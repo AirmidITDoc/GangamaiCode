@@ -359,7 +359,7 @@ export class GoodReceiptnoteComponent implements OnInit {
     onVerify(row) {
         let GRNVerifyObj = {};
         GRNVerifyObj['grnid'] = row.grnid;
-        GRNVerifyObj['VerifiedBy'] = this.accountService.currentUserValue.userId;
+        GRNVerifyObj['verifiedBy'] = this.accountService.currentUserValue.userId;
 
         this._GRNService.getVerifyGRN(GRNVerifyObj).subscribe(response => {
         }); 

@@ -124,7 +124,7 @@ export interface GRNFinalFormModel {
   VatAmount: string;
   NetPayamt: string;
   OtherCharge: number;
-  RoundingAmt: number;
+  RoundingAmt: any;
   EwayBillNo: string;
   EwalBillDate: Date;
   DiscAmount2: number;

@@ -265,7 +265,7 @@
                                 [formGroup]="ItemSubform" formControlName="extMobileNo" maxlength="10" minlength="10"
                                 placeholder="Enter 10 digit Mobile No." fxFlex   TextField="text" 
                                 ApiUrl="Sales/External-auto-complete?Keyword="  
-                                (selectionChange)="getSelectedObjextMobile($event)"  (keyup)="getSelectedObjextMobile($event)" 
+                                (selectionChange)="getSelectedObjextMobile($event)"   
                                ></airmid-autocomplete>  
                             </div> 
                        
@@ -274,7 +274,7 @@
                                 [formGroup]="ItemSubform" formControlName="externalPatientName"
                                 placeholderText="Patient Name" fxFlex
                                ApiUrl="Sales/External-auto-complete?Keyword="  TextField="text" 
-                                (selectionChange)="getSelectedObjextPatient($event)" (keyup)="getSelectedObjextPatient($event)" 
+                                (selectionChange)="getSelectedObjextPatient($event)"  
                                 ></airmid-autocomplete> 
                             </div>
 
