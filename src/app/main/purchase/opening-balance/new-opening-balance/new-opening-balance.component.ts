@@ -31,7 +31,9 @@ export class NewOpeningBalanceComponent implements OnInit {
     'ItemName',
     'BatchNo',
     'ExpDate',
-    'BalQty',
+    'pack',
+    'qty',
+    'totalQty',
     'CGST',
     'SGST',
     'IGST',
@@ -111,9 +113,9 @@ export class NewOpeningBalanceComponent implements OnInit {
       itemId: [element.ItemID || 0],
       batchNo: [element.BatchNo || ''],
       batchExpDate: this.datePipe.transform(this.dateTimeObj?.date, "yyyy-MM-dd") || '1900-01-01',//this.vExpDate,// this.datePipe.transform(element.ExpDate, "yyyy-MM-dd") || '1900-01-01',
-      perUnitPurRate: [element.PerRate || 0,[this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-      perUnitMrp: [element.UnitMRP || 0,[this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-      perUnitLandedRate: [element.LandedRate || 0,[this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      perUnitPurRate: [element.PerRate || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      perUnitMrp: [element.UnitMRP || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      perUnitLandedRate: [element.LandedRate || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
       cgstPer: [element.CGST || 0],
       sgstPer: [element.SGST || 0],
       igstPer: [element.IGST || 0],
@@ -139,8 +141,8 @@ export class NewOpeningBalanceComponent implements OnInit {
     // }
     this.OPeningtemForm.patchValue({
       UOMId: item.umoId,
-      ConversionFactor: isNaN(+item.converFactor) ? 1 : +item.converFactor,
-      BalanceQty: item.balanceQty,
+      pack: isNaN(+item.converFactor) ? 1 : +item.converFactor,
+      // BalanceQty: item.balanceQty,
       CGST: item.cgstPer,
       SGST: item.sgstPer,
       IGST: item.igstPer,
@@ -157,50 +159,6 @@ export class NewOpeningBalanceComponent implements OnInit {
   lastDay2: string = '';
   calculateLastDay() {
     const inputDate = this.OPeningtemForm.get("ExpDate").value;
-    // // Reset values if input is empty
-    // if (!inputDate) {
-    //     this.vlastDay = '';
-    //     this.lastDay2 = '';
-    //     return;
-    // } 
-    // // If input is already in DD/MM/YYYY format, just update the variables
-    // if (inputDate.length === 10 && inputDate.includes('/')) {
-    //     const [day, month, year] = inputDate.split('/');
-    //     this.vlastDay = inputDate;
-    //     this.lastDay2 = `${year}/${month}/${day}`;
-    //     return;
-    // } 
-    // // Handle MMYYYY format
-    // if (inputDate.length === 6) {
-    //     // Check if input contains only numbers
-    //     if (!/^\d+$/.test(inputDate)) {
-    //         this.resetDateAndShowError('Please enter only numbers in MMYYYY format');
-    //         return;
-    //     } 
-    //     const month = +inputDate.substring(0, 2);
-    //     const year = +inputDate.substring(2, 6); 
-    //     // Validate month range
-    //     if (month < 1 || month > 12) {
-    //         this.resetDateAndShowError('Invalid month. Month should be between 01 and 12');
-    //         return;
-    //     }
-
-    //     // Validate year (assuming reasonable year range)
-    //     if (year < 1900) {
-    //         this.resetDateAndShowError('Invalid year. Please enter a valid year');
-    //         return;
-    //     }
-
-    //     // Calculate last day of the month
-    //     const lastDay = this.getLastDayOfMonth(month, year);
-    //     this.vlastDay = `${this.pad(lastDay)}/${this.pad(month)}/${year}`;
-    //     this.lastDay2 = `${year}/${this.pad(month)}/${this.pad(lastDay)}`;
-    //     this.userFormGroup.get('ExpDate').setValue(this.vlastDay);
-    // } else {
-    //     this.resetDateAndShowError('Please enter date in MMYYYY format');
-    // } 
-
-
     const numericPattern = /^[0-9]+$/;
     const CurrentDate = new Date();
     const Currentmonths = new Date();
@@ -270,11 +228,11 @@ export class NewOpeningBalanceComponent implements OnInit {
   }
 
   onExpDateInput(event: any) {
-  const value = event.target.value;
-  if (value && value.length === 6) {
-    this.calculateLastDay();
+    const value = event.target.value;
+    if (value && value.length === 6) {
+      this.calculateLastDay();
+    }
   }
-}
 
   getLastDayOfMonth(month: number, year: number): number {
     return new Date(year, month, 0).getDate();
@@ -284,7 +242,6 @@ export class NewOpeningBalanceComponent implements OnInit {
   }
 
   getchangegstper(rate, GSTTYP): void {
-
     const formValues = this.OPeningtemForm.getRawValue() as GRNFormModel;
     const gstValues = [
       { value: 2.5 },
@@ -306,6 +263,18 @@ export class NewOpeningBalanceComponent implements OnInit {
     }
   }
 
+  calculateTotalQty() {
+    const pack = this.OPeningtemForm.get('pack')?.value || 0;
+    const qty = this.OPeningtemForm.get('BalanceQty')?.value || 0;
+
+    // Total = packs * strips per pack
+    const totalQty = qty * pack;
+
+    this.OPeningtemForm.patchValue({
+      totalQty: totalQty
+    });
+  }
+
   Onadd() {
 
     const isDuplicate = this.dsItemNameList.data.some(item => item.BatchNo === this.vBatchNo);
@@ -319,6 +288,8 @@ export class NewOpeningBalanceComponent implements OnInit {
           ItemName: this.OPeningtemForm.get('ItemName').value.formattedText || '',
           BatchNo: this.OPeningtemForm.get('BatchNo').value || "",
           ExpDate: this.vlastDay, //this.OPeningtemForm.get('ExpDate').value || "",
+          Pack: this.OPeningtemForm.get('pack').value || 0,
+          TotalQty: this.OPeningtemForm.get('totalQty').value || 0,
           BalQty: this.OPeningtemForm.get('BalanceQty').value || 0,
           PerRate: this.OPeningtemForm.get('RatePerUnit').value || 0,
           UnitMRP: this.OPeningtemForm.get('MRP').value || 0,
@@ -349,6 +320,8 @@ export class NewOpeningBalanceComponent implements OnInit {
       ItemName: "",
       BatchNo: "",
       ExpDate: "",
+      pack:"",
+      totalQty:"",
       BalanceQty: "",
       CGST: "",
       SGST: "",

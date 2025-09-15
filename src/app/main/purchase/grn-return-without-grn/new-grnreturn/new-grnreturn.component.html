@@ -118,12 +118,10 @@
                         </div>
                     </form>
 
-                    <div style="width: 100%;">
-                        <div matColumnDef="loading" [ngClass]="{'hide': !(sIsLoading == 'loading-data')}"
-                            class="backgroundBlur">
-                            <div class="spinner-border text-danger"></div>
-                        </div>
-                        <mat-table #table matSort [dataSource]="dsItemList" [@animateStagger]="{value:'50'}">
+                    <div style="width: 100%;" class="airmid-table-container">
+
+                        <mat-table #table matSort [dataSource]="dsItemList" [@animateStagger]="{value:'50'}"
+                        style="overflow: auto; height: 400px;" class="airmid-table">
 
                             <ng-container matColumnDef="buttons" stickyEnd>
                                 <mat-header-cell *matHeaderCellDef style="color: white;"> Action

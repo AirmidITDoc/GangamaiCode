@@ -105,7 +105,7 @@ export class NewReservationComponent implements OnInit {
       this.reservationForm.get("anestheticsDr")?.setValue(this.registerObj?.anestheticsDrID)
       this.reservationForm.get("anestheticsDr1")?.setValue(this.registerObj?.anestheticsDrID1)
       this.reservationForm.get("unBooking")?.setValue(false)
-
+    // this.reservationForm.get('ottableId').setValue(this.registerObj?.ottableId);
     }
 
     if (this.registerObj?.opstartTime) {
@@ -183,7 +183,7 @@ export class NewReservationComponent implements OnInit {
           });
         }
       }
-      this.reservationForm.get('ottableId').setValue(this.data?.otTableId);
+      // this.reservationForm.get('ottableId').setValue(this.data?.otTableId);
       this.reservationForm.get('duration').setValue(this.data?.duration);
 
     }
