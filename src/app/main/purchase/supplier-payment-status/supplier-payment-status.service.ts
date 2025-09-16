@@ -11,7 +11,6 @@ import { FormvalidationserviceService } from 'app/main/shared/services/formvalid
 })
 export class SupplierPaymentStatusService {
   SearchFormGroup:FormGroup;
-  SupplierListForm :FormGroup;
   constructor(
     public _httpClient:HttpClient,  public _httpClient1:ApiCaller,
     public _formbuilder:UntypedFormBuilder,
@@ -21,7 +20,6 @@ export class SupplierPaymentStatusService {
   )
    { 
     this.SearchFormGroup = this.CreateSearchForm();
-    this.SupplierListForm = this.CreateSupplierList();
    }
    CreateSearchForm(){
     return this._formbuilder.group({
@@ -39,7 +37,7 @@ export class SupplierPaymentStatusService {
     return this._formbuilder.group({
       start: [(new Date()).toISOString()],
       end: [(new Date()).toISOString()], 
-      SupplierId:['%'], 
+      SupplierId:['0'], 
     });
    }
 

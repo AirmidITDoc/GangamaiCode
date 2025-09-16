@@ -25,22 +25,17 @@
     <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
         <airmid-table [gridConfig]="gridConfig" class="content">
             <ng-container filters>
-                <!-- <mat-form-field appearance="outline" fxFlex="20%">
-                                            <mat-label>Enter a date range</mat-label>
-                                            <mat-date-range-input [rangePicker]="grnPicker">
-                                                <input matStartDate formControlName="start" placeholder="Start date">
-                                                <input matEndDate formControlName="end" placeholder="End date"
-                                                    (dateChange)="getSupplierPayStatusList()">
-                                            </mat-date-range-input>
-                                            <mat-datepicker-toggle matSuffix [for]="grnPicker"></mat-datepicker-toggle>
-                                            <mat-date-range-picker #grnPicker></mat-date-range-picker>
-                                        </mat-form-field> -->
-                <airmid-dropdown label="Supplier Name" formControlName="SupplierId"
-                    (selectionChange)="selectChangeSupplier($event)"
-                    [formGroup]="_SupplierPaymentStatusService.SupplierListForm" 
-                    [(ngModel)]="gridConfig.filters[0].fieldValue"
-                    [mode]="autocompleteSupplier">
-                </airmid-dropdown>
+                <form [formGroup]="SupplierListForm">
+
+                    <airmid-datepicker [formGroup]="SupplierListForm" [isRangePicker]="true" formStartControlName="start"
+                        formEndControlName="end" [(fromValue)]="gridConfig.filters[0].fieldValue"
+                        [(toValue)]="gridConfig.filters[1].fieldValue"></airmid-datepicker>
+
+                    <airmid-dropdown label="Supplier Name" formControlName="SupplierId"
+                        (selectionChange)="selectChangeSupplier($event)" [formGroup]="SupplierListForm"
+                        [(ngModel)]="gridConfig.filters[2].fieldValue" [mode]="autocompleteSupplier">
+                    </airmid-dropdown>
+                </form>
             </ng-container>
         </airmid-table>
     </div>
@@ -54,7 +49,7 @@
 
                 <div class="sidebar-body">
                     <div class="sidebar-form">
-                        <form [formGroup]="_SupplierPaymentStatusService.SupplierListForm">
+                        <form [formGroup]="SupplierListForm">
                             <div fxLayout="column" fxLayoutAlign="start none">
                                 <mat-form-field appearance="outline">
                                     <mat-label>Enter a date range</mat-label>
@@ -74,9 +69,9 @@
                                         [matAutocomplete]="autoSupllier" (input)="getSupplierList()">
                                     <span matSuffix style="display: flex;">
                                         <mat-icon class="mat-icon-close"
-                                            (click)="_SupplierPaymentStatusService.SupplierListForm.get('SupplierId').setValue(''); isSupplierSelected = false;">close</mat-icon>
+                                            (click)="SupplierListForm.get('SupplierId').setValue(''); isSupplierSelected = false;">close</mat-icon>
                                         <mat-icon class="mat-icon-close"
-                                            (click)="_SupplierPaymentStatusService.SupplierListForm.get('SupplierId').setValue(''); isSupplierSelected = false;">search</mat-icon>
+                                            (click)="SupplierListForm.get('SupplierId').setValue(''); isSupplierSelected = false;">search</mat-icon>
                                     </span>
                                     <mat-autocomplete #autoSupllier="matAutocomplete"
                                         [displayWith]="getOptionTextSupplier">

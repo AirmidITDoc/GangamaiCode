@@ -40,7 +40,6 @@ export class OpeningBalanceService {
       ItemName: ['', [Validators.required]],
       BatchNo: ['', [Validators.required, Validators.maxLength(50)]],
       ExpDate: [''],//['',this._FormvalidationserviceService.validDateValidator()],
-      BalanceQty: ['', [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       CGST: [''],
       SGST: [''],
       IGST: [''],
@@ -49,10 +48,9 @@ export class OpeningBalanceService {
       RatePerUnit: ['', [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       Remark: [''],
       LandedRate: ['', [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-
-      // extra fields
       pack:['', [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      totalQty: [''],
+      stripQty: ['', [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      totalQty: ['', [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
     })
   }
 
