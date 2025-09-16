@@ -9,7 +9,7 @@
             <mat-icon>close</mat-icon>
         </button>
     </mat-toolbar>
-    <div class="content">
+    <div class="content full-height-content" fxFlex>
         <div class="center p-12 pb-56" style="border-radius: 4px;">
             <div class="modal-card-container">
                 <div fxFlexFill fxLayout="row" fxLayoutGap="4px" fxLayoutAlign="space-between" style="width: 50%;">
@@ -141,63 +141,64 @@
                                     <div class="content" style="overflow: auto;">
                                         <div class="center pb-56" style="border-radius: 4px;padding: 10px;">
                                             <div class="content-card">
-                                                <div fxFlexFill fxLayout="column" fxLayoutGap="10px">
-                                                    <div fxLayout="row" fxLayoutGap="10px">
-                                                        <div fxFlex.gt-sm="40%" fxFlex>
-                                                            <mat-card style="padding: 5px;">
-                                                                <div id="contacts"
-                                                                    class="page-layout simple left-sidebar inner-sidebar inner-scroll">
-                                                                    <airmid-table [gridConfig]="gridConfig" #docNote
-                                                                        :ShowFilter="false" :ShowButtons="false">
-                                                                    </airmid-table>
-                                                                </div>
-                                                            </mat-card>
-                                                        </div>
-                                                        <div fxFlex.gt-sm="60%" fxFlex>
-                                                            <form [formGroup]="myNoteform">
-                                                                <input type="hidden" formControlName="doctNoteId">
-                                                                <div fxLayout="column" fxLayoutGap="2px">
-                                                                    <form [formGroup]="myform">
-                                                                        <div fxLayout="row" fxLayoutGap="10px">
-                                                                            <airmid-dropdown label="Template Name"
-                                                                                *ngIf="showDropdown"
-                                                                                formControlName="TemplateId"
-                                                                                [formGroup]="myform" fxFlex="50%"
-                                                                                ValueField="docNoteTempId"
-                                                                                TextField="docsTempName"
-                                                                                (selectionChange)="onChangetemplate($event)"
-                                                                                ApiUrl="Pathology/get-DoctorNotesTemplateMaster">
-                                                                            </airmid-dropdown>
-                                                                            <div class="input-add-button">
-                                                                                <div>
-                                                                                    <button #addbutton
-                                                                                        class="btn btn-primary btn-with-icon"
-                                                                                        (click)="OnAdd()" id="btnAdd"
-                                                                                        [disabled]="IsAddFlag">
-                                                                                        <span class="btn-icon">
-                                                                                            <mat-icon> add </mat-icon>
-                                                                                        </span>
-                                                                                        <span>Add</span>
-                                                                                    </button>
-                                                                                </div>
+                                                <div fxFlexFill fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="stretch start">
+                                                    <div fxFlex.gt-sm="40%" fxFlex fxFlexFill class="table-container">
+                                                        <mat-card style="padding: 5px; height: 100%;">
+                                                            <div id="contacts"
+                                                                class="page-layout simple left-sidebar inner-sidebar inner-scroll" style="height: 100%;">
+                                                                <airmid-table [gridConfig]="gridConfig" #docNote
+                                                                    :ShowFilter="false" :ShowButtons="false" class="full-height-table">
+                                                                </airmid-table>
+                                                            </div>
+                                                        </mat-card>
+                                                    </div>
+                                                    <div fxFlex.gt-sm="60%" fxFlex fxFlexFill class="editor-container">
+                                                        <form [formGroup]="myNoteform">
+                                                            <input type="hidden" formControlName="doctNoteId">
+                                                            <div fxLayout="column" fxLayoutGap="2px">
+                                                                <form [formGroup]="myform">
+                                                                    <div fxLayout="row" fxLayoutGap="10px">
+                                                                        <airmid-dropdown label="Template Name"
+                                                                            *ngIf="showDropdown"
+                                                                            formControlName="TemplateId"
+                                                                            [formGroup]="myform" fxFlex="50%"
+                                                                            ValueField="docNoteTempId"
+                                                                            TextField="docsTempName"
+                                                                            (selectionChange)="onChangetemplate($event)"
+                                                                            ApiUrl="Pathology/get-DoctorNotesTemplateMaster">
+                                                                        </airmid-dropdown>
+                                                                        <div class="input-add-button">
+                                                                            <div>
+                                                                                <button #addbutton
+                                                                                    class="btn btn-primary btn-with-icon"
+                                                                                    (click)="OnAdd()" id="btnAdd"
+                                                                                    [disabled]="IsAddFlag">
+                                                                                    <span class="btn-icon">
+                                                                                        <mat-icon> add </mat-icon>
+                                                                                    </span>
+                                                                                    <span>Add</span>
+                                                                                </button>
                                                                             </div>
                                                                         </div>
-                                                                    </form>
-                                                                    <mat-card style="padding: 5px;overflow: auto;">
-                                                                        <div>
-                                                                            <airmid-editor label="Template Details"
-                                                                                formControlName="doctorsNotes"
-                                                                                [(value)]="vDescription"
-                                                                                [formGroup]="myNoteform" (valueChange)="onEditorValueChange($event)">
-                                                                            </airmid-editor>
-                                                                        </div>
-                                                                    </mat-card>
-                                                                    <div fxLayout="row" fxLayoutAlign="end"
-                                                                        fxLayoutGap="6px">
+                                                                    </div>
+                                                                </form>
+                                                                <mat-card style="padding: 5px;overflow: auto;">
+                                                                    <div>
+                                                                        <airmid-editor label="Template Details"
+                                                                            formControlName="doctorsNotes"
+                                                                            [(value)]="vDescription"
+                                                                            [formGroup]="myNoteform" (valueChange)="onEditorValueChange($event)">
+                                                                        </airmid-editor>
+                                                                    </div>
+                                                                </mat-card>
+                                                                <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="6px" class="mt-16">
+                                                                    <div>
                                                                         <button class="btn btn-primary-outline"
                                                                             (click)="NewTemplate()">
                                                                             New Template
                                                                         </button>
+                                                                    </div>
+                                                                    <div fxLayout="row" fxLayoutGap="6px">
                                                                         <button class="btn btn-danger-outline"
                                                                             (click)="onClear()">
                                                                             Reset
@@ -208,8 +209,8 @@
                                                                         </button>
                                                                     </div>
                                                                 </div>
-                                                            </form>
-                                                        </div>
+                                                            </div>
+                                                        </form>
                                                     </div>
                                                 </div>
                                             </div>

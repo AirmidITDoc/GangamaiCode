@@ -2,6 +2,40 @@
     padding: 10px !important;
 }
 
+// Ensure table and editor have same height
+.table-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 400px; // Set minimum height
+}
+
+.editor-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 400px; // Set minimum height
+}
+
+.full-height-table {
+    height: 100%;
+    min-height: 400px;
+}
+
+// Ensure airmid-table takes full height
+::ng-deep .full-height-table .airmid-table-container {
+    height: 100%;
+    min-height: 400px;
+}
+
+::ng-deep .full-height-table .table-wrapper {
+    height: 100%;
+    min-height: 400px;
+}
+
+::ng-deep .full-height-table mat-table {
+    height: 100%;
+    min-height: 400px;
+}
+
 app-doctornote{
 
     .mat-icon-button {
@@ -13,4 +47,16 @@ app-doctornote{
         line-height: 20px;
         border-radius: 50%;
     }
+}
+
+.mt-16 {
+    margin-top: 16px !important;
+}
+
+.full-height-content {
+    height: 100%;
+    min-height: 0;
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
 }

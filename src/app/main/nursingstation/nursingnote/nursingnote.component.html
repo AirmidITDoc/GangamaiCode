@@ -195,27 +195,35 @@
                                                                         </div>
                                                                     </form>
 
-                                                                    <mat-card style="padding: 5px;overflow: auto;">
-                                                                        <div>
-                                                                            <airmid-editor label="Template Details" formControlName="nursingNotes"
-                                                                                [(value)]="vDescription" [formGroup]="myNursingForm"  (valueChange)="onEditorValueChange($event)">
-                                                                            </airmid-editor>
+                                                                    <mat-card class="mat-elevation-z2" style="padding: 0; overflow: hidden;">
+                                                                        <div fxLayout="column" fxFlexFill>
+                                                                            <!-- Editor Container with proper height -->
+                                                                            <div fxFlex="1 1 auto" style="min-height: 400px; max-height: 600px;">
+                                                                                <airmid-editor formControlName="nursingNotes"
+                                                                                    [(value)]="vDescription" [formGroup]="myNursingForm" (valueChange)="onEditorValueChange($event)">
+                                                                                </airmid-editor>
+                                                                            </div>
                                                                         </div>
                                                                     </mat-card>
-
-                                                                    <div fxLayout="row" fxLayoutGap="10px"
-                                                                        fxLayoutAlign="end">
-                                                                        <button class="btn btn-primary-outline"
-                                                                            type="button" value="Input"
-                                                                            (click)="onTemplate()">New Template
-                                                                        </button>
-                                                                        <button class="btn btn-danger-outline"
-                                                                            type="button" value="Input"
-                                                                            (click)="onClear()">Reset</button>
-                                                                        <button class="btn btn-primary" type="submit"
-                                                                            (click)="onSubmit()"
-                                                                            value="submit">Save</button>
+                                                                    <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="6px" class="mt-16">
+                                                                        <div>
+                                                                            <button class="btn btn-primary-outline"
+                                                                                (click)="onTemplate()">
+                                                                                New Template
+                                                                            </button>
+                                                                        </div>
+                                                                        <div fxLayout="row" fxLayoutGap="6px">
+                                                                            <button class="btn btn-danger-outline"
+                                                                                (click)="onClear()">
+                                                                                Reset
+                                                                            </button>
+                                                                            <button class="btn btn-primary"
+                                                                                (click)="onSubmit()">
+                                                                                Save
+                                                                            </button>
+                                                                        </div>
                                                                     </div>
+
                                                                 </div>
                                                             </form>
 
