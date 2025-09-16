@@ -1160,6 +1160,9 @@ public getbedbyRoom(deptId) {
        public AddBedCharges(param) {
         return this._httpClient1.PostData("IPBill/AddBedServiceCharges", param);
     }
+          public InsertIPpacakgeAddCharges(param) {
+        return this._httpClient1.PostData("IPBill/AddBedServiceCharges", param);
+    } 
 }
 
 // Set NODE_OPTIONS="--max-old-space-size=8192"

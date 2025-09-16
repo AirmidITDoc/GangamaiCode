@@ -388,6 +388,9 @@ export class OpPaymentComponent implements OnInit {
       this.Paymentobj['payTmamount'] = this.Payments.data.find(x => x.PaymentType == "upi")?.Amount ?? 0;
       this.Paymentobj['payTmtranNo'] = this.Payments.data.find(x => x.PaymentType == "upi")?.RefNo ?? "0";
       this.Paymentobj['payTmdate'] = this.datePipe.transform(this.currentDate, 'yyyy-MM-dd') || this.datePipe.transform(this.currentDate, 'yyyy-MM-dd')
+      this.Paymentobj['tdsamount'] = this.Payments.data.find(x => x.PaymentType == "tds")?.Amount ?? 0;
+      this.Paymentobj['unitId'] = this._loggedService.currentUserValue.user.unitId
+      this.Paymentobj['wfamount'] = this.Payments.data.find(x => x.PaymentType == "wf")?.Amount ?? 0;  
     }
     else if (this.data.FromName == "OP-Pharma-SETTLEMENT") {
 
@@ -522,7 +525,9 @@ export class OpPaymentComponent implements OnInit {
       this.Paymentobj['payTmamount'] = this.Payments.data.find(x => x.PaymentType == "upi")?.Amount ?? 0;
       this.Paymentobj['payTmtranNo'] = this.Payments.data.find(x => x.PaymentType == "upi")?.RefNo ?? "";
       this.Paymentobj['payTmdate'] = this.datePipe.transform(this.currentDate, 'yyyy-MM-dd') || this.datePipe.transform(this.currentDate, 'yyyy-MM-dd')
-      this.Paymentobj['tdsAmount'] = this.Payments.data.find(x => x.PaymentType == "tds")?.Amount ?? 0;
+      this.Paymentobj['tdsamount'] = this.Payments.data.find(x => x.PaymentType == "tds")?.Amount ?? 0;
+      this.Paymentobj['unitId'] = this._loggedService.currentUserValue.user.unitId
+      this.Paymentobj['wfamount'] = this.Payments.data.find(x => x.PaymentType == "wf")?.Amount ?? 0;  
     }
     //new changes done by Ambadas ip IntrimBIll 13/6/2025
     else if (this.data.FromName == "IP-IntrimBIll") {
@@ -555,7 +560,9 @@ export class OpPaymentComponent implements OnInit {
       this.Paymentobj['payTmamount'] = this.Payments.data.find(x => x.PaymentType == "upi")?.Amount ?? 0;
       this.Paymentobj['payTmtranNo'] = this.Payments.data.find(x => x.PaymentType == "upi")?.RefNo ?? "";
       this.Paymentobj['payTmdate'] = this.datePipe.transform(this.currentDate, 'yyyy-MM-dd') || this.datePipe.transform(this.currentDate, 'yyyy-MM-dd')
-      this.Paymentobj['tdsAmount'] = 0;
+      this.Paymentobj['tdsamount'] = this.Payments.data.find(x => x.PaymentType == "tds")?.Amount ?? 0;
+      this.Paymentobj['unitId'] = this._loggedService.currentUserValue.user.unitId
+      this.Paymentobj['wfamount'] = this.Payments.data.find(x => x.PaymentType == "wf")?.Amount ?? 0;  
     }
     else if (this.data.FromName == "OP-RefundOfBill") {
       this.Paymentobj['BillNo'] = this.advanceData.billNo; //this.data?.billNo;
@@ -591,7 +598,9 @@ export class OpPaymentComponent implements OnInit {
       this.Paymentobj['PayTMDate'] = this.datePipe.transform(this.currentDate, 'yyyy-MM-dd') || this.datePipe.transform(this.currentDate, 'yyyy-MM-dd')
       this.Paymentobj['PaidAmt'] = this.paidAmt;// this.patientDetailsFormGrp.get('paidAmountController').value +Number(this.amount1);
       this.Paymentobj['BalanceAmt'] = this.patientDetailsFormGrp.get('balanceAmountController').value;
-      this.Paymentobj['tdsAmount'] = 0;
+      this.Paymentobj['tdsamount'] = this.Payments.data.find(x => x.PaymentType == "tds")?.Amount ?? 0;
+      this.Paymentobj['unitId'] = this._loggedService.currentUserValue.user.unitId
+      this.Paymentobj['wfamount'] = this.Payments.data.find(x => x.PaymentType == "wf")?.Amount ?? 0;  
     }
     //new changes done by Ambadas op bill 10/6/2025
     else if (this.data.FromName == "OP-Bill") {
@@ -625,7 +634,9 @@ export class OpPaymentComponent implements OnInit {
       this.Paymentobj['payTmamount'] = this.Payments.data.find(x => x.PaymentType == "upi")?.Amount ?? 0;
       this.Paymentobj['payTmtranNo'] = this.Payments.data.find(x => x.PaymentType == "upi")?.RefNo ?? "0";
       this.Paymentobj['payTmdate'] = this.datePipe.transform(this.currentDate, 'yyyy-MM-dd') || this.datePipe.transform(this.currentDate, 'yyyy-MM-dd')
-      this.Paymentobj['tdsamount'] = 0;
+      this.Paymentobj['tdsamount'] = this.Payments.data.find(x => x.PaymentType == "tds")?.Amount ?? 0;
+      this.Paymentobj['unitId'] = this._loggedService.currentUserValue.user.unitId
+      this.Paymentobj['wfamount'] = this.Payments.data.find(x => x.PaymentType == "wf")?.Amount ?? 0;  
     }
     //new changes done by Ambadas sales hospital pay 20/6/2025
     else if (this.data.FromName == "Phar-SalesPay") {

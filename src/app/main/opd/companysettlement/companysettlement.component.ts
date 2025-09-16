@@ -139,16 +139,16 @@ export class CompanysettlementComponent implements OnInit {
                 billNo: [0, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
                 paymentDate: ['', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
                 paymentTime: ['', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
-                cashPayAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-                chequePayAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+                cashPayAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+                chequePayAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
                 chequeNo: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
                 bankName: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
                 chequeDate: ['1999-01-01'],
-                cardPayAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+                cardPayAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
                 cardNo: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
                 cardBankName: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
                 cardDate: ['1999-01-01'],
-                advanceUsedAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+                advanceUsedAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
                 advanceId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
                 refundId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
                 transactionType: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -162,14 +162,18 @@ export class CompanysettlementComponent implements OnInit {
                 neftno: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
                 neftbankMaster: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
                 neftdate: ['1999-01-01'],
-                payTmamount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+                payTmamount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
                 payTmtranNo: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
                 payTmdate: ['1999-01-01'],
+                tdsamount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+                unitId: [this.accountService.currentUserValue.user.unitId, [this._FormvalidationserviceService.onlyNumberValidator()]],
+                wfamount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+ 
             }),
             //bill update 
             billUpdate: this.formBuilder.group({
                 billNo: [0, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-                balanceAmt: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+                balanceAmt: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
             })
         })
     }
