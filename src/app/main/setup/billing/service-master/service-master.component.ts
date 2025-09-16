@@ -25,67 +25,68 @@ export class ServiceMasterComponent implements OnInit {
     autocompleteModegroupName: string = "GroupName";
     tariffId = "0";
     groupId = "0";
-    serviceName:any="";
-    type:any="2"
+    serviceName: any = "";
+    type: any = "2"
 
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
-     ngAfterViewInit() {
-              // Assign the template to the column dynamically
-              this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
-              this.gridConfig.columnsList.find(col => col.key === 'creditedtoDoctor')!.template = this.iconcreditedtoDoctor; 
-              this.gridConfig.columnsList.find(col => col.key === 'isPathology')!.template = this.iconisPathology; 
-              this.gridConfig.columnsList.find(col => col.key === 'isRadiology')!.template = this.iconisRadiology;
-              this.gridConfig.columnsList.find(col => col.key === 'isPackage')!.template = this.iconisPackage; 
-              this.gridConfig.columnsList.find(col => col.key === 'isProcedure')!.template = this.iconisProcedure; 
-          }
-          @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
-          @ViewChild('iconcreditedtoDoctor') iconcreditedtoDoctor!: TemplateRef<any>;
-          @ViewChild('iconisPathology') iconisPathology!: TemplateRef<any>;
-          @ViewChild('iconisRadiology') iconisRadiology!: TemplateRef<any>;
-          @ViewChild('iconisPackage') iconisPackage!: TemplateRef<any>;
-          @ViewChild('iconisProcedure') iconisProcedure!: TemplateRef<any>;
+    ngAfterViewInit() {
+        // Assign the template to the column dynamically
+        this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
+        this.gridConfig.columnsList.find(col => col.key === 'creditedtoDoctor')!.template = this.iconcreditedtoDoctor;
+        this.gridConfig.columnsList.find(col => col.key === 'isPathology')!.template = this.iconisPathology;
+        this.gridConfig.columnsList.find(col => col.key === 'isRadiology')!.template = this.iconisRadiology;
+        this.gridConfig.columnsList.find(col => col.key === 'isPackage')!.template = this.iconisPackage;
+        this.gridConfig.columnsList.find(col => col.key === 'isProcedure')!.template = this.iconisProcedure;
+    }
+    @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
+    @ViewChild('iconcreditedtoDoctor') iconcreditedtoDoctor!: TemplateRef<any>;
+    @ViewChild('iconisPathology') iconisPathology!: TemplateRef<any>;
+    @ViewChild('iconisRadiology') iconisRadiology!: TemplateRef<any>;
+    @ViewChild('iconisPackage') iconisPackage!: TemplateRef<any>;
+    @ViewChild('iconisProcedure') iconisProcedure!: TemplateRef<any>;
 
-          allColumns=[
-            { heading: "IsPackage", key: "isPackage", sort: true, align: 'center', emptySign: 'NA', width: 100, type: gridColumnTypes.template, 
-                template: this.iconisPackage  // Assign ng-template to the column
-             },
-            { heading: "ServiceName", key: "serviceName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-            { heading: "ServiceShortDesc", key: "serviceShortDesc", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-            { heading: "GroupName", key: "groupName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-            { heading: "TariffName", key: "tariffName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-            { heading: "PrintOrder", key: "printOrder", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-            { heading: "Price", key: "price", sort: true, align: 'left', emptySign: 'NA', width: 100,type: gridColumnTypes.amount},
-            { heading: "EmergencyAmt", key: "emgAmt", sort: true, align: 'left', emptySign: 'NA', width: 150,type: gridColumnTypes.amount},
-            { heading: "IsEditable", key: "isEditable", sort: true, type: gridColumnTypes.status, align: 'left', width: 100 },
-            { heading: "CreditedToDoctor", key: "creditedtoDoctor", sort: true, align: 'left', width: 150, type: gridColumnTypes.template },
-            { heading: "IsPathology", key: "isPathology", sort: true, align: 'center', emptySign: 'NA', width: 100, type: gridColumnTypes.template },
-            { heading: "IsRadiology", key: "isRadiology", sort: true, align: 'center', emptySign: 'NA', width: 100, type: gridColumnTypes.template },
-            { heading: "IsProcedure", key: "isProcedure", sort: true, align: 'center', emptySign: 'NA', width: 100, type: gridColumnTypes.template },
-            { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center", width: 100 },
-            {
-                heading: "Action", key: "action", align: "right", width: 100, type: gridColumnTypes.action, actions: [
-                    {
-                        action: gridActions.edit, callback: (data: any) => {
-                            this.onNew(data);
-                        }
-                    }, {
-                        action: gridActions.delete, callback: (data: any) => {
-                            
-                            this._serviceMasterService.ServiceMasterCancle(data.serviceId).subscribe((response: any) => {
-                                this.toastr.success(response.message);
-                                this.grid.bindGridData();
-                            });
-                        }
-                    }]
-            } 
-        ]
+    allColumns = [
+        {
+            heading: "IsPackage", key: "isPackage", sort: true, align: 'center', emptySign: 'NA', width: 100, type: gridColumnTypes.template,
+            template: this.iconisPackage  // Assign ng-template to the column
+        },
+        { heading: "ServiceName", key: "serviceName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+        { heading: "ServiceShortDesc", key: "serviceShortDesc", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+        { heading: "GroupName", key: "groupName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+        { heading: "TariffName", key: "tariffName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+        { heading: "PrintOrder", key: "printOrder", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "Price", key: "price", sort: true, align: 'left', emptySign: 'NA', width: 100, type: gridColumnTypes.amount },
+        { heading: "EmergencyAmt", key: "emgAmt", sort: true, align: 'left', emptySign: 'NA', width: 150, type: gridColumnTypes.amount },
+        { heading: "IsEditable", key: "isEditable", sort: true, type: gridColumnTypes.status, align: 'left', width: 100 },
+        { heading: "CreditedToDoctor", key: "creditedtoDoctor", sort: true, align: 'left', width: 150, type: gridColumnTypes.template },
+        { heading: "IsPathology", key: "isPathology", sort: true, align: 'center', emptySign: 'NA', width: 100, type: gridColumnTypes.template },
+        { heading: "IsRadiology", key: "isRadiology", sort: true, align: 'center', emptySign: 'NA', width: 100, type: gridColumnTypes.template },
+        { heading: "IsProcedure", key: "isProcedure", sort: true, align: 'center', emptySign: 'NA', width: 100, type: gridColumnTypes.template },
+        { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center", width: 100 },
+        {
+            heading: "Action", key: "action", align: "right", width: 100, type: gridColumnTypes.action, actions: [
+                {
+                    action: gridActions.edit, callback: (data: any) => {
+                        this.onNew(data);
+                    }
+                }, {
+                    action: gridActions.delete, callback: (data: any) => {
 
-        allFilters=[
-            { fieldName: "ServiceName", fieldValue: "%", opType: OperatorComparer.StartsWith },
-            { fieldName: "TariffId", fieldValue: "0", opType: OperatorComparer.Equals },
-            { fieldName: "GroupId", fieldValue: "0", opType: OperatorComparer.Equals },
-            { fieldName: "IsActive", fieldValue: "2", opType: OperatorComparer.Equals }
-        ]
+                        this._serviceMasterService.ServiceMasterCancle(data.serviceId).subscribe((response: any) => {
+                            this.toastr.success(response.message);
+                            this.grid.bindGridData();
+                        });
+                    }
+                }]
+        }
+    ]
+
+    allFilters = [
+        { fieldName: "ServiceName", fieldValue: "%", opType: OperatorComparer.StartsWith },
+        { fieldName: "TariffId", fieldValue: "0", opType: OperatorComparer.Equals },
+        { fieldName: "GroupId", fieldValue: "0", opType: OperatorComparer.Equals },
+        { fieldName: "IsActive", fieldValue: "2", opType: OperatorComparer.Equals }
+    ]
 
     gridConfig: gridModel = {
         apiUrl: "BillingService/BillingList",
@@ -99,31 +100,34 @@ export class ServiceMasterComponent implements OnInit {
         console.log(event)
         if (event == 'ServiceNameSearch')
             this._serviceMasterService.myformSearch.get('ServiceNameSearch').setValue("")
-       
+
         this.onChangeFirst();
-      }
-      
+    }
+
     onChangeFirst() {
         this.serviceName = this._serviceMasterService.myformSearch.get('ServiceNameSearch').value + "%"
         this.type = this._serviceMasterService.myformSearch.get('IsDeletedSearch').value
+
+        this.tariffId = this._serviceMasterService.myformSearch.get('TariffId').value ?? "0";
+        this.groupId = this._serviceMasterService.myformSearch.get('GroupId').value ?? "0";
         this.getfilterdata();
     }
 
-    getfilterdata(){
+    getfilterdata() {
         this.gridConfig = {
             apiUrl: "BillingService/BillingList",
-            columnsList:this.allColumns , 
+            columnsList: this.allColumns,
             sortField: "ServiceId",
             sortOrder: 0,
-            filters:  [
+            filters: [
                 { fieldName: "ServiceName", fieldValue: this.serviceName, opType: OperatorComparer.Equals },
                 { fieldName: "TariffId", fieldValue: this.tariffId, opType: OperatorComparer.Equals },
                 { fieldName: "GroupId", fieldValue: this.groupId, opType: OperatorComparer.Equals },
-            { fieldName: "IsActive", fieldValue: this.type, opType: OperatorComparer.Equals }
+                { fieldName: "IsActive", fieldValue: this.type, opType: OperatorComparer.Equals }
             ]
         }
         this.grid.gridConfig = this.gridConfig;
-        this.grid.bindGridData(); 
+        this.grid.bindGridData();
     }
 
     constructor(
@@ -138,19 +142,19 @@ export class ServiceMasterComponent implements OnInit {
     }
 
     groupSelection(value) {
-         if(value.value!==0)
-            this.groupId=value.value
+        if (value.value !== 0)
+            this.groupId = value.value
         else
-        this.groupId="0"
+            this.groupId = "0"
 
         this.onChangeFirst();
     }
 
     tariffSelection(value) {
-         if(value.value!==0)
-            this.tariffId=value.value
+        if (value.value !== 0)
+            this.tariffId = value.value
         else
-        this.tariffId="0"
+            this.tariffId = "0"
 
         this.onChangeFirst();
     }
@@ -223,7 +227,7 @@ export class ServiceMasterComponent implements OnInit {
                 // maxHeight: '70vh',
                 // width: '70%',
                 // data: row
-                 maxWidth: "95vw",
+                maxWidth: "95vw",
                 maxHeight: '95vh',
                 height: '95%',
                 width: '70%',
@@ -260,8 +264,8 @@ export class ServiceMaster {
     UpdatedBy: number;
     AddedByName: string;
     IsDeleted: any;
-    tariffId:any;
-    isApplicableFor:any;
+    tariffId: any;
+    isApplicableFor: any;
 
     /**
      * Constructor
@@ -309,12 +313,12 @@ export class Servicedetail {
     EffectiveDate: Date;
     ClassName: any;
     className: any;
-    tariffId:any;
-     GroupId:any;
-     GroupName:any;
-     ServiceName:any;
-     TariffName:any;
-     SubGroupName:any;
+    tariffId: any;
+    GroupId: any;
+    GroupName: any;
+    ServiceName: any;
+    TariffName: any;
+    SubGroupName: any;
 
     constructor(Servicedetail) {
         {
@@ -327,13 +331,13 @@ export class Servicedetail {
             this.ClassName = Servicedetail.ClassName || "";
             this.className = Servicedetail.className || "";
             this.EffectiveDate = Servicedetail.EffectiveDate || "";
-            this.tariffId=Servicedetail.tariffId || 0;
+            this.tariffId = Servicedetail.tariffId || 0;
 
-             this.GroupId = Servicedetail.GroupId || 0;
+            this.GroupId = Servicedetail.GroupId || 0;
             this.GroupName = Servicedetail.GroupName || "";
             this.ServiceName = Servicedetail.ServiceName || "";
-            this.TariffName=Servicedetail.TariffName || ""
-            this.SubGroupName=Servicedetail.SubGroupName || ""
+            this.TariffName = Servicedetail.TariffName || ""
+            this.SubGroupName = Servicedetail.SubGroupName || ""
         }
     }
 }
