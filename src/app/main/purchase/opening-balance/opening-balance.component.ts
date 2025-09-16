@@ -52,7 +52,7 @@ export class OpeningBalanceComponent {
   allcolumns = [
 
     { heading: "DateTime", key: "openingTime", sort: true, align: 'left', emptySign: 'NA', width: 100},
-    { heading: "TransectionNo", key: "transectionNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+    { heading: "TransectionNo", key: "openingDocNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
     { heading: "StoreName", key: "storeName", sort: true, align: 'left', emptySign: 'NA', width: 230 },
     { heading: "AdddedByName", key: "adddedByName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
     {

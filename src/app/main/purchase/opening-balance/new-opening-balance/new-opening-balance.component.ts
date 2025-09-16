@@ -47,7 +47,7 @@ export class NewOpeningBalanceComponent implements OnInit {
   autocompletestore: string = "Store";
   dateTimeObj: any;
   screenFromString: 'addmission-form';
-  vBalQty: any;
+  vstrQty: any;
   vGST: any;
   vRatePerUnit: any;
   vLandedRate: any;
@@ -112,7 +112,7 @@ export class NewOpeningBalanceComponent implements OnInit {
       openingTime: this.dateTimeObj?.time,
       itemId: [element.ItemID || 0],
       batchNo: [element.BatchNo || ''],
-      batchExpDate: this.datePipe.transform(this.dateTimeObj?.date, "yyyy-MM-dd") || '1900-01-01',//this.vExpDate,// this.datePipe.transform(element.ExpDate, "yyyy-MM-dd") || '1900-01-01',
+      batchExpDate: [element.ExpDate ? this.datePipe.transform(new Date(element.ExpDate.split('/').reverse().join('-')), 'yyyy-MM-dd') : null],
       perUnitPurRate: [element.PerRate || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
       perUnitMrp: [element.UnitMRP || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
       perUnitLandedRate: [element.LandedRate || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
@@ -120,7 +120,9 @@ export class NewOpeningBalanceComponent implements OnInit {
       sgstPer: [element.SGST || 0],
       igstPer: [element.IGST || 0],
       gstper: [element.GST || 0],
-      balQty: [element.BalQty || 0],
+      totalQty: [element.TotalQty],
+      packing: [element.Pack],
+      stripQty: [element.strQty],
       addedby: [this._loggedService.currentUserValue.userId],
       updatedby: [this._loggedService.currentUserValue.userId],
     });
@@ -142,7 +144,7 @@ export class NewOpeningBalanceComponent implements OnInit {
     this.OPeningtemForm.patchValue({
       UOMId: item.umoId,
       pack: isNaN(+item.converFactor) ? 1 : +item.converFactor,
-      // BalanceQty: item.balanceQty,
+      // stripQty: item.stripQty,
       CGST: item.cgstPer,
       SGST: item.sgstPer,
       IGST: item.igstPer,
@@ -195,7 +197,7 @@ export class NewOpeningBalanceComponent implements OnInit {
         this.lastDay2 = `${year}/${this.pad(month)}/${lastDay}`;
         const newuserDate = this.datePipe.transform(this.lastDay2, 'dd/MM/YYYY')
         this.OPeningtemForm.get('ExpDate').setValue(this.vlastDay)
-        const QtyElement = document.querySelector(`[name='BalanceQty']`) as HTMLElement;
+        const QtyElement = document.querySelector(`[name='stripQty']`) as HTMLElement;
         if (QtyElement) {
           QtyElement.focus();
         }
@@ -265,7 +267,7 @@ export class NewOpeningBalanceComponent implements OnInit {
 
   calculateTotalQty() {
     const pack = this.OPeningtemForm.get('pack')?.value || 0;
-    const qty = this.OPeningtemForm.get('BalanceQty')?.value || 0;
+    const qty = this.OPeningtemForm.get('stripQty')?.value || 0;
 
     // Total = packs * strips per pack
     const totalQty = qty * pack;
@@ -290,7 +292,7 @@ export class NewOpeningBalanceComponent implements OnInit {
           ExpDate: this.vlastDay, //this.OPeningtemForm.get('ExpDate').value || "",
           Pack: this.OPeningtemForm.get('pack').value || 0,
           TotalQty: this.OPeningtemForm.get('totalQty').value || 0,
-          BalQty: this.OPeningtemForm.get('BalanceQty').value || 0,
+          strQty: this.OPeningtemForm.get('stripQty').value || 0,
           PerRate: this.OPeningtemForm.get('RatePerUnit').value || 0,
           UnitMRP: this.OPeningtemForm.get('MRP').value || 0,
           LandedRate: this.OPeningtemForm.get('LandedRate').value || 0,
@@ -322,7 +324,7 @@ export class NewOpeningBalanceComponent implements OnInit {
       ExpDate: "",
       pack:"",
       totalQty:"",
-      BalanceQty: "",
+      stripQty: "",
       CGST: "",
       SGST: "",
       IGST: "",
@@ -509,7 +511,7 @@ export class dsItemNameList {
   ItemName: string;
   BatchNo: number;
   ExpDate: any;
-  BalQty: number;
+  strQty: number;
   PerRate: number;
   UnitMRP: number;
   GST: number;
@@ -520,7 +522,7 @@ export class dsItemNameList {
       this.ItemName = dsItemNameList.ItemName || "";
       this.BatchNo = dsItemNameList.BatchNo || 0;
       this.ExpDate = dsItemNameList.ExpDate || 0;
-      this.BalQty = dsItemNameList.BalQty || 0;
+      this.strQty = dsItemNameList.strQty || 0;
       this.PerRate = dsItemNameList.PerRate || 0;
       this.UnitMRP = dsItemNameList.UnitMRP || 0;
       this.GST = dsItemNameList.GST || 0;

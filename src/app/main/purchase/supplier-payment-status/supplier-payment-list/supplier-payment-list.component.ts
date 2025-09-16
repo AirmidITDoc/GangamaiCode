@@ -12,6 +12,7 @@ import { AuthenticationService } from 'app/core/services/authentication.service'
 import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
 import { ToastrService } from 'ngx-toastr';
 import { SupplierPaymentStatusService } from '../supplier-payment-status.service';
+import { FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-supplier-payment-list',
@@ -33,6 +34,7 @@ export class SupplierPaymentListComponent implements OnInit {
   //   'action',
   // ];
 
+  SupplierListForm: FormGroup;
   isSupplierSelected: boolean = false;
   ToStoreList: any = [];
   dateTimeObj: any;
@@ -45,7 +47,10 @@ export class SupplierPaymentListComponent implements OnInit {
   @ViewChild('paginator', { static: true }) public paginator: MatPaginator;
   @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
   supplierN: any = "%";
+  SupplierID: any = "0"
   autocompleteSupplier: string = "SupplierMaster"
+  fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+  toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
 
   constructor(
     public _SupplierPaymentStatusService: SupplierPaymentStatusService,
@@ -58,11 +63,9 @@ export class SupplierPaymentListComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-     this._SupplierPaymentStatusService.SupplierListForm.get('SupplierId')?.valueChanges.subscribe(value => {
-            this.supplierN = value.text || "%";
-            this.getfilterdata();
-        });
+    this.SupplierListForm = this._SupplierPaymentStatusService.CreateSupplierList();
   }
+
   toggleSidebar(name): void {
     this._fuseSidebarService.getSidebar(name).toggleOpen();
   }
@@ -71,14 +74,14 @@ export class SupplierPaymentListComponent implements OnInit {
   }
 
   allColumns = [
-    { heading: "SupPayNo", key: "mo", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "Date", key: "bankName", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "SupPayNo", key: "supPayNo", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "Date", key: "supPayDate", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "SupplierName", key: "supplierName", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "TotalAmount", key: "totalAmt", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "CashPayAmt", key: "cash", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "ChequePayAmt", key: "chequ", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "UserName", key: "username", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "PartyReceipt", key: "par", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "TotalAmount", key: "netAmount", sort: true, align: 'left', emptySign: 'NA', type:gridColumnTypes.amount },
+    { heading: "CashPayAmt", key: "cashPayAmt", sort: true, align: 'left', emptySign: 'NA', type:gridColumnTypes.amount },
+    { heading: "ChequePayAmt", key: "chequePayAmt", sort: true, align: 'left', emptySign: 'NA', type:gridColumnTypes.amount },
+    { heading: "UserName", key: "userName", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "PartyReceiptNo", key: "partyReceiptNo", sort: true, align: 'left', emptySign: 'NA' },
     {
       heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
         {
@@ -90,11 +93,13 @@ export class SupplierPaymentListComponent implements OnInit {
   ]
 
   allFilters = [
-    { fieldName: "SupplierName", fieldValue: this.supplierN, opType: OperatorComparer.StartsWith }
+    { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.StartsWith },
+    { fieldName: "ToDate", fieldValue: this.toDate, opType: OperatorComparer.StartsWith },
+    { fieldName: "SupplierId", fieldValue: this.SupplierID, opType: OperatorComparer.StartsWith }
   ]
 
   gridConfig: gridModel = {
-    apiUrl: "SupplierPayment/supplierPaymentList",
+    apiUrl: "SupplierPayment/GetSupplierPaymentList",
     columnsList: this.allColumns,
     sortField: "SupplierId",
     sortOrder: 0,
@@ -102,54 +107,17 @@ export class SupplierPaymentListComponent implements OnInit {
   }
 
   selectChangeSupplier(obj: any) {
-    console.log(obj);
-    if (!obj || obj.text === null || obj.text === undefined || obj.text === 0 || obj.text === '') {
-      this.supplierN = "%";
-    } else {
-      this.supplierN = obj.text;
-    }
-    this.getfilterdata();
+    // if (!obj || obj.text === null || obj.text === undefined || obj.text === 0 || obj.text === '') {
+    //   this.supplierN = "%";
+    // } else {
+    //   this.supplierN = obj.text;
+    // }
+    if (obj.value !== 0)
+      this.SupplierID = obj.value
+    else
+      this.SupplierID = "0"
   }
 
-  getfilterdata() {
-    this.gridConfig = {
-      apiUrl: "SupplierPayment/supplierPaymentList",
-      columnsList: this.allColumns,
-      sortField: "SupplierId",
-      sortOrder: 0,
-      filters: [
-        { fieldName: "SupplierName", fieldValue: this.supplierN, opType: OperatorComparer.Contains }
-      ]
-    }
-    this.grid.gridConfig = this.gridConfig;
-    this.grid.bindGridData();
-  }
-
-  // getSupplierPayStatusList(){
-  //   this.sIsLoading = '';
-  //   var vdata={
-  //     'ToStoreId': this.accountService.currentUserValue.storeId || 0,
-  //     'From_Dt':this.datePipe.transform(this._SupplierPaymentStatusService.SupplierListForm.get('start').value,"yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-  //     'To_Dt':this.datePipe.transform(this._SupplierPaymentStatusService.SupplierListForm.get('end').value,"yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-  //     'IsPaymentProcess':this._SupplierPaymentStatusService.SupplierListForm.get('Status').value || 0,
-  //     'Supplier_Id':this._SupplierPaymentStatusService.SupplierListForm.get('SupplierId').value.SupplierId || 0,
-  //   }
-  //   console.log(vdata)
-  //   this._SupplierPaymentStatusService.getSupplierPayStatusList(vdata).subscribe((data) =>{
-  //     this.dsSupplierList.data = data as SupplierPayStatusList[];
-  //     console.log(this.dsSupplierList)
-  //     this.dsSupplierList.sort =this.sort;
-  //     this.dsSupplierList.paginator = this.paginator;
-  //     this.sIsLoading = '';
-  //   },
-  //     error => {
-  //       this.sIsLoading = '';
-  //     });
-  // }
-
-  onClear() {
-
-  }
   onClose() {
     this._matDialog.closeAll();
   }

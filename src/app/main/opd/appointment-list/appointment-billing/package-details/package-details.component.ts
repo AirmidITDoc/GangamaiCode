@@ -375,11 +375,11 @@ export class PackageDetailsComponent {
   getTotalAmtSum(element) {
     let Finalnetamt = element.reduce((sum, { NetAmount }) => sum += +(NetAmount || 0), 0).toFixed(2);
     let TotalPrice = element.reduce((sum, { price }) => sum += +(price || 0), 0).toFixed(2);
-    let FinalQty = element.reduce((sum, { Qty }) => sum += +(Qty || 0), 0);
+    let FinalQty = element.Qty //element.reduce((sum, { Qty }) => sum += +(Qty || 0), 0);
     this.PackageForm.patchValue({
       Finalnetamt: Finalnetamt,
       TotalPrice: TotalPrice,
-      FinalQty: FinalQty
+      FinalQty:FinalQty
     })
   }
   // Pacakge service details update form
@@ -416,6 +416,7 @@ export class PackageDetailsComponent {
   }
   // final save 
   onSavePackage() {
+    debugger
     if (this.dsPackageDet.data.length < 0) {
       this.toastr.warning('please add services list is blank ', 'error!', {
         toastClass: 'tostr-tost custom-toast-warning',

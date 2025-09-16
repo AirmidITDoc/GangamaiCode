@@ -367,6 +367,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
       compDiscAmt: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       discComments: [0, [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],//need to set concession reason
       cashCounterId: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],//need to set cashCounterId
+      createdBy: [this.accountService.currentUserValue.userId, [this._FormvalidationserviceService.onlyNumberValidator()]],
       addCharges: this.formBuilder.array([]),
 
       // ✅ Fixed: should be FormArray
@@ -408,6 +409,8 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
         payTmtranNo: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
         payTmdate: ['1999-01-01'],
         tdsamount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+        unitId:[this.accountService.currentUserValue.user.unitId],
+        wfamount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
       })
     });
   }
@@ -455,6 +458,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
       classId: [1, [this._FormvalidationserviceService.onlyNumberValidator()]],
       tariffId: [this.vTariffId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       billNo: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      createdBy: [this.accountService.currentUserValue.userId, [this._FormvalidationserviceService.onlyNumberValidator()]],
     });
   }
   createBillDetails(item: any): FormGroup {
@@ -508,6 +512,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
       classId: [1, [this._FormvalidationserviceService.onlyNumberValidator()]],
       tariffId: [this.vTariffId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       billNo: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      createdBy: [this.accountService.currentUserValue.userId, [this._FormvalidationserviceService.onlyNumberValidator()]]
     });
   }
   // Getters
@@ -956,6 +961,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
   getSelectedObj(obj) {
     console.log(obj)
     this.patientDetail = obj 
+    this.PatientName = obj.formattedText
     this.DepartmentName = this.patientDetail.departmentName
     this.AgeYear = this.patientDetail.ageYear
     this.Doctorname = this.patientDetail.doctorName

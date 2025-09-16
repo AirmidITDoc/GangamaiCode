@@ -56,6 +56,12 @@
                                             (selectionChange)="getSelectedItem($event)" TextField="formattedText"
                                             ValueField="itemId"
                                             (onClearSelection)="ItemFromReset()"></airmid-autocomplete>
+                                            
+                                        <!-- how many strips are in 1 pack. -->
+                                        <airmid-textbox fxFlex="5%" label="Packing" formControlName="pack" [min]="0"
+                                            [formGroup]="OPeningtemForm" type="number" (input)="calculateTotalQty()"
+                                            placeholder="Packing"
+                                            (keypress)="keyPressAlphanumeric($event)"></airmid-textbox>
 
                                         <airmid-textbox fxFlex="6%" label="BatchNo" formControlName="BatchNo"
                                             [(ngModel)]="vBatchNo" [formGroup]="OPeningtemForm"
@@ -69,19 +75,9 @@
                                                 placeholder="MMYYYY" (input)="onExpDateInput($event)" required>
                                         </mat-form-field>
 
-                                        <!-- <airmid-textbox fxFlex="5%" label="Bal Qty" formControlName="BalanceQty"
-                                            [(ngModel)]="vBalQty" [formGroup]="OPeningtemForm" type="number"
-                                            placeholder="BalanceQty"></airmid-textbox> -->
-
-                                        <!-- how many strips are in 1 pack. -->
-                                        <airmid-textbox fxFlex="5%" label="Pack" formControlName="pack" [min]="0"
-                                            [formGroup]="OPeningtemForm" type="number" (input)="calculateTotalQty()"
-                                            placeholder="Pack"
-                                            (keypress)="keyPressAlphanumeric($event)"></airmid-textbox>
-
                                         <!-- number of packs. (conversion factor)-->
-                                        <airmid-textbox fxFlex="5%" label="Qty" formControlName="BalanceQty"
-                                            [(ngModel)]="vBalQty" [formGroup]="OPeningtemForm" type="number"
+                                        <airmid-textbox fxFlex="5%" label="Qty" formControlName="stripQty"
+                                            [(ngModel)]="vstrQty" [formGroup]="OPeningtemForm" type="number"
                                             placeholder="Qty" (input)="calculateTotalQty()" [min]="0"
                                             (keypress)="keyPressAlphanumeric($event)"></airmid-textbox>
 
@@ -183,7 +179,7 @@
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-150">
                                     Qty </mat-header-cell>
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-150">
-                                    {{contact.TotalQty}}
+                                    {{contact.strQty}}
                                 </mat-cell>
                             </ng-container>
 
@@ -191,7 +187,7 @@
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-150">
                                     TotalQty </mat-header-cell>
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-150">
-                                    {{contact.BalQty}}
+                                    {{contact.TotalQty}}
                                 </mat-cell>
                             </ng-container>
 
