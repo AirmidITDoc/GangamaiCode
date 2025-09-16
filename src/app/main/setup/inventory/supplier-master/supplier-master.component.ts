@@ -26,22 +26,22 @@ export class SupplierMasterComponent implements OnInit {
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
 
-    storeId=0 //this.accountService.currentUserValue.user.storeId 
+    storeId= this.accountService.currentUserValue.user.storeId
     
     allColumns=[
-        { heading: "Code", key: "supplierId", sort: true, align: 'left', emptySign: 'NA', width:80,sticky: true },
-        { heading: "SupplierName", key: "supplierName", sort: true, align: 'left', emptySign: 'NA', width: 200,sticky: true },
-        { heading: "ContactPerson", key: "contactPerson", sort: true, align: 'left', emptySign: 'NA', width: 150,sticky: true },
+        { heading: "Code", key: "supplierId", sort: true, align: 'left', emptySign: 'NA', width:100,sticky: true },
+        { heading: "Supplier Name", key: "supplierName", sort: true, align: 'left', emptySign: 'NA', width: 350,sticky: true },
+        { heading: "Contact Person", key: "contactPerson", sort: true, align: 'left', emptySign: 'NA', width: 150,sticky: true },
         { heading: "Address", key: "address", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-        { heading: "CityName", key: "cityName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-        { heading: "CreditPeriod", key: "creditPeriod", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "City Name", key: "cityName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "Credit Period", key: "creditPeriod", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "Mobile", key: "mobile", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "Phone", key: "phone", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "Fax", key: "fax", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "Email", key: "email", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         { heading: "GSTNo", key: "gstNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "PanNo", key: "panNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-        { heading: "UserName", key: "username", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "User Name", key: "username", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center", width: 100 },
         {
             heading: "Action", key: "action", width: 100, sticky: true, align: "right", type: gridColumnTypes.action, actions: [
@@ -76,38 +76,6 @@ export class SupplierMasterComponent implements OnInit {
         filters: this.allFilters
     }
 
-    // Clearfilter(event) {
-    //     debugger
-    //     console.log(event)
-    //     if (event == 'SupplierNameSearch')
-    //         this.myformSearch.get('SupplierNameSearch').setValue("")
-       
-    //     this.onChangeFirst();
-    //   }
-      
-    // onChangeFirst() {
-    //     debugger
-    //     this.supplierName = this.myformSearch.get('SupplierNameSearch').value + "%"
-    //     // this.type = this.myformSearch.get('IsDeletedSearch').value
-    //     this.getfilterdata();
-    // }
-
-    // getfilterdata(){
-    //     debugger
-    //     this.gridConfig = {
-    //         apiUrl: "Supplier/SupplierList",
-    //         columnsList:this.allColumns, 
-    //         sortField: "SupplierId",
-    //         sortOrder: 0,
-    //         filters:  [
-    //             { fieldName: "SupplierName", fieldValue: this.supplierName, opType: OperatorComparer.Contains },
-    //             { fieldName: "StoreID", fieldValue: String(this.storeId), opType: OperatorComparer.Equals }
-    //         ]
-    //     }
-    //     this.grid.gridConfig = this.gridConfig;
-    //     this.grid.bindGridData(); 
-    // }
-
     constructor(public _supplierService: SupplierMasterService, public _matDialog: MatDialog,
         private accountService: AuthenticationService,
         public toastr: ToastrService,) { }
@@ -115,9 +83,38 @@ export class SupplierMasterComponent implements OnInit {
     ngOnInit(): void {
         this.myformSearch=this._supplierService.createSearchForm();
     }
-    onSearch() {
-
+    Clearfilter(event) {
+        
+        console.log(event)
+        if (event == 'SupplierNameSearch')
+            this.myformSearch.get('SupplierNameSearch').setValue("")
+       
+        this.onChangeFirst();
+      }
+      
+    onChangeFirst() {
+        
+        this.supplierName = this.myformSearch.get('SupplierNameSearch').value + "%"
+        this.getfilterdata();
     }
+
+    getfilterdata(){
+        
+        this.gridConfig = {
+            apiUrl: "Supplier/SupplierList",
+            columnsList:this.allColumns, 
+            sortField: "SupplierId",
+            sortOrder: 0,
+            filters:  [
+                { fieldName: "SupplierName", fieldValue: this.supplierName, opType: OperatorComparer.Contains },
+                { fieldName: "StoreID", fieldValue: String(this.storeId), opType: OperatorComparer.Equals }
+            ]
+        }
+        this.grid.gridConfig = this.gridConfig;
+        this.grid.bindGridData(); 
+    }
+
+ 
 
     onSearchClear() {
         this._supplierService.myformSearch.reset({
@@ -134,10 +131,9 @@ export class SupplierMasterComponent implements OnInit {
         let that = this;
         const dialogRef = this._matDialog.open(FixSupplierComponent,
             {
-                maxWidth: "100vw",
-                // height: '95%',
+                maxWidth: "120vw",
                 maxHeight: '95vh',
-                width: '70%',
+                width: '90%',
                 data: obj
             });
         dialogRef.afterClosed().subscribe(result => {
@@ -145,7 +141,7 @@ export class SupplierMasterComponent implements OnInit {
             console.log('The dialog was closed - Action', result);
         });
     }
-    // storeId = "0";
+    
     selectChangestoreName(obj: any) {
         
         this.storeId = obj.value;
@@ -157,7 +153,6 @@ export class SupplierMasterComponent implements OnInit {
 
     onEdit(row) {
         var m_data = {
-            // BankId: row.bankId,
             SupplierName: row.supplierName.trim(),
             IsDeleted: JSON.stringify(row.IsDeleted),
             UpdatedBy: row.UpdatedBy,

@@ -8,6 +8,7 @@ import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/air
 import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
 import { gridColumnTypes, gridActions } from "app/core/models/tableActions";
 import { FormGroup } from "@angular/forms";
+import { AuthenticationService } from "app/core/services/authentication.service";
 
 @Component({
     selector: "app-item-master",
@@ -19,42 +20,42 @@ import { FormGroup } from "@angular/forms";
 export class ItemMasterComponent implements OnInit {
     hasSelectedContacts: boolean;
     autocompleteModestoreName: string = "StoreName";
-    myformSearch:FormGroup;
-    itemName:any="";
-    type:any="2"
-
+    myformSearch: FormGroup;
+    itemName: any = "";
+    autocompletestore: string = "Store";
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
 
-    allColumns=[
-        { heading: "Code", key: "itemID", sort: true, align: 'left', emptySign: 'NA'},
+    allColumns = [
+        { heading: "Code", key: "itemID", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "Hsncode", key: "hsNcode", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "Item Name", key: "itemName", sort: true, align: 'left', emptySign: 'NA' , width: 200},
+        { heading: "Item Name", key: "itemName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         { heading: "TypeName", key: "itemTypeName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-        { heading: "Category Name", key: "itemCategoryName", sort: true, align: 'left', emptySign: 'NA' , width: 200},
+        { heading: "Category Name", key: "itemCategoryName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         { heading: "Generic Name", key: "itemGenericName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-        { heading: "Item Class", key: "itemClassName", sort: true, align: 'left', emptySign: 'NA', width: 200},
+        { heading: "Item Class", key: "itemClassName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         { heading: "Puchase UOM", key: "puchaseUOM", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "Stock UOM", key: "stockUOM", sort: true, align: 'left', emptySign: 'NA'},
-        { heading: "Conversion Factor", key: "conversionFactor", sort: true, align: 'left', emptySign: 'NA', width: 150},
+        { heading: "Stock UOM", key: "stockUOM", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Conversion Factor", key: "conversionFactor", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "Currency", key: "currencyName", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "Min Qty", key: "minQty", sort: true, align: 'left', emptySign: 'NA'},
+        { heading: "Min Qty", key: "minQty", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "Max Qty", key: "maxQty", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "ReOrder", key: "reOrder", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "CGST", key: "cgst", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "SGST", key: "sgst", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "IGST", key: "igst", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "Manufacture Name", key: "manufId", sort: true, align: 'left', emptySign: 'NA',width: 150 },
+        { heading: "Manufacture Name", key: "manufId", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "Location", key: "prodLocation", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "User Name", key: "addedby", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "IsNursingFlaf", key: "isNursingFlag", sort: true, align: 'left', type: gridColumnTypes.status },
         { heading: "IsBatchRequired", key: "isBatchRequired", sort: true, align: 'left', type: gridColumnTypes.status },
-        { heading: "IsActive", key: "isActive",  type: gridColumnTypes.status, align: "center" },
-        { heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+        { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
+        {
+            heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
                 {
                     action: gridActions.edit, callback: (data: any) => {
                         this.onSave(data);
                     }
-                }, 
+                },
                 {
                     action: gridActions.delete, callback: (data: any) => {
                         this._itemService.deactivateTheStatus(data.itemID).subscribe((response: any) => {
@@ -67,7 +68,7 @@ export class ItemMasterComponent implements OnInit {
         } //Action 1-view, 2-Edit,3-delete
     ]
 
-    allFilters= [
+    allFilters = [
         { fieldName: "itemName", fieldValue: "%", opType: OperatorComparer.Equals },
         { fieldName: "StoreID", fieldValue: "0", opType: OperatorComparer.Equals }
     ]
@@ -80,47 +81,57 @@ export class ItemMasterComponent implements OnInit {
         filters: this.allFilters
     }
 
-    // Clearfilter(event) {
-    //     debugger
-    //     console.log(event)
-    //     if (event == 'ItemNameSearch')
-    //         this.myformSearch.get('ItemNameSearch').setValue("")
-       
-    //     this.onChangeFirst();
-    //   }
-      
-    // onChangeFirst() {
-    //     debugger
-    //     this.itemName = this.myformSearch.get('ItemNameSearch').value + "%"
-    //     this.type = this.myformSearch.get('IsDeletedSearch').value
-    //     this.getfilterdata();
-    // }
-
-    // getfilterdata(){
-    //     debugger
-    //     this.gridConfig = {
-    //         apiUrl: "ItemMaster/ItemMasterList",
-    //         columnsList:this.allColumns, 
-    //         sortField: "ItemID",
-    //         sortOrder: 0,
-    //         filters:  [
-    //             { fieldName: "itemName", fieldValue: this.itemName, opType: OperatorComparer.Equals },
-    //             { fieldName: "StoreID", fieldValue: "0", opType: OperatorComparer.Equals }
-    //         ]
-    //     }
-    //     this.grid.gridConfig = this.gridConfig;
-    //     this.grid.bindGridData(); 
-    // }
 
     constructor(
-        public _itemService: ItemMasterService,
+        public _itemService: ItemMasterService, private accountService: AuthenticationService,
         public _matDialog: MatDialog,
         public toastr: ToastrService,
     ) { }
 
     ngOnInit(): void {
-        this.myformSearch=this._itemService.createSearchForm();
-     }
+        this.myformSearch = this._itemService.createSearchForm();
+    }
+
+    Tostore = this.accountService.currentUserValue.user.storeId
+    ListView1(value) {
+        console.log(value)
+        if (value.value !== 0)
+            this.Tostore = value.value
+        else
+            this.Tostore = "0"
+        this.onChangeFirst();
+    }
+
+    Clearfilter(event) {
+        
+        console.log(event)
+        if (event == 'ItemNameSearch')
+            this.myformSearch.get('ItemNameSearch').setValue("")
+
+        this.onChangeFirst();
+    }
+
+    onChangeFirst() {
+        
+        this.itemName = this.myformSearch.get('ItemNameSearch').value + "%"
+        this.getfilterdata();
+    }
+
+    getfilterdata() {
+        
+        this.gridConfig = {
+            apiUrl: "ItemMaster/ItemMasterList",
+            columnsList: this.allColumns,
+            sortField: "ItemID",
+            sortOrder: 0,
+            filters: [
+                { fieldName: "itemName", fieldValue: this.itemName, opType: OperatorComparer.Equals },
+                { fieldName: "StoreID", fieldValue: this.Tostore, opType: OperatorComparer.Equals }
+            ]
+        }
+        this.grid.gridConfig = this.gridConfig;
+        this.grid.bindGridData();
+    }
 
     onSave(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
@@ -131,20 +142,16 @@ export class ItemMasterComponent implements OnInit {
             {
                 maxHeight: '95vh',
                 maxWidth: '95wh',
-                width:'95%',
+                width: '95%',
                 data: row
             });
         dialogRef.afterClosed().subscribe(result => {
-            if (result) {
-                that.grid.bindGridData();
-            }
+            that.grid.bindGridData();
+            
         });
     }
 
-    storeId = 0;
-    selectChangestoreName(obj: any) {
-        this.storeId = obj.value;
-    }
+
 }
 
 
@@ -198,9 +205,9 @@ export class ItemMaster {
     itemCompnayId: any;
     position: any;
     mAssignItemToStores: any[];
-    isActive:any;
+    isActive: any;
 
-    stockUomid:any;
+    stockUomid: any;
 
 
     /**
@@ -218,12 +225,12 @@ export class ItemMaster {
             this.itemName = ItemMaster.itemName || "";
             this.itemTypeID = ItemMaster.itemTypeID || 0;
             this.itemTypeId = ItemMaster.itemTypeId || 0;
-           
-           
+
+
             this.itemCategoryId = ItemMaster.itemCategoryId || 0;
             this.itemCategaryId = ItemMaster.itemCategaryId || 0;
 
-            
+
             this.itemGenericNameId = ItemMaster.itemGenericNameId || 0;
             this.itemClassId = ItemMaster.itemClassId || 0;
             this.purchaseUomid = ItemMaster.purchaseUomid || 0;
@@ -260,10 +267,10 @@ export class ItemMaster {
             this.drugType = ItemMaster.drugType || ""
             this.drugTypeName = ItemMaster.DrugTypeName || ""
             this.itemCompnayId = ItemMaster.itemCompnayId || 0
-            this.isActive=ItemMaster.isActiuve || true;
+            this.isActive = ItemMaster.isActiuve || true;
             this.mAssignItemToStores = ItemMaster.mAssignItemToStores || [];
 
-            this.stockUomid=ItemMaster.stockUomid ||0
+            this.stockUomid = ItemMaster.stockUomid || 0
         }
     }
 }

@@ -1,4 +1,3 @@
-
 <div fusePerfectScrollbar
     class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
     dynamicTableHeight>
@@ -17,43 +16,24 @@
         </div>
     </div>
     <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
-        <airmid-table [gridConfig]="gridConfig"  class="content">
-             <!-- <ng-container filters>
+        <airmid-table [gridConfig]="gridConfig" class="content">
+            <ng-container filters>
                 <form [formGroup]="myformSearch" fxLayout="column">
-                <mat-form-field appearance="outline" fxFlex>
-                    <mat-label>Item Name</mat-label>
-                    <input matInput placeholder="Search Item Name" autocomplete="off"
-                    (input)="onChangeFirst()" [formGroup]="myformSearch" formControlName="ItemNameSearch"/>
-                    <button matSuffix mat-icon-button aria-label="Clear"
-                    (click)="Clearfilter('ItemNameSearch')">
-                        <mat-icon>close</mat-icon>
-                    </button>
-                </mat-form-field>
+                    <mat-form-field appearance="outline" fxFlex>
+                        <mat-label>Item Name</mat-label>
+                        <input matInput placeholder="Search Item Name" autocomplete="off" (input)="onChangeFirst()"
+                            [formGroup]="myformSearch" formControlName="ItemNameSearch" />
+                        <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('ItemNameSearch')">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </mat-form-field>
 
-                 <mat-radio-group value="" [formGroup]="myformSearch" formControlName="IsDeletedSearch" 
-                fxLayoutAlign="center center" (change)="onChangeFirst()">
-                    <mat-radio-button value="2">All</mat-radio-button>
-                    <mat-radio-button mat-fab value="1">IsActive</mat-radio-button>
-                    <mat-radio-button mat-fab value="0">IsDeactive</mat-radio-button>
-                </mat-radio-group>
-            </form>
-            </ng-container>  -->
-             <ng-container filters>
-                <mat-form-field appearance="outline" fxFlex>
-                    <mat-label>Item Name</mat-label>
-                    <input matInput placeholder="Search Item  Name" autocomplete="off"
-                        [(ngModel)]="gridConfig.filters[0].fieldValue" />
-                    <button matSuffix mat-icon-button aria-label="Clear"
-                        (click)="gridConfig.filters[0].fieldValue=''">
-                        <mat-icon>close</mat-icon>
-                    </button>
-                </mat-form-field>
+                    <airmid-dropdown label="To Store Name" formControlName="ToStoreId"
+                        (selectionChange)="ListView1($event)" [formGroup]="myformSearch" [mode]="autocompletestore">
+                    </airmid-dropdown>
 
-                <mat-radio-group value="" [(ngModel)]="gridConfig.filters[1].fieldValue" fxLayoutAlign="center center">
-                    <mat-radio-button value="">All</mat-radio-button>
-                    <mat-radio-button mat-fab value="1">IsActive</mat-radio-button>
-                    <mat-radio-button mat-fab value="0">IsDeactive</mat-radio-button>
-                </mat-radio-group>
+                </form>
+
             </ng-container>
         </airmid-table>
     </div>

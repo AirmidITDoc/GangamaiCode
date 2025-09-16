@@ -13,15 +13,14 @@
   min-height: 60px !important;
 }
 
-
 .net-amt-box {
   display: flex;
   justify-content: space-between;
   align-items: center;
   border: 1px solid #1976d2;   /* Material primary color */
   border-radius: 8px;
-  padding: 2px 2px;           /* reduced padding */
-  margin: 15px;
+  padding: 6px 10px;           /* reduced padding */
+  margin: 25px;
   background-color: #f1f8ff;   /* light background */
   font-weight: 500;
 }

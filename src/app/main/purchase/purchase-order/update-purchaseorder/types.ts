@@ -21,6 +21,7 @@ export interface PurchaseFormModel {
   // Item Details
   ItemName: GRNItemResponseType | null;
   UOMId: string;
+  umoName: string;
   HSNCode: string;
   BatchNo: string;
   ConversionFactor: number;

@@ -34,6 +34,7 @@ export class ItemFormMasterComponent implements OnInit {
     menuId = 0;
 
     // new api
+     autocompleteModeGSTTypesValues: string = "GSTTypes";  
     autocompleteModeItemType: string = "ItemType";
     autocompleteModeItemCategory: string = "ItemCategory";
     autocompleteModeItemGenericName: string = "ItemGeneric";
@@ -103,9 +104,8 @@ export class ItemFormMasterComponent implements OnInit {
                 data: row
             });
         dialogRef.afterClosed().subscribe(result => {
-            if (result) {
-                that.grid.bindGridData();
-            }
+            that.grid.bindGridData();
+
         });
     }
 
@@ -116,41 +116,11 @@ export class ItemFormMasterComponent implements OnInit {
     }
 
 
-
-    // selectChangeItemType(obj: any) {
-    //     this.itemId = obj.value;
-    // }
-    // selectChangeItemCategory(obj: any) {
-    //     this.categoryId = obj.value;
-    // }
-    // selectChangeItemGenericName(obj: any) {
-    //     this.genericId = obj.value;
-    // }
-    // selectChangeItemClass(obj: any) {
-    //     this.classId = obj.value;
-    // }
-    // selectChangeCurrency(obj: any) {
-    //     this.currencyId = obj.value;
-    // }
-    // selectChangePurchaseUOM(obj: any) {
-    //     this.purchaseId = obj.value;
-    // }
-    // selectChangeStockUOM(obj: any) {
-    //     this.stockId = obj.value;
-    // }
-    // selectChangeCompany(obj: any) {
-    //     this.companyId = obj.value
-    // }
-    // selectChangeStore(obj: any) {
-    //     this.storeId = obj.value
-    // }
     selectChangeDrugType(obj: any) {
         this.drugId = obj.value
         this.drugName = obj.text
     }
-    // selectChangeMenu(obj: any) {
-    //     this.menuId = obj.value
-    // }
+
 
     gstPerArray: any = [
         { gstPer: 0 },
@@ -171,6 +141,16 @@ export class ItemFormMasterComponent implements OnInit {
         }
         return true;
     }
+  
+    keyPressAlphanumeric(event) {
+        var inp = String.fromCharCode(event.keyCode);
+        if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
+            return true;
+        } else {
+            event.preventDefault();
+            return false;
+        }
+    }
 
     gstPerChecking() {
         if (!this.validateGST(this.vCGST, 'CGST')) return;
@@ -182,8 +162,6 @@ export class ItemFormMasterComponent implements OnInit {
         debugger;
 
         if (this.itemForm.valid) {
-            console.log("Item JSON :-", this.itemForm.value);
-
 
             const formData = { ...this.itemForm.value };
 
@@ -197,30 +175,18 @@ export class ItemFormMasterComponent implements OnInit {
 
             console.log("Transformed Item JSON :-", formData);
 
-            if (this.ItemId) {
+            if (this.ItemId !=0) {
                 formData.itemID = this.ItemId;
 
-                this._itemService.updateItemMaster(formData).subscribe(
-                    (data) => {
-                        this.toastr.success(data.message);
-                        this.onClear(true);
-                    },
-                    (error) => {
-                        this.toastr.error(error.message);
-                    }
-                );
-            } else {
+                this._itemService.updateItemMaster(formData).subscribe((data) => {
+                    this.onClear(true);
+                });
+            } else if(this.ItemId ==0) {
                 formData.drugTypeName = this.drugName;
-
-                this._itemService.insertItemMaster(formData).subscribe(
-                    (data) => {
-                        this.toastr.success(data.message);
-                        this.onClear(true);
-                    },
-                    (error) => {
-                        this.toastr.error(error.message);
-                    }
-                );
+                console.log(formData)
+                this._itemService.insertItemMaster(formData).subscribe((data) => {
+                    this.onClear(true);
+                });
             }
         } else {
             const invalidFields: string[] = [];

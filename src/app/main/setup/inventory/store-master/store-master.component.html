@@ -19,11 +19,11 @@
 
         <ng-template #actionsPharStore let-element>
             <div fxLayout="row" fxLayoutAlign="center center">
-                    <mat-icon *ngIf="element.isPharStore == true" title="PharmacyStore">
+                    <mat-icon *ngIf="element.isPharStore == true" title="PharmacyStore"  class="active-icon red-500 s-16">
                         local_pharmacy
                     </mat-icon>
-                    <mat-icon *ngIf="element.isPharStore == false" class="active-icon red-500 s-16">
-                        close
+                    <mat-icon *ngIf="element.isPharStore == false" class="active-icon green-500 s-16" title="Non PharmacyStore">
+                        shopping_basket
                     </mat-icon>
             </div>
         </ng-template>

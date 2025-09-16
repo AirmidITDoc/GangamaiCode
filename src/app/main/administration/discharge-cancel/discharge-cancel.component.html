@@ -156,11 +156,7 @@
                 </form>
             </mat-card>
             <mat-card style="padding: 15px;" *ngIf="!vCheckBox && vRegNo">
-                <div fxLayout="row" fxLayoutGap="6px">
-                    <span style="font-size: large;color: rgb(2, 74, 88);margin-right: 20px;">Admission Date /Time : -{{vAdmissionTime}}-- IPD No of
-                        Selected Patient:-  {{vIPDNo}} </span>
 
-                </div>
                 <form [formGroup]="_DischargeCancelService.DischargeForm">
                     <div fxLayout="row" fxLayoutGap="6px" style="margin-top: 10px;">
                         <app-common-date [screenFrom]="screenFromString" (dateTimeEventEmitter)="getDateTime($event)">
@@ -174,17 +170,17 @@
                 </form>
 
             </mat-card>
-
+            <button *ngIf="!vCheckBox && vRegNo" class="btn btn-danger" (click)="AdmisssionCancel()"
+                style="color: white;margin-top: 10px;">Admission Cancel</button>
         </div>
     </div>
 
     <div class="modal-footer-buttons" fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="10px"
         style="margin-top: 20px;">
-        <button *ngIf="!vCheckBox && vRegNo" class="btn btn-danger" (click)="AdmisssionCancel()"
-            style="color: white;margin-top: 10px;">Admission Cancel</button>
+
         <button *ngIf="vCheckBox" class="btn btn-primary" style="color: white;" (click)="DischargeCancel()">Discharge
             Cancel</button>
-        <button *ngIf="!vCheckBox && vRegNo" class="btn btn-primary" (click)="OnAdmDateTimeUpdate()">Update</button>
+        <button *ngIf="!vCheckBox && vRegNo" class="btn btn-primary" (click)="OnAdmDateTimeUpdate()">Admission Detail Update</button>
         <button class="btn btn-danger-outline" (click)="onClear()">Clear</button>
     </div>
 </div>

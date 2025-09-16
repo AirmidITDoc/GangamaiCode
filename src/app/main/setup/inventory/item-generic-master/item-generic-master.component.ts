@@ -78,9 +78,8 @@ export class ItemGenericMasterComponent implements OnInit {
             });
 
         dialogRef.afterClosed().subscribe(result => {
-            if (result) {
-                that.grid.bindGridData();
-            }
+           that.grid.bindGridData();
+            
         });
     }
 

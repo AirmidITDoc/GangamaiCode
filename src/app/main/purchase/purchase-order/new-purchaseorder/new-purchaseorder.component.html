@@ -24,7 +24,7 @@
 
         <div class="modal-body">
             <div class="modal-body-container">
-                <div fxLayout="column" class="h-100-p">
+                <div fxLayout="column" class="h-1q0-p">
                     <mat-accordion>
                         <mat-expansion-panel expanded>
                             <!-- <mat-expansion-panel-header>
@@ -81,7 +81,7 @@
                                             (selectionChange)="onGSTTypeChange($event)"
                                             [mode]="autocompleteModeGSTType"></airmid-dropdown>
                                     </div>
-                                    <div fxLayout="row" class="gap-2"> 
+                                    <div fxLayout="row" class="gap-2">
                                         <airmid-textbox fxFlex="6%" label="HSNcode" formControlName="HSNcode"
                                             [(ngModel)]="vHSNcode" [formGroup]="userFormGroup"
                                             [readonly]="true"></airmid-textbox>
@@ -111,7 +111,7 @@
                                         <airmid-textbox fxFlex="5%" label="MRP" formControlName="MRP"
                                             [formGroup]="userFormGroup" placeholder="MRP" type="number"
                                             [(ngModel)]="vMRP" [validations]="getValidationMessages().mrp"
-                                            (valueChange)="calculateTotalamt()"  [min]="0"></airmid-textbox>
+                                            (valueChange)="calculateTotalamt()" [min]="0"></airmid-textbox>
                                         <!-- (keyup)="OnchekPurchaserateValidation()" -->
                                         <airmid-textbox fxFlex="6%" label="Rate" formControlName="Rate"
                                             [(ngModel)]="vRate" [formGroup]="userFormGroup" placeholder="Rate"
@@ -132,31 +132,41 @@
                                             (valueChange)="calculateTotalamt()"></airmid-textbox>
 
 
-                                        <airmid-textbox fxFlex="4%" label="CGST %" formControlName="CGSTPer" #CGST
+                                        <!-- <airmid-textbox fxFlex="4%" label="CGST %" formControlName="CGSTPer" #CGST
                                             (change)="getchangegstper(userFormGroup.get('CGSTPer')?.value, 'CGSTPer')" [formGroup]="userFormGroup"
                                             type="text"></airmid-textbox>
 
-                                        <!-- <airmid-textbox fxFlex="4%" label="CGST Amt" formControlName="CGSTAmount"
-                                            [formGroup]="userFormGroup" type="text" [readonly]="true"></airmid-textbox> -->
-
+                               
                                         <airmid-textbox fxFlex="4%" label="SGST %" formControlName="SGSTPer" #SGST
                                             (valueChange)="getchangegstper($event,SGST)" [formGroup]="userFormGroup"
-                                            type="text"></airmid-textbox>
+                                            type="text"></airmid-textbox> -->
 
-                                      
+                                        <airmid-dropdown label="CGST" formControlName="CGSTPer" fxFlex="5%"
+                                            [formGroup]="userFormGroup" [validations]="getValidationMessages().CGST"
+                                            [mode]="autocompleteModeGSTTypesValues"
+                                            (selectionChange)="getchangegstper($event)"> </airmid-dropdown>
 
-                                        <airmid-textbox fxFlex="4%" label="IGST %" formControlName="IGSTPer" #IGST
+                                        <airmid-textbox fxFlex="4%" label="SGST" formControlName="SGSTPer"
+                                            [formGroup]="userFormGroup" type="text" #SGST
+                                            [readonly]="true"></airmid-textbox>
+
+                                        <!-- <airmid-textbox fxFlex="4%" label="IGST %" formControlName="IGSTPer" #IGST
                                             (valueChange)="getchangegstper($event,IGST)" [formGroup]="userFormGroup"
-                                            type="text" [readonly]="true"></airmid-textbox>
+                                            type="text"></airmid-textbox> -->
 
-                                        <!-- <airmid-textbox fxFlex="4%" label="IGSTAmt" formControlName="IGSTAmount"
-                                            [formGroup]="userFormGroup" type="text" [readonly]="true"></airmid-textbox> -->
+                                        <airmid-dropdown label="IGST" formControlName="IGSTPer" fxFlex="5%"
+                                            [formGroup]="userFormGroup" [validations]="getValidationMessages().IGST"
+                                            [mode]="autocompleteModeGSTTypesValues"
+                                            (selectionChange)="getchangeIgstper($event)"> </airmid-dropdown>
 
-                                        <airmid-textbox fxFlex="4%" label="GST %" formControlName="GST"
+
+                                        <!-- <airmid-textbox fxFlex="4%" label="GST %" formControlName="GST"
                                             [formGroup]="userFormGroup" type="text" [readonly]="true"></airmid-textbox>
 
                                         <airmid-textbox fxFlex="4%" label="GST Amt" formControlName="GSTAmount"
-                                            [formGroup]="userFormGroup" type="text" [readonly]="true"></airmid-textbox>
+                                            [formGroup]="userFormGroup" type="text" [readonly]="true"></airmid-textbox> -->
+
+
 
                                         <airmid-textbox fxFlex="5%" label="Net Amount" formControlName="NetAmount"
                                             [formGroup]="userFormGroup" [readonly]="true"></airmid-textbox>
@@ -170,12 +180,11 @@
                                             [(ngModel)]="vDefRate" [formGroup]="userFormGroup"
                                             [readonly]="true"></airmid-textbox>
 
-<!--  [disabled]="!userFormGroup.valid" -->
+                                        <!--  [disabled]="!userFormGroup.valid" -->
                                         <div
                                             [matTooltip]="!userFormGroup.valid ? 'Select All Value to enable this button!!' : ''">
                                             <button type="button" class="btn btn-primary btn-with-icon py-8"
-                                                (click)="onAdd()" #addbutton id="btnAdd"
-                                               >
+                                                (click)="onAdd()" #addbutton id="btnAdd">
                                                 <mat-icon>add</mat-icon>
                                             </button>
                                         </div>
@@ -491,8 +500,9 @@
                                     | currency:'INR'}}</span>
                             </mat-expansion-panel-header> -->
 
+
                             <mat-expansion-panel-header>
-                                <mat-panel-title style="font-size: 15px;">Total Summary </mat-panel-title>
+                                <mat-panel-title style="font-size: 15px;">Total Amount Summary </mat-panel-title>
                                 <div class="summary-container">
                                     <div class="net-amt-box">
                                         <span class="net-amt-mat-label">No Of Item:</span>
@@ -663,19 +673,19 @@
                                                     [formGroup]="FinalPurchaseform"></airmid-textbox>
 
                                                 <airmid-dropdown label="Payment Term" formControlName="PaymentTerm"
-                                                    fxFlex="13%" [formGroup]="FinalPurchaseform"
+                                                    fxFlex="15%" [formGroup]="FinalPurchaseform"
                                                     [mode]="autocompletepaymentterm"
                                                     (selectionChange)="selPaymentterm($event)">
                                                 </airmid-dropdown>
 
                                                 <airmid-dropdown label="-- Select PaymentMode --"
-                                                    formControlName="PaymentMode" fxFlex="13%"
+                                                    formControlName="PaymentMode" fxFlex="15%"
                                                     [formGroup]="FinalPurchaseform" [mode]="autocompletepaymentmode"
                                                     (selectionChange)="selPaymentmode($event)">
                                                 </airmid-dropdown>
                                             </div>
                                             <div fxLayout="row wrap" fxLayoutGap="5px">
-                                                <airmid-textbox fxFlex="55%" label="Remark"
+                                                <airmid-textbox fxFlex="52%" label="Remark"
                                                     [(ngModel)]="registerObj.remarks" formControlName="Remark"
                                                     [formGroup]="FinalPurchaseform" type="text"></airmid-textbox>
 

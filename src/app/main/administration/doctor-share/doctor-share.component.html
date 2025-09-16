@@ -1,27 +1,27 @@
 <div fusePerfectScrollbar
     class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
     dynamicTableHeight>
-    
+
     <div class="top-header header accent p-16" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
         fxLayoutAlign.gt-xs="space-between center ">
 
         <div class="top-header-info">
             <div class="top-header-title">
                 <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                    Doctor Share 
+                    Doctor Share
                 </span>
             </div>
         </div>
 
         <div fxLayout="row" fxLayoutAlign="end" class="left-icon">
-            <button mat-raised-button   (click)="viewDocShareReport()"  fxLayoutAlign="center center" class="py-8">
+            <button mat-raised-button (click)="viewDocShareReport()" fxLayoutAlign="center center" class="py-8">
                 <mat-icon>print</mat-icon><span>Doctor Share Report</span>
-             </button>&nbsp;
-             <button mat-raised-button  (click)="viewDocShareSummaryReport()" fxLayoutAlign="center center" class="py-8">
-                 <mat-icon>print</mat-icon> <span> Doctor Share Summary Report</span>
-             </button>&nbsp;&nbsp;
+            </button>&nbsp;
+            <button mat-raised-button (click)="viewDocShareSummaryReport()" fxLayoutAlign="center center" class="py-8">
+                <mat-icon>print</mat-icon> <span> Doctor Share Summary Report</span>
+            </button>&nbsp;&nbsp;
             <button mat-raised-button (click)="processDocShare()" fxLayoutAlign="center center" class="py-8">
-               <span>Process Doctor Share</span>
+                <span>Process Doctor Share</span>
             </button>&nbsp;
             <button mat-raised-button (click)="NewDocShare()" fxLayoutAlign="center center" class="py-8">
                 <mat-icon>add</mat-icon> <span> Doctor Share</span>
@@ -30,64 +30,61 @@
 
     </div>
 
-    <div class="content"> 
+    <div class="content">
         <div class="center  pb-56" style="border-radius: 4px;padding: 6px 6px 6px 6px;">
             <div class="content-card">
                 <div fxLayout="row" fxLayout="column" fxFlexFill fxLayoutGap="10px">
                     <mat-card style="padding: 5px;">
                         <form [formGroup]="_DoctorShareService.UserFormGroup">
-                                <div fxLayout="row wrap" fxLayoutGap="12px grid">
-                    
-                                
+                            <div fxLayout="row wrap" fxLayoutGap="12px grid">
+
+
                                 <div fxFlex="19%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                <div fxLayout="row" style="padding: 10px;">
-                                    <mat-radio-group formControlName="OP_IP_Type" name="Radio" (change)="onChangeFirst()">
-                                        <mat-radio-button value="2">ALL</mat-radio-button>&nbsp;
-                                        <mat-radio-button value="0">OP</mat-radio-button>&nbsp;
-                                        <mat-radio-button value="1">IP</mat-radio-button>&nbsp;
-                                    </mat-radio-group>
-                                </div>
+                                    <div fxLayout="row" style="padding: 10px;">
+                                        <mat-radio-group formControlName="OP_IP_Type" name="Radio"
+                                            (change)="onChangeFirst()">
+                                            <mat-radio-button value="2">ALL</mat-radio-button>&nbsp;
+                                            <mat-radio-button value="0">OP</mat-radio-button>&nbsp;
+                                            <mat-radio-button value="1">IP</mat-radio-button>&nbsp;
+                                        </mat-radio-group>
+                                    </div>
                                 </div>
 
                                 <div fxFlex="18%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <airmid-datepicker [formGroup]="_DoctorShareService.UserFormGroup" [isRangePicker]="true" formStartControlName="fromDate"
-                                            formEndControlName="enddate" [(fromValue)]="gridConfig.filters[0].fieldValue"
-                                            [(toValue)]="gridConfig.filters[1].fieldValue">
+                                    <airmid-datepicker [formGroup]="_DoctorShareService.UserFormGroup"
+                                        [isRangePicker]="true" formStartControlName="fromDate"
+                                        formEndControlName="enddate" [(fromValue)]="gridConfig.filters[0].fieldValue"
+                                        [(toValue)]="gridConfig.filters[1].fieldValue">
                                     </airmid-datepicker>
                                 </div>
 
                                 <div fxFlex="18%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <airmid-dropdown 
-                                        label="Select Doctor Name" 
-                                        formControlName="DoctorID"
+                                    <airmid-dropdown label="Select Doctor Name" formControlName="DoctorID"
                                         [formGroup]="_DoctorShareService.UserFormGroup"
                                         (selectionChange)="ListView($event)" (keyup)="ListView($event)"
                                         [mode]="autocompleteModeItem">
                                     </airmid-dropdown>
                                 </div>
 
-                                <div fxFlex="18%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                <!-- <div fxFlex="18%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <airmid-dropdown 
                                         label="Select Group Name" 
                                         formControlName="GroupId"
                                         [formGroup]="_DoctorShareService.UserFormGroup"
                                         [mode]="autocompletedepartment">
                                     </airmid-dropdown>
-                                </div>
+                                </div> -->
 
                                 <div fxFlex="18%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <airmid-textbox 
-                                        label="PbillNo"
-                                        formControlName="PbillNo"
+                                    <airmid-textbox label="PbillNo" formControlName="PbillNo"
                                         [formGroup]="_DoctorShareService.UserFormGroup"
-                                        (click)=" Clearfilter('PbillNo')"
-                                        [maxLength]="50">
-                                    </airmid-textbox> 
+                                        (click)=" Clearfilter('PbillNo')" [maxLength]="50">
+                                    </airmid-textbox>
                                 </div>
-                                
-                                 <div style="padding: 10px;"> 
+
+                                <div style="padding: 10px;">
                                     <button mat-raised-button class="searchButton" matTooltip="search"
-                                    (click)="getfilterdata()" >
+                                        (click)="getfilterdata()">
                                         <mat-icon class="searchiconbutton">search</mat-icon>
                                     </button>
                                 </div>
@@ -104,6 +101,29 @@
                                 <div fusePerfectScrollbar
                                     class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
                                     dynamicTableHeight>
+
+                                    <ng-template #actionsTemplate1 let-element>
+                                        <div fxLayout="row" fxLayoutAlign="center center">
+                                            <mat-icon *ngIf="element.patientType=='Self'"
+                                                matTooltip="Patient Category Self">account_box
+                                            </mat-icon>
+                                            <mat-icon *ngIf="!element.patientType=='Self'"
+                                                matTooltip="Patient Category other">business
+                                            </mat-icon>
+                                        </div>
+
+                                    </ng-template>
+                                    <ng-template #actionsTemplate let-element>
+                                        <div fxLayout="row" fxLayoutAlign="center center">
+
+                                            <mat-icon *ngIf="element.opdIpdType=='0'" matTooltip="OPD"
+                                                class="pill orange-600 s-16">circle</mat-icon>
+
+                                            <mat-icon *ngIf="element.opdIpdType=='1'" matTooltip="IPD"
+                                                class="pill green-600 s-16">circle</mat-icon>
+                                        </div>
+                                    </ng-template>
+
                                     <airmid-table [gridConfig]="gridConfig" #grid :ShowFilter="false">
                                         <ng-container filters>
 

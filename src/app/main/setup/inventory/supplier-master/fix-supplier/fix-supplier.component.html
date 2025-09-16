@@ -41,17 +41,18 @@
                                 </div>
 
                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <airmid-textbox label="MobileNo" formControlName="mobile" [formGroup]="supplierForm" [validations]="getValidationMessages().mobile" [maxLength]="10">
+                                    <airmid-textbox label="MobileNo" formControlName="mobile"  (keypress)="keyPressAlphanumeric($event)"
+                                     [formGroup]="supplierForm" [validations]="getValidationMessages().mobile" [maxLength]="10">
                                     </airmid-textbox>
                                 </div>
 
                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <airmid-textbox label="PhoneNo" formControlName="phone" [validations]="getValidationMessages().phone" [formGroup]="supplierForm" [maxLength]="10">
+                                    <airmid-textbox label="PhoneNo" formControlName="phone"  (keypress)="keyPressAlphanumeric($event)" [validations]="getValidationMessages().phone" [formGroup]="supplierForm" [maxLength]="10">
                                     </airmid-textbox>
                                 </div>
 
                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <airmid-textbox label="Address" formControlName="address" [(ngModel)]="vAddress" [formGroup]="supplierForm" [validations]="getValidationMessages().address" [maxLength]="50">
+                                    <airmid-textbox label="Address" formControlName="address"  [(ngModel)]="vAddress" [formGroup]="supplierForm" [validations]="getValidationMessages().address" [maxLength]="50">
                                     </airmid-textbox>
                                 </div>
 
@@ -96,7 +97,7 @@
                                 </div>
 
                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <airmid-textbox label="Pin Code" formControlName="pinCode" [value]="registerObj.pinCode" [formGroup]="supplierForm" [maxLength]="6">
+                                    <airmid-textbox label="Pin Code" formControlName="pinCode"  (keypress)="keyPressAlphanumeric($event)" [value]="registerObj.pinCode" [formGroup]="supplierForm" [maxLength]="6">
                                     </airmid-textbox>
                                 </div>
                             </div>
@@ -123,37 +124,37 @@
                                 </div>
 
                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <airmid-textbox label="Freight" formControlName="Freight" [value]="registerObj.freight" [formGroup]="supplierForm" [validations]="getValidationMessages().Freight">
+                                    <airmid-textbox label="Freight" formControlName="Freight"  (keypress)="keyPressAlphanumeric($event)" [value]="registerObj.freight" [formGroup]="supplierForm" [validations]="getValidationMessages().Freight">
                                     </airmid-textbox>
                                 </div>
 
                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <airmid-textbox label="CreditPeriod" formControlName="CreditPeriod" [value]="registerObj.creditPeriod" [formGroup]="supplierForm" [validations]="getValidationMessages().CreditPeriod">
+                                    <airmid-textbox label="CreditPeriod" formControlName="CreditPeriod" [value]="registerObj.creditPeriod" [formGroup]="supplierForm" [validations]="getValidationMessages().CreditPeriod" [maxLength]="5">
                                     </airmid-textbox>
                                 </div>
 
                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <airmid-dropdown label="Mode Of Payment" formControlName="modeofPayment" [formGroup]="supplierForm" [value]="registerObj.modeofPayment" [validations]="getValidationMessages().modeofPayment" [mode]="autocompleteModeofpayment" (selectionChange)="selectChangemodeofpayment($event)">
+                                    <airmid-dropdown label="Mode Of Payment" formControlName="modeofPayment" [formGroup]="supplierForm" [value]="registerObj.modeofPayment" [validations]="getValidationMessages().modeofPayment" [mode]="autocompleteModeofpayment">
                                     </airmid-dropdown>
                                 </div>
 
                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <airmid-dropdown label="Term Of Payment" formControlName="termofPayment" [formGroup]="supplierForm" [value]="registerObj.termofPayment" [validations]="getValidationMessages().termofPayment" [mode]="autocompleteModetermofpayment" (selectionChange)="selectChangetermofpayment($event)">
+                                    <airmid-dropdown label="Term Of Payment" formControlName="termofPayment" [formGroup]="supplierForm" [value]="registerObj.termofPayment" [validations]="getValidationMessages().termofPayment" [mode]="autocompleteModetermofpayment" >
                                     </airmid-dropdown>
                                 </div>
 
                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <airmid-textbox label="Tax Nature" formControlName="taxNature" [value]="registerObj.taxNature" [formGroup]="supplierForm" [validations]="getValidationMessages().taxNature" [maxLength]="15">
+                                    <airmid-textbox label="Tax Nature" formControlName="taxNature" [value]="registerObj.taxNature" [formGroup]="supplierForm" [validations]="getValidationMessages().taxNature" [maxLength]="10">
                                     </airmid-textbox>
                                 </div>
 
                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <airmid-textbox label="GST No" formControlName="gstNo" [value]="registerObj.gstNo" [formGroup]="supplierForm" [validations]="getValidationMessages().gstNo" [maxLength]="15">
+                                    <airmid-textbox label="GST No" formControlName="gstNo" (keypress)="keyPressAlphanumeric($event)" [value]="registerObj.gstNo" [formGroup]="supplierForm" [validations]="getValidationMessages().gstNo" [maxLength]="15">
                                     </airmid-textbox>
                                 </div>
 
                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <airmid-textbox label="Lic No" formControlName="licNo" [value]="registerObj.licNo" [formGroup]="supplierForm" [validations]="getValidationMessages().licNo" [maxLength]="30">
+                                    <airmid-textbox label="Lic No" formControlName="licNo" [value]="registerObj.licNo" [formGroup]="supplierForm" [validations]="getValidationMessages().licNo" [maxLength]="15">
                                     </airmid-textbox>
                                 </div>
 
@@ -169,7 +170,7 @@
                                 </div>
 
                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <airmid-textbox label="DlNo" formControlName="dlno" [value]="registerObj.dlno" [formGroup]="supplierForm" [validations]="getValidationMessages().dlno" [maxLength]="30">
+                                    <airmid-textbox label="DlNo" formControlName="dlno" [value]="registerObj.dlno" [formGroup]="supplierForm" [validations]="getValidationMessages().dlno" [maxLength]="10">
                                     </airmid-textbox>
                                 </div>
                             </div>
@@ -197,7 +198,7 @@
                                 </div>
 
                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <airmid-textbox label="Bank No" formControlName="bankNo" [value]="registerObj.bankNo" [formGroup]="supplierForm" [validations]="getValidationMessages().bankNo">
+                                    <airmid-textbox label="Bank No"  (keypress)="keyPressAlphanumeric($event)" formControlName="bankNo" [value]="registerObj.bankNo" [formGroup]="supplierForm" [validations]="getValidationMessages().bankNo">
                                     </airmid-textbox>
                                 </div>
 
@@ -222,7 +223,7 @@
 
                                 
                             <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                <airmid-textbox label="OpeningBal" formControlName="openingBalance" [value]="registerObj.openingBalance" [formGroup]="supplierForm" >
+                                <airmid-textbox label="OpeningBal" (keypress)="keyPressAlphanumeric($event)" formControlName="openingBalance" [value]="registerObj.openingBalance" [formGroup]="supplierForm" [maxLength]="10" >
                                 </airmid-textbox>
                             </div>
 

@@ -75,7 +75,10 @@ export class DischargeCancelComponent implements OnInit {
 
   getDischargedList(event) {
     if (event.checked == true)
+    {
       this.vCheckBox = true;
+        this.patientInfoReset() 
+    }
     else
       this.vCheckBox = false;
     this._DischargeCancelService.DischargeForm.get('RegID').setValue('');

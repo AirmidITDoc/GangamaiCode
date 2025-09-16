@@ -27,31 +27,20 @@ export class SupplierMasterService {
             supplierName: ["",
                 [
                     Validators.required,
-                   // Validators.pattern("^[A-Za-z ]*$")
                     Validators.pattern('^[a-zA-Z0-9 ]*$'),
                      this._FormvalidationserviceService.allowEmptyStringValidator()
                 ]
             ],
-            ContactPerson: ["", [
-                // Validators.required,
-                // Validators.pattern("^[a-zA-Z._ -]+$"),
-                // Validators.maxLength(100),
-            ]],
+            ContactPerson: ["", []],
             address: ["", [Validators.required]
             ],
-            cityId: [0,
-                [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]
+            cityId: [0,[Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]
             ],
-            stateId: [0,
-                [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]
+            stateId: [0,[Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]
             ],
-            countryId: [0,
-                [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]
+            countryId: [0,[Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]
             ],
-            CreditPeriod: ["",
-                [
-                    Validators.required
-                ]
+            CreditPeriod: ["",[Validators.required]
             ],
             mobile: ["",
                 [
@@ -105,7 +94,7 @@ export class SupplierMasterService {
             panNo: ["",
                 [
                     Validators.required,
-                    Validators.pattern("[A-Z]{5}[0-9]{4}[A-Z]{1}")
+                    // Validators.pattern("[A-Z]{5}[0-9]{4}[A-Z]{1}")
                     // Validators.pattern("^\\s*[A-Z]{5}[0-9]{4}[A-Z]{1}\\s*$")
                 ]
             ],
@@ -155,7 +144,7 @@ export class SupplierMasterService {
 
     createSearchForm(): FormGroup {
         return this._formBuilder.group({
-            StoreId: 0,
+            StoreId: this._loggedService.currentUserValue.user.storeId,
             SupplierNameSearch: [""],
             // IsDeletedSearch: ["2"],
         });

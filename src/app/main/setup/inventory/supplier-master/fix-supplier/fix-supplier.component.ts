@@ -52,22 +52,7 @@ export class FixSupplierComponent implements OnInit {
     ngOnInit(): void {
         this.supplierForm = this._supplierService.createSuppliermasterForm();
         this.supplierForm.markAllAsTouched();
-        
-        // if(this.data){
-        //     console.log(this.data)
-        //     this.SupplierId = this.data.supplierId
-        //     this.supplierForm.get('supplierName')?.setValue(this.data.supplierName.trim());
-        //     this.supplierForm.get('mobile')?.setValue(this.data.mobile.trim());
-        //     this.supplierForm.get('phone')?.setValue(this.data.phone.trim());
-        //     this.supplierForm.get('address')?.setValue(this.data.address.trim());
-        //     this.supplierForm.get('panNo')?.setValue(this.data.panNo.trim());
-
-        //     this.supplierForm.get('email')?.setValue(this.data.email.trim());
-        //     this.supplierForm.get('CreditPeriod')?.setValue(this.data.creditPeriod.trim());
-        //     this.supplierForm.get('gstNo')?.setValue(this.data.gstNo.trim());
-        //     this.supplierForm.get('ContactPerson')?.setValue(this.data.contactPerson.trim());
-        // }
-
+       
         if ((this.data?.supplierId ?? 0) > 0) {
 
             this.isActive = this.data.isActive;
@@ -139,11 +124,11 @@ export class FixSupplierComponent implements OnInit {
 
   const msmNoControl = this.supplierForm.controls['MSMNo'];
   if (this.msmflag === false) {
-    msmNoControl.setValidators([Validators.required]);
+    // msmNoControl.setValidators([Validators.required]);
   } else {
     msmNoControl.clearValidators();
   }
-  msmNoControl.updateValueAndValidity();
+//   msmNoControl.updateValueAndValidity();
 
   if (this.supplierForm.valid) {
     const formData = { ...this.supplierForm.value };
@@ -161,17 +146,9 @@ export class FixSupplierComponent implements OnInit {
 
     console.log("After transformation:", formData);
 
-    this._supplierService.SupplierSave(formData).subscribe(
-      (response) => {
-        this.toastr.success(response.message);
-        this.onClear(true);
-      },
-      (error) => {
-        this.toastr.error(error.message);
-      }
-    );
-
-    this.onClose();
+    this._supplierService.SupplierSave(formData).subscribe((response) => {
+       this.onClear(true);
+      });
 
   } else {
   
@@ -192,11 +169,7 @@ export class FixSupplierComponent implements OnInit {
   }
 }
 
-    onChangeMode(event) {
-
-    }
-
-
+  
     onClear(val: boolean) {
         this.supplierForm.reset();
         this.dialogRef.close(val);
@@ -217,27 +190,16 @@ export class FixSupplierComponent implements OnInit {
     storeId = 0;
     supplierId = 0;
 
-    selectChangecity(obj: any) {
-        console.log(obj);
-        this.cityId = obj.value
-        this.cityName = obj.text
+    
+    keyPressAlphanumeric(event) {
+        var inp = String.fromCharCode(event.keyCode);
+        if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
+            return true;
+        } else {
+            event.preventDefault();
+            return false;
+        }
     }
-    selectChangestate(obj: any) {
-        console.log(obj);
-        this.stateId = obj
-    }
-
-    selectChangecountry(obj: any) {
-        console.log(obj);
-        this.countryId = obj
-    }
-    selectChangemodeofpayment(obj: any) {
-        this.modeOfPaymentId = obj.value;
-    }
-    selectChangetermofpayment(obj: any) {
-        this.termOfPaymentId = obj.value;
-    }
-
 
     getValidationMessages() {
         return {
@@ -272,19 +234,13 @@ export class FixSupplierComponent implements OnInit {
                 { name: "pattern", Message: "Only Numbers & Characters Allowed" },
             ],
             fax: [
-                // { name: "pattern", Message: "Only numbers allowed" },
-                // { name: "required", Message: "Fax No is required" },
-                // { name: "maxLength", Message: "More than 10 digits not allowed." }
-            ],
+              ],
             email: [
                 { name: "required", Message: "Email is required" },
                 { name: "pattern", Message: "Only Numbers & Characters Allowed" },
             ],
             Freight: [
-                // { name: "pattern", Message: "Only Numbers allowed" },
-                // { name: "required", Message: "Freight is required" },
-                // { name: "maxLength", Message: "More than 10 digits not allowed." }
-            ],
+               ],
             CreditPeriod: [
                 { name: "required", Message: "Credit Period is required" },
             ],

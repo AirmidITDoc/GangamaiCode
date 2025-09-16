@@ -27,7 +27,7 @@ export class ItemMasterService {
     createSearchForm(): FormGroup {
         return this._formBuilder.group({
             ItemNameSearch: [""],
-            IsDeletedSearch: ["2"],
+            ToStoreId: this._loggedService.currentUserValue.user.storeId,
         });
     }
 
@@ -38,7 +38,6 @@ export class ItemMasterService {
                 [
                     Validators.required,
                     Validators.maxLength(50),
-                  //  Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                     Validators.pattern('^[a-zA-Z0-9 ]*$'),
                      this._FormvalidationserviceService.allowEmptyStringValidator()
                     
@@ -48,7 +47,6 @@ export class ItemMasterService {
                 [
                     Validators.required,
                     Validators.maxLength(50),
-                  //  Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                     Validators.pattern('^[a-zA-Z0-9 ]*$')
                 ]
             ],
@@ -90,7 +88,6 @@ export class ItemMasterService {
                 [
                     Validators.required,
                     Validators.maxLength(50),
-                    //Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                     Validators.pattern('^[a-zA-Z0-9 ]*$')
                 ]
             ],
@@ -120,7 +117,6 @@ export class ItemMasterService {
             reOrder: ["0",
                 [
                     Validators.required,
-                    // Validators.maxLength(50),
                     Validators.pattern('^[0-9]*$')
                 ]
             ],

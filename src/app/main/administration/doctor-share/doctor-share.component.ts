@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatDrawer } from '@angular/material/sidenav';
@@ -14,6 +14,7 @@ import { Observable } from 'rxjs';
 import { AddDoctorShareComponent } from './add-doctor-share/add-doctor-share.component';
 import { DoctorShareService } from './doctor-share.service';
 import { ProcessDoctorShareComponent } from './process-doctor-share/process-doctor-share.component';
+import { gridColumnTypes } from 'app/core/models/tableActions';
 
 @Component({
   selector: 'app-doctor-share',
@@ -73,27 +74,36 @@ export class DoctorShareComponent implements OnInit {
     });
 
   }
+  @ViewChild('actionsTemplate1') actionsTemplate1!: TemplateRef<any>;
+    @ViewChild('actionsTemplate') actionsTemplate!: TemplateRef<any>;
+   ngAfterViewInit() {
+        // Assign the template to the column dynamically
+        this.gridConfig.columnsList.find(col => col.key === 'patientType')!.template = this.actionsTemplate1;
+     this.gridConfig.columnsList.find(col => col.key === 'opdipdtype')!.template = this.actionsTemplate;
+     
+    }
 
   allColumns=[
-    { heading: "-", key: "firstName", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "", key: "patientType", sort: true, align: 'left', type: gridColumnTypes.template, emptySign: 'NA', width: 25 },
+     { heading: "", key: "opdIpdType", sort: true, align: 'left', type: gridColumnTypes.template, emptySign: 'NA', width: 25 },
     { heading: "PBillNo", key: "pbillNo", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "Bill Amt", key: "totalAmt", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "Discount Amt", key: "ConcessionAmt", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "Net Amt", key: "netPayableAmt", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "Bill Amt", key: "totalAmt", sort: true, align: 'left', emptySign: 'NA' , type: gridColumnTypes.amount },
+    { heading: "Discount Amt", key: "ConcessionAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount  },
+    { heading: "Net Amt", key: "netPayableAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount  },
     { heading: "Doctor Name", key: "admittedDoctorName", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "Patient Type", key: "patientType", sort: true, align: 'left', emptySign: 'NA' },
+    // { heading: "Patient Type", key: "patientType", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "Company Name", key: "companyName", sort: true, align: 'left', emptySign: 'NA' }
   ]
   allFilters=[
     { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.StartsWith },
     { fieldName: "ToDate", fieldValue: this.toDate, opType: OperatorComparer.StartsWith },
-    { fieldName: "DoctorId", fieldValue: "1", opType: OperatorComparer.Equals },
-    { fieldName: "PBillNo", fieldValue: "1", opType: OperatorComparer.Equals },
+    { fieldName: "DoctorId", fieldValue: "0", opType: OperatorComparer.Equals },
+    { fieldName: "PBillNo", fieldValue: "0", opType: OperatorComparer.Equals },
     { fieldName: "OP_IP_TYpe", fieldValue: "0", opType: OperatorComparer.Equals },
   ]
   gridConfig: gridModel = {
-    apiUrl: "Doctor/DoctorShareList",
+    apiUrl: "Doctor/DoctorshareBillList",
     columnsList: this.allColumns,
     sortField: "DoctorId",
     sortOrder: 0,
@@ -103,7 +113,7 @@ export class DoctorShareComponent implements OnInit {
   onChangeFirst() {
     this.fromDate = this.datePipe.transform(this._DoctorShareService.UserFormGroup.get('fromDate').value, "yyyy-MM-dd")
     this.toDate = this.datePipe.transform(this._DoctorShareService.UserFormGroup.get('enddate').value, "yyyy-MM-dd")
-    this.pBillNo = this._DoctorShareService.UserFormGroup.get('PbillNo').value 
+    this.pBillNo = this._DoctorShareService.UserFormGroup.get('PbillNo').value || "0"
     this.opipType = this._DoctorShareService.UserFormGroup.get('OP_IP_Type').value 
     this.getfilterdata();
 }
@@ -119,7 +129,7 @@ console.log("fromDate:",this.fromDate)
 console.log("toDate:",this.toDate)
 
 this.gridConfig = {
-    apiUrl: "Doctor/DoctorShareList",
+    apiUrl: "Doctor/DoctorshareBillList",
     columnsList:this.allColumns , 
     sortField: "DoctorId",
     sortOrder: 0,
