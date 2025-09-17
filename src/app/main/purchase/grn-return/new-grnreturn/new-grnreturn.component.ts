@@ -79,8 +79,8 @@ export class NewGRNReturnComponent implements OnInit {
   vRoundingAmt: any;
   autocompletestore: string = "Store";
   autocompleteSupplier: string = "SupplierMaster"
-  vGSTTpe: any;
-
+  vGSTTpe = "GST Return";
+  registerObj = new ItemNameList({});
   dsGrnItemList = new MatTableDataSource<ItemNameList>();
   dsNewGRNReturnItemList = new MatTableDataSource<ItemNameList>();
   dsItemNameList1 = new MatTableDataSource<ItemNameList>();
@@ -105,8 +105,18 @@ export class NewGRNReturnComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.vGSTTpe = 'GST Return';
     console.log("GRN Return:", this.data)
+    if (this.data?.grnReturnId) {
+      this.registerObj = this.data
+      this.VsupplierId = this.data.supplierId
+
+      if (this.registerObj.isGrnTypeFlag == true) {
+        this.vGSTTpe = 'GST Return';
+      } else {
+        this.vGSTTpe = 'Without GST';
+      }
+    }
+    this.getGRNreturnlist();
     // this.getStoreList();    
     this.GrnReturnForm = this.CreateGrnReturnInsertForm();
     this.grnReturnDetArray.push(this.createGrnReturnDetInsert());
@@ -182,10 +192,10 @@ export class NewGRNReturnComponent implements OnInit {
       landedTotalAmount: [element.TotalAmount || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       mrpTotalAmount: [mrpTotal || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       purchaseTotalAmount: [PurchaseTotalAmt || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      conversion: [element.ConversionFactor || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      conversion: [element.ConversionFactor || 1, [this._FormvalidationserviceService.onlyNumberValidator()]],
       remarks: '',
       stkId: [element.StkID || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      cf: [element.ConversionFactor || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      cf: [element.ConversionFactor || 1, [this._FormvalidationserviceService.onlyNumberValidator()]],
       totalQty: [element.TotalQty || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
     });
   }
@@ -361,12 +371,9 @@ export class NewGRNReturnComponent implements OnInit {
 
       this.dsGrnItemList.sort = this.sort;
       this.dsGrnItemList.paginator = this.paginator;
-      this.sIsLoading = '';
-    },
-      error => {
-        console.error("Error fetching GRN item list:", error);
-        this.sIsLoading = '';
-      });
+      this.getTotalamt(this.dsGrnItemList.data);
+      // this.getNetamt(this.dsGrnItemList.data);
+    });
   }
 
   deleteTableRow(elm) {
@@ -379,19 +386,35 @@ export class NewGRNReturnComponent implements OnInit {
     });
   }
 
-  parseDate(dateStr: string): Date | null {
+  // parseDate(dateStr: string): Date | null {
+
+  //   const parts = dateStr.split(' ');
+  //   const dateParts = parts[0].split('-'); // ["31", "07", "2026"]
+  //   const time = parts[1] || '00:00:00';
+
+  //   if (dateParts.length === 3) {
+  //     const formatted = `${dateParts[2]}-${dateParts[1]}-${dateParts[0]}T${time}`;
+  //     return new Date(formatted);
+  //   }
+
+  //   return null;
+  // }
+  parseDate(dateStr: string | null | undefined): Date | null {
+    if (!dateStr) return null;  // prevent split on undefined/null
 
     const parts = dateStr.split(' ');
-    const dateParts = parts[0].split('-'); // ["31", "07", "2026"]
-    const time = parts[1] || '00:00:00';
+    const dateParts = parts[0]?.split('-') ?? [];
 
     if (dateParts.length === 3) {
-      const formatted = `${dateParts[2]}-${dateParts[1]}-${dateParts[0]}T${time}`;
-      return new Date(formatted);
+      const [day, month, year] = dateParts;
+      const time = parts[1] || '00:00:00';
+      // convert dd-MM-yyyy HH:mm:ss → yyyy-MM-ddTHH:mm:ss
+      return new Date(`${year}-${month}-${day}T${time}`);
     }
 
     return null;
   }
+
 
   keyPressAlphanumeric(event) {
     var inp = String.fromCharCode(event.keyCode);
@@ -402,11 +425,78 @@ export class NewGRNReturnComponent implements OnInit {
       return false;
     }
   }
-  getTotalamt(element) {
-    // console.log("getTotalamt:",element)
+
+  getGRNreturnlist() {
+    var vdata = {
+      "first": 0,
+      "rows": 10,
+      "sortField": "GRNReturnId",
+      "sortOrder": 0,
+      "filters": [
+        {
+          "fieldName": "GRNReturnId",
+          "fieldValue": String(this.registerObj.grnReturnId),
+          "opType": "Contains"
+        }
+      ],
+      "exportType": "JSON",
+      "columns": []
+    }
+    this._GRNReturnService.getGRNReturnrtrvlist(vdata).subscribe(response => {
+      // this.dsGrnItemList.data = response.data
+      this.dsGrnItemList.data = response.data.map(item => ({
+        ...item,
+        NetAmount: (item.landedRate * item.returnQty) + item.vatAmount,
+        VatAmount: item.vatAmount,
+        TotalAmount: item.landedTotalAmount,    // or whichever your table uses
+        PurchaseRate: item.unitPurchaseRate,
+        ReturnQty: item.returnQty
+      }));
+
+        const row = this.dsGrnItemList.data
+
+        // want for calculation
+        this.getCellCalculation(row, row);
+
+      console.log(this.dsGrnItemList.data)
+      this.isGSTVisible = true;
+    });
+  }
+  
+  // getTotalamt(element) {
+  //   debugger
+  //   this.vFinalTotalAmount = (element.reduce((sum, { TotalAmount }) => sum += +(TotalAmount || 0), 0)).toFixed(2);
+  //   this.vFinalVatAmount = (element.reduce((sum, { VatAmount }) => sum += +(VatAmount || 0), 0)).toFixed(2);
+  //   this.vFinalDiscAmount = (element.reduce((sum, { DiscAmount }) => sum += +(DiscAmount || 0), 0)).toFixed(2);
+
+  //   let finalAmt = (element.reduce((sum, { NetAmount }) => sum += +(NetAmount || 0), 0)).toFixed(2);
+  //   this.vFinalNetAmount = Math.round(finalAmt).toFixed(2);
+  //   this.vRoundingAmt = (parseFloat(this.vFinalNetAmount) - (finalAmt)).toFixed(2);
+
+  //   if (this.vGSTTpe === "Without GST") {
+  //     this.vFinalVatAmount = "0.00";
+  //   } else {
+  //     this.vFinalVatAmount = (element.reduce((sum, { VatAmount }) => sum += +(VatAmount || 0), 0)).toFixed(2);
+  //   }
+
+  //   this._GRNReturnService.NewGRNRetFinalFrom.patchValue({
+  //     FinalTotalAmount: this.vFinalTotalAmount,
+  //     FinalDiscAmountt: this.vFinalDiscAmount,
+  //     FinalVatAmount: this.vFinalVatAmount,
+  //     FinalNetAmount: this.vFinalNetAmount,
+  //     RoundingAmt: this.vRoundingAmt
+  //   })
+  //   // return this.vFinalTotalAmount;
+  // }
+   getTotalamt(element) {
+    debugger
     this.vFinalTotalAmount = (element.reduce((sum, { TotalAmount }) => sum += +(TotalAmount || 0), 0)).toFixed(2);
     this.vFinalVatAmount = (element.reduce((sum, { VatAmount }) => sum += +(VatAmount || 0), 0)).toFixed(2);
     this.vFinalDiscAmount = (element.reduce((sum, { DiscAmount }) => sum += +(DiscAmount || 0), 0)).toFixed(2);
+
+    let finalAmt = (element.reduce((sum, { NetAmount }) => sum += +(NetAmount || 0), 0)).toFixed(2);
+    this.vFinalNetAmount = Math.round(finalAmt).toFixed(2);
+    this.vRoundingAmt = (parseFloat(this.vFinalNetAmount) - (finalAmt)).toFixed(2);
 
     if (this.vGSTTpe === "Without GST") {
       this.vFinalVatAmount = "0.00";
@@ -414,16 +504,14 @@ export class NewGRNReturnComponent implements OnInit {
       this.vFinalVatAmount = (element.reduce((sum, { VatAmount }) => sum += +(VatAmount || 0), 0)).toFixed(2);
     }
 
-    return this.vFinalTotalAmount;
-  }
-
-  getNetamt(element) {
-    // console.log("getNetamt:",element)
-    let finalAmt = (element.reduce((sum, { NetAmount }) => sum += +(NetAmount || 0), 0)).toFixed(2);
-    this.vFinalNetAmount = Math.round(finalAmt).toFixed(2);
-    this.vRoundingAmt = (parseFloat(this.vFinalNetAmount) - (finalAmt)).toFixed(2);
-
-    return this.vFinalNetAmount;
+    this._GRNReturnService.NewGRNRetFinalFrom.patchValue({
+      FinalTotalAmount: this.vFinalTotalAmount,
+      FinalDiscAmountt: this.vFinalDiscAmount,
+      FinalVatAmount: this.vFinalVatAmount,
+      FinalNetAmount: this.vFinalNetAmount,
+      RoundingAmt: this.vRoundingAmt
+    })
+    // return this.vFinalTotalAmount;
   }
 
   onGSTTypeChange() {
@@ -438,6 +526,39 @@ export class NewGRNReturnComponent implements OnInit {
   }
 
   RQty: any;
+  // getCellCalculation(contact, ReturnQty) {
+  //   // debugger
+  //   if (parseInt(contact.ReturnQty) > parseInt(contact.BalanceQty)) {
+  //     this.toastr.warning('Return Qty cannot be greater than BalQty', 'Warning !', {
+  //       toastClass: 'tostr-tost custom-toast-warning',
+  //     });
+  //     contact.ReturnQty = 0;
+  //     contact.ReturnQty = '';
+  //     contact.TotalQty = 0;
+  //     contact.TotalAmount = 0;
+  //     contact.VatAmount = 0;
+  //     contact.DiscAmount = 0;
+  //     contact.NetAmount = 0;
+  //   }
+  //   else {
+  //     contact.TotalQty = (parseInt(contact.ReturnQty) * parseInt(contact.ConversionFactor));
+  //     contact.TotalAmount = (parseFloat(contact.ReturnQty) * parseFloat(contact.LandedRate)).toFixed(2);
+  //     contact.VatAmount = ((parseFloat(contact.TotalAmount) * parseFloat(contact.VatPer)) / 100).toFixed(2);
+  //     contact.DiscAmount = ((parseFloat(contact.TotalAmount) * parseFloat(contact.DiscPercentage)) / 100).toFixed(2);
+  //     let GrossAmt = (parseFloat(contact.TotalAmount) - parseFloat(contact.DiscAmount)).toFixed(2);
+  //     contact.NetAmount = (parseFloat(GrossAmt) + parseFloat(contact.VatAmount)).toFixed(2);
+
+  //     // ✅ GST condition
+  //     if (this.vGSTTpe === "Without GST") {
+  //       contact.VatAmount = 0;
+  //       contact.NetAmount = GrossAmt;
+  //     } else {
+  //       contact.VatAmount = ((parseFloat(contact.TotalAmount) * parseFloat(contact.VatPer)) / 100).toFixed(2);
+  //       contact.NetAmount = (parseFloat(GrossAmt) + parseFloat(contact.VatAmount)).toFixed(2);
+  //     }
+  //   }
+  //   this.getTotalamt(this.dsGrnItemList.data);
+  // }
   getCellCalculation(contact, ReturnQty) {
     // debugger
     if (parseInt(contact.ReturnQty) > parseInt(contact.BalanceQty)) {
@@ -453,31 +574,25 @@ export class NewGRNReturnComponent implements OnInit {
       contact.NetAmount = 0;
     }
     else {
-      contact.TotalQty = (parseInt(contact.ReturnQty) * parseInt(contact.ConversionFactor));
-      contact.TotalAmount = (parseFloat(contact.ReturnQty) * parseFloat(contact.LandedRate)).toFixed(2);
-      contact.VatAmount = ((parseFloat(contact.TotalAmount) * parseFloat(contact.VatPer)) / 100).toFixed(2);
-      contact.DiscAmount = ((parseFloat(contact.TotalAmount) * parseFloat(contact.DiscPercentage)) / 100).toFixed(2);
-      let GrossAmt = (parseFloat(contact.TotalAmount) - parseFloat(contact.DiscAmount)).toFixed(2);
-      contact.NetAmount = (parseFloat(GrossAmt) + parseFloat(contact.VatAmount)).toFixed(2);
+      contact.TotalQty = (parseInt(contact.ReturnQty) * parseInt(contact.ConversionFactor ?? contact.conversion));
+      contact.TotalAmount = (parseFloat(contact.ReturnQty) * parseFloat(contact.LandedRate ?? contact.landedRate)).toFixed(2);
+      contact.VatAmount = ((parseFloat(contact.TotalAmount ?? contact.landedTotalAmount) * parseFloat(contact.VatPer ?? contact.vatPercentage)) / 100).toFixed(2);
+      contact.DiscAmount = ((parseFloat(contact.TotalAmount ?? contact.landedTotalAmount) * parseFloat(contact.DiscPercentage)) / 100).toFixed(2);
+      let GrossAmt = (parseFloat(contact.TotalAmount ?? contact.landedTotalAmount) - parseFloat(contact.DiscAmount)).toFixed(2);
+      contact.NetAmount = (parseFloat(GrossAmt) + parseFloat(contact.VatAmount ?? contact.vatAmount)).toFixed(2);
 
       // ✅ GST condition
       if (this.vGSTTpe === "Without GST") {
         contact.VatAmount = 0;
-        contact.NetAmount = GrossAmt;
+        contact.NetAmount = (parseFloat(contact.TotalAmount ?? contact.landedTotalAmount)).toFixed(2);
+        // contact.NetAmount = GrossAmt;
       } else {
-        contact.VatAmount = ((parseFloat(contact.TotalAmount) * parseFloat(contact.VatPer)) / 100).toFixed(2);
-        contact.NetAmount = (parseFloat(GrossAmt) + parseFloat(contact.VatAmount)).toFixed(2);
+        contact.VatAmount = ((parseFloat(contact.TotalAmount ?? contact.landedTotalAmount) * parseFloat(contact.VatPer ?? contact.vatPercentage)) / 100).toFixed(2);
+        contact.NetAmount = (parseFloat(GrossAmt) + parseFloat(contact.VatAmount ?? contact.vatAmount)).toFixed(2);
       }
     }
+    this.getTotalamt(this.dsGrnItemList.data);
   }
-
-  // interimArray: any = [];
-  // tableElementChecked(event, element) {
-  //   debugger
-  //   if (event.checked) {
-  //     this.interimArray.push(element);
-  //   }
-  // }
 
   getValidationMessages() {
     return {
@@ -494,11 +609,11 @@ export class NewGRNReturnComponent implements OnInit {
 
   OnSave() {
     debugger
-    if(this._GRNReturnService.NewGRNReturnFrom.get('GSTType').value == 'GST Return'){
+    if (this._GRNReturnService.NewGRNReturnFrom.get('GSTType').value == 'GST Return') {
       this.GrnReturnForm.get('grnReturn.isGrnTypeFlag').setValue(true)
-    }else
+    } else
       this.GrnReturnForm.get('grnReturn.isGrnTypeFlag').setValue(false)
-      
+
     this.GrnReturnForm.get('grnReturn.grnid').setValue(this.vGRNID)
     this.GrnReturnForm.get('grnReturn.supplierId').setValue(Number(this.VsupplierId))
     this.GrnReturnForm.get('grnReturn.totalAmount').setValue(this.vFinalTotalAmount)
@@ -625,25 +740,6 @@ export class NewGRNReturnComponent implements OnInit {
         maxHeight: '95vh',
         width: '85%',
       });
-    // dialogRef.afterClosed().subscribe(result => {
-    //   debugger
-    //   console.log('The dialog was closed - Insert Action', result);
-    //    console.log("ddddddaaaaaatttttaaa",result) 
-    //   this.dsNewGRNReturnItemList.data = result as ItemNameList[];
-    //   this.VsupplierId = this.dsNewGRNReturnItemList.data[0]['supplierId']
-    //   this.vStoreId=this.dsNewGRNReturnItemList.data[0]['storeId']
-    //   this.VsupplierName = this.dsNewGRNReturnItemList.data[0]['supplierName']
-    //   this.vGRNID = this.dsNewGRNReturnItemList.data[0].grnid
-    //   this.CashCredittype = this.dsNewGRNReturnItemList.data[0].cash_CreditType
-    //   // this.getSupplierSearchCombo(); 
-
-    //   this.getGrnItemDetailList(this.dsNewGRNReturnItemList.data[0]) 
-    //   if(this.dsNewGRNReturnItemList.data[0].cash_CreditType == false){
-    //     this.isChecked = true;
-    //   }else{
-    //     this.isChecked = false;
-    //   }
-    // });
     dialogRef.afterClosed().subscribe(result => {
       this.isGSTVisible = true;
       console.log("ddddddaaaaaatttttaaa", result);

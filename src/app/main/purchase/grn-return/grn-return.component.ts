@@ -567,6 +567,16 @@ export class ItemNameList {
   supplierName: any;
   issueqty: any;
   receiveQty:any;
+   isGrnTypeFlag: any;
+  remark: any;
+  totalVatAmount: any;
+  grnReturnId:any;
+  vatPercentage:any;
+  purchaseTotalAmount:any;
+  unitPurchaseRate:any;
+  landedRate:any;
+  returnQty:any;
+  landedTotalAmount:any;
   /**
    * Constructor
    *
@@ -665,6 +675,18 @@ export class ItemNameList {
       this.supplierName = ItemNameList.supplierName
       this.issueqty = ItemNameList.issueqty
       this.receiveQty = ItemNameList.receiveQty
+      this.isGrnTypeFlag = ItemNameList.isGrnTypeFlag || ''
+      this.remark = ItemNameList.remark || ''
+      this.totalVatAmount = ItemNameList.totalVatAmount || ''
+      this.grnReturnId = ItemNameList.grnReturnId || ''
+      this.vatAmount = ItemNameList.vatAmount || ''
+      this.vatPercentage = ItemNameList.vatPercentage || ''
+      this.stkId = ItemNameList.stkId || ''
+      this.purchaseTotalAmount = ItemNameList.purchaseTotalAmount || ''
+      this.unitPurchaseRate = ItemNameList.unitPurchaseRate || ''
+      this.landedRate = ItemNameList.landedRate || ''
+      this.returnQty = ItemNameList.returnQty || ''
+      this.landedTotalAmount = ItemNameList.landedTotalAmount || ''
     }
   }
 }
