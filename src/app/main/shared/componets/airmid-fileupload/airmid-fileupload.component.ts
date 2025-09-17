@@ -1,14 +1,19 @@
-import { Component, ElementRef, EventEmitter, Inject, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { Component, ElementRef, EventEmitter, Inject, Input, OnInit, Output, ViewChild, ViewEncapsulation } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ApiCaller } from 'app/core/services/apiCaller';
 import { BaseFormControlComponent } from '../base-form-control-component';
+import { ImageViewComponent } from 'app/main/opd/appointment-list/image-view/image-view.component';
+import { fuseAnimations } from '@fuse/animations';
+import { AirmidImageviewComponent } from '../airmid-imageview/airmid-imageview.component';
 
 @Component({
     selector: 'airmid-fileupload',
     templateUrl: './airmid-fileupload.component.html',
-    styleUrls: ['./airmid-fileupload.component.scss']
+    styleUrls: ['./airmid-fileupload.component.scss'],
+        encapsulation: ViewEncapsulation.None,
+        animations: fuseAnimations
 })
 export class AirmidFileuploadComponent extends BaseFormControlComponent implements OnInit {
     @Input() multiple: boolean = false;
@@ -25,7 +30,7 @@ export class AirmidFileuploadComponent extends BaseFormControlComponent implemen
     @ViewChild('fileUpload')
     fileUpload: ElementRef
     inputFileName: string
-    constructor(private sanitizer: DomSanitizer, private _service: ApiCaller, el: ElementRef,
+    constructor(private sanitizer: DomSanitizer, private _service: ApiCaller, el: ElementRef,public _matDialog: MatDialog,
         @Inject(MAT_DIALOG_DATA) public data: any, public dialogRef: MatDialogRef<AirmidFileuploadComponent>) {
         super(el);
     }
@@ -147,6 +152,26 @@ export class AirmidFileuploadComponent extends BaseFormControlComponent implemen
 
         });
     }
+
+    onViewImage(ele: any, type: string) {
+    let fileType;
+    console.log(ele)
+    debugger
+    // if (ele) {
+        const dialogRef = this._matDialog.open(AirmidImageviewComponent,
+            {
+                width: '60%',
+                height: '65%',
+                data: {
+                    docData: type == 'img' ? ele : ele.docSavedName,
+                    type: type == 'img' ? "image" : ele.type
+                }
+            }
+        );
+        dialogRef.afterClosed().subscribe(result => {
+        });
+    // }
+  }
 }
 export class AirmidFileModel {
     srNo: Number;

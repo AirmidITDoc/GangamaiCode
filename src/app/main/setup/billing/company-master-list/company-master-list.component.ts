@@ -181,7 +181,7 @@ searchform:FormGroup
     }
     delCompany(obj) {
         this._CompanyMasterService.deactivateTheStatus(obj.companyId).subscribe((response: any) => {
-            this.toastr.success(response.message);
+            // this.toastr.success(response.message);
             this.grid.bindGridData();
         });
     }

@@ -21,7 +21,8 @@ export class DischargeCancelService {
       Op_ip_id: '1',
       IsDischargedit: 0, 
       IsIPDnoEdit: 0,
-      AdmissionDateEdit:0,
+      AdmissionDate: [(new Date()).toISOString()],
+      AdmissionTime: [''],
       start: [(new Date()).toISOString()],
       end: [(new Date()).toISOString()],
       NewIpdNo:['']

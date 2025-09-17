@@ -1,8 +1,8 @@
 <div class="page-layout simple inner-sidebar inner-scroll" style="width:100% ;" dynamicTableHeight fusePerfectScrollbar>
     <!-- HEADER -->
     <div class="top-header">
-        <div class="top-header-info" fxLayout="row" fxLayoutAlign="start center" >
-            
+        <div class="top-header-info" fxLayout="row" fxLayoutAlign="start center">
+
             <mat-icon class="logo-icon" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">account_box
             </mat-icon>
             <div class="top-header-title" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
@@ -10,7 +10,7 @@
             </div>
         </div>
 
-        
+
         <div class="gap-8" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
             <div fxLayout="row" fxLayoutAlign="start center" class="gap-4">
                 <mat-icon class="pill orange-600 s-16">circle</mat-icon>
@@ -42,16 +42,19 @@
                                 <div fxFlex="35%" fxFlex.xs="100%" fxFlex.sm="35%">
                                     <mat-form-field appearance="outline" fxFlex>
                                         <mat-label>RegNo</mat-label>
-                                        <input matInput placeholder="Search RegNo" autocomplete="off" [formGroup]="myformSearch" formControlName="RegNoSearch" (input)="onChangeFirst()" />
-                                        <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('RegNoSearch')">
+                                        <input matInput placeholder="Search RegNo" autocomplete="off"
+                                            [formGroup]="myformSearch" formControlName="RegNoSearch"
+                                            (input)="onChangeFirst()" />
+                                        <button matSuffix mat-icon-button aria-label="Clear"
+                                            (click)="Clearfilter('RegNoSearch')">
                                             <mat-icon>close</mat-icon>
                                         </button>
                                     </mat-form-field>
                                 </div>
 
                                 <div fxFlex="16%" fxLayout="row">
-                                    <mat-radio-group name="PatientTypeSearch" formControlName="PatientTypeSearch" (change)="onChangeFirst()"
-                                        fxLayout="column" value="2" class="gap-4"
+                                    <mat-radio-group name="PatientTypeSearch" formControlName="PatientTypeSearch"
+                                        (change)="onChangeFirst()" fxLayout="column" value="2" class="gap-4"
                                         [(ngModel)]="gridConfig.filters[6].fieldValue">
                                         <mat-label><b>Patient Type:</b></mat-label>
                                         <div fxLayout="row">
@@ -63,8 +66,8 @@
                                 </div>
 
                                 <div fxFlex="20%" fxLayout="row">
-                                    <mat-radio-group name="StatusSearch" formControlName="StatusSearch"  (change)="onChangeFirst()"
-                                        fxLayout="column" value="0" class="gap-4"
+                                    <mat-radio-group name="StatusSearch" formControlName="StatusSearch"
+                                        (change)="onChangeFirst()" fxLayout="column" value="0" class="gap-4"
                                         [(ngModel)]="vStatusSearch">
                                         <mat-label><b>Status:</b></mat-label>
                                         <div fxLayout="row">
@@ -78,7 +81,7 @@
                                     <div class="button-row-group">
                                         <button class="btn btn-danger-outline btn-xs" (click)="onClear()">clear</button>
                                         <button class="btn btn-primary btn-with-icon btn-xs"
-                                        (click)="searchRecords($event)" >
+                                            (click)="searchRecords($event)">
                                             <span>Search</span>
                                             <span class="btn-icon">
                                                 <mat-icon>search</mat-icon>
@@ -103,6 +106,19 @@
                                             (click)="onSave(element)">
                                             <mat-icon>description</mat-icon>
                                         </button>
+
+                                        <airmid-fileupload-icon [refId]="element.doctorId" [refType]="page"
+                                            [multiple]="true" [title]="'Report Master'"></airmid-fileupload-icon>
+
+                                        <airmid-signature-icon [refId]="element.doctorId" [refType]="signature"
+                                            [multiple]="true" docName="DoctorSignature"></airmid-signature-icon>
+
+                                        <!-- <button mat-icon-button matTooltip="Upload Doc" (click)="onFilesUpload()">
+                                            <mat-icon> cloud_upload </mat-icon>
+                                        </button>
+                                        <button mat-icon-button matTooltip="Report View" (click)="onFiles()">
+                                            <mat-icon> insert_drive_file</mat-icon>
+                                        </button> -->
                                     </div>
                                 </ng-template>
 
@@ -118,7 +134,7 @@
                                 </ng-template>
 
                                 <airmid-table [gridConfig]="gridConfig" #grid :ShowFilter="false" :ShowButtons="false"
-                                (onSelectRow)="getSelectedRow($event)">
+                                    (onSelectRow)="getSelectedRow($event)">
                                 </airmid-table>
 
                             </div>
@@ -146,7 +162,7 @@
                                 <mat-table class="mat-table-2 h-210" #table matSort [dataSource]="dataSource1"
                                     [@animateStagger]="{value:'50'}">
                                     <ng-container matColumnDef="select">
-                                        <th mat-header-cell *matHeaderCellDef >
+                                        <th mat-header-cell *matHeaderCellDef>
                                             <mat-checkbox (change)="$event ? masterToggle() : null"
                                                 [checked]="selection.hasValue()"
                                                 [indeterminate]="selection.hasValue() && !isAllSelected()">
@@ -234,14 +250,12 @@
                                             Action</mat-header-cell>
                                         <mat-cell *matCellDef="let contact">
 
-                                                <button
-                                                *ngIf="contact.isTemplateTest == 1"
-                                                title="IsTemplateTest"
+                                            <button *ngIf="contact.isTemplateTest == 1" title="IsTemplateTest"
                                                 (click)="chkresultentry(contact, false)"
                                                 style="background: none; border: none; padding: 0; cursor: pointer;">
                                                 <mat-icon title="IsTemplateTest">edit</mat-icon>
                                                 <!-- <img src="assets/images/logos/radiology.png" width="15px" height="8px" /> -->
-                                                </button>
+                                            </button>
 
                                             <!-- <mat-icon *ngIf="contact.isTemplateTest != 1" title="IsTest">
                                                 <img width="15px" height="9px" src="assets/images/logos/pathology.png">

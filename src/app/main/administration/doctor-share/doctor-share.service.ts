@@ -34,6 +34,8 @@ export class DoctorShareService {
       fieldValue:"",
     })
   }
+
+  
   createDocFormGroup() {
     return this._formBuilder.group({ 
       Type: ['1'],
@@ -49,14 +51,16 @@ export class DoctorShareService {
       Percentage:''
     })
   }
+
+
   createProDocFormGroup() {
     return this._formBuilder.group({ 
       startdate: [(new Date()).toISOString()],
       enddate: [(new Date()).toISOString()], 
     })
   }
-  public getPatientVisitedListSearch(employee) {
-    return this._httpClient.PostData("Generic/GetByProc?procName=m_Rtrv_PatientVisitedListSearch", employee)
+  public getPatientVisitedListSearch(Param) {
+    return this._httpClient.PostData("Generic/GetByProc?procName=m_Rtrv_PatientVisitedListSearch", Param)
   }
   public getAdmittedDoctorCombo() {
     return this._httpClient.PostData("Generic/GetByProc?procName=RetrieveConsultantDoctorMasterForCombo", {})
@@ -65,19 +69,23 @@ export class DoctorShareService {
     return this._httpClient.PostData("Generic/GetByProc?procName=Rtrv_BillListForDocShr",param)
   }
   public getDocShrList(param) {
-    return this._httpClient.PostData("Generic/GetByProc?procName=m_Rtrv_DoctorShareList_by_Name",param)
+    return this._httpClient.PostData("Doctor/DoctorshareBillList",param)
   }
-  public getServiceList(employee) {
-    return this._httpClient.PostData("Generic/GetByProc?procName=Rtrv_ServicesList_Combo",employee) 
+  public getServiceList(Param) {
+    return this._httpClient.PostData("Generic/GetByProc?procName=Rtrv_ServicesList_Combo",Param) 
   }
-  public getClassList(employee) {
-    return this._httpClient.PostData("Generic/GetByProc?procName=m_rtrv_BillingClassName",employee) 
+  public getClassList(Param) {
+    return this._httpClient.PostData("Generic/GetByProc?procName=m_rtrv_BillingClassName",Param) 
   }
   public getGroupList() {
     return this._httpClient.PostData("Generic/GetByProc?procName=RetrieveGroupMasterForCombo",{}) 
   }
-  public InsertDocShare(employee) {
-    return this._httpClient.PostData("DoctorShareMaster/InsertEDMX",employee) 
+  public InsertDocShare(Param) {
+    debugger
+    if(Param.doctorShareId==0)
+    return this._httpClient.PostData("DoctorShareMaster/InsertEDMX",Param) 
+    else
+        return this._httpClient.PutData("DoctorShareMaster/" + Param.doctorShareId, Param);
   }
 
   public UpdateDocShare(Param: any) {
@@ -86,8 +94,8 @@ export class DoctorShareService {
     }
 }
 
-  public SaveProcessdocShare(employee) {
-    return this._httpClient.PostData("Administration/DoctorShareProcess",employee) 
+  public SaveProcessdocShare(Param) {
+    return this._httpClient.PostData("Administration/DoctorShareProcess",Param) 
   } 
   public getPdfDocShareSummaryRpt(FromDate,ToDate,DoctorId){
     return this._httpClient.GetData("DoctorShareReports/viewDoctorWiseSummaryReport?FromDate=" + FromDate +"&ToDate=" + ToDate +"&DoctorId" +DoctorId);

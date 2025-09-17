@@ -208,18 +208,18 @@ export class NewRequestforlabComponent implements OnInit {
       }
     }
 
-    // if (this.dsLabRequest2.data.creditedtoDoctor == true) {
-    //           this.myFormGroup.get('doctorId').reset();
-    //           this.myFormGroup.get('doctorId').setValidators([Validators.required]);
-    //           this.myFormGroup.get('doctorId').enable();
-    //           this.isDoctor = true;
-    //       } else {
-    //           this.myFormGroup.get('doctorId').reset();
-    //           this.myFormGroup.get('doctorId').clearValidators();
-    //           this.myFormGroup.get('doctorId').updateValueAndValidity();
-    //           this.myFormGroup.get('doctorId').disable();
-    //           this.isDoctor = false;
-    //       }
+    if (this.dsLabRequest2.data[0]['creditedtoDoctor'] == true) {
+              this.myFormGroup.get('doctorId').reset();
+              this.myFormGroup.get('doctorId').setValidators([Validators.required]);
+              this.myFormGroup.get('doctorId').enable();
+              this.isDoctor = true;
+          } else {
+              this.myFormGroup.get('doctorId').reset();
+              this.myFormGroup.get('doctorId').clearValidators();
+              this.myFormGroup.get('doctorId').updateValueAndValidity();
+              this.myFormGroup.get('doctorId').disable();
+              this.isDoctor = false;
+          }
 
   }
 
@@ -418,10 +418,12 @@ export class LabRequest {
   ServiceName: any;
   Price: number;
   ServiceId: any;
+  CreditedtoDoctor:any;
   constructor(LabRequest) {
     this.ServiceName = LabRequest.ServiceName || '';
     this.Price = LabRequest.Price || 0;
     this.ServiceId = LabRequest.ServiceId || 0;
+    this.CreditedtoDoctor = LabRequest.CreditedtoDoctor || 0;
   }
 }
 

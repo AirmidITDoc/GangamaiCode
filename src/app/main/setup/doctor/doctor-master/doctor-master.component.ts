@@ -32,26 +32,43 @@ export class DoctorMasterComponent implements OnInit {
     active: any = "1"
     isCon: any = "1"
     isRef: any = "0"
-    page: PageNames=PageNames.DOCTOR;
-    signature: PageNames=PageNames.DOCTOR_SIGNATURE;
+    page: PageNames = PageNames.DOCTOR;
+    signature: PageNames = PageNames.DOCTOR_SIGNATURE;
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
-    
+    @ViewChild('actionsTemplate') actionsTemplate!: TemplateRef<any>;
+    @ViewChild('actionsTemplate1') actionsTemplate1!: TemplateRef<any>;
+    @ViewChild('actionsTemplate3') actionsTemplate3!: TemplateRef<any>;
+ @ViewChild('actionsTemplate2') actionsTemplate2!: TemplateRef<any>;
+    @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
+
     ngAfterViewInit() {
         // Assign the template to the column dynamically
         this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
+        this.gridConfig.columnsList.find(col => col.key === 'isInHouseDoctor')!.template = this.actionsTemplate;
+        this.gridConfig.columnsList.find(col => col.key === 'isOnCallDoctor')!.template = this.actionsTemplate1;
+         this.gridConfig.columnsList.find(col => col.key === 'isConsultant')!.template = this.actionsTemplate2;
+        this.gridConfig.columnsList.find(col => col.key === 'isRefDoc')!.template = this.actionsTemplate3;
+
     }
-    @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
 
     allColumns = [
+         { heading: "-", key: "isConsultant", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
+        { heading: "-", key: "isRefDoc", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 60 },
+
+        { heading: "-", key: "isInHouseDoctor", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
+        { heading: "-", key: "isOnCallDoctor", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 60 },
+
         { heading: "Code", key: "doctorId", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "Prefix", key: "prefixName", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "FirstName", key: "firstName", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "MiddleName", key: "middleName", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "LastName", key: "lastName", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+
+        // { heading: "Prefix", key: "prefixName", sort: true, align: 'left', emptySign: 'NA' },
+        // { heading: "FirstName", key: "firstName", sort: true, align: 'left', emptySign: 'NA' },
+        // { heading: "MiddleName", key: "middleName", sort: true, align: 'left', emptySign: 'NA' },
+        // { heading: "LastName", key: "lastName", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "DateofBirth", key: "dateofBirth", sort: true, align: 'left', emptySign: 'NA', width: 100, type: 6 },
         { heading: "Address", key: "address", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-        { heading: "City", key: "city", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "City", key: "cityName", sort: true, align: 'left', emptySign: 'NA' },
         // { heading: "Pin", key: "pin", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "Phone", key: "phone", sort: true, align: 'left', emptySign: 'NA' },
         // { heading: "Mobile", key: "mobile", sort: true, align: 'left', emptySign: 'NA' },
@@ -59,8 +76,8 @@ export class DoctorMasterComponent implements OnInit {
         // { heading: "IsConsultant", key: "isConsultant", sort: true, align: 'left', emptySign: 'NA' },
         // { heading: "IsRefDoc", key: "isRefDoc", sort: true, align: 'left', emptySign: 'NA'  },
 
-        { heading: "IsConsultant", key: "isConsultant", type: gridColumnTypes.status, align: "center" },
-        { heading: "IsRefDoc", key: "isRefDoc", type: gridColumnTypes.status, align: "center" },
+        // { heading: "IsConsultant", key: "isConsultant", type: gridColumnTypes.status, align: "center" },
+        // { heading: "IsRefDoc", key: "isRefDoc", type: gridColumnTypes.status, align: "center" },
 
         { heading: "Doctor Type", key: "doctorType", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         { heading: "Age Year", key: "ageYear", sort: true, align: 'left', emptySign: 'NA' },
@@ -73,8 +90,8 @@ export class DoctorMasterComponent implements OnInit {
         { heading: "Mah RegNo", key: "mahregno", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "Mah RegDate ", key: "mahRegDate", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 6 },
         { heading: "RefDocHospitalName", key: "refDocHospitalName", sort: true, align: 'left', emptySign: 'NA', width: 150, },
-        { heading: "IsInHouseDoctor", key: "isInHouseDoctor", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "IsOnCallDoctor", key: "isOnCallDoctor", sort: true, align: 'left', emptySign: 'NA' },
+        // { heading: "IsInHouseDoctor", key: "isInHouseDoctor", sort: true, align: 'left', emptySign: 'NA' },
+        // { heading: "IsOnCallDoctor", key: "isOnCallDoctor", sort: true, align: 'left', emptySign: 'NA' },
 
         { heading: "Pan CardNo", key: "panCardNo", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "Aadhar CardNo", key: "aadharCardNo", sort: true, align: 'left', emptySign: 'NA' },

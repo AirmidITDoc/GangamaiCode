@@ -131,9 +131,9 @@ export class SupplierMasterComponent implements OnInit {
         let that = this;
         const dialogRef = this._matDialog.open(FixSupplierComponent,
             {
-                maxWidth: "120vw",
-                maxHeight: '95vh',
-                width: '90%',
+                maxWidth: "95vw",
+        width: '100%',
+        height: "98vh",
                 data: obj
             });
         dialogRef.afterClosed().subscribe(result => {

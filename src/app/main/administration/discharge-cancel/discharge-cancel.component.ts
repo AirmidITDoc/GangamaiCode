@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, ViewChild, ViewEncapsulation } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -19,13 +19,14 @@ import { DischargeCancelService } from './discharge-cancel.service';
 })
 export class DischargeCancelComponent implements OnInit {
 
-
+  date: any;
+  Currentdate: any;
   dateTimeObj: any;
-  sIsLoading: string = '';
-  isLoading = true;
+  // sIsLoading: string = '';
+  // isLoading = true;
   isRegIdSelected: boolean = false;
-  filteredOptions: any;
-  noOptionFound: any;
+  // filteredOptions: any;
+  // noOptionFound: any;
   vRegNo: any;
   vPatientName: any;
   vAdmissionDate: any;
@@ -56,8 +57,9 @@ export class DischargeCancelComponent implements OnInit {
   registerObj: any;
   registerObjAM: any;
 
-  OldIpdNo: any;
-  NewIpdNo: any;
+
+
+  isDatePckrDisabled: boolean = false;
 
   constructor(
     public _DischargeCancelService: DischargeCancelService,
@@ -74,10 +76,9 @@ export class DischargeCancelComponent implements OnInit {
 
 
   getDischargedList(event) {
-    if (event.checked == true)
-    {
+    if (event.checked == true) {
       this.vCheckBox = true;
-        this.patientInfoReset() 
+      this.patientInfoReset()
     }
     else
       this.vCheckBox = false;
@@ -131,16 +132,16 @@ export class DischargeCancelComponent implements OnInit {
       this.AdmissionId = obj.admissionID
 
       this._DischargeCancelService.DischargeForm.get('NewIpdNo').setValue(this.vIPDNo)
-      // this.OldIpdNo=obj.Ip
-      // setTimeout(() => {
-      //   this._DischargeCancelService.getVisitById(obj.regId).subscribe((response) => {
-      //     this.registerObj = response;
-      //     console.log(this.registerObj)
-      //   });
+     
+  this.date = (this.datePipe.transform(new Date(),"MM-dd-YYYY hh:mm tt"));
+      debugger
+      var now = new Date(obj.admissionTime);
+      now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+      this.date = now.toISOString().slice(0, 16);
 
-      // }, 500);
     }
   }
+
 
 
   DischargeCancel() {
@@ -201,6 +202,7 @@ export class DischargeCancelComponent implements OnInit {
   today: Date = new Date();
   formattedDate: string;
 
+  public now: Date = new Date();
   OnAdmDateTimeUpdate() {
     if (this.vRegNo == '0' || this.vRegNo == '' || this.vRegNo == undefined || this.vRegNo == null) {
       this.toastr.success('Please select patient', 'Save !', {
@@ -209,8 +211,8 @@ export class DischargeCancelComponent implements OnInit {
       return
     }
 
-    const formattedDate = this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd");
-    const formattedTime = formattedDate + this.dateTimeObj.time;//this.datePipe.transform(this.dateTimeObj.date,"yyyy-MM-dd")+this.dateTimeObj.time;  
+    // const formattedDate = this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd");
+    // const formattedTime = formattedDate + this.dateTimeObj.time;//this.datePipe.transform(this.dateTimeObj.date,"yyyy-MM-dd")+this.dateTimeObj.time;  
 
     Swal.fire({
       title: 'Do you want to Update Admission Date & Time ',
@@ -224,8 +226,8 @@ export class DischargeCancelComponent implements OnInit {
       if (result.isConfirmed) {
         var data = {
           'admissionID': this.AdmissionId,
-          'admissionDate': this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd"),
-          'admissionTime': formattedDate + this.dateTimeObj.time,
+          'admissionDate': this.datePipe.transform(this._DischargeCancelService.DischargeForm.get('AdmissionDate').value, "yyyy-MM-dd"),
+          'admissionTime': this.datePipe.transform(this._DischargeCancelService.DischargeForm.get('AdmissionDate').value, 'HH:mm'),
           'ipdno': this._DischargeCancelService.DischargeForm.get('NewIpdNo').value
         }
         console.log(data);
@@ -237,6 +239,15 @@ export class DischargeCancelComponent implements OnInit {
       }
     });
   }
+
+
+
+  eventEmitForParent(actualDate, actualTime) {
+    let localaDateValues = actualDate.split('/');
+    let localaDateStr = localaDateValues[1] + '/' + localaDateValues[0] + '/' + localaDateValues[2];
+    // this.dateTimeEventEmitter.emit({ date: actualDate, time: actualTime });
+  }
+
 
   // OnIpdNoUpdate() {
   //   if (this.vRegNo == '0' || this.vRegNo == '' || this.vRegNo == undefined || this.vRegNo == null) {

@@ -776,16 +776,18 @@ export class NewPurchaseorderComponent {
         })
 
     }
+    UmoId=0
     getSelectedItem(item: GRNItemResponseType): void {
         console.log(item)
         this.lastsupplierflag = true
         this.ItemID = item.itemId
+        this.UmoId=item.umoId
         // if (this.mock) {
         //     return;
         // }
         this.userFormGroup.patchValue({
             UOMId: item.umoId,
-            // UMOName:item.UMOName,
+            // UMOName:item.umoName,
             ConversionFactor: isNaN(+item.converFactor) ? 1 : +item.converFactor,
             Qty: '',// item.balanceQty,
             CGSTPer: item.cgstPer,

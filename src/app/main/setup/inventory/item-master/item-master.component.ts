@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
+import { Component, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from "@angular/core";
 import { ItemFormMasterComponent } from "./item-form-master/item-form-master.component";
 import { ItemMasterService } from "./item-master.service";
 import { MatDialog } from "@angular/material/dialog";
@@ -9,6 +9,7 @@ import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
 import { gridColumnTypes, gridActions } from "app/core/models/tableActions";
 import { FormGroup } from "@angular/forms";
 import { AuthenticationService } from "app/core/services/authentication.service";
+import { ItemGenericMasterComponent } from "../item-generic-master/item-generic-master.component";
 
 @Component({
     selector: "app-item-master",
@@ -24,6 +25,12 @@ export class ItemMasterComponent implements OnInit {
     itemName: any = "";
     autocompletestore: string = "Store";
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+     @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
+      
+         ngAfterViewInit() {
+            this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
+    
+        }
 
     allColumns = [
         { heading: "Code", key: "itemID", sort: true, align: 'left', emptySign: 'NA' },
@@ -49,23 +56,10 @@ export class ItemMasterComponent implements OnInit {
         { heading: "IsNursingFlaf", key: "isNursingFlag", sort: true, align: 'left', type: gridColumnTypes.status },
         { heading: "IsBatchRequired", key: "isBatchRequired", sort: true, align: 'left', type: gridColumnTypes.status },
         { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
-        {
-            heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
-                {
-                    action: gridActions.edit, callback: (data: any) => {
-                        this.onSave(data);
-                    }
-                },
-                {
-                    action: gridActions.delete, callback: (data: any) => {
-                        this._itemService.deactivateTheStatus(data.itemID).subscribe((response: any) => {
-                            this.toastr.success(response.message);
-                            this.grid.bindGridData();
-                        });
-                    }
-                }
-            ]
-        } //Action 1-view, 2-Edit,3-delete
+       {
+                   heading: "Action", key: "action", align: "right", width: 150, sticky: true, type: gridColumnTypes.template,
+                   template: this.actionButtonTemplate  // Assign ng-template to the column
+               }
     ]
 
     allFilters = [
@@ -140,9 +134,9 @@ export class ItemMasterComponent implements OnInit {
         let that = this;
         const dialogRef = this._matDialog.open(ItemFormMasterComponent,
             {
-                maxHeight: '95vh',
-                maxWidth: '95wh',
-                width: '95%',
+               maxWidth: "95vw",
+        width: '100%',
+        height: "98vh",
                 data: row
             });
         dialogRef.afterClosed().subscribe(result => {
@@ -151,7 +145,27 @@ export class ItemMasterComponent implements OnInit {
         });
     }
 
+ ongenericedit(row: any = null) {
+        let that = this;
 
+        const dialogRef = this._matDialog.open(ItemGenericMasterComponent,
+            {
+                width: '80%',
+                data: row
+            });
+        dialogRef.afterClosed().subscribe(result => {
+            that.grid.bindGridData();
+
+        });
+    }
+
+
+     delitem(obj) {
+        this._itemService.deactivateTheStatus(obj.itemId).subscribe((response: any) => {
+            // this.toastr.success(response.message);
+            this.grid.bindGridData();
+        });
+    }
 }
 
 

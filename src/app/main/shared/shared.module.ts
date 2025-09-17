@@ -71,13 +71,14 @@ import { WebcamModule } from 'ngx-webcam';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { AirmidCardViewComponent } from './componets/airmid-card-view/airmid-card-view.component';
 import { Error0Component } from './APIerrorpages/error-0/error-0.component';
+import { AirmidImageviewComponent } from './componets/airmid-imageview/airmid-imageview.component';
 
 
 @NgModule({
     declarations: [
         TrimPipe, CommonDateComponent, AirmidTableComponent, AirmidTextboxComponent, AirmidDropDownComponent, AirmidAutoCompleteComponent, SmsEmailTemplateComponent, HeaderComponent, PaymentModeComponent, ImageCropComponent, EmailSendComponent, DyanmicTableHeightDirective,
         AirmidDateofbirthComponent, AirmidSliderComponent, AirmidDatepickerComponent, AirmidEditorComponent, TableSearchBarComponent, PrintCallingComponent, ErrorPageComponent, Error401Component, Error403Component, Error404Component, Error500Component, FocusNextDirective, AirmidTimePickerComponent, PatientInfoComponent, AirmidDateTimePickerComponent, TableKeyboardNavigationDirective, AirmidChipautocompleteComponent, AirmidFullDatepickerComponent, AirmidFileuploadComponent,AirmidFileuploadIconComponent,AirmidSignatureComponent,AirmidSignatureIconComponent, AirmidPhotoComponent, AirmidPhotoIconComponent,
-        AirmidCardViewComponent,Error0Component
+        AirmidCardViewComponent,Error0Component, AirmidImageviewComponent
     ],
     imports: [
         CommonModule,

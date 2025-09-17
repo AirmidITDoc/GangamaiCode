@@ -1,6 +1,6 @@
 import { SelectionModel } from '@angular/cdk/collections';
 import { DatePipe } from '@angular/common';
-import { Component, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormGroup, UntypedFormBuilder } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
@@ -26,6 +26,8 @@ import { SampledetailtwoComponent } from '../sample-collection/sampledetailtwo/s
 import { ResultEntryOneComponent } from './result-entry-one/result-entry-one.component';
 import { ResultEntryService } from './result-entry.service';
 import { ResultEntrytwoComponent } from './result-entrytwo/result-entrytwo.component';
+
+
 
 @Component({
     selector: 'app-result-entry',
@@ -98,10 +100,12 @@ export class ResultEntryComponent implements OnInit {
     toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
     searchregNo: any;
     vOPIPId = 0;
-    f_name:any = "" 
-    regNo:any="0"
-    l_name:any=""
-    vStatusSearch:any="0";
+    f_name: any = ""
+    regNo: any = "0"
+    l_name: any = ""
+    vStatusSearch: any = "0";
+    patientName:'RK'
+    title:'Reports'
 
     @ViewChild(MatSort) sort: MatSort;
     @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -136,23 +140,23 @@ export class ResultEntryComponent implements OnInit {
         this.gridConfig.columnsList.find(col => col.key === 'patientType')!.template = this.actionsIPOP;
     }
 
-    allcolumns=  [
+    allcolumns = [
         {
             heading: "-", key: "patientType", sort: true, align: 'left', type: gridColumnTypes.template,
             template: this.actionsIPOP
         },
-          { heading: "Admission Date", key: "vaTime", sort: true, align: 'left', emptySign: 'NA'},
-        { heading: "Test Date", key: "pathDate", sort: true, align: 'left', emptySign: 'NA',type:6 },
+        { heading: "Admission Date", key: "vaTime", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Test Date", key: "pathDate", sort: true, align: 'left', emptySign: 'NA', type: 6 },
         { heading: "UHID No", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "Admission No", key: "oP_IP_No", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA',width: 200 },
-          { heading: "Gender", key: "genderName", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+        { heading: "Gender", key: "genderName", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "AgeYear", key: "ageYear", sort: true, align: 'left', emptySign: 'NA' },
-     
-        { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA',width: 200 },
+
+        { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         // { heading: "PatientType", key: "patientType", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "PBillNo", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA' },
-       {
+        {
             heading: "Action", key: "action", align: "right", width: 80, sticky: true, type: gridColumnTypes.template,
             template: this.actionButtonTemplate  // Assign ng-template to the column
         }
@@ -160,7 +164,7 @@ export class ResultEntryComponent implements OnInit {
 
     gridConfig: gridModel = {
         apiUrl: "Pathology/PathologyPatientTestList",
-        columnsList:this.allcolumns,
+        columnsList: this.allcolumns,
         sortField: "PresReId",
         sortOrder: 0,
         filters: [
@@ -180,7 +184,7 @@ export class ResultEntryComponent implements OnInit {
         columnsList: [
             { heading: "Date", key: "date", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "UHID No", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
-            
+
             { heading: "PatientName", key: "patientname", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "PatientType", key: "patientType", sort: true, align: 'left', emptySign: 'NA' },
@@ -205,7 +209,7 @@ export class ResultEntryComponent implements OnInit {
             { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals }
         ]
     }
-   
+
     constructor(
         private formBuilder: UntypedFormBuilder,
         public _SampleService: ResultEntryService,
@@ -221,7 +225,7 @@ export class ResultEntryComponent implements OnInit {
     ) { }
 
     ngOnInit(): void {
-        this.myformSearch=this._SampleService.createSearchForm()
+        this.myformSearch = this._SampleService.createSearchForm()
         this.fromDate = this.myformSearch.get("start").value || "";
         this.toDate = this.myformSearch.get("end").value || "";
         // this.getPatientsList();
@@ -229,8 +233,8 @@ export class ResultEntryComponent implements OnInit {
 
     searchRecords(data) {
         this.dataSource1.data = [];
-        this.selection.clear(); 
-        
+        this.selection.clear();
+
         let regno = this.myformSearch.get("RegNoSearch").value || "0";
         let fromDate = this.myformSearch.get("start").value || "";
         let toDate = this.myformSearch.get("end").value || "";
@@ -248,7 +252,7 @@ export class ResultEntryComponent implements OnInit {
                 },
                 { heading: "Date", key: "pathDate", sort: true, align: 'left', emptySign: 'NA', width: 200 },
                 { heading: "UHID No", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
-                { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA',width: 200 },
+                { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
                 { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA' },
                 // { heading: "PatientType", key: "patientType", sort: true, align: 'left', emptySign: 'NA' },
                 { heading: "PBillNo", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA' },
@@ -277,11 +281,11 @@ export class ResultEntryComponent implements OnInit {
     }
 
     getSelectedRow(row: any): void {
-        
+
         console.log("Selected row : ", row);
 
         this.dataSource1.data = [];
-        this.selection.clear(); 
+        this.selection.clear();
 
         this.reportPrintObj = row
         this.reportPrintObj["DOA"] = row.pathDate
@@ -298,65 +302,65 @@ export class ResultEntryComponent implements OnInit {
         this.getSampledetailList1(row);
     }
 
-      getSampledetailList1(row) {
+    getSampledetailList1(row) {
         // debugger
         this.dataSource1.data = [];
-        let rawDate = row.pathDate; 
+        let rawDate = row.pathDate;
         let day = rawDate.split("T")[0];
-        let rest = rawDate.split("T")[1].split("-"); 
-        let month = rest[0]; 
-        let year = rest[1]; 
-     
-        let formattedDate=`${day}` 
-        
+        let rest = rawDate.split("T")[1].split("-");
+        let month = rest[0];
+        let year = rest[1];
+
+        let formattedDate = `${day}`
+
         console.log(formattedDate);
-    
+
         let OPIP = row.patientType === 'OP' ? "0" : "1";
-    
+
         var m_data = {
-          "first": 0,
-          "rows": 10,
-          "sortField": "RegNo",
-          "sortOrder": 0,
-          "filters": [
-            {
-              "fieldName": "BillNo",
-              "fieldValue": String(row.billNo),
-              "opType": "Equals"
-            },
-            {
-              "fieldName": "OP_IP_Type",
-              "fieldValue": OPIP,
-              "opType": "Equals"
-            },
-            {
-              "fieldName": "From_Dt",
-              "fieldValue": formattedDate,
-              "opType": "Equals"
-            }
-          ],
-          "Columns":[],
-          "exportType": "JSON"
+            "first": 0,
+            "rows": 10,
+            "sortField": "RegNo",
+            "sortOrder": 0,
+            "filters": [
+                {
+                    "fieldName": "BillNo",
+                    "fieldValue": String(row.billNo),
+                    "opType": "Equals"
+                },
+                {
+                    "fieldName": "OP_IP_Type",
+                    "fieldValue": OPIP,
+                    "opType": "Equals"
+                },
+                {
+                    "fieldName": "From_Dt",
+                    "fieldValue": formattedDate,
+                    "opType": "Equals"
+                }
+            ],
+            "Columns": [],
+            "exportType": "JSON"
         }
-    
+
         console.log(m_data);
         this._SampleService.PathResultentryDetailList(m_data).subscribe(Visit => {
-          this.dataSource1.data = Visit.data as SampleList[];
-          console.log("ResultList:",this.dataSource1.data)
-          this.dataSource1.sort = this.sort;
-          this.dataSource1.paginator = this.paginator;
+            this.dataSource1.data = Visit.data as SampleList[];
+            console.log("ResultList:", this.dataSource1.data)
+            this.dataSource1.sort = this.sort;
+            this.dataSource1.paginator = this.paginator;
         },
-          error => {
-            // this.sIsLoading = '';
-          });
-      }
+            error => {
+                // this.sIsLoading = '';
+            });
+    }
 
     getDateTime(dateTimeObj) {
         this.dateTimeObj = dateTimeObj;
     }
 
-status:any="0"
-opipType:any="2";
+    status: any = "0"
+    opipType: any = "2";
     onChangeFirst() {
         this.dataSource1.data = [];
 
@@ -369,36 +373,36 @@ opipType:any="2";
         this.regNo = this.myformSearch.get('RegNoSearch').value || ""
         this.getfilterdata();
     }
-    
-    getfilterdata(){
-    
-    this.gridConfig = {
-        apiUrl: "Pathology/PathologyPatientTestList",
-        columnsList:this.allcolumns,
-        sortField: "PresReId",
-        sortOrder: 0,
-        filters:  [
-            { fieldName: "F_Name ", fieldValue: "%", opType: OperatorComparer.StartsWith },
-            { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.StartsWith },
-            { fieldName: "Reg_No", fieldValue: this.regNo, opType: OperatorComparer.Equals },
-            { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
-            { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
-            { fieldName: "IsCompleted", fieldValue: this.status, opType: OperatorComparer.Equals },
-            { fieldName: "OP_IP_Type", fieldValue: this.opipType, opType: OperatorComparer.Equals }
-    
-        ]
+
+    getfilterdata() {
+
+        this.gridConfig = {
+            apiUrl: "Pathology/PathologyPatientTestList",
+            columnsList: this.allcolumns,
+            sortField: "PresReId",
+            sortOrder: 0,
+            filters: [
+                { fieldName: "F_Name ", fieldValue: "%", opType: OperatorComparer.StartsWith },
+                { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.StartsWith },
+                { fieldName: "Reg_No", fieldValue: this.regNo, opType: OperatorComparer.Equals },
+                { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
+                { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
+                { fieldName: "IsCompleted", fieldValue: this.status, opType: OperatorComparer.Equals },
+                { fieldName: "OP_IP_Type", fieldValue: this.opipType, opType: OperatorComparer.Equals }
+
+            ]
+        }
+        this.grid.gridConfig = this.gridConfig;
+        this.grid.bindGridData();
     }
-    this.grid.gridConfig = this.gridConfig;
-    this.grid.bindGridData(); 
-    }
-    
-    
+
+
     Clearfilter(event) {
-    console.log(event)
-    if (event == 'RegNoSearch')
-        this.myformSearch.get('RegNoSearch').setValue("")
-    
-    this.onChangeFirst();
+        console.log(event)
+        if (event == 'RegNoSearch')
+            this.myformSearch.get('RegNoSearch').setValue("")
+
+        this.onChangeFirst();
     }
 
     exportSamplerequstReportExcel() {
@@ -466,13 +470,13 @@ opipType:any="2";
                 ? this.selection.clear()
                 : this.dataSource1.data.forEach(row => this.selection.select(row));
         }
-    
+
         console.log('Selected items count:', this.selection.selected.length);
-    
+
         this.resultSource = [...this.selection.selected];
         console.log('Selected items:', this.resultSource);
     }
-    
+
 
     isSomeSelected() {
         // console.log(this.selection.selected);
@@ -486,7 +490,7 @@ opipType:any="2";
 
         return numSelected === numRows;
     }
-    
+
     IsTemplateTest: any;
     chkresultentry(contact, flag) {
         // debugger
@@ -514,17 +518,17 @@ opipType:any="2";
 
                     this.selection.selected.forEach(element => {
                         console.log(element)
-                        data.push({ 
+                        data.push({
                             PathReportId: element["pathReportId"].toString(),
-                             ServiceId: element["serviceId"].toString(), 
-                             IsCompleted: element["isCompleted"].toString() 
-                            });
+                            ServiceId: element["serviceId"].toString(),
+                            IsCompleted: element["isCompleted"].toString()
+                        });
                         this.printdata.push({ PathReportId: element["pathReportId"].toString() });
                     });
 
                     console.log(this.printdata)
                     data.forEach((element) => {
-                        console.log('aaaaaa:',element)
+                        console.log('aaaaaa:', element)
                         this.reportIdData.push(element.PathReportId)
                         this.ServiceIdData.push(element.ServiceId)
                         if (element.IsCompleted == "true")
@@ -618,7 +622,7 @@ opipType:any="2";
     OPIPID: any = 0;
     onresultentryshow(event, m) {
         // debugger
-        console.log("2nd Table Data:",m)
+        console.log("2nd Table Data:", m)
         this.OPIPID = m.opdipdid //m.OPD_IPD_ID
         this.advanceDataStored.storage = new SampleDetailObj(m);
         // console.log(this.advanceDataStored.storage)
@@ -645,7 +649,7 @@ opipType:any="2";
             console.log('isTemplateTest not found or null, dataSource1 cleared.');
             return;
         }
-    }    
+    }
 
     Cancleresult(row) {
         Swal.fire({
@@ -658,7 +662,7 @@ opipType:any="2";
             confirmButtonText: 'Yes, deactivate!'
 
         }).then((flag) => {
-// debugger
+            // debugger
             if (flag.isConfirmed) {
 
                 let submitData = {
@@ -682,65 +686,65 @@ opipType:any="2";
         // this.onEdit(row);
     }
 
-viewgetPathologyTemplateReportPdf1(contact: any, mode: string) {
-    
-    setTimeout(() => {
-        const param = {
-            searchFields: [
-                {
-                    fieldName: "PathReportId",
-                    fieldValue: String(contact.pathReportId),
-                    opType: "Equals"
-                },
-                {
-                    fieldName: "OP_IP_Type",
-                    fieldValue: String(contact.opdipdtype),
-                    opType: "Equals"
-                }
-            ],
-            mode: mode  // dynamic
-        };
-        console.log(param)
-        this._SampleService.getReportView(param).subscribe(res => {
-            const matDialog = this._matDialog.open(PdfviewerComponent, {
-                maxWidth: "85vw",
-                height: '750px',
-                width: '100%',
-                data: {
-                    base64: res["base64"] as string,
-                    title: "Template Report Viewer"
-                }
+    viewgetPathologyTemplateReportPdf1(contact: any, mode: string) {
+
+        setTimeout(() => {
+            const param = {
+                searchFields: [
+                    {
+                        fieldName: "PathReportId",
+                        fieldValue: String(contact.pathReportId),
+                        opType: "Equals"
+                    },
+                    {
+                        fieldName: "OP_IP_Type",
+                        fieldValue: String(contact.opdipdtype),
+                        opType: "Equals"
+                    }
+                ],
+                mode: mode  // dynamic
+            };
+            console.log(param)
+            this._SampleService.getReportView(param).subscribe(res => {
+                const matDialog = this._matDialog.open(PdfviewerComponent, {
+                    maxWidth: "85vw",
+                    height: '750px',
+                    width: '100%',
+                    data: {
+                        base64: res["base64"] as string,
+                        title: "Template Report Viewer"
+                    }
+                });
+                matDialog.afterClosed().subscribe(result => { });
             });
-            matDialog.afterClosed().subscribe(result => {});
-        });
-    }, 100);
-}
+        }, 100);
+    }
 
     getPrint(contact) {
-        
+
         console.log(contact)
 
         if (contact.isTemplateTest)
             // this.viewgetPathologyTemplateReportPdf(contact)
-        Swal.fire({
-            title: 'Select Report Format',
-            text: "Choose how you want to view the report:",
-            icon: "warning",
-            showDenyButton: true,
-            showCancelButton: true,
-            confirmButtonColor: "#3085d6",
-            denyButtonColor: "#6c757d",
-            cancelButtonColor: "#d33",
-            confirmButtonText: "With Header",
-            denyButtonText: "Without Header",
-        }).then((result) => {
-          
-            if (result.isConfirmed) {
-                this.viewgetPathologyTemplateReportPdf1(contact, "PathologyReportTemplateWithHeader");
-            } else if (result.isDenied) {
-                this.viewgetPathologyTemplateReportPdf1(contact, "PathologyReportTemplate");
-            }
-        });
+            Swal.fire({
+                title: 'Select Report Format',
+                text: "Choose how you want to view the report:",
+                icon: "warning",
+                showDenyButton: true,
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                denyButtonColor: "#6c757d",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "With Header",
+                denyButtonText: "Without Header",
+            }).then((result) => {
+
+                if (result.isConfirmed) {
+                    this.viewgetPathologyTemplateReportPdf1(contact, "PathologyReportTemplateWithHeader");
+                } else if (result.isDenied) {
+                    this.viewgetPathologyTemplateReportPdf1(contact, "PathologyReportTemplate");
+                }
+            });
         else {
             // this.viewgetPathologyTestReportPdf(contact)
             if (this.selection.selected.length == 0) {
@@ -755,12 +759,12 @@ viewgetPathologyTemplateReportPdf1(contact: any, mode: string) {
         this.selection.clear();
     }
 
-    OP_IP_Type:any;
+    OP_IP_Type: any;
 
-    selectedItem:any;
+    selectedItem: any;
     // opiptype = this.selectedItem.opdipdtype;
     Printresultentry() {
-        
+
         console.log(this.selection.selected);
         let pathologyDelete = [];
 
@@ -769,13 +773,13 @@ viewgetPathologyTemplateReportPdf1(contact: any, mode: string) {
         this.selection.selected.forEach((element) => {
             pathologyDelete.push({ pathReportId: element.pathReportId });
         });
-    
+
         const submitData = {
             pathPrintResultEntry: pathologyDelete
         };
-    
+
         console.log(submitData);
-    
+
         this._SampleService.PathPrintResultentryInsert(submitData).subscribe(res => {
             if (res) {
                 this.viewgetPathologyTestReportPdf(this.selectedItem)
@@ -784,56 +788,56 @@ viewgetPathologyTemplateReportPdf1(contact: any, mode: string) {
     }
 
     viewgetPathologyTestReportPdf(data) {
-    
+
         // this.selection.selected.forEach((element) => {
-            const param = {
-                searchFields: [
-                    {
-                        fieldName: "OP_IP_Type",
-                        fieldValue: String(data.opdipdtype),
-                        opType: "Equals"
-                    }
-                ],
-                mode: "PathologyReport"
-            };
-    
-            console.log(param);
-    
-            this._SampleService.getReportView(param).subscribe(res => {
-                const matDialog = this._matDialog.open(PdfviewerComponent, {
-                    maxWidth: "85vw",
-                    height: '750px',
-                    width: '100%',
-                    data: {
-                        base64: res["base64"] as string,
-                        title: "Pathology Test Report Viewer"
-                    }
-                });
-    
-                matDialog.afterClosed().subscribe(result => {
-                    
-                });
+        const param = {
+            searchFields: [
+                {
+                    fieldName: "OP_IP_Type",
+                    fieldValue: String(data.opdipdtype),
+                    opType: "Equals"
+                }
+            ],
+            mode: "PathologyReport"
+        };
+
+        console.log(param);
+
+        this._SampleService.getReportView(param).subscribe(res => {
+            const matDialog = this._matDialog.open(PdfviewerComponent, {
+                maxWidth: "85vw",
+                height: '750px',
+                width: '100%',
+                data: {
+                    base64: res["base64"] as string,
+                    title: "Pathology Test Report Viewer"
+                }
             });
+
+            matDialog.afterClosed().subscribe(result => {
+
+            });
+        });
         // });
     }
-    
+
     Printresultentrywithheader() {
-        
+
         console.log(this.selection.selected);
         let pathologyDelete = [];
-    
+
         this.selectedItem = this.selection.selected[0];
 
         this.selection.selected.forEach((element) => {
             pathologyDelete.push({ pathReportId: element.pathReportId });
         });
-    
+
         const submitData = {
             pathPrintResultEntry: pathologyDelete
         };
-    
+
         console.log(submitData);
-    
+
         this._SampleService.PathPrintResultentryInsert(submitData).subscribe(res => {
             if (res) {
                 this.viewgetPathologyTestReportwithheaderPdf(this.selectedItem)
@@ -842,41 +846,41 @@ viewgetPathologyTemplateReportPdf1(contact: any, mode: string) {
     }
 
     viewgetPathologyTestReportwithheaderPdf(data) {
-    
+
         console.log(this.selection.selected);
-    
+
         // this.selection.selected.forEach((element) => {
-            const param = {
-                searchFields: [
-                    {
-                        fieldName: "OP_IP_Type",
-                        fieldValue: String(data.opdipdtype),
-                        opType: "Equals"
-                    }
-                ],
-                mode: "PathologyReportWithHeader"
-            };
-    
-            console.log(param);
-    
-            this._SampleService.getReportView(param).subscribe(res => {
-                const matDialog = this._matDialog.open(PdfviewerComponent, {
-                    maxWidth: "85vw",
-                    height: '750px',
-                    width: '100%',
-                    data: {
-                        base64: res["base64"] as string,
-                        title: "Pathology Test Report With Header Viewer"
-                    }
-                });
-    
-                matDialog.afterClosed().subscribe(result => {
-                    
-                });
+        const param = {
+            searchFields: [
+                {
+                    fieldName: "OP_IP_Type",
+                    fieldValue: String(data.opdipdtype),
+                    opType: "Equals"
+                }
+            ],
+            mode: "PathologyReportWithHeader"
+        };
+
+        console.log(param);
+
+        this._SampleService.getReportView(param).subscribe(res => {
+            const matDialog = this._matDialog.open(PdfviewerComponent, {
+                maxWidth: "85vw",
+                height: '750px',
+                width: '100%',
+                data: {
+                    base64: res["base64"] as string,
+                    title: "Pathology Test Report With Header Viewer"
+                }
             });
+
+            matDialog.afterClosed().subscribe(result => {
+
+            });
+        });
         // });
     }
-    
+
     AdList: boolean = false;
 
     whatsappresultentry() {
@@ -897,7 +901,7 @@ viewgetPathologyTemplateReportPdf1(contact: any, mode: string) {
         // this.selection.clear();
     }
 
-   
+
     exportResultentryReportExcel() {
         this.sIsLoading == 'loading-data'
         let exportHeaders = ['Date', 'Time', 'RegNo', 'PatientName', 'DoctorName', 'PatientType', 'PBillNo', 'GenderName', 'AgeYear', 'PathDues'];
@@ -968,7 +972,7 @@ viewgetPathologyTemplateReportPdf1(contact: any, mode: string) {
         });
     }
 
-
+    
     onClear() {
         this._SampleService.myformSearch.get('RegNoSearch').setValue("0");
         this._SampleService.myformSearch.get('StatusSearch').setValue("0");
@@ -1013,8 +1017,8 @@ export class SampleList {
     TemplateDesc: String;
     IsCompleted: boolean;
     CategoryId: any;
-    opdipdtype:any;
-    pathReportId:any
+    opdipdtype: any;
+    pathReportId: any
 
     constructor(SampleList) {
         this.VADate = SampleList.VADate || '';
@@ -1026,8 +1030,8 @@ export class SampleList {
         this.TemplateDesc = SampleList.TemplateDesc || '';
         this.IsCompleted = SampleList.IsCompleted || 0;
         this.CategoryId = SampleList.CategoryId || 0;
-        this.opdipdtype=SampleList.opdipdtype || 0
-        this.pathReportId=SampleList.pathReportId || 0
+        this.opdipdtype = SampleList.opdipdtype || 0
+        this.pathReportId = SampleList.pathReportId || 0
     }
 
 }

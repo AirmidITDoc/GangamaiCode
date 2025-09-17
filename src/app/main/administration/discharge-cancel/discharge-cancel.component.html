@@ -159,8 +159,19 @@
 
                 <form [formGroup]="_DischargeCancelService.DischargeForm">
                     <div fxLayout="row" fxLayoutGap="6px" style="margin-top: 10px;">
-                        <app-common-date [screenFrom]="screenFromString" (dateTimeEventEmitter)="getDateTime($event)">
-                        </app-common-date>
+                        <!-- <app-common-date [screenFrom]="screenFromString" (dateTimeEventEmitter)="getDateTime($event)">
+                        </app-common-date> -->
+
+
+                        <mat-form-field appearance="outline">
+                            <mat-label>Admission Date / Time</mat-label>
+                            <input matInput type="datetime-local" placeholder="date" [value]="date" [(ngModel)]="date"
+                                (change)="date=$event.target.value" formControlName="AdmissionDate" />
+
+                            <!-- <input type="date" my-date="date" my-date-format="DD/MM/YYYY, hh:mm:ss" value="2015-08-09"  formControlName="SampleDateTime"
+                                                    [(ngModel)]="date"> -->
+                        </mat-form-field>
+
 
                         <airmid-textbox label="New IPDNo" formControlName="NewIpdNo" fxFlex="25%"
                             [formGroup]="_DischargeCancelService.DischargeForm" [value]="vIPDNo">
@@ -180,7 +191,8 @@
 
         <button *ngIf="vCheckBox" class="btn btn-primary" style="color: white;" (click)="DischargeCancel()">Discharge
             Cancel</button>
-        <button *ngIf="!vCheckBox && vRegNo" class="btn btn-primary" (click)="OnAdmDateTimeUpdate()">Admission Detail Update</button>
+        <button *ngIf="!vCheckBox && vRegNo" class="btn btn-primary" (click)="OnAdmDateTimeUpdate()">Admission Detail
+            Update</button>
         <button class="btn btn-danger-outline" (click)="onClear()">Clear</button>
     </div>
 </div>

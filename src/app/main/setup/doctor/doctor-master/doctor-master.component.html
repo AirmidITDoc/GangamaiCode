@@ -22,6 +22,42 @@
         </div>
     </div>
     <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+        <ng-template #actionsTemplate let-element>
+            <div fxLayout="row" fxLayoutAlign="center center">
+                <mat-icon *ngIf="element.isInHouseDoctor =='true'" matTooltip="IsInHouseDoctor">account_balance
+                </mat-icon>
+
+            </div>
+        </ng-template>
+
+        <ng-template #actionsTemplate1 let-element>
+            <div fxLayout="row" fxLayoutAlign="center center">
+                <mat-icon *ngIf="element.isOnCallDoctor =='true'" matTooltip="IsOnCallDoctor">ring_volume
+                </mat-icon>
+                <!-- 
+            <mat-icon *ngIf="element.patientTypeID != '1'" matTooltip="Patient Category Company">business
+            </mat-icon> -->
+            </div>
+        </ng-template>
+
+
+          <ng-template #actionsTemplate2 let-element>
+            <div fxLayout="row" fxLayoutAlign="center center">
+                <mat-icon *ngIf="element.isConsultant =='true'" matTooltip="IsConsultant">local_pharmacy
+                </mat-icon>
+
+            </div>
+        </ng-template>
+
+        <ng-template #actionsTemplate3 let-element>
+            <div fxLayout="row" fxLayoutAlign="center center">
+                <mat-icon *ngIf="element.isRefDoc =='true'" matTooltip="iIRefDoc">directions_run
+                </mat-icon>
+                <!-- 
+            <mat-icon *ngIf="element.patientTypeID != '1'" matTooltip="Patient Category Company">business
+            </mat-icon> -->
+            </div>
+        </ng-template>
 
         <airmid-table [gridConfig]="gridConfig" class="content">
             <ng-container filters>
@@ -74,11 +110,11 @@
                 <button mat-icon-button (click)="onDelete(element)" color="warn">
                     <mat-icon>delete_outline</mat-icon>
                 </button>
-                <airmid-fileupload-icon [refId]="element.doctorId" [refType]="page"
-                    [multiple]="true" [title]="'Doctor Master'"></airmid-fileupload-icon>
+                <airmid-fileupload-icon [refId]="element.doctorId" [refType]="page" [multiple]="true"
+                    [title]="'Doctor Master'"></airmid-fileupload-icon>
 
-                <airmid-signature-icon [refId]="element.doctorId" [refType]="signature"
-                    [multiple]="true" docName="DoctorSignature"></airmid-signature-icon>
+                <airmid-signature-icon [refId]="element.doctorId" [refType]="signature" [multiple]="true"
+                    docName="DoctorSignature"></airmid-signature-icon>
             </div>
         </ng-template>
     </div>

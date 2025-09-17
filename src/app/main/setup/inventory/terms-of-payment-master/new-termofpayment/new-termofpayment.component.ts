@@ -29,6 +29,7 @@ export class NewTermofpaymentComponent implements OnInit {
         this.termsofpaymentForm.markAllAsTouched();
 
         if ((this.data?.id ?? 0) > 0) {
+            console.log(this.data)
             this.isActive = this.data.isActive;
             this.termsofpaymentForm.patchValue(this.data);
         }
