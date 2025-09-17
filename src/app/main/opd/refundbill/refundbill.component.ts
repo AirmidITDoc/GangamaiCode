@@ -118,6 +118,7 @@ export class RefundbillComponent implements OnInit {
         refundNo: ['', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
         refundDate: [this.datePipe.transform(new Date(), 'yyyy-MM-dd')],
         refundTime: [this.datePipe.transform(new Date(), 'shortTime')],
+        UnitId: [1],
         billId: [0, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator(),this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
         advanceId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         opdipdtype: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
