@@ -615,7 +615,7 @@ export class IPBillingComponent implements OnInit {
                 payTmdate: ['1999-01-01'],
                 tdsAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
                 unitId:[this.accountService.currentUserValue.user.unitId],
-                wfamount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+                wfAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]]
             }),
             // BIll insert
             bills: this.formBuilder.group({

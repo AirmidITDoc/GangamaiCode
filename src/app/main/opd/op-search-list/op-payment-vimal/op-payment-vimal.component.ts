@@ -434,7 +434,7 @@ export class OpPaymentVimalComponent implements OnInit {
             this.Paymentobj['payTmdate'] = this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd') || '1999-01-01';
             this.Paymentobj['tdsAmount'] = this.Payments.data.find(x => x.PaymentType == "tds")?.Amount ?? 0; 
             this.Paymentobj['unitId'] = this._loggedService.currentUserValue.user.unitId
-            this.Paymentobj['wfamount'] = this.Payments.data.find(x => x.PaymentType == "wf")?.Amount ?? 0; 
+            this.Paymentobj['wfAmount'] = this.Payments.data.find(x => x.PaymentType == "wf")?.Amount ?? 0; 
         }
         console.log(JSON.stringify(this.Paymentobj));
 
