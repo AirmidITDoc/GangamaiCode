@@ -657,13 +657,14 @@ export class SalesHospitalNewComponent implements OnInit {
         const discPer = Number(formValue.DiscPer);
 
         if (discPer < 0 || discPer > 100) {
-            this.toastr.error('Enter discount between 0 - 100', 'Error !', {
+            this.toastr.warning('Enter discount between 0 - 100', 'Error !', {
                 toastClass: 'tostr-tost custom-toast-warning',
             });
             this._salesService.ItemSearchGroup.patchValue({
                 DiscAmt: 0,
                 DiscPer: 0,
             });
+            this.ConShow = false;
             return;
         }
         if (formValue.TotalMrp) {
@@ -672,6 +673,7 @@ export class SalesHospitalNewComponent implements OnInit {
             this._salesService.ItemSearchGroup.patchValue({
                 DiscAmt: DiscAmt,
             });
+              this.ConShow = true;
             this.calculateNetAmount();
         }
     }
@@ -926,7 +928,21 @@ export class SalesHospitalNewComponent implements OnInit {
         let DiscAmt = formValues.discAmount || 0;
         let NetAmount = formValues.netAmount;
         let FinalDiscAmt = '';
-        if (Disc > 0 || Disc < 100) {
+        
+        if (Disc < 0 || Disc > 100) {
+            this.toastr.warning('Enter discount between 0 - 100', 'Error !', {
+                toastClass: 'tostr-tost custom-toast-warning',
+            });
+            this.ItemSubform.patchValue({
+                FinalDiscPer: 0,
+                discAmount: 0, 
+                netAmount: NetAmount,
+                roundoffAmt:Math.round(NetAmount)
+            });
+            this.ConShow = false;
+            return;
+        }
+        else if (Disc > 0 || Disc < 100) {
             this.ConShow = true;
             FinalDiscAmt = ((formValues.totalAmount * Disc) / 100).toFixed(2);
             NetAmount = (formValues.totalAmount - parseFloat(FinalDiscAmt)).toFixed(2);
@@ -944,6 +960,7 @@ export class SalesHospitalNewComponent implements OnInit {
         this.ItemSubform.patchValue({
             discAmount: FinalDiscAmt,
             netAmount: NetAmount,
+            roundoffAmt:Math.round(NetAmount)
         })
     }
     getFinalDiscAmount() {
@@ -965,6 +982,7 @@ export class SalesHospitalNewComponent implements OnInit {
         }
         this.ItemSubform.patchValue({
             netAmount: NetAmount,
+            roundoffAmt:Math.round(NetAmount) 
         })
 
     }
@@ -1949,6 +1967,7 @@ export class SalesHospitalNewComponent implements OnInit {
             // });
         }
         this.saleSelectedDatasource.data = this.chargeslistBarcode;
+        this.getUpdateNetAmtSum(this.saleSelectedDatasource.data)
         console.log(this.saleSelectedDatasource.data);
 
         this.vBarcode = 0;
@@ -2074,9 +2093,7 @@ export class SalesHospitalNewComponent implements OnInit {
                 });
             }
         });
-    }
-
-
+    } 
     OnSalesprint(SalesID, OP_IP_Type) {
         setTimeout(() => {
             let param = {

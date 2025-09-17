@@ -92,7 +92,7 @@ export class GoodReceiptnoteComponent implements OnInit {
         //   { heading: "-", key: "check", sort: false, align: 'left', emptySign: 'NA',width:60,type: gridColumnTypes.template,
         //     template: this.actionButtonTemplateCheck},
         { heading: "Item Name", key: "itemName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-        { heading: "UMO", key: "UnitofMeasurementName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+        { heading: "UMO", key: "umo", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         { heading: "Batch No", key: "batchNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "BatchExpDate", key: "batchExpDate", sort: true, align: 'left', emptySign: 'NA', width: 180 },
         { heading: "Package", key: "conversionFactor", sort: true, align: 'left', emptySign: 'NA', width: 100 },

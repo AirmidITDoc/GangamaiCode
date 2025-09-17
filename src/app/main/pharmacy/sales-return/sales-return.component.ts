@@ -54,14 +54,14 @@ export class SalesReturnComponent implements OnInit {
     'DiscAmount', 
     'VatPer', 
     'GrossAmount',
-    'LandedPrice',
-    'TotalLandedAmount', 
-    'CGSTPer',
-    'CGSTAmount',
-    'SGSTPer',
-    'SGSTAmount',
-    'IGSTPer',
-    'IGSTAmount', 
+    // 'LandedPrice',
+    // 'TotalLandedAmount', 
+    // 'CGSTPer',
+    // 'CGSTAmount',
+    // 'SGSTPer',
+    // 'SGSTAmount',
+    // 'IGSTPer',
+    // 'IGSTAmount', 
     "buttons", 
   ]
 
@@ -112,7 +112,8 @@ export class SalesReturnComponent implements OnInit {
 
   ngOnInit(): void {
     this.SearchForm.markAllAsTouched();
-     this.IPSalesRetFooterform.markAllAsTouched(); 
+    this.IPSalesRetFooterform.markAllAsTouched(); 
+    this.IpSalesReturnForm = this.CreateSalesReturnForm();
     this.getSalesList(); 
   } 
     SearchFilter(): FormGroup {
@@ -141,21 +142,21 @@ export class SalesReturnComponent implements OnInit {
         //sales return header  
         salesReturn: this.formBuilder.group({
           salesReturnId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-          date: ['', [this._FormvalidationserviceService.allowEmptyStringValidator(), this._FormvalidationserviceService.validDateValidator()]],
-          time: ['', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
-          salesId: [this.selcteditemObj.SalesId, [this._FormvalidationserviceService.onlyNumberValidator()]],
-          opIpId: [this.selcteditemObj.OP_IP_ID, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
+          date: [''],
+          time: [''],
+          salesId: [this.selcteditemObj?.SalesId, [this._FormvalidationserviceService.onlyNumberValidator()]],
+          opIpId: [this.selcteditemObj?.OP_IP_ID, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
           opIpType: [1],
-          totalAmount: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
-          vatAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-          discAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-          netAmount: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
-          paidAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-          balanceAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+          totalAmount: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+          vatAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+          discAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+          netAmount: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+          paidAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+          balanceAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
           isSellted: false,
           isPrint: true,
           isFree: false,
-          unitId: [1, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
+          unitId: [this._loggedService.currentUserValue.user.unitId, [this._FormvalidationserviceService.onlyNumberValidator()]],
           addedBy: [this._loggedService.currentUserValue.userId],
           storeId: [this._loggedService.currentUserValue.user.storeId, [this._FormvalidationserviceService.onlyNumberValidator()]],
           narration: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],//need to set concession reason
@@ -172,16 +173,16 @@ export class SalesReturnComponent implements OnInit {
           billNo: [this.selcteditemObj.SalesId, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
           paymentDate: ['', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
           paymentTime: ['', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
-          cashPayAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-          chequePayAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+          cashPayAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+          chequePayAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
           chequeNo: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
           bankName: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
           chequeDate: ['1999-01-01'],
-          cardPayAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+          cardPayAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
           cardNo: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
           cardBankName: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
           cardDate: ['1999-01-01'],
-          advanceUsedAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+          advanceUsedAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
           advanceId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
           refundId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
           transactionType: [5, [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -191,11 +192,11 @@ export class SalesReturnComponent implements OnInit {
           isCancelledBy: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
           isCancelledDate: ['1999-01-01'],
           opdipdType: [3, [this._FormvalidationserviceService.onlyNumberValidator()]],
-          neftpayAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+          neftpayAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
           neftno: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
           neftbankMaster: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
           neftdate: ['1999-01-01'],
-          payTmamount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+          payTmamount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
           payTmtranNo: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
           payTmdate: ['1999-01-01'],
         })
@@ -204,45 +205,45 @@ export class SalesReturnComponent implements OnInit {
     createSalesretDetails(element: any): FormGroup {
       return this.formBuilder.group({
         salesReturnID: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        itemId: [element.ItemId, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-        batchNo: [element.BatchNo, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-        batchExpDate: [this.datePipe.transform(element.BatchExpDate, "yyyy-MM-dd"), [this._FormvalidationserviceService.onlyNumberValidator()]],
-        unitMrp: [element.UnitMRP, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-        qty: [element.ReturnQty, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-        totalAmount: [element.TotalAmount, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-        vatPer: [element.VatPer, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        vatAmount: [element.VatAmount, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        discPer: [element.DiscPer, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        discAmount: [element.DiscAmount, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        grossAmount: [element.GrossAmount, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-        landedPrice: [element.LandedPrice, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-        totalLandedAmount: [element.TotalLandedAmount, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        purRate: [element.PurRateWf, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        purTot: [element.PurTotAmt, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        salesId: [element.SalesId, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-        salesDetId: [element.SalesDetId, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-        isCashOrCredit: [element.isCashOrCredit, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        cgstper: [element.CGSTPer, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        cgstamt: [element.CGSTAmount, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        sgstper: [element.SGSTPer,[this._FormvalidationserviceService.onlyNumberValidator()]],
-        sgstamt: [element.SGSTAmount,[this._FormvalidationserviceService.onlyNumberValidator()]],
-        igstper: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        igstamt: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        stkId: [element.StkID, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+        itemId: [element?.ItemId, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+        batchNo: [element?.BatchNo, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+        batchExpDate: [this.datePipe.transform(element.BatchExpDate, "yyyy-MM-dd")],
+        unitMrp: [element?.UnitMRP, [this._FormvalidationserviceService.AllowDecimalNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+        qty: [element?.ReturnQty, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+        totalAmount: [element?.TotalAmount, [this._FormvalidationserviceService.AllowDecimalNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+        vatPer: [element?.VatPer || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+        vatAmount: [element?.VatAmount || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+        discPer: [element?.DiscPer || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+        discAmount: [element?.DiscAmount || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+        grossAmount: [element?.GrossAmount, [this._FormvalidationserviceService.AllowDecimalNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+        landedPrice: [element?.LandedPrice, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+        totalLandedAmount: [element?.TotalLandedAmount, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        purRate: [element?.PurRateWf, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+        purTot: [element?.PurTotAmt, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+        salesId: [element?.SalesId, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+        salesDetId: [element?.SalesDetId, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+        isCashOrCredit: [element?.isCashOrCredit, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        cgstper: [element?.CGSTPer || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+        cgstamt: [element?.CGSTAmount || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+        sgstper: [element?.SGSTPer || 0,[this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+        sgstamt: [element?.SGSTAmount || 0,[this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+        igstper: [element?.IGSTPer || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+        igstamt: [element?.IGSTAmount || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+        stkId: [element?.StkID, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       })   
     }
     createcurrentStock(element: any): FormGroup {
       return this.formBuilder.group({
         itemId: [element?.ItemId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
         issueQty: [element?.ReturnQty ?? 0, [, this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-        storeId: [this._loggedService.currentUserValue.storeId],
+        storeId: [this._loggedService.currentUserValue.user.storeId],
         istkId: [element?.StkID ?? 0, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       });
     }
     createSalesDetails(element: any): FormGroup {
       return this.formBuilder.group({
-        salesDetId: [element.SalesDetId, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-        returnQty: [element.ReturnQty, [, this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+        salesDetId: [element?.SalesDetId, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+        returnQty: [element?.ReturnQty, [, this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       });
     }
     // Getters 
@@ -401,9 +402,9 @@ getbillllist(){
         DiscPer: contact.DiscPer,
         DiscAmount: contact.DiscAmount,
         GrossAmount: NetAmount,
-        LandedPrice: contact.LandedPrice,
+        LandedPrice: (contact.LandedPrice).toFixed(2),
         TotalLandedAmount: TotalLandedAmount,
-        PurRateWf: contact.PurRateWf,
+        PurRateWf: (contact.PurRateWf).toFixed(2),
         PurTotAmt: contact.PurTotAmt,
         CGSTPer: contact.CGSTPer,
         CGSTAmount: CGSTAmount,
@@ -434,6 +435,7 @@ getbillllist(){
     this.getUpdateTotalAmtSum()
   }
   getUpdateTotalAmtSum() {
+    debugger
     const itemlist = this.selectedssaleDetailList.data
     let TotalAmt= itemlist.reduce((sum, { TotalAmount }) => sum += +(TotalAmount || 0), 0).toFixed(2);
     let NetAmt = itemlist.reduce((sum, { GrossAmount }) => sum += +(GrossAmount || 0), 0).toFixed(2);
@@ -448,54 +450,53 @@ getbillllist(){
     }) 
   }
   //table calculation
-  getCellCalculation(contact, ReturnQty) { 
-    if ((ReturnQty) > (contact.Qty)) { 
-      contact.ReturnQty = '';
+  getCellCalculation(contact, ReturnQty) {
+
+    if ((ReturnQty > 0)) {
+      if ((ReturnQty) <= (contact.Qty)) {
+        contact.TotalAmount = (contact.UnitMRP * ReturnQty).toFixed(2);
+        contact.DiscAmount = ((contact.TotalAmount * contact.DiscPer) / 100).toFixed(2);
+        contact.VatAmount = ((contact.TotalAmount * contact.VatPer) / 100).toFixed(2);
+        contact.CGSTAmount = ((contact.TotalAmount * contact.CGSTPer) / 100).toFixed(2);
+        contact.SGSTAmount = ((contact.TotalAmount * contact.SGSTPer) / 100).toFixed(2);
+        contact.IGSTAmount = ((contact.TotalAmount * contact.IGSTPer) / 100).toFixed(2);
+        contact.GrossAmount = (contact.TotalAmount - contact.DiscAmount).toFixed(2);
+        contact.TotalLandedAmount = (contact.LandedPrice * ReturnQty).toFixed(2);
+        // this.PurAmt = (parseFloat(contact.PurRateWf) * parseInt(this.RQty)).toFixed(2); 
+      } else if ((ReturnQty) > (contact.Qty)) {
+        contact.ReturnQty = '';
+        contact.TotalAmount = 0;
+        contact.DiscAmount = 0;
+        contact.VatAmount = 0;
+        contact.CGSTAmount = 0;
+        contact.SGSTAmount = 0;
+        contact.IGSTAmount = 0;
+        contact.GrossAmount = 0;
+        contact.TotalLandedAmount = 0;
+        Swal.fire({
+          icon: "warning",
+          title:  "Enter Return qty less than BalQty and greater than 0",
+          showConfirmButton: false,
+          timer: 2000
+        }); 
+      }
+    }
+    else if (ReturnQty == '' || ReturnQty == null || ReturnQty == undefined || ReturnQty == 0) {
       contact.TotalAmount = 0;
-      contact.DiscAmount =  0;
-      contact.VatAmount =  0;
-      contact.CGSTAmount =  0;
-      contact.SGSTAmount =  0;
-      contact.IGSTAmount =  0;
-      contact.GrossAmount =  0;
-      contact.TotalLandedAmount =  0;
+      contact.DiscAmount = 0;
+      contact.VatAmount = 0;
+      contact.CGSTAmount = 0;
+      contact.SGSTAmount = 0;
+      contact.IGSTAmount = 0;
+      contact.GrossAmount = 0;
+      contact.TotalLandedAmount = 0; 
       Swal.fire({
         icon: "warning",
-        title: "Return Qty cannot be greater than BalQty",
+        title: "Enter Return qty less than BalQty and greater than 0",
         showConfirmButton: false,
         timer: 2000
-      });
-      return 
+      }); 
     }
-    else if((ReturnQty) <= (contact.Qty)) {  
-      contact.TotalAmount = (parseFloat(contact.UnitMRP) * parseInt(ReturnQty)).toFixed(2);
-      contact.DiscAmount = ((parseFloat(contact.TotalAmount) * parseFloat(contact.DiscPer)) / 100).toFixed(2);
-      contact.VatAmount =  ((parseFloat(contact.TotalAmount) * (parseFloat(contact.VatPer)) / 100)).toFixed(2);
-      contact.CGSTAmount = (((parseFloat(contact.TotalAmount) * (parseFloat(contact.CGSTPer))) / 100)).toFixed(2);
-      contact.SGSTAmount = (((parseFloat(contact.TotalAmount) * (parseFloat(contact.SGSTPer))) / 100)).toFixed(2);
-      contact.IGSTAmount = ((((parseFloat(contact.TotalAmount)* (parseFloat(contact.IGSTPer))) / 100))).toFixed(2); 
-      contact.GrossAmount = (parseFloat(contact.TotalAmount) - (parseFloat(contact.DiscAmount))).toFixed(2);
-      contact.TotalLandedAmount = (parseFloat(contact.LandedPrice) * parseInt(ReturnQty)).toFixed(2); 
-     // this.PurAmt = (parseFloat(contact.PurRateWf) * parseInt(this.RQty)).toFixed(2); 
-    }
-    else if(ReturnQty == '' || ReturnQty == null || ReturnQty == undefined || ReturnQty == 0 ) {
-      contact.TotalAmount = 0;
-      contact.DiscAmount =  0;
-      contact.VatAmount =  0;
-      contact.CGSTAmount =  0;
-      contact.SGSTAmount =  0;
-      contact.IGSTAmount =  0;
-      contact.GrossAmount =  0;
-      contact.TotalLandedAmount =  0;
-
-        Swal.fire({
-        icon: "warning",
-        title: "Return Qty cannot be greater than BalQty",
-        showConfirmButton: false,
-        timer: 2000
-      });
-      return 
-    } 
     this.getUpdateTotalAmtSum()
   }  
    //Save code 
@@ -553,10 +554,10 @@ getbillllist(){
 
     this.IpSalesReturnForm.get('salesReturn.date').setValue(formattedDate)
     this.IpSalesReturnForm.get('salesReturn.time').setValue(formattedTime)
-    this.IpSalesReturnForm.get('salesReturn.totalAmount')?.setValue(Number(Math.round(this.IPSalesRetFooterform.get('TotalAmt').value)))
-    this.IpSalesReturnForm.get('salesReturn.vatAmount')?.setValue(Number(Math.round(this.IPSalesRetFooterform.get('GSTAmount').value)))
-    this.IpSalesReturnForm.get('salesReturn.discAmount')?.setValue(Number(Math.round(this.IPSalesRetFooterform.get('TotDiscAmount').value)))
-    this.IpSalesReturnForm.get('salesReturn.netAmount')?.setValue(Number(Math.round(this.IPSalesRetFooterform.get('NetAmt').value)))
+    this.IpSalesReturnForm.get('salesReturn.totalAmount')?.setValue(this.IPSalesRetFooterform.get('TotalAmt')?.value)
+    this.IpSalesReturnForm.get('salesReturn.vatAmount')?.setValue(this.IPSalesRetFooterform.get('GSTAmount')?.value)
+    this.IpSalesReturnForm.get('salesReturn.discAmount')?.setValue(this.IPSalesRetFooterform.get('TotDiscAmount')?.value)
+    this.IpSalesReturnForm.get('salesReturn.netAmount')?.setValue(this.IPSalesRetFooterform.get('NetAmt')?.value)
     this.IpSalesReturnForm.get('salesReturn.opIpType').setValue(this.selcteditemObj?.OP_IP_Type);
     if( this.selcteditemObj.OP_IP_Type == 2 ){
       this.IpSalesReturnForm.get('salesReturn.opIpId').clearValidators();
@@ -619,7 +620,6 @@ getbillllist(){
           this.toastr.warning(`Please Check this field "${field}" is invalid.`, 'Warning',
           );
         });
-        return
       }
     }
   } 
