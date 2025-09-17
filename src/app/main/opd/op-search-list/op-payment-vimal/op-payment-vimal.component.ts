@@ -446,13 +446,13 @@ export class OpPaymentVimalComponent implements OnInit {
             let Advancesarr = [];
             this.dataSource.data.forEach((element) => {
                 let Advanceobj = {};
-                Advanceobj['AdvanceId'] = element.advanceId;
-                Advanceobj['AdvanceDetailID'] = element.advanceDetailID;
-                Advanceobj['AdvanceAmount'] = element.advanceAmount;
-                Advanceobj['UsedAmount'] = element.usedAmount;
-                Advanceobj['Date'] = element.date;
-                Advanceobj['BalanceAmount'] = element.balanceAmount;
-                Advanceobj['RefundAmount'] = element.refundAmount;
+                Advanceobj['AdvanceId'] = element?.advanceId;
+                Advanceobj['AdvanceDetailID'] = element?.advanceDetailID;
+                Advanceobj['AdvanceAmount'] = element?.advanceAmount || 0;
+                Advanceobj['UsedAmount'] = element?.usedAmount || 0;
+                Advanceobj['Date'] = element?.date;
+                Advanceobj['BalanceAmount'] = element?.balanceAmount || 0;
+                Advanceobj['RefundAmount'] = element?.refundAmount || 0;
                 Advancesarr.push(Advanceobj);
             });
             IsSubmit = {
