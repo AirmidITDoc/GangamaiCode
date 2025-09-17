@@ -63,9 +63,9 @@ export class GrnReturnWithoutgrnComponent implements OnInit {
   filteredOptionssupplier: any;
   noOptionFoundsupplier: any;
   SpinLoading: boolean = false;
-autocompletestore: string = "Store";
+  autocompletestore: string = "Store";
   autocompleteSupplier: string = "SupplierMaster"
-  
+
   dsGRNReturnWithoutList = new MatTableDataSource<GRNReturnList>();
   dsGRNReturnItemDetList = new MatTableDataSource<ItemNameList>();
   @ViewChild(MatSort) sort: MatSort;
@@ -432,6 +432,20 @@ export class ItemNameList {
   PurchaseRate: any;
   ConversionFactor: any;
   StockId: any;
+  isGrnTypeFlag: any;
+  remark: any;
+  totalAmount: any;
+  totalVatAmount: any;
+  netAmount: any;
+  grnReturnId:any;
+  vatAmount:any;
+  vatPercentage:any;
+  stkId:any;
+  purchaseTotalAmount:any;
+  unitPurchaseRate:any;
+  landedRate:any;
+  landedTotalAmount:any;
+  mrp:any;
 
   constructor(ItemNameList) {
     {
@@ -457,6 +471,20 @@ export class ItemNameList {
       this.PurchaseRate = ItemNameList.PurchaseRate || 0;
       this.UnitMRP = ItemNameList.UnitMRP || 0;
       this.BalanceQty = ItemNameList.BalanceQty || 0;
+      this.isGrnTypeFlag = ItemNameList.isGrnTypeFlag || ''
+      this.remark = ItemNameList.remark || ''
+      this.totalAmount = ItemNameList.totalAmount || ''
+      this.totalVatAmount = ItemNameList.totalVatAmount || ''
+      this.netAmount = ItemNameList.netAmount || ''
+      this.grnReturnId = ItemNameList.grnReturnId || ''
+      this.vatAmount = ItemNameList.vatAmount || ''
+      this.vatPercentage = ItemNameList.vatPercentage || ''
+      this.stkId = ItemNameList.stkId || ''
+      this.purchaseTotalAmount = ItemNameList.purchaseTotalAmount || ''
+      this.unitPurchaseRate = ItemNameList.unitPurchaseRate || ''
+      this.landedRate = ItemNameList.landedRate || ''
+      this.landedTotalAmount = ItemNameList.landedTotalAmount || ''
+      this.mrp = ItemNameList.mrp || ''
     }
   }
 }
