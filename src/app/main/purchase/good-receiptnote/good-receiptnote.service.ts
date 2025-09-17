@@ -107,7 +107,8 @@ export class GoodReceiptnoteService {
       SupplierName:[''], 
       SupplierAddress:[''],
       StoreId:[this.accountService.currentUserValue.user.storeId,
-        [Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator(),Validators.min(1)]]
+        [Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator(),Validators.min(1)]],
+      selectedIGSTValue:[0]
     });
   }
 
@@ -115,7 +116,7 @@ export class GoodReceiptnoteService {
     return this._formBuilder.group({
       Status3: [''],
       Remark: [''],
-      ReceivedBy: ['',Validators.required],
+      ReceivedBy: ['',[Validators.required]],
       DebitAmount: [''],
       CreditAmount: [''],
       DiscAmount: [''],

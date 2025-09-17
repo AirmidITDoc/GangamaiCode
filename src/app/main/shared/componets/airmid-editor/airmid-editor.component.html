@@ -1,64 +1,33 @@
-<!-- <div role="main">
-    <ckeditor [editor]="editor" [data]="value" [disabled]="disabled" [(ngModel)]="value"></ckeditor>
-</div> -->
-<!-- <mat-form-field appearance="outline" fxFlex>
-    <mat-label>{{label}}</mat-label>
-    <textarea matInput [formControlName]="formControlName" style="display: none;"></textarea>
-    <mat-error>
-        <ng-container *ngFor="let error of activeErrors">
-            {{ error }}
-        </ng-container>
-    </mat-error>
-</mat-form-field> -->
-
-<!-- Working code -->
-<!-- <div class="ckeditor-container">
-    <mat-card>
-        <mat-card-content>
-            <div class="editor-title" *ngIf="label">
-                <h2 class="fw-600 border-bottom">{{label}}</h2>
-            </div>
-            <div class="editor-area">
-                <ckeditor [editor]="editor" [data]="value" [disabled]="disabled" [(ngModel)]="value" [formControlName]="formControlName"
-                (change)="onEditorChange($event)"></ckeditor>
-            </div>
-        </mat-card-content>
-    </mat-card>
-</div> -->
-
-<!-- Tryed code -->
-
-<div class="ckeditor-container">
-  <mat-card>
-    <mat-card-content>
+<div class="ckeditor-container" fxFlexFill>
+  <div class="editor-area" fxFlexFill>
+    <ckeditor [editor]="editor" [disabled]="disabled" [formControlName]="formControlName"
+              (ready)="onReady($event)"></ckeditor>
+    
+    <!-- Integrated Controls in Editor Toolbar -->
+    <div class="integrated-controls">
+      <button mat-icon-button
+              (click)="onMicToggle()"
+              [color]="speechService.isListening ? 'warn' : 'primary'"
+              type="button"
+              [matTooltip]="speechService.isListening ? 'Stop Speech Recognition' : 'Start Speech Recognition'"
+              matTooltipPosition="below"
+              class="mic-button"
+              aria-label="Toggle Speech Recognition">
+        <mat-icon>{{speechService.isListening ? 'mic_off' : 'mic'}}</mat-icon>
+      </button>
       
-      <div class="editor-title-bar">
-        <h2 class="fw-600 border-bottom">{{label}}</h2>
-
-        <div class="editor-actions">
-          <button mat-icon-button
-                  (click)="onMicToggle()"
-                  [color]="speechService.isListening ? 'warn' : 'primary'"
-                  type="button">
-            <i [class]="speechService.isListening ? 'fas fa-microphone-slash' : 'fas fa-microphone'"></i>
-          </button>
-
-          <mat-form-field appearance="outline" style="min-width: 160px;">
-            <mat-label>Language</mat-label>
-            <mat-select [(ngModel)]="selectedLang" [ngModelOptions]="{standalone: true}">
-              <mat-option *ngFor="let lang of languages" [value]="lang.code">
-                {{ lang.label }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
+      <div class="language-dropdown-container">
+        <select class="language-select" 
+                [(ngModel)]="selectedLang" 
+                (change)="onLangChange()"
+                [ngModelOptions]="{standalone: true}"
+                matTooltip="Select Speech Recognition Language"
+                matTooltipPosition="below">
+          <option *ngFor="let lang of languages" [value]="lang.code">
+            {{ lang.label }}
+          </option>
+        </select>
       </div>
-
-      <div class="editor-area">
-         <ckeditor [editor]="editor"[disabled]="disabled" [formControlName]="formControlName"
-                (ready)="onReady($event)"></ckeditor>
-      </div>
-
-    </mat-card-content>
-  </mat-card>
+    </div>
+  </div>
 </div>

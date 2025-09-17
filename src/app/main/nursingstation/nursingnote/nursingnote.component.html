@@ -146,11 +146,11 @@
                                         <div class="center pb-56" style="border-radius: 4px;padding: 10px;">
                                             <div class="content-card">
                                                 <div fxFlexFill fxLayout="column" fxLayoutGap="10px">
-                                                    <div fxLayout="row" fxLayoutGap="10px">
-                                                        <div fxFlex.gt-sm="40%" fxFlex>
-                                                            <mat-card style="padding: 5px;">
+                                                    <div fxLayout="row" fxLayoutGap="10px" fxFlex fxFlexFill class="mat-elevation-z0" style="min-height: 600px;">
+                                                        <div fxFlex.gt-sm="40%" fxFlex fxFlexFill>
+                                                            <mat-card class="mat-elevation-z2" fxLayout="column" fxFlexFill style="padding: 5px; min-height: 400px;">
 
-                                                                <div id="contacts"
+                                                                <div id="contacts" fxFlex="1 1 auto" style="overflow: auto; min-height: 350px;"
                                                                     class="page-layout simple left-sidebar inner-sidebar inner-scroll">
                                                                     <airmid-table [gridConfig]="gridConfig" #docNote
                                                                         :ShowFilter="false" :ShowButtons="false">
@@ -160,11 +160,11 @@
                                                             </mat-card>
                                                         </div>
 
-                                                        <div fxFlex.gt-sm="60%" fxFlex>
+                                                        <div fxFlex.gt-sm="60%" fxFlex fxFlexFill>
 
-                                                            <form [formGroup]="myNursingForm">
+                                                            <form [formGroup]="myNursingForm" fxLayout="column" fxFlexFill>
 
-                                                                <div fxLayout="column" fxLayoutGap="2px">
+                                                                <div fxLayout="column" fxLayoutGap="2px" fxFlex fxFlexFill>
 
                                                                     <form [formGroup]="myform">
                                                                         <div fxLayout="row" fxLayoutGap="10px">
@@ -195,27 +195,35 @@
                                                                         </div>
                                                                     </form>
 
-                                                                    <mat-card style="padding: 5px;overflow: auto;">
-                                                                        <div>
-                                                                            <airmid-editor label="Template Details" formControlName="nursingNotes"
-                                                                                [(value)]="vDescription" [formGroup]="myNursingForm"  (valueChange)="onEditorValueChange($event)">
-                                                                            </airmid-editor>
+                                                                    <mat-card class="mat-elevation-z2" style="padding: 0; overflow: hidden; flex: 1 1 auto; display: flex; flex-direction: column;">
+                                                                        <div fxLayout="column" fxFlexFill style="height: 100%;">
+                                                                            <!-- Editor Container with proper height -->
+                                                                            <div fxFlex="1 1 auto" style="min-height: 400px;">
+                                                                                <airmid-editor formControlName="nursingNotes"
+                                                                                    [(value)]="vDescription" [formGroup]="myNursingForm" (valueChange)="onEditorValueChange($event)">
+                                                                                </airmid-editor>
+                                                                            </div>
                                                                         </div>
                                                                     </mat-card>
-
-                                                                    <div fxLayout="row" fxLayoutGap="10px"
-                                                                        fxLayoutAlign="end">
-                                                                        <button class="btn btn-primary-outline"
-                                                                            type="button" value="Input"
-                                                                            (click)="onTemplate()">New Template
-                                                                        </button>
-                                                                        <button class="btn btn-danger-outline"
-                                                                            type="button" value="Input"
-                                                                            (click)="onClear()">Reset</button>
-                                                                        <button class="btn btn-primary" type="submit"
-                                                                            (click)="onSubmit()"
-                                                                            value="submit">Save</button>
+                                                                    <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="6px" class="mt-16">
+                                                                        <div>
+                                                                            <button class="btn btn-primary-outline"
+                                                                                (click)="onTemplate()">
+                                                                                New Template
+                                                                            </button>
+                                                                        </div>
+                                                                        <div fxLayout="row" fxLayoutGap="6px">
+                                                                            <button class="btn btn-danger-outline"
+                                                                                (click)="onClear()">
+                                                                                Reset
+                                                                            </button>
+                                                                            <button class="btn btn-primary"
+                                                                                (click)="onSubmit()">
+                                                                                Save
+                                                                            </button>
+                                                                        </div>
                                                                     </div>
+
                                                                 </div>
                                                             </form>
 

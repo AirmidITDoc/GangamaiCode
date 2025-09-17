@@ -66,7 +66,7 @@ export class NewGRNReturnComponent implements OnInit {
   vGSTType: any;
   screenFromString: 'GrnReturn-Form'
   SpinLoading: boolean = false;
-  vGSTTpe: any;
+  vGSTTpe = "GST Return";
   autocompletestore: string = "Store";
   autocompleteSupplier: string = "SupplierMaster"
   VsupplierId: any = 0
@@ -76,6 +76,7 @@ export class NewGRNReturnComponent implements OnInit {
 
   dsItemList = new MatTableDataSource<ItemNameList>();
   dsTempItemNameList = new MatTableDataSource<ItemNameList>();
+  registerObj = new ItemNameList({});
 
   constructor(
     public _GRNReturnService: GRNReturnWithoutGRNService,
@@ -92,18 +93,18 @@ export class NewGRNReturnComponent implements OnInit {
   ngOnInit(): void {
     console.log("GRN Return Without GRN:", this.data)
     if (this.data?.grnReturnId) {
+      this.registerObj = this.data
       this.VsupplierId = this.data.supplierId
-      // this._GRNReturnService.ReturnFinalForm.get("Remark").setValue(this.data?.remark)
-      // this.vFinalVatAmount = this.data?.totalVatAmount
-      // this.vFinalNetAmount = this.data?.netAmount
-      this._GRNReturnService.ReturnFinalForm.patchValue({
-        Remark: this.data?.remark,
-        FinalVatAmount: this.data?.totalVatAmount,
-        FinalNetPayamt: this.data?.netAmount
-      });
-      console.log(this._GRNReturnService.ReturnFinalForm.value)
+      // this._GRNReturnService.ReturnFinalForm.get("Remark").setValue(this.registerObj?.remark)
+
+      if (this.registerObj.isGrnTypeFlag == true) {
+        this.vGSTTpe = 'GST Return';
+      } else {
+        this.vGSTTpe = 'Without GST';
+      }
     }
-    this.vGSTTpe = 'GST Return';
+    this.getGRNreturnlist();
+
     this._GRNReturnService.NewGRNReturnFrom.markAllAsTouched();
 
     this.GrnReturnForm = this.CreateGrnReturnInsertForm();
@@ -111,6 +112,7 @@ export class NewGRNReturnComponent implements OnInit {
     this.grnReturnDetArray.push(this.createGrnReturnDetInsert());
     this.grnReturnCurrentStockArray.push(this.createGrnReturnCurrentStockInsert());
     this.grnReturnQtyArray.push(this.createGrnReturnQtyInsert());
+
   }
 
   CreateGrnReturnInsertForm() {
@@ -149,19 +151,11 @@ export class NewGRNReturnComponent implements OnInit {
   }
 
   createGrnReturnDetInsert(element: any = {}): FormGroup {
+    let totalQty = (parseFloat(element.Qty) * parseFloat(element.ConversionFactor))
+
     let inputDate = element.ExpDate;
     let parts = inputDate.split('-');
     let ExpDate = `${parts[2]}-${parts[0]}-${parts[1]}`;
-    let totalQty = (parseFloat(element.Qty) * parseFloat(element.ConversionFactor))
-    // let ExpDate = null;
-
-    // if (element.ExpDate) {
-    //   let parts = element.ExpDate.split('-');
-    //   if (parts.length === 3) {
-    //     ExpDate = `${parts[2]}-${parts[0]}-${parts[1]}`;
-    //   }
-    // }
-    // let totalQty = (parseFloat(element.Qty || 0) * parseFloat(element.ConversionFactor || 0));
 
     return this._formbuilder.group({
       grnreturnDetailId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -286,63 +280,116 @@ export class NewGRNReturnComponent implements OnInit {
 
     });
   }
+
+  // onAdd() {
+  //   if ((this.vQty == '' || this.vQty == null || this.vQty == undefined)) {
+  //     this.toastr.warning('Please enter a Qty', 'Warning !', {
+  //       toastClass: 'tostr-tost custom-toast-warning',
+  //     });
+  //     return;
+  //   }
+  //   const isDuplicate = this.dsItemList.data.some(item => item.BatchNo === this._GRNReturnService.NewGRNReturnFrom.get('BatchNo').value);
+
+  //   if (!isDuplicate) {
+  //     this.dsItemList.data = [];
+  //     this.chargeslist = this.dsTempItemNameList.data;
+  //     this.chargeslist.push(
+  //       {
+  //         ItemId: this.ItemId || 0,
+  //         ItemName: this.itemName || '',
+  //         BatchNo: this.vBatchNo || '',
+  //         ConversionFactor: this.vConversionFactor || 0,
+  //         ExpDate: this.vExpDates,
+  //         BalQty: this.vBalQty || 0,
+  //         Qty: this.vQty || 0,
+  //         LandedRate: this.vLandedRate || 0,
+  //         TotalAmount: this.vTotalAmount || 0,
+  //         UnitMRP: this.vUnitMRP || 0,
+  //         PurchaseRate: this.vPurchaseRate || 0,
+  //         VatPercentage: this.vGST || 0,
+  //         VatAmount: this.vGSTAmount || 0,
+  //         NetAmount: this.vNetAmount || 0,
+  //         BalanceQty: (parseFloat(this.vBalQty) - parseFloat(this.vQty)),
+  //         StockId: this.vStockId || 0
+  //       });
+  //     this.dsItemList.data = this.chargeslist
+  //   }
+  //   else {
+  //     this.toastr.warning('Selected Item already added in the list', 'Warning !', {
+  //       toastClass: 'tostr-tost custom-toast-warning',
+  //     });
+  //   }
+  //   this.ItemReset();
+  //   this.setFocus('ItemName');
+
+  //   this._GRNReturnService.NewGRNReturnFrom.get('ItemName').setValue('');
+  //   this.getGSTTotalAmt(this.dsItemList.data)
+  // }
+
   onAdd() {
-    if ((this.vQty == '' || this.vQty == null || this.vQty == undefined)) {
+    if (!this.vQty) {
       this.toastr.warning('Please enter a Qty', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       return;
     }
-    const isDuplicate = this.dsItemList.data.some(item => item.BatchNo === this._GRNReturnService.NewGRNReturnFrom.get('BatchNo').value);
+
+    const batchNo = this._GRNReturnService.NewGRNReturnFrom.get('BatchNo')?.value;
+    const isDuplicate = this.dsItemList.data.some(item => item.BatchNo === batchNo);
 
     if (!isDuplicate) {
-      this.dsItemList.data = [];
-      this.chargeslist = this.dsTempItemNameList.data;
-      this.chargeslist.push(
-        {
-          ItemId: this.ItemId || 0,
-          ItemName: this.itemName || '',
-          BatchNo: this.vBatchNo || '',
-          ConversionFactor: this.vConversionFactor || 0,
-          ExpDate: this.vExpDates,
-          BalQty: this.vBalQty || 0,
-          Qty: this.vQty || 0,
-          LandedRate: this.vLandedRate || 0,
-          TotalAmount: this.vTotalAmount || 0,
-          UnitMRP: this.vUnitMRP || 0,
-          PurchaseRate: this.vPurchaseRate || 0,
-          VatPercentage: this.vGST || 0,
-          VatAmount: this.vGSTAmount || 0,
-          NetAmount: this.vNetAmount || 0,
-          BalanceQty: (parseFloat(this.vBalQty) - parseFloat(this.vQty)),
-          StockId: this.vStockId || 0
-        });
-      this.dsItemList.data = this.chargeslist
-    }
-    else {
+      // append instead of resetting
+      const newItem = {
+        ItemId: this.ItemId || 0,
+        ItemName: this.itemName || '',
+        BatchNo: this.vBatchNo || '',
+        ConversionFactor: this.vConversionFactor || 1,
+        ExpDate: this.vExpDates,
+        BalQty: this.vBalQty || 0,
+        Qty: this.vQty || 0,
+        LandedRate: this.vLandedRate || 0,
+        TotalAmount: this.vTotalAmount || 0,
+        UnitMRP: this.vUnitMRP || 0,
+        PurchaseRate: this.vPurchaseRate || 0,
+        VatPercentage: this.vGST || 0,
+        VatAmount: this.vGSTAmount || 0,
+        NetAmount: this.vNetAmount || 0,
+        BalanceQty: (parseFloat(this.vBalQty) - parseFloat(this.vQty)),
+        StockId: this.vStockId || 0
+      };
+
+      //  Append to MatTableDataSource safely
+
+      this.dsItemList.data = this.dsItemList.data.concat(newItem as ItemNameList);
+      this.getGSTTotalAmt(this.dsItemList.data);
+
+    } else {
       this.toastr.warning('Selected Item already added in the list', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
     }
+
     this.ItemReset();
     this.setFocus('ItemName');
-    //this.date.setValue(new Date());
-    this._GRNReturnService.NewGRNReturnFrom.get('ItemName').setValue('');
-    //this.vNetAmount = 0;
-    //this.itemid.nativeElement.focus();
-    //this.vlastDay = '';
+    this._GRNReturnService.NewGRNReturnFrom.get('ItemName')?.setValue('');
   }
-  deleteTableRow(element) {
-    let index = this.chargeslist.indexOf(element);
+
+  deleteTableRow(element: ItemNameList) {
+    const currentData = this.dsItemList.data;
+    const index = currentData.indexOf(element);
+
     if (index >= 0) {
-      this.chargeslist.splice(index, 1);
-      this.dsItemList.data = [];
-      this.dsItemList.data = this.chargeslist;
+      currentData.splice(index, 1); // remove element
+      this.dsItemList.data = [...currentData]; // trigger table update
+      this.getGSTTotalAmt(this.dsItemList.data);
     }
+
     this.toastr.success('Record Deleted Successfully.', 'Deleted !', {
       toastClass: 'tostr-tost custom-toast-success',
     });
   }
+
+
   ItemReset() {
     this.vItemName = '';
     this.ItemName = '';
@@ -358,29 +405,36 @@ export class NewGRNReturnComponent implements OnInit {
     this.vNetAmount = 0;
   }
 
-  // CalculateTotalAmt() {
-  //   // debugger
-  //   if (this.vQty > 0 && this.vBalQty >= this.vQty) {
-  //     this.vTotalAmount = (parseFloat(this.vQty) * parseFloat(this.vLandedRate)).toFixed(2);
-  //     this.vNetAmount = this.vTotalAmount;
-  //   } else {
-  //     this.vQty = '';
-  //     this.vTotalAmount = 0;
-  //     this.vGSTAmount = 0;
-  //     this.vNetAmount = 0;
-  //     this.toastr.warning('Please enter Qty lessthan BalQty', 'Warning !', {
-  //       toastClass: 'tostr-tost custom-toast-warning',
-  //     });
-  //   }
-  //   let RadioValue = this._GRNReturnService.NewGRNReturnFrom.get('GSTType').value || 1;
-  //   console.log(RadioValue);
-  //   if (RadioValue == 'GST Return') {
-  //     this.vGSTAmount = ((parseFloat(this.vGST) * parseFloat(this.vTotalAmount)) / 100).toFixed(2);
-  //     this.vNetAmount = (parseFloat(this.vTotalAmount) + parseFloat(this.vGSTAmount)).toFixed(2);
-  //   } else {
-  //     this.vGSTAmount = 0;
-  //   }
-  // }
+  getGRNreturnlist() {
+    var vdata = {
+      "first": 0,
+      "rows": 10,
+      "sortField": "GRNReturnId",
+      "sortOrder": 0,
+      "filters": [
+        {
+          "fieldName": "GRNReturnId",
+          "fieldValue": String(this.registerObj.grnReturnId),
+          "opType": "Contains"
+        }
+      ],
+      "exportType": "JSON",
+      "columns": []
+    }
+    this._GRNReturnService.getGRNReturnrtrvlist(vdata).subscribe(response => {
+      this.dsItemList.data = response.data.map(item => ({
+        ...item, // keep all existing fields
+        NetAmount: (item.landedRate * item.returnQty) + item.vatAmount,         
+        // NetAmount: item.netAmount,             // normalize changed field
+        VatAmount: item.vatAmount,
+        TotalAmount: item.landedTotalAmount,    // or whichever your table uses
+        PurchaseRate: item.unitPurchaseRate
+      }));
+      console.log(this.dsItemList.data)
+      // this.getGSTTotalAmt(this.dsItemList.data)
+    });
+  }
+
   CalculateTotalAmt() {
     const qty = Number(this.vQty) || 0;
     const balQty = Number(this.vBalQty) || 0;
@@ -420,29 +474,30 @@ export class NewGRNReturnComponent implements OnInit {
   vNetRoundAmt: any;
   mrpTotalAmount: any;
 
-  getGSTTotalAmt(element) {
-    this.vFinalVatAmount = (element.reduce((sum, { VatAmount }) => sum += +(VatAmount || 0), 0)).toFixed(2);
-    return this.vFinalVatAmount;
-  }
-  getTotalAmt(element) {
-    this.vTotalFinalAmount = (element.reduce((sum, { TotalAmount }) => sum += +(TotalAmount || 0), 0)).toFixed(2);
-    return this.vTotalFinalAmount;
-  }
+  getGSTTotalAmt(element: any[]) {
+    this.vFinalVatAmount = element.reduce((sum, { VatAmount }) => sum + +(VatAmount || 0), 0).toFixed(2);
 
-  getNetTotalAmt(element) {
+    this.vTotalFinalAmount = (element.reduce((sum, { TotalAmount }) => sum += +(TotalAmount || 0), 0)).toFixed(2);
+
     let FinalRoundAmt = (element.reduce((sum, { NetAmount }) => sum += +(NetAmount || 0), 0)).toFixed(2);
     this.mrpTotalAmount = (element.reduce((sum, { UnitMRP }) => sum += +(UnitMRP || 0), 0)).toFixed(2);
     this.vFinalNetAmount = Math.round(FinalRoundAmt).toFixed(2);
     this.vNetRoundAmt = (parseFloat(this.vFinalNetAmount) - (FinalRoundAmt)).toFixed(2);
 
-    return this.vFinalNetAmount;
+    this._GRNReturnService.ReturnFinalForm.patchValue({
+      FinalVatAmount: this.vFinalVatAmount,
+      FinalTotalAmt: this.vTotalFinalAmount,
+      FinalNetPayamt: this.vFinalNetAmount,
+      RoundingAmt: this.vNetRoundAmt
+    })
   }
+
   Savebtn: boolean = false;
   OnSave() {
     debugger
-    if(this._GRNReturnService.NewGRNReturnFrom.get('GSTType').value == 'GST Return'){
+    if (this._GRNReturnService.NewGRNReturnFrom.get('GSTType').value == 'GST Return') {
       this.GrnReturnForm.get('grnReturn.isGrnTypeFlag').setValue(true)
-    }else
+    } else
       this.GrnReturnForm.get('grnReturn.isGrnTypeFlag').setValue(false)
 
     this.GrnReturnForm.get('grnReturn.supplierId').setValue(this.VsupplierId)
@@ -452,7 +507,7 @@ export class NewGRNReturnComponent implements OnInit {
     this.GrnReturnForm.get('grnReturn.netAmount').setValue(this._GRNReturnService.ReturnFinalForm.get('FinalNetPayamt').value)
     this.GrnReturnForm.get('grnReturn.remark').setValue(this._GRNReturnService.ReturnFinalForm.get('Remark').value)
     this.GrnReturnForm.get('grnReturn.grnType').setValue(this._GRNReturnService.NewGRNReturnFrom.get('GSTType').value)
-    
+
     if (!this.GrnReturnForm.invalid) {
       if ((!this.dsItemList.data.length)) {
         this.toastr.warning('Data is not available in list ,please add item in the list.', 'Warning !', {
@@ -516,146 +571,6 @@ export class NewGRNReturnComponent implements OnInit {
     }
 
   }
-
-  //   OnSave() {
-  //   debugger
-  //   const currentDate = new Date();
-  //   const datePipe = new DatePipe('en-US');
-  //   const formattedTime = datePipe.transform(currentDate, 'shortTime');
-  //   const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
-
-  //   if ((!this.dsItemList.data.length)) {
-  //     this.toastr.warning('Data is not available in list ,please add item in the list.', 'Warning !', {
-  //       toastClass: 'tostr-tost custom-toast-warning',
-  //     });
-  //     return;
-  //   }
-  //   if ((this.VsupplierId == '' || this.VsupplierId == '0' || this.VsupplierId == null || this.VsupplierId == undefined)) {
-  //     this.toastr.warning('Please Select Supplier name.', 'Warning !', {
-  //       toastClass: 'tostr-tost custom-toast-warning',
-  //     });
-  //     return;
-  //   }
-  //   if ((this.vstoreId == '' || this.vstoreId == '0' || this.vstoreId == null || this.vstoreId == undefined)) {
-  //     this.toastr.warning('Please Select Store Name.', 'Warning !', {
-  //       toastClass: 'tostr-tost custom-toast-warning',
-  //     });
-  //     return;
-  //   }
-
-  //   this.Savebtn = true;
-
-  //   let grnReturnDetailSavearray = [];
-  //   this.dsItemList.data.forEach((element) => {
-  //     console.log(element)
-  //     // let mrpTotal = element.ReturnQty * element.MRP;
-  //     // let PurchaseTotalAmt =element.ReturnQty * element.Rate;
-  //     let inputDate = element.ExpDate;
-  //     let parts = inputDate.split('-');
-  //     let ExpDate = `${parts[2]}-${parts[0]}-${parts[1]}`;
-
-  //     let totalQty = (parseFloat(element.Qty) * parseFloat(element.ConversionFactor))
-  //     // what if convefacto comes zero then ? totalqty will come 0
-
-  //     let grnDetailSaveObj = {};
-  //     grnDetailSaveObj['grnreturnDetailId'] = 0;
-  //     grnDetailSaveObj['grnReturnId'] = 0;
-  //     grnDetailSaveObj['grnId'] = 0
-  //     grnDetailSaveObj['itemId'] = element.ItemId || 0;
-  //     grnDetailSaveObj['batchNo'] = element.BatchNo || 0;
-  //     grnDetailSaveObj['batchExpiryDate'] = ExpDate;
-  //     // grnDetailSaveObj['batchExpiryDate'] = element.ExpDate;
-  //     grnDetailSaveObj['returnQty'] = element.Qty || 0;
-  //     grnDetailSaveObj['landedRate'] = element.LandedRate || 0;
-  //     grnDetailSaveObj['mrp'] = element.UnitMRP || 0;
-  //     grnDetailSaveObj['unitPurchaseRate'] = element.PurchaseRate || 0;
-  //     grnDetailSaveObj['vatPercentage'] = element.VatPercentage || 0;
-  //     grnDetailSaveObj['vatAmount'] = element.VatAmount || 0;
-  //     grnDetailSaveObj['taxAmount'] = 0;
-  //     grnDetailSaveObj['otherTaxAmount'] = 0;
-  //     grnDetailSaveObj['octroiPer'] = 0;
-  //     grnDetailSaveObj['octroiAmt'] = 0;
-  //     grnDetailSaveObj['landedTotalAmount'] = element.TotalAmount || 0;
-  //     grnDetailSaveObj['mrpTotalAmount'] = this.mrpTotalAmount || 0;
-  //     grnDetailSaveObj['purchaseTotalAmount'] = 0;
-  //     grnDetailSaveObj['conversion'] = element.ConversionFactor || 0;
-  //     grnDetailSaveObj['remarks'] = '';
-  //     grnDetailSaveObj['stkId'] = element.StockId || 0;
-  //     grnDetailSaveObj['cf'] = element.ConversionFactor || 0;
-  //     grnDetailSaveObj['totalQty'] = totalQty || 0;
-  //     grnReturnDetailSavearray.push(grnDetailSaveObj);
-  //   });
-
-  //   let grnReturnSave = {
-  //     "grnreturnId": 0,
-  //     "grnreturnNo": "string",
-  //     "grnid": 0,
-  //     "grnreturnDate": formattedDate,
-  //     "grnreturnTime": formattedTime,
-  //     "storeId": Number(this._loggedService.currentUserValue.user.storeId) || Number(this.vstoreId),
-  //     "supplierId": Number(this.VsupplierId) || 0,
-  //     "totalAmount": this._GRNReturnService.ReturnFinalForm.get('FinalTotalAmt').value || 0,
-  //     "grnReturnAmount": this._GRNReturnService.ReturnFinalForm.get('FinalTotalAmt').value || 0,
-  //     "totalDiscAmount": 0,
-  //     "totalVatAmount": this._GRNReturnService.ReturnFinalForm.get('FinalVatAmount').value || 0,
-  //     "totalOtherTaxAmount": 0,
-  //     "totalOctroiAmount": 0,
-  //     "netAmount": this._GRNReturnService.ReturnFinalForm.get('FinalNetPayamt').value || 0,
-  //     "cashCredit": true,//this._GRNReturnService.NewGRNReturnFrom.get('CashType').value,
-  //     "remark": this._GRNReturnService.ReturnFinalForm.get('Remark').value || '',
-  //     "isVerified": false,
-  //     "isClosed": false,
-  //     "isCancelled": false,
-  //     "grnType": this._GRNReturnService.NewGRNReturnFrom.get('GSTType').value,
-  //     "isGrnTypeFlag": true,
-  //     "tGrnreturnDetails": grnReturnDetailSavearray
-  //   };
-
-  //   let grnReturnUpdateCurrentStockarray = [];
-  //   this.dsItemList.data.forEach((element) => {
-  //     let grnReturnUpdateCurrentStockObj = {};
-  //     grnReturnUpdateCurrentStockObj['itemId'] = element.ItemId || 0;
-  //     grnReturnUpdateCurrentStockObj['issueQty'] = element.Qty || 0;
-  //     grnReturnUpdateCurrentStockObj['stockId'] = element.StockId || 0;
-  //     grnReturnUpdateCurrentStockObj['storeID'] = this._loggedService.currentUserValue.user.storeId || 0;
-  //     grnReturnUpdateCurrentStockarray.push(grnReturnUpdateCurrentStockObj);
-  //   });
-
-  //   let grnReturnUpateReturnQtyarray = [];
-  //   this.dsItemList.data.forEach((element) => {
-  //     let grnReturnUpateReturnQty = {};
-
-  //     let issueqty = element.BalQty - element.Qty
-  //     grnReturnUpateReturnQty['grndetId'] = 0;
-  //     grnReturnUpateReturnQty['returnQty'] = issueqty || 0;
-  //     grnReturnUpateReturnQtyarray.push(grnReturnUpateReturnQty);
-  //   });
-
-  //   let submitdata = {
-  //     'grnReturn': grnReturnSave,
-  //     'grnReturnCurrentStock': grnReturnUpdateCurrentStockarray,
-  //     'grnReturnReturnQt': grnReturnUpateReturnQtyarray
-  //   }
-  //   console.log(submitdata)
-  //   this._GRNReturnService.GRNReturnSave(submitdata).subscribe(response => {
-  //     if (response) {
-  //       this.toastr.success('Record New GRN Return Saved Successfully.', 'Saved !', {
-  //         toastClass: 'tostr-tost custom-toast-success',
-  //       });
-  //       this.OnReset();
-  //       this.viewgetgrnreturnReportPdf(response);
-  //       this.Savebtn = true;
-  //     } else {
-  //       this.toastr.error('New GRN Return Data not saved !, Please check validation error..', 'Error !', {
-  //         toastClass: 'tostr-tost custom-toast-error',
-  //       });
-  //     }
-  //   }, error => {
-  //     this.toastr.error('New GRN Return Data not saved !, Please check API error..', 'Error !', {
-  //       toastClass: 'tostr-tost custom-toast-error',
-  //     });
-  //   });
-  // }
 
   OnReset() {
     this.dsItemList.data = [];

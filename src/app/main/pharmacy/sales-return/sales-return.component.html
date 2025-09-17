@@ -288,8 +288,8 @@
                             <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                 <mat-form-field appearance="fill">
                                     <input matInput [(ngModel)]="contact.ReturnQty"  min="1"
-                                        (keyup)="getCellCalculation(contact,contact.ReturnQty)" #ReturnQty type="number"
-                                        autocomplete="off" (keypress)="keyPressAlphanumeric($event)">
+                                        (ngModelChange)="getCellCalculation(contact,contact.ReturnQty)" #ReturnQty type="text"
+                                        autocomplete="off" (keypress)="keyPressAlphanumeric($event)"> 
                                 </mat-form-field>
                             </mat-cell>
                         </ng-container>
@@ -341,7 +341,7 @@
                                 {{contact.GrossAmount | currency:"INR":"symbol"}}
                             </mat-cell>
                         </ng-container>
-                        <ng-container matColumnDef="LandedPrice">
+                        <!-- <ng-container matColumnDef="LandedPrice">
                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>LandedPrice
                             </mat-header-cell>
                             <mat-cell *matCellDef="let contact" fxShow.gt-sm>
@@ -402,7 +402,7 @@
                             <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                 {{contact.IGSTAmount | currency:"INR":"symbol"}}
                             </mat-cell>
-                        </ng-container>
+                        </ng-container> -->
 
                           <ng-container matColumnDef="buttons" StickyEnd>
                             <mat-header-cell *matHeaderCellDef class="table-actions w-90">Action

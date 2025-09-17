@@ -274,7 +274,7 @@ export class NewOPListComponent implements OnInit {
         if (m == "Bill Print")
             this.commonService.Onprint("BillNo", element.billNo, "OpBillReceipt");
         else if (m == "Bill Print-Package Info")
-            this.commonService.Onprint("BillNo", element.billNo, "OpBillReceipt");
+            this.commonService.Onprint("BillNo", element.billNo, "OPBillWithPackagePrint");
     }
 
 

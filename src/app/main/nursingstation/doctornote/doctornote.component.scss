@@ -2,6 +2,7 @@
     padding: 10px !important;
 }
 
+
 app-doctornote{
 
     .mat-icon-button {
@@ -13,4 +14,16 @@ app-doctornote{
         line-height: 20px;
         border-radius: 50%;
     }
+}
+
+.mt-16 {
+    margin-top: 16px !important;
+}
+
+.full-height-content {
+    height: 100%;
+    min-height: 0;
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
 }

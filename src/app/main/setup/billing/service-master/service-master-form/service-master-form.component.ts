@@ -98,7 +98,7 @@ export class ServiceMasterFormComponent implements OnInit {
             this.serviceForm.get('creditedtoDoctor')?.valueChanges.subscribe((val: boolean) => {
                 if (!val) {
                     this.serviceForm.get('isDocEditable')?.setValue(false);
-                    this.serviceForm.get('doctorId')?.setValue('');
+                    this.serviceForm.get('doctorId')?.setValue('0');
                 }
             });
 
@@ -250,7 +250,7 @@ export class ServiceMasterFormComponent implements OnInit {
             doctorControl?.setValidators([Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]);
         } else {
             doctorControl?.clearValidators();
-            this.serviceForm.get('doctorId').setValue('')
+            this.serviceForm.get('doctorId').setValue('0')
         }
         doctorControl?.updateValueAndValidity();
     }
@@ -291,12 +291,12 @@ export class ServiceMasterFormComponent implements OnInit {
     onSubmit() {
         this.updateEmergencyValidators();
         if (!this.serviceForm.invalid) {
-            if (this.serviceForm.get('opipType').value == false) {
-                this.toastr.warning('IsApplicableFor is required', 'Warning !', {
-                    toastClass: 'tostr-tost custom-toast-warning',
-                });
-                return;
-            }
+            // if (this.serviceForm.get('opipType').value == false) {
+            //     this.toastr.warning('IsApplicableFor is required', 'Warning !', {
+            //         toastClass: 'tostr-tost custom-toast-warning',
+            //     });
+            //     return;
+            // }
 
             Swal.fire({
                 title: 'Confirm Action',
@@ -495,7 +495,7 @@ export class ServiceMasterFormComponent implements OnInit {
         }
         else {
             this.showDoctor=false
-            this.serviceForm.get('doctorId').setValue('')
+            this.serviceForm.get('doctorId').setValue('0')
             this.isDocEditableBoolen = false;
         }
     }

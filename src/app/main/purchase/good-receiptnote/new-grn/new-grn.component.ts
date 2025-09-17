@@ -117,7 +117,8 @@ export class NewGrnComponent implements OnInit, OnDestroy {
     lastsupplierflag: boolean = false;
     autocompletestore: string = "Store";
     autocompleteModeGSTType: string = "GstCalcType";
-     autocompleteModeGSTTypesValues: string = "GSTTypes";   
+     autocompleteModeGSTTypesValues: string = "GSTTypes";  
+     autocompleteModebatchlist: string = "CheckExistingBatchAvailable";   
     ItemName: any;
     Dis: any = 0;
     vpoBalQty: any;
@@ -190,8 +191,10 @@ export class NewGrnComponent implements OnInit, OnDestroy {
             this.dsTempItemNameList.data = obj.Items as ItemNameList[];
         } 
     } 
+    batchlistApiUrl:any='';
     //Item details selectedObj
     getSelectedItem(item: GRNItemResponseType): void {
+        debugger
         if (this.mock) {
             return;
         }
@@ -205,39 +208,48 @@ export class NewGrnComponent implements OnInit, OnDestroy {
             SGST: item.sgstPer,
             IGST: item.igstPer,
             GST: item.cgstPer + item.sgstPer + item.igstPer
-        });
+        }); 
         this.calculateTotalamt();
         this.getLastThreeItemInfo(item)
     } 
     getchangegstper(rate: any): void {
         debugger   
-        if (rate) { 
+        if (Number(rate?.value) >0) { 
             this.userFormGroup.patchValue({ 
-                SGST:Number(rate.text),  
+                SGST:Number((rate.value)/2),  
                 IGST:0,
-                GST: Number((rate.text) * 2)
+                GST: Number(rate.value)
             }) 
-
+            this.userFormGroup.get('IGST').reset();
+            this.userFormGroup.get('IGST').clearValidators();
+            this.userFormGroup.get('IGST').updateValueAndValidity();
+            this.userFormGroup.get('IGST').disable();
         const addbuttonElement = document.querySelector(`[name='addbutton']`) as HTMLElement;
         if (addbuttonElement) {
             addbuttonElement.focus();
+        } 
+        } else{ 
+        this.userFormGroup.get('IGST').reset(); 
+        this.userFormGroup.get('IGST').enable();
         }
-        }
-        // const GSTPer = Number(formValues.CGST || 0) + Number(formValues.SGST || 0) + Number(formValues.IGST || 0);
-        // this.userFormGroup.patchValue({
-        //     GST: GSTPer
-        // });
-
         this.calculateTotalamt();
     }
     getchangeIgstper(rate: any): void {
         debugger    
-        if (rate) { 
+        if (Number(rate?.text) >0) { 
             this.userFormGroup.patchValue({ 
                 SGST:0, 
                 CGST:0,
-                GST: Number(rate.text)
+                GST: Number(rate.text),
+                selectedIGSTValue:Number(rate.text),
             }) 
+            this.userFormGroup.get('CGST').reset();
+            this.userFormGroup.get('CGST').clearValidators();
+            this.userFormGroup.get('CGST').updateValueAndValidity();
+            this.userFormGroup.get('CGST').disable();
+        }else{
+        this.userFormGroup.get('CGST').reset(); 
+        this.userFormGroup.get('CGST').enable(); 
         }
          this.calculateTotalamt();
     }
@@ -389,6 +401,7 @@ export class NewGrnComponent implements OnInit, OnDestroy {
     }
     //Add item list
     onAddGRNItem() {
+        debugger
         if (!this.newGRNService.validateGRNForm(this.userFormGroup)) {
             return;
         }
@@ -399,6 +412,12 @@ export class NewGrnComponent implements OnInit, OnDestroy {
             this.newGRNService.showToast('Item already added in the list', ToastType.WARNING);
             return;
         }
+        const formValue =  this.userFormGroup.value
+        this.userFormGroup.patchValue({
+            BatchNo:(formValue.BatchNo?.batchNo ?? formValue.BatchNo),
+            IGST:formValue?.selectedIGSTValue || 0, 
+            CGST:formValue?.SGST  || 0
+        })
         const formValues = this.userFormGroup.getRawValue() as GRNFormModel;
         const totalQty = (Number(formValues.Qty) + Number(formValues.FreeQty)) * (Number(formValues.ConversionFactor) || 1);
         if (formValues.ItemName) {
@@ -423,6 +442,10 @@ export class NewGrnComponent implements OnInit, OnDestroy {
             itemNameElement.focus();
         }
         this.userFormGroup.markAllAsTouched();
+        this.userFormGroup.get('CGST').reset(); 
+        this.userFormGroup.get('CGST').enable();
+        this.userFormGroup.get('IGST').reset(); 
+        this.userFormGroup.get('IGST').enable();
     }
     //Delete 
     deleteTableRow(row: ItemNameList) {
@@ -531,6 +554,7 @@ export class NewGrnComponent implements OnInit, OnDestroy {
         this.calculateGSTType();
     }
     calculateGSTType(type: GSTType = GSTType.GST_BEFORE_DISC) {
+        debugger
         const form = this.userFormGroup;
         const formValues = form.getRawValue() as GRNFormModel;
 
@@ -657,12 +681,21 @@ setTimeout(() => {
         const form = this._GRNList.GRNFinalForm;
         const itemList = this.dsItemNameList.data;
         const netAmount = itemList.reduce((sum, { NetAmount }) => sum += +(NetAmount || 0), 0);
-        const reoundingamt = Math.round(netAmount)
+        const Othercharge = this._GRNList.GRNFinalForm.get("OtherCharge")?.value || 0;
+        let FinalRoundAmt = (netAmount + Othercharge);
+
+        let DebitAmount = this._GRNList.GRNFinalForm.get("DebitAmount")?.value || 0;
+        FinalRoundAmt = (parseFloat(FinalRoundAmt) + parseFloat(DebitAmount));
+
+        let CreditAmount = this._GRNList.GRNFinalForm.get("CreditAmount")?.value || 0;
+        FinalRoundAmt = (parseFloat(FinalRoundAmt) - parseFloat(CreditAmount));
+        
+        const reoundingamt = Math.round(FinalRoundAmt)
         const updatableFormValues: GRNFinalFormModel = {
             TotalAmt: itemList.reduce((sum, { TotalAmount }) => sum += +(TotalAmount || 0), 0).toFixed(2),
             VatAmount: itemList.reduce((sum, { GSTAmount }) => sum += +(GSTAmount || 0), 0).toFixed(2),
             NetPayamt:  reoundingamt.toFixed(2),
-            RoundingAmt: (Math.round(netAmount) - netAmount).toFixed(2),
+            RoundingAmt: (Math.round(FinalRoundAmt) - FinalRoundAmt).toFixed(2),
             DiscAmount: itemList.reduce((sum, { DisAmount }) => sum += +(DisAmount || 0), 0).toFixed(2),
             DiscAmount2: itemList.reduce((sum, { DisAmount2 }) => sum += +(DisAmount2 || 0), 0),
             OtherCharge: itemList.reduce((sum, { OtherCharge }) => sum += +(OtherCharge || 0), 0),
@@ -1107,6 +1140,9 @@ setTimeout(() => {
             ], 
             IGST: [
                 // { name: "required", Message: "StoreId is required" }
+            ], 
+            BatchNo: [
+                // { name: "required", Message: "StoreId is required" }
             ],
         };
     }
@@ -1173,7 +1209,7 @@ setTimeout(() => {
             event.preventDefault();
             return false;
         }
-    }
+    } 
     // Check Invice is already exist or not 
 chkInvoiceNo(InvoiceNo){
      if (!this.userFormGroup.get('SupplierId')?.value) {
@@ -1201,25 +1237,18 @@ chkInvoiceNo(InvoiceNo){
             }
         });
 
-}
+} 
  
-  getPrevBatchlist() {
+  onBatchChange(event) {
     debugger
-    const formValues = this.userFormGroup.getRawValue();
-        var vdata = {
-            "searchFields": [
-                { "fieldName": "StoreId", "fieldValue": String(formValues?.StoreId), "opType": "13" },
-                { "fieldName": "ItemId", "fieldValue": String(formValues?.ItemName.itemId), "opType": "13" },
-                { "fieldName": "BatchNo", "fieldValue": String(formValues?.BatchNo), "opType": "13" }
-            ],
-            "mode": "CheckExistingBatchAvailable"
-        }
-        // this._GRNList.getGRNchkInvoice_chkGSTTypes(vdata).subscribe(response => ( 
-        //     //this.gstValues = response 
-        //     //console.log(this.gstValues)
-        //     //this.gstValues = response
-        // ))
-        
+    console.log(event)  
+    const expDate = this.datePipe.transform(event.batchExpDate,'MMYYYY')
+    this.userFormGroup.patchValue({
+        ExpDate:expDate,
+        MRP:event?.unitMRP || 0, 
+        Rate:event?.unitPurRate || 0,  
+    }) 
+   // this.userFormGroup.get('')
     }
     //Purchase order to grn section
     FinalTotalQty1: any = 0;
@@ -1323,6 +1352,12 @@ chkInvoiceNo(InvoiceNo){
             });
         });
     } 
+    onEnterHSNCode(event){
+        const HSNCodeElement = document.querySelector(`[name='HSNCode']`) as HTMLElement;
+        if (HSNCodeElement) {
+            HSNCodeElement.focus();
+        }
+    }
 }
 export class LastThreeItemList {
     ItemID: any;

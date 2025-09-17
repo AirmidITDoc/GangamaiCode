@@ -117,7 +117,7 @@ export class IssueToDepartmentComponent implements OnInit {
         this.gridConfig1 = {
             apiUrl: "IssueToDepartment/IssueToDeptdetailList",
             columnsList: [
-                  { heading: "Status", key: "status", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 70 },
+                  { heading: "Status", key: "status", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 70, template: this.statusTable2 },
 
                 { heading: "ItemName", key: "itemName", sort: true, align: 'left', emptySign: 'NA', widthh: 350 },
                 { heading: "Batch No", key: "batchNo", sort: true, align: 'left', emptySign: 'NA' },
@@ -137,10 +137,7 @@ export class IssueToDepartmentComponent implements OnInit {
         this.isShowDetailTable = true;
         setTimeout(() => {
             this.grid1.gridConfig = this.gridConfig1;
-            this.gridConfig1.columnsList.find(col => col.key === 'status')!.template = this.statusTable2;
             this.grid1.bindGridData();
-
-
         }, 500);
     }
 

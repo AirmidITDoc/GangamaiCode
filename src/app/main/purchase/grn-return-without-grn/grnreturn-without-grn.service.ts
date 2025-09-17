@@ -101,5 +101,9 @@ export class GRNReturnWithoutGRNService {
   public getGRNreturnreportview(GRNReturnId) {
     return this._httpClient.get("Pharmacy/view-GRNReturnReport?GRNReturnId=" + GRNReturnId);
   }
+
+  public getGRNReturnrtrvlist(Param) {
+    return this._httpClient1.PostData("GRNReturn/GRNReturnList", Param);
+  }
   
 }
