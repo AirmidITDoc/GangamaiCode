@@ -12,165 +12,165 @@ export class IPSearchListService {
   myFilterform: FormGroup;
   myShowAdvanceForm: FormGroup;
   mySaveForm: FormGroup;
-  bsaveForm:FormGroup;
-  psaveForm:FormGroup;
-  advForm:FormGroup;
+  bsaveForm: FormGroup;
+  psaveForm: FormGroup;
+  advForm: FormGroup;
   paymentForm: FormGroup;
   myShowDischargeSummaryForm: FormGroup;
-  myRefundBillForm:FormGroup;
-  myRefundAdvanceForm:FormGroup;
+  myRefundBillForm: FormGroup;
+  myRefundAdvanceForm: FormGroup;
   RefundOfBillFormGroup: FormGroup;
   // IsDischarge:FormGroup;
   // getIPLitPharmsalesDateWise: any;
-  
 
-constructor(public _httpClient:HttpClient,public _httpClient1:ApiCaller,
+
+  constructor(public _httpClient: HttpClient, public _httpClient1: ApiCaller,
     private _formBuilder: UntypedFormBuilder,
     //  public datePipe: DatePipe,
     private _loaderService: LoaderService,
-    ) {
-      this.myFilterform=this.filterForm();
-      this.myShowAdvanceForm = this.showAdvanceForm();
-      this.paymentForm =this.showPaymentForm();
-      // this.mySaveForm=this.DischargesaveForm();
-      this.bsaveForm=this.bedsaveForm();
-      this.psaveForm=this.presaveForm();
-      this.myRefundBillForm=this.refundBillForm();
-      this.myRefundAdvanceForm=this.refundAdvanceForm();
-      this.RefundOfBillFormGroup=this.OPrefundForm();
-      // this.myShowDischargeSummaryForm = this.showDischargeSummaryForm();
-     }
+  ) {
+    this.myFilterform = this.filterForm();
+    this.myShowAdvanceForm = this.showAdvanceForm();
+    this.paymentForm = this.showPaymentForm();
+    // this.mySaveForm=this.DischargesaveForm();
+    this.bsaveForm = this.bedsaveForm();
+    this.psaveForm = this.presaveForm();
+    this.myRefundBillForm = this.refundBillForm();
+    this.myRefundAdvanceForm = this.refundAdvanceForm();
+    this.RefundOfBillFormGroup = this.OPrefundForm();
+    // this.myShowDischargeSummaryForm = this.showDischargeSummaryForm();
+  }
 
   filterForm(): FormGroup {
     return this._formBuilder.group({
       RegNo: '',
       IPDNo: '',
-      FirstName:['', [ Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),]],
-      MiddleName:['', [ Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),]],
-      LastName:['', [Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),]],
-      MobileNo: ['', [Validators.pattern("^[0-9]*$"),Validators.minLength(10),Validators.maxLength(10),]],   
+      FirstName: ['', [Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),]],
+      MiddleName: ['', [Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),]],
+      LastName: ['', [Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),]],
+      MobileNo: ['', [Validators.pattern("^[0-9]*$"), Validators.minLength(10), Validators.maxLength(10),]],
       searchDoctorId: '0',
       DoctorName: '',
-      IsDischarge:[0],
+      IsDischarge: [0],
       WardId: '0',
       RoomName: '',
       fromDate: [],
       enddate: [],
-      DischargeId:[''],
-      
+      DischargeId: [''],
+
     });
   }
 
   showAdvanceForm(): FormGroup {
     return this._formBuilder.group({
-      AdmissionID:'',
-      AdvanceId:'',
+      AdmissionID: '',
+      AdvanceId: '',
       RegNo: '',
       IPDNo: '',
-      FirstName:['', [
+      FirstName: ['', [
         Validators.required,
         Validators.pattern("^[A-Za-z]*[a-zA-Z]*$"),
       ]],
       PatientName: '',
       // DOT: '', 
-      DOA:'',
-      AdmDateTime:'',
-      BedId:'',
-      BedName :'',
-      AdmittedDoctor1:'',
-      DOT:'',
-      BedNo:'',
+      DOA: '',
+      AdmDateTime: '',
+      BedId: '',
+      BedName: '',
+      AdmittedDoctor1: '',
+      DOT: '',
+      BedNo: '',
       DoctorId: '0',
       DoctorName: '',
       WardId: '0',
       RoomName: '',
-      TariffId:'',
-      TariffName:'',
-      Date:[(new Date()).toISOString()],
-      ClassId:'',
-      ClassName:'',
-      currentDate:'',
-      DischargeId:'',
-      cashAmt:'',
-      AdvanceAmount:['',Validators.pattern("^[0-9]*$")],
-      AdvanceUsedAmount:['',Validators.pattern("^[0-9]*$")],
-      BalanceAmount:['',Validators.pattern("^[0-9]*$")],
-      Amount:['',Validators.required],
-      Remark: ''   ,
-      PaymentId : '0',
-      BillNo : '0',
-      ReceiptNo : '',
-      PaymentDate	: '',
-      PaymentTime : '',
-      CashPayAmount :	'0',
-      ChequePayAmount : '0',
-      ChequeNo : '',
-      BankName : '',
-      ChequeDate : '',
-      CardPayAmount :	'0',
-      CardNo : '',
-      CardBankName : '',
-      CardDate : '',
+      TariffId: '',
+      TariffName: '',
+      Date: [(new Date()).toISOString()],
+      ClassId: '',
+      ClassName: '',
+      currentDate: '',
+      DischargeId: '',
+      cashAmt: '',
+      AdvanceAmount: ['', Validators.pattern("^[0-9]*$")],
+      AdvanceUsedAmount: ['', Validators.pattern("^[0-9]*$")],
+      BalanceAmount: ['', Validators.pattern("^[0-9]*$")],
+      Amount: ['', Validators.required],
+      Remark: '',
+      PaymentId: '0',
+      BillNo: '0',
+      ReceiptNo: '',
+      PaymentDate: '',
+      PaymentTime: '',
+      CashPayAmount: '0',
+      ChequePayAmount: '0',
+      ChequeNo: '',
+      BankName: '',
+      ChequeDate: '',
+      CardPayAmount: '0',
+      CardNo: '',
+      CardBankName: '',
+      CardDate: '',
       //AdvanceUsedAmount :	'0',
-     // AdvanceId :	'0',
-      RefundId :	'0',
-      TransactionType :	'0',
+      // AdvanceId :	'0',
+      RefundId: '0',
+      TransactionType: '0',
       //Remark : '',
-      AddBy:	'0',
-      IsCancelled	: ['false'],
-      IsCancelledBy : '0',
-      IsCancelledDate	: '',
-      CashCounterId :	'0',
-      IsSelfORCompany	: '0',
-      CompanyId : '0',
-      NEFTPayAmount :	'0',
-      NEFTNo : '',
-      NEFTBankMaster : '',
-      NEFTDate	:'',
-      PayTMAmount	: '0',
-      PayTMTranNo : '',
-      PayTMDate : '',
-      
+      AddBy: '0',
+      IsCancelled: ['false'],
+      IsCancelledBy: '0',
+      IsCancelledDate: '',
+      CashCounterId: '0',
+      IsSelfORCompany: '0',
+      CompanyId: '0',
+      NEFTPayAmount: '0',
+      NEFTNo: '',
+      NEFTBankMaster: '',
+      NEFTDate: '',
+      PayTMAmount: '0',
+      PayTMTranNo: '',
+      PayTMDate: '',
+
 
     });
   }
 
 
-  showPaymentForm(): FormGroup{
+  showPaymentForm(): FormGroup {
     return this._formBuilder.group({
-      PaymentId : '0',
-      BillNo : '0',
-      ReceiptNo : '',
-      PaymentDate	: '',
-      PaymentTime : '',
-      CashPayAmount :	'0',
-      ChequePayAmount : '0',
-      ChequeNo : '',
-      BankName : '',
-      ChequeDate : '',
-      CardPayAmount :	'0',
-      CardNo : '',
-      CardBankName : '',
-      CardDate : '',
-      AdvanceUsedAmount :	'0',
-      AdvanceId :	'0',
-      RefundId :	'0',
-      TransactionType :	'0',
-      Remark : '',
-      AddBy:	'0',
-      IsCancelled	: ['false'],
-      IsCancelledBy : '0',
-      IsCancelledDate	: '',
-      CashCounterId :	'0',
-      IsSelfORCompany	: '0',
-      CompanyId : '0',
-      NEFTPayAmount :	'0',
-      NEFTNo : '',
-      NEFTBankMaster : '',
-      NEFTDate	:'',
-      PayTMAmount	: '0',
-      PayTMTranNo : '',
-      PayTMDate : '',
+      PaymentId: '0',
+      BillNo: '0',
+      ReceiptNo: '',
+      PaymentDate: '',
+      PaymentTime: '',
+      CashPayAmount: '0',
+      ChequePayAmount: '0',
+      ChequeNo: '',
+      BankName: '',
+      ChequeDate: '',
+      CardPayAmount: '0',
+      CardNo: '',
+      CardBankName: '',
+      CardDate: '',
+      AdvanceUsedAmount: '0',
+      AdvanceId: '0',
+      RefundId: '0',
+      TransactionType: '0',
+      Remark: '',
+      AddBy: '0',
+      IsCancelled: ['false'],
+      IsCancelledBy: '0',
+      IsCancelledDate: '',
+      CashCounterId: '0',
+      IsSelfORCompany: '0',
+      CompanyId: '0',
+      NEFTPayAmount: '0',
+      NEFTNo: '',
+      NEFTBankMaster: '',
+      NEFTDate: '',
+      PayTMAmount: '0',
+      PayTMTranNo: '',
+      PayTMDate: '',
     })
   }
 
@@ -193,183 +193,183 @@ constructor(public _httpClient:HttpClient,public _httpClient1:ApiCaller,
   //     // DischargesummaryId :'',
   //     DischargeSummaryId:'', 
   //     DischargeId :'',
-	//     History :'',
+  //     History :'',
   //     Diagnosis :'',
   //     Investigation :'',
   //     ClinicalFinding:'',
   //     OpertiveNotes:'',
   //     TreatmentGiven:'',
   //     TreatmentAdvisedAfterDischarge:'',
-	//     Followupdate:this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
-	//     Remark:'',
-	//     DischargeSummaryDate:'',
-	//     OPDate :(this.datePipe.transform(new Date(), 'yyyy-MM-dd')),
-	//     OPTime :[(new Date()).toISOString()],
-	//     DischargeDoctor1 :'',
-	//     DischargeDoctor2 :'',
-	//     DischargeDoctor3 :'',
-	//     DischargeSummaryTime :'',
-	//     DoctorAssistantName :'',
-	//     ClaimNumber :'',
-	//     PreOthNumber:'',
+  //     Followupdate:this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
+  //     Remark:'',
+  //     DischargeSummaryDate:'',
+  //     OPDate :(this.datePipe.transform(new Date(), 'yyyy-MM-dd')),
+  //     OPTime :[(new Date()).toISOString()],
+  //     DischargeDoctor1 :'',
+  //     DischargeDoctor2 :'',
+  //     DischargeDoctor3 :'',
+  //     DischargeSummaryTime :'',
+  //     DoctorAssistantName :'',
+  //     ClaimNumber :'',
+  //     PreOthNumber:'',
   //     AddedBy :'',
-	//     AddedByDate :(this.datePipe.transform(new Date(), 'yyyy-MM-dd')),
-	//     SurgeryProcDone :(this.datePipe.transform(new Date(), 'yyyy-MM-dd')),
-	//     ICD10CODE :'',
-	//     ClinicalConditionOnAdmisssion:'',
-	//     OtherConDrOpinions:'',
-	//     ConditionAtTheTimeOfDischarge :'',
-	//     PainManagementTechnique	:'',
-	//     LifeStyle :'',
-	//     WarningSymptoms	:'',
-	//     Radiology :'',
-	//     IsNormalOrDeath :'',
+  //     AddedByDate :(this.datePipe.transform(new Date(), 'yyyy-MM-dd')),
+  //     SurgeryProcDone :(this.datePipe.transform(new Date(), 'yyyy-MM-dd')),
+  //     ICD10CODE :'',
+  //     ClinicalConditionOnAdmisssion:'',
+  //     OtherConDrOpinions:'',
+  //     ConditionAtTheTimeOfDischarge :'',
+  //     PainManagementTechnique	:'',
+  //     LifeStyle :'',
+  //     WarningSymptoms	:'',
+  //     Radiology :'',
+  //     IsNormalOrDeath :'',
   //     DoctorName1: '',
-    
+
   //     DoctorIdOne: '',
   //     DoctorIdTwo: ''
   //   });
   // }
 
- refundBillForm(): FormGroup {
+  refundBillForm(): FormGroup {
     return this._formBuilder.group({
-      AdmissionId:'',
+      AdmissionId: '',
       RegNo: '',
       PatientName: '',
-      DOA:'',
-      DOT:'',
-      BedNo:'',
+      DOA: '',
+      DOT: '',
+      BedNo: '',
       DoctorId: '0',
       DoctorName: '',
       WardId: '0',
       RoomName: '',
-      DischargeSummaryId:'', 
-      DischargeId :'',
-	    History :'',
-      Diagnosis :'',
-      Investigation :'',
-      ClinicalFinding:'',
-      OpertiveNotes:'',
-      TreatmentGiven:'',
-      TreatmentAdvisedAfterDischarge:'',
-	    Followupdate:'',
-	    Remark:'',
-	    DischargeSummaryDate:'',
-	    OPDate :'',
-	    OPTime :'',
-	    DischargeDoctor1 :'',
-	    DischargeDoctor2 :'',
-	    DischargeDoctor3 :'',
-	    DischargeSummaryTime :'',
-	    DoctorAssistantName :'',
-	    ClaimNumber :'',
-	    PreOthNumber:'',
-      AddedBy :'',
-	    AddedByDate :'',
-	    SurgeryProcDone :'',
-	    ICD10CODE :'',
-	    ClinicalConditionOnAdmisssion:'',
-	    OtherConDrOpinions:'',
-	    ConditionAtTheTimeOfDischarge :'',
-	    PainManagementTechnique	:'',
-	    LifeStyle :'',
-	    WarningSymptoms	:'',
-	    Radiology :'',
-	    IsNormalOrDeath :'',
+      DischargeSummaryId: '',
+      DischargeId: '',
+      History: '',
+      Diagnosis: '',
+      Investigation: '',
+      ClinicalFinding: '',
+      OpertiveNotes: '',
+      TreatmentGiven: '',
+      TreatmentAdvisedAfterDischarge: '',
+      Followupdate: '',
+      Remark: '',
+      DischargeSummaryDate: '',
+      OPDate: '',
+      OPTime: '',
+      DischargeDoctor1: '',
+      DischargeDoctor2: '',
+      DischargeDoctor3: '',
+      DischargeSummaryTime: '',
+      DoctorAssistantName: '',
+      ClaimNumber: '',
+      PreOthNumber: '',
+      AddedBy: '',
+      AddedByDate: '',
+      SurgeryProcDone: '',
+      ICD10CODE: '',
+      ClinicalConditionOnAdmisssion: '',
+      OtherConDrOpinions: '',
+      ConditionAtTheTimeOfDischarge: '',
+      PainManagementTechnique: '',
+      LifeStyle: '',
+      WarningSymptoms: '',
+      Radiology: '',
+      IsNormalOrDeath: '',
       DoctorName1: '',
       DoctorIdOne: '',
       DoctorIdTwo: ''
     });
   }
 
- 
+
   refundAdvanceForm(): FormGroup {
     return this._formBuilder.group({
-      AdmissionId:'',
+      AdmissionId: '',
       RegNo: '',
       PatientName: '',
-      DOA:'',
-      DOT:'',
-      BedNo:'',
+      DOA: '',
+      DOT: '',
+      BedNo: '',
       DoctorId: '0',
       DoctorName: '',
       WardId: '0',
       RoomName: '',
-      DischargeSummaryId:'', 
-      DischargeId :'',
-	    History :'',
-      Diagnosis :'',
-      Investigation :'',
-      ClinicalFinding:'',
-      OpertiveNotes:'',
-      TreatmentGiven:'',
-      TreatmentAdvisedAfterDischarge:'',
-	    Followupdate:'',
-	    Remark:'',
-	    DischargeSummaryDate:'',
-	    OPDate :'',
-	    OPTime :'',
-	    DischargeDoctor1 :'',
-	    DischargeDoctor2 :'',
-	    DischargeDoctor3 :'',
-	    DischargeSummaryTime :'',
-	    DoctorAssistantName :'',
-	    ClaimNumber :'',
-	    PreOthNumber:'',
-      AddedBy :'',
-	    AddedByDate :'',
-	    SurgeryProcDone :'',
-	    ICD10CODE :'',
-	    ClinicalConditionOnAdmisssion:'',
-	    OtherConDrOpinions:'',
-	    ConditionAtTheTimeOfDischarge :'',
-	    PainManagementTechnique	:'',
-	    LifeStyle :'',
-	    WarningSymptoms	:'',
-	    Radiology :'',
-	    IsNormalOrDeath :'',
+      DischargeSummaryId: '',
+      DischargeId: '',
+      History: '',
+      Diagnosis: '',
+      Investigation: '',
+      ClinicalFinding: '',
+      OpertiveNotes: '',
+      TreatmentGiven: '',
+      TreatmentAdvisedAfterDischarge: '',
+      Followupdate: '',
+      Remark: '',
+      DischargeSummaryDate: '',
+      OPDate: '',
+      OPTime: '',
+      DischargeDoctor1: '',
+      DischargeDoctor2: '',
+      DischargeDoctor3: '',
+      DischargeSummaryTime: '',
+      DoctorAssistantName: '',
+      ClaimNumber: '',
+      PreOthNumber: '',
+      AddedBy: '',
+      AddedByDate: '',
+      SurgeryProcDone: '',
+      ICD10CODE: '',
+      ClinicalConditionOnAdmisssion: '',
+      OtherConDrOpinions: '',
+      ConditionAtTheTimeOfDischarge: '',
+      PainManagementTechnique: '',
+      LifeStyle: '',
+      WarningSymptoms: '',
+      Radiology: '',
+      IsNormalOrDeath: '',
       DoctorName1: '',
       DoctorIdOne: '',
       DoctorIdTwo: ''
     });
   }
 
- 
 
-  bedsaveForm(): FormGroup{
+
+  bedsaveForm(): FormGroup {
     return this._formBuilder.group({
-     RegNo: '',
-     RoomId: ['',Validators.required],
-     RoomName: '',
-     BedId:['',Validators.required],
-     BedName :'',
-     ClassId : ['',Validators.required],
-     ClassName:'',
-     Remark :'',
+      RegNo: '',
+      RoomId: ['', Validators.required],
+      RoomName: '',
+      BedId: ['', Validators.required],
+      BedName: '',
+      ClassId: ['', Validators.required],
+      ClassName: '',
+      Remark: '',
     });
   }
 
-  presaveForm(): FormGroup{
+  presaveForm(): FormGroup {
     return this._formBuilder.group({
-     RegNo: '',
-     WardId: ['',Validators.required],
-     RoomName: '',
-     StoreId:['',Validators.required],
-     StoreName :'',
-     DrugId : ['',Validators.required],
-     DoseId: [''],
-     QtyPerDay:[''],
-     UnitofMeasurementId:['',Validators.required],
-     UnitofMeasurementName :'',
-     WardID:'',
-     pDate:'',
-     PTime:'',
-     ClassID:['',Validators.required],
-     Remark :'',
-     TotalQty:['',Validators.required],
-     RoundVisitDate:[(new Date()).toISOString()],
-     RoundVisitTime:'',
-     DocNameID:'',
+      RegNo: '',
+      WardId: ['', Validators.required],
+      RoomName: '',
+      StoreId: ['', Validators.required],
+      StoreName: '',
+      DrugId: ['', Validators.required],
+      DoseId: [''],
+      QtyPerDay: [''],
+      UnitofMeasurementId: ['', Validators.required],
+      UnitofMeasurementName: '',
+      WardID: '',
+      pDate: '',
+      PTime: '',
+      ClassID: ['', Validators.required],
+      Remark: '',
+      TotalQty: ['', Validators.required],
+      RoundVisitDate: [(new Date()).toISOString()],
+      RoundVisitTime: '',
+      DocNameID: '',
     });
   }
 
@@ -399,230 +399,213 @@ constructor(public _httpClient:HttpClient,public _httpClient1:ApiCaller,
     });
   }
 
-  public getpackagedetList(employee)
-  {    
-    return this._httpClient1.PostData("IPBill/PackageDetailsList",employee);
+  public getpackagedetList(employee) {
+    return this._httpClient1.PostData("IPBill/PackageDetailsList", employee);
   }
-    public getpackagedetServiceWiseList(employee)
-  {    
-    return this._httpClient1.PostData("IPBill/Addpackagelist",employee);
+  public getpackagedetServiceWiseList(employee) {
+    return this._httpClient1.PostData("IPBill/Addpackagelist", employee);
   }
-  public advanceHeaderInsert(employee)
-  {    
-    return this._httpClient.post("InPatient/IPAdvance",employee);
+  public advanceHeaderInsert(employee) {
+    return this._httpClient.post("InPatient/IPAdvance", employee);
   }
 
-  public DischargeInsert(employee)
-  {    
-  return this._httpClient.post("InPatient/InsertIPDischarge",employee);
+  public DischargeInsert(employee) {
+    return this._httpClient.post("InPatient/InsertIPDischarge", employee);
   }
 
-  public DischargeUpdate(employee){
-    return this._httpClient.post("InPatient/UpdateIPDischarge",employee);
+  public DischargeUpdate(employee) {
+    return this._httpClient.post("InPatient/UpdateIPDischarge", employee);
   }
 
-  public PrescriptionInsert(employee)
-  {    
-  return this._httpClient.post("InPatient/InsertIPPrescription",employee);
+  public PrescriptionInsert(employee) {
+    return this._httpClient.post("InPatient/InsertIPPrescription", employee);
   }
-  
+
 
   // Dashboard
 
-  public getAccountDashboard()
-  {
-    return this._httpClient.post("Generic/GetByProc?procName=rptAccountDashboard",{})
+  public getAccountDashboard() {
+    return this._httpClient.post("Generic/GetByProc?procName=rptAccountDashboard", {})
   }
 
-  public getAccountOPBillDashChart(params)
-  {
+  public getAccountOPBillDashChart(params) {
     return this._httpClient.post("Generic/GetByProc?procName=d_OP_DepartBillInfo_Chart_Range", params)
   }
 
-  public getAccountIPBillDashChart(params)
-  {
+  public getAccountIPBillDashChart(params) {
     return this._httpClient.post("Generic/GetByProc?procName=d_IP_DepartBillInfo_Chart_Range", params)
   }
 
-  public getOPBillInfoSummryDashboard()
-  {
-    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_OPBillInfoSumry_Range",{})
+  public getOPBillInfoSummryDashboard() {
+    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_OPBillInfoSumry_Range", {})
   }
-  
+
   // public getIPBillInfoSummryDashboard()
   // {
   //   return this._httpClient.post("Generic/GetByProc?procName=Rtrv_OPBillInfoSumry_Range",{})
   // }
 
-  public getIPIntriemBILLBrowsePrint(emp)
-  {
-    return this._httpClient.post("Generic/GetByProc?procName=rptIPDInterimBill",emp)
+  public getIPIntriemBILLBrowsePrint(emp) {
+    return this._httpClient.post("Generic/GetByProc?procName=rptIPDInterimBill", emp)
   }
-  public getIPDashboard()
-  {
-    return this._httpClient.post("Generic/GetByProc?procName=rptIPDashboard",{})
+  public getIPDashboard() {
+    return this._httpClient.post("Generic/GetByProc?procName=rptIPDashboard", {})
   }
-  public getCollSummryDashboard()
-  {
-    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_ColSumry_Range",{})
+  public getCollSummryDashboard() {
+    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_ColSumry_Range", {})
   }
-  
-  public getIPDashChart(params)
-  {
+
+  public getIPDashChart(params) {
     return this._httpClient.post("Generic/GetByProc?procName=rptIP_DepartmentChart_Range", params)
   }
 
-  public getOPDashChart(params)
-  {
+  public getOPDashChart(params) {
     return this._httpClient.post("Generic/GetByProc?procName=rptOP_DepartmentChart_Range", params)
   }
 
- public getCollectionSummaryChart(params){
+  public getCollectionSummaryChart(params) {
     return this._httpClient.post("Generic/GetByProc?procName=Rtrv_CollectionSummary_Range", params)
-}
+  }
 
-public getInventoryDashboard(){
-    return this._httpClient.post("Generic/GetByProc?procName=rptInventoryDashboard",{})
-}
+  public getInventoryDashboard() {
+    return this._httpClient.post("Generic/GetByProc?procName=rptInventoryDashboard", {})
+  }
 
-public getInvPurchaseOrderDashChart(params){
+  public getInvPurchaseOrderDashChart(params) {
     return this._httpClient.post("Generic/GetByProc?procName=rptInv_StoreWPurchase_Range", params)
-}
+  }
 
-public getAdmittedPatientList(employee) {
+  public getAdmittedPatientList(employee) {
     return this._httpClient.post("Generic/GetByProc?procName=Rtrv_Admtd_Ptnt_Dtls", employee)
-}  
+  }
 
-public getAdmittedPatientList_1(Param,loader = true){ 
-  if (loader) {
-    this._loaderService.show();
-}
-  return this._httpClient.post("Generic/GetDataSetByProc?procName=m_rtrv_Admtd_Ptnt_Dtls", Param);
-}
+  public getAdmittedPatientList_1(Param, loader = true) {
+    if (loader) {
+      this._loaderService.show();
+    }
+    return this._httpClient.post("Generic/GetDataSetByProc?procName=m_rtrv_Admtd_Ptnt_Dtls", Param);
+  }
 
-public getDischargedPatientList(employee) {
-  return this._httpClient.post("Generic/GetByProc?procName=Rtrv_AdmtdWithDischargeDate_Ptnt_Dtls", employee)
-}  
+  public getDischargedPatientList(employee) {
+    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_AdmtdWithDischargeDate_Ptnt_Dtls", employee)
+  }
 
-public getDischargedPatientList_1(employee) {
+  public getDischargedPatientList_1(employee) {
     return this._httpClient.post("Generic/GetDataSetByProc?procName=m_rtrv_AdmtdWithDischargeDate_Ptnt_Dtls", employee)
-}  
+  }
 
-public getDischargePatientList() {
-    return this._httpClient.post("Generic/GetByProc?procName=ps_rtrv_dischargesimple",{})
-}  
-  
-public getBankMasterCombo() {
+  public getDischargePatientList() {
+    return this._httpClient.post("Generic/GetByProc?procName=ps_rtrv_dischargesimple", {})
+  }
+
+  public getBankMasterCombo() {
     return this._httpClient.post("Generic/GetByProc?procName=RetrieveBankMasterForCombo", {})
-}
+  }
 
-public getPaymentPrint (paymentid){
+  public getPaymentPrint(paymentid) {
     return this._httpClient.post("Generic/GetByProc?procName=rptIPDPaymentReceiptPrint", paymentid)
-}
+  }
 
-  
-  
-  public getAdvanceList(employee)
-  {
-    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_T_AdvanceList",employee)
+
+
+  public getAdvanceList(employee) {
+    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_T_AdvanceList", employee)
   }
   // Rtrv_IPRefundAdvanceDetails 
   public getRefundofAdvanceList(Id) {
-    return this._httpClient1.PostData("Advance/PatientRefundOfAdvancesList" , Id);
-}
-
-  public getReturndetails(employee){
-    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_IPRefundDetails",employee)
+    return this._httpClient1.PostData("Advance/PatientRefundOfAdvancesList", Id);
   }
 
-  public getAdvReturndetails(employee){
-    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_RefundOfAdvance",employee)
+  public getReturndetails(employee) {
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_IPRefundDetails", employee)
   }
-  public getrefundAdvanceReceiptPrint(RefundId){
+
+  public getAdvReturndetails(employee) {
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_RefundOfAdvance", employee)
+  }
+  public getrefundAdvanceReceiptPrint(RefundId) {
     return this._httpClient.post("Generic/GetByProc?procName=rptIPRefundofAdvancePrint", RefundId)
 
   }
   public getAdvanceBrowsePrint(AdvanceDetailID) {
     return this._httpClient.post("Generic/GetByProc?procName=rptIPDAdvancePrint", AdvanceDetailID)
-  }  
-  public getRefundofBillList(employee)
-  {
-    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_IPBill_For_Refund",employee)
   }
- 
-  public getRefundofBillServiceList(Id) {
-    return this._httpClient1.PostData("RefundOfBill/IPBillForRefundList" , Id);
-}
-  public getRefundofBillIPDList(employee){
-  return this._httpClient.post("Generic/GetByProc?procName=m_IPBillListforRefund",employee)
+  public getRefundofBillList(employee) {
+    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_IPBill_For_Refund", employee)
   }
 
-     // Get CashCounter List 
-     public getCashcounterList( loader = true) {
-      if (loader) {
-        this._loaderService.show();
-    } 
-      return this._httpClient.post("Generic/GetByProc?procName=m_RtrvCashCounterForCombo", {})
+  public getRefundofBillServiceList(Id) {
+    return this._httpClient1.PostData("RefundOfBill/IPBillForRefundList", Id);
+  }
+  public getRefundofBillIPDList(employee) {
+    return this._httpClient.post("Generic/GetByProc?procName=m_IPBillListforRefund", employee)
+  }
+
+  // Get CashCounter List 
+  public getCashcounterList(loader = true) {
+    if (loader) {
+      this._loaderService.show();
     }
+    return this._httpClient.post("Generic/GetByProc?procName=m_RtrvCashCounterForCombo", {})
+  }
   // public getRefundofBillOPDList(employee){
   //   return this._httpClient.post("Generic/GetByProc?procName=RtrvRefundOfBillOPDList",employee)
   //   }
 
-      
+
   public InsertRefundOfBill(employee, loader = true) {
     if (loader) {
       this._loaderService.show();
-  } 
+    }
     return this._httpClient1.PostData("RefundOfBill/IPRefundOfBILLInsert", employee)
-  } 
+  }
   public InsertAdvanceHeader(employee, loader = true) {
     if (loader) {
       this._loaderService.show();
-  } 
+    }
     return this._httpClient1.PostData("Advance/InsertSP", employee)
-  } 
+  }
   public UpdateAdvanceHeader(employee, loader = true) {
     if (loader) {
       this._loaderService.show();
-  } 
-  return this._httpClient1.PutData("Advance/Edit",employee)  
-  }
- 
-  public AdvanceHeaderlist(Id) {
-    return this._httpClient1.PostData("Advance/PatientWiseAdvanceList" , Id);
-}
- 
-  public insertIPRefundOfAdvance(employee) {
-    return this._httpClient1.PostData("Advance/IPRefundofAdvanceInsert", employee)
-  } 
-  public insertIPRefundOfBill(employee)
-  {
-    return this._httpClient.post("InPatient/InsertIPRefundofBill",employee)
+    }
+    return this._httpClient1.PutData("Advance/Edit", employee)
   }
 
-  
+  public AdvanceHeaderlist(Id) {
+    return this._httpClient1.PostData("Advance/PatientWiseAdvanceList", Id);
+  }
+
+  public insertIPRefundOfAdvance(employee) {
+    return this._httpClient1.PostData("Advance/IPRefundofAdvanceInsert", employee)
+  }
+  public insertIPRefundOfBill(employee) {
+    return this._httpClient.post("InPatient/InsertIPRefundofBill", employee)
+  }
+
+
   populateForm1(employee) {
     this.myShowDischargeSummaryForm.patchValue(employee);
-        
+
   }
   populateForm2(employee) {
     this.myRefundAdvanceForm.patchValue(employee);
-        
+
   }
- 
+
   // Insert add Charges 
   public InsertIPAddCharges(employee, loader = true) {
     if (loader) {
       this._loaderService.show();
-  } 
+    }
     return this._httpClient1.PostData("IPBill/AddChargeInsert", employee);
   }
 
-  
+
   public Addchargescancle(employee, loader = true) {
     if (loader) {
       this._loaderService.show();
-  } 
+    }
     return this._httpClient.post("InPatient/DeleteIPCharges", employee);
   }
 
@@ -630,21 +613,21 @@ public getPaymentPrint (paymentid){
   public InsertIPAddChargesNew(employee, loader = true) {
     if (loader) {
       this._loaderService.show();
-  } 
-  return this._httpClient1.PostData("IPBill/InsertLabRequest",employee)
-  } 
-  public UpdateChargesDetails(employee,Id, loader = true) {
+    }
+    return this._httpClient1.PostData("IPBill/InsertLabRequest", employee)
+  }
+  public UpdateChargesDetails(employee, Id, loader = true) {
     if (loader) {
       this._loaderService.show();
-  } 
-  return this._httpClient1.PutData("IPBill/UpdateAddcharges/"+Id,employee) 
-  } 
+    }
+    return this._httpClient1.PutData("IPBill/UpdateAddcharges/" + Id, employee)
+  }
   public InsertIPpaInsertBedChargesServicecakgeAddCharges(employee, loader = true) {
     if (loader) {
       this._loaderService.show();
-  } 
-  return this._httpClient1.PostData("IPBill/IPAddcharges",employee)
-  } 
+    }
+    return this._httpClient1.PostData("IPBill/IPAddcharges", employee)
+  }
   // public InsertIPBilling(employee)
   // {
   //   return this._httpClient.post("InPatient/IPBillingInsert",employee)
@@ -652,8 +635,8 @@ public getPaymentPrint (paymentid){
   public InsertIPBilling(employee, loader = true) {
     if (loader) {
       this._loaderService.show();
-  } 
-    return this._httpClient1.PostData("IPBill/IPBilllwithCashCounterInsert",employee)
+    }
+    return this._httpClient1.PostData("IPBill/IPBilllwithCashCounterInsert", employee)
   }
   // public InsertIPBillingCredit(employee)
   // {
@@ -662,52 +645,51 @@ public getPaymentPrint (paymentid){
   public InsertIPBillingCredit(employee, loader = true) {
     if (loader) {
       this._loaderService.show();
-  } 
-    return this._httpClient1.PostData("IPBill/IPBilllCreditInsert",employee)
+    }
+    return this._httpClient1.PostData("IPBill/IPBilllCreditInsert", employee)
   }
   public InsertIPDraftBilling(e, loader = true) {
     if (loader) {
       this._loaderService.show();
-  } 
-    return this._httpClient1.PostData("IPBill/InsertIPDraftBill",e)
-  } 
+    }
+    return this._httpClient1.PostData("IPBill/InsertIPDraftBill", e)
+  }
   public InsertInterim(employee, loader = true) {
     if (loader) {
       this._loaderService.show();
-  } 
+    }
     return this._httpClient1.PostData("IPBill/IPInterimBillInsertWithCashCounter", employee)
-  } 
-  public BillDiscountAfter(employee)
-  {    
-    return this._httpClient1.PostData("IPBill/BillDiscountAfter",employee);
   }
-  public getClassList(employee){
-    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_ClassName_Conditional",employee)
+  public BillDiscountAfter(employee) {
+    return this._httpClient1.PostData("IPBill/BillDiscountAfter", employee);
+  }
+  public getClassList(employee) {
+    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_ClassName_Conditional", employee)
   }
   public AddchargesDelete(m_data, loader = true) {
     if (loader) {
       this._loaderService.show();
-  } 
-    return this._httpClient1.PostData("IPBill/IPAddchargesdelete" , m_data);
-  }  
-  public deleteCharges(employee){
-    return this._httpClient.post("Generic/GetByProc?procName=Delete_Addcharges",employee)
+    }
+    return this._httpClient1.PostData("IPBill/IPAddchargesdelete", m_data);
+  }
+  public deleteCharges(employee) {
+    return this._httpClient.post("Generic/GetByProc?procName=Delete_Addcharges", employee)
   }
 
-  public getIpPatientBillInfo(employee){
-    return this._httpClient.post("Generic/GetByProc?procName=ps_rtv_IPPatientBillInformation",employee)
+  public getIpPatientBillInfo(employee) {
+    return this._httpClient.post("Generic/GetByProc?procName=ps_rtv_IPPatientBillInformation", employee)
   }
 
-  public getPreviousBillInfo(employee){
-    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_IPPreviousBill_info",employee)
+  public getPreviousBillInfo(employee) {
+    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_IPPreviousBill_info", employee)
   }
 
-  public getIpdAdvanceSummaryPrint(employee){
-    return this._httpClient.post("Generic/GetByProc?procName=RptIPDAdvanceBillsummary",employee)
+  public getIpdAdvanceSummaryPrint(employee) {
+    return this._httpClient.post("Generic/GetByProc?procName=RptIPDAdvanceBillsummary", employee)
   }
 
-  getPatientVisitedListSearch(employee){
-    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PatientRegistrationList",employee)
+  getPatientVisitedListSearch(employee) {
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PatientRegistrationList", employee)
   }
 
   public getAdmittedPatientDetailList(employee) {
@@ -723,72 +705,71 @@ public getPaymentPrint (paymentid){
       },
     ];
   }
-  
 
-  
+
+
   public getAdvanceId(data) {
-    return this._httpClient.post("Generic/GetBySelectQuery?query="+data, {})
+    return this._httpClient.post("Generic/GetBySelectQuery?query=" + data, {})
   }
   public getPharmacyAmt(data) {
-    return this._httpClient.post("Generic/GetBySelectQuery?query="+data, {})
+    return this._httpClient.post("Generic/GetBySelectQuery?query=" + data, {})
   }
   public getCompanyPhAmt(m_data) {
-    return this._httpClient.post("Generic/ExecByQueryStatement?query=" + m_data,{});
-}
-  public getCheckBalanceAmt(data) {
-    return this._httpClient.post("Generic/GetBySelectQuery?query="+data, {})
+    return this._httpClient.post("Generic/ExecByQueryStatement?query=" + m_data, {});
   }
- 
+  public getCheckBalanceAmt(data) {
+    return this._httpClient.post("Generic/GetBySelectQuery?query=" + data, {})
+  }
+
   public getchargesList(Id) {
-    return this._httpClient1.PostData("IPBill/IPAddchargesList" , Id);
-}
+    return this._httpClient1.PostData("IPBill/IPAddchargesList", Id);
+  }
   public getBillheaderList(data) {
-    return this._httpClient.post("Generic/GetBySelectQuery?query="+data, {})
+    return this._httpClient.post("Generic/GetBySelectQuery?query=" + data, {})
   }
 
   public getchargesList1(data, loader = true) {
     if (loader) {
       this._loaderService.show();
-  } 
-    return this._httpClient1.PostData("IPBill/PathRadRequestList",data)
+    }
+    return this._httpClient1.PostData("IPBill/PathRadRequestList", data)
   }
 
   // Get billing Service List 
   public getBillingServiceList(employee) {
-    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_ServicesList",employee)
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_ServicesList", employee)
     // ps_Rtrv_BillingServicesList Rtrv_ServList
   }
 
   public getTemplate(query) {
-    return this._httpClient.post("Generic/GetBySelectQuery?query="+query, {})
+    return this._httpClient.post("Generic/GetBySelectQuery?query=" + query, {})
   }
   public getIPRefundBILLBrowsePrint(RefundId) {
     return this._httpClient.post("Generic/GetByProc?procName=rptIPRefundofBillPrint", RefundId)
-  }    
-
- public getseletclassMasterCombo(Params){
-  return this._httpClient.post("Generic/GetByProc?procName=m_rtrv_BillingClassName", Params)
   }
-  
+
+  public getseletclassMasterCombo(Params) {
+    return this._httpClient.post("Generic/GetByProc?procName=m_rtrv_BillingClassName", Params)
+  }
+
   populateForm(employee) {
     this.myShowAdvanceForm.patchValue(employee);
     this.mySaveForm.patchValue(employee);
 
   }
-  public getConcessionCombo()
-  {
+  public getConcessionCombo() {
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_ConcessionReasonMasterForCombo", {});
   }
-  
-  
-  
-  
+
+
+
+
   public getDepartmentCombo() {
     return this._httpClient.post("Generic/GetByProc?procName=ps_Cmb_rtrv_DocDepartmentMasterForCombo", {})
   }
   //Doctor Master Combobox List
   public getDoctorMasterCombo(Id) {
-    return this._httpClient.post("Generic/GetByProc?procName=ps_Cmb_rtrv_DoctorWithDepartMasterForCombo_Conditional", {"Id":Id})
+    return this._httpClient.post("Generic/GetByProc?procName=ps_Cmb_rtrv_DoctorWithDepartMasterForCombo_Conditional", { "Id": Id })
   }
   //Doctor 1 Combobox List
   public getDoctorMaster1Combo() {
@@ -801,21 +782,21 @@ public getPaymentPrint (paymentid){
   public getserviceCombo() {
     return this._httpClient.post("Generic/GetByProc?procName=ps_Retrieve_ServiceMasterForCombo", {})
   }
- 
+
   public InsertIPRefundBilling(employee, loader = true) {
     if (loader) {
       this._loaderService.show();
-  } 
+    }
     return this._httpClient1.PostData("RefundOfBill/OPRefundOfBILLInsert", employee)
-  } 
+  }
   public getAdvcanceDetails(query) {
-    return this._httpClient.post("Generic/GetBySelectQuery?query="+query, {})
+    return this._httpClient.post("Generic/GetBySelectQuery?query=" + query, {})
   }
   public getPreRefundofBill(query) {
-    return this._httpClient.post("Generic/GetBySelectQuery?query="+query, {})
+    return this._httpClient.post("Generic/GetBySelectQuery?query=" + query, {})
   }
   public getPreRefundofAdvance(query) {
-    return this._httpClient.post("Generic/GetBySelectQuery?query="+query, {})
+    return this._httpClient.post("Generic/GetBySelectQuery?query=" + query, {})
   }
 
   // public xyz()
@@ -823,346 +804,285 @@ public getPaymentPrint (paymentid){
   //   return this._httpClient.post("Generic/GetByProc?procName=rptBarChartValues",{})
   // }
 
-  public depWiseCount(x) {
-    
-    return this._httpClient.post("Generic/GetByProc?procName=D_IPDepartment_WiseCount",x)
-  }
+  // public depWiseCount(x) {
 
-  public monthWiseCount(x) {
-    
-    return this._httpClient.post("Generic/GetByProc?procName=D_IPDepart_MonthlyWiseCount",x)
-  }
-  
-  public getIPLitDateWise(x)
-  {
-    return this._httpClient.post("Generic/GetByProc?procName=Dash_IPAdm_LitDateWise",x)
-  }
-  
-  public getDateWiseDepCount(params)
-  {
-    return this._httpClient.post("Generic/GetByProc?procName=Dash_DateWiseDeptCnt",params)
-  }
-  
-  
-  public getIPLitPharmsalesDateWise(x)
-  {
-      
-    return this._httpClient.post("Generic/GetByProc?procName=Dash_Phar_SalesDateWise",x)
-  }
+  //   return this._httpClient.post("Generic/GetByProc?procName=D_IPDepartment_WiseCount", x)
+  // }
+
+  // public monthWiseCount(x) {
+
+  //   return this._httpClient.post("Generic/GetByProc?procName=D_IPDepart_MonthlyWiseCount", x)
+  // }
+
+  // public getIPLitDateWise(x) {
+  //   return this._httpClient.post("Generic/GetByProc?procName=Dash_IPAdm_LitDateWise", x)
+  // }
+
+  // public getDateWiseDepCount(params) {
+  //   return this._httpClient.post("Generic/GetByProc?procName=Dash_DateWiseDeptCnt", params)
+  // }
 
 
-  public getIPLitPharmsalesMedicalDateWise(x)
-  {
-    return this._httpClient.post("Generic/GetByProc?procName=Dash_Phar_SalesMedicalDateWise",x)
-  }
-  public getIPLitDateWise1(x)
-  {
-        
-     return this._httpClient.post("Generic/GetByProc?procName=Dash_OPIP_BILLDATEWISE",x)
-  }
+  // public getIPLitPharmsalesDateWise(x) {
 
-  public getBedStatusList()
-  {
-    return this._httpClient.post("Generic/GetByProc?procName=rtrv_BedStatus",{})
-  }
+  //   return this._httpClient.post("Generic/GetByProc?procName=Dash_Phar_SalesDateWise", x)
+  // }
 
-  public getIPDoctorWiseBedStatusList()
-  {
-    return this._httpClient.post("Generic/GetByProc?procName=IPDoctorWiseBedStatus",{})
-  }
+
+  // public getIPLitPharmsalesMedicalDateWise(x) {
+  //   return this._httpClient.post("Generic/GetByProc?procName=Dash_Phar_SalesMedicalDateWise", x)
+  // }
+  // public getIPLitDateWise1(x) {
+
+  //   return this._httpClient.post("Generic/GetByProc?procName=Dash_OPIP_BILLDATEWISE", x)
+  // }
+
+  // public getBedStatusList() {
+  //   return this._httpClient.post("Generic/GetByProc?procName=rtrv_BedStatus", {})
+  // }
+
+  // public getIPDoctorWiseBedStatusList() {
+  //   return this._httpClient.post("Generic/GetByProc?procName=IPDoctorWiseBedStatus", {})
+  // }
 
   public getIPBILLBrowsePrint(BillNo) {
     return this._httpClient.post("Generic/GetByProc?procName=rptIPDFinalBill", BillNo)
-  }  
+  }
 
- public getIPDraftBILLBrowsePrint(BillNo){
-  return this._httpClient.post("Generic/GetByProc?procName=rptIPDDraftBillPrintSummary", BillNo)
- }
+  public getIPDraftBILLBrowsePrint(BillNo) {
+    return this._httpClient.post("Generic/GetByProc?procName=rptIPDDraftBillPrintSummary", BillNo)
+  }
 
- public getIPsettlementPrint(PaymentId){
-  return this._httpClient.post("Generic/GetByProc?procName=rptIPDPaymentReceiptPrint", PaymentId)
- }
- public InsertOpSettlementPayment (employee){
-  // return this._httpClient.post("InPatient/IPBillingCreditInsert", employee)
-   return this._httpClient.post("OutPatient/OpSettlement", employee)
-}
-public InsertIPSettlementPayment (employee){
-  // return this._httpClient.post("InPatient/IPBillingCreditInsert", employee)
-   return this._httpClient.post("InPatient/IPSettlement", employee)
-}
+  public getIPsettlementPrint(PaymentId) {
+    return this._httpClient.post("Generic/GetByProc?procName=rptIPDPaymentReceiptPrint", PaymentId)
+  }
+  public InsertOpSettlementPayment(employee) {
+    return this._httpClient.post("OutPatient/OpSettlement", employee)
+  }
+  public InsertIPSettlementPayment(employee) {
+    return this._httpClient.post("InPatient/IPSettlement", employee)
+  }
 
-public getPaidBillList(data) {
-  return this._httpClient.post("Generic/GetBySelectQuery?query="+data, {})
-}
+  // public getPaidBillList(data) {
+  //   return this._httpClient.post("Generic/GetBySelectQuery?query=" + data, {})
+  // }
 
-public getCreditBillList(data) {
-  return this._httpClient.post("Generic/GetBySelectQuery?query="+data, {})
-}
+  // public getCreditBillList(data) {
+  //   return this._httpClient.post("Generic/GetBySelectQuery?query=" + data, {})
+  // }
 
 
-public getLabRequestList(employee){
-   
-  return this._httpClient.post("Generic/GetByProc?procName=Rtrv_LabRequest_Nursing",employee)
-}
+  public getLabRequestList(employee) {
 
-public getLabrequestDetailList(employee)
-{
- return this._httpClient.post("Generic/GetByProc?procName=Rtrv_NursingLabRequestDetails",employee)
-}
+    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_LabRequest_Nursing", employee)
+  }
 
-public getpatientlist(employee){
-  return this._httpClient.post("Generic/GetByProc?procName=Retrieve_PatientlistDepartmentwise",employee)
-}
+  public getLabrequestDetailList(employee) {
+    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_NursingLabRequestDetails", employee)
+  }
 
-public getOPIPPatientList(employee){
+  public getpatientlist(employee) {
+    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_PatientlistDepartmentwise", employee)
+  }
+
+  public getOPIPPatientList(employee) {
+
+    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_OPIPPatientList", employee)
+  }
+
+  public getServicelistpathradio(employee) {
+    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_PathRadServiceList", employee)
+
+  }
+
+  public PathResultentryInsert(employee) {
+    return this._httpClient.post("InPatient/IPPathOrRadiRequest", employee)
+  }
+
+
+  public getOTRequestList(employee) {
+    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_BrowseOTlist", employee)
+  }
+
+  public getPrescriptionReturnList(employee) {
+    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_PrescriptionListFromWard", employee)
+  }
+
+  public getRefundofBillDetailList(employee) {
+    return this._httpClient.post("Generic/GetByProc?procName=RtrvIPDRefundAgainstBill_List", employee)
+  }
+
+
+  public getprescriptionList(employee) {
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_IP_Prescriptio_Det", employee)
+
+  }
+
+  public getIpFinalBillReceipt(BillNo) {
+    return this._httpClient.get("InPatient/view-IP-BillReceipt?BillNo=" + BillNo);
+  }
+
+  getIpFinalBillReceiptgroupwise(BillNo, loader = true) {
+    if (loader) {
+      this._loaderService.show();
+    }
+    return this._httpClient.get("InPatient/view-IP-BillReceiptgroupwise?BillNo=" + BillNo)
+  }
+
+
+  public getIpDraftBillReceipt(AdmissionID, loader = true) {
+    if (loader) {
+      this._loaderService.show();
+    }
+    return this._httpClient.get("InPatient/view-IP-DraftBillReceipt?AdmissionID=" + AdmissionID);
+  }
+
+  public getCompanyDraftBillReceipt(AdmissionID, loader = true) {
+    if (loader) {
+      this._loaderService.show();
+    }
+    return this._httpClient.get("IPReport/view-IPCompanyBill?AdmissionID=" + AdmissionID);
+  }
+
+  public getIpInterimBillReceipt(BillNo) {
+    return this._httpClient.get("InPatient/view-IP-InterimBillReceipt?BillNo=" + BillNo);
+  }
+
+  public getRefundofAdvanceview(RefundId) {
+    return this._httpClient.get("InPatient/view-IP-ReturnOfAdvanceReceipt?RefundId=" + RefundId);
+  }
+
+  public getAdvancedetail(Id){
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_IPAdvanceDetails",Id);
+  }
   
-  return this._httpClient.post("Generic/GetByProc?procName=Retrieve_OPIPPatientList",employee)
-}
-
-public getServicelistpathradio(employee){
-  return this._httpClient.post("Generic/GetByProc?procName=Rtrv_PathRadServiceList",employee) 
-
-}
-
-public PathResultentryInsert(employee){
-  return this._httpClient.post("InPatient/IPPathOrRadiRequest", employee)
-}
-
-
-public getOTRequestList(employee){
-  return this._httpClient.post("Generic/GetByProc?procName=Retrieve_BrowseOTlist", employee)
-}
-
-public getPrescriptionReturnList(employee){
-  return this._httpClient.post("Generic/GetByProc?procName=Retrieve_PrescriptionListFromWard", employee)
-}
-
-public getRefundofBillDetailList(employee){
-  return this._httpClient.post("Generic/GetByProc?procName=RtrvIPDRefundAgainstBill_List", employee)
-}
-
- 
-public getprescriptionList(employee) {
-  return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_IP_Prescriptio_Det", employee)
-   
-}
-
-public getIpFinalBillReceipt(BillNo){
-  return this._httpClient.get("InPatient/view-IP-BillReceipt?BillNo=" + BillNo);
-}
-
-getIpFinalBillReceiptgroupwise(BillNo,loader = true){
-  if (loader) {
-    this._loaderService.show();
-}
-  return this._httpClient.get("InPatient/view-IP-BillReceiptgroupwise?BillNo=" + BillNo)
- }
-
-
-public getIpDraftBillReceipt(AdmissionID,loader = true){
-  if (loader) {
-    this._loaderService.show();
-}
-  return this._httpClient.get("InPatient/view-IP-DraftBillReceipt?AdmissionID=" + AdmissionID);
-}
-
-public getCompanyDraftBillReceipt(AdmissionID,loader = true){
-  if (loader) {
-    this._loaderService.show();
-}
-  return this._httpClient.get("IPReport/view-IPCompanyBill?AdmissionID=" + AdmissionID);
-}
-
-
-public getIpInterimBillReceipt(BillNo){
-  return this._httpClient.get("InPatient/view-IP-InterimBillReceipt?BillNo=" + BillNo);
-}
-
-public getpreviousbilldetail(Id){
+  public getpreviousbilldetail(Id){
   return this._httpClient.post("Generic/GetByProc?procName=Rtrv_IPPreviousBill_info",Id);
 }
 
-public getAdvancedetail(Id){
-  return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_IPAdvanceDetails",Id);
-}
 
-public getRefundofAdvanceview(RefundId){
-  return this._httpClient.get("InPatient/view-IP-ReturnOfAdvanceReceipt?RefundId=" + RefundId);
-}
+  public getRefundofbillview(RefundId) {
+    return this._httpClient.get("InPatient/view-IP-ReturnOfBillReceipt?RefundId=" + RefundId);
+  }
 
-public getRefundofbillview(RefundId){
-  return this._httpClient.get("InPatient/view-IP-ReturnOfBillReceipt?RefundId=" + RefundId);
-}
-public getPreBillDetList(param){
-  return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_IPBillInfo",param);
-}
+  getIpDischargeReceipt(AdmId) {
+    return this._httpClient.get("InPatient/view-DischargeCheckOutReceipt?AdmId=" + AdmId)
+  }
 
-getIpDischargeReceipt(AdmId){
-  return this._httpClient.get("InPatient/view-DischargeCheckOutReceipt?AdmId=" + AdmId)
- }
+  getIpDischargesummaryReceipt(AdmissionID) {
+    return this._httpClient.get("InPatient/view-DischargSummary?AdmissionID=" + AdmissionID)
+  }
 
- getIpDischargesummaryReceipt(AdmissionID){
-  return this._httpClient.get("InPatient/view-DischargSummary?AdmissionID=" + AdmissionID)
- }
+  getViewAdvancestatementReceipt(AdmissionID) {
+    return this._httpClient.get("InPatient/view-IP-AdvanceSummaryReceipt?AdmissionID=" + AdmissionID)
+  }
 
- getViewAdvancestatementReceipt(AdmissionID){
-  return this._httpClient.get("InPatient/view-IP-AdvanceSummaryReceipt?AdmissionID=" + AdmissionID)
- }
+  public InsertWhatsappAdvance(emp) {
+    return this._httpClient.post("WhatsappE1mail/WhatsappSalesSave", emp);
+  }
+  public getViewAdvanceReceipt(AdvanceDetailID) {
+    return this._httpClient.get("InPatient/view-IP-AdvanceReceipt?AdvanceDetailID=" + AdvanceDetailID);
+  }
+  public getModenameListCombo() {
+    return this._httpClient.post("Generic/GetByProc?procName=Rtrvm_modeOfDischarge", {});
+  }
 
- 
- public InsertWhatsappAdvance(emp) {
-  return this._httpClient.post("WhatsappE1mail/WhatsappSalesSave", emp);
-}
- public getViewAdvanceReceipt(AdvanceDetailID){
-  // return this._httpClient.get("InPatient/view-IP-AdvanceReceipt?AdvanceDetailID=" + AdvanceDetailID);
-  return this._httpClient.get("InPatient/view-IP-AdvanceReceipt?AdvanceDetailID=" + AdvanceDetailID);
-}
-public getModenameListCombo(){
-  return this._httpClient.post("Generic/GetByProc?procName=Rtrvm_modeOfDischarge",{});
-}
+  public getDoseList() {
+    return this._httpClient.post("Generic/GetByProc?procName=ps_Rtrv_DoseMasterList", {})
+  }
 
-public getDoseList() {
-  return this._httpClient.post("Generic/GetByProc?procName=ps_Rtrv_DoseMasterList", {})
-}
+  //  new Api
+  public BedtransferUpdate(Param: any) {
+    return this._httpClient1.PostData("BedTransfer/InsertSP", Param);
+  }
 
+  public DichargeInsert(Param: any) {
+    return this._httpClient1.PostData("DischargeSummary/DischargeInsert", Param);
+  }
 
+  public DichargeUpdate(Param: any) {
+    return this._httpClient1.PutData("DischargeSummary/DischargeUpdate", Param);
+  }
 
+  public getMaster(mode, Id) {
+    return this._httpClient1.GetData("Dropdown/GetBindDropDown?mode=" + mode + "&Id=" + Id);
+  }
 
-//  new Api
-public BedtransferUpdate(Param: any) {
-  
-      return this._httpClient1.PostData("BedTransfer/InsertSP",Param);
-  
-}
+  public deactivateTheStatus(m_data) {
+    return this._httpClient1.PostData("Admission", m_data);
+  }
 
-public DichargeInsert(Param: any) {
- 
-   return this._httpClient1.PostData("DischargeSummary/DischargeInsert", Param);
-}
+  public getRegistraionById(Id) {
+    return this._httpClient1.GetData("OutPatient/" + Id);
+  }
+  public getAdmissionById(Id) {
+    return this._httpClient1.GetData("Admission/" + Id);
+  }
 
-public DichargeUpdate(Param: any) {
- return this._httpClient1.PutData("DischargeSummary/DischargeUpdate", Param);
- 
-}
+  public getRegistrations(keyword) {
+    return this._httpClient1.GetData("OutPatient/auto-complete?Keyword=" + keyword);
+  }
+  public getItemlist(Param) {
+    return this._httpClient1.PostData("ItemMaster/ItemMasterList", Param)
+  }
 
-public getMaster(mode,Id) {
-return this._httpClient1.GetData("Dropdown/GetBindDropDown?mode="+mode+"&Id="+Id);
-}
+  //new
+  public InsertIPLabReqCharges(employee) {
+    return this._httpClient.post("InPatient/LabRequestCharges", employee)
+  }
 
-public deactivateTheStatus(m_data) {
-  return this._httpClient1.PostData("Admission", m_data);
-}
+  public SaveDischargeInitiate(employee) {
+    return this._httpClient1.PostData("DischargeSummary/InitiateDischargeInsertsync", employee)
+  }
+  public UpdateDischargeInitiate(employee) {
+    return this._httpClient1.PostData("DischargeSummary/InitiateDischargeUpdate", employee)
+  }
+  public updateIPDDischargSummary(employee) {
+    return this._httpClient1.PutData("DischargeSummary/DischargeSummaryUpdate", employee);
+  }
+  public insertIPDDischargSummary(param) {
+    return this._httpClient1.PostData("DischargeSummary/DischargeSummaryInsert", param);
+  }
+  public getDischargeSummary(employee) {
+    return this._httpClient1.PostData("DischargeSummary/IPDischargeSummaryData", employee)
+  }
+  public getchkConfigInitiate(employee) {
+    return this._httpClient1.PostData("DischargeSummary/IPDischargeSummaryData", employee)
+  }
+  public getPrescriptionList(employee) {
+    return this._httpClient1.PostData("DischargeSummary/IPPrescriptionDischargeData", employee)
+  }
+  public getDischargeId(Id) {
+    return this._httpClient1.GetData("DischargeSummary/" + Id);
+  }
+  public gettemplateId(Id) {
+    return this._httpClient1.GetData("ReportTemplate/" + Id);
+  }
 
-
-
-
-public getRegistraionById(Id) {
-  return this._httpClient1.GetData("OutPatient/" + Id);
-}
-
-public getAdmissionById(Id) {
-  return this._httpClient1.GetData("Admission/" + Id);
-}
-
-public getRegistrations(keyword) {
-  return this._httpClient1.GetData("OutPatient/auto-complete?Keyword=" + keyword);
-}
-
-
-public getItemlist(Param){//m_Rtrv_IPDrugName,Retrieve_ItemName_BalanceQty
-  return this._httpClient1.PostData("ItemMaster/ItemMasterList",Param)
-}
-
-
-//new
-public InsertIPLabReqCharges(employee) {
-  return this._httpClient.post("InPatient/LabRequestCharges",employee)
-}
-
-public SaveDischargeInitiate(employee) {
- 
-  return this._httpClient1.PostData("DischargeSummary/InitiateDischargeInsertsync", employee)
- 
-}
-
-public UpdateDischargeInitiate(employee) {
- 
-  return this._httpClient1.PostData("DischargeSummary/InitiateDischargeUpdate", employee)
-}
-
-
-public updateIPDDischargSummary(employee)
-{    
-  return this._httpClient1.PutData("DischargeSummary/DischargeSummaryUpdate",employee);
-}
-
-
-public insertIPDDischargSummary(param)
-{
-// if (param.dischargesummaryId) {
-//   return this._httpClient1.PostData("DischargeSummary/DischargeUpdate", param);
-  // } else
-   return this._httpClient1.PostData("DischargeSummary/DischargeSummaryInsert", param);
-}
-
-
-public getDischargeSummary(employee) {
-  return this._httpClient1.PostData("DischargeSummary/IPDischargeSummaryData",employee)
-}
-
-
-
-public getchkConfigInitiate(employee) {
-  return this._httpClient1.PostData("DischargeSummary/IPDischargeSummaryData",employee)
-}
-public getPrescriptionList(employee) {
-  return this._httpClient1.PostData("DischargeSummary/IPPrescriptionDischargeData",employee)
-}
-
-public getDischargeId(Id){
-  return this._httpClient1.GetData("DischargeSummary/" + Id);
-}
-
-
-
-public gettemplateId(Id){
-  return this._httpClient1.GetData("ReportTemplate/" + Id);
-}
-
-public insertIPDDischargSummaryTemplate(employee)
-{    
-  return this._httpClient1.PostData("DischargeSummary/DischargeTemplateInsert",employee);
-}
-
-
-public UpdateIPDDischargSummaryTemplate(employee)
-{    
-  return this._httpClient1.PutData("DischargeSummary/DischargeTemplateUpdate",employee);
-}
-
-
-
-public getbedbyRoom(deptId) {
-  return this._httpClient1.GetData("VisitDetail/DeptDoctorList?DeptId="+deptId)
-}
- public getRtevIPPackageDetList(param) {
-        return this._httpClient1.PostData("IPBill/Retrivepackagedetaillist", param);
-    }
- 
-   public UpdateIpClassName(param) {
-        return this._httpClient1.PostData("IPBill/ClasswiseRatechange", param);
-    }
-       public UpdateIpTariffName(param) {
-        return this._httpClient1.PostData("IPBill/TariffwiseClassRatechange", param);
-    }
-
-
-       public AddBedCharges(param) {
-        return this._httpClient1.PostData("IPBill/AddBedServiceCharges", param);
-    }
-          public InsertIPpacakgeAddCharges(param) {
-        return this._httpClient1.PostData("IPBill/AddBedServiceCharges", param);
-    } 
+  public insertIPDDischargSummaryTemplate(employee) {
+    return this._httpClient1.PostData("DischargeSummary/DischargeTemplateInsert", employee);
+  }
+  public UpdateIPDDischargSummaryTemplate(employee) {
+    return this._httpClient1.PutData("DischargeSummary/DischargeTemplateUpdate", employee);
+  }
+  public getbedbyRoom(deptId) {
+    return this._httpClient1.GetData("VisitDetail/DeptDoctorList?DeptId=" + deptId)
+  }
+  public getRtevIPPackageDetList(param) {
+    return this._httpClient1.PostData("IPBill/Retrivepackagedetaillist", param);
+  }
+  public UpdateIpClassName(param) {
+    return this._httpClient1.PostData("IPBill/ClasswiseRatechange", param);
+  }
+  public UpdateIpTariffName(param) {
+    return this._httpClient1.PostData("IPBill/TariffwiseClassRatechange", param);
+  }
+  public AddBedCharges(param) {
+    return this._httpClient1.PostData("IPBill/AddBedServiceCharges", param);
+  }
+  public InsertIPpacakgeAddCharges(param) {
+    return this._httpClient1.PostData("IPBill/AddBedServiceCharges", param);
+  }
 }
 
 // Set NODE_OPTIONS="--max-old-space-size=8192"

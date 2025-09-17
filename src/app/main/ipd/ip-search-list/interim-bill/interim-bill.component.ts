@@ -442,7 +442,7 @@ export class InterimBillComponent implements OnInit {
   }
   }  
   viewgetInterimBillReportPdf(billNo) {
-    this.commonService.Onprint("BillNo", billNo, "IpInterimBill");
+    this.commonService.Onprint("BillNo", billNo, "IPDInterimBill");
   }  
   keyPressAlphanumeric(event) {
     var inp = String.fromCharCode(event.keyCode);
