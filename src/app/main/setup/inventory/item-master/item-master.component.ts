@@ -145,20 +145,6 @@ export class ItemMasterComponent implements OnInit {
         });
     }
 
- ongenericedit(row: any = null) {
-        let that = this;
-
-        const dialogRef = this._matDialog.open(ItemGenericMasterComponent,
-            {
-                width: '80%',
-                data: row
-            });
-        dialogRef.afterClosed().subscribe(result => {
-            that.grid.bindGridData();
-
-        });
-    }
-
 
      delitem(obj) {
         this._itemService.deactivateTheStatus(obj.itemId).subscribe((response: any) => {
