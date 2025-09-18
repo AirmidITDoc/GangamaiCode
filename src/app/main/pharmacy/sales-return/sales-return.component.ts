@@ -170,6 +170,7 @@ export class SalesReturnComponent implements OnInit {
         //Payment form
         payment: this.formBuilder.group({
           paymentId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+          unitId:[this._loggedService.currentUserValue.user.unitId],
           billNo: [this.selcteditemObj.SalesId, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
           paymentDate: ['', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
           paymentTime: ['', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
@@ -199,6 +200,8 @@ export class SalesReturnComponent implements OnInit {
           payTmamount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
           payTmtranNo: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
           payTmdate: ['1999-01-01'],
+          tdsAmount:[0],
+          wfAmount:[0]
         })
       });
     }
