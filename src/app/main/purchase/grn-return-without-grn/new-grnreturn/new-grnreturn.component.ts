@@ -1,3 +1,4 @@
+
 import { DatePipe } from '@angular/common';
 import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
@@ -151,36 +152,47 @@ export class NewGRNReturnComponent implements OnInit {
   }
 
   createGrnReturnDetInsert(element: any = {}): FormGroup {
-    let totalQty = (parseFloat(element.Qty) * parseFloat(element.ConversionFactor))
+    let totalQty = (parseFloat(element.returnQty) * parseFloat(element.conversion))
 
-    let inputDate = element.ExpDate;
-    let parts = inputDate.split('-');
-    let ExpDate = `${parts[2]}-${parts[0]}-${parts[1]}`;
+    let inputDate = element?.ExpDate ?? element?.batchExpiryDate;
+    let ExpDate = '1900-01-01';
+
+    if (inputDate) {
+      if (inputDate.includes('-')) {
+        ExpDate=inputDate
+      }
+      else if (inputDate.includes('/')) {
+        // dd/MM/yyyy → convert to yyyy-MM-dd
+        let parts = inputDate.split('/');
+        let year = parts[2].length === 2 ? '20' + parts[2] : parts[2];
+        ExpDate = `${year}-${parts[1].padStart(2, '0')}-${parts[0].padStart(2, '0')}`;
+      }
+    }
 
     return this._formbuilder.group({
       grnreturnDetailId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       grnReturnId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       grnId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      itemId: [element.ItemId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      batchNo: [element.BatchNo || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      itemId: [element.itemId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      batchNo: [element.batchNo || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       batchExpiryDate: [ExpDate, [this._FormvalidationserviceService.validDateValidator()]],
-      returnQty: [element.Qty || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      landedRate: [element.LandedRate || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      mrp: [element.UnitMRP || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      unitPurchaseRate: [element.PurchaseRate || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      vatPercentage: [element.VatPercentage || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      vatAmount: [element.VatAmount || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      returnQty: [element.returnQty || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      landedRate: [element.landedRate || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      mrp: [element.mrp || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      unitPurchaseRate: [element.unitPurchaseRate || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      vatPercentage: [element.vatPercentage || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      vatAmount: [element.vatAmount || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       taxAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       otherTaxAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       octroiPer: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       octroiAmt: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      landedTotalAmount: [element.TotalAmount || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      landedTotalAmount: [element.landedTotalAmount || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       mrpTotalAmount: [this.mrpTotalAmount || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       purchaseTotalAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      conversion: [element.ConversionFactor || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      conversion: [element.conversion || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       remarks: '',
-      stkId: [element.StockId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      cf: [element.ConversionFactor || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      stkId: [element.stkId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      cf: [element.conversion || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       totalQty: [totalQty || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
     });
   }
@@ -191,9 +203,9 @@ export class NewGRNReturnComponent implements OnInit {
 
   createGrnReturnCurrentStockInsert(element: any = {}): FormGroup {
     return this._formbuilder.group({
-      itemId: [element.ItemId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      issueQty: [element.Qty || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      stockId: [element.StockId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      itemId: [element.itemId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      issueQty: [element.returnQty || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      stockId: [element.stkId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       storeID: [this.vstoreId, [this._FormvalidationserviceService.onlyNumberValidator()]]
     });
   }
@@ -203,9 +215,9 @@ export class NewGRNReturnComponent implements OnInit {
   }
 
   createGrnReturnQtyInsert(element: any = {}): FormGroup {
-    let issueqty = element.BalQty - element.Qty
+    let issueqty = element.BalQty - element.returnQty
     return this._formbuilder.group({
-      grndetId: [element.ItemId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      grndetId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       returnQty: [issueqty || 0, [this._FormvalidationserviceService.onlyNumberValidator()]]
     });
   }
@@ -265,7 +277,7 @@ export class NewGRNReturnComponent implements OnInit {
       console.log(result);
       result = result.selectedData
       this.vBatchNo = result.batchNo;
-      this.vExpDates = this.datePipe.transform(result.batchExpDate, "MM-dd-yyyy");
+      this.vExpDates = this.datePipe.transform(result.batchExpDate, "yyyy-MM-dd");
       this.vQty = '';
       this.vBalQty = result.balanceQty;
       this.vLandedRate = result.landedRate;
@@ -298,7 +310,7 @@ export class NewGRNReturnComponent implements OnInit {
   //         ItemId: this.ItemId || 0,
   //         ItemName: this.itemName || '',
   //         BatchNo: this.vBatchNo || '',
-  //         ConversionFactor: this.vConversionFactor || 0,
+  //         conversion: this.vConversionFactor || 0,
   //         ExpDate: this.vExpDates,
   //         BalQty: this.vBalQty || 0,
   //         Qty: this.vQty || 0,
@@ -310,7 +322,7 @@ export class NewGRNReturnComponent implements OnInit {
   //         VatAmount: this.vGSTAmount || 0,
   //         NetAmount: this.vNetAmount || 0,
   //         BalanceQty: (parseFloat(this.vBalQty) - parseFloat(this.vQty)),
-  //         StockId: this.vStockId || 0
+  //         stkId: this.vStockId || 0
   //       });
   //     this.dsItemList.data = this.chargeslist
   //   }
@@ -335,27 +347,27 @@ export class NewGRNReturnComponent implements OnInit {
     }
 
     const batchNo = this._GRNReturnService.NewGRNReturnFrom.get('BatchNo')?.value;
-    const isDuplicate = this.dsItemList.data.some(item => item.BatchNo === batchNo);
+    const isDuplicate = this.dsItemList.data.some(item => item.batchNo === batchNo);
 
     if (!isDuplicate) {
       // append instead of resetting
       const newItem = {
-        ItemId: this.ItemId || 0,
-        ItemName: this.itemName || '',
-        BatchNo: this.vBatchNo || '',
-        ConversionFactor: this.vConversionFactor || 1,
+        itemId: this.ItemId || 0,
+        itemName: this.itemName || '',
+        batchNo: this.vBatchNo || '',
+        conversion: this.vConversionFactor || 1,
         ExpDate: this.vExpDates,
         BalQty: this.vBalQty || 0,
-        Qty: this.vQty || 0,
-        LandedRate: this.vLandedRate || 0,
-        TotalAmount: this.vTotalAmount || 0,
-        UnitMRP: this.vUnitMRP || 0,
-        PurchaseRate: this.vPurchaseRate || 0,
-        VatPercentage: this.vGST || 0,
-        VatAmount: this.vGSTAmount || 0,
-        NetAmount: this.vNetAmount || 0,
+        returnQty: this.vQty || 0,
+        landedRate: this.vLandedRate || 0,
+        landedTotalAmount: this.vTotalAmount || 0,
+        mrp: this.vUnitMRP || 0,
+        unitPurchaseRate: this.vPurchaseRate || 0,
+        vatPercentage: this.vGST || 0,
+        vatAmount: this.vGSTAmount || 0,
+        netAmount: this.vNetAmount || 0,
         BalanceQty: (parseFloat(this.vBalQty) - parseFloat(this.vQty)),
-        StockId: this.vStockId || 0
+        stkId: this.vStockId || 0
       };
 
       //  Append to MatTableDataSource safely
@@ -422,14 +434,15 @@ export class NewGRNReturnComponent implements OnInit {
       "columns": []
     }
     this._GRNReturnService.getGRNReturnrtrvlist(vdata).subscribe(response => {
-      this.dsItemList.data = response.data.map(item => ({
-        ...item, // keep all existing fields
-        NetAmount: (item.landedRate * item.returnQty) + item.vatAmount,         
-        // NetAmount: item.netAmount,             // normalize changed field
-        VatAmount: item.vatAmount,
-        TotalAmount: item.landedTotalAmount,    // or whichever your table uses
-        PurchaseRate: item.unitPurchaseRate
-      }));
+      this.dsItemList.data = response.data
+      // this.dsItemList.data = response.data.map(item => ({
+      // ...item, // keep all existing fields
+      // NetAmount: (item.landedRate * item.returnQty) + item.vatAmount,         
+      // NetAmount: item.netAmount,             // normalize changed field
+      // VatAmount: item.vatAmount,
+      // TotalAmount: item.landedTotalAmount,    // or whichever your table uses
+      // PurchaseRate: item.unitPurchaseRate
+      // }));
       console.log(this.dsItemList.data)
       // this.getGSTTotalAmt(this.dsItemList.data)
     });
@@ -475,12 +488,12 @@ export class NewGRNReturnComponent implements OnInit {
   mrpTotalAmount: any;
 
   getGSTTotalAmt(element: any[]) {
-    this.vFinalVatAmount = element.reduce((sum, { VatAmount }) => sum + +(VatAmount || 0), 0).toFixed(2);
+    this.vFinalVatAmount = element.reduce((sum, { vatAmount }) => sum + +(vatAmount || 0), 0).toFixed(2);
 
-    this.vTotalFinalAmount = (element.reduce((sum, { TotalAmount }) => sum += +(TotalAmount || 0), 0)).toFixed(2);
+    this.vTotalFinalAmount = (element.reduce((sum, { landedTotalAmount }) => sum += +(landedTotalAmount || 0), 0)).toFixed(2);
 
-    let FinalRoundAmt = (element.reduce((sum, { NetAmount }) => sum += +(NetAmount || 0), 0)).toFixed(2);
-    this.mrpTotalAmount = (element.reduce((sum, { UnitMRP }) => sum += +(UnitMRP || 0), 0)).toFixed(2);
+    let FinalRoundAmt = (element.reduce((sum, { netAmount }) => sum += +(netAmount || 0), 0)).toFixed(2);
+    this.mrpTotalAmount = (element.reduce((sum, { mrp }) => sum += +(mrp || 0), 0)).toFixed(2);
     this.vFinalNetAmount = Math.round(FinalRoundAmt).toFixed(2);
     this.vNetRoundAmt = (parseFloat(this.vFinalNetAmount) - (FinalRoundAmt)).toFixed(2);
 
@@ -495,6 +508,11 @@ export class NewGRNReturnComponent implements OnInit {
   Savebtn: boolean = false;
   OnSave() {
     debugger
+    const formattedDate = this.datePipe.transform(this.GrnReturnForm.get('grnReturn.grnreturnDate').value, "yyyy-MM-dd");
+    const formattedTime = this.datePipe.transform(new Date(), "HH:mm:ss");
+    this.GrnReturnForm.get('grnReturn.grnreturnDate').setValue(formattedDate);
+    this.GrnReturnForm.get('grnReturn.grnreturnTime').setValue(formattedDate + ' ' + formattedTime);
+
     if (this._GRNReturnService.NewGRNReturnFrom.get('GSTType').value == 'GST Return') {
       this.GrnReturnForm.get('grnReturn.isGrnTypeFlag').setValue(true)
     } else

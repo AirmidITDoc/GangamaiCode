@@ -446,6 +446,12 @@ export class ItemNameList {
   landedRate:any;
   landedTotalAmount:any;
   mrp:any;
+  returnQty:any;
+  batchNo:any;
+  itemName:any;
+  batchExpiryDate:any;
+  conversion:any;
+  itemId:any;
 
   constructor(ItemNameList) {
     {
@@ -485,6 +491,12 @@ export class ItemNameList {
       this.landedRate = ItemNameList.landedRate || ''
       this.landedTotalAmount = ItemNameList.landedTotalAmount || ''
       this.mrp = ItemNameList.mrp || ''
+      this.returnQty = ItemNameList.returnQty || ''
+      this.batchNo = ItemNameList.batchNo || ''
+      this.itemName = ItemNameList.itemName || ''
+      this.batchExpiryDate = ItemNameList.batchExpiryDate || ''
+      this.conversion = ItemNameList.conversion || ''
+      this.itemId = ItemNameList.itemId || ''
     }
   }
 }

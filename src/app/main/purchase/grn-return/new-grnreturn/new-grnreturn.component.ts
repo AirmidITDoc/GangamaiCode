@@ -14,7 +14,7 @@ import { ItemNameList } from '../grn-return.component';
 import { GrnReturnService } from '../grn-return.service';
 import { GrnListComponent } from './grn-list/grn-list.component';
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
-import { FormArray, FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
+import { AbstractControl, FormArray, FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 
 @Component({
@@ -109,6 +109,7 @@ export class NewGRNReturnComponent implements OnInit {
     if (this.data?.grnReturnId) {
       this.registerObj = this.data
       this.VsupplierId = this.data.supplierId
+      this.vGRNID=this.data?.grnid
 
       if (this.registerObj.isGrnTypeFlag == true) {
         this.vGSTTpe = 'GST Return';
@@ -134,7 +135,7 @@ export class NewGRNReturnComponent implements OnInit {
     return this._formbuilder.group({
       grnReturn: this._formbuilder.group({
         "grnreturnId": [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        "grnreturnNo": "string",
+        "grnreturnNo": "0",
         "grnid": [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
         "grnreturnDate": this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
         "grnreturnTime": this.datePipe.transform(new Date(), 'shortTime'),
@@ -166,37 +167,54 @@ export class NewGRNReturnComponent implements OnInit {
   }
 
   createGrnReturnDetInsert(element: any = {}): FormGroup {
-    let inputDate = element.BatchExpDate.split(" ")[0]; // take only date part
-    let parts = inputDate.split("-");                   // ["08","07","2025"]
-    let ExpDate = `${parts[2]}-${parts[1]}-${parts[0]}`; // yyyy-MM-dd
-    let mrpTotal = element.ReturnQty * element.MRP;
-    let PurchaseTotalAmt = element.ReturnQty * element.Rate;
+    let inputDate = element?.BatchExpDate ?? element?.batchExpiryDate;
+    let ExpDate = '1900-01-01';
+
+    if (inputDate) {
+      inputDate = inputDate.split(' ')[0];
+
+      if (inputDate.includes('-')) {
+        // dd-MM-yyyy → convert to yyyy-MM-dd
+        let parts = inputDate.split('-');
+        let year = parts[2].length === 2 ? '20' + parts[2] : parts[2];
+        ExpDate = `${year}-${parts[1].padStart(2, '0')}-${parts[0].padStart(2, '0')}`;
+      }
+      else if (inputDate.includes('/')) {
+        // dd/MM/yyyy → convert to yyyy-MM-dd
+        let parts = inputDate.split('/');
+        let year = parts[2].length === 2 ? '20' + parts[2] : parts[2];
+        ExpDate = `${year}-${parts[1].padStart(2, '0')}-${parts[0].padStart(2, '0')}`;
+      }
+    }
+
+    let mrpTotal = element.returnQty * element.mrp;
+    let PurchaseTotalAmt = element.returnQty * element.Rate;
 
     return this._formbuilder.group({
       grnreturnDetailId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       grnReturnId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      grnId: [element.GRNID, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      itemId: [element.ItemId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      batchNo: [element.BatchNo || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      grnId: [element.grnId, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      itemId: [element.itemId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      batchNo: [element.batchNo || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       batchExpiryDate: [ExpDate, [this._FormvalidationserviceService.validDateValidator()]],
-      returnQty: [element.ReturnQty || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      landedRate: [element.LandedRate || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      mrp: [element.MRP || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      returnQty: [element.returnQty || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      landedRate: [element.landedRate || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      mrp: [element.mrp || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       unitPurchaseRate: [element.Rate || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      vatPercentage: [element.VatPer || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      vatAmount: [element.VatAmount || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      vatPercentage: [element.vatPercentage || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      vatAmount: [element.vatAmount || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       taxAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       otherTaxAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       octroiPer: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       octroiAmt: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      landedTotalAmount: [element.TotalAmount || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      landedTotalAmount: [element.landedTotalAmount || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       mrpTotalAmount: [mrpTotal || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       purchaseTotalAmount: [PurchaseTotalAmt || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      conversion: [element.ConversionFactor || 1, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      conversion: [element.conversion || 1, [this._FormvalidationserviceService.onlyNumberValidator()]],
       remarks: '',
-      stkId: [element.StkID || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      cf: [element.ConversionFactor || 1, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      totalQty: [element.TotalQty || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      stkId: [element.stkId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      cf: [element.conversion || 1, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      totalQty: [element.totalQty || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
     });
   }
 
@@ -206,9 +224,9 @@ export class NewGRNReturnComponent implements OnInit {
 
   createGrnReturnCurrentStockInsert(element: any = {}): FormGroup {
     return this._formbuilder.group({
-      itemId: [element.ItemId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      issueQty: [element.ReturnQty || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      stockId: [element.StkID || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      itemId: [element.itemId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      issueQty: [element.returnQty || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      stockId: [element.stkId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       storeID: [this.vStoreId, [this._FormvalidationserviceService.onlyNumberValidator()]]
     });
   }
@@ -229,86 +247,12 @@ export class NewGRNReturnComponent implements OnInit {
   }
 
   selectChangeStore(obj: any) {
-    console.log("Store:", obj);
     this.vStoreId = obj.value
   }
 
   selectChangeSupplier(obj: any) {
-    console.log("Supplier:", obj);
     this.VsupplierId = obj.value
   }
-
-  // dont delete commented code
-  // getGrnItemDetailList(Params) {
-  //   debugger
-  //   var Param = {
-  //     "first": 0,
-  //     "rows": 10,
-  //     "sortField": "GRNID",
-  //     "sortOrder": 0,
-  //     "filters": [
-  //       {
-  //         "fieldName": "GRNID",
-  //         "fieldValue": String(Params.grnid),
-  //         "opType": "Equals"
-  //       }
-  //     ],
-  //     "exportType": "JSON",
-  //     "columns": [
-  //       {
-  //         "data": "string",
-  //         "name": "string"
-  //       }
-  //     ]
-  //   }
-  //   console.log(Param)
-  //   this._GRNReturnService.getGrnItemList(Param).subscribe(data => {
-  //     this.dsItemNameList1.data = data.data as ItemNameList[];
-  //     console.log(this.dsItemNameList1.data)
-  //     this.dsItemNameList1.data.forEach((element) => {
-  //       this.chargeslist.push(
-  //         {
-  //           ItemId: element.itemId || 0,
-  //           ItemName: element.itemName || '',
-  //           BatchNo: element.batchNo || 0,
-  //           BatchExpDate: element.batchExpDate,
-  //           // BatchExpDate: new Date(element.batchExpDate.split("-").reverse().join("-") + "T00:00:00").toISOString(),
-  //           ConversionFactor: element.conversionFactor,
-  //           BalanceQty: element.balanceQty,
-  //           ReturnQty: 0,
-  //           MRP: element.mrp || 0,
-  //           ReceiveQty: element.ReceiveQty || 0,
-  //           //Rate: element.Rate || 0,
-  //           TotalAmount: 0,
-  //           VatPer: element.vatPer || 0,
-  //           VatAmount: 0,
-  //           DiscPercentage: element.discPercentage || 0,
-  //           DiscAmount: 0,
-  //           LandedRate: element.rate || 0,
-  //           NetAmount: 0,
-  //           StkID: element.stkId || 0 ,
-  //           GRNID:element.grnid || 0,
-  //           GRNDetID:element.grnDetID || 0,
-  //           TotalQty:0
-  //         });
-
-  //           // TotalAmount: element.totalAmount || 0,// returnQty
-  //           // VatAmount: element.vatAmount || 0,//
-  //           // NetAmount: element.netAmount || 0, 
-  //           // TotalQty:element.totalQty || 0//
-
-  //        // console.log(this.chargeslist)
-  //       this.dsGrnItemList.data = this.chargeslist
-  //       console.log(this.dsGrnItemList.data)
-  //       this.dsGrnItemList.sort = this.sort;
-  //       this.dsGrnItemList.paginator = this.paginator;
-  //       this.sIsLoading = '';
-  //     }); 
-  //   },
-  //     error => {
-  //       this.sIsLoading = '';
-  //     });
-  // }
 
   getGrnItemDetailList(Params) {
     // debugger;
@@ -334,45 +278,39 @@ export class NewGRNReturnComponent implements OnInit {
       ]
     };
 
-    console.log("Fetching GRN items with:", Param);
-
     this._GRNReturnService.getGrnItemList(Param).subscribe(data => {
       const itemList = data.data as ItemNameList[];
-      console.log("Fetched item list:", itemList);
-
       itemList.forEach(element => {
         this.chargeslist.push({
-          ItemId: element.itemId || 0,
-          ItemName: element.itemName || '',
-          BatchNo: element.batchNo || 0,
+          itemId: element.itemId || 0,
+          itemName: element.itemName || '',
+          batchNo: element.batchNo || 0,
           BatchExpDate: element.batchExpDate,
-          ConversionFactor: element.conversionFactor,
+          conversion: element.conversionFactor || 1,
           BalanceQty: element.balanceQty,
-          ReturnQty: 0,
-          MRP: element.mrp || 0,
+          returnQty: 0,
+          mrp: element.mrp || 0,
           ReceiveQty: element.receiveQty || 0,
-          TotalAmount: 0,
-          VatPer: element.vatPer || 0,
-          VatAmount: 0,
+          landedTotalAmount: 0,
+          vatPercentage: element.vatPer || 0,
+          vatAmount: 0,
           DiscPercentage: element.discPercentage || 0,
           DiscAmount: 0,
-          LandedRate: element.rate || 0,
-          NetAmount: 0,
-          StkID: element.stkId || 0,
-          GRNID: element.grnid || 0,
+          landedRate: element.rate || 0,
+          netAmount: 0,
+          stkId: element.stkId || 0,
+          grnId: element.grnid || 0,
           GRNDetID: element.grnDetID || 0,
-          TotalQty: 0
+          totalQty: 0
         });
       });
 
       // Assign after all items are processed
       this.dsGrnItemList.data = this.chargeslist;
-      console.log("Updated data source:", this.dsGrnItemList.data);
 
       this.dsGrnItemList.sort = this.sort;
       this.dsGrnItemList.paginator = this.paginator;
       this.getTotalamt(this.dsGrnItemList.data);
-      // this.getNetamt(this.dsGrnItemList.data);
     });
   }
 
@@ -386,19 +324,6 @@ export class NewGRNReturnComponent implements OnInit {
     });
   }
 
-  // parseDate(dateStr: string): Date | null {
-
-  //   const parts = dateStr.split(' ');
-  //   const dateParts = parts[0].split('-'); // ["31", "07", "2026"]
-  //   const time = parts[1] || '00:00:00';
-
-  //   if (dateParts.length === 3) {
-  //     const formatted = `${dateParts[2]}-${dateParts[1]}-${dateParts[0]}T${time}`;
-  //     return new Date(formatted);
-  //   }
-
-  //   return null;
-  // }
   parseDate(dateStr: string | null | undefined): Date | null {
     if (!dateStr) return null;  // prevent split on undefined/null
 
@@ -443,26 +368,26 @@ export class NewGRNReturnComponent implements OnInit {
       "columns": []
     }
     this._GRNReturnService.getGRNReturnrtrvlist(vdata).subscribe(response => {
-      // this.dsGrnItemList.data = response.data
-      this.dsGrnItemList.data = response.data.map(item => ({
-        ...item,
-        NetAmount: (item.landedRate * item.returnQty) + item.vatAmount,
-        VatAmount: item.vatAmount,
-        TotalAmount: item.landedTotalAmount,    // or whichever your table uses
-        PurchaseRate: item.unitPurchaseRate,
-        ReturnQty: item.returnQty
-      }));
+      this.dsGrnItemList.data = response.data
+      // this.dsGrnItemList.data = response.data.map(item => ({
+      //   ...item,
+      //   NetAmount: (item.landedRate * item.returnQty) + item.vatAmount,
+      //   vatAmount: item.vatAmount,
+      //   TotalAmount: item.landedTotalAmount,    // or whichever your table uses
+      //   PurchaseRate: item.unitPurchaseRate,
+      //   ReturnQty: item.returnQty
+      // }));
 
-        const row = this.dsGrnItemList.data
+      const row = this.dsGrnItemList.data
 
-        // want for calculation
-        this.getCellCalculation(row, row);
+      // want for calculation
+      this.getCellCalculation(row, row);
 
       console.log(this.dsGrnItemList.data)
       this.isGSTVisible = true;
     });
   }
-  
+
   // getTotalamt(element) {
   //   debugger
   //   this.vFinalTotalAmount = (element.reduce((sum, { TotalAmount }) => sum += +(TotalAmount || 0), 0)).toFixed(2);
@@ -488,20 +413,20 @@ export class NewGRNReturnComponent implements OnInit {
   //   })
   //   // return this.vFinalTotalAmount;
   // }
-   getTotalamt(element) {
-    debugger
-    this.vFinalTotalAmount = (element.reduce((sum, { TotalAmount }) => sum += +(TotalAmount || 0), 0)).toFixed(2);
-    this.vFinalVatAmount = (element.reduce((sum, { VatAmount }) => sum += +(VatAmount || 0), 0)).toFixed(2);
-    this.vFinalDiscAmount = (element.reduce((sum, { DiscAmount }) => sum += +(DiscAmount || 0), 0)).toFixed(2);
+  getTotalamt(element) {
+    // debugger
+    this.vFinalTotalAmount = (element.reduce((sum, { landedTotalAmount }) => sum += +(landedTotalAmount || 0), 0)).toFixed(2);
+    this.vFinalVatAmount = (element.reduce((sum, { vatAmount }) => sum += +(vatAmount || 0), 0)).toFixed(2);
+    this.vFinalDiscAmount = (element.reduce((sum, { discAmount }) => sum += +(discAmount || 0), 0)).toFixed(2);
 
-    let finalAmt = (element.reduce((sum, { NetAmount }) => sum += +(NetAmount || 0), 0)).toFixed(2);
+    let finalAmt = (element.reduce((sum, { netAmount }) => sum += +(netAmount || 0), 0)).toFixed(2);
     this.vFinalNetAmount = Math.round(finalAmt).toFixed(2);
     this.vRoundingAmt = (parseFloat(this.vFinalNetAmount) - (finalAmt)).toFixed(2);
 
     if (this.vGSTTpe === "Without GST") {
       this.vFinalVatAmount = "0.00";
     } else {
-      this.vFinalVatAmount = (element.reduce((sum, { VatAmount }) => sum += +(VatAmount || 0), 0)).toFixed(2);
+      this.vFinalVatAmount = (element.reduce((sum, { vatAmount }) => sum += +(vatAmount || 0), 0)).toFixed(2);
     }
 
     this._GRNReturnService.NewGRNRetFinalFrom.patchValue({
@@ -517,7 +442,7 @@ export class NewGRNReturnComponent implements OnInit {
   onGSTTypeChange() {
     if (this.dsGrnItemList && this.dsGrnItemList.data.length > 0) {
       this.dsGrnItemList.data.forEach(contact => {
-        this.getCellCalculation(contact, contact.ReturnQty);
+        this.getCellCalculation(contact, contact.returnQty);
       });
 
       // refresh totals after recalculation
@@ -559,36 +484,36 @@ export class NewGRNReturnComponent implements OnInit {
   //   }
   //   this.getTotalamt(this.dsGrnItemList.data);
   // }
-  getCellCalculation(contact, ReturnQty) {
+  getCellCalculation(contact, returnQty) {
     // debugger
-    if (parseInt(contact.ReturnQty) > parseInt(contact.BalanceQty)) {
+    if (parseInt(contact.returnQty) > parseInt(contact.BalanceQty)) {
       this.toastr.warning('Return Qty cannot be greater than BalQty', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
-      contact.ReturnQty = 0;
-      contact.ReturnQty = '';
-      contact.TotalQty = 0;
-      contact.TotalAmount = 0;
-      contact.VatAmount = 0;
+      contact.returnQty = 0;
+      contact.returnQty = '';
+      contact.totalQty = 0;
+      contact.landedTotalAmount = 0;
+      contact.vatAmount = 0;
       contact.DiscAmount = 0;
-      contact.NetAmount = 0;
+      contact.netAmount = 0;
     }
     else {
-      contact.TotalQty = (parseInt(contact.ReturnQty) * parseInt(contact.ConversionFactor ?? contact.conversion));
-      contact.TotalAmount = (parseFloat(contact.ReturnQty) * parseFloat(contact.LandedRate ?? contact.landedRate)).toFixed(2);
-      contact.VatAmount = ((parseFloat(contact.TotalAmount ?? contact.landedTotalAmount) * parseFloat(contact.VatPer ?? contact.vatPercentage)) / 100).toFixed(2);
-      contact.DiscAmount = ((parseFloat(contact.TotalAmount ?? contact.landedTotalAmount) * parseFloat(contact.DiscPercentage)) / 100).toFixed(2);
-      let GrossAmt = (parseFloat(contact.TotalAmount ?? contact.landedTotalAmount) - parseFloat(contact.DiscAmount)).toFixed(2);
-      contact.NetAmount = (parseFloat(GrossAmt) + parseFloat(contact.VatAmount ?? contact.vatAmount)).toFixed(2);
+      contact.totalQty = (parseInt(contact.returnQty) * parseInt(contact.conversion));
+      contact.landedTotalAmount = (parseFloat(contact.returnQty) * parseFloat(contact.landedRate)).toFixed(2);
+      contact.vatAmount = ((parseFloat(contact.landedTotalAmount) * parseFloat(contact.vatPercentage)) / 100).toFixed(2);
+      contact.DiscAmount = ((parseFloat(contact.landedTotalAmount) * parseFloat(contact.DiscPercentage)) / 100).toFixed(2);
+      let GrossAmt = (parseFloat(contact.landedTotalAmount) - parseFloat(contact.DiscAmount)).toFixed(2);
+      contact.netAmount = (parseFloat(GrossAmt) + parseFloat(contact.vatAmount)).toFixed(2);
 
       // ✅ GST condition
       if (this.vGSTTpe === "Without GST") {
-        contact.VatAmount = 0;
-        contact.NetAmount = (parseFloat(contact.TotalAmount ?? contact.landedTotalAmount)).toFixed(2);
-        // contact.NetAmount = GrossAmt;
+        contact.vatAmount = 0;
+        contact.netAmount = (parseFloat(contact.landedTotalAmount)).toFixed(2);
+        // contact.netAmount = GrossAmt;
       } else {
-        contact.VatAmount = ((parseFloat(contact.TotalAmount ?? contact.landedTotalAmount) * parseFloat(contact.VatPer ?? contact.vatPercentage)) / 100).toFixed(2);
-        contact.NetAmount = (parseFloat(GrossAmt) + parseFloat(contact.VatAmount ?? contact.vatAmount)).toFixed(2);
+        contact.vatAmount = ((parseFloat(contact.landedTotalAmount) * parseFloat(contact.vatPercentage)) / 100).toFixed(2);
+        contact.netAmount = (parseFloat(GrossAmt) + parseFloat(contact.vatAmount)).toFixed(2);
       }
     }
     this.getTotalamt(this.dsGrnItemList.data);
@@ -609,6 +534,11 @@ export class NewGRNReturnComponent implements OnInit {
 
   OnSave() {
     debugger
+    const formattedDate = this.datePipe.transform(this.GrnReturnForm.get('grnReturn.grnreturnDate').value, "yyyy-MM-dd");
+    const formattedTime = this.datePipe.transform(new Date(), "HH:mm:ss");
+    this.GrnReturnForm.get('grnReturn.grnreturnDate').setValue(formattedDate);
+    this.GrnReturnForm.get('grnReturn.grnreturnTime').setValue(formattedDate + ' ' + formattedTime);
+
     if (this._GRNReturnService.NewGRNReturnFrom.get('GSTType').value == 'GST Return') {
       this.GrnReturnForm.get('grnReturn.isGrnTypeFlag').setValue(true)
     } else
@@ -643,7 +573,7 @@ export class NewGRNReturnComponent implements OnInit {
         });
         return;
       }
-      const hasInvalidQty = this.dsGrnItemList.data.some(item => !item.ReturnQty || isNaN(item.ReturnQty) || Number(item.ReturnQty) <= 0);
+      const hasInvalidQty = this.dsGrnItemList.data.some(item => !item.returnQty || isNaN(item.returnQty) || Number(item.returnQty) <= 0);
 
       if (hasInvalidQty) {
         this.toastr.warning('ReturnQty must be greater than zero.', 'Warning', {
@@ -685,38 +615,44 @@ export class NewGRNReturnComponent implements OnInit {
         }
       });
     } else {
-      let invalidFields: string[] = [];
+      debugger
+      const invalidFields = this.getInvalidFields(this.GrnReturnForm);
 
-      if (this.GrnReturnForm.invalid) {
-        // Loop through top-level controls
-        for (const controlName in this.GrnReturnForm.controls) {
-          const control = this.GrnReturnForm.controls[controlName];
-
-          if (control instanceof FormArray) {
-            // Handle FormArray (in your case 'grn')
-            control.controls.forEach((group: any, index: number) => {
-              Object.keys(group.controls).forEach(key => {
-                if (group.get(key)?.invalid) {
-                  invalidFields.push(`Nested Form[${index + 1}] -> ${key}`);
-                }
-              });
-            });
-          } else {
-            // Handle normal controls
-            if (control.invalid) {
-              invalidFields.push(`Form: ${controlName}`);
-            }
-          }
-        }
-      }
       if (invalidFields.length > 0) {
         invalidFields.forEach(field => {
           this.toastr.warning(`Field "${field}" is invalid.`, 'Warning');
         });
       }
     }
-
   }
+
+  private getInvalidFields(form: AbstractControl, path: string = ''): string[] {
+    let invalidFields: string[] = [];
+
+    if (form instanceof FormGroup) {
+      Object.keys(form.controls).forEach(key => {
+        const control = form.get(key);
+        if (control) {
+          invalidFields = invalidFields.concat(
+            this.getInvalidFields(control, path ? `${path} -> ${key}` : key)
+          );
+        }
+      });
+    }
+    else if (form instanceof FormArray) {
+      form.controls.forEach((control, index) => {
+        invalidFields = invalidFields.concat(
+          this.getInvalidFields(control, `${path}[${index + 1}]`)
+        );
+      });
+    }
+    else if (form.invalid) {
+      invalidFields.push(path);
+    }
+
+    return invalidFields;
+  }
+
 
   viewgetGRNreturnReportPdf(GRNReturnId) {
     this.commonService.Onprint("GRNReturnId", GRNReturnId, "GRNReturnReport");
@@ -742,12 +678,10 @@ export class NewGRNReturnComponent implements OnInit {
       });
     dialogRef.afterClosed().subscribe(result => {
       this.isGSTVisible = true;
-      console.log("ddddddaaaaaatttttaaa", result);
-
       this.dsNewGRNReturnItemList.data = result as ItemNameList[];
 
       this.dsNewGRNReturnItemList.data.forEach(item => {
-        console.log("Processing item:", item);
+        // console.log("Processing item:", item);
 
         this.getGrnItemDetailList(item);
         this.vGRNID = item.grnid
