@@ -219,7 +219,7 @@ export class SalesHospitalNewComponent implements OnInit {
             referanceNo: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             PaidbyPatient: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             PaidbacktoPatient: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            roundoffAmt: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            roundoffAmt: [0],
             opIpType: ['1', [this._FormvalidationserviceService.onlyNumberValidator()]],
             totalAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             vatAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
@@ -285,8 +285,8 @@ export class SalesHospitalNewComponent implements OnInit {
                 billNo: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
                 paymentDate: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
                 paymentTime: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
-                cashPayAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-                chequePayAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+                cashPayAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+                chequePayAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
                 chequeNo: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
                 bankName: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
                 chequeDate: "1999-01-01",
@@ -294,7 +294,7 @@ export class SalesHospitalNewComponent implements OnInit {
                 cardNo: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
                 cardBankName: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
                 cardDate: "1999-01-01",
-                advanceUsedAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+                advanceUsedAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
                 advanceId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
                 refundId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
                 transactionType: [4, [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -304,13 +304,16 @@ export class SalesHospitalNewComponent implements OnInit {
                 isCancelledBy: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
                 isCancelledDate: "1999-01-01",
                 opdipdType: [3, [this._FormvalidationserviceService.onlyNumberValidator()]],
-                neftpayAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+                neftpayAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
                 neftno: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
                 neftbankMaster: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
                 neftdate: "1999-01-01",
-                payTmamount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+                payTmamount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
                 payTmtranNo: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
-                payTmdate: "1999-01-01"
+                payTmdate: "1999-01-01",
+                tdsamount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+                unitId: [this._loggedService.currentUserValue.user.unitId],
+                wfamount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]], 
             }),
             //Sales current stock
             tCurrentStock: this.formBuilder.array([]),
@@ -342,14 +345,14 @@ export class SalesHospitalNewComponent implements OnInit {
             landedPrice: [item?.LandedRate, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
             totalLandedAmount: [item?.LandedRateandedTotal, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
             returnQty: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-            purRateWf: [item?.PurchaseRate ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-            purTotAmt: [item?.PurTotAmt ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-            cgstper: [item?.CgstPer ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-            cgstamt: [item?.CGSTAmt ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-            sgstper: [item?.SgstPer ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-            sgstamt: [item?.SGSTAmt ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-            igstper: [item?.IgstPer ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-            igstamt: [item?.IGSTAmt ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            purRateWf: [item?.PurchaseRate || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            purTotAmt: [item?.PurTotAmt || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            cgstper: [item?.CgstPer || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            cgstamt: [item?.CGSTAmt || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            sgstper: [item?.SgstPer || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            sgstamt: [item?.SGSTAmt || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            igstper: [item?.IgstPer || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            igstamt: [item?.IGSTAmt || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
             isPurRate: [true],
             stkId: [item?.StockId, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             mrp: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
@@ -395,7 +398,7 @@ export class SalesHospitalNewComponent implements OnInit {
                 concessionAuthorizationId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
                 isSellted: [true],
                 isPrint: [true],
-                unitId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+                unitId: [this._loggedService.currentUserValue.user.unitId, [this._FormvalidationserviceService.onlyNumberValidator()]],
                 addedBy: [this._loggedService.currentUserValue.userId],
                 externalPatientName: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
                 doctorName: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
@@ -892,7 +895,7 @@ export class SalesHospitalNewComponent implements OnInit {
         let FinalTotalAmt = itemData.reduce((sum, { TotalMRP }) => (sum += +(TotalMRP || 0)), 0).toFixed(2);
         let FinalDiscAmt = itemData.reduce((sum, { DiscAmt }) => (sum += +(DiscAmt || 0)), 0).toFixed(2);
         let FinalGSTAmt = itemData.reduce((sum, { GSTAmount }) => (sum += +(GSTAmount || 0)), 0).toFixed(2);
-        let roundoffAmt = Math.round(FinalNetAmt);
+        let roundoffAmt = (Math.round(FinalNetAmt) - FinalNetAmt).toFixed(2);
         this.ItemSubform.patchValue({
             roundoffAmt: roundoffAmt,
             totalAmount: FinalTotalAmt,
@@ -937,7 +940,7 @@ export class SalesHospitalNewComponent implements OnInit {
                 FinalDiscPer: 0,
                 discAmount: 0, 
                 netAmount: NetAmount,
-                roundoffAmt:Math.round(NetAmount)
+                roundoffAmt:(Math.round(NetAmount) - NetAmount).toFixed(2)
             });
             this.ConShow = false;
             return;
@@ -960,7 +963,7 @@ export class SalesHospitalNewComponent implements OnInit {
         this.ItemSubform.patchValue({
             discAmount: FinalDiscAmt,
             netAmount: NetAmount,
-            roundoffAmt:Math.round(NetAmount)
+            roundoffAmt:(Math.round(NetAmount) - NetAmount).toFixed(2)
         })
     }
     getFinalDiscAmount() {
@@ -982,12 +985,15 @@ export class SalesHospitalNewComponent implements OnInit {
         }
         this.ItemSubform.patchValue({
             netAmount: NetAmount,
-            roundoffAmt:Math.round(NetAmount) 
+            roundoffAmt:(Math.round(NetAmount) - NetAmount).toFixed(2)
         })
 
     }
     onSave(event) {
-        debugger
+        debugger 
+    const formattedTime = this.datePipe.transform(new Date(), 'hh:mm');
+    const formattedDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
+    const FormattedDateTime = formattedDate + ' ' + formattedTime 
         const formValue = this.ItemSubform.value
         if (!this.isValidForm()) {
             Swal.fire('Please enter valid table data.');
@@ -1012,8 +1018,8 @@ export class SalesHospitalNewComponent implements OnInit {
             }
         }
         let opIpType = formValue?.opIpType || 0
-        this.PharmaSalesForm.get('sales.date').setValue(this.datePipe.transform(new Date(), 'yyyy-MM-dd'))
-        this.PharmaSalesForm.get('sales.time').setValue(this.datePipe.transform(new Date(), 'hh:mm'))
+        this.PharmaSalesForm.get('sales.date').setValue(formattedDate)
+        this.PharmaSalesForm.get('sales.time').setValue(FormattedDateTime)
         this.PharmaSalesForm.get('sales.opIpType').setValue(formValue?.opIpType ?? 0)
         this.PharmaSalesForm.get('sales.totalAmount').setValue(formValue?.totalAmount ?? 0)
         this.PharmaSalesForm.get('sales.vatAmount').setValue(formValue?.vatAmount ?? 0)
@@ -1054,8 +1060,8 @@ export class SalesHospitalNewComponent implements OnInit {
             if (this.ItemSubform.get('CashPay').value == 'CashPay') {
                 this.PharmaSalesForm.get('sales.paidAmount').setValue((Math.round(formValue.netAmount)))
                 this.PharmaSalesForm.get('sales.balanceAmount').setValue(0)
-                this.PharmaSalesForm.get('payment.paymentDate').setValue(this.datePipe.transform(new Date(), 'yyyy-MM-dd'))
-                this.PharmaSalesForm.get('payment.paymentTime').setValue(this.datePipe.transform(new Date(), 'hh:mm'))
+                this.PharmaSalesForm.get('payment.paymentDate').setValue(formattedDate)
+                this.PharmaSalesForm.get('payment.paymentTime').setValue(FormattedDateTime)
                 this.PharmaSalesForm.get('payment.cashPayAmount').setValue((Math.round(formValue.netAmount)))
                 console.log(this.PharmaSalesForm.value)
                 this._salesService.InsertCashSales(this.PharmaSalesForm.value).subscribe((response) => {
@@ -1065,8 +1071,8 @@ export class SalesHospitalNewComponent implements OnInit {
                     }
                 });
             } else if (this.ItemSubform.get('CashPay').value == 'Credit') {
-                this.PharmaSalesForm.get('payment.paymentDate').setValue(this.datePipe.transform(new Date(), 'yyyy-MM-dd'))
-                this.PharmaSalesForm.get('payment.paymentTime').setValue(this.datePipe.transform(new Date(), 'hh:mm'))
+                this.PharmaSalesForm.get('payment.paymentDate').setValue(formattedDate)
+                this.PharmaSalesForm.get('payment.paymentTime').setValue(FormattedDateTime)
                 this.PharmaSalesForm.get('sales.paidAmount').setValue(0)
                 this.PharmaSalesForm.get('sales.balanceAmount').setValue((Math.round(formValue.netAmount)))
                 console.log(this.PharmaSalesForm.value)
@@ -1088,7 +1094,7 @@ export class SalesHospitalNewComponent implements OnInit {
                     PatientHeaderObj['OPD_IPD_Id'] = this.Patientdetails.ipdNo;
                 }
                 PatientHeaderObj['Age'] = this.Patientdetails.age;
-                PatientHeaderObj['NetPayAmount'] = this.ItemSubform.get('roundoffAmt').value;
+                PatientHeaderObj['NetPayAmount'] = Math.round(this.ItemSubform.get('netAmount').value);
                 const dialogRef = this._matDialog.open(OpPaymentComponent,
                     {
                         maxWidth: "80vw",
@@ -1310,6 +1316,9 @@ export class SalesHospitalNewComponent implements OnInit {
         });
     }
     onSaveDraftBill() {
+    const formattedTime = this.dateTimeObj.time;
+    const formattedDate = this.datePipe.transform(this.dateTimeObj.date,'yyyy-MM-dd');
+    const FormattedDateTime = formattedDate + ' ' + formattedTime 
         const formValue = this.ItemSubform.value
         if (!this.isValidForm()) {
             Swal.fire('Please enter valid table data.');
@@ -1324,8 +1333,8 @@ export class SalesHospitalNewComponent implements OnInit {
         //   }
         // } 
         debugger
-        this.PharmaSalesDraftForm.get('salesDraft.date').setValue(this.datePipe.transform(new Date(), 'yyyy-MM-dd'))
-        this.PharmaSalesDraftForm.get('salesDraft.time').setValue(this.datePipe.transform(new Date(), 'hh:mm'))
+        this.PharmaSalesDraftForm.get('salesDraft.date').setValue(formattedDate)
+        this.PharmaSalesDraftForm.get('salesDraft.time').setValue(FormattedDateTime)
         this.PharmaSalesDraftForm.get('salesDraft.opIpType').setValue(formValue.opIpType)
         this.PharmaSalesDraftForm.get('salesDraft.opIpId').setValue(this.OP_IP_Id)
         this.PharmaSalesDraftForm.get('salesDraft.totalAmount').setValue(Number(Math.round(formValue.totalAmount)))
@@ -1695,8 +1704,7 @@ export class SalesHospitalNewComponent implements OnInit {
             });
             console.log(advancedetails)
         });
-    }
-
+    } 
 
     salesIdWiseObj: any;
     dummySalesIdNameArr = [];
@@ -1787,7 +1795,7 @@ export class SalesHospitalNewComponent implements OnInit {
     }
     CalPaidbackAmt() {
         const formvalue = this.ItemSubform.value
-        let PaidbacktoPatient = (parseFloat(formvalue.roundoffAmt) - parseFloat(formvalue.PaidbyPatient)).toFixed(2);
+        let PaidbacktoPatient = (parseFloat(formvalue?.roundoffAmt || 0) - parseFloat(formvalue?.PaidbyPatient || 0)).toFixed(2);
         this.ItemSubform.patchValue({
             PaidbacktoPatient: PaidbacktoPatient
         })

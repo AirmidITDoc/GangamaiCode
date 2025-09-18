@@ -101,14 +101,13 @@ export class NewAdvanceComponent implements OnInit {
 
       pharmacyAdvance: this.formBuilder.group({
         advanceId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        date: '',
+        date: [''],
         refId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         opdIpdType: [1, [this._FormvalidationserviceService.onlyNumberValidator()]],
         opdIpdId: [0, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
         advanceAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
         advanceUsedAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        balanceAmount: [0, [Validators.required, this._FormvalidationserviceService.AllowDecimalNumberValidator(), Validators.minLength(1),
-        this._FormvalidationserviceService.notEmptyOrZeroValidator()
+        balanceAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator(),this._FormvalidationserviceService.notEmptyOrZeroValidator()
         ]],
         addedBy: [this._loggedService.currentUserValue.userId, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator()]],
         isCancelled: [false],
@@ -118,8 +117,8 @@ export class NewAdvanceComponent implements OnInit {
 
       pharmacyAdvanceDetails: this.formBuilder.group({
         advanceDetailId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        date: '',
-        time: '',
+        date:  [''],
+        time:  [''],
         advanceId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         refId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         transactionId: [8, [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -138,10 +137,8 @@ export class NewAdvanceComponent implements OnInit {
         isCancelledDate: ['1900-01-01', [this._FormvalidationserviceService.validDateValidator]],
         reason: [''],
         storeId: this._loggedService.currentUserValue.user.storeId || 0,
-      }),
-
-      paymentPharmacy: ''
-
+      }), 
+      paymentPharmacy: '' 
     });
   }
   getDateTime(dateTimeObj) {
@@ -188,6 +185,9 @@ export class NewAdvanceComponent implements OnInit {
     });
   }
   onSave() {
+    const formattedTime = this.dateTimeObj.time;
+    const formattedDate = this.datePipe.transform(this.dateTimeObj.date,'yyyy-MM-dd');
+    const FormattedDateTime = formattedDate + ' ' + formattedTime 
     if (!this.MainForm.get('RegID')?.value && !this.vRegId) {
       this.toastr.warning('Please Select Patient', 'Warning!', {
         toastClass: 'tostr-tost custom-toast-warning',
@@ -196,14 +196,14 @@ export class NewAdvanceComponent implements OnInit {
     }
     this.insertForm?.get("pharmacyAdvance.advanceId")?.setValue(this.vAdvanceId || 0);
     this.insertForm?.get("pharmacyAdvance.advanceAmount")?.setValue(Number(this.MainForm?.get('advanceAmt')?.value ?? 0));
-    this.insertForm?.get("pharmacyAdvance.date")?.setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'));
+    this.insertForm?.get("pharmacyAdvance.date")?.setValue(formattedDate);
     this.insertForm?.get("pharmacyAdvance.balanceAmount")?.setValue(Number(this.MainForm?.get('advanceAmt')?.value ?? 0));
     this.insertForm?.get("pharmacyAdvance.refId")?.setValue(this.regObj?.regID || 0);
     this.insertForm?.get("pharmacyAdvance.opdIpdId")?.setValue(this.regObj?.admissionID || 0);
     this.insertForm?.get("pharmacyAdvanceDetails.advanceId")?.setValue(this.vAdvanceId || 0);
     this.insertForm?.get("pharmacyAdvanceDetails.advanceDetailId")?.setValue(this.vAdvanceDetailID || 0);
-    this.insertForm?.get("pharmacyAdvanceDetails.date")?.setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'));
-    this.insertForm?.get("pharmacyAdvanceDetails.time")?.setValue(this.dateTimeObj.time);
+    this.insertForm?.get("pharmacyAdvanceDetails.date")?.setValue(formattedDate);
+    this.insertForm?.get("pharmacyAdvanceDetails.time")?.setValue(FormattedDateTime);
     this.insertForm?.get("pharmacyAdvanceDetails.advanceAmount")?.setValue(Number(this.MainForm?.get('advanceAmt')?.value ?? 0));
     this.insertForm?.get("pharmacyAdvanceDetails.balanceAmount")?.setValue(Number(this.MainForm?.get('advanceAmt')?.value ?? 0));
     this.insertForm?.get("pharmacyAdvanceDetails.reason")?.setValue(this.MainForm?.get('comment')?.value ?? '');

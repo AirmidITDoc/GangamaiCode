@@ -459,6 +459,9 @@ export class OpPaymentComponent implements OnInit {
       this.Paymentobj['payTmamount'] = this.Payments.data.find(x => x.PaymentType == "upi")?.Amount ?? 0;
       this.Paymentobj['payTmtranNo'] = String(this.Payments.data.find(x => x.PaymentType == "upi")?.RefNo || 0);
       this.Paymentobj['payTmdate'] = this.datePipe.transform(this.currentDate, 'yyyy-MM-dd') || this.datePipe.transform(this.currentDate, 'yyyy-MM-dd')
+      this.Paymentobj['tdsamount'] = this.Payments.data.find(x => x.PaymentType == "tds")?.Amount ?? 0;
+      this.Paymentobj['unitId'] = this._loggedService.currentUserValue.user.unitId
+      this.Paymentobj['wfamount'] = this.Payments.data.find(x => x.PaymentType == "wf")?.Amount ?? 0;  
     }
     else if (this.data.FromName == "Phar-SupplierPay") { //changed by raksha
       debugger
@@ -659,7 +662,7 @@ export class OpPaymentComponent implements OnInit {
       this.Paymentobj['transactionType'] = 4;
       this.Paymentobj['remark'] = " ";
       this.Paymentobj['addBy'] = this._loggedService.currentUserValue.userId,
-        this.Paymentobj['isCancelled'] = false;
+      this.Paymentobj['isCancelled'] = false;
       this.Paymentobj['isCancelledBy'] = 0;
       this.Paymentobj['isCancelledDate'] = this.datePipe.transform(this.currentDate, 'yyyy-MM-dd') || this.datePipe.transform(this.currentDate, 'yyyy-MM-dd')
       this.Paymentobj['opdipdType'] = 3;
@@ -670,6 +673,9 @@ export class OpPaymentComponent implements OnInit {
       this.Paymentobj['payTmamount'] = this.Payments.data.find(x => x.PaymentType == "upi")?.Amount ?? 0;
       this.Paymentobj['payTmtranNo'] = this.Payments.data.find(x => x.PaymentType == "upi")?.RefNo ?? "0";
       this.Paymentobj['payTmdate'] = this.datePipe.transform(this.currentDate, 'yyyy-MM-dd') || this.datePipe.transform(this.currentDate, 'yyyy-MM-dd')
+      this.Paymentobj['tdsamount'] = this.Payments.data.find(x => x.PaymentType == "tds")?.Amount ?? 0;
+      this.Paymentobj['unitId'] = this._loggedService.currentUserValue.user.unitId
+      this.Paymentobj['wfamount'] = this.Payments.data.find(x => x.PaymentType == "wf")?.Amount ?? 0;  
     }
     //new changes done by Ambadas sales multiple settlemetn pay 25/6/2025
     else if (this.data.FromName == "IP-Pharma-Multiple-SETTLEMENT") {
@@ -682,6 +688,7 @@ export class OpPaymentComponent implements OnInit {
       let NeftAmt = this.Payments.data.find(x => x.PaymentType == "net banking")?.Amount ?? 0;
       let PaytmAmt = this.Payments.data.find(x => x.PaymentType == "upi")?.Amount ?? 0;
       let PayTds = this.Payments.data.find(x => x.PaymentType == "tds")?.Amount ?? 0;
+      let Paywf = this.Payments.data.find(x => x.PaymentType == "wf")?.Amount ?? 0;
 
       this.data.ArrayList.forEach(element => {
         if (CashAmount == this.netPayAmt) {
@@ -701,6 +708,9 @@ export class OpPaymentComponent implements OnInit {
         }
         else if (PayTds == this.netPayAmt) {
           PayTds = element.balanceAmount
+        }
+        else if (Paywf == this.netPayAmt) {
+          Paywf = element.balanceAmount
         }
 
         let MultiplePay = {}
@@ -734,6 +744,9 @@ export class OpPaymentComponent implements OnInit {
         MultiplePay['payTmamount'] = PyaPytmAmt || 0;
         MultiplePay['payTmtranNo'] = this.Payments.data.find(x => x.PaymentType == "upi")?.RefNo ?? "";
         MultiplePay['payTmdate'] = this.datePipe.transform(this.currentDate, 'yyyy-MM-dd') || '1999-01-01';
+        MultiplePay['tdsamount'] = PayTds || 0;
+        MultiplePay['unitId'] = this._loggedService.currentUserValue.user.unitId
+        MultiplePay['wfamount'] = Paywf || 0;
         PaymentMul.push(MultiplePay)
       })
       this.Paymentobj = PaymentMul

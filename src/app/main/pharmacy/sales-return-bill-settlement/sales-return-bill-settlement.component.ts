@@ -235,6 +235,9 @@ export class SalesReturnBillSettlementComponent implements OnInit {
       payTmamount: [element?.payTmamount ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
       payTmtranNo: [element?.payTmtranNo ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
       payTmdate: [element?.payTmdate ?? ''],
+      tdsamount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      wfamount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      unitId: [this._loggedService.currentUserValue.user.unitId, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]], 
     });  
   }
   // Getters 

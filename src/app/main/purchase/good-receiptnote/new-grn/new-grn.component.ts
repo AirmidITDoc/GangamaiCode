@@ -194,7 +194,6 @@ export class NewGrnComponent implements OnInit, OnDestroy {
     batchlistApiUrl:any='';
     //Item details selectedObj
     getSelectedItem(item: GRNItemResponseType): void {
-        debugger
         if (this.mock) {
             return;
         }
@@ -204,10 +203,10 @@ export class NewGrnComponent implements OnInit, OnDestroy {
             HSNCode: item.hsNcode,
             ConversionFactor: isNaN(+item.converFactor) ? 1 : +item.converFactor,
             // Qty: item.balanceQty,
-            CGST: item.cgstPer,
-            SGST: item.sgstPer,
-            IGST: item.igstPer,
-            GST: item.cgstPer + item.sgstPer + item.igstPer
+            // CGST: item.cgstPer,
+            // SGST: item.sgstPer,
+            // IGST: item.igstPer,
+            // GST: item.cgstPer + item.sgstPer + item.igstPer
         }); 
         this.calculateTotalamt();
         this.getLastThreeItemInfo(item)
@@ -219,18 +218,14 @@ export class NewGrnComponent implements OnInit, OnDestroy {
                 SGST:Number((rate.value)/2),  
                 IGST:0,
                 GST: Number(rate.value)
-            }) 
+            })  
             this.userFormGroup.get('IGST').reset();
             this.userFormGroup.get('IGST').clearValidators();
             this.userFormGroup.get('IGST').updateValueAndValidity();
             this.userFormGroup.get('IGST').disable();
-        const addbuttonElement = document.querySelector(`[name='addbutton']`) as HTMLElement;
-        if (addbuttonElement) {
-            addbuttonElement.focus();
-        } 
-        } else{ 
-        this.userFormGroup.get('IGST').reset(); 
+        } else{  
         this.userFormGroup.get('IGST').enable();
+         this.userFormGroup.get('IGST').reset();
         }
         this.calculateTotalamt();
     }
@@ -240,16 +235,15 @@ export class NewGrnComponent implements OnInit, OnDestroy {
             this.userFormGroup.patchValue({ 
                 SGST:0, 
                 CGST:0,
-                GST: Number(rate.text),
-                selectedIGSTValue:Number(rate.text),
-            }) 
+                GST: Number(rate.text), 
+            })  
             this.userFormGroup.get('CGST').reset();
             this.userFormGroup.get('CGST').clearValidators();
             this.userFormGroup.get('CGST').updateValueAndValidity();
             this.userFormGroup.get('CGST').disable();
-        }else{
-        this.userFormGroup.get('CGST').reset(); 
+        }else{ 
         this.userFormGroup.get('CGST').enable(); 
+        this.userFormGroup.get('CGST').reset();
         }
          this.calculateTotalamt();
     }
@@ -275,12 +269,21 @@ export class NewGrnComponent implements OnInit, OnDestroy {
         })
     }
     //BatchExpireDate calculation
-    calculateLastDay() {
-        const inputDate = this.userFormGroup.get("ExpDate").value;
+    calculateLastDay() {  
+    debugger 
+        
+        const NextExpiryDate = new Date();   
+        const Months = 3 
+        const inputDate = this.userFormGroup.get("ExpDate").value; 
         const numericPattern = /^[0-9]+$/;
         const CurrentDate = new Date();
         const currentMonth = CurrentDate.getMonth();
         const currentYear = CurrentDate.getFullYear();
+        const NxtMonths =  ((currentMonth) + (Months)); 
+       NextExpiryDate.setMonth(NxtMonths);
+        const newNextDate  = new Date(NextExpiryDate)
+        const getnextYear = newNextDate.getFullYear(); 
+        
         if ((inputDate && inputDate.length === 6) && numericPattern.test(inputDate)) {
             const month = +inputDate.substring(0, 2);
             const year = +inputDate.substring(2, 6);
@@ -288,15 +291,20 @@ export class NewGrnComponent implements OnInit, OnDestroy {
             if (year >= currentYear) {
                 if (month <= currentMonth && year == currentYear) {
                     Swal.fire({
-                        icon: "warning",
-                        title: "This item is already expired",
+                        icon: 'warning',
+                        title: '⚠️ Expired Item Alert',
+                        html: `<strong>This item has already <span style="color: #e74c3c;">expired</span>.</strong>`,
                         showConfirmButton: false,
-                        timer: 1500
+                        timer: 2000,
+                        timerProgressBar: true,
+                        background: '#fff',
+                        width: '400px',
+                        padding: '1.5em',
                     });
                     this.vlastDay = '';
                     this.userFormGroup.get('ExpDate').setValue(this.vlastDay)
                     return
-                }
+                } 
                 if (month > 12 && month <= 0) {
                     this.vlastDay = '';
                     this.userFormGroup.get('ExpDate').setValue(this.vlastDay)
@@ -309,19 +317,43 @@ export class NewGrnComponent implements OnInit, OnDestroy {
                 this.vlastDay = `${lastDay}/${this.pad(month)}/${year}`;
                 this.lastDay2 = `${year}/${this.pad(month)}/${lastDay}`;
                 const newuserDate = this.datePipe.transform(this.lastDay2, 'dd/MM/YYYY')
-                this.userFormGroup.get('ExpDate').setValue(this.vlastDay)
+                this.userFormGroup.get('ExpDate').setValue(this.vlastDay) 
                 const QtyElement = document.querySelector(`[name='Qty']`) as HTMLElement;
                 if (QtyElement) {
                     QtyElement.focus();
                 }
-
+                if (month <= NxtMonths && year <= getnextYear) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: '⚠️ Upcoming Expiry Alert',
+                        html: `<strong>This item will expire within the next <span style="color:#e74c3c;">3 months</span>.</strong>`,
+                        showConfirmButton: true,
+                        confirmButtonText: 'OK',
+                        confirmButtonColor: '#f39c12',
+                        width: '400px',
+                        padding: '1.5em',
+                        background: '#fff',
+                        timer: 4000,
+                        timerProgressBar: true,
+                    }); 
+                    this.userFormGroup.get('ExpDate').setValue(this.vlastDay)
+                    const QtyElement = document.querySelector(`[name='Qty']`) as HTMLElement;
+                    if (QtyElement) {
+                        QtyElement.focus();
+                    }
+                }
             } else {
                 Swal.fire({
-                    icon: "warning",
-                    title: "This item is already expired",
-                    showConfirmButton: false,
-                    timer: 1500
-                });
+                        icon: 'warning',
+                        title: '⚠️ Expired Item Alert',
+                        html: `<strong>This item has already <span style="color: #e74c3c;">expired</span>.</strong>`,
+                        showConfirmButton: false,
+                        timer: 2000,
+                        timerProgressBar: true,
+                        background: '#fff',
+                        width: '400px',
+                        padding: '1.5em',
+                    });
                 this.vlastDay = '';
                 this.userFormGroup.get('ExpDate').setValue(this.vlastDay)
                 return
@@ -334,7 +366,7 @@ export class NewGrnComponent implements OnInit, OnDestroy {
             });
             return;
         }
-    }
+    }  
     private pad(num: number): string {
         return num.toString().padStart(2, '0');
     }
@@ -409,14 +441,13 @@ export class NewGrnComponent implements OnInit, OnDestroy {
         //console.log("Form values : ", this.userFormGroup.value);
         const isDuplicate = this.dsItemNameList.data.some(item => item.BatchNo === this.userFormGroup.get('BatchNo').value);
         if (isDuplicate) {
-            this.newGRNService.showToast('Item already added in the list', ToastType.WARNING);
+            this.newGRNService.showToast('Item already added with same Batch no in the list', ToastType.WARNING);
             return;
         }
         const formValue =  this.userFormGroup.value
         this.userFormGroup.patchValue({
             BatchNo:(formValue.BatchNo?.batchNo ?? formValue.BatchNo),
-            IGST:formValue?.selectedIGSTValue || 0, 
-            CGST:formValue?.SGST  || 0
+            CGST:formValue.SGST
         })
         const formValues = this.userFormGroup.getRawValue() as GRNFormModel;
         const totalQty = (Number(formValues.Qty) + Number(formValues.FreeQty)) * (Number(formValues.ConversionFactor) || 1);
@@ -484,8 +515,8 @@ export class NewGrnComponent implements OnInit, OnDestroy {
             GSTAmount: 0,
             TotalAmount: 0,
             NetAmount: 0,
-            FinalTotalQty: 0,
-        });
+            FinalTotalQty: 0 
+        }); 
         this.userFormGroup.markAsUntouched();
     }
     //item Total amt
@@ -554,7 +585,6 @@ export class NewGrnComponent implements OnInit, OnDestroy {
         this.calculateGSTType();
     }
     calculateGSTType(type: GSTType = GSTType.GST_BEFORE_DISC) {
-        debugger
         const form = this.userFormGroup;
         const formValues = form.getRawValue() as GRNFormModel;
 
@@ -576,7 +606,6 @@ export class NewGrnComponent implements OnInit, OnDestroy {
     }
     calculateCellGSTType(item: ItemNameList): ItemNameList {
         // Validate input
-        debugger
         if (!item) return item;
         try {
             // Get all required values with proper type conversion
@@ -1248,6 +1277,10 @@ chkInvoiceNo(InvoiceNo){
         MRP:event?.unitMRP || 0, 
         Rate:event?.unitPurRate || 0,  
     }) 
+     const QtyElement = document.querySelector(`[name='Qty']`) as HTMLElement;
+                if (QtyElement) {
+                    QtyElement.focus();
+                }
    // this.userFormGroup.get('')
     }
     //Purchase order to grn section

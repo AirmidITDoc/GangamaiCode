@@ -179,6 +179,9 @@ advanceDetailId:any=0;
     }) 
   } 
   onSave() { 
+    const formattedTime =this.dateTimeObj.time;
+    const formattedDate = this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd');
+    const FormattedDateTime = formattedDate + ' ' + formattedTime 
     if(this.RefundFooterForm.invalid){
         this.toastr.warning('Please check Refund Form is Invalid ', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
@@ -186,9 +189,9 @@ advanceDetailId:any=0;
     }
 
     const formValues = this.RefundFooterForm.value
-       this.RefundSaveForm.get('pharmacyRefund.refundDate').setValue(this.datePipe.transform(this.dateTimeObj.date ,'yyyy-MM-dd'))
-       this.RefundSaveForm.get('pharmacyRefund.refundTime').setValue(this.dateTimeObj.time)
-      this.RefundSaveForm.get('pharmacyRefund.opdIpdId').setValue(this.regObj?.admissionID)
+    this.RefundSaveForm.get('pharmacyRefund.refundDate').setValue(formattedDate)
+    this.RefundSaveForm.get('pharmacyRefund.refundTime').setValue(FormattedDateTime)
+    this.RefundSaveForm.get('pharmacyRefund.opdIpdId').setValue(this.regObj?.admissionID)
     this.RefundSaveForm.get('pharmacyRefund.opdIpdId').setValue(this.regObj?.admissionID)
     this.RefundSaveForm.get('pharmacyRefund.refundAmount').setValue(formValues?.ToatalRefunfdAmt)
     this.RefundSaveForm.get('pharmacyRefund.advanceId').setValue(this.advanceDetailId)

@@ -149,7 +149,7 @@
                       <mat-label>ExpDate</mat-label>
                       <input matInput #inputField (keyup.enter)="calculateLastDay()" formControlName="ExpDate"
                         autocomplete="off" placeholder="mmyyyy" required (keypress)="keyPressDigitsOnly($event)">
-                    </mat-form-field>
+                    </mat-form-field> 
 
                     <airmid-textbox fxFlex="4%" label="Qty" formControlName="Qty" [formGroup]="userFormGroup"
                       placeholder="Qty" (valueChange)="calculateTotalamt()" type="number"></airmid-textbox>

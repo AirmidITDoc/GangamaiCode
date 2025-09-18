@@ -390,7 +390,7 @@ export class OpPaymentVimalComponent implements OnInit {
             this.Paymentobj['transactionType'] = 4;
             this.Paymentobj['remark'] = '';
             this.Paymentobj['addBy'] = this._loggedService.currentUserValue.userId,
-                this.Paymentobj['isCancelled'] = false;
+            this.Paymentobj['isCancelled'] = false;
             this.Paymentobj['isCancelledBy'] = 0;
             this.Paymentobj['isCancelledDate'] = this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd') || '1999-01-01';
             this.Paymentobj['opdipdType'] = 3;
@@ -401,6 +401,9 @@ export class OpPaymentVimalComponent implements OnInit {
             this.Paymentobj['payTmamount'] = this.Payments.data.find(x => x.PaymentType == "upi")?.Amount ?? 0;
             this.Paymentobj['payTmtranNo'] = this.Payments.data.find(x => x.PaymentType == "upi")?.RefNo ?? "0";
             this.Paymentobj['payTmdate'] = this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd') || '1999-01-01';
+            this.Paymentobj['tdsamount'] = this.Payments.data.find(x => x.PaymentType == "tds")?.Amount ?? 0; 
+            this.Paymentobj['unitId'] = this._loggedService.currentUserValue.user.unitId
+            this.Paymentobj['wfamount'] = this.Payments.data.find(x => x.PaymentType == "wf")?.Amount ?? 0; 
         }
         else if (this.data.FromName == "IP-Bill") {
             this.Paymentobj['billNo'] = 0;
