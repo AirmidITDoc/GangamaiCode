@@ -38,11 +38,11 @@
             <ng-template #actionButtonTemplate let-element>
                 <div fxLayout="row" fxLayoutAlign="center center">
                     <button mat-icon-button matTooltip="Edit GRNReturn Without GRN" (click)="newGRNRetunr(element)"
-                        *ngIf="!element.isVerified">
+                        *ngIf="!element.isVerified  && element.grnid <= 0">
                         <mat-icon>edit</mat-icon>
                     </button>
                     <button mat-icon-button matTooltip="Edit GRNReturn" (click)="getNewGRNRet(element)"
-                        *ngIf="!element.isVerified">
+                        *ngIf="!element.isVerified && element.grnid > 0">
                         <mat-icon>edit</mat-icon>
                     </button>
                     <button mat-icon-button matTooltip="Verify" (click)="getVerify(element)"

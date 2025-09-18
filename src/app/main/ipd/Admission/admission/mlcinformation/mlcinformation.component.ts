@@ -26,7 +26,7 @@ export class MLCInformationComponent implements OnInit {
   MlcInfoFormGroup: FormGroup;
   dateTimeObj: any;
   screenFromString = 'advance';
-  Personaldata = new AdmissionPersonlModel({});
+  Personaldata = new MlcDetail({});
   registerObj = new MlcDetail({})
   AdmissionId: any;
   EmgId: any;
@@ -34,6 +34,8 @@ export class MLCInformationComponent implements OnInit {
   date: string;
   dateValue: any = new Date().toISOString();
   mlcid = 0;
+  DetailGiven: any;
+  Remark: any;
 
   Mlcdate: any;
   isTimeChanged: boolean = false;
@@ -73,8 +75,9 @@ export class MLCInformationComponent implements OnInit {
           this._AdmissionService.getMLCById(this.data.admissionId).subscribe((response) => {
             if (response?.mlcid > 0)
               this.registerObj = response;
+            this.DetailGiven = this.registerObj.detailGiven
+            this.Remark = this.registerObj.remark
             console.log(this.registerObj)
-
           });
         }, 500);
       }
@@ -84,10 +87,12 @@ export class MLCInformationComponent implements OnInit {
           this._AdmissionService.getMLCById(this.data.emgId).subscribe((response) => {
             if (response?.mlcid > 0)
               this.registerObj = response;
+            this.DetailGiven = this.registerObj.detailGiven
+            this.Remark = this.registerObj.remark
             console.log(this.registerObj)
-
           });
         }, 500);
+        this.MlcInfoFormGroup.get('isEmgOrAdm').setValue(true)
       }
 
     }
@@ -104,36 +109,45 @@ export class MLCInformationComponent implements OnInit {
 
   createmlcForm() {
     return this.formBuilder.group({
-
       mlcid: 0,
       admissionId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      mlcno: ['', [Validators.minLength(10), Validators.maxLength(15),
-      Validators.required]],
+      isEmgOrAdm: [false],
+      mlcno: ['', [Validators.minLength(10), Validators.maxLength(15), Validators.required]],
       reportingDate: [(new Date()).toISOString()],
-      reportingTime: ['', [
-        Validators.required]],
-      authorityName: ['', [
-        Validators.required]],
-      buckleNo: ['', [Validators.minLength(5), Validators.maxLength(7),
-      Validators.required]],
-      policeStation: ['', [
-        Validators.required]],
-      // Given:"",
-      // Remark:""
-
+      reportingTime: ['', [Validators.required]],
+      authorityName: ['', [Validators.required]],
+      buckleNo: ['', [Validators.minLength(5), Validators.maxLength(7), Validators.required]],
+      policeStation: ['', [Validators.required]],
+      detailGiven: [''],
+      remark: ['']
     });
   }
 
   onSubmit() {
-    console.log(this.MlcInfoFormGroup.value)
+    debugger
+
+    let selectedDate = this.datePipe.transform(this.MlcInfoFormGroup.get('reportingDate')?.value,'yyyy-MM-dd');
+    let timeValue = this.MlcInfoFormGroup.get('reportingTime')?.value;
+    let time = new Date(timeValue);
+
+    // extract hours and minutes
+    let hours = time.getHours();
+    let minutes = time.getMinutes();
+
+    // combine reportingDate + reportingTime
+    let combinedDateTime = new Date(
+      selectedDate + 'T' + this.pad(hours) + ':' + this.pad(minutes) + ':00'
+    );
+
     this.MlcInfoFormGroup.get('reportingDate').setValue(this.datePipe.transform(this.MlcInfoFormGroup.get('reportingDate').value, 'yyyy-MM-dd'))
+    this.MlcInfoFormGroup.get('reportingTime').setValue(combinedDateTime)
+
     this.MlcInfoFormGroup.get('admissionId').setValue(this.EmgId ?? this.AdmissionId)
     if (!this.MlcInfoFormGroup.invalid) {
+      console.log(this.MlcInfoFormGroup.value)
       this._AdmissionService.MlcInsert(this.MlcInfoFormGroup.value).subscribe((response) => {
-        this.toastr.success(response.message);
         this.getMLCdetailview(response)
         this._matDialog.closeAll();
-
       });
     } else {
       let invalidFields = [];
@@ -153,6 +167,11 @@ export class MLCInformationComponent implements OnInit {
       }
     }
   }
+
+  pad(n: number) {
+    return n < 10 ? '0' + n : n;
+  }
+
   getValidationMessages() {
     return {
       mlcno: [
@@ -217,8 +236,6 @@ export class MLCInformationComponent implements OnInit {
 
 }
 
-
-
 export class MlcDetail {
   mlcid: any;
   admissionId: any;
@@ -228,6 +245,29 @@ export class MlcDetail {
   authorityName: any;
   buckleNo: any;
   policeStation: any;
+  seqNo: any;
+  emgId: any;
+  refDocName: any;
+  refDoctorName: any;
+  roomName: any;
+  bedName: any;
+  patientType: any;
+  tariffName: any;
+  companyName: any;
+  admissionTime: any;
+  emgTime: any;
+  ipdno: any;
+  ageYear: any;
+  ageMonth: any;
+  ageDay: any;
+  GenderName: any;
+  regNo: any;
+  patientName: any;
+  doctorname: any;
+  doctorName: any;
+  departmentName: any;
+  detailGiven: any;
+  remark: any;
   /**
    * Constructor
    *
@@ -244,7 +284,28 @@ export class MlcDetail {
       this.authorityName = MlcDetail.authorityName || '';
       this.buckleNo = MlcDetail.buckleNo || '';
       this.policeStation = MlcDetail.policeStation || '';
-
+      this.seqNo = MlcDetail.seqNo || ''
+      this.refDocName = MlcDetail.refDocName || 0;
+      this.refDoctorName = MlcDetail.refDoctorName || 0;
+      this.roomName = MlcDetail.roomName || '';
+      this.bedName = MlcDetail.bedName || '';
+      this.patientType = MlcDetail.patientType || '';
+      this.tariffName = MlcDetail.tariffName || '';
+      this.companyName = MlcDetail.companyName || '';
+      this.admissionTime = MlcDetail.admissionTime || '';
+      this.emgTime = MlcDetail.emgTime || ''
+      this.ipdno = MlcDetail.ipdno || '';
+      this.ageYear = MlcDetail.ageYear || ''
+      this.ageMonth = MlcDetail.ageMonth || '';
+      this.ageDay = MlcDetail.ageDay || ''
+      this.GenderName = MlcDetail.GenderName || '';
+      this.regNo = MlcDetail.regNo || ''
+      this.patientName = MlcDetail.patientName || '';
+      this.doctorname = MlcDetail.doctorname || ''
+      this.doctorName = MlcDetail.doctorName || '';
+      this.departmentName = MlcDetail.departmentName || ''
+      this.detailGiven = MlcDetail.detailGiven || ''
+      this.remark = MlcDetail.remark || ''
     }
   }
 }

@@ -138,7 +138,7 @@
                                     ItemName
                                 </mat-header-cell>
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-150">
-                                    {{contact.ItemName ?? contact.itemName}}
+                                    {{contact.itemName}}
                                 </mat-cell>
                             </ng-container>
 
@@ -146,7 +146,7 @@
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-100">BatchNo
                                 </mat-header-cell>
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100">
-                                    {{contact.BatchNo ?? contact.batchNo}}
+                                    {{contact.batchNo}}
                                 </mat-cell>
                             </ng-container>
 
@@ -154,7 +154,7 @@
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Packing
                                 </mat-header-cell>
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                    {{contact.ConversionFactor ?? contact.conversion}}
+                                    {{contact.conversion}}
                                 </mat-cell>
                             </ng-container>
 
@@ -162,7 +162,8 @@
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-100">ExpDate
                                 </mat-header-cell>
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100">
-                                    {{contact.ExpDate ?? contact.batchExpiryDate}}
+                                    <!-- {{contact.batchExpiryDate}} -->
+                                     {{contact.ExpDate ?? contact.batchExpiryDate}}
                                 </mat-cell>
                             </ng-container>
 
@@ -178,7 +179,7 @@
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                     RQty</mat-header-cell>
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                    {{contact.Qty ?? contact.returnQty}}
+                                    {{contact.returnQty}}
                                 </mat-cell>
                             </ng-container>
 
@@ -186,7 +187,7 @@
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                     LandedRate</mat-header-cell>
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                    {{(contact.LandedRate ?? contact.landedRate) | number:'1.2-2'}}
+                                    {{(contact.landedRate) | number:'1.2-2'}}
                                 </mat-cell>
                             </ng-container>
 
@@ -194,7 +195,7 @@
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                     TotalAmt </mat-header-cell>
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                    {{(contact.TotalAmount) | number:'1.2-2'}}
+                                    {{(contact.landedTotalAmount) | number:'1.2-2'}}
                                 </mat-cell>
                             </ng-container>
 
@@ -202,7 +203,7 @@
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                     UnitMRP</mat-header-cell>
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                    {{(contact.UnitMRP ?? contact.mrp) | number:'1.2-2'}}
+                                    {{(contact.mrp) | number:'1.2-2'}}
                                 </mat-cell>
                             </ng-container>
 
@@ -210,7 +211,7 @@
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                     PurRate</mat-header-cell>
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                    {{(contact.PurchaseRate) | number:'1.2-2'}}
+                                    {{(contact.unitPurchaseRate) | number:'1.2-2'}}
                                 </mat-cell>
                             </ng-container>
 
@@ -218,7 +219,7 @@
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                     StockId</mat-header-cell>
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                    {{contact.StockId ?? contact.stkId}}
+                                    {{contact.stkId}}
                                 </mat-cell>
                             </ng-container>
 
@@ -226,7 +227,7 @@
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                     GST</mat-header-cell>
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                    {{contact.VatPercentage ?? contact.vatPercentage}}
+                                    {{contact.vatPercentage}}
                                 </mat-cell>
                             </ng-container>
 
@@ -234,7 +235,7 @@
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                     GSTAmount</mat-header-cell>
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                    {{(contact.VatAmount) | number:'1.2-2'}}
+                                    {{(contact.vatAmount) | number:'1.2-2'}}
                                 </mat-cell>
                             </ng-container>
 
@@ -242,7 +243,7 @@
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                     NetAmt</mat-header-cell>
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                    {{(contact.NetAmount) | number:'1.2-2' }}
+                                    {{(contact.netAmount) | number:'1.2-2' }}
                                 </mat-cell>
                             </ng-container>
 
