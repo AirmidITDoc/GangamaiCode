@@ -26,6 +26,7 @@ import { SampledetailtwoComponent } from '../sample-collection/sampledetailtwo/s
 import { ResultEntryOneComponent } from './result-entry-one/result-entry-one.component';
 import { ResultEntryService } from './result-entry.service';
 import { ResultEntrytwoComponent } from './result-entrytwo/result-entrytwo.component';
+import { PageNames } from 'app/main/shared/componets/airmid-fileupload/airmid-fileupload.component';
 
 
 
@@ -106,6 +107,7 @@ export class ResultEntryComponent implements OnInit {
     vStatusSearch: any = "0";
     patientName:'RK'
     title:'Reports'
+     page: PageNames = PageNames.PATIENT;
 
     @ViewChild(MatSort) sort: MatSort;
     @ViewChild(MatPaginator) paginator: MatPaginator;

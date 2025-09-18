@@ -17,16 +17,14 @@
     </div>
     <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
 
-          <ng-template #actionButtonTemplate let-element>
+        <ng-template #actionButtonTemplate let-element>
             <div fxLayout="row" fxLayoutAlign="center center">
 
-
-              
                 <button mat-icon-button matTooltip="Edit Item" (click)="onSave(element)">
                     <mat-icon> edit</mat-icon>
                 </button>
 
-            
+
                 <button mat-icon-button matTooltip="Delete" (click)="delitem(element)">
                     <mat-icon>delete</mat-icon>
                 </button>
@@ -38,6 +36,11 @@
         <airmid-table [gridConfig]="gridConfig" class="content">
             <ng-container filters>
                 <form [formGroup]="myformSearch" fxLayout="column">
+
+                    <airmid-dropdown label="To Store Name" formControlName="ToStoreId"
+                        (selectionChange)="ListView1($event)" [formGroup]="myformSearch" [mode]="autocompletestore">
+                    </airmid-dropdown>
+
                     <mat-form-field appearance="outline" fxFlex>
                         <mat-label>Item Name</mat-label>
                         <input matInput placeholder="Search Item Name" autocomplete="off" (input)="onChangeFirst()"
@@ -47,9 +50,30 @@
                         </button>
                     </mat-form-field>
 
-                    <airmid-dropdown label="To Store Name" formControlName="ToStoreId"
-                        (selectionChange)="ListView1($event)" [formGroup]="myformSearch" [mode]="autocompletestore">
+                    <airmid-dropdown label="Item Category Name" formControlName="CatId"
+                        (selectionChange)="onChangeFirst()" [formGroup]="myformSearch"
+                        [mode]="autocompleteModeItemCategory" >
                     </airmid-dropdown>
+
+                    <airmid-dropdown label="Item Generic Name" formControlName="GenericId"
+                        (selectionChange)="onChangeFirst()" [formGroup]="myformSearch"
+                        [mode]="autocompleteModeItemGenericName" >
+                    </airmid-dropdown>
+
+                    <airmid-dropdown label="Drug Type" formControlName="DrugTypeId" 
+                        [formGroup]="myformSearch" [mode]="autocompleteModeDrugType"
+                        (selectionChange)="onChangeFirst()" >
+                    </airmid-dropdown>
+
+                  
+                    <airmid-dropdown label="Manufacture Name" formControlName="ManufId"
+                        (selectionChange)="onChangeFirst()" [formGroup]="myformSearch"  [mode]="autocompleteModeMenu"
+                        >
+                    </airmid-dropdown>
+
+                    <airmid-textbox label="Storage Location" formControlName="ProdLocation" [formGroup]="myformSearch"
+                        [maxLength]="50" (keyup)="onChangeFirst()">
+                    </airmid-textbox>
 
                 </form>
 

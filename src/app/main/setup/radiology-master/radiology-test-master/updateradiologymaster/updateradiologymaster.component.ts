@@ -21,7 +21,7 @@ export class UpdateradiologymasterComponent implements OnInit {
 
     isActive: boolean = true;
 
-    autocompleteModeService: string = "Service";
+    autocompleteModeService: string = "RadiologyService";
 
     autocompleteModeCategory: string = "ItemCategory";
     autocompleteModeRadioTemp: string = "RadioTemplate";

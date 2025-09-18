@@ -473,8 +473,8 @@ export class NewPurchaseorderComponent {
           ItemName: formValues.ItemName.itemName,
           // TotalQty: formValues.Qty,
           ItemId: formValues.ItemName.itemId,
-          UOM: formValues.UOMId || 0,
-          UOMID: formValues.UOMId || 0,
+          UOM: this.UmoId,// formValues.UOMId || 0,
+          UOMID:  this.UmoId,//formValues.UOMId || 0,
           Rate: formValues.Rate,// this.userFormGroup.get("Rate").value,// this.vRate || 0,
           Qty: formValues.Qty || 0,
           TotalAmount: formValues.TotalAmount || 0,
@@ -777,17 +777,19 @@ export class NewPurchaseorderComponent {
 
     }
     UmoId=0
+    Umoname=''
     getSelectedItem(item: GRNItemResponseType): void {
         console.log(item)
         this.lastsupplierflag = true
         this.ItemID = item.itemId
         this.UmoId=item.umoId
+        this.Umoname=item.umoName
         // if (this.mock) {
         //     return;
         // }
         this.userFormGroup.patchValue({
-            UOMId: item.umoId,
-            // UMOName:item.umoName,
+            // UOMId: item.umoId,
+            UOMId:item.umoName,
             ConversionFactor: isNaN(+item.converFactor) ? 1 : +item.converFactor,
             Qty: '',// item.balanceQty,
             CGSTPer: item.cgstPer,
@@ -1019,39 +1021,80 @@ export class NewPurchaseorderComponent {
 
 //           this.calculateTotalamt(); 
 //   }
-  getchangegstper(rate: any): void {
-        debugger   
-        if (rate) { 
-            this.userFormGroup.patchValue({ 
-              CGSTPer:Number(rate.text),  
-                SGSTPer:Number(rate.text),  
-                IGSTPer:0,
-                GST: Number((rate.text) * 2)
-            }) 
+  // getchangegstper(rate: any): void {
+  //       debugger   
+  //       if (rate) { 
+  //           this.userFormGroup.patchValue({ 
+  //             CGSTPer:Number(rate.text),  
+  //               SGSTPer:Number(rate.text),  
+  //               IGSTPer:0,
+  //               GST: Number((rate.text) * 2)
+  //           }) 
 
+  //       const addbuttonElement = document.querySelector(`[name='addbutton']`) as HTMLElement;
+  //       if (addbuttonElement) {
+  //           addbuttonElement.focus();
+  //       }
+  //       }
+      
+  //       this.calculateTotalamt();
+  //   }
+    // getchangeIgstper(rate: any): void {
+    //     debugger    
+    //     if (rate) { 
+    //         this.userFormGroup.patchValue({ 
+    //             CGSTPer:0, 
+    //             SGSTPer:0,
+    //             GST: Number(rate.text)
+    //         }) 
+    //     }
+    //      this.calculateTotalamt();
+    // }
+
+     getchangegstper(rate: any): void {
+        debugger   
+        if (Number(rate?.value) >0) { 
+            this.userFormGroup.patchValue({ 
+                SGST:Number((rate.value)/2),  
+                IGST:0,
+                GST: Number(rate.value)
+            }) 
+            this.userFormGroup.get('IGST').reset();
+            this.userFormGroup.get('IGST').clearValidators();
+            this.userFormGroup.get('IGST').updateValueAndValidity();
+            this.userFormGroup.get('IGST').disable();
         const addbuttonElement = document.querySelector(`[name='addbutton']`) as HTMLElement;
         if (addbuttonElement) {
             addbuttonElement.focus();
+        } 
+        } else{ 
+        this.userFormGroup.get('IGST').reset(); 
+        this.userFormGroup.get('IGST').enable();
         }
-        }
-        // const GSTPer = Number(formValues.CGST || 0) + Number(formValues.SGST || 0) + Number(formValues.IGST || 0);
-        // this.userFormGroup.patchValue({
-        //     GST: GSTPer
-        // });
-
         this.calculateTotalamt();
     }
     getchangeIgstper(rate: any): void {
         debugger    
-        if (rate) { 
+        if (Number(rate?.text) >0) { 
             this.userFormGroup.patchValue({ 
-                CGSTPer:0, 
-                SGSTPer:0,
-                GST: Number(rate.text)
+                SGST:0, 
+                CGST:0,
+                GST: Number(rate.text),
+                selectedIGSTValue:Number(rate.text),
             }) 
+            this.userFormGroup.get('CGST').reset();
+            this.userFormGroup.get('CGST').clearValidators();
+            this.userFormGroup.get('CGST').updateValueAndValidity();
+            this.userFormGroup.get('CGST').disable();
+        }else{
+        this.userFormGroup.get('CGST').reset(); 
+        this.userFormGroup.get('CGST').enable(); 
         }
          this.calculateTotalamt();
     }
+
+
+
   resetForm() {
     this.userFormGroup.reset();
     this.dsItemNameList.data = [];

@@ -17,7 +17,7 @@ export class ItemMasterService {
         private _httpClient: ApiCaller,
         private _formBuilder: UntypedFormBuilder,
         private _loggedService: AuthenticationService,
-        private _FormvalidationserviceService: FormvalidationserviceService        
+        private _FormvalidationserviceService: FormvalidationserviceService
     ) {
         this.itemForm = this.createItemmasterForm();
         // this.myformSearch = this.createSearchForm();
@@ -28,19 +28,24 @@ export class ItemMasterService {
         return this._formBuilder.group({
             ItemNameSearch: [""],
             ToStoreId: this._loggedService.currentUserValue.user.storeId,
+            CatId: [""],
+            GenericId: [""],
+            ProdLocation: [""],
+            ManufId: [""],
+            DrugTypeId: [""],
         });
     }
 
     createItemmasterForm(): FormGroup {
         return this._formBuilder.group({
-            itemID: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+            itemID: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             itemShortName: ["",
                 [
                     Validators.required,
                     Validators.maxLength(50),
                     Validators.pattern('^[a-zA-Z0-9 ]*$'),
-                     this._FormvalidationserviceService.allowEmptyStringValidator()
-                    
+                    this._FormvalidationserviceService.allowEmptyStringValidator()
+
                 ]
             ],
             itemName: ["",
@@ -98,7 +103,7 @@ export class ItemMasterService {
                 ]
             ],
             taxPer: ["0"],
-            isActive:[true],
+            isActive: [true],
             isBatchRequired: [true as boolean],
             minQty: ["",
                 [
@@ -124,7 +129,7 @@ export class ItemMasterService {
                 [
                     Validators.required,
                     Validators.maxLength(50),
-                     Validators.pattern('^[a-zA-Z0-9 ]*$')
+                    Validators.pattern('^[a-zA-Z0-9 ]*$')
                 ]
             ],
             cgst: ["",
@@ -171,17 +176,17 @@ export class ItemMasterService {
                 ]
             ],
             drugTypeName: [""
-                [
-                    Validators.required,
-                    this._FormvalidationserviceService.notEmptyOrZeroValidator()
-                ]
+            [
+                Validators.required,
+                this._FormvalidationserviceService.notEmptyOrZeroValidator()
+            ]
             ],
             prodLocation: ["",
                 [
                     Validators.required,
                     Validators.maxLength(50),
                     Validators.pattern('^[a-zA-Z0-9 ]*$')
-                    
+
                 ]
             ],
             itemCompnayId: [0,
@@ -220,7 +225,7 @@ export class ItemMasterService {
     public updateItemMaster(Param: any) {
         if (Param.itemID) {
             return this._httpClient.PutData("ItemMaster/Edit/" + Param.itemID, Param);
-        } 
+        }
     }
 
     public deactivateTheStatus(m_data) {
@@ -233,11 +238,11 @@ export class ItemMasterService {
 
     public getItemGenericById(Id) {
         return this._httpClient.GetData("ItemType/" + Id);
-      }
+    }
 
     // public ItemMasterCancle(Param: any) {
-        
+
     //   return this._httpClient.PostData("ItemMaster/ItemCanceled", Param);
     // }
-    
+
 }

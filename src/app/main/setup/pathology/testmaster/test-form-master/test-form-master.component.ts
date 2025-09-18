@@ -37,7 +37,7 @@ export class TestFormMasterComponent implements OnInit {
     displayedColumns: string[] = ['parameterName'];
     displayedColumns2: string[] = ['Reorder', 'ParameterName', 'PrintParameterName', 'MethodName', 'UnitName', 'ParaMultipleRange', 'Formula', 'IsNumeric', 'Action'];
     autocompleteModeCategoryId: string = "ItemCategory";
-    autocompleteModeServiceID: string = "Service";
+    autocompleteModeServiceID: string = "PathologyService";
     autocompleteModeTemplate: string = "Template";
     registerObj: any;
     vTestId: any;
@@ -59,8 +59,7 @@ export class TestFormMasterComponent implements OnInit {
     showTemplateTable: boolean=false;
    displayedColumns5: string[] = ['TemplateName', 'Action'];
 
-    // ///////////////////////
-
+    
     constructor(
         public _TestmasterService: TestmasterService,
         public dialogRef: MatDialogRef<TestFormMasterComponent>,

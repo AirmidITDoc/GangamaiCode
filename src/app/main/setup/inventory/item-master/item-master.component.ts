@@ -21,16 +21,28 @@ import { ItemGenericMasterComponent } from "../item-generic-master/item-generic-
 export class ItemMasterComponent implements OnInit {
     hasSelectedContacts: boolean;
     autocompleteModestoreName: string = "StoreName";
+    autocompleteModeItemCategory: string = "ItemCategory";
+    autocompleteModeItemGenericName: string = "ItemGeneric";
+    autocompleteModeDrugType: string = "ItemDrugType";
+    autocompleteModeMenu: string = "ItemManufacture";
     myformSearch: FormGroup;
     itemName: any = "";
+    catId = "0"
+    gerericId = "0"
+    drugtypeId = "0"
+    ManufId = "0"
+    location=''
+        Tostore = this.accountService.currentUserValue.user.storeId
+
+
     autocompletestore: string = "Store";
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
-     @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
-      
-         ngAfterViewInit() {
-            this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
-    
-        }
+    @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
+
+    ngAfterViewInit() {
+        this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
+
+    }
 
     allColumns = [
         { heading: "Code", key: "itemID", sort: true, align: 'left', emptySign: 'NA' },
@@ -56,15 +68,22 @@ export class ItemMasterComponent implements OnInit {
         { heading: "IsNursingFlaf", key: "isNursingFlag", sort: true, align: 'left', type: gridColumnTypes.status },
         { heading: "IsBatchRequired", key: "isBatchRequired", sort: true, align: 'left', type: gridColumnTypes.status },
         { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
-       {
-                   heading: "Action", key: "action", align: "right", width: 150, sticky: true, type: gridColumnTypes.template,
-                   template: this.actionButtonTemplate  // Assign ng-template to the column
-               }
+        {
+            heading: "Action", key: "action", align: "right", width: 150, sticky: true, type: gridColumnTypes.template,
+            template: this.actionButtonTemplate  // Assign ng-template to the column
+        }
     ]
 
     allFilters = [
-        { fieldName: "itemName", fieldValue: "%", opType: OperatorComparer.Equals },
-        { fieldName: "StoreID", fieldValue: "0", opType: OperatorComparer.Equals }
+        { fieldName: "ItemName", fieldValue: "%", opType: OperatorComparer.Equals },
+        { fieldName: "StoreID", fieldValue:  String(this.Tostore), opType: OperatorComparer.Equals },
+        { fieldName: "CatId", fieldValue: "0", opType: OperatorComparer.Equals },
+        { fieldName: "GenericId", fieldValue: "0", opType: OperatorComparer.Equals },
+        { fieldName: "ProdLocation", fieldValue: "%", opType: OperatorComparer.Equals },
+        { fieldName: "ManufId", fieldValue: "0", opType: OperatorComparer.Equals },
+        { fieldName: "DrugTypeId", fieldValue: "0", opType: OperatorComparer.Equals }
+
+
     ]
 
     gridConfig: gridModel = {
@@ -86,7 +105,7 @@ export class ItemMasterComponent implements OnInit {
         this.myformSearch = this._itemService.createSearchForm();
     }
 
-    Tostore = this.accountService.currentUserValue.user.storeId
+
     ListView1(value) {
         console.log(value)
         if (value.value !== 0)
@@ -97,7 +116,7 @@ export class ItemMasterComponent implements OnInit {
     }
 
     Clearfilter(event) {
-        
+
         console.log(event)
         if (event == 'ItemNameSearch')
             this.myformSearch.get('ItemNameSearch').setValue("")
@@ -106,21 +125,33 @@ export class ItemMasterComponent implements OnInit {
     }
 
     onChangeFirst() {
-        
+
         this.itemName = this.myformSearch.get('ItemNameSearch').value + "%"
+        this.catId = this.myformSearch.get('CatId').value || "0"
+        this.gerericId = this.myformSearch.get('GenericId').value || "0"
+        this.drugtypeId = this.myformSearch.get('DrugTypeId').value || "0"
+        this.ManufId = this.myformSearch.get('ManufId').value || "0"
+         this.location = this.myformSearch.get('ProdLocation').value + "%"
+
         this.getfilterdata();
     }
 
     getfilterdata() {
-        
+        debugger
         this.gridConfig = {
             apiUrl: "ItemMaster/ItemMasterList",
             columnsList: this.allColumns,
             sortField: "ItemID",
             sortOrder: 0,
             filters: [
-                { fieldName: "itemName", fieldValue: this.itemName, opType: OperatorComparer.Equals },
-                { fieldName: "StoreID", fieldValue: this.Tostore, opType: OperatorComparer.Equals }
+                { fieldName: "ItemName", fieldValue: this.itemName, opType: OperatorComparer.Equals },
+                { fieldName: "StoreID", fieldValue: String(this.Tostore), opType: OperatorComparer.Equals },
+                { fieldName: "CatId", fieldValue: this.catId, opType: OperatorComparer.Equals },
+                { fieldName: "GenericId", fieldValue: this.gerericId, opType: OperatorComparer.Equals },
+                { fieldName: "ProdLocation", fieldValue:   this.location, opType: OperatorComparer.Equals },
+                { fieldName: "ManufId", fieldValue: this.ManufId, opType: OperatorComparer.Equals },
+                { fieldName: "DrugTypeId", fieldValue: this.drugtypeId, opType: OperatorComparer.Equals }
+
             ]
         }
         this.grid.gridConfig = this.gridConfig;
@@ -134,19 +165,19 @@ export class ItemMasterComponent implements OnInit {
         let that = this;
         const dialogRef = this._matDialog.open(ItemFormMasterComponent,
             {
-               maxWidth: "95vw",
-        width: '100%',
-        height: "98vh",
+                maxWidth: "95vw",
+                width: '100%',
+                height: "98vh",
                 data: row
             });
         dialogRef.afterClosed().subscribe(result => {
             that.grid.bindGridData();
-            
+
         });
     }
 
 
-     delitem(obj) {
+    delitem(obj) {
         this._itemService.deactivateTheStatus(obj.itemId).subscribe((response: any) => {
             // this.toastr.success(response.message);
             this.grid.bindGridData();

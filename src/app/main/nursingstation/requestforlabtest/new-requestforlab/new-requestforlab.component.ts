@@ -208,18 +208,18 @@ export class NewRequestforlabComponent implements OnInit {
       }
     }
 
-    if (this.dsLabRequest2.data[0]['creditedtoDoctor'] == true) {
-              this.myFormGroup.get('doctorId').reset();
-              this.myFormGroup.get('doctorId').setValidators([Validators.required]);
-              this.myFormGroup.get('doctorId').enable();
-              this.isDoctor = true;
-          } else {
-              this.myFormGroup.get('doctorId').reset();
-              this.myFormGroup.get('doctorId').clearValidators();
-              this.myFormGroup.get('doctorId').updateValueAndValidity();
-              this.myFormGroup.get('doctorId').disable();
-              this.isDoctor = false;
-          }
+    // if (this.dsLabRequest2.data[0]['creditedtoDoctor'] == true) {
+    //           this.myFormGroup.get('doctorId').reset();
+    //           this.myFormGroup.get('doctorId').setValidators([Validators.required]);
+    //           this.myFormGroup.get('doctorId').enable();
+    //           this.isDoctor = true;
+    //       } else {
+    //           this.myFormGroup.get('doctorId').reset();
+    //           this.myFormGroup.get('doctorId').clearValidators();
+    //           this.myFormGroup.get('doctorId').updateValueAndValidity();
+    //           this.myFormGroup.get('doctorId').disable();
+    //           this.isDoctor = false;
+    //       }
 
   }
 

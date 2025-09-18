@@ -107,18 +107,12 @@
                                             <mat-icon>description</mat-icon>
                                         </button>
 
-                                        <airmid-fileupload-icon [refId]="element.doctorId" [refType]="page"
-                                            [multiple]="true" [title]="'Report Master'"></airmid-fileupload-icon>
+                                        <!-- <airmid-fileupload-icon [refId]="element.doctorId" [refType]="page"
+                                            [multiple]="true" [title]="'Report Master'"></airmid-fileupload-icon> -->
 
-                                        <airmid-signature-icon [refId]="element.doctorId" [refType]="signature"
-                                            [multiple]="true" docName="DoctorSignature"></airmid-signature-icon>
-
-                                        <!-- <button mat-icon-button matTooltip="Upload Doc" (click)="onFilesUpload()">
-                                            <mat-icon> cloud_upload </mat-icon>
-                                        </button>
-                                        <button mat-icon-button matTooltip="Report View" (click)="onFiles()">
-                                            <mat-icon> insert_drive_file</mat-icon>
-                                        </button> -->
+                                        <airmid-fileupload-icon [refId]="element.opdipdid" [refType]="page"
+                                            [multiple]="true"
+                                            [title]="element.patientName + ' Document'"></airmid-fileupload-icon>
                                     </div>
                                 </ng-template>
 

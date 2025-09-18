@@ -47,6 +47,7 @@ export class AirmidFileuploadComponent extends BaseFormControlComponent implemen
         }
     }
     onSubmit(): void {
+        debugger
         if (this.files.length > 0) {
             this._service.PostFromData("Files/save-files", { MDoctorFiles: this.files }).subscribe((data) => {
                 this.dialogRef.close();
@@ -153,25 +154,8 @@ export class AirmidFileuploadComponent extends BaseFormControlComponent implemen
         });
     }
 
-    onViewImage(ele: any, type: string) {
-    let fileType;
-    console.log(ele)
-    debugger
-    // if (ele) {
-        const dialogRef = this._matDialog.open(AirmidImageviewComponent,
-            {
-                width: '60%',
-                height: '65%',
-                data: {
-                    docData: type == 'img' ? ele : ele.docSavedName,
-                    type: type == 'img' ? "image" : ele.type
-                }
-            }
-        );
-        dialogRef.afterClosed().subscribe(result => {
-        });
-    // }
-  }
+   
+  
 }
 export class AirmidFileModel {
     srNo: Number;

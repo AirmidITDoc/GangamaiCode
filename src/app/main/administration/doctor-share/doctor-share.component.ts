@@ -84,8 +84,8 @@ export class DoctorShareComponent implements OnInit {
     }
 
   allColumns=[
-    { heading: "", key: "patientType", sort: true, align: 'left', type: gridColumnTypes.template, emptySign: 'NA', width: 25 },
-     { heading: "", key: "opdIpdType", sort: true, align: 'left', type: gridColumnTypes.template, emptySign: 'NA', width: 25 },
+    { heading: "-", key: "patientType", sort: true, align: 'left', type: gridColumnTypes.template, emptySign: 'NA', width: 25 },
+     { heading: "-", key: "opdipdtype", sort: true, align: 'left', type: gridColumnTypes.template, emptySign: 'NA', width: 25 },
     { heading: "PBillNo", key: "pbillNo", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "Bill Amt", key: "totalAmt", sort: true, align: 'left', emptySign: 'NA' , type: gridColumnTypes.amount },
@@ -152,30 +152,30 @@ Clearfilter(event) {
   this.onChangeFirst();
 }
 
-  gridConfig1: gridModel = {
-    apiUrl: "CurrencyMaster/List",
-    columnsList: [
-      { heading: "-", key: "firstName", sort: true, align: 'left', emptySign: 'NA' },
-      { heading: "PBillNo", key: "middleName", sort: true, align: 'left', emptySign: 'NA' },
-      { heading: "PatientName", key: "lastName", sort: true, align: 'left', emptySign: 'NA' },
-      { heading: "BillAmt", key: "address", sort: true, align: 'left', emptySign: 'NA' },
-      { heading: "DiscountAmt", key: "City", sort: true, align: 'left', emptySign: 'NA' },
-      { heading: "NetAmt", key: "Age", sort: true, align: 'left', emptySign: 'NA' },
-      { heading: "DoctorName", key: "PhoneNo", sort: true, align: 'left', emptySign: 'NA' },
-      { heading: "PatientType", key: "oPBILL", sort: true, align: 'left', emptySign: 'NA' },
-      { heading: "CompanyName", key: "oPReceipt", sort: true, align: 'left', emptySign: 'NA' }
-    ],
-    sortField: "firstName",
-    sortOrder: 0,
-    filters: [
-      { fieldName: "firstName", fieldValue: "", opType: OperatorComparer.Contains },
-      { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals },
-      { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
-      { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
-      { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
-    ]
-  }
-  data: any;
+  // gridConfig1: gridModel = {
+  //   apiUrl: "CurrencyMaster/List",
+  //   columnsList: [
+  //     { heading: "-", key: "firstName", sort: true, align: 'left', emptySign: 'NA' },
+  //     { heading: "PBillNo", key: "middleName", sort: true, align: 'left', emptySign: 'NA' },
+  //     { heading: "PatientName", key: "lastName", sort: true, align: 'left', emptySign: 'NA' },
+  //     { heading: "BillAmt", key: "address", sort: true, align: 'left', emptySign: 'NA' },
+  //     { heading: "DiscountAmt", key: "City", sort: true, align: 'left', emptySign: 'NA' },
+  //     { heading: "NetAmt", key: "Age", sort: true, align: 'left', emptySign: 'NA' },
+  //     { heading: "DoctorName", key: "PhoneNo", sort: true, align: 'left', emptySign: 'NA' },
+  //     { heading: "PatientType", key: "oPBILL", sort: true, align: 'left', emptySign: 'NA' },
+  //     { heading: "CompanyName", key: "oPReceipt", sort: true, align: 'left', emptySign: 'NA' }
+  //   ],
+  //   sortField: "firstName",
+  //   sortOrder: 0,
+  //   filters: [
+  //     { fieldName: "firstName", fieldValue: "", opType: OperatorComparer.Contains },
+  //     { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals },
+  //     { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
+  //     { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
+  //     { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
+  //   ]
+  // }
+  // data: any;
 
   onSave(row: any = null) {
     const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element

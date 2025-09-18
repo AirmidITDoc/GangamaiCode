@@ -141,14 +141,21 @@
                                             (valueChange)="getchangegstper($event,SGST)" [formGroup]="userFormGroup"
                                             type="text"></airmid-textbox> -->
 
-                                        <airmid-dropdown label="CGST" formControlName="CGSTPer" fxFlex="5%"
+                                        <!-- <airmid-dropdown label="CGST" formControlName="CGSTPer" fxFlex="5%"
                                             [formGroup]="userFormGroup" [validations]="getValidationMessages().CGST"
                                             [mode]="autocompleteModeGSTTypesValues"
-                                            (selectionChange)="getchangegstper($event)"> </airmid-dropdown>
+                                            (selectionChange)="getchangegstper($event)"> </airmid-dropdown> -->
 
-                                        <airmid-textbox fxFlex="4%" label="SGST" formControlName="SGSTPer"
+                                        <airmid-dropdown label="CGST/SGST" formControlName="CGSTPer" fxFlex="8%"
+                                            [formGroup]="userFormGroup" [validations]="getValidationMessages().CGST"
+                                            [mode]="autocompleteModeGSTTypesValues"
+                                            (selectionChange)="getchangegstper($event)"
+                                            (onClearSelection)="getchangegstper($event)"> </airmid-dropdown>
+
+
+                                        <!-- <airmid-textbox fxFlex="4%" label="SGST" formControlName="SGSTPer"
                                             [formGroup]="userFormGroup" type="text" #SGST
-                                            [readonly]="true"></airmid-textbox>
+                                            [readonly]="true"></airmid-textbox> -->
 
                                         <!-- <airmid-textbox fxFlex="4%" label="IGST %" formControlName="IGSTPer" #IGST
                                             (valueChange)="getchangegstper($event,IGST)" [formGroup]="userFormGroup"
@@ -207,6 +214,13 @@
                             </ng-container>
 
                             <ng-container matColumnDef="UOM">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-100">
+                                    U.M.O </mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100">
+                                    {{contact.UOM}}
+                                </mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="UOMName">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-100">
                                     U.M.O </mat-header-cell>
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100">

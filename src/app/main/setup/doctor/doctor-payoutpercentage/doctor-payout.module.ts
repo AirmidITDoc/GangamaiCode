@@ -35,6 +35,7 @@ import { DoctorPayoutpercentageComponent } from "./doctor-payoutpercentage.compo
 import { MatTabsModule } from "@angular/material/tabs";
 import { MatTimepickerModule } from "mat-timepicker";
 import { DoctorMasterService } from "../doctor-master/doctor-master.service";
+import { DoctorShareListComponent } from './doctor-share-list/doctor-share-list.component';
 
 
 const routes: Routes = [
@@ -45,7 +46,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    declarations: [DoctorPayoutpercentageComponent],
+    declarations: [DoctorPayoutpercentageComponent, DoctorShareListComponent],
     imports: [
         RouterModule.forChild(routes),
         MatChipsModule,

@@ -116,10 +116,10 @@
                                     <ng-template #actionsTemplate let-element>
                                         <div fxLayout="row" fxLayoutAlign="center center">
 
-                                            <mat-icon *ngIf="element.opdIpdType=='0'" matTooltip="OPD"
+                                            <mat-icon *ngIf="element.opdipdtype=='0'" matTooltip="OPD"
                                                 class="pill orange-600 s-16">circle</mat-icon>
 
-                                            <mat-icon *ngIf="element.opdIpdType=='1'" matTooltip="IPD"
+                                            <mat-icon *ngIf="element.opdipdtype=='1'" matTooltip="IPD"
                                                 class="pill green-600 s-16">circle</mat-icon>
                                         </div>
                                     </ng-template>
@@ -137,11 +137,11 @@
                                 <div fusePerfectScrollbar
                                     class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
                                     dynamicTableHeight>
-                                    <airmid-table [gridConfig]="gridConfig1" #grid :ShowFilter="false">
+                                    <!-- <airmid-table [gridConfig]="gridConfig1" #grid :ShowFilter="false">
                                         <ng-container filters>
 
                                         </ng-container>
-                                    </airmid-table>
+                                    </airmid-table> -->
                                 </div>
                             </mat-tab>
                         </mat-tab-group>

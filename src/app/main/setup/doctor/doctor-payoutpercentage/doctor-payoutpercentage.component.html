@@ -1,176 +1,64 @@
-<div id="contacts" class="page-layout simple inner-scroll inner-sidebar right-sidebar">
-    <mat-toolbar style="width: 100%;height: 40px;justify-content: space-between;">
-        <div fxLayout="row" fxLayoutAlign="start center">
-            <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="color: white;">
-                Doctor Payout Details
-            </span>
-        </div>
-        <div fxLayout="row" fxLayoutAlign="space-between center">
-            <button mat-icon-button [mat-dialog-close]="true" tabIndex="-1" aria-label="Close dialog"
-                (click)="onClose()">
-                <mat-icon>close</mat-icon>
-            </button>
-        </div>
-    </mat-toolbar>
-
-    <div class="content">
-        <div class="center p-12 pb-56" style="border-radius: 4px;">
-            <div class="content-card">
-                <div fxLayout="row" fxLayout="column" fxFlexFill fxLayoutGap="10px">
-                    <mat-card style="padding: 5px;">
-                    <form [formGroup]="_DoctorShareService.DocFormGroup">
-                        <div fxLayout="row" fxLayoutGap="6px"> 
-
-                            <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                <airmid-dropdown 
-                                    label="Select Doctor Name" 
-                                    formControlName="DoctorName"
-                                    [value]="data?.DoctorName"
-                                    [formGroup]="_DoctorShareService.DocFormGroup"
-                                    [validations]="getValidationMessages().DoctorName"
-                                    (selectionChange)="ListView($event)"
-                                    [mode]="autocompleteModeItem">
-                                </airmid-dropdown>
-                            </div>
-
-                            <div fxLayout="row" style="padding: 15px;">
-                                <mat-radio-group formControlName="Type" name="Type" (change)="onChange()" >
-                                    <mat-radio-button value="1">Service Wise</mat-radio-button>
-                                    <mat-radio-button value="2">Group Wise</mat-radio-button> 
-                                </mat-radio-group>
-                            </div> 
-
-                            <div style="padding: 10px;"> 
-                                <button mat-raised-button class="searchButton" matTooltip="search" (click)="getfilterdata()">
-                                    <mat-icon class="searchiconbutton">search</mat-icon>
-                                </button>
-                            </div>
-                        </div>
-                    </form> 
-                   </mat-card>
-                   <!-- 1st -->
-                   <mat-card style="padding: 5px;">
-                    <div fxFlex.gt-sm="100%" fxFlex>
-                     
-                        <div style="height: 250px;" fusePerfectScrollbar dynamicTableHeight
-                            class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto">
-                            <airmid-table [gridConfig]="gridConfig" #grid :ShowFilter="false" (onSelectRow)="OnEdit($event)">
-                                <ng-container filters>
-
-                                </ng-container>
-                            </airmid-table>
-                        </div>
-        
-                    </div>
-
-                   </mat-card>
-
-                   <!-- 2nd -->
-                   <mat-card style="padding: 5px;">
-                    <form [formGroup]="_DoctorShareService.DocFormGroup">
-                        <div fxLayout="column" fxLayoutGap="5px">
-                            <div fxLayout="row" fxLayoutGap="4px">  
-                                <div fxLayout="row wrap" fxLayoutGap="12px grid">
-                                    <mat-radio-group formControlName="ServiceOrgrpType" name="ServiceOrgrpType" fxLayout="row">
-                                        <mat-radio-button value="1">Service Wise</mat-radio-button>
-                                        <mat-radio-button value="2">Group Wise</mat-radio-button>
-                                    </mat-radio-group>
-                                    <mat-divider [vertical]="true"></mat-divider>&nbsp;
-                                    <mat-radio-group formControlName="PatientType" name="PatientType" fxLayout="row">
-                                        <mat-radio-button value="0">OP</mat-radio-button>
-                                        <mat-radio-button value="1">IP</mat-radio-button>
-                                    </mat-radio-group>
-                                </div>  
-                            </div>
-                    
-                            <div fxLayout="row wrap" fxLayoutGap="12px grid">
-                    
-                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <airmid-dropdown 
-                                        label="Select Doctor Name" 
-                                        formControlName="DoctorID"
-                                        [value]="data?.DoctorID"
-                                        [formGroup]="_DoctorShareService.DocFormGroup"
-                                        [validations]="getValidationMessages().DoctorID"
-                                        (selectionChange)="selectChangeDoctor($event)"
-                                        [mode]="autocompleteModeItem">
-                                    </airmid-dropdown>
-                                </div>
-
-                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%"
-                                *ngIf="_DoctorShareService.DocFormGroup.get('ServiceOrgrpType').value=='1'">
-                                    <airmid-dropdown 
-                                        label="Select Service Name" 
-                                        formControlName="ServiceID"
-                                        [value]="data?.ServiceID"
-                                        [formGroup]="_DoctorShareService.DocFormGroup"
-                                        [validations]="getValidationMessages().ServiceID"
-                                        (selectionChange)="selectChangeService($event)"
-                                        [mode]="autocompleteModeService">
-                                    </airmid-dropdown>
-                                </div>
-                
-                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%"
-                                *ngIf="_DoctorShareService.DocFormGroup.get('ServiceOrgrpType').value=='2'">
-                                    <airmid-dropdown 
-                                        label="Select Group Name" 
-                                        formControlName="GroupWise"
-                                        [value]="data?.GroupWise"
-                                        [formGroup]="_DoctorShareService.DocFormGroup"
-                                        [validations]="getValidationMessages().GroupWise"
-                                        (selectionChange)="selectChangeGroup($event)"
-                                        [mode]="autocompletedepartment">
-                                    </airmid-dropdown>
-                                </div>
-
-                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <airmid-dropdown 
-                                        label="Select Class Name" 
-                                        formControlName="ClassId"
-                                        [value]="data?.ClassId"
-                                        [formGroup]="_DoctorShareService.DocFormGroup"
-                                        [validations]="getValidationMessages().ClassId"
-                                        (selectionChange)="selectChangeClass($event)"
-                                        [mode]="autocompleteClass">
-                                    </airmid-dropdown>
-                                </div>
-
-                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <div fxLayout="row" style="padding:15px 5px 15px 5px;">
-                                        <mat-radio-group formControlName="DocShareType" name="DocShareType" fxLayout="row">
-                                            <mat-label>Doctor Share :</mat-label>&nbsp;&nbsp;
-                                            <mat-radio-button value="P">%</mat-radio-button> &nbsp;
-                                            <mat-radio-button value="A">Amount</mat-radio-button>
-                                        </mat-radio-group>
-                                    </div> 
-                                </div>
-
-                                <mat-form-field appearance="outline" fxFlex="11%" *ngIf="_DoctorShareService.DocFormGroup.get('DocShareType').value=='P'">
-                                    <mat-label>%</mat-label>
-                                    <input name="Percentage" formControlName="Percentage" matInput [(ngModel)]="vServicePerc"
-                                    (keypress)="keyPressAlphanumeric($event)">
-                                </mat-form-field>  
-
-                                <mat-form-field appearance="outline" fxFlex="11%"  *ngIf="_DoctorShareService.DocFormGroup.get('DocShareType').value=='A'">
-                                    <mat-label>Amount</mat-label>
-                                    <input name="Amount" formControlName="Amount" matInput [(ngModel)]="vServiceAmt"
-                                    (keypress)="keyPressAlphanumeric($event)">
-                                </mat-form-field>  
-
-                            </div>
-                        </div>
-                    </form>
-                   </mat-card>
-                   
-                   <div fxLayoutAlign="end">
-                        <div class="modal-footer-buttons" fxLayout="row" fxLayoutGap="5px" style="margin: 20px 20px 0px 50px; ">
-                            <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
-                            <button class="btn btn-primary"   (click)="OnSave()">Save</button>
-                        </div>
-                    </div>
-
-                </div>
+<div fusePerfectScrollbar
+    class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
+    dynamicTableHeight>
+    <div class="top-header header accent p-16" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
+        fxLayoutAlign.gt-xs="space-between center ">
+        <div class="top-header-info">
+            <div class="top-header-title">
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    Doctor Share Payout List
+                </span>
             </div>
         </div>
+        <div class="gap-8" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
+            <button mat-raised-button (click)="onAdd()">New Add
+            </button>
+
+        </div>
+    </div>
+    <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+        <ng-template #actionsTemplate let-element>
+            <div fxLayout="row" fxLayoutAlign="center center">
+
+                <mat-icon *ngIf="element.op_IP_Type=='0'" matTooltip="IP" class="pill green-600 s-16">circle</mat-icon>
+                <mat-icon *ngIf="element.op_IP_Type=='1'" matTooltip="OP" class="pill orange-600 s-16">circle
+                </mat-icon>
+
+            </div>
+        </ng-template>
+          <ng-template #actionButtonTemplate let-element>
+            <div fxLayout="row" fxLayoutAlign="center center">
+                <button mat-icon-button (click)="onadd(element)" style="color:black;">
+                    <mat-icon title="Edit Menu">edit</mat-icon>
+                </button>
+                <button mat-icon-button (click)="onDelete(element)" color="warn">
+                    <mat-icon>delete_outline</mat-icon>
+                </button>
+
+            </div>
+        </ng-template>
+        
+        <airmid-table [gridConfig]="gridConfig" class="content">
+            <ng-container filters>
+                <form [formGroup]="_DoctorShareService.DocFormGroup">
+                    <airmid-dropdown label="Select Doctor Name" formControlName="DoctorName"
+                        [formGroup]="_DoctorShareService.DocFormGroup" (selectionChange)="ListView($event)"
+                        [mode]="autocompleteModeItem">
+                    </airmid-dropdown>
+                    <mat-radio-group formControlName="Type" name="Type" (change)="onChange()">
+                        <mat-radio-button value="1">Service Wise</mat-radio-button>
+                        <mat-radio-button value="2">Group Wise</mat-radio-button>
+                    </mat-radio-group>
+
+                    <div style="padding: 10px;">
+                        <button mat-raised-button class="searchButton" matTooltip="search" (click)="getfilterdata()">
+                            <mat-icon class="searchiconbutton">search</mat-icon>
+                        </button>
+                    </div>
+
+                </form>
+            </ng-container>
+        </airmid-table>
+      
     </div>
 </div>
