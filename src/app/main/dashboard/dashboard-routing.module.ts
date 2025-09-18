@@ -9,16 +9,16 @@ import { BedOccupancyComponent } from './bed-occupancy/bed-occupancy.component';
 import { HomePageComponent } from './home-page/home-page.component';
 
 const routes: Routes = [
+  // {
+  //   path: '',
+  //   component: HomePageComponent
+  // },
   {
     path: '',
-    component: HomePageComponent
-  },
-  {
-    path: 'dashboard',
     component: DailyDashboardComponent
   },
   {
-    path: 'daily-dashboard',
+    path: 'dashboard',
     component: DailyDashboardComponent
   },
   {

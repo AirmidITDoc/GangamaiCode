@@ -396,7 +396,7 @@ getServicetotSum(element) {
     return new Chart('doughnutChart', {
       type: 'doughnut',
       data: {
-        labels: ['ONE', 'TWO', 'THREE', 'FOUR', 'FIVE'],
+        // labels: ['ONE', 'TWO', 'THREE', 'FOUR', 'FIVE'],
         datasets: [
           {
             backgroundColor: [

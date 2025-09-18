@@ -115,6 +115,8 @@
                 </mat-card>
             </div>
         </div>
+
+        
         <mat-tab-group>
             <mat-tab label="OPD">
              
@@ -123,31 +125,28 @@
                     <div fxFlex="34%" fxFlex.xs="100%" fxFlex.sm="25%">
                         <div class="chart-card-container">
                             <mat-card>
-                                        <div class="header-sm" fxLayout="row">
-                                            <div>OPD Count</div>
-                                            <!-- <div>Total : {{dsDailyCountList.data[0].TotalVisitCount}}</div> -->
-                                        </div>
+                                        <div class="table-title">OPD Count</div>
                                 <hr>
-                                <mat-table matSort class="h-100" [dataSource]="dsDailyCountList"
+                                <mat-table matSort class="h-100 table-designed" [dataSource]="dsDailyCountList"
                                     [@animateStagger]="{value:'50'}" style="overflow:auto; ">
         
                                     <ng-container matColumnDef="OldPatient">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                            OldPatient </mat-header-cell>
+                                            Old Patient </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                             {{contact.OldPatientCount}}
                                         </mat-cell>
                                     </ng-container>
                                     <ng-container matColumnDef="NewPatient">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                            NewPatient </mat-header-cell>
+                                            New Patient </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                             {{contact.NewPatientCount}}
                                         </mat-cell>
                                     </ng-container>
                                     <ng-container matColumnDef="ReferPatient">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                            CrossConsultant </mat-header-cell>
+                                            Cross Consultant </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                             {{contact.CrossConsultantPatCount}}
                                         </mat-cell>
@@ -189,38 +188,35 @@
                     <div fxFlex="64.8%" fxFlex.xs="100%" fxFlex.sm="25%">
                         <div class="chart-card-container">
                             <mat-card>
-                                <div class="header-sm" fxLayout="row">
-                                    <div>OPD Collection and Summary</div>
-                                    <!-- <div>Total Bill Amount : {{dsDailyBillList.data[0].NetBillAmount | currency:'INR' :'symbol' :'2.2-2'}}</div> -->
-                                </div>
+                                <div class="table-title">OPD Collection and Summary</div>
                                 <hr>
-                                <mat-table matSort class="h-100" [dataSource]="dsDailyBillList" [@animateStagger]="{value:'50'}"
+                                <mat-table matSort class="h-100 table-designed" [dataSource]="dsDailyBillList" [@animateStagger]="{value:'50'}"
                                     style="overflow:auto; ">
         
                                     <ng-container matColumnDef="Cash">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                            CashPay </mat-header-cell>
+                                            Cash Pay </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                             {{contact.CashPay | currency:'INR' :'symbol' :'2.2-2'}}
                                         </mat-cell>
                                     </ng-container>
                                     <ng-container matColumnDef="Cheque">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                            ChequePay </mat-header-cell>
+                                            Cheque Pay </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                             {{contact.ChequePay | currency:'INR' :'symbol' :'2.2-2'}}
                                         </mat-cell>
                                     </ng-container>
                                     <ng-container matColumnDef="Online">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                            OnlinePay </mat-header-cell>
+                                            Online Pay </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                             {{contact.OnlinePay | currency:'INR' :'symbol' :'2.2-2'}}
                                         </mat-cell>
                                     </ng-container>
                                     <ng-container matColumnDef="Company">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                            CardPay </mat-header-cell>
+                                            Card Pay </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                             {{contact.CardPay | currency:'INR' :'symbol' :'2.2-2'}}
                                         </mat-cell>
@@ -228,7 +224,7 @@
         
                                     <ng-container matColumnDef="DiscAmount">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                            Discount Amt </mat-header-cell>
+                                            Discount </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                             {{contact.DiscAmount | currency:'INR' :'symbol' :'2.2-2'}}
                                         </mat-cell>
@@ -236,7 +232,7 @@
         
                                     <ng-container matColumnDef="TotalAmount">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                            Total Amt </mat-header-cell>
+                                            Total </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                             {{contact.TotalBillAmount | currency:'INR' :'symbol' :'2.2-2'}}
                                         </mat-cell>
@@ -244,7 +240,7 @@
         
                                     <ng-container matColumnDef="NetAmount">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                            Net Amt </mat-header-cell>
+                                            Net </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                             {{contact.NetBillAmount | currency:'INR' :'symbol' :'2.2-2'}}
                                         </mat-cell>
@@ -252,14 +248,14 @@
         
                                     <ng-container matColumnDef="PaidAmount">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                            Paid Amt </mat-header-cell>
+                                            Paid </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                             {{contact.PaidAmount | currency:'INR' :'symbol' :'2.2-2'}}
                                         </mat-cell>
                                     </ng-container>
                                     <ng-container matColumnDef="BalAmount">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                            Bal Amt </mat-header-cell>
+                                            Balance </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                             {{contact.BillBalAmount | currency:'INR' :'symbol' :'2.2-2'}}
                                         </mat-cell>
@@ -296,17 +292,14 @@
                     <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="25%">
                         <div class="chart-card-container">
                             <mat-card>
-                                <div class="header-sm" fxLayout="row">
-                                    <div>OPD Department Wise Count</div>
-                                    <!-- <div>Total : {{getServicetotSum(dsDailyDepartmentCountList.data)}}</div> -->
-                                </div>
+                                <div class="table-title">OPD Department Wise Count</div>
                                 <hr>
-                                <mat-table matSort class="h-200" [dataSource]="dsDailyDepartmentCountList"
+                                <mat-table matSort class="h-200 table-designed" [dataSource]="dsDailyDepartmentCountList"
                                     [@animateStagger]="{value:'50'}" style="overflow:auto; ">
         
                                     <ng-container matColumnDef="DepartmentName">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                            Department Name </mat-header-cell>
+                                            Department </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                             {{contact.DepartmentName}}
                                         </mat-cell>
@@ -348,16 +341,14 @@
                     <div fxFlex="32%" fxFlex.xs="100%" fxFlex.sm="25%">
                         <div class="chart-card-container">
                             <mat-card>
-                                <div class="header-sm" fxLayout="row">
-                                    <div>OPD Department Wise Bill</div>
-                                </div>
+                                <div class="table-title">OPD Department Wise Bill</div>
                                 <hr>
-                                <mat-table matSort class="h-200" [dataSource]="dsDailyDepBillList"
+                                <mat-table matSort class="h-200 table-designed" [dataSource]="dsDailyDepBillList"
                                     [@animateStagger]="{value:'50'}" style="overflow:auto; ">
         
                                     <ng-container matColumnDef="DepartmentName">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                            Department Name </mat-header-cell>
+                                            Department </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                             {{contact.DepartmentName}}
                                         </mat-cell>
@@ -399,17 +390,15 @@
                     <div fxFlex="32.5%" fxFlex.xs="100%" fxFlex.sm="25%">
                         <div class="chart-card-container">
                             <mat-card>
-                                <div class="header-sm" fxLayout="row">
-                                    <div>OPD Doctor Wise Count</div>
-                                </div>
+                                <div class="table-title">OPD Doctor Wise Count</div>
                                
                                 <hr>
-                                <mat-table matSort class="h-200" [dataSource]="dsDailyDocBillList"
+                                <mat-table matSort class="h-200 table-designed" [dataSource]="dsDailyDocBillList"
                                     [@animateStagger]="{value:'50'}" style="overflow:auto; ">
         
                                     <ng-container matColumnDef="DoctorName">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                            Doctor Name </mat-header-cell>
+                                            Doctor </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                             {{contact.DoctorName}}
                                         </mat-cell>
@@ -458,17 +447,14 @@
                     <div fxFlex="65%" fxFlex.xs="100%" fxFlex.sm="25%">
                         <div class="chart-card-container">
                             <mat-card>
-                                <div class="header-sm" fxLayout="row">
-                                    <div>IPD Collection and Summary</div>
-                                    <!-- <div>Total Bill Amount : {{dsDailyIPDBillList.data[0].NetBillAmount | currency:'INR' :'symbol' :'2.2-2'}}</div> -->
-                                </div>
+                                <div class="table-title">IPD Collection and Summary</div>
                                 <hr>
-                                <mat-table matSort class="h-100" [dataSource]="dsDailyIPDBillList"
+                                <mat-table matSort class="h-100 table-designed" [dataSource]="dsDailyIPDBillList"
                                     [@animateStagger]="{value:'50'}" style="overflow:auto; ">
         
                                     <ng-container matColumnDef="Cash">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                            CashPay </mat-header-cell>
+                                            Cash Pay </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                             {{contact.CashPay | currency:'INR' :'symbol' :'2.2-2'}}
                                         </mat-cell>
@@ -476,7 +462,7 @@
         
                                     <ng-container matColumnDef="Cheque">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                            ChequePay </mat-header-cell>
+                                            Cheque Pay </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                             {{contact.ChequePay | currency:'INR' :'symbol' :'2.2-2'}}
                                         </mat-cell>
@@ -484,7 +470,7 @@
         
                                     <ng-container matColumnDef="Online">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                            OnlinePay </mat-header-cell>
+                                            Online Pay </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                             {{contact.OnlinePay | currency:'INR' :'symbol' :'2.2-2'}}
                                         </mat-cell>
@@ -492,7 +478,7 @@
         
                                     <ng-container matColumnDef="Company">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                            CardPay </mat-header-cell>
+                                            Card Pay </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                             {{contact.CardPay | currency:'INR' :'symbol' :'2.2-2'}}
                                         </mat-cell>
@@ -500,7 +486,7 @@
         
                                     <ng-container matColumnDef="DiscAmount">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                            DiscountAmt </mat-header-cell>
+                                            Discount </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                             {{contact.DiscAmount | currency:'INR' :'symbol' :'2.2-2'}}
                                         </mat-cell>
@@ -516,7 +502,7 @@
         
                                     <ng-container matColumnDef="TotalAmount">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                            Total Amt </mat-header-cell>
+                                            Total </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                             {{contact.TotalBillAmount | currency:'INR' :'symbol' :'2.2-2'}}
                                         </mat-cell>
@@ -524,7 +510,7 @@
         
                                     <ng-container matColumnDef="NetAmount">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                            Net Amt </mat-header-cell>
+                                            Net </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                             {{contact.NetBillAmount | currency:'INR' :'symbol' :'2.2-2'}}
                                         </mat-cell>
@@ -532,7 +518,7 @@
         
                                     <ng-container matColumnDef="PaidAmount">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                            Paid Amt </mat-header-cell>
+                                            Paid </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                             {{contact.PaidAmount | currency:'INR' :'symbol' :'2.2-2'}}
                                         </mat-cell>
@@ -540,7 +526,7 @@
         
                                     <ng-container matColumnDef="BalAmount">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                            Bal Amt </mat-header-cell>
+                                            Balance </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                             {{contact.BillBalAmount | currency:'INR' :'symbol' :'2.2-2'}}
                                         </mat-cell>
@@ -575,11 +561,9 @@
                     <div fxFlex="33.5%" fxFlex.xs="100%" fxFlex.sm="25%">
                         <div class="chart-card-container">
                             <mat-card>
-                                <div class="header-sm" fxLayout="row">
-                                    <div>IPD Advance</div>
-                                </div>
+                                <div class="table-title">IPD Advance</div>
                                 <hr>
-                                <mat-table matSort class="h-100" [dataSource]="dsDailyIPDAdvaList"
+                                <mat-table matSort class="h-100 table-designed" [dataSource]="dsDailyIPDAdvaList"
                                     [@animateStagger]="{value:'50'}" style="overflow:auto; ">
         
                                     <ng-container matColumnDef="Cash">
@@ -640,14 +624,12 @@
         
                 <div class="dashboard-container gap-14" fxLayout="row wrap" fxLayoutGap="0px grid">
                   
-                    <div fxFlex="43%" fxFlex.xs="100%" fxFlex.sm="50%">
+                    <div fxFlex="49%" fxFlex.xs="100%" fxFlex.sm="50%">
                         <div class="chart-card-container">
                             <mat-card>
-                                <div class="header-sm" fxLayout="row">
-                                    <div>Ward Wise Bed Occupany</div>
-                                </div>
+                                <div class="table-title">Ward Wise Bed Occupany</div>
                                 <hr>
-                                <mat-table matSort class="h-510" [dataSource]="dsBedOccupanyList"
+                                <mat-table matSort class="h-510 table-designed" [dataSource]="dsBedOccupanyList"
                                     [@animateStagger]="{value:'50'}" style="overflow:auto; ">
         
                                     <ng-container matColumnDef="RoomName">
@@ -705,20 +687,18 @@
                         </div>
                     </div>
         
-                    <div fxLayout="column">
-                        <div fxFlex="27.5%" fxFlex.xs="100%" fxFlex.sm="25%">
+                    <div class="gap-14" fxLayout="row" fxFlex="49.5%" fxFlex.xs="100%" fxFlex.sm="50%">
+                        <div fxFlex="49%" fxFlex.xs="100%" fxFlex.sm="25%">
                             <div class="chart-card-container">
                                 <mat-card>
-                                    <div class="header-sm" fxLayout="row">
-                                        <div>IPD Department Wise Count</div>
-                                    </div>
+                                    <div class="table-title">IPD Department Wise Count</div>
                                     <hr>
-                                    <mat-table matSort class="h-200" [dataSource]="dsDailyIPDDepcotList"
+                                    <mat-table matSort class="h-200 table-designed" [dataSource]="dsDailyIPDDepcotList"
                                         [@animateStagger]="{value:'50'}" style="overflow:auto; ">
             
                                         <ng-container matColumnDef="DepartmentName">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                                Department Name</mat-header-cell>
+                                                Department</mat-header-cell>
                                             <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                                 {{contact.DepartmentName}}
                                             </mat-cell>
@@ -757,19 +737,17 @@
                                 </mat-card>
                             </div>
                         </div>
-                        <div fxFlex="27.5%" fxFlex.xs="100%" fxFlex.sm="25%">
+                        <div fxFlex="49.5%" fxFlex.xs="100%" fxFlex.sm="25%">
                             <div class="chart-card-container">
                                 <mat-card>
-                                    <div class="header-sm" fxLayout="row">
-                                        <div>IPD Doctor Wise Count</div>
-                                    </div>
+                                    <div class="table-title">IPD Doctor Wise Count</div>
                                     <hr>
-                                    <mat-table matSort class="h-200" [dataSource]="dsDailyIPDDocList"
+                                    <mat-table matSort class="h-200 table-designed" [dataSource]="dsDailyIPDDocList"
                                         [@animateStagger]="{value:'50'}" style="overflow:auto; ">
             
                                         <ng-container matColumnDef="DoctorName">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                                Doctor Name </mat-header-cell>
+                                                Doctor </mat-header-cell>
                                             <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                                 {{contact.DoctorName}}
                                             </mat-cell>
@@ -807,25 +785,34 @@
                                 </mat-card>
                             </div>
                         </div>
-                        </div>
+                    </div>
                 </div>
             </mat-tab>
         </mat-tab-group>
 
         <div class="dashboard-container gap-14" fxLayout="row wrap" fxLayoutGap="0px grid">
 
-            <div fxFlex="49%" fxFlex.xs="100%" fxFlex.sm="25%">
-                <mat-card class="h-350">
+            <div fxFlex="49%" fxFlex.xs="100%" class="dashboard-graph-container">
+                <mat-card class="graph-card">
                     <mat-card-content>
-                        <canvas id="surveyChart" style="width: 100%;">{{ surveyChart }}</canvas>
+                        <canvas id="surveyChart" class="dashboard-graph-canvas">{{ surveyChart }}</canvas>
                     </mat-card-content>
                 </mat-card>
             </div>
 
-            <div fxFlex="49.5%" fxFlex.xs="100%" fxFlex.sm="50%">
-                <mat-card>
+            <div fxFlex="49 %" fxFlex.xs="100%" class="dashboard-graph-container">
+                <mat-card class="graph-card">
                     <mat-card-content>
-                        <canvas id="doughnutChart" style="width: 100%;">{{ doughnutChart }}</canvas>
+                        <div class="doughnut-row">
+                            <canvas id="doughnutChart" class="dashboard-graph-canvas">{{ doughnutChart }}</canvas>
+                            <div class="custom-legend">
+                                <div class="legend-item" style="color:#ff4081;"><span class="legend-color" style="background:#ff4081;"></span> ONE</div>
+                                <div class="legend-item" style="color:#2196f3;"><span class="legend-color" style="background:#2196f3;"></span> TWO</div>
+                                <div class="legend-item" style="color:#26c6da;"><span class="legend-color" style="background:#26c6da;"></span> THREE</div>
+                                <div class="legend-item" style="color:#ff9800;"><span class="legend-color" style="background:#ff9800;"></span> FOUR</div>
+                                <div class="legend-item" style="color:#a283f6;"><span class="legend-color" style="background:#a283f6;"></span> FIVE</div>
+                            </div>
+                        </div>
                     </mat-card-content>
                 </mat-card>
 
