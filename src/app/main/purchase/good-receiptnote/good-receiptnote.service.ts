@@ -107,8 +107,7 @@ export class GoodReceiptnoteService {
       SupplierName:[''], 
       SupplierAddress:[''],
       StoreId:[this.accountService.currentUserValue.user.storeId,
-        [Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator(),Validators.min(1)]],
-      selectedIGSTValue:[0]
+        [Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator(),Validators.min(1)]] 
     });
   }
 

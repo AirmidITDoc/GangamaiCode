@@ -108,8 +108,8 @@ export class IpSalesReturnComponent implements OnInit {
         salesReturnId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         date: ['', [this._FormvalidationserviceService.allowEmptyStringValidator(), this._FormvalidationserviceService.validDateValidator()]],
         time: ['', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
-        salesId: [this.selcteditemObj.SalesId, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        opIpId: [this.selcteditemObj.OP_IP_ID, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
+        salesId: [this.selcteditemObj?.SalesId, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        opIpId: [this.selcteditemObj?.OP_IP_ID, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
         opIpType: [1],
         totalAmount: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
         vatAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
@@ -120,7 +120,7 @@ export class IpSalesReturnComponent implements OnInit {
         isSellted: false,
         isPrint: true,
         isFree: false,
-        unitId: [1, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
+        unitId: [this.accountService.currentUserValue.user.unitId, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
         addedBy: [this.accountService.currentUserValue.userId],
         storeId: [this.accountService.currentUserValue.user.storeId, [this._FormvalidationserviceService.onlyNumberValidator()]],
         narration: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],//need to set concession reason
@@ -134,7 +134,7 @@ export class IpSalesReturnComponent implements OnInit {
       //Payment form
       payment: this.formBuilder.group({
         paymentId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        billNo: [this.selcteditemObj.SalesId, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+        billNo: [this.selcteditemObj?.SalesId, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
         paymentDate: ['', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
         paymentTime: ['', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
         cashPayAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
@@ -163,37 +163,40 @@ export class IpSalesReturnComponent implements OnInit {
         payTmamount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
         payTmtranNo: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
         payTmdate: ['1999-01-01'],
+        tdsamount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+        unitId: [this.accountService.currentUserValue.user.unitId],
+        wfamount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]], 
       })
     });
   }
   createSalesretDetails(element: any): FormGroup {
     return this.formBuilder.group({
       salesReturnID: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      itemId: [element.ItemId, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      batchNo: [element.BatchNo, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      itemId: [element?.ItemId, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      batchNo: [element?.BatchNo, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       batchExpDate: [this.datePipe.transform(element.ExpDate, "yyyy-MM-dd"), [this._FormvalidationserviceService.onlyNumberValidator()]],
-      unitMrp: [element.MRP, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      qty: [element.ReturnQty, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      totalAmount: [element.TotalAmt, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      vatPer: [element.GST, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      vatAmount: [element.GSTAmt, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      discPer: [element.Disc, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      discAmount: [element.DiscAmt, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      grossAmount: [element.NetAmount, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      landedPrice: [element.LandedPrice, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      totalLandedAmount: [element.TotalLandedAmount, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      purRate: [element.PurRateWf, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      purTot: [element.PurTotAmt, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      salesId: [this.selcteditemObj.SalesId, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      salesDetId: [element.SalesDetId, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      isCashOrCredit: [element.isCashOrCredit, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      cgstper: [((element.GST) / 2), [this._FormvalidationserviceService.onlyNumberValidator()]],
-      cgstamt: [((element.GSTAmt) / 2), [this._FormvalidationserviceService.onlyNumberValidator()]],
-      sgstper: [((element.GST) / 2), [this._FormvalidationserviceService.onlyNumberValidator()]],
-      sgstamt: [((element.GSTAmt) / 2), [this._FormvalidationserviceService.onlyNumberValidator()]],
+      unitMrp: [element?.MRP, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      qty: [element?.ReturnQty, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      totalAmount: [element?.TotalAmt, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      vatPer: [element?.GST || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      vatAmount: [element?.GSTAmt || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      discPer: [element?.Disc || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      discAmount: [element?.DiscAmt || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      grossAmount: [element?.NetAmount, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      landedPrice: [element?.LandedPrice || 0, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      totalLandedAmount: [element?.TotalLandedAmount || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      purRate: [element?.PurRateWf || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      purTot: [element?.PurTotAmt || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      salesId: [this.selcteditemObj?.SalesId, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      salesDetId: [element?.SalesDetId, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      isCashOrCredit: [element?.isCashOrCredit, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      cgstper: [((element?.GST) / 2)  || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      cgstamt: [((element?.GSTAmt) / 2) || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      sgstper: [((element?.GST) / 2) || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      sgstamt: [((element?.GSTAmt) / 2) || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       igstper: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       igstamt: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      stkId: [element.StkID, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      stkId: [element?.StkID, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
     })
   }
   createcurrentStock(element: any): FormGroup {
@@ -206,8 +209,8 @@ export class IpSalesReturnComponent implements OnInit {
   }
   createSalesDetails(element: any): FormGroup {
     return this.formBuilder.group({
-      salesDetId: [element.SalesDetId, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      returnQty: [element.ReturnQty, [, this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      salesDetId: [element?.SalesDetId, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      returnQty: [element?.ReturnQty, [, this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
     });
   }
   // Getters 
@@ -498,17 +501,16 @@ export class IpSalesReturnComponent implements OnInit {
     })
   }
   onSavePayment() {
-     const currentDate = new Date();
-    const datePipe = new DatePipe('en-US');
-    const formattedTime = datePipe.transform(currentDate, 'shortTime');
-    const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd'); 
+    const formattedTime = this.datePipe.transform(new Date(), 'hh:mm');
+    const formattedDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
+    const FormattedDateTime = formattedDate + ' ' + formattedTime 
 
     this.IpSalesReturnForm.get('salesReturn.date').setValue(formattedDate)
-    this.IpSalesReturnForm.get('salesReturn.time').setValue(formattedTime)
-    this.IpSalesReturnForm.get('salesReturn.totalAmount')?.setValue(Number(Math.round(this.IPSalesRetFooterform.get('FinalTotalAmt').value)))
-    this.IpSalesReturnForm.get('salesReturn.vatAmount')?.setValue(Number(Math.round(this.IPSalesRetFooterform.get('FinalGSTAmt').value)))
-    this.IpSalesReturnForm.get('salesReturn.discAmount')?.setValue(Number(Math.round(this.IPSalesRetFooterform.get('FinalDiscAmount').value)))
-    this.IpSalesReturnForm.get('salesReturn.netAmount')?.setValue(Number(Math.round(this.IPSalesRetFooterform.get('FinalNetAmount').value)))
+    this.IpSalesReturnForm.get('salesReturn.time').setValue(FormattedDateTime)
+    this.IpSalesReturnForm.get('salesReturn.totalAmount')?.setValue(this.IPSalesRetFooterform.get('FinalTotalAmt').value)
+    this.IpSalesReturnForm.get('salesReturn.vatAmount')?.setValue(this.IPSalesRetFooterform.get('FinalGSTAmt').value)
+    this.IpSalesReturnForm.get('salesReturn.discAmount')?.setValue(this.IPSalesRetFooterform.get('FinalDiscAmount').value)
+    this.IpSalesReturnForm.get('salesReturn.netAmount')?.setValue((Math.round(this.IPSalesRetFooterform.get('FinalNetAmount').value)))
 
     if (this.IpSalesReturnForm.valid) {
       this.SaleRetDetailsArray.clear()
@@ -520,11 +522,11 @@ export class IpSalesReturnComponent implements OnInit {
         this.SalesDetArray.push(this.createSalesDetails(element));
       });
       if (this.ItemFormGroup.get('PaymentType').value == 'CashPay') {
-        this.IpSalesReturnForm.get('salesReturn.paidAmount').setValue(this.IPSalesRetFooterform.get('FinalNetAmount').value)
+        this.IpSalesReturnForm.get('salesReturn.paidAmount').setValue((Math.round(this.IPSalesRetFooterform.get('FinalNetAmount').value)))
         this.IpSalesReturnForm.get('salesReturn.balanceAmount').setValue(0)
         this.IpSalesReturnForm.get('payment.paymentDate').setValue(formattedDate)
-        this.IpSalesReturnForm.get('payment.paymentTime').setValue(formattedTime)
-        this.IpSalesReturnForm.get('payment.cashPayAmount').setValue(this.IPSalesRetFooterform.get('FinalNetAmount').value)
+        this.IpSalesReturnForm.get('payment.paymentTime').setValue(FormattedDateTime)
+        this.IpSalesReturnForm.get('payment.cashPayAmount').setValue((Math.round(this.IPSalesRetFooterform.get('FinalNetAmount').value)))
 
         console.log(this.IpSalesReturnForm.value);
         this._IpSalesRetService.InsertCashSalesReturn(this.IpSalesReturnForm.value).subscribe(response => {
@@ -533,9 +535,9 @@ export class IpSalesReturnComponent implements OnInit {
       }
       else {
         this.IpSalesReturnForm.get('salesReturn.paidAmount').setValue(0)
-        this.IpSalesReturnForm.get('salesReturn.balanceAmount').setValue(this.IPSalesRetFooterform.get('FinalNetAmount').value)
+        this.IpSalesReturnForm.get('salesReturn.balanceAmount').setValue((Math.round(this.IPSalesRetFooterform.get('FinalNetAmount').value)))
         this.IpSalesReturnForm.get('payment.paymentDate').setValue(formattedDate)
-        this.IpSalesReturnForm.get('payment.paymentTime').setValue(formattedTime)
+        this.IpSalesReturnForm.get('payment.paymentTime').setValue(FormattedDateTime)
 
         console.log(this.IpSalesReturnForm.value);
         this._IpSalesRetService.InsertCreditSalesReturn(this.IpSalesReturnForm.value).subscribe(response => {
@@ -597,8 +599,7 @@ export class IpSalesReturnComponent implements OnInit {
   }
   focusNext(nextElement: HTMLElement) {
     nextElement.focus();
-  }
-
+  } 
 }
 export class IPSalesItemList {
   SalesNo: Number;

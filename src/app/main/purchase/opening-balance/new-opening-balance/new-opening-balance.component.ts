@@ -106,10 +106,15 @@ export class NewOpeningBalanceComponent implements OnInit {
   }
 
   createOpeningBalInsert(element: any = {}): FormGroup {
+    const openingDate = this.datePipe.transform(this.dateTimeObj?.date, "yyyy-MM-dd") || '1900-01-01';
+    const openingTime = this.dateTimeObj?.time || '00:00';
+
+    const openingDateTime = `${openingDate} ${openingTime}`;
+
     return this._formbuilder.group({
       storeId: [this.StoreId, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      openingDate: this.datePipe.transform(this.dateTimeObj?.date, "yyyy-MM-dd") || '1900-01-01',
-      openingTime: this.dateTimeObj?.time,
+      openingDate:openingDate,
+      openingTime: openingDateTime,
       itemId: [element.ItemID || 0],
       batchNo: [element.BatchNo || ''],
       batchExpDate: [element.ExpDate ? this.datePipe.transform(new Date(element.ExpDate.split('/').reverse().join('-')), 'yyyy-MM-dd') : null],
@@ -322,8 +327,8 @@ export class NewOpeningBalanceComponent implements OnInit {
       ItemName: "",
       BatchNo: "",
       ExpDate: "",
-      pack:"",
-      totalQty:"",
+      pack: "",
+      totalQty: "",
       stripQty: "",
       CGST: "",
       SGST: "",
@@ -348,7 +353,6 @@ export class NewOpeningBalanceComponent implements OnInit {
   }
 
   OnSave() {
-
     if (!this.StoreForm.invalid) {
       if (!(this.StoreForm.get("storeId").value > 0)) {
         Swal.fire('Please enter To Store');

@@ -346,12 +346,12 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
       netPayableAmt: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       paidAmt: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
       balanceAmt: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-      billDate: ['', [this._FormvalidationserviceService.allowEmptyStringValidator(), this._FormvalidationserviceService.validDateValidator()]],
+      billDate: [this.datePipe.transform(new Date(), 'yyyy-MM-dd'), [this._FormvalidationserviceService.allowEmptyStringValidator(), this._FormvalidationserviceService.validDateValidator()]],
       opdipdType: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       addedBy: [this.accountService.currentUserValue.userId],
       totalAdvanceAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
       advanceUsedAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-      billTime: ['', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
+      billTime: [this.datePipe.transform(new Date(), 'shortTime'), [this._FormvalidationserviceService.allowEmptyStringValidator()]],
       concessionReasonId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       isSettled: true,
       isPrinted: true,
@@ -989,6 +989,12 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
         return;
       }
     }
+
+    const formattedDate = this.datePipe.transform(this.OpBillForm.get('billDate').value, "yyyy-MM-dd");
+    const formattedTime = this.datePipe.transform(new Date(), "HH:mm:ss");
+    this.OpBillForm.get('billDate').setValue(formattedDate);
+    this.OpBillForm.get('billTime').setValue(formattedDate + ' ' + formattedTime);
+
     this.OpBillForm.get('opdipdid')?.setValue(this.vOPIPId)
     this.OpBillForm.get('tariffId')?.setValue(this.vTariffId) 
     this.OpBillForm.get('regNo')?.setValue(this.patientDetail?.regNo) 
@@ -1006,8 +1012,8 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
     this.OpBillForm.get('totalAmt')?.setValue(this.OPFooterForm.get('totalAmt')?.value)
     this.OpBillForm.get('concessionAmt')?.setValue(this.OPFooterForm.get('concessionAmt')?.value)
     this.OpBillForm.get('netPayableAmt')?.setValue(this.OPFooterForm.get('netPayableAmt')?.value)
-    this.OpBillForm.get('billDate').setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'))
-    this.OpBillForm.get('billTime').setValue(this.dateTimeObj.time)
+    // this.OpBillForm.get('billDate').setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'))
+    // this.OpBillForm.get('billTime').setValue(this.dateTimeObj.time)
     this.OpBillForm.get('concessionReasonId')?.setValue(this.ConcessionId)
     this.OpBillForm.get('discComments')?.setValue(this.ConcessionReason)
     this.OpBillForm.get('cashCounterId')?.setValue(this.searchForm.get('CashCounterID')?.value)

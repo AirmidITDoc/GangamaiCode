@@ -169,7 +169,7 @@ export class SalesReturnComponent implements OnInit {
         salesDetail: this.formBuilder.array([]),
         //Payment form
         payment: this.formBuilder.group({
-          paymentId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+          paymentId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]], 
           billNo: [this.selcteditemObj.SalesId, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
           paymentDate: ['', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
           paymentTime: ['', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
@@ -199,6 +199,9 @@ export class SalesReturnComponent implements OnInit {
           payTmamount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
           payTmtranNo: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
           payTmdate: ['1999-01-01'],
+          tdsamount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+          unitId: [this._loggedService.currentUserValue.user.unitId],
+          wfamount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]], 
         })
       });
     }
@@ -313,24 +316,14 @@ getbillllist(){
     this.PaymentType=Parama.paidType
  
     let storeID = this.SearchForm.get('StoreId').value 
-    const Filters = [
-      // { "fieldName": "SalesId", "fieldValue": String(Parama.regNo), "opType": "Equals" },
-      // { "fieldName": "StoreId", "fieldValue": String(storeID), "opType": "Equals" },
-      // { "fieldName": "SalesNo", "fieldValue": "%", "opType": "Equals" },
-      // { "fieldName": "CashCounterId", "fieldValue": "0", "opType": "Equals" }
-
-
+    const Filters = [  
       { "fieldName": "SalesId", "fieldValue": String(Parama?.salesId), "opType": "Equals" },
       { "fieldName": "StoreId", "fieldValue": String(storeID), "opType": "Equals" },
       { "fieldName": "SalesNo", "fieldValue": String(Parama?.salesNo), "opType": "Equals" },
       { "fieldName": "CashCounterId", "fieldValue": String(Parama?.cashCounterID), "opType": "Equals" },
       { "fieldName": "Start", "fieldValue": String(0), "opType": "Equals" },
-      { "fieldName": "Length", "fieldValue": String(25), "opType": "Equals" }
-  
-      //SalesReturnCash
-      //SalesReturnCredit 
-    ]
-  
+      { "fieldName": "Length", "fieldValue": String(25), "opType": "Equals" } 
+    ] 
     if (Parama.paidType == 'Paid') {
       var vdata = {
         "searchFields": Filters,
@@ -355,8 +348,7 @@ getbillllist(){
         }
       );
     }, 1000);
-  } 
-
+  }  
   SelectedItem(contact) { 
     this.selcteditemObj = contact
 
@@ -434,8 +426,7 @@ getbillllist(){
     Swal.fire('Success !', 'Item Row Deleted Successfully', 'success');
     this.getUpdateTotalAmtSum()
   }
-  getUpdateTotalAmtSum() {
-    debugger
+  getUpdateTotalAmtSum() { 
     const itemlist = this.selectedssaleDetailList.data
     let TotalAmt= itemlist.reduce((sum, { TotalAmount }) => sum += +(TotalAmount || 0), 0).toFixed(2);
     let NetAmt = itemlist.reduce((sum, { GrossAmount }) => sum += +(GrossAmount || 0), 0).toFixed(2);
@@ -450,8 +441,7 @@ getbillllist(){
     }) 
   }
   //table calculation
-  getCellCalculation(contact, ReturnQty) {
-
+  getCellCalculation(contact, ReturnQty) { 
     if ((ReturnQty > 0)) {
       if ((ReturnQty) <= (contact.Qty)) {
         contact.TotalAmount = (contact.UnitMRP * ReturnQty).toFixed(2);
@@ -546,14 +536,13 @@ getbillllist(){
        }
      })
    } 
-     onSavePayment() {
-     const currentDate = new Date();
-    const datePipe = new DatePipe('en-US');
-    const formattedTime = datePipe.transform(currentDate, 'shortTime');
-    const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');  
+  onSavePayment() {
+    const formattedTime = this.dateTimeObj.time;
+    const formattedDate = this.datePipe.transform(this.dateTimeObj.date,'yyyy-MM-dd');
+    const FormattedDateTime = formattedDate + ' ' + formattedTime 
 
     this.IpSalesReturnForm.get('salesReturn.date').setValue(formattedDate)
-    this.IpSalesReturnForm.get('salesReturn.time').setValue(formattedTime)
+    this.IpSalesReturnForm.get('salesReturn.time').setValue(FormattedDateTime)
     this.IpSalesReturnForm.get('salesReturn.totalAmount')?.setValue(this.IPSalesRetFooterform.get('TotalAmt')?.value)
     this.IpSalesReturnForm.get('salesReturn.vatAmount')?.setValue(this.IPSalesRetFooterform.get('GSTAmount')?.value)
     this.IpSalesReturnForm.get('salesReturn.discAmount')?.setValue(this.IPSalesRetFooterform.get('TotDiscAmount')?.value)
@@ -580,7 +569,7 @@ getbillllist(){
         this.IpSalesReturnForm.get('salesReturn.paidAmount').setValue(Number(Math.round(this.IPSalesRetFooterform.get('NetAmt').value)))
         this.IpSalesReturnForm.get('salesReturn.balanceAmount').setValue(0)
         this.IpSalesReturnForm.get('payment.paymentDate').setValue(formattedDate)
-        this.IpSalesReturnForm.get('payment.paymentTime').setValue(formattedTime)
+        this.IpSalesReturnForm.get('payment.paymentTime').setValue(FormattedDateTime)
         this.IpSalesReturnForm.get('payment.cashPayAmount').setValue(Number(Math.round(this.IPSalesRetFooterform.get('NetAmt').value)))
 
         console.log(this.IpSalesReturnForm.value);
@@ -592,7 +581,7 @@ getbillllist(){
         this.IpSalesReturnForm.get('salesReturn.paidAmount').setValue(0)
         this.IpSalesReturnForm.get('salesReturn.balanceAmount').setValue(Number(Math.round(this.IPSalesRetFooterform.get('NetAmt').value)))
         this.IpSalesReturnForm.get('payment.paymentDate').setValue(formattedDate)
-        this.IpSalesReturnForm.get('payment.paymentTime').setValue(formattedTime)
+        this.IpSalesReturnForm.get('payment.paymentTime').setValue(FormattedDateTime)
 
         console.log(this.IpSalesReturnForm.value);
         this._SalesReturnService.InsertCreditSalesReturn(this.IpSalesReturnForm.value).subscribe(response => {
@@ -638,9 +627,7 @@ getbillllist(){
   } 
    isValidForm(): boolean {
     return this.selectedssaleDetailList.data.every((i) => i.ReturnQty > 0);
-  } 
-
-
+  }  
   transform2(value: string) {
     var datePipe = new DatePipe("en-US");
     value = datePipe.transform((new Date), 'dd/MM/yyyy h:mm a');
