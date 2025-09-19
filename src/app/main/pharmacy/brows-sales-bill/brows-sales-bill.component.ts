@@ -719,8 +719,7 @@ export class BrowsSalesBillComponent implements OnInit {
             "opType": "Equals"
           }
         ],
-        "mode": "PharamcySalesBill"
-        "mode": "PharamcySalesBill"
+        "mode": "PharamcySalesBill" 
       }
 
       this._BrowsSalesBillService.getReportView(param).subscribe(res => {
