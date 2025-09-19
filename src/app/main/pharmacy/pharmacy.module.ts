@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { BrowseSalesBillComponent } from './browse-sales-bill/browse-sales-bill.component';
 
 const appRoutes: Routes = [
     {
@@ -12,12 +11,6 @@ const appRoutes: Routes = [
     path: "browsesalesbill",
     loadChildren : () =>import("./brows-sales-bill/brows-sales-bill.module").then((m)=>m.BrowsSalesBillModule),
   },
-
-  //   {
-  //   path: "browsesalesbill",
-  //   loadChildren : () =>import("./browse-sales-bill/browsesales-bill.module").then((m)=>m.BrowsesalesBillModule),
-  // },
-
   {
     path: "salesreturn",
     loadChildren: () => import("./sales-return/sales-return.module").then((m) =>m.SalesReturnModule),
@@ -66,24 +59,6 @@ const appRoutes: Routes = [
     path:"discountaftersalesbill",
     loadChildren: () => import("./discount-after-sales-bill/discount-after-sales-bill.module").then((m)=>m.DiscountAfterSalesBillModule),
   },
-
-
-
-
-  // {
-  //   path:"ippharmacyadvance",
-    
-  // },
-  // {
-  //   path:"ippharmacyadvancereturn",
-  //   loadChildren: () => import("./pharm-item-summary/pharmaitemsummary.module").then((m)=>m.PharmaitemsummaryModule),
-  // },
-
-  // {
-  //   path:"pharmacyitemwisesupplierList",
-  //   loadChildren:() => import("./pharmacy-item-wise-supplier-list/pharmacy-item-wise-supplier-list.module").then((m)=>m.PharmacyItemWiseSupplierListModule),
-  // },
- 
 ];
 
 
