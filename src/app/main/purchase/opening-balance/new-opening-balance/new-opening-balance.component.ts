@@ -23,6 +23,7 @@ import { OpeningBalanceService } from '../opening-balance.service';
 export class NewOpeningBalanceComponent implements OnInit {
   StoreForm: FormGroup;
   OPeningtemForm: FormGroup;
+  ItemId: any;
 
   fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
   toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
@@ -45,6 +46,7 @@ export class NewOpeningBalanceComponent implements OnInit {
   ];
 
   autocompletestore: string = "Store";
+  autocompleteModeGSTTypesValues: string = "GSTTypes";
   dateTimeObj: any;
   screenFromString: 'addmission-form';
   vstrQty: any;
@@ -113,7 +115,7 @@ export class NewOpeningBalanceComponent implements OnInit {
 
     return this._formbuilder.group({
       storeId: [this.StoreId, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      openingDate:openingDate,
+      openingDate: openingDate,
       openingTime: openingDateTime,
       itemId: [element.ItemID || 0],
       batchNo: [element.BatchNo || ''],
@@ -248,26 +250,64 @@ export class NewOpeningBalanceComponent implements OnInit {
     return n < 10 ? '0' + n : n.toString();
   }
 
-  getchangegstper(rate, GSTTYP): void {
-    const formValues = this.OPeningtemForm.getRawValue() as GRNFormModel;
-    const gstValues = [
-      { value: 2.5 },
-      { value: 6 },
-      { value: 9 },
-      { value: 14 }
-    ];
-    const dvalue = gstValues.find(item => item.value == parseFloat(rate))
-    if (!dvalue) {
-      this._OpeningBalanceService.showToast('Please enter GST percentage as 2.5%, 6%, 9% or 14%', ToastType.WARNING);
-      return;
-    }
+  // getchangegstper(rate, GSTTYP): void {
+  //   const formValues = this.OPeningtemForm.getRawValue() as GRNFormModel;
+  //   const gstValues = [
+  //     { value: 2.5 },
+  //     { value: 6 },
+  //     { value: 9 },
+  //     { value: 14 }
+  //   ];
+  //   const dvalue = gstValues.find(item => item.value == parseFloat(rate))
+  //   if (!dvalue) {
+  //     this._OpeningBalanceService.showToast('Please enter GST percentage as 2.5%, 6%, 9% or 14%', ToastType.WARNING);
+  //     return;
+  //   }
 
-    else {
-      const GSTPer = Number(formValues.CGST) + Number(formValues.SGST) + Number(formValues.IGST)
+  //   else {
+  //     const GSTPer = Number(formValues.CGST) + Number(formValues.SGST) + Number(formValues.IGST)
+  //     this.OPeningtemForm.patchValue({
+  //       GST: GSTPer
+  //     });
+  //   }
+  // }
+
+  getchangegstper(rate: any): void {
+    debugger
+    if (Number(rate?.value) > 0) {
       this.OPeningtemForm.patchValue({
-        GST: GSTPer
-      });
+        SGST: Number((rate.value) / 2),
+        IGST: 0,
+        GST: Number(rate.value)
+      })
+      this.OPeningtemForm.get('IGST').reset();
+      this.OPeningtemForm.get('IGST').clearValidators();
+      this.OPeningtemForm.get('IGST').updateValueAndValidity();
+      this.OPeningtemForm.get('IGST').disable();
+    } else {
+      this.OPeningtemForm.get('IGST').enable();
+      this.OPeningtemForm.get('IGST').reset();
     }
+    // this.calculateTotalamt();
+  }
+
+  getchangeIgstper(rate: any): void {
+    debugger
+    if (Number(rate?.text) > 0) {
+      this.OPeningtemForm.patchValue({
+        SGST: 0,
+        CGST: 0,
+        GST: Number(rate.text),
+      })
+      this.OPeningtemForm.get('CGST').reset();
+      this.OPeningtemForm.get('CGST').clearValidators();
+      this.OPeningtemForm.get('CGST').updateValueAndValidity();
+      this.OPeningtemForm.get('CGST').disable();
+    } else {
+      this.OPeningtemForm.get('CGST').enable();
+      this.OPeningtemForm.get('CGST').reset();
+    }
+    //  this.calculateTotalamt();
   }
 
   calculateTotalQty() {
@@ -280,6 +320,20 @@ export class NewOpeningBalanceComponent implements OnInit {
     this.OPeningtemForm.patchValue({
       totalQty: totalQty
     });
+  }
+
+  onBatchChange(event) {
+    console.log(event)
+    const expDate = this.datePipe.transform(event.batchExpDate, 'MMYYYY')
+    this.OPeningtemForm.patchValue({
+      ExpDate: expDate,
+      MRP: event?.unitMRP || 0,
+      RatePerUnit: event?.unitPurRate || 0,
+    })
+    const QtyElement = document.querySelector(`[name='Qty']`) as HTMLElement;
+    if (QtyElement) {
+      QtyElement.focus();
+    }
   }
 
   Onadd() {
@@ -301,7 +355,7 @@ export class NewOpeningBalanceComponent implements OnInit {
           PerRate: this.OPeningtemForm.get('RatePerUnit').value || 0,
           UnitMRP: this.OPeningtemForm.get('MRP').value || 0,
           LandedRate: this.OPeningtemForm.get('LandedRate').value || 0,
-          CGST: this.OPeningtemForm.get('CGST').value || 0,
+          CGST: this.OPeningtemForm.get('SGST').value || 0, //div data pass here from dd
           SGST: this.OPeningtemForm.get('SGST').value || 0,
           IGST: this.OPeningtemForm.get('IGST').value || 0,
           GST: this.OPeningtemForm.get('GST').value || 0,

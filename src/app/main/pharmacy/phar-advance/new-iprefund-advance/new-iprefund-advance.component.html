@@ -284,11 +284,10 @@
         </div>
     </div>
 
-    <div class="modal-footer  p-12">
-        <div class="modal-footer-container" fxLayout="row" fxLayoutAlign="space-between">
+ <div class="modal-footer" fxLayout="column" >
+        <div class="modal-card-container"> 
             <form [formGroup]="RefundFooterForm">
-                <div fxLayout="row" fxLayoutGap="6px">
-
+            <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px" fxLayoutAlign="start">
                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                         <airmid-textbox label="Refund Amount" formControlName="ToatalRefunfdAmt" type="number"
                             [readonly]="true" [formGroup]="RefundFooterForm">
@@ -298,7 +297,7 @@
                         <airmid-textbox label="Balance Amt" formControlName="BalanceAmount" type="number"
                             [readonly]="true" [formGroup]="RefundFooterForm"></airmid-textbox>
                     </div>
-                    <div fxFlex="45%" fxFlex.xs="100%" fxFlex.sm="33%">
+                    <div fxFlex="100%" >
                         <airmid-textbox label="Remark" formControlName="comment" type="text"
                             [formGroup]="RefundFooterForm"></airmid-textbox>
                     </div>

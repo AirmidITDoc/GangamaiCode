@@ -102,4 +102,7 @@ export class SalesReturnService {
   public InsertCashSalesReturn (employee){
     return this._httpClient1.PostData("SalesReturn/SalesReturnWithCash", employee)
   }
+      public getReportView(Param) {
+    return this._httpClient1.PostData("Report/ViewReport", Param);
+  }
 }

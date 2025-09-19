@@ -231,7 +231,7 @@ export class SalesHospitalNewComponent implements OnInit {
             externalPatientName: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
             doctorName: [''],
             regId: [0, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-            extMobileNo: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(10),
+            extMobileNo: ['', [Validators.required, Validators.min(0), Validators.max(10),
             Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$"), this._FormvalidationserviceService.onlyNumberValidator()]],
             extAddress: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
             ExternalPatID: ''
@@ -2109,7 +2109,7 @@ export class SalesHospitalNewComponent implements OnInit {
                     { "fieldName": "SalesID", "fieldValue": String(SalesID), "opType": "13" },
                     { "fieldName": "OP_IP_Type", "fieldValue": String(OP_IP_Type), "opType": "13" }
                 ],
-                "mode": "SalesBill"
+                "mode": "PharamcySalesBill"
             }
             this._salesService.getReportView(param).subscribe(res => {
                 const matDialog = this._matDialog.open(PdfviewerComponent,

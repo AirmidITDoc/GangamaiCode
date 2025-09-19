@@ -47,9 +47,9 @@ export class DashboardService {
     });
   }
 
-  public getDailyDashboardSummary() {
-    return this._httpClient.post("Generic/GetByProc?procName=rptDailyDashboardSummary", {})
-  }
+  // public getDailyDashboardSummary() {
+  //   return this._httpClient.post("Generic/GetByProc?procName=rptDailyDashboardSummary", {})
+  // }
 
   public getOPDashChart(params) {
     return this._httpClient.post("Generic/GetByProc?procName=rptOP_DepartmentChart_Range", params)

@@ -83,14 +83,14 @@ export class RadiologyOrderListComponent implements OnInit {
     ]
 
     allFilters = [
-        { fieldName: "F_Name ", fieldValue: "%", opType: OperatorComparer.Equals },
-        { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Equals },
+        { fieldName: "F_Name ", fieldValue: "%", opType: OperatorComparer.StartsWith },
+        { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.StartsWith },
         { fieldName: "Reg_No", fieldValue: "", opType: OperatorComparer.Equals },
         { fieldName: "From_Dt", fieldValue: this.fromdate, opType: OperatorComparer.Equals },
         { fieldName: "To_Dt", fieldValue: this.todate, opType: OperatorComparer.Equals },
         { fieldName: "IsCompleted", fieldValue: "0", opType: OperatorComparer.Equals },
         { fieldName: "OP_IP_Type", fieldValue: "2", opType: OperatorComparer.Equals },
-        { fieldName: "CategoryId", fieldValue: "1", opType: OperatorComparer.Equals },
+        { fieldName: "CategoryId", fieldValue: "0", opType: OperatorComparer.Equals },
     ]
 
     gridConfig: gridModel = {
@@ -130,14 +130,14 @@ debugger
             sortField: "RadReportId",
             sortOrder: 0,
             filters: [
-                { fieldName: "F_Name ", fieldValue: "%", opType: OperatorComparer.Equals },
-                { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Equals },
+                { fieldName: "F_Name ", fieldValue: "%", opType: OperatorComparer.StartsWith },
+                { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.StartsWith },
                 { fieldName: "Reg_No", fieldValue: regno, opType: OperatorComparer.Equals },
                 { fieldName: "From_Dt", fieldValue: fromDatee, opType: OperatorComparer.Equals },
                 { fieldName: "To_Dt", fieldValue: toDatee, opType: OperatorComparer.Equals },
                 { fieldName: "IsCompleted", fieldValue: status, opType: OperatorComparer.Equals },
                 { fieldName: "OP_IP_Type", fieldValue: patientType, opType: OperatorComparer.Equals },
-                { fieldName: "CategoryId", fieldValue: "1", opType: OperatorComparer.Equals },
+                { fieldName: "CategoryId", fieldValue: "0", opType: OperatorComparer.Equals },
             ]
         }
         this.grid.gridConfig = this.gridConfig;
@@ -171,7 +171,7 @@ debugger
                 { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
                 { fieldName: "IsCompleted", fieldValue: String(this.status), opType: OperatorComparer.Equals },
                 { fieldName: "OP_IP_Type", fieldValue:String (this.opipType), opType: OperatorComparer.Equals },
-                { fieldName: "CategoryId", fieldValue: "1", opType: OperatorComparer.Equals },
+                { fieldName: "CategoryId", fieldValue: "0", opType: OperatorComparer.Equals },
             ]
 
         }

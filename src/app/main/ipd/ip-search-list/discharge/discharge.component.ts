@@ -100,12 +100,12 @@ export class DischargeComponent implements OnInit {
       }
 
     }
-    console.log(this._ConfigService.configParams.IsDischargeInitiateflow)
-    if (this._ConfigService.configParams.IsDischargeInitiateflow == 1)
-      this.ChkConfigInitiate = false
-    else
-      this.ChkConfigInitiate = true
-    this.getchkConfigInitiate();
+    // console.log(this._ConfigService.configParams.IsDischargeInitiateflow)
+    // if (this._ConfigService.configParams.IsDischargeInitiateflow == 1)
+    //   this.ChkConfigInitiate = false
+    // else
+    //   this.ChkConfigInitiate = true
+    // this.getchkConfigInitiate();
   }
 
   docName(event) {

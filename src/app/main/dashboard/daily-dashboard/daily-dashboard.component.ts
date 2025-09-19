@@ -141,9 +141,9 @@ export class DailyDashboardComponent implements OnInit {
       ? this._accountServices.currentUserValue.userName
       : '';
 
-    this.getDashboardSummary();
-    this.getOPChartData();
-    this.getIPChartData();
+    // this.getDashboardSummary();
+    // this.getOPChartData();
+    // this.getIPChartData();
 
     this.tableCurrentRange = this.pieChartData.currentRange;
     this.chart1 = this.getLineChartData('MyChart1', '#d4bbf4', '#c5aae6');
@@ -153,21 +153,21 @@ export class DailyDashboardComponent implements OnInit {
     this.surveyChart = this.getSurveyChart();
     this.doughnutChart = this.getDoughnutChart();
 
-    this.getAppointmentlist();
-    this.getOPDCoutList();
-    this.getIPDBillDatewiseList();
-     this.getBedOccupancyList();
+    // this.getAppointmentlist();
+    // this.getOPDCoutList();
+    // this.getIPDBillDatewiseList();
+    //  this.getBedOccupancyList();
   }
 
-  public getDashboardSummary() {
-    this._dashboardServices.getDailyDashboardSummary().subscribe(data => {
-      this.dashbardCardData = data;
-      //console.log(this.dashCardsData);
-    });
-  }
+  // public getDashboardSummary() {
+  //   this._dashboardServices.getDailyDashboardSummary().subscribe(data => {
+  //     this.dashbardCardData = data;
+  //     //console.log(this.dashCardsData);
+  //   });
+  // }
   onDateRangeChanged() {
-    this.getOPDCoutList();
-    this.getIPDBillDatewiseList();
+    // this.getOPDCoutList();
+    // this.getIPDBillDatewiseList();
   }
   
 getOPDCoutList(){
@@ -200,37 +200,37 @@ getOPDCoutList(){
 }
 Appoinmentlist:any=[];
 getAppointmentlist(){
-  this._dashboardServices.getIPDAppointCountList().subscribe(data =>{
-    this.Appoinmentlist = data
-    console.log(this.Appoinmentlist)
-    this.AppoinmentCount = this.Appoinmentlist[0].AppointmentCount;
-    this.TotalAdmittedCount = this.Appoinmentlist[0].TotalAdmittedPatientCount;
-    this.TotalSelf = this.Appoinmentlist[0].SelfPatient ;
-    this.TotalCompany = this.Appoinmentlist[0].CompnayPatient ;
-    this.TodayAdmittedCount = this.Appoinmentlist[0].TodayAdmittedPatient;
-    this.TodayDischargeCount = this.Appoinmentlist[0].TodayDischargePatient;
-    this.TodaySelf = this.Appoinmentlist[0].TodaySelfPatient;
-    this.TodayOther = this.Appoinmentlist[0].TodayOtherPatient;
-  });
+  // this._dashboardServices.getIPDAppointCountList().subscribe(data =>{
+  //   this.Appoinmentlist = data
+  //   console.log(this.Appoinmentlist)
+  //   this.AppoinmentCount = this.Appoinmentlist[0].AppointmentCount;
+  //   this.TotalAdmittedCount = this.Appoinmentlist[0].TotalAdmittedPatientCount;
+  //   this.TotalSelf = this.Appoinmentlist[0].SelfPatient ;
+  //   this.TotalCompany = this.Appoinmentlist[0].CompnayPatient ;
+  //   this.TodayAdmittedCount = this.Appoinmentlist[0].TodayAdmittedPatient;
+  //   this.TodayDischargeCount = this.Appoinmentlist[0].TodayDischargePatient;
+  //   this.TodaySelf = this.Appoinmentlist[0].TodaySelfPatient;
+  //   this.TodayOther = this.Appoinmentlist[0].TodayOtherPatient;
+  // });
 }
 getIPDBillDatewiseList(){
-  var vadat={
-    'FromDate':this.datePipe.transform(this._dashboardServices.DailyUseFrom.get('start').value,"yyyy-MM-dd 00:00:00.000") || '01/01/2020',
-    'ToDate': this.datePipe.transform(this._dashboardServices.DailyUseFrom.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/2020',
-  }
-  this._dashboardServices.getIPDBillDatewiseList(vadat).subscribe(data =>{
-    this.dsDailyIPDBillList.data = data as IPDCountList[];
-    //console.log(this.dsDailyIPDBillList.data)
-  })
+  // var vadat={
+  //   'FromDate':this.datePipe.transform(this._dashboardServices.DailyUseFrom.get('start').value,"yyyy-MM-dd 00:00:00.000") || '01/01/2020',
+  //   'ToDate': this.datePipe.transform(this._dashboardServices.DailyUseFrom.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/2020',
+  // }
+  // this._dashboardServices.getIPDBillDatewiseList(vadat).subscribe(data =>{
+  //   this.dsDailyIPDBillList.data = data as IPDCountList[];
+  //   //console.log(this.dsDailyIPDBillList.data)
+  // })
 }
 WardList:any=[];
 getBedOccupancyList(){
-  this._dashboardServices.getBedOccupancyList().subscribe(data =>{
-    this.WardList = data;
-    console.log(this.WardList)
-    this.dsBedOccupanyList.data = this.WardList
-    // console.log(this.dsBedOccupanyList.data)
-  })
+  // this._dashboardServices.getBedOccupancyList().subscribe(data =>{
+  //   this.WardList = data;
+  //   console.log(this.WardList)
+  //   this.dsBedOccupanyList.data = this.WardList
+  //   // console.log(this.dsBedOccupanyList.data)
+  // })
 }
 getServicetotSum(element) {
   let DepartmentOPDCount = (element.reduce((sum, { vCount }) => sum += +(vCount || 0), 0));
@@ -247,28 +247,28 @@ getServicetotSum(element) {
   }
 
   public getOPChartData() {
-    this.isLoadingArr[0] = '0';
-    var m_data = {
-      "DateRange": this.pieChartOPData.currentRange,
-    }
-    this._dashboardServices.getOPDashChart(m_data).subscribe(data => {
-      this.DashChartOP = data;
-      this.isLoadingArr[0] = '1';
-      if (this.DashChartOP && this.DashChartOP.length > 0) {
-        this.isLoadingArr[0] = '2';
-        this.pieChartOPData['footerLeft'].title = 'Total Count';
-        this.pieChartOPData['footerLeft'].count = this.DashChartOP[0]['TotalCount'];
-        this.pieChartOPData['footerRight'].title = 'Doctor Count';
-        this.pieChartOPData['footerRight'].count = this.DashChartOP[0]['DischargeCount'];
-        this.pieChartOPData.mainChart[this.pieChartOPData.currentRange] = [];
-        this.DashChartOP.forEach(element => {
-          this.pieChartOPData.mainChart[this.pieChartOPData.currentRange].push(element);
-        });
-      } else {
-        this.pieChartOPData['footerLeft'].count = 0;
-        this.pieChartOPData['footerRight'].count = 0;
-      }
-    });
+    // this.isLoadingArr[0] = '0';
+    // var m_data = {
+    //   "DateRange": this.pieChartOPData.currentRange,
+    // }
+    // this._dashboardServices.getOPDashChart(m_data).subscribe(data => {
+    //   this.DashChartOP = data;
+    //   this.isLoadingArr[0] = '1';
+    //   if (this.DashChartOP && this.DashChartOP.length > 0) {
+    //     this.isLoadingArr[0] = '2';
+    //     this.pieChartOPData['footerLeft'].title = 'Total Count';
+    //     this.pieChartOPData['footerLeft'].count = this.DashChartOP[0]['TotalCount'];
+    //     this.pieChartOPData['footerRight'].title = 'Doctor Count';
+    //     this.pieChartOPData['footerRight'].count = this.DashChartOP[0]['DischargeCount'];
+    //     this.pieChartOPData.mainChart[this.pieChartOPData.currentRange] = [];
+    //     this.DashChartOP.forEach(element => {
+    //       this.pieChartOPData.mainChart[this.pieChartOPData.currentRange].push(element);
+    //     });
+    //   } else {
+    //     this.pieChartOPData['footerLeft'].count = 0;
+    //     this.pieChartOPData['footerRight'].count = 0;
+    //   }
+    // });
   }
 
   onSelectPieOptionIP(value) {
@@ -279,28 +279,28 @@ getServicetotSum(element) {
   }
 
   getIPChartData() {
-    var m_data = {
-      "DateRange": this.pieChartData.currentRange,
-    }
-    this.isLoadingArr[1] = '0';
-    this.getIPChartDataAPI(m_data).subscribe(response => {
-      this.DashChartIP.push(response);
-      if (this.DashChartIP && this.DashChartIP.length > 0) {
-        this.isLoadingArr[2] = '2';
-        this.pieChartData['footerLeft'].title = 'Admission Count ';
-        this.pieChartData['footerLeft'].count = this.DashChartIP[0]['TotalCount'];
-        this.pieChartData['footerRight'].title = 'Discharge Count';
-        this.pieChartData['footerRight'].count = this.DashChartIP[0]['DischargeCount'];
-        this.pieChartData.mainChart[this.pieChartData.currentRange] = [];
-        this.DashChartIP.forEach(element => {
-          this.pieChartData.mainChart[this.pieChartData.currentRange].push(element);
-        });
-      } else {
-        this.isLoadingArr[1] = '1';
-        this.pieChartData['footerLeft'].count = 0;
-        this.pieChartData['footerRight'].count = 0;
-      }
-    });
+    // var m_data = {
+    //   "DateRange": this.pieChartData.currentRange,
+    // }
+    // this.isLoadingArr[1] = '0';
+    // this.getIPChartDataAPI(m_data).subscribe(response => {
+    //   this.DashChartIP.push(response);
+    //   if (this.DashChartIP && this.DashChartIP.length > 0) {
+    //     this.isLoadingArr[2] = '2';
+    //     this.pieChartData['footerLeft'].title = 'Admission Count ';
+    //     this.pieChartData['footerLeft'].count = this.DashChartIP[0]['TotalCount'];
+    //     this.pieChartData['footerRight'].title = 'Discharge Count';
+    //     this.pieChartData['footerRight'].count = this.DashChartIP[0]['DischargeCount'];
+    //     this.pieChartData.mainChart[this.pieChartData.currentRange] = [];
+    //     this.DashChartIP.forEach(element => {
+    //       this.pieChartData.mainChart[this.pieChartData.currentRange].push(element);
+    //     });
+    //   } else {
+    //     this.isLoadingArr[1] = '1';
+    //     this.pieChartData['footerLeft'].count = 0;
+    //     this.pieChartData['footerRight'].count = 0;
+    //   }
+    // });
   }
   public getIPChartDataAPI(params: Object): Observable<any> {
     var subject = new Subject<string>();
