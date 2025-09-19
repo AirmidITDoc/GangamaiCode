@@ -160,53 +160,53 @@ export class SupplierMasterComponent implements OnInit {
         this._supplierService.populateForm(m_data);
     }
 
-    changeStatus(status: any) {
-        switch (status.id) {
-            case 1:
-                //this.onEdit(status.data)
-                break;
-            case 2:
-                this.onEdit(status.data)
-                break;
-            case 5:
-                this.onDeactive(status.data.genderId);
-                break;
-            default:
-                break;
-        }
-    }
+    // changeStatus(status: any) {
+    //     switch (status.id) {
+    //         case 1:
+    //             //this.onEdit(status.data)
+    //             break;
+    //         case 2:
+    //             this.onEdit(status.data)
+    //             break;
+    //         case 5:
+    //             this.onDeactive(status.data.supplierId);
+    //             break;
+    //         default:
+    //             break;
+    //     }
+    // }
 
-    onDeactive(doctorId) {
+    // onDeactive(Id) {
         
-        this.confirmDialogRef = this._matDialog.open(
-            FuseConfirmDialogComponent,
-            {
-                disableClose: false,
-            }
-        );
-        this.confirmDialogRef.componentInstance.confirmMessage =
-            "Are you sure you want to deactive?";
-        this.confirmDialogRef.afterClosed().subscribe((result) => {
+    //     this.confirmDialogRef = this._matDialog.open(
+    //         FuseConfirmDialogComponent,
+    //         {
+    //             disableClose: false,
+    //         }
+    //     );
+    //     this.confirmDialogRef.componentInstance.confirmMessage =
+    //         "Are you sure you want to deactive?";
+    //     this.confirmDialogRef.afterClosed().subscribe((result) => {
             
-            if (result) {
-                this._supplierService.SupplierMasterCancle(doctorId).subscribe((data: any) => {
-                    //  this.msg = data
-                    if (data.StatusCode == 200) {
-                        this.toastr.success(
-                            "Record updated Successfully.",
-                            "updated !",
-                            {
-                                toastClass:
-                                    "tostr-tost custom-toast-success",
-                            }
-                        );
-                        // this.getGenderMasterList();
-                    }
-                });
-            }
-            this.confirmDialogRef = null;
-        });
-    }
+    //         if (result) {
+    //             this._supplierService.SupplierMasterCancle(Id).subscribe((data: any) => {
+    //                 //  this.msg = data
+    //                 if (data.StatusCode == 200) {
+    //                     this.toastr.success(
+    //                         "Record updated Successfully.",
+    //                         "updated !",
+    //                         {
+    //                             toastClass:
+    //                                 "tostr-tost custom-toast-success",
+    //                         }
+    //                     );
+    //                     // this.getGenderMasterList();
+    //                 }
+    //             });
+    //         }
+    //         this.confirmDialogRef = null;
+    //     });
+    // }
 
 }
 export class SupplierMaster {

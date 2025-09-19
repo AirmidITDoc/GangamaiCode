@@ -325,7 +325,7 @@ export class NewIssueTodeptComponent {
     let TotalMRP = this.NewIssueGroup.get("Qty").value * this.NewIssueGroup.get("UnitRate").value
     let PurTotAmt = this.vPurchaseRate * this.NewIssueGroup.get("Qty").value
     let LandedRateandedTotal = this.NewIssueGroup.get("UnitRate").value * this.NewIssueGroup.get("Qty").value
-    let GSTAmount = (((this.NewIssueGroup.get("UnitRate").value) * (this.vVatPer) / 100) * parseInt(this.vQty)).toFixed(2);
+    let GSTAmount = (((this.NewIssueGroup.get("UnitRate").value) * (this.vVatPer) / 100) * parseInt(this.vQty)).toFixed(4);
     let gstper = 0
 
     this.chargeslist.push(
@@ -339,7 +339,7 @@ export class NewIssueTodeptComponent {
         LandedRate: this.NewIssueGroup.get("UnitRate").value,
         UnitMRP: this.NewIssueGroup.get("UnitRate").value || 0,
         VatPer: gstper || 0,
-        VatAmount: (((this.vTotalAmount) * (gstper)) / 100).toFixed(2),
+        VatAmount: (((this.vTotalAmount) * (gstper)) / 100).toFixed(4),
         TotalAmount: this.vTotalAmount || 0,
         StockId: this.vStockId,
         TotalMRP: TotalMRP,
@@ -402,7 +402,7 @@ export class NewIssueTodeptComponent {
         this.vCgstPer = result.cgstPer;
         this.vSgstPer = result.sgstPer;
         this.vIgstPer = result.igstPer;
-        this.vVatAmount = (((this.vTotalAmount) * (this.vVatPer)) / 100).toFixed(2),
+        this.vVatAmount = (((this.vTotalAmount) * (this.vVatPer)) / 100).toFixed(4),
           this.vStockId = result.stockId
         this.vStoreId = result.storeId;
         this.vLandedRate = result.landedRate;
@@ -434,7 +434,7 @@ export class NewIssueTodeptComponent {
       this.NewIssueGroup.get('Qty').setValue(0);
     }
     if (this.NewIssueGroup.get("Qty").value > 0 && this.NewIssueGroup.get("UnitRate").value) {
-      this.vTotalAmount = (parseFloat(this.NewIssueGroup.get("Qty").value) * parseFloat(this.NewIssueGroup.get("UnitRate").value)).toFixed(2);
+      this.vTotalAmount = (parseFloat(this.NewIssueGroup.get("Qty").value) * parseFloat(this.NewIssueGroup.get("UnitRate").value)).toFixed(4);
     } else {
       this.toastr.warning('Enter Qty  greater than 0', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
@@ -443,9 +443,9 @@ export class NewIssueTodeptComponent {
   }
   getTotalamt(element) {
 
-    this.vFinalTotalAmount = (element.reduce((sum, { LandedRateandedTotal }) => sum += +(LandedRateandedTotal || 0), 0)).toFixed(2);
-    this.vFinalGSTAmount = (element.reduce((sum, { VatAmount }) => sum += +(VatAmount || 0), 0)).toFixed(2);
-    this.vFinalNetAmount = (parseFloat(this.vFinalGSTAmount) + parseFloat(this.vFinalTotalAmount)).toFixed(2);
+    this.vFinalTotalAmount = (element.reduce((sum, { LandedRateandedTotal }) => sum += +(LandedRateandedTotal || 0), 0)).toFixed(4);
+    this.vFinalGSTAmount = (element.reduce((sum, { VatAmount }) => sum += +(VatAmount || 0), 0)).toFixed(4);
+    this.vFinalNetAmount = (parseFloat(this.vFinalGSTAmount) + parseFloat(this.vFinalTotalAmount)).toFixed(4);
     return this.vFinalTotalAmount;
   }
 
@@ -633,26 +633,26 @@ export class NewIssueTodeptComponent {
           Qty: this.RQty || 0,
           UnitRate: contact.unitMRP,
           UnitMRP: contact.unitMRP,
-          TotalAmount: ((parseFloat((parseInt(this.RQty) * (contact.landedRate)).toFixed(2)) + parseFloat((((contact.landedRate) * (contact.vatPercentage) / 100) * parseInt(this.RQty)).toFixed(2)))).toFixed(2) || 0,// NetAmt || 0,
+          TotalAmount: ((parseFloat((parseInt(this.RQty) * (contact.landedRate)).toFixed(4)) + parseFloat((((contact.landedRate) * (contact.vatPercentage) / 100) * parseInt(this.RQty)).toFixed(4)))).toFixed(4) || 0,// NetAmt || 0,
           VatPer: contact.vatPercentage || 0,
-          VatAmount: (((contact.landedRate) * (contact.vatPercentage) / 100) * parseInt(this.RQty)).toFixed(2) || 0,// GSTAmount || 0,
-          TotalMRP: (parseInt(this.RQty) * (contact.unitMRP)).toFixed(2),// TotalMRP,
+          VatAmount: (((contact.landedRate) * (contact.vatPercentage) / 100) * parseInt(this.RQty)).toFixed(4) || 0,// GSTAmount || 0,
+          TotalMRP: (parseInt(this.RQty) * (contact.unitMRP)).toFixed(4),// TotalMRP,
           DiscPer: 0,
           DiscAmt: 0,
-          NetAmt: ((parseFloat((parseInt(this.RQty) * (contact.landedRate)).toFixed(2)) + parseFloat((((contact.landedRate) * (contact.vatPercentage) / 100) * parseInt(this.RQty)).toFixed(2)))).toFixed(2),// NetAmt,
-          RoundNetAmt: parseInt(((parseFloat((parseInt(this.RQty) * (contact.landedRate)).toFixed(2)) + parseFloat((((contact.landedRate) * (contact.vatPercentage) / 100) * parseInt(this.RQty)).toFixed(2)))).toFixed(2)),
+          NetAmt: ((parseFloat((parseInt(this.RQty) * (contact.landedRate)).toFixed(4)) + parseFloat((((contact.landedRate) * (contact.vatPercentage) / 100) * parseInt(this.RQty)).toFixed(4)))).toFixed(4),// NetAmt,
+          RoundNetAmt: parseInt(((parseFloat((parseInt(this.RQty) * (contact.landedRate)).toFixed(4)) + parseFloat((((contact.landedRate) * (contact.vatPercentage) / 100) * parseInt(this.RQty)).toFixed(4)))).toFixed(4)),
           StockId: contact.stockId,
           LandedRate: contact.landedRate,
-          LandedRateandedTotal: (parseInt(this.RQty) * (contact.landedRate)).toFixed(2),
+          LandedRateandedTotal: (parseInt(this.RQty) * (contact.landedRate)).toFixed(4),
           CgstPer: contact.cgstPer,
-          CGSTAmt: (((contact.landedRate) * (contact.cgstPer) / 100) * parseInt(this.RQty)).toFixed(2),
+          CGSTAmt: (((contact.landedRate) * (contact.cgstPer) / 100) * parseInt(this.RQty)).toFixed(4),
           SgstPer: contact.sgstPer,
-          SGSTAmt: (((contact.landedRate) * (contact.sgstPer) / 100) * parseInt(this.RQty)).toFixed(2),
+          SGSTAmt: (((contact.landedRate) * (contact.sgstPer) / 100) * parseInt(this.RQty)).toFixed(4),
           IgstPer: contact.igstPer,
-          IGSTAmt: (((contact.landedRate) * (contact.igstPer) / 100) * parseInt(this.RQty)).toFixed(2),
+          IGSTAmt: (((contact.landedRate) * (contact.igstPer) / 100) * parseInt(this.RQty)).toFixed(4),
           PurchaseRate: contact.purchaseRate,
-          PurTotAmt: (parseInt(this.RQty) * (contact.purchaseRate)).toFixed(2),
-          MarginAmt: (parseFloat((parseInt(this.RQty) * (contact.landedRate)).toFixed(2)) - parseFloat((parseInt(this.RQty) * (contact.landedRate)).toFixed(2))).toFixed(2),
+          PurTotAmt: (parseInt(this.RQty) * (contact.purchaseRate)).toFixed(4),
+          MarginAmt: (parseFloat((parseInt(this.RQty) * (contact.landedRate)).toFixed(4)) - parseFloat((parseInt(this.RQty) * (contact.landedRate)).toFixed(4))).toFixed(4),
           SalesDraftId: 1,
           IndentId: this.vIndentId,
           IndentDetailsId: element.indentDetailsId,
@@ -691,8 +691,8 @@ export class NewIssueTodeptComponent {
     }
     else {
       if (contact.Qty > 0) {
-        contact.LandedRateandedTotal = (parseFloat(contact.Qty) * parseFloat(contact.LandedRate)).toFixed(2);
-        contact.VatAmount = ((parseFloat(contact.VatPer) * parseFloat(contact.LandedRateandedTotal)) / 100).toFixed(2);
+        contact.LandedRateandedTotal = (parseFloat(contact.Qty) * parseFloat(contact.LandedRate)).toFixed(4);
+        contact.VatAmount = ((parseFloat(contact.VatPer) * parseFloat(contact.LandedRateandedTotal)) / 100).toFixed(4);
         this.Indbalqty = (this.Indbalqty) - parseInt(Qty);
         contact.IssueBalQty = (this.Indbalqty)
 

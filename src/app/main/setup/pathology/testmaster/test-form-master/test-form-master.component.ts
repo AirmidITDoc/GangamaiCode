@@ -36,7 +36,7 @@ export class TestFormMasterComponent implements OnInit {
     @ViewChild(MatPaginator) paginator: MatPaginator;
     displayedColumns: string[] = ['parameterName'];
     displayedColumns2: string[] = ['Reorder', 'ParameterName', 'PrintParameterName', 'MethodName', 'UnitName', 'ParaMultipleRange', 'Formula', 'IsNumeric', 'Action'];
-    autocompleteModeCategoryId: string = "ItemCategory";
+    autocompleteModeCategoryId: string = "PathCategory";
     autocompleteModeServiceID: string = "PathologyService";
     autocompleteModeTemplate: string = "Template";
     registerObj: any;

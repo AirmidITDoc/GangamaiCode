@@ -1055,21 +1055,21 @@ export class NewPurchaseorderComponent {
         debugger   
         if (Number(rate?.value) >0) { 
             this.userFormGroup.patchValue({ 
-                SGST:Number((rate.value)/2),  
-                IGST:0,
+                SGSTPer:Number((rate.value)/2),  
+                IGSTPer:0,
                 GST: Number(rate.value)
             }) 
-            this.userFormGroup.get('IGST').reset();
-            this.userFormGroup.get('IGST').clearValidators();
-            this.userFormGroup.get('IGST').updateValueAndValidity();
-            this.userFormGroup.get('IGST').disable();
+            this.userFormGroup.get('IGSTPer').reset();
+            this.userFormGroup.get('IGSTPer').clearValidators();
+            this.userFormGroup.get('IGSTPer').updateValueAndValidity();
+            this.userFormGroup.get('IGSTPer').disable();
         const addbuttonElement = document.querySelector(`[name='addbutton']`) as HTMLElement;
         if (addbuttonElement) {
             addbuttonElement.focus();
         } 
         } else{ 
-        this.userFormGroup.get('IGST').reset(); 
-        this.userFormGroup.get('IGST').enable();
+        this.userFormGroup.get('IGSTPer').reset(); 
+        this.userFormGroup.get('IGSTPer').enable();
         }
         this.calculateTotalamt();
     }
@@ -1077,18 +1077,18 @@ export class NewPurchaseorderComponent {
         debugger    
         if (Number(rate?.text) >0) { 
             this.userFormGroup.patchValue({ 
-                SGST:0, 
-                CGST:0,
+                SGSTPer:0, 
+                CGSTPer:0,
                 GST: Number(rate.text),
                 selectedIGSTValue:Number(rate.text),
             }) 
-            this.userFormGroup.get('CGST').reset();
-            this.userFormGroup.get('CGST').clearValidators();
-            this.userFormGroup.get('CGST').updateValueAndValidity();
-            this.userFormGroup.get('CGST').disable();
+            this.userFormGroup.get('CGSTPer').reset();
+            this.userFormGroup.get('CGSTPer').clearValidators();
+            this.userFormGroup.get('CGSTPer').updateValueAndValidity();
+            this.userFormGroup.get('CGSTPer').disable();
         }else{
-        this.userFormGroup.get('CGST').reset(); 
-        this.userFormGroup.get('CGST').enable(); 
+        this.userFormGroup.get('CGSTPer').reset(); 
+        this.userFormGroup.get('CGSTPer').enable(); 
         }
          this.calculateTotalamt();
     }

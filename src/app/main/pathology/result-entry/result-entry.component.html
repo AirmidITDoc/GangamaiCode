@@ -107,12 +107,15 @@
                                             <mat-icon>description</mat-icon>
                                         </button>
 
-                                        <!-- <airmid-fileupload-icon [refId]="element.doctorId" [refType]="page"
-                                            [multiple]="true" [title]="'Report Master'"></airmid-fileupload-icon> -->
 
                                         <airmid-fileupload-icon [refId]="element.opdipdid" [refType]="page"
                                             [multiple]="true"
-                                            [title]="element.patientName + ' Document'"></airmid-fileupload-icon>
+                                            [title]="element.patientName + ' Report'"></airmid-fileupload-icon>
+
+                                        <!-- <airmid-signature-icon [refId]="element.doctorId" [refType]="signature" [multiple]="true"
+                    docName="DoctorSignature"></airmid-signature-icon> -->
+                                        <app-airmid-image-icon [refId]="element.opdipdid" [refType]="pathFiles"
+                                            [multiple]="true" docName="Report"></app-airmid-image-icon>
                                     </div>
                                 </ng-template>
 

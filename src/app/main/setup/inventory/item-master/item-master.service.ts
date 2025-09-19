@@ -229,7 +229,7 @@ export class ItemMasterService {
     }
 
     public deactivateTheStatus(m_data) {
-        return this._httpClient.DeleteData("ItemMaster?Id=" + m_data.toString());
+        return this._httpClient.DeleteData("ItemMaster?Id=" + m_data);
     }
 
     public getstoreById(Id) {

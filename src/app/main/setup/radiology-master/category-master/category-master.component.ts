@@ -21,10 +21,10 @@ export class CategoryMasterComponent implements OnInit {
  categoryName: any = "";
    
          allcolumns = [
-            { heading: "Code", key: "categoryId", sort: true, align: 'left', emptySign: 'NA' },
+           
             { heading: "Category Name", key: "categoryName", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Added By", key: "username", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Updated By", key: "updatedby", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "User Name", key: "username", sort: true, align: 'left', emptySign: 'NA' },
+            // { heading: "Updated By", key: "updatedby", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
             {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [

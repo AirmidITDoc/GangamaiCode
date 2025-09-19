@@ -23,9 +23,11 @@ import Swal from "sweetalert2";
     animations: fuseAnimations,
 })
 export class ParametermasterComponent implements OnInit {
-
-    paraName:any="";
+    IsNumneric = "0"
+    UnitName = "0"
+    paraName: any = "";
     searchFormGroup: FormGroup;
+    autocompleteModeUnitId: string = "Unit";
 
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
@@ -36,8 +38,12 @@ export class ParametermasterComponent implements OnInit {
         this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
     }
 
-    allcolumns=[
-        { heading: "Code", key: "parameterId", width: 100, sort: true, align: 'left', emptySign: 'NA' },
+    allcolumns = [
+        { heading: "IsNumeric", key: "isNumericParameter", width: 100, sort: true, align: 'left', type: gridColumnTypes.template },
+
+        { heading: "IsPrintDisSummary", key: "isPrintDisSummary", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+
+        // { heading: "Code", key: "parameterId", width: 100, sort: true, align: 'left', emptySign: 'NA' },
 
         { heading: "Parameter Name", key: "parameterName", width: 200, sort: true, align: 'left', emptySign: 'NA' },
 
@@ -45,11 +51,8 @@ export class ParametermasterComponent implements OnInit {
 
         { heading: "PrintParameterName", key: "printParameterName", width: 200, sort: true, align: 'left', emptySign: 'NA' },
 
-        { heading: "Unit Name", key: "unitId", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Unit Name", key: "unitName", sort: true, align: 'left', emptySign: 'NA' },
 
-        { heading: "IsNumeric", key: "isNumericParameter", width: 100, sort: true, align: 'left', type: gridColumnTypes.template },
-
-        { heading: "IsPrintDisSummary", key: "isPrintDisSummary", sort: true, align: 'left', emptySign: 'NA', width: 150 },
 
         { heading: "Formula", key: "formula", sort: true, align: 'left', emptySign: 'NA', width: 100 },
 
@@ -60,11 +63,13 @@ export class ParametermasterComponent implements OnInit {
         {
             heading: "Action", key: "action", align: "right", width: 100, sticky: true, type: gridColumnTypes.template,
             template: this.actionButtonTemplate  // Assign ng-template to the column
-        } 
+        }
     ]
 
-    allFilters=[
-        { fieldName: "ParameterName", fieldValue: "%", opType: OperatorComparer.Contains }
+    allFilters = [
+        { fieldName: "ParameterName", fieldValue: "%", opType: OperatorComparer.Contains },
+        { fieldName: "UnitId", fieldValue: "0", opType: OperatorComparer.Equals },
+        { fieldName: "IsNumneric", fieldValue: "0", opType: OperatorComparer.Equals }
     ]
 
     gridConfig: gridModel = {
@@ -90,29 +95,35 @@ export class ParametermasterComponent implements OnInit {
         console.log(event)
         if (event == 'ParameterNameSearch')
             this.searchFormGroup.get('ParameterNameSearch').setValue("")
-       
+
         this.onChangeFirst();
-      }
-      
+    }
+
     onChangeFirst() {
         this.paraName = this.searchFormGroup.get('ParameterNameSearch').value + "%"
+        this.UnitName = this.searchFormGroup.get('UnitId').value || "0"
+        if (this.searchFormGroup.get('IsNumeric').value)
+            this.IsNumneric = "1"
+        else
+            this.IsNumneric = "0"
         this.getfilterdata();
     }
 
-    getfilterdata(){
-        
+    getfilterdata() {
+        debugger
         this.gridConfig = {
             apiUrl: "ParameterMaster/MPathParameterList",
-            columnsList:this.allcolumns , 
+            columnsList: this.allcolumns,
             sortField: "parameterId",
             sortOrder: 0,
-            filters:  [
-                { fieldName: "ParameterName", fieldValue: this.paraName , opType: OperatorComparer.Contains }
-        
+            filters: [
+                { fieldName: "ParameterName", fieldValue: this.paraName, opType: OperatorComparer.Contains },
+                { fieldName: "UnitId ", fieldValue: this.UnitName, opType: OperatorComparer.Equals },
+                { fieldName: "IsNumneric", fieldValue: String(this.IsNumneric), opType: OperatorComparer.Equals }
             ]
         }
         this.grid.gridConfig = this.gridConfig;
-        this.grid.bindGridData(); 
+        this.grid.bindGridData();
     }
 
     toggleSidebar(name): void {
@@ -134,7 +145,7 @@ export class ParametermasterComponent implements OnInit {
     }
 
     onEdit(row) {
-        
+
         console.log(row)
 
         // wroung api used
@@ -151,7 +162,7 @@ export class ParametermasterComponent implements OnInit {
                         "opType": "Equals"
                     }
                 ],
-                "Columns":[],
+                "Columns": [],
                 "exportType": "JSON"
             }
         }
@@ -168,13 +179,13 @@ export class ParametermasterComponent implements OnInit {
                         "opType": "Equals"
                     }
                 ],
-                "Columns":[],
+                "Columns": [],
                 "exportType": "JSON"
             }
         }
 
         console.log(param)
-        console.log(param,row)
+        console.log(param, row)
         this._ParameterService.getTableData(param, row.isNumericParameter).subscribe((data) => {
 
             console.log("data:", data.data)

@@ -33,12 +33,12 @@
         <ng-template #actionsIsSubTest let-element>
             <div fxLayout="row" fxLayoutAlign="center center">
 
-                    <mat-icon *ngIf="element.isSubTest == true" title="IsSubTest">
-                        <img width="30px" height="30px" src="assets/images/logos/radiology.png">
-                    </mat-icon>
-                    <mat-icon *ngIf="element.isSubTest == false" title="IsTest">
-                        <img width="30px" height="30px" src="assets/images/logos/pathology.png">  
-                    </mat-icon>
+                <mat-icon *ngIf="element.isSubTest == true" title="IsSubTest">
+                    <img width="30px" height="30px" src="assets/images/logos/radiology.png">
+                </mat-icon>
+                <mat-icon *ngIf="element.isSubTest == false" title="IsTest">
+                    <img width="30px" height="30px" src="assets/images/logos/pathology.png">
+                </mat-icon>
 
             </div>
         </ng-template>
@@ -46,32 +46,33 @@
         <ng-template #actionsisTemplateTest let-element>
             <div fxLayout="row" fxLayoutAlign="center center">
 
-                    <mat-icon *ngIf="element.isTemplateTest=='1'" title="IsTemplateTest">assignment</mat-icon>
-                    <mat-icon *ngIf="element.isTemplateTest=='0'" title="Test">
-                        <img width="30px" height="30px" src="assets/images/logos/pathology.png">
-                    </mat-icon>
+                <mat-icon *ngIf="element.isTemplateTest=='1'" title="IsTemplateTest">assignment</mat-icon>
+                <mat-icon *ngIf="element.isTemplateTest=='0'" title="Test">
+                    <img width="30px" height="30px" src="assets/images/logos/pathology.png">
+                </mat-icon>
             </div>
         </ng-template>
 
         <airmid-table [gridConfig]="gridConfig" class="content">
             <ng-container filters>
-               <form [formGroup]="searchFormGroup">
-                <mat-form-field appearance="outline" fxFlex>
-                    <mat-label>Test Name</mat-label>
-                        <input matInput placeholder="Search Test Name" autocomplete="off"
-                        (input)="onChangeFirst()" [formGroup]="searchFormGroup" formControlName="TestNameSearch"/>
-                    <button matSuffix mat-icon-button aria-label="Clear"
-                    (click)="Clearfilter('TestNameSearch')">
-                        <mat-icon>close</mat-icon>
-                    </button>
-                </mat-form-field>
+                <form [formGroup]="searchFormGroup" fxLayout="column">
+                    <mat-form-field appearance="outline" fxFlex>
+                        <mat-label>Test Name</mat-label>
+                        <input matInput placeholder="Search Test Name" autocomplete="off" (input)="onChangeFirst()"
+                            [formGroup]="searchFormGroup" formControlName="TestNameSearch" />
+                        <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('TestNameSearch')">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </mat-form-field>
+                    <airmid-dropdown label="CategoryName" formControlName="CategoryId"
+                        [formGroup]="searchFormGroup"
+                        [mode]="autocompleteModeCategoryId"
+                        (selectionChange)="Clearfilter($event)"></airmid-dropdown>
 
-                <!-- <mat-radio-group value="" [(ngModel)]="gridConfig.filters[1].fieldValue" fxLayoutAlign="center center">
-                    <mat-radio-button value="">All</mat-radio-button>
-                    <mat-radio-button mat-fab value="1">IsActive</mat-radio-button>
-                    <mat-radio-button mat-fab value="0">IsDeactive</mat-radio-button>
-                </mat-radio-group> -->
-               </form>
+                    <airmid-dropdown label="ServiceName" formControlName="ServiceId"
+                        [formGroup]="searchFormGroup" [mode]="autocompleteModeServiceID"
+                        (selectionChange)="Clearfilter($event)" ></airmid-dropdown>
+                </form>
             </ng-container>
         </airmid-table>
     </div>

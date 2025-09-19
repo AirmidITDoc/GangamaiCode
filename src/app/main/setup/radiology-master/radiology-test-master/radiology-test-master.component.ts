@@ -14,34 +14,34 @@ import { UpdateradiologymasterComponent } from './updateradiologymaster/updatera
 
 
 @Component({
-  selector: 'app-radiology-test-master',
-  templateUrl: './radiology-test-master.component.html',
-  styleUrls: ['./radiology-test-master.component.scss'],
-  encapsulation: ViewEncapsulation.None,
-  animations: fuseAnimations
+    selector: 'app-radiology-test-master',
+    templateUrl: './radiology-test-master.component.html',
+    styleUrls: ['./radiology-test-master.component.scss'],
+    encapsulation: ViewEncapsulation.None,
+    animations: fuseAnimations
 })
 export class RadiologyTestMasterComponent implements OnInit {
 
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
-    testName:any="";
+    testName: any = "";
     searchFormGroup: FormGroup;
-    
-    allColumns=[
-        { heading: "Code", key: "testId", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "TestName", key: "testName", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "PrintTestName", key: "printTestName",width: 200, sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "CategoryName", key: "categoryId",width: 150, sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "ServiceName", key: "serviceId",width: 150, sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "AddedBy", key: "username", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "IsActive", key: "isActive",width: 100, type: gridColumnTypes.status, align: "center" },
+
+    allColumns = [
+        // { heading: "Code", key: "testId", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Test Name", key: "testName", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "PrintTest Name", key: "printTestName", width: 200, sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Category Name", key: "categoryName", width: 150, sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Service Name", key: "serviceName", width: 150, sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "User Name", key: "username", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "IsActive", key: "isActive", width: 100, type: gridColumnTypes.status, align: "center" },
         {
-            heading: "Action", key: "action",width: 100, align: "right", type: gridColumnTypes.action, actions: [
+            heading: "Action", key: "action", width: 100, align: "right", type: gridColumnTypes.action, actions: [
                 {
                     action: gridActions.edit, callback: (data: any) => {
                         this.onSave(data) // EDIT Records
                     }
-                }, 
+                },
                 {
                     action: gridActions.delete, callback: (data: any) => {
                         this._radiologytestService.deactivateTheStatus(data.testId).subscribe((response: any) => {
@@ -54,8 +54,10 @@ export class RadiologyTestMasterComponent implements OnInit {
         } //Action 1-view, 2-Edit,3-delete
     ]
 
-    allFilters=[
-        { fieldName: "ServiceName", fieldValue: "%", opType: OperatorComparer.Contains }
+    allFilters = [
+        { fieldName: "TestName", fieldValue: "%", opType: OperatorComparer.Contains },
+        { fieldName: "CatId", fieldValue: "0", opType: OperatorComparer.Contains },
+        { fieldName: "ServiceId", fieldValue: "0", opType: OperatorComparer.Contains }
     ]
 
     gridConfig: gridModel = {
@@ -70,30 +72,37 @@ export class RadiologyTestMasterComponent implements OnInit {
         console.log(event)
         if (event == 'TestNameSearch')
             this.searchFormGroup.get('TestNameSearch').setValue("")
-       
+
         this.onChangeFirst();
-      }
-      
+    }
+    CatId = "0"
+    ServiceId = "0"
+    autocompleteModeCategoryId: string = "PathCategory";
+    autocompleteModeServiceID: string = "Service";
     onChangeFirst() {
         debugger
         this.testName = this.searchFormGroup.get('TestNameSearch').value + "%"
+        this.CatId = this.searchFormGroup.get('CategoryId').value || "0"
+        this.ServiceId = this.searchFormGroup.get('ServiceId').value || "0"
         this.getfilterdata();
     }
 
-    getfilterdata(){
+    getfilterdata() {
         debugger
         this.gridConfig = {
             apiUrl: "RadiologyTest/RadiologyTestList",
-            columnsList:this.allColumns , 
+            columnsList: this.allColumns,
             sortField: "TestId",
             sortOrder: 0,
             filters: [
-                { fieldName: "ServiceName", fieldValue: this.testName, opType: OperatorComparer.Contains }
+                { fieldName: "TestName", fieldValue: this.testName, opType: OperatorComparer.Contains },
+                { fieldName: "CatId", fieldValue: String(this.CatId), opType: OperatorComparer.Contains },
+                { fieldName: "ServiceId", fieldValue: String(this.ServiceId), opType: OperatorComparer.Contains }
             ]
         }
         console.log(this.gridConfig)
         this.grid.gridConfig = this.gridConfig;
-        this.grid.bindGridData(); 
+        this.grid.bindGridData();
     }
 
     constructor(
@@ -107,16 +116,16 @@ export class RadiologyTestMasterComponent implements OnInit {
     ngOnInit(): void {
         this.searchFormGroup = this._radiologytestService.createSearchForm();
     }
-    onSearch() {}
+ 
 
-    onSave(row:any = null) {
+    onSave(row: any = null) {
         const dialogRef = this._matDialog.open(UpdateradiologymasterComponent,
-        {
-            maxWidth: "95vw",
-            maxHeight: '95vh',
-            width: '95%',
-            data: row
-        });
+            {
+                maxWidth: "95vw",
+                maxHeight: '95vh',
+                width: '95%',
+                data: row
+            });
         dialogRef.afterClosed().subscribe(result => {
             this.grid.bindGridData()
             console.log('The dialog was closed - Action', result);
@@ -137,7 +146,7 @@ export class RadiologyTestMasterComponent implements OnInit {
                     if (response.StatusCode == 200) {
                         this.toastr.success(response.Message);
                         // this.getGenderMasterList();
-                        // How to refresh Grid.
+                        
                     }
                 });
             }
@@ -146,81 +155,81 @@ export class RadiologyTestMasterComponent implements OnInit {
     }
 
     onEdit(row) {
-    
-        row["IsDeleted"]= JSON.stringify(row.IsActive)
+
+        row["IsDeleted"] = JSON.stringify(row.IsActive)
         console.log(row)
         this._radiologytestService.populateForm(row);
         const dialogRef = this._matDialog.open(UpdateradiologymasterComponent, {
-        maxWidth: "80%", 
-        width: "95%",
-        height: "85%",
-            data : {
-                Obj : row,
+            maxWidth: "80%",
+            width: "95%",
+            height: "85%",
+            data: {
+                Obj: row,
             }
         });
         dialogRef.afterClosed().subscribe((result) => {
             this.grid.bindGridData()
             console.log("The dialog was closed - Insert Action", result);
-            
+
         });
     }
-  
+
 }
 
 export class TestList {
-  testId:any;
-  testName: any;
-  printTestName:any;
-  categoryId: number;
-  serviceId:any;
-  isActive:any;
-  mRadiologyTemplateDetails:any;
-  /**
-   * Constructor
-   *
-   * @param TestList
-   */
-  constructor(TestList) {
-    {
-      this.testId = TestList.testId || "";
-      this.testName = TestList.testName || '';
-      this.printTestName = TestList.printTestName || '';
-      this.categoryId = TestList.categoryId || "";
-      this.serviceId = TestList.serviceId || 0;
-      this.isActive = TestList.isActive || 0;
-      this.mRadiologyTemplateDetails = TestList.mRadiologyTemplateDetails || 0;
+    testId: any;
+    testName: any;
+    printTestName: any;
+    categoryId: number;
+    serviceId: any;
+    isActive: any;
+    mRadiologyTemplateDetails: any;
+    /**
+     * Constructor
+     *
+     * @param TestList
+     */
+    constructor(TestList) {
+        {
+            this.testId = TestList.testId || "";
+            this.testName = TestList.testName || '';
+            this.printTestName = TestList.printTestName || '';
+            this.categoryId = TestList.categoryId || "";
+            this.serviceId = TestList.serviceId || 0;
+            this.isActive = TestList.isActive || 0;
+            this.mRadiologyTemplateDetails = TestList.mRadiologyTemplateDetails || 0;
+        }
     }
-  }
 }
 export class RadiologytestMaster {
-  TestId: number;
-  TestName: string;
-  PrintTestName: string;
-  CategoryId: number;
-  IsDeleted: boolean;
-  AddedBy: number;
-  UpdatedBy: number;
-  ServiceId: number;
-  AddedByName: string;
-  IsActive:any;
-  /**
-   * Constructor
-   *
-   * @param RadiologytestMaster
-   */
-  constructor(RadiologytestMaster) {
-    {
-      this.TestId = RadiologytestMaster.TestId || '';
-      this.TestName = RadiologytestMaster.TestName || '';
-      this.PrintTestName = RadiologytestMaster.PrintTestName || '';
-      this.CategoryId = RadiologytestMaster.CategoryId || '';
-      this.IsDeleted = RadiologytestMaster.IsDeleted || 'false';
-      this.AddedBy = RadiologytestMaster.AddedBy || '';
-      this.UpdatedBy = RadiologytestMaster.UpdatedBy || '';
-      this.ServiceId = RadiologytestMaster.ServiceId || '';
-      this.AddedByName = RadiologytestMaster.AddedByName || '';
-      this.IsActive = RadiologytestMaster.IsActive || '';
+    TestId: number;
+    TestName: string;
+    PrintTestName: string;
+    CategoryId: number;
+    IsDeleted: boolean;
+    AddedBy: number;
+    UpdatedBy: number;
+    ServiceId: number;
+    AddedByName: string;
+    IsActive: any;
+    /**
+     * Constructor
+     *
+     * @param RadiologytestMaster
+     */
+    constructor(RadiologytestMaster) {
+        {
+            this.TestId = RadiologytestMaster.TestId || '';
+            this.TestName = RadiologytestMaster.TestName || '';
+            this.PrintTestName = RadiologytestMaster.PrintTestName || '';
+            this.CategoryId = RadiologytestMaster.CategoryId || '';
+            this.IsDeleted = RadiologytestMaster.IsDeleted || 'false';
+            this.AddedBy = RadiologytestMaster.AddedBy || '';
+            this.UpdatedBy = RadiologytestMaster.UpdatedBy || '';
+            this.ServiceId = RadiologytestMaster.ServiceId || '';
+            this.AddedByName = RadiologytestMaster.AddedByName || '';
+            this.IsActive = RadiologytestMaster.IsActive || '';
 
+        }
     }
-  }
 }

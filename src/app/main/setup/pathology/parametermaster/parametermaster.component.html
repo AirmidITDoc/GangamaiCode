@@ -16,7 +16,7 @@
         </div>
     </div>
     <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
-        
+
         <ng-template #actionButtonTemplate let-element>
             <div fxLayout="row" fxLayoutAlign="center center">
 
@@ -40,12 +40,12 @@
         <ng-template #actionsNumeric let-element>
             <div fxLayout="row" fxLayoutAlign="center center">
 
-                    <mat-icon *ngIf="element.isNumericParameter == 1" title="IsNumeric">
-                        <img width="20px" height="20px" src="assets/images/logos/radiology.png">
-                    </mat-icon>
-                    <mat-icon *ngIf="element.isNumericParameter == 0" title="IsDescriptive">
-                        <img width="20px" height="20px" src="assets/images/logos/pathology.png">  
-                    </mat-icon>
+                <mat-icon *ngIf="element.isNumericParameter == 1" title="IsNumeric">
+                    <img width="20px" height="20px" src="assets/images/logos/radiology.png">
+                </mat-icon>
+                <mat-icon *ngIf="element.isNumericParameter == 0" title="IsDescriptive">
+                    <img width="20px" height="20px" src="assets/images/logos/pathology.png">
+                </mat-icon>
 
             </div>
         </ng-template>
@@ -53,21 +53,26 @@
         <airmid-table [gridConfig]="gridConfig" class="content">
             <ng-container filters>
                 <form [formGroup]="searchFormGroup" fxLayout="column">
-                <mat-form-field appearance="outline" fxFlex>
-                    <mat-label>Parameter Name</mat-label>
-                    <input matInput placeholder="Search Parameter Name" autocomplete="off"
-                    [formGroup]="searchFormGroup" formControlName="ParameterNameSearch"
-                    (input)="onChangeFirst()"/>
-                    <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('ParameterNameSearch')">
-                        <mat-icon>close</mat-icon>
-                    </button>
-                </mat-form-field>
+                    <mat-form-field appearance="outline" fxFlex>
+                        <mat-label>Parameter Name</mat-label>
+                        <input matInput placeholder="Search Parameter Name" autocomplete="off"
+                            [formGroup]="searchFormGroup" formControlName="ParameterNameSearch"
+                            (input)="onChangeFirst()" />
+                        <button matSuffix mat-icon-button aria-label="Clear"
+                            (click)="Clearfilter('ParameterNameSearch')">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </mat-form-field>
 
-                <!-- <mat-radio-group value="" [(ngModel)]="gridConfig.filters[1].fieldValue" fxLayoutAlign="center center">
-                    <mat-radio-button value="">All</mat-radio-button>
-                    <mat-radio-button mat-fab value="1">IsActive</mat-radio-button>
-                    <mat-radio-button mat-fab value="0">IsDeactive</mat-radio-button>
-                </mat-radio-group> -->
+                    <airmid-dropdown label="UnitId" formControlName="UnitId" [formGroup]="searchFormGroup"
+                        [mode]="autocompleteModeUnitId" (selectionChange)="onChangeFirst()">
+                    </airmid-dropdown>
+
+                  
+                      <mat-slide-toggle name="IsNumeric" (change)="onChangeFirst()" formControlName="IsNumeric">
+                            IsDescriptive / IsNumeric 
+                        </mat-slide-toggle>
+
                 </form>
             </ng-container>
         </airmid-table>

@@ -23,11 +23,10 @@ export class TemplateMasterComponent implements OnInit {
 
   
        allcolumns =  [
-            { heading: "Code", key: "templateId", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Template Name", key: "templateName", width: 200, sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Template Desc", key: "templateDesc", width: 300, sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Added By", key: "username", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Updated By", key: "updatedbyname", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Template Name", key: "templateName", width: 300, sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Template Desc", key: "templateDesc", width: 500, sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "UserName", key: "username", sort: true, align: 'left', emptySign: 'NA' },
+            // { heading: "Updated By", key: "updatedbyname", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
             {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [

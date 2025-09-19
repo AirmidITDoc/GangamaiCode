@@ -21,7 +21,7 @@ export class UnitmasterComponent implements OnInit {
 
    
        allcolumns = [
-            { heading: "Code", key: "unitId", sort: true, align: 'left', emptySign: 'NA' },
+           
             { heading: "Unit Name", key: "unitName", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
             {

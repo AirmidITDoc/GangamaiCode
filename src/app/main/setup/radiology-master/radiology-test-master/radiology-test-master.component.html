@@ -29,11 +29,14 @@
                         </button>
                     </mat-form-field>
 
-                <!-- <mat-radio-group value="" [(ngModel)]="gridConfig.filters[1].fieldValue" fxLayoutAlign="center center">
-                    <mat-radio-button value="">All</mat-radio-button>
-                    <mat-radio-button mat-fab value="1">IsActive</mat-radio-button>
-                    <mat-radio-button mat-fab value="0">IsDeactive</mat-radio-button>
-                </mat-radio-group> -->
+               <airmid-dropdown label="CategoryName" formControlName="CategoryId"
+                        [formGroup]="searchFormGroup"
+                        [mode]="autocompleteModeCategoryId"
+                        (selectionChange)="Clearfilter($event)"></airmid-dropdown>
+
+                    <airmid-dropdown label="ServiceName" formControlName="ServiceId"
+                        [formGroup]="searchFormGroup" [mode]="autocompleteModeServiceID"
+                        (selectionChange)="Clearfilter($event)" ></airmid-dropdown>
                 </form>
             </ng-container>
         </airmid-table>

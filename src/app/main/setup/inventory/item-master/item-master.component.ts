@@ -62,11 +62,10 @@ export class ItemMasterComponent implements OnInit {
         { heading: "CGST", key: "cgst", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "SGST", key: "sgst", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "IGST", key: "igst", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "Manufacture Name", key: "manufId", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-        { heading: "Location", key: "prodLocation", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "User Name", key: "addedby", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "IsNursingFlaf", key: "isNursingFlag", sort: true, align: 'left', type: gridColumnTypes.status },
-        { heading: "IsBatchRequired", key: "isBatchRequired", sort: true, align: 'left', type: gridColumnTypes.status },
+        { heading: "Manufacture Name", key: "manufName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "Location", key: "prodLocation", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "User Name", key: "userName", sort: true, align: 'left', emptySign: 'NA' },
+       
         { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
         {
             heading: "Action", key: "action", align: "right", width: 150, sticky: true, type: gridColumnTypes.template,
@@ -178,8 +177,8 @@ export class ItemMasterComponent implements OnInit {
 
 
     delitem(obj) {
-        this._itemService.deactivateTheStatus(obj.itemId).subscribe((response: any) => {
-            // this.toastr.success(response.message);
+        debugger
+        this._itemService.deactivateTheStatus(obj.itemID).subscribe((response: any) => {
             this.grid.bindGridData();
         });
     }

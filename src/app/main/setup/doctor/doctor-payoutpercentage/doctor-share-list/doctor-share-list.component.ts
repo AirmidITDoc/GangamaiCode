@@ -39,7 +39,7 @@ export class DoctorShareListComponent {
   GroupList: any = [];
   isGroupnameSelected: boolean = false;
   GroupListfilteredOptions: Observable<string[]>;
-  doctorShareId: any;
+  doctorShareId=0;
 
   dataSource = new MatTableDataSource<BillListForDocShrList>();
   @ViewChild(MatSort) sort: MatSort;
@@ -69,6 +69,7 @@ export class DoctorShareListComponent {
     // this.getAddDoctorList();
 
     this.Doctorshare = this.cretaedocshareform()
+    console.log(this.data)
      if(this.data){
     
             this.doctorShareId = this.data.doctorShareId;
@@ -124,9 +125,9 @@ export class DoctorShareListComponent {
    cretaedocshareform() {
     return this._formBuilder.group({
 
-      "doctorShareId": 0,
+      "doctorShareId":  this.doctorShareId,
       "doctorId": [this.doctorId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      "serviceId": [this.serviceId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      "serviceId": [this.serviceId, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       "docShrType": [0],
       "docShrTypeS": "",
       "servicePercentage": 0,
@@ -220,6 +221,7 @@ export class DoctorShareListComponent {
 
     console.log(this.Doctorshare.value)
 
+       this.Doctorshare.get('doctorShareId').setValue( this.doctorShareId)
     this.Doctorshare.get('doctorId').setValue(this.doctorId)
     this.Doctorshare.get('serviceId').setValue(this.serviceId)
     this.Doctorshare.get('classId').setValue(this.classid)
@@ -235,6 +237,7 @@ export class DoctorShareListComponent {
     console.log(this.Doctorshare.value)
     if (!this.Doctorshare.invalid) {
       this._DoctorShareService.InsertDocShare(this.Doctorshare.value).subscribe((response) => {
+        this.onClose()
          this._matDialog.closeAll();
       });
     }
@@ -255,33 +258,7 @@ export class DoctorShareListComponent {
         });
       }
     }
-    // else {
-    //   let updatedate = {
-    //     "doctorShareId": this.doctorShareId,
-    //     "doctorId": this.doctorId || 0,
-    //     "serviceId": this.serviceId || 0,
-    //     "docShrType": 0,
-    //     "docShrTypeS": docShrTypeS,
-    //     "servicePercentage": this._DoctorShareService.DocFormGroup.get('Percentage').value || 0,
-    //     "serviceAmount": this._DoctorShareService.DocFormGroup.get('Amount').value || 0,
-    //     "classId": this.classid || 0,
-    //     "shrTypeSerOrGrp": this._DoctorShareService.DocFormGroup.get('ServiceOrgrpType').value || 0,
-    //     "opIpType": this._DoctorShareService.DocFormGroup.get('PatientType').value || 0
-    //   }
-    //   console.log(updatedate)
-    //   this._DoctorShareService.UpdateDocShare(updatedate).subscribe((response) => {
-
-    //       this.getAddDoctorList()
-    //       this.grid.bindGridData(); 
-    //       this.Reset();
-    //     } else {
-    //       this.toastr.error('API Error!', 'Error !', {
-    //         toastClass: 'tostr-tost custom-toast-error',
-    //       });
-    //     }
-    //   });
-    // }
-
+   
   }
   onClose() {
     this._matDialog.closeAll();

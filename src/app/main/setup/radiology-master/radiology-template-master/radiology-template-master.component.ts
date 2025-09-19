@@ -24,11 +24,11 @@ export class RadiologyTemplateMasterComponent implements OnInit {
  templateName: any = "";
 
        allcolumns =  [
-            { heading: "Code", key: "templateId", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "TemplateName", key: "templateName", width: 200, sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "TemplateDesc", key: "templateDesc", width: 200, sort: true, align: 'left', emptySign: 'NA' },
+           
+            { heading: "TemplateName", key: "templateName", width: 300, sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "TemplateDesc", key: "templateDesc", width: 500, sort: true, align: 'left', emptySign: 'NA' },
             { heading: "AddedBy", key: "username", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "UpdatedBy", key: "updatedbyname", sort: true, align: 'left', emptySign: 'NA' },
+            // { heading: "UpdatedBy", key: "updatedbyname", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
             {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [

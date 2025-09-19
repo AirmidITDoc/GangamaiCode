@@ -27,9 +27,11 @@ export class TestmasterComponent implements OnInit {
   @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
   @ViewChild('actionsIsSubTest') actionsIsSubTest!: TemplateRef<any>;
   @ViewChild('actionsisTemplateTest') actionsisTemplateTest!: TemplateRef<any>;
-  testName:any="";   
-   searchFormGroup: FormGroup;
-  
+  testName: any = "";
+  searchFormGroup: FormGroup;
+  autocompleteModeCategoryId: string = "PathCategory";
+  autocompleteModeServiceID: string = "Service";
+
   ngAfterViewInit() {
     // Assign the template to the column dynamically
     this.gridConfig.columnsList.find(col => col.key === 'isSubTest')!.template = this.actionsIsSubTest;
@@ -37,17 +39,17 @@ export class TestmasterComponent implements OnInit {
     this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
   }
 
-  allColumns=[
-    { heading: "IsTemplateTest", key: "isTemplateTest", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 150 },
-    { heading: "Code", key: "testId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+  allColumns = [
+    { heading: "IsTemplate", key: "isTemplateTest", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 100 },
+    { heading: "IsSub Test", key: "isSubTest", sort: true, align: 'left', type: gridColumnTypes.template, width: 80 },
     { heading: "TestName", key: "testName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
     { heading: "PrintTestName", key: "printTestName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
     { heading: "Category Name", key: "categoryName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
     { heading: "BillingServiceName", key: "serviceName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
     { heading: "Technique Name", key: "techniqueName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
     { heading: "Machine Name", key: "machineName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-    { heading: "IsSub Test", key: "isSubTest", sort: true, align: 'left', type: gridColumnTypes.template, width: 100 },
-    { heading: "Added By", key: "addedBy", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+
+    { heading: "Added By", key: "userName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
     { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center", width: 100 },
     {
       heading: "Action", key: "action", align: "right", width: 100, sticky: true, type: gridColumnTypes.template,
@@ -55,8 +57,10 @@ export class TestmasterComponent implements OnInit {
     }
   ]
 
-  filters=[
-    { fieldName: "ServiceName", fieldValue: "%", opType: OperatorComparer.StartsWith }
+  filters = [
+    { fieldName: "ServiceName", fieldValue: "%", opType: OperatorComparer.Contains },
+    { fieldName: "CatId", fieldValue: "0", opType: OperatorComparer.Equals },
+    { fieldName: "ServiceId", fieldValue: "0", opType: OperatorComparer.Equals }
   ]
 
   constructor(
@@ -83,34 +87,39 @@ export class TestmasterComponent implements OnInit {
   Clearfilter(event) {
     console.log(event)
     if (event == 'TestNameSearch')
-        this.searchFormGroup.get('TestNameSearch').setValue("")
-   
+      this.searchFormGroup.get('TestNameSearch').setValue("")
+
     this.onChangeFirst();
   }
-  
-onChangeFirst() {
-    this.testName = this.searchFormGroup.get('TestNameSearch').value + "%"
-    this.getfilterdata();
-}
 
-getfilterdata(){
-    
+  catId = "0"
+  serviceId = "0"
+
+  onChangeFirst() {
+    this.testName = this.searchFormGroup.get('TestNameSearch').value + "%"
+    this.catId = this.searchFormGroup.get('CategoryId').value
+    this.serviceId = this.searchFormGroup.get('ServiceId').value
+    this.getfilterdata();
+  }
+
+  getfilterdata() {
+
     this.gridConfig = {
       apiUrl: "PathTestMaster/PathTestList",
       columnsList: this.allColumns,
       sortField: "TestId",
       sortOrder: 0,
       filters: [
-        { fieldName: "ServiceName", fieldValue: this.testName, opType: OperatorComparer.StartsWith }
+        { fieldName: "ServiceName", fieldValue: this.testName, opType: OperatorComparer.Contains },
+        { fieldName: "CatId", fieldValue: String(this.catId), opType: OperatorComparer.Equals },
+        { fieldName: "ServiceId", fieldValue: String(this.serviceId), opType: OperatorComparer.Equals }
       ]
     }
     this.grid.gridConfig = this.gridConfig;
-    this.grid.bindGridData(); 
-}
+    this.grid.bindGridData();
+  }
 
   onSave(row: any = null) {
-
-    let that = this;
     const dialogRef = this._matDialog.open(TestFormMasterComponent,
       {
         maxWidth: "100vw",
@@ -119,46 +128,36 @@ getfilterdata(){
         data: row
       });
     dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        that.grid.bindGridData();
-      }
+      this.grid.bindGridData();
+
     });
   }
 
-  deactivateTestMaster(row) {
-    Swal.fire({
-      title: 'Confirm Status',
-      text: 'Are you sure you want to Change Active Status?',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, Change Status!'
-    }).then((result) => {
-      
-      if (result.isConfirmed) {
-        this._TestService.deactivateTheStatus(row.testId).subscribe(
-          (response) => {
-            if (response) {
-              this.toastr.success('Status has been Changed Successfully.', 'Status!', {
-                toastClass: 'tostr-tost custom-toast-success',
-              });
-            } else {
-              this.toastr.error('Failed to Change TestMaster Status! Please check API error..', 'Error!', {
-                toastClass: 'tostr-tost custom-toast-error',
-              });
-            }
-          },
-          (error) => {
-            this.toastr.error('An error occurred while Changing the Status.', 'Error!', {
-              toastClass: 'tostr-tost custom-toast-error',
-            });
-          }
-        );
+ 
+    deactivateTestMaster(row) {
+          Swal.fire({
+              title: 'Confirm Status',
+              text: 'Are you sure you want to Change Active Status?',
+              icon: 'warning',
+              showCancelButton: true,
+              confirmButtonColor: '#3085d6',
+              cancelButtonColor: '#d33',
+              confirmButtonText: 'Yes, Change Status!'
+          }).then((result) => {
+              debugger
+              if (result.isConfirmed) {
+                  this._TestService.deactivateTheStatus(row.testId).subscribe(
+                      (data) => {
+                          Swal.fire('Changed!', 'Parameter Status has been Changed.', 'success');
+                          this.grid.bindGridData(); // Refresh grid data
+                      },
+                      (error) => {
+                          Swal.fire('Error!', 'Failed to Change Parameter Status.', 'error');
+                      }
+                  );
+              }
+          });
       }
-    });
-  }
-
 }
 
 export class TestMaster {

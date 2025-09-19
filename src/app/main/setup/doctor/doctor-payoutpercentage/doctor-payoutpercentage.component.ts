@@ -14,6 +14,7 @@ import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/air
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 import { ToastrService } from 'ngx-toastr';
 import { Observable } from 'rxjs';
+import { DoctorShareListComponent } from './doctor-share-list/doctor-share-list.component';
 
 
 @Component({
@@ -125,8 +126,8 @@ DoctorId = "0";
     const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
     buttonElement.blur(); // Remove focus from the button
 
-    const dialogRef = this._matDialog.open(DoctorPayoutpercentageComponent, {
-      maxWidth: "55vw",
+    const dialogRef = this._matDialog.open(DoctorShareListComponent, {
+      maxWidth: "85vw",
       height: "55%",
       width: "100%",
           
@@ -141,8 +142,8 @@ DoctorId = "0";
     const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
     buttonElement.blur(); // Remove focus from the button
 
-    const dialogRef = this._matDialog.open(DoctorPayoutpercentageComponent, {
-      maxWidth: "55vw",
+    const dialogRef = this._matDialog.open(DoctorShareListComponent, {
+     maxWidth: "85vw",
       height: "55%",
       width: "100%",
       data:row
