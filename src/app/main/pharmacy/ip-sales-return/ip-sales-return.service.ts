@@ -62,5 +62,7 @@ export class IpSalesReturnService {
   public getSalesReturnPdf(SalesId,OP_IP_Type) {
     return this._httpClient.get("Pharmacy/view-SalesTaxReturn_Report?SalesId=" + SalesId + "&OP_IP_Type=" + OP_IP_Type);
     }
-  
+       public getReportView(Param) {
+    return this._httpClient1.PostData("Report/ViewReport", Param);
+  } 
 }

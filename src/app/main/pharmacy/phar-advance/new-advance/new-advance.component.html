@@ -1,4 +1,4 @@
-<div class="modal-wrapper grid-container" fusePerfectScrollbar>
+<div class="page-layout modal-wrapper grid-container" fusePerfectScrollbar>
 
     <div class="modal-header accent">
         <div class="modal-header-content">
@@ -21,7 +21,7 @@
         </div>
     </div>
 
-    <div class="modal-body modal-body-light">
+<div class="modal-body content">
         <div class="modal-body-container">
             <div fxLayout="column" class="gap-8 h-100-p">
                 <div class="modal-card-container">
@@ -165,25 +165,21 @@
     </div>
 
 
-
-    <div class="modal-footer  p-12">
-        <div class="modal-footer-container" fxLayout="row" fxLayoutAlign="space-between">
+ <div class="modal-footer" fxLayout="column" >
+        <div class="modal-card-container"> 
             <form [formGroup]="MainForm">
-                <div fxLayout="row" fxLayoutGap="6px">
+                <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px" fxLayoutAlign="start">
                     <!-- Advance Amount -->
-                    <div fxFlex="40%" fxFlex.xs="100%" fxFlex.sm="33%">
+                    <div fxFlex="25%">
                         <airmid-textbox label="Advance Amount" formControlName="advanceAmt" type="number"
                           min="1" [formGroup]="MainForm">
                         </airmid-textbox>
                     </div>
                     <!-- Reason of Advance -->
-                    <div fxFlex="60%" fxFlex.xs="100%" fxFlex.sm="33%">
+                    <div fxFlex="100%">
                         <airmid-textbox label="Reason of Advance" formControlName="comment" type="text"
                             [formGroup]="MainForm"></airmid-textbox>
-                    </div>
-
-                    <!-- Spacer to push buttons to the right -->
-                    <!-- <div fxFlex></div>  -->
+                    </div> 
                 </div>
             </form>
             <div>

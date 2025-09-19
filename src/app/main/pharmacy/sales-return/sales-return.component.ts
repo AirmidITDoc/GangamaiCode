@@ -15,6 +15,7 @@ import { Printsal } from '../sales/sales.component';
 import { SalesReturnService } from './sales-return.service';
 import { OperatorComparer } from 'app/core/models/gridRequest';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 
 
 @Component({
@@ -573,8 +574,9 @@ getbillllist(){
         this.IpSalesReturnForm.get('payment.cashPayAmount').setValue(Number(Math.round(this.IPSalesRetFooterform.get('NetAmt').value)))
 
         console.log(this.IpSalesReturnForm.value);
-        this._SalesReturnService.InsertCashSalesReturn(this.IpSalesReturnForm.value).subscribe(response => {
-          this.OnReset();
+        this._SalesReturnService.InsertCashSalesReturn(this.IpSalesReturnForm.value).subscribe(response => { 
+            this.OnSalesReturnprint(response, this.selcteditemObj?.OP_IP_Type)
+            this.OnReset(); 
         });
       }
       else {
@@ -584,8 +586,9 @@ getbillllist(){
         this.IpSalesReturnForm.get('payment.paymentTime').setValue(FormattedDateTime)
 
         console.log(this.IpSalesReturnForm.value);
-        this._SalesReturnService.InsertCreditSalesReturn(this.IpSalesReturnForm.value).subscribe(response => {
-          this.OnReset();
+        this._SalesReturnService.InsertCreditSalesReturn(this.IpSalesReturnForm.value).subscribe(response => { 
+            this.OnSalesReturnprint(response, this.selcteditemObj?.OP_IP_Type)
+            this.OnReset(); 
         });
       }
     } else {
@@ -632,60 +635,6 @@ getbillllist(){
     var datePipe = new DatePipe("en-US");
     value = datePipe.transform((new Date), 'dd/MM/yyyy h:mm a');
     return value;
-  } 
-  //print
-  getSalesRetPrint(el) {
-    var D_data = {
-      "SalesID": el,
-      "OP_IP_Type": 2//this.OP_IP_Type,
-    }
-    let printContents;
-    this.subscriptionArr.push(
-      this._SalesReturnService.getSalesReturnPrint(D_data).subscribe(res => {
-        this.reportPrintObjList = res as Printsal[];
-        // console.log(this.reportPrintObjList);
-        this.reportPrintObj = res[0] as Printsal;
-        console.log(this.reportPrintObj);
-        setTimeout(() => {
-          this.print3();
-        }, 1000);
-      })
-    );
-  }
-  print3() {
-    let popupWin, printContents;
-    popupWin = window.open('', '_blank', 'top=0,left=0,height=800px !important,width=auto,width=2200px !important');
-
-    popupWin.document.write(` <html>
-    <head><style type="text/css">`);
-    popupWin.document.write(`
-      </style>
-      <style type="text/css" media="print">
-    @page { size: portrait; }
-  </style>
-          <title></title>
-      </head>
-    `);
-    popupWin.document.write(`<body onload="window.print();window.close()" style="font-family: system-ui, sans-serif;margin:0;font-size: 16px;">${this.billSalesReturn.nativeElement.innerHTML}</body>
-    <script>
-      var css = '@page { size: portrait; }',
-      head = document.head || document.getElementsByTagName('head')[0],
-      style = document.createElement('style');
-      style.type = 'text/css';
-      style.media = 'print';
-  
-      if (style.styleSheet){
-          style.styleSheet.cssText = css;
-      } else {
-          style.appendChild(document.createTextNode(css));
-      }
-      head.appendChild(style);
-    </script>
-    </html>`);
-    // popupWin.document.write(`<body style="margin:0;font-size: 16px;">${this.printTemplate}</body>
-    // </html>`);
-
-    popupWin.document.close();
   }  
   getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;
@@ -724,6 +673,32 @@ getbillllist(){
       ]
 
     };
+  }
+  //print 
+  OnSalesReturnprint(SalesID, OP_IP_Type) {
+    setTimeout(() => {
+      let param = {
+        "searchFields": [
+          { "fieldName": "SalesID", "fieldValue": String(SalesID || 0), "opType": "13" },
+          { "fieldName": "OP_IP_Type", "fieldValue": String(OP_IP_Type), "opType": "13" }
+        ],
+        "mode": "PharamcySalesReturn"
+      }
+      this._SalesReturnService.getReportView(param).subscribe(res => {
+        const matDialog = this._matDialog.open(PdfviewerComponent,
+          {
+            maxWidth: "85vw",
+            height: '750px',
+            width: '100%',
+            data: {
+              base64: res["base64"] as string,
+              title: "Sales Return" + " " + "Viewer"
+            }
+          });
+        matDialog.afterClosed().subscribe(result => {
+        });
+      });
+    }, 100);
   }
 }
 

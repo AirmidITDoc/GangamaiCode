@@ -249,10 +249,10 @@ export class PharAdvanceComponent implements OnInit {
     });
   }
   viewgetIPAdvanceReportPdf(contact) {
-       this.commonService.Onprint("AdvanceDetailID", contact.advanceDetailId, "IPPharmaAdvanceReport"); 
+  this.commonService.Onprint("AdvanceDetailID", contact.advanceDetailId, "PharamcyAdvanceReceipt");
   }
   viewgetRefundofAdvanceReportPdf(contact) {
-     this.commonService.Onprint("RefundId", contact.refundId, "IPPharmaAdvanceReturnReport");
+     this.commonService.Onprint("RefundId", contact.refundId, "PharamcyAdvanceReturnReceipt");
   }
   currentDate = new Date();
   getWhatsappsAdvance(el, vmono) {

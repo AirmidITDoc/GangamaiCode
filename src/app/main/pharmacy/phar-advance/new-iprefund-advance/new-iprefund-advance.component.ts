@@ -272,7 +272,7 @@ advanceDetailId:any=0;
   } 
 
    viewgetRefundofAdvanceReportPdf(contact) { 
-    this.commonService.Onprint("RefundId", contact.refundId, "IPPharmaAdvanceReturnReport");
+    this.commonService.Onprint("RefundId", contact.refundId, "PharamcyAdvanceReturnReceipt");
   }
 
   keyPressCharater(event) {

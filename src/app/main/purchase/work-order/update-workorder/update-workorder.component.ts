@@ -1,6 +1,6 @@
 import { DatePipe } from '@angular/common';
 import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
-import { FormGroup, UntypedFormBuilder } from '@angular/forms';
+import { FormArray, FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
@@ -14,6 +14,7 @@ import { GRNItemResponseType, GSTType, ToastType } from '../../good-receiptnote/
 import { FinalFormModel } from '../../purchase-order/new-purchaseorder/types';
 import { PurchaseFormModel } from '../../purchase-order/update-purchaseorder/types';
 import { WorkOrderService } from '../work-order.service';
+import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 
 @Component({
   selector: 'app-update-workorder',
@@ -71,7 +72,7 @@ export class UpdateWorkorderComponent implements OnInit {
   vSupplierId: any;
   vWorkId: any = 0;
   vItemName: any;
-
+  workOrderForm: FormGroup;
   autocompletestore: string = "Store";
   autocompleteSupplier: string = "SupplierMaster"
   autocompleteModeGSTType: string = "GstCalcType";
@@ -80,17 +81,15 @@ export class UpdateWorkorderComponent implements OnInit {
   dsTempItemNameList = new MatTableDataSource<ItemNameList>();
 
   constructor(public _WorkOrderService: WorkOrderService,
-    private _fuseSidebarService: FuseSidebarService,
     public _matDialog: MatDialog,
     public toastr: ToastrService,
-     private commonService: PrintserviceService,
+    private commonService: PrintserviceService,
     private _formBuilder: UntypedFormBuilder,
     public datePipe: DatePipe,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<UpdateWorkorderComponent>,
     private accountService: AuthenticationService,
-    private snackBarService: SnackBarService,
-    private advanceDataStored: AdvanceDataStored) { }
+    private _FormvalidationserviceService: FormvalidationserviceService) { }
 
   ngOnInit(): void {
     this.WorkOrderStoreForm = this._WorkOrderService.createStoreFrom();
@@ -100,6 +99,9 @@ export class UpdateWorkorderComponent implements OnInit {
     this.WorkorderItemForm.markAllAsTouched();
     this.WorkorderFinalForm.markAllAsTouched();
 
+    this.workOrderForm = this.CreateworkOrderForm();
+    this.workOrderArray.push(this.createworkOrderInsert());
+
     if (this.data) {
       // this.registerObj = this.data;
       console.log(this.data)
@@ -108,8 +110,8 @@ export class UpdateWorkorderComponent implements OnInit {
       this.WorkOrderStoreForm.get('StoreId').setValue(this.data.Obj.storeId);
       this.WorkOrderStoreForm.get('SupplierName').setValue(this.data.Obj.supplierId);
       this.WorkorderFinalForm.get('Remark').setValue(this.data.Obj.woRemark);
-      this.WorkorderFinalForm.get('discAmount').setValue(this.data.Obj.woDiscAmount);
-      this.WorkorderFinalForm.get('totalAmount').setValue(this.data.Obj.woTotalAmount);
+      this.WorkorderFinalForm.get('discAmount').setValue(this.data.Obj.woDiscAmount ?? 0);
+      this.WorkorderFinalForm.get('totalAmount').setValue(this.data.Obj.woTotalAmount ?? 0);
       this.WorkorderFinalForm.get('vatAmount').setValue(this.data.Obj.woVatAmount);
       this.WorkorderFinalForm.get('netAmount').setValue(this.data.Obj.woNetAmount);
       this.WorkOrderStoreForm.get('workId').setValue(this.data.Obj.woId);
@@ -118,9 +120,53 @@ export class UpdateWorkorderComponent implements OnInit {
     }
   }
 
+  CreateworkOrderForm() {
+    return this._formBuilder.group({
+      workOrders: this._formBuilder.group({
+        woId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        date: [this.datePipe.transform(new Date(), 'yyyy-MM-dd')],
+        time: [this.datePipe.transform(new Date(), 'shortTime')],
+        storeId: [this.accountService.currentUserValue.user.storeId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+        supplierID: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+        totalAmount: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+        vatAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        discAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        netAmount: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+        isclosed: false,
+        remark: [''],
+        addedby: [this.accountService.currentUserValue.userId],
+        updatedBy: [this.accountService.currentUserValue.userId],
+        isCancelled: false,
+        isCancelledBy: 0
+      }),
+      workOrderDetails: this._formBuilder.array([]),
+    })
+  }
+
+  createworkOrderInsert(element: any = {}): FormGroup {
+    return this._formBuilder.group({
+      woId: [this.vWorkId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      itemName: [element.ItemName],
+      qty: [element.Qty],
+      rate: [element.Rate],
+      totalAmount: [element.TotalAmount],
+      discPer: [element.DiscPer ?? 0],
+      discAmount: [element.DiscAmount ?? 0],
+      vatPer: [element.GST ?? 0],
+      vatAmount: [element.GSTAmount ?? 0],
+      netAmount: [element.NetAmount],
+      remark: "",
+    });
+  }
+
+  get workOrderArray(): FormArray {
+    return this.workOrderForm.get('workOrderDetails') as FormArray;
+  }
+
   getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;
   }
+
   getWorkOrderItemDetailList(Id) {
 
     var Param = {
@@ -159,9 +205,8 @@ export class UpdateWorkorderComponent implements OnInit {
           element.Remark = element.remark
 
       });
-
-
       console.log(this.dsItemNameList);
+      this.getGSTTotalAmt(this.dsItemNameList.data);
     });
   }
 
@@ -185,7 +230,6 @@ export class UpdateWorkorderComponent implements OnInit {
     this.vstoreId = obj.value
   }
 
-
   getSelectedSupplierObj(obj) {
     // setTimeout(() => {
     //   this._PurchaseOrder.getSupplierById(obj.value).subscribe((response) => {
@@ -204,6 +248,7 @@ export class UpdateWorkorderComponent implements OnInit {
 
     // }, 100);
   }
+
   onAdd() {
 
     if ((this.WorkorderItemForm.get("Qty").value == 0 || this.WorkorderItemForm.get("Qty").value == "")) {
@@ -219,7 +264,6 @@ export class UpdateWorkorderComponent implements OnInit {
       return;
     }
 
-
     const isDuplicate = this.dsItemNameList.data.some(item => item.ItemId === this.WorkorderItemForm.get('ItemName').value.itemId);
     if (!isDuplicate) {
 
@@ -228,10 +272,11 @@ export class UpdateWorkorderComponent implements OnInit {
       const formValues = this.WorkorderItemForm.getRawValue() as PurchaseFormModel;
       console.log(formValues)
       if (formValues.ItemName) {
+        const selectedItem = this.WorkorderItemForm.get('ItemName').value; ///////// need to check
         const newItem = new ItemNameList({
           ...formValues,
-          ItemName: formValues.ItemName.itemName,
-          ItemID: formValues.ItemName.itemId,
+          ItemName: selectedItem.itemName,
+          ItemId: selectedItem.itemId,
           Rate: formValues.UnitRate,// this.userFormGroup.get("Rate").value,// this.vRate || 0,
           Qty: formValues.Qty || 0,
           TotalAmount: formValues.TotalAmount || 0,
@@ -256,26 +301,35 @@ export class UpdateWorkorderComponent implements OnInit {
     if (itemNameElement) {
       itemNameElement.focus();
     }
-
   }
 
   updateFinalForm() {
-
     const form = this.WorkorderFinalForm;
     const itemList = this.dsItemNameList.data;
-    const netAmount = itemList.reduce((sum, { NetAmount }) => sum += +(NetAmount || 0), 0);
-    const updatableFormValues: FinalFormModel = {
-      totalAmount: itemList.reduce((sum, { TotalAmount }) => sum += +(TotalAmount || 0), 0).toFixed(4),
-      vatAmount: itemList.reduce((sum, { GSTAmount }) => sum += +(GSTAmount || 0), 0).toFixed(4),
-      netAmount: netAmount.toFixed(4),
-      discAmount: itemList.reduce((sum, { DiscAmount }) => sum += +(DiscAmount || 0), 0).toFixed(4)
-    } as FinalFormModel;
 
-    form.patchValue({
-      ...updatableFormValues
-    });
+    const totalAmount = +itemList.reduce((sum, { TotalAmount }) => sum + +(TotalAmount || 0), 0).toFixed(2);
+
+    const vatAmount = +itemList.reduce((sum, { GSTAmount }) => sum + +(GSTAmount || 0), 0).toFixed(2);
+
+    const netAmount = +itemList.reduce((sum, { NetAmount }) => sum + +(NetAmount || 0), 0).toFixed(2);
+
+    const discAmount = +itemList.reduce((sum, { DiscAmount }) => sum + +(DiscAmount || 0), 0).toFixed(2);
+
+    form.patchValue(
+      {
+        totalAmount,
+        vatAmount,
+        netAmount,
+        discAmount,
+      },
+      { emitEvent: false }
+    );
+
+    form.get('discAmount')?.markAsPristine();
+    form.get('discAmount')?.markAsUntouched();
+    form.get('vatAmount')?.markAsPristine();
+    form.get('vatAmount')?.markAsUntouched();
   }
-
 
   getSelectedItem(item: GRNItemResponseType): void {
     console.log(item)
@@ -289,11 +343,8 @@ export class UpdateWorkorderComponent implements OnInit {
       IGSTPer: item.igstPer,
       GST: item.cgstPer + item.sgstPer + item.igstPer,
       HSNcode: item.hsNcode
-
     });
-
   }
-
 
   ResetItem() {
     const form = this.WorkorderItemForm;
@@ -301,7 +352,7 @@ export class UpdateWorkorderComponent implements OnInit {
     form.patchValue({
       WorkId: '',
       ItemName: '',
-      ItemID: '',
+      ItemId: '',
       Qty: '',
       UnitRate: '',
       TotalAmount: '',
@@ -316,19 +367,18 @@ export class UpdateWorkorderComponent implements OnInit {
     this.WorkorderItemForm.markAsUntouched();
   }
 
-
   deleteTableRow(element) {
-    let index = this.chargeslist.indexOf(element);
+    let index = this.dsItemNameList.data.findIndex(x => x.ItemId === element.ItemId);
     if (index >= 0) {
-      this.chargeslist.splice(index, 1);
-      this.dsItemNameList.data = [];
-      this.dsItemNameList.data = this.chargeslist;
+      this.dsItemNameList.data.splice(index, 1);
+      this.dsItemNameList.data = [...this.dsItemNameList.data]; // refresh table
+      this.chargeslist = [...this.dsItemNameList.data]; // sync chargeslist
     }
     this.toastr.success('Record Deleted Successfully.', 'Deleted !', {
       toastClass: 'tostr-tost custom-toast-success',
     });
   }
- 
+
   calculateTotalAmount() {
 
     this.validateFormValues();
@@ -399,11 +449,9 @@ export class UpdateWorkorderComponent implements OnInit {
 
   }
 
-
-
   calculateDiscperAmount() {
-
     let disc = this.WorkorderItemForm.get('Disc').value || 0;
+    this.vGST = this.WorkorderItemForm.get('GST').value || 0;
     if (disc >= 100) {
       this.toastr.warning('Enter Discount less than 100', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
@@ -436,6 +484,7 @@ export class UpdateWorkorderComponent implements OnInit {
       this.vNetAmount = ((parseFloat(totalamt)) - parseFloat(this.vDiscAmt)).toFixed(2);
     }
   }
+
   finalCalculation() {
     this.calculateTotalAmount();
     // this.calculateDiscperAmount();
@@ -445,7 +494,6 @@ export class UpdateWorkorderComponent implements OnInit {
         this.getCellCalculation(this.dsItemNameList.data[i], null);
       }
     }
-    // this.calculateDiscAmount();
   }
 
   GSTTypeName = "GST Before Disc"
@@ -462,7 +510,6 @@ export class UpdateWorkorderComponent implements OnInit {
   }
 
   calculateGSTType(type: GSTType = GSTType.GST_BEFORE_DISC) {
-
     const form = this.WorkorderItemForm;
     const formValues = form.getRawValue() as PurchaseFormModel;
     const values = this._WorkOrderService.normalizeValues(formValues);
@@ -470,7 +517,7 @@ export class UpdateWorkorderComponent implements OnInit {
 
     // Update form with calculated values
     form.patchValue({
-     
+
       GSTAmount: calculation.totalGSTAmount.toFixed(2),
       NetAmount: calculation.netAmount.toFixed(2)
     }, { emitEvent: false });
@@ -496,28 +543,37 @@ export class UpdateWorkorderComponent implements OnInit {
     }
   }
   getCellCalculation(contact, ReceiveQty) {
+    const qty = parseFloat(contact.Qty) || 0;
+    const rate = parseFloat(contact.Rate) || 0;
+    const discPer = parseFloat(contact.DiscPer) || 0;
+    const gst = parseFloat(contact.GST) || 0;
 
-    if (contact.Qty > 0 && contact.Rate > 0) {
+    if (qty > 0 && rate > 0) {
       if (this.GSTTypeName == 'GST After Disc') {
 
-        //total amt
-        contact.TotalAmount = (parseFloat(contact.Qty) * parseFloat(contact.Rate)).toFixed(2);;
-        //disc
-        contact.DiscAmount = ((parseFloat(contact.TotalAmount) * parseFloat(contact.DiscPer)) / 100).toFixed(2);;
+        // contact.TotalAmount = (parseFloat(qty) * parseFloat(rate)).toFixed(2);
+        // contact.DiscAmount = ((parseFloat(contact.TotalAmount) * parseFloat(discPer)) / 100).toFixed(2);
+        contact.TotalAmount = parseFloat((qty * rate).toFixed(2));
+        contact.DiscAmount = parseFloat(((contact.TotalAmount * discPer) / 100).toFixed(2));
+
         let TotalAmt = (parseFloat(contact.TotalAmount) - parseFloat(contact.DiscAmount));
-        //Gst
-        contact.GSTAmount = (((TotalAmt) * parseFloat(contact.GST)) / 100).toFixed(2);;
+
+        // contact.GSTAmount = (((TotalAmt) * parseFloat(gst)) / 100).toFixed(2);
+        contact.GSTAmount = parseFloat(((TotalAmt * gst) / 100).toFixed(2));
         contact.NetAmount = ((TotalAmt) + parseFloat(contact.GSTAmount)).toFixed(2);;
 
       }
       else if (this.GSTTypeName == 'GST Before Disc') {
-        //total amt
-        contact.TotalAmount = (parseFloat(contact.Qty) * parseFloat(contact.Rate)).toFixed(2);;
-        //Gst
-        contact.GSTAmount = ((parseFloat(contact.TotalAmount) * parseFloat(contact.GST)) / 100).toFixed(2);;
+
+        // contact.TotalAmount = (parseFloat(qty) * parseFloat(rate)).toFixed(2);
+        // contact.GSTAmount = ((parseFloat(contact.TotalAmount) * parseFloat(gst)) / 100).toFixed(2);
+        contact.TotalAmount = parseFloat((qty * rate).toFixed(2));
+        contact.GSTAmount = parseFloat(((contact.TotalAmount * gst) / 100).toFixed(2));
+
         let totalAmt = (parseFloat(contact.TotalAmount) + parseFloat(contact.GSTAmount));
-        //disc
-        contact.DiscAmount = ((parseFloat(contact.TotalAmount) * parseFloat(contact.DiscPer)) / 100).toFixed(2);;
+
+        // contact.DiscAmount = ((parseFloat(contact.TotalAmount) * parseFloat(discPer)) / 100).toFixed(2);
+        contact.DiscAmount = parseFloat(((contact.TotalAmount * discPer) / 100).toFixed(2));
         contact.NetAmount = ((totalAmt) - parseFloat(contact.DiscAmount)).toFixed(2);;
       }
     }
@@ -527,139 +583,113 @@ export class UpdateWorkorderComponent implements OnInit {
       contact.VATAmount = 0;
       contact.NetAmount = 0;
     }
+    this.getGSTTotalAmt([contact]);
   }
-  getTotalNet(element) {
-    this.FinalNetAmount = element.reduce((sum, { NetAmount }) => sum += +(NetAmount || 0), 0).toFixed(2);
-    return this.FinalNetAmount;
-  }
-  getTotalVAT(element) {
-    this.FinalVatAmount = (element.reduce((sum, { GSTAmount }) => sum += +(GSTAmount || 0), 0)).toFixed(2);
-    return this.FinalVatAmount;
-  }
-  getTotalDisc(element) {
-    this.FinalDiscAmount = element.reduce((sum, { DiscAmount }) => sum += +(DiscAmount || 0), 0).toFixed(2);
-    return this.FinalDiscAmount;
-  }
-  getTotalAmt(element) {
-    this.FinalTotalAmount = (element.reduce((sum, { TotalAmount }) => sum += +(TotalAmount || 0), 0)).toFixed(2);
-    return this.FinalTotalAmount;
-  }
-  OnSave() {
 
+  getGSTTotalAmt(element: any[]) {
+    if (!element || !Array.isArray(element)) {
+      element = [];
+    }
+
+    this.FinalNetAmount = +element.reduce((sum, { NetAmount }) => sum + +(NetAmount || 0), 0).toFixed(2);
+    this.FinalVatAmount = +element.reduce((sum, { GSTAmount }) => sum + +(GSTAmount || 0), 0).toFixed(2);
+    this.FinalDiscAmount = +element.reduce((sum, { DiscAmount }) => sum + +(DiscAmount || 0), 0).toFixed(2);
+    this.FinalTotalAmount = +element.reduce((sum, { TotalAmount }) => sum + +(TotalAmount || 0), 0).toFixed(2);
+
+    this.WorkorderFinalForm.patchValue({
+      discAmount: this.FinalDiscAmount ?? 0,
+      totalAmount: this.FinalTotalAmount ?? 0,
+      vatAmount: this.FinalVatAmount ?? 0,
+      netAmount: this.FinalNetAmount ?? 0
+    }, { emitEvent: false });
+
+    // reset error state (optional)
+    Object.keys(this.WorkorderFinalForm.controls).forEach(key => {
+      this.WorkorderFinalForm.get(key)?.markAsPristine();
+      this.WorkorderFinalForm.get(key)?.markAsUntouched();
+    });
+  }
+
+  OnSave() {
     if ((!this.dsItemNameList.data.length)) {
       this.toastr.warning('Data is not available in list ,please add item in the list.', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       return;
     }
-   
-    console.log(this.WorkOrderStoreForm.value)
+
+    const formattedDate = this.datePipe.transform(this.workOrderForm.get('workOrders.date').value, "yyyy-MM-dd");
+    const formattedTime = this.datePipe.transform(new Date(), "HH:mm:ss");
+    this.workOrderForm.get('workOrders.date').setValue(formattedDate);
+    this.workOrderForm.get('workOrders.time').setValue(formattedDate + ' ' + formattedTime);
+
+    this.workOrderForm.get('workOrders.supplierID').setValue(this.WorkOrderStoreForm.get("SupplierName").value)
+    this.workOrderForm.get('workOrders.totalAmount').setValue(this.WorkorderFinalForm.get("totalAmount").value)
+    this.workOrderForm.get('workOrders.vatAmount').setValue(this.WorkorderFinalForm.get("vatAmount").value)
+    this.workOrderForm.get('workOrders.discAmount').setValue(this.WorkorderFinalForm.get("discAmount").value)
+    this.workOrderForm.get('workOrders.netAmount').setValue(this.WorkorderFinalForm.get("netAmount").value)
+    this.workOrderForm.get('workOrders.remark').setValue(this.WorkorderFinalForm.get("Remark").value)
+
     debugger
-if(!this.WorkOrderStoreForm.invalid){
-    let InsertWorkDetailarrayObj = [];
+    if (!this.workOrderForm.invalid) {
 
-    let insertWorkObj = {};
-    insertWorkObj['woId'] = 0
-    insertWorkObj['date'] = this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd")
-    insertWorkObj['time'] = this.dateTimeObj.time
-    insertWorkObj['storeId'] = this.WorkOrderStoreForm.get("StoreId").value
-    insertWorkObj['supplierID'] = this.WorkOrderStoreForm.get("SupplierName").value
-    insertWorkObj['totalAmount'] = this.WorkorderFinalForm.get("totalAmount").value
-    insertWorkObj['vatAmount'] = this.WorkorderFinalForm.get("vatAmount").value
-    insertWorkObj['discAmount'] = this.WorkorderFinalForm.get("discAmount").value
-    insertWorkObj['netAmount'] = this.WorkorderFinalForm.get("netAmount").value
-    insertWorkObj['isclosed'] = true
-    insertWorkObj['remark'] = this.WorkorderFinalForm.get("Remark").value
-    insertWorkObj['addedBy'] = this.accountService.currentUserValue.userId;
-    insertWorkObj['isCancelled'] = false;
-    insertWorkObj['isCancelledBy'] = 0;
+      this.workOrderArray.clear();
+      this.dsItemNameList.data.forEach(item => {
+        this.workOrderArray.push(this.createworkOrderInsert(item));
+      });
 
+      if (this.vWorkId == 0) {
+        (this.workOrderForm.get('workOrders') as FormGroup).removeControl('updatedBy');
 
-
-    let UpdateWorkObj = {};
-    UpdateWorkObj['woId'] = this.vWorkId
-    UpdateWorkObj['storeId'] = this.WorkOrderStoreForm.get("StoreId").value
-    UpdateWorkObj['supplierID'] = this.WorkOrderStoreForm.get("SupplierName").value
-    UpdateWorkObj['totalAmount'] = this.WorkorderFinalForm.get("totalAmount").value
-    UpdateWorkObj['vatAmount'] = this.WorkorderFinalForm.get("vatAmount").value
-    UpdateWorkObj['discAmount'] = this.WorkorderFinalForm.get("discAmount").value
-    UpdateWorkObj['netAmount'] = this.WorkorderFinalForm.get("netAmount").value
-    UpdateWorkObj['isclosed'] = true
-    UpdateWorkObj['remark'] = this.WorkorderFinalForm.get("Remark").value
-    UpdateWorkObj['updatedBy'] = this.accountService.currentUserValue.userId;
-
-    this.dsItemNameList.data.forEach((element) => {
-      let insertWorkDetailaObj = {};
-      insertWorkDetailaObj['woId'] = this.vWorkId;
-      insertWorkDetailaObj['itemName'] = element.ItemName;
-      insertWorkDetailaObj['qty'] = element.Qty;
-      insertWorkDetailaObj['rate'] = element.Rate;
-      insertWorkDetailaObj['totalAmount'] = element.TotalAmount;
-      insertWorkDetailaObj['discAmount'] = element.DiscAmount;
-      insertWorkDetailaObj['discPer'] = element.DiscPer;
-      insertWorkDetailaObj['vatAmount'] = element.GSTAmount;
-      insertWorkDetailaObj['vatPer'] = element.GST;;
-      insertWorkDetailaObj['netAmount'] = element.NetAmount;
-      insertWorkDetailaObj['remark'] = "";
-
-      InsertWorkDetailarrayObj.push(insertWorkDetailaObj);
-    });
-
-    if (this.vWorkId == 0) {
-      console.log(this.WorkorderFinalForm.value)
-      let submitData = {
-        "workOrders": insertWorkObj,//this.WorkorderFinalForm.value,
-        "workOrderDetails": InsertWorkDetailarrayObj,
-      };
-      console.log(submitData);
-      this._WorkOrderService.InsertWorkorderSave(submitData).subscribe(response => {
-        this.toastr.success(response.message);
+        console.log(this.workOrderForm.value)
+        this._WorkOrderService.InsertWorkorderSave(this.workOrderForm.value).subscribe(response => {
           this.viewgetWorkorderReportPdf(response)
           this._matDialog.closeAll();
-              });
-    } else {
-
-      let submitData = {
-        "updateWorkOrders": UpdateWorkObj,
-        "workOrderDetail": InsertWorkDetailarrayObj
-      };
-      console.log(submitData);
-      this._WorkOrderService.WorkorderUpdate(submitData).subscribe(response => {
-        this.toastr.success(response.message);
-       this.viewgetWorkorderReportPdf(response)
-          this._matDialog.closeAll();
-        
-      });
-    }
-  }else {
-        let invalidFields = [];
-
-        if (this.WorkorderFinalForm.invalid) {
-          for (const controlName in this.WorkorderFinalForm.controls) {
-            if (this.WorkorderFinalForm.controls[controlName].invalid) {
-              invalidFields.push(`Final Form: ${controlName}`);
-            }
-          }
-        }
-        if (this.WorkOrderStoreForm.invalid) {
-          for (const controlName in this.WorkOrderStoreForm.controls) {
-            if (this.WorkOrderStoreForm.controls[controlName].invalid) {
-              invalidFields.push(`Store Form: ${controlName}`);
-            }
-          }
-        }
-        if (invalidFields.length > 0) {
-          invalidFields.forEach(field => {
-            this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
-            );
-          });
-        }
-
+        });
       }
+      else {
+        this.workOrderForm.get('workOrders.woId').setValue(this.vWorkId),
+
+          (this.workOrderForm.get('workOrders') as FormGroup).removeControl('addedby');
+        (this.workOrderForm.get('workOrders') as FormGroup).removeControl('isCancelled');
+        (this.workOrderForm.get('workOrders') as FormGroup).removeControl('isCancelledBy');
+
+        console.log(this.workOrderForm.value);
+        this._WorkOrderService.WorkorderUpdate(this.workOrderForm.value).subscribe(response => {
+          this.viewgetWorkorderReportPdf(response)
+          this._matDialog.closeAll();
+
+        });
+      }
+    } else {
+      let invalidFields = [];
+
+      if (this.WorkorderFinalForm.invalid) {
+        for (const controlName in this.WorkorderFinalForm.controls) {
+          if (this.WorkorderFinalForm.controls[controlName].invalid) {
+            invalidFields.push(`Final Form: ${controlName}`);
+          }
+        }
+      }
+      if (this.WorkOrderStoreForm.invalid) {
+        for (const controlName in this.WorkOrderStoreForm.controls) {
+          if (this.WorkOrderStoreForm.controls[controlName].invalid) {
+            invalidFields.push(`Store Form: ${controlName}`);
+          }
+        }
+      }
+      if (invalidFields.length > 0) {
+        invalidFields.forEach(field => {
+          this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
+          );
+        });
+      }
+
+    }
   }
 
   viewgetWorkorderReportPdf(element) {
-  this.commonService.Onprint("WOId", element.woId, "WorkOrder");
+    this.commonService.Onprint("WOId", element.woId, "WorkOrder");
   }
 
   ItemFromReset() {
@@ -668,7 +698,7 @@ if(!this.WorkOrderStoreForm.invalid){
       // GSTType: '',
       WorkId: '',
       ItemName: '',
-      ItemID: 0,
+      ItemId: 0,
       Qty: '',
       UnitRate: 0,
       TotalAmount: 0,

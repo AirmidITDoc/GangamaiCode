@@ -380,7 +380,7 @@ export class BrowsSalesBillComponent implements OnInit {
     { heading: "Tariff Name", key: "tariffName", sort: true, align: 'left', emptySign: 'NA', width: 130 },
     { heading: "Class Name", key: "className", sort: true, align: 'left', emptySign: 'NA', width: 220 },
     {
-      heading: "Action", key: "action", align: "right", sticky: true, type: gridColumnTypes.template, width: 80,
+      heading: "Action", key: "action", align: "right", sticky: true, type: gridColumnTypes.template, width: 100,
       template: this.isPatientPrintTemplate  // Assign ng-template to the column
     }
   ]
@@ -703,8 +703,7 @@ export class BrowsSalesBillComponent implements OnInit {
   // }
 
   viewgetSalesBillReportPdf(response) {
-    console.log(response)
-    
+    console.log(response) 
     setTimeout(() => {
       let param = {
         "searchFields": [
@@ -720,7 +719,7 @@ export class BrowsSalesBillComponent implements OnInit {
             "opType": "Equals"
           }
         ],
-        "mode": "PharamcySalesBill"
+        "mode": "PharamcySalesBill" 
       }
 
       this._BrowsSalesBillService.getReportView(param).subscribe(res => {
@@ -737,11 +736,77 @@ export class BrowsSalesBillComponent implements OnInit {
           });
         matDialog.afterClosed().subscribe(result => {
         });
-      });
+      }); 
     }, 100);
   }
+// dialogData :any
+// viewgetSalesBillReportPdf(response) {
+//   console.log(response);
 
+//   setTimeout(() => {
+//     let param = {
+//       "searchFields": [
+//         {
+//           "fieldName": "SalesID",
+//           "fieldValue": String(response.salesId),
+//           "opType": "Equals"
+//         },
+//         {
+//           "fieldName": "OP_IP_Type",
+//           "fieldValue": String(response.oP_IP_Type),
+//           "opType": "Equals"
+//         }
+//       ],
+//       "mode": "PharamcySalesBill"
+//     };
 
+//     this._BrowsSalesBillService.getReportView(param).subscribe(res => {
+
+//       const matDialog = this._matDialog.open(PdfviewerComponent, {
+//         maxWidth: "85vw",
+//         height: '750px',
+//         width: '100%',
+//         data: {
+//           base64: res["base64"] as string,
+//           title: "Sales Bill" + " " + "Viewer"
+//         }
+//       });
+
+//       matDialog.afterOpened().subscribe(() => {
+//         // Trigger the print dialog after the PDF is rendered inside the dialog
+//         this.printPDF();
+//       });
+
+//       matDialog.afterClosed().subscribe(result => {
+//         // Handle dialog closure if needed
+//       });
+//     });
+//   }, 100);
+// }
+
+// printPDF() {
+//   // Assuming you are using a method to display PDF within the dialog, 
+//   // you may have an instance of the PDF viewer. Here's one approach using window.print().
+
+//   const printWindow = window.open('', '_blank');
+//   if (printWindow) {
+//     const base64PDF = this.dialogData.base64;
+//     printWindow.document.write(`
+//       <html>
+//         <head><title>Print PDF</title></head>
+//         <body>
+//           <embed src="data:application/pdf;base64,${base64PDF}" type="application/pdf" width="100%" height="100%"></embed>
+//         </body>
+//       </html>
+//     `);
+//     printWindow.document.close(); // Necessary to finish the HTML document
+//     printWindow.onload = () => {
+//       printWindow.print(); // Trigger the print dialog when the PDF is loaded
+//     };
+//   }
+// }
+
+ 
   viewgetSalesreturnBillReportPdf(response) {
     console.log(response)
     debugger
@@ -750,7 +815,7 @@ export class BrowsSalesBillComponent implements OnInit {
         "searchFields": [
           {
             "fieldName": "SalesID",
-            "fieldValue": String(response.salesId),
+            "fieldValue": String(response.salesReturnId),
             "opType": "Equals"
           },
           {
@@ -759,7 +824,7 @@ export class BrowsSalesBillComponent implements OnInit {
             "opType": "Equals"
           }
         ],
-        "mode": "PharamcySalesReturn"
+        "mode": "SalesReturnBill"
       }
 
       this._BrowsSalesBillService.getReportView(param).subscribe(res => {
@@ -1598,25 +1663,58 @@ export class BrowsSalesBillComponent implements OnInit {
       //   console.log('The dialog was closed - Insert Action', result);
       // });
     } else if (m == 'Patient Statement') {
-      this.viewSalesstatement(contact);
+      //this.viewSalesstatement(contact);
     } else if (m == 'Patient Sales Summary') {
 
     } else if (m == 'Patient Sales Detail') {
 
     }
+  } 
+  WhatsSalesRetPdf(el) {
+
   }
 
-  viewSalesstatement(el) {
-    console.log(el)
-    //  
-    let StoreId = this._loggedService.currentUserValue.storeId || 0
-    this.sIsLoading = 'loading-data';
-    setTimeout(() => {
-      // this.SpinLoading =true; el.AdmissionID,StoreId
-      this.AdList = true;
-      console.log(StoreId)
-      console.log(el.AdmissionID)
-      this._BrowsSalesBillService.getPdfSalesstatement(el.AdmissionID, StoreId).subscribe(res => {
+  printpatient(){
+    
+  } 
+  printsalesDetails(contact){
+    debugger
+        setTimeout(() => { 
+        let param = {
+            "searchFields": [
+              { "fieldName": "OP_IP_ID", "fieldValue": String(contact?.admissionId || 0), "opType": "13" },
+              { "fieldName": "StoreId", "fieldValue": String(this._loggedService.currentUserValue?.user?.storeId), "opType": "13" }
+            ],
+            "mode": "PharmacySalesDetails"
+          }
+      this._BrowsSalesBillService.getReportView(param).subscribe(res => {
+        const dialogRef = this._matDialog.open(PdfviewerComponent,
+          {
+            maxWidth: "85vw",
+            height: '750px',
+            width: '100%',
+            data: {
+              base64: res["base64"] as string,
+              title: "Pharmacy Sales Details viewer"
+            }
+          });
+        dialogRef.afterClosed().subscribe(result => { 
+        });
+      });
+
+    }, 100);
+  }
+ 
+  printsalesPatientstatement(contact){ 
+    setTimeout(() => { 
+        let param = {
+            "searchFields": [
+              { "fieldName": "OP_IP_ID", "fieldValue": String(contact?.admissionId || 0), "opType": "13" },
+              { "fieldName": "StoreId", "fieldValue": String(this._loggedService.currentUserValue?.user?.storeId), "opType": "13" }
+            ],
+            "mode": "PharmacyPatientStatement"
+          }
+      this._BrowsSalesBillService.getReportView(param).subscribe(res => {
         const dialogRef = this._matDialog.open(PdfviewerComponent,
           {
             maxWidth: "85vw",
@@ -1627,24 +1725,12 @@ export class BrowsSalesBillComponent implements OnInit {
               title: "Patient Statement viewer"
             }
           });
-        dialogRef.afterClosed().subscribe(result => {
-          this.AdList = false;
-          this.sIsLoading = '';
+        dialogRef.afterClosed().subscribe(result => { 
         });
       });
 
     }, 100);
-  }
-  WhatsSalesRetPdf(el) {
-
-  }
-
-  printpatient(){
-    
-  }
-
-  printsummary(){}
-  printdetail(){}
+  } 
 }
 
 export class SaleList {

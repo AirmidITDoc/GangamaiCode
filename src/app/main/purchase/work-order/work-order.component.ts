@@ -1,23 +1,11 @@
 import { Component, ElementRef, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { fuseAnimations } from '@fuse/animations';
 import { WorkOrderService } from './work-order.service';
-import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { AuthenticationService } from 'app/core/services/authentication.service';
-import { MatTableDataSource } from '@angular/material/table';
 import { DatePipe } from '@angular/common';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
-import { ItemNameList } from '../purchase-order/purchase-order.component';
-import { MatSelect } from '@angular/material/select';
-import Swal from 'sweetalert2';
 import { MatDialog } from '@angular/material/dialog';
 import { UpdateWorkorderComponent } from './update-workorder/update-workorder.component';
-import { SearchInforObj } from 'app/main/opd/op-search-list/opd-search-list/opd-search-list.component';
-import { AdvanceDataStored } from 'app/main/ipd/advance';
-import { element } from 'protractor';
 import { ToastrService } from 'ngx-toastr';
-import { Subscription } from 'rxjs';
-import { Printsal } from 'app/main/pharmacy/sales/sales.component';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { FormGroup, UntypedFormBuilder } from '@angular/forms';
 import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
@@ -46,14 +34,13 @@ export class WorkOrderComponent implements OnInit {
 
   ngAfterViewInit() {
     this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
-
   }
 
   allcolumns = [
 
     { heading: "WO No", key: "woNo", sort: true, align: 'left', emptySign: 'NA', width: 50 },
-    { heading: "Date", key: "time", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-    { heading: "SupplierName", key: "supplierName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+    { heading: "Date", key: "woDate", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+    { heading: "SupplierName", key: "supplierName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
     { heading: "TotalAmt", key: "woTotalAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
     { heading: "GstAmount", key: "woVatAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
     { heading: "DiscAmount", key: "woDiscAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
@@ -61,7 +48,7 @@ export class WorkOrderComponent implements OnInit {
     { heading: "Netamount", key: "woNetAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
     { heading: "Remark", key: "woRemark", sort: true, align: 'left', emptySign: 'NA', width: 100 },
     {
-      heading: "Action", key: "action", align: "right", width: 250, sticky: true, type: gridColumnTypes.template,
+      heading: "Action", key: "action", align: "right", width: 100, sticky: true, type: gridColumnTypes.template,
       template: this.actionButtonTemplate  // Assign ng-template to the column
     }
   ];
@@ -69,6 +56,7 @@ export class WorkOrderComponent implements OnInit {
   constructor(public _WorkOrderService: WorkOrderService, public _matDialog: MatDialog, public datePipe: DatePipe,
     private commonService: PrintserviceService,
     public toastr: ToastrService, private _formBuilder: UntypedFormBuilder, private accountService: AuthenticationService,) { }
+
   @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
   gridConfig: gridModel = {
     apiUrl: "WorkOrder/WorkOrderHeaderList",
@@ -87,14 +75,12 @@ export class WorkOrderComponent implements OnInit {
     this.myform = this.createseacrhform();
   }
 
-
   createseacrhform(): FormGroup {
     return this._formBuilder.group({
       ToStoreId: [this.accountService.currentUserValue.user.storeId],
       SupplierId: [0],
       fromDate: [(new Date()).toISOString()],
       enddate: [(new Date()).toISOString()]
-
     });
   }
 

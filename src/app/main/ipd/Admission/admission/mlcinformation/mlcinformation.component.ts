@@ -87,9 +87,30 @@ export class MLCInformationComponent implements OnInit {
           this._AdmissionService.getMLCById(this.data.emgId).subscribe((response) => {
             if (response?.mlcid > 0)
               this.registerObj = response;
+            console.log(this.registerObj)
+
             this.DetailGiven = this.registerObj.detailGiven
             this.Remark = this.registerObj.remark
-            console.log(this.registerObj)
+            this.MlcInfoFormGroup.get('reportingDate')?.setValue(this.registerObj.reportingDate);
+            const backendValue = this.registerObj.reportingTime; // "19-09-2025 13:00:00"
+
+            if (backendValue) {
+              // Parse backend time
+              const timePart = backendValue.split(' ')[1]; // "13:00:00"
+              const [hours, minutes, seconds] = timePart.split(':').map(Number);
+
+              const timeOnly = new Date();
+              timeOnly.setHours(hours, minutes, seconds || 0, 0);
+
+              this.MlcInfoFormGroup.get('reportingTime')?.setValue(timeOnly);
+            } else {
+              // No backend value → set current time
+              const now = new Date();
+              this.MlcInfoFormGroup.get('reportingDate')?.setValue(now);
+              this.MlcInfoFormGroup.get('reportingTime')?.setValue(now);
+            }
+
+            // this.MlcInfoFormGroup.get('reportingTime')?.setValue(this.registerObj.reportingTime.toTimeString().slice(0, 5));
           });
         }, 500);
         this.MlcInfoFormGroup.get('isEmgOrAdm').setValue(true)
@@ -99,11 +120,11 @@ export class MLCInformationComponent implements OnInit {
     setInterval(() => {
       this.now = new Date();
       this.dateTimeString = this.now.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }).split(',');
-      if (!this.isTimeChanged) {
-        this.MlcInfoFormGroup.get('reportingTime').setValue(this.now);
-        if (this.MlcInfoFormGroup.get('reportingTime'))
-          this.MlcInfoFormGroup.get('reportingTime').setValue(this.now);
-      }
+      // if (!this.isTimeChanged) {
+      //   this.MlcInfoFormGroup.get('reportingTime').setValue(this.now);
+      //   if (this.MlcInfoFormGroup.get('reportingTime'))
+      //     this.MlcInfoFormGroup.get('reportingTime').setValue(this.now);
+      // }
     }, 1);
   }
 
@@ -126,7 +147,7 @@ export class MLCInformationComponent implements OnInit {
   onSubmit() {
     debugger
 
-    let selectedDate = this.datePipe.transform(this.MlcInfoFormGroup.get('reportingDate')?.value,'yyyy-MM-dd');
+    let selectedDate = this.datePipe.transform(this.MlcInfoFormGroup.get('reportingDate')?.value, 'yyyy-MM-dd');
     let timeValue = this.MlcInfoFormGroup.get('reportingTime')?.value;
     let time = new Date(timeValue);
 

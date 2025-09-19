@@ -262,7 +262,7 @@
                               </mat-form-field> -->
 
                                <airmid-autocomplete label="Mobile No"
-                                [formGroup]="ItemSubform" formControlName="extMobileNo" maxlength="10" minlength="10"
+                                [formGroup]="ItemSubform" formControlName="extMobileNo" min="0" max="10"
                                 placeholder="Enter 10 digit Mobile No." fxFlex   TextField="text" 
                                 ApiUrl="Sales/External-auto-complete?Keyword="  
                                 (selectionChange)="getSelectedObjextMobile($event)"   
