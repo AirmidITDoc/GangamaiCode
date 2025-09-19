@@ -56,16 +56,20 @@
                                             (selectionChange)="getSelectedItem($event)" TextField="formattedText"
                                             ValueField="itemId"
                                             (onClearSelection)="ItemFromReset()"></airmid-autocomplete>
-                                            
+
                                         <!-- how many strips are in 1 pack. -->
                                         <airmid-textbox fxFlex="5%" label="Packing" formControlName="pack" [min]="0"
                                             [formGroup]="OPeningtemForm" type="number" (input)="calculateTotalQty()"
                                             placeholder="Packing"
                                             (keypress)="keyPressAlphanumeric($event)"></airmid-textbox>
 
-                                        <airmid-textbox fxFlex="6%" label="BatchNo" formControlName="BatchNo"
+                                        <!-- <airmid-textbox fxFlex="6%" label="BatchNo" formControlName="BatchNo"
                                             [(ngModel)]="vBatchNo" [formGroup]="OPeningtemForm"
-                                            placeholder="BatchNo"></airmid-textbox>
+                                            placeholder="BatchNo"></airmid-textbox> -->
+                                        <airmid-autocomplete label="BatchNo" [formGroup]="OPeningtemForm"
+                                            formControlName="BatchNo" fxFlex="7%" TextField="batchNo"
+                                            ApiUrl="GRN/GetExisitingBatchList?StoreId={{StoreId}}&ItemId={{OPeningtemForm.get('ItemName').value.itemId}}&BatchNo="
+                                            (selectionChange)="onBatchChange($event)"></airmid-autocomplete>
 
                                         <mat-form-field appearance="outline" fxFlex="6%">
                                             <mat-label>ExpDate</mat-label>
@@ -85,7 +89,17 @@
                                             [formGroup]="OPeningtemForm" type="number" [readonly]="true"
                                             placeholder="Total Qty"></airmid-textbox>
 
-                                        <airmid-textbox fxFlex="5%" label="CGST %" formControlName="CGST"
+                                        <airmid-dropdown label="CGST/SGST" formControlName="CGST" fxFlex="8%"
+                                            [formGroup]="OPeningtemForm" [mode]="autocompleteModeGSTTypesValues"
+                                            (selectionChange)="getchangegstper($event)"
+                                            (onClearSelection)="getchangegstper($event)">
+                                        </airmid-dropdown>
+
+                                        <airmid-dropdown label="IGST" formControlName="IGST" fxFlex="6%"
+                                            [formGroup]="OPeningtemForm" [mode]="autocompleteModeGSTTypesValues"
+                                            (selectionChange)="getchangeIgstper($event)"> </airmid-dropdown>
+
+                                        <!-- <airmid-textbox fxFlex="5%" label="CGST %" formControlName="CGST"
                                             [formGroup]="OPeningtemForm" type="text" #CGST
                                             (valueChange)="getchangegstper($event,CGST)"></airmid-textbox>
 
@@ -95,7 +109,7 @@
 
                                         <airmid-textbox fxFlex="5%" label="IGST %" formControlName="IGST"
                                             [formGroup]="OPeningtemForm" type="text" #IGST
-                                            (valueChange)="getchangegstper($event,IGST)"></airmid-textbox>
+                                            (valueChange)="getchangegstper($event,IGST)"></airmid-textbox> -->
 
                                         <airmid-textbox fxFlex="5%" label="GST %" formControlName="GST"
                                             [(ngModel)]="vGST" [formGroup]="OPeningtemForm" type="text"
@@ -175,7 +189,7 @@
                                 </mat-cell>
                             </ng-container>
 
-                             <ng-container matColumnDef="qty">
+                            <ng-container matColumnDef="qty">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-150">
                                     Qty </mat-header-cell>
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-150">

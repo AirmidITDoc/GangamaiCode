@@ -578,7 +578,7 @@ export class IPSearchListComponent implements OnInit {
 
 
     getMLCdetailview(element) {
-        this.commonService.Onprint("AdmissionID", element, "IpMLCCasePaperPrint");
+        this.commonService.Onprint("AdmissionID", element.admissionId, "IpMLCCasePaperPrint");
     }
 }
 

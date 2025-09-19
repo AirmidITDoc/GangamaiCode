@@ -720,6 +720,7 @@ export class BrowsSalesBillComponent implements OnInit {
           }
         ],
         "mode": "PharamcySalesBill"
+        "mode": "PharamcySalesBill"
       }
 
       this._BrowsSalesBillService.getReportView(param).subscribe(res => {
@@ -824,8 +825,9 @@ export class BrowsSalesBillComponent implements OnInit {
             "opType": "Equals"
           }
         ],
-        "mode": "PharamcySalesReturn"
-      } 
+        "mode": "SalesReturnBill"
+      }
+
       this._BrowsSalesBillService.getReportView(param).subscribe(res => {
 
         const matDialog = this._matDialog.open(PdfviewerComponent,

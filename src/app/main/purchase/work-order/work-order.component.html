@@ -1,65 +1,58 @@
 <div class="page-layout simple inner-sidebar inner-scroll right-sidebar" style="height: 100%;" dynamicTableHeight>
+    <div fusePerfectScrollbar
+        class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
+        dynamicTableHeight>
 
+        <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
 
-  
-            <div fusePerfectScrollbar
-                class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
-                dynamicTableHeight>
+            <div class="top-header">
+                <div class="top-header-info">
 
-                <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
-
-                    <div class="top-header">
-                        <div class="top-header-info">
-
-                            <div class="top-header-title" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                                <span>Work Order</span>
-                            </div>
-                        </div>
-                        <div class="top-header-right">
-                            <div class="header-add-button">
-                                <button mat-raised-button (click)="onSave()">Add Work Order</button>
-                            </div>
-                        </div>
+                    <div class="top-header-title" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                        <span>Work Order</span>
                     </div>
-
-
-                    <ng-template #actionButtonTemplate let-element>
-                        <div fxLayout="row" fxLayoutAlign="center center">
-                            <button mat-icon-button matTooltip="Print Work Order" (click)="viewgetReportPdf(element)">
-                                <mat-icon> print</mat-icon>
-                            </button>
-
-                                <button mat-icon-button matTooltip="Edit Work order" (click)="OnEdit(element)" *ngIf="!element.isVerified">
-                        <mat-icon>edit</mat-icon>
-                    </button>
-                        </div>
-                    </ng-template>
-                    <airmid-table [gridConfig]="gridConfig" class="content" #opBillGrid>
-
-                        <ng-container filters>
-                            <form [formGroup]="myform">
-                                <airmid-datepicker [formGroup]="myform" [isRangePicker]="true"
-                                    formStartControlName="fromDate" formEndControlName="enddate"
-                                    [(fromValue)]="gridConfig.filters[2].fieldValue"
-                                    [(toValue)]="gridConfig.filters[3].fieldValue"></airmid-datepicker>
-
-                                <airmid-dropdown label="Store Name" formControlName="ToStoreId"
-                                    (selectionChange)="ListView($event)" [formGroup]="myform"
-                                    [mode]="autocompletestore">
-                                </airmid-dropdown>
-
-
-                                <airmid-dropdown label="Supplier Name" formControlName="SupplierId"
-                                    (selectionChange)="ListView1($event)" [formGroup]="myform"
-                                    [mode]="autocompleteSupplier">
-                                </airmid-dropdown>
-
-                            </form>
-                        </ng-container>
-                    </airmid-table>
                 </div>
-
+                <div class="top-header-right">
+                    <div class="header-add-button">
+                        <button mat-raised-button (click)="onSave()">Add Work Order</button>
+                    </div>
+                </div>
             </div>
 
-       
+            <ng-template #actionButtonTemplate let-element>
+                <div fxLayout="row" fxLayoutAlign="center center">
+                    <button mat-icon-button matTooltip="Edit Work order" (click)="OnEdit(element)"
+                        *ngIf="!element.isVerified">
+                        <mat-icon>edit</mat-icon>
+                    </button>
+                    <button mat-icon-button matTooltip="Print Work Order" (click)="viewgetReportPdf(element)">
+                        <mat-icon> print</mat-icon>
+                    </button>
+                </div>
+            </ng-template>
+            <airmid-table [gridConfig]="gridConfig" class="content" #opBillGrid>
+
+                <ng-container filters>
+                    <form [formGroup]="myform">
+                        <airmid-datepicker [formGroup]="myform" [isRangePicker]="true" formStartControlName="fromDate"
+                            formEndControlName="enddate" [(fromValue)]="gridConfig.filters[2].fieldValue"
+                            [(toValue)]="gridConfig.filters[3].fieldValue"></airmid-datepicker>
+
+                        <airmid-dropdown label="Store Name" formControlName="ToStoreId"
+                            (selectionChange)="ListView($event)" [formGroup]="myform" [mode]="autocompletestore">
+                        </airmid-dropdown>
+
+                        <airmid-dropdown label="Supplier Name" formControlName="SupplierId"
+                            [(ngModel)]="gridConfig.filters[3].fieldValue" (selectionChange)="ListView1($event)"
+                            [formGroup]="myform" [mode]="autocompleteSupplier">
+                        </airmid-dropdown>
+
+                    </form>
+                </ng-container>
+            </airmid-table>
+        </div>
+
+    </div>
+
+
 </div>
