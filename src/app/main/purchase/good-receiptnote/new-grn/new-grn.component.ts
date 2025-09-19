@@ -269,9 +269,7 @@ export class NewGrnComponent implements OnInit, OnDestroy {
         })
     }
     //BatchExpireDate calculation
-    calculateLastDay() {  
-    debugger 
-        
+    calculateLastDay() {   
         const NextExpiryDate = new Date();   
         const Months = 3 
         const inputDate = this.userFormGroup.get("ExpDate").value; 
@@ -386,11 +384,16 @@ export class NewGrnComponent implements OnInit, OnDestroy {
             const year = +inputDate.substring(2, 6);
             if (year <= currentYear) {
                 if (month <= currentMonth) {
-                    Swal.fire({
-                        icon: "warning",
-                        title: "This item is already expired",
+                      Swal.fire({
+                        icon: 'warning',
+                        title: '⚠️ Expired Item Alert',
+                        html: `<strong>This item has already <span style="color: #e74c3c;">expired</span>.</strong>`,
                         showConfirmButton: false,
-                        timer: 1500
+                        timer: 2000,
+                        timerProgressBar: true,
+                        background: '#fff',
+                        width: '400px',
+                        padding: '1.5em',
                     });
                     this.lastDay1 = '';
                     contact.ExpDate = '';
@@ -472,7 +475,7 @@ export class NewGrnComponent implements OnInit, OnDestroy {
         if (itemNameElement) {
             itemNameElement.focus();
         }
-        this.userFormGroup.markAllAsTouched();
+        this.userFormGroup.markAllAsTouched(); 
         this.userFormGroup.get('CGST').reset(); 
         this.userFormGroup.get('CGST').enable();
         this.userFormGroup.get('IGST').reset(); 
@@ -732,6 +735,28 @@ setTimeout(() => {
 
         form.patchValue({
             ...updatableFormValues
+        });
+    }
+    getcalculateothercharges(){
+        let FinalRoundAmt = 0;
+        const form = this._GRNList.GRNFinalForm.value;  
+        const Othercharge = this._GRNList.GRNFinalForm.get("OtherCharge")?.value || 0;
+        const DebitAmount = this._GRNList.GRNFinalForm.get("DebitAmount")?.value || 0;
+        const CreditAmount = this._GRNList.GRNFinalForm.get("CreditAmount")?.value || 0;   
+        
+        if(Othercharge > 0 || DebitAmount > 0 || CreditAmount > 0){
+         if(CreditAmount>0){ 
+         FinalRoundAmt = parseFloat(form?.NetPayamt) - parseFloat(CreditAmount)  
+        }else{
+         const FinalOtherAmt = Number(Othercharge || 0) + Number(DebitAmount || 0).toFixed(2)
+        FinalRoundAmt  = parseFloat(form?.NetPayamt) + parseFloat(FinalOtherAmt)  
+        }  
+        }else{
+        FinalRoundAmt = form?.NetPayamt
+        } 
+         this._GRNList.GRNFinalForm.patchValue({ 
+            NetPayamt:  Math.round(FinalRoundAmt).toFixed(2),
+            RoundingAmt: (Math.round(FinalRoundAmt) - FinalRoundAmt).toFixed(2), 
         });
     }
     resetForm() {

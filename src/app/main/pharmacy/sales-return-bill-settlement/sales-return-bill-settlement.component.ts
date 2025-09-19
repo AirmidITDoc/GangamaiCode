@@ -18,6 +18,7 @@ import { addBusinessDays } from 'date-fns';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 import { IpPaymentInsert } from 'app/main/ipd/ip-search-list/ip-advance/ip-advance.component';
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 
 @Component({
   selector: 'app-sales-return-bill-settlement',
@@ -400,8 +401,9 @@ export class SalesReturnBillSettlementComponent implements OnInit {
         this._SelseSettelmentservice.InsertSalessettlement(this.PharmaSettlementfrom.value).subscribe(response => { 
             this.MutliSettlemForm.reset(); 
             console.log(response)
-            this.viewgetIPPayemntPdf(response)
-            this.grid.bindGridData();
+            this.viewgetIPPayemntPdf(response) 
+            this.OnSalessettlemtnprint(this.OP_IP_Id,this._loggedService.currentUserValue.user.storeId) 
+            this.grid.bindGridData(); 
         });
       }
     });
@@ -651,6 +653,32 @@ export class SalesReturnBillSettlementComponent implements OnInit {
       return false;
     }
   }
+    //print  
+    OnSalessettlemtnprint(SalesID, OP_IP_Type) {
+      setTimeout(() => {
+        let param = {
+          "searchFields": [
+            { "fieldName": "OP_IP_ID", "fieldValue": String(SalesID), "opType": "13" },
+            { "fieldName": "StoreId", "fieldValue": String(OP_IP_Type), "opType": "13" }
+          ],
+          "mode": "PharmacyPatientStatement"
+        }
+        this._SelseSettelmentservice.getReportView(param).subscribe(res => {
+          const matDialog = this._matDialog.open(PdfviewerComponent,
+            {
+              maxWidth: "85vw",
+              height: '750px',
+              width: '100%',
+              data: {
+                base64: res["base64"] as string,
+                title: "Sales Settlement" + " " + "Viewer"
+              }
+            });
+          matDialog.afterClosed().subscribe(result => {
+          });
+        });
+      }, 100);
+    }
 }
 
 export class PaidItemList {

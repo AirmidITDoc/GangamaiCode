@@ -103,7 +103,7 @@ export class NewAdvanceComponent implements OnInit {
         advanceId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         date: [''],
         refId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        opdIpdType: [1, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        opdipdType: [1, [this._FormvalidationserviceService.onlyNumberValidator()]],
         opdIpdId: [0, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
         advanceAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
         advanceUsedAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -113,6 +113,8 @@ export class NewAdvanceComponent implements OnInit {
         isCancelled: [false],
         isCancelledBy: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         isCancelledDate: ['1900-01-01', [this._FormvalidationserviceService.validDateValidator]],
+        storeId: [this._loggedService.currentUserValue.user.storeId],
+        unitId:[this._loggedService.currentUserValue.user.unitId]
       }),
 
       pharmacyAdvanceDetails: this.formBuilder.group({
@@ -136,7 +138,8 @@ export class NewAdvanceComponent implements OnInit {
         isCancelledBy: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         isCancelledDate: ['1900-01-01', [this._FormvalidationserviceService.validDateValidator]],
         reason: [''],
-        storeId: this._loggedService.currentUserValue.user.storeId || 0,
+        storeId: [this._loggedService.currentUserValue.user.storeId],
+          unitId:[this._loggedService.currentUserValue.user.unitId]
       }), 
       paymentPharmacy: '' 
     });
@@ -302,9 +305,8 @@ export class NewAdvanceComponent implements OnInit {
     this._matDialog.closeAll();
   }
   viewgetIPAdvanceReportPdf(contact) {
-    this.commonService.Onprint("AdvanceDetailID", contact.advanceDetailId, "IPPharmaAdvanceReport");
-  } 
- 
+    this.commonService.Onprint("AdvanceDetailID", contact.advanceDetailId, "PharamcyAdvanceReceipt");
+  }  
   keyPressCharater(event) {
     var inp = String.fromCharCode(event.keyCode);
     if (/^\d*\.?\d*$/.test(inp)) {

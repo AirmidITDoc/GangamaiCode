@@ -42,4 +42,7 @@ export class SalesReturnBillSettlementService {
     public BillDiscountAfter(emp) { 
     return this._httpClient1.PostData("Sales/PhBillDiscountAfter", emp);
   }
+       public getReportView(Param) {
+    return this._httpClient1.PostData("Report/ViewReport", Param);
+  }
 }

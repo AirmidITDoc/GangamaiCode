@@ -780,12 +780,12 @@
                           [formGroup]="_GRNList.GRNFinalForm" type="number" [readonly]="true"></airmid-textbox>
                     
                         <airmid-textbox fxFlex="8%" label="Debit Amt" formControlName="DebitAmount" [(ngModel)]="registerObj.debitNote"
-                          [formGroup]="_GRNList.GRNFinalForm" type="number" [min]="0"></airmid-textbox>
+                          [formGroup]="_GRNList.GRNFinalForm" type="number" [min]="0"  (keyup)="getcalculateothercharges()"></airmid-textbox>
                     
                         <airmid-textbox fxFlex="8%" label="Credit Amt" formControlName="CreditAmount" [(ngModel)]="registerObj.creditNote"
-                          [formGroup]="_GRNList.GRNFinalForm" type="number" [min]="0"></airmid-textbox>
+                          [formGroup]="_GRNList.GRNFinalForm" type="number" [min]="0" (keyup)="getcalculateothercharges()"></airmid-textbox>
                     
-                        <airmid-textbox fxFlex="8%" label="Other Charges" formControlName="OtherCharge"
+                        <airmid-textbox fxFlex="8%" label="Other Charges" formControlName="OtherCharge" (keyup)="getcalculateothercharges()"
                           [(ngModel)]="registerObj.otherCharge" [formGroup]="_GRNList.GRNFinalForm" type="number"
                           [min]="0"></airmid-textbox>
                     

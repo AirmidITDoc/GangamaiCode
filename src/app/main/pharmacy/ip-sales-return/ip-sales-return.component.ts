@@ -529,8 +529,9 @@ export class IpSalesReturnComponent implements OnInit {
         this.IpSalesReturnForm.get('payment.cashPayAmount').setValue((Math.round(this.IPSalesRetFooterform.get('FinalNetAmount').value)))
 
         console.log(this.IpSalesReturnForm.value);
-        this._IpSalesRetService.InsertCashSalesReturn(this.IpSalesReturnForm.value).subscribe(response => {
-          this.OnReset();
+        this._IpSalesRetService.InsertCashSalesReturn(this.IpSalesReturnForm.value).subscribe(response => { 
+            this.OnSalesReturnprint(response, this.selcteditemObj?.OP_IP_Type)
+            this.OnReset(); 
         });
       }
       else {
@@ -540,8 +541,9 @@ export class IpSalesReturnComponent implements OnInit {
         this.IpSalesReturnForm.get('payment.paymentTime').setValue(FormattedDateTime)
 
         console.log(this.IpSalesReturnForm.value);
-        this._IpSalesRetService.InsertCreditSalesReturn(this.IpSalesReturnForm.value).subscribe(response => {
-          this.OnReset();
+        this._IpSalesRetService.InsertCreditSalesReturn(this.IpSalesReturnForm.value).subscribe(response => { 
+            this.OnSalesReturnprint(response, this.selcteditemObj.OP_IP_Type)
+            this.OnReset(); 
         });
       }
     } else {
@@ -600,6 +602,32 @@ export class IpSalesReturnComponent implements OnInit {
   focusNext(nextElement: HTMLElement) {
     nextElement.focus();
   } 
+    //print 
+    OnSalesReturnprint(SalesID, OP_IP_Type) {
+      setTimeout(() => {
+        let param = {
+          "searchFields": [
+            { "fieldName": "SalesID", "fieldValue": String(SalesID || 0), "opType": "13" },
+            { "fieldName": "OP_IP_Type", "fieldValue": String(OP_IP_Type), "opType": "13" }
+          ],
+          "mode": "PharamcySalesReturn"
+        }
+        this._IpSalesRetService.getReportView(param).subscribe(res => {
+          const matDialog = this._matDialog.open(PdfviewerComponent,
+            {
+              maxWidth: "85vw",
+              height: '750px',
+              width: '100%',
+              data: {
+                base64: res["base64"] as string,
+                title: "IP Sales Return" + " " + "Viewer"
+              }
+            });
+          matDialog.afterClosed().subscribe(result => {
+          });
+        });
+      }, 100);
+    }
 }
 export class IPSalesItemList {
   SalesNo: Number;
