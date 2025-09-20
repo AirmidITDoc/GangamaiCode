@@ -1,0 +1,71 @@
+<div fusePerfectScrollbar
+    class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
+    dynamicTableHeight>
+    <div class="top-header header accent p-16" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
+        fxLayoutAlign.gt-xs="space-between center ">
+        <div class="top-header-info">
+            <div class="top-header-title">
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    Daily Expenses
+                </span>
+            </div>
+        </div>
+        <div class="gap-8" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
+            <button mat-raised-button (click)="addNewExpenses()">Add Expenses
+            </button>
+        </div>
+    </div>
+
+    <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+
+        <airmid-table [gridConfig]="gridConfig" class="content">
+            <ng-container filters>
+                <form [formGroup]="myFilterform">
+
+                    <div fxLayout="column" fxLayoutAlign="start none">
+
+                        <mat-form-field appearance="outline">
+                            <mat-label>Enter a date range</mat-label>
+                            <mat-date-range-input [rangePicker]="picker">
+                                <input matStartDate formControlName="fromDate" placeholder="Start date"
+                                    (dateChange)="onChangeFirst()">
+                                <input matEndDate formControlName="enddate" placeholder="End date"
+                                    (dateChange)="onChangeFirst()">
+                            </mat-date-range-input>
+                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-date-range-picker #picker></mat-date-range-picker>
+                        </mat-form-field>
+
+                        <mat-radio-group formControlName="expType" name="expType" fxLayout="column"
+                            (change)="onChangeFirst()" style="padding: 8px;">
+
+                             <div fxLayout="row" fxLayoutAlign="start center" style="gap: 8px;">
+                                <mat-icon class="pill">circle</mat-icon>
+                                <mat-radio-button value="3">ALL</mat-radio-button>
+                            </div>
+
+                            <div fxLayout="row" fxLayoutAlign="start center" style="gap: 8px;">
+                                <mat-icon class="pill green-600 s-16">circle</mat-icon>
+                                <mat-radio-button value="0">Cash</mat-radio-button>
+                            </div>
+
+                            <div fxLayout="row" fxLayoutAlign="start center" style="gap: 8px;">
+                                <mat-icon class="pill orange-600 s-16">circle</mat-icon>
+                                <mat-radio-button value="1">Cheque</mat-radio-button>
+                            </div>
+
+                            <div fxLayout="row" fxLayoutAlign="start center" style="gap: 8px;">
+                                <mat-icon class="pill blue-600 s-16">circle</mat-icon>
+                                <mat-radio-button value="2">Online</mat-radio-button>
+                            </div>
+                        </mat-radio-group>
+
+                    </div>
+
+                </form>
+            </ng-container>
+        </airmid-table>
+
+    </div>
+
+</div>
