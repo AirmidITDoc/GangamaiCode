@@ -134,8 +134,7 @@ export class NewGRNReturnComponent implements OnInit {
     }
     return this._formbuilder.group({
       grnReturn: this._formbuilder.group({
-        "grnreturnId": [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        "grnreturnNo": "0",
+        // "grnreturnNo": "0",
         "grnid": [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
         "grnreturnDate": this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
         "grnreturnTime": this.datePipe.transform(new Date(), 'shortTime'),
@@ -151,19 +150,23 @@ export class NewGRNReturnComponent implements OnInit {
         "cashCredit": checkcashtype,
         "remark": [''],
         "isVerified": [false],
+        "addedBy":this._loggedService.currentUserValue.userId,
         "isClosed": [false],
         "isCancelled": [false],
         "grnType": this._GRNReturnService.NewGRNReturnFrom.get('GSTType').value,
         "isGrnTypeFlag": [true],
-        "tGrnreturnDetails": this._formbuilder.array([]),
+        "grnreturnId": [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+
+        // "tGrnreturnDetails": this._formbuilder.array([]),
       }),
+      tGrnreturnDetails: this._formbuilder.array([]),
       grnReturnCurrentStock: this._formbuilder.array([]),
       grnReturnReturnQt: this._formbuilder.array([]),
     })
   }
 
   get grnReturnDetArray(): FormArray {
-    return this.GrnReturnForm.get('grnReturn.tGrnreturnDetails') as FormArray;
+    return this.GrnReturnForm.get('tGrnreturnDetails') as FormArray;
   }
 
   createGrnReturnDetInsert(element: any = {}): FormGroup {
@@ -191,9 +194,9 @@ export class NewGRNReturnComponent implements OnInit {
     let PurchaseTotalAmt = element.returnQty * element.Rate;
 
     return this._formbuilder.group({
-      grnreturnDetailId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      // grnreturnDetailId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       grnReturnId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      grnId: [element.grnId, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      // grnId: [element.grnId, [this._FormvalidationserviceService.onlyNumberValidator()]],
       itemId: [element.itemId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       batchNo: [element.batchNo || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       batchExpiryDate: [ExpDate, [this._FormvalidationserviceService.validDateValidator()]],
@@ -215,6 +218,8 @@ export class NewGRNReturnComponent implements OnInit {
       stkId: [element.stkId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       cf: [element.conversion || 1, [this._FormvalidationserviceService.onlyNumberValidator()]],
       totalQty: [element.totalQty || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      grnid: [element.grnId, [this._FormvalidationserviceService.onlyNumberValidator()]],
+
     });
   }
 
@@ -226,7 +231,7 @@ export class NewGRNReturnComponent implements OnInit {
     return this._formbuilder.group({
       itemId: [element.itemId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       issueQty: [element.returnQty || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      stockId: [element.stkId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      iStkId: [element.stkId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       storeID: [this.vStoreId, [this._FormvalidationserviceService.onlyNumberValidator()]]
     });
   }
@@ -236,6 +241,7 @@ export class NewGRNReturnComponent implements OnInit {
   }
 
   createGrnReturnQtyInsert(element: any = {}): FormGroup {
+    let issueqty = element.BalQty - element.returnQty
     return this._formbuilder.group({
       grndetId: [element.GRNDetID || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       returnQty: [element.issueqty || 0, [this._FormvalidationserviceService.onlyNumberValidator()]]
@@ -615,7 +621,7 @@ export class NewGRNReturnComponent implements OnInit {
         }
       });
     } else {
-      debugger
+      // debugger
       const invalidFields = this.getInvalidFields(this.GrnReturnForm);
 
       if (invalidFields.length > 0) {

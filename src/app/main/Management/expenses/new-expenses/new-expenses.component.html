@@ -1,0 +1,95 @@
+<div class="modal-wrapper grid-container">
+
+    <div class="modal-header accent">
+        <div class="modal-header-content">
+            <div class="modal-header-title">
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">New Expenses</span>
+            </div>
+            <div class="modal-header-right">
+                <div class="comman-date-container">
+                    <div class="comman-date">
+                        <app-common-date [screenFrom]="screenFromString"
+                            (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
+                    </div>
+                    <div class="close-icon">
+                        <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
+                            matTooltip="Close">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal body -->
+    <div class="modal-body" fusePerfectScrollbar>
+        <div class="modal-body-container detail-wrapper">
+
+            <div fxLayout="column" fxLayoutGap="16px">
+                <!-- Search section -->
+                <div class="detail-container">
+                    <form [formGroup]="myForm">
+                        <mat-card>
+                            <mat-card-content>
+                                <div fxLayout="column" fxLayoutGap="16px">
+
+                                    <div fxFlex="40">
+                                        <airmid-autocomplete label="Expenses Head" [formGroup]="myForm"
+                                            formControlName="expHeadId">
+                                        </airmid-autocomplete>
+                                    </div>
+
+                                    <div fxFlex>
+                                        <airmid-textbox label="Personal Name" formControlName="personName"
+                                            [formGroup]="myForm" [maxLength]="50">
+                                        </airmid-textbox>
+                                    </div>
+
+                                    <div fxFlex>
+                                        <airmid-textbox label="Expenses Amount" formControlName="expAmount"
+                                            [formGroup]="myForm" [maxLength]="50">
+                                        </airmid-textbox>
+                                    </div>
+
+                                    <div fxFlex>
+                                        <mat-form-field appearance="outline" fxFlex="100">
+                                            <mat-label>Reason</mat-label>
+                                            <textarea rows="7" matInput name="Reason" formControlName="narration"
+                                                [(ngModel)]="vReason">
+                                           </textarea>
+                                        </mat-form-field>
+                                    </div>
+
+                                </div>
+                            </mat-card-content>
+                        </mat-card>
+                    </form>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <div class="footer-navigation-container">
+            <form [formGroup]="myForm">
+
+                <div class="modal-footer-container">
+                    <mat-radio-group formControlName="expType" name="ExpType" style="padding: 10px;"
+                        [(ngModel)]="vExpType">
+                        <mat-radio-button value="0">Cash Pay</mat-radio-button>
+                        <mat-radio-button value="1">Cheque Pay</mat-radio-button>
+                        <mat-radio-button value="2">Online Pay</mat-radio-button>
+                    </mat-radio-group>
+
+                    <div class="modal-footer-buttons">
+                        <button class="btn btn-primary" (click)="onNewSave()">Save </button>
+                        <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
