@@ -5,7 +5,9 @@ import { ApiCaller } from 'app/core/services/apiCaller';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 import { ItemNameList } from '../good-receiptnote/good-receiptnote.component';
-import { GSTCalculation, GSTCalculationResult, GSTType, PurchaseFormModel, ToastType } from '../purchase-order/update-purchaseorder/types';
+import { GSTCalculation, GSTCalculationResult, GSTType, ToastType } from '../good-receiptnote/new-grn/types';
+import { PurchaseFormModel } from '../purchase-order/new-purchaseorder/types';
+
 
 @Injectable({
   providedIn: 'root'
