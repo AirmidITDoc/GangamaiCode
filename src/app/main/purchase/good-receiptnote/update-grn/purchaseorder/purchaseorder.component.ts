@@ -82,9 +82,9 @@ export class PurchaseorderComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.getSupplierSearchCombo();
-    this.gePharStoreList();
-    this.getDirectPOList();
+    // this.getSupplierSearchCombo();
+    // this.gePharStoreList();
+    // this.getDirectPOList();
   }
   toggleSidebar(name): void {
     this._fuseSidebarService.getSidebar(name).toggleOpen();

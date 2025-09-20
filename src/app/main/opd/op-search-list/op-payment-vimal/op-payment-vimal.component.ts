@@ -450,7 +450,7 @@ export class OpPaymentVimalComponent implements OnInit {
             this.dataSource.data.forEach((element) => {
                 let Advanceobj = {};
                 Advanceobj['AdvanceId'] = element?.advanceId;
-                Advanceobj['AdvanceDetailID'] = element?.advanceDetailID;
+                Advanceobj['AdvanceDetailID'] = (element?.advanceDetailId ?? element?.advanceDetailID) || 0;
                 Advanceobj['AdvanceAmount'] = element?.advanceAmount || 0;
                 Advanceobj['UsedAmount'] = element?.usedAmount || 0;
                 Advanceobj['Date'] = element?.date;

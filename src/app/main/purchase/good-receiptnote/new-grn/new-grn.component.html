@@ -218,24 +218,26 @@
           </mat-accordion>
           <div class="airmid-table-container py-12" fxFlex>
             <mat-table #table class="airmid-table table3 max-h-700" matSort [dataSource]="dsItemNameList"
-              [@animateStagger]="{ value: '50' }">
-              <ng-container matColumnDef="buttons" stickyEnd>
-                <mat-header-cell *matHeaderCellDef>Action</mat-header-cell>
-                <mat-cell *matCellDef="let row">
-                  <button mat-icon-button (click)="deleteTableRow(row)" color="warn">
-                    <mat-icon>delete_outline</mat-icon>
-                  </button>
+              [@animateStagger]="{ value: '50' }"> 
+                <ng-container matColumnDef="Status" sticky>
+                <mat-header-cell *matHeaderCellDef fxShow.gt-sm style="color: white"
+                  class="w-70">Verify</mat-header-cell>
+                <mat-cell *matCellDef="let contact" class="w-70">
+                  <mat-icon *ngIf="contact.IsVerified" matTooltip="Verified"
+                    class="pill green-600 s-16">check_circle</mat-icon>
+                  <mat-icon *ngIf="!contact.IsVerified" matTooltip="Pending"
+                    class="red-600 s-16">hourglass_empty</mat-icon>
                 </mat-cell>
               </ng-container>
 
-              <ng-container matColumnDef="SrNo">
-                <mat-header-cell *matHeaderCellDef mat-sort-header class="w-60">Sr.No</mat-header-cell>
-                <mat-cell *matCellDef="let contact; let index = index" class="w-60">
+              <ng-container matColumnDef="SrNo" sticky>
+                <mat-header-cell *matHeaderCellDef mat-sort-header class="w-50">Sr.No</mat-header-cell>
+                <mat-cell *matCellDef="let contact; let index = index" class="w-50">
                   <span>{{ index + 1 }}</span>
                 </mat-cell>
               </ng-container>
 
-              <ng-container matColumnDef="ItemName">
+              <ng-container matColumnDef="ItemName" sticky>
                 <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-200">Item
                   Name</mat-header-cell>
                 <mat-cell *matCellDef="let contact; let i = index" fxShow.gt-sm class="w-200">
@@ -243,39 +245,28 @@
                 </mat-cell>
               </ng-container>
 
-              <ng-container matColumnDef="ConversionFactor">
-                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Packing</mat-header-cell>
-                <mat-cell *matCellDef="let contact; let index = index" fxShow.gt-sm>
-                  <mat-form-field appearance="fill">
-                    <input matInput [(ngModel)]="contact.ConversionFactor" (ngModelChange)="getCellCalculation(contact)"
-                      type="number" autocomplete="off" [min]="1" OnlyNumber [disabled]="contact.isVerified"
-                      [id]="'Packing_' + index" (keydown.arrowdown)="setFocus('Packing_' + (index + 1))"
-                      (keydown.arrowup)="setFocus('Packing_' + (index - 1))" />
-                  </mat-form-field>
-                </mat-cell>
-              </ng-container>
-
-              <ng-container matColumnDef="UOMId">
-                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>UOM</mat-header-cell>
-                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                  {{ contact.UOMId }}
+               <ng-container matColumnDef="UOMId">
+                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-100">UOM</mat-header-cell>
+                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100">
+                 <span>{{ contact.UOMId }}</span>
                 </mat-cell>
               </ng-container>
 
               <ng-container matColumnDef="HSNCode">
                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-120">HSNCode</mat-header-cell>
                 <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-120">
-                  {{ contact.HSNCode }}
+                 <span>{{ contact.HSNCode }}</span>  
                 </mat-cell>
               </ng-container>
 
-              <ng-container matColumnDef="BatchNo">
-                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Batch No</mat-header-cell>
-                <mat-cell *matCellDef="let contact; let index = index" fxShow.gt-sm>
+               <ng-container matColumnDef="BatchNo">
+                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-140">Batch No</mat-header-cell>
+                <mat-cell *matCellDef="let contact; let index = index" fxShow.gt-sm class="w-140">
                   <mat-form-field appearance="fill">
-                    <input matInput [(ngModel)]="contact.BatchNo" [disabled]="contact.isVerified"
+                    <input matInput #inputField [(ngModel)]="contact.BatchNo" [disabled]="contact.IsVerifiedUserId > 0"
                       [id]="'BatchNo_' + index" (keydown.arrowdown)="setFocus('BatchNo_' + (index + 1))"
-                      (keydown.arrowup)="setFocus('BatchNo_' + (index - 1))" />
+                      (keydown.arrowup)="setFocus('BatchNo_' + (index - 1))"  
+                      (ngModelChange)="contact.BatchNo = convertUppercase(inputField.value)" />
                   </mat-form-field>
                 </mat-cell>
               </ng-container>
@@ -284,30 +275,30 @@
                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-140">ExpDate</mat-header-cell>
                 <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-140">
                   <mat-form-field appearance="fill">
-                    <input matInput #inputField (change)="CellcalculateLastDay(contact, inputField.value)"
-                      [(ngModel)]="contact.ExpDate" placeholder="mmyyyy" [disabled]="contact.isVerified"
+                    <input matInput #inputField (keyup.enter)="CellcalculateLastDay(contact, inputField.value)"
+                      [(ngModel)]="contact.ExpDate" placeholder="mmyyyy" [disabled]="contact.IsVerifiedUserId > 0"
                       (keypress)="keyPressDigitsOnly($event)" />
                   </mat-form-field>
                 </mat-cell>
               </ng-container>
 
               <ng-container matColumnDef="Qty">
-                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Qty</mat-header-cell>
-                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-100">Qty</mat-header-cell>
+                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100">
                   <mat-form-field appearance="fill">
-                    <input matInput [(ngModel)]="contact.Qty" type="number" OnlyNumber [id]="'Qty_' + index"
+                    <input matInput [(ngModel)]="contact.Qty" type="text" OnlyNumber [id]="'Qty_' + index"
                       (ngModelChange)="getCellCalculation(contact)" [disabled]="contact.IsVerifiedUserId > 0" [min]="0" />
                   </mat-form-field>
                 </mat-cell>
               </ng-container>
 
-              <ng-container matColumnDef="FreeQty">
-                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Free Qty</mat-header-cell>
-                <mat-cell *matCellDef="let contact; let index = index" fxShow.gt-sm [(ngModel)]="contact.FreeQty">
+                <ng-container matColumnDef="FreeQty">
+                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-100">Free Qty</mat-header-cell>
+                <mat-cell *matCellDef="let contact; let index = index" fxShow.gt-sm [(ngModel)]="contact.FreeQty" class="w-100">
                   <mat-form-field appearance="fill">
-                    <input matInput [(ngModel)]="contact.FreeQty" type="number" OnlyNumber [id]="'FreeQty_' + index"
+                    <input matInput [(ngModel)]="contact.FreeQty" type="text" OnlyNumber [id]="'FreeQty_' + index"
                       (ngModelChange)="getCellCalculation(contact)" (keydown.arrowdown)="setFocus('FreeQty_' + (index + 1))"
-                      (keydown.arrowup)="setFocus('FreeQty_' + (index - 1))" [disabled]="contact.isVerified"
+                      (keydown.arrowup)="setFocus('FreeQty_' + (index - 1))" [disabled]="contact.IsVerifiedUserId > 0"
                       [min]="0" />
                   </mat-form-field>
                   <!-- {{contact.FreeQty }} -->
@@ -315,18 +306,30 @@
               </ng-container>
 
               <ng-container matColumnDef="TotalQty">
-                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Total Qty</mat-header-cell>
-                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-100">Total Qty</mat-header-cell>
+                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100">
                   {{ contact.TotalQty }}
                 </mat-cell>
-              </ng-container>
+              </ng-container> 
+
+              <ng-container matColumnDef="ConversionFactor">
+                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm  class="w-100">Packing</mat-header-cell>
+                <mat-cell *matCellDef="let contact; let index = index" fxShow.gt-sm  class="w-100"> 
+                  <mat-form-field appearance="fill">
+                    <input matInput [(ngModel)]="contact.ConversionFactor" (ngModelChange)="getCellCalculation(contact)"
+                      type="text" autocomplete="off" [min]="1" OnlyNumber [disabled]="contact.IsVerifiedUserId > 0"
+                      [id]="'Packing_' + index" (keydown.arrowdown)="setFocus('Packing_' + (index + 1))"
+                      (keydown.arrowup)="setFocus('Packing_' + (index - 1))" />
+                  </mat-form-field>
+                </mat-cell>
+              </ng-container>  
 
               <ng-container matColumnDef="MRP">
-                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>MRP(Strip)</mat-header-cell>
-                <mat-cell *matCellDef="let contact; let index = index" fxShow.gt-sm>
+                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-130">MRP(Strip)</mat-header-cell>
+                <mat-cell *matCellDef="let contact; let index = index" fxShow.gt-sm class="w-130">
                   <mat-form-field appearance="fill">
-                    <input matInput [(ngModel)]="contact.MRP" (ngModelChange)="getCellCalculation(contact)" type="number"
-                      OnlyNumber [id]="'MRP_' + index" autocomplete="off" [disabled]="contact.isVerified"
+                    <input matInput [(ngModel)]="contact.MRP" (ngModelChange)="getCellCalculation(contact)" type="text"
+                      OnlyNumber [id]="'MRP_' + index" autocomplete="off" [disabled]="contact.IsVerifiedUserId > 0"
                       (keydown.arrowdown)="setFocus('MRP_' + (index + 1))"
                       (keydown.arrowup)="setFocus('MRP_' + (index - 1))" (keypress)="keyPressDigitDecimalOnly($event)"
                       [min]="0" />
@@ -336,11 +339,11 @@
               </ng-container>
 
               <ng-container matColumnDef="Rate">
-                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Rate</mat-header-cell>
-                <mat-cell *matCellDef="let contact; let index = index" fxShow.gt-sm>
+                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-130">Rate</mat-header-cell>
+                <mat-cell *matCellDef="let contact; let index = index" fxShow.gt-sm class="w-130">
                   <mat-form-field appearance="fill">
-                    <input matInput type="number" [(ngModel)]="contact.Rate" step="0.1" [id]="'Rate_' + index"
-                      autocomplete="off" OnlyNumber [disabled]="contact.isVerified"
+                    <input matInput type="text" [(ngModel)]="contact.Rate" step="0.1" [id]="'Rate_' + index"
+                      autocomplete="off" OnlyNumber [disabled]="contact.IsVerifiedUserId > 0"
                       (ngModelChange)="getCellCalculation(contact)" (keydown.arrowdown)="setFocus('Rate_' + (index + 1))"
                       (keydown.arrowup)="setFocus('Rate_' + (index - 1))" (keypress)="keyPressDigitDecimalOnly($event)"
                       [min]="0" />
@@ -349,19 +352,19 @@
               </ng-container>
 
               <ng-container matColumnDef="TotalAmount">
-                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Total Amt</mat-header-cell>
-                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-140">Total Amt</mat-header-cell>
+                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-140">
                   {{ contact.TotalAmount | number : '1.2-2' }}
                 </mat-cell>
               </ng-container>
 
               <ng-container matColumnDef="Disc">
-                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Disc%</mat-header-cell>
-                <mat-cell *matCellDef="let contact; let index = index" fxShow.gt-sm>
+                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-90">Disc%</mat-header-cell>
+                <mat-cell *matCellDef="let contact; let index = index" fxShow.gt-sm class="w-90">
                   <mat-form-field appearance="fill">
-                    <input matInput [(ngModel)]="contact.Disc" [id]="'DiscPer_' + index" [disabled]="contact.isVerified"
+                    <input matInput [(ngModel)]="contact.Disc" [id]="'DiscPer_' + index" [disabled]="contact.IsVerifiedUserId > 0"
                       (ngModelChange)="getCellCalculation(contact)" (keydown.arrowdown)="setFocus('DiscPer_' + (index + 1))"
-                      (keydown.arrowup)="setFocus('DiscPer_' + (index - 1))" step="0.1" type="number" [min]="0"
+                      (keydown.arrowup)="setFocus('DiscPer_' + (index - 1))" step="0.1" type="text" [min]="0"
                       [max]="100" OnlyNumber autocomplete="off" (keypress)="keyPressDigitDecimalOnly($event)" />
                   </mat-form-field>
                 </mat-cell>
@@ -375,11 +378,11 @@
               </ng-container>
 
               <ng-container matColumnDef="Disc2">
-                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Disc2%</mat-header-cell>
-                <mat-cell *matCellDef="let contact; let index = index" fxShow.gt-sm>
+                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-90">Disc2%</mat-header-cell>
+                <mat-cell *matCellDef="let contact; let index = index" fxShow.gt-sm class="w-90">
                   <mat-form-field appearance="fill">
                     <input matInput [(ngModel)]="contact.Disc2" [id]="'DiscPer2_' + index"
-                      [disabled]="contact.isVerified" (ngModelChange)="getCellCalculation(contact)" [min]="0" [max]="100"
+                   [disabled]="contact.IsVerifiedUserId > 0" (ngModelChange)="getCellCalculation(contact)" [min]="0" [max]="100"
                       step="0.1" type="number" OnlyNumber autocomplete="off"
                       (keydown.arrowdown)="setFocus('DiscPer2_' + (index + 1))"
                       (keydown.arrowup)="setFocus('DiscPer2_' + (index - 1))"
@@ -404,8 +407,8 @@
               </ng-container>
 
               <ng-container matColumnDef="GST">
-                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>GST</mat-header-cell>
-                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-90">GST</mat-header-cell>
+                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-90">
                   {{ contact.GST }}
                 </mat-cell>
               </ng-container>
@@ -418,11 +421,11 @@
               </ng-container>
 
               <ng-container matColumnDef="CGST">
-                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>CGST</mat-header-cell>
-                <mat-cell *matCellDef="let contact; let index = index" fxShow.gt-sm>
+                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-90">CGST</mat-header-cell>
+                <mat-cell *matCellDef="let contact; let index = index" fxShow.gt-sm class="w-90">
                   <mat-form-field appearance="fill">
                     <input matInput [(ngModel)]="contact.CGST" [id]="'CGSTPer_' + index" step="0.1" type="text"
-                      OnlyNumber [disabled]="contact.isVerified" (ngModelChange)="getCellCalculation(contact)"
+                      OnlyNumber [disabled]="contact.IsVerifiedUserId > 0" (ngModelChange)="getCellCalculation(contact)"
                       (keydown.arrowdown)="setFocus('CGSTPer_' + (index + 1))"
                       (keydown.arrowup)="setFocus('CGSTPer_' + (index - 1))" autocomplete="off"
                       (keypress)="keyPressDigitDecimalOnly($event)" />
@@ -438,11 +441,11 @@
               </ng-container>
 
               <ng-container matColumnDef="SGST">
-                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>SGST</mat-header-cell>
-                <mat-cell *matCellDef="let contact; let index = index" fxShow.gt-sm>
+                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-90">SGST</mat-header-cell>
+                <mat-cell *matCellDef="let contact; let index = index" fxShow.gt-sm class="w-90">
                   <mat-form-field appearance="fill">
                     <input matInput [(ngModel)]="contact.SGST" [id]="'SGSTPer_' + index" step="0.1" type="text"
-                      OnlyNumber [disabled]="contact.isVerified" (ngModelChange)="getCellCalculation(contact)"
+                      OnlyNumber [disabled]="contact.IsVerifiedUserId > 0" (ngModelChange)="getCellCalculation(contact)"
                       (keydown.arrowdown)="setFocus('SGSTPer_' + (index + 1))"
                       (keydown.arrowup)="setFocus('SGSTPer_' + (index - 1))" autocomplete="off"
                       (keypress)="keyPressDigitDecimalOnly($event)" />
@@ -458,11 +461,11 @@
               </ng-container>
 
               <ng-container matColumnDef="IGST">
-                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>IGST</mat-header-cell>
-                <mat-cell *matCellDef="let contact; let index = index" fxShow.gt-sm>
+                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-90">IGST</mat-header-cell>
+                <mat-cell *matCellDef="let contact; let index = index" fxShow.gt-sm class="w-90">
                   <mat-form-field appearance="fill">
                     <input matInput [(ngModel)]="contact.IGST" [id]="'IGSTPer_' + index" step="0.1" type="text"
-                      OnlyNumber [disabled]="contact.isVerified" (ngModelChange)="getCellCalculation(contact)"
+                      OnlyNumber [disabled]="contact.IsVerifiedUserId > 0" (ngModelChange)="getCellCalculation(contact)"
                       autocomplete="off" (keydown.arrowdown)="setFocus('IGSTPer_' + (index + 1))"
                       (keydown.arrowup)="setFocus('IGSTPer_' + (index - 1))"
                       (keypress)="keyPressDigitDecimalOnly($event)" />
@@ -478,13 +481,13 @@
               </ng-container>
 
               <ng-container matColumnDef="NetAmount">
-                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Net Amt</mat-header-cell>
-                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-150">Net Amt</mat-header-cell>
+                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-150">
                   {{ contact.NetAmount | number : '1.2-2' }}
                 </mat-cell>
               </ng-container>
 
-              <ng-container matColumnDef="poId">
+              <!-- <ng-container matColumnDef="poId">
                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>PO No</mat-header-cell>
                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                   {{ contact.PurchaseId || '0'}}
@@ -496,7 +499,7 @@
                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                   {{ contact.PurDetId || '0'}}
                 </mat-cell>
-              </ng-container>
+              </ng-container> -->
 
               <!-- <ng-container matColumnDef="isClosed">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
@@ -507,91 +510,89 @@
                                 </ng-container> -->
 
               <ng-container matColumnDef="poBalQty">
-                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>POBalQty</mat-header-cell>
-                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-90">POBalQty</mat-header-cell>
+                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-90">
                   {{ contact.POBalQty || '0'}}
                 </mat-cell>
               </ng-container>
 
               <ng-container matColumnDef="poQty">
-                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>PO Qty</mat-header-cell>
-                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-90">PO Qty</mat-header-cell>
+                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-90">
                   {{ contact.POQty || '0' }}
                 </mat-cell>
               </ng-container>
 
-              <ng-container matColumnDef="landedRate">
+              <!-- <ng-container matColumnDef="landedRate">
                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>landedRate</mat-header-cell>
                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                   {{ contact.LandedRate | number : '1.2-2' }}
                 </mat-cell>
-              </ng-container>
+              </ng-container> -->
 
               <ng-container matColumnDef="purUnitRate">
-                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Unit Rate</mat-header-cell>
-                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-130">Unit Rate</mat-header-cell>
+                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-130">
                   <!-- {{ contact.PurUnitRate | number : '1.2-2' }} -->
                   {{ contact.Rate | number : '1.2-2' }}
                 </mat-cell>
               </ng-container>
 
-              <ng-container matColumnDef="purUnitRateWF">
+              <!-- <ng-container matColumnDef="purUnitRateWF">
                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Unit Rate WF</mat-header-cell>
                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                   {{ contact.PurUnitRateWF | number : '1.2-2' }}
                 </mat-cell>
-              </ng-container>
+              </ng-container> -->
 
               <ng-container matColumnDef="UnitMRP">
-                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>UnitMRP</mat-header-cell>
-                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-130">UnitMRP</mat-header-cell>
+                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-130">
                   <!-- {{ contact.UnitMRP | number : '1.2-2' }} -->
                   {{ contact.MRP | number : '1.2-2' }}
                 </mat-cell>
               </ng-container>
 
-              <ng-container matColumnDef="IsVerifiedUserId">
+              <!-- <ng-container matColumnDef="IsVerifiedUserId">
                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>IsVerifiedUserId</mat-header-cell>
                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                   {{ contact.IsVerifiedUserId }}
                 </mat-cell>
-              </ng-container>
+              </ng-container> --> 
 
-              <ng-container matColumnDef="Status">
-                <mat-header-cell *matHeaderCellDef fxShow.gt-sm style="color: white"
-                  class="w-80">Verify</mat-header-cell>
-                <mat-cell *matCellDef="let contact" class="w-80">
-                  <mat-icon *ngIf="contact.IsVerified" matTooltip="Verified"
-                    class="pill green-600 s-16">check_circle</mat-icon>
-                  <mat-icon *ngIf="!contact.IsVerified" matTooltip="Pending"
-                    class="red-600 s-16">hourglass_empty</mat-icon>
-                </mat-cell>
-              </ng-container>
-
-              <ng-container matColumnDef="IsVerified">
+              <!-- <ng-container matColumnDef="IsVerified">
                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>IsVerified</mat-header-cell>
                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                   <mat-icon *ngIf="contact.IsVerified" matTooltip="GRN IsVerified" class="active-icon green-500 s-16">
                     check_circle
                   </mat-icon>
 
-                  <mat-icon *ngIf="contact.IsVerified" matTooltip="GRN Not IsVerified" class="active-icon red-500 s-16">
+                  <mat-icon *ngIf="!.IsVerified" matTooltip="GRN Not IsVerified" class="active-icon red-500 s-16">
                     hourglass_empty
                   </mat-icon>
                 </mat-cell>
-              </ng-container>
+              </ng-container> -->
 
-              <ng-container matColumnDef="IsVerifiedDatetime">
+              <!-- <ng-container matColumnDef="IsVerifiedDatetime">
                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>IsVerifiedDatetime</mat-header-cell>
                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                   {{ contact.IsVerifiedDatetime | date : 'dd/MM/YYYY' }}
                 </mat-cell>
-              </ng-container>
+              </ng-container> -->
 
-              <ng-container matColumnDef="stockid">
+              <!-- <ng-container matColumnDef="stockid">
                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>StockId</mat-header-cell>
                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                   {{ contact.StkID }}
+                </mat-cell>
+              </ng-container> -->
+
+                <ng-container matColumnDef="buttons" stickyEnd>
+                <mat-header-cell *matHeaderCellDef class="w-60">Action</mat-header-cell>
+                <mat-cell *matCellDef="let row"  class="w-60">
+                  <button mat-icon-button (click)="deleteTableRow(row)" color="warn" [disabled]="row.IsVerifiedUserId > 0">
+                    <mat-icon>delete_outline</mat-icon>
+                  </button>
                 </mat-cell>
               </ng-container>
 
@@ -603,10 +604,10 @@
                 <mat-footer-cell *matFooterCellDef colspan="6">no data found...</mat-footer-cell>
               </ng-container>
 
-              <mat-header-row class="accent min-width-3500"
+              <mat-header-row class="accent min-width-2700"
                 *matHeaderRowDef="displayedColumns2; sticky: true"></mat-header-row>
               <mat-row *matRowDef="let contact; columns: displayedColumns2; let i = index" tabindex="999"
-                class="contact min-width-3500" [@animate]="{ value: '*', params: { y: '100%' } }"
+                class="contact min-width-2700" [@animate]="{ value: '*', params: { y: '100%' } }"
                 appHighlight></mat-row>
               <mat-footer-row *matFooterRowDef="['loading']"
                 [ngClass]="{ hide: !(sIsLoading == 'loading-data') }"></mat-footer-row>
