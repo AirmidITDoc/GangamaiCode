@@ -37,7 +37,6 @@ import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { EmailComponent } from './email/email.component';
 import { NewPurchaseorderComponent } from './new-purchaseorder/new-purchaseorder.component';
 import { PurchaseOrderComponent } from './purchase-order.component';
-import { UpdatePurchaseorderComponent } from './update-purchaseorder/update-purchaseorder.component';
 
 
 
@@ -51,7 +50,7 @@ const routes: Routes = [
 @NgModule({
     declarations: [
         PurchaseOrderComponent,
-        UpdatePurchaseorderComponent,
+        
         EmailComponent,
         NewPurchaseorderComponent
     ],

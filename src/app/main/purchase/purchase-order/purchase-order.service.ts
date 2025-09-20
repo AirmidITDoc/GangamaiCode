@@ -5,9 +5,10 @@ import { ApiCaller } from 'app/core/services/apiCaller';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 import { ToastrService } from 'ngx-toastr';
-import { GSTCalculation, GSTCalculationResult, GSTType, GSTValidation, ToastType } from '../good-receiptnote/new-grn/types';
+import { GRNFormModel, GSTCalculation, GSTCalculationResult, GSTType, GSTValidation, ToastType } from '../good-receiptnote/new-grn/types';
 import { ItemNameList } from './purchase-order.component';
-import { PurchaseFormModel } from './update-purchaseorder/types';
+import { PurchaseFormModel } from './new-purchaseorder/types';
+// import { PurchaseFormModel } from './update-purchaseorder/types';
 
 @Injectable({
   providedIn: 'root'
@@ -62,78 +63,78 @@ export class PurchaseOrderService {
   }
 
 
-  getPurchaseOrderForm() {
-    return this._formBuilder.group({
-      purchaseId: [''],
-      purchaseNo: [''],
-      StoreId: [this.accountService.currentUserValue.user.storeId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      SupplierId: ['', [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      TotalAmount: [''],
-      DiscAmount: [''],
-      Disc: [''],
+  // getPurchaseOrderForm() {
+  //   return this._formBuilder.group({
+  //     purchaseId: [''],
+  //     purchaseNo: [''],
+  //     StoreId: [this.accountService.currentUserValue.user.storeId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+  //     SupplierId: ['', [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+  //     TotalAmount: [''],
+  //     DiscAmount: [''],
+  //     Disc: [''],
 
-      grandTotal: [''],
-      ItemName: ['', [Validators.required]],
-      ConversionFactor: [''],
-      Qty: [0, [Validators.required]],
-      UOM: [''],
-      Rate: ['', [Validators.required]],
+  //     grandTotal: [''],
+  //     ItemName: ['', [Validators.required]],
+  //     ConversionFactor: [''],
+  //     Qty: [0, [Validators.required]],
+  //     UOM: [''],
+  //     Rate: ['', [Validators.required]],
 
-      HSNcode: '',
-      GST: [''],
-      GSTPer: [''],
-      GSTAmount: [''],
-      NetAmount: [''],
-      MRP: [''],
-      Specification: [''],
-      SupplierID: '',
-      Address: [''],
-      Mobile: '',
-      Contact: '',
-      GSTNo: '',
-      Email: '',
-      PurchaseDate: [new Date()],
-      DefRate: '',
+  //     HSNcode: '',
+  //     GST: [''],
+  //     GSTPer: [''],
+  //     GSTAmount: [''],
+  //     NetAmount: [''],
+  //     MRP: [''],
+  //     Specification: [''],
+  //     SupplierID: '',
+  //     Address: [''],
+  //     Mobile: '',
+  //     Contact: '',
+  //     GSTNo: '',
+  //     Email: '',
+  //     PurchaseDate: [new Date()],
+  //     DefRate: '',
 
-      CGSTPer: [''],
-      CGSTAmount: [''],
-      SGSTPer: [''],
-      SGSTAmount: [''],
-      IGSTPer: [''],
-      IGSTAmount: [''],
-      GSTType: [16],
-      UOMId: [''],
+  //     CGSTPer: [''],
+  //     CGSTAmount: [''],
+  //     SGSTPer: [''],
+  //     SGSTAmount: [''],
+  //     IGSTPer: [''],
+  //     IGSTAmount: [''],
+  //     GSTType: [16],
+  //     UOMId: [''],
 
-      PurchaseId: [0],
+  //     PurchaseId: [0],
 
-    });
+  //   });
 
-  }
+  // }
 
-  getPurchaseOrderFinalForm() {
-    return this._formBuilder.group({
-      TransportCharges: [''],
-      HandlingCharges: [''],
-      Freight: [''],
-      OctriAmount: [''],
-      Worrenty: [''],
-      roundVal: [''],
-      NetAmount: [''],
-      Remark: ['', [Validators.required]],
-      PaymentTerm: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      PaymentMode: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+  // getPurchaseOrderFinalForm() {
+  //   return this._formBuilder.group({
+  //     TransportCharges: [''],
+  //     HandlingCharges: [''],
+  //     Freight: [''],
+  //     OctriAmount: [''],
+  //     Worrenty: [''],
+  //     roundVal: [''],
+  //     NetAmount: [''],
+  //     Remark: ['', [Validators.required]],
+  //     PaymentTerm: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+  //     PaymentMode: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
 
-    });
-  }
-  createPOEmailFrom() {
-    return this._formBuilder.group({
-      ToMailId: [''],
-      Subject: [''],
-      Body: [''],
-      CCName: [''],
-      bccName: ['']
-    })
-  }
+  //   });
+  // }
+  // createPOEmailFrom() {
+  //   return this._formBuilder.group({
+  //     ToMailId: [''],
+  //     Subject: [''],
+  //     Body: [''],
+  //     CCName: [''],
+  //     bccName: ['']
+  //   })
+  // }
 
 
   public getLastThreeItemInfo(Param) {
@@ -386,6 +387,44 @@ export class PurchaseOrderService {
     }
     return true;
   }
+
+
+   validatePurchaseForm(form: FormGroup): boolean {
+          const values = form.getRawValue() as PurchaseFormModel;
+  
+  
+          if (!values.ItemName) {
+              this.showToast('Please select an item', ToastType.WARNING);
+              return false;
+          }
+        
+          if (!values.Qty || +values.Qty < 0) {
+              this.showToast('Please enter a valid Quantity', ToastType.WARNING);
+              form.patchValue({ Qty: 0 });
+              return false;
+          }
+          if (!values.Rate || +values.Rate < 0) {
+              this.showToast('Please enter a rate greater than 0', ToastType.WARNING);
+              form.patchValue({ Rate: 0 });
+              return false;
+          }
+          if (+values.Rate > +values.MRP) {
+              this.showToast('Rate should less than MRP', ToastType.WARNING);
+              form.patchValue({ Rate: 0 });
+              return false;
+          }
+          if (+values.Disc < 0 || +values.Disc > 100) {
+              this.showToast('Discount percentage should be between 0 and 100', ToastType.WARNING);
+              form.patchValue({ Disc: 0 });
+              return false;
+          }
+       
+           if (!values.GSTType || +values.GSTType < 0) {
+              this.showToast('Please select an GST Type', ToastType.WARNING);
+              return false;
+          }
+          return true;
+      }
 
 }
 

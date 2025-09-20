@@ -28,7 +28,7 @@ export class PurchaseOrderComponent implements OnInit {
   autocompletestore: string = "Store";
   autocompleteSupplier: string = "SupplierMaster"
   StoreId: any = String(this.accountService.currentUserValue.user.storeId);
-  SupplierId:any = "0";
+  SupplierId: any = "0";
   status = "0";
 
 
@@ -128,7 +128,7 @@ export class PurchaseOrderComponent implements OnInit {
   ngOnInit(): void {
     this.mysearchform = this._PurchaseOrderService.PurchaseSearchFrom();
   }
-  
+
 
   selectChangeStore(value) {
     if (value.value !== 0)
@@ -155,7 +155,7 @@ export class PurchaseOrderComponent implements OnInit {
     }
     this.isShowDetailTable = false;
     this.fromDate = this.datePipe.transform(this.mysearchform.get('startdate').value, "yyyy-MM-dd")
-    this.toDate = this.datePipe.transform(this.mysearchform.get('enddate').value, "yyyy-MM-dd") 
+    this.toDate = this.datePipe.transform(this.mysearchform.get('enddate').value, "yyyy-MM-dd")
     this.getfilterdata();
   }
   getfilterdata() {
@@ -173,10 +173,10 @@ export class PurchaseOrderComponent implements OnInit {
         { fieldName: "Supplier_Id", fieldValue: this.SupplierId, opType: OperatorComparer.Equals }
       ],
       row: 25
-    } 
+    }
     this.grid.gridConfig = this.gridConfig;
     this.grid.bindGridData();
-  } 
+  }
   viewgetPurchaseorderReportPdf(element) {
     this.commonService.Onprint("PurchaseID", element.purchaseID, "Purchaseorder");
   }
@@ -212,7 +212,8 @@ export class PurchaseOrderComponent implements OnInit {
       "purchaseId": row.purchaseID,
       "isVerifiedId": 1
     };
-    this._PurchaseOrderService.getVerifyPurchaseOrdert(submitData).subscribe(response => {  
+    this._PurchaseOrderService.getVerifyPurchaseOrdert(submitData).subscribe(response => {
+      this.grid.bindGridData()
     });
   }
   //Add New Purchase
@@ -259,7 +260,7 @@ export class ItemNameList {
   Dis: any;
   Disc: any;
   DiscAmount: any;
- purchaseNo: any;
+  purchaseNo: any;
   GST: number;
   GSTAmount: any;
   CGSTPer: any;
@@ -368,7 +369,7 @@ export class ItemNameList {
       this.DiscAmount = ItemNameList.DiscAmount || 0;
       this.GST = ItemNameList.GST || 0;
       this.GSTAmount = ItemNameList.GSTAmount || 0;
-       this.purchaseNo = ItemNameList.purchaseNo || 0;
+      this.purchaseNo = ItemNameList.purchaseNo || 0;
       this.CGSTPer = ItemNameList.CGSTPer || 0;
       this.CGSTAmt = ItemNameList.CGSTAmt || 0;
       this.SGSTPer = ItemNameList.SGSTPer || 0;
