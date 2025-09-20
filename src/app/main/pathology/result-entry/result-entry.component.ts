@@ -108,6 +108,7 @@ export class ResultEntryComponent implements OnInit {
     patientName:'RK'
     title:'Reports'
      page: PageNames = PageNames.PATIENT;
+     pathFiles: PageNames = PageNames.PATIENT_PATHFILES;
 
     @ViewChild(MatSort) sort: MatSort;
     @ViewChild(MatPaginator) paginator: MatPaginator;
