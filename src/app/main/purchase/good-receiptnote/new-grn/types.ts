@@ -39,6 +39,8 @@ export interface GRNFormModel {
   // Price Details
   MRP: number;
   Rate: number;
+  RatePerUnit:number;
+  LandedRate:number;
   TotalAmount: number;
 
   // Discount Details

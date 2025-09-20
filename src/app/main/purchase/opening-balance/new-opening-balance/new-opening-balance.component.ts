@@ -153,9 +153,9 @@ export class NewOpeningBalanceComponent implements OnInit {
       pack: isNaN(+item.converFactor) ? 1 : +item.converFactor,
       // stripQty: item.stripQty,
       CGST: item.cgstPer,
-      SGST: item.sgstPer,
-      IGST: item.igstPer,
-      GST: item.cgstPer + item.sgstPer + item.igstPer,
+      // SGST: item.sgstPer,
+      // IGST: item.igstPer,
+      // GST: item.cgstPer + item.sgstPer + item.igstPer,
       HSNcode: item.hsNcode
     });
     // this.calculateTotalamt();
@@ -250,27 +250,6 @@ export class NewOpeningBalanceComponent implements OnInit {
     return n < 10 ? '0' + n : n.toString();
   }
 
-  // getchangegstper(rate, GSTTYP): void {
-  //   const formValues = this.OPeningtemForm.getRawValue() as GRNFormModel;
-  //   const gstValues = [
-  //     { value: 2.5 },
-  //     { value: 6 },
-  //     { value: 9 },
-  //     { value: 14 }
-  //   ];
-  //   const dvalue = gstValues.find(item => item.value == parseFloat(rate))
-  //   if (!dvalue) {
-  //     this._OpeningBalanceService.showToast('Please enter GST percentage as 2.5%, 6%, 9% or 14%', ToastType.WARNING);
-  //     return;
-  //   }
-
-  //   else {
-  //     const GSTPer = Number(formValues.CGST) + Number(formValues.SGST) + Number(formValues.IGST)
-  //     this.OPeningtemForm.patchValue({
-  //       GST: GSTPer
-  //     });
-  //   }
-  // }
 
   getchangegstper(rate: any): void {
     debugger
@@ -329,6 +308,7 @@ export class NewOpeningBalanceComponent implements OnInit {
       ExpDate: expDate,
       MRP: event?.unitMRP || 0,
       RatePerUnit: event?.unitPurRate || 0,
+      LandedRate: event?.unitLandedRate || 0
     })
     const QtyElement = document.querySelector(`[name='Qty']`) as HTMLElement;
     if (QtyElement) {
@@ -347,7 +327,7 @@ export class NewOpeningBalanceComponent implements OnInit {
         {
           ItemID: this.OPeningtemForm.get('ItemName').value.itemId || 0,
           ItemName: this.OPeningtemForm.get('ItemName').value.formattedText || '',
-          BatchNo: this.OPeningtemForm.get('BatchNo').value || "",
+          BatchNo: this.OPeningtemForm.get('BatchNo').value.batchNo || "",
           ExpDate: this.vlastDay, //this.OPeningtemForm.get('ExpDate').value || "",
           Pack: this.OPeningtemForm.get('pack').value || 0,
           TotalQty: this.OPeningtemForm.get('totalQty').value || 0,
@@ -498,52 +478,95 @@ export class NewOpeningBalanceComponent implements OnInit {
   }
 
   onRatePerUnitInput(event: any) {
-    const rate = +event.target.value;
-    const landed = +this.OPeningtemForm.get('LandedRate')?.value || 0;
-    const mrp = +this.OPeningtemForm.get('MRP')?.value || 0;
+    // const rate = +event.target.value;
+    // const landed = +this.OPeningtemForm.get('LandedRate')?.value || 0;
+    // const mrp = +this.OPeningtemForm.get('MRP')?.value || 0;
 
-    // Rule 1: Rate must be greater than LandedRate
-    if (landed && rate <= landed) {
-      this.toastr.warning('Rate Per Unit must be greater than Landed Rate');
-      this.OPeningtemForm.get('RatePerUnit')?.setValue(null);
-      event.target.value = '';
-      return;
-    }
+    // // Rule 1: Rate must be greater than LandedRate
+    // if (landed && rate <= landed) {
+    //   this.toastr.warning('Rate Per Unit must be greater than Landed Rate');
+    //   this.OPeningtemForm.get('RatePerUnit')?.setValue(null);
+    //   event.target.value = '';
+    //   return;
+    // }
 
-    // Rule 2: Rate must not exceed MRP
-    if (mrp && rate > mrp) {
-      this.toastr.warning('Rate Per Unit cannot be greater than MRP');
-      this.OPeningtemForm.get('RatePerUnit')?.setValue(null);
-      event.target.value = '';
-      return;
-    }
+    // // Rule 2: Rate must not exceed MRP
+    // if (mrp && rate > mrp) {
+    //   this.toastr.warning('Rate Per Unit cannot be greater than MRP');
+    //   this.OPeningtemForm.get('RatePerUnit')?.setValue(null);
+    //   event.target.value = '';
+    //   return;
+    // }
+    this.validateFormValues()
   }
 
   onMRPInput(event: any) {
-    const mrp = +event.target.value;
-    const landed = +this.OPeningtemForm.get('LandedRate')?.value || 0;
+    // const mrp = +event.target.value;
+    // const landed = +this.OPeningtemForm.get('LandedRate')?.value || 0;
 
-    if (landed && mrp <= landed) {
-      this.toastr.warning('MRP must be greater than Landed Rate');
-      this.OPeningtemForm.get('MRP')?.setValue(null);
-      event.target.value = '';
-      return;
-    }
+    // if (landed && mrp <= landed) {
+    //   this.toastr.warning('MRP must be greater than Landed Rate');
+    //   this.OPeningtemForm.get('MRP')?.setValue(null);
+    //   event.target.value = '';
+    //   return;
+    // }
+    this.validateFormValues()
   }
 
   onLandedRateInput(event: any) {
-    const landed = +event.target.value;
-    const rate = +this.OPeningtemForm.get('RatePerUnit')?.value || 0;
-    const mrp = +this.OPeningtemForm.get('MRP')?.value || 0;
+    // const landed = +event.target.value;
+    // const rate = +this.OPeningtemForm.get('RatePerUnit')?.value || 0;
+    // const mrp = +this.OPeningtemForm.get('MRP')?.value || 0;
 
-    if ((rate && landed >= rate) || (mrp && landed >= mrp)) {
-      this.toastr.warning('Landed Rate must be less than Rate Per Unit and MRP');
-      this.OPeningtemForm.get('LandedRate')?.setValue(null);
-      event.target.value = '';
-      return;
-    }
+    // if ((rate && landed >= rate) || (mrp && landed >= mrp)) {
+    //   this.toastr.warning('Landed Rate must be less than Rate Per Unit and MRP');
+    //   this.OPeningtemForm.get('LandedRate')?.setValue(null);
+    //   event.target.value = '';
+    //   return;
+    // }
+    this.validateFormValues()
   }
 
+  validateFormValues() {
+    const form = this.OPeningtemForm;
+    const values = form.getRawValue() as GRNFormModel;
+    if (+values.MRP < 0) {
+      this._OpeningBalanceService.showToast('MRP should be greater than 0', ToastType.WARNING);
+      form.patchValue({
+        MRP: 0,
+      });
+    }
+    if (+values.RatePerUnit < 0) {
+      this._OpeningBalanceService.showToast('RatePerUnit should be greater than 0', ToastType.WARNING);
+      form.patchValue({
+        RatePerUnit: 0,
+      });
+    }
+    if (+values.LandedRate < 0) {
+      this._OpeningBalanceService.showToast('LandedRate should be greater than 0', ToastType.WARNING);
+      form.patchValue({
+        LandedRate: 0,
+      });
+    }
+    if (+values.RatePerUnit > +values.MRP) {
+      this._OpeningBalanceService.showToast('RatePerUnit should be less than MRP', ToastType.WARNING);
+      form.patchValue({
+        RatePerUnit: 0,
+      });
+    }
+    if (+values.RatePerUnit >= +values.LandedRate) {
+      this._OpeningBalanceService.showToast('RatePerUnit should be less than LandedRate', ToastType.WARNING);
+      form.patchValue({
+        RatePerUnit: 0,
+      });
+    }
+    if (+values.LandedRate >= +values.MRP) {
+      this._OpeningBalanceService.showToast('LandedRate should be less than MRP',ToastType.WARNING);
+      form.patchValue({
+        LandedRate: 0,
+      });
+    }
+  }
 
   keyPressAlphanumeric(event) {
     var inp = String.fromCharCode(event.keyCode);
