@@ -5,47 +5,51 @@ import { ApiCaller } from 'app/core/services/apiCaller';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 import { ItemNameList } from '../good-receiptnote/good-receiptnote.component';
-import { GSTCalculation, GSTCalculationResult, GSTType, ToastType } from '../good-receiptnote/new-grn/types';
-import { PurchaseFormModel } from '../purchase-order/new-purchaseorder/types';
-
+import { GSTCalculation, GSTCalculationResult, GSTType, GSTValidation, PurchaseFormModel, ToastType } from '../purchase-order/update-purchaseorder/types';
+// import { GSTCalculation, GSTCalculationResult, GSTType, ToastType } from '../good-receiptnote/new-grn/types';
 
 @Injectable({
   providedIn: 'root'
 })
 export class WorkOrderService {
- 
-  GST_VALIDATION: any;
-constructor(
+
+  private readonly GST_VALIDATION: GSTValidation = {
+    // Provide all valid GST rates
+    VALID_GST_RATES: [2.5, 6, 9, 14],
+    GST_ERROR_MESSAGE: 'Please enter GST percentage as 2.5%, 6%, 9% or 14%'
+  };
+  toastr: any;
+  constructor(
     public _formBuilder: UntypedFormBuilder,
     private accountService: AuthenticationService,
     public _httpClient: HttpClient, public _httpClient1: ApiCaller, private _FormvalidationserviceService: FormvalidationserviceService
   ) {
-   
+
   }
   createStoreFrom() {
     return this._formBuilder.group({
       workId: 0,
       StoreId: [this.accountService.currentUserValue.user.storeId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       SupplierName: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      GSTType: ['16',[Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      GSTType: ['16', [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
     })
   }
-  
+
 
   getWorOrderItemForm() {
     return this._formBuilder.group({
-    workId: '',
+      workId: '',
       ItemName: ['', [Validators.required]],
       ItemID: '',
       Qty: [0, [Validators.required]],
       UnitRate: ['', [Validators.required]],
-      TotalAmount: '',
-      Disc: '',
-      DiscAmount: '',
-      GST: '',
-      GSTAmount: '',
-      VatAmt: '',
-      NetAmount: '',
+      TotalAmount: [0],
+      Disc: [0],
+      DiscAmount: [0],
+      GST: [0],
+      GSTAmount: [0],
+      VatAmt: [0],
+      NetAmount: [0],
       Specification: '',
 
     });
@@ -53,26 +57,26 @@ constructor(
 
   getWorkOrderFinalForm() {
     return this._formBuilder.group({
-     
+
       woId: 0,
       date: new Date(),
       time: new Date(),
-      totalAmount: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator(),Validators.min(1)]],
+      totalAmount: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator(), Validators.min(1)]],
       vatAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       discAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      GSTAmount:  [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      netAmount: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator(),Validators.min(1)]],
+      GSTAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      netAmount: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator(), Validators.min(1)]],
       isclosed: true,
       Remark: "",
-      addedBy:[this.accountService.currentUserValue.userId,this._FormvalidationserviceService.notEmptyOrZeroValidator()],
-       updatedBy:[this.accountService.currentUserValue.userId,this._FormvalidationserviceService.notEmptyOrZeroValidator()],
+      addedBy: [this.accountService.currentUserValue.userId, this._FormvalidationserviceService.notEmptyOrZeroValidator()],
+      updatedBy: [this.accountService.currentUserValue.userId, this._FormvalidationserviceService.notEmptyOrZeroValidator()],
       isCancelled: true,
       isCancelledBy: 0
       // workOrderDetails: ''
     });
 
   }
-    initializeFormGroup() {
+  initializeFormGroup() {
     // this.createNewWorkForm();
   }
 
@@ -94,9 +98,9 @@ constructor(
   }
 
   public InsertWorkorderSave(Param) {
-   return this._httpClient1.PostData("WorkOrder/WorkOrderSave", Param);
+    return this._httpClient1.PostData("WorkOrder/WorkOrderSave", Param);
   }
- 
+
 
   public WorkorderUpdate(Param) {
     return this._httpClient1.PutData("WorkOrder/WorkOrderUpdate", Param)
@@ -307,7 +311,24 @@ constructor(
     }
     return true;
   }
-  showToast(GST_ERROR_MESSAGE: any, WARNING: any) {
-    throw new Error('Method not implemented.');
+
+  showToast(message: string, type: ToastType = ToastType.SUCCESS) {
+    if (type === ToastType.SUCCESS) {
+      this.toastr.success(message, `${type} !`, {
+        toastClass: `tostr-tost custom-toast-${ToastType.SUCCESS}`,
+      });
+    }
+
+    if (type === ToastType.WARNING) {
+      this.toastr.warning(message, `${type} !`, {
+        toastClass: `tostr-tost custom-toast-${ToastType.WARNING}`,
+      });
+    }
+    if (type === ToastType.ERROR) {
+      this.toastr.error(message, `${type} !`, {
+        toastClass: `tostr-tost custom-toast-${ToastType.ERROR}`,
+      });
+    }
+
   }
 }

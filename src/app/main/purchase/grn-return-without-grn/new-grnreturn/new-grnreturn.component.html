@@ -97,6 +97,8 @@
                                 <input matInput [(ngModel)]="vGST" name="GST" type="text" OnlyNumber
                                     formControlName="GST" id="GST" #gst readonly>
                             </mat-form-field>
+                            <!-- <airmid-dropdown label="GST" formControlName="GST" fxFlex="5%" [formGroup]="_GRNReturnService.NewGRNReturnFrom"
+                                [mode]="autocompleteModeGSTTypesValues" (selectionChange)="getchangegstper($event)"> </airmid-dropdown> -->
 
                             <mat-form-field appearance="outline" fxFlex="8%">
                                 <mat-label>GST Amount</mat-label>
@@ -163,7 +165,7 @@
                                 </mat-header-cell>
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100">
                                     <!-- {{contact.batchExpiryDate}} -->
-                                     {{contact.ExpDate ?? contact.batchExpiryDate}}
+                                    {{contact.ExpDate ?? contact.batchExpiryDate}}
                                 </mat-cell>
                             </ng-container>
 
@@ -308,7 +310,7 @@
 
                                 </div>
 
-                                <div fxLayout="row"  fxLayoutGap="16px">
+                                <div fxLayout="row" fxLayoutGap="16px">
 
                                     <airmid-textbox label="Total Amount" formControlName="FinalTotalAmt"
                                         [(ngModel)]="registerObj.totalAmount"

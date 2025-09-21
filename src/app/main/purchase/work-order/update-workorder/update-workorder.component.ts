@@ -45,8 +45,6 @@ export class UpdateWorkorderComponent implements OnInit {
 
   ItemID: any = 0;
   ItemName: any;
-  screenFromString = 'Common-form';
-
   chargeslist: any = [];
   FinalNetAmount: any;
   FinalTotalAmount: any;
@@ -76,6 +74,7 @@ export class UpdateWorkorderComponent implements OnInit {
   autocompletestore: string = "Store";
   autocompleteSupplier: string = "SupplierMaster"
   autocompleteModeGSTType: string = "GstCalcType";
+  autocompleteModeGSTTypesValues: string = "GSTTypes";
 
   dsItemNameList = new MatTableDataSource<ItemNameList>();
   dsTempItemNameList = new MatTableDataSource<ItemNameList>();
@@ -449,6 +448,10 @@ export class UpdateWorkorderComponent implements OnInit {
 
   }
 
+  getchangegstper(rate: any): void {
+    this.calculateDiscperAmount();
+  }
+
   calculateDiscperAmount() {
     let disc = this.WorkorderItemForm.get('Disc').value || 0;
     this.vGST = this.WorkorderItemForm.get('GST').value || 0;
@@ -550,29 +553,22 @@ export class UpdateWorkorderComponent implements OnInit {
 
     if (qty > 0 && rate > 0) {
       if (this.GSTTypeName == 'GST After Disc') {
-
-        // contact.TotalAmount = (parseFloat(qty) * parseFloat(rate)).toFixed(2);
-        // contact.DiscAmount = ((parseFloat(contact.TotalAmount) * parseFloat(discPer)) / 100).toFixed(2);
         contact.TotalAmount = parseFloat((qty * rate).toFixed(2));
         contact.DiscAmount = parseFloat(((contact.TotalAmount * discPer) / 100).toFixed(2));
 
         let TotalAmt = (parseFloat(contact.TotalAmount) - parseFloat(contact.DiscAmount));
 
-        // contact.GSTAmount = (((TotalAmt) * parseFloat(gst)) / 100).toFixed(2);
         contact.GSTAmount = parseFloat(((TotalAmt * gst) / 100).toFixed(2));
         contact.NetAmount = ((TotalAmt) + parseFloat(contact.GSTAmount)).toFixed(2);;
 
       }
       else if (this.GSTTypeName == 'GST Before Disc') {
 
-        // contact.TotalAmount = (parseFloat(qty) * parseFloat(rate)).toFixed(2);
-        // contact.GSTAmount = ((parseFloat(contact.TotalAmount) * parseFloat(gst)) / 100).toFixed(2);
         contact.TotalAmount = parseFloat((qty * rate).toFixed(2));
         contact.GSTAmount = parseFloat(((contact.TotalAmount * gst) / 100).toFixed(2));
 
         let totalAmt = (parseFloat(contact.TotalAmount) + parseFloat(contact.GSTAmount));
 
-        // contact.DiscAmount = ((parseFloat(contact.TotalAmount) * parseFloat(discPer)) / 100).toFixed(2);
         contact.DiscAmount = parseFloat(((contact.TotalAmount * discPer) / 100).toFixed(2));
         contact.NetAmount = ((totalAmt) - parseFloat(contact.DiscAmount)).toFixed(2);;
       }
@@ -584,6 +580,7 @@ export class UpdateWorkorderComponent implements OnInit {
       contact.NetAmount = 0;
     }
     this.getGSTTotalAmt([contact]);
+    this._WorkOrderService.validateGSTRates(contact);
   }
 
   getGSTTotalAmt(element: any[]) {

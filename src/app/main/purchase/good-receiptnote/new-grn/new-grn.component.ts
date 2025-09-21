@@ -40,8 +40,8 @@ export class NewGrnComponent implements OnInit, OnDestroy {
         'ExpDate',
         'Qty',
         'FreeQty',
-        'TotalQty',
         'ConversionFactor',
+        'TotalQty',
         'MRP',
         'Rate',
         'TotalAmount',
@@ -52,19 +52,19 @@ export class NewGrnComponent implements OnInit, OnDestroy {
         'SGST',
         'IGST',
         'NetAmount',
-        'poId',
-        'purDetID',
+        //'poId',
+       // 'purDetID',
         //'isClosed',
         'poBalQty',
         'poQty',
-        'landedRate',
+       // 'landedRate',
         'purUnitRate',
-        'purUnitRateWF',
+        //'purUnitRateWF',
         'UnitMRP',
-        'IsVerifiedUserId',
-        'IsVerified',
-        'IsVerifiedDatetime',
-        'stockid',
+       // 'IsVerifiedUserId',
+       // 'IsVerified',
+       // 'IsVerifiedDatetime',
+       // 'stockid',
         'buttons',
     ];
     displayedColumns3 = [
@@ -278,7 +278,7 @@ export class NewGrnComponent implements OnInit, OnDestroy {
         const currentMonth = CurrentDate.getMonth();
         const currentYear = CurrentDate.getFullYear();
         const NxtMonths =  ((currentMonth) + (Months)); 
-       NextExpiryDate.setMonth(NxtMonths);
+        NextExpiryDate.setMonth(NxtMonths);
         const newNextDate  = new Date(NextExpiryDate)
         const getnextYear = newNextDate.getFullYear(); 
         
@@ -449,7 +449,7 @@ export class NewGrnComponent implements OnInit, OnDestroy {
         }
         const formValue =  this.userFormGroup.value
         this.userFormGroup.patchValue({
-            BatchNo:(formValue.BatchNo?.batchNo ?? formValue.BatchNo),
+            BatchNo:(formValue.BatchNo?.batchNo ?? formValue.BatchNo).toUpperCase(),
             CGST:formValue.SGST
         })
         const formValues = this.userFormGroup.getRawValue() as GRNFormModel;
@@ -710,54 +710,49 @@ setTimeout(() => {
         this.updateGRNFinalForm();
     }
     updateGRNFinalForm() {
+        debugger
+        this.BaseNetpayAmt = 0;
         const form = this._GRNList.GRNFinalForm;
         const itemList = this.dsItemNameList.data;
-        const netAmount = itemList.reduce((sum, { NetAmount }) => sum += +(NetAmount || 0), 0);
-        const Othercharge = this._GRNList.GRNFinalForm.get("OtherCharge")?.value || 0;
-        let FinalRoundAmt = (netAmount + Othercharge);
-
-        let DebitAmount = this._GRNList.GRNFinalForm.get("DebitAmount")?.value || 0;
-        FinalRoundAmt = (parseFloat(FinalRoundAmt) + parseFloat(DebitAmount));
-
-        let CreditAmount = this._GRNList.GRNFinalForm.get("CreditAmount")?.value || 0;
-        FinalRoundAmt = (parseFloat(FinalRoundAmt) - parseFloat(CreditAmount));
-        
-        const reoundingamt = Math.round(FinalRoundAmt)
+        const netAmount = itemList.reduce((sum, { NetAmount }) => sum += +(NetAmount || 0), 0);  
+        const finalnetamt = itemList.reduce((sum, { NetAmount }) => sum += +(NetAmount || 0), 0).toFixed(2);
+        const reoundingamt =Math.round(netAmount).toFixed(2) 
+        this.BaseNetpayAmt = netAmount || 0
         const updatableFormValues: GRNFinalFormModel = {
             TotalAmt: itemList.reduce((sum, { TotalAmount }) => sum += +(TotalAmount || 0), 0).toFixed(2),
             VatAmount: itemList.reduce((sum, { GSTAmount }) => sum += +(GSTAmount || 0), 0).toFixed(2),
-            NetPayamt:  reoundingamt.toFixed(2),
-            RoundingAmt: (Math.round(FinalRoundAmt) - FinalRoundAmt).toFixed(2),
+            NetPayamt:  Math.round(netAmount).toFixed(2),
+            RoundingAmt: (parseFloat(reoundingamt) - parseFloat(finalnetamt)).toFixed(2),
             DiscAmount: itemList.reduce((sum, { DisAmount }) => sum += +(DisAmount || 0), 0).toFixed(2),
             DiscAmount2: itemList.reduce((sum, { DisAmount2 }) => sum += +(DisAmount2 || 0), 0),
-            OtherCharge: itemList.reduce((sum, { OtherCharge }) => sum += +(OtherCharge || 0), 0),
+           // OtherCharge: itemList.reduce((sum, { OtherCharge }) => sum += +(OtherCharge || 0), 0) 
         } as GRNFinalFormModel;
 
         form.patchValue({
             ...updatableFormValues
         });
+        this.getcalculateothercharges();
     }
+    BaseNetpayAmt:any=0;
     getcalculateothercharges(){
-        let FinalRoundAmt = 0;
-        const form = this._GRNList.GRNFinalForm.value;  
-        const Othercharge = this._GRNList.GRNFinalForm.get("OtherCharge")?.value || 0;
-        const DebitAmount = this._GRNList.GRNFinalForm.get("DebitAmount")?.value || 0;
-        const CreditAmount = this._GRNList.GRNFinalForm.get("CreditAmount")?.value || 0;   
-        
-        if(Othercharge > 0 || DebitAmount > 0 || CreditAmount > 0){
-         if(CreditAmount>0){ 
-         FinalRoundAmt = parseFloat(form?.NetPayamt) - parseFloat(CreditAmount)  
-        }else{
-         const FinalOtherAmt = Number(Othercharge || 0) + Number(DebitAmount || 0).toFixed(2)
-        FinalRoundAmt  = parseFloat(form?.NetPayamt) + parseFloat(FinalOtherAmt)  
-        }  
-        }else{
-        FinalRoundAmt = form?.NetPayamt
-        } 
-         this._GRNList.GRNFinalForm.patchValue({ 
-            NetPayamt:  Math.round(FinalRoundAmt).toFixed(2),
-            RoundingAmt: (Math.round(FinalRoundAmt) - FinalRoundAmt).toFixed(2), 
-        });
+        debugger 
+  const form = this._GRNList.GRNFinalForm.value;
+
+  const baseNet = parseFloat(this.BaseNetpayAmt) || 0;
+  const otherCharge = parseFloat(form?.OtherCharge) || 0;
+  const debitAmount = parseFloat(form?.DebitAmount) || 0;
+  const creditAmount = parseFloat(form?.CreditAmount) || 0;
+
+  // Calculate net based on original base + additions - credits
+  let finalAmt = baseNet + otherCharge + debitAmount - creditAmount;
+
+  const roundedAmt = Math.round(finalAmt);
+  const roundingAmt = (roundedAmt - finalAmt).toFixed(2);
+
+  this._GRNList.GRNFinalForm.patchValue({
+    NetPayamt: roundedAmt.toFixed(2),
+    RoundingAmt: roundingAmt
+  });
     }
     resetForm() {
         this.userFormGroup.reset();
@@ -1012,6 +1007,7 @@ setTimeout(() => {
         this.commonService.Onprint("GRNID", grnid, "GRNReport");
     }
     OnReset() {
+        this.BaseNetpayAmt = 0;
         this._matDialog.closeAll();
         this.resetForm();
     }
@@ -1076,6 +1072,7 @@ setTimeout(() => {
                 )
             })
             this.dsItemNameList.data = this.chargeslist;
+            this.updateGRNFinalForm();
         });
     }
     // Handlers
@@ -1291,8 +1288,7 @@ chkInvoiceNo(InvoiceNo){
             }
         });
 
-} 
- 
+}  
   onBatchChange(event) {
     debugger
     console.log(event)  
@@ -1415,7 +1411,10 @@ chkInvoiceNo(InvoiceNo){
         if (HSNCodeElement) {
             HSNCodeElement.focus();
         }
-    }
+    } 
+convertUppercase(value: string): string {
+  return value ? value.toUpperCase() : '';
+}
 }
 export class LastThreeItemList {
     ItemID: any;

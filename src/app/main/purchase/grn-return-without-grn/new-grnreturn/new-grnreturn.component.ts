@@ -11,7 +11,7 @@ import { ToastrService } from 'ngx-toastr';
 import { ItemNameList } from '../grn-return-withoutgrn.component';
 import { GRNReturnWithoutGRNService } from '../grnreturn-without-grn.service';
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
-import { FormArray, FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
+import { AbstractControl, FormArray, FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 
 @Component({
@@ -70,6 +70,7 @@ export class NewGRNReturnComponent implements OnInit {
   vGSTTpe = "GST Return";
   autocompletestore: string = "Store";
   autocompleteSupplier: string = "SupplierMaster"
+  autocompleteModeGSTTypesValues: string = "GSTTypes";
   VsupplierId: any = 0
   vstoreId: any = this._loggedService.currentUserValue.user.storeId
   itemName: any;
@@ -119,8 +120,7 @@ export class NewGRNReturnComponent implements OnInit {
   CreateGrnReturnInsertForm() {
     return this._formbuilder.group({
       grnReturn: this._formbuilder.group({
-        "grnreturnId": [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        "grnreturnNo": "string",
+        // "grnreturnNo": "string",
         "grnid": [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         "grnreturnDate": this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
         "grnreturnTime": this.datePipe.transform(new Date(), 'shortTime'),
@@ -136,19 +136,23 @@ export class NewGRNReturnComponent implements OnInit {
         "cashCredit": true,
         "remark": this._GRNReturnService.ReturnFinalForm.get('Remark').value || '',
         "isVerified": false,
-        "isClosed": false,
+        "addedBy": this._loggedService.currentUserValue.userId,
         "isCancelled": false,
+        "isClosed": false,
         "grnType": this._GRNReturnService.NewGRNReturnFrom.get('GSTType').value,
         "isGrnTypeFlag": true,
-        "tGrnreturnDetails": this._formbuilder.array([]),
+        "grnreturnId": [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+
+        // "tGrnreturnDetails": this._formbuilder.array([]),
       }),
+      tGrnreturnDetails: this._formbuilder.array([]),
       grnReturnCurrentStock: this._formbuilder.array([]),
       grnReturnReturnQt: this._formbuilder.array([]),
     })
   }
 
   get grnReturnDetArray(): FormArray {
-    return this.GrnReturnForm.get('grnReturn.tGrnreturnDetails') as FormArray;
+    return this.GrnReturnForm.get('tGrnreturnDetails') as FormArray;
   }
 
   createGrnReturnDetInsert(element: any = {}): FormGroup {
@@ -159,7 +163,7 @@ export class NewGRNReturnComponent implements OnInit {
 
     if (inputDate) {
       if (inputDate.includes('-')) {
-        ExpDate=inputDate
+        ExpDate = inputDate
       }
       else if (inputDate.includes('/')) {
         // dd/MM/yyyy → convert to yyyy-MM-dd
@@ -170,9 +174,9 @@ export class NewGRNReturnComponent implements OnInit {
     }
 
     return this._formbuilder.group({
-      grnreturnDetailId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      // grnreturnDetailId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       grnReturnId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      grnId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      // grnId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       itemId: [element.itemId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       batchNo: [element.batchNo || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       batchExpiryDate: [ExpDate, [this._FormvalidationserviceService.validDateValidator()]],
@@ -194,6 +198,8 @@ export class NewGRNReturnComponent implements OnInit {
       stkId: [element.stkId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       cf: [element.conversion || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       totalQty: [totalQty || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      grnid: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+
     });
   }
 
@@ -205,7 +211,7 @@ export class NewGRNReturnComponent implements OnInit {
     return this._formbuilder.group({
       itemId: [element.itemId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       issueQty: [element.returnQty || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      stockId: [element.stkId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      iStkId: [element.stkId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       storeID: [this.vstoreId, [this._FormvalidationserviceService.onlyNumberValidator()]]
     });
   }
@@ -283,6 +289,7 @@ export class NewGRNReturnComponent implements OnInit {
       this.vLandedRate = result.landedRate;
       this.vTotalAmount = 0;
       this.vGST = result.vatPercentage; //|| 1;
+      // this._GRNReturnService.NewGRNReturnFrom.get('GST').setValue(this.vGST) //|| 1;
       this.vGSTAmount = 0;
       this.vNetAmount = 0;
       this.vUnitMRP = result.unitMRP;
@@ -291,6 +298,10 @@ export class NewGRNReturnComponent implements OnInit {
       this.vPurchaseRate = result.purchaseRate;
 
     });
+  }
+
+  getchangegstper(rate: any): void {
+    this.vGST = rate.text
   }
 
   // onAdd() {
@@ -401,7 +412,6 @@ export class NewGRNReturnComponent implements OnInit {
     });
   }
 
-
   ItemReset() {
     this.vItemName = '';
     this.ItemName = '';
@@ -476,6 +486,7 @@ export class NewGRNReturnComponent implements OnInit {
       this.vNetAmount = Number((this.vTotalAmount + this.vGSTAmount).toFixed(2));
     } else {
       this.vGSTAmount = 0;
+      // this.vGST=0
       this.vNetAmount = this.vTotalAmount;
     }
   }
@@ -571,23 +582,41 @@ export class NewGRNReturnComponent implements OnInit {
         }
       });
     } else {
-      let invalidFields = [];
+      const invalidFields = this.getInvalidFields(this.GrnReturnForm);
 
-      if (this.GrnReturnForm.invalid) {
-        for (const controlName in this.GrnReturnForm.controls) {
-          if (this.GrnReturnForm.controls[controlName].invalid) {
-            invalidFields.push(`Form: ${controlName}`);
-          }
-        }
-      }
       if (invalidFields.length > 0) {
         invalidFields.forEach(field => {
-          this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
-          );
+          this.toastr.warning(`Field "${field}" is invalid.`, 'Warning');
         });
       }
     }
+  }
 
+  private getInvalidFields(form: AbstractControl, path: string = ''): string[] {
+    let invalidFields: string[] = [];
+
+    if (form instanceof FormGroup) {
+      Object.keys(form.controls).forEach(key => {
+        const control = form.get(key);
+        if (control) {
+          invalidFields = invalidFields.concat(
+            this.getInvalidFields(control, path ? `${path} -> ${key}` : key)
+          );
+        }
+      });
+    }
+    else if (form instanceof FormArray) {
+      form.controls.forEach((control, index) => {
+        invalidFields = invalidFields.concat(
+          this.getInvalidFields(control, `${path}[${index + 1}]`)
+        );
+      });
+    }
+    else if (form.invalid) {
+      invalidFields.push(path);
+    }
+
+    return invalidFields;
   }
 
   OnReset() {

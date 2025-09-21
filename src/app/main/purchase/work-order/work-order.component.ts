@@ -38,7 +38,7 @@ export class WorkOrderComponent implements OnInit {
 
   allcolumns = [
 
-    { heading: "WO No", key: "woNo", sort: true, align: 'left', emptySign: 'NA', width: 50 },
+    { heading: "WO No", key: "wono", sort: true, align: 'left', emptySign: 'NA', width: 50 },
     { heading: "Date", key: "woDate", sort: true, align: 'left', emptySign: 'NA', width: 100 },
     { heading: "SupplierName", key: "supplierName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
     { heading: "TotalAmt", key: "woTotalAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },

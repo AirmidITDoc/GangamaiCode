@@ -327,6 +327,7 @@ export class SalesReturnBillSettlementComponent implements OnInit {
     this.grid.bindGridData();
   }
   openPaymentpopup(contact) {
+    debugger
     const currentDate = new Date();
     const datePipe = new DatePipe('en-US');
     const formattedTime = datePipe.transform(currentDate, 'shortTime');
@@ -399,10 +400,9 @@ export class SalesReturnBillSettlementComponent implements OnInit {
       
         console.log(this.PharmaSettlementfrom.value);
         this._SelseSettelmentservice.InsertSalessettlement(this.PharmaSettlementfrom.value).subscribe(response => { 
-            this.MutliSettlemForm.reset(); 
-            console.log(response)
-            this.viewgetIPPayemntPdf(response) 
-            this.OnSalessettlemtnprint(this.OP_IP_Id,this._loggedService.currentUserValue.user.storeId) 
+            this.MutliSettlemForm.reset();  
+            // this.viewgetIPPayemntPdf(response) 
+            // this.OnSalessettlemtnprint(this.OP_IP_Id,this._loggedService.currentUserValue.user.storeId) 
             this.grid.bindGridData(); 
         });
       }
