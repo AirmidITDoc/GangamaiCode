@@ -21,9 +21,9 @@ export class DepartmentMasterComponent implements OnInit {
     departmentName: any = "";
 
         allcolumns =[
-            { heading: "Code", key: "departmentId", sort: true, align: 'left', emptySign: 'NA' },
+            // { heading: "Code", key: "departmentId", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "Department Name", key: "departmentName", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "User Name", key: "username", sort: true, align: 'left', emptySign: 'NA' },
+            // { heading: "User Name", key: "username", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
             {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
@@ -34,7 +34,7 @@ export class DepartmentMasterComponent implements OnInit {
                     }, {
                         action: gridActions.delete, callback: (data: any) => {
                             this._departmentService.deactivateTheStatus(data.departmentId).subscribe((response: any) => {
-                                this.toastr.success(response.message);
+                                
                                 this.grid.bindGridData();
                             });
                         }
@@ -43,7 +43,7 @@ export class DepartmentMasterComponent implements OnInit {
         ]
         
         allfilters = [
-            { fieldName: "departmentName", fieldValue: "", opType: OperatorComparer.Contains },
+            { fieldName: "departmentName", fieldValue: "", opType: OperatorComparer.StartsWith },
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
         ]
     gridConfig: gridModel = {
@@ -60,44 +60,7 @@ export class DepartmentMasterComponent implements OnInit {
         public toastr: ToastrService,) { }
 
     ngOnInit(): void { }
-//filters addedby avdhoot vedpathak date-27/05/2025
-    // Clearfilter(event) {
-    //     console.log(event)
-    //     if (event == 'DepartmentNameSearch')
-    //         this._departmentService.myformSearch.get('DepartmentNameSearch').setValue("")
 
-    //     this.onChangeFirst();
-    // }
-
-    // onChangeFirst() {
-    //     this.departmentName = this._departmentService.myformSearch.get('DepartmentNameSearch').value
-    //     this.getfilterdata();
-    // }
-
-    // getfilterdata() {
-    //     debugger
-    //     let isActive = this._departmentService.myformSearch.get("IsDeletedSearch").value || "";
-    //     this.gridConfig = {
-    //         apiUrl: "DepartmentMaster/List",
-    //         columnsList: this.allcolumns,
-    //         sortField: "departmentId",
-    //         sortOrder: 0,
-    //         filters: [
-    //             { fieldName: "departmentName", fieldValue: this.departmentName, opType: OperatorComparer.Contains },
-    //             { fieldName: "isActive", fieldValue: isActive, opType: OperatorComparer.Equals }
-    //         ]
-    //     }
-    //     // this.grid.gridConfig = this.gridConfig;
-    //     // this.grid.bindGridData();
-    //     console.log("GridConfig:", this.gridConfig);
-
-    // if (this.grid) {
-    //     this.grid.gridConfig = this.gridConfig;
-    //     this.grid.bindGridData();
-    // } else {
-    //     console.error("Grid is undefined!");
-    // }
-    // }
     onSave(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button

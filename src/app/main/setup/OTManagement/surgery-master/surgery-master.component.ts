@@ -22,7 +22,7 @@ export class SurgeryMasterComponent implements OnInit {
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
 
     allColumns = [
-        { heading: "Code", key: "surgeryId", sort: true, align: 'left', emptySign: 'NA' },
+        // { heading: "Code", key: "surgeryId", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "SurgeryName", key: "surgeryName", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "DepartmentName", key: "departmentId", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "CategoryName", key: "surgeryCategoryId", sort: true, align: 'left', emptySign: 'NA' },
@@ -38,7 +38,6 @@ export class SurgeryMasterComponent implements OnInit {
                 }, {
                     action: gridActions.delete, callback: (data: any) => {
                         this._SurgeryMasterService.deactivateTheStatus(data.surgeryId).subscribe((response: any) => {
-                            this.toastr.success(response.message);
                             this.grid.bindGridData();
                         });
                     }

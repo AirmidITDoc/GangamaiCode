@@ -58,7 +58,7 @@ export class TestmasterComponent implements OnInit {
   ]
 
   filters = [
-    { fieldName: "ServiceName", fieldValue: "%", opType: OperatorComparer.Contains },
+    { fieldName: "ServiceName", fieldValue: "%", opType: OperatorComparer.StartsWith },
     { fieldName: "CatId", fieldValue: "0", opType: OperatorComparer.Equals },
     { fieldName: "ServiceId", fieldValue: "0", opType: OperatorComparer.Equals }
   ]
@@ -94,6 +94,27 @@ export class TestmasterComponent implements OnInit {
 
   catId = "0"
   serviceId = "0"
+
+   ServiceView(value) {
+
+        if (value.value !== 0)
+            this.serviceId = value.value
+        else
+            this.serviceId = "0"
+
+        this.onChangeFirst();
+    }
+
+    CatView(value) {
+
+        if (value.value !== 0)
+            this.catId = value.value
+        else
+            this.catId = "0"
+
+        this.onChangeFirst();
+    }
+
 
   onChangeFirst() {
     this.testName = this.searchFormGroup.get('TestNameSearch').value + "%"

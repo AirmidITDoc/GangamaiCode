@@ -478,7 +478,7 @@ export class NewPurchaseorderComponent {
           TotalAmount: formValues.TotalAmount || 0,
           DiscPer: formValues.Disc || 0,
           DiscAmount: formValues.DiscAmount || 0,
-          CGSTPer: formValues.CGSTPer || 0,
+          CGSTPer: formValues.SGSTPer || 0,
           CGSTAmount: formValues.CGSTAmount || 0,
           CGSTAmt: formValues.CGSTAmount || 0,
           SGSTPer: formValues.SGSTPer || 0,
@@ -865,10 +865,17 @@ export class NewPurchaseorderComponent {
     // // Recalculate GST after discount update
     this.calculateGSTType();
   }
+  Cgst:any;
   calculateGSTType(type: GSTType = GSTType.GST_BEFORE_DISC) {
+debugger
 
     const form = this.userFormGroup;
     const formValues = form.getRawValue() as PurchaseFormModel;
+    
+    this.Cgst= (formValues.CGSTPer)
+    this.Cgst=parseFloat(this.Cgst)/2
+    formValues.CGSTPer= this.Cgst
+
     const values = this._PurchaseOrder.normalizeValues(formValues);
     const calculation = this._PurchaseOrder.getGSTCalculation(this.GSTTypetext || type, values);
 

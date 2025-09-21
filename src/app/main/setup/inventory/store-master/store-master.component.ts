@@ -43,9 +43,9 @@ export class StoreMasterComponent implements OnInit {
         { heading: "GRNRet No", key: "grnreturnNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "IssueToDept Prefix", key: "issueToDeptPrefix", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "IssueToDept No", key: "issueToDeptNo", sort: true, align: 'left', emptySign: 'NA', width: 120},
-        { heading: "ReturnFromDept Prefix", key: "returnFromDeptNoPrefix", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-        { heading: "ReturnFromDept No", key: "returnFromDeptNo", sort: true, align: 'left', emptySign: 'NA', width: 130 },
-        { heading: "User Name", key: "username", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "RetFromDept Prefix", key: "returnFromDeptNoPrefix", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "RetFromDept No", key: "returnFromDeptNo", sort: true, align: 'left', emptySign: 'NA', width: 130 },
+        { heading: "User Name", key: "userName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center", width: 100 },
         {
             heading: "Action", key: "action", width: 100 , align: "right", type: gridColumnTypes.action, actions: [
@@ -56,7 +56,6 @@ export class StoreMasterComponent implements OnInit {
                 }, {
                     action: gridActions.delete, callback: (data: any) => {
                         this._StoreMasterService.deactivateTheStatus(data.storeId).subscribe((response: any) => {
-                            this.toastr.success(response.message);
                             this.grid.bindGridData();
                         });
                     }
@@ -65,7 +64,7 @@ export class StoreMasterComponent implements OnInit {
     ]
 
     allFilters=[
-        { fieldName: "storeName", fieldValue: "", opType: OperatorComparer.Contains },
+        { fieldName: "storeName", fieldValue: "", opType: OperatorComparer.StartsWith },
         // { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
     ]
 
@@ -77,37 +76,7 @@ export class StoreMasterComponent implements OnInit {
         filters: this.allFilters
     }
 
-    // Clearfilter(event) {
-    //     debugger
-    //     console.log(event)
-    //     if (event == 'StoreNameSearch')
-    //         this.myformSearch.get('StoreNameSearch').setValue("")
-       
-    //     this.onChangeFirst();
-    //   }
-      
-    // onChangeFirst() {
-    //     debugger
-    //     this.storeName = this.myformSearch.get('StoreNameSearch').value + "%"
-    //     this.type = this.myformSearch.get('IsDeletedSearch').value
-    //     this.getfilterdata();
-    // }
-
-    // getfilterdata(){
-    //     debugger
-    //     this.gridConfig = {
-    //         apiUrl: "StoreMaster/List", //StoreMasterList
-    //         columnsList:this.allColumns, 
-    //         sortField: "storeId",
-    //         sortOrder: 0,
-    //         filters:  [
-    //             { fieldName: "storeName", fieldValue: this.storeName, opType: OperatorComparer.StartsWith },
-    //             // { fieldName: "isActive", fieldValue: this.type, opType: OperatorComparer.Equals }
-    //         ]
-    //     }
-    //     this.grid.gridConfig = this.gridConfig;
-    //     this.grid.bindGridData(); 
-    // }
+    
 
     constructor(public _StoreMasterService: StoreMasterService, public _matDialog: MatDialog,
         public toastr: ToastrService,) { }

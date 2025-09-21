@@ -20,9 +20,9 @@ export class UomMasterComponent implements OnInit {
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     unitofMeasurementName: any = "";
         allcolumns = [
-            { heading: "Code", key: "unitofMeasurementId", sort: true, align: 'left', emptySign: 'NA' },
+            // { heading: "Code", key: "unitofMeasurementId", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "UnitOfMeasurement Name", key: "unitofMeasurementName", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "User Name", key: "username", sort: true, align: 'left', emptySign: 'NA' },
+            // { heading: "User Name", key: "username", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
             {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
@@ -33,7 +33,6 @@ export class UomMasterComponent implements OnInit {
                     }, {
                         action: gridActions.delete, callback: (data: any) => {
                             this._UomMasterService.deactivateTheStatus(data.unitofMeasurementId).subscribe((response: any) => {
-                                this.toastr.success(response.message);
                                 this.grid.bindGridData();
                             });
                         }
@@ -42,7 +41,7 @@ export class UomMasterComponent implements OnInit {
         ]
         
          allfilters =[
-            { fieldName: "unitofMeasurementName", fieldValue: "", opType: OperatorComparer.Contains },
+            { fieldName: "unitofMeasurementName", fieldValue: "", opType: OperatorComparer.StartsWith },
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
         ]
     
@@ -57,44 +56,7 @@ gridConfig: gridModel = {
         public toastr: ToastrService,) { }
 
     ngOnInit(): void { }
-    //filters addedby avdhoot vedpathak date-28/05/2025
-    // Clearfilter(event) {
-    //     console.log(event)
-    //     if (event == 'UnitofMeasurementSearch')
-    //         this._UomMasterService.myformSearch.get('UnitofMeasurementSearch').setValue("")
-
-    //     this.onChangeFirst();
-    // }
-
-    // onChangeFirst() {
-    //     this.unitofMeasurementName = this._UomMasterService.myformSearch.get('UnitofMeasurementSearch').value
-    //     this.getfilterdata();
-    // }
-
-    // getfilterdata() {
-    //     debugger
-    //     let isActive = this._UomMasterService.myformSearch.get("IsDeletedSearch").value || "";
-    //     this.gridConfig = {
-    //         apiUrl: "UnitOfMeasurement/List",
-    //         columnsList: this.allcolumns,
-    //         sortField: "unitofMeasurementId",
-    //         sortOrder: 0,
-    //         filters: [
-    //             { fieldName: "unitofMeasurementName", fieldValue: this.unitofMeasurementName, opType: OperatorComparer.Contains },
-    //             { fieldName: "isActive", fieldValue: isActive, opType: OperatorComparer.Equals }
-    //         ]
-    //     }
-    //     // this.grid.gridConfig = this.gridConfig;
-    //     // this.grid.bindGridData();
-    //     console.log("GridConfig:", this.gridConfig);
-
-    // if (this.grid) {
-    //     this.grid.gridConfig = this.gridConfig;
-    //     this.grid.bindGridData();
-    // } else {
-    //     console.error("Grid is undefined!");
-    // }
-    // }
+ 
     onSave(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button

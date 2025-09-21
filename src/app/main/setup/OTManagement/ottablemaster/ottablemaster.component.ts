@@ -25,10 +25,10 @@ tableName: any = "";
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
    
         allColumns =[
-            { heading: "Code", key: "ottableId", sort: true, align: 'left', emptySign: 'NA' },
+            // { heading: "Code", key: "ottableId", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "OT Room Name", key: "ottableName", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "Location Name", key: "locationId", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "AddedBy", key: "isAddedBy", sort: true, align: 'left', emptySign: 'NA' },
+            // { heading: "AddedBy", key: "isAddedBy", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
             {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
@@ -40,7 +40,6 @@ tableName: any = "";
                         action: gridActions.delete, callback: (data: any) => {
                     
                             this._OttablemasterService.deactivateTheStatus(data.ottableId).subscribe((response: any) => {
-                                this.toastr.success(response.message);
                                 this.grid.bindGridData();
                             });
                         }

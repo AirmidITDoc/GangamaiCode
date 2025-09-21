@@ -21,9 +21,9 @@ export class ItemClassMasterComponent implements OnInit {
     itemClassName: any = "";
    
          allcolumns = [
-            { heading: "Code", key: "itemClassId", sort: true, align: 'left', emptySign: 'NA' },
+            // { heading: "Code", key: "itemClassId", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "ItemClass Name", key: "itemClassName", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "User Name", key: "username", sort: true, align: 'left', emptySign: 'NA' },
+            // { heading: "User Name", key: "username", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
             {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
@@ -34,7 +34,6 @@ export class ItemClassMasterComponent implements OnInit {
                     }, {
                         action: gridActions.delete, callback: (data: any) => {
                             this._ItemClassMasterService.deactivateTheStatus(data.itemClassId).subscribe((response: any) => {
-                                this.toastr.success(response.message);
                                 this.grid.bindGridData();
                             });
                         }
@@ -43,7 +42,7 @@ export class ItemClassMasterComponent implements OnInit {
         ]
         
         allfilters = [
-            { fieldName: "itemClassName", fieldValue: "", opType: OperatorComparer.Contains },
+            { fieldName: "itemClassName", fieldValue: "", opType: OperatorComparer.StartsWith },
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
         ]
      gridConfig: gridModel = {
@@ -58,44 +57,7 @@ export class ItemClassMasterComponent implements OnInit {
         public toastr: ToastrService,) { }
         
     ngOnInit(): void { }
-     //filters addedby avdhoot vedpathak date-28/05/2025
-    // Clearfilter(event) {
-    //     console.log(event)
-    //     if (event == 'ItemClassNameSearch')
-    //         this._ItemClassMasterService.myformSearch.get('ItemClassNameSearch').setValue("")
-
-    //     this.onChangeFirst();
-    // }
-
-    // onChangeFirst() {
-    //     this.itemClassName = this._ItemClassMasterService.myformSearch.get('ItemClassNameSearch').value
-    //     this.getfilterdata();
-    // }
-
-    // getfilterdata() {
-    //     debugger
-    //     let isActive = this._ItemClassMasterService.myformSearch.get("IsDeletedSearch").value || "";
-    //     this.gridConfig = {
-    //         apiUrl: "ItemClassMaster/List",
-    //         columnsList: this.allcolumns,
-    //         sortField: "itemClassId",
-    //         sortOrder: 0,
-    //         filters: [
-    //             { fieldName: "itemClassName", fieldValue: this.itemClassName, opType: OperatorComparer.Contains },
-    //             { fieldName: "isActive", fieldValue: isActive, opType: OperatorComparer.Equals }
-    //         ]
-    //     }
-    //     // this.grid.gridConfig = this.gridConfig;
-    //     // this.grid.bindGridData();
-    //     console.log("GridConfig:", this.gridConfig);
-
-    // if (this.grid) {
-    //     this.grid.gridConfig = this.gridConfig;
-    //     this.grid.bindGridData();
-    // } else {
-    //     console.error("Grid is undefined!");
-    // }
-    // }
+    
     onSave(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button

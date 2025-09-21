@@ -20,10 +20,10 @@ export class ManufactureMasterComponent implements OnInit {
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     manufName: any = "";
         allcolumns = [
-            { heading: "Code", key: "manufId", sort: true, align: 'left', emptySign: 'NA' },
+            // { heading: "Code", key: "manufId", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "ManuFatcure Name", key: "manufName", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "Manufacture ShortName", key: "manufShortName", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "User Name", key: "AddedBy", sort: true, align: 'left', emptySign: 'NA' },
+            // { heading: "User Name", key: "AddedBy", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "IsActive", key: "!isActive", type: gridColumnTypes.status, align: "center" },
             {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
@@ -34,7 +34,6 @@ export class ManufactureMasterComponent implements OnInit {
                     }, {
                         action: gridActions.delete, callback: (data: any) => {
                             this._ManufactureMasterService.deactivateTheStatus(data.manufId).subscribe((response: any) => {
-                                this.toastr.success(response.message);
                                 this.grid.bindGridData();
                             });
                         }
@@ -43,7 +42,7 @@ export class ManufactureMasterComponent implements OnInit {
         ]
        
       allfilters = [
-            { fieldName: "manufName", fieldValue: "", opType: OperatorComparer.Contains },
+            { fieldName: "manufName", fieldValue: "", opType: OperatorComparer.StartsWith },
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
         ]
      gridConfig: gridModel = {
@@ -58,44 +57,7 @@ export class ManufactureMasterComponent implements OnInit {
         public toastr: ToastrService,) { }
         
     ngOnInit(): void { }
- //filters addedby avdhoot vedpathak date-28/05/2025
-    // Clearfilter(event) {
-    //     console.log(event)
-    //     if (event == 'ManufNameSearch')
-    //         this._ManufactureMasterService.myformSearch.get('ManufNameSearch').setValue("")
-
-    //     this.onChangeFirst();
-    // }
-
-    // onChangeFirst() {
-    //     this.manufName = this._ManufactureMasterService.myformSearch.get('ManufNameSearch').value
-    //     this.getfilterdata();
-    // }
-
-    // getfilterdata() {
-    //     debugger
-    //     let isActive = this._ManufactureMasterService.myformSearch.get("IsDeletedSearch").value || "";
-    //     this.gridConfig = {
-    //         apiUrl: "ManufactureMaster/List",
-    //         columnsList: this.allcolumns,
-    //         sortField: "ManufName",
-    //         sortOrder: 0,
-    //         filters: [
-    //             { fieldName: "manufName", fieldValue: this.manufName, opType: OperatorComparer.Contains },
-    //             { fieldName: "isActive", fieldValue: isActive, opType: OperatorComparer.Equals }
-    //         ]
-    //     }
-    //     // this.grid.gridConfig = this.gridConfig;
-    //     // this.grid.bindGridData();
-    //     console.log("GridConfig:", this.gridConfig);
-
-    // if (this.grid) {
-    //     this.grid.gridConfig = this.gridConfig;
-    //     this.grid.bindGridData();
-    // } else {
-    //     console.error("Grid is undefined!");
-    // }
-    // }
+ 
     onSave(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button
@@ -109,9 +71,8 @@ export class ManufactureMasterComponent implements OnInit {
                 data: row
             });
         dialogRef.afterClosed().subscribe(result => {
-            if (result) {
-                that.grid.bindGridData();
-            }
+           that.grid.bindGridData();
+            
         });
     }
 

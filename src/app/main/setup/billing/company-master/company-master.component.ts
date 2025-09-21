@@ -28,7 +28,7 @@ export class CompanyMasterComponent implements OnInit {
     companyName: any = "";
 
     allcolumns = [
-        { heading: "Code", key: "companyId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        // { heading: "Code", key: "companyId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "Company Name", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
         { heading: "Company Type", key: "compTypeId", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "Address", key: "address", sort: true, align: 'left', emptySign: 'NA', width: 200 },
@@ -63,7 +63,6 @@ export class CompanyMasterComponent implements OnInit {
                 }, {
                     action: gridActions.delete, callback: (data: any) => {
                         this._CompanyMasterService.deactivateTheStatus(data.companyId).subscribe((response: any) => {
-                            this.toastr.success(response.message);
                             this.grid.bindGridData();
                         });
                     }
@@ -72,7 +71,7 @@ export class CompanyMasterComponent implements OnInit {
     ]
 
     allfilters = [
-        { fieldName: "companyName", fieldValue: "", opType: OperatorComparer.Contains },
+        { fieldName: "companyName", fieldValue: "", opType: OperatorComparer.StartsWith },
         { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
     ]
     gridConfig: gridModel = {

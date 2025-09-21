@@ -21,39 +21,43 @@ import { DoctorShareListComponent } from './doctor-share-list/doctor-share-list.
   selector: 'app-doctor-payoutpercentage',
   templateUrl: './doctor-payoutpercentage.component.html',
   styleUrls: ['./doctor-payoutpercentage.component.scss'],
-      encapsulation: ViewEncapsulation.None,
-      animations: fuseAnimations,
+  encapsulation: ViewEncapsulation.None,
+  animations: fuseAnimations,
 })
 export class DoctorPayoutpercentageComponent {
-DoctorId = "0";
+  DoctorId = "0";
   classid = 0;
-  doctorId = 0
   serviceId = 0
   groupId = 0
-  type="1"
-  autocompleteModeItem: string = "ConDoctor";
+  type = "1"
+  autocompleteModeDoctor: string = "ConDoctor";
   @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+  @ViewChild('actionsTemplate') actionsTemplate!: TemplateRef<any>;
+  @ViewChild('actionsTemplate1') actionsTemplate1!: TemplateRef<any>;
+  @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
 
-   ngAfterViewInit() {
-         this.gridConfig.columnsList.find(col => col.key === 'op_IP_Type')!.template = this.actionsTemplate;
-         this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
-      }
-      @ViewChild('actionsTemplate') actionsTemplate!: TemplateRef<any>;
-      @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
+  ngAfterViewInit() {
+    this.gridConfig.columnsList.find(col => col.key === 'op_IP_Type')!.template = this.actionsTemplate;
+    this.gridConfig.columnsList.find(col => col.key === 'shrTypeSerOrGrp')!.template = this.actionsTemplate1;
+    this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
+  }
+
   allColumns = [
 
-      { heading: "", key: "op_IP_Type", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 20 },
-          
-    { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "ServiceName", key: "serviceName", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "Share%", key: "servicePercentage", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "ShareAmt", key: "serviceAmount", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "DocShareType", key: "docShrTypeS", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "ClassName", key: "className", sort: true, align: 'left', emptySign: 'NA' },
-   {
-            heading: "Action", key: "action", align: "right", width: 150, sticky: true, type: gridColumnTypes.template,
-            template: this.actionButtonTemplate  // Assign ng-template to the column
-        }
+    { heading: "", key: "op_IP_Type", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width:50 },
+    { heading: "", key: "shrTypeSerOrGrp", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width:50 },
+    { heading: "Share Type", key: "docShrTypeS", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+
+    { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
+    { heading: "ServiceName", key: "serviceName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
+    { heading: "ClassName", key: "className", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+    { heading: "Share%", key: "servicePercentage", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+    { heading: "ShareAmt", key: "serviceAmount", sort: true, align: 'left', emptySign: 'NA', width: 100, type: gridColumnTypes.amount  },
+
+    {
+      heading: "Action", key: "action", align: "right", width: 150, sticky: true, type: gridColumnTypes.template,
+      template: this.actionButtonTemplate  // Assign ng-template to the column
+    }
   ]
   allFilters = [
     { fieldName: "DoctorId", fieldValue: this.DoctorId, opType: OperatorComparer.StartsWith },//"10006"
@@ -74,15 +78,15 @@ DoctorId = "0";
   ) { }
 
   ngOnInit(): void {
-  
+
   }
 
   onChange() {
-    debugger
+
     this.type = this._DoctorShareService.DocFormGroup.get('Type').value
     this.getfilterdata();
   }
-  
+
   getfilterdata() {
     debugger
     this.gridConfig = {
@@ -101,7 +105,7 @@ DoctorId = "0";
   }
 
   ListView(value) {
-    console.log(value)
+    debugger
     if (value.value !== 0)
       this.DoctorId = value.value
     else
@@ -110,47 +114,41 @@ DoctorId = "0";
     this.getfilterdata();
   }
 
-    onDelete(data: any) {
-        this._DoctorShareService.deactivateTheStatus(data.doctorShareId).subscribe((response: any) => {
-            this.toastr.success(response.message);
-            this.grid.bindGridData();
-        });
-    }
-  selectChangeDoctor(obj: any) {
-    console.log(obj);
-    this.doctorId = obj.value
+  onDelete(data: any) {
+    this._DoctorShareService.deactivateTheStatus(data.doctorShareId).subscribe((response: any) => {
+      this.grid.bindGridData();
+    });
   }
 
-
   onAdd() {
-    const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
-    buttonElement.blur(); // Remove focus from the button
+    const buttonElement = document.activeElement as HTMLElement;
+    buttonElement.blur();
+
+    const dialogRef = this._matDialog.open(DoctorShareListComponent, {
+      maxWidth: "85vw",
+      height: "45%",
+      width: "100%",
+
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+     this.gridConfig.filters[0].fieldValue="0"
+      this.grid.bindGridData();
+    });
+  }
+
+  onEdit(row) {
+    const buttonElement = document.activeElement as HTMLElement;
+    buttonElement.blur();
 
     const dialogRef = this._matDialog.open(DoctorShareListComponent, {
       maxWidth: "85vw",
       height: "55%",
       width: "100%",
-          
+      data: row
+
     });
     dialogRef.afterClosed().subscribe((result) => {
-      console.log("The dialog was closed - Insert Action", result);
-      this.grid.bindGridData();
-    });
-  }
-
-    onEdit(row) {
-    const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
-    buttonElement.blur(); // Remove focus from the button
-
-    const dialogRef = this._matDialog.open(DoctorShareListComponent, {
-     maxWidth: "85vw",
-      height: "55%",
-      width: "100%",
-      data:row
-    
-    });
-    dialogRef.afterClosed().subscribe((result) => {
-      console.log("The dialog was closed - Insert Action", result);
+      this.gridConfig.filters[0].fieldValue="0"
       this.grid.bindGridData();
     });
   }

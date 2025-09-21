@@ -22,7 +22,7 @@ export class NursingMasterComponent {
   @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
 
   allColumns = [
-    { heading: "Code", key: "nursingId", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+    // { heading: "Code", key: "nursingId", sort: true, align: 'left', emptySign: 'NA', width: 150 },
     { heading: "Template Name", key: "nursTempName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
     { heading: "Template Desc ", key: "templateDesc", sort: true, align: 'left', emptySign: 'NA', width: 350 },
     // { heading: "isActive", key: "isActive", type: gridColumnTypes.status, align: "center" },

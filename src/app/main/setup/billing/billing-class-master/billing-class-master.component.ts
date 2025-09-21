@@ -20,7 +20,7 @@ export class BillingClassMasterComponent implements OnInit {
  className: any = "";
    
         allcolumns = [
-            { heading: "Code", key: "classId", sort: true, align: 'left', emptySign: 'NA' },
+            // { heading: "Code", key: "classId", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "Billing Class Name", key: "className", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
             {
@@ -32,7 +32,6 @@ export class BillingClassMasterComponent implements OnInit {
                     }, {
                         action: gridActions.delete, callback: (data: any) => {
                             this._BillingClassMasterService.deactivateTheStatus(data.classId).subscribe((response: any) => {
-                                this.toastr.success(response.message);
                                 this.grid.bindGridData();
                             });
                         }
@@ -41,7 +40,7 @@ export class BillingClassMasterComponent implements OnInit {
         ]
        
         allfilters = [
-            { fieldName: "className", fieldValue: "", opType: OperatorComparer.Contains },
+            { fieldName: "className", fieldValue: "", opType: OperatorComparer.StartsWith },
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
         ]
      gridConfig: gridModel = {

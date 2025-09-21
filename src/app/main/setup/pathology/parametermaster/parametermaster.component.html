@@ -50,6 +50,17 @@
             </div>
         </ng-template>
 
+
+        <ng-template #actionsIsprint let-element>
+            <div fxLayout="row" fxLayoutAlign="center center">
+
+                <mat-icon *ngIf="element.isPrintDisSummary==true" title="IsPrintDisSummary">
+                    <img width="20px" height="20px" src="assets/images/logos/IsprintonDischarge.png">
+                </mat-icon>
+               
+            </div>
+        </ng-template>
+
         <airmid-table [gridConfig]="gridConfig" class="content">
             <ng-container filters>
                 <form [formGroup]="searchFormGroup" fxLayout="column">
@@ -65,13 +76,17 @@
                     </mat-form-field>
 
                     <airmid-dropdown label="UnitId" formControlName="UnitId" [formGroup]="searchFormGroup"
-                        [mode]="autocompleteModeUnitId" (selectionChange)="onChangeFirst()">
+                        [mode]="autocompleteModeUnitId" (selectionChange)="UnitView($event)"
+                        [(ngModel)]="gridConfig.filters[1].fieldValue">
                     </airmid-dropdown>
 
-                  
-                      <mat-slide-toggle name="IsNumeric" (change)="onChangeFirst()" formControlName="IsNumeric">
-                            IsDescriptive / IsNumeric 
-                        </mat-slide-toggle>
+                    <!-- [(ngModel)]="gridConfig.filters[2].fieldValue"  -->
+                    <mat-radio-group formControlName="IsNumeric" fxLayoutAlign="center center"
+                        (change)="onChangeFirst()">
+                        <mat-radio-button value="2">All</mat-radio-button>
+                        <mat-radio-button mat-fab value="1">IsNumeric</mat-radio-button>
+                        <mat-radio-button mat-fab value="0">IsDescriptive</mat-radio-button>
+                    </mat-radio-group>
 
                 </form>
             </ng-container>

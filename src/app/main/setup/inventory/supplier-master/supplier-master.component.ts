@@ -41,7 +41,7 @@ export class SupplierMasterComponent implements OnInit {
         { heading: "Email", key: "email", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         { heading: "GSTNo", key: "gstNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "PanNo", key: "panNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-        { heading: "User Name", key: "username", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "User Name", key: "userName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center", width: 100 },
         {
             heading: "Action", key: "action", width: 100, sticky: true, align: "right", type: gridColumnTypes.action, actions: [
@@ -54,7 +54,6 @@ export class SupplierMasterComponent implements OnInit {
                     action: gridActions.delete, callback: (data: any) => {
                         
                         this._supplierService.SupplierMasterCancle(data.supplierId).subscribe((response: any) => {
-                            this.toastr.success(response.message);
                             this.grid.bindGridData();
                         });
                     }
@@ -106,7 +105,7 @@ export class SupplierMasterComponent implements OnInit {
             sortField: "SupplierId",
             sortOrder: 0,
             filters:  [
-                { fieldName: "SupplierName", fieldValue: this.supplierName, opType: OperatorComparer.Contains },
+                { fieldName: "SupplierName", fieldValue: this.supplierName, opType: OperatorComparer.StartsWith },
                 { fieldName: "StoreID", fieldValue: String(this.storeId), opType: OperatorComparer.Equals }
             ]
         }

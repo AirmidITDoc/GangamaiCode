@@ -33,7 +33,6 @@ export class UnitmasterComponent implements OnInit {
                     }, {
                         action: gridActions.delete, callback: (data: any) => {
                             this._unitmasterService.deactivateTheStatus(data.unitId).subscribe((response: any) => {
-                                this.toastr.success(response.message);
                                 this.grid.bindGridData();
                             });
                         }
@@ -42,7 +41,7 @@ export class UnitmasterComponent implements OnInit {
         ]
         
          allfilters = [
-            { fieldName: "unitName", fieldValue: "", opType: OperatorComparer.Contains },
+            { fieldName: "unitName", fieldValue: "", opType: OperatorComparer.StartsWith },
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
         ]
      gridConfig: gridModel = {

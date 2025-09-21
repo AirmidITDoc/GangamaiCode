@@ -20,20 +20,35 @@
         <ng-template #actionsTemplate let-element>
             <div fxLayout="row" fxLayoutAlign="center center">
 
-                <mat-icon *ngIf="element.op_IP_Type=='0'" matTooltip="IP" class="pill green-600 s-16">circle</mat-icon>
-                <mat-icon *ngIf="element.op_IP_Type=='1'" matTooltip="OP" class="pill orange-600 s-16">circle
+                <mat-icon *ngIf="element.op_IP_Type=='0'" title="OP" class="pill green-600 s-16">circle</mat-icon>
+                <mat-icon *ngIf="element.op_IP_Type=='1'" title="IP" class="pill orange-600 s-16">circle
                 </mat-icon>
 
             </div>
         </ng-template>
+
+        <ng-template #actionsTemplate1 let-element>
+            <div fxLayout="row" fxLayoutAlign="center center">
+
+                <mat-icon *ngIf="element.shrTypeSerOrGrp == 1" title="Service">
+                    <img width="30px" height="30px" src="assets/images/logos/doctorservice.png">
+                </mat-icon>
+                <mat-icon *ngIf="element.shrTypeSerOrGrp == 2" title="Group">
+                    <img width="30px" height="30px" src="assets/images/logos/doctorpakage.png">
+                </mat-icon>
+
+            </div>
+        </ng-template>
+
+
           <ng-template #actionButtonTemplate let-element>
             <div fxLayout="row" fxLayoutAlign="center center">
                 <button mat-icon-button (click)="onEdit(element)" style="color:black;">
                     <mat-icon title="Edit Menu">edit</mat-icon>
                 </button>
-                <button mat-icon-button (click)="onDelete(element)" color="warn">
+                <!-- <button mat-icon-button (click)="onDelete(element)" color="warn">
                     <mat-icon>delete_outline</mat-icon>
-                </button>
+                </button> -->
 
             </div>
         </ng-template>
@@ -41,21 +56,24 @@
         <airmid-table [gridConfig]="gridConfig" class="content">
             <ng-container filters>
                 <form [formGroup]="_DoctorShareService.DocFormGroup">
-                    <airmid-dropdown label="Select Doctor Name" formControlName="DoctorName"
+                    <!-- <airmid-dropdown label="Select Doctor Name" formControlName="DoctorName"
                         [formGroup]="_DoctorShareService.DocFormGroup" (selectionChange)="ListView($event)"
                         [mode]="autocompleteModeItem">
-                    </airmid-dropdown>
+                    </airmid-dropdown> -->
+
+
+                     <airmid-dropdown label="Doctor Name" formControlName="DoctorName" [formGroup]="_DoctorShareService.DocFormGroup"
+                            [(ngModel)]="gridConfig.filters[0].fieldValue"
+                            [mode]="autocompleteModeDoctor" (selectionChange)="ListView($event)"
+                            (keyup)="ListView($event)">
+                        </airmid-dropdown>
+
                     <mat-radio-group formControlName="Type" name="Type" (change)="onChange()">
                         <mat-radio-button value="1">Service Wise</mat-radio-button>
                         <mat-radio-button value="2">Group Wise</mat-radio-button>
                     </mat-radio-group>
 
-                    <div style="padding: 10px;">
-                        <button mat-raised-button class="searchButton" matTooltip="search" (click)="getfilterdata()">
-                            <mat-icon class="searchiconbutton">search</mat-icon>
-                        </button>
-                    </div>
-
+                   
                 </form>
             </ng-container>
         </airmid-table>

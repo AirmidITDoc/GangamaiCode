@@ -22,9 +22,9 @@ typeName: any = "";
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
    
          allColumns = [
-            { heading: "Code", key: "ottypeId", sort: true, align: 'left', emptySign: 'NA' },
+            // { heading: "Code", key: "ottypeId", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "OT Type Name", key: "typeName", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "AddedBy", key: "addedBy", sort: true, align: 'left', emptySign: 'NA' },
+            // { heading: "AddedBy", key: "addedBy", sort: true, align: 'left', emptySign: 'NA' },
            // { heading: "SurgeryCategoryName", key: "addedByName", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "isActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
             {
@@ -36,7 +36,6 @@ typeName: any = "";
                     }, {
                         action: gridActions.delete, callback: (data: any) => {
                             this._TypeMasterService.deactivateTheStatus(data.ottypeId).subscribe((response: any) => {
-                                this.toastr.success(response.message);
                                 this.grid.bindGridData();
                             });
                         }

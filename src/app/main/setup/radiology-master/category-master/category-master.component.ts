@@ -23,7 +23,7 @@ export class CategoryMasterComponent implements OnInit {
          allcolumns = [
            
             { heading: "Category Name", key: "categoryName", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "User Name", key: "username", sort: true, align: 'left', emptySign: 'NA' },
+            // { heading: "User Name", key: "username", sort: true, align: 'left', emptySign: 'NA' },
             // { heading: "Updated By", key: "updatedby", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
             {
@@ -36,7 +36,7 @@ export class CategoryMasterComponent implements OnInit {
                     {
                         action: gridActions.delete, callback: (data: any) => {
                             this._categorymasterService.deactivateTheStatus(data.categoryId).subscribe((response: any) => {
-                                this.toastr.success(response.message);
+                                
                                 this.grid.bindGridData();
                             });
                         }
@@ -45,7 +45,7 @@ export class CategoryMasterComponent implements OnInit {
         ]
        
         allfilters =[
-            { fieldName: "categoryName", fieldValue: "", opType: OperatorComparer.Contains },
+            { fieldName: "categoryName", fieldValue: "", opType: OperatorComparer.StartsWith },
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
         ]
      gridConfig: gridModel = {
@@ -65,44 +65,7 @@ export class CategoryMasterComponent implements OnInit {
     ngOnInit(): void {
 
     }
- //filters addedby avdhoot vedpathak date-28/05/2025
-    // Clearfilter(event) {
-    //     console.log(event)
-    //     if (event == 'CategoryNameSearch')
-    //         this._categorymasterService.myformSearch.get('CategoryNameSearch').setValue("")
 
-    //     this.onChangeFirst();
-    // }
-
-    // onChangeFirst() {
-    //     this.categoryName = this._categorymasterService.myformSearch.get('CategoryNameSearch').value
-    //     this.getfilterdata();
-    // }
-
-    // getfilterdata() {
-    //     debugger
-    //     let isActive = this._categorymasterService.myformSearch.get("IsDeletedSearch").value || "";
-    //     this.gridConfig = {
-    //         apiUrl: "RadiologyCategoryMaster/List",
-    //         columnsList: this.allcolumns,
-    //         sortField: "categoryId",
-    //         sortOrder: 0,
-    //         filters: [
-    //             { fieldName: "categoryName", fieldValue: this.categoryName, opType: OperatorComparer.Contains },
-    //             { fieldName: "isActive", fieldValue: isActive, opType: OperatorComparer.Equals }
-    //         ]
-    //     }
-    //     // this.grid.gridConfig = this.gridConfig;
-    //     // this.grid.bindGridData();
-    //     console.log("GridConfig:", this.gridConfig);
-
-    // if (this.grid) {
-    //     this.grid.gridConfig = this.gridConfig;
-    //     this.grid.bindGridData();
-    // } else {
-    //     console.error("Grid is undefined!");
-    // }
-    // }
     onSave(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button

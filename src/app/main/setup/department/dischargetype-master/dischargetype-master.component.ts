@@ -20,9 +20,9 @@ export class DischargetypeMasterComponent implements OnInit {
     dischargeTypeName: any = "";
 
         allcolumns =[
-            { heading: "Code", key: "dischargeTypeId", sort: true, align: 'left', emptySign: 'NA' },
+            // { heading: "Code", key: "dischargeTypeId", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "DischargeTypeName", key: "dischargeTypeName", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "UserName", key: "username", sort: true, align: 'left', emptySign: 'NA' },
+            // { heading: "UserName", key: "username", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
             {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
@@ -33,7 +33,6 @@ export class DischargetypeMasterComponent implements OnInit {
                     }, {
                         action: gridActions.delete, callback: (data: any) => {
                             this._dischargetypeService.deactivateTheStatus(data.dischargeTypeId).subscribe((response: any) => {
-                                this.toastr.success(response.message);
                                 this.grid.bindGridData();
                             });
                         }
@@ -42,7 +41,7 @@ export class DischargetypeMasterComponent implements OnInit {
         ]
         
         allfilters =  [
-            { fieldName: "dischargeTypeName", fieldValue: "", opType: OperatorComparer.Contains },
+            { fieldName: "dischargeTypeName", fieldValue: "", opType: OperatorComparer.StartsWith },
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
         ]
     
@@ -60,44 +59,7 @@ export class DischargetypeMasterComponent implements OnInit {
     ) { }
 
     ngOnInit(): void { }
-     //filters addedby avdhoot vedpathak date-27/05/2025
-    // Clearfilter(event) {
-    //     console.log(event)
-    //     if (event == 'DischargeTypeNameSearch')
-    //         this._dischargetypeService.myformSearch.get('DischargeTypeNameSearch').setValue("")
-
-    //     this.onChangeFirst();
-    // }
-
-    // onChangeFirst() {
-    //     this.dischargeTypeName = this._dischargetypeService.myformSearch.get('DischargeTypeNameSearch').value
-    //     this.getfilterdata();
-    // }
-
-    // getfilterdata() {
-    //     debugger
-    //     let isActive = this._dischargetypeService.myformSearch.get("IsDeletedSearch").value || "";
-    //     this.gridConfig = {
-    //         apiUrl: "DischargeType/List",
-    //         columnsList: this.allcolumns,
-    //         sortField: "dischargeTypeId",
-    //         sortOrder: 0,
-    //         filters: [
-    //             { fieldName: "dischargeTypeName", fieldValue: this.dischargeTypeName, opType: OperatorComparer.Contains },
-    //             { fieldName: "isActive", fieldValue: isActive, opType: OperatorComparer.Equals }
-    //         ]
-    //     }
-        // this.grid.gridConfig = this.gridConfig;
-        // this.grid.bindGridData();
-    //     console.log("GridConfig:", this.gridConfig);
-
-    // if (this.grid) {
-    //     this.grid.gridConfig = this.gridConfig;
-    //     this.grid.bindGridData();
-    // } else {
-    //     console.error("Grid is undefined!");
-    // }
-    // }
+  
     onSave(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button

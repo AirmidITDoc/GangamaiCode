@@ -25,7 +25,7 @@ export class TemplateMasterComponent implements OnInit {
        allcolumns =  [
             { heading: "Template Name", key: "templateName", width: 300, sort: true, align: 'left', emptySign: 'NA' },
             { heading: "Template Desc", key: "templateDesc", width: 500, sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "UserName", key: "username", sort: true, align: 'left', emptySign: 'NA' },
+            // { heading: "UserName", key: "username", sort: true, align: 'left', emptySign: 'NA' },
             // { heading: "Updated By", key: "updatedbyname", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
             {
@@ -37,7 +37,6 @@ export class TemplateMasterComponent implements OnInit {
                     }, {
                         action: gridActions.delete, callback: (data: any) => {
                             this._TemplateServieService.deactivateTheStatus(data.templateId).subscribe((response: any) => {
-                                this.toastr.success(response.message);
                                 this.grid.bindGridData();
                             });
                         }
@@ -46,7 +45,7 @@ export class TemplateMasterComponent implements OnInit {
         ]
       
          allfilters =  [
-            { fieldName: "templateName", fieldValue: "", opType: OperatorComparer.Contains },
+            { fieldName: "templateName", fieldValue: "", opType: OperatorComparer.StartsWith },
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
         ]
      gridConfig: gridModel = {
@@ -65,44 +64,7 @@ export class TemplateMasterComponent implements OnInit {
     ngOnInit(): void {
 
     }
-    //filters addedby avdhoot vedpathak date-28/05/2025
-    // Clearfilter(event) {
-    //     console.log(event)
-    //     if (event == 'TemplateNameSearch')
-    //         this._TemplateServieService.myformSearch.get('TemplateNameSearch').setValue("")
-
-    //     this.onChangeFirst();
-    // }
-
-    // onChangeFirst() {
-    //     this.templateName = this._TemplateServieService.myformSearch.get('TemplateNameSearch').value
-    //     this.getfilterdata();
-    // }
-
-    // getfilterdata() {
-    //     debugger
-    //     let isActive = this._TemplateServieService.myformSearch.get("IsDeletedSearch").value || "";
-    //     this.gridConfig = {
-    //         apiUrl: "PathologyTemplate/List",
-    //         columnsList: this.allcolumns,
-    //         sortField: "templateId",
-    //         sortOrder: 0,
-    //         filters: [
-    //             { fieldName: "templateName", fieldValue: this.templateName, opType: OperatorComparer.Contains },
-    //             { fieldName: "isActive", fieldValue: isActive, opType: OperatorComparer.Equals }
-    //         ]
-    //     }
-    //     // this.grid.gridConfig = this.gridConfig;
-    //     // this.grid.bindGridData();
-    //     console.log("GridConfig:", this.gridConfig);
-
-    // if (this.grid) {
-    //     this.grid.gridConfig = this.gridConfig;
-    //     this.grid.bindGridData();
-    // } else {
-    //     console.error("Grid is undefined!");
-    // }
-    // }
+   
     onSave(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button

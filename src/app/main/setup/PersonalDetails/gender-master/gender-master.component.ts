@@ -25,7 +25,7 @@ export class GenderMasterComponent implements OnInit {
         permissionCode:permissionCodes.Prefix,
         apiUrl: "Gender/List",
         columnsList: [
-            { heading: "Code", key: "genderId", sort: true, align: 'left', emptySign: 'NA' },
+            // { heading: "Code", key: "genderId", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "GenderName", key: "genderName", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
             {
@@ -37,7 +37,6 @@ export class GenderMasterComponent implements OnInit {
                     }, {
                         action: gridActions.delete, callback: (data: any) => {
                             this._GenderService.deactivateTheStatus(data.genderId).subscribe((response: any) => {
-                                this.toastr.success(response.message);
                                 this.grid.bindGridData();
                             });
                         }
@@ -47,7 +46,7 @@ export class GenderMasterComponent implements OnInit {
         sortField: "genderId",
         sortOrder: 0,
         filters: [
-            { fieldName: "GenderName", fieldValue: "", opType: OperatorComparer.Contains },
+            { fieldName: "GenderName", fieldValue: "", opType: OperatorComparer.StartsWith },
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
         ]
     }

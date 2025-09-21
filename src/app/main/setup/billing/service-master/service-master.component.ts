@@ -73,7 +73,6 @@ export class ServiceMasterComponent implements OnInit {
                     action: gridActions.delete, callback: (data: any) => {
 
                         this._serviceMasterService.ServiceMasterCancle(data.serviceId).subscribe((response: any) => {
-                            this.toastr.success(response.message);
                             this.grid.bindGridData();
                         });
                     }

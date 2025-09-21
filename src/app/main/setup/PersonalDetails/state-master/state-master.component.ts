@@ -21,7 +21,7 @@ export class StateMasterComponent implements OnInit {
    stateName: any = "";
    
         allcolumns =  [
-            { heading: "Code", key: "stateId", sort: true, align: 'left', emptySign: 'NA' },
+            // { heading: "Code", key: "stateId", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "State Name", key: "stateName", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "Country Name", key: "countryId", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
@@ -34,7 +34,6 @@ export class StateMasterComponent implements OnInit {
                     }, {
                         action: gridActions.delete, callback: (data: any) => {
                             this._StateMasterService.deactivateTheStatus(data.stateId).subscribe((response: any) => {
-                                this.toastr.success(response.message);
                                 this.grid.bindGridData();
                             });
                         }
@@ -43,7 +42,7 @@ export class StateMasterComponent implements OnInit {
         ]
         
         allfilters = [
-            { fieldName: "stateName", fieldValue: "", opType: OperatorComparer.Contains },
+            { fieldName: "stateName", fieldValue: "", opType: OperatorComparer.StartsWith },
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
         ]
     
@@ -60,44 +59,7 @@ export class StateMasterComponent implements OnInit {
     ) { }
 
     ngOnInit(): void { }
-    //filters addedby avdhoot vedpathak date-27/05/2025
-// Clearfilter(event) {
-//         console.log(event)
-//         if (event == 'StateNameSearch')
-//             this._StateMasterService.myformSearch.get('StateNameSearch').setValue("")
-
-//         //this.onChangeFirst();
-//     }
-
-    // onChangeFirst() {
-    //     this.stateName = this._StateMasterService.myformSearch.get('StateNameSearch').value
-    //     this.getfilterdata();
-    // }
-
-    // getfilterdata() {
-    //     debugger
-    //     let isActive = this._StateMasterService.myformSearch.get("IsDeletedSearch").value || "";
-    //     this.gridConfig = {
-    //         apiUrl: "StateMaster/List",
-    //         columnsList: this.allcolumns,
-    //         sortField: "stateId",
-    //         sortOrder: 0,
-    //         filters: [
-    //             { fieldName: "stateName", fieldValue: this.stateName, opType: OperatorComparer.Contains },
-    //             { fieldName: "isActive", fieldValue: isActive, opType: OperatorComparer.Equals }
-    //         ]
-    //     }
-    //     // this.grid.gridConfig = this.gridConfig;
-    //     // this.grid.bindGridData();
-    //     console.log("GridConfig:", this.gridConfig);
-
-    // if (this.grid) {
-    //     this.grid.gridConfig = this.gridConfig;
-    //     this.grid.bindGridData();
-    // } else {
-    //     console.error("Grid is undefined!");
-    // }
-    // }
+   
     onSave(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button

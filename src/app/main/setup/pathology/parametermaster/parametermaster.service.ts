@@ -107,7 +107,7 @@ export class ParametermasterService {
     createSearchForm():FormGroup{
         return this._formBuilder.group({
             ParameterNameSearch: [""],
-            IsNumeric: [0],
+            IsNumeric:['2'],
             UnitId:[0]
         });
     }

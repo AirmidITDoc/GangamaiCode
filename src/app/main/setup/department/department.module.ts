@@ -45,11 +45,11 @@ const appRoutes: Routes = [
         path: "vendor-master",
         loadChildren: () => import("./vendor-master/vendor-master.module").then((m) => m.VendorMasterModule),
     },
-    {
-        path: "producttype-master",
+    // {
+    //     path: "producttype-master",
 
-        loadChildren: () => import("./producttype-master/producttype-master.module").then((m) => m.ProducttypeMasterModule),
-    },
+    //     loadChildren: () => import("./producttype-master/producttype-master.module").then((m) => m.ProducttypeMasterModule),
+    // },
 
     {
         path: "parameterDescriptive-master",

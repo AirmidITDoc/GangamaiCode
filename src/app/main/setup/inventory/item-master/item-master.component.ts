@@ -31,41 +31,55 @@ export class ItemMasterComponent implements OnInit {
     gerericId = "0"
     drugtypeId = "0"
     ManufId = "0"
-    location=''
-        Tostore = this.accountService.currentUserValue.user.storeId
+    location = ''
+    Tostore = this.accountService.currentUserValue.user.storeId
 
 
     autocompletestore: string = "Store";
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
+    @ViewChild('actionsTemplatehigh') actionsTemplatehigh!: TemplateRef<any>;
+    @ViewChild('actionsTemplatenarcotic') actionsTemplatenarcotic!: TemplateRef<any>;
+    @ViewChild('actionsTemplateisH1Drug') actionsTemplateisH1Drug!: TemplateRef<any>;
+
+    @ViewChild('actionsTemplateisEmgerency') actionsTemplateisEmgerency!: TemplateRef<any>;
+
 
     ngAfterViewInit() {
         this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
+        this.gridConfig.columnsList.find(col => col.key === 'isHighRisk')!.template = this.actionsTemplatehigh;
+        this.gridConfig.columnsList.find(col => col.key === 'isEmgerency')!.template = this.actionsTemplateisEmgerency;
+        this.gridConfig.columnsList.find(col => col.key === 'isH1Drug')!.template = this.actionsTemplateisH1Drug;
+        this.gridConfig.columnsList.find(col => col.key === 'isNarcotic')!.template = this.actionsTemplatenarcotic;
 
     }
 
     allColumns = [
-        { heading: "Code", key: "itemID", sort: true, align: 'left', emptySign: 'NA' },
+        // { heading: "Code", key: "itemID", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Drug Type", key: "isHighRisk", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 90 },
+        { heading: "", key: "isEmgerency", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 40 },
+        { heading: "", key: "isH1Drug", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 40 },
+        { heading: "", key: "isNarcotic", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 40 },
         { heading: "Hsncode", key: "hsNcode", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "Item Name", key: "itemName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-        { heading: "TypeName", key: "itemTypeName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+        { heading: "Item Name", key: "itemName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
+        { heading: "Type Name", key: "itemTypeName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "Category Name", key: "itemCategoryName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         { heading: "Generic Name", key: "itemGenericName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         { heading: "Item Class", key: "itemClassName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         { heading: "Puchase UOM", key: "puchaseUOM", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "Stock UOM", key: "stockUOM", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "Conversion Factor", key: "conversionFactor", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-        { heading: "Currency", key: "currencyName", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "Min Qty", key: "minQty", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "Max Qty", key: "maxQty", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "ReOrder", key: "reOrder", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "CGST", key: "cgst", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "SGST", key: "sgst", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "IGST", key: "igst", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "Manufacture Name", key: "manufName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-        { heading: "Location", key: "prodLocation", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "Conv Factor", key: "conversionFactor", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "Currency", key: "currencyName", sort: true, align: 'left', emptySign: 'NA', width: 80 },
+        { heading: "Min Qty", key: "minQty", sort: true, align: 'left', emptySign: 'NA', width: 80  },
+        { heading: "Max Qty", key: "maxQty", sort: true, align: 'left', emptySign: 'NA', width: 80  },
+        { heading: "ReOrder", key: "reOrder", sort: true, align: 'left', emptySign: 'NA', width: 80  },
+        { heading: "CGST", key: "cgst", sort: true, align: 'left', emptySign: 'NA', width: 80  },
+        { heading: "SGST", key: "sgst", sort: true, align: 'left', emptySign: 'NA', width: 80  },
+        { heading: "IGST", key: "igst", sort: true, align: 'left', emptySign: 'NA' , width: 80 },
+        { heading: "Manufacture Name", key: "manufName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+        { heading: "Location", key: "prodLocation", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         { heading: "User Name", key: "userName", sort: true, align: 'left', emptySign: 'NA' },
-       
+
         { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
         {
             heading: "Action", key: "action", align: "right", width: 150, sticky: true, type: gridColumnTypes.template,
@@ -75,7 +89,7 @@ export class ItemMasterComponent implements OnInit {
 
     allFilters = [
         { fieldName: "ItemName", fieldValue: "%", opType: OperatorComparer.Equals },
-        { fieldName: "StoreID", fieldValue:  String(this.Tostore), opType: OperatorComparer.Equals },
+        { fieldName: "StoreID", fieldValue: String(this.Tostore), opType: OperatorComparer.Equals },
         { fieldName: "CatId", fieldValue: "0", opType: OperatorComparer.Equals },
         { fieldName: "GenericId", fieldValue: "0", opType: OperatorComparer.Equals },
         { fieldName: "ProdLocation", fieldValue: "%", opType: OperatorComparer.Equals },
@@ -104,21 +118,66 @@ export class ItemMasterComponent implements OnInit {
         this.myformSearch = this._itemService.createSearchForm();
     }
 
+    StoreView(value) {
 
-    ListView1(value) {
-        console.log(value)
         if (value.value !== 0)
             this.Tostore = value.value
         else
             this.Tostore = "0"
+
         this.onChangeFirst();
     }
+
+    Catlist(value) {
+
+        if (value.value !== 0)
+            this.catId = value.value
+        else
+            this.catId = "0"
+
+        this.onChangeFirst();
+    }
+
+
+    Genericlist(value) {
+
+        if (value.value !== 0)
+            this.gerericId = value.value
+        else
+            this.gerericId = "0"
+
+        this.onChangeFirst();
+    }
+
+
+    druglist(value) {
+        console.log(value)
+        if (value.value !== 0)
+            this.drugtypeId = value.value
+        else
+            this.drugtypeId = "0"
+        this.onChangeFirst();
+    }
+
+
+    Manulist(value) {
+        console.log(value)
+        if (value.value !== 0)
+            this.ManufId = value.value
+        else
+            this.ManufId = "0"
+        this.onChangeFirst();
+    }
+
 
     Clearfilter(event) {
 
         console.log(event)
         if (event == 'ItemNameSearch')
             this.myformSearch.get('ItemNameSearch').setValue("")
+
+        if (event == 'ProdLocation')
+            this.myformSearch.get('ProdLocation').setValue("")
 
         this.onChangeFirst();
     }
@@ -130,7 +189,7 @@ export class ItemMasterComponent implements OnInit {
         this.gerericId = this.myformSearch.get('GenericId').value || "0"
         this.drugtypeId = this.myformSearch.get('DrugTypeId').value || "0"
         this.ManufId = this.myformSearch.get('ManufId').value || "0"
-         this.location = this.myformSearch.get('ProdLocation').value + "%"
+        this.location = this.myformSearch.get('ProdLocation').value + "%"
 
         this.getfilterdata();
     }
@@ -147,7 +206,7 @@ export class ItemMasterComponent implements OnInit {
                 { fieldName: "StoreID", fieldValue: String(this.Tostore), opType: OperatorComparer.Equals },
                 { fieldName: "CatId", fieldValue: this.catId, opType: OperatorComparer.Equals },
                 { fieldName: "GenericId", fieldValue: this.gerericId, opType: OperatorComparer.Equals },
-                { fieldName: "ProdLocation", fieldValue:   this.location, opType: OperatorComparer.Equals },
+                { fieldName: "ProdLocation", fieldValue: this.location, opType: OperatorComparer.Equals },
                 { fieldName: "ManufId", fieldValue: this.ManufId, opType: OperatorComparer.Equals },
                 { fieldName: "DrugTypeId", fieldValue: this.drugtypeId, opType: OperatorComparer.Equals }
 

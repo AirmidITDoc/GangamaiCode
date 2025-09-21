@@ -37,13 +37,13 @@ const appRoutes: Routes = [
                 (m) => m.TestmasterModule
             ),
     },
-    {
-        path: "paramteragewise",
-        loadChildren: () =>
-            import("./paramteragewise/paramteragewise.module").then(
-                (m) => m.ParamteragewiseModule
-            ),
-    },
+    // {
+    //     path: "paramteragewise",
+    //     loadChildren: () =>
+    //         import("./paramteragewise/paramteragewise.module").then(
+    //             (m) => m.ParamteragewiseModule
+    //         ),
+    // },
 ];
 
 @NgModule({

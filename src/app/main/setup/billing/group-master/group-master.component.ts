@@ -22,7 +22,7 @@ groupName: any = "";
 
    
         allcolumns =[
-            { heading: "Code", key: "groupId", sort: true, align: 'left', emptySign: 'NA' },
+            // { heading: "Code", key: "groupId", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "Group Name", key: "groupName", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "IsConsolidatedDR", key: "isconsolidated", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
@@ -35,7 +35,6 @@ groupName: any = "";
                     }, {
                         action: gridActions.delete, callback: (data: any) => {
                             this._GroupMasterService.deactivateTheStatus(data.groupId).subscribe((response: any) => {
-                                this.toastr.success(response.message);
                                 this.grid.bindGridData();
                             });
                         }
@@ -44,7 +43,7 @@ groupName: any = "";
         ]
        
         allfilters =  [
-            { fieldName: "groupName", fieldValue: "", opType: OperatorComparer.Contains },
+            { fieldName: "groupName", fieldValue: "", opType: OperatorComparer.StartsWith },
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
         ]
     

@@ -22,7 +22,7 @@ export class DoctortypeMasterComponent implements OnInit {
     gridConfig: gridModel = {
         apiUrl: "DoctorTypeMaster/List",
         columnsList: [
-            { heading: "Code", key: "id", sort: true, align: 'left', emptySign: 'NA' },
+            // { heading: "Code", key: "id", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "DoctorType", key: "doctorType", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
             {
@@ -34,7 +34,6 @@ export class DoctortypeMasterComponent implements OnInit {
                     }, {
                         action: gridActions.delete, callback: (data: any) => {
                             this._doctortypeService.deactivateTheStatus(data.id).subscribe((response: any) => {
-                                this.toastr.success(response.message);
                                 this.grid.bindGridData();
                             });
                         }
@@ -44,7 +43,7 @@ export class DoctortypeMasterComponent implements OnInit {
         sortField: "id",
         sortOrder: 0,
         filters: [
-            { fieldName: "doctorType", fieldValue: "", opType: OperatorComparer.Contains },
+            { fieldName: "doctorType", fieldValue: "", opType: OperatorComparer.StartsWith },
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
         ]
     }

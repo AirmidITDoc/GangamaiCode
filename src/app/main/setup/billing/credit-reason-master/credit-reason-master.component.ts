@@ -22,9 +22,9 @@ export class CreditReasonMasterComponent implements OnInit {
 creditReason: any = "";
    
          allcolumns = [
-            { heading: "Code", key: "creditId", sort: true, align: 'left', emptySign: 'NA' },
+            // { heading: "Code", key: "creditId", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "Credit Reason ", key: "creditReason", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "User Name", key: "username", sort: true, align: 'left', emptySign: 'NA' },
+            // { heading: "User Name", key: "username", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
             {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
@@ -35,7 +35,6 @@ creditReason: any = "";
                     }, {
                         action: gridActions.delete, callback: (data: any) => {
                             this._CreditreasonService.deactivateTheStatus(data.creditId).subscribe((response: any) => {
-                                this.toastr.success(response.message);
                                 this.grid.bindGridData();
                             });
                         }
@@ -44,7 +43,7 @@ creditReason: any = "";
         ]
        
        allfilters = [
-            { fieldName: "creditReason", fieldValue: "", opType: OperatorComparer.Contains },
+            { fieldName: "creditReason", fieldValue: "", opType: OperatorComparer.StartsWith },
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
         ]
     

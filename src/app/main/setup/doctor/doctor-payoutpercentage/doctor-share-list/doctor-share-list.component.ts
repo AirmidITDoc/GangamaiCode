@@ -198,6 +198,7 @@ export class DoctorShareListComponent {
         });
         return;
       }
+      this.serviceId=this.groupId
     }
 
     if (this._DoctorShareService.DocFormGroup.get('DocShareType').value == 'P') {
@@ -230,7 +231,7 @@ export class DoctorShareListComponent {
     this.Doctorshare.get('docShrTypeS').setValue(docShrTypeS)
     this.Doctorshare.get('servicePercentage').setValue(this._DoctorShareService.DocFormGroup.get('Percentage').value || 0)
     this.Doctorshare.get('serviceAmount').setValue(this._DoctorShareService.DocFormGroup.get('Amount').value || 0)
-    this.Doctorshare.get('shrTypeSerOrGrp').setValue(this._DoctorShareService.DocFormGroup.get('ServiceOrgrpType').value || 0)
+    this.Doctorshare.get('shrTypeSerOrGrp').setValue(this._DoctorShareService.DocFormGroup.get('ServiceOrgrpType').value || 1)
     this.Doctorshare.get('opIpType').setValue(parseInt(this._DoctorShareService.DocFormGroup.get('PatientType').value) || 0)
 
 
@@ -238,7 +239,7 @@ export class DoctorShareListComponent {
     if (!this.Doctorshare.invalid) {
       this._DoctorShareService.InsertDocShare(this.Doctorshare.value).subscribe((response) => {
         this.onClose()
-         this._matDialog.closeAll();
+         
       });
     }
     else {
@@ -261,11 +262,12 @@ export class DoctorShareListComponent {
    
   }
   onClose() {
-    this._matDialog.closeAll();
+   
     this._DoctorShareService.DocFormGroup.reset();
     this.dataSource.data = [];
     this.Reset();
     this._DoctorShareService.DocFormGroup.get('Type').setValue('1');
+     this._matDialog.closeAll();
   }
   Reset() {
     this._DoctorShareService.DocFormGroup.get('DoctorID').setValue('');

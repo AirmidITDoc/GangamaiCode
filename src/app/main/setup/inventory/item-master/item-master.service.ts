@@ -28,11 +28,11 @@ export class ItemMasterService {
         return this._formBuilder.group({
             ItemNameSearch: [""],
             ToStoreId: this._loggedService.currentUserValue.user.storeId,
-            CatId: [""],
-            GenericId: [""],
-            ProdLocation: [""],
-            ManufId: [""],
-            DrugTypeId: [""],
+            CatId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            GenericId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            ProdLocation:[0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            ManufId:[0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            DrugTypeId:[0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         });
     }
 

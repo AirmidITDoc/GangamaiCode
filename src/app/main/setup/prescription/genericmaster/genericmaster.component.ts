@@ -21,9 +21,9 @@ export class GenericmasterComponent implements OnInit {
  genericName: any = "";
     
         allcolumns = [
-            { heading: "Code", key: "genericId", sort: true, align: 'left', emptySign: 'NA' },
+            // { heading: "Code", key: "genericId", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "Generic Name", key: "genericName", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "User Name", key: "username", sort: true, align: 'left', emptySign: 'NA' },
+            // { heading: "User Name", key: "username", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
             {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
@@ -34,7 +34,6 @@ export class GenericmasterComponent implements OnInit {
                     }, {
                         action: gridActions.delete, callback: (data: any) => {
                             this._GenericService.deactivateTheStatus(data.genericId).subscribe((data: any) => {
-                                this.toastr.success(data.message)
                                 this.grid.bindGridData();
                             });
                         }
@@ -43,7 +42,7 @@ export class GenericmasterComponent implements OnInit {
         ]
         
        allfilters = [
-            { fieldName: "genericName", fieldValue: "", opType: OperatorComparer.Contains },
+            { fieldName: "genericName", fieldValue: "", opType: OperatorComparer.StartsWith },
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
         ]
     
@@ -58,45 +57,7 @@ export class GenericmasterComponent implements OnInit {
         public toastr: ToastrService,) { }
 
     ngOnInit(): void { }
- //filters addedby avdhoot vedpathak date-28/05/2025
-    // Clearfilter(event) {
-    //     console.log(event)
-    //     if (event == 'GenericNameSearch')
-    //         this._GenericService.myformSearch.get('GenericNameSearch').setValue("")
-
-    //     this.onChangeFirst();
-    // }
-
-    // onChangeFirst() {
-    //     this.genericName = this._GenericService.myformSearch.get('GenericNameSearch').value
-    //     this.getfilterdata();
-    // }
-
-    // getfilterdata() {
-    //     debugger
-    //     let isActive = this._GenericService.myformSearch.get("IsDeletedSearch").value || "";
-    //     this.gridConfig = {
-    //         apiUrl: "GenericMaster/List",
-    //         columnsList: this.allcolumns,
-    //         sortField: "genericId",
-    //         sortOrder: 0,
-    //         filters: [
-    //             { fieldName: "genericName", fieldValue: this.genericName, opType: OperatorComparer.Contains },
-    //             { fieldName: "isActive", fieldValue: isActive, opType: OperatorComparer.Equals }
-    //         ]
-    //     }
-    //     // this.grid.gridConfig = this.gridConfig;
-    //     // this.grid.bindGridData();
-    //     console.log("GridConfig:", this.gridConfig);
-
-    // if (this.grid) {
-    //     this.grid.gridConfig = this.gridConfig;
-    //     this.grid.bindGridData();
-    // } else {
-    //     console.error("Grid is undefined!");
-    // }
-    // }
-
+ 
     changeStatus(status: any) {
         switch (status.id) {
             case 1:

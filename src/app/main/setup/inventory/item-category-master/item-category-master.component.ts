@@ -22,10 +22,10 @@ export class ItemCategoryMasterComponent implements OnInit {
 
    
         allcolumns =  [
-            { heading: "Code", key: "itemCategoryId", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "ItemCategoryName", key: "itemCategoryName", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "ItemTypeName", key: "itemTypeId", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "UserName", key: "username", sort: true, align: 'left', emptySign: 'NA' },
+            // { heading: "Code", key: "itemCategoryId", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "ItemCategory Name", key: "itemCategoryName", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "ItemType Name", key: "itemTypeId", sort: true, align: 'left', emptySign: 'NA' },
+            // { heading: "User Name", key: "username", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
             {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
@@ -36,7 +36,6 @@ export class ItemCategoryMasterComponent implements OnInit {
                     }, {
                         action: gridActions.delete, callback: (data: any) => {
                             this._categorymasterService.deactivateTheStatus(data.itemCategoryId).subscribe((response: any) => {
-                                this.toastr.success(response.message);
                                 this.grid.bindGridData();
                             });
                         }
@@ -45,7 +44,7 @@ export class ItemCategoryMasterComponent implements OnInit {
         ]
       
         allfilters =  [
-            { fieldName: "itemCategoryName", fieldValue: "", opType: OperatorComparer.Contains },
+            { fieldName: "itemCategoryName", fieldValue: "", opType: OperatorComparer.StartsWith },
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
         ]
      gridConfig: gridModel = {
@@ -62,44 +61,7 @@ export class ItemCategoryMasterComponent implements OnInit {
     ) { }
 
     ngOnInit(): void { }
-//filters addedby avdhoot vedpathak date-28/05/2025
-    // Clearfilter(event) {
-    //     console.log(event)
-    //     if (event == 'ItemCategoryNameSearch')
-    //         this._categorymasterService.myformSearch.get('ItemCategoryNameSearch').setValue("")
 
-    //     this.onChangeFirst();
-    // }
-
-    // onChangeFirst() {
-    //     this.itemCategoryName = this._categorymasterService.myformSearch.get('ItemCategoryNameSearch').value
-    //     this.getfilterdata();
-    // }
-
-    // getfilterdata() {
-    //     debugger
-    //     let isActive = this._categorymasterService.myformSearch.get("IsDeletedSearch").value || "";
-    //     this.gridConfig = {
-    //         apiUrl: "ItemCategoryMaster/List",
-    //         columnsList: this.allcolumns,
-    //         sortField: "itemCategoryId",
-    //         sortOrder: 0,
-    //         filters: [
-    //             { fieldName: "itemCategoryName", fieldValue: this.itemCategoryName, opType: OperatorComparer.Contains },
-    //             { fieldName: "isActive", fieldValue: isActive, opType: OperatorComparer.Equals }
-    //         ]
-    //     }
-    //     // this.grid.gridConfig = this.gridConfig;
-    //     // this.grid.bindGridData();
-    //     console.log("GridConfig:", this.gridConfig);
-
-    // if (this.grid) {
-    //     this.grid.gridConfig = this.gridConfig;
-    //     this.grid.bindGridData();
-    // } else {
-    //     console.error("Grid is undefined!");
-    // }
-    // }
     onSave(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button

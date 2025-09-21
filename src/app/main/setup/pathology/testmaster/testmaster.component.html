@@ -34,10 +34,10 @@
             <div fxLayout="row" fxLayoutAlign="center center">
 
                 <mat-icon *ngIf="element.isSubTest == true" title="IsSubTest">
-                    <img width="30px" height="30px" src="assets/images/logos/radiology.png">
+                    <img width="50px" height="50px" src="assets/images/logos/Subtest.png">
                 </mat-icon>
                 <mat-icon *ngIf="element.isSubTest == false" title="IsTest">
-                    <img width="30px" height="30px" src="assets/images/logos/pathology.png">
+                    <img width="30px" height="30px" src="assets/images/logos/ISTest.png">
                 </mat-icon>
 
             </div>
@@ -46,9 +46,9 @@
         <ng-template #actionsisTemplateTest let-element>
             <div fxLayout="row" fxLayoutAlign="center center">
 
-                <mat-icon *ngIf="element.isTemplateTest=='1'" title="IsTemplateTest">assignment</mat-icon>
-                <mat-icon *ngIf="element.isTemplateTest=='0'" title="Test">
-                    <img width="30px" height="30px" src="assets/images/logos/pathology.png">
+                <!-- <mat-icon *ngIf="element.isTemplateTest=='1'" title="IsTemplateTest">assignment</mat-icon> -->
+                <mat-icon *ngIf="element.isTemplateTest=='1'" title="NotTemplateTest">
+                    <img width="30px" height="30px" src="assets/images/logos/template.png">
                 </mat-icon>
             </div>
         </ng-template>
@@ -65,13 +65,16 @@
                         </button>
                     </mat-form-field>
                     <airmid-dropdown label="CategoryName" formControlName="CategoryId"
-                        [formGroup]="searchFormGroup"
+                        [formGroup]="searchFormGroup" (selectionChange)="CatView($event)"
+                        [(ngModel)]="gridConfig.filters[1].fieldValue"
                         [mode]="autocompleteModeCategoryId"
-                        (selectionChange)="Clearfilter($event)"></airmid-dropdown>
+                      ></airmid-dropdown>
 
                     <airmid-dropdown label="ServiceName" formControlName="ServiceId"
+                    (selectionChange)="ServiceView($event)"
+                        [(ngModel)]="gridConfig.filters[2].fieldValue"
                         [formGroup]="searchFormGroup" [mode]="autocompleteModeServiceID"
-                        (selectionChange)="Clearfilter($event)" ></airmid-dropdown>
+                       ></airmid-dropdown>
                 </form>
             </ng-container>
         </airmid-table>

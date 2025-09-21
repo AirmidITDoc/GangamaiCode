@@ -20,7 +20,7 @@ export class WardMasterComponent implements OnInit {
     roomName: any = "";
 
         allcolumns =  [
-            { heading: "Code", key: "roomId", sort: true, align: 'left', emptySign: 'NA' },
+            // { heading: "Code", key: "roomId", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "RoomName", key: "roomName", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "Location", key: "locationId", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "Class", key: "classId", sort: true, align: 'left', emptySign: 'NA' },
@@ -36,7 +36,6 @@ export class WardMasterComponent implements OnInit {
                     {
                         action: gridActions.delete, callback: (data: any) => {
                             this._wardService.deactivateTheStatus(data.roomId).subscribe((response: any) => {
-                                this.toastr.success(response.message);
                                 this.grid.bindGridData();
                             });
                         }
@@ -45,7 +44,7 @@ export class WardMasterComponent implements OnInit {
         ]
        
         allfilters = [
-            { fieldName: "roomName", fieldValue: "", opType: OperatorComparer.Contains },
+            { fieldName: "roomName", fieldValue: "", opType: OperatorComparer.StartsWith },
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
         ]
      gridConfig: gridModel = {
@@ -61,44 +60,7 @@ export class WardMasterComponent implements OnInit {
         public toastr: ToastrService,) { }
 
     ngOnInit(): void { }
-//filters addedby avdhoot vedpathak date-27/05/2025
-    // Clearfilter(event) {
-    //     console.log(event)
-    //     if (event == 'RoomNameSearch')
-    //         this._wardService.myformSearch.get('RoomNameSearch').setValue("")
 
-    //     this.onChangeFirst();
-    // }
-
-    // onChangeFirst() {
-    //     this.roomName = this._wardService.myformSearch.get('RoomNameSearch').value
-    //     this.getfilterdata();
-    // }
-
-    // getfilterdata() {
-    //     debugger
-    //     let isActive = this._wardService.myformSearch.get("IsDeletedSearch").value || "";
-    //     this.gridConfig = {
-    //         apiUrl: "WardMaster/List",
-    //         columnsList: this.allcolumns,
-    //         sortField: "roomId",
-    //         sortOrder: 0,
-    //         filters: [
-    //             { fieldName: "roomName", fieldValue: this.roomName, opType: OperatorComparer.Contains },
-    //             { fieldName: "isActive", fieldValue: isActive, opType: OperatorComparer.Equals }
-    //         ]
-    //     }
-    //     // this.grid.gridConfig = this.gridConfig;
-    //     // this.grid.bindGridData();
-    //     console.log("GridConfig:", this.gridConfig);
-
-    // if (this.grid) {
-    //     this.grid.gridConfig = this.gridConfig;
-    //     this.grid.bindGridData();
-    // } else {
-    //     console.error("Grid is undefined!");
-    // }
-    // }
     onSave(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button

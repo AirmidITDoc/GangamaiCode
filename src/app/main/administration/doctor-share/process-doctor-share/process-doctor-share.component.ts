@@ -33,18 +33,18 @@ export class ProcessDoctorShareComponent implements OnInit {
         }
 
         console.log(submitData)
-        this._DoctorShareService.SaveProcessdocShare(submitData).subscribe((response)=>{
-          if (response) {
-            this.toastr.success('Process Doctor Share Saved Successfully', 'Save !', {
-              toastClass: 'tostr-tost custom-toast-success',
-            });
-            this.onClose() 
-          } else {
-            this.toastr.error('API Error!', 'Error !', {
-              toastClass: 'tostr-tost custom-toast-error',
-            });
-          }
-        });
+        // this._DoctorShareService.SaveProcessdocShare(submitData).subscribe((response)=>{
+        //   if (response) {
+        //     this.toastr.success('Process Doctor Share Saved Successfully', 'Save !', {
+        //       toastClass: 'tostr-tost custom-toast-success',
+        //     });
+        //     this.onClose() 
+        //   } else {
+        //     this.toastr.error('API Error!', 'Error !', {
+        //       toastClass: 'tostr-tost custom-toast-error',
+        //     });
+        //   }
+        // });
       }
       onClose(){
         this._matDialog.closeAll();

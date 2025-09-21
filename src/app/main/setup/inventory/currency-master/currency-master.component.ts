@@ -20,9 +20,9 @@ export class CurrencyMasterComponent implements OnInit {
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     currencyName: any = "";
         allcolumns = [
-            { heading: "Code", key: "currencyId", sort: true, align: 'left', emptySign: 'NA' },
+            // { heading: "Code", key: "currencyId", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "Currency Name", key: "currencyName", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "User Name", key: "username", sort: true, align: 'left', emptySign: 'NA' },
+            // { heading: "User Name", key: "userName", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
             {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
@@ -33,7 +33,6 @@ export class CurrencyMasterComponent implements OnInit {
                     }, {
                         action: gridActions.delete, callback: (data: any) => {
                             this._CurrencymasterService.deactivateTheStatus(data.currencyId).subscribe((response: any) => {
-                                this.toastr.success(response.message);
                                 this.grid.bindGridData();
                             });
                         }
@@ -42,7 +41,7 @@ export class CurrencyMasterComponent implements OnInit {
         ]
         
         allfilters = [
-            { fieldName: "currencyName", fieldValue: "", opType: OperatorComparer.Contains },
+            { fieldName: "currencyName", fieldValue: "", opType: OperatorComparer.StartsWith },
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
         ]
     gridConfig: gridModel = {
@@ -57,44 +56,7 @@ export class CurrencyMasterComponent implements OnInit {
         public toastr: ToastrService,) { }
 
     ngOnInit(): void { }
-     //filters addedby avdhoot vedpathak date-28/05/2025
-    // Clearfilter(event) {
-    //     console.log(event)
-    //     if (event == 'CurrencyNameSearch')
-    //         this._CurrencymasterService.myformSearch.get('CurrencyNameSearch').setValue("")
-
-    //     this.onChangeFirst();
-    // }
-
-    // onChangeFirst() {
-    //     this.currencyName = this._CurrencymasterService.myformSearch.get('CurrencyNameSearch').value
-    //     this.getfilterdata();
-    // }
-
-    // getfilterdata() {
-    //     debugger
-    //     let isActive = this._CurrencymasterService.myformSearch.get("IsDeletedSearch").value || "";
-    //     this.gridConfig = {
-    //         apiUrl: "CurrencyMaster/List",
-    //         columnsList: this.allcolumns,
-    //         sortField: "currencyId",
-    //         sortOrder: 0,
-    //         filters: [
-    //             { fieldName: "currencyName", fieldValue: this.currencyName, opType: OperatorComparer.Contains },
-    //             { fieldName: "isActive", fieldValue: isActive, opType: OperatorComparer.Equals }
-    //         ]
-    //     }
-    //     // this.grid.gridConfig = this.gridConfig;
-    //     // this.grid.bindGridData();
-    //     console.log("GridConfig:", this.gridConfig);
-
-    // if (this.grid) {
-    //     this.grid.gridConfig = this.gridConfig;
-    //     this.grid.bindGridData();
-    // } else {
-    //     console.error("Grid is undefined!");
-    // }
-    // }
+  
     onSave(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button
@@ -108,9 +70,8 @@ export class CurrencyMasterComponent implements OnInit {
                 data: row
             });
         dialogRef.afterClosed().subscribe(result => {
-            if (result) {
-                that.grid.bindGridData();
-            }
+           that.grid.bindGridData();
+            
         });
     }
 

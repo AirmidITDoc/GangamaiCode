@@ -26,7 +26,7 @@ export class SubtpaCompanyMasterComponent implements OnInit {
  @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
    
     allColumns =  [
-        { heading: "Code", key: "subCompanyId", sort: true, align: 'left', emptySign: 'NA'},
+        // { heading: "Code", key: "subCompanyId", sort: true, align: 'left', emptySign: 'NA'},
         { heading: "TPA Type", key: "typeName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "Main Company Name", key: "mainCompanyName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
         { heading: "Company Name", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
@@ -36,7 +36,7 @@ export class SubtpaCompanyMasterComponent implements OnInit {
         { heading: "Country", key: "countryName", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "Phone No", key: "phoneNo", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "Mobile No", key: "faxNo", sort: true, align: 'left', emptySign: 'NA'},
-        { heading: "User Name", key: "CreatedBy", sort: true, align: 'left', emptySign: 'NA' },
+        // { heading: "User Name", key: "CreatedBy", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
         {
             heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, width: 100, actions: [
@@ -48,7 +48,6 @@ export class SubtpaCompanyMasterComponent implements OnInit {
                 }, {
                     action: gridActions.delete, callback: (data: any) => {
                         this._subtpacompanyService.deactivateTheStatus(data.subCompanyId).subscribe((response: any) => {
-                            this.toastr.success(response.Message);
                             this.grid.bindGridData();
                         });
                     }
@@ -58,7 +57,7 @@ export class SubtpaCompanyMasterComponent implements OnInit {
 
 
     allFilters = [
-        { fieldName: "CompanyName", fieldValue: "%", opType: OperatorComparer.Contains },
+        { fieldName: "CompanyName", fieldValue: "%", opType: OperatorComparer.StartsWith },
         { fieldName: "IsActive", fieldValue: "1", opType: OperatorComparer.Equals }
     ]
     

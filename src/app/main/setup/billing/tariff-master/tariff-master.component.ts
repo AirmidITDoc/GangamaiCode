@@ -20,7 +20,7 @@ export class TariffMasterComponent implements OnInit {
 tariffName: any = "";
    
         allcolumns = [
-            { heading: "Code", key: "tariffId", sort: true, align: 'left', emptySign: 'NA' },
+            // { heading: "Code", key: "tariffId", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "Tariff Name", key: "tariffName", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
             {
@@ -33,7 +33,6 @@ tariffName: any = "";
                     }, {
                         action: gridActions.delete, callback: (data: any) => {
                             this._TariffMasterService.deactivateTheStatus(data.tariffId).subscribe((response: any) => {
-                                this.toastr.success(response.Message);
                                 this.grid.bindGridData();
                             });
                         }
@@ -42,7 +41,7 @@ tariffName: any = "";
         ]
         
          allfilters = [
-            { fieldName: "tariffName", fieldValue: "", opType: OperatorComparer.Contains },
+            { fieldName: "tariffName", fieldValue: "", opType: OperatorComparer.StartsWith },
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
         ]
     

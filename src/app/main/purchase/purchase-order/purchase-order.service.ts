@@ -204,7 +204,7 @@ export class PurchaseOrderService {
 
 
   public getGSTCalculation(type: GSTType, values: GSTCalculationResult): GSTCalculation {
-    //debugger
+    debugger
     let calculation: GSTCalculation;
     switch (type) {
       case GSTType.GST_AFTER_DISC: {

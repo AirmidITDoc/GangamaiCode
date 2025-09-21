@@ -21,9 +21,9 @@ export class ReligionMasterComponent implements OnInit {
  religionName: any = "";
 
     allcolumns = [
-            { heading: "Code", key: "religionId", sort: true, align: 'left', emptySign: 'NA' },
+            // { heading: "Code", key: "religionId", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "Religion Name", key: "religionName", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "User Name", key: "username", sort: true, align: 'left', emptySign: 'NA' },
+            // { heading: "User Name", key: "username", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
             {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
@@ -34,7 +34,6 @@ export class ReligionMasterComponent implements OnInit {
                     }, {
                         action: gridActions.delete, callback: (data: any) => {
                             this._religionService.deactivateTheStatus(data.religionId).subscribe((response: any) => {
-                                this.toastr.success(response.message);
                                 this.grid.bindGridData();
                             });
                         }
@@ -43,7 +42,7 @@ export class ReligionMasterComponent implements OnInit {
         ]
         
         allfilters =  [
-            { fieldName: "religionName", fieldValue: "", opType: OperatorComparer.Contains },
+            { fieldName: "religionName", fieldValue: "", opType: OperatorComparer.StartsWith },
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
         ]
      gridConfig: gridModel = {
@@ -57,43 +56,7 @@ export class ReligionMasterComponent implements OnInit {
         public toastr: ToastrService,) { }
 
     ngOnInit(): void { }
-    // Clearfilter(event) {
-    //     console.log(event)
-    //     if (event == 'ReligionNameSearch')
-    //         this._religionService.myformSearch.get('AreaNaReligionNameSearchmeSearch').setValue("")
-
-    //   //  this.onChangeFirst();
-    // }
-
-    // onChangeFirst() {
-    //     this.religionName = this._religionService.myformSearch.get('ReligionNameSearch').value
-    //     this.getfilterdata();
-    // }
-
-    // getfilterdata() {
-    //     debugger
-    //     let isActive = this._religionService.myformSearch.get("IsDeletedSearch").value || "";
-    //     this.gridConfig = {
-    //         apiUrl: "ReligionMaster/List",
-    //         columnsList: this.allcolumns,
-    //         sortField: "religionId",
-    //         sortOrder: 0,
-    //         filters: [
-    //             { fieldName: "religionName", fieldValue: this.religionName, opType: OperatorComparer.Contains },
-    //             { fieldName: "isActive", fieldValue: isActive, opType: OperatorComparer.Equals }
-    //         ]
-    //     }
-    //     // this.grid.gridConfig = this.gridConfig;
-    //     // this.grid.bindGridData();
-    //     console.log("GridConfig:", this.gridConfig);
-
-    // if (this.grid) {
-    //     this.grid.gridConfig = this.gridConfig;
-    //     this.grid.bindGridData();
-    // } else {
-    //     console.error("Grid is undefined!");
-    // }
-    // }
+   
 
     onSave(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element

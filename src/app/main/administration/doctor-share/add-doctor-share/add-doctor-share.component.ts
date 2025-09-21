@@ -167,27 +167,27 @@ export class AddDoctorShareComponent implements OnInit {
 
   searchdoctorID: any = 0;
   getAddDoctorList() {
-    if (this.doctorId) {
-      this.searchdoctorID = this.doctorId || 0;
-    } else {
-      this.searchdoctorID = 0;
-    }
-    this.sIsLoading = 'loading-data';
-    var m_data = {
-      "DoctorId": this.searchdoctorID,
-      "ShrTypeSerOrGrp": this._DoctorShareService.DocFormGroup.get('Type').value
-    }
-    console.log(m_data);
-    this._DoctorShareService.getDocShrList(m_data).subscribe(Visit => {
-      this.dataSource.data = Visit as BillListForDocShrList[];
-      //console.log(this.dataSource.data);
-      this.dataSource.sort = this.sort;
-      this.dataSource.paginator = this.paginator;
-      this.sIsLoading = '';
-    },
-      error => {
-        this.sIsLoading = '';
-      });
+    // if (this.doctorId) {
+    //   this.searchdoctorID = this.doctorId || 0;
+    // } else {
+    //   this.searchdoctorID = 0;
+    // }
+    // this.sIsLoading = 'loading-data';
+    // var m_data = {
+    //   "DoctorId": this.searchdoctorID,
+    //   "ShrTypeSerOrGrp": this._DoctorShareService.DocFormGroup.get('Type').value
+    // }
+    // console.log(m_data);
+    // this._DoctorShareService.getDocShrList(m_data).subscribe(Visit => {
+    //   this.dataSource.data = Visit as BillListForDocShrList[];
+    //   //console.log(this.dataSource.data);
+    //   this.dataSource.sort = this.sort;
+    //   this.dataSource.paginator = this.paginator;
+    //   this.sIsLoading = '';
+    // },
+    //   error => {
+    //     this.sIsLoading = '';
+    //   });
   }
 
   ServiceName: any;

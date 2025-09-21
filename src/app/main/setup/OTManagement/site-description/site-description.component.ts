@@ -22,10 +22,10 @@ export class SiteDescriptionComponent implements OnInit {
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
    
         allColumns = [
-            { heading: "Code", key: "siteDescId", sort: true, align: 'left', emptySign: 'NA' },
+            // { heading: "Code", key: "siteDescId", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "OT SiteDesc Name", key: "siteDescriptionName", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "Surgery Category", key: "surgeryCategoryId", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "AddedBy", key: "addedBy", sort: true, align: 'left', emptySign: 'NA' },
+            // { heading: "AddedBy", key: "addedBy", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "isActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
             {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
@@ -37,7 +37,6 @@ export class SiteDescriptionComponent implements OnInit {
                         action: gridActions.delete, callback: (data: any) => {
                             debugger
                             this._SiteDescriptionService.deactivateTheStatus(data.siteDescId).subscribe((response: any) => {
-                                this.toastr.success(response.message);
                                 this.grid.bindGridData();
                             });
                         }

@@ -27,7 +27,7 @@ export class RadiologyTemplateMasterComponent implements OnInit {
            
             { heading: "TemplateName", key: "templateName", width: 300, sort: true, align: 'left', emptySign: 'NA' },
             { heading: "TemplateDesc", key: "templateDesc", width: 500, sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "AddedBy", key: "username", sort: true, align: 'left', emptySign: 'NA' },
+            // { heading: "AddedBy", key: "username", sort: true, align: 'left', emptySign: 'NA' },
             // { heading: "UpdatedBy", key: "updatedbyname", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
             {
@@ -39,7 +39,6 @@ export class RadiologyTemplateMasterComponent implements OnInit {
                     }, {
                         action: gridActions.delete, callback: (data: any) => {
                             this._TemplateServieService.deactivateTheStatus(data.templateId).subscribe((response: any) => {
-                                this.toastr.success(response.message);
                                 this.grid.bindGridData();
                             });
                         }
@@ -48,7 +47,7 @@ export class RadiologyTemplateMasterComponent implements OnInit {
         ]
        
        allfilters = [
-            { fieldName: "templateName", fieldValue: "", opType: OperatorComparer.Contains },
+            { fieldName: "templateName", fieldValue: "", opType: OperatorComparer.StartsWith },
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
         ]
      gridConfig: gridModel = {
@@ -66,44 +65,7 @@ export class RadiologyTemplateMasterComponent implements OnInit {
     ) { }
 
     ngOnInit(): void { }
-     //filters addedby avdhoot vedpathak date-28/05/2025
-    // Clearfilter(event) {
-    //     console.log(event)
-    //     if (event == 'TemplateNameSearch')
-    //         this._TemplateServieService.myformSearch.get('TemplateNameSearch').setValue("")
-
-    //     this.onChangeFirst();
-    // }
-
-    // onChangeFirst() {
-    //     this.templateName = this._TemplateServieService.myformSearch.get('TemplateNameSearch').value
-    //     this.getfilterdata();
-    // }
-
-    // getfilterdata() {
-    //     debugger
-    //     let isActive = this._TemplateServieService.myformSearch.get("IsDeletedSearch").value || "";
-    //     this.gridConfig = {
-    //         apiUrl: "RadiologyTemplate/List",
-    //         columnsList: this.allcolumns,
-    //         sortField: "TemplateName",
-    //         sortOrder: 0,
-    //         filters: [
-    //             { fieldName: "templateName", fieldValue: this.templateName, opType: OperatorComparer.Contains },
-    //             { fieldName: "isActive", fieldValue: isActive, opType: OperatorComparer.Equals }
-    //         ]
-    //     }
-    //     // this.grid.gridConfig = this.gridConfig;
-    //     // this.grid.bindGridData();
-    //     console.log("GridConfig:", this.gridConfig);
-
-    // if (this.grid) {
-    //     this.grid.gridConfig = this.gridConfig;
-    //     this.grid.bindGridData();
-    // } else {
-    //     console.error("Grid is undefined!");
-    // }
-    // }
+   
     onSave(row: any = null) {
         
         let that = this;

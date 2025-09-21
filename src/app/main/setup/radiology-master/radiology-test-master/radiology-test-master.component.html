@@ -30,13 +30,14 @@
                     </mat-form-field>
 
                <airmid-dropdown label="CategoryName" formControlName="CategoryId"
-                        [formGroup]="searchFormGroup"
+                        [formGroup]="searchFormGroup" (selectionChange)="UnitView($event)"
+                        [(ngModel)]="gridConfig.filters[1].fieldValue"
                         [mode]="autocompleteModeCategoryId"
                         (selectionChange)="Clearfilter($event)"></airmid-dropdown>
 
-                    <airmid-dropdown label="ServiceName" formControlName="ServiceId"
-                        [formGroup]="searchFormGroup" [mode]="autocompleteModeServiceID"
-                        (selectionChange)="Clearfilter($event)" ></airmid-dropdown>
+                    <airmid-dropdown label="ServiceName" formControlName="ServiceId" (selectionChange)="ServiceView($event)"                        [(ngModel)]="gridConfig.filters[2].fieldValue"
+                       [(ngModel)]="gridConfig.filters[2].fieldValue"  [formGroup]="searchFormGroup" [mode]="autocompleteModeServiceID"
+                        ></airmid-dropdown>
                 </form>
             </ng-container>
         </airmid-table>

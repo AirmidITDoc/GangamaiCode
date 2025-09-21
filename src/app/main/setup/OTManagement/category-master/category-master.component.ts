@@ -23,9 +23,9 @@ msg: any;
  @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
    
         allColumns =  [
-            { heading: "Code", key: "surgeryCategoryId", sort: true, align: 'left', emptySign: 'NA' },
+            // { heading: "Code", key: "surgeryCategoryId", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "SystemName", key: "surgeryCategoryName", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "AddedBy", key: "addedBy", sort: true, align: 'left', emptySign: 'NA' },
+            // { heading: "AddedBy", key: "addedBy", sort: true, align: 'left', emptySign: 'NA' },
             //{ heading: "UserName", key: "addedByName", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
             {

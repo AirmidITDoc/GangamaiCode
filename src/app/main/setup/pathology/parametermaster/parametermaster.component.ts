@@ -32,16 +32,17 @@ export class ParametermasterComponent implements OnInit {
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
     @ViewChild('actionsNumeric') actionsNumeric!: TemplateRef<any>;
-
+  @ViewChild('actionsIsprint') actionsIsprint!: TemplateRef<any>;
     ngAfterViewInit() {
         this.gridConfig.columnsList.find(col => col.key === 'isNumericParameter')!.template = this.actionsNumeric;
+        this.gridConfig.columnsList.find(col => col.key === 'isPrintDisSummary')!.template = this.actionsIsprint;
         this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
     }
 
     allcolumns = [
-        { heading: "IsNumeric", key: "isNumericParameter", width: 100, sort: true, align: 'left', type: gridColumnTypes.template },
+        { heading: "IsNumeric", key: "isNumericParameter", sort: true, align: 'left', type: gridColumnTypes.template, width: 90  },
 
-        { heading: "IsPrintDisSummary", key: "isPrintDisSummary", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "PrintDisSumm", key: "isPrintDisSummary", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template , width: 100 },
 
         // { heading: "Code", key: "parameterId", width: 100, sort: true, align: 'left', emptySign: 'NA' },
 
@@ -54,9 +55,9 @@ export class ParametermasterComponent implements OnInit {
         { heading: "Unit Name", key: "unitName", sort: true, align: 'left', emptySign: 'NA' },
 
 
-        { heading: "Formula", key: "formula", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "Formula", key: "formula", sort: true, align: 'left', emptySign: 'NA', width: 150 },
 
-        { heading: "Added By", key: "username", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "User Name", key: "userName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
 
         { heading: "IsActive", key: "isActive", width: 100, type: gridColumnTypes.status, align: "center" },
 
@@ -95,6 +96,17 @@ export class ParametermasterComponent implements OnInit {
         console.log(event)
         if (event == 'ParameterNameSearch')
             this.searchFormGroup.get('ParameterNameSearch').setValue("")
+
+        this.onChangeFirst();
+    }
+
+
+     UnitView(value) {
+
+        if (value.value !== 0)
+            this.UnitName = value.value
+        else
+            this.UnitName = "0"
 
         this.onChangeFirst();
     }

@@ -22,9 +22,9 @@ export class RelationshipMasterComponent implements OnInit {
     msg: any;
 
         allcolumns =  [
-            { heading: "Code", key: "relationshipId", sort: true, align: 'left', emptySign: 'NA' },
+            // { heading: "Code", key: "relationshipId", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "RelationshipName", key: "relationshipName", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "UserName", key: "username", sort: true, align: 'left', emptySign: 'NA' },
+            // { heading: "UserName", key: "username", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
             {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
@@ -35,7 +35,6 @@ export class RelationshipMasterComponent implements OnInit {
                     }, {
                         action: gridActions.delete, callback: (data: any) => {
                             this._relationshipService.deactivateTheStatus(data.relationshipId).subscribe((response: any) => {
-                                this.toastr.success(response.message);
                                 this.grid.bindGridData();
                             });
                         }
@@ -44,7 +43,7 @@ export class RelationshipMasterComponent implements OnInit {
         ]
         
         allfilters =  [
-            { fieldName: "relationshipName", fieldValue: "", opType: OperatorComparer.Contains },
+            { fieldName: "relationshipName", fieldValue: "", opType: OperatorComparer.StartsWith },
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
         ]
         gridConfig: gridModel = {

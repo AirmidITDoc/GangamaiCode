@@ -20,7 +20,7 @@ export class DosemasterComponent implements OnInit {
  doseName: any = "";
    
         allcolumns = [
-            { heading: "Code", key: "doseId", sort: true, align: 'left', emptySign: 'NA' },
+            // { heading: "Code", key: "doseId", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "Dose Name", key: "doseName", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "Dose Name In English", key: "doseNameInEnglish", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "DoseQtyPerDay", key: "doseQtyPerDay", sort: true, align: 'left', emptySign: 'NA' },
@@ -34,7 +34,6 @@ export class DosemasterComponent implements OnInit {
                     }, {
                         action: gridActions.delete, callback: (data: any) => {
                             this._DoseService.deactivateTheStatus(data.doseId).subscribe((data: any) => {
-                                this.toastr.success(data.message)
                                 this.grid.bindGridData();
                             });
                         }
@@ -43,7 +42,7 @@ export class DosemasterComponent implements OnInit {
         ]
         
           allfilters = [
-            { fieldName: "doseName", fieldValue: "", opType: OperatorComparer.Contains },
+            { fieldName: "doseName", fieldValue: "", opType: OperatorComparer.StartsWith },
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
         ]
     
@@ -62,45 +61,7 @@ export class DosemasterComponent implements OnInit {
     ) { }
 
     ngOnInit(): void { }
-    //filters addedby avdhoot vedpathak date-28/05/2025
-    // Clearfilter(event) {
-    //     console.log(event)
-    //     if (event == 'DoseNameSearch')
-    //         this._DoseService.myformSearch.get('DoseNameSearch').setValue("")
-
-    //     this.onChangeFirst();
-    // }
-
-    // onChangeFirst() {
-    //     this.doseName = this._DoseService.myformSearch.get('DoseNameSearch').value
-    //     this.getfilterdata();
-    // }
-
-    // getfilterdata() {
-    //     debugger
-    //     let isActive = this._DoseService.myformSearch.get("IsDeletedSearch").value || "";
-    //     this.gridConfig = {
-    //         apiUrl: "DoseMaster/List",
-    //         columnsList: this.allcolumns,
-    //         sortField: "doseId",
-    //         sortOrder: 0,
-    //         filters: [
-    //             { fieldName: "doseName", fieldValue: this.doseName, opType: OperatorComparer.Contains },
-    //             { fieldName: "isActive", fieldValue: isActive, opType: OperatorComparer.Equals }
-    //         ]
-    //     }
-    //     // this.grid.gridConfig = this.gridConfig;
-    //     // this.grid.bindGridData();
-    //     console.log("GridConfig:", this.gridConfig);
-
-    // if (this.grid) {
-    //     this.grid.gridConfig = this.gridConfig;
-    //     this.grid.bindGridData();
-    // } else {
-    //     console.error("Grid is undefined!");
-    // }
-    // }
-
+   
      closeDialog() {
     if (this.dialogRef) {
       this.dialogRef.close();

@@ -22,7 +22,7 @@ export class ConsentMasterComponent implements OnInit {
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
    
         allColumns = [
-            { heading: "Code", key: "consentId", sort: true, align: 'left', emptySign: 'NA' ,width:150},
+            // { heading: "Code", key: "consentId", sort: true, align: 'left', emptySign: 'NA' ,width:150},
             { heading: "OT Consent Name", key: "consentName", sort: true, align: 'left', emptySign: 'NA',width:300 },
             { heading: "Consent Desc ", key: "consentDesc", sort: true, align: 'left', emptySign: 'NA' ,width:350 },
             { heading: "Department Name", key: "departmentName", sort: true, align: 'left', emptySign: 'NA' ,width:200 },
@@ -36,7 +36,6 @@ export class ConsentMasterComponent implements OnInit {
                     }, {
                         action: gridActions.delete, callback: (data: any) => {
                             this._ConsentMasterService.deactivateTheStatus(data.consentId).subscribe((response: any) => {
-                                this.toastr.success(response.message);
                                 this.grid.bindGridData();
                             });
                         }

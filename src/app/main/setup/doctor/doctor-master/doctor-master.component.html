@@ -24,38 +24,42 @@
     <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
         <ng-template #actionsTemplate let-element>
             <div fxLayout="row" fxLayoutAlign="center center">
-                <mat-icon *ngIf="element.isInHouseDoctor =='true'" matTooltip="IsInHouseDoctor">account_balance
+                <!-- <mat-icon *ngIf="element.isInHouseDoctor==true" title="IsInHouseDoctor">account_balance
+                </mat-icon> -->
+                <mat-icon *ngIf="element.isInHouseDoctor==true" title="IsInHouseDoctor">
+                    <img width="50px" height="50px" src="assets/images/logos/houseondr.png">
                 </mat-icon>
-
             </div>
         </ng-template>
 
         <ng-template #actionsTemplate1 let-element>
             <div fxLayout="row" fxLayoutAlign="center center">
-                <mat-icon *ngIf="element.isOnCallDoctor =='true'" matTooltip="IsOnCallDoctor">ring_volume
+                <!-- <mat-icon *ngIf="element.isOnCallDoctor==true" title="IsOnCallDoctor">ring_volume
+                </mat-icon> -->
+                <mat-icon *ngIf="element.isOnCallDoctor==true" title="IsOnCallDoctor">
+                    <img width="50px" height="50px" src="assets/images/logos/callondr.png">
                 </mat-icon>
-                <!-- 
-            <mat-icon *ngIf="element.patientTypeID != '1'" matTooltip="Patient Category Company">business
-            </mat-icon> -->
             </div>
         </ng-template>
 
 
-          <ng-template #actionsTemplate2 let-element>
+        <ng-template #actionsTemplate2 let-element>
             <div fxLayout="row" fxLayoutAlign="center center">
-                <mat-icon *ngIf="element.isConsultant =='true'" matTooltip="IsConsultant">local_pharmacy
+                <!-- <mat-icon *ngIf="element.isConsultant==true" title="IsConsultant">local_pharmacy
+                </mat-icon> -->
+                <mat-icon *ngIf="element.isConsultant==true" title="IsConsultant">
+                    <img width="50px" height="50px" src="assets/images/logos/consultantdr.jpg">
                 </mat-icon>
-
             </div>
         </ng-template>
 
         <ng-template #actionsTemplate3 let-element>
             <div fxLayout="row" fxLayoutAlign="center center">
-                <mat-icon *ngIf="element.isRefDoc =='false'" matTooltip="IsRefDoc">directions_run
+                <!-- <mat-icon *ngIf="element.isRefDoc==false" title="IsRefDoc">directions_run
+                </mat-icon> -->
+                <mat-icon *ngIf="element.isRefDoc==true" title="IsRefDoc">
+                    <img width="50px" height="50px" src="assets/images/logos/refdr.png">
                 </mat-icon>
-                <!-- 
-            <mat-icon *ngIf="element.patientTypeID != '1'" matTooltip="Patient Category Company">business
-            </mat-icon> -->
             </div>
         </ng-template>
 

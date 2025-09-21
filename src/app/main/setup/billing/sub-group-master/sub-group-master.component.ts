@@ -20,10 +20,10 @@ export class SubGroupMasterComponent implements OnInit {
   subGroupName: any = "";
     
         allcolumns =  [
-            { heading: "Code", key: "subGroupId", sort: true, align: 'left', emptySign: 'NA' },
+            // { heading: "Code", key: "subGroupId", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "Sub Group Name", key: "subGroupName", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "Group Name", key: "groupId", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "User Name", key: "username", sort: true, align: 'left', emptySign: 'NA' },
+            // { heading: "User Name", key: "username", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
             {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
@@ -34,7 +34,6 @@ export class SubGroupMasterComponent implements OnInit {
                     }, {
                         action: gridActions.delete, callback: (data: any) => {
                             this._subgroupService.deactivateTheStatus(data.subGroupId).subscribe((response: any) => {
-                                this.toastr.success(response.message);
                                 this.grid.bindGridData();
                             });
                         }
@@ -43,7 +42,7 @@ export class SubGroupMasterComponent implements OnInit {
         ]
        
         allfilters = [
-            { fieldName: "subGroupName", fieldValue: "", opType: OperatorComparer.Contains },
+            { fieldName: "subGroupName", fieldValue: "", opType: OperatorComparer.StartsWith },
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
         ]
      gridConfig: gridModel = {

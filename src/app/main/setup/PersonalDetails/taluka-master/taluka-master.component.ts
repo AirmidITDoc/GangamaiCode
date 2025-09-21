@@ -21,10 +21,10 @@ export class TalukaMasterComponent implements OnInit {
     talukaName: any = "";
 
         allcolumns =  [
-               { heading: "Code", key: "talukaId", sort: true, align: 'left', emptySign: 'NA' },
+            //    { heading: "Code", key: "talukaId", sort: true, align: 'left', emptySign: 'NA' },
                { heading: "Taluka Name", key: "talukaName", sort: true, align: 'left', emptySign: 'NA' },
                { heading: "City Name", key: "cityId", sort: true, align: 'left', emptySign: 'NA' },
-               { heading: "UserName", key: "username", sort: true, align: 'left', emptySign: 'NA' },
+            //    { heading: "UserName", key: "username", sort: true, align: 'left', emptySign: 'NA' },
                { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
                {
                    heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
@@ -35,7 +35,6 @@ export class TalukaMasterComponent implements OnInit {
                        }, {
                            action: gridActions.delete, callback: (data: any) => {
                                this._TalukaMasterService.deactivateTheStatus(data.talukaId).subscribe((response: any) => {
-                                   this.toastr.success(response.message);
                                    this.grid.bindGridData();
                                });
                            }
@@ -44,7 +43,7 @@ export class TalukaMasterComponent implements OnInit {
            ]
           
            allfilters =[
-               { fieldName: "talukaName", fieldValue: "", opType: OperatorComparer.Contains },
+               { fieldName: "talukaName", fieldValue: "", opType: OperatorComparer.StartsWith },
                { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
            ]
        
@@ -61,44 +60,7 @@ export class TalukaMasterComponent implements OnInit {
        ) { }
    
        ngOnInit(): void { }
-   //filters addedby avdhoot vedpathak date-27/05/2025
-    //    Clearfilter(event) {
-    //     console.log(event)
-    //     if (event == 'TalukaNameSearch')
-    //         this._TalukaMasterService.myformSearch.get('TalukaNameSearch').setValue("")
-
-    //     //this.onChangeFirst();
-    // }
-
-    // onChangeFirst() {
-    //     this.talukaName = this._TalukaMasterService.myformSearch.get('TalukaNameSearch').value
-    //     this.getfilterdata();
-    // }
-
-    // getfilterdata() {
-    //     debugger
-    //     let isActive = this._TalukaMasterService.myformSearch.get("IsDeletedSearch").value || "";
-    //     this.gridConfig = {
-    //         apiUrl: "TalukaMaster/List",
-    //         columnsList: this.allcolumns,
-    //         sortField: "talukaId",
-    //         sortOrder: 0,
-    //         filters: [
-    //             { fieldName: "talukaName", fieldValue: this.talukaName, opType: OperatorComparer.Contains },
-    //             { fieldName: "isActive", fieldValue: isActive, opType: OperatorComparer.Equals }
-    //         ]
-    //     }
-    //     // this.grid.gridConfig = this.gridConfig;
-    //     // this.grid.bindGridData();
-    //     console.log("GridConfig:", this.gridConfig);
-
-    // if (this.grid) {
-    //     this.grid.gridConfig = this.gridConfig;
-    //     this.grid.bindGridData();
-    // } else {
-    //     console.error("Grid is undefined!");
-    // }
-    // }
+  
        onSave(row: any = null) {
            const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
            buttonElement.blur(); // Remove focus from the button

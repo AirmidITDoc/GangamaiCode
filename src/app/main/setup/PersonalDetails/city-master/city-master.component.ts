@@ -24,7 +24,7 @@ export class CityMasterComponent implements OnInit {
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
 
     allColumns = [
-        { heading: "Code", key: "cityId", sort: true, align: 'left', emptySign: 'NA' },
+        // { heading: "Code", key: "cityId", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "City Name", key: "cityName", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "State Name", key: "stateId", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
@@ -37,7 +37,6 @@ export class CityMasterComponent implements OnInit {
                 }, {
                     action: gridActions.delete, callback: (data: any) => {
                         this._CityMasterService.deactivateTheStatus(data.cityId).subscribe((response: any) => {
-                            this.toastr.success(response.message);
                             this.grid.bindGridData();
                         });
                     }
@@ -46,7 +45,7 @@ export class CityMasterComponent implements OnInit {
     ]
 
     allFilters = [
-        { fieldName: "cityName", fieldValue: this.cityName, opType: OperatorComparer.Contains },
+        { fieldName: "cityName", fieldValue: this.cityName, opType: OperatorComparer.StartsWith },
         { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
     ]
     gridConfig: gridModel = {
@@ -65,36 +64,7 @@ export class CityMasterComponent implements OnInit {
 
     ngOnInit(): void { }
 
-    // Clearfilter(event) {
-    //     console.log(event)
-    //     if (event == 'CityNameSearch')
-    //         this._CityMasterService.myformSearch.get('CityNameSearch').setValue("")
-    //    // this.onChangeFirst();
-    // }
-
-    // onChangeFirst() {
-    //     this.cityName = this._CityMasterService.myformSearch.get('CityNameSearch').value
-    //     this.getfilterdata();
-    // }
-
-    // getfilterdata() {
-    //     debugger
-    //     let isActive = this._CityMasterService.myformSearch.get("IsDeletedSearch").value || "";
-    //     this.gridConfig = {
-    //         apiUrl: "CityMaster/List",
-    //         columnsList: this.allColumns,
-    //         sortField: "cityId",
-    //         sortOrder: 0,
-    //         filters: [
-    //             { fieldName: "cityName", fieldValue: this.cityName, opType: OperatorComparer.Contains },
-    //             { fieldName: "isActive", fieldValue: isActive, opType: OperatorComparer.Equals }
-    //         ]
-    //     }
-    //     this.grid.gridConfig = this.gridConfig;
-    //     this.grid.bindGridData();
-    //     console.log("GridConfig:", this.gridConfig);
-    // }
-
+  
     onSave(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button

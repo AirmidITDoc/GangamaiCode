@@ -22,9 +22,9 @@ export class ConcessionReasonMasterComponent implements OnInit {
 
      concessionReason: any = "";
         allcolumns = [
-            { heading: "Code", key: "concessionId", sort: true, align: 'left', emptySign: 'NA' },
+            // { heading: "Code", key: "concessionId", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "Concession Reason ", key: "concessionReason", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "User Name", key: "username", sort: true, align: 'left', emptySign: 'NA' },
+            // { heading: "User Name", key: "username", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
             {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
@@ -35,7 +35,6 @@ export class ConcessionReasonMasterComponent implements OnInit {
                     }, {
                         action: gridActions.delete, callback: (data: any) => {
                             this._ConcessionReasonMasterService.deactivateTheStatus(data.concessionId).subscribe((response: any) => {
-                                this.toastr.success(response.message);
                                 this.grid.bindGridData();
                             });
                         }
@@ -44,7 +43,7 @@ export class ConcessionReasonMasterComponent implements OnInit {
         ]
         
         allfilters = [
-            { fieldName: "concessionReason", fieldValue: "", opType: OperatorComparer.Contains },
+            { fieldName: "concessionReason", fieldValue: "", opType: OperatorComparer.StartsWith },
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
         ]
      gridConfig: gridModel = {
@@ -61,45 +60,7 @@ export class ConcessionReasonMasterComponent implements OnInit {
         public toastr: ToastrService,) { }
 
     ngOnInit(): void { }
-     //filters addedby avdhoot vedpathak date-28/05/2025
-    // Clearfilter(event) {
-    //     console.log(event)
-    //     if (event == 'ConcessionReasonNameSearch')
-    //         this._ConcessionReasonMasterService.myformSearch.get('ConcessionReasonNameSearch').setValue("")
-
-    //     this.onChangeFirst();
-    // }
-
-    // onChangeFirst() {
-    //     this.concessionReason = this._ConcessionReasonMasterService.myformSearch.get('ConcessionReasonNameSearch').value
-    //     this.getfilterdata();
-    // }
-
-    // getfilterdata() {
-    //     debugger
-    //     let isActive = this._ConcessionReasonMasterService.myformSearch.get("IsDeletedSearch").value || "";
-    //     this.gridConfig = {
-    //         apiUrl: "ConcessionReasonMaster/List",
-    //         columnsList: this.allcolumns,
-    //         sortField: "concessionId",
-    //         sortOrder: 0,
-    //         filters: [
-    //             { fieldName: "concessionReason", fieldValue: this.concessionReason, opType: OperatorComparer.Contains },
-    //             { fieldName: "isActive", fieldValue: isActive, opType: OperatorComparer.Equals }
-    //         ]
-    //     }
-    //     // this.grid.gridConfig = this.gridConfig;
-    //     // this.grid.bindGridData();
-    //     console.log("GridConfig:", this.gridConfig);
-
-    // if (this.grid) {
-    //     this.grid.gridConfig = this.gridConfig;
-    //     this.grid.bindGridData();
-    // } else {
-    //     console.error("Grid is undefined!");
-    // }
-    // }
-
+  
     onSave(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button

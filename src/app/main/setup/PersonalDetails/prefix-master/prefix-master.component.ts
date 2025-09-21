@@ -39,7 +39,7 @@ export class PrefixMasterComponent implements OnInit {
         apiUrl: "Prefix/List",
         fileName: "PrefixList",
         columnsList: [
-            { heading: "Code", key: "prefixId", sort: false, align: 'left', emptySign: 'NA' },
+            // { heading: "Code", key: "prefixId", sort: false, align: 'left', emptySign: 'NA' },
             { heading: "PrefixName", key: "prefixName", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "GenderName", key: "genderName", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
@@ -52,7 +52,6 @@ export class PrefixMasterComponent implements OnInit {
                     }, {
                         action: gridActions.delete, visible: this.permissionService.getPermission(permissionCodes.Prefix, permissionType.Delete), message: 'Are you sure want to deactive?', callback: (data: any) => {
                             this._PrefixMasterService.deactivateTheStatus(data.prefixId).subscribe((response: any) => {
-                                this.toastr.success(response.message);
                                 this.grid.bindGridData();
                             });
                         }
@@ -62,7 +61,7 @@ export class PrefixMasterComponent implements OnInit {
         sortField: "PrefixID",
         sortOrder: 0,
         filters: [
-            { fieldName: "PrefixName", fieldValue: "", opType: OperatorComparer.Contains },
+            { fieldName: "PrefixName", fieldValue: "", opType: OperatorComparer.StartsWith },
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
         ]
     }

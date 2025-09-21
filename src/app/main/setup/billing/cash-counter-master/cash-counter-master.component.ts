@@ -21,7 +21,7 @@ export class CashCounterMasterComponent implements OnInit {
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
 cashCounterName: any = "";
      allcolumns = [
-            { heading: "Code", key: "cashCounterId", sort: true, align: 'left', emptySign: 'NA' },
+            // { heading: "Code", key: "cashCounterId", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "Cash Counter Name", key: "cashCounterName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
             { heading: "Prefix Name", key: "prefix", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "BillNo", key: "billNo", sort: true, align: 'left', emptySign: 'NA' },
@@ -35,7 +35,6 @@ cashCounterName: any = "";
                     }, {
                         action: gridActions.delete, callback: (data: any) => {
                             this._CashCounterMasterService.deactivateTheStatus(data.cashCounterId).subscribe((response: any) => {
-                                this.toastr.success(response.message);
                                 this.grid.bindGridData();
                             });
                         }
@@ -44,7 +43,7 @@ cashCounterName: any = "";
         ]
        
        allfilters = [
-            { fieldName: "cashCounterName", fieldValue: "", opType: OperatorComparer.Contains },
+            { fieldName: "cashCounterName", fieldValue: "", opType: OperatorComparer.StartsWith },
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
         ]
     gridConfig: gridModel = {

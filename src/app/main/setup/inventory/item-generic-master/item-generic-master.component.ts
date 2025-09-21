@@ -23,9 +23,9 @@ export class ItemGenericMasterComponent implements OnInit {
     gridConfig: gridModel = {
         apiUrl: "GenericMaster/List",
         columnsList: [
-            { heading: "Code", key: "genericId", sort: true, align: 'left', emptySign: 'NA' },
+            // { heading: "Code", key: "genericId", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "GenericName", key: "genericName", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "UserName", key: "username", sort: true, align: 'left', emptySign: 'NA' },
+            // { heading: "UserName", key: "username", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
             {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
@@ -59,11 +59,7 @@ export class ItemGenericMasterComponent implements OnInit {
 
     ngOnInit(): void { }
 
-    // onClear(val: boolean) {
-    //     this.genericForm.reset();
-    //     this.dialogRef.close(val);
-    // }
-
+   
     onSave(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button

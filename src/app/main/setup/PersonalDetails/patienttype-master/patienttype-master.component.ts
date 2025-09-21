@@ -20,7 +20,7 @@ export class PatienttypeMasterComponent implements OnInit {
 patientType: any = "";
 
         allcolumns= [
-            { heading: "Code", key: "patientTypeId", sort: true, align: 'left', emptySign: 'NA' },
+            // { heading: "Code", key: "patientTypeId", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "Patient Type Name", key: "patientType", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
             {
@@ -32,7 +32,6 @@ patientType: any = "";
                     }, {
                         action: gridActions.delete, callback: (data: any) => {
                             this._PatienttypeMasterService.deactivateTheStatus(data.patientTypeId).subscribe((response: any) => {
-                                this.toastr.success(response.message);
                                 this.grid.bindGridData();
                             });
                         }
@@ -41,7 +40,7 @@ patientType: any = "";
         ]
         
         allfilters= [
-            { fieldName: "patientType", fieldValue: "", opType: OperatorComparer.Contains },
+            { fieldName: "patientType", fieldValue: "", opType: OperatorComparer.StartsWith },
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
         ]
         gridConfig: gridModel = {
@@ -58,46 +57,7 @@ patientType: any = "";
     ) { }
 
     ngOnInit(): void { }
-//filters addedby avdhoot vedpathak date-27/05/2025
-    // Clearfilter(event) {
-    //     console.log(event)
-    //     if (event == 'PatientTypeSearch')
-    //         this._PatienttypeMasterService.myformSearch.get('PatientTypeSearch').setValue("")
 
-    //    // this.onChangeFirst();
-    // }
-
-    // onChangeFirst() 
-    // {
-    //     debugger
-    //     this.patientType = this._PatienttypeMasterService.myformSearch.get("PatientTypeSearch").value
-    //     this.getfilterdata();
-    // }
-
-    // getfilterdata() {
-    //     debugger
-    //     let isActive = this._PatienttypeMasterService.myformSearch.get("IsDeletedSearch").value || "";
-    //     this.gridConfig = {
-    //         apiUrl: "PatientType/List",
-    //         columnsList: this.allcolumns,
-    //         sortField: "patientTypeId",
-    //         sortOrder: 0,
-    //         filters: [
-    //             { fieldName: "patientType", fieldValue: this.patientType, opType: OperatorComparer.Contains },
-    //             { fieldName: "isActive", fieldValue: isActive, opType: OperatorComparer.Equals }
-    //         ]
-    //     }
-    //     // this.grid.gridConfig = this.gridConfig;
-    //     // this.grid.bindGridData();
-    //     console.log("GridConfig:", this.gridConfig);
-
-    // if (this.grid) {
-    //     this.grid.gridConfig = this.gridConfig;
-    //     this.grid.bindGridData();
-    // } else {
-    //     console.error("Grid is undefined!");
-    // }
-    // }
     
     onSave(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element

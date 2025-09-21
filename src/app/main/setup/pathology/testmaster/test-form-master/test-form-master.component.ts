@@ -394,6 +394,7 @@ export class TestFormMasterComponent implements OnInit {
     }
 
     getParameterList() {
+        debugger
         let parameter = this.testForm.get("ParameterNameSearch").value + "%" || '%';
         var param = {
             "first": 0,
@@ -405,6 +406,16 @@ export class TestFormMasterComponent implements OnInit {
                     "fieldName": "ParameterName",
                     "fieldValue": parameter,
                     "opType": "StartsWith"
+                },
+                {
+                    "fieldName": "UnitId",
+                    "fieldValue": "0",
+                    "opType": "Equals"
+                },
+                {
+                    "fieldName": "IsNumneric",
+                    "fieldValue": "2",
+                    "opType": "Equals"
                 }
             ],
             "Columns": [],

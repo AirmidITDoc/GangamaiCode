@@ -59,7 +59,7 @@ export class DoctorMasterComponent implements OnInit {
         { heading: "-", key: "isInHouseDoctor", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
         { heading: "-", key: "isOnCallDoctor", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 60 },
 
-        { heading: "Code", key: "doctorId", sort: true, align: 'left', emptySign: 'NA' },
+        // { heading: "Code", key: "doctorId", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
 
         // { heading: "Prefix", key: "prefixName", sort: true, align: 'left', emptySign: 'NA' },

@@ -37,7 +37,6 @@ export class CertificatemasterComponent implements OnInit {
             {
                 action: gridActions.delete, callback: (data: any) => {
                     this._CertificateserviceService.deactivateTheStatus(data.certificateId).subscribe((response: any) => {
-                        this.toastr.success(response.message);
                         this.grid.bindGridData();
                     });
                 }

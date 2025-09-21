@@ -58,7 +58,7 @@ export class HospitalMasterComponent implements OnInit {
     columnsList: this.allcolumns,
     sortField: "HospitalId",
     sortOrder: 1,
-    filters: [{ fieldName: "HospitalName", fieldValue: "%", opType: OperatorComparer.Contains },
+    filters: [{ fieldName: "HospitalName", fieldValue: "%", opType: OperatorComparer.StartsWith },
     { fieldName: "IsActive", fieldValue: "0", opType: OperatorComparer.Contains }
     ]
   }

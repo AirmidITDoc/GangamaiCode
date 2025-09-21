@@ -26,14 +26,21 @@ export class RadiologyTestMasterComponent implements OnInit {
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     testName: any = "";
     searchFormGroup: FormGroup;
+    CatId = "0"
+    ServiceId = "0"
+    UnitId = "0"
+
+
+    autocompleteModeCategoryId: string = "RadioCategory";
+    autocompleteModeServiceID: string = "Service";
 
     allColumns = [
         // { heading: "Code", key: "testId", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "Test Name", key: "testName", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Test Name", key: "testName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
         { heading: "PrintTest Name", key: "printTestName", width: 200, sort: true, align: 'left', emptySign: 'NA' },
         { heading: "Category Name", key: "categoryName", width: 150, sort: true, align: 'left', emptySign: 'NA' },
         { heading: "Service Name", key: "serviceName", width: 150, sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "User Name", key: "username", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "User Name", key: "userName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "IsActive", key: "isActive", width: 100, type: gridColumnTypes.status, align: "center" },
         {
             heading: "Action", key: "action", width: 100, align: "right", type: gridColumnTypes.action, actions: [
@@ -45,7 +52,6 @@ export class RadiologyTestMasterComponent implements OnInit {
                 {
                     action: gridActions.delete, callback: (data: any) => {
                         this._radiologytestService.deactivateTheStatus(data.testId).subscribe((response: any) => {
-                            this.toastr.success(response.message);
                             this.grid.bindGridData();
                         });
                     }
@@ -55,9 +61,9 @@ export class RadiologyTestMasterComponent implements OnInit {
     ]
 
     allFilters = [
-        { fieldName: "TestName", fieldValue: "%", opType: OperatorComparer.Contains },
-        { fieldName: "CatId", fieldValue: "0", opType: OperatorComparer.Contains },
-        { fieldName: "ServiceId", fieldValue: "0", opType: OperatorComparer.Contains }
+        { fieldName: "TestName", fieldValue: "%", opType: OperatorComparer.StartsWith },
+        { fieldName: "CatId", fieldValue: "0", opType: OperatorComparer.Equals },
+        { fieldName: "ServiceId", fieldValue: "0", opType: OperatorComparer.Equals }
     ]
 
     gridConfig: gridModel = {
@@ -75,10 +81,7 @@ export class RadiologyTestMasterComponent implements OnInit {
 
         this.onChangeFirst();
     }
-    CatId = "0"
-    ServiceId = "0"
-    autocompleteModeCategoryId: string = "PathCategory";
-    autocompleteModeServiceID: string = "Service";
+
     onChangeFirst() {
         debugger
         this.testName = this.searchFormGroup.get('TestNameSearch').value + "%"
@@ -116,7 +119,7 @@ export class RadiologyTestMasterComponent implements OnInit {
     ngOnInit(): void {
         this.searchFormGroup = this._radiologytestService.createSearchForm();
     }
- 
+
 
     onSave(row: any = null) {
         const dialogRef = this._matDialog.open(UpdateradiologymasterComponent,
@@ -146,7 +149,7 @@ export class RadiologyTestMasterComponent implements OnInit {
                     if (response.StatusCode == 200) {
                         this.toastr.success(response.Message);
                         // this.getGenderMasterList();
-                        
+
                     }
                 });
             }
@@ -172,6 +175,26 @@ export class RadiologyTestMasterComponent implements OnInit {
             console.log("The dialog was closed - Insert Action", result);
 
         });
+    }
+
+    UnitView(value) {
+
+        if (value.value !== 0)
+            this.UnitId = value.value
+        else
+            this.UnitId = "0"
+
+        this.onChangeFirst();
+    }
+
+    ServiceView(value) {
+
+        if (value.value !== 0)
+            this.ServiceId = value.value
+        else
+            this.ServiceId = "0"
+
+        this.onChangeFirst();
     }
 
 }

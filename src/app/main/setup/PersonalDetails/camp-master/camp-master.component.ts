@@ -24,7 +24,7 @@ export class CampMasterComponent implements OnInit {
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
 
     allColumns = [
-        { heading: "Code", key: "campId", sort: true, align: 'left', emptySign: 'NA' },
+        // { heading: "Code", key: "campId", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "Camp Name", key: "campName", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "Location Name", key: "campLocation", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
@@ -37,7 +37,6 @@ export class CampMasterComponent implements OnInit {
                 }, {
                     action: gridActions.delete, callback: (data: any) => {
                         this._CampMasterService.deactivateTheStatus(data.campId).subscribe((response: any) => {
-                            this.toastr.success(response.message);
                             this.grid.bindGridData();
                         });
                     }
@@ -46,7 +45,7 @@ export class CampMasterComponent implements OnInit {
     ]
 
     allFilters = [
-        { fieldName: "CampName", fieldValue: this.CampName, opType: OperatorComparer.Contains },
+        { fieldName: "CampName", fieldValue: this.CampName, opType: OperatorComparer.StartsWith },
         { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
     ]
     gridConfig: gridModel = {
