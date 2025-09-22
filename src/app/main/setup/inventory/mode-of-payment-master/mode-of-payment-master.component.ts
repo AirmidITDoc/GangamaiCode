@@ -33,7 +33,6 @@ export class ModeOfPaymentMasterComponent implements OnInit {
                 }, {
                     action: gridActions.delete, callback: (data: any) => {
                         this._ModeOfPaymentMasterService.deactivateTheStatus(data.id).subscribe((response: any) => {
-                            this.toastr.success(response.message);
                             this.grid.bindGridData();
                         });
                     }
@@ -43,7 +42,7 @@ export class ModeOfPaymentMasterComponent implements OnInit {
 
     allfilters = [
         { fieldName: "modeOfPayment", fieldValue: "", opType: OperatorComparer.StartsWith },
-        { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+            { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
     ]
     gridConfig: gridModel = {
         apiUrl: "ModeOfPayment/List",

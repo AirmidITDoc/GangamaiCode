@@ -42,16 +42,7 @@ export class RadiologyTemplateFormComponent implements OnInit {
         public toastr: ToastrService
     ) { }
 
-    //   ngOnInit(): void {
-    //       this.templateForm = this._TemplateServieService.createRadiologytemplateForm();
-    //       var m_data = {
-    //           templateId: this.data?.templateId,
-    //           templateName: this.data?.templateName.trim(),
-    //           templateDesc: this.data?.templateDesc.trim(),
-    //       };
-    //       this.templateForm.patchValue(m_data);
-    //   }
-
+   
     ngOnInit(): void {
         this.templateForm = this._TemplateServieService.createRadiologytemplateForm();
         this.templateForm.markAllAsTouched();
@@ -61,6 +52,11 @@ export class RadiologyTemplateFormComponent implements OnInit {
             this.templateForm.patchValue(this.data);
         }
     }
+
+        onEditorValueChange(content: string) {
+        this.templateForm.get('templateDesc')?.setValue(content);
+    }
+
 
     onSubmit() {
         if (!this.templateForm.invalid) {

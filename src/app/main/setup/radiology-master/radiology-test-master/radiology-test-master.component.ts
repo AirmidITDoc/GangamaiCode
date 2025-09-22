@@ -32,7 +32,7 @@ export class RadiologyTestMasterComponent implements OnInit {
 
 
     autocompleteModeCategoryId: string = "RadioCategory";
-    autocompleteModeServiceID: string = "Service";
+    autocompleteModeServiceID: string = "RadiologyService";
 
     allColumns = [
         // { heading: "Code", key: "testId", sort: true, align: 'left', emptySign: 'NA' },
@@ -131,8 +131,7 @@ export class RadiologyTestMasterComponent implements OnInit {
             });
         dialogRef.afterClosed().subscribe(result => {
             this.grid.bindGridData()
-            console.log('The dialog was closed - Action', result);
-        });
+            });
     }
 
     onDeactive(testId) {
@@ -146,11 +145,7 @@ export class RadiologyTestMasterComponent implements OnInit {
         this.confirmDialogRef.afterClosed().subscribe((result) => {
             if (result) {
                 this._radiologytestService.deactivateTheStatus(testId).subscribe((response: any) => {
-                    if (response.StatusCode == 200) {
-                        this.toastr.success(response.Message);
-                        // this.getGenderMasterList();
-
-                    }
+                  
                 });
             }
             this.confirmDialogRef = null;
@@ -172,8 +167,7 @@ export class RadiologyTestMasterComponent implements OnInit {
         });
         dialogRef.afterClosed().subscribe((result) => {
             this.grid.bindGridData()
-            console.log("The dialog was closed - Insert Action", result);
-
+         
         });
     }
 

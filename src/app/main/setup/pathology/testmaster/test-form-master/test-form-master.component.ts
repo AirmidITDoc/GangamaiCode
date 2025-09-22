@@ -81,6 +81,7 @@ export class TestFormMasterComponent implements OnInit {
 
         this.templatedetailsForm = this._TestmasterService.templatedetailsForm();
         this.testdetailsForm = this._TestmasterService.testdetailsForm();
+        debugger
         this.testForm.get("Status").setValue(1)
         if (this.data) {
             this.registerObj = this.data;
@@ -460,6 +461,7 @@ export class TestFormMasterComponent implements OnInit {
     }
 
     onAdd(event) {
+        debugger
         if (this.testForm.get("IsSubTest").value) {
             this.addSubTest(event);
 
@@ -529,19 +531,17 @@ export class TestFormMasterComponent implements OnInit {
 }
 
     addParameter(row) {
-        // ;
-
+      
         if (!row || !row.parameterId) {
             console.error("Invalid row data!");
             return;
         }
 
-        if (!this.chargeslist) {
+        if (!this.chargeslist) 
             this.chargeslist = [];
-        }
-
-        if (this.chargeslist.length > 0) {
-            let isDuplicate = this.chargeslist.some(ele => ele.parameterId === row.parameterId);
+               
+        if (this.chargeslist.length > 0 && this.chargeslist.length!=1) {
+         let isDuplicate = this.chargeslist.some(ele => ele.parameterId === row.parameterId);
 
             if (isDuplicate) {
                 this.toastr.warning('Selected Parameter already added in the list', 'Warning!', {
@@ -554,13 +554,14 @@ export class TestFormMasterComponent implements OnInit {
         this.chargeslist.push(row);
 
         this.addparameterdata(row);
-
+debugger
         this.DSTestListtemp.data = [...this.chargeslist];
         this.DSTestListtemp.sort = this.sort;
         this.DSTestListtemp.paginator = this.paginator;
     }
 
     addparameterdata(row) {
+        debugger
         this.ChargeList = this.DSTestList.data || [];
 
         let exists = this.ChargeList.some(item => item.ParameterID === row.parameterId);

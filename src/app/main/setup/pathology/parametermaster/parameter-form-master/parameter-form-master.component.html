@@ -40,14 +40,14 @@
                                 <airmid-textbox label="Print Parameter Name" formControlName="printParameterName" [value]="data?.printParameterName" [formGroup]="parameterForm" [validations]="getValidationMessages().printParameterName" [maxLength]="50">
                                 </airmid-textbox>
                             </div>
-
+<!-- [value]="data?.MethodName" -->
                             <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                <airmid-textbox label="Method Name" formControlName="methodName" [value]="data?.MethodName" [formGroup]="parameterForm" [validations]="getValidationMessages().methodName" [maxLength]="50">
+                                <airmid-textbox label="Method Name" formControlName="methodName"  [formGroup]="parameterForm" [validations]="getValidationMessages().methodName" [maxLength]="50">
                                 </airmid-textbox>
                             </div>
-
+ <!-- [value]="data?.formula" -->
                             <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                <airmid-textbox label="Formula" formControlName="formula" [value]="data?.Formula" [formGroup]="parameterForm" [validations]="getValidationMessages().formula" [maxLength]="50">
+                                <airmid-textbox label="Formula" formControlName="formula" [formGroup]="parameterForm" [validations]="getValidationMessages().formula" [maxLength]="150">
                                 </airmid-textbox>
                             </div>
 
@@ -211,11 +211,12 @@
                                             <mat-card-content>
                                                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row wrap" fxLayoutGap="8px grid">
                                                     <div fxFlex="45%" fxFlex.xs="100%" fxFlex.sm="45%">
-                                                        <airmid-textbox label="Parameter" formControlName="paraId" [value]="paraId" [formGroup]="descForm" [validations]="getValidationMessages().paraId" [maxLength]="50">
+                                                        <airmid-textbox label="Parameter" formControlName="paraId" [value]="paraId" [formGroup]="descForm" [validations]="getValidationMessages().paraId" [maxLength]="10"
+                                                         (keypress)="keyPressAlphanumeric($event)" >
                                                         </airmid-textbox>
                                                     </div>
                                                     <div fxFlex="45%" fxFlex.xs="100%" fxFlex.sm="45%">
-                                                        <airmid-textbox label="DefaultValue" formControlName="defaultValue" [value]="defaultValue" [formGroup]="descForm" [validations]="getValidationMessages().defaultValue" [maxLength]="50">
+                                                        <airmid-textbox label="DefaultValue" formControlName="defaultValue" [value]="defaultValue" [formGroup]="descForm" [validations]="getValidationMessages().defaultValue" [maxLength]="10">
                                                         </airmid-textbox>
                                                     </div>
                                                     <div fxFlex="10%" fxFlex.xs="100%" fxFlex.sm="33%">

@@ -30,7 +30,7 @@ export class ItemMasterService {
             ToStoreId: this._loggedService.currentUserValue.user.storeId,
             CatId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             GenericId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            ProdLocation:[0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            ProdLocation:['', [this._FormvalidationserviceService.onlyNumberValidator()]],
             ManufId:[0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             DrugTypeId:[0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         });
@@ -42,8 +42,8 @@ export class ItemMasterService {
             itemShortName: ["",
                 [
                     Validators.required,
-                    Validators.maxLength(50),
-                    Validators.pattern('^[a-zA-Z0-9 ]*$'),
+                    Validators.maxLength(150),
+                    // Validators.pattern('^[a-zA-Z0-9 ]*$'),
                     this._FormvalidationserviceService.allowEmptyStringValidator()
 
                 ]
@@ -51,8 +51,8 @@ export class ItemMasterService {
             itemName: ["",
                 [
                     Validators.required,
-                    Validators.maxLength(50),
-                    Validators.pattern('^[a-zA-Z0-9 ]*$')
+                    Validators.maxLength(150),
+                    // Validators.pattern('^[a-zA-Z0-9 ]*$')
                 ]
             ],
             itemTypeId: [0,
@@ -132,30 +132,9 @@ export class ItemMasterService {
                     Validators.pattern('^[a-zA-Z0-9 ]*$')
                 ]
             ],
-            cgst: ["",
-                [
-                    Validators.required,
-                    Validators.maxLength(15),
-                    Validators.pattern('^[0-9.]*$')
-
-                ]
-            ],
-            sgst: ["",
-                [
-                    Validators.required,
-                    Validators.maxLength(15),
-                    Validators.pattern('^[0-9.]*$')
-
-                ]
-            ],
-            igst: ["",
-                [
-                    Validators.required,
-                    Validators.maxLength(15),
-                    Validators.pattern('^[0-9.]*$')
-
-                ]
-            ],
+            cgst: [0],
+            sgst: [0],
+            igst: [0],
 
             manufId: [0,
                 [
@@ -170,7 +149,7 @@ export class ItemMasterService {
             isScheduleX: true,
             isLasa: true,
             isEmgerency: true,
-            drugType: [0,
+            drugType: ['',
                 [
                     Validators.required,
                 ]
@@ -196,13 +175,7 @@ export class ItemMasterService {
                 ]
             ],
             itemTime: [(new Date()).toISOString()],
-            // mAssignItemToStores: [
-            //     {
-            //         assignId: 0,
-            //         storeId: 0,
-            //         itemId: 0
-            //     },[Validators.required]
-            // ]
+          
             addedby: this._loggedService.currentUserValue.userId,
             upDatedBy: this._loggedService.currentUserValue.userId,
             doseName: "",

@@ -23,7 +23,7 @@ import Swal from "sweetalert2";
     animations: fuseAnimations,
 })
 export class ParametermasterComponent implements OnInit {
-    IsNumneric = "0"
+    IsNumneric = "2"
     UnitName = "0"
     paraName: any = "";
     searchFormGroup: FormGroup;
@@ -42,7 +42,7 @@ export class ParametermasterComponent implements OnInit {
     allcolumns = [
         { heading: "IsNumeric", key: "isNumericParameter", sort: true, align: 'left', type: gridColumnTypes.template, width: 90  },
 
-        { heading: "PrintDisSumm", key: "isPrintDisSummary", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template , width: 100 },
+        { heading: "PrintDisSummary", key: "isPrintDisSummary", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template , width: 120 },
 
         // { heading: "Code", key: "parameterId", width: 100, sort: true, align: 'left', emptySign: 'NA' },
 
@@ -114,9 +114,12 @@ export class ParametermasterComponent implements OnInit {
     onChangeFirst() {
         this.paraName = this.searchFormGroup.get('ParameterNameSearch').value + "%"
         this.UnitName = this.searchFormGroup.get('UnitId').value || "0"
-        if (this.searchFormGroup.get('IsNumeric').value)
+        debugger
+        if (this.searchFormGroup.get('IsNumeric').value==1)
             this.IsNumneric = "1"
-        else
+        else if(this.searchFormGroup.get('IsNumeric').value==2)
+            this.IsNumneric = "2"
+          else if(this.searchFormGroup.get('IsNumeric').value==0)
             this.IsNumneric = "0"
         this.getfilterdata();
     }
@@ -242,10 +245,8 @@ export class ParametermasterComponent implements OnInit {
                 width: '70%'
             });
         dialogRef.afterClosed().subscribe(result => {
-            if (result) {
-                that.grid.bindGridData();
-            }
-            console.log('The dialog was closed - Action', result);
+          that.grid.bindGridData();
+           
         });
     }
     onaddformula(row) {
@@ -254,7 +255,6 @@ export class ParametermasterComponent implements OnInit {
             maxWidth: "50vw",
             maxHeight: "60vh",
             width: "100%",
-            // height: "100%",
             data: {
                 registerObj: row,
             }

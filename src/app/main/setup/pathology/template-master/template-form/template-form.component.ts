@@ -57,7 +57,7 @@ export class TemplateFormComponent implements OnInit {
             this.vTemplateDesc = this.data.templateDesc;
             this.TemplateId = this.data.templateId;
             this.vTemplateDescInHtml = this.data.templateDescInHtml;
-            // this.templateForm.patchValue(this.data)
+            this.templateForm.patchValue(this.data)
         }
     }
 
@@ -71,9 +71,11 @@ export class TemplateFormComponent implements OnInit {
         });
     }
 
-    add() {
-        this.vTemplateDesc = ""
+     onEditorValueChange(content: string) {
+        this.templateForm.get('templateDesc')?.setValue(content);
     }
+
+  
     onSubmit() {
         if (!this.templateForm.invalid) {
             console.log(this.templateForm.value)

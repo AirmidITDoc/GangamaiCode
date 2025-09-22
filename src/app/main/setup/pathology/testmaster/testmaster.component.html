@@ -33,10 +33,10 @@
         <ng-template #actionsIsSubTest let-element>
             <div fxLayout="row" fxLayoutAlign="center center">
 
-                <mat-icon *ngIf="element.isSubTest == true" title="IsSubTest">
+                <mat-icon *ngIf="element.isSubTest == true && element.isTemplateTest==false" title="IsSubTest">
                     <img width="50px" height="50px" src="assets/images/logos/Subtest.png">
                 </mat-icon>
-                <mat-icon *ngIf="element.isSubTest == false" title="IsTest">
+                <mat-icon *ngIf="element.isSubTest == false && element.isTemplateTest==false" title="IsTest">
                     <img width="30px" height="30px" src="assets/images/logos/ISTest.png">
                 </mat-icon>
 

@@ -45,7 +45,7 @@ export class TestmasterService {
             SuggestionNote: [""],
             FootNote: [""],
             IsDeleted: true,
-            ServiceId: [""],
+            ServiceId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             IsTemplateTest: true,
             TestTime: ["2022-09-10"],
             TestDate: ["2022-07-11"],
@@ -69,45 +69,45 @@ export class TestmasterService {
     templatedetailsForm(): FormGroup{
         return this._formBuilder.group({
             PtemplateId: [0],
-            TestId: [""],
-            TemplateId: [""],
+            TestId:  [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            TemplateId:  [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             TemplateName:[""],
         });
     }
     testdetailsForm(): FormGroup{
         return this._formBuilder.group({
-            TestDetId: [0],
-            TestId: [""],
-            SubTestId: [""],
-            ParameterId: [""]
+            TestDetId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            TestId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            SubTestId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            ParameterId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         });
     }
 
     createSearchForm(): FormGroup {
         return this._formBuilder.group({
             TestNameSearch: [""],
-            CategoryId: ["0"],
-            ServiceId: ["0"],
+            CategoryId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            ServiceId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         });
     }
       
     initializeFormGroup() {
         this.createPathtestForm();
     }
-    public getTestMasterList(param,loader = true) {//Retrieve_PathologyTestList
-        if (loader) {
-            this._loaderService.show();
-        }
-        return this._httpClient.PostData("Generic/GetByProc?procName=m_Rtrv_PathologyTestList",
-            param
-        );
-    }
+    // public getTestMasterList(param,loader = true) {//Retrieve_PathologyTestList
+    //     if (loader) {
+    //         this._loaderService.show();
+    //     }
+    //     return this._httpClient.PostData("Generic/GetByProc?procName=m_Rtrv_PathologyTestList",
+    //         param
+    //     );
+    // }
     // get sub Test Master list
-    public getSubTestMasterList(param) {
-        return this._httpClient.PostData("Generic/GetByProc?procName=m_Rtrv_PathologySubTestList",
-            param
-        );
-    }
+    // public getSubTestMasterList(param) {
+    //     return this._httpClient.PostData("Generic/GetByProc?procName=m_Rtrv_PathologySubTestList",
+    //         param
+    //     );
+    // }
 
     // retrieve list  remain
     // get Test master list
@@ -142,28 +142,28 @@ export class TestmasterService {
     
    
 
-    public getParameterMasterCombo(emp,loader = true){
-        if (loader) {
-            this._loaderService.show();
-        }
-        return this._httpClient.PostData(//Retrieve_PathParameterListForCombo
-            "Generic/GetByProc?procName=m_Rtrv_PathParameterList_by_Name1",emp);
-    }
+    // public getParameterMasterCombo(emp,loader = true){
+    //     if (loader) {
+    //         this._loaderService.show();
+    //     }
+    //     return this._httpClient.PostData(//Retrieve_PathParameterListForCombo
+    //         "Generic/GetByProc?procName=m_Rtrv_PathParameterList_by_Name1",emp);
+    // }
 
-    public getNewSubTestList(emp) {
-        return this._httpClient.PostData("Generic/GetByProc?procName=m_Retrieve_PathSubTestListForCombo",emp);
-    }
+    // public getNewSubTestList(emp) {
+    //     return this._httpClient.PostData("Generic/GetByProc?procName=m_Retrieve_PathSubTestListForCombo",emp);
+    // }
 
-    public getNewSubTestMasterList() {
-        return this._httpClient.PostData("Generic/GetByProc?procName=m_Rtrv_PathSubTestListForCombo",
-            {}
-        );
-    }
+    // public getNewSubTestMasterList() {
+    //     return this._httpClient.PostData("Generic/GetByProc?procName=m_Rtrv_PathSubTestListForCombo",
+    //         {}
+    //     );
+    // }
 
-    public getquerydata(data){
+    // public getquerydata(data){
         
-        return this._httpClient.PostData("Generic/GetBySelectQuery?query="+data, {})
-    }
+    //     return this._httpClient.PostData("Generic/GetBySelectQuery?query="+data, {})
+    // }
 
 
     getValidationMessages() {
@@ -186,14 +186,13 @@ export class TestmasterService {
     }
 
     public TestMasterSave(Param: any) {
-        debugger
         if (Param.pathTest.TestId) {
          return this._httpClient.PutData("PathTestMaster/Update/" + Param.pathTest.TestId, Param);
         }else return this._httpClient.PostData("PathTestMaster/Insert", Param);
     }
 
     public TestMasterUpdate(Param: any) {
-        debugger
+        
         if (Param.pathTest.testId) {
          return this._httpClient.PutData("PathTestMaster/Update/" + Param.pathTest.testId, Param);
         }

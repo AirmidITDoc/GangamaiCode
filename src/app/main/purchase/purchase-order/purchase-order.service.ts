@@ -335,22 +335,23 @@ export class PurchaseOrderService {
       return false;
     }
 
-    if (+item.MRP < 0) {
-      this.showToast('MRP should be greater than 0', ToastType.WARNING);
-      item.MRP = 0;
-      return false;
-    }
+    // if (+item.MRP < 0) {
+    //   this.showToast('MRP should be greater than 0', ToastType.WARNING);
+    //   item.MRP = 0;
+    //   return false;
+    // }
     if (+item.Rate < 0) {
       this.showToast('Rate should be greater than 0', ToastType.WARNING);
       item.Rate = 0;
       return false;
-    }
+    }debugger
+    if(item.MRP >0){
     if (+item.Rate > +item.MRP) {
       this.showToast('Rate should be less than MRP', ToastType.WARNING);
       item.Rate = 0;
       return false;
     }
-
+  }
     if (+item.Qty < 0) {
       this.showToast('Quantity should be greater than 0', ToastType.WARNING);
       item.Qty = 0;
@@ -391,7 +392,7 @@ export class PurchaseOrderService {
 
    validatePurchaseForm(form: FormGroup): boolean {
           const values = form.getRawValue() as PurchaseFormModel;
-  
+  debugger
   
           if (!values.ItemName) {
               this.showToast('Please select an item', ToastType.WARNING);
@@ -408,11 +409,13 @@ export class PurchaseOrderService {
               form.patchValue({ Rate: 0 });
               return false;
           }
+          if(+values.MRP > 0){
           if (+values.Rate > +values.MRP) {
               this.showToast('Rate should less than MRP', ToastType.WARNING);
               form.patchValue({ Rate: 0 });
               return false;
           }
+        }
           if (+values.Disc < 0 || +values.Disc > 100) {
               this.showToast('Discount percentage should be between 0 and 100', ToastType.WARNING);
               form.patchValue({ Disc: 0 });

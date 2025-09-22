@@ -106,20 +106,20 @@
 
                                         <airmid-textbox fxFlex="5%" label="Qty" formControlName="Qty"
                                             (keypress)="keyPressAlphanumeric($event)" [formGroup]="userFormGroup"
-                                            [validations]="getValidationMessages().Qty" [maxLength]="10" #qtyTextboxRef>
+                                            [validations]="getValidationMessages().Qty" [maxLength]="10" #qtyTextboxRef  [min]="0">
                                         </airmid-textbox>
 
 
                                         <airmid-textbox fxFlex="5%" label="MRP" formControlName="MRP"
                                             [formGroup]="userFormGroup" placeholder="MRP" type="number"
                                             [validations]="getValidationMessages().mrp"
-                                            (valueChange)="calculateTotalamt()"></airmid-textbox>
+                                            (valueChange)="calculateTotalamt()"  [min]="0"></airmid-textbox>
 
 
                                         <airmid-textbox fxFlex="6%" label="Rate" formControlName="Rate"
                                             [(ngModel)]="vRate" [formGroup]="userFormGroup" placeholder="Rate"
                                             type="number" (valueChange)="OnchekPurchaserateValidation()"
-                                            [validations]="getValidationMessages().rate"></airmid-textbox>
+                                            [validations]="getValidationMessages().rate"  [min]="0"></airmid-textbox>
 
                                         <airmid-textbox fxFlex="5%" label="Total Amount" formControlName="TotalAmount"
                                             [formGroup]="userFormGroup" [readonly]="true"></airmid-textbox>

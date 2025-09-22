@@ -37,9 +37,7 @@ export class ParametermasterService {
     createParameterForm(): FormGroup {
         return this._formBuilder.group({
             parameterId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            parameterShortName: [
-                "",
-                [
+            parameterShortName: ["",[
                     Validators.required,
                     Validators.pattern("^[A-Za-z ]*$")
                 ],
@@ -68,9 +66,9 @@ export class ParametermasterService {
             unitId: ["",
                 [Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             isNumeric: ["1"],
-            isPrintDisSummary: true,
+            isPrintDisSummary: [false],
           
-            isBoldFlag: [true],
+            isBoldFlag: [false],
             IsDeleted: ["true"],
             mParameterDescriptiveMasters:this._formBuilder.array([]),
             mPathParaRangeWithAgeMasters:this._formBuilder.array([])

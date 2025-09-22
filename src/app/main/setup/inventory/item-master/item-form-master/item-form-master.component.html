@@ -52,11 +52,11 @@
 
                   <airmid-textbox label="Item Short Name" formControlName="itemShortName"
                     [value]="registerObj?.itemShortName" [formGroup]="itemForm"
-                    [validations]="getValidationMessages().itemShortName" [maxLength]="50" fxFlex="25%">
+                    [validations]="getValidationMessages().itemShortName" [maxLength]="150" fxFlex="25%">
                   </airmid-textbox>
 
                   <airmid-textbox label="Item Name" formControlName="itemName" [value]="registerObj?.itemName"
-                    [formGroup]="itemForm" [validations]="getValidationMessages().itemName" [maxLength]="50"
+                    [formGroup]="itemForm" [validations]="getValidationMessages().itemName" [maxLength]="150"
                     fxFlex="25%">
                   </airmid-textbox>
 
@@ -165,7 +165,7 @@
                 <div fxFlex="100" fxLayout="row wrap" fxLayoutGap="12px grid" style="padding: 10px"
                   fxLayoutAlign="start center">
 
-                  <mat-form-field appearance="outline" fxFlex="25%">
+                 <!-- <mat-form-field appearance="outline" fxFlex="25%">
                             <mat-label>CGST</mat-label>
                             <input name="CGST" placeholder="Enter CGST" [(ngModel)]="vCGST" formControlName="cgst" matInput
                                 type="number" step="0.01" (keyup)="gstPerChecking()">
@@ -175,23 +175,25 @@
                             <mat-label>SGST</mat-label>
                             <input name="SGST" placeholder="Enter SGST" [(ngModel)]="vSGST" formControlName="sgst" matInput
                                 type="number" step="0.01" (keyup)="gstPerChecking()">
-                        </mat-form-field>
-                
-                        <mat-form-field appearance="outline" fxFlex="25%">
-                            <mat-label>IGST</mat-label>
-                            <input name="IGST" placeholder="Enter IGST" [(ngModel)]="vIGST" formControlName="igst" matInput
-                                type="number" step="0.01" (keyup)="gstPerChecking()">
-                        </mat-form-field>
+                        </mat-form-field> -->
+                 
+
 
                   <!-- <airmid-dropdown label="CGST" formControlName="cgst" fxFlex="25%" [formGroup]="itemForm"
-                    [mode]="autocompleteModeGSTTypesValues"> </airmid-dropdown>
+                    [mode]="autocompleteModeGSTTypesValues"> </airmid-dropdown> -->
+
+                    <airmid-dropdown label="CGST/SGST" formControlName="cgst" fxFlex="25%" 
+                      [formGroup]="itemForm" 
+                      [mode]="autocompleteModeGSTTypesValues" (selectionChange)="getchangegstper($event)"
+                       (onClearSelection)="getchangegstper($event)"> </airmid-dropdown>
 
 
-                  <airmid-dropdown label="SGST" formControlName="sgst" fxFlex="25%" [formGroup]="itemForm"
-                    [mode]="autocompleteModeGSTTypesValues"> </airmid-dropdown>
+                 
+                  <!-- <airmid-dropdown label="SGST" formControlName="sgst" fxFlex="25%" [formGroup]="itemForm"
+                    [mode]="autocompleteModeGSTTypesValues"> </airmid-dropdown>-->
 
                   <airmid-dropdown label="IGST" formControlName="igst" fxFlex="25%" [formGroup]="itemForm"
-                    [mode]="autocompleteModeGSTTypesValues"> </airmid-dropdown> -->
+                    [mode]="autocompleteModeGSTTypesValues"  (selectionChange)="getchangeIgstper($event)"> </airmid-dropdown> 
 
                 </div>
               </mat-card>

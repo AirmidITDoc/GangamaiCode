@@ -72,9 +72,8 @@ export class TemplateMasterComponent implements OnInit {
         let that = this;
         const dialogRef = this._matDialog.open(TemplateFormComponent,
             {
-                maxWidth: "85vw",
-                maxHeight: '75%',
-                width: '90%',
+              maxHeight: '90vh',
+              width: '100%',
                 data: row
             });
         dialogRef.afterClosed().subscribe(result => {

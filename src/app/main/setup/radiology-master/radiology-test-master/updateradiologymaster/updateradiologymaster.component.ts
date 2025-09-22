@@ -22,8 +22,7 @@ export class UpdateradiologymasterComponent implements OnInit {
     isActive: boolean = true;
 
     autocompleteModeService: string = "RadiologyService";
-
-    autocompleteModeCategory: string = "ItemCategory";
+    autocompleteModeCategory: string = "RadioCategory";
     autocompleteModeRadioTemp: string = "RadioTemplate";
 
     vTestName: any;
@@ -44,21 +43,9 @@ export class UpdateradiologymasterComponent implements OnInit {
     CategoryId: any;
     vTemplateName: any;
     vCategoryId: any;
-    filteredOptionsCategory: Observable<string[]>;
-    optionscategory: any[] = [];
-    iscategorySelected: boolean = false;
     testId: any;
 
-    filteredOptionsService: Observable<string[]>;
-    optionsservice: any[] = [];
-    isserviceSelected: boolean = false;
-
-
-    isTemplateNameSelected: boolean = false;
-    filteredOptionsisTemplate: Observable<string[]>;
-    optionsTemplate: any[] = [];
-
-
+   
     DSTestList = new MatTableDataSource<TestList>();
     dsTemparoryList = new MatTableDataSource<TestList>();
 
@@ -80,32 +67,31 @@ export class UpdateradiologymasterComponent implements OnInit {
         this.AddParameterFrom = this._radiologytestService.createAddparaFrom();
         if ((this.data?.testId ?? 0) > 0) {
             // this.registerObj=this.data.Obj;
+            debugger
             this.isActive = this.data.isActive
             this.testId = this.data.testId
             this.testForm.get("serviceId").setValue(this.data.serviceId)
             this.gettemplateMasterServicewise(this.data);
             this.testForm.patchValue(this.data);
+             this.templateName=this.data.templateName
             console.log(this.data)
         }
     }
 
     itemId = 0;
     selectChangeCategory(obj: any) {
-        console.log(obj);
-        this.itemId = obj
+      this.itemId = obj
     }
 
     service = 0;
     selectChangeservice(obj: any) {
-        console.log(obj);
-        this.service = obj
+   this.service = obj
     }
 
     templateId = 0
     templateName = ''
     selectChangetemplate(obj: any) {
-        console.log(obj);
-        this.templateId = obj.value
+      this.templateId = obj.value
         this.templateName = obj.text
     }
 

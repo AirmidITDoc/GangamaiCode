@@ -270,6 +270,7 @@ export class NewPurchaseorderComponent {
   }
 
   // Item Calculation form
+  
   getPurchaseOrderForm() {
     return this._formBuilder.group({
       purchaseId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -290,7 +291,7 @@ export class NewPurchaseorderComponent {
       GSTPer: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
       GSTAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
       NetAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-      MRP: ['', [Validators.required, Validators.min(1)]],
+      MRP:[0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
       Specification: [''],
       SupplierID: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       Address: [''],
@@ -948,6 +949,7 @@ debugger
 
 
   validateFormValues() {
+    debugger
     const form = this.userFormGroup;
     const values = form.getRawValue() as GRNFormModel;
     if (+values.Qty < 0) {
@@ -957,24 +959,26 @@ debugger
       });
     }
 
-    if (+values.MRP < 0) {
-      this._PurchaseOrder.showToast('MRP should be greater than 0', ToastType.WARNING);
-      form.patchValue({
-        MRP: 0,
-      });
-    }
-    if (+values.Rate < 0) {
+    // if (+values.MRP < 0) {
+    //   this._PurchaseOrder.showToast('MRP should be greater than 0', ToastType.WARNING);
+    //   form.patchValue({
+    //     MRP: 0,
+    //   });
+    // }
+    if (+values.Rate < 0 ) {
       this._PurchaseOrder.showToast('Rate should be greater than 0', ToastType.WARNING);
       form.patchValue({
         Rate: 0,
       });
     }
+    if(+values.MRP > 0){
     if (+values.Rate > +values.MRP) {
       this._PurchaseOrder.showToast('Rate should be less than MRP', ToastType.WARNING);
       form.patchValue({
         Rate: 0,
       });
     }
+  }
 
   }
 
