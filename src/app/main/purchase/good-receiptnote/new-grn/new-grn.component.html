@@ -141,7 +141,7 @@
 
                       <airmid-autocomplete label="BatchNo" [formGroup]="userFormGroup"
                       formControlName="BatchNo" fxFlex="7%" TextField="batchNo"
-                       ApiUrl="GRN/GetExisitingBatchList?StoreId={{userFormGroup.get('StoreId').value}}&ItemId={{userFormGroup.get('ItemName').value.itemId}}&BatchNo="
+                       ApiUrl="GRN/GetExisitingBatchList?StoreId={{userFormGroup.get('StoreId')?.value}}&ItemId={{userFormGroup.get('ItemName')?.value?.itemId}}&BatchNo="
                       (selectionChange)="onBatchChange($event)" 
                       ></airmid-autocomplete> 
 
@@ -207,7 +207,7 @@
                       <!-- Temporary disabled false 
                         [disabled]="!userFormGroup.valid"-->
                       <button type="button" class="btn btn-primary btn-with-icon py-8" (click)="onAddGRNItem()"
-                        #addbutton id="addbutton">
+                        #addButton id="addButton">
                         <mat-icon>add</mat-icon>
                       </button>
                     </div>
@@ -653,7 +653,7 @@
 
            <mat-accordion>
             <!-- expanded -->
-            <mat-expansion-panel >
+            <mat-expansion-panel [expanded]="isExpanded">
               <mat-expansion-panel-header>
                 <mat-panel-title style="font-size: 15px;">Total Amount Summary </mat-panel-title>
                 <div class="summary-container" >

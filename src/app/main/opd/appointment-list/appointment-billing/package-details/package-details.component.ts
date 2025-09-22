@@ -374,12 +374,11 @@ export class PackageDetailsComponent {
   //Total amt
   getTotalAmtSum(element) {
     let Finalnetamt = element.reduce((sum, { NetAmount }) => sum += +(NetAmount || 0), 0).toFixed(2);
-    let TotalPrice = element.reduce((sum, { price }) => sum += +(price || 0), 0).toFixed(2);
-    let FinalQty = element.Qty //element.reduce((sum, { Qty }) => sum += +(Qty || 0), 0);
+    let TotalPrice = element.reduce((sum, { price }) => sum += +(price || 0), 0).toFixed(2); 
     this.PackageForm.patchValue({
       Finalnetamt: Finalnetamt,
       TotalPrice: TotalPrice,
-      FinalQty:FinalQty
+      FinalQty:1
     })
   }
   // Pacakge service details update form
@@ -425,22 +424,22 @@ export class PackageDetailsComponent {
     }
     const formValue = this.PackageForm.value
     let DiscAmt, netAmt, totalAmt;
-    if (this.data.FormName == 'IPD Package') {
-      totalAmt = ((formValue?.TotalPrice ?? 0) * (formValue?.FinalQty)) || 0;
+    if (this.data.FormName == 'IPD Package') { 
+      totalAmt = formValue?.TotalPrice ?? 0;
       if (this.vBillWiseTotal == true && this.vBillWiseTotalAmt > 0) {
         totalAmt = this.vBillWiseTotalAmt
-      }
+      } 
       if (this.registerObj?.concessionPercentage) {
-        DiscAmt = ((totalAmt * this.registerObj?.concessionPercentage) / 100).toFixed(2) || 0
-        netAmt = Math.round(totalAmt - DiscAmt).toFixed(2)
-      } else {
-        DiscAmt = 0;
-        netAmt = totalAmt;
-      }
+        DiscAmt = ((totalAmt * (this.registerObj?.concessionPercentage || 0)) / 100).toFixed(2) || 0
+        netAmt = Math.round(totalAmt - (DiscAmt || 0)).toFixed(2)
+      }else{ 
+      DiscAmt = 0;
+      netAmt = totalAmt; 
+      }  
       if (this.dsPackageDet.data.length > 0) {
         this.PacakgeUpdateForm.get('chargesId').setValue(this.registerObj?.chargesId);
-        this.PacakgeUpdateForm.get('price').setValue(formValue?.TotalPrice);
-        this.PacakgeUpdateForm.get('qty').setValue(formValue?.FinalQty);
+        this.PacakgeUpdateForm.get('price').setValue(totalAmt);
+        this.PacakgeUpdateForm.get('qty').setValue(formValue?.FinalQty ?? 1);
         this.PacakgeUpdateForm.get('totalAmt').setValue(totalAmt);
         this.PacakgeUpdateForm.get('concessionPercentage').setValue(this.registerObj?.concessionPercentage ?? 0);
         this.PacakgeUpdateForm.get('concessionAmount').setValue(DiscAmt);
