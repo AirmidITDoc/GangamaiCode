@@ -13,21 +13,16 @@
             </div>
         </div>
     </div>
-    <img *ngIf="docType=='image'" [src]="docData" height="400" width="400" class="view-image">
+     <img class="h-100-p w-100-p border-radius-4" style="height: 250px !important;"
+                            [src]="sanitizeImagePreview ? sanitizeImagePreview:'/assets/images/noimage.jpg'" />
 
-      <input formControlName="imageFile" type="file" #attachments accept="image/*" multiple
+                            
+      <!-- <input formControlName="imageFile" type="file" #attachments accept="image/*" multiple
                             name="file" id="file" class="inputfile" (change)="onImageChange($event)"
-                            style="margin-right: 10px;display: none;" />
+                            style="margin-right: 10px;display: none;" /> -->
 
 
-
-    <object [data]="docData" *ngIf="docType=='pdf' || docType=='xls'" [type]="docViewType" width="100%"
-        height="500px"></object>
-
-    <div class="photp-capture-image">
-        <img class="h-300-p w-300-p border-radius-4" style="height: 250px !important;"
-            [src]="sanitizeImagePreview ? sanitizeImagePreview:'/assets/images/noimage.jpg'" />
-    </div>
+ 
 
 
 </div>
