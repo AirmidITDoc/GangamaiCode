@@ -660,12 +660,13 @@ export class SalesHospitalNewComponent implements OnInit {
         const discPer = Number(formValue.DiscPer);
 
         if (discPer < 0 || discPer > 100) {
-            this.toastr.warning('Enter discount between 0 - 100', 'Error !', {
-                toastClass: 'tostr-tost custom-toast-warning',
-            });
+                this.toastr.warning('Discount % should less than 100% & greater than 0', 'warning !', {
+                  toastClass: 'tostr-tost custom-toast-warning',
+                }); 
             this._salesService.ItemSearchGroup.patchValue({
                 DiscAmt: 0,
                 DiscPer: 0,
+                NetAmt:formValue.TotalMrp
             });
             this.ConShow = false;
             return;
@@ -890,6 +891,7 @@ export class SalesHospitalNewComponent implements OnInit {
         this.getUpdateNetAmtSum(this.saleSelectedDatasource.data)
     }
     getUpdateNetAmtSum(data) {
+        debugger
         const itemData = data
         let FinalNetAmt = itemData.reduce((sum, { NetAmt }) => (sum += +(NetAmt || 0)), 0).toFixed(2);
         let FinalTotalAmt = itemData.reduce((sum, { TotalMRP }) => (sum += +(TotalMRP || 0)), 0).toFixed(2);
@@ -899,11 +901,11 @@ export class SalesHospitalNewComponent implements OnInit {
         this.ItemSubform.patchValue({
             roundoffAmt: roundoffAmt,
             totalAmount: FinalTotalAmt,
-            vatAmount: FinalGSTAmt,
-            discAmount: FinalDiscAmt,
+            vatAmount: FinalGSTAmt, 
             netAmount: FinalNetAmt,
         })
         if (Number(FinalDiscAmt > 0)) {
+         this.ItemSubform.patchValue({discAmount: FinalDiscAmt})
             this.chkdiscper = true;
             this.ConShow = true;
             this.ItemSubform.get('FinalDiscPer').disable();
@@ -911,13 +913,11 @@ export class SalesHospitalNewComponent implements OnInit {
             this.ItemSubform.get('concessionReasonId').setValidators([Validators.required]);
             this.ItemSubform.get('concessionReasonId').enable();
         } else {
-            this.chkdiscper = false;
-            this.ConShow = false;
-            this.ItemSubform.get('FinalDiscPer').enable();
-            this.ItemSubform.get('concessionReasonId').reset();
-            this.ItemSubform.get('concessionReasonId').clearValidators();
-            this.ItemSubform.get('concessionReasonId').updateValueAndValidity();
+             if(this.ItemSubform.get('FinalDiscPer')?.value > 0){
+            this.getFinalDiscperAmt()
         }
+        } 
+      
     }
     getStoredet() {
         this._salesService.getstoreDetails(this.autocompletestore).subscribe((data) => {
@@ -926,57 +926,60 @@ export class SalesHospitalNewComponent implements OnInit {
         });
     }
     getFinalDiscperAmt() {
+        debugger
         const formValues = this.ItemSubform.value;
-        let Disc = formValues.FinalDiscPer || 0;
-        let DiscAmt = formValues.discAmount || 0;
+        let Disc = formValues.FinalDiscPer || 0; 
         let NetAmount = formValues.netAmount;
-        let FinalDiscAmt = '';
-        
-        if (Disc < 0 || Disc > 100) {
-            this.toastr.warning('Enter discount between 0 - 100', 'Error !', {
-                toastClass: 'tostr-tost custom-toast-warning',
-            });
-            this.ItemSubform.patchValue({
-                FinalDiscPer: 0,
-                discAmount: 0, 
-                netAmount: NetAmount,
-                roundoffAmt:(Math.round(NetAmount) - NetAmount).toFixed(2)
-            });
-            this.ConShow = false;
-            return;
-        }
-        else if (Disc > 0 || Disc < 100) {
+        let FinalDiscAmt = ''; 
+        if (Disc > 0 && Disc <= 100) {
             this.ConShow = true;
-            FinalDiscAmt = ((formValues.totalAmount * Disc) / 100).toFixed(2);
+            FinalDiscAmt = ((formValues?.totalAmount * Disc) / 100).toFixed(2);
             NetAmount = (formValues.totalAmount - parseFloat(FinalDiscAmt)).toFixed(2);
+           this.ItemSubform.patchValue({
+            discAmount: FinalDiscAmt,
+            netAmount: NetAmount,
+            roundoffAmt:(Math.round(NetAmount) - NetAmount).toFixed(2)
+            })
             this.ItemSubform.get('concessionReasonId').reset();
             this.ItemSubform.get('concessionReasonId').setValidators([Validators.required]);
             this.ItemSubform.get('concessionReasonId').enable();
             this.ItemSubform.updateValueAndValidity();
         } else {
+            if(Disc > 100){
+             this.toastr.warning('Discount % should less than 100% & greater than 0', 'warning !', {
+                  toastClass: 'tostr-tost custom-toast-warning',
+                }); 
+            } 
+             this.ItemSubform.patchValue({
+                FinalDiscPer: 0,
+                discAmount: 0, 
+                netAmount: formValues?.totalAmount,
+                roundoffAmt:(Math.round(formValues?.totalAmount) - formValues?.totalAmount).toFixed(2)
+            });   
             this.ConShow = false;
             this.ItemSubform.get('concessionReasonId').reset();
             this.ItemSubform.get('concessionReasonId').clearValidators();
             this.ItemSubform.get('concessionReasonId').updateValueAndValidity();
             this.ItemSubform.get('concessionReasonId').disable();
-        }
-        this.ItemSubform.patchValue({
-            discAmount: FinalDiscAmt,
-            netAmount: NetAmount,
-            roundoffAmt:(Math.round(NetAmount) - NetAmount).toFixed(2)
-        })
+        } 
     }
     getFinalDiscAmount() {
         const formValues = this.ItemSubform.value;
         let totDiscAmt = formValues.discAmount || 0;
         let NetAmount = formValues.netAmount;
-        if (totDiscAmt > 0) {
+        if (totDiscAmt > 0 && totDiscAmt < NetAmount) {
             NetAmount = (formValues.netAmount - totDiscAmt).toFixed(2);
             this.ConShow = true;
             this.ItemSubform.get('concessionReasonId').reset();
             this.ItemSubform.get('concessionReasonId').setValidators([Validators.required]);
             this.ItemSubform.get('concessionReasonId').enable();
         } else {
+            if(totDiscAmt > totDiscAmt){
+                  this.toastr.warning('Discount Amt should less than NetAmt & greater than 0', 'warning !', {
+                  toastClass: 'tostr-tost custom-toast-warning',
+                }); 
+            }
+            totDiscAmt = 0
             this.ConShow = false;
             this.ItemSubform.get('concessionReasonId').reset();
             this.ItemSubform.get('concessionReasonId').clearValidators();
@@ -984,6 +987,7 @@ export class SalesHospitalNewComponent implements OnInit {
             //this.ConseId.nativeElement.focus();
         }
         this.ItemSubform.patchValue({
+            discAmount:totDiscAmt,
             netAmount: NetAmount,
             roundoffAmt:(Math.round(NetAmount) - NetAmount).toFixed(2)
         })

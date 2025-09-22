@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, ElementRef, Inject, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, ElementRef, HostListener, Inject, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormArray, FormControl, FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
@@ -80,7 +80,7 @@ export class NewGrnComponent implements OnInit, OnDestroy {
     GrnHeaderForm: FormGroup;
     userFormGroup: FormGroup
 
-
+isExpanded = false;
     sIsLoading: string = '';
     isLoading = true;
     screenFromString = 'Common-form';
@@ -193,21 +193,42 @@ export class NewGrnComponent implements OnInit, OnDestroy {
     } 
     batchlistApiUrl:any='';
     //Item details selectedObj
-    getSelectedItem(item: GRNItemResponseType): void {
+    getSelectedItem(item: GRNItemResponseType): void { 
         if (this.mock) {
             return;
         }
         this.lastsupplierflag = true
+        this.isExpanded = true;
         this.userFormGroup.patchValue({
             UOMId: item.umoId,
             HSNCode: item.hsNcode,
-            ConversionFactor: isNaN(+item.converFactor) ? 1 : +item.converFactor,
-            // Qty: item.balanceQty,
-            // CGST: item.cgstPer,
-            // SGST: item.sgstPer,
-            // IGST: item.igstPer,
-            // GST: item.cgstPer + item.sgstPer + item.igstPer
-        }); 
+            ConversionFactor: isNaN(+item.converFactor) ? 1 : +item.converFactor, 
+        });  
+        if(((item?.cgstPer ?? 0) || 0) > 0){
+            this.userFormGroup.patchValue({
+            CGST: item?.taxPer,
+            SGST: item?.sgstPer,
+            IGST: 0,
+            GST: item?.taxPer 
+            })
+            this.userFormGroup.get('CGST').enable();  
+            this.userFormGroup.get('IGST').reset();
+            this.userFormGroup.get('IGST').clearValidators();
+            this.userFormGroup.get('IGST').updateValueAndValidity();
+            this.userFormGroup.get('IGST').disable();
+        }else{
+            this.userFormGroup.patchValue({
+            CGST: 0,
+            SGST: 0,
+            IGST: item?.taxPer,
+            GST: item?.taxPer
+            })  
+            this.userFormGroup.get('IGST').enable();
+            this.userFormGroup.get('CGST').reset();
+            this.userFormGroup.get('CGST').clearValidators();
+            this.userFormGroup.get('CGST').updateValueAndValidity();
+            this.userFormGroup.get('CGST').disable();
+        }
         this.calculateTotalamt();
         this.getLastThreeItemInfo(item)
     } 
@@ -227,8 +248,9 @@ export class NewGrnComponent implements OnInit, OnDestroy {
         this.userFormGroup.get('IGST').enable();
          this.userFormGroup.get('IGST').reset();
         }
-        this.calculateTotalamt();
+        this.calculateTotalamt(); 
     }
+    
     getchangeIgstper(rate: any): void {
         debugger    
         if (Number(rate?.text) >0) { 
@@ -245,9 +267,28 @@ export class NewGrnComponent implements OnInit, OnDestroy {
         this.userFormGroup.get('CGST').enable(); 
         this.userFormGroup.get('CGST').reset();
         }
-         this.calculateTotalamt();
-    }
-        
+         this.calculateTotalamt(); 
+    } 
+@ViewChild('addButton') addButton!: ElementRef<HTMLButtonElement>;
+@HostListener('document:keydown.enter', ['$event'])
+handleEnterKey(event: KeyboardEvent) {
+  const activeElement = document.activeElement as HTMLElement;
+
+  // Only act if focus is inside the CGST dropdown
+  if (activeElement && activeElement.closest('airmid-dropdown')) {
+    const cgstValue = this.userFormGroup.get('CGST')?.value;
+    const igstValue = this.userFormGroup.get('IGST')?.value;
+
+    // If CGST already has a value, trigger the add button
+    if (cgstValue || igstValue) {
+      event.preventDefault(); // prevent default behavior if needed
+      this.addButton?.nativeElement.focus();
+      this.addButton?.nativeElement.click();
+    } 
+    // Otherwise let selectionChange happen and set the value normally
+  }
+}
+
     //supplier details
     selectChangeSupplier(supplier: any): void {
         let SupplierId = 0
@@ -315,11 +356,14 @@ export class NewGrnComponent implements OnInit, OnDestroy {
                 this.vlastDay = `${lastDay}/${this.pad(month)}/${year}`;
                 this.lastDay2 = `${year}/${this.pad(month)}/${lastDay}`;
                 const newuserDate = this.datePipe.transform(this.lastDay2, 'dd/MM/YYYY')
+                setTimeout(() => { 
                 this.userFormGroup.get('ExpDate').setValue(this.vlastDay) 
-                const QtyElement = document.querySelector(`[name='Qty']`) as HTMLElement;
+                 const QtyElement = document.querySelector(`[name='Qty']`) as HTMLElement;
                 if (QtyElement) {
                     QtyElement.focus();
                 }
+                }, 500);
+               
                 if (month <= NxtMonths && year <= getnextYear) {
                     Swal.fire({
                         icon: 'warning',
@@ -460,26 +504,29 @@ export class NewGrnComponent implements OnInit, OnDestroy {
                 ItemName: formValues.ItemName.itemName,
                 TotalQty: totalQty,
                 // Add any additional calculated fields
-                LandedRate: formValues.NetAmount / (totalQty || 1),
-                PurUnitRate: formValues.TotalAmount / (formValues.Qty * formValues.ConversionFactor),
-                PurUnitRateWF: formValues.TotalAmount / (totalQty || 1),
-                UnitMRP: formValues.MRP / formValues.ConversionFactor,
+                LandedRate: Number(formValues.NetAmount / (totalQty || 1)).toFixed(2),
+                PurUnitRate:  Number(formValues.TotalAmount / (formValues.Qty * formValues.ConversionFactor)).toFixed(2),
+                PurUnitRateWF:  Number(formValues.TotalAmount / (totalQty || 1)).toFixed(2),
+                UnitMRP:  Number(formValues.MRP / formValues.ConversionFactor).toFixed(2),
                 ItemId: formValues.ItemName.itemId
             });
             this.dsItemNameList.data = [...this.dsItemNameList.data, newItem];
             this.updateGRNFinalForm();
         }
         this.resetFormItem();
-        this.lastsupplierflag = false;
-        const itemNameElement = document.querySelector(`[name='ItemName']`) as HTMLElement;
-        if (itemNameElement) {
-            itemNameElement.focus();
-        }
+        this.lastsupplierflag = false; 
+        this.isExpanded = false;
         this.userFormGroup.markAllAsTouched(); 
         this.userFormGroup.get('CGST').reset(); 
         this.userFormGroup.get('CGST').enable();
         this.userFormGroup.get('IGST').reset(); 
         this.userFormGroup.get('IGST').enable();
+        setTimeout(() => {
+        const itemNameElement = document.querySelector(`[name='ItemName']`) as HTMLElement;
+        if (itemNameElement) {
+            itemNameElement.focus();
+        }
+        }, 500); 
     }
     //Delete 
     deleteTableRow(row: ItemNameList) {
@@ -627,10 +674,10 @@ export class NewGrnComponent implements OnInit, OnDestroy {
                 GSTAmount: Number(calculation.totalGSTAmount.toFixed(2)),
                 NetAmount: Number(calculation.netAmount.toFixed(2)),
                 // Add any additional calculated fields
-                LandedRate: calculation.netAmount / (item.TotalQty || 1),
-                PurUnitRate: item.TotalAmount / (item.Qty * item.ConversionFactor),
-                PurUnitRateWF: item.TotalAmount / (item.TotalQty || 1),
-                UnitMRP: item.MRP / item.ConversionFactor
+                LandedRate: Number(calculation.netAmount / (item.TotalQty || 1)).toFixed(2),
+                PurUnitRate: Number(item.TotalAmount / (item.Qty * item.ConversionFactor)).toFixed(2),
+                PurUnitRateWF: Number(item.TotalAmount / (item.TotalQty || 1)).toFixed(2),
+                UnitMRP: Number(item.MRP / item.ConversionFactor).toFixed(2),
             };
         } catch (error) {
             console.error('Error calculating GST:', error);
@@ -804,6 +851,7 @@ setTimeout(() => {
                 tranProcessMode: ["", [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
                 billDiscAmt: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
                 ewayBillNo: ["", [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+                ewayBillDate:[""],
                 //GRN Details form
                 tGrndetails: this.formBuilder.array([]),
             }),
@@ -948,7 +996,8 @@ setTimeout(() => {
             tranProcessId: this.userFormGroup.get('GSTType')?.value || 0,
             tranProcessMode: this.GSTTypeName || '',
             billDiscAmt: this._GRNList.GRNFinalForm.get('DiscAmount2')?.value || 0,
-            ewayBillNo: this._GRNList.GRNFinalForm.get('EwayBillNo')?.value || ''
+            ewayBillNo: this._GRNList.GRNFinalForm.get('EwayBillNo')?.value || '',
+            ewayBillDate:this.datePipe.transform(this._GRNList.GRNFinalForm.get('EwalBillDate')?.value, "yyyy-MM-dd"),
         };
         this.GrnHeaderForm.get('grn')?.patchValue(grnPatchData);
         debugger
@@ -1292,17 +1341,43 @@ chkInvoiceNo(InvoiceNo){
   onBatchChange(event) {
     debugger
     console.log(event)  
-    const expDate = this.datePipe.transform(event.batchExpDate,'MMYYYY')
+           if(((event?.cgstPer ?? 0) || 0)>0){
+            this.userFormGroup.patchValue({
+            CGST: event?.gst,
+            SGST: event.sgstPer,
+            IGST: 0,
+            GST: event?.gst
+            })
+            this.userFormGroup.get('CGST').enable();  
+            this.userFormGroup.get('IGST').reset();
+            this.userFormGroup.get('IGST').clearValidators();
+            this.userFormGroup.get('IGST').updateValueAndValidity();
+            this.userFormGroup.get('IGST').disable(); 
+        }else{
+            this.userFormGroup.patchValue({
+            CGST: 0,
+            SGST: 0,
+            IGST: event?.igstPer,
+            GST: event?.gst
+            })  
+            this.userFormGroup.get('IGST').enable();
+            this.userFormGroup.get('CGST').reset();
+            this.userFormGroup.get('CGST').clearValidators();
+            this.userFormGroup.get('CGST').updateValueAndValidity();
+            this.userFormGroup.get('CGST').disable(); 
+        }
+    const expDate = this.datePipe.transform(event.batchExpDate,'MMYYYY') 
     this.userFormGroup.patchValue({
         ExpDate:expDate,
         MRP:event?.unitMRP || 0, 
         Rate:event?.unitPurRate || 0,  
-    }) 
-     const QtyElement = document.querySelector(`[name='Qty']`) as HTMLElement;
-                if (QtyElement) {
-                    QtyElement.focus();
-                }
-   // this.userFormGroup.get('')
+    })  
+     
+    //  const QtyElement = document.querySelector(`[name='Qty']`) as HTMLElement;
+    //             if (QtyElement) {
+    //                 QtyElement.focus();
+    //             }
+    
     }
     //Purchase order to grn section
     FinalTotalQty1: any = 0;

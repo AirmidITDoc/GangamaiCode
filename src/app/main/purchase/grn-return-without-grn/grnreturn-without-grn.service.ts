@@ -55,6 +55,9 @@ export class GRNReturnWithoutGRNService {
       Rate:[''],
       TotalAmount:[''],
       GST:[''],
+      CGST: [''],
+      SGST: [''],
+      IGST: [''],
       GSTAmount:[''],
       NetAmount:[''],
     });
@@ -92,9 +95,12 @@ export class GRNReturnWithoutGRNService {
   public getItemNameList(Param) {
     return this._httpClient.post("Generic/GetByProc?procName=RetrieveItemName_GRN", Param);
   }
-  public GRNReturnSave(Param){
-    return this._httpClient1.PostData("GRNReturn/Insert", Param);
+   public GRNReturnSave(Param){
+    if(Param.grnReturn.grnreturnId){
+       return this._httpClient1.PutData("GRNReturn/UpdateGRNReturn", Param);
+    }else return this._httpClient1.PostData("GRNReturn/Insert", Param);
   }
+
   public getVerifyGRNReturn(Param) {
     return this._httpClient.post("Pharmacy/VerifyGRNReturn", Param)
   }

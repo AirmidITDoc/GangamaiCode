@@ -272,6 +272,7 @@ export class IPBillingComponent implements OnInit {
                 this.openServiceTable();
             }, 1000);
         }
+          this.setupFormListener();
             //Admin per retrevied
           if (this.selectedAdvanceObj?.adminPer > 0) {
                 this.isAdminDisabled = true;
@@ -280,14 +281,12 @@ export class IPBillingComponent implements OnInit {
             } else {
                 this.isAdminDisabled = false;
                 this.IpbillFooterform.get('Admincheck').setValue(false)
-            }
-
-        this.setupFormListener();
+            } 
     }
     private setupFormListener(): void {
         this.handleChange('price', () => this.calculateTotalCharge());
         this.handleChange('qty', () => this.calculateTotalCharge());
-        this.handleChange('concessiondiscPer', () => this.updateDiscountAmount());
+        this.handleChange('concessionPercentage', () => this.updateDiscountAmount());
         this.handleChange('concessionAmount', () => this.updateDiscountdiscPer());
     }
     toggleSidebar() {
@@ -371,12 +370,12 @@ export class IPBillingComponent implements OnInit {
             opdIpdId: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
             unitId:  [this.accountService.currentUserValue.user.unitId, [this._FormvalidationserviceService.onlyNumberValidator()]],
             serviceId: [0, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-            price: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
+            price: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
             qty: [1, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
-            totalAmt: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
-            concessionPercentage: [0, [Validators.min(0), Validators.max(100), this._FormvalidationserviceService.onlyNumberValidator()]],
-            concessionAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            netAmount: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
+            totalAmt: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            concessionPercentage: [0, [Validators.min(0), Validators.max(100), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            concessionAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            netAmount: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
             doctorId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             docPercentage: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             docAmt: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],

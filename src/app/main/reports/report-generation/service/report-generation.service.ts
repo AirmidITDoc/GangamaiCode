@@ -44,6 +44,8 @@ export class ReportService {
             PaymentId: [""],
             DrugTypeId: [""],
             ItemId: [""],
+            CreditId:[""],
+            paymentId:[""],
             OPIPType: ["2"]
             // 
         });

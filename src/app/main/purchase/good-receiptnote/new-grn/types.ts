@@ -11,6 +11,7 @@ export interface GRNItemResponseType {
   umoId: number;
   itemCompanyName: string;
   formattedText: string;
+  taxPer:number;
 }
 
 export interface GRNFormModel {
