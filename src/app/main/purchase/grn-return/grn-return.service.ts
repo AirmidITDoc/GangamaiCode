@@ -93,7 +93,9 @@ export class GrnReturnService {
   }
 
   public GRNReturnSave(Param){
-    return this._httpClient1.PostData("GRNReturn/Insert", Param);
+    if(Param.grnReturn.grnreturnId){
+       return this._httpClient1.PutData("GRNReturn/UpdateGRNReturn", Param);
+    }else return this._httpClient1.PostData("GRNReturn/Insert", Param);
   }
 
   public getVerifyGRNReturn(Param) {

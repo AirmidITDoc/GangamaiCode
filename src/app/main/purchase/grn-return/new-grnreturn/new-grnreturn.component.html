@@ -137,15 +137,7 @@
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-100">
                                             Bal_Qty</mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100">
-                                            {{contact.BalanceQty}}
-                                        </mat-cell>
-                                    </ng-container>
-
-                                    <ng-container matColumnDef="ReceivedQty" sticky>
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-100">
-                                            ReceivedQty</mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100">
-                                            {{contact.ReceiveQty}}
+                                            {{contact.balanceQty}}
                                         </mat-cell>
                                     </ng-container>
 
@@ -182,7 +174,7 @@
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-80">
                                             GST</mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-80">
-                                            {{(contact.vatPercentage) | number:'1.2-2'}}%
+                                            {{(contact.gstPercentage) | number:'1.2-2'}}%
                                         </mat-cell>
                                     </ng-container>
 
@@ -190,7 +182,7 @@
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-100">
                                             GSTAmt</mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100">
-                                            {{(contact.vatAmount) | number:'1.2-2'}}
+                                            {{(contact.gstAmount) | number:'1.2-2'}}
                                         </mat-cell>
                                     </ng-container>
 
@@ -198,7 +190,7 @@
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-80">
                                             Disc</mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-80">
-                                            {{contact.DiscPercentage | number:'1.2-2'}}%
+                                             {{(contact.discPercentage ?? 0) | number:'1.2-2'}}%
                                         </mat-cell>
                                     </ng-container>
 
@@ -206,7 +198,7 @@
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-100">
                                             DiscAmt</mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100">
-                                            {{contact.DiscAmount | number:'1.2-2'}}
+                                            {{(contact.discAmount ?? 0) | number:'1.2-2'}}
                                         </mat-cell>
                                     </ng-container>
 

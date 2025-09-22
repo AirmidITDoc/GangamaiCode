@@ -272,7 +272,8 @@ export class GRNReturnComponent implements OnInit {
   onClear() { }
   getVerify(row) {
     let submitObj = {
-      "grnreturnId": row.grnReturnId
+      "grnreturnId": row.grnReturnId,
+      "isVerified":1
     }
     console.log(submitObj)
     this._GRNReturnService.getVerifyGRNReturn(submitObj).subscribe(response => {
