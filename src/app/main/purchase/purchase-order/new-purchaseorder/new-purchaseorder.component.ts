@@ -873,9 +873,10 @@ debugger
     const formValues = form.getRawValue() as PurchaseFormModel;
     
     this.Cgst= (formValues.CGSTPer)
+    if(parseFloat(this.Cgst)>0){
     this.Cgst=parseFloat(this.Cgst)/2
     formValues.CGSTPer= this.Cgst
-
+    }
     const values = this._PurchaseOrder.normalizeValues(formValues);
     const calculation = this._PurchaseOrder.getGSTCalculation(this.GSTTypetext || type, values);
 
