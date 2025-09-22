@@ -32,7 +32,7 @@ export class NewGRNReturnComponent implements OnInit {
     "BatchExpDate",
     "ConversionFactor",
     "BalanceQty",
-    'ReceivedQty',
+    // 'ReceivedQty',
     "ReturnQty",
     "MRP",
     //"Rate",
@@ -86,6 +86,7 @@ export class NewGRNReturnComponent implements OnInit {
   dsItemNameList1 = new MatTableDataSource<ItemNameList>();
   CashCredittype: any;
   GrnReturnForm: FormGroup
+  VGrnReturnID: any;
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild('paginator', { static: true }) public paginator: MatPaginator;
@@ -109,7 +110,8 @@ export class NewGRNReturnComponent implements OnInit {
     if (this.data?.grnReturnId) {
       this.registerObj = this.data
       this.VsupplierId = this.data.supplierId
-      this.vGRNID=this.data?.grnid
+      this.vGRNID = this.data?.grnid
+      this.VGrnReturnID = this.data?.grnReturnId
 
       if (this.registerObj.isGrnTypeFlag == true) {
         this.vGSTTpe = 'GST Return';
@@ -134,7 +136,7 @@ export class NewGRNReturnComponent implements OnInit {
     }
     return this._formbuilder.group({
       grnReturn: this._formbuilder.group({
-        // "grnreturnNo": "0",
+
         "grnid": [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
         "grnreturnDate": this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
         "grnreturnTime": this.datePipe.transform(new Date(), 'shortTime'),
@@ -150,14 +152,13 @@ export class NewGRNReturnComponent implements OnInit {
         "cashCredit": checkcashtype,
         "remark": [''],
         "isVerified": [false],
-        "addedBy":this._loggedService.currentUserValue.userId,
+        "addedBy": this._loggedService.currentUserValue.userId,
         "isClosed": [false],
         "isCancelled": [false],
         "grnType": this._GRNReturnService.NewGRNReturnFrom.get('GSTType').value,
         "isGrnTypeFlag": [true],
         "grnreturnId": [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-
-        // "tGrnreturnDetails": this._formbuilder.array([]),
+        "unitId": this._loggedService.currentUserValue.user.unitId,
       }),
       tGrnreturnDetails: this._formbuilder.array([]),
       grnReturnCurrentStock: this._formbuilder.array([]),
@@ -194,9 +195,8 @@ export class NewGRNReturnComponent implements OnInit {
     let PurchaseTotalAmt = element.returnQty * element.Rate;
 
     return this._formbuilder.group({
-      // grnreturnDetailId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      grnReturnId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      // grnId: [element.grnId, [this._FormvalidationserviceService.onlyNumberValidator()]],
+
+      grnReturnId: [element.grnReturnId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       itemId: [element.itemId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       batchNo: [element.batchNo || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       batchExpiryDate: [ExpDate, [this._FormvalidationserviceService.validDateValidator()]],
@@ -204,12 +204,13 @@ export class NewGRNReturnComponent implements OnInit {
       landedRate: [element.landedRate || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       mrp: [element.mrp || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       unitPurchaseRate: [element.Rate || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      vatPercentage: [element.vatPercentage || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      vatAmount: [element.vatAmount || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      taxAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      otherTaxAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      octroiPer: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      octroiAmt: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      cgstper: [element.cgst ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      sgstper: [element.sgst ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      igstper: [element.igst ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      gstPercentage: [element.gstPercentage || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      gstAmount: [element.gstAmount || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      discPercentage: [element.discPercentage || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      discAmount: [element.discAmount || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       landedTotalAmount: [element.landedTotalAmount || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       mrpTotalAmount: [mrpTotal || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       purchaseTotalAmount: [PurchaseTotalAmt || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -244,7 +245,8 @@ export class NewGRNReturnComponent implements OnInit {
     let issueqty = element.BalQty - element.returnQty
     return this._formbuilder.group({
       grndetId: [element.GRNDetID || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      returnQty: [element.issueqty || 0, [this._FormvalidationserviceService.onlyNumberValidator()]]
+      returnQty: [element.returnQty || 0, [this._FormvalidationserviceService.onlyNumberValidator()]]
+      // returnQty: [element.issueqty || 0, [this._FormvalidationserviceService.onlyNumberValidator()]]
     });
   }
 
@@ -286,6 +288,18 @@ export class NewGRNReturnComponent implements OnInit {
 
     this._GRNReturnService.getGrnItemList(Param).subscribe(data => {
       const itemList = data.data as ItemNameList[];
+
+      // ✅ check balanceQty here
+      const zeroBalanceItems = itemList.filter(x => x.balanceQty == 0);
+      if (zeroBalanceItems.length > 0) {
+        this.toastr.warning(
+          `Some items have balance 0 (e.g., ${zeroBalanceItems[0].itemName}).`,
+          'Warning!',
+          { toastClass: 'tostr-tost custom-toast-warning' }
+        );
+        return; // stop further processing if balance = 0
+      }
+
       itemList.forEach(element => {
         this.chargeslist.push({
           itemId: element.itemId || 0,
@@ -293,15 +307,18 @@ export class NewGRNReturnComponent implements OnInit {
           batchNo: element.batchNo || 0,
           BatchExpDate: element.batchExpDate,
           conversion: element.conversionFactor || 1,
-          BalanceQty: element.balanceQty,
+          balanceQty: element.balanceQty,
           returnQty: 0,
           mrp: element.mrp || 0,
           ReceiveQty: element.receiveQty || 0,
           landedTotalAmount: 0,
-          vatPercentage: element.vatPer || 0,
-          vatAmount: 0,
-          DiscPercentage: element.discPercentage || 0,
-          DiscAmount: 0,
+          cgst: (element.vatPer || 0) / 2,
+          sgst: (element.vatPer || 0) / 2,
+          igst: 0,
+          gstPercentage: element.vatPer || 0,
+          gstAmount: 0,
+          discPercentage: element.discPercentage || 0,
+          discAmount: 0,
           landedRate: element.rate || 0,
           netAmount: 0,
           stkId: element.stkId || 0,
@@ -342,7 +359,6 @@ export class NewGRNReturnComponent implements OnInit {
       // convert dd-MM-yyyy HH:mm:ss → yyyy-MM-ddTHH:mm:ss
       return new Date(`${year}-${month}-${day}T${time}`);
     }
-
     return null;
   }
 
@@ -374,55 +390,32 @@ export class NewGRNReturnComponent implements OnInit {
       "columns": []
     }
     this._GRNReturnService.getGRNReturnrtrvlist(vdata).subscribe(response => {
-      this.dsGrnItemList.data = response.data
-      // this.dsGrnItemList.data = response.data.map(item => ({
-      //   ...item,
-      //   NetAmount: (item.landedRate * item.returnQty) + item.vatAmount,
-      //   vatAmount: item.vatAmount,
-      //   TotalAmount: item.landedTotalAmount,    // or whichever your table uses
-      //   PurchaseRate: item.unitPurchaseRate,
-      //   ReturnQty: item.returnQty
-      // }));
+      // this.dsGrnItemList.data = response.data
+      // const row = this.dsGrnItemList.data
+      // this.getCellCalculation(row, row);
+      this.dsGrnItemList.data = response.data.map(item => {
+        const gstPer = item.gstPercentage || 0;
+        return {
+          ...item,
+          cgst: gstPer / 2,
+          sgst: gstPer / 2
+        };
+      });
 
-      const row = this.dsGrnItemList.data
-
-      // want for calculation
-      this.getCellCalculation(row, row);
+      // run calculations for each row
+      this.dsGrnItemList.data.forEach(row => {
+        this.getCellCalculation(row, row.returnQty);
+      });
 
       console.log(this.dsGrnItemList.data)
       this.isGSTVisible = true;
     });
   }
 
-  // getTotalamt(element) {
-  //   debugger
-  //   this.vFinalTotalAmount = (element.reduce((sum, { TotalAmount }) => sum += +(TotalAmount || 0), 0)).toFixed(2);
-  //   this.vFinalVatAmount = (element.reduce((sum, { VatAmount }) => sum += +(VatAmount || 0), 0)).toFixed(2);
-  //   this.vFinalDiscAmount = (element.reduce((sum, { DiscAmount }) => sum += +(DiscAmount || 0), 0)).toFixed(2);
-
-  //   let finalAmt = (element.reduce((sum, { NetAmount }) => sum += +(NetAmount || 0), 0)).toFixed(2);
-  //   this.vFinalNetAmount = Math.round(finalAmt).toFixed(2);
-  //   this.vRoundingAmt = (parseFloat(this.vFinalNetAmount) - (finalAmt)).toFixed(2);
-
-  //   if (this.vGSTTpe === "Without GST") {
-  //     this.vFinalVatAmount = "0.00";
-  //   } else {
-  //     this.vFinalVatAmount = (element.reduce((sum, { VatAmount }) => sum += +(VatAmount || 0), 0)).toFixed(2);
-  //   }
-
-  //   this._GRNReturnService.NewGRNRetFinalFrom.patchValue({
-  //     FinalTotalAmount: this.vFinalTotalAmount,
-  //     FinalDiscAmountt: this.vFinalDiscAmount,
-  //     FinalVatAmount: this.vFinalVatAmount,
-  //     FinalNetAmount: this.vFinalNetAmount,
-  //     RoundingAmt: this.vRoundingAmt
-  //   })
-  //   // return this.vFinalTotalAmount;
-  // }
   getTotalamt(element) {
-    // debugger
+    debugger
     this.vFinalTotalAmount = (element.reduce((sum, { landedTotalAmount }) => sum += +(landedTotalAmount || 0), 0)).toFixed(2);
-    this.vFinalVatAmount = (element.reduce((sum, { vatAmount }) => sum += +(vatAmount || 0), 0)).toFixed(2);
+    this.vFinalVatAmount = (element.reduce((sum, { gstAmount }) => sum += +(gstAmount || 0), 0)).toFixed(2);
     this.vFinalDiscAmount = (element.reduce((sum, { discAmount }) => sum += +(discAmount || 0), 0)).toFixed(2);
 
     let finalAmt = (element.reduce((sum, { netAmount }) => sum += +(netAmount || 0), 0)).toFixed(2);
@@ -432,7 +425,7 @@ export class NewGRNReturnComponent implements OnInit {
     if (this.vGSTTpe === "Without GST") {
       this.vFinalVatAmount = "0.00";
     } else {
-      this.vFinalVatAmount = (element.reduce((sum, { vatAmount }) => sum += +(vatAmount || 0), 0)).toFixed(2);
+      this.vFinalVatAmount = (element.reduce((sum, { gstAmount }) => sum += +(gstAmount || 0), 0)).toFixed(2);
     }
 
     this._GRNReturnService.NewGRNRetFinalFrom.patchValue({
@@ -457,42 +450,10 @@ export class NewGRNReturnComponent implements OnInit {
   }
 
   RQty: any;
-  // getCellCalculation(contact, ReturnQty) {
-  //   // debugger
-  //   if (parseInt(contact.ReturnQty) > parseInt(contact.BalanceQty)) {
-  //     this.toastr.warning('Return Qty cannot be greater than BalQty', 'Warning !', {
-  //       toastClass: 'tostr-tost custom-toast-warning',
-  //     });
-  //     contact.ReturnQty = 0;
-  //     contact.ReturnQty = '';
-  //     contact.TotalQty = 0;
-  //     contact.TotalAmount = 0;
-  //     contact.VatAmount = 0;
-  //     contact.DiscAmount = 0;
-  //     contact.NetAmount = 0;
-  //   }
-  //   else {
-  //     contact.TotalQty = (parseInt(contact.ReturnQty) * parseInt(contact.ConversionFactor));
-  //     contact.TotalAmount = (parseFloat(contact.ReturnQty) * parseFloat(contact.LandedRate)).toFixed(2);
-  //     contact.VatAmount = ((parseFloat(contact.TotalAmount) * parseFloat(contact.VatPer)) / 100).toFixed(2);
-  //     contact.DiscAmount = ((parseFloat(contact.TotalAmount) * parseFloat(contact.DiscPercentage)) / 100).toFixed(2);
-  //     let GrossAmt = (parseFloat(contact.TotalAmount) - parseFloat(contact.DiscAmount)).toFixed(2);
-  //     contact.NetAmount = (parseFloat(GrossAmt) + parseFloat(contact.VatAmount)).toFixed(2);
 
-  //     // ✅ GST condition
-  //     if (this.vGSTTpe === "Without GST") {
-  //       contact.VatAmount = 0;
-  //       contact.NetAmount = GrossAmt;
-  //     } else {
-  //       contact.VatAmount = ((parseFloat(contact.TotalAmount) * parseFloat(contact.VatPer)) / 100).toFixed(2);
-  //       contact.NetAmount = (parseFloat(GrossAmt) + parseFloat(contact.VatAmount)).toFixed(2);
-  //     }
-  //   }
-  //   this.getTotalamt(this.dsGrnItemList.data);
-  // }
   getCellCalculation(contact, returnQty) {
-    // debugger
-    if (parseInt(contact.returnQty) > parseInt(contact.BalanceQty)) {
+    debugger
+    if (parseInt(contact.returnQty) > parseInt(contact.balanceQty)) {
       this.toastr.warning('Return Qty cannot be greater than BalQty', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
@@ -500,26 +461,26 @@ export class NewGRNReturnComponent implements OnInit {
       contact.returnQty = '';
       contact.totalQty = 0;
       contact.landedTotalAmount = 0;
-      contact.vatAmount = 0;
-      contact.DiscAmount = 0;
+      contact.gstAmount = 0;
+      contact.discAmount = 0;
       contact.netAmount = 0;
     }
     else {
       contact.totalQty = (parseInt(contact.returnQty) * parseInt(contact.conversion));
       contact.landedTotalAmount = (parseFloat(contact.returnQty) * parseFloat(contact.landedRate)).toFixed(2);
-      contact.vatAmount = ((parseFloat(contact.landedTotalAmount) * parseFloat(contact.vatPercentage)) / 100).toFixed(2);
-      contact.DiscAmount = ((parseFloat(contact.landedTotalAmount) * parseFloat(contact.DiscPercentage)) / 100).toFixed(2);
-      let GrossAmt = (parseFloat(contact.landedTotalAmount) - parseFloat(contact.DiscAmount)).toFixed(2);
-      contact.netAmount = (parseFloat(GrossAmt) + parseFloat(contact.vatAmount)).toFixed(2);
+      contact.gstAmount = ((parseFloat(contact.landedTotalAmount) * parseFloat(contact.gstPercentage)) / 100).toFixed(2);
+      contact.discAmount = ((parseFloat(contact.landedTotalAmount) * parseFloat(contact.discPercentage)) / 100).toFixed(2);
+      let GrossAmt = (parseFloat(contact.landedTotalAmount) - parseFloat(contact.discAmount)).toFixed(2);
+      contact.netAmount = (parseFloat(GrossAmt) + parseFloat(contact.gstAmount)).toFixed(2);
 
       // ✅ GST condition
       if (this.vGSTTpe === "Without GST") {
-        contact.vatAmount = 0;
-        contact.netAmount = (parseFloat(contact.landedTotalAmount)).toFixed(2);
-        // contact.netAmount = GrossAmt;
+        contact.gstAmount = 0;
+        // contact.netAmount = (parseFloat(contact.landedTotalAmount)).toFixed(2);
+        contact.netAmount = GrossAmt;
       } else {
-        contact.vatAmount = ((parseFloat(contact.landedTotalAmount) * parseFloat(contact.vatPercentage)) / 100).toFixed(2);
-        contact.netAmount = (parseFloat(GrossAmt) + parseFloat(contact.vatAmount)).toFixed(2);
+        contact.gstAmount = ((parseFloat(contact.landedTotalAmount) * parseFloat(contact.gstPercentage)) / 100).toFixed(2);
+        contact.netAmount = (parseFloat(GrossAmt) + parseFloat(contact.gstAmount)).toFixed(2);
       }
     }
     this.getTotalamt(this.dsGrnItemList.data);
@@ -550,6 +511,7 @@ export class NewGRNReturnComponent implements OnInit {
     } else
       this.GrnReturnForm.get('grnReturn.isGrnTypeFlag').setValue(false)
 
+    this.GrnReturnForm.get('grnReturn.grnreturnId').setValue(this.VGrnReturnID ?? 0)
     this.GrnReturnForm.get('grnReturn.grnid').setValue(this.vGRNID)
     this.GrnReturnForm.get('grnReturn.supplierId').setValue(Number(this.VsupplierId))
     this.GrnReturnForm.get('grnReturn.totalAmount').setValue(this.vFinalTotalAmount)
@@ -703,7 +665,6 @@ export class NewGRNReturnComponent implements OnInit {
         // this.isChecked = firstItem.cash_CreditType === false;
       }
     });
-
   }
   onClose() {
     this._matDialog.closeAll();

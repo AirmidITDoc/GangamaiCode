@@ -228,7 +228,27 @@
                                             </airmid-autocomplete>
                                         </div>
                                     </ng-container>
-                                    <!-- Creadit Reason & sales dd remaining -->
+
+                                    <ng-container *ngIf="flagCreditReasonSelected">
+                                        <div style="max-width: 265px;">
+                                            <airmid-autocomplete label="Credit Reason" [formGroup]="_ReportService.userForm"
+                                                formControlName="CreditId" placeholderText="Select Credit Reason"
+                                                ApiUrl="Report/MCreditReasonMasterList/auto-complete?Keyword="
+                                                (selectionChange)="SelectedCreditObj($event)">
+                                            </airmid-autocomplete>
+                                        </div>
+                                    </ng-container>
+
+                                    <ng-container *ngIf="flagPaymentModeSelected">
+                                        <div style="max-width: 265px;">
+                                            <airmid-autocomplete label="Payment Mode" [formGroup]="_ReportService.userForm"
+                                                formControlName="paymentId" placeholderText="Select Payment Mode"
+                                                ApiUrl="Report/MModeOfPaymentList/auto-complete?Keyword="
+                                                (selectionChange)="SelectedPaymentObj($event)">
+                                            </airmid-autocomplete>
+                                        </div>
+                                    </ng-container>
+                                    <!-- sales dd remaining -->
                                 </div>
 
                                 <div fxLayout="row" fxLayoutAlign="start none">

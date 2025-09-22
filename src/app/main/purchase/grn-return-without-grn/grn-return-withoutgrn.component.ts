@@ -427,7 +427,7 @@ export class ItemNameList {
   VatPercentage: any;
   VatAmount: any;
   TotalAmount: any;
-  BalanceQty: any;
+  balanceQty: any;
   UnitMRP: any;
   PurchaseRate: any;
   ConversionFactor: any;
@@ -438,8 +438,8 @@ export class ItemNameList {
   totalVatAmount: any;
   netAmount: any;
   grnReturnId:any;
-  vatAmount:any;
-  vatPercentage:any;
+  gstAmount:any;
+  gstPercentage:any;
   stkId:any;
   purchaseTotalAmount:any;
   unitPurchaseRate:any;
@@ -452,6 +452,9 @@ export class ItemNameList {
   batchExpiryDate:any;
   conversion:any;
   itemId:any;
+  cgst:any;
+sgst:any;
+igst:any;
 
   constructor(ItemNameList) {
     {
@@ -476,15 +479,15 @@ export class ItemNameList {
       this.ConversionFactor = ItemNameList.ConversionFactor || 0;
       this.PurchaseRate = ItemNameList.PurchaseRate || 0;
       this.UnitMRP = ItemNameList.UnitMRP || 0;
-      this.BalanceQty = ItemNameList.BalanceQty || 0;
+      this.balanceQty = ItemNameList.balanceQty || 0;
       this.isGrnTypeFlag = ItemNameList.isGrnTypeFlag || ''
       this.remark = ItemNameList.remark || ''
       this.totalAmount = ItemNameList.totalAmount || ''
       this.totalVatAmount = ItemNameList.totalVatAmount || ''
       this.netAmount = ItemNameList.netAmount || ''
       this.grnReturnId = ItemNameList.grnReturnId || ''
-      this.vatAmount = ItemNameList.vatAmount || ''
-      this.vatPercentage = ItemNameList.vatPercentage || ''
+      this.gstAmount = ItemNameList.gstAmount || ''
+      this.gstPercentage = ItemNameList.gstPercentage || ''
       this.stkId = ItemNameList.stkId || ''
       this.purchaseTotalAmount = ItemNameList.purchaseTotalAmount || ''
       this.unitPurchaseRate = ItemNameList.unitPurchaseRate || ''
@@ -497,6 +500,9 @@ export class ItemNameList {
       this.batchExpiryDate = ItemNameList.batchExpiryDate || ''
       this.conversion = ItemNameList.conversion || ''
       this.itemId = ItemNameList.itemId || ''
+      this.cgst = ItemNameList.cgst || ''
+      this.sgst = ItemNameList.sgst || ''
+      this.igst = ItemNameList.igst || ''
     }
   }
 }

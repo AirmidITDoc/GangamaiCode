@@ -67,6 +67,8 @@ export class ReportGenerationComponent implements OnInit {
     PaymentId: any;
     DrugTypeId: any;
     ItemId: any;
+    CreditId: any;
+    paymentId: any;
     OPIPType: any = '2';
     // 
     rid: number = 0;
@@ -112,6 +114,8 @@ export class ReportGenerationComponent implements OnInit {
     flagPaymentSelected: boolean = false;
     flagDrugTypeSelected: boolean = false;
     flagItemSelected: boolean = false;
+    flagCreditReasonSelected: boolean = false;
+    flagPaymentModeSelected: boolean = false;
     flagOPIPTypeSelected: boolean = false;
     // 
 
@@ -221,6 +225,10 @@ export class ReportGenerationComponent implements OnInit {
             this.flagDrugTypeSelected = true;
         if (controllerPermission.filter(x => x == "Item")?.length > 0)
             this.flagItemSelected = true;
+        if (controllerPermission.filter(x => x == "CreditReason")?.length > 0)
+            this.flagCreditReasonSelected = true;
+        if (controllerPermission.filter(x => x == "PaymentMode")?.length > 0)
+            this.flagPaymentModeSelected = true;
         if (controllerPermission.filter(x => x == "OPIPType")?.length > 0)
             this.flagOPIPTypeSelected = true;
         // 
@@ -271,6 +279,9 @@ export class ReportGenerationComponent implements OnInit {
     SelectedItemObj(obj) {
         this.ItemId = obj.value;
     }
+    SelectedCreditObj(obj) {
+        this.CreditId = obj.value;
+    }
     // 
     OnClose() {
         this._ReportService.userForm.get("UserId").setValue('');
@@ -319,7 +330,9 @@ export class ReportGenerationComponent implements OnInit {
         this.flagPaymentSelected = false;
         this.flagDrugTypeSelected = false;
         this.flagItemSelected = false;
+        this.flagCreditReasonSelected = false;
         this.flagOPIPTypeSelected = false;
+        this.flagPaymentModeSelected = false;
     }
     CallReportData(type) {
         setTimeout(() => {
@@ -426,12 +439,18 @@ export class ReportGenerationComponent implements OnInit {
                     "fieldValue": this.ItemId.toString() || "0",
                     "opType": OperatorComparer.Equals
                 });
-            // if (this.flagOPIPTypeSelected)
-            //     paramFilterList.push({
-            //         "fieldName": "OPIPType",
-            //         "fieldValue": this.OPIPType.toString() || "2",
-            //         "opType": OperatorComparer.Equals
-            //     });
+            if (this.flagCreditReasonSelected)
+                paramFilterList.push({
+                    "fieldName": "CreditId",
+                    "fieldValue": this.CreditId.toString() || "2",
+                    "opType": OperatorComparer.Equals
+                });
+            if (this.flagPaymentModeSelected)
+                paramFilterList.push({
+                    "fieldName": "paymentId",
+                    "fieldValue": this.paymentId.toString() || "2",
+                    "opType": OperatorComparer.Equals
+                });
             if (this.flagOPIPTypeSelected)
                 paramFilterList.push({
                     "fieldName": "OPIPType",
@@ -441,7 +460,7 @@ export class ReportGenerationComponent implements OnInit {
             //   
             let param = {
                 "searchFields": paramFilterList,
-                "reportId":this.reportDetail.reportId
+                "reportId": this.reportDetail.reportId
                 // "mode": this.reportDetail?.reportMode,
                 // "repoertName": this.reportDetail?.reportName,
                 // "headerList": this.reportDetail?.reportHeader?.split(",") || [],
