@@ -56,7 +56,6 @@ const routes: Routes = [
   imports: [
     RouterModule.forChild(routes),
    MatChipsModule,
-        SharedModule,
                 MatButtonModule,
                 MatCheckboxModule,
                 MatDatepickerModule,

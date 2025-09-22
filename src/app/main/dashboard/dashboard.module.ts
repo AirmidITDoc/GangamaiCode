@@ -15,6 +15,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatTableModule } from '@angular/material/table';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatGridListModule } from '@angular/material/grid-list';
 import { FuseWidgetModule } from '@fuse/components';
 import { FuseSharedModule } from '@fuse/shared.module';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
@@ -25,6 +26,7 @@ import { DashboardRoutingModule } from './dashboard-routing.module';
 import { HomePageComponent } from './home-page/home-page.component';
 import { PharmacyDashboardComponent } from './pharmacy-dashboard/pharmacy-dashboard.component';
 import { SalesSummaryComponent } from './pharmacy-dashboard/sales-summary/sales-summary.component';
+import { NewDashboardComponent } from './new-dashboard/new-dashboard.component';
 
 @NgModule({
     declarations: [
@@ -32,7 +34,8 @@ import { SalesSummaryComponent } from './pharmacy-dashboard/sales-summary/sales-
         BedOccupancyComponent,
         PharmacyDashboardComponent,
         SalesSummaryComponent,
-        HomePageComponent
+        HomePageComponent,
+        NewDashboardComponent
     ],
     imports: [
         CommonModule,
@@ -59,7 +62,7 @@ import { SalesSummaryComponent } from './pharmacy-dashboard/sales-summary/sales-
         MatPaginatorModule,
         MatCardModule,
         MatToolbarModule,
-        SharedModule
+        MatGridListModule,
     ],
     providers: [
         DatePipe
