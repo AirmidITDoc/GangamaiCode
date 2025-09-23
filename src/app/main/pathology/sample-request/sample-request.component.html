@@ -20,31 +20,33 @@
 
         <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
 
-           <ng-template #isTestCompletedmasterIcon let-element>
-            <div fxLayout="row" fxLayoutAlign="center center">
-                <mat-icon *ngIf="element.isTestCompted == true" matTooltip="Lab Report Ready">remove_red_eye
-                </mat-icon>
+            <ng-template #isTestCompletedmasterIcon let-element>
+                <div fxLayout="row" fxLayoutAlign="center center">
+                    <mat-icon *ngIf="element.isTestCompted == true" matTooltip="Lab Report Ready">remove_red_eye
+                    </mat-icon>
 
-                <mat-icon *ngIf="element.isTestCompted == false" matTooltip="Result Entry Not Completed"
-                    class="active-icon red-500 s-16">
-                    hourglass_empty
-                </mat-icon>
-            </div>
-        </ng-template>
-        <ng-template #isOnFileTestIcon let-element>
-            <div fxLayout="row" fxLayoutAlign="center center">
+                    <mat-icon *ngIf="element.isTestCompted == false" matTooltip="Result Entry Not Completed"
+                        class="active-icon red-500 s-16">
+                        hourglass_empty
+                    </mat-icon>
+                </div>
+            </ng-template>
+            <ng-template #isOnFileTestIcon let-element>
+                <div fxLayout="row" fxLayoutAlign="center center">
 
-                <mat-icon *ngIf="element.isOnFileTest =='false'" matTooltip="Is File ON">flip_to_front
-                </mat-icon>
+                    <mat-icon *ngIf="element.isOnFileTest =='false'" matTooltip="Is File ON">flip_to_front
+                    </mat-icon>
 
-                <mat-icon *ngIf="element.isOnFileTest !== 'false'" matTooltip="Is File Off">markunread_mailbox
-                </mat-icon>
+                    <mat-icon *ngIf="element.isOnFileTest !== 'false'" matTooltip="Is File Off">markunread_mailbox
+                    </mat-icon>
 
-            </div>
-        </ng-template>
+                </div>
+            </ng-template>
 
-            <airmid-table [gridConfig]="gridConfig" class="content" :ShowButtons="false"
-                (onSelectRow)="getSelectedRow($event)">
+
+            <airmid-table [gridConfig]="gridConfig" class="content" (onSelectRow)="GetDetails1($event)" #grid>
+
+
                 <ng-container filters>
                     <form [formGroup]="myformSearch">
                         <airmid-datepicker [formGroup]="myformSearch" [isRangePicker]="true"
@@ -100,7 +102,7 @@
         </div>
 
         <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll" *ngIf="isShowDetailTable">
-<!-- 
+            <!-- 
    <ng-template #isTestCompletedIcon let-element>
                 <div fxLayout="row" fxLayoutAlign="center center">
                     <mat-icon *ngIf="element.isTestCompted == true" matTooltip="Lab Report Ready"
@@ -115,7 +117,7 @@
                 </div>
             </ng-template> -->
 
-<!-- 
+            <!-- 
             <ng-template #isRadiologyicon let-element>
                 <div fxLayout="row" fxLayoutAlign="center center">
                     <mat-icon *ngIf="contact.isRadiology != 1" matTooltip="IsRadiology">
@@ -124,15 +126,33 @@
                 </div>
             </ng-template> -->
 
-            <ng-template #isPathologyicon let-element>
+
+
+            <ng-template #statuspath let-element>
                 <div fxLayout="row" fxLayoutAlign="center center">
-                    <mat-icon *ngIf="contact.isPathology==1" matTooltip="IsPatholgy">
-                        <img width="15px" height="9px" src="assets/images/logos/pathology.png" />
+                    <mat-icon *ngIf="element.isPathology==1" matTooltip="IsPatholgy">
+                        <img width="25px" height="9px" src="assets/images/logos/pathology.png" />
                     </mat-icon>
                 </div>
             </ng-template>
 
-            <airmid-table [gridConfig]="gridConfig1" class="content" #grid1 :ShowFilter="false" :ShowButtons="false">
+            <ng-template #statusradio let-element>
+                <div fxLayout="row" fxLayoutAlign="center center">
+                    <mat-icon *ngIf="element.isRadiology==1" matTooltip="IsRadiology">
+                        <img width="25px" height="9px" src="assets/images/logos/radiology.png" />
+                    </mat-icon>
+                </div>
+            </ng-template>
+
+            <ng-template #statusTemplate let-element>
+                <div fxLayout="row" fxLayoutAlign="center center">
+                    <mat-icon *ngIf="element.isTestCompted==1" matTooltip="IsTestCompted">
+                        <img width="25px" height="9px" src="assets/images/logos/testcompleted.jpg" />
+                    </mat-icon>
+                </div>
+            </ng-template>
+
+              <airmid-table [gridConfig]="gridConfig1" class="content" #grid1 :ShowFilter="false">
             </airmid-table>
         </div>
 

@@ -26,7 +26,7 @@ export class RadioloyOrderlistService {
       PatientTypeSearch:['2'],
       StatusSearch: ['0'],
       TestStatusSearch:['0'],
-      CategoryId:[''],
+      CategoryId:[0],
        start: [new Date().toISOString()],
        end: [new Date().toISOString()],
       });

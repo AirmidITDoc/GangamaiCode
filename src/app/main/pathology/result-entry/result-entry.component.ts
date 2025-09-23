@@ -148,17 +148,17 @@ export class ResultEntryComponent implements OnInit {
             heading: "-", key: "patientType", sort: true, align: 'left', type: gridColumnTypes.template,
             template: this.actionsIPOP
         },
-        { heading: "Admission Date", key: "vaTime", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "DOA", key: "vaTime", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "Test Date", key: "pathDate", sort: true, align: 'left', emptySign: 'NA', type: 6 },
         { heading: "UHID No", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "Admission No", key: "oP_IP_No", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+        { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         { heading: "Gender", key: "genderName", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "AgeYear", key: "ageYear", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Age Year", key: "ageYear", sort: true, align: 'left', emptySign: 'NA' },
 
-        { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+        { heading: "Doctor Name", key: "doctorName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         // { heading: "PatientType", key: "patientType", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "PBillNo", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "PBill No", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA' },
         {
             heading: "Action", key: "action", align: "right", width: 80, sticky: true, type: gridColumnTypes.template,
             template: this.actionButtonTemplate  // Assign ng-template to the column
@@ -188,12 +188,12 @@ export class ResultEntryComponent implements OnInit {
             { heading: "Date", key: "date", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "UHID No", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
 
-            { heading: "PatientName", key: "patientname", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "PatientType", key: "patientType", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "PBillNo", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Patient Name", key: "patientname", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Doctor Name", key: "doctorName", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Patient Type", key: "patientType", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "PBill No", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "Gender", key: "gender", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "AgeYear", key: "ageYear", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Age Year", key: "ageYear", sort: true, align: 'left', emptySign: 'NA' },
             {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
                     {
@@ -255,12 +255,11 @@ export class ResultEntryComponent implements OnInit {
                 },
                 { heading: "Date", key: "pathDate", sort: true, align: 'left', emptySign: 'NA', width: 200 },
                 { heading: "UHID No", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
-                { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-                { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA' },
-                // { heading: "PatientType", key: "patientType", sort: true, align: 'left', emptySign: 'NA' },
-                { heading: "PBillNo", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA' },
+                { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+                { heading: "Doctor Name", key: "doctorName", sort: true, align: 'left', emptySign: 'NA' },
+                { heading: "PBill No", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA' },
                 { heading: "Gender", key: "genderName", sort: true, align: 'left', emptySign: 'NA' },
-                { heading: "AgeYear", key: "ageYear", sort: true, align: 'left', emptySign: 'NA' },
+                { heading: "Age Year", key: "ageYear", sort: true, align: 'left', emptySign: 'NA' },
                 {
                     heading: "Action", key: "action", align: "right", width: 80, sticky: true, type: gridColumnTypes.template,
                     template: this.actionButtonTemplate  // Assign ng-template to the column
@@ -352,10 +351,7 @@ export class ResultEntryComponent implements OnInit {
             console.log("ResultList:", this.dataSource1.data)
             this.dataSource1.sort = this.sort;
             this.dataSource1.paginator = this.paginator;
-        },
-            error => {
-                // this.sIsLoading = '';
-            });
+        });
     }
 
     getDateTime(dateTimeObj) {
@@ -640,12 +636,7 @@ export class ResultEntryComponent implements OnInit {
         }
 
         if (!m || typeof m !== 'object' || !('isTemplateTest' in m) || m.isTemplateTest == null) {
-            // this.dataSource1.data = [];
-            // this.selection.clear();
-            // setTimeout(() => {
-            //     this.selection.clear();
-            //     console.log('Selection cleared after timeout.');
-            // }, 0);
+           
             this.toastr.warning('This Test Not Created!', 'Warning!', {
                 toastClass: 'tostr-tost custom-toast-warning',
             });

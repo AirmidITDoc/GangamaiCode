@@ -31,23 +31,6 @@
 
         <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
 
-            <!-- <div style="padding: 10px; height: 40px;">
-                <div fxLayout="row wrap" fxLayoutAlign="end center" class="gap-8">
-                    <div class="table-header-right">
-                        <div class="export-buttons">
-                            <div fxLayout="row" fxLayoutAlign="center center" class="gap-8">
-                                <button mat-icon-button (click)="exportReportPdf()">
-                                    <img width="32" height="10px" src="assets/images/svg/pdf-svg.svg">
-                                </button>
-
-                                <button mat-icon-button (click)="exportSamplerequstReportExcel()">
-                                    <img width="32" height="10px" src="assets/images/svg/xls-svg.svg">
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div> -->
 
             <ng-template #iconlbl let-element>
                 <div fxLayout="row" fxLayoutAlign="center center">
@@ -69,11 +52,14 @@
             <ng-template #iconisSampleCollection let-element>
                 <div fxLayout="row" fxLayoutAlign="center center">
 
-                    <mat-icon *ngIf="element.isSampleCollection !== 'True'"
-                        matTooltip="Sample Not Collected">highlight_off
+                    <mat-icon *ngIf="element.isSampleCollection == 'True'" title="Sample Collected"
+                        style="background-color: rgb(69, 181, 16);">
+                        <img width="50px" height="50px" src="assets/images/logos/samplecoll1.png">
                     </mat-icon>
 
-                    <mat-icon *ngIf="element.isSampleCollection === 'True'" matTooltip="Sample Collected">done_outline
+                    <mat-icon *ngIf="element.isSampleCollection !== 'True'" title="Sample Not Collected"
+                        style="background-color: rgb(232, 127, 52);">
+                        <img width="50px" height="50px" src="assets/images/logos/samplenotcoll.jpg">
                     </mat-icon>
 
                 </div>
@@ -100,7 +86,7 @@
                         edit
                     </mat-icon>
                 </div>
-             
+
             </ng-template>
 
 
@@ -156,7 +142,7 @@
                             </div>
 
                             <div fxFlex fxLayout="row">
-                                <mat-radio-group name="StatusSearch" fxLayout="row" value="0" [formGroup]="myformSearch"
+                                <mat-radio-group name="StatusSearch" fxLayout="row" [formGroup]="myformSearch"
                                     formControlName="StatusSearch" (change)="onChangeFirst()" style="padding: 6px;"
                                     class="gap-4">
                                     <mat-label>Status:</mat-label>
