@@ -7,11 +7,14 @@
     flex-wrap: wrap;
     width: 100%;
     align-items: stretch;
+    justify-content: flex-start;
 }
 
 .metric-card {
-  flex: 1 1 220px;
-  min-width: 220px;
+  flex: 0 0 320px; /* fixed card width */
+  // width: 320px;
+  min-width: 120px;
+  max-width: 185px;
   height: fit-content;
   border-radius: 14px;
 }
@@ -75,6 +78,7 @@
   padding: 10px;
   width: 100%;
   margin-top: 8px;
+  flex-wrap: wrap;
 }
 
 .dashboard-container{
@@ -84,8 +88,67 @@
 }
 
 .chart-card {
-  flex: 1 1 50%;
+  flex: 1 1 49.5%;
   min-width: 300px;
 }
 
-/* removed stacked charts */
+.tables-row {
+  padding: 10px;
+}
+
+.table-card {
+  width: 100%;
+}
+
+.full-width-table {
+  width: 100%;
+}
+
+.finance-grid .metric-card {
+  background: linear-gradient(135deg, #f9fafb 0%, #ffffff 100%);
+}
+
+/* Stack cards on small screens */
+@media (max-width: 768px) {
+  .metric-card {
+    flex: 1 1 100%;
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+  }
+}
+
+/* Mini cards inside Patient Mix */
+.mini-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(160px, 1fr));
+  gap: 12px;
+}
+
+.mini-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: 12px;
+}
+
+.mini-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+  background: rgba(0,0,0,0.06);
+}
+
+.mini-label { font-size: 12px; opacity: .8; font-weight: 600; }
+.mini-value { font-size: 20px; font-weight: 700; line-height: 1; }
+
+@media (max-width: 992px) {
+  .mini-grid { grid-template-columns: repeat(2, minmax(160px, 1fr)); }
+}
+
+@media (max-width: 600px) {
+  .mini-grid { grid-template-columns: 1fr; }
+}
