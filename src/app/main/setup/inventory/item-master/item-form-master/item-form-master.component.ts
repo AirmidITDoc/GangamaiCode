@@ -37,6 +37,7 @@ export class ItemFormMasterComponent implements OnInit {
 
 
     autocompleteModeGSTTypesValues: string = "GSTTypes";
+     autocompleteModeGSTTypesValues1: string = "GSTTypes";
     autocompleteModeItemType: string = "ItemType";
     autocompleteModeItemCategory: string = "ItemCategory";
     autocompleteModeItemGenericName: string = "ItemGeneric";
@@ -79,6 +80,12 @@ export class ItemFormMasterComponent implements OnInit {
             this.vCGST = this.data.cgst
             this.vSGST = this.data.sgst
             this.vIGST = this.data.igst
+
+            if(this.data.igst==0)
+            this.itemForm.get('cgst').setValue( this.data.taxPer)
+        else
+             this.itemForm.get('igst').setValue( this.data.taxPer)
+            
         }
         if ((this.data?.itemID ?? 0) > 0) {
             this._itemService.getstoreById(this.data.itemID).subscribe((response) => {
@@ -91,6 +98,10 @@ export class ItemFormMasterComponent implements OnInit {
             });
         }
     }
+
+    // Cgstset(){
+
+    // }
 
     onHSNChange(event: any) {
         const upper = event.target.value.toUpperCase();
@@ -124,26 +135,6 @@ export class ItemFormMasterComponent implements OnInit {
     }
 
 
-    // gstPerArray: any = [
-    //     { gstPer: 0 },
-    //     { gstPer: 2.5 },
-    //     { gstPer: 6 },
-    //     { gstPer: 9 },
-    //     { gstPer: 14 },
-    // ]
-
-    // validateGST(fieldValue, fieldName) {
-    //     if (parseFloat(fieldValue) > 0) {
-    //         if (!this.gstPerArray.some(item => item.gstPer == parseFloat(fieldValue))) {
-    //             this.toastr.warning(`Please enter ${fieldName} percentage as 2.5%, 6%, 9% or 14%`, 'Warning !', {
-    //                 toastClass: 'tostr-tost custom-toast-warning',
-    //             });
-    //             return false;
-    //         }
-    //     }
-    //     return true;
-    // }
-
     keyPressAlphanumeric(event) {
         var inp = String.fromCharCode(event.keyCode);
         if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
@@ -175,38 +166,32 @@ export class ItemFormMasterComponent implements OnInit {
         console.log(this.itemForm.value);
 
     }
-    cgststatus=false
+    
     getchangeIgstper(rate: any): void {
         debugger
         if (Number(rate?.text) > 0) {
             this.itemForm.patchValue({
-                sgst: 0,
-                cgst: 0,
                 taxPer: Number(rate.value)
 
             })
-            this.itemForm.get('cgst').reset('0');
+            this.itemForm.get('cgst').reset();
             this.itemForm.get('cgst').clearValidators();
             this.itemForm.get('cgst').updateValueAndValidity();
             this.itemForm.get('cgst').disable();
-            // this.cgststatus=true
-
-           
+         
         } else {
             this.itemForm.get('cgst').enable();
-            this.itemForm.get('cgst').reset('0');
+            this.itemForm.get('cgst').reset();
         }
         console.log(this.itemForm.value);
-
-
       
     }
 
 
     onSubmit() {
-debugger
+
         if (this.itemForm.valid) {
-               
+                const formValues = this.itemForm.getRawValue() as ItemMasterModule;
             console.log(this.itemForm.value)
             const formData = { ...this.itemForm.value };
 
@@ -218,17 +203,14 @@ debugger
 
             formData.mAssignItemToStores = transformedStores;
             
-
+debugger
             if (parseFloat(formData.sgst) > 0){
                 formData.cgst = formData.sgst
                 formData.igst=0
             }else if (formData.isgst > 0) {
                 formData.cgst = 0
                 formData.sgst = 0
-                   this.itemForm.patchValue({
-                CGST:formData.SGST
-                 })
-            }        
+              }        
             
 
             console.log("Transformed Item JSON :-", formData);
