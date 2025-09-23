@@ -83,7 +83,7 @@ export class ItemFormMasterComponent implements OnInit {
 
             if(this.data.igst==0)
             this.itemForm.get('cgst').setValue( this.data.taxPer)
-        else
+          else
              this.itemForm.get('igst').setValue( this.data.taxPer)
             
         }
@@ -99,9 +99,7 @@ export class ItemFormMasterComponent implements OnInit {
         }
     }
 
-    // Cgstset(){
-
-    // }
+  
 
     onHSNChange(event: any) {
         const upper = event.target.value.toUpperCase();

@@ -34,6 +34,7 @@ import { SharedModule } from 'app/main/shared/shared.module';
 import { SampleCollectionComponent } from './sample-collection.component';
 import { SampleCollectionService } from './sample-collection.service';
 import { SampledetailtwoComponent } from './sampledetailtwo/sampledetailtwo.component';
+import { SamplecollectionPageComponent } from './samplecollection-page/samplecollection-page.component';
 
 
 const routes: Routes = [
@@ -47,7 +48,8 @@ const routes: Routes = [
 @NgModule({
     declarations: [
         SampleCollectionComponent,
-        SampledetailtwoComponent
+        SampledetailtwoComponent,
+        SamplecollectionPageComponent
     ],
     imports: [
         RouterModule.forChild(routes),

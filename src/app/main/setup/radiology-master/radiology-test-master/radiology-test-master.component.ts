@@ -171,7 +171,7 @@ export class RadiologyTestMasterComponent implements OnInit {
         });
     }
 
-    UnitView(value) {
+    CategoryView(value) {
 
         if (value.value !== 0)
             this.UnitId = value.value

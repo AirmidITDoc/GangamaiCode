@@ -30,7 +30,7 @@
                     </mat-form-field>
 
                <airmid-dropdown label="CategoryName" formControlName="CategoryId"
-                        [formGroup]="searchFormGroup" (selectionChange)="UnitView($event)"
+                        [formGroup]="searchFormGroup" (selectionChange)="CategoryView($event)"
                         [(ngModel)]="gridConfig.filters[1].fieldValue"
                         [mode]="autocompleteModeCategoryId"
                         (selectionChange)="Clearfilter($event)"></airmid-dropdown>

@@ -10,6 +10,7 @@ import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
 import { gridColumnTypes } from "app/core/models/tableActions";
 import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
 import { ToastrService } from 'ngx-toastr';
+import { SamplecollectionPageComponent } from './samplecollection-page/samplecollection-page.component';
 
 
 @Component({
@@ -53,9 +54,9 @@ export class SampleCollectionComponent implements OnInit {
         { heading: "-", key: "lbl", width: 30, sort: true, align: 'left', type: gridColumnTypes.template },
         { heading: "-", key: "companyName", width: 30, sort: true, align: 'left', type: gridColumnTypes.template },
         { heading: "-", key: "isSampleCollection", width: 80, sort: true, align: 'left', type: gridColumnTypes.template },
-         { heading: "Admission Date", key: "vaTime", sort: true, align: 'left', emptySign: 'NA', width: 200},
+         { heading: "DOA", key: "vaTime", sort: true, align: 'left', emptySign: 'NA', width: 200},
         // { heading: "Collection Date", key: "pathDate", sort: true, align: 'left', emptySign: 'NA', width: 200,type:6},
-        { heading: "UHID No", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
        
         { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
          { heading: "Admission No", key: "oP_IP_No", sort: true, align: 'left', emptySign: 'NA' },
@@ -117,9 +118,9 @@ this.myformSearch=this._SampleCollectionService.createSearchForm()
             columnsList: [
                 { heading: "Completed", key: "isCompleted", sort: true, align: 'left',type: gridColumnTypes.template, 
                     template:this.iconisCompeleted, width: 50 },
-                { heading: "SampleNo", key: "sampleNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-                { heading: "TestName", key: "serviceName", sort: true, align: 'left', emptySign: 'NA', width: 400 },
-                { heading: "CollectionDate/Time", key: "sampleCollectionTime", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+                { heading: "Sample No", key: "sampleNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+                { heading: "Test Name", key: "serviceName", sort: true, align: 'left', emptySign: 'NA', width: 400 },
+                { heading: "Collection Date/Time", key: "sampleCollectionTime", sort: true, align: 'left', emptySign: 'NA', width: 150 },
             ],
             sortField: "BillNo",
             sortOrder: 0,
@@ -154,7 +155,7 @@ this.myformSearch=this._SampleCollectionService.createSearchForm()
         }
     
     getfilterdata(){
-        
+        debugger
         this.gridConfig = {
             apiUrl: "PathlogySampleCollection/SampleCollectionPatientList",
             columnsList:this.allcolumns , 
@@ -189,27 +190,20 @@ this.myformSearch=this._SampleCollectionService.createSearchForm()
         this.onChangeFirst();
       }
 
-    exportReportPdf() {
     
-    }
-
-    
-    exportSamplerequstReportExcel(){}
-
     onSave(row: any = null) {
         let that = this;
-        const dialogRef = this._matDialog.open(SampledetailtwoComponent,
+        const dialogRef = this._matDialog.open(SamplecollectionPageComponent,
             {
-                // maxWidth: "75vw",
+                
                 maxHeight: '80vh',
                 width: '70%',
                 data: row
             });
         dialogRef.afterClosed().subscribe(result => {
-            // if (result) {
-                this.grid.bindGridData();
+           this.grid.bindGridData();
             this.grid1.bindGridData();
-            // }
+            
         });
     }
 

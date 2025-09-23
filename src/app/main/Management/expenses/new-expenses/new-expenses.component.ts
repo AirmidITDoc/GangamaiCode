@@ -31,6 +31,7 @@ export class NewExpensesComponent {
   dateTimeObj: any;
   vExpType: any = "0";
   vReason:any;
+  autocompleteExpensen: string = "ExpHeadMaster"
 
   constructor(public _ExpensesService: ExpensesService,
     public _matDialog: MatDialog,
@@ -48,11 +49,42 @@ export class NewExpensesComponent {
   }
 
   getDateTime(dateTimeObj) {
+    console.log(dateTimeObj)
     this.dateTimeObj = dateTimeObj;
   }
 
   onNewSave() {
+    const formattedDate = this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd");
+    const formattedTime = this.dateTimeObj.time;
+    this.myForm.get('expDate').setValue(formattedDate);
+    this.myForm.get('expTime').setValue(formattedDate + ' ' + formattedTime);
 
+    if (!this.myForm.invalid) {
+      console.log(this.myForm.value)
+      this._ExpensesService.ExpensesSave(this.myForm.value).subscribe((response) => {
+        this.onClose();
+      });
+    } {
+      let invalidFields = [];
+      if (this.myForm.invalid) {
+        for (const controlName in this.myForm.controls) {
+          if (this.myForm.controls[controlName].invalid) {
+            invalidFields.push(`Form: ${controlName}`);
+          }
+        }
+      }
+      if (invalidFields.length > 0) {
+        invalidFields.forEach(field => {
+          this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
+          );
+        });
+      }
+
+    }
+  }
+
+  ListView1(value) {
+    console.log(value)
   }
 
   onClose() {

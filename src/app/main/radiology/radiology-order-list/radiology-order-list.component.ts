@@ -28,7 +28,7 @@ export class RadiologyOrderListComponent implements OnInit {
     l_name: any = ""
     status: any = "0"
     opipType: any = "2";
-
+    autocompleteModeCategoryId: string = "RadioCategory";
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
 
     @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
@@ -36,7 +36,7 @@ export class RadiologyOrderListComponent implements OnInit {
     @ViewChild('actionsCompleted') actionsCompleted!: TemplateRef<any>;
     @ViewChild('actionsType') actionsType!: TemplateRef<any>;
 
-  
+
     fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
     toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
     fromdate = this.fromDate ? this.datePipe.transform(this.fromDate, "yyyy-MM-dd") : "";
@@ -62,19 +62,19 @@ export class RadiologyOrderListComponent implements OnInit {
             heading: "-", key: "patientType", type: gridColumnTypes.template, align: "center", width: 50,
             template: this.actionsType
         },
-         { heading: "Admission Date", key: "visitTime", sort: true, align: 'left', emptySign: 'NA', width: 200},
-        { heading: "RadDate", key: "radTime", sort: true, align: 'left', emptySign: 'NA', width: 200},
-        { heading: "BillNo", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-         { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-         { heading: "Admission No", key: "oP_IP_Number", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        //  { heading: "DOA", key: "visitTime", sort: true, align: 'left', emptySign: 'NA', width: 200},
+        { heading: "RadDate", key: "radTime", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+        { heading: "Bill No", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "Admission No", key: "oP_IP_Number", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
         { heading: "DoctorName", key: "consultantDoctor", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-        { heading: "AgeYear", key: "ageYear", sort: true, align: 'left', emptySign: 'NA', width: 80 },
-        { heading: "GenderName", key: "genderName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "TestName", key: "serviceName",  sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "Age Year", key: "ageYear", sort: true, align: 'left', emptySign: 'NA', width: 80 },
+        { heading: "Gender", key: "genderName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "Test Name", key: "serviceName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         // { heading: "BillNo", key: "billNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         // { heading: "MobileNo", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-        { heading: "CategoryName", key: "categoryName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "Category Name", key: "categoryName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         // { heading: "RefDoctorName", key: "refdoctorName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         {
             heading: "Action", key: "action", align: "right", width: 200, sticky: true, type: gridColumnTypes.template,
@@ -85,7 +85,7 @@ export class RadiologyOrderListComponent implements OnInit {
     allFilters = [
         { fieldName: "F_Name ", fieldValue: "%", opType: OperatorComparer.StartsWith },
         { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.StartsWith },
-        { fieldName: "Reg_No", fieldValue: "", opType: OperatorComparer.Equals },
+        { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
         { fieldName: "From_Dt", fieldValue: this.fromdate, opType: OperatorComparer.Equals },
         { fieldName: "To_Dt", fieldValue: this.todate, opType: OperatorComparer.Equals },
         { fieldName: "IsCompleted", fieldValue: "0", opType: OperatorComparer.Equals },
@@ -94,7 +94,7 @@ export class RadiologyOrderListComponent implements OnInit {
     ]
 
     gridConfig: gridModel = {
-        apiUrl: "RadiologyTest/RadiologyList",
+        apiUrl: "Radiology/RadiologyList",
         columnsList: this.allColumns,
         sortField: "RadReportId",
         sortOrder: 0,
@@ -114,38 +114,49 @@ export class RadiologyOrderListComponent implements OnInit {
         this.myformSearch = this._RadioloyOrderlistService.filterForm()
     }
 
-    searchRecords(data) {
-debugger
-        let regno = this.myformSearch.get("RegNoSearch").value || "0";
-        // let fromDatee = this.myformSearch.get("start").value || "";
-        // let toDatee = this.myformSearch.get("end").value || "";
-      let  fromDatee =this.datePipe.transform(this.myformSearch.get("start").value, "yyyy-MM-dd");
-       let toDatee =  this.datePipe.transform(this.myformSearch.get("end").value, "yyyy-MM-dd");
-        let patientType = this.myformSearch.get("PatientTypeSearch").value || "2";
-        let status = this.myformSearch.get("StatusSearch").value || "1";
-        // Update the filters dynamically
-        this.gridConfig = {
-            apiUrl: "RadiologyTest/RadiologyList",
-            columnsList: this.allColumns,
-            sortField: "RadReportId",
-            sortOrder: 0,
-            filters: [
-                { fieldName: "F_Name ", fieldValue: "%", opType: OperatorComparer.StartsWith },
-                { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.StartsWith },
-                { fieldName: "Reg_No", fieldValue: regno, opType: OperatorComparer.Equals },
-                { fieldName: "From_Dt", fieldValue: fromDatee, opType: OperatorComparer.Equals },
-                { fieldName: "To_Dt", fieldValue: toDatee, opType: OperatorComparer.Equals },
-                { fieldName: "IsCompleted", fieldValue: status, opType: OperatorComparer.Equals },
-                { fieldName: "OP_IP_Type", fieldValue: patientType, opType: OperatorComparer.Equals },
-                { fieldName: "CategoryId", fieldValue: "0", opType: OperatorComparer.Equals },
-            ]
-        }
-        this.grid.gridConfig = this.gridConfig;
-        this.grid.bindGridData();
+    // searchRecords(data) {
+    //     debugger
+    //     let regno = this.myformSearch.get("RegNoSearch").value || "0";
+    //     // let fromDatee = this.myformSearch.get("start").value || "";
+    //     // let toDatee = this.myformSearch.get("end").value || "";
+    //     let fromDatee = this.datePipe.transform(this.myformSearch.get("start").value, "yyyy-MM-dd");
+    //     let toDatee = this.datePipe.transform(this.myformSearch.get("end").value, "yyyy-MM-dd");
+    //     let patientType = this.myformSearch.get("PatientTypeSearch").value || "2";
+    //     let status = this.myformSearch.get("StatusSearch").value || "1";
+    //     // Update the filters dynamically
+    //     this.gridConfig = {
+    //         apiUrl: "RadiologyTest/RadiologyList",
+    //         columnsList: this.allColumns,
+    //         sortField: "RadReportId",
+    //         sortOrder: 0,
+    //         filters: [
+    //             { fieldName: "F_Name ", fieldValue: "%", opType: OperatorComparer.StartsWith },
+    //             { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.StartsWith },
+    //             { fieldName: "Reg_No", fieldValue: regno, opType: OperatorComparer.Equals },
+    //             { fieldName: "From_Dt", fieldValue: fromDatee, opType: OperatorComparer.Equals },
+    //             { fieldName: "To_Dt", fieldValue: toDatee, opType: OperatorComparer.Equals },
+    //             { fieldName: "IsCompleted", fieldValue: status, opType: OperatorComparer.Equals },
+    //             { fieldName: "OP_IP_Type", fieldValue: patientType, opType: OperatorComparer.Equals },
+    //             { fieldName: "CategoryId", fieldValue: "0", opType: OperatorComparer.Equals },
+    //         ]
+    //     }
+    //     this.grid.gridConfig = this.gridConfig;
+    //     this.grid.bindGridData();
+    // }
+    CategoryId = "0"
+    CategoryView(value) {
+
+        if (value.value !== 0)
+            this.CategoryId = value.value
+        else
+            this.CategoryId = "0"
+
+        this.onChangeFirst();
     }
 
+
     onChangeFirst() {
-debugger
+        debugger
         this.fromDate = this.datePipe.transform(this.myformSearch.get('start').value, "yyyy-MM-dd")
         this.toDate = this.datePipe.transform(this.myformSearch.get('end').value, "yyyy-MM-dd")
         this.f_name = this.myformSearch.get('FirstNameSearch').value + "%"
@@ -156,12 +167,13 @@ debugger
         this.getfilterdata();
     }
 
+
     getfilterdata() {
         debugger
         this.gridConfig = {
-            apiUrl: "RadiologyTest/RadiologyList",
-            columnsList: this.allColumns,
-            sortField: "RadReportId",
+             apiUrl: "Radiology/RadiologyList",
+        columnsList: this.allColumns,
+        sortField: "RadReportId",
             sortOrder: 0,
             filters: [
                 { fieldName: "F_Name ", fieldValue: "%", opType: OperatorComparer.StartsWith },
@@ -170,14 +182,15 @@ debugger
                 { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
                 { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
                 { fieldName: "IsCompleted", fieldValue: String(this.status), opType: OperatorComparer.Equals },
-                { fieldName: "OP_IP_Type", fieldValue:String (this.opipType), opType: OperatorComparer.Equals },
-                { fieldName: "CategoryId", fieldValue: "0", opType: OperatorComparer.Equals },
+                { fieldName: "OP_IP_Type", fieldValue: String(this.opipType), opType: OperatorComparer.Equals },
+                { fieldName: "CategoryId", fieldValue: String(this.CategoryId), opType: OperatorComparer.Equals },
             ]
 
         }
         console.log(this.gridConfig)
         this.grid.gridConfig = this.gridConfig;
         this.grid.bindGridData();
+         this.CategoryId ="0"
     }
 
     Clearfilter(event) {
@@ -193,15 +206,13 @@ debugger
         let that = this;
         const dialogRef = this._matDialog.open(ResultEntryComponent,
             {
-                // maxWidth: "90vw",
                 maxHeight: '95vh',
                 width: '100%',
                 data: row
             });
         dialogRef.afterClosed().subscribe(result => {
-            // if (result) {
             this.grid.bindGridData();
-            // }
+
         });
     }
 

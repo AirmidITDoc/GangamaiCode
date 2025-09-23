@@ -24,26 +24,16 @@
                             <div fxLayout="row wrap" fxFlex fxLayoutGap="12px 0px grid">
 
                                 <div fxFlex="17%" fxFlex.xs="100%" fxFlex.sm="35%">
-                                    <airmid-datepicker [formGroup]="myformSearch"
-                                        [isRangePicker]="true" formStartControlName="start" formEndControlName="end"
+                                    <airmid-datepicker [formGroup]="myformSearch" [isRangePicker]="true"
+                                        formStartControlName="start" formEndControlName="end"
                                         [(fromValue)]="gridConfig.filters[3].fieldValue"
                                         [(toValue)]="gridConfig.filters[4].fieldValue">
                                     </airmid-datepicker>
 
-                                    <!-- <mat-form-field appearance="outline" fxFlex.sm="35%">
-                                        <mat-label>Enter a date range</mat-label>
-                                        <mat-date-range-input [rangePicker]="picker">
-                                            <input matStartDate formControlName="start" placeholder="Start date">
-                                            <input matEndDate formControlName="end" placeholder="End date"
-                                                (dateChange)="onChangeFirst()">
-                                        </mat-date-range-input>
-                                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                                        <mat-date-range-picker #picker></mat-date-range-picker>
-                                    </mat-form-field> -->
 
                                 </div>
 
-                                <div fxFlex="35%" fxFlex.xs="100%" fxFlex.sm="35%">
+                                <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="15%">
                                     <mat-form-field appearance="outline" fxFlex>
                                         <mat-label>UHID</mat-label>
                                         <input matInput placeholder="Search UHID" autocomplete="off"
@@ -54,10 +44,16 @@
                                         </button>
                                     </mat-form-field>
                                 </div>
-
+                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="35%">
+                                    <airmid-dropdown label="CategoryName" formControlName="CategoryId"
+                                        [formGroup]="myformSearch" (selectionChange)="CategoryView($event)"
+                                        [(ngModel)]="gridConfig.filters[7].fieldValue"
+                                        [mode]="autocompleteModeCategoryId"></airmid-dropdown>
+ 
+                                </div>
                                 <div fxFlex="16%" fxLayout="row">
                                     <mat-radio-group name="PatientTypeSearch" formControlName="PatientTypeSearch"
-                                        fxLayout="column"  class="gap-4" (change)="onChangeFirst()">
+                                        fxLayout="column" class="gap-4" (change)="onChangeFirst()">
                                         <mat-label><b>Patient Type:</b></mat-label>
                                         <div fxLayout="row">
                                             <mat-radio-button value='2'>All</mat-radio-button>
@@ -69,7 +65,7 @@
 
                                 <div fxFlex="20%" fxLayout="row">
                                     <mat-radio-group name="StatusSearch" formControlName="StatusSearch"
-                                        fxLayout="column"  class="gap-4" (change)="onChangeFirst()">
+                                        fxLayout="column" class="gap-4" (change)="onChangeFirst()">
                                         <mat-label><b>Status:</b></mat-label>
                                         <div fxLayout="row">
                                             <mat-radio-button value='0'>Pending</mat-radio-button>
@@ -82,7 +78,7 @@
                                     <div class="button-row-group">
                                         <button class="btn btn-danger-outline btn-xs" (click)="onClear()">clear</button>
                                         <button class="btn btn-primary btn-with-icon btn-xs"
-                                            (click)="searchRecords($event)">
+                                            (click)="onChangeFirst()">
                                             <span>Search</span>
                                             <span class="btn-icon">
                                                 <mat-icon>search</mat-icon>
@@ -156,6 +152,8 @@
                                 </ng-template>
 
                                 <airmid-table [gridConfig]="gridConfig" #grid :ShowFilter="false" :ShowButtons="false">
+                              
+                              
                                 </airmid-table>
 
                             </div>

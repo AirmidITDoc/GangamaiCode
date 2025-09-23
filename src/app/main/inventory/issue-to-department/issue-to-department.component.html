@@ -93,17 +93,7 @@
         <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll" *ngIf="isShowDetailTable">
             <ng-template #detailstatus let-element>
                 <div fxLayout="row" fxLayoutAlign="center center">
-                    <!-- <mat-icon *ngIf="element.status=='0'" matTooltip="Status True"
-                        class="pill green-600 s-16">circle</mat-icon>
-
-                    <mat-icon *ngIf="element.status=='A'" matTooltip="Status False"
-                        class="pill red-600 s-16">circle</mat-icon>
-
-                         <mat-icon *ngIf="element.status=='false'" matTooltip="Status False"
-                        class="pill red-600 s-16">circle</mat-icon>
-
-                          <mat-icon *ngIf="!element.status=='1'" matTooltip="Status False"
-                        class="pill red-600 s-16">circle</mat-icon> -->
+                 
 
                     <div matTooltip="Accepted" class="pill1 green-600 s-18">
                         {{element.status}}
