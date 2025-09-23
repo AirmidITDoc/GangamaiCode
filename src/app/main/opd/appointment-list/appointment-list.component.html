@@ -20,49 +20,7 @@
     <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="space-between center"
         class="px-12 py-4 border-bottom gap-8">
         <div class="info-badge-top overflow-auto" fxLayout="row" fxLayoutAlign="space-between" flex>
-            <!-- <div fxLayout="row" fxLayoutAlign="start center" class="gap-8" >
-                <div style="color: blue;" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
-                    <mat-icon class="pill blue-600 s-16">circle</mat-icon>
-                    <span class="blue-600-fg">Total Count : {{Vtotalcount}}</span>
-                </div>
-                <div style="color: red;" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
-                    <mat-icon class="pill red-600 s-16">circle</mat-icon>
-                    <span class="red-600-fg">Appointment : {{Vtotalcount}}</span>
-                </div>
-                <div style="color: blue;" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
-                    <mat-icon class="pill blue-600 s-16">circle</mat-icon>
-                    <span class="blue-600-fg">Registration : {{Vtotalcount}}</span>
-                </div>
-                <div style="color: green" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
-                    <mat-icon class="pill green-600 s-16">circle</mat-icon>
-                    <span class="green-600-fg"> New Patient : {{VNewcount}}</span>
-                </div>
-                <div style="color: orange" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
-                    <mat-icon class="pill orange-600 s-16">circle</mat-icon>
-                    <span class="orange-600-fg">FollowUp : {{VFollowupcount}}</span>
-                </div>
-                <div style="color: red" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
-                    <mat-icon class="pill red-600 s-16">circle</mat-icon>
-                    <span class="red-600-fg">Bill Count : {{VBillcount}}</span>
-                </div>
-                <div style="color: blue" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
-                    <mat-icon class="pill blue-600 s-16">circle</mat-icon>
-                    <span class="blue-600-fg">Cross Consultant Count :
-                        {{VCrossConscount}}</span>
-                </div>
-                <div style="color: green" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
-                    <mat-icon class="pill green-600 s-16">circle</mat-icon>
-                    <span class="green-600-fg">EMR Ready : {{VBillcount}}</span>
-                </div>
-                <div style="color: blue" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
-                    <mat-icon class="pill blue-600 s-16">circle</mat-icon>
-                    <span class="blue-600-fg">Check Out : {{VBillcount}}</span>
-                </div>
-                <div style="color: orange" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
-                    <mat-icon class="pill orange-600 s-16">circle</mat-icon>
-                    <span class="red-orange-fg">Waiting : {{VBillcount}}</span>
-                </div>
-            </div> -->
+         
             <div fxLayout="row" fxLayoutAlign="start center" class="gap-8">
                 <!-- Registrations -->
                 <div class="dashboard-card registrations">
@@ -306,10 +264,18 @@
         <airmid-table [gridConfig]="gridConfig" class="content" (onSelectRow)="getSelectedRow($event)">
             <ng-container filters>
                 <form [formGroup]="myformSearch">
-
+<!-- 
                     <airmid-datepicker [formGroup]="myformSearch" [isRangePicker]="true" formStartControlName="fromDate"
                         formEndControlName="enddate" [(fromValue)]="gridConfig.filters[4].fieldValue" (dateChange)="GetAppointdetail()"
-                        [(toValue)]="gridConfig.filters[5].fieldValue"></airmid-datepicker>
+                        [(toValue)]="gridConfig.filters[5].fieldValue"></airmid-datepicker> -->
+
+
+                          <airmid-datepicker [formGroup]="myformSearch"
+                                [isRangePicker]="true" formStartControlName="fromDate" formEndControlName="enddate"
+                                [(fromValue)]="gridConfig.filters[4].fieldValue"
+                                [(toValue)]="gridConfig.filters[5].fieldValue">
+                            </airmid-datepicker>
+
 
                     <mat-form-field appearance="outline">
                         <mat-label>UHID NO</mat-label>

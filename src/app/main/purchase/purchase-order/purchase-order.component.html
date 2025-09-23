@@ -61,11 +61,18 @@
                 (onSelectRow)="GetDetails1($event)">
                 <ng-container filters>
                     <form [formGroup]="mysearchform" fxLayout="column">
-                        <airmid-datepicker [formGroup]="mysearchform" [isRangePicker]="true"
+                        <!-- <airmid-datepicker [formGroup]="mysearchform" [isRangePicker]="true"
                             formStartControlName="startdate" formEndControlName="enddate"
                             [(fromValue)]="gridConfig.filters[0].fieldValue" 
                             [(toValue)]="gridConfig.filters[1].fieldValue" (dateChange)="onChangeFirst()">
-                        </airmid-datepicker> 
+                        </airmid-datepicker>  -->
+
+                         <airmid-datepicker [formGroup]="mysearchform"
+                                [isRangePicker]="true" formStartControlName="startdate" formEndControlName="enddate"
+                                [(fromValue)]="gridConfig.filters[1].fieldValue"
+                                [(toValue)]="gridConfig.filters[2].fieldValue">
+                            </airmid-datepicker>
+
 
                         <airmid-dropdown label="Store Name" formControlName="StoreId"
                         (selectionChange)="selectChangeStore($event)" [formGroup]="mysearchform"
