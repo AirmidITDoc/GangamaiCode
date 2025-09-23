@@ -28,10 +28,11 @@
 
             <ng-template #ColorCode let-element>
                 <div fxLayout="row" fxLayoutAlign="center center">
-                    <mat-icon *ngIf="element.isVerified === false" matTooltip="Pending"
-                        class="pill red-600 s-16">circle</mat-icon>
                     <mat-icon *ngIf="element.isVerified === true" matTooltip="Verified"
-                        class="pill green-600 s-16">circle</mat-icon>
+                        style="color: green;">check_circle</mat-icon>
+
+                    <mat-icon *ngIf="element.isVerified === false" matTooltip="Pending"
+                        color="warn">hourglass_empty</mat-icon>
                 </div>
             </ng-template>
 

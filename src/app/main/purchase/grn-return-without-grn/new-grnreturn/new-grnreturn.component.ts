@@ -182,8 +182,8 @@ export class NewGRNReturnComponent implements OnInit {
     }
 
     return this._formbuilder.group({
-      // grnreturnDetailId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      grnReturnId: [element.grnReturnId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      grnReturnId: [this.VGrnReturnID ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      // grnReturnId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       itemId: [element.itemId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       batchNo: [element.batchNo || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       batchExpiryDate: [ExpDate, [this._FormvalidationserviceService.validDateValidator()]],
@@ -308,7 +308,74 @@ export class NewGRNReturnComponent implements OnInit {
       this.vConversionFactor = (result.converFactor === '%') ? 1 : result.converFactor; //becasue i am getting % from list but during insert it ask number
       this.vPurchaseRate = result.purchaseRate;
 
+      if ((result?.cgstPer ?? 0) > 0) {
+        this._GRNReturnService.NewGRNReturnFrom.patchValue({
+          CGST: result?.vatPercentage,
+          SGST: result?.sgstPer,
+          IGST: 0,
+          GST: result?.vatPercentage
+        });
+
+        this._GRNReturnService.NewGRNReturnFrom.get('CGST').enable();
+        this._GRNReturnService.NewGRNReturnFrom.get('IGST').reset();
+        this._GRNReturnService.NewGRNReturnFrom.get('IGST').clearValidators();
+        this._GRNReturnService.NewGRNReturnFrom.get('IGST').updateValueAndValidity();
+        this._GRNReturnService.NewGRNReturnFrom.get('IGST').disable();
+
+      } else if ((result?.igstPer ?? 0) > 0) {
+        this._GRNReturnService.NewGRNReturnFrom.patchValue({
+          CGST: 0,
+          SGST: 0,
+          IGST: result?.igstPer,
+          GST: result?.vatPercentage
+        });
+
+        this._GRNReturnService.NewGRNReturnFrom.get('IGST').enable();
+        this._GRNReturnService.NewGRNReturnFrom.get('CGST').reset();
+        this._GRNReturnService.NewGRNReturnFrom.get('CGST').clearValidators();
+        this._GRNReturnService.NewGRNReturnFrom.get('CGST').updateValueAndValidity();
+        this._GRNReturnService.NewGRNReturnFrom.get('CGST').disable();
+
+      } else {
+        // ✅ Both missing → don’t disable any, keep them editable
+        this._GRNReturnService.NewGRNReturnFrom.patchValue({
+          CGST: 0,
+          SGST: 0,
+          IGST: 0,
+          GST: 0
+        });
+
+        this._GRNReturnService.NewGRNReturnFrom.get('CGST').enable();
+        this._GRNReturnService.NewGRNReturnFrom.get('IGST').enable();
+      }
     });
+  }
+
+  ItemFromReset() {
+    const form = this._GRNReturnService.NewGRNReturnFrom;
+    form.patchValue({
+      ItemName: "",
+      BatchNo: "",
+      ExpDates: "",
+      BalQty: "",
+      Qty: "",
+      Rate: "",
+      CGST: "",
+      SGST: "",
+      IGST: "",
+      GST: "",
+      TotalAmount: "",
+      LandedRate: "",
+      NetAmount: "",
+      GSTAmount: ""
+    });
+    this.vExpDates = ""
+    this.vBalQty = ""
+    this.vQty = ""
+    this.vLandedRate = ""
+    this.vTotalAmount = ""
+    this.vGSTAmount = ""
+    this.vNetAmount = ""
   }
 
   getchangegstper(rate: any): void {
@@ -316,13 +383,13 @@ export class NewGRNReturnComponent implements OnInit {
     if (Number(rate?.value) > 0) {
       this.vGST = Number(rate.text)
       this.vSGST = Number((rate.value) / 2),
-      this.vCGST = Number((rate.value) / 2),
-      this.vIGST=0
-        this._GRNReturnService.NewGRNReturnFrom.patchValue({
-          SGST: Number((rate.value) / 2),
-          IGST: 0,
-          GST: Number(rate.value)
-        })
+        this.vCGST = Number((rate.value) / 2),
+        this.vIGST = 0
+      this._GRNReturnService.NewGRNReturnFrom.patchValue({
+        SGST: Number((rate.value) / 2),
+        IGST: 0,
+        GST: Number(rate.value)
+      })
       this._GRNReturnService.NewGRNReturnFrom.get('IGST').reset();
       this._GRNReturnService.NewGRNReturnFrom.get('IGST').clearValidators();
       this._GRNReturnService.NewGRNReturnFrom.get('IGST').updateValueAndValidity();
@@ -336,10 +403,10 @@ export class NewGRNReturnComponent implements OnInit {
 
   getchangeIgstper(rate: any): void {
     debugger
-    this.vIGST=Number(rate.text)
-    this.vCGST=0
-    this.vSGST=0
-    this.vGST=Number(rate.text)
+    this.vIGST = Number(rate.text)
+    this.vCGST = 0
+    this.vSGST = 0
+    this.vGST = Number(rate.text)
     if (Number(rate?.text) > 0) {
       this.vGST = Number(rate.text)
       this._GRNReturnService.NewGRNReturnFrom.patchValue({
@@ -355,7 +422,7 @@ export class NewGRNReturnComponent implements OnInit {
       this._GRNReturnService.NewGRNReturnFrom.get('CGST').enable();
       this._GRNReturnService.NewGRNReturnFrom.get('CGST').reset();
     }
-     this.CalculateTotalAmt();
+    this.CalculateTotalAmt();
   }
 
   onAdd() {
@@ -458,13 +525,13 @@ export class NewGRNReturnComponent implements OnInit {
     this._GRNReturnService.getGRNReturnrtrvlist(vdata).subscribe(response => {
       // this.dsItemList.data = response.data
 
-       this.dsItemList.data = response.data.map(item => {
+      this.dsItemList.data = response.data.map(item => {
         const gstPer = item.gstPercentage || 0;
         return {
           ...item,
           cgst: gstPer / 2,
           sgst: gstPer / 2,
-          BalQty:(item.balanceQty + item.returnQty)
+          BalQty: (item.balanceQty + item.returnQty)
         };
       });
 
@@ -534,7 +601,7 @@ export class NewGRNReturnComponent implements OnInit {
 
   Savebtn: boolean = false;
   OnSave() {
-    debugger
+    // debugger
     const formattedDate = this.datePipe.transform(this.GrnReturnForm.get('grnReturn.grnreturnDate').value, "yyyy-MM-dd");
     const formattedTime = this.datePipe.transform(new Date(), "HH:mm:ss");
     this.GrnReturnForm.get('grnReturn.grnreturnDate').setValue(formattedDate);
@@ -574,10 +641,11 @@ export class NewGRNReturnComponent implements OnInit {
         });
         return;
       }
-
+      debugger
       this.Savebtn = true;
       this.grnReturnDetArray.clear();
       this.dsItemList.data.forEach(item => {
+        console.log(this.dsItemList.data)
         this.grnReturnDetArray.push(this.createGrnReturnDetInsert(item));
       });
 

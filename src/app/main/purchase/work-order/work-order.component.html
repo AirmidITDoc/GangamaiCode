@@ -35,8 +35,8 @@
                 <ng-container filters>
                     <form [formGroup]="myform">
                         <airmid-datepicker [formGroup]="myform" [isRangePicker]="true" formStartControlName="fromDate"
-                            formEndControlName="enddate" [(fromValue)]="gridConfig.filters[2].fieldValue"
-                            [(toValue)]="gridConfig.filters[3].fieldValue"></airmid-datepicker>
+                            formEndControlName="enddate" [(fromValue)]="gridConfig.filters[1].fieldValue"
+                            [(toValue)]="gridConfig.filters[2].fieldValue"></airmid-datepicker>
 
                         <airmid-dropdown label="Store Name" formControlName="ToStoreId"
                             (selectionChange)="ListView($event)" [formGroup]="myform" [mode]="autocompletestore">

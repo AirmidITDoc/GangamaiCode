@@ -25,25 +25,36 @@ export class ExpensesService {
     return this._frombuilder.group({
       fromDate: [(new Date()).toISOString()],
       enddate: [(new Date()).toISOString()],
+      ExpensenId: [0],
       expType: ["3"]
     })
   }
 
   CreateMyForm() {
     return this._frombuilder.group({
-      expId: [0,this._FormvalidationserviceService.onlyNumberValidator()],
-      expDate: [''],
-      expTime: [''],
+      expId: [0, this._FormvalidationserviceService.onlyNumberValidator()],
+      expDate: ['',[Validators.required]],
+      expTime: ['',[Validators.required]],
       expType: [0],
-      expAmount: [0,[Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      personName: ['',[Validators.required]],
+      expAmount: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      personName: ['', [Validators.required]],
       narration: [''],
       isAddedby: this.accountService.currentUserValue.userId,
       isUpdatedBy: this.accountService.currentUserValue.userId,
       isCancelled: false,
       isCancelledBy: 0,
       voucharNo: "string",
-      expHeadId: [0,[Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      expHeadId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
     })
   }
+
+  public ExpensesSave(Param: any) {
+    if (Param.expId) {
+      return this._httpClient.PutData("TExpense/TExpenseUpdate/" + Param.expId, Param);
+    } else return this._httpClient.PostData("TExpense/TExpenseInsert", Param);
+  }
+
+   public OnCancel(param) {
+        return this._httpClient.DeleteData('TExpense/TExpenseCancel')
+    }
 }

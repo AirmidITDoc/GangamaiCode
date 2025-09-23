@@ -18,28 +18,48 @@
 
     <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
 
+        <ng-template #ColorCode let-element>
+            <div fxLayout="row" fxLayoutAlign="center center">
+                <mat-icon *ngIf="element.expType == '0'" matTooltip="Cash" class="pill green-600 s-16">circle</mat-icon>
+                <mat-icon *ngIf="element.expType == '1'" matTooltip="Cheque"
+                    class="pill orange-600 s-16">circle</mat-icon>
+                <mat-icon *ngIf="element.expType == '2'" matTooltip="Online"
+                    class="pill blue-600 s-16">circle</mat-icon>
+            </div>
+        </ng-template>
+
+        <ng-template #actionButtonTemplate let-element>
+            <div fxLayout="row" fxLayoutAlign="center center">
+                <button mat-icon-button matTooltip="Cancel" (click)="OnCancel(element)"
+                *ngIf="element.isCancelled==false">
+                    <mat-icon>cancel</mat-icon>
+                </button>
+                <button mat-icon-button matTooltip="Print">
+                    <mat-icon>print</mat-icon>
+                </button>
+            </div>
+        </ng-template>
+
         <airmid-table [gridConfig]="gridConfig" class="content">
             <ng-container filters>
                 <form [formGroup]="myFilterform">
 
                     <div fxLayout="column" fxLayoutAlign="start none">
 
-                        <mat-form-field appearance="outline">
-                            <mat-label>Enter a date range</mat-label>
-                            <mat-date-range-input [rangePicker]="picker">
-                                <input matStartDate formControlName="fromDate" placeholder="Start date"
-                                    (dateChange)="onChangeFirst()">
-                                <input matEndDate formControlName="enddate" placeholder="End date"
-                                    (dateChange)="onChangeFirst()">
-                            </mat-date-range-input>
-                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                            <mat-date-range-picker #picker></mat-date-range-picker>
-                        </mat-form-field>
+                        <airmid-datepicker [formGroup]="myFilterform" [isRangePicker]="true"
+                            formStartControlName="fromDate" formEndControlName="enddate"
+                            [(fromValue)]="gridConfig.filters[0].fieldValue"
+                            [(toValue)]="gridConfig.filters[1].fieldValue"></airmid-datepicker>
+
+                        <airmid-dropdown label="Expenses Name" formControlName="ExpensenId"
+                            [(ngModel)]="gridConfig.filters[2].fieldValue" [formGroup]="myFilterform"
+                            [mode]="autocompleteExpensen" (selectionChange)="ListView1($event)">
+                        </airmid-dropdown>
 
                         <mat-radio-group formControlName="expType" name="expType" fxLayout="column"
                             (change)="onChangeFirst()" style="padding: 8px;">
 
-                             <div fxLayout="row" fxLayoutAlign="start center" style="gap: 8px;">
+                            <div fxLayout="row" fxLayoutAlign="start center" style="gap: 8px;">
                                 <mat-icon class="pill">circle</mat-icon>
                                 <mat-radio-button value="3">ALL</mat-radio-button>
                             </div>
