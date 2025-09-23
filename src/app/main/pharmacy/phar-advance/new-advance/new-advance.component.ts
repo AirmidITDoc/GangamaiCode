@@ -243,6 +243,7 @@ export class NewAdvanceComponent implements OnInit {
             this.insertForm.removeControl('pharmacyHeader');
             console.log(this.insertForm?.value);
             this._PharAdvanceService.InsertIpPharmaAdvance(this.insertForm.value).subscribe(response => {
+              console.log(response);
               this.viewgetIPAdvanceReportPdf(response);
               this._matDialog.closeAll();
               this.OnReset();
@@ -255,6 +256,7 @@ export class NewAdvanceComponent implements OnInit {
             this.insertForm?.get('paymentPharmacy')?.setValue(result.submitDataPay.ipPaymentInsert);
             console.log(this.insertForm?.value);
             this._PharAdvanceService.UpdateIpPharmaAdvance(this.insertForm.value).subscribe(response => {
+              console.log(response)
               this.viewgetIPAdvanceReportPdf(response);
               this._matDialog.closeAll();
               this.OnReset();
@@ -305,7 +307,8 @@ export class NewAdvanceComponent implements OnInit {
     this._matDialog.closeAll();
   }
   viewgetIPAdvanceReportPdf(contact) {
-    this.commonService.Onprint("AdvanceDetailID", contact.advanceDetailId, "PharamcyAdvanceReceipt");
+    debugger;
+    this.commonService.Onprint("AdvanceDetailID", contact, "PharamcyAdvanceReceipt");
   }  
   keyPressCharater(event) {
     var inp = String.fromCharCode(event.keyCode);

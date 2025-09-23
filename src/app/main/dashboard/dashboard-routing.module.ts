@@ -7,6 +7,7 @@ import { RadiologyDashboardComponent } from './radiology-dashboard/radiology-das
 import { PharmacyDashboardComponent } from './pharmacy-dashboard/pharmacy-dashboard.component';
 import { BedOccupancyComponent } from './bed-occupancy/bed-occupancy.component';
 import { HomePageComponent } from './home-page/home-page.component';
+import { NewDashboardComponent } from './new-dashboard/new-dashboard.component';
 
 const routes: Routes = [
   // {
@@ -20,6 +21,10 @@ const routes: Routes = [
   {
     path: 'dashboard',
     component: DailyDashboardComponent
+  },
+  {
+    path: 'new-dashboard',
+    component: NewDashboardComponent
   },
   {
     path: 'Pathology-dashboard',

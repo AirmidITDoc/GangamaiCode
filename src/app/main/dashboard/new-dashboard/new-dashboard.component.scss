@@ -1,0 +1,91 @@
+/* Minimal styles complementing Angular Material */
+.metrics-grid {
+    display: flex;
+    height: fit-content;
+    gap: 16px;
+    padding: 10px;
+    flex-wrap: wrap;
+    width: 100%;
+    align-items: stretch;
+}
+
+.metric-card {
+  flex: 1 1 220px;
+  min-width: 220px;
+  height: fit-content;
+  border-radius: 14px;
+}
+
+.metric-content {
+  display: flex;
+  align-items: center;
+}
+
+.metric-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 12px;
+  display: grid;
+  place-items: center;
+  margin-right: 16px;
+}
+
+.metric-icon .mat-icon {
+  font-size: 32px;
+  width: 32px;
+  height: 32px;
+}
+
+.metric-label {
+  font-size: 13px;
+  font-weight: 600;
+  opacity: 0.75;
+}
+
+.metric-value {
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+/* Soft color themes */
+.theme-lavender { background: linear-gradient(135deg, #f0f2ff 0%, #f7f5ff 100%); }
+.theme-lavender .metric-icon { background: rgba(84, 104, 255, 0.12); color: #5468ff; }
+
+.theme-butter { background: linear-gradient(135deg, #fff8e1 0%, #fffbea 100%); }
+.theme-butter .metric-icon { background: rgba(250, 189, 0, 0.12); color: #e2a300; }
+
+.theme-mint { background: linear-gradient(135deg, #e9fbf0 0%, #f3fdf6 100%); }
+.theme-mint .metric-icon { background: rgba(16, 185, 129, 0.12); color: #10b981; }
+
+.theme-rose { background: linear-gradient(135deg, #ffe9f2 0%, #fff2f7 100%); }
+.theme-rose .metric-icon { background: rgba(236, 72, 153, 0.12); color: #ec4899; }
+
+.theme-sky { background: linear-gradient(135deg, #e6f4ff 0%, #f0f8ff 100%); }
+.theme-sky .metric-icon { background: rgba(59, 130, 246, 0.12); color: #3b82f6; }
+
+.theme-peach { background: linear-gradient(135deg, #fff0e6 0%, #fff6f0 100%); }
+.theme-peach .metric-icon { background: rgba(249, 115, 22, 0.12); color: #f97316; }
+
+/* Flex layout wraps naturally; no grid media queries needed */
+
+.charts-row {
+  display: flex;
+  gap: 16px;
+  padding: 10px;
+  width: 100%;
+  margin-top: 8px;
+}
+
+.dashboard-container{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.chart-card {
+  flex: 1 1 50%;
+  min-width: 300px;
+}
+
+/* removed stacked charts */

@@ -80,7 +80,7 @@ export class PharAdvanceComponent implements OnInit {
       heading: "Action", key: "action", align: "right", width: 80, type: gridColumnTypes.action, actions: [
         {
           action: gridActions.print, callback: (data: any) => {
-              this.commonService.Onprint("AdvanceDetailID", data.advanceDetailID, "IPPharmaAdvanceReport");
+              this.commonService.Onprint("AdvanceDetailID", data.advanceDetailID, "PharamcyAdvanceReceipt");
             }
         }]
     }
@@ -100,7 +100,7 @@ export class PharAdvanceComponent implements OnInit {
       heading: "Action", key: "action", align: "right", width: 80, type: gridColumnTypes.action, actions: [
         {
           action: gridActions.print, callback: (data: any) => {
-              this.commonService.Onprint("RefundId", data.refundId, "IPPharmaAdvanceReturnReport");
+              this.commonService.Onprint("RefundId", data.refundId, "PharamcyAdvanceReturnReceipt");
             }
         }]
     }
