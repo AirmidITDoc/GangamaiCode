@@ -1,0 +1,48 @@
+<div class="simple page-layout modal-wrapper grid-container modal-page">
+    <div class="modal-header accent">
+        <div class="modal-header-content">
+            <div class="modal-header-title">
+                <span [@animate]="{ value: '*', params: { delay: '100ms', x: '-25px' } }">Update GRN Details</span>
+            </div>
+            <div class="close-icon">
+                <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
+                    matTooltip="Close">
+                    <mat-icon>close</mat-icon>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-body">
+        <div class="modal-body-container">
+            <div fxLayout="column" class="h-100-p">
+                <form [formGroup]="EditGRNFrom">
+                    <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="6px">
+
+                        <airmid-datepicker fxFlex="20%" [formGroup]="EditGRNFrom" formControlName="GRNDate"
+                            [label]="'GRN Date'" ></airmid-datepicker>
+
+                        <airmid-dropdown label="Supplier Name | Code" formControlName="SupplierId" fxFlex
+                            [formGroup]="EditGRNFrom" [validations]="getValidationMessages().supplierId"
+                            [mode]="dropdownMode.supplierMaster" (selectionChange)="selectChangeSupplier($event)"
+                            [value]="registerObj.supplierId"></airmid-dropdown>
+
+                        <airmid-textbox fxFlex="20%" label="Invoice No" formControlName="InvoiceNo" [formGroup]="EditGRNFrom"
+                            [readonly]="true" name="InvoiceNo"></airmid-textbox>
+
+
+                        <airmid-datepicker fxFlex="20%" [formGroup]="EditGRNFrom" formControlName="DateOfInvoice"
+                            [label]="'Invoice Date'"></airmid-datepicker> 
+
+                    </div>
+                </form> 
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <div class="modal-footer-buttons" fxLayout="row" fxLayoutAlign="end" fxLayoutGap="6px">
+            <button class="btn btn-danger-outline" (click)="onClose()">CLose</button>
+            <button class="btn btn-primary" (click)="OnSave()">Save</button>
+        </div>
+    </div>
+</div>

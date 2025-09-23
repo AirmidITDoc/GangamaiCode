@@ -11,14 +11,13 @@ import { default as _rollupMoment } from 'moment';
 import { ToastrService } from 'ngx-toastr';
 import Swal from 'sweetalert2';
 import { GrnItemList, GRNList, ItemNameList } from '../good-receiptnote.component';
-import { GoodReceiptnoteService } from '../good-receiptnote.service';
-import { PODetailList, PurchaseorderComponent } from '../update-grn/purchaseorder/purchaseorder.component';
+import { GoodReceiptnoteService } from '../good-receiptnote.service'; 
 import { NewGRNService } from './new-grn.service';
 import { GRNFinalFormModel, GRNFormModel, GRNItemResponseType, GSTType, ToastType } from './types';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 import { ItemFormMasterComponent } from 'app/main/setup/inventory/item-master/item-form-master/item-form-master.component';
-import { FixSupplierComponent } from 'app/main/setup/inventory/supplier-master/fix-supplier/fix-supplier.component';
-import { values } from 'lodash';
+import { FixSupplierComponent } from 'app/main/setup/inventory/supplier-master/fix-supplier/fix-supplier.component'; 
+import { POtoGRNComponent } from '../poto-grn/poto-grn.component';
 
 
 const moment = _rollupMoment || _moment;
@@ -96,8 +95,7 @@ isExpanded = false;
     CGSTFinalAmount: any;
     SGSTFinalAmount: any;
     IGSTFinalAmount: any;
-    vPurchaseId: any;
-    selectedAdvanceObj: PODetailList;
+    vPurchaseId: any; 
     InvoiceNo: any;
     GateEntryNo: any;
     SupplierId: any;
@@ -148,7 +146,7 @@ isExpanded = false;
         public datePipe: DatePipe,
         @Inject(MAT_DIALOG_DATA) public data: any,
         public dialogRef: MatDialogRef<NewGrnComponent>,
-        public _dialogRef: MatDialogRef<PurchaseorderComponent>,
+        public _dialogRef: MatDialogRef<POtoGRNComponent>,
         private accountService: AuthenticationService,
         public toastr: ToastrService,
         private _FormvalidationserviceService: FormvalidationserviceService,
@@ -194,6 +192,7 @@ isExpanded = false;
     batchlistApiUrl:any='';
     //Item details selectedObj
     getSelectedItem(item: GRNItemResponseType): void { 
+        debugger
         if (this.mock) {
             return;
         }
@@ -204,7 +203,7 @@ isExpanded = false;
             HSNCode: item.hsNcode,
             ConversionFactor: isNaN(+item.converFactor) ? 1 : +item.converFactor, 
         });  
-        if(((item?.cgstPer ?? 0) || 0) > 0){
+        if(((item?.cgstPer ?? 0) || 0) > 0 ){
             this.userFormGroup.patchValue({
             CGST: item?.taxPer,
             SGST: item?.sgstPer,
@@ -283,7 +282,7 @@ handleEnterKey(event: KeyboardEvent) {
     if (cgstValue || igstValue) {
       event.preventDefault(); // prevent default behavior if needed
       this.addButton?.nativeElement.focus();
-      this.addButton?.nativeElement.click();
+     // this.addButton?.nativeElement.click();
     } 
     // Otherwise let selectionChange happen and set the value normally
   }
@@ -526,7 +525,7 @@ handleEnterKey(event: KeyboardEvent) {
         if (itemNameElement) {
             itemNameElement.focus();
         }
-        }, 500); 
+        }, 1000); 
     }
     //Delete 
     deleteTableRow(row: ItemNameList) {
@@ -1387,22 +1386,22 @@ chkInvoiceNo(InvoiceNo){
     FinalUnitMRP1: any = 0;
     vPurchaseOrderSupplierId: any;
     PurchaseOrderList() {
-        const _dialogRef = this._matDialog.open(PurchaseorderComponent,
+        const _dialogRef = this._matDialog.open(POtoGRNComponent,
             {
                 maxWidth: "100%",
-                height: '95%',
-                width: '95%',
+                height: '100%',
+                width: '98%',
             });
 
         _dialogRef.afterClosed().subscribe(result => {
 
             console.log(result)
-            this.vPurchaseId = result[0].PurchaseID;
-            this.vpoBalQty = result[0].ReceiveQty;
-            this.vPurchaseOrderSupplierId = result[0].SupplierName
-            let other = result[0].FreightCharges + result[0].HandlingCharges + result[0].TransportChanges + result[0].OctriAmount
+            this.vPurchaseId = result[0]?.PurchaseID;
+            this.vpoBalQty = result[0]?.ReceiveQty;
+            this.vPurchaseOrderSupplierId = result[0]?.SupplierName
+            let other = result[0]?.FreightCharges + result[0]?.HandlingCharges + result[0]?.TransportChanges + result[0]?.OctriAmount
             this._GRNList.GRNFinalForm.get('OtherCharge').setValue(other);
-            this._GRNList.GRNFinalForm.get('Remark').setValue(result[0].Remarks);
+            this._GRNList.GRNFinalForm.get('Remark').setValue(result[0]?.Remarks);
 
             // this.getSupplierSearchCombo();
 
