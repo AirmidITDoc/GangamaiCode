@@ -580,7 +580,7 @@ export class UpdateWorkorderComponent implements OnInit {
       contact.NetAmount = 0;
     }
     this.getGSTTotalAmt([contact]);
-    this._WorkOrderService.validateGSTRates(contact);
+    // this._WorkOrderService.validateGSTRates(contact);
   }
 
   getGSTTotalAmt(element: any[]) {
@@ -686,7 +686,7 @@ export class UpdateWorkorderComponent implements OnInit {
   }
 
   viewgetWorkorderReportPdf(element) {
-    this.commonService.Onprint("WOId", element.woId, "WorkOrder");
+    this.commonService.Onprint("WOId", element, "WorkOrder");
   }
 
   ItemFromReset() {

@@ -35,9 +35,9 @@
                                 <div fxLayout="column" fxLayoutGap="16px">
 
                                     <div fxFlex="40">
-                                        <airmid-autocomplete label="Expenses Head" [formGroup]="myForm"
-                                            formControlName="expHeadId">
-                                        </airmid-autocomplete>
+                                        <airmid-dropdown label="Expenses Name" formControlName="expHeadId"
+                                            [formGroup]="myForm" [mode]="autocompleteExpensen" (selectionChange)="ListView1($event)">
+                                        </airmid-dropdown>
                                     </div>
 
                                     <div fxFlex>

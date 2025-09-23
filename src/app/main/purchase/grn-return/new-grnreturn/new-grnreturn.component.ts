@@ -196,7 +196,7 @@ export class NewGRNReturnComponent implements OnInit {
 
     return this._formbuilder.group({
 
-      grnReturnId: [element.grnReturnId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      grnReturnId: [this.VGrnReturnID ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       itemId: [element.itemId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       batchNo: [element.batchNo || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       batchExpiryDate: [ExpDate, [this._FormvalidationserviceService.validDateValidator()]],
@@ -245,8 +245,8 @@ export class NewGRNReturnComponent implements OnInit {
     let issueqty = element.BalQty - element.returnQty
     return this._formbuilder.group({
       grndetId: [element.GRNDetID || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      returnQty: [element.returnQty || 0, [this._FormvalidationserviceService.onlyNumberValidator()]]
-      // returnQty: [element.issueqty || 0, [this._FormvalidationserviceService.onlyNumberValidator()]]
+      // returnQty: [element.returnQty || 0, [this._FormvalidationserviceService.onlyNumberValidator()]]
+      returnQty: [element.issueqty || 0, [this._FormvalidationserviceService.onlyNumberValidator()]]
     });
   }
 

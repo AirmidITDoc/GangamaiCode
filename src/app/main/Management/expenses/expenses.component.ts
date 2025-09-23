@@ -11,6 +11,7 @@ import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
 import { gridColumnTypes } from 'app/core/models/tableActions';
 import { FormGroup } from '@angular/forms';
 import { NewExpensesComponent } from './new-expenses/new-expenses.component';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-expenses',
@@ -22,15 +23,19 @@ import { NewExpensesComponent } from './new-expenses/new-expenses.component';
 export class ExpensesComponent {
 
   myFilterform: FormGroup;
+  autocompleteExpensen: string = "ExpHeadMaster"
   type: any = "3";
+  expId: any = "0"
   fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
   toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
 
   @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
   @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
+  @ViewChild('ColorCode') ColorCode!: TemplateRef<any>;
 
   ngAfterViewInit() {
     this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
+    this.gridConfig.columnsList.find(col => col.key === 'expType')!.template = this.ColorCode;
   }
 
   constructor(
@@ -47,14 +52,17 @@ export class ExpensesComponent {
   }
 
   allcolumns = [
-    { heading: "-", key: "expensetype", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30 },
-    { heading: "Expense Date/Time", key: "time", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 80 },
+    {
+      heading: "-", key: "expType", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template,
+      template: this.ColorCode, width: 30
+    },
+    { heading: "Expense Date", key: "expDate", sort: true, align: 'left', emptySign: 'NA', width: 80 },
+    { heading: "Expense Time", key: "expTime", sort: true, align: 'left', emptySign: 'NA', width: 80 },
     { heading: "Head Name", key: "headName", sort: true, align: 'left', emptySign: 'NA', width: 60 },
     { heading: "Person Name", key: "personName", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "Expense Amount", key: "expenseAmt", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "Reason", key: "reason", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "AddedBy", key: "addedBy", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "Expense Type", key: "type", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "Expense Amount", key: "expAmount", sort: true, align: 'left', emptySign: 'NA',type:gridColumnTypes.amount },
+    { heading: "Reason", key: "narration", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "AddedBy", key: "userName", sort: true, align: 'left', emptySign: 'NA' },
     {
       heading: "Action", key: "action", align: "right", width: 190, sticky: true, type: gridColumnTypes.template,
       template: this.actionButtonTemplate  // Assign ng-template to the column
@@ -62,37 +70,48 @@ export class ExpensesComponent {
   ]
 
   allfilters = [
-    { fieldName: "From_Dt", fieldValue: "", opType: OperatorComparer.StartsWith },
-    { fieldName: "To_Dt", fieldValue: "", opType: OperatorComparer.StartsWith },
-    // { fieldName: "Type", fieldValue: "0", opType: OperatorComparer.StartsWith },
+    { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.StartsWith },
+    { fieldName: "ToDate", fieldValue: this.toDate, opType: OperatorComparer.StartsWith },
+    { fieldName: "ExpHeadId", fieldValue: "0", opType: OperatorComparer.Equals },
+    { fieldName: "ExpType", fieldValue: this.type, opType: OperatorComparer.Equals },
   ]
 
   gridConfig: gridModel = {
-    apiUrl: "",
+    apiUrl: "TExpense/DailyExpenceList",
     columnsList: this.allcolumns,
-    sortField: "EmgId",
+    sortField: "ExpID",
     sortOrder: 0,
     filters: this.allfilters
   }
 
-   onChangeFirst() {
+  ListView1(value) {
+    if (value.value !== 0)
+      this.expId = value.value
+    else
+      this.expId = "0"
+    this.onChangeFirst();
+  }
+
+  onChangeFirst() {
     this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd") || "01/01/1900"
     this.toDate = this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd") || "01/01/1900"
+    this.expId = this.myFilterform.get('ExpensenId').value
     this.type = this.myFilterform.get('expType').value
 
     this.getfilterdata();
   }
 
-   getfilterdata() {
+  getfilterdata() {
     this.gridConfig = {
-      apiUrl: "Emergency/Emergencylist",
+      apiUrl: "TExpense/DailyExpenceList",
       columnsList: this.allcolumns,
-      sortField: "EmgId",
+      sortField: "ExpID",
       sortOrder: 0,
       filters: [
-        { fieldName: "From_Dt", fieldValue: this.fromDate || "1900-01-01", opType: OperatorComparer.StartsWith },
-        { fieldName: "To_Dt", fieldValue: this.toDate || "2100-12-31", opType: OperatorComparer.StartsWith },
-        { fieldName: "type", fieldValue: this.type, opType: OperatorComparer.StartsWith },
+        { fieldName: "FromDate", fieldValue: this.fromDate || "1900-01-01", opType: OperatorComparer.StartsWith },
+        { fieldName: "ToDate", fieldValue: this.toDate || "2100-12-31", opType: OperatorComparer.StartsWith },
+        { fieldName: "ExpHeadId", fieldValue: this.expId, opType: OperatorComparer.Equals },
+        { fieldName: "ExpType", fieldValue: this.type, opType: OperatorComparer.Equals },
       ]
     }
     this.grid.gridConfig = this.gridConfig;
@@ -110,6 +129,29 @@ export class ExpensesComponent {
       });
     dialogRef.afterClosed().subscribe(result => {
       this.grid.bindGridData();
+    });
+  }
+
+  OnCancel(data: any) {
+    Swal.fire({
+      title: 'Do you want to cancel Expenses?',
+      text: "This action cannot be undone.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, Cancel it!"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        let submitData = {
+          expId: data.expId,
+          isCancelledBy: this._loggedService.currentUserValue.userId
+        };
+        console.log(submitData);
+        this._ExpensesService.OnCancel(submitData).subscribe((res) => {
+          this.grid.bindGridData();
+        });
+      }
     });
   }
 
