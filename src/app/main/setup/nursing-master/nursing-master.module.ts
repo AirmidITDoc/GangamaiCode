@@ -22,6 +22,7 @@ import { MatDialogModule } from "@angular/material/dialog";
 import { NursingMasterComponent } from "./nursing-master.component";
 import { NursingMasterService } from "./nursing-master.service";
 import { NursingTemplateComponent } from './nursing-template/nursing-template.component';
+import { ReactiveFormsModule } from "@angular/forms";
 
 const routes: Routes = [
   {
@@ -35,6 +36,7 @@ const routes: Routes = [
   imports: [
     RouterModule.forChild(routes),
     SharedModule,
+    ReactiveFormsModule,
     MatButtonModule,
     MatCheckboxModule,
     MatFormFieldModule,

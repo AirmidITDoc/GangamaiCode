@@ -240,7 +240,7 @@
                               [(ngModel)]="vcertificateText" required formControlName="certificateText">
                             </angular-editor> -->
                             <airmid-editor label="Certificate Details" formControlName="certificateText"
-                              [(value)]="vcertificateText" [formGroup]="mycertificateForm"
+                             [formGroup]="mycertificateForm"
                               (valueChange)="onEditorValueChange($event)">
                             </airmid-editor>
                           </div>

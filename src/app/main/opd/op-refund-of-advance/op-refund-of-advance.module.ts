@@ -36,7 +36,6 @@ import { SharedModule } from 'app/main/shared/shared.module';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { AngularEditorModule } from '@kolkov/angular-editor';
 import { MatTimepickerModule } from 'mat-timepicker';
 import { MatButtonToggleModule } from "@angular/material/button-toggle";
 import { MatSliderModule } from '@angular/material/slider';
@@ -93,7 +92,6 @@ const routes: Routes = [
          MatChipsModule,
          MatGridListModule,
          MatSidenavModule,
-         AngularEditorModule,
          MatTimepickerModule,
          MatTooltipModule,
          MatButtonToggleModule,

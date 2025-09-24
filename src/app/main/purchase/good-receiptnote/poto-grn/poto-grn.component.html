@@ -1,0 +1,79 @@
+<div fusePerfectScrollbar
+    class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
+    dynamicTableHeight>
+    <mat-toolbar class="top-header accent" fxLayoutAlign="space-between">
+        <div fxLayout="row" fxLayoutAlign="start center" class="top-header-info">
+            <button mat-icon-button class="sidebar-toggle ">
+                <mat-icon>menu</mat-icon>
+            </button>
+            <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                Purchase Order List
+            </span>
+        </div>
+        <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog" matTooltip="Close"
+        (click)="onClose()">
+            <mat-icon>close</mat-icon>
+        </button>
+    </mat-toolbar>
+
+    <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+        <ng-template #actionButtonTemplateType let-element>
+            <div fxLayout="row" fxLayoutAlign="space-between center">
+                <mat-icon *ngIf="element.isClosed" matTooltip="isClosed" style="color: green;">check_circle</mat-icon>
+                <mat-icon *ngIf="!element.isClosed" matTooltip="Pending"
+                    style="color: rgb(128, 0, 30);">hourglass_empty</mat-icon>
+            </div>
+        </ng-template>
+
+        <ng-template #actionButtonTemplate let-element>
+            <div fxLayout="row" fxLayoutAlign="center center">
+                <button mat-icon-button matTooltip="Print">
+                    <mat-icon>print</mat-icon>
+                </button>
+            </div>
+        </ng-template>
+        <airmid-table [gridConfig]="gridConfig"  class="content h-100-p"  #grid (onSelectRow)="getSelectedRow($event)">
+            <ng-container filters>
+                <form [formGroup]="PotoGRNForm" fxLayout="column"> 
+
+                     <airmid-datepicker [formGroup]="PotoGRNForm" [isRangePicker]="true"
+                        formStartControlName="start" formEndControlName="end"
+                        [(fromValue)]="gridConfig.filters[1].fieldValue" [(toValue)]="gridConfig.filters[2].fieldValue"
+                       ></airmid-datepicker>
+
+                    <airmid-dropdown label="Store Name" formControlName="StoreId"
+                        [formGroup]="PotoGRNForm" [validations]="getValidationMessages().StoreId"
+                        fxFlex [mode]="autocompletestore" (selectionChange)="selectChangeStore($event)"
+                        (keyup)="selectChangeStore($event)">
+                    </airmid-dropdown>
+
+                     <airmid-dropdown label="Supplier Name | Code" formControlName="SupplierId"
+                        [formGroup]="PotoGRNForm" [validations]="getValidationMessages().supplierId"
+                        [mode]="autocompleteSupplier" (selectionChange)="selectChangeSupplier($event)"
+                        (keyup)="selectChangeSupplier($event)"
+                        [(ngModel)]="gridConfig.filters[0].fieldValue"></airmid-dropdown>
+
+
+                    <div fxLayout="row" class="gap-4 ">
+                        <span style="font-weight: bold;">Status :</span>
+                        <mat-slide-toggle name="StatusType" (change)="ChangeeFilter()" formControlName="StatusType">
+                            Pending / Close
+                        </mat-slide-toggle>
+                    </div>
+                </form>
+            </ng-container>
+        </airmid-table>
+    </div>
+
+    <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll" *ngIf="isShowDetailTable">
+        <airmid-table [gridConfig]="gridConfig1" class="content" #grid1 :ShowFilter="false">
+        </airmid-table>
+    </div>
+
+    <div class="modal-footer">
+        <div class="modal-footer-buttons" fxLayout="row" fxLayoutAlign="end" fxLayoutGap="6px">
+            <button class="btn btn-danger-outline" (click)="onClose()">CLose</button>
+            <button class="btn btn-primary" (click)="SavetoGRN()">Save</button>
+        </div>
+    </div>
+</div>

@@ -52,6 +52,13 @@
                 </mat-icon>
             </div>
         </ng-template>
+             <ng-template #actionButtonTemplateEditsupplier let-element>
+            <div fxLayout="row" fxLayoutAlign="center center">  
+               <button mat-icon-button (click)="EditSupplierdetails(element)" matTooltip="Edit Supplier Name"  *ngIf="!element.isVerified">
+                    <mat-icon title="Edit  Supplier Name">edit</mat-icon>
+                </button>
+            </div>
+        </ng-template>
 
         <ng-template #actionButtonTemplate let-element>
             <div fxLayout="row" fxLayoutAlign="center center">
@@ -77,6 +84,9 @@
                         title="Email Menu">mail</mat-icon>
                     <mat-icon *ngIf="element.isVerified" title="Email Menu">mail</mat-icon>
                 </button>
+                 <!-- <button mat-icon-button (click)="onEdit(element)" matTooltip="Edit Supplier Name"  *ngIf="!element.isVerified">
+                    <mat-icon title="Edit  Supplier Name">launch</mat-icon>
+                </button> -->
                 <button mat-icon-button matTooltip="Send Bill On WhatsApp" class="p-4"
                     (click)="getWhatsappshareSales(element)">
                     <img width="100" height="20px" src="assets/images/logos/WhatsApp.png">
@@ -86,8 +96,7 @@
                     <mat-icon *ngIf="!element.isVerified" title="Cancle">highlight_off</mat-icon>
                 </button>
             </div>
-        </ng-template>
-
+        </ng-template>  
 
         <airmid-table [gridConfig]="gridConfig" class="content" (onSelectRow)="getSelectedRow($event)" #grid>
             <ng-container filters>
@@ -124,7 +133,26 @@
     </div>
 
     <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll" *ngIf="isShowDetailTable">
-        <airmid-table [gridConfig]="gridConfig1" class="content" #grid1 [ShowFilter]="false" [ShowButtons]="false">
+    
+        <!-- <ng-template #actionButtonTemplateIscheck let-element>
+            <div fxLayout="row" fxLayoutAlign="center center">
+                <mat-checkbox aria-label="Checked" (change)="tableElementChecked($event, element)"></mat-checkbox>
+            </div>
+        </ng-template> -->
+
+         <ng-template #actionButtonTemplateIscheck let-element>
+            <div fxLayout="row" fxLayoutAlign="center center">
+                 <mat-checkbox aria-label="Checked" (change)="tableElementChecked($event, element)"></mat-checkbox>
+                 
+            </div>
+        </ng-template>
+
+        <button mat-raised-button *ngIf="selection?.selected?.length>0" (click)="printBulkQrCode()">
+            Print QrCode
+        </button>
+    
+        <airmid-table [gridConfig]="gridConfig1" class="content" #grid1 [ShowFilter]="false" [ShowButtons]="false"
+            (onSelectRow)="Onbarcode($event)">
         </airmid-table>
     </div>
 </div>

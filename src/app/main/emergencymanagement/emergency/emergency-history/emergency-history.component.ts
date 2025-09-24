@@ -10,7 +10,6 @@ import { EmergencyList } from '../emergency.component';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 import { LanguageOption, SpeechRecognitionService } from 'app/main/shared/services/speech-recognition.service';
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
-import { AngularEditorConfig } from '@kolkov/angular-editor';
 
 @Component({
   selector: 'app-emergency-history',
@@ -39,16 +38,6 @@ export class EmergencyHistoryComponent {
   vBP: any;
   vBSL: any;
 
-  editorConfig: AngularEditorConfig = {
-    editable: true,
-    spellcheck: true,
-    height: '10rem',
-    minHeight: '10rem',
-    translate: 'yes',
-    placeholder: 'Enter text here...',
-    enableToolbar: true,
-    showToolbar: true,
-  };
 
   onBlur(e: any) {
     // this.vTemplateDesc = e.target.innerHTML;

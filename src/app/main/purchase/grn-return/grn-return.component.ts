@@ -137,18 +137,17 @@ export class GRNReturnComponent implements OnInit {
       heading: "-", key: "isVerified", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template,
       template: this.ColorCode
     },
-    // { heading: "GRNReturnId", key: "grnReturnId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
     { heading: "GRNReturnNo", key: "grnReturnNo", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "GRNReturnDate", key: "grnReturnDate", sort: true, align: 'left', emptySign: 'NA', width: 100},
-    { heading: "SupplierName", key: "supplierName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-    { heading: "UserName", key: "userName", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "GSTAmount", key: "totalVatAmount", sort: true, align: 'left', emptySign: 'NA',type: gridColumnTypes.amount },
-    { heading: "NetAmount", key: "netAmount", sort: true, align: 'left', emptySign: 'NA', width: 100,type: gridColumnTypes.amount },
+    { heading: "GRNReturnDateTime", key: "grnReturnDate", sort: true, align: 'left', emptySign: 'NA', width: 150},
+    { heading: "SupplierName", key: "supplierName", sort: true, align: 'left', emptySign: 'NA', width: 350 },
+    { heading: "TotalAmount", key: "totalAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+    // { heading: "GSTAmount", key: "totalVatAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+    { heading: "NetAmount", key: "netAmount", sort: true, align: 'left', emptySign: 'NA', width: 100, type: gridColumnTypes.amount },
     { heading: "Remark", key: "remark", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "AddedBy", key: "addedBy", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "UserName", key: "userName", sort: true, align: 'left', emptySign: 'NA' },
     {
       heading: "Action", key: "action", align: "right", width: 150, sticky: true, type: gridColumnTypes.template,
-      template: this.actionButtonTemplate  // Assign ng-template to the column
+      template: this.actionButtonTemplate
     }
   ]
   allFilters = [
@@ -236,16 +235,16 @@ export class GRNReturnComponent implements OnInit {
       columnsList: [
         { heading: "Item Name", key: "itemName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         { heading: "BatchNo", key: "batchNo", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "ExpDate", key: "batchExpiryDate", sort: true, align: 'left', emptySign: 'NA', width: 100},
+        { heading: "ExpDate", key: "batchExpiryDate", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "Packing", key: "conversion", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "RQty", key: "returnQty", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "TotalQty", key: "totalQty", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "MRP", key: "mrp", sort: true, align: 'left', emptySign: 'NA',type: gridColumnTypes.amount },
-        { heading: "LandRate", key: "landedRate", sort: true, align: 'left', emptySign: 'NA',type: gridColumnTypes.amount },
-        { heading: "TotalAmt", key: "landedTotalAmount", sort: true, align: 'left', emptySign: 'NA',type: gridColumnTypes.amount },
-        { heading: "GSt", key: "vatPercentage", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "GSTAmount", key: "vatAmount", sort: true, align: 'left', emptySign: 'NA',type: gridColumnTypes.amount },
-        { heading: "NetAmount", key: "netAmount", sort: true, align: 'left', emptySign: 'NA',type: gridColumnTypes.amount }, //landedTotalAmount if i provide same name then shows error
+        { heading: "MRP", key: "mrp", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+        { heading: "LandRate", key: "landedRate", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+        { heading: "TotalAmt", key: "landedTotalAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+        { heading: "GST%", key: "gstPercentage", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "GSTAmount", key: "gstAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+        { heading: "NetAmount", key: "netAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount }, //landedTotalAmount if i provide same name then shows error
         { heading: "StkId", key: "stkId", sort: true, align: 'left', emptySign: 'NA' },
       ],
       sortField: "GRNReturnId",
@@ -273,7 +272,7 @@ export class GRNReturnComponent implements OnInit {
   getVerify(row) {
     let submitObj = {
       "grnreturnId": row.grnReturnId,
-      "isVerified":1
+      "isVerified": 1
     }
     console.log(submitObj)
     this._GRNReturnService.getVerifyGRNReturn(submitObj).subscribe(response => {
@@ -298,13 +297,13 @@ export class GRNReturnComponent implements OnInit {
     this.onChangeFirst();
   }
 
-  getNewGRNRet(row?:any) {
+  getNewGRNRet(row?: any) {
     const dialogRef = this._matDialog.open(NewGRNReturnComponent,
       {
         maxWidth: "95vw",
         maxHeight: '100vh',
         width: '90%',
-        data:row ?? ''
+        data: row ?? ''
       });
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed - Insert Action', result);
@@ -312,14 +311,14 @@ export class GRNReturnComponent implements OnInit {
     });
   }
 
-  newGRNRetunr(row?:any) {
+  newGRNRetunr(row?: any) {
     const dialogRef = this._matDialog.open(NewGRNReturnWithoutGRNComponent,
       {
         maxWidth: "95vw",
         maxHeight: '100vh',
         width: '90%',
         // height:'90%',
-        data:row ?? ''
+        data: row ?? ''
       });
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed - Insert Action', result);
@@ -567,17 +566,17 @@ export class ItemNameList {
   storeId: any;
   supplierName: any;
   issueqty: any;
-  receiveQty:any;
-   isGrnTypeFlag: any;
+  receiveQty: any;
+  isGrnTypeFlag: any;
   remark: any;
   totalVatAmount: any;
-  grnReturnId:any;
-  vatPercentage:any;
-  purchaseTotalAmount:any;
-  unitPurchaseRate:any;
-  landedRate:any;
-  returnQty:any;
-  landedTotalAmount:any;
+  grnReturnId: any;
+  vatPercentage: any;
+  purchaseTotalAmount: any;
+  unitPurchaseRate: any;
+  landedRate: any;
+  returnQty: any;
+  landedTotalAmount: any;
   /**
    * Constructor
    *

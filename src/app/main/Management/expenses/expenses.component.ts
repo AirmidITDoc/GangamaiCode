@@ -60,7 +60,7 @@ export class ExpensesComponent {
     { heading: "Expense Time", key: "expTime", sort: true, align: 'left', emptySign: 'NA', width: 80 },
     { heading: "Head Name", key: "headName", sort: true, align: 'left', emptySign: 'NA', width: 60 },
     { heading: "Person Name", key: "personName", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "Expense Amount", key: "expAmount", sort: true, align: 'left', emptySign: 'NA',type:gridColumnTypes.amount },
+    { heading: "Expense Amount", key: "expAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
     { heading: "Reason", key: "narration", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "AddedBy", key: "userName", sort: true, align: 'left', emptySign: 'NA' },
     {
@@ -132,6 +132,10 @@ export class ExpensesComponent {
     });
   }
 
+  OnPrint(element) {
+    this.commonService.Onprint("ExpId", element.expID, "ExpenseVoucharPrint");
+  }
+
   OnCancel(data: any) {
     Swal.fire({
       title: 'Do you want to cancel Expenses?',
@@ -144,7 +148,7 @@ export class ExpensesComponent {
     }).then((result) => {
       if (result.isConfirmed) {
         let submitData = {
-          expId: data.expId,
+          expId: data.expID,
           isCancelledBy: this._loggedService.currentUserValue.userId
         };
         console.log(submitData);

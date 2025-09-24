@@ -1,76 +1,69 @@
 <div class="dialog-content-wrapper modal-wrapper grid-container">
-
-    <div class="modal-header accent">
-        <div class="modal-header-content">
-            <div class="modal-header-title">
-                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">New Template </span>
-            </div>
-            <div class="modal-header-right">
-                <div class="close-icon">
-                    <button mat-icon-button tabIndex="-1" (click)="onClose()" aria-label="Close dialog">
-                        <mat-icon>close</mat-icon>
-                    </button>
-                </div>
-            </div>
+  <div class="modal-header accent">
+    <div class="modal-header-content">
+      <div class="modal-header-title">
+        <span>New Template</span>
+      </div>
+      <div class="modal-header-right">
+        <div class="close-icon">
+          <button mat-icon-button tabIndex="-1" (click)="onClose()" aria-label="Close dialog">
+            <mat-icon>close</mat-icon>
+          </button>
         </div>
+      </div>
     </div>
+  </div>
 
-    <div class="modal-body" fusePerfectScrollbar>
-        <div class="modal-body-container">
+  <div class="modal-body" fusePerfectScrollbar>
+    <div class="modal-body-container">
+      <div fxLayout="column" class="gap-12">
 
-            <div fxLayout="column" class="gap-12">
-                <form [formGroup]="myTemplateform">
-                    <div fxLayout="row wrap" fxLayoutGap="12px grid">
-                        <div fxFlex="70%" fxFlex.xs="100%" fxFlex.sm="33%" fxLayoutGap="8px" fxLayoutAlign="center">
-                            <airmid-textbox label="Template Name" fxFlex formControlName="nursTempName"
-                                [value]="data?.nursTempName" [formGroup]="myTemplateform"
-                                [validations]="getValidationMessages().nursTempName" [maxLength]="100">
-                            </airmid-textbox>
+        <!-- ✅ Only ONE root form -->
+        <form [formGroup]="myTemplateform">
 
-                            <form [formGroup]="myform">
-                                <div fxFlex="20%" fxLayout="row">
-                                    <mat-radio-group name="Category" formControlName="Category" fxLayout="row"
-                                        value="NursNote" class="gap-4">
-                                        <mat-label><b>Category:</b></mat-label>
-                                        <div fxLayout="row">
-                                            <mat-radio-button value="NursNote">NursingNote</mat-radio-button>
-                                            <mat-radio-button value='DoctorNote'>DoctorNote</mat-radio-button>
-                                        </div>
-                                    </mat-radio-group>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
+          <div fxLayout="row wrap" fxLayoutGap="12px grid">
+            <div fxFlex="70%" fxFlex.xs="100%" fxFlex.sm="33%" fxLayoutGap="8px" fxLayoutAlign="center">
+              <airmid-textbox
+                label="Template Name"
+                fxFlex
+                formControlName="nursTempName"
+                [value]="data?.nursTempName"
+                [validations]="getValidationMessages().nursTempName"
+                [maxLength]="100">
+              </airmid-textbox>
 
-                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-                        <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="33%">
-                            <airmid-editor label="Template Details" formControlName="templateDesc"
-                                [(value)]="vTemplateDesc" [formGroup]="myTemplateform"
-                                (valueChange)="onEditorValueChange($event)">
-                            </airmid-editor>
-                        </div>
-                    </div>
-                </form>
-
+              <!-- ✅ remove nested <form>, just use formGroup -->
+              <div fxFlex="20%" fxLayout="row">
+                <mat-radio-group formControlName="Category" fxLayout="row" value="NursNote" class="gap-4">
+                  <mat-label><b>Category:</b></mat-label>
+                  <div fxLayout="row">
+                    <mat-radio-button value="NursNote">NursingNote</mat-radio-button>
+                    <mat-radio-button value="DoctorNote">DoctorNote</mat-radio-button>
+                  </div>
+                </mat-radio-group>
+              </div>
             </div>
+          </div>
 
-        </div>
+          <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+            <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="33%">
+              <!-- ✅ no [formGroup] here -->
+              <airmid-editor formControlName="templateDesc"></airmid-editor>
+            </div>
+          </div>
 
+          <!-- ✅ Footer belongs inside the same form -->
+          <div class="modal-footer" style="margin-top: 10px;">
+            <div class="footer-navigation-container" fxLayout="row" fxLayoutAlign="end">
+              <div class="modal-footer-buttons">
+                <button class="btn btn-danger-outline" type="button" (click)="onClear(false)">Close</button>
+                <button class="btn btn-primary" type="submit" (click)="onSubmit()">Save</button>
+              </div>
+            </div>
+          </div>
+
+        </form>
+      </div>
     </div>
-
-    <div class="modal-footer" style="margin-top: 10px;">
-        <div class="footer-navigation-container" fxLayout="row" fxLayoutAlign="end">
-           
-            <form [formGroup]="myTemplateform">
-                <div class="modal-footer-buttons">
-                    <button class="btn btn-danger-outline" (click)="onClear(false)">Close</button>
-                    <button class="btn btn-primary" (click)="onSubmit()">
-                        Save
-                    </button>
-                    
-                </div>
-            </form>
-        </div>
-    </div>
-
+  </div>
 </div>

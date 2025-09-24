@@ -1,6 +1,6 @@
 <div class="ckeditor-container" fxFlexFill>
   <div class="editor-area" fxFlexFill>
-    <ckeditor [editor]="editor" [disabled]="disabled" [formControlName]="formControlName"
+    <ckeditor [editor]="editor" [config]="editorConfig" [disabled]="disabled" [formControlName]="formControlName"
               (ready)="onReady($event)"></ckeditor>
     
     <!-- Integrated Controls in Editor Toolbar -->

@@ -44,6 +44,9 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { NewGrnComponent } from './new-grn/new-grn.component';
 import { GoodReceiptnoteService } from './good-receiptnote.service';
+import { CreateBarcodeComponent } from './create-barcode/create-barcode.component';
+import { POtoGRNComponent } from './poto-grn/poto-grn.component';
+import { EditGRNDetailsComponent } from './edit-grndetails/edit-grndetails.component';
 
 //import { MatGridListModule } from '@angular/material/grid-list';
 
@@ -62,7 +65,10 @@ const routes: Routes = [
         PurchaseorderComponent,
         GrnemailComponent,
         QrcodegeneratorComponent,
-        NewGrnComponent
+        NewGrnComponent,
+        CreateBarcodeComponent,
+        POtoGRNComponent,
+        EditGRNDetailsComponent
     ],
     imports: [
         CommonModule,

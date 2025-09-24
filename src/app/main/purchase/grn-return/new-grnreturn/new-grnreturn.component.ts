@@ -233,7 +233,7 @@ export class NewGRNReturnComponent implements OnInit {
       itemId: [element.itemId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       issueQty: [element.returnQty || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       iStkId: [element.stkId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      storeID: [this.vStoreId, [this._FormvalidationserviceService.onlyNumberValidator()]]
+      storeId: [this.vStoreId, [this._FormvalidationserviceService.onlyNumberValidator()]]
     });
   }
 

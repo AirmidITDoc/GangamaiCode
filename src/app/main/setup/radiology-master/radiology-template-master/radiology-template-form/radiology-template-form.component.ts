@@ -2,7 +2,6 @@ import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { fuseAnimations } from '@fuse/animations';
-import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { ToastrService } from 'ngx-toastr';
 import { RadiologyTemplateMasterService } from '../radiology-template-master.service';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';

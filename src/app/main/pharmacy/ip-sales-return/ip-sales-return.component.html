@@ -26,16 +26,31 @@
                                         <mat-radio-button value="1">IP</mat-radio-button>
                                     </mat-radio-group>
                                 </div>
-                                <div fxFlex="50%" fxFlex.sm="100%">
+                                <div fxFlex="50%" fxFlex.sm="100%" *ngIf="!vCheckBox">
                                     <airmid-autocomplete label="IP RegNo / First Name / Last Name / Mobile No"
                                         [formGroup]="ItemFormGroup" formControlName="PatientName"
                                         placeholderText="IP RegNo / First Name / Last Name / Mobile No" fxFlex
                                         ApiUrl="Admission/search-patient?Keyword="
                                         (selectionChange)="getSelectedObjRegIP($event)" TextField="formattedText"
-                                        ValueField="itemId"></airmid-autocomplete>
+                                        ValueField="regId"></airmid-autocomplete>
                                 </div>
+
+                                <div fxFlex="50%" fxFlex.sm="100%" *ngIf="vCheckBox">
+                                    <airmid-autocomplete lbl="RegID" [formGroup]="ItemFormGroup"
+                                        label="Search Reg No / Patient Name / Mobile No(DC)"
+                                        formControlName="PatientName" fxFlex
+                                        placeholderText="RegNo / First Name / Last Name / Mobile No(DC)"
+                                        ApiUrl="Admission/Dischargesearch-patient?Keyword="
+                                        (selectionChange)="getSelectedObjRegIP($event)" TextField="formattedText"
+                                        ValueField="regId">
+                                    </airmid-autocomplete>
+                                </div>
+
+                                <mat-checkbox fxFlex="15%" formControlName="IsDischargedit" [(ngModel)]="vCheckBox"
+                                    (change)="getDischargedList($event)">IsDischarged
+                                </mat-checkbox>
                             </div>
-    
+
                             <mat-card fxFlex style="padding: 6px;">
                                 <div class="patient-info-container">
                                     <div class="patient-info-box">
@@ -44,7 +59,7 @@
                                         </div>
                                         <div class="patient-info-row patient-info-1-111 pt-8" fxLayout="row"
                                             fxLayoutAlign="space-between">
-    
+
                                             <div fxLayout="column" fxLayoutGap="6px">
                                                 <div class="patient-col">
                                                     <span class="patient-col-key">Patient Name
@@ -53,7 +68,7 @@
                                                     <span
                                                         class="patient-col-value">{{registerObj?.regNo}}-{{vPatientName}}</span>
                                                 </div>
-    
+
                                                 <div class="patient-col">
                                                     <span class="patient-col-key">Doctor Name</span>
                                                     <span>:</span>
@@ -61,7 +76,7 @@
                                                 </div>
                                             </div>
                                             <div fxLayout="column" fxLayoutGap="6px">
-    
+
                                                 <div class="patient-col">
                                                     <span class="patient-col-key">DOA | Time</span>
                                                     <span>:</span>
@@ -90,7 +105,7 @@
                                                     <span class="patient-col-value">{{registerObj?.roomName}}
                                                         | {{registerObj?.bedName}}</span>
                                                 </div>
-    
+
                                             </div>
                                             <div fxLayout="column" fxLayoutGap="6px">
                                                 <div class="patient-col">
@@ -111,22 +126,23 @@
                                 </div>
                             </mat-card>
                         </div>
-    
+
                         <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="4px">
-    
+
                             <mat-radio-group aria-label="Select an option" formControlName="PaymentType"
                                 style="padding: 15px 15px 0px 15px;" (change)="OnRadioChange()" fxLayout="row"
                                 fxLayoutGap="8px">
                                 <mat-radio-button value="CashPay">Cash</mat-radio-button>
                                 <mat-radio-button value="Credit">Credit</mat-radio-button>
                             </mat-radio-group>
-    
+
                             <div fxFlex="30%">
                                 <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>Item Name</mat-label>
                                     <input matAutocompletePosition="below" type="text"
-                                        (keydown.enter)="focusNext(ReturnQty)" placeholderText="Item Name (enter 2 char)"
-                                        matInput #ItemName formControlName="ItemName" [matAutocomplete]="auto">
+                                        (keydown.enter)="focusNext(ReturnQty)"
+                                        placeholderText="Item Name (enter 2 char)" matInput #ItemName
+                                        formControlName="ItemName" [matAutocomplete]="auto">
                                     <span matSuffix style="display: flex;">
                                         <mat-icon class="mat-icon-close"
                                             (click)="ItemFormGroup.get('ItemName').setValue(''); isItemIdSelected = false;">close</mat-icon>
@@ -143,18 +159,18 @@
                                     </mat-autocomplete>
                                 </mat-form-field>
                             </div>
-    
+
                             <div fxFlex="12%">
-                                <airmid-textbox label="Total Qty" formControlName="TotalQty" [readonly]="true" type="number"
-                                    min="1" [formGroup]="ItemFormGroup"></airmid-textbox>
+                                <airmid-textbox label="Total Qty" formControlName="TotalQty" [readonly]="true"
+                                    type="number" min="1" [formGroup]="ItemFormGroup"></airmid-textbox>
                             </div>
-    
+
                             <mat-form-field appearance="outline">
                                 <mat-label>Return Qty</mat-label>
                                 <input matInput formControlName="ReturnQty" id="ReturnQty" type="number" #ReturnQty
                                     (keyup)="checkQty()" min="1" />
                             </mat-form-field>
-    
+
                             <div fxLayout="row" fxLayout.xs="column" fxFlex="16%">
                                 <div matTooltip="Select All Value to enable this button!!" style="padding: 2px;">
                                     <button class="btn btn-primary" (click)="OnAdd()">
@@ -166,13 +182,13 @@
                     </div>
                 </form>
             </div>
-    
+
             <div class="modal-card-container h-100-p">
                 <div style="width: 100%;" class="h-100-p" fxLayoutGap="10px">
                     <div class="airmid-table-container py-12 h-100-p" fxLayout="column">
                         <mat-table #table class="airmid-table table3 h-100-p" matSort [dataSource]="dsIpSaleItemList"
                             [@animateStagger]="{ value: '50' }" style="overflow: auto;height: 300px;">
-    
+
                             <ng-container matColumnDef="SalesNo" sticky>
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-80">
                                     SalesNo</mat-header-cell>
@@ -180,7 +196,7 @@
                                     {{contact.SalesNo}}
                                 </mat-cell>
                             </ng-container>
-    
+
                             <ng-container matColumnDef="ItemName" sticky>
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-250">
                                     Item Name
@@ -189,7 +205,7 @@
                                     {{contact.ItemName}}
                                 </mat-cell>
                             </ng-container>
-    
+
                             <ng-container matColumnDef="BatchNo" sticky>
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-120">
                                     BatchNo</mat-header-cell>
@@ -197,7 +213,7 @@
                                     {{contact.BatchNo}}
                                 </mat-cell>
                             </ng-container>
-    
+
                             <ng-container matColumnDef="ExpDate" sticky>
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-100">
                                     ExpDate</mat-header-cell>
@@ -205,7 +221,7 @@
                                     {{contact.ExpDate | date:'MM/dd/YYYY'}}
                                 </mat-cell>
                             </ng-container>
-    
+
                             <ng-container matColumnDef="Qty" sticky>
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-80">
                                     Qty</mat-header-cell>
@@ -213,7 +229,7 @@
                                     {{contact.Qty}}
                                 </mat-cell>
                             </ng-container>
-    
+
                             <ng-container matColumnDef="ReturnQty" sticky>
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-100">ReturnQty
                                 </mat-header-cell>
@@ -225,7 +241,7 @@
                                     </mat-form-field>
                                 </mat-cell>
                             </ng-container>
-    
+
                             <ng-container matColumnDef="MRP">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-130">
                                     MRP</mat-header-cell>
@@ -233,7 +249,7 @@
                                     {{contact.MRP | currency:"INR":"symbol"}}
                                 </mat-cell>
                             </ng-container>
-    
+
                             <ng-container matColumnDef="TotalAmt">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-130">
                                     TotalAmount</mat-header-cell>
@@ -241,7 +257,7 @@
                                     {{contact.TotalAmt | currency:"INR":"symbol"}}
                                 </mat-cell>
                             </ng-container>
-    
+
                             <ng-container matColumnDef="GST">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-90">
                                     GST%</mat-header-cell>
@@ -249,7 +265,7 @@
                                     {{contact.GST}}
                                 </mat-cell>
                             </ng-container>
-    
+
                             <ng-container matColumnDef="GSTAmt">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-120">
                                     GSTAmt</mat-header-cell>
@@ -257,7 +273,7 @@
                                     {{contact.GSTAmt | currency:"INR":"symbol"}}
                                 </mat-cell>
                             </ng-container>
-    
+
                             <ng-container matColumnDef="Disc">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-90">
                                     Disc%</mat-header-cell>
@@ -265,7 +281,7 @@
                                     {{contact.Disc}}
                                 </mat-cell>
                             </ng-container>
-    
+
                             <ng-container matColumnDef="DiscAmt">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-120">
                                     DiscAmt</mat-header-cell>
@@ -273,7 +289,7 @@
                                     {{contact.DiscAmt | currency:"INR":"symbol"}}
                                 </mat-cell>
                             </ng-container>
-    
+
                             <ng-container matColumnDef="LandedPrice">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-130">
                                     LandedPrice</mat-header-cell>
@@ -281,7 +297,7 @@
                                     {{contact.LandedPrice | currency:"INR":"symbol"}}
                                 </mat-cell>
                             </ng-container>
-    
+
                             <ng-container matColumnDef="StkID">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-130">
                                     StkID</mat-header-cell>
@@ -289,7 +305,7 @@
                                     {{contact.StkID}}
                                 </mat-cell>
                             </ng-container>
-    
+
                             <ng-container matColumnDef="NetAmount">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-130">
                                     NetAmount</mat-header-cell>
@@ -297,7 +313,7 @@
                                     {{contact.NetAmount | currency:"INR":"symbol"}}
                                 </mat-cell>
                             </ng-container>
-    
+
                             <ng-container matColumnDef="Action" stickyEnd>
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-80">
                                     Action
@@ -309,19 +325,20 @@
                                     </span>
                                 </mat-cell>
                             </ng-container>
-    
+
                             <ng-container matColumnDef="loading">
                                 <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
                                 </mat-header-cell>
                             </ng-container>
-    
+
                             <ng-container matColumnDef="noData">
                                 <mat-footer-cell *matFooterCellDef colspan="6">
                                     no data found...
                                 </mat-footer-cell>
                             </ng-container>
-    
-                            <mat-header-row class="accent min-width-1900" *matHeaderRowDef="displayedColumns; sticky: true">
+
+                            <mat-header-row class="accent min-width-1900"
+                                *matHeaderRowDef="displayedColumns; sticky: true">
                             </mat-header-row>
                             <mat-row *matRowDef="let contact; columns: displayedColumns;" class="contact min-width-1900"
                                 [@animate]="{value:'*',params:{y:'100%'}}" appHighlight></mat-row>
@@ -332,13 +349,14 @@
                                 [ngClass]="{'hide':!(dsIpSaleItemList!=null && dsIpSaleItemList.data.length==0)}">
                             </mat-footer-row>
                         </mat-table>
-                        <mat-paginator #paginator [pageSizeOptions]="[10,15, 25, 100]" [pageSize]="10" showFirstLastButtons>
+                        <mat-paginator #paginator [pageSizeOptions]="[10,15, 25, 100]" [pageSize]="10"
+                            showFirstLastButtons>
                         </mat-paginator>
                     </div>
                 </div>
             </div>
         </div>
-    </div> 
+    </div>
 
     <div class="modal-footer  p-12">
 

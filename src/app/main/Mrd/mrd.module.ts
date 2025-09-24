@@ -93,10 +93,6 @@ const approutes : Routes =[
     MatTooltipModule,
     SharedModule,
     MatBadgeModule,
-    // AngularEditorModule,
-    //  NgxPrintModule,
-    //  RichTextEditorModule,
-    //  DateTimePickerModule,
     MatIconModule,
   RouterModule.forChild(approutes)
   ],

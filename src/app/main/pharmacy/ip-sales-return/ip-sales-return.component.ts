@@ -225,17 +225,8 @@ export class IpSalesReturnComponent implements OnInit {
   }
 
   getSelectedObjRegIP(obj) {
-    let IsDischarged = 0;
-    IsDischarged = obj.isDischarged;
-    if (IsDischarged == 1) {
-      Swal.fire({
-        icon: "warning",
-        title: "Selected Patient is already discharged",
-        showConfirmButton: false,
-        timer: 2000
-      });
-      return
-    }
+    debugger
+    console.log(obj)  
     this.registerObj = obj;
     this.vPatientName = obj.firstName + ' ' + obj.middleName + ' ' + obj.lastName;
     this.vRegno = this.registerObj.regNo;
@@ -279,9 +270,9 @@ export class IpSalesReturnComponent implements OnInit {
     this._IpSalesRetService.getSalesReturnitemlist(param).subscribe(response => {
       this.Itemlist = response
       console.log(this.Itemlist)
-      this.ItemfilteredOptions = this.ItemFormGroup.get('ItemName').valueChanges.pipe(
+      this.ItemfilteredOptions = this.ItemFormGroup.get('ItemName')?.valueChanges.pipe(
         startWith(''),
-        map(value => value ? this._filterItemname(value) : this.Itemlist.slice()),
+        map(value => value ? this._filterItemname(value) : this.Itemlist?.slice()),
       );
     })
   }
@@ -628,6 +619,17 @@ export class IpSalesReturnComponent implements OnInit {
         });
       }, 100);
     }
+    vCheckBox:boolean=false;
+  getDischargedList(event) {
+    if (event.checked == true) {
+      this.vCheckBox = true;
+      this.OnReset()
+    }
+    else
+    this.vCheckBox = false;
+    this.ItemFormGroup.get('PatientName').setValue('');
+  }
+
 }
 export class IPSalesItemList {
   SalesNo: Number;

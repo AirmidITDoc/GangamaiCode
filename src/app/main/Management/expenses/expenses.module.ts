@@ -37,12 +37,13 @@ import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { ExpensesComponent } from './expenses.component';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { AngularEditorModule } from '@kolkov/angular-editor';
 import { MatTimepickerModule } from 'mat-timepicker';
 import { MatButtonToggleModule } from "@angular/material/button-toggle";
 import { MatSliderModule } from '@angular/material/slider';
 import { MatTreeModule } from '@angular/material/tree';
 import { NewExpensesComponent } from './new-expenses/new-expenses.component';
+import { ExpensesHeadMasterComponent } from './expenses-head-master/expenses-head-master.component';
+import { NewHeadMasterComponent } from './expenses-head-master/new-head-master/new-head-master.component';
 
 const routes: Routes = [
   {
@@ -54,7 +55,9 @@ const routes: Routes = [
 @NgModule({
   declarations: [
     ExpensesComponent,
-    NewExpensesComponent
+    NewExpensesComponent,
+    ExpensesHeadMasterComponent,
+    NewHeadMasterComponent
   ],
   imports: [
     CommonModule,
@@ -98,7 +101,6 @@ const routes: Routes = [
     MatTooltipModule,
     MatGridListModule,
     MatSidenavModule,
-    AngularEditorModule,
     MatTimepickerModule,
     MatButtonToggleModule,
     MatSliderModule,

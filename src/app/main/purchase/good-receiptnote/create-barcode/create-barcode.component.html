@@ -1,0 +1,47 @@
+<div class="simple page-layout modal-wrapper grid-container modal-page">
+    <div class="modal-header accent">
+        <div class="modal-header-content">
+            <div class="modal-header-title">
+                <span [@animate]="{ value: '*', params: { delay: '100ms', x: '-25px' } }">Barcode</span>
+            </div>
+              <div class="close-icon">
+              <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
+                matTooltip="Close">
+                <mat-icon>close</mat-icon>
+              </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-body">
+        <div class="modal-body-container">
+            <div fxLayout="column" class="h-100-p"> 
+                <form [formGroup]="GRNBarcodeFrom"> 
+                    <div fxLayout="row" fxLayout.gt-xs="column" fxLayoutGap="6px">
+                        <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">  
+
+                             <airmid-textbox fxFlex label="Item Name" formControlName="ItemName"  
+                              [formGroup]="GRNBarcodeFrom" [readonly]="true"   name="ItemName"></airmid-textbox> 
+
+                          <airmid-textbox fxFlex="25%" label="Batch No" formControlName="BatchNo"  
+                              [formGroup]="GRNBarcodeFrom" [readonly]="true"  name="BatchNo" ></airmid-textbox> 
+
+                         <airmid-textbox fxFlex="25%" label="ExpDate" formControlName="ExpDate"  
+                              [formGroup]="GRNBarcodeFrom" [readonly]="true"  name="ExpDate" ></airmid-textbox> 
+                           
+                        </div> 
+                        
+                         <airmid-textbox fxFlex label="Barcode No" formControlName="BarcodeNo" placeholder="BarcodeNo"
+                           name="BarcodeNo"  [formGroup]="GRNBarcodeFrom" ></airmid-textbox> 
+                    </div>
+                </form> 
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <div class="modal-footer-buttons" fxLayout="row" fxLayoutAlign="end" fxLayoutGap="6px">
+            <button class="btn btn-danger-outline" (click)="onClose()">CLose</button>
+            <button class="btn btn-primary" (click)="OnSave()">Save</button>
+        </div>
+    </div>
+</div>

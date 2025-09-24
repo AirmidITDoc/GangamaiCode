@@ -2,7 +2,6 @@ import { Component, ElementRef, Inject, OnInit, ViewChild, ViewEncapsulation } f
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { fuseAnimations } from '@fuse/animations';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
-import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { ExcelDownloadService } from 'app/main/shared/services/excel-download.service';
 import { ToastrService } from 'ngx-toastr';
 import { Observable } from 'rxjs';
@@ -48,18 +47,6 @@ export class NewHospitalComponent implements OnInit {
   autocompleteIPDRefundofBillCounterId: string = "CashCounter";
   autocompleteIPDRefundofBillReceiptCounterId: string = "CashCounter";
   autocompleteIPDRefundofAdvanceCounterId: string = "CashCounter";
-
-  editorConfig: AngularEditorConfig = {
-    editable: true,
-    spellcheck: true,
-    height: '36rem',
-    minHeight: '36rem',
-    translate: 'yes',
-    placeholder: 'Enter text here...',
-    enableToolbar: true,
-    showToolbar: true,
-
-  };
 
   onBlur(e: any) {
     this.vTemplateDesc = e.target.innerHTML;

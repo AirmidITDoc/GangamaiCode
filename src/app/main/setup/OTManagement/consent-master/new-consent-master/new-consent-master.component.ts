@@ -5,7 +5,6 @@ import { fuseAnimations } from '@fuse/animations';
 import { ToastrService } from 'ngx-toastr';
 import { NewSiteDescriptionMasterComponent } from '../../site-description/new-site-description-master/new-site-description-master.component';
 import { ConsentMasterService } from '../consent-master.service';
-import { AngularEditorConfig } from '@kolkov/angular-editor';
 
 @Component({
     selector: 'app-new-consent-master',
