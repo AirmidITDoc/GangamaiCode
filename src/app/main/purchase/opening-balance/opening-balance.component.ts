@@ -51,7 +51,7 @@ export class OpeningBalanceComponent {
 
   allcolumns = [
 
-    { heading: "DateTime", key: "openingTime", sort: true, align: 'left', emptySign: 'NA', width: 100},
+    { heading: "DateTime", key: "openingDateTime", sort: true, align: 'left', emptySign: 'NA', width: 100 },
     { heading: "TransectionNo", key: "openingDocNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
     { heading: "StoreName", key: "storeName", sort: true, align: 'left', emptySign: 'NA', width: 230 },
     { heading: "AdddedByName", key: "adddedByName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
@@ -84,8 +84,8 @@ export class OpeningBalanceComponent {
       columnsList: [
         { heading: "Item Name", key: "itemName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
         { heading: "BatchNo", key: "batchNo", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "Exp.Date", key: "batchExpDate", sort: true, align: 'left', emptySign: 'NA'},
-        { heading: "Qty", key: "balQty", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Exp.Date", key: "batchExpDate", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Qty", key: "totalQty", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "MRP", key: "perUnitMrp", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
         { heading: "Pure.Rate", key: "perUnitPurRate", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
         { heading: "LandedRate", key: "perUnitLandedRate", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
@@ -118,6 +118,8 @@ export class OpeningBalanceComponent {
 
 
   viewgetReportPdf(element) {
+    let fromDate = this.datePipe.transform(this.mysearchform.get('startdate').value, "yyyy-MM-dd")
+    let toDate = this.datePipe.transform(this.mysearchform.get('enddate').value, "yyyy-MM-dd")
     var Param = {
       "searchFields": [
         {
@@ -127,12 +129,12 @@ export class OpeningBalanceComponent {
         },
         {
           "fieldName": "From_Dt",
-          "fieldValue": this.fromDate,
+          "fieldValue": fromDate,
           "opType": "Equals"
         },
         {
           "fieldName": "To_Dt",
-          "fieldValue": this.toDate,
+          "fieldValue": toDate,
           "opType": "Equals"
         }
       ],

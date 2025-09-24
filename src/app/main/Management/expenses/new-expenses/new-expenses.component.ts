@@ -16,6 +16,7 @@ import Swal from 'sweetalert2';
 import { format } from 'date-fns';
 import { ExpensesComponent } from '../expenses.component';
 import { ExpensesService } from '../expenses.service';
+import { ExpensesHeadMasterComponent } from '../expenses-head-master/expenses-head-master.component';
 
 @Component({
   selector: 'app-new-expenses',
@@ -30,7 +31,7 @@ export class NewExpensesComponent {
   screenFromString = 'Common-form';
   dateTimeObj: any;
   vExpType: any = "0";
-  vReason:any;
+  vReason: any;
   autocompleteExpensen: string = "ExpHeadMaster"
 
   constructor(public _ExpensesService: ExpensesService,
@@ -62,6 +63,7 @@ export class NewExpensesComponent {
     if (!this.myForm.invalid) {
       console.log(this.myForm.value)
       this._ExpensesService.ExpensesSave(this.myForm.value).subscribe((response) => {
+        this.OnPrint(response)
         this.onClose();
       });
     } {
@@ -83,6 +85,10 @@ export class NewExpensesComponent {
     }
   }
 
+   OnPrint(element) {
+    this.commonService.Onprint("ExpId", element, "ExpenseVoucharPrint");
+  }
+
   ListView1(value) {
     console.log(value)
   }
@@ -92,4 +98,15 @@ export class NewExpensesComponent {
     this.dialogRef.close();
   }
 
+  addNewheadExpenses() {
+    const dialogRef = this._matDialog.open(ExpensesHeadMasterComponent,
+      {
+        maxWidth: "95vw",
+        maxHeight: '90vh',
+        // height: '90%',
+        width: '60%',
+      });
+    dialogRef.afterClosed().subscribe(result => {
+    });
+  }
 }

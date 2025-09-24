@@ -36,7 +36,8 @@
 
                                     <div fxFlex="40">
                                         <airmid-dropdown label="Expenses Name" formControlName="expHeadId"
-                                            [formGroup]="myForm" [mode]="autocompleteExpensen" (selectionChange)="ListView1($event)">
+                                            [formGroup]="myForm" [mode]="autocompleteExpensen"
+                                            (selectionChange)="ListView1($event)">
                                         </airmid-dropdown>
                                     </div>
 
@@ -85,6 +86,9 @@
                     </mat-radio-group>
 
                     <div class="modal-footer-buttons">
+                        <button mat-raised-button (click)="addNewheadExpenses()">
+                            <mat-icon>add</mat-icon>Expenses Head
+                        </button>
                         <button class="btn btn-primary" (click)="onNewSave()">Save </button>
                         <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
                     </div>
