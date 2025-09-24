@@ -157,7 +157,8 @@ export class IPAdvanceComponent implements OnInit {
         isCancelled: [false],
         isCancelledBy: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         isCancelledDate: ['1900-01-01', [ this._FormvalidationserviceService.validDateValidator()]],
-        advanceId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]]
+        advanceId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        unitId: [1]
       }),
       // details 
       advanceDetail: this.formBuilder.group({
@@ -183,6 +184,7 @@ export class IPAdvanceComponent implements OnInit {
         isCancelledDate: ['1900-01-01', [ this._FormvalidationserviceService.validDateValidator()]],
         reason: [''],
         advanceDetailId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        unitId: [1]
       }), 
       //advanceupdate header
       advanceupdate: this.formBuilder.group({ 
