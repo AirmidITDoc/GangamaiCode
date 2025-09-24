@@ -163,7 +163,7 @@ export class ToolbarComponent implements OnInit, OnDestroy {
         this.accountService.logout().subscribe((data) => { });
     }
     navigateToDailyDashboard() {
-        this.router.navigate(['/dashboard']);
+        this.router.navigate(['/new-dashboard']);
     }
 
     // navigateToDailyDashboard() {

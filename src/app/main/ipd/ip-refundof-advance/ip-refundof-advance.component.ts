@@ -99,6 +99,7 @@ export class IPRefundofAdvanceComponent implements OnInit {
         isCancelledBy: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         isCancelledDate: ['1900-01-01', [this._FormvalidationserviceService.validDateValidator]],
         refundId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        UnitId: [this.accountService.currentUserValue.unitId],
       }),
 
       //Advance update
@@ -122,15 +123,15 @@ export class IPRefundofAdvanceComponent implements OnInit {
       [this._FormvalidationserviceService.validDateValidator()]],
       refundTime: [item?.time,
       []],
-      advRefundAmt: [item?.refundAmt, [, this._FormvalidationserviceService.onlyNumberValidator()]],
+      advRefundAmt: [item?.refundAmt ?? 0, [, this._FormvalidationserviceService.onlyNumberValidator()]],
     });
   }
   createAdvDetailsUpdate(item: any): FormGroup {
     return this.formBuilder.group({
       advanceDetailID: [item?.advanceDetailID, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator(),
       this._FormvalidationserviceService.onlyNumberValidator()]],
-      refundAmount: [item?.refundAmt, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      balanceAmount: [item?.balanceAmount, [this._FormvalidationserviceService.onlyNumberValidator()]]
+      refundAmount: [item?.refundAmt ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      balanceAmount: [item?.balanceAmount ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]]
     });
   }
   // Getters
@@ -253,8 +254,8 @@ export class IPRefundofAdvanceComponent implements OnInit {
       "sortOrder": 0,
       "filters": [
         {
-          "fieldName": "RegID",
-          "fieldValue": String(this.registerObj.regId),
+          "fieldName": "OPDIPDId",
+          "fieldValue": String(this.registerObj.admissionId),
           "opType": "Equals"
         }
       ],
