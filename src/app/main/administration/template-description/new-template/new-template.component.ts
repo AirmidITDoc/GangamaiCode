@@ -2,7 +2,6 @@ import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { fuseAnimations } from '@fuse/animations';
-// import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { ToastrService } from 'ngx-toastr';
 import { TemplatedescriptionService } from '../templatedescription.service';
 
@@ -18,17 +17,6 @@ export class NewTemplateComponent implements OnInit {
   vTemplateDesc: any;
   vTemplateName: any;
   templateId=0;
-//   editorConfig: AngularEditorConfig = {
-//     editable: true,
-//     spellcheck: true,
-//     height: '20rem',
-//     minHeight: '20rem',
-//     translate: 'yes',
-//     placeholder: 'Enter text here...',
-//     enableToolbar: true,
-//     showToolbar: true,
-
-//   };
 
   constructor(
     public _TemplatedescriptionService: TemplatedescriptionService, private _formBuilder: UntypedFormBuilder,

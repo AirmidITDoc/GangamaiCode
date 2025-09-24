@@ -34,7 +34,6 @@ import { RadiologyTemplateMasterComponent } from './radiology-template-master.co
 import { RadiologyTemplateMasterService } from './radiology-template-master.service';
 
 import { MatTabsModule } from '@angular/material/tabs';
-// import { AngularEditorModule } from '@kolkov/angular-editor';
 import { SharedModule } from 'app/main/shared/shared.module';
 
 
@@ -83,16 +82,10 @@ const routes: Routes = [
         FuseSidebarModule,
         // NgxEditorModule,
         MatProgressSpinnerModule,
-        // AngularEditorModule,
-        // NgxPrintModule,
-        // RichTextEditorModule,
         MatCardModule,
         MatToolbarModule,
         MatSlideToggleModule,
         FuseSharedModule,
-        // RichTextEditorModule
-        //  NgMultiSelectDropDownModule.forRoot()
-        // AngularEditorModule,
     ],
     providers: [
         RadiologyTemplateMasterService,

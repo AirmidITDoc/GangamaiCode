@@ -2,7 +2,6 @@ import { Component, Inject, OnInit, ViewEncapsulation } from "@angular/core";
 import { FormGroup, Validators } from "@angular/forms";
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 import { fuseAnimations } from "@fuse/animations";
-// import { AngularEditorConfig } from "@kolkov/angular-editor";
 import { ToastrService } from "ngx-toastr";
 import { StoreMaster } from "../store-master.component";
 import { StoreMasterService } from "../store-master.service";
@@ -16,19 +15,7 @@ import { StoreMasterService } from "../store-master.service";
     animations: fuseAnimations,
 })
 export class StoreFormMasterComponent implements OnInit {
-
-    // editorConfig: AngularEditorConfig = {
-    //        editable: true,
-    //        spellcheck: true,
-    //        height: '20rem',
-    //        minHeight: '20rem',
-    //        translate: 'yes',
-    //        placeholder: 'Enter text here...',
-    //        enableToolbar: true,
-    //        showToolbar: true,
-       
-    //      };
-                   
+   
     onBlur(e: any) {
     this.vTemplateDesc = e.target.innerHTML;
     throw new Error('Method not implemented.');

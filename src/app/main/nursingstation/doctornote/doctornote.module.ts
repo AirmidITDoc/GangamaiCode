@@ -35,7 +35,6 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterModule, Routes } from '@angular/router';
 import { FuseConfirmDialogModule, FuseSidebarModule } from '@fuse/components';
 import { FuseSharedModule } from '@fuse/shared.module';
-// import { AngularEditorModule } from "@kolkov/angular-editor";
 import { SharedModule } from 'app/main/shared/shared.module';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { DoctornoteComponent } from './doctornote.component';
@@ -93,7 +92,6 @@ const routes: Routes = [
         MatTooltipModule,
         ScrollingModule,
         MatButtonToggleModule,
-        // AngularEditorModule,
         MatBadgeModule
     ],
     providers: [

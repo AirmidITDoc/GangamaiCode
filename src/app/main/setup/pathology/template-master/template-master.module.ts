@@ -25,7 +25,6 @@ import { MatToolbarModule } from "@angular/material/toolbar";
 import { RouterModule, Routes } from "@angular/router";
 import { FuseConfirmDialogModule, FuseSidebarModule } from "@fuse/components";
 import { FuseSharedModule } from "@fuse/shared.module";
-// import { AngularEditorModule } from "@kolkov/angular-editor";
 import { SharedModule } from "app/main/shared/shared.module";
 import { NgxSummernoteModule } from "ngx-summernote";
 import { TemplateFormComponent } from "./template-form/template-form.component";
@@ -43,7 +42,6 @@ const routes: Routes = [
     declarations: [TemplateMasterComponent, TemplateFormComponent],
     imports: [
         RouterModule.forChild(routes),
-        // AngularEditorModule,
         NgxSummernoteModule,
         MatButtonModule,
         MatCheckboxModule,
@@ -84,13 +82,11 @@ const routes: Routes = [
         FuseConfirmDialogModule,
         FuseSidebarModule,
         MatProgressSpinnerModule,
-        // AngularEditorModule,
         FuseSharedModule,
         MatAutocompleteModule,
         MatProgressSpinnerModule,
         SharedModule,
         MatDialogModule,
-        // AngularEditorModule,
          
     ],
     providers: [TemplateServieService, DatePipe]

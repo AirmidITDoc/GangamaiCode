@@ -35,7 +35,6 @@ import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { MatSelectModule } from '@angular/material/select';
 
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
-// import { AngularEditorModule } from '@kolkov/angular-editor';
 import { NotificationService } from 'app/core/notification.service';
 import { SharedModule } from 'app/main/shared/shared.module';
 import { RadiologyOrderListComponent } from './radiology-order-list.component';
@@ -94,12 +93,6 @@ const routes: Routes = [
         MatSelectModule,
         MatAutocompleteModule,
         MatTooltipModule,
-        // NgxEditorModule ,
-        // NgxEditorModule,
-        // AngularEditorModule,
-        // NgxPrintModule,
-        // RichTextEditorModule,
-        // NgMultiSelectDropDownModule.forRoot()
     ],
     providers: [
         RadioloyOrderlistService,

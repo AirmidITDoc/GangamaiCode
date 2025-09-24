@@ -7,7 +7,6 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { fuseAnimations } from '@fuse/animations';
-// import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 import { ToastrService } from 'ngx-toastr';
@@ -27,21 +26,6 @@ import { FormvalidationserviceService } from 'app/main/shared/services/formvalid
 export class DischargeSummaryTemplateComponent {
 
 
-  // editorConfig: AngularEditorConfig = {
-  //   editable: true,
-  //   spellcheck: true,
-  //   height: '24rem',
-  //   minHeight: '24rem',
-  //   translate: 'yes',
-  //   placeholder: 'Enter text here...',
-  //   enableToolbar: true,
-  //   showToolbar: true,
-  // };
-
-  // onBlur(e: any) {
-  //   this.vTemplateDesc = e.target.innerHTML;
-  //   throw new Error('Method not implemented.');
-  // }
   DischargesumForm: FormGroup;
   MedicineItemForm: FormGroup;
   vAdmissionId: any = 0;

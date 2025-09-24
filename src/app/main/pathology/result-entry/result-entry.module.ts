@@ -35,7 +35,6 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { RouterModule, Routes } from '@angular/router';
-// import { AngularEditorModule } from '@kolkov/angular-editor';
 import { NotificationService } from 'app/core/notification.service';
 import { SharedModule } from 'app/main/shared/shared.module';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
@@ -91,9 +90,6 @@ const routes: Routes = [
         FuseSidebarModule,
         // NgxEditorModule,
         MatProgressSpinnerModule,
-        // AngularEditorModule,
-        // NgxPrintModule,
-        // RichTextEditorModule,
         MatCardModule,
         MatToolbarModule,
         MatSlideToggleModule,
@@ -102,7 +98,6 @@ const routes: Routes = [
         MatTooltipModule,
         //  DateTimePickerModule ,
         MatAutocompleteModule,
-        // AngularEditorModule,
     ],
     providers: [
         ResultEntryService,

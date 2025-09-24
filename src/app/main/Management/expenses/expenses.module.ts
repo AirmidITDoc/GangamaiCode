@@ -37,7 +37,6 @@ import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { ExpensesComponent } from './expenses.component';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatSidenavModule } from '@angular/material/sidenav';
-// import { AngularEditorModule } from '@kolkov/angular-editor';
 import { MatTimepickerModule } from 'mat-timepicker';
 import { MatButtonToggleModule } from "@angular/material/button-toggle";
 import { MatSliderModule } from '@angular/material/slider';
@@ -102,7 +101,6 @@ const routes: Routes = [
     MatTooltipModule,
     MatGridListModule,
     MatSidenavModule,
-    // AngularEditorModule,
     MatTimepickerModule,
     MatButtonToggleModule,
     MatSliderModule,

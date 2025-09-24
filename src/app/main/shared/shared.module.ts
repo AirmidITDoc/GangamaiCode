@@ -73,7 +73,6 @@ import { AirmidCardViewComponent } from './componets/airmid-card-view/airmid-car
 import { Error0Component } from './APIerrorpages/error-0/error-0.component';
 import { AirmidImageviewComponent } from './componets/airmid-imageview/airmid-imageview.component';
 import { AirmidImageIconComponent } from './componets/airmid-image-icon/airmid-image-icon.component';
-// import { AngularEditorModule } from '@kolkov/angular-editor';
 
 
 @NgModule({
@@ -86,7 +85,6 @@ import { AirmidImageIconComponent } from './componets/airmid-image-icon/airmid-i
         CommonModule,
         MatFormFieldModule,
         CKEditorModule,
-        // AngularEditorModule,
         MatInputModule,
         FormsModule,
         ReactiveFormsModule,
