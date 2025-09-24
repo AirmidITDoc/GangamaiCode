@@ -99,7 +99,7 @@ export class IPRefundofAdvanceComponent implements OnInit {
         isCancelledBy: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         isCancelledDate: ['1900-01-01', [this._FormvalidationserviceService.validDateValidator]],
         refundId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        UnitId: [this.accountService.currentUserValue.unitId],
+        UnitId: [1],
       }),
 
       //Advance update
@@ -145,8 +145,10 @@ export class IPRefundofAdvanceComponent implements OnInit {
   onSave() {
     debugger
     //Assigning value to run time values to from control
+    
     this.RefundOfAdvanceFormGroup.get('refundHeader.refundDate').setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'))
     this.RefundOfAdvanceFormGroup.get('refundHeader.refundTime').setValue(this.dateTimeObj.time)
+
     this.RefundOfAdvanceFormGroup.get('refundHeader.opdIpdId').setValue(this.registerObj?.admissionId)
     this.RefundOfAdvanceFormGroup.get('advanceHeaderupdate.advanceUsedAmount').setValue(this.UsedAmount)
     this.RefundOfAdvanceFormGroup.get('refundHeader.advanceId').setValue(this.AdvanceId)
@@ -199,7 +201,7 @@ export class IPRefundofAdvanceComponent implements OnInit {
          // console.log(submitData);
           this._IpSearchListService.insertIPRefundOfAdvance(submitData).subscribe(response => {
             this.viewgetRefundofAdvanceReportPdf(response);
-            this.getWhatsappsRefundAdvance(response, this.vMobileNo);
+            // this.getWhatsappsRefundAdvance(response, this.vMobileNo);
             this.onClose()
           });
         }  

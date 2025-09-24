@@ -14,7 +14,7 @@ import { Observable } from 'rxjs';
 export class ExpensesService {
 
   constructor(
-    public _frombuilder: UntypedFormBuilder,
+    public _formBuilder: UntypedFormBuilder,
     public _httpClient: ApiCaller,
     private _loaderService: LoaderService,
     private accountService: AuthenticationService,
@@ -22,7 +22,7 @@ export class ExpensesService {
   ) { }
 
   CreateSearchGroup() {
-    return this._frombuilder.group({
+    return this._formBuilder.group({
       fromDate: [(new Date()).toISOString()],
       enddate: [(new Date()).toISOString()],
       ExpensenId: [0],
@@ -31,10 +31,10 @@ export class ExpensesService {
   }
 
   CreateMyForm() {
-    return this._frombuilder.group({
+    return this._formBuilder.group({
       expId: [0, this._FormvalidationserviceService.onlyNumberValidator()],
-      expDate: ['',[Validators.required]],
-      expTime: ['',[Validators.required]],
+      expDate: ['', [Validators.required]],
+      expTime: ['', [Validators.required]],
       expType: [0],
       expAmount: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       personName: ['', [Validators.required]],
@@ -43,9 +43,23 @@ export class ExpensesService {
       isUpdatedBy: this.accountService.currentUserValue.userId,
       isCancelled: false,
       isCancelledBy: 0,
-      voucharNo: "string",
+      voucharNo: "",
       expHeadId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
     })
+  }
+
+  createHeadMasterForm(): FormGroup {
+    return this._formBuilder.group({
+      expHedId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      headName: ["",
+        [
+          Validators.required,
+          Validators.pattern('^[a-zA-Z0-9 ]*$'),
+          this._FormvalidationserviceService.allowEmptyStringValidator()
+        ]
+      ],
+      isActive: [true, [Validators.required]]
+    });
   }
 
   public ExpensesSave(Param: any) {
@@ -53,8 +67,18 @@ export class ExpensesService {
       return this._httpClient.PutData("TExpense/TExpenseUpdate/" + Param.expId, Param);
     } else return this._httpClient.PostData("TExpense/TExpenseInsert", Param);
   }
+  
+  public OnCancel(param) {
+    return this._httpClient.PostData('TExpense/TExpenseCancel', param)
+  }
 
-   public OnCancel(param) {
-        return this._httpClient.DeleteData('TExpense/TExpenseCancel')
+  public headMasterSave(Param: any) {
+    if (Param.expHedId) {
+      return this._httpClient.PutData("ExpensesHeadMaster/" + Param.expHedId, Param);
+    } else return this._httpClient.PostData("ExpensesHeadMaster", Param);
+  }
+
+   public deactivateTheStatus(m_data) {
+        return this._httpClient.DeleteData("ExpensesHeadMaster?Id=" + m_data.toString());
     }
 }

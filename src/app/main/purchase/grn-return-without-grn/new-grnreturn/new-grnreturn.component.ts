@@ -474,6 +474,10 @@ export class NewGRNReturnComponent implements OnInit {
     this.ItemReset();
     this.setFocus('ItemName');
     this._GRNReturnService.NewGRNReturnFrom.get('ItemName')?.setValue('');
+    this._GRNReturnService.NewGRNReturnFrom.get('CGST').reset();
+    this._GRNReturnService.NewGRNReturnFrom.get('CGST').enable();
+    this._GRNReturnService.NewGRNReturnFrom.get('IGST').reset();
+    this._GRNReturnService.NewGRNReturnFrom.get('IGST').enable();
   }
 
   deleteTableRow(element: ItemNameList) {
@@ -501,9 +505,15 @@ export class NewGRNReturnComponent implements OnInit {
     this.vQty = 0;
     this.vLandedRate = 0;
     this.vTotalAmount = 0;
+    this.vCGST = 0;
+    this.vSGST = 0;
+    this.vIGST = 0;
     this.vGST = 0;
     this.vGSTAmount = 0;
-    this.vNetAmount = 0;
+    this.vNetAmount = 0;    
+    this._GRNReturnService.NewGRNReturnFrom.get('CGST').reset();
+    this._GRNReturnService.NewGRNReturnFrom.get('SGST').reset();
+    this._GRNReturnService.NewGRNReturnFrom.get('IGST').reset();
   }
 
   getGRNreturnlist() {
@@ -601,7 +611,7 @@ export class NewGRNReturnComponent implements OnInit {
 
   Savebtn: boolean = false;
   OnSave() {
-    // debugger
+    debugger
     const formattedDate = this.datePipe.transform(this.GrnReturnForm.get('grnReturn.grnreturnDate').value, "yyyy-MM-dd");
     const formattedTime = this.datePipe.transform(new Date(), "HH:mm:ss");
     this.GrnReturnForm.get('grnReturn.grnreturnDate').setValue(formattedDate);
