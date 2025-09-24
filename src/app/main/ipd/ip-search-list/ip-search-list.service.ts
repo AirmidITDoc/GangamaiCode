@@ -787,7 +787,7 @@ export class IPSearchListService {
     if (loader) {
       this._loaderService.show();
     }
-    return this._httpClient1.PostData("RefundOfBill/OPRefundOfBILLInsert", employee)
+    return this._httpClient1.PostData("RefundOfBill/InsertOPRefundOfBill", employee)
   }
   public getAdvcanceDetails(query) {
     return this._httpClient.post("Generic/GetBySelectQuery?query=" + query, {})
