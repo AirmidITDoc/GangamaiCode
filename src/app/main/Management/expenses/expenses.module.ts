@@ -43,6 +43,8 @@ import { MatButtonToggleModule } from "@angular/material/button-toggle";
 import { MatSliderModule } from '@angular/material/slider';
 import { MatTreeModule } from '@angular/material/tree';
 import { NewExpensesComponent } from './new-expenses/new-expenses.component';
+import { ExpensesHeadMasterComponent } from './expenses-head-master/expenses-head-master.component';
+import { NewHeadMasterComponent } from './expenses-head-master/new-head-master/new-head-master.component';
 
 const routes: Routes = [
   {
@@ -54,7 +56,9 @@ const routes: Routes = [
 @NgModule({
   declarations: [
     ExpensesComponent,
-    NewExpensesComponent
+    NewExpensesComponent,
+    ExpensesHeadMasterComponent,
+    NewHeadMasterComponent
   ],
   imports: [
     CommonModule,
