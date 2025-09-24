@@ -140,6 +140,7 @@ export class IPRefundofBillComponent implements OnInit {
         isCancelledBy: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         isCancelledDate: ['1900-01-01', [this._FormvalidationserviceService.validDateValidator]],
         refundId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        unitId: [1],
       }),
 
       tRefundDetails: this.formBuilder.array([]), // FormArray for details

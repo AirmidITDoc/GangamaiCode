@@ -314,6 +314,47 @@ export class NewOpeningBalanceComponent implements OnInit {
     if (QtyElement) {
       QtyElement.focus();
     }
+
+        if ((event?.cgstPer ?? 0) > 0) {
+      this.OPeningtemForm.patchValue({
+        CGST: event?.gst,
+        SGST: event?.sgstPer,
+        IGST: 0,
+        GST: event?.gst
+      });
+
+      this.OPeningtemForm.get('CGST').enable();
+      this.OPeningtemForm.get('IGST').reset();
+      this.OPeningtemForm.get('IGST').clearValidators();
+      this.OPeningtemForm.get('IGST').updateValueAndValidity();
+      this.OPeningtemForm.get('IGST').disable();
+
+    } else if ((event?.igstPer ?? 0) > 0) {
+      this.OPeningtemForm.patchValue({
+        CGST: 0,
+        SGST: 0,
+        IGST: event?.igstPer,
+        GST: event?.gst
+      });
+
+      this.OPeningtemForm.get('IGST').enable();
+      this.OPeningtemForm.get('CGST').reset();
+      this.OPeningtemForm.get('CGST').clearValidators();
+      this.OPeningtemForm.get('CGST').updateValueAndValidity();
+      this.OPeningtemForm.get('CGST').disable();
+
+    } else {
+      // ✅ Both missing → don’t disable any, keep them editable
+      this.OPeningtemForm.patchValue({
+        CGST: 0,
+        SGST: 0,
+        IGST: 0,
+        GST: 0
+      });
+
+      this.OPeningtemForm.get('CGST').enable();
+      this.OPeningtemForm.get('IGST').enable();
+    }
   }
 
   Onadd() {
@@ -478,52 +519,14 @@ export class NewOpeningBalanceComponent implements OnInit {
   }
 
   onRatePerUnitInput(event: any) {
-    // const rate = +event.target.value;
-    // const landed = +this.OPeningtemForm.get('LandedRate')?.value || 0;
-    // const mrp = +this.OPeningtemForm.get('MRP')?.value || 0;
-
-    // // Rule 1: Rate must be greater than LandedRate
-    // if (landed && rate <= landed) {
-    //   this.toastr.warning('Rate Per Unit must be greater than Landed Rate');
-    //   this.OPeningtemForm.get('RatePerUnit')?.setValue(null);
-    //   event.target.value = '';
-    //   return;
-    // }
-
-    // // Rule 2: Rate must not exceed MRP
-    // if (mrp && rate > mrp) {
-    //   this.toastr.warning('Rate Per Unit cannot be greater than MRP');
-    //   this.OPeningtemForm.get('RatePerUnit')?.setValue(null);
-    //   event.target.value = '';
-    //   return;
-    // }
     this.validateFormValues()
   }
 
   onMRPInput(event: any) {
-    // const mrp = +event.target.value;
-    // const landed = +this.OPeningtemForm.get('LandedRate')?.value || 0;
-
-    // if (landed && mrp <= landed) {
-    //   this.toastr.warning('MRP must be greater than Landed Rate');
-    //   this.OPeningtemForm.get('MRP')?.setValue(null);
-    //   event.target.value = '';
-    //   return;
-    // }
     this.validateFormValues()
   }
 
   onLandedRateInput(event: any) {
-    // const landed = +event.target.value;
-    // const rate = +this.OPeningtemForm.get('RatePerUnit')?.value || 0;
-    // const mrp = +this.OPeningtemForm.get('MRP')?.value || 0;
-
-    // if ((rate && landed >= rate) || (mrp && landed >= mrp)) {
-    //   this.toastr.warning('Landed Rate must be less than Rate Per Unit and MRP');
-    //   this.OPeningtemForm.get('LandedRate')?.setValue(null);
-    //   event.target.value = '';
-    //   return;
-    // }
     this.validateFormValues()
   }
 
@@ -561,7 +564,7 @@ export class NewOpeningBalanceComponent implements OnInit {
       });
     }
     if (+values.LandedRate >= +values.MRP) {
-      this._OpeningBalanceService.showToast('LandedRate should be less than MRP',ToastType.WARNING);
+      this._OpeningBalanceService.showToast('LandedRate should be less than MRP', ToastType.WARNING);
       form.patchValue({
         LandedRate: 0,
       });

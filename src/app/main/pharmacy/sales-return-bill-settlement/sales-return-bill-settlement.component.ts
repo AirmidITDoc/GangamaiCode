@@ -273,13 +273,7 @@ export class SalesReturnBillSettlementComponent implements OnInit {
     this.getdata(); 
   }
   getSelectedObjRegIP(obj) { 
-    let IsDischarged = 0;
-    this.registerObj =obj
-    IsDischarged = obj.isDischarged;
-    if (IsDischarged == 1) {
-      Swal.fire('Selected Patient is already discharged');
-      this.RegId = '';
-    } else {
+    this.registerObj =obj  
       this.DoctorNamecheck = true;
       this.IPDNocheck = true;
       this.OPDNoCheck = false;
@@ -292,8 +286,7 @@ export class SalesReturnBillSettlementComponent implements OnInit {
       this.TariffName = obj.tariffName;
       this.WardName = obj.roomName;
       this.BedName = obj.bedName;
-    }
-    this.getdata();
+     this.getdata();
   }
   getSelectedObjOp(obj) { 
      this.registerObj =obj
@@ -679,6 +672,17 @@ export class SalesReturnBillSettlementComponent implements OnInit {
         });
       }, 100);
     }
+        vCheckBox:boolean=false;
+  getDischargedList(event) {
+    if (event.checked == true) {
+      this.vCheckBox = true;
+      this.OnReset()
+    }
+    else
+    this.vCheckBox = false;
+    this.userFormGroup.get('RegID').setValue('');
+  }
+
 }
 
 export class PaidItemList {

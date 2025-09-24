@@ -49,6 +49,160 @@
             </ngx-charts-pie-chart>
           </mat-card-content>
         </mat-card>
+
+        <mat-card class="chart-card mat-elevation-z2">
+          <mat-card-header>
+            <mat-card-title>Payments Overview</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <ngx-charts-bar-vertical
+              [results]="paymentData"
+              [view]="barChartView"
+              [scheme]="colorScheme"
+              [xAxis]="true"
+              [yAxis]="true"
+              [legend]="false"
+              [showXAxisLabel]="true"
+              [showYAxisLabel]="true"
+              [xAxisLabel]="'Payment Type'"
+              [yAxisLabel]="'Amount Received'"
+              [gradient]="true">
+            </ngx-charts-bar-vertical>
+          </mat-card-content>
+        </mat-card>
       </div>
+  </div>
+
+  <!-- Extended dashboard content below existing graphs -->
+  <div class="extra-sections">
+    <!-- Finance summary cards -->
+    <div class="metrics-grid finance-grid">
+      <mat-card *ngFor="let f of financeSummary" class="metric-card mat-elevation-z2" [ngClass]="'theme-' + f.color">
+        <mat-card-content class="metric-content">
+          <div class="metric-icon">
+            <mat-icon>{{ getMatIcon(f.icon) }}</mat-icon>
+          </div>
+          <div class="metric-text">
+            <div class="metric-label">{{ f.label }}</div>
+            <div class="metric-value">{{ f.value | number }}</div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <!-- Trends and Top Departments -->
+    <div class="charts-row">
+      <mat-card class="chart-card mat-elevation-z2">
+        <mat-card-header>
+          <mat-card-title>7-Day Trends</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <ngx-charts-line-chart
+            [results]="trendSeries"
+            [scheme]="colorScheme"
+            [autoScale]="true"
+            [xAxis]="true"
+            [yAxis]="true"
+            [legend]="true"
+            [showXAxisLabel]="true"
+            [showYAxisLabel]="true"
+            [xAxisLabel]="'Day'"
+            [yAxisLabel]="'Count'">
+          </ngx-charts-line-chart>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card class="chart-card mat-elevation-z2">
+        <mat-card-header>
+          <mat-card-title>Top Departments by Visits</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <ngx-charts-bar-horizontal
+            [results]="departmentVisits"
+            [scheme]="colorScheme"
+            [xAxis]="true"
+            [yAxis]="true"
+            [legend]="false"
+            [showXAxisLabel]="true"
+            [showYAxisLabel]="true"
+            [xAxisLabel]="'Visits'"
+            [yAxisLabel]="'Department'">
+          </ngx-charts-bar-horizontal>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <!-- Recent activity table -->
+    <div class="tables-row">
+      <mat-card class="table-card mat-elevation-z2">
+        <mat-card-header>
+          <mat-card-title>Recent Patients</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <table mat-table [dataSource]="recentPatients" class="mat-elevation-z0 full-width-table">
+            <ng-container matColumnDef="name">
+              <th mat-header-cell *matHeaderCellDef> Name </th>
+              <td mat-cell *matCellDef="let r"> {{ r.name }} </td>
+            </ng-container>
+            <ng-container matColumnDef="type">
+              <th mat-header-cell *matHeaderCellDef> Type </th>
+              <td mat-cell *matCellDef="let r"> {{ r.type }} </td>
+            </ng-container>
+            <ng-container matColumnDef="dept">
+              <th mat-header-cell *matHeaderCellDef> Department </th>
+              <td mat-cell *matCellDef="let r"> {{ r.department }} </td>
+            </ng-container>
+            <ng-container matColumnDef="time">
+              <th mat-header-cell *matHeaderCellDef> Time </th>
+              <td mat-cell *matCellDef="let r"> {{ r.time }} </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="recentColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: recentColumns;"></tr>
+          </table>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <!-- Patient Mix section: mediclaim vs self vs reference -->
+    <div class="charts-row">
+      <mat-card class="chart-card mat-elevation-z2">
+        <mat-card-header>
+          <mat-card-title>Patient Mix</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="mini-grid">
+            <div class="mini-card theme-mint">
+              <div class="mini-icon"><mat-icon>verified_user</mat-icon></div>
+              <div>
+                <div class="mini-label">With Mediclaim</div>
+                <div class="mini-value">{{ patientStats.withMediclaim | number }}</div>
+              </div>
+            </div>
+            <div class="mini-card theme-butter">
+              <div class="mini-icon"><mat-icon>person</mat-icon></div>
+              <div>
+                <div class="mini-label">Without Mediclaim</div>
+                <div class="mini-value">{{ patientStats.withoutMediclaim | number }}</div>
+              </div>
+            </div>
+            <div class="mini-card theme-sky">
+              <div class="mini-icon"><mat-icon>group_add</mat-icon></div>
+              <div>
+                <div class="mini-label">Reference Patients</div>
+                <div class="mini-value">{{ patientStats.reference | number }}</div>
+              </div>
+            </div>
+            <div class="mini-card theme-lavender">
+              <div class="mini-icon"><mat-icon>groups</mat-icon></div>
+              <div>
+                <div class="mini-label">Total Patients</div>
+                <div class="mini-value">{{ patientStats.total | number }}</div>
+              </div>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
   </div>
 

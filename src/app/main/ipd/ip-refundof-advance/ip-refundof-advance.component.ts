@@ -99,6 +99,7 @@ export class IPRefundofAdvanceComponent implements OnInit {
         isCancelledBy: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         isCancelledDate: ['1900-01-01', [this._FormvalidationserviceService.validDateValidator]],
         refundId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        UnitId: [1],
       }),
 
       //Advance update
@@ -122,15 +123,15 @@ export class IPRefundofAdvanceComponent implements OnInit {
       [this._FormvalidationserviceService.validDateValidator()]],
       refundTime: [item?.time,
       []],
-      advRefundAmt: [item?.refundAmt, [, this._FormvalidationserviceService.onlyNumberValidator()]],
+      advRefundAmt: [item?.refundAmt ?? 0, [, this._FormvalidationserviceService.onlyNumberValidator()]],
     });
   }
   createAdvDetailsUpdate(item: any): FormGroup {
     return this.formBuilder.group({
       advanceDetailID: [item?.advanceDetailID, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator(),
       this._FormvalidationserviceService.onlyNumberValidator()]],
-      refundAmount: [item?.refundAmt, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      balanceAmount: [item?.balanceAmount, [this._FormvalidationserviceService.onlyNumberValidator()]]
+      refundAmount: [item?.refundAmt ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      balanceAmount: [item?.balanceAmount ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]]
     });
   }
   // Getters
@@ -144,8 +145,10 @@ export class IPRefundofAdvanceComponent implements OnInit {
   onSave() {
     debugger
     //Assigning value to run time values to from control
+    
     this.RefundOfAdvanceFormGroup.get('refundHeader.refundDate').setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'))
     this.RefundOfAdvanceFormGroup.get('refundHeader.refundTime').setValue(this.dateTimeObj.time)
+
     this.RefundOfAdvanceFormGroup.get('refundHeader.opdIpdId').setValue(this.registerObj?.admissionId)
     this.RefundOfAdvanceFormGroup.get('advanceHeaderupdate.advanceUsedAmount').setValue(this.UsedAmount)
     this.RefundOfAdvanceFormGroup.get('refundHeader.advanceId').setValue(this.AdvanceId)
@@ -198,7 +201,7 @@ export class IPRefundofAdvanceComponent implements OnInit {
          // console.log(submitData);
           this._IpSearchListService.insertIPRefundOfAdvance(submitData).subscribe(response => {
             this.viewgetRefundofAdvanceReportPdf(response);
-            this.getWhatsappsRefundAdvance(response, this.vMobileNo);
+            // this.getWhatsappsRefundAdvance(response, this.vMobileNo);
             this.onClose()
           });
         }  
@@ -253,8 +256,8 @@ export class IPRefundofAdvanceComponent implements OnInit {
       "sortOrder": 0,
       "filters": [
         {
-          "fieldName": "RegID",
-          "fieldValue": String(this.registerObj.regId),
+          "fieldName": "OPDIPDId",
+          "fieldValue": String(this.registerObj.admissionId),
           "opType": "Equals"
         }
       ],
