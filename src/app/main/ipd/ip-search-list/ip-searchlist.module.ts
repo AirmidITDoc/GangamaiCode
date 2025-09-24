@@ -46,7 +46,7 @@ import { IPAdvanceComponent } from './ip-advance/ip-advance.component';
 import { IPSearchListComponent } from './ip-search-list.component';
 import { IPSearchListService } from './ip-search-list.service';
 // import { IPRefundofAdvanceComponent } from './ip-refundof-advance/ip-refundof-advance.component';
-import { AngularEditorModule } from '@kolkov/angular-editor';
+// import { AngularEditorModule } from '@kolkov/angular-editor';
 import { MatTimepickerModule } from 'mat-timepicker';
 import { IPRefundofAdvanceComponent } from '../ip-refundof-advance/ip-refundof-advance.component';
 import { CompanyBillComponent } from './company-bill/company-bill.component';
@@ -136,7 +136,7 @@ const routes: Routes = [
        MatTooltipModule,
         MatStepperModule,
         MatTimepickerModule,
-         AngularEditorModule,
+        //  AngularEditorModule,
           
     ],
     providers: [

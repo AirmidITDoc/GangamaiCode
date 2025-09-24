@@ -5,7 +5,7 @@ import { FormGroup, UntypedFormBuilder } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { fuseAnimations } from '@fuse/animations';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
-import { AngularEditorConfig } from '@kolkov/angular-editor';
+// import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { AirmidDropDownComponent } from 'app/main/shared/componets/airmid-dropdown/airmid-dropdown.component';
 import { ToastrService } from 'ngx-toastr';
@@ -60,16 +60,16 @@ export class NewConsentComponent {
 
   @ViewChild('ddlTemplate') ddlTemplate: AirmidDropDownComponent;
 
-  editorConfig: AngularEditorConfig = {
-    editable: true,
-    spellcheck: true,
-    height: '20rem',
-    minHeight: '20rem',
-    translate: 'yes',
-    placeholder: 'Enter text here...',
-    enableToolbar: true,
-    showToolbar: true,
-  };
+//   editorConfig: AngularEditorConfig = {
+//     editable: true,
+//     spellcheck: true,
+//     height: '20rem',
+//     minHeight: '20rem',
+//     translate: 'yes',
+//     placeholder: 'Enter text here...',
+//     enableToolbar: true,
+//     showToolbar: true,
+//   };
 
   onBlur(e: any) {
     this.vConsentText = e.target.innerHTML;

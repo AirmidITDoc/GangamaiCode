@@ -5,7 +5,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
-import { AngularEditorConfig } from '@kolkov/angular-editor';
+// import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
 import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
 import { AuthenticationService } from 'app/core/services/authentication.service';
@@ -25,18 +25,18 @@ import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
   animations: fuseAnimations
 })
 export class ConsentComponent implements OnInit {
-  editorConfig: AngularEditorConfig = {
-    // color:true,
-    editable: true,
-    spellcheck: true,
-    height: '7rem',
-    minHeight: '7rem',
-    translate: 'yes',
-    placeholder: 'Enter text here...',
-    enableToolbar: true,
-    showToolbar: true,
+//   editorConfig: AngularEditorConfig = {
+//     // color:true,
+//     editable: true,
+//     spellcheck: true,
+//     height: '7rem',
+//     minHeight: '7rem',
+//     translate: 'yes',
+//     placeholder: 'Enter text here...',
+//     enableToolbar: true,
+//     showToolbar: true,
 
-  };
+//   };
   onBlur(e: any) {
     this.vTemplateDesc = e.target.innerHTML;
   }

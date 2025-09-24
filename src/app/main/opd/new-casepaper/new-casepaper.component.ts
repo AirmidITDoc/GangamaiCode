@@ -29,7 +29,7 @@ import { LanguageOption, SpeechRecognitionService } from 'app/main/shared/servic
 import { setValue } from '@ngx-translate/core';
 import { Console } from 'console';
 import { certificateTemp } from '../medicalrecord/patientcertificate/patientcertificate.component';
-import { AngularEditorConfig } from '@kolkov/angular-editor';
+// import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
 import { OperatorComparer } from 'app/core/models/gridRequest';
@@ -171,16 +171,16 @@ export class NewCasepaperComponent implements OnInit {
     'Action'
   ]
   mycertificateForm: FormGroup;
-  editorConfig: AngularEditorConfig = {
-    editable: true,
-    spellcheck: true,
-    height: '24rem',
-    minHeight: '24rem',
-    translate: 'yes',
-    placeholder: 'Enter text here...',
-    enableToolbar: true,
-    showToolbar: true,
-  };
+//   editorConfig: AngularEditorConfig = {
+//     editable: true,
+//     spellcheck: true,
+//     height: '24rem',
+//     minHeight: '24rem',
+//     translate: 'yes',
+//     placeholder: 'Enter text here...',
+//     enableToolbar: true,
+//     showToolbar: true,
+//   };
 
   onBlur(e: any) {
     this.vcertificateText = e.target.innerHTML;

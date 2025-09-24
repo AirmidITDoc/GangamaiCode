@@ -24,7 +24,7 @@ import { MatToolbarModule } from "@angular/material/toolbar";
 import { RouterModule, Routes } from "@angular/router";
 import { FuseConfirmDialogModule, FuseSidebarModule } from "@fuse/components";
 import { FuseSharedModule } from "@fuse/shared.module";
-import { AngularEditorModule } from '@kolkov/angular-editor';
+// import { AngularEditorModule } from '@kolkov/angular-editor';
 import { SharedModule } from "app/main/shared/shared.module";
 import { StoreFormMasterComponent } from './store-form-master/store-form-master.component';
 import { StoreMasterComponent } from "./store-master.component";
@@ -41,7 +41,7 @@ const routes: Routes = [
     declarations: [StoreMasterComponent, StoreFormMasterComponent],
     imports: [
         RouterModule.forChild(routes),
-        AngularEditorModule,
+        // AngularEditorModule,
         MatButtonModule,
         MatCheckboxModule,
         MatDatepickerModule,
@@ -76,7 +76,7 @@ const routes: Routes = [
         FuseSharedModule,
         // RichTextEditorModule
         //  NgMultiSelectDropDownModule.forRoot()
-        AngularEditorModule,
+        // AngularEditorModule,
     ],
     providers: [StoreMasterService, DatePipe]
 })

@@ -6,7 +6,7 @@ import { MatPaginator } from "@angular/material/paginator";
 import { MatSort } from "@angular/material/sort";
 import { MatTableDataSource } from "@angular/material/table";
 import { fuseAnimations } from "@fuse/animations";
-import { AngularEditorConfig } from '@kolkov/angular-editor';
+// import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
 import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
 import { AuthenticationService } from "app/core/services/authentication.service";
@@ -31,16 +31,16 @@ export class DoctornoteComponent implements OnInit {
   myHandOverform: FormGroup;
   myNoteform: FormGroup;
   autocompleteModetemplate: string = "Template";
-  editorConfig: AngularEditorConfig = {
-    editable: true,
-    spellcheck: true,
-    height: '20rem',
-    minHeight: '20rem',
-    translate: 'yes',
-    placeholder: 'Enter text here...',
-    enableToolbar: true,
-    showToolbar: true,
-  };
+//   editorConfig: AngularEditorConfig = {
+//     editable: true,
+//     spellcheck: true,
+//     height: '20rem',
+//     minHeight: '20rem',
+//     translate: 'yes',
+//     placeholder: 'Enter text here...',
+//     enableToolbar: true,
+//     showToolbar: true,
+//   };
 
   vCompanyName: any;
   vRegNo: any;

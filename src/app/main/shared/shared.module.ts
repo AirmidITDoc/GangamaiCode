@@ -73,20 +73,20 @@ import { AirmidCardViewComponent } from './componets/airmid-card-view/airmid-car
 import { Error0Component } from './APIerrorpages/error-0/error-0.component';
 import { AirmidImageviewComponent } from './componets/airmid-imageview/airmid-imageview.component';
 import { AirmidImageIconComponent } from './componets/airmid-image-icon/airmid-image-icon.component';
-import { AngularEditorModule } from '@kolkov/angular-editor';
+// import { AngularEditorModule } from '@kolkov/angular-editor';
 
 
 @NgModule({
     declarations: [
         TrimPipe, CommonDateComponent, AirmidTableComponent, AirmidTextboxComponent, AirmidDropDownComponent, AirmidAutoCompleteComponent, SmsEmailTemplateComponent, HeaderComponent, PaymentModeComponent, ImageCropComponent, EmailSendComponent, DyanmicTableHeightDirective,
-        AirmidDateofbirthComponent, AirmidSliderComponent, AirmidDatepickerComponent, AirmidEditorComponent, TableSearchBarComponent, PrintCallingComponent, ErrorPageComponent, Error401Component, Error403Component, Error404Component, Error500Component, FocusNextDirective, AirmidTimePickerComponent, PatientInfoComponent, AirmidDateTimePickerComponent, TableKeyboardNavigationDirective, AirmidChipautocompleteComponent, AirmidFullDatepickerComponent, AirmidFileuploadComponent,AirmidFileuploadIconComponent,AirmidSignatureComponent,AirmidSignatureIconComponent, AirmidPhotoComponent, AirmidPhotoIconComponent,
-        AirmidCardViewComponent,Error0Component, AirmidImageviewComponent, AirmidImageIconComponent
+        AirmidDateofbirthComponent, AirmidSliderComponent, AirmidDatepickerComponent, TableSearchBarComponent, PrintCallingComponent, ErrorPageComponent, Error401Component, Error403Component, Error404Component, Error500Component, FocusNextDirective, AirmidTimePickerComponent, PatientInfoComponent, AirmidDateTimePickerComponent, TableKeyboardNavigationDirective, AirmidChipautocompleteComponent, AirmidFullDatepickerComponent, AirmidFileuploadComponent, AirmidFileuploadIconComponent, AirmidSignatureComponent, AirmidSignatureIconComponent, AirmidPhotoComponent, AirmidPhotoIconComponent,
+        AirmidCardViewComponent, Error0Component, AirmidImageviewComponent, AirmidImageIconComponent, AirmidEditorComponent
     ],
     imports: [
         CommonModule,
         MatFormFieldModule,
         CKEditorModule,
-        AngularEditorModule,
+        // AngularEditorModule,
         MatInputModule,
         FormsModule,
         ReactiveFormsModule,

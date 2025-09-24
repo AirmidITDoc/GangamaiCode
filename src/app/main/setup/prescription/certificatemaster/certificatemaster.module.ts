@@ -27,7 +27,7 @@ import { MatToolbarModule } from "@angular/material/toolbar";
 import { RouterModule, Routes } from "@angular/router";
 import { FuseConfirmDialogModule, FuseSidebarModule } from "@fuse/components";
 import { FuseSharedModule } from "@fuse/shared.module";
-import { AngularEditorModule } from "@kolkov/angular-editor";
+// import { AngularEditorModule } from "@kolkov/angular-editor";
 import { SharedModule } from "app/main/shared/shared.module";
 import { NgxMatSelectSearchModule } from "ngx-mat-select-search";
 import { CertificatemasterComponent } from "./certificatemaster.component";
@@ -82,7 +82,7 @@ const routes: Routes = [
         FuseSharedModule,
         // RichTextEditorModule
         //  NgMultiSelectDropDownModule.forRoot()
-        AngularEditorModule,
+        // AngularEditorModule,
     ],
     providers: [
         CertificateserviceService,

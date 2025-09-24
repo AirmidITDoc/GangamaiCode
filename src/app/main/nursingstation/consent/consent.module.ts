@@ -33,7 +33,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterModule, Routes } from '@angular/router';
 import { FuseConfirmDialogModule, FuseSidebarModule } from '@fuse/components';
 import { FuseSharedModule } from '@fuse/shared.module';
-import { AngularEditorModule } from '@kolkov/angular-editor';
+// import { AngularEditorModule } from '@kolkov/angular-editor';
 import { SharedModule } from 'app/main/shared/shared.module';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { ConsentComponent } from './consent.component';
@@ -79,7 +79,7 @@ const routes: Routes = [
         FuseSidebarModule,
         MatChipsModule,
         MatProgressSpinnerModule,
-        AngularEditorModule,
+        // AngularEditorModule,
         ReactiveFormsModule,
         MatAutocompleteModule,
         MatSidenavModule,

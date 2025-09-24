@@ -40,7 +40,7 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { NewConfigurationComponent } from './new-configuration/new-configuration.component';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { AngularEditorModule } from '@kolkov/angular-editor';
+// import { AngularEditorModule } from '@kolkov/angular-editor';
 import { EditConfigurationComponent } from './edit-configuration/edit-configuration.component';
 import { AddAutoServiceComponent } from './add-auto-service/add-auto-service.component';
 
@@ -93,7 +93,7 @@ const routes: Routes = [
                 ScrollingModule,
                 MatSidenavModule,
                MatButtonToggleModule,
-               AngularEditorModule,
+            //    AngularEditorModule,
   ],
    providers: [ DatePipe, ConfigurationService]
 })

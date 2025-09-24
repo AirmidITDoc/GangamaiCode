@@ -40,7 +40,7 @@ import { EmergencyHistoryComponent } from './emergency-history/emergency-history
 import { EmergencyBillComponent } from './emergency-bill/emergency-bill.component';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { AngularEditorModule } from '@kolkov/angular-editor';
+// import { AngularEditorModule } from '@kolkov/angular-editor';
 import { MatTimepickerModule } from 'mat-timepicker';
 import { MatButtonToggleModule } from "@angular/material/button-toggle";
 import { MatSliderModule } from '@angular/material/slider';
@@ -96,7 +96,7 @@ const routes: Routes = [
     MatChipsModule,
     MatGridListModule,
     MatSidenavModule,
-    AngularEditorModule,
+    // AngularEditorModule,
     MatTimepickerModule,
     MatTooltipModule,
     MatButtonToggleModule,

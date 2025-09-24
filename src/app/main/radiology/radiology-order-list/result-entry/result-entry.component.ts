@@ -3,7 +3,7 @@ import { Component, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angula
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
-import { AngularEditorConfig } from '@kolkov/angular-editor';
+// import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { AdvanceDataStored } from 'app/main/ipd/advance';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
@@ -28,17 +28,17 @@ export class ResultEntryComponent implements OnInit {
 
   Tempdesc: any;
   isSelected: boolean = false;
-  editorConfig: AngularEditorConfig = {
-    editable: true,
-    spellcheck: true,
-    height: '20rem',
-    minHeight: '20rem',
-    translate: 'yes',
-    placeholder: 'Enter text here...',
-    enableToolbar: true,
-    showToolbar: true,
+//   editorConfig: AngularEditorConfig = {
+//     editable: true,
+//     spellcheck: true,
+//     height: '20rem',
+//     minHeight: '20rem',
+//     translate: 'yes',
+//     placeholder: 'Enter text here...',
+//     enableToolbar: true,
+//     showToolbar: true,
 
-  };
+//   };
 
   onBlur(e: any) {
     this.vTemplateDesc = e.target.innerHTML;

@@ -25,7 +25,7 @@ import { FuseSharedModule } from "@fuse/shared.module";
 import { SharedModule } from "app/main/shared/shared.module";
 import { ConsentMasterComponent } from "./consent-master.component";
 import { NewConsentMasterComponent } from "./new-consent-master/new-consent-master.component";
-import { AngularEditorModule } from "@kolkov/angular-editor";
+// import { AngularEditorModule } from "@kolkov/angular-editor";
 const routes: Routes = [
     {
         path: "**",
@@ -63,7 +63,7 @@ const routes: Routes = [
                MatExpansionModule,
                MatCardModule,
                MatSlideToggleModule,
-               AngularEditorModule
+            //    AngularEditorModule
   ],
   providers: [DatePipe]
 })

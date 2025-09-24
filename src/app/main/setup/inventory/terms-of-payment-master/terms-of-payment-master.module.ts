@@ -24,7 +24,7 @@ import { MatToolbarModule } from "@angular/material/toolbar";
 import { RouterModule, Routes } from "@angular/router";
 import { FuseConfirmDialogModule, FuseSidebarModule } from "@fuse/components";
 import { FuseSharedModule } from "@fuse/shared.module";
-import { AngularEditorModule } from "@kolkov/angular-editor";
+// import { AngularEditorModule } from "@kolkov/angular-editor";
 import { SharedModule } from "app/main/shared/shared.module";
 import { NewTermofpaymentComponent } from './new-termofpayment/new-termofpayment.component';
 import { TermsOfPaymentMasterComponent } from "./terms-of-payment-master.component";
@@ -41,7 +41,7 @@ const routes: Routes = [
     declarations: [TermsOfPaymentMasterComponent, NewTermofpaymentComponent],
     imports: [
         RouterModule.forChild(routes),
-        AngularEditorModule,
+        // AngularEditorModule,
         MatButtonModule,
         MatCheckboxModule,
         MatDatepickerModule,

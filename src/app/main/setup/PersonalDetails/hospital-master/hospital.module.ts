@@ -42,7 +42,7 @@ import { MatSidenavModule } from "@angular/material/sidenav";
 import { HospitalMasterComponent } from "./hospital-master.component";
 import { NewHospitalComponent } from "./new-hospital/new-hospital.component";
 import { HospitalService } from "./hospital.service";
-import { AngularEditorModule } from "@kolkov/angular-editor";
+// import { AngularEditorModule } from "@kolkov/angular-editor";
 
 
 const routes: Routes = [
@@ -95,7 +95,7 @@ const routes: Routes = [
         ScrollingModule,
         MatSidenavModule,
         //NgxQRCodeModule,
-        AngularEditorModule,
+        // AngularEditorModule,
         MatButtonToggleModule,
          ],
     providers: [DatePipe,HospitalService]

@@ -37,7 +37,7 @@ import { TemplateDescriptionComponent } from './template-description.component';
 import { TemplatedescriptionService } from './templatedescription.service';
 import { NewTemplateComponent } from './new-template/new-template.component';
 import { MatBadgeModule } from '@angular/material/badge';
-import { AngularEditorModule } from '@kolkov/angular-editor';
+// import { AngularEditorModule } from '@kolkov/angular-editor';
 
 
 const routes: Routes = [
@@ -97,7 +97,7 @@ const routes: Routes = [
     MatToolbarModule,
     MatSlideToggleModule,
     FuseSharedModule,
-    AngularEditorModule,
+    // AngularEditorModule,
   ],
     providers: [
         TemplatedescriptionService,

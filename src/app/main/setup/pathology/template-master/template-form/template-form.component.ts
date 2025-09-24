@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, Inject, OnInit, ViewEncapsulation }
 import { FormBuilder, FormGroup, UntypedFormBuilder } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { fuseAnimations } from '@fuse/animations';
-import { AngularEditorConfig } from '@kolkov/angular-editor';
+// import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { ToastrService } from 'ngx-toastr';
 import { TemplateServieService } from '../template-servie.service';
 
@@ -21,17 +21,17 @@ export class TemplateFormComponent implements OnInit {
     TemplateId = 0;
     vTemplateDescInHtml = '';
     vTemplateDesc = '';
-    editorConfig: AngularEditorConfig = {
-        editable: true,
-        spellcheck: true,
-        height: '20rem',
-        minHeight: '20rem',
-        translate: 'yes',
-        placeholder: 'Enter text here...',
-        enableToolbar: true,
-        showToolbar: true,
+    // editorConfig: AngularEditorConfig = {
+    //     editable: true,
+    //     spellcheck: true,
+    //     height: '20rem',
+    //     minHeight: '20rem',
+    //     translate: 'yes',
+    //     placeholder: 'Enter text here...',
+    //     enableToolbar: true,
+    //     showToolbar: true,
 
-    };
+    // };
 
 
     onBlur(e: any) {
