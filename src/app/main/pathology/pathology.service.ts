@@ -68,11 +68,11 @@ export class PathologyService {
     return this._formBuilder.group({
 
       RegNo: [],
-      Istype: ["3"],
+      Istype: ["1"],
       start: [new Date().toISOString()],
       end: [new Date().toISOString()],
       IsCompleted:'0',
-      IsPathOrRad: ['3'],
+      IsPathOrRad: ['1'],
     });
   }
 

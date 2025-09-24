@@ -150,33 +150,7 @@ vSampleCollFormGroup:FormGroup
     }
 
   }
-  // getSampledetailList() {
-
-  //   let OPIP
-  //   if (this.regObj.lbl == "IP" || this.regObj.lbl == "IP") {
-  //     OPIP = 1;
-  //   }
-  //   else if (this.regObj.lbl == "OP" || this.regObj.lbl == "OP") {
-  //     OPIP = 0;
-  //   }
-
-  //   var m_data = {
-  //     "BillNo": this.regObj.billNo,
-  //     "BillDate": this.datePipe.transform(this.regObj.pathDate, "yyyy-MM-dd"),
-  //     "OP_IP_Type": OPIP,
-  //   }
-  //   console.log(m_data);
-  //   this._SampleService.getSampleDetailsList(m_data).subscribe(Visit => {
-  //     this.dataSource.data = Visit as SampleList[];
-  //     console.log(this.dataSource.data)
-  //     this.dataSource.sort = this.sort;
-  //     this.dataSource.paginator = this.paginator;
-  //     this.sIsLoading = '';
-  //   },
-  //     error => {
-  //       // this.sIsLoading = '';
-  //     });
-  // }
+  
 
   getSampledetailList1(row) {
 debugger
@@ -264,31 +238,12 @@ debugger
       
   onSave() {
     
-    // const currentDate = new Date();
-    // const datePipe = new DatePipe('en-US');
-    // const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
-    // const formattedTime = datePipe.transform(currentDate, 'shortTime');
+  
     if (this.selection.selected.length == 0) {
       Swal.fire('Error !', 'Please select sample data', 'error');
       return;
     }
-    // let updatesamcollection = [];
-
-    //   this.selection.selected.forEach((element) => {
-    //     console.log(element);
-    //     let UpdateAddSampleDetailsObj = {
-    //       "PathReportId": element.pathReportID || 1,
-    //       "sampleCollectionTime": this._SampleService.sampldetailform.get('SampleDateTime').value || '01/01/1900',
-    //       "IsSampleCollection": true, //String(element.isSampleCollection) === "True" ? true : false,
-    //       "SampleNo": String(element.sampleNo || 0)
-    //     }
-    //     updatesamcollection.push(UpdateAddSampleDetailsObj);
-    //   });
-
-    //   let submitData={
-    //     "pathlogySampleCollection":updatesamcollection
-    //   }
-
+   
         this.refundDetailsArray.clear();
       this.selection.selected.forEach(item => {
         this.refundDetailsArray.push(this.createSampleDetail(item));
@@ -297,18 +252,18 @@ debugger
 
     console.log(this.vSampleCollFormGroup.value);
     this._SampleService.UpdateSampleCollection(this.vSampleCollFormGroup.value).subscribe(data => {
-      // this.msg = data;
-      if (data) {
-        Swal.fire('Congratulations !', 'Pathology Sample collection data updated Successfully !', 'success').then((result) => {
-          if (result.isConfirmed) {
-            this._matDialog.closeAll();
-          }
-        });
-      } else {
-        Swal.fire('Error !', 'Pathology Sample collection data not update', 'error');
-      }
+      
+      // if (data) {
+      //   Swal.fire('Congratulations !', 'Pathology Sample collection data updated Successfully !', 'success').then((result) => {
+      //     if (result.isConfirmed) {
+      //       this._matDialog.closeAll();
+      //     }
+      //   });
+      // } else {
+      //   Swal.fire('Error !', 'Pathology Sample collection data not update', 'error');
+      // }
     });
-    // this.isLoading = '';
+    
   }
 
 

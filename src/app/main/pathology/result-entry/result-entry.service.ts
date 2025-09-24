@@ -2,6 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { ApiCaller } from 'app/core/services/apiCaller';
+import { AuthenticationService } from 'app/core/services/authentication.service';
+import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +14,7 @@ export class ResultEntryService {
   myform: FormGroup;
   constructor(
     private _httpClient: HttpClient,
-    private _httpClient1: ApiCaller,
+    private _httpClient1: ApiCaller,private accountService: AuthenticationService, private _FormvalidationserviceService: FormvalidationserviceService,
      private _formBuilder: UntypedFormBuilder) { 
     this.myformSearch = this.createSearchForm();
     this.myform = this.createtemplateForm();
@@ -23,16 +25,13 @@ export class ResultEntryService {
       RegNoSearch: [],
       FirstNameSearch:  ['', [
         Validators.maxLength(50),
-        // Validators.pattern("^[a-zA-Z._ -]*$"),
         Validators.pattern('^[a-zA-Z () ]*$')
       ]],
       LastNameSearch: ['', [
         Validators.maxLength(50),
-        // Validators.pattern("^[a-zA-Z._ -]*$"),
         Validators.pattern('^[a-zA-Z () ]*$')
       ]],
-      // BillNo:[''],
-      // BillDate:[''],
+     
       PatientTypeSearch: ['2'],
       StatusSearch: ['0'],
       CategoryId: [''],
@@ -44,12 +43,12 @@ export class ResultEntryService {
 
   createtemplateForm(): FormGroup {
     return this._formBuilder.group({
-      TemplateId: [''],
+      TemplateId: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       TemplateName: [''],
       TemplateDesc: [''],
       IsDeleted: ['false'],
-      AddedBy: ['0'],
-      UpdatedBy: ['0'],
+      AddedBy: [this.accountService.currentUserValue.userId, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      UpdatedBy: [this.accountService.currentUserValue.userId , [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       AddedByName: ['']
     });
   }

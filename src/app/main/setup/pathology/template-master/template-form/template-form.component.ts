@@ -5,6 +5,7 @@ import { fuseAnimations } from '@fuse/animations';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { ToastrService } from 'ngx-toastr';
 import { TemplateServieService } from '../template-servie.service';
+import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 
 @Component({
     selector: 'app-template-form',
@@ -43,7 +44,7 @@ export class TemplateFormComponent implements OnInit {
         public dialogRef: MatDialogRef<TemplateFormComponent>,
         @Inject(MAT_DIALOG_DATA) public data: any,
         private _formBuilder: FormBuilder,
-        private _formBuilder1: UntypedFormBuilder,
+        private _formBuilder1: UntypedFormBuilder, private _FormvalidationserviceService: FormvalidationserviceService,
         public toastr: ToastrService
     ) { }
 
@@ -63,7 +64,7 @@ export class TemplateFormComponent implements OnInit {
 
     createTemplateForm(): FormGroup {
         return this._formBuilder1.group({
-            templateId: this.TemplateId,
+            templateId: [this.TemplateId,this._FormvalidationserviceService.allowEmptyStringValidator()],
             templateName: '',
             templateDesc: this.vTemplateDesc,
             templateDescInHtml: ''

@@ -790,6 +790,27 @@ export class NewAdmissionComponent implements OnInit {
     }
   }
 
+    selectChangeward(obj: any) {
+    if (obj.value) {
+      this._AdmissionService.getBedByWard(obj.value).subscribe((data: any) => {
+        this.ddlDoctor.options = data;
+        this.ddlDoctor.bindGridAutoComplete();
+      });
+    } else {
+      this._AdmissionService.getDoctorsByDepartment(obj.departmentId).subscribe((data: any) => {
+        // console.log(data)
+        this.ddlDoctor.options = data;
+        this.ddlDoctor.bindGridAutoComplete();
+        const incomingDoctorId = obj.docNameId || obj.doctorId;
+        if (incomingDoctorId) {
+          const matchedDoctor = data.find(doc => doc.value === incomingDoctorId);
+          if (matchedDoctor) {
+            this.admissionFormGroup.get('DocNameId')?.setValue(matchedDoctor.value);
+          }
+        }
+      });
+    }
+  }
   getAdmittedPatientCasepaperview(AdmissionId) {
     this.commonService.Onprint("AdmissionId", AdmissionId, "IpCasepaperReport");
   }

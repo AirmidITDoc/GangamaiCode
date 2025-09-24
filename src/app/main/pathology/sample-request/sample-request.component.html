@@ -81,7 +81,7 @@
                                 (change)="onChangeFirst()">
                                 <mat-radio-button (click)="toggle(0)" value="3">All</mat-radio-button>
                                 <mat-radio-button mat-fab value="1" (click)="toggle(1)">IsPathology</mat-radio-button>
-                                <mat-radio-button (click)="toggle(2)" value="2">IsRadiology</mat-radio-button>
+                                <!-- <mat-radio-button (click)="toggle(2)" value="2">IsRadiology</mat-radio-button> -->
                             </mat-radio-group>
 
                             <div fxFlex fxLayout="row">
@@ -102,32 +102,7 @@
         </div>
 
         <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll" *ngIf="isShowDetailTable">
-            <!-- 
-   <ng-template #isTestCompletedIcon let-element>
-                <div fxLayout="row" fxLayoutAlign="center center">
-                    <mat-icon *ngIf="element.isTestCompted == true" matTooltip="Lab Report Ready"
-                        (click)="getPrint(element)">
-                        remove_red_eye
-                    </mat-icon>
-
-                    <mat-icon *ngIf="element.isTestCompted == false" matTooltip="Result Entry Not Completed"
-                        class="active-icon red-500 s-16">
-                        hourglass_empty
-                    </mat-icon>
-                </div>
-            </ng-template> -->
-
-            <!-- 
-            <ng-template #isRadiologyicon let-element>
-                <div fxLayout="row" fxLayoutAlign="center center">
-                    <mat-icon *ngIf="contact.isRadiology != 1" matTooltip="IsRadiology">
-                        <img width="15px" height="8px" src="assets/images/logos/radiology.png" />
-                    </mat-icon>
-                </div>
-            </ng-template> -->
-
-
-
+         
             <ng-template #statuspath let-element>
                 <div fxLayout="row" fxLayoutAlign="center center">
                     <mat-icon *ngIf="element.isPathology==1" matTooltip="IsPatholgy">
@@ -156,7 +131,7 @@
             </airmid-table>
         </div>
 
-        <div class="layout-card-container" style="padding: 10px;" *ngIf="isShowDetailTable">
+        <!-- <div class="layout-card-container" style="padding: 10px;" *ngIf="isShowDetailTable">
             <mat-card>
                 <div fxLayout="row wrap" fxLayoutAlign="start start" class="gap-8" style="padding: 10px;">
                     <span class="font-weight-600"> Help : </span>
@@ -172,6 +147,6 @@
                     </span>
                 </div>
             </mat-card>
-        </div>
+        </div> -->
     </div>
 </div>

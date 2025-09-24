@@ -67,18 +67,18 @@ export class RadiologyTemplateMasterComponent implements OnInit {
     ngOnInit(): void { }
    
     onSave(row: any = null) {
-        
-        let that = this;
-        const dialogRef = this._matDialog.open(RadiologyTemplateFormComponent,
-            {
-              maxHeight: '90vh',
-              width: '100%',
-                data: row
+       const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+            buttonElement.blur(); // Remove focus from the button
+    
+            let that = this;
+            const dialogRef = this._matDialog.open(RadiologyTemplateFormComponent,
+                {
+                  maxHeight: '95vh',
+                  width: '100%',
+                    data: row
+                });
+            dialogRef.afterClosed().subscribe(result => {
+                this.grid.bindGridData();
             });
-        dialogRef.afterClosed().subscribe(result => {
-            if (result) {
-                that.grid.bindGridData();
-            }
-        });
-    }
+        }
 }

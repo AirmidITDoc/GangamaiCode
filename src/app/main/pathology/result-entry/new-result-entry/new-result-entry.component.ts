@@ -1,34 +1,32 @@
-import { DatePipe } from '@angular/common';
-import { Component, ElementRef, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { FormArray, FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { MatAccordion } from '@angular/material/expansion';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatDrawer } from '@angular/material/sidenav';
-import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
-import { fuseAnimations } from '@fuse/animations';
-import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
-import { ConfigService } from 'app/core/services/config.service';
-import { AdmissionPersonlModel } from 'app/main/ipd/Admission/admission/admission.component';
-import { AdvanceDataStored } from 'app/main/ipd/advance';
-import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
-import { PrintserviceService } from 'app/main/shared/services/printservice.service';
-import { ToastrService } from 'ngx-toastr';
+import { Component, ElementRef, Inject, ViewChild } from '@angular/core';
 import Swal from 'sweetalert2';
 import { SampleDetailObj } from '../result-entry.component';
+import { AdmissionPersonlModel } from 'app/main/ipd/Admission/admission/admission.component';
+import { MatTableDataSource } from '@angular/material/table';
+import { FormArray, FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
+import { MatDrawer } from '@angular/material/sidenav';
+import { AdvanceDataStored } from 'app/main/ipd/advance';
 import { ResultEntryService } from '../result-entry.service';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
+import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
+import { MatAccordion } from '@angular/material/expansion';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatSort } from '@angular/material/sort';
+import { ConfigService } from 'app/core/services/config.service';
+import { PrintserviceService } from 'app/main/shared/services/printservice.service';
+import { MatPaginator } from '@angular/material/paginator';
+import { ToastrService } from 'ngx-toastr';
+import { DatePipe } from '@angular/common';
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 
 @Component({
-    selector: 'app-result-entry-one',
-    templateUrl: './result-entry-one.component.html',
-    styleUrls: ['./result-entry-one.component.scss'],
-    encapsulation: ViewEncapsulation.None,
-    animations: fuseAnimations
+  selector: 'app-new-result-entry',
+  templateUrl: './new-result-entry.component.html',
+  styleUrls: ['./new-result-entry.component.scss']
 })
-export class ResultEntryOneComponent implements OnInit {
- ResultForm: FormGroup
+export class NewResultEntryComponent {
+
+ResultForm: FormGroup
     PathResultForm: FormGroup
     vresultdetailFormGroup: FormGroup
      @ViewChild('PathResultDoctorId') PathResultDoctorId: ElementRef;
@@ -97,7 +95,7 @@ export class ResultEntryOneComponent implements OnInit {
     constructor(private formBuilder: UntypedFormBuilder,
         public _SampleService: ResultEntryService,
         public datePipe: DatePipe,
-        private dialogRef: MatDialogRef<ResultEntryOneComponent>,
+        private dialogRef: MatDialogRef<NewResultEntryComponent>,
         public _matDialog: MatDialog,
         @Inject(MAT_DIALOG_DATA) public data: any,
         private advanceDataStored: AdvanceDataStored,
@@ -959,10 +957,3 @@ export class PthologyresulUp {
     }
 }
 
-
-// select * from T_PathologyReportHeader order by 1 desc
-// select * from T_PathologyReportDetails order by 1 desc
-
-// select * from T_PathologyReportHeader where OPD_IPD_ID=184539
-// select * from T_PathologyReportDetails where PathReportId=204118
-// select * from T_PathologyReportDetails where PathReportId=204119

@@ -195,7 +195,7 @@ debugger
 
     console.log(this.vSampleCollFormGroup.value);
     this._SampleService.UpdateSampleCollection(this.vSampleCollFormGroup.value).subscribe(data => {
-     
+     this._matDialog.closeAll()
     });
     
   }

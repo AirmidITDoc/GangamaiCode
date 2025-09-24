@@ -140,7 +140,7 @@ export class ResultEntryComponent implements OnInit {
   }
   RaioInsertForm: FormGroup;
   ngOnInit(): void {
-
+this.RaioInsertForm = this.createradioInsert();
     if (this.data) {
       this.regObj = this.data
       console.log(this.regObj)
@@ -205,6 +205,11 @@ export class ResultEntryComponent implements OnInit {
     this.vTemplateDesc = this.Tempdesc
   }
 
+    onEditorValueChange(content: string) {
+        this._radiologytemplateService.myform.get('ResultEntry')?.setValue(content);
+    }
+
+
   RadReportId = 0
   templateObj: any;
   getTemplateList(row) {
@@ -224,17 +229,17 @@ export class ResultEntryComponent implements OnInit {
   }
 
   onSubmit() {
-   
-    if (this._radiologytemplateService.myform.get("ResultEntry")?.value == '') {
+    console.log(this._radiologytemplateService.myform.value)
+
+debugger
+    if (this._radiologytemplateService.myform.get("ResultEntry")?.value == '' || this._radiologytemplateService.myform.get("ResultEntry")?.value == undefined) {
       this.toastr.warning('Please Enter Result Entry ', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       return;
     }
 
-    console.log(this._radiologytemplateService.myform.value)
-
-
+      
     if (this.regObj.radReportId) {
 
       // var m_dataUpdate = {

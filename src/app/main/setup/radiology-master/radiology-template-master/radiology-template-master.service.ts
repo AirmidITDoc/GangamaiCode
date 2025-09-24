@@ -15,27 +15,11 @@ export class RadiologyTemplateMasterService {
         private _formBuilder: UntypedFormBuilder,
         private _FormvalidationserviceService: FormvalidationserviceService) 
         {
-        this.myform = this.createRadiologytemplateForm();
+        // this.myform = this.createRadiologytemplateForm();
         this.myformSearch = this.createSearchForm();
     }
 
-    createRadiologytemplateForm(): FormGroup {
-        return this._formBuilder.group({
-            templateId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            templateName: ["",
-                [
-                    Validators.required, Validators.maxLength(50),
-                    // Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
-                    Validators.pattern('^[a-zA-Z0-9 ]*$'),
-                    this._FormvalidationserviceService.allowEmptyStringValidator()
-                ]
-            ],
-            templateDesc: ["",
-                // Validators.required
-            ],
-            isActive: [true, [Validators.required]]
-        });
-    }
+   
 
     createSearchForm(): FormGroup {
         return this._formBuilder.group({
@@ -45,8 +29,8 @@ export class RadiologyTemplateMasterService {
     }
 
     initializeFormGroup() {
-        this.createRadiologytemplateForm();
-        this.createSearchForm();
+        // this.createRadiologytemplateForm();
+        // this.createSearchForm();
     }
 
     public templateMasterSave(Param: any) {

@@ -271,9 +271,9 @@ export class ItemMaster {
     isNursingFlag: boolean;
     hsNcode: string;
     hsncode: String;
-    cgst: number;
-    sgst: number;
-    igst: number;
+    cgst: any;
+    sgst: any;
+    igst: any;
     IsNarcotic: boolean;
     ManufId: number;
     manufId: any;
@@ -336,9 +336,9 @@ export class ItemMaster {
             this.reOrder = ItemMaster.reOrder || "";
             this.isNursingFlag = ItemMaster.isNursingFlag || false;
             this.hsNcode = ItemMaster.hsNcode || "";
-            this.cgst = ItemMaster.cgst || "";
-            this.sgst = ItemMaster.sgst || "";
-            this.igst = ItemMaster.igst || "";
+            this.cgst = ItemMaster.cgst || 0;
+            this.sgst = ItemMaster.sgst || 0;
+            this.igst = ItemMaster.igst || 0;
             this.manufId = ItemMaster.manufId || 0;
             this.IsNarcotic = ItemMaster.IsNarcotic || "false";
             this.prodLocation = ItemMaster.prodLocation || "";

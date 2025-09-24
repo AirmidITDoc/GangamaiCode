@@ -2,7 +2,7 @@
     <mat-toolbar style="height: 50px; justify-content:space-between;width: 100%;">
         <div fxLayout="row" fxLayoutAlign="start center">
             <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                Radiology Template
+                Template Description
             </span>
         </div>
         <div fxLayout="row" fxLayoutALign="end start">
@@ -22,42 +22,46 @@
                                 <div class="dialog-content-wrapper">
                                     <div fxFlexFill fxLayout="row" fxLayout.gt-xs="column">
 
-                                        <input type="hidden" name="templateId" formControlName="templateId">
+                                        <input type="hidden" name="templateId" formControlName="templateId"
+                                            [(ngModel)]="TemplateId">
 
-                                        <div fxLayout="row wrap" fxLayoutGap="12px grid">
-                                            <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                <airmid-textbox label="TemplateName" formControlName="templateName"
-                                                    [value]="data?.templateName" [formGroup]="templateForm"
-                                                    [validations]="getValidationMessages().templateName"
-                                                    [maxLength]="50">
-                                                </airmid-textbox>
 
-                                                <airmid-editor label="Template Details" formControlName="templateDesc"
-                                                    [(value)]="vTemplateDesc" [formGroup]="templateForm"
-                                                    (valueChange)="onEditorValueChange($event)">
-                                                </airmid-editor>
-                                            </div>
+                                        <mat-form-field appearance="outline" fxFlex>
+                                            <mat-label>Template Name</mat-label>
+                                            <input matInput placeholder="Template Name" [(ngModel)]="vTemplateName"
+                                                name="templateName" formControlName="templateName" required>
+                                            <mat-error class="error"
+                                                *ngIf="templateForm.get('templateName').invalid && templateForm.get('templateName').touched">
+                                                TemplateName is required Enter only Alphabets
+                                            </mat-error>
+                                        </mat-form-field>
 
-                                        </div>
+
+
+                                        <airmid-editor label="Template Details" formControlName="templateDesc"
+                                            [(value)]="vTemplateDesc" [formGroup]="templateForm"
+                                            (valueChange)="onEditorValueChange($event)">
+                                        </airmid-editor>
+
                                     </div>
-                                    <div class="new-appointment-actions gap-8 mt-12" fxLayout="row"
-                                        fxLayoutAlign="space-between">
-                                        <div>
-                                            <app-airmid-slider label="IsActive/Deactive" formControlName="isActive"
-                                                [formGroup]="templateForm" [(ngModel)]="isActive"></app-airmid-slider>
-                                        </div>
-                                        <div class="new-appointment-actions gap-8" fxLayoutAlign="end center">
-                                            <button class="btn btn-danger-outline"
-                                                (click)="onClear(false)">Close</button>
-                                            <button class="btn btn-primary " color="accent" (click)="onSubmit()">
-                                                <span>Save</span>
-                                            </button>
-                                        </div>
+                                </div>
+                            </form>
+                            <form [formGroup]="templateForm">
+                                <div fxLayout="row" fxLayoutAlign="end">
+
+                                    <mat-radio-button value='true' [checked]="true" name="IsDeleted"
+                                        style="align-items: center;"
+                                        formControlName="IsDeleted">IsActive</mat-radio-button>
+                                    <div class="modal-footer-buttons" fxLayoutGap="6px" style="padding: 8px;">
+                                        <button class="btn btn-danger-outline" (click)="onClear(false)">Close</button>
+                                        <button class="btn btn-primary" (click)="onSubmit()"
+                                            [disabled]="templateForm.invalid">Save</button>
                                     </div>
                                 </div>
                             </form>
                         </div>
                     </div>
+
                 </div>
             </div>
         </div>

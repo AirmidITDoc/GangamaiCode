@@ -49,22 +49,22 @@ export class SampleCollectionComponent implements OnInit {
     l_name:any="" 
 
     status:any="1"
-    Ptype:any="2"
+    Ptype:any="1"
     allcolumns=[
         { heading: "-", key: "lbl", width: 30, sort: true, align: 'left', type: gridColumnTypes.template },
         { heading: "-", key: "companyName", width: 30, sort: true, align: 'left', type: gridColumnTypes.template },
         { heading: "-", key: "isSampleCollection", width: 80, sort: true, align: 'left', type: gridColumnTypes.template },
-         { heading: "DOA", key: "vaTime", sort: true, align: 'left', emptySign: 'NA', width: 200},
+         { heading: "DOA", key: "vaTime", sort: true, align: 'left', emptySign: 'NA', width: 150},
         // { heading: "Collection Date", key: "pathDate", sort: true, align: 'left', emptySign: 'NA', width: 200,type:6},
-        { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
        
         { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
          { heading: "Admission No", key: "oP_IP_No", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-        { heading: "PBillNo", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "PatientType", key: "patientType", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "CompanyName", key: "cm", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-        { heading: "WardName", key: "wardName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "Doctor Name", key: "doctorName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+        { heading: "PBill No", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "Patient Type", key: "patientType", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "Company Name", key: "cm", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "Ward Name", key: "wardName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
          {
             heading: "Action", key: "action", align: "right", width: 250, sticky: true, type: gridColumnTypes.template,
             template: this.actionButtonTemplate  // Assign ng-template to the column
@@ -83,7 +83,7 @@ export class SampleCollectionComponent implements OnInit {
             { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
             { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
             { fieldName: "IsCompleted", fieldValue: "0", opType: OperatorComparer.Equals },
-            { fieldName: "OP_IP_Type", fieldValue: "2", opType: OperatorComparer.Equals }
+            { fieldName: "OP_IP_Type", fieldValue: "1", opType: OperatorComparer.Equals }
         ]
     }
 

@@ -129,7 +129,7 @@
 
                         <div fxLayout="column" fxLayoutAlign="start start">
                             <div fxFlex fxLayout="row">
-                                <mat-radio-group name="Istype" fxLayout="row" value="2" [formGroup]="myformSearch"
+                                <mat-radio-group name="Istype" fxLayout="row"  [formGroup]="myformSearch"
                                     formControlName="PatientTypeSearch" (change)="onChangeFirst()" style="padding: 6px;"
                                     class="gap-4">
                                     <mat-label>Type:</mat-label>
@@ -173,107 +173,3 @@
     </div>
 </div>
 
-
-<!-- <div class="page-layout simple inner-sidebar inner-scroll right-sidebar" style="height: 100%;" fusePerfectScrollbar
-    dynamicTableHeight>
-    <mat-toolbar class="top-header accent">
-        <div fxLayout="row" fxLayoutAlign="start center" class="top-header-info">
-            <button mat-icon-button class="sidebar-toggle ">
-                <mat-icon>menu</mat-icon>
-            </button>
-            <mat-icon class="logo-icon" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">account_box
-            </mat-icon>
-            <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-             Sample Collection List
-            </span>
-        </div>
-        <div class="gap-8" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
-            <button mat-raised-button (click)="onSave()">New  Sample Collection
-            </button>
-        </div>
-
-    </mat-toolbar>
-
-
-            <div fusePerfectScrollbar
-                class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
-                dynamicTableHeight>
-                <div class="top-header header accent p-16" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
-                    fxLayoutAlign.gt-xs="space-between center ">
-                    <div class="top-header-info">
-                        <div class="top-header-title">
-                            <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                                Sample Collection
-                            </span>
-                        </div>
-                    </div>
-
-                </div>
-                <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
-                    <airmid-table [gridConfig]="gridConfig" class="content">
-                        <ng-container filters>
-
-                            <mat-form-field appearance="outline" fxFlex>
-                                <mat-label>First Name</mat-label>
-                                <input matInput placeholder="Search First Name" autocomplete="off"
-                                    [(ngModel)]="gridConfig.filters[0].fieldValue" />
-                                <button matSuffix mat-icon-button aria-label="Clear"
-                                    (click)="gridConfig.filters[0].fieldValue=''">
-                                    <mat-icon>close</mat-icon>
-                                </button>
-                            </mat-form-field>
-                            <mat-form-field appearance="outline" fxFlex>
-                                <mat-label>Last Name</mat-label>
-                                <input matInput placeholder="Search Last Name" autocomplete="off"
-                                    [(ngModel)]="gridConfig.filters[1].fieldValue" />
-                                <button matSuffix mat-icon-button aria-label="Clear"
-                                    (click)="gridConfig.filters[1].fieldValue=''">
-                                    <mat-icon>close</mat-icon>
-                                </button>
-                            </mat-form-field>
-            
-                           
-                            <mat-form-field appearance="outline" fxFlex>
-                                <mat-label>RegNo</mat-label>
-                                <input matInput placeholder="Search RegNo" autocomplete="off"
-                                    [(ngModel)]="gridConfig.filters[2].fieldValue" />
-                                <button matSuffix mat-icon-button aria-label="Clear"
-                                    (click)="gridConfig.filters[2].fieldValue=''">
-                                    <mat-icon>close</mat-icon>
-                                </button>
-                            </mat-form-field>
-            
-                       
-                            <mat-form-field appearance="outline" fxFlex>
-                                <mat-label>From Date</mat-label>
-                                <input matInput placeholder="Search From Date" autocomplete="off"
-                                    [(ngModel)]="gridConfig.filters[3].fieldValue" />
-                                <button matSuffix mat-icon-button aria-label="Clear"
-                                    (click)="gridConfig.filters[3].fieldValue=''">
-                                    <mat-icon>close</mat-icon>
-                                </button>
-                            </mat-form-field>
-            
-                            <mat-form-field appearance="outline" fxFlex>
-                                <mat-label>To Date</mat-label>
-                                <input matInput placeholder="Search To Date" autocomplete="off"
-                                    [(ngModel)]="gridConfig.filters[4].fieldValue" />
-                                <button matSuffix mat-icon-button aria-label="Clear"
-                                    (click)="gridConfig.filters[4].fieldValue=''">
-                                    <mat-icon>close</mat-icon>
-                                </button>
-                            </mat-form-field>
-
-                            <mat-radio-group value="" [(ngModel)]="gridConfig.filters[5].fieldValue"
-                            fxLayoutAlign="center center">
-                            <mat-radio-button mat-fab value="1">IsCompleted</mat-radio-button>
-                            <mat-radio-button mat-fab value="0">NotCompleted</mat-radio-button>
-                        </mat-radio-group>
-                        </ng-container>
-                    </airmid-table>
-                </div>
-              
-            </div>
-
-
-</div> -->

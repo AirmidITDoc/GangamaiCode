@@ -60,7 +60,7 @@ export class IPBillingComponent implements OnInit {
     NurReqColumns = [
         'ServiceName',
         'Price',
-        'reqDate',
+        // 'reqDate',
         'billingUser',
         'Action'
     ];
@@ -232,6 +232,7 @@ export class IPBillingComponent implements OnInit {
             //console.log(this.selectedAdvanceObj)
             this.opD_IPD_Id = this.selectedAdvanceObj.admissionId || "0"
             this.ApiURL = "VisitDetail/GetServiceListwithTraiff?TariffId=" + this.selectedAdvanceObj.tariffId + "&ClassId=" + this.selectedAdvanceObj.classId + "&ServiceName="
+       
             this.getdata(this.selectedAdvanceObj.admissionId)
             this.getadvancelist(this.selectedAdvanceObj.admissionId)
             this.Serviceform.get("classId").setValue(this.selectedAdvanceObj.classId)
@@ -713,6 +714,7 @@ export class IPBillingComponent implements OnInit {
         this.Serviceform.get("opdIpdId").setValue(this.opD_IPD_Id) 
         this.Serviceform.get("wardId").setValue(this.WardId) 
         this.Serviceform.get("bedId").setValue(this.BedId)
+         this.Serviceform.get("isPathology").setValue(formValue.serviceName?.isPathology ?? 0)
         this.Serviceform.get("isRadiology").setValue(formValue.serviceName?.isRadiology ?? 0)
         this.Serviceform.get("isPackage").setValue(formValue.serviceName?.isPackage ?? 0)
         this.Serviceform.get("serviceId").setValue(formValue.serviceName?.serviceId)

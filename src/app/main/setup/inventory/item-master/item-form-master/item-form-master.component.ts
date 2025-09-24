@@ -3,7 +3,7 @@ import { FormGroup } from "@angular/forms";
 import { fuseAnimations } from "@fuse/animations";
 import { ItemMasterService } from "../item-master.service";
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from "@angular/material/dialog";
-import { ItemMaster, ItemMasterComponent } from "../item-master.component";
+import {  ItemMaster, ItemMasterComponent } from "../item-master.component";
 import { ToastrService } from "ngx-toastr";
 import { ItemGenericMasterComponent } from "../../item-generic-master/item-generic-master.component";
 import { AirmidDropDownComponent } from "app/main/shared/componets/airmid-dropdown/airmid-dropdown.component";
@@ -187,9 +187,10 @@ export class ItemFormMasterComponent implements OnInit {
 
 
     onSubmit() {
-
+debugger
         if (this.itemForm.valid) {
-                const formValues = this.itemForm.getRawValue() as ItemMasterModule;
+                // const formData = this.itemForm.getRawValue() as ItemMaster;
+                //  console.log(formData)
             console.log(this.itemForm.value)
             const formData = { ...this.itemForm.value };
 
@@ -201,11 +202,11 @@ export class ItemFormMasterComponent implements OnInit {
 
             formData.mAssignItemToStores = transformedStores;
             
-debugger
+
             if (parseFloat(formData.sgst) > 0){
                 formData.cgst = formData.sgst
                 formData.igst=0
-            }else if (formData.isgst > 0) {
+            }else if (formData.igst > 0) {
                 formData.cgst = 0
                 formData.sgst = 0
               }        

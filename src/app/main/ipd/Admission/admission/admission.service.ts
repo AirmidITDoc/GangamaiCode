@@ -267,6 +267,10 @@ export class AdmissionService {
     public getDoctorsByDepartment(deptId) {
         return this._httpClient1.GetData("VisitDetail/DeptDoctorList?DeptId=" + deptId)
     }
+ public getBedByWard(deptId) {
+        return this._httpClient1.GetData("VisitDetail/DeptDoctorList?DeptId=" + deptId)
+    }
+    
 
     public getMLCById(Id) {
         return this._httpClient1.GetData("MlcInformation/" + Id);

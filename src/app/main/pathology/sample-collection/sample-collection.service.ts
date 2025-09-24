@@ -30,7 +30,7 @@ export class SampleCollectionService {
       ]],
       // BillNo:[''],
       // BillDate:[''],
-      PatientTypeSearch: ['2'],
+      PatientTypeSearch: ['1'],
       StatusSearch: ['0'],
       Istype:['2'],
       CategoryId: [''],

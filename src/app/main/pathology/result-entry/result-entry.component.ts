@@ -27,6 +27,8 @@ import { ResultEntryOneComponent } from './result-entry-one/result-entry-one.com
 import { ResultEntryService } from './result-entry.service';
 import { ResultEntrytwoComponent } from './result-entrytwo/result-entrytwo.component';
 import { PageNames } from 'app/main/shared/componets/airmid-fileupload/airmid-fileupload.component';
+import { NewResultTemplateComponent } from './new-result-template/new-result-template.component';
+import { NewResultEntryComponent } from './new-result-entry/new-result-entry.component';
 
 
 
@@ -148,17 +150,17 @@ export class ResultEntryComponent implements OnInit {
             heading: "-", key: "patientType", sort: true, align: 'left', type: gridColumnTypes.template,
             template: this.actionsIPOP
         },
-        { heading: "DOA", key: "vaTime", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "Test Date", key: "pathDate", sort: true, align: 'left', emptySign: 'NA', type: 6 },
-        { heading: "UHID No", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "Admission No", key: "oP_IP_No", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-        { heading: "Gender", key: "genderName", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "Age Year", key: "ageYear", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "DOA", key: "vaTime", sort: true, align: 'left', emptySign: 'NA', width: 150  },
+        { heading: "Test Date", key: "pathDate", sort: true, align: 'left', emptySign: 'NA', type: 6 , width: 150 },
+        { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 100  },
+        { heading: "Admission No", key: "oP_IP_No", sort: true, align: 'left', emptySign: 'NA', width: 100  },
+        { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 400 },
+        // { heading: "Gender", key: "genderName", sort: true, align: 'left', emptySign: 'NA' },
+        // { heading: "Age Year", key: "ageYear", sort: true, align: 'left', emptySign: 'NA' },
 
         { heading: "Doctor Name", key: "doctorName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         // { heading: "PatientType", key: "patientType", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "PBill No", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "PBill No", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA' , width: 100 },
         {
             heading: "Action", key: "action", align: "right", width: 80, sticky: true, type: gridColumnTypes.template,
             template: this.actionButtonTemplate  // Assign ng-template to the column
@@ -534,7 +536,7 @@ export class ResultEntryComponent implements OnInit {
                             this.Iscompleted = 1;
                     });
 
-                    const dialogRef = this._matDialog.open(ResultEntryOneComponent,
+                    const dialogRef = this._matDialog.open(NewResultEntryComponent,
                         {
                             maxWidth: "95vw",
                             height: '670px',
@@ -949,7 +951,7 @@ export class ResultEntryComponent implements OnInit {
 
         this.advanceDataStored.storage = new AdvanceDetailObj(contact);
 
-        const dialogRef1 = this._matDialog.open(SampledetailtwoComponent,
+        const dialogRef1 = this._matDialog.open(NewResultTemplateComponent,
             {
                 maxWidth: "70vw",
                 height: '80vh',

@@ -22,22 +22,22 @@
         </mat-cell>
       </ng-container>
 
-      <ng-container matColumnDef="Price">
+       <ng-container matColumnDef="Price">
         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-130">Price</mat-header-cell>
         <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-130">
           <span>{{ contact.price }}</span>
         </mat-cell>
       </ng-container>
 
-      <ng-container matColumnDef="reqDate">
+     <!-- <ng-container matColumnDef="reqDate">
         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-180">ReqDateTime</mat-header-cell>
         <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-180">
           <span>{{ contact.reqDate }}-{{ contact.reqTime }}</span>
         </mat-cell>
-      </ng-container>
+      </ng-container> -->
 
       <ng-container matColumnDef="billingUser">
-        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>User Name</mat-header-cell>
+        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Request Date | User Name</mat-header-cell>
         <mat-cell *matCellDef="let contact" fxShow.gt-sm>
           <span>{{ contact.billingUser }}</span>
         </mat-cell>

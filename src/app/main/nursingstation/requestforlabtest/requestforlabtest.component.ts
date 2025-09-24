@@ -47,17 +47,17 @@ export class RequestforlabtestComponent implements OnInit {
     allColumns = [
       
         { heading: "IsFileON", key: "isOnFileTest", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 80 },
-        { heading: "Request Date", key: "reqTime", sort: true, align: 'left', emptySign: 'NA', width: 200, type: 8 },
-        { heading: "DOA", key: "admDate", sort: true, align: 'left', emptySign: 'NA', width: 170 },
-        { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-        { heading: "IPD No", key: "ipdNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-        { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
-        { heading: "Doctor Name", key: "doctorName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
+        { heading: "Request Date", key: "reqTime", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 8 },
+        { heading: "DOA", key: "admDate", sort: true, align: 'left', emptySign: 'NA', width: 110 },
+        { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 80 },
+        { heading: "IPD No", key: "ipdNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
+        { heading: "Doctor Name", key: "doctorName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
 
-        { heading: "WardName | Bed No", key: "wardName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
+        { heading: "Ward Name | Bed No", key: "wardName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
         
-        { heading: "Payer Type", key: "patientType", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-        { heading: "Request Type", key: "requestType", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+        { heading: "Payer Type", key: "patientType", sort: true, align: 'left', emptySign: 'NA', width: 120 },
+        { heading: "Request Type", key: "requestType", sort: true, align: 'left', emptySign: 'NA', width: 120 },
 
         {
             heading: "Action", key: "action", align: "right", width: 250, sticky: true, type: gridColumnTypes.template,
@@ -147,11 +147,11 @@ export class RequestforlabtestComponent implements OnInit {
             apiUrl: "IPPrescription/LabRadRequestDetailList",
             columnsList: [
 
-                { heading: "IsBillingStatus", key: "isStatus", type: gridColumnTypes.status, align: "center" },
-                { heading: "IsTestStatus", key: "isTestCompleted", type: gridColumnTypes.status, align: "center" },
-                { heading: "Request Date ", key: "reqDate", sort: true, align: 'left', emptySign: 'NA',width:250 },
-                { heading: "ServiceName", key: "serviceName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
-                { heading: "BillNo | User | DateTime", key: "addedByDate", sort: true, align: 'left', emptySign: 'NA', width: 300 },
+                { heading: "Status", key: "isStatus", type: gridColumnTypes.status, align: "center" ,width:70 },
+                { heading: "--", key: "isTestCompleted", type: gridColumnTypes.status, align: "center" ,width:50 },
+                { heading: "Request Date ", key: "reqDate", sort: true, align: 'left', emptySign: 'NA',width:200 },
+                { heading: "ServiceName", key: "serviceName", sort: true, align: 'left', emptySign: 'NA', width: 450 },
+                { heading: "BillNo | User | DateTime", key: "addedByDate", sort: true, align: 'left', emptySign: 'NA', width: 350 },
                 
 
             ],

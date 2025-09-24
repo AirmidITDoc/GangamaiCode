@@ -71,8 +71,8 @@ export class NewAppointmentComponent implements OnInit {
     OPIP: any = '';
     VisitId = 0;
     patienttype = 0
-    UnitId = 1;
-    ClassId = 1;
+    UnitId = 0;
+    ClassId = 0;
     Vtotalcount = 0;
     VNewcount = 0;
     VFollowupcount = 0;
