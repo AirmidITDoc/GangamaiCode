@@ -39,7 +39,8 @@
                                                     </mat-radio-group>
 
                                                     <div fxFlex="30%" fxFlex.sm="100%"
-                                                        *ngIf="userFormGroup.get('PatientType').value != '1' && userFormGroup.get('PatientType').value != '2'">
+                                                        *ngIf="userFormGroup.get('PatientType').value != '1' && userFormGroup.get('PatientType').value != '2'
+                                                        && !vCheckBox">
                                                         <airmid-autocomplete
                                                             label="Search Reg No / Patient Name / Mobile No"
                                                             [formGroup]="userFormGroup" fxFlex formControlName="RegID"
@@ -50,7 +51,8 @@
                                                     </div>
 
                                                     <div fxFlex="30%" fxFlex.sm="100%"
-                                                        *ngIf="userFormGroup.get('PatientType').value != '0' && userFormGroup.get('PatientType').value != '2'">
+                                                        *ngIf="userFormGroup.get('PatientType').value != '0' && userFormGroup.get('PatientType').value != '2'
+                                                        && !vCheckBox">
                                                         <airmid-autocomplete
                                                             label="IP RegNo / First Name / Last Name / Mobile No"
                                                             [formGroup]="userFormGroup" formControlName="RegID"
@@ -62,13 +64,25 @@
                                                     </div>
 
                                                     <div fxFlex="100%" fxFlex.sm="100%"
-                                                        *ngIf="userFormGroup.get('PatientType').value == '2'">
+                                                        *ngIf="userFormGroup.get('PatientType').value == '2' && !vCheckBox">
                                                         <airmid-textbox label="MobileNo" [(ngModel)]="MobileNo"
                                                             fxFlex="30%" formControlName="MobileNo"
                                                             [formGroup]="userFormGroup"
                                                             [validations]="getValidationMessages().mobileNo"
                                                             [type]="'text'" maxLength="10"></airmid-textbox>
                                                     </div>
+
+                                                    <div fxFlex="30%" fxFlex.sm="100%" *ngIf="vCheckBox">
+                                                        <airmid-autocomplete lbl="RegID" [formGroup]="userFormGroup" label="Search Reg No / Patient Name / Mobile No(DC)"
+                                                            formControlName="RegID" fxFlex placeholderText="RegNo / First Name / Last Name / Mobile No(DC)"
+                                                            ApiUrl="Admission/Dischargesearch-patient?Keyword=" (selectionChange)="getSelectedObjRegIP($event)"
+                                                            TextField="formattedText" ValueField="admissionID">
+                                                        </airmid-autocomplete>
+                                                    </div>
+
+                                                    <mat-checkbox fxFlex="15%" formControlName="IsDischargedit" [(ngModel)]="vCheckBox"
+                                                      (change)="getDischargedList($event)">IsDischarged
+                                                            </mat-checkbox>
                                                 </div>
                                             </div>
                                             <div *ngIf="userFormGroup.get('PatientType').value != '2' && RegId != ''">
