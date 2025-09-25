@@ -1,4 +1,4 @@
-import { Component, ElementRef, Inject, OnInit, Renderer2, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, ElementRef, Inject, NgZone, OnInit, Renderer2, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormArray, FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { fuseAnimations } from '@fuse/animations';
@@ -79,7 +79,7 @@ export class NUserComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<NUserComponent>,
     private _FormvalidationserviceService: FormvalidationserviceService,
-    private renderer: Renderer2
+    private zone: NgZone
   ) {
     this.myuserApprovalform = this.createuserApprovalForm();
     this.myuserApprovalform.markAllAsTouched();
@@ -206,23 +206,30 @@ export class NUserComponent implements OnInit {
     this._CreateUserService.getUnitDetailList(SelectQuery).subscribe(response => {
       const rowData = response?.data || [];
       this.RtrvUnitList = rowData.map(item => ({
-        value: item.unitId,
+        value: String(item.unitId),
         text: item.hospitalName
       }))
       debugger
       console.log("Unit data:", this.RtrvUnitList)
-      const assignedUnits = this.RtrvUnitList.filter(unit => {
-        const originalItem = rowData.find(r => r.unitId === unit.value);
-        return originalItem?.isAssigned === true;
-      });
+      // const assignedUnits = this.RtrvUnitList.filter(unit => {
+      //   const originalItem = rowData.find(r => r.unitId === unit.value);
+      //   return originalItem?.isAssigned === true;
+      // });
 
-      this.myuserApprovalform.patchValue({
-        multipleUnitId: assignedUnits
-      });
+      // this.myuserApprovalform.patchValue({
+      //   multipleUnitId: assignedUnits
+      // });
+
+  //     this.zone.run(() => {
+  //   this.myuserApprovalform.patchValue({
+  //     multipleUnitId: this.RtrvUnitList
+  //   });
+  // });
 
       setTimeout(() => {
         this.myuserApprovalform.get('multipleUnitId')?.setValue(this.RtrvUnitList);
       }, 0);
+      console.log("setData:", this.myuserApprovalform.get('multipleUnitId').value)
     });
   }
 
@@ -245,18 +252,19 @@ export class NUserComponent implements OnInit {
     this._CreateUserService.getStoreDetailList(SelectQuery).subscribe(response => {
       const rowData = response?.data || [];
       this.RtrvStoreList = rowData.map(item => ({
-        value: item.storeId,
+        value: String(item.storeId),
         text: item.storeName
       }))
+      debugger
       console.log("store data:", this.RtrvStoreList)
-      const assignedStore = this.RtrvUnitList.filter(store => {
-        const originalItem = rowData.find(r => r.storeId === store.value);
-        return originalItem?.isAssigned === true;
-      });
+      // const assignedStore = this.RtrvUnitList.filter(store => {
+      //   const originalItem = rowData.find(r => r.storeId === store.value);
+      //   return originalItem?.isAssigned === true;
+      // });
 
-      this.myuserApprovalform.patchValue({
-        multipleUnitId: assignedStore
-      });
+      // this.myuserApprovalform.patchValue({
+      //   multipleUnitId: assignedStore
+      // });
       setTimeout(() => {
         this.myuserApprovalform.get('multipleStoreId')?.setValue(this.RtrvStoreList);
       }, 0);
@@ -266,7 +274,7 @@ export class NUserComponent implements OnInit {
 
   createuserApprovalForm(): FormGroup {
     return this._formBuilder.group({
-      userId: [0],
+      userId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       firstName: ['', [
         Validators.required,
         Validators.pattern("^[A-Za-z () ] *[a-zA-Z () ]*$"),
@@ -281,7 +289,7 @@ export class NUserComponent implements OnInit {
           Validators.pattern('[a-z A-Z 0-9_ ]*')
         ]],
       password: ["", [Validators.required]],
-      unitId: [1],
+      unitId: [this._loggedService.currentUserValue.user.unitId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       mobileNo: ["", [
         Validators.required,
         Validators.minLength(10),
@@ -293,11 +301,7 @@ export class NUserComponent implements OnInit {
           Validators.required
         ]
       ],
-      storeId: [2,
-        [
-          Validators.required
-        ]
-      ],
+      storeId: [this._loggedService.currentUserValue.user.storeId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       isDoctorType: false,
       doctorId: "0",
       isPoverify: false,
@@ -320,7 +324,7 @@ export class NUserComponent implements OnInit {
       isPoinchargeVerify: false,
       isInchIndVfy: false,
       isRefDocEditOpt: true,
-      webRoleId: [0, [Validators.required]],
+      webRoleId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       userToken: [""],
       pharExtOpt: 0,
       pharOpopt: 0,
@@ -508,7 +512,9 @@ export class NUserComponent implements OnInit {
   }
 
   selectChangeUnitName(obj: any) {
+    console.log(obj)
     this.unitname = obj.value
+    console.log("set:", this.myuserApprovalform.get('multipleUnitId').value)
   }
 
   selectChangeRoleName(obj: any) {
@@ -516,6 +522,7 @@ export class NUserComponent implements OnInit {
   }
 
   selectChangeStoreName(obj: any) {
+    console.log(obj)
     this.storename = obj.value
   }
 
