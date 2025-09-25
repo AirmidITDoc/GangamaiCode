@@ -29,16 +29,13 @@
                                 "glob": "**/*",
                                 "input": "node_modules/ngx-extended-pdf-viewer/assets/",
                                 "output": "/assets/"
-                            },
-                            {
-                                "glob": "**/*",
-                                "output": "assets/ae-icons/"
                             }
                         ],
                         "styles": [
                             "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
                             "./node_modules/@fortawesome/fontawesome-free/css/all.min.css",
-                            "src/styles.scss"                        ],
+                            "src/styles.scss"
+                        ],
                         "scripts": [
                             "./node_modules/@fortawesome/fontawesome-free/js/all.min.js"
                         ],

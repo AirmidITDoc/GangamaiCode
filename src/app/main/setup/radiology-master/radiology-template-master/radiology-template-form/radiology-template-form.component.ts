@@ -20,17 +20,6 @@ export class RadiologyTemplateFormComponent implements OnInit {
     vTemplateName: any;
     isActive: boolean = true;
      TemplateId = 0;
-    editorConfig: AngularEditorConfig = {
-        editable: true,
-        spellcheck: true,
-        height: '20rem',
-        minHeight: '20rem',
-        translate: 'yes',
-        placeholder: 'Enter text here...',
-        enableToolbar: true,
-        showToolbar: true,
-
-    };
 
     onBlur(e: any) {
         this.vTemplateDesc = e.target.innerHTML;
