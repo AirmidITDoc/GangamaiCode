@@ -1,4 +1,3 @@
-
 <!-- OP Request Patient List For Admission -->
 <ng-template #IPConvertTable>
     <mat-toolbar class="accent" style="width: 100%;height: 40px;justify-content: space-between;">
@@ -30,7 +29,7 @@
                         </mat-cell>
                     </ng-container>
 
-                     <ng-container matColumnDef="UHID">
+                    <ng-container matColumnDef="UHID">
                         <mat-header-cell *matHeaderCellDef mat-sort-header class="w-160">
                             UHID
                         </mat-header-cell>
@@ -56,9 +55,9 @@
                             <span> {{contact.patientType}}</span>
                         </mat-cell>
                     </ng-container>
-                    
+
                     <ng-container matColumnDef="opdNo">
-                        <mat-header-cell *matHeaderCellDef mat-sort-header >
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>
                             OPD No
                         </mat-header-cell>
                         <mat-cell *matCellDef="let contact">
@@ -74,7 +73,7 @@
                         </mat-cell>
                     </ng-container>
 
-                      <ng-container matColumnDef="RefDoctorName">
+                    <ng-container matColumnDef="RefDoctorName">
                         <mat-header-cell *matHeaderCellDef mat-sort-header class="w-260">
                             Ref Doctor Name
                         </mat-header-cell>
@@ -826,11 +825,13 @@
 
                                             <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
 
-                                                <airmid-dropdown label="Bed Name" formControlName="bedId"
-                                                    [value]="registerObj1?.bedId ?? 0" [formGroup]="admissionFormGroup"
-                                                    [validations]="getValidationMessages().bedId"
-                                                    [mode]="autocompleteModeBedName">
+                                              <airmid-dropdown label="Bed Name" formControlName="bedId"
+                                                    [value]="registerObj1?.bedId ?? registerObj1?.bedId"
+                                                    [formGroup]="admissionFormGroup" TextField="bedName"  
+                                          ValueField="bedId"
+                                                    [validations]="getValidationMessages().bedId" #ddlBedName>
                                                 </airmid-dropdown>
+                                              
                                             </div>
 
                                             <div fxFlex="34%" fxFlex.xs="100%" fxFlex.sm="33%">

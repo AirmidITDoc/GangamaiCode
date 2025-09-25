@@ -74,6 +74,8 @@ export class NewAdmissionComponent implements OnInit {
   @ViewChild('ddlCountry') ddlCountry: AirmidDropDownComponent;
 
   @ViewChild('ddlClassName') ddlClassName: AirmidDropDownComponent;
+  @ViewChild('ddlBedName') ddlBedName: AirmidDropDownComponent;
+  
 
   constructor(public _AdmissionService: AdmissionService,
     private accountService: AuthenticationService,
@@ -769,14 +771,16 @@ export class NewAdmissionComponent implements OnInit {
   }
 
   selectChangedepartment(obj: any) {
+    debugger
     if (obj.value) {
       this._AdmissionService.getDoctorsByDepartment(obj.value).subscribe((data: any) => {
+          console.log(data)
         this.ddlDoctor.options = data;
         this.ddlDoctor.bindGridAutoComplete();
       });
     } else {
       this._AdmissionService.getDoctorsByDepartment(obj.departmentId).subscribe((data: any) => {
-        // console.log(data)
+        console.log(data)
         this.ddlDoctor.options = data;
         this.ddlDoctor.bindGridAutoComplete();
         const incomingDoctorId = obj.docNameId || obj.doctorId;
@@ -790,27 +794,8 @@ export class NewAdmissionComponent implements OnInit {
     }
   }
 
-    selectChangeward(obj: any) {
-    if (obj.value) {
-      this._AdmissionService.getBedByWard(obj.value).subscribe((data: any) => {
-        this.ddlDoctor.options = data;
-        this.ddlDoctor.bindGridAutoComplete();
-      });
-    } else {
-      this._AdmissionService.getDoctorsByDepartment(obj.departmentId).subscribe((data: any) => {
-        // console.log(data)
-        this.ddlDoctor.options = data;
-        this.ddlDoctor.bindGridAutoComplete();
-        const incomingDoctorId = obj.docNameId || obj.doctorId;
-        if (incomingDoctorId) {
-          const matchedDoctor = data.find(doc => doc.value === incomingDoctorId);
-          if (matchedDoctor) {
-            this.admissionFormGroup.get('DocNameId')?.setValue(matchedDoctor.value);
-          }
-        }
-      });
-    }
-  }
+
+  
   getAdmittedPatientCasepaperview(AdmissionId) {
     this.commonService.Onprint("AdmissionId", AdmissionId, "IpCasepaperReport");
   }
@@ -825,11 +810,37 @@ export class NewAdmissionComponent implements OnInit {
   onChangestate(e) {
     // this.ddlCountry.SetSelection(e.stateId);
   }
-
+RoomId=0
   onChangeWard(e) {
+    debugger
+    this.RoomId=e.roomId
     this.ddlClassName.SetSelection(e.classId);
+     this. selectChangeward(e)
   }
 
+    selectChangeward(obj: any) {
+      debugger
+    if (obj.roomId) {
+      this._AdmissionService.getBedByWard(obj.roomId).subscribe((data: any) => {
+        console.log(data)
+        this.ddlBedName.options = data;
+        this.ddlBedName.bindGridAutoComplete();
+      });
+    // } else {
+    //   this._AdmissionService.getDoctorsByDepartment(obj.departmentId).subscribe((data: any) => {
+    //     // console.log(data)
+    //     this.ddlDoctor.options = data;
+    //     this.ddlDoctor.bindGridAutoComplete();
+    //     const incomingDoctorId = obj.docNameId || obj.doctorId;
+    //     if (incomingDoctorId) {
+    //       const matchedDoctor = data.find(doc => doc.value === incomingDoctorId);
+    //       if (matchedDoctor) {
+    //         this.admissionFormGroup.get('DocNameId')?.setValue(matchedDoctor.value);
+    //       }
+    //     }
+    //   });
+    }
+  }
   onChangecity(e) {
     this.CityName = e.cityName
     this.registerObj.stateId = e.stateId
