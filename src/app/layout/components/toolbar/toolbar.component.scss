@@ -69,3 +69,95 @@ toolbar {
     font-weight: normal;
     color: #666;
 }
+
+/* Inline fuse-search-bar overrides within toolbar */
+toolbar .nav-button fuse-search-bar .fuse-search-bar {
+    position: static !important;
+    height: 45px;
+    padding: 0 8px;
+}
+
+/* Ensure the inner content aligns to toolbar height */
+toolbar .nav-button fuse-search-bar .fuse-search-bar .fuse-search-bar-content {
+    display: flex;
+    align-items: center;
+    height: 45px;
+}
+
+toolbar .nav-button fuse-search-bar .fuse-search-bar.expanded {
+    position: static !important;
+    top: auto !important;
+    right: auto !important;
+    bottom: auto !important;
+    left: auto !important;
+    z-index: auto !important;
+    min-height: 45px !important;
+}
+
+/* Default: hide input inline, show when expanded */
+toolbar .nav-button fuse-search-bar .fuse-search-bar .fuse-search-bar-content #fuse-search-bar-input {
+    display: none !important;
+}
+
+/* When expanded: show input inline with width, show collapser */
+toolbar .nav-button fuse-search-bar .fuse-search-bar.expanded .fuse-search-bar-content #fuse-search-bar-input {
+    display: flex !important;
+    flex: 0 0 auto;
+    width: 240px;
+    max-width: 320px;
+}
+
+/* Ensure input aligns with toolbar height */
+toolbar .nav-button fuse-search-bar .fuse-search-bar .fuse-search-bar-content #fuse-search-bar-input {
+    height: 45px !important;
+    line-height: 45px !important;
+    padding: 0 8px !important;
+    margin: 0 8px !important;
+    box-sizing: border-box;
+}
+
+/* Force icon buttons to match toolbar height */
+toolbar .nav-button fuse-search-bar .fuse-search-bar .fuse-search-bar-content .fuse-search-bar-expander,
+toolbar .nav-button fuse-search-bar .fuse-search-bar .fuse-search-bar-content .fuse-search-bar-collapser {
+    height: 45px !important;
+    width: 45px !important;
+    line-height: 45px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+/* State-based visibility for buttons */
+toolbar .nav-button fuse-search-bar .fuse-search-bar:not(.expanded) .fuse-search-bar-content .fuse-search-bar-collapser {
+    display: none !important;
+}
+
+toolbar .nav-button fuse-search-bar .fuse-search-bar.expanded .fuse-search-bar-content .fuse-search-bar-expander {
+    display: none !important;
+}
+
+/* Show appropriate buttons based on state */
+toolbar .nav-button fuse-search-bar .fuse-search-bar:not(.expanded) .fuse-search-bar-content .fuse-search-bar-expander {
+    display: inline-flex !important;
+}
+
+toolbar .nav-button fuse-search-bar .fuse-search-bar.expanded .fuse-search-bar-content .fuse-search-bar-collapser {
+    display: inline-flex !important;
+}
+
+/* Neutralize any global overlay effect if a class is added to body */
+body.fuse-search-bar-expanded #toolbar {
+    z-index: initial !important;
+}
+
+/* --- Minimal MUI-focused overrides (consolidated) --- */
+.mat-toolbar fuse-search-bar .fuse-search-bar { position: static; height: 45px; padding: 0 8px; }
+.mat-toolbar fuse-search-bar .fuse-search-bar.expanded { position: static; inset: auto; z-index: auto; min-height: 45px; }
+.mat-toolbar fuse-search-bar .fuse-search-bar .fuse-search-bar-content { display: flex; align-items: center; height: 45px; }
+.mat-toolbar fuse-search-bar #fuse-search-bar-input { display: none; height: 45px; line-height: 45px; padding: 0 8px; margin: 0 8px; box-sizing: border-box; }
+.mat-toolbar fuse-search-bar .fuse-search-bar.expanded #fuse-search-bar-input { display: block; width: 240px; max-width: 320px; }
+.mat-toolbar fuse-search-bar button.mat-icon-button { height: 45px; width: 45px; line-height: 45px; padding: 0; margin: 0; }
+.mat-toolbar fuse-search-bar .fuse-search-bar:not(.expanded) button.mat-icon-button.fuse-search-bar-collapser { display: none; }
+.mat-toolbar fuse-search-bar .fuse-search-bar.expanded button.mat-icon-button.fuse-search-bar-expander { display: none; }
