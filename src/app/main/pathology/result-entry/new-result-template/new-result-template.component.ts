@@ -23,18 +23,6 @@ export class NewResultTemplateComponent {
   PathReportHeaderForm: FormGroup
   @ViewChild('PathResultDoctorId') PathResultDoctorId: ElementRef;
 
-  // editorConfig: AngularEditorConfig = {
-  //   editable: true,
-  //   spellcheck: true,
-  //   height: '20rem',
-  //   minHeight: '20rem',
-  //   translate: 'yes',
-  //   placeholder: 'Enter text here...',
-  //   enableToolbar: true,
-  //   showToolbar: true,
-
-  // };
-
   onBlur(e: any) {
     this.vTemplateDesc = e.target.innerHTML;
     throw new Error('Method not implemented.');

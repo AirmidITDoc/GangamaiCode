@@ -5,8 +5,6 @@ import { FormControl, FormGroup, NgControl } from '@angular/forms';
 import { Subject, takeUntil } from 'rxjs';
 import { LanguageOption, SpeechRecognitionService } from '../../services/speech-recognition.service';
 // import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-import { CommonModule } from '@angular/common';
-import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import {
     type EditorConfig,
     ClassicEditor,
@@ -345,22 +343,6 @@ export class AirmidEditorComponent {
             contentToolbar: ['tableColumn', 'tableRow', 'mergeTableCells', 'tableProperties', 'tableCellProperties']
         }
     };
-
-
-//     editorConfig = {
-//   toolbar: [
-//     'heading', '|', 'bold', 'italic', 'underline', 'strikethrough', '|',
-//     'fontSize', 'fontFamily', 'fontColor', 'fontBackgroundColor', '|',
-//     'link', 'bulletedList', 'numberedList', '|',
-//     'insertTable', 'blockQuote', 'codeBlock', '|',
-//     'undo', 'redo', '|',
-//     'sourceEditing'
-//   ],
-//   table: {
-//     contentToolbar: ['tableColumn', 'tableRow', 'mergeTableCells']
-//   }
-// };
-
     languages: LanguageOption[] = [];
     selectedLang = 'en-US';
     @Input() data: string = '';
