@@ -1,5 +1,5 @@
 import { Component, HostBinding, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
-import { FormGroup, UntypedFormBuilder } from '@angular/forms';
+import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { fuseAnimations } from '@fuse/animations';
 import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
@@ -133,7 +133,11 @@ export class CreateUserComponent implements OnInit {
       UserName: [''],
       FirstName: [''],
       LastName: [''],
-      MobileNo: [''],
+      MobileNo: ["", [
+        Validators.minLength(10),
+        Validators.maxLength(10),
+        Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
+      ]],
       storeId: [],
       roleId: [],
       status: ['']
