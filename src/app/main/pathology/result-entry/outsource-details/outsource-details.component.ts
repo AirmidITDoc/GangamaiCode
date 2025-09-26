@@ -1,0 +1,149 @@
+import { Component, Inject, ViewEncapsulation } from '@angular/core';
+import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
+import { ResultEntryService } from '../result-entry.service';
+import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
+import { AuthenticationService } from 'app/core/services/authentication.service';
+import { Router } from '@angular/router';
+import { PrintserviceService } from 'app/main/shared/services/printservice.service';
+import { DatePipe } from '@angular/common';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { ToastrService } from 'ngx-toastr';
+import { AdvanceDataStored } from 'app/main/ipd/advance';
+import { fuseAnimations } from '@fuse/animations';
+
+@Component({
+  selector: 'app-outsource-details',
+  templateUrl: './outsource-details.component.html',
+  styleUrls: ['./outsource-details.component.scss'],
+  encapsulation: ViewEncapsulation.None,
+  animations: fuseAnimations
+})
+export class OutsourceDetailsComponent {
+
+  LabFormGroup: FormGroup;
+  dateTimeObj: any;
+  screenFromString = 'advance';
+  outSourceId = 0;
+  outSourceLabName: any;
+  outSourceStatus=true;
+  date: any;
+  date1: any;
+  LabName='';
+  vPathReportId: any;
+  autocompleteModeoutsource: string = "OutsourceLab";
+  constructor(
+    public _SampleService: ResultEntryService,
+    private formBuilder: UntypedFormBuilder,
+    private accountService: AuthenticationService,
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    public _matDialog: MatDialog,
+    private _FormvalidationserviceService: FormvalidationserviceService,
+    public datePipe: DatePipe,
+    private commonService: PrintserviceService,
+    public toastr: ToastrService,
+    private advanceDataStored: AdvanceDataStored,
+    public dialogRef: MatDialogRef<OutsourceDetailsComponent>,
+    private router: Router
+  ) {
+
+  }
+
+  ngOnInit(): void {
+    console.log(this.data);
+    this.LabFormGroup = this.createmlcForm();
+    this.LabFormGroup.markAllAsTouched();
+
+    if (this.data) {
+      this.vPathReportId = this.data.pathReportId
+      this.outSourceId = this.data.outSourceId || 0;
+      this.outSourceLabName = this.data.outSourceLabName;
+      this.outSourceStatus = this.data.outSourceStatus;
+      // this.mobileNo = this.data.mobileNo;
+      // this.address = this.data.address;
+      // this.data.sampleCollectionTime
+
+    }
+    var now = new Date();
+     var now1 = new Date()
+    now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+     now1.setMinutes(now1.getMinutes() - now1.getTimezoneOffset());
+    this.date = now.toISOString().slice(0, 16);
+    this.date1 = now1.toISOString().slice(0, 16);
+  }
+
+
+  createmlcForm() {
+    return this.formBuilder.group({
+      pathReportId: [this.vPathReportId, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      outSourceId: [this.outSourceId],
+      outSourceLabName: [ this.LabName, [Validators.required]],
+      outSourceSampleSentDateTime: [''],
+      outSourceStatus: [true, Validators.required],
+      outSourceReportCollectedDateTime: [''],
+      outSourceCreatedBy: [this.accountService.currentUserValue.userId, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      outSourceCreatedDateTime: [new Date().toISOString()],
+      outSourceModifiedby: [this.accountService.currentUserValue.userId, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      outSourceModifiedDateTime: [new Date().toISOString()],
+    });
+  }
+
+    onChangeLab(e) {
+      console.log(e)
+    this.outSourceId=e.value
+    this.LabName = e.text
+    }
+
+  onSubmit() {
+    debugger
+    if (this.LabFormGroup.get('outSourceStatus').value)
+      this.LabFormGroup.get('outSourceStatus').setValue(1)
+    else
+      this.LabFormGroup.get('outSourceStatus').setValue(0)
+    this.LabFormGroup.get('outSourceLabName').setValue(this.LabName)
+
+    console.log(this.LabFormGroup.value)
+    if (!this.LabFormGroup.invalid) {
+
+      this._SampleService.updatelabourMaster(this.LabFormGroup.value).subscribe((response) => {
+        this._matDialog.closeAll()
+      });
+    } else {
+      let invalidFields = [];
+
+      if (this.LabFormGroup.invalid) {
+        for (const controlName in this.LabFormGroup.controls) {
+          if (this.LabFormGroup.controls[controlName].invalid) {
+            invalidFields.push(`Lab Form: ${controlName}`);
+          }
+        }
+      }
+      if (invalidFields.length > 0) {
+        invalidFields.forEach(field => {
+          this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
+          );
+        });
+      }
+    }
+  }
+
+  keyPressAlphanumeric(event) {
+    var inp = String.fromCharCode(event.keyCode);
+    if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
+      return true;
+    } else {
+      event.preventDefault();
+      return false;
+    }
+  }
+
+
+  getDateTime(dateTimeObj) {
+    this.dateTimeObj = dateTimeObj;
+  }
+
+  onClose() {
+    this.dialogRef.close();
+  }
+
+}
+

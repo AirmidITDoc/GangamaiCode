@@ -53,16 +53,17 @@ export class SampleCollectionComponent implements OnInit {
     allcolumns=[
         { heading: "-", key: "lbl", width: 30, sort: true, align: 'left', type: gridColumnTypes.template },
         { heading: "-", key: "companyName", width: 30, sort: true, align: 'left', type: gridColumnTypes.template },
-        { heading: "-", key: "isSampleCollection", width: 80, sort: true, align: 'left', type: gridColumnTypes.template },
+        { heading: "-", key: "isSampleCollection", width: 50, sort: true, align: 'left', type: gridColumnTypes.template },
          { heading: "DOA", key: "vaTime", sort: true, align: 'left', emptySign: 'NA', width: 150},
         // { heading: "Collection Date", key: "pathDate", sort: true, align: 'left', emptySign: 'NA', width: 200,type:6},
         { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
        
         { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
          { heading: "Admission No", key: "oP_IP_No", sort: true, align: 'left', emptySign: 'NA' },
+          { heading: "PBill No", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+           { heading: "Patient Type", key: "patientType", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "Doctor Name", key: "doctorName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-        { heading: "PBill No", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "Patient Type", key: "patientType", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+       
         { heading: "Company Name", key: "cm", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "Ward Name", key: "wardName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
          {
@@ -118,8 +119,8 @@ this.myformSearch=this._SampleCollectionService.createSearchForm()
             columnsList: [
                 { heading: "Completed", key: "isCompleted", sort: true, align: 'left',type: gridColumnTypes.template, 
                     template:this.iconisCompeleted, width: 50 },
-                { heading: "Sample No", key: "sampleNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
                 { heading: "Test Name", key: "serviceName", sort: true, align: 'left', emptySign: 'NA', width: 400 },
+                { heading: "Sample No", key: "sampleNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
                 { heading: "Collection Date/Time", key: "sampleCollectionTime", sort: true, align: 'left', emptySign: 'NA', width: 150 },
             ],
             sortField: "BillNo",

@@ -129,38 +129,26 @@ export class ParametermasterService {
         } 
     }
 
-    public getStateList(CityId,loader = true) {
+    // public getStateList(CityId,loader = true) {
       
-        return this._httpClient.PostData("Generic/GetByProc?procName=Retrieve_StateMasterForCombo_Conditional", { "Id": CityId })
-      }
+    //     return this._httpClient.PostData("Generic/GetByProc?procName=Retrieve_StateMasterForCombo_Conditional", { "Id": CityId })
+    //   }
 
     initializeFormGroup() {
         this.createParameterForm();
     }
 
     //parameter detail
-    public getParameterMasterList(m_data,loader = true) { 
-        if (loader) {
-            this._loaderService.show();
-        }
-        return this._httpClient.PostData("Generic/GetByProc?procName=m_Rtrv_PathParameterMaster_by_Name",
-            m_data);
+    public getParameterMasterList(m_data) { 
+      
+        return this._httpClient.PostData("Generic/GetByProc?procName=m_Rtrv_PathParameterMaster_by_Name",m_data);
     }
      // Unit Master Combobox List
      public getUnitMasterCombo() {
         return this._httpClient.PostData(
             "Generic/GetByProc?procName=m_Rtrv_UnitMasterForCombo",{});
     }
-     // Gender Master Combobox List
    
-
-    public getGenderMasterCombo() { 
-        return this._httpClient.PostData("Generic/GetByProc?procName=m_Rtrv_GenderMasterForCombo",{});
-    }
-
-    // public deactivateTheStatus(param) {
-    //     return this._httpClient.PostData("ParameterMaster/ParameterCancel", param);
-    // }
         
     public deactivateTheStatus(Id: number) {
         return this._httpClient.DeleteData(`ParameterMaster/ParameterCancel?Id=${Id}`);
@@ -181,13 +169,12 @@ export class ParametermasterService {
         return this._httpClient.PostData("PathologyMaster/ParameterAgeWiseMasterUpdate", param);
     }
 
-    // Gender Master Combobox List
-    public getParameterMaster1Combo() {
-        return this._httpClient.PostData(
-            "Generic/GetByProc?procName=Rtrv_PathParameterList_by_Name",
-            {}
-        );
+       public insertlaboursouceMaster(Param: any) {
+        if (Param.outSourceId) {
+            return this._httpClient.PutData("OutSourcelabMaster/" + Param.outSourceId, Param);
+        } else return this._httpClient.PostData("OutSourcelabMaster", Param);
     }
+
 
     public deleteAssignParameterToRange(param) {
         return this._httpClient.PostData("Pathology/ParameterUpdate", param);

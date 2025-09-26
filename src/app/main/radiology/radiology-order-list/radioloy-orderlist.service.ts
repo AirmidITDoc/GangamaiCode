@@ -52,7 +52,7 @@ export class RadioloyOrderlistService {
         // RefDoctorID: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
         ResultEntry: ['',Validators.required],
         // Suggatationnote:[''],
-        DoctorId: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+        DoctorId: [0, [Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
         // IsDeleted: ['false'],
         // AddedBy: [this.accountService.currentUserValue.userId, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
         // UpdatedBy: [this.accountService.currentUserValue.userId, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
@@ -93,13 +93,6 @@ export class RadioloyOrderlistService {
     }
 
 
-    // public getRadiologytemplateMasterList() {
-    //   return this._httpClient.post("Generic/GetByProc?procName=ps_Rtrv_Radiology_TemplateMaster_by_Name", {TemplateName:"%"})
-    // }
-    
-    // public getRadiologytemplateMasterList1(employee) {
-    //   return this._httpClient.post("Generic/GetByProc?procName=Rtrv_RadilogyResultEntryList_Ptnt_Dtls", employee)
-    // }
     // public gettemplateCombo(Id)
     // {
     //   return this._httpClient.post("Generic/GetByProc?procName=Retrieve_RadTemplateMasterForCombo",{Id:1});
@@ -123,13 +116,13 @@ export class RadioloyOrderlistService {
       return this._httpClient1.GetData("RadiologyTemplate/RadReportId/" + Id);
     }
     
-    // public insertRadiologyTemplateMaster(employee) {
-    //   return this._httpClient.post("Radiology/RadiologyTemplateMasterSave", employee);
-    // }
+    public RadioReportverifyMaster(employee) {
+      return this._httpClient1.PostData("Radiology/RadiologyTemplateMasterSave", employee);
+    }
     
-    // public updateRadiologyTemplateMaster(employee) {
-    //   return this._httpClient.post("Radiology/RadiologyTemplateMasterUpdate", employee);
-    // }
+    public updateRadioReportOutscourceMaster(employee) {
+      return this._httpClient.post("Radiology/RadiologyTemplateMasterUpdate", employee);
+    }
   
     populateForm(employee) {
       this.myform.patchValue(employee);

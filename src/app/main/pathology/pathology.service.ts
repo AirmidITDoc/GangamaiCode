@@ -77,83 +77,64 @@ export class PathologyService {
   }
 
 
-
-
-  // Rtrv_PathologySampleEntryList_Ptnt_Dtls
-
-  //  public getPatientList(employee) {
-  //   return this._httpClient.post("Generic/GetByProc?procName=Rtrv_PathSamColllist_Pat_Dtls", employee)
-  // }
-
-
   public PathTemplateResultentryInsert(employee) {
     return this._httpClient.post("Pathology/PathologyTemplateResult", employee);
   }
 
+  // public getPathologyDoctorMaster1Combo() {
+  //   return this._httpClient.post("Generic/GetByProc?procName=Retrieve_PathologistDoctorMasterForCombo", {})
+  // }
+
+
+  // public getResultList(employee) {
+  //   return this._httpClient.post("Generic/GetByProc?procName=Retrive_PathologyResultTemplate_Update", employee)
+  // }
+
+
+  // public getRadioTestDetails(employee) {
+  //   return this._httpClient.post("Generic/GetByProc?procName=Rtrv_RadioResultEntryList_Test_Dtls", employee)
+
+  // }
+
+  // public getTestList(employee) {
+  //   return this._httpClient.post("Generic/GetByProc?procName=Rtrv_PathResultEntryList_Test_Dtls1", employee)
+  // }
+
+  // public getPathTemplatePrint(No) {
+  //   return this._httpClient.post("Generic/GetByProc?procName=rptPrintPathologyReportTemplate", No)
+  // }
+  // public getTemplate(query) {
+  //   return this._httpClient.post("Generic/GetBySelectQuery?query=" + query, {})
+  // }
+
+  // public getInsertStatementQuery(query) {
+  //   return this._httpClient.post("Generic/ExecByQueryStatement?query=" + query, {})
+  // }
+
+
+  // public getSampleLabOrRadRequestList(employee) {
+  //   return this._httpClient.post("Generic/GetByProc?procName=Rtrv_LabOrRadRequestList", employee)
+  // }
+  // public getSampleNursingPathRadReqDetList(employee) {
+  //   return this._httpClient.post("Generic/GetByProc?procName=Rtrv_NursingPathRadReqDet", employee)
+  // }
 
 
 
-  public getPathologyDoctorMaster1Combo() {
-    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_PathologistDoctorMasterForCombo", {})
-  }
+  // public getRadiologyList(employee) {
+  //   return this._httpClient.post("Generic/GetByProc?procName=Rtrv_RadilogyResultEntryList_Ptnt_Dtls", employee)
+  // }
 
+  
+  // public getSampleEntryList(m_data) {
+  //   return this._httpClient.post("Generic/GetByProc?procName=Rtrv_PathSamColllist_Pat_Dtls", m_data)
+  // }
 
+  // public getCategoryCombo() {
+  //   return this._httpClient.post("Generic/GetByProc?procName=Retrieve_RadiologyCategoryMasterForCombo", {})
+  // }
 
-  public getResultList(employee) {
-    return this._httpClient.post("Generic/GetByProc?procName=Retrive_PathologyResultTemplate_Update", employee)
-  }
-
-
-
-
-
-  public getRadioTestDetails(employee) {
-    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_RadioResultEntryList_Test_Dtls", employee)
-
-  }
-
-  public getTestList(employee) {
-    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_PathResultEntryList_Test_Dtls1", employee)
-  }
-
-  public getPathTemplatePrint(No) {
-    return this._httpClient.post("Generic/GetByProc?procName=rptPrintPathologyReportTemplate", No)
-  }
-  public getTemplate(query) {
-    return this._httpClient.post("Generic/GetBySelectQuery?query=" + query, {})
-  }
-
-  public getInsertStatementQuery(query) {
-    return this._httpClient.post("Generic/ExecByQueryStatement?query=" + query, {})
-  }
-
-
-  public getSampleLabOrRadRequestList(employee) {
-    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_LabOrRadRequestList", employee)
-  }
-  public getSampleNursingPathRadReqDetList(employee) {
-    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_NursingPathRadReqDet", employee)
-  }
-
-
-
-  public getRadiologyList(employee) {
-    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_RadilogyResultEntryList_Ptnt_Dtls", employee)
-  }
-
-  //  public getSampleEntryList(m_data) {
-  //      return this._httpClient.post("Generic/GetByProc?procName=ps_Rtrv_PathologySampleEntryList_Ptnt_Dtls",m_data)
-  //  }
-
-  public getSampleEntryList(m_data) {
-    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_PathSamColllist_Pat_Dtls", m_data)
-  }
-
-  public getCategoryCombo() {
-    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_RadiologyCategoryMasterForCombo", {})
-  }
-
-
+  
 
   populateForm(employee) {
     this.myform.patchValue(employee);

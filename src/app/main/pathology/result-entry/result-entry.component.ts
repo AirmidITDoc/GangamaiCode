@@ -29,6 +29,8 @@ import { ResultEntrytwoComponent } from './result-entrytwo/result-entrytwo.compo
 import { PageNames } from 'app/main/shared/componets/airmid-fileupload/airmid-fileupload.component';
 import { NewResultTemplateComponent } from './new-result-template/new-result-template.component';
 import { NewResultEntryComponent } from './new-result-entry/new-result-entry.component';
+import { OutsourceDetailsComponent } from './outsource-details/outsource-details.component';
+import { ReportVerifyDetailsComponent } from './report-verify-details/report-verify-details.component';
 
 
 
@@ -43,19 +45,19 @@ export class ResultEntryComponent implements OnInit {
     SpinLoading: boolean = false;
 
 
-    displayedColumns: string[] = [
-        'OP_Ip_Type',
-        'Date',
-        // 'Time',
-        'RegNo',
-        'PatientName',
-        'DoctorName',
-        'PatientType',
-        'PBillNo',
-        'GenderName',
-        'AgeYear',
-        'action'
-    ];
+    // displayedColumns: string[] = [
+    //     'OP_Ip_Type',
+    //     'Date',
+    //     // 'Time',
+    //     'RegNo',
+    //     'PatientName',
+    //     'DoctorName',
+    //     'PatientType',
+    //     'PBillNo',
+    //     'GenderName',
+    //     'AgeYear',
+    //     'action'
+    // ];
 
 
     reportPrintObjList: SampleDetailObj[] = [];
@@ -106,11 +108,15 @@ export class ResultEntryComponent implements OnInit {
     f_name: any = ""
     regNo: any = "0"
     l_name: any = ""
+
+    age = ''
+    gendername = ''
+
     vStatusSearch: any = "0";
-    patientName:'RK'
-    title:'Reports'
-     page: PageNames = PageNames.PATIENT;
-     pathFiles: PageNames = PageNames.PATIENT_PATHFILES;
+    patientName: 'RK'
+    title: 'Reports'
+    page: PageNames = PageNames.PATIENT;
+    pathFiles: PageNames = PageNames.PATIENT_PATHFILES;
 
     @ViewChild(MatSort) sort: MatSort;
     @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -125,10 +131,17 @@ export class ResultEntryComponent implements OnInit {
         'select',
         'IsCompleted',
         'IsTemplateTest',
+        'outSourceStatus',
+        'isVerifyid',
         'TestName',
         'SampleCollectionTime',
         'SampleNo',
         'CategoryName',
+        'outSourceLabName',
+        'outSourceSampleSentDateTime',
+
+        'outSourceReportCollectedDateTime',
+
         'action'
     ];
 
@@ -148,19 +161,19 @@ export class ResultEntryComponent implements OnInit {
     allcolumns = [
         {
             heading: "-", key: "patientType", sort: true, align: 'left', type: gridColumnTypes.template,
-            template: this.actionsIPOP
+            template: this.actionsIPOP, width: 80
         },
-        { heading: "DOA", key: "vaTime", sort: true, align: 'left', emptySign: 'NA', width: 150  },
-        { heading: "Test Date", key: "pathDate", sort: true, align: 'left', emptySign: 'NA', type: 6 , width: 150 },
-        { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 100  },
-        { heading: "Admission No", key: "oP_IP_No", sort: true, align: 'left', emptySign: 'NA', width: 100  },
-        { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 400 },
-        // { heading: "Gender", key: "genderName", sort: true, align: 'left', emptySign: 'NA' },
-        // { heading: "Age Year", key: "ageYear", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "DOA", key: "vaTime", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "Test Date", key: "pathDate", sort: true, align: 'left', emptySign: 'NA', type: 6, width: 100 },
+        { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
 
+        { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
+        { heading: "Age | Gender", key: "genderName", sort: true, align: 'left', emptySign: 'NA' },
+        // { heading: "Age Year", key: "ageYear", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Admission No", key: "oP_IP_No", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "PBill No", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "Doctor Name", key: "doctorName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-        // { heading: "PatientType", key: "patientType", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "PBill No", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA' , width: 100 },
+
         {
             heading: "Action", key: "action", align: "right", width: 80, sticky: true, type: gridColumnTypes.template,
             template: this.actionButtonTemplate  // Assign ng-template to the column
@@ -184,36 +197,36 @@ export class ResultEntryComponent implements OnInit {
         ]
     }
 
-    gridConfig1: gridModel = {
-        apiUrl: "Pathology/PathologyTestList",
-        columnsList: [
-            { heading: "Date", key: "date", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "UHID No", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
+    // gridConfig1: gridModel = {
+    //     apiUrl: "Pathology/PathologyTestList",
+    //     columnsList: [
+    //         { heading: "Date", key: "date", sort: true, align: 'left', emptySign: 'NA' },
+    //         { heading: "UHID No", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
 
-            { heading: "Patient Name", key: "patientname", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Doctor Name", key: "doctorName", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Patient Type", key: "patientType", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "PBill No", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Gender", key: "gender", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Age Year", key: "ageYear", sort: true, align: 'left', emptySign: 'NA' },
-            {
-                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
-                    {
-                        action: gridActions.edit, callback: (data: any) => {
-                            this.onSave(data) // EDIT Records
-                        }
-                    }]
-            }
-        ],
-        sortField: "PresReId",
-        sortOrder: 0,
-        filters: [
+    //         { heading: "Patient Name", key: "patientname", sort: true, align: 'left', emptySign: 'NA' },
+    //         { heading: "Doctor Name", key: "doctorName", sort: true, align: 'left', emptySign: 'NA' },
+    //         { heading: "Patient Type", key: "patientType", sort: true, align: 'left', emptySign: 'NA' },
+    //         { heading: "PBill No", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA' },
+    //         { heading: "Gender", key: "gender", sort: true, align: 'left', emptySign: 'NA' },
+    //         // { heading: "Age Year", key: "ageYear", sort: true, align: 'left', emptySign: 'NA' },
+    //         {
+    //             heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+    //                 {
+    //                     action: gridActions.edit, callback: (data: any) => {
+    //                         this.onSave(data) // EDIT Records
+    //                     }
+    //                 }]
+    //         }
+    //     ],
+    //     sortField: "PresReId",
+    //     sortOrder: 0,
+    //     filters: [
 
-            { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
-            { fieldName: "ToDate", fieldValue: this.toDate, opType: OperatorComparer.Equals },
-            { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals }
-        ]
-    }
+    //         { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
+    //         { fieldName: "ToDate", fieldValue: this.toDate, opType: OperatorComparer.Equals },
+    //         { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals }
+    //     ]
+    // }
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -250,23 +263,8 @@ export class ResultEntryComponent implements OnInit {
         // Update the filters dynamically
         this.gridConfig = {
             apiUrl: "Pathology/PathologyPatientTestList",
-            columnsList: [
-                {
-                    heading: "-", key: "patientType", sort: true, align: 'left', type: gridColumnTypes.template,
-                    template: this.actionsIPOP
-                },
-                { heading: "Date", key: "pathDate", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-                { heading: "UHID No", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
-                { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-                { heading: "Doctor Name", key: "doctorName", sort: true, align: 'left', emptySign: 'NA' },
-                { heading: "PBill No", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA' },
-                { heading: "Gender", key: "genderName", sort: true, align: 'left', emptySign: 'NA' },
-                { heading: "Age Year", key: "ageYear", sort: true, align: 'left', emptySign: 'NA' },
-                {
-                    heading: "Action", key: "action", align: "right", width: 80, sticky: true, type: gridColumnTypes.template,
-                    template: this.actionButtonTemplate  // Assign ng-template to the column
-                }
-            ],
+         
+            columnsList: this.allcolumns,
             sortField: "PresReId",
             sortOrder: 0,
             filters: [
@@ -353,6 +351,10 @@ export class ResultEntryComponent implements OnInit {
             console.log("ResultList:", this.dataSource1.data)
             this.dataSource1.sort = this.sort;
             this.dataSource1.paginator = this.paginator;
+
+            // this.age = this.dataSource1.data[0]['ageYear']
+            // this.gendername = this.dataSource1.data[0]['genderName']
+            // this.OPIPID = this.dataSource1.data[0]['opdipdid']
         });
     }
 
@@ -383,8 +385,8 @@ export class ResultEntryComponent implements OnInit {
             sortField: "PresReId",
             sortOrder: 0,
             filters: [
-                { fieldName: "F_Name ", fieldValue: "%", opType: OperatorComparer.StartsWith },
-                { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.StartsWith },
+                { fieldName: "F_Name ", fieldValue:   this.f_name, opType: OperatorComparer.StartsWith },
+                { fieldName: "L_Name", fieldValue:  this.l_name, opType: OperatorComparer.StartsWith },
                 { fieldName: "Reg_No", fieldValue: this.regNo, opType: OperatorComparer.Equals },
                 { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
                 { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
@@ -403,13 +405,16 @@ export class ResultEntryComponent implements OnInit {
         if (event == 'RegNoSearch')
             this.myformSearch.get('RegNoSearch').setValue("")
 
+         if (event == 'FirstNameSearch')
+            this.myformSearch.get('FirstNameSearch').setValue("")
+
+          if (event == 'LastNameSearch')
+            this.myformSearch.get('LastNameSearch').setValue("")
+
         this.onChangeFirst();
     }
 
-    exportSamplerequstReportExcel() {
-
-    }
-
+   
     onSave(row: any = null) {
         let that = this;
         const dialogRef = this._matDialog.open(SampledetailtwoComponent,
@@ -440,25 +445,25 @@ export class ResultEntryComponent implements OnInit {
         this._SampleService.myformSearch.reset({ RegNoSearch: '', FirstNameSearch: '', LastNameSearch: '', PatientTypeSearch: '', StatusSearch: '' });
     }
 
-    SearchTest($event) {
-        var m_data = {
-            "BillNo": this.SBillNo,
-            "OP_IP_Type": this.SOPIPtype,
-            "IsCompleted": this._SampleService.myformSearch.get("TestStatusSearch").value || 0,
-        }
+    // SearchTest($event) {
+    //     var m_data = {
+    //         "BillNo": this.SBillNo,
+    //         "OP_IP_Type": this.SOPIPtype,
+    //         "IsCompleted": this._SampleService.myformSearch.get("TestStatusSearch").value || 0,
+    //     }
 
-        this._SampleService.getTestList(m_data).subscribe(Visit => {
-            this.dataSource1.data = Visit as SampleList[];
-            this.dataSource1.sort = this.sort;
-            this.dataSource1.paginator = this.paginator;
-            console.log(this.dataSource1.data);
-            this.sIsLoading = '';
-            this.click = false;
-        },
-            error => {
-                this.sIsLoading = '';
-            });
-    }
+    //     this._SampleService.getTestList(m_data).subscribe(Visit => {
+    //         this.dataSource1.data = Visit as SampleList[];
+    //         this.dataSource1.sort = this.sort;
+    //         this.dataSource1.paginator = this.paginator;
+    //         console.log(this.dataSource1.data);
+    //         this.sIsLoading = '';
+    //         this.click = false;
+    //     },
+    //         error => {
+    //             this.sIsLoading = '';
+    //         });
+    // }
 
     selection = new SelectionModel<SampleList>(true, []);
 
@@ -638,7 +643,7 @@ export class ResultEntryComponent implements OnInit {
         }
 
         if (!m || typeof m !== 'object' || !('isTemplateTest' in m) || m.isTemplateTest == null) {
-           
+
             this.toastr.warning('This Test Not Created!', 'Warning!', {
                 toastClass: 'tostr-tost custom-toast-warning',
             });
@@ -948,8 +953,8 @@ export class ResultEntryComponent implements OnInit {
 
     onsamplecolltion(contact) {
         console.log(contact)
-
-        this.advanceDataStored.storage = new AdvanceDetailObj(contact);
+        const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+        buttonElement.blur(); // Remove focus from the button
 
         const dialogRef1 = this._matDialog.open(NewResultTemplateComponent,
             {
@@ -963,12 +968,49 @@ export class ResultEntryComponent implements OnInit {
             });
 
         dialogRef1.afterClosed().subscribe(result => {
-            // console.log('The dialog was closed - Insert Action', result);
-            // this.getPatientsList();
+                     // this.getPatientsList();
+        });
+    }
+    Editoutsoucedata(row) {
+        console.log(row)
+
+        this.advanceDataStored.storage = new AdvanceDetailObj(row);
+
+        const dialogRef1 = this._matDialog.open(OutsourceDetailsComponent,
+            {
+                maxWidth: "80vw",
+                height: '60vh',
+                width: '100%',
+                data: row
+
+            });
+
+        dialogRef1.afterClosed().subscribe(result => {
+            this.grid.bindGridData();
+          
         });
     }
 
-    
+    onVerify(row) {
+debugger
+        console.log(row)
+        const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+        buttonElement.blur(); // Remove focus from the button
+
+        const dialogRef1 = this._matDialog.open(ReportVerifyDetailsComponent,
+            {
+                maxWidth: "50vw",
+                height: '50vh',
+                width: '100%',
+                data: row
+
+            });
+
+        dialogRef1.afterClosed().subscribe(result => {
+            this.grid.bindGridData();
+            
+        });
+    }
     onClear() {
         this._SampleService.myformSearch.get('RegNoSearch').setValue("0");
         this._SampleService.myformSearch.get('StatusSearch').setValue("0");
@@ -1014,7 +1056,25 @@ export class SampleList {
     IsCompleted: boolean;
     CategoryId: any;
     opdipdtype: any;
-    pathReportId: any
+
+    pathReportId: any;
+    isVerifyid: any;
+    isVerifyedDate: any;
+    isPathOutSource: any;
+    OutSourceId: any;
+    OutSourceLabName: any;
+    OutSourceSampleSentDateTime: any;
+    OutSourceStatus: any;
+
+    OutSourceReportCollectedDateTime: any;
+    opipnumber: any;
+    ageY: any;
+    ageM: any;
+    ageD: any;
+    genderId: any;
+    sampleNo: any;
+    suggestionNotes: any;
+
 
     constructor(SampleList) {
         this.VADate = SampleList.VADate || '';
@@ -1028,6 +1088,24 @@ export class SampleList {
         this.CategoryId = SampleList.CategoryId || 0;
         this.opdipdtype = SampleList.opdipdtype || 0
         this.pathReportId = SampleList.pathReportId || 0
+        this.isVerifyid = SampleList.isVerifyid || 0
+        this.isVerifyedDate = SampleList.isVerifyedDate || '01/01/1900'
+        this.isPathOutSource = SampleList.isPathOutSource || 0
+
+        this.pathReportId = SampleList.pathReportId || 0
+        this.OutSourceLabName = SampleList.OutSourceLabName || 0
+        this.OutSourceSampleSentDateTime = SampleList.OutSourceSampleSentDateTime || '01/01/1900'
+        this.OutSourceStatus = SampleList.OutSourceStatus || 0
+
+        this.OutSourceReportCollectedDateTime = SampleList.OutSourceReportCollectedDateTime || 0
+        this.OutSourceSampleSentDateTime = SampleList.OutSourceSampleSentDateTime || '01/01/1900'
+        this.opipnumber = SampleList.opipnumber || 0
+        this.ageY = SampleList.ageY || '0'
+        this.ageM = SampleList.ageM || 0
+        this.ageD = SampleList.ageD || '0'
+        this.genderId = SampleList.genderId || 0
+        this.sampleNo = SampleList.sampleNo || '0'
+        this.suggestionNotes = SampleList.suggestionNotes || 0
     }
 
 }

@@ -1,0 +1,84 @@
+<div class="modal-wrapper grid-container">
+
+  <div class="modal-header accent">
+    <div class="modal-header-content">
+      <div class="modal-header-title">
+        <span [@animate]="{ value: '*', params: { delay: '100ms', x: '-25px' } }">Report Verify </span>
+      </div>
+      <div class="modal-header-right">
+        <div class="comman-date-container">
+          <div class="comman-date">
+            <app-common-date [screenFrom]="screenFromString"
+              (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
+          </div>
+          <div class="close-icon">
+            <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
+              matTooltip="Close">
+              <mat-icon>close</mat-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-body" fusePerfectScrollbar>
+    <div class="modal-body-container">
+      <div fxLayout="column" class="gap-12">
+
+        <div class="modal-card-container">
+          <mat-card style="padding: 10px;">
+            <div fxLayout="column" class="gap-8">
+
+              <form [formGroup]="VerifyFormGroup" style="border: blue">
+
+                <div fxLayout="row wrap" fxLayoutGap="8px 0px grid">
+                  <input type="hidden" name="pathReportId" formControlName="pathReportId" [(ngModel)]="vPathReportId" />
+
+
+                  <!-- <div fxFlex="50" fxFlex.xs="100"> -->
+
+                  <mat-form-field appearance="outline" fxFlex="50%">
+                    <mat-label>Report verify Date / Time</mat-label>
+                    <input matInput type="datetime-local" placeholder="date" [value]="date" [(ngModel)]="date"
+                      (change)="date=$event.target.value" formControlName="isVerifyedDate" />
+
+                  </mat-form-field>
+                  <!-- </div> -->
+
+                  <!-- <div fxFlex="45" fxFlex.xs="100" fxFlex.sm="33">
+                    <airmid-textbox label="verify Person Name" formControlName="verifyPersonName"
+                      [value]="VerifyPersonName" [formGroup]="VerifyFormGroup" [maxLength]="100"></airmid-textbox>
+                  </div> -->
+
+                  <div fxFlex="25" fxFlex.xs="100" fxFlex.sm="33">
+                    <!-- <app-airmid-slider label="IsVerified"   formControlName="isVerifyid" [formGroup]="VerifyFormGroup" [(ngModel)]="IsVerified" ></app-airmid-slider> -->
+                    <mat-checkbox formControlName="isVerifyid" [(ngModel)]="IsVerified">
+                      IsVerified
+                    </mat-checkbox>
+                  </div>
+
+                  <!--  <div fxFlex="65" fxFlex.xs="100" fxFlex.sm="33">
+                    <airmid-textbox label="address" formControlName="address" [value]="address"
+                      [formGroup]="LabFormGroup" [maxLength]="200"></airmid-textbox>
+                  </div> -->
+
+
+                </div>
+
+
+              </form>
+            </div>
+          </mat-card>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <div class="footer-navigation-container">
+      <div class="modal-footer-buttons">
+        <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
+        <button type="button" class="btn btn-primary" (click)="onSubmit()">Save</button>
+      </div>
+    </div>
+  </div>
+</div>

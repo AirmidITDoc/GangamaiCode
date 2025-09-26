@@ -45,6 +45,8 @@ import { ResultEntrytwoComponent } from './result-entrytwo/result-entrytwo.compo
 import { ResultEntryService } from './result-entry.service';
 import { NewResultEntryComponent } from './new-result-entry/new-result-entry.component';
 import { NewResultTemplateComponent } from './new-result-template/new-result-template.component';
+import { OutsourceDetailsComponent } from './outsource-details/outsource-details.component';
+import { ReportVerifyDetailsComponent } from './report-verify-details/report-verify-details.component';
 
 
 const routes: Routes = [
@@ -62,7 +64,9 @@ const routes: Routes = [
         ResultEntrytwoComponent,
         PathTemplateViewComponent,
         NewResultEntryComponent,
-        NewResultTemplateComponent
+        NewResultTemplateComponent,
+        OutsourceDetailsComponent,
+        ReportVerifyDetailsComponent
       
     ],
     imports: [

@@ -72,11 +72,10 @@ export class SampleRequestComponent implements OnInit {
 
     { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 90 },
     { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 350 },
-    { heading: "DOA", key: "admDate", sort: true, align: 'left', emptySign: 'NA', width: 100  },
+    { heading: "DOA", key: "admDate", sort: true, align: 'left', emptySign: 'NA', width: 100 , type: 6 },
     { heading: "Request Date", key: "reqDate", sort: true, align: 'left', emptySign: 'NA', type: 6, width: 100  },
     { heading: "Ward Name | Bed Name", key: "wardName", sort: true, align: 'left', emptySign: 'NA', width: 350  },
-    // { heading: "Bed Name", key: "bedName", sort: true, align: 'left', emptySign: 'NA', width: 200  },
-
+    
   ];
   gridConfig: gridModel = {
     apiUrl: "PathlogySampleCollection/LabOrRadRequestPatientList",

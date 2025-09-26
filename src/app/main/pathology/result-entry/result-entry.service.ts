@@ -71,6 +71,20 @@ export class ResultEntryService {
     return this._httpClient1.PostData("Pathology/PathologyTestList", employee);
   }
 
+   public PathReportverifyMaster(employee) {
+      return this._httpClient1.PostData("Pathology/Verify", employee);
+    }
+    // pathologyOutsourceUpdate
+    public updatePathReportOutscourceMaster(employee) {
+      return this._httpClient1.PostData("Pathology/Edit/Id"+employee.pathReportId, employee);
+    }
+
+    
+
+      public updatelabourMaster(employee) {
+      return this._httpClient1.PutData("Pathology/pathologyOutsourceUpdate/"+employee.pathReportId, employee);
+    }
+
   public getPathologyDoctorCombo() {
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_PathologistDoctorMasterForCombo", {})
   }
@@ -79,17 +93,11 @@ export class ResultEntryService {
     return this._httpClient.post("Generic/GetByProc?procName=RetrieveConsultantDoctorMasterForCombo", {})
   }
 
-  // public getPathologyResultListforIP(query){
-  //   return this._httpClient.post("Generic/GetBySelectQuery?query=" + query, {})
 
-  // }
   public getPathologyResultListforIP(param){
     return this._httpClient1.PostData("Common",param)
   }
-  // public getPathologyResultListforOP(query){
-  //   return this._httpClient.post("Generic/GetBySelectQuery?query=" + query, {})
-  // }
-
+ 
   public getPathologyResultListforOP(param){
     return this._httpClient1.PostData("Common",param)
   }

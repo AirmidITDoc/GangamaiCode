@@ -1,5 +1,6 @@
 import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
+import { OutsourceLabDetailsComponent } from './outsource-lab-details/outsource-lab-details.component';
 
 const appRoutes: Routes = [
     {
@@ -37,17 +38,19 @@ const appRoutes: Routes = [
                 (m) => m.TestmasterModule
             ),
     },
-    // {
-    //     path: "paramteragewise",
-    //     loadChildren: () =>
-    //         import("./paramteragewise/paramteragewise.module").then(
-    //             (m) => m.ParamteragewiseModule
-    //         ),
-    // },
+    {
+        path: "outsourcelabdetails",
+        loadChildren: () =>
+            import("./outsource-lab-details/outsource-labtetails.module").then(
+                (m) => m.OutsourceLabtetailsModule
+            ),
+    },
 ];
 
 @NgModule({
-    declarations: [],
+    declarations: [
+    
+  ],
     imports: [RouterModule.forChild(appRoutes)],
 })
 export class PathologyModule {}

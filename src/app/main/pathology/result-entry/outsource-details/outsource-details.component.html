@@ -1,0 +1,134 @@
+<div class="modal-wrapper grid-container">
+
+  <div class="modal-header accent">
+    <div class="modal-header-content">
+      <div class="modal-header-title">
+        <span [@animate]="{ value: '*', params: { delay: '100ms', x: '-25px' } }">Out Source Lab Details</span>
+      </div>
+      <div class="modal-header-right">
+        <div class="comman-date-container">
+          <div class="comman-date">
+            <app-common-date [screenFrom]="screenFromString"
+              (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
+          </div>
+          <div class="close-icon">
+            <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
+              matTooltip="Close">
+              <mat-icon>close</mat-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-body" fusePerfectScrollbar>
+    <div class="modal-body-container">
+      <mat-card>
+        <div class="patient-info-container">
+          <div class="patient-sub">
+            <div class="patient-info-row patient-info-1-40 pt-8" fxLayout="row" fxLayoutAlign="space-between">
+              <div fxLayout="column" fxLayoutGap="10px">
+                <div class="patient-col">
+                  <span class="patient-col-key">UHID No</span>
+                  <span>:</span>
+                  <span class="patient-col-value">{{ data.regNo }}</span>
+                </div>
+                <div class="patient-col">
+                  <span class="patient-col-key">Patient Name</span>
+                  <span>:</span>
+                  <span class="patient-col-value">{{ data.patientName }}</span>
+                </div>
+
+              </div>
+
+              <div fxLayout="column" fxLayoutGap="10px">
+                <div class="patient-col">
+                  <span class="patient-col-key">Doctor Name</span>
+                  <span>:</span>
+                  <span class="patient-col-value">{{ data.doctorname || data.doctorName}}</span>
+                </div>
+                <div class="patient-col">
+                  <span class="patient-col-key">DOA | Time</span>
+                  <span>:</span>
+                  <span class="patient-col-value">{{ (data.doa) }}</span>
+                </div>
+              </div>
+              <div fxLayout="column" fxLayoutGap="10px">
+                <div class="patient-col">
+                  <span class="patient-col-key">IPD No</span>
+                  <span>:</span>
+                  <span class="patient-col-value">{{ data.oP_IP_No }}</span>
+                </div>
+                <div class="patient-col">
+                  <span class="patient-col-key">Age | Sex</span>
+                  <span>:</span>
+                  <span class="patient-col-value">{{ data.ageYear }}Y|{{ data.ageMonth }}M|{{
+                    data.ageDay }} D | {{ data.genderName}}</span>
+                </div>
+
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </mat-card>
+      <div fxLayout="column" class="gap-12">
+
+        <div class="modal-card-container">
+          <mat-card style="padding: 10px;">
+            <div fxLayout="column" class="gap-8">
+
+              <form [formGroup]="LabFormGroup" style="border: blue">
+                <input type="hidden" name="pathReportId" formControlName="pathReportId" [(ngModel)]="vPathReportId" />
+                <input type="hidden" name="outSourceId" formControlName="outSourceId" [(ngModel)]="outSourceId" />
+
+
+
+                <div fxLayout="row wrap" fxLayoutGap="8px 0px grid">
+                  <div>
+                    <mat-form-field appearance="outline">
+                      <mat-label>Sample Sent Date / Time</mat-label>
+                      <input matInput type="datetime-local" placeholder="date" [value]="date" [(ngModel)]="date"
+                        (change)="date=$event.target.value" formControlName="outSourceSampleSentDateTime" readonly />
+
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div fxLayout="row wrap" fxLayoutGap="8px 0px grid">
+                  <!-- [value]="registerObj?.labId ?? 0" -->
+                  <div fxFlex="50" fxFlex.xs="100" fxFlex.sm="33">
+                    <airmid-dropdown label="Lab Name" formControlName="outSourceLabName" [formGroup]="LabFormGroup"
+                      [mode]="autocompleteModeoutsource"   (selectionChange)="onChangeLab($event)"></airmid-dropdown>
+                  </div>
+
+                  <div fxFlex="50" fxFlex.xs="100" fxFlex.sm="33">
+                    <mat-form-field appearance="outline">
+                      <mat-label>Report Collection Date / Time</mat-label>
+                      <input matInput type="datetime-local" placeholder="date" [value]="date1" [(ngModel)]="date1"
+                        (change)="date1=$event.target.value" formControlName="outSourceReportCollectedDateTime" />
+
+                    </mat-form-field>
+                  </div>
+                  <div fxFlex="25" fxFlex.xs="100" fxFlex.sm="33">
+                    <mat-checkbox formControlName="outSourceStatus" [(ngModel)]="outSourceStatus">
+                      OutSource Status
+                    </mat-checkbox>
+                  </div>
+                </div>
+
+              </form>
+            </div>
+          </mat-card>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <div class="footer-navigation-container">
+      <div class="modal-footer-buttons">
+        <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
+        <button type="button" class="btn btn-primary" (click)="onSubmit()">Save</button>
+      </div>
+    </div>
+  </div>
+</div>

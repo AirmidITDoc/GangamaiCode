@@ -14,6 +14,7 @@
             </span>
         </div>
         <div fxLayout="row" fxLayoutALign="end start">
+            <app-common-date [screenFrom]="'Common'" (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
             <button mat-icon-button tabIndex="-1" (click)="onClose()" aria-label="Close dialog">
                 <mat-icon>close</mat-icon>
             </button>
@@ -37,8 +38,8 @@
                             <div class="Ipd-patient-info" fxFlexFill fxLayout="row" fxLayoutAlign="space-between center"
                                 class="patient-info">
                                 <div class="patient-sub">
-                                    <div class="patient-info-row patient-info-1-111" style="padding: 5px;" fxLayout="row"
-                                        fxLayoutAlign="space-between">
+                                    <div class="patient-info-row patient-info-1-111" style="padding: 5px;"
+                                        fxLayout="row" fxLayoutAlign="space-between">
                                         <div fxLayout="column" fxLayoutGap="6px">
                                             <div class="patient-col">
                                                 <span class="patient-col-key">UHID No
@@ -79,9 +80,8 @@
                                                 <span class="patient-col-key">Age | Sex
                                                 </span>
                                                 <span>:</span>
-                                                <span
-                                                class="patient-col-value">{{AgeYear}}Y|{{AgeMonth}}M|{{AgeDay}}
-                                                D | {{GenderName}}</span>
+                                                <span class="patient-col-value">{{AgeYear}}Y|{{AgeMonth}}M|{{AgeDay}}
+                                                    D | {{GenderName}}</span>
                                             </div>
                                             <div class="patient-col">
                                                 <span class="patient-col-key">Ref-Doctor Name
@@ -115,7 +115,7 @@
                                                 <span class="patient-col-key">Company Name</span>
                                                 <span>:</span>
                                                 <span class="patient-col-value"
-                                                style="color: orange;">{{CompanyName}}</span>
+                                                    style="color: orange;">{{CompanyName}}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -136,12 +136,9 @@
                     <form [formGroup]="_radiologytemplateService.myform" style="border: blue; padding: 10px;">
                         <div fxFlexFill fxLayout="row">
 
-                            <airmid-dropdown label="Template Name" 
-                                formControlName="TemplateName" 
-                                [formGroup]="_radiologytemplateService.myform"  fxFlex="50%"
-                                ValueField="templateId" 
-                                TextField="templateName"
-                                (selectionChange)="selectChangeTemplateName($event)" 
+                            <airmid-dropdown label="Template Name" formControlName="TemplateName"
+                                [formGroup]="_radiologytemplateService.myform" fxFlex="50%" ValueField="templateId"
+                                TextField="templateName" (selectionChange)="selectChangeTemplateName($event)"
                                 ApiUrl="RadiologyTemplate/get-RdioTemplates">
                             </airmid-dropdown>
 
@@ -157,16 +154,16 @@
                         </div>
 
                         <div>
-                           <!-- <mat-label style="font-size: large;color: rgb(7, 70, 90);align-items: center;">Template Details</mat-label> -->
-                                <!-- <angular-editor (blur)="onBlur($event)" [config]="editorConfig"
+                            <!-- <mat-label style="font-size: large;color: rgb(7, 70, 90);align-items: center;">Template Details</mat-label> -->
+                            <!-- <angular-editor (blur)="onBlur($event)" [config]="editorConfig"
                                     style="height:380px;" [(ngModel)]="vTemplateDesc" required
                                     formControlName="ResultEntry">
                                 </angular-editor> -->
 
-                                 <airmid-editor label="Template Details" formControlName="ResultEntry"
-                                            [(value)]="vTemplateDesc" [formGroup]="_radiologytemplateService.myform"
-                                            (valueChange)="onEditorValueChange($event)">
-                                        </airmid-editor>
+                            <airmid-editor label="Template Details" formControlName="ResultEntry"
+                                [(value)]="vTemplateDesc" [formGroup]="_radiologytemplateService.myform"
+                                (valueChange)="onEditorValueChange($event)">
+                            </airmid-editor>
                         </div>
 
                         <div style="margin-top: 5px;">
@@ -178,13 +175,19 @@
                             </mat-form-field>
                         </div>
 
+                        <div fxLayout="row" >
+                            <airmid-dropdown label="Doctor Name" formControlName="DoctorId" fxFlex="40%"
+                                [formGroup]="_radiologytemplateService.myform" [mode]="autocompleteModeDoctor"
+                                (selectionChange)="selectChangeDoctorName($event)">
+                            </airmid-dropdown>
+                        </div>
+
                         <div fxLayoutGap="5px">
- <!-- [disabled]="_radiologytemplateService.myform.invalid" -->
+                            <!-- [disabled]="_radiologytemplateService.myform.invalid" -->
                             <div class="footer-navigation-container">
                                 <div fxLayout="row" fxLayoutAlign="end start" fxLayoutGap="6px">
                                     <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
-                                    <button class="btn btn-primary" (click)="onSubmit()"
-                                       >Save</button>
+                                    <button class="btn btn-primary" (click)="onSubmit()">Save</button>
                                 </div>
                             </div>
 

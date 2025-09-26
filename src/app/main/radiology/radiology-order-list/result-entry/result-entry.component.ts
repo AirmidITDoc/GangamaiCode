@@ -82,7 +82,7 @@ export class ResultEntryComponent implements OnInit {
   Lbl: any;
   DOA: any;
   DOT: any;
-
+  autocompleteModeDoctor: string = "ConDoctor";
   autocompleteModeTemplate: string = "RadioTemplate";
 
   private _onDestroy = new Subject<void>();
@@ -90,21 +90,21 @@ export class ResultEntryComponent implements OnInit {
 
   dataSource = new MatTableDataSource<RadiologyPatienInsert>();
 
-  public tools: object = {
-    type: 'MultiRow',
-    items: ['Undo', 'Redo', '|',
-      'Bold', 'Italic', 'Underline', 'StrikeThrough', '|',
-      'FontName', 'FontSize', 'FontColor', 'BackgroundColor', '|',
-      'SubScript', 'SuperScript', '|',
-      'LowerCase', 'UpperCase', '|',
-      'Formats', 'Alignments', '|', 'OrderedList', 'UnorderedList', '|',
-      'CreateTable', '|',
-      'CreateLink', 'Image', '|',
-      'Indent', 'Outdent', '|',
-      'ClearFormat', '|', 'FullScreen',
-      // 'SourceCode',
-    ]
-  };
+  // public tools: object = {
+  //   type: 'MultiRow',
+  //   items: ['Undo', 'Redo', '|',
+  //     'Bold', 'Italic', 'Underline', 'StrikeThrough', '|',
+  //     'FontName', 'FontSize', 'FontColor', 'BackgroundColor', '|',
+  //     'SubScript', 'SuperScript', '|',
+  //     'LowerCase', 'UpperCase', '|',
+  //     'Formats', 'Alignments', '|', 'OrderedList', 'UnorderedList', '|',
+  //     'CreateTable', '|',
+  //     'CreateLink', 'Image', '|',
+  //     'Indent', 'Outdent', '|',
+  //     'ClearFormat', '|', 'FullScreen',
+  //     // 'SourceCode',
+  //   ]
+  // };
   constructor(
     public _radiologytemplateService: RadioloyOrderlistService,
     private accountService: AuthenticationService,
@@ -215,6 +215,12 @@ this.RaioInsertForm = this.createradioInsert();
     }
   }
 
+    VpathResultDr1 = 0
+  selectChangeDoctorName(row) {
+    this.VpathResultDr1 = row.value
+  }
+  
+
   onSubmit() {
     console.log(this._radiologytemplateService.myform.value)
 
@@ -226,6 +232,12 @@ debugger
       return;
     }
 
+      if (this._radiologytemplateService.myform.get("DoctorId")?.value == '' || this._radiologytemplateService.myform.get("DoctorId")?.value == undefined) {
+      this.toastr.warning('Please Select Doctor', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
       
     if (this.regObj.radReportId) {
 
@@ -251,7 +263,7 @@ debugger
       this.RaioInsertForm.get("refDoctorId").setValue(this._radiologytemplateService.myform.get("DoctorId").value || 0)
       this.RaioInsertForm.get("resultEntry").setValue(this._radiologytemplateService.myform.get("ResultEntry")?.value || 'abc')
       this.RaioInsertForm.get("reportDate").setValue(this.datePipe.transform(new Date(), 'yyyy-MM-dd'))
-      this.RaioInsertForm.get("reportTime").setValue(this.datePipe.transform(new Date(), 'shortTime'))
+      this.RaioInsertForm.get("reportTime").setValue(this.dateTimeObj.time)
 
       console.log(this.RaioInsertForm.value);
       this._radiologytemplateService.RadiologyUpdate(this.RaioInsertForm.value).subscribe(data => {

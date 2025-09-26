@@ -12,6 +12,9 @@ import { ToastrService } from 'ngx-toastr';
 import { RadiologyTemplateReportComponent } from './radiology-template-report/radiology-template-report.component';
 import { RadioloyOrderlistService } from './radioloy-orderlist.service';
 import { ResultEntryComponent } from './result-entry/result-entry.component';
+import { ReportVerifyDetailsComponent } from 'app/main/pathology/result-entry/report-verify-details/report-verify-details.component';
+import { OutsourceDetailsComponent } from 'app/main/pathology/result-entry/outsource-details/outsource-details.component';
+import { PageNames } from 'app/main/shared/componets/airmid-fileupload/airmid-fileupload.component';
 
 @Component({
     selector: 'app-radiology-order-list',
@@ -28,6 +31,8 @@ export class RadiologyOrderListComponent implements OnInit {
     l_name: any = ""
     status: any = "0"
     opipType: any = "2";
+        page: PageNames = PageNames.PATIENT;
+        pathFiles: PageNames = PageNames.PATIENT_PATHFILES;
     autocompleteModeCategoryId: string = "RadioCategory";
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
 
@@ -66,17 +71,18 @@ export class RadiologyOrderListComponent implements OnInit {
         //  { heading: "DOA", key: "visitTime", sort: true, align: 'left', emptySign: 'NA', width: 200},
         { heading: "RadDate", key: "radTime", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 70 },
-        { heading: "Admission No", key: "oP_IP_Number", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "Patient Name |Age|Gender", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 350 },
-       
+        { heading: "Patient Name ", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
+         { heading: "Age | Gender", key: "genderName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "Test Name", key: "serviceName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
+         { heading: "Admission No", key: "oP_IP_Number", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+      
         { heading: "Bill No", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
       
         { heading: "DoctorName", key: "consultantDoctor", sort: true, align: 'left', emptySign: 'NA', width: 150 },
          
        
         // { heading: "Age Year", key: "ageYear", sort: true, align: 'left', emptySign: 'NA', width: 80 },
-        // { heading: "Gender", key: "genderName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+      
         // { heading: "BillNo", key: "billNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         // { heading: "MobileNo", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "Category Name", key: "categoryName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
@@ -242,12 +248,13 @@ debugger
   }}
 
     getView(row: any = null) {
+  const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+        buttonElement.blur(); // Remove focus from the button
 
-        let that = this;
         const dialogRef = this._matDialog.open(RadiologyTemplateReportComponent,
             {
-                maxWidth: "75vw",
-                height: '75%',
+                maxWidth: "85vw",
+                height: '85%',
                 width: '70%',
                 data: row
             });
@@ -255,6 +262,47 @@ debugger
             // if (result) {
             this.grid.bindGridData();
             // }
+        });
+    }
+Editoutsoucedata(row) {
+        const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+        buttonElement.blur(); // Remove focus from the button
+
+        const dialogRef1 = this._matDialog.open(OutsourceDetailsComponent,
+            {
+                maxWidth: "60vw",
+                height: '50vh',
+                width: '100%',
+                data: {
+
+                    regobj: row
+                }
+            });
+
+        dialogRef1.afterClosed().subscribe(result => {
+                       // this.getPatientsList();
+        });
+    }
+
+    onVerify(row) {
+
+        console.log(row)
+
+        // this.advanceDataStored.storage = new AdvanceDetailObj(row);
+
+        const dialogRef1 = this._matDialog.open(ReportVerifyDetailsComponent,
+            {
+                maxWidth: "60vw",
+                height: '50vh',
+                width: '100%',
+                data: {
+
+                    regobj: row
+                }
+            });
+
+        dialogRef1.afterClosed().subscribe(result => {
+                       // this.getPatientsList();
         });
     }
 
