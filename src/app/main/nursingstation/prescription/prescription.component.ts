@@ -390,7 +390,7 @@ export class PrescriptionComponent implements OnInit {
             confirmButtonText: "Yes, Cancel it!"
         }).then((flag) => {
             if (flag.isConfirmed) {
-                this._PrescriptionService.PrescriptionCancle(data.prscId).subscribe((response: any) => {
+                this._PrescriptionService.PrescriptionCancle(data.ippreId).subscribe((response: any) => {
                     this.toastr.success(response.message);
                     this.grid.bindGridData();
                 });

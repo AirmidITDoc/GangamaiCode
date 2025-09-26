@@ -1071,6 +1071,7 @@ export class ClinicalCareChartComponent implements OnInit {
   vVitalId: any;
   onEditVital(row: any) {
     console.log('Row:', row, typeof row.suctionType);
+    this.vVitalId=row.vitalId
     const updated = {
       ...row,
       suctionType: String(row.suctionType)

@@ -13,6 +13,7 @@ import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/air
 import { ToastrService } from 'ngx-toastr';
 import { SupplierPaymentStatusService } from '../supplier-payment-status.service';
 import { FormGroup } from '@angular/forms';
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 
 @Component({
   selector: 'app-supplier-payment-list',
@@ -77,16 +78,16 @@ export class SupplierPaymentListComponent implements OnInit {
     { heading: "SupPayNo", key: "supPayNo", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "Date", key: "supPayDate", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "SupplierName", key: "supplierName", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "TotalAmount", key: "netAmount", sort: true, align: 'left', emptySign: 'NA', type:gridColumnTypes.amount },
-    { heading: "CashPayAmt", key: "cashPayAmt", sort: true, align: 'left', emptySign: 'NA', type:gridColumnTypes.amount },
-    { heading: "ChequePayAmt", key: "chequePayAmt", sort: true, align: 'left', emptySign: 'NA', type:gridColumnTypes.amount },
+    { heading: "TotalAmount", key: "netAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+    { heading: "CashPayAmt", key: "cashPayAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+    { heading: "ChequePayAmt", key: "chequePayAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
     { heading: "UserName", key: "userName", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "PartyReceiptNo", key: "partyReceiptNo", sort: true, align: 'left', emptySign: 'NA' },
     {
       heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
         {
           action: gridActions.print, callback: (data: any) => {
-            // this.onSave(data) // EDIT Records
+            this.viewgetReportPdf(data)
           }
         }]
     }
@@ -120,6 +121,47 @@ export class SupplierPaymentListComponent implements OnInit {
 
   onClose() {
     this._matDialog.closeAll();
+  }
+
+  viewgetReportPdf(element) {
+    let fromDate = this.datePipe.transform(this.SupplierListForm.get('start').value, "yyyy-MM-dd")
+    let toDate = this.datePipe.transform(this.SupplierListForm.get('end').value, "yyyy-MM-dd")
+    var Param = {
+      "searchFields": [
+        {
+          "fieldName": "FromDate",
+          "fieldValue": fromDate,
+          "opType": "Equals"
+        },
+        {
+          "fieldName": "ToDate",
+          "fieldValue": toDate,
+          "opType": "Equals"
+        },
+        {
+          "fieldName": "SupplierId",
+          "fieldValue": String(element.supplierId),
+          "opType": "Equals"
+        },
+      ],
+      "mode": "SupplierPaymentReciept"
+    }
+    this._SupplierPaymentStatusService.getReportView(Param).subscribe(res => {
+
+      const matDialog = this._matDialog.open(PdfviewerComponent,
+        {
+          maxWidth: "85vw",
+          height: '750px',
+          width: '100%',
+          data: {
+            base64: res["base64"] as string,
+            title: "OpeningBalance" + " " + "Viewer"
+          }
+        });
+      matDialog.afterClosed().subscribe(result => {
+      });
+    });
+
   }
 }
 

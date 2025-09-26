@@ -68,4 +68,9 @@ export class NewHeadMasterComponent {
     this._matDialog.closeAll()
   }
 
+   onClose(val: boolean) {
+    this.HeadForm.reset();
+    this.dialogRef.close()
+  }
+
 }
