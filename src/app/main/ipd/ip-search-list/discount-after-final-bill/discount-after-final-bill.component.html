@@ -52,10 +52,10 @@
                                         <span class="patient-col-value">{{selectedAdvanceObj?.ipdNo}}</span>
                                     </div>
                                     <div class="patient-col gap-1" fxFlex="30%">
-                                        <span class="patient-col-key ">Age</span>
+                                        <span class="patient-col-key ">Age | Gender</span>
                                         <span>:</span>
                                         <span
-                                        class="patient-col-value">{{PatientObj?.ageYear}}Y |{{PatientObj?.ageMonth}}M |{{PatientObj?.ageDay}}D</span>
+                                        class="patient-col-value">{{PatientObj?.age}} | {{PatientObj?.genderName}}</span>
                                     </div>
                                    
                                 </div>
@@ -68,7 +68,7 @@
                                     <div class="patient-col gap-1" fxFlex="30%">
                                         <span class="patient-col-key">Patient Type</span>
                                         <span>:</span>
-                                        <span class="patient-col-value">{{selectedAdvanceObj?.patientType}}</span>
+                                        <span class="patient-col-value">{{selectedAdvanceObj?.roomName}}</span>
                                     </div> 
                                 </div>
                             </div>

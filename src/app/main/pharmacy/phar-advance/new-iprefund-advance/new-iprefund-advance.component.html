@@ -150,7 +150,7 @@
 
                 <div fxLayout="row" fxLayoutGap="10px">
 
-                    <div class="airmid-table-container" fxFlex.gt-md="75%" fxFlex.md="50%" fxFlex.lt-md="100%">
+                    <div class="airmid-table-container" fxFlex.gt-md="100%" fxFlex.md="100%" fxFlex.lt-md="100%">
 
                         <mat-table matSort [dataSource]="dsIpItemList" class="airmid-table"
                             [@animateStagger]="{value:'50'}">
@@ -230,55 +230,8 @@
                         </mat-table>
                         <mat-paginator #paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="16"
                             showFirstLastButtons>
-                        </mat-paginator>
-
-                    </div>
-
-                    <div class="airmid-table-container" fxFlex.gt-md="25%" fxFlex.md="50%" fxFlex.lt-md="100%">
-                        <div fxlayout="column">
-                            <mat-table class="h-200" matSort [dataSource]="dsPreRefundList"
-                                [@animateStagger]="{value:'50'}" style="width: 100%;" class="airmid-table">
-                                <ng-container matColumnDef="Date">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Date
-                                    </mat-header-cell>
-                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm> {{element.refundDate |
-                                        date}}
-                                    </mat-cell>
-                                </ng-container>
-
-                                <ng-container matColumnDef="RefundAmount">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
-                                        Refund Amount </mat-header-cell>
-                                    <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                        <span> {{element.refundAmount | currency:'INR'}}</span>
-                                    </mat-cell>
-                                </ng-container>
-
-                                <ng-container matColumnDef="loading">
-                                    <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
-                                    </mat-header-cell>
-                                </ng-container>
-
-                                <ng-container matColumnDef="noData">
-                                    <mat-footer-cell *matFooterCellDef colspan="6">
-                                        no data found...
-                                    </mat-footer-cell>
-                                </ng-container>
-
-                                <mat-header-row class="accent min" *matHeaderRowDef="displayedColumns1; sticky: true">
-                                </mat-header-row>
-                                <mat-row *matRowDef="let contact; columns: displayedColumns1;" class="contact"
-                                    [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
-                                <mat-footer-row *matFooterRowDef="['loading']"
-                                    [ngClass]="{'hide':dsPreRefundList!=null}"></mat-footer-row>
-                                <mat-footer-row *matFooterRowDef="['noData']"
-                                    [ngClass]="{'hide':!(dsPreRefundList!=null && dsPreRefundList.data.length==0)}"></mat-footer-row>
-                            </mat-table>
-                            <mat-paginator #paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="16"
-                                showFirstLastButtons>
-                            </mat-paginator>
-                        </div>
-                    </div>
+                        </mat-paginator> 
+                    </div> 
                 </div>
             </div>
         </div>

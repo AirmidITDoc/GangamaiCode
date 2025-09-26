@@ -106,16 +106,16 @@ export class IPSettlementComponent implements OnInit {
         billNo: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         paymentDate: ['', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
         paymentTime: ['', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
-        cashPayAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        chequePayAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        cashPayAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+        chequePayAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
         chequeNo: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
         bankName: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
         chequeDate: ['1999-01-01'],
-        cardPayAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        cardPayAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
         cardNo: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
         cardBankName: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
         cardDate: ['1999-01-01'],
-        advanceUsedAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        advanceUsedAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
         advanceId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         refundId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         transactionType: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -125,35 +125,37 @@ export class IPSettlementComponent implements OnInit {
         isCancelledBy: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         isCancelledDate: ['1999-01-01'],
         opdipdType:[3,[this._FormvalidationserviceService.onlyNumberValidator()]],
-        neftpayAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        neftpayAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
         neftno: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
         neftbankMaster: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
         neftdate: ['1999-01-01'],
-        payTmamount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        payTmamount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
         payTmtranNo: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
         payTmdate: ['1999-01-01'],
-        tdsAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        tdsAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+        unitId: [this.accountService.currentUserValue.user.unitId, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        wfamount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]]
       }),
       // BIll update
       billupdate: this.formBuilder.group({
         billNo: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        balanceAmt: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        balanceAmt: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
       }), 
       // Advance details update in array
       advanceDetailupdate: this.formBuilder.array([]),
       // Advacne header update
       advanceHeaderupdate: this.formBuilder.group({
         advanceId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        advanceUsedAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        balanceAmount:[0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        advanceUsedAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+        balanceAmount:[0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
       }), 
     });
   } 
   createAdvanceUpdate(item: any): FormGroup {
     return this.formBuilder.group({
       advanceDetailID: [item?.AdvanceDetailID ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      usedAmount: [item?.UsedAmount ?? 0, [, this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      balanceAmount: [item?.BalanceAmount ?? 0, [, this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      usedAmount: [item?.UsedAmount ?? 0, [, this._FormvalidationserviceService.AllowDecimalNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      balanceAmount: [item?.BalanceAmount ?? 0, [, this._FormvalidationserviceService.AllowDecimalNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
     });
   }  
   // Getters  
@@ -162,17 +164,19 @@ export class IPSettlementComponent implements OnInit {
   }    
     //    110193 
     getSelectedObj(obj) { 
-        this.RegId1 = obj.value; 
-        setTimeout(() => {
-            this._IPSettlementService.getRegistraionById(this.RegId1).subscribe((response) => {
-                this.registerObj = response;
-                this.PatientName = this.registerObj.firstName + ' ' + this.registerObj.middleName + ' ' + this.registerObj.lastName
+        console.log(obj)
+        this.RegId1 = obj.regID; 
+        this.registerObj = obj;
+        this.PatientName = this.registerObj.firstName + ' ' + this.registerObj.middleName + ' ' + this.registerObj.lastName
+        // setTimeout(() => {
+        //     this._IPSettlementService.getRegistraionById(this.RegId1).subscribe((response) => {
+        //         this.registerObj = response;
+        //         this.PatientName = this.registerObj.firstName + ' ' + this.registerObj.middleName + ' ' + this.registerObj.lastName
                
-            });  
-        }, 500);
+        //     });  
+        // }, 500);                   "
         this.GetDetails(this.RegId1)
-    }
-
+    } 
 
     openPaymentpopup(contact) { 
         const currentDate = new Date();
@@ -246,6 +250,7 @@ export class IPSettlementComponent implements OnInit {
     reset(){
         this.searchFormGroup.reset();
         this.PatientName = '';
+        this.registerObj = new RegInsert({});  
     }
     GetDetails(RegId1) {  
         this.gridConfig = {

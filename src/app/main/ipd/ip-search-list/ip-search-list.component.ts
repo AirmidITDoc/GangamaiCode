@@ -375,10 +375,10 @@ export class IPSearchListComponent implements OnInit {
         else if (m == "Advance") {
             this.advanceDataStored.storage = new AdvanceDetailObj(element);
             let Advflag: boolean = false;
-            if (element.IsBillGenerated) {
+            if (element.isBillGenerated) {
                 Advflag = true;
             }
-            if (element.IsDischarged) {
+            if (element.isDischarged) {
                 Advflag = true;
             }
 

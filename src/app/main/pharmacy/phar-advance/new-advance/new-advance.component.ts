@@ -242,8 +242,7 @@ export class NewAdvanceComponent implements OnInit {
             this.insertForm?.get('paymentPharmacy')?.setValue(result.submitDataPay.ipPaymentInsert);
             this.insertForm.removeControl('pharmacyHeader');
             console.log(this.insertForm?.value);
-            this._PharAdvanceService.InsertIpPharmaAdvance(this.insertForm.value).subscribe(response => {
-              console.log(response);
+            this._PharAdvanceService.InsertIpPharmaAdvance(this.insertForm.value).subscribe(response => { 
               this.viewgetIPAdvanceReportPdf(response);
               this._matDialog.closeAll();
               this.OnReset();
@@ -255,8 +254,7 @@ export class NewAdvanceComponent implements OnInit {
             this.insertForm?.get("pharmacyHeader.balanceAmount")?.setValue(Number(this.MainForm?.get('advanceAmt')?.value ?? 0));
             this.insertForm?.get('paymentPharmacy')?.setValue(result.submitDataPay.ipPaymentInsert);
             console.log(this.insertForm?.value);
-            this._PharAdvanceService.UpdateIpPharmaAdvance(this.insertForm.value).subscribe(response => {
-              console.log(response)
+            this._PharAdvanceService.UpdateIpPharmaAdvance(this.insertForm.value).subscribe(response => { 
               this.viewgetIPAdvanceReportPdf(response);
               this._matDialog.closeAll();
               this.OnReset();

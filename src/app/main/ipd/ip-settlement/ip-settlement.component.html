@@ -17,18 +17,30 @@
                 <form [formGroup]="searchFormGroup" fxLayoutAlign="space-between start">
                     <div fxLayout="column" fxLayoutAlign="start none" style="width: 100%;" fxLayoutGap="6px">
                 
-                        <airmid-autocomplete class="w-700" label="Search Reg No / Patient Name / Mobile No"
-                            [formGroup]="searchFormGroup"   formControlName="RegId"
-                            placeholderText="Search Reg No / Patient Name / Mobile No" ApiUrl="OutPatient/auto-complete?Keyword="
-                            (selectionChange)="getSelectedObj($event)">
-                        </airmid-autocomplete>
+                      
+                        <div fxLayout="row" fxLayoutGap="8px"> 
+                                <!-- <div fxFlex="50%" fxFlex.sm="100%" *ngIf="!vCheckBox">
+                                     <airmid-autocomplete  label="Search Reg No / Patient Name / Mobile No"
+                                      [formGroup]="searchFormGroup"   formControlName="RegId"
+                                       placeholderText="Search Reg No / Patient Name / Mobile No" 
+                                      ApiUrl="Admission/search-patient?Keyword=" TextField="formattedText"  ValueField="regId"
+                                      (selectionChange)="getSelectedObj($event)">
+                                       </airmid-autocomplete> 
+                                </div> -->
 
-                        <!-- <airmid-autocomplete lbl="RegId" [formGroup]="searchFormGroup" formControlName="RegId"
-                        placeholderText="IP-RegNo/FirstName/LastName" class="w-700" 
-                        ApiUrl="Admission/search-patient?Keyword="
-                        (selectionChange)="getSelectedObjIP($event)" ValueField="admissionID"
-                        TextField="formattedText">
-                        </airmid-autocomplete> --> 
+                                <div fxFlex="50%" fxFlex.sm="100%" >
+                                    <airmid-autocomplete lbl="RegID" [formGroup]="searchFormGroup"
+                                        label="Search Reg No / Patient Name / Mobile No(DC)"
+                                        formControlName="RegId" fxFlex
+                                        placeholderText="RegNo / First Name / Last Name / Mobile No(DC)"
+                                        ApiUrl="Admission/Dischargesearch-patient?Keyword="
+                                        (selectionChange)="getSelectedObj($event)" TextField="formattedText"
+                                        ValueField="regId">
+                                    </airmid-autocomplete>
+                                </div> 
+                            </div>
+
+                        
                 
                         <div fxFlex.gt-sm="100%" fxFlex class="patient-info-container">
                             <div class="patient-info-container" *ngIf="PatientName">
@@ -38,26 +50,28 @@
                                     </div>
                                     <div class="patient-info-box my-8">
                                         <div class="patient-info-row ">
-                                            <div class="patient-col">
-                                                <span class="patient-col-key">UHID No</span>
-                                                <span>:</span>
-                                                <span class="patient-col-value">{{registerObj.regNo}}</span>
-                                            </div>
+                                           
                                             <div class="patient-col">
                                                 <span class="patient-col-key ">Patient Name</span>
                                                 <span>:</span>
-                                                <span class="patient-col-value">{{PatientName}}</span>
+                                                <span class="patient-col-value">{{registerObj.regNo}}-{{PatientName}}</span>
                                             </div>
+                                             <div class="patient-col gap-1">
+                                                <span class="patient-col-key ">Age | Gender</span>
+                                               <span>:</span>
+                                                  <span
+                                                 class="patient-col-value">{{registerObj?.age}} | {{registerObj?.genderName}}</span>
+                                             </div>
+
+                                               <div class="patient-col gap-1">
+                                                    <span class="patient-col-key">IPDNo</span>
+                                              <span>:</span>
+                                            <span class="patient-col-value">{{registerObj?.ipdNo}}</span>
+                                                </div>
                                             <div class="patient-col">
-                                                <span class="patient-col-key">Age</span>
+                                                <span class="patient-col-key">Ward | Bed Name </span>
                                                 <span>:</span>
-                                                <span class="patient-col-value">{{registerObj.ageDay}}D |
-                                                    | {{registerObj.ageMonth}}M | {{registerObj.ageYear}}Y </span>
-                                            </div>
-                                            <div class="patient-col">
-                                                <span class="patient-col-key">Mobile No</span>
-                                                <span>:</span>
-                                                <span class="patient-col-value">{{registerObj.mobileNo}}</span>
+                                                <span class="patient-col-value">{{registerObj?.roomName}} | {{registerObj?.bedName}}</span>
                                             </div>
                 
                                         </div>

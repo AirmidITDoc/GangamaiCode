@@ -41,8 +41,7 @@ export class NewIPRefundAdvanceComponent implements OnInit {
   vPatienName: any;   
   regObj: any;
   RefundFooterForm:FormGroup
-   RefundSaveForm:FormGroup 
-dsPreRefundList= new MatTableDataSource<IpItemList>();
+   RefundSaveForm:FormGroup  
 dsIpItemList= new MatTableDataSource<IpItemList>();
 advanceDetailId:any=0;
 
@@ -265,8 +264,7 @@ advanceDetailId:any=0;
     this.RefundFooterForm.reset();
     this.RefundFooterForm.get('Op_ip_id').setValue(1); 
     this.RefundFooterForm.get('RegID').setValue('');
-    this.dsIpItemList.data = [];
-    this.dsPreRefundList.data = [];
+    this.dsIpItemList.data = []; 
     this.AdvanceId = 0;
     this._matDialog.closeAll();
   } 
@@ -285,23 +283,23 @@ advanceDetailId:any=0;
     }
   }
     // shoe 2nd table data
-  getPreRefundofAdvance(row) {  
-     var m_data = {
-  "first": 0,
-  "rows": 10,
-  "sortField": "AdvanceId",
-  "sortOrder": 0,
-  "filters": [ { "fieldName": "AdvanceId", "fieldValue": String(row.advanceId),  "opType": "Contains" }],
-  "exportType": "JSON",
-  "columns": []
-}  
-    this._PharAdvanceService.getPreRefundofAdvance(m_data).subscribe(Visit => {
-      this.dsPreRefundList.data =  Visit.data as IpItemList[];       
-      this.dsPreRefundList.sort = this.sort;
-      this.dsPreRefundList.paginator = this.paginator;
-      console.log(this.dsPreRefundList.data); 
-    });  
-  }
+//   getPreRefundofAdvance(row) {  
+//      var m_data = {
+//   "first": 0,
+//   "rows": 10,
+//   "sortField": "AdvanceId",
+//   "sortOrder": 0,
+//   "filters": [ { "fieldName": "AdvanceId", "fieldValue": String(row.advanceId),  "opType": "Contains" }],
+//   "exportType": "JSON",
+//   "columns": []
+// }  
+//     this._PharAdvanceService.getPreRefundofAdvance(m_data).subscribe(Visit => {
+//       this.dsPreRefundList.data =  Visit.data as IpItemList[];       
+//       this.dsPreRefundList.sort = this.sort;
+//       this.dsPreRefundList.paginator = this.paginator;
+//       console.log(this.dsPreRefundList.data); 
+//     });  
+//   }
 }
   export class IpItemList { 
     AdvanceNo: number;

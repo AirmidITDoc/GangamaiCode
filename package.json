@@ -47,6 +47,7 @@
     "file-saver": "2.0.5",
     "font-awesome": "4.7.0",
     "idlejs": "3.0.0",
+    "install": "0.13.0",
     "jquery": "3.7.1",
     "jspdf": "2.5.1",
     "jspdf-autotable": "3.7.0",
