@@ -1,76 +1,94 @@
 <div fxLayout="column" fxFlex fusePerfectScrollbar>
 
-    <mat-list class="date" cdkFocusRegionStart>
+    <mat-toolbar class="qpanel-toolbar" cdkFocusRegionStart>
+        <mat-icon aria-hidden="true">today</mat-icon>
+        <span class="qpanel-date">{{ date | date:'EEEE, d' }}{{ getOrdinalSuffix(date) }} {{ date | date:'MMMM' }}</span>
+    </mat-toolbar>
 
-        <h3 matSubheader cdkFocusInit>
-            <span>Today</span>
-        </h3>
+    <mat-accordion multi cdkFocusRegionEnd>
 
-        <div class="secondary-text mat-display-1 mb-0 p-16">
-            <div class="mb-12">
-                {{date | date:'EEEE'}}
-            </div>
-            <div fxLayout="row" fxLayoutAlign="start start">
-                <span> {{date | date:'d'}}</span>
-                <span class="mat-subheading-1">th</span>
-                <span> {{date | date:'MMMM'}}</span>
-            </div>
-        </div>
-    </mat-list>
+        <mat-expansion-panel [expanded]="true">
+            <mat-expansion-panel-header>
+                <mat-panel-title>Profile Settings</mat-panel-title>
+            </mat-expansion-panel-header>
 
-    <mat-divider cdkFocusRegionEnd></mat-divider>
+            <mat-list class="qpanel-list">
 
-    <mat-list>
-        <h3 matSubheader>
-            <span>Events</span>
-        </h3>
+                <mat-list-item class="qpanel-list-item" (click)="Changepassword()">
+                    <div matLine>Change Password</div>
+                </mat-list-item>
+                
+            </mat-list>
+        </mat-expansion-panel>
 
-        <mat-list-item *ngFor="let event of events">
-            <h3 matLine>{{event.title}}</h3>
-            <p matLine class="secondary-text">{{event.detail}}</p>
-        </mat-list-item>
-    </mat-list>
+        <mat-expansion-panel>
+            <mat-expansion-panel-header>
+                <mat-panel-title>Quick Settings</mat-panel-title>
+            </mat-expansion-panel-header>
 
-    <mat-divider></mat-divider>
+            <mat-list class="qpanel-list">
+                <mat-list-item class="qpanel-list-item">
+                    <span matLine>Notifications</span>
+                    <div class="spacer"></div>
+                    <mat-slide-toggle [(ngModel)]="settings.notify" aria-label="Notifications toggle"></mat-slide-toggle>
+                </mat-list-item>
 
-    <mat-list>
-        <h3 matSubheader>
-            <span>Notes</span>
-        </h3>
+                <mat-list-item>
+                    <div matLine>Cloud Sync</div>
+                    <div class="spacer"></div>
+                    <mat-slide-toggle [(ngModel)]="settings.cloud" aria-label="Cloud Sync toggle"></mat-slide-toggle>
+                </mat-list-item>
 
-        <mat-list-item *ngFor="let note of notes">
-            <h3 matLine>{{note.title}}</h3>
-            <p matLine class="secondary-text">{{note.detail}}</p>
-        </mat-list-item>
-    </mat-list>
+                <mat-list-item>
+                    <div matLine>Retro Thrusters</div>
+                    <div class="spacer"></div>
+                    <mat-slide-toggle color="warn" [(ngModel)]="settings.retro" aria-label="Retro Thrusters toggle"></mat-slide-toggle>
+                </mat-list-item>
+            </mat-list>
+        </mat-expansion-panel>
 
-    <mat-divider></mat-divider>
+        <mat-expansion-panel>
+            <mat-expansion-panel-header>
+                <mat-panel-title>Events</mat-panel-title>
+            </mat-expansion-panel-header>
 
-    <mat-list>
-        <h3 matSubheader>
-            <span>Quick Settings</span>
-        </h3>
+            <ng-container *ngIf="events?.length; else noEvents">
+                <mat-list>
+                    <mat-list-item *ngFor="let event of events">
+                        <div matLine class="subtitle-2">{{event.title}}</div>
+                        <div matLine class="secondary-text">{{event.detail}}</div>
+                    </mat-list-item>
+                </mat-list>
+            </ng-container>
+            <ng-template #noEvents>
+                <div class="empty">No events for today</div>
+            </ng-template>
+        </mat-expansion-panel>
 
-        <mat-list-item>
-            <mat-slide-toggle fxFlex class="mat-primary" [(ngModel)]="settings.notify" aria-label="Notifications"
-                              labelPosition="before">
-                <h3>Notifications</h3>
-            </mat-slide-toggle>
-        </mat-list-item>
+        <mat-expansion-panel>
+            <mat-expansion-panel-header>
+                <mat-panel-title>Notes</mat-panel-title>
+            </mat-expansion-panel-header>
 
-        <mat-list-item>
-            <mat-slide-toggle fxFlex class="mat-accent" [(ngModel)]="settings.cloud" aria-label="Cloud"
-                              labelPosition="before">
-                <h3>Cloud Sync</h3>
-            </mat-slide-toggle>
-        </mat-list-item>
+            <ng-container *ngIf="notes?.length; else noNotes">
+                <mat-list>
+                    <mat-list-item *ngFor="let note of notes">
+                        <div matLine class="subtitle-2">{{note.title}}</div>
+                        <div matLine class="secondary-text">{{note.detail}}</div>
+                    </mat-list-item>
+                </mat-list>
+            </ng-container>
+            <ng-template #noNotes>
+                <div class="empty">No notes yet</div>
+            </ng-template>
+        </mat-expansion-panel>
 
-        <mat-list-item>
-            <mat-slide-toggle fxFlex class="mat-warn" [(ngModel)]="settings.retro" aria-label="Retro Thrusters"
-                              labelPosition="before">
-                <h3>Retro Thrusters</h3>
-            </mat-slide-toggle>
-        </mat-list-item>
-    </mat-list>
+    </mat-accordion>
 
+    <div class="qpanel-footer">
+        <button mat-flat-button color="mat-primary" class="logout-btn" (click)="logout(); toggleSidebarOpen('quickPanel')">
+            <mat-icon>exit_to_app</mat-icon>
+            <span>Logout</span>
+        </button>
+    </div>
 </div>

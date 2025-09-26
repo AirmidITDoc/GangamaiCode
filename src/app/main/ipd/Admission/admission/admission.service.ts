@@ -267,8 +267,8 @@ export class AdmissionService {
     public getDoctorsByDepartment(deptId) {
         return this._httpClient1.GetData("VisitDetail/DeptDoctorList?DeptId=" + deptId)
     }
- public getBedByWard(deptId) {
-        return this._httpClient1.GetData("VisitDetail/DeptDoctorList?DeptId=" + deptId)
+ public getBedByWard(RoomId) {
+        return this._httpClient1.GetData("Admission/BedList?RoomId=" + RoomId)
     }
     
 

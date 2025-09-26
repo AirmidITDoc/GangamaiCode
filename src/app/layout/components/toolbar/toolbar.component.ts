@@ -158,10 +158,6 @@ export class ToolbarComponent implements OnInit, OnDestroy {
             this.unreadCount--;
         });
     }
-
-    logout() {
-        this.accountService.logout().subscribe((data) => { });
-    }
     navigateToDailyDashboard() {
         this.router.navigate(['/new-dashboard']);
     }
@@ -255,21 +251,6 @@ export class ToolbarComponent implements OnInit, OnDestroy {
         dialogRef.afterClosed().subscribe(result => {
 
         });
-    }
-
-    Changepassword() {
-        const dialogRef = this._matDialog.open(ChangePasswordComponent,
-            {
-                // maxWidth: "60vw",
-                // maxHeight: "80vh", width: '100%', height: "100%"                               
-                maxWidth: "50vw",
-                maxHeight: '50%',
-                width: '40%',
-            });
-        dialogRef.afterClosed().subscribe(result => {
-
-        });
-
     }
     // navigateToImportExcel() {
     //     this.router.navigate(['/import-excel']);

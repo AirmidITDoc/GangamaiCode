@@ -2,12 +2,101 @@ quick-panel {
     display: flex;
     flex-direction: column;
     flex: 1 1 auto;
-    width: 280px;
-    min-width: 280px;
-    max-width: 280px;
+    width: 360px;
+    min-width: 360px;
+    max-width: 360px;
     z-index: 99;
 
     .mat-slide-toggle-content {
         flex: 1;
     }
+
+    .qpanel-toolbar {
+        position: sticky;
+        top: 0;
+        z-index: 2;
+        gap: 8px;
+        --mat-toolbar-container-background-color: #3949ab;
+        --mat-toolbar-container-text-color: #ffffff;
+    }
+
+    .qpanel-date {
+        font-weight: 500;
+    }
+
+    .qpanel-list .mdc-list-item {
+        padding-left: 8px;
+        padding-right: 8px;
+    }
+
+    .qpanel-list .mat-mdc-list-item-unscoped-content{
+        display: flex;
+        cursor: pointer;
+    }
+
+    .spacer {
+        flex: 1 1 auto;
+    }
+
+    .secondary-text {
+        opacity: .72;
+    }
+
+    .empty {
+        padding: 16px;
+        opacity: .6;
+    }
+
+    .qpanel-footer {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: #fff;
+        padding: 12px 16px;
+        border-top: 1px solid rgba(0,0,0,0.06);
+        z-index: 1000;
+    }
+
+    .logout-btn {
+        width: 100%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        background-color: #3949ab !important;
+        color: white !important;
+        border-radius: 4px;
+        border: none;
+        height: 40px;
+        font-weight: 500;
+    }
+}
+
+/* Scoped override: apply only to the Quick Panel sidebar container */
+fuse-sidebar.quick-panel {
+    width: 360px !important;
+    min-width: 360px !important;
+    max-width: 360px !important;
+}
+
+@media (max-width: 599px) {
+    fuse-sidebar.quick-panel {
+        max-width: 80vw !important;
+        width: 80vw !important;
+        min-width: 0 !important;
+    }
+}
+
+/* Remove extra space below open expansion panels inside quick panel */
+quick-panel .mat-accordion .mat-expansion-panel {
+    margin: 0 !important;
+}
+
+quick-panel .mat-expansion-panel-spacing {
+    margin: 0 !important;
+}
+
+quick-panel .mat-expansion-panel .mat-expansion-panel-body {
+    padding-bottom: 0;
 }
