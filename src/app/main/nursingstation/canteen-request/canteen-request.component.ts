@@ -201,7 +201,10 @@ export class CanteenRequestComponent implements OnInit {
             confirmButtonText: "Yes, Cancel it!"
         }).then((flag) => {
             if (flag.isConfirmed) {
-                this._CanteenRequestService.CanrequestCancle(data.prscId).subscribe((response: any) => {
+                let sub={
+                    reqDetId:data.reqDetId
+                }
+                this._CanteenRequestService.CanrequestCancle(sub).subscribe((response: any) => {
                     this.toastr.success(response.message);
                     this.grid.bindGridData();
                 });

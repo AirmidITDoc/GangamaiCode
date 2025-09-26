@@ -77,6 +77,24 @@ export class MLCInformationComponent implements OnInit {
               this.registerObj = response;
             this.DetailGiven = this.registerObj.detailGiven
             this.Remark = this.registerObj.remark
+            this.MlcInfoFormGroup.get('reportingDate')?.setValue(this.registerObj.reportingDate);
+            const backendValue = this.registerObj.reportingTime; // "19-09-2025 13:00:00"
+
+            if (backendValue) {
+              // Parse backend time
+              const timePart = backendValue.split(' ')[1]; // "13:00:00"
+              const [hours, minutes, seconds] = timePart.split(':').map(Number);
+
+              const timeOnly = new Date();
+              timeOnly.setHours(hours, minutes, seconds || 0, 0);
+
+              this.MlcInfoFormGroup.get('reportingTime')?.setValue(timeOnly);
+            } else {
+              // No backend value → set current time
+              const now = new Date();
+              this.MlcInfoFormGroup.get('reportingDate')?.setValue(now);
+              this.MlcInfoFormGroup.get('reportingTime')?.setValue(now);
+            }
             console.log(this.registerObj)
           });
         }, 500);

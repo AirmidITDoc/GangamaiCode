@@ -21,7 +21,7 @@ import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 })
 export class RequestforlabtestComponent implements OnInit {
 
-     hasSelectedContacts: boolean;
+    hasSelectedContacts: boolean;
     fname = "%"
     lname = "%"
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
@@ -29,15 +29,15 @@ export class RequestforlabtestComponent implements OnInit {
     @ViewChild('isStatusIcon') isStatusIcon!: TemplateRef<any>;
     @ViewChild('isTestCompletedIcon') isTestCompletedIcon!: TemplateRef<any>;
     @ViewChild('isOnFileTestIcon') isOnFileTestIcon!: TemplateRef<any>;
-   @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
-    
+    @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
+
 
     ngAfterViewInit() {
         this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
         this.gridConfig.columnsList.find(col => col.key === 'isOnFileTest')!.template = this.isOnFileTestIcon;
-          this.gridConfig.columnsList.find(col => col.key === 'isStatus')!.template = this.isStatusIcon;
+        this.gridConfig.columnsList.find(col => col.key === 'isStatus')!.template = this.isStatusIcon;
         this.gridConfig.columnsList.find(col => col.key === 'isTestCompleted')!.template = this.isTestCompletedIcon;
- 
+
     }
 
     fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
@@ -45,7 +45,7 @@ export class RequestforlabtestComponent implements OnInit {
     regNo: any = ""
 
     allColumns = [
-      
+
         { heading: "IsFileON", key: "isOnFileTest", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 80 },
         { heading: "Request Date", key: "reqTime", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 8 },
         { heading: "DOA", key: "admDate", sort: true, align: 'left', emptySign: 'NA', width: 110 },
@@ -55,13 +55,13 @@ export class RequestforlabtestComponent implements OnInit {
         { heading: "Doctor Name", key: "doctorName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
 
         { heading: "Ward Name | Bed No", key: "wardName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
-        
+
         { heading: "Payer Type", key: "patientType", sort: true, align: 'left', emptySign: 'NA', width: 120 },
-        { heading: "Request Type", key: "requestType", sort: true, align: 'left', emptySign: 'NA', width: 120 },
+        { heading: "Request Type", key: "requestType", sort: true, align: 'left', emptySign: 'NA', width: 150 },
 
         {
-            heading: "Action", key: "action", align: "right", width: 250, sticky: true, type: gridColumnTypes.template,
-            template: this.actionButtonTemplate 
+            heading: "Action", key: "action", align: "right", width: 120, sticky: true, type: gridColumnTypes.template,
+            template: this.actionButtonTemplate
         }
     ]
     allFilters = [
@@ -142,17 +142,17 @@ export class RequestforlabtestComponent implements OnInit {
 
         console.log("Selected row : ", row);
         let vRequestId = row.requestId
-        debugger
+        // debugger
         this.gridConfig1 = {
             apiUrl: "IPPrescription/LabRadRequestDetailList",
             columnsList: [
 
-                { heading: "Status", key: "isStatus", type: gridColumnTypes.status, align: "center" ,width:70 },
-                { heading: "--", key: "isTestCompleted", type: gridColumnTypes.status, align: "center" ,width:50 },
-                { heading: "Request Date ", key: "reqDate", sort: true, align: 'left', emptySign: 'NA',width:200 },
+                { heading: "Status", key: "isStatus", type: gridColumnTypes.status, align: "center", width: 70 },
+                { heading: "--", key: "isTestCompleted", type: gridColumnTypes.status, align: "center", width: 50 },
+                { heading: "Request Date ", key: "reqDate", sort: true, align: 'left', emptySign: 'NA', width: 200 },
                 { heading: "ServiceName", key: "serviceName", sort: true, align: 'left', emptySign: 'NA', width: 450 },
                 { heading: "BillNo | User | DateTime", key: "addedByDate", sort: true, align: 'left', emptySign: 'NA', width: 350 },
-                
+
 
             ],
             sortField: "RequestId",
@@ -185,7 +185,7 @@ export class RequestforlabtestComponent implements OnInit {
                         opType: "Equals"
                     }
                 ],
-                mode: mode 
+                mode: mode
             };
             console.log(param)
             this._RequestforlabtestService.getReportView(param).subscribe(res => {
@@ -250,7 +250,7 @@ export class RequestforlabtestComponent implements OnInit {
     }
 
     Labrequestcancle(data) {
-        debugger
+        // debugger
         console.log(data)
         Swal.fire({
             title: 'Do you want to cancel the Lab Request?',
@@ -262,7 +262,10 @@ export class RequestforlabtestComponent implements OnInit {
             confirmButtonText: "Yes, Cancel it!"
         }).then((flag) => {
             if (flag.isConfirmed) {
-                this._RequestforlabtestService.labreqCancle(data.requestId).subscribe((response: any) => {
+                let sub = {
+                    "requestId": data.requestId
+                }
+                this._RequestforlabtestService.labreqCancle(sub).subscribe((response: any) => {
                     this.toastr.success(response.message);
                     this.grid.bindGridData();
                 });

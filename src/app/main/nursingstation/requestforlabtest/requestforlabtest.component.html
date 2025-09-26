@@ -39,7 +39,8 @@
                 <button mat-icon-button (click)="viewLabRequestPdf(element)" matTooltip="Lab Request Print">
                     <mat-icon title="Request Print">print</mat-icon>
                 </button>
-                <button mat-icon-button (click)="Labrequestcancle(element)" matTooltip="Lab Request  Cancel">
+                <button mat-icon-button (click)="Labrequestcancle(element)" matTooltip="Lab Request Cancel"
+                *ngIf="element.isCancelled==false">
                     <mat-icon title="Cancel Lab Request">cancel</mat-icon>
                 </button>
 

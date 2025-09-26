@@ -229,7 +229,7 @@
                                 <airmid-autocomplete label="Enter Item Name" [formGroup]="ItemSubform" #itemAutocomplete
                                     formControlName="ItemId" placeholderText="Enter Item Name" fxFlex="30%"
                                     [ApiUrl]="'ItemMaster/GetItemListForPrescription?StoreId=' + vstoreId + '&ItemName='"
-                                    (selectionChange)="selectChangeItem($event)"
+                                    (selectionChange)="selectChangeItem($event)" (onClearSelection)="ItemFromReset()"
                                     [validations]="getValidationMessages().ItemId" TextField="formattedText"
                                     ValueField="ItemId">
                                 </airmid-autocomplete>

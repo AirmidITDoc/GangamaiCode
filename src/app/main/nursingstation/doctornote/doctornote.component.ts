@@ -211,7 +211,8 @@ export class DoctornoteComponent implements OnInit {
     console.log("data:", row)
     this.registerObj = row;
     this.vDescription = this.registerObj.doctorsNotes || '';
-    this.myNoteform.get('doctorsNotes').setValue(this.vDescription);
+    this.myNoteform.get('doctorsNotes').setValue(this.registerObj.doctorsNotes);
+    // this.myNoteform.get('doctorsNotes').setValue(this.vDescription);
     this.vDoctNoteId = this.registerObj.doctNoteId
     this.IsAddFlag = true;
   }

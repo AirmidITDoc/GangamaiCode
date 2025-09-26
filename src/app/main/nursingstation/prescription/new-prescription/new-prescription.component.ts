@@ -24,7 +24,7 @@ import { RegInsert } from 'app/main/opd/registration/registration.component';
 })
 export class NewPrescriptionComponent implements OnInit {
 
- 
+
   myForm: FormGroup;
   searchFormGroup: FormGroup;
   prescForm: FormGroup;
@@ -81,7 +81,7 @@ export class NewPrescriptionComponent implements OnInit {
   registerObj = new RegInsert({});
   selectedAdvanceObj = new AdmissionPersonlModel({});
 
-  
+
   displayedColumns: string[] = [
     'ItemName',
     'Qty',
@@ -93,7 +93,7 @@ export class NewPrescriptionComponent implements OnInit {
   @ViewChild('itemAutocomplete', { read: ElementRef }) itemAutocomplete: ElementRef;
 
   constructor(
-   
+
     public _PrescriptionService: PrescriptionService,
     private _loggedService: AuthenticationService,
     public _registerService: RegistrationService,
@@ -103,7 +103,7 @@ export class NewPrescriptionComponent implements OnInit {
     private _FormvalidationserviceService: FormvalidationserviceService,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public _matDialog: MatDialog,
-     private ref: MatDialogRef<NewPrescriptionComponent>,
+    private ref: MatDialogRef<NewPrescriptionComponent>,
     public datePipe: DatePipe,
   ) {
   }
@@ -127,7 +127,7 @@ export class NewPrescriptionComponent implements OnInit {
 
     if ((obj.regID ?? 0) > 0) {
       console.log("Admitted patient:", obj)
-      this.registerObj=obj
+      this.registerObj = obj
       this.vRegNo = obj.regNo
       this.vDoctorName = obj.doctorName
       this.vPatientName = obj.firstName + " " + obj.middleName + " " + obj.lastName
@@ -167,7 +167,7 @@ export class NewPrescriptionComponent implements OnInit {
   // }
 
   selectChangeItem(obj: any) {
-debugger
+    // debugger
     if (this.vstoreId == 0) {
       this.toastr.warning('Please select a StoreName before choosing an Item.', 'Warning!', {
         toastClass: 'tostr-tost custom-toast-warning'
@@ -187,6 +187,8 @@ debugger
     this.vitemname = obj.itemName;
     this.vdoseId = obj.doseName;
     this.day = obj.doseDay;
+    this.vInstruction = obj.instruction;
+    this.vQty = obj.balanceQty;
     this.ItemForm.get('ItemId').setValue(obj);
 
     if ((this.vdoseId ?? 0) > 0) {
@@ -320,14 +322,20 @@ debugger
   }
 
   createPrescriptionFormInsert(element: any = {}): FormGroup {
-    debugger
+    const openingDate = this.datePipe.transform(this.dateTimeObj?.date, "yyyy-MM-dd") || '1900-01-01';
+    const openingTime = this.dateTimeObj?.time || '00:00';
+
+    const openingDateTime = `${openingDate} ${openingTime}`;
+    // debugger
     return this.formBuilder.group({
       ippreId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       ipmedId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       opIpId: [this.vAdmissionID, [this._FormvalidationserviceService.onlyNumberValidator()]],
       opdIpdType: [1, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      pdate: [this.datePipe.transform(new Date(), 'yyyy-MM-dd')],
-      ptime: [new Date()],
+      // pdate: [this.datePipe.transform(new Date(), 'yyyy-MM-dd')],
+      // ptime: [new Date()],
+      pdate: [openingDate],
+      ptime: [openingDateTime],
       classId: [this.vClassId, [this._FormvalidationserviceService.onlyNumberValidator()]],
       genericId: [1, [this._FormvalidationserviceService.onlyNumberValidator()]],
       drugId: [element.ItemID, [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -338,7 +346,7 @@ debugger
       remark: [element.Remark ?? '', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
       isClosed: [false],
       isAddBy: [this._loggedService.currentUserValue.userId, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      storeId: [ this.vstoreId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      storeId: [this.vstoreId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       wardId: [Number(this.myForm.get('WardName').value) ?? 0, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator()]]
     });
   }
@@ -372,7 +380,7 @@ debugger
         this.toastr.warning('No data in the item list!', 'Warning');
         return;
       }
-      
+
       this.dsItemList.data.forEach(item => {
         this.prescriptionArray.push(this.createPrescriptionFormInsert(item));
       });
@@ -406,7 +414,7 @@ debugger
   }
 
   viewgetIpprescriptionReportPdf(response) {
-    debugger
+    // debugger
     setTimeout(() => {
       let param = {
         "searchFields": [
@@ -439,6 +447,15 @@ debugger
         });
       });
     }, 100);
+  }
+
+  ItemFromReset() {
+    const form = this.ItemForm;
+    form.patchValue({
+      ItemId: "",
+      Qty: "",
+      Instruction: "",
+    });
   }
 
   onClose() {

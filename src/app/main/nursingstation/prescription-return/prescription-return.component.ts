@@ -10,6 +10,7 @@ import { ToastrService } from 'ngx-toastr';
 import { NewPrescriptionreturnComponent } from './new-prescriptionreturn/new-prescriptionreturn.component';
 import { PrescriptionReturnService } from './prescription-return.service';
 import Swal from 'sweetalert2';
+import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 @Component({
     selector: 'app-prescription-return',
     templateUrl: './prescription-return.component.html',
@@ -28,7 +29,7 @@ export class PrescriptionReturnComponent implements OnInit {
     toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
     fname = "%"
     lname = "%"
-    
+
 
     @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
 
@@ -38,22 +39,22 @@ export class PrescriptionReturnComponent implements OnInit {
     }
 
     allColumns2 = [
-     { heading: "Date", key: "presTime", sort: true, align: 'left', emptySign: 'NA', width: 170},
-            { heading: "DOA", key: "admissionDate", sort: true, align: 'left', emptySign: 'NA', width: 170},
-            { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-           
-            { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
-             { heading: "IPD No", key: "ipdNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-            { heading: "Doctor Name", key: "doctorName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
-          
-            { heading: "Ward Name | Bed No", key: "roomName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
-            { heading: "Payer Type", key: "patientType", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-           
-            { heading: "Company Name", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-             { heading: "Store Name", key: "storeName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+        { heading: "Date", key: "presTime", sort: true, align: 'left', emptySign: 'NA', width: 170 },
+        { heading: "DOA", key: "admissionDate", sort: true, align: 'left', emptySign: 'NA', width: 170 },
+        { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
 
-              {
-            heading: "Action", key: "action", align: "right", width: 250, sticky: true, type: gridColumnTypes.template,
+        { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
+        { heading: "IPD No", key: "ipdNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "Doctor Name", key: "doctorName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
+
+        { heading: "Ward Name | Bed No", key: "roomName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
+        { heading: "Payer Type", key: "patientType", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+
+        { heading: "Company Name", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+        { heading: "Store Name", key: "storeName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+
+        {
+            heading: "Action", key: "action", align: "right", width: 120, sticky: true, type: gridColumnTypes.template,
             template: this.actionButtonTemplate  // Assign ng-template to the column
         }
 
@@ -68,7 +69,7 @@ export class PrescriptionReturnComponent implements OnInit {
     ]
     gridConfig: gridModel = {
         apiUrl: "IPPrescription/IPPrescriptionReturnList",
-        columnsList:this.allColumns2,
+        columnsList: this.allColumns2,
         //  [
         //     { heading: "Date", key: "presTime", sort: true, align: 'left', emptySign: 'NA', width: 170},
         //     { heading: "DOA", key: "admissionDate", sort: true, align: 'left', emptySign: 'NA', width: 170},
@@ -76,10 +77,10 @@ export class PrescriptionReturnComponent implements OnInit {
         //     { heading: "IPD No", key: "ipdNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         //     { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
         //     { heading: "Doctor Name", key: "doctorName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
-          
+
         //     { heading: "Ward Name | Bed No", key: "roomName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
         //     { heading: "Payer Type", key: "patientType", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-           
+
         //     { heading: "Company Name", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         //      { heading: "Store Name", key: "storeName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
 
@@ -95,13 +96,14 @@ export class PrescriptionReturnComponent implements OnInit {
             { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
             { fieldName: "ToDate", fieldValue: this.toDate, opType: OperatorComparer.Equals },
             { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
-          { fieldName: "F_Name", fieldValue: this.fname, opType: OperatorComparer.Equals },
-                  { fieldName: "L_Name", fieldValue: this.lname, opType: OperatorComparer.Equals }
+            { fieldName: "F_Name", fieldValue: this.fname, opType: OperatorComparer.Equals },
+            { fieldName: "L_Name", fieldValue: this.lname, opType: OperatorComparer.Equals }
         ]
     }
 
     constructor(public _PrescriptionReturnService: PrescriptionReturnService, public _matDialog: MatDialog,
         public toastr: ToastrService,
+        private commonService: PrintserviceService,
         public datePipe: DatePipe) { }
     ngOnInit(): void {
     }
@@ -141,42 +143,13 @@ export class PrescriptionReturnComponent implements OnInit {
         });
     }
 
-
     viewgetIpprescriptionreturnReportPdf(response) {
-console.log(response)
-        setTimeout(() => {
-            let param = {
-
-                "searchFields": [
-                    {
-                        "fieldName": "PresReId",
-                        "fieldValue": String(response.presReId),
-                        "opType": "Equals"
-                    }
-                ],
-                "mode": "NurIPprescriptionReturnReport"
-            }
-
-            this._PrescriptionReturnService.getReportView(param).subscribe(res => {
-
-                const matDialog = this._matDialog.open(PdfviewerComponent,
-                    {
-                        maxWidth: "85vw",
-                        height: '750px',
-                        width: '100%',
-                        data: {
-                            base64: res["base64"] as string,
-                            title: "Nursing Prescription Return" + " " + "Viewer"
-                        }
-                    });
-                matDialog.afterClosed().subscribe(result => {
-                });
-            });
-        }, 100);
+        console.log(response)
+        this.commonService.Onprint("PresReId", response.presReId, "NurIPprescriptionReturnReport");
     }
 
     getfilterdata1() {
-        debugger
+        // debugger
         this.isShowDetailTable = false;
         let fromDate2 = this._PrescriptionReturnService.mySearchForm.get("startdate").value || "";
         let toDate2 = this._PrescriptionReturnService.mySearchForm.get("enddate").value || "";
@@ -192,8 +165,8 @@ console.log(response)
                 { fieldName: "FromDate", fieldValue: fromDate2, opType: OperatorComparer.Equals },
                 { fieldName: "ToDate", fieldValue: toDate2, opType: OperatorComparer.Equals },
                 { fieldName: "Reg_No", fieldValue: this.regNo, opType: OperatorComparer.Equals },
-              { fieldName: "F_Name", fieldValue: this.fname, opType: OperatorComparer.Equals },
-        { fieldName: "L_Name", fieldValue: this.lname, opType: OperatorComparer.Equals }
+                { fieldName: "F_Name", fieldValue: this.fname, opType: OperatorComparer.Equals },
+                { fieldName: "L_Name", fieldValue: this.lname, opType: OperatorComparer.Equals }
             ]
         }
         this.grid.gridConfig = this.gridConfig;
@@ -214,14 +187,14 @@ console.log(response)
     onChangeFirst1() {
         this.regNo = this._PrescriptionReturnService.mySearchForm.get('RegNo').value || "0"
         this.fname = this._PrescriptionReturnService.mySearchForm.get('fName').value + "%"
-        this.lname = this._PrescriptionReturnService.mySearchForm.get('lName').value  + "%"
+        this.lname = this._PrescriptionReturnService.mySearchForm.get('lName').value + "%"
 
         this.getfilterdata1();
     }
 
     // isShowDetailTable: boolean = false;
     GetDetails2(data) {
-debugger
+        // debugger
         this.gridConfig1 = {
             apiUrl: "IPPrescription/IPPrescReturnItemDetList",
             columnsList: [
@@ -252,21 +225,24 @@ debugger
     }
 
     Prescretruncancle(data) {
-            Swal.fire({
-                title: 'Do you want to cancel the Prescription Return?',
-                text: "You won't be able to revert this!",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#3085d6",
-                cancelButtonColor: "#d33",
-                confirmButtonText: "Yes, Cancel it!"
-            }).then((flag) => {
-                if (flag.isConfirmed) {
-                    this._PrescriptionReturnService.PrescriptionReturnCancle(data.presReId).subscribe((response: any) => {
-                        this.toastr.success(response.message);
-                        this.grid.bindGridData();
-                    });
+        Swal.fire({
+            title: 'Do you want to cancel the Prescription Return?',
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, Cancel it!"
+        }).then((flag) => {
+            if (flag.isConfirmed) {
+                let sub={
+                    presReId:data.presReId
                 }
-            });
-        }
+                this._PrescriptionReturnService.PrescriptionReturnCancle(sub).subscribe((response: any) => {
+                    this.toastr.success(response.message);
+                    this.grid.bindGridData();
+                });
+            }
+        });
+    }
 }

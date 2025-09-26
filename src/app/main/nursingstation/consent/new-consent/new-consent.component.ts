@@ -91,11 +91,11 @@ export class NewConsentComponent {
       this.vSelectedOption = this.data.opipType === 1 ? 'IP' : 'OP';
       this.vdepartmentId = this.data.consentDeptId
       this.templateId = this.data.consentTempId
-      this.templateName=this.data.consentName
-      this.vRegNo=this.data.regNo
+      this.templateName = this.data.consentName
+      this.vRegNo = this.data.regNo
       this.ConsentinsertForm.patchValue(this.data);
       console.log(this.data)
-      this.registerObj=this.data
+      this.registerObj = this.data
       // this.getSelectedObjOP(this.data)
       // this.getSelectedObjIP(this.data)
       this.selectChangedepartment(this.data)
@@ -116,14 +116,14 @@ export class NewConsentComponent {
 
   getSelectedObjOP(obj) {
     console.log("Visite Patient:", obj)
-    this.registerObj=obj
+    this.registerObj = obj
     this.vRegNo = obj.regNo
     this.OP_IP_Id = obj.visitId
   }
 
   getSelectedObjIP(obj) {
     console.log("Admitted patient:", obj)
-    this.registerObj=obj
+    this.registerObj = obj
     this.vRegNo = obj.regNo
     this.OP_IP_Id = obj.admissionID
   }
@@ -136,30 +136,30 @@ export class NewConsentComponent {
   }
 
   vdepartmentId = ""
-   selectChangedepartment(obj: any) {
-    if(obj.value){
+  selectChangedepartment(obj: any) {
+    if (obj.value) {
       this.vdepartmentId = obj.value
-    this._ConsentService.getConsentByDepartment(obj.value).subscribe((data: any[]) => {
-      const mapped = data.map(item=>({
-        ...item,
-        value:item.consentId,
-        text:item.consentName
-      }))
+      this._ConsentService.getConsentByDepartment(obj.value).subscribe((data: any[]) => {
+        const mapped = data.map(item => ({
+          ...item,
+          value: item.consentId,
+          text: item.consentName
+        }))
         this.ddlTemplate.options = mapped;
         this.ddlTemplate.bindGridAutoComplete();
-    });
-    }else{
+      });
+    } else {
       this._ConsentService.getConsentByDepartment(obj.consentDeptId).subscribe((data: any[]) => {
-      const mapped = data.map(item=>({
-        ...item,
-        value:item.consentId,
-        text:item.consentName
-      }))
+        const mapped = data.map(item => ({
+          ...item,
+          value: item.consentId,
+          text: item.consentName
+        }))
         this.ddlTemplate.options = mapped;
 
         const incomingTempId = obj.consentTempId;
         setTimeout(() => {
-         debugger
+          debugger
 
           this.ddlTemplate.bindGridAutoComplete();
           if (incomingTempId) {
@@ -169,40 +169,40 @@ export class NewConsentComponent {
             }
           }
         }, 100);
-    });
+      });
     }
   }
 
   templateId = "0"
-  templateName=''
+  templateName = ''
   onTemplateSelect(option: any) {
     this.isButtonDisabled = false
     this.templateId = option.consentId
     this.templateName = option.consentName
-    this.selectedTemplateOption = option.consentDesc; //details of template dd should pass
+    this.selectedTemplateOption = option.consentDesc;
   }
 
-   onEditorValueChange(content: string) {
+  onEditorValueChange(content: string) {
     this.ConsentinsertForm.get('ConsentText')?.setValue(content);
   }
 
   onSave() {
 
     if (this.ConsentinsertForm.get("consentId").value > 0) {
-        this.ConsentinsertForm.get("modifiedBy").setValue(this._loggedService.currentUserValue.userId)
-         this.ConsentinsertForm.removeControl('createdBy');
+      this.ConsentinsertForm.get("modifiedBy").setValue(this._loggedService.currentUserValue.userId)
+      this.ConsentinsertForm.removeControl('createdBy');
 
-      } else {
-        this.ConsentinsertForm.get("createdBy").setValue(this._loggedService.currentUserValue.userId)
-         this.ConsentinsertForm.removeControl('modifiedBy');
+    } else {
+      this.ConsentinsertForm.get("createdBy").setValue(this._loggedService.currentUserValue.userId)
+      this.ConsentinsertForm.removeControl('modifiedBy');
 
-      }   
-      this.ConsentinsertForm.get("consentDate").setValue(this.datePipe.transform(new Date(), 'yyyy-MM-dd'))
-      this.ConsentinsertForm.get("consentTime").setValue(this.datePipe.transform(new Date(), 'shortTime'))
-      this.ConsentinsertForm.get("opipid").setValue(this.OP_IP_Id)
-      this.ConsentinsertForm.get("opiptype").setValue(Number(this.OP_IPType))
-      this.ConsentinsertForm.get("consentTempId").setValue(Number(this.templateId))
-      this.ConsentinsertForm.get("ConsentName").setValue(this.templateName)
+    }
+    this.ConsentinsertForm.get("consentDate").setValue(this.datePipe.transform(new Date(), 'yyyy-MM-dd'))
+    this.ConsentinsertForm.get("consentTime").setValue(this.datePipe.transform(new Date(), 'shortTime'))
+    this.ConsentinsertForm.get("opipid").setValue(this.OP_IP_Id)
+    this.ConsentinsertForm.get("opiptype").setValue(Number(this.OP_IPType))
+    this.ConsentinsertForm.get("consentTempId").setValue(Number(this.templateId))
+    this.ConsentinsertForm.get("ConsentName").setValue(this.templateName)
 
     if (!this.ConsentinsertForm.invalid) {
 
@@ -252,7 +252,11 @@ export class NewConsentComponent {
       });
       return;
     }
+
     this.vConsentText = this.selectedTemplateOption || '';
+    this.ConsentinsertForm.get('ConsentText')?.setValue(this.vConsentText);
+    console.log(this.ConsentinsertForm.get('ConsentText').value)
+
     this.selectedTemplateOption = '';
     this.isButtonDisabled = true
   }
@@ -268,6 +272,7 @@ export class NewConsentComponent {
       Language: '1',
       IsIPOrOP: '2'
     });
+    this.patientInfoReset();
     this.dialogRef.close();
   }
 
@@ -287,39 +292,39 @@ export class NewConsentComponent {
   }
 
   OnViewReportPdf(element: any) {
-    
-      setTimeout(() => {
-        let param = {
-          "searchFields": [
-            {
-              "fieldName": "ConsentId",
-              "fieldValue": String(element.consentId),
-              "opType": "Equals"
-            },
-            {
-              "fieldName": "OPIPType",
-              "fieldValue": String(element.opiptype),
-              "opType": "Equals"
+
+    setTimeout(() => {
+      let param = {
+        "searchFields": [
+          {
+            "fieldName": "ConsentId",
+            "fieldValue": String(element.consentId),
+            "opType": "Equals"
+          },
+          {
+            "fieldName": "OPIPType",
+            "fieldValue": String(element.opiptype),
+            "opType": "Equals"
+          }
+        ],
+        "mode": "ConsentInformation"
+      }
+
+      this._ConsentService.getReportView(param).subscribe(res => {
+
+        const matDialog = this._matDialog.open(PdfviewerComponent,
+          {
+            maxWidth: "85vw",
+            height: '750px',
+            width: '100%',
+            data: {
+              base64: res["base64"] as string,
+              title: "Consent Report" + " " + "Viewer"
             }
-          ],
-          "mode": "ConsentInformation"
-        }
-    
-        this._ConsentService.getReportView(param).subscribe(res => {
-    
-          const matDialog = this._matDialog.open(PdfviewerComponent,
-            {
-              maxWidth: "85vw",
-              height: '750px',
-              width: '100%',
-              data: {
-                base64: res["base64"] as string,
-                title: "Consent Report" + " " + "Viewer"
-              }
-            });
-          matDialog.afterClosed().subscribe(result => {
           });
+        matDialog.afterClosed().subscribe(result => {
         });
-      }, 100);
+      });
+    }, 100);
   }
 }

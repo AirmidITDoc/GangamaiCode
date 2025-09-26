@@ -811,7 +811,7 @@ export class ClinicalCareChartComponent implements OnInit {
 
   GetDetails1(data: any): void {
     console.log("detailList:", data)
-    let ipMedID = data.ipMedID;
+    let ipMedID = data.ippreId;
     this.gridConfig1 = {
       apiUrl: "IPPrescription/PrescriptionDetailList",
       columnsList: [
@@ -839,7 +839,7 @@ export class ClinicalCareChartComponent implements OnInit {
         "searchFields": [
           {
             "fieldName": "OP_IP_ID",
-            "fieldValue": String(response.ipMedID),
+            "fieldValue": String(response.ippreId),
             "opType": "Equals"
           },
           {

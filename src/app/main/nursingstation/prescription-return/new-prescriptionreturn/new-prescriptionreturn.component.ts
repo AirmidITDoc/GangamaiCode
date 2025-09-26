@@ -35,7 +35,7 @@ export class NewPrescriptionreturnComponent implements OnInit {
   PatientName: any;
   OP_IP_Id: any;
   sIsLoading: string = '';
-  OP_IPType: any=1;
+  OP_IPType: any = 1;
   ItemName: any;
   ItemId: any;
   itemName: any;
@@ -72,7 +72,7 @@ export class NewPrescriptionreturnComponent implements OnInit {
   dateTimeObj: any;
   @ViewChild('addbutton', { static: true }) addbutton: HTMLButtonElement;
   add: boolean = false;
-   autocompletestore: string = "PharmacyStore";
+  autocompletestore: string = "PharmacyStore";
 
   constructor(
     public _PrescriptionReturnService: PrescriptionReturnService,
@@ -100,18 +100,18 @@ export class NewPrescriptionreturnComponent implements OnInit {
   @ViewChild('itemAutocomplete', { read: ElementRef }) itemAutocomplete: ElementRef;
 
   ngOnInit(): void {
-    debugger
+    // debugger
     this.vSelectedOption = this.OP_IPType === 1 ? 'IP' : 'OP';
     if (this.data) {
       this.registerObj1 = this.data;
       console.log("Icd RegisterObj:", this.registerObj1)
 
-       setTimeout(() => {
-                 this._PrescriptionReturnService.getPrscretbyId(this.data.presReId).subscribe((response) => {
-                    this.registerObj = response;
-                     console.log(this.registerObj)
-               });
-             }, 500);
+      setTimeout(() => {
+        this._PrescriptionReturnService.getPrscretbyId(this.data.presReId).subscribe((response) => {
+          this.registerObj = response;
+          console.log(this.registerObj)
+        });
+      }, 500);
     }
     this.getItemSubform();
     this.ItemSubform.markAllAsTouched();
@@ -133,12 +133,19 @@ export class NewPrescriptionreturnComponent implements OnInit {
 
   // prescription return insert form
   presReturnForm(): FormGroup {
+     const openingDate = this.datePipe.transform(this.dateTimeObj?.date, "yyyy-MM-dd") || '1900-01-01';
+    const openingTime = this.dateTimeObj?.time || '00:00';
+
+    const openingDateTime = `${openingDate} ${openingTime}`;
+
     return this._formBuilder.group({
       presReId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       presNo: ['', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
-      presDate: [(new Date()).toISOString().split('T')[0]],
-      presTime: [(new Date()).toISOString()],
-      toStoreId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      // presDate: [(new Date()).toISOString().split('T')[0]],
+      // presTime: [(new Date()).toISOString()],
+      presDate: [openingDate],
+      presTime: [openingDateTime],
+      toStoreId: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       opIpId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       opIpType: 0,
       addedby: this._loggedService.currentUserValue.userId,
@@ -170,14 +177,13 @@ export class NewPrescriptionreturnComponent implements OnInit {
     if (this.ItemSubform.get('PatientType').value == 'IP') { opip_Type = 1; }
     else { opip_Type = 0; }
 
-    if (this.vRegNo==0) {
+    if (this.vRegNo == 0) {
       this.toastr.warning('Please select a Patient Name .', 'Warning!', {
         toastClass: 'tostr-tost custom-toast-warning'
       });
-       return;
+      return;
     }
 
-    
     if (!this.prescriptionReturnForm.invalid) {
 
       this.prescriptionReturnArray.clear();
@@ -251,7 +257,7 @@ export class NewPrescriptionreturnComponent implements OnInit {
 
   selectChangeItem(obj: any) {
 
-     if (this.vstoreId == 0) {
+    if (this.vstoreId == 0) {
       this.toastr.warning('Please select a StoreName before choosing an Item.', 'Warning!', {
         toastClass: 'tostr-tost custom-toast-warning'
       });
@@ -292,6 +298,14 @@ export class NewPrescriptionreturnComponent implements OnInit {
       this.Qty = result.balanceQty;
       this.BalanceQty = result.balanceQty;
       this.BatchExpDate = result.batchExpDate;
+    });
+  }
+
+  ItemFromReset() {
+    this.ItemSubform.patchValue({
+      ItemId: "",
+      BatchNo: "",
+      Qty: "",
     });
   }
 
@@ -383,9 +397,9 @@ export class NewPrescriptionreturnComponent implements OnInit {
     this.add = true;
     this.addbutton.focus();
   }
- 
+
   onAdd() {
-    debugger
+    // debugger
     if (!this.ItemSubform.invalid) {
       const iscekDuplicate = this.saleSelectedDatasource.data.some(item => item.ItemID == this.ItemId)
       if (!iscekDuplicate) {
@@ -395,7 +409,7 @@ export class NewPrescriptionreturnComponent implements OnInit {
             ItemID: this.ItemId || 0,
             ItemName: this.itemName || '',
             BatchNo: this.BatchNo || '',
-            Qty:this.ItemSubform.get('Qty').value || this.Qty,
+            Qty: this.ItemSubform.get('Qty').value || this.Qty,
             BatchexpDate: this.BatchExpDate || ''
           });
         this.saleSelectedDatasource.data = this.Chargelist
@@ -480,44 +494,13 @@ export class NewPrescriptionreturnComponent implements OnInit {
 
   viewgetIpprescriptionreturnReportPdf(element) {
     console.log(element)
-           this.commonService.Onprint("PresReId", element.PresReId, "NurIPprescriptionReturnReport");
-          //   setTimeout(() => {
-          //      let param = {
-          //          "searchFields": [
-          //              {
-          //                  "fieldName": "PresReId",
-          //                  "fieldValue": String(response.presReId),
-          //                  "opType": "Equals"
-          //              }
-          //          ],
-          //          "mode": "NurIPprescriptionReturnReport"
-          //      }
-   
-          //      console.log(param)
-          //      this._PrescriptionReturnService.getReportView(param).subscribe(res => {
-   
-          //          const matDialog = this._matDialog.open(PdfviewerComponent,
-          //              {
-          //                  maxWidth: "85vw",
-          //                  height: '750px',
-          //                  width: '100%',
-          //                  data: {
-          //                      base64: res["base64"] as string,
-          //                      title: "Nursing Prescription Return" + " " + "Viewer"
-          //                  }
-          //              });
-          //          matDialog.afterClosed().subscribe(result => {
-          //          });
-          //      });
-          //  }, 100);
-         
+    this.commonService.Onprint("PresReId", element.presReId, "NurIPprescriptionReturnReport");
   }
-    selectChangeStore(obj: any) {
+
+  selectChangeStore(obj: any) {
     console.log(obj)
     this.vstoreId = obj.value
   }
-
-
 }
 export class IndentList {
   ItemId: any;

@@ -31,7 +31,7 @@ export class PrescriptionComponent implements OnInit {
     regNo: any = ""
     fname = "%"
     lname = "%"
-    
+
     gridConfig1: gridModel = new gridModel();
     gridConfig4: gridModel = new gridModel();
 
@@ -53,7 +53,7 @@ export class PrescriptionComponent implements OnInit {
 
 
     ngAfterViewInit() {
-       this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
+        this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
 
     }
     allColumns1 = [
@@ -62,29 +62,19 @@ export class PrescriptionComponent implements OnInit {
         { heading: "DOA", key: "vst_Adm_Date", sort: true, align: 'left', emptySign: 'NA', width: 200 },//cant apply any date type
 
         { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 90 },
-        
+
         { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
-         { heading: "IPD NO", key: "ipdno", sort: true, align: 'left', emptySign: 'NA', width: 150 }, 
+        { heading: "IPD NO", key: "ipdno", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "Doctor Name", key: "doctorName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
-        
+
         { heading: "Ward Name | Bed No", key: "wardName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
         { heading: "Payer Type", key: "patientType", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "Company Name", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         { heading: "Store Name", key: "storeName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
 
         { heading: "Remark", key: "remark", sort: true, align: 'left', emptySign: 'NA', width: 170 },
-
-        // {
-        //     heading: "Action", key: "action", align: "right", type: gridColumnTypes.action,
-        //     actions: [
-        //         {
-        //             action: gridActions.print, callback: (data: any) => {
-        //                 this.viewgetIpprescriptionReportPdf(data);
-        //             }
-        //         }]
-        // }
         {
-            heading: "Action", key: "action", align: "right", width: 250, sticky: true, type: gridColumnTypes.template,
+            heading: "Action", key: "action", align: "right", width: 120, sticky: true, type: gridColumnTypes.template,
             template: this.actionButtonTemplate  // Assign ng-template to the column
         }
     ]
@@ -109,7 +99,7 @@ export class PrescriptionComponent implements OnInit {
             this._PrescriptionService.mysearchform.get('RegNo').setValue("")
         if (event == 'fName')
             this._PrescriptionService.mysearchform.get('fName').setValue("")
-       
+
         if (event == 'lName')
             this._PrescriptionService.mysearchform.get('lName').setValue("")
 
@@ -118,7 +108,7 @@ export class PrescriptionComponent implements OnInit {
 
     onChangeFirst() {
         this.regNo = this._PrescriptionService.mysearchform.get('RegNo').value || '0'
-        this.fname = this._PrescriptionService.mysearchform.get('fName').value  + "%"
+        this.fname = this._PrescriptionService.mysearchform.get('fName').value + "%"
         this.lname = this._PrescriptionService.mysearchform.get('lName').value + "%"
 
         this.getfilterdata();
@@ -140,7 +130,7 @@ export class PrescriptionComponent implements OnInit {
                 { fieldName: "FromDate", fieldValue: fromDate1, opType: OperatorComparer.Equals },
                 { fieldName: "ToDate", fieldValue: toDate1, opType: OperatorComparer.Equals },
                 { fieldName: "Reg_No", fieldValue: this.regNo, opType: OperatorComparer.Equals },
-                 { fieldName: "F_Name", fieldValue: this.fname, opType: OperatorComparer.Equals },
+                { fieldName: "F_Name", fieldValue: this.fname, opType: OperatorComparer.Equals },
                 { fieldName: "L_Name", fieldValue: this.lname, opType: OperatorComparer.Equals }
             ]
         }
@@ -153,7 +143,7 @@ export class PrescriptionComponent implements OnInit {
 
         console.log("detailList:", data)
         let ipMedID = data.ippreId
-;
+            ;
 
         this.gridConfig1 = {
             apiUrl: "IPPrescription/PrescriptionDetailList",
@@ -312,35 +302,6 @@ export class PrescriptionComponent implements OnInit {
         }, 100);
     }
 
-    viewgetIpprescriptionreturnReportPdf(response) {
-        setTimeout(() => {
-            let param = {
-                "searchFields": [
-                    {
-                        "fieldName": "PresReId",
-                        "fieldValue": String(response.presReId),
-                        "opType": "Equals"
-                    }
-                ],
-                "mode": "NurIPprescriptionReturnReport"
-            }
-            this._PrescriptionService.getReportView(param).subscribe(res => {
-                const matDialog = this._matDialog.open(PdfviewerComponent,
-                    {
-                        maxWidth: "85vw",
-                        height: '750px',
-                        width: '100%',
-                        data: {
-                            base64: res["base64"] as string,
-                            title: "Nursing Prescription Return" + " " + "Viewer"
-                        }
-                    });
-                matDialog.afterClosed().subscribe(result => {
-                });
-            });
-        }, 100);
-
-    }
     onSave(row: any = null) {
         const dialogRef = this._matDialog.open(NewPrescriptionComponent,
             {
@@ -390,7 +351,10 @@ export class PrescriptionComponent implements OnInit {
             confirmButtonText: "Yes, Cancel it!"
         }).then((flag) => {
             if (flag.isConfirmed) {
-                this._PrescriptionService.PrescriptionCancle(data.ippreId).subscribe((response: any) => {
+                let sub = {
+                    "ippreId": data.ippreId
+                }
+                this._PrescriptionService.PrescriptionCancle(sub).subscribe((response: any) => {
                     this.toastr.success(response.message);
                     this.grid.bindGridData();
                 });

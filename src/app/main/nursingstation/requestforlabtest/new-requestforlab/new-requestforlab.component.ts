@@ -119,10 +119,16 @@ export class NewRequestforlabComponent implements OnInit {
   }
 
   labRequestInsertForm(): FormGroup {
+    const openingDate = this.datePipe.transform(new Date(), "yyyy-MM-dd") || "1900-01-01";
+    const openingTime = this.datePipe.transform(new Date(), "HH:mm") || "00:00";
+
+    const openingDateTime = `${openingDate} ${openingTime}`;
     return this._FormBuilder.group({
       requestId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      reqDate: [(new Date()).toISOString().split('T')[0]],
-      reqTime: [(new Date()).toISOString()],
+      // reqDate: [(new Date()).toISOString().split('T')[0]],
+      // reqTime: [(new Date()).toISOString()],
+      reqDate: [openingDate],
+      reqTime: [openingDateTime],
       opIpId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       opIpType: [1, [this._FormvalidationserviceService.onlyNumberValidator()]],
       isAddedBy: [this._loggedService.currentUserValue.userId, [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -338,18 +344,18 @@ export class NewRequestforlabComponent implements OnInit {
   }
 
   onSaveEntry(row) {
-  let doctorid = 0;
-  const formValue = this.myFormGroup.value
-     if (this.isDoctor) {
-            if ((formValue.doctorId == '' || formValue.doctorId == null || formValue.doctorId == '0')) {
-                this.toastr.warning('Please select Doctor', 'Warning !', {
-                    toastClass: 'tostr-tost custom-toast-warning',
-                });
-                return;
-            }
-            if (formValue.doctorId)
-                doctorid = this.myFormGroup.get("doctorId")?.value ?? 0;
-        }
+    let doctorid = 0;
+    const formValue = this.myFormGroup.value
+    if (this.isDoctor) {
+      if ((formValue.doctorId == '' || formValue.doctorId == null || formValue.doctorId == '0')) {
+        this.toastr.warning('Please select Doctor', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+      }
+      if (formValue.doctorId)
+        doctorid = this.myFormGroup.get("doctorId")?.value ?? 0;
+    }
 
 
     this.isLoading = 'save';
@@ -418,7 +424,7 @@ export class LabRequest {
   ServiceName: any;
   Price: number;
   ServiceId: any;
-  CreditedtoDoctor:any;
+  CreditedtoDoctor: any;
   constructor(LabRequest) {
     this.ServiceName = LabRequest.ServiceName || '';
     this.Price = LabRequest.Price || 0;

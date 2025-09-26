@@ -90,7 +90,7 @@ export class NewCanteenRequestComponent implements OnInit {
       unitId: [this.accountService.currentUserValue.user.unitId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       isBillGenerated: false,
       isPrint: false,
-      tCanteenRequestDetails: this.formBuilder.array([]), 
+      tCanteenRequestDetails: this.formBuilder.array([]),
       RegID: [0],
       StoreId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
 
@@ -174,7 +174,7 @@ export class NewCanteenRequestComponent implements OnInit {
     }
     const iscekDuplicate = this.dsItemList.data.some(item => item.ItemID == this.ItemId)
     if (!iscekDuplicate) {
-     this.dsItemList.data = [];
+      this.dsItemList.data = [];
       this.Chargelist.push(
         {
           ItemID: this.ItemId,
@@ -203,6 +203,14 @@ export class NewCanteenRequestComponent implements OnInit {
     this.ItemName = obj.itemName
     this.price = obj.price
     this.isBatchRequired = obj.isBatchRequired
+  }
+
+  ItemFromReset() {
+    this._CanteenRequestservice.ItemForm.patchValue({
+      ItemId: "",
+      Qty: "",
+      Remark: "",
+    });
   }
 
   deleteTableRow(event, element) {

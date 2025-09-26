@@ -182,6 +182,7 @@
                                                     placeholderText="Enter Item Name" fxFlex
                                                     ApiUrl="CanteenRequest/GetItemListforCanteen?ItemName="
                                                     (selectionChange)="getSelectedserviceObj($event)"
+                                                     (onClearSelection)="ItemFromReset()"
                                                     TextField="itemName" ValueField="itemID"></airmid-autocomplete>
                                             </div>
 

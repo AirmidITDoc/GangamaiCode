@@ -28,7 +28,8 @@
                     <button mat-icon-button (click)="viewgetIpprescriptionreturnReportPdf(element)" matTooltip="Prescription Retrun Print">
                         <mat-icon title="Request Print">print</mat-icon>
                     </button>
-                    <button mat-icon-button (click)="Prescretruncancle(element)" matTooltip="Prescription ReturnCancel">
+                    <button mat-icon-button (click)="Prescretruncancle(element)" matTooltip="Prescription ReturnCancel"
+                    *ngIf="element.isclosed==false">
                         <mat-icon title="Cancel Prescription Return">cancel</mat-icon>
                     </button>
 

@@ -180,7 +180,7 @@
                         <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" class="gap-8">
                             <airmid-autocomplete label="Enter Item Name" [formGroup]="ItemForm" required
                                 #itemAutocomplete formControlName="ItemId" placeholderText="Enter Item Name"
-                                fxFlex="45%"
+                                fxFlex="45%" (onClearSelection)="ItemFromReset()"
                                 [ApiUrl]="'ItemMaster/GetItemListForPrescription?StoreId=' + vstoreId + '&ItemName='"
                                 (selectionChange)="selectChangeItem($event)" TextField="formattedText"
                                 ValueField="ItemId" [validations]="getValidationMessages().ItemId">
