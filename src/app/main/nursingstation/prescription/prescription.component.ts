@@ -142,8 +142,7 @@ export class PrescriptionComponent implements OnInit {
     GetDetails1(data: any): void {
 
         console.log("detailList:", data)
-        let ipMedID = data.ippreId
-            ;
+        let ipMedID = data.ipMedID;
 
         this.gridConfig1 = {
             apiUrl: "IPPrescription/PrescriptionDetailList",

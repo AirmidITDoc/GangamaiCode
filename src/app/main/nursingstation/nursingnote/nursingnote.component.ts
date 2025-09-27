@@ -98,7 +98,7 @@ export class NursingnoteComponent implements OnInit {
     { heading: "Date", key: "tDate", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "Time", key: "tTime", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "Note", key: "nursingNotes", sort: true, align: 'left', emptySign: 'NA', width: 250 },
-    { heading: "CreatedBy", key: "isAddedBy", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "CreatedBy", key: "userName", sort: true, align: 'left', emptySign: 'NA' },
     {
       heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
         {
@@ -390,6 +390,7 @@ export class NursingnoteComponent implements OnInit {
     }
 
     this.vDescription = this.tempdesc || '';
+    this.myNursingForm.get('nursingNotes')?.setValue(this.vDescription);
     this.myform.get('TemplateId').setValue('');
   }
 

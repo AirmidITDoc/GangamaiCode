@@ -347,7 +347,8 @@ export class NewPrescriptionComponent implements OnInit {
       isClosed: [false],
       isAddBy: [this._loggedService.currentUserValue.userId, [this._FormvalidationserviceService.onlyNumberValidator()]],
       storeId: [this.vstoreId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      wardId: [Number(this.myForm.get('WardName').value) ?? 0, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator()]]
+      wardId: [Number(this.myForm.get('WardName').value) ?? 0, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator()]],
+      isCancelled: [false],
     });
   }
 

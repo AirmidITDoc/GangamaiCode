@@ -274,7 +274,10 @@ export class ClinicalCareChartComponent implements OnInit {
   }
 
   onChangeFirst() {
+    debugger
     this.pname = this._ClinicalcareService.MyForm.get('PatientName').value + '%'
+    this.wardid = this._ClinicalcareService.MyForm.get('WardName').value
+
     if (!this.wardid) {
       this.wardid = "0";
     }
@@ -705,8 +708,7 @@ export class ClinicalCareChartComponent implements OnInit {
     this.advanceDataStored.storage = new AdmissionPersonlModel(this.registerObj);
     const dialogRef = this._matDialog.open(DischargeSummaryComponent,
       {
-        maxWidth: "100%",
-        height: '90%',
+        maxHeight: '95vh',
         width: '90%',
         data: this.registerObj
       });
@@ -756,8 +758,7 @@ export class ClinicalCareChartComponent implements OnInit {
     this.advanceDataStored.storage = new AdmissionPersonlModel(this.registerObj);
     const dialogRef = this._matDialog.open(NewPrescriptionComponent,
       {
-        maxWidth: "100%",
-        height: '90%',
+        maxHeight: '95vh',
         width: '90%',
         data: this.registerObj
       });
@@ -954,8 +955,7 @@ export class ClinicalCareChartComponent implements OnInit {
     this.advanceDataStored.storage = new AdmissionPersonlModel(this.registerObj);
     const dialogRef = this._matDialog.open(NewRequestforlabComponent,
       {
-        maxWidth: "100%",
-        height: '90%',
+        maxHeight: '95vh',
         width: '90%',
         data: this.registerObj
       });
@@ -1071,7 +1071,7 @@ export class ClinicalCareChartComponent implements OnInit {
   vVitalId: any;
   onEditVital(row: any) {
     console.log('Row:', row, typeof row.suctionType);
-    this.vVitalId=row.vitalId
+    this.vVitalId = row.vitalId
     const updated = {
       ...row,
       suctionType: String(row.suctionType)

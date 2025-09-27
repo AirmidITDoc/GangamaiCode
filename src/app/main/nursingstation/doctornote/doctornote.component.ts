@@ -107,7 +107,7 @@ export class DoctornoteComponent implements OnInit {
     { heading: "Date", key: "tdate", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "Time", key: "ttime", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "Note", key: "doctorsNotes", sort: true, align: 'left', emptySign: 'NA', width: 250 },
-    { heading: "CreatedBy", key: "createdby", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "CreatedBy", key: "userName", sort: true, align: 'left', emptySign: 'NA' },
     {
       heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
         {
@@ -239,6 +239,7 @@ export class DoctornoteComponent implements OnInit {
     }
 
     this.vDescription = this.tempdesc || '';
+    this.myNoteform.get('doctorsNotes')?.setValue(this.vDescription);
     this.myform.get('TemplateId').setValue('');
   }
 
