@@ -133,24 +133,17 @@ export class NewPrescriptionreturnComponent implements OnInit {
 
   // prescription return insert form
   presReturnForm(): FormGroup {
-     const openingDate = this.datePipe.transform(this.dateTimeObj?.date, "yyyy-MM-dd") || '1900-01-01';
-    const openingTime = this.dateTimeObj?.time || '00:00';
-
-    const openingDateTime = `${openingDate} ${openingTime}`;
-
     return this._formBuilder.group({
       presReId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       presNo: ['', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
-      // presDate: [(new Date()).toISOString().split('T')[0]],
-      // presTime: [(new Date()).toISOString()],
-      presDate: [openingDate],
-      presTime: [openingDateTime],
+      presDate: [''],
+      presTime: [''],
       toStoreId: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       opIpId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       opIpType: 0,
       addedby: this._loggedService.currentUserValue.userId,
       isActive: 1,
-      isclosed: true,
+      isclosed: false,
       tIpprescriptionReturnDs: this._formBuilder.array([]),
     })
   }
@@ -163,7 +156,7 @@ export class NewPrescriptionreturnComponent implements OnInit {
       batchNo: [element.BatchNo],
       batchExpDate: [element.BatchexpDate ?? this.datePipe.transform(new Date(), 'yyyy-MM-dd')],
       qty: [element.Qty ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      isClosed: [true]
+      isClosed: [false]
     });
   }
 
@@ -173,6 +166,11 @@ export class NewPrescriptionreturnComponent implements OnInit {
 
   OnSavePrescriptionreturn() {
     // debugger
+    const formattedDate = this.datePipe.transform(this.dateTimeObj?.date, "yyyy-MM-dd");
+    const formattedTime = this.dateTimeObj?.time;
+    this.prescriptionReturnForm.get('presDate').setValue(formattedDate);
+    this.prescriptionReturnForm.get('presTime').setValue(formattedDate + ' ' + formattedTime);
+
     let opip_Type;
     if (this.ItemSubform.get('PatientType').value == 'IP') { opip_Type = 1; }
     else { opip_Type = 0; }
@@ -195,8 +193,6 @@ export class NewPrescriptionreturnComponent implements OnInit {
         this.prescriptionReturnArray.push(this.createPresReturnFormInsert(item));
       });
 
-      this.prescriptionReturnForm.get("presDate").setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'))
-      this.prescriptionReturnForm.get("presTime").setValue(this.dateTimeObj.time)
       this.prescriptionReturnForm.get("toStoreId").setValue(this.vstoreId)
       this.prescriptionReturnForm.get("opIpId").setValue(this.OP_IP_Id)
       this.prescriptionReturnForm.get("opIpType").setValue(opip_Type)

@@ -1,5 +1,5 @@
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
-import { Component, EventEmitter, Input, Optional, Output, Self, SimpleChanges,ViewEncapsulation } from '@angular/core';
+import { Component, EventEmitter, Input, Optional, Output, Self, SimpleChanges, ViewEncapsulation } from '@angular/core';
 import { FormControl, FormGroup, NgControl } from '@angular/forms';
 //import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { Subject, takeUntil } from 'rxjs';
@@ -416,9 +416,21 @@ export class AirmidEditorComponent {
     registerOnTouched(onTouched: () => void): void {
         this.onTouched = onTouched;
     }
+    // writeValue(value: string | null): void {
+    //     this.control.setValue(value);
+    // }
+
+    // added by raksha 27/9/25
     writeValue(value: string | null): void {
-        this.control.setValue(value);
+        // update Angular side
+        this.control.setValue(value, { emitEvent: false });
+
+        // update CKEditor if already initialized
+        if (this.editorInstance && value !== this.editorInstance.getData()) {
+            this.editorInstance.setData(value || '');
+        }
     }
+
     constructor(@Optional() @Self() public ngControl: NgControl | null,
         public speechService: SpeechRecognitionService) {
         if (ngControl) {
@@ -431,12 +443,6 @@ export class AirmidEditorComponent {
         this.valueChange.emit(editorData);
     }
 
-    // added by raksha 1/9/25
-    // onEditorChange({ editor }: any): void {
-    //     const editorData = editor.getData();
-    //     console.log("Editor content: ", editorData);
-    //     this.valueChange.emit(editorData);
-    // }
 
     editorInstance: any;
     onReady(editor: any): void {

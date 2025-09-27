@@ -299,6 +299,7 @@ export class NewCanteenRequestComponent implements OnInit {
     this.dsCanteenDateList.data = [];
     this.dsItemList.data = [];
     this.Chargelist.data = [];
+    this.ItemFromReset();
   }
 }
 
