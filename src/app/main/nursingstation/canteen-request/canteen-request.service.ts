@@ -54,6 +54,6 @@ export class CanteenRequestService {
     
 
       public CanrequestCancle(Param){
-  return this._httpClient1.PostData("Report/ViewReport", Param);
+  return this._httpClient1.PostData("CanteenRequest/CanteenRequestCancel", Param);
   }
 }

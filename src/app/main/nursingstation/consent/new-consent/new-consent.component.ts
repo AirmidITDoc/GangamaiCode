@@ -187,6 +187,13 @@ export class NewConsentComponent {
   }
 
   onSave() {
+    const now = new Date();
+
+    const formattedDate = this.datePipe.transform(now, "yyyy-MM-dd");   // e.g. 2025-09-27
+    const formattedTime = this.datePipe.transform(now, "shortTime");   // e.g. 10:45 AM
+
+    this.ConsentinsertForm.get('consentDate')?.setValue(formattedDate);
+    this.ConsentinsertForm.get('consentTime')?.setValue(`${formattedDate} ${formattedTime}`);
 
     if (this.ConsentinsertForm.get("consentId").value > 0) {
       this.ConsentinsertForm.get("modifiedBy").setValue(this._loggedService.currentUserValue.userId)
@@ -197,8 +204,6 @@ export class NewConsentComponent {
       this.ConsentinsertForm.removeControl('modifiedBy');
 
     }
-    this.ConsentinsertForm.get("consentDate").setValue(this.datePipe.transform(new Date(), 'yyyy-MM-dd'))
-    this.ConsentinsertForm.get("consentTime").setValue(this.datePipe.transform(new Date(), 'shortTime'))
     this.ConsentinsertForm.get("opipid").setValue(this.OP_IP_Id)
     this.ConsentinsertForm.get("opiptype").setValue(Number(this.OP_IPType))
     this.ConsentinsertForm.get("consentTempId").setValue(Number(this.templateId))
