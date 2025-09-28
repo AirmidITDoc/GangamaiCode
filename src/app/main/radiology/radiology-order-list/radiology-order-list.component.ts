@@ -15,6 +15,8 @@ import { ResultEntryComponent } from './result-entry/result-entry.component';
 import { ReportVerifyDetailsComponent } from 'app/main/pathology/result-entry/report-verify-details/report-verify-details.component';
 import { OutsourceDetailsComponent } from 'app/main/pathology/result-entry/outsource-details/outsource-details.component';
 import { PageNames } from 'app/main/shared/componets/airmid-fileupload/airmid-fileupload.component';
+import Swal from 'sweetalert2';
+import { AuthenticationService } from 'app/core/services/authentication.service';
 
 @Component({
     selector: 'app-radiology-order-list',
@@ -116,7 +118,7 @@ export class RadiologyOrderListComponent implements OnInit {
         public _RadioloyOrderlistService: RadioloyOrderlistService,
         public _matDialog: MatDialog,
         public datePipe: DatePipe,
-        //private accountService: AuthenticationService,
+        private accountService: AuthenticationService,
         private _fuseSidebarService: FuseSidebarService,
         public toastr: ToastrService,
     ) { }
@@ -284,28 +286,35 @@ Editoutsoucedata(row) {
         });
     }
 
-    onVerify(row) {
-
-        console.log(row)
-
-        // this.advanceDataStored.storage = new AdvanceDetailObj(row);
-
-        const dialogRef1 = this._matDialog.open(ReportVerifyDetailsComponent,
-            {
-                maxWidth: "60vw",
-                height: '50vh',
-                width: '100%',
-                data: {
-
-                    regobj: row
-                }
-            });
-
-        dialogRef1.afterClosed().subscribe(result => {
-                       // this.getPatientsList();
-        });
-    }
-
+     onVerify(row) {
+           Swal.fire({
+               title: 'Confirm Verify Report ',
+               text: 'Are you sure you want to Verify Report?',
+               icon: 'warning',
+               showCancelButton: true,
+               confirmButtonColor: '#3bd96dff',
+               cancelButtonColor: '#d33',
+               confirmButtonText: 'Yes, Verify!'
+   
+           }).then((flag) => {
+               // debugger
+               if (flag.isConfirmed) {
+   
+                   let submitData = {
+   
+                       "radReportId": row.radReportId,
+                       "isVerified": this.accountService.currentUserValue.userId,
+                       "isVerifyedDate": new Date().toISOString()
+   
+                   };
+                   console.log(submitData);
+                   this._RadioloyOrderlistService.RadioReportverifyMaster(submitData).subscribe(response => {
+                      
+                   });
+               }
+           });
+           // this.onEdit(row);
+       }
     onClear() {
         this.myformSearch.get('RegNoSearch').setValue("0");
         this.myformSearch.get('StatusSearch').setValue("0");

@@ -91,7 +91,7 @@ debugger
       ResultEntry: ['', Validators.required],
       TemplateId: [0],
       suggestionNotes: [''],
-      PathResultDoctorId: ['']
+      PathResultDoctorId: ['', Validators.required]
 
     });
   }
@@ -282,14 +282,14 @@ debugger
       });
       return;
     }
-    if (this.otherForm.get("ResultEntry")?.value == '') {
+    if (this.otherForm.get("ResultEntry")?.value == '' || this.otherForm.get("ResultEntry")?.value == undefined) {
       this.toastr.warning('Please Enter Result Entry ', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       return;
     }
 
-
+   
     this.PathReportTemplateForm.get("pathTemplateDetailsResult").setValue(this.otherForm.get("ResultEntry").value)
     this.PathReportTemplateForm.get("templateResultInHTML").setValue(this.otherForm.get("ResultEntry").value)
     this.PathReportTemplateForm.get("testId").setValue(this.selectedAdvanceObj1.pathTestID)
@@ -300,12 +300,14 @@ debugger
     this.TemplateForm.get("pathologyReportHeader").setValue(this.PathReportHeaderForm.value)
 
     console.log(this.TemplateForm.value);
-
+    debugger
+ if(!this.TemplateForm.invalid){
     this._SampleService.PathTemplateResultentryInsert(this.TemplateForm.value).subscribe(response => {
       this.dialogRef.close();
       this.viewgetPathologyTemplateReportPdf(this.selectedAdvanceObj1);
 
     });
+  }
   }
 
   viewgetPathologyTemplateReportPdf(contact) {

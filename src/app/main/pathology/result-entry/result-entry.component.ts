@@ -263,7 +263,7 @@ export class ResultEntryComponent implements OnInit {
         // Update the filters dynamically
         this.gridConfig = {
             apiUrl: "Pathology/PathologyPatientTestList",
-         
+
             columnsList: this.allcolumns,
             sortField: "PresReId",
             sortOrder: 0,
@@ -385,8 +385,8 @@ export class ResultEntryComponent implements OnInit {
             sortField: "PresReId",
             sortOrder: 0,
             filters: [
-                { fieldName: "F_Name ", fieldValue:   this.f_name, opType: OperatorComparer.StartsWith },
-                { fieldName: "L_Name", fieldValue:  this.l_name, opType: OperatorComparer.StartsWith },
+                { fieldName: "F_Name ", fieldValue: this.f_name, opType: OperatorComparer.StartsWith },
+                { fieldName: "L_Name", fieldValue: this.l_name, opType: OperatorComparer.StartsWith },
                 { fieldName: "Reg_No", fieldValue: this.regNo, opType: OperatorComparer.Equals },
                 { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
                 { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
@@ -405,16 +405,16 @@ export class ResultEntryComponent implements OnInit {
         if (event == 'RegNoSearch')
             this.myformSearch.get('RegNoSearch').setValue("")
 
-         if (event == 'FirstNameSearch')
+        if (event == 'FirstNameSearch')
             this.myformSearch.get('FirstNameSearch').setValue("")
 
-          if (event == 'LastNameSearch')
+        if (event == 'LastNameSearch')
             this.myformSearch.get('LastNameSearch').setValue("")
 
         this.onChangeFirst();
     }
 
-   
+
     onSave(row: any = null) {
         let that = this;
         const dialogRef = this._matDialog.open(SampledetailtwoComponent,
@@ -561,7 +561,7 @@ export class ResultEntryComponent implements OnInit {
         }
         else if (contact.isTemplateTest == 1) {
             this.advanceDataStored.storage = new SampleDetailObj(contact);
-            const dialogRef = this._matDialog.open(ResultEntrytwoComponent,
+            const dialogRef = this._matDialog.open(NewResultTemplateComponent,
                 {
                     maxHeight: '95vh',
                     width: '90%',
@@ -968,7 +968,7 @@ export class ResultEntryComponent implements OnInit {
             });
 
         dialogRef1.afterClosed().subscribe(result => {
-                     // this.getPatientsList();
+            // this.getPatientsList();
         });
     }
     Editoutsoucedata(row) {
@@ -987,30 +987,60 @@ export class ResultEntryComponent implements OnInit {
 
         dialogRef1.afterClosed().subscribe(result => {
             this.grid.bindGridData();
-          
+
         });
     }
 
     onVerify(row) {
-debugger
-        console.log(row)
-        const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
-        buttonElement.blur(); // Remove focus from the button
+        Swal.fire({
+            title: 'Confirm Verify Report ',
+            text: 'Are you sure you want to Verify Report?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#41ea76ff',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, Verify!'
 
-        const dialogRef1 = this._matDialog.open(ReportVerifyDetailsComponent,
-            {
-                maxWidth: "50vw",
-                height: '50vh',
-                width: '100%',
-                data: row
+        }).then((flag) => {
+            // debugger
+            if (flag.isConfirmed) {
 
-            });
+                let submitData = {
 
-        dialogRef1.afterClosed().subscribe(result => {
-            this.grid.bindGridData();
-            
+                    "pathReportId": row.pathReportId,
+                    "isVerified": this.accountService.currentUserValue.userId,
+                    "isVerifyedDate": new Date().toISOString()
+
+                };
+                console.log(submitData);
+                this._SampleService.PathReportverifyMaster(submitData).subscribe(response => {
+                   
+                });
+            }
         });
+        // this.onEdit(row);
     }
+
+    //     onVerify(row) {
+    // debugger
+    //         console.log(row)
+    //         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+    //         buttonElement.blur(); // Remove focus from the button
+
+    //         const dialogRef1 = this._matDialog.open(ReportVerifyDetailsComponent,
+    //             {
+    //                 maxWidth: "50vw",
+    //                 height: '50vh',
+    //                 width: '100%',
+    //                 data: row
+
+    //             });
+
+    //         dialogRef1.afterClosed().subscribe(result => {
+    //             this.grid.bindGridData();
+
+    //         });
+    //     }
     onClear() {
         this._SampleService.myformSearch.get('RegNoSearch').setValue("0");
         this._SampleService.myformSearch.get('StatusSearch').setValue("0");

@@ -166,10 +166,11 @@
                         </div>
 
                         <div fxLayoutGap="5px">
-                                <!-- <airmid-editor label="Template Details" formControlName="ResultEntry"
+                               <mat-label>Template Details</mat-label>
+                                <airmid-editor label="Template Details" formControlName="ResultEntry"
                                 [(value)]="vTemplateDesc" 
-                                [formGroup]="otherForm"></airmid-editor> -->
-                                <mat-label>Template Details</mat-label>
+                                [formGroup]="otherForm"></airmid-editor>
+                             
                                 <!-- <angular-editor (blur)="onBlur($event)" [config]="editorConfig"
                                     style="height:400px;" [(ngModel)]="vTemplateDesc" required
                                     formControlName="ResultEntry">
@@ -182,7 +183,7 @@
                             <mat-form-field appearance="outline" fxFlex>
                                 <mat-label>Comment </mat-label>
                                 <textarea rows="1" name="suggestionNotes" formControlName="suggestionNotes" matInput
-                                    [(ngModel)]="vsuggestionNotes" (keydown)="onEnterSugg($event)"></textarea>
+                                    [(ngModel)]="vsuggestionNotes" (keydown)="onEnterSugg($event)" required></textarea>
                                 <mat-error>Please enter Comment </mat-error>
                             </mat-form-field>
                            </div>

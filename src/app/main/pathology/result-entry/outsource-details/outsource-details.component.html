@@ -84,7 +84,7 @@
 
 
 
-                <div fxLayout="row wrap" fxLayoutGap="8px 0px grid">
+                <!-- <div fxLayout="row wrap" fxLayoutGap="8px 0px grid">
                   <div>
                     <mat-form-field appearance="outline">
                       <mat-label>Sample Sent Date / Time</mat-label>
@@ -93,16 +93,26 @@
 
                     </mat-form-field>
                   </div>
-                </div>
+                </div> -->
                 <div fxLayout="row wrap" fxLayoutGap="8px 0px grid">
                   <!-- [value]="registerObj?.labId ?? 0" -->
-                  <div fxFlex="50" fxFlex.xs="100" fxFlex.sm="33">
-                    <airmid-dropdown label="Lab Name" formControlName="outSourceLabName" [formGroup]="LabFormGroup"
-                      [mode]="autocompleteModeoutsource"   (selectionChange)="onChangeLab($event)"></airmid-dropdown>
+
+                  <div fxFlex="32" fxFlex.xs="100" fxFlex.sm="33">
+                    <mat-form-field appearance="outline" fxFlex>
+                      <mat-label>Sample Sent Date / Time</mat-label>
+                      <input matInput type="datetime-local" placeholder="date" [value]="date" [(ngModel)]="date"
+                        (change)="date=$event.target.value" formControlName="outSourceSampleSentDateTime" readonly />
+
+                    </mat-form-field>
                   </div>
 
-                  <div fxFlex="50" fxFlex.xs="100" fxFlex.sm="33">
-                    <mat-form-field appearance="outline">
+                  <div fxFlex="32" fxFlex.xs="100" fxFlex.sm="33">
+                    <airmid-dropdown label="Lab Name" formControlName="outSourceLabName" [formGroup]="LabFormGroup"
+                      [mode]="autocompleteModeoutsource" (selectionChange)="onChangeLab($event)"></airmid-dropdown>
+                  </div>
+
+                  <div fxFlex="32" fxFlex.xs="100" fxFlex.sm="33" *ngIf="Reportdatestatus">
+                    <mat-form-field appearance="outline" fxFlex>
                       <mat-label>Report Collection Date / Time</mat-label>
                       <input matInput type="datetime-local" placeholder="date" [value]="date1" [(ngModel)]="date1"
                         (change)="date1=$event.target.value" formControlName="outSourceReportCollectedDateTime" />
