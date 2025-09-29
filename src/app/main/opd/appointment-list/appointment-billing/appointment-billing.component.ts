@@ -980,7 +980,23 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
   getSelectedTariffObj(event) {
     this.ApiURL = "VisitDetail/GetServiceListwithTraiff?TariffId=" + event.value + "&ClassId=" + this.patientDetail.classId + "&ServiceName="
   }
-  BillSave() {
+  BillSave(){
+    Swal.fire({
+    title: 'Confirm Save',
+    text: 'Are you sure you want to save this OPD bill?',
+    icon: 'warning', // or 'question'
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6', // Blue
+    cancelButtonColor: '#d33',     // Red
+    confirmButtonText: 'Yes, save it!',
+    cancelButtonText: 'No, cancel'
+}).then((result) => {
+    if (result.isConfirmed) {
+        this.OnSave(); // Call your save function
+    }
+});
+  }
+  OnSave() {
     if (this.OPFooterForm.get('concessionAmt').value > 0 && this.Consessionres) {
       if (!this.OPFooterForm.get('concessionReasonId').value) {
         this.toastr.warning('Please select ConcessionReason.', 'Warning !', {

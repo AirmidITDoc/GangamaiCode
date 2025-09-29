@@ -448,9 +448,10 @@
                     <ng-container matColumnDef="ItemName">
                       <mat-header-cell *matHeaderCellDef class="w-220" mat-sort-header>ItemName</mat-header-cell>
                       <mat-cell *matCellDef="let contact" class="w-220">
-                        <mat-form-field appearance="fill">
+                            <span> {{ contact.ItemName }}</span>
+                        <!-- <mat-form-field appearance="fill">
                           <input matInput [(ngModel)]="contact.ItemName" (keydown.enter)="onEnterItemName(contact)" />
-                        </mat-form-field>
+                        </mat-form-field> -->
                       </mat-cell>
                     </ng-container>
 
@@ -474,7 +475,7 @@
                       <mat-cell class="w-100" *matCellDef="let contact" fxShow.gt-sm>
                         <mat-form-field appearance="fill">
                           <input matInput [(ngModel)]="contact.Qty" type="text " (keyup)="getCellCalculation(contact)"
-                            min="0" name="tableQty" OnlyNumber />
+                            min="0" max="1000" name="tableQty" OnlyNumber />
                         </mat-form-field>
                       </mat-cell>
                     </ng-container>
@@ -513,7 +514,7 @@
                       <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                         <mat-form-field appearance="fill">
                           <input matInput [(ngModel)]="contact.DiscPer" type="text"
-                            (keyup)="updateCellDiscount(contact)" min="0" OnlyNumber />
+                            (keyup)="updateCellDiscount(contact)" min="0" max="100" OnlyNumber />
                         </mat-form-field>
                       </mat-cell>
                     </ng-container>
