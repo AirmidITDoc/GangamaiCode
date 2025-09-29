@@ -1061,6 +1061,7 @@ export class AdmissionPersonlModel {
 admissionType:any;
 emgTime:any;
 refDoctorName:any;
+
   /**
 * Constructor
 *

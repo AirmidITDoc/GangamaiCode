@@ -117,17 +117,20 @@ export class NewResultEntryComponent {
 
         if (this.data) {
             console.log(this.data)
-
-            this.opipnumber = this.data.opipnumber
-            this.ageY = this.data.ageY
-            this.ageM = this.data.ageM
-            this.ageD = this.data.ageD
-            this.genderId = this.data.genderId
-            this.sampleNo = this.data.sampleNo
-            this.suggestionNotes = this.data.suggestionNotes
-
-
             this.selectedAdvanceObj2 = data.patientdata;
+              console.log(this.data.patientdata)
+
+          debugger
+            this.opipnumber = this.data.patientdata.oP_IP_No
+            this.ageY = this. data.patientdata.ageYear.trim()
+            this.ageM = this. data.patientdata.ageMonth.trim()
+            this.ageD = this. data.patientdata.ageDay.trim()
+            this.genderId = this. data.patientdata.genderId
+            this.sampleNo = this. data.patientdata.sampleNo
+            this.suggestionNotes = this. data.patientdata.suggestionNotes
+
+
+            
             this.OPIPID = this.selectedAdvanceObj2.opdipdid // this.selectedAdvanceObj2.OPD_IPD_ID;
             this.OP_IPType = this.selectedAdvanceObj2.opdipdtype;
             this.SexId = this.selectedAdvanceObj2.genderId;
@@ -778,6 +781,7 @@ export class NewResultEntryComponent {
     }
 
     createResultdetailForm(item: any = {}): FormGroup {
+        debugger
         return this.formBuilder.group({
             pathReportDetId: [item.pathReportDetId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             pathReportId: [item.PathReportId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -809,8 +813,8 @@ export class NewResultEntryComponent {
             ageM:this.ageM,
             ageD:this.ageD,
             genderId: this.genderId,
-            sampleNo: this.sampleNo,
-            suggestionNotes: this.suggestionNotes,
+            sampleNo: " ",
+            suggestionNotes: this.vsuggation,
 
         });
     }

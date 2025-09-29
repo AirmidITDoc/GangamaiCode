@@ -47,28 +47,31 @@ export class OutsourceDetailsComponent {
   ) {
 
   }
-
+  Reportdatestatus=false
   ngOnInit(): void {
     console.log(this.data);
     this.LabFormGroup = this.createmlcForm();
     this.LabFormGroup.markAllAsTouched();
-
+debugger
     if (this.data) {
       this.vPathReportId = this.data.pathReportId
       this.outSourceId = this.data.outSourceId || 0;
       this.outSourceLabName = this.data.outSourceLabName;
-      this.outSourceStatus = this.data.outSourceStatus;
-      // this.mobileNo = this.data.mobileNo;
-      // this.address = this.data.address;
-      // this.data.sampleCollectionTime
+      this.outSourceStatus = this.data.outSourceStatus ;
+     if(this.outSourceId>0)
+      this.Reportdatestatus=true
 
     }
     var now = new Date();
      var now1 = new Date()
     now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
      now1.setMinutes(now1.getMinutes() - now1.getTimezoneOffset());
-    this.date = now.toISOString().slice(0, 16);
+    // this.date = now.toISOString().slice(0, 16);
+    this.date= new Date(this.data.outSourceSampleSentDateTime).toISOString().slice(0,16)
+
     this.date1 = now1.toISOString().slice(0, 16);
+
+   
   }
 
 
@@ -78,7 +81,7 @@ export class OutsourceDetailsComponent {
       outSourceId: [this.outSourceId],
       outSourceLabName: [ this.LabName, [Validators.required]],
       outSourceSampleSentDateTime: [''],
-      outSourceStatus: [true, Validators.required],
+      outSourceStatus: [true],
       outSourceReportCollectedDateTime: [''],
       outSourceCreatedBy: [this.accountService.currentUserValue.userId, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       outSourceCreatedDateTime: [new Date().toISOString()],
@@ -94,12 +97,19 @@ export class OutsourceDetailsComponent {
     }
 
   onSubmit() {
-    debugger
+    
     if (this.LabFormGroup.get('outSourceStatus').value)
       this.LabFormGroup.get('outSourceStatus').setValue(1)
     else
       this.LabFormGroup.get('outSourceStatus').setValue(0)
     this.LabFormGroup.get('outSourceLabName').setValue(this.LabName)
+
+debugger
+    if(this.outSourceId==0)
+       this.LabFormGroup.get('outSourceReportCollectedDateTime').setValue("01/01/1900")
+
+      else
+         this.LabFormGroup.get('outSourceReportCollectedDateTime').setValue(this.date1)
 
     console.log(this.LabFormGroup.value)
     if (!this.LabFormGroup.invalid) {

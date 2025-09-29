@@ -36,8 +36,8 @@
                                         [mode]="autocompleteModeCategoryId"></airmid-dropdown>
                                 </div>
                                 <div fxFlex="35%" fxFlex.xs="100%" fxFlex.sm="35%">
-                                    <airmid-autocomplete lbl="RgId" [formGroup]="myformSearch"
-                                        formControlName="RegNoSearch" placeholderText="IP-RegNo/FirstName/LastName"
+                                    <airmid-autocomplete lbl="UHID" [formGroup]="myformSearch"
+                                        formControlName="RegNoSearch" placeholderText="IP-UHID/FirstName/LastName"
                                         label="Search UNID / Patient Name / Mobile No"
                                         ApiUrl="Admission/search-patient?Keyword="
                                         (selectionChange)="getSelectedObjIP($event)" ValueField="admissionID"
@@ -112,11 +112,11 @@
 
                                     <!-- *ngIf="!element.isVerify" -->
                                     <button mat-icon-button (click)="onVerify(element)">
-                                        <mat-icon class="disabled-icon"
+                                        <mat-icon class="disabled-icon" style="color: chartreuse;"
                                             matTooltip="verify Menu">verified_user</mat-icon>
                                     </button>
                                     <!-- *ngIf="element.isPathOutSource == 1" -->
-                                    <button title="IsPathOutSource" (click)="Editoutsoucedata(element)"
+                                    <button title="IsPathOutSource" (click)="Editoutsoucedata(element)" 
                                         style="background: none; border: none; padding: 0; cursor: pointer;">
                                         <mat-icon title="Add OutSouce">edit</mat-icon>
                                     </button>

@@ -117,7 +117,7 @@ export class RadioloyOrderlistService {
     }
     
     public RadioReportverifyMaster(employee) {
-      return this._httpClient1.PostData("Radiology/RadiologyTemplateMasterSave", employee);
+      return this._httpClient1.PostData("Radiology/Verify", employee);
     }
     
     public updateRadioReportOutscourceMaster(employee) {

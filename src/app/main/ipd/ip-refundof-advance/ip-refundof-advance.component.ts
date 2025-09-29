@@ -123,15 +123,15 @@ export class IPRefundofAdvanceComponent implements OnInit {
       [this._FormvalidationserviceService.validDateValidator()]],
       refundTime: [item?.time,
       []],
-      advRefundAmt: [item?.refundAmt ?? 0, [, this._FormvalidationserviceService.onlyNumberValidator()]],
+      advRefundAmt: [item?.refundAmt || 0, [, this._FormvalidationserviceService.onlyNumberValidator()]],
     });
   }
   createAdvDetailsUpdate(item: any): FormGroup {
     return this.formBuilder.group({
       advanceDetailID: [item?.advanceDetailID, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator(),
       this._FormvalidationserviceService.onlyNumberValidator()]],
-      refundAmount: [item?.refundAmt ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      balanceAmount: [item?.balanceAmount ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]]
+      refundAmount: [item?.refundAmt || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      balanceAmount: [item?.balanceAmount || 0, [this._FormvalidationserviceService.onlyNumberValidator()]]
     });
   }
   // Getters
@@ -143,12 +143,9 @@ export class IPRefundofAdvanceComponent implements OnInit {
   }
 
   onSave() {
-    debugger
     //Assigning value to run time values to from control
-    
     this.RefundOfAdvanceFormGroup.get('refundHeader.refundDate').setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'))
     this.RefundOfAdvanceFormGroup.get('refundHeader.refundTime').setValue(this.dateTimeObj.time)
-
     this.RefundOfAdvanceFormGroup.get('refundHeader.opdIpdId').setValue(this.registerObj?.admissionId)
     this.RefundOfAdvanceFormGroup.get('advanceHeaderupdate.advanceUsedAmount').setValue(this.UsedAmount)
     this.RefundOfAdvanceFormGroup.get('refundHeader.advanceId').setValue(this.AdvanceId)
@@ -276,6 +273,7 @@ export class IPRefundofAdvanceComponent implements OnInit {
 
   //Refund Amount calculation
   getCellCalculation(element, RefundAmt) { 
+    debugger;
     if (RefundAmt > 0 && RefundAmt <= element.netBallAmt) {
       element.balanceAmount = ((element.netBallAmt) - (RefundAmt));
     }
