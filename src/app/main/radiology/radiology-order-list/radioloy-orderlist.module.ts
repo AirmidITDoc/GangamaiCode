@@ -38,7 +38,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { NotificationService } from 'app/core/notification.service';
 import { SharedModule } from 'app/main/shared/shared.module';
 import { RadiologyOrderListComponent } from './radiology-order-list.component';
-import { RadiologyTemplateReportComponent } from './radiology-template-report/radiology-template-report.component';
+// import { RadiologyTemplateReportComponent } from './radiology-template-report/radiology-template-report.component';
 import { RadioloyOrderlistService } from './radioloy-orderlist.service';
 import { ResultEntryComponent } from './result-entry/result-entry.component';
 
@@ -55,7 +55,7 @@ const routes: Routes = [
     declarations: [
         RadiologyOrderListComponent,
         ResultEntryComponent,
-        RadiologyTemplateReportComponent,
+        // RadiologyTemplateReportComponent,
     ],
     imports: [
         CommonModule,

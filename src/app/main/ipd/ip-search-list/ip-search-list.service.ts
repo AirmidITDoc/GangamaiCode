@@ -1060,7 +1060,11 @@ export class IPSearchListService {
   }
 
   public insertIPDDischargSummaryTemplate(employee) {
+    debugger
+    if(employee.discharge.dischargeSummaryId==0)
     return this._httpClient1.PostData("DischargeSummary/DischargeTemplateInsert", employee);
+  else
+     return this._httpClient1.PutData("DischargeSummary/DischargeTemplateUpdate", employee);
   }
   public UpdateIPDDischargSummaryTemplate(employee) {
     return this._httpClient1.PutData("DischargeSummary/DischargeTemplateUpdate", employee);

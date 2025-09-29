@@ -52,24 +52,26 @@ export class OutsourceDetailsComponent {
     console.log(this.data);
     this.LabFormGroup = this.createmlcForm();
     this.LabFormGroup.markAllAsTouched();
+     var now = new Date();
+     var now1 = new Date()
 debugger
     if (this.data) {
       this.vPathReportId = this.data.pathReportId
       this.outSourceId = this.data.outSourceId || 0;
       this.outSourceLabName = this.data.outSourceLabName;
       this.outSourceStatus = this.data.outSourceStatus ;
-     if(this.outSourceId>0)
+     if(this.outSourceId>0){
       this.Reportdatestatus=true
-
+      this.date1 = now1.toISOString().slice(0, 16);
+     }
     }
-    var now = new Date();
-     var now1 = new Date()
+   
     now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
      now1.setMinutes(now1.getMinutes() - now1.getTimezoneOffset());
     // this.date = now.toISOString().slice(0, 16);
     this.date= new Date(this.data.outSourceSampleSentDateTime).toISOString().slice(0,16)
 
-    this.date1 = now1.toISOString().slice(0, 16);
+    // this.date1 = now1.toISOString().slice(0, 16);
 
    
   }
@@ -82,7 +84,7 @@ debugger
       outSourceLabName: [ this.LabName, [Validators.required]],
       outSourceSampleSentDateTime: [''],
       outSourceStatus: [true],
-      outSourceReportCollectedDateTime: [''],
+      outSourceReportCollectedDateTime: ['1900-01-01 00:00:00.000'],
       outSourceCreatedBy: [this.accountService.currentUserValue.userId, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       outSourceCreatedDateTime: [new Date().toISOString()],
       outSourceModifiedby: [this.accountService.currentUserValue.userId, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],

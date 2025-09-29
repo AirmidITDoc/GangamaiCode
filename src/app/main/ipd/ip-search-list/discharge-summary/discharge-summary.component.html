@@ -82,7 +82,7 @@
                         <div class="patient-col">
                           <span class="patient-col-key">Ward | Bed Name</span>
                           <span>:</span>
-                          <span class="patient-col-value">{{ data.RoomName }} | {{ data.bedName }}</span>
+                          <span class="patient-col-value">{{ data.roomName }} | {{ data.bedName }}</span>
                         </div>
                         <div class="patient-col">
                           <span class="patient-col-key">Patient Type</span>
@@ -190,11 +190,7 @@
                             <mat-label>CLINICAL FINDING</mat-label>
                             <textarea matInput name="ClinicalFinding" formControlName="clinicalFinding"
                               [(ngModel)]="vClinicalFinding" cols="300" rows="6"></textarea>
-                                 <!-- <button mat-icon-button matSuffix (click)="onMicToggleclinicalFinding()"
-                              [color]="speechService.isListening ? 'warn' : 'primary'" type="button">
-                              <i
-                                [class]="speechService.isListening ? 'fas fa-microphone-slash' : 'fas fa-microphone'"></i>
-                            </button> -->
+                               
                           </mat-form-field>
                         </div>
                       </div>

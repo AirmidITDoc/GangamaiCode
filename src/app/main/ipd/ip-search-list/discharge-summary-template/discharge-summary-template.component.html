@@ -7,7 +7,8 @@
       <div class="modal-header-right">
         <div class="comman-date-container">
           <div class="comman-date">
-            <app-common-date [screenFrom]="screenFromString" (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
+            <app-common-date [screenFrom]="screenFromString"
+              (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
           </div>
           <div class="close-icon">
             <button mat-icon-button tabIndex="-1" (click)="onClose()" aria-label="Close dialog">
@@ -67,7 +68,8 @@
                       <div class="patient-col">
                         <span class="patient-col-key">Age | Sex</span>
                         <span>:</span>
-                        <span class="patient-col-value">{{ data.ageYear }}Y|{{ data.ageMonth }}M|{{ data.ageDay }} D | {{ data.genderName }}</span>
+                        <span class="patient-col-value">{{ data.ageYear }}Y|{{ data.ageMonth }}M|{{ data.ageDay }} D |
+                          {{ data.genderName }}</span>
                       </div>
                       <div class="patient-col">
                         <span class="patient-col-key">Ref-Doctor Name</span>
@@ -111,50 +113,42 @@
           <div class="content-card mt-8 input-error-hidden">
             <form [formGroup]="DischargesumForm" fxLayout="column" fxLayoutGap="8px">
               <div [formGroupName]="'discharge'">
-              <div fxLayout="row" fxLayoutGap="8px" fxLayoutAlign="start center">
-                <airmid-dropdown
-                  label="Template"
-                  formControlName="TemplateId"
-                  [formGroup]="DischargesumForm"
-                  fxFlex="40%"
-                  [value]="TemplateId"
-                  ValueField="templateId"
-                  TextField="templateName"
-                  (selectionChange)="onChangetemp($event)"
-                  ApiUrl="ReportTemplate/get-Templates"
-                ></airmid-dropdown>
+                <div fxLayout="row" fxLayoutGap="8px" fxLayoutAlign="start center">
+                  <airmid-dropdown label="Template" formControlName="TemplateId" [formGroup]="DischargesumForm"
+                    fxFlex="40%" [value]="TemplateId" ValueField="templateId" TextField="templateName"
+                    (selectionChange)="onChangetemp($event)" ApiUrl="ReportTemplate/get-Templates"></airmid-dropdown>
 
-                <div class="mt-2">
-                  <button type="button" (click)="onAddTemplate($event)" class="btn btn-primary btn-with-icon py-8" [disabled]="!isItemIdSelected" fxFlex>
-                    <span class="btn-icon">
-                      <mat-icon>add</mat-icon>
-                    </span>
-                  </button>
+                  <div class="mt-2">
+                    <button type="button" (click)="onAddTemplate($event)" class="btn btn-primary btn-with-icon py-8"
+                      [disabled]="!isItemIdSelected" fxFlex>
+                      <span class="btn-icon">
+                        <mat-icon>add</mat-icon>
+                      </span>
+                    </button>
+                  </div>
                 </div>
-              </div>
 
-              <!-- EDITOR -->
-              <airmid-editor label="Template Details" formControlName="templateDescriptionHtml" [formGroup]="DischargesumForm"></airmid-editor>
+                <!-- EDITOR -->
+                <!-- <airmid-editor label="Template Details" formControlName="templateDescriptionHtml" [formGroup]="DischargesumForm"></airmid-editor> -->
+                <airmid-editor label="Template Details" formControlName="templateDescriptionHtml"
+                  [(value)]="vTemplateDesc" [formGroup]="DischargesumForm" >
+                </airmid-editor>
 
-              <div fxLayout="row wrap" fxLayoutGap="8px" class="mt-8">
-                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                  <airmid-dropdown
-                    label="Doctor Name"
-                    formControlName="dischargeDoctor1"
-                    [formGroup]="DischargesumForm.get('discharge')"
-                    [validations]="getValidationMessages().dischargeDoctor1"
-                    [mode]="autocompleteModeDoctor"
-                  ></airmid-dropdown>
+
+                <div fxLayout="row wrap" fxLayoutGap="8px" class="mt-8">
+                  <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                    <airmid-dropdown label="Doctor Name" formControlName="dischargeDoctor1"
+                      [formGroup]="DischargesumForm.get('discharge')"
+                      [validations]="getValidationMessages().dischargeDoctor1"
+                      [mode]="autocompleteModeDoctor"></airmid-dropdown>
+                  </div>
+                  <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                    <airmid-dropdown label="RMO.Doctor Name" formControlName=DischargesumForm
+                      [formGroup]="DischargesumForm.get('discharge')"
+                      [validations]="getValidationMessages().dischargeDoctor2"
+                      [mode]="autocompleteModeRefDoctor"></airmid-dropdown>
+                  </div>
                 </div>
-                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                  <airmid-dropdown
-                    label="RMO.Doctor Name"
-                    formControlName=DischargesumForm
-                    [formGroup]="DischargesumForm.get('discharge')"
-                    [validations]="getValidationMessages().dischargeDoctor2"
-                    [mode]="autocompleteModeRefDoctor"></airmid-dropdown>
-                </div>
-              </div>
               </div>
             </form>
           </div>
@@ -171,31 +165,22 @@
                 <div fxFlex.gt-sm="100%" fxFlex>
                   <form [formGroup]="MedicineItemForm">
                     <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" class="gap-8">
-                      <airmid-autocomplete
-                        label="Enter Item Name"
-                        [formGroup]="MedicineItemForm"
-                        formControlName="ItemId"
-                        placeholderText="Enter Item Name"
-                        fxFlex
+                      <airmid-autocomplete label="Enter Item Name" [formGroup]="MedicineItemForm"
+                        formControlName="ItemId" placeholderText="Enter Item Name" fxFlex
                         ApiUrl="ItemMaster/GetItemListForPrescription?StoreId=2&ItemName="
-                        (selectionChange)="getSelectedserviceObj($event)"
-                        TextField="itemName"
-                        ValueField="itemId"
-                      ></airmid-autocomplete>
+                        (selectionChange)="getSelectedserviceObj($event)" TextField="itemName"
+                        ValueField="itemId"></airmid-autocomplete>
 
-                      <airmid-dropdown
-                        label="Dose Name"
-                        formControlName="DoseId"
-                        [formGroup]="MedicineItemForm"
-                        [validations]="getValidationMessages().DoseId"
-                        (selectionChange)="getdose($event)"
-                        [mode]="autocompleteModeDose"
-                      ></airmid-dropdown>
+                      <airmid-dropdown label="Dose Name" formControlName="DoseId" [formGroup]="MedicineItemForm"
+                        [validations]="getValidationMessages().DoseId" (selectionChange)="getdose($event)"
+                        [mode]="autocompleteModeDose"></airmid-dropdown>
 
-                      <airmid-textbox label="Day" formControlName="Day" [value]="vDay" [formGroup]="MedicineItemForm" [type]="'text'" (keypress)="keyPressCharater($event)"></airmid-textbox>
+                      <airmid-textbox label="Day" formControlName="Day" [value]="vDay" [formGroup]="MedicineItemForm"
+                        [type]="'text'" (keypress)="keyPressCharater($event)"></airmid-textbox>
 
                       <div class="input-add-button">
-                        <div matTooltip="Select Itemname to enable this button!!" [matTooltipPosition]="'above'" fxLayoutGap="10px" fxLayout="row">
+                        <div matTooltip="Select Itemname to enable this button!!" [matTooltipPosition]="'above'"
+                          fxLayoutGap="10px" fxLayout="row">
                           <button #addbutton class="btn btn-primary btn-with-icon" (click)="onAdd()">
                             <span class="btn-icon">
                               <mat-icon>add</mat-icon>
@@ -209,7 +194,7 @@
                 </div>
               </div>
             </div>
-            <div class="modal-card-container table-container overflow-auto" >
+            <div class="modal-card-container table-container overflow-auto">
               <!-- Table 1 -->
               <div class="airmid-table-container">
                 <div class="content-card">
@@ -245,7 +230,8 @@
                     </ng-container>
 
                     <mat-header-row class="accent" *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
-                    <mat-row *matRowDef="let row; columns: displayedColumns" class="element" [@animate]="{ value: '*', params: { y: '100%' } }"></mat-row>
+                    <mat-row *matRowDef="let row; columns: displayedColumns" class="element"
+                      [@animate]="{ value: '*', params: { y: '100%' } }"></mat-row>
                   </mat-table>
                 </div>
               </div>

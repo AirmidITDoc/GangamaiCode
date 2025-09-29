@@ -605,112 +605,7 @@ export class DischargeSummaryComponent implements OnInit {
     }
   }
 
-  //   onMicTogglehistory() {
-  //   // console.log(this.selectedLang);
-  //   this.speechService.toggleRecognition(this.selectedLang, (text: string) => {
-  //     const currentText = this.DischargesumInsertForm.get('dischargModel.history')?.value || '';
-  //     const updated = currentText ? `${currentText} ${text}` : text;
-  //     this.DischargesumInsertForm.get('dischargModel.history')?.setValue(updated);
-  //   });
-  // }
-  //   onMicToggleclinicalFinding() {
-  //   // console.log(this.selectedLang);
-  //   this.speechService.toggleRecognition(this.selectedLang, (text: string) => {
-  //     const currentText = this.DischargesumInsertForm.get('dischargModel.clinicalFinding')?.value || '';
-  //     const updated = currentText ? `${currentText} ${text}` : text;
-  //     this.DischargesumInsertForm.get('dischargModel.clinicalFinding')?.setValue(updated);
-  //   });
-  // }
-  // onMicToggleinvestigation() {
-  //   // console.log(this.selectedLang);
-  //   this.speechService.toggleRecognition(this.selectedLang, (text: string) => {
-  //     const currentText = this.DischargesumInsertForm.get('dischargModel.investigation')?.value || '';
-  //     const updated = currentText ? `${currentText} ${text}` : text;
-  //     this.DischargesumInsertForm.get('dischargModel.investigation')?.setValue(updated);
-  //   });
-  // }
-
-  // onMicTogglesurgeryProcDone() {
-  //   // console.log(this.selectedLang);
-  //   this.speechService.toggleRecognition(this.selectedLang, (text: string) => {
-  //     const currentText = this.DischargesumInsertForm.get('dischargModel.surgeryProcDone')?.value || '';
-  //     const updated = currentText ? `${currentText} ${text}` : text;
-  //     this.DischargesumInsertForm.get('dischargModel.surgeryProcDone')?.setValue(updated);
-  //   });
-  // }
-  // onMicToggleopertiveNotes() {
-  //   // console.log(this.selectedLang);
-  //   this.speechService.toggleRecognition(this.selectedLang, (text: string) => {
-  //     const currentText = this.DischargesumInsertForm.get('dischargModel.opertiveNotes')?.value || '';
-  //     const updated = currentText ? `${currentText} ${text}` : text;
-  //     this.DischargesumInsertForm.get('dischargModel.opertiveNotes')?.setValue(updated);
-  //   });
-  // }
-
-  // onMicToggleradiology() {
-  //   // console.log(this.selectedLang);
-  //   this.speechService.toggleRecognition(this.selectedLang, (text: string) => {
-  //     const currentText = this.DischargesumInsertForm.get('dischargModel.radiology')?.value || '';
-  //     const updated = currentText ? `${currentText} ${text}` : text;
-  //     this.DischargesumInsertForm.get('dischargModel.radiology')?.setValue(updated);
-  //   });
-  // }
-
-  // onMicToggletreatmentGiven() {
-  //   // console.log(this.selectedLang);
-  //   this.speechService.toggleRecognition(this.selectedLang, (text: string) => {
-  //     const currentText = this.DischargesumInsertForm.get('dischargModel.treatmentGiven')?.value || '';
-  //     const updated = currentText ? `${currentText} ${text}` : text;
-  //     this.DischargesumInsertForm.get('dischargModel.treatmentGiven')?.setValue(updated);
-  //   });
-  // }
-
-  // onMicToggletreatmentAdvisedAfterDischarge() {
-  //   // console.log(this.selectedLang);
-  //   this.speechService.toggleRecognition(this.selectedLang, (text: string) => {
-  //     const currentText = this.DischargesumInsertForm.get('dischargModel.treatmentAdvisedAfterDischarge')?.value || '';
-  //     const updated = currentText ? `${currentText} ${text}` : text;
-  //     this.DischargesumInsertForm.get('dischargModel.treatmentAdvisedAfterDischarge')?.setValue(updated);
-  //   });
-  // }
-
-  // onMicToggleotherConDrOpinions() {
-  //   // console.log(this.selectedLang);
-  //   this.speechService.toggleRecognition(this.selectedLang, (text: string) => {
-  //     const currentText = this.DischargesumInsertForm.get('dischargModel.otherConDrOpinions')?.value || '';
-  //     const updated = currentText ? `${currentText} ${text}` : text;
-  //     this.DischargesumInsertForm.get('dischargModel.otherConDrOpinions')?.setValue(updated);
-  //   });
-  // }
-
-  // onMicTogglepainManagementTechnique() {
-  //   // console.log(this.selectedLang);
-  //   this.speechService.toggleRecognition(this.selectedLang, (text: string) => {
-  //     const currentText = this.DischargesumInsertForm.get('dischargModel.painManagementTechnique')?.value || '';
-  //     const updated = currentText ? `${currentText} ${text}` : text;
-  //     this.DischargesumInsertForm.get('dischargModel.painManagementTechnique')?.setValue(updated);
-  //   });
-  // }
-  // onMicTogglelifeStyle() {
-  //   // console.log(this.selectedLang);
-  //   this.speechService.toggleRecognition(this.selectedLang, (text: string) => {
-  //     const currentText = this.DischargesumInsertForm.get('dischargModel.lifeStyle')?.value || '';
-  //     const updated = currentText ? `${currentText} ${text}` : text;
-  //     this.DischargesumInsertForm.get('dischargModel.lifeStyle')?.setValue(updated);
-  //   });
-  // }
-
-  // onMicToggleconditionAtTheTimeOfDischarge(event) {
-  //   console.log(event);
-  //   console.log(event.value);
-  //   this.speechService.toggleRecognition(this.selectedLang, (text: string) => {
-  //     const currentText = this.DischargesumInsertForm.get('dischargModel.conditionAtTheTimeOfDischarge')?.value || '';
-  //     const updated = currentText ? `${currentText} ${text}` : text;
-  //     this.DischargesumInsertForm.get('dischargModel.conditionAtTheTimeOfDischarge')?.setValue(updated);
-  //   });
-  // }
-
-
+  
   getValidationMessages() {
     return {
       RegId: [],
@@ -720,14 +615,8 @@ export class DischargeSummaryComponent implements OnInit {
         { name: "pattern", Message: "only char allowed." }
       ],
       dischargeDoctor2: [
-        // { name: "required", Message: "Middle Name is required" },
-        // { name: "maxLength", Message: "Enter only upto 50 chars" },
-        { name: "pattern", Message: "only char allowed." }
-      ],
+       ],
       dischargeDoctor3: [
-        { name: "required", Message: "Last Name is required" },
-        // { name: "maxLength", Message: "Enter only upto 50 chars" },
-        { name: "pattern", Message: "only char allowed." }
       ],
       address: [
         { name: "required", Message: "Address is required" },

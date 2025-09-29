@@ -9,7 +9,7 @@ import { gridColumnTypes } from "app/core/models/tableActions";
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
 import { ToastrService } from 'ngx-toastr';
-import { RadiologyTemplateReportComponent } from './radiology-template-report/radiology-template-report.component';
+// import { RadiologyTemplateReportComponent } from './radiology-template-report/radiology-template-report.component';
 import { RadioloyOrderlistService } from './radioloy-orderlist.service';
 import { ResultEntryComponent } from './result-entry/result-entry.component';
 import { ReportVerifyDetailsComponent } from 'app/main/pathology/result-entry/report-verify-details/report-verify-details.component';
@@ -249,23 +249,23 @@ debugger
     this.onChangeFirst();
   }}
 
-    getView(row: any = null) {
-  const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
-        buttonElement.blur(); // Remove focus from the button
+//     getView(row: any = null) {
+//   const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+//         buttonElement.blur(); // Remove focus from the button
 
-        const dialogRef = this._matDialog.open(RadiologyTemplateReportComponent,
-            {
-                maxWidth: "85vw",
-                height: '85%',
-                width: '70%',
-                data: row
-            });
-        dialogRef.afterClosed().subscribe(result => {
-            // if (result) {
-            this.grid.bindGridData();
-            // }
-        });
-    }
+//         const dialogRef = this._matDialog.open(RadiologyTemplateReportComponent,
+//             {
+//                 maxWidth: "85vw",
+//                 height: '85%',
+//                 width: '70%',
+//                 data: row
+//             });
+//         dialogRef.afterClosed().subscribe(result => {
+//             // if (result) {
+//             this.grid.bindGridData();
+//             // }
+//         });
+//     }
 Editoutsoucedata(row) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button
@@ -303,7 +303,8 @@ Editoutsoucedata(row) {
                    let submitData = {
    
                        "radReportId": row.radReportId,
-                       "isVerified": this.accountService.currentUserValue.userId,
+                       "isVerifyid": this.accountService.currentUserValue.userId,
+                       "isVerifySign":true,
                        "isVerifyedDate": new Date().toISOString()
    
                    };

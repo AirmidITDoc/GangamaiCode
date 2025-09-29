@@ -243,8 +243,8 @@ export class IPSearchListComponent implements OnInit {
             let that = this;
             const dialogRef = this._matDialog.open(DischargeSummaryTemplateComponent,
                 {
-                    height: '95%',
-                    width: "80%",
+                    height: '99%',
+                    width: "90%",
                     data: element
                 });
             dialogRef.afterClosed().subscribe(result => {

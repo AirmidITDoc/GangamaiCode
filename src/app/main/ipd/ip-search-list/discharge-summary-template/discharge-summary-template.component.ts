@@ -82,7 +82,7 @@ export class DischargeSummaryTemplateComponent {
 
   ngOnInit(): void {
 
-     
+
 
     this.DischargesumForm = this.showDischargeSummaryForm();
     this.DischargesumForm.markAllAsTouched();
@@ -132,10 +132,9 @@ export class DischargeSummaryTemplateComponent {
   showDischargeSummaryForm(): FormGroup {
     return this._formBuilder.group({
       TemplateId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      isNormalOrDeath: '1',
-
+      isNormalOrDeath: 1,
       discharge: this._formBuilder.group({
-        dischargeSummaryId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        dischargeSummaryId: [this.DischargeSummaryId, [this._FormvalidationserviceService.onlyNumberValidator()]],
         admissionId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],// this.vAdmissionId,
         dischargeId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         dischargeDoctor1: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
@@ -178,14 +177,115 @@ export class DischargeSummaryTemplateComponent {
     return this.DischargesumForm.get('prescriptionTemplate') as FormArray;
   }
 
+  // OnSave() {
+
+  //    this.DischargesumForm.get('templateDescriptionHtml')?.valueChanges.subscribe(val => {
+  //   console.log('Editor output:', val);
+  // });
+
+
+
+  //   if (!this.DischargesumForm.invalid) {
+  //     Swal.fire({
+  //       title: 'Do you want to Save the Discharge Summary Template',
+  //       text: "You won't be able to revert this!",
+  //       icon: "warning",
+  //       showCancelButton: true,
+  //       confirmButtonColor: "#3085d6",
+  //       cancelButtonColor: "#d33",
+  //       confirmButtonText: "Yes, Save!"
+
+  //     }).then((result) => {
+  //       if (result.isConfirmed) {
+  //         this.saveflag = true
+  //         if (this.DischargesumForm.get("isNormalOrDeath").value == false)
+  //           this.vIsNormalDeath = "0"
+  //         if (this.DischargesumForm.get("isNormalOrDeath").value == true)
+  //           this.vIsNormalDeath = "1"
+
+  //         this.DischargesumForm.get("discharge.isNormalOrDeath")?.setValue(Number(this.vIsNormalDeath))
+  //         this.DischargesumForm.get("discharge.dischargeSummaryId")?.setValue(this.DischargeSummaryId);
+
+  //         debugger
+  //         this.prescriptionTemplateArray.clear();
+  //         this.dsItemList.data.forEach(item => {
+  //           this.prescriptionTemplateArray.push(this.createprescriptionTemplate(item));
+  //         });
+
+  //         // update
+  //         if (this.DischargesumForm.get('discharge.dischargeSummaryId')?.value) {
+
+  //           this.DischargesumForm.get('discharge.updatedBy').setValue(this.accountService.currentUserValue.userId)
+
+  //           let updateData = {
+  //             "discharge": this.DischargesumForm.value.discharge,
+  //             "prescriptionTemplate": this.DischargesumForm.value.prescriptionTemplate
+  //           };
+  //           console.log(updateData)
+
+  //           this._IpSearchListService.UpdateIPDDischargSummaryTemplate(updateData).subscribe(response => {
+  //             this.viewgetDischargesummaryPdf(this.vAdmissionId)
+  //             this._matDialog.closeAll();
+  //           });
+
+  //         } else {       //insert     
+  //           this.DischargesumForm.get('discharge.addedBy').setValue(this.accountService.currentUserValue.userId)
+
+  //           let insertData = {
+  //             "discharge": this.DischargesumForm.value.discharge,
+  //             "prescriptionTemplate": this.DischargesumForm.value.prescriptionTemplate
+  //           };
+  //           console.log(insertData)
+
+  //           this._IpSearchListService.insertIPDDischargSummaryTemplate(insertData).subscribe(response => {
+  //             this.getPrint(response)
+  //             this._matDialog.closeAll();
+  //           });
+  //         }
+  //       }
+  //     })
+  //   } else {
+  //     let invalidFields = [];
+
+  //     if (this.DischargesumForm.invalid) {
+  //       for (const controlName in this.DischargesumForm.controls) {
+  //         if (this.DischargesumForm.controls[controlName].invalid) {
+  //           invalidFields.push(`Discharge Form: ${controlName}`);
+  //         }
+  //       }
+  //     }
+  //     if (invalidFields.length > 0) {
+  //       invalidFields.forEach(field => {
+  //         this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
+  //         );
+  //       });
+  //     }
+  //   }
+  // }
+
+
   OnSave() {
 
-     this.DischargesumForm.get('templateDescriptionHtml')?.valueChanges.subscribe(val => {
-    console.log('Editor output:', val);
-  });
+    if (this.DischargesumForm.get("discharge.templateDescriptionHtml")?.value == '' || this.DischargesumForm.get("discharge.templateDescriptionHtml")?.value == undefined) {
+      this.toastr.warning('Please Enter Template', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+
+    if (this.DischargesumForm.get("discharge.dischargeDoctor1")?.value == '' || this.DischargesumForm.get("discharge.dischargeDoctor1")?.value == undefined) {
+      this.toastr.warning('Please Select Doctor', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+
+    this.DischargesumForm.get('templateDescriptionHtml')?.valueChanges.subscribe(val => {
+      console.log('Editor output:', val);
+    });
 
 
-  
+
     if (!this.DischargesumForm.invalid) {
       Swal.fire({
         title: 'Do you want to Save the Discharge Summary Template',
@@ -213,56 +313,56 @@ export class DischargeSummaryTemplateComponent {
             this.prescriptionTemplateArray.push(this.createprescriptionTemplate(item));
           });
 
-          // update
-          if (this.DischargesumForm.get('discharge.dischargeSummaryId')?.value) {
+          // const form=this.DischargesumForm
+          // form.TemplateId.re
 
+          // this.DischargesumForm.removeControl('TemplateId')
+          this.DischargesumForm.removeControl('isNormalOrDeath')
+
+          if (this.DischargesumForm.get('discharge.dischargeSummaryId')?.value)
             this.DischargesumForm.get('discharge.updatedBy').setValue(this.accountService.currentUserValue.userId)
+          else
 
-            let updateData = {
-              "discharge": this.DischargesumForm.value.discharge,
-              "prescriptionTemplate": this.DischargesumForm.value.prescriptionTemplate
-            };
-            console.log(updateData)
-
-            this._IpSearchListService.UpdateIPDDischargSummaryTemplate(updateData).subscribe(response => {
-              this.viewgetDischargesummaryPdf(this.vAdmissionId)
-              this._matDialog.closeAll();
-            });
-
-          } else {       //insert     
             this.DischargesumForm.get('discharge.addedBy').setValue(this.accountService.currentUserValue.userId)
 
-            let insertData = {
-              "discharge": this.DischargesumForm.value.discharge,
-              "prescriptionTemplate": this.DischargesumForm.value.prescriptionTemplate
-            };
-            console.log(insertData)
+          let insertData = {
+            "discharge": this.DischargesumForm.value.discharge,
+            "prescriptionTemplate": this.DischargesumForm.value.prescriptionTemplate
+          };
+          console.log(insertData)
+          console.log(this.DischargesumForm.value)
 
-            this._IpSearchListService.insertIPDDischargSummaryTemplate(insertData).subscribe(response => {
-              this.getPrint(response)
-              this._matDialog.closeAll();
-            });
-          }
+
+          this._IpSearchListService.insertIPDDischargSummaryTemplate(this.DischargesumForm.value).subscribe(response => {
+
+            console.log(response)
+            
+            this.getPrint(response)
+            this._matDialog.closeAll();
+          });
         }
+
       })
-    } else {
-      let invalidFields = [];
-
-      if (this.DischargesumForm.invalid) {
-        for (const controlName in this.DischargesumForm.controls) {
-          if (this.DischargesumForm.controls[controlName].invalid) {
-            invalidFields.push(`Discharge Form: ${controlName}`);
-          }
-        }
-      }
-      if (invalidFields.length > 0) {
-        invalidFields.forEach(field => {
-          this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
-          );
-        });
-      }
     }
+    //  else {
+    //   let invalidFields = [];
+
+    //   if (this.DischargesumForm.invalid) {
+    //     for (const controlName in this.DischargesumForm.controls) {
+    //       if (this.DischargesumForm.controls[controlName].invalid) {
+    //         invalidFields.push(`Discharge Summary Form: ${controlName}`);
+    //       }
+    //     }
+    //   }
+    //   if (invalidFields.length > 0) {
+    //     invalidFields.forEach(field => {
+    //       this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
+    //       );
+    //     });
+    //   }
+    // }
   }
+
 
   @ViewChild('dosename') dosename: ElementRef;
   @ViewChild('Day') Day: ElementRef;
@@ -461,11 +561,13 @@ export class DischargeSummaryTemplateComponent {
   }
 
   viewgetDischargesummaryPdf(AdmId) {
+    console.log(AdmId)
     this.commonService.Onprint("AdmissionID", AdmId, "IpDischargeSummaryTemplate");
   }
 
   viewgetDischargesummaryTempPdf(AdmId) {
-    // this.commonService.Onprint("AdmissionID", AdmId, "IpDischargeSummaryTemplateWithoutHeader");
+    console.log(AdmId)
+    this.commonService.Onprint("AdmissionID", AdmId, "IpDischargeSummaryTemplateWithoutHeader");
   }
 
   getValidationMessages() {
@@ -597,8 +699,9 @@ export class DischargeSummaryTemplateComponent {
   }
 
   onAddTemplate(e) {
+    debugger
     this.vTemplateDesc = this.Tempdesc
-    this.DischargesumForm.get('templateDescriptionHtml').setValue(this.Tempdesc)
+    // this.DischargesumForm.get('templateDescriptionHtml').setValue(this.Tempdesc)
 
   }
 

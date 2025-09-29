@@ -31,6 +31,7 @@ import { NewResultTemplateComponent } from './new-result-template/new-result-tem
 import { NewResultEntryComponent } from './new-result-entry/new-result-entry.component';
 import { OutsourceDetailsComponent } from './outsource-details/outsource-details.component';
 import { ReportVerifyDetailsComponent } from './report-verify-details/report-verify-details.component';
+import { SamplecollectionPageComponent } from '../sample-collection/samplecollection-page/samplecollection-page.component';
 
 
 
@@ -417,7 +418,7 @@ export class ResultEntryComponent implements OnInit {
 
     onSave(row: any = null) {
         let that = this;
-        const dialogRef = this._matDialog.open(SampledetailtwoComponent,
+        const dialogRef = this._matDialog.open(SamplecollectionPageComponent,
             {
                 // maxWidth: "75vw",
                 maxHeight: '75vh',
@@ -1008,7 +1009,8 @@ export class ResultEntryComponent implements OnInit {
                 let submitData = {
 
                     "pathReportId": row.pathReportId,
-                    "isVerified": this.accountService.currentUserValue.userId,
+                    "isVerifyid": this.accountService.currentUserValue.userId,
+                    "isVerifySign":true,
                     "isVerifyedDate": new Date().toISOString()
 
                 };
