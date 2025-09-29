@@ -598,6 +598,7 @@ export class DischargeSummaryTemplateComponent {
 
   onAddTemplate(e) {
     this.vTemplateDesc = this.Tempdesc
+    this.DischargesumForm.get('templateDescriptionHtml').setValue(this.Tempdesc)
 
   }
 

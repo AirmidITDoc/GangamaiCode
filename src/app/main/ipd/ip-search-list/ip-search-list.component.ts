@@ -568,8 +568,14 @@ export class IPSearchListComponent implements OnInit {
     }
 
     getfeedback(event) { }
-    printDischargesummaryWithoutletterhead(event) { }
-    printDischargesummary(event) { }
+    printDischargesummaryWithoutletterhead(event) {
+ this.commonService.Onprint("AdmissionID", event.admissionId, "IpDischargeSummaryReportWithoutHeader");
+     }
+    printDischargesummary(event) {
+ this.commonService.Onprint("AdmissionID", event.admissionId, "IpDischargeSummaryReport");
+     }
+ 
+  
     printDischargeslip(data) {
         this.commonService.Onprint("AdmId", data.admissionId, "IpDischargeReceipt");
 

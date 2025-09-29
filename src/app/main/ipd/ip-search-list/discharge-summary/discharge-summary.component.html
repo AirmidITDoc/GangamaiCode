@@ -7,7 +7,8 @@
       <div class="modal-header-right">
         <div class="comman-date-container">
           <div class="comman-date">
-            <app-common-date [screenFrom]="screenFromString" (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
+            <app-common-date [screenFrom]="screenFromString"
+              (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
           </div>
           <div class="close-icon">
             <button mat-icon-button tabIndex="-1" (click)="onClose()" aria-label="Close dialog">
@@ -68,7 +69,8 @@
                         <div class="patient-col">
                           <span class="patient-col-key">Age | Sex</span>
                           <span>:</span>
-                          <span class="patient-col-value">{{ data.ageYear }}Y|{{ data.ageMonth }}M|{{ data.ageDay }} D | {{ data.genderName }}</span>
+                          <span class="patient-col-value">{{ data.ageYear }}Y|{{ data.ageMonth }}M|{{ data.ageDay }} D |
+                            {{ data.genderName }}</span>
                         </div>
                         <div class="patient-col">
                           <span class="patient-col-key">Ref-Doctor Name</span>
@@ -105,166 +107,226 @@
             </div>
           </mat-card-content>
         </mat-card>
-        
+
         <form [formGroup]="DischargesumInsertForm" fusePerfectScrollbar>
           <mat-tab-group class="dynamic-table-wrapper">
             <!-- 1st tab -->
             <mat-tab label="FINAL DIAGNOSS">
               <mat-card class="mat-tab-card-container">
-          <div [formGroupName]="'dischargModel'">
+                <div [formGroupName]="'dischargModel'">
 
-                <div fxLayout="column" fxLayoutGap="10px">
+                  <div fxLayout="column" fxLayoutGap="10px">
 
-                  <div fxLayout="row" fxLayoutGap="10px">
-                    <div fxLayout="column" fxFlex>
-                      <div class="form-title mb-2 pb-2 border-bottom">
-                        <span class="h3 font-weight-600">FINAL DIAGNOSS</span>
+                    <div fxLayout="row" fxLayoutGap="10px">
+                      <div fxLayout="column" fxFlex>
+                        <div class="form-title mb-2 pb-2 border-bottom">
+                          <span class="h3 font-weight-600">FINAL DIAGNOSS</span>
+                        </div>
+                        <div class="form-input">
+                          <!-- <mat-form-field appearance="outline" fxFlex>
+                            <mat-label>FInal DIAGNOSS</mat-label>
+                            <textarea matInput name="Diagnosis" formControlName="diagnosis" [(ngModel)]="vDiagnosis"
+                              cols="300" rows="6"></textarea>
+                          </mat-form-field> -->
+
+                          <mat-form-field appearance="outline" style="width: 100%;">
+                            <mat-label>Diagnosis</mat-label>
+                            <textarea rows="1" formControlName="diagnosis" placeholder="Diagnosis" matInput [(ngModel)]="vDiagnosis"
+                            cols="300" rows="6"></textarea>
+
+                            <!-- 🎤 Mic button -->
+                            <button mat-icon-button matSuffix (click)="onMicTogglefields('diagnosis')"
+                              [color]="speechService.isListening ? 'warn' : 'primary'" type="button">
+                              <i
+                                [class]="speechService.isListening ? 'fas fa-microphone-slash' : 'fas fa-microphone'"></i>
+                            </button>
+                          </mat-form-field>
+
+                        </div>
                       </div>
-                      <div class="form-input">
-                        <mat-form-field appearance="outline" fxFlex>
-                          <mat-label>FInal DIAGNOSS</mat-label>
-                          <textarea matInput name="Diagnosis" formControlName="diagnosis" [(ngModel)]="vDiagnosis" cols="300" rows="6"></textarea>
-                        </mat-form-field>
+                      <div fxLayout="column" fxFlex>
+                        <div class="form-title mb-2 pb-2 border-bottom">
+                          <span class="h3 font-weight-600">HISTORY</span>
+                        </div>
+                        <div class="form-input">
+                          <mat-form-field appearance="outline" fxFlex>
+                            <mat-label>HISTORY</mat-label>
+                            <textarea matInput name="history" formControlName="history" [(ngModel)]="vhistory"
+                              cols="300" rows="6"></textarea>
+                                 <button mat-icon-button matSuffix (click)="onMicTogglefields('history')"
+                              [color]="speechService.isListening ? 'warn' : 'primary'" type="button">
+                              <i [class]="speechService.isListening ? 'fas fa-microphone-slash' : 'fas fa-microphone'"></i>
+                            </button>
+                          </mat-form-field>
+                        </div>
                       </div>
                     </div>
-                    <div fxLayout="column" fxFlex>
-                      <div class="form-title mb-2 pb-2 border-bottom">
-                        <span class="h3 font-weight-600">HISTORY</span>
-                      </div>
-                      <div class="form-input">
-                        <mat-form-field appearance="outline" fxFlex>
-                          <mat-label>HISTORY</mat-label>
-                          <textarea matInput name="history" formControlName="history" [(ngModel)]="vhistory" cols="300" rows="6"></textarea>
-                        </mat-form-field>
-                      </div>
-                    </div>
-                  </div>
 
-                  <div fxLayout="row" fxLayoutGap="10px">
-                    <div fxLayout="column" fxFlex>
-                      <div class="form-title mb-2 pb-2 border-bottom">
-                        <span class="h3 font-weight-600">CLINICAL CONDITION ON ADMISSION</span>
+                    <div fxLayout="row" fxLayoutGap="10px">
+                      <div fxLayout="column" fxFlex>
+                        <div class="form-title mb-2 pb-2 border-bottom">
+                          <span class="h3 font-weight-600">CLINICAL CONDITION ON ADMISSION</span>
+                        </div>
+                        <div class="form-input">
+                          <mat-form-field appearance="outline" fxFlex>
+                            <mat-label>Clinical Condition OnAdmisssion</mat-label>
+                            <textarea matInput name="ClinicalConditionOnAdmisssion"
+                              formControlName="clinicalConditionOnAdmisssion" [(ngModel)]="vClinicalCondition"
+                              cols="300" rows="6"></textarea>
+                                 <button mat-icon-button matSuffix (click)="onMicTogglefields('clinicalConditionOnAdmisssion')"
+                              [color]="speechService.isListening ? 'warn' : 'primary'" type="button">
+                              <i
+                                [class]="speechService.isListening ? 'fas fa-microphone-slash' : 'fas fa-microphone'"></i>
+                            </button>
+                          </mat-form-field>
+                        </div>
                       </div>
-                      <div class="form-input">
-                        <mat-form-field appearance="outline" fxFlex>
-                          <mat-label>Clinical Condition OnAdmisssion</mat-label>
-                          <textarea matInput name="ClinicalConditionOnAdmisssion" formControlName="clinicalConditionOnAdmisssion" [(ngModel)]="vClinicalCondition" cols="300" rows="6"></textarea>
-                        </mat-form-field>
-                      </div>
-                    </div>
-                    <div fxLayout="column" fxFlex>
-                      <div class="form-title mb-2 pb-2 border-bottom">
-                        <span class="h3 font-weight-600">CLINICAL FINDING</span>
-                      </div>
-                      <div class="form-input">
-                        <mat-form-field appearance="outline" fxFlex>
-                          <mat-label>CLINICAL FINDING</mat-label>
-                          <textarea matInput name="ClinicalFinding" formControlName="clinicalFinding" [(ngModel)]="vClinicalFinding" cols="300" rows="6"></textarea>
-                        </mat-form-field>
+                      <div fxLayout="column" fxFlex>
+                        <div class="form-title mb-2 pb-2 border-bottom">
+                          <span class="h3 font-weight-600">CLINICAL FINDING</span>
+                        </div>
+                        <div class="form-input">
+                          <mat-form-field appearance="outline" fxFlex>
+                            <mat-label>CLINICAL FINDING</mat-label>
+                            <textarea matInput name="ClinicalFinding" formControlName="clinicalFinding"
+                              [(ngModel)]="vClinicalFinding" cols="300" rows="6"></textarea>
+                                 <!-- <button mat-icon-button matSuffix (click)="onMicToggleclinicalFinding()"
+                              [color]="speechService.isListening ? 'warn' : 'primary'" type="button">
+                              <i
+                                [class]="speechService.isListening ? 'fas fa-microphone-slash' : 'fas fa-microphone'"></i>
+                            </button> -->
+                          </mat-form-field>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
-          </div>
               </mat-card>
             </mat-tab>
 
             <!-- 2nd tab -->
             <mat-tab label="SURGERY / OPRATIVE NOTES">
               <mat-card class="mat-tab-card-container" fxLayoutGap="6px">
-          <div [formGroupName]="'dischargModel'">
+                <div [formGroupName]="'dischargModel'">
 
-                <div>
-                  <div class="form-title mb-2 pb-2 border-bottom">
-                    <span class="h3 font-weight-600">SURGERY/PROCEDURE DONE</span>
+                  <div>
+                    <div class="form-title mb-2 pb-2 border-bottom">
+                      <span class="h3 font-weight-600">SURGERY/PROCEDURE DONE</span>
+                    </div>
+                    <div class="form-input">
+                      <mat-form-field appearance="outline" fxFlex>
+                        <mat-label>SURGERY /PROCEDURE DONE</mat-label>
+                        <textarea matInput name="SurgeryProcDone" formControlName="surgeryProcDone"
+                          [(ngModel)]="vSURGERYprocedure" cols="300" rows="6"></textarea>
+                             <button mat-icon-button matSuffix (click)="onMicTogglefields('surgeryProcDone')"
+                              [color]="speechService.isListening ? 'warn' : 'primary'" type="button">
+                              <i
+                                [class]="speechService.isListening ? 'fas fa-microphone-slash' : 'fas fa-microphone'"></i>
+                            </button>
+                      </mat-form-field>
+                    </div>
                   </div>
-                  <div class="form-input">
-                    <mat-form-field appearance="outline" fxFlex>
-                      <mat-label>SURGERY /PROCEDURE DONE</mat-label>
-                      <textarea matInput name="SurgeryProcDone" formControlName="surgeryProcDone" [(ngModel)]="vSURGERYprocedure" cols="300" rows="6"></textarea>
-                    </mat-form-field>
+                  <div>
+                    <div class="form-title mb-2 pb-2 border-bottom">
+                      <span class="h3 font-weight-600">OPRATIVE NOTES</span>
+                    </div>
+                    <div class="form-input">
+                      <mat-form-field appearance="outline" fxFlex>
+                        <mat-label>OPRATIVE NOTES</mat-label>
+                        <textarea matInput name="OperativeNotes" formControlName="opertiveNotes"
+                          [(ngModel)]="vOperativeNotes" cols="300" rows="6"></textarea>
+                             <button mat-icon-button matSuffix (click)="onMicTogglefields('opertiveNotes')"
+                              [color]="speechService.isListening ? 'warn' : 'primary'" type="button">
+                              <i
+                                [class]="speechService.isListening ? 'fas fa-microphone-slash' : 'fas fa-microphone'"></i>
+                            </button>
+                      </mat-form-field>
+                    </div>
                   </div>
                 </div>
-                <div>
-                  <div class="form-title mb-2 pb-2 border-bottom">
-                    <span class="h3 font-weight-600">OPRATIVE NOTES</span>
-                  </div>
-                  <div class="form-input">
-                    <mat-form-field appearance="outline" fxFlex>
-                      <mat-label>OPRATIVE NOTES</mat-label>
-                      <textarea matInput name="OperativeNotes" formControlName="opertiveNotes" [(ngModel)]="vOperativeNotes" cols="300" rows="6"></textarea>
-                    </mat-form-field>
-                  </div>
-                </div>
-          </div>
               </mat-card>
             </mat-tab>
 
             <!-- 3rd tab -->
             <mat-tab label="PATHOLOGY / RADIOLOGY ">
               <mat-card class="mat-tab-card-container">
-          <div [formGroupName]="'dischargModel'">
+                <div [formGroupName]="'dischargModel'">
 
-                <div class="form-title mb-2 pb-2 border-bottom">
-                  <span class="h3 font-weight-600">PATHOLOGY</span>
-                </div>
-                <div class="form-input">
-                  <mat-form-field appearance="outline" fxFlex>
-                    <mat-label>PATHOLOGY</mat-label>
-                    <textarea matInput name="investigation" formControlName="investigation" [(ngModel)]="vPathology" cols="300" rows="6"></textarea>
-                  </mat-form-field>
-                </div>
+                  <div class="form-title mb-2 pb-2 border-bottom">
+                    <span class="h3 font-weight-600">PATHOLOGY</span>
+                  </div>
+                  <div class="form-input">
+                    <mat-form-field appearance="outline" fxFlex>
+                      <mat-label>PATHOLOGY</mat-label>
+                      <textarea matInput name="investigation" formControlName="investigation" [(ngModel)]="vPathology"
+                        cols="300" rows="6"></textarea>
+                         <button mat-icon-button matSuffix (click)="onMicTogglefields('investigation')"
+                              [color]="speechService.isListening ? 'warn' : 'primary'" type="button">
+                              <i [class]="speechService.isListening ? 'fas fa-microphone-slash' : 'fas fa-microphone'"></i>
+                            </button>
+                    </mat-form-field>
+                  </div>
 
-                <div class="form-title mb-2 pb-2 border-bottom">
-                  <span class="h3 font-weight-600">Radiology</span>
+                  <div class="form-title mb-2 pb-2 border-bottom">
+                    <span class="h3 font-weight-600">Radiology</span>
+                  </div>
+                  <div class="form-input">
+                    <mat-form-field appearance="outline" fxFlex>
+                      <mat-label>Radiology</mat-label>
+                      <textarea matInput name="Radiology" formControlName="radiology" [(ngModel)]="vRadiology"
+                        cols="300" rows="6"></textarea>
+                         <button mat-icon-button matSuffix (click)="onMicTogglefields('radiology')"
+                              [color]="speechService.isListening ? 'warn' : 'primary'" type="button">
+                              <i [class]="speechService.isListening ? 'fas fa-microphone-slash' : 'fas fa-microphone'"></i>
+                            </button>
+                    </mat-form-field>
+                  </div>
                 </div>
-                <div class="form-input">
-                  <mat-form-field appearance="outline" fxFlex>
-                    <mat-label>Radiology</mat-label>
-                    <textarea matInput name="Radiology" formControlName="radiology" [(ngModel)]="vRadiology" cols="300" rows="6"></textarea>
-                  </mat-form-field>
-                </div>
-              </div>
               </mat-card>
             </mat-tab>
 
             <!-- 4th tab -->
             <mat-tab label="COURSES IN THE HOSPITAL">
               <mat-card class="mat-tab-card-container">
-          <div [formGroupName]="'dischargModel'">
+                <div [formGroupName]="'dischargModel'">
 
-                <div fxLayout="column" class="gap-8">
-                  <div class="card-content">
-                    <div class="form-title mb-2 pb-2 border-bottom">
-                      <span class="h3 font-weight-600">COURSES IN THE HOSPITAL</span>
+                  <div fxLayout="column" class="gap-8">
+                    <div class="card-content">
+                      <div class="form-title mb-2 pb-2 border-bottom">
+                        <span class="h3 font-weight-600">COURSES IN THE HOSPITAL</span>
+                      </div>
+                      <div class="form-input">
+                        <mat-form-field appearance="outline" fxFlex>
+                          <mat-label>COURSES IN THE HOSPITAL</mat-label>
+                          <textarea matInput name="TreatmentGiven" style="white-space: pre-wrap"
+                            formControlName="treatmentGiven" [(ngModel)]="vTreatmentGiven" cols="200"
+                            rows="6"></textarea>
+                             <button mat-icon-button matSuffix (click)="onMicTogglefields('treatmentGiven')"
+                              [color]="speechService.isListening ? 'warn' : 'primary'" type="button">
+                              <i [class]="speechService.isListening ? 'fas fa-microphone-slash' : 'fas fa-microphone'"></i>
+                            </button>
+                        </mat-form-field>
+                      </div>
                     </div>
-                    <div class="form-input">
-                      <mat-form-field appearance="outline" fxFlex>
-                        <mat-label>COURSES IN THE HOSPITAL</mat-label>
-                        <textarea matInput name="TreatmentGiven" style="white-space: pre-wrap" formControlName="treatmentGiven" [(ngModel)]="vTreatmentGiven" cols="200" rows="6"></textarea>
-                      </mat-form-field>
+                    <!-- *ngIf="DischargesumInsertForm.get('isNormalOrDeath').value == 'True'" -->
+                    <div class="card-content">
+                      <div class="form-title mb-2 pb-2 border-bottom">
+                        <span class="h3 font-weight-600">TREATMENT ADVICED</span>
+                      </div>
+                      <div class="form-input">
+                        <mat-form-field appearance="outline" fxFlex>
+                          <mat-label>Treatment Adviced</mat-label>
+                          <textarea matInput name="TreatmentAdvisedAfterDischarge"
+                            formControlName="treatmentAdvisedAfterDischarge"
+                            [(ngModel)]="vTreatmentAdvisedAfterDischarge" cols="200" rows="6"></textarea>
+                              <button mat-icon-button matSuffix (click)="onMicTogglefields('treatmentAdvisedAfterDischarge')"
+                              [color]="speechService.isListening ? 'warn' : 'primary'" type="button">
+                              <i [class]="speechService.isListening ? 'fas fa-microphone-slash' : 'fas fa-microphone'"></i>
+                            </button>
+                        </mat-form-field>
+                      </div>
                     </div>
                   </div>
-                  <!-- *ngIf="DischargesumInsertForm.get('isNormalOrDeath').value == 'True'" -->
-                  <div class="card-content">
-                    <div class="form-title mb-2 pb-2 border-bottom">
-                      <span class="h3 font-weight-600">TREATMENT ADVICED</span>
-                    </div>
-                    <div class="form-input">
-                      <mat-form-field appearance="outline" fxFlex>
-                        <mat-label>Treatment Adviced</mat-label>
-                        <textarea
-                          matInput
-                          name="TreatmentAdvisedAfterDischarge"
-                          formControlName="treatmentAdvisedAfterDischarge"
-                          [(ngModel)]="vTreatmentAdvisedAfterDischarge"
-                          cols="200"
-                          rows="6"
-                        ></textarea>
-                      </mat-form-field>
-                    </div>
-                  </div>
-                </div>
                 </div>
               </mat-card>
             </mat-tab>
@@ -272,28 +334,38 @@
             <!-- 5th tab -->
             <mat-tab label="OTHER CON DR.OPINION">
               <mat-card class="mat-tab-card-container">
-          <div [formGroupName]="'dischargModel'">
+                <div [formGroupName]="'dischargModel'">
 
-                <div class="form-title mb-2 pb-2 border-bottom">
-                  <span class="h3 font-weight-600">OTHER CON DR.OPINION</span>
-                </div>
-                <div class="form-input">
-                  <mat-form-field appearance="outline" fxFlex>
-                    <mat-label>OTHER CON DR.OPINION</mat-label>
-                    <textarea matInput name="OtherConDrOpinions" formControlName="otherConDrOpinions" [(ngModel)]="vOtherConDrOpinions" cols="300" rows="6"></textarea>
-                  </mat-form-field>
-                </div>
-                <!-- *ngIf="DischargesumInsertForm.get('isNormalOrDeath').value == 'True'" -->
-                <div class="form-title mb-2 pb-2 border-bottom">
-                  <span class="h3 font-weight-600">PAIN MANAGMENT TECHNIQUE</span>
-                </div>
-                <!-- *ngIf="DischargesumInsertForm.get('isNormalOrDeath').value == 'True'" -->
-                <div class="form-input">
-                  <mat-form-field appearance="outline" fxFlex>
-                    <mat-label>PAIN MANAGMENT TECHNIQUE</mat-label>
-                    <textarea matInput name="PainManagementTechnique" formControlName="painManagementTechnique" [(ngModel)]="vPainManagementTechnique" cols="300" rows="6"></textarea>
-                  </mat-form-field>
-                </div>
+                  <div class="form-title mb-2 pb-2 border-bottom">
+                    <span class="h3 font-weight-600">OTHER CON DR.OPINION</span>
+                  </div>
+                  <div class="form-input">
+                    <mat-form-field appearance="outline" fxFlex>
+                      <mat-label>OTHER CON DR.OPINION</mat-label>
+                      <textarea matInput name="OtherConDrOpinions" formControlName="otherConDrOpinions"
+                        [(ngModel)]="vOtherConDrOpinions" cols="300" rows="6"></textarea>
+                           <button mat-icon-button matSuffix (click)="onMicTogglefields('otherConDrOpinions')"
+                              [color]="speechService.isListening ? 'warn' : 'primary'" type="button">
+                              <i [class]="speechService.isListening ? 'fas fa-microphone-slash' : 'fas fa-microphone'"></i>
+                            </button>
+                    </mat-form-field>
+                  </div>
+                  <!-- *ngIf="DischargesumInsertForm.get('isNormalOrDeath').value == 'True'" -->
+                  <div class="form-title mb-2 pb-2 border-bottom">
+                    <span class="h3 font-weight-600">PAIN MANAGMENT TECHNIQUE</span>
+                  </div>
+                  <!-- *ngIf="DischargesumInsertForm.get('isNormalOrDeath').value == 'True'" -->
+                  <div class="form-input">
+                    <mat-form-field appearance="outline" fxFlex>
+                      <mat-label>PAIN MANAGMENT TECHNIQUE</mat-label>
+                      <textarea matInput name="PainManagementTechnique" formControlName="painManagementTechnique"
+                        [(ngModel)]="vPainManagementTechnique" cols="300" rows="6"></textarea>
+                         <button mat-icon-button matSuffix (click)="onMicTogglefields('painManagementTechnique')"
+                              [color]="speechService.isListening ? 'warn' : 'primary'" type="button">
+                              <i [class]="speechService.isListening ? 'fas fa-microphone-slash' : 'fas fa-microphone'"></i>
+                            </button>
+                    </mat-form-field>
+                  </div>
                 </div>
               </mat-card>
             </mat-tab>
@@ -303,7 +375,7 @@
               <mat-card>
                 <mat-card-content>
                   <div fxLayout="column" class="gap-8">
-                    <div class="card-content" [formGroupName]="'dischargModel'"> 
+                    <div class="card-content" [formGroupName]="'dischargModel'">
                       <div class="form-title mb-2 pb-2 border-bottom">
                         <span class="h3 font-weight-600">FOLLOW UP</span>
                       </div>
@@ -313,72 +385,73 @@
                           <div fxFlex="50" fxFlex.xs="100">
                             <mat-form-field appearance="outline" fxFlex>
                               <mat-label>FOLLOW UP</mat-label>
-                              <textarea matInput name="LifeStyle" formControlName="lifeStyle" [(ngModel)]="vLifeStyle" cols="300" rows="6"></textarea>
+                              <textarea matInput name="LifeStyle" formControlName="lifeStyle" [(ngModel)]="vLifeStyle"
+                                cols="300" rows="6"></textarea>
+                                 <button mat-icon-button matSuffix (click)="onMicTogglefields('lifeStyle')"
+                              [color]="speechService.isListening ? 'warn' : 'primary'" type="button">
+                              <i [class]="speechService.isListening ? 'fas fa-microphone-slash' : 'fas fa-microphone'"></i>
+                            </button>
                             </mat-form-field>
                           </div>
 
                           <div fxFlex="50" fxFlex.xs="100">
                             <mat-form-field appearance="outline" fxFlex>
                               <mat-label>CONDITION AT THE TIME OF DISCHARGE</mat-label>
-                              <textarea
-                                matInput
-                                name="ConditionAtTheTimeOfDischarge"
-                                formControlName="conditionAtTheTimeOfDischarge"
-                                [(ngModel)]="vConditionofTimeDischarge"
-                                cols="300"
-                                rows="6"
-                              ></textarea>
+                              <textarea matInput name="ConditionAtTheTimeOfDischarge"
+                                formControlName="conditionAtTheTimeOfDischarge" [(ngModel)]="vConditionofTimeDischarge"
+                                cols="300" rows="6"></textarea>
+                                  <button mat-icon-button matSuffix (click)="onMicTogglefields('conditionAtTheTimeOfDischarge')"
+                              [color]="speechService.isListening ? 'warn' : 'primary'" type="button">
+                              <i [class]="speechService.isListening ? 'fas fa-microphone-slash' : 'fas fa-microphone'"></i>
+                            </button>
                             </mat-form-field>
                           </div>
 
                           <div fxFlex="50" fxFlex.xs="100">
-                            <airmid-dropdown
-                              label="Doctor Name"
-                              formControlName="dischargeDoctor1"
+                            <airmid-dropdown label="Doctor Name" formControlName="dischargeDoctor1"
                               [formGroup]="DischargesumInsertForm.get('dischargModel')"
                               [validations]="getValidationMessages().dischargeDoctor1"
-                              [mode]="autocompleteModeRefDoctor"
-                            ></airmid-dropdown>
+                              [mode]="autocompleteModeRefDoctor"></airmid-dropdown>
                           </div>
 
                           <div fxFlex="50" fxFlex.xs="100">
                             <mat-form-field appearance="outline" fxFlex>
                               <mat-label>Claim Number</mat-label>
-                              <input name="ClaimNumber" formControlName="claimNumber" [(ngModel)]="vClaimNumber" matInput (keypress)="keyPressAlphanumeric($event)"/>
+                              <input name="ClaimNumber" formControlName="claimNumber" [(ngModel)]="vClaimNumber"
+                                matInput (keypress)="keyPressAlphanumeric($event)" />
                             </mat-form-field>
                           </div>
 
                           <div fxFlex="50" fxFlex.xs="100">
-                            <airmid-dropdown
-                              label="Ref.Doctor Name"
-                              formControlName="dischargeDoctor2"
+                            <airmid-dropdown label="Ref.Doctor Name" formControlName="dischargeDoctor2"
                               [formGroup]="DischargesumInsertForm.get('dischargModel')"
                               [validations]="getValidationMessages().dischargeDoctor2"
-                              [mode]="autocompleteModeRefDoctor"
-                            ></airmid-dropdown>
+                              [mode]="autocompleteModeRefDoctor"></airmid-dropdown>
                           </div>
 
                           <div fxFlex="50" fxFlex.xs="100">
                             <mat-form-field appearance="outline" fxFlex>
                               <mat-label>Pre OTH Number</mat-label>
-                              <input name="PreOthNumber" formControlName="preOthNumber" [(ngModel)]="vPreOthNumber" matInput (keypress)="keyPressAlphanumeric($event)" />
+                              <input name="PreOthNumber" formControlName="preOthNumber" [(ngModel)]="vPreOthNumber"
+                                matInput (keypress)="keyPressAlphanumeric($event)" />
                             </mat-form-field>
                           </div>
 
                           <div fxFlex="50" fxFlex.xs="100">
                             <mat-form-field appearance="outline" fxFlex>
                               <mat-label>Doctor Assistant Name</mat-label>
-                              <input name="DoctorAssistantName" formControlName="doctorAssistantName" [(ngModel)]="vDoctorAssistantName" matInput />
+                              <input name="DoctorAssistantName" formControlName="doctorAssistantName"
+                                [(ngModel)]="vDoctorAssistantName" matInput />
                             </mat-form-field>
                           </div>
 
-                        <div fxFlex="50%" fxFlex.xs="100%">
-                             <mat-form-field appearance="outline" fxFlex>
-                                <mat-label>FollowUp Date</mat-label>
-                                <input matInput [matDatepicker]="picker1" formControlName="followupdate"
+                          <div fxFlex="50%" fxFlex.xs="100%">
+                            <mat-form-field appearance="outline" fxFlex>
+                              <mat-label>FollowUp Date</mat-label>
+                              <input matInput [matDatepicker]="picker1" formControlName="followupdate"
                                 (dateChange)="onChangeDate($event.value)">
-                                <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-                                <mat-datepicker #picker1></mat-datepicker>
+                              <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                              <mat-datepicker #picker1></mat-datepicker>
                             </mat-form-field>
                           </div>
                         </div>
@@ -401,31 +474,22 @@
                     <div fxFlex.gt-sm="100%" fxFlex>
                       <form [formGroup]="MedicineItemForm">
                         <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" class="gap-8">
-                          <airmid-autocomplete
-                            label="Enter Item Name"
-                            [formGroup]="MedicineItemForm"
-                            formControlName="ItemId"
-                            placeholderText="Enter Item Name"
-                            fxFlex
+                          <airmid-autocomplete label="Enter Item Name" [formGroup]="MedicineItemForm"
+                            formControlName="ItemId" placeholderText="Enter Item Name" fxFlex
                             ApiUrl="ItemMaster/GetItemListForPrescription?StoreId=2&ItemName="
-                            (selectionChange)="getSelectedserviceObj($event)"
-                            TextField="itemName"
-                            ValueField="itemId"
-                          ></airmid-autocomplete>
+                            (selectionChange)="getSelectedserviceObj($event)" TextField="itemName"
+                            ValueField="itemId"></airmid-autocomplete>
 
-                          <airmid-dropdown
-                            label="Dose Name"
-                            formControlName="DoseId"
-                            [formGroup]="MedicineItemForm"
-                            [validations]="getValidationMessages().DoseId"
-                            (selectionChange)="getdose($event)"
-                            [mode]="autocompleteModeDose"
-                          ></airmid-dropdown>
+                          <airmid-dropdown label="Dose Name" formControlName="DoseId" [formGroup]="MedicineItemForm"
+                            [validations]="getValidationMessages().DoseId" (selectionChange)="getdose($event)"
+                            [mode]="autocompleteModeDose"></airmid-dropdown>
 
-                          <airmid-textbox label="Day" formControlName="Day" [value]="vDay" [type]="'text'" (keypress)="keyPressCharater($event)" [formGroup]="MedicineItemForm"></airmid-textbox>
+                          <airmid-textbox label="Day" formControlName="Day" [value]="vDay" [type]="'text'"
+                            (keypress)="keyPressCharater($event)" [formGroup]="MedicineItemForm"></airmid-textbox>
 
                           <div class="input-add-button">
-                            <div matTooltip="Select Itemname to enable this button!!" [matTooltipPosition]="'above'" fxLayoutGap="10px" fxLayout="row">
+                            <div matTooltip="Select Itemname to enable this button!!" [matTooltipPosition]="'above'"
+                              fxLayoutGap="10px" fxLayout="row">
                               <button #addbutton class="btn btn-primary btn-with-icon" (click)="onAdd()">
                                 <span class="btn-icon">
                                   <mat-icon>add</mat-icon>
@@ -443,16 +507,19 @@
                   <!-- Table 1 -->
                   <div class="airmid-table-container">
                     <div class="content-card">
-                      <mat-table class="mat-table-1 h-250" matSort [dataSource]="dsItemList" [@animateStagger]="{ value: '50' }">
+                      <mat-table class="mat-table-1 h-250" matSort [dataSource]="dsItemList"
+                        [@animateStagger]="{ value: '50' }">
                         <ng-container matColumnDef="itemName">
-                          <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>ItemName</mat-header-cell>
+                          <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
+                            fxShow.gt-sm>ItemName</mat-header-cell>
                           <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
                             <span>{{ element.itemName }}</span>
                           </mat-cell>
                         </ng-container>
 
                         <ng-container matColumnDef="doseName">
-                          <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Dose Name</mat-header-cell>
+                          <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Dose
+                            Name</mat-header-cell>
                           <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
                             <span>{{ element.doseName }}</span>
                           </mat-cell>
@@ -474,8 +541,10 @@
                           </mat-cell>
                         </ng-container>
 
-                        <mat-header-row class="accent" *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
-                        <mat-row *matRowDef="let row; columns: displayedColumns" class="element" [@animate]="{ value: '*', params: { y: '100%' } }"></mat-row>
+                        <mat-header-row class="accent"
+                          *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+                        <mat-row *matRowDef="let row; columns: displayedColumns" class="element"
+                          [@animate]="{ value: '*', params: { y: '100%' } }"></mat-row>
                       </mat-table>
                     </div>
                   </div>
@@ -500,7 +569,8 @@
   <div class="modal-footer">
     <div class="modal-footer-container" fxLayoutAlign="end center" fxLayoutGap="16px">
       <form [formGroup]="DischargesumInsertForm">
-        <mat-radio-group [formGroup]="DischargesumInsertForm" formControlName="isNormalOrDeath" [(ngModel)]="vIsNormalDeath">
+        <mat-radio-group [formGroup]="DischargesumInsertForm" formControlName="isNormalOrDeath"
+          [(ngModel)]="vIsNormalDeath">
           <mat-radio-button mat-fab value=1>Normal</mat-radio-button>
           <mat-radio-button mat-fab value=0>Death Summary</mat-radio-button>
         </mat-radio-group>

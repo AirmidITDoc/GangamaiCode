@@ -58,6 +58,9 @@ import { IPBillingComponent } from './ip-billing/ip-billing.component';
 import { PrebillDetailsComponent } from './ip-billing/prebill-details/prebill-details.component';
 import { IPRefundofBillComponent } from './ip-refundof-bill/ip-refundof-bill.component';
 import { IPUpdatesComponent } from './ip-billing/ipupdates/ipupdates.component';
+import { MatTreeModule } from '@angular/material/tree';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatSliderModule } from '@angular/material/slider';
 
 
 const routes: Routes = [
@@ -134,6 +137,11 @@ const routes: Routes = [
        MatTooltipModule,
         MatStepperModule,
         MatTimepickerModule,
+
+                 MatTreeModule,
+                MatSliderModule,
+                MatButtonToggleModule,
+              
           
     ],
     providers: [

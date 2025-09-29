@@ -12,6 +12,7 @@ import { ToastrService } from 'ngx-toastr';
 import Swal from 'sweetalert2';
 import { AdmissionPersonlModel } from '../../Admission/admission/admission.component';
 import { IPSearchListService } from '../ip-search-list.service';
+import { LanguageOption, SpeechRecognitionService } from 'app/main/shared/services/speech-recognition.service';
 
 @Component({
   selector: 'app-discharge-summary',
@@ -34,6 +35,8 @@ export class DischargeSummaryComponent implements OnInit {
   vInstruction: any;
   ClinicalFInding: any;
   saveflag: boolean = false
+  selectedLang = 'en-US';
+  languages: LanguageOption[] = [];
 
   displayedColumns: string[] = [
     'itemName',
@@ -87,6 +90,7 @@ export class DischargeSummaryComponent implements OnInit {
     private _formBuilder: FormBuilder,
     private _ActRoute: Router,
     public toastr: ToastrService,
+    public speechService: SpeechRecognitionService,
     private accountService: AuthenticationService,
     public dialogRef: MatDialogRef<DischargeSummaryComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -155,7 +159,7 @@ export class DischargeSummaryComponent implements OnInit {
         opertiveNotes: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
         treatmentGiven: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
         treatmentAdvisedAfterDischarge: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
-        followupdate: [new Date(),[this._FormvalidationserviceService.validDateValidator()]],
+        followupdate: [new Date(), [this._FormvalidationserviceService.validDateValidator()]],
         remark: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
         dischargeSummaryDate: this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
         opDate: [this.datePipe.transform(new Date(), 'yyyy-MM-dd')],
@@ -242,7 +246,7 @@ export class DischargeSummaryComponent implements OnInit {
           this.DischargesumInsertForm.get("dischargModel.dischargeSummaryId")?.setValue(this.DischargeSummaryId);
           this.DischargesumInsertForm.get("dischargModel.dischargeSummaryDate")?.setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'))
           this.DischargesumInsertForm.get("dischargModel.dischargeSummaryTime")?.setValue(this.dateTimeObj.time)
-        
+
           if (this.DischargesumInsertForm.get('dischargModel.dischargeSummaryId')?.value) {
             this.DischargesumInsertForm.get('dischargModel.updatedBy').setValue(this.accountService.currentUserValue.userId);
 
@@ -308,12 +312,12 @@ export class DischargeSummaryComponent implements OnInit {
     this.ItemName = obj.itemName
     console.log(obj)
   }
-  
- onChangeDate(value) {
-  console.log(value)
-  const formatted = this.datePipe.transform(value, 'yyyy-MM-dd');
-  this.DischargesumInsertForm.get("dischargModel.followupdate").setValue(formatted);
-}
+
+  onChangeDate(value) {
+    console.log(value)
+    const formatted = this.datePipe.transform(value, 'yyyy-MM-dd');
+    this.DischargesumInsertForm.get("dischargModel.followupdate").setValue(formatted);
+  }
 
   getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;
@@ -504,6 +508,208 @@ export class DischargeSummaryComponent implements OnInit {
     //   console.log('The dialog was closed - Insert Action', result);
     // });
   }
+
+
+  onLangChange() {
+    if (this.speechService.isListening) {
+      this.speechService.stopRecognition();
+    }
+  }
+  onMicTogglefields(FiledName) {
+    console.log(FiledName);
+    debugger
+    if (FiledName == "diagnosis") {
+      this.speechService.toggleRecognition(this.selectedLang, (text: string) => {
+        const currentText = this.DischargesumInsertForm.get('dischargModel.diagnosis')?.value || '';
+        const updated = currentText ? `${currentText} ${text}` : text;
+        this.DischargesumInsertForm.get('dischargModel.diagnosis')?.setValue(updated);
+      });
+    } if (FiledName == "history") {
+      this.speechService.toggleRecognition(this.selectedLang, (text: string) => {
+        const currentText = this.DischargesumInsertForm.get('dischargModel.history')?.value || '';
+        const updated = currentText ? `${currentText} ${text}` : text;
+        this.DischargesumInsertForm.get('dischargModel.history')?.setValue(updated);
+      });
+    } if (FiledName == "clinicalConditionOnAdmisssion") {
+      this.speechService.toggleRecognition(this.selectedLang, (text: string) => {
+        const currentText = this.DischargesumInsertForm.get('dischargModel.clinicalConditionOnAdmisssion')?.value || '';
+        const updated = currentText ? `${currentText} ${text}` : text;
+        this.DischargesumInsertForm.get('dischargModel.clinicalConditionOnAdmisssion')?.setValue(updated);
+      });
+    } if (FiledName == "investigation") {
+      this.speechService.toggleRecognition(this.selectedLang, (text: string) => {
+        const currentText = this.DischargesumInsertForm.get('dischargModel.investigation')?.value || '';
+        const updated = currentText ? `${currentText} ${text}` : text;
+        this.DischargesumInsertForm.get('dischargModel.investigation')?.setValue(updated);
+      });
+    }
+     if (FiledName == "surgeryProcDone") {
+      this.speechService.toggleRecognition(this.selectedLang, (text: string) => {
+        const currentText = this.DischargesumInsertForm.get('dischargModel.surgeryProcDone')?.value || '';
+        const updated = currentText ? `${currentText} ${text}` : text;
+        this.DischargesumInsertForm.get('dischargModel.surgeryProcDone')?.setValue(updated);
+      });
+    }
+    if (FiledName == "opertiveNotes") {
+      this.speechService.toggleRecognition(this.selectedLang, (text: string) => {
+        const currentText = this.DischargesumInsertForm.get('dischargModel.opertiveNotes')?.value || '';
+        const updated = currentText ? `${currentText} ${text}` : text;
+        this.DischargesumInsertForm.get('dischargModel.opertiveNotes')?.setValue(updated);
+      });
+    }
+     if (FiledName == "radiology") {
+      this.speechService.toggleRecognition(this.selectedLang, (text: string) => {
+        const currentText = this.DischargesumInsertForm.get('dischargModel.radiology')?.value || '';
+        const updated = currentText ? `${currentText} ${text}` : text;
+        this.DischargesumInsertForm.get('dischargModel.radiology')?.setValue(updated);
+      });
+    } if (FiledName == "treatmentGiven") {
+      this.speechService.toggleRecognition(this.selectedLang, (text: string) => {
+        const currentText = this.DischargesumInsertForm.get('dischargModel.treatmentGiven')?.value || '';
+        const updated = currentText ? `${currentText} ${text}` : text;
+        this.DischargesumInsertForm.get('dischargModel.treatmentGiven')?.setValue(updated);
+      });
+    }
+     if (FiledName == "treatmentAdvisedAfterDischarge") {
+      this.speechService.toggleRecognition(this.selectedLang, (text: string) => {
+        const currentText = this.DischargesumInsertForm.get('dischargModel.treatmentAdvisedAfterDischarge')?.value || '';
+        const updated = currentText ? `${currentText} ${text}` : text;
+        this.DischargesumInsertForm.get('dischargModel.treatmentAdvisedAfterDischarge')?.setValue(updated);
+      });
+    }if (FiledName == "otherConDrOpinions") {
+      this.speechService.toggleRecognition(this.selectedLang, (text: string) => {
+        const currentText = this.DischargesumInsertForm.get('dischargModel.otherConDrOpinions')?.value || '';
+        const updated = currentText ? `${currentText} ${text}` : text;
+        this.DischargesumInsertForm.get('dischargModel.otherConDrOpinions')?.setValue(updated);
+      });
+    }
+     if (FiledName == "painManagementTechnique") {
+      this.speechService.toggleRecognition(this.selectedLang, (text: string) => {
+        const currentText = this.DischargesumInsertForm.get('dischargModel.painManagementTechnique')?.value || '';
+        const updated = currentText ? `${currentText} ${text}` : text;
+        this.DischargesumInsertForm.get('dischargModel.painManagementTechnique')?.setValue(updated);
+      });
+    }if (FiledName == "lifeStyle") {
+      this.speechService.toggleRecognition(this.selectedLang, (text: string) => {
+        const currentText = this.DischargesumInsertForm.get('dischargModel.lifeStyle')?.value || '';
+        const updated = currentText ? `${currentText} ${text}` : text;
+        this.DischargesumInsertForm.get('dischargModel.lifeStyle')?.setValue(updated);
+      });
+    }
+     if (FiledName == "conditionAtTheTimeOfDischarge") {
+      this.speechService.toggleRecognition(this.selectedLang, (text: string) => {
+        const currentText = this.DischargesumInsertForm.get('dischargModel.conditionAtTheTimeOfDischarge')?.value || '';
+        const updated = currentText ? `${currentText} ${text}` : text;
+        this.DischargesumInsertForm.get('dischargModel.conditionAtTheTimeOfDischarge')?.setValue(updated);
+      });
+    }
+  }
+
+  //   onMicTogglehistory() {
+  //   // console.log(this.selectedLang);
+  //   this.speechService.toggleRecognition(this.selectedLang, (text: string) => {
+  //     const currentText = this.DischargesumInsertForm.get('dischargModel.history')?.value || '';
+  //     const updated = currentText ? `${currentText} ${text}` : text;
+  //     this.DischargesumInsertForm.get('dischargModel.history')?.setValue(updated);
+  //   });
+  // }
+  //   onMicToggleclinicalFinding() {
+  //   // console.log(this.selectedLang);
+  //   this.speechService.toggleRecognition(this.selectedLang, (text: string) => {
+  //     const currentText = this.DischargesumInsertForm.get('dischargModel.clinicalFinding')?.value || '';
+  //     const updated = currentText ? `${currentText} ${text}` : text;
+  //     this.DischargesumInsertForm.get('dischargModel.clinicalFinding')?.setValue(updated);
+  //   });
+  // }
+  // onMicToggleinvestigation() {
+  //   // console.log(this.selectedLang);
+  //   this.speechService.toggleRecognition(this.selectedLang, (text: string) => {
+  //     const currentText = this.DischargesumInsertForm.get('dischargModel.investigation')?.value || '';
+  //     const updated = currentText ? `${currentText} ${text}` : text;
+  //     this.DischargesumInsertForm.get('dischargModel.investigation')?.setValue(updated);
+  //   });
+  // }
+
+  // onMicTogglesurgeryProcDone() {
+  //   // console.log(this.selectedLang);
+  //   this.speechService.toggleRecognition(this.selectedLang, (text: string) => {
+  //     const currentText = this.DischargesumInsertForm.get('dischargModel.surgeryProcDone')?.value || '';
+  //     const updated = currentText ? `${currentText} ${text}` : text;
+  //     this.DischargesumInsertForm.get('dischargModel.surgeryProcDone')?.setValue(updated);
+  //   });
+  // }
+  // onMicToggleopertiveNotes() {
+  //   // console.log(this.selectedLang);
+  //   this.speechService.toggleRecognition(this.selectedLang, (text: string) => {
+  //     const currentText = this.DischargesumInsertForm.get('dischargModel.opertiveNotes')?.value || '';
+  //     const updated = currentText ? `${currentText} ${text}` : text;
+  //     this.DischargesumInsertForm.get('dischargModel.opertiveNotes')?.setValue(updated);
+  //   });
+  // }
+
+  // onMicToggleradiology() {
+  //   // console.log(this.selectedLang);
+  //   this.speechService.toggleRecognition(this.selectedLang, (text: string) => {
+  //     const currentText = this.DischargesumInsertForm.get('dischargModel.radiology')?.value || '';
+  //     const updated = currentText ? `${currentText} ${text}` : text;
+  //     this.DischargesumInsertForm.get('dischargModel.radiology')?.setValue(updated);
+  //   });
+  // }
+
+  // onMicToggletreatmentGiven() {
+  //   // console.log(this.selectedLang);
+  //   this.speechService.toggleRecognition(this.selectedLang, (text: string) => {
+  //     const currentText = this.DischargesumInsertForm.get('dischargModel.treatmentGiven')?.value || '';
+  //     const updated = currentText ? `${currentText} ${text}` : text;
+  //     this.DischargesumInsertForm.get('dischargModel.treatmentGiven')?.setValue(updated);
+  //   });
+  // }
+
+  // onMicToggletreatmentAdvisedAfterDischarge() {
+  //   // console.log(this.selectedLang);
+  //   this.speechService.toggleRecognition(this.selectedLang, (text: string) => {
+  //     const currentText = this.DischargesumInsertForm.get('dischargModel.treatmentAdvisedAfterDischarge')?.value || '';
+  //     const updated = currentText ? `${currentText} ${text}` : text;
+  //     this.DischargesumInsertForm.get('dischargModel.treatmentAdvisedAfterDischarge')?.setValue(updated);
+  //   });
+  // }
+
+  // onMicToggleotherConDrOpinions() {
+  //   // console.log(this.selectedLang);
+  //   this.speechService.toggleRecognition(this.selectedLang, (text: string) => {
+  //     const currentText = this.DischargesumInsertForm.get('dischargModel.otherConDrOpinions')?.value || '';
+  //     const updated = currentText ? `${currentText} ${text}` : text;
+  //     this.DischargesumInsertForm.get('dischargModel.otherConDrOpinions')?.setValue(updated);
+  //   });
+  // }
+
+  // onMicTogglepainManagementTechnique() {
+  //   // console.log(this.selectedLang);
+  //   this.speechService.toggleRecognition(this.selectedLang, (text: string) => {
+  //     const currentText = this.DischargesumInsertForm.get('dischargModel.painManagementTechnique')?.value || '';
+  //     const updated = currentText ? `${currentText} ${text}` : text;
+  //     this.DischargesumInsertForm.get('dischargModel.painManagementTechnique')?.setValue(updated);
+  //   });
+  // }
+  // onMicTogglelifeStyle() {
+  //   // console.log(this.selectedLang);
+  //   this.speechService.toggleRecognition(this.selectedLang, (text: string) => {
+  //     const currentText = this.DischargesumInsertForm.get('dischargModel.lifeStyle')?.value || '';
+  //     const updated = currentText ? `${currentText} ${text}` : text;
+  //     this.DischargesumInsertForm.get('dischargModel.lifeStyle')?.setValue(updated);
+  //   });
+  // }
+
+  // onMicToggleconditionAtTheTimeOfDischarge(event) {
+  //   console.log(event);
+  //   console.log(event.value);
+  //   this.speechService.toggleRecognition(this.selectedLang, (text: string) => {
+  //     const currentText = this.DischargesumInsertForm.get('dischargModel.conditionAtTheTimeOfDischarge')?.value || '';
+  //     const updated = currentText ? `${currentText} ${text}` : text;
+  //     this.DischargesumInsertForm.get('dischargModel.conditionAtTheTimeOfDischarge')?.setValue(updated);
+  //   });
+  // }
+
 
   getValidationMessages() {
     return {
