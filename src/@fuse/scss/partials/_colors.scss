@@ -29,7 +29,10 @@
     i {
         color: map-get($foreground, icon);
     }
-
+    .ck-content i {
+        color: inherit;
+      }
+      
     .hint-text {
         color: map-get($foreground, hint-text);
     }

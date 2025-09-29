@@ -82,10 +82,10 @@
                 </form>
 
                 <!-- add table -->
-                <div class="modal-card-container h-100-p">
-                    <div style="width: 100%;" fxLayoutGap="10px">
-                        <div class="airmid-table-container py-12" fxFlex="100%" cdkScrollable>
-                            <mat-table #table matSort [dataSource]="dsReportList" class="airmid-table table3 max-h-300"
+                <div class="modal-card-container">
+                    <div style="width: 100%;" fxLayoutGap="10px" >
+                        <div class="airmid-table-container py-12" fxFlex="100%" dynamicTableHeight fusePerfectScrollbar>
+                            <mat-table #table matSort [dataSource]="dsReportList" class="airmid-table table3"
                                 [@animateStagger]="{ value: '50' }" cdkDropList (cdkDropListDropped)="drop($event)"
                                 style="overflow:auto;">
 
