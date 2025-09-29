@@ -515,7 +515,11 @@ export class OpPaymentComponent implements OnInit {
       this.Paymentobj['advanceUsedAmount'] = 0;
       this.Paymentobj['advanceId'] = 0;
       this.Paymentobj['refundId'] = 0;
+      if(this.data.FromName == "IP-Advance"){
       this.Paymentobj['transactionType'] = 1;
+      }else{
+         this.Paymentobj['transactionType'] = 2;
+      } 
       this.Paymentobj['remark'] = " ";
       this.Paymentobj['addBy'] = this._loggedService.currentUserValue.userId,
         this.Paymentobj['isCancelled'] = false;

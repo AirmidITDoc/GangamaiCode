@@ -6,8 +6,7 @@ import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
 import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
 import { ToastrService } from 'ngx-toastr';
 import { NewTemplateComponent } from './new-template/new-template.component';
-import { TemplatedescriptionService } from './templatedescription.service';
-
+import { TemplatedescriptionService } from './templatedescription.service'; 
 
 @Component({
     selector: 'app-template-description',
@@ -63,31 +62,31 @@ export class TemplateDescriptionComponent implements OnInit {
     
         onEdit(row: any = null) {
             const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
-            buttonElement.blur(); // Remove focus from the button
-            
+            buttonElement.blur(); // Remove focus from the button 
             let that = this;
             const dialogRef = this._matDialog.open(NewTemplateComponent,
                 {
-                    maxWidth: "90vw",
-                    height: '80%',
+                    maxWidth: "95vw",
+                    height: '95%',
                     width: '90%',
-                    data: row
+                    data:{
+                        Obj:row
+                    } 
                 });
             dialogRef.afterClosed().subscribe(result => {
-               this.getfilterdata()
-              
+               this.getfilterdata() 
             });
         }
 
-        onSave(row: any = null) {
+        onAddnew(row: any = null) {
             const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
             buttonElement.blur(); // Remove focus from the button
             
             let that = this;
             const dialogRef = this._matDialog.open(NewTemplateComponent,
                 {
-                    maxWidth: "90vw",
-                    height: '80%',
+                    maxWidth: "95vw",
+                    height: '95%',
                     width: '90%'
                   
                 });
@@ -96,7 +95,7 @@ export class TemplateDescriptionComponent implements OnInit {
               
             });
         }
-    
+ 
         getfilterdata() {
             debugger
             this.gridConfig = {
@@ -123,13 +122,11 @@ export class TemplateDescriptionComponent implements OnInit {
                 sortField: "TemplateId",
                 sortOrder: 0,
                 filters: [
-                    
-                ]
-            }
-             
+                      { fieldName: "TemplateName", fieldValue: "", opType: OperatorComparer.Contains }  
+                 ]
+            } 
               this.grid.gridConfig = this.gridConfig;
-              this.grid.bindGridData();
-          
+              this.grid.bindGridData(); 
             }
           
     }

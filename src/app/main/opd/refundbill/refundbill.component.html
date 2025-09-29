@@ -55,7 +55,7 @@
                           <div class="patient-col">
                             <span class="patient-col-key">UHID No</span>
                             <span>:</span>
-                            <span class="patient-col-value">{{ registerObj.regId }}</span>
+                            <span class="patient-col-value">{{ registerObj.regNo }}</span>
                           </div>
                           <div class="patient-col">
                             <span class="patient-col-key">Patient Name</span>
@@ -142,7 +142,7 @@
                   <mat-form-field appearance="fill">
                     <!-- <mat-form-field appearance="legacy"> -->
                     <input matInput [(ngModel)]="element.RefundAmt" type="text" OnlyNumber 
-                      (ngModelChange)="onPriceOrQtyChange(element,element.RefundAmt)"
+                      (keyup)="onPriceOrQtyChange(element,element.RefundAmt)"
                       (keypress)="keyPressCharater($event)" />
                   </mat-form-field>
                 </mat-cell>

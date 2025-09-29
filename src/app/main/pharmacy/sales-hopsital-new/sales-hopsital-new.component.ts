@@ -994,6 +994,22 @@ export class SalesHospitalNewComponent implements OnInit {
 
     }
     onSave(event) {
+        Swal.fire({
+            title: 'Confirm Save',
+            text: 'Are you sure you want to save this Sales bill?',
+            icon: 'warning', // or 'question'
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6', // Blue
+            cancelButtonColor: '#d33',     // Red
+            confirmButtonText: 'Yes, save it!',
+            cancelButtonText: 'No, cancel'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                this.BillSave(event); // Call your save function
+            }
+        });
+    }
+    BillSave(event) {
         debugger 
     const formattedTime = this.datePipe.transform(new Date(), 'hh:mm');
     const formattedDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
@@ -1179,6 +1195,14 @@ export class SalesHospitalNewComponent implements OnInit {
     getCellCalculation(item: IndentList) {
         let qty = +item.Qty;
         if (!qty) {
+            qty = 0;
+        } else if (qty > item.BalanceQty) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Invalid Quantity',
+                text: 'Please enter a quantity less than the balance quantity = '+ item.BalanceQty,
+                confirmButtonText: 'OK',
+            });
             qty = 0;
         }
         const gstPer = +item.GSTPer;
@@ -2056,7 +2080,7 @@ export class SalesHospitalNewComponent implements OnInit {
             this.onsubstitutes();
         }
         if (event.keyCode === 120) {
-            this.onSave(event);
+            this.BillSave(event);
         }
     }
     onsubstitutes() {
