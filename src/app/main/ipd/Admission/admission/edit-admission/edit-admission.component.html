@@ -43,12 +43,12 @@
                         <div class="patient-col gap-1" fxFlex="30%">
                           <span class="patient-col-key ">UHID </span>
                           <span>:</span>
-                          <span class="patient-col-value">{{data.regId}}</span>
+                          <span class="patient-col-value">{{data.regNo}}</span>
                         </div>
                         <div class="patient-col gap-1" fxFlex="30%">
                           <span class="patient-col-key">DOA /Time</span>
                           <span>:</span>
-                          <span class="patient-col-value">{{data.admissionTime}}</span>
+                          <span class="patient-col-value">{{ data.admissionTime | date:'dd-MM-yyyy, hh:mm a' }}</span>
                         </div>
                         <div class="patient-col gap-1" fxFlex="30%">
                           <span class="patient-col-key">IPDNo</span>

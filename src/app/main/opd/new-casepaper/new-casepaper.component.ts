@@ -722,6 +722,7 @@ export class NewCasepaperComponent implements OnInit {
 
     this._CasepaperService.RtrvPreviousprescriptionDetailsdemo(m_data2).subscribe(Visit => {
       const allItems = Visit?.data as MedicineItemList[] || [];
+      debugger
       if (allItems.length > 0 && allItems[0].precriptionId) {
         const firstItem = allItems[0];
 
@@ -913,7 +914,7 @@ export class NewCasepaperComponent implements OnInit {
     }, 0);
   }
 
- ItemFromReset() {
+  ItemFromReset() {
     const form = this.MedicineItemForm;
     form.patchValue({
       ItemId: "",
@@ -1490,15 +1491,21 @@ export class NewCasepaperComponent implements OnInit {
     }
   }
 
+  onEnter(event: KeyboardEvent, nextInputId: string) {
+    if (event.key === "Enter") {
+      event.preventDefault();  // prevent form submit
+      document.getElementById(nextInputId)?.focus();
+    }
+  }
+
+  focusNext(nextId: string) {
+    setTimeout(() => {
+      document.getElementById(nextId)?.focus();
+    }, 0);
+  }
+
+
   @ViewChild('ChiefComp') ChiefComp: ElementRef;
-  @ViewChild('EHeight') EHeight: ElementRef;
-  @ViewChild('EBSL') EBSL: ElementRef;
-  @ViewChild('EWeight') EWeight: ElementRef;
-  @ViewChild('ESpO2') ESpO2: ElementRef;
-  @ViewChild('EPulse') EPulse: ElementRef;
-  @ViewChild('EBMI') EBMI: ElementRef;
-  @ViewChild('EBP') EBP: ElementRef;
-  @ViewChild('ETemp') ETemp: ElementRef;
   @ViewChild('deptdoc') deptdoc: ElementRef;
   @ViewChild('itemid') itemid: ElementRef;
   @ViewChild('dosename') dosename: ElementRef;
@@ -1509,45 +1516,6 @@ export class NewCasepaperComponent implements OnInit {
   public onEnterdept(event): void {
     if (event.which === 13) {
       this.deptdoc.nativeElement.focus();
-    }
-  }
-  public onEnterHeight(event): void {
-    if (event.which === 13) {
-      this.EWeight.nativeElement.focus();
-    }
-  }
-  public onEnterWeight(event): void {
-    if (event.which === 13) {
-      this.EBSL.nativeElement.focus();
-    }
-  }
-  public onEnterBSL(event): void {
-    if (event.which === 13) {
-      this.ESpO2.nativeElement.focus();
-    }
-  }
-  public onEnterSpO2(event): void {
-    if (event.which === 13) {
-      this.EPulse.nativeElement.focus();
-    }
-  }
-  public onEnterPulse(event): void {
-    if (event.which === 13) {
-      this.EBP.nativeElement.focus();
-    }
-  }
-  public onEnterBMI(event): void {
-    if (event.which === 13) {
-    }
-  }
-  public onEnterBP(event): void {
-    if (event.which === 13) {
-      this.ETemp.nativeElement.focus();
-    }
-  }
-  onEnterTemp(event): void {
-    if (event.which === 13) {
-      this.ChiefComp.nativeElement.focus();
     }
   }
 
@@ -1989,6 +1957,7 @@ export class NewCasepaperComponent implements OnInit {
       CertificateTemplateId: row.certificateTemplateId,
     });
     this.vcertificateText = row.certificateText
+     this.mycertificateForm.get('certificateText').setValue(this.vcertificateText)
     this.selectedTabIndex = 1;
   }
 
@@ -2474,8 +2443,8 @@ export class MedicineItemList {
   doseNameOption3: any;
   daysOption3: any;
   genericid: any;
-  allergy:any;
-bloodGroup:any;
+  allergy: any;
+  bloodGroup: any;
   /**
   * Constructor
   *

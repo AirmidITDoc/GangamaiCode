@@ -957,19 +957,15 @@
 
                 <div class="modal-footer-container">
                     <div class="checkbox-container">
-                        <mat-checkbox aria-label="Remember Me" formControlName="IsMLC">
+                        <mat-checkbox aria-label="Remember Me" formControlName="IsMLC" (change)="onIsMLCChange($event)">
                             ISMLC
                         </mat-checkbox>
-                        <!-- <mat-checkbox aria-label="Op TO Ip Change" formControlName="IsOpToIpconv"
-                            style="margin-left:30px;">
-                            OP TO IP Convert
-                        </mat-checkbox> -->
                         <mat-checkbox aria-label="Op TO Ip Change" formControlName="IsCharity"
-                            style="margin-left:30px;">
+                            style="margin-left:30px;" (change)="onISCharChange($event)">
                             IsCharity
                         </mat-checkbox>
 
-                        <mat-checkbox aria-label="Op TO Ip Change" formControlName="IsSenior" style="margin-left:30px;">
+                        <mat-checkbox aria-label="Op TO Ip Change" formControlName="IsSenior" style="margin-left:30px;" (change)="onIsSeniorChange($event)">
                             IsSeniorCitizen
                         </mat-checkbox>
                     </div>
