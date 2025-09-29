@@ -191,6 +191,7 @@ export class PatientcertificateComponent {
     }
     if (this.registerObjDet) {
       this.vcertificateText = this.registerObjDet;
+      this.mycertificateForm.get('certificateText').setValue(this.vcertificateText)
       this.registerObjDet = '';
     }
   }
@@ -234,6 +235,7 @@ export class PatientcertificateComponent {
       CertificateTemplateId: row.certificateTemplateId,
     });
     this.vcertificateText = row.certificateText
+     this.mycertificateForm.get('certificateText').setValue(this.vcertificateText)
     this.selectedTabIndex = 1;
   }
 

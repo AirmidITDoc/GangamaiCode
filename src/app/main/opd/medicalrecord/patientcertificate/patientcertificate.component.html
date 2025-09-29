@@ -229,19 +229,8 @@
                           </div>
 
                           <div>
-                            <!-- <mat-form-field appearance="outline" fxFlex>
-                                    <mat-label>Certificate Details</mat-label>
-                                            <textarea rows="10" matInput name="certificateText" formControlName="certificateText"
-                                                type="text" id="certificateText" required [(ngModel)]="vcertificateText">
-                                            </textarea>
-                                    </mat-form-field> -->
-                            <!-- <mat-label>Certificate Details</mat-label>
-                            <angular-editor (blur)="onBlur($event)" [config]="editorConfig"
-                              [(ngModel)]="vcertificateText" required formControlName="certificateText">
-                            </angular-editor> -->
                             <airmid-editor label="Certificate Details" formControlName="certificateText"
-                             [formGroup]="mycertificateForm"
-                              (valueChange)="onEditorValueChange($event)">
+                              [formGroup]="mycertificateForm" (valueChange)="onEditorValueChange($event)">
                             </airmid-editor>
                           </div>
 

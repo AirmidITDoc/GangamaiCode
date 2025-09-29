@@ -254,10 +254,10 @@ export class IPRefundofBillComponent implements OnInit {
     this.toastr.warning('Enter Refund Amount Less than Balance Amount ', 'Warning !', {
       toastClass: 'tostr-tost custom-toast-warning',
     });
-    row.refundAmount = 0;
+    row.refundAmount = '';
     row.balanceAmount = row.balAmt;
   } else if (refundAmount == 0 || refundAmount === '' || refundAmount == null || refundAmount === undefined) {
-    row.refundAmount = 0;
+    row.refundAmount = '';
     row.balanceAmount = row.balAmt;
   }
   this.calculateTotalAmount();
@@ -439,7 +439,7 @@ export class InsertRefundDetail {
   serviceId: number;
   serviceName: any;
   netAmount: number;
-  refundAmount: number;
+  refundAmount: any;
   doctorId: number;
   Remark: String;
   AddBy: number;

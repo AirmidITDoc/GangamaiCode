@@ -17,6 +17,7 @@ export class NewTemplateComponent implements OnInit {
   vTemplateDesc: any;
   vTemplateName: any;
   templateId=0;
+    autocompleteModeDepartment: string = "Department";
 
   constructor(
     public _TemplatedescriptionService: TemplatedescriptionService, private _formBuilder: UntypedFormBuilder,
@@ -26,29 +27,38 @@ export class NewTemplateComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.templateForm = this.createRadiologytemplateForm();
-
+    this.templateForm = this.createRadiologytemplateForm(); 
+    if((this.data?.Obj ?? 0)>0){
     console.log(this.data)
     this.templateId=this.data.templateId
     this.vTemplateName = this.data.templateName
     this.vTemplateDesc = this.data.templateDescription
     this.templateForm.patchValue(this.data);
+    } 
   }
 
   createRadiologytemplateForm(): FormGroup {
     return this._formBuilder.group({
-      templateId: [0],
+      templateId: [0], 
+      DepartmentId: [0], 
+      CategoryId: [0],
       templateName: ['',[
           Validators.required,
           // Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
         ]
       ],
       templateDesc: this.vTemplateDesc,
-      isActive: [true]
+      isActive: [true],
+      TemplateBody:[''],
+      Templateheader:[''],
+      TemplateFooter:['']
     });
   }
 
-
+  onEditorValueChange(content: string) {
+    console.log("Got from editor:", content);
+    //this.templateForm.get('doctorsNotes')?.setValue(content);
+  }
   onSubmit() {
     console.log(this.templateForm.value)
   
@@ -82,12 +92,28 @@ export class NewTemplateComponent implements OnInit {
   onClose() {
     this.templateForm.reset();
     this.dialogRef.close();
-  }
-  onBlur(e: any) {
-    this.vTemplateDesc = e.target.innerHTML;
-  }
+  } 
   onClear() {
     this.templateForm.reset();
     this.dialogRef.close();
+  }
+   selectChangedepartment(obj: any) { 
+    if (obj.value) {
+      console.log(obj)
+      
+    }   
+  }
+    getValidationMessages() {
+    return { 
+      DepartmentId: [
+        { name: "pattern", Message: "only char allowed." }
+      ],
+      templateName: [ 
+        { name: "pattern", Message: "only char allowed." }
+      ], 
+      CategoryId: [
+        { name: "required", Message: "Country Name is required" }
+      ]
+    };
   }
 }

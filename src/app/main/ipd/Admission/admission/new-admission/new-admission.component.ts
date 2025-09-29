@@ -241,7 +241,7 @@ export class NewAdmissionComponent implements OnInit {
   // }
 
   getSelectedObj(obj: any) {
-    debugger
+    // debugger
     console.log(obj);
     this.RegId = obj.value;
 
@@ -647,6 +647,18 @@ export class NewAdmissionComponent implements OnInit {
     this.rawDate3 = event.value || '1900-01-01';
   }
 
+  onIsMLCChange(event: any) {
+  this.admissionFormGroup.patchValue({ IsMLC: event.checked });
+}
+
+ onISCharChange(event: any) {
+  this.admissionFormGroup.patchValue({ IsCharity: event.checked });
+}
+
+ onIsSeniorChange(event: any) {
+  this.admissionFormGroup.patchValue({ IsSenior: event.checked });
+}
+
   OnSaveAdmission() {
 
     if (this.EmgId > 0) {
@@ -771,7 +783,7 @@ export class NewAdmissionComponent implements OnInit {
   }
 
   selectChangedepartment(obj: any) {
-    debugger
+    // debugger
     if (obj.value) {
       this._AdmissionService.getDoctorsByDepartment(obj.value).subscribe((data: any) => {
           console.log(data)
@@ -812,14 +824,14 @@ export class NewAdmissionComponent implements OnInit {
   }
 RoomId=0
   onChangeWard(e) {
-    debugger
+    // debugger
     this.RoomId=e.roomId
     this.ddlClassName.SetSelection(e.classId);
      this. selectChangeward(e)
   }
 
     selectChangeward(obj: any) {
-      debugger
+      // debugger
     if (obj.roomId) {
       this._AdmissionService.getBedByWard(obj.roomId).subscribe((data: any) => {
         console.log(data)

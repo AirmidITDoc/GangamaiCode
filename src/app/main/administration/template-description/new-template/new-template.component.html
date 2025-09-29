@@ -1,71 +1,105 @@
-<div class="page-layout simple inner-scroll inner-sidebar right-sidebar">
-    <mat-toolbar style="height: 50px; justify-content:space-between;width: 100%;">
-        <div fxLayout="row" fxLayoutAlign="start center">
-            <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                Template Description
-            </span>
-        </div>
-        <div fxLayout="row" fxLayoutALign="end start">
-            <button mat-icon-button tabIndex="-1" (click)="onClose()" aria-label="Close dialog">
-                <mat-icon>close</mat-icon>
-            </button>
-        </div>
-    </mat-toolbar>
-    <div class="content">
-        <div class="center p-2" fusePerfectScrollbar>
-            <div class="content-card">
-                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
-                    <div fxFlex.gt-sm="100%" fxFlex>
-                        <div fxlayout="row" style=" background-color: white;
-                             padding: 5px 10px 5px 10px;">
-                            <form [formGroup]="templateForm">
-                                <div class="dialog-content-wrapper">
-                                    <div fxFlexFill fxLayout="row" fxLayout.gt-xs="column">
+<div class="page-layout modal-wrapper grid-container" fusePerfectScrollbar>
 
-                                        <input type="hidden" name="templateId" formControlName="templateId">
-
-                                        <mat-form-field appearance="outline" fxFlex>
-                                            <mat-label>Template Name</mat-label>
-                                            <input matInput placeholder="Template Name" [(ngModel)]="vTemplateName"
-                                                name="templateName" formControlName="templateName" required>
-                                            <mat-error class="error"
-                                                *ngIf="templateForm.get('templateName').invalid && templateForm.get('templateName').touched">
-                                                TemplateName is required Enter only Alphabets
-                                            </mat-error>
-                                        </mat-form-field>
-
-                                        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
-                                            <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                <mat-label>Template Details</mat-label>
-                                                <!-- <angular-editor (blur)="onBlur($event)" [config]="editorConfig"
-                                                    style="height:400px;" [(ngModel)]="vTemplateDesc" required
-                                                    formControlName="templateDesc">
-                                                </angular-editor> -->
-
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </form>
-
-                            <div fxLayout="row" fxLayoutAlign="space-between">
-                                <form [formGroup]="templateForm">
-                                    <div>
-                                        <app-airmid-slider label="IsActive/Deactive" formControlName="isActive"
-                                            [formGroup]="templateForm"></app-airmid-slider>
-                                    </div>
-                                </form>
-                                <div class="modal-footer-buttons" fxLayoutGap="6px" style="padding: 8px;">
-                                    <button class="btn btn-danger-outline" (click)="onClear()">Close</button>
-                                    <button class="btn btn-primary" (click)="onSubmit()" [disabled]="templateForm.invalid">Save</button>
-                                </div>
-                            </div>
-                        </div>
+    <div class="modal-header accent">
+        <div class="modal-header-content">
+            <div class="modal-header-title">
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"> Template Description </span>
+            </div>
+            <div class="modal-header-right">
+                <div class="comman-date-container">
+                    <div class="comman-date">
+                        <!-- <app-common-date [screenFrom]="screenFromString" (dateTimeEventEmitter)="getDateTime($event)"></app-common-date> -->
                     </div>
-
+                    <div class="close-icon">
+                        <button mat-icon-button tabIndex="-1" (click)="onClose()" aria-label="Close dialog">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <div class="modal-body content">
+        <div fxLayout="column" class="gap-8 h-100-p">
+            <div class="modal-card-container">
+                <form [formGroup]="templateForm">
+                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
+
+                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                            <airmid-dropdown label="Department Name" formControlName="DepartmentId"
+                                [formGroup]="templateForm" [validations]="getValidationMessages().DepartmentId"
+                                [mode]="autocompleteModeDepartment" (selectionChange)="selectChangedepartment($event)">
+                            </airmid-dropdown>
+                        </div>
+
+                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                            <airmid-dropdown label="Category" formControlName="CategoryId" [formGroup]="templateForm"
+                                [validations]="getValidationMessages().CategoryId" [mode]="autocompleteModeDepartment"
+                                (selectionChange)="selectChangedepartment($event)">
+                            </airmid-dropdown>
+                        </div>
+
+                        <airmid-textbox label="Template Name" formControlName="templateName" [formGroup]="templateForm"
+                            [validations]="getValidationMessages().templateName" fxFlex [(ngModel)]="vTemplateName">
+                        </airmid-textbox>
+                    </div>
+                </form>
+            </div>
+
+            <div class="modal-card-container">
+                <form [formGroup]="templateForm">
+
+                    <div fxFlexFill fxLayout="row" fxLayout.gt-xs="column" fxLayoutGap="6px">
+                        <div class="modal-card-header">
+                            <span style="font-weight: bold;">Template Header</span>
+                        </div>
+                        <airmid-editor formControlName="Templateheader" [formGroup]="templateForm"
+                            (valueChange)="onEditorValueChange($event)">
+                        </airmid-editor>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-card-container">
+                <form [formGroup]="templateForm">
+
+                    <div fxFlexFill fxLayout="row" fxLayout.gt-xs="column" fxLayoutGap="6px">
+                        <div class="modal-card-header">
+                            <span style="font-weight: bold;">Template Content</span>
+                        </div>
+                        <airmid-editor formControlName="TemplateBody" [formGroup]="templateForm"
+                            (valueChange)="onEditorValueChange($event)">
+                        </airmid-editor>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-card-container">
+                <form [formGroup]="templateForm">
+
+                    <div fxFlexFill fxLayout="row" fxLayout.gt-xs="column" fxLayoutGap="6px">
+                        <div class="modal-card-header">
+                            <span style="font-weight: bold;">Template Footer</span>
+                        </div>
+                        <airmid-editor formControlName="TemplateFooter" [formGroup]="templateForm"
+                            (valueChange)="onEditorValueChange($event)">
+                        </airmid-editor>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+    <div class="modal-footer" fxLayout="row" fxLayoutAlign="space-between">
+        <form [formGroup]="templateForm">
+            <div>
+                <app-airmid-slider label="IsActive/Deactive" formControlName="isActive"
+                    [formGroup]="templateForm"></app-airmid-slider>
+            </div>
+        </form>
+        <div class="modal-footer-buttons">
+            <button class="btn btn-danger-outline" (click)="onClear()">Close</button>
+            <button class="btn btn-primary" (click)="onSubmit()" [disabled]="templateForm.invalid">Save</button>
+        </div>
+    </div>
+
 </div>

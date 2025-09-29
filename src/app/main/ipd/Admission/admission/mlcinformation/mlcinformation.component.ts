@@ -25,7 +25,7 @@ export class MLCInformationComponent implements OnInit {
 
   MlcInfoFormGroup: FormGroup;
   dateTimeObj: any;
-  screenFromString = 'advance';
+  screenFromString = 'Common-form';
   Personaldata = new MlcDetail({});
   registerObj = new MlcDetail({})
   AdmissionId: any;

@@ -43,7 +43,7 @@
                                                 <span class="patient-col-key">UHID No
                                                 </span>
                                                 <span>:</span>
-                                                <span class="patient-col-value">{{data.regId}}</span>
+                                                <span class="patient-col-value">{{data.regNo}}</span>
                                             </div>
                                             <div class="patient-col">
                                                 <span class="patient-col-key">Patient Name
@@ -118,7 +118,7 @@
                                     <mat-form-field appearance="outline" fxFlex="12%">
                                         <mat-label>Height</mat-label>
                                         <input matInput formControlName="height" placeholder="Height in cm" required
-                                            [maxLength]="20" (keydown)="onEnterHeight($event)" OnlyNumber
+                                            [maxLength]="20" (keydown)="onEnter($event, 'weightField')" OnlyNumber
                                             (keyup)="getBMIcalculation()" [(ngModel)]="vHeight"
                                             (keypress)="keyPressAlphanumeric($event)">
                                         <span matSuffix style="font-size: x-large;">|</span>
@@ -127,8 +127,8 @@
 
                                     <mat-form-field appearance="outline" fxFlex="12%">
                                         <mat-label>Weight</mat-label>
-                                        <input matInput formControlName="pweight" placeholder="Weight in Kg" required
-                                            [maxLength]="20" (keydown)="onEnterWeight($event)" OnlyNumber
+                                        <input matInput formControlName="pweight" placeholder="Weight in Kg" required id="weightField"
+                                            [maxLength]="20" (keydown)="onEnter($event, 'bmiField')" OnlyNumber
                                             (keyup)="getBMIcalculation()" [(ngModel)]="vWeight"
                                             (keypress)="keyPressAlphanumeric($event)">
                                         <span matSuffix style="font-size: x-large;">|</span>
@@ -138,32 +138,32 @@
                                     <!-- BMI [(ngModel)]="vBMI"-->
                                     <mat-form-field appearance="outline" fxFlex="12%">
                                         <mat-label>BMI</mat-label>
-                                        <input matInput formControlName="bmi" placeholder="BMI" readonly
-                                            [(ngModel)]="vBMI" [style.color]="getVitalColorClass('BMI', vBMI)"
+                                        <input matInput formControlName="bmi" placeholder="BMI" readonly id="bmiField"
+                                            [(ngModel)]="vBMI" [style.color]="getVitalColorClass('BMI', vBMI)" (keydown)="onEnter($event, 'bslField')"
                                             [style.fontWeight]="'500'" />
                                     </mat-form-field>
 
                                     <mat-form-field appearance="outline" fxFlex="12%">
                                         <mat-label>BSL</mat-label>
-                                        <input matInput formControlName="bsl" placeholder="BSL" [maxLength]="20"
-                                            (keydown)="onEnterBSL($event)" OnlyNumber
-                                            (keypress)="keyPressAlphanumeric($event)" [(ngModel)]="vBSL">
+                                        <input matInput formControlName="bsl" placeholder="BSL" [maxLength]="20" id="bslField"
+                                            (keypress)="keyPressAlphanumeric($event)" OnlyNumber
+                                            (keydown)="onEnter($event, 'spo2Field')" [(ngModel)]="vBSL">
                                     </mat-form-field>
 
                                     <mat-form-field appearance="outline" fxFlex="12%">
                                         <mat-label>SpO2</mat-label>
-                                        <input matInput formControlName="spO2" placeholder="SpO2" [maxLength]="20"
-                                            (keydown)="onEnterSpO2($event)" OnlyNumber
-                                            (keypress)="keyPressAlphanumeric($event)" [(ngModel)]="vSpO2"
+                                        <input matInput formControlName="spO2" placeholder="SpO2" [maxLength]="20" id="spo2Field"
+                                            (keypress)="keyPressAlphanumeric($event)" OnlyNumber
+                                            (keydown)="onEnter($event, 'pulseField')" [(ngModel)]="vSpO2"
                                             [style.color]="getVitalColorClass('SpO2', vSpO2)"
                                             [style.fontWeight]="'500'">
                                     </mat-form-field>
 
                                     <mat-form-field appearance="outline" fxFlex="12%">
                                         <mat-label>Pulse</mat-label>
-                                        <input matInput formControlName="pulse" placeholder="Pulse" [maxLength]="10"
-                                            (keydown)="onEnterPulse($event)" OnlyNumber
-                                            (keypress)="keyPressAlphanumeric($event)" [(ngModel)]="vPulse"
+                                        <input matInput formControlName="pulse" placeholder="Pulse" [maxLength]="10" id="pulseField"
+                                            (keypress)="keyPressAlphanumeric($event)" OnlyNumber
+                                            (keydown)="onEnter($event, 'bpField')" [(ngModel)]="vPulse"
                                             [style.color]="getVitalColorClass('Pulse', vPulse)"
                                             [style.fontWeight]="'500'">
                                         <span matSuffix style="font-size: x-large;">|</span>
@@ -172,8 +172,8 @@
 
                                     <mat-form-field appearance="outline" fxFlex="13%">
                                         <mat-label>BP</mat-label>
-                                        <input matInput formControlName="bp" placeholder="BP" [maxLength]="10"
-                                            (keydown)="onEnterBP($event)" OnlyNumber (keypress)="keyPressOk($event)"
+                                        <input matInput formControlName="bp" placeholder="BP" [maxLength]="10" id="bpField"
+                                            (keydown)="onEnter($event, 'tempField')" OnlyNumber (keypress)="keyPressOk($event)"
                                             [(ngModel)]="vBP" [style.color]="getVitalColorClass('BP', vBP)"
                                             [style.fontWeight]="'500'" placeholder="Enter 120/80">
                                         <span matSuffix style="font-size: x-large;">|</span>
@@ -183,8 +183,7 @@
                                     <mat-form-field appearance="outline" fxFlex="12%">
                                         <mat-label>Temp</mat-label>
                                         <input matInput formControlName="temp" placeholder="Temp" [maxLength]="10"
-                                            (keydown)="onEnterTemp($event)" OnlyNumber
-                                            (keypress)="keyPressAlphanumeric($event)" [(ngModel)]="vTemp"
+                                            OnlyNumber id="tempField" (keypress)="keyPressAlphanumeric($event)" [(ngModel)]="vTemp"
                                             [style.color]="getVitalColorClass('Temp', vTemp)"
                                             [style.fontWeight]="'500'">
                                         <span matSuffix style="font-size: x-large;">|</span>

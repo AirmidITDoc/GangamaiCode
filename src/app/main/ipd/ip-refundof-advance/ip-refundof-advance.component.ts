@@ -274,7 +274,8 @@ export class IPRefundofAdvanceComponent implements OnInit {
   //Refund Amount calculation
   getCellCalculation(element, RefundAmt) { 
     debugger;
-    if (RefundAmt > 0 && RefundAmt <= element.netBallAmt) {
+    
+   if (RefundAmt > 0 && RefundAmt <= element.netBallAmt) {
       element.balanceAmount = ((element.netBallAmt) - (RefundAmt));
     }
     else if (parseInt(RefundAmt) > parseInt(element.netBallAmt)) {
@@ -287,7 +288,7 @@ export class IPRefundofAdvanceComponent implements OnInit {
     else if (RefundAmt == 0 || RefundAmt == '' || RefundAmt == undefined || RefundAmt == null) {
       element.refundAmt = ''
       element.balanceAmount = element.netBallAmt;
-    }
+    } 
     this.AdvanceId = element.advanceId
     this.UsedAmount += element.usedAmount
     this.getRefundSum();

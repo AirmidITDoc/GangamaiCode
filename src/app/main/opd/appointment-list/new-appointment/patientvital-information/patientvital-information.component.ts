@@ -192,56 +192,12 @@ export class PatientvitalInformationComponent {
     this._matDialog.closeAll();
   }
 
-
-
-  @ViewChild('EHeight') EHeight: ElementRef;
-  @ViewChild('EBSL') EBSL: ElementRef;
-  @ViewChild('EWeight') EWeight: ElementRef;
-  @ViewChild('ESpO2') ESpO2: ElementRef;
-  @ViewChild('EPulse') EPulse: ElementRef;
-  @ViewChild('EBMI') EBMI: ElementRef;
-  @ViewChild('EBP') EBP: ElementRef;
-  @ViewChild('ETemp') ETemp: ElementRef;
-
-  public onEnterHeight(event): void {
-    if (event.which === 13) {
-      this.EWeight.nativeElement.focus();
-    }
+onEnter(event: KeyboardEvent, nextInputId: string) {
+  if (event.key === "Enter") {
+    event.preventDefault();  // prevent form submit
+    document.getElementById(nextInputId)?.focus();
   }
-  public onEnterWeight(event): void {
-    if (event.which === 13) {
-      this.EBSL.nativeElement.focus();
-    }
-  }
-  public onEnterBSL(event): void {
-    if (event.which === 13) {
-      this.ESpO2.nativeElement.focus();
-    }
-  }
-  public onEnterSpO2(event): void {
-    if (event.which === 13) {
-      this.EPulse.nativeElement.focus();
-    }
-  }
-  public onEnterPulse(event): void {
-    if (event.which === 13) {
-      this.EBP.nativeElement.focus();
-    }
-  }
-  public onEnterBMI(event): void {
-    if (event.which === 13) {
-    }
-  }
-  public onEnterBP(event): void {
-    if (event.which === 13) {
-      this.ETemp.nativeElement.focus();
-    }
-  }
-  onEnterTemp(event): void {
-    if (event.which === 13) {
-      //this.ChiefComp.nativeElement.focus();
-    }
-  }
+}
 
   keyPressAlphanumeric(event) {
     var inp = String.fromCharCode(event.keyCode);

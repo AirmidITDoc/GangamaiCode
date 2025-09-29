@@ -71,7 +71,8 @@
                                                     <div class="patient-col">
                                                         <span class="patient-col-key">DOA | Time</span>
                                                         <span>:</span>
-                                                        <span class="patient-col-value">{{registerObj?.admissionDate | date:'dd/MM/yyyy'}}</span>
+                                                        <span class="patient-col-value">{{registerObj?.admissionDate | date:'dd/MM/yyyy'}} | 
+                                                               {{registerObj?.admissionTime | date:'hh:mm'}}</span> 
                                                     </div>
                                                     <div class="patient-col">
                                                         <span class="patient-col-key">IPD No</span>
@@ -175,7 +176,7 @@
                                                 <mat-form-field  appearance="fill" *ngIf="!element.isCancelled">
                                                     <input matInput placeholder="RefundAmt" type="text"  
                                                         [(ngModel)]="element.refundAmt" (keypress)="keyPressCharater($event)"
-                                                        (ngModelChange)="getCellCalculation(element,element.refundAmt)">
+                                                        (keyup)="getCellCalculation(element,element.refundAmt)">
                                                 </mat-form-field> 
                                                 <ng-container *ngIf="element.isCancelled" >
                                                     <span>--</span>
@@ -228,11 +229,9 @@
     </div>
 
       <!--End of Middle Data-->
-    <div class="modal-footer">
-        <div class="modal-footer-container" fxLayout="row">
+    <div class="modal-footer"  fxLayout="column"> 
             <form [formGroup]="RefundOfAdvanceFormGroup">  
-                <div fxLayout="row" fxLayoutGap="6px"> 
-                    
+                <div fxLayout="row" fxLayoutGap="6px">  
                     <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="33%">
                         <airmid-textbox label="Total Balance Amount" formControlName="balanceAmount"
                             [formGroup]="RefundOfAdvanceFormGroup" [validations]="getValidationMessages().BalanceAdvance"
@@ -262,7 +261,6 @@
             <div class="modal-footer-buttons">
                 <button class="btn btn-danger-outline" id="btncancel" (click)="onClose()">Cancel</button>
                 <button class="btn btn-primary" (click)="onSave()">Save</button>
-            </div>
-        </div>
+            </div> 
     </div>
 </div>

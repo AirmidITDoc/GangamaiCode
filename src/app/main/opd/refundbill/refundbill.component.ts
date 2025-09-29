@@ -213,7 +213,7 @@ export class RefundbillComponent implements OnInit {
   }
 
    
-  onPriceOrQtyChange(row : InsertRefundDetail = null, RefundAmt): void {
+  onPriceOrQtyChange(row : InsertRefundDetail = null, RefundAmt): void { 
     if (RefundAmt > 0 && RefundAmt <= row.balAmt) {
       const BalanceAmount = row.balAmt - RefundAmt;
        row.balanceAmount = BalanceAmount;

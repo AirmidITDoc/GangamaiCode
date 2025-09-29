@@ -86,11 +86,11 @@ export class InterimBillComponent implements OnInit {
   CreateFooterForm(): FormGroup {
     return this.formBuilder.group({  
         CashCounterID:[4,[this._FormvalidationserviceService.notEmptyOrZeroValidator(),Validators.min(1)]], 
-        TotalAmt: [0,[this._FormvalidationserviceService.notEmptyOrZeroValidator(),this._FormvalidationserviceService.onlyNumberValidator()]],
-        discPer: [0, [Validators.min(0), Validators.max(100),this._FormvalidationserviceService.onlyNumberValidator()]],
-        concessionAmt: [0, [Validators.min(0),this._FormvalidationserviceService.onlyNumberValidator()]],
+        TotalAmt: [0,[this._FormvalidationserviceService.notEmptyOrZeroValidator(),this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+        discPer: [0, [Validators.min(0), Validators.max(100),this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+        concessionAmt: [0, [Validators.min(0),this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
         ConcessionId: [0,this._FormvalidationserviceService.onlyNumberValidator()], 
-        NetpayAmount: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(),this._FormvalidationserviceService.onlyNumberValidator()]],
+        NetpayAmount: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(),this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
         paymode: ['cashpay'], 
         UPINO: [''], 
         Remark: ['',[this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]], 
