@@ -134,7 +134,7 @@ export class AppointmentlistService {
             isCancelledBy: 0,
             isCancelled: true,
             isCancelledDate: [(new Date()).toISOString()],
-            ClassId: [0, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator()]],
+            ClassId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             DepartmentId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
             patientOldNew: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             firstFollowupVisit: 0,
