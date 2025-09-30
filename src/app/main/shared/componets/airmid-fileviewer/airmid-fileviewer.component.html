@@ -1,0 +1,21 @@
+<div class="viewer-container">
+    <h3>{{data.fileName}}</h3>
+
+    <ng-container [ngSwitch]="data.type">
+        <!-- Images -->
+        <img *ngSwitchCase="'image'" [src]="safeUrl" class="viewer-img" />
+
+        <!-- PDFs -->
+        <embed *ngSwitchCase="'pdf'" [src]="safeUrl" type="application/pdf" width="100%" height="600px" />
+
+        <!-- Fallback -->
+        <p *ngSwitchDefault>
+            Preview not available.
+            <a [href]="safeUrl" download="{{data.fileName}}">Download instead</a>
+        </p>
+    </ng-container>
+
+    <div class="viewer-actions">
+        <button mat-raised-button color="primary" (click)="dialogRef.close()">Close</button>
+    </div>
+</div>

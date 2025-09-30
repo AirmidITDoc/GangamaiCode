@@ -73,12 +73,13 @@ import { AirmidCardViewComponent } from './componets/airmid-card-view/airmid-car
 import { Error0Component } from './APIerrorpages/error-0/error-0.component';
 import { AirmidImageviewComponent } from './componets/airmid-imageview/airmid-imageview.component';
 import { AirmidImageIconComponent } from './componets/airmid-image-icon/airmid-image-icon.component';
+import { AirmidFileViewerComponent } from './componets/airmid-fileviewer/airmid-fileviewer.component';
 
 
 @NgModule({
     declarations: [
         TrimPipe, CommonDateComponent, AirmidTableComponent, AirmidTextboxComponent, AirmidDropDownComponent, AirmidAutoCompleteComponent, SmsEmailTemplateComponent, HeaderComponent, PaymentModeComponent, ImageCropComponent, EmailSendComponent, DyanmicTableHeightDirective,
-        AirmidDateofbirthComponent, AirmidSliderComponent, AirmidDatepickerComponent, TableSearchBarComponent, PrintCallingComponent, ErrorPageComponent, Error401Component, Error403Component, Error404Component, Error500Component, FocusNextDirective, AirmidTimePickerComponent, PatientInfoComponent, AirmidDateTimePickerComponent, TableKeyboardNavigationDirective, AirmidChipautocompleteComponent, AirmidFullDatepickerComponent, AirmidFileuploadComponent, AirmidFileuploadIconComponent, AirmidSignatureComponent, AirmidSignatureIconComponent, AirmidPhotoComponent, AirmidPhotoIconComponent,
+        AirmidDateofbirthComponent, AirmidSliderComponent, AirmidDatepickerComponent, TableSearchBarComponent, PrintCallingComponent, ErrorPageComponent, Error401Component, Error403Component, Error404Component, Error500Component, FocusNextDirective, AirmidTimePickerComponent, PatientInfoComponent, AirmidDateTimePickerComponent, TableKeyboardNavigationDirective, AirmidChipautocompleteComponent, AirmidFullDatepickerComponent, AirmidFileuploadComponent,AirmidFileViewerComponent, AirmidFileuploadIconComponent, AirmidSignatureComponent, AirmidSignatureIconComponent, AirmidPhotoComponent, AirmidPhotoIconComponent,
         AirmidCardViewComponent, Error0Component, AirmidImageviewComponent, AirmidImageIconComponent, AirmidEditorComponent
     ],
     imports: [
@@ -131,6 +132,7 @@ import { AirmidImageIconComponent } from './componets/airmid-image-icon/airmid-i
         AirmidDropDownComponent,
         AirmidAutoCompleteComponent,
         AirmidFileuploadComponent,
+        AirmidFileViewerComponent,
         AirmidFileuploadIconComponent,
         AirmidSignatureComponent,
         AirmidSignatureIconComponent,

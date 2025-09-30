@@ -3,7 +3,7 @@ import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
 import { ToastrService } from 'ngx-toastr';
 import { Observable, of } from "rxjs";
-import {  map } from "rxjs/operators";
+import { map } from "rxjs/operators";
 import { apiResponse } from "../models/apiResponse";
 import { AppConfigService } from "./api-config.service";
 
@@ -131,7 +131,7 @@ export class ApiCaller {
             }
         })));
     }
-    downloadFile(url: string, body: any, type: number, filename: string): Observable<Blob> {
+    downloadFile(url: string, body: any, type: number, filename: string, fileSave: boolean = true): Observable<Blob> {
         if (type == 1) {
             return this._httpClient.post(`${this.config.apiBaseUrl}${url}`, body, {
                 responseType: 'blob',
@@ -142,7 +142,8 @@ export class ApiCaller {
                 })
             }).pipe(
                 map(response => {
-                    this.saveFile(response.body as Blob, filename);
+                    if (fileSave)
+                        this.saveFile(response.body as Blob, filename);
                     return response.body as Blob;
                 })
             );
@@ -157,7 +158,8 @@ export class ApiCaller {
                 })
             }).pipe(
                 map(response => {
-                    this.saveFile(response.body as Blob, filename);
+                    if (fileSave)
+                        this.saveFile(response.body as Blob, filename);
                     return response.body as Blob;
                 })
             );

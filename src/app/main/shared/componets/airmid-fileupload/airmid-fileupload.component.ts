@@ -7,6 +7,7 @@ import { BaseFormControlComponent } from '../base-form-control-component';
 import { ImageViewComponent } from 'app/main/opd/appointment-list/image-view/image-view.component';
 import { fuseAnimations } from '@fuse/animations';
 import { AirmidImageviewComponent } from '../airmid-imageview/airmid-imageview.component';
+import { AirmidFileViewerComponent } from '../airmid-fileviewer/airmid-fileviewer.component';
 
 @Component({
     selector: 'airmid-fileupload',
@@ -154,7 +155,40 @@ export class AirmidFileuploadComponent extends BaseFormControlComponent implemen
         });
     }
 
-   
+   viewFile(file: AirmidFileModel): void {
+        // Case: newly uploaded (local File object)
+        if (file.Document instanceof File) {
+            const ext = file.docName.split('.').pop()?.toLowerCase();
+            const url = URL.createObjectURL(file.Document);
+
+            this.openViewer(url, file.docName, this.getFileType(ext));
+            return;
+        }
+
+        // Case: already saved in DB -> fetch from backend
+        this._service.downloadFile("Files/get-file?Id=" + file.id, null, 2, file.docName,false)
+            .subscribe((blob: Blob) => {
+                const ext = file.docName.split('.').pop()?.toLowerCase();
+                const url = URL.createObjectURL(blob);
+
+                this.openViewer(url, file.docName, this.getFileType(ext));
+            });
+    }
+
+    private getFileType(ext: string | undefined): string {
+        if (!ext) return 'other';
+        if (['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp'].includes(ext)) return 'image';
+        if (ext === 'pdf') return 'pdf';
+        return 'other';
+    }
+
+    private openViewer(url: string, fileName: string, type: string): void {
+        this._matDialog.open(AirmidFileViewerComponent, {
+            width: '80%',
+            height: '90%',
+            data: { url, fileName, type }
+        });
+    }
   
 }
 export class AirmidFileModel {
