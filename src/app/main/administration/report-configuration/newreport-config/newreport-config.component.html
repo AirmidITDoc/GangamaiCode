@@ -24,27 +24,48 @@
             <div>
                 <form [formGroup]="myform">
                     <div fxLayout="row wrap" fxLayoutGap="12px 0px grid">
-                        <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="33%">
                             <airmid-dropdown label="Report Section" formControlName="reportSectionId"
                                 [formGroup]="myform" [mode]="autocompleteModedReport"
                                 (selectionChange)="ListView($event)">
                             </airmid-dropdown>
                         </div>
 
-                        <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="33%">
                             <airmid-textbox label="ReportName" formControlName="reportName" [value]="data?.reportName"
                                 [formGroup]="myform" [validations]="getValidationMessages().reportName"
                                 [maxLength]="200">
                             </airmid-textbox>
                         </div>
 
-                        <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="33%">
                             <airmid-dropdown label="Menu Name" formControlName="menuId" [formGroup]="myform"
                                 [mode]="autocompleteModedMenu" (selectionChange)="ListView1($event)">
                             </airmid-dropdown>
                         </div>
+
+                         <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="33%">
+                            <airmid-textbox label="ReportMode" formControlName="reportMode" [value]="data?.reportMode"
+                                [formGroup]="myform" [validations]="getValidationMessages().reportMode"
+                                [maxLength]="500">
+                            </airmid-textbox>
+                        </div>
+
+                        <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="33%">
+                            <airmid-textbox label="ReportTitle" formControlName="reportTitle"
+                                [value]="data?.reportTitle" [formGroup]="myform"
+                                [validations]="getValidationMessages().reportTitle" [maxLength]="200">
+                            </airmid-textbox>
+                        </div>
+
+                        <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="33%">
+                            <airmid-textbox label="ReportHeaderFile" formControlName="reportHeaderFile"
+                                [value]="data?.reportHeaderFile" [formGroup]="myform"
+                                [validations]="getValidationMessages().reportHeaderFile" [maxLength]="1000">
+                            </airmid-textbox>
+                        </div>
                     </div>
-                    <div fxLayout="row wrap" fxLayoutGap="12px 0px grid">
+                    <!-- <div fxLayout="row wrap" fxLayoutGap="12px 0px grid">
                         <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
                             <airmid-textbox label="ReportMode" formControlName="reportMode" [value]="data?.reportMode"
                                 [formGroup]="myform" [validations]="getValidationMessages().reportMode"
@@ -65,7 +86,7 @@
                                 [validations]="getValidationMessages().reportHeaderFile" [maxLength]="1000">
                             </airmid-textbox>
                         </div>
-                    </div>
+                    </div> -->
 
                     <div fxLayout="row" fxLayoutGap="8px" fxLayoutAlign="start" style="margin-bottom: 5px;">
                         <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
