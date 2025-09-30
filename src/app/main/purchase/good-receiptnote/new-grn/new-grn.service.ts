@@ -23,7 +23,7 @@ export class NewGRNService {
         const values = {
             totalAmount: Number(obj.TotalAmount || 0),
             discAmount: Number(obj.DisAmount || 0),
-            cgst: Number(obj.CGST || 0),
+            cgst: Number(obj.SGST || 0),
             sgst: Number(obj.SGST || 0),
             igst: Number(obj.IGST || 0),
             gst: Number(obj.GST || 0),

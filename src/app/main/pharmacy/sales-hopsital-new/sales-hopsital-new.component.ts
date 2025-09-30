@@ -36,9 +36,7 @@ import { FakeDbService } from 'app/fake-db/fake-db.service';
 export class SalesHospitalNewComponent implements OnInit {
     // Display Columns
     DraftSaleDisplayedCol: string[] = ['Action', 'UHID', 'PatientName', 'NetAmt', 'MobileNo', 'UserName', 'DraftClose'];
-    displayedColumns = ['FromStoreId', 'IndentNo', 'IndentDate', 'FromStoreName', 'ToStoreName', 'Addedby', 'IsInchargeVerify', 'action'];
-    displayedColumns1 = ['ItemName', 'Qty', 'IssQty', 'Bal'];
-    selectedSaleDisplayedCol = ['ItemName', 'BatchNo', 'BatchExpDate', 'Qty', 'UnitMRP', 'GSTPer', 'GSTAmount', 'TotalMRP', 'DiscPer', 'DiscAmt', 'NetAmt', 'MarginAmt', 'buttons'];
+     selectedSaleDisplayedCol = ['ItemName', 'BatchNo', 'BatchExpDate', 'Qty', 'UnitMRP', 'GSTPer', 'GSTAmount', 'TotalMRP', 'DiscPer', 'DiscAmt', 'NetAmt', 'buttons'];
     DraftAvbStkListDisplayedCol = ['StoreName', 'BalQty'];
     // View Children
     @ViewChild('qtyInputRef') qtyInputRef: ElementRef;
@@ -72,6 +70,7 @@ export class SalesHospitalNewComponent implements OnInit {
 
 
     // Patient Related 
+    Focusstatus:boolean=true
     type: any;
     PatientName: any;
     MobileNo: any;
@@ -234,7 +233,8 @@ export class SalesHospitalNewComponent implements OnInit {
             extMobileNo: ['', [Validators.required, Validators.min(0), Validators.max(10),
             Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$"), this._FormvalidationserviceService.onlyNumberValidator()]],
             extAddress: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
-            ExternalPatID: ''
+            ExternalPatID: [''],
+            IsPurchaseWsie:[false]
         });
     }
     //sales save form
@@ -450,6 +450,9 @@ export class SalesHospitalNewComponent implements OnInit {
             this.ItemSubform.get('doctorName').reset('');
             this.ItemSubform.get('regId').setValue('');
             this.saleSelectedDatasource.data = [];
+            this.Itemchargeslist = []; 
+            this.IPMedID = 0;
+            this.DraftID = 0;
         } else if (event.value == '1') {
             this.RegId = '';
             this.paymethod = true;
@@ -463,6 +466,9 @@ export class SalesHospitalNewComponent implements OnInit {
             this.ItemSubform.get('doctorName').reset('');
             this.ItemSubform.get('regId').setValue('');
             this.saleSelectedDatasource.data = [];
+            this.Itemchargeslist = []; 
+            this.IPMedID = 0;
+            this.DraftID = 0;
         } else {
             this.ItemSubform.get('extMobileNo').reset();
             this.ItemSubform.get('extMobileNo').setValidators([Validators.required]);
@@ -473,11 +479,14 @@ export class SalesHospitalNewComponent implements OnInit {
             this.ItemSubform.get('regId').setValue('');
             this.ItemSubform.updateValueAndValidity();
             this.saleSelectedDatasource.data = [];
+            this.Itemchargeslist = [];
             this.paymethod = false;
             this.Draftchk = false;
+            this.IPMedID = 0;
+            this.DraftID = 0;
         }
     }
-    getSelectedObjRegIP(obj) {
+     getSelectedObjRegIP(obj) {
         console.log(obj);
         let IsDischarged = 0;
         IsDischarged = obj.isDischarged;
@@ -499,12 +508,8 @@ export class SalesHospitalNewComponent implements OnInit {
             this.wardId = obj.wardId;
             this.bedId = obj.bedId;
         }
-        this.getBillSummary(obj?.admissionID);
-        const ItemIdElement = document.querySelector(`[name='ItemId']`) as HTMLElement;
-        if (ItemIdElement) {
-            ItemIdElement.focus();
-        }
-        this.ItemFormreset();
+        this.getBillSummary(obj?.admissionID);  
+        this.ItemFormreset();  
     }
     getSelectedObjOP(obj) {
         console.log(obj);
@@ -517,14 +522,10 @@ export class SalesHospitalNewComponent implements OnInit {
         this.OP_IP_Id = obj.visitId;
         this.OPDNo = obj.opdNo;
         this.HospitalId = obj.hospitalId;
-        this.DoctorName = obj.doctorName;
-        const ItemIdElement = document.querySelector(`[name='ItemId']`) as HTMLElement;
-        if (ItemIdElement) {
-            ItemIdElement.focus();
-        }
-        this.ItemFormreset();
+        this.DoctorName = obj.doctorName; 
+        this.ItemFormreset(); 
     }
-
+   
     onItemChange(event: SalesItemModel): void {
         this.getBatch(event.itemId, event.storeId);
         this.m_getBalAvaListStore(event.itemId)
@@ -615,6 +616,7 @@ export class SalesHospitalNewComponent implements OnInit {
                 timer: 2000
             });
             this.ItemFormreset();
+            return
         }
         let TotalMRP = '0';
         let LandedRateandedTotal = '0';
@@ -994,6 +996,25 @@ export class SalesHospitalNewComponent implements OnInit {
 
     }
     onSave(event) {
+         const formValue = this.ItemSubform.value
+          if (this.ItemSubform.get('opIpType').value == '2') {
+            if ((formValue.externalPatientName?.patientName ?? formValue.externalPatientName) == '' ||
+                ((formValue?.doctorName.doctorName ?? formValue?.doctorName)) == '' ||
+                ((formValue.extMobileNo.extMobileNo ?? formValue.extMobileNo) == '')) {
+                this.toastr.warning('Please select Customer Detail', 'Warning !', {
+                    toastClass: 'tostr-tost custom-toast-warning',
+                });
+                return;
+            }
+        }
+           if (this.ItemSubform.get('opIpType').value != '2') {
+            if ((this.Patientdetails?.regNo ?? 0) == 0) {
+                this.toastr.warning('Please select Patient', 'Warning !', {
+                    toastClass: 'tostr-tost custom-toast-warning',
+                });
+                return;
+            }
+        } 
         Swal.fire({
             title: 'Confirm Save',
             text: 'Are you sure you want to save this Sales bill?',
@@ -1010,25 +1031,16 @@ export class SalesHospitalNewComponent implements OnInit {
         });
     }
     BillSave(event) {
-        debugger 
-    const formattedTime = this.datePipe.transform(new Date(), 'hh:mm');
-    const formattedDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
-    const FormattedDateTime = formattedDate + ' ' + formattedTime 
+        debugger
+        const formattedTime = this.datePipe.transform(new Date(), 'hh:mm');
+        const formattedDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
+        const FormattedDateTime = formattedDate + ' ' + formattedTime
         const formValue = this.ItemSubform.value
         if (!this.isValidForm()) {
             Swal.fire('Please enter valid table data.');
             return;
-        }
-        if (this.ItemSubform.get('opIpType').value == '2') {
-            if ((formValue.externalPatientName?.patientName ?? formValue.externalPatientName) == '' ||
-                ((formValue?.doctorName.doctorName ?? formValue?.doctorName)) == '' ||
-                ((formValue.extMobileNo.extMobileNo ?? formValue.extMobileNo) == '')) {
-                this.toastr.warning('Please select Customer Detail', 'Warning !', {
-                    toastClass: 'tostr-tost custom-toast-warning',
-                });
-                return;
-            }
-        }
+        } 
+     
         if (Number(formValue.discAmount) > 0) {
             if (!formValue.concessionReasonId) {
                 this.toastr.warning('Please select Concession Reason ', 'Warning !', {
@@ -1106,14 +1118,14 @@ export class SalesHospitalNewComponent implements OnInit {
                 let PatientHeaderObj = {};
                 PatientHeaderObj['Date'] = this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd') || '01/01/1900',
                     PatientHeaderObj['PatientName'] = this.PatientName;
-                PatientHeaderObj['RegNo'] = this.Patientdetails.regNo;
-                PatientHeaderObj['DoctorName'] = this.Patientdetails.doctorName;
+                PatientHeaderObj['RegNo'] = this.Patientdetails?.regNo || 0;
+                PatientHeaderObj['DoctorName'] = this.Patientdetails?.doctorName;
                 if (formValue.opIpType == '1') {
-                    PatientHeaderObj['OPD_IPD_Id'] = this.Patientdetails.ipdNo;
+                    PatientHeaderObj['OPD_IPD_Id'] = this.Patientdetails?.ipdNo || 0;
                 } else {
-                    PatientHeaderObj['OPD_IPD_Id'] = this.Patientdetails.ipdNo;
+                    PatientHeaderObj['OPD_IPD_Id'] = this.Patientdetails?.ipdNo || 0;
                 }
-                PatientHeaderObj['Age'] = this.Patientdetails.age;
+                PatientHeaderObj['Age'] = this.Patientdetails?.age || 0;
                 PatientHeaderObj['NetPayAmount'] = Math.round(this.ItemSubform.get('netAmount').value);
                 const dialogRef = this._matDialog.open(OpPaymentComponent,
                     {
@@ -1360,28 +1372,37 @@ export class SalesHospitalNewComponent implements OnInit {
         //     return;
         //   }
         // } 
+        if (this.ItemSubform.get('opIpType').value != '2') {
+            if ((this.Patientdetails?.regNo ?? 0) == 0) {
+                this.toastr.warning('Please select Patient', 'Warning !', {
+                    toastClass: 'tostr-tost custom-toast-warning',
+                });
+                return;
+            }
+        }  
         debugger
         this.PharmaSalesDraftForm.get('salesDraft.date').setValue(formattedDate)
         this.PharmaSalesDraftForm.get('salesDraft.time').setValue(FormattedDateTime)
-        this.PharmaSalesDraftForm.get('salesDraft.opIpType').setValue(formValue.opIpType)
+        this.PharmaSalesDraftForm.get('salesDraft.opIpType').setValue(formValue?.opIpType)
         this.PharmaSalesDraftForm.get('salesDraft.opIpId').setValue(this.OP_IP_Id)
-        this.PharmaSalesDraftForm.get('salesDraft.totalAmount').setValue(Number(Math.round(formValue.totalAmount)))
-        this.PharmaSalesDraftForm.get('salesDraft.vatAmount').setValue(Number(Math.round(formValue.vatAmount)))
-        this.PharmaSalesDraftForm.get('salesDraft.discAmount').setValue(Number(Math.round(formValue.discAmount)))
-        this.PharmaSalesDraftForm.get('salesDraft.netAmount').setValue(Number(Math.round(formValue.netAmount)))
+        this.PharmaSalesDraftForm.get('salesDraft.totalAmount').setValue(Number(Math.round(formValue?.totalAmount)))
+        this.PharmaSalesDraftForm.get('salesDraft.vatAmount').setValue(Number(Math.round(formValue?.vatAmount)))
+        this.PharmaSalesDraftForm.get('salesDraft.discAmount').setValue(Number(Math.round(formValue?.discAmount)))
+        this.PharmaSalesDraftForm.get('salesDraft.netAmount').setValue(Number(Math.round(formValue?.netAmount)))
         this.PharmaSalesDraftForm.get('salesDraft.concessionReasonId').setValue(formValue?.concessionReasonId ?? 0)
-        this.PharmaSalesDraftForm.get('salesDraft.paidAmount').setValue(Number(Math.round(formValue.netAmount)))
+        this.PharmaSalesDraftForm.get('salesDraft.paidAmount').setValue(Number(Math.round(formValue?.netAmount)))
 
         if (formValue.opIpType == 2) {
-            this.PharmaSalesDraftForm.get('salesDraft.externalPatientName').setValue(formValue.externalPatientName)
-            this.PharmaSalesDraftForm.get('salesDraft.doctorName').setValue(formValue.doctorName)
-            this.PharmaSalesDraftForm.get('salesDraft.extAddress').setValue(formValue.extAddress)
-            this.PharmaSalesDraftForm.get('salesDraft.extMobileNo').setValue(formValue.extMobileNo)
+            this.PharmaSalesDraftForm.get('salesDraft.externalPatientName').setValue(formValue?.externalPatientName)
+            this.PharmaSalesDraftForm.get('salesDraft.doctorName').setValue(formValue?.doctorName)
+            this.PharmaSalesDraftForm.get('salesDraft.extAddress').setValue(formValue?.extAddress)
+            this.PharmaSalesDraftForm.get('salesDraft.extMobileNo').setValue(formValue?.extMobileNo)
         } else {
             this.PharmaSalesDraftForm.get('salesDraft.externalPatientName').setValue(this.PatientName)
-            this.PharmaSalesDraftForm.get('salesDraft.doctorName').setValue(this.Patientdetails.doctorName)
+            this.PharmaSalesDraftForm.get('salesDraft.doctorName').setValue(this.Patientdetails?.doctorName)
         }
         console.log(this.PharmaSalesDraftForm.value)
+        this.SalesDraftDetailsAarry.clear();
         if (this.PharmaSalesDraftForm.valid) {
             this.SalesDraftDetailsAarry.clear();
             this.saleSelectedDatasource.data.forEach((element) => {
@@ -2186,6 +2207,15 @@ export class SalesHospitalNewComponent implements OnInit {
             extAddressNameElement.focus();
         }
     }
+    getPurchaseRateWise(){
+    debugger
+    // if(!this.saleSelectedDatasource.data.length){
+    //   this.ItemSubform.get('IsPurchaseWsie').enable();
+   
+    // }else{
+    //   this.ItemSubform.get('IsPurchaseWsie').disable();
+    // } 
+  }
 }
 
 export class IndentList {

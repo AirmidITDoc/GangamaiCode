@@ -40,8 +40,7 @@ export class SupplierMasterService {
             ],
             countryId: [0,[Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]
             ],
-            CreditPeriod: ["",[Validators.required]
-            ],
+            CreditPeriod: [""],
             mobile: ["",
                 [
                     Validators.required,
@@ -70,12 +69,8 @@ export class SupplierMasterService {
                     Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,4}$")
                 ]
             ],
-            modeofPayment: [0,
-               [ Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]
-            ],
-            termofPayment: [0,
-               [ Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]
-            ],
+            modeofPayment: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+            termofPayment: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
             CurrencyId: [0],
             Octroi: [0],
             Freight: [0,
@@ -99,13 +94,13 @@ export class SupplierMasterService {
                 ]
             ],
             taluka: [0],
-            licNo: [""],
+            licNo: ["",[Validators.required]],
             pinCode: ["", [Validators.pattern("^[0-9]*$"),
                 Validators.minLength(6),
                 Validators.maxLength(6),]],
             taxNature: [0, Validators.pattern("^[0-9]*$")],
             expDate: [new Date()],
-            dlno: [""],
+            dlno: ["",[Validators.required]],
             bankId: [0],
             bankName: [""],
             branch: [""],

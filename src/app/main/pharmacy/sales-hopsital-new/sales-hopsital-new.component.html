@@ -239,16 +239,16 @@
                                 [formGroup]="ItemSubform" formControlName="regId"
                                 placeholderText="OP-RegNo / First Name / Last Name / Mobile No" fxFlex
                                 ApiUrl="VisitDetail/search-patient?Keyword="
-                                (selectionChange)="getSelectedObjOP($event)" ValueField="regId"
+                                (selectionChange)="getSelectedObjOP($event)" ValueField="regId"  
                                 TextField="formattedText"></airmid-autocomplete>
                             </div>
 
                             <div fxFlex="30%" fxFlex.sm="100%"
                               *ngIf="ItemSubform.get('opIpType').value != '0' && ItemSubform.get('opIpType').value != '2'">
                               <airmid-autocomplete label="IP RegNo / First Name / Last Name / Mobile No"
-                                [formGroup]="ItemSubform" formControlName="regId"
+                                [formGroup]="ItemSubform" formControlName="regId" 
                                 placeholderText="IP RegNo / First Name / Last Name / Mobile No" fxFlex
-                                ApiUrl="Admission/search-patient?Keyword="
+                                ApiUrl="Admission/search-patient?Keyword="   
                                 (selectionChange)="getSelectedObjRegIP($event)" TextField="formattedText"
                                 ValueField="itemId"></airmid-autocomplete>
                             </div>
@@ -331,7 +331,7 @@
                                           <div class="patient-col" *ngIf="DoctorNamecheck">
                                             <span class="patient-col-key">Doctor Name</span>
                                             <span>:</span>
-                                            <span class="patient-col-value">Dr.{{ DoctorName }}</span>
+                                            <span class="patient-col-value">{{DoctorName}}</span>
                                           </div>
 
                                           <div class="patient-col">
@@ -379,9 +379,9 @@
                         <div fxFlex="100%">
                           <airmid-autocomplete label="Item Name (enter 2 char)"
                             [formGroup]="_salesService.ItemSearchGroup" formControlName="ItemId"
-                            placeholderText="Item Name (enter 2 char)" fxFlex
+                            placeholderText="Item Name (enter 2 char)" fxFlex id="ItemId"
                             ApiUrl="ItemMaster/GetItemListforSalesPage?StoreId=2&ItemName=" TextField="itemName"
-                            ValueField="itemId" (selectionChange)="onItemChange($event)" #itemid></airmid-autocomplete>
+                            ValueField="itemId" (selectionChange)="onItemChange($event)" #ItemId></airmid-autocomplete>
                           <!-- (selectionChange)="getSelectedObj($event)" -->
                         </div>
 
@@ -534,12 +534,12 @@
                       </mat-cell>
                     </ng-container>
 
-                    <ng-container matColumnDef="MarginAmt">
+                    <!-- <ng-container matColumnDef="MarginAmt">
                       <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>MarginAmt</mat-header-cell>
                       <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                         <span> {{ contact.MarginAmt | currency : 'INR' }}</span>
                       </mat-cell>
-                    </ng-container>
+                    </ng-container> -->
 
                     <ng-container matColumnDef="buttons" stickyEnd>
                       <mat-header-cell *matHeaderCellDef class="table-actions">Action</mat-header-cell>
@@ -673,6 +673,12 @@
                                   <mat-radio-button value="PayOption">PayOption</mat-radio-button>
                                   <!-- <mat-radio-button value="Other">Multiple Pay</mat-radio-button> -->
                                 </mat-radio-group>
+
+                               
+                        
+                        <mat-slide-toggle name="IsPurchaseWsie"  (change)="getPurchaseRateWise()" formControlName="IsPurchaseWsie">
+                          PurchaseRateWsie
+                        </mat-slide-toggle> 
 
                                 <div class="sales-footer-buttons gap-8" fxLayout="row">
 

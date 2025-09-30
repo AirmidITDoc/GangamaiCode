@@ -206,14 +206,14 @@
 
                     <mat-tab label="Certificate Detail">
                       <div fxLayout="column" fxLayoutGap="10px">
-                        <mat-card style="padding: 5px;overflow: auto;height:370px;" fxLayout="column">
+                        <mat-card style="padding: 5px;overflow: auto;height:420px;" fxLayout="column">
 
                           <div class="gap-8" fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%">
 
                             <input type="hidden" name="certificateId" formControlName="certificateId"
                               [(ngModel)]="vCertificateId">
 
-                            <airmid-dropdown label="CertificateTemplate" formControlName="CertificateTemplateId"
+                            <airmid-dropdown label="CertificateTemplate" formControlName="CertificateTemplateId" 
                               [formGroup]="mycertificateForm" fxFlex="35%" [mode]="autocompleteModeTemplate"
                               (selectionChange)="selectChangeTemplate($event)" ValueField="certificateId"
                               TextField="certificateName" ApiUrl="OPDEMRCertificate/get-CertificateMaster">

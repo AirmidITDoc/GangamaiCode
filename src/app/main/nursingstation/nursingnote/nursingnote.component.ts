@@ -194,7 +194,13 @@ export class NursingnoteComponent implements OnInit {
           action: gridActions.edit, callback: (data: any) => {
             this.OnHandOverEdit(data);
           }
-        }]
+        },
+         {
+          action: gridActions.print, callback: (data: any) => {
+            this.OnHandOverPrint(data.admID);
+          }
+        }
+      ]
     }
   ]
 
@@ -306,6 +312,7 @@ export class NursingnoteComponent implements OnInit {
     this.myNursingForm.get('nursingNotes').setValue(this.vDescription);
     this.vDoctNoteId = this.registerObj.docNoteId
     this.IsAddFlag = true
+    this.myform.get('TemplateId').disable();
   }
 
   onClearPatientInfo() {
@@ -472,6 +479,7 @@ export class NursingnoteComponent implements OnInit {
         this.getHandOverNotelist()
         this.grid1.bindGridData();
         this.onClose();
+        this.OnHandOverPrint(response)
       });
     } else {
       let invalidFields = [];
@@ -499,6 +507,10 @@ export class NursingnoteComponent implements OnInit {
     this.myHandOverForm.get('shiftInfo').setValue('Morning')
     this.myHandOverForm.get('comments').setValue('')
     this.dsHandOverNoteList.data = [];
+  }
+
+   OnHandOverPrint(element) {
+    this.commonService.Onprint("AdmId", element, "DoctorPatientHandoverReceipt");
   }
 
   OnHandOverEdit(row) {

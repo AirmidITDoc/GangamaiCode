@@ -99,6 +99,10 @@ export class NewConsentComponent {
       // this.getSelectedObjOP(this.data)
       // this.getSelectedObjIP(this.data)
       this.selectChangedepartment(this.data)
+      
+    this.ConsentinsertForm.get('consentDeptId').disable();    
+    this.ConsentinsertForm.get('consentTempId').disable();
+    this.isButtonDisabled=true
     }
   }
 

@@ -103,12 +103,10 @@ export class BrowsSalesBillService {
   }
   public getSalesReturnDetList(Param) {
     return this._httpClient.post("Generic/GetByProc?procName=Rtrv_SalesReturnDetails", Param);
+  } 
+  public InsertSalessettlement(emp) { 
+    return this._httpClient1.PostData("Sales/PaymentSettlement", emp);
   }
-
-  public InsertSalessettlement(emp) {
-    return this._httpClient.post("Pharmacy/PaymentSettlement", emp);
-  }
-
   public InsertWhatsappSales(emp){
     return this._httpClient.post("WhatsappEmail/WhatsappSalesSave", emp);
   }

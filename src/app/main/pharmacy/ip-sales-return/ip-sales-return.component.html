@@ -191,7 +191,7 @@
 
                             <ng-container matColumnDef="SalesNo" sticky>
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-80">
-                                    SalesNo</mat-header-cell>
+                                    Sales No</mat-header-cell>
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-80">
                                     {{contact.SalesNo}}
                                 </mat-cell>
@@ -216,7 +216,7 @@
 
                             <ng-container matColumnDef="ExpDate" sticky>
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-100">
-                                    ExpDate</mat-header-cell>
+                                    Exp.Date</mat-header-cell>
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100">
                                     {{contact.ExpDate | date:'MM/dd/YYYY'}}
                                 </mat-cell>
@@ -231,7 +231,7 @@
                             </ng-container>
 
                             <ng-container matColumnDef="ReturnQty" sticky>
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-100">ReturnQty
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-100">Return Qty
                                 </mat-header-cell>
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100">
                                     <mat-form-field appearance="fill">
@@ -252,7 +252,7 @@
 
                             <ng-container matColumnDef="TotalAmt">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-130">
-                                    TotalAmount</mat-header-cell>
+                                    Total Amt</mat-header-cell>
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-130">
                                     {{contact.TotalAmt | currency:"INR":"symbol"}}
                                 </mat-cell>
@@ -268,7 +268,7 @@
 
                             <ng-container matColumnDef="GSTAmt">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-120">
-                                    GSTAmt</mat-header-cell>
+                                    GST Amt</mat-header-cell>
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-120">
                                     {{contact.GSTAmt | currency:"INR":"symbol"}}
                                 </mat-cell>
@@ -284,7 +284,7 @@
 
                             <ng-container matColumnDef="DiscAmt">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-120">
-                                    DiscAmt</mat-header-cell>
+                                    Disc Amt</mat-header-cell>
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-120">
                                     {{contact.DiscAmt | currency:"INR":"symbol"}}
                                 </mat-cell>
@@ -292,7 +292,7 @@
 
                             <ng-container matColumnDef="LandedPrice">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-130">
-                                    LandedPrice</mat-header-cell>
+                                    Landed Price</mat-header-cell>
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-130">
                                     {{contact.LandedPrice | currency:"INR":"symbol"}}
                                 </mat-cell>
@@ -308,7 +308,7 @@
 
                             <ng-container matColumnDef="NetAmount">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-130">
-                                    NetAmount</mat-header-cell>
+                                    Net Amt</mat-header-cell>
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-130">
                                     {{contact.NetAmount | currency:"INR":"symbol"}}
                                 </mat-cell>

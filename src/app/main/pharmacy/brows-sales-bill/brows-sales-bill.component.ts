@@ -24,7 +24,10 @@ import { IPSearchListService } from 'app/main/ipd/ip-search-list/ip-search-list.
 import { OpPaymentComponent } from 'app/main/opd/op-search-list/op-payment/op-payment.component';
 import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
 import { ToastrService } from 'ngx-toastr';
-import { FormGroup } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
+import { OpPaymentVimalComponent } from 'app/main/opd/op-search-list/op-payment-vimal/op-payment-vimal.component';
+import { IpPaymentInsert } from 'app/main/ipd/ip-search-list/ip-advance/ip-advance.component';
+import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 
 @Component({
   selector: 'app-brows-sales-bill',
@@ -104,10 +107,13 @@ export class BrowsSalesBillComponent implements OnInit {
     private _fuseSidebarService: FuseSidebarService,
     public datePipe: DatePipe,
     public toastr: ToastrService,
-    private _ActRoute: Router,
+    private _ActRoute: Router, 
+         public _formBuilder: FormBuilder, 
+        public _FormvalidationserviceService: FormvalidationserviceService
   ) { }
 
-  ngOnInit(): void {
+  ngOnInit(): void { 
+    this.PharmaSettlementfrom = this.createSettlementform();
     if (this._ActRoute.url == '/pharmacy/browsesalesbill') {
       this.menuActions.push('Patient Ledger');
       this.menuActions.push("Patient Statement");
@@ -133,7 +139,8 @@ export class BrowsSalesBillComponent implements OnInit {
   //Sales 
   @ViewChild('patientTypetemp') patientTypetemp!: TemplateRef<any>;
   @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
-  @ViewChild('isPrintTemplate') isPrintTemplate!: TemplateRef<any>;
+  @ViewChild('isPrintTemplate') isPrintTemplate!: TemplateRef<any>; 
+  @ViewChild('patientTypePaidType') patientTypePaidType!: TemplateRef<any>;
 
   //Sales Return
   @ViewChild('patientTypetempReturn') patientTypetempReturn!: TemplateRef<any>;
@@ -147,6 +154,7 @@ export class BrowsSalesBillComponent implements OnInit {
     this.gridConfig.columnsList.find(col => col.key === 'Status')!.template = this.patientTypetemp;
     this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
     this.gridConfig.columnsList.find(col => col.key === 'isPrint')!.template = this.isPrintTemplate;
+    this.gridConfig.columnsList.find(col => col.key === 'paidType')!.template = this.patientTypePaidType;
     //Sales Return
     this.gridConfig2.columnsList.find(col => col.key === 'Status')!.template = this.patientTypetempReturn;
     this.gridConfig2.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplateRetrun;
@@ -159,13 +167,17 @@ export class BrowsSalesBillComponent implements OnInit {
   BrowseHColumns = [
     {
       heading: "-", key: "Status", align: "right", sticky: true, type: gridColumnTypes.template,
-      template: this.patientTypetemp, width: 50,
+      template: this.patientTypetemp, width: 100,
     },
     {
-      heading: "--", key: "isPrint", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50,
+      heading: "--", key: "isPrint", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 40,
       template: this.isPrintTemplate
     },
-    { heading: "Date", key: "date", sort: true, align: 'left', emptySign: 'NA', width: 180, type: 8 },
+    { heading: "Type", key: "paidType",align: 'right', width: 50,sticky: true,type: gridColumnTypes.template,
+       template: this.patientTypePaidType
+    },
+    { heading: "Date", key: "date", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+     { heading: "Time", key: "time", sort: true, align: 'left', emptySign: 'NA', width: 90 },
     { heading: "Sales No", key: "salesNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
     { heading: "UHID No", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
 
@@ -179,14 +191,16 @@ export class BrowsSalesBillComponent implements OnInit {
 
     { heading: "Paid Amt", key: "paidAmount", sort: true, align: 'left', emptySign: 'NA', width: 150, type: gridColumnTypes.amount },
 
-    { heading: "Balance Amount", key: "balanceAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, columnClass: (element) => element["balanceAmount"] > 0 ? Color.RED : "" },
+    { heading: "Balance Amt", key: "balanceAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, columnClass: (element) => element["balanceAmount"] > 0 ? Color.RED : "" },
     // { heading: "Balance Amt", key: "balanceAmount", sort: true, align: 'left', emptySign: 'NA', width: 150, type: gridColumnTypes.amount },
     { heading: "GST Amt", key: "vatAmount", sort: true, align: 'left', emptySign: 'NA', width: 150, type: gridColumnTypes.amount },
 
-    { heading: "Paid Type", key: "paidType", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+    // { heading: "Paid Type", key: "paidType",align: 'right', width: 70,sticky: true,type: gridColumnTypes.template,
+    //    template: this.patientTypePaidType
+    // },
 
     {
-      heading: "Action", key: "action", align: "right", width: 140, sticky: true, type: gridColumnTypes.template,
+      heading: "Action", key: "action", align: "right", width: 100, sticky: true, type: gridColumnTypes.template,
       template: this.actionButtonTemplate  // Assign ng-template to the column
     }
   ]
@@ -578,80 +592,236 @@ export class BrowsSalesBillComponent implements OnInit {
 
 
 
+  // OnPayment(contact) {
+  //   const currentDate = new Date();
+  //   const datePipe = new DatePipe('en-US');
+  //   const formattedTime = datePipe.transform(currentDate, 'shortTime');
+  //   const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
+  //   console.log(contact)
+  //   let PatientHeaderObj = {};
+
+  //   PatientHeaderObj['Date'] = formattedDate,
+  //     PatientHeaderObj['PatientName'] = contact.PatientName;
+  //   PatientHeaderObj['RegNo'] = contact.RegNo;
+  //   PatientHeaderObj['OPD_IPD_Id'] = contact.IPNO;
+  //   PatientHeaderObj['billNo'] = contact.SalesId;
+  //   PatientHeaderObj['NetPayAmount'] = Math.round(contact.BalanceAmount);
+
+  //   const dialogRef = this._matDialog.open(OpPaymentComponent,
+  //     {
+  //       maxWidth: "80vw",
+  //       height: '650px',
+  //       width: '80%',
+  //       data: {
+  //         vPatientHeaderObj: PatientHeaderObj,
+  //         FromName: "OP-Pharma-SETTLEMENT",
+  //         advanceObj: PatientHeaderObj,
+  //       }
+  //     });
+  //   dialogRef.afterClosed().subscribe(result => {
+  //     console.log(result)
+
+  //     if (result.IsSubmitFlag == true) {
+  //       let updateBillobj = {};
+  //       updateBillobj['salesID'] = contact.SalesId;
+  //       updateBillobj['salRefundAmt'] = 0;
+  //       updateBillobj['balanceAmount'] = result.submitDataPay.ipPaymentInsert.BalanceAmt;
+
+  //       let UpdateAdvanceDetailarr = [];
+  //       if (UpdateAdvanceDetailarr.length == 0) {
+  //         let update_T_PHAdvanceDetailObj = {};
+  //         update_T_PHAdvanceDetailObj['AdvanceDetailID'] = 0,
+  //           update_T_PHAdvanceDetailObj['UsedAmount'] = 0,
+  //           update_T_PHAdvanceDetailObj['BalanceAmount'] = 0,
+  //           UpdateAdvanceDetailarr.push(update_T_PHAdvanceDetailObj);
+  //       }
+
+  //       let update_T_PHAdvanceHeaderObj = {};
+  //       update_T_PHAdvanceHeaderObj['AdvanceId'] = 0,
+  //         update_T_PHAdvanceHeaderObj['AdvanceUsedAmount'] = 0,
+  //         update_T_PHAdvanceHeaderObj['BalanceAmount'] = 0
+
+  //       let Data = {
+  //         "salesPaymentSettlement": result.submitDataPay.ipPaymentInsert,
+  //         "update_Pharmacy_BillBalAmountSettlement": updateBillobj,
+  //         "update_T_PHAdvanceDetailSettlement": UpdateAdvanceDetailarr,
+  //         "update_T_PHAdvanceHeaderSettlement": update_T_PHAdvanceHeaderObj
+  //       };
+  //       console.log(Data);
+
+  //       this._BrowsSalesBillService.InsertSalessettlement(Data).subscribe(response => {
+  //         if (response) {
+  //           this.toastr.success('Sales Credit Payment Successfully !', 'Success', {
+  //             toastClass: 'tostr-tost custom-toast-error',
+  //           });
+  //           //this.getSalesList();  
+  //         }
+  //         else {
+  //           this.toastr.error('Sales Credit Payment  not saved !', 'error', {
+  //             toastClass: 'tostr-tost custom-toast-error',
+  //           });
+  //         }
+  //       });
+  //     }
+  //   });
+  // }
+  PharmaSettlementfrom: FormGroup;
+  createSettlementform() {
+    return this._formBuilder.group({ 
+      // payment in array
+      payment: this._formBuilder.array([]),
+          // Current stock in array
+      saless: this._formBuilder.array([]),
+        // sales return details in array
+      advanceDetail: this._formBuilder.array([]),
+        //Advacne header  
+      advanceHeader: this._formBuilder.group({
+        advanceId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        advanceUsedAmount: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+        balanceAmount: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      })
+    });
+  } 
+    createAdvanceDetails(element: any): FormGroup {
+    return this._formBuilder.group({
+      advanceDetailID: [element?.AdvanceDetailID ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      usedAmount: [element?.UsedAmount ?? 0, [, this._FormvalidationserviceService.AllowDecimalNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      balanceAmount: [element?.BalanceAmount ?? 0, [, this._FormvalidationserviceService.AllowDecimalNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+    });
+  } 
+  createsaless(element: any): FormGroup {
+    return this._formBuilder.group({
+      salesID: [element?.salesID ?? 0, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      balanceAmount: [element?.balanceAmount ?? 0, [, this._FormvalidationserviceService.AllowDecimalNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      refundAmt: [element?.refundAmt ?? 0]
+    });
+  }
+  createSettlmentPyament(element: any): FormGroup {
+    return this._formBuilder.group({
+      paymentId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      billNo: [element?.billNo, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      paymentDate: [element?.paymentDate, [this._FormvalidationserviceService.allowEmptyStringValidator()]],
+      paymentTime: [element?.paymentTime, [this._FormvalidationserviceService.allowEmptyStringValidator()]],
+      cashPayAmount: [element?.cashPayAmount ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      chequePayAmount: [element?.chequePayAmount ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      chequeNo: [element?.chequeNo, [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+      bankName: [element?.bankName, [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+      chequeDate: [element?.chequeDate ?? ''],
+      cardPayAmount: [element?.cardPayAmount ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      cardNo: [element?.cardNo ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+      cardBankName: [element?.cardBankName ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+      cardDate: [element?.cardDate ?? ''],
+      advanceUsedAmount: [element?.advanceUsedAmount ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      advanceId: [element?.advanceId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      refundId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      transactionType: [element?.transactionType, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      remark: [element?.remark ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+      addBy: [this._loggedService.currentUserValue.userId],
+      isCancelled: [false],
+      isCancelledBy: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      isCancelledDate: ['1999-01-01'],
+      opdipdType: [3, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      neftpayAmount: [element?.neftpayAmount ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      neftno: [element?.neftno ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+      neftbankMaster: [element?.neftbankMaster ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+      neftdate: [element?.neftdate ?? ''],
+      payTmamount: [element?.payTmamount ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      payTmtranNo: [element?.payTmtranNo ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+      payTmdate: [element?.payTmdate ?? ''],
+      tdsamount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      wfamount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      unitId: [this._loggedService.currentUserValue.user.unitId, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]], 
+    });  
+  }
+  // Getters 
+  get AdvanceDetailsArray(): FormArray {
+    return this.PharmaSettlementfrom.get('advanceDetail') as FormArray;
+  }
+  get salessArray(): FormArray {
+    return this.PharmaSettlementfrom.get('saless') as FormArray;
+  }
+  get PaymentArray(): FormArray {
+    return this.PharmaSettlementfrom.get('payment') as FormArray;
+  }
   OnPayment(contact) {
+    debugger
     const currentDate = new Date();
     const datePipe = new DatePipe('en-US');
     const formattedTime = datePipe.transform(currentDate, 'shortTime');
     const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
-    console.log(contact)
+
     let PatientHeaderObj = {};
+    PatientHeaderObj['Date'] = formattedDate;
+    PatientHeaderObj['PatientName'] = contact?.patientName;
+    PatientHeaderObj['AdvanceAmount'] = Math.round(contact?.balanceAmount);
+    PatientHeaderObj['NetPayAmount'] = Math.round(contact?.balanceAmount);
+    PatientHeaderObj['BillNo'] = contact?.salesId;
+    PatientHeaderObj['OPD_IPD_Id'] =  contact?.opipid;
+    PatientHeaderObj['RegNo'] = contact?.regNo;
+    PatientHeaderObj['DoctorName'] = '';
+    PatientHeaderObj['DepartmentName'] = '';
+    PatientHeaderObj['Age'] ='';
+    if (contact?.oP_IP_Type == 1)
+      PatientHeaderObj['IPDNo'] =  contact?.ipno;
+    else
+      PatientHeaderObj['OPDNo'] = contact?.patientName;
 
-    PatientHeaderObj['Date'] = formattedDate,
-      PatientHeaderObj['PatientName'] = contact.PatientName;
-    PatientHeaderObj['RegNo'] = contact.RegNo;
-    PatientHeaderObj['OPD_IPD_Id'] = contact.IPNO;
-    PatientHeaderObj['billNo'] = contact.SalesId;
-    PatientHeaderObj['NetPayAmount'] = Math.round(contact.BalanceAmount);
-
-    const dialogRef = this._matDialog.open(OpPaymentComponent,
+    const dialogRef = this._matDialog.open(OpPaymentVimalComponent,
       {
         maxWidth: "80vw",
-        height: '650px',
-        width: '80%',
+        height: '800px',
+        width: '75%',
         data: {
           vPatientHeaderObj: PatientHeaderObj,
-          FromName: "OP-Pharma-SETTLEMENT",
+          FromName: "IP-Pharma-SETTLEMENT",
           advanceObj: PatientHeaderObj,
         }
       });
     dialogRef.afterClosed().subscribe(result => {
       console.log(result)
+      debugger
+      if (result && result.IsSubmitFlag) {
+        let UpdateAdvanceDetailarr1: IpPaymentInsert[] = [];
+        UpdateAdvanceDetailarr1 = result.submitDataAdvancePay;
 
-      if (result.IsSubmitFlag == true) {
-        let updateBillobj = {};
-        updateBillobj['salesID'] = contact.SalesId;
-        updateBillobj['salRefundAmt'] = 0;
-        updateBillobj['balanceAmount'] = result.submitDataPay.ipPaymentInsert.BalanceAmt;
+        let SalesDataArray = [];
+        SalesDataArray.push({ salesID: contact?.salesId, balanceAmount: result?.BalAmt ?? 0, refundAmt: 0 })
 
-        let UpdateAdvanceDetailarr = [];
-        if (UpdateAdvanceDetailarr.length == 0) {
-          let update_T_PHAdvanceDetailObj = {};
-          update_T_PHAdvanceDetailObj['AdvanceDetailID'] = 0,
-            update_T_PHAdvanceDetailObj['UsedAmount'] = 0,
-            update_T_PHAdvanceDetailObj['BalanceAmount'] = 0,
-            UpdateAdvanceDetailarr.push(update_T_PHAdvanceDetailObj);
+        this.AdvanceDetailsArray.clear();
+        UpdateAdvanceDetailarr1.forEach(item => {
+          this.AdvanceDetailsArray.push(this.createAdvanceDetails(item));
+        });
+
+        this.salessArray.clear();
+        SalesDataArray.forEach(item => {
+          this.salessArray.push(this.createsaless(item));
+        });
+
+        let AdvanceBalAmt = 0;
+        let AdvanceUsedAmt = 0;
+        if (UpdateAdvanceDetailarr1.length > 0) {
+          UpdateAdvanceDetailarr1.forEach(element => {
+            AdvanceUsedAmt = AdvanceUsedAmt + element.UsedAmount
+            AdvanceBalAmt = AdvanceBalAmt + element.BalanceAmount
+            this.PharmaSettlementfrom.get('advanceHeader.advanceId')?.setValue(element.AdvanceId)
+            this.PharmaSettlementfrom.get('advanceHeader.advanceUsedAmount')?.setValue(AdvanceUsedAmt)
+            this.PharmaSettlementfrom.get('advanceHeader.balanceAmount')?.setValue(AdvanceBalAmt)
+          })
         }
+        console.log(this.PharmaSettlementfrom.value);
 
-        let update_T_PHAdvanceHeaderObj = {};
-        update_T_PHAdvanceHeaderObj['AdvanceId'] = 0,
-          update_T_PHAdvanceHeaderObj['AdvanceUsedAmount'] = 0,
-          update_T_PHAdvanceHeaderObj['BalanceAmount'] = 0
+        let PaymentArray: IpPaymentInsert[] = [];
+        PaymentArray = result.submitDataPay.ipPaymentInsert;
+        this.PaymentArray.clear();
+        this.PaymentArray.push(this.createSettlmentPyament(PaymentArray));
 
-        let Data = {
-          "salesPaymentSettlement": result.submitDataPay.ipPaymentInsert,
-          "update_Pharmacy_BillBalAmountSettlement": updateBillobj,
-          "update_T_PHAdvanceDetailSettlement": UpdateAdvanceDetailarr,
-          "update_T_PHAdvanceHeaderSettlement": update_T_PHAdvanceHeaderObj
-        };
-        console.log(Data);
-
-        this._BrowsSalesBillService.InsertSalessettlement(Data).subscribe(response => {
-          if (response) {
-            this.toastr.success('Sales Credit Payment Successfully !', 'Success', {
-              toastClass: 'tostr-tost custom-toast-error',
-            });
-            //this.getSalesList();  
-          }
-          else {
-            this.toastr.error('Sales Credit Payment  not saved !', 'error', {
-              toastClass: 'tostr-tost custom-toast-error',
-            });
-          }
+        console.log(this.PharmaSettlementfrom.value);
+        this._BrowsSalesBillService.InsertSalessettlement(this.PharmaSettlementfrom.value).subscribe(response => {
+          this.grid.bindGridData();
         });
       }
     });
   }
-
 
   getPrint(el) {
     //

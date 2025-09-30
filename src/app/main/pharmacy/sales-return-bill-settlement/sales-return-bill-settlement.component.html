@@ -190,7 +190,7 @@
                 <ng-template #actionButtonTemplatePay let-element>
                     <div fxLayout="row" fxLayoutAlign="center center">
                         <button mat-icon-button (click)="getDiscFinalBill(element)" matTooltip="Final Discount"
-                            *ngIf="element.balanceAmount!='0'">
+                            *ngIf="element.balanceAmount!='0' && element.refundAmt==0">
                             <mat-icon title="Settlement">gradient</mat-icon>
                         </button>
                         <button mat-icon-button (click)="openPaymentpopup(element)" matTooltip="Settlement"

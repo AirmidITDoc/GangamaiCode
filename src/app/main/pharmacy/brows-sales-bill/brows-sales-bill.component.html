@@ -38,12 +38,12 @@
                             <mat-icon *ngIf="element.oP_IP_Type==2" matTooltip="External"
                                 class="pill blue s-16">circle</mat-icon>
 
-                            <button mat-icon-button matTooltip="Bill Return" *ngIf="element.isRefundFlag==true">
+                            <button mat-icon-button matTooltip="Bill Return" *ngIf="element.isRefundFlag==true ">
                                 <mat-icon>replay</mat-icon>
-                            </button>
+                            </button> 
                             <button mat-icon-button matTooltip="Credit Bill"
                                 *ngIf="element.paidType=='Credit' && element.balanceAmount > '0'"
-                                (click)="OnPayment1(element)">
+                                (click)="OnPayment(element)">
                                 <mat-icon>payment</mat-icon>
                             </button>
                         </div>
@@ -57,6 +57,13 @@
                             <ng-template #Show>
                                 <span>-</span>
                             </ng-template>
+                        </div>
+                    </ng-template>
+
+                      <ng-template #patientTypePaidType let-element>
+                        <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="4px"> 
+                            <mat-icon *ngIf="element.paidType == 'Paid'" matTooltip="Paid Bill">monetization_on</mat-icon>
+                            <mat-icon *ngIf="element.paidType == 'Credit'" matTooltip="Credit Bill">account_balance_wallet</mat-icon> 
                         </div>
                     </ng-template>
 

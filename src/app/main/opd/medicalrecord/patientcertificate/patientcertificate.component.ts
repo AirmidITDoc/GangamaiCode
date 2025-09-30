@@ -228,6 +228,9 @@ export class PatientcertificateComponent {
   selectedTabIndex = 0;
   certiID = 0;
   OnEdit(row) {
+    this.mycertificateForm.get('CertificateTemplateId').disable();
+    this.isButtonDisabled=true
+
     console.log('Row data received:', row);
     this.certiID = row.certificateId
     this.mycertificateForm.get('certificateName').setValue(row.certificateName)
