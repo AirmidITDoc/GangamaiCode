@@ -323,7 +323,7 @@ export class NewPurchaseorderComponent {
       HandlingCharges: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
       Freight: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
       OctriAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-      Worrenty: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      Worrenty: [0, [Validators.pattern("^[A-Za-z0-9 ]+$")]],
       roundVal: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       NetAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
       Remark: ['', [Validators.required]],
