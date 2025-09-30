@@ -6,7 +6,7 @@ fxLayoutAlign.gt-xs="space-between center " style="height:40px;">
     
     <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"
         style="font-size:18px; font-weight: 500;width:99%;font-family: sans-serif;">
-      Sale Pop Up : 
+     Batch Details : 
         <!-- <span> RegNo - {{selectedAdvanceObj.RegNo}} - {{selectedAdvanceObj.PatientName}} (IPD
             No:{{selectedAdvanceObj.IPDNo}}) - AdmissionDate:{{selectedAdvanceObj.AdmDateTime}} -
             Ward:{{selectedAdvanceObj.WardName}} - Tariff :{{selectedAdvanceObj.TariffName}}</span> -->
@@ -53,12 +53,12 @@ fxLayoutAlign.gt-xs="space-between center " style="height:40px;">
 
     <ng-container matColumnDef="unitMRP">
         <mat-header-cell *matHeaderCellDef> MRP </mat-header-cell>
-        <mat-cell *matCellDef="let element"> {{element.unitMRP}} </mat-cell>
+        <mat-cell *matCellDef="let element"> {{element.unitMRP | currency:'INR' }} </mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="purchaseRate">
         <mat-header-cell *matHeaderCellDef> Pur Price </mat-header-cell>
-        <mat-cell *matCellDef="let element"> {{element.purchaseRate}} </mat-cell>
+        <mat-cell *matCellDef="let element"> {{element.purchaseRate | currency:'INR' }} </mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="converFacto">
@@ -68,12 +68,17 @@ fxLayoutAlign.gt-xs="space-between center " style="height:40px;">
 
     <ng-container matColumnDef="landedRate">
         <mat-header-cell *matHeaderCellDef> Landed Rate </mat-header-cell>
-        <mat-cell *matCellDef="let element"> {{element.landedRate}} </mat-cell>
+        <mat-cell *matCellDef="let element"> {{element.landedRate | currency:'INR' }} </mat-cell>
     </ng-container>
 
      <ng-container matColumnDef="ExpDays">
         <mat-header-cell *matHeaderCellDef> Exp Days </mat-header-cell>
         <mat-cell *matCellDef="let element"> {{element.expDays}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="prodLocation">
+        <mat-header-cell *matHeaderCellDef>Location </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.prodLocation || '-'}} </mat-cell>
     </ng-container>
 
     <!--<ng-container matColumnDef="loading">

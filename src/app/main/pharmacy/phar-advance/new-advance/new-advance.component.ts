@@ -41,17 +41,17 @@ export class NewAdvanceComponent implements OnInit {
 
   AllColumns = [
     { heading: "Date", key: "date", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "AdvanceNo", key: "advanceNo", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "AdvanceAmount", key: "advanceAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
-    { heading: "UsedAmount", key: "usedAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
-    { heading: "BalanceAmount", key: "balanceAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
-    { heading: "RefundAmount", key: "refundAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+    { heading: "Advance No", key: "advanceNo", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "Advance Amt", key: "advanceAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+    { heading: "Used Amt", key: "usedAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+    { heading: "Balance Amt", key: "balanceAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+    { heading: "Refund Amt", key: "refundAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
     { heading: "CashPay", key: "cashPayAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
     { heading: "ChequePay", key: "chequePayAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
     { heading: "CardPay", key: "cardPayAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
     { heading: "NeftPay", key: "neftPayAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
     { heading: "PayTMPay", key: "payTmamount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
-    { heading: "UserName", key: "userName", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "User Name", key: "userName", sort: true, align: 'left', emptySign: 'NA' },
     {
       heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
         {

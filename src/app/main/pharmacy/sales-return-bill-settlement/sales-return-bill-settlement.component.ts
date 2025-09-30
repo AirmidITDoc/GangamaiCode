@@ -82,6 +82,7 @@ export class SalesReturnBillSettlementComponent implements OnInit {
     { heading: "Discount Amt", key: "discAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
     { heading: "Net Amt", key: "netAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
     { heading: "Paid Amt", key: "paidAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+    { heading: "Refund Amt", key: "refundAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
     { heading: "Balance Amt", key: "balanceAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, columnClass: (element) => element["balanceAmount"] > 0 ? Color.RED : "" },
     {
       heading: "Action", key: "action", align: "right", sticky: true, type: gridColumnTypes.template,
@@ -113,7 +114,8 @@ export class SalesReturnBillSettlementComponent implements OnInit {
     { heading: "Total Amt", key: "totalAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
     { heading: "Discount Amt", key: "discAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
     { heading: "Net Amt", key: "netAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
-    { heading: "Paid Amt", key: "paidAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+    { heading: "Paid Amt", key: "paidAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount }, 
+    { heading: "Refund Amt", key: "refundAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
     { heading: "Balance Amt", key: "balanceAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, columnClass: (element) => element["balanceAmount"] > 0 ? Color.RED : "" },
     {
       heading: "Action", key: "action", align: "right", sticky: true, type: gridColumnTypes.template,

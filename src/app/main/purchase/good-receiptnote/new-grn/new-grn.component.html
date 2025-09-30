@@ -425,7 +425,7 @@
                 <mat-cell *matCellDef="let contact; let index = index" fxShow.gt-sm class="w-90">
                   <mat-form-field appearance="fill">
                     <input matInput [(ngModel)]="contact.CGST" [id]="'CGSTPer_' + index" step="0.1" type="text"
-                      OnlyNumber [disabled]="contact.IsVerifiedUserId > 0" (ngModelChange)="getCellCalculation(contact)"
+                      OnlyNumber [disabled]="contact.IsVerifiedUserId > 0 || contact.IGST > 0" (ngModelChange)="getCellCalculation(contact)"
                       (keydown.arrowdown)="setFocus('CGSTPer_' + (index + 1))"
                       (keydown.arrowup)="setFocus('CGSTPer_' + (index - 1))" autocomplete="off"
                       (keypress)="keyPressDigitDecimalOnly($event)" />
@@ -434,8 +434,8 @@
               </ng-container>
 
               <ng-container matColumnDef="CGSTAmount">
-                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>CGST Amt</mat-header-cell>
-                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-110">CGST Amt</mat-header-cell>
+                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-110">
                   {{ contact.CGSTAmount | number : '1.2-2' }}
                 </mat-cell>
               </ng-container>
@@ -445,7 +445,7 @@
                 <mat-cell *matCellDef="let contact; let index = index" fxShow.gt-sm class="w-90">
                   <mat-form-field appearance="fill">
                     <input matInput [(ngModel)]="contact.SGST" [id]="'SGSTPer_' + index" step="0.1" type="text"
-                      OnlyNumber [disabled]="contact.IsVerifiedUserId > 0" (ngModelChange)="getCellCalculation(contact)"
+                      OnlyNumber [disabled]="contact.IsVerifiedUserId > 0 || contact.IGST > 0" (ngModelChange)="getCellCalculation(contact)"
                       (keydown.arrowdown)="setFocus('SGSTPer_' + (index + 1))"
                       (keydown.arrowup)="setFocus('SGSTPer_' + (index - 1))" autocomplete="off"
                       (keypress)="keyPressDigitDecimalOnly($event)" />
@@ -454,8 +454,8 @@
               </ng-container>
 
               <ng-container matColumnDef="SGSTAmount">
-                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>SGST Amt</mat-header-cell>
-                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-110">SGST Amt</mat-header-cell>
+                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-110">
                   {{ contact.SGSTAmount | number : '1.2-2' }}
                 </mat-cell>
               </ng-container>
@@ -465,7 +465,7 @@
                 <mat-cell *matCellDef="let contact; let index = index" fxShow.gt-sm class="w-90">
                   <mat-form-field appearance="fill">
                     <input matInput [(ngModel)]="contact.IGST" [id]="'IGSTPer_' + index" step="0.1" type="text"
-                      OnlyNumber [disabled]="contact.IsVerifiedUserId > 0" (ngModelChange)="getCellCalculation(contact)"
+                      OnlyNumber [disabled]="contact.IsVerifiedUserId > 0 || (contact.CGST > 0 || contact.SGST > 0)" (ngModelChange)="getCellCalculation(contact)"
                       autocomplete="off" (keydown.arrowdown)="setFocus('IGSTPer_' + (index + 1))"
                       (keydown.arrowup)="setFocus('IGSTPer_' + (index - 1))"
                       (keypress)="keyPressDigitDecimalOnly($event)" />
@@ -474,8 +474,8 @@
               </ng-container>
 
               <ng-container matColumnDef="IGSTAmount">
-                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>IGST Amt</mat-header-cell>
-                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-110">IGST Amt</mat-header-cell>
+                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-110">
                   {{ contact.IGSTAmount | number : '1.2-2' }}
                 </mat-cell>
               </ng-container>
@@ -604,10 +604,10 @@
                 <mat-footer-cell *matFooterCellDef colspan="6">no data found...</mat-footer-cell>
               </ng-container>
 
-              <mat-header-row class="accent min-width-2700"
+              <mat-header-row class="accent min-width-2850"
                 *matHeaderRowDef="displayedColumns2; sticky: true"></mat-header-row>
               <mat-row *matRowDef="let contact; columns: displayedColumns2; let i = index" tabindex="999"
-                class="contact min-width-2700" [@animate]="{ value: '*', params: { y: '100%' } }"
+                class="contact min-width-2850" [@animate]="{ value: '*', params: { y: '100%' } }"
                 appHighlight></mat-row>
               <mat-footer-row *matFooterRowDef="['loading']"
                 [ngClass]="{ hide: !(sIsLoading == 'loading-data') }"></mat-footer-row>

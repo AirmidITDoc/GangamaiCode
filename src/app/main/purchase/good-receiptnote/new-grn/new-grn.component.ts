@@ -48,8 +48,11 @@ export class NewGrnComponent implements OnInit, OnDestroy {
         'Disc2',
         "GST",
         'CGST',
+        'CGSTAmount',
         'SGST',
+        'SGSTAmount',
         'IGST',
+        'IGSTAmount',
         'NetAmount',
         //'poId',
        // 'purDetID',
@@ -633,7 +636,7 @@ handleEnterKey(event: KeyboardEvent) {
         // // Recalculate GST after discount update
         this.calculateGSTType();
     }
-    calculateGSTType(type: GSTType = GSTType.GST_BEFORE_DISC) {
+    calculateGSTType(type: GSTType = GSTType.GST_BEFORE_DISC) { 
         const form = this.userFormGroup;
         const formValues = form.getRawValue() as GRNFormModel;
 
