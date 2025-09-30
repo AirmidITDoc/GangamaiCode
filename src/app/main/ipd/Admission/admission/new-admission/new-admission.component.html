@@ -825,13 +825,13 @@
 
                                             <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
 
-                                              <airmid-dropdown label="Bed Name" formControlName="bedId"
+                                                <airmid-dropdown label="Bed Name" formControlName="bedId"
                                                     [value]="registerObj1?.bedId ?? registerObj1?.bedId"
-                                                    [formGroup]="admissionFormGroup" TextField="bedName"  
-                                          ValueField="bedId"
-                                                    [validations]="getValidationMessages().bedId" #ddlBedName>
+                                                    [formGroup]="admissionFormGroup" TextField="bedName"
+                                                    ValueField="bedId" [validations]="getValidationMessages().bedId"
+                                                    #ddlBedName>
                                                 </airmid-dropdown>
-                                              
+
                                             </div>
 
                                             <div fxFlex="34%" fxFlex.xs="100%" fxFlex.sm="33%">
@@ -960,12 +960,13 @@
                         <mat-checkbox aria-label="Remember Me" formControlName="IsMLC" (change)="onIsMLCChange($event)">
                             ISMLC
                         </mat-checkbox>
-                        <mat-checkbox aria-label="Op TO Ip Change" formControlName="IsCharity"
-                            style="margin-left:30px;" (change)="onISCharChange($event)">
+                        <mat-checkbox aria-label="Op TO Ip Change" formControlName="IsCharity" style="margin-left:30px;"
+                            (change)="onISCharChange($event)">
                             IsCharity
                         </mat-checkbox>
 
-                        <mat-checkbox aria-label="Op TO Ip Change" formControlName="IsSenior" style="margin-left:30px;" (change)="onIsSeniorChange($event)">
+                        <mat-checkbox aria-label="Op TO Ip Change" formControlName="IsSenior" style="margin-left:30px;"
+                            (change)="onIsSeniorChange($event)">
                             IsSeniorCitizen
                         </mat-checkbox>
                     </div>

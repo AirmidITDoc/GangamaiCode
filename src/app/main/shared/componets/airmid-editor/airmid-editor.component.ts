@@ -123,7 +123,8 @@ export class AirmidEditorComponent {
                 'bulletedList',
                 'numberedList',
                 'outdent',
-                'indent'
+                'indent',
+                'insertImage', 
             ],
             shouldNotGroupWhenFull: false
         },
@@ -151,6 +152,8 @@ export class AirmidEditorComponent {
             HorizontalLine,
             HtmlComment,
             HtmlEmbed,
+            Image,
+            
             ImageBlock,
             ImageCaption,
             ImageInline,
@@ -252,6 +255,7 @@ export class AirmidEditorComponent {
         },
         image: {
             toolbar: [
+                  'insertImage',
                 'toggleImageCaption',
                 'imageTextAlternative',
                 '|',

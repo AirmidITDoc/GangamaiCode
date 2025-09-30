@@ -58,7 +58,7 @@
                       <div class="patient-col">
                         <span class="patient-col-key">DOA | Time</span>
                         <span>:</span>
-                        <span class="patient-col-value">{{ data.doa }}</span>
+                        <span class="patient-col-value">{{data.admissionTime | date:'dd-MM-yyyy | hh:mma'}}</span>
                       </div>
                       <div class="patient-col">
                         <span class="patient-col-key">IPD No</span>
@@ -81,7 +81,7 @@
                       <div class="patient-col">
                         <span class="patient-col-key">Ward | Bed Name</span>
                         <span>:</span>
-                        <span class="patient-col-value">{{ data.RoomName }} | {{ data.bedName }}</span>
+                        <span class="patient-col-value">{{ data.roomName }} | {{ data.bedName }}</span>
                       </div>
                       <div class="patient-col">
                         <span class="patient-col-key">Patient Type</span>
@@ -116,8 +116,9 @@
                 <div fxLayout="row" fxLayoutGap="8px" fxLayoutAlign="start center">
                   <airmid-dropdown label="Template" formControlName="TemplateId" [formGroup]="DischargesumForm"
                     fxFlex="40%" [value]="TemplateId" ValueField="templateId" TextField="templateName"
-                    (selectionChange)="onChangetemp($event)" ApiUrl="ReportTemplate/get-Templates"></airmid-dropdown>
-
+                    (selectionChange)="onChangetemp($event)" ApiUrl="ReportTemplate/get-Templates"
+                   ></airmid-dropdown>
+ <!-- [readonly]="!isItemIdSelected" -->
                   <div class="mt-2">
                     <button type="button" (click)="onAddTemplate($event)" class="btn btn-primary btn-with-icon py-8"
                       [disabled]="!isItemIdSelected" fxFlex>
@@ -128,8 +129,7 @@
                   </div>
                 </div>
 
-                <!-- EDITOR -->
-                <!-- <airmid-editor label="Template Details" formControlName="templateDescriptionHtml" [formGroup]="DischargesumForm"></airmid-editor> -->
+              
                 <airmid-editor label="Template Details" formControlName="templateDescriptionHtml"
                   [(value)]="vTemplateDesc" [formGroup]="DischargesumForm" >
                 </airmid-editor>

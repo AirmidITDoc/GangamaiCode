@@ -147,7 +147,7 @@ export class IPSearchListComponent implements OnInit {
                 this.menuActions.push('Discharge Summary Template');
             else
                 this.menuActions.push('Discharge Summary');
-                this.menuActions.push('Discharge Summary Template');
+            this.menuActions.push('Discharge Summary Template');
 
         }
         else if (this._ActRoute.url == '/ipd/refund/iprefundofadvance') {
@@ -186,7 +186,7 @@ export class IPSearchListComponent implements OnInit {
         }
         this.id = this.route.snapshot.queryParamMap.get('Id');
         this.mode = this.route.snapshot.queryParamMap.get('Mode');
-        if (this.mode == "Bill" && Number(this.id)>0) {
+        if (this.mode == "Bill" && Number(this.id) > 0) {
             this.gridConfig.filters.find(x => x.fieldName == "Id").fieldValue = this.id;
         }
         this.IsShowGrid = true;
@@ -194,7 +194,7 @@ export class IPSearchListComponent implements OnInit {
     }
 
     handleNotificationEvent(data) {
-        if (this.mode == "Bill" && Number(this.id)>0) {
+        if (this.mode == "Bill" && Number(this.id) > 0) {
             this.OngetRecord(data[0], 'Bill');
         }
     }
@@ -225,9 +225,9 @@ export class IPSearchListComponent implements OnInit {
             let that = this;
             const dialogRef = this._matDialog.open(DischargeSummaryComponent,
                 {
-                    maxWidth: "100%",
-                    height: '90%',
-                    width: '90%',
+                    maxWidth: "95vw",
+                    width: '100%',
+                    height: "98vh",
                     data: element
                 });
             dialogRef.afterClosed().subscribe(result => {
@@ -243,8 +243,9 @@ export class IPSearchListComponent implements OnInit {
             let that = this;
             const dialogRef = this._matDialog.open(DischargeSummaryTemplateComponent,
                 {
-                    height: '99%',
-                    width: "90%",
+                    maxWidth: "95vw",
+                    width: '100%',
+                    height: "98vh",
                     data: element
                 });
             dialogRef.afterClosed().subscribe(result => {
@@ -373,7 +374,7 @@ export class IPSearchListComponent implements OnInit {
                     that.grid.bindGridData();
                 }
             });
-        }  
+        }
         else if (m == "Advance") {
             this.advanceDataStored.storage = new AdvanceDetailObj(element);
             let Advflag: boolean = false;
@@ -447,15 +448,15 @@ export class IPSearchListComponent implements OnInit {
     apiUrl: any;
     IsDischarge: boolean = false
     onChangeFirst(event) {
-         debugger
-        console.log(event) 
+        debugger
+        console.log(event)
         if (this.myFilterform.get('IsDischarge').value == false) {
             this.myFilterform.get('fromDate').setValue('')
             this.myFilterform.get('enddate').setValue('')
             this.fromDate = "1900-01-01"
-            this.toDate =   "1900-01-01"
+            this.toDate = "1900-01-01"
             this.apiUrl = "Admission/AdmissionList"
-            this.status = '0' 
+            this.status = '0'
         } else {
             this.myFilterform.get('fromDate').setValue(new Date())
             this.myFilterform.get('enddate').setValue(new Date())
@@ -473,8 +474,8 @@ export class IPSearchListComponent implements OnInit {
         this.getfilterdata();
     }
 
-    getchangeDate(){
-          if (this.myFilterform.get('IsDischarge').value != false) {  
+    getchangeDate() {
+        if (this.myFilterform.get('IsDischarge').value != false) {
             this.apiUrl = "Admission/AdmissionDischargeList"
             this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd") || "1900-01-01"
             this.toDate = this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd") || "1900-01-01"
@@ -484,7 +485,7 @@ export class IPSearchListComponent implements OnInit {
         this.l_name = this.myFilterform.get('LastName').value + "%"
         this.regNo = this.myFilterform.get('RegNo').value || "0"
         this.m_name = this.myFilterform.get('MiddleName').value + "%"
-        this.IPDNo = this.myFilterform.get('IPDNo').value || "0" 
+        this.IPDNo = this.myFilterform.get('IPDNo').value || "0"
         this.getfilterdata();
     }
     getfilterdata() {
@@ -569,13 +570,13 @@ export class IPSearchListComponent implements OnInit {
 
     getfeedback(event) { }
     printDischargesummaryWithoutletterhead(event) {
- this.commonService.Onprint("AdmissionID", event.admissionId, "IpDischargeSummaryReportWithoutHeader");
-     }
+        this.commonService.Onprint("AdmissionID", event.admissionId, "IpDischargeSummaryReportWithoutHeader");
+    }
     printDischargesummary(event) {
- this.commonService.Onprint("AdmissionID", event.admissionId, "IpDischargeSummaryReport");
-     }
- 
-  
+        this.commonService.Onprint("AdmissionID", event.admissionId, "IpDischargeSummaryReport");
+    }
+
+
     printDischargeslip(data) {
         this.commonService.Onprint("AdmId", data.admissionId, "IpDischargeReceipt");
 
@@ -825,7 +826,7 @@ export class ChargesList {
     concessionPercentage: any;
     concessionAmount: any;
     netAmount: any;
-    CreditedtoDoctor:any;
+    CreditedtoDoctor: any;
 
     constructor(ChargesList) {
         this.chargesId = ChargesList.chargesId || '';

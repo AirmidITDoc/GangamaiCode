@@ -332,12 +332,11 @@ export class DischargeSummaryTemplateComponent {
           console.log(insertData)
           console.log(this.DischargesumForm.value)
 
-
+debugger
           this._IpSearchListService.insertIPDDischargSummaryTemplate(this.DischargesumForm.value).subscribe(response => {
-
-            console.log(response)
-            
-            this.getPrint(response)
+             console.log(response)
+            if(response)
+            this.getPrint(this.vAdmissionId)
             this._matDialog.closeAll();
           });
         }
@@ -511,9 +510,15 @@ export class DischargeSummaryTemplateComponent {
       this.RetrDischargeSumryList = data?.data as DischargeSummary;
       console.log(this.RetrDischargeSumryList);
       if (this.RetrDischargeSumryList.length != 0) {
+      
         this.DischargeSummaryId = this.RetrDischargeSumryList[0].dischargeSummaryId || 0
         this.vIsNormalDeath = this.RetrDischargeSumryList[0].isNormalOrDeath
         this.vTemplateDesc = this.RetrDischargeSumryList[0].templateDescriptionHtml
+        console.log(this.RetrDischargeSumryList[0].templateDescriptionHtml)
+          debugger
+        //  this.isItemIdSelected = false
+        if(this.RetrDischargeSumryList[0].templateDescriptionHtml !=="")
+           this.DischargesumForm.get('TemplateId').disable();
         console.log(this.vTemplateDesc);
         this.DischargesumForm.get("discharge.dischargeDoctor1").setValue(Number(this.RetrDischargeSumryList[0].dischargeDoctor1))
         this.DischargesumForm.get("discharge.dischargeDoctor2").setValue(Number(this.RetrDischargeSumryList[0].dischargeDoctor2))
@@ -528,15 +533,18 @@ export class DischargeSummaryTemplateComponent {
 
   }
 
-  getTemplateList() {
-    if (this.data) {
-      this._IpSearchListService.gettemplateId(this.TemplateId).subscribe(data => {
-        console.log(data)
-        this.DischargesumForm.get('TemplateId').setValue(data.templateId);
-        this.vTemplateDesc = data.templateDescription
-      });
-    }
-  }
+
+  // getTemplateList() {
+  //   if (this.data) {
+  //     this._IpSearchListService.gettemplateId(this.TemplateId).subscribe(data => {
+  //       console.log(data)
+  //       this.DischargesumForm.get('TemplateId').setValue(data.templateId);
+  //       this.vTemplateDesc = data.templateDescription
+  //         //  this.isItemIdSelected = false
+  //          this.DischargesumForm.get('TemplateId').disable();
+  //     });
+  //   }
+  // }
 
   getPrint(contact) {
     Swal.fire({

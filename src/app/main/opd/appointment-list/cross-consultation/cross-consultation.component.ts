@@ -66,7 +66,7 @@ export class CrossConsultationComponent implements OnInit {
       visitTime: " ",
       unitId: [this.accountService.currentUserValue.user.unitId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       patientTypeId: this.data.patientTypeId,
-      consultantDocId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      consultantDocId: ['', [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       refDocId: [this.data?.refDocId, [this._FormvalidationserviceService.onlyNumberValidator()]],
       tariffId: [this.data?.tariffId, [this._FormvalidationserviceService.onlyNumberValidator()]],
       companyId: [this.data?.companyId, [this._FormvalidationserviceService.onlyNumberValidator()]],
