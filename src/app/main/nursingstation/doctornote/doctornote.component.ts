@@ -144,7 +144,13 @@ export class DoctornoteComponent implements OnInit {
           action: gridActions.edit, callback: (data: any) => {
             this.OnHandOverEdit(data);
           }
-        }]
+        },
+        {
+          action: gridActions.print, callback: (data: any) => {
+            this.OnHandOverPrint(data.admID);
+          }
+        }
+      ]
     } //Action 1-view, 2-Edit,3-delete
   ]
 
@@ -215,6 +221,7 @@ export class DoctornoteComponent implements OnInit {
     // this.myNoteform.get('doctorsNotes').setValue(this.vDescription);
     this.vDoctNoteId = this.registerObj.doctNoteId
     this.IsAddFlag = true;
+    this.myform.get('TemplateId').disable();
   }
 
   onChangetemplate(event) {
@@ -308,6 +315,7 @@ export class DoctornoteComponent implements OnInit {
         this.getHandOverNotelist()
         this.grid1.bindGridData();
         this.onClose()
+        this.OnHandOverPrint(response)
       });
     } else {
       let invalidFields = [];
@@ -334,6 +342,10 @@ export class DoctornoteComponent implements OnInit {
     this.VAssessment = "ON THE BASIC OF ABOVE\nAssessment give \nAny Need\nAny Risk"
     this.myHandOverform.get('shiftInfo').setValue('morning')
     this.dsHandOverNoteList.data = [];
+  }
+
+    OnHandOverPrint(element) {
+    this.commonService.Onprint("AdmId", element, "DoctorPatientHandoverReceipt");
   }
 
   OnHandOverEdit(row) {

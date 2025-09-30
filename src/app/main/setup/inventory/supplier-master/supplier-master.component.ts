@@ -277,6 +277,7 @@ export class SupplierMaster {
     pinCode:any;
     taluka:any;
     bankname:any;
+    dlNo:any;
     /**
      * Constructor
      *
@@ -328,6 +329,7 @@ export class SupplierMaster {
             this.ifsccode = SupplierMaster.ifsccode || "";
             this.StoreId = SupplierMaster.StoreId || 0;
             this.dlno=SupplierMaster.dlno || 0
+            this.dlNo=SupplierMaster.dlNo || 0
             this.bankId=SupplierMaster.bankId || 0
             this.branch=SupplierMaster.branch || ''
             this.PinCode = SupplierMaster.PinCode || 0;

@@ -1949,8 +1949,10 @@ export class NewCasepaperComponent implements OnInit {
     })
   }
 
-  OnEdit(row) {
-    // console.log('Row data received:', row);
+  OnEdit(row) {    
+    this.mycertificateForm.get('CertificateTemplateId').disable();
+    this.isButtonDisabled=true
+
     this.certiID = row.certificateId
     this.mycertificateForm.get('certificateName').setValue(row.certificateName)
     this.mycertificateForm.patchValue({

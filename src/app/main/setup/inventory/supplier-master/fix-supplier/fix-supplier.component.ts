@@ -7,6 +7,7 @@ import { AirmidDropDownComponent } from 'app/main/shared/componets/airmid-dropdo
 import { ToastrService } from 'ngx-toastr';
 import { SupplierMaster, SupplierMasterComponent } from '../supplier-master.component';
 import { SupplierMasterService } from '../supplier-master.service';
+import { DatePipe } from '@angular/common';
 
 @Component({
     selector: 'app-fix-supplier',
@@ -28,15 +29,15 @@ export class FixSupplierComponent implements OnInit {
     isActive: boolean = true;
     // new API
     SupplierId: any = 0;
-    vtaluka:any;
+    vtaluka: any;
 
     autocompleteModecity: string = "City";
     autocompleteModestate: string = "State";
     autocompleteModecountry: string = "Country";
     autocompleteModeofpayment: string = "PaymentMode";
     autocompleteModetermofpayment: string = "TermofPayment";
-    autocompleteModeoftaluka:string="Taluka"
-    autocompleteModeofBank:string='Bank'
+    autocompleteModeoftaluka: string = "Taluka"
+    autocompleteModeofBank: string = 'Bank'
     @ViewChild('ddlCountry') ddlCountry: AirmidDropDownComponent;
 
     constructor(
@@ -44,15 +45,16 @@ export class FixSupplierComponent implements OnInit {
         public toastr: ToastrService,
         @Inject(MAT_DIALOG_DATA) public data: any,
         private _loggedService: AuthenticationService,
+        private datepipe: DatePipe,
         public dialogRef: MatDialogRef<SupplierMasterComponent>
     ) { }
 
-    vAddress:any;
+    vAddress: any;
 
     ngOnInit(): void {
         this.supplierForm = this._supplierService.createSuppliermasterForm();
         this.supplierForm.markAllAsTouched();
-       
+
         if ((this.data?.supplierId ?? 0) > 0) {
 
             this.isActive = this.data.isActive;
@@ -60,19 +62,25 @@ export class FixSupplierComponent implements OnInit {
                 this.registerObj = response;
                 console.log(this.registerObj)
                 this.SupplierId = this.registerObj.supplierId
-            this.supplierForm.get('supplierName')?.setValue(this.registerObj.supplierName.trim());
-            this.supplierForm.get('mobile')?.setValue(this.registerObj.mobile.trim());
-            this.supplierForm.get('phone')?.setValue(this.registerObj.phone.trim());
-            this.supplierForm.get('address')?.setValue(this.registerObj.address.trim());
-            this.supplierForm.get('panNo')?.setValue(this.registerObj.panNo.trim());
-            this.supplierForm.get('pinCode')?.setValue(this.registerObj.pinCode.trim());
-            this.supplierForm.get('fax')?.setValue(this.registerObj.fax.trim());
-            this.supplierForm.get('Freight')?.setValue(this.registerObj.freight);
-            this.supplierForm.get('email')?.setValue(this.registerObj.email.trim());
-            this.supplierForm.get('CreditPeriod')?.setValue(this.registerObj.creditPeriod.trim());
-            this.supplierForm.get('gstNo')?.setValue(this.registerObj.gstNo.trim());
-            this.supplierForm.get('ContactPerson')?.setValue(this.registerObj.contactPerson.trim());
-            this.supplierForm.get('bankNo')?.setValue(this.registerObj.bankNo.trim());
+                this.supplierForm.get('supplierName')?.setValue(this.registerObj.supplierName.trim());
+                this.supplierForm.get('mobile')?.setValue(this.registerObj.mobile.trim());
+                this.supplierForm.get('phone')?.setValue(this.registerObj.phone.trim());
+                this.supplierForm.get('address')?.setValue(this.registerObj.address.trim());
+                this.supplierForm.get('panNo')?.setValue(this.registerObj.panNo.trim());
+                this.supplierForm.get('pinCode')?.setValue(this.registerObj.pinCode.trim());
+                this.supplierForm.get('fax')?.setValue(this.registerObj.fax.trim());
+                this.supplierForm.get('Freight')?.setValue(this.registerObj.freight);
+                this.supplierForm.get('email')?.setValue(this.registerObj.email.trim());
+                this.supplierForm.get('CreditPeriod')?.setValue(this.registerObj.creditPeriod.trim());
+                this.supplierForm.get('gstNo')?.setValue(this.registerObj.gstNo.trim());
+                this.supplierForm.get('ContactPerson')?.setValue(this.registerObj.contactPerson.trim());
+                this.supplierForm.get('bankNo')?.setValue(this.registerObj.bankNo);
+                // this.supplierForm.get('bankNo')?.setValue(this.registerObj.bankNo.trim());
+                this.supplierForm.get('licNo')?.setValue(this.registerObj.licNo.trim());
+                this.supplierForm.get('dlno')?.setValue(this.registerObj.dlNo);
+                this.supplierForm.get('taxNature')?.setValue(this.registerObj.taxNature);
+                this.supplierForm.get('branch')?.setValue(this.registerObj.branch);
+                this.supplierForm.get('openingBalance')?.setValue(this.registerObj.openingBalance);
                 this.ddlStore.SetSelection(this.registerObj.mAssignSupplierToStores);
 
             }, (error) => {
@@ -82,12 +90,12 @@ export class FixSupplierComponent implements OnInit {
     }
 
     onChangeMsm(event) {
-        
-        if(event.checked==true)
-        this.msmflag=true;
-       else
-       this.msmflag=false;
-      }
+
+        if (event.checked == true)
+            this.msmflag = true;
+        else
+            this.msmflag = false;
+    }
 
     removestore(item) {
         let removedIndex = this.supplierForm.value.mAssignSupplierToStores.findIndex(x => x.storeId == item.storeId);
@@ -96,7 +104,7 @@ export class FixSupplierComponent implements OnInit {
     }
 
     onChangecity(e) {
-        
+
         this.registerObj.stateId = e.stateId
         this._supplierService.getstateId(e.stateId).subscribe((Response) => {
             console.log(Response)
@@ -104,72 +112,74 @@ export class FixSupplierComponent implements OnInit {
         });
     }
 
-    bankId=0
-    bankName=''
-    selectChangemodeofBank(obj:any){
-        this.bankId=obj.value
-        this.bankName=obj.text
+    bankId = 0
+    bankName = ''
+    selectChangemodeofBank(obj: any) {
+        this.bankId = obj.value
+        this.bankName = obj.text
     }
 
-    talukaId=0
-    selectChangemodeoftaluka(obj:any){
-        this.talukaId=obj.value
+    talukaId = 0
+    selectChangemodeoftaluka(obj: any) {
+        this.talukaId = obj.value
     }
 
     onChangestate(e) {
     }
 
-   onSubmit() {
-  
+    onSubmit() {
 
-  const msmNoControl = this.supplierForm.controls['MSMNo'];
-  if (this.msmflag === false) {
-    // msmNoControl.setValidators([Validators.required]);
-  } else {
-    msmNoControl.clearValidators();
-  }
-//   msmNoControl.updateValueAndValidity();
+        const msmNoControl = this.supplierForm.controls['MSMNo'];
+        if (this.msmflag === false) {
+            // msmNoControl.setValidators([Validators.required]);
+        } else {
+            msmNoControl.clearValidators();
+        }
+        //   msmNoControl.updateValueAndValidity();
 
-  if (this.supplierForm.valid) {
-    const formData = { ...this.supplierForm.value };
+        if (this.supplierForm.valid) {
+            const formData = { ...this.supplierForm.value };
 
-    const transformedStores = (formData.mAssignSupplierToStores || []).map((store: any) => ({
-      assignId: 0,
-      StoreId: store.storeId,
-      SupplierId: 0
-    }));
+            const transformedStores = (formData.mAssignSupplierToStores || []).map((store: any) => ({
+                assignId: 0,
+                StoreId: store.storeId,
+                SupplierId: 0
+            }));
 
-    formData.mAssignSupplierToStores = transformedStores;
+            formData.mAssignSupplierToStores = transformedStores;
 
-    formData.supplierId = this.SupplierId;
-    formData.bankName = this.bankName;
+            formData.supplierId = this.SupplierId;
+            formData.bankName = this.bankName;
+            formData.expDate = this.datepipe.transform(this.supplierForm.get('expDate').value, 'yyyy-MM-dd')
+            formData.modeofPayment = Number(formData.modeofPayment);
+            formData.termofPayment = Number(formData.termofPayment);
 
-    console.log("After transformation:", formData);
+            console.log("After transformation:", formData);
 
-    this._supplierService.SupplierSave(formData).subscribe((response) => {
-       this.onClear(true);
-      });
+            this._supplierService.SupplierSave(formData).subscribe((response) => {
+                this.onClear(true);
+            });
 
-  } else {
-  
-    const invalidFields: string[] = [];
+        } else {
 
-    Object.keys(this.supplierForm.controls).forEach((controlName) => {
-      const control = this.supplierForm.controls[controlName];
-      if (control.invalid) {
-        invalidFields.push(controlName);
-      }
-    });
+            const invalidFields: string[] = [];
 
-    if (invalidFields.length > 0) {
-      invalidFields.forEach((field) => {
-        this.toastr.warning(`Field "${field}" is invalid.`, 'Warning');
-      });
+            Object.keys(this.supplierForm.controls).forEach((controlName) => {
+                const control = this.supplierForm.controls[controlName];
+                if (control.invalid) {
+                    invalidFields.push(controlName);
+                }
+            });
+
+            if (invalidFields.length > 0) {
+                invalidFields.forEach((field) => {
+                    this.toastr.warning(`Field "${field}" is invalid.`, 'Warning');
+                });
+            }
+        }
     }
-  }
-}
 
-  
+
     onClear(val: boolean) {
         this.supplierForm.reset();
         this.dialogRef.close(val);
@@ -190,7 +200,7 @@ export class FixSupplierComponent implements OnInit {
     storeId = 0;
     supplierId = 0;
 
-    
+
     keyPressAlphanumeric(event) {
         var inp = String.fromCharCode(event.keyCode);
         if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
@@ -234,13 +244,13 @@ export class FixSupplierComponent implements OnInit {
                 { name: "pattern", Message: "Only Numbers & Characters Allowed" },
             ],
             fax: [
-              ],
+            ],
             email: [
                 { name: "required", Message: "Email is required" },
                 { name: "pattern", Message: "Only Numbers & Characters Allowed" },
             ],
             Freight: [
-               ],
+            ],
             CreditPeriod: [
                 { name: "required", Message: "Credit Period is required" },
             ],
@@ -257,14 +267,14 @@ export class FixSupplierComponent implements OnInit {
             mAssignSupplierToStores: [
                 { name: "required", Message: "Store is required" }
             ],
-            taxNature:[],
-            licNo:[],
-            dlno:[],
-            taluka:[],
-            bankId:[],
-            branch:[],
-            bankNo:[],
-            ifsccode:[],
+            taxNature: [],
+            licNo: [],
+            dlno: [],
+            taluka: [],
+            bankId: [],
+            branch: [],
+            bankNo: [],
+            ifsccode: [],
         };
     }
 }

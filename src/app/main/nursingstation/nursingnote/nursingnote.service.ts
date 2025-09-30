@@ -35,7 +35,7 @@ export class NursingnoteService {
       admId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
       tdate: [(new Date()).toISOString()],
       ttime: [(new Date()).toISOString()],
-      nursingNotes: ['',[this._FormvalidationserviceService.allowEmptyStringValidator(),Validators.maxLength(2000)]],
+      nursingNotes: ['',[this._FormvalidationserviceService.allowEmptyStringValidator()]],
       isAddedBy: [0,[this._FormvalidationserviceService.onlyNumberValidator()]]
     });
   }
