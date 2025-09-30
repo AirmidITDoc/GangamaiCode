@@ -39,7 +39,7 @@ export class EditorComponent implements OnInit {
     type: 'MultiRow',
     items: ['Undo', 'Redo', '|',
       'Bold', 'Italic', 'Underline', 'StrikeThrough', '|',
-      'FontName', 'FontSize', 'FontColor', 'BackgroundColor', '|',
+      'FontName', 'FontSize', '|',
       'SubScript', 'SuperScript', '|',
       'LowerCase', 'UpperCase', '|',
       'Formats', 'Alignments', '|', 'OrderedList', 'UnorderedList', '|',
