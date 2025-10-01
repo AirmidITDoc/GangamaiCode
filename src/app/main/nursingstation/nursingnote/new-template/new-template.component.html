@@ -30,11 +30,11 @@
                             <form [formGroup]="myform">
                                 <div fxFlex="20%" fxLayout="row">
                                     <mat-radio-group name="Category" formControlName="Category" fxLayout="row"
-                                        value="NursNote" class="gap-4">
+                                        value="0" class="gap-4" [(ngModel)]="categoryType">
                                         <mat-label><b>Category:</b></mat-label>
                                         <div fxLayout="row">
-                                            <mat-radio-button value="NursNote">NursingNote</mat-radio-button>
-                                            <mat-radio-button value='DoctorNote'>DoctorNote</mat-radio-button>
+                                            <mat-radio-button value="0">NursingNote</mat-radio-button>
+                                            <mat-radio-button value='1'>DoctorNote</mat-radio-button>
                                         </div>
                                     </mat-radio-group>
                                 </div>

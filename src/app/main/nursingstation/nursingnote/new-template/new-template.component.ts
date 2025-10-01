@@ -19,6 +19,7 @@ export class NewTemplateComponent implements OnInit {
     myTemplateform: FormGroup;
     vTemplateDesc: any;
     isActive: boolean = true;
+  categoryType="0";
 
     constructor(
         public _NursingnoteService: NursingnoteService,
@@ -44,8 +45,6 @@ export class NewTemplateComponent implements OnInit {
 
     onSubmit() {
         if (!this.myTemplateform.invalid) {
-            this.myTemplateform.get('addedBy').setValue(this.accountService.currentUserValue.userId)
-            this.myTemplateform.get('updatedBy').setValue(this.accountService.currentUserValue.userId)
             this._NursingnoteService.templateMasterSave(this.myTemplateform.value).subscribe((response) => {
                 this.onClear(true);
             });

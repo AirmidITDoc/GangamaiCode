@@ -1,0 +1,363 @@
+<div class="modal-wrapper grid-container">
+    <!-- Modal header -->
+    <div class="modal-header accent">
+        <div class="modal-header-content">
+            <div class="modal-header-title">
+                <span [@animate]="{ value: '*', params: { delay: '100ms', x: '-25px' } }">FA-Registration</span>
+            </div>
+            <div class="modal-header-right">
+                <div class="comman-date-container">
+                    <div class="comman-date">
+                        <app-common-date [screenFrom]="screenFromString" [isDisableFuture]="true"
+                            (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
+                    </div>
+                    <div class="close-icon">
+                        <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
+                            matTooltip="Close">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-body">
+        <div class="modal-body-container">
+            <mat-drawer-container class="main-container h-100-p">
+                <mat-drawer-content [class.expanded]="!(filteredOptions.length > 0)" class="overflow-hidden">
+                    <div class="main-content h-100-p overflow-auto ml-8">
+
+                        <div class="personal-panel">
+                            <mat-accordion multi>
+                                <mat-expansion-panel expanded class="mt-12">
+                                    <mat-expansion-panel-header>
+                                        <div class="flex flex-col" fxLayout="column">
+                                            <mat-panel-title  style="font-size: 19px;">Basic Information</mat-panel-title>
+                                            <small class="text-gray-600"  style="font-size: 14px;">Enter the fundamental details of the
+                                                assets</small>
+                                        </div>
+                                    </mat-expansion-panel-header>
+
+                                    <form [formGroup]="FARegFormGroup" class="mat-form-field-100">
+                                        <div fxFlex="100" fxLayout="row wrap" fxLayoutGap="10px grid">
+                                            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <airmid-textbox label="Assets Name" formControlName="assetsName"
+                                                    [value]="registerObj.assetsName" [formGroup]="FARegFormGroup"
+                                                    [maxLength]="100"></airmid-textbox>
+                                            </div>
+
+                                            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <airmid-textbox label="Asset Code" formControlName="assetCode"
+                                                    [value]="registerObj.assetCode" [formGroup]="FARegFormGroup"
+                                                    [maxLength]="100"></airmid-textbox>
+                                            </div>
+
+                                            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <airmid-dropdown label="Category" formControlName="categoryId"
+                                                    [formGroup]="FARegFormGroup" [value]="registerObj?.categoryId"
+                                                    ValueField="categoryId" TextField="categoryName"
+                                                    ApiUrl=""></airmid-dropdown>
+                                            </div>
+
+                                            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <airmid-dropdown label="Sub-Category" formControlName="subcategoryId"
+                                                    [formGroup]="FARegFormGroup" [value]="registerObj?.subcategoryId"
+                                                    ValueField="subcategoryId" TextField="subcategoryName"
+                                                    ApiUrl=""></airmid-dropdown>
+                                            </div>
+
+                                            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <airmid-textbox label="Serial Number" formControlName="serialNo"
+                                                    [value]="registerObj.serialNo" [formGroup]="FARegFormGroup"
+                                                    [maxLength]="100"></airmid-textbox>
+                                            </div>
+
+                                            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <airmid-textbox label="Model Number" formControlName="modelNo"
+                                                    [value]="registerObj.modelNo" [formGroup]="FARegFormGroup"
+                                                    [maxLength]="100"></airmid-textbox>
+                                            </div>
+
+                                            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <airmid-textbox label="Manufacturer" formControlName="manufacturer"
+                                                    [value]="registerObj.manufacturer" [formGroup]="FARegFormGroup"
+                                                    [maxLength]="100"></airmid-textbox>
+                                            </div>
+
+                                            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <airmid-dropdown label="Condition" formControlName="conditionId"
+                                                    [formGroup]="FARegFormGroup" [value]="registerObj?.conditionId"
+                                                    ValueField="conditionId" TextField="conditionName"
+                                                    ApiUrl=""></airmid-dropdown>
+                                            </div>
+
+                                            <mat-form-field appearance="outline" fxFlex>
+                                                <mat-label>Description</mat-label>
+                                                <textarea rows="3" matInput
+                                                    placeholder="Additional details about the asset..."
+                                                    formControlName="description" #Remark [maxLength]="100"></textarea>
+                                            </mat-form-field>
+
+                                        </div>
+                                    </form>
+
+                                </mat-expansion-panel>
+
+                                <mat-expansion-panel expanded class="mt-12">
+                                    <mat-expansion-panel-header>
+                                        <div class="flex flex-col" fxLayout="column">
+                                            <mat-panel-title  style="font-size: 19px;">Financial Information</mat-panel-title>
+                                            <small class="text-gray-600"  style="font-size: 14px;">Purchase details & depreciation
+                                                settings</small>
+                                        </div>
+                                    </mat-expansion-panel-header>
+                                    <form [formGroup]="FARegFormGroup" class="mat-form-field-100">
+                                        <div fxFlex="100" fxLayout="row wrap" fxLayoutGap="10px grid">
+
+                                            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <mat-form-field appearance="outline" fxFlex>
+                                                    <mat-label>Purchase Date</mat-label>
+                                                    <input matInput [matDatepicker]="picker1"
+                                                        formControlName="purchaseDate"
+                                                        [value]="registerObj.purchaseDate ?? '1900-01-01'"
+                                                        (dateChange)="onPurchaseDateChange($event)">
+                                                    <mat-datepicker-toggle matSuffix
+                                                        [for]="picker1"></mat-datepicker-toggle>
+                                                    <mat-datepicker #picker1></mat-datepicker>
+                                                </mat-form-field>
+                                            </div>
+
+                                            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <airmid-textbox label="Purchase Cost" formControlName="purchaseCost"
+                                                    [value]="registerObj.purchaseCost"
+                                                    [formGroup]="FARegFormGroup"></airmid-textbox>
+                                            </div>
+
+                                            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <airmid-textbox label="Supplier" formControlName="supplier"
+                                                    [value]="registerObj.supplier"
+                                                    [formGroup]="FARegFormGroup"></airmid-textbox>
+                                            </div>
+
+                                            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <airmid-textbox label="Invoice Number" formControlName="invoiceNo"
+                                                    [value]="registerObj.invoiceNo"
+                                                    [formGroup]="FARegFormGroup"></airmid-textbox>
+                                            </div>
+
+                                            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <airmid-dropdown label="Depreciation Method"
+                                                    formControlName="depreciationId" [formGroup]="FARegFormGroup"
+                                                    [value]="registerObj?.depreciationId" ValueField="depreciationId"
+                                                    TextField="depreciationName" ApiUrl=""></airmid-dropdown>
+                                            </div>
+
+                                            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <airmid-textbox label="Useful Life(Years)" formControlName="usefullife"
+                                                    [value]="registerObj.usefullife" [formGroup]="FARegFormGroup"
+                                                    [maxLength]="100"></airmid-textbox>
+                                            </div>
+
+                                        </div>
+                                    </form>
+                                </mat-expansion-panel>
+
+                                <mat-expansion-panel expanded class="mt-12" [(expanded)]="isExpanded1">
+                                    <mat-expansion-panel-header>
+                                        <div class="flex flex-col" fxLayout="column">
+                                            <mat-panel-title  style="font-size: 19px;">Insurance & Warranty</mat-panel-title>
+                                            <small class="text-gray-600"  style="font-size: 14px;">Protection and maintenance coverage
+                                                details</small>
+                                        </div>
+                                    </mat-expansion-panel-header>
+                                    <form [formGroup]="FARegFormGroup" class="mat-form-field-100">
+                                        <div fxFlex="100" fxLayout="row wrap" fxLayoutGap="10px grid">
+                                            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <airmid-textbox label="Insurance Provider"
+                                                    formControlName="insurancePro" [value]="registerObj.insurancePro"
+                                                    [formGroup]="FARegFormGroup"></airmid-textbox>
+                                            </div>
+
+                                            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <airmid-textbox label="Policy Number" formControlName="policyNo"
+                                                    [value]="registerObj.policyNo"
+                                                    [formGroup]="FARegFormGroup"></airmid-textbox>
+                                            </div>
+
+                                            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <mat-form-field appearance="outline" fxFlex>
+                                                    <mat-label>Insurance Expiry Date</mat-label>
+                                                    <input matInput [matDatepicker]="picker2"
+                                                        formControlName="insuranceExpDate"
+                                                        [value]="registerObj.insuranceExpDate ?? '1900-01-01'"
+                                                        (dateChange)="onInsuranceExpDateChange($event)">
+                                                    <mat-datepicker-toggle matSuffix
+                                                        [for]="picker2"></mat-datepicker-toggle>
+                                                    <mat-datepicker #picker2></mat-datepicker>
+                                                </mat-form-field>
+                                            </div>
+
+                                            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <airmid-textbox label="Warranty Provider"
+                                                    formControlName="warrantyprovider"
+                                                    [value]="registerObj.warrantyprovider"
+                                                    [formGroup]="FARegFormGroup"></airmid-textbox>
+                                            </div>
+
+                                            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <mat-form-field appearance="outline" fxFlex>
+                                                    <mat-label>Warranty Expiry Date</mat-label>
+                                                    <input matInput [matDatepicker]="picker3"
+                                                        formControlName="warrantyExpDate"
+                                                        [value]="registerObj.warrantyExpDate ?? '1900-01-01'"
+                                                        (dateChange)="onWarrantyExpDateChange($event)">
+                                                    <mat-datepicker-toggle matSuffix
+                                                        [for]="picker3"></mat-datepicker-toggle>
+                                                    <mat-datepicker #picker3></mat-datepicker>
+                                                </mat-form-field>
+                                            </div>
+
+                                            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <airmid-textbox label="AMC Provider" formControlName="amcprovider"
+                                                    [value]="registerObj.amcprovider"
+                                                    [formGroup]="FARegFormGroup"></airmid-textbox>
+                                            </div>
+
+                                            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <mat-form-field appearance="outline" fxFlex>
+                                                    <mat-label>AMC Expiry Date</mat-label>
+                                                    <input matInput [matDatepicker]="picker4"
+                                                        formControlName="amcExpDate"
+                                                        [value]="registerObj.amcExpDate ?? '1900-01-01'"
+                                                        (dateChange)="onWarrantyExpDateChange($event)">
+                                                    <mat-datepicker-toggle matSuffix
+                                                        [for]="picker4"></mat-datepicker-toggle>
+                                                    <mat-datepicker #picker4></mat-datepicker>
+                                                </mat-form-field>
+                                            </div>
+
+                                        </div>
+                                    </form>
+                                </mat-expansion-panel>
+
+                                <mat-expansion-panel expanded class="mt-12">
+                                    <mat-expansion-panel-header>
+                                        <div class="flex flex-col" fxLayout="column">
+                                            <mat-panel-title  style="font-size: 19px;">Location & Assignment</mat-panel-title>
+                                            <small class="text-gray-600"  style="font-size: 14px;">Where is the asset located & who is responsible
+                                                for it</small>
+                                        </div>
+                                    </mat-expansion-panel-header>
+                                    <form [formGroup]="FARegFormGroup" class="mat-form-field-100">
+                                        <div fxFlex="100" fxLayout="row wrap" fxLayoutGap="10px grid">
+                                            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <airmid-textbox label="Location" formControlName="location"
+                                                    [value]="registerObj.location"
+                                                    [formGroup]="FARegFormGroup"></airmid-textbox>
+                                            </div>
+
+                                            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <airmid-dropdown label="Department Name" formControlName="departmentId"
+                                                    [value]="registerObj?.departmentId" [formGroup]="FARegFormGroup"
+                                                    [mode]="autocompletedepartment"></airmid-dropdown>
+                                            </div>
+
+                                            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <airmid-textbox label="Assigned To" formControlName="assignedTo"
+                                                    [value]="registerObj.assignedTo"
+                                                    [formGroup]="FARegFormGroup"></airmid-textbox>
+                                            </div>
+
+                                            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <airmid-textbox label="Building" formControlName="building"
+                                                    [value]="registerObj.building"
+                                                    [formGroup]="FARegFormGroup"></airmid-textbox>
+                                            </div>
+
+                                            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <airmid-textbox label="Floor" formControlName="floor"
+                                                    [value]="registerObj.floor"
+                                                    [formGroup]="FARegFormGroup"></airmid-textbox>
+                                            </div>
+
+                                            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <airmid-textbox label="Room" formControlName="room"
+                                                    [value]="registerObj.room"
+                                                    [formGroup]="FARegFormGroup"></airmid-textbox>
+                                            </div>
+
+                                        </div>
+                                    </form>
+                                </mat-expansion-panel>
+
+                                <mat-expansion-panel expanded class="mt-12">
+                                    <mat-expansion-panel-header>
+                                        <div class="flex flex-col" fxLayout="column">
+                                            <mat-panel-title style="font-size: 19px;">Additional Details</mat-panel-title>
+                                            <small class="text-gray-600" style="font-size: 14px;">Status and other relevant information</small>
+                                        </div>
+                                    </mat-expansion-panel-header>
+                                    <form [formGroup]="FARegFormGroup" class="mat-form-field-100">
+                                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                            <airmid-dropdown label="Status" formControlName="statusId"
+                                                [value]="registerObj?.statusId" [formGroup]="FARegFormGroup"></airmid-dropdown>
+                                        </div>
+                                    </form>
+                                </mat-expansion-panel>
+                            </mat-accordion>
+                        </div>
+
+                    </div>
+                </mat-drawer-content>
+                <!-- <mat-drawer #serviceDrawer mode="side" [opened]="filteredOptions.length > 0" position="end"
+          class="service-drawer" style="min-width: 430px;">
+          <mat-card class="sidebar h-100-p">
+            <div class="airmid-table-container overflow-hidden">
+              <mat-table class="airmid-table" [dataSource]="filteredOptions">
+              
+                <ng-container matColumnDef="regNo">
+                  <mat-header-cell *matHeaderCellDef class="w-120">Reg No</mat-header-cell>
+                  <mat-cell *matCellDef="let element" class="w-120"><span>{{ element.regNo }}</span></mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="patientName">
+                  <mat-header-cell *matHeaderCellDef>Patient Name</mat-header-cell>
+                  <mat-cell *matCellDef="let element"><span>{{ element.patientName }}</span></mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="mobileNo">
+                  <mat-header-cell *matHeaderCellDef class="w-120">Mobile No</mat-header-cell>
+                  <mat-cell *matCellDef="let element" class="w-120"><span>{{ element.mobileNo }}</span></mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="NoData">
+                  <mat-footer-cell *matFooterCellDef>
+                    <span>No Data Found</span>
+                  </mat-footer-cell>
+                </ng-container>
+
+                <mat-header-row class="accent"
+                  *matHeaderRowDef="['regNo', 'patientName', 'mobileNo']; sticky: true"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: ['regNo', 'patientName', 'mobileNo']"
+                  (click)="onSelectPatient(row)"></mat-row>
+                <mat-footer-row *matFooterRowDef="['NoData']"
+                  [ngClass]="{ hide: filteredOptions && filteredOptions.length > 0 }"></mat-footer-row>
+              </mat-table>
+            </div>
+          </mat-card>
+        </mat-drawer> -->
+            </mat-drawer-container>
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <div class="footer-navigation-container">
+            <div class="modal-footer-buttons">
+                <button type="button" class="btn btn-danger-outline" (click)="onClose()">Close</button>
+                <button type="button" class="btn btn-primary" (click)="onSave()"
+                    [disabled]="filteredOptions.length > 0">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
