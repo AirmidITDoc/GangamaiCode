@@ -1,4 +1,10 @@
 /* Minimal styles complementing Angular Material */
+:host {
+  display: block;
+  box-sizing: border-box;
+  padding-left: max(12px, env(safe-area-inset-left));
+  padding-right: max(12px, env(safe-area-inset-right));
+}
 .metrics-grid {
     display: flex;
     height: fit-content;
@@ -10,13 +16,23 @@
     justify-content: flex-start;
 }
 
+/* (reverted) */
+
+/* Prevent flex-items from overflowing and getting clipped */
+.metrics-grid > .mat-card,
+.charts-row > .mat-card,
+.tables-row > .mat-card,
+.finance-grid > .mat-card {
+  min-width: 0;
+}
+
 .metric-card {
-  flex: 0 0 320px; /* fixed card width */
-  // width: 320px;
-  min-width: 120px;
-  max-width: 185px;
+  flex: 1 1 240px; /* fluid card width; 3-5 per row depending on space */
+  min-width: 180px;
+  max-width: 256px;
   height: fit-content;
   border-radius: 14px;
+  overflow: visible; /* allow chart callouts/labels to be visible */
 }
 
 .metric-content {
@@ -73,23 +89,27 @@
 /* Flex layout wraps naturally; no grid media queries needed */
 
 .charts-row {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: 16px;
   padding: 10px;
   width: 100%;
   margin-top: 8px;
-  flex-wrap: wrap;
 }
 
 .dashboard-container{
     display: flex;
     flex-direction: column;
     width: 100%;
+    max-width: 1400px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .chart-card {
-  flex: 1 1 49.5%;
-  min-width: 300px;
+  flex: 1 1 420px;
+  min-width: 280px;
+  overflow: hidden; /* keep legend within card bounds */
 }
 
 .tables-row {
@@ -110,12 +130,34 @@
 
 /* Stack cards on small screens */
 @media (max-width: 768px) {
-  .metric-card {
-    flex: 1 1 100%;
-    width: 100%;
-    min-width: 0;
-    max-width: 100%;
+  .dashboard-container { padding: 0 8px; }
+
+  .count-cards {
+    width: fit-content !important;
   }
+
+  // .metrics-grid {
+  //   display: grid;
+  //   grid-template-columns: 1fr;
+  //   gap: 12px;
+  //   padding: 8px;
+  // }
+
+  // .metric-card {
+  //   /* Stack and fill on small screens */
+  //   flex: 1 1 100%;
+  //   width: 100%;
+  //   min-width: 0;
+  //   max-width: 100%;
+  // }
+
+  .charts-row {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    padding: 8px;
+  }
+
+  .tables-row { padding: 8px; }
 }
 
 /* Mini cards inside Patient Mix */
@@ -131,6 +173,7 @@
   gap: 12px;
   padding: 12px 14px;
   border-radius: 12px;
+  box-sizing: border-box;
 }
 
 .mini-icon {
@@ -152,3 +195,41 @@
 @media (max-width: 600px) {
   .mini-grid { grid-template-columns: 1fr; }
 }
+
+/* Ensure ngx-charts canvases are responsive within cards */
+:host ::ng-deep ngx-charts-pie-chart,
+:host ::ng-deep ngx-charts-bar-vertical,
+:host ::ng-deep ngx-charts-bar-horizontal,
+:host ::ng-deep ngx-charts-line-chart {
+  display: block;
+  width: 100% !important;
+  height: auto;
+}
+
+/* Override Angular Material card overflow inside this component only */
+:host ::ng-deep .mat-card {
+  overflow: visible;
+}
+
+/* Improve table responsiveness */
+.full-width-table {
+  display: block;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Tweak grid gaps on very small screens */
+@media (max-width: 400px) {
+  .metrics-grid { gap: 8px; padding: 8px; }
+  .charts-row { gap: 8px; padding: 8px; }
+}
+
+/* Prevent unexpected overflow from long labels/values */
+.metric-content { flex-wrap: wrap; }
+.metric-label, .metric-value { word-break: break-word; }
+
+/* Safety: avoid horizontal scrolling from nested elements */
+.dashboard-container, .metrics-grid, .charts-row, .tables-row { max-width: 100%; overflow-x: clip; }
+
+/* Make images/svgs within cards scale down */
+::host img, ::host svg { max-width: 100%; height: auto; }
