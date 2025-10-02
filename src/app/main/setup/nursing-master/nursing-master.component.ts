@@ -24,8 +24,8 @@ export class NursingMasterComponent {
   allColumns = [
     // { heading: "Code", key: "nursingId", sort: true, align: 'left', emptySign: 'NA', width: 150 },
     { heading: "Template Name", key: "nursTempName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
-    { heading: "Template Desc ", key: "templateDesc", sort: true, align: 'left', emptySign: 'NA', width: 350 },
-    // { heading: "isActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
+    { heading: "Template Desc ", key: "templateDesc", sort: true, align: 'left', emptySign: 'NA', width: 400 },
+    { heading: "isActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
     {
       heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
         {
@@ -34,16 +34,16 @@ export class NursingMasterComponent {
           }
         }, {
           action: gridActions.delete, callback: (data: any) => {
-            // this._NursingService.deactivateTheStatus(data.consentId).subscribe((response: any) => {
-            //   this.grid.bindGridData();
-            // });
+            this._NursingService.deactivateTheStatus(data.nursingId).subscribe((response: any) => {
+              this.grid.bindGridData();
+            });
           }
         }]
-    } //Action 1-view, 2-Edit,3-delete
+    }
   ]
   allFilters = [
     { fieldName: "nursTempName", fieldValue: "", opType: OperatorComparer.StartsWith },
-    // { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+    { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
   ]
   gridConfig: gridModel = {
     apiUrl: "Nursing/NursingTemplateList",

@@ -11,6 +11,7 @@ import { PdfviewerComponent } from "app/main/pdfviewer/pdfviewer.component";
 import { ToastrService } from "ngx-toastr";
 import { Observable } from "rxjs";
 import { ReportService } from "./service/report-generation.service";
+import { Validators } from "@angular/forms";
 
 
 interface FoodNode {
@@ -62,6 +63,7 @@ export class ReportGenerationComponent implements OnInit {
     WardId: any;
     dischargeTypeId: any;
     CompanyId: any;
+    // StoreId= this._loggedUser.currentUserValue.storeId
     StoreId: any;
     SupplierId: any;
     PaymentId: any;
@@ -70,6 +72,7 @@ export class ReportGenerationComponent implements OnInit {
     CreditId: any;
     paymentId: any;
     OPIPType: any = '2';
+    type: any = '0';
     // 
     rid: number = 0;
     UId: any = 0;
@@ -117,7 +120,9 @@ export class ReportGenerationComponent implements OnInit {
     flagCreditReasonSelected: boolean = false;
     flagPaymentModeSelected: boolean = false;
     flagOPIPTypeSelected: boolean = false;
+    flagTypeSelected: boolean = false;
     // 
+    flagStoreRequired: boolean = false;
 
     constructor(
         public _ReportService: ReportService,
@@ -204,7 +209,6 @@ export class ReportGenerationComponent implements OnInit {
             this.flagServiceSelected = true;
         if (controllerPermission.filter(x => x == "CashCounter")?.length > 0)
             this.flagCashcounterSelected = true;
-        // created by raksha date:7/6/25
         if (controllerPermission.filter(x => x == "GroupName")?.length > 0)
             this.flagGroupSelected = true;
         if (controllerPermission.filter(x => x == "Class")?.length > 0)
@@ -231,6 +235,8 @@ export class ReportGenerationComponent implements OnInit {
             this.flagPaymentModeSelected = true;
         if (controllerPermission.filter(x => x == "OPIPType")?.length > 0)
             this.flagOPIPTypeSelected = true;
+        if (controllerPermission.filter(x => x == "type")?.length > 0)
+            this.flagTypeSelected = true;
         // 
     }
     SelectedUserObj(obj) {
@@ -300,6 +306,7 @@ export class ReportGenerationComponent implements OnInit {
         this._ReportService.userForm.get('DrugTypeId').setValue('');
         this._ReportService.userForm.get('ItemId').setValue('');
         this._ReportService.userForm.get('OPIPType').setValue('2');
+        this._ReportService.userForm.get('type').setValue('0');
         this.UserId = 0;
         this.DoctorId = 0;
         this.ServiceId = 0;
@@ -332,6 +339,7 @@ export class ReportGenerationComponent implements OnInit {
         this.flagItemSelected = false;
         this.flagCreditReasonSelected = false;
         this.flagOPIPTypeSelected = false;
+        this.flagTypeSelected = false;
         this.flagPaymentModeSelected = false;
     }
     CallReportData(type) {
@@ -455,6 +463,12 @@ export class ReportGenerationComponent implements OnInit {
                 paramFilterList.push({
                     "fieldName": "OPIPType",
                     "fieldValue": this._ReportService.userForm.get('OPIPType').value || "2",
+                    "opType": OperatorComparer.Equals
+                });
+            if (this.flagTypeSelected)
+                paramFilterList.push({
+                    "fieldName": "Type",
+                    "fieldValue": this._ReportService.userForm.get('type').value || "2",
                     "opType": OperatorComparer.Equals
                 });
             //   

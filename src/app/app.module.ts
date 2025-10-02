@@ -150,6 +150,11 @@ const appRoutes: Routes = [
         loadChildren: () =>
             import("./main/Management/managment.module").then((m) => m.ManagmentModule),
     },
+     {
+        path: "AssetsManagement",
+        loadChildren: () =>
+            import("./main/assetsmanagement/assetsmanagement.module").then((m) => m.AssetsmanagementModule),
+    },
     // {
     //     path: "import-excel",
     //     loadChildren: () => import("./main/import-excel/import-excel.module").then(m => m.ImportExcelModule)

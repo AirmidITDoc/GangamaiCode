@@ -25,9 +25,7 @@ export class NursingMasterService {
       nursingId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       templateDesc: ['', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
       nursTempName: ['', [this._FormvalidationserviceService.allowEmptyStringValidator(), Validators.maxLength(100)]],
-      addedBy: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      updatedBy: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      Category:[1,[this._FormvalidationserviceService.onlyNumberValidator()]]
+      category:['0',[this._FormvalidationserviceService.onlyNumberValidator()]]
     });
   }
 
@@ -36,4 +34,8 @@ export class NursingMasterService {
       return this._httpClient.PutData("Nursing/NursingTemplateUpdate/" +Param.nursingId, Param);
     } else return this._httpClient.PostData("Nursing/NursingTemplateInsert", Param);
   }
+
+  public deactivateTheStatus(m_data) {
+        return this._httpClient.DeleteData("Nursing/NursingTemplateCanel?Id=" + m_data.toString());
+    }
 }

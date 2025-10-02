@@ -19,6 +19,7 @@ export class NursingTemplateComponent {
   myTemplateform: FormGroup;
   vTemplateDesc: any;
   isActive: boolean = true;
+  categoryType="0";
 
   constructor(
     public _NursingService: NursingMasterService,
@@ -33,6 +34,7 @@ export class NursingTemplateComponent {
     if ((this.data?.nursingId ?? 0) > 0) {
       this.isActive = this.data.isActive
       this.vTemplateDesc=this.data.templateDesc
+      this.categoryType=this.data.category
       this.myTemplateform.get('templateDesc').setValue(this.vTemplateDesc)
       this.myTemplateform.get('nursTempName').setValue(this.data?.nursTempName)
     }
@@ -43,10 +45,9 @@ export class NursingTemplateComponent {
   }
 
   onSubmit() {
-    if (!this.myTemplateform.invalid) {
+    console.log(this.myTemplateform.value)
       this.myTemplateform.get('nursingId').setValue(this.data?.nursingId ?? 0)
-      this.myTemplateform.get('addedBy').setValue(this.accountService.currentUserValue.userId)
-      this.myTemplateform.get('updatedBy').setValue(this.accountService.currentUserValue.userId)
+    if (!this.myTemplateform.invalid) {
       this._NursingService.templateMasterSave(this.myTemplateform.value).subscribe((response) => {
         this.onClear(true);
       });
