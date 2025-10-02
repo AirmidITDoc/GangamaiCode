@@ -122,11 +122,11 @@ export class AppointmentlistService {
             regId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             visitDate: [(new Date()).toISOString(), this._FormvalidationserviceService.validDateValidator()],
             visitTime: [(new Date()).toISOString()],
-            PatientTypeId: [1, [Validators.required]],// this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-            UnitId: [this.accountService.currentUserValue.user.unitId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            PatientTypeId: [1, [Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            UnitId: [1, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             ConsultantDocId: ['', [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             RefDocId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            TariffId: [1, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            TariffId: [1, [Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             CompanyId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             SubCompanyId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             addedBy: [this.accountService.currentUserValue.userId, this._FormvalidationserviceService.onlyNumberValidator()],
@@ -134,7 +134,7 @@ export class AppointmentlistService {
             isCancelledBy: 0,
             isCancelled: false,
             isCancelledDate: ['1900-01-01'],
-            ClassId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            ClassId: [1, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             DepartmentId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
             patientOldNew: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             firstFollowupVisit: 0,
@@ -320,8 +320,7 @@ export class AppointmentlistService {
         return this._httpClient1.PostData("VisitDetail/RequestForOPTOIP", param);
     }
 
-    // OPD Certificate apis
-
+    
     public getCertificateList(param) {
         return this._httpClient1.PostData("OPDEMRCertificate/CertificateInformationList", param);
     }

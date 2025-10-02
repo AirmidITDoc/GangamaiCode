@@ -1010,11 +1010,11 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
     const formattedTime = this.datePipe.transform(new Date(), "HH:mm:ss");
     this.OpBillForm.get('billDate').setValue(formattedDate);
     this.OpBillForm.get('billTime').setValue(formattedDate + ' ' + formattedTime);
-
+debugger
     this.OpBillForm.get('opdipdid')?.setValue(this.vOPIPId)
     this.OpBillForm.get('tariffId')?.setValue(this.vTariffId) 
     this.OpBillForm.get('regNo')?.setValue(this.patientDetail?.regNo) 
-    this.OpBillForm.get('patientName')?.setValue(this.patientDetail?.patientName)
+    this.OpBillForm.get('patientName')?.setValue(this.PatientName)
     this.OpBillForm.get('ipdno')?.setValue(this.patientDetail?.opdNo)
     this.OpBillForm.get('ageYear')?.setValue(Number(this.patientDetail?.ageYear) || 0)
     this.OpBillForm.get('ageMonth')?.setValue(Number(this.patientDetail?.ageMonth) || 0)
@@ -1034,7 +1034,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
     this.OpBillForm.get('discComments')?.setValue(this.ConcessionReason)
     this.OpBillForm.get('cashCounterId')?.setValue(this.searchForm.get('CashCounterID')?.value)
 
-    if (this.OpBillForm.valid) {
+    if (!this.OpBillForm.invalid) {
       debugger
       this.ChargeddetailsArray.clear();
       this.BillDetailsArray.clear();
@@ -1057,7 +1057,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
       if (this.OPFooterForm.get('paymentType').value == 'PayOption') {
         let PatientHeaderObj = {};
         PatientHeaderObj['Date'] = this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd') || '01/01/1900',
-          PatientHeaderObj['PatientName'] = this.patientDetail.patientName;
+          PatientHeaderObj['PatientName'] =this.PatientName; // this.patientDetail.patientName;
         PatientHeaderObj['RegNo'] = this.RegNo;
         PatientHeaderObj['DoctorName'] = this.Doctorname;
         PatientHeaderObj['CompanyName'] = this.CompanyName;

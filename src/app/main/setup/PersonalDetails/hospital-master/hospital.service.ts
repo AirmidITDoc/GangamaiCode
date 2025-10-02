@@ -17,24 +17,21 @@ export class HospitalService {
 
   createHospitalForm(): FormGroup {
     return this._formBuilder.group({
-      HospitalId:  [0],//[ this._FormvalidationserviceService.onlyNumberValidator()]],
+      HospitalId:  [0,[this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       hospitalHeaderLine:[" "],
       HospitalName: [" ",
                 [
-                    Validators.required,
-                    Validators.pattern('^[a-zA-Z0-9 ]*$')
+                    Validators.required
                 ]
        ],
       HospitalAddress:["",
                 [
                     Validators.required,
-                    Validators.pattern('^[a-zA-Z0-9 ]*$')
-                ]
+                                  ]
             ],
       City:["",
                       [
-                          Validators.required,
-                          Validators.pattern('^[a-zA-Z0-9 ]*$')
+                          Validators.required
                       ]
                   ],
       // CityId: [""],
@@ -49,18 +46,18 @@ export class HospitalService {
       header:[" "],//, [Validators.required,this._FormvalidationserviceService.allowEmptyStringValidator()]],
       IsActive:true,
 
- opdBillingCounterId:[0, this._FormvalidationserviceService.onlyNumberValidator()],
-  opdReceiptCounterId:[0, this._FormvalidationserviceService.onlyNumberValidator()],
-  opdRefundBillCounterId:[0, this._FormvalidationserviceService.onlyNumberValidator()],
-  opdRefundBillReceiptCounterId:[0, this._FormvalidationserviceService.onlyNumberValidator()],
-  opdAdvanceCounterId:[0, this._FormvalidationserviceService.onlyNumberValidator()],
-  opdRefundAdvanceCounterId: [0, this._FormvalidationserviceService.onlyNumberValidator()],
-  ipdAdvanceCounterId:[0, this._FormvalidationserviceService.onlyNumberValidator()],
-  ipdBillingCounterId:[0, this._FormvalidationserviceService.onlyNumberValidator()],
-  ipdReceiptCounterId:[0, this._FormvalidationserviceService.onlyNumberValidator()],
-  ipdRefundOfBillCounterId:[0, this._FormvalidationserviceService.onlyNumberValidator()],
-  ipdRefundOfBillReceiptCounterId: [0, this._FormvalidationserviceService.onlyNumberValidator()],
-  ipdRefundOfAdvanceCounterId:[0, this._FormvalidationserviceService.onlyNumberValidator()],
+ opdBillingCounterId:[0, this._FormvalidationserviceService.notEmptyOrZeroValidator()],
+  opdReceiptCounterId:[0, this._FormvalidationserviceService.notEmptyOrZeroValidator()],
+  opdRefundBillCounterId:[0, this._FormvalidationserviceService.notEmptyOrZeroValidator()],
+  opdRefundBillReceiptCounterId:[0, this._FormvalidationserviceService.notEmptyOrZeroValidator()],
+  opdAdvanceCounterId:[0, this._FormvalidationserviceService.notEmptyOrZeroValidator()],
+  opdRefundAdvanceCounterId: [0, this._FormvalidationserviceService.notEmptyOrZeroValidator()],
+  ipdAdvanceCounterId:[0, this._FormvalidationserviceService.notEmptyOrZeroValidator()],
+  ipdBillingCounterId:[0, this._FormvalidationserviceService.notEmptyOrZeroValidator()],
+  ipdReceiptCounterId:[0, this._FormvalidationserviceService.notEmptyOrZeroValidator()],
+  ipdRefundOfBillCounterId:[0, this._FormvalidationserviceService.notEmptyOrZeroValidator()],
+  ipdRefundOfBillReceiptCounterId: [0, this._FormvalidationserviceService.notEmptyOrZeroValidator()],
+  ipdRefundOfAdvanceCounterId:[0, this._FormvalidationserviceService.notEmptyOrZeroValidator()],
     });
   }
 
@@ -68,14 +65,17 @@ export class HospitalService {
   createSearchForm(): FormGroup {
     return this._formBuilder.group({
       NameSearch: [""],
-      IsActive: ["1"],
+      IsActive: ['1']
     });
   }
+    public gethospitalById(Id) {
+        return this._httpClient.GetData("HospitalMaster/" + Id);
+    }
 
-   
     public HospitalInsert(Param: any) {
-        if (Param.hospitalId) {
-            return this._httpClient.PutData("HospitalMaster/", Param);
+      debugger
+        if (Param.HospitalId > 0) {
+            return this._httpClient.PutData("HospitalMaster/"+Param.HospitalId, Param);
         } else return this._httpClient.PostData("HospitalMaster", Param);
     }
 

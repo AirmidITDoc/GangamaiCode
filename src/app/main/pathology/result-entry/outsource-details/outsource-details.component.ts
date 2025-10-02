@@ -69,8 +69,12 @@ debugger
     now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
      now1.setMinutes(now1.getMinutes() - now1.getTimezoneOffset());
     // this.date = now.toISOString().slice(0, 16);
-    this.date= new Date(this.data.outSourceSampleSentDateTime).toISOString().slice(0,16)
 
+    debugger
+    if(this.data.outSourceSampleSentDateTime!=undefined)
+    this.date= new Date(this.data.outSourceSampleSentDateTime).toISOString().slice(0,16)
+else
+   this.date= new Date().toISOString().slice(0,16)
     // this.date1 = now1.toISOString().slice(0, 16);
 
    
@@ -106,6 +110,8 @@ debugger
       this.LabFormGroup.get('outSourceStatus').setValue(0)
     this.LabFormGroup.get('outSourceLabName').setValue(this.LabName)
 
+
+    
 debugger
     if(this.outSourceId==0)
        this.LabFormGroup.get('outSourceReportCollectedDateTime').setValue("01/01/1900")

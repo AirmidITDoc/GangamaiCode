@@ -137,7 +137,7 @@ debugger
       pathResultDr1: [this.VpathResultDr1 || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       pathResultDr2: 0,
       pathResultDr3: 0,
-      isTemplateTest: 0,
+      isTemplateTest: 1,
       suggestionNotes: "",
       admVisitDoctorID: [this.selectedAdvanceObj1.adm_Visit_docId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       refDoctorID: 0

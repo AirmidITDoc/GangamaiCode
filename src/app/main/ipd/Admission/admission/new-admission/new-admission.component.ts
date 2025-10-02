@@ -120,6 +120,7 @@ export class NewAdmissionComponent implements OnInit {
   showEmergencyFlag: boolean = false;
   showOPtoIPFlag: boolean = false;
   public opdList: OpList[] = [];
+  colstatus=0
   ngOnInit(): void {
 
     this.searchFormGroup = this.createSearchForm();
@@ -1146,6 +1147,8 @@ RoomId=0
 
     this._AdmissionService.getOPDToIpConvertList(Data).subscribe((response) => {
       this.dataSource.data = response.data;
+      if(this.dataSource.data.length > 0)
+        this.colstatus=1
     });
   }
 

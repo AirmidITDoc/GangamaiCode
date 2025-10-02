@@ -247,7 +247,7 @@
                                         <div fxFlex="10%" fxFlex.xs="10%" fxFlex.sm="8%">
                                             <airmid-textbox label="Price" formControlName="price"
                                                 [formGroup]="chargeForm" [validations]="getValidationMessages().price"
-                                                [type]="'number'" [value]="vPrice" [readonly]="chkIsEditable">
+                                                [type]="'number'" [value]="vPrice" [readonly]="chkIsEditable" [min]="0">
                                             </airmid-textbox>
                                         </div>
                                         <!-- <div fxFlex="10%" fxFlex.xs="10%" fxFlex.sm="10%">

@@ -420,11 +420,11 @@
                         <input type="hidden" name="RegId" formControlName="regId" [(ngModel)]="registerObj.regId" />
 
                         <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                          <airmid-dropdown label="Unit Name" formControlName="UnitId" [value]="UnitId"
+                          <airmid-dropdown label="Unit Name" formControlName="UnitId" [value]="UnitId" [value]="data?.unitId"
                             [formGroup]="VisitFormGroup" [mode]="autocompleteModeunit"></airmid-dropdown>
                         </div>
                         <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                          <airmid-dropdown label="Class Name" formControlName="ClassId" [value]="ClassId"
+                          <airmid-dropdown label="Class Name" formControlName="ClassId"  [value]="data?.classId"
                             [formGroup]="VisitFormGroup" [mode]="autocompleteModeClass"></airmid-dropdown>
                         </div>
 

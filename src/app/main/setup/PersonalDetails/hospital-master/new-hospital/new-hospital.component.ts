@@ -32,7 +32,7 @@ export class NewHospitalComponent implements OnInit {
   vCityId: any;
   HospitalId = 0;
   HospitalHeader: any = '';
- isExpanded = false;
+  isExpanded = false;
   selectedTabIndex = 0;
   autocompleteOPDBillingCounterId: string = "CashCounter";
   autocompleteOPDReceiptCounterId: string = "CashCounter";
@@ -66,25 +66,44 @@ export class NewHospitalComponent implements OnInit {
   ngOnInit(): void {
     this.HospitalForm = this._HospitalService.createHospitalForm();
     this.HospitalForm.markAllAsTouched();
+    console.log(this.data)
+    // if (this.data) {
+    //   this.registerObj = this.data;
+    //   this.HospitalId = this.registerObj.hospitalId
+    //   console.log(this.registerObj)
 
-    if (this.data) {
+    // }
+
+    if ((this.data?.hospitalId ?? 0) > 0) {
       this.registerObj = this.data;
       this.HospitalId = this.registerObj.hospitalId
-      console.log(this.registerObj)
+      this.HospitalForm.patchValue(this.data);
 
+      setTimeout(() => {
+        this._HospitalService.gethospitalById(this.data.hospitalId).subscribe((response) => {
+          this.registerObj = response;
+          console.log(this.registerObj)
+
+          
+           this.HospitalForm.get('HospitalId').setValue(this.registerObj.hospitalId)
+         this.HospitalForm.get('HospitalName').setValue(this.registerObj.hospitalName)
+          this.HospitalForm.get('HospitalAddress').setValue(this.registerObj.hospitalAddress)
+           this.HospitalForm.get('Phone').setValue(this.registerObj.phone)
+        });
+      }, 500);
     }
 
   }
 
 
   onSubmit() {
-    let hospitalarr = [];
-    debugger
+
     console.log(this.HospitalForm.value)
+    debugger
     if (!this.HospitalForm.invalid) {
-     this._HospitalService.HospitalInsert(this.HospitalForm.value).subscribe(response => {
+      this._HospitalService.HospitalInsert(this.HospitalForm.value).subscribe(response => {
         this.onClear(true);
-        this._matDialog.closeAll();
+
       });
     } else {
       let invalidFields = [];
@@ -123,18 +142,18 @@ export class NewHospitalComponent implements OnInit {
     return {
       cityId: [
         { name: "required", Message: "CityName  is required" },
-        { name: "maxlength", Message: "CityName  should not be greater than 50 char." },
-        { name: "pattern", Message: "Only Characters Allowed." }
+        // { name: "maxlength", Message: "CityName  should not be greater than 50 char." },
+        // { name: "pattern", Message: "Only Characters Allowed." }
       ],
       HospitalName: [
         { name: "required", Message: "HospitalName is required" },
-        { name: "maxlength", Message: "HospitalName should not be greater than 50 char." },
-        { name: "pattern", Message: "Only Characters Allowed." }
+        // { name: "maxlength", Message: "HospitalName should not be greater than 50 char." },
+        // { name: "pattern", Message: "Only Characters Allowed." }
       ],
       HospitalAddress: [
         { name: "required", Message: "HospitalAddress is required" },
-        { name: "maxlength", Message: "HospitalAddress should not be greater than 250 char." },
-        { name: "pattern", Message: "Only Characters Allowed." }
+        // { name: "maxlength", Message: "HospitalAddress should not be greater than 250 char." },
+        // { name: "pattern", Message: "Only Characters Allowed." }
       ],
       Email: [
         // { name: "required", Message: "Email is required" },
@@ -147,10 +166,10 @@ export class NewHospitalComponent implements OnInit {
     };
   }
 
-    onTabChange(event: MatTabChangeEvent) {
-          this.selectedTabIndex = event.index;
-      }
-  
+  onTabChange(event: MatTabChangeEvent) {
+    this.selectedTabIndex = event.index;
+  }
+
 
   onClose() {
     this._matDialog.closeAll();

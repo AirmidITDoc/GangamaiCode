@@ -110,16 +110,19 @@
                                         <img width="100" height="20px" src="assets/images/logos/WhatsApp.png">
                                     </button>
 
-                                    <!-- *ngIf="!element.isVerify" -->
-                                    <button mat-icon-button (click)="onVerify(element)">
+                                    <!-- *ngIf="element.isVerifyid==null" -->
+                                    <button mat-icon-button (click)="onVerify(element)"  >
                                         <mat-icon class="disabled-icon" style="color: chartreuse;"
                                             matTooltip="verify Menu">verified_user</mat-icon>
                                     </button>
                                     <!-- *ngIf="element.isPathOutSource == 1" -->
-                                    <button title="IsPathOutSource" (click)="Editoutsoucedata(element)" 
-                                        style="background: none; border: none; padding: 0; cursor: pointer;">
-                                        <mat-icon title="Add OutSouce">edit</mat-icon>
-                                    </button>
+                                   
+
+                                       <button title="IsRadOutSource" *ngIf="element.isRadOutSource== 1"
+                                                (click)="Editoutsoucedata(element)"
+                                                style="background: none; border: none; padding: 0; cursor: pointer;">
+                                                <mat-icon title="Add OutSouce">edit</mat-icon>
+                                            </button>
 
                                     <airmid-fileupload-icon [refId]="element.radReportId" [refType]="pathFiles"
                                         [multiple]="true"

@@ -180,9 +180,8 @@
                                                 <!-- *ngIf="showOPtoIPFlag" -->
                                                 <div>
                                                     <button mat-icon-button (click)="openPatientTable()"
-                                                        style="padding: 0px;"
-                                                        matTooltip="View OP Patient notifications">
-                                                        <mat-icon style="font-size: 24px;">notifications_none</mat-icon>
+                                                        style="padding: 0px;" matTooltip="View OP Patient notifications">
+                                                        <mat-icon style="font-size: 24px;"   [ngClass]="colstatus ? 'icon-alert' : 'icon-normal'"   title="Request ">notifications_none</mat-icon>
                                                     </button>
                                                 </div>
 

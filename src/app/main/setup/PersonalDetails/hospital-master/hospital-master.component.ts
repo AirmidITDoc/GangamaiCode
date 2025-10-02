@@ -34,22 +34,22 @@ export class HospitalMasterComponent implements OnInit {
     public _matDialog: MatDialog, public toastr: ToastrService
   ) { }
   @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
- ngAfterViewInit() {
-        // Assign the template to the column dynamically
-       this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
+  ngAfterViewInit() {
+    // Assign the template to the column dynamically
+    this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
 
-    }
+  }
 
   allcolumns = [
     { heading: "Hospital Name", key: "hospitalName", sort: true, align: 'left', emptySign: 'NA', Width: 300 },
     { heading: "Hospital Address", key: "hospitalAddress", sort: true, align: 'left', emptySign: 'NA', Width: 400 },
     { heading: "City", key: "city", sort: true, align: 'left', emptySign: 'NA', Width: 100 },
     { heading: "Pin", key: "pin", sort: true, align: 'left', emptySign: 'NA', Width: 100 },
-    { heading: "Phone", key: "phone", sort: true, align: 'left', emptySign: 'NA', Width: 100 }, 
-    
+    { heading: "Phone", key: "phone", sort: true, align: 'left', emptySign: 'NA', Width: 100 },
+
     {
       heading: "Action", key: "action", align: "right", width: 280, sticky: true, type: gridColumnTypes.template,
-      template: this.actionButtonTemplate  
+      template: this.actionButtonTemplate
     }
   ]
 
@@ -59,7 +59,7 @@ export class HospitalMasterComponent implements OnInit {
     sortField: "HospitalId",
     sortOrder: 1,
     filters: [{ fieldName: "HospitalName", fieldValue: "%", opType: OperatorComparer.StartsWith },
-    { fieldName: "IsActive", fieldValue: "0", opType: OperatorComparer.Contains }
+    { fieldName: "IsActive", fieldValue: "1", opType: OperatorComparer.Contains }
     ]
   }
 
@@ -75,21 +75,21 @@ export class HospitalMasterComponent implements OnInit {
     console.log(event)
     // if (event.key == 13) {
 
-      this.hospitalname = this.myformSearch.get('NameSearch').value + "%"
-      this.active = this.myformSearch.get('IsActive').value
-      this.getfilterdata();
+    this.hospitalname = this.myformSearch.get('NameSearch').value + "%"
+    this.active = this.myformSearch.get('IsActive').value
+    this.getfilterdata();
     // }
   }
 
   getfilterdata() {
-debugger
+    debugger
     this.gridConfig = {
       apiUrl: "HospitalMaster/HospitalMasterList",
       columnsList: this.allcolumns,
       sortField: "HospitalId",
       sortOrder: 0,
       filters: [
-        { fieldName: "HospitalName", fieldValue: this.hospitalname, opType: OperatorComparer.Contains },
+        { fieldName: "HospitalName", fieldValue: this.hospitalname, opType: OperatorComparer.StartsWith },
         { fieldName: "IsActive", fieldValue: this.active, opType: OperatorComparer.Equals },
 
       ]
@@ -102,7 +102,7 @@ debugger
   Clearfilter(event) {
     console.log(event)
     if (event == 'Hospital')
-      this.myformSearch.get('Hospital').setValue("")
+      this.myformSearch.get('NameSearch').setValue("")
 
     this.onChangeFirst(event);
   }
@@ -127,7 +127,7 @@ debugger
   //       maxHeight: "100vh",
   //       width: "100%",
   //       data: obj
-    
+
   // });
   // dialogRef.afterClosed().subscribe((result) => {
   //   if(result)
@@ -135,9 +135,9 @@ debugger
   // });
   // }
 
-  onSave(obj: any = null) {
-    // const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
-    // buttonElement.blur(); // Remove focus from the button
+  onSave(obj) {
+    const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+    buttonElement.blur(); // Remove focus from the button
     console.log(obj)
     const dialogRef = this._matDialog.open(NewHospitalComponent,
       {
@@ -147,9 +147,8 @@ debugger
         data: obj
       });
     dialogRef.afterClosed().subscribe(result => {
-        if(result)
       this.grid.bindGridData();
-      
+
     });
   }
 }
@@ -167,19 +166,19 @@ export class HospitalMaster {
   webSiteInfo: any;
   header: any;
   isActive: any;
- opdBillingCounterId: any;
- opdReceiptCounterId: any;
- opdRefundBillCounterId: any;
- opdRefundBillReceiptCounterId: any;
- opdAdvanceCounterId: any;
- opdRefundAdvanceCounterId: any;
- ipdAdvanceCounterId: any;
- ipdBillingCounterId: any;
+  opdBillingCounterId: any;
+  opdReceiptCounterId: any;
+  opdRefundBillCounterId: any;
+  opdRefundBillReceiptCounterId: any;
+  opdAdvanceCounterId: any;
+  opdRefundAdvanceCounterId: any;
+  ipdAdvanceCounterId: any;
+  ipdBillingCounterId: any;
   ipdReceiptCounterId: any;
   ipdRefundOfBillCounterId: any;
   ipdRefundOfBillReceiptCounterId: any;
   ipdRefundOfAdvanceCounterId: any;
-  hospitalHeaderLine:any;
+  hospitalHeaderLine: any;
   /**
    * Constructor
    *
@@ -188,10 +187,10 @@ export class HospitalMaster {
   constructor(HospitalMaster) {
     {
       this.hospitalId = HospitalMaster.hospitalId || 0;
-      this.hospitalName = HospitalMaster.hospitalName || "";
+      this.hospitalName= HospitalMaster.hospitalName || "";
       this.hospitalAddress = HospitalMaster.hospitalAddress || "";
       this.city = HospitalMaster.city || "";
-      this.CityId = HospitalMaster.CityId ||  0;
+      this.CityId = HospitalMaster.CityId || 0;
       this.pin = HospitalMaster.pin || "";
       this.phone = HospitalMaster.phone || "";
       this.emailId = HospitalMaster.emailId || "";
@@ -199,18 +198,18 @@ export class HospitalMaster {
       this.header = HospitalMaster.header || "";
       this.isActive = HospitalMaster.isActive || true;
       this.opdBillingCounterId = HospitalMaster.header || 0;
- this.opdReceiptCounterId = HospitalMaster.opdReceiptCounterId ||  0;
- this.opdRefundBillCounterId = HospitalMaster.opdRefundBillCounterId ||  0;
- this.opdRefundBillReceiptCounterId = HospitalMaster.opdRefundBillReceiptCounterId ||  0;
- this.opdAdvanceCounterId = HospitalMaster.opdAdvanceCounterId ||  0;
- this.opdRefundAdvanceCounterId = HospitalMaster.opdRefundAdvanceCounterId ||  0;
-this. ipdAdvanceCounterId = HospitalMaster.ipdAdvanceCounterId || 0;
- this.ipdBillingCounterId = HospitalMaster.ipdBillingCounterId || 0;
-  this.ipdReceiptCounterId = HospitalMaster.ipdReceiptCounterId ||  0;
- this.ipdRefundOfBillCounterId = HospitalMaster.ipdRefundOfBillCounterId ||  0;
- this.ipdRefundOfBillReceiptCounterId = HospitalMaster.ipdRefundOfBillReceiptCounterId ||  0;
-  this.ipdRefundOfAdvanceCounterId = HospitalMaster.ipdRefundOfAdvanceCounterId ||  0;
-  this.hospitalHeaderLine = HospitalMaster.hospitalHeaderLine ||  '';
+      this.opdReceiptCounterId = HospitalMaster.opdReceiptCounterId || 0;
+      this.opdRefundBillCounterId = HospitalMaster.opdRefundBillCounterId || 0;
+      this.opdRefundBillReceiptCounterId = HospitalMaster.opdRefundBillReceiptCounterId || 0;
+      this.opdAdvanceCounterId = HospitalMaster.opdAdvanceCounterId || 0;
+      this.opdRefundAdvanceCounterId = HospitalMaster.opdRefundAdvanceCounterId || 0;
+      this.ipdAdvanceCounterId = HospitalMaster.ipdAdvanceCounterId || 0;
+      this.ipdBillingCounterId = HospitalMaster.ipdBillingCounterId || 0;
+      this.ipdReceiptCounterId = HospitalMaster.ipdReceiptCounterId || 0;
+      this.ipdRefundOfBillCounterId = HospitalMaster.ipdRefundOfBillCounterId || 0;
+      this.ipdRefundOfBillReceiptCounterId = HospitalMaster.ipdRefundOfBillReceiptCounterId || 0;
+      this.ipdRefundOfAdvanceCounterId = HospitalMaster.ipdRefundOfAdvanceCounterId || 0;
+      this.hospitalHeaderLine = HospitalMaster.hospitalHeaderLine || '';
     }
   }
 }

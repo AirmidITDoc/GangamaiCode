@@ -23,15 +23,15 @@ import { ToastrService } from 'ngx-toastr';
 import { Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
 import { SampledetailtwoComponent } from '../sample-collection/sampledetailtwo/sampledetailtwo.component';
-import { ResultEntryOneComponent } from './result-entry-one/result-entry-one.component';
 import { ResultEntryService } from './result-entry.service';
-import { ResultEntrytwoComponent } from './result-entrytwo/result-entrytwo.component';
 import { PageNames } from 'app/main/shared/componets/airmid-fileupload/airmid-fileupload.component';
 import { NewResultTemplateComponent } from './new-result-template/new-result-template.component';
 import { NewResultEntryComponent } from './new-result-entry/new-result-entry.component';
 import { OutsourceDetailsComponent } from './outsource-details/outsource-details.component';
 import { ReportVerifyDetailsComponent } from './report-verify-details/report-verify-details.component';
 import { SamplecollectionPageComponent } from '../sample-collection/samplecollection-page/samplecollection-page.component';
+import { ConsoleLogger } from '@microsoft/signalr/dist/esm/Utils';
+import { Console } from 'console';
 
 
 
@@ -162,7 +162,7 @@ export class ResultEntryComponent implements OnInit {
     allcolumns = [
         {
             heading: "-", key: "patientType", sort: true, align: 'left', type: gridColumnTypes.template,
-            template: this.actionsIPOP, width: 80
+            template: this.actionsIPOP, width: 30
         },
         { heading: "DOA", key: "vaTime", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "Test Date", key: "pathDate", sort: true, align: 'left', emptySign: 'NA', type: 6, width: 100 },
@@ -170,7 +170,6 @@ export class ResultEntryComponent implements OnInit {
 
         { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
         { heading: "Age | Gender", key: "genderName", sort: true, align: 'left', emptySign: 'NA' },
-        // { heading: "Age Year", key: "ageYear", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "Admission No", key: "oP_IP_No", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "PBill No", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "Doctor Name", key: "doctorName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
@@ -353,9 +352,6 @@ export class ResultEntryComponent implements OnInit {
             this.dataSource1.sort = this.sort;
             this.dataSource1.paginator = this.paginator;
 
-            // this.age = this.dataSource1.data[0]['ageYear']
-            // this.gendername = this.dataSource1.data[0]['genderName']
-            // this.OPIPID = this.dataSource1.data[0]['opdipdid']
         });
     }
 
@@ -765,6 +761,7 @@ export class ResultEntryComponent implements OnInit {
 
     selectedItem: any;
     // opiptype = this.selectedItem.opdipdtype;
+    CompletdFlag = 1
     Printresultentry() {
 
         console.log(this.selection.selected);
@@ -773,6 +770,12 @@ export class ResultEntryComponent implements OnInit {
         this.selectedItem = this.selection.selected[0];
 
         this.selection.selected.forEach((element) => {
+            console.log(element);
+           
+            if (element.isCompleted)
+                this.CompletdFlag = 1
+            else
+                this.CompletdFlag = 0
             pathologyDelete.push({ pathReportId: element.pathReportId });
         });
 
@@ -781,12 +784,15 @@ export class ResultEntryComponent implements OnInit {
         };
 
         console.log(submitData);
-
-        this._SampleService.PathPrintResultentryInsert(submitData).subscribe(res => {
-            if (res) {
-                this.viewgetPathologyTestReportPdf(this.selectedItem)
-            }
-        });
+        if (this.CompletdFlag) {
+            this._SampleService.PathPrintResultentryInsert(submitData).subscribe(res => {
+                if (res) {
+                    this.viewgetPathologyTestReportPdf(this.selectedItem)
+                }
+            });
+        }else{
+            Swal.fire("Selcted test Not Completd for Print.....")
+        }
     }
 
     viewgetPathologyTestReportPdf(data) {
@@ -1010,13 +1016,13 @@ export class ResultEntryComponent implements OnInit {
 
                     "pathReportId": row.pathReportId,
                     "isVerifyid": this.accountService.currentUserValue.userId,
-                    "isVerifySign":true,
+                    "isVerifySign": true,
                     "isVerifyedDate": new Date().toISOString()
 
                 };
                 console.log(submitData);
                 this._SampleService.PathReportverifyMaster(submitData).subscribe(response => {
-                   
+
                 });
             }
         });
@@ -1106,7 +1112,7 @@ export class SampleList {
     genderId: any;
     sampleNo: any;
     suggestionNotes: any;
-
+isCompleted: any;
 
     constructor(SampleList) {
         this.VADate = SampleList.VADate || '';
@@ -1138,6 +1144,7 @@ export class SampleList {
         this.genderId = SampleList.genderId || 0
         this.sampleNo = SampleList.sampleNo || '0'
         this.suggestionNotes = SampleList.suggestionNotes || 0
+        this.isCompleted = SampleList.isCompleted || 0
     }
 
 }

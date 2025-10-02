@@ -32,18 +32,20 @@
                                             <span class="title">Hospital Details</span>
                                         </div>
 
-                                        <input type="hidden" name="HospitalId" formControlName="HospitalId"  [(ngModel)]="registerObj.hospitalId">
+                                        <input type="hidden" name="HospitalId" formControlName="HospitalId"
+                                            [(ngModel)]="registerObj.hospitalId">
                                         <div fxLayout="row wrap" fxLayoutGap="12px 0px grid">
                                             <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                 <airmid-textbox label="HospitalName" formControlName="HospitalName"
-                                                    [formGroup]="HospitalForm" [maxLength]="100"
+                                                    [formGroup]="HospitalForm" [maxLength]="400"
                                                     [(ngModel)]="registerObj.hospitalName"
-                                                    [validations]="getValidationMessages().HospitalName">
+                                                      [validations]="getValidationMessages().HospitalName">
                                                 </airmid-textbox>
                                             </div>
 
                                             <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                <airmid-textbox label="HospitalHeaderLine"  [(ngModel)]="registerObj.hospitalHeaderLine"
+                                                <airmid-textbox label="HospitalHeaderLine"
+                                                    [(ngModel)]="registerObj.hospitalHeaderLine"
                                                     formControlName="hospitalHeaderLine" [formGroup]="HospitalForm"
                                                     [maxLength]="100">
                                                 </airmid-textbox>
@@ -52,14 +54,14 @@
                                     </div>
                                     <div class="detail-container">
                                         <div class="top-header accent heading-container h-40 border-radius-4 mb-3">
-                                            <span class="title">StoreNumber Details</span>
+                                            <span class="title">Hospital Details</span>
                                         </div>
                                         <div fxLayout="row wrap" fxLayoutGap="12px 0px grid">
                                             <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                 <airmid-textbox label="HospitalAddress"
                                                     [(ngModel)]="registerObj.hospitalAddress"
                                                     formControlName="HospitalAddress" [formGroup]="HospitalForm"
-                                                    [maxLength]="100"
+                                                    [maxLength]="400"
                                                     [validations]="getValidationMessages().HospitalAddress">
                                                 </airmid-textbox>
                                             </div>
@@ -108,7 +110,8 @@
 
                                         <div fxLayout="row wrap" fxLayoutGap="12px 0px grid">
                                             <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                <airmid-dropdown label="OPD_Billing_Counter"  [value]="registerObj?.opdBillingCounterId"
+                                                <airmid-dropdown label="OPD_Billing_Counter"
+                                                    [value]="registerObj?.opdBillingCounterId"
                                                     formControlName="opdBillingCounterId"
                                                     [mode]="autocompleteOPDBillingCounterId"
                                                     [formGroup]="HospitalForm"></airmid-dropdown>
@@ -116,8 +119,9 @@
 
                                             </div>
                                             <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                <airmid-dropdown label="OPD_Receipt_Counter" 
-                                                    formControlName="opdReceiptCounterId" [value]="registerObj?.opdReceiptCounterId"
+                                                <airmid-dropdown label="OPD_Receipt_Counter"
+                                                    formControlName="opdReceiptCounterId"
+                                                    [value]="registerObj?.opdReceiptCounterId"
                                                     [mode]="autocompleteOPDReceiptCounterId"
                                                     [formGroup]="HospitalForm"></airmid-dropdown>
 
@@ -126,7 +130,8 @@
                                             <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
 
                                                 <airmid-dropdown label="OPD_Refund_Bill_Counter"
-                                                    formControlName="opdRefundBillCounterId" [value]="registerObj?.opdRefundBillCounterId"
+                                                    formControlName="opdRefundBillCounterId"
+                                                    [value]="registerObj?.opdRefundBillCounterId"
                                                     [mode]="autocompleteOPDRefundBillCounterId"
                                                     [formGroup]="HospitalForm"></airmid-dropdown>
                                             </div>
@@ -134,15 +139,17 @@
                                             <!-- added as per 8085 -->
                                             <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                 <airmid-dropdown label="OPD_Refund_Bill_Receipt_Counter"
-                                                    [mode]="autocompleteOPDRefundBillReceiptCounterId" [value]="registerObj?.opdRefundBillReceiptCounterId"
+                                                    [mode]="autocompleteOPDRefundBillReceiptCounterId"
+                                                    [value]="registerObj?.opdRefundBillReceiptCounterId"
                                                     formControlName="opdRefundBillReceiptCounterId"
                                                     [formGroup]="HospitalForm"></airmid-dropdown>
 
                                             </div>
                                             <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
 
-                                                <airmid-dropdown label="OPD_Advance_Counter" 
-                                                    formControlName="opdAdvanceCounterId" [value]="registerObj?.opdAdvanceCounterId"
+                                                <airmid-dropdown label="OPD_Advance_Counter"
+                                                    formControlName="opdAdvanceCounterId"
+                                                    [value]="registerObj?.opdAdvanceCounterId"
                                                     [mode]="autocompleteOPDAdvanceCounterId"
                                                     [formGroup]="HospitalForm"></airmid-dropdown>
 
@@ -150,8 +157,9 @@
                                             <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
 
                                                 <airmid-dropdown label="OPD_Refund_Advance_Counter"
-                                                    [mode]="autocompleteOPDRefundAdvanceCounterId" 
-                                                    formControlName="opdRefundAdvanceCounterId" [value]="registerObj?.opdRefundAdvanceCounterId"
+                                                    [mode]="autocompleteOPDRefundAdvanceCounterId"
+                                                    formControlName="opdRefundAdvanceCounterId"
+                                                    [value]="registerObj?.opdRefundAdvanceCounterId"
                                                     [formGroup]="HospitalForm"></airmid-dropdown>
                                             </div>
 
@@ -168,45 +176,51 @@
                                         <div fxLayout="row wrap" fxLayoutGap="12px 0px grid">
 
                                             <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                <airmid-dropdown label="IPD_Advance_Counter" 
-                                                    formControlName="ipdAdvanceCounterId" [value]="registerObj?.ipdAdvanceCounterId"
+                                                <airmid-dropdown label="IPD_Advance_Counter"
+                                                    formControlName="ipdAdvanceCounterId"
+                                                    [value]="registerObj?.ipdAdvanceCounterId"
                                                     [mode]="autocompleteIPDAdvanceCounterId"
                                                     [formGroup]="HospitalForm"></airmid-dropdown>
                                             </div>
 
                                             <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                <airmid-dropdown label="IPD_Billing_Counter" 
-                                                    formControlName="ipdBillingCounterId" [value]="registerObj?.ipdBillingCounterId"
+                                                <airmid-dropdown label="IPD_Billing_Counter"
+                                                    formControlName="ipdBillingCounterId"
+                                                    [value]="registerObj?.ipdBillingCounterId"
                                                     [mode]="autocompleteIPDBillingCounterId"
                                                     [formGroup]="HospitalForm"></airmid-dropdown>
                                             </div>
 
                                             <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                <airmid-dropdown label="IPD_Receipt_Counter" [value]="registerObj?.ipdReceiptCounterId"
+                                                <airmid-dropdown label="IPD_Receipt_Counter"
+                                                    [value]="registerObj?.ipdReceiptCounterId"
                                                     formControlName="ipdReceiptCounterId"
                                                     [mode]="autocompleteIPDReceiptCounterId"
                                                     [formGroup]="HospitalForm"></airmid-dropdown>
                                             </div>
 
                                             <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                <airmid-dropdown label="IPD_Refund_of_Bill_Counter" 
-                                                    formControlName="ipdRefundOfBillCounterId" [value]="registerObj?.ipdRefundOfBillCounterId"
+                                                <airmid-dropdown label="IPD_Refund_of_Bill_Counter"
+                                                    formControlName="ipdRefundOfBillCounterId"
+                                                    [value]="registerObj?.ipdRefundOfBillCounterId"
                                                     [mode]="autocompleteIPDRefundofBillCounterId"
                                                     [formGroup]="HospitalForm"></airmid-dropdown>
                                             </div>
 
                                             <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                <airmid-dropdown label="IPD_Refund_of_Bill_Receipt_Counter" [value]="registerObj?.ipdRefundOfBillReceiptCounterId"
-                                                     [mode]="autocompleteIPDRefundofBillReceiptCounterId"
+                                                <airmid-dropdown label="IPD_Refund_of_Bill_Receipt_Counter"
+                                                    [value]="registerObj?.ipdRefundOfBillReceiptCounterId"
+                                                    [mode]="autocompleteIPDRefundofBillReceiptCounterId"
                                                     formControlName="ipdRefundOfBillReceiptCounterId"
                                                     [formGroup]="HospitalForm"></airmid-dropdown>
 
                                             </div>
 
                                             <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                <airmid-dropdown label="IPD_Refund_of_Advance_Counter" 
+                                                <airmid-dropdown label="IPD_Refund_of_Advance_Counter"
                                                     [mode]="autocompleteIPDRefundofAdvanceCounterId"
-                                                    formControlName="ipdRefundOfAdvanceCounterId" [value]="registerObj?.ipdRefundOfAdvanceCounterId"
+                                                    formControlName="ipdRefundOfAdvanceCounterId"
+                                                    [value]="registerObj?.ipdRefundOfAdvanceCounterId"
                                                     [formGroup]="HospitalForm"></airmid-dropdown>
                                             </div>
 
@@ -236,6 +250,8 @@
                                                 <!-- <angular-editor (blur)="onBlur($event)" [config]="editorConfig"
                                                     [(ngModel)]="vTemplateDesc" formControlName="header">
                                                 </angular-editor> -->
+                                                <airmid-editor label="Template Details" formControlName="header"
+                                                    [(value)]="vTemplateDesc" [formGroup]="HospitalForm"></airmid-editor>
 
                                                 <mat-checkbox aria-label="Is Active" formControlName="IsActive"
                                                     (checked)=true [(ngModel)]="registerObj.isActive"
@@ -257,12 +273,12 @@
 
         </div>
     </div>
- <div class="modal-footer">
-    <div class="footer-navigation-container">
-      <div class="modal-footer-buttons">
-        <button type="button" class="btn btn-danger-outline" (click)="onClose()">Close</button>
-        <button type="button" class="btn btn-primary" (click)="onSubmit()">Save</button>
-      </div>
+    <div class="modal-footer">
+        <div class="footer-navigation-container">
+            <div class="modal-footer-buttons">
+                <button type="button" class="btn btn-danger-outline" (click)="onClose()">Close</button>
+                <button type="button" class="btn btn-primary" (click)="onSubmit()">Save</button>
+            </div>
+        </div>
     </div>
-  </div>
 </div>

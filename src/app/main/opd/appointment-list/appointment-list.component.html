@@ -79,7 +79,7 @@
 
             <airmid-autocomplete label="Search UHID / Patient Name / Mobile No" [formGroup]="searchFormGroup"
                 formControlName="RegId" fxFlex placeholderText="Search UHID / Patient Name / Mobile No"
-                ApiUrl="OutPatient/auto-complete?Keyword=" (selectionChange)="getSelectedObj($event)"
+                ApiUrl="VisitDetail/search-patient-1?Keyword=" (selectionChange)="getSelectedObj($event)"
                 ValueField="regId"></airmid-autocomplete>
 
             <!-- <airmid-autocomplete class="w-350" label="Search Reg No / Patient Name / Mobile No" [formGroup]="searchFormGroup" formControlName="regId"  placeholderText="Search Reg No / Patient Name / Mobile No" ApiUrl="VisitDetail/search-patient?Keyword=" (selectionChange)="getSelectedObj($event)"

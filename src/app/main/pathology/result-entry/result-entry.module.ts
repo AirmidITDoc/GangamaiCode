@@ -40,8 +40,7 @@ import { SharedModule } from 'app/main/shared/shared.module';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { PathTemplateViewComponent } from './path-template-view/path-template-view.component';
 import { ResultEntryComponent } from './result-entry.component';
-import { ResultEntryOneComponent } from './result-entry-one/result-entry-one.component';
-import { ResultEntrytwoComponent } from './result-entrytwo/result-entrytwo.component';
+
 import { ResultEntryService } from './result-entry.service';
 import { NewResultEntryComponent } from './new-result-entry/new-result-entry.component';
 import { NewResultTemplateComponent } from './new-result-template/new-result-template.component';
@@ -60,9 +59,7 @@ const routes: Routes = [
 @NgModule({
     declarations: [
         ResultEntryComponent,
-        ResultEntryOneComponent,
-        ResultEntrytwoComponent,
-        PathTemplateViewComponent,
+       PathTemplateViewComponent,
         NewResultEntryComponent,
         NewResultTemplateComponent,
         OutsourceDetailsComponent,

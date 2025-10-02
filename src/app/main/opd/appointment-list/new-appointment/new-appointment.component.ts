@@ -71,8 +71,8 @@ export class NewAppointmentComponent implements OnInit {
     OPIP: any = '';
     VisitId = 0;
     patienttype = 0
-    UnitId = 0;
-    ClassId = 0;
+    UnitId = 1;
+    ClassId = 1;
     Vtotalcount = 0;
     VNewcount = 0;
     VFollowupcount = 0;
@@ -166,14 +166,16 @@ export class NewAppointmentComponent implements OnInit {
 
         console.log(this._configue.configParams.OPDDefaultDepartment)
         console.log(this._configue.configParams.OPDDefaultDoctor)
-        // Swal.fire("Doc", this._configue.configParams.OPDDefaultDoctor)
+        // Swal.fire("", this._configue.configParams)
 
         this.personalFormGroup = this.createPesonalForm();
         this.personalFormGroup.markAllAsTouched();
-
+     
         this.VisitFormGroup = this._AppointmentlistService.createVisitdetailForm();
         this.VisitFormGroup.markAllAsTouched();
-
+        // this.ClassId=1
+        //  this.VisitFormGroup.get("UnitId").setValue(this.accountService.currentUserValue.user.unitId)
+       
         // this.abhaForm = this._AppointmentlistService.createAbhadetailForm();
 
         this.searchFormGroup = this.createSearchForm();
@@ -225,17 +227,14 @@ export class NewAppointmentComponent implements OnInit {
         this.registerObj.doctorId = this._configue.configParams.OPDDefaultDepartment
         this.registerObj.doctorId = this._configue.configParams.OPDDefaultDoctor
         this.selectChangedepartment(this.registerObj)
-        // this.getSelectedObjphone()
-
-
-        // this.VisitFormGroup.get("ConsultantDocId").setValue(this._configue.configParams.OPDDefaultDoctor)
+       
         if (this._configue.configParams.OPDDefaultDoctor > 0)
             this.setdoctor(this._configue.configParams.OPDDefaultDoctor)
     }
 
 
     setdoctor(data) {
-        // debugger
+      
         this._AppointmentlistService.getDoctorsByDepartment(data).subscribe((data: any) => {
             console.log(data)
             this.ddlDoctor.options = data;

@@ -30,7 +30,7 @@ export class ServiceMasterService {
                 [
                     Validators.required,
                     //Validators.pattern("^[A-Za-z0-9 ]+$")
-                    Validators.pattern('^[a-zA-Z0-9 ]*$')
+                    // Validators.pattern('^[a-zA-Z0-9 ]*$')
                 ]
             ],
             ServiceName: ["",
