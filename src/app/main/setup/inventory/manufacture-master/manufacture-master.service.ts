@@ -19,13 +19,7 @@ export class ManufactureMasterService {
         this.myformSearch = this.createSearchForm();
     }
 
-    // {
-    //     "manufId": 0,
-    //     "manufName": "Pharmacy",
-    //     "manufShortName": "Medical"
-    //   }
-
-
+  
     createManufactureForm(): FormGroup {
         return this._formBuilder.group({
             manufId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -45,10 +39,10 @@ export class ManufactureMasterService {
                     this._FormvalidationserviceService.allowEmptyStringValidator()
                 ]
             ],
-            isDeleted: false,
-            AddedBy: ["0"],
-            UpdatedBy: ["0"],
-            isActive: [true, [Validators.required]]
+            // isDeleted: false,
+            // AddedBy: ["0"],
+            // UpdatedBy: ["0"],
+            // isActive: [true, [Validators.required]]
         });
     }
     createSearchForm(): FormGroup {

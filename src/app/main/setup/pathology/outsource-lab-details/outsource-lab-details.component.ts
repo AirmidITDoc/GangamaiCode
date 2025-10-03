@@ -67,7 +67,7 @@ export class OutsourceLabDetailsComponent {
     ]
     allFilters = [
 
-        { fieldName: "OutSourceLabName", fieldValue: this.labname, opType: OperatorComparer.StartsWith },
+        { fieldName: "OutSourceLabName", fieldValue: "", opType: OperatorComparer.StartsWith },
         { fieldName: "IsActive", fieldValue: "", opType: OperatorComparer.Equals }
     ]
 
@@ -79,39 +79,39 @@ export class OutsourceLabDetailsComponent {
         filters: this.allFilters
     }
 
-    Clearfilter1(event) {
+//     Clearfilter1(event) {
 
-        if (event == 'labname')
-            this.mySearchForm.get('LabName').setValue("")
+//         if (event == 'labname')
+//             this.mySearchForm.get('LabName').setValue("")
 
-        this.onChangeFirst1();
-    }
+//         this.onChangeFirst1();
+//     }
 
-    onChangeFirst1() {
+//     onChangeFirst1() {
 
-        this.labname = this.mySearchForm.get('LabName').value + "%"
+//         this.labname = this.mySearchForm.get('LabName').value + "%"
 
-        this.getfilterdata();
-    }
-
-
-    getfilterdata() {
+//         this.getfilterdata();
+//     }
 
 
-        this.gridConfig = {
-            apiUrl: "OutSourcelabMaster/List",
-            columnsList: this.allColumns,
-            sortField: "OutSourceId",
-            sortOrder: 0,
-            filters: [
+//     getfilterdata() {
+// debugger
 
-                { fieldName: "OutSourceLabName", fieldValue: this.labname, opType: OperatorComparer.StartsWith },
-                { fieldName: "IsActive ", fieldValue: "1", opType: OperatorComparer.Equals }
-            ]
-        }
-        this.grid.gridConfig = this.gridConfig;
-        this.grid.bindGridData();
-    }
+//         this.gridConfig = {
+//             apiUrl: "OutSourcelabMaster/List",
+//             columnsList: this.allColumns,
+//             sortField: "OutSourceId",
+//             sortOrder: 0,
+//             filters: [
+
+//                 { fieldName: "OutSourceLabName", fieldValue: this.labname, opType: OperatorComparer.StartsWith },
+//                 { fieldName: "IsActive ", fieldValue: "1", opType: OperatorComparer.Equals }
+//             ]
+//         }
+//         this.grid.gridConfig = this.gridConfig;
+//         this.grid.bindGridData();
+//     }
 
   
     constructor(public _RequestforlabtestService: RequestforlabtestService, public _matDialog: MatDialog,

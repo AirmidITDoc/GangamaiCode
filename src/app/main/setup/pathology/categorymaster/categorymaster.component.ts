@@ -22,7 +22,7 @@ export class CategorymasterComponent implements OnInit {
        allcolumns = [
           
             { heading: "Category Name", key: "categoryName", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "User Name", key: "username", sort: true, align: 'left', emptySign: 'NA' },
+            // { heading: "User Name", key: "username", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
             {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [

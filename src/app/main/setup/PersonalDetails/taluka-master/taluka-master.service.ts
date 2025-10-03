@@ -21,7 +21,7 @@ export class TalukaMasterService {
     createTalukaForm(): FormGroup {
         return this._formBuilder.group({
             talukaId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
-            talukaName: [0,
+            talukaName: ['',
                [ Validators.required,
                 Validators.pattern('^[a-zA-Z0-9 ]*$'),
                  this._FormvalidationserviceService.allowEmptyStringValidator()

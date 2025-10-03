@@ -21,7 +21,7 @@ export class VillageMasterComponent implements OnInit {
      villageName: any = "";
 
         allcolumns = [
-            { heading: "Code", key: "villageId", sort: true, align: 'left', emptySign: 'NA' },
+            // { heading: "Code", key: "villageId", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "VillageName", key: "villageName", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "TalukaName", key: "talukaName", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "UserName", key: "addedByName", sort: true, align: 'left', emptySign: 'NA' },

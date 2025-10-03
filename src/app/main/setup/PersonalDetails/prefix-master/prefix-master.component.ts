@@ -49,11 +49,11 @@ export class PrefixMasterComponent implements OnInit {
                         action: gridActions.edit, visible: this.permissionService.getPermission(permissionCodes.Prefix, permissionType.Edit), callback: (data: any) => {
                             this.onSave(data);
                         }
-                    }, {
-                        action: gridActions.delete, visible: this.permissionService.getPermission(permissionCodes.Prefix, permissionType.Delete), message: 'Are you sure want to deactive?', callback: (data: any) => {
-                            this._PrefixMasterService.deactivateTheStatus(data.prefixId).subscribe((response: any) => {
-                                this.grid.bindGridData();
-                            });
+                    },  {
+                    action: gridActions.delete, callback: (data: any) => {
+                        this._PrefixMasterService.deactivateTheStatus(data.prefixId).subscribe((response: any) => {
+                            this.grid.bindGridData();
+                        });
                         }
                     }]
             } //Action 1-view, 2-Edit,3-delete

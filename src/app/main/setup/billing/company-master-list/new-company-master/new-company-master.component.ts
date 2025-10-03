@@ -21,10 +21,11 @@ export class NewCompanyMasterComponent {
      companyForm: FormGroup;
      companyFormDemo: FormGroup;
      isActive: boolean = true;
+     autocompleteModecity: string = "City";
      autocompleteModetypeName: string = "CompanyType";
      autocompleteModetariff: string = "Tariff";
      autocompleteModeofpayment: string = "PaymentMode";
-     autocompleteModecity: string = "City";
+     
      autocompleteModestate: string = "State";
      autocompleteModecountry: string = "Country";
      registerObj = new CompanyMaster({});

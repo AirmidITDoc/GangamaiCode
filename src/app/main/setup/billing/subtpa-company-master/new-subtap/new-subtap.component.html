@@ -89,10 +89,18 @@
                 <div fxLayout="row wrap" fxLayoutGap="12px grid">
                    
                     <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <airmid-textbox label="PhoneNumber" [(ngModel)]="regobj.phoneNo" formControlName="phoneNo"
+                        <!-- <airmid-textbox label="PhoneNumber" [(ngModel)]="regobj.phoneNo" formControlName="phoneNo"
                             (keypress)="keyPressCharater($event)" [formGroup]="subTpaForm"
                             [validations]="getValidationMessages().phoneNo" [maxLength]="10">
-                        </airmid-textbox>
+                        </airmid-textbox> -->
+
+                         <airmid-textbox  label="MobileNo"
+                                    formControlName="phoneNo" (keypress)="keyPressCharater($event)"
+                                    [value]="regobj.phoneNo ?? ''" [formGroup]="subTpaForm" [(ngModel)]="regobj.phoneNo"
+                                    [validations]="getValidationMessages().phoneNo" [maxLength]="10"
+                                   ></airmid-textbox>
+
+
                     </div>
                     <div fxFlex="34%" fxFlex.xs="100%" fxFlex.sm="33%">
                         <airmid-textbox label="faxNo" [(ngModel)]="regobj.faxNo" formControlName="faxNo"

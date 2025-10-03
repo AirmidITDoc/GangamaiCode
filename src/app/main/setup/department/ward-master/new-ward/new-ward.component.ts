@@ -16,7 +16,7 @@ export class NewWardComponent implements OnInit {
     roomForm: FormGroup;
     isActive:boolean=true;
     isAvailible:boolean=true;
-    autocompleteModelocation: string = "City";
+    autocompleteModelocation: string = "Location";
     autocompleteModeclass: string = "Class";
     autocompleteModeroomId: string = "Room"; 
     locationId =0;

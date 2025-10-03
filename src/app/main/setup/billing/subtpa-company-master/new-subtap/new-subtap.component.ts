@@ -71,10 +71,10 @@ export class NewSubtapComponent implements OnInit {
     }
 
     onSubmit() {
-debugger
+
 console.log(this.subTpaForm.value)
+debugger
         if (!this.subTpaForm.invalid) {
-            console.log("SubTpa Json:", this.subTpaForm.value);
             this._subTpaServiceMaster.subTpaCompanyMasterInsert(this.subTpaForm.value).subscribe((response) => {
                 this.dialogRef.close()
             });
@@ -157,8 +157,11 @@ console.log(this.subTpaForm.value)
                 { name: "pattern", Message: "Only Digits allowed." }
             ],
             phoneNo: [
-                { name: "required", Message: "Phone Number is required" },
-                { name: "pattern", Message: "Only Digits allowed." }
+                { name: "pattern", Message: "Only numbers allowed" },
+                { name: "required", Message: "Mobile No is required" },
+                { name: "minLength", Message: "10 digit required." },
+                { name: "maxLength", Message: "More than 10 digits not allowed." }
+
             ],
             faxNo: [
                 { name: "required", Message: "faxNo Number is required" },

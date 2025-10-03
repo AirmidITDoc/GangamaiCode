@@ -40,12 +40,12 @@ export class SubtpaCompanyMasterService {
              countryId: [0,[Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()
                 ],
             ],
-            phoneNo: ["",[
-                    Validators.required,
-                    Validators.pattern("^[- +()]*[0-9][- +()0-9]*$"),
-                    Validators.maxLength(10),
-                ],
-            ],
+            phoneNo: ['', [Validators.required,
+            Validators.minLength(10),
+            Validators.maxLength(10),
+            Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$"),
+            this._FormvalidationserviceService.onlyNumberValidator()
+            ]],
             faxNo: ["0"],
             isActive:[true,[Validators.required]]
         });

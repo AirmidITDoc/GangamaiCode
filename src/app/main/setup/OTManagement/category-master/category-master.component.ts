@@ -46,7 +46,7 @@ msg: any;
        
         allFilters = [
             { fieldName: "categoryName", fieldValue: "", opType: OperatorComparer.StartsWith },
-            { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+            { fieldName: "IsActive", fieldValue: "", opType: OperatorComparer.Equals }
         ]
     
  gridConfig: gridModel = {

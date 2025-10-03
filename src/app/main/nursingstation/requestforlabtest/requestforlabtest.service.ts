@@ -131,7 +131,7 @@ export class RequestforlabtestService {
     }
 
     public deactivateTheStatus(m_data) {
-        return this._httpClient1.PostData("PhoneApp", m_data);
+        return this._httpClient1.DeleteData("OutSourcelabMaster?Id=" + m_data.toString());
     }
 
     // demo list

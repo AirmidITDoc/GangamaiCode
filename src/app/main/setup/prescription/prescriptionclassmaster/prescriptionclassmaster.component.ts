@@ -25,7 +25,7 @@ export class PrescriptionclassmasterComponent implements OnInit {
       allcolumns = [
             // { heading: "Code", key: "classId", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "ClassName", key: "className", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "TemplateDescName", key: "templateDescName", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "TemplateDesc Name", key: "templateDescName", sort: true, align: 'left', emptySign: 'NA' },
             // { heading: "UserName", key: "username", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
             {

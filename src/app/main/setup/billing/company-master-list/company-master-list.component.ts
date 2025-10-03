@@ -20,19 +20,25 @@ import { FormGroup } from '@angular/forms';
 })
 export class CompanyMasterListComponent {
 
-searchform:FormGroup
-    Companyname:any;
-    type=0
+    searchform: FormGroup
+    Companyname: any;
+    type = 0
+    compTypeId = 0
+    cityId = 0
+    phoneNo = '%'
 
+
+    autocompleteModecity: string = "City";
+    autocompleteModetypeName: string = "CompanyType";
     @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
-  
-     ngAfterViewInit() {
+
+    ngAfterViewInit() {
         this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
 
     }
-  
-     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
-   
+
+    @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+
     allColumns = [
         { heading: "Code", key: "companyId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "Company Name", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
@@ -64,10 +70,13 @@ searchform:FormGroup
 
 
     allFilters = [
-        { fieldName: "CompanyName", fieldValue: "%", opType: OperatorComparer.Contains },
-        { fieldName: "IsActive", fieldValue: "1", opType: OperatorComparer.Equals }
+        { fieldName: "CompanyName", fieldValue: "%", opType: OperatorComparer.StartsWith },
+        { fieldName: "CompanyType", fieldValue: "0", opType: OperatorComparer.Equals },
+        { fieldName: "CityId", fieldValue: "0", opType: OperatorComparer.Equals },
+        { fieldName: "PhoneNo", fieldValue: "%", opType: OperatorComparer.StartsWith },
+        { fieldName: "IsActive", fieldValue: "2", opType: OperatorComparer.Equals }
     ]
-    
+
 
     gridConfig: gridModel = {
         apiUrl: "CompanyMaster/CompanyMasterList",
@@ -81,13 +90,20 @@ searchform:FormGroup
         console.log(event)
         if (event == 'CompanyNameSearch')
             this.searchform.get('CompanyNameSearch').setValue("")
+         if (event == 'phoneNo')
+            this.searchform.get('phoneNo').setValue("")
 
         this.onChangeFirst();
     }
 
     onChangeFirst() {
         this.Companyname = this.searchform.get('CompanyNameSearch').value + "%"
-        // this.type = this.myformSearch.get('IsDeletedSearch').value
+
+        this.compTypeId = this.searchform.get('compTypeId').value
+        this.cityId = this.searchform.get('cityId').value
+        this.phoneNo = this.searchform.get('phoneNo').value + "%"
+
+        this.type = this.searchform.get('Isactive').value
         this.getfilterdata();
     }
 
@@ -99,11 +115,14 @@ searchform:FormGroup
             sortField: "CompanyId",
             sortOrder: 0,
             filters: [
-                { fieldName: "CompanyName", fieldValue: this.Companyname, opType: OperatorComparer.Contains },
-                { fieldName: "IsActive", fieldValue: "1", opType: OperatorComparer.Equals }
+                { fieldName: "CompanyName", fieldValue: this.Companyname, opType: OperatorComparer.StartsWith },
+                { fieldName: "CompanyType", fieldValue: String(this.compTypeId), opType: OperatorComparer.Equals },
+                { fieldName: "CityId", fieldValue: String(this.cityId), opType: OperatorComparer.Equals },
+                { fieldName: "PhoneNo", fieldValue: String(this.phoneNo), opType: OperatorComparer.StartsWith },
+                { fieldName: "IsActive", fieldValue: String(this.type), opType: OperatorComparer.Equals }
             ]
         }
-        
+
         this.grid.gridConfig = this.gridConfig;
         this.grid.bindGridData();
     }
@@ -115,9 +134,9 @@ searchform:FormGroup
     ) { }
 
     ngOnInit(): void {
-        this.searchform=this._CompanyMasterService.createSearchForm()
+        this.searchform = this._CompanyMasterService.createSearchForm()
     }
-   
+
     AssignServCompany(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button
@@ -125,12 +144,10 @@ searchform:FormGroup
         let that = this;
         const dialogRef = this._matDialog.open(ServeToCompanyComponent,
             {
-                // maxWidth: "98vw",
-                // width: '100%',
-                // maxHeight: "95vh",
+              
                 maxWidth: "95vw",
                 maxHeight: '90vh',
-                height:'90%',
+                height: '90%',
                 width: '90%',
                 data: row
             });
@@ -170,7 +187,7 @@ searchform:FormGroup
 
                 maxWidth: "95vw",
                 maxHeight: "90vh",
-                height:'90%',
+                height: '90%',
                 width: '90%',
                 data: row
             });
@@ -225,7 +242,7 @@ export class CompanyMaster {
     emailId: any;
     TypeName: any;
     CompanyName: string;
-    isSubCompany:any;
+    isSubCompany: any;
     /**
    * Constructor
    *
@@ -273,7 +290,7 @@ export class CompanyMaster {
             this.CompanyName = CompanyMaster.CompanyName || "";
             this.isSubCompany = CompanyMaster.isSubCompany || 0;
 
-            
+
         }
     }
 }

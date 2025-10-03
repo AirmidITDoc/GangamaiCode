@@ -83,7 +83,10 @@ export class CompanyMasterService {
     createSearchForm(): FormGroup {
         return this._formBuilder.group({
             CompanyNameSearch: [""],
-            Isactive: ["1"],
+            cityId:[0, this._FormvalidationserviceService.notEmptyOrZeroValidator()],
+            compTypeId:[0, this._FormvalidationserviceService.notEmptyOrZeroValidator()],
+            phoneNo:'',
+            Isactive: ["2"],
         });
     }
 

@@ -24,7 +24,7 @@ export class ManufactureMasterComponent implements OnInit {
             { heading: "ManuFatcure Name", key: "manufName", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "Manufacture ShortName", key: "manufShortName", sort: true, align: 'left', emptySign: 'NA' },
             // { heading: "User Name", key: "AddedBy", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "IsActive", key: "!isActive", type: gridColumnTypes.status, align: "center" },
+            { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
             {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
                     {
