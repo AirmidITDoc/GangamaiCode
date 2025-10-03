@@ -77,6 +77,7 @@ export class NewHospitalComponent implements OnInit {
     if ((this.data?.hospitalId ?? 0) > 0) {
       this.registerObj = this.data;
       this.HospitalId = this.registerObj.hospitalId
+      this.HospitalForm.get('Pin').setValue(this.data.pin)
       this.HospitalForm.patchValue(this.data);
 
       setTimeout(() => {
@@ -84,11 +85,11 @@ export class NewHospitalComponent implements OnInit {
           this.registerObj = response;
           console.log(this.registerObj)
 
-          
-           this.HospitalForm.get('HospitalId').setValue(this.registerObj.hospitalId)
-         this.HospitalForm.get('HospitalName').setValue(this.registerObj.hospitalName)
+
+          this.HospitalForm.get('HospitalId').setValue(this.registerObj.hospitalId)
+          this.HospitalForm.get('HospitalName').setValue(this.registerObj.hospitalName)
           this.HospitalForm.get('HospitalAddress').setValue(this.registerObj.hospitalAddress)
-           this.HospitalForm.get('Phone').setValue(this.registerObj.phone)
+          this.HospitalForm.get('Phone').setValue(this.registerObj.phone)
         });
       }, 500);
     }
@@ -97,13 +98,17 @@ export class NewHospitalComponent implements OnInit {
 
 
   onSubmit() {
-
-    console.log(this.HospitalForm.value)
     debugger
+    if (this.HospitalForm.get('header')?.value === "") {
+      this.toastr.warning('Please enter Template Details', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
     if (!this.HospitalForm.invalid) {
+      console.log(this.HospitalForm.value)
       this._HospitalService.HospitalInsert(this.HospitalForm.value).subscribe(response => {
         this.onClear(true);
-
       });
     } else {
       let invalidFields = [];

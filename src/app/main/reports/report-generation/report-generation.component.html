@@ -91,6 +91,15 @@
                                             </airmid-autocomplete>
                                         </div>
                                     </ng-container>
+                                    <ng-container *ngIf="flagRefDoctorSelected">
+                                        <div style="max-width: 265px;">
+                                            <airmid-autocomplete label="RefDoctor" [formGroup]="_ReportService.userForm"
+                                                formControlName="RefDoctorId" placeholderText="Enter RefDoctor"
+                                                ApiUrl="Report/RefDoctorList/auto-complete?Keyword="
+                                                (selectionChange)="SelectedRefDoctorObj($event)">
+                                            </airmid-autocomplete>
+                                        </div>
+                                    </ng-container>
                                     <ng-container *ngIf="flagServiceSelected">
                                         <div style="max-width: 265px;">
                                             <airmid-autocomplete label="Service Name"
@@ -301,7 +310,7 @@
 
                         <mat-card-footer>
                             <div fxLayout="row" fxLayoutAlign="start Left" class="footer-section">
-                                <span class="text-sm text-gray-600">
+                                <span class="text-sm text-gray-600" style="font-size: 18px;">
                                     <strong>Report Summary:</strong>{{ ReportSummary }}
                                 </span>
                             </div>

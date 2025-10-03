@@ -26,30 +26,43 @@ export class HospitalMasterComponent implements OnInit {
 
   myformSearch: FormGroup;
   msg: any;
+  cityName = "";
+  phoneNo = "";
+  hospitalname = '';
+  active: any;
+  autocompletecity: string = "City";
+
   @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
   confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
-
 
   constructor(public _HospitalService: HospitalService,
     public _matDialog: MatDialog, public toastr: ToastrService
   ) { }
   @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
   ngAfterViewInit() {
-    // Assign the template to the column dynamically
     this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
-
   }
 
   allcolumns = [
     { heading: "Hospital Name", key: "hospitalName", sort: true, align: 'left', emptySign: 'NA', Width: 300 },
-    { heading: "Hospital Address", key: "hospitalAddress", sort: true, align: 'left', emptySign: 'NA', Width: 400 },
+    { heading: "Hospital Address", key: "hospitalAddress", sort: true, align: 'left', emptySign: 'NA', Width: 500 },
     { heading: "City", key: "city", sort: true, align: 'left', emptySign: 'NA', Width: 100 },
     { heading: "Pin", key: "pin", sort: true, align: 'left', emptySign: 'NA', Width: 100 },
     { heading: "Phone", key: "phone", sort: true, align: 'left', emptySign: 'NA', Width: 100 },
-
+    { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
     {
-      heading: "Action", key: "action", align: "right", width: 280, sticky: true, type: gridColumnTypes.template,
-      template: this.actionButtonTemplate
+      heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+        {
+          action: gridActions.edit, callback: (data: any) => {
+            this.onSave(data)
+          }
+        }, {
+          action: gridActions.delete, callback: (data: any) => {
+            this._HospitalService.HospitalCancle(data.hospitalId).subscribe((response: any) => {
+              this.grid.bindGridData;
+            });
+          }
+        }]
     }
   ]
 
@@ -59,6 +72,8 @@ export class HospitalMasterComponent implements OnInit {
     sortField: "HospitalId",
     sortOrder: 1,
     filters: [{ fieldName: "HospitalName", fieldValue: "%", opType: OperatorComparer.StartsWith },
+    { fieldName: "City", fieldValue: "%", opType: OperatorComparer.Equals },
+    { fieldName: "PhoneNo", fieldValue: "%", opType: OperatorComparer.Contains },
     { fieldName: "IsActive", fieldValue: "1", opType: OperatorComparer.Contains }
     ]
   }
@@ -68,17 +83,22 @@ export class HospitalMasterComponent implements OnInit {
     this.myformSearch = this._HospitalService.createSearchForm();
   }
 
-  hospitalname = '';
-  active: any;
+  selectChangecity(obj: any) {
+    console.log(obj)
+    if (obj.value !== 0)
+      this.cityName = obj.text
+    else
+      this.cityName = "%"
+    this.onChangeFirst(obj);
+  }
+
   onChangeFirst(event) {
     debugger
-    console.log(event)
-    // if (event.key == 13) {
-
     this.hospitalname = this.myformSearch.get('NameSearch').value + "%"
+    this.phoneNo = this.myformSearch.get('phoneNo').value + "%"
     this.active = this.myformSearch.get('IsActive').value
+    this.cityName = this.cityName + "%"
     this.getfilterdata();
-    // }
   }
 
   getfilterdata() {
@@ -90,8 +110,9 @@ export class HospitalMasterComponent implements OnInit {
       sortOrder: 0,
       filters: [
         { fieldName: "HospitalName", fieldValue: this.hospitalname, opType: OperatorComparer.StartsWith },
-        { fieldName: "IsActive", fieldValue: this.active, opType: OperatorComparer.Equals },
-
+        { fieldName: "City", fieldValue: this.cityName, opType: OperatorComparer.Equals },
+        { fieldName: "PhoneNo", fieldValue: this.phoneNo, opType: OperatorComparer.Contains },
+        { fieldName: "IsActive", fieldValue: "1", opType: OperatorComparer.Contains }
       ]
     }
     this.grid.gridConfig = this.gridConfig;
@@ -103,21 +124,21 @@ export class HospitalMasterComponent implements OnInit {
     console.log(event)
     if (event == 'Hospital')
       this.myformSearch.get('NameSearch').setValue("")
+    if (event == 'phoneNo')
+      this.myformSearch.get('phoneNo').setValue("")
 
     this.onChangeFirst(event);
   }
 
 
   onAdd() {
-
     const dialogRef = this._matDialog.open(NewHospitalComponent, {
       maxWidth: "95vw",
-      maxHeight: "100vh",
+      maxHeight: "95vh",
       width: "100%",
     });
     dialogRef.afterClosed().subscribe((result) => {
-      console.log("The dialog was closed - Insert Action", result);
-
+      this.grid.bindGridData();
     });
   }
 
@@ -187,7 +208,7 @@ export class HospitalMaster {
   constructor(HospitalMaster) {
     {
       this.hospitalId = HospitalMaster.hospitalId || 0;
-      this.hospitalName= HospitalMaster.hospitalName || "";
+      this.hospitalName = HospitalMaster.hospitalName || "";
       this.hospitalAddress = HospitalMaster.hospitalAddress || "";
       this.city = HospitalMaster.city || "";
       this.CityId = HospitalMaster.CityId || 0;

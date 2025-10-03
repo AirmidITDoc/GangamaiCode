@@ -15,18 +15,21 @@ import { StoreMasterService } from "../store-master.service";
     animations: fuseAnimations,
 })
 export class StoreFormMasterComponent implements OnInit {
-   
-    onBlur(e: any) {
-    this.vTemplateDesc = e.target.innerHTML;
-    throw new Error('Method not implemented.');
-    }
 
     vTemplateDesc: any;
     storeForm: FormGroup;
     isActive: boolean = true;
     registerObj = new StoreMaster({});
     autocompleteModeCashcounter: string = "CashCounter";
-    
+    VindentNo: any;
+    VgrnreturnNo: any;
+    VpurchaseNo: any;
+    VissueToDeptNo: any;
+    VgrnNo: any;
+    VdlNo: any;
+    Vgstin: any;
+    VreturnFromDeptNo: any;
+
     constructor(
         public _StoreMasterService: StoreMasterService,
         public dialogRef: MatDialogRef<StoreFormMasterComponent>,
@@ -34,41 +37,32 @@ export class StoreFormMasterComponent implements OnInit {
         public toastr: ToastrService
     ) { }
 
-    VindentNo:any;
-    VgrnreturnNo:any;
-    VpurchaseNo:any;
-    VissueToDeptNo:any;
-    VgrnNo:any;
-    VdlNo:any;
-    Vgstin:any;
-    VreturnFromDeptNo:any;
     ngOnInit(): void {
         this.storeForm = this._StoreMasterService.createStoremasterForm();
         this.storeForm.markAllAsTouched();
 
-       if(this.data){
-        console.log(this.data)
-        this.VindentNo=this.data.indentNo.trim()
-        this.VgrnreturnNo=this.data.grnreturnNo.trim()
-        this.VpurchaseNo=this.data.purchaseNo.trim()
-        this.VissueToDeptNo=this.data.issueToDeptNo.trim()
-        this.VgrnNo=this.data.grnNo.trim()
-        this.VreturnFromDeptNo=this.data.returnFromDeptNo.trim()
-        this.VdlNo=this.data.dlNo.trim()
-        this.Vgstin=this.data.gstin.trim()
-        this.vTemplateDesc = this.data.header;
-       }
-        if((this.data?.storeId??0) > 0)
-        {
+        if (this.data) {
+            console.log(this.data)
+            this.VindentNo = this.data.indentNo.trim()
+            this.VgrnreturnNo = this.data.grnreturnNo.trim()
+            this.VpurchaseNo = this.data.purchaseNo.trim()
+            this.VissueToDeptNo = this.data.issueToDeptNo.trim()
+            this.VgrnNo = this.data.grnNo.trim()
+            this.VreturnFromDeptNo = this.data.returnFromDeptNo.trim()
+            this.VdlNo = this.data.dlNo.trim()
+            this.Vgstin = this.data.gstin.trim()
+            this.vTemplateDesc = this.data.header;
+        }
+        if ((this.data?.storeId ?? 0) > 0) {
             this.updated = true;
-            this.isActive =this.data.isActive
+            this.isActive = this.data.isActive
             this.storeForm.patchValue(this.data);
-            
+
             setTimeout(() => {
                 this._StoreMasterService.getStoreById(this.data.storeId).subscribe((response) => {
                     this.registerObj = response;
-                    console.log(this.registerObj)  
-                   });
+                    console.log(this.registerObj)
+                });
             }, 500);
         }
 
@@ -76,7 +70,7 @@ export class StoreFormMasterComponent implements OnInit {
     updated: boolean = false;
 
     onSubmit() {
-       if (!this.storeForm.invalid) {
+        if (!this.storeForm.invalid) {
             console.log(this.storeForm.value)
             this._StoreMasterService.storeMasterSave(this.storeForm.value).subscribe((response) => {
                 this.onClear(true);
@@ -205,31 +199,31 @@ export class StoreFormMasterComponent implements OnInit {
             pharSalReturnCountId: [
                 { name: "required", Message: "Phar Sales Return Cash Counter is required" }
             ],
-            pharAdvId:[
+            pharAdvId: [
                 { name: "required", Message: "Phar Advance Cash Counter is required" }
             ],
-            pharAdvRefId:[
+            pharAdvRefId: [
                 { name: "required", Message: "Phar Advance Refund Cash Counter is required" }
             ],
-            pharAdvReptId:[
+            pharAdvReptId: [
                 { name: "required", Message: "Phar Advance Receipt Cash Counter is required" }
             ],
-            pharAdvRefReptId:[
+            pharAdvRefReptId: [
                 { name: "required", Message: "Phar Advance Refund Receipt Cash Counter is required" }
             ],
-            dlNo:[
+            dlNo: [
                 { name: "required", Message: "DL_No is required" }
             ],
-            gstin:[
+            gstin: [
                 { name: "required", Message: "GSTIN is required" }
             ],
-            workOrderPrefix:[
+            workOrderPrefix: [
                 { name: "required", Message: "workOrderPrefix is required" }
             ],
-            workOrderNo:[
+            workOrderNo: [
                 { name: "required", Message: "workOrderNO is required" }
             ],
         };
     }
-    
+
 }

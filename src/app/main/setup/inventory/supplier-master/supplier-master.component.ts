@@ -19,19 +19,22 @@ import { SupplierMasterService } from "./supplier-master.service";
     animations: fuseAnimations,
 })
 export class SupplierMasterComponent implements OnInit {
-    myformSearch:FormGroup;
+    myformSearch: FormGroup;
     autocompleteModestoreName: string = "Store";
+    autocompletecity: string = "City";
     // new code
-    supplierName:any="";
+    supplierName: any = "";
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
 
-    storeId= this.accountService.currentUserValue.user.storeId
-    
-    allColumns=[
-        { heading: "Code", key: "supplierId", sort: true, align: 'left', emptySign: 'NA', width:100,sticky: true },
-        { heading: "Supplier Name", key: "supplierName", sort: true, align: 'left', emptySign: 'NA', width: 350,sticky: true },
-        { heading: "Contact Person", key: "contactPerson", sort: true, align: 'left', emptySign: 'NA', width: 150,sticky: true },
+    storeId = this.accountService.currentUserValue.user.storeId
+    cityId = "0"
+    mobileNo = "%"
+
+    allColumns = [
+        { heading: "Code", key: "supplierId", sort: true, align: 'left', emptySign: 'NA', width: 100, sticky: true },
+        { heading: "Supplier Name", key: "supplierName", sort: true, align: 'left', emptySign: 'NA', width: 350, sticky: true },
+        { heading: "Contact Person", key: "contactPerson", sort: true, align: 'left', emptySign: 'NA', width: 150, sticky: true },
         { heading: "Address", key: "address", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         { heading: "City Name", key: "cityName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "Credit Period", key: "creditPeriod", sort: true, align: 'left', emptySign: 'NA', width: 100 },
@@ -49,10 +52,10 @@ export class SupplierMasterComponent implements OnInit {
                     action: gridActions.edit, callback: (data: any) => {
                         this.onSave(data);
                     }
-                }, 
+                },
                 {
                     action: gridActions.delete, callback: (data: any) => {
-                        
+
                         this._supplierService.SupplierMasterCancle(data.supplierId).subscribe((response: any) => {
                             this.grid.bindGridData();
                         });
@@ -62,9 +65,11 @@ export class SupplierMasterComponent implements OnInit {
         } //Action 1-view, 2-Edit,3-delete
     ]
 
-    allFilters=[
+    allFilters = [
         { fieldName: "SupplierName", fieldValue: "%", opType: OperatorComparer.Contains },
-        { fieldName: "StoreID", fieldValue: String(this.storeId), opType: OperatorComparer.Equals }
+        { fieldName: "StoreID", fieldValue: String(this.storeId), opType: OperatorComparer.Equals },
+        { fieldName: "CityId", fieldValue: String(this.cityId), opType: OperatorComparer.Equals },
+        { fieldName: "Mobile", fieldValue: "%", opType: OperatorComparer.Contains },
     ]
 
     gridConfig: gridModel = {
@@ -80,40 +85,51 @@ export class SupplierMasterComponent implements OnInit {
         public toastr: ToastrService,) { }
 
     ngOnInit(): void {
-        this.myformSearch=this._supplierService.createSearchForm();
+        this.myformSearch = this._supplierService.createSearchForm();
     }
     Clearfilter(event) {
-        
+
         console.log(event)
         if (event == 'SupplierNameSearch')
             this.myformSearch.get('SupplierNameSearch').setValue("")
-       
+        if (event == 'mobileNo')
+            this.myformSearch.get('mobileNo').setValue("")
+
         this.onChangeFirst();
-      }
-      
+    }
+
+    selectChangecity(obj: any) {
+        console.log(obj)
+        if (obj.value !== 0)
+            this.cityId = obj.value
+        else
+            this.cityId = "0"
+        this.onChangeFirst();
+    }
+
     onChangeFirst() {
-        
         this.supplierName = this.myformSearch.get('SupplierNameSearch').value + "%"
+        this.mobileNo = this.myformSearch.get('mobileNo').value + "%"
         this.getfilterdata();
     }
 
-    getfilterdata(){
-        
+    getfilterdata() {
+
         this.gridConfig = {
             apiUrl: "Supplier/SupplierList",
-            columnsList:this.allColumns, 
+            columnsList: this.allColumns,
             sortField: "SupplierId",
             sortOrder: 0,
-            filters:  [
+            filters: [
                 { fieldName: "SupplierName", fieldValue: this.supplierName, opType: OperatorComparer.StartsWith },
-                { fieldName: "StoreID", fieldValue: String(this.storeId), opType: OperatorComparer.Equals }
+                { fieldName: "StoreID", fieldValue: String(this.storeId), opType: OperatorComparer.Equals },
+                { fieldName: "CityId", fieldValue: String(this.cityId), opType: OperatorComparer.Equals },
+                { fieldName: "Mobile", fieldValue: this.mobileNo, opType: OperatorComparer.Contains },
             ]
         }
         this.grid.gridConfig = this.gridConfig;
-        this.grid.bindGridData(); 
+        this.grid.bindGridData();
     }
-
- 
 
     onSearchClear() {
         this._supplierService.myformSearch.reset({
@@ -131,22 +147,22 @@ export class SupplierMasterComponent implements OnInit {
         const dialogRef = this._matDialog.open(FixSupplierComponent,
             {
                 maxWidth: "95vw",
-        width: '100%',
-        height: "98vh",
+                width: '100%',
+                height: "98vh",
                 data: obj
             });
         dialogRef.afterClosed().subscribe(result => {
-                this.grid.bindGridData();
+            this.grid.bindGridData();
             console.log('The dialog was closed - Action', result);
         });
     }
-    
+
     selectChangestoreName(obj: any) {
-        
+
         this.storeId = obj.value;
         this.gridConfig.filters = [
-        { fieldName: "SupplierName", fieldValue: "%", opType: OperatorComparer.Contains },
-        { fieldName: "StoreID", fieldValue: String(this.storeId), opType: OperatorComparer.Equals }
+            { fieldName: "SupplierName", fieldValue: "%", opType: OperatorComparer.Contains },
+            { fieldName: "StoreID", fieldValue: String(this.storeId), opType: OperatorComparer.Equals }
         ]
     }
 
@@ -176,7 +192,7 @@ export class SupplierMasterComponent implements OnInit {
     // }
 
     // onDeactive(Id) {
-        
+
     //     this.confirmDialogRef = this._matDialog.open(
     //         FuseConfirmDialogComponent,
     //         {
@@ -186,7 +202,7 @@ export class SupplierMasterComponent implements OnInit {
     //     this.confirmDialogRef.componentInstance.confirmMessage =
     //         "Are you sure you want to deactive?";
     //     this.confirmDialogRef.afterClosed().subscribe((result) => {
-            
+
     //         if (result) {
     //             this._supplierService.SupplierMasterCancle(Id).subscribe((data: any) => {
     //                 //  this.msg = data
@@ -234,7 +250,7 @@ export class SupplierMaster {
     email: String;
     ModeOfPayment: Number;
     TermOfPayment: Number;
-    
+
     modeofPayment: Number;
     termofPayment: Number;
     TaxNature: Number;
@@ -263,21 +279,21 @@ export class SupplierMaster {
     Branch: any;
     VenderType: any;
     openingBalance: any;
-    supplierTime:any;
+    supplierTime: any;
     mAssignSupplierToStores: any[];
     Freight: any;
-    taxNature:any;
-    licNo:any;
-    dlno:any;
-    bankId:any;
-    branch:any;
-    bankNo:any;
-    IFSCcode:any;
-    OpeningBal:any;
-    pinCode:any;
-    taluka:any;
-    bankname:any;
-    dlNo:any;
+    taxNature: any;
+    licNo: any;
+    dlno: any;
+    bankId: any;
+    branch: any;
+    bankNo: any;
+    IFSCcode: any;
+    OpeningBal: any;
+    pinCode: any;
+    taluka: any;
+    bankname: any;
+    dlNo: any;
     /**
      * Constructor
      *
@@ -301,7 +317,7 @@ export class SupplierMaster {
             this.countryId = SupplierMaster.countryId || "";
             this.CreditPeriod = SupplierMaster.CreditPeriod || "";
             this.creditPeriod = SupplierMaster.creditPeriod || "";
-            this.taxNature=SupplierMaster.taxNature || ''
+            this.taxNature = SupplierMaster.taxNature || ''
             this.Mobile = SupplierMaster.Mobile || "";
             this.mobile = SupplierMaster.mobile || "";
             this.Phone = SupplierMaster.Phone || "";
@@ -328,10 +344,10 @@ export class SupplierMaster {
             this.Bankbranch = SupplierMaster.Bankbranch || "";
             this.ifsccode = SupplierMaster.ifsccode || "";
             this.StoreId = SupplierMaster.StoreId || 0;
-            this.dlno=SupplierMaster.dlno || 0
-            this.dlNo=SupplierMaster.dlNo || 0
-            this.bankId=SupplierMaster.bankId || 0
-            this.branch=SupplierMaster.branch || ''
+            this.dlno = SupplierMaster.dlno || 0
+            this.dlNo = SupplierMaster.dlNo || 0
+            this.bankId = SupplierMaster.bankId || 0
+            this.branch = SupplierMaster.branch || ''
             this.PinCode = SupplierMaster.PinCode || 0;
             this.Taluka = SupplierMaster.Taluka || 0;
             this.LicNo = SupplierMaster.LicNo || 0;
@@ -340,14 +356,14 @@ export class SupplierMaster {
             this.Branch = SupplierMaster.Branch || 0;
             this.VenderType = SupplierMaster.VenderType || 0;
             this.openingBalance = SupplierMaster.openingBalance || 0;
-            this.supplierTime=SupplierMaster.supplierTime || this.currentDate;
+            this.supplierTime = SupplierMaster.supplierTime || this.currentDate;
             this.mAssignSupplierToStores = SupplierMaster.mAssignSupplierToStores || [];
             this.bankNo = SupplierMaster.bankNo || 0
             this.IFSCcode = SupplierMaster.IFSCcode || 0
             this.OpeningBal = SupplierMaster.OpeningBal || 0
-            this.pinCode=SupplierMaster.pinCode || 0
-            this.taluka=SupplierMaster.taluka || 0
-            this.bankname=SupplierMaster.bankname || ''
+            this.pinCode = SupplierMaster.pinCode || 0
+            this.taluka = SupplierMaster.taluka || 0
+            this.bankname = SupplierMaster.bankname || ''
         }
     }
 }
