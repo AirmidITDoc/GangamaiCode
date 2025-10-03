@@ -20,6 +20,8 @@ export class EditGRNDetailsComponent implements OnInit {
 
   registerObj:any;
   EditGRNFrom:FormGroup;
+  screenFromString = 'grn-form';
+  dateTimeObj:any;
    // Bind dropdown mode
     dropdownMode = {
         gstCalcType: "GstCalcType",
@@ -44,30 +46,33 @@ export class EditGRNDetailsComponent implements OnInit {
       this.registerObj = this.data?.Obj;
       console.log(this.registerObj);
       this.EditGRNFrom.patchValue({
-        SupplierId: this.registerObj?.supplierId ?? 0,
-        InvoiceNo: this.registerObj?.invoiceNo,
+        supplierId: this.registerObj?.supplierId ?? 0,
+        invoiceNo: this.registerObj?.invoiceNo,
+        grnid: this.registerObj?.grnid,
       })
 
       const grnDateStr = this.registerObj?.grndate;
       if (grnDateStr) {
         const [day, month, year] = grnDateStr.split('/');
         const parsedDate = new Date(+year, +month - 1, +day);
-        this.EditGRNFrom.get('GRNDate').setValue(this.datePipe.transform(parsedDate, 'MM/dd/yyyy'));
+        this.EditGRNFrom.get('grndate').setValue(this.datePipe.transform(parsedDate, 'MM/dd/yyyy'));
       }
       const InvDateStr = this.registerObj?.grndate;
       if (InvDateStr) {
         const [day, month, year] = InvDateStr.split('/');
         const parsedDate = new Date(+year, +month - 1, +day);
-        this.EditGRNFrom.get('DateOfInvoice').setValue(this.datePipe.transform(parsedDate, 'MM/dd/yyyy'));
+        this.EditGRNFrom.get('invDate').setValue(this.datePipe.transform(parsedDate, 'MM/dd/yyyy'));
       } 
     }
   }
 CreatebarcodeForm(){
   this.EditGRNFrom = this._formbuilder.group({
-    GRNDate:['',[this._formValidationservice.allowEmptyStringValidator()]],
-    SupplierId:[0,[this._formValidationservice.notEmptyOrZeroValidator()]],
-    InvoiceNo:['',[this._formValidationservice.allowEmptyStringValidator()]],
-    DateOfInvoice:['',[this._formValidationservice.allowEmptyStringValidator()]]
+    grndate:['',[this._formValidationservice.allowEmptyStringValidator()]], 
+    grntime:['',[this._formValidationservice.allowEmptyStringValidator()]],
+    supplierId:[0,[this._formValidationservice.notEmptyOrZeroValidator()]],
+    invoiceNo:['',[this._formValidationservice.allowEmptyStringValidator()]],
+    invDate:['',[this._formValidationservice.allowEmptyStringValidator()]],
+    grnid:[0,[this._formValidationservice.notEmptyOrZeroValidator()]]
   })
 }
     //supplier details
@@ -93,19 +98,18 @@ CreatebarcodeForm(){
 
 
   OnSave(){ 
- //   let Query = "update T_CurrentStock set BarCodeSeqNo= "+ this.vBarcodeNo +"where StockId="+  this.registerObj.stockid  + "and ItemId="+  this.registerObj.ItemId  + "and StoreId="+ this.accountService.currentUserValue.user.storeId
-    // this._GRNList.getBarcodeSave(Query).subscribe(response =>{
-    //   if(response){
-    //     this.toastr.success('Record Saved Successfully.', 'Saved !', {
-    //       toastClass: 'tostr-tost custom-toast-success',
-    //   });
-    //   this.onClose();
-    //   }else{
-    //     this.toastr.error('Record Not Saved Successfully.', 'error !', {
-    //       toastClass: 'tostr-tost custom-toast-error',
-    //   });
-    //   }
-    // })
+    debugger
+    const formattedTime = this.datePipe.transform(new Date(),'hh:mm');
+    const formattedDate = this.datePipe.transform(this.EditGRNFrom.get('grndate').value,'yyyy-MM-dd');
+    const FormattedDateTime = formattedDate + ' ' + formattedTime 
+
+    this.EditGRNFrom.patchValue({ 
+      grndate:formattedDate || '1999-01-01',
+      grntime:FormattedDateTime
+    })
+     this._GRNList.UpdateSupplierDet(this.EditGRNFrom.value).subscribe(response =>{ 
+      this.onClose(); 
+    }) 
   } 
   onClose(){
     this._GRNList.GRNEmailFrom.reset();
@@ -118,6 +122,7 @@ CreatebarcodeForm(){
             ] 
         };
     }
+     
 }
 
  

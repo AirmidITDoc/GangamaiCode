@@ -85,7 +85,7 @@ export class NewGrnComponent implements OnInit, OnDestroy {
 isExpanded = false;
     sIsLoading: string = '';
     isLoading = true;
-    screenFromString = 'Common-form';
+    screenFromString = 'grn-form';
     registerObj = new ItemNameList({});
     chargeslist: any = [];
     labelPosition: 'before' | 'after' = 'after';

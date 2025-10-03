@@ -35,13 +35,14 @@ export class CreateBarcodeComponent implements OnInit{
 
   ngOnInit(): void {
     this.CreatebarcodeForm();
+    this.BarcodeSaveForm();
     if(this.data.Obj){
       this.registerObj = this.data.Obj ;
       console.log(this.registerObj);   
       this.GRNBarcodeFrom.patchValue({
         ItemName:this.registerObj?.itemName ?? '',
         BatchNo:this.registerObj?.batchNo ?? '',
-        ExpDate:this.registerObj?.batchExpDate //this.datePipe.transform(this.registerObj?.batchExpDate , 'dd/mm/yyyy')
+        ExpDate:this.registerObj?.batchExpDate, //this.datePipe.transform(this.registerObj?.batchExpDate , 'dd/mm/yyyy'),
       })
     }
   }
@@ -50,26 +51,35 @@ CreatebarcodeForm(){
     ItemName:['',[this._formValidationservice.allowEmptyStringValidator()]],
     BatchNo:['',[this._formValidationservice.allowEmptyStringValidator()]],
     ExpDate:['',[this._formValidationservice.allowEmptyStringValidator()]],
-    BarcodeNo:['']
+    BarcodeNo:[''],
   })
 }
-
-
-
+barcodeSaveform:FormGroup;
+BarcodeSaveForm(){
+  this.barcodeSaveform = this._formbuilder.group({
+  barCodeSeqNo: ['',[this._formValidationservice.allowEmptyStringValidator()]],
+  stockId: ['',[this._formValidationservice.notEmptyOrZeroValidator()]],
+  itemId: ['',[this._formValidationservice.notEmptyOrZeroValidator()]],
+  storeId:[this.accountService.currentUserValue.user.storeId,[this._formValidationservice.onlyNumberValidator()]],
+  })
+} 
   OnSave(){ 
- //   let Query = "update T_CurrentStock set BarCodeSeqNo= "+ this.vBarcodeNo +"where StockId="+  this.registerObj.stockid  + "and ItemId="+  this.registerObj.ItemId  + "and StoreId="+ this.accountService.currentUserValue.user.storeId
-    // this._GRNList.getBarcodeSave(Query).subscribe(response =>{
-    //   if(response){
-    //     this.toastr.success('Record Saved Successfully.', 'Saved !', {
-    //       toastClass: 'tostr-tost custom-toast-success',
-    //   });
-    //   this.onClose();
-    //   }else{
-    //     this.toastr.error('Record Not Saved Successfully.', 'error !', {
-    //       toastClass: 'tostr-tost custom-toast-error',
-    //   });
-    //   }
-    // })
+    debugger 
+    if((this.registerObj?.stockid ?? 0) == 0){
+     this.toastr.warning('Stockid Is 0 please verify grn ', 'Warning !', {
+         toastClass: 'tostr-tost custom-toast-warning',
+       });
+       return
+    }
+    const formvalue = this.GRNBarcodeFrom.getRawValue();
+    this.barcodeSaveform.patchValue({
+       barCodeSeqNo: formvalue?.BarcodeNo,
+       stockId: this.registerObj?.stockid,
+       itemId:this.registerObj?.itemId 
+    })  
+     this._GRNList.getBarcodeSave(this.barcodeSaveform.value).subscribe(response =>{ 
+      this.onClose(); 
+    }) 
   } 
   onClose(){
     this._GRNList.GRNEmailFrom.reset();

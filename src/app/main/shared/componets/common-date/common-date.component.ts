@@ -112,6 +112,11 @@ export class CommonDateComponent implements OnInit {
             this.timeLabel = 'WorkOrder Time';
             this.isDatePckrDisabled = false;
         }
+          else if (this.screenFromString == 'grn-form') {
+            this.dateLabel = 'GRN Date';
+            this.timeLabel = 'GRN Time';
+            this.isDatePckrDisabled = false;
+        }
         else if (this.screenFromString == 'Common-form') {
             this.dateLabel = 'Date';
             this.timeLabel = 'Time';
