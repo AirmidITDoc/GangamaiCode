@@ -44,6 +44,24 @@
                             [validations]="getValidationMessages().templateName" fxFlex [(ngModel)]="vTemplateName">
                         </airmid-textbox>
                     </div>
+
+                   <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="space-between">
+                    <mat-slide-toggle name="isTemplateWithHeader" (change)="getTemplatedetails()" formControlName="isTemplateWithHeader">
+                        isTemplateWithHeader
+                    </mat-slide-toggle>
+                    
+                    <mat-slide-toggle name="isTemplateHeaderWithImage" (change)="getTemplatedetails()" formControlName="isTemplateHeaderWithImage">
+                        isTemplateHeaderWithImage
+                    </mat-slide-toggle>
+                    
+                    <mat-slide-toggle name="isTemplateWithFooter" (change)="getTemplatedetails()" formControlName="isTemplateWithFooter">
+                        isTemplateWithFooter
+                    </mat-slide-toggle>
+                    
+                    <mat-slide-toggle name="isTemplateFooterWithImage" (change)="getTemplatedetails()" formControlName="isTemplateFooterWithImage">
+                        isTemplateFooterWithImage
+                    </mat-slide-toggle>
+                    </div>
                 </form>
             </div>
 
@@ -67,7 +85,7 @@
                         <div class="modal-card-header">
                             <span style="font-weight: bold;">Template Content</span>
                         </div>
-                        <airmid-editor formControlName="TemplateBody" [formGroup]="templateForm"
+                        <airmid-editor formControlName="TemplateContent" [formGroup]="templateForm"
                             (valueChange)="onEditorValueChange($event)">
                         </airmid-editor>
                     </div>

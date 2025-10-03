@@ -203,7 +203,7 @@ export class IpSalesReturnComponent implements OnInit {
     return this.formBuilder.group({
       itemId: [element?.ItemId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       issueQty: [element?.ReturnQty ?? 0, [, this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      storeId: [this.accountService.currentUserValue.storeId],
+      storeId: [this.accountService.currentUserValue.user.storeId],
       istkId: [element?.StkID ?? 0, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
     });
   }

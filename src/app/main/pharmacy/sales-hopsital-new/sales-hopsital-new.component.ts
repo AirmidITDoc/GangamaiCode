@@ -544,6 +544,7 @@ export class SalesHospitalNewComponent implements OnInit {
             },
         });
         dialogRef.afterClosed().subscribe((result1) => {
+            debugger
             let isEscaped = result1.vEscflag;
             if (isEscaped && !isEditable) {
                 this._salesService.ItemSearchGroup.get('ItemId').setValue('a');
@@ -570,6 +571,12 @@ export class SalesHospitalNewComponent implements OnInit {
             }
 
             this.selectedItem = result;
+            let MRP = 0;
+            if(this.ItemSubform.get('IsPurchaseWsie').value == true){
+              MRP = result.purchaseRate;
+              }else{
+              MRP = result.unitMRP;
+             }
             if (isEditable) {
                 // If it is table row then update new values
                 const updatedItem = {
@@ -601,7 +608,7 @@ export class SalesHospitalNewComponent implements OnInit {
                 Qty: '',
                 DiscAmt: 0,
                 GSTPer: result.vatPercentage,
-                MRP: result.unitMRP,
+                MRP: MRP,
             })
         });
     }
@@ -827,6 +834,7 @@ export class SalesHospitalNewComponent implements OnInit {
             this.add = false;
             this.ItemFormreset();
             this.getUpdateNetAmtSum(this.saleSelectedDatasource.data)
+            this.getPurchaseRateWise();
             this._salesService.ItemSearchGroup.markAllAsTouched()
             const ItemIdElement = document.querySelector(`[name='ItemId']`) as HTMLElement;
             if (ItemIdElement) {
@@ -891,6 +899,7 @@ export class SalesHospitalNewComponent implements OnInit {
         }
         Swal.fire('Success !', 'ItemList Row Deleted Successfully', 'success');
         this.getUpdateNetAmtSum(this.saleSelectedDatasource.data)
+        this.getPurchaseRateWise();
     }
     getUpdateNetAmtSum(data) {
         debugger
@@ -1057,7 +1066,7 @@ export class SalesHospitalNewComponent implements OnInit {
         this.PharmaSalesForm.get('sales.vatAmount').setValue(formValue?.vatAmount ?? 0)
         this.PharmaSalesForm.get('sales.discAmount').setValue(formValue?.discAmount ?? 0)
         this.PharmaSalesForm.get('sales.netAmount').setValue(Math.round(formValue?.netAmount ?? 0))
-        this.PharmaSalesForm.get('sales.roundOff').setValue(Math.round(formValue?.netAmount ?? 0))
+        this.PharmaSalesForm.get('sales.roundOff').setValue(Math.round(formValue?.roundoffAmt ?? 0))
         this.PharmaSalesForm.get('sales.regId').setValue(this.RegId)
         this.PharmaSalesForm.get('sales.concessionReasonId').setValue(formValue?.concessionReasonId ?? 0)
         this.PharmaSalesForm.get('sales.opIpId').setValue(this.OP_IP_Id)
@@ -2209,12 +2218,12 @@ export class SalesHospitalNewComponent implements OnInit {
     }
     getPurchaseRateWise(){
     debugger
-    // if(!this.saleSelectedDatasource.data.length){
-    //   this.ItemSubform.get('IsPurchaseWsie').enable();
+    if(!this.saleSelectedDatasource.data.length){
+      this.ItemSubform.get('IsPurchaseWsie').enable();
    
-    // }else{
-    //   this.ItemSubform.get('IsPurchaseWsie').disable();
-    // } 
+    }else{
+      this.ItemSubform.get('IsPurchaseWsie').disable();
+    } 
   }
 }
 

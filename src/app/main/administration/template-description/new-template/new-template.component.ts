@@ -4,6 +4,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { fuseAnimations } from '@fuse/animations';
 import { ToastrService } from 'ngx-toastr';
 import { TemplatedescriptionService } from '../templatedescription.service';
+import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 
 @Component({
   selector: 'app-new-template',
@@ -14,6 +15,7 @@ import { TemplatedescriptionService } from '../templatedescription.service';
 })
 export class NewTemplateComponent implements OnInit {
   templateForm: FormGroup;
+  TemplateSaveForm: FormGroup;
   vTemplateDesc: any;
   vTemplateName: any;
   templateId=0;
@@ -23,11 +25,13 @@ export class NewTemplateComponent implements OnInit {
     public _TemplatedescriptionService: TemplatedescriptionService, private _formBuilder: UntypedFormBuilder,
     public dialogRef: MatDialogRef<NewTemplateComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    public toastr: ToastrService
+    public toastr: ToastrService,
+    public _FormvalidationserviceService: FormvalidationserviceService,
   ) { }
 
   ngOnInit(): void {
     this.templateForm = this.createRadiologytemplateForm(); 
+    this.TemplateSaveForm = this.createSaveTemplateForm();
     if((this.data?.Obj ?? 0)>0){
     console.log(this.data)
     this.templateId=this.data.templateId
@@ -36,60 +40,81 @@ export class NewTemplateComponent implements OnInit {
     this.templateForm.patchValue(this.data);
     } 
   }
-
+  onEditorValueChange(content: string) {
+    console.log("Got from editor:", content);
+    //this.templateForm.get('doctorsNotes')?.setValue(content);
+  }
   createRadiologytemplateForm(): FormGroup {
     return this._formBuilder.group({
       templateId: [0], 
       DepartmentId: [0], 
       CategoryId: [0],
-      templateName: ['',[
-          Validators.required,
-          // Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
-        ]
-      ],
+      templateName: ['',[ Validators.required]],
       templateDesc: this.vTemplateDesc,
       isActive: [true],
-      TemplateBody:[''],
+      TemplateContent:[''],
       Templateheader:[''],
-      TemplateFooter:['']
+      TemplateFooter:[''],
+      isTemplateWithHeader:[false],
+      isTemplateHeaderWithImage:[false],
+      isTemplateWithFooter:[false],
+      isTemplateFooterWithImage:[false] 
     });
   }
 
-  onEditorValueChange(content: string) {
-    console.log("Got from editor:", content);
-    //this.templateForm.get('doctorsNotes')?.setValue(content);
-  }
+  createSaveTemplateForm(){
+    return this._formBuilder.group({ 
+      templateId:[0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+      templateName:['',[this._FormvalidationserviceService.allowEmptyStringValidator()]],
+      templateDescription:['',[this._FormvalidationserviceService.allowEmptyStringValidator()]],
+      departmentId:[0,[this._FormvalidationserviceService.onlyNumberValidator(),this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      categoryName:['',[this._FormvalidationserviceService.allowEmptyStringValidator()]],
+      templateHeader:['',[this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+      templateFooter:['',[this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+      isTemplateWithHeader:[false],
+      isTemplateHeaderWithImage:[false],
+      isTemplateWithFooter:[false],
+      isTemplateFooterWithImage:[false] 
+    })
+  }  
   onSubmit() {
     console.log(this.templateForm.value)
+   const formValue = this.templateForm.getRawValue();
+    this.TemplateSaveForm.patchValue({
+      templateId: formValue?.templateId,
+      templateName: formValue?.templateName,
+      templateDescription: formValue?.TemplateContent,
+      departmentId: formValue?.DepartmentId,
+      categoryName: formValue?.CategoryId,
+      templateHeader: formValue?.Templateheader,
+      templateFooter: formValue?.TemplateFooter,
+      isTemplateWithHeader: formValue?.isTemplateWithHeader,
+      isTemplateHeaderWithImage: formValue?.isTemplateHeaderWithImage,
+      isTemplateWithFooter: formValue?.isTemplateWithFooter,
+      isTemplateFooterWithImage: formValue?.isTemplateFooterWithImage,
+    })
   
-    if (this.templateForm.valid) {
-     
-     var mdata = {
-          "templateId": this.templateId,
-          "templateName": this.templateForm.get("templateName").value,
-          "templateDescription": this.templateForm.get("templateDesc").value,
-          "isActive": true
-        }
-        console.log('json mdata:', mdata);
-        
-        this._TemplatedescriptionService.TemplateSave(mdata).subscribe((response) => {
+    if (this.TemplateSaveForm.valid) { 
+    
+        this.TemplateSaveForm.patchValue({templateId:this.templateId});
+      console.log('json mdata:', this.TemplateSaveForm.value); 
+        this._TemplatedescriptionService.TemplateSave( this.TemplateSaveForm.value).subscribe((response) => {
           this.onClose();
         });
       }  else {
         let invalidFields = [];
-        if (this.templateForm.invalid) {
-            for (const controlName in this.templateForm.controls) {
-                if (this.templateForm.controls[controlName].invalid) { invalidFields.push(`Template Form: ${controlName}`); }
+        if (this.TemplateSaveForm.invalid) {
+            for (const controlName in this.TemplateSaveForm.controls) {
+                if (this.TemplateSaveForm.controls[controlName].invalid) { invalidFields.push(`Template Form: ${controlName}`); }
             }
-        }
-       
+        } 
         if (invalidFields.length > 0) {
             invalidFields.forEach(field => { this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',); });
-        }
-
+        } 
       }
   }
   onClose() {
+    this.templateId = 0;
     this.templateForm.reset();
     this.dialogRef.close();
   } 
@@ -99,9 +124,11 @@ export class NewTemplateComponent implements OnInit {
   }
    selectChangedepartment(obj: any) { 
     if (obj.value) {
-      console.log(obj)
-      
+      console.log(obj) 
     }   
+  }
+  getTemplatedetails(){
+    
   }
     getValidationMessages() {
     return { 

@@ -509,8 +509,8 @@ export class GoodReceiptnoteComponent implements OnInit {
     Onbarcode(contact){
         const dialogRef = this._matDialog.open(CreateBarcodeComponent,
             {
-                width:"48%",
-                height:"40%",
+                width:"40%",
+                height:"50%",
                 data:{
                     Obj:contact
                 }
@@ -523,8 +523,8 @@ export class GoodReceiptnoteComponent implements OnInit {
         EditSupplierdetails(contact){
         const dialogRef = this._matDialog.open(EditGRNDetailsComponent,
             {
-                width:"60%",
-                height:"35%",
+                width:"35%",
+                height:"40%",
                 data:{
                     Obj:contact
                 }

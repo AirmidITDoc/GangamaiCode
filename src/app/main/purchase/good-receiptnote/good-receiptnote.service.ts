@@ -246,4 +246,10 @@ export class GoodReceiptnoteService {
     public getGRNchkInvoice_chkGSTTypes(param){
     return this._httpClient1.PostData("Common",param)
   }
+    public UpdateSupplierDet(emp) {
+    return this._httpClient1.PutData("GRN/UpdateGrnSupplierDetails" + emp.grnid, emp);
+  }
+      public getBarcodeSave(emp) {
+    return this._httpClient1.PutData("GRN/UpdateCurrentStockBarcode", emp);
+  }
 }

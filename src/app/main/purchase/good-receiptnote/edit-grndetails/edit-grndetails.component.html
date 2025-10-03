@@ -17,25 +17,27 @@
         <div class="modal-body-container">
             <div fxLayout="column" class="h-100-p">
                 <form [formGroup]="EditGRNFrom">
-                    <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="6px">
-
-                        <airmid-datepicker fxFlex="20%" [formGroup]="EditGRNFrom" formControlName="GRNDate"
-                            [label]="'GRN Date'" ></airmid-datepicker>
-
-                        <airmid-dropdown label="Supplier Name | Code" formControlName="SupplierId" fxFlex
-                            [formGroup]="EditGRNFrom" [validations]="getValidationMessages().supplierId"
-                            [mode]="dropdownMode.supplierMaster" (selectionChange)="selectChangeSupplier($event)"
-                            [value]="registerObj.supplierId"></airmid-dropdown>
-
-                        <airmid-textbox fxFlex="20%" label="Invoice No" formControlName="InvoiceNo" [formGroup]="EditGRNFrom"
-                            [readonly]="true" name="InvoiceNo"></airmid-textbox>
-
-
-                        <airmid-datepicker fxFlex="20%" [formGroup]="EditGRNFrom" formControlName="DateOfInvoice"
-                            [label]="'Invoice Date'"></airmid-datepicker> 
-
+                    <div fxLayout="row" fxLayout.gt-xs="column" fxLayoutGap="6px">
+                
+                        <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="6px">
+                
+                            <airmid-datepicker fxFlex="25%" [formGroup]="EditGRNFrom" formControlName="grndate"
+                                [label]="'GRN Date'"></airmid-datepicker>
+                
+                            <airmid-textbox fxFlex label="Invoice No" formControlName="invoiceNo" [formGroup]="EditGRNFrom"
+                                name="InvoiceNo"></airmid-textbox>
+                
+                            <airmid-datepicker fxFlex="25%" [formGroup]="EditGRNFrom" formControlName="invDate"
+                                [label]="'Invoice Date'"></airmid-datepicker>
+                
+                        </div> 
+                
+                        <airmid-dropdown label="Supplier Name | Code" formControlName="supplierId" fxFlex [formGroup]="EditGRNFrom"
+                            [validations]="getValidationMessages().supplierId" [mode]="dropdownMode.supplierMaster"
+                            (selectionChange)="selectChangeSupplier($event)" [value]="registerObj.supplierId"></airmid-dropdown>
+                
                     </div>
-                </form> 
+                </form>
             </div>
         </div>
     </div>
