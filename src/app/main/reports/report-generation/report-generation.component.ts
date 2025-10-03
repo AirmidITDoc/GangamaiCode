@@ -54,6 +54,7 @@ let TREE_DATA: FoodNode[] = [
 export class ReportGenerationComponent implements OnInit {
     UserId: any;
     DoctorId: any;
+    RefDoctorId:any;
     ServiceId: any;
     DepartmentId: any;
     CashCounterId: any;
@@ -100,6 +101,7 @@ export class ReportGenerationComponent implements OnInit {
     searchCashCounterList: any = [];
 
     flagDoctorSelected: boolean = false;
+    flagRefDoctorSelected: boolean = false;
     flagUserSelected: boolean = false;
     flagDepartmentSelected: boolean = false;
     flagServiceSelected: boolean = false;
@@ -201,6 +203,8 @@ export class ReportGenerationComponent implements OnInit {
         let controllerPermission = this.reportDetail?.reportFilter?.split(",");
         if (controllerPermission.filter(x => x == "Doctor")?.length > 0)
             this.flagDoctorSelected = true;
+        if (controllerPermission.filter(x => x == "RefDoctor")?.length > 0)
+            this.flagRefDoctorSelected = true;
         if (controllerPermission.filter(x => x == "User")?.length > 0)
             this.flagUserSelected = true;
         if (controllerPermission.filter(x => x == "Department")?.length > 0)
@@ -244,6 +248,9 @@ export class ReportGenerationComponent implements OnInit {
     }
     SelectedDoctorObj(obj) {
         this.DoctorId = obj.value;
+    }
+     SelectedRefDoctorObj(obj) {
+        this.RefDoctorId = obj.value;
     }
     SelectedServiceObj(obj) {
         this.ServiceId = obj.value;
@@ -292,6 +299,7 @@ export class ReportGenerationComponent implements OnInit {
     OnClose() {
         this._ReportService.userForm.get("UserId").setValue('');
         this._ReportService.userForm.get("DoctorId").setValue('');
+        this._ReportService.userForm.get("RefDoctorId").setValue('');
         this._ReportService.userForm.get("DepartmentId").setValue('');
         this._ReportService.userForm.get("ServiceId").setValue('');
         this._ReportService.userForm.get("CashCounterId").setValue('');
@@ -309,6 +317,7 @@ export class ReportGenerationComponent implements OnInit {
         this._ReportService.userForm.get('type').setValue('0');
         this.UserId = 0;
         this.DoctorId = 0;
+        this.RefDoctorId = 0;
         this.ServiceId = 0;
         this.DepartmentId = 0;
         this.CashCounterId = 0;
@@ -323,6 +332,7 @@ export class ReportGenerationComponent implements OnInit {
         this.ItemId = 0;
         this.dischargeTypeId = 0;
         this.flagDoctorSelected = false;
+        this.flagRefDoctorSelected = false;
         this.flagUserSelected = false;
         this.flagDepartmentSelected = false;
         this.flagServiceSelected = false;
@@ -366,6 +376,12 @@ export class ReportGenerationComponent implements OnInit {
                 paramFilterList.push({
                     "fieldName": "DoctorId",
                     "fieldValue": (this.DoctorId || "0").toString(),
+                    "opType": OperatorComparer.Equals
+                });
+                if (this.flagRefDoctorSelected)
+                paramFilterList.push({
+                    "fieldName": "RefDoctorId",
+                    "fieldValue": (this.RefDoctorId || "0").toString(),
                     "opType": OperatorComparer.Equals
                 });
             if (this.flagDepartmentSelected)

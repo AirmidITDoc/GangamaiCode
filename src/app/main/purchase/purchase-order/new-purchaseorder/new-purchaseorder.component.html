@@ -129,9 +129,9 @@
                                             [formGroup]="userFormGroup" type="number"
                                             (valueChange)="calculateTotalamt()"></airmid-textbox>
 
-                                        <airmid-textbox fxFlex="5%" label="DiscAmt" formControlName="DiscAmount"
+                                        <!-- <airmid-textbox fxFlex="5%" label="DiscAmt" formControlName="DiscAmount"
                                             [formGroup]="userFormGroup" type="number"
-                                            (valueChange)="calculateTotalamt()"></airmid-textbox>
+                                            (valueChange)="calculateTotalamt()"></airmid-textbox> -->
 
                                         <airmid-dropdown label="CGST/SGST" formControlName="CGSTPer" fxFlex="8%"
                                             [formGroup]="userFormGroup" [validations]="getValidationMessages().CGST"
@@ -282,13 +282,14 @@
                                     {{contact.DiscAmount | number:'1.2-2'}}
                                 </mat-cell>
                             </ng-container>
+
                             <ng-container matColumnDef="CGSTPer">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-100">CGST
                                     (%)</mat-header-cell>
                                 <mat-cell *matCellDef="let contact; let index = index" fxShow.gt-sm class="w-100">
                                     <mat-form-field appearance="fill">
                                         <input matInput [(ngModel)]="contact.CGSTPer" [id]="'CGSTPer' + index"
-                                            [disabled]="contact.IsVerifiedUserId > 0"
+                                            [disabled]="contact.IsVerifiedUserId > 0 || contact.IGSTPer > 0"
                                             (input)="getCellCalculation(contact)"
                                             (keydown.arrowdown)="setFocus('CGSTPer' + (index + 1))"
                                             (keydown.arrowup)="setFocus('CGSTPer' + (index - 1))" step="0.1"
@@ -314,7 +315,7 @@
                                 <mat-cell *matCellDef="let contact; let index = index" fxShow.gt-sm class="w-100">
                                     <mat-form-field appearance="fill">
                                         <input matInput [(ngModel)]="contact.SGSTPer" [id]="'SGSTPer' + index"
-                                            [disabled]="contact.IsVerifiedUserId > 0"
+                                            [disabled]="contact.IsVerifiedUserId > 0 || contact.IGSTPer > 0"
                                             (input)="getCellCalculation(contact)"
                                             (keydown.arrowdown)="setFocus('SGSTPer' + (index + 1))"
                                             (keydown.arrowup)="setFocus('SGSTPer' + (index - 1))" step="0.1"
@@ -339,7 +340,7 @@
                                 <mat-cell *matCellDef="let contact; let index = index" fxShow.gt-sm class="w-100">
                                     <mat-form-field appearance="fill">
                                         <input matInput [(ngModel)]="contact.IGSTPer" [id]="'IGSTPer' + index"
-                                            [disabled]="contact.IsVerifiedUserId > 0"
+                                            [disabled]="contact.IsVerifiedUserId > 0 || (contact.CGSTPer > 0 || contact.SGSTPer > 0)"
                                             (input)="getCellCalculation(contact)"
                                             (keydown.arrowdown)="setFocus('IGSTPer' + (index + 1))"
                                             (keydown.arrowup)="setFocus('IGSTPer' + (index - 1))" step="0.1"
@@ -572,17 +573,17 @@
                                         fxFlex.xs="100%">
                                         <form [formGroup]="FinalPurchaseform">
                                             <div fxLayout="row wrap" fxLayoutGap="5px">
-                                                <airmid-textbox fxFlex="13%" label="HandlingCharges"
+                                                <airmid-textbox fxFlex="10%" label="HandlingCharges"
                                                     formControlName="HandlingCharges" [min]="0"
                                                     [(ngModel)]="registerObj.handlingCharges"
                                                     [formGroup]="FinalPurchaseform" type="number"></airmid-textbox>
 
-                                                <airmid-textbox fxFlex="13%" label="Transport Charges"
+                                                <airmid-textbox fxFlex="10%" label="Transport Charges"
                                                     formControlName="TransportCharges" [min]="0"
                                                     [(ngModel)]="registerObj.transportChanges"
                                                     [formGroup]="FinalPurchaseform" type="number"></airmid-textbox>
 
-                                                <airmid-textbox fxFlex="13%" label="Freight" formControlName="Freight"
+                                                <!-- <airmid-textbox fxFlex="13%" label="Freight" formControlName="Freight"
                                                     [(ngModel)]="registerObj.freightAmount" [min]="0"
                                                     [formGroup]="FinalPurchaseform" type="number"></airmid-textbox>
 
@@ -592,7 +593,7 @@
 
                                                 <airmid-textbox fxFlex="13%" label="Guarantee/ Worrenty"
                                                     formControlName="Worrenty" [(ngModel)]="registerObj.worrenty"
-                                                    [formGroup]="FinalPurchaseform"></airmid-textbox>
+                                                    [formGroup]="FinalPurchaseform"></airmid-textbox> -->
 
                                                 <airmid-dropdown label="Payment Term" formControlName="PaymentTerm"
                                                     fxFlex="15%" [formGroup]="FinalPurchaseform"
@@ -605,9 +606,9 @@
                                                     [formGroup]="FinalPurchaseform" [mode]="autocompletepaymentmode"
                                                     (selectionChange)="selPaymentmode($event)">
                                                 </airmid-dropdown>
-                                            </div>
-                                            <div fxLayout="row wrap" fxLayoutGap="5px">
-                                                <airmid-textbox fxFlex="52%" label="Remark"
+                                            <!-- </div>
+                                            <div fxLayout="row wrap" fxLayoutGap="5px"> -->
+                                                <airmid-textbox fxFlex="48%" label="Remark"
                                                     [(ngModel)]="registerObj.remarks" formControlName="Remark"
                                                     [formGroup]="FinalPurchaseform" type="text"></airmid-textbox>
 

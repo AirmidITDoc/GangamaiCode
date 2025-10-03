@@ -29,11 +29,10 @@ export class ReportService {
             EndDate: [new Date().toISOString()],
             UserId: [""],
             DoctorId: [""],
+            RefDoctorId:[""],
             ServiceId: [""],
             DepartmentId: [""],
             CashCounterId: [""],
-
-            // added by raksha date:6/6/25
             GroupId: [""],
             ClassId: [""],
             WardId: [""],

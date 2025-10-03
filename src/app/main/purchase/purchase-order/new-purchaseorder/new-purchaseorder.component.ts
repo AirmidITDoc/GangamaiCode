@@ -177,7 +177,7 @@ export class NewPurchaseorderComponent {
     'SGSTAmount',
     'IGSTPer',
     'IGSTAmount',
-    // 'GST',
+    'GST',
     'GSTAmount',
     'NetAmount',
     'Specification',
@@ -240,7 +240,7 @@ export class NewPurchaseorderComponent {
       this.paymentterm = this.data.Obj.paymentTermId
       this.paymentmode = this.data.Obj.modeOfPayment
 
-      
+
       this._PurchaseOrder.getSupplierById(this.data.Obj.supplierID).subscribe((response) => {
         console.log(response)
         this.SupplierObj = response;
@@ -264,13 +264,13 @@ export class NewPurchaseorderComponent {
       this.FinalPurchaseform.get('Freight').setValue(this.data.Obj.freightAmount);
       this.FinalPurchaseform.get('OctriAmount').setValue(this.data.Obj.octriAmount);
       this.FinalPurchaseform.get('Worrenty').setValue(this.data.Obj.worrenty);
-      
+
       this.getOldPurchaseOrder(this.data.Obj.purchaseID);
     }
   }
 
   // Item Calculation form
-  
+
   getPurchaseOrderForm() {
     return this._formBuilder.group({
       purchaseId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -291,7 +291,7 @@ export class NewPurchaseorderComponent {
       GSTPer: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
       GSTAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
       NetAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-      MRP:[0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      MRP: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
       Specification: [''],
       SupplierID: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       Address: [''],
@@ -308,7 +308,8 @@ export class NewPurchaseorderComponent {
       SGSTAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
       IGSTPer: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
       IGSTAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-      GSTType: [16, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      GSTType: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      // GSTType: [16, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       UOMId: [''],
 
       PurchaseId: [0],
@@ -511,6 +512,10 @@ export class NewPurchaseorderComponent {
       itemNameElement.focus();
     }
     this.resetFormItem();
+    this.userFormGroup.get('CGST').reset();
+    this.userFormGroup.get('CGST').enable();
+    this.userFormGroup.get('IGST').reset();
+    this.userFormGroup.get('IGST').enable();
   }
 
   deleteTableRow(row: ItemNameList) {
@@ -574,7 +579,7 @@ export class NewPurchaseorderComponent {
 
     const fomrValues = this.userFormGroup.value
     const FooterfomrValues = this.FinalPurchaseform.value
-   
+
     if (!this.FinalPurchaseform.invalid) {
 
       this.PurchaseInsertform.get("storeId").setValue(this.vstoreId)
@@ -866,17 +871,17 @@ export class NewPurchaseorderComponent {
     // // Recalculate GST after discount update
     this.calculateGSTType();
   }
-  Cgst:any;
+  Cgst: any;
   calculateGSTType(type: GSTType = GSTType.GST_BEFORE_DISC) {
-debugger
+    debugger
 
     const form = this.userFormGroup;
     const formValues = form.getRawValue() as PurchaseFormModel;
-    
-    this.Cgst= (formValues.CGSTPer)
-    if(parseFloat(this.Cgst)>0){
-    this.Cgst=parseFloat(this.Cgst)/2
-    formValues.CGSTPer= this.Cgst
+
+    this.Cgst = (formValues.CGSTPer)
+    if (parseFloat(this.Cgst) > 0) {
+      this.Cgst = parseFloat(this.Cgst) / 2
+      formValues.CGSTPer = this.Cgst
     }
     const values = this._PurchaseOrder.normalizeValues(formValues);
     const calculation = this._PurchaseOrder.getGSTCalculation(this.GSTTypetext || type, values);
@@ -965,20 +970,20 @@ debugger
     //     MRP: 0,
     //   });
     // }
-    if (+values.Rate < 0 ) {
+    if (+values.Rate < 0) {
       this._PurchaseOrder.showToast('Rate should be greater than 0', ToastType.WARNING);
       form.patchValue({
         Rate: 0,
       });
     }
-    if(+values.MRP > 0){
-    if (+values.Rate > +values.MRP) {
-      this._PurchaseOrder.showToast('Rate should be less than MRP', ToastType.WARNING);
-      form.patchValue({
-        Rate: 0,
-      });
+    if (+values.MRP > 0) {
+      if (+values.Rate > +values.MRP) {
+        this._PurchaseOrder.showToast('Rate should be less than MRP', ToastType.WARNING);
+        form.patchValue({
+          Rate: 0,
+        });
+      }
     }
-  }
 
   }
 

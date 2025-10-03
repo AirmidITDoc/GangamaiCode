@@ -17,9 +17,9 @@ import { StoreMasterService } from "./store-master.service";
     animations: fuseAnimations,
 })
 export class StoreMasterComponent implements OnInit {
-    myformSearch:FormGroup;
-    storeName:any="";
-    type:any="2"
+    myformSearch: FormGroup;
+    storeName: any = "";
+    type: any = "2"
 
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     @ViewChild('actionsPharStore') actionsPharStore!: TemplateRef<any>;
@@ -28,9 +28,9 @@ export class StoreMasterComponent implements OnInit {
         this.gridConfig.columnsList.find(col => col.key === 'isPharStore')!.template = this.actionsPharStore;
     }
 
-    allColumns=[
-        { heading: "-", key: "isPharStore", sort: true, align: 'left', type: gridColumnTypes.template, width: 60,sticky: true },
-        { heading: "Code", key: "storeId", sort: true, align: 'left', emptySign: 'NA', width: 100 ,sticky: true},
+    allColumns = [
+        { heading: "-", key: "isPharStore", sort: true, align: 'left', type: gridColumnTypes.template, width: 60, sticky: true },
+        { heading: "Code", key: "storeId", sort: true, align: 'left', emptySign: 'NA', width: 100, sticky: true },
         { heading: "Store ShortName", key: "storeShortName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "Store Name", key: "storeName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "Indent Prefix", key: "indentPrefix", sort: true, align: 'left', emptySign: 'NA', width: 150 },
@@ -42,13 +42,13 @@ export class StoreMasterComponent implements OnInit {
         { heading: "GRNReturn Prefix", key: "grnreturnNoPrefix", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "GRNRet No", key: "grnreturnNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "IssueToDept Prefix", key: "issueToDeptPrefix", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-        { heading: "IssueToDept No", key: "issueToDeptNo", sort: true, align: 'left', emptySign: 'NA', width: 120},
+        { heading: "IssueToDept No", key: "issueToDeptNo", sort: true, align: 'left', emptySign: 'NA', width: 120 },
         { heading: "RetFromDept Prefix", key: "returnFromDeptNoPrefix", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "RetFromDept No", key: "returnFromDeptNo", sort: true, align: 'left', emptySign: 'NA', width: 130 },
         { heading: "User Name", key: "userName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center", width: 100 },
         {
-            heading: "Action", key: "action", width: 100 , align: "right", type: gridColumnTypes.action, actions: [
+            heading: "Action", key: "action", width: 100, align: "right", type: gridColumnTypes.action, actions: [
                 {
                     action: gridActions.edit, callback: (data: any) => {
                         this.onSave(data);
@@ -63,7 +63,7 @@ export class StoreMasterComponent implements OnInit {
         } //Action 1-view, 2-Edit,3-delete
     ]
 
-    allFilters=[
+    allFilters = [
         { fieldName: "storeName", fieldValue: "", opType: OperatorComparer.StartsWith },
         // { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
     ]
@@ -76,13 +76,13 @@ export class StoreMasterComponent implements OnInit {
         filters: this.allFilters
     }
 
-    
+
 
     constructor(public _StoreMasterService: StoreMasterService, public _matDialog: MatDialog,
         public toastr: ToastrService,) { }
-        
-    ngOnInit(): void { 
-        this.myformSearch=this._StoreMasterService.createSearchForm();
+
+    ngOnInit(): void {
+        this.myformSearch = this._StoreMasterService.createSearchForm();
     }
 
     onSave(row: any = null) {
@@ -92,9 +92,10 @@ export class StoreMasterComponent implements OnInit {
         let that = this;
         const dialogRef = this._matDialog.open(StoreFormMasterComponent,
             {
-              maxWidth: "95vw",
-        width: '100%',
-        height: "98vh",
+                maxWidth: "95vw",
+                maxHeight: "98vh",
+                width: '100%',
+                height: "100%",
                 data: row
             });
         dialogRef.afterClosed().subscribe(result => {
@@ -126,23 +127,23 @@ export class StoreMaster {
     isDeleted: boolean;
     addedBy: number;
     updatedBy: number;
-    header:any;
+    header: any;
     IsDeletedSearch: number;
-    pharSalCountId:any;
-    pharSalRecCountId:any;
-    pharSalReturnCountId:any;
-    printStoreName:any
-    hospitalMobileNo:any
-    storeAddress:any
-    pharAdvId:any
-    pharAdvReptId:any
-    pharAdvRefId:any
-    pharAdvRefReptId:any
-    hospitalEmailId:any
-    printStoreUnitName:any
-    workOrderPrefix:any
-    workOrderNo:any
-    termsAndCondition:any;
+    pharSalCountId: any;
+    pharSalRecCountId: any;
+    pharSalReturnCountId: any;
+    printStoreName: any
+    hospitalMobileNo: any
+    storeAddress: any
+    pharAdvId: any
+    pharAdvReptId: any
+    pharAdvRefId: any
+    pharAdvRefReptId: any
+    hospitalEmailId: any
+    printStoreUnitName: any
+    workOrderPrefix: any
+    workOrderNo: any
+    termsAndCondition: any;
     /**
      * Constructor
      *
@@ -163,28 +164,28 @@ export class StoreMaster {
             this.grnreturnNo = StoreMaster.grnreturnNo || "";
             this.issueToDeptPrefix = StoreMaster.issueToDeptPrefix || "";
             this.issueToDeptNo = StoreMaster.issueToDeptNo || "";
-            this.returnFromDeptNoPrefix =StoreMaster.returnFromDeptNoPrefix || "";
+            this.returnFromDeptNoPrefix = StoreMaster.returnFromDeptNoPrefix || "";
             this.returnFromDeptNo = StoreMaster.returnFromDeptNo || "";
             this.isDeleted = StoreMaster.isDeleted || "true";
             this.addedBy = StoreMaster.addedBy || 0;
             this.updatedBy = StoreMaster.updatedBy || 0;
-           this.header=StoreMaster.header || '';
+            this.header = StoreMaster.header || '';
             this.IsDeletedSearch = StoreMaster.IsDeletedSearch || "";
             this.pharSalCountId = StoreMaster.pharSalCountId || 0;
-            this.pharSalRecCountId=StoreMaster.pharSalRecCountId || 0;
-             this.pharSalReturnCountId = StoreMaster.pharSalReturnCountId || 0;
+            this.pharSalRecCountId = StoreMaster.pharSalRecCountId || 0;
+            this.pharSalReturnCountId = StoreMaster.pharSalReturnCountId || 0;
             this.hospitalEmailId = StoreMaster.hospitalEmailId || ''
             this.printStoreUnitName = StoreMaster.printStoreUnitName || ''
-             this.termsAndCondition = StoreMaster.termsAndCondition || ''
+            this.termsAndCondition = StoreMaster.termsAndCondition || ''
             this.printStoreName = StoreMaster.printStoreName || '';
-            this.hospitalMobileNo=StoreMaster.hospitalMobileNo || '';
-             this.storeAddress = StoreMaster.storeAddress || '';
-             this.pharAdvId = StoreMaster.pharAdvId || 0
-             this.pharAdvReptId = StoreMaster.pharAdvReptId || 0
-             this.pharAdvRefId = StoreMaster.pharAdvRefId || 0
-             this.pharAdvRefReptId = StoreMaster.pharAdvRefReptId || 0
-             this.workOrderPrefix = StoreMaster.workOrderPrefix || 0
-             this.workOrderNo = StoreMaster.workOrderNo || 0
+            this.hospitalMobileNo = StoreMaster.hospitalMobileNo || '';
+            this.storeAddress = StoreMaster.storeAddress || '';
+            this.pharAdvId = StoreMaster.pharAdvId || 0
+            this.pharAdvReptId = StoreMaster.pharAdvReptId || 0
+            this.pharAdvRefId = StoreMaster.pharAdvRefId || 0
+            this.pharAdvRefReptId = StoreMaster.pharAdvRefReptId || 0
+            this.workOrderPrefix = StoreMaster.workOrderPrefix || 0
+            this.workOrderNo = StoreMaster.workOrderNo || 0
         }
 
     }

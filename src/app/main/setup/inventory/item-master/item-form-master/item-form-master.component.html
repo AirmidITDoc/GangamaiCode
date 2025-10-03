@@ -165,16 +165,16 @@
                 <div fxFlex="100" fxLayout="row wrap" fxLayoutGap="12px grid" style="padding: 10px"
                   fxLayoutAlign="start center">
 
-              
-                    <airmid-dropdown label="CGST/SGST" formControlName="cgst" fxFlex="25%" 
-                      [formGroup]="itemForm" 
-                      [mode]="autocompleteModeGSTTypesValues" (selectionChange)="getchangegstper($event)"
-                       (onClearSelection)="getchangegstper($event)"> </airmid-dropdown>
+
+                  <airmid-dropdown label="CGST/SGST" formControlName="cgst" fxFlex="25%" [formGroup]="itemForm"
+                    [mode]="autocompleteModeGSTTypesValues" (selectionChange)="getchangegstper($event)"
+                    (onClearSelection)="getchangegstper($event)"> </airmid-dropdown>
 
 
-                 
-                       <airmid-dropdown label="IGST" formControlName="igst" fxFlex="25%" [formGroup]="itemForm"
-                    [mode]="autocompleteModeGSTTypesValues1"  (selectionChange)="getchangeIgstper($event)"> </airmid-dropdown> 
+
+                  <airmid-dropdown label="IGST" formControlName="igst" fxFlex="25%" [formGroup]="itemForm"
+                    [mode]="autocompleteModeGSTTypesValues1" (selectionChange)="getchangeIgstper($event)">
+                  </airmid-dropdown>
 
                 </div>
               </mat-card>
@@ -217,41 +217,43 @@
               </mat-card>
             </form>
 
-            <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="20px" class="modal-footer-buttons">
 
-              <!-- Left Side: Checkboxes -->
-              <div fxLayout="row" fxLayoutAlign="start center" style="padding: 5px;">
-                <form [formGroup]="itemForm" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px">
-                  <mat-checkbox aria-label="IsActive" formControlName="isActive" [(ngModel)]="vchkactive"
-                    style="font-weight: bold;">
-                    IsActive
-                  </mat-checkbox>
-
-                  <!-- <mat-checkbox aria-label="CreateApproval" formControlName="CreateApproval" (change)="onChangeMode($event)" style="font-weight: bold;">
-                      Create / Approval
-                    </mat-checkbox> -->
-                </form>
-              </div>
-
-              <!-- Right Side: Buttons -->
-              <div fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="10px" style="padding: 5px;">
-
-                <button mat-raised-button (click)="onSave()" fxLayoutAlign="center center">
-                  <mat-icon color="Primary" title=" Add New Item ">add</mat-icon>
-                  <span>Item GenericName</span>
-                </button>
-
-                <button class="btn btn-danger-outline" (click)="onClear(false)"> Close </button>
-
-                <button class="btn btn-primary " (click)="onSubmit()"> Save </button>
-              </div>
-
-            </div>
 
 
           </div>
         </div>
       </div>
+    </div>
+
+  </div>
+
+  <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="20px" class="modal-footer-buttons">
+
+    <!-- Left Side: Checkboxes -->
+    <div fxLayout="row" fxLayoutAlign="start center" style="padding: 5px;">
+      <form [formGroup]="itemForm" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px">
+        <mat-checkbox aria-label="IsActive" formControlName="isActive" [(ngModel)]="vchkactive"
+          style="font-weight: bold;">
+          IsActive
+        </mat-checkbox>
+
+        <!-- <mat-checkbox aria-label="CreateApproval" formControlName="CreateApproval" (change)="onChangeMode($event)" style="font-weight: bold;">
+                      Create / Approval
+                    </mat-checkbox> -->
+      </form>
+    </div>
+
+    <!-- Right Side: Buttons -->
+    <div fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="10px" style="padding: 5px;">
+
+      <button mat-raised-button (click)="onSave()" fxLayoutAlign="center center">
+        <mat-icon color="Primary" title=" Add New Item ">add</mat-icon>
+        <span>Item GenericName</span>
+      </button>
+
+      <button class="btn btn-danger-outline" (click)="onClear(false)"> Close </button>
+
+      <button class="btn btn-primary " (click)="onSubmit()"> Save </button>
     </div>
 
   </div>
