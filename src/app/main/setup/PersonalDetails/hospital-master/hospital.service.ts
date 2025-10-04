@@ -17,35 +17,20 @@ export class HospitalService {
 
   createHospitalForm(): FormGroup {
     return this._formBuilder.group({
-      HospitalId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      hospitalHeaderLine: [" "],
-      HospitalName: [" ",
-        [
-          Validators.required
-        ]
-      ],
-      HospitalAddress: ["",
-        [
-          Validators.required,
-        ]
-      ],
-      City: ["",
-        [
-          Validators.required
-        ]
-      ],
-      // CityId: [""],
-      Pin: ["", Validators.pattern("[0-9]{6}")],
-      Phone: ['', [Validators.required,
+      hospitalId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      hospitalHeaderLine: ["",[Validators.required]],
+      hospitalName: ["",[Validators.required]],
+      hospitalAddress:  ["",[Validators.required]],
+      City:   ["",[Validators.required]],
+      pin: ["", Validators.pattern("[0-9]{6}")],
+      phone: ['', [Validators.required,
       Validators.minLength(10),
       Validators.maxLength(10),
       Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
       ]],
-      emailId: ["",[Validators.required]],
-      webSiteInfo: ["",[Validators.required]],
+      emailId: ["", [Validators.required]],
+      webSiteInfo: [""],
       header: [""],//, [Validators.required,this._FormvalidationserviceService.allowEmptyStringValidator()]],
-      IsActive: true,
-
       opdBillingCounterId: [0, this._FormvalidationserviceService.notEmptyOrZeroValidator()],
       opdReceiptCounterId: [0, this._FormvalidationserviceService.notEmptyOrZeroValidator()],
       opdRefundBillCounterId: [0, this._FormvalidationserviceService.notEmptyOrZeroValidator()],
@@ -53,21 +38,23 @@ export class HospitalService {
       opdAdvanceCounterId: [0, this._FormvalidationserviceService.notEmptyOrZeroValidator()],
       opdRefundAdvanceCounterId: [0, this._FormvalidationserviceService.notEmptyOrZeroValidator()],
       ipdAdvanceCounterId: [0, this._FormvalidationserviceService.notEmptyOrZeroValidator()],
+      ipdAdvanceReceiptCounterId: [0, this._FormvalidationserviceService.onlyNumberValidator()],
       ipdBillingCounterId: [0, this._FormvalidationserviceService.notEmptyOrZeroValidator()],
       ipdReceiptCounterId: [0, this._FormvalidationserviceService.notEmptyOrZeroValidator()],
       ipdRefundOfBillCounterId: [0, this._FormvalidationserviceService.notEmptyOrZeroValidator()],
       ipdRefundOfBillReceiptCounterId: [0, this._FormvalidationserviceService.notEmptyOrZeroValidator()],
       ipdRefundOfAdvanceCounterId: [0, this._FormvalidationserviceService.notEmptyOrZeroValidator()],
+      ipdRefundOfAdvanceReceiptCounterId: [0, this._FormvalidationserviceService.onlyNumberValidator()],
+      cityId: [0, this._FormvalidationserviceService.notEmptyOrZeroValidator()],
     });
   }
-
 
   createSearchForm(): FormGroup {
     return this._formBuilder.group({
       NameSearch: [""],
-      IsActive: ['1'],
-      cityId:[0],
-      phoneNo:['']
+      IsActive: ['2'],
+      cityId: [0],
+      phoneNo: ['']
     });
   }
   public gethospitalById(Id) {
@@ -75,8 +62,8 @@ export class HospitalService {
   }
 
   public HospitalInsert(Param: any) {
-    if (Param.HospitalId > 0) {
-      return this._httpClient.PutData("HospitalMaster/" + Param.HospitalId, Param);
+    if (Param.hospitalId > 0) {
+      return this._httpClient.PutData("HospitalMaster/" + Param.hospitalId, Param);
     } else return this._httpClient.PostData("HospitalMaster", Param);
   }
 

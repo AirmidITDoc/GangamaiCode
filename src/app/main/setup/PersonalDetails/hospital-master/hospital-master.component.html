@@ -15,7 +15,7 @@
             </button>
         </div>
     </div>
-    
+
     <airmid-table [gridConfig]="gridConfig" class="content">
         <ng-container filters>
             <form [formGroup]="myformSearch">
@@ -31,15 +31,11 @@
                 <mat-form-field appearance="outline">
                     <mat-label>PhoneNo</mat-label>
                     <input matInput autocomplete="off" [formGroup]="myformSearch" formControlName="phoneNo"
-                        (input)="onChangeFirst($event)" maxlength="10"/>
+                        (input)="onChangeFirst($event)" maxlength="10" />
                     <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('phoneNo')">
                         <mat-icon>close</mat-icon>
                     </button>
                 </mat-form-field>
-
-                <!-- <airmid-dropdown label="City" formControlName="cityId" [formGroup]="myformSearch"
-                    ValueField="cityName" TextField="cityName" (selectionChange)="selectChangecity($event)"
-                    [(ngModel)]="gridConfig.filters[1].fieldValue" ApiUrl="CityMaster/get-cities"></airmid-dropdown> -->
 
                 <airmid-dropdown label="City Name" formControlName="cityId" [formGroup]="myformSearch"
                     [(ngModel)]="gridConfig.filters[1].fieldValue" [mode]="autocompletecity"
@@ -48,11 +44,9 @@
 
                 <mat-radio-group name="IsActive" formControlName="IsActive"
                     [(ngModel)]="gridConfig.filters[3].fieldValue" (change)="onChangeFirst($event)">
-                    <div fxLayout="row">
-
-                        <mat-radio-button value='1'>Active</mat-radio-button>
-                        <mat-radio-button value='0'>Deactive</mat-radio-button>
-                    </div>
+                    <mat-radio-button value="2">All</mat-radio-button>
+                    <mat-radio-button value='1'>Active</mat-radio-button>
+                    <mat-radio-button value='0'>Deactive</mat-radio-button>
                 </mat-radio-group>
             </form>
         </ng-container>

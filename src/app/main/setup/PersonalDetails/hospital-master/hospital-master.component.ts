@@ -26,7 +26,7 @@ export class HospitalMasterComponent implements OnInit {
 
   myformSearch: FormGroup;
   msg: any;
-  cityName = "";
+  cityId = "0";
   phoneNo = "";
   hospitalname = '';
   active: any;
@@ -72,9 +72,9 @@ export class HospitalMasterComponent implements OnInit {
     sortField: "HospitalId",
     sortOrder: 1,
     filters: [{ fieldName: "HospitalName", fieldValue: "%", opType: OperatorComparer.StartsWith },
-    { fieldName: "City", fieldValue: "%", opType: OperatorComparer.Equals },
+    { fieldName: "CityId", fieldValue: "0", opType: OperatorComparer.Equals },
     { fieldName: "PhoneNo", fieldValue: "%", opType: OperatorComparer.Contains },
-    { fieldName: "IsActive", fieldValue: "1", opType: OperatorComparer.Contains }
+    { fieldName: "IsActive", fieldValue: "2", opType: OperatorComparer.Contains }
     ]
   }
 
@@ -86,9 +86,9 @@ export class HospitalMasterComponent implements OnInit {
   selectChangecity(obj: any) {
     console.log(obj)
     if (obj.value !== 0)
-      this.cityName = obj.text
+      this.cityId = obj.value
     else
-      this.cityName = "%"
+      this.cityId = "0"
     this.onChangeFirst(obj);
   }
 
@@ -97,7 +97,7 @@ export class HospitalMasterComponent implements OnInit {
     this.hospitalname = this.myformSearch.get('NameSearch').value + "%"
     this.phoneNo = this.myformSearch.get('phoneNo').value + "%"
     this.active = this.myformSearch.get('IsActive').value
-    this.cityName = this.cityName + "%"
+    this.cityId = this.myformSearch.get('cityId').value
     this.getfilterdata();
   }
 
@@ -110,9 +110,9 @@ export class HospitalMasterComponent implements OnInit {
       sortOrder: 0,
       filters: [
         { fieldName: "HospitalName", fieldValue: this.hospitalname, opType: OperatorComparer.StartsWith },
-        { fieldName: "City", fieldValue: this.cityName, opType: OperatorComparer.Equals },
+        { fieldName: "CityId", fieldValue: this.cityId, opType: OperatorComparer.Equals },
         { fieldName: "PhoneNo", fieldValue: this.phoneNo, opType: OperatorComparer.Contains },
-        { fieldName: "IsActive", fieldValue: "1", opType: OperatorComparer.Contains }
+        { fieldName: "IsActive", fieldValue: this.active, opType: OperatorComparer.Contains }
       ]
     }
     this.grid.gridConfig = this.gridConfig;
@@ -180,7 +180,7 @@ export class HospitalMaster {
   hospitalName: any;
   hospitalAddress: any;
   city: any;
-  CityId: any;
+  cityId: any;
   pin: any;
   phone: any;
   emailId: any;
@@ -211,7 +211,7 @@ export class HospitalMaster {
       this.hospitalName = HospitalMaster.hospitalName || "";
       this.hospitalAddress = HospitalMaster.hospitalAddress || "";
       this.city = HospitalMaster.city || "";
-      this.CityId = HospitalMaster.CityId || 0;
+      this.cityId = HospitalMaster.cityId || 0;
       this.pin = HospitalMaster.pin || "";
       this.phone = HospitalMaster.phone || "";
       this.emailId = HospitalMaster.emailId || "";

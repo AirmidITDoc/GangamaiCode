@@ -30,6 +30,7 @@ export class NewHospitalComponent implements OnInit {
   filteredOptionsCity: Observable<string[]>;
   isCitySelected: boolean = false;
   vCityId: any;
+  vCityName:any;
   HospitalId = 0;
   HospitalHeader: any = '';
   isExpanded = false;
@@ -48,36 +49,22 @@ export class NewHospitalComponent implements OnInit {
   autocompleteIPDRefundofBillReceiptCounterId: string = "CashCounter";
   autocompleteIPDRefundofAdvanceCounterId: string = "CashCounter";
 
-  onBlur(e: any) {
-    this.vTemplateDesc = e.target.innerHTML;
-    throw new Error('Method not implemented.');
-  }
-
   constructor(public _HospitalService: HospitalService,
     public _matDialog: MatDialog,
-    private reportDownloadService: ExcelDownloadService,
-    private _formBuilder: UntypedFormBuilder,
     public toastr: ToastrService,
-    private _FormvalidationserviceService: FormvalidationserviceService,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    public dialogRef: MatDialogRef<NewHospitalComponent>,
-    private _fuseSidebarService: FuseSidebarService,) { }
+    public dialogRef: MatDialogRef<NewHospitalComponent>) { }
 
   ngOnInit(): void {
     this.HospitalForm = this._HospitalService.createHospitalForm();
     this.HospitalForm.markAllAsTouched();
     console.log(this.data)
-    // if (this.data) {
-    //   this.registerObj = this.data;
-    //   this.HospitalId = this.registerObj.hospitalId
-    //   console.log(this.registerObj)
-
-    // }
 
     if ((this.data?.hospitalId ?? 0) > 0) {
       this.registerObj = this.data;
       this.HospitalId = this.registerObj.hospitalId
-      this.HospitalForm.get('Pin').setValue(this.data.pin)
+      this.HospitalForm.get('pin').setValue(this.data.pin)
+      this.HospitalForm.get('cityId').setValue(this.data.cityId)
       this.HospitalForm.patchValue(this.data);
 
       setTimeout(() => {
@@ -86,16 +73,21 @@ export class NewHospitalComponent implements OnInit {
           console.log(this.registerObj)
 
 
-          this.HospitalForm.get('HospitalId').setValue(this.registerObj.hospitalId)
-          this.HospitalForm.get('HospitalName').setValue(this.registerObj.hospitalName)
-          this.HospitalForm.get('HospitalAddress').setValue(this.registerObj.hospitalAddress)
-          this.HospitalForm.get('Phone').setValue(this.registerObj.phone)
+          this.HospitalForm.get('hospitalId').setValue(this.registerObj.hospitalId)
+          this.HospitalForm.get('hospitalName').setValue(this.registerObj.hospitalName)
+          this.HospitalForm.get('hospitalAddress').setValue(this.registerObj.hospitalAddress)
+          this.HospitalForm.get('phone').setValue(this.registerObj.phone)
         });
       }, 500);
     }
 
   }
 
+selectChangecity(obj: any) {
+    console.log(obj)
+    this.vCityName=obj.cityName
+    this.vCityId=obj.cityId
+  }
 
   onSubmit() {
     debugger
@@ -105,6 +97,7 @@ export class NewHospitalComponent implements OnInit {
       });
       return;
     }
+    this.HospitalForm.get('City')?.setValue(this.vCityName)
     if (!this.HospitalForm.invalid) {
       console.log(this.HospitalForm.value)
       this._HospitalService.HospitalInsert(this.HospitalForm.value).subscribe(response => {

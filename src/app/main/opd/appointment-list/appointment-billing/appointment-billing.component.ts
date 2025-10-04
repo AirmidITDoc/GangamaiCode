@@ -307,7 +307,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
       discountPer: [0, [Validators.min(0), Validators.max(100)]],
       discountAmount: [0, [Validators.required, Validators.min(0)]],
       netAmount: [0, [Validators.min(0)]],
-      DoctorID: [0],
+      DoctorID: [0,[Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       GroupId:[0]
     });
   }
@@ -533,6 +533,12 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
     const serviceNameValue = this.chargeForm.get('serviceName')?.value;
     if (!serviceNameValue || serviceNameValue === '%' || this.serviceSelct == false) {
       this.toastrService.warning('Please select a valid service name.', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    if (this.chargeForm.get('DoctorID').value=="0") {
+      this.toastrService.warning('Please select a valid doctor name.', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       return;
