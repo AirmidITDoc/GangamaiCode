@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AbstractControl, ValidationErrors } from '@angular/forms';
+import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { ToastType } from 'app/main/purchase/good-receiptnote/new-grn/types';
 import { ToastrService } from 'ngx-toastr';
 
@@ -18,37 +18,37 @@ export class FormvalidationserviceService {
     };
   }
 
-    // Date validation
-   validDateValidator():any {
-   return (control: AbstractControl): ValidationErrors | null => {
-   const value = control.value;
-       //  const DatePattern = /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/;
-        if(!isNaN(Date.parse(value))){
-          return null
-        }else{
-          return { invalidDate: true }
-        } 
-      }; 
+  // Date validation
+  validDateValidator(): any {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const value = control.value;
+      //  const DatePattern = /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/;
+      if (!isNaN(Date.parse(value))) {
+        return null
+      } else {
+        return { invalidDate: true }
+      }
+    };
   }
 
   // Only number is allowed
   onlyNumberValidator(): any {
     return (control: AbstractControl): ValidationErrors | null => {
       const value = control.value;
-     if (value === null || value === '') return null;
+      if (value === null || value === '') return null;
       return /^[0-9]+$/.test(value) ? null : { invalidNumber: true };
     };
   }
-// decimal number is allowed
+  // decimal number is allowed
   AllowDecimalNumberValidator(): any {
-  return (control: AbstractControl): ValidationErrors | null => {
-    const value = control.value;
-    if (value === null || value === '') return null;
+    return (control: AbstractControl): ValidationErrors | null => {
+      const value = control.value;
+      if (value === null || value === '') return null;
 
-    // Allow positive decimal numbers (e.g., 123, 123.45) 
-    return /^[0-9]+(\.[0-9]+)?$/.test(value) ? null : { invalidNumber: true };
-  };
-}
+      // Allow positive decimal numbers (e.g., 123, 123.45) 
+      return /^[0-9]+(\.[0-9]+)?$/.test(value) ? null : { invalidNumber: true };
+    };
+  }
   // only string is allowed when it is required
   allowEmptyStringValidator(): any {
     return (control: AbstractControl): ValidationErrors | null => {
@@ -60,17 +60,26 @@ export class FormvalidationserviceService {
   // created by raksha date:7/6/25
   // only string is allowed when it is not required
   allowEmptyStringValidatorOnly(): any {
-  return (control: AbstractControl): ValidationErrors | null => {
-    const value = control.value
-    if (value === undefined || value===null) {
-      control.setValue('', { emitEvent: false }); // converts undefined to ''
-    }
-    // Allow any string (including empty string), disallow null or non-string
-    return typeof value === 'string' ? null : { requiredValue: true };
-  };
-}
+    return (control: AbstractControl): ValidationErrors | null => {
+      const value = control.value
+      if (value === undefined || value === null) {
+        control.setValue('', { emitEvent: false }); // converts undefined to ''
+      }
+      // Allow any string (including empty string), disallow null or non-string
+      return typeof value === 'string' ? null : { requiredValue: true };
+    };
+  }
 
-// dropdown validator
+  // ✅ Reusable whitespace validator
+  noWhitespaceValidator(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const isWhitespace = (control.value || '').trim().length === 0;
+      const isValid = !isWhitespace;
+      return isValid ? null : { whitespace: true };
+    };
+  }
+
+  // dropdown validator
   // dropdownvalidation(): any {
   //   return (control: AbstractControl): ValidationErrors | null => {
   //     const value = control.value;
@@ -90,7 +99,7 @@ export class FormvalidationserviceService {
   //   }
   // }
 
-  
+
   // allow for all manditory parameter when there is requied
   // notBlankValidator(): any {
   //   return (control: AbstractControl): ValidationErrors | null => {
@@ -101,40 +110,40 @@ export class FormvalidationserviceService {
 
 
 
-   // GST validation
-   validGstValidator(allowedValues: number[]): any {
-  return (control: AbstractControl): ValidationErrors | null => {
-    if (control.value === null || control.value === undefined || control.value === '') {
-       this.showToast('Please enter GST percentage as 2.5%, 6%, 9% or 14%', ToastType.WARNING);
-      return null; 
+  // GST validation
+  validGstValidator(allowedValues: number[]): any {
+    return (control: AbstractControl): ValidationErrors | null => {
+      if (control.value === null || control.value === undefined || control.value === '') {
+        this.showToast('Please enter GST percentage as 2.5%, 6%, 9% or 14%', ToastType.WARNING);
+        return null;
+      }
+
+      const value = parseFloat(control.value);
+
+      return allowedValues.includes(value)
+        ? null
+        : { invalidGST: { value: control.value } };
+    };
+  }
+
+  showToast(message: string, type: ToastType = ToastType.SUCCESS) {
+    if (type === ToastType.SUCCESS) {
+      this.toastr.success(message, `${type} !`, {
+        toastClass: `tostr-tost custom-toast-${ToastType.SUCCESS}`,
+      });
     }
 
-    const value = parseFloat(control.value);
+    if (type === ToastType.WARNING) {
+      this.toastr.warning(message, `${type} !`, {
+        toastClass: `tostr-tost custom-toast-${ToastType.WARNING}`,
+      });
+    }
+    if (type === ToastType.ERROR) {
+      this.toastr.error(message, `${type} !`, {
+        toastClass: `tostr-tost custom-toast-${ToastType.ERROR}`,
+      });
+    }
 
-    return allowedValues.includes(value)
-      ? null
-      : { invalidGST: { value: control.value } };
-  };
-}
-
- showToast(message: string, type: ToastType = ToastType.SUCCESS) {
-          if (type === ToastType.SUCCESS) {
-              this.toastr.success(message, `${type} !`, {
-                  toastClass: `tostr-tost custom-toast-${ToastType.SUCCESS}`,
-              });
-          }
-  
-          if (type === ToastType.WARNING) {
-              this.toastr.warning(message, `${type} !`, {
-                  toastClass: `tostr-tost custom-toast-${ToastType.WARNING}`,
-              });
-          }
-          if (type === ToastType.ERROR) {
-              this.toastr.error(message, `${type} !`, {
-                  toastClass: `tostr-tost custom-toast-${ToastType.ERROR}`,
-              });
-          }
-  
-      }
+  }
 }
 

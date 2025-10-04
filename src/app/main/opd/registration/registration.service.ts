@@ -47,7 +47,8 @@ export class RegistrationService {
                 Validators.required,
                 Validators.minLength(1),
                 Validators.maxLength(100),
-                Validators.pattern("^[A-Za-z/() ]*$")
+                Validators.pattern("^[A-Za-z/() ]*$"),
+                this._FormvalidationserviceService.noWhitespaceValidator()
             ]],
             MiddleName: ['', [
                 Validators.maxLength(100),
@@ -58,7 +59,8 @@ export class RegistrationService {
                 Validators.required,
                 Validators.minLength(1),
                 Validators.maxLength(100),
-                Validators.pattern("^[A-Za-z/() ]*$")
+                Validators.pattern("^[A-Za-z/() ]*$"),
+                this._FormvalidationserviceService.noWhitespaceValidator()
             ]],
 
             Address: ['', [this._FormvalidationserviceService.allowEmptyStringValidator(), Validators.maxLength(200)]],
