@@ -181,8 +181,11 @@ export class RefundbillComponent implements OnInit {
     });
   }  
   getSelectedObj(obj) {
+     console.log(obj);
+
+debugger
     if ((obj.value ?? 0) > 0) {
-      console.log(obj)
+      
       setTimeout(() => {
         this._RefundbillService.getRegistraionById(obj.value).subscribe((response) => {
           this.registerObj = response;
@@ -195,6 +198,20 @@ export class RefundbillComponent implements OnInit {
         });
       }, 500);
     }
+
+
+        // this.PatientName = obj;
+        // this.OPDNoCheck = true;
+        // this.DoctorNamecheck = true;
+        // this.IPDNocheck = false;
+        // this.PatientName = obj.firstName + ' ' + obj.lastName;
+        // this.RegId = obj.regId;
+        // this.OP_IP_Id = obj.visitId;
+        // this.OPDNo = obj.opdNo;
+        // this.HospitalId = obj.hospitalId;
+        // this.DoctorName = obj.doctorName; 
+        
+
     this.getfilterdata(obj.value)
   }
     getfilterdata(RegId) {

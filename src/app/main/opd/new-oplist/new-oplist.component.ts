@@ -363,12 +363,16 @@ debugger
     }
 
     onChangeOPBill() {
+        debugger
         this.fromDate = this.datePipe.transform(this.myFilterbillform.get('fromDate').value, "yyyy-MM-dd")
         this.toDate = this.datePipe.transform(this.myFilterbillform.get('enddate').value, "yyyy-MM-dd")
         this.f_name = this.myFilterbillform.get('FirstName').value + "%"
         this.l_name = this.myFilterbillform.get('LastName').value + "%"
         this.regNo = this.myFilterbillform.get('RegNo').value || "0"
         this.PBillNo = this.myFilterbillform.get('PBillNo').value || "%"
+        this.CompanyId = this.myFilterbillform.get('CompanyId').value || "0"
+
+        
         this.getfilterdataOpBill();
     }
 

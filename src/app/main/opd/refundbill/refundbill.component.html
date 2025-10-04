@@ -29,11 +29,20 @@
               <div class="patient-search">
                 <div fxLayout="row" fxLayoutAlign="start start" class="gap-8">
                   <div fxFlexFill fxLayout="row" fxLayoutGap="4px" fxLayoutAlign="space-between">
-                    <airmid-autocomplete class="w-350" label="Search Reg No / Patient Name / Mobile No"
+                    <!-- <airmid-autocomplete class="w-350" label="Search Reg No / Patient Name / Mobile No"
                       [formGroup]="searchFormGroup" fxFlex="40%" formControlName="RegId"
                       placeholderText="Search Reg No / Patient Name / Mobile No"
                       ApiUrl="OutPatient/auto-complete?Keyword="
-                      (selectionChange)="getSelectedObj($event)"></airmid-autocomplete>
+                      (selectionChange)="getSelectedObj($event)"></airmid-autocomplete> -->
+
+
+                      <airmid-autocomplete label="OP-UHID / First Name / Last Name / Mobile No" class="w-350"
+                                [formGroup]="searchFormGroup" formControlName="RegId"
+                                placeholderText="OP-UHID / First Name / Last Name / Mobile No" fxFlex
+                                ApiUrl="VisitDetail/search-patient-1?Keyword="
+                                (selectionChange)="getSelectedObj($event)" ValueField="regId"  
+                                TextField="formattedText"></airmid-autocomplete> 
+
                   </div>
                 </div>
               </div>

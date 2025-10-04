@@ -554,11 +554,12 @@ export class IPSearchListComponent implements OnInit {
     }
 
     NewMLc(contact) {
-
+        const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+        buttonElement.blur(); // Remove focus from the button 
         const dialogRef = this._matDialog.open(MLCInformationComponent,
             {
-                maxWidth: "100%",
-                height: '60%',
+                maxWidth: "75vw",
+                height: '85%',
                 width: '90%',
                 data: contact
             });

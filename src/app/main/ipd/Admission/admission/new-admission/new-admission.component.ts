@@ -284,14 +284,12 @@ export class NewAdmissionComponent implements OnInit {
             this.registerObj = response;
             this.value = response.dateofBirth
             this.onChangeDateofBirth(response.dateofBirth)
-            // console.log(this.registerObj)
-            // this.personalFormGroup.get('MaritalStatusId').setValue(this.registerObj.maritalStatusId)
-            this.personalFormGroup.patchValue({
+           this.personalFormGroup.patchValue({
               FirstName: this.registerObj.firstName.trim(),
-              middleName: this.registerObj.middleName.trim(),
+              MiddleName: this.registerObj.middleName.trim(),
               LastName: this.registerObj.lastName.trim(),
               MobileNo: this.registerObj.mobileNo.trim(),
-              address: this.registerObj.address.trim(),
+              Address: this.registerObj.address.trim(),
               // MaritalStatusId: this.registerObj.maritalStatusId,
               emgContactPersonName: this.registerObj?.emgContactPersonName ?? '',
               emgRelationshipId: this.registerObj?.emgRelationshipId ?? 0,
@@ -551,6 +549,8 @@ export class NewAdmissionComponent implements OnInit {
         });
         return;
       }
+      debugger
+      console.log(this.personalFormGroup.value)
       if (!this.personalFormGroup.invalid && !this.admissionFormGroup.invalid && !this.searchFormGroup.invalid) {
         Swal.fire({
           title: 'Do you want to Save the Admission ',
@@ -661,7 +661,7 @@ export class NewAdmissionComponent implements OnInit {
 }
 
   OnSaveAdmission() {
-
+debugger
     if (this.EmgId > 0) {
       this.admissionFormGroup.get('convertId').setValue(this.EmgId)
       this.admissionFormGroup.get('AdmissionType').setValue(2)
@@ -706,6 +706,8 @@ export class NewAdmissionComponent implements OnInit {
           "AdmissionReg": this.personalFormGroup.value,
           "ADMISSION": this.admissionFormGroup.value
         };
+
+        debugger
         console.log(submitData);
         this._AdmissionService.AdmissionNewInsert(submitData).subscribe(response => {
           this.getAdmittedPatientCasepaperview(response);

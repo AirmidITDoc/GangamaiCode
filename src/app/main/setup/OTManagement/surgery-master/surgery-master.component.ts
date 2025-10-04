@@ -24,7 +24,7 @@ export class SurgeryMasterComponent implements OnInit {
     allColumns = [
         // { heading: "Code", key: "surgeryId", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "SurgeryName", key: "surgeryName", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "DepartmentName", key: "departmentId", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "DepartmentName", key: "departmentName", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "CategoryName", key: "surgeryCategoryId", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "SiteDescriptionName", key: "siteDescId", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "Amount", key: "surgeryAmount", sort: true, align: 'left', emptySign: 'NA' },

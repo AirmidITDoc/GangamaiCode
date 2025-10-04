@@ -23,9 +23,9 @@ myForm: FormGroup;
                     public toastr: ToastrService
                 ) { }
     
-    autocompleteModetaluka: string = "Taluka";
+    autocompleteModeSurgeryCategory: string = "SurgeryCategory";
     autocompleteModeDepartment: String = "Department";
-
+autocompleteModeSiteDescription: String = "SiteDescription";
     SurgeryId = 0;
     
     ngOnInit(): void {

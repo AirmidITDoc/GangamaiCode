@@ -71,16 +71,25 @@
             
         </div>
         <form [formGroup]="searchFormGroup" class="input-error-hidden w-400">
-            <!-- <airmid-autocomplete label="Search UHID / Patient Name / Mobile No" 
+            <airmid-autocomplete label="Search UHID / Patient Name / Mobile No" 
             [formGroup]="searchFormGroup" formControlName="RegId" 
             placeholderText="Search UHID / Patient Name / Mobile No" fxFlex 
             ApiUrl="OutPatient/auto-complete?Keyword=" 
-            (selectionChange)="getSelectedObj($event)" ValueField="regId"></airmid-autocomplete> -->
+            (selectionChange)="getSelectedObj($event)" ValueField="regId"></airmid-autocomplete>
 
-            <airmid-autocomplete label="Search UHID / Patient Name / Mobile No" [formGroup]="searchFormGroup"
+            <!-- <airmid-autocomplete label="Search UHID / Patient Name / Mobile No" [formGroup]="searchFormGroup"
                 formControlName="RegId" fxFlex placeholderText="Search UHID / Patient Name / Mobile No"
                 ApiUrl="VisitDetail/search-patient-1?Keyword=" (selectionChange)="getSelectedObj($event)"
-                ValueField="regId"></airmid-autocomplete>
+                ValueField="regId"></airmid-autocomplete> -->
+
+
+                 <!-- <airmid-autocomplete label="OP-UHID / First Name / Last Name / Mobile No"
+                                [formGroup]="searchFormGroup" formControlName="RegId"
+                                placeholderText="OP-UHID / First Name / Last Name / Mobile No" fxFlex
+                                ApiUrl="VisitDetail/search-patient-1?Keyword="
+                                (selectionChange)="getSelectedObj($event)" ValueField="regId"  
+                                TextField="formattedText"></airmid-autocomplete> -->
+
 
             <!-- <airmid-autocomplete class="w-350" label="Search Reg No / Patient Name / Mobile No" [formGroup]="searchFormGroup" formControlName="regId"  placeholderText="Search Reg No / Patient Name / Mobile No" ApiUrl="VisitDetail/search-patient?Keyword=" (selectionChange)="getSelectedObj($event)"
             TextField="formattedText" ValueField="regId"></airmid-autocomplete> -->
@@ -272,7 +281,7 @@
 
                           <airmid-datepicker [formGroup]="myformSearch"
                                 [isRangePicker]="true" formStartControlName="fromDate" formEndControlName="enddate"
-                                [(fromValue)]="gridConfig.filters[4].fieldValue"
+                                [(fromValue)]="gridConfig.filters[4].fieldValue" (dateChange)="onChangeFirst1($event)"
                                 [(toValue)]="gridConfig.filters[5].fieldValue">
                             </airmid-datepicker>
 

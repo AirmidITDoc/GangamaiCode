@@ -36,7 +36,7 @@
                             formControlName="surgeryCategoryId"
                             [formGroup]="myForm" 
                             [validations]="getValidationMessages().surgeryCategoryId"
-                            [mode]="autocompleteModetaluka">
+                            [mode]="autocompleteModeSurgeryCategory">
                         </airmid-dropdown>
                     </div>
                     <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="30%">
@@ -46,16 +46,15 @@
                             [value]="data?.siteDescId"
                             [formGroup]="myForm" 
                             [validations]="getValidationMessages().siteDescId" 
-                            [mode]="autocompleteModetaluka">
+                            [mode]="autocompleteModeSiteDescription">
                         </airmid-dropdown>
                     </div>
                     <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="30%">
                         <airmid-textbox 
                             label="Template Name" 
-                            formControlName="SurgeryName" 
-                            [value]="data?.SurgeryName"
+                            formControlName="ottemplateId" 
+                            [value]="data?.ottemplateId"
                             [formGroup]="myForm" 
-                            [validations]="getValidationMessages().SurgeryName" 
                             [maxLength]="50">
                         </airmid-textbox>
                     </div>

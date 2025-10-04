@@ -66,16 +66,19 @@ export class AdmissionService {
             FirstName: ['', [
                 Validators.required,
                 Validators.maxLength(50),
-                Validators.pattern("^[A-Za-z/() ]*$")
+                Validators.pattern("^[A-Za-z/() ]*$"),
+                 this._FormvalidationserviceService.noWhitespaceValidator()
             ]],
             MiddleName: ['', [
                 Validators.maxLength(50),
-                Validators.pattern("^[A-Za-z/() ]*$")
+                Validators.pattern("^[A-Za-z/() ]*$"),
+                 this._FormvalidationserviceService.noWhitespaceValidator()
             ]],
             LastName: ['', [
                 Validators.required,
                 Validators.maxLength(50),
-                Validators.pattern("^[A-Za-z/() ]*$")
+                Validators.pattern("^[A-Za-z/() ]*$"),
+                 this._FormvalidationserviceService.noWhitespaceValidator()
             ]],
             GenderId: new FormControl(0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]),
             Address: ['', [this._FormvalidationserviceService.allowEmptyStringValidator(), Validators.maxLength(150)]],
@@ -117,7 +120,8 @@ export class AdmissionService {
             PinNo: [''],
 
             //emergency form
-            emgContactPersonName: ['', [Validators.maxLength(50), this._FormvalidationserviceService.allowEmptyStringValidator()]],
+            emgContactPersonName: ['',
+                 [Validators.maxLength(50), this._FormvalidationserviceService.allowEmptyStringValidator()]],
             emgRelationshipId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             emgMobileNo: ['', [Validators.minLength(10), Validators.maxLength(10),
             Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$"), this._FormvalidationserviceService.onlyNumberValidator()]],

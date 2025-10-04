@@ -47,8 +47,8 @@ tableName: any = "";
             } //Action 1-view, 2-Edit,3-delete
         ]
         allFilters = [
-            { fieldName: "TableName", fieldValue: "", opType: OperatorComparer.StartsWith },
-            { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+            { fieldName: "TableName", fieldValue: "", opType: OperatorComparer.Contains },
+            { fieldName: "IsActive", fieldValue: "", opType: OperatorComparer.Equals }
         ]
      gridConfig: gridModel = {
         apiUrl: "OtTableMaster/List",

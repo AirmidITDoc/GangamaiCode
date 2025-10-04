@@ -528,11 +528,13 @@ export class AdmissionComponent implements OnInit {
   }
 
   NewMLc(contact) {
-
+    const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+    buttonElement.blur(); // Remove focus from the button 
     const dialogRef = this._matDialog.open(MLCInformationComponent,
       {
-        maxWidth: '85vw',
-        height: 'auto', width: '100%',
+        maxWidth: "75vw",
+        height: '95%',
+        width: '90%',
         data: contact
       });
 
@@ -820,7 +822,7 @@ export class AdmissionComponent implements OnInit {
           // else 
 
           if (element.admissionType == 1) {
-            this.VOPtoIPcount=this.VOPtoIPcount + 1
+            this.VOPtoIPcount = this.VOPtoIPcount + 1
           }
           if (element.isBillGenerated == 1 || element.isBillGenerated == 2) {
             this.VBillcount = this.VBillcount + 1;
@@ -1058,9 +1060,9 @@ export class AdmissionPersonlModel {
   isOpToIpconv: any;
   isDischarged: any;
   isBillGenerated: any;
-admissionType:any;
-emgTime:any;
-refDoctorName:any;
+  admissionType: any;
+  emgTime: any;
+  refDoctorName: any;
 
   /**
 * Constructor

@@ -38,6 +38,8 @@ export class OpPaymentComponent implements OnInit {
   }
 
   onChangePaymentType() {
+    debugger
+
     if (this.selectedPaymnet1 == 'cash') {
       this.patientDetailsFormGrp.get('referenceNo1').clearValidators();
       this.patientDetailsFormGrp.get('referenceNo1').updateValueAndValidity();
@@ -65,6 +67,10 @@ export class OpPaymentComponent implements OnInit {
       }
       else if (this.selectedPaymnet1 == 'net banking') {
         this.patientDetailsFormGrp.get('bankName1').setValidators([Validators.required]);
+      }
+       else if (this.selectedPaymnet1 == 'upi') {
+        this.patientDetailsFormGrp.get('referenceNo1').setValidators([Validators.required]);
+          this.patientDetailsFormGrp.get('regDate1').setValidators([Validators.required]);
       }
       else {
         this.patientDetailsFormGrp.get('bankName1').clearValidators();
