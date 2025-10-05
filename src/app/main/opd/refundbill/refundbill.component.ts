@@ -212,7 +212,7 @@ debugger
         // this.DoctorName = obj.doctorName; 
         
 
-    this.getfilterdata(obj.value)
+    this.getfilterdata(obj.regId)
   }
     getfilterdata(RegId) {
       debugger
