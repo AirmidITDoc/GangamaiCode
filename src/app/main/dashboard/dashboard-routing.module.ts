@@ -16,15 +16,15 @@ const routes: Routes = [
   // },
   {
     path: '',
-    component: DailyDashboardComponent
+    component: NewDashboardComponent
   },
   {
     path: 'dashboard',
-    component: DailyDashboardComponent
+    component: NewDashboardComponent
   },
   {
-    path: 'new-dashboard',
-    component: NewDashboardComponent
+    path: 'old-dashboard',
+    component: DailyDashboardComponent
   },
   {
     path: 'Pathology-dashboard',

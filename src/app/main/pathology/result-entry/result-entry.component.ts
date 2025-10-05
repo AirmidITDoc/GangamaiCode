@@ -761,9 +761,9 @@ export class ResultEntryComponent implements OnInit {
 
     selectedItem: any;
     // opiptype = this.selectedItem.opdipdtype;
-    CompletdFlag = 1
+    // CompletdFlag = 1
     Printresultentry() {
-
+debugger
         console.log(this.selection.selected);
         let pathologyDelete = [];
 
@@ -772,10 +772,10 @@ export class ResultEntryComponent implements OnInit {
         this.selection.selected.forEach((element) => {
             console.log(element);
            
-            if (element.isCompleted)
-                this.CompletdFlag = 1
-            else
-                this.CompletdFlag = 0
+            // if (element.isCompleted)
+            //     this.CompletdFlag = 1
+            // else
+            //     this.CompletdFlag = 0
             pathologyDelete.push({ pathReportId: element.pathReportId });
         });
 
@@ -784,15 +784,15 @@ export class ResultEntryComponent implements OnInit {
         };
 
         console.log(submitData);
-        if (this.CompletdFlag) {
+        // if (this.CompletdFlag) {
             this._SampleService.PathPrintResultentryInsert(submitData).subscribe(res => {
                 if (res) {
                     this.viewgetPathologyTestReportPdf(this.selectedItem)
                 }
             });
-        }else{
-            Swal.fire("Selcted test Not Completd for Print.....")
-        }
+        // }else{
+        //     Swal.fire("Selcted test Not Completd for Print.....")
+        // }
     }
 
     viewgetPathologyTestReportPdf(data) {

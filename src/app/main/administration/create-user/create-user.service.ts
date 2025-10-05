@@ -43,7 +43,7 @@ export class CreateUserService {
   }
 
   public deactivateTheStatus(m_data) {
-    return this._httpClient.DeleteData("LoginManager/LoginCanceled?Id=" + m_data.toString());
+    return this._httpClient.PostData("LoginManager/LoginCanceled",m_data);
   }
   
 

@@ -15,6 +15,7 @@ import { FormvalidationserviceService } from 'app/main/shared/services/formvalid
 import { ToastrService } from 'ngx-toastr';
 import { Observable } from 'rxjs';
 import { DoctorShareListComponent } from './doctor-share-list/doctor-share-list.component';
+import { DoctorShareServiceService } from './doctor-share-service.service';
 
 
 @Component({
@@ -30,6 +31,7 @@ export class DoctorPayoutpercentageComponent {
   serviceId = 0
   groupId = 0
   type = "1"
+  SearchForm:FormGroup
   autocompleteModeDoctor: string = "ConDoctor";
   @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
   @ViewChild('actionsTemplate') actionsTemplate!: TemplateRef<any>;
@@ -71,19 +73,28 @@ export class DoctorPayoutpercentageComponent {
     filters: this.allFilters
   }
   constructor(
-    public _DoctorShareService: DoctorShareService,
+    public _DoctorShareService: DoctorShareServiceService,
     public datePipe: DatePipe, private _FormvalidationserviceService: FormvalidationserviceService,
     public _matDialog: MatDialog, public _formBuilder: UntypedFormBuilder,
     public toastr: ToastrService,
   ) { }
 
   ngOnInit(): void {
-
+    this.SearchForm=this.Createsearchform()
   }
+
+
+   Createsearchform() {
+    return this._formBuilder.group({ 
+      DoctorName:'',
+      Type: ['1'],
+    })
+  }
+
 
   onChange() {
 
-    this.type = this._DoctorShareService.DocFormGroup.get('Type').value
+    this.type = this.SearchForm.get('Type').value
     this.getfilterdata();
   }
 

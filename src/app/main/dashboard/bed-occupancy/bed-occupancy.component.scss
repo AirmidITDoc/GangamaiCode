@@ -190,3 +190,215 @@ hr {
 .icon-orange {
     color: orange;
 }
+
+/* New summary header styles */
+.summary-row {
+    margin-bottom: 16px;
+}
+.summary-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 164px;
+    text-align: center;
+}
+.summary-value { font-size: 40px; font-weight: 700; }
+.summary-label { font-weight: 600; opacity: .8; }
+.summary-sub { opacity: .6; }
+
+.summary-chart { padding: 12px; }
+.chart-title { font-weight: 600; margin-bottom: 8px; }
+.fake-line-chart {
+    height: 120px;
+    background: linear-gradient(180deg, rgba(0,0,0,0.06), rgba(0,0,0,0.02));
+    border-radius: 8px;
+    position: relative;
+    overflow: hidden;
+}
+.fake-line-chart:after {
+    content: '';
+    position: absolute;
+    left: -20%;
+    top: 50%;
+    width: 140%;
+    height: 2px;
+    background: repeating-linear-gradient(90deg, rgba(0,0,0,0.15) 0 8px, transparent 8px 16px);
+    transform: translateY(-50%) rotate(-8deg);
+}
+
+/* Responsive tweaks */
+@media (max-width: 599px) {
+    .summary-card { height: 140px; }
+}
+
+/* First section cards */
+.overall-stats-card { padding: 12px; }
+.overall-title { text-transform: uppercase; font-size: 12px; letter-spacing: .8px; opacity:.8; }
+.overall-row { display:flex; align-items:center; justify-content: space-between; margin: 8px 0 6px; }
+.overall-left { text-align:left; }
+.overall-right { text-align:right; }
+.overall-value { font-size: 28px; font-weight: 700; }
+.overall-label { opacity:.75; }
+.overall-total { font-size: 24px; font-weight: 700; }
+.overall-total-label { opacity:.75; }
+.overall-donut-wrap { margin: 8px 0; }
+.legend-mini { display:flex; flex-wrap:wrap; gap: 10px; align-items:center; font-size: 12px; }
+.legend-mini .dot { width:10px; height:10px; border-radius:50%; display:inline-block; margin-right:6px; }
+.dot-red{ background:#ff5a8a; }
+.dot-amber{ background:#f6c542; }
+.dot-green{ background:#3ecf8e; }
+.dot-blue{ background:#5ac8fa; }
+.dot-violet{ background:#a283f6; }
+
+.overall-stats-card, 
+.admissions-card {
+  height: 280px; // or any value you want same height
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.ward-dashboard-container {
+    padding-bottom: 0 !important;
+  }
+  
+.full-height {
+    height: 100%;
+  }
+  
+  .admissions-card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.chart-container {
+  position: relative;
+  height: 100%;
+  width: 100%;
+}
+
+#admissionsLineCanvas {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: contain;
+}
+
+  
+.overall-donut-wrap canvas,
+#admissionsLineCanvas {
+  height: 100% !important;
+  width: 100% !important;
+}
+
+// .first-section { margin-bottom: 16px; }
+
+/* removed department card styles */
+/* Department cards */
+.dept-card { padding: 12px; }
+.dept-header { margin-bottom: 8px; }
+.dept-title { }
+.dept-name { font-weight: 700; }
+.dept-total { opacity:.7; font-size: 12px; }
+.dept-percent { font-weight: 700; font-size: 20px; }
+.dept-percent.warn { color: #f44336; }
+.dept-rows { display:grid; gap: 8px; }
+.dept-row { display:flex; align-items:center; gap: 8px; }
+.bar { display:inline-block; width:70px; height:6px; border-radius: 3px; background:#eee; position: relative; }
+.bar-red{ background:#ff5a8a; }
+.bar-amber{ background:#f6c542; }
+.bar-green{ background:#3ecf8e; }
+.dept-img { width: 36px; height: 36px; border-radius: 6px; object-fit: cover; }
+
+
+
+// ----------------------------------------------
+.room-filter {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    margin-top: 1.5rem;
+  
+    .room-select,
+    .month-select {
+      width: 200px;
+    }
+  }
+  
+  .bed-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1.5rem;
+  }
+  
+  .bed-card {
+    border-radius: 16px;
+    padding: 1rem;
+    transition: all 0.3s ease;
+    text-align: left;
+  
+    .bed-header {
+      display: flex;
+      justify-content: space-between;
+      font-weight: 600;
+      .bed-id {
+        opacity: 0.8;
+      }
+    }
+  
+    .bed-icon {
+      display: flex;
+      justify-content: center;
+      font-size: 64px;
+      font-size: 55px;
+      height: 64px;
+      width: 64px;
+      margin: 1rem auto;
+        mat-icon {
+            border-radius: 50%;
+            padding: 35px;
+            margin: 0;
+        }
+    }
+  
+    .bed-details {
+      font-size: 14px;
+    }
+
+  
+    &:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    }
+  }
+  
+  
+    .use {
+    background-color: #d7fde5;
+    color: #1cb755;
+
+    .bed-icon mat-icon {
+      color: #1cb755;
+    }
+  }
+
+  .reserved {
+    background-color: #fff8e1;  
+    color: #ff8f00;
+
+    .bed-icon mat-icon {
+      color: #ffb300;
+    }
+  }
+
+  .empty {
+    background-color: #e3f2fd;
+    color: #1565c0;
+
+    .bed-icon mat-icon {
+      color: #42a5f5;
+    }
+  }

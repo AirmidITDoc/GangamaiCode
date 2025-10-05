@@ -179,9 +179,8 @@ export class IPBrowseBillService {
   }
 
 
-  public InsertIPSettlementPayment(employee) {
-
-    return this._httpClient1.PostData("IPBill/PaymentSettelment", employee)
-  }
-
+public InsertIPSettlementPayment (employee){
+ 
+   return this._httpClient1.PostData("IPBill/PaymentSettelment", employee)
+}
 }
