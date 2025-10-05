@@ -1,87 +1,4 @@
-<div id="dashboard-project" class="page-layout simple right-sidebar bed-occupancy-section" fxLayout="row" *ngIf="false">
-
-    <!-- CENTER -->
-    <div class="center">
-
-        <!-- HEADER -->
-        <div class="header accent p-12 pb-0" fxLayout="row" fxLayoutAlign="space-between">
-
-            <div class="header-row" fxLayout="row" fxLayoutAlign="space-between center">
-
-                <span class="mat-display-1 m-0 welcome-message" [@animate]="{value:'*',params:{x:'50px'}}">Bed Occupancy Dashboard
-                </span>
-
-                <button mat-icon-button class="sidebar-toggle mr-8" fxHide.gt-md>
-                    <mat-icon>menu</mat-icon>
-                </button>
-            </div>
-
-
-        </div>
-        <div class="ward-dashboard" fxLayout="row wrap" fxLayoutGap="15px grid">
-            <div class="ward-main-conatiner" *ngFor="let ele of warDataArr" fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%" (click)="onSelectWard(ele)">
-                <div class="ward-container" fxLayout="column" fxLayoutAlign="space-evenly">
-                    <div>
-                        {{ele.RoomName}}
-                    </div>
-                    <div>
-                        {{ele.LocationName}}
-                    </div>
-                </div>
-                <div [ngClass]="ele.isSelected ? 'ward-details-container active' : 'ward-details-container '"> <!--ward-white-->
-                    <div class="detail-div" fxLayout="column" fxLayoutGap="15px">
-                        <div style="text-align: center;">
-                            <span class="labels">Ward Charges: </span><span class="ward-value-class">1500/-</span>
-                        </div>
-                        <div style="display: flex; justify-content: space-between;">
-                            <div>
-                                <span class="labels">Total Room: 0</span>
-                            </div>
-                            <div>
-                                <span class="labels">Total Beds: 0</span>
-                            </div>
-                        </div>
-                        <div style="display: flex; justify-content: space-between;">
-                            <div>
-                                <span class="ward-value-class">Occupied: {{ele.OccuipedCount}}</span>
-                            </div>
-                            <div>
-                                <span class="ward-value-class">Available: {{ele.AvailableCount}}</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-
-        <div class="ward-availibility" fxLayout="row wrap" fxLayoutGap="15px grid">
-            <div class="ward-avail-details" fxFlex="20%" *ngFor="let ele of warItemArr">
-                <div style="margin-bottom: 10px;">
-                    <span [ngClass]="ele.IsAvailible ? 'ward-status status-green' : 'ward-status status-orange'">{{ele.IsAvailible
-                        ? 'Available' : 'Occupied'}}</span>
-                </div>
-                <div>
-                    <span class="ward-status">Bed : {{ele.BedName}}</span>
-                </div>
-                <hr>
-                <div class="avail-icon">
-                    <mat-icon [ngClass]="ele.IsAvailible ? 'avail-icon-name icon-green' : 'avail-icon-name icon-orange'">{{ele.IsAvailible ? 'person' : 'person_add'}}</mat-icon>
-                </div>
-                <div *ngIf="!ele.IsAvailible">
-                    <hr>
-                    <div style="margin-bottom: 10px;">
-                        <span class="ward-status">{{ele.RegNo}}:{{ele.PatientName}}</span>
-                    </div>
-                    <div>
-                        <span>{{ele.DoctorName}}</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-    </div>
-</div>
+<!-- Removed old experimental layout block -->
 <div class="page-layout simple inner-sidebar inner-scroll right-sidebar bed-occupancy-section" dynamicTableHeight>
     <!-- HEADER -->
     <div class="top-header accent h-60">
@@ -98,143 +15,179 @@
     <div class="content layout-body">
         <div class="center p-12 ">
             <div class="content-card ward-dashboard-container">
-                <div fxLayout="row" class="gap-8">
-                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%">
-                        <div class="layout-content-container " fusePerfectScrollbar>
-                            <div fxFlexFill fxLayout="row wrap" fxLayoutAlign="start start" fxLayoutGap="12px grid">
-                                <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%" *ngFor="let item of warDataArr">
-                                    <div class="ward-card-container" (click)="onSelectWard(item)">
-                                        <mat-card class="ward-card" [ngClass]="{'active':item.isSelected}">
-                                            <div class="card-header border-bottom pb-2">
-                                                <div class="card-header-title">
-                                                    <span class="h3 font-weight-600">{{item.RoomName}}</span>
+                <!-- First section: two graphs -->
+                <div class="first-section"  fxLayout="row" fxLayoutAlign="stretch stretch" fxLayoutGap="12px grid">
+                    <div fxFlex="25%" fxFlex.sm="33%" fxFlex.xs="100%">
+                        <mat-card class="overall-stats-card full-height">
+                            <mat-card-content>
+                                <div class="overall-title">Overall statistics</div>
+                                <div class="overall-row">
+                                    <div class="overall-left">
+                                        <div class="overall-value">{{occupancyPercent}}%</div>
+                                        <div class="overall-label">In Use</div>
                                                 </div>
-                                            </div>
-                                            <div class="card-body py-16 ">
-                                                <div fxLayout="column" class="gap-8">
-                                                    <div fxLayout="row" fxLayoutAlign="space-between center">
-                                                        <div class="room-info">
-                                                            <span class="ward-info-title">Total Rooms : </span>
-                                                            <span class="ward-info-value">0</span>
-                                                        </div>
-                                                        <div class="bed-info">
-                                                            <span class="ward-info-title">Total Beds : </span>
-                                                            <span class="ward-info-value">0</span>
-                                                        </div>
-                                                    </div>
-                                                    <div fxLayout="row" fxLayoutAlign="space-between center">
-                                                        <div class="total-occupied orange-800-fg">
-                                                            <span class="ward-info-title">Occupied : </span>
-                                                            <span class="ward-info-value"> {{item.OccuipedCount}}</span>
-                                                        </div>
-                                                        <div class="total-available green-800-fg">
-                                                            <span class="ward-info-title">Available : </span>
-                                                            <span class="ward-info-value"> {{item.AvailableCount}}</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="card-footer border-top pt-8">
-                                                <div fxLayout="row" fxLayoutAlign="space-between center" class="gap-8">
-                                                    <div class="floor">
-                                                        <span class="font-weight-600">{{item.LocationName}}</span>
-                                                    </div>
-                                                    <div class="ward-charges">
-                                                        <span class="font-weight-600">Ward Charges : </span>
-                                                        <span>1500 /-</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </mat-card>
+                                    <div class="overall-right">
+                                        <div class="overall-total">{{totalBeds}}</div>
+                                        <div class="overall-total-label">Total</div>
                                     </div>
                                 </div>
+                                <div class="overall-donut-wrap">
+                                    <canvas id="BedOverallDoughnut" style="width:100%; height:160px"></canvas>
                             </div>
-                        </div>
+                                <!-- <div class="legend-mini">
+                                    <span class="dot dot-red"></span> In use
+                                    <span class="dot dot-amber"></span> Reserved
+                                    <span class="dot dot-green"></span> Empty
+                                    <span class="dot dot-blue"></span> Clean up
+                                    <span class="dot dot-violet"></span> Other
+                        </div> -->
+                            </mat-card-content>
+                        </mat-card>
                     </div>
-                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%">
-                        <div class="layout-content-container">
-                            <div class="table-header" *ngIf="selectedRoom">
-                                <div class="table-header-title pb-2 mb-3 border-bottom">
-                                    <span class="h1 font-weight-600">{{selectedRoom}}</span>
+                    <div fxFlex="75%" fxFlex.sm="66%" fxFlex.xs="100%">
+                        <mat-card class="admissions-card full-height">
+                            <mat-card-content>
+                                <div class="chart-title">New admission</div>
+                                <div style="height:220px">
+                                    <canvas id="BedAdmissionsLine"></canvas>
                                 </div>
-                            </div>
-                            <div class="table-wrapper">
-                                <!-- Mat table -->
-                                <div matColumnDef="loading" [ngClass]="{'hide': !isTableLoading}" class="backgroundBlur">
-                                    <div class="spinner-border"></div>
-                                </div>
-                                <mat-table matSort [dataSource]="dataSource" [@animateStagger]="{value:'50'}">
-
-                                    <ng-container matColumnDef="RegNo">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header>Reg No
-                                        </mat-header-cell>
-                                        <mat-cell *matCellDef="let item">
-                                            <span> {{item.RegNo || '--'}}</span>
-                                        </mat-cell>
-                                    </ng-container>
-
-                                    <ng-container matColumnDef="PatientName">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header>Patient name
-                                        </mat-header-cell>
-                                        <mat-cell *matCellDef="let item">
-                                            <span> {{item.PatientName || '--' }}</span>
-                                        </mat-cell>
-                                    </ng-container>
-
-                                    <ng-container matColumnDef="DoctorName">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header>Doctor name
-                                        </mat-header-cell>
-                                        <mat-cell *matCellDef="let item">
-                                            <span> {{item.DoctorName || '--' }}</span>
-                                        </mat-cell>
-                                    </ng-container>
-
-                                    <ng-container matColumnDef="IsAvailible">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header>Status </mat-header-cell>
-                                        <mat-cell *matCellDef="let item">
-                                            <span [ngClass]="item.IsAvailible ? 'green-800-fg' :'orange-800-fg'"> {{item.IsAvailible ? 'Available':'Occupied'}}</span>
-                                        </mat-cell>
-                                    </ng-container>
-
-                                    <ng-container matColumnDef="BedName">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header>Bed name</mat-header-cell>
-                                        <mat-cell *matCellDef="let item">
-                                            <span> {{item.BedName || '--' }}</span>
-                                        </mat-cell>
-                                    </ng-container>
-
-                                    <ng-container matColumnDef="noData">
-                                        <mat-footer-cell *matFooterCellDef>
-                                            <span *ngIf="!warItemArr.length ">No Data Found...</span>
-                                        </mat-footer-cell>
-                                    </ng-container>
-
-                                    <mat-header-row class="accent min-width-600" *matHeaderRowDef="displayedColumns; sticky: true">
-                                    </mat-header-row>
-
-                                    <mat-row class="min-width-600" *matRowDef="let item; columns: displayedColumns;" [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
-
-                                    <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide': warItemArr.length > 0 }">
-                                    </mat-footer-row>
-                                </mat-table>
-                                <!-- <div fxFlexFill fxLayout="row wrap" fxLayoutAlign="start start" fxLayoutGap="12px grid">
-                                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%" *ngFor="let item of warItemArr">
-                                        <div class="ward-card-container">
-                                            <mat-card>
-                                                <div>
-                                                    <pre>
-                                                    {{item | json}}
-                                                    </pre>
-                                                </div>
-                                            </mat-card>
-                                        </div>
-                                    </div>
-                                </div> -->
-
-                            </div>
-                        </div>
+                            </mat-card-content>
+                        </mat-card>
                     </div>
                 </div>
+                <!-- Department summary (4 cards) -->
+                <div class="dept-cards mt-8" fxLayout="row wrap" fxLayoutGap="12px grid">
+                    <!-- Department 1 -->
+                    <div fxFlex="25%" fxFlex.sm="50%" fxFlex.xs="100%">
+                        <mat-card class="dept-card">
+                            <mat-card-content>
+                                <div class="dept-header" fxLayout="row" fxLayoutAlign="space-between center">
+                                    <div class="dept-title" fxLayout="row" fxLayoutGap="8px" fxLayoutAlign="start center">
+                                        <!-- <img class="dept-img" [src]="dept1.image" alt="dept"/> -->
+                                        <div>
+                                            <div class="dept-name">{{dept1.name}}</div>
+                                            <div class="dept-total">{{dept1.total}} Total</div>
+                                        </div>
+                                    </div>
+                                    <div class="dept-percent" [ngClass]="{'warn': dept1.percent>95}">{{dept1.percent}}%</div>
+                                </div>
+                                <div class="dept-rows">
+                                    <div class="dept-row"><span class="bar bar-red"></span><span> {{dept1.inUse}} In Use</span></div>
+                                    <div class="dept-row"><span class="bar bar-amber"></span><span> {{dept1.reserved}} Reserved</span></div>
+                                    <div class="dept-row"><span class="bar bar-green"></span><span> {{dept1.empty}} Empty</span></div>
+                                </div>
+                            </mat-card-content>
+                        </mat-card>
+                    </div>
+
+                    <!-- Department 2 -->
+                    <div fxFlex="25%" fxFlex.sm="50%" fxFlex.xs="100%">
+                        <mat-card class="dept-card">
+                            <mat-card-content>
+                                <div class="dept-header" fxLayout="row" fxLayoutAlign="space-between center">
+                                    <div class="dept-title" fxLayout="row" fxLayoutGap="8px" fxLayoutAlign="start center">
+                                        <div>
+                                            <div class="dept-name">{{dept2.name}}</div>
+                                            <div class="dept-total">{{dept2.total}} Total</div>
+                                        </div>
+                                    </div>
+                                    <div class="dept-percent" [ngClass]="{'warn': dept2.percent>95}">{{dept2.percent}}%</div>
+                                </div>
+                                <div class="dept-rows">
+                                    <div class="dept-row"><span class="bar bar-red"></span><span> {{dept2.inUse}} In Use</span></div>
+                                    <div class="dept-row"><span class="bar bar-amber"></span><span> {{dept2.reserved}} Reserved</span></div>
+                                    <div class="dept-row"><span class="bar bar-green"></span><span> {{dept2.empty}} Empty</span></div>
+                                </div>
+                            </mat-card-content>
+                        </mat-card>
+                    </div>
+
+                    <!-- Department 3 -->
+                    <div fxFlex="25%" fxFlex.sm="50%" fxFlex.xs="100%">
+                        <mat-card class="dept-card">
+
+                            <mat-card-content>
+                                <div class="dept-header" fxLayout="row" fxLayoutAlign="space-between center">
+                                    <div class="dept-title" fxLayout="row" fxLayoutGap="8px" fxLayoutAlign="start center">
+                                        <!-- <img class="dept-img" [src]="dept3.image" alt="dept"/> -->
+                                        <div>
+                                            <div class="dept-name">{{dept3.name}}</div>
+                                            <div class="dept-total">{{dept3.total}} Total</div>
+                                        </div>
+                                    </div>
+                                    <div class="dept-percent" [ngClass]="{'warn': dept3.percent>95}">{{dept3.percent}}%</div>
+                                </div>
+                                <div class="dept-rows">
+                                    <div class="dept-row"><span class="bar bar-red"></span><span> {{dept3.inUse}} In Use</span></div>
+                                    <div class="dept-row"><span class="bar bar-amber"></span><span> {{dept3.reserved}} Reserved</span></div>
+                                    <div class="dept-row"><span class="bar bar-green"></span><span> {{dept3.empty}} Empty</span></div>
+                                </div>
+                            </mat-card-content>
+                        </mat-card>
+                    </div>
+
+                    <!-- Department 4 -->
+                    <div fxFlex="25%" fxFlex.sm="50%" fxFlex.xs="100%">
+                        <mat-card class="dept-card">
+                            <mat-card-content>
+                                <div class="dept-header" fxLayout="row" fxLayoutAlign="space-between center">
+                                    <div class="dept-title" fxLayout="row" fxLayoutGap="8px" fxLayoutAlign="start center">
+                                        <!-- <img class="dept-img" [src]="dept4.image" alt="dept"/> -->
+                                        <div>
+                                            <div class="dept-name">{{dept4.name}}</div>
+                                            <div class="dept-total">{{dept4.total}} Total</div>
+                                        </div>
+                                    </div>
+                                    <div class="dept-percent" [ngClass]="{'warn': dept4.percent>95}">{{dept4.percent}}%</div>
+                                </div>
+                                <div class="dept-rows">
+                                    <div class="dept-row"><span class="bar bar-red"></span><span> {{dept4.inUse}} In Use</span></div>
+                                    <div class="dept-row"><span class="bar bar-amber"></span><span> {{dept4.reserved}} Reserved</span></div>
+                                    <div class="dept-row"><span class="bar bar-green"></span><span> {{dept4.empty}} Empty</span></div>
+                                </div>
+                            </mat-card-content>
+                        </mat-card>
+                    </div>
+                </div>
+
+                    <mat-form-field appearance="outline" class="room-select mt-8 mr-8">
+                      <mat-label>Room</mat-label>
+                      <mat-select [(value)]="selectedRoom">
+                        <mat-option *ngFor="let room of rooms" [value]="room">{{ room }}</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  
+                    <mat-form-field appearance="outline" class="month-select mt-8">
+                      <mat-label>Month</mat-label>
+                      <input matInput [matDatepicker]="picker" placeholder="Select month" />
+                      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                      <mat-datepicker #picker startView="multi-year" panelClass="month-picker"></mat-datepicker>
+                    </mat-form-field>
+                  
+                  <div class="bed-grid">
+                    <mat-card *ngFor="let bed of beds" class="bed-card" >
+                      <div class="bed-header">
+                        <div class="bed-id">BED {{ bed.id }}</div>
+                        <div class="bed-status">{{ bed.status }}</div>
+                      </div>
+                  
+                      <div class="bed-icon">
+                        <mat-icon class="bed-icon" [ngClass]="bed.status.toLowerCase()">{{ bed.icon }}</mat-icon>
+                      </div>
+                  
+                      <div class="bed-details" *ngIf="bed.status !== 'Empty'">
+                        <p><strong>Patient:</strong> {{ bed.patient }}</p>
+                        <p><strong>Admission Date:</strong> {{ bed.admissionDate }}</p>
+                        <p><strong>Age:</strong> {{ bed.age }}</p>
+                        <p><strong>Sex:</strong> {{ bed.sex }}</p>
+                      </div>
+                  
+                      <div class="bed-details" *ngIf="bed.status === 'Empty'">
+                        <p>No patient assigned</p>
+                      </div>
+                    </mat-card>
+                  </div>
+                  
             </div>
         </div>
         <!-- CENTER -->
