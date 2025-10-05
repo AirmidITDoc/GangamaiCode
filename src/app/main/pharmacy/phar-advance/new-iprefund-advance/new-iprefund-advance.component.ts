@@ -101,14 +101,14 @@ advanceDetailId:any=0;
       advDetailId: [item?.advanceDetailId, [this._FormvalidationserviceService.onlyNumberValidator()]],
       refundDate: this.datePipe.transform(new Date(),'yyyy-MM-dd'),
       refundTime: this.datePipe.transform(new Date(),'hh:mm'),
-      advRefundAmt: [item?.refundAmount, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]]
+      advRefundAmt: [item?.refundAmount || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]]
     })
   }
   CreatePhAdvRefundBalDet(item: any) {
     return this.formBuilder.group({
       advanceDetailId: [item?.advanceDetailId, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      balanceAmount: [item?.balanceAmount, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-      refundAmount: [item?.refundAmount, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]]
+      balanceAmount: [item?.balanceAmount ||0 , [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      refundAmount: [item?.refundAmount || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]]
     })
   }
  get AdvRefundDetailsArray(): FormArray{

@@ -381,7 +381,9 @@
                             [formGroup]="_salesService.ItemSearchGroup" formControlName="ItemId"
                             placeholderText="Item Name (enter 2 char)" fxFlex id="ItemId"
                             ApiUrl="ItemMaster/GetItemListforSalesPage?StoreId=2&ItemName=" TextField="itemName"
-                            ValueField="itemId" (selectionChange)="onItemChange($event)" #ItemId></airmid-autocomplete>
+                            ValueField="itemId" (selectionChange)="onItemChange($event)" 
+                            (keydown.enter)="handleEnterKey($event)"
+                            #ItemId></airmid-autocomplete>
                           <!-- (selectionChange)="getSelectedObj($event)" -->
                         </div>
 
@@ -393,6 +395,7 @@
                         <div fxFlex="100%" fxFlex.gt-sm="7%">
                           <airmid-textbox label="Qty" formControlName="Qty" #qtyInputRef [type]="'number'" min="0"
                             (valueChange)="calculateTotalAmt()"
+                            (keydown.enter)="checkQtyBeforeNext($event)"
                             [formGroup]="_salesService.ItemSearchGroup"></airmid-textbox>
                         </div>
 

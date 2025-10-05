@@ -544,7 +544,6 @@ export class SalesHospitalNewComponent implements OnInit {
             },
         });
         dialogRef.afterClosed().subscribe((result1) => {
-            debugger
             let isEscaped = result1.vEscflag;
             if (isEscaped && !isEditable) {
                 this._salesService.ItemSearchGroup.get('ItemId').setValue('a');
@@ -565,9 +564,10 @@ export class SalesHospitalNewComponent implements OnInit {
                 }
                 return;
             }
+            // const QtyElement = this.getElementByName(isEditable ? 'tableQty' : 'Qty') as HTMLInputElement;
             const QtyElement = this.getElementByName(isEditable ? 'tableQty' : 'Qty') as HTMLElement;
             if (QtyElement) {
-                QtyElement.focus();
+                  QtyElement.focus();
             }
 
             this.selectedItem = result;
@@ -664,6 +664,18 @@ export class SalesHospitalNewComponent implements OnInit {
             PurTotAmt: PurTotAmt,
         })
     }
+    checkQtyBeforeNext(event: KeyboardEvent) {
+        const qtyControl = this._salesService.ItemSearchGroup.get('Qty');
+
+        if (!qtyControl?.value || qtyControl.value <= 0) {
+            event.preventDefault(); // stop Enter/Tab action
+            const qtyInput = (event.target as HTMLElement);
+            qtyInput.focus(); // keep focus on same field
+            // Optionally show a message
+            // this._toastr.warning('Please enter quantity before continuing.');
+        }
+    }
+
     public discperCal(): void {
         const formValue = this._salesService.ItemSearchGroup.value;
         const discPer = Number(formValue.DiscPer);
@@ -758,6 +770,22 @@ export class SalesHospitalNewComponent implements OnInit {
             StoreId: [this.selectedItem?.storeId, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
         })
     }
+
+    handleEnterKey(event: KeyboardEvent) {
+        if (event.key === 'Enter') {
+            const ItemIdElement = event.target as HTMLInputElement;
+
+            if (!ItemIdElement.value || ItemIdElement.value.trim() === '') {
+                event.preventDefault(); // stop next focus
+                ItemIdElement.focus();
+                return;
+            }
+
+            const nextElement = document.querySelector(`[name='Qty']`) as HTMLElement;
+            nextElement?.focus();
+        }
+    }
+
     OnAddItem() {
         if (this.saleSelectedDatasource.data.length > 0) {
             this.saleSelectedDatasource.data.forEach((element) => {
@@ -873,7 +901,7 @@ export class SalesHospitalNewComponent implements OnInit {
         this.RegId = '';
         this.PatientName = '';
         this.DoctorName = '';
-        this.ItemSubform.get('opIpType').setValue('2');
+        this.ItemSubform.get('opIpType').setValue('1');
         this.ItemSubform.get('CashPay').setValue('CashPay');
         this.ItemSubform.get('referanceNo').reset('');
         this.ItemSubform.get('extMobileNo').reset('');
@@ -1184,6 +1212,7 @@ export class SalesHospitalNewComponent implements OnInit {
             }
         }
         this.getDraftorderList();
+        this.PharmaSalesForm.get('sales.balanceAmount')?.reset(0);
     }
     onClose() {
         this.Itemchargeslist = [];

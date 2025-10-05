@@ -65,16 +65,19 @@ export class PharAdvanceComponent implements OnInit {
   ]
 
   allColumns1 = [
-    { heading: "Date", key: "date", sort: true, align: 'left', emptySign: 'NA', width: 180 },
+    { heading: "Date", key: "date", sort: true, align: 'left', emptySign: 'NA', type: 6, width: 150},
     { heading: "Advance.No", key: "advanceNo", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "UHID No", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 260 },
     { heading: "Advance Amt", key: "advanceAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
     { heading: "Balance Amt", key: "balanceAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
-    { heading: "CashPay Amt", key: "cashPayAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
-    { heading: "ChequePay Amt", key: "chequePayAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
-    { heading: "CardPay Amt", key: "cardPayAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
-    // { heading: "Remark", key: "remark", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "Cash Pay", key: "cashPayAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+    { heading: "Cheque Pay", key: "chequePayAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+    { heading: "Card Pay", key: "cardPayAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+    { heading: "online Pay", key: "onlineAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+    { heading: "TDS Pay", key: "tdsAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+    { heading: "WF Pay", key: "wfAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+    { heading: "Commects", key: "reason", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "AddedBy", key: "userName", sort: true, align: 'left', emptySign: 'NA' },
     {
       heading: "Action", key: "action", align: "right", width: 80, type: gridColumnTypes.action, actions: [
@@ -86,14 +89,14 @@ export class PharAdvanceComponent implements OnInit {
     }
   ]
   allColumnsRefund = [
-    { heading: "Refund Date", key: "refundDate", sort: true, align: 'left', emptySign: 'NA', width: 180 },
+    { heading: "Refund Date", key: "refundDate", sort: true, align: 'left', emptySign: 'NA', width: 150 , type: 6 },
     { heading: "Refund No", key: "refundNo", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "UHID No", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 260 },
     { heading: "Refund Amt", key: "refundAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
-    { heading: "CashPay Amt", key: "cashPayAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
-    { heading: "ChequePay Amt", key: "chequePayAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
-    { heading: "CardPay Amt", key: "cardPayAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+    { heading: "Cash Pay", key: "cashPayAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+    { heading: "Cheque Pay", key: "chequePayAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+    { heading: "Card Pay", key: "cardPayAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
     { heading: "Remark", key: "remark", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "AddedBy", key: "userName", sort: true, align: 'left', emptySign: 'NA' },
     {
