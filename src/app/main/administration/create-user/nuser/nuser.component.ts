@@ -22,6 +22,7 @@ import { values } from 'lodash';
 })
 export class NUserComponent implements OnInit {
   myuserApprovalform: FormGroup;
+  myuserApprovalform1: FormGroup;
   isActive: boolean = true;
 
   vPharExpOpt: any = 0;
@@ -137,6 +138,8 @@ export class NUserComponent implements OnInit {
     this.LoginAccessDetailsArray.push(this.createLoginAccessDetails());
     this.LoginUnitDetailsArray.push(this.createLoginUnitDetails());
     this.LoginStoreDetailsArray.push(this.createLoginStoreDetails());
+
+    this.myuserApprovalform1=this.CreateMultidataform()
   }
 
   getList() {
@@ -227,9 +230,9 @@ export class NUserComponent implements OnInit {
   // });
 
       setTimeout(() => {
-        this.myuserApprovalform.get('multipleUnitId')?.setValue(this.RtrvUnitList);
+        this.myuserApprovalform1.get('multipleUnitId')?.setValue(this.RtrvUnitList);
       }, 0);
-      console.log("setData:", this.myuserApprovalform.get('multipleUnitId').value)
+      console.log("setData:", this.myuserApprovalform1.get('multipleUnitId').value)
     });
   }
 
@@ -266,7 +269,7 @@ export class NUserComponent implements OnInit {
       //   multipleUnitId: assignedStore
       // });
       setTimeout(() => {
-        this.myuserApprovalform.get('multipleStoreId')?.setValue(this.RtrvStoreList);
+        this.myuserApprovalform1.get('multipleStoreId')?.setValue(this.RtrvStoreList);
       }, 0);
 
     });
@@ -289,7 +292,7 @@ export class NUserComponent implements OnInit {
           Validators.pattern('[a-z A-Z 0-9_ ]*')
         ]],
       password: ["", [Validators.required]],
-      unitId: [this._loggedService.currentUserValue.user.unitId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      unitId: [this._loggedService.currentUserValue.user.unitId, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       mobileNo: ["", [
         Validators.required,
         Validators.minLength(10),
@@ -301,7 +304,7 @@ export class NUserComponent implements OnInit {
           Validators.required
         ]
       ],
-      storeId: [this._loggedService.currentUserValue.user.storeId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      storeId: [this._loggedService.currentUserValue.user.storeId, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       isDoctorType: false,
       doctorId: "0",
       isPoverify: false,
@@ -337,11 +340,18 @@ export class NUserComponent implements OnInit {
       tLoginStoreDetails: this._formBuilder.array([]),
 
       // extra fields
-      multipleUnitId: [[], [Validators.required]],
-      multipleStoreId: [[], [Validators.required]],
+      // multipleUnitId: [[], [Validators.required]],
+      // multipleStoreId: [[], [Validators.required]],
       IsPharmacyBalClearnace: false
 
     });
+  }
+
+  CreateMultidataform(): FormGroup {
+    return this._formBuilder.group({
+       multipleUnitId: [[], [Validators.required]],
+      multipleStoreId: [[], [Validators.required]]
+      });
   }
 
   createLoginAccessDetails(item: any = {}): FormGroup {
@@ -383,15 +393,15 @@ export class NUserComponent implements OnInit {
   }
 
   removeUnit(item) {
-    let removedIndex = this.myuserApprovalform.value.multipleUnitId.findIndex(x => x.value == item.value);
-    this.myuserApprovalform.value.multipleUnitId.splice(removedIndex, 1);
-    this.ddlUnit.SetSelection(this.myuserApprovalform.value.multipleUnitId.map(x => x.value));
+    let removedIndex = this.myuserApprovalform1.value.multipleUnitId.findIndex(x => x.value == item.value);
+    this.myuserApprovalform1.value.multipleUnitId.splice(removedIndex, 1);
+    this.ddlUnit.SetSelection(this.myuserApprovalform1.value.multipleUnitId.map(x => x.value));
   }
 
   removeStore(item) {
-    let removedIndex = this.myuserApprovalform.value.multipleStoreId.findIndex(x => x.value == item.value);
-    this.myuserApprovalform.value.multipleStoreId.splice(removedIndex, 1);
-    this.ddlStore.SetSelection(this.myuserApprovalform.value.multipleStoreId.map(x => x.value));
+    let removedIndex = this.myuserApprovalform1.value.multipleStoreId.findIndex(x => x.value == item.value);
+    this.myuserApprovalform1.value.multipleStoreId.splice(removedIndex, 1);
+    this.ddlStore.SetSelection(this.myuserApprovalform1.value.multipleStoreId.map(x => x.value));
   }
 
   getCheckboxValue(element: any): boolean {
@@ -456,19 +466,22 @@ export class NUserComponent implements OnInit {
       })
 
       this.LoginUnitDetailsArray.clear();
-      this.myuserApprovalform.get('multipleUnitId').value.forEach((item) => {
+      debugger
+      if(this.myuserApprovalform1.get('multipleUnitId').value){
+      this.myuserApprovalform1.get('multipleUnitId').value.forEach((item) => {
         this.LoginUnitDetailsArray.push(this.createLoginUnitDetails(item))
       })
-
+    }
       this.LoginStoreDetailsArray.clear();
-      this.myuserApprovalform.get('multipleStoreId').value.forEach((item) => {
+      if(this.myuserApprovalform1.get('multipleStoreId').value){
+      this.myuserApprovalform1.get('multipleStoreId').value.forEach((item) => {
         this.LoginStoreDetailsArray.push(this.createLoginStoreDetails(item))
       })
-
-      this.myuserApprovalform.removeControl('multipleUnitId')
-      this.myuserApprovalform.removeControl('multipleStoreId')
+    }
+      // this.myuserApprovalform1.removeControl('multipleUnitId')
+      // this.myuserApprovalform1.removeControl('multipleStoreId')
       this.myuserApprovalform.removeControl('IsPharmacyBalClearnace')
-
+debugger
       let formData = { ...this.myuserApprovalform.value };
 
       formData.pharExtOpt = formData.pharExtOpt === true ? 1 : 0;
@@ -514,7 +527,7 @@ export class NUserComponent implements OnInit {
   selectChangeUnitName(obj: any) {
     console.log(obj)
     this.unitname = obj.value
-    console.log("set:", this.myuserApprovalform.get('multipleUnitId').value)
+    console.log("set:", this.myuserApprovalform1.get('multipleUnitId').value)
   }
 
   selectChangeRoleName(obj: any) {

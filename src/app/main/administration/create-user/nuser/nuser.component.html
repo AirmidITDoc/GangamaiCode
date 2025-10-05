@@ -285,10 +285,10 @@
                         <mat-tab label="User Access Information">
 
                             <div fxLayout="column" class="p-12">
-                                <form [formGroup]="myuserApprovalform">
+                                <!-- <form [formGroup]="myuserApprovalform1"> -->
 
                                     <mat-card fxLayout="column" style="padding: 5px;">
-                                        <form [formGroup]="myuserApprovalform">
+                                        <form [formGroup]="myuserApprovalform1">
                                             <div class="investigation-title">
                                                 <span style="font-weight: 700;">
                                                     Multiple Select
@@ -303,7 +303,7 @@
                                             <div fxLayout="row">
                                                 <div fxFlex="35%">
                                                     <airmid-dropdown label="UnitName" formControlName="multipleUnitId"
-                                                        [formGroup]="myuserApprovalform"
+                                                        [formGroup]="myuserApprovalform1"
                                                         [validations]="getValidationMessages().unitId"
                                                         [mode]="autocompleteModeUnitName" [IsMultiPle]="true"
                                                         ValueField="value" #ddlUnit TextField="text" [ReqFullObj]="true"
@@ -313,7 +313,7 @@
 
                                                 <mat-chip-listbox #chipList>
                                                     <mat-chip
-                                                        *ngFor="let item of myuserApprovalform.value.multipleUnitId">
+                                                        *ngFor="let item of myuserApprovalform1.value.multipleUnitId">
                                                         {{ item.text }} <mat-icon
                                                             (click)="removeUnit(item)">close</mat-icon>
                                                     </mat-chip>
@@ -325,8 +325,8 @@
                                                 <div fxFlex="35%">
 
                                                     <airmid-dropdown label="StoreName" formControlName="multipleStoreId"
-                                                        [formGroup]="myuserApprovalform"
-                                                        [validations]="getValidationMessages().unitId"
+                                                        [formGroup]="myuserApprovalform1"
+                                                        [validations]="getValidationMessages().storeId"
                                                         [mode]="autocompleteModeStoreName" [IsMultiPle]="true"
                                                         ValueField="value" #ddlStore TextField="text"
                                                         [ReqFullObj]="true"
@@ -337,7 +337,7 @@
 
                                                 <mat-chip-listbox #chipList>
                                                     <mat-chip
-                                                        *ngFor="let item of myuserApprovalform.value.multipleStoreId">
+                                                        *ngFor="let item of myuserApprovalform1.value.multipleStoreId">
                                                         {{ item.text }} <mat-icon
                                                             (click)="removeStore(item)">close</mat-icon>
                                                     </mat-chip>
@@ -345,7 +345,7 @@
                                             </div>
                                         </form>
                                     </mat-card>
-                                </form>
+                                <!-- </form> -->
 
                                 <!-- table -->
                                 <div class="modal-card-container airmid-table-container"

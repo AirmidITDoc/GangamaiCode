@@ -249,6 +249,7 @@ export class PharAdvanceComponent implements OnInit {
     });
   }
   viewgetIPAdvanceReportPdf(contact) {
+    console.log(contact)
   this.commonService.Onprint("AdvanceDetailID", contact.advanceDetailId, "PharamcyAdvanceReceipt");
   }
   viewgetRefundofAdvanceReportPdf(contact) {

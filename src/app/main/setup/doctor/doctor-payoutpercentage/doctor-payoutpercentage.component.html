@@ -55,14 +55,14 @@
         
         <airmid-table [gridConfig]="gridConfig" class="content">
             <ng-container filters>
-                <form [formGroup]="_DoctorShareService.DocFormGroup">
+                <form [formGroup]="SearchForm">
                     <!-- <airmid-dropdown label="Select Doctor Name" formControlName="DoctorName"
                         [formGroup]="_DoctorShareService.DocFormGroup" (selectionChange)="ListView($event)"
                         [mode]="autocompleteModeItem">
                     </airmid-dropdown> -->
 
 
-                     <airmid-dropdown label="Doctor Name" formControlName="DoctorName" [formGroup]="_DoctorShareService.DocFormGroup"
+                     <airmid-dropdown label="Doctor Name" formControlName="DoctorName" [formGroup]="SearchForm"
                             [(ngModel)]="gridConfig.filters[0].fieldValue"
                             [mode]="autocompleteModeDoctor" (selectionChange)="ListView($event)"
                             (keyup)="ListView($event)">

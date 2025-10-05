@@ -80,7 +80,7 @@ debugger
       this.OP_IPType = this.selectedAdvanceObj1.patientType === 'OP' ? '0' : '1';
       this.reportIdData = this.selectedAdvanceObj1.pathReportId
       this.PathResultDr1 = this.selectedAdvanceObj1.adm_Visit_docId //PathResultDr1 ask to sir
-
+//  this.TemplateId = row.templateId
       if (this.OP_IPType == 1)
         this.getTemplatedetailIP(this.selectedAdvanceObj1);
       else
@@ -289,25 +289,31 @@ debugger
       return;
     }
 
-   
+     this.PathReportTemplateForm.get("pathTemplateId").setValue(this.TemplateId)
+  debugger
     this.PathReportTemplateForm.get("pathTemplateDetailsResult").setValue(this.otherForm.get("ResultEntry").value)
     this.PathReportTemplateForm.get("templateResultInHTML").setValue(this.otherForm.get("ResultEntry").value)
     this.PathReportTemplateForm.get("testId").setValue(this.selectedAdvanceObj1.pathTestID)
     this.PathReportTemplateForm.get("suggestionNotes").setValue(this.otherForm.get("suggestionNotes").value)
     this.PathReportTemplateForm.get("pathResultDr1").setValue(this.VpathResultDr1)
-
+   
+    this.PathReportHeaderForm.get("pathResultDr1").setValue(this.VpathResultDr1)
+    this.PathReportHeaderForm.get("suggestionNotes").setValue(this.otherForm.get("suggestionNotes").value)
+    this.PathReportHeaderForm.get("reportTime").setValue(datePipe.transform(currentDate, 'shortTime'))
+    
     this.TemplateForm.get("pathologyReportTemplate").setValue(this.PathReportTemplateForm.value)
     this.TemplateForm.get("pathologyReportHeader").setValue(this.PathReportHeaderForm.value)
+  
 
     console.log(this.TemplateForm.value);
-    debugger
- if(!this.TemplateForm.invalid){
-    this._SampleService.PathTemplateResultentryInsert(this.TemplateForm.value).subscribe(response => {
-      this.dialogRef.close();
-      this.viewgetPathologyTemplateReportPdf(this.selectedAdvanceObj1);
+    
+//  if(!this.TemplateForm.invalid){
+//     this._SampleService.PathTemplateResultentryInsert(this.TemplateForm.value).subscribe(response => {
+//       this.dialogRef.close();
+//       this.viewgetPathologyTemplateReportPdf(this.selectedAdvanceObj1);
 
-    });
-  }
+//     });
+//   }
   }
 
   viewgetPathologyTemplateReportPdf(contact) {

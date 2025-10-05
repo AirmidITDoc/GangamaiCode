@@ -276,6 +276,30 @@ export class CreateUserComponent implements OnInit {
     });
   }
 
+
+   Usercancle(data) {
+          Swal.fire({
+              title: 'Do you want to cancel the User?',
+              text: "You won't be able to revert this!",
+              icon: "warning",
+              showCancelButton: true,
+              confirmButtonColor: "#3085d6",
+              cancelButtonColor: "#d33",
+              confirmButtonText: "Yes, Cancel it!"
+          }).then((flag) => {
+              if (flag.isConfirmed) {
+                console.log(data)
+debugger
+                var data1={
+                  userId:data.userId
+                }
+                  this._CreateUserService.deactivateTheStatus(data1).subscribe((response: any) => {
+                      this.grid.bindGridData();
+                  });
+              }
+          });
+      }
+
   Password: string;
 
   PasswordView(contact) {
