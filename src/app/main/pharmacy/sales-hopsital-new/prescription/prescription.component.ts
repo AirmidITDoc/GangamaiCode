@@ -155,29 +155,39 @@ PrescriptionFrom:FormGroup;
   }
   dsItemDetList:any;
   GetPrescrpList() {
-    debugger 
+    debugger
+    if (!this.SelectedObj) {
+      this.toastr.warning('Product not in list Please select Product!', 'warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return
+    }
     let patientType = 0;
-    let Op_ip_Id  = this.SelectedObj?.oP_IP_ID;
-    if(this.SelectedObj?.patientType == 'IP'){
-    Op_ip_Id = this.SelectedObj?.ipMedID
-    patientType  = 1 
+    let Op_ip_Id = this.SelectedObj?.oP_IP_ID;
+    if (this.SelectedObj?.patientType == 'IP') {
+      Op_ip_Id = this.SelectedObj?.ipMedID
+      patientType = 1
     } 
-      if(Op_ip_Id > 0){
-        var vdata = {
-          "first": 0,
-          "rows": 10,
-          "sortField": "ItemId",
-          "sortOrder": 0,
-          "filters": [
-            { "fieldName": "IPMedID", "fieldValue": String(Op_ip_Id), "opType": "Contains" },
-            { "fieldName": "OP_IP_Type", "fieldValue": String(patientType), "opType": "Contains" }],//"40039"
-          "exportType": "JSON",
-          "columns": [{ "data": "string", "name": "string" }]
-        } 
-       this._SalesService.getPrescriptionBalQtyList(vdata).subscribe(reponse => {
-        this.chargelist = reponse.data as any;  
-      });   
-      this.chargelist.forEach((element) => { 
+    var vdata = {
+      "first": 0,
+      "rows": 10,
+      "sortField": "ItemId",
+      "sortOrder": 0,
+      "filters": [
+        { "fieldName": "IPMedID", "fieldValue": String(Op_ip_Id), "opType": "Contains" },
+        { "fieldName": "OP_IP_Type", "fieldValue": String(patientType), "opType": "Contains" }],//"40039"
+      "exportType": "JSON",
+      "columns": [{ "data": "string", "name": "string" }]
+    }
+    this._SalesService.getPrescriptionBalQtyList(vdata).subscribe(reponse => {
+      this.chargelist = reponse.data as any;
+      if(this.chargelist.length){
+        this.OnSave();
+      }
+    });
+  }  
+  OnSave(){
+  this.chargelist.forEach((element) => { 
         this.Patientlist.push(
           {
             ItemId :element.itemId,
@@ -197,13 +207,7 @@ PrescriptionFrom:FormGroup;
       console.log(this.Patientlist);
       this._dialogRef.close(this.Patientlist);
       }); 
-    }
-    else{
-      this.toastr.error('Product not in list Please select Product!', 'Error !', {
-        toastClass: 'tostr-tost custom-toast-error',
-      }); 
-    } 
-  } 
+  }
   onClose() {
      this.PrescriptionFrom.reset();
     this._matDialog.closeAll();

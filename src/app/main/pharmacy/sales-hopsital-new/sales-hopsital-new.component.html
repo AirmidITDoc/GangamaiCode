@@ -486,7 +486,7 @@
                     <ng-container matColumnDef="UnitMRP">
                       <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Unit MRP</mat-header-cell>
                       <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                        <span> {{ contact.UnitMRP }}</span>
+                        <span> {{ contact.UnitMRP | currency : 'INR'  }}</span>
                       </mat-cell>
                     </ng-container>
 
@@ -621,12 +621,12 @@
                                 <airmid-textbox fxFlex="8%" label="Total Amount" [formGroup]="ItemSubform"
                                   formControlName="totalAmount" [readonly]="true"></airmid-textbox>
 
-                                <airmid-textbox fxFlex="7%" label="Discount %" [formGroup]="ItemSubform"
+                                <airmid-textbox fxFlex="6%" label="Discount %" [formGroup]="ItemSubform"
                                   formControlName="FinalDiscPer" (valueChange)="getFinalDiscperAmt()"
                                   [disabled]="chkdiscper"></airmid-textbox>
 
                                 <airmid-textbox fxFlex="8%" label="Discount Amount" [formGroup]="ItemSubform"
-                                  formControlName="discAmount" (valueChange)="getFinalDiscAmount()" [readonly]="true"
+                                  formControlName="discAmount" (valueChange)="getFinalDiscAmount()" [readonly]="true"  
                                   type="number"></airmid-textbox>
 
                                 <div style="width: 200px" *ngIf="ConShow">
@@ -639,16 +639,16 @@
                                 <airmid-textbox fxFlex="8%" label="Net Amount" [formGroup]="ItemSubform"
                                   formControlName="netAmount" [readonly]="true" [required]="true"></airmid-textbox>
 
-                                <airmid-textbox fxFlex="7%" label="Balance Amount" [formGroup]="ItemSubform"
+                                <airmid-textbox fxFlex="6%" label="Balance Amount" [formGroup]="ItemSubform"
                                   formControlName="balanceAmount"></airmid-textbox>
 
-                                <airmid-textbox fxFlex="8%" label="Net Amount (Round off)" [formGroup]="ItemSubform"
+                                <airmid-textbox fxFlex="6%" label="Round off" [formGroup]="ItemSubform"
                                   formControlName="roundoffAmt" [readonly]="true"></airmid-textbox>
 
-                                <airmid-textbox fxFlex="8%" label="Paid By Patient" [formGroup]="ItemSubform"
+                                <airmid-textbox fxFlex="6%" label="Paid By Patient" [formGroup]="ItemSubform"
                                   formControlName="PaidbyPatient" (valueChange)="CalPaidbackAmt()"></airmid-textbox>
 
-                                <airmid-textbox fxFlex="8%" label="Paid Back To Patient" [formGroup]="ItemSubform"
+                                <airmid-textbox fxFlex="6%" label="Paid Back To Patient" [formGroup]="ItemSubform"
                                   formControlName="PaidbacktoPatient" [readonly]="true"></airmid-textbox>
 
                                 <div class="net-amt-section">
@@ -678,9 +678,10 @@
                                 </mat-radio-group>
 
                                
-                        
-                        <mat-slide-toggle name="IsPurchaseWsie"  (change)="getPurchaseRateWise()" formControlName="IsPurchaseWsie">
-                          PurchaseRateWsie
+                         
+                        <mat-slide-toggle name="IsPurchaseWsie"  (change)="getPurchaseRateWise($event)" formControlName="IsPurchaseWsie">
+                         {{ItemSubform.get('IsPurchaseWsie')?.value === 'true' ? 'PurchaseRateWsie' : 'MRPRateWsie'}}
+
                         </mat-slide-toggle> 
 
                                 <div class="sales-footer-buttons gap-8" fxLayout="row">

@@ -228,8 +228,8 @@ export class IpSalesReturnComponent implements OnInit {
     debugger
     console.log(obj)  
     this.registerObj = obj;
-    this.vPatientName = obj.firstName + ' ' + obj.middleName + ' ' + obj.lastName;
-    this.vRegno = this.registerObj.regNo;
+    this.vPatientName = obj?.firstName + ' ' + obj?.middleName + ' ' + obj?.lastName;
+    this.vRegno = this.registerObj?.regNo;
     this.getItemNameList();
     this.OnRadioChange();
   }
@@ -247,7 +247,7 @@ export class IpSalesReturnComponent implements OnInit {
       return
     }
     let storeID = this.accountService.currentUserValue.user.storeId
-    let ItemName = this.ItemFormGroup.get('ItemName').value + '%' || '%'
+    let ItemName = this.ItemFormGroup.get('ItemName')?.value + '%' || '%'
     const Filters = [
       { "fieldName": "RegNo", "fieldValue": String(this.vRegno), "opType": "Equals" },
       { "fieldName": "StoreId", "fieldValue": String(storeID), "opType": "Equals" },
@@ -267,13 +267,16 @@ export class IpSalesReturnComponent implements OnInit {
         "mode": "IPSalesReturnCredit"
       }
     }
-    this._IpSalesRetService.getSalesReturnitemlist(param).subscribe(response => {
+    this._IpSalesRetService.getSalesReturnitemlist(param).subscribe(response => { 
+      console.log('response',response)
+      if(response){
       this.Itemlist = response
       console.log(this.Itemlist)
       this.ItemfilteredOptions = this.ItemFormGroup.get('ItemName')?.valueChanges.pipe(
         startWith(''),
         map(value => value ? this._filterItemname(value) : this.Itemlist?.slice()),
       );
+      } 
     })
   }
   getOptionTextitemname(option) { 
@@ -522,7 +525,7 @@ export class IpSalesReturnComponent implements OnInit {
         console.log(this.IpSalesReturnForm.value);
         this._IpSalesRetService.InsertCashSalesReturn(this.IpSalesReturnForm.value).subscribe(response => { 
             this.OnSalesReturnprint(response, this.selcteditemObj?.OP_IP_Type)
-            this.OnReset(); 
+            this.ngOnDestroy(); 
         });
       }
       else {
@@ -534,7 +537,7 @@ export class IpSalesReturnComponent implements OnInit {
         console.log(this.IpSalesReturnForm.value);
         this._IpSalesRetService.InsertCreditSalesReturn(this.IpSalesReturnForm.value).subscribe(response => { 
             this.OnSalesReturnprint(response, this.selcteditemObj.OP_IP_Type)
-            this.OnReset(); 
+            this.ngOnDestroy(); 
         });
       }
     } else {
@@ -570,11 +573,15 @@ export class IpSalesReturnComponent implements OnInit {
     this.vPatientName = '';
     this.registerObj = '';
     this.selcteditemObj = '';
-    this.ItemFormGroup.get('Op_ip_id').setValue('1');
+    this.ItemFormGroup.get('ItemName').setValue('%');
     this.ItemFormGroup.get('PaymentType').setValue('CashPay');
+    this.ItemFormGroup.get('Op_ip_id').setValue('1');
     this.ItemFormGroup.markAllAsTouched();
     this.IPSalesRetFooterform.markAllAsTouched();
   }
+      ngOnDestroy() { 
+        this.OnReset();
+    }
   isValidForm(): boolean {
     return this.dsIpSaleItemList.data.every((i) => i.ReturnQty > 0);
   }
