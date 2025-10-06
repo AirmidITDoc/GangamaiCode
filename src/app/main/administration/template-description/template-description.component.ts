@@ -6,7 +6,7 @@ import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
 import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
 import { ToastrService } from 'ngx-toastr';
 import { NewTemplateComponent } from './new-template/new-template.component';
-import { TemplatedescriptionService } from './templatedescription.service'; 
+import { TemplatedescriptionService } from './templatedescription.service';
 
 @Component({
     selector: 'app-template-description',
@@ -16,117 +16,106 @@ import { TemplatedescriptionService } from './templatedescription.service';
     animations: fuseAnimations,
 })
 export class TemplateDescriptionComponent implements OnInit {
-        @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
-    
-        gridConfig: gridModel = {
-            apiUrl: "Administration/BrowseReportTemplateConfigList",
-            columnsList: [
-                { heading: "Code", key: "templateId", sort: true, align: 'left', emptySign: 'NA' },
-                { heading: "TemplateName", key: "templateName", sort: true, align: 'left', emptySign: 'NA' },
-                {
-                    heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
-                        {
-                            action: gridActions.edit, callback: (data: any) => {
-                                this.onEdit(data) // EDIT Records
-                            }
-                        }, {
-                            action: gridActions.delete, callback: (data: any) => {
-                                this._TemplatedescriptionService.deactivateTheStatus(data.templateId).subscribe((response: any) => {
-                                    this.toastr.success(response.Message);
-                                  this.getfilterdata();
-                                });
-                            }
-                        }]
-                } //Action 1-view, 2-Edit,3-delete
-            ],
-            sortField: "TemplateId",
-            sortOrder: 0,
-            filters: [
-                { fieldName: "TemplateName", fieldValue: "", opType: OperatorComparer.Contains }                
-            ]
-        }
-    
-        constructor(public _TemplatedescriptionService: TemplatedescriptionService,
-             public _matDialog: MatDialog,
-            public toastr: ToastrService,) { }
-    
-        ngOnInit(): void { }
-    
-        onSearchClear() {
-            this._TemplatedescriptionService.myformSearch.reset({
-                BankNameSearch: "",
-                IsDeletedSearch: "2",
-            });
-    
-        }
-    
-        onEdit(row: any = null) {
-            const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
-            buttonElement.blur(); // Remove focus from the button 
-            let that = this;
-            const dialogRef = this._matDialog.open(NewTemplateComponent,
-                {
-                    maxWidth: "95vw",
-                    height: '95%',
-                    width: '90%',
-                    data:{
-                        Obj:row
-                    } 
-                });
-            dialogRef.afterClosed().subscribe(result => {
-               this.getfilterdata() 
-            });
-        }
+    @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
 
-        onAddnew(row: any = null) {
-            const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
-            buttonElement.blur(); // Remove focus from the button
-            
-            let that = this;
-            const dialogRef = this._matDialog.open(NewTemplateComponent,
-                {
-                    maxWidth: "95vw",
-                    height: '95%',
-                    width: '90%'
-                  
-                });
-            dialogRef.afterClosed().subscribe(result => {
-                                 this.getfilterdata()
-              
-            });
-        }
- 
-        getfilterdata() {
-            debugger
-            this.gridConfig = {
-                apiUrl: "Administration/BrowseReportTemplateConfigList",
-                columnsList: [
-                    { heading: "TemplateId", key: "templateId", sort: true, align: 'left', emptySign: 'NA' },
-                    { heading: "TemplateName", key: "templateName", sort: true, align: 'left', emptySign: 'NA' },
+    gridConfig: gridModel = {
+        apiUrl: "Administration/BrowseReportTemplateConfigList",
+        columnsList: [
+            { heading: "Code", key: "templateId", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "TemplateName", key: "templateName", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
+            {
+                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
                     {
-                        heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
-                            {
-                                action: gridActions.edit, callback: (data: any) => {
-                                    this.onEdit(data) // EDIT Records
-                                }
-                            }, {
-                                action: gridActions.delete, callback: (data: any) => {
-                                    this._TemplatedescriptionService.deactivateTheStatus(data.bankId).subscribe((response: any) => {
-                                        this.toastr.success(response.Message);
-                                        this.grid.bindGridData;
-                                    });
-                                }
-                            }]
-                    } //Action 1-view, 2-Edit,3-delete
-                ],
-                sortField: "TemplateId",
-                sortOrder: 0,
-                filters: [
-                      { fieldName: "TemplateName", fieldValue: "", opType: OperatorComparer.Contains }  
-                 ]
-            } 
-              this.grid.gridConfig = this.gridConfig;
-              this.grid.bindGridData(); 
+                        action: gridActions.edit, callback: (data: any) => {
+                            this.onEdit(data) // EDIT Records
+                        }
+                    }, {
+                        action: gridActions.delete, callback: (data: any) => {
+                            this._TemplatedescriptionService.deactivateTheStatus(data.templateId).subscribe((response: any) => {
+                                this.grid.bindGridData();
+                            });
+                        }
+                    }]
             }
-          
+        ],
+        sortField: "TemplateId",
+        sortOrder: 0,
+        filters: [
+            { fieldName: "TemplateName", fieldValue: "", opType: OperatorComparer.Contains },
+            { fieldName: "IsActive", fieldValue: "2", opType: OperatorComparer.Contains }
+        ]
     }
+
+    constructor(public _TemplatedescriptionService: TemplatedescriptionService,
+        public _matDialog: MatDialog,
+        public toastr: ToastrService,) { }
+
+    ngOnInit(): void { }
+
+    onEdit(row: any = null) {
+        const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+        buttonElement.blur(); // Remove focus from the button 
+        const dialogRef = this._matDialog.open(NewTemplateComponent,
+            {
+                maxWidth: "95vw",
+                maxHeight: "95vh",
+                height: '70%',
+                width: '90%',
+                data: row
+            });
+        dialogRef.afterClosed().subscribe(result => {
+            this.grid.bindGridData();
+        });
+    }
+
+    onAddnew(row: any = null) {
+        const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+        buttonElement.blur(); // Remove focus from the button
+
+        const dialogRef = this._matDialog.open(NewTemplateComponent,
+            {
+                maxWidth: "95vw",
+                maxHeight: "95vh",
+                height: '70%',
+                width: '90%',
+            });
+        dialogRef.afterClosed().subscribe(result => {
+            this.grid.bindGridData();
+        });
+    }
+
+    // getfilterdata() {
+    //     this.gridConfig = {
+    //         apiUrl: "Administration/BrowseReportTemplateConfigList",
+    //         columnsList: [
+    //             { heading: "TemplateId", key: "templateId", sort: true, align: 'left', emptySign: 'NA' },
+    //             { heading: "TemplateName", key: "templateName", sort: true, align: 'left', emptySign: 'NA' },
+    //             {
+    //                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+    //                     {
+    //                         action: gridActions.edit, callback: (data: any) => {
+    //                             this.onEdit(data) // EDIT Records
+    //                         }
+    //                     }, {
+    //                         action: gridActions.delete, callback: (data: any) => {
+    //                             this._TemplatedescriptionService.deactivateTheStatus(data.bankId).subscribe((response: any) => {
+    //                                 this.toastr.success(response.Message);
+    //                                 this.grid.bindGridData;
+    //                             });
+    //                         }
+    //                     }]
+    //             } //Action 1-view, 2-Edit,3-delete
+    //         ],
+    //         sortField: "TemplateId",
+    //         sortOrder: 0,
+    //         filters: [
+    //             { fieldName: "TemplateName", fieldValue: "", opType: OperatorComparer.Contains },
+    //             { fieldName: "IsActive", fieldValue: "2", opType: OperatorComparer.Contains }
+    //         ]
+    //     }
+    //     this.grid.gridConfig = this.gridConfig;
+    //     this.grid.bindGridData();
+    // }
+
+}

@@ -75,12 +75,15 @@
                                     </airmid-dropdown>
                                 </div> -->
 
-                                <div fxFlex="18%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <airmid-textbox label="PbillNo" formControlName="PbillNo"
-                                        [formGroup]="_DoctorShareService.UserFormGroup"
-                                        (click)=" Clearfilter('PbillNo')" [maxLength]="50">
-                                    </airmid-textbox>
-                                </div>
+                                <mat-form-field appearance="outline" fxFlex="220px">
+                                    <mat-label>Pbill No.</mat-label>
+                                    <input matInput placeholder="PbillNo" autocomplete="off" formControlName="PbillNo"
+                                        (input)="onChangeFirst()" />
+                                    <button matSuffix mat-icon-button aria-label="Clear"
+                                        (click)="Clearfilter('PbillNo')">
+                                        <mat-icon>close</mat-icon>
+                                    </button>
+                                </mat-form-field>
 
                                 <div style="padding: 10px;">
                                     <button mat-raised-button class="searchButton" matTooltip="search"

@@ -45,27 +45,27 @@
                         </airmid-textbox>
                     </div>
 
-                   <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="space-between">
-                    <mat-slide-toggle name="isTemplateWithHeader" (change)="getTemplatedetails()" formControlName="isTemplateWithHeader">
-                        isTemplateWithHeader
-                    </mat-slide-toggle>
-                    
-                    <mat-slide-toggle name="isTemplateHeaderWithImage" (change)="getTemplatedetails()" formControlName="isTemplateHeaderWithImage">
-                        isTemplateHeaderWithImage
-                    </mat-slide-toggle>
-                    
-                    <mat-slide-toggle name="isTemplateWithFooter" (change)="getTemplatedetails()" formControlName="isTemplateWithFooter">
+                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start" class="gap-8">
+                        <mat-slide-toggle name="isTemplateWithHeader" formControlName="isTemplateWithHeader">
+                            isTemplateWithHeader
+                        </mat-slide-toggle>
+
+                        <mat-slide-toggle name="isTemplateHeaderWithImage" formControlName="isTemplateHeaderWithImage">
+                            isTemplateHeaderWithImage
+                        </mat-slide-toggle>
+
+                        <!-- <mat-slide-toggle name="isTemplateWithFooter" (change)="()" formControlName="isTemplateWithFooter">
                         isTemplateWithFooter
                     </mat-slide-toggle>
                     
-                    <mat-slide-toggle name="isTemplateFooterWithImage" (change)="getTemplatedetails()" formControlName="isTemplateFooterWithImage">
+                    <mat-slide-toggle name="isTemplateFooterWithImage" (change)="()" formControlName="isTemplateFooterWithImage">
                         isTemplateFooterWithImage
-                    </mat-slide-toggle>
+                    </mat-slide-toggle> -->
                     </div>
                 </form>
             </div>
 
-            <div class="modal-card-container">
+            <!-- <div class="modal-card-container">
                 <form [formGroup]="templateForm">
 
                     <div fxFlexFill fxLayout="row" fxLayout.gt-xs="column" fxLayoutGap="6px">
@@ -77,7 +77,7 @@
                         </airmid-editor>
                     </div>
                 </form>
-            </div>
+            </div> -->
             <div class="modal-card-container">
                 <form [formGroup]="templateForm">
 
@@ -91,7 +91,7 @@
                     </div>
                 </form>
             </div>
-            <div class="modal-card-container">
+            <!-- <div class="modal-card-container">
                 <form [formGroup]="templateForm">
 
                     <div fxFlexFill fxLayout="row" fxLayout.gt-xs="column" fxLayoutGap="6px">
@@ -103,7 +103,7 @@
                         </airmid-editor>
                     </div>
                 </form>
-            </div>
+            </div> -->
         </div>
 
     </div>

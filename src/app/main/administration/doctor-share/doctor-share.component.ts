@@ -119,11 +119,12 @@ export class DoctorShareComponent implements OnInit {
 }
 
 getfilterdata(){
-debugger
+// debugger
 let fromD = this._DoctorShareService.UserFormGroup.get("fromDate").value || "";
 let toD = this._DoctorShareService.UserFormGroup.get("enddate").value || "";
 this.fromDate = fromD ? this.datePipe.transform(this._DoctorShareService.UserFormGroup.get('fromDate').value, "yyyy-MM-dd") : "";
 this.toDate = toD ? this.datePipe.transform(this._DoctorShareService.UserFormGroup.get('enddate').value, "yyyy-MM-dd") : "";
+this.DoctorId = this._DoctorShareService.UserFormGroup.get('DoctorID').value
 
 console.log("fromDate:",this.fromDate)
 console.log("toDate:",this.toDate)
@@ -147,7 +148,7 @@ this.grid.bindGridData();
 
 Clearfilter(event) {
   console.log(event)
-  if (event == 'PBillNo')
+  if (event == 'PbillNo')
       this._DoctorShareService.UserFormGroup.get('PbillNo').setValue("")
   this.onChangeFirst();
 }
