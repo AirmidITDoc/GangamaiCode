@@ -740,7 +740,7 @@ export class ResultEntryComponent implements OnInit {
                 if (result.isConfirmed) {
                     this.viewgetPathologyTemplateReportPdf1(contact, "PathologyReportTemplateWithHeader");
                 } else if (result.isDenied) {
-                    this.viewgetPathologyTemplateReportPdf1(contact, "PathologyReportTemplate");
+                    this.viewgetPathologyTemplateReportPdf1(contact, "PathologyReportTemplateWithOutHeader");
                 }
             });
         else {
@@ -806,7 +806,7 @@ debugger
                     opType: "Equals"
                 }
             ],
-            mode: "PathologyReport"
+            mode: "PathologyReportWithOutHeader"
         };
 
         console.log(param);

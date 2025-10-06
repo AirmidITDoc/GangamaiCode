@@ -153,8 +153,8 @@ Clearfilteropd(event) {
   if_name: any = ""
   iregNo: any = "0"
   il_name: any = ""
-  iPBillNo: any = "0"
-  iReceiptNo:any="0"
+  iPBillNo: any = "%"
+  iReceiptNo:any="%"
   ifromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
   itoDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
 
@@ -186,7 +186,7 @@ allipdFilters=[
   { fieldName: "To_Dt", fieldValue: this.itoDate, opType: OperatorComparer.Equals },
   { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
   { fieldName: "PBillNo", fieldValue: "%", opType: OperatorComparer.Equals },
-  { fieldName: "ReceiptNo", fieldValue: "0", opType: OperatorComparer.Equals }
+  { fieldName: "ReceiptNo", fieldValue: "%", opType: OperatorComparer.Equals }
 ]
 
   gridConfigIP: gridModel = {
@@ -203,8 +203,8 @@ allipdFilters=[
     this.if_name = this._PaymentmodechangesService.UseFormGroup.get('FirstName').value + "%"
     this.il_name = this._PaymentmodechangesService.UseFormGroup.get('LastName').value + "%"
     this.iregNo = this._PaymentmodechangesService.UseFormGroup.get('RegNo').value || "0"
-    this.iPBillNo = this._PaymentmodechangesService.UseFormGroup.get('PBillNo').value || "0"
-    this.iReceiptNo = this._PaymentmodechangesService.UseFormGroup.get('ReceiptNo').value || "0"
+    this.iPBillNo = this._PaymentmodechangesService.UseFormGroup.get('PBillNo').value || "%"
+    this.iReceiptNo = this._PaymentmodechangesService.UseFormGroup.get('ReceiptNo').value || "%"
     this.getfilteripd();
 }
 

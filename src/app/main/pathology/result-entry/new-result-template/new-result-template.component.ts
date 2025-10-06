@@ -307,13 +307,13 @@ debugger
 
     console.log(this.TemplateForm.value);
     
-//  if(!this.TemplateForm.invalid){
-//     this._SampleService.PathTemplateResultentryInsert(this.TemplateForm.value).subscribe(response => {
-//       this.dialogRef.close();
-//       this.viewgetPathologyTemplateReportPdf(this.selectedAdvanceObj1);
+ if(!this.TemplateForm.invalid){
+    this._SampleService.PathTemplateResultentryInsert(this.TemplateForm.value).subscribe(response => {
+      this.dialogRef.close();
+      this.viewgetPathologyTemplateReportPdf(this.selectedAdvanceObj1);
 
-//     });
-//   }
+    });
+  }
   }
 
   viewgetPathologyTemplateReportPdf(contact) {
@@ -332,7 +332,7 @@ debugger
             "opType": "Equals"
           }
         ],
-        "mode": "PathologyReportTemplate"
+        "mode": "PathologyReportTemplateWithHeader"
       }
 
       this._SampleService.getReportView(param).subscribe(res => {

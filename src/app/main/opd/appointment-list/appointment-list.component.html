@@ -121,6 +121,14 @@
                 </mat-icon>
             </div>
         </ng-template>
+
+            <ng-template #actionCompany let-element>
+        <div fxLayout="row" fxLayoutAlign="center center">
+            <button mat-icon-button (click)="getEditCompany(element)" matTooltip="Company">
+                <mat-icon *ngIf="element.companyId > 0">edit </mat-icon>
+            </button>
+        </div>
+    </ng-template>
         <ng-template #actionsTemplate2 let-element>
             <div>
                 <mat-icon *ngIf="element.phoneAppId !== 0" matTooltip="Phone Appointment" class=" cyan-600 s-16">

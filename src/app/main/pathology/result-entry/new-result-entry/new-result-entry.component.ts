@@ -555,7 +555,7 @@ export class NewResultEntryComponent {
         // });
 
         this.dataSource.data.forEach((element) => {
-
+console.log(element)
             let pathologyInsertReportObj = {};
             pathologyInsertReportObj['PathReportId'] = element.PathReportId //element1.PathReportId;
             pathologyInsertReportObj['CategoryID'] = element.CategoryId || 0;
@@ -579,6 +579,19 @@ export class NewResultEntryComponent {
             pathologyInsertReportObj['SampleID'] = element.SampleID || '';
 
             pathologyInsertReportObj['ParaBoldFlag'] = element.ParaBoldFlag || '';
+
+            // pathologyInsertReportObj['opipnumber'] = element.UnitName || '';
+            // pathologyInsertReportObj['ageY'] = this.selectedAdvanceObj2.PatientName || '';
+            // pathologyInsertReportObj['ageM'] = this.selectedAdvanceObj2.regNo;
+            // pathologyInsertReportObj['ageD'] = parseFloat(element.MinValue) || 0;
+            // pathologyInsertReportObj['genderId'] = parseFloat(element.MaxValue) || 0;
+            // pathologyInsertReportObj['sampleNo'] = element.SampleID || '';
+
+            // pathologyInsertReportObj['suggestionNotes'] = element.ParaBoldFlag || '';
+
+
+
+
 
             PathInsertArry.push(pathologyInsertReportObj);
         });
@@ -656,7 +669,7 @@ export class NewResultEntryComponent {
                     opType: "Equals"
                 }
             ],
-            mode: "PathologyReport"
+            mode: "PathologyReportWithHeader"
         };
 
         console.log(param);

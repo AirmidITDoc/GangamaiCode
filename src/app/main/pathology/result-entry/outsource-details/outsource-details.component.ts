@@ -25,7 +25,7 @@ export class OutsourceDetailsComponent {
   screenFromString = 'advance';
   outSourceId = 0;
   outSourceLabName: any;
-  outSourceStatus=true;
+  outSourceStatus=1;
   date: any;
   date1: any;
   LabName='';
@@ -87,7 +87,7 @@ else
       outSourceId: [this.outSourceId],
       outSourceLabName: [ this.LabName, [Validators.required]],
       outSourceSampleSentDateTime: [''],
-      outSourceStatus: [true],
+      outSourceStatus: [1],
       outSourceReportCollectedDateTime: ['1900-01-01 00:00:00.000'],
       outSourceCreatedBy: [this.accountService.currentUserValue.userId, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       outSourceCreatedDateTime: [new Date().toISOString()],

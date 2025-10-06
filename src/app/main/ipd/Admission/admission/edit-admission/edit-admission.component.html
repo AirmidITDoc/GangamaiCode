@@ -110,7 +110,6 @@
       </div>
 
 
-
       <div class="detail-container">
         <form [formGroup]="admissionFormGroup">
           <mat-card>
@@ -138,7 +137,29 @@
                   </airmid-dropdown>
                 </div>
 
-                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+               
+                <ng-container *ngIf="isCompanySelected">
+
+                  <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="25%">
+
+                    <airmid-dropdown label="Company Name" formControlName="CompanyId" [value]="registerObj1?.companyId"
+                      [formGroup]="admissionFormGroup" [validations]="getValidationMessages().CompanyId"
+                      [mode]="autocompleteModeCompany">
+                    </airmid-dropdown>
+
+                  </div>
+
+                  <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="25%">
+
+                    <airmid-dropdown label="SubTpaCom" formControlName="SubTpaComId" [value]="registerObj1?.subTpaComId"
+                      [formGroup]="admissionFormGroup" [validations]="getValidationMessages().SubTpaComId"
+                      [mode]="autocompleteModeSubCompany">
+                    </airmid-dropdown>
+
+                  </div>
+                </ng-container>
+
+                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
 
                   <airmid-dropdown label="Tariff Name" formControlName="TariffId" [value]="registerObj1?.tariffId"
                     [formGroup]="admissionFormGroup" [validations]="getValidationMessages().TariffId"
@@ -146,6 +167,7 @@
                   </airmid-dropdown>
                 </div>
 
+                
                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
 
                   <airmid-dropdown label="Department Name" formControlName="DepartmentId"
@@ -184,26 +206,7 @@
                   </airmid-dropdown>
                 </div>
 
-                <ng-container *ngIf="isCompanySelected">
 
-                  <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="25%">
-
-                    <airmid-dropdown label="Company Name" formControlName="CompanyId" [value]="registerObj1?.companyId"
-                      [formGroup]="admissionFormGroup" [validations]="getValidationMessages().CompanyId"
-                      [mode]="autocompleteModeCompany">
-                    </airmid-dropdown>
-
-                  </div>
-
-                  <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="25%">
-
-                    <airmid-dropdown label="SubTpaCom" formControlName="SubTpaComId" [value]="registerObj1?.subTpaComId"
-                      [formGroup]="admissionFormGroup" [validations]="getValidationMessages().SubTpaComId"
-                      [mode]="autocompleteModeSubCompany">
-                    </airmid-dropdown>
-
-                  </div>
-                </ng-container>
               </div>
             </mat-card-content>
           </mat-card>
@@ -235,8 +238,9 @@
                 </div>
 
                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="25%">
-                  <airmid-textbox label="PhoneNo" formControlName="PhoneNo" [value]="registerObj1.phoneNo" (keypress)="keyPressAlphanumeric($event)"
-                    [formGroup]="admissionFormGroup" [validations]="getValidationMessages().phoneNo" [maxLength]="10">
+                  <airmid-textbox label="PhoneNo" formControlName="PhoneNo" [value]="registerObj1.phoneNo"
+                    (keypress)="keyPressAlphanumeric($event)" [formGroup]="admissionFormGroup"
+                    [validations]="getValidationMessages().phoneNo" [maxLength]="10">
                   </airmid-textbox>
                 </div>
 
@@ -253,6 +257,30 @@
                 </div>
               </div>
             </mat-card-content>
+
+            <div class="modal-footer">
+              <div class="footer-navigation-container">
+                <form [formGroup]="admissionFormGroup">
+
+                  <div class="modal-footer-container">
+                    <div class="checkbox-container">
+                      <mat-checkbox aria-label="Remember Me" formControlName="isMlc" (change)="onIsMLCChange($event)">
+                        ISMLC
+                      </mat-checkbox>
+                      <mat-checkbox aria-label="IsCharity" formControlName="ischarity" style="margin-left:30px;"
+                        (change)="onISCharChange($event)">
+                        IsCharity
+                      </mat-checkbox>
+
+
+                    </div>
+
+                  </div>
+                </form>
+
+
+              </div>
+            </div>
           </mat-card>
           <div fxLayoutAlign="end">
             <div class="modal-footer-buttons" fxLayout="row" fxLayoutGap="5px" style="margin: 10px 20px 0px 20px;">

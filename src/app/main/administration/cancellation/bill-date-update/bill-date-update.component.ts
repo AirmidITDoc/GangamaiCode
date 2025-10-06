@@ -97,9 +97,9 @@ export class BillDateUpdateComponent implements OnInit {
           const d1 = new Date(this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd")!);
           const d2 = new Date(this.refundDate);
           if (d1 < d2) {
-   Swal.fire("Enter Payment Date After Return Date :" + this.datePipe.transform(this.refundDate, "yyyy-MM-dd"))
-              return;
-            } else {
+            Swal.fire("Enter Payment Date After Return Date :" + this.datePipe.transform(this.refundDate, "yyyy-MM-dd"))
+            return;
+          } else {
             var data2 = {
               "refundDate": this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd"),
               "refundTime": formattedDate + this.dateTimeObj.time,
@@ -110,38 +110,38 @@ export class BillDateUpdateComponent implements OnInit {
               this._matDialog.closeAll();
             });
           }
-          } else if (this.SalesId && this.data.Id == 1) {
-            var data3 = {
-              "date": this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd"),
-              "time": formattedDate + this.dateTimeObj.time,
-              "salesId": this.SalesId
+        } else if (this.SalesId && this.data.Id == 1) {
+          var data3 = {
+            "date": this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd"),
+            "time": formattedDate + this.dateTimeObj.time,
+            "salesId": this.SalesId
+          }
+          console.log(data3);
+          this._CancellationService.getDateTimeChangeSalesId(data3).subscribe(response => {
+            this._matDialog.closeAll();
+          });
+
+        } else if (this.PaymentId && this.data.Id == 2) {
+
+          const d1 = new Date(this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd")!);
+          const d2 = new Date(this.SalesDate);
+          if (d1 < d2) {
+            Swal.fire("Enter Payment Date After Bill Date :" + this.datePipe.transform(this.SalesDate, "yyyy-MM-dd"))
+            return;
+          } else {
+            var data4 = {
+              "paymentDate": this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd"),
+              "paymentTime":  formattedDate + this.dateTimeObj.time,
+              "paymentId": this.PaymentId
             }
-            console.log(data3);
-            this._CancellationService.getDateTimeChangeSalesId(data3).subscribe(response => {
+            console.log(data4);
+            this._CancellationService.getDateTimeChangePaymentId(data4).subscribe(response => {
               this._matDialog.closeAll();
             });
-
-          } else if (this.PaymentId && this.data.Id == 2) {
-
-            const d1 = new Date(this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd")!);
-            const d2 = new Date(this.SalesDate);
-            if (d1 < d2) {
-              Swal.fire("Enter Payment Date After Bill Date :" + this.datePipe.transform(this.SalesDate, "yyyy-MM-dd"))
-              return;
-            } else {
-              var data4 = {
-                "paymentDate": this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd"),
-                "paymentTime": this.dateTimeObj.time,
-                "paymentId": this.PaymentId
-              }
-              console.log(data4);
-              this._CancellationService.getDateTimeChangePaymentId(data4).subscribe(response => {
-                this._matDialog.closeAll();
-              });
-            }
           }
         }
-      });
+      }
+    });
 
   }
   onClose() {

@@ -37,7 +37,7 @@ export class EditAdmissionComponent implements OnInit {
   reportPrintObj: AdmissionPersonlModel;
   printTemplate: any;
   registerObj1 = new AdmissionPersonlModel({});
-  registerObj2 = new AdmissionPersonlModel({});
+  // registerObj2 = new AdmissionPersonlModel({});
   registerObj = new RegInsert({});
   bedObj = new Bed({});
   newRegSelected: any = 'registration';
@@ -94,21 +94,25 @@ export class EditAdmissionComponent implements OnInit {
       setTimeout(() => {
         this._AdmissionService.getRegistraionById(this.data.regId).subscribe((response) => {
           this.registerObj = response;
-
+          console.log(response)
         });
 
         this._AdmissionService.getAdmissionById(this.data.admissionId).subscribe((response) => {
           this.registerObj1 = response;
           console.log(response)
           if (this.registerObj1) {
+            
             this.registerObj1.phoneNo = this.registerObj1.phoneNo.trim()
             this.registerObj1.mobileNo = this.registerObj1.mobileNo.trim()
             if (this.registerObj1.patientTypeId !== 1) {
               this.isCompanySelected = true
               this.admissionFormGroup.get("DepartmentId").setValue(this.registerObj1.departmentId
               )
-              this.admissionFormGroup.get("CompanyId").setValue(this.registerObj1.companyId)
+              this.admissionFormGroup.get("CompanyId").setValue(this.registerObj1.companyId || 0)
+            
             }
+              this.admissionFormGroup.get("isMlc").setValue(this.registerObj1.isMlc)
+              this.admissionFormGroup.get("ischarity").setValue(this.registerObj1.ischarity)
           }
 
         });
@@ -117,8 +121,10 @@ export class EditAdmissionComponent implements OnInit {
     this.admissionFormGroup = this.createEditAdmissionForm();
 
     this.admissionFormGroup.get("DocNameId").setValue(this.data.docNameId)
-    this.admissionFormGroup.get("hospitalID").setValue(this.accountService.currentUserValue.user.unitId)
+    console.log(this.accountService.currentUserValue.user)
+    this.admissionFormGroup.get("hospitalId").setValue(this.accountService.currentUserValue.user.unitId)
     this.AdmissionFormSet()
+    this.admissionFormGroup.get("hospitalId").setValue(this.accountService.currentUserValue.user.unitId)
    
   }
 
@@ -127,54 +133,56 @@ export class EditAdmissionComponent implements OnInit {
     return this._formBuilder.group({
         AdmissionId: 0,
         RegId: 0,
-        AdmissionDate: [(new Date()).toISOString()],
-        AdmissionTime: [(new Date()).toISOString()],
+        AdmissionDate: [this.registerObj1.admissionDate],
+        AdmissionTime: [this.registerObj1.admissionTime],
         PatientTypeId:[0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
         hospitalId: [this.accountService.currentUserValue.user.unitId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
         DocNameId:[0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
         RefDocNameId: 0,
         DischargeDate: "1900-01-01",
         DischargeTime: "1900-01-01T11:24:02.655Z",
-        IsDischarged: 0,
-        IsBillGenerated: 0,
-        CompanyId: 0,
+        IsDischarged:[this.registerObj1.isDischarged],
+        IsBillGenerated: [this.registerObj1.isBillGenerated],
+        CompanyId:[0],
         TariffId:[this.registerObj1.tariffId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
         ClassId:[this.registerObj1.classId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
         wardId:[this.registerObj1.wardId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
         bedId:[this.registerObj1.bedId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
 
         DepartmentId:[0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-        RelativeName: "",
-        RelativeAddress: "",
-        PhoneNo: ['', [
+        RelativeName:this.registerObj1.relativeName,
+        RelativeAddress: this.registerObj1.relativeAddress,
+        PhoneNo: [ this.registerObj1.phoneNo,[
             Validators.minLength(10),
             Validators.maxLength(10),
             Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
             ]],
-        MobileNo: ['', [
+        MobileNo: [this.registerObj1.mobileNo, [
         Validators.minLength(10),
         Validators.maxLength(10),
         Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
         ]],
-        RelationshipId: 0,
+        RelationshipId:[this.registerObj1.relationshipId],
         AddedBy:this.accountService.currentUserValue.userId,
-        IsMlc: [false],
-        MotherName: "",
-        AdmittedDoctor1:0,
-        AdmittedDoctor2: 0,
-        RefByTypeId: 0,
-        RefByName: 0,
-        SubTpaComId: 0,
-        PolicyNo: "",
-        AprovAmount: 0,
+        isMlc: [false],
+        ischarity: [false],
+        MotherName: [this.registerObj1.motherName],
+        AdmittedDoctor1:[this.registerObj1.admittedDoctor1],
+        AdmittedDoctor2:[this.registerObj1.admittedDoctor2],
+        RefByTypeId: [this.registerObj1.refByTypeId],
+        RefByName:[this.registerObj1.refByName],
+        SubTpaComId:[this.registerObj1.subTpaComId],
+        PolicyNo:[this.registerObj1.policyNo],
+        AprovAmount:[this.registerObj1.aprovAmount],
         compDOd: [(new Date()).toISOString()],
-        IsOpToIpconv: false,
-        RefDoctorDept: "",
-        AdmissionType: 0,
-      
+        IsOpToIpconv: [this.registerObj1.isOpToIpconv],
+        RefDoctorDept: [this.registerObj1.refDoctorDept],
+        AdmissionType:[this.registerObj1.admittedDoctor2],
+        convertId:0
    
     });
 }
+
 
 AdmissionFormSet(){
   this.admissionFormGroup.reset({
@@ -218,7 +226,11 @@ AdmissionFormSet(){
 
 
   OnSaveAdmission() {
-    this.admissionFormGroup.get('AdmissionDate').setValue(this.datePipe.transform(this.admissionFormGroup.get('AdmissionDate').value, 'yyyy-MM-dd'))
+    // this.admissionFormGroup.get('AdmissionDate').setValue(this.datePipe.transform(this.admissionFormGroup.get('AdmissionDate').value, 'yyyy-MM-dd'))
+    
+    this.admissionFormGroup.get('AdmissionDate').setValue(this.datePipe.transform(this.registerObj1.admissionDate, 'yyyy-MM-dd'))
+    this.admissionFormGroup.get('AdmissionTime').setValue(this.registerObj1.admissionTime)
+    
     console.log(this.admissionFormGroup.value)
 
     if (this.isCompanySelected && this.admissionFormGroup.get('CompanyId').value == 0) {
@@ -227,16 +239,45 @@ AdmissionFormSet(){
       });
       return;
     }
+  console.log(this.registerObj)
+ console.log( this.admissionFormGroup.value)
+
+ this.admissionFormGroup.get('DischargeDate').setValue(this.datePipe.transform(this.registerObj1.dischargeDate, 'yyyy-MM-dd'))
+    this.admissionFormGroup.get('DischargeTime').setValue(this.registerObj1.dischargeTime)
+    this.admissionFormGroup.get('IsDischarged').setValue(this.registerObj1.isDischarged)
+    this.admissionFormGroup.get('IsBillGenerated').setValue(this.registerObj1.isBillGenerated)
+    this.admissionFormGroup.get('CompanyId').setValue(this.admissionFormGroup.get('CompanyId').value || 0)
+    this.admissionFormGroup.get('RelativeAddress').setValue(this.admissionFormGroup.get('RelativeAddress').value || '')
+    this.admissionFormGroup.get('PhoneNo').setValue(this.admissionFormGroup.get('PhoneNo').value || '')
+    this.admissionFormGroup.get('MobileNo').setValue(this.registerObj1.mobileNo)
+    this.admissionFormGroup.get('RelationshipId').setValue(this.admissionFormGroup.get('RelationshipId').value || 0)
+    this.admissionFormGroup.get('AddedBy').setValue(this.registerObj1.addedBy)
+    this.admissionFormGroup.get('isMlc').setValue(this.admissionFormGroup.get('isMlc').value),
+    this.admissionFormGroup.get('MotherName').setValue(this.registerObj1.motherName)
+    this.admissionFormGroup.get('RefByTypeId').setValue(this.registerObj1.refByTypeId)
+    this.admissionFormGroup.get('RefByName').setValue(this.registerObj1.refByName)
+    this.admissionFormGroup.get('SubTpaComId').setValue(this.registerObj1.subTpaComId)
+    this.admissionFormGroup.get('PolicyNo').setValue(this.registerObj1.policyNo)
+    this.admissionFormGroup.get('AprovAmount').setValue(this.registerObj1.aprovAmount)
+    this.admissionFormGroup.get('compDOd').setValue(this.registerObj1.compDod)
+     this.admissionFormGroup.get('IsOpToIpconv').setValue(this.registerObj1.isOpToIpconv)
+    this.admissionFormGroup.get('RefDoctorDept').setValue(this.registerObj1.refDoctorDept)
+   this.admissionFormGroup.get('AdmissionType').setValue(this.registerObj1.admissionType)
+    this.admissionFormGroup.get('ischarity').setValue(this.admissionFormGroup.get('ischarity').value)
+    this.admissionFormGroup.get('convertId').setValue(this.registerObj1.converId || 0)
+   
+  //  isCharity
+
+
     if (!this.admissionFormGroup.invalid) {
-      console.log(this.registerObj)
+    
       let submitData = {
-        "AdmissionReg": this.registerObj,// this.personalFormGroup.value,
-        "ADMISSION": this.admissionFormGroup.value
+        "admissionReg": this.registerObj,// this.personalFormGroup.value,
+        "admission": this.admissionFormGroup.value
       };
       console.log(submitData);
 
       this._AdmissionService.AdmissionUpdate(this.registerObj1.admissionId, submitData).subscribe(response => {
-        this.toastr.success(response.message);
         this.getAdmittedPatientCasepaperview(response);
         this._matDialog.closeAll();
       });
@@ -328,6 +369,16 @@ AdmissionFormSet(){
         return false;
     }
 }
+
+  onIsMLCChange(event: any) {
+    
+  this.admissionFormGroup.patchValue({ isMlc: event.checked });
+}
+
+ onISCharChange(event: any) {
+  this.admissionFormGroup.patchValue({ ischarity: event.checked });
+}
+
 
   OnClose() {
     this._matDialog.closeAll();

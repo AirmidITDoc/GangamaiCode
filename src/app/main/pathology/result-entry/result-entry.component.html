@@ -204,8 +204,8 @@
 
                                     <ng-container matColumnDef="IsTemplateTest">
                                         <mat-header-cell *matHeaderCellDef fxShow.gt-sm
-                                            class="w-70">IsTemplate</mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" class="w-70">
+                                            class="w-90">IsTemplate</mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" class="w-90">
 
                                             <mat-icon *ngIf="contact.isTemplateTest=='1'"
                                                 matTooltip="IsTemplateTest">assignment</mat-icon>
@@ -220,10 +220,10 @@
 
                                     <ng-container matColumnDef="IsCompleted">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md
-                                            class="w-70">
+                                            class="w-90">
                                             Completed
                                         </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="w-70">
+                                        <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="w-90">
                                             <mat-icon *ngIf="contact.isCompleted" matTooltip="IsCompleted"
                                                 class="active-icon green-500 s-16">check_circle</mat-icon>
                                             <mat-icon *ngIf="!contact.isCompleted" matTooltip="Not Completed"
@@ -233,10 +233,10 @@
 
                                     <ng-container matColumnDef="outSourceStatus">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md
-                                            class="w-70">
+                                            class="w-90">
                                             OutSource
                                         </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="w-70">
+                                        <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="w-90">
                                             <!-- <span> {{contact.outSourceStatus}}</span> -->
                                             <!-- <mat-icon *ngIf="contact.outSourceStatus" matTooltip="IsCompleted"
                                                 class="active-icon green-500 s-16">check_circle</mat-icon>
@@ -253,8 +253,8 @@
 
                                     <ng-container matColumnDef="isVerifyid">
                                         <mat-header-cell *matHeaderCellDef fxShow.gt-sm
-                                            class="w-70">Isverify</mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" class="w-70">
+                                            class="w-90">Isverify</mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" class="w-90">
 
                                             <!-- <mat-icon *ngIf="contact.isVerifyid=='1'"
                                                 matTooltip="isverify">check_circle</mat-icon>
@@ -292,7 +292,7 @@
 
                                     <ng-container matColumnDef="SampleNo">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md
-                                            class="w-80">
+                                            class="w-90">
                                             SampleNo
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="w-90">
@@ -312,10 +312,10 @@
 
                                     <ng-container matColumnDef="outSourceLabName">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md
-                                            class="w-110">
+                                            class="w-150">
                                             OutSourceName
                                         </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="w-110">
+                                        <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="w-150">
                                             <span> {{contact.outSourceLabName}}</span>
                                         </mat-cell>
                                     </ng-container>

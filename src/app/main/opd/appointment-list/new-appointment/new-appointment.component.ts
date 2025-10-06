@@ -789,6 +789,7 @@ export class NewAppointmentComponent implements OnInit {
         };
         console.log(submitData)
         this._AppointmentlistService.RregisteredappointmentSave(submitData).subscribe((response) => {
+            console.log(response)
             this.OnViewReportPdf(response)
             this.onClear(true);
             this._matDialog.closeAll();

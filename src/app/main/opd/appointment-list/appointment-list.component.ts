@@ -29,6 +29,8 @@ import { MatTableDataSource } from '@angular/material/table';
 import { element } from 'protractor';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ApointmentCardviewComponent } from './apointment-cardview/apointment-cardview.component';
+import { CompanyInformationComponent } from 'app/main/ipd/company-information/company-information.component';
+import { RegistrationService } from '../registration/registration.service';
 // const moment = _rollupMoment || _moment;
 
 @Component({
@@ -78,7 +80,7 @@ export class AppointmentListComponent implements OnInit {
     mode: string;
 
     constructor(public _AppointmentlistService: AppointmentlistService, public _matDialog: MatDialog,
-        private commonService: PrintserviceService,
+        private commonService: PrintserviceService, public _registrationService: RegistrationService,
         private advanceDataStored: AdvanceDataStored,
         private formBuilder: FormBuilder,
         public toastr: ToastrService, public datePipe: DatePipe,
@@ -151,6 +153,7 @@ export class AppointmentListComponent implements OnInit {
         this.gridConfig.columnsList.find(col => col.key === 'phoneAppId')!.template = this.actionsTemplate2;
         this.gridConfig.columnsList.find(col => col.key === 'crossConsulFlag')!.template = this.actionsTemplate3;
         this.gridConfig.columnsList.find(col => col.key === 'isConvertRequestForIp')!.template = this.actionsTemplate4;
+          this.gridConfig.columnsList.find(col => col.key === 'companyId')!.template = this.actionCompany;
         this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
 
     }
@@ -159,7 +162,7 @@ export class AppointmentListComponent implements OnInit {
     @ViewChild('actionsTemplate2') actionsTemplate2!: TemplateRef<any>;
     @ViewChild('actionsTemplate3') actionsTemplate3!: TemplateRef<any>;
     @ViewChild('actionsTemplate4') actionsTemplate4!: TemplateRef<any>;
-
+ @ViewChild('actionCompany') actionCompany!: TemplateRef<any>;
     @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
 
     allcolumns = [
@@ -179,6 +182,7 @@ export class AppointmentListComponent implements OnInit {
         { heading: "Patient Type", key: "patientType", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "Tariff Name", key: "tariffName", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "Company Name", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 230 },
+         { heading: "", key: "companyId", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
         { heading: "Mobile No", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "Check-InTime", key: "checkInTime", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 7 },
         { heading: "Check-OutTime", key: "checkOutTime", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 7 },
@@ -816,7 +820,27 @@ export class AppointmentListComponent implements OnInit {
         });
     }
 
+  registerObj = new RegInsert({});
+  getEditCompany(row) {
 
+    this._registrationService.populateFormpersonal(row);
+    this.registerObj["RegId"] = row.RegID;
+    this.registerObj["RegID"] = row.RegID;
+
+    const dialogRef = this._matDialog.open(CompanyInformationComponent,
+      {
+        maxWidth: "70vw",
+        height: '740px',
+        width: '100%',
+        data: {
+          registerObj: row,
+          Submitflag: true
+        }
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed - Insert Action', result);
+    });
+  }
 }
 
 

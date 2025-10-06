@@ -1064,6 +1064,21 @@ export class AdmissionPersonlModel {
   emgTime: any;
   refDoctorName: any;
 
+  admissionDate: any;
+  motherName: any;
+  refByTypeId: any;
+  refByName: any;
+  subTpaComId: any;
+  policyNo: any;
+  aprovAmount: any;
+  refDoctorDept: any;
+dischargeDate: any;
+addedBy: any;
+compDod: any;
+isMlc: any;
+ischarity: any;
+converId: any;
+
   /**
 * Constructor
 *
@@ -1277,6 +1292,26 @@ export class AdmissionPersonlModel {
       this.isOpToIpconv = AdmissionPersonl.isOpToIpconv || 0
       this.admissionType = AdmissionPersonl.admissionType || 0
       this.emgTime = AdmissionPersonl.emgTime || ''
+
+
+
+      this.admissionDate = AdmissionPersonl.admissionDate || ''
+      this.motherName = AdmissionPersonl.motherName || ''
+      this.refByTypeId = AdmissionPersonl.refByTypeId || 0
+      this.refByName = AdmissionPersonl.refByName || ''
+      this.subTpaComId = AdmissionPersonl.subTpaComId || 0
+      this.policyNo = AdmissionPersonl.policyNo || ''
+      this.aprovAmount = AdmissionPersonl.aprovAmount || ''
+      this.refDoctorDept = AdmissionPersonl.refDoctorDept || ''
+      this.dischargeDate = AdmissionPersonl.dischargeDate || ''
+      this.addedBy = AdmissionPersonl.addedBy || 0
+      this.compDod = AdmissionPersonl.compDod || ''
+ this.isMlc = AdmissionPersonl.isMlc || 0
+      this.ischarity = AdmissionPersonl.ischarity || 0
+ this.converId = AdmissionPersonl.converId || 0
+
+   
+
     }
   }
 }
