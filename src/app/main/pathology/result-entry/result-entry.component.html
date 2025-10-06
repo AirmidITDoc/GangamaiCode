@@ -158,10 +158,10 @@
                             </div>
                         </mat-card>
 
-                        <mat-card style="margin-top: 10px;">
+                        <mat-card style="margin-top: 10px; padding:12px;">
                             <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
 
-                                <div style="height: 50px; padding: 10px;">
+                                <div style="height: 50px;">
                                     <button mat-raised-button (click)="chkresultentry(selection.selected,true)">
                                         Result Entry
                                     </button>
@@ -181,13 +181,13 @@
                                     [@animateStagger]="{value:'50'}">
 
                                     <ng-container matColumnDef="select">
-                                        <th mat-header-cell *matHeaderCellDef class="w-70">
+                                        <th mat-header-cell *matHeaderCellDef>
                                             <mat-checkbox (change)="$event ? masterToggle() : null"
                                                 [checked]="selection.hasValue()"
                                                 [indeterminate]="selection.hasValue() && !isAllSelected()">
                                             </mat-checkbox>
                                         </th>
-                                        <td mat-cell *matCellDef="let contact" class="w-70">
+                                        <td mat-cell *matCellDef="let contact">
                                             <mat-checkbox (click)="$event.stopPropagation()"
                                                 (change)="onresultentryshow($event,contact)"
                                                 (change)="$event ? selection.toggle(contact) : null"
@@ -195,7 +195,9 @@
                                                 [checked]="selection.isSelected(contact)">
                                             </mat-checkbox>
                                             <ng-template #noMLC>
-                                                <span>----</span>
+                                                <div style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;">
+                                                    <span>----</span>
+                                                </div>
                                             </ng-template>
                                         </td>
                                     </ng-container>
@@ -204,8 +206,8 @@
 
                                     <ng-container matColumnDef="IsTemplateTest">
                                         <mat-header-cell *matHeaderCellDef fxShow.gt-sm
-                                            class="w-90">IsTemplate</mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" class="w-90">
+                                            >IsTemplate</mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" >
 
                                             <mat-icon *ngIf="contact.isTemplateTest=='1'"
                                                 matTooltip="IsTemplateTest">assignment</mat-icon>
@@ -219,11 +221,10 @@
 
 
                                     <ng-container matColumnDef="IsCompleted">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md
-                                            class="w-90">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
                                             Completed
                                         </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="w-90">
+                                        <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md >
                                             <mat-icon *ngIf="contact.isCompleted" matTooltip="IsCompleted"
                                                 class="active-icon green-500 s-16">check_circle</mat-icon>
                                             <mat-icon *ngIf="!contact.isCompleted" matTooltip="Not Completed"
@@ -232,11 +233,10 @@
                                     </ng-container>
 
                                     <ng-container matColumnDef="outSourceStatus">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md
-                                            class="w-90">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
                                             OutSource
                                         </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="w-90">
+                                        <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md >
                                             <!-- <span> {{contact.outSourceStatus}}</span> -->
                                             <!-- <mat-icon *ngIf="contact.outSourceStatus" matTooltip="IsCompleted"
                                                 class="active-icon green-500 s-16">check_circle</mat-icon>
@@ -252,9 +252,8 @@
 
 
                                     <ng-container matColumnDef="isVerifyid">
-                                        <mat-header-cell *matHeaderCellDef fxShow.gt-sm
-                                            class="w-90">Isverify</mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" class="w-90">
+                                        <mat-header-cell *matHeaderCellDef fxShow.gt-sm>Isverify</mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" >
 
                                             <!-- <mat-icon *ngIf="contact.isVerifyid=='1'"
                                                 matTooltip="isverify">check_circle</mat-icon>
@@ -291,59 +290,54 @@
                                     </ng-container>
 
                                     <ng-container matColumnDef="SampleNo">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md
-                                            class="w-90">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
                                             SampleNo
                                         </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="w-90">
+                                        <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
                                             <span> {{contact.sampleNo}}</span>
                                         </mat-cell>
                                     </ng-container>
 
                                     <ng-container matColumnDef="CategoryName">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md
-                                            class="w-100">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
                                             Category
                                         </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="w-100">
+                                        <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
                                             <span> {{contact.categoryName}}</span>
                                         </mat-cell>
                                     </ng-container>
 
                                     <ng-container matColumnDef="outSourceLabName">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md
-                                            class="w-150">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
                                             OutSourceName
                                         </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="w-150">
+                                        <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
                                             <span> {{contact.outSourceLabName}}</span>
                                         </mat-cell>
                                     </ng-container>
 
                                     <ng-container matColumnDef="outSourceSampleSentDateTime">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md
-                                            class="w-150">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
                                             OutSourceSentDate
                                         </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="w-150">
+                                        <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
                                             <span> {{contact.outSourceSampleSentDateTime | date:'yyyy-MM-dd'}}</span>
                                         </mat-cell>
                                     </ng-container>
 
                                     <ng-container matColumnDef="outSourceReportCollectedDateTime">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md
-                                            class="w-150">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
                                             ReportCollectedDate
                                         </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="w-150">
+                                        <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
                                             <span> {{contact.outSourceReportCollectedDateTime | date:'yyyy-MM-dd'}}</span>
                                         </mat-cell>
                                     </ng-container>
 
                                     <ng-container matColumnDef="action" stickyEnd>
-                                        <mat-header-cell *matHeaderCellDef fxShow.gt-sm class="w-250">
+                                        <mat-header-cell *matHeaderCellDef fxShow.gt-sm>
                                             Action</mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" class="w-250">
+                                        <mat-cell *matCellDef="let contact">
 
                                             <button *ngIf="contact.isTemplateTest == 1" title="IsTemplateTest"
                                                 (click)="chkresultentry(contact, false)"

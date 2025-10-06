@@ -1,21 +1,24 @@
 <div class="viewer-container">
-    <h3>{{data.fileName}}</h3>
+    <div class="viewer-header">
+        <h3>{{data.fileName}}</h3>
+        <button mat-icon-button class="close-button" (click)="dialogRef.close()">
+            <mat-icon>close</mat-icon>
+        </button>
+    </div>
 
-    <ng-container [ngSwitch]="data.type">
-        <!-- Images -->
-        <img *ngSwitchCase="'image'" [src]="safeUrl" class="viewer-img" />
+    <div class="viewer-content">
+        <ng-container [ngSwitch]="data.type">
+            <!-- Images -->
+            <img *ngSwitchCase="'image'" [src]="safeUrl" class="viewer-img" />
 
-        <!-- PDFs -->
-        <embed *ngSwitchCase="'pdf'" [src]="safeUrl" type="application/pdf" width="100%" height="600px" />
+            <!-- PDFs -->
+            <embed *ngSwitchCase="'pdf'" [src]="safeUrl" type="application/pdf" width="100%" height="100%" />
 
-        <!-- Fallback -->
-        <p *ngSwitchDefault>
-            Preview not available.
-            <a [href]="safeUrl" download="{{data.fileName}}">Download instead</a>
-        </p>
-    </ng-container>
-
-    <div class="viewer-actions">
-        <button mat-raised-button color="primary" (click)="dialogRef.close()">Close</button>
+            <!-- Fallback -->
+            <p *ngSwitchDefault>
+                Preview not available.
+                <a [href]="safeUrl" download="{{data.fileName}}">Download instead</a>
+            </p>
+        </ng-container>
     </div>
 </div>
