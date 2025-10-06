@@ -165,6 +165,7 @@ export class HospitalMasterComponent implements OnInit {
         maxWidth: "95vw",
         maxHeight: "100vh",
         width: "100%",
+        height: "95%",
         data: obj
       });
     dialogRef.afterClosed().subscribe(result => {
@@ -200,6 +201,8 @@ export class HospitalMaster {
   ipdRefundOfBillReceiptCounterId: any;
   ipdRefundOfAdvanceCounterId: any;
   hospitalHeaderLine: any;
+  ipdAdvanceReceiptCounterId: any;
+  ipdRefundOfAdvanceReceiptCounterId: any;
   /**
    * Constructor
    *
@@ -231,6 +234,8 @@ export class HospitalMaster {
       this.ipdRefundOfBillReceiptCounterId = HospitalMaster.ipdRefundOfBillReceiptCounterId || 0;
       this.ipdRefundOfAdvanceCounterId = HospitalMaster.ipdRefundOfAdvanceCounterId || 0;
       this.hospitalHeaderLine = HospitalMaster.hospitalHeaderLine || '';
+      this.ipdAdvanceReceiptCounterId = HospitalMaster.ipdAdvanceReceiptCounterId || 0;
+      this.ipdRefundOfAdvanceReceiptCounterId = HospitalMaster.ipdRefundOfAdvanceReceiptCounterId || 0;
     }
   }
 }

@@ -38,13 +38,13 @@ export class HospitalService {
       opdAdvanceCounterId: [0, this._FormvalidationserviceService.notEmptyOrZeroValidator()],
       opdRefundAdvanceCounterId: [0, this._FormvalidationserviceService.notEmptyOrZeroValidator()],
       ipdAdvanceCounterId: [0, this._FormvalidationserviceService.notEmptyOrZeroValidator()],
-      ipdAdvanceReceiptCounterId: [0, this._FormvalidationserviceService.onlyNumberValidator()],
+      ipdAdvanceReceiptCounterId: [0, this._FormvalidationserviceService.notEmptyOrZeroValidator()],
       ipdBillingCounterId: [0, this._FormvalidationserviceService.notEmptyOrZeroValidator()],
       ipdReceiptCounterId: [0, this._FormvalidationserviceService.notEmptyOrZeroValidator()],
       ipdRefundOfBillCounterId: [0, this._FormvalidationserviceService.notEmptyOrZeroValidator()],
       ipdRefundOfBillReceiptCounterId: [0, this._FormvalidationserviceService.notEmptyOrZeroValidator()],
       ipdRefundOfAdvanceCounterId: [0, this._FormvalidationserviceService.notEmptyOrZeroValidator()],
-      ipdRefundOfAdvanceReceiptCounterId: [0, this._FormvalidationserviceService.onlyNumberValidator()],
+      ipdRefundOfAdvanceReceiptCounterId: [0, this._FormvalidationserviceService.notEmptyOrZeroValidator()],
       cityId: [0, this._FormvalidationserviceService.notEmptyOrZeroValidator()],
     });
   }

@@ -30,11 +30,12 @@ export class NewHospitalComponent implements OnInit {
   filteredOptionsCity: Observable<string[]>;
   isCitySelected: boolean = false;
   vCityId: any;
-  vCityName:any;
+  vCityName: any;
   HospitalId = 0;
   HospitalHeader: any = '';
   isExpanded = false;
   selectedTabIndex = 0;
+  isActive=true
   autocompleteOPDBillingCounterId: string = "CashCounter";
   autocompleteOPDReceiptCounterId: string = "CashCounter";
   autocompleteOPDRefundBillCounterId: string = "CashCounter";
@@ -48,6 +49,8 @@ export class NewHospitalComponent implements OnInit {
   autocompleteIPDRefundofBillCounterId: string = "CashCounter";
   autocompleteIPDRefundofBillReceiptCounterId: string = "CashCounter";
   autocompleteIPDRefundofAdvanceCounterId: string = "CashCounter";
+  autocompleteIPDAdvanceReceiptCounterId: string = "CashCounter";
+  autocompleteIPDRefundofAdvanceReceiptCounterId: string = "CashCounter";
 
   constructor(public _HospitalService: HospitalService,
     public _matDialog: MatDialog,
@@ -63,16 +66,16 @@ export class NewHospitalComponent implements OnInit {
     if ((this.data?.hospitalId ?? 0) > 0) {
       this.registerObj = this.data;
       this.HospitalId = this.registerObj.hospitalId
+      this.isActive=this.registerObj.isActive
       this.HospitalForm.get('pin').setValue(this.data.pin)
       this.HospitalForm.get('cityId').setValue(this.data.cityId)
+      this.vCityName=this.data.city
       this.HospitalForm.patchValue(this.data);
 
       setTimeout(() => {
         this._HospitalService.gethospitalById(this.data.hospitalId).subscribe((response) => {
           this.registerObj = response;
           console.log(this.registerObj)
-
-
           this.HospitalForm.get('hospitalId').setValue(this.registerObj.hospitalId)
           this.HospitalForm.get('hospitalName').setValue(this.registerObj.hospitalName)
           this.HospitalForm.get('hospitalAddress').setValue(this.registerObj.hospitalAddress)
@@ -83,10 +86,10 @@ export class NewHospitalComponent implements OnInit {
 
   }
 
-selectChangecity(obj: any) {
+  selectChangecity(obj: any) {
     console.log(obj)
-    this.vCityName=obj.cityName
-    this.vCityId=obj.cityId
+    this.vCityName = obj.cityName
+    this.vCityId = obj.cityId
   }
 
   onSubmit() {

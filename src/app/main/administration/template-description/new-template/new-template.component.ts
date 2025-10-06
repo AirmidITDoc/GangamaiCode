@@ -19,7 +19,7 @@ export class NewTemplateComponent implements OnInit {
   vTemplateDesc: any;
   vTemplateName: any;
   templateId = 0;
-  autocompleteModeDepartment: string = "Department";
+  autocompleteModeTemplateCat: string = "TemplateDescCategory";
 
   constructor(
     public _TemplatedescriptionService: TemplatedescriptionService, private _formBuilder: UntypedFormBuilder,
@@ -45,6 +45,20 @@ export class NewTemplateComponent implements OnInit {
       this.templateForm.get('TemplateContent')?.setValue(this.data.templateDescription);
       this.templateForm.patchValue(this.data);
     }
+
+    this.templateForm.get('isTemplateHeaderWithImage')?.valueChanges.subscribe((value: boolean) => {
+      if (!value) {
+        // Clear file selection when toggle is turned OFF
+        this.selectedFileName = null;
+        this.selectedImage = null;
+
+        // Optionally clear the input element
+        const fileInput = document.getElementById('fileInput') as HTMLInputElement;
+        if (fileInput) {
+          fileInput.value = '';
+        }
+      }
+    });
   }
   onEditorValueChange(content: string) {
     this.templateForm.get('TemplateContent')?.setValue(content);
@@ -52,8 +66,8 @@ export class NewTemplateComponent implements OnInit {
   createRadiologytemplateForm(): FormGroup {
     return this._formBuilder.group({
       templateId: [0],
-      DepartmentId: [0,[Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      CategoryId: [0,[Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      DepartmentId: [0],
+      CategoryId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       templateName: ['', [Validators.required]],
       templateDesc: this.vTemplateDesc,
       isActive: [true],
@@ -72,8 +86,8 @@ export class NewTemplateComponent implements OnInit {
       templateId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       templateName: ['', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
       templateDescription: [''],
-      departmentId: [0, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      categoryName: ['', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
+      departmentId: [0],
+      categoryName: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       templateHeader: ['string'],
       templateFooter: ['string'],
       isTemplateWithHeader: [false],
@@ -82,6 +96,24 @@ export class NewTemplateComponent implements OnInit {
       isTemplateFooterWithImage: [false]
     })
   }
+
+  selectedImage: string | ArrayBuffer | null = null;
+  selectedFileName: string | null = null;
+
+  onFileSelected(event: any) {
+    const file = event.target.files[0];
+    if (file) {
+      this.selectedFileName = file.name;
+    }
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.selectedImage = reader.result;
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
   onSubmit() {
     console.log(this.templateForm.value)
     const formValue = this.templateForm.getRawValue();
@@ -89,9 +121,8 @@ export class NewTemplateComponent implements OnInit {
       templateId: formValue?.templateId,
       templateName: formValue?.templateName,
       templateDescription: formValue?.TemplateContent,
-      departmentId: formValue?.DepartmentId,
       categoryName: formValue?.CategoryId,
-      // templateHeader: formValue?.Templateheader,
+      // templateHeader: this.selectedImage,
       // templateFooter: formValue?.TemplateFooter,
       isTemplateWithHeader: formValue?.isTemplateWithHeader,
       isTemplateHeaderWithImage: formValue?.isTemplateHeaderWithImage,
@@ -132,7 +163,7 @@ export class NewTemplateComponent implements OnInit {
       console.log(obj)
     }
   }
-  
+
   getValidationMessages() {
     return {
       DepartmentId: [
