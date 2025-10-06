@@ -159,7 +159,7 @@ export class ToolbarComponent implements OnInit, OnDestroy {
         });
     }
     navigateToDailyDashboard() {
-        this.router.navigate(['/new-dashboard']);
+        this.router.navigate(['/dashboard']);
     }
 
     // navigateToDailyDashboard() {
