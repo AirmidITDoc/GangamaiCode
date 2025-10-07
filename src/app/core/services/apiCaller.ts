@@ -6,6 +6,7 @@ import { Observable, of } from "rxjs";
 import { map } from "rxjs/operators";
 import { apiResponse } from "../models/apiResponse";
 import { AppConfigService } from "./api-config.service";
+import Swal from "sweetalert2";
 
 @Injectable({ providedIn: "root" })
 export class ApiCaller {
@@ -21,9 +22,16 @@ export class ApiCaller {
                 }
                 else {
                     if (data.message)
+                        //need to chk
+                        debugger
+                    if (data.message == 'No data found.') {
+                        Swal.fire("Data Not Find .....")
+                    }
+                    else {
                         this.toastr.error(data.message, 'Error !', {
                             toastClass: 'tostr-tost custom-toast-error',
                         });
+                    }
                     return of(null); // Avoid returning anything invalid
                 }
             }));

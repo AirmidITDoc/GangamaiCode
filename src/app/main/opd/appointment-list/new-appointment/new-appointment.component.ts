@@ -71,8 +71,8 @@ export class NewAppointmentComponent implements OnInit {
     OPIP: any = '';
     VisitId = 0;
     patienttype = 0
-    UnitId = 1;
-    ClassId = 1;
+    // UnitId = 1;
+    // ClassId = 1;
     Vtotalcount = 0;
     VNewcount = 0;
     VFollowupcount = 0;
@@ -179,7 +179,7 @@ export class NewAppointmentComponent implements OnInit {
         // this.abhaForm = this._AppointmentlistService.createAbhadetailForm();
 
         this.searchFormGroup = this.createSearchForm();
-
+ console.log(this.data) 
         if (this.data) {
             this.FromRegistration = this.data?.Obj
             // console.log(this.FromRegistration) 
@@ -949,10 +949,13 @@ export class NewAppointmentComponent implements OnInit {
                 { name: "pattern", Message: "Only alphanumeric, 10 to 15 characters" },
                 { name: "minLength", Message: "Minimum 10 characters required." },
                 { name: "maxLength", Message: "Maximum 15 characters allowed." }
-            ]
-            // wardId: [
-            //     { name: "required", Message: "Ward Name is required" }
-            // ],
+            ],
+            UnitId: [
+                { name: "required", Message: "Unit Name is required" }
+            ],
+             ClassId: [
+                { name: "required", Message: "Class Name is required" }
+            ],
         };
     }
 

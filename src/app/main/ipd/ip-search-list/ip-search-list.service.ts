@@ -553,22 +553,15 @@ export class IPSearchListService {
   //   }
 
 
-  public InsertRefundOfBill(employee, loader = true) {
-    if (loader) {
-      this._loaderService.show();
-    }
-    return this._httpClient1.PostData("RefundOfBill/IPRefundOfBILLInsert", employee)
+  public InsertRefundOfBill(employee) {
+       return this._httpClient1.PostData("RefundOfBill/IPRefundOfBILLInsert", employee)
   }
-  public InsertAdvanceHeader(employee, loader = true) {
-    if (loader) {
-      this._loaderService.show();
-    }
+  public InsertAdvanceHeader(employee) {
+  
     return this._httpClient1.PostData("Advance/InsertSP", employee)
   }
-  public UpdateAdvanceHeader(employee, loader = true) {
-    if (loader) {
-      this._loaderService.show();
-    }
+  public UpdateAdvanceHeader(employee) {
+   
     return this._httpClient1.PutData("Advance/Edit", employee)
   }
 

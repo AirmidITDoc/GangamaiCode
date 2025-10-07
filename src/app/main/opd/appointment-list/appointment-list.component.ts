@@ -1058,7 +1058,7 @@ export class ChargesList {
         this.ChargesDate = ChargesList.ChargesDate || '';
         this.IsPathology = ChargesList.IsPathology || '';
         this.IsRadiology = ChargesList.IsRadiology || '';
-        this.ClassId = ChargesList.ClassId || 0;
+        this.ClassId = ChargesList.ClassId || 1;
         this.ClassName = ChargesList.ClassName || '';
         this.ChargesAddedName = ChargesList.ChargesAddedName || '';
         this.PackageId = ChargesList.PackageId || 0;

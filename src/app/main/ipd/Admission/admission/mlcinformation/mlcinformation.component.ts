@@ -73,6 +73,8 @@ export class MLCInformationComponent implements OnInit {
       if ((this.data?.admissionId ?? 0) > 0) {
         setTimeout(() => {
           this._AdmissionService.getMLCById(this.data.admissionId).subscribe((response) => {
+            debugger
+            console.log(response)
             if (response?.mlcid > 0)
               this.registerObj = response;
             this.DetailGiven = this.registerObj.detailGiven

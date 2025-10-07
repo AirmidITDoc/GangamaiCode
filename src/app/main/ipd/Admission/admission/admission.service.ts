@@ -72,7 +72,7 @@ export class AdmissionService {
             MiddleName: ['', [
                 Validators.maxLength(50),
                 Validators.pattern("^[A-Za-z/() ]*$"),
-                 this._FormvalidationserviceService.noWhitespaceValidator()
+                //  this._FormvalidationserviceService.noWhitespaceValidator()
             ]],
             LastName: ['', [
                 Validators.required,

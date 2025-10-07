@@ -27,14 +27,14 @@
                     <mat-icon class="card-icon">event</mat-icon>
                 </div>
                 <!-- Admissions New/Follow-up -->
-                <div class="dashboard-card admissions-split">
+                <!-- <div class="dashboard-card admissions-split">
                     <div class="card-label">Total Admissions</div>
                     <div class="card-value">
                         <div>New {{VNewcount}}</div>
                         <div>Follow-up {{VFollowupcount}}</div>
                     </div>
                     <mat-icon class="card-icon">group</mat-icon>
-                </div>
+                </div> -->
                 <!-- Bills -->
                 <div class="dashboard-card bills">
                     <div class="card-label">Total BillGenerated</div>
@@ -48,10 +48,19 @@
                     <mat-icon class="card-icon">exit_to_app</mat-icon>
                 </div> -->
                 <!-- op to ip convert -->
-                <div class="dashboard-card opipconvert">
+                <!-- <div class="dashboard-card opipconvert">
                     <div class="card-label">OP To IP Convert</div>
                     <div class="card-value">{{VOPtoIPcount}}</div>
                     <mat-icon class="card-icon">assignment_turned_in</mat-icon>
+                </div> -->
+
+                 <div class="dashboard-card admissions-split">
+                    <div class="card-label">Admissions</div>
+                    <div class="card-value">
+                        <div>OP/IPConvert {{VOPtoIPcount}}</div>
+                        <div>Emergency {{VEmgcount}}</div>
+                    </div>
+                    <mat-icon class="card-icon">group</mat-icon>
                 </div>
             </div>
             <!-- <div fxLayout="row wrap" fxLayoutAlign="start center" class="gap-8">

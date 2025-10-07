@@ -72,6 +72,7 @@ export class AdmissionComponent implements OnInit {
   VBillcount = 0;
   VOPtoIPcount = 0;
   vIsDischarg = 0;
+  VEmgcount = 0;
   VAdmissioncount = 0;
   PatientName: any;
   RegId: any;
@@ -223,9 +224,27 @@ export class AdmissionComponent implements OnInit {
       if (data[i].IsOpToIPconv == true) {
         this.VOPtoIPcount = this.VOPtoIPcount + 1;
         console.log(this.VOPtoIPcount)
-      } else if (data[i].IsDischarged == 1) {
-        this.vIsDischarg = this.vIsDischarg + 1;
       }
+      //  else if (data[i].IsDischarged == 1) {
+      //   this.vIsDischarg = this.vIsDischarg + 1;
+      // }
+
+      if (data[i].admissionType == 1) {
+        this.VOPtoIPcount = this.VOPtoIPcount + 1
+      }
+      if (data[i].isBillGenerated == 1 || data[i].isBillGenerated == 2) {
+        this.VBillcount = this.VBillcount + 1;
+      }
+
+      if (data[i].admissionType == 1) {
+        this.VOPtoIPcount = this.VOPtoIPcount + 1
+      }
+      if (data[i].admissionType == 2) {
+        this.VEmgcount = this.VEmgcount + 1
+      }
+
+
+
       this.Vtotalcount = this.Vtotalcount + 1;
     }
 
@@ -814,23 +833,31 @@ export class AdmissionComponent implements OnInit {
       console.log("akakak:", response)
       if (this.dataSource.data.length > 0) {
         this.VAdmissioncount = this.dataSource.data.length
-        this.dataSource.data.forEach(element => {
-          console.log(element)
-          // if (element.patientOldNew == 1) {
-          //     this.VNewcount = this.VNewcount + 1;
-          // }
-          // else 
+        // this.dataSource.data.forEach(element => {
+        //   console.log(element)
+        // if (element.patientOldNew == 1) {
+        //     this.VNewcount = this.VNewcount + 1;
+        // }
+        // else 
 
-          if (element.admissionType == 1) {
-            this.VOPtoIPcount = this.VOPtoIPcount + 1
-          }
-          if (element.isBillGenerated == 1 || element.isBillGenerated == 2) {
-            this.VBillcount = this.VBillcount + 1;
-          }
-          if (element.isDischarged == 1) {
-            this.vIsDischarg = this.vIsDischarg + 1;
-          }
-        });
+        // if (element.admissionType == 1) {
+        //   this.VOPtoIPcount = this.VOPtoIPcount + 1
+        // }
+        // if (element.isBillGenerated == 1 || element.isBillGenerated == 2) {
+        //   this.VBillcount = this.VBillcount + 1;
+        // }
+        // if (element.isDischarged == 1) {
+        //   this.vIsDischarg = this.vIsDischarg + 1;
+        // }
+        // if (element.admissionType == 1) {
+        //   this.VOPtoIPcount = this.VOPtoIPcount + 1
+        // }
+        // if (element.admissionType == 2) {
+        //   this.VEmgcount = this.VEmgcount + 1
+        // }
+
+        // });
+        this.Admissiondetail(this.dataSource.data)
         console.log(this.dataSource.data)
       }
     });
@@ -1072,12 +1099,12 @@ export class AdmissionPersonlModel {
   policyNo: any;
   aprovAmount: any;
   refDoctorDept: any;
-dischargeDate: any;
-addedBy: any;
-compDod: any;
-isMlc: any;
-ischarity: any;
-converId: any;
+  dischargeDate: any;
+  addedBy: any;
+  compDod: any;
+  isMlc: any;
+  ischarity: any;
+  converId: any;
 
   /**
 * Constructor
@@ -1306,11 +1333,11 @@ converId: any;
       this.dischargeDate = AdmissionPersonl.dischargeDate || ''
       this.addedBy = AdmissionPersonl.addedBy || 0
       this.compDod = AdmissionPersonl.compDod || ''
- this.isMlc = AdmissionPersonl.isMlc || 0
+      this.isMlc = AdmissionPersonl.isMlc || 0
       this.ischarity = AdmissionPersonl.ischarity || 0
- this.converId = AdmissionPersonl.converId || 0
+      this.converId = AdmissionPersonl.converId || 0
 
-   
+
 
     }
   }
