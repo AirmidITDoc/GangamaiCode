@@ -150,9 +150,9 @@ export class IPRefundofAdvanceComponent implements OnInit {
     this.RefundOfAdvanceFormGroup.get('advanceHeaderupdate.advanceUsedAmount').setValue(this.UsedAmount)
     this.RefundOfAdvanceFormGroup.get('refundHeader.advanceId').setValue(this.AdvanceId)
     this.RefundOfAdvanceFormGroup.get('advanceHeaderupdate.advanceId').setValue(this.AdvanceId)
-    this.RefundOfAdvanceFormGroup.get('refundHeader.remark').setValue(this.RefundOfAdvanceFormGroup.get('remark').value)
-    this.RefundOfAdvanceFormGroup.get('refundHeader.refundAmount').setValue(this.RefundOfAdvanceFormGroup.get('refundAmount').value)
-    this.RefundOfAdvanceFormGroup.get('advanceHeaderupdate.balanceAmount').setValue(this.RefundOfAdvanceFormGroup.get('balanceAmount').value)
+    this.RefundOfAdvanceFormGroup.get('refundHeader.remark').setValue(this.RefundOfAdvanceFormGroup.get('remark')?.value)
+    this.RefundOfAdvanceFormGroup.get('refundHeader.refundAmount').setValue(this.RefundOfAdvanceFormGroup.get('refundAmount')?.value)
+    this.RefundOfAdvanceFormGroup.get('advanceHeaderupdate.balanceAmount').setValue(this.RefundOfAdvanceFormGroup.get('balanceAmount')?.value || 0)
 
     //getting data from table to array
     if (this.RefundOfAdvanceFormGroup.valid) {
@@ -166,14 +166,14 @@ export class IPRefundofAdvanceComponent implements OnInit {
 
       let PatientHeaderObj = {};
       PatientHeaderObj['Date'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '1900-01-01',
-      PatientHeaderObj['PatientName'] = this.registerObj.patientName;
-      PatientHeaderObj['RegNo'] = this.registerObj.regNo,
-      PatientHeaderObj['DoctorName'] = this.registerObj.doctorname;
-      PatientHeaderObj['CompanyName'] = this.registerObj.companyName;
-      PatientHeaderObj['DepartmentName'] = this.registerObj.departmentName;
-      PatientHeaderObj['OPD_IPD_Id'] = this.registerObj.ipdno;
-      PatientHeaderObj['Age'] = this.registerObj.ageYear;
-      PatientHeaderObj['NetPayAmount'] = this.RefundOfAdvanceFormGroup.get('refundAmount').value || 0;
+      PatientHeaderObj['PatientName'] = this.registerObj?.patientName;
+      PatientHeaderObj['RegNo'] = this.registerObj?.regNo,
+      PatientHeaderObj['DoctorName'] = this.registerObj?.doctorname;
+      PatientHeaderObj['CompanyName'] = this.registerObj?.companyName;
+      PatientHeaderObj['DepartmentName'] = this.registerObj?.departmentName;
+      PatientHeaderObj['OPD_IPD_Id'] = this.registerObj?.ipdno;
+      PatientHeaderObj['Age'] = this.registerObj?.ageYear;
+      PatientHeaderObj['NetPayAmount'] = Math.round(this.RefundOfAdvanceFormGroup.get('refundAmount').value) || 0;
 
       const dialogRef = this._matDialog.open(OpPaymentComponent,
         {
@@ -272,9 +272,7 @@ export class IPRefundofAdvanceComponent implements OnInit {
   }
 
   //Refund Amount calculation
-  getCellCalculation(element, RefundAmt) { 
-    debugger;
-    
+  getCellCalculation(element, RefundAmt) {  
    if (RefundAmt > 0 && RefundAmt <= element.netBallAmt) {
       element.balanceAmount = ((element.netBallAmt) - (RefundAmt));
     }

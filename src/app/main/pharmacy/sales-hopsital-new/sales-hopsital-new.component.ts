@@ -337,10 +337,10 @@ export class SalesHospitalNewComponent implements OnInit {
             unitMrp: [item?.UnitMRP, [this._FormvalidationserviceService.AllowDecimalNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             qty: [item?.Qty, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             totalAmount: [item?.TotalMRP, [this._FormvalidationserviceService.AllowDecimalNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-            vatPer: [item?.VatPer ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-            vatAmount: [item?.VatAmount ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            vatPer: [item?.VatPer || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            vatAmount: [item?.VatAmount || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
             discPer: [item?.DiscPer || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-            discAmount: [item?.DiscAmt ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            discAmount: [item?.DiscAmt || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
             grossAmount: [item?.NetAmt, [this._FormvalidationserviceService.AllowDecimalNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             landedPrice: [item?.LandedRate, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
             totalLandedAmount: [item?.LandedRateandedTotal, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
@@ -425,10 +425,10 @@ export class SalesHospitalNewComponent implements OnInit {
             unitMrp: [item?.UnitMRP, [this._FormvalidationserviceService.AllowDecimalNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             qty: [item?.Qty, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             totalAmount: [item?.TotalMRP, [this._FormvalidationserviceService.AllowDecimalNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-            vatPer: [item?.VatPer ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-            vatAmount: [item?.VatAmount ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            vatPer: [item?.VatPer || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            vatAmount: [item?.VatAmount || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
             discPer: [item?.DiscPer || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-            discAmount: [item?.DiscAmt ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            discAmount: [item?.DiscAmt || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
             grossAmount: [item?.NetAmt, [this._FormvalidationserviceService.AllowDecimalNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             landedPrice: [item?.LandedRate, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
             totalLandedAmount: [item?.LandedRateandedTotal, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
@@ -1098,14 +1098,14 @@ export class SalesHospitalNewComponent implements OnInit {
         let opIpType = formValue?.opIpType || 0
         this.PharmaSalesForm.get('sales.date').setValue(formattedDate)
         this.PharmaSalesForm.get('sales.time').setValue(FormattedDateTime)
-        this.PharmaSalesForm.get('sales.opIpType').setValue(formValue?.opIpType ?? 0)
-        this.PharmaSalesForm.get('sales.totalAmount').setValue(formValue?.totalAmount ?? 0)
-        this.PharmaSalesForm.get('sales.vatAmount').setValue(formValue?.vatAmount ?? 0)
-        this.PharmaSalesForm.get('sales.discAmount').setValue(formValue?.discAmount ?? 0)
-        this.PharmaSalesForm.get('sales.netAmount').setValue(Math.round(formValue?.netAmount ?? 0))
-        this.PharmaSalesForm.get('sales.roundOff').setValue(Math.round(formValue?.roundoffAmt ?? 0))
+        this.PharmaSalesForm.get('sales.opIpType').setValue(formValue?.opIpType)
+        this.PharmaSalesForm.get('sales.totalAmount').setValue(formValue?.totalAmount || 0)
+        this.PharmaSalesForm.get('sales.vatAmount').setValue(formValue?.vatAmount || 0)
+        this.PharmaSalesForm.get('sales.discAmount').setValue(formValue?.discAmount || 0)
+        this.PharmaSalesForm.get('sales.netAmount').setValue(Math.round(formValue?.netAmount || 0))
+        this.PharmaSalesForm.get('sales.roundOff').setValue(Math.round(formValue?.roundoffAmt || 0))
         this.PharmaSalesForm.get('sales.regId').setValue(this.RegId)
-        this.PharmaSalesForm.get('sales.concessionReasonId').setValue(formValue?.concessionReasonId ?? 0)
+        this.PharmaSalesForm.get('sales.concessionReasonId').setValue(formValue?.concessionReasonId || 0)
         this.PharmaSalesForm.get('sales.opIpId').setValue(this.OP_IP_Id)
         this.PharmaSalesForm.get('sales.wardId').setValue(this.wardId)
         this.PharmaSalesForm.get('sales.bedId').setValue(this.bedId)
@@ -1117,7 +1117,7 @@ export class SalesHospitalNewComponent implements OnInit {
         if (formValue.opIpType == 2) {
             this.PharmaSalesForm.get('sales.externalPatientName').setValue((formValue.externalPatientName?.patientName ?? formValue.externalPatientName) || '')
             this.PharmaSalesForm.get('sales.doctorName').setValue((formValue?.doctorName.doctorName ?? formValue?.doctorName) || '')
-            this.PharmaSalesForm.get('sales.extAddress').setValue(formValue?.extAddress ?? '')
+            this.PharmaSalesForm.get('sales.extAddress').setValue(formValue?.extAddress || '')
             this.PharmaSalesForm.get('sales.extMobileNo').setValue((formValue.extMobileNo.extMobileNo ?? formValue.extMobileNo) || '')
             this.PharmaSalesForm.get('sales.regId').clearValidators();
             this.PharmaSalesForm.get('sales.regId').updateValueAndValidity();

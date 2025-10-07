@@ -290,15 +290,15 @@ export class InterimBillComponent implements OnInit {
         return;
       }
     } 
-    this.IPInterimBillForm.get('ipBillling.totalAmt')?.setValue(this.InterimFooterForm.get('TotalAmt')?.value)
-    this.IPInterimBillForm.get('ipBillling.concessionAmt')?.setValue(this.InterimFooterForm.get('concessionAmt')?.value)
-    this.IPInterimBillForm.get('ipBillling.netPayableAmt')?.setValue(this.InterimFooterForm.get('NetpayAmount')?.value)
-    this.IPInterimBillForm.get('ipBillling.paidAmt')?.setValue(this.InterimFooterForm.get('NetpayAmount')?.value)
+    this.IPInterimBillForm.get('ipBillling.totalAmt')?.setValue(formValue?.TotalAmt ?? 0)
+    this.IPInterimBillForm.get('ipBillling.concessionAmt')?.setValue(formValue?.concessionAmt || 0)
+    this.IPInterimBillForm.get('ipBillling.netPayableAmt')?.setValue(formValue?.NetpayAmount ?? 0)
+    this.IPInterimBillForm.get('ipBillling.paidAmt')?.setValue(formValue?.NetpayAmount ?? 0)
     this.IPInterimBillForm.get('ipBillling.billDate').setValue(formattedDate)
     this.IPInterimBillForm.get('ipBillling.billTime').setValue(FormattedDateTime)
-    this.IPInterimBillForm.get('ipBillling.concessionReasonId')?.setValue(this.InterimFooterForm.get('ConcessionId')?.value)
-    this.IPInterimBillForm.get('ipBillling.discComments')?.setValue(this.InterimFooterForm.get('Remark')?.value)
-    this.IPInterimBillForm.get('ipBillling.cashCounterId')?.setValue(this.InterimFooterForm.get('CashCounterID')?.value)
+    this.IPInterimBillForm.get('ipBillling.concessionReasonId')?.setValue(formValue?.ConcessionId || 0)
+    this.IPInterimBillForm.get('ipBillling.discComments')?.setValue(formValue?.Remark || '')
+    this.IPInterimBillForm.get('ipBillling.cashCounterId')?.setValue(formValue?.CashCounterID ?? 0)
 
 
     if (this.IPInterimBillForm.valid) {
@@ -319,8 +319,14 @@ export class InterimBillComponent implements OnInit {
         });
       }
       else if (this.InterimFooterForm.get('paymode').value == 'onlinepay') {
+        if(!(this.InterimFooterForm.get('UPINO')?.value)){
+           this.toastr.warning('Please enter upi no', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+        }
         this.IPInterimBillForm.get('payments.payTmamount')?.setValue(this.InterimFooterForm.get('NetpayAmount')?.value)
-        this.IPInterimBillForm.get('payments.payTmtranNo').setValue(this.InterimFooterForm.get('UPINO')?.value)
+        this.IPInterimBillForm.get('payments.payTmtranNo').setValue(this.InterimFooterForm.get('UPINO')?.value || 0)
         this.IPInterimBillForm.get('payments.payTmdate').setValue(formattedDate)
         this.IPInterimBillForm.get('payments.paymentDate').setValue(formattedDate)
         this.IPInterimBillForm.get('payments.paymentTime').setValue(FormattedDateTime)
@@ -334,14 +340,14 @@ export class InterimBillComponent implements OnInit {
       else if (this.InterimFooterForm.get('paymode').value == 'PayOption') {
         let PatientHeaderObj = {};
         PatientHeaderObj['Date'] = formattedDate
-        PatientHeaderObj['PatientName'] = this.selectedAdvanceObj.patientName;
-        PatientHeaderObj['RegNo'] = this.selectedAdvanceObj.regNo;
-        PatientHeaderObj['DoctorName'] = this.selectedAdvanceObj.doctorname;
-        PatientHeaderObj['CompanyName'] = this.selectedAdvanceObj.companyName;
-        PatientHeaderObj['DepartmentName'] = this.selectedAdvanceObj.departmentName;
-        PatientHeaderObj['OPD_IPD_Id'] = this.selectedAdvanceObj.admissionId;
-        PatientHeaderObj['Age'] = this.selectedAdvanceObj.ageYear;
-        PatientHeaderObj['NetPayAmount'] = this.InterimFooterForm.get('NetpayAmount').value
+        PatientHeaderObj['PatientName'] = this.selectedAdvanceObj?.patientName;
+        PatientHeaderObj['RegNo'] = this.selectedAdvanceObj?.regNo;
+        PatientHeaderObj['DoctorName'] = this.selectedAdvanceObj?.doctorname;
+        PatientHeaderObj['CompanyName'] = this.selectedAdvanceObj?.companyName;
+        PatientHeaderObj['DepartmentName'] = this.selectedAdvanceObj?.departmentName;
+        PatientHeaderObj['OPD_IPD_Id'] = this.selectedAdvanceObj?.admissionId;
+        PatientHeaderObj['Age'] = this.selectedAdvanceObj?.ageYear;
+        PatientHeaderObj['NetPayAmount'] = Math.round(this.InterimFooterForm.get('NetpayAmount')?.value)
         const dialogRef = this._matDialog.open(OpPaymentComponent,
           {
            maxWidth: "80vw",

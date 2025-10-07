@@ -318,7 +318,7 @@ export class IPBillingComponent implements OnInit {
             this.Serviceform.get("concessionAmount").setValue(0);
             this.Serviceform.get("concessionPercentage").setValue(0);
             this.isUpdating = false;
-            this.toastr.error("Enter discount % between 0-100");
+            this.toastr.warning("Enter discount % between 0-100");
             return;
         }
         let discPer = perControl.value;
@@ -431,8 +431,8 @@ export class IPBillingComponent implements OnInit {
             price: [item?.price, [this._FormvalidationserviceService.onlyNumberValidator()]],
             qty: [item?.Qty, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
             totalAmt: [item?.TotalAmt, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-            concessionPercentage: [item?.ConcessionPercentage, [Validators.min(0), Validators.max(100), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-            concessionAmount: [item?.DiscAmt, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            concessionPercentage: [item?.ConcessionPercentage || 0, [Validators.min(0), Validators.max(100), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            concessionAmount: [item?.DiscAmt || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
             netAmount: [item?.NetAmount, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
             doctorId: [item?.doctorId ?? 0],
             docPercentage: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -970,6 +970,7 @@ export class IPBillingComponent implements OnInit {
             this.isAdminDisabled = false;
             this.IpbillFooterform.get('AdminPer').reset();
             this.IpbillFooterform.get('AdminAmt').reset();
+            this.CalculateAdminCharge();
         }
     }
     //Admin calculation
@@ -1190,7 +1191,8 @@ export class IPBillingComponent implements OnInit {
         this.IPBillMyForm.get('bill.cashCounterId')?.setValue(this.IpbillFooterform.get('CashCounterID')?.value)
         this.IPBillMyForm.get('bill.totalAdvanceAmount')?.setValue(this.TotalAdvanceAmt)
         this.IPBillMyForm.get('bill.speTaxPer')?.setValue(this.IpbillFooterform.get('AdminPer').value || 0)
-        this.IPBillMyForm.get('bill.speTaxAmt')?.setValue(this.IpbillFooterform.get('AdminAmt').value)
+        this.IPBillMyForm.get('bill.speTaxAmt')?.setValue(this.IpbillFooterform.get('AdminAmt').value) 
+
 
         if (this.IPBillMyForm.valid && this.dataSource.data.length > 0) {
             if (this.IpbillFooterform.get('CreditBill').value || this.selectedAdvanceObj.companyId) {

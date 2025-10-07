@@ -292,14 +292,14 @@ calculateTotalAmount(): void {
 
       let PatientHeaderObj = {};
       PatientHeaderObj['Date'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
-      PatientHeaderObj['PatientName'] = this.selectedAdvanceObj.patientName;
-      PatientHeaderObj['RegNo'] = this.selectedAdvanceObj.regNo,
-      PatientHeaderObj['DoctorName'] = this.selectedAdvanceObj.doctorname;
-      PatientHeaderObj['CompanyName'] = this.selectedAdvanceObj.companyName;
-      PatientHeaderObj['DepartmentName'] = this.selectedAdvanceObj.departmentName;
-      PatientHeaderObj['OPD_IPD_Id'] = this.selectedAdvanceObj.admissionId;
-      PatientHeaderObj['Age'] = this.selectedAdvanceObj.ageYear;
-      PatientHeaderObj['NetPayAmount'] = this.RefundOfBillFormFooter.get('TotalRefundAmount').value || 0
+      PatientHeaderObj['PatientName'] = this.selectedAdvanceObj?.patientName;
+      PatientHeaderObj['RegNo'] = this.selectedAdvanceObj?.regNo,
+      PatientHeaderObj['DoctorName'] = this.selectedAdvanceObj?.doctorname;
+      PatientHeaderObj['CompanyName'] = this.selectedAdvanceObj?.companyName;
+      PatientHeaderObj['DepartmentName'] = this.selectedAdvanceObj?.departmentName;
+      PatientHeaderObj['OPD_IPD_Id'] = this.selectedAdvanceObj?.admissionId;
+      PatientHeaderObj['Age'] = this.selectedAdvanceObj?.ageYear;
+      PatientHeaderObj['NetPayAmount'] =Math.round(this.RefundOfBillFormFooter.get('TotalRefundAmount').value) || 0
 
       const dialogRef = this._matDialog.open(OpPaymentComponent,
         {
