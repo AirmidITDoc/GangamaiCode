@@ -11,15 +11,16 @@
             </div>
         </div>
     </div>
-    <div class="modal-body">
-        <div class="modal-body-container">
+    <mat-card style="padding: 8px;">
 
-            <mat-card style="padding: 8px;">
+        <div class="modal-body">
+            <div class="modal-body-container">
+
                 <form [formGroup]="_DischargeCancelService.DischargeForm">
 
                     <div fxLayout="column" fxLayoutAlign="start none" style="width: 100%;" fxLayoutGap="6px">
 
-                        <div fxlayout="row">
+                        <div fxlayout="row" style="padding: 20px;">
                             <div class="radio-container" style="padding: 15px;">
                                 <mat-radio-group formControlName="Op_ip_id" fxFlex="5%">
                                     <mat-radio-button value="1">IP</mat-radio-button>
@@ -154,16 +155,16 @@
 
                     </div>
                 </form>
-            </mat-card>
-            <mat-card style="padding: 15px;" *ngIf="!vCheckBox && vRegNo">
+
+                <!-- <mat-card style="padding: 15px;" *ngIf="!vCheckBox && vRegNo"> -->
 
                 <form [formGroup]="_DischargeCancelService.DischargeForm">
-                    <div fxLayout="row" fxLayoutGap="6px" style="margin-top: 10px;">
+                    <div fxLayout="row" fxLayoutGap="6px" style="padding: 50px;">
                         <!-- <app-common-date [screenFrom]="screenFromString" (dateTimeEventEmitter)="getDateTime($event)">
                         </app-common-date> -->
 
 
-                        <mat-form-field appearance="outline">
+                        <mat-form-field appearance="outline" fxFlex="47%">
                             <mat-label>Admission Date / Time</mat-label>
                             <input matInput type="datetime-local" placeholder="date" [value]="date" [(ngModel)]="date"
                                 (change)="date=$event.target.value" formControlName="AdmissionDate" />
@@ -173,26 +174,29 @@
                         </mat-form-field>
 
 
-                        <airmid-textbox label="New IPDNo" formControlName="NewIpdNo" fxFlex="25%"
+                        <airmid-textbox label="New IPDNo" formControlName="NewIpdNo" fxFlex="47%"
                             [formGroup]="_DischargeCancelService.DischargeForm" [value]="vIPDNo">
                         </airmid-textbox>
                     </div>
 
                 </form>
 
-            </mat-card>
-            <button *ngIf="!vCheckBox && vRegNo" class="btn btn-danger" (click)="AdmisssionCancel()"
-                style="color: white;margin-top: 10px;">Admission Cancel</button>
+
+                <button *ngIf="!vCheckBox && vRegNo" class="btn btn-danger" (click)="AdmisssionCancel()"
+                    style="color: white;margin-top: 10px;">Admission Cancel</button>
+            </div>
         </div>
-    </div>
 
-    <div class="modal-footer-buttons" fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="10px"
-        style="margin-top: 20px;">
+        <div class="modal-footer-buttons" fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="10px"
+            style="margin-top: 20px;">
 
-        <button *ngIf="vCheckBox" class="btn btn-primary" style="color: white;" (click)="DischargeCancel()">Discharge
-            Cancel</button>
-        <button *ngIf="!vCheckBox && vRegNo" class="btn btn-primary" (click)="OnAdmDateTimeUpdate()">Admission Detail
-            Update</button>
-        <button class="btn btn-danger-outline" (click)="onClear()">Clear</button>
-    </div>
+            <button *ngIf="vCheckBox" class="btn btn-primary" style="color: white;"
+                (click)="DischargeCancel()">Discharge
+                Cancel</button>
+            <button *ngIf="!vCheckBox && vRegNo" class="btn btn-primary" (click)="OnAdmDateTimeUpdate()">Admission
+                Detail
+                Update</button>
+            <button class="btn btn-danger-outline" (click)="onClear()">Clear</button>
+        </div>
+    </mat-card>
 </div>

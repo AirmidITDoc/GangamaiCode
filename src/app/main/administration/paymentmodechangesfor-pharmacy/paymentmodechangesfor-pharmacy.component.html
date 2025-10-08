@@ -31,7 +31,7 @@
                 <button class="btn btn-primary" (click)="OnUpdate(element,2)" matTooltip="Payment Date Update">
                     Date Update
                 </button>&nbsp;
-                <button class="btn btn-danger" (click)="onEdit(element)" matTooltip="Cancle Bill" style="color: white;">
+                <button class="btn btn-danger"   *ngIf="element.paidAmount > 0" (click)="onEdit(element)" matTooltip="Cancle Bill" style="color: white;">
                     Edit
                 </button>
             </div>

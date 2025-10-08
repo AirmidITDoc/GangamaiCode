@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { FormGroup, UntypedFormBuilder } from '@angular/forms';
 import { ApiCaller } from 'app/core/services/apiCaller';
+import { AuthenticationService } from 'app/core/services/authentication.service';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 
 @Injectable({
@@ -13,7 +14,7 @@ export class PaymentmodechangesforpharmacyService {
     paymentInsertform:FormGroup;
     constructor(
         private _httpClient: ApiCaller,
-        private _formBuilder: UntypedFormBuilder,
+        private _formBuilder: UntypedFormBuilder, private accountService: AuthenticationService,
         private _FormvalidationserviceService: FormvalidationserviceService
     ) 
     {       
@@ -85,7 +86,7 @@ export class PaymentmodechangesforpharmacyService {
         RefundId:'',
         TransactionType:'',
         Remark:'',
-        AddBy:'',
+        AddBy:0,
         IsCancelled:false,
         IsCancelledBy:0,
         IsCancelledDate:'1900-01-01',

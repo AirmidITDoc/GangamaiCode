@@ -450,7 +450,7 @@ export class PaymentChange {
   addBy: any
   chequeDate: any
   cardDate: any
-
+pBillNo:any
   constructor(PaymentChange) {
     {
       this.PayDate = PaymentChange.PayDate || 0;
@@ -500,6 +500,7 @@ export class PaymentChange {
       this.ChequeAmt = PaymentChange.ChequeAmt || 0;
       this.CardAmt = PaymentChange.CardAmt || 0;
       this.NeftPay = PaymentChange.NeftPay || 0;
+      this.pBillNo= PaymentChange.pBillNo || 0;
     }
   }
 

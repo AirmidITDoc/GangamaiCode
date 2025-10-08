@@ -30,6 +30,7 @@ export class RoleTemplateMasterComponent implements OnInit {
      allcolumns= [
         { heading: "Code", key: "roleId", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "Role Name", key: "roleName", sort: true, align: 'left', emptySign: 'NA' },
+         { heading: "IsActive", key: "isActive", sort: true, align: 'left', emptySign: 'NA' },
         {
             heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
                 {
@@ -40,7 +41,6 @@ export class RoleTemplateMasterComponent implements OnInit {
                 {
                     action: gridActions.delete, callback: (data: any) => {
                         this._RoleTemplateService.deactivateTheStatus(data.roleId).subscribe((response: any) => {
-                            this.toastr.success(response.message);
                             this.grid.bindGridData();
                         });
                     }

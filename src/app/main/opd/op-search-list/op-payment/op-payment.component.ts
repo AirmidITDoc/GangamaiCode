@@ -22,6 +22,25 @@ export class OpPaymentComponent implements OnInit {
   currentDate = new Date();
   patientDetailsFormGrp: FormGroup;
   selectedPaymnet1: string = '';
+   RegNo: any;
+  DoctorName: any;
+  CompanyName: any;
+  Date: any;
+  DepartmentName: any;
+  Age: any;
+  OPD_IPD_Id: any;
+  TariffName: any;
+  MultipleSettlement: boolean = false;
+  autocompleteModebank: string = "Bank";
+    netPayAmt: any = 0;
+  nowDate: Date;
+  amount1: number;
+  screenFromString = 'payment-form';
+  paidAmt: number;
+  balanceAmt: number = 0;
+  advanceData: any = {};
+  PatientName: any;
+  submitted: boolean = false;
   paymentArr1: any[] = this.opService.getPaymentArr();
   BindPaymentTypes() {
     // this.opService.getPaymentModes().subscribe((data) => {
@@ -87,15 +106,7 @@ export class OpPaymentComponent implements OnInit {
     'RegDate',
     'buttons'
   ];
-  netPayAmt: any = 0;
-  nowDate: Date;
-  amount1: number;
-  screenFromString = 'payment-form';
-  paidAmt: number;
-  balanceAmt: number = 0;
-  advanceData: any = {};
-  PatientName: any;
-  submitted: boolean = false;
+
   get f(): { [key: string]: AbstractControl } {
     return this.patientDetailsFormGrp.controls;
   }
@@ -170,16 +181,7 @@ export class OpPaymentComponent implements OnInit {
       }
     });
   }
-  RegNo: any;
-  DoctorName: any;
-  CompanyName: any;
-  Date: any;
-  DepartmentName: any;
-  Age: any;
-  OPD_IPD_Id: any;
-  TariffName: any;
-  MultipleSettlement: boolean = false;
-  autocompleteModebank: string = "Bank";
+ 
   constructor(
     private formBuilder: UntypedFormBuilder,
     private dialogRef: MatDialogRef<OpPaymentComponent>,
@@ -352,7 +354,8 @@ export class OpPaymentComponent implements OnInit {
     const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
 
     this.onAddPayment();
-    
+   
+
     if (this.balanceAmt != 0 && this.data?.FromName != 'OP-Bill') {
       Swal.fire('Please select payment mode, Balance Amount is' + this.balanceAmt)
       return

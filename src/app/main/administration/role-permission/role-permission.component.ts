@@ -139,9 +139,7 @@ export class RolePermissionComponent implements OnInit {
     onSubmit() {
         var data = this.dataSource["_flattenedData"].value.map(obj => ({ ...obj, RoleId: this.roleId }));
         this._RoleTemplateService.savePermission(data).subscribe((Menu) => {
-            this.toastr.success('Permission updated Successfully.', 'updated !', {
-                toastClass: 'tostr-tost custom-toast-success',
-            });
+           this.dialogRef.close()
         });
     }
 

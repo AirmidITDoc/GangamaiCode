@@ -41,10 +41,7 @@ export class NewRoletemplateComponent implements OnInit {
         console.log("JSON :-",this.myform.value)
 
             this._RoleTemplateService.roleMasterSave(this.myform.value).subscribe((response) => {
-              this.toastr.success(response.message);
               this.onClear(true);
-            }, (error) => {
-              this.toastr.error(error.message);
             });
         }
         else

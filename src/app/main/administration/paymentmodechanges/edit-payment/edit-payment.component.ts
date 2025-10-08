@@ -90,7 +90,11 @@ export class EditPaymentComponent implements OnInit {
       this.vnetPayAmt = this.registerObj.paidAmount;
       this.vbalanceAmt = this.registerObj.paidAmount;
       this.vPaidAmount = this.registerObj.paidAmount;
-      this.vBillNo=this.registerObj.billNo;
+      this.vBillNo=this.registerObj.billNo || 0;
+      
+// pBillNo advanceId
+
+
     }
 
     if (this.registerObj.cashPayAmount > 0) {
@@ -246,7 +250,7 @@ export class EditPaymentComponent implements OnInit {
       this._Paymentmodesevice.paymentInsertform.get('RefundId').setValue(this.registerObj.refundId || 0)
       this._Paymentmodesevice.paymentInsertform.get('TransactionType').setValue(this.registerObj.transactionType || 0)
       this._Paymentmodesevice.paymentInsertform.get('Remark').setValue(this.registerObj.remark || '')
-      this._Paymentmodesevice.paymentInsertform.get('AddBy').setValue(this.registerObj.addBy || 0)
+      this._Paymentmodesevice.paymentInsertform.get('AddBy').setValue(this.accountService.currentUserValue.userId || 0)
       this._Paymentmodesevice.paymentInsertform.get('NeftbankMaster').setValue( NFTBank || "")
       this._Paymentmodesevice.paymentInsertform.get('ChequeNo').setValue( this._Paymentmodesevice.paymentInsertform.get('ChequeNo').value || "")
       this._Paymentmodesevice.paymentInsertform.get('CardNo').setValue( this._Paymentmodesevice.paymentInsertform.get('CardNo').value || "")
@@ -349,7 +353,7 @@ export class EditPaymentComponent implements OnInit {
       this._Paymentmodesevice.paymentInsertform.get('RefundId').setValue(this.registerObj.refundId || 0)
       this._Paymentmodesevice.paymentInsertform.get('TransactionType').setValue(this.registerObj.transactionType || 0)
       this._Paymentmodesevice.paymentInsertform.get('Remark').setValue(this.registerObj.remark || '')
-      this._Paymentmodesevice.paymentInsertform.get('AddBy').setValue(this.registerObj.addBy || 0)
+      this._Paymentmodesevice.paymentInsertform.get('AddBy').setValue(this.accountService.currentUserValue.userId|| 0)
       this._Paymentmodesevice.paymentInsertform.get('NeftbankMaster').setValue( NFTBank || "")
       this._Paymentmodesevice.paymentInsertform.get('ChequeNo').setValue( this._Paymentmodesevice.paymentInsertform.get('ChequeNo').value || "")
       this._Paymentmodesevice.paymentInsertform.get('CardNo').setValue( this._Paymentmodesevice.paymentInsertform.get('CardNo').value || "")

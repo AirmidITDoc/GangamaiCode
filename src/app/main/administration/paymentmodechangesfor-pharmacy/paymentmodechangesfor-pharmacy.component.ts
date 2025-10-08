@@ -227,7 +227,7 @@ export class PaymentmodechangesforPharmacyComponent implements OnInit {
   getfilter() {
     debugger
     this.gridConfigIpPhy = {
-      apiUrl: "Administration/BrowseIPAdvPayPharReceiptList1",
+      apiUrl: "Administration/c",
       columnsList: this.allColumns1,
       sortField: "PaymentId",
       sortOrder: 0,

@@ -87,7 +87,7 @@ export class EditPaymentmodeComponent implements OnInit {
       this.vnetPayAmt = this.registerObj.paidAmount;
       this.vbalanceAmt = this.registerObj.paidAmount;
       this.vPaidAmount = this.registerObj.paidAmount;
-      this.vBillNo=this.registerObj.billNo;
+      this.vBillNo=this.registerObj.billNo || 0
     }
 
     if (this.registerObj.cashPayAmount > 0) {
