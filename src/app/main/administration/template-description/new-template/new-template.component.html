@@ -23,25 +23,19 @@
     <div class="modal-body content">
         <div fxLayout="column" class="gap-8 h-100-p">
             <div class="modal-card-container">
-                <form [formGroup]="templateForm">
+                <form [formGroup]="TemplateSaveForm">
                     <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
 
-                        <!-- <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                            <airmid-dropdown label="Department Name" formControlName="DepartmentId"
-                                [formGroup]="templateForm" [validations]="getValidationMessages().DepartmentId"
-                                [mode]="autocompleteModeDepartment" (selectionChange)="selectChangedepartment($event)">
-                            </airmid-dropdown>
-                        </div> -->
-
                         <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                            <airmid-dropdown label="Category" formControlName="CategoryId" [formGroup]="templateForm"
-                                [validations]="getValidationMessages().CategoryId" [mode]="autocompleteModeTemplateCat"
-                                (selectionChange)="selectChangedepartment($event)">
+                            <airmid-dropdown label="Category" formControlName="categoryId"
+                                [formGroup]="TemplateSaveForm" [validations]="getValidationMessages().CategoryId"
+                                [mode]="autocompleteModeTemplateCat" (selectionChange)="selectChangeTemplate($event)">
                             </airmid-dropdown>
                         </div>
 
-                        <airmid-textbox label="Template Name" formControlName="templateName" [formGroup]="templateForm"
-                            [validations]="getValidationMessages().templateName" fxFlex [(ngModel)]="vTemplateName">
+                        <airmid-textbox label="Template Name" formControlName="templateName"
+                            [formGroup]="TemplateSaveForm" [validations]="getValidationMessages().templateName" fxFlex
+                            [(ngModel)]="vTemplateName">
                         </airmid-textbox>
                     </div>
 
@@ -53,25 +47,17 @@
                         <mat-slide-toggle name="isTemplateHeaderWithImage" formControlName="isTemplateHeaderWithImage">
                             isTemplateHeaderWithImage
                         </mat-slide-toggle>
-
-                        <!-- <mat-slide-toggle name="isTemplateWithFooter" (change)="()" formControlName="isTemplateWithFooter">
-                        isTemplateWithFooter
-                    </mat-slide-toggle>
-                    
-                    <mat-slide-toggle name="isTemplateFooterWithImage" (change)="()" formControlName="isTemplateFooterWithImage">
-                        isTemplateFooterWithImage
-                    </mat-slide-toggle> -->
                     </div>
 
                     <mat-card fxLayout="column" style="padding: 5px; margin-top: 10px;"
-                        *ngIf="templateForm.get('isTemplateHeaderWithImage')?.value">
+                        *ngIf="TemplateSaveForm.get('isTemplateHeaderWithImage')?.value">
                         <div class="consultunt-title">
                             <span style="font-weight: 700;">
                                 Upload Image
                             </span>
                         </div>
-                        <div *ngIf="templateForm.get('isTemplateHeaderWithImage')?.value" class="mt-2" fxLayout="row"
-                            fxLayoutAlign="start center" fxLayoutGap="10px">
+                        <div *ngIf="TemplateSaveForm.get('isTemplateHeaderWithImage')?.value" class="mt-2"
+                            fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
                             <button mat-raised-button color="primary" (click)="fileInput.click()">Select Image</button>
                             <input type="file" #fileInput accept="image/*" style="display: none" id="fileInput"
                                 (change)="onFileSelected($event)" />
@@ -87,58 +73,34 @@
                 </form>
             </div>
 
-            <!-- <div class="modal-card-container">
-                <form [formGroup]="templateForm">
-
-                    <div fxFlexFill fxLayout="row" fxLayout.gt-xs="column" fxLayoutGap="6px">
-                        <div class="modal-card-header">
-                            <span style="font-weight: bold;">Template Header</span>
-                        </div>
-                        <airmid-editor formControlName="Templateheader" [formGroup]="templateForm"
-                            (valueChange)="onEditorValueChange($event)">
-                        </airmid-editor>
-                    </div>
-                </form>
-            </div> -->
             <div class="modal-card-container">
-                <form [formGroup]="templateForm">
+                <form [formGroup]="TemplateSaveForm">
 
                     <div fxFlexFill fxLayout="row" fxLayout.gt-xs="column" fxLayoutGap="6px">
                         <div class="modal-card-header">
                             <span style="font-weight: bold;">Template Content</span>
                         </div>
-                        <airmid-editor formControlName="TemplateContent" [formGroup]="templateForm"
+                        <airmid-editor formControlName="templateDescription" [formGroup]="TemplateSaveForm"
                             (valueChange)="onEditorValueChange($event)">
                         </airmid-editor>
                     </div>
                 </form>
             </div>
-            <!-- <div class="modal-card-container">
-                <form [formGroup]="templateForm">
 
-                    <div fxFlexFill fxLayout="row" fxLayout.gt-xs="column" fxLayoutGap="6px">
-                        <div class="modal-card-header">
-                            <span style="font-weight: bold;">Template Footer</span>
-                        </div>
-                        <airmid-editor formControlName="TemplateFooter" [formGroup]="templateForm"
-                            (valueChange)="onEditorValueChange($event)">
-                        </airmid-editor>
-                    </div>
-                </form>
-            </div> -->
         </div>
 
     </div>
+
     <div class="modal-footer" fxLayout="row" fxLayoutAlign="space-between">
-        <form [formGroup]="templateForm">
+        <form [formGroup]="TemplateSaveForm">
             <div>
-                <app-airmid-slider label="IsActive/Deactive" formControlName="isActive"
-                    [formGroup]="templateForm"></app-airmid-slider>
+                <!-- <app-airmid-slider label="IsActive/Deactive" formControlName="isActive"
+                    [formGroup]="TemplateSaveForm"></app-airmid-slider> -->
             </div>
         </form>
         <div class="modal-footer-buttons">
             <button class="btn btn-danger-outline" (click)="onClear()">Close</button>
-            <button class="btn btn-primary" (click)="onSubmit()" [disabled]="templateForm.invalid">Save</button>
+            <button class="btn btn-primary" (click)="onSubmit()">Save</button>
         </div>
     </div>
 

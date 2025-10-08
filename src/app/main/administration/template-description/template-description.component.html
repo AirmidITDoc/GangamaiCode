@@ -19,20 +19,29 @@
     <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
         <airmid-table [gridConfig]="gridConfig" class="content">
             <ng-container filters>
-                <mat-form-field appearance="outline" fxFlex>
-                    <mat-label>Template Name</mat-label>
-                    <input matInput placeholder="Search Template Name" autocomplete="off"
-                        [(ngModel)]="gridConfig.filters[0].fieldValue" />
-                    <button matSuffix mat-icon-button aria-label="Clear" (click)="gridConfig.filters[0].fieldValue=''">
-                        <mat-icon>close</mat-icon>
-                    </button>
-                </mat-form-field>
+                <form [formGroup]="myformSearch" fxLayout="column">
+                    <mat-form-field appearance="outline" fxFlex>
+                        <mat-label>Template Name</mat-label>
+                        <input matInput placeholder="Search Template Name" autocomplete="off"
+                            [(ngModel)]="gridConfig.filters[0].fieldValue" formControlName="templateName" />
+                        <button matSuffix mat-icon-button aria-label="Clear"
+                            (click)="gridConfig.filters[0].fieldValue=''">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </mat-form-field>
 
-                <mat-radio-group name="IsActive" [(ngModel)]="gridConfig.filters[1].fieldValue">
-                    <mat-radio-button value="2">All</mat-radio-button>
-                    <mat-radio-button value='1'>Active</mat-radio-button>
-                    <mat-radio-button value='0'>Deactive</mat-radio-button>
-                </mat-radio-group>
+                    <!-- <airmid-dropdown label="Category" formControlName="categoryId" [formGroup]="myformSearch"
+                        [(ngModel)]="gridConfig.filters[1].fieldValue" [mode]="autocompleteModeTemplateCat"
+                        >
+                    </airmid-dropdown> -->
+
+                    <mat-radio-group name="IsActive" [(ngModel)]="gridConfig.filters[1].fieldValue"
+                        formControlName="isActive">
+                        <!-- <mat-radio-button value="2">All</mat-radio-button> -->
+                        <mat-radio-button value='1'>Active</mat-radio-button>
+                        <mat-radio-button value='0'>Deactive</mat-radio-button>
+                    </mat-radio-group>
+                </form>
             </ng-container>
         </airmid-table>
     </div>

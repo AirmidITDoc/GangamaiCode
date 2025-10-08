@@ -7,6 +7,7 @@ import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/air
 import { ToastrService } from 'ngx-toastr';
 import { NewTemplateComponent } from './new-template/new-template.component';
 import { TemplatedescriptionService } from './templatedescription.service';
+import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 
 @Component({
     selector: 'app-template-description',
@@ -17,12 +18,16 @@ import { TemplatedescriptionService } from './templatedescription.service';
 })
 export class TemplateDescriptionComponent implements OnInit {
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+    autocompleteModeTemplateCat: string = "TemplateDescCategory";
+    categoryid = ""
+    myformSearch: FormGroup;
 
     gridConfig: gridModel = {
-        apiUrl: "Administration/BrowseReportTemplateConfigList",
+        apiUrl: "TemplateDescriptionConfig/List",
         columnsList: [
             { heading: "Code", key: "templateId", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "TemplateName", key: "templateName", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Template Name", key: "templateName", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Category Name", key: "categoryName", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
             {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
@@ -43,15 +48,19 @@ export class TemplateDescriptionComponent implements OnInit {
         sortOrder: 0,
         filters: [
             { fieldName: "TemplateName", fieldValue: "", opType: OperatorComparer.Contains },
-            { fieldName: "IsActive", fieldValue: "2", opType: OperatorComparer.Contains }
+            // { fieldName: "CategoryId", fieldValue: "", opType: OperatorComparer.Equals },
+            { fieldName: "IsActive", fieldValue: "1", opType: OperatorComparer.Contains }
         ]
     }
 
     constructor(public _TemplatedescriptionService: TemplatedescriptionService,
         public _matDialog: MatDialog,
+        private _formBuilder: UntypedFormBuilder,
         public toastr: ToastrService,) { }
 
-    ngOnInit(): void { }
+    ngOnInit(): void {
+        this.myformSearch=this.filterForm();
+     }
 
     onEdit(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
@@ -85,4 +94,23 @@ export class TemplateDescriptionComponent implements OnInit {
         });
     }
 
+    selectChangeTemplate(value) {
+        console.log(value)
+        if (value.value !== 0)
+            this.categoryid = value.value
+        else
+            this.categoryid = "0"
+    }
+
+    filterForm(): FormGroup {
+        return this._formBuilder.group({
+            isActive: '1',
+            templateName: ['', [
+                Validators.maxLength(50),
+                Validators.pattern("^[A-Za-z / () ]*$")
+
+            ]],
+            categoryId: [0]
+        });
+    }
 }

@@ -317,7 +317,7 @@ export class ServiceMasterFormComponent implements OnInit {
                             maxWidth: "50vw",
                             maxHeight: '50%',
                             width: '70%',
-                            data: { context: 'new' }
+                            // data: { context: 'new' }
                         });
                     dialogRef.afterClosed().subscribe(result => {
 

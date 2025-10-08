@@ -14,11 +14,12 @@ import { FormvalidationserviceService } from 'app/main/shared/services/formvalid
   animations: fuseAnimations,
 })
 export class NewTemplateComponent implements OnInit {
-  templateForm: FormGroup;
+
   TemplateSaveForm: FormGroup;
   vTemplateDesc: any;
   vTemplateName: any;
   templateId = 0;
+  categoryName: any;
   autocompleteModeTemplateCat: string = "TemplateDescCategory";
 
   constructor(
@@ -30,23 +31,24 @@ export class NewTemplateComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.templateForm = this.createRadiologytemplateForm();
-    this.templateForm.markAllAsTouched();
+
     this.TemplateSaveForm = this.createSaveTemplateForm();
+    this.TemplateSaveForm.markAllAsTouched();
+
     if (this.data?.templateId > 0) {
       console.log(this.data)
       this.templateId = this.data.templateId
       this.vTemplateName = this.data.templateName
       this.vTemplateDesc = this.data.templateDescription
-      this.templateForm.get('DepartmentId')?.setValue(this.data.departmentId);
-      this.templateForm.get('CategoryId')?.setValue(this.data.categoryName);
-      this.templateForm.get('isTemplateWithHeader')?.setValue(this.data.isTemplateWithHeader);
-      this.templateForm.get('isTemplateHeaderWithImage')?.setValue(this.data.isTemplateHeaderWithImage);
-      this.templateForm.get('TemplateContent')?.setValue(this.data.templateDescription);
-      this.templateForm.patchValue(this.data);
+      // this.TemplateSaveForm.get('CategoryId')?.setValue(this.data.categoryName);
+      this.categoryName=this.data.categoryName
+      this.TemplateSaveForm.get('isTemplateWithHeader')?.setValue(this.data.isTemplateWithHeader);
+      this.TemplateSaveForm.get('isTemplateHeaderWithImage')?.setValue(this.data.isTemplateHeaderWithImage);
+      this.TemplateSaveForm.get('templateDescription')?.setValue(this.data.templateDescription);
+      this.TemplateSaveForm.patchValue(this.data);
     }
 
-    this.templateForm.get('isTemplateHeaderWithImage')?.valueChanges.subscribe((value: boolean) => {
+    this.TemplateSaveForm.get('isTemplateHeaderWithImage')?.valueChanges.subscribe((value: boolean) => {
       if (!value) {
         // Clear file selection when toggle is turned OFF
         this.selectedFileName = null;
@@ -61,39 +63,18 @@ export class NewTemplateComponent implements OnInit {
     });
   }
   onEditorValueChange(content: string) {
-    this.templateForm.get('TemplateContent')?.setValue(content);
-  }
-  createRadiologytemplateForm(): FormGroup {
-    return this._formBuilder.group({
-      templateId: [0],
-      DepartmentId: [0],
-      CategoryId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      templateName: ['', [Validators.required]],
-      templateDesc: this.vTemplateDesc,
-      isActive: [true],
-      TemplateContent: ['', [Validators.required]],
-      Templateheader: [''],
-      TemplateFooter: [''],
-      isTemplateWithHeader: [false],
-      isTemplateHeaderWithImage: [false],
-      isTemplateWithFooter: [false],
-      isTemplateFooterWithImage: [false]
-    });
+    this.TemplateSaveForm.get('templateDescription')?.setValue(content);
   }
 
   createSaveTemplateForm() {
     return this._formBuilder.group({
       templateId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       templateName: ['', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
-      templateDescription: [''],
-      departmentId: [0],
-      categoryName: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      templateHeader: ['string'],
-      templateFooter: ['string'],
+      templateDescription: ['', Validators.required],
+      categoryId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      categoryName: ['', [Validators.required]],
       isTemplateWithHeader: [false],
       isTemplateHeaderWithImage: [false],
-      isTemplateWithFooter: [false],
-      isTemplateFooterWithImage: [false]
     })
   }
 
@@ -115,24 +96,9 @@ export class NewTemplateComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log(this.templateForm.value)
-    const formValue = this.templateForm.getRawValue();
-    this.TemplateSaveForm.patchValue({
-      templateId: formValue?.templateId,
-      templateName: formValue?.templateName,
-      templateDescription: formValue?.TemplateContent,
-      categoryName: formValue?.CategoryId,
-      // templateHeader: this.selectedImage,
-      // templateFooter: formValue?.TemplateFooter,
-      isTemplateWithHeader: formValue?.isTemplateWithHeader,
-      isTemplateHeaderWithImage: formValue?.isTemplateHeaderWithImage,
-      // isTemplateWithFooter: formValue?.isTemplateWithFooter,
-      // isTemplateFooterWithImage: formValue?.isTemplateFooterWithImage,
-    })
-
+    this.TemplateSaveForm.patchValue({ templateId: this.templateId, categoryName: this.categoryName });
     if (this.TemplateSaveForm.valid) {
 
-      this.TemplateSaveForm.patchValue({ templateId: this.templateId });
       console.log('json mdata:', this.TemplateSaveForm.value);
       this._TemplatedescriptionService.TemplateSave(this.TemplateSaveForm.value).subscribe((response) => {
         this.onClose();
@@ -151,16 +117,16 @@ export class NewTemplateComponent implements OnInit {
   }
   onClose() {
     this.templateId = 0;
-    this.templateForm.reset();
+    this.TemplateSaveForm.reset();
     this.dialogRef.close();
   }
   onClear() {
-    this.templateForm.reset();
+    this.TemplateSaveForm.reset();
     this.dialogRef.close();
   }
-  selectChangedepartment(obj: any) {
+  selectChangeTemplate(obj: any) {
     if (obj.value) {
-      console.log(obj)
+      this.categoryName = obj.text
     }
   }
 

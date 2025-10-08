@@ -65,12 +65,12 @@ export class TemplatedescriptionService {
     public TemplateSave(Param: any) {
         debugger
         if (Param.templateId) {
-            return this._httpClient.PutData("Administration/TemplateUpdate" + Param.templateId, Param);
-        } else return this._httpClient.PostData("Administration/TemplateInsert", Param);
+            return this._httpClient.PutData("TemplateDescriptionConfig/Update" + Param.templateId, Param);
+        } else return this._httpClient.PostData("TemplateDescriptionConfig/Insert", Param);
     }
 
     public deactivateTheStatus(m_data) {
-        return this._httpClient.DeleteData("Administration?Id=" + m_data.toString());
+        return this._httpClient.DeleteData("TemplateDescriptionConfig?Id=" + m_data.toString());
     }
 
 }
