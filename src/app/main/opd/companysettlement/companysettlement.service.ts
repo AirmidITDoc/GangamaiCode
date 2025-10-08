@@ -4,24 +4,23 @@ import { ApiCaller } from 'app/core/services/apiCaller';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class CompanysettlementService {
 
     myformSearch: FormGroup;
     myform: FormGroup;
 
-    constructor(private _httpClient: ApiCaller,private accountService: AuthenticationService,
-    private _formBuilder: UntypedFormBuilder) 
-    {
+    constructor(private _httpClient: ApiCaller, private accountService: AuthenticationService,
+        private _formBuilder: UntypedFormBuilder) {
         this.myformSearch = this.createSearchForm();
-        this.myform = this.createForm(); 
+        this.myform = this.createForm();
     }
-   
+
 
     createForm(): FormGroup {
         return this._formBuilder.group({
-            
+
             companyName: [""],
             patientType: [""],
             billDate: [""],
@@ -55,21 +54,21 @@ export class CompanysettlementService {
             // isActive:[true,[Validators.required]],
         });
     }
-    
+
     createSearchForm(): FormGroup {
         return this._formBuilder.group({
             StoreNameSearch: [""],
             IsDeletedSearch: ["2"],
         });
     }
-    
+
     initializeFormGroup() {
         this.createForm();
     }
 
     public InsertOPBillingsettlement(Param) {
-      return this._httpClient.PostData("OPSettlement/SettlementInsert", Param);
-      
+        return this._httpClient.PostData("OPSettlement/SettlementInsert", Param);
+
     }
 
     public deactivateTheStatus(m_data) {
@@ -85,4 +84,7 @@ export class CompanysettlementService {
         return this._httpClient.PostData("OutPatient/RegistrationInsert", m_data);
     }
 
+    public getmultiplePayList(param) {
+        return this._httpClient.PostData("OPBill/BrowseOPPaymentList", param);
+    }
 }

@@ -14,6 +14,10 @@ import { CompanysettlementService } from './companysettlement.service';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { DiscountAfterFinalBillComponent } from 'app/main/ipd/ip-search-list/discount-after-final-bill/discount-after-final-bill.component';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
+import { SelectionModel } from '@angular/cdk/collections';
 
 @Component({
     selector: 'app-companysettlement',
@@ -45,6 +49,24 @@ export class CompanysettlementComponent implements OnInit {
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     @ViewChild('actionsTemplate') actionsTemplate!: TemplateRef<any>;
     @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
+
+    displayedColumns = [
+        'CheckBox',
+        'BillDate',
+        'PBillNo',
+        'uhid',
+        'patientName',
+        'BillAmount',
+        'ConsessionAmt',
+        'NetAmount',
+        'PaidAmount',
+        'balAmount',
+        'companyName',
+        'action',
+    ];
+    vNetAmount: any = 0;
+    vPaidAmount: any = 0;
+    vBalanceAmount: any = 0;
 
     ngAfterViewInit() {
         this.gridConfig.columnsList.find(col => col.key === 'companyId')!.template = this.actionsTemplate;
@@ -109,6 +131,8 @@ export class CompanysettlementComponent implements OnInit {
         this.searchFormGroup = this.createSearchForm();
         this.OpSettlementForm = this.CreateOPSettlementForm();
         this.OPMultipleSettlForm = this.CreateOPMultiplpeSettlForm();
+
+        this.getmultiplePaymentList();
     }
     createSearchForm() {
         return this.formBuilder.group({
@@ -124,11 +148,16 @@ export class CompanysettlementComponent implements OnInit {
             LastName: ['', [Validators.maxLength(50),
             Validators.pattern("^[A-Za-z0-9 () ] *[a-zA-Z0-9 () ]*[0-9 ]*$"),
             ]],
-            fromDate: [(new Date()).toISOString()],
-            enddate: [(new Date()).toISOString()],
+            fromDate: [],
+            enddate: [],
             PBillNo: '',
             RegNo: '',
-            CompanyId: 0
+            CompanyId: 0,
+            RegId: 0,
+
+            NetAmount: [''],
+            PaidAmount: [''],
+            BalanceAmount: ['']
         });
     }
     OpSettlementForm: FormGroup
@@ -168,7 +197,7 @@ export class CompanysettlementComponent implements OnInit {
                 tdsamount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
                 unitId: [this.accountService.currentUserValue.user.unitId, [this._FormvalidationserviceService.onlyNumberValidator()]],
                 wfamount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
- 
+
             }),
             //bill update 
             billUpdate: this.formBuilder.group({
@@ -179,8 +208,11 @@ export class CompanysettlementComponent implements OnInit {
     }
     getSelectedObj(obj) {
         this.RegId1 = obj.value;
+        this.regNo = obj.regNo
         this.registerObj = obj
         this.GetDetails(obj.value)
+
+        this.getmultiplePaymentList();
     }
     openPaymentpopup(contact) {
         let PatientHeaderObj = {};
@@ -324,21 +356,243 @@ export class CompanysettlementComponent implements OnInit {
         }
     }
 
-         getFinalDisc(contact){ 
-            const dialogRef = this._matDialog.open(DiscountAfterFinalBillComponent,
-              {
+    getFinalDisc(contact) {
+        const dialogRef = this._matDialog.open(DiscountAfterFinalBillComponent,
+            {
                 maxWidth: "100%",
                 height: '65%',
                 width: '45%',
                 data: {
-                Obj:contact,
-                PatientObj:this.registerObj
+                    Obj: contact,
+                    PatientObj: this.registerObj
                 }
-                
-              });
-            dialogRef.afterClosed().subscribe(result => {
-              console.log('The dialog was closed - Insert Action', result);
-                this.grid.bindGridData();
             });
-          } 
+        dialogRef.afterClosed().subscribe(result => {
+            console.log('The dialog was closed - Insert Action', result);
+            this.grid.bindGridData();
+        });
+    }
+
+    dsMultiplepayList = new MatTableDataSource<MultiplePayList>();
+    @ViewChild(MatSort) sort: MatSort;
+    @ViewChild('paginator', { static: true }) public paginator: MatPaginator;
+    getmultiplePaymentList() {
+        let fromDate = this.OPMultipleSettlForm.get("fromDate").value || "";
+        let toDate = this.OPMultipleSettlForm.get("enddate").value || "";
+        fromDate = fromDate ? this.datePipe.transform(fromDate, "yyyy-MM-dd") : "";
+        toDate = toDate ? this.datePipe.transform(toDate, "yyyy-MM-dd") : "";
+        var vdata = {
+            "first": 0,
+            "rows": 10,
+            "sortField": "RegNo",
+            "sortOrder": 0,
+            "filters": [
+                {
+                    "fieldName": "F_Name",
+                    "fieldValue": "%",
+                    "opType": "Equals"
+                },
+                {
+                    "fieldName": "L_Name",
+                    "fieldValue": "%",
+                    "opType": "Equals"
+                },
+                {
+                    "fieldName": "From_Dt",
+                    "fieldValue": fromDate, //"2024-01-01",
+                    "opType": "StartsWith"
+                },
+                {
+                    "fieldName": "To_Dt",
+                    "fieldValue": toDate, //"2025-01-01",
+                    "opType": "StartsWith"
+                },
+                {
+                    "fieldName": "Reg_No",
+                    "fieldValue": this.regNo, //"1",
+                    "opType": "Contains"
+                },
+                {
+                    "fieldName": "PBillNo",
+                    "fieldValue": "0",
+                    "opType": "Contains"
+                },
+                {
+                    "fieldName": "ReceiptNo",
+                    "fieldValue": "0",
+                    "opType": "Contains"
+                }
+            ],
+            "exportType": "JSON",
+            "columns": []
+        }
+        console.log(vdata)
+        this._CompanysettlementService.getmultiplePayList(vdata).subscribe((data) => {
+            this.dsMultiplepayList.data = data.data as MultiplePayList[];
+            console.log(this.dsMultiplepayList.data)
+            this.dsMultiplepayList.sort = this.sort;
+            this.dsMultiplepayList.paginator = this.paginator;
+        });
+    }
+
+    onClear() {
+
+    }
+
+    selection = new SelectionModel<MultiplePayList>(true, []);
+    SelectedList: any = [];
+    masterToggle() {
+        debugger
+        // if there is a selection then clear that selection
+        // if (this.OPMultipleSettlForm.get('Status').value == 1) {
+        //     this.toastr.warning('Please select unpaid list', 'Warning !', {
+        //         toastClass: 'tostr-tost custom-toast-warning',
+        //     });
+        //     return;
+        // }
+        // if (!this.OPMultipleSettlForm.get('SupplierId').value) {
+        //     this.toastr.warning('Please select supplier Name', 'Warning !', {
+        //         toastClass: 'tostr-tost custom-toast-warning',
+        //     });
+        //     return;
+        // }
+        // if (this.OPMultipleSettlForm.get('SupplierId').value) {
+        //     if (!this.filteredSupplier.some(item => item.SupplierId == this.OPMultipleSettlForm.get('SupplierId').value.SupplierId)) {
+        //         this.toastr.warning('Please select valid supplier Name', 'Warning !', {
+        //             toastClass: 'tostr-tost custom-toast-warning',
+        //         });
+        //         return;
+        //     }
+        // }
+        if (this.isSomeSelected()) {
+            this.vNetAmount = 0;
+            this.vPaidAmount = 0;
+            this.vBalanceAmount = 0;
+            this.selection.clear();
+            this.SelectedList = [];
+        } else {
+            this.isAllSelected()
+                ? this.selection.clear()
+                : this.dsMultiplepayList.data.forEach(row => this.selection.select(row));
+
+            this.dsMultiplepayList.data.forEach(element => {
+                console.log(element)
+                this.vNetAmount += element.netAmount
+                this.vPaidAmount += element.paidAmount
+                this.vBalanceAmount += element.balanceAmt
+                this.SelectedList.push(element)
+            })
+        }
+        this.SelectedList.push(this.selection.selected);
+        console.log(this.SelectedList)
+    }
+
+    isAllSelected() {
+        const numSelected = this.selection.selected.length;
+        const numRows = this.dsMultiplepayList.data.length;
+
+        return numSelected === numRows;
+    }
+    isSomeSelected() {
+        return this.selection.selected.length > 0;
+    }
+
+    OnSelectPayment(event, element) {
+        debugger
+        if (event.checked) {
+            if (this.SelectedList.length > 0) {
+                // if (!this.SelectedList.some(item => item.supplierName == element.supplierName)) {
+                //     this.toastr.warning('Please select same supplier Name', 'Warning !', {
+                //         toastClass: 'tostr-tost custom-toast-warning',
+                //     });
+                //     this.SelectedList = [];
+                //     this.selection.clear()
+                //     this.getmultiplePaymentList();
+                //     this.OPMultipleSettlForm.patchValue({
+                //         NetAmount: '',
+                //         PaidAmount: '',
+                //         BalanceAmount: ''
+                //     });
+                //     this.vNetAmount = 0;
+                //     this.vPaidAmount = 0;
+                //     this.vBalanceAmount = 0;
+                //     return;
+                // }
+                this.SelectedList.push(element)
+            } else {
+                this.SelectedList.push(element)
+            }
+
+            this.vNetAmount = this.roundAmount(this.vNetAmount + element.netAmount);
+            this.vPaidAmount = this.roundAmount(this.vPaidAmount + element.paidAmount);
+            this.vBalanceAmount = this.roundAmount(this.vBalanceAmount + element.balAmount);
+        }
+        else {
+            let index = this.SelectedList.indexOf(element);
+            if (index >= 0) {
+                this.SelectedList.splice(index, 1);
+            }
+
+            this.vNetAmount = this.roundAmount(
+                this.SelectedList.reduce((sum, x) => sum + x.netAmount, 0)
+            );
+            this.vPaidAmount = this.roundAmount(
+                this.SelectedList.reduce((sum, x) => sum + x.paidAmount, 0)
+            );
+            this.vBalanceAmount = this.roundAmount(
+                this.SelectedList.reduce((sum, x) => sum + x.balAmount, 0)
+            );
+
+        }
+        console.log(this.SelectedList)
+    }
+    roundAmount(value: number, decimals: number = 1): number {
+        return Math.round(value * Math.pow(10, decimals)) / Math.pow(10, decimals);
+    }
+
+    opMulSettFormReset() {
+        this.regNo = "0"
+    }
+
+    OnReset() {
+        this.vNetAmount = 0;
+        this.vPaidAmount = 0;
+        this.vBalanceAmount = 0;
+        this.SelectedList = [];
+        this.selection.clear();
+    }
+
+    OnSave() {
+
+    }
+}
+
+export class MultiplePayList {
+    billDate: any;
+    pBillNo: string;
+    totalAmt: number;
+    concessionAmt: number;
+    netPayableAmt: any;
+    paidAmount: any;
+    balanceAmt: any;
+    companyName: any;
+    patientName: any;
+    regNo: any;
+    netAmount: any;
+
+    constructor(MultiplePayList) {
+        {
+            this.billDate = MultiplePayList.billDate || 0;
+            this.pBillNo = MultiplePayList.pBillNo || '';
+            this.totalAmt = MultiplePayList.totalAmt || 0;
+            this.concessionAmt = MultiplePayList.concessionAmt || 0;
+            this.netPayableAmt = MultiplePayList.netPayableAmt || 0;
+            this.paidAmount = MultiplePayList.paidAmount || 0;
+            this.balanceAmt = MultiplePayList.balanceAmt || '';
+            this.companyName = MultiplePayList.companyName || '';
+            this.patientName = MultiplePayList.patientName || '';
+            this.regNo = MultiplePayList.regNo || 0;
+            this.netAmount = MultiplePayList.netAmount || 0
+        }
+    }
 }

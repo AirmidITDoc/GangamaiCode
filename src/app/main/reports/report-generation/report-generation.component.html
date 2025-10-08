@@ -187,12 +187,18 @@
 
                                     <ng-container *ngIf="flagStoreSelected">
                                         <div style="max-width: 265px;">
-                                            <airmid-autocomplete label="Store Name"
+                                            <!-- <airmid-autocomplete label="Store Name"
                                                 [formGroup]="_ReportService.userForm" formControlName="StoreId"
                                                 placeholderText="Select Store Name"
                                                 ApiUrl="Report/MStoreMasterList/auto-complete?Keyword="
                                                 (selectionChange)="SelectedStoreObj($event)">
-                                            </airmid-autocomplete>
+                                            </airmid-autocomplete> -->
+
+                                            <airmid-dropdown label="Store Name" formControlName="StoreId"
+                                                [formGroup]="_ReportService.userForm" [mode]="autocompletestore"
+                                                (selectionChange)="SelectedStoreObj($event)">
+                                            </airmid-dropdown>
+
                                         </div>
                                         <!-- <mat-error
                                             *ngIf="flagStoreRequired && _ReportService.userForm.get('StoreId')?.hasError('required') && _ReportService.userForm.get('StoreId')?.touched">

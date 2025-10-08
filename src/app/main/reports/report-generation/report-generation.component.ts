@@ -84,6 +84,10 @@ export class ReportGenerationComponent implements OnInit {
     reportDetail: any;
     sIsLoading = '';
     selectedNode: ExampleFlatNode | null = null;
+
+    autocompletestore: string = "Store";
+    vstoreId=this._loggedUser.currentUserValue.user.storeId;
+
     private transformer = (node: FoodNode, level: number) => {
         return {
             expandable: !!node.children && node.children.length > 0,
@@ -151,6 +155,7 @@ export class ReportGenerationComponent implements OnInit {
 
     hasChild = (_: number, node: ExampleFlatNode) => node.expandable;
     ngOnInit(): void {
+        console.log("IIIIDDDD:",this.vstoreId)
         this._activeRoute.paramMap.subscribe(params => {
             this.rid = ~~(params.get('rid') || 0);
         });
@@ -223,8 +228,11 @@ export class ReportGenerationComponent implements OnInit {
             this.flagDischargeTypeSelected = true;
         if (controllerPermission.filter(x => x == "Company")?.length > 0)
             this.flagCompanySelected = true;
+
         if (controllerPermission.filter(x => x == "Store")?.length > 0)
             this.flagStoreSelected = true;
+        this._ReportService.userForm.get('StoreId')?.setValue(this.vstoreId); //default value set
+
         if (controllerPermission.filter(x => x == "SupplierMaster")?.length > 0)
             this.flagSupplierelected = true;
         if (controllerPermission.filter(x => x == "Bank")?.length > 0)
@@ -261,7 +269,6 @@ export class ReportGenerationComponent implements OnInit {
     SelecteCashCounterObj(obj) {
         this.CashCounterId = obj.value;
     }
-    // created by raksha
     SelectedGroupObj(obj) {
         this.GroupId = obj.value;
     }
@@ -353,6 +360,7 @@ export class ReportGenerationComponent implements OnInit {
         this.flagPaymentModeSelected = false;
     }
     CallReportData(type) {
+        this.StoreId=this._ReportService.userForm.get("StoreId").value
         setTimeout(() => {
             let paramFilterList = [
                 {
