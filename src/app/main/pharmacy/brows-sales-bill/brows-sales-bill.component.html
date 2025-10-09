@@ -60,6 +60,20 @@
                         </div>
                     </ng-template>
 
+                    <ng-template #patientPurBill let-element>
+                        <div fxLayout="row" fxLayoutAlign="center center">
+                            <button mat-icon-button matTooltip="IsPurchaseWsieBill" *ngIf="element.isPurBill == true; else Show">
+                                <mat-icon>
+                                    <img width="10px" height="4px" src="assets/images/logos/Purchaseratewise.png"
+                                        style="background-color: transparent;">
+                                </mat-icon>
+                            </button> 
+                            <ng-template #Show>
+                                <span>-</span>
+                            </ng-template>
+                        </div>
+                    </ng-template>
+
                       <ng-template #patientTypePaidType let-element>
                         <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="4px"> 
                             <mat-icon *ngIf="element.paidType == 'Paid'" matTooltip="Paid Bill">monetization_on</mat-icon>

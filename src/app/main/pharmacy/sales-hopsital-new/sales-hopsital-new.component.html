@@ -381,7 +381,7 @@
                             [formGroup]="_salesService.ItemSearchGroup" formControlName="ItemId"
                             placeholderText="Item Name (enter 2 char)" fxFlex id="ItemId"
                             ApiUrl="ItemMaster/GetItemListforSalesPage?StoreId=2&ItemName=" TextField="itemName"
-                            ValueField="itemId" (selectionChange)="onItemChange($event)" 
+                            ValueField="itemId" (selectionChange)="onItemChange($event)"  
                             (keydown.enter)="handleEnterKey($event)"
                             #ItemId></airmid-autocomplete>
                           <!-- (selectionChange)="getSelectedObj($event)" -->
@@ -516,7 +516,7 @@
                       <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Disc %</mat-header-cell>
                       <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                         <mat-form-field appearance="fill">
-                          <input matInput [(ngModel)]="contact.DiscPer" type="text"
+                          <input matInput [(ngModel)]="contact.DiscPer" type="text" [disabled]="contact.IsPurRate > 0"
                             (keyup)="updateCellDiscount(contact)" min="0" max="100" OnlyNumber />
                         </mat-form-field>
                       </mat-cell>
@@ -621,34 +621,41 @@
                                 <airmid-textbox fxFlex="8%" label="Total Amount" [formGroup]="ItemSubform"
                                   formControlName="totalAmount" [readonly]="true"></airmid-textbox>
 
-                                <airmid-textbox fxFlex="6%" label="Discount %" [formGroup]="ItemSubform"
-                                  formControlName="FinalDiscPer" (valueChange)="getFinalDiscperAmt()"
-                                  [disabled]="chkdiscper"></airmid-textbox>
+                                <airmid-textbox fxFlex="5%" label="Discount %" [formGroup]="ItemSubform"
+                                  formControlName="FinalDiscPer" (keyup)="getFinalDiscperAmt()"
+                                  ></airmid-textbox>
 
-                                <airmid-textbox fxFlex="8%" label="Discount Amount" [formGroup]="ItemSubform"
-                                  formControlName="discAmount" (valueChange)="getFinalDiscAmount()" [readonly]="true"  
-                                  type="number"></airmid-textbox>
+                                <airmid-textbox fxFlex="6%" label="Discount Amount" [formGroup]="ItemSubform"
+                                  formControlName="discAmount" (keyup)="getFinalDiscAmount()"    [readonly]="isdiscAmount" 
+                                  ></airmid-textbox>
 
-                                <div style="width: 200px" *ngIf="ConShow">
+                                <div style="width: 160px" *ngIf="ConShow">
                                   <airmid-dropdown label="Concession Reason" formControlName="concessionReasonId"
                                     [formGroup]="ItemSubform" [validations]="getValidationMessages().concessionId"
                                     [mode]="autocompleteModeConcession">
                                   </airmid-dropdown>
                                 </div>
 
+                                  <div style="width: 160px" *ngIf="CreditReasonShow">
+                                  <airmid-dropdown label="Credit Reason" formControlName="CredirReasonId"
+                                    [formGroup]="ItemSubform" [validations]="getValidationMessages().CredirReasonId"
+                                    [mode]="autocompleteModeCreditReason"  (selectionChange)="OnCreditReasonchange($event)" >
+                                  </airmid-dropdown>
+                                </div>
+
                                 <airmid-textbox fxFlex="8%" label="Net Amount" [formGroup]="ItemSubform"
                                   formControlName="netAmount" [readonly]="true" [required]="true"></airmid-textbox>
 
-                                <airmid-textbox fxFlex="6%" label="Balance Amount" [formGroup]="ItemSubform"
+                                <airmid-textbox fxFlex="5%" label="Balance Amount" [formGroup]="ItemSubform"
                                   formControlName="balanceAmount"></airmid-textbox>
 
-                                <airmid-textbox fxFlex="6%" label="Round off" [formGroup]="ItemSubform"
+                                <airmid-textbox fxFlex="5%" label="Round off" [formGroup]="ItemSubform"
                                   formControlName="roundoffAmt" [readonly]="true"></airmid-textbox>
 
-                                <airmid-textbox fxFlex="6%" label="Paid By Patient" [formGroup]="ItemSubform"
+                                <airmid-textbox fxFlex="5%" label="Paid By Patient" [formGroup]="ItemSubform"
                                   formControlName="PaidbyPatient" (valueChange)="CalPaidbackAmt()"></airmid-textbox>
 
-                                <airmid-textbox fxFlex="6%" label="Paid Back To Patient" [formGroup]="ItemSubform"
+                                <airmid-textbox fxFlex="5%" label="Paid Back To Patient" [formGroup]="ItemSubform"
                                   formControlName="PaidbacktoPatient" [readonly]="true"></airmid-textbox>
 
                                 <div class="net-amt-section">
@@ -669,8 +676,8 @@
                               </div>
                               <div class="sales-radio-buttons gap-8" fxLayout="row"
                                 fxLayoutAlign="space-between center">
-                                <mat-radio-group aria-label="Select an option" formControlName="CashPay">
-                                  <mat-radio-button value="Credit" *ngIf="paymethod">Credit</mat-radio-button>
+                                <mat-radio-group aria-label="Select an option" formControlName="CashPay" (change)="checkCreditreason()">
+                                  <mat-radio-button value="Credit" *ngIf="paymethod" >Credit</mat-radio-button>
                                   <mat-radio-button value="CashPay">Cash</mat-radio-button>
                                   <!-- <mat-radio-button value="Online">Online</mat-radio-button> -->
                                   <mat-radio-button value="PayOption">PayOption</mat-radio-button>

@@ -49,6 +49,9 @@ import { FormvalidationserviceService } from 'app/main/shared/services/formvalid
        SGSTAmt:[0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
        IGSTAmt:[0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
        PurTotAmt:[0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+       MRPRate:[0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+       MRPRateTotal:[0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+       IsPurRate:[0]
       });
     }
     
