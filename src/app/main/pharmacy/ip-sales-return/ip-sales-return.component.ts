@@ -124,6 +124,7 @@ export class IpSalesReturnComponent implements OnInit {
         addedBy: [this.accountService.currentUserValue.userId],
         storeId: [this.accountService.currentUserValue.user.storeId, [this._FormvalidationserviceService.onlyNumberValidator()]],
         narration: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],//need to set concession reason
+        isPurBill: [false]
       }),
       // sales return details in array
       salesReturnDetails: this.formBuilder.array([]),
@@ -453,7 +454,7 @@ export class IpSalesReturnComponent implements OnInit {
   //Save code 
   onSave() { 
     const formValues = this.ItemFormGroup.value
-    if (!(formValues.PatientName.admissionID > 0)) {
+    if (!(formValues?.PatientName?.admissionID > 0)) {
       this.toastr.warning('Please select Patient Name', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
@@ -505,7 +506,7 @@ export class IpSalesReturnComponent implements OnInit {
     this.IpSalesReturnForm.get('salesReturn.vatAmount')?.setValue(this.IPSalesRetFooterform.get('FinalGSTAmt').value)
     this.IpSalesReturnForm.get('salesReturn.discAmount')?.setValue(this.IPSalesRetFooterform.get('FinalDiscAmount').value)
     this.IpSalesReturnForm.get('salesReturn.netAmount')?.setValue((Math.round(this.IPSalesRetFooterform.get('FinalNetAmount').value)))
-
+    this.IpSalesReturnForm.get('salesReturn.isPurBill').setValue(this.selcteditemObj?.IsPurRate || false);
     if (this.IpSalesReturnForm.valid) {
       this.SaleRetDetailsArray.clear()
       this.currentStockArray.clear()

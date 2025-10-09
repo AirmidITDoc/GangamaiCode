@@ -161,6 +161,7 @@ export class SalesReturnComponent implements OnInit {
           addedBy: [this._loggedService.currentUserValue.userId],
           storeId: [this._loggedService.currentUserValue.user.storeId, [this._FormvalidationserviceService.onlyNumberValidator()]],
           narration: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],//need to set concession reason
+          isPurBill: [false]
         }),
         // sales return details in array
         salesReturnDetails: this.formBuilder.array([]),
@@ -549,6 +550,7 @@ getbillllist(){
     this.IpSalesReturnForm.get('salesReturn.discAmount')?.setValue(this.IPSalesRetFooterform.get('TotDiscAmount')?.value)
     this.IpSalesReturnForm.get('salesReturn.netAmount')?.setValue(this.IPSalesRetFooterform.get('NetAmt')?.value)
     this.IpSalesReturnForm.get('salesReturn.opIpType').setValue(this.selcteditemObj?.OP_IP_Type);
+    this.IpSalesReturnForm.get('salesReturn.isPurBill').setValue(this.selcteditemObj?.IsPurRate || false);
     if( this.selcteditemObj.OP_IP_Type == 2 ){
       this.IpSalesReturnForm.get('salesReturn.opIpId').clearValidators();
       this.IpSalesReturnForm.get('salesReturn.opIpId').updateValueAndValidity();

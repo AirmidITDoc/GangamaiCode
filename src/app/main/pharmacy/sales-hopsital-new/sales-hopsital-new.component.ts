@@ -587,14 +587,7 @@ export class SalesHospitalNewComponent implements OnInit {
             let IsPurRate= 0;
             if (this.ItemSubform.get('IsPurchaseWsie').value == true) {
                 MRP = +result?.landedRate;
-                IsPurRate = 1; 
-                Swal.fire({
-                    icon: 'info',
-                    title: 'Discount Disabled',
-                    text: 'Discounts are disabled while Purchase Rate Wise mode is active.',
-                      timer: 3000, // auto close after 3 seconds
-                    confirmButtonText: 'OK',
-                });
+                IsPurRate = 1;  
             } else {
                 MRP = result.unitMRP;
                  IsPurRate = 1; 
@@ -892,9 +885,7 @@ export class SalesHospitalNewComponent implements OnInit {
                     return
                 }
             }
-            this.add = false;
-        console.log(this.ItemSubform.getRawValue())
-
+            this.add = false; 
             this.ItemFormreset();
             this.getUpdateNetAmtSum(this.saleSelectedDatasource.data) 
             this._salesService.ItemSearchGroup.markAllAsTouched()
@@ -965,8 +956,7 @@ export class SalesHospitalNewComponent implements OnInit {
      isdiscAmount:boolean=false;
     getUpdateNetAmtSum(data) {
         debugger
-        console.log(this.ItemSubform.getRawValue())
-        const itemData = data
+         const itemData = data
         let FinalNetAmt = itemData.reduce((sum, { NetAmt }) => (sum += +(NetAmt || 0)), 0).toFixed(2);
         let FinalTotalAmt = itemData.reduce((sum, { TotalMRP }) => (sum += +(TotalMRP || 0)), 0).toFixed(2);
         let FinalDiscAmt = itemData.reduce((sum, { DiscAmt }) => (sum += +(DiscAmt || 0)), 0).toFixed(2);
@@ -987,7 +977,7 @@ export class SalesHospitalNewComponent implements OnInit {
             this.ItemSubform.get('concessionReasonId').setValidators([Validators.required]);
             this.ItemSubform.get('concessionReasonId').enable();
         } else {
-            const finalDiscPerControl = this.ItemSubform.getRawValue().FinalDiscPer
+            const finalDiscPerControl = this.ItemSubform.value.FinalDiscPer
             if(!(this.saleSelectedDatasource.data.every((i) => i.DiscAmt > 0 && i.DiscPer > 0 ))){
                  this.ItemSubform.get('FinalDiscPer').enable();
                  this.ItemSubform.get('FinalDiscPer').setValue(finalDiscPerControl);
@@ -1331,14 +1321,7 @@ export class SalesHospitalNewComponent implements OnInit {
         let IsPurRate
         if (this.ItemSubform.get('IsPurchaseWsie')?.value == true) {
             MRP = +item?.LandedRate;
-            IsPurRate=1 
-            Swal.fire({
-                icon: 'info',
-                title: 'Discount Disabled',
-                text: 'Discounts are disabled while Purchase Rate Wise mode is active.',
-                  timer: 3000, // auto close after 3 seconds
-                confirmButtonText: 'OK',
-            });
+            IsPurRate=1  
         } else {
             MRP = +item?.MRP;
             IsPurRate=0; 
@@ -2347,8 +2330,18 @@ export class SalesHospitalNewComponent implements OnInit {
         debugger
         // Update gst type of table data  
         if (this.ItemSubform.get('IsPurchaseWsie')?.value == true) { 
-             this.ItemSubform.get('FinalDiscPer').disable();
+            this.ItemSubform.get('FinalDiscPer').reset();
+            this.ItemSubform.get('discAmount').reset();
+            this.ItemSubform.get('FinalDiscPer').disable();
             this.ItemSubform.get('discAmount').disable();
+              Swal.fire({
+                    icon: 'info',
+                    title: 'Discount Disabled',
+                    text: 'Discounts are disabled while Purchase Rate Wise mode is active.',
+                      timer: 3000, // auto close after 3 seconds
+                    confirmButtonText: 'OK',
+                });
+
          } else {
             this.ItemSubform.get('FinalDiscPer').enable();
             this.ItemSubform.get('discAmount').enable();
