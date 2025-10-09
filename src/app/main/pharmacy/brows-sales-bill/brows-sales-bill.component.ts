@@ -141,6 +141,7 @@ export class BrowsSalesBillComponent implements OnInit {
   @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
   @ViewChild('isPrintTemplate') isPrintTemplate!: TemplateRef<any>; 
   @ViewChild('patientTypePaidType') patientTypePaidType!: TemplateRef<any>;
+  @ViewChild('patientPurBill') patientPurBill!: TemplateRef<any>;
 
   //Sales Return
   @ViewChild('patientTypetempReturn') patientTypetempReturn!: TemplateRef<any>;
@@ -155,6 +156,7 @@ export class BrowsSalesBillComponent implements OnInit {
     this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
     this.gridConfig.columnsList.find(col => col.key === 'isPrint')!.template = this.isPrintTemplate;
     this.gridConfig.columnsList.find(col => col.key === 'paidType')!.template = this.patientTypePaidType;
+    this.gridConfig.columnsList.find(col => col.key === 'isPurBill')!.template = this.patientPurBill;
     //Sales Return
     this.gridConfig2.columnsList.find(col => col.key === 'Status')!.template = this.patientTypetempReturn;
     this.gridConfig2.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplateRetrun;
@@ -173,8 +175,11 @@ export class BrowsSalesBillComponent implements OnInit {
       heading: "--", key: "isPrint", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 40,
       template: this.isPrintTemplate
     },
-    { heading: "Type", key: "paidType",align: 'right', width: 50,sticky: true,type: gridColumnTypes.template,
+    { heading: "Type", key: "paidType",align: 'right', width:45,sticky: true,type: gridColumnTypes.template,
        template: this.patientTypePaidType
+    },
+    { heading: "IsPurBill", key: "isPurBill",align: 'right', width: 60,sticky: true,type: gridColumnTypes.template,
+       template: this.patientPurBill
     },
     { heading: "Date", key: "date", sort: true, align: 'left', emptySign: 'NA', width: 100 },
      { heading: "Time", key: "time", sort: true, align: 'left', emptySign: 'NA', width: 90 },
@@ -182,7 +187,7 @@ export class BrowsSalesBillComponent implements OnInit {
     { heading: "UHID No", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
 
     { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-    { heading: "IPD No", key: "ipno", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+    { heading: "IPD No", key: "ipno", sort: true, align: 'left', emptySign: 'NA', width: 130 },
 
     { heading: "Total Amt", key: "totalAmount", sort: true, align: 'left', emptySign: 'NA', width: 150, type: gridColumnTypes.amount },
     { heading: "Disc Amt", key: "discAmount", sort: true, align: 'left', emptySign: 'NA', width: 150, type: gridColumnTypes.amount },
