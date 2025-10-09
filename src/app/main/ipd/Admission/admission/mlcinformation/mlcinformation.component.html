@@ -124,7 +124,7 @@
 
                   <div fxFlex="25" fxFlex.xs="100" fxFlex.sm="33">
                     <mat-form-field appearance="outline" class="dateField" fxFlex>
-                      <mat-label>Report Date</mat-label>
+                      <mat-label>MLC Date</mat-label>
                       <input matInput [matDatepicker]="picker1" [min]="minDate" formControlName="reportingDate"
                         (dateChange)="onChangeDate($event.value)" />
                       <mat-datepicker-toggle matSuffix [for]="picker1"
@@ -135,7 +135,7 @@
 
                   <div fxFlex="25" fxFlex.xs="100" fxFlex.sm="33">
                     <mat-form-field appearance="outline" class="timeField" fxFlex>
-                      <mat-label>ReportTime</mat-label>
+                      <mat-label>MLC Time</mat-label>
                       <input matTimepicker #t="matTimepicker" mode="12h" formControlName="reportingTime"
                         (timeChange)="onChangeTime($event)" [disableDialogOpenOnClick]="isDatePckrDisabled" />
                       <mat-icon matSuffix (click)="!isDatePckrDisabled ? t.showDialog() : ''">access_time</mat-icon>

@@ -288,7 +288,7 @@ export class IPRefundofAdvanceComponent implements OnInit {
       element.balanceAmount = element.netBallAmt;
     } 
     this.AdvanceId = element.advanceId
-    this.UsedAmount += element.usedAmount
+    this.UsedAmount = element.usedAmount
     this.getRefundSum();
   }
   getRefundSum() {

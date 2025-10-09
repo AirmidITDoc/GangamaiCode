@@ -1253,6 +1253,7 @@ export class IPBillingComponent implements OnInit {
                             let AdvanceUsedAmt = 0;
                             UpdateAdvanceDetailarr1.forEach(element => {
                                 this.IPBillMyForm.get('advancesHeaderupdate.advanceId')?.setValue(element.AdvanceId)
+                                debugger
                                 AdvanceUsedAmt = AdvanceUsedAmt + element.UsedAmount
                                 AdvanceBalAmt = AdvanceBalAmt + element.BalanceAmount
                                 this.IPBillMyForm.get('advancesHeaderupdate.advanceUsedAmount')?.setValue(AdvanceUsedAmt)

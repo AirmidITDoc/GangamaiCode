@@ -97,7 +97,7 @@ export class NewAppointmentComponent implements OnInit {
     // <mat-expansion-panel> default to closed,
     isExpanded1 = false; // Defaults to closed
     isExpanded2 = false;
-    ApiUrl="PhoneAppointment2/auto-complete?Keyword=a"
+    ApiUrl = "PhoneAppointment2/auto-complete?Keyword=a"
 
     screenFromString = 'appointment';
     @ViewChild('attachments') attachment: any;
@@ -170,16 +170,16 @@ export class NewAppointmentComponent implements OnInit {
 
         this.personalFormGroup = this.createPesonalForm();
         this.personalFormGroup.markAllAsTouched();
-     
+
         this.VisitFormGroup = this._AppointmentlistService.createVisitdetailForm();
         this.VisitFormGroup.markAllAsTouched();
         // this.ClassId=1
         //  this.VisitFormGroup.get("UnitId").setValue(this.accountService.currentUserValue.user.unitId)
-       
+
         // this.abhaForm = this._AppointmentlistService.createAbhadetailForm();
 
         this.searchFormGroup = this.createSearchForm();
- console.log(this.data) 
+        console.log(this.data)
         if (this.data) {
             this.FromRegistration = this.data?.Obj
             // console.log(this.FromRegistration) 
@@ -223,18 +223,18 @@ export class NewAppointmentComponent implements OnInit {
         }
 
         this.VisitFormGroup.get("DepartmentId").setValue(this._configue.configParams.OPDDefaultDepartment)
-        
+
         this.registerObj.doctorId = this._configue.configParams.OPDDefaultDepartment
         this.registerObj.doctorId = this._configue.configParams.OPDDefaultDoctor
         this.selectChangedepartment(this.registerObj)
-       
+
         if (this._configue.configParams.OPDDefaultDoctor > 0)
             this.setdoctor(this._configue.configParams.OPDDefaultDoctor)
     }
 
 
     setdoctor(data) {
-      
+
         this._AppointmentlistService.getDoctorsByDepartment(data).subscribe((data: any) => {
             console.log(data)
             this.ddlDoctor.options = data;
@@ -398,7 +398,7 @@ export class NewAppointmentComponent implements OnInit {
     }
     getSelectedObj(obj) {
 
-        // debugger
+        // 
         if (this.data?.FormName == 'Registration-Page') {
             this.PatientName = obj.firstName + ' ' + obj.lastName;
             this.RegId = obj.regId;
@@ -481,16 +481,13 @@ export class NewAppointmentComponent implements OnInit {
                             medTourismResidentialAddress: this.registerObj?.medTourismResidentialAddress ?? '',
                             medTourismOfficeWorkAddress: this.registerObj?.medTourismOfficeWorkAddress ?? '',
                         });
-                        // console.log(this.registerObj)
+
                     });
 
                 }, 100);
             }
         }
-        // debugger
-        // this.value=this.registerObj.dateofBirth
-        console.log('Bdate', this.value)
-        // this.personalFormGroup.get("DateOfBirth").setValue(this.registerObj.dateofBirth)
+
         this.onChangeDateofBirth(this.registerObj.dateofBirth)
     }
     PrevregisterObj: any;
@@ -509,12 +506,19 @@ export class NewAppointmentComponent implements OnInit {
             this.PrevregisterObj = result
             this.VisitFormGroup.get("DepartmentId").setValue(this.PrevregisterObj.departmentId)
             this.selectChangedepartment(this.PrevregisterObj)
+            console.log(this.PrevregisterObj)
+
+
 
         });
     }
 
-    vDepId=0;
-    vDocId=0;
+
+
+
+
+    vDepId = 0;
+    vDocId = 0;
     //   changed by raksha date:17/6/25
     getSelectedObjphone(obj) {
         console.log("Phone data:", obj)
@@ -536,8 +540,8 @@ export class NewAppointmentComponent implements OnInit {
         this.VisitFormGroup.get("phoneAppId")?.setValue(this.vPhoneAppId);
         this.VisitFlagDisp = false;
         this.registerObj = obj;
-        this.vDepId=this.registerObj.departmentId
-        this.vDocId=this.registerObj.doctorId
+        this.vDepId = this.registerObj.departmentId
+        this.vDocId = this.registerObj.doctorId
         if ((this.RegId ?? 0) > 0) {
             setTimeout(() => {
                 this.searchFormGroup.get('regRadio')?.setValue('registrered');
@@ -596,8 +600,8 @@ export class NewAppointmentComponent implements OnInit {
             }, 500);
         }
     }
-     selectChangedepartmentForPhone(obj: any) {
-        debugger
+    selectChangedepartmentForPhone(obj: any) {
+
         this._AppointmentlistService.getDoctorsByDepartment(obj).subscribe((data: any) => {
             // console.log(data)
             this.ddlDoctor.options = data;
@@ -620,7 +624,7 @@ export class NewAppointmentComponent implements OnInit {
             return;
         }
 
-        debugger
+
         let DateOfBirth1 = this.personalFormGroup.get("DateOfBirth").value
         if (DateOfBirth1) {
             const todayDate = new Date();
@@ -700,7 +704,7 @@ export class NewAppointmentComponent implements OnInit {
     }
 
     OnsaveNewRegister() {
-        debugger
+
         this.personalFormGroup.get("RegId").setValue(0)
         this.VisitFormGroup.get("regId").setValue(0)
         this.VisitFormGroup.get("patientOldNew").setValue(this.Patientnewold)
@@ -759,7 +763,7 @@ export class NewAppointmentComponent implements OnInit {
 
     onSaveRegistered() {
 
-        debugger
+
         this.VisitFormGroup.get("regId")?.setValue(this.registerObj.regId)
         this.VisitFormGroup.get("patientOldNew").setValue(2)
         this.personalFormGroup.get("PrefixId").setValue(Number(this.personalFormGroup.get('PrefixId').value))
@@ -779,7 +783,7 @@ export class NewAppointmentComponent implements OnInit {
         this.VisitFormGroup.get("AppPurposeId").setValue(Number(this.VisitFormGroup.get('AppPurposeId').value))
         this.VisitFormGroup.get("phoneAppId")?.setValue(this.vPhoneAppId ? this.vPhoneAppId : 0);
         this.VisitFormGroup.removeControl('SubCompanyId');
-        ['AddedBy', 'ReligionId', 'AreaId', 'IsSeniorCitizen','IsNRI'].forEach(control => {
+        ['AddedBy', 'ReligionId', 'AreaId', 'IsSeniorCitizen', 'IsNRI'].forEach(control => {
             this.personalFormGroup.removeControl(control)
         })
 
@@ -822,7 +826,7 @@ export class NewAppointmentComponent implements OnInit {
     }
 
     selectChangedepartment(obj: any) {
-        // debugger
+        debugger
         if (obj.value) {
             this._AppointmentlistService.getDoctorsByDepartment(obj.value).subscribe((data: any) => {
                 this.ddlDoctor.options = data;
@@ -830,14 +834,17 @@ export class NewAppointmentComponent implements OnInit {
             });
         } else {
             this._AppointmentlistService.getDoctorsByDepartment(obj.departmentId).subscribe((data: any) => {
-                // console.log(data)
-                this.ddlDoctor.options = data;
-                this.ddlDoctor.bindGridAutoComplete();
-                const incomingDoctorId = obj.consultantDocId || obj.doctorId;
-                if (incomingDoctorId) {
-                    const matchedDoctor = data.find(doc => doc.value === incomingDoctorId);
-                    if (matchedDoctor) {
-                        this.VisitFormGroup.get('ConsultantDocId')?.setValue(matchedDoctor.value);
+                console.log(data)
+                if (data) {
+                    debugger
+                    this.ddlDoctor.options = data;
+                    this.ddlDoctor.bindGridAutoComplete();
+                    const incomingDoctorId = obj.consultantDocId || obj.doctorId;
+                    if (incomingDoctorId) {
+                        const matchedDoctor = data.find(doc => doc.value === incomingDoctorId);
+                        if (matchedDoctor) {
+                            this.VisitFormGroup.get('ConsultantDocId')?.setValue(matchedDoctor.value);
+                        }
                     }
                 }
             });
@@ -953,7 +960,7 @@ export class NewAppointmentComponent implements OnInit {
             UnitId: [
                 { name: "required", Message: "Unit Name is required" }
             ],
-             ClassId: [
+            ClassId: [
                 { name: "required", Message: "Class Name is required" }
             ],
         };
@@ -1012,7 +1019,7 @@ export class NewAppointmentComponent implements OnInit {
                 Validators.required,
                 Validators.minLength(1),
                 Validators.maxLength(100),
-                Validators.pattern("^[A-Za-z/() ]*$"),this._FormvalidationserviceService.noWhitespaceValidator()
+                Validators.pattern("^[A-Za-z/() ]*$"), this._FormvalidationserviceService.noWhitespaceValidator()
             ]],
             MiddleName: ['', [
                 Validators.maxLength(100),
@@ -1023,7 +1030,7 @@ export class NewAppointmentComponent implements OnInit {
                 Validators.required,
                 Validators.minLength(1),
                 Validators.maxLength(100),
-                Validators.pattern("^[A-Za-z/() ]*$"),this._FormvalidationserviceService.noWhitespaceValidator()
+                Validators.pattern("^[A-Za-z/() ]*$"), this._FormvalidationserviceService.noWhitespaceValidator()
             ]],
             GenderId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             Address: ['', [this._FormvalidationserviceService.allowEmptyStringValidator(), Validators.maxLength(200)]],
@@ -1193,7 +1200,7 @@ export class NewAppointmentComponent implements OnInit {
 
 
     onChangeDateofBirth(DateOfBirth: Date) {
-        debugger
+
         if (DateOfBirth > this.minDate) {
             this.toastr.warning('Enter Proper Birth Date..', 'warning !', {
                 toastClass: 'tostr-tost custom-toast-success',

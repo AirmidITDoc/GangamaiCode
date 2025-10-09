@@ -257,6 +257,23 @@ export class EditPaymentComponent implements OnInit {
       this._Paymentmodesevice.paymentInsertform.get('Neftno').setValue( this._Paymentmodesevice.paymentInsertform.get('Neftno').value || "")
       this._Paymentmodesevice.paymentInsertform.get('PayTmtranNo').setValue( this._Paymentmodesevice.paymentInsertform.get('PayTmtranNo').value || "")
 
+      
+       this._Paymentmodesevice.paymentInsertform.get('tdsamount').setValue(this.registerObj.tdsamount || 0)
+     
+      this._Paymentmodesevice.paymentInsertform.get('wfamount').setValue(this.registerObj.wfamount || 0)
+      this._Paymentmodesevice.paymentInsertform.get('companyId').setValue(this.registerObj.companyId || 0)
+      this._Paymentmodesevice.paymentInsertform.get('cashCounterId').setValue(this.registerObj.cashCounterId || 0)
+      this._Paymentmodesevice.paymentInsertform.get('isSelfOrcompany').setValue(this.registerObj.isSelfOrcompany || 0)
+      this._Paymentmodesevice.paymentInsertform.get('chCashPayAmount').setValue(this.registerObj.chCashPayAmount || 0)
+      this._Paymentmodesevice.paymentInsertform.get('chChequePayAmount').setValue(this.registerObj.chChequePayAmount || 0)
+      this._Paymentmodesevice.paymentInsertform.get('chCardPayAmount').setValue(this.registerObj.chCardPayAmount || 0)
+      this._Paymentmodesevice.paymentInsertform.get('chAdvanceUsedAmount').setValue(this.registerObj.chAdvanceUsedAmount || 0)
+      this._Paymentmodesevice.paymentInsertform.get('chNeftpayAmount').setValue(this.registerObj.chNeftpayAmount || 0)
+      this._Paymentmodesevice.paymentInsertform.get('chPayTmamount').setValue(this.registerObj.chPayTmamount || 0)
+            this._Paymentmodesevice.paymentInsertform.get('tranMode').setValue(this.registerObj.tranMode ||"HOSP")
+
+    
+       
       const controlsToRemove = ['PaidAmount', 'BalAmount', 'IsPayTMpay', 'RefundBalAmount','NEFTBankName','IsNEFTpay','IsCardpay','IsChequepay','ChequeBankName','IsCashpay'];
       controlsToRemove.forEach(controlName => {
         const ctrl = this._Paymentmodesevice.paymentInsertform.get(controlName);
