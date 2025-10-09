@@ -22,7 +22,7 @@ export class OpPaymentComponent implements OnInit {
   currentDate = new Date();
   patientDetailsFormGrp: FormGroup;
   selectedPaymnet1: string = '';
-   RegNo: any;
+  RegNo: any;
   DoctorName: any;
   CompanyName: any;
   Date: any;
@@ -32,7 +32,7 @@ export class OpPaymentComponent implements OnInit {
   TariffName: any;
   MultipleSettlement: boolean = false;
   autocompleteModebank: string = "Bank";
-    netPayAmt: any = 0;
+  netPayAmt: any = 0;
   nowDate: Date;
   amount1: number;
   screenFromString = 'payment-form';
@@ -55,7 +55,7 @@ export class OpPaymentComponent implements OnInit {
     });
     this.paymentArr1 = final;
   }
-
+  Upiflag = 0
   onChangePaymentType() {
     debugger
 
@@ -87,9 +87,11 @@ export class OpPaymentComponent implements OnInit {
       else if (this.selectedPaymnet1 == 'net banking') {
         this.patientDetailsFormGrp.get('bankName1').setValidators([Validators.required]);
       }
-       else if (this.selectedPaymnet1 == 'upi') {
+      else if (this.selectedPaymnet1 == 'upi') {
         this.patientDetailsFormGrp.get('referenceNo1').setValidators([Validators.required]);
-          this.patientDetailsFormGrp.get('regDate1').setValidators([Validators.required]);
+        this.patientDetailsFormGrp.get('regDate1').setValidators([Validators.required]);
+        this.patientDetailsFormGrp.get('referenceNo1').updateValueAndValidity();
+        this.Upiflag = 1
       }
       else {
         this.patientDetailsFormGrp.get('bankName1').clearValidators();
@@ -137,6 +139,18 @@ export class OpPaymentComponent implements OnInit {
     if (this.patientDetailsFormGrp.invalid) {
       return;
     }
+    // if (this.Upiflag == 1) {
+    //   if (this.Payments.data.find(x => x.PaymentType == "upi")?.RefNo == undefined || this.Payments.data.find(x => x.PaymentType == "upi")?.RefNo == '') {
+    //     Swal.fire('Please Enter UPI mode RefNO ')
+    //     return;
+    //   } else {
+    //     if (this.Upiflag == 1 && this.Payments.data.find(x => x.PaymentType == "upi")?.RefNo.length < 4){
+    //       Swal.fire('Please Enter UPI mode RefNO Min 4 Digit')
+    //     return;
+    //   }}
+    // }
+
+
     let tmp = this.Payments.data;
     tmp.push({
       Id: this.getNewId(),
@@ -157,7 +171,7 @@ export class OpPaymentComponent implements OnInit {
     this.patientDetailsFormGrp.get("paymentType1").setValue(null);
     this.BindPaymentTypes();
     this.GetBalanceAmt();
-  } 
+  }
   getNewId() {
     return Math.max(...this.Payments.data.map(o => o.Id), 0) + 1;
   }
@@ -181,7 +195,7 @@ export class OpPaymentComponent implements OnInit {
       }
     });
   }
- 
+
   constructor(
     private formBuilder: UntypedFormBuilder,
     private dialogRef: MatDialogRef<OpPaymentComponent>,
@@ -353,9 +367,22 @@ export class OpPaymentComponent implements OnInit {
     const formattedTime = datePipe.transform(currentDate, 'shortTime');
     const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
 
-    this.onAddPayment();
-   
+debugger
 
+    // if (this.Upiflag == 1) {
+    //   if (this.Payments.data.find(x => x.PaymentType == "upi")?.RefNo == undefined || this.Payments.data.find(x => x.PaymentType == "upi")?.RefNo == '') {
+    //     Swal.fire('Please Enter UPI mode RefNO ')
+    //     // return;
+
+    //   } else {
+    //     if (this.Upiflag == 1 && this.Payments.data.find(x => x.PaymentType == "upi")?.RefNo.length < 4){
+    //       Swal.fire('Please Enter UPI mode RefNO Min 4 Digit')
+    //     // return;
+    //   }}
+    // }
+
+    
+    this.onAddPayment();
     if (this.balanceAmt != 0 && this.data?.FromName != 'OP-Bill') {
       Swal.fire('Please select payment mode, Balance Amount is' + this.balanceAmt)
       return
@@ -399,7 +426,7 @@ export class OpPaymentComponent implements OnInit {
       this.Paymentobj['payTmdate'] = this.datePipe.transform(this.currentDate, 'yyyy-MM-dd') || this.datePipe.transform(this.currentDate, 'yyyy-MM-dd')
       this.Paymentobj['tdsamount'] = this.Payments.data.find(x => x.PaymentType == "tds")?.Amount ?? 0;
       this.Paymentobj['unitId'] = this._loggedService.currentUserValue.user.unitId
-      this.Paymentobj['wfamount'] = this.Payments.data.find(x => x.PaymentType == "wf")?.Amount ?? 0;  
+      this.Paymentobj['wfamount'] = this.Payments.data.find(x => x.PaymentType == "wf")?.Amount ?? 0;
     }
     else if (this.data.FromName == "OP-Pharma-SETTLEMENT") {
 
@@ -458,7 +485,7 @@ export class OpPaymentComponent implements OnInit {
       }
       this.Paymentobj['remark'] = " ";
       this.Paymentobj['addBy'] = this._loggedService.currentUserValue.userId,
-      this.Paymentobj['Opdipdtype'] = 1;
+        this.Paymentobj['Opdipdtype'] = 1;
       this.Paymentobj['isCancelled'] = false;
       this.Paymentobj['isCancelledBy'] = 0;
       this.Paymentobj['isCancelledDate'] = this.datePipe.transform(this.currentDate, 'yyyy-MM-dd') || this.datePipe.transform(this.currentDate, 'yyyy-MM-dd')
@@ -471,7 +498,7 @@ export class OpPaymentComponent implements OnInit {
       this.Paymentobj['payTmdate'] = this.datePipe.transform(this.currentDate, 'yyyy-MM-dd') || this.datePipe.transform(this.currentDate, 'yyyy-MM-dd')
       this.Paymentobj['tdsamount'] = this.Payments.data.find(x => x.PaymentType == "tds")?.Amount ?? 0;
       this.Paymentobj['unitId'] = this._loggedService.currentUserValue.user.unitId
-      this.Paymentobj['wfamount'] = this.Payments.data.find(x => x.PaymentType == "wf")?.Amount ?? 0;  
+      this.Paymentobj['wfamount'] = this.Payments.data.find(x => x.PaymentType == "wf")?.Amount ?? 0;
     }
     else if (this.data.FromName == "Phar-SupplierPay") { //changed by raksha
       debugger
@@ -524,11 +551,11 @@ export class OpPaymentComponent implements OnInit {
       this.Paymentobj['advanceUsedAmount'] = 0;
       this.Paymentobj['advanceId'] = 0;
       this.Paymentobj['refundId'] = 0;
-      if(this.data.FromName == "IP-Advance"){
-      this.Paymentobj['transactionType'] = 1;
-      }else{
-         this.Paymentobj['transactionType'] = 2;
-      } 
+      if (this.data.FromName == "IP-Advance") {
+        this.Paymentobj['transactionType'] = 1;
+      } else {
+        this.Paymentobj['transactionType'] = 2;
+      }
       this.Paymentobj['remark'] = " ";
       this.Paymentobj['addBy'] = this._loggedService.currentUserValue.userId,
         this.Paymentobj['isCancelled'] = false;
@@ -544,7 +571,7 @@ export class OpPaymentComponent implements OnInit {
       this.Paymentobj['payTmdate'] = this.datePipe.transform(this.currentDate, 'yyyy-MM-dd') || this.datePipe.transform(this.currentDate, 'yyyy-MM-dd')
       this.Paymentobj['tdsamount'] = this.Payments.data.find(x => x.PaymentType == "tds")?.Amount ?? 0;
       this.Paymentobj['unitId'] = this._loggedService.currentUserValue.user.unitId
-      this.Paymentobj['wfamount'] = this.Payments.data.find(x => x.PaymentType == "wf")?.Amount ?? 0;  
+      this.Paymentobj['wfamount'] = this.Payments.data.find(x => x.PaymentType == "wf")?.Amount ?? 0;
     }
     //new changes done by Ambadas ip IntrimBIll 13/6/2025
     else if (this.data.FromName == "IP-IntrimBIll") {
@@ -579,7 +606,7 @@ export class OpPaymentComponent implements OnInit {
       this.Paymentobj['payTmdate'] = this.datePipe.transform(this.currentDate, 'yyyy-MM-dd') || this.datePipe.transform(this.currentDate, 'yyyy-MM-dd')
       this.Paymentobj['tdsamount'] = this.Payments.data.find(x => x.PaymentType == "tds")?.Amount ?? 0;
       this.Paymentobj['unitId'] = this._loggedService.currentUserValue.user.unitId
-      this.Paymentobj['wfamount'] = this.Payments.data.find(x => x.PaymentType == "wf")?.Amount ?? 0;  
+      this.Paymentobj['wfamount'] = this.Payments.data.find(x => x.PaymentType == "wf")?.Amount ?? 0;
     }
     else if (this.data.FromName == "OP-RefundOfBill") {
       this.Paymentobj['BillNo'] = this.advanceData.billNo; //this.data?.billNo;
@@ -617,7 +644,7 @@ export class OpPaymentComponent implements OnInit {
       this.Paymentobj['BalanceAmt'] = this.patientDetailsFormGrp.get('balanceAmountController').value;
       this.Paymentobj['tdsamount'] = this.Payments.data.find(x => x.PaymentType == "tds")?.Amount ?? 0;
       this.Paymentobj['unitId'] = this._loggedService.currentUserValue.user.unitId
-      this.Paymentobj['wfamount'] = this.Payments.data.find(x => x.PaymentType == "wf")?.Amount ?? 0;  
+      this.Paymentobj['wfamount'] = this.Payments.data.find(x => x.PaymentType == "wf")?.Amount ?? 0;
     }
     //new changes done by Ambadas op bill 10/6/2025
     else if (this.data.FromName == "OP-Bill") {
@@ -653,7 +680,7 @@ export class OpPaymentComponent implements OnInit {
       this.Paymentobj['payTmdate'] = this.datePipe.transform(this.currentDate, 'yyyy-MM-dd') || this.datePipe.transform(this.currentDate, 'yyyy-MM-dd')
       this.Paymentobj['tdsamount'] = this.Payments.data.find(x => x.PaymentType == "tds")?.Amount ?? 0;
       this.Paymentobj['unitId'] = this._loggedService.currentUserValue.user.unitId
-      this.Paymentobj['wfamount'] = this.Payments.data.find(x => x.PaymentType == "wf")?.Amount ?? 0;  
+      this.Paymentobj['wfamount'] = this.Payments.data.find(x => x.PaymentType == "wf")?.Amount ?? 0;
     }
     //new changes done by Ambadas sales hospital pay 20/6/2025
     else if (this.data.FromName == "Phar-SalesPay") {
@@ -676,7 +703,7 @@ export class OpPaymentComponent implements OnInit {
       this.Paymentobj['transactionType'] = 4;
       this.Paymentobj['remark'] = " ";
       this.Paymentobj['addBy'] = this._loggedService.currentUserValue.userId,
-      this.Paymentobj['isCancelled'] = false;
+        this.Paymentobj['isCancelled'] = false;
       this.Paymentobj['isCancelledBy'] = 0;
       this.Paymentobj['isCancelledDate'] = this.datePipe.transform(this.currentDate, 'yyyy-MM-dd') || this.datePipe.transform(this.currentDate, 'yyyy-MM-dd')
       this.Paymentobj['opdipdType'] = 3;
@@ -689,7 +716,7 @@ export class OpPaymentComponent implements OnInit {
       this.Paymentobj['payTmdate'] = this.datePipe.transform(this.currentDate, 'yyyy-MM-dd') || this.datePipe.transform(this.currentDate, 'yyyy-MM-dd')
       this.Paymentobj['tdsamount'] = this.Payments.data.find(x => x.PaymentType == "tds")?.Amount ?? 0;
       this.Paymentobj['unitId'] = this._loggedService.currentUserValue.user.unitId
-      this.Paymentobj['wfamount'] = this.Payments.data.find(x => x.PaymentType == "wf")?.Amount ?? 0;  
+      this.Paymentobj['wfamount'] = this.Payments.data.find(x => x.PaymentType == "wf")?.Amount ?? 0;
     }
     //new changes done by Ambadas sales multiple settlemetn pay 25/6/2025
     else if (this.data.FromName == "IP-Pharma-Multiple-SETTLEMENT") {
@@ -731,8 +758,8 @@ export class OpPaymentComponent implements OnInit {
         MultiplePay['paymentId'] = 0;
         MultiplePay['billNo'] = element.salesId || 0;
         MultiplePay['paymentDate'] = formattedDate,
-        MultiplePay['paymentTime'] = formattedTime,
-        MultiplePay['cashPayAmount'] = PayCashAmt || 0
+          MultiplePay['paymentTime'] = formattedTime,
+          MultiplePay['cashPayAmount'] = PayCashAmt || 0
         MultiplePay['chequePayAmount'] = PayChequeAmt || 0
         MultiplePay['chequeNo'] = this.Payments.data.find(x => x.PaymentType == "cheque")?.RefNo ?? "";
         MultiplePay['bankName'] = this.Payments.data.find(x => x.PaymentType == "cheque")?.BankName ?? "";
@@ -764,7 +791,7 @@ export class OpPaymentComponent implements OnInit {
         PaymentMul.push(MultiplePay)
       })
       this.Paymentobj = PaymentMul
-    }   
+    }
     let submitDataPay = {
       ipPaymentInsert: this.Paymentobj
     };
