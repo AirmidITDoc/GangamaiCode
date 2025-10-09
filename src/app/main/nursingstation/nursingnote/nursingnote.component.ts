@@ -510,7 +510,7 @@ export class NursingnoteComponent implements OnInit {
   }
 
    OnHandOverPrint(element) {
-    this.commonService.Onprint("AdmId", element, "DoctorPatientHandoverReceipt");
+    this.commonService.Onprint("AdmId", element, "NursingPatientHandoverReceipt");
   }
 
   OnHandOverEdit(row) {

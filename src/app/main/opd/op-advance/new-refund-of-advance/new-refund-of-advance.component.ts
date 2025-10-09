@@ -12,7 +12,7 @@ import { FormvalidationserviceService } from 'app/main/shared/services/formvalid
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 import { WhatsAppEmailService } from 'app/main/shared/services/whats-app-email.service';
 import { ToastrService } from 'ngx-toastr';
-import { OpRefundOfAdvanceService } from '../op-refund-of-advance.service';
+import { OpRefundOfAdvanceService } from '../../op-refund-of-advance/op-refund-of-advance.service';
 
 @Component({
   selector: 'app-new-refund-of-advance',

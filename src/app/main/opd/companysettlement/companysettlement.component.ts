@@ -18,6 +18,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { SelectionModel } from '@angular/cdk/collections';
+import { MatCheckboxChange } from '@angular/material/checkbox';
 
 @Component({
     selector: 'app-companysettlement',
@@ -34,6 +35,7 @@ export class CompanysettlementComponent implements OnInit {
     vOPIPId = 0;
     f_name: any = ""
     regNo: any = "0"
+    regNo2: any = "0"
     l_name: any = ""
     CompanyId = 0
     PBillNo: any = "%"
@@ -41,6 +43,7 @@ export class CompanysettlementComponent implements OnInit {
     searchFormGroup: FormGroup
     OPMultipleSettlForm: FormGroup
     RegId1 = "0";
+    RegId2 = "0";
     BillNo: any;
     vpaidamt: any = 0;
     vbalanceamt: any = 0;
@@ -59,8 +62,9 @@ export class CompanysettlementComponent implements OnInit {
         'BillAmount',
         'ConsessionAmt',
         'NetAmount',
-        'PaidAmount',
         'balAmount',
+        'PaidAmount',
+        'tds',
         'companyName',
         'action',
     ];
@@ -211,9 +215,15 @@ export class CompanysettlementComponent implements OnInit {
         this.regNo = obj.regNo
         this.registerObj = obj
         this.GetDetails(obj.value)
+    }
 
+    getSelectedObj2(obj) {
+        this.RegId2 = obj.value;
+        this.regNo2 = obj.regNo
+        this.registerObj = obj
         this.getmultiplePaymentList();
     }
+
     openPaymentpopup(contact) {
         let PatientHeaderObj = {};
         PatientHeaderObj['Date'] = this.datePipe.transform(contact.billDate, 'MM/dd/yyyy') || '01/01/1900',
@@ -373,6 +383,75 @@ export class CompanysettlementComponent implements OnInit {
         });
     }
 
+    onTDSChange(element: any) {
+
+        if (!this.selection.isSelected(element)) {
+            this.toastr.warning('Please select the row before entering TDS.', 'Warning!', {
+                toastClass: 'tostr-tost custom-toast-warning',
+            });
+            element.tds = 0;
+            return;
+        }
+
+        if (element.tds > element.balanceAmt) {
+            this.toastr.warning('TDS cannot be greater than Paid Amount.', 'Warning!', {
+                toastClass: 'tostr-tost custom-toast-warning',
+            });
+            element.tds = 0; // reset TDS
+        }
+
+        // recalculate totals based on current SelectedList
+        this.vNetAmount = this.roundAmount(
+            this.SelectedList.reduce((sum, x) => sum + x.billAmount, 0)
+        );
+
+        // Paid amount minus TDS for selected rows
+        this.vPaidAmount = this.roundAmount(
+            this.SelectedList.reduce(
+                (sum, x) => sum + (x.balanceAmt - (x.tds || 0)), 0
+            )
+        );
+
+        this.vBalanceAmount = this.roundAmount(
+            this.SelectedList.reduce((sum, x) => sum + x.paidAmount, 0)
+        );
+    }
+
+    deleteTableRow(element: MultiplePayList) {
+        const currentData = this.dsMultiplepayList.data;
+        const index = currentData.indexOf(element);
+
+        if (index >= 0) {
+            currentData.splice(index, 1); // remove element from table
+            this.dsMultiplepayList.data = [...currentData];
+        }
+
+        // 🔹 Deselect if it was selected
+        this.selection.deselect(element);
+
+        // 🔹 Remove from SelectedList if present
+        const selectedIndex = this.SelectedList.indexOf(element);
+        if (selectedIndex >= 0) {
+            this.SelectedList.splice(selectedIndex, 1);
+        }
+
+        // 🔹 Recalculate totals based on remaining selected items
+        this.vNetAmount = this.roundAmount(
+            this.SelectedList.reduce((sum, x) => sum + x.billAmount, 0)
+        );
+        this.vPaidAmount = this.roundAmount(
+            this.SelectedList.reduce((sum, x) => sum + x.balanceAmt, 0)
+        );
+        this.vBalanceAmount = this.roundAmount(
+            this.SelectedList.reduce((sum, x) => sum + x.paidAmount, 0)
+        );
+
+        this.toastr.success('Record Deleted Successfully.', 'Deleted !', {
+            toastClass: 'tostr-tost custom-toast-success',
+        });
+    }
+
+
     dsMultiplepayList = new MatTableDataSource<MultiplePayList>();
     @ViewChild(MatSort) sort: MatSort;
     @ViewChild('paginator', { static: true }) public paginator: MatPaginator;
@@ -409,7 +488,7 @@ export class CompanysettlementComponent implements OnInit {
                 },
                 {
                     "fieldName": "Reg_No",
-                    "fieldValue": this.regNo, //"1",
+                    "fieldValue": this.regNo2, //"1",
                     "opType": "Contains"
                 },
                 {
@@ -477,7 +556,7 @@ export class CompanysettlementComponent implements OnInit {
 
             this.dsMultiplepayList.data.forEach(element => {
                 console.log(element)
-                this.vNetAmount += element.netAmount
+                this.vNetAmount += element.billAmount
                 this.vPaidAmount += element.paidAmount
                 this.vBalanceAmount += element.balanceAmt
                 this.SelectedList.push(element)
@@ -500,6 +579,16 @@ export class CompanysettlementComponent implements OnInit {
     OnSelectPayment(event, element) {
         debugger
         if (event.checked) {
+
+            if (element._origPaidAmount === undefined && element._origBalanceAmt === undefined) {
+                element._origPaidAmount = element.paidAmount;
+                element._origBalanceAmt = element.balanceAmt;
+            }
+
+            // ✅ Your swap logic
+            element.balanceAmt = element.paidAmount; //here for paid i pass balAmt & viceversa in html
+            element.paidAmount = 0;
+
             if (this.SelectedList.length > 0) {
                 // if (!this.SelectedList.some(item => item.supplierName == element.supplierName)) {
                 //     this.toastr.warning('Please select same supplier Name', 'Warning !', {
@@ -523,26 +612,32 @@ export class CompanysettlementComponent implements OnInit {
                 this.SelectedList.push(element)
             }
 
-            this.vNetAmount = this.roundAmount(this.vNetAmount + element.netAmount);
-            this.vPaidAmount = this.roundAmount(this.vPaidAmount + element.paidAmount);
-            this.vBalanceAmount = this.roundAmount(this.vBalanceAmount + element.balAmount);
+            this.vNetAmount = this.roundAmount(this.vNetAmount + element.billAmount);
+            this.vPaidAmount = this.roundAmount(this.vPaidAmount + element.balanceAmt);
+            this.vBalanceAmount = this.roundAmount(this.vBalanceAmount + element.paidAmount);
         }
         else {
+
+            if (element._origPaidAmount !== undefined && element._origBalanceAmt !== undefined) {
+                element.paidAmount = element._origPaidAmount;
+                element.balanceAmt = element._origBalanceAmt;
+            }
+
             let index = this.SelectedList.indexOf(element);
             if (index >= 0) {
                 this.SelectedList.splice(index, 1);
             }
 
             this.vNetAmount = this.roundAmount(
-                this.SelectedList.reduce((sum, x) => sum + x.netAmount, 0)
+                this.SelectedList.reduce((sum, x) => sum + x.billAmount, 0)
             );
             this.vPaidAmount = this.roundAmount(
-                this.SelectedList.reduce((sum, x) => sum + x.paidAmount, 0)
+                this.SelectedList.reduce((sum, x) => sum + x.balanceAmt, 0)
             );
             this.vBalanceAmount = this.roundAmount(
-                this.SelectedList.reduce((sum, x) => sum + x.balAmount, 0)
+                this.SelectedList.reduce((sum, x) => sum + x.paidAmount, 0)
             );
-
+            this.dsMultiplepayList.data = [...this.dsMultiplepayList.data];
         }
         console.log(this.SelectedList)
     }
@@ -562,8 +657,33 @@ export class CompanysettlementComponent implements OnInit {
         this.selection.clear();
     }
 
+    CurrentDate = new Date()
     OnSave() {
+        if ((this.vPaidAmount == 0 && this.vNetAmount == 0)) {
+            this.toastr.warning('Please select Check Box', 'Warning !', {
+                toastClass: 'tostr-tost custom-toast-warning',
+            });
+            return;
+        }
+        debugger
 
+        let PatientHeaderObj = {};
+        PatientHeaderObj['Date'] = this.datePipe.transform(this.CurrentDate, 'dd/MM/YYYY') || '01/01/1900'
+        PatientHeaderObj['NetPayAmount'] = this.vNetAmount;
+        const dialogRef = this._matDialog.open(OpPaymentComponent,
+            {
+                maxWidth: "80vw",
+                height: '750px',
+                width: '80%',
+                data: {
+                    vPatientHeaderObj: PatientHeaderObj,
+                    FromName: "Phar-SupplierPay"
+                }
+            });
+        dialogRef.afterClosed().subscribe(result => {
+            debugger
+            console.log("payment:", result)
+        });
     }
 }
 
@@ -579,6 +699,8 @@ export class MultiplePayList {
     patientName: any;
     regNo: any;
     netAmount: any;
+    billAmount: any;
+    tds: any;
 
     constructor(MultiplePayList) {
         {
@@ -593,6 +715,8 @@ export class MultiplePayList {
             this.patientName = MultiplePayList.patientName || '';
             this.regNo = MultiplePayList.regNo || 0;
             this.netAmount = MultiplePayList.netAmount || 0
+            this.tds = MultiplePayList.tds || 0
+            this.billAmount = MultiplePayList.billAmount || 0
         }
     }
 }
