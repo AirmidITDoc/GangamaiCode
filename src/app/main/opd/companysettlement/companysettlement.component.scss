@@ -1,0 +1,25 @@
+.demo-table {
+  display: flex;
+  flex-direction: column;
+  height: 65vh; 
+  overflow: hidden;
+}
+
+.table-wrapper {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.demo-table1 {
+  table-layout: fixed;
+  width: 100%;
+  min-width: 1200px; /* or whatever fits */
+}
+
+.mat-paginator {
+  flex-shrink: 0;
+  background: #fff;
+  position: sticky;
+  bottom: 0;
+  z-index: 10;
+}
