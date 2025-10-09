@@ -15,6 +15,7 @@ import { PrintserviceService } from 'app/main/shared/services/printservice.servi
 import { ToastrService } from 'ngx-toastr';
 import { OpAdvanceService } from './op-advance.service';
 import { NewOpAdvanceComponent } from './new-op-advance/new-op-advance.component';
+import { NewRefundOfAdvanceComponent } from './new-refund-of-advance/new-refund-of-advance.component';
 
 @Component({
   selector: 'app-op-advance',
@@ -140,7 +141,7 @@ export class OpAdvanceComponent {
     console.log("Selected row : ", row);
   }
 
-  onNew() {
+  onNew1() {
     const dialogRef = this._matDialog.open(NewOpAdvanceComponent,
       {
         maxWidth: "100%",
@@ -152,4 +153,17 @@ export class OpAdvanceComponent {
       this.grid.bindGridData();
     });
   }
+
+   onNew2() {
+      const dialogRef = this._matDialog.open(NewRefundOfAdvanceComponent,
+        {
+          maxWidth: "100%",
+          maxHeight: '95%',
+          width: '80%',
+        });
+      dialogRef.afterClosed().subscribe(result => {
+        console.log('The dialog was closed - Insert Action', result);
+        this.grid.bindGridData();
+      });
+    }
 }

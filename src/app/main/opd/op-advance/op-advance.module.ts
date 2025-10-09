@@ -43,6 +43,7 @@ import { MatTreeModule } from '@angular/material/tree';
 import { OpAdvanceComponent } from './op-advance.component';
 import { OpAdvanceService } from './op-advance.service';
 import { NewOpAdvanceComponent } from './new-op-advance/new-op-advance.component';
+import { NewRefundOfAdvanceComponent } from './new-refund-of-advance/new-refund-of-advance.component';
 
 const routes: Routes = [
   {
@@ -52,7 +53,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [OpAdvanceComponent, NewOpAdvanceComponent],
+  declarations: [OpAdvanceComponent, NewOpAdvanceComponent, NewRefundOfAdvanceComponent],
    imports: [
        CommonModule,
        RouterModule.forChild(routes),

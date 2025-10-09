@@ -14,7 +14,6 @@ import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/air
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 import { ToastrService } from 'ngx-toastr';
 import { OpRefundOfAdvanceService } from './op-refund-of-advance.service';
-import { NewRefundOfAdvanceComponent } from './new-refund-of-advance/new-refund-of-advance.component';
 
 @Component({
   selector: 'app-op-refund-of-advance',
@@ -141,15 +140,15 @@ export class OpRefundOfAdvanceComponent {
   }
 
     onNew() {
-      const dialogRef = this._matDialog.open(NewRefundOfAdvanceComponent,
-        {
-          maxWidth: "100%",
-          maxHeight: '95%',
-          width: '80%',
-        });
-      dialogRef.afterClosed().subscribe(result => {
-        console.log('The dialog was closed - Insert Action', result);
-        this.grid.bindGridData();
-      });
+      // const dialogRef = this._matDialog.open(NewRefundOfAdvanceComponent,
+      //   {
+      //     maxWidth: "100%",
+      //     maxHeight: '95%',
+      //     width: '80%',
+      //   });
+      // dialogRef.afterClosed().subscribe(result => {
+      //   console.log('The dialog was closed - Insert Action', result);
+      //   this.grid.bindGridData();
+      // });
     }
 }
