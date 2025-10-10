@@ -321,13 +321,13 @@ export class SalesHospitalNewComponent implements OnInit {
             //Sales current stock
             tCurrentStock: this.formBuilder.array([]),
             prescription: this.formBuilder.group({
-                opipid: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-                isclosed: [true]
+                opIpId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+                isClosed: [true]
             }),
             //Sales draft
             salesDraft: this.formBuilder.group({
-                dSalesId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-                isclosed: [true]
+                dsalesId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+                isClosed: [true]
             })
         })
     }
@@ -367,7 +367,7 @@ export class SalesHospitalNewComponent implements OnInit {
             itemId: [item?.ItemId, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             issueQty: [item?.Qty, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             iStkId: [item?.StockId, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-            storeID: [this._loggedService.currentUserValue.user.storeId, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]]
+            storeId: [this._loggedService.currentUserValue.user.storeId, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]]
         })
     }
     // Getters 
@@ -497,8 +497,7 @@ export class SalesHospitalNewComponent implements OnInit {
             Swal.fire('Selected Patient is already discharged');
             this.RegId = '';
         } else {
-            console.log(obj);
-            this.Patientdetails = obj;
+             this.Patientdetails = obj;
             this.DoctorNamecheck = true;
             this.IPDNocheck = true;
             this.OPDNoCheck = false;
@@ -629,7 +628,7 @@ export class SalesHospitalNewComponent implements OnInit {
             })
         });
     }
-    calculateTotalAmt() {
+    calculateTotalAmt() { 
         const formvalues = this._salesService.ItemSearchGroup.value;
         let qty = +formvalues.Qty;
         if (qty > formvalues.BalanceQty) {
@@ -651,13 +650,13 @@ export class SalesHospitalNewComponent implements OnInit {
         let CGSTAmt = '0';
         let SGSTAmt = '0';
         let IGSTAmt = '0';
-        if (qty && formvalues.MRP) {
-            TotalMRP = (qty * formvalues.MRP).toFixed(2);
+        if (qty && formvalues?.MRP) {
+            TotalMRP = (qty * formvalues?.MRP).toFixed(2);
             LandedRateandedTotal = (qty * this.selectedItem?.landedRate).toFixed(2);
-            MRPRateTotal = (qty * this.selectedItem?.unitMRP).toFixed(2);
+            MRPRateTotal = (qty * formvalues?.MRPRate).toFixed(2);
             marginamt = (parseFloat(TotalMRP) - parseFloat(LandedRateandedTotal)).toFixed(2);
             PurTotAmt = (qty * this.selectedItem?.purchaseRate).toFixed(2);
-            GSTAmount = (((parseFloat(TotalMRP) * formvalues.GSTPer) / 100) * qty).toFixed(2);
+            GSTAmount = (((parseFloat(TotalMRP) * formvalues?.GSTPer) / 100) * qty).toFixed(2);
             CGSTAmt = (((parseFloat(TotalMRP) * this.selectedItem?.cgstPer) / 100) * qty).toFixed(2);
             SGSTAmt = (((parseFloat(TotalMRP) * this.selectedItem?.sgstPer) / 100) * qty).toFixed(2);
             IGSTAmt = (((parseFloat(TotalMRP) * this.selectedItem?.igstPer) / 100) * qty).toFixed(2);
@@ -699,22 +698,45 @@ export class SalesHospitalNewComponent implements OnInit {
     public discperCal(): void {
         const formValue = this._salesService.ItemSearchGroup.value;
         const discPer = Number(formValue.DiscPer);
-
-        if (discPer < 0 || discPer > 100) {
+        if((formValue?.MarginAmt ?? 0) <= 0){
+                   Swal.fire({
+                icon: 'warning',
+                title: 'Discount not allowed!',
+                text: `Margin amount is zero. Please review the pricing before applying a discount.`,
+                timer: 3000, // auto close after 3 seconds
+                timerProgressBar: true,
+                showConfirmButton: false,
+            });
+            this._salesService.ItemSearchGroup.patchValue({  DiscAmt: 0,  DiscPer: '', NetAmt:formValue.TotalMrp});
+            return 
+        }
+        if (discPer < 0 && discPer > 100 || formValue.DiscPer == '') {
                 this.toastr.warning('Discount % should less than 100% & greater than 0', 'warning !', {
                   toastClass: 'tostr-tost custom-toast-warning',
                 }); 
             this._salesService.ItemSearchGroup.patchValue({
                 DiscAmt: 0,
-                DiscPer: 0,
+                DiscPer: '',
                 NetAmt:formValue.TotalMrp
             });
             this.ConShow = false;
             return;
         }
-        if (formValue.TotalMrp) {
+        if (formValue.TotalMrp && discPer > 0) {
             // Calculate discount amount from percentage
             let DiscAmt = ((formValue.TotalMrp * discPer) / 100).toFixed(2);
+            if(Number(DiscAmt) > Number(formValue?.MarginAmt ?? 0)){ 
+                Swal.fire({
+                icon: 'warning',
+                title: 'Discount exceeds margin!',
+                text: `Entered discount amount exceeds the margin. Maximum allowed is ₹${formValue?.MarginAmt}`,
+                timer: 3000, // auto close after 3 seconds
+                timerProgressBar: true,
+                showConfirmButton: false,
+            });
+            this._salesService.ItemSearchGroup.patchValue({ DiscAmt: 0,  DiscPer: '', NetAmt:formValue.TotalMrp });
+            return
+            } 
             this._salesService.ItemSearchGroup.patchValue({
                 DiscAmt: DiscAmt,
             });
@@ -735,14 +757,35 @@ export class SalesHospitalNewComponent implements OnInit {
         const formValue = this._salesService.ItemSearchGroup.value;
         const discAmt = Number(formValue.DiscAmt);
 
-        if (discAmt < 0 || discAmt > Number(formValue.TotalMrp)) {
-            this.toastr.error('Discount amount should less then Total MRP', 'Error !', {
-                toastClass: 'tostr-tost custom-toast-error',
+          if((formValue?.MarginAmt ?? 0) <= 0){ 
+                  Swal.fire({
+                icon: 'warning',
+                title: 'Discount not allowed!',
+                text: `Margin amount is zero. Please review the pricing before applying a discount.`,
+                timer: 3000, // auto close after 3 seconds
+                timerProgressBar: true,
+                showConfirmButton: false,
             });
-            this._salesService.ItemSearchGroup.patchValue({
-                DiscAmt: 0,
-                DiscPer: 0,
+            this._salesService.ItemSearchGroup.patchValue({  DiscAmt: '',  DiscPer: 0, NetAmt:formValue.TotalMrp });
+            return 
+        }
+        if (discAmt > (formValue?.MarginAmt ?? 0)) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Discount exceeds margin!',
+                text: `Entered discount amount exceeds the margin. Maximum allowed is ₹${formValue?.MarginAmt}`,
+                timer: 3000, // auto close after 3 seconds
+                timerProgressBar: true,
+                showConfirmButton: false,
             });
+            this._salesService.ItemSearchGroup.patchValue({  DiscAmt: '',  DiscPer: 0, NetAmt:formValue.TotalMrp });
+            return
+        } 
+        if (discAmt < 0 || discAmt > Number(formValue.TotalMrp) || formValue.DiscAmt == '') {
+            this.toastr.warning('Discount amount should less then Total MRP', 'warning !', {
+                toastClass: 'tostr-tost custom-toast-warning',
+            });
+            this._salesService.ItemSearchGroup.patchValue({  DiscAmt: '',  DiscPer: 0, NetAmt:formValue.TotalMrp });
             return;
         }
         if (formValue.TotalMrp && discAmt) {
@@ -789,7 +832,8 @@ export class SalesHospitalNewComponent implements OnInit {
             SalesDraftId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             StoreId: [this.selectedItem?.storeId, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             MRP: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-            MRPRate: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            MRPRate: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            MRPRateTotal: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
         })
     }
 
@@ -808,7 +852,7 @@ export class SalesHospitalNewComponent implements OnInit {
         }
     }
 
-    OnAddItem() {
+    OnAddItem() { 
         if (this.saleSelectedDatasource.data.length > 0) {
             this.saleSelectedDatasource.data.forEach((element) => {
                 if (element.StockId == this.StockId) {
@@ -843,19 +887,19 @@ export class SalesHospitalNewComponent implements OnInit {
             ItemName: formValue.ItemId.itemName,
             Qty: formValue.Qty,
             UnitMRP: formValue.MRP,
-            GSTAmount: formValue.GSTAmount,
+            GSTAmount: formValue.GSTAmount || 0,
             TotalMRP: formValue.TotalMrp,
-            DiscPer: formValue.DiscPer,
-            DiscAmt: formValue.DiscAmt,
+            DiscPer: formValue.DiscPer || '',
+            DiscAmt: formValue.DiscAmt || 0,
             NetAmt: formValue.NetAmt,
-            GSTPer: formValue.GSTPer,
-            VatPer: formValue.GSTPer,
+            GSTPer: formValue.GSTPer || 0,
+            VatPer: formValue.GSTPer || 0,
             RoundNetAmt: Math.round(formValue.NetAmt),
-            VatAmount: formValue.GSTAmount,
+            VatAmount: formValue.GSTAmount || 0,
             LandedRateandedTotal: formValue.LandedRateandedTotal,
-            CGSTAmt: formValue.CGSTAmt,
-            SGSTAmt: formValue.SGSTAmt,
-            IGSTAmt: formValue.IGSTAmt,
+            CGSTAmt: formValue.CGSTAmt || 0,
+            SGSTAmt: formValue.SGSTAmt || 0,
+            IGSTAmt: formValue.IGSTAmt || 0,
             PurTotAmt: formValue.PurTotAmt,
             MarginAmt: formValue.MarginAmt, 
             MRP: formValue.MRP,
@@ -933,6 +977,7 @@ export class SalesHospitalNewComponent implements OnInit {
         this.ItemSubform.get('externalPatientName').reset('');
         this.ItemSubform.get('doctorName').reset('');
         this.ConShow = false;
+         this.CreditReasonShow = false;
         this.ItemSubform.get('concessionReasonId').clearValidators();
         this.ItemSubform.get('concessionReasonId').updateValueAndValidity();
         this.ItemSubform.get('concessionReasonId').disable();
@@ -954,8 +999,7 @@ export class SalesHospitalNewComponent implements OnInit {
         this.getUpdateNetAmtSum(this.saleSelectedDatasource.data)
      }
      isdiscAmount:boolean=false;
-    getUpdateNetAmtSum(data) {
-        debugger
+    getUpdateNetAmtSum(data) { 
          const itemData = data
         let FinalNetAmt = itemData.reduce((sum, { NetAmt }) => (sum += +(NetAmt || 0)), 0).toFixed(2);
         let FinalTotalAmt = itemData.reduce((sum, { TotalMRP }) => (sum += +(TotalMRP || 0)), 0).toFixed(2);
@@ -966,7 +1010,7 @@ export class SalesHospitalNewComponent implements OnInit {
             roundoffAmt: roundoffAmt,
             totalAmount: FinalTotalAmt,
             vatAmount: FinalGSTAmt, 
-            netAmount: FinalNetAmt,
+            netAmount: Math.round(FinalNetAmt),
         })
         if (Number(FinalDiscAmt > 0)) {
          this.ItemSubform.patchValue({discAmount: FinalDiscAmt}) 
@@ -994,7 +1038,9 @@ export class SalesHospitalNewComponent implements OnInit {
             this.ItemSubform.get('concessionReasonId').disable();
             if (finalDiscPerControl > 0) { 
             this.getFinalDiscperAmt();
-           } 
+           } else{
+             this.ItemSubform.patchValue({discAmount: ''}) 
+           }
         } 
     }
     getStoredet() {
@@ -1003,8 +1049,7 @@ export class SalesHospitalNewComponent implements OnInit {
             this.StoreName = storename[1].text;
         });
     }
-    getFinalDiscperAmt() {
-        debugger
+    getFinalDiscperAmt() { 
         const formValues = this.ItemSubform.getRawValue();
         let Disc = formValues.FinalDiscPer || 0; 
         let NetAmount = formValues.netAmount;
@@ -1015,7 +1060,7 @@ export class SalesHospitalNewComponent implements OnInit {
             NetAmount = (formValues.totalAmount - parseFloat(FinalDiscAmt)).toFixed(2);
            this.ItemSubform.patchValue({
             discAmount: FinalDiscAmt,
-            netAmount: NetAmount,
+            netAmount:  Math.round(NetAmount),
             roundoffAmt:(Math.round(NetAmount) - NetAmount).toFixed(2)
             })
             this.ItemSubform.get('concessionReasonId').reset();
@@ -1031,7 +1076,7 @@ export class SalesHospitalNewComponent implements OnInit {
              this.ItemSubform.patchValue({
                 FinalDiscPer: 0,
                 discAmount: 0, 
-                netAmount: formValues?.totalAmount,
+                netAmount: Math.round(formValues?.totalAmount),
                 roundoffAmt:(Math.round(formValues?.totalAmount) - formValues?.totalAmount).toFixed(2)
             });   
             this.ConShow = false;
@@ -1042,14 +1087,13 @@ export class SalesHospitalNewComponent implements OnInit {
         } 
     }
     getFinalDiscAmount() {
-        debugger
         const formValues = this.ItemSubform.getRawValue();
         let Discper = ''
         let totDiscAmt = formValues?.discAmount || 0;
         let NetAmount = formValues?.totalAmount;
         if (totDiscAmt > 0 && totDiscAmt < parseInt(NetAmount)) {
             Discper = ((totDiscAmt/NetAmount) * 100 ).toFixed(2);
-            NetAmount = (formValues?.totalAmount - totDiscAmt).toFixed(2);
+            NetAmount = (formValues?.totalAmount - totDiscAmt).toFixed(2); 
             this.ConShow = true;
             this.ItemSubform.get('concessionReasonId').reset();
             this.ItemSubform.get('concessionReasonId').setValidators([Validators.required]);
@@ -1072,7 +1116,7 @@ export class SalesHospitalNewComponent implements OnInit {
         this.ItemSubform.patchValue({
             FinalDiscPer:Discper,
             discAmount:totDiscAmt,
-            netAmount: NetAmount,
+            netAmount:  Math.round(NetAmount),
             roundoffAmt:(Math.round(NetAmount) - NetAmount).toFixed(2)
         })
 
@@ -1145,13 +1189,12 @@ export class SalesHospitalNewComponent implements OnInit {
         this.PharmaSalesForm.get('sales.opIpId').setValue(this.OP_IP_Id)
         this.PharmaSalesForm.get('sales.wardId').setValue(this.wardId)
         this.PharmaSalesForm.get('sales.bedId').setValue(this.bedId) 
-        this.PharmaSalesForm.get('sales.isPurBill').setValue(formValue?.IsPurchaseWsie)
+        this.PharmaSalesForm.get('sales.isPurBill').setValue(formValue?.IsPurchaseWsie || false)
         this.PharmaSalesForm.get('sales.isPrescription').setValue(this.IPMedID || 0)
-        this.PharmaSalesForm.get('prescription.opipid').setValue(this.IPMedID || 0)
-        this.PharmaSalesForm.get('salesDraft.dSalesId').setValue(this.DraftID || 0)
+        this.PharmaSalesForm.get('prescription.opIpId').setValue(this.IPMedID || 0)
+        this.PharmaSalesForm.get('salesDraft.dsalesId').setValue(this.DraftID || 0)
         this.PharmaSalesForm.get('sales.externalPatientName').setValue(this.PatientName || '')
         this.PharmaSalesForm.get('sales.doctorName').setValue(this.DoctorName || '') 
-
 
         if (formValue.opIpType == 2) {
             this.PharmaSalesForm.get('sales.externalPatientName').setValue((formValue.externalPatientName?.patientName ?? formValue.externalPatientName) || '')
@@ -1172,11 +1215,10 @@ export class SalesHospitalNewComponent implements OnInit {
                 //this.SalesDetailsAarry.push(this.CreateSalesDetailsform(element))
                 this.CurrentStockArray.push(this.CreateCurrentStockForm(element))
                 const formObj = this.CreateSalesDetailsform(element);  
-                formObj.patchValue({ isPurRate: formValue?.IsPurchaseWsie});  
+                formObj.patchValue({ isPurRate: formValue?.IsPurchaseWsie || false});  
                 this.SalesDetailsAarry.push(formObj);  
             });
-            console.log(this.PharmaSalesForm.value) 
-
+ 
             if (this.ItemSubform.get('CashPay').value == 'CashPay') {
                 this.PharmaSalesForm.get('sales.paidAmount').setValue((Math.round(formValue.netAmount)))
                 this.PharmaSalesForm.get('sales.balanceAmount').setValue(0)
@@ -1274,7 +1316,9 @@ export class SalesHospitalNewComponent implements OnInit {
         this.getDraftorderList();
         this.PharmaSalesForm.get('sales.balanceAmount')?.reset(0);
     }
-    onClose() {
+    onClose() { 
+        this.PharmaSalesForm = this.CreatePharmasalesform()
+        this.PharmaSalesDraftForm = this.CreatePharmasalesDraftform()
         this.Itemchargeslist = [];
         this.ItemFormreset();
         this.ItemSubform.reset();
@@ -1284,6 +1328,9 @@ export class SalesHospitalNewComponent implements OnInit {
         this.MobileNo = '';
         this.saleSelectedDatasource.data = [];
         this.ItemSubform.get('FinalDiscPer').enable();
+        this.ItemSubform.get('discAmount').enable();
+        this._salesService.ItemSearchGroup.get('DiscPer').enable();
+        this._salesService.ItemSearchGroup.get('DiscAmt').enable();
     }
     // Table calculation
     updateCellDiscount(item: IndentList): void {
@@ -1302,8 +1349,7 @@ export class SalesHospitalNewComponent implements OnInit {
         item.DiscAmt = ((totalMrp * discPer) / 100).toFixed(2);
         this.calculateCellNetAmount(item);
     }
-    getCellCalculation(item: IndentList) {
-        debugger
+    getCellCalculation(item: IndentList) { 
         let qty = +item?.Qty;
         if (!qty) {
             qty = 0;
@@ -1347,8 +1393,7 @@ export class SalesHospitalNewComponent implements OnInit {
         this.updateCellDiscount(item);
         this.calculateCellNetAmount(item);
     }
-    calculateCellNetAmount(item: IndentList): void {
-        debugger
+    calculateCellNetAmount(item: IndentList): void { 
         const formValue = this.ItemSubform.value;
         const discAmt = +item?.DiscAmt;
         const totalMrp = +item.TotalMRP;
@@ -1514,8 +1559,7 @@ export class SalesHospitalNewComponent implements OnInit {
             this.PharmaSalesDraftForm.get('salesDraft.externalPatientName').setValue(this.PatientName)
             this.PharmaSalesDraftForm.get('salesDraft.doctorName').setValue(this.Patientdetails?.doctorName)
         }
-        console.log(this.PharmaSalesDraftForm.value)
-        this.SalesDraftDetailsAarry.clear();
+         this.SalesDraftDetailsAarry.clear();
         if (this.PharmaSalesDraftForm.valid) {
             this.SalesDraftDetailsAarry.clear();
             this.saleSelectedDatasource.data.forEach((element) => {
@@ -1553,8 +1597,7 @@ export class SalesHospitalNewComponent implements OnInit {
         }
     }
 
-    onAddDraftList(contact) {
-        debugger
+    onAddDraftList(contact) { 
         console.log(contact)
         this.DraftID = contact.dsalesId;
         this.saleSelectedDatasource.data = [];
@@ -1620,8 +1663,7 @@ export class SalesHospitalNewComponent implements OnInit {
         }
         this._salesService.getDraftItemDetailsList(vdata).subscribe((response) => {
             this.tempDatasource.data = response.data as any;
-            console.log(this.tempDatasource.data);
-            if (this.tempDatasource.data.length >= 1) {
+             if (this.tempDatasource.data.length >= 1) {
                 this.tempDatasource.data.forEach((element) => {
                     this.DraftQty = element.qtyPerDay;
                     this.onAddDraftListTosale(element, this.DraftQty);
@@ -2223,11 +2265,11 @@ export class SalesHospitalNewComponent implements OnInit {
         }
     }
     onsubstitutes() {
-        const dialogRef = this._matDialog.open(SubstitutesComponent, {
-            maxWidth: '65vw',
-            height: '650px',
-            width: '60%',
-        });
+        const dialogRef = this._matDialog.open(SubstitutesComponent,
+          {
+                 width:"45%",
+                height:"60%",
+           });
         dialogRef.afterClosed().subscribe((result) => {
             console.log('The dialog was closed - Insert Action', result);
         });
@@ -2294,8 +2336,7 @@ export class SalesHospitalNewComponent implements OnInit {
             });
         }, 100);
     }
-    getSelectedObjextMobile(event) {
-        debugger
+    getSelectedObjextMobile(event) { 
         if (event) {
             this.ItemSubform.get('externalPatientName').setValue(event)
             this.ItemSubform.get('doctorName').setValue(event)
@@ -2306,8 +2347,7 @@ export class SalesHospitalNewComponent implements OnInit {
             extAddressNameElement.focus();
         }
     }
-    getSelectedObjextPatient(event: any): void {
-        debugger
+    getSelectedObjextPatient(event: any): void { 
         if (event) {
             this.ItemSubform.get('extMobileNo').setValue(event)
             this.ItemSubform.get('doctorName').setValue(event)
@@ -2318,8 +2358,7 @@ export class SalesHospitalNewComponent implements OnInit {
             extAddressNameElement.focus();
         }
     }
-    getSelectedObjExtDocName(event) {
-        debugger
+    getSelectedObjExtDocName(event) { 
         const extAddressNameElement = document.querySelector(`[name='extAddress']`) as HTMLElement;
         if (extAddressNameElement) {
             extAddressNameElement.focus();
@@ -2327,13 +2366,18 @@ export class SalesHospitalNewComponent implements OnInit {
     }
   
     getPurchaseRateWise(event) {
-        debugger
         // Update gst type of table data  
         if (this.ItemSubform.get('IsPurchaseWsie')?.value == true) { 
             this.ItemSubform.get('FinalDiscPer').reset();
             this.ItemSubform.get('discAmount').reset();
             this.ItemSubform.get('FinalDiscPer').disable();
             this.ItemSubform.get('discAmount').disable();
+
+            this._salesService.ItemSearchGroup.get('DiscPer').reset();
+            this._salesService.ItemSearchGroup.get('DiscAmt').reset();
+            this._salesService.ItemSearchGroup.get('DiscPer').disable();
+            this._salesService.ItemSearchGroup.get('DiscAmt').disable();
+            
               Swal.fire({
                     icon: 'info',
                     title: 'Discount Disabled',
@@ -2345,6 +2389,8 @@ export class SalesHospitalNewComponent implements OnInit {
          } else {
             this.ItemSubform.get('FinalDiscPer').enable();
             this.ItemSubform.get('discAmount').enable();
+            this._salesService.ItemSearchGroup.get('DiscPer').enable();
+            this._salesService.ItemSearchGroup.get('DiscAmt').enable();
         } 
         this.saleSelectedDatasource.data.forEach((item) => {
             this.getCellCalculation(item);
@@ -2363,6 +2409,26 @@ export class SalesHospitalNewComponent implements OnInit {
         CredirReasonName:event.text
        })
     }
+    // it allowed only Digit 
+    keyPressDigitsOnly(event) {
+        var inp = String.fromCharCode(event.keyCode);
+        if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
+            return true;
+        } else {
+            event.preventDefault();
+            return false;
+        }
+    }
+        // it allowed only Digit & decimal
+    keyPressDigitDecimalOnly(event) {
+        var inp = String.fromCharCode(event.keyCode);
+        if (/^\d*\.?\d*$/.test(inp)) {
+            return true;
+        } else {
+            event.preventDefault();
+            return false;
+        }
+    } 
 }
 
 export class IndentList {

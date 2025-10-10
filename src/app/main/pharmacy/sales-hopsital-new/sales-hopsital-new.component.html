@@ -426,7 +426,7 @@
                         </div>
 
                         <div fxFlex="100%" fxFlex.gt-sm="7%">
-                          <airmid-textbox label="Margin Amount" formControlName="MarginAmt" [readonly]="true"
+                          <airmid-textbox label="Markup Amt" formControlName="MarginAmt" [readonly]="true"
                             [formGroup]="_salesService.ItemSearchGroup"></airmid-textbox>
                         </div>
 
@@ -478,7 +478,7 @@
                       <mat-cell class="w-100" *matCellDef="let contact" fxShow.gt-sm>
                         <mat-form-field appearance="fill">
                           <input matInput [(ngModel)]="contact.Qty" type="text " (keyup)="getCellCalculation(contact)"
-                            min="0" max="1000" name="tableQty" OnlyNumber />
+                            min="0" max="1000" name="tableQty" OnlyNumber  (keypress)="keyPressDigitsOnly($event)"/>
                         </mat-form-field>
                       </mat-cell>
                     </ng-container>
@@ -517,7 +517,7 @@
                       <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                         <mat-form-field appearance="fill">
                           <input matInput [(ngModel)]="contact.DiscPer" type="text" [disabled]="contact.IsPurRate > 0"
-                            (keyup)="updateCellDiscount(contact)" min="0" max="100" OnlyNumber />
+                            (keyup)="updateCellDiscount(contact)" min="0" max="100" OnlyNumber (keypress)="keyPressDigitDecimalOnly($event)"/>
                         </mat-form-field>
                       </mat-cell>
                     </ng-container>
@@ -687,8 +687,7 @@
                                
                          
                         <mat-slide-toggle name="IsPurchaseWsie"  (change)="getPurchaseRateWise($event)" formControlName="IsPurchaseWsie">
-                        PurchaseRateWsie
-
+                         ByRate
                         </mat-slide-toggle> 
 
                                 <div class="sales-footer-buttons gap-8" fxLayout="row">

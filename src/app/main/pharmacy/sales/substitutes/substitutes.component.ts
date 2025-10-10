@@ -16,26 +16,18 @@ import { SalesService } from '../sales.service';
   animations: fuseAnimations,
 })
 export class SubstitutesComponent implements OnInit {
-  
-  IssueSearchGroup :FormGroup;
-  isStoreSelected:boolean = false;
-  isItemIdSelected:boolean = false;
-
   displayedColumns = [
     'ItemName',
     'ItemGenericName'
   ];
-  
-  ToStoreList: any = [];
-  GenericItemList: any = [];
 
-  filteredOptionsStoreList: Observable<string[]>;
-  filteredOptionsGenericItemList: Observable<string[]>;
-
+  SubtituteForm: FormGroup;
   sIsLoading: string = '';
-  dsItemList = new MatTableDataSource<ItemList>();
+  autocompleteModeItemGenericName: string = "ItemGeneric";
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
+
+  dsItemList = new MatTableDataSource<ItemList>();
 
   constructor(
     public _matDialog: MatDialog,
@@ -43,80 +35,24 @@ export class SubstitutesComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
     public _SalesService: SalesService,
     private _formBuilder: UntypedFormBuilder
-  ) {
-    this.IssueSearchGroup= this.IssueSearchFrom();
-   }
-
-   IssueSearchFrom() {
-    return this._formBuilder.group({
-      ToStoreId: '',
-      FromStoreId:'',
-    });
-  }
-
+  ) { this.SubtituteForm = this.CreateSubtituteForm();}
   ngOnInit(): void {
   }
-
- 
-  filteredOptions: any;
-  PatientListfilteredOptions: any;
-  noOptionFound: boolean = false;
-
-  getPhoneAppointmentList() {
-    var m_data = {
-      "ItemName": `${this.IssueSearchGroup.get('ToStoreId').value}%`
-    }
-    if (this.IssueSearchGroup.get('ToStoreId').value.length >= 1) {
-      this._SalesService.getItemListSearchList(m_data).subscribe(resData => {
-        this.filteredOptions = resData;
-        this.PatientListfilteredOptions = resData;
-        if (this.filteredOptions.length == 0) {
-          this.noOptionFound = true;
-        } else {
-          this.noOptionFound = false;
-        }
-      });
-    }
+  CreateSubtituteForm() {
+    return this._formBuilder.group({
+      ItemId: [0],
+      itemGenericNameId: [0]
+    });
   }
-  getOptionText(option) {
-    if (!option) return '';
-    return option.ItemName;
-  }
-  getSelectedObjPhone(obj) {
-    console.log(obj);
+  onItemChange(obj): void {
+    console.log(obj)
     this.getItemList(obj);
   }
 
-// ========================
-  GenericfilteredOptions: any;
-  GenericListfilteredOptions: any;
-  noOptionFoundgen: boolean = false;
-  getGenericList() {
-    var g_data = {
-      "ItemName": `${this.IssueSearchGroup.get('FromStoreId').value}%`
-    }
-    if (this.IssueSearchGroup.get('FromStoreId').value.length >= 1) {
-      this._SalesService.getGenericNameList(g_data).subscribe(resData => {
-        this.GenericfilteredOptions = resData;
-        this.GenericListfilteredOptions = resData;
-        if (this.GenericfilteredOptions.length == 0) {
-          this.noOptionFoundgen = true;
-        } else {
-          this.noOptionFoundgen = false;
-        }
-      });
-    }
-  }
-  getOptionTextGeneric(option) {
-    if (!option) return '';
-    return option.ItemGenericName;
-  }
   getSelectedObjGeneric(obj) {
     console.log(obj);
     this.getItemList(obj);
   }
-
-
   getItemList(Param) {
     var data = {
       "ItemId": Param.ItemID || 0,
@@ -135,7 +71,13 @@ export class SubstitutesComponent implements OnInit {
   onClose() {
     this.dialogRef.close();
   }
-
+  getValidationMessages() {
+    return {
+      itemGenericNameId: [
+        { name: "required", Message: "ItemGeneric Name No is required" }
+      ]
+    };
+  }
 }
 export class ItemList {
   ItemName: string;
