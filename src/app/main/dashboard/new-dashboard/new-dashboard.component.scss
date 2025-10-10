@@ -233,3 +233,31 @@
 
 /* Make images/svgs within cards scale down */
 ::host img, ::host svg { max-width: 100%; height: auto; }
+
+// .finance-grid {
+//   align-items: stretch;
+// }
+
+// /* Ensure all cards fill equal vertical space */
+// .metric-card {
+//   display: flex;
+//   flex-direction: column;
+//   justify-content: space-between;
+// }
+
+// /* Keep chart visually separated from edges */
+// .chart-card {
+//   padding-right: 12px;
+// }
+
+// /* Fix chart overflowing to the edge */
+// .chart-content {
+//   padding-right: 8px;
+//   box-sizing: border-box;
+// }
+
+// /* Optional: consistent min height */
+// .metric-card,
+// .chart-card {
+//   min-height: 300px;
+// }
