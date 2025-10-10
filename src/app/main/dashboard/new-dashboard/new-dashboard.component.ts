@@ -36,21 +36,22 @@ export class NewDashboardComponent {
     }
   }
 
+  labelFormatting(c: any): string {
+    return `${c.value}`;
+  }
+
   // Chart data
   colorScheme = { domain: ['#6366f1', '#f59e0b', '#10b981', '#ec4899', '#3b82f6', '#f97316'] };
   chartView: [number, number] = [420, 300];
   barChartView: [number, number] = [380, 300];
 
-  ipdData = [
-    { name: 'Todays Admissions', value: 24 },
-    { name: 'Current Occupancy', value: 68 },
-    { name: 'ER to IP', value: 12 },
-    { name: 'Today Discharge', value: 15 },
-    { name: 'Discharge Clearance / Pending', value: 6 },
-    { name: 'Total IP Bills', value: 40 }
+  // Registration related chart data
+  registrationChartData = [
+    { name: 'New Registration', value: 80 },
+    { name: 'Old Registration', value: 120 },
+    { name: 'Referral', value: 30 },
+    { name: 'Other', value: 10 }
   ];
-
-  // removed secondary IPD ops chart
 
   opdData = [
     { name: 'Registrations', value: 120 },

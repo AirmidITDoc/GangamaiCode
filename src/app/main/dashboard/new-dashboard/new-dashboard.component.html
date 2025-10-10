@@ -16,11 +16,11 @@
       <div class="charts-row">
         <mat-card class="chart-card mat-elevation-z2">
           <mat-card-header>
-            <mat-card-title>IPD Overview</mat-card-title>
+            <mat-card-title>Registration Overview</mat-card-title>
           </mat-card-header>
           <mat-card-content>
             <ngx-charts-pie-chart
-              [results]="ipdData"
+              [results]="registrationChartData"
               [doughnut]="true"
               [labels]="true"
               [gradient]="false"
@@ -42,6 +42,7 @@
               [labels]="true"
               [gradient]="false"
               [explodeSlices]="false"
+              [trimLabels]="true"
               [arcWidth]="0.4"
               [scheme]="colorScheme">
             </ngx-charts-pie-chart>
@@ -50,21 +51,21 @@
 
         <mat-card class="chart-card mat-elevation-z2">
           <mat-card-header>
-            <mat-card-title>Payments Overview</mat-card-title>
+            <mat-card-title>Top Departments by Visits</mat-card-title>
           </mat-card-header>
           <mat-card-content>
-            <ngx-charts-bar-vertical
-              [results]="paymentData"
+            <ngx-charts-bar-horizontal
+              [results]="departmentVisits"
               [scheme]="colorScheme"
               [xAxis]="true"
               [yAxis]="true"
               [legend]="false"
+              [showDataLabel]="true"
               [showXAxisLabel]="true"
               [showYAxisLabel]="true"
-              [xAxisLabel]="'Payment Type'"
-              [yAxisLabel]="'Amount Received'"
-              [gradient]="true">
-            </ngx-charts-bar-vertical>
+              [xAxisLabel]="'Visits'"
+              [yAxisLabel]="'Department'">
+            </ngx-charts-bar-horizontal>
           </mat-card-content>
         </mat-card>
       </div>
@@ -111,22 +112,26 @@
 
       <mat-card class="chart-card mat-elevation-z2">
         <mat-card-header>
-          <mat-card-title>Top Departments by Visits</mat-card-title>
+          <mat-card-title>Payments Overview</mat-card-title>
         </mat-card-header>
         <mat-card-content>
-          <ngx-charts-bar-horizontal
-            [results]="departmentVisits"
+          <ngx-charts-bar-vertical
+            [results]="paymentData"
             [scheme]="colorScheme"
             [xAxis]="true"
             [yAxis]="true"
             [legend]="false"
+            [showGridLines]="true"
             [showXAxisLabel]="true"
             [showYAxisLabel]="true"
-            [xAxisLabel]="'Visits'"
-            [yAxisLabel]="'Department'">
-          </ngx-charts-bar-horizontal>
+            [xAxisLabel]="'Payment Type'"
+            [yAxisLabel]="'Amount Received'"
+            [showDataLabel]="true"
+            [gradient]="true">
+          </ngx-charts-bar-vertical>
         </mat-card-content>
       </mat-card>
+      
     </div>
 
     <!-- Recent activity table -->
