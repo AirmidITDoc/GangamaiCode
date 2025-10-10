@@ -1,9 +1,11 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { MatDialog } from '@angular/material/dialog';
 import { fuseAnimations } from '@fuse/animations';
 import { DashboardService } from '../dashboard.service';
 import Chart, { Color } from 'chart.js/auto';
+import { BedDetailsDialogComponent } from './bed-details-dialog/bed-details-dialog.component';
 
 @Component({
     selector: 'app-bed-occupancy',
@@ -55,6 +57,7 @@ export class BedOccupancyComponent implements OnInit {
     public distributionChart: any;
     public overallDoughnutChart: any;
     public admissionsLineLarge: any;
+    public dischargeLineLarge: any;
     public departmentImages: string[] = [
         'assets/images/default.jpg',
         'assets/images/logos/1.png',
@@ -76,7 +79,8 @@ export class BedOccupancyComponent implements OnInit {
       { id: 8, status: 'In Use', patient: 'Robert Scott', admissionDate: '01/01/2020', age: 60, sex: 'Male', icon: 'hotel' },
     ];
     constructor(
-        public _dashboardServices: DashboardService
+        public _dashboardServices: DashboardService,
+        public dialog: MatDialog
     ) { }
 
     ngOnInit(): void {
@@ -106,6 +110,9 @@ export class BedOccupancyComponent implements OnInit {
             }
             if (document.getElementById('BedAdmissionsLine')) {
                 this.admissionsLineLarge = this.getLargeAdmissionsChart();
+            }
+            if (document.getElementById('BedDischargeLine')) {
+                this.dischargeLineLarge = this.getLargeDischargeChart();
             }
         });
     }
@@ -240,6 +247,99 @@ export class BedOccupancyComponent implements OnInit {
     }
 
     getOverallDoughnutChart() {
+        const centerTextPlugin = {
+            id: 'centerText',
+            beforeDraw: (chart: any) => {
+                const { width, height, ctx } = chart;
+                ctx.restore();
+                
+                // Main percentage text
+                const percentText = `${this.occupancyPercent}%`;
+                ctx.font = 'bold 42px Inter, sans-serif';
+                ctx.fillStyle = '#2c3e50';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                const percentX = width / 2;
+                const percentY = height / 2 - 10;
+                ctx.fillText(percentText, percentX, percentY);
+                
+                // Subtitle text
+                ctx.font = '14px Inter, sans-serif';
+                ctx.fillStyle = '#6c757d';
+                const subtitleY = height / 2 + 25;
+                ctx.fillText('Occupancy', percentX, subtitleY);
+                
+                ctx.save();
+            }
+        };
+
+        const dataLabelsPlugin = {
+            id: 'dataLabels',
+            afterDatasetDraw: (chart: any) => {
+                const { ctx, chartArea } = chart;
+                const labels = chart.data.labels;
+                
+                chart.data.datasets.forEach((dataset: any, datasetIndex: number) => {
+                    const meta = chart.getDatasetMeta(datasetIndex);
+                    if (!meta.hidden) {
+                        meta.data.forEach((element: any, index: number) => {
+                            const value = dataset.data[index];
+                            if (value > 0) {
+                                ctx.save();
+                                
+                                // Get arc properties
+                                const model = element;
+                                const centerX = chart.width / 2;
+                                const centerY = chart.height / 2;
+                                
+                                // Calculate middle angle of the arc
+                                const startAngle = model.startAngle;
+                                const endAngle = model.endAngle;
+                                const midAngle = startAngle + (endAngle - startAngle) / 2;
+                                
+                                // Position in the middle of the arc segment
+                                const radius = (model.outerRadius + model.innerRadius) / 2;
+                                const labelX = centerX + Math.cos(midAngle) * radius;
+                                const labelY = centerY + Math.sin(midAngle) * radius;
+                                
+                                // Calculate percentage
+                                const total = dataset.data.reduce((sum: number, val: number) => sum + val, 0);
+                                const percentage = Math.round((value / total) * 100);
+                                
+                                // Get label name
+                                const labelName = labels[index];
+                                
+                                // Custom label text - Option 3: Label name with count and percentage
+                                const line1Text = labelName;
+                                const line2Text = `${value} (${percentage}%)`;
+                                
+                                // Draw labels with white text and shadow for contrast
+                                ctx.fillStyle = 'white';
+                                ctx.textAlign = 'center';
+                                ctx.textBaseline = 'middle';
+                                
+                                // Draw label name (e.g., "In use")
+                                ctx.font = 'bold 13px Inter, sans-serif';
+                                ctx.strokeStyle = 'rgba(0, 0, 0, 0.4)';
+                                ctx.lineWidth = 3;
+                                ctx.strokeText(line1Text, labelX, labelY - 10);
+                                ctx.fillText(line1Text, labelX, labelY - 10);
+                                
+                                // Draw count and percentage (e.g., "5 (25%)")
+                                ctx.font = 'bold 15px Inter, sans-serif';
+                                ctx.strokeStyle = 'rgba(0, 0, 0, 0.3)';
+                                ctx.lineWidth = 2.5;
+                                ctx.strokeText(line2Text, labelX, labelY + 8);
+                                ctx.fillText(line2Text, labelX, labelY + 8);
+                                
+                                ctx.restore();
+                            }
+                        });
+                    }
+                });
+            }
+        };
+
         return new Chart('BedOverallDoughnut', {
             type: 'doughnut',
             data: {
@@ -251,7 +351,14 @@ export class BedOccupancyComponent implements OnInit {
                     }
                 ]
             },
-            options: { plugins: { tooltip: { enabled: true } } }
+            options: { 
+                plugins: { 
+                    tooltip: { enabled: true },
+                    legend: { display: false }
+                },
+                cutout: '70%'
+            },
+            plugins: [centerTextPlugin, dataLabelsPlugin]
         });
     }
 
@@ -267,6 +374,28 @@ export class BedOccupancyComponent implements OnInit {
                         backgroundColor: 'rgba(255,99,132,0.15)',
                         borderColor: '#ff5a8a',
                         pointBackgroundColor: '#ff5a8a',
+                        pointRadius: 3,
+                        tension: 0.35,
+                        fill: true
+                    }
+                ]
+            },
+            options: { maintainAspectRatio: false }
+        });
+    }
+
+    getLargeDischargeChart() {
+        return new Chart('BedDischargeLine', {
+            type: 'line',
+            data: {
+                labels: ['01 Mon','02 Tue','03 Wed','04 Thu','05 Fri','06 Sat','07 Sun','08 Mon','09 Tue','10 Wed','11 Thu','12 Fri','13 Sat','14 Sun'],
+                datasets: [
+                    {
+                        label: 'Discharges',
+                        data: [22,20,30,38,52,40,35,38,18,24,35,32,28,85],
+                        backgroundColor: 'rgba(99,179,237,0.15)',
+                        borderColor: '#5ac8fa',
+                        pointBackgroundColor: '#5ac8fa',
                         pointRadius: 3,
                         tension: 0.35,
                         fill: true
@@ -300,7 +429,36 @@ export class BedOccupancyComponent implements OnInit {
         });
     }
 
+    openBedDetails(bed: any): void {
+        this.dialog.open(BedDetailsDialogComponent, {
+            width: '650px',
+            maxWidth: '90vw',
+            data: bed,
+            panelClass: 'bed-details-dialog'
+        });
+    }
+
+    getBedStatusClass(status: string): string {
+        if (!status) return '';
+        const normalizedStatus = status.toLowerCase().trim();
+        
+        if (normalizedStatus === 'in use' || normalizedStatus === 'inuse') {
+            return 'use';
+        } else if (normalizedStatus === 'reserved') {
+            return 'reserved';
+        } else if (normalizedStatus === 'empty') {
+            return 'empty';
+        }
+        return '';
+    }
+
+    isBedEmpty(status: string): boolean {
+        if (!status) return false;
+        return status.toLowerCase().trim() === 'empty';
+    }
+
 }
+
 export class WardDetails {
     AvailableCount: number;
     LocationName: string;

@@ -1,11 +1,14 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import Chart from 'chart.js/auto';
 
 @Component({
   selector: 'app-new-dashboard',
   templateUrl: './new-dashboard.component.html',
   styleUrls: ['./new-dashboard.component.scss']
 })
-export class NewDashboardComponent {
+export class NewDashboardComponent implements OnInit {
+  public patientOverviewChart: any;
+  public opdOverviewChart: any;
   metrics = [
     { label: 'Todays Registrations', value: 10, color: 'lavender', icon: 'user-plus' },
     { label: 'Appointments', value: 20, color: 'butter', icon: 'calendar' },
@@ -16,6 +19,18 @@ export class NewDashboardComponent {
   ];
 
   constructor() { }
+
+  ngOnInit(): void {
+    // Initialize the charts
+    setTimeout(() => {
+      if (document.getElementById('PatientOverviewDoughnut')) {
+        this.patientOverviewChart = this.getPatientOverviewChart();
+      }
+      if (document.getElementById('OPDOverviewDoughnut')) {
+        this.opdOverviewChart = this.getOPDOverviewChart();
+      }
+    });
+  }
 
   getMatIcon(icon: string): string {
     switch (icon) {
@@ -136,4 +151,264 @@ export class NewDashboardComponent {
     { name: 'Without Mediclaim', value: this.patientStats.withoutMediclaim },
     { name: 'Reference', value: this.patientStats.reference }
   ];
+
+  // Patient Overview Statistics
+  get totalRegistrations(): number {
+    return this.registrationChartData.reduce((sum, item) => sum + item.value, 0);
+  }
+
+  get newRegistrationsCount(): number {
+    const newReg = this.registrationChartData.find(item => item.name === 'New Registration');
+    return newReg ? newReg.value : 0;
+  }
+
+  get registrationPercent(): number {
+    if (!this.totalRegistrations) { return 0; }
+    return Math.round((this.newRegistrationsCount / this.totalRegistrations) * 100);
+  }
+
+  // OPD Overview Statistics
+  get totalOPD(): number {
+    return this.opdData.reduce((sum, item) => sum + item.value, 0);
+  }
+
+  get checkedInCount(): number {
+    const checkedIn = this.opdData.find(item => item.name === 'Checked In');
+    return checkedIn ? checkedIn.value : 0;
+  }
+
+  get opdPercent(): number {
+    if (!this.totalOPD) { return 0; }
+    return Math.round((this.checkedInCount / this.totalOPD) * 100);
+  }
+
+  // Chart.js doughnut chart with custom plugins
+  getPatientOverviewChart() {
+    const centerTextPlugin = {
+      id: 'centerText',
+      beforeDraw: (chart: any) => {
+        const { width, height, ctx } = chart;
+        ctx.restore();
+        
+        // Main percentage text
+        const percentText = `${this.registrationPercent}%`;
+        ctx.font = 'bold 36px Inter, sans-serif';
+        ctx.fillStyle = '#2c3e50';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        const percentX = width / 2;
+        const percentY = height / 2 - 8;
+        ctx.fillText(percentText, percentX, percentY);
+        
+        // Subtitle text
+        ctx.font = '12px Inter, sans-serif';
+        ctx.fillStyle = '#6c757d';
+        const subtitleY = height / 2 + 20;
+        ctx.fillText('New Registrations', percentX, subtitleY);
+        
+        ctx.save();
+      }
+    };
+
+    const dataLabelsPlugin = {
+      id: 'dataLabels',
+      afterDatasetDraw: (chart: any) => {
+        const { ctx } = chart;
+        const labels = chart.data.labels;
+        
+        chart.data.datasets.forEach((dataset: any, datasetIndex: number) => {
+          const meta = chart.getDatasetMeta(datasetIndex);
+          if (!meta.hidden) {
+            meta.data.forEach((element: any, index: number) => {
+              const value = dataset.data[index];
+              
+              // Calculate percentage first
+              const total = dataset.data.reduce((sum: number, val: number) => sum + val, 0);
+              const percentage = Math.round((value / total) * 100);
+              
+              // Only show labels for segments with at least 8% to avoid clutter
+              if (value > 0 && percentage >= 8) {
+                ctx.save();
+                
+                // Get arc properties
+                const model = element;
+                const centerX = chart.width / 2;
+                const centerY = chart.height / 2;
+                
+                // Calculate middle angle of the arc
+                const startAngle = model.startAngle;
+                const endAngle = model.endAngle;
+                const midAngle = startAngle + (endAngle - startAngle) / 2;
+                
+                // Position at 60% of radius for better placement
+                const radius = model.outerRadius * 0.65;
+                const labelX = centerX + Math.cos(midAngle) * radius;
+                const labelY = centerY + Math.sin(midAngle) * radius;
+                
+                // Draw labels with white text and shadow for contrast
+                ctx.fillStyle = 'white';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                
+                // Show count and percentage only
+                const labelText = `${value} (${percentage}%)`;
+                ctx.font = 'bold 12px Inter, sans-serif';
+                ctx.strokeStyle = 'rgba(0, 0, 0, 0.5)';
+                ctx.lineWidth = 3;
+                ctx.strokeText(labelText, labelX, labelY);
+                ctx.fillText(labelText, labelX, labelY);
+                
+                ctx.restore();
+              }
+            });
+          }
+        });
+      }
+    };
+
+    return new Chart('PatientOverviewDoughnut', {
+      type: 'doughnut',
+      data: {
+        labels: ['New Registration', 'Old Registration', 'Referral', 'Other'],
+        datasets: [
+          {
+            backgroundColor: ['#ff5a8a', '#f6c542', '#3ecf8e', '#5ac8fa'],
+            data: [
+              this.registrationChartData[0].value,
+              this.registrationChartData[1].value,
+              this.registrationChartData[2].value,
+              this.registrationChartData[3].value
+            ]
+          }
+        ]
+      },
+      options: { 
+        responsive: true,
+        maintainAspectRatio: true,
+        aspectRatio: 1.4,
+        plugins: { 
+          tooltip: { enabled: true },
+          legend: { display: false }
+        },
+        cutout: 0
+      },
+      plugins: [dataLabelsPlugin]
+    });
+  }
+
+  // OPD Overview Chart with custom plugins
+  getOPDOverviewChart() {
+    const centerTextPlugin = {
+      id: 'centerText',
+      beforeDraw: (chart: any) => {
+        const { width, height, ctx } = chart;
+        ctx.restore();
+        
+        // Main percentage text
+        const percentText = `${this.opdPercent}%`;
+        ctx.font = 'bold 36px Inter, sans-serif';
+        ctx.fillStyle = '#2c3e50';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        const percentX = width / 2;
+        const percentY = height / 2 - 8;
+        ctx.fillText(percentText, percentX, percentY);
+        
+        // Subtitle text
+        ctx.font = '12px Inter, sans-serif';
+        ctx.fillStyle = '#6c757d';
+        const subtitleY = height / 2 + 20;
+        ctx.fillText('Checked In', percentX, subtitleY);
+        
+        ctx.save();
+      }
+    };
+
+    const dataLabelsPlugin = {
+      id: 'dataLabels',
+      afterDatasetDraw: (chart: any) => {
+        const { ctx } = chart;
+        const labels = chart.data.labels;
+        
+        chart.data.datasets.forEach((dataset: any, datasetIndex: number) => {
+          const meta = chart.getDatasetMeta(datasetIndex);
+          if (!meta.hidden) {
+            meta.data.forEach((element: any, index: number) => {
+              const value = dataset.data[index];
+              
+              // Calculate percentage first
+              const total = dataset.data.reduce((sum: number, val: number) => sum + val, 0);
+              const percentage = Math.round((value / total) * 100);
+              
+              // Only show labels for segments with at least 8% to avoid clutter
+              if (value > 0 && percentage >= 8) {
+                ctx.save();
+                
+                // Get arc properties
+                const model = element;
+                const centerX = chart.width / 2;
+                const centerY = chart.height / 2;
+                
+                // Calculate middle angle of the arc
+                const startAngle = model.startAngle;
+                const endAngle = model.endAngle;
+                const midAngle = startAngle + (endAngle - startAngle) / 2;
+                
+                // Position at 60% of radius for better placement
+                const radius = model.outerRadius * 0.65;
+                const labelX = centerX + Math.cos(midAngle) * radius;
+                const labelY = centerY + Math.sin(midAngle) * radius;
+                
+                // Draw labels with white text and shadow for contrast
+                ctx.fillStyle = 'white';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                
+                // Show count and percentage only
+                const labelText = `${value} (${percentage}%)`;
+                ctx.font = 'bold 12px Inter, sans-serif';
+                ctx.strokeStyle = 'rgba(0, 0, 0, 0.5)';
+                ctx.lineWidth = 3;
+                ctx.strokeText(labelText, labelX, labelY);
+                ctx.fillText(labelText, labelX, labelY);
+                
+                ctx.restore();
+              }
+            });
+          }
+        });
+      }
+    };
+
+    return new Chart('OPDOverviewDoughnut', {
+      type: 'doughnut',
+      data: {
+        labels: ['Registrations', 'Appointments', 'Checked In', 'Checked Out', 'No Shows', 'Bills'],
+        datasets: [
+          {
+            backgroundColor: ['#ff5a8a', '#f6c542', '#3ecf8e', '#5ac8fa', '#a283f6', '#ff9f43'],
+            data: [
+              this.opdData[0].value,
+              this.opdData[1].value,
+              this.opdData[2].value,
+              this.opdData[3].value,
+              this.opdData[4].value,
+              this.opdData[5].value
+            ]
+          }
+        ]
+      },
+      options: { 
+        responsive: true,
+        maintainAspectRatio: true,
+        aspectRatio: 1.4,
+        plugins: { 
+          tooltip: { enabled: true },
+          legend: { display: false }
+        },
+        cutout: 0
+      },
+      plugins: [dataLabelsPlugin]
+    });
+  }
 }

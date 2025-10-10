@@ -1,0 +1,73 @@
+<div class="dialog-header" [ngClass]="getStatusClass(data.status)">
+    <div class="header-content">
+        <div class="bed-icon-large">
+            <mat-icon>{{ data.icon }}</mat-icon>
+        </div>
+        <div class="header-info">
+            <h2 class="bed-title">BED {{ data.id }}</h2>
+            <div class="status-badge" [ngClass]="getStatusClass(data.status)">
+                <mat-icon class="status-icon">{{ getStatusIcon(data.status) }}</mat-icon>
+                <span>{{ data.status }}</span>
+            </div>
+        </div>
+    </div>
+    <button mat-icon-button mat-dialog-close class="close-button">
+        <mat-icon>close</mat-icon>
+    </button>
+</div>
+
+<mat-dialog-content class="bed-dialog-content">
+    <div *ngIf="!isEmptyBed()" class="patient-info-card">
+        <div class="card-header">
+            <mat-icon>person</mat-icon>
+            <h3>Patient Information</h3>
+        </div>
+        
+        <div class="info-grid">
+            <div class="info-item">
+                <mat-icon class="item-icon">person</mat-icon>
+                <div class="item-content">
+                    <div class="item-label">Patient Name</div>
+                    <div class="item-value">{{ data.patient }}</div>
+                </div>
+            </div>
+
+            <div class="info-item">
+                <mat-icon class="item-icon">calendar_today</mat-icon>
+                <div class="item-content">
+                    <div class="item-label">Admission Date</div>
+                    <div class="item-value">{{ data.admissionDate }}</div>
+                </div>
+            </div>
+
+            <div class="info-item">
+                <mat-icon class="item-icon">cake</mat-icon>
+                <div class="item-content">
+                    <div class="item-label">Age</div>
+                    <div class="item-value">{{ data.age }} years</div>
+                </div>
+            </div>
+
+            <div class="info-item">
+                <mat-icon class="item-icon">wc</mat-icon>
+                <div class="item-content">
+                    <div class="item-label">Gender</div>
+                    <div class="item-value">{{ data.sex }}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div *ngIf="isEmptyBed()" class="empty-state">
+        <div class="empty-icon-wrapper">
+            <mat-icon class="empty-icon">person_add</mat-icon>
+        </div>
+        <h3 class="empty-title">Bed Available</h3>
+        <p class="empty-description">This bed is currently unoccupied and ready for patient assignment.</p>
+        <button mat-raised-button color="primary" *ngIf="isEmptyBed()" class="action-button mt-16">
+            <mat-icon>person_add</mat-icon>
+            Assign Patient
+        </button>
+    </div>
+</mat-dialog-content>
+

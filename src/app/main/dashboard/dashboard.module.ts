@@ -16,11 +16,12 @@ import { MatTableModule } from '@angular/material/table';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatGridListModule } from '@angular/material/grid-list';
+import { MatDialogModule } from '@angular/material/dialog';
 import { FuseWidgetModule } from '@fuse/components';
 import { FuseSharedModule } from '@fuse/shared.module';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
-import { SharedModule } from 'app/main/shared/shared.module';
 import { BedOccupancyComponent } from './bed-occupancy/bed-occupancy.component';
+import { BedDetailsDialogComponent } from './bed-occupancy/bed-details-dialog/bed-details-dialog.component';
 import { DailyDashboardComponent } from './daily-dashboard/daily-dashboard.component';
 import { DashboardRoutingModule } from './dashboard-routing.module';
 import { HomePageComponent } from './home-page/home-page.component';
@@ -32,6 +33,7 @@ import { NewDashboardComponent } from './new-dashboard/new-dashboard.component';
     declarations: [
         DailyDashboardComponent,
         BedOccupancyComponent,
+        BedDetailsDialogComponent,
         PharmacyDashboardComponent,
         SalesSummaryComponent,
         HomePageComponent,
@@ -63,6 +65,7 @@ import { NewDashboardComponent } from './new-dashboard/new-dashboard.component';
         MatCardModule,
         MatToolbarModule,
         MatGridListModule,
+        MatDialogModule,
     ],
     providers: [
         DatePipe

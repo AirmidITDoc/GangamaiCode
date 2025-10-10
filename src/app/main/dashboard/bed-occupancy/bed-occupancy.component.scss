@@ -134,9 +134,6 @@
     font-weight: bold;
 }
 
-.labels {
-}
-
 .ward-availibility {
     padding: 0 12px 30px 12px;
 }
@@ -241,22 +238,56 @@ hr {
 .overall-value { font-size: 28px; font-weight: 700; }
 .overall-label { opacity:.75; }
 .overall-total { font-size: 24px; font-weight: 700; }
-.overall-total-label { opacity:.75; }
-.overall-donut-wrap { margin: 8px 0; }
-.legend-mini { display:flex; flex-wrap:wrap; gap: 10px; align-items:center; font-size: 12px; }
-.legend-mini .dot { width:10px; height:10px; border-radius:50%; display:inline-block; margin-right:6px; }
-.dot-red{ background:#ff5a8a; }
-.dot-amber{ background:#f6c542; }
-.dot-green{ background:#3ecf8e; }
-.dot-blue{ background:#5ac8fa; }
-.dot-violet{ background:#a283f6; }
+.overall-total-label { opacity:.75; font-size: 12px; }
+.overall-donut-wrap { margin: 12px 0; }
+.legend-mini { 
+    display: flex; 
+    flex-wrap: wrap; 
+    gap: 8px; 
+    align-items: center; 
+    font-size: 11px;
+    margin-top: 12px;
+    justify-content: center;
+}
+.legend-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+.legend-mini .dot { 
+    width: 8px; 
+    height: 8px; 
+    border-radius: 50%; 
+    display: inline-block;
+}
+.dot-red { background: #ff5a8a; }
+.dot-amber { background: #f6c542; }
+.dot-green { background: #3ecf8e; }
+.dot-blue { background: #5ac8fa; }
+.dot-violet { background: #a283f6; }
 
-.overall-stats-card, 
-.admissions-card {
-  height: 280px; // or any value you want same height
+.overall-stats-card {
+  height: 280px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+}
+
+.combined-charts-card {
+  height: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.combined-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.chart-row {
+  width: 100%;
+  padding: 8px 0;
 }
 .ward-dashboard-container {
     padding-bottom: 0 !important;
@@ -266,11 +297,10 @@ hr {
     height: 100%;
   }
   
-  .admissions-card {
+  .combined-charts-card {
   height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: center;
 }
 
 .chart-container {
@@ -299,7 +329,6 @@ hr {
 /* Department cards */
 .dept-card { padding: 12px; }
 .dept-header { margin-bottom: 8px; }
-.dept-title { }
 .dept-name { font-weight: 700; }
 .dept-total { opacity:.7; font-size: 12px; }
 .dept-percent { font-weight: 700; font-size: 20px; }
@@ -339,6 +368,8 @@ hr {
     padding: 1rem;
     transition: all 0.3s ease;
     text-align: left;
+    cursor: pointer;
+    position: relative;
   
     .bed-header {
       display: flex;
@@ -368,10 +399,34 @@ hr {
       font-size: 14px;
     }
 
+    .click-indicator {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 12px;
+      padding: 8px;
+      background: rgba(0, 0, 0, 0.04);
+      border-radius: 8px;
+      font-size: 12px;
+      color: #666;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+
+      mat-icon {
+        font-size: 16px;
+        width: 16px;
+        height: 16px;
+      }
+    }
   
     &:hover {
       transform: translateY(-4px);
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+
+      .click-indicator {
+        opacity: 1;
+      }
     }
   }
   
