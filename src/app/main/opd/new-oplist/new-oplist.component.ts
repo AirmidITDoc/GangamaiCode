@@ -280,10 +280,9 @@ export class NewOPListComponent implements OnInit {
 
     openPaymentpopup(contact) {
         console.log(contact)
-debugger
         let PatientHeaderObj = {};
         PatientHeaderObj['Date'] = this.datePipe.transform(contact.billDate, 'MM/dd/yyyy') || '01/01/1900',
-            PatientHeaderObj['RegNo'] = contact.regNo;
+        PatientHeaderObj['RegNo'] = contact.regNo;
         PatientHeaderObj['PatientName'] = contact.patientName;
         PatientHeaderObj['OPD_IPD_Id'] = contact.opD_IPD_ID;
         PatientHeaderObj['Age'] = contact.patientAge;
@@ -291,7 +290,7 @@ debugger
         PatientHeaderObj['DoctorName'] = contact.doctorName;
         PatientHeaderObj['TariffName'] = contact.tariffName;
         PatientHeaderObj['CompanyName'] = contact.companyName;
-        PatientHeaderObj['NetPayAmount'] = contact.netPayableAmt;
+        PatientHeaderObj['NetPayAmount'] = contact.balanceAmt;
         this.vMobileNo = contact.mobileNo;
         const dialogRef = this._matDialog.open(OpPaymentComponent,
             {
@@ -312,13 +311,13 @@ debugger
                 PaymentObj['BillNo'] = contact.billNo;
                 let updateBillobj = {};
                 updateBillobj['BillNo'] = contact.billNo;
-                updateBillobj['balanceAmt'] = 0,//result.submitDataPay.ipPaymentInsert.BalanceAmt;
+                updateBillobj['balanceAmt'] = result.BillBalanceAmount;
                 console.log(result.submitDataPay.ipPaymentInsert)
                 let data = {
                     opCreditPayment: PaymentObj,
                     "billUpdate": {
                         "billNo": contact.billNo,
-                        "balanceAmt":0,// result.submitDataPay.ipPaymentInsert.BalanceAmt
+                        "balanceAmt": result.BillBalanceAmount
                     },
                 }
                 console.log(data)

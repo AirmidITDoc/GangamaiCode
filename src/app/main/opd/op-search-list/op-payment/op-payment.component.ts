@@ -57,8 +57,6 @@ export class OpPaymentComponent implements OnInit {
   }
   Upiflag = 0
   onChangePaymentType() {
-    debugger
-
     if (this.selectedPaymnet1 == 'cash') {
       this.patientDetailsFormGrp.get('referenceNo1').clearValidators();
       this.patientDetailsFormGrp.get('referenceNo1').updateValueAndValidity();
@@ -91,6 +89,8 @@ export class OpPaymentComponent implements OnInit {
         this.patientDetailsFormGrp.get('referenceNo1').setValidators([Validators.required]);
         this.patientDetailsFormGrp.get('regDate1').setValidators([Validators.required]);
         this.patientDetailsFormGrp.get('referenceNo1').updateValueAndValidity();
+          // Optionally revalidate the whole form
+        this.patientDetailsFormGrp.updateValueAndValidity();
         this.Upiflag = 1
       }
       else {
@@ -98,6 +98,8 @@ export class OpPaymentComponent implements OnInit {
         this.patientDetailsFormGrp.get('bankName1').updateValueAndValidity();
       }
     }
+    this.patientDetailsFormGrp.markAllAsTouched();
+    this.patientDetailsFormGrp.updateValueAndValidity();
   }
   Payments = new MatTableDataSource<PaymentList>();
   selectedSaleDisplayedCol = [
@@ -134,23 +136,39 @@ export class OpPaymentComponent implements OnInit {
     }
     this.balanceAmt = Number(this.netPayAmt || 0) - (Number(this.paidAmt || 0) + Number(this.amount1 || 0));
   }
+
+  OnCheckFormValidity(): number {
+    this.patientDetailsFormGrp.markAllAsTouched();
+    this.patientDetailsFormGrp.updateValueAndValidity();
+
+    if (this.patientDetailsFormGrp.invalid) {
+
+      let invalidFields = [];
+      if (this.patientDetailsFormGrp.invalid) {
+        for (const controlName in this.patientDetailsFormGrp.controls) {
+          const control = this.patientDetailsFormGrp.get(controlName);
+          if (control?.invalid) {
+            invalidFields.push(`Payment From: ${controlName}`);
+          }
+        }
+      }
+      if (invalidFields.length > 0) {
+        invalidFields.forEach(field => {
+          this.toastr.warning(`Please Check this field "${field}" is invalid.`, 'Warning',
+          );
+        });
+        return 0
+      }
+    }
+    return 1;
+  }
+
   onAddPayment() {
     this.submitted = true;
     if (this.patientDetailsFormGrp.invalid) {
       return;
     }
-    // if (this.Upiflag == 1) {
-    //   if (this.Payments.data.find(x => x.PaymentType == "upi")?.RefNo == undefined || this.Payments.data.find(x => x.PaymentType == "upi")?.RefNo == '') {
-    //     Swal.fire('Please Enter UPI mode RefNO ')
-    //     return;
-    //   } else {
-    //     if (this.Upiflag == 1 && this.Payments.data.find(x => x.PaymentType == "upi")?.RefNo.length < 4){
-    //       Swal.fire('Please Enter UPI mode RefNO Min 4 Digit')
-    //     return;
-    //   }}
-    // }
-
-
+    
     let tmp = this.Payments.data;
     tmp.push({
       Id: this.getNewId(),
@@ -362,30 +380,27 @@ export class OpPaymentComponent implements OnInit {
   Paymentobj = {};
   // Paymentobj: any[] = [];   //changed by raksha
   onSubmit() {
+    
+    let result = this.OnCheckFormValidity();
+    if (result === 0) return; // stop execution if invalid
+
+
     const currentDate = new Date();
     const datePipe = new DatePipe('en-US');
     const formattedTime = datePipe.transform(currentDate, 'shortTime');
     const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
-
-debugger
-
-    // if (this.Upiflag == 1) {
-    //   if (this.Payments.data.find(x => x.PaymentType == "upi")?.RefNo == undefined || this.Payments.data.find(x => x.PaymentType == "upi")?.RefNo == '') {
-    //     Swal.fire('Please Enter UPI mode RefNO ')
-    //     // return;
-
-    //   } else {
-    //     if (this.Upiflag == 1 && this.Payments.data.find(x => x.PaymentType == "upi")?.RefNo.length < 4){
-    //       Swal.fire('Please Enter UPI mode RefNO Min 4 Digit')
-    //     // return;
-    //   }}
-    // }
-
     
     this.onAddPayment();
     if (this.balanceAmt != 0 && this.data?.FromName != 'OP-Bill') {
       Swal.fire('Please select payment mode, Balance Amount is' + this.balanceAmt)
       return
+    }
+    // -------------- If you comment this code -- OP Billing and Browse List - you can't do the parital payment
+    if (this.amount1 != 0 && this.data?.FromName == 'OP-Bill') {
+      let balamt = this.netPayAmt - this.paidAmt
+      // Swal.fire('Please pay remaing amount, Balance Amount is ' + balamt)
+      this.patientDetailsFormGrp.get("balanceAmountController").setValue(balamt);
+      // return
     }
     if (this.amount1 != 0 && this.data?.FromName != 'OP-Bill') {
       let balamt = this.netPayAmt - this.paidAmt
@@ -413,7 +428,7 @@ debugger
       this.Paymentobj['transactionType'] = 0;
       this.Paymentobj['remark'] = " ";
       this.Paymentobj['addBy'] = this._loggedService.currentUserValue.userId,
-        this.Paymentobj['isCancelled'] = false;
+      this.Paymentobj['isCancelled'] = false;
       this.Paymentobj['isCancelledBy'] = 0;
       this.Paymentobj['isCancelledDate'] = this.datePipe.transform(this.currentDate, 'yyyy-MM-dd') || this.datePipe.transform(this.currentDate, 'yyyy-MM-dd')
       this.Paymentobj['opdipdType'] = 0;
@@ -668,7 +683,7 @@ debugger
       this.Paymentobj['transactionType'] = 0;
       this.Paymentobj['remark'] = " ";
       this.Paymentobj['addBy'] = this._loggedService.currentUserValue.userId,
-        this.Paymentobj['isCancelled'] = false;
+      this.Paymentobj['isCancelled'] = false;
       this.Paymentobj['isCancelledBy'] = 0;
       this.Paymentobj['isCancelledDate'] = this.datePipe.transform(this.currentDate, 'yyyy-MM-dd') || this.datePipe.transform(this.currentDate, 'yyyy-MM-dd')
       this.Paymentobj['neftpayAmount'] = this.Payments.data.find(x => x.PaymentType == "net banking")?.Amount ?? 0;
@@ -797,7 +812,9 @@ debugger
     };
     let IsSubmit = {
       "submitDataPay": submitDataPay,
-      "IsSubmitFlag": true
+      "IsSubmitFlag": true,
+      "BillBalanceAmount": this.patientDetailsFormGrp.get("balanceAmountController").value
+
     }
     console.log(IsSubmit);
     this.dialogRef.close(IsSubmit);
