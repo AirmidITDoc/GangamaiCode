@@ -37,11 +37,12 @@ export class CompanysettlementComponent implements OnInit {
     regNo: any = "0"
     regNo2: any = "0"
     l_name: any = ""
-    CompanyId = 0
+    CompanyId = "0"
     PBillNo: any = "%"
     autocompleteModecompany: string = "Company";
     searchFormGroup: FormGroup
     OPMultipleSettlForm: FormGroup
+    OPMultipleSettlInsertForm: FormGroup
     RegId1 = "0";
     RegId2 = "0";
     BillNo: any;
@@ -49,6 +50,8 @@ export class CompanysettlementComponent implements OnInit {
     vbalanceamt: any = 0;
     registerObj = new RegInsert({});
     RegId = 0;
+    OpSettlementForm: FormGroup
+
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     @ViewChild('actionsTemplate') actionsTemplate!: TemplateRef<any>;
     @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
@@ -71,6 +74,7 @@ export class CompanysettlementComponent implements OnInit {
     vNetAmount: any = 0;
     vPaidAmount: any = 0;
     vBalanceAmount: any = 0;
+    isSearchTriggered = false;
 
     ngAfterViewInit() {
         this.gridConfig.columnsList.find(col => col.key === 'companyId')!.template = this.actionsTemplate;
@@ -131,19 +135,42 @@ export class CompanysettlementComponent implements OnInit {
         public _FormvalidationserviceService: FormvalidationserviceService,
         public toastr: ToastrService, public formBuilder: UntypedFormBuilder
     ) { }
+
     ngOnInit(): void {
         this.searchFormGroup = this.createSearchForm();
         this.OpSettlementForm = this.CreateOPSettlementForm();
         this.OPMultipleSettlForm = this.CreateOPMultiplpeSettlForm();
+        this.OPMultipleSettlInsertForm = this.CreateOPMultipleSettlInsertForm();
 
-        this.getmultiplePaymentList();
+        // 🔹 Auto refresh when Company is cleared
+        this.OPMultipleSettlForm.get('CompanyId')?.valueChanges.subscribe(value => {
+            if (!value || value === '0' || value === '') {
+                if (this.isSearchTriggered) {  // only clear if user had searched
+                    this.dsMultiplepayList.data = []; // clear table
+                }
+            }
+        });
+
+        // 🔹 Auto refresh when Patient is cleared
+        this.OPMultipleSettlForm.get('RegId')?.valueChanges.subscribe(value => {
+            if (!value || value === '0' || value === '') {
+                this.regNo2 = "0";
+                if (this.isSearchTriggered) {  // only clear if user had searched
+                    this.dsMultiplepayList.data = []; // clear table
+                }
+            }
+        });
+
+        this.getmultiplePaymentList(true);
     }
+
     createSearchForm() {
         return this.formBuilder.group({
             RegId: 0,
             AppointmentDate: [(new Date()).toISOString()],
         });
     }
+
     CreateOPMultiplpeSettlForm() {
         return this.formBuilder.group({
             FirstName: ['', [Validators.maxLength(50),
@@ -164,7 +191,7 @@ export class CompanysettlementComponent implements OnInit {
             BalanceAmount: ['']
         });
     }
-    OpSettlementForm: FormGroup
+
     CreateOPSettlementForm() {
         return this.formBuilder.group({
             opCreditPayment: this.formBuilder.group({
@@ -210,6 +237,53 @@ export class CompanysettlementComponent implements OnInit {
             })
         })
     }
+
+    CreateOPMultipleSettlInsertForm() {
+        return this.formBuilder.group({
+            opCreditPayment: this.formBuilder.group({
+                paymentId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+                billNo: [0, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+                paymentDate: ['', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
+                paymentTime: ['', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
+                cashPayAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+                chequePayAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+                chequeNo: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+                bankName: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+                chequeDate: ['1999-01-01'],
+                cardPayAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+                cardNo: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+                cardBankName: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+                cardDate: ['1999-01-01'],
+                advanceUsedAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+                advanceId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+                refundId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+                transactionType: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+                remark: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+                addBy: [this.accountService.currentUserValue.userId],
+                isCancelled: [false],
+                isCancelledBy: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+                isCancelledDate: ['1999-01-01'],
+                opdipdType: [0],
+                neftpayAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+                neftno: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+                neftbankMaster: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+                neftdate: ['1999-01-01'],
+                payTmamount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+                payTmtranNo: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+                payTmdate: ['1999-01-01'],
+                tdsamount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+                unitId: [this.accountService.currentUserValue.user.unitId, [this._FormvalidationserviceService.onlyNumberValidator()]],
+                wfamount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+
+            }),
+            //bill update 
+            billUpdate: this.formBuilder.group({
+                billNo: [0, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+                balanceAmt: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            })
+        })
+    }
+
     getSelectedObj(obj) {
         this.RegId1 = obj.value;
         this.regNo = obj.regNo
@@ -287,6 +361,7 @@ export class CompanysettlementComponent implements OnInit {
         });
         this.searchFormGroup.get('RegId').setValue('')
     }
+
     viewgetOPPayemntPdf(data, status) {
         if (status)
             this.commonService.Onprint("PaymentId", data, "OPPaymentReceipt");
@@ -327,7 +402,7 @@ export class CompanysettlementComponent implements OnInit {
             { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
             { fieldName: "Reg_No", fieldValue: this.regNo, opType: OperatorComparer.Equals },
             { fieldName: "PBillNo", fieldValue: this.PBillNo, opType: OperatorComparer.Equals },
-                // { fieldName: "Company_Id", fieldValue: String(this.CompanyId), opType: OperatorComparer.Equals }
+            { fieldName: "Company_Id", fieldValue: String(this.CompanyId), opType: OperatorComparer.Equals }
             ]
         }
         this.grid.gridConfig = this.gridConfig;
@@ -352,9 +427,9 @@ export class CompanysettlementComponent implements OnInit {
         if (value.value !== 0)
             this.CompanyId = value.value
         else
-            this.CompanyId = 0
+            this.CompanyId = "0"
 
-        this.onChangeOPBill();
+        this.getmultiplePaymentList();
     }
     keyPressAlphanumeric(event) {
         var inp = String.fromCharCode(event.keyCode);
@@ -392,28 +467,35 @@ export class CompanysettlementComponent implements OnInit {
             element.tds = 0;
             return;
         }
+        
+        if (element._origPaidAmount === undefined || element._origPaidAmount == "0") {
+            element._origPaidAmount = Number(element.PaidAmount) || 0;
+        }
 
-        if (element.tds > element.balanceAmt) {
+        const tdsValue = Number(element.tds) || 0;
+        const origPaid = Number(element._origPaidAmount) || 0;
+
+        if (tdsValue > origPaid) {
             this.toastr.warning('TDS cannot be greater than Paid Amount.', 'Warning!', {
                 toastClass: 'tostr-tost custom-toast-warning',
             });
-            element.tds = 0; // reset TDS
+            element.tds = 0;
+            element.PaidAmount = this.roundAmount(origPaid);
+            return;
         }
 
-        // recalculate totals based on current SelectedList
+        element.PaidAmount = this.roundAmount(origPaid - tdsValue);
+
         this.vNetAmount = this.roundAmount(
-            this.SelectedList.reduce((sum, x) => sum + x.billAmount, 0)
+            this.SelectedList.reduce((sum, x) => sum + (x.netAmount || 0), 0)
         );
 
-        // Paid amount minus TDS for selected rows
         this.vPaidAmount = this.roundAmount(
-            this.SelectedList.reduce(
-                (sum, x) => sum + (x.balanceAmt - (x.tds || 0)), 0
-            )
+            this.SelectedList.reduce((sum, x) => sum + (x.PaidAmount || 0), 0)
         );
 
         this.vBalanceAmount = this.roundAmount(
-            this.SelectedList.reduce((sum, x) => sum + x.paidAmount, 0)
+            this.SelectedList.reduce((sum, x) => sum + (x.balanceAmt || 0), 0)
         );
     }
 
@@ -440,10 +522,10 @@ export class CompanysettlementComponent implements OnInit {
             this.SelectedList.reduce((sum, x) => sum + x.billAmount, 0)
         );
         this.vPaidAmount = this.roundAmount(
-            this.SelectedList.reduce((sum, x) => sum + x.balanceAmt, 0)
+            this.SelectedList.reduce((sum, x) => sum + x.PaidAmount, 0)
         );
         this.vBalanceAmount = this.roundAmount(
-            this.SelectedList.reduce((sum, x) => sum + x.paidAmount, 0)
+            this.SelectedList.reduce((sum, x) => sum + x.balanceAmt, 0)
         );
 
         this.toastr.success('Record Deleted Successfully.', 'Deleted !', {
@@ -451,11 +533,23 @@ export class CompanysettlementComponent implements OnInit {
         });
     }
 
-
     dsMultiplepayList = new MatTableDataSource<MultiplePayList>();
     @ViewChild(MatSort) sort: MatSort;
     @ViewChild('paginator', { static: true }) public paginator: MatPaginator;
-    getmultiplePaymentList() {
+    getmultiplePaymentList(validate = true) {
+        this.CompanyId = String(this.OPMultipleSettlForm.get('CompanyId').value)
+        this.RegId2 = this.OPMultipleSettlForm.get('RegId')?.value.value
+
+        if (validate &&
+            (this.CompanyId === "0" || this.CompanyId === "" || this.CompanyId === null) &&
+            (this.RegId2 === "0" || this.RegId2 === "" || this.RegId2 === undefined)) {
+            this.toastr.warning('Please select either a Company or a Patient before searching.');
+            this.dsMultiplepayList.data = []; // keep list empty
+            return;
+        }
+
+        this.isSearchTriggered = true;
+
         let fromDate = this.OPMultipleSettlForm.get("fromDate").value || "";
         let toDate = this.OPMultipleSettlForm.get("enddate").value || "";
         fromDate = fromDate ? this.datePipe.transform(fromDate, "yyyy-MM-dd") : "";
@@ -500,6 +594,11 @@ export class CompanysettlementComponent implements OnInit {
                     "fieldName": "ReceiptNo",
                     "fieldValue": "0",
                     "opType": "Contains"
+                },
+                {
+                    "fieldName": "CompanyId",
+                    "fieldValue": this.CompanyId,
+                    "opType": "Contains"
                 }
             ],
             "exportType": "JSON",
@@ -515,34 +614,12 @@ export class CompanysettlementComponent implements OnInit {
     }
 
     onClear() {
-
     }
 
     selection = new SelectionModel<MultiplePayList>(true, []);
     SelectedList: any = [];
     masterToggle() {
         debugger
-        // if there is a selection then clear that selection
-        // if (this.OPMultipleSettlForm.get('Status').value == 1) {
-        //     this.toastr.warning('Please select unpaid list', 'Warning !', {
-        //         toastClass: 'tostr-tost custom-toast-warning',
-        //     });
-        //     return;
-        // }
-        // if (!this.OPMultipleSettlForm.get('SupplierId').value) {
-        //     this.toastr.warning('Please select supplier Name', 'Warning !', {
-        //         toastClass: 'tostr-tost custom-toast-warning',
-        //     });
-        //     return;
-        // }
-        // if (this.OPMultipleSettlForm.get('SupplierId').value) {
-        //     if (!this.filteredSupplier.some(item => item.SupplierId == this.OPMultipleSettlForm.get('SupplierId').value.SupplierId)) {
-        //         this.toastr.warning('Please select valid supplier Name', 'Warning !', {
-        //             toastClass: 'tostr-tost custom-toast-warning',
-        //         });
-        //         return;
-        //     }
-        // }
         if (this.isSomeSelected()) {
             this.vNetAmount = 0;
             this.vPaidAmount = 0;
@@ -557,7 +634,7 @@ export class CompanysettlementComponent implements OnInit {
             this.dsMultiplepayList.data.forEach(element => {
                 console.log(element)
                 this.vNetAmount += element.billAmount
-                this.vPaidAmount += element.paidAmount
+                this.vPaidAmount += element.PaidAmount
                 this.vBalanceAmount += element.balanceAmt
                 this.SelectedList.push(element)
             })
@@ -581,31 +658,32 @@ export class CompanysettlementComponent implements OnInit {
         if (event.checked) {
 
             if (element._origPaidAmount === undefined && element._origBalanceAmt === undefined) {
-                element._origPaidAmount = element.paidAmount;
+                element._origPaidAmount = element.PaidAmount ?? 0;
                 element._origBalanceAmt = element.balanceAmt;
             }
 
             // ✅ Your swap logic
-            element.balanceAmt = element.paidAmount; //here for paid i pass balAmt & viceversa in html
-            element.paidAmount = 0;
+            element.PaidAmount = element.balanceAmt; //here for paid i pass balAmt & viceversa in html
+            element.balanceAmt = 0;
+            // element.tds = 0;
 
             if (this.SelectedList.length > 0) {
                 // if (!this.SelectedList.some(item => item.supplierName == element.supplierName)) {
-                //     this.toastr.warning('Please select same supplier Name', 'Warning !', {
-                //         toastClass: 'tostr-tost custom-toast-warning',
-                //     });
-                //     this.SelectedList = [];
-                //     this.selection.clear()
-                //     this.getmultiplePaymentList();
-                //     this.OPMultipleSettlForm.patchValue({
-                //         NetAmount: '',
-                //         PaidAmount: '',
-                //         BalanceAmount: ''
-                //     });
-                //     this.vNetAmount = 0;
-                //     this.vPaidAmount = 0;
-                //     this.vBalanceAmount = 0;
-                //     return;
+                //   this.toastr.warning('Please select same supplier Name', 'Warning !', {
+                //     toastClass: 'tostr-tost custom-toast-warning',
+                //   });
+                //   this.SelectedList = [];
+                //   this.selection.clear()
+                //   this.getSupplierPayStatusList();
+                //   this._SupplierPaymentStatusService.SearchFormGroup.patchValue({
+                //     NetAmount: '',
+                //     PaidAmount: '',
+                //     BalanceAmount: ''
+                //   });
+                //   this.vNetAmount = 0;
+                //   this.vPaidAmount = 0;
+                //   this.vBalanceAmount = 0;
+                //   return;
                 // }
                 this.SelectedList.push(element)
             } else {
@@ -613,15 +691,16 @@ export class CompanysettlementComponent implements OnInit {
             }
 
             this.vNetAmount = this.roundAmount(this.vNetAmount + element.billAmount);
-            this.vPaidAmount = this.roundAmount(this.vPaidAmount + element.balanceAmt);
-            this.vBalanceAmount = this.roundAmount(this.vBalanceAmount + element.paidAmount);
+            this.vPaidAmount = this.roundAmount(this.vPaidAmount + element.PaidAmount);
+            this.vBalanceAmount = this.roundAmount(this.vBalanceAmount + element.balanceAmt);
         }
         else {
 
             if (element._origPaidAmount !== undefined && element._origBalanceAmt !== undefined) {
-                element.paidAmount = element._origPaidAmount;
+                element.PaidAmount = 0;
                 element.balanceAmt = element._origBalanceAmt;
             }
+            element.tds = 0;
 
             let index = this.SelectedList.indexOf(element);
             if (index >= 0) {
@@ -632,10 +711,10 @@ export class CompanysettlementComponent implements OnInit {
                 this.SelectedList.reduce((sum, x) => sum + x.billAmount, 0)
             );
             this.vPaidAmount = this.roundAmount(
-                this.SelectedList.reduce((sum, x) => sum + x.balanceAmt, 0)
+                this.SelectedList.reduce((sum, x) => sum + x.PaidAmount, 0)
             );
             this.vBalanceAmount = this.roundAmount(
-                this.SelectedList.reduce((sum, x) => sum + x.paidAmount, 0)
+                this.SelectedList.reduce((sum, x) => sum + x.balanceAmt, 0)
             );
             this.dsMultiplepayList.data = [...this.dsMultiplepayList.data];
         }
@@ -647,6 +726,9 @@ export class CompanysettlementComponent implements OnInit {
 
     opMulSettFormReset() {
         this.regNo = "0"
+        this.RegId2 = "0"
+        this.regNo2 = "0"
+        this.getmultiplePaymentList();
     }
 
     OnReset() {
@@ -677,12 +759,44 @@ export class CompanysettlementComponent implements OnInit {
                 width: '80%',
                 data: {
                     vPatientHeaderObj: PatientHeaderObj,
-                    FromName: "Phar-SupplierPay"
+                    FromName: "OP-SETTLEMENT"
                 }
             });
         dialogRef.afterClosed().subscribe(result => {
             debugger
             console.log("payment:", result)
+            // if (this.OPMultipleSettlInsertForm.valid) {
+            //     console.log(this.OPMultipleSettlInsertForm.value)
+            //     console.log(result.submitDataPay.ipPaymentInsert)
+
+            //     // this._CompanysettlementService.InsertOPBillingsettlement(this.OpSettlementForm.value).subscribe(response => {
+            //     //     // this.GetDetails(this.RegId1)
+            //     //     // this.viewgetOPPayemntPdf(response, true);
+            //     // });
+            // } else {
+            //     let invalidFields = []
+            //     if (this.OPMultipleSettlInsertForm.invalid) {
+            //         for (const controlName in this.OPMultipleSettlInsertForm.controls) {
+            //             const control = this.OPMultipleSettlInsertForm.get(controlName);
+            //             if (control instanceof FormGroup || control instanceof FormArray) {
+            //                 for (const nestedKey in control.controls) {
+            //                     if (control.get(nestedKey)?.invalid) {
+            //                         invalidFields.push(`OP Settlement Data: ${controlName}.${nestedKey}`);
+            //                     }
+            //                 }
+            //             } else if (control?.invalid) {
+            //                 invalidFields.push(`OPSettlement From: ${controlName}`);
+            //             }
+            //         }
+            //     }
+            //     if (invalidFields.length > 0) {
+            //         invalidFields.forEach(field => {
+            //             this.toastr.warning(`Please Check this field "${field}" is invalid.`, 'Warning',
+            //             );
+            //         });
+            //         return
+            //     }
+            // }
         });
     }
 }
@@ -694,6 +808,7 @@ export class MultiplePayList {
     concessionAmt: number;
     netPayableAmt: any;
     paidAmount: any;
+    PaidAmount: any;
     balanceAmt: any;
     companyName: any;
     patientName: any;
@@ -710,6 +825,7 @@ export class MultiplePayList {
             this.concessionAmt = MultiplePayList.concessionAmt || 0;
             this.netPayableAmt = MultiplePayList.netPayableAmt || 0;
             this.paidAmount = MultiplePayList.paidAmount || 0;
+            this.PaidAmount = MultiplePayList.PaidAmount || 0
             this.balanceAmt = MultiplePayList.balanceAmt || '';
             this.companyName = MultiplePayList.companyName || '';
             this.patientName = MultiplePayList.patientName || '';
