@@ -28,7 +28,7 @@ export class ChangePasswordComponent implements OnInit {
   UserId: any;
   passrule: boolean = false;
   hidePassword = true;
-hideConfirmPassword = true;
+  hideConfirmPassword = true;
 
   constructor(private _fuseSidebarService: FuseSidebarService,
     private accountService: AuthenticationService,
@@ -77,8 +77,8 @@ hideConfirmPassword = true;
     return this.formBuilder.group({
       userId: this.accountService.currentUserValue.userId,
       userName: this.accountService.currentUserValue.userName,
-      password: ['', [Validators.required, Validators.minLength(8),Validators.maxLength(15),Validators.pattern(this.passwordPattern)]],
-      confirmpassword: ['',[Validators.minLength(8),Validators.maxLength(15)]]
+      password: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(15), Validators.pattern(this.passwordPattern)]],
+      confirmpassword: ['', [Validators.minLength(8), Validators.maxLength(15)]]
     }, { validators: this.passwordMatchValidator }
     );
   }
