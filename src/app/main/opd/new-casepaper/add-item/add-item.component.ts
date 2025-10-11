@@ -70,7 +70,7 @@ export class AddItemComponent {
   createItemmasterForm(): FormGroup {
     return this._formBuilder.group({
       itemId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      itemShortName: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+      itemShortName: ['string', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
       itemName: ['', [Validators.required, this._FormvalidationserviceService.allowEmptyStringValidator()]],
       itemTypeId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       itemCategaryId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -78,7 +78,7 @@ export class AddItemComponent {
       itemClassId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       purchaseUomid: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       stockUomid: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      conversionFactor: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+      conversionFactor: ['1', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
       currencyId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       taxPer: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       isActive: true,
@@ -86,7 +86,7 @@ export class AddItemComponent {
       minQty: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       maxQty: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       reOrder: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      hsncode: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+      hsncode: ['string', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
       cgst: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       sgst: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       igst: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -130,7 +130,7 @@ export class AddItemComponent {
       });
       this.itemForm.get('itemGenericNameId').setValue(Number(this.itemForm.get("itemGenericNameId").value))
       this.itemForm.get('purchaseUomid').setValue(Number(this.itemForm.get("purchaseUomid").value))
-      this.itemForm.get('itemId').setValue(this.vItemId )
+      this.itemForm.get('itemId').setValue(this.vItemId ?? 0)
       this.itemForm.get("mAssignItemToStores").setValue(data2)
         console.log("FormValue", this.itemForm.value)
         this._CasepaperService.insertItemMaster(this.itemForm.value).subscribe((data) => {

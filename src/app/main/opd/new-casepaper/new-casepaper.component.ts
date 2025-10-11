@@ -1728,6 +1728,7 @@ export class NewCasepaperComponent implements OnInit {
     });
   }
 
+  showTemplateRefresh = true;
   SaveTemplate() {
     if (this.dsItemList.data.length == 0) {
       Swal.fire('Error !', 'Please add prescription in table', 'error');
@@ -1744,6 +1745,10 @@ export class NewCasepaperComponent implements OnInit {
         }
       });
     dialogRef.afterClosed().subscribe(result => {
+      this.showTemplateRefresh = false;
+      setTimeout(() => {
+        this.showTemplateRefresh = true;
+      }, 100);
     });
   }
 
@@ -1761,6 +1766,7 @@ export class NewCasepaperComponent implements OnInit {
     });
   }
 
+  showDoseDropdownRefresh = true;
   getDosemaster() {
     const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
     buttonElement.blur(); // Remove focus from the button
@@ -1774,9 +1780,11 @@ export class NewCasepaperComponent implements OnInit {
       });
     dialogRef.componentInstance.openedFromOPD = true;
     dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        //  that.grid.bindGridData();
-      }
+      //  Force re-render of dropdown to reload internal data
+      this.showDoseDropdownRefresh = false;
+      setTimeout(() => {
+        this.showDoseDropdownRefresh = true;
+      }, 100);
     });
   }
 
@@ -1949,9 +1957,9 @@ export class NewCasepaperComponent implements OnInit {
     })
   }
 
-  OnEdit(row) {    
+  OnEdit(row) {
     this.mycertificateForm.get('CertificateTemplateId').disable();
-    this.isButtonDisabled=true
+    this.isButtonDisabled = true
 
     this.certiID = row.certificateId
     this.mycertificateForm.get('certificateName').setValue(row.certificateName)
@@ -1959,7 +1967,7 @@ export class NewCasepaperComponent implements OnInit {
       CertificateTemplateId: row.certificateTemplateId,
     });
     this.vcertificateText = row.certificateText
-     this.mycertificateForm.get('certificateText').setValue(this.vcertificateText)
+    this.mycertificateForm.get('certificateText').setValue(this.vcertificateText)
     this.selectedTabIndex = 1;
   }
 

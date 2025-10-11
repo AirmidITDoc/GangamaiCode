@@ -1029,6 +1029,7 @@ export class ClinicalCareChartComponent implements OnInit {
     const currentDate = new Date();
     const datePipe = new DatePipe('en-US');
     const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
+    const formattedTime = datePipe.transform(currentDate, 'shortTime');
 
     if (this.vRegNo == 0 || this.vRegNo == '' || this.vRegNo == null || this.vRegNo == undefined) {
       this.toastr.warning('Please select Patient', 'Warning !', {
@@ -1039,6 +1040,7 @@ export class ClinicalCareChartComponent implements OnInit {
     this.VitalsForm.get('vitalId').setValue(this.vVitalId ?? 0)
     this.VitalsForm.get('admissionId').setValue(this.vAdmission)
     this.VitalsForm.get('vitalDate').setValue(formattedDate)
+    this.VitalsForm.get('vitalTime').setValue(`${formattedDate} ${formattedTime}`)
     if (!this.VitalsForm.invalid) {
       console.log(this.VitalsForm.value)
       this._ClinicalcareService.SaveVitalInfo(this.VitalsForm.value).subscribe((response) => {
@@ -1145,6 +1147,7 @@ export class ClinicalCareChartComponent implements OnInit {
     const currentDate = new Date();
     const datePipe = new DatePipe('en-US');
     const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
+    const formattedTime = datePipe.transform(currentDate, 'shortTime');
 
     if (this.vRegNo == 0 || this.vRegNo == '' || this.vRegNo == null || this.vRegNo == undefined) {
       this.toastr.warning('Please select Patient', 'Warning !', {
@@ -1155,6 +1158,7 @@ export class ClinicalCareChartComponent implements OnInit {
     this.SugarForm.get('id').setValue(this.vid ?? 0)
     this.SugarForm.get('admissionId').setValue(this.vAdmission)
     this.SugarForm.get('entryDate').setValue(formattedDate)
+    this.SugarForm.get('entryTime').setValue(`${formattedDate} ${formattedTime}`)
     if (!this.SugarForm.invalid) {
       const controlsToRemove = ['InformedTo', 'InformedBy', 'Injection', 'InjectionDose', 'Tablet', 'TabletDose'];
       controlsToRemove.forEach(controlName => {
@@ -1229,6 +1233,7 @@ export class ClinicalCareChartComponent implements OnInit {
     const currentDate = new Date();
     const datePipe = new DatePipe('en-US');
     const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
+    const formattedTime = datePipe.transform(currentDate, 'shortTime');
 
     if (this.vRegNo == 0 || this.vRegNo == '' || this.vRegNo == null || this.vRegNo == undefined) {
       this.toastr.warning('Please select Patient', 'Warning !', {
@@ -1239,6 +1244,7 @@ export class ClinicalCareChartComponent implements OnInit {
     this.OxygenForm.get('id').setValue(this.vOxyid ?? 0)
     this.OxygenForm.get('admissionId').setValue(this.vAdmission)
     this.OxygenForm.get('entryDate').setValue(formattedDate)
+    this.OxygenForm.get('entryTime').setValue(`${formattedDate} ${formattedTime}`)
     if (!this.OxygenForm.invalid) {
       console.log(this.OxygenForm.value)
       this._ClinicalcareService.SaveOxygenVentilator(this.OxygenForm.value).subscribe((response) => {

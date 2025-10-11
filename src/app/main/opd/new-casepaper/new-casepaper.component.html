@@ -327,7 +327,7 @@
                                                             (onClearSelection)="ItemFromReset()">
                                                         </airmid-autocomplete>
 
-                                                        <airmid-dropdown label="Dose Name" formControlName="DoseId"
+                                                        <airmid-dropdown label="Dose Name" formControlName="DoseId" *ngIf="showDoseDropdownRefresh"
                                                             [formGroup]="MedicineItemForm" #doseDropdown
                                                             [validations]="getValidationMessages().DoseId"
                                                             [mode]="autocompleteModeDose" [(ngModel)]="vdoseName"
@@ -366,7 +366,7 @@
 
                                                         <mat-divider [vertical]="true"></mat-divider>&nbsp;
 
-                                                        <airmid-dropdown label="Template List"
+                                                        <airmid-dropdown label="Template List" *ngIf="showTemplateRefresh"
                                                             formControlName="TemplateId" [formGroup]="MedicineItemForm"
                                                             [validations]="getValidationMessages().TemplateId"
                                                             [mode]="autocompleteModeTemplate"
