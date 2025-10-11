@@ -885,8 +885,6 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
     this.isUpdating = false;
   }
   updateTotalDiscountPer(): void {
-
-    debugger
     if (this.isUpdating) return; // Stop recursion
     this.isUpdating = true;
 
@@ -1016,7 +1014,6 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
     const formattedTime = this.datePipe.transform(new Date(), "HH:mm:ss");
     this.OpBillForm.get('billDate').setValue(formattedDate);
     this.OpBillForm.get('billTime').setValue(formattedDate + ' ' + formattedTime);
-debugger
     this.OpBillForm.get('opdipdid')?.setValue(this.vOPIPId)
     this.OpBillForm.get('tariffId')?.setValue(this.vTariffId) 
     this.OpBillForm.get('regNo')?.setValue(this.patientDetail?.regNo) 
@@ -1086,6 +1083,8 @@ debugger
           if (result && result.IsSubmitFlag == true) {
             console.log(this.OpBillForm.value)
             console.log(result.submitDataPay.ipPaymentInsert)
+            console.log(result.BillBalanceAmount)
+            this.OpBillForm.get('balanceAmt').setValue(result.BillBalanceAmount ||0)
             this.OpBillForm.get('payments').setValue(result.submitDataPay.ipPaymentInsert)
             console.log(this.OpBillForm.value)
             this._AppointmentlistService.InsertOPBilling(this.OpBillForm.value).subscribe(response => {
