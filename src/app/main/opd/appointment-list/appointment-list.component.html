@@ -111,11 +111,12 @@
             </div>
         </ng-template>
         <ng-template #actionsTemplate1 let-element>
-            <div>
+            <div fxLayout="row" fxLayoutAlign="center center">
 
+<!-- style=" border: black 1px solid;" -->
                 <mat-icon *ngIf="element.mPbillNo=='1'|| element.mPbillNo=='2' " matTooltip="Bill Generated"
                     class="pill red-600 s-16">circle</mat-icon>
-                <mat-icon style=" border: black 1px solid;" *ngIf="element.mPbillNo=='0' "
+                <mat-icon  *ngIf="element.mPbillNo=='0' "
                     matTooltip="Did not Generated Bill" class="pill white-600 s-16">
                     circle
                 </mat-icon>

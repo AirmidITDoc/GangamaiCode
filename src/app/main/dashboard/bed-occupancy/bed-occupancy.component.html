@@ -23,33 +23,41 @@
                                 <div class="overall-title">Overall statistics</div>
                                 <div class="overall-row">
                                     <div class="overall-left">
-                                        <div class="overall-value">{{occupancyPercent}}%</div>
+                                        <div class="overall-value">{{totalOccupied}}</div>
                                         <div class="overall-label">In Use</div>
-                                                </div>
+                                    </div>
                                     <div class="overall-right">
                                         <div class="overall-total">{{totalBeds}}</div>
-                                        <div class="overall-total-label">Total</div>
+                                        <div class="overall-total-label">Total Beds</div>
                                     </div>
                                 </div>
                                 <div class="overall-donut-wrap">
-                                    <canvas id="BedOverallDoughnut" style="width:100%; height:160px"></canvas>
-                            </div>
-                                <!-- <div class="legend-mini">
-                                    <span class="dot dot-red"></span> In use
-                                    <span class="dot dot-amber"></span> Reserved
-                                    <span class="dot dot-green"></span> Empty
-                                    <span class="dot dot-blue"></span> Clean up
-                                    <span class="dot dot-violet"></span> Other
-                        </div> -->
+                                    <canvas id="BedOverallDoughnut" style="width:100%; height:180px"></canvas>
+                                </div>
+                                <div class="legend-mini">
+                                    <span class="legend-item"><span class="dot dot-red"></span> In use</span>
+                                    <span class="legend-item"><span class="dot dot-amber"></span> Reserved</span>
+                                    <span class="legend-item"><span class="dot dot-green"></span> Empty</span>
+                                    <span class="legend-item"><span class="dot dot-blue"></span> Clean up</span>
+                                    <span class="legend-item"><span class="dot dot-violet"></span> Other</span>
+                                </div>
                             </mat-card-content>
                         </mat-card>
                     </div>
                     <div fxFlex="75%" fxFlex.sm="66%" fxFlex.xs="100%">
-                        <mat-card class="admissions-card full-height">
-                            <mat-card-content>
-                                <div class="chart-title">New admission</div>
-                                <div style="height:220px">
-                                    <canvas id="BedAdmissionsLine"></canvas>
+                        <mat-card class="combined-charts-card full-height">
+                            <mat-card-content class="combined-content">
+                                <div class="chart-row">
+                                    <div class="chart-title">New admission</div>
+                                    <div style="height:220px">
+                                        <canvas id="BedAdmissionsLine"></canvas>
+                                    </div>
+                                </div>
+                                <div class="chart-row mt-12">
+                                    <div class="chart-title">Discharge</div>
+                                    <div style="height:220px">
+                                        <canvas id="BedDischargeLine"></canvas>
+                                    </div>
                                 </div>
                             </mat-card-content>
                         </mat-card>
@@ -150,7 +158,7 @@
                     </div>
                 </div>
 
-                    <mat-form-field appearance="outline" class="room-select mt-8 mr-8">
+                    <!-- <mat-form-field appearance="outline" class="room-select mt-8 mr-8">
                       <mat-label>Room</mat-label>
                       <mat-select [(value)]="selectedRoom">
                         <mat-option *ngFor="let room of rooms" [value]="room">{{ room }}</mat-option>
@@ -162,28 +170,33 @@
                       <input matInput [matDatepicker]="picker" placeholder="Select month" />
                       <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                       <mat-datepicker #picker startView="multi-year" panelClass="month-picker"></mat-datepicker>
-                    </mat-form-field>
+                    </mat-form-field> -->
                   
-                  <div class="bed-grid">
-                    <mat-card *ngFor="let bed of beds" class="bed-card" >
+                  <div class="bed-grid mt-8">
+                    <mat-card *ngFor="let bed of beds" class="bed-card" (click)="openBedDetails(bed)">
                       <div class="bed-header">
                         <div class="bed-id">BED {{ bed.id }}</div>
                         <div class="bed-status">{{ bed.status }}</div>
                       </div>
                   
                       <div class="bed-icon">
-                        <mat-icon class="bed-icon" [ngClass]="bed.status.toLowerCase()">{{ bed.icon }}</mat-icon>
+                        <mat-icon class="bed-icon" [ngClass]="getBedStatusClass(bed.status)">{{ bed.icon }}</mat-icon>
                       </div>
                   
-                      <div class="bed-details" *ngIf="bed.status !== 'Empty'">
+                      <div class="bed-details" *ngIf="!isBedEmpty(bed.status)">
                         <p><strong>Patient:</strong> {{ bed.patient }}</p>
                         <p><strong>Admission Date:</strong> {{ bed.admissionDate }}</p>
                         <p><strong>Age:</strong> {{ bed.age }}</p>
                         <p><strong>Sex:</strong> {{ bed.sex }}</p>
                       </div>
                   
-                      <div class="bed-details" *ngIf="bed.status === 'Empty'">
+                      <div class="bed-details" *ngIf="isBedEmpty(bed.status)">
                         <p>No patient assigned</p>
+                      </div>
+
+                      <div class="click-indicator">
+                        <mat-icon>visibility</mat-icon>
+                        <span>Click for details</span>
                       </div>
                     </mat-card>
                   </div>

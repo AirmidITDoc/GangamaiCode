@@ -112,6 +112,18 @@
   overflow: hidden; /* keep legend within card bounds */
 }
 
+.chart-content {
+  padding: 16px !important;
+  overflow: hidden;
+}
+
+.chart-wrapper {
+  width: 100%;
+  height: 250px;
+  overflow: hidden;
+  position: relative;
+}
+
 .tables-row {
   padding: 10px;
 }
@@ -203,12 +215,48 @@
 :host ::ng-deep ngx-charts-line-chart {
   display: block;
   width: 100% !important;
-  height: auto;
+  height: 100% !important;
+  overflow: hidden;
 }
 
-/* Override Angular Material card overflow inside this component only */
-:host ::ng-deep .mat-card {
+/* Specific fixes for horizontal bar chart overflow */
+:host ::ng-deep .chart-wrapper ngx-charts-bar-horizontal {
+  width: 100% !important;
+  height: 100% !important;
+  
+  .ngx-charts {
+    width: 100% !important;
+    height: 100% !important;
+    overflow: hidden;
+  }
+  
+  svg {
+    width: 100% !important;
+    height: 100% !important;
+    overflow: visible;
+  }
+  
+  /* Ensure data labels are positioned correctly */
+  .bar-label-text {
+    font-size: 10px;
+    font-weight: 600;
+  }
+  
+  /* Add padding to chart area to prevent label cutoff */
+  .chart {
+    margin-right: 50px;
+    margin-left: 10px;
+  }
+}
+
+/* Override Angular Material card overflow for metric cards only */
+:host ::ng-deep .metric-card.mat-card {
   overflow: visible;
+}
+
+/* Ensure chart cards stay contained */
+:host ::ng-deep .chart-card.mat-card {
+  overflow: hidden !important;
 }
 
 /* Improve table responsiveness */
@@ -233,3 +281,154 @@
 
 /* Make images/svgs within cards scale down */
 ::host img, ::host svg { max-width: 100%; height: auto; }
+
+/* Patient Overview Chart Styles - matching bed-occupancy */
+.patient-overview-card {
+  .overall-stats-section {
+    padding: 12px 8px;
+  }
+
+  .overall-title {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    color: #7c7c7c;
+    margin-bottom: 12px;
+    text-align: left;
+  }
+
+  .overall-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 16px;
+    padding: 0 8px;
+  }
+
+  .overall-left,
+  .overall-right {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .overall-value {
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 1;
+    color: #2c3e50;
+    margin-bottom: 4px;
+  }
+
+  .overall-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: #6c757d;
+  }
+
+  .overall-total {
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 1;
+    color: #2c3e50;
+    margin-bottom: 4px;
+    text-align: right;
+  }
+
+  .overall-total-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: #6c757d;
+    text-align: right;
+  }
+
+  .overall-donut-wrap {
+    margin: 12px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    canvas {
+      max-width: 280px !important;
+      max-height: 200px !important;
+      width: 100% !important;
+      height: auto !important;
+    }
+  }
+
+  .legend-mini {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 12px;
+    padding: 0 8px;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    font-size: 10px;
+    font-weight: 600;
+    color: #555;
+    gap: 5px;
+  }
+
+  .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    display: inline-block;
+  }
+
+  .dot-red {
+    background-color: #ff5a8a;
+  }
+
+  .dot-amber {
+    background-color: #f6c542;
+  }
+
+  .dot-green {
+    background-color: #3ecf8e;
+  }
+
+  .dot-blue {
+    background-color: #5ac8fa;
+  }
+
+  .dot-violet {
+    background-color: #a283f6;
+  }
+
+  .dot-orange {
+    background-color: #ff9f43;
+  }
+}
+
+// .finance-grid {
+//   align-items: stretch;
+// }
+
+// /* Ensure all cards fill equal vertical space */
+// .metric-card {
+//   display: flex;
+//   flex-direction: column;
+//   justify-content: space-between;
+// }
+
+// /* Keep chart visually separated from edges */
+// .chart-card {
+//   padding-right: 12px;
+// }
+
+// /* Fix chart overflowing to the edge */
+// .chart-content {
+//   padding-right: 8px;
+//   box-sizing: border-box;
+// }
+
+// /* Optional: consistent min height */
+// .metric-card,
+// .chart-card {
+//   min-height: 300px;
+// }
