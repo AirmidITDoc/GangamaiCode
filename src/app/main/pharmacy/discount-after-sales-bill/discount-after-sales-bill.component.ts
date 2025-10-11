@@ -258,6 +258,37 @@ export class DiscountAfterSalesBillComponent implements OnInit {
     onClear() {
   
     } 
+    RegId:any;
+      onChangePatientTypeMultiple(event) {
+        if (event.value == 'OP') {
+          this.RegId = ''; 
+          this._DiscAftSalesBillService.SearchGroupForm.get('RegID').setValue('a');
+        } else if (event.value == 'IP') {
+          this.RegId = '';
+       
+          this._DiscAftSalesBillService.SearchGroupForm.get('RegID').setValue('a');
+        } else {
+        
+          this._DiscAftSalesBillService.SearchGroupForm.get('RegID').setValue('%');
+          this._DiscAftSalesBillService.SearchGroupForm.updateValueAndValidity();
+        } 
+      } 
+      getValidationMessages() {
+    return {
+      MobileNo: [
+        // { name: "required", Message: "MobileNo is required" }
+      ],
+      FinalPaidAmt: [
+        // { name: "required", Message: "FinalPaidAmt is required" }
+      ],
+      FinalBalanceAmt: [
+        // { name: "required", Message: "FinalBalanceAmt is required" }
+      ],
+      FinalNetAmt: [
+        // { name: "required", Message: "FinalNetAmt is required" }
+      ]
+    };
+  }
   } 
   export class  ItemList {
   

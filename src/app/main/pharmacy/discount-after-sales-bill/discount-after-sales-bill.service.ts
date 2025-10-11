@@ -25,6 +25,8 @@ export class DiscountAfterSalesBillService {
       ItemName:'',
       ReturnQty:'',
       TotalQty:'', 
+      
+      PatientType: ['1'],
     });
   }
   CreateaIpFinalform() {

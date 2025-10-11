@@ -1,4 +1,4 @@
-<div class="page-layout simple left-sidebar inner-sidebar inner-scroll" dynamicTableHeight  >
+<!-- <div class="page-layout simple left-sidebar inner-sidebar inner-scroll" dynamicTableHeight  >
     <mat-toolbar style="height: 50px; justify-content:space-between;width: 100%;">
         <div fxLayout="row" fxLayoutAlign="start center">
             <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
@@ -240,19 +240,7 @@
                                             </mat-cell>
                                         </ng-container> 
     
-                                        <!-- <ng-container matColumnDef="action" stickyEnd>
-                                            <mat-header-cell *matHeaderCellDef fxShow.gt-sm style="color: white;" class="w-80">
-                                                Action</mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" class="w-80">
-                                                <button mat-icon-button  *ngIf="contact.BalanceAmount>0" matTooltip="Payment"
-                                                    (click)="OnPayment(contact)" >
-                                                    <mat-icon>payment</mat-icon> 
-                                                </button> 
-                                                <button mat-icon-button   matTooltip="Print">
-                                                    <mat-icon>print</mat-icon>
-                                                </button>
-                                            </mat-cell>
-                                        </ng-container>   -->
+                                       
                         
                                         <ng-container matColumnDef="loading">
                                             <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
@@ -323,4 +311,331 @@
         </div>
     </div>
 </div>
+  -->
+
+
+    
+        <div class="simple page-layout modal-wrapper grid-container">
+            <!-- Modal header -->
+            <div class="modal-header accent">
+                <div class="modal-header-content">
+                    <div class="modal-header-title">
+                        <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
+                            <mat-icon>menu</mat-icon>
+                        </button>
+        
+                        <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"
+                            style="color: white;">
+                           Discount After Final Bill
+                        </span>
+                    </div>
+                    <div class="modal-header-right">
+                        <div class="close-icon">
+                            <!-- <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
+                                matTooltip="Close">
+                                <mat-icon>close</mat-icon>
+                            </button> -->
+                        </div>
+                    </div>
+                </div>
+            </div> 
+            <div class="modal-body">
+                <div class="h-100-p" fxLayout="column">
+                    <div class="modal-card-container">
+                        <div fxLayout="column" class="gap-8 h-100-p">
+                            <div class="modal-card-container search-container p-12">
+                                <div class="patient-search-container input-error-hidden">
+                                    <mat-card fxFlex.gt-sm="100%" fxFlex>
+                                        <mat-card-content>
+                                            <form [formGroup]="_DiscAftSalesBillService.SearchGroupForm" class="pt-0">
+                                                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="space-between"
+                                                    class="gap-8">
+                                                    <div class="radio-group-left gap-8" fxLayout="row" fxLayoutAlign="start center"
+                                                        fxFlex>
+                                                        <mat-radio-group aria-label="Select an option" formControlName="PatientType"
+                                                            [formGroup]="_DiscAftSalesBillService.SearchGroupForm"
+                                                            (change)="onChangePatientTypeMultiple($event)"
+                                                            (blur)="onChangePatientTypeMultiple($event)" fxLayout="row">
+                                                            <mat-radio-button value="0">OP</mat-radio-button>
+                                                            <mat-radio-button value="1">IP</mat-radio-button>
+                                                            <mat-radio-button value="2">External</mat-radio-button>
+                                                        </mat-radio-group>
+                
+                                                        <div fxFlex="30%" fxFlex.sm="100%"
+                                                            *ngIf="_DiscAftSalesBillService.SearchGroupForm.get('PatientType').value != '1' && _DiscAftSalesBillService.SearchGroupForm.get('PatientType').value != '2'">
+                                                            <airmid-autocomplete label="Search Reg No / Patient Name / Mobile No"
+                                                                [formGroup]="_DiscAftSalesBillService.SearchGroupForm" fxFlex formControlName="RegID"
+                                                                placeholderText="Search Reg No / Patient Name / Mobile No"
+                                                                ApiUrl="VisitDetail/search-patient?Keyword=" ValueField="regId"
+                                                                TextField="formattedText"
+                                                                (selectionChange)="getSelectedObjOpMultiple($event)"></airmid-autocomplete>
+                                                        </div>
+                
+                                                        <div fxFlex="30%" fxFlex.sm="100%"
+                                                            *ngIf="_DiscAftSalesBillService.SearchGroupForm.get('PatientType').value != '0' && _DiscAftSalesBillService.SearchGroupForm.get('PatientType').value != '2'">
+                                                            <airmid-autocomplete label="IP RegNo / First Name / Last Name / Mobile No"
+                                                                [formGroup]="_DiscAftSalesBillService.SearchGroupForm" formControlName="RegID"
+                                                                placeholderText="IP RegNo / First Name / Last Name / Mobile No" fxFlex
+                                                                ApiUrl="Admission/search-patient?Keyword="
+                                                                (selectionChange)="getSelectedObjIPMultiple($event)"
+                                                                ValueField="admissionID"
+                                                                TextField="formattedText"></airmid-autocomplete>
+                                                        </div>                   
+                                                    </div>
+                                                </div>
+                                                <div *ngIf="_DiscAftSalesBillService.SearchGroupForm.get('PatientType').value != '2' && RegId != ''">
+                                                    <div class="content-card">
+                                                        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="5px">
+                                                            <div fxFlex.gt-sm="100%" fxFlex>
+                                                                <div fxlayout="row" style="background-color: white">
+                                                                    <div class="patient-info-sales my-8">
+                                                                        <div class="sales-patient-info-title">
+                                                                            <span style="font-weight: 700">Patient
+                                                                                Information</span>
+                                                                        </div>
+                                                                        <div class="sales-patient-info" fxFlexFill fxLayout="row"
+                                                                            fxLayoutAlign="space-between center" class="patient-info">
+                                                                            <div class="patient-sub">
+                                                                                <div class="patient-info-row patient-info-1-111 pt-8"
+                                                                                    fxLayout="row" fxLayoutAlign="space-between center">
+                                                                                    <div class="patient-col">
+                                                                                        <span class="patient-col-key">Patient
+                                                                                            Name</span>
+                                                                                        <span>:</span>
+                                                                                        <span class="patient-col-value">{{
+                                                                                            mRegNo }}-{{
+                                                                                            mPatientName
+                                                                                            }}</span>
+                                                                                    </div>
+                                                                                    <div class="patient-col" *ngIf="IPDNocheck">
+                                                                                        <span class="patient-col-key">IPDNo</span>
+                                                                                        <span>:</span>
+                                                                                        <span class="patient-col-value">{{
+                                                                                            mIPDNo }}</span>
+                                                                                    </div>
+                                                                                    <div class="patient-col" *ngIf="OPDNoCheck">
+                                                                                        <span class="patient-col-key">OPDNo</span>
+                                                                                        <span>:</span>
+                                                                                        <span class="patient-col-value">{{
+                                                                                            mOPDNo }}</span>
+                                                                                    </div>
+                                                                                    <div class="patient-col" *ngIf="DoctorNamecheck">
+                                                                                        <span class="patient-col-key">Doctor
+                                                                                            Name</span>
+                                                                                        <span>:</span>
+                                                                                        <span class="patient-col-value">Dr.{{
+                                                                                            mDoctorName
+                                                                                            }}</span>
+                                                                                    </div>
+                
+                                                                                    <div class="patient-col">
+                                                                                        <span class="patient-col-key">Ward
+                                                                                            |
+                                                                                            Bed Name</span>
+                                                                                        <span>:</span>
+                                                                                        <span class="patient-col-value">{{
+                                                                                            mWardName }} |
+                                                                                            {{mBedName}}</span>
+                                                                                    </div>
+                
+                                                                                    <div class="patient-col">
+                                                                                        <span class="patient-col-key">Tariff
+                                                                                            Name</span>
+                                                                                        <span>:</span>
+                                                                                        <span class="patient-col-value">{{
+                                                                                            mTariffName
+                                                                                            }}</span>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </mat-card-content>
+                                    </mat-card>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                
+                    <div class="modal-card-container h-100-p">
+                        <div class="airmid-table-container py-12 h-100-p" fxLayout="column">
+                            <mat-table #table class="airmid-table h-100-p" matSort [dataSource]="dsIpSaleItemList"
+                                [@animateStagger]="{ value: '50' }" style="overflow: auto;"> 
+                                
+                                        <ng-container matColumnDef="button" sticky>
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md class="w-80">
+                                                 
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="w-80">
+                                                <mat-checkbox aria-label="Checked" (change)="tableElementChecked($event, contact)">
+                                                </mat-checkbox>
+                                                <mat-icon *ngIf="contact.PatientType !='Company'" matTooltip="Patient Category Self">account_box
+                                                </mat-icon>
+                                                
+                                                <mat-icon *ngIf="contact.PatientType =='Company'" matTooltip="Patient Category Company">business
+                                                </mat-icon>
+                                            </mat-cell>
+                                        </ng-container> 
+    
+                                        <ng-container matColumnDef="SalesDate">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-90">SalesDate
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-90"> 
+                                                {{element.Date | date:'dd/MM/YYYY'}}
+                                            </mat-cell>
+                                        </ng-container>
+                        
+                                        <ng-container matColumnDef="PillNo">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-80">
+                                                Sales No</mat-header-cell>
+                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-80">
+                                                <span> {{element.SalesNo}}</span>
+                                            </mat-cell>
+                                        </ng-container> 
+    
+                                        <ng-container matColumnDef="CompanyName">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-130">
+                                                Company Name </mat-header-cell>
+                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-130">
+                                                <span> {{element.CompanyName}}</span>
+                                            </mat-cell>
+                                        </ng-container>
+                        
+                                        <ng-container matColumnDef="BillAmt">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                Total Amt </mat-header-cell>
+                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                <span> {{element.TotalAmount | currency:"INR":"symbol"}}</span>
+                                            </mat-cell>
+                                        </ng-container>
+                        
+                                        <ng-container matColumnDef="conAmount">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                              Total Disc Amt </mat-header-cell>
+                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                <span> {{element.DiscAmount | currency:"INR":"symbol"}}</span>
+                                            </mat-cell>
+                                        </ng-container>
+                        
+                                        <ng-container matColumnDef="NetPayAmount">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Net Amt
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                <span> {{element.NetAmount | currency:"INR":"symbol"}}</span>
+                                            </mat-cell>
+                                        </ng-container>
+                        
+                                        <ng-container matColumnDef="PaidAmount">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                Paid Amt
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                <span> {{element.PaidAmount | currency:"INR":"symbol"}}</span>
+                                            </mat-cell>
+                                        </ng-container>
+                        
+                                        <ng-container matColumnDef="BalanceAmt">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-110">Balance Amt
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-110"
+                                            [ngClass]="{'positive-balance': element.BalanceAmount > 0 }">
+                                                <span> {{element.BalanceAmount | currency:"INR":"symbol"}}</span>
+                                            </mat-cell>
+                                        </ng-container>
+                        
+                                        <ng-container matColumnDef="RefundAmt">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                Refund Amt
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                <span> {{element.RefundAmt | currency:"INR":"symbol"}}</span>
+                                            </mat-cell>
+                                        </ng-container> 
+    
+                                        <ng-container matColumnDef="discPer">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                               Disc%
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                
+                                                <mat-form-field appearance="legacy"> 
+                                                    <input matInput [(ngModel)]="element.discPer" type="text" OnlyNumber
+                                                        (keyup)="getCellCalculation(element,element.discPer)"
+                                                        (keypress)="keyPressAlphanumeric($event)">
+                                                </mat-form-field> 
+                                            </mat-cell>
+                                        </ng-container> 
+    
+                                        <ng-container matColumnDef="PreDiscAmt">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                Pre DiscAmt
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                <span> {{element.PreDiscAmt | currency:"INR":"symbol"}}</span>
+                                            </mat-cell>
+                                        </ng-container> 
+    
+                                       
+                        
+                                        <ng-container matColumnDef="loading">
+                                            <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
+                                            </mat-header-cell>
+                                        </ng-container>
+                        
+                                        <ng-container matColumnDef="noData">
+                                            <mat-footer-cell *matFooterCellDef colspan="6">
+                                                no data found...
+                                            </mat-footer-cell>
+                                        </ng-container>
+                        
+                        
+                                        <mat-header-row class="accent" *matHeaderRowDef="displayedColumns ; sticky: true">
+                                        </mat-header-row>
+                                        <mat-row *matRowDef="let contact; columns: displayedColumns;" 
+                                            [@animate]="{value:'*',params:{y:'100%'}}"
+                                            [ngClass]="contact.PatientType !== 'Self' ? 'self-row' : ''"  ></mat-row>
+                                        <mat-footer-row *matFooterRowDef="['loading']"
+                                            [ngClass]="{'hide':dsIpSaleItemList!=null}"></mat-footer-row>
+                                        <mat-footer-row *matFooterRowDef="['noData']"
+                                            [ngClass]="{'hide':!(dsIpSaleItemList!=null && dsIpSaleItemList.data.length==0)}"></mat-footer-row>
+                                    </mat-table>
+                            
+                                    <mat-paginator #paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="10" showFirstLastButtons>
+                                    </mat-paginator>
+                        </div>
+                    </div> 
+                </div>
+            </div>
+        
+            <div class="modal-footer" fxLayout="row" fxLayoutAlign="space-between" fxLayoutAlign="end" fxLayoutGap="50px">
+        
+                <form [formGroup]="_DiscAftSalesBillService.IPFinalform">
+                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="space-between" class="gap-8">
+        
+                        <airmid-textbox fxFlex label="Net Amount" formControlName="FinalNetAmount" [formGroup]="_DiscAftSalesBillService.IPFinalform"
+                            [readonly]="true" [validations]="getValidationMessages().FinalNetAmt"  [(ngModel)]="vFinalNetAmount" ></airmid-textbox>
+        
+                        <airmid-textbox fxFlex label="Paid Amount" formControlName="FinalPaidAmt" [formGroup]="_DiscAftSalesBillService.IPFinalform"
+                            [readonly]="true" [validations]="getValidationMessages().FinalPaidAmt"  [(ngModel)]="vFinalPaidAmt"></airmid-textbox>
+        
+                        <airmid-textbox fxFlex label="Balance Amount" formControlName="FinalBalAmt"
+                            [formGroup]="_DiscAftSalesBillService.IPFinalform" [readonly]="true" [(ngModel)]="vFinalBalAmt"
+                            [validations]="getValidationMessages().FinalBalanceAmt"></airmid-textbox>
+        
+                    </div>
+                </form>
+              
+                <div class="modal-footer-buttons" fxLayoutGap="6px" >
+                    <button class="btn btn-danger-outline" (click)="OnReset()">Close</button>
+                    <button class="btn btn-primary" (click)="onSave()" [disabled]="!vFinalPaidAmt">Save</button>
+                </div>
+        
+            </div>
+        </div> 
  

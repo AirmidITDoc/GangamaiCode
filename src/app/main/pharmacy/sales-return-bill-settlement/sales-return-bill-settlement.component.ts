@@ -19,6 +19,8 @@ import { FormvalidationserviceService } from 'app/main/shared/services/formvalid
 import { IpPaymentInsert } from 'app/main/ipd/ip-search-list/ip-advance/ip-advance.component';
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
+import { MatSort } from '@angular/material/sort';
+import { MatPaginator } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-sales-return-bill-settlement',
@@ -28,6 +30,21 @@ import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
   animations: fuseAnimations,
 })
 export class SalesReturnBillSettlementComponent implements OnInit {
+    displayedColumns = [ 
+    'Status',
+    'date',
+    'salesNo',
+    'regNo',
+    'patientName',
+    'totalAmount',
+    'discAmount',
+    'netAmount',
+    'paidAmount',
+    'refundAmt',
+    'balanceAmount',
+    'Action'
+  ];
+   
   userFormGroup: FormGroup;
   MutliSettlemForm: FormGroup;
   RegNo: any;
@@ -54,6 +71,8 @@ export class SalesReturnBillSettlementComponent implements OnInit {
   mIPDNo: any
   mWardName: any = ''
   mRegId: any = '' 
+    @ViewChild(MatSort) sort: MatSort;
+    @ViewChild(MatPaginator) paginator: MatPaginator;
 
   @ViewChild('grid', { static: false }) grid: AirmidTableComponent;
   @ViewChild('grid1', { static: false }) grid1: AirmidTableComponent;
@@ -135,7 +154,7 @@ export class SalesReturnBillSettlementComponent implements OnInit {
     row: 25
   }
   dsPaidItemList = new MatTableDataSource<PaidItemList>();
-  dsPaidItemList1 = new MatTableDataSource<PaidItemList>();
+  dssalesbillListMultiple = new MatTableDataSource<PaidItemList>(); 
 
   constructor(
     public _SelseSettelmentservice: SalesReturnBillSettlementService,
@@ -471,21 +490,24 @@ export class SalesReturnBillSettlementComponent implements OnInit {
     this.getdataMultiple();
   }
   getdataMultiple() { 
-    let opiptype = this.MutliSettlemForm.get('PatientType').value
-    this.gridConfig1 = {
-      apiUrl: "Sales/PharSalesSettlemet",
-      columnsList: this.AllColumnsMultiple,
-      sortField: "SalesId",
-      sortOrder: 0,
-      filters: [
-        { fieldName: "RegId", fieldValue: String(this.mRegId), opType: OperatorComparer.Contains },
-        { fieldName: "OP_IP_ID", fieldValue: String(this.OP_IP_Id), opType: OperatorComparer.Contains },
-        { fieldName: "OP_IP_Type", fieldValue: opiptype, opType: OperatorComparer.Contains },
-      ],
-          row: 25
-    }
-    this.grid1.gridConfig = { ...this.gridConfig1 }; // Use a new object reference
-    this.grid1.bindGridData(); // Only refresh the OPPayment grid 
+    let opiptype = this.MutliSettlemForm.get('PatientType')?.value || 0 
+  var vdata= {
+  "first": 0,
+  "rows": 25,
+  "sortField": "SalesId",
+  "sortOrder": 0,
+  "filters": [ {"fieldName": "RegId", "fieldValue":  String(this.mRegId), "opType": "Contains" },
+    {"fieldName": "OP_IP_ID", "fieldValue":String(this.OP_IP_Id), "opType": "Contains" },
+    {"fieldName": "OP_IP_Type", "fieldValue": opiptype, "opType": "Contains" },
+  ],
+  "exportType": "JSON",
+  "columns": [   {  "data": "string",  "name": "string"  }  ]
+}
+this._SelseSettelmentservice.SalesBillList(vdata).subscribe((response)=>{
+  this.dssalesbillListMultiple.data = response.data
+  this.dssalesbillListMultiple.sort = this.sort
+  this.dssalesbillListMultiple.paginator = this.paginator
+}) 
 
   }
   vNetAmount: any = 0;
@@ -571,8 +593,8 @@ export class SalesReturnBillSettlementComponent implements OnInit {
       
          console.log(this.PharmaSettlementfrom.value);
         this._SelseSettelmentservice.InsertSalessettlement(this.PharmaSettlementfrom.value).subscribe(response => { 
-           this.userFormGroup.reset(); 
-           this.grid1.bindGridData(); 
+           this.getdataMultiple()
+           this.userFormGroup.reset();  
         });
       }
     });
