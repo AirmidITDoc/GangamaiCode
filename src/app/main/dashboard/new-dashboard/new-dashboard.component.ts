@@ -9,6 +9,22 @@ import Chart from 'chart.js/auto';
 export class NewDashboardComponent implements OnInit {
   public patientOverviewChart: any;
   public opdOverviewChart: any;
+  
+  // Comprehensive Chart Popover properties
+  chartPopoverVisible = false;
+  chartPopoverData: any[] = [];
+  chartPopoverTitle = '';
+  chartPopoverTotal = 0;
+  chartPopoverPosition = { x: 0, y: 0 };
+  chartPopoverArrowClass = '';
+  private hoverTimeout: any;
+  
+  // Individual Segment Popover properties
+  segmentPopoverVisible = false;
+  segmentPopoverData: any = null;
+  segmentPopoverPosition = { x: 0, y: 0 };
+  segmentPopoverArrowClass = '';
+  private segmentHoverTimeout: any;
   metrics = [
     { label: 'Todays Registrations', value: 10, color: 'lavender', icon: 'user-plus' },
     { label: 'Appointments', value: 20, color: 'butter', icon: 'calendar' },
@@ -68,6 +84,30 @@ export class NewDashboardComponent implements OnInit {
     { name: 'Other', value: 10 }
   ];
 
+  // Detailed breakdown data for calculations
+  registrationBreakdown = {
+    'New Registration': [
+      { source: 'Walk-in Patients', count: 45 },
+      { source: 'Online Bookings', count: 25 },
+      { source: 'Phone Appointments', count: 10 }
+    ],
+    'Old Registration': [
+      { source: 'Returning Patients', count: 80 },
+      { source: 'Follow-up Visits', count: 30 },
+      { source: 'Emergency Cases', count: 10 }
+    ],
+    'Referral': [
+      { source: 'Doctor Referrals', count: 20 },
+      { source: 'Hospital Referrals', count: 8 },
+      { source: 'Clinic Referrals', count: 2 }
+    ],
+    'Other': [
+      { source: 'Insurance Cases', count: 5 },
+      { source: 'Corporate Clients', count: 3 },
+      { source: 'Special Programs', count: 2 }
+    ]
+  };
+
   opdData = [
     { name: 'Registrations', value: 120 },
     { name: 'Appointments', value: 85 },
@@ -76,6 +116,40 @@ export class NewDashboardComponent implements OnInit {
     { name: 'No Shows', value: 12 },
     { name: 'Bills', value: 90 }
   ];
+
+  // Detailed breakdown data for OPD calculations
+  opdBreakdown = {
+    'Registrations': [
+      { source: 'New Patient Registration', count: 80 },
+      { source: 'Existing Patient Update', count: 25 },
+      { source: 'Emergency Registration', count: 15 }
+    ],
+    'Appointments': [
+      { source: 'Scheduled Appointments', count: 60 },
+      { source: 'Walk-in Appointments', count: 20 },
+      { source: 'Urgent Appointments', count: 5 }
+    ],
+    'Checked In': [
+      { source: 'On-time Check-ins', count: 50 },
+      { source: 'Early Check-ins', count: 15 },
+      { source: 'Late Check-ins', count: 5 }
+    ],
+    'Checked Out': [
+      { source: 'Completed Consultations', count: 45 },
+      { source: 'Prescription Given', count: 18 },
+      { source: 'Follow-up Scheduled', count: 5 }
+    ],
+    'No Shows': [
+      { source: 'Missed Appointments', count: 8 },
+      { source: 'Cancelled Same Day', count: 3 },
+      { source: 'Rescheduled', count: 1 }
+    ],
+    'Bills': [
+      { source: 'Consultation Fees', count: 50 },
+      { source: 'Procedure Charges', count: 25 },
+      { source: 'Medication Costs', count: 15 }
+    ]
+  };
 
   // Payments by type (sample data; replace with API-fed values)
   paymentData = [
@@ -266,7 +340,7 @@ export class NewDashboardComponent implements OnInit {
       }
     };
 
-    return new Chart('PatientOverviewDoughnut', {
+    const chart = new Chart('PatientOverviewDoughnut', {
       type: 'doughnut',
       data: {
         labels: ['New Registration', 'Old Registration', 'Referral', 'Other'],
@@ -287,13 +361,60 @@ export class NewDashboardComponent implements OnInit {
         maintainAspectRatio: true,
         aspectRatio: 1.4,
         plugins: { 
-          tooltip: { enabled: true },
+          tooltip: { enabled: false }, // Disable default tooltip
           legend: { display: false }
         },
-        cutout: 0
+        cutout: 0,
+        onHover: (event: any, elements: any) => {
+          console.log('Patient Chart Hover event triggered:', elements.length);
+          if (elements.length > 0) {
+            const element = elements[0];
+            const index = element.index;
+            const dataset = chart.data.datasets[element.datasetIndex];
+            const data = {
+              name: this.registrationChartData[index].name,
+              value: this.registrationChartData[index].value,
+              percentage: Math.round((this.registrationChartData[index].value / this.totalRegistrations) * 100),
+              color: dataset.backgroundColor[index]
+            };
+            console.log('Showing Patient popover for:', data);
+            this.showSegmentPopover(event, data);
+          } else {
+            console.log('Hiding Patient popover');
+            this.hideSegmentPopover();
+          }
+        }
       },
       plugins: [dataLabelsPlugin]
     });
+
+    // Add additional event listeners
+    chart.canvas.addEventListener('mousemove', (event: MouseEvent) => {
+      const elements = chart.getElementsAtEventForMode(event, 'nearest', { intersect: true }, true);
+      console.log('Canvas mousemove - elements:', elements.length);
+      if (elements.length > 0) {
+        const element = elements[0];
+        const index = element.index;
+        const dataset = chart.data.datasets[element.datasetIndex];
+        const data = {
+          name: this.registrationChartData[index].name,
+          value: this.registrationChartData[index].value,
+          percentage: Math.round((this.registrationChartData[index].value / this.totalRegistrations) * 100),
+          color: dataset.backgroundColor[index]
+        };
+        console.log('Canvas mousemove - showing popover for:', data);
+        this.showSegmentPopover(event, data);
+      } else {
+        this.hideSegmentPopover();
+      }
+    });
+
+    chart.canvas.addEventListener('mouseleave', () => {
+      console.log('Canvas mouseleave - hiding popover');
+      this.hideSegmentPopover();
+    });
+
+    return chart;
   }
 
   // OPD Overview Chart with custom plugins
@@ -380,7 +501,7 @@ export class NewDashboardComponent implements OnInit {
       }
     };
 
-    return new Chart('OPDOverviewDoughnut', {
+    const chart = new Chart('OPDOverviewDoughnut', {
       type: 'doughnut',
       data: {
         labels: ['Registrations', 'Appointments', 'Checked In', 'Checked Out', 'No Shows', 'Bills'],
@@ -403,12 +524,245 @@ export class NewDashboardComponent implements OnInit {
         maintainAspectRatio: true,
         aspectRatio: 1.4,
         plugins: { 
-          tooltip: { enabled: true },
+          tooltip: { enabled: false }, // Disable default tooltip
           legend: { display: false }
         },
-        cutout: 0
+        cutout: 0,
+        onHover: (event: any, elements: any) => {
+          console.log('OPD Chart Hover event triggered:', elements.length);
+          if (elements.length > 0) {
+            const element = elements[0];
+            const index = element.index;
+            const dataset = chart.data.datasets[element.datasetIndex];
+            const data = {
+              name: this.opdData[index].name,
+              value: this.opdData[index].value,
+              percentage: Math.round((this.opdData[index].value / this.totalOPD) * 100),
+              color: dataset.backgroundColor[index]
+            };
+            console.log('Showing OPD popover for:', data);
+            this.showSegmentPopover(event, data);
+          } else {
+            console.log('Hiding OPD popover');
+            this.hideSegmentPopover();
+          }
+        }
       },
       plugins: [dataLabelsPlugin]
     });
+
+    // Add additional event listeners
+    chart.canvas.addEventListener('mousemove', (event: MouseEvent) => {
+      const elements = chart.getElementsAtEventForMode(event, 'nearest', { intersect: true }, true);
+      console.log('OPD Canvas mousemove - elements:', elements.length);
+      if (elements.length > 0) {
+        const element = elements[0];
+        const index = element.index;
+        const dataset = chart.data.datasets[element.datasetIndex];
+        const data = {
+          name: this.opdData[index].name,
+          value: this.opdData[index].value,
+          percentage: Math.round((this.opdData[index].value / this.totalOPD) * 100),
+          color: dataset.backgroundColor[index]
+        };
+        console.log('OPD Canvas mousemove - showing popover for:', data);
+        this.showSegmentPopover(event, data);
+      } else {
+        this.hideSegmentPopover();
+      }
+    });
+
+    chart.canvas.addEventListener('mouseleave', () => {
+      console.log('OPD Canvas mouseleave - hiding popover');
+      this.hideSegmentPopover();
+    });
+
+    return chart;
+  }
+
+  // Comprehensive Chart Popover methods
+  showChartPopover(event: MouseEvent, chartType: string) {
+    // Clear any existing timeout
+    if (this.hoverTimeout) {
+      clearTimeout(this.hoverTimeout);
+    }
+    
+    // Add small delay to prevent flickering
+    this.hoverTimeout = setTimeout(() => {
+      // Set data based on chart type
+      if (chartType === 'patient') {
+        this.chartPopoverData = [...this.registrationChartData];
+        this.chartPopoverTitle = 'Patient Registration Overview';
+        this.chartPopoverTotal = this.totalRegistrations;
+      } else if (chartType === 'opd') {
+        this.chartPopoverData = [...this.opdData];
+        this.chartPopoverTitle = 'OPD Overview';
+        this.chartPopoverTotal = this.totalOPD;
+      }
+      
+      // Calculate smart positioning - position exactly beside chart
+      const popoverWidth = 280;
+      const popoverHeight = 200;
+      const padding = 5; // Minimal gap
+      
+      // Get the canvas element bounds for precise positioning
+      const canvasElement = event.target as HTMLCanvasElement;
+      const canvasRect = canvasElement.getBoundingClientRect();
+      
+      // Position popover to the right of the canvas by default
+      let x = canvasRect.right + padding;
+      let y = canvasRect.top + (canvasRect.height / 2) - (popoverHeight / 2);
+      
+      // If canvas is on the right side of screen, position popover to the left
+      if (x + popoverWidth > window.innerWidth - 10) {
+        x = canvasRect.left - popoverWidth - padding;
+      }
+      
+      // Adjust vertical position if popover would go off-screen
+      let arrowClass = '';
+      if (y < 10) {
+        y = 10;
+      } else if (y + popoverHeight > window.innerHeight - 10) {
+        y = window.innerHeight - popoverHeight - 10;
+      }
+      
+      // Determine arrow direction based on popover position relative to canvas
+      if (x < canvasRect.left) {
+        // Popover is to the left of canvas
+        arrowClass = 'arrow-right';
+      } else {
+        // Popover is to the right of canvas
+        arrowClass = 'arrow-left';
+      }
+      
+      this.chartPopoverPosition = { x, y };
+      this.chartPopoverArrowClass = arrowClass;
+      this.chartPopoverVisible = true;
+    }, 300); // 300ms delay
+  }
+
+  hideChartPopover() {
+    // Clear timeout if popover hasn't shown yet
+    if (this.hoverTimeout) {
+      clearTimeout(this.hoverTimeout);
+      this.hoverTimeout = null;
+    }
+    
+    this.chartPopoverVisible = false;
+    this.chartPopoverData = [];
+    this.chartPopoverTitle = '';
+    this.chartPopoverTotal = 0;
+    this.chartPopoverArrowClass = '';
+  }
+
+  getDotColor(index: number): string {
+    const colors = ['red', 'amber', 'green', 'blue', 'violet', 'orange'];
+    return colors[index] || 'gray';
+  }
+
+  getItemPercentage(item: any): number {
+    if (!item || !this.chartPopoverTotal) return 0;
+    return Math.round((item.value / this.chartPopoverTotal) * 100);
+  }
+
+  // Individual Segment Popover methods
+  showSegmentPopover(event: MouseEvent, data: any) {
+    console.log('showSegmentPopover called with:', data);
+    
+    // Get detailed breakdown for this segment
+    const breakdown = this.getSegmentBreakdown(data.name);
+    
+    this.segmentPopoverData = {
+      ...data,
+      breakdown: breakdown
+    };
+    
+    // Calculate positioning relative to mouse cursor
+    const popoverWidth = 280;
+    const popoverHeight = 200;
+    const padding = 10;
+    
+    let x = event.clientX + padding;
+    let y = event.clientY - padding;
+    
+    // Adjust horizontal position if popover would go off-screen
+    if (x + popoverWidth > window.innerWidth - 10) {
+      x = event.clientX - popoverWidth - padding;
+    }
+    
+    // Adjust vertical position if popover would go off-screen
+    let arrowClass = '';
+    if (y < 10) {
+      y = event.clientY + padding;
+      arrowClass = 'arrow-top';
+    }
+    
+    // Calculate dynamic arrow position based on chart center
+    const chartCenterX = this.calculateChartCenter(event.target as HTMLCanvasElement);
+    const chartCenterY = this.calculateChartCenterY(event.target as HTMLCanvasElement);
+    
+    // Determine arrow direction and position dynamically
+    const arrowDirection = this.calculateArrowDirection(x, y, chartCenterX, chartCenterY, popoverWidth, popoverHeight);
+    
+    this.segmentPopoverPosition = { x, y };
+    this.segmentPopoverArrowClass = arrowClass + ' ' + arrowDirection;
+    this.segmentPopoverVisible = true;
+    console.log('Popover should be visible now:', this.segmentPopoverVisible);
+    console.log('Arrow class:', arrowClass + ' ' + arrowDirection, 'Chart center:', chartCenterX, chartCenterY);
+  }
+
+  hideSegmentPopover() {
+    console.log('Hiding segment popover');
+    this.segmentPopoverVisible = false;
+    this.segmentPopoverData = null;
+    this.segmentPopoverArrowClass = '';
+  }
+
+  getSegmentBreakdown(segmentName: string): any[] {
+    // Check if it's a registration chart segment
+    if (this.registrationBreakdown[segmentName]) {
+      return this.registrationBreakdown[segmentName];
+    }
+    // Check if it's an OPD chart segment
+    if (this.opdBreakdown[segmentName]) {
+      return this.opdBreakdown[segmentName];
+    }
+    return [];
+  }
+
+  calculateChartCenter(canvas: HTMLCanvasElement): number {
+    const rect = canvas.getBoundingClientRect();
+    return rect.left + rect.width / 2;
+  }
+
+  calculateChartCenterY(canvas: HTMLCanvasElement): number {
+    const rect = canvas.getBoundingClientRect();
+    return rect.top + rect.height / 2;
+  }
+
+  calculateArrowDirection(popoverX: number, popoverY: number, chartCenterX: number, chartCenterY: number, popoverWidth: number, popoverHeight: number): string {
+    const popoverCenterX = popoverX + popoverWidth / 2;
+    const popoverCenterY = popoverY + popoverHeight / 2;
+    
+    // Calculate distances
+    const deltaX = chartCenterX - popoverCenterX;
+    const deltaY = chartCenterY - popoverCenterY;
+    
+    // Determine primary direction based on which axis has larger difference
+    if (Math.abs(deltaX) > Math.abs(deltaY)) {
+      // Horizontal positioning
+      if (deltaX > 0) {
+        return 'arrow-right'; // Chart is to the right of popover
+      } else {
+        return 'arrow-left'; // Chart is to the left of popover
+      }
+    } else {
+      // Vertical positioning
+      if (deltaY > 0) {
+        return 'arrow-bottom'; // Chart is below popover
+      } else {
+        return 'arrow-top'; // Chart is above popover
+      }
+    }
   }
 }

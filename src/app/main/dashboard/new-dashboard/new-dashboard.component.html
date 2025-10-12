@@ -217,3 +217,34 @@
     </div>
   </div>
 
+  <!-- Individual Segment Popover -->
+  <div class="segment-popover" 
+       [class.show]="segmentPopoverVisible" 
+       [ngClass]="segmentPopoverArrowClass"
+       [style.left.px]="segmentPopoverPosition.x" 
+       [style.top.px]="segmentPopoverPosition.y">
+    <div class="segment-content">
+      <div class="segment-header">
+        <div class="segment-dot" [style.background-color]="segmentPopoverData?.color"></div>
+        <div class="segment-title">{{ segmentPopoverData?.name }}</div>
+      </div>
+      <div class="segment-summary">
+        <div class="segment-value">{{ segmentPopoverData?.value }}</div>
+        <div class="segment-percentage">{{ segmentPopoverData?.percentage }}%</div>
+      </div>
+      <div class="breakdown-section" *ngIf="segmentPopoverData?.breakdown?.length > 0">
+        <div class="breakdown-title">Calculation Breakdown:</div>
+        <div class="breakdown-list">
+          <div class="breakdown-item" *ngFor="let item of segmentPopoverData.breakdown">
+            <div class="breakdown-source">{{ item.source }}</div>
+            <div class="breakdown-count">{{ item.count }}</div>
+          </div>
+        </div>
+        <div class="breakdown-total">
+          <div class="total-label">Total:</div>
+          <div class="total-value">{{ segmentPopoverData?.value }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
