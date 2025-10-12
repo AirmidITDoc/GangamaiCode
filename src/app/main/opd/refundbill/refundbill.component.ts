@@ -39,6 +39,7 @@ export class RefundbillComponent implements OnInit {
     'qty',
     'ServiceWiseDisc',
     'netAmount',
+    'discnetAmount',
     'chargesDocName',
     'refAmount',
     'balanceAmount',
