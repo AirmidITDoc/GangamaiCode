@@ -1,4 +1,4 @@
-import { DatePipe } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
@@ -39,6 +39,9 @@ import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { SharedModule } from '../shared/shared.module';
 import { NewCertificateComponent } from './certificate/new-certificate/new-certificate.component';
 import { MrdService } from './mrd.service';
+import { MatButtonModule } from '@angular/material/button';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatTabsModule } from '@angular/material/tabs';
 
 
 
@@ -56,45 +59,40 @@ const approutes : Routes =[
 @NgModule({
   declarations: [CertificateComponent, NewCertificateComponent],
   imports: [
-    MatCheckboxModule,
-    MatDatepickerModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatMenuModule,
-    MatRippleModule,
-    MatTableModule,
-    MatToolbarModule,
-    MatPaginatorModule,
-    MatSortModule,
-    MatSelectModule,
-    MatRadioModule,
-    MatCardModule,
-    MatDividerModule,
-    MatDialogModule,
-    FuseSharedModule,
-    FuseConfirmDialogModule,
-    FuseSidebarModule,
-    MatChipsModule,
-    MatProgressSpinnerModule,
-    // WebcamModule,
-    ReactiveFormsModule,
-    MatAutocompleteModule,
-    MatSidenavModule,
-    MatExpansionModule,
-    MatGridListModule,
-    MatSnackBarModule,
-    MatSlideToggleModule,
-    MatListModule,
-    SharedModule,
-    MatStepperModule,
-    NgxMatSelectSearchModule,
-    MatDatepickerModule ,
-    // NgMultiSelectDropDownModule.forRoot(),
-    MatTooltipModule,
-    SharedModule,
-    MatBadgeModule,
-    MatIconModule,
-  RouterModule.forChild(approutes)
+   RouterModule.forChild(approutes),
+          //  MatTableExporterModule,
+          MatChipsModule,
+          MatButtonModule,
+          MatCheckboxModule,
+          MatDatepickerModule,
+          MatFormFieldModule,
+          MatIconModule,
+          MatInputModule,
+          MatMenuModule,
+          MatRippleModule,
+          MatTableModule,
+          MatToolbarModule,
+          MatPaginatorModule,
+          MatSortModule,
+          MatSelectModule,
+          MatRadioModule,
+          MatSnackBarModule,
+          FuseSharedModule,
+          FuseConfirmDialogModule,
+          FuseSidebarModule,
+          CommonModule,
+          MatExpansionModule,
+          MatCardModule,
+          MatSlideToggleModule,
+          MatListModule,
+          MatStepperModule,
+          MatAutocompleteModule,
+          MatProgressSpinnerModule,
+          SharedModule,
+          NgxMatSelectSearchModule,
+          MatButtonToggleModule,
+          MatDialogModule,
+          MatTabsModule
   ],
    providers:[MrdService,
     DatePipe,

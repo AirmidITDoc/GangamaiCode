@@ -356,27 +356,67 @@ export class EditPaymentComponent implements OnInit {
       let NFTBank = 0;
       if (this._Paymentmodesevice.paymentInsertform.get('NEFTBankName').value)
       NFTBank = this.NFTBankdd
-      this._Paymentmodesevice.paymentInsertform.get('PaymentId').setValue(this.registerObj.paymentId || 0)
-      this._Paymentmodesevice.paymentInsertform.get('BillNo').setValue(this.vBillNo || 0)
+      // this._Paymentmodesevice.paymentInsertform.get('PaymentId').setValue(this.registerObj.paymentId || 0)
+      // this._Paymentmodesevice.paymentInsertform.get('BillNo').setValue(this.vBillNo || 0)
+      // this._Paymentmodesevice.paymentInsertform.get('ReceiptNo').setValue(String(this.registerObj.receiptNo) || '0')
+      // this._Paymentmodesevice.paymentInsertform.get('PaymentDate').setValue(datePipe.transform(new Date(), 'yyyy-MM-dd'))
+      // this._Paymentmodesevice.paymentInsertform.get('PaymentTime').setValue(datePipe.transform(new Date(), 'shortTime'))
+      // this._Paymentmodesevice.paymentInsertform.get('BankName').setValue(ChequeBank || '')
+      // this._Paymentmodesevice.paymentInsertform.get('ChequeDate').setValue("2024-08-10")
+      // this._Paymentmodesevice.paymentInsertform.get('CardBankName').setValue(CardBank || "")
+      // this._Paymentmodesevice.paymentInsertform.get('CardDate').setValue("2024-08-10")
+      // this._Paymentmodesevice.paymentInsertform.get('AdvanceUsedAmount').setValue(this.registerObj.advanceUsedAmount || 0)
+      // this._Paymentmodesevice.paymentInsertform.get('AdvanceId').setValue(this.registerObj.advanceId || 0)
+      // this._Paymentmodesevice.paymentInsertform.get('RefundId').setValue(this.registerObj.refundId || 0)
+      // this._Paymentmodesevice.paymentInsertform.get('TransactionType').setValue(this.registerObj.transactionType || 0)
+      // this._Paymentmodesevice.paymentInsertform.get('Remark').setValue(this.registerObj.remark || '')
+      // this._Paymentmodesevice.paymentInsertform.get('AddBy').setValue(this.accountService.currentUserValue.userId|| 0)
+      // this._Paymentmodesevice.paymentInsertform.get('NeftbankMaster').setValue( NFTBank || "")
+      // this._Paymentmodesevice.paymentInsertform.get('ChequeNo').setValue( this._Paymentmodesevice.paymentInsertform.get('ChequeNo').value || "")
+      // this._Paymentmodesevice.paymentInsertform.get('CardNo').setValue( this._Paymentmodesevice.paymentInsertform.get('CardNo').value || "")
+      // this._Paymentmodesevice.paymentInsertform.get('Neftno').setValue( this._Paymentmodesevice.paymentInsertform.get('Neftno').value || "")
+      // this._Paymentmodesevice.paymentInsertform.get('PayTmtranNo').setValue( this._Paymentmodesevice.paymentInsertform.get('PayTmtranNo').value || "")
+    
+     this._Paymentmodesevice.paymentInsertform.get('PaymentId').setValue(this.registerObj.paymentId || 0)
+      this._Paymentmodesevice.paymentInsertform.get('BillNo').setValue(this.vBillNo)
       this._Paymentmodesevice.paymentInsertform.get('ReceiptNo').setValue(String(this.registerObj.receiptNo) || '0')
       this._Paymentmodesevice.paymentInsertform.get('PaymentDate').setValue(datePipe.transform(new Date(), 'yyyy-MM-dd'))
       this._Paymentmodesevice.paymentInsertform.get('PaymentTime').setValue(datePipe.transform(new Date(), 'shortTime'))
       this._Paymentmodesevice.paymentInsertform.get('BankName').setValue(ChequeBank || '')
-      this._Paymentmodesevice.paymentInsertform.get('ChequeDate').setValue("2024-08-10")
+      this._Paymentmodesevice.paymentInsertform.get('ChequeDate').setValue(this.registerObj.chequeDate || "1900-01-01")
       this._Paymentmodesevice.paymentInsertform.get('CardBankName').setValue(CardBank || "")
-      this._Paymentmodesevice.paymentInsertform.get('CardDate').setValue("2024-08-10")
+      this._Paymentmodesevice.paymentInsertform.get('CardDate').setValue(this.registerObj.cardDate || "1900-01-01")
       this._Paymentmodesevice.paymentInsertform.get('AdvanceUsedAmount').setValue(this.registerObj.advanceUsedAmount || 0)
       this._Paymentmodesevice.paymentInsertform.get('AdvanceId').setValue(this.registerObj.advanceId || 0)
       this._Paymentmodesevice.paymentInsertform.get('RefundId').setValue(this.registerObj.refundId || 0)
       this._Paymentmodesevice.paymentInsertform.get('TransactionType').setValue(this.registerObj.transactionType || 0)
       this._Paymentmodesevice.paymentInsertform.get('Remark').setValue(this.registerObj.remark || '')
-      this._Paymentmodesevice.paymentInsertform.get('AddBy').setValue(this.accountService.currentUserValue.userId|| 0)
+      this._Paymentmodesevice.paymentInsertform.get('AddBy').setValue(this.accountService.currentUserValue.userId || 0)
       this._Paymentmodesevice.paymentInsertform.get('NeftbankMaster').setValue( NFTBank || "")
       this._Paymentmodesevice.paymentInsertform.get('ChequeNo').setValue( this._Paymentmodesevice.paymentInsertform.get('ChequeNo').value || "")
       this._Paymentmodesevice.paymentInsertform.get('CardNo').setValue( this._Paymentmodesevice.paymentInsertform.get('CardNo').value || "")
       this._Paymentmodesevice.paymentInsertform.get('Neftno').setValue( this._Paymentmodesevice.paymentInsertform.get('Neftno').value || "")
       this._Paymentmodesevice.paymentInsertform.get('PayTmtranNo').setValue( this._Paymentmodesevice.paymentInsertform.get('PayTmtranNo').value || "")
+
+      
+       this._Paymentmodesevice.paymentInsertform.get('tdsamount').setValue(this.registerObj.tdsamount || 0)
+     
+      this._Paymentmodesevice.paymentInsertform.get('wfamount').setValue(this.registerObj.wfamount || 0)
+      this._Paymentmodesevice.paymentInsertform.get('companyId').setValue(this.registerObj.companyId || 0)
+      this._Paymentmodesevice.paymentInsertform.get('cashCounterId').setValue(this.registerObj.cashCounterId || 0)
+      this._Paymentmodesevice.paymentInsertform.get('isSelfOrcompany').setValue(this.registerObj.isSelfOrcompany || 0)
+      this._Paymentmodesevice.paymentInsertform.get('chCashPayAmount').setValue(this.registerObj.chCashPayAmount || 0)
+      this._Paymentmodesevice.paymentInsertform.get('chChequePayAmount').setValue(this.registerObj.chChequePayAmount || 0)
+      this._Paymentmodesevice.paymentInsertform.get('chCardPayAmount').setValue(this.registerObj.chCardPayAmount || 0)
+      this._Paymentmodesevice.paymentInsertform.get('chAdvanceUsedAmount').setValue(this.registerObj.chAdvanceUsedAmount || 0)
+      this._Paymentmodesevice.paymentInsertform.get('chNeftpayAmount').setValue(this.registerObj.chNeftpayAmount || 0)
+      this._Paymentmodesevice.paymentInsertform.get('chPayTmamount').setValue(this.registerObj.chPayTmamount || 0)
+      this._Paymentmodesevice.paymentInsertform.get('tranMode').setValue(this.registerObj.tranMode ||"HOSP")
+      this._Paymentmodesevice.paymentInsertform.get('strId').setValue(this.registerObj.strId || 0)
+       this._Paymentmodesevice.paymentInsertform.get('opdipdtype').setValue(this.registerObj.opdipdtype || 1)
+
       const controlsToRemove = ['PaidAmount', 'BalAmount', 'IsPayTMpay', 'RefundBalAmount','NEFTBankName','IsNEFTpay','IsCardpay','IsChequepay','ChequeBankName','IsCashpay'];
+    
       controlsToRemove.forEach(controlName => {
         const ctrl = this._Paymentmodesevice.paymentInsertform.get(controlName);
         if (ctrl) {
@@ -429,7 +469,7 @@ getValidationMessages(){
     this._Paymentmodesevice.paymentInsertform.get('IsCancelledDate').setValue('1900-01-01')
     this._Paymentmodesevice.paymentInsertform.get('Neftdate').setValue('1900-01-01')
     this._Paymentmodesevice.paymentInsertform.get('PayTmdate').setValue('1900-01-01')
-    this._Paymentmodesevice.paymentInsertform.get('Tdsamount').setValue(0)
+    this._Paymentmodesevice.paymentInsertform.get('tdsamount').setValue(0)
   }
   amount:any = 0;
  

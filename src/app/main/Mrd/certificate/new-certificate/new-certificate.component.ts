@@ -14,6 +14,7 @@ import { ReplaySubject, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import Swal from 'sweetalert2';
 import { MrdService } from '../../mrd.service';
+import { AirmidDropDownComponent } from 'app/main/shared/componets/airmid-dropdown/airmid-dropdown.component';
 
 @Component({
   selector: 'app-new-certificate',
@@ -23,7 +24,8 @@ import { MrdService } from '../../mrd.service';
   animations: fuseAnimations
 })
 export class NewCertificateComponent implements OnInit {
-
+createMrdcertificate:FormGroup
+myForm:FormGroup
   public tools: object = {
     type: 'MultiRow',
     items: ['Undo', 'Redo', '|',
@@ -40,28 +42,7 @@ export class NewCertificateComponent implements OnInit {
     ]
   };
 
-  public iframe: object = { enable: true };
-  public height: number = 410;
-  hasSelectedContacts: boolean;
-
-  DepartmentList: any = [];
-  DoctorList: any = [];
-  Doctor1List: any = [];
-  Doctor2List: any = [];
-  createMrdcertificate: FormGroup;
-
-  // registerObj1 = new DischargePatientDetail({});
-  options = [];
-  filteredOptions: any;
-  noOptionFound: boolean = false;
-  selectedHName: any;
-  buttonColor: any;
-  registerObj = new OPIPPatientModel({});
-  public now: Date = new Date();
-  isLoading: string = '';
-  screenFromString = 'admission-form';
-  submitted = false;
-  sIsLoading: string = '';
+  
   minDate: Date;
   Today:Date =new Date();
   selectedAdvanceObj: OPIPPatientModel;
@@ -77,13 +58,11 @@ export class NewCertificateComponent implements OnInit {
   Adm_Vit_ID: any = 0;
   Injuries: any;
   PatientHeaderObj: any;
-  // dataSource = new MatTableDataSource<PhoneschlistMaster>();
-  isChecked = true;
-  myForm:FormGroup;
-  PatientListfilteredOptions: any;
   RegId:any;
   vAdmissionID:any;
   isRegIdSelected :boolean=false;
+
+   autocompleteModeDepartment: string = "Department";
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -92,10 +71,8 @@ export class NewCertificateComponent implements OnInit {
   constructor(private _fuseSidebarService: FuseSidebarService,
     public _MrdService: MrdService,
     public formBuilder: UntypedFormBuilder,
-    // public _PhoneAppointListService :MrdService,
     public _matDialog: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    // public _AdmissionService: AdmissionService,
     private accountService: AuthenticationService,
     private advanceDataStored: AdvanceDataStored,
     // private _FormBuilder: FormBuilder,
@@ -118,26 +95,11 @@ export class NewCertificateComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.myForm = this.createMyForm();
-
-    this.createMrdcertificate = this.createMrdcertificateForm();
-    this.getDepartmentList();
-    this.getDoctorList();
+       this.createMrdcertificate = this.createMrdcertificateForm();
+      this.myForm = this.createMyForm();
     this.minDate = new Date();
 
-    this.doctorFilterCtrl.valueChanges
-      .pipe(takeUntil(this._onDestroy))
-      .subscribe(() => {
-        this.filterDoctor();
-      });
-
-    this.departmentFilterCtrl.valueChanges
-      .pipe(takeUntil(this._onDestroy))
-      .subscribe(() => {
-        this.filterDepartment();
-      });
-
-      
+         
     if (this.advanceDataStored.storage) {
       this.selectedAdvanceObj = this.advanceDataStored.storage;
       console.log(this.selectedAdvanceObj);
@@ -161,53 +123,6 @@ export class NewCertificateComponent implements OnInit {
   }
 
 
-
-  getSearchList() {
-    var m_data = {
-      "Keyword": `${this.myForm.get('RegID').value}%`
-    }
-    if (this.myForm.get('RegID').value.length >= 1) {
-      this._MrdService.getAdmittedpatientlist(m_data).subscribe(resData => {
-        this.filteredOptions = resData;
-        console.log(resData)
-        this.PatientListfilteredOptions = resData;
-        if (this.filteredOptions.length == 0) {
-          this.noOptionFound = true;
-        } else {
-          this.noOptionFound = false;
-        }
-
-      });
-    }
-
-
-  }
-
-  getSelectedObj(obj) {
-    this.registerObj = obj;
-    // this.PatientName = obj.FirstName + '' + obj.LastName;
-    this.PatientName = obj.FirstName + ' ' + obj.MiddleName + ' ' + obj.PatientName;
-    this.RegId = obj.RegID;
-    this.vAdmissionID = obj.AdmissionID
-
-    console.log(obj);
-  }
-
-  getOptionText(option) {
-    if (!option) return '';
-    return option.FirstName + ' ' + option.LastName + ' (' + option.RegNo + ')';
-  }
-
-
-  // get f() { return this.personalFormGroup.controls; }
-
-  toggleSidebar(name): void {
-    this._fuseSidebarService.getSidebar(name).toggleOpen();
-
-    this.getDepartmentList();
-  }
-
-
   createMrdcertificateForm() {
 
    
@@ -228,105 +143,34 @@ export class NewCertificateComponent implements OnInit {
       DOA: [(new Date()).toISOString()],
     });
   }
-
-
-
-  private filterDepartment() {
-    // ;
-    if (!this.DepartmentList) {
-      return;
-    }
-    // get the search keyword
-    let search = this.departmentFilterCtrl.value;
-    if (!search) {
-      this.filteredDepartment.next(this.DepartmentList.slice());
-      return;
-    }
-    else {
-      search = search.toLowerCase();
-    }
-    // filter
-    this.filteredDepartment.next(
-      this.DepartmentList.filter(bank => bank.departmentName.toLowerCase().indexOf(search) > -1)
-    );
-  }
-
-  // doctorone filter code  
-  private filterDoctor() {
-
-    if (!this.DoctorList) {
-      return;
-    }
-    // get the search keyword
-    let search = this.doctorFilterCtrl.value;
-    if (!search) {
-      this.filteredDoctor.next(this.DoctorList.slice());
-      return;
-    }
-    else {
-      search = search.toLowerCase();
-    }
-    // filter
-    this.filteredDoctor.next(
-      this.DoctorList.filter(bank => bank.Doctorname.toLowerCase().indexOf(search) > -1)
-    );
-  }
-
-  OnChangeDoctorList(departmentObj) {
-    console.log(departmentObj);
-    this._MrdService.getDoctorMasterCombo(departmentObj.Departmentid).subscribe(data => { this.DoctorList = data; })
- console.log(this.DoctorList);
-  }
-
-  getDoctorList() {
-    this._MrdService.getDoctorMaster().subscribe(
-      data => { 
-        this.DoctorList = data; 
+ @ViewChild('ddlDoctor') ddlDoctor: AirmidDropDownComponent;
+  selectChangedepartment(obj: any) {
+    // debugger
+    if (obj.value) {
+      this._MrdService.getDoctorsByDepartment(obj.value).subscribe((data: any) => {
+          console.log(data)
+        this.ddlDoctor.options = data;
+        this.ddlDoctor.bindGridAutoComplete();
+      });
+    } else {
+      this._MrdService.getDoctorsByDepartment(obj.departmentId).subscribe((data: any) => {
         console.log(data)
-      // data => {
-      //   this.DoctorList = data;
-        this.filteredDoctor.next(this.DoctorList.slice());
-      })
+        this.ddlDoctor.options = data;
+        this.ddlDoctor.bindGridAutoComplete();
+        const incomingDoctorId = obj.docNameId || obj.doctorId;
+        if (incomingDoctorId) {
+          const matchedDoctor = data.find(doc => doc.value === incomingDoctorId);
+          if (matchedDoctor) {
+            this.createMrdcertificate.get('DoctorId')?.setValue(matchedDoctor.value);
+          }
+        }
+      });
+    }
   }
-  getDepartmentList() {
-    this._MrdService.getDepartmentCombo().subscribe(data => {
-      this.DepartmentList = data;
-      this.filteredDepartment.next(this.DepartmentList.slice());
-    });
-  }
-
-  searchPatientList() {
-    ;
-    // const dialogRef = this._matDialog.open(IPPatientsearchComponent,
-    //   {
-    //     maxWidth: "90%",
-    //     height: "530px !important ", width: '100%',
-    //   });
-
-    // dialogRef.afterClosed().subscribe(result => {
-    //   // console.log('The dialog was closed - Insert Action', result);
-    //   if (result) {
-    //     this.registerObj = result as OPIPPatientModel;
-    //     if (result) {
-    //       this.PatientName = this.registerObj.PatientName;
-    //       this.OPIP = this.registerObj.IP_OP_Number;
-    //       this.AgeYear = this.registerObj.AgeYear;
-    //       this.classname = this.registerObj.ClassName;
-    //       this.tariffname = this.registerObj.TariffName;
-    //       this.ipno = this.registerObj.IPNumber;
-    //       this.Bedname = this.registerObj.Bedname;
-    //       this.wardname = this.registerObj.WardId;
-    //       this.Adm_Vit_ID = this.registerObj.Adm_Vit_ID;
-    //     }
-    //   }
-    //   // console.log(this.registerObj);
-    // });
-  }
-
   onSubmit() {
-    ;
+    
     let MLCId = 0//this.registerObj1.OTCathLabBokingID;
-    this.isLoading = 'submit';
+   
 
     console.log()
     // if (this.Adm_Vit_ID) {
@@ -356,24 +200,31 @@ export class NewCertificateComponent implements OnInit {
         }
         console.log(m_data);
         this._MrdService.DeathcertificateInsert(m_data).subscribe(response => {
-          if (response) {
-            Swal.fire('Congratulations !', 'Certificate  Data  save Successfully !', 'success').then((result) => {
-              if (result.isConfirmed) {
-                this._matDialog.closeAll();
-
-              }
-            });
-          } else {
-            Swal.fire('Error !', 'Certificate Data  not saved', 'error');
-          }
-
+        
         });
       }
     
-    // }
+    
   }
 
-  
+    getSelectedObj(obj) { 
+        console.log(obj)
+        this.RegId = obj.regId; 
+        this.vAdmissionID = obj.opD_IPD_Id;
+        this.PatientName = obj.firstName + ' ' + obj.middleName + ' ' + obj.lastName
+        
+    } 
+
+   getValidationMessages() {
+    return {
+       DepartmentId: [
+        // { name: "required", Message: "Department is required" }
+      ],
+      DoctorId: [
+        // { name: "required", Message: "DoctorName Name is required" }
+      ],
+       };
+  }
 
   dateTimeObj: any;
   getDateTime(dateTimeObj) {
@@ -386,35 +237,3 @@ export class NewCertificateComponent implements OnInit {
 }
 
 
-export class PhoneschlistMaster {
-  AppDate: Date;
-  Cnt: string;
-  // AppDate: Date;
-  // Cnt: string;
-
-  // AppDate: Date;
-  // Cnt: string;
-
-  // AppDate: Date;
-  // Cnt: string;
-
-
-  /**
-   * Constructor
-   *
-   * @param contact
-   */
-  constructor(PhoneschlistMaster) {
-    {
-      this.AppDate = PhoneschlistMaster.AppDate || '';
-      this.Cnt = PhoneschlistMaster.Cnt || '';
-      this.AppDate = PhoneschlistMaster.AppDate || '';
-      this.Cnt = PhoneschlistMaster.Cnt || '';
-      this.AppDate = PhoneschlistMaster.AppDate || '';
-      this.Cnt = PhoneschlistMaster.Cnt || '';
-      this.AppDate = PhoneschlistMaster.AppDate || '';
-      this.Cnt = PhoneschlistMaster.Cnt || '';
-
-    }
-  }
-}

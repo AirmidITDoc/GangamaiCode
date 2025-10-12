@@ -284,7 +284,9 @@ export class OpPaymentVimalComponent implements OnInit {
             this.selectedRow = response.data;
         });
         }else{
+            debugger
         this._IpSearchListService.AdvanceHeaderlist(vdata).subscribe((response) => {
+            console.log(response)
             this.selectedRow = response.data;
         });
         } 
@@ -527,7 +529,9 @@ export class OpPaymentVimalComponent implements OnInit {
                 }
         });
         }else{
+            debugger
         this._IpSearchListService.AdvanceHeaderlist(vdata).subscribe((response) => {
+            console.log(response)
              this.selectedAdvanceData = response.data;
                 this.dataSource.data = this.selectedAdvanceData
                 if (this.dataSource.data.length > 0) {
@@ -566,6 +570,7 @@ export class OpPaymentVimalComponent implements OnInit {
                     });
                 } else {
                     this._IpSearchListService.AdvanceHeaderlist(vdata).subscribe((response) => {
+                        console.log(response)
                         this.dataSource.data = response.data;
                         this.AdvanceId = this.dataSource.data[0].advanceId
                         this.calculateBalance();

@@ -15,6 +15,7 @@ import { AddDoctorShareComponent } from './add-doctor-share/add-doctor-share.com
 import { DoctorShareService } from './doctor-share.service';
 import { ProcessDoctorShareComponent } from './process-doctor-share/process-doctor-share.component';
 import { gridColumnTypes } from 'app/core/models/tableActions';
+import { DoctorShareListComponent } from 'app/main/setup/doctor/doctor-payoutpercentage/doctor-share-list/doctor-share-list.component';
 
 @Component({
   selector: 'app-doctor-share',
@@ -86,14 +87,14 @@ export class DoctorShareComponent implements OnInit {
   allColumns=[
     { heading: "-", key: "patientType", sort: true, align: 'left', type: gridColumnTypes.template, emptySign: 'NA', width: 25 },
      { heading: "-", key: "opdipdtype", sort: true, align: 'left', type: gridColumnTypes.template, emptySign: 'NA', width: 25 },
-    { heading: "PBillNo", key: "pbillNo", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "Bill Amt", key: "totalAmt", sort: true, align: 'left', emptySign: 'NA' , type: gridColumnTypes.amount },
-    { heading: "Discount Amt", key: "ConcessionAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount  },
-    { heading: "Net Amt", key: "netPayableAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount  },
-    { heading: "Doctor Name", key: "admittedDoctorName", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "PBillNo", key: "pbillNo", sort: true, align: 'left', emptySign: 'NA', width: 25 },
+    { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
+    { heading: "Bill Amt", key: "totalAmt", sort: true, align: 'left', emptySign: 'NA' , type: gridColumnTypes.amount , width: 125},
+    { heading: "Discount Amt", key: "ConcessionAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount , width: 125 },
+    { heading: "Net Amt", key: "netPayableAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, width: 125  },
+    { heading: "Doctor Name", key: "admittedDoctorName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
     // { heading: "Patient Type", key: "patientType", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "Company Name", key: "companyName", sort: true, align: 'left', emptySign: 'NA' }
+    { heading: "Company Name", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 200 }
   ]
   allFilters=[
     { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.StartsWith },
@@ -229,15 +230,14 @@ Clearfilter(event) {
   }
 
   NewDocShare() {
-    const dialogRef = this._matDialog.open(AddDoctorShareComponent,
+    const dialogRef = this._matDialog.open(DoctorShareListComponent,
       {
-        maxWidth: "75vw",
-        maxHeight: '90vh',
-        width: '100%',
-        height:'100%'
+          maxWidth: "85vw",
+      height: "45%",
+      width: "100%",
       });
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed - Insert Action', result);
+      this.onChangeFirst()
     });
   }
   processDocShare() {

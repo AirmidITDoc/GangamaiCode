@@ -150,8 +150,8 @@ export class PaymentmodechangesforPharmacyComponent implements OnInit {
       columnsList: this.allColumns,
       sortField: "PaymentId",
       sortOrder: 0,
-      filters: [{ fieldName: "F_Name", fieldValue: this.f_name, opType: OperatorComparer.Contains },
-      { fieldName: "L_Name", fieldValue: this.l_name, opType: OperatorComparer.Contains },
+      filters: [{ fieldName: "F_Name", fieldValue: this.f_name, opType: OperatorComparer.StartsWith },
+      { fieldName: "L_Name", fieldValue: this.l_name, opType: OperatorComparer.StartsWith },
       { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
       { fieldName: "ToDate", fieldValue: this.toDate, opType: OperatorComparer.Equals },
       { fieldName: "Reg_No", fieldValue: this.regNo, opType: OperatorComparer.Equals },
@@ -227,12 +227,12 @@ export class PaymentmodechangesforPharmacyComponent implements OnInit {
   getfilter() {
     debugger
     this.gridConfigIpPhy = {
-      apiUrl: "Administration/c",
+      apiUrl: "Administration/BrowseIPAdvPayPharReceiptList1",
       columnsList: this.allColumns1,
       sortField: "PaymentId",
       sortOrder: 0,
-      filters: [{ fieldName: "F_Name", fieldValue: this.pf_name, opType: OperatorComparer.Contains },
-      { fieldName: "L_Name", fieldValue: this.pl_name, opType: OperatorComparer.Contains },
+      filters: [{ fieldName: "F_Name", fieldValue: this.pf_name, opType: OperatorComparer.StartsWith },
+      { fieldName: "L_Name", fieldValue: this.pl_name, opType: OperatorComparer.StartsWith },
       { fieldName: "FromDate", fieldValue: this.pfromDate, opType: OperatorComparer.Equals },
       { fieldName: "ToDate", fieldValue: this.ptoDate, opType: OperatorComparer.Equals },
       { fieldName: "Reg_No", fieldValue: this.pregNo, opType: OperatorComparer.Equals },
@@ -372,6 +372,7 @@ export class PaymentPharmayList {
   chequeDate: any
   cardDate: any
   // PaidAmount:any;
+  
 
   constructor(PaymentPharmayList) {
     {

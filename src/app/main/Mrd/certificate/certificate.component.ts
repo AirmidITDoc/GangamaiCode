@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, OnInit, SimpleChanges, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, SimpleChanges, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormControl, FormGroup, UntypedFormBuilder } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
@@ -12,6 +12,13 @@ import { AdvanceDataStored } from 'app/main/ipd/advance';
 import { ReplaySubject, Subject } from 'rxjs';
 import { MrdService } from '../mrd.service';
 import { NewCertificateComponent } from './new-certificate/new-certificate.component';
+import { FuseConfirmDialogComponent } from '@fuse/components/confirm-dialog/confirm-dialog.component';
+import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
+import { PageNames } from 'app/main/shared/componets/airmid-fileupload/airmid-fileupload.component';
+import { PrintserviceService } from 'app/main/shared/services/printservice.service';
+import { ToastrService } from 'ngx-toastr';
+import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
+import { gridColumnTypes } from 'app/core/models/tableActions';
 
 @Component({
   selector: 'app-certificate',
@@ -21,279 +28,198 @@ import { NewCertificateComponent } from './new-certificate/new-certificate.compo
   animations: fuseAnimations
 })
 export class CertificateComponent implements OnInit {
+  myFilterform: FormGroup;
 
-  searchFormGroup : FormGroup;
-  registerObj = new CharityPatientdetail({});
-  options = [];
-  filteredOptions: any;
-  noOptionFound: boolean = false;
-  selectedHName: any;
-  selectedPrefixId: any;
-  buttonColor:any;
-  isCompanySelected: boolean = false;
-  public now: Date = new Date();
-  isLoading: string = '';
-  screenFromString = 'admission-form';
-  submitted = false;
-  sIsLoading: string = '';
-  minDate:Date;
-  hasSelectedContacts: boolean;
-  AnesthType:any ='';
-
-  displayedColumns = [
+    fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+    toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+    f_name: any = ""
+    regNo: any = "0"
+    l_name: any = ""
+    mobileno: any = "%"
+    confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
+    @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+    photo: PageNames=PageNames.PATIENT_PHOTO;
+    signature: PageNames=PageNames.PATIENT_SIGNATURE;
     
-  'RegNo',
-  'IPDNo',
-  'PatientName',
-  'Address',
-  'GenderName',
-  'AgeYear',
-  'DepartmentName',
-  'AdmissionDate',
-  'DischargeDate',
-  'TotalAmt',
-  'ConcessionAmt',
-  'NetPayableAmt',
-  'Ischarity',
-  'PaidAmount',
-  'PBillNo',
-  'ConcessionReason',
-  'AnnualIncome',
-  'RationCardNo',
-  'IsIndientOrWeaker',
-  'BillNo',
-  'buttons'
+    constructor(
+        public _MrdService: MrdService,
+        public _matDialog: MatDialog,
+        private commonService: PrintserviceService,
+        public toastr: ToastrService, public datePipe: DatePipe) { }
 
-  ];
-  dataSource = new MatTableDataSource<CharityPatientdetail>();
-  isChecked = true;
+    ngOnInit(): void {
+        this.myFilterform = this._MrdService.filterForm();
+    }
 
-  @ViewChild(MatSort) sort: MatSort;
-  @ViewChild(MatPaginator) paginator: MatPaginator;
+    onChangeStartDate(value) {
+        this.gridConfig.filters[2].fieldValue = this.datePipe.transform(value, "yyyy-MM-dd")
+    }
+    onChangeEndDate(value) {
+        this.gridConfig.filters[3].fieldValue = this.datePipe.transform(value, "yyyy-MM-dd")
+    }
+    ngAfterViewInit() {
+        // Assign the template to the column dynamically
+        this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
+    }
+    @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
 
+    allcolumns = [
+        { heading: "AdmissionDate", key: "admissionDate", sort: true, align: 'left', emptySign: 'NA', type: 6, width: 130 },
+        { heading: "DischargeDate", key: "dischargeDate", sort: true, align: 'left', emptySign: 'NA', type: 7 },
+        { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
+        { heading: "Age", key: "ageYear", sort: true, align: 'left', emptySign: 'NA', width: 50 },
+        { heading: "Gender", key: "genderName", sort: true, align: 'left', emptySign: 'NA', },
+        { heading: "IPD No", key: "ipdNo", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Adddress", key: "address", sort: true, align: 'left', emptySign: 'NA', width: 300 },
+        { heading: "Annual Income", key: "annualIncome", sort: true, align: 'left', emptySign: 'NA', },
+        { heading: "BillNo", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA',width:150},
+        { heading: "TotalAmt", key: "totalAmt", sort: true, align: 'left', emptySign: 'NA', },
+        { heading: "ConcessionAmt", key: "concessionAmt", sort: true, align: 'left', emptySign: 'NA', },
+        { heading: "NetPayableAmt", key: "netPayableAmt", sort: true, align: 'left', emptySign: 'NA',width:150 },
+        { heading: "PaidAmount", key: "paidAmount", sort: true, align: 'left', emptySign: 'NA', },
+        // { heading: "Created Date", key: "createdDate",  sort: true, align: 'left', emptySign: 'NA', type: 8 ,width:170},
+        // { heading: "Updated By", key: "updatedBy", sort: true, align: 'left', emptySign: 'NA', },
+        // { heading: "Modify Date", key: "modifiedDate",  sort: true, align: 'left', emptySign: 'NA', type: 8 ,width:170},
+        {
+            heading: "Action", key: "action", align: "right", width: 200, sticky: true, type: gridColumnTypes.template,
+            template: this.actionButtonTemplate  // Assign ng-template to the column
+        }
 
-  constructor(private _fuseSidebarService: FuseSidebarService,
-    public _MrdService: MrdService,
-    public formBuilder: UntypedFormBuilder,
-    public _NursingStationService:MrdService,
-    public _matDialog: MatDialog,
-    private accountService: AuthenticationService,
-    public dialogRef: MatDialogRef<CertificateComponent>,
-    private advanceDataStored: AdvanceDataStored,
-    public datePipe: DatePipe) {
-      dialogRef.disableClose = true;
-     }
+        // {
+        //     heading: "Action", key: "action", align: "right", sticky: true, type: gridColumnTypes.action, actions: [
+        //         {action: gridActions.edit, callback: (data: any) => {
+        //                 this.onEdit(data);
+        //                 this.grid.bindGridData();
+        //             }},]
+        // }
+    ];
 
+    gridConfig: gridModel = {
+        apiUrl: "MRD/MRDList",
+        columnsList: this.allcolumns,
+        sortField: "RegId",
+        sortOrder: 0,
+        filters: [
+            { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.Contains },
+            { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Contains },
+            { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
+            { fieldName: "ToDate", fieldValue: this.toDate, opType: OperatorComparer.Equals },
+           
+        ]
+    }
 
-  doctorNameCmbList: any = [];
-  D_data1:any;
-  dataArray = {};
-  public doctorFilterCtrl: FormControl = new FormControl();
-  public filteredDoctor: ReplaySubject<any> = new ReplaySubject<any>(1);
-  
-    //department filter
-    public departmentFilterCtrl: FormControl = new FormControl();
-    public filteredDepartment: ReplaySubject<any> = new ReplaySubject<any>(1);
-  
-  private _onDestroy = new Subject<void>();
+    OnNew(row: any = null) {
+        const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+        buttonElement.blur(); // Remove focus from the button 
+        let that = this;
+        const dialogRef = this._matDialog.open(NewCertificateComponent,
+            {
+                maxWidth: "95vw",
+                height: '95%',
+                width: '90%',
+                data:row
 
+            });
+        dialogRef.afterClosed().subscribe(result => {
+            that.grid.bindGridData();
+        });
+    }
 
-  ngOnInit(): void {
+    capturedImage = '';
+     onPhotoCaptured(photoBase64: string) {
+        if (photoBase64) {
+            this.capturedImage = photoBase64;
+            // Save or display
+        }
+    }
 
-    this.searchFormGroup = this.createSearchForm();
-    ;
-    this.minDate = new Date();
-     
-      this.getCharityPatientList();
-  }
+    OnPrint(Param) {
+        // this.commonService.Onprint("RegId", Param.regId, "RegistrationForm");
+    }
+    onNew(row: any = null) {
+        const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+        buttonElement.blur(); // Remove focus from the button
+        let that = this;
+        const dialogRef = this._matDialog.open(NewCertificateComponent,
+            {
+                maxWidth: "95vw",
+                maxHeight: '90%',
+                width: '90%',
 
+            });
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                this.grid.bindGridData();
+            }
+        });
+    }
 
-  // get f() { return this.personalFormGroup.controls; }
-
-  toggleSidebar(name): void {
-    this._fuseSidebarService.getSidebar(name).toggleOpen();
-  }
- 
-  
-  createSearchForm() {
-    return this.formBuilder.group({
-      start: [new Date().toISOString()],
-      end: [new Date().toISOString()],
-      F_Name: [''],
-      L_Name: [''],
-    });
-  }
-     
 
    
-  getCharityPatientList() {
-    ;
-    // this.sIsLoading = 'loading-data';
-    var m_data ={
-      "F_Name": (this.searchFormGroup.get("F_Name").value).trim() + '%' || '%',
-      "L_Name": (this.searchFormGroup.get("L_Name").value ).trim() + '%' || '%',
-      "FromDate": this.datePipe.transform(this.searchFormGroup.get("start").value, "yyyy-MM-dd 00:00:00.000") || '2019-06-18 00:00:00.000',
-      "ToDate":  this.datePipe.transform(this.searchFormGroup.get("end").value, "yyy-MM-dd 00:00:00.000") || '2019-06-18 00:00:00.000',
-     
+    onChangeFirst() {
+        this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd")
+        this.toDate = this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd")
+        this.f_name = this.myFilterform.get('FirstName').value + "%"
+        this.l_name = this.myFilterform.get('LastName').value + "%"
+       this.getfilterdata();
     }
 
-    console.log(m_data);
-    this._MrdService.getCharitypatientList(m_data).subscribe(Visit => {
-      console.log(Visit);
-      this.dataSource.data = Visit as CharityPatientdetail[];
-      console.log(this.dataSource.data);
-      this.dataSource.sort = this.sort;
-      this.dataSource.paginator = this.paginator;
-
-      this.sIsLoading = '';
-    },
-      error => {
-        this.sIsLoading = '';
-      });
-  }
-
- 
-  addNewCertificate(){
-
-;   
-    // let m_data ={
-    //   Regno:
-    // }
-const dialogRef = this._matDialog.open(NewCertificateComponent,
-     {
-       maxWidth: "85%",
-       height: '95%',
-       width: '100%',
-     });
-     dialogRef.afterClosed().subscribe(result => {
-      console.log(result);
-      // this._MrdService.getcathlabBooking(this.D_data1).subscribe(reg=> {
-      //     this.dataArray = reg;
-      //     this.dataSource.data =  reg as CharityPatientdetail[];
-      //     console.log( this.dataSource.data);
-      //     console.log( this.dataArray);
-      //     this.sIsLoading = '';
-      //   },
-      //   error => {
-      //     this.sIsLoading = '';
-      //   });
-    });
-}
-
-addNewCasepaper(){
-  const dialogRef = this._matDialog.open(NewCertificateComponent,
-    {
-      maxWidth: "85%",
-      height: '115%',
-      width: '100%',
-    });
-    dialogRef.afterClosed().subscribe(result => {
-     console.log(result);
-     // this._MrdService.getcathlabBooking(this.D_data1).subscribe(reg=> {
-     //     this.dataArray = reg;
-     //     this.dataSource.data =  reg as CharityPatientdetail[];
-     //     console.log( this.dataSource.data);
-     //     console.log( this.dataArray);
-     //     this.sIsLoading = '';
-     //   },
-     //   error => {
-     //     this.sIsLoading = '';
-     //   });
-   });
-}
-
-
-ngOnChanges(changes: SimpleChanges) {
-  // changes.prop contains the old and the new value...
-  // console.log(changes.dataArray.currentValue, 'new arrrrrrr');
-  this.dataSource.data = changes.dataArray.currentValue as CharityPatientdetail[];
-  this.dataSource.sort =this.sort;
-  this.dataSource.paginator=this.paginator;
-}
-
-onEdit(contact){
-  ;
- console.log(contact);
-
- if(contact.AnesthType)
- this.AnesthType =contact.AnesthType.trim();
-
- let PatInforObj = {};
- PatInforObj['OTCathLabBokingID'] = contact.OTCathLabBokingID,
-
- PatInforObj['PatientName'] = contact.PatientName,
- PatInforObj['OTTableName'] = contact.OTTableName,
- 
- PatInforObj['OTTableID'] = contact.OTTableID,
- PatInforObj['RegNo'] = contact.RegNo,
- PatInforObj['SurgeonId'] = contact.SurgeonId,
- PatInforObj['SurgeonId1'] = contact.SurgeonId1,
- PatInforObj['SurgeonName'] = contact.SurgeonName,
- PatInforObj['Surgeryname'] = 'Mild one',//contact.Surgeryname,
-
- PatInforObj['AnathesDrName'] = contact.AnathesDrName,
- PatInforObj['AnathesDrName1'] = contact.AnathesDrName1,
- PatInforObj['AnesthType'] =  this.AnesthType
- PatInforObj['AnestheticsDr'] = contact.AnestheticsDr,
- PatInforObj['AnestheticsDr1'] = contact.AnestheticsDr1,
- PatInforObj['Duration'] = contact.Duration,
- PatInforObj['OPDate'] = contact.OPDate,
- PatInforObj['OPTime'] = contact.OPTime,
- PatInforObj ['OP_IP_ID'] = contact.OP_IP_ID,
- 
- PatInforObj['TranDate'] = contact.TranDate,
- PatInforObj['UnBooking'] = contact.UnBooking,
- PatInforObj['Instruction'] = contact.instruction,
- PatInforObj['AddedBy'] = contact.AddedBy,
- PatInforObj['Adm_Vit_ID'] = contact.OP_IP_ID
- 
-
- console.log(PatInforObj);
- 
- 
-//  this._MrdService.populateFormpersonal(PatInforObj);
-
-this.advanceDataStored.storage = contact;
-
-const dialogRef = this._matDialog.open(NewCertificateComponent,
-  {
-    maxWidth: "90%",
-    height: '96%',
-    width: '100%',
-    data: {
-      PatObj: contact 
+    getfilterdata() {
+        this.gridConfig = {
+            apiUrl: "OutPatient/RegistrationList",
+            columnsList: this.allcolumns,
+            sortField: "RegId",
+            sortOrder: 0,
+            filters: [
+                 { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.Contains },
+            { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Contains },
+            { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
+            { fieldName: "ToDate", fieldValue: this.toDate, opType: OperatorComparer.Equals },
+           
+            ],
+            row: 25
+        }
+        this.grid.gridConfig = this.gridConfig;
+        this.grid.bindGridData();
     }
-  });
-dialogRef.afterClosed().subscribe(result => {
-  console.log('The dialog was closed - Insert Action', result);
+    Clearfilter(event) {
+        console.log(event)
+        if (event == 'FirstName')
+            this.myFilterform.get('FirstName').setValue("")
+        else
+            if (event == 'LastName')
+                this.myFilterform.get('LastName').setValue("")
+       
+        this.onChangeFirst();
+    }
 
-});
-//   if(contact) this.dialogRef.close(PatInforObj);
+    getValidationMessages() {
+        return {
+            FirstName: [
+                { name: "required", Message: "First Name is required" },
+                { name: "maxLength", Message: "Enter only upto 50 chars" },
+                { name: "pattern", Message: "only char allowed." }
+            ],
+            LastName: [
+                { name: "pattern", Message: "only char allowed." }
+            ]
+        }
+    }
+
+    keyPressAlphanumeric(event) {
+        var inp = String.fromCharCode(event.keyCode);
+        if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
+            return true;
+        } else {
+            event.preventDefault();
+            return false;
+        }
+    }
+
 }
 
 
-
-  dateTimeObj: any;
-  getDateTime(dateTimeObj) {
-    console.log('dateTimeObj==', dateTimeObj);
-    this.dateTimeObj = dateTimeObj;
-  }
-
-  onClear() {
-    // this.personalFormGroup.reset();
-    this.dialogRef.close();
-  }
-  onClose() {
-  // this.personalFormGroup.reset();
-  this.dialogRef.close();
-}
-  changec()
-  { 
-
-this.buttonColor='red';
-// this.buttonColor: ThemePalette = 'primary';
-  }
-}
 
 
 

@@ -464,6 +464,8 @@ export class PaymentChange {
   companyId: any
   wfamount:any;
   tdsamount:any
+  strId:any
+      opdipdtype:any
 
   constructor(PaymentChange) {
     {
@@ -526,6 +528,9 @@ export class PaymentChange {
       this.companyId = PaymentChange.companyId || 0;
       this.wfamount= PaymentChange.wfamount || 0;
       this.tdsamount= PaymentChange.tdsamount || 0;
+
+        this.strId= PaymentChange.strId || 0;
+      this.opdipdtype= PaymentChange.opdipdtype || 1;
     }
   }
 
