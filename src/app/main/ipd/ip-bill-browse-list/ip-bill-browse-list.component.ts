@@ -4,7 +4,7 @@ import { FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { fuseAnimations } from '@fuse/animations';
-import { AuthenticationService } from 'app/core/services/authentication.service'; 
+import { AuthenticationService } from 'app/core/services/authentication.service';
 import { IPBrowseBillService } from './ip-browse-bill.service';
 
 
@@ -153,13 +153,13 @@ export class IPBillBrowseListComponent implements OnInit {
         { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
         { heading: "TotalAmount", key: "totalAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
         { heading: "BalAmount", key: "balanceAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
-     
+
         { heading: "AdvanceUsed", key: "advused", sort: true, align: "center", type: gridColumnTypes.amount },
         { heading: "PaidAmount", key: "paidAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
         { heading: "CashPayAmt", key: "cashPayAmount", sort: true, align: "center", type: gridColumnTypes.amount },
         { heading: "ChequePayAmt", key: "chequePayAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
         { heading: "CardPayAmt", key: "cardPayAmount", sort: true, align: "center", type: gridColumnTypes.amount },
-       
+
         { heading: "NEFTPayAmt", key: "nEFTPayAmount", sort: true, align: "center", emptySign: 'NA', type: gridColumnTypes.amount },
         { heading: "PayTMAmt", key: "payTmPayAmount", sort: true, align: "center", emptySign: 'NA', type: gridColumnTypes.amount },
         { heading: "Remark ", key: "remark0", sort: true, align: "center", emptySign: 'NA' },
@@ -188,7 +188,7 @@ export class IPBillBrowseListComponent implements OnInit {
 
     allIpRefundListColumns = [
         { heading: "Payment Date", key: "paymentTime", sort: true, align: 'left', emptySign: 'NA', type: 8, width: 200 },
-          { heading: "Refund Date", key: "refundTime", sort: true, align: 'left', emptySign: 'NA', type: 8, width: 200 },
+        { heading: "Refund Date", key: "refundTime", sort: true, align: 'left', emptySign: 'NA', type: 8, width: 200 },
         { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
         { heading: "RefundAmount", key: "refundId", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
@@ -524,7 +524,7 @@ export class IPBillBrowseListComponent implements OnInit {
     //             Paymentobj['unitId'] = 1
     //             Paymentobj['wfamount'] = 0
 
-               
+
     //             let BillUpdateObj = {};
 
     //             BillUpdateObj['billNo'] = contact.billNo;
@@ -596,7 +596,7 @@ export class IPBillBrowseListComponent implements OnInit {
     //     });
 
     // }
- Billpayment(contact) {
+    Billpayment(contact) {
 
         console.log(contact)
         let PatientHeaderObj = {};
@@ -605,8 +605,8 @@ export class IPBillBrowseListComponent implements OnInit {
         PatientHeaderObj['AdvanceAmount'] = contact.advUsedPay;
         PatientHeaderObj['NetPayAmount'] = contact.netPayableAmt;
         PatientHeaderObj['BillNo'] = contact.billNo;
-        PatientHeaderObj['OPD_IPD_Id'] = contact.OPD_IPD_ID;
-        PatientHeaderObj['IPDNo'] = contact.opD_IPD_ID;
+        PatientHeaderObj['OPD_IPD_Id'] = contact.opdipdid;
+        PatientHeaderObj['IPDNo'] = contact.ipdNo;
         PatientHeaderObj['RegNo'] = contact.regNo;
         console.log(PatientHeaderObj)
 
@@ -626,7 +626,7 @@ export class IPBillBrowseListComponent implements OnInit {
 
         dialogRef.afterClosed().subscribe(result => {
             let NeftNo = "0"
-              console.log(result.submitDataPay.ipPaymentInsert)
+            console.log(result.submitDataPay.ipPaymentInsert)
 
             if (result.submitDataPay.ipPaymentInsert.neftno == "undefined")
                 NeftNo = "0"
@@ -654,7 +654,7 @@ export class IPBillBrowseListComponent implements OnInit {
                 Paymentobj['TransactionType'] = 0;
                 Paymentobj['Remark'] = '';
                 Paymentobj['AddBy'] = this.accountService.currentUserValue.userId,
-                Paymentobj['IsCancelled'] = false;
+                    Paymentobj['IsCancelled'] = false;
                 Paymentobj['IsCancelledBy'] = 0;
                 Paymentobj['IsCancelledDate'] = result.submitDataPay.ipPaymentInsert.isCancelledDate
                 Paymentobj['opdipdType'] = 1;
@@ -665,12 +665,12 @@ export class IPBillBrowseListComponent implements OnInit {
                 Paymentobj['neftdate'] = result.submitDataPay.ipPaymentInsert.neftdate
                 Paymentobj['payTmamount'] = result.submitDataPay.ipPaymentInsert.payTmamount
                 Paymentobj['payTmtranNo'] = "0",//result.submitDataPay.ipPaymentInsert.payTmtranNo || 0
-                Paymentobj['payTmdate'] = result.submitDataPay.ipPaymentInsert.payTmdate
+                    Paymentobj['payTmdate'] = result.submitDataPay.ipPaymentInsert.payTmdate
                 Paymentobj['tdsAmount'] = result.submitDataPay.ipPaymentInsert.tdsAmount
                 Paymentobj['unitId'] = 1
                 Paymentobj['wfamount'] = 0
 
-               
+
                 let BillUpdateObj = {};
 
                 BillUpdateObj['billNo'] = contact.billNo;
@@ -720,7 +720,7 @@ export class IPBillBrowseListComponent implements OnInit {
                     //         UpdateAdvanceHeaderObj['balanceAmount'] = 0
                     // }
 
-                    
+
 
                     let submitData = {
                         "payment": Paymentobj,// result.submitDataPay.ipPaymentInsert,

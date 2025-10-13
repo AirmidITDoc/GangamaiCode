@@ -109,28 +109,34 @@
         </mat-tab>
 
         <mat-tab label="OP Multiple Settlement">
-            <div class="modal-page page-layout inner-scroll">
-                <div class="modal-wrapper grid-container">
-                    <!-- Modal header -->
-                    <div class="modal-header accent">
-                        <div class="modal-header-content">
-                            <div class="modal-header-title">
-                                <button mat-icon-button class="sidebar-toggle" style="color: white;">
-                                    <mat-icon>menu</mat-icon>
-                                </button>
-                                <span [@animate]="{ value: '*', params: { delay: '100ms', x: '-25px' } }">OP Multiple
-                                    Settlement</span>
-                            </div>
+            <div 
+                class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
+                >
+                <!-- <div class="modal-wrapper grid-container"> -->
+                <!-- Modal header -->
+
+                <div class="top-header header accent p-16" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
+                    fxLayoutAlign.gt-xs="space-between center ">
+                    <div class="top-header-info">
+                        <div class="top-header-title">
+                            <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                                OP Multiple Settlement
+                            </span>
                         </div>
                     </div>
+                </div>
 
-                    <!-- Modal body -->
-                    <div class="modal-body modal-body-light" style="overflow:auto;">
-                        <div class="modal-body-container">
-                            <div fxLayout="column" class="gap-8 h-100-p">
-                                <div class="modal-card-container">
-                                    <form [formGroup]="OPMultipleSettlForm">
-                                        <div class="patient-search">
+                <!-- Modal body -->
+
+                <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll" dynamicTableHeight
+                    fusePerfectScrollbar>
+                    <div class="modal-body-container">
+
+                        <div fxLayout="column" class="gap-8 h-100-p">
+                            <div class="modal-card-container">
+                                <form [formGroup]="OPMultipleSettlForm">
+                                    <mat-card>
+                                        <div class="patient-search p-12">
                                             <div fxLayout="row" fxLayoutAlign="start start" class="gap-8">
                                                 <div fxFlexFill fxLayout="column" fxLayout="row" fxLayoutGap="6px">
 
@@ -148,7 +154,7 @@
                                                         <mat-date-range-picker #multiplePayment></mat-date-range-picker>
                                                     </mat-form-field>
 
-                                                    <airmid-autocomplete class="w-350"
+                                                    <airmid-autocomplete class="w-320"
                                                         label="Search Reg No / Patient Name / Mobile No"
                                                         [formGroup]="OPMultipleSettlForm" formControlName="RegId"
                                                         placeholderText="Search Reg No / Patient Name / Mobile No"
@@ -158,7 +164,7 @@
                                                         fxFlex="40%"></airmid-autocomplete>
 
                                                     <airmid-dropdown label="Company Name" formControlName="CompanyId"
-                                                        [formGroup]="OPMultipleSettlForm"
+                                                        [formGroup]="OPMultipleSettlForm" fxFlex="20%"
                                                         (selectionChange)="ListView($event)"
                                                         [mode]="autocompleteModecompany"></airmid-dropdown>
 
@@ -168,7 +174,7 @@
                                                             <mat-icon class="cleariconbutton">close</mat-icon>
                                                         </button>&nbsp;
                                                         <button mat-raised-button class="search-button"
-                                                            (click)="getmultiplePaymentList()" matTooltip="search">
+                                                            (click)="getmultiplePaymentList(true)" matTooltip="search">
                                                             <mat-icon class="searchiconbutton">search</mat-icon>
                                                         </button>
                                                     </div>
@@ -176,21 +182,23 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </form>
-                                </div>
+                                    </mat-card>
+                                </form>
+                            </div>
 
-                                <div class="modal-card-container airmid-table-container demo-table">
-                                    <div class="table-wrapper">
+                            <div class="airmid-table-container p-12">
+                                <mat-card>
+                                    <div class="table-scroll">
                                         <mat-table matSort [dataSource]="dsMultiplepayList"
-                                            [@animateStagger]="{ value: '50' }" class="airmid-table demo-table1">
+                                            [@animateStagger]="{ value: '50' }" class="airmid-table demo2">
                                             <ng-container matColumnDef="CheckBox">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header class="w-150">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header>
                                                     <mat-checkbox (change)="$event ? masterToggle() : null"
                                                         [checked]="selection.hasValue()"
                                                         [indeterminate]="selection.hasValue() && !isAllSelected()">
                                                     </mat-checkbox>
                                                 </mat-header-cell>
-                                                <mat-cell *matCellDef="let contact" required class="w-150">
+                                                <mat-cell *matCellDef="let contact" required>
                                                     <mat-checkbox (click)="$event.stopPropagation()"
                                                         (change)="OnSelectPayment($event,contact)"
                                                         (change)="$event ? selection.toggle(contact) : null"
@@ -200,28 +208,25 @@
                                             </ng-container>
 
                                             <ng-container matColumnDef="BillDate">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
-                                                    class="w-180">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                     BillDate</mat-header-cell>
-                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-180">
+                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                                     {{contact.billDate}}
                                                 </mat-cell>
                                             </ng-container>
 
                                             <ng-container matColumnDef="PBillNo">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
-                                                    class="w-180">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                     PBillNo</mat-header-cell>
-                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-180">
+                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                                     {{contact.pBillNo}}
                                                 </mat-cell>
                                             </ng-container>
 
                                             <ng-container matColumnDef="uhid">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
-                                                    class="w-180">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                     UHID</mat-header-cell>
-                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-180">
+                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                                     {{contact.regNo}}
                                                 </mat-cell>
                                             </ng-container>
@@ -236,61 +241,53 @@
                                             </ng-container>
 
                                             <ng-container matColumnDef="BillAmount">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
-                                                    class="w-180">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                     Bill Amount </mat-header-cell>
-                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-180">
+                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                                     {{contact.billAmount | currency:"INR":"symbol"}}
                                                 </mat-cell>
                                             </ng-container>
 
                                             <ng-container matColumnDef="ConsessionAmt">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
-                                                    class="w-180">
-                                                    Consession Amt</mat-header-cell>
-                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-180">
-                                                    {{contact.concessionAmt | currency:"INR":"symbol"}}
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                                    Disc Amt</mat-header-cell>
+                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                    {{contact.discAmount | currency:"INR":"symbol"}}
                                                 </mat-cell>
                                             </ng-container>
 
                                             <ng-container matColumnDef="NetAmount">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
-                                                    class="w-180">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                     Net Amount</mat-header-cell>
-                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-180">
-                                                    <!-- {{contact.netPayableAmt | currency:"INR":"symbol"}} 
-                                                     netamt is taken as billamt in procedure-->
-                                                    {{contact.billAmount | currency:"INR":"symbol"}}
-                                                </mat-cell>
-                                            </ng-container>
-
-                                            <ng-container matColumnDef="PaidAmount">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
-                                                    class="w-180">
-                                                    Paid Amount</mat-header-cell>
-                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-180">
-                                                    {{contact.balanceAmt | currency:"INR":"symbol"}}
-                                                    <!-- {{contact.paidAmount | currency:"INR":"symbol"}} -->
+                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                    {{contact.netAmount | currency:"INR":"symbol"}}
                                                 </mat-cell>
                                             </ng-container>
 
                                             <ng-container matColumnDef="balAmount">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
-                                                    class="w-180">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                     Balance Amount</mat-header-cell>
-                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-180">
-                                                    <!-- {{contact.balanceAmt | currency:"INR":"symbol"}} -->
-                                                    {{contact.paidAmount | currency:"INR":"symbol"}}
+                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                    {{contact.balanceAmt | currency:"INR":"symbol"}}
+                                                </mat-cell>
+                                            </ng-container>
+
+                                            <ng-container matColumnDef="PaidAmount">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                                    Paid Amount</mat-header-cell>
+                                                <mat-cell *matCellDef="let element" fxShow.gt-sm>
+                                                    <mat-form-field appearance="fill">
+                                                        <input matInput [(ngModel)]="element.PaidAmount" type="text"
+                                                            OnlyNumber [disabled]="!selection.isSelected(element)">
+                                                    </mat-form-field>
                                                 </mat-cell>
                                             </ng-container>
 
                                             <ng-container matColumnDef="tds">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
-                                                    class="w-120">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                     TDS
                                                 </mat-header-cell>
-
-                                                <mat-cell *matCellDef="let element" fxShow.gt-sm class="w-120">
+                                                <mat-cell *matCellDef="let element" fxShow.gt-sm>
                                                     <mat-form-field appearance="fill">
                                                         <input matInput [(ngModel)]="element.tds" type="text" OnlyNumber
                                                             (ngModelChange)="onTDSChange(element)"
@@ -298,7 +295,6 @@
                                                     </mat-form-field>
                                                 </mat-cell>
                                             </ng-container>
-
 
                                             <ng-container matColumnDef="companyName">
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
@@ -310,12 +306,12 @@
                                             </ng-container>
 
                                             <ng-container matColumnDef="action">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
-                                                    class="w-250">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                                     Action
                                                 </mat-header-cell>
-                                                <mat-cell *matCellDef="let element" class="w-150">
-                                                    <button mat-icon-button (click)="deleteTableRow(element)" color="warn">
+                                                <mat-cell *matCellDef="let element">
+                                                    <button mat-icon-button (click)="deleteTableRow(element)"
+                                                        color="warn">
                                                         <mat-icon>delete_outline</mat-icon>
                                                     </button>
                                                 </mat-cell>
@@ -348,61 +344,60 @@
                                                 </mat-footer-cell>
                                             </ng-container>
 
-                                            <mat-header-row class="accent min-width-1200"
+                                            <mat-header-row class="accent"
                                                 *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
-                                            <mat-row *matRowDef="let row; columns: displayedColumns"
-                                                class="element min-width-1200"
+                                            <mat-row *matRowDef="let row; columns: displayedColumns" class="element"
                                                 [@animate]="{ value: '*', params: { y: '100%' } }"></mat-row>
                                         </mat-table>
                                     </div>
-
                                     <mat-paginator #paginator [pageSizeOptions]="[10, 15, 25, 100]" [pageSize]="10"
                                         showFirstLastButtons>
                                     </mat-paginator>
-                                </div>
-
+                                </mat-card>
                             </div>
+
                         </div>
                     </div>
-
-                    <div class="modal-footer">
-                        <form [formGroup]="OPMultipleSettlForm">
-                            <mat-card>
-                                <mat-card-content>
-                                    <div class="net-amt-form input-error-hidden">
-                                        <div fxLayout="row" class="gap-8" fxLayoutAlign="end center">
-                                            <mat-form-field appearance="outline" fxFlex>
-                                                <mat-label>NetAmount</mat-label>
-                                                <input name="NetAmount" formControlName="NetAmount" matInput readonly
-                                                    [(ngModel)]="vNetAmount">
-                                            </mat-form-field>
-
-                                            <mat-form-field appearance="outline" fxFlex>
-                                                <mat-label>PaidAmount</mat-label>
-                                                <input name="PaidAmount" formControlName="PaidAmount" matInput
-                                                    [(ngModel)]="vPaidAmount">
-                                            </mat-form-field>
-
-                                            <mat-form-field appearance="outline" fxFlex>
-                                                <mat-label>BalanceAmount</mat-label>
-                                                <input name="BalanceAmount" formControlName="BalanceAmount" matInput
-                                                    readonly [(ngModel)]="vBalanceAmount">
-                                            </mat-form-field>
-                                            <!-- [disabled]="!TotalRefundAmount || dataSource2.data.length==0" -->
-                                            <div class="footer-navigation-container">
-                                                <div class="modal-footer-buttons">
-                                                    <button class="btn btn-danger-outline"
-                                                        (click)="OnReset()">Reset</button>
-                                                    <button class="btn btn-primary" (click)="OnSave()">Payment</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </mat-card-content>
-                            </mat-card>
-                        </form>
-                    </div>
                 </div>
+
+                <div class="modal-footer demo1">
+                    <form [formGroup]="OPMultipleSettlForm">
+                        <mat-card>
+
+                            <div fxLayout="row" class="gap-8" fxLayoutAlign="space-between">
+                                <div class="gap-8">
+                                    <mat-form-field appearance="outline" fxFlex="35%">
+                                        <mat-label>NetAmount</mat-label>
+                                        <input name="NetAmount" formControlName="NetAmount" matInput readonly
+                                            [(ngModel)]="vNetAmount">
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" fxFlex="35%">
+                                        <mat-label>PaidAmount</mat-label>
+                                        <input name="PaidAmount" formControlName="PaidAmount" matInput
+                                            [(ngModel)]="vPaidAmount">
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" fxFlex="35%">
+                                        <mat-label>BalanceAmount</mat-label>
+                                        <input name="BalanceAmount" formControlName="BalanceAmount" matInput readonly
+                                            [(ngModel)]="vBalanceAmount">
+                                    </mat-form-field>
+                                </div>
+                                <!-- [disabled]="!TotalRefundAmount || dataSource2.data.length==0" -->
+                                <div class="footer-navigation-container">
+                                    <div class="modal-footer-buttons">
+                                        <button class="btn btn-danger-outline" (click)="OnReset()">Reset</button>
+
+                                        <button class="btn btn-primary" style="margin-left: 5px;" (click)="OnSave()">Payment</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </mat-card>
+                    </form>
+                </div>
+                
             </div>
         </mat-tab>
     </mat-tab-group>

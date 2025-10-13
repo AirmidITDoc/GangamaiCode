@@ -96,7 +96,7 @@ export class PaymentmodechangesforpharmacyService {
       PayTmamount: '',
       PayTmtranNo: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
       PayTmdate: "1900-01-01",
-      Tdsamount: 0,
+      // Tdsamount: 0,
 
 
       wfamount: 0,
@@ -124,6 +124,9 @@ export class PaymentmodechangesforpharmacyService {
       IsChequepay: '',
       ChequeBankName: '',
       IsCashpay: '',
+      strId:0,
+      opdipdtype:1
+
     })
   }
 

@@ -185,7 +185,8 @@ export class IPAdvanceComponent implements OnInit {
         isCancelledDate: ['1900-01-01', [this._FormvalidationserviceService.validDateValidator()]],
         reason: [''],
         advanceDetailId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        unitId: [this.accountService.currentUserValue.user.unitId]
+        unitId: [this.accountService.currentUserValue.user.unitId],
+        cashCounterId:[5, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator(), Validators.min(1)]],
       }),
       //advanceupdate header
       advanceupdate: this.formBuilder.group({

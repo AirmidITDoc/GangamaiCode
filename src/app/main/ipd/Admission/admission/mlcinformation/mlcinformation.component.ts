@@ -187,6 +187,7 @@ export class MLCInformationComponent implements OnInit {
     if (!this.MlcInfoFormGroup.invalid) {
       console.log(this.MlcInfoFormGroup.value)
       this._AdmissionService.MlcInsert(this.MlcInfoFormGroup.value).subscribe((response) => {
+        console.log(response)
         this.getMLCdetailview(response)
         this._matDialog.closeAll();
       });
@@ -230,6 +231,7 @@ export class MLCInformationComponent implements OnInit {
     };
   }
   getMLCdetailview(AdmissionId) {
+    debugger
     this.commonService.Onprint("AdmissionID", AdmissionId, "IpMLCCasePaperPrint");
   }
 

@@ -26,10 +26,10 @@ export class NewOPListComponent implements OnInit {
     myFilterpayform: FormGroup;
     myFilterrefundform: FormGroup;
     menuActions: Array<string> = [];
-   
+
     @ViewChild('opBillGrid', { static: false }) grid: AirmidTableComponent;
-@ViewChild('opPaymentGrid', { static: false }) grid1: AirmidTableComponent;
-@ViewChild('opRefundGrid', { static: false }) grid2: AirmidTableComponent;
+    @ViewChild('opPaymentGrid', { static: false }) grid1: AirmidTableComponent;
+    @ViewChild('opRefundGrid', { static: false }) grid2: AirmidTableComponent;
 
     hasSelectedContacts: boolean;
     fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
@@ -44,7 +44,7 @@ export class NewOPListComponent implements OnInit {
     CompanyId = 0
     PBillNo: any = "%"
     autocompleteModecompany: string = "Company";
-
+autocompleteModecompany1: string = "Company";
     pf_name: any = ""
     pregNo: any = "0"
     pl_name: any = ""
@@ -77,7 +77,7 @@ export class NewOPListComponent implements OnInit {
         { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
         { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
         { fieldName: "PBillNo", fieldValue: "%", opType: OperatorComparer.Equals },
-        { fieldName: "CompanyId", fieldValue: '0', opType: OperatorComparer.Equals}
+        { fieldName: "CompanyId", fieldValue: '0', opType: OperatorComparer.Equals }
     ];
 
     allOPbillcolumns = [
@@ -90,17 +90,17 @@ export class NewOPListComponent implements OnInit {
         { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
         { heading: "Total Amount", key: "totalAmt", sort: true, align: 'right', emptySign: 'NA', type: gridColumnTypes.amount }, // It is just example of apply color based on condition
-        { heading: "Disc Amount", key: "concessionAmt", sort: true, align: 'left', emptySign: 'NA' , type: gridColumnTypes.amount },
-        { heading: "Net Amount", key: "netPayableAmt", sort: true, align: 'left', emptySign: 'NA' , type: gridColumnTypes.amount },
-        { heading: "Paid Amount", key: "paidAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount},
-        { heading: "Balance Amount", key: "balanceAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount , columnClass: (element) => element["balanceAmt"] > 0 ? Color.RED : "" },
+        { heading: "Disc Amount", key: "concessionAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+        { heading: "Net Amount", key: "netPayableAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+        { heading: "Paid Amount", key: "paidAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+        { heading: "Balance Amount", key: "balanceAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, columnClass: (element) => element["balanceAmt"] > 0 ? Color.RED : "" },
         { heading: "Cash Pay", key: "cashPay", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
-        { heading: "Cheque Pay", key: "chequePay", sort: true, align: 'left', emptySign: 'NA' , type: gridColumnTypes.amount},
-        { heading: "Card Pay", key: "cardPay", sort: true, align: 'left', emptySign: 'NA' , type: gridColumnTypes.amount},
-        { heading: "Adv Used Pay", key: "advUsedPay", sort: true, align: 'left', emptySign: 'NA' , type: gridColumnTypes.amount},
-        { heading: "Online Pay", key: "onlinePay", sort: true, align: 'left', emptySign: 'NA' , type: gridColumnTypes.amount},
+        { heading: "Cheque Pay", key: "chequePay", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+        { heading: "Card Pay", key: "cardPay", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+        { heading: "Adv Used Pay", key: "advUsedPay", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+        { heading: "Online Pay", key: "onlinePay", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
         { heading: "PayCount", key: "payCount", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "Refund Amount", key: "refundAmount", sort: true, align: 'left', emptySign: 'NA' , type: gridColumnTypes.amount , columnClass: (element) => element["refundAmount"] > 0 ? Color.RED : ""},
+        { heading: "Refund Amount", key: "refundAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, columnClass: (element) => element["refundAmount"] > 0 ? Color.RED : "" },
         { heading: "Cash Counter Name", key: "cashCounterName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         { heading: "Age", key: "patientAge", sort: true, align: 'left', emptySign: 'NA', width: 50 },
         { heading: "MobileNo", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA' },
@@ -126,7 +126,9 @@ export class NewOPListComponent implements OnInit {
         { fieldName: "To_Dt", fieldValue: this.ptoDate, opType: OperatorComparer.Equals },
         { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
         { fieldName: "PBillNo", fieldValue: "0", opType: OperatorComparer.Contains },
-        { fieldName: "ReceiptNo", fieldValue: "0", opType: OperatorComparer.Contains }
+        { fieldName: "ReceiptNo", fieldValue: "0", opType: OperatorComparer.Contains },
+        { fieldName: "CompanyId", fieldValue: "0", opType: OperatorComparer.Equals }
+
 
     ];
     allOPpaymentcolumns = [
@@ -135,14 +137,14 @@ export class NewOPListComponent implements OnInit {
         { heading: "ReceiptNo", key: "receiptNo", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "RegNo", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
-        { heading: "Bill Amount", key: "billAmount", sort: true, align: 'left', emptySign: 'NA' , type: gridColumnTypes.amount },
-        { heading: "Balance Amount", key: "balanceAmt", sort: true, align: 'left', emptySign: 'NA' , type: gridColumnTypes.amount},
-        { heading: "Paid Amount", key: "paidAmount", sort: true, align: 'left', emptySign: 'NA' , type: gridColumnTypes.amount},
-        { heading: "CashPay", key: "cashPayAmount", sort: true, align: "center" , type: gridColumnTypes.amount},
-        { heading: "ChequePay", key: "chequePayAmount", sort: true, align: 'left', emptySign: 'NA' , type: gridColumnTypes.amount},
-        { heading: "CardPay", key: "cardPayAmount", sort: true, align: "center" , type: gridColumnTypes.amount},
+        { heading: "Bill Amount", key: "billAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+        { heading: "Balance Amount", key: "balanceAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+        { heading: "Paid Amount", key: "paidAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+        { heading: "CashPay", key: "cashPayAmount", sort: true, align: "center", type: gridColumnTypes.amount },
+        { heading: "ChequePay", key: "chequePayAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+        { heading: "CardPay", key: "cardPayAmount", sort: true, align: "center", type: gridColumnTypes.amount },
         { heading: "AdvUsedPay", key: "advanceUsedAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
-        { heading: "OnlinePay", key: "onlinePay", sort: true, align: "center" , type: gridColumnTypes.amount},
+        { heading: "OnlinePay", key: "onlinePay", sort: true, align: "center", type: gridColumnTypes.amount },
         { heading: "MobileNo", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "VisitDate", key: "visitDate", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
@@ -171,8 +173,8 @@ export class NewOPListComponent implements OnInit {
         { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
         { heading: "PaymentDate", key: "paymentDate", sort: true, align: 'left', emptySign: 'NA', type: 8 },
-        { heading: "Refund Amount", key: "refundAmount", sort: true, align: 'left', emptySign: 'NA' , type: gridColumnTypes.amount},
-        { heading: "Bill Amount", key: "billAmount", sort: true, align: 'left', emptySign: 'NA' , type: gridColumnTypes.amount},
+        { heading: "Refund Amount", key: "refundAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+        { heading: "Bill Amount", key: "billAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
         { heading: "PBillNo", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "MobileNo", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
@@ -270,7 +272,7 @@ export class NewOPListComponent implements OnInit {
 
 
     OngetRecord(element, m) {
-      console.log('Third action clicked for:', element);
+        console.log('Third action clicked for:', element);
         if (m == "Bill Print")
             this.commonService.Onprint("BillNo", element.billNo, "OpBillReceipt");
         else if (m == "Bill Print-Package Info")
@@ -282,7 +284,7 @@ export class NewOPListComponent implements OnInit {
         console.log(contact)
         let PatientHeaderObj = {};
         PatientHeaderObj['Date'] = this.datePipe.transform(contact.billDate, 'MM/dd/yyyy') || '01/01/1900',
-        PatientHeaderObj['RegNo'] = contact.regNo;
+            PatientHeaderObj['RegNo'] = contact.regNo;
         PatientHeaderObj['PatientName'] = contact.patientName;
         PatientHeaderObj['OPD_IPD_Id'] = contact.opD_IPD_ID;
         PatientHeaderObj['Age'] = contact.patientAge;
@@ -345,19 +347,19 @@ export class NewOPListComponent implements OnInit {
             this.grid.gridConfig = this.gridConfig
             console.log('Tab 1 is selected');
             this.grid.bindGridData();
-    
+
         }
         if (event.index === 2) {
             this.grid.gridConfig = this.gridConfig1
             console.log('Tab 2 is selected');
             this.grid.bindGridData();
-         
+
         }
         if (event.index === 3) {
             this.grid.gridConfig = this.gridConfig2
             console.log('Tab 3 is selected');
             this.grid.bindGridData();
-         
+
         }
     }
 
@@ -371,7 +373,7 @@ export class NewOPListComponent implements OnInit {
         this.PBillNo = this.myFilterbillform.get('PBillNo').value || "%"
         this.CompanyId = this.myFilterbillform.get('CompanyId').value || "0"
 
-        
+
         this.getfilterdataOpBill();
     }
 
@@ -388,8 +390,8 @@ export class NewOPListComponent implements OnInit {
             { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
             { fieldName: "Reg_No", fieldValue: this.regNo, opType: OperatorComparer.Equals },
             { fieldName: "PBillNo", fieldValue: this.PBillNo, opType: OperatorComparer.Equals },
-            { fieldName: "CompanyId", fieldValue: this.CompanyId, opType: OperatorComparer.Equals}
-        ]
+            { fieldName: "CompanyId", fieldValue: this.CompanyId, opType: OperatorComparer.Equals }
+            ]
         }
         this.grid.gridConfig = this.gridConfig;
         this.grid.bindGridData();
@@ -410,7 +412,7 @@ export class NewOPListComponent implements OnInit {
         this.onChangeOPBill();
     }
 
-     ListView(value) {
+    ListView(value) {
         console.log(value)
         if (value.value !== 0)
             this.CompanyId = value.value
@@ -420,6 +422,19 @@ export class NewOPListComponent implements OnInit {
         this.onChangeOPBill();
     }
 
+
+    CompanyId1=0
+    ListView1(value) {
+        console.log(value)
+        if (value.value !== 0)
+            this.CompanyId1 = value.value
+        else
+            this.CompanyId1 = 0
+
+        this.onChangeOPPayment();
+    }
+
+
     onChangeOPPayment() {
         this.pfromDate = this.datePipe.transform(this.myFilterpayform.get('fromDate').value, "yyyy-MM-dd")
         this.ptoDate = this.datePipe.transform(this.myFilterpayform.get('enddate').value, "yyyy-MM-dd")
@@ -428,6 +443,7 @@ export class NewOPListComponent implements OnInit {
         this.pregNo = this.myFilterpayform.get('RegNo').value || "0"
         this.pPBillNo = this.myFilterpayform.get('PBillNo').value || "0"
         this.precptNo = this.myFilterpayform.get('ReceiptNo').value || "0"
+         this.CompanyId1 = this.myFilterpayform.get('CompanyId').value || "0"
         this.getfilterdataOpPayment();
     }
 
@@ -443,10 +459,12 @@ export class NewOPListComponent implements OnInit {
             { fieldName: "To_Dt", fieldValue: this.ptoDate, opType: OperatorComparer.Equals },
             { fieldName: "Reg_No", fieldValue: this.pregNo, opType: OperatorComparer.Equals },
             { fieldName: "PBillNo", fieldValue: this.pPBillNo, opType: OperatorComparer.Equals },
-            { fieldName: "ReceiptNo", fieldValue: this.precptNo, opType: OperatorComparer.Contains }
+            { fieldName: "ReceiptNo", fieldValue: this.precptNo, opType: OperatorComparer.Contains },
+            { fieldName: "CompanyId", fieldValue: this.CompanyId1, opType: OperatorComparer.Equals }
+
             ]
         }
-      
+
         this.grid1.gridConfig = { ...this.gridConfig1 }; // Use a new object reference
         this.grid1.bindGridData(); // Only refresh the OPPayment grid
 
@@ -494,7 +512,7 @@ export class NewOPListComponent implements OnInit {
                 { fieldName: "Reg_No", fieldValue: this.rregNo, opType: OperatorComparer.Equals }
             ]
         }
-       this.grid2.gridConfig = { ...this.gridConfig2 }; // Use a new object reference
+        this.grid2.gridConfig = { ...this.gridConfig2 }; // Use a new object reference
         this.grid2.bindGridData(); // Only refresh the OPRefund grid        
 
     }
@@ -512,8 +530,8 @@ export class NewOPListComponent implements OnInit {
         this.onChangeOPRefund();
     }
 
-    
-       keyPressAlphanumeric(event) {
+
+    keyPressAlphanumeric(event) {
         var inp = String.fromCharCode(event.keyCode);
         if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
             return true;
@@ -522,11 +540,11 @@ export class NewOPListComponent implements OnInit {
             return false;
         }
     }
-    
+
     Onemail(data) { }
     Onmessage(data) { }
 
-    
+
 }
 
 export class BrowseOPDBill {

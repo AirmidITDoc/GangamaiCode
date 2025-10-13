@@ -46,8 +46,8 @@ export class DoctorPayoutpercentageComponent {
 
   allColumns = [
 
-    { heading: "", key: "op_IP_Type", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width:50 },
-    { heading: "", key: "shrTypeSerOrGrp", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width:50 },
+    { heading: "", key: "op_IP_Type", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width:30 },
+    { heading: "", key: "shrTypeSerOrGrp", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width:30 },
     { heading: "Share Type", key: "docShrTypeS", sort: true, align: 'left', emptySign: 'NA', width: 100 },
 
     { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA', width: 250 },

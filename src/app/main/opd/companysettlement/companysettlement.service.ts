@@ -85,6 +85,6 @@ export class CompanysettlementService {
     }
 
     public getmultiplePayList(param) {
-        return this._httpClient.PostData("OPBill/BrowseOPPaymentList", param);
+        return this._httpClient.PostData("OPBill/PatientWisePaymentList", param);
     }
 }

@@ -30,9 +30,9 @@
 
                                 <div fxFlex="50%" fxFlex.sm="100%" >
                                     <airmid-autocomplete lbl="RegID" [formGroup]="searchFormGroup"
-                                        label="Search Reg No / Patient Name / Mobile No(DC)"
+                                        label="Search UHID / Patient Name / Mobile No(DC)"
                                         formControlName="RegId" fxFlex
-                                        placeholderText="RegNo / First Name / Last Name / Mobile No(DC)"
+                                        placeholderText="UHID / First Name / Last Name / Mobile No(DC)"
                                         ApiUrl="Admission/Dischargesearch-patient?Keyword="
                                         (selectionChange)="getSelectedObj($event)" TextField="formattedText"
                                         ValueField="regId">

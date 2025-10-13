@@ -96,7 +96,7 @@ export class BrowseOpAdvanceComponent {
   ]
 
   gridConfig: gridModel = {
-    apiUrl: "",
+      apiUrl: "Advance/BrowseAdvanceList",
     columnsList: this.allAdvanceColumns,
     sortField: "RegID",
     sortOrder: 0,
@@ -116,7 +116,7 @@ export class BrowseOpAdvanceComponent {
   getfilterAdvanceList() {
 
     this.gridConfig = {
-      apiUrl: "",
+      apiUrl: "Advance/BrowseAdvanceList",
       columnsList: this.allAdvanceColumns,
       sortField: "RegID",
       sortOrder: 0,
@@ -176,7 +176,7 @@ export class BrowseOpAdvanceComponent {
   ]
 
   gridConfig1: gridModel = {
-    apiUrl: "",
+   apiUrl: "Advance/BrowseRefundOfAdvanceList",
     columnsList: this.allRefundOfAdvanceColumns,
     sortField: "RegId",
     sortOrder: 0,
@@ -195,7 +195,7 @@ export class BrowseOpAdvanceComponent {
   getfilterAdvanceOfRefundList() {
 
     this.gridConfig1 = {
-      apiUrl: "",
+    apiUrl: "Advance/BrowseRefundOfAdvanceList",
       columnsList: this.allRefundOfAdvanceColumns,
       sortField: "RegId",
       sortOrder: 0,

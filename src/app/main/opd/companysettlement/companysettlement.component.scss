@@ -1,25 +1,20 @@
-.demo-table {
-  display: flex;
-  flex-direction: column;
-  height: 65vh; 
-  overflow: hidden;
-}
-
-.table-wrapper {
-  flex: 1;
-  overflow-y: auto;
-}
-
-.demo-table1 {
-  table-layout: fixed;
-  width: 100%;
-  min-width: 1200px; /* or whatever fits */
-}
-
-.mat-paginator {
-  flex-shrink: 0;
-  background: #fff;
-  position: sticky;
+.demo1 {
+  position: fixed;
   bottom: 0;
-  z-index: 10;
+  left: -3;
+  width: 98%;
+  z-index: 1000;
+  padding: 8px 16px;
 }
+
+.table-scroll {
+  max-height: calc(100vh - 400px);
+  overflow-y: auto;        /* make table content scrollable */
+}
+
+.demo2 {
+  width: 100%;
+   display: block;      /* optional, for wide tables */
+}
+
+

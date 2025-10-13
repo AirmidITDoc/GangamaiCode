@@ -432,3 +432,317 @@
 // .chart-card {
 //   min-height: 300px;
 // }
+
+/* Comprehensive Chart Data Popover Styles */
+.chart-data-popover {
+  position: fixed;
+  z-index: 1000;
+  background: rgba(0, 0, 0, 0.95);
+  color: white;
+  border-radius: 12px;
+  padding: 0;
+  font-size: 12px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(-10px) scale(0.95);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  max-width: 300px;
+  min-width: 250px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  
+  &.show {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  
+  .popover-header {
+    padding: 16px 20px 12px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    
+    .popover-title {
+      font-weight: 700;
+      font-size: 14px;
+      color: #fff;
+      margin-bottom: 4px;
+    }
+    
+    .popover-total {
+      font-size: 12px;
+      color: #4ade80;
+      font-weight: 600;
+    }
+  }
+  
+  .popover-content {
+    padding: 12px 20px 16px;
+    
+    .data-item {
+      margin-bottom: 8px;
+      
+      &:last-child {
+        margin-bottom: 0;
+      }
+      
+      .data-row {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        
+        .data-dot {
+          width: 10px;
+          height: 10px;
+          border-radius: 50%;
+          flex-shrink: 0;
+        }
+        
+        .data-name {
+          flex: 1;
+          font-size: 12px;
+          color: #e2e8f0;
+          font-weight: 500;
+        }
+        
+        .data-value {
+          font-size: 13px;
+          font-weight: 700;
+          color: #4ade80;
+          min-width: 40px;
+          text-align: right;
+        }
+        
+        .data-percentage {
+          font-size: 11px;
+          color: #94a3b8;
+          font-weight: 600;
+          min-width: 35px;
+          text-align: right;
+        }
+      }
+    }
+  }
+  
+  .popover-arrow {
+    position: absolute;
+    top: 50%;
+    left: -6px;
+    transform: translateY(-50%);
+    width: 0;
+    height: 0;
+    border-top: 6px solid transparent;
+    border-bottom: 6px solid transparent;
+    border-right: 6px solid rgba(0, 0, 0, 0.95);
+  }
+  
+  // Arrow positioning for different orientations
+  &.arrow-left .popover-arrow {
+    left: -6px;
+    border-right: 6px solid rgba(0, 0, 0, 0.95);
+    border-left: none;
+  }
+  
+  &.arrow-right .popover-arrow {
+    left: auto;
+    right: -6px;
+    border-left: 6px solid rgba(0, 0, 0, 0.95);
+    border-right: none;
+  }
+  
+  &.arrow-top .popover-arrow {
+    top: -6px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-top: none;
+    border-bottom: 6px solid rgba(0, 0, 0, 0.95);
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+  }
+}
+
+/* Individual Segment Popover Styles */
+.segment-popover {
+  position: fixed;
+  z-index: 1001;
+  background: rgba(0, 0, 0, 0.95);
+  color: white;
+  border-radius: 12px;
+  padding: 16px 20px;
+  font-size: 12px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(-5px) scale(0.95);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  max-width: 320px;
+  min-width: 280px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  
+  &.show {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  
+  .segment-content {
+    .segment-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+      
+      .segment-dot {
+        width: 14px;
+        height: 14px;
+        border-radius: 50%;
+        flex-shrink: 0;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+      }
+      
+      .segment-title {
+        font-weight: 700;
+        font-size: 14px;
+        color: #fff;
+      }
+    }
+    
+    .segment-summary {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      
+      .segment-value {
+        font-size: 24px;
+        font-weight: 800;
+        color: #4ade80;
+      }
+      
+      .segment-percentage {
+        font-size: 16px;
+        color: #94a3b8;
+        font-weight: 600;
+      }
+    }
+    
+    .breakdown-section {
+      .breakdown-title {
+        font-size: 11px;
+        font-weight: 600;
+        color: #a1a1aa;
+        margin-bottom: 10px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+      
+      .breakdown-list {
+        margin-bottom: 12px;
+        
+        .breakdown-item {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 6px 0;
+          border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+          
+          &:last-child {
+            border-bottom: none;
+          }
+          
+          .breakdown-source {
+            font-size: 12px;
+            color: #e2e8f0;
+            font-weight: 500;
+          }
+          
+          .breakdown-count {
+            font-size: 13px;
+            color: #4ade80;
+            font-weight: 700;
+          }
+        }
+      }
+      
+      .breakdown-total {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 8px 12px;
+        background: rgba(74, 222, 128, 0.1);
+        border-radius: 6px;
+        border: 1px solid rgba(74, 222, 128, 0.2);
+        
+        .total-label {
+          font-size: 12px;
+          font-weight: 600;
+          color: #4ade80;
+        }
+        
+        .total-value {
+          font-size: 16px;
+          font-weight: 800;
+          color: #4ade80;
+        }
+      }
+    }
+  }
+  
+  .popover-arrow {
+    position: absolute;
+    top: 50%;
+    left: -6px;
+    transform: translateY(-50%);
+    width: 0;
+    height: 0;
+    border-top: 6px solid transparent;
+    border-bottom: 6px solid transparent;
+    border-right: 6px solid rgba(0, 0, 0, 0.95);
+  }
+  
+  // Arrow positioning for different orientations
+  &.arrow-left .popover-arrow {
+    left: -6px;
+    border-right: 6px solid rgba(0, 0, 0, 0.95);
+    border-left: none;
+  }
+  
+  &.arrow-right .popover-arrow {
+    left: auto;
+    right: -6px;
+    border-left: 6px solid rgba(0, 0, 0, 0.95);
+    border-right: none;
+  }
+  
+  &.arrow-top .popover-arrow {
+    top: -6px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-top: none;
+    border-bottom: 6px solid rgba(0, 0, 0, 0.95);
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+  }
+  
+  &.arrow-bottom .popover-arrow {
+    bottom: -6px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-top: 6px solid rgba(0, 0, 0, 0.95);
+  }
+}
+
+/* Chart hover area styling */
+.overall-donut-wrap {
+  canvas {
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    
+    &:hover {
+      transform: scale(1.02);
+    }
+  }
+}

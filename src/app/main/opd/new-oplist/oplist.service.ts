@@ -40,6 +40,7 @@ export class OPListService {
       PBillNo: '', 
       RegNo: '',
      ReceiptNo: '',
+     CompanyId:0
     });
   }
   myFilterrefundbrowseform(): FormGroup {

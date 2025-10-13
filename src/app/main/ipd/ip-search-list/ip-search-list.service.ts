@@ -566,6 +566,7 @@ export class IPSearchListService {
   }
 
   public AdvanceHeaderlist(Id) {
+    debugger
     return this._httpClient1.PostData("Advance/PatientWiseAdvanceList", Id);
   }
 

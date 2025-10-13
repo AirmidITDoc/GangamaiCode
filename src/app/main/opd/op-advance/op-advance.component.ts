@@ -25,117 +25,219 @@ import { NewRefundOfAdvanceComponent } from './new-refund-of-advance/new-refund-
   animations: fuseAnimations
 })
 export class OpAdvanceComponent {
-  myFilterform: FormGroup;
-  vOPIPId = 0;
-  f_name: any = ""
-  regNo: any = "0"
-  l_name: any = ""
-  m_name: any = ""
-  IPDNo: any = ""
-  status = "0"
-  apiUrl: any;
-  IsDischarge: boolean = false
-  autocompleteModedeptdoc: string = "ConDoctor";
-
-  @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
-  constructor(
-    public _opAdvanceService: OpAdvanceService,
-    public _matDialog: MatDialog,
-    private _fuseSidebarService: FuseSidebarService,
-    private _ActRoute: Router,
-    private commonService: PrintserviceService,
-    public datePipe: DatePipe,
-    private _configue: ConfigService,
-    public toastr: ToastrService) { }
-
-  ngOnInit(): void {
-    this.myFilterform = this._opAdvanceService.filterForm();
-  }
-
-  allcolumns = [
-    { heading: "", key: "patientType", sort: true, align: 'left', type: gridColumnTypes.template, width: 50 },
-    { heading: "Bill", key: "isBillGenerated", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
-    { heading: "IsMLC", key: "isMLC", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 70 },
-    { heading: "RegNo", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
-    { heading: "DOA", key: "admissionTime", sort: true, align: 'left', emptySign: 'NA', type: 8, width: 200 },
-    { heading: "OPD No", key: "ipdno", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "Doctor Name", key: "doctorname", sort: true, align: 'left', emptySign: 'NA', width: 250 },
-    { heading: "Ref Doc Name", key: "refDocName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
-    { heading: "Company Name", key: "companyName", sort: true, align: 'left', emptySign: 'NA', type: 10, width: 350 },
-    { heading: "Adv Amount", key: "AdvanceAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
-    { heading: "Charges Amount", key: "ChargesAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
-    {
-      heading: "Action", key: "action", align: "right", sticky: true, type: gridColumnTypes.template, width: 200,
-      // template: this.actionButtonTemplate  // Assign ng-template to the column
-    }
-  ];
-
-  gridConfig: gridModel = {
-    apiUrl: "",
-    columnsList: this.allcolumns,
-    sortField: "",
-    sortOrder: 1,
-    filters: [
-      { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.Contains },
-      { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Contains },
-      { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
-      { fieldName: "Doctor_Id", fieldValue: "0", opType: OperatorComparer.Equals },
-      { fieldName: "From_Dt", fieldValue: "", opType: OperatorComparer.Equals },
-      { fieldName: "To_Dt", fieldValue: "", opType: OperatorComparer.Equals },
-      { fieldName: "Admtd_Dschrgd_All", fieldValue: this.status, opType: OperatorComparer.Equals },
-      { fieldName: "M_Name", fieldValue: "%", opType: OperatorComparer.Contains },
-      { fieldName: "IPNo", fieldValue: "0", opType: OperatorComparer.Equals },
-    ],
-    row: 25
-  }
-
-  onChangeFirst(event) {
-    this.getfilterdata();
-  }
-
-  getfilterdata() {
-    // debugger
-    // this.gridConfig = {
-    //   apiUrl: this.apiUrl,
-    //   columnsList: this.allcolumns,
-    //   sortField: "AdmissionId",
-    //   sortOrder: 0,
-    //   filters: [
-    //     { fieldName: "F_Name", fieldValue: this.f_name, opType: OperatorComparer.Contains },
-    //     { fieldName: "L_Name", fieldValue: this.l_name, opType: OperatorComparer.Contains },
-    //     { fieldName: "Reg_No", fieldValue: this.regNo, opType: OperatorComparer.Equals },
-    //     { fieldName: "Doctor_Id", fieldValue: "0", opType: OperatorComparer.Equals },
-    //     { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
-    //     { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
-    //     { fieldName: "Admtd_Dschrgd_All", fieldValue: this.status, opType: OperatorComparer.Equals },
-    //     { fieldName: "M_Name", fieldValue: this.m_name, opType: OperatorComparer.Equals },
-    //     { fieldName: "IPNo", fieldValue: this.OPDNo, opType: OperatorComparer.Equals }
-
-    //   ],
-    //   row: 25
-    // }
-    // this.grid.gridConfig = this.gridConfig;
-    // this.grid.bindGridData();
-  }
-
-  Clearfilter(event) {
-    console.log(event)
-    if (event == 'FirstName')
-      this.myFilterform.get('FirstName').setValue("")
-    else
-      if (event == 'LastName')
-        this.myFilterform.get('LastName').setValue("")
-      else
-        if (event == 'MiddleName')
-          this.myFilterform.get('MiddleName').setValue("")
-    if (event == 'RegNo')
-      this.myFilterform.get('RegNo').setValue("")
-    if (event == 'OPDNo')
-      this.myFilterform.get('OPDNo').setValue("")
-
-    this.onChangeFirst(event);
-  }
+   constructor(
+         public _BrowseIpAdvanceService: OpAdvanceService,
+         public datePipe: DatePipe,
+         public _matDialog: MatDialog,
+         public toastr: ToastrService,
+         private commonService: PrintserviceService,
+     ) { }
+ 
+     ngOnInit(): void { }
+ 
+     fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+     toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+ 
+ 
+     @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
+     @ViewChild('actionButtonTemplateone') actionButtonTemplateone!: TemplateRef<any>;
+ 
+ 
+     ngAfterViewInit() {
+         this.gridConfig1.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
+         this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplateone;
+     }
+ 
+    
+     @ViewChild('ipBrowse', { static: false }) grid: AirmidTableComponent;
+     @ViewChild('ipRefund', { static: false }) grid1: AirmidTableComponent;
+ 
+     f_name: any = ""
+     regNo: any = "0"
+     l_name: any = ""
+     PBillNo: any = "0"
+ 
+     af_name: any = ""
+     aregNo: any = "0"
+     al_name: any = ""
+     afromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+     atoDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+ 
+     allAdvanceFilter = [
+         { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.StartsWith },
+         { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.StartsWith },
+         { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
+         { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
+         { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
+         { fieldName: "PBillNo", fieldValue: "0", opType: OperatorComparer.Equals }
+     ]
+ 
+     allAdvanceColumns = [
+         { heading: "Date", key: "date", sort: true, align: 'left', emptySign: 'NA', type: 6 },
+         { heading: "Advance No", key: "advanceNo", sort: true, align: 'left', emptySign: 'NA' },
+         { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
+         { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+         { heading: "IPDNo", key: "ipdNo", sort: true, align: 'left', emptySign: 'NA' },
+         { heading: "Doctor Name", key: "doctorName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+         { heading: "Ref DoctorName", key: "refDoctorName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+         { heading: "Company Name", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+         { heading: "Mobile No", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA' },
+         { heading: "Ward Name", key: "wardName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+         { heading: "Advance Amt", key: "advanceAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+         { heading: "Cash Pay", key: "cashPayAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+         { heading: "Cheque Pay", key: "chequePayAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+         { heading: "Card Pay", key: "cardPayAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+         { heading: "Online Pay", key: "payTMAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+         { heading: "Balance Amt", key: "balanceAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+         { heading: "Refund Amt", key: "refundAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+         { heading: "User Name", key: "userName", sort: true, align: 'left', emptySign: 'NA' },
+         {
+             heading: "Action", key: "action", align: "right", sticky: true, type: gridColumnTypes.template,
+             template: this.actionButtonTemplateone  // Assign ng-template to the column
+         }
+     ]
+ 
+     allRefundOfAdvanceFilters = [
+         { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.StartsWith },
+         { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.StartsWith },
+         { fieldName: "From_Dt", fieldValue: this.afromDate, opType: OperatorComparer.Equals },
+         { fieldName: "To_Dt", fieldValue: this.atoDate, opType: OperatorComparer.Equals },
+         { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals }
+     ]
+ 
+     allRefundOfAdvanceColumns = [
+         { heading: "UHIDNo", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
+         { heading: "Date", key: "refundDate", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 6 },
+         { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
+         { heading: "Advance Amt", key: "advanceUsedAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+         { heading: "Advance UsedAmt", key: "advanceUsedAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, width: 150 },
+         { heading: "Balance Amt", key: "balanceAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+         { heading: "Refund Amt", key: "refundAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+         { heading: "Pay Date", key: "paymentDate", sort: true, align: 'left', emptySign: 'NA', width: 180, type: 6 },
+         { heading: "Cash Pay", key: "cashPayAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+         { heading: "Cheque Pay", key: "chequePayAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+         { heading: "Card Pay", key: "cardPayAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+         { heading: "Remark", key: "remark", sort: true, align: 'left', emptySign: 'NA', width: 300 },
+         { heading: "UserName", key: "userName", sort: true, align: 'left', emptySign: 'NA' },
+         {
+             heading: "Action", key: "action", align: "right", sticky: true, type: gridColumnTypes.template,
+             template: this.actionButtonTemplate  // Assign ng-template to the column
+         }
+     ]
+ 
+     gridConfig: gridModel = {
+         apiUrl: "Advance/BrowseAdvanceList",
+         columnsList: this.allAdvanceColumns,
+         sortField: "RegID",
+         sortOrder: 0,
+         filters: this.allAdvanceFilter
+     }
+ 
+     gridConfig1: gridModel = {
+         apiUrl: "Advance/BrowseRefundOfAdvanceList",
+         columnsList: this.allRefundOfAdvanceColumns,
+         sortField: "RegId",
+         sortOrder: 0,
+         filters: this.allRefundOfAdvanceFilters
+     }
+ 
+     onChangeAdvance() {
+         this.fromDate = this.datePipe.transform(this._BrowseIpAdvanceService.UserFormGroup.get('fromDate').value, "yyyy-MM-dd")
+         this.toDate = this.datePipe.transform(this._BrowseIpAdvanceService.UserFormGroup.get('enddate').value, "yyyy-MM-dd")
+         this.f_name = this._BrowseIpAdvanceService.UserFormGroup.get('FirstName').value + "%"
+         this.l_name = this._BrowseIpAdvanceService.UserFormGroup.get('LastName').value + "%"
+         this.regNo = this._BrowseIpAdvanceService.UserFormGroup.get('RegNo').value || "0"
+         this.PBillNo = this._BrowseIpAdvanceService.UserFormGroup.get('PBillNo').value || "0"
+         this.getfilterAdvanceList();
+     }
+ 
+     getfilterAdvanceList() {
+ 
+         this.gridConfig = {
+             apiUrl: "Advance/BrowseAdvanceList",
+             columnsList: this.allAdvanceColumns,
+             sortField: "RegID",
+             sortOrder: 0,
+             filters: [{ fieldName: "F_Name", fieldValue: this.f_name, opType: OperatorComparer.Contains },
+             { fieldName: "L_Name", fieldValue: this.l_name, opType: OperatorComparer.Contains },
+             { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
+             { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
+             { fieldName: "Reg_No", fieldValue: this.regNo, opType: OperatorComparer.Equals },
+             { fieldName: "PBillNo", fieldValue: this.PBillNo, opType: OperatorComparer.Equals }
+             ]
+         }
+         this.grid.gridConfig = this.gridConfig;
+         this.grid.bindGridData();
+     }
+ 
+     ClearfilterAdvance(event) {
+         console.log(event)
+         if (event == 'FirstName')
+             this._BrowseIpAdvanceService.UserFormGroup.get('FirstName').setValue("")
+         else
+             if (event == 'LastName')
+                 this._BrowseIpAdvanceService.UserFormGroup.get('LastName').setValue("")
+         if (event == 'RegNo')
+             this._BrowseIpAdvanceService.UserFormGroup.get('RegNo').setValue("")
+         if (event == 'PBillNo')
+             this._BrowseIpAdvanceService.UserFormGroup.get('PBillNo').setValue("")
+ 
+         this.onChangeAdvance();
+     }
+ 
+     onChangeAdvanceOfRefund() {
+         this.afromDate = this.datePipe.transform(this._BrowseIpAdvanceService.AdvanceOfRefund.get('fromDate').value, "yyyy-MM-dd")
+         this.atoDate = this.datePipe.transform(this._BrowseIpAdvanceService.AdvanceOfRefund.get('enddate').value, "yyyy-MM-dd")
+         this.af_name = this._BrowseIpAdvanceService.AdvanceOfRefund.get('FirstName').value + "%"
+         this.al_name = this._BrowseIpAdvanceService.AdvanceOfRefund.get('LastName').value + "%"
+         this.aregNo = this._BrowseIpAdvanceService.AdvanceOfRefund.get('RegNo').value || "0"
+         this.getfilterAdvanceOfRefundList();
+     }
+ 
+     getfilterAdvanceOfRefundList() {
+ 
+         this.gridConfig1 = {
+             apiUrl: "Advance/BrowseRefundOfAdvanceList",
+             columnsList: this.allRefundOfAdvanceColumns,
+             sortField: "RegId",
+             sortOrder: 0,
+             filters: [{ fieldName: "F_Name", fieldValue: this.af_name, opType: OperatorComparer.Contains },
+             { fieldName: "L_Name", fieldValue: this.al_name, opType: OperatorComparer.Contains },
+             { fieldName: "From_Dt", fieldValue: this.afromDate, opType: OperatorComparer.Equals },
+             { fieldName: "To_Dt", fieldValue: this.atoDate, opType: OperatorComparer.Equals },
+             { fieldName: "Reg_No", fieldValue: this.aregNo, opType: OperatorComparer.Equals }
+             ]
+         }
+         this.grid1.gridConfig = this.gridConfig1;
+         this.grid1.bindGridData();
+     }
+ 
+     ClearfilterAdvanceOfRefund(event) {
+         console.log(event)
+         if (event == 'FirstName')
+             this._BrowseIpAdvanceService.AdvanceOfRefund.get('FirstName').setValue("")
+         else
+             if (event == 'LastName')
+                 this._BrowseIpAdvanceService.AdvanceOfRefund.get('LastName').setValue("")
+         if (event == 'RegNo')
+             this._BrowseIpAdvanceService.AdvanceOfRefund.get('RegNo').setValue("")
+ 
+         this.onChangeAdvanceOfRefund();
+     }
+ 
+     OnAdvanceViewReportPdf(element) {
+         console.log(element)
+         this.commonService.Onprint("AdvanceDetailID", element.advanceDetailID, "IpAdvanceReceipt");
+     }
+ 
+ 
+     getAdvreturnview(element) {
+         console.log(element)
+         this.commonService.Onprint("RefundId", element.refundId, "IpAdvanceRefundReceipt");
+     }
+     whatsappAppoitment(data) { }
+ 
+ 
 
   getSelectedRow(row: any): void {
     console.log("Selected row : ", row);
