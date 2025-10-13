@@ -61,12 +61,10 @@ export class SampleCollectionService {
   // }
 
   public UpdateSampleCollection(employee) {
-    return this._httpClient1.PutData("PathlogySampleCollection/PathlogySampleCollectionUpdate", employee);
+    return this._httpClient1.PutData("PathlogySampleCollection/Update", employee);
   }
 
   public InsertLabDetail(employee){
-
- 
 
     this._httpClient = new HttpClient(this.handler);
     

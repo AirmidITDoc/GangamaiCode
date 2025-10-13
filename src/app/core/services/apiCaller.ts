@@ -21,9 +21,7 @@ export class ApiCaller {
                     return data.data;
                 }
                 else {
-                    if (data.message)
-                        //need to chk
-                        debugger
+                   
                     if (data.message == 'No data found.') {
                         Swal.fire("Data Not Find .....")
                     }
@@ -44,12 +42,24 @@ export class ApiCaller {
                     this.toastr.success(data.message, 'success !', { toastClass: 'tostr-tost custom-toast-success', });
                 return data?.data || data;
             }
-            else {
-                this.toastr.error(data.message, 'Error !', {
-                    toastClass: 'tostr-tost custom-toast-error',
-                });
-                return of(null); // Avoid returning anything invalid
-            }
+             else {
+                   
+                    if (data.message == 'No data found.') {
+                        Swal.fire("Data Not Find .....")
+                    }
+                    else {
+                        this.toastr.error(data.message, 'Error !', {
+                            toastClass: 'tostr-tost custom-toast-error',
+                        });
+                    }
+                    return of(null); // Avoid returning anything invalid
+                }
+            // else {
+            //     this.toastr.error(data.message, 'Error !', {
+            //         toastClass: 'tostr-tost custom-toast-error',
+            //     });
+            //     return of(null); // Avoid returning anything invalid
+            // }
         })));
     }
     PostFromData(url: string, data: any) {

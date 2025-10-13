@@ -214,64 +214,7 @@ export class NewResultEntryComponent {
         return Keys;
     }
 
-    // onResultUp(data) {
-    //     debugger
-    // let items = this.dataSource.data.filter(x => (x?.Formula ?? "").indexOf('{{' + data.ParameterShortName + '}}') > 0);
-    //     let items = this.dataSource.data.filter(x => String(x?.Formula ?? "").indexOf('{{' + data.ParameterShortName + '}}') > 0);
-
-    //     for (let i = 0; i < items.length; i++) {
-    //         let formula = items[i].Formula;
-    //         let formulas = this.getShortNames(formula);
-
-    //         formulas.forEach(e => {
-    //             let itm = this.dataSource.data.find(x => x.ParameterShortName?.toLowerCase().trim() === e.toLowerCase().trim());
-
-    //             let valueToReplace = itm?.ResultValue !== undefined && itm?.ResultValue !== null ? itm.ResultValue : "0";
-
-    //             formula = formula.replaceAll("{{" + e.trim() + "}}", valueToReplace);
-
-    //             console.log("Matching for:", e.trim());
-    //             console.log("Matched item:", itm);
-    //             console.log("Replacing {{ " + e.trim() + " }} with:", valueToReplace);
-    //         });
-
-    //         if (formula.includes('{{')) {
-    //             console.error("Formula still has unresolved placeholders:", formula);
-    //             items[i].ResultValue = "";
-    //         } else {
-    //             try {
-    //                 items[i].ResultValue = isNaN(eval(formula)) ? "" : eval(formula);
-
-    //                 if (!isNaN(items[i].ResultValue)) {
-    //                     items[i].ResultValue = Math.round(items[i].ResultValue * 100) / 100;
-    //                 }
-    //             } catch (error) {
-    //                 console.error('Error evaluating formula:', formula, error);
-    //                 items[i].ResultValue = "";
-    //             }
-    //         }
-    //     }
-
-    //     // Set flag for bold if the value is out of range
-    //     data.ParaBoldFlag = '';
-    //     if (data.PIsNumeric) {
-    //         let a = parseFloat(data.ResultValue);
-    //         let b = parseFloat(data.MinValue);
-    //         let c = parseFloat(data.MaxValue);
-
-    //         if (b != null && c != null && a != null) {
-    //             if (a < b || a > c) {
-    //                 data.ParaBoldFlag = 'B'; // Set bold flag if value is out of range
-    //             }
-    //         }
-    //     }
-    // }    
-
-    // isValidFormula(formula: string): boolean {
-    //     // Basic regex to allow only numbers, operators, and parentheses
-    //     const validFormulaPattern = /^[0-9+\-*/().\s]+$/;
-    //     return validFormulaPattern.test(formula.trim());
-    // }
+  
 
     onResultUp(data) {
         debugger
@@ -813,7 +756,7 @@ console.log(element)
             subTestName: [item.SubTestName || '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
             parameterName: [item.ParameterName || '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
             unitName: [item.UnitName || '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
-            patientName: [this.selectedAdvanceObj2.PatientName || '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+            patientName: [this.selectedAdvanceObj2.patientName || '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
             regNo: [this.selectedAdvanceObj2.regNo || '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
             sampleId: [item.SampleID || "", [this._FormvalidationserviceService.onlyNumberValidator()]],
 
@@ -836,6 +779,65 @@ console.log(element)
         return this.ResultForm.get('pathologyResult') as FormArray;
     }
 
+
+      // onResultUp(data) {
+    //     debugger
+    // let items = this.dataSource.data.filter(x => (x?.Formula ?? "").indexOf('{{' + data.ParameterShortName + '}}') > 0);
+    //     let items = this.dataSource.data.filter(x => String(x?.Formula ?? "").indexOf('{{' + data.ParameterShortName + '}}') > 0);
+
+    //     for (let i = 0; i < items.length; i++) {
+    //         let formula = items[i].Formula;
+    //         let formulas = this.getShortNames(formula);
+
+    //         formulas.forEach(e => {
+    //             let itm = this.dataSource.data.find(x => x.ParameterShortName?.toLowerCase().trim() === e.toLowerCase().trim());
+
+    //             let valueToReplace = itm?.ResultValue !== undefined && itm?.ResultValue !== null ? itm.ResultValue : "0";
+
+    //             formula = formula.replaceAll("{{" + e.trim() + "}}", valueToReplace);
+
+    //             console.log("Matching for:", e.trim());
+    //             console.log("Matched item:", itm);
+    //             console.log("Replacing {{ " + e.trim() + " }} with:", valueToReplace);
+    //         });
+
+    //         if (formula.includes('{{')) {
+    //             console.error("Formula still has unresolved placeholders:", formula);
+    //             items[i].ResultValue = "";
+    //         } else {
+    //             try {
+    //                 items[i].ResultValue = isNaN(eval(formula)) ? "" : eval(formula);
+
+    //                 if (!isNaN(items[i].ResultValue)) {
+    //                     items[i].ResultValue = Math.round(items[i].ResultValue * 100) / 100;
+    //                 }
+    //             } catch (error) {
+    //                 console.error('Error evaluating formula:', formula, error);
+    //                 items[i].ResultValue = "";
+    //             }
+    //         }
+    //     }
+
+    //     // Set flag for bold if the value is out of range
+    //     data.ParaBoldFlag = '';
+    //     if (data.PIsNumeric) {
+    //         let a = parseFloat(data.ResultValue);
+    //         let b = parseFloat(data.MinValue);
+    //         let c = parseFloat(data.MaxValue);
+
+    //         if (b != null && c != null && a != null) {
+    //             if (a < b || a > c) {
+    //                 data.ParaBoldFlag = 'B'; // Set bold flag if value is out of range
+    //             }
+    //         }
+    //     }
+    // }    
+
+    // isValidFormula(formula: string): boolean {
+    //     // Basic regex to allow only numbers, operators, and parentheses
+    //     const validFormulaPattern = /^[0-9+\-*/().\s]+$/;
+    //     return validFormulaPattern.test(formula.trim());
+    // }
 }
 
 export class Pthologyresult {

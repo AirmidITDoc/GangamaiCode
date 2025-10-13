@@ -125,7 +125,8 @@
 
                                 <ng-template #actionButtonTemplate let-element>
                                     <div fxLayout="row" fxLayoutAlign="center center">
-                                        <button mat-icon-button matTooltip="Sample Collection" (click)="onSave(element)">
+                                        <button mat-icon-button matTooltip="Sample Collection"
+                                            (click)="onSave(element)">
                                             <mat-icon>description</mat-icon>
                                         </button>
                                         <!-- <airmid-fileupload-icon [refId]="element.opdipdid" [refType]="pathFiles" [multiple]="true" 
@@ -198,7 +199,7 @@
 
 
 
-                                    <ng-container matColumnDef="IsTemplateTest">
+                                    <!-- <ng-container matColumnDef="IsTemplateTest">
                                         <mat-header-cell *matHeaderCellDef fxShow.gt-sm>IsTemplate</mat-header-cell>
                                         <mat-cell *matCellDef="let contact">
 
@@ -209,11 +210,11 @@
                                             </mat-icon>
 
                                         </mat-cell>
-                                    </ng-container>
+                                    </ng-container> -->
 
 
 
-                                    <ng-container matColumnDef="IsCompleted">
+                                    <!-- <ng-container matColumnDef="IsCompleted">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
                                             Completed
                                         </mat-header-cell>
@@ -223,36 +224,24 @@
                                             <mat-icon *ngIf="!contact.isCompleted" matTooltip="Not Completed"
                                                 class="active-icon red-500 s-16">hourglass_empty</mat-icon>
                                         </mat-cell>
-                                    </ng-container>
+                                    </ng-container> -->
 
-                                    <ng-container matColumnDef="outSourceStatus">
+                                    <!-- <ng-container matColumnDef="outSourceStatus">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
                                             OutSource
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
-                                            <!-- <span> {{contact.outSourceStatus}}</span> -->
-                                            <!-- <mat-icon *ngIf="contact.outSourceStatus" matTooltip="IsCompleted"
-                                                class="active-icon green-500 s-16">check_circle</mat-icon>
-                                            <mat-icon *ngIf="!contact.outSourceStatus" matTooltip="Not Completed"
-                                                class="active-icon red-500 s-16">hourglass_empty</mat-icon> -->
-
-                                            <mat-icon *ngIf="contact.outSourceStatus" title="OutSource Completed"
+                                        <mat-icon *ngIf="contact.outSourceStatus" title="OutSource Completed"
                                                 style="background-color: rgb(232, 127, 52);">
                                                 <img width="70px" height="70px" src="assets/images/logos/outsource.jpg">
                                             </mat-icon>
                                         </mat-cell>
-                                    </ng-container>
+                                    </ng-container> -->
 
-
+                                    <!-- 
                                     <ng-container matColumnDef="isVerifyid">
                                         <mat-header-cell *matHeaderCellDef fxShow.gt-sm>Isverify</mat-header-cell>
                                         <mat-cell *matCellDef="let contact">
-
-                                            <!-- <mat-icon *ngIf="contact.isVerifyid=='1'"
-                                                matTooltip="isverify">check_circle</mat-icon>
-                                            <mat-icon *ngIf="contact.isVerifyid !='1'" matTooltip="Result Entry">
-                                                hourglass_empty
-                                            </mat-icon> -->
 
                                             <mat-icon *ngIf="contact.isVerifyid" title="Repoer Verified"
                                                 style="background-color: rgb(232, 127, 52);">
@@ -260,7 +249,58 @@
                                             </mat-icon>
 
                                         </mat-cell>
+                                    </ng-container> -->
+
+                                    <ng-container matColumnDef="action1">
+                                        <mat-header-cell *matHeaderCellDef fxShow.gt-sm>Status</mat-header-cell>
+                                        <mat-cell *matCellDef="let contact">
+
+                                            <div fxLayout="row" fxLayoutAlign="center center">
+
+                                                <mat-icon *ngIf="contact.isTemplateTest=='1'" class="w-50"
+                                                    matTooltip="IsTemplateTest">assignment</mat-icon>
+                                                <mat-icon *ngIf="contact.isTemplateTest !='1'" class="w-50"
+                                                    matTooltip="Result Entry">
+                                                    <img width="30px" height="30px"
+                                                        src="assets/images/logos/pathology.png">
+                                                </mat-icon>
+
+                                                <mat-icon *ngIf="contact.isCompleted" matTooltip="IsCompleted"
+                                                    class="w-50"
+                                                    class="active-icon green-500 s-16">check_circle</mat-icon>
+                                                <mat-icon *ngIf="!contact.isCompleted" matTooltip="Not Completed"
+                                                    class="w-50"
+                                                    class="active-icon red-500 s-16">hourglass_empty</mat-icon>
+
+
+                                                <mat-icon *ngIf="contact.outSourceStatus" title="OutSource Completed"
+                                                    class="w-70" style="background-color: rgb(232, 127, 52);">
+                                                    <img width="70px" height="70px"
+                                                        src="assets/images/logos/outsource.jpg">
+                                                </mat-icon>
+
+
+                                                <mat-icon *ngIf="!contact.outSourceStatus" title="No OutSource"
+                                                    class="w-70">
+                                                    <img width="70px" height="70px"
+                                                        src="assets/images/logos/mylabindia.png">
+                                                </mat-icon>
+                                                <mat-icon *ngIf="contact.isVerifyid" title="Report Verified"
+                                                    class="w-60">
+                                                    <img width="60px" height="60px"
+                                                        src="assets/images/logos/verify.png">
+                                                </mat-icon>
+
+                                                <mat-icon *ngIf="!contact.isVerifyid" title="Report Not Verified"
+                                                    class="w-50">
+                                                    <img width="50px" height="50px"
+                                                        src="assets/images/logos/notverified1.jpg">
+                                                </mat-icon>
+                                            </div>
+
+                                        </mat-cell>
                                     </ng-container>
+
 
                                     <ng-container matColumnDef="TestName" sticky>
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
@@ -283,10 +323,11 @@
                                     </ng-container>
 
                                     <ng-container matColumnDef="SampleNo">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md
+                                            class="w-100">
                                             SampleNo
                                         </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
+                                        <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="w-100">
                                             <span> {{contact.sampleNo}}</span>
                                         </mat-cell>
                                     </ng-container>
@@ -305,7 +346,7 @@
                                             OutSourceName
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
-                                            <span> {{contact.outSourceLabName}}</span>
+                                            <span> {{contact.outSourceLabName || '--'}}</span>
                                         </mat-cell>
                                     </ng-container>
 
@@ -314,7 +355,8 @@
                                             OutSourceSentDate
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
-                                            <span> {{contact.outSourceSampleSentDateTime | date:'yyyy-MM-dd'}}</span>
+                                            <span> {{contact.outSourceSampleSentDateTime | date:'yyyy-MM-dd' ||
+                                                "1900-01-01"}}</span>
                                         </mat-cell>
                                     </ng-container>
 
@@ -324,7 +366,7 @@
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
                                             <span> {{contact.outSourceReportCollectedDateTime |
-                                                date:'yyyy-MM-dd'}}</span>
+                                                date:'yyyy-MM-dd' || "1900-01-01"}}</span>
                                         </mat-cell>
                                     </ng-container>
 
@@ -363,9 +405,6 @@
                                                 (click)="Cancleresult(contact)" matTooltip="Cancel Result">
                                                 <mat-icon title="Cancel Result">highlight_off</mat-icon>
                                             </button>
-
-
-
 
                                             <airmid-fileupload-icon [refId]="contact.pathReportId" [refType]="pathFiles"
                                                 [multiple]="true"

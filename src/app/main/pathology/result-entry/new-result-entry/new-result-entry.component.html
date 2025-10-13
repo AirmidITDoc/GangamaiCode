@@ -1,28 +1,31 @@
-<div class="page-layout simple inner-scroll inner-sidebar right-sidebar">
-    <mat-toolbar style="height: 50px; justify-content:space-between;width: 100%;">
-        <div fxLayout="row" fxLayoutAlign="start center">
-            <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
-                <mat-icon>menu</mat-icon>
-            </button>
-            <button mat-icon-button class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"
-                style="color: white;">
-                <mat-icon>account_box</mat-icon>
-            </button>
-            <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                Result Entry
-            </span>
-        </div>
-        <div fxLayout="row" fxLayoutALign="end start">
-            <button mat-icon-button tabIndex="-1" (click)="onClose()" aria-label="Close dialog">
-                <mat-icon>close</mat-icon>
-            </button>
-        </div>
-    </mat-toolbar>
+<div class="page-layout modal-wrapper grid-container" fusePerfectScrollbar>
 
-    <div class="content">
-        <div class="center p-12 pb-56" style="border-radius: 4px;">
-            <div fxFlexFill fxLayout="row" fxLayout.gt-xs="column" fxLayoutGap="8px">
-                <div fxLayout="column">
+    <div class="modal-header accent">
+        <div class="modal-header-content">
+            <div class="modal-header-title">
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"> Result Entry</span>
+            </div>
+            <div class="modal-header-right">
+                <div class="comman-date-container">
+                    <div class="comman-date">
+                        <app-common-date [screenFrom]="screenFromString"
+                            (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
+                    </div>
+                    <div class="close-icon">
+                        <button mat-icon-button tabIndex="-1" (click)="onClose()" aria-label="Close dialog">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal-body content">
+        <div fxLayout="column" class="gap-8 h-100-p">
+            <div class="modal-card-container">
+                <div fxFlex.gt-sm="100%" fxFlex fxLayoutGap="4px">
                     <mat-card fxFlex.gt-sm="100%" fxFlex>
                         <div class="patient-info-sales my-8">
                             <div class="patient-info-title border-bottom pb-2">
@@ -82,212 +85,165 @@
                             </div>
                         </div>
                     </mat-card>
-                </div>
-                <div fxLayout="column">
-                    <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 0 9px; height: fit-content;">
-                        <div class="patient-info-sales my-8">
 
-                            <div class="Ipd-patient-info" fxFlexFill fxLayout="row" class="patient-info">
-                                <div class="patient-sub">
-                                    <div class="patient-info-row patient-info-1-111 pt-8" fxLayout="row">
-                                        <div fxLayout="row" class="gap-8" fxLayoutAlign="space-between" fxFlex>
-
-                                            <div fxLayout="row" fxLayoutGap="5px">
-                                                <div fxLayout="row" fxLayoutAlign="start center" class="gap-4">
-                                                    <mat-icon class="Help-Value">circle</mat-icon>
-                                                    <span>: Help Value (F2)</span>
-                                                </div>
-                                                <div fxLayout="row" fxLayoutAlign="center center" class="gap-4">
-                                                    <mat-icon class="Result-Formula">circle</mat-icon>
-                                                    <span>: Formula </span>
-                                                </div>
-                                            </div>
-
-                                            <div fxLayout="row" fxLayoutGap="5px">
-                                                <button mat-raised-button (click)="onUpload()"
-                                                    style="background-color: aliceblue;color: brown;">
-                                                    UpLoad <mat-icon>cloud_upload</mat-icon>
-                                                </button>
-
-                                                <button mat-raised-button (click)="onReload()"
-                                                    style="background-color: aliceblue;color: brown;">
-                                                    Re-Load <mat-icon>cloud_upload</mat-icon>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </mat-card>
-                </div>
-                <div fxFlex.gt-sm="100%" fxFlex>
-                    <div fxlayout="row">
-                        <div fxFlex.gt-sm="100%" fxFlex style="width: 100%;overflow:auto; "
-                        class="airmid-table-container">
-
-                            <mat-card style="padding: 6px;">
-                                <mat-table matSort [dataSource]="dataSource" class="airmid-table h-260" 
-                                    [@animateStagger]="{value:'50'}" appTableKeyboardNavigation>
-
-                                    <ng-container matColumnDef="TestName" sticky>
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
-                                            class="border-right">
-                                            TestName
-                                        </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact">
-                                            {{contact.TestName}}
-                                        </mat-cell>
-                                    </ng-container>
-
-                                    <ng-container matColumnDef="ParameterName">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md
-                                            class="border-right">
-                                            ParameterName
-                                        </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
-                                            {{contact.ParameterName}}
-                                        </mat-cell>
-                                    </ng-container>
-                                
-                                    <ng-container matColumnDef="ResultValue" style="width:100%;font-weight: bold;">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header class="border-right">
-                                            Result
-                                        </mat-header-cell>
-
-                                        <mat-cell *matCellDef="let contact" class="border-right">
-
-                                            <mat-form-field appearance="fill" *ngIf="!contact.IsHelpShown"
-                                                style="width: 100%;">
-                                                <!-- [ngClass]="{'Result-Formula': contact.Formula !=' '}" -->
-                                                
-                                                <input matInput autocomplete="off" (keyup)="onResultUp(contact)"
-                                                    (keydown.F2)="onKeydown($event,contact)" matTooltip="Use Help Value"
-                                                    [(ngModel)]="contact.ResultValue">
-                                            </mat-form-field>
-
-                                            <mat-form-field appearance="fill" *ngIf="contact.IsHelpShown"
-                                                style="width: 100%;">
-                                                <input type="text" matInput id="helpText_{{contact.ParameterId}}"
-                                                    [matAutocomplete]="auto" (keyup)="filterHelp($event)" multiple>
-                                                <mat-autocomplete #auto="matAutocomplete"
-                                                    (optionSelected)='onSelectHelp($event.option.value,contact)'>
-                                                    <mat-option *ngFor="let option of helpItems"
-                                                        [value]="option.ParameterValues">
-                                                        {{option.ParameterValues}}
-                                                    </mat-option>
-                                                </mat-autocomplete>
-                                            </mat-form-field>
-
-                                            <mat-icon class="Help-Value" *ngIf=" contact.PIsNumeric ==0"
-                                                matTooltip="Use Help Value"
-                                                style="width: 10px;height: 10px;">
-                                                circle
-                                            </mat-icon>
-                                           
-                                        </mat-cell>
-                                    </ng-container>
-
-                                    <ng-container matColumnDef="Flag">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
-                                            class="w-80 border-right">Flag
-                                        </mat-header-cell>
-                                        <mat-cell class="w-80" *matCellDef="let contact" fxShow.gt-sm>
-                                            <mat-form-field appearance="fill">
-                                                <input matInput matTooltip="Status" [(ngModel)]="contact.ParaBoldFlag">
-                                                <!-- (keyup)="editflag()" -->
-                                            </mat-form-field>
-                                        </mat-cell>
-                                    </ng-container>
-
-                                    <ng-container matColumnDef="NormalRange">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md
-                                            class="border-right">
-                                            NormalRange
-                                        </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="border-right">
-                                            {{contact?.NormalRange}}
-                                        </mat-cell>
-                                    </ng-container>
-
-                                    <ng-container matColumnDef="Formula">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md
-                                            class="border-right">
-                                            Formula
-                                        </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="border-right">
-                                            {{contact?.Formula}}
-                                        </mat-cell>
-                                    </ng-container>
-
-                                    <ng-container matColumnDef="loading">
-                                        <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
-                                        </mat-header-cell>
-                                    </ng-container>
-
-                                    <ng-container matColumnDef="noData">
-                                        <mat-footer-cell *matFooterCellDef colspan="6">
-                                            no data found...
-                                        </mat-footer-cell>
-                                    </ng-container>
-
-                                    <mat-header-row class="accent"
-                                        *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
-                                    <mat-row *matRowDef="let contact; columns: displayedColumns;" class="contact"
-                                        [@animate]="{value:'*',params:{y:'100%'}}">
-                                    </mat-row>
-                                    <mat-footer-row *matFooterRowDef="['loading']"
-                                        [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
-                                    </mat-footer-row>
-                                    <mat-footer-row *matFooterRowDef="['noData']"
-                                        [ngClass]="{'hide':!(dataSource!=null && dataSource.data.length==0)}">
-                                    </mat-footer-row>
-                                </mat-table>
-
-                            </mat-card>
-                        </div>
-                    </div>
-                </div>
-                <div fxFlex.gt-sm="100%" fxFlex>
-                    <form [formGroup]="otherForm">
-                        <mat-card style="padding: 6px;">
-                            <div fxLayout="column" fxLayout="row" fxLayout="4px">
-
-                                <mat-form-field appearance="outline" fxFlex>
-                                    <mat-label>Suggestion Note</mat-label>
-                                    <textarea matInput rows="3" name="suggestionNotes" formControlName="suggestionNotes"
-                                      [(ngModel)]="vsuggation" (keydown)="onEnterSugg($event)" maxlength="500">
-                                    </textarea>
-                                    <mat-hint align="end">{{ vsuggation?.length || 0 }}/500</mat-hint>
-                                  </mat-form-field>
-                                  
-                            </div>
-
-                            <div fxLayout="column" fxLayout="row" fxLayout="4px">
-
-                                <airmid-dropdown label="Pathologist Name" formControlName="PathResultDoctorId"
-                                    [mode]="autocompleteModeDoctor" [formGroup]="otherForm" fxFlex="40%"
-                                    (selectionChange)="selectChangeDoctor($event)">
-                                </airmid-dropdown>
-
-                            </div>
-
-
-                        </mat-card>
-                         <!-- [disabled]="otherForm.invalid" -->
-                        <div fxLayout="row" fxLayoutAlign="end">
-                            <div class="modal-footer-buttons" fxLayoutGap="6px" style="padding: 8px;">
-                                <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
-                                <button class="btn btn-primary" (click)="onSave()"
-                                   >Save</button>
-                                <button class="btn btn-success" (click)="Printresultentry()">Authorization</button>
-                            </div>
-                        </div>
-                    </form>
                 </div>
 
             </div>
+            <div class="modal-card-container h-100-p">
+                <div fxFlex.gt-sm="100%" fxFlex class="airmid-table-container">
+                    <mat-card style="padding: 6px;">
+                        <mat-table matSort [dataSource]="dataSource" class="airmid-table h-400"
+                            [@animateStagger]="{value:'50'}" appTableKeyboardNavigation>
+
+                            <ng-container matColumnDef="TestName" sticky>
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="border-right">
+                                    TestName
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let contact">
+                                    {{contact.TestName}}
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="ParameterName">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md
+                                    class="border-right">
+                                    ParameterName
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
+                                    {{contact.ParameterName}}
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="ResultValue" style="width:100%;font-weight: bold;">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header class="border-right">
+                                    Result
+                                </mat-header-cell>
+
+                                <mat-cell *matCellDef="let contact" class="border-right">
+
+                                    <mat-form-field appearance="fill" *ngIf="!contact.IsHelpShown" style="width: 100%;">
+                                        <!-- [ngClass]="{'Result-Formula': contact.Formula !=' '}" -->
+
+                                        <input matInput autocomplete="off" (keyup)="onResultUp(contact)"
+                                            (keydown.F2)="onKeydown($event,contact)" matTooltip="Use Help Value"
+                                            [(ngModel)]="contact.ResultValue">
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="fill" *ngIf="contact.IsHelpShown" style="width: 100%;">
+                                        <input type="text" matInput id="helpText_{{contact.ParameterId}}"
+                                            [matAutocomplete]="auto" (keyup)="filterHelp($event)" multiple>
+                                        <mat-autocomplete #auto="matAutocomplete"
+                                            (optionSelected)='onSelectHelp($event.option.value,contact)'>
+                                            <mat-option *ngFor="let option of helpItems"
+                                                [value]="option.ParameterValues">
+                                                {{option.ParameterValues}}
+                                            </mat-option>
+                                        </mat-autocomplete>
+                                    </mat-form-field>
+
+                                    <mat-icon class="Help-Value" *ngIf=" contact.PIsNumeric ==0"
+                                        matTooltip="Use Help Value" style="width: 10px;height: 10px;">
+                                        circle
+                                    </mat-icon>
+
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="Flag">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
+                                    class="w-80 border-right">Flag
+                                </mat-header-cell>
+                                <mat-cell class="w-80" *matCellDef="let contact" fxShow.gt-sm>
+                                    <mat-form-field appearance="fill">
+                                        <input matInput matTooltip="Status" [(ngModel)]="contact.ParaBoldFlag">
+                                        <!-- (keyup)="editflag()" -->
+                                    </mat-form-field>
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="NormalRange">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md
+                                    class="border-right">
+                                    NormalRange
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="border-right">
+                                    {{contact?.NormalRange}}
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="Formula">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md
+                                    class="border-right">
+                                    Formula
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="border-right">
+                                    {{contact?.Formula}}
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="loading">
+                                <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
+                                </mat-header-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="noData">
+                                <mat-footer-cell *matFooterCellDef colspan="6">
+                                    no data found...
+                                </mat-footer-cell>
+                            </ng-container>
+
+                            <mat-header-row class="accent"
+                                *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+                            <mat-row *matRowDef="let contact; columns: displayedColumns;" class="contact"
+                                [@animate]="{value:'*',params:{y:'100%'}}">
+                            </mat-row>
+                            <mat-footer-row *matFooterRowDef="['loading']"
+                                [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
+                            </mat-footer-row>
+                            <mat-footer-row *matFooterRowDef="['noData']"
+                                [ngClass]="{'hide':!(dataSource!=null && dataSource.data.length==0)}">
+                            </mat-footer-row>
+                        </mat-table>
+
+                    </mat-card>
+                </div>
+            </div>
         </div>
     </div>
+    <div class="modal-footer" fxLayout="column">
+        <div class="modal-card-container">
+            <form [formGroup]="otherForm">
+                <mat-card style="padding: 6px;">
+                    <div fxLayout="column" fxLayout="row" fxLayout="4px">
 
+                        <mat-form-field appearance="outline" fxFlex>
+                            <mat-label>Suggestion Note</mat-label>
+                            <textarea matInput rows="2" name="suggestionNotes" formControlName="suggestionNotes"
+                                [(ngModel)]="vsuggation" (keydown)="onEnterSugg($event)" maxlength="500">
+                                    </textarea>
+                            <mat-hint align="end">{{ vsuggation?.length || 0 }}/500</mat-hint>
+                        </mat-form-field>
+
+                    </div>
+
+                    <div fxLayout="column" fxLayout="row" fxLayout="4px">
+
+                        <airmid-dropdown label="Pathologist Name" formControlName="PathResultDoctorId"
+                            [mode]="autocompleteModeDoctor" [formGroup]="otherForm" fxFlex="40%"
+                            (selectionChange)="selectChangeDoctor($event)">
+                        </airmid-dropdown>
+
+                    </div>
+
+
+                </mat-card>
+
+            </form>
+        </div>
+        <div class="modal-footer-buttons">
+            <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
+            <button class="btn btn-primary" (click)="onSave()">Save</button>
+            <button class="btn btn-success" (click)="Printresultentry()">Authorization</button>
+        </div>
+    </div>
 </div>

@@ -171,8 +171,8 @@ debugger
         PathReportId: [item.pathReportID, [this._FormvalidationserviceService.onlyNumberValidator()]],
         sampleCollectionTime: [this._SampleService.sampldetailform.get('SampleDateTime').value || '01/01/1900' , [Validators.required]],
         IsSampleCollection: [true],
-        SampleNo: [item.sampleNo || 0, [this._FormvalidationserviceService.notEmptyOrZeroValidator]]
-       
+        SampleNo: [item.sampleNo || 0, [this._FormvalidationserviceService.notEmptyOrZeroValidator]],
+        sampleCollectedBy:this.accountService.currentUserValue.userId
       });
     }
   

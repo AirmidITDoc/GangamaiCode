@@ -21,7 +21,7 @@ import { SamplecollectionPageComponent } from './samplecollection-page/samplecol
     animations: fuseAnimations
 })
 export class SampleCollectionComponent implements OnInit {
-    myformSearch:FormGroup;
+    myformSearch: FormGroup;
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     @ViewChild('grid1') grid1: AirmidTableComponent;
 
@@ -36,7 +36,7 @@ export class SampleCollectionComponent implements OnInit {
         this.gridConfig.columnsList.find(col => col.key === 'companyName')!.template = this.iconcompanyName;
         this.gridConfig.columnsList.find(col => col.key === 'isSampleCollection')!.template = this.iconisSampleCollection;
         // this.gridConfig.columnsList.find(col => col.key === 'isCompleted')!.template = this.iconisCompeleted;
-          this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
+        this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
     }
 
     gridConfig1: gridModel = new gridModel();
@@ -44,33 +44,33 @@ export class SampleCollectionComponent implements OnInit {
     fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
     toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
     vOPIPId = 0;
-    f_name:any = "" 
-    regNo:any="0"
-    l_name:any="" 
+    f_name: any = ""
+    regNo: any = "0"
+    l_name: any = ""
 
-    status:any="1"
-    Ptype:any="1"
-    allcolumns=[
+    status: any = "1"
+    Ptype: any = "1"
+    allcolumns = [
         { heading: "-", key: "lbl", width: 30, sort: true, align: 'left', type: gridColumnTypes.template },
         { heading: "-", key: "companyName", width: 30, sort: true, align: 'left', type: gridColumnTypes.template },
         { heading: "-", key: "isSampleCollection", width: 50, sort: true, align: 'left', type: gridColumnTypes.template },
-         { heading: "DOA", key: "vaTime", sort: true, align: 'left', emptySign: 'NA', width: 150},
+        { heading: "DOA", key: "vaTime", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         // { heading: "Collection Date", key: "pathDate", sort: true, align: 'left', emptySign: 'NA', width: 200,type:6},
         { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-       
+
         { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
-         { heading: "Admission No", key: "oP_IP_No", sort: true, align: 'left', emptySign: 'NA' },
-          { heading: "PBill No", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-           { heading: "Patient Type", key: "patientType", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "Admission No", key: "oP_IP_No", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "PBill No", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "Patient Type", key: "patientType", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "Doctor Name", key: "doctorName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-       
+
         { heading: "Company Name", key: "cm", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "Ward Name", key: "wardName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-         {
+        {
             heading: "Action", key: "action", align: "right", width: 250, sticky: true, type: gridColumnTypes.template,
             template: this.actionButtonTemplate  // Assign ng-template to the column
         }
-                
+
     ];
     gridConfig: gridModel = {
         apiUrl: "PathlogySampleCollection/SampleCollectionPatientList",
@@ -94,22 +94,22 @@ export class SampleCollectionComponent implements OnInit {
         public toastr: ToastrService,) { }
 
     ngOnInit(): void {
-this.myformSearch=this._SampleCollectionService.createSearchForm()
+        this.myformSearch = this._SampleCollectionService.createSearchForm()
     }
 
     getSelectedRow(row: any): void {
         debugger
-        console.log("selectedRow:",row)
+        console.log("selectedRow:", row)
         let billNo = row.billNo;
 
-        let rawDate = row.pathDate; 
+        let rawDate = row.pathDate;
         let day = rawDate.split("T")[0];
-        let rest = rawDate.split("T")[1].split("-"); 
-        let month = rest[0]; 
-        let year = rest[1]; 
-     
-        let formattedDate=`${day}` 
-        
+        let rest = rawDate.split("T")[1].split("-");
+        let month = rest[0];
+        let year = rest[1];
+
+        let formattedDate = `${day}`
+
         console.log(formattedDate);
 
         let opipType = row.lbl === 'OP' ? 0 : 1;
@@ -117,8 +117,10 @@ this.myformSearch=this._SampleCollectionService.createSearchForm()
         this.gridConfig1 = {
             apiUrl: "PathlogySampleCollection/SampleCollectionTestList",
             columnsList: [
-                { heading: "Completed", key: "isCompleted", sort: true, align: 'left',type: gridColumnTypes.template, 
-                    template:this.iconisCompeleted, width: 50 },
+                {
+                    heading: "Completed", key: "isCompleted", sort: true, align: 'left', type: gridColumnTypes.template,
+                    template: this.iconisCompeleted, width: 50
+                },
                 { heading: "Test Name", key: "serviceName", sort: true, align: 'left', emptySign: 'NA', width: 400 },
                 { heading: "Sample No", key: "sampleNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
                 { heading: "Collection Date/Time", key: "sampleCollectionTime", sort: true, align: 'left', emptySign: 'NA', width: 150 },
@@ -141,43 +143,43 @@ this.myformSearch=this._SampleCollectionService.createSearchForm()
         console.log(this.gridConfig1)
     }
 
-     onChangeFirst() {
+    onChangeFirst() {
         debugger
-    this.isShowDetailTable = false;
-            this.fromDate = this.datePipe.transform(this.myformSearch.get('start').value, "yyyy-MM-dd")
-            this.toDate = this.datePipe.transform(this.myformSearch.get('end').value, "yyyy-MM-dd")
-            this.f_name = this.myformSearch.get('FirstName').value + "%"
-            this.l_name = this.myformSearch.get('LastName').value + "%"
-            this.regNo = this.myformSearch.get('RegNo').value || ""
-            this.status = this.myformSearch.get('StatusSearch').value 
-            this.Ptype = this.myformSearch.get('PatientTypeSearch').value 
+        this.isShowDetailTable = false;
+        this.fromDate = this.datePipe.transform(this.myformSearch.get('start').value, "yyyy-MM-dd")
+        this.toDate = this.datePipe.transform(this.myformSearch.get('end').value, "yyyy-MM-dd")
+        this.f_name = this.myformSearch.get('FirstName').value + "%"
+        this.l_name = this.myformSearch.get('LastName').value + "%"
+        this.regNo = this.myformSearch.get('RegNo').value || ""
+        this.status = this.myformSearch.get('StatusSearch').value
+        this.Ptype = this.myformSearch.get('PatientTypeSearch').value
 
-            this.getfilterdata();
-        }
-    
-    getfilterdata(){
+        this.getfilterdata();
+    }
+
+    getfilterdata() {
         debugger
         this.gridConfig = {
             apiUrl: "PathlogySampleCollection/SampleCollectionPatientList",
-            columnsList:this.allcolumns , 
+            columnsList: this.allcolumns,
             sortField: "RegNo",
             sortOrder: 0,
-            filters:  [
+            filters: [
                 { fieldName: "F_Name ", fieldValue: this.f_name, opType: OperatorComparer.StartsWith },
-                { fieldName: "L_Name", fieldValue:this.l_name, opType: OperatorComparer.StartsWith },
+                { fieldName: "L_Name", fieldValue: this.l_name, opType: OperatorComparer.StartsWith },
                 { fieldName: "Reg_No", fieldValue: this.regNo, opType: OperatorComparer.Equals },
                 { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
                 { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
                 { fieldName: "IsCompleted", fieldValue: this.status, opType: OperatorComparer.Equals },
-                { fieldName: "OP_IP_Type", fieldValue:  this.Ptype, opType: OperatorComparer.Equals }
-        
+                { fieldName: "OP_IP_Type", fieldValue: this.Ptype, opType: OperatorComparer.Equals }
+
             ]
         }
         this.grid.gridConfig = this.gridConfig;
-        this.grid.bindGridData(); 
+        this.grid.bindGridData();
     }
-      
-    
+
+
     Clearfilter(event) {
         console.log(event)
         if (event == 'FirstName')
@@ -187,24 +189,24 @@ this.myformSearch=this._SampleCollectionService.createSearchForm()
                 this.myformSearch.get('LastName').setValue("")
         if (event == 'RegNo')
             this.myformSearch.get('RegNo').setValue("")
-       
-        this.onChangeFirst();
-      }
 
-    
+        this.onChangeFirst();
+    }
+
+
     onSave(row: any = null) {
         let that = this;
         const dialogRef = this._matDialog.open(SamplecollectionPageComponent,
             {
-                
+
                 maxHeight: '80vh',
                 width: '70%',
                 data: row
             });
         dialogRef.afterClosed().subscribe(result => {
-           this.grid.bindGridData();
+            this.grid.bindGridData();
             this.grid1.bindGridData();
-            
+
         });
     }
 

@@ -130,10 +130,11 @@ export class ResultEntryComponent implements OnInit {
 
     displayedColumns1: string[] = [
         'select',
-        'IsCompleted',
-        'IsTemplateTest',
-        'outSourceStatus',
-        'isVerifyid',
+        // 'IsCompleted',
+        // 'IsTemplateTest',
+        // 'outSourceStatus',
+        // 'isVerifyid',
+        'action1',
         'TestName',
         'SampleCollectionTime',
         'SampleNo',
@@ -541,8 +542,8 @@ export class ResultEntryComponent implements OnInit {
                     const dialogRef = this._matDialog.open(NewResultEntryComponent,
                         {
                             maxWidth: "95vw",
-                            height: '670px',
-                            width: '90%',
+                            height: '870px',
+                            width: '95%',
                             data: {
                                 RIdData: data,
                                 patientdata: this.reportPrintObj,
@@ -966,7 +967,7 @@ debugger
         const dialogRef1 = this._matDialog.open(NewResultTemplateComponent,
             {
                 maxWidth: "70vw",
-                height: '80vh',
+                height: '90vh',
                 width: '100%',
                 data: {
 

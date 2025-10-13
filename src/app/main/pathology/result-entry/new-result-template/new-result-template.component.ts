@@ -192,85 +192,11 @@ debugger
     this.VpathResultDr1 = row.value
   }
 
-  // demo check
+
   dataSource: any = { data: [] };
 
-  // onSubmit1() {
-  //   debugger
-  //   const currentDate = new Date();
-  //   const datePipe = new DatePipe('en-US');
-  //   const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
-  //   const formattedTime = datePipe.transform(currentDate, 'shortTime');
-
-  //   // if (this.otherForm.get("ResultEntry")?.value == '') {
-  //   //   this.toastr.warning('Please select valid Template ', 'Warning !', {
-  //   //     toastClass: 'tostr-tost custom-toast-warning',
-  //   //   });
-  //   //   return;
-  //   // }
-  //   if (this.otherForm.get("PathResultDoctorId")?.value == '') {
-  //     this.toastr.warning('Please select valid Pathalogist', 'Warning !', {
-  //         toastClass: 'tostr-tost custom-toast-warning',
-  //     });
-  //     return;
-  // }
-  // if (this.otherForm.get("ResultEntry")?.value == '') {
-  //   this.toastr.warning('Please Enter Result Entry ', 'Warning !', {
-  //     toastClass: 'tostr-tost custom-toast-warning',
-  //   });
-  //   return;
-  // }
-
-  //     let pathologyReportTemplate= {
-  //       "pathReportId": this.reportIdData || 0,
-  //       "pathTemplateId": this.TemplateId || 0,
-  //       "pathTemplateDetailsResult":this.otherForm.get("ResultEntry").value || "string",  //this.Tempdesc
-  //       "templateResultInHTML": this.otherForm.get("ResultEntry").value || "string",  //this.Tempdesc
-  //       "testId":  this.selectedAdvanceObj1.pathTestID || 0,
-  //       "suggestionNotes": this.otherForm.get("suggestionNotes").value || "string",
-  //       "pathResultDr1": this.VpathResultDr1 || 0,
-  //     }
-
-  //     let pathologyReportHeader={
-  //       "pathReportID": this.reportIdData || 0,
-  //       "reportDate": formattedDate,
-  //       "reportTime": formattedTime,
-  //       "isCompleted": true,
-  //       "isPrinted": true,
-  //       "pathResultDr1": this.VpathResultDr1 || 0,
-  //       "pathResultDr2": 0,
-  //       "pathResultDr3": 0,
-  //       "isTemplateTest": 0,
-  //       "suggestionNotes": this.otherForm.get("suggestionNotes").value || "string",
-  //       "admVisitDoctorID": this.selectedAdvanceObj1.adm_Visit_docId,
-  //       "refDoctorID": 0
-  //     }
-
-  //   console.log('==============================  Advance Amount ===========');
-  //   let submitData = {
-  //     "pathologyReportTemplate": pathologyReportTemplate,
-  //     "pathologyReportHeader": pathologyReportHeader
-  //   };
-  //       console.log(submitData);
-
-  //         this._SampleService.PathTemplateResultentryInsert(submitData).subscribe(response => {
-
-  //           if (response) {
-  //             Swal.fire('Congratulations !', 'Pathology Template data saved Successfully !', 'success').then((result) => {
-  //               if (result.isConfirmed) {
-  //                this.dialogRef.close();
-  //                this.viewgetPathologyTemplateReportPdf(this.selectedAdvanceObj1);
-  //               }
-  //             });
-  //           } else {
-  //             Swal.fire('Error !', 'Pathology Template data not saved', 'error');
-  //           }
-  //           this.isLoading = '';
-  //         });
-
-  // }
   onSubmit() {
-    debugger
+    
     const currentDate = new Date();
     const datePipe = new DatePipe('en-US');
     const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');

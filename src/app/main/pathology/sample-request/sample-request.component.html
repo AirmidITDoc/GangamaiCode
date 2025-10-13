@@ -22,10 +22,10 @@
 
             <ng-template #isTestCompletedmasterIcon let-element>
                 <div fxLayout="row" fxLayoutAlign="center center">
-                    <mat-icon *ngIf="element.isTestCompted == true" matTooltip="Lab Report Ready">remove_red_eye
+                    <mat-icon *ngIf="element.isTestCompted==1" title="Lab Report Ready">remove_red_eye
                     </mat-icon>
 
-                    <mat-icon *ngIf="element.isTestCompted == false" matTooltip="Result Entry Not Completed"
+                    <mat-icon *ngIf="element.isTestCompted!=1" title="Result Entry Not Completed"
                         class="active-icon red-500 s-16">
                         hourglass_empty
                     </mat-icon>
@@ -34,10 +34,10 @@
             <ng-template #isOnFileTestIcon let-element>
                 <div fxLayout="row" fxLayoutAlign="center center">
 
-                    <mat-icon *ngIf="element.isOnFileTest =='false'" matTooltip="Is File ON">flip_to_front
+                    <mat-icon *ngIf="element.isOnFileTest =='false'" title="Is File ON">flip_to_front
                     </mat-icon>
 
-                    <mat-icon *ngIf="element.isOnFileTest !== 'false'" matTooltip="Is File Off">markunread_mailbox
+                    <mat-icon *ngIf="element.isOnFileTest !== 'false'" title="Is File Off">markunread_mailbox
                     </mat-icon>
 
                 </div>
@@ -105,7 +105,7 @@
          
             <ng-template #statuspath let-element>
                 <div fxLayout="row" fxLayoutAlign="center center">
-                    <mat-icon *ngIf="element.isPathology==1" matTooltip="IsPatholgy">
+                    <mat-icon *ngIf="element.isPathology==1" title="IsPatholgy">
                         <img width="25px" height="9px" src="assets/images/logos/pathology.png" />
                     </mat-icon>
                 </div>
@@ -113,7 +113,7 @@
 
             <ng-template #statusradio let-element>
                 <div fxLayout="row" fxLayoutAlign="center center">
-                    <mat-icon *ngIf="element.isRadiology==1" matTooltip="IsRadiology">
+                    <mat-icon *ngIf="element.isRadiology==1" title="IsRadiology">
                         <img width="25px" height="9px" src="assets/images/logos/radiology.png" />
                     </mat-icon>
                 </div>
@@ -121,8 +121,16 @@
 
             <ng-template #statusTemplate let-element>
                 <div fxLayout="row" fxLayoutAlign="center center">
-                    <mat-icon *ngIf="element.isTestCompted==1" matTooltip="IsTestCompted">
+                    <mat-icon *ngIf="element.isTestCompted=='True'" title="IsTestCompted">
                         <img width="25px" height="9px" src="assets/images/logos/testcompleted.jpg" />
+                    </mat-icon>
+                     <!-- <mat-icon *ngIf="element.isTestCompted==1" title="Result Entry Not Completed"
+                        class="active-icon green-600 s-16">
+                        hourglass_empty
+                    </mat-icon> -->
+                     <mat-icon *ngIf="element.isTestCompted=='False'" title="Result Entry Not Completed"
+                        class="active-icon red-600 s-16">
+                        hourglass_empty
                     </mat-icon>
                 </div>
             </ng-template>

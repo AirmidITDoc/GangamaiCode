@@ -67,12 +67,12 @@ export class SampleRequestComponent implements OnInit {
   gridConfig1: gridModel = new gridModel();
 
   allcolumns = [
-    { heading: "FileON", key: "isOnFileTest", width: 70, sort: true, align: 'left', type: gridColumnTypes.template },
-    { heading: "--", key: "isTestCompted", sort: true, align: 'left',type: gridColumnTypes.template, width: 30 },
+    { heading: "FileOn", key: "isOnFileTest", width: 70, sort: true, align: 'left', type: gridColumnTypes.template },
+    { heading: "Completed", key: "isTestCompted", sort: true, align: 'left',type: gridColumnTypes.template, width: 30 },
 
     { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 90 },
     { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 350 },
-    { heading: "DOA", key: "admDate", sort: true, align: 'left', emptySign: 'NA', width: 100 , type: 6 },
+    { heading: "DOA", key: "admDate", sort: true, align: 'left', emptySign: 'NA', width: 100 },
     { heading: "Request Date", key: "reqDate", sort: true, align: 'left', emptySign: 'NA', type: 6, width: 100  },
     { heading: "Ward Name | Bed Name", key: "wardName", sort: true, align: 'left', emptySign: 'NA', width: 350  },
     
@@ -119,21 +119,21 @@ export class SampleRequestComponent implements OnInit {
     this.gridConfig1 = {
       apiUrl: "PathlogySampleCollection/LabOrRadRequestDetailList",
       columnsList: [
-        { heading: "Status", key: "isClosed", type: gridColumnTypes.status, align: "center" , width: 50},
+        { heading: "IsClosed", key: "isClosed", type: gridColumnTypes.status, align: "center" , width: 50},
          { heading: "IsStatus", key: "isStatus", type: gridColumnTypes.status, align: 'center' },
 
-        { heading: "--", key: "isPathology", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30, template: this.statuspath },
-        { heading: "--", key: "isRadiology", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30, template: this.statusradio },
-        { heading: "--", key: "isTestCompted", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30, template: this.statusTemplate },
+        { heading: "TestType", key: "isPathology", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30, template: this.statuspath },
+        { heading: "", key: "isRadiology", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30, template: this.statusradio },
+        { heading: "Completed", key: "isTestCompted", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30, template: this.statusTemplate },
 
         // { heading: "ReqDate", key: "reqDate", sort: true, align: 'left', emptySign: 'NA' , width: 200},
-        { heading: "ReqTime", key: "reqTime", sort: true, align: 'left', emptySign: 'NA' , width: 200},
-        { heading: "Service Name", key: "serviceName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
+        { heading: "ReqTime", key: "reqTime", sort: true, align: 'left', emptySign: 'NA' , width: 100},
+        { heading: "Service Name", key: "serviceName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
         { heading: "PBill No", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA' , width: 100},
         { heading: "Billing User", key: "billingUser", sort: true, align: 'left', emptySign: 'NA', width: 100 },
 
         // { heading: "Added By", key: "addedByName", sort: true, align: 'left', emptySign: 'NA' , width: 200},
-        { heading: "AddedBy Date", key: "addedByDate", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+        { heading: "AddedBy", key: "addedByDate", sort: true, align: 'left', emptySign: 'NA', width: 300 },
         
       ],
       sortField: "RequestId",
