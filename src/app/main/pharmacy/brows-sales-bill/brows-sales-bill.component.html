@@ -104,8 +104,8 @@
 
                                 <airmid-datepicker [formGroup]="_BrowsSalesBillService.userForm" [isRangePicker]="true"
                                     formStartControlName="startdate" formEndControlName="enddate"
-                                    [(fromValue)]="gridConfig.filters[3].fieldValue"
-                                    [(toValue)]="gridConfig.filters[4].fieldValue"></airmid-datepicker>
+                                    [(fromValue)]="gridConfig.filters[2].fieldValue"
+                                    [(toValue)]="gridConfig.filters[3].fieldValue"></airmid-datepicker>
 
 
                                 <airmid-dropdown label="Store Name" formControlName="StoreId"
@@ -323,9 +323,9 @@
                                     <mat-label>Enter a date range</mat-label>
                                     <mat-date-range-input [rangePicker]="picker">
                                         <input matStartDate formControlName="startdate1" placeholder="Start date"
-                                            (dateChange)="onChangeFirstPatient()">
+                                           >
                                         <input matEndDate formControlName="startdate1" placeholder="End date"
-                                            (dateChange)="onChangeFirstPatient()">
+                                            >
                                     </mat-date-range-input>
                                     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                                     <mat-date-range-picker #picker></mat-date-range-picker>

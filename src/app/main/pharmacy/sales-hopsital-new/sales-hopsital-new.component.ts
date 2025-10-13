@@ -79,6 +79,7 @@ export class SalesHospitalNewComponent implements OnInit {
     RegId: any = '';
     IPMedID: any;
     OPDNo: any;
+     RegNo: any;
     IPDNo: any;
     Itemchargeslist: any = [];
     Tempchargeslist: any = [];
@@ -509,6 +510,7 @@ export class SalesHospitalNewComponent implements OnInit {
             this.HospitalId = obj.hospitalID;
             this.wardId = obj.wardId;
             this.bedId = obj.bedId;
+             this.RegNo =  obj?.regNo;
         }
         this.getBillSummary(obj?.admissionID);  
         this.ItemFormreset();  
@@ -525,6 +527,7 @@ export class SalesHospitalNewComponent implements OnInit {
         this.OPDNo = obj.opdNo;
         this.HospitalId = obj.hospitalId;
         this.DoctorName = obj.doctorName; 
+        this.RegNo =  obj?.regNo;
         this.ItemFormreset(); 
     }
    
@@ -971,6 +974,7 @@ export class SalesHospitalNewComponent implements OnInit {
         this.PatientName = '';
         this.DoctorName = '';
         this.ItemSubform.get('opIpType').setValue('1');
+        this.Draftchk = true;
         this.ItemSubform.get('CashPay').setValue('CashPay');
         this.ItemSubform.get('referanceNo').reset('');
         this.ItemSubform.get('extMobileNo').reset('');
@@ -1134,7 +1138,7 @@ export class SalesHospitalNewComponent implements OnInit {
             }
         }
            if (this.ItemSubform.get('opIpType').value != '2') {
-            if ((this.Patientdetails?.regNo ?? 0) == 0) {
+            if ((this.RegNo || 0) == 0) {
                 this.toastr.warning('Please select Patient', 'Warning !', {
                     toastClass: 'tostr-tost custom-toast-warning',
                 });
@@ -1257,7 +1261,7 @@ export class SalesHospitalNewComponent implements OnInit {
                 let PatientHeaderObj = {};
                 PatientHeaderObj['Date'] = this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd') || '01/01/1900',
                     PatientHeaderObj['PatientName'] = this.PatientName;
-                PatientHeaderObj['RegNo'] = this.Patientdetails?.regNo || 0;
+                PatientHeaderObj['RegNo'] = this.RegNo || 0;
                 PatientHeaderObj['DoctorName'] = this.Patientdetails?.doctorName;
                 if (formValue.opIpType == '1') {
                     PatientHeaderObj['OPD_IPD_Id'] = this.Patientdetails?.ipdNo || 0;
@@ -1326,6 +1330,7 @@ export class SalesHospitalNewComponent implements OnInit {
         this.PatientName = '';
         this.DoctorName = '';
         this.MobileNo = '';
+        this.RegNo = 0;
         this.saleSelectedDatasource.data = [];
         this.ItemSubform.get('FinalDiscPer').enable();
         this.ItemSubform.get('discAmount').enable();
@@ -1531,7 +1536,7 @@ export class SalesHospitalNewComponent implements OnInit {
         //   }
         // } 
         if (this.ItemSubform.get('opIpType').value != '2') {
-            if ((this.Patientdetails?.regNo ?? 0) == 0) {
+            if ((this.RegNo || 0) == 0) {
                 this.toastr.warning('Please select Patient', 'Warning !', {
                     toastClass: 'tostr-tost custom-toast-warning',
                 });
@@ -1631,6 +1636,7 @@ export class SalesHospitalNewComponent implements OnInit {
             this.DoctorName = contact.admDoctorName;
             this.PatientName = contact.patientName;
             this.RegId = contact.regID;
+             this.RegNo =  contact?.regNo;
             this.ItemSubform.get('extMobileNo').clearValidators();
             this.ItemSubform.get('externalPatientName').clearValidators();
             this.ItemSubform.get('extMobileNo').updateValueAndValidity();
@@ -1647,6 +1653,7 @@ export class SalesHospitalNewComponent implements OnInit {
             this.DoctorName = contact.admDoctorName;
             this.PatientName = contact.patientName;
             this.RegId = contact.regID;
+            this.RegNo =  contact?.regNo;
             this.ItemSubform.get('extMobileNo').clearValidators();
             this.ItemSubform.get('externalPatientName').clearValidators();
             this.ItemSubform.get('extMobileNo').updateValueAndValidity();
@@ -1798,11 +1805,10 @@ export class SalesHospitalNewComponent implements OnInit {
             });
             dialogRef.afterClosed().subscribe((result) => {
                 console.log('The dialog was closed - Insert Action', result);
-                console.log(result);
-
-                this.DoctorNamecheck = true;
+                 this.DoctorNamecheck = true;
                 this.PatientName = result[0]?.PatientName;
                 this.RegId = result[0]?.RegId;
+                this.RegNo =  result[0]?.RegNo;
                 this.OP_IP_Id = result[0]?.AdmissionID;
                 this.DoctorName = result[0]?.DoctorName;
                 this.ItemSubform.get('regId').setValue(result[0]?.RegId);
@@ -1823,8 +1829,8 @@ export class SalesHospitalNewComponent implements OnInit {
                     this.vSelectedOption = '0';
                     this.OP_IPType = 0;
                 }
-                this.dsItemNameList1.data = result;
-                
+                this.getBillSummary(result[0]?.AdmissionID || 0)
+                this.dsItemNameList1.data = result; 
                 this.dsItemNameList1.data.forEach((contact) => { 
                     var m_data = {
                         "first": 0,
@@ -1839,9 +1845,16 @@ export class SalesHospitalNewComponent implements OnInit {
                         "columns": [{ "data": "string", "name": "string" }]
                     };
                     this._salesService.getDraftBillItemBalQty(m_data).subscribe((response) => {
+                        debugger
                         this.Tempchargeslist = response.data as any;
-                        if (this.Tempchargeslist.length == 0) {
-                            Swal.fire(contact.ItemId + ' : ' + 'Item Stock is Not Avilable:');
+                        if (this.Tempchargeslist.length == 0) { 
+                            Swal.fire({
+                                icon: 'warning',
+                                title: 'Stock Unavailable',
+                                text: `The item with ID ${contact.ItemId} is currently out of stock.`,
+                                showConfirmButton: true,
+                                confirmButtonText: 'OK'
+                            }); 
                         } else if (this.Tempchargeslist.length > 0) {
                             let remaing_qty = contact.QtyPerDay;
                             let bal_qnt = 0;
@@ -1864,7 +1877,7 @@ export class SalesHospitalNewComponent implements OnInit {
                                     bal_qnt += element.balanceQty;
                                 }
                             });
-                            Swal.fire('Balance Qty is :', String(bal_qnt));
+                            //Swal.fire('Balance Qty is :', String(bal_qnt));
                         }
                     });
                 });

@@ -65,7 +65,7 @@ export class PharAdvanceComponent implements OnInit {
   ]
 
   allColumns1 = [
-    { heading: "Date", key: "date", sort: true, align: 'left', emptySign: 'NA', type: 6, width: 150},
+    { heading: "Date", key: "date", sort: true, align: 'left', emptySign: 'NA', width: 120},
     { heading: "Advance.No", key: "advanceNo", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "UHID No", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 260 },

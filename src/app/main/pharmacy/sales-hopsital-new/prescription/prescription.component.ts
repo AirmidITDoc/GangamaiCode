@@ -43,8 +43,8 @@ PrescriptionFrom:FormGroup;
         heading: "-", key: "Status", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template,
       template: this.actionButtonTemplateType, width: 80
     },
-    { heading: "Date", key: "date", sort: true, align: 'left', emptySign: 'NA', width: 120 },
-    { heading: "Time", key: "pTime", sort: true, align: 'left', emptySign: 'NA', width: 120 },
+    { heading: "Date", key: "date", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+    { heading: "Time", key: "pTime", sort: true, align: 'left', emptySign: 'NA', width: 100 },
     { heading: "Pre. NO", key: "ipPreId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
     { heading: "UHID No", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 110, },
     { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
@@ -53,7 +53,7 @@ PrescriptionFrom:FormGroup;
     { heading: "Bed Name", key: "bedId", sort: true, align: 'left', emptySign: 'NA', width: 140, },
     { heading: "Patient Type", key: "patientType", sort: true, align: 'left', emptySign: 'NA', width: 150 },
     {
-      heading: "Action", key: "action", align: "right", width: 80, sticky: true, type: gridColumnTypes.template,
+      heading: "Action", key: "action", align: "right", width: 70, sticky: true, type: gridColumnTypes.template,
       template: this.actionButtonTemplate  // Assign ng-template to the column
     }
   ]
