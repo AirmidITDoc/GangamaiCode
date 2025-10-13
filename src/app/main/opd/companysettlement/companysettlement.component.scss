@@ -8,7 +8,7 @@
 }
 
 .table-scroll {
-  max-height: 500px;       /* your desired visible height */
+  max-height: calc(100vh - 400px);
   overflow-y: auto;        /* make table content scrollable */
 }
 
@@ -16,4 +16,5 @@
   width: 100%;
    display: block;      /* optional, for wide tables */
 }
+
 

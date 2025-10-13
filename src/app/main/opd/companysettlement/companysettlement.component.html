@@ -109,9 +109,9 @@
         </mat-tab>
 
         <mat-tab label="OP Multiple Settlement">
-            <div fusePerfectScrollbar
+            <div 
                 class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
-                dynamicTableHeight>
+                >
                 <!-- <div class="modal-wrapper grid-container"> -->
                 <!-- Modal header -->
 
@@ -128,7 +128,8 @@
 
                 <!-- Modal body -->
 
-                <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+                <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll" dynamicTableHeight
+                    fusePerfectScrollbar>
                     <div class="modal-body-container">
 
                         <div fxLayout="column" class="gap-8 h-100-p">
@@ -385,10 +386,10 @@
                                 </div>
                                 <!-- [disabled]="!TotalRefundAmount || dataSource2.data.length==0" -->
                                 <div class="footer-navigation-container">
-                                    <div class="modal-footer-buttons gap-8">
+                                    <div class="modal-footer-buttons">
                                         <button class="btn btn-danger-outline" (click)="OnReset()">Reset</button>
 
-                                        <button class="btn btn-primary" (click)="OnSave()">Payment</button>
+                                        <button class="btn btn-primary" style="margin-left: 5px;" (click)="OnSave()">Payment</button>
                                     </div>
                                 </div>
                             </div>
@@ -396,7 +397,7 @@
                         </mat-card>
                     </form>
                 </div>
-                <!-- </div> -->
+                
             </div>
         </mat-tab>
     </mat-tab-group>
