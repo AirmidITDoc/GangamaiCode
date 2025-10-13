@@ -33,6 +33,8 @@ import { SharedModule } from "../../../shared/shared.module";
 import { ItemFormMasterComponent } from "./item-form-master/item-form-master.component";
 import { ItemMasterComponent } from "./item-master.component";
 import { ItemMasterService } from "./item-master.service";
+import { ItemWiseSupplierRateComponent } from './item-wise-supplier-rate/item-wise-supplier-rate.component';
+import { NewItemWiseSupplierRateComponent } from './item-wise-supplier-rate/new-item-wise-supplier-rate/new-item-wise-supplier-rate.component';
 
 const routes: Routes = [
     {
@@ -42,7 +44,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    declarations: [ItemMasterComponent, ItemFormMasterComponent],
+    declarations: [ItemMasterComponent, ItemFormMasterComponent, ItemWiseSupplierRateComponent, NewItemWiseSupplierRateComponent],
     imports: [
         RouterModule.forChild(routes),
         MatChipsModule,

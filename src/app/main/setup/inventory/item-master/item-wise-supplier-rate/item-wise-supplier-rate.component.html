@@ -1,0 +1,34 @@
+<div fusePerfectScrollbar class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto modal-wrapper" dynamicTableHeight>
+    <div class="modal-header accent">
+        <div class="modal-header-content">
+            <div class="modal-header-title">
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">Item Wise Supplier Rate</span>
+            </div>
+            <div class="modal-header-right">
+                <div class="comman-date-container">
+                    <button mat-raised-button (click)="onSave()">+ New Item </button>
+                    <div class="close-icon">
+                        <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog" matTooltip="Close">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <airmid-table [gridConfig]="gridConfig" class="content">
+      
+         <ng-container filters>
+                <mat-form-field appearance="outline" fxFlex>
+                    <mat-label> Item Name</mat-label>
+                    <input matInput placeholder="Search Item Name" autocomplete="off"
+                        [(ngModel)]="gridConfig.filters[0].fieldValue" />
+                    <button matSuffix mat-icon-button aria-label="Clear"
+                        (click)="gridConfig.filters[0].fieldValue=''">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                </mat-form-field>
+            </ng-container>
+    </airmid-table>
+</div>

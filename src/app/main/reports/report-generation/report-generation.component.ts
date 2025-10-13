@@ -54,7 +54,7 @@ let TREE_DATA: FoodNode[] = [
 export class ReportGenerationComponent implements OnInit {
     UserId: any;
     DoctorId: any;
-    RefDoctorId:any;
+    RefDoctorId: any;
     ServiceId: any;
     DepartmentId: any;
     CashCounterId: any;
@@ -66,6 +66,8 @@ export class ReportGenerationComponent implements OnInit {
     CompanyId: any;
     // StoreId= this._loggedUser.currentUserValue.storeId
     StoreId: any;
+    FromStoreId: any;
+    ToStoreId: any;
     SupplierId: any;
     PaymentId: any;
     DrugTypeId: any;
@@ -86,7 +88,7 @@ export class ReportGenerationComponent implements OnInit {
     selectedNode: ExampleFlatNode | null = null;
 
     autocompletestore: string = "Store";
-    vstoreId=this._loggedUser.currentUserValue.user.storeId;
+    vstoreId = this._loggedUser.currentUserValue.user.storeId;
 
     private transformer = (node: FoodNode, level: number) => {
         return {
@@ -110,8 +112,6 @@ export class ReportGenerationComponent implements OnInit {
     flagDepartmentSelected: boolean = false;
     flagServiceSelected: boolean = false;
     flagCashcounterSelected: boolean = false;
-
-    //created by raksha
     flagGroupSelected: boolean = false;
     flagClassSelected: boolean = false;
     flagWardSelected: boolean = false;
@@ -127,7 +127,10 @@ export class ReportGenerationComponent implements OnInit {
     flagPaymentModeSelected: boolean = false;
     flagOPIPTypeSelected: boolean = false;
     flagTypeSelected: boolean = false;
-    // 
+    flagFromStoreSelected: boolean = false;
+    flagToStoreSelected: boolean = false;
+
+    // by default set value who
     flagStoreRequired: boolean = false;
 
     constructor(
@@ -155,7 +158,7 @@ export class ReportGenerationComponent implements OnInit {
 
     hasChild = (_: number, node: ExampleFlatNode) => node.expandable;
     ngOnInit(): void {
-        console.log("IIIIDDDD:",this.vstoreId)
+        console.log("IIIIDDDD:", this.vstoreId)
         this._activeRoute.paramMap.subscribe(params => {
             this.rid = ~~(params.get('rid') || 0);
         });
@@ -233,6 +236,13 @@ export class ReportGenerationComponent implements OnInit {
             this.flagStoreSelected = true;
         this._ReportService.userForm.get('StoreId')?.setValue(this.vstoreId); //default value set
 
+        if (controllerPermission.filter(x => x == "FromStore")?.length > 0)
+            this.flagFromStoreSelected = true;
+        this._ReportService.userForm.get('FromStoreId')?.setValue(this.vstoreId);
+
+        if (controllerPermission.filter(x => x == "ToStore")?.length > 0)
+            this.flagToStoreSelected = true;
+
         if (controllerPermission.filter(x => x == "SupplierMaster")?.length > 0)
             this.flagSupplierelected = true;
         if (controllerPermission.filter(x => x == "Bank")?.length > 0)
@@ -257,7 +267,7 @@ export class ReportGenerationComponent implements OnInit {
     SelectedDoctorObj(obj) {
         this.DoctorId = obj.value;
     }
-     SelectedRefDoctorObj(obj) {
+    SelectedRefDoctorObj(obj) {
         this.RefDoctorId = obj.value;
     }
     SelectedServiceObj(obj) {
@@ -286,6 +296,12 @@ export class ReportGenerationComponent implements OnInit {
     }
     SelectedStoreObj(obj) {
         this.StoreId = obj.value;
+    }
+    SelectedFromStoreObj(obj) {
+        this.FromStoreId = obj.value;
+    }
+    SelectedToStoreObj(obj) {
+        this.ToStoreId = obj.value;
     }
     SelectedSupplierObj(obj) {
         this.SupplierId = obj.value;
@@ -316,6 +332,8 @@ export class ReportGenerationComponent implements OnInit {
         this._ReportService.userForm.get("dischargeTypeId").setValue('');
         this._ReportService.userForm.get('CompanyId').setValue('');
         this._ReportService.userForm.get('StoreId').setValue('');
+        this._ReportService.userForm.get('FromStoreId').setValue('');
+        this._ReportService.userForm.get('ToStoreId').setValue('');
         this._ReportService.userForm.get('SupplierId').setValue('');
         this._ReportService.userForm.get('PaymentId').setValue('');
         this._ReportService.userForm.get('DrugTypeId').setValue('');
@@ -332,6 +350,8 @@ export class ReportGenerationComponent implements OnInit {
         this.ClassId = 0;
         this.WardId = 0;
         this.StoreId = 0;
+        this.FromStoreId = 0;
+        this.ToStoreId = 0;
         this.SupplierId = 0;
         this.PaymentId = 0
         this.CompanyId = 0;
@@ -350,6 +370,8 @@ export class ReportGenerationComponent implements OnInit {
         this.flagDischargeTypeSelected = false;
         this.flagCompanySelected = false;
         this.flagStoreSelected = false;
+        this.flagFromStoreSelected = false;
+        this.flagToStoreSelected = false;
         this.flagSupplierelected = false;
         this.flagPaymentSelected = false;
         this.flagDrugTypeSelected = false;
@@ -360,7 +382,7 @@ export class ReportGenerationComponent implements OnInit {
         this.flagPaymentModeSelected = false;
     }
     CallReportData(type) {
-        this.StoreId=this._ReportService.userForm.get("StoreId").value
+        this.StoreId = this._ReportService.userForm.get("StoreId").value
         setTimeout(() => {
             let paramFilterList = [
                 {
@@ -386,7 +408,7 @@ export class ReportGenerationComponent implements OnInit {
                     "fieldValue": (this.DoctorId || "0").toString(),
                     "opType": OperatorComparer.Equals
                 });
-                if (this.flagRefDoctorSelected)
+            if (this.flagRefDoctorSelected)
                 paramFilterList.push({
                     "fieldName": "RefDoctorId",
                     "fieldValue": (this.RefDoctorId || "0").toString(),
@@ -445,6 +467,18 @@ export class ReportGenerationComponent implements OnInit {
                 paramFilterList.push({
                     "fieldName": "StoreId",
                     "fieldValue": this.StoreId.toString() || "0",
+                    "opType": OperatorComparer.Equals
+                });
+            if (this.flagFromStoreSelected)
+                paramFilterList.push({
+                    "fieldName": "FromStoreId",
+                    "fieldValue": this.FromStoreId.toString() || "0",
+                    "opType": OperatorComparer.Equals
+                });
+            if (this.flagToStoreSelected)
+                paramFilterList.push({
+                    "fieldName": "ToStoreId",
+                    "fieldValue": this.ToStoreId.toString() || "0",
                     "opType": OperatorComparer.Equals
                 });
             if (this.flagSupplierelected)

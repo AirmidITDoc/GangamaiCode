@@ -30,9 +30,9 @@ export class ItemMasterService {
             ToStoreId: this._loggedService.currentUserValue.user.storeId,
             CatId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             GenericId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            ProdLocation:['', [this._FormvalidationserviceService.onlyNumberValidator()]],
-            ManufId:[0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            DrugTypeId:[0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            ProdLocation: ['', [this._FormvalidationserviceService.onlyNumberValidator()]],
+            ManufId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            DrugTypeId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         });
     }
 
@@ -175,7 +175,7 @@ export class ItemMasterService {
                 ]
             ],
             itemTime: [(new Date()).toISOString()],
-          
+
             addedby: this._loggedService.currentUserValue.userId,
             upDatedBy: this._loggedService.currentUserValue.userId,
             doseName: "",
@@ -183,6 +183,16 @@ export class ItemMasterService {
             instruction: "",
             mAssignItemToStores: [[], Validators.required] // empty array, not an object
 
+        });
+    }
+
+    createItemwiseSuppRateForm(): FormGroup {
+        return this._formBuilder.group({
+            itemId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+            itemName: ["", [Validators.required, Validators.maxLength(50)]],
+            supplierId: [0,[Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            price:[0,[Validators.required]],
+            period: [new Date()]
         });
     }
 

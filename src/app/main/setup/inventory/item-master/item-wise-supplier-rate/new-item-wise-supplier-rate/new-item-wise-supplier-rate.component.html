@@ -1,0 +1,70 @@
+<form [formGroup]="ItemWiseSuppRateForm">
+    <div class="modal-wrapper grid-container">
+        <!-- Modal header -->
+        <div class="modal-header accent">
+            <div class="modal-header-content">
+                <div class="modal-header-title">
+                    <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">New Item Wise Supplier Rate</span>
+                </div>
+                <div class="modal-header-right">
+                    <div class="close-icon">
+                        <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
+                            matTooltip="Close">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal body -->
+        <div class="modal-body" fusePerfectScrollbar>
+            <div class="modal-body-container" fxLayout="column">
+                <div fxLayout="row wrap" fxLayoutGap="12px grid">
+                    <div fxFlex="25%">
+                        <airmid-textbox label="Item Name" formControlName="itemName" [value]="data?.itemName"
+                            [formGroup]="ItemWiseSuppRateForm" [maxLength]="50">
+                        </airmid-textbox>
+                        <!-- <airmid-dropdown label="Item Name" formControlName="itemId"
+                            [formGroup]="ItemWiseSuppRateForm" [mode]="autocompleteModeItemName"
+                            (selectionChange)="selectChangeSupplierType($event)">
+                        </airmid-dropdown> -->
+                    </div>
+                    <div fxFlex="25%">
+                        <airmid-dropdown label="Supplier Name" formControlName="supplierId"
+                            [formGroup]="ItemWiseSuppRateForm" [mode]="autocompleteModeSupplierType"
+                            (selectionChange)="selectChangeSupplierType($event)">
+                        </airmid-dropdown>
+                    </div>
+
+                    <div fxFlex="25%">
+                        <airmid-textbox label="Price" formControlName="price" [value]="data?.price"
+                            [formGroup]="ItemWiseSuppRateForm">
+                        </airmid-textbox>
+                    </div>
+                    <div fxFlex="25%">
+                        <mat-form-field appearance="outline" fxFlex>
+                            <input matInput [matDatepicker]="picker3" name="Period" formControlName="period">
+                            <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
+                            <mat-datepicker #picker3></mat-datepicker>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal footer -->
+        <div class="modal-footer">
+            <div class="footer-navigation-container" fxLayout="row" fxLayoutAlign="space-between center">
+                <div class="modal-footer-actins">
+                </div>
+                <div class="modal-footer-buttons">
+                    <button class="btn btn-danger-outline" (click)="onClear(false)">Close</button>
+                    <button class="btn btn-primary " color="accent" (click)="onSubmit()">
+                        <span>Save</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

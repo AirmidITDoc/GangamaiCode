@@ -269,6 +269,25 @@
                                             </airmid-autocomplete>
                                         </div>
                                     </ng-container>
+
+                                     <ng-container *ngIf="flagFromStoreSelected">
+                                        <div style="max-width: 265px;">
+                                            <airmid-dropdown label="FromStore Name" formControlName="FromStoreId"
+                                                [formGroup]="_ReportService.userForm" [mode]="autocompletestore"
+                                                (selectionChange)="SelectedFromStoreObj($event)">
+                                            </airmid-dropdown>
+                                        </div>
+                                    </ng-container>
+
+                                     <ng-container *ngIf="flagToStoreSelected">
+                                        <div style="max-width: 265px;">
+                                            <airmid-dropdown label="ToStore Name" formControlName="ToStoreId"
+                                                [formGroup]="_ReportService.userForm" [mode]="autocompletestore"
+                                                (selectionChange)="SelectedToStoreObj($event)">
+                                            </airmid-dropdown>
+
+                                        </div>
+                                    </ng-container>
                                     <!-- sales dd remaining -->
                                 </div>
 

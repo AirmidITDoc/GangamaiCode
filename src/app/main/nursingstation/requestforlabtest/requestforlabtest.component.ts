@@ -53,10 +53,9 @@ export class RequestforlabtestComponent implements OnInit {
         { heading: "IPD No", key: "ipdNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
         { heading: "Doctor Name", key: "doctorName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-
         { heading: "Ward Name | Bed No", key: "wardName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
-
         { heading: "Payer Type", key: "patientType", sort: true, align: 'left', emptySign: 'NA', width: 120 },
+        { heading: "Company Name", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "Request Type", key: "requestType", sort: true, align: 'left', emptySign: 'NA', width: 150 },
 
         {

@@ -228,7 +228,7 @@
                             <div class="input-container gap-8" fxLayout="column" fxLayout.gt-xs="row">
                                 <airmid-autocomplete label="Enter Item Name" [formGroup]="ItemSubform" #itemAutocomplete
                                     formControlName="ItemId" placeholderText="Enter Item Name" fxFlex="30%"
-                                    [ApiUrl]="'ItemMaster/GetItemListForPrescription?StoreId=' + vstoreId + '&ItemName='"
+                                    [ApiUrl]="'ItemMaster/GetItemListForPrescriptionReturn?StoreId=' + vstoreId + '&ItemName='"
                                     (selectionChange)="selectChangeItem($event)" (onClearSelection)="ItemFromReset()"
                                     [validations]="getValidationMessages().ItemId" TextField="formattedText"
                                     ValueField="ItemId">

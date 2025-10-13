@@ -88,6 +88,10 @@ const appRoutes: Routes = [
      loadChildren: () => import("./deliverychallan/deliverychallan.module").then((m) => m.DeliverychallanModule),
 
 },
+  {
+      path: "purchaserequisitionverification",
+      loadChildren: () => import("./purchase-requisition-verification/purchase-requisition-verification.module").then((m) => m.PurchaseRequisitionVerificationModule)
+  },
 ];
 
 

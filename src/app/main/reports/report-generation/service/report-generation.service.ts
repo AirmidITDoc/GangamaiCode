@@ -39,6 +39,8 @@ export class ReportService {
             dischargeTypeId: [""],
             CompanyId: [""],
             StoreId: [""],
+            FromStoreId: [""],
+            ToStoreId: [""],
             SupplierId: [""],
             PaymentId: [""],
             DrugTypeId: [""],

@@ -40,7 +40,7 @@ export class PrescriptionReturnComponent implements OnInit {
 
     allColumns2 = [
         { heading: "Date", key: "presTime", sort: true, align: 'left', emptySign: 'NA', width: 170},
-        { heading: "DOA", key: "admissionDate", sort: true, align: 'left', emptySign: 'NA', width: 170, type: 6 },
+        { heading: "DOA", key: "vst_Adm_Date", sort: true, align: 'left', emptySign: 'NA', width: 170},
         { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
 
         { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 300 },

@@ -3,12 +3,13 @@ import { FormGroup } from "@angular/forms";
 import { fuseAnimations } from "@fuse/animations";
 import { ItemMasterService } from "../item-master.service";
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from "@angular/material/dialog";
-import {  ItemMaster, ItemMasterComponent } from "../item-master.component";
+import { ItemMaster, ItemMasterComponent } from "../item-master.component";
 import { ToastrService } from "ngx-toastr";
 import { ItemGenericMasterComponent } from "../../item-generic-master/item-generic-master.component";
 import { AirmidDropDownComponent } from "app/main/shared/componets/airmid-dropdown/airmid-dropdown.component";
 import { Console } from "console";
 import { ItemMasterModule } from "../item-master.module";
+import { ItemWiseSupplierRateComponent } from "../item-wise-supplier-rate/item-wise-supplier-rate.component";
 
 @Component({
     selector: "app-item-form-master",
@@ -37,7 +38,7 @@ export class ItemFormMasterComponent implements OnInit {
 
 
     autocompleteModeGSTTypesValues: string = "GSTTypes";
-     autocompleteModeGSTTypesValues1: string = "GSTTypes";
+    autocompleteModeGSTTypesValues1: string = "GSTTypes";
     autocompleteModeItemType: string = "ItemType";
     autocompleteModeItemCategory: string = "ItemCategory";
     autocompleteModeItemGenericName: string = "ItemGeneric";
@@ -81,11 +82,11 @@ export class ItemFormMasterComponent implements OnInit {
             this.vSGST = this.data.sgst
             this.vIGST = this.data.igst
 
-            if(this.data.igst==0)
-            this.itemForm.get('cgst').setValue( this.data.taxPer)
-          else
-             this.itemForm.get('igst').setValue( this.data.taxPer)
-            
+            if (this.data.igst == 0)
+                this.itemForm.get('cgst').setValue(this.data.taxPer)
+            else
+                this.itemForm.get('igst').setValue(this.data.taxPer)
+
         }
         if ((this.data?.itemID ?? 0) > 0) {
             this._itemService.getstoreById(this.data.itemID).subscribe((response) => {
@@ -99,12 +100,28 @@ export class ItemFormMasterComponent implements OnInit {
         }
     }
 
-  
+
 
     onHSNChange(event: any) {
         const upper = event.target.value.toUpperCase();
         this.itemForm.get('hsNcode')?.setValue(upper, { emitEvent: false });
     }
+
+    onNewItemWiseSupprate(row: any = null) {
+        let that = this;
+
+        const dialogRef = this._matDialog.open(ItemWiseSupplierRateComponent,
+            {
+                height:'85%',
+                width: '80%',
+                data: row
+            });
+        dialogRef.afterClosed().subscribe(result => {
+            that.grid.bindGridData();
+
+        });
+    }
+
 
     onSave(row: any = null) {
         let that = this;
@@ -164,7 +181,7 @@ export class ItemFormMasterComponent implements OnInit {
         console.log(this.itemForm.value);
 
     }
-    
+
     getchangeIgstper(rate: any): void {
         debugger
         if (Number(rate?.text) > 0) {
@@ -176,21 +193,21 @@ export class ItemFormMasterComponent implements OnInit {
             this.itemForm.get('cgst').clearValidators();
             this.itemForm.get('cgst').updateValueAndValidity();
             this.itemForm.get('cgst').disable();
-         
+
         } else {
             this.itemForm.get('cgst').enable();
             this.itemForm.get('cgst').reset();
         }
         console.log(this.itemForm.value);
-      
+
     }
 
 
     onSubmit() {
-debugger
+        debugger
         if (this.itemForm.valid) {
-                // const formData = this.itemForm.getRawValue() as ItemMaster;
-                //  console.log(formData)
+            // const formData = this.itemForm.getRawValue() as ItemMaster;
+            //  console.log(formData)
             console.log(this.itemForm.value)
             const formData = { ...this.itemForm.value };
 
@@ -201,16 +218,16 @@ debugger
             }));
 
             formData.mAssignItemToStores = transformedStores;
-            
 
-            if (parseFloat(formData.sgst) > 0){
+
+            if (parseFloat(formData.sgst) > 0) {
                 formData.cgst = formData.sgst
-                formData.igst=0
-            }else if (formData.igst > 0) {
+                formData.igst = 0
+            } else if (formData.igst > 0) {
                 formData.cgst = 0
                 formData.sgst = 0
-              }        
-            
+            }
+
 
             console.log("Transformed Item JSON :-", formData);
 

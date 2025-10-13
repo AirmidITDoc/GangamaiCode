@@ -109,10 +109,7 @@
         </mat-tab>
 
         <mat-tab label="OP Multiple Settlement">
-            <div 
-                class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
-                >
-                <!-- <div class="modal-wrapper grid-container"> -->
+            <div class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto">
                 <!-- Modal header -->
 
                 <div class="top-header header accent p-16" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
@@ -360,44 +357,47 @@
                     </div>
                 </div>
 
-                <div class="modal-footer demo1">
+                <div class="modal-card-container">
                     <form [formGroup]="OPMultipleSettlForm">
                         <mat-card>
+                            <div class="patient-search p-12">
+                                <div fxLayout="row" fxLayoutAlign="start start" class="gap-8">
+                                    <div fxFlexFill fxLayout="column" fxLayout="row" fxLayoutGap="6px"
+                                        fxLayoutAlign="space-between">
 
-                            <div fxLayout="row" class="gap-8" fxLayoutAlign="space-between">
-                                <div class="gap-8">
-                                    <mat-form-field appearance="outline" fxFlex="35%">
-                                        <mat-label>NetAmount</mat-label>
-                                        <input name="NetAmount" formControlName="NetAmount" matInput readonly
-                                            [(ngModel)]="vNetAmount">
-                                    </mat-form-field>
+                                        <div fxLayout="row" fxLayoutGap="6px">
+                                            <mat-form-field appearance="outline" fxFlex="35%">
+                                                <mat-label>NetAmount</mat-label>
+                                                <input name="NetAmount" formControlName="NetAmount" matInput readonly
+                                                    [(ngModel)]="vNetAmount">
+                                            </mat-form-field>
 
-                                    <mat-form-field appearance="outline" fxFlex="35%">
-                                        <mat-label>PaidAmount</mat-label>
-                                        <input name="PaidAmount" formControlName="PaidAmount" matInput
-                                            [(ngModel)]="vPaidAmount">
-                                    </mat-form-field>
+                                            <mat-form-field appearance="outline" fxFlex="35%">
+                                                <mat-label>PaidAmount</mat-label>
+                                                <input name="PaidAmount" formControlName="PaidAmount" matInput
+                                                    [(ngModel)]="vPaidAmount">
+                                            </mat-form-field>
 
-                                    <mat-form-field appearance="outline" fxFlex="35%">
-                                        <mat-label>BalanceAmount</mat-label>
-                                        <input name="BalanceAmount" formControlName="BalanceAmount" matInput readonly
-                                            [(ngModel)]="vBalanceAmount">
-                                    </mat-form-field>
-                                </div>
-                                <!-- [disabled]="!TotalRefundAmount || dataSource2.data.length==0" -->
-                                <div class="footer-navigation-container">
-                                    <div class="modal-footer-buttons">
-                                        <button class="btn btn-danger-outline" (click)="OnReset()">Reset</button>
+                                            <mat-form-field appearance="outline" fxFlex="35%">
+                                                <mat-label>BalanceAmount</mat-label>
+                                                <input name="BalanceAmount" formControlName="BalanceAmount" matInput
+                                                    readonly [(ngModel)]="vBalanceAmount">
+                                            </mat-form-field>
+                                        </div>
 
-                                        <button class="btn btn-primary" style="margin-left: 5px;" (click)="OnSave()">Payment</button>
+                                        <div class="modal-footer-buttons" style="padding: 10px;">
+                                            <button class="btn btn-danger-outline" (click)="OnReset()">Reset</button>
+
+                                            <button class="btn btn-primary" style="margin-left: 5px;"
+                                                (click)="OnSave()">Payment</button>
+                                        </div>
+
                                     </div>
                                 </div>
                             </div>
-
                         </mat-card>
                     </form>
                 </div>
-                
             </div>
         </mat-tab>
     </mat-tab-group>
