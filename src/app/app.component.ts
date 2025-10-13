@@ -231,7 +231,6 @@ export class AppComponent implements OnInit, OnDestroy {
             if ((d?.userToken ?? "") != "") {
                 // debugger
                 this.authService.getNavigationData();
-                this.ConfigSettingParam();
                 this.ConfigSettingParamNew();
             }
         });
@@ -259,26 +258,26 @@ export class AppComponent implements OnInit, OnDestroy {
         this._fuseSidebarService.getSidebar(key).toggleOpen();
     }
 
-    ConfigSettingParam() {
-        var Params =
-        {
-            "searchFields": [
-                {
-                    "fieldName": "ConfigId",
-                    "fieldValue": "1",
-                    "opType": "Equals"
-                }
-            ],
-            "mode": "SysConfig"
-        }
-        this._httpClient1
-            .PostData("Common", Params).subscribe(data => {
-                this.configSettingParam = data;
-                console.log(data);
-                this.configService.setCongiParam(this.configSettingParam[0]);
-                console.log(this.configSettingParam);
-            });
-    }
+    // ConfigSettingParam() {
+    //     var Params =
+    //     {
+    //         "searchFields": [
+    //             {
+    //                 "fieldName": "ConfigId",
+    //                 "fieldValue": "1",
+    //                 "opType": "Equals"
+    //             }
+    //         ],
+    //         "mode": "SysConfig"
+    //     }
+    //     this._httpClient1
+    //         .PostData("Common", Params).subscribe(data => {
+    //             this.configSettingParam = data;
+    //             console.log(data);
+    //             this.configService.setCongiParam(this.configSettingParam[0]);
+    //             console.log(this.configSettingParam);
+    //         });
+    // }
 
     configdata = []
     AddList: any = [];
