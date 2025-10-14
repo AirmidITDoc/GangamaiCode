@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import Chart from 'chart.js/auto';
+import { DashboardService } from '../dashboard.service';
 
 @Component({
   selector: 'app-new-dashboard',
@@ -26,17 +27,50 @@ export class NewDashboardComponent implements OnInit {
   segmentPopoverArrowClass = '';
   private segmentHoverTimeout: any;
   metrics = [
-    { label: 'Todays Registrations', value: 10, color: 'lavender', icon: 'user-plus' },
-    { label: 'Appointments', value: 20, color: 'butter', icon: 'calendar' },
-    { label: 'Checked In', value: 10, color: 'mint', icon: 'check-circle' },
-    { label: 'Checked-Out', value: 10, color: 'rose', icon: 'logout' },
-    { label: 'Pending & Waiting', value: 10, color: 'sky', icon: 'hourglass' },
-    { label: 'ER to OP.', value: 5, color: 'peach', icon: 'ambulance' }
+    { label: 'Todays Registrations', value: 0, color: 'lavender', icon: 'user-plus' },
+    { label: 'Appointments', value: 0, color: 'butter', icon: 'calendar' },
+    { label: 'Checked In', value: 0, color: 'mint', icon: 'check-circle' },
+    { label: 'Checked-Out', value: 0, color: 'rose', icon: 'logout' },
+    { label: 'Pending & Waiting', value: 0, color: 'sky', icon: 'hourglass' },
+    { label: 'ER to OP.', value: 0, color: 'peach', icon: 'ambulance' }
+  ];
+  financeSummary = [
+    { label: 'Today Revenue', value: 0, color: 'mint', icon: 'check-circle' },
+    { label: 'Pending Dues', value: 0, color: 'rose', icon: 'hourglass' },
+    { label: 'Refunds', value: 0, color: 'sky', icon: 'logout' },
+    { label: 'Advances', value: 0, color: 'butter', icon: 'user-plus' }
   ];
 
-  constructor() { }
+  paymentData = [
+    { name: 'Cash', value: 0 },
+    { name: 'Online', value: 0 },
+    { name: 'Card', value: 0 },
+    { name: 'Cheque', value: 0 }
+  ];
+
+  departmentVisits =  [
+    { name: 'Medicine', value: 0 },
+    { name: 'Gastrologist', value: 0 },
+    { name: 'Pathologist', value: 0 },
+    { name: 'Physician', value: 0 },
+    { name: 'Plastic', value: 0 },
+    { name: 'Surgeon', value: 0 },
+  ];
+    // Registration related chart data
+  registrationChartData = [
+    { name: 'New Registration', value: 80 },
+    { name: 'Old Registration', value: 120 },
+    { name: 'Referral', value: 30 },
+    { name: 'Other', value: 10 }
+  ];
+
+
+  constructor(private dashboardService: DashboardService) { }
 
   ngOnInit(): void {
+    this.getHomeDashboardAPI();
+    this.getDashOPUserWiseRevenue();
+    this.getDashOPDepatmentWiseCount();
     // Initialize the charts
     setTimeout(() => {
       if (document.getElementById('PatientOverviewDoughnut')) {
@@ -48,6 +82,186 @@ export class NewDashboardComponent implements OnInit {
     });
   }
 
+  getHomeDashboardAPI() {
+    const payload = {
+      searchFields: [
+        { fieldName: 'UnitId', fieldValue: '0', opType: 'Equals' }
+      ],
+      mode: 'HomeDashboardAPI'
+    };
+    this.dashboardService.HomeDashboardAPI(payload).subscribe((res: any) => {
+      
+      let apiData = res && res.length ? res[0] : {};
+      this.metrics = [
+        { label: 'Todays Registrations', value: apiData?.RegistrationCount || 0, color: 'lavender', icon: 'user-plus' },
+        { label: 'Appointments', value: apiData?.AppointmentCount || 0, color: 'butter', icon: 'calendar' },
+        { label: 'Checked In', value: apiData?.CheckInCount || 0, color: 'mint', icon: 'check-circle' },
+        { label: 'Checked-Out', value: apiData?.CheckOutCount || 0, color: 'rose', icon: 'logout' },
+        { label: 'Pending & Waiting', value: 0, color: 'sky', icon: 'hourglass' }, // If API has a matching field, set it.
+        { label: 'ER to OP.', value: apiData?.OPtoIPConvertCount || 0, color: 'peach', icon: 'ambulance' }
+      ];
+     
+    }, err => {
+      this.metrics = [
+        { label: 'Todays Registrations', value: 0, color: 'lavender', icon: 'user-plus' },
+        { label: 'Appointments', value: 0, color: 'butter', icon: 'calendar' },
+        { label: 'Checked In', value: 0, color: 'mint', icon: 'check-circle' },
+        { label: 'Checked-Out', value: 0, color: 'rose', icon: 'logout' },
+        { label: 'Pending & Waiting', value: 0, color: 'sky', icon: 'hourglass' },
+        { label: 'ER to OP.', value: 0, color: 'peach', icon: 'ambulance' }
+      ];
+    });
+  }
+
+  getDashOPUserWiseRevenue() {
+    const payload = {
+      "searchFields": [
+        {
+          "fieldName": "UnitId",
+          "fieldValue": "0",
+          "opType": "Equals"
+        },
+     {
+          "fieldName": "UserId",
+          "fieldValue": "0",
+          "opType": "Equals"
+        },
+       {
+          "fieldName": "FromDate",
+          "fieldValue": "10/01/2025",
+          "opType": "Equals"
+        },
+       {
+          "fieldName": "ToDate",
+          "fieldValue": "10/11/2025",
+          "opType": "Equals"
+        }
+      ],
+      "mode": "DashOPUserWiseRevenue"
+    }
+    ;
+    this.dashboardService.HomeDashboardAPI(payload).subscribe((res: any) => {
+      
+      let apiData = res && res.length ? res[0] : {};
+      console.log("==api data", apiData);
+
+      this.financeSummary = [
+        { label: 'Today Revenue', value: apiData?.Total_Revenue || 0, color: 'mint', icon: 'check-circle' },
+        { label: 'Pending Dues', value: apiData?.PendingDues || 0, color: 'rose', icon: 'hourglass' },
+        { label: 'Refunds', value: apiData?.RefundAmount || 0, color: 'sky', icon: 'logout' },
+        { label: 'Advances', value: apiData?.AdvPay || 0, color: 'butter', icon: 'user-plus' }
+      ];
+      this.paymentData =  [
+        { name: 'Cash', value: apiData?.CashPay || 0 },
+        { name: 'Online', value: apiData?.OnlinePay || 0 },
+        { name: 'Card', value: apiData?.CardPay || 0 },
+        { name: 'Cheque', value: apiData?.ChequePay || 0 }
+      ];
+    }, err => {
+      this.financeSummary = [
+        { label: 'Today Revenue', value: 0, color: 'mint', icon: 'check-circle' },
+        { label: 'Pending Dues', value: 0, color: 'rose', icon: 'hourglass' },
+        { label: 'Refunds', value: 0, color: 'sky', icon: 'logout' },
+        { label: 'Advances', value: 0, color: 'butter', icon: 'user-plus' }
+      ];
+      this.paymentData =  [
+        { name: 'Cash', value: 0 },
+        { name: 'Online', value: 0 },
+        { name: 'Card', value: 0 },
+        { name: 'Cheque', value: 0 }
+      ];
+    });
+  }
+
+    getDashOPDepatmentWiseCount() {
+      const payload = {
+        "searchFields": [
+          {
+            "fieldName": "UnitId",
+            "fieldValue": "0",
+            "opType": "Equals"
+          },
+        {
+            "fieldName": "FromDate",
+            "fieldValue": "10/01/2025",
+            "opType": "Equals"
+          },
+        {
+            "fieldName": "ToDate",
+            "fieldValue": "10/11/2025",
+            "opType": "Equals"
+          }
+        ],
+        "mode": "DashOPDepatmentWiseCount"
+      };
+      this.dashboardService.HomeDashboardAPI(payload).subscribe((res: any) => {
+        let apiData = res && res.length ? res : {};
+
+        this.departmentVisits = [
+          { name: 'Medicine', value: apiData?.find(d => d.name.toLowerCase() === 'Medicine'.toLowerCase())?.value || 0 },
+          { name: 'Gastrologist', value: apiData?.find(d => d.name.toLowerCase() === 'Gastrologist'.toLowerCase())?.value || 0 },
+          { name: 'Pathologist', value: apiData?.find(d => d.name.toLowerCase() === 'pathologist'.toLowerCase())?.value || 0 },
+          { name: 'Physician', value: apiData?.find(d => d.name.toLowerCase() === 'Physician'.toLowerCase())?.value || 0 },
+          { name: 'Plastic Surgeon', value: apiData?.find(d => d.name.toLowerCase() === 'plastic surgeon'.toLowerCase())?.value || 0 },
+          { name: 'Surgeon', value: apiData?.find(d => d.name.toLowerCase() === 'surgeon'.toLowerCase())?.value || 0 },
+        ];
+      
+      }, err => {
+        this.departmentVisits = [
+          { name: 'Medicine', value: 0 },
+          { name: 'Gastrologist', value: 0 },
+          { name: 'Pathologist', value: 0 },
+          { name: 'Physician', value: 0 },
+          { name: 'Plastic', value: 0 },
+          { name: 'Surgeon', value: 0 },
+        ];
+    })
+  }
+
+  getDashRegistrationAgeWiseCount() {
+    const payload = {
+      "searchFields": [
+        {
+          "fieldName": "UnitId",
+          "fieldValue": "0",
+          "opType": "Equals"
+        },
+        {
+          "fieldName": "FromDate",
+          "fieldValue": "10/01/2025",
+          "opType": "Equals"
+        },
+       {
+          "fieldName": "ToDate",
+          "fieldValue": "10/11/2025",
+          "opType": "Equals"
+        }
+      ],
+      "mode": "DashRegistrationAgeWiseCount"
+    };
+    this.dashboardService.HomeDashboardAPI(payload).subscribe((res: any) => {
+      let apiData = res && res.length ? res : {};
+
+      this.departmentVisits = [
+        { name: 'Medicine', value: res.find(d => d.name.toLowerCase() === 'Medicine'.toLowerCase())?.value || 0 },
+        { name: 'Gastrologist', value: res.find(d => d.name.toLowerCase() === 'Gastrologist'.toLowerCase())?.value || 0 },
+        { name: 'Pathologist', value: res.find(d => d.name.toLowerCase() === 'pathologist'.toLowerCase())?.value || 0 },
+        { name: 'Physician', value: res.find(d => d.name.toLowerCase() === 'Physician'.toLowerCase())?.value || 0 },
+        { name: 'Plastic Surgeon', value: res.find(d => d.name.toLowerCase() === 'plastic surgeon'.toLowerCase())?.value || 0 },
+        { name: 'Surgeon', value: res.find(d => d.name.toLowerCase() === 'surgeon'.toLowerCase())?.value || 0 },
+      ];
+    
+    }, err => {
+      this.departmentVisits = [
+        { name: 'Medicine', value: 0 },
+        { name: 'Gastrologist', value: 0 },
+        { name: 'Pathologist', value: 0 },
+        { name: 'Physician', value: 0 },
+        { name: 'Plastic', value: 0 },
+        { name: 'Surgeon', value: 0 },
+      ];
+  })
+  }
   getMatIcon(icon: string): string {
     switch (icon) {
       case 'user-plus':
@@ -76,13 +290,7 @@ export class NewDashboardComponent implements OnInit {
   chartView: [number, number] = [420, 300];
   barChartView: [number, number] = [380, 300];
 
-  // Registration related chart data
-  registrationChartData = [
-    { name: 'New Registration', value: 80 },
-    { name: 'Old Registration', value: 120 },
-    { name: 'Referral', value: 30 },
-    { name: 'Other', value: 10 }
-  ];
+
 
   // Detailed breakdown data for calculations
   registrationBreakdown = {
@@ -152,21 +360,8 @@ export class NewDashboardComponent implements OnInit {
   };
 
   // Payments by type (sample data; replace with API-fed values)
-  paymentData = [
-    { name: 'Cash', value: 52000 },
-    { name: 'UPI', value: 34000 },
-    { name: 'Card', value: 41000 },
-    { name: 'NEFT/RTGS', value: 18000 },
-    { name: 'Cheque', value: 9000 }
-  ];
 
-  // Below-the-fold dashboard data (mock; replace with service later)
-  financeSummary = [
-    { label: 'Today Revenue', value: 245000, color: 'mint', icon: 'check-circle' },
-    { label: 'Pending Dues', value: 56000, color: 'rose', icon: 'hourglass' },
-    { label: 'Refunds', value: 8000, color: 'sky', icon: 'logout' },
-    { label: 'Advances', value: 32000, color: 'butter', icon: 'user-plus' }
-  ];
+
 
   trendSeries = [
     {
@@ -195,13 +390,6 @@ export class NewDashboardComponent implements OnInit {
     }
   ];
 
-  departmentVisits = [
-    { name: 'Medicine', value: 180 },
-    { name: 'Orthopedics', value: 140 },
-    { name: 'Pediatrics', value: 120 },
-    { name: 'Gynaecology', value: 100 },
-    { name: 'ENT', value: 80 }
-  ];
 
   recentColumns = ['name', 'type', 'dept', 'time'];
   recentPatients = [
@@ -592,11 +780,11 @@ export class NewDashboardComponent implements OnInit {
       // Set data based on chart type
       if (chartType === 'patient') {
         this.chartPopoverData = [...this.registrationChartData];
-        this.chartPopoverTitle = 'Patient Registration Overview';
+        this.chartPopoverTitle = 'Patient Age Wise Overview';
         this.chartPopoverTotal = this.totalRegistrations;
       } else if (chartType === 'opd') {
         this.chartPopoverData = [...this.opdData];
-        this.chartPopoverTitle = 'OPD Overview';
+        this.chartPopoverTitle = 'Docter Overview';
         this.chartPopoverTotal = this.totalOPD;
       }
       
