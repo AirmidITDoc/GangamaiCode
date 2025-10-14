@@ -165,6 +165,15 @@
                                                         (selectionChange)="ListView($event)"
                                                         [mode]="autocompleteModecompany"></airmid-dropdown>
 
+                                                    <mat-radio-group name="opipType" formControlName="opipType" (change)="getmultiplePaymentList()"
+                                                        fxLayout="column" value="0" class="gap-4">
+                                                        <mat-label><b>Patient Type:</b></mat-label>
+                                                        <div fxLayout="row">
+                                                            <mat-radio-button value='0'>OP</mat-radio-button>
+                                                            <mat-radio-button value='1'>IP</mat-radio-button>
+                                                        </div>
+                                                    </mat-radio-group>
+
                                                     <div class="action-buttons" style="padding: 10px;">
                                                         <button mat-raised-button (click)="onClear()"
                                                             class="clear-button" matTooltip="close">
@@ -228,6 +237,14 @@
                                                 </mat-cell>
                                             </ng-container>
 
+                                            <ng-container matColumnDef="opd/ipdNo">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                                    OPD/IPDNo</mat-header-cell>
+                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                    {{contact.opdNo ?? contact.ipdNo}}
+                                                </mat-cell>
+                                            </ng-container>
+
                                             <ng-container matColumnDef="patientName">
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
                                                     class="w-250">
@@ -250,6 +267,18 @@
                                                     Disc Amt</mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                                     {{contact.discAmount | currency:"INR":"symbol"}}
+                                                </mat-cell>
+                                            </ng-container>
+
+                                            <ng-container matColumnDef="CompanyDisc">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                                    CompanyDisc</mat-header-cell>
+                                                <mat-cell *matCellDef="let element" fxShow.gt-sm>
+                                                    <mat-form-field appearance="fill">
+                                                        <input matInput [(ngModel)]="element.CompanyDisc" type="text"
+                                                            (input)="onCompanyDiscChange(element)" OnlyNumber
+                                                            [disabled]="!selection.isSelected(element)">
+                                                    </mat-form-field>
                                                 </mat-cell>
                                             </ng-container>
 
@@ -309,23 +338,9 @@
                                                 <mat-cell *matCellDef="let element">
                                                     <button mat-icon-button (click)="deleteTableRow(element)"
                                                         color="warn">
-                                                        <mat-icon>delete_outline</mat-icon>
+                                                        <mat-icon>cancel</mat-icon>
                                                     </button>
                                                 </mat-cell>
-
-                                                <!-- <mat-cell *matCellDef="let element" fxLayout="row"
-                                            fxLayoutAlign="center center">
-                                            <button mat-icon-button class="material-icons"
-                                                *ngIf="element.balanceAmt != 0" matTooltip="Final Discount"
-                                                (click)="getFinalDisc(element)">
-                                                <mat-icon>money</mat-icon>
-                                            </button>
-
-                                            <button mat-icon-button (click)="openPaymentpopup(element)"
-                                                matTooltip="Settlement" *ngIf="element.balanceAmt != 0">
-                                                <mat-icon title="Settlement">receipt</mat-icon>
-                                            </button>
-                                        </mat-cell> -->
                                             </ng-container>
 
                                             <ng-container matColumnDef="loading">
@@ -373,23 +388,55 @@
                                             </mat-form-field>
 
                                             <mat-form-field appearance="outline" fxFlex="35%">
+                                                <mat-label>BalanceAmount</mat-label>
+                                                <input name="BalanceAmount" formControlName="BalanceAmount" matInput
+                                                    readonly [(ngModel)]="vBalanceAmount">
+                                            </mat-form-field>
+
+                                            <mat-form-field appearance="outline" fxFlex="35%">
                                                 <mat-label>PaidAmount</mat-label>
                                                 <input name="PaidAmount" formControlName="PaidAmount" matInput
                                                     [(ngModel)]="vPaidAmount">
                                             </mat-form-field>
 
                                             <mat-form-field appearance="outline" fxFlex="35%">
-                                                <mat-label>BalanceAmount</mat-label>
-                                                <input name="BalanceAmount" formControlName="BalanceAmount" matInput
-                                                    readonly [(ngModel)]="vBalanceAmount">
+                                                <mat-label>TDSAmount</mat-label>
+                                                <input name="TDSAmount" formControlName="TDSAmount" matInput
+                                                    [(ngModel)]="vTDSAmount">
                                             </mat-form-field>
+
+                                            <!-- <div *ngIf="selection.selected.length > 0" fxLayout="row" fxLayoutGap="6px"> -->
+                                            <!-- <mat-radio-group formControlName="paymode" name="paymode">
+                                                    <mat-radio-button value="NEFT">NEFT</mat-radio-button>
+                                                </mat-radio-group> -->
+
+                                            <mat-form-field appearance="outline" fxFlex="40%"
+                                                *ngIf="selection.selected.length > 0">
+                                                <mat-label>UPI NO</mat-label>
+                                                <input matInput placeholder="UPI Number" formControlName="UPINO"
+                                                    [(ngModel)]="vUPINO" maxlength="12" minlength="4" type="text"
+                                                    Onlynumber max="999999999999" min="100000000000" autocomplete="off"
+                                                    (keypress)="keyPressAlphanumeric($event)"
+                                                    oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 12);"
+                                                    required="required" value="987665868822">
+                                                <mat-error class="error"
+                                                    *ngIf="OPMultipleSettlForm.get('UPINO').invalid && OPMultipleSettlForm.get('UPINO').touched">12
+                                                    digits upi number is required</mat-error>
+                                            </mat-form-field>
+
+                                            <airmid-dropdown label="Bank Name" formControlName="bankName"
+                                                [formGroup]="OPMultipleSettlForm" *ngIf="selection.selected.length > 0"
+                                                (selectionChange)="selectChangebank($event)"
+                                                [mode]="autocompleteModebank">
+                                            </airmid-dropdown>
+                                            <!-- </div> -->
                                         </div>
 
                                         <div class="modal-footer-buttons" style="padding: 10px;">
                                             <button class="btn btn-danger-outline" (click)="OnReset()">Reset</button>
 
                                             <button class="btn btn-primary" style="margin-left: 5px;"
-                                                (click)="OnSave()">Payment</button>
+                                                (click)="OnSave()">Save</button>
                                         </div>
 
                                     </div>

@@ -308,13 +308,17 @@ export class AdmissionService {
         return this._httpClient1.GetData("OutPatient/auto-complete?Keyword=" + keyword);
     }
 
-    public CompanyUpdate(param) {
-        return this._httpClient1.PostData("VisitDetail/DeptDoctorList", param)
+    public CompanyInfoUpdate(param) {
+         if (param.admissionId) {
+            return this._httpClient1.PutData("Admission/Companyinformation/" + param.admissionId, param);
+        }
     }
 
-    //  public getVisitlist(employee) {
-    //     return this._httpClient1.PostData("VisitDetail/AppVisitList", employee)
-    // }
+     public CompanyApprovalInsert(Param: any) {
+        if (Param.id) {
+            return this._httpClient1.PutData("CompanyTPAApproval/" + Param.id, Param);
+        } else return this._httpClient1.PostData("CompanyTPAApproval", Param);
+    }
 
       public getOPDToIpConvertList(employee) {
         return this._httpClient1.PostData("Admission/OPRequestListForIPAdmission", employee)

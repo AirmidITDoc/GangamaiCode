@@ -1,6 +1,6 @@
 import { DatePipe } from '@angular/common';
 import { Component, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
-import { FormArray, FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
+import { AbstractControl, FormArray, FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { fuseAnimations } from '@fuse/animations';
 import { Color, gridModel, OperatorComparer } from 'app/core/models/gridRequest';
@@ -38,11 +38,13 @@ export class CompanysettlementComponent implements OnInit {
     regNo2: any = "0"
     l_name: any = ""
     CompanyId = "0"
+    OPIPType = "0"
     PBillNo: any = "%"
     autocompleteModecompany: string = "Company";
     searchFormGroup: FormGroup
     OPMultipleSettlForm: FormGroup
-    OPMultipleSettlInsertForm: FormGroup
+    // OPMultipleSettlInsertForm: FormGroup
+    OPMultipleSettlLoopInsertForm: FormGroup
     RegId1 = "0";
     RegId2 = "0";
     BillNo: any;
@@ -61,9 +63,11 @@ export class CompanysettlementComponent implements OnInit {
         'BillDate',
         'PBillNo',
         'uhid',
+        'opd/ipdNo',
         'patientName',
         'BillAmount',
         'ConsessionAmt',
+        'CompanyDisc',
         'NetAmount',
         'balAmount',
         'PaidAmount',
@@ -73,8 +77,11 @@ export class CompanysettlementComponent implements OnInit {
     ];
     vNetAmount: any = 0;
     vPaidAmount: any = 0;
+    vTDSAmount: any = 0;
     vBalanceAmount: any = 0;
     isSearchTriggered = false;
+    vUPINO: any;
+    autocompleteModebank: string = "Bank";
 
     ngAfterViewInit() {
         this.gridConfig.columnsList.find(col => col.key === 'companyId')!.template = this.actionsTemplate;
@@ -140,9 +147,12 @@ export class CompanysettlementComponent implements OnInit {
         this.searchFormGroup = this.createSearchForm();
         this.OpSettlementForm = this.CreateOPSettlementForm();
         this.OPMultipleSettlForm = this.CreateOPMultiplpeSettlForm();
-        this.OPMultipleSettlInsertForm = this.CreateOPMultipleSettlInsertForm();
 
-        // 🔹 Auto refresh when Company is cleared
+        this.OPMultipleSettlLoopInsertForm = this.CreateOPMultipleSettlInsertForm();
+        this.OPMulSetLoopArray.push(this.CreateOPMultipleSettlLoopInsertForm())
+        this.OPMulSetBillLoopArray.push(this.CreateOPMultipleSettlBillLoopInsertForm())
+
+        // Auto refresh when Company is cleared
         this.OPMultipleSettlForm.get('CompanyId')?.valueChanges.subscribe(value => {
             if (!value || value === '0' || value === '') {
                 if (this.isSearchTriggered) {  // only clear if user had searched
@@ -151,7 +161,7 @@ export class CompanysettlementComponent implements OnInit {
             }
         });
 
-        // 🔹 Auto refresh when Patient is cleared
+        // Auto refresh when Patient is cleared
         this.OPMultipleSettlForm.get('RegId')?.valueChanges.subscribe(value => {
             if (!value || value === '0' || value === '') {
                 this.regNo2 = "0";
@@ -184,11 +194,16 @@ export class CompanysettlementComponent implements OnInit {
             PBillNo: '',
             RegNo: '',
             CompanyId: 0,
+            opipType: '0',
             RegId: 0,
 
             NetAmount: [''],
             PaidAmount: [''],
-            BalanceAmount: ['']
+            BalanceAmount: [''],
+            TDSAmount: [''],
+            paymode: ['NEFT'],
+            UPINO: ['0', [Validators.required]],
+            bankName: ['', [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]]
         });
     }
 
@@ -240,11 +255,28 @@ export class CompanysettlementComponent implements OnInit {
 
     CreateOPMultipleSettlInsertForm() {
         return this.formBuilder.group({
+            opCreditPayment: this.formBuilder.array([]),
+            billUpdate: this.formBuilder.array([]),
+        })
+    }
+
+    CreateOPMultipleSettlLoopInsertForm(element: any = {}): FormGroup {
+        const currentDate = new Date();
+        const datePipe = new DatePipe('en-US');
+        const formattedTime = datePipe.transform(currentDate, 'shortTime');
+        const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
+
+        if (element.opdNo)
+            this.OPIPType = "0"
+        else
+            this.OPIPType = "1"
+
+        return this.formBuilder.group({
             opCreditPayment: this.formBuilder.group({
                 paymentId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
                 billNo: [0, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-                paymentDate: ['', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
-                paymentTime: ['', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
+                paymentDate: [formattedDate, [this._FormvalidationserviceService.allowEmptyStringValidator()]],
+                paymentTime: [formattedTime, [this._FormvalidationserviceService.allowEmptyStringValidator()]],
                 cashPayAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
                 chequePayAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
                 chequeNo: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
@@ -263,11 +295,13 @@ export class CompanysettlementComponent implements OnInit {
                 isCancelled: [false],
                 isCancelledBy: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
                 isCancelledDate: ['1999-01-01'],
-                opdipdType: [0],
-                neftpayAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+
+                opdipdType: [this.OPIPType],
+                neftpayAmount: [element.PaidAmount, [this._FormvalidationserviceService.onlyNumberValidator()]],
                 neftno: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
-                neftbankMaster: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
-                neftdate: ['1999-01-01'],
+                neftbankMaster: [this.BankNam, [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+                neftdate: [formattedDate], //['1999-01-01'],
+
                 payTmamount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
                 payTmtranNo: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
                 payTmdate: ['1999-01-01'],
@@ -275,13 +309,23 @@ export class CompanysettlementComponent implements OnInit {
                 unitId: [this.accountService.currentUserValue.user.unitId, [this._FormvalidationserviceService.onlyNumberValidator()]],
                 wfamount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
 
-            }),
-            //bill update 
+            })
+        })
+    }
+    get OPMulSetLoopArray(): FormArray {
+        return this.OPMultipleSettlLoopInsertForm.get('opCreditPayment') as FormArray;
+    }
+
+    CreateOPMultipleSettlBillLoopInsertForm(element: any = {}): FormGroup {
+        return this.formBuilder.group({
             billUpdate: this.formBuilder.group({
                 billNo: [0, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
                 balanceAmt: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
             })
         })
+    }
+    get OPMulSetBillLoopArray(): FormArray {
+        return this.OPMultipleSettlLoopInsertForm.get('billUpdate') as FormArray;
     }
 
     getSelectedObj(obj) {
@@ -325,7 +369,25 @@ export class CompanysettlementComponent implements OnInit {
                 this.OpSettlementForm.get('billUpdate.billNo').setValue(contact.billNo)
                 this.OpSettlementForm.get('opCreditPayment').setValue(result.submitDataPay.ipPaymentInsert)
 
+                debugger
                 if (this.OpSettlementForm.valid) {
+
+                    // const formValue = this.OpSettlementForm.value;
+
+                    // const payload = {
+                    //     opCreditPayment: [
+                    //         {
+                    //             opCreditPayment: formValue.opCreditPayment
+                    //         }
+                    //     ],
+                    //     billUpdate: [
+                    //         {
+                    //             billUpdate: formValue.billUpdate
+                    //         }
+                    //     ]
+                    // };
+                    // console.log('Final Payload:', payload);
+
                     console.log(this.OpSettlementForm.value)
                     console.log(result.submitDataPay.ipPaymentInsert)
 
@@ -467,7 +529,7 @@ export class CompanysettlementComponent implements OnInit {
             element.tds = 0;
             return;
         }
-        
+
         if (element._origPaidAmount === undefined || element._origPaidAmount == "0") {
             element._origPaidAmount = Number(element.PaidAmount) || 0;
         }
@@ -481,6 +543,7 @@ export class CompanysettlementComponent implements OnInit {
             });
             element.tds = 0;
             element.PaidAmount = this.roundAmount(origPaid);
+            this.recalculateTotals();
             return;
         }
 
@@ -492,6 +555,54 @@ export class CompanysettlementComponent implements OnInit {
 
         this.vPaidAmount = this.roundAmount(
             this.SelectedList.reduce((sum, x) => sum + (x.PaidAmount || 0), 0)
+        );
+
+        this.vTDSAmount = this.roundAmount(
+            this.SelectedList.reduce((sum, x) => sum + (x.tds || 0), 0)
+        );
+
+        this.vBalanceAmount = this.roundAmount(
+            this.SelectedList.reduce((sum, x) => sum + (x.balanceAmt || 0), 0)
+        );
+    }
+
+    onCompanyDiscChange(element: any) {
+        // Prevent manual input on unselected rows
+        if (!this.selection.isSelected(element)) {
+            this.toastr.warning('Please select the row before entering Company Discount.', 'Warning!', {
+                toastClass: 'tostr-tost custom-toast-warning',
+            });
+            element.CompanyDisc = 0;
+            return;
+        }
+
+        const billAmt = Number(element.billAmount) || 0;
+        const discAmt = Number(element.discAmount) || 0;
+        const companyDisc = Number(element.CompanyDisc) || 0;
+
+        // Validate: company discount cannot exceed remaining amount
+        if (companyDisc > billAmt - discAmt) {
+            this.toastr.warning('Company Discount cannot be greater than remaining amount.', 'Warning!', {
+                toastClass: 'tostr-tost custom-toast-warning',
+            });
+            element.CompanyDisc = 0;
+        }
+
+        element.netAmount = this.roundAmount(billAmt - discAmt - element.CompanyDisc);
+        this.recalculateTotals();
+    }
+
+    recalculateTotals() {
+        this.vNetAmount = this.roundAmount(
+            this.SelectedList.reduce((sum, x) => sum + (x.netAmount || 0), 0)
+        );
+
+        this.vPaidAmount = this.roundAmount(
+            this.SelectedList.reduce((sum, x) => sum + (x.PaidAmount || 0), 0)
+        );
+
+        this.vTDSAmount = this.roundAmount(
+            this.SelectedList.reduce((sum, x) => sum + (x.tds || 0), 0)
         );
 
         this.vBalanceAmount = this.roundAmount(
@@ -527,6 +638,9 @@ export class CompanysettlementComponent implements OnInit {
         this.vBalanceAmount = this.roundAmount(
             this.SelectedList.reduce((sum, x) => sum + x.balanceAmt, 0)
         );
+        this.vTDSAmount = this.roundAmount(
+            this.SelectedList.reduce((sum, x) => sum + (x.tds || 0), 0)
+        );
 
         this.toastr.success('Record Deleted Successfully.', 'Deleted !', {
             toastClass: 'tostr-tost custom-toast-success',
@@ -539,6 +653,7 @@ export class CompanysettlementComponent implements OnInit {
     getmultiplePaymentList(validate = true) {
         this.CompanyId = String(this.OPMultipleSettlForm.get('CompanyId').value)
         this.RegId2 = this.OPMultipleSettlForm.get('RegId')?.value.value
+        this.OPIPType = this.OPMultipleSettlForm.get('opipType')?.value
 
         if (validate &&
             (this.CompanyId === "0" || this.CompanyId === "" || this.CompanyId === null) &&
@@ -599,6 +714,11 @@ export class CompanysettlementComponent implements OnInit {
                     "fieldName": "CompanyId",
                     "fieldValue": this.CompanyId,
                     "opType": "Contains"
+                },
+                {
+                    "fieldName": "OPIPType",
+                    "fieldValue": this.OPIPType,
+                    "opType": "Contains"
                 }
             ],
             "exportType": "JSON",
@@ -618,29 +738,66 @@ export class CompanysettlementComponent implements OnInit {
 
     selection = new SelectionModel<MultiplePayList>(true, []);
     SelectedList: any = [];
+
     masterToggle() {
-        debugger
-        if (this.isSomeSelected()) {
+        // debugger;
+
+        if (this.isAllSelected() || this.isSomeSelected()) {
+            // Unselect all
+            this.selection.clear();
+            this.SelectedList = [];
             this.vNetAmount = 0;
             this.vPaidAmount = 0;
             this.vBalanceAmount = 0;
-            this.selection.clear();
-            this.SelectedList = [];
-        } else {
-            this.isAllSelected()
-                ? this.selection.clear()
-                : this.dsMultiplepayList.data.forEach(row => this.selection.select(row));
+            this.vTDSAmount = 0;
 
             this.dsMultiplepayList.data.forEach(element => {
-                console.log(element)
-                this.vNetAmount += element.billAmount
-                this.vPaidAmount += element.PaidAmount
-                this.vBalanceAmount += element.balanceAmt
-                this.SelectedList.push(element)
-            })
+                if (element._origBalanceAmt !== undefined) {
+                    element.PaidAmount = 0;
+                    element.balanceAmt = element._origBalanceAmt;
+                    element.netAmount = element._origNetAmt;
+                }
+                element.tds = 0;
+                element.CompanyDisc = 0;
+            });
+
+        } else {
+            // Select all
+            this.SelectedList = [];
+            this.vNetAmount = 0;
+            this.vPaidAmount = 0;
+            this.vBalanceAmount = 0;
+            this.vTDSAmount = 0;
+
+            this.dsMultiplepayList.data.forEach(element => {
+                this.selection.select(element);
+
+                if (element._origPaidAmount === undefined && element._origBalanceAmt === undefined && element._origNetAmt !== undefined) {
+                    element._origPaidAmount = element.PaidAmount ?? 0;
+                    element._origBalanceAmt = element.balanceAmt;
+                    element.netAmount = element._origNetAmt;
+                }
+
+                element.PaidAmount = element.balanceAmt;
+                element.balanceAmt = 0;
+                element.tds = 0;
+                element.CompanyDisc = 0;
+
+                element.netAmount = this.roundAmount(
+                    element.billAmount - (element.discAmount ?? 0) - (element.CompanyDisc ?? 0)
+                );
+
+                this.SelectedList.push(element);
+                this.vNetAmount += element.billAmount;
+                this.vPaidAmount += element.PaidAmount;
+                this.vBalanceAmount += element.balanceAmt;
+                this.vTDSAmount += element.tds;
+            });
         }
-        this.SelectedList.push(this.selection.selected);
-        console.log(this.SelectedList)
+
+        // Refresh the table view
+        this.dsMultiplepayList.data = [...this.dsMultiplepayList.data];
+        console.log(this.SelectedList);
     }
 
     isAllSelected() {
@@ -654,37 +811,24 @@ export class CompanysettlementComponent implements OnInit {
     }
 
     OnSelectPayment(event, element) {
-        debugger
+        // debugger
         if (event.checked) {
 
-            if (element._origPaidAmount === undefined && element._origBalanceAmt === undefined) {
+            if (element._origPaidAmount === undefined && element._origBalanceAmt === undefined && element._origNetAmt === undefined) {
                 element._origPaidAmount = element.PaidAmount ?? 0;
                 element._origBalanceAmt = element.balanceAmt;
+                element._origNetAmt = element.netAmount ?? 0;
             }
 
             // ✅ Your swap logic
             element.PaidAmount = element.balanceAmt; //here for paid i pass balAmt & viceversa in html
             element.balanceAmt = 0;
-            // element.tds = 0;
+            element.tds = 0;
+            element.CompanyDisc = 0;
+
+            element.netAmount = this.roundAmount(element.billAmount - (element.discAmount ?? 0) - (element.CompanyDisc ?? 0));
 
             if (this.SelectedList.length > 0) {
-                // if (!this.SelectedList.some(item => item.supplierName == element.supplierName)) {
-                //   this.toastr.warning('Please select same supplier Name', 'Warning !', {
-                //     toastClass: 'tostr-tost custom-toast-warning',
-                //   });
-                //   this.SelectedList = [];
-                //   this.selection.clear()
-                //   this.getSupplierPayStatusList();
-                //   this._SupplierPaymentStatusService.SearchFormGroup.patchValue({
-                //     NetAmount: '',
-                //     PaidAmount: '',
-                //     BalanceAmount: ''
-                //   });
-                //   this.vNetAmount = 0;
-                //   this.vPaidAmount = 0;
-                //   this.vBalanceAmount = 0;
-                //   return;
-                // }
                 this.SelectedList.push(element)
             } else {
                 this.SelectedList.push(element)
@@ -693,13 +837,16 @@ export class CompanysettlementComponent implements OnInit {
             this.vNetAmount = this.roundAmount(this.vNetAmount + element.billAmount);
             this.vPaidAmount = this.roundAmount(this.vPaidAmount + element.PaidAmount);
             this.vBalanceAmount = this.roundAmount(this.vBalanceAmount + element.balanceAmt);
+            this.vTDSAmount = this.roundAmount(this.vTDSAmount + element.tds);
         }
         else {
 
-            if (element._origPaidAmount !== undefined && element._origBalanceAmt !== undefined) {
+            if (element._origPaidAmount !== undefined && element._origBalanceAmt !== undefined && element._origNetAmt !== undefined) {
                 element.PaidAmount = 0;
                 element.balanceAmt = element._origBalanceAmt;
+                element.netAmount = element._origNetAmt;
             }
+            element.CompanyDisc = 0;
             element.tds = 0;
 
             let index = this.SelectedList.indexOf(element);
@@ -715,6 +862,9 @@ export class CompanysettlementComponent implements OnInit {
             );
             this.vBalanceAmount = this.roundAmount(
                 this.SelectedList.reduce((sum, x) => sum + x.balanceAmt, 0)
+            );
+            this.vTDSAmount = this.roundAmount(
+                this.SelectedList.reduce((sum, x) => sum + (x.tds || 0), 0)
             );
             this.dsMultiplepayList.data = [...this.dsMultiplepayList.data];
         }
@@ -734,9 +884,18 @@ export class CompanysettlementComponent implements OnInit {
     OnReset() {
         this.vNetAmount = 0;
         this.vPaidAmount = 0;
+        this.vTDSAmount = 0;
         this.vBalanceAmount = 0;
         this.SelectedList = [];
         this.selection.clear();
+    }
+
+    BankId = 0
+    BankNam: any;
+    selectChangebank(event) {
+        console.log(event)
+        this.BankId = event.value
+        this.BankNam = event.text
     }
 
     CurrentDate = new Date()
@@ -747,57 +906,77 @@ export class CompanysettlementComponent implements OnInit {
             });
             return;
         }
-        debugger
+        if (this.OPMultipleSettlForm.get('UPINO').value == undefined) {
+            this.toastr.warning('Please Enter UPINO', 'Warning !', {
+                toastClass: 'tostr-tost custom-toast-warning',
+            });
+            return;
+        }
+        if (this.OPMultipleSettlForm.get('bankName').value == "") {
+            this.toastr.warning('Please select Bank Name', 'Warning !', {
+                toastClass: 'tostr-tost custom-toast-warning',
+            });
+            return;
+        }
 
-        let PatientHeaderObj = {};
-        PatientHeaderObj['Date'] = this.datePipe.transform(this.CurrentDate, 'dd/MM/YYYY') || '01/01/1900'
-        PatientHeaderObj['NetPayAmount'] = this.vNetAmount;
-        const dialogRef = this._matDialog.open(OpPaymentComponent,
-            {
-                maxWidth: "80vw",
-                height: '750px',
-                width: '80%',
-                data: {
-                    vPatientHeaderObj: PatientHeaderObj,
-                    FromName: "OP-SETTLEMENT"
+        debugger
+        console.log(this.OPMultipleSettlLoopInsertForm.value)
+        if (!this.OPMultipleSettlLoopInsertForm.invalid) {
+            const upiNoValue = this.OPMultipleSettlForm.get('UPINO').value;
+
+            this.OPMulSetLoopArray.clear();
+            this.SelectedList.forEach(item => {
+                const formGroup = this.CreateOPMultipleSettlLoopInsertForm(item);
+                formGroup.get('opCreditPayment.neftno').setValue(upiNoValue);
+                this.OPMulSetLoopArray.push(formGroup);
+            })
+
+            this.OPMulSetBillLoopArray.clear();
+            this.SelectedList.forEach(item => {
+                this.OPMulSetBillLoopArray.push(this.CreateOPMultipleSettlBillLoopInsertForm(item))
+            });
+
+            console.log(this.OPMultipleSettlLoopInsertForm.value)
+            // this._CompanysettlementService.InsertOPBillingsettlement(this.OpSettlementForm.value).subscribe(response => {
+            //     this.getmultiplePaymentList();
+            //     this.viewgetOPPayemntPdf(response, true);
+            // });
+        } else {
+            const invalidFields = this.getInvalidFields(this.OPMultipleSettlLoopInsertForm);
+
+            if (invalidFields.length > 0) {
+                invalidFields.forEach(field => {
+                    this.toastr.warning(`Field "${field}" is invalid.`, 'Warning');
+                });
+            }
+        }
+    }
+
+    private getInvalidFields(form: AbstractControl, path: string = ''): string[] {
+        let invalidFields: string[] = [];
+
+        if (form instanceof FormGroup) {
+            Object.keys(form.controls).forEach(key => {
+                const control = form.get(key);
+                if (control) {
+                    invalidFields = invalidFields.concat(
+                        this.getInvalidFields(control, path ? `${path} -> ${key}` : key)
+                    );
                 }
             });
-        dialogRef.afterClosed().subscribe(result => {
-            debugger
-            console.log("payment:", result)
-            // if (this.OPMultipleSettlInsertForm.valid) {
-            //     console.log(this.OPMultipleSettlInsertForm.value)
-            //     console.log(result.submitDataPay.ipPaymentInsert)
+        }
+        else if (form instanceof FormArray) {
+            form.controls.forEach((control, index) => {
+                invalidFields = invalidFields.concat(
+                    this.getInvalidFields(control, `${path}[${index + 1}]`)
+                );
+            });
+        }
+        else if (form.invalid) {
+            invalidFields.push(path);
+        }
 
-            //     // this._CompanysettlementService.InsertOPBillingsettlement(this.OpSettlementForm.value).subscribe(response => {
-            //     //     // this.GetDetails(this.RegId1)
-            //     //     // this.viewgetOPPayemntPdf(response, true);
-            //     // });
-            // } else {
-            //     let invalidFields = []
-            //     if (this.OPMultipleSettlInsertForm.invalid) {
-            //         for (const controlName in this.OPMultipleSettlInsertForm.controls) {
-            //             const control = this.OPMultipleSettlInsertForm.get(controlName);
-            //             if (control instanceof FormGroup || control instanceof FormArray) {
-            //                 for (const nestedKey in control.controls) {
-            //                     if (control.get(nestedKey)?.invalid) {
-            //                         invalidFields.push(`OP Settlement Data: ${controlName}.${nestedKey}`);
-            //                     }
-            //                 }
-            //             } else if (control?.invalid) {
-            //                 invalidFields.push(`OPSettlement From: ${controlName}`);
-            //             }
-            //         }
-            //     }
-            //     if (invalidFields.length > 0) {
-            //         invalidFields.forEach(field => {
-            //             this.toastr.warning(`Please Check this field "${field}" is invalid.`, 'Warning',
-            //             );
-            //         });
-            //         return
-            //     }
-            // }
-        });
+        return invalidFields;
     }
 }
 
@@ -816,6 +995,11 @@ export class MultiplePayList {
     netAmount: any;
     billAmount: any;
     tds: any;
+    _origPaidAmount: any;
+    _origBalanceAmt: any;
+    _origNetAmt: any;
+    discAmount: any;
+    CompanyDisc: any;
 
     constructor(MultiplePayList) {
         {
@@ -833,6 +1017,11 @@ export class MultiplePayList {
             this.netAmount = MultiplePayList.netAmount || 0
             this.tds = MultiplePayList.tds || 0
             this.billAmount = MultiplePayList.billAmount || 0
+            this._origPaidAmount = MultiplePayList._origPaidAmount || 0
+            this._origBalanceAmt = MultiplePayList._origBalanceAmt || 0
+            this._origNetAmt = MultiplePayList._origNetAmt || 0
+            this.discAmount = MultiplePayList.discAmount || 0
+            this.CompanyDisc = MultiplePayList.CompanyDisc || 0
         }
     }
 }
