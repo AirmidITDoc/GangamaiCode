@@ -25,7 +25,7 @@ export class RadioloyOrderlistService {
       RegNoSearch:[],
       FirstNameSearch:[''],
       LastNameSearch:[''],
-      PatientTypeSearch:['2'],
+      PatientTypeSearch:['1'],
       StatusSearch: ['0'],
       TestStatusSearch:['0'],
       CategoryId: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
@@ -61,47 +61,9 @@ export class RadioloyOrderlistService {
     }
 
    
-
-    public getRadiologyOrderList(employee) {
-      return this._httpClient.post("Generic/GetByProc?procName=Rtrv_RadilogyResultEntryList_Ptnt_Dtls", employee)
-    }  
-    
-    public getCategoryNameCombo()
-    {
-      return this._httpClient.post("Generic/getByProc?procName=Retrieve_RadiologyCategoryMasterForCombo",{})
+    public updatelabourMaster(employee) {
+      return this._httpClient1.PutData("Radiology/RadiologyOutsourceUpdate/"+employee.radReportId, employee);
     }
-    public getRtrvtemplate(employee)
-    {
-      
-      return this._httpClient.post("Generic/getByProc?procName=Retrive_RadiologyResultTemplate_Update",employee)
-    }
-
-
-    
-    public getTemplate(query) {
-      return this._httpClient.post("Generic/GetBySelectQuery?query="+query, {})
-    }
-    public getRadiologyPrint(RadReportId) {
-      return this._httpClient.post("Generic/GetByProc?procName=rptRadiologyReportPrint", RadReportId)
-    }    
-    populatePrintForm(employee) {
-      this.myform.patchValue(employee);
-    }
-  
-    Print(employee) {
-      return this._httpClient.post("Generic/GetByProc?procName=Rtrv_RadilogyResultEntryList_Ptnt_Dtls", employee)
-    }
-
-
-    // public gettemplateCombo(Id)
-    // {
-    //   return this._httpClient.post("Generic/GetByProc?procName=Retrieve_RadTemplateMasterForCombo",{Id:1});
-    // }
-    public getdoctorCombo()
-    {
-      return this._httpClient.post("Generic/GetByProc?procName=Retrieve_PathologistDoctorMasterForCombo",{});
-    }
-
     public RadiologyUpdate(Param:any) {
     return this._httpClient1.PutData("Radiology/RadiologyUpdate/"+Param.radReportId, Param)
       

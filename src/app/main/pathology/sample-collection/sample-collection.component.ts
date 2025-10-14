@@ -122,7 +122,7 @@ export class SampleCollectionComponent implements OnInit {
                     template: this.iconisCompeleted, width: 50
                 },
                 { heading: "Test Name", key: "serviceName", sort: true, align: 'left', emptySign: 'NA', width: 400 },
-                { heading: "Sample No", key: "sampleNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+                { heading: "Sample No | Collected By", key: "sampleNo", sort: true, align: 'left', emptySign: 'NA', width: 300 },
                 { heading: "Collection Date/Time", key: "sampleCollectionTime", sort: true, align: 'left', emptySign: 'NA', width: 150 },
             ],
             sortField: "BillNo",

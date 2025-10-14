@@ -41,6 +41,7 @@ import { RadiologyOrderListComponent } from './radiology-order-list.component';
 // import { RadiologyTemplateReportComponent } from './radiology-template-report/radiology-template-report.component';
 import { RadioloyOrderlistService } from './radioloy-orderlist.service';
 import { ResultEntryComponent } from './result-entry/result-entry.component';
+import { RadioLabOutsourceComponent } from './radio-lab-outsource/radio-lab-outsource.component';
 
 
 const routes: Routes = [
@@ -55,6 +56,7 @@ const routes: Routes = [
     declarations: [
         RadiologyOrderListComponent,
         ResultEntryComponent,
+        RadioLabOutsourceComponent,
         // RadiologyTemplateReportComponent,
     ],
     imports: [

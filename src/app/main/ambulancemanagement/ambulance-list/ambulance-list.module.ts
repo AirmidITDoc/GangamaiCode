@@ -35,6 +35,7 @@ import { FuseSharedModule } from '@fuse/shared.module';
 import { SharedModule } from 'app/main/shared/shared.module';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { AmbulanceListComponent } from './ambulance-list.component';
+import { NewAmbulanceDetailComponent } from './new-ambulance-detail/new-ambulance-detail.component';
 ;
  
 const routes: Routes = [
@@ -45,7 +46,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    declarations: [AmbulanceListComponent],
+    declarations: [AmbulanceListComponent, NewAmbulanceDetailComponent],
     imports: [
         CommonModule,
         RouterModule.forChild(routes),

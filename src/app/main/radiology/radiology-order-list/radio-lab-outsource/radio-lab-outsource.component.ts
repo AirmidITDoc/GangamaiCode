@@ -1,24 +1,21 @@
-import { Component, Inject, ViewEncapsulation } from '@angular/core';
-import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
-import { ResultEntryService } from '../result-entry.service';
+import { Component, Inject } from '@angular/core';
+import { RadioloyOrderlistService } from '../radioloy-orderlist.service';
+import { AdvanceDataStored } from 'app/main/ipd/advance';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 import { AuthenticationService } from 'app/core/services/authentication.service';
-import { Router } from '@angular/router';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 import { DatePipe } from '@angular/common';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
-import { AdvanceDataStored } from 'app/main/ipd/advance';
-import { fuseAnimations } from '@fuse/animations';
+import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-outsource-details',
-  templateUrl: './outsource-details.component.html',
-  styleUrls: ['./outsource-details.component.scss'],
-  encapsulation: ViewEncapsulation.None,
-  animations: fuseAnimations
+  selector: 'app-radio-lab-outsource',
+  templateUrl: './radio-lab-outsource.component.html',
+  styleUrls: ['./radio-lab-outsource.component.scss']
 })
-export class OutsourceDetailsComponent {
+export class RadioLabOutsourceComponent {
 
   LabFormGroup: FormGroup;
   dateTimeObj: any;
@@ -29,10 +26,10 @@ export class OutsourceDetailsComponent {
   date: any;
   date1: any;
   LabName='';
-  vPathReportId: any;
+  vradReportId: any;
   autocompleteModeoutsource: string = "OutsourceLab";
   constructor(
-    public _SampleService: ResultEntryService,
+    public _RadioloyOrderlistService: RadioloyOrderlistService,
     private formBuilder: UntypedFormBuilder,
     private accountService: AuthenticationService,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -42,7 +39,7 @@ export class OutsourceDetailsComponent {
     private commonService: PrintserviceService,
     public toastr: ToastrService,
     private advanceDataStored: AdvanceDataStored,
-    public dialogRef: MatDialogRef<OutsourceDetailsComponent>,
+    public dialogRef: MatDialogRef<RadioLabOutsourceComponent>,
     private router: Router
   ) {
 
@@ -56,7 +53,7 @@ export class OutsourceDetailsComponent {
      var now1 = new Date()
 debugger
     if (this.data) {
-      this.vPathReportId = this.data.pathReportId
+      this.vradReportId = this.data.radReportId
       this.outSourceId = this.data.outSourceId || 0;
       this.outSourceLabName = this.data.outSourceLabName;
       this.outSourceStatus = this.data.outSourceStatus ;
@@ -83,7 +80,7 @@ else
 
   createLabForm() {
     return this.formBuilder.group({
-      pathReportId: [this.vPathReportId, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      radReportId: [this.vradReportId, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       outSourceId: [this.outSourceId],
       outSourceLabName: [ this.LabName, [Validators.required]],
       outSourceSampleSentDateTime: [''],
@@ -109,8 +106,6 @@ else
     else
       this.LabFormGroup.get('outSourceStatus').setValue(0)
     this.LabFormGroup.get('outSourceLabName').setValue(this.LabName)
-
-
     
 debugger
     if(this.outSourceId==0)
@@ -122,7 +117,7 @@ debugger
     console.log(this.LabFormGroup.value)
     if (!this.LabFormGroup.invalid) {
 
-      this._SampleService.updatelabourMaster(this.LabFormGroup.value).subscribe((response) => {
+      this._RadioloyOrderlistService.updatelabourMaster(this.LabFormGroup.value).subscribe((response) => {
         this._matDialog.closeAll()
       });
     } else {

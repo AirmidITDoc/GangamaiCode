@@ -17,6 +17,7 @@ import { OutsourceDetailsComponent } from 'app/main/pathology/result-entry/outso
 import { PageNames } from 'app/main/shared/componets/airmid-fileupload/airmid-fileupload.component';
 import Swal from 'sweetalert2';
 import { AuthenticationService } from 'app/core/services/authentication.service';
+import { RadioLabOutsourceComponent } from './radio-lab-outsource/radio-lab-outsource.component';
 
 @Component({
     selector: 'app-radiology-order-list',
@@ -33,8 +34,8 @@ export class RadiologyOrderListComponent implements OnInit {
     l_name: any = ""
     status: any = "0"
     opipType: any = "2";
-        page: PageNames = PageNames.PATIENT;
-        pathFiles: PageNames = PageNames.PATIENT_PATHFILES;
+    page: PageNames = PageNames.PATIENT;
+    pathFiles: PageNames = PageNames.PATIENT_PATHFILES;
     autocompleteModeCategoryId: string = "RadioCategory";
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
 
@@ -42,7 +43,8 @@ export class RadiologyOrderListComponent implements OnInit {
     @ViewChild('actionsIPOP') actionsIPOP!: TemplateRef<any>;
     @ViewChild('actionsCompleted') actionsCompleted!: TemplateRef<any>;
     @ViewChild('actionsType') actionsType!: TemplateRef<any>;
-
+ @ViewChild('actionsverify') actionsverify!: TemplateRef<any>;
+@ViewChild('actionsoutSourceStatus') actionsoutSourceStatus!: TemplateRef<any>;
 
     fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
     toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
@@ -54,40 +56,52 @@ export class RadiologyOrderListComponent implements OnInit {
         this.gridConfig.columnsList.find(col => col.key === 'opdipdtype')!.template = this.actionsIPOP;
         this.gridConfig.columnsList.find(col => col.key === 'isCompleted')!.template = this.actionsCompleted;
         this.gridConfig.columnsList.find(col => col.key === 'patientType')!.template = this.actionsType;
+        this.gridConfig.columnsList.find(col => col.key === 'isVerified')!.template = this.actionsverify;
+ this.gridConfig.columnsList.find(col => col.key === 'outSourceStatus')!.template = this.actionsoutSourceStatus;
+
+
     }
 
     allColumns = [
-    
+
         {
-            heading: "-", key: "isCompleted", type: gridColumnTypes.template, align: "center", width: 30,
+            heading: "Status", key: "isCompleted", type: gridColumnTypes.template, align: "center", width: 30,
             template: this.actionsCompleted
         },
-            {
-            heading: "-", key: "opdipdtype", type: gridColumnTypes.template, align: 'center', width: 30,
+        {
+            heading: "Type", key: "opdipdtype", type: gridColumnTypes.template, align: 'center', width: 30,
             template: this.actionsIPOP
         },
         {
-            heading: "-", key: "patientType", type: gridColumnTypes.template, align: "center", width: 30,
+            heading: "PType", key: "patientType", type: gridColumnTypes.template, align: "center", width: 30,
             template: this.actionsType
         },
+        {
+            heading: "Verify", key: "isVerified", type: gridColumnTypes.template, align: "center", width: 50,
+            template: this.actionsverify
+        },
+         {
+            heading: "-", key: "outSourceStatus", type: gridColumnTypes.template, align: "center", width: 50,
+            template: this.actionsverify
+        },
         //  { heading: "DOA", key: "visitTime", sort: true, align: 'left', emptySign: 'NA', width: 200},
-        { heading: "RadDate", key: "radTime", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "RadDate", key: "radTime", sort: true, align: 'left', emptySign: 'NA', width: 120 },
         { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 70 },
-        { heading: "Patient Name ", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
-         { heading: "Age | Gender", key: "genderName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "Test Name", key: "serviceName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
-         { heading: "Admission No", key: "oP_IP_Number", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-      
+        { heading: "Patient Name ", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 230 },
+        { heading: "Age | Gender", key: "genderName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "Test Name", key: "serviceName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+        { heading: "Admission No", key: "oP_IP_Number", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+
         { heading: "Bill No", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-      
+
         { heading: "DoctorName", key: "consultantDoctor", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-         
-       
+
+
         // { heading: "Age Year", key: "ageYear", sort: true, align: 'left', emptySign: 'NA', width: 80 },
-      
+
         // { heading: "BillNo", key: "billNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         // { heading: "MobileNo", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-        { heading: "Category Name", key: "categoryName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "Category Name", key: "categoryName", sort: true, align: 'left', emptySign: 'NA', width: 120 },
         // { heading: "RefDoctorName", key: "refdoctorName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         {
             heading: "Action", key: "action", align: "right", width: 200, sticky: true, type: gridColumnTypes.template,
@@ -127,7 +141,7 @@ export class RadiologyOrderListComponent implements OnInit {
         this.myformSearch = this._RadioloyOrderlistService.filterForm()
     }
 
-    
+
     CategoryId = "0"
     CategoryView(value) {
 
@@ -156,9 +170,9 @@ export class RadiologyOrderListComponent implements OnInit {
     getfilterdata() {
         debugger
         this.gridConfig = {
-             apiUrl: "Radiology/RadiologyList",
-        columnsList: this.allColumns,
-        sortField: "RadReportId",
+            apiUrl: "Radiology/RadiologyList",
+            columnsList: this.allColumns,
+            sortField: "RadReportId",
             sortOrder: 0,
             filters: [
                 { fieldName: "F_Name ", fieldValue: "%", opType: OperatorComparer.StartsWith },
@@ -175,8 +189,8 @@ export class RadiologyOrderListComponent implements OnInit {
         console.log(this.gridConfig)
         this.grid.gridConfig = this.gridConfig;
         this.grid.bindGridData();
-         this.CategoryId ="0"
-         this.regNo ="0"
+        //  this.CategoryId ="0"
+        //  this.regNo ="0"
     }
 
     Clearfilter(event) {
@@ -188,12 +202,12 @@ export class RadiologyOrderListComponent implements OnInit {
     }
 
     onSave(row: any = null) {
-debugger
+        debugger
         let that = this;
         const dialogRef = this._matDialog.open(ResultEntryComponent,
             {
-                maxHeight: '95vh',
-                width: '100%',
+                maxHeight: '99vh',
+                width: '80%',
                 data: row
             });
         dialogRef.afterClosed().subscribe(result => {
@@ -218,7 +232,7 @@ debugger
                         "opType": "Equals"
                     }
                 ],
-                "mode": "RadiologyTemplateReport"
+                "mode": "RadiologyTemplateReportWithHeader"
             }
 
             this._RadioloyOrderlistService.getReportView(param).subscribe(res => {
@@ -239,87 +253,70 @@ debugger
         }, 100);
     }
 
+
+    getSelectedObjIP(obj) {
+
+        console.log(obj)
+        if ((obj.regID ?? 0) > 0) {
+            this.regNo = obj.regID
+
+            this.onChangeFirst();
+        }
+    }
+
     
-  getSelectedObjIP(obj) {
-
-    console.log(obj)
-    if ((obj.regID ?? 0) > 0) {
-      this.regNo = obj.regID
-
-    this.onChangeFirst();
-  }}
-
-//     getView(row: any = null) {
-//   const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
-//         buttonElement.blur(); // Remove focus from the button
-
-//         const dialogRef = this._matDialog.open(RadiologyTemplateReportComponent,
-//             {
-//                 maxWidth: "85vw",
-//                 height: '85%',
-//                 width: '70%',
-//                 data: row
-//             });
-//         dialogRef.afterClosed().subscribe(result => {
-//             // if (result) {
-//             this.grid.bindGridData();
-//             // }
-//         });
-//     }
-Editoutsoucedata(row) {
-        const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+    Editoutsoucedata(row) {
+        const buttonElement = document.activeElement as HTMLElement; 
         buttonElement.blur(); // Remove focus from the button
 
-        const dialogRef1 = this._matDialog.open(OutsourceDetailsComponent,
+        const dialogRef1 = this._matDialog.open(RadioLabOutsourceComponent,
             {
                 maxWidth: "60vw",
                 height: '50vh',
                 width: '100%',
-                data: {
-
-                    regobj: row
-                }
+                data: row
+                
             });
 
         dialogRef1.afterClosed().subscribe(result => {
-                       // this.getPatientsList();
+               this.grid.bindGridData();
         });
     }
 
-     onVerify(row) {
-           Swal.fire({
-               title: 'Confirm Verify Report ',
-               text: 'Are you sure you want to Verify Report?',
-               icon: 'warning',
-               showCancelButton: true,
-               confirmButtonColor: '#3bd96dff',
-               cancelButtonColor: '#d33',
-               confirmButtonText: 'Yes, Verify!'
-   
-           }).then((flag) => {
-               // debugger
-               if (flag.isConfirmed) {
-   
-                   let submitData = {
-   
-                       "radReportId": row.radReportId,
-                       "isVerifyid": this.accountService.currentUserValue.userId,
-                       "isVerifySign":true,
-                       "isVerifyedDate": new Date().toISOString()
-   
-                   };
-                   console.log(submitData);
-                   this._RadioloyOrderlistService.RadioReportverifyMaster(submitData).subscribe(response => {
-                      
-                   });
-               }
-           });
-           // this.onEdit(row);
-       }
+    onVerify(row) {
+        Swal.fire({
+            title: 'Confirm Verify Report ',
+            text: 'Are you sure you want to Verify Report?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3bd96dff',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, Verify!'
+
+        }).then((flag) => {
+            // debugger
+            if (flag.isConfirmed) {
+
+                let submitData = {
+
+                    "radReportId": row.radReportId,
+                    "isVerifyid": this.accountService.currentUserValue.userId,
+                    "isVerifySign": true,
+                    "isVerifyedDate": new Date().toISOString()
+
+                };
+                console.log(submitData);
+                this._RadioloyOrderlistService.RadioReportverifyMaster(submitData).subscribe(response => {
+
+                });
+            }
+        });
+           this.grid.bindGridData();
+    }
     onClear() {
         this.myformSearch.get('RegNoSearch').setValue("0");
         this.myformSearch.get('StatusSearch').setValue("0");
-        this.myformSearch.get('PatientTypeSearch').setValue("2");
+        this.myformSearch.get('PatientTypeSearch').setValue("1");
     }
 }
 

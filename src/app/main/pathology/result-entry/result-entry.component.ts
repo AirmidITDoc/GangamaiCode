@@ -135,10 +135,11 @@ export class ResultEntryComponent implements OnInit {
         // 'outSourceStatus',
         // 'isVerifyid',
         'action1',
+        'CategoryName',
         'TestName',
         'SampleCollectionTime',
         'SampleNo',
-        'CategoryName',
+      
         'outSourceLabName',
         'outSourceSampleSentDateTime',
 
@@ -413,7 +414,7 @@ export class ResultEntryComponent implements OnInit {
     }
 
 
-    onSave(row: any = null) {
+    onSampleCollSave(row: any = null) {
         let that = this;
         const dialogRef = this._matDialog.open(SamplecollectionPageComponent,
             {
@@ -429,72 +430,8 @@ export class ResultEntryComponent implements OnInit {
         });
     }
 
-    keyPressAlphanumeric(event) {
-        var inp = String.fromCharCode(event.keyCode);
-        if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
-            return true;
-        } else {
-            event.preventDefault();
-            return false;
-        }
-    }
-
-    onSearchClear() {
-        this._SampleService.myformSearch.reset({ RegNoSearch: '', FirstNameSearch: '', LastNameSearch: '', PatientTypeSearch: '', StatusSearch: '' });
-    }
-
-    // SearchTest($event) {
-    //     var m_data = {
-    //         "BillNo": this.SBillNo,
-    //         "OP_IP_Type": this.SOPIPtype,
-    //         "IsCompleted": this._SampleService.myformSearch.get("TestStatusSearch").value || 0,
-    //     }
-
-    //     this._SampleService.getTestList(m_data).subscribe(Visit => {
-    //         this.dataSource1.data = Visit as SampleList[];
-    //         this.dataSource1.sort = this.sort;
-    //         this.dataSource1.paginator = this.paginator;
-    //         console.log(this.dataSource1.data);
-    //         this.sIsLoading = '';
-    //         this.click = false;
-    //     },
-    //         error => {
-    //             this.sIsLoading = '';
-    //         });
-    // }
-
-    selection = new SelectionModel<SampleList>(true, []);
-
-    masterToggle() {
-        // Toggle selection
-        if (this.isSomeSelected()) {
-            this.selection.clear();
-        } else {
-            this.isAllSelected()
-                ? this.selection.clear()
-                : this.dataSource1.data.forEach(row => this.selection.select(row));
-        }
-
-        console.log('Selected items count:', this.selection.selected.length);
-
-        this.resultSource = [...this.selection.selected];
-        console.log('Selected items:', this.resultSource);
-    }
-
-
-    isSomeSelected() {
-        // console.log(this.selection.selected);
-        return this.selection.selected.length > 0;
-    }
-
-
-    isAllSelected() {
-        const numSelected = this.selection.selected.length;
-        const numRows = this.dataSource1.data.length;
-
-        return numSelected === numRows;
-    }
-
+   
+   
     IsTemplateTest: any;
     chkresultentry(contact, flag) {
         // debugger
@@ -541,8 +478,8 @@ export class ResultEntryComponent implements OnInit {
 
                     const dialogRef = this._matDialog.open(NewResultEntryComponent,
                         {
-                            maxWidth: "95vw",
-                            height: '870px',
+                            maxWidth: "75vw",
+                            height: '800px',
                             width: '95%',
                             data: {
                                 RIdData: data,
@@ -562,7 +499,7 @@ export class ResultEntryComponent implements OnInit {
             const dialogRef = this._matDialog.open(NewResultTemplateComponent,
                 {
                     maxHeight: '95vh',
-                    width: '90%',
+                    width: '80%',
                     data: contact,
                 });
 
@@ -629,7 +566,6 @@ export class ResultEntryComponent implements OnInit {
         console.log("2nd Table Data:", m)
         this.OPIPID = m.opdipdid //m.OPD_IPD_ID
         this.advanceDataStored.storage = new SampleDetailObj(m);
-        // console.log(this.advanceDataStored.storage)
         if (event.checked) {
             if (m.pathTestID == 0) {
                 this.toastr.warning('This Test Not Created !', 'Warning !', {
@@ -724,7 +660,7 @@ export class ResultEntryComponent implements OnInit {
         console.log(contact)
 
         if (contact.isTemplateTest)
-            // this.viewgetPathologyTemplateReportPdf(contact)
+            
             Swal.fire({
                 title: 'Select Report Format',
                 text: "Choose how you want to view the report:",
@@ -762,7 +698,7 @@ export class ResultEntryComponent implements OnInit {
 
     selectedItem: any;
     // opiptype = this.selectedItem.opdipdtype;
-    // CompletdFlag = 1
+    CompletdFlag = 1
     Printresultentry() {
 debugger
         console.log(this.selection.selected);
@@ -773,10 +709,10 @@ debugger
         this.selection.selected.forEach((element) => {
             console.log(element);
            
-            // if (element.isCompleted)
-            //     this.CompletdFlag = 1
-            // else
-            //     this.CompletdFlag = 0
+            if (element.isCompleted)
+                this.CompletdFlag = 1
+            else
+                this.CompletdFlag = 0
             pathologyDelete.push({ pathReportId: element.pathReportId });
         });
 
@@ -785,21 +721,19 @@ debugger
         };
 
         console.log(submitData);
-        // if (this.CompletdFlag) {
+        if (this.CompletdFlag) {
             this._SampleService.PathPrintResultentryInsert(submitData).subscribe(res => {
                 if (res) {
                     this.viewgetPathologyTestReportPdf(this.selectedItem)
                 }
             });
-        // }else{
-        //     Swal.fire("Selcted test Not Completd for Print.....")
-        // }
+        }else{
+            Swal.fire("Selcted test Not Completd for Print.....")
+        }
     }
 
     viewgetPathologyTestReportPdf(data) {
-
-        // this.selection.selected.forEach((element) => {
-        const param = {
+     const param = {
             searchFields: [
                 {
                     fieldName: "OP_IP_Type",
@@ -827,7 +761,7 @@ debugger
 
             });
         });
-        // });
+        
     }
 
     Printresultentrywithheader() {
@@ -857,8 +791,6 @@ debugger
     viewgetPathologyTestReportwithheaderPdf(data) {
 
         console.log(this.selection.selected);
-
-        // this.selection.selected.forEach((element) => {
         const param = {
             searchFields: [
                 {
@@ -911,53 +843,51 @@ debugger
     }
 
 
-    exportResultentryReportExcel() {
-        this.sIsLoading == 'loading-data'
-        let exportHeaders = ['Date', 'Time', 'RegNo', 'PatientName', 'DoctorName', 'PatientType', 'PBillNo', 'GenderName', 'AgeYear', 'PathDues'];
-        this.reportDownloadService.getExportJsonData(this.dataSource.data, exportHeaders, 'Result Entry');
-        this.dataSource.data = [];
-        this.sIsLoading = '';
-    }
+    // exportResultentryReportExcel() {
+    //     this.sIsLoading == 'loading-data'
+    //     let exportHeaders = ['Date', 'Time', 'RegNo', 'PatientName', 'DoctorName', 'PatientType', 'PBillNo', 'GenderName', 'AgeYear', 'PathDues'];
+    //     this.reportDownloadService.getExportJsonData(this.dataSource.data, exportHeaders, 'Result Entry');
+    //     this.dataSource.data = [];
+    //     this.sIsLoading = '';
+    // }
 
-    exportReportPdf() {
-        let actualData = [];
-        this.dataSource.data.forEach(e => {
-            var tempObj = [];
-            tempObj.push(e.DOA);
-            tempObj.push(e.DOT);
-            // tempObj.push(e.DVisitDate);
-            tempObj.push(e.RegNo);
-            tempObj.push(e.DoctorName);
-            tempObj.push(e.PatientType);
-            tempObj.push(e.PBillNo);
-            tempObj.push(e.GenderName);
-            tempObj.push(e.AgeYear);
-            // tempObj.push(e.PathAmount);
-            actualData.push(tempObj);
-        });
-        let headers = [['Date', 'Time', 'RegNo', 'DoctorName', 'PatientType', 'PBillNo', 'GenderName', 'AgeYear', 'PathAmount']];
-        this.reportDownloadService.exportPdfDownload(headers, actualData, 'Result Entry');
-    }
+    // exportReportPdf() {
+    //     let actualData = [];
+    //     this.dataSource.data.forEach(e => {
+    //         var tempObj = [];
+    //         tempObj.push(e.DOA);
+    //         tempObj.push(e.DOT);
+    //         // tempObj.push(e.DVisitDate);
+    //         tempObj.push(e.RegNo);
+    //         tempObj.push(e.DoctorName);
+    //         tempObj.push(e.PatientType);
+    //         tempObj.push(e.PBillNo);
+    //         tempObj.push(e.GenderName);
+    //         tempObj.push(e.AgeYear);
+    //         // tempObj.push(e.PathAmount);
+    //         actualData.push(tempObj);
+    //     });
+    //     let headers = [['Date', 'Time', 'RegNo', 'DoctorName', 'PatientType', 'PBillNo', 'GenderName', 'AgeYear', 'PathAmount']];
+    //     this.reportDownloadService.exportPdfDownload(headers, actualData, 'Result Entry');
+    // }
 
-    onClose() {
+  
+    // onShow(event: MouseEvent) {
+    //     // this.click = false;// !this.click;
+    //     this.click = !this.click;
 
-    }
-    onShow(event: MouseEvent) {
-        // this.click = false;// !this.click;
-        this.click = !this.click;
+    //     setTimeout(() => {
+    //         {
+    //             this.sIsLoading = 'loading-data';
 
-        setTimeout(() => {
-            {
-                this.sIsLoading = 'loading-data';
+    //             // this.getPatientsList();
+    //         }
 
-                // this.getPatientsList();
-            }
+    //     }, 50);
+    //     this.MouseEvent = true;
+    //     this.click = true;
 
-        }, 50);
-        this.MouseEvent = true;
-        this.click = true;
-
-    }
+    // }
 
     onsamplecolltion(contact) {
         console.log(contact)
@@ -976,8 +906,7 @@ debugger
             });
 
         dialogRef1.afterClosed().subscribe(result => {
-            // this.getPatientsList();
-        });
+            });
     }
     Editoutsoucedata(row) {
         console.log(row)
@@ -1030,26 +959,51 @@ debugger
         // this.onEdit(row);
     }
 
-    //     onVerify(row) {
-    // debugger
-    //         console.log(row)
-    //         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
-    //         buttonElement.blur(); // Remove focus from the button
+ 
+     selection = new SelectionModel<SampleList>(true, []);
 
-    //         const dialogRef1 = this._matDialog.open(ReportVerifyDetailsComponent,
-    //             {
-    //                 maxWidth: "50vw",
-    //                 height: '50vh',
-    //                 width: '100%',
-    //                 data: row
+    masterToggle() {
+        // Toggle selection
+        if (this.isSomeSelected()) {
+            this.selection.clear();
+        } else {
+            this.isAllSelected()
+                ? this.selection.clear()
+                : this.dataSource1.data.forEach(row => this.selection.select(row));
+        }
 
-    //             });
+        console.log('Selected items count:', this.selection.selected.length);
 
-    //         dialogRef1.afterClosed().subscribe(result => {
-    //             this.grid.bindGridData();
+        this.resultSource = [...this.selection.selected];
+        console.log('Selected items:', this.resultSource);
+    }
 
-    //         });
-    //     }
+
+    isSomeSelected() {
+        // console.log(this.selection.selected);
+        return this.selection.selected.length > 0;
+    }
+ keyPressAlphanumeric(event) {
+        var inp = String.fromCharCode(event.keyCode);
+        if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
+            return true;
+        } else {
+            event.preventDefault();
+            return false;
+        }
+    }
+
+    onSearchClear() {
+        this._SampleService.myformSearch.reset({ RegNoSearch: '', FirstNameSearch: '', LastNameSearch: '', PatientTypeSearch: '', StatusSearch: '' });
+    }
+
+    isAllSelected() {
+        const numSelected = this.selection.selected.length;
+        const numRows = this.dataSource1.data.length;
+
+        return numSelected === numRows;
+    }
+
     onClear() {
         this._SampleService.myformSearch.get('RegNoSearch').setValue("0");
         this._SampleService.myformSearch.get('StatusSearch').setValue("0");

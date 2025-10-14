@@ -32,7 +32,8 @@
                                 <!-- Column 1 -->
                                 <div fxLayout="column" fxLayoutGap="6px">
                                     <div class="patient-col"><span class="patient-col-key">UHID No</span><span>:</span>
-                                        <span class="patient-col-value">{{data.regNo}}</span></div>
+                                        <span class="patient-col-value">{{data.regNo}}</span>
+                                    </div>
                                     <div class="patient-col"><span class="patient-col-key">Patient
                                             Name</span><span>:</span> <span
                                             class="patient-col-value">{{data.patientName}}</span></div>
@@ -50,7 +51,8 @@
                                             Time</span><span>:</span> <span
                                             class="patient-col-value">{{data.doa}}</span></div>
                                     <div class="patient-col"><span class="patient-col-key">IPD No</span><span>:</span>
-                                        <span class="patient-col-value">{{data.ipdno}}</span></div>
+                                        <span class="patient-col-value">{{data.ipdno}}</span>
+                                    </div>
                                     <div class="patient-col"><span class="patient-col-key">Age |
                                             Sex</span><span>:</span> <span
                                             class="patient-col-value">{{data.ageYear}}Y|{{data.ageMonth}}M|{{data.ageDay}}D
@@ -83,6 +85,43 @@
                 <!-- Bed Transfer Form -->
                 <div class="modal-card-container">
                     <mat-card>
+                        <div class="patient-info-container" style="margin-top: 20px;">
+                            <div class="patient-sub">
+                                <div class="patient-info-title border-bottom pb-2">
+                                <span class="h1">Previous Bed Information:-{{ data.roomName}} | {{ data.className }} </span>
+                            </div>
+                                <!-- <div class="patient-info-row patient-info-1-40 pt-8" fxLayout="row"
+                                    fxLayoutAlign="space-between">
+                                    <div fxLayout="column" fxLayoutGap="10px">
+                                        <div class="patient-col">
+                                            <span class="patient-col-key">Previous Ward</span>
+                                            <span>:</span>
+                                            <span class="patient-col-value">{{ data.roomName}}</span>
+                                        </div>
+
+                                    </div>
+
+                                    <div fxLayout="column" fxLayoutGap="10px">
+                                        <div class="patient-col">
+                                            <span class="patient-col-key">Previous Bed</span>
+                                            <span>:</span>
+                                            <span class="patient-col-value">{{ data.bedtName }}</span>
+                                        </div>
+                                    </div>
+                                    <div fxLayout="column" fxLayoutGap="10px">
+                                        <div class="patient-col">
+                                            <span class="patient-col-key">Previous Class</span>
+                                            <span>:</span>
+                                            <span class="patient-col-value">{{ data.className }}</span>
+                                        </div>
+
+                                    </div>
+
+                                </div> -->
+                            </div>
+                        </div>
+                    </mat-card>
+                    <mat-card>
                         <div fxLayout="column" class="gap-8">
                             <div class="form-title mb-2 border-bottom pb-2">
                                 <span class="h3 font-weight-600">Bed Transfer Information</span>
@@ -98,12 +137,7 @@
                                         <hr>
                                         <div fxLayout="row wrap" fxLayoutGap="8px">
 
-                                            <!-- <airmid-dropdown label="Ward Name" formControlName="toWardId" [formGroup]="Bedtransfer"
-                                                [validations]="getValidationMessages().toWardId"
-                                                ValueField="roomId" TextField="roomName"
-                                                (selectionChange)="onChangeWard($event)"
-                                                ApiUrl="WardMaster/get-WardClass" fxFlex="32%">
-                                            </airmid-dropdown> -->
+
 
                                             <airmid-dropdown label="Ward Name" formControlName="toWardId" fxFlex="32%"
                                                 [formGroup]="Bedtransfer"
@@ -119,15 +153,9 @@
                                                 fxFlex="32%">
                                             </airmid-dropdown>
 
-                                            <!-- <airmid-dropdown label="Class Name" formControlName="toClassId" [formGroup]="Bedtransfer"
-                                                [validations]="getValidationMessages().ClassId"
-                                                [mode]="autocompleteclass" [disabled]="true"
-                                                fxFlex="32%">
-                                            </airmid-dropdown> -->
-
 
                                             <airmid-dropdown label="Class Name" formControlName="toClassId" fxFlex="32%"
-                                                 [formGroup]="Bedtransfer"
+                                                [formGroup]="Bedtransfer"
                                                 [validations]="getValidationMessages().ClassId"
                                                 [mode]="autocompleteModeClass" [disabled]="true" [readonly]="true"
                                                 #ddlClassName>

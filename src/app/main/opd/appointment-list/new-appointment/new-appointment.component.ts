@@ -224,13 +224,38 @@ export class NewAppointmentComponent implements OnInit {
 
         this.VisitFormGroup.get("DepartmentId").setValue(this._configue.configParams.OPDDefaultDepartment)
 
-        this.registerObj.doctorId = this._configue.configParams.OPDDefaultDepartment
+        this.registerObj.departmentId = this._configue.configParams.OPDDefaultDepartment
         this.registerObj.doctorId = this._configue.configParams.OPDDefaultDoctor
         this.selectChangedepartment(this.registerObj)
 
         if (this._configue.configParams.OPDDefaultDoctor > 0)
             this.setdoctor(this._configue.configParams.OPDDefaultDoctor)
+
+        // if (this._configue.configParams.OPDDefaultDoctor > 0) {
+        //     this.setdoctorconfig()
+        // }
     }
+
+    // setdoctorconfig() {
+    //     debugger
+    //     this._AppointmentlistService.getDoctorsByDepartment(this._configue.configParams.OPDDefaultDepartment).subscribe((data: any) => {
+    //         console.log(data)
+    //         if (data) {
+                
+    //             this.ddlDoctor.options = data;
+    //             this.ddlDoctor.bindGridAutoComplete();
+    //             debugger
+    //             const incomingDoctorId = this._configue.configParams.OPDDefaultDoctor;
+    //             if (incomingDoctorId) {
+    //                 const matchedDoctor = data.find(doc => doc.value === incomingDoctorId);
+    //                 if (matchedDoctor) {
+    //                     this.VisitFormGroup.get('ConsultantDocId')?.setValue(matchedDoctor.value);
+    //                 }
+    //             }
+    //         }
+    //     });
+    // }
+
 
 
     setdoctor(data) {

@@ -147,7 +147,7 @@ export class RequestforlabtestComponent implements OnInit {
             columnsList: [
 
                 { heading: "Status", key: "isStatus", type: gridColumnTypes.status, align: "center", width: 70 },
-                { heading: "--", key: "isTestCompleted", type: gridColumnTypes.status, align: "center", width: 50 },
+                { heading: "Completed", key: "isTestCompleted", type: gridColumnTypes.status, align: "center", width: 50 },
                 { heading: "Request Date ", key: "reqDate", sort: true, align: 'left', emptySign: 'NA', width: 200 },
                 { heading: "ServiceName", key: "serviceName", sort: true, align: 'left', emptySign: 'NA', width: 450 },
                 { heading: "BillNo | User | DateTime", key: "addedByDate", sort: true, align: 'left', emptySign: 'NA', width: 350 },

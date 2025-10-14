@@ -183,6 +183,7 @@ this.RaioInsertForm = this.createradioInsert();
 
   selectChangeTemplateName(row) {
     console.log("Template:", row)
+    debugger
     this.Tempdesc = row.templateDesc
     if (row.templateId)
       this.isSelected = true
@@ -208,8 +209,12 @@ this.RaioInsertForm = this.createradioInsert();
         this._radiologytemplateService.getRadTemplateById(this.RadReportId).subscribe((response) => {
           this.templateObj = response;
           console.log("all data:", this.templateObj)
+          if(this.templateObj.isCompleted){
           this.vTemplateDesc = this.templateObj.resultEntry
           this.vsuggestionNotes = this.templateObj.suggestionNotes
+          
+          }else
+            this.isSelected=true
         });
       }, 500);
     }
@@ -267,6 +272,7 @@ debugger
 
       console.log(this.RaioInsertForm.value);
       this._radiologytemplateService.RadiologyUpdate(this.RaioInsertForm.value).subscribe(data => {
+        console.log()
         this.dialogRef.close();
         this.viewgetRadioloyTemplateReportPdf(this.regObj);
       });
@@ -294,7 +300,7 @@ debugger
 
 
 viewgetRadioloyTemplateReportPdf(contact) {
-  
+  debugger
   setTimeout(() => {
     let param = {
       "searchFields": [
@@ -309,7 +315,7 @@ viewgetRadioloyTemplateReportPdf(contact) {
           "opType": "Equals"
         }
       ],
-      "mode": "RadiologyTemplateReport"
+      "mode": "RadiologyTemplateReportWithHeader"
     }
 
     this._radiologytemplateService.getReportView(param).subscribe(res => {
