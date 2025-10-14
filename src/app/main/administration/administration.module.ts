@@ -71,6 +71,10 @@ const appRoutes: Routes = [
     loadChildren: () => import("./template-description/templatedescription.module").then((m) => m.TemplatedescriptionModule),
 },
 {
+    path: "barcode-config",
+    loadChildren: () => import("./barcode-config/barcodeconfig.module").then((m) => m.BarcodeConfigModule),
+},
+{
   path: "import-excel",
   loadChildren: () => import("./import-excel/import-excel.module").then((m) => m.ImportExcelModule),
 }
