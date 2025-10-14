@@ -111,7 +111,7 @@
 
                 <!-- policy info -->
                 <div class="modal-card-container">
-                    <form [formGroup]="companyFormGroup" fxLayout="column" fxLayoutGap="8px">
+                    <form [formGroup]="companyInformationFormGroup" fxLayout="column" fxLayoutGap="8px">
                         <div class="detail-container">
                             <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 6px;">
                                 <div class="detail-header">
@@ -120,9 +120,8 @@
                                 <div fxLayout="row wrap" fxLayoutGap="12px 0px grid">
 
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <airmid-textbox label="Policy No / Member No" formControlName="PolicyNo"
-                                            [value]="registerObj.policyNo || ''" [formGroup]="companyFormGroup"
-                                            [maxLength]="15"></airmid-textbox>
+                                        <airmid-textbox label="Policy No / Member No" formControlName="policyNo"
+                                            [formGroup]="companyInformationFormGroup" [maxLength]="15"></airmid-textbox>
                                     </div>
 
                                     <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
@@ -135,14 +134,18 @@
                                         </mat-form-field>
                                     </div>
 
+                                    <!-- <airmid-textbox label="Approved Amt" formControlName="ApprovalAmt"
+                                        [formGroup]="companyInformationFormGroup" [value]="registerObj.ApprovalAmt || ''"
+                                        [maxLength]="15" (keypress)="keyPressAlphanumeric($event)" fxFlex="15%">
+                                    </airmid-textbox> -->
+
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <airmid-textbox label="Policy Limit" formControlName="PolicyLimit"
-                                            [value]="registerObj.PolicyLimit || ''" [formGroup]="companyFormGroup"
-                                            [maxLength]="15"></airmid-textbox>
+                                        <airmid-textbox label="Policy Limit" formControlName="approvedAmount"
+                                            [formGroup]="companyInformationFormGroup" [maxLength]="15"></airmid-textbox>
                                     </div>
 
                                     <div class="input-add-button" fxFlex="10%" fxLayoutAlign="center center">
-                                        <button mat-raised-button color="primary">
+                                        <button mat-raised-button color="primary" (click)="CompanyInfoSave()">
                                             Save
                                         </button>
                                     </div>
@@ -155,21 +158,21 @@
                         <mat-card fxFlex="100%" style="padding: 12px;">
 
                             <!-- Form Row -->
-                            <form [formGroup]="companyFormGroup">
+                            <form [formGroup]="companyApprovalFormGroup">
                                 <div fxLayout="row wrap" fxLayoutGap="12px" fxLayoutAlign="start center">
 
-                                    <airmid-textbox label="Estimate Amt" formControlName="EstimatAmt"
-                                        [formGroup]="companyFormGroup" [value]="registerObj.EstimatAmt || ''"
+                                    <airmid-textbox label="Estimate Amt" formControlName="estimateAmount"
+                                        [formGroup]="companyApprovalFormGroup" [value]="registerObj.estimateAmount || ''"
                                         [maxLength]="15" (keypress)="keyPressAlphanumeric($event)" fxFlex="15%">
                                     </airmid-textbox>
 
-                                    <airmid-textbox label="Approved Amt" formControlName="ApprovalAmt"
-                                        [formGroup]="companyFormGroup" [value]="registerObj.ApprovalAmt || ''"
+                                    <airmid-textbox label="Approved Amt" formControlName="approvedAmount"
+                                        [formGroup]="companyApprovalFormGroup" [value]="registerObj.approvedAmount || ''"
                                         [maxLength]="15" (keypress)="keyPressAlphanumeric($event)" fxFlex="15%">
                                     </airmid-textbox>
 
-                                    <airmid-textbox label="AL Entry" formControlName="Alentry"
-                                        [formGroup]="companyFormGroup" [value]="registerObj.Alentry || ''"
+                                    <airmid-textbox label="AL Entry" formControlName="alentry"
+                                        [formGroup]="companyApprovalFormGroup" [value]="registerObj.alentry || ''"
                                         [maxLength]="15" fxFlex="15%">
                                     </airmid-textbox>
 
@@ -181,8 +184,8 @@
                                         <mat-datepicker #picker2></mat-datepicker>
                                     </mat-form-field>
 
-                                    <airmid-textbox label="Enter Reason" formControlName="reason"
-                                        [formGroup]="companyFormGroup" [value]="registerObj.reason || ''"
+                                    <airmid-textbox label="Enter Reason" formControlName="comments"
+                                        [formGroup]="companyApprovalFormGroup" [value]="registerObj.comments || ''"
                                         [maxLength]="15" fxFlex="20%">
                                     </airmid-textbox>
 
@@ -192,7 +195,7 @@
                                             <mat-icon>add</mat-icon>
                                             Add
                                         </button> -->
-                                        <button mat-raised-button color="primary">
+                                        <button mat-raised-button color="primary" (click)="CompanyApprovalSave()">
                                             Save
                                         </button>
                                     </div>

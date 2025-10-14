@@ -1,0 +1,81 @@
+<div class="page-layout modal-wrapper grid-container" fusePerfectScrollbar>
+
+    <div class="modal-header accent">
+        <div class="modal-header-content">
+            <div class="modal-header-title">
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"> Barcode Config </span>
+            </div>
+            <div class="modal-header-right">
+                <div class="comman-date-container">
+                    <div class="comman-date">
+                        <!-- <app-common-date [screenFrom]="screenFromString" (dateTimeEventEmitter)="getDateTime($event)"></app-common-date> -->
+                    </div>
+                    <div class="close-icon">
+                        <button mat-icon-button tabIndex="-1" (click)="onClose()" aria-label="Close dialog">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-body content">
+        <div fxLayout="column" class="gap-8 h-100-p">
+            <div class="modal-card-container">
+                <form [formGroup]="TemplateSaveForm">
+                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="4px">
+                        <airmid-textbox label="Template Code" formControlName="templateCode" [readonly]="true"
+                            [formGroup]="TemplateSaveForm" [validations]="getValidationMessages().templateCode" fxFlex>
+                        </airmid-textbox>
+                        <airmid-textbox label="Width" formControlName="width" [formGroup]="TemplateSaveForm"
+                            [validations]="getValidationMessages().width" fxFlex>
+                        </airmid-textbox>
+                        <airmid-textbox label="Height" formControlName="height" [formGroup]="TemplateSaveForm"
+                            [validations]="getValidationMessages().height" fxFlex>
+                        </airmid-textbox>
+                    </div>
+
+                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start" class="gap-8">
+                        <airmid-textbox label="Margin" formControlName="margin" [formGroup]="TemplateSaveForm" fxFlex>
+                        </airmid-textbox>
+                        <airmid-textbox label="Padding" formControlName="padding" [formGroup]="TemplateSaveForm" fxFlex>
+                        </airmid-textbox>
+                        <airmid-textbox label="Barcode Data" formControlName="barcodeData"
+                            [formGroup]="TemplateSaveForm" fxFlex>
+                        </airmid-textbox>
+                    </div>
+                    <div fxFlexFill fxLayout="row" fxLayout.gt-xs="column" fxLayoutGap="6px">
+                        <div class="modal-card-header">
+                            <span style="font-weight: bold;">Template Content</span>
+                        </div>
+                        <airmid-editor formControlName="templateBody" [formGroup]="TemplateSaveForm"
+                            (valueChange)="onEditorValueChange($event)">
+                        </airmid-editor>
+                    </div>
+                    <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start" class="gap-8">
+                        <mat-slide-toggle name="isActive" formControlName="isActive">
+                            Active
+                        </mat-slide-toggle>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="modal-footer" fxLayout="row" fxLayoutAlign="space-between">
+        <form [formGroup]="TemplateSaveForm">
+            <div>
+                <!-- <app-airmid-slider label="IsActive/Deactive" formControlName="isActive"
+                    [formGroup]="TemplateSaveForm"></app-airmid-slider> -->
+            </div>
+        </form>
+        <div class="modal-footer-buttons">
+            <button class="btn btn-danger-outline" (click)="onClear()">Close</button>
+            <button class="btn btn-primary" (click)="onSubmit()">Save</button>
+        </div>
+    </div>
+
+</div>

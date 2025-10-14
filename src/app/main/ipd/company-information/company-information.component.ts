@@ -22,7 +22,8 @@ import { gridModel } from 'app/core/models/gridRequest';
   animations: fuseAnimations
 })
 export class CompanyInformationComponent implements OnInit {
-  companyFormGroup: FormGroup;
+  companyInformationFormGroup: FormGroup;
+  companyApprovalFormGroup: FormGroup;
   dateTimeObj: any;
   screenFromString = 'Common-form';
   // registerObj: AdmissionPersonlModel;
@@ -54,11 +55,17 @@ export class CompanyInformationComponent implements OnInit {
   registerObj = new CompanyDetails({});
 
   ngOnInit(): void {
-    this.companyFormGroup = this.createCompanyForm();
-    this.companyFormGroup.markAllAsTouched();
+    this.companyApprovalFormGroup = this.createCompanyAprrovalForm();
+    this.companyApprovalFormGroup.markAllAsTouched();
+
+    this.companyInformationFormGroup = this.createCompanyInfoForm();
+    this.companyInformationFormGroup.markAllAsTouched()
 
     console.log("company data:", this.data.registerObj)
     this.registerObj = this.data.registerObj
+    this.AdmissionID = this.registerObj.admissionId
+    this.companyInformationFormGroup.patchValue(this.registerObj)
+
     if ((this.data?.companyId) > 0) {
       this._AdmissionService.getCompanyIdDetail(this.data.companyId).subscribe(res => {
         // this.registerObj = res
@@ -67,7 +74,7 @@ export class CompanyInformationComponent implements OnInit {
     }
 
     // date validation
-    this.companyFormGroup.get('validDate')?.valueChanges.subscribe(selectedDate => {
+    this.companyApprovalFormGroup.get('validDate')?.valueChanges.subscribe(selectedDate => {
       if (selectedDate) {
         const today = new Date();
         today.setHours(0, 0, 0, 0); // remove time portion
@@ -78,7 +85,7 @@ export class CompanyInformationComponent implements OnInit {
           this.toastr.warning('Valid Date cannot be earlier than today.', 'Warning!',
             { toastClass: 'tostr-tost custom-toast-warning' }
           );
-          this.companyFormGroup.get('validDate')?.setValue(null);
+          this.companyApprovalFormGroup.get('validDate')?.setValue(null);
         }
       }
     });
@@ -90,34 +97,26 @@ export class CompanyInformationComponent implements OnInit {
       .reduce((sum, row) => sum + (Number(row.ApprovedAmt) || 0), 0);
   }
 
-  createCompanyForm() {
+  createCompanyInfoForm() {
     return this.formBuilder.group({
-      PolicyNo: ['', [Validators.required, this._FormvalidationserviceService.onlyNumberValidator()]],
-      PolicyLimit: ['', [Validators.required, this._FormvalidationserviceService.onlyNumberValidator()]],
-      validDate: [new Date()],
-      dateApproved: [new Date()],
-      reason: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
-      amt: '',
-      Alentry: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
-      ApprovalAmt: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      EstimatAmt: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      policyNo: ['', [Validators.required, this._FormvalidationserviceService.onlyNumberValidator()]],
+      approvedAmount: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      admissionId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
 
-      MemberNo: [''],
-      ClaimNo: [''],
-      BillToTpa: '',
-      PAdvance: '',
-      ApprovBYTpa: '',
-      InvestigationPaid: '',
-      DisallowAmt: '',
-      NetAmtRefund: '',
-      PathAmt: '',
-      DiscByTpa: '',
-      RefundAmt: '',
-      RadiAmt: '',
-      DiscByManagement: '',
-      PharmacyAmt: '',
-      RecoverAmtbyPatient: '',
-      MedicalAmt: ''
+      // PolicyLimit: ['', [Validators.required, this._FormvalidationserviceService.onlyNumberValidator()]],
+      validDate: [new Date()],
+    });
+  }
+
+  createCompanyAprrovalForm() {
+    return this.formBuilder.group({
+      id: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      admissionId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      estimateAmount: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      approvedAmount: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      alentry: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+      dateApproved: [new Date()],
+      comments: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
     });
   }
 
@@ -132,13 +131,13 @@ export class CompanyInformationComponent implements OnInit {
   }
 
   allColumns = [
-    { heading: "Estimate Amt", key: "amt1", sort: true, align: 'left', emptySign: 'NA'},
-    { heading: "Approved Amt", key: "amt2", sort: true, align: 'left', emptySign: 'NA'},
-    { heading: "Al Entry", key: "enter", sort: true, align: 'left', emptySign: 'NA'},
-    { heading: "Valid Date", key: "date", sort: true, align: 'left', emptySign: 'NA'},
-    { heading: "Remark", key: "remark", sort: true, align: 'left', emptySign: 'NA'},
-    { heading: "IsActive", key: "active", sort: true, align: 'left', emptySign: 'NA'},
-    { heading: "Action", key: "ac", sort: true, align: 'left', emptySign: 'NA'},
+    { heading: "Estimate Amt", key: "amt1", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "Approved Amt", key: "amt2", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "Al Entry", key: "enter", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "Valid Date", key: "date", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "Remark", key: "remark", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "IsActive", key: "active", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "Action", key: "ac", sort: true, align: 'left', emptySign: 'NA' },
   ]
 
   allFilters = []
@@ -155,36 +154,70 @@ export class CompanyInformationComponent implements OnInit {
     console.log('IsActive changed:', element);
   }
 
-  onAdd() {
-    if (!this.companyFormGroup.invalid) {
-      this.dsCompanyList.data = [];
-      const selectedDate = this.companyFormGroup.get('dateApproved').value;
-      const formattedDate = selectedDate ? new Date(selectedDate).toISOString().split('T')[0] : '';
+  // onAdd() {
+  //   if (!this.companyApprovalFormGroup.invalid) {
+  //     this.dsCompanyList.data = [];
+  //     const selectedDate = this.companyApprovalFormGroup.get('dateApproved').value;
+  //     const formattedDate = selectedDate ? new Date(selectedDate).toISOString().split('T')[0] : '';
 
-      this.Chargelist.push(
-        {
-          EstimateAmt: this.companyFormGroup.get('EstimatAmt').value || '',
-          ApprovedAmt: this.companyFormGroup.get('ApprovalAmt').value || '',
-          Alentry: this.companyFormGroup.get('Alentry').value || '',
-          ValidDate: formattedDate,
-          Remark: this.companyFormGroup.get('reason').value || ''
-        });
-      this.dsCompanyList.data = this.Chargelist
-      this.companyFormGroup.get('EstimatAmt').reset('');
-      this.companyFormGroup.get('ApprovalAmt').reset('');
-      this.companyFormGroup.get('Alentry').reset('');
-      this.companyFormGroup.get('dateApproved').reset(new Date());
-      this.companyFormGroup.get('reason').reset('');
+  //     this.Chargelist.push(
+  //       {
+  //         EstimateAmt: this.companyApprovalFormGroup.get('estimateAmount').value || '',
+  //         ApprovedAmt: this.companyApprovalFormGroup.get('approvedAmount').value || '',
+  //         Alentry: this.companyApprovalFormGroup.get('alentry').value || '',
+  //         ValidDate: formattedDate,
+  //         Remark: this.companyApprovalFormGroup.get('comments').value || ''
+  //       });
+  //     this.dsCompanyList.data = this.Chargelist
+  //     this.companyApprovalFormGroup.get('estimateAmount').reset('');
+  //     this.companyApprovalFormGroup.get('approvedAmount').reset('');
+  //     this.companyApprovalFormGroup.get('alentry').reset('');
+  //     this.companyApprovalFormGroup.get('dateApproved').reset(new Date());
+  //     this.companyApprovalFormGroup.get('comments').reset('');
+  //   } else {
+  //     let invalidFields = [];
+  //     if (this.companyApprovalFormGroup.invalid) {
+  //       for (const controlName in this.companyApprovalFormGroup.controls) {
+  //         if (this.companyApprovalFormGroup.controls[controlName].invalid) {
+  //           invalidFields.push(`Company Form: ${controlName}`);
+  //         }
+  //       }
+  //     }
+
+  //     if (invalidFields.length > 0) {
+  //       invalidFields.forEach(field => {
+  //         this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
+  //         );
+  //       });
+  //     }
+  //   }
+  // }
+
+  CompanyApprovalSave() {
+    const currentDate = this.companyApprovalFormGroup.get('dateApproved').value;
+    const datePipe = new DatePipe('en-US');
+    const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
+
+    this.companyApprovalFormGroup.get('dateApproved').setValue(formattedDate)
+    this.companyApprovalFormGroup.get('admissionId').setValue(this.AdmissionID)
+    console.log(this.companyApprovalFormGroup.value)
+
+    if (!this.companyApprovalFormGroup.invalid) {
+      console.log(this.companyApprovalFormGroup.value)
+      this._AdmissionService.CompanyApprovalInsert(this.companyApprovalFormGroup.value).subscribe((response) => {
+        console.log(response)
+        this.onClose();
+      });
     } else {
       let invalidFields = [];
-      if (this.companyFormGroup.invalid) {
-        for (const controlName in this.companyFormGroup.controls) {
-          if (this.companyFormGroup.controls[controlName].invalid) {
-            invalidFields.push(`Company Form: ${controlName}`);
+
+      if (this.companyApprovalFormGroup.invalid) {
+        for (const controlName in this.companyApprovalFormGroup.controls) {
+          if (this.companyApprovalFormGroup.controls[controlName].invalid) {
+            invalidFields.push(`CompanyInfo Form: ${controlName}`);
           }
         }
       }
-
       if (invalidFields.length > 0) {
         invalidFields.forEach(field => {
           this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
@@ -206,41 +239,35 @@ export class CompanyInformationComponent implements OnInit {
     });
   }
 
-  Save() {
-    var m_data = {
-      "companyUpdate": {
-        "AdmissionId": this.AdmissionID,
-        "policyNo": this.companyFormGroup.get('PolicyNo').value || "",
-        "claimNo": this.companyFormGroup.get('ClaimNo').value || "",
-        "estimatedAmount": this.companyFormGroup.get('EstimatAmt').value || 0,
-        "approvedAmount": this.companyFormGroup.get('ApprovBYTpa').value || 0,
-        "hosApreAmt": this.companyFormGroup.get('ApprovalAmt').value || 0,
-        "pathApreAmt": this.companyFormGroup.get('PathAmt').value || 0,
-        "PharApreAmt": this.companyFormGroup.get('PharmacyAmt').value || 0,
-        "radiApreAmt": this.companyFormGroup.get('RadiAmt').value || 0,
-        "c_DisallowedAmt": this.companyFormGroup.get('DisallowAmt').value || 0,
-        "compDiscount": this.companyFormGroup.get('DiscByTpa').value || 0,
-        "hDiscAmt": this.companyFormGroup.get('DiscByManagement').value || 0,
-        "c_OutsideInvestAmt": this.companyFormGroup.get('InvestigationPaid').value || 0,
-        "recoveredByPatient": this.companyFormGroup.get('RecoverAmtbyPatient').value || 0,
-        "medicalApreAmt": this.companyFormGroup.get('MedicalAmt').value.SubCompanyId || 0,
-        "C_FinalBillAmt": this.companyFormGroup.get('BillToTpa').value || 0
+  CompanyInfoSave() {
 
+    this.companyInformationFormGroup.get('admissionId').setValue(this.AdmissionID)
+    console.log(this.companyInformationFormGroup.value)
+
+    if (!this.companyInformationFormGroup.invalid) {
+      this.companyInformationFormGroup.removeControl('validDate')
+      console.log(this.companyInformationFormGroup.value)
+      this._AdmissionService.CompanyInfoUpdate(this.companyInformationFormGroup.value).subscribe((response) => {
+        console.log(response)
+      });
+    } else {
+      let invalidFields = [];
+
+      if (this.companyInformationFormGroup.invalid) {
+        for (const controlName in this.companyInformationFormGroup.controls) {
+          if (this.companyInformationFormGroup.controls[controlName].invalid) {
+            invalidFields.push(`CompanyInfo Form: ${controlName}`);
+          }
+        }
       }
-
+      if (invalidFields.length > 0) {
+        invalidFields.forEach(field => {
+          this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
+          );
+        });
+      }
     }
-    console.log(m_data)
-
-    this._AdmissionService.CompanyUpdate(m_data).subscribe(response => {
-      this.toastr.success(response.message);
-      // this.viewgetIPPayemntPdf(response)
-      // this._matDialog.closeAll();
-
-    }, (error) => {
-      this.toastr.error(error.message);
-    });
   }
-
 
   getCompanydetailview(AdmissionId) {
     // this.sIsLoading = 'loading-data';
@@ -277,7 +304,8 @@ export class CompanyInformationComponent implements OnInit {
   }
 
   onClose() {
-    this.dialogRef.close();
+    // this.dialogRef.close();
+    this.companyApprovalFormGroup.reset();
   }
 }
 
@@ -305,10 +333,10 @@ export class CompanyDetails {
   patientType: any;
   policyNo: any;
   claimNo: any;
-  EstimatAmt: any;
+  estimateAmount: any;
   BillToTpa: any;
   InvestigationPaid: any;
-  ApprovalAmt: any;
+  approvedAmount: any;
   ApprovBYTpa: any;
   NetAmtRefund: any;
   PathAmt: any;
@@ -322,9 +350,9 @@ export class CompanyDetails {
   RecoverAmtbyPatient: any;
   PolicyLimit: any;
   validDate: any;
-  Alentry: any;
+  alentry: any;
   dateApproved: any;
-  reason: any;
+  comments: any;
   amt: any;
   isActive: any;
   ApprovedAmt: any;
@@ -351,6 +379,7 @@ export class CompanyDetails {
   H_PaidAmt: any;
   H_BalAmt: any;
   CompanyId: any;
+  admissionId: any
   /**
    * Constructor
    *
@@ -380,10 +409,10 @@ export class CompanyDetails {
       this.patientType = CompanyDetails.patientType || ''
       this.policyNo = CompanyDetails.policyNo || 0
       this.claimNo = CompanyDetails.claimNo || 0
-      this.EstimatAmt = CompanyDetails.EstimatAmt || 0
+      this.estimateAmount = CompanyDetails.estimateAmount || 0
       this.BillToTpa = CompanyDetails.BillToTpa || 0
       this.InvestigationPaid = CompanyDetails.InvestigationPaid || 0
-      this.ApprovalAmt = CompanyDetails.ApprovalAmt || 0
+      this.approvedAmount = CompanyDetails.approvedAmount || 0
       this.ApprovBYTpa = CompanyDetails.ApprovBYTpa || 0
       this.NetAmtRefund = CompanyDetails.NetAmtRefund || 0
       this.PathAmt = CompanyDetails.PathAmt || 0
@@ -392,8 +421,8 @@ export class CompanyDetails {
       this.PolicyLimit = CompanyDetails.PolicyLimit || 0
       this.validDate = CompanyDetails.validDate || '1900-01-01'
       this.dateApproved = CompanyDetails.dateApproved || '1900-01-01'
-      this.Alentry = CompanyDetails.Alentry || ''
-      this.reason = CompanyDetails.reason || ''
+      this.alentry = CompanyDetails.alentry || ''
+      this.comments = CompanyDetails.comments || ''
       this.amt = CompanyDetails.amt || ''
       this.isActive = CompanyDetails.isActive || ''
       this.ApprovedAmt = CompanyDetails.ApprovedAmt || ''
@@ -427,8 +456,8 @@ export class CompanyDetails {
       this.H_PaidAmt = CompanyDetails.H_PaidAmt || '';
       this.H_BalAmt = CompanyDetails.H_BalAmt || '';
       this.CompanyId = CompanyDetails.CompanyId || '';
-      // this.ReligionId = CompanyDetails.ReligionId || '';
-      // this.AreaId = CompanyDetails.AreaId || '';
+      this.admissionId = CompanyDetails.admissionId || '';
+      this.approvedAmount = CompanyDetails.approvedAmount || '';
       // this.VillageId = CompanyDetails.VillageId || '';
       // this.TalukaId = CompanyDetails.TalukaId || '';
       // this.PatientWeight = CompanyDetails.PatientWeight || '';
