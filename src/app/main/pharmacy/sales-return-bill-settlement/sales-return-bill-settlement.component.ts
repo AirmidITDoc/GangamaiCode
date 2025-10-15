@@ -60,7 +60,8 @@ export class SalesReturnBillSettlementComponent implements OnInit {
   IPDNo: any
   DoctorNamecheck: boolean = false;
   IPDNocheck: boolean = false;
-  OPDNoCheck: boolean = false;
+  OPDNoCheck: boolean = false; 
+  vglobledisc: boolean = false;
   WardName: any = ''
   mRegNo: any;
   mTariffName: any;
@@ -191,6 +192,8 @@ export class SalesReturnBillSettlementComponent implements OnInit {
       FinalNetAmt: 0,
       FinalPaidAmt: 0,
       FinalBalanceAmt: 0,
+      globledisc:[false],
+      globlediscPer:[0]
     });
   }
 
@@ -658,8 +661,18 @@ this._SelseSettelmentservice.SalesBillList(vdata).subscribe((response)=>{
       ],
       FinalNetAmt: [
         // { name: "required", Message: "FinalNetAmt is required" }
+      ],
+       globlediscPer: [
+        // { name: "required", Message: "FinalNetAmt is required" }
       ]
     };
+  }
+  onChangeglobledisc(event){
+    if(event.checked == true){
+      this.vglobledisc = true;
+    }else{
+      this.vglobledisc = false;
+    }
   }
   keyPressCharater(event) {
     var inp = String.fromCharCode(event.keyCode);

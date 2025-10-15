@@ -48,6 +48,8 @@ export class AppComponent implements OnInit, OnDestroy {
     configSettingParam: any = [];
       configSettingParam1: any = [];
     newconfigSettingParam: any = [];
+    LogOutTimeValue:any = 10;
+    LogOutTimeID:any = 0;
     // Private
     private _unsubscribeAll: Subject<any>;
 
@@ -62,9 +64,9 @@ export class AppComponent implements OnInit, OnDestroy {
      * @param {FuseTranslationLoaderService} _fuseTranslationLoaderService
      * @param {Platform} _platform
      * @param {TranslateService} _translateService
-     */
+     */ 
 
-    idle = new Idle().whenNotInteractive().within(10).do(() => {
+    idle = new Idle().whenNotInteractive().within(this.LogOutTimeValue).do(() => {
         this.url = this.router.url;
         // console.log('this.url==', this.url);
         if (this.url !== '/auth/login') {
@@ -233,7 +235,8 @@ export class AppComponent implements OnInit, OnDestroy {
                 this.authService.getNavigationData();
                 this.ConfigSettingParamNew();
             }
-        });
+        }); 
+  
     }
 
     /**
@@ -279,20 +282,23 @@ export class AppComponent implements OnInit, OnDestroy {
     //         });
     // }
 
-    configdata = []
+
     AddList: any = [];
     public dsconfigList = new MatTableDataSource<ConfigList>();
     ConfigSettingParamNew() {
         var Params =
         {
             "searchFields": [],
-            "mode": "NewSysConfig"
+            "mode": "NewSysConfig"  //SystemConfigList
         }
         this._httpClient1.PostData("Common", Params).subscribe(data => {
            this.configSettingParam1 = data;
-                console.log(data);
+               /// console.log(data);
                 this.configService.setCongiParam(this.configSettingParam1[0]);
-                console.log(this.configSettingParam);
+                console.log(this.configSettingParam1); 
+                const [LogOutTimeID, LogOutTimeValue] =this.configService.configParams.SystemLogOutTime.split(":");
+                this.LogOutTimeID = LogOutTimeID
+                if(this.LogOutTimeID == 1){this.LogOutTimeValue = LogOutTimeValue}  
         });
     }
 }

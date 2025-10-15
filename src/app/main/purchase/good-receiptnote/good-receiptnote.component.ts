@@ -178,10 +178,11 @@ export class GoodReceiptnoteComponent implements OnInit {
             filters: [
                 { fieldName: "GrnId", fieldValue: String(event.grnid), opType: OperatorComparer.Equals }
             ],
-        }
- 
+        } 
+        setTimeout(() => {
         this.grid1.gridConfig = this.gridConfig1;
         this.grid1.bindGridData();
+        }, 1000);
     }
     getValidationMessages() {
         return {

@@ -345,8 +345,7 @@ export class IPSearchListComponent implements OnInit {
                         Obj: element
                     }
                 });
-            dialogRef.afterClosed().subscribe(result => {
-                debugger
+            dialogRef.afterClosed().subscribe(result => { 
                 if (this.myFilterform.get('IsDischarge').value == false) {
                     const currentPath = this.router.url.split('?')[0];
                     this.router.navigate([currentPath], { queryParams: {} });

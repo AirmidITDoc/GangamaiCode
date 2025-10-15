@@ -1327,10 +1327,22 @@ export class IPBillingComponent implements OnInit {
         if (this.dataSource.data.length > 0 && this.draftSaveform.valid) {
             console.log("Draft form values", this.draftSaveform.value)
             this._IpSearchListService.InsertIPDraftBilling(this.draftSaveform.value).subscribe(response => {
-                if (this.IpbillFooterform.get("BillType").value == 1)
-                    this.viewgetDraftBillReportPdf(response.drbno);
-                else
-                    this.viewgetDraftBillservicewiseReportPdf(response.drbno);
+                debugger
+                const [IpDraftPrint_A4, IpDraftPrintValue] = this._ConfigService.configParams.IPDraftPrintA4toA5.split(":");
+                if (this.IpbillFooterform.get("BillType").value == 1) {
+                    if (IpDraftPrint_A4 == 1) {
+                        this.viewgetDraftBillReportPdf(response.drbno);
+                    } else {
+                        this.viewgetDraftBillclasswiseA5PageReportPdf(response.drbno);
+                    }
+                }
+                else {
+                    if (IpDraftPrint_A4 == 1) {
+                        this.viewgetDraftBillservicewiseReportPdf(response.drbno);
+                    } else {
+                        this.viewgetDraftBillservicewiseA5PageReportPdf(response.drbno);
+                    }
+                }
                 this._matDialog.closeAll();
             });
         }
@@ -1581,13 +1593,22 @@ export class IPBillingComponent implements OnInit {
     viewgetInterimBillReportPdf(element) {
         this.commonService.Onprint("BillNo", element.billNo, "IpInterimBill");
     }
-    //For testing 
+    //For draft print   
     viewgetDraftBillReportPdf(Id) {
         this.commonService.Onprint("AdmissionID", Id, "IpDraftBillClassWise");
     }
-    //For testing 
+    //For draft print  
     viewgetDraftBillservicewiseReportPdf(Id) {
         this.commonService.Onprint("AdmissionID", Id, "IpDraftBillGroupWise");
+    }
+        //For draft print  A5
+    viewgetDraftBillclasswiseA5PageReportPdf(Id) {
+        this.commonService.Onprint("AdmissionID", Id, "IpDraftBillClassWiseA5");
+    }
+
+        //For draft print   A5
+    viewgetDraftBillservicewiseA5PageReportPdf(Id) {
+        this.commonService.Onprint("AdmissionID", Id, "IpDraftBillGroupWiseA5");
     }
 
     viewgetBillReportPdf(billNo) {

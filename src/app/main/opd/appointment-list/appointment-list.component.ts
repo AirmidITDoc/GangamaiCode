@@ -186,6 +186,7 @@ export class AppointmentListComponent implements OnInit {
         { heading: "Mobile No", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "Check-InTime", key: "checkInTime", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 7 },
         { heading: "Check-OutTime", key: "checkOutTime", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 7 },
+        { heading: "Token No", key: "tariffId", sort: true, align: 'left', emptySign: 'NA', width: 100, },
         {
             heading: "Action", key: "action", align: "center", width: 150
             , sticky: true, type: gridColumnTypes.template,

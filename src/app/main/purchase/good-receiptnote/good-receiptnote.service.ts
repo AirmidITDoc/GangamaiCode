@@ -198,13 +198,13 @@ export class GoodReceiptnoteService {
     if (loader) {
       this._loaderService.show();
     }
-    return this._httpClient.post("Pharmacy/InsertGRNPurchase", Param);
+    return this._httpClient1.PostData("GRN/InsertPO", Param);
   }
-  public POtoGRNUpated(Param, loader = true) {
+  public POtoGRNUpated(employee,Id, loader = true) {
     if (loader) {
       this._loaderService.show();
     }
-    return this._httpClient.post("Pharmacy/UpdateGRNPurchase", Param);
+    return this._httpClient1.PutData("GRN/InsertPO/"+Id, employee);
   } 
   public GRNEdit(employee,Id, loader = true) {
     if (loader) {
@@ -251,5 +251,11 @@ export class GoodReceiptnoteService {
   }
       public getBarcodeSave(emp) {
     return this._httpClient1.PutData("GRN/UpdateCurrentStockBarcode", emp);
+  } 
+    public getPurchasedetailList(Param, loader = true) {
+    if (loader) {
+      this._loaderService.show();
+    }
+    return this._httpClient1.PostData("GRN/Podetaillist", Param);
   }
 }

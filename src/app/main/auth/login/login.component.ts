@@ -93,7 +93,7 @@ export class LoginComponent implements OnInit {
         };
         this.authenticationService.login(data).subscribe(
             (data) => {
-                debugger
+               // debugger
                 if ((data?.status ?? 'Ok') != 'Ok') {
                     this.confirmDialogRef = this._matDialog.open(
                         FuseConfirmDialogComponent,

@@ -35,11 +35,13 @@ export class NewGRNService {
         return values;
     }
     validatePOQuantity(contact: ItemNameList): boolean {
-        if (contact.PurchaseId > 0 && contact.ReceiveQty > contact.POQty) {
+        if (contact.PurchaseId > 0 && contact.Qty > contact.POQty) {
+            contact.Qty = contact.POQty
+            contact.POBalQty = 0
             return false;
         }
         if (contact.PurchaseId > 0) {
-            contact.POBalQty = contact.POQty - contact.ReceiveQty;
+            contact.POBalQty = contact.POQty - contact.Qty;
         }
         return true;
     }
@@ -261,6 +263,7 @@ export class NewGRNService {
     public calculateBasicValues(contact: ItemNameList): void {
         contact.TotalQty = (Number(contact.Qty || 0) + Number(contact.FreeQty || 0)) * Number(contact.ConversionFactor || 1);
         this.calculateCellTotalAmount(contact);
+        ///contact.POBalQty = (Number(contact.POQty || 0) - Number(contact.Qty || 0));
         const discountAmount = (Number(contact.TotalAmount || 0) * Number(contact.Disc || 0)) / 100;
         const discountAmount2 = (Number(contact.TotalAmount || 0) * Number(contact.Disc2 || 0)) / 100;
         contact.DisAmount = discountAmount;

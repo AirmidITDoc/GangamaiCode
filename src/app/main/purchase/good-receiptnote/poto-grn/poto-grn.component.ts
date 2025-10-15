@@ -45,7 +45,7 @@ export class POtoGRNComponent implements OnInit {
     { heading: "Status", key: "Status", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template,
       template: this.actionButtonTemplateType, width: 80
     },
-    { heading: "Date", key: "purchaseDate", sort: true, align: 'left', emptySign: 'NA', width: 120,type:9 },
+    { heading: "Date", key: "purchaseDate", sort: true, align: 'left', emptySign: 'NA', width: 120,type:6 },
     { heading: "Supplier Name", key: "supplierName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
     { heading: "Total Amt", key: "totalAmount", sort: true, align: 'left', emptySign: 'NA', width: 100,type: gridColumnTypes.amount },
     { heading: "Grand Total Amt", key: "grandTotal", sort: true, align: 'left', emptySign: 'NA', width: 110,type: gridColumnTypes.amount },
@@ -94,9 +94,9 @@ export class POtoGRNComponent implements OnInit {
     public _GRNList: GoodReceiptnoteService,
     public _matDialog: MatDialog,
     public datePipe: DatePipe,
-    private _loggedService: AuthenticationService,
+    public _loggedService: AuthenticationService,
     public toastr: ToastrService,
-    private _formBuilder: FormBuilder,
+    public _formBuilder: FormBuilder, 
     public _dialogRef: MatDialogRef<POtoGRNComponent>,
   ) { }
 
@@ -112,10 +112,8 @@ export class POtoGRNComponent implements OnInit {
       StatusType: [false],
       SupplierId: [0] 
     });
-  }
-
-  ChangeeFilter() {
-    debugger
+  } 
+  ChangeeFilter() { 
     this.isShowDetailTable = false;
     this.SupplierId = this.PotoGRNForm.get('SupplierId')?.value || 0
     this.FormDate = this.datePipe.transform(this.PotoGRNForm.get('start').value, 'yyyy-MM-dd')
@@ -131,8 +129,7 @@ export class POtoGRNComponent implements OnInit {
       this.StoreId = "0"
 
     this.ChangeeFilter();
-  }
-
+  } 
   selectChangeSupplier(value) {
     if (value?.value !== 0)
       this.SupplierId = value.value
@@ -141,8 +138,7 @@ export class POtoGRNComponent implements OnInit {
 
     this.ChangeeFilter();
   }
-  getHeaderlist() {
-    debugger
+  getHeaderlist() { 
     this.gridConfig = {
       apiUrl: "GRN/Poheaderlist",
       columnsList: this.AllColumns,
@@ -170,46 +166,104 @@ export class POtoGRNComponent implements OnInit {
         { fieldName: "PurchaseID", fieldValue: String(Obj?.purchaseId ?? 0), opType: OperatorComparer.Equals }
       ]
     }
+    setTimeout(() => {
     this.grid1.gridConfig = this.gridConfig1;
-    this.grid1.bindGridData();
+    this.grid1.bindGridData(); 
+    }, 1000);
+
+  }  
+  OnSavedata(){
+    const PurchaseId = this.SelectedObj?.purchaseId || 0
+      var vdata = {
+            "first": 0,
+            "rows": 10,
+            "sortField": "PurchaseID",
+            "sortOrder": 0,
+            "filters": [{ "fieldName": "PurchaseID", "fieldValue": String(PurchaseId), "opType": "Equals" }],
+           "columns": [{ "data": "string", "name": "string" }],
+            "exportType": "JSON"
+        }
+        this._GRNList.getPurchasedetailList(vdata).subscribe(response => {
+            this.chargelist = response.data
+             if(this.chargelist?.length){
+        this.getSave(); 
+      }else{
+       this.toastr.warning('Product not in list Please select Product!', 'warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return
+      }  
+    })
   }
-  dsItemDetList: any;
-  SavetoGRN() {
+  getSave() {
     debugger
-  let Op_ip_Id=5
-    console.log(this.gridConfig1)
-    if (Op_ip_Id > 0) {  
-      this.chargelist.forEach((element) => {
-        this.Patientlist.push(
-          {
-            ItemId: element.itemId,
-            QtyPerDay: element.qtyPerDay,
-            BalQty: element.balQty,
-            IsBatchRequired: element.isBatchRequired,
-            PatientName: this.SelectedObj.patientName,
-            RegNo: this.SelectedObj.regNo,
-            WardId: this.SelectedObj.wardId,
-            BedId: this.SelectedObj.bedId,
-            AdmissionID: this.SelectedObj.oP_IP_ID,
-            RegId: this.SelectedObj.regId,
-            IPMedID: this.SelectedObj.ipMedID,
-            DoctorName: this.SelectedObj.doctorName,
-            IPDNo: this.SelectedObj.ipdNo
-          });
-        console.log(this.Patientlist);
-      
-      });
-        this._dialogRef.close(this.Patientlist);
-    }
-    else {
-      this.toastr.error('Product not in list Please select Product!', 'Error !', {
-        toastClass: 'tostr-tost custom-toast-error',
-      });
-    }
+    console.log(this.chargelist)
+    this.chargelist.forEach((element) => {
+      const FinalTotalQty = (element.qty * element?.conversionFactor);
+      const FinalpurUnitRate = (((element?.itemTotalAmount || 0) / (element.qty)) * (element.conversionFactor))
+      const FinalpurUnitrateWF = (((element?.itemTotalAmount || 0) / (FinalTotalQty)) * (element?.conversionFactor))
+      const FinalUnitMRP = ((element?.mrp || 0) / (element?.conversionFactor)) || 0
+
+      this.Patientlist.push(
+        {
+          ItemId: element.itemId ?? 0,
+          ItemName: element.itemName?.trim() || '',
+          ConversionFactor: Number(element.conversionFactor) || 1,
+          UOMId: element.uomid ?? 0,
+          HSNCode: element.hsNcode?.trim() || 'N/A',
+          BatchNo: '',
+          ExpDate: element.expDate || '1999-01-01',
+          Qty: Number(element.qty) || 0,
+          FreeQty: 0,
+          TotalQty: Number(FinalTotalQty) || 0,
+          MRP: Number(element.mrp) || 0,
+          Rate: Number(element.rate) || 0,
+          TotalAmount: Number(element.itemTotalAmount) || 0,
+          Disc: Number(element.discPer) || 0,
+          DisAmount: Number(element.itemDiscAmount) || 0,
+          Disc2: 0,
+          DiscAmt2: 0,
+          GST: Number(element.vatPer) || 0,
+          GSTAmount: Number(element.vatAmount) || 0,
+          CGST: Number(element.cgstper) || 0,
+          CGSTAmount: Number(element.cgstamt) || 0,
+          SGST: Number(element.sgstper) || 0,
+          SGSTAmount: Number(element.sgstamt) || 0,
+          IGST: Number(element.igstper) || 0,
+          IGSTAmount: Number(element.igstamt) || 0,
+          NetAmount: Number(element.grossAmount) || 0,
+          PurchaseId: element.purchaseId ?? 0,
+          PurDetId: element.purDetId ?? 0,
+          POBalQty: Number(element.poBalQty) || 0,
+          POQty: Number(element.poQty) || 0,
+          LandedRate: Number(element.landedRate) || 0,
+          purUnitRate: Number(FinalpurUnitRate) || 0,
+          PurUnitRateWF: Number(FinalpurUnitrateWF) || 0,
+          unitMRP: Number(FinalUnitMRP) || 0,
+          IsVerifiedUserId: 0,
+          IsVerified: false,
+          IsVerifiedDatetime: '1999-01-01',
+          StkID: 0,
+          grnDetID: 0,
+          supplierId: element.supplierId ?? 0,
+          transportChanges: Number(element.transportChanges) || 0,
+          handlingCharges: Number(element.handlingCharges) || 0,
+          freightCharges: Number(element.freightCharges) || 0,
+          octriAmount: Number(element.octriAmount) || 0,
+          supplierName: element.supplierName?.trim() || '',
+          PurchaseNo:element.purchaseNo || 0
+        }
+      ); 
+     });
+      console.log(this.Patientlist);
+      if(this.Patientlist){
+      this._dialogRef.close(this.Patientlist);
+      }
+
   }
-  onClose() {
+  onClose() { 
     this.PotoGRNForm.reset();
-    this._matDialog.closeAll();
+    this._dialogRef.close();
   }
   getValidationMessages() {
     return {

@@ -70,8 +70,8 @@ export class ConfigSettingParams {
     SalesReceiptCounterID:number;
     IsDischargeInitiateflow:any;
     IsDischargeTemplate:any;
-
-    
+    SystemLogOutTime:any;
+     IPDraftPrintA4toA5:any;
 OPDNo:any;
 IsOPBillPrint:any;
 PrintAfterRegistration:any;
@@ -181,9 +181,9 @@ OPDDefaultDepartment:any;
         this.SalesReturnCounterId = ConfigSettingParams.SalesReturnCounterId;
         this.SalesReceiptCounterID =ConfigSettingParams.SalesReceiptCounterID;
         this.IsDischargeInitiateflow =ConfigSettingParams.IsDischargeInitiateflow;
-        this.IsDischargeTemplate=ConfigSettingParams.IsDischargeTemplate;
-
-
+        this.IsDischargeTemplate=ConfigSettingParams.IsDischargeTemplate; 
+        this.SystemLogOutTime=ConfigSettingParams.SystemLogOutTime; 
+        this.IPDraftPrintA4toA5=ConfigSettingParams.IPDraftPrintA4toA5;
             
 this.OPDNo=ConfigSettingParams.OPDNo;
 this.IsOPBillPrint=ConfigSettingParams.IsOPBillPrint;

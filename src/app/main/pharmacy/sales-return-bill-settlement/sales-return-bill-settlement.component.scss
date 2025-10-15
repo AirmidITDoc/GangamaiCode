@@ -1,5 +1,21 @@
 .positive-balance {
   background-color: lightcoral;
 }
-  
+
+// .table-scroll {
+//   max-height: calc(100vh - 400px);
+//   overflow-y: auto;
+//   /* make table content scrollable */
+// }
+.table-scroll {
+  max-height: calc(100vh - 500px);
+  overflow-y: auto;
+  /* make table content scrollable */
+}
+
+.demo2 {
+  width: 100%;
+  display: block;
+  /* optional, for wide tables */
+}
  

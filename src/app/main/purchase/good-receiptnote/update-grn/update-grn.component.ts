@@ -1637,7 +1637,7 @@ chekgstper(obj){
             "update_POHeader_Status_AganistGRN": update_POHeader_Status_AganistGRN,
         };
         console.log(submitData);
-        this._GRNList.POtoGRNUpated(submitData).subscribe((data) => {
+        this._GRNList.POtoGRNUpated(submitData,submitData).subscribe((data) => {
             console.log(data)
             if (data) {
                 this.toastr.success('Record PO TO GRN Updated Successfully.', 'Updated !', {

@@ -104,7 +104,7 @@
 
                       <mat-radio-group formControlName="GRNType" fxLayout="column" class="gap-4">
                         <mat-radio-button [value]="true">Direct Purchase</mat-radio-button>
-                        <mat-radio-button [value]="false" (click)="PurchaseOrderList()">Purchase
+                        <mat-radio-button [value]="false" (change)="getPurchaseList()">Purchase
                           Orders</mat-radio-button>
                       </mat-radio-group>
 
@@ -813,7 +813,7 @@
         </div>
       </div>
     </div>
-    <!-- Modal footer -->
+    <!-- Modal footer  -->
     <div class="modal-footer">
       <div class="footer-navigation-container">
         <div class="modal-footer-buttons">
