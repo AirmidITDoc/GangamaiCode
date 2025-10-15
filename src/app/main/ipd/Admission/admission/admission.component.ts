@@ -107,11 +107,11 @@ export class AdmissionComponent implements OnInit {
   autocompleteModedeptdoc: string = "ConDoctor";
   optionsSearchDoc: any[] = [];
   vOPIPId = 0;
-  f_name: any = ""
+  f_name: any = "%"
   regNo: any = "0"
-  l_name: any = ""
-  m_name: any = ""
-  IPDNo: any = ""
+  l_name: any = "%"
+  m_name: any = "%"
+  IPDNo: any = "0"
   DoctorId = "0";
 
 
@@ -755,25 +755,32 @@ export class AdmissionComponent implements OnInit {
   dataSource = new MatTableDataSource<AdmissionPersonlModel>();
   GetAdmissiondetail() {
     debugger
-    console.log(this.myFilterform.value)
-    // this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd")
-    // this.toDate = this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd")
-    this.fromDate = this.datePipe.transform(new Date(), "yyyy-MM-dd")
-    this.toDate = this.datePipe.transform(new Date(), "yyyy-MM-dd")
+    // Format date values
+    let fromDateControl = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd");
+    let toDateControl = this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd");
+
+    // Reset counts
     this.Vtotalcount = 0;
     this.VNewcount = 0;
     this.VFollowupcount = 0;
     this.VBillcount = 0;
-    // this.VCrossConscount = 0;
-    //    debugger
-    let data =
-    {
-      "first": 0,
-      "rows": 150,
-      "sortField": "AdmissionId",
-      "sortOrder": 0,
-      "filters": [
-        {
+    this.VOPtoIPcount = 0;
+    this.VEmgcount = 0;
+
+    let filters: any[] = [];
+
+    // Handle date range
+    if (fromDateControl && toDateControl) {
+      this.fromDate = this.datePipe.transform(fromDateControl, "yyyy-MM-dd");
+      this.toDate = this.datePipe.transform(toDateControl, "yyyy-MM-dd");
+    } else {
+      this.fromDate = "1900-01-01";
+      this.toDate = "1900-01-01";
+    }
+
+    // Push filters like GetAppointdetail()
+    filters.push(
+      {
           "fieldName": "F_Name",
           "fieldValue": String(this.f_name),
           "opType": "Contains"
@@ -796,12 +803,12 @@ export class AdmissionComponent implements OnInit {
         {
           "fieldName": "From_Dt",
           "fieldValue": this.fromDate,
-          "opType": "Equals"
+          "opType": "GreaterThanOrEqual"
         },
         {
           "fieldName": "To_Dt",
           "fieldValue": this.toDate,
-          "opType": "Equals"
+          "opType": "LessThanOrEqual"
         },
         {
           "fieldName": "Admtd_Dschrgd_All",
@@ -818,51 +825,158 @@ export class AdmissionComponent implements OnInit {
           "fieldValue": String(this.IPDNo),
           "opType": "Equals"
         }
-      ],
+    );
+
+    let data = {
+      "first": 0,
+      "rows": 999999,
+      "sortField": "AdmissionId",
+      "sortOrder": 0,
+      "filters": filters,
       "exportType": "JSON",
-      "columns": [
-        {
-          "data": "string",
-          "name": "string"
-        }
-      ]
-    }
-    console.log(data)
+      "columns": []
+    };
+
+    // API call to admission service
     this._AdmissionService.getadmissionlist(data).subscribe((response) => {
+      debugger
       this.dataSource.data = response.data;
-      console.log("akakak:", response)
+
       if (this.dataSource.data.length > 0) {
-        this.VAdmissioncount = this.dataSource.data.length
-        // this.dataSource.data.forEach(element => {
-        //   console.log(element)
-        // if (element.patientOldNew == 1) {
-        //     this.VNewcount = this.VNewcount + 1;
-        // }
-        // else 
+        this.Vtotalcount = this.dataSource.data.length;
 
-        // if (element.admissionType == 1) {
-        //   this.VOPtoIPcount = this.VOPtoIPcount + 1
-        // }
-        // if (element.isBillGenerated == 1 || element.isBillGenerated == 2) {
-        //   this.VBillcount = this.VBillcount + 1;
-        // }
-        // if (element.isDischarged == 1) {
-        //   this.vIsDischarg = this.vIsDischarg + 1;
-        // }
-        // if (element.admissionType == 1) {
-        //   this.VOPtoIPcount = this.VOPtoIPcount + 1
-        // }
-        // if (element.admissionType == 2) {
-        //   this.VEmgcount = this.VEmgcount + 1
-        // }
+        // Calculate counts similar to GetAppointdetail
+        this.VBillcount = this.dataSource.data.filter(
+          (element: any) => element.isBillGenerated == 1 || element.isBillGenerated == 2
+        ).length;
 
-        // });
-        this.Admissiondetail(this.dataSource.data)
-        console.log(this.dataSource.data)
+        this.VOPtoIPcount = this.dataSource.data.filter(
+          (element: any) => element.IsOpToIPconv == true || element.admissionType == 1
+        ).length;
+
+        this.VEmgcount = this.dataSource.data.filter(
+          (element: any) => element.admissionType == 2
+        ).length;
+
+        // Example: count today’s admissions
+        let today = this.datePipe.transform(new Date(), "yyyy-MM-dd");
+        this.VNewcount = this.dataSource.data.filter(
+          (element: any) => this.datePipe.transform(element.admissionDate, "yyyy-MM-dd") === today
+        ).length;
       }
     });
   }
 
+
+  // GetAdmissiondetail() {
+  //   debugger
+  //   console.log(this.myFilterform.value)
+  //   // this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd")
+  //   // this.toDate = this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd")
+  //   this.fromDate = this.datePipe.transform(new Date(), "yyyy-MM-dd")
+  //   this.toDate = this.datePipe.transform(new Date(), "yyyy-MM-dd")
+  //   this.Vtotalcount = 0;
+  //   this.VNewcount = 0;
+  //   this.VFollowupcount = 0;
+  //   this.VBillcount = 0;
+  //   // this.VCrossConscount = 0;
+  //   //    debugger
+  //   let data =
+  //   {
+  //     "first": 0,
+  //     "rows": 150,
+  //     "sortField": "AdmissionId",
+  //     "sortOrder": 0,
+  //     "filters": [
+  //       {
+  //         "fieldName": "F_Name",
+  //         "fieldValue": String(this.f_name),
+  //         "opType": "Contains"
+  //       },
+  //       {
+  //         "fieldName": "L_Name",
+  //         "fieldValue": String(this.l_name),
+  //         "opType": "Contains"
+  //       },
+  //       {
+  //         "fieldName": "Reg_No",
+  //         "fieldValue": String(this.regNo),
+  //         "opType": "Equals"
+  //       },
+  //       {
+  //         "fieldName": "Doctor_Id",
+  //         "fieldValue": String(this.DoctorId),
+  //         "opType": "Equals"
+  //       },
+  //       {
+  //         "fieldName": "From_Dt",
+  //         "fieldValue": this.fromDate,
+  //         "opType": "Equals"
+  //       },
+  //       {
+  //         "fieldName": "To_Dt",
+  //         "fieldValue": this.toDate,
+  //         "opType": "Equals"
+  //       },
+  //       {
+  //         "fieldName": "Admtd_Dschrgd_All",
+  //         "fieldValue": "0",
+  //         "opType": "Equals"
+  //       },
+  //       {
+  //         "fieldName": "M_Name",
+  //         "fieldValue": String(this.m_name),
+  //         "opType": "Equals"
+  //       },
+  //       {
+  //         "fieldName": "IPNo",
+  //         "fieldValue": String(this.IPDNo),
+  //         "opType": "Equals"
+  //       }
+  //     ],
+  //     "exportType": "JSON",
+  //     "columns": [
+  //       {
+  //         "data": "string",
+  //         "name": "string"
+  //       }
+  //     ]
+  //   }
+  //   console.log(data)
+  //   this._AdmissionService.getadmissionlist(data).subscribe((response) => {
+  //     this.dataSource.data = response.data;
+  //     console.log("akakak:", response)
+  //     if (this.dataSource.data.length > 0) {
+  //       this.VAdmissioncount = this.dataSource.data.length
+  //       // this.dataSource.data.forEach(element => {
+  //       //   console.log(element)
+  //       // if (element.patientOldNew == 1) {
+  //       //     this.VNewcount = this.VNewcount + 1;
+  //       // }
+  //       // else 
+
+  //       // if (element.admissionType == 1) {
+  //       //   this.VOPtoIPcount = this.VOPtoIPcount + 1
+  //       // }
+  //       // if (element.isBillGenerated == 1 || element.isBillGenerated == 2) {
+  //       //   this.VBillcount = this.VBillcount + 1;
+  //       // }
+  //       // if (element.isDischarged == 1) {
+  //       //   this.vIsDischarg = this.vIsDischarg + 1;
+  //       // }
+  //       // if (element.admissionType == 1) {
+  //       //   this.VOPtoIPcount = this.VOPtoIPcount + 1
+  //       // }
+  //       // if (element.admissionType == 2) {
+  //       //   this.VEmgcount = this.VEmgcount + 1
+  //       // }
+
+  //       // });
+  //       this.Admissiondetail(this.dataSource.data)
+  //       console.log(this.dataSource.data)
+  //     }
+  //   });
+  // }
 }
 
 export class Bed {

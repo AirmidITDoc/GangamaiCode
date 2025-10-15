@@ -67,8 +67,11 @@ export class CompanysettlementService {
     }
 
     public InsertOPBillingsettlement(Param) {
-        return this._httpClient.PostData("OPSettlement/SettlementInsert", Param);
+        return this._httpClient.PostData("OPSettlement/InsertSettlement", Param);
+    }
 
+     public InsertOPMultiplesettlement(Param) {
+        return this._httpClient.PostData("OPSettlement/InsertSettlementMultiple", Param);
     }
 
     public deactivateTheStatus(m_data) {

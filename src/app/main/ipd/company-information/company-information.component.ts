@@ -12,7 +12,8 @@ import { AdvanceDataStored } from '../advance';
 import { MatTableDataSource } from '@angular/material/table';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
-import { gridModel } from 'app/core/models/gridRequest';
+import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
+import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
 
 @Component({
   selector: 'app-company-information',
@@ -89,6 +90,8 @@ export class CompanyInformationComponent implements OnInit {
         }
       }
     });
+
+    this.getfilterdata();
   }
 
   getActiveApprovedAmtTotal(): number {
@@ -131,23 +134,50 @@ export class CompanyInformationComponent implements OnInit {
   }
 
   allColumns = [
-    { heading: "Estimate Amt", key: "amt1", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "Approved Amt", key: "amt2", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "Al Entry", key: "enter", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "Valid Date", key: "date", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "Remark", key: "remark", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "IsActive", key: "active", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "Action", key: "ac", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "Estimate Amt", key: "estimateAmount", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "Approved Amt", key: "approvedAmount", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "Al Entry", key: "alentry", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "Valid Date", key: "dateApproved", sort: true, align: 'left', emptySign: 'NA', type:6 },
+    { heading: "Remark", key: "comments", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
+    {
+      heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+        {
+          action: gridActions.edit, callback: (data: any) => {
+            this.OnEdit(data) // EDIT Records
+          }
+        }, {
+          action: gridActions.delete, callback: (data: any) => {
+            this._AdmissionService.deactivateTheStatus(data.id).subscribe((response: any) => {
+              this.getfilterdata()
+            });
+          }
+        }]
+    }
   ]
 
-  allFilters = []
-
   gridConfig: gridModel = {
-    apiUrl: "",
+    apiUrl: "CompanyTPAApproval/List",
     columnsList: this.allColumns,
-    sortField: "",
+    sortField: "Id",
     sortOrder: 0,
-    filters: this.allFilters
+    filters: [
+      { fieldName: "AdmissionId", fieldValue: "0", opType: OperatorComparer.Contains }
+    ]
+  }
+
+  getfilterdata() {
+    this.gridConfig = {
+      apiUrl: "CompanyTPAApproval/List",
+      columnsList: this.allColumns,
+      sortField: "Id",
+      sortOrder: 0,
+      filters: [
+        { fieldName: "AdmissionId", fieldValue: String(this.AdmissionID), opType: OperatorComparer.Contains }
+      ]
+    }
+    this.grid.gridConfig = this.gridConfig;
+    this.grid.bindGridData();
   }
 
   onActiveChange(element: any) {
@@ -193,6 +223,11 @@ export class CompanyInformationComponent implements OnInit {
   //   }
   // }
 
+  OnEdit(row) {
+    console.log(row)
+    this.companyApprovalFormGroup.patchValue(row)
+  }
+
   CompanyApprovalSave() {
     const currentDate = this.companyApprovalFormGroup.get('dateApproved').value;
     const datePipe = new DatePipe('en-US');
@@ -206,6 +241,7 @@ export class CompanyInformationComponent implements OnInit {
       console.log(this.companyApprovalFormGroup.value)
       this._AdmissionService.CompanyApprovalInsert(this.companyApprovalFormGroup.value).subscribe((response) => {
         console.log(response)
+        this.getfilterdata();
         this.onClose();
       });
     } else {

@@ -10,6 +10,7 @@ import { ToastrService } from 'ngx-toastr';
 import Swal from 'sweetalert2';
 import { CreateUserService } from './create-user.service';
 import { NUserComponent } from './nuser/nuser.component';
+import { PageNames } from 'app/main/shared/componets/airmid-fileupload/airmid-fileupload.component';
 
 @Component({
   selector: 'app-create-user',
@@ -58,6 +59,8 @@ export class CreateUserComponent implements OnInit {
   };
   pageSize = 25;
   resultsLength = 0;
+
+  signature: PageNames = PageNames.PATIENT_SIGNATURE;
 
   constructor(public _CreateUserService: CreateUserService, private _formBuilder: UntypedFormBuilder,
     public _matDialog: MatDialog, public toastr: ToastrService) { }
@@ -277,28 +280,28 @@ export class CreateUserComponent implements OnInit {
   }
 
 
-   Usercancle(data) {
-          Swal.fire({
-              title: 'Do you want to cancel the User?',
-              text: "You won't be able to revert this!",
-              icon: "warning",
-              showCancelButton: true,
-              confirmButtonColor: "#3085d6",
-              cancelButtonColor: "#d33",
-              confirmButtonText: "Yes, Cancel it!"
-          }).then((flag) => {
-              if (flag.isConfirmed) {
-                console.log(data)
-debugger
-                var data1={
-                  userId:data.userId
-                }
-                  this._CreateUserService.deactivateTheStatus(data1).subscribe((response: any) => {
-                      this.grid.bindGridData();
-                  });
-              }
-          });
+  Usercancle(data) {
+    Swal.fire({
+      title: 'Do you want to cancel the User?',
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, Cancel it!"
+    }).then((flag) => {
+      if (flag.isConfirmed) {
+        console.log(data)
+        debugger
+        var data1 = {
+          userId: data.userId
+        }
+        this._CreateUserService.deactivateTheStatus(data1).subscribe((response: any) => {
+          this.grid.bindGridData();
+        });
       }
+    });
+  }
 
   Password: string;
 

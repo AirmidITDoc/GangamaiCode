@@ -41,7 +41,11 @@
           <button mat-icon-button matTooltip="Edit" (click)="onEdit(element)">
             <mat-icon>edit</mat-icon>
           </button>
-          <button mat-icon-button matTooltip="Delete"   (click)="Usercancle(element)">
+
+          <airmid-signature-icon [refId]="element.userId" [refType]="signature" [multiple]="true"
+            docName="UserSignature"></airmid-signature-icon>
+
+          <button mat-icon-button matTooltip="Delete" (click)="Usercancle(element)">
             <mat-icon>delete</mat-icon>
           </button>
         </div>
@@ -177,7 +181,7 @@
                     [(ngModel)]="gridConfig.filters[5].fieldValue">
                   </airmid-dropdown>
                 </div>
-                
+
                 <div fxFlex="100%" fxFlex.gt-sm="33" fxFlex.gt-md="1 1 0" fxFlex.gt-lg="1 1 0"
                   class="mat-density-compact">
                   <airmid-dropdown label="Search By Store Name" formControlName="storeId" [formGroup]="myuserform"

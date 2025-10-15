@@ -237,7 +237,7 @@ export class AdmissionService {
 
 
     public deactivateTheStatus(m_data) {
-        return this._httpClient1.PostData("VisitDetail", m_data);
+        return this._httpClient1.DeleteData("CompanyTPAApproval?Id=" + m_data.toString());
     }
     //new admission api 
     public getMaster(mode, Id) {

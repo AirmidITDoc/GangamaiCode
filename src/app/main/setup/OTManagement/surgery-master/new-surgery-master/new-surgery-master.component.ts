@@ -6,44 +6,44 @@ import { ToastrService } from 'ngx-toastr';
 import { SurgeryMasterService } from '../surgery-master.service';
 
 @Component({
-  selector: 'app-new-surgery-master',
-  templateUrl: './new-surgery-master.component.html',
-  styleUrls: ['./new-surgery-master.component.scss'],
-  encapsulation: ViewEncapsulation.None,
-        animations: fuseAnimations,
+    selector: 'app-new-surgery-master',
+    templateUrl: './new-surgery-master.component.html',
+    styleUrls: ['./new-surgery-master.component.scss'],
+    encapsulation: ViewEncapsulation.None,
+    animations: fuseAnimations,
 })
 export class NewSurgeryMasterComponent implements OnInit {
-myForm: FormGroup;
-    isActive:boolean=true;
-      
+    myForm: FormGroup;
+    isActive: boolean = true;
+
     constructor(
-                    public _SurgeryMasterService: SurgeryMasterService,
-                    public dialogRef: MatDialogRef<NewSurgeryMasterComponent>,
-                    @Inject(MAT_DIALOG_DATA) public data: any,
-                    public toastr: ToastrService
-                ) { }
-    
+        public _SurgeryMasterService: SurgeryMasterService,
+        public dialogRef: MatDialogRef<NewSurgeryMasterComponent>,
+        @Inject(MAT_DIALOG_DATA) public data: any,
+        public toastr: ToastrService
+    ) { }
+
     autocompleteModeSurgeryCategory: string = "SurgeryCategory";
     autocompleteModeDepartment: String = "Department";
-autocompleteModeSiteDescription: String = "SiteDescription";
+    autocompleteModeSiteDescription: String = "SiteDescription";
     SurgeryId = 0;
-    
+
     ngOnInit(): void {
         this.myForm = this._SurgeryMasterService.createSurgeryForm();
-         this.myForm.markAllAsTouched();
+        this.myForm.markAllAsTouched();
 
         console.log(this.data)
-        if ((this.data?.surgeryId??0) > 0) 
-        {
-            this.isActive=this.data.isActive
-            this.SurgeryId=this.data.surgeryId
+        if ((this.data?.surgeryId ?? 0) > 0) {
+            this.isActive = this.data.isActive
+            this.SurgeryId = this.data.surgeryId
+            this.myForm.get('SurgeryName').setValue(this.data.surgeryName)
             this.myForm.patchValue(this.data);
-        }   
+        }
     }
-    
-      
-        onSubmit() {
-         if (!this.myForm.invalid) {
+
+
+    onSubmit() {
+        if (!this.myForm.invalid) {
             console.log(this.myForm.value)
             this._SurgeryMasterService.surgerySave(this.myForm.value).subscribe((response) => {
                 this.onClear(true);
@@ -66,37 +66,38 @@ autocompleteModeSiteDescription: String = "SiteDescription";
 
         }
     }
-          
-        getValidationMessages() {
-            return {
-                SurgeryName: [
-                    { name: "required", Message: "surgery Name is required" }
-                ],
-                 surgeryCategoryId: [
-                    { name: "required", Message: "surgeryCategory Id is required" }
-                ],
-                 departmentId: [
-                    { name: "required", Message: "department id is required" }
-                ],
-                 surgeryAmount: [
-                    { name: "required", Message: "amount is required" }
-                ],
-                 ottemplateId: [
-                    { name: "required", Message: "Table id is required" }
-                ],
-                 siteDescId: [
-                    { name: "required", Message: "siteDesc id is required" }
-                ],
-                departmentName: [
-                    { name: "required", Message: "department Name is required" 
-                    },
-                    { name: "maxlength", Message: "department Name should not be greater than 50 char." },
-                    { name: "pattern", Message: "Only char allowed." }
-                ]
-            };
-        }
-    
-    
+
+    getValidationMessages() {
+        return {
+            SurgeryName: [
+                { name: "required", Message: "surgery Name is required" }
+            ],
+            surgeryCategoryId: [
+                { name: "required", Message: "surgeryCategory Id is required" }
+            ],
+            departmentId: [
+                { name: "required", Message: "department id is required" }
+            ],
+            surgeryAmount: [
+                { name: "required", Message: "amount is required" }
+            ],
+            ottemplateId: [
+                { name: "required", Message: "Table id is required" }
+            ],
+            siteDescId: [
+                { name: "required", Message: "siteDesc id is required" }
+            ],
+            departmentName: [
+                {
+                    name: "required", Message: "department Name is required"
+                },
+                { name: "maxlength", Message: "department Name should not be greater than 50 char." },
+                { name: "pattern", Message: "Only char allowed." }
+            ]
+        };
+    }
+
+
     keyPressCharater(event) {
         var inp = String.fromCharCode(event.keyCode);
         if (/^\d*\.?\d*$/.test(inp)) {
@@ -106,9 +107,9 @@ autocompleteModeSiteDescription: String = "SiteDescription";
             return false;
         }
     }
-         
-        onClear(val: boolean) {
-          this.myForm.reset();
-          this.dialogRef.close(val);
-        }
+
+    onClear(val: boolean) {
+        this.myForm.reset();
+        this.dialogRef.close(val);
+    }
 }

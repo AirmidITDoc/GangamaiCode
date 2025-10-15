@@ -61,7 +61,7 @@ export class CompanysettlementComponent implements OnInit {
     displayedColumns = [
         'CheckBox',
         'BillDate',
-        'PBillNo',
+        'BillNo',
         'uhid',
         'opd/ipdNo',
         'patientName',
@@ -157,7 +157,10 @@ export class CompanysettlementComponent implements OnInit {
             if (!value || value === '0' || value === '') {
                 if (this.isSearchTriggered) {  // only clear if user had searched
                     this.dsMultiplepayList.data = []; // clear table
+                    this.resetSelectionAndFooter();
                 }
+            } else {
+                this.resetSelectionAndFooter();
             }
         });
 
@@ -167,7 +170,10 @@ export class CompanysettlementComponent implements OnInit {
                 this.regNo2 = "0";
                 if (this.isSearchTriggered) {  // only clear if user had searched
                     this.dsMultiplepayList.data = []; // clear table
+                    this.resetSelectionAndFooter();
                 }
+            } else {
+                this.resetSelectionAndFooter();
             }
         });
 
@@ -212,6 +218,7 @@ export class CompanysettlementComponent implements OnInit {
             opCreditPayment: this.formBuilder.group({
                 paymentId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
                 billNo: [0, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+                // receiptNo:['0'],
                 paymentDate: ['', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
                 paymentTime: ['', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
                 cashPayAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
@@ -272,44 +279,45 @@ export class CompanysettlementComponent implements OnInit {
             this.OPIPType = "1"
 
         return this.formBuilder.group({
-            opCreditPayment: this.formBuilder.group({
-                paymentId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-                billNo: [0, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-                paymentDate: [formattedDate, [this._FormvalidationserviceService.allowEmptyStringValidator()]],
-                paymentTime: [formattedTime, [this._FormvalidationserviceService.allowEmptyStringValidator()]],
-                cashPayAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-                chequePayAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-                chequeNo: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
-                bankName: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
-                chequeDate: ['1999-01-01'],
-                cardPayAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-                cardNo: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
-                cardBankName: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
-                cardDate: ['1999-01-01'],
-                advanceUsedAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-                advanceId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-                refundId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-                transactionType: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-                remark: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
-                addBy: [this.accountService.currentUserValue.userId],
-                isCancelled: [false],
-                isCancelledBy: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-                isCancelledDate: ['1999-01-01'],
+            // opCreditPayment: this.formBuilder.group({
+            paymentId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            billNo: [element.billNo, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            receiptNo: ['0'],
+            paymentDate: [formattedDate, [this._FormvalidationserviceService.allowEmptyStringValidator()]],
+            paymentTime: [formattedTime, [this._FormvalidationserviceService.allowEmptyStringValidator()]],
+            cashPayAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            chequePayAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            chequeNo: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+            bankName: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+            chequeDate: ['1999-01-01'],
+            cardPayAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            cardNo: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+            cardBankName: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+            cardDate: ['1999-01-01'],
+            advanceUsedAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            advanceId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            refundId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            transactionType: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            remark: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+            addBy: [this.accountService.currentUserValue.userId],
+            isCancelled: [false],
+            isCancelledBy: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            isCancelledDate: ['1999-01-01'],
 
-                opdipdType: [this.OPIPType],
-                neftpayAmount: [element.PaidAmount, [this._FormvalidationserviceService.onlyNumberValidator()]],
-                neftno: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
-                neftbankMaster: [this.BankNam, [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
-                neftdate: [formattedDate], //['1999-01-01'],
+            opdipdType: [this.OPIPType],
+            neftpayAmount: [element.PaidAmount, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            neftno: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+            neftbankMaster: [this.BankNam, [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+            neftdate: [formattedDate], //['1999-01-01'],
 
-                payTmamount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-                payTmtranNo: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
-                payTmdate: ['1999-01-01'],
-                tdsamount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-                unitId: [this.accountService.currentUserValue.user.unitId, [this._FormvalidationserviceService.onlyNumberValidator()]],
-                wfamount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            payTmamount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            payTmtranNo: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+            payTmdate: ['1999-01-01'],
+            tdsamount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            unitId: [this.accountService.currentUserValue.user.unitId, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            wfamount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
 
-            })
+            // })
         })
     }
     get OPMulSetLoopArray(): FormArray {
@@ -318,10 +326,10 @@ export class CompanysettlementComponent implements OnInit {
 
     CreateOPMultipleSettlBillLoopInsertForm(element: any = {}): FormGroup {
         return this.formBuilder.group({
-            billUpdate: this.formBuilder.group({
-                billNo: [0, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-                balanceAmt: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-            })
+            // billUpdate: this.formBuilder.group({
+            billNo: [element.billNo, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            balanceAmt: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            // })
         })
     }
     get OPMulSetBillLoopArray(): FormArray {
@@ -733,7 +741,21 @@ export class CompanysettlementComponent implements OnInit {
         });
     }
 
-    onClear() {
+    resetSelectionAndFooter() {
+        this.selection.clear(); // Clear all selected rows
+        this.SelectedList = [];
+
+        // Reset footer totals
+        this.vNetAmount = 0;
+        this.vPaidAmount = 0;
+        this.vBalanceAmount = 0;
+        this.vTDSAmount = 0;
+        this.vUPINO = '';
+        this.OPMultipleSettlForm.get('UPINO')?.reset();
+        this.OPMultipleSettlForm.get('bankName')?.reset(0);
+
+        // Clear table
+        this.dsMultiplepayList.data = [];
     }
 
     selection = new SelectionModel<MultiplePayList>(true, []);
@@ -890,6 +912,17 @@ export class CompanysettlementComponent implements OnInit {
         this.selection.clear();
     }
 
+    OnClose() {
+        this.vNetAmount = 0;
+        this.vPaidAmount = 0;
+        this.vTDSAmount = 0;
+        this.vBalanceAmount = 0;
+        this.SelectedList = [];
+        this.OPMultipleSettlForm.get('UPINO').setValue('')
+        this.OPMultipleSettlForm.get('bankName').setValue(0)
+        this.selection.clear();
+    }
+
     BankId = 0
     BankNam: any;
     selectChangebank(event) {
@@ -927,7 +960,7 @@ export class CompanysettlementComponent implements OnInit {
             this.OPMulSetLoopArray.clear();
             this.SelectedList.forEach(item => {
                 const formGroup = this.CreateOPMultipleSettlLoopInsertForm(item);
-                formGroup.get('opCreditPayment.neftno').setValue(upiNoValue);
+                formGroup.get('neftno').setValue(upiNoValue);
                 this.OPMulSetLoopArray.push(formGroup);
             })
 
@@ -937,10 +970,11 @@ export class CompanysettlementComponent implements OnInit {
             });
 
             console.log(this.OPMultipleSettlLoopInsertForm.value)
-            // this._CompanysettlementService.InsertOPBillingsettlement(this.OpSettlementForm.value).subscribe(response => {
-            //     this.getmultiplePaymentList();
-            //     this.viewgetOPPayemntPdf(response, true);
-            // });
+            this._CompanysettlementService.InsertOPMultiplesettlement(this.OPMultipleSettlLoopInsertForm.value).subscribe(response => {
+                this.getmultiplePaymentList();
+                this.OnClose();
+                // this.viewgetOPPayemntPdf(response, true);
+            });
         } else {
             const invalidFields = this.getInvalidFields(this.OPMultipleSettlLoopInsertForm);
 
@@ -1000,6 +1034,7 @@ export class MultiplePayList {
     _origNetAmt: any;
     discAmount: any;
     CompanyDisc: any;
+    billNo: any;
 
     constructor(MultiplePayList) {
         {
@@ -1022,6 +1057,7 @@ export class MultiplePayList {
             this._origNetAmt = MultiplePayList._origNetAmt || 0
             this.discAmount = MultiplePayList.discAmount || 0
             this.CompanyDisc = MultiplePayList.CompanyDisc || 0
+            this.billNo = MultiplePayList.billNo || 0
         }
     }
 }
