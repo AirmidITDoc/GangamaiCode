@@ -84,7 +84,7 @@ export class BedOccupancyComponent implements OnInit {
     ) { }
 
     ngOnInit(): void {
-        this.getWard();
+        // this.getWard();
         // initialize charts using same helpers as Daily Dashboard
         setTimeout(() => {
             if (document.getElementById('BedMiniChart1')) {
@@ -165,6 +165,8 @@ export class BedOccupancyComponent implements OnInit {
     }
 
     private getDeptData(index: number) {
+
+
         const w = this.warDataArr[index];
         if (!w) return { name: 'Department ' + (index + 1), image: this.departmentImages[index], total: 0, inUse: 0, reserved: 0, empty: 0, percent: 0 };
         
@@ -363,47 +365,109 @@ export class BedOccupancyComponent implements OnInit {
     }
 
     getLargeAdmissionsChart() {
-        return new Chart('BedAdmissionsLine', {
-            type: 'line',
-            data: {
-                labels: ['01 Mon','02 Tue','03 Wed','04 Thu','05 Fri','06 Sat','07 Sun','08 Mon','09 Tue','10 Wed','11 Thu','12 Fri','13 Sat','14 Sun'],
-                datasets: [
-                    {
-                        label: 'Admissions',
-                        data: [30,26,35,42,60,45,40,41,22,28,40,36,30,90],
-                        backgroundColor: 'rgba(255,99,132,0.15)',
-                        borderColor: '#ff5a8a',
-                        pointBackgroundColor: '#ff5a8a',
-                        pointRadius: 3,
-                        tension: 0.35,
-                        fill: true
-                    }
-                ]
-            },
-            options: { maintainAspectRatio: false }
-        });
+        const payload = {
+            "searchFields": [],
+            "mode": "DashAdmissionDateWiseCount"
+          };
+          this._dashboardServices.HomeDashboardAPI(payload).subscribe((res: any) => {
+            let apiData = res && res.length ? res : {};
+      
+            return new Chart('BedAdmissionsLine', {
+                type: 'line',
+                data: {
+                    labels: apiData?.map(data => data?.AdmissionDate) || [],
+                    datasets: [
+                        {
+                            label: 'Admissions',
+                            data: apiData?.map(data => data?.Count) || [],
+                            backgroundColor: 'rgba(255,99,132,0.15)',
+                            borderColor: '#ff5a8a',
+                            pointBackgroundColor: '#ff5a8a',
+                            pointRadius: 3,
+                            tension: 0.35,
+                            fill: true
+                        }
+                    ]
+                },
+                options: { maintainAspectRatio: false }
+            });
+          
+          }, err => {
+            return new Chart('BedAdmissionsLine', {
+                type: 'line',
+                data: {
+                    labels: [],
+                    datasets: [
+                        {
+                            label: 'Admissions',
+                            data: [],
+                            backgroundColor: 'rgba(255,99,132,0.15)',
+                            borderColor: '#ff5a8a',
+                            pointBackgroundColor: '#ff5a8a',
+                            pointRadius: 3,
+                            tension: 0.35,
+                            fill: true
+                        }
+                    ]
+                },
+                options: { maintainAspectRatio: false }
+            });
+        })
+        
     }
 
     getLargeDischargeChart() {
-        return new Chart('BedDischargeLine', {
-            type: 'line',
-            data: {
-                labels: ['01 Mon','02 Tue','03 Wed','04 Thu','05 Fri','06 Sat','07 Sun','08 Mon','09 Tue','10 Wed','11 Thu','12 Fri','13 Sat','14 Sun'],
-                datasets: [
-                    {
-                        label: 'Discharges',
-                        data: [22,20,30,38,52,40,35,38,18,24,35,32,28,85],
-                        backgroundColor: 'rgba(99,179,237,0.15)',
-                        borderColor: '#5ac8fa',
-                        pointBackgroundColor: '#5ac8fa',
-                        pointRadius: 3,
-                        tension: 0.35,
-                        fill: true
-                    }
-                ]
-            },
-            options: { maintainAspectRatio: false }
-        });
+        const payload = {
+            "searchFields": [],
+            "mode": "DashDischargeDateWiseCount"
+          };
+
+          this._dashboardServices.HomeDashboardAPI(payload).subscribe((res: any) => {
+            let apiData = res && res.length ? res : {};
+      
+            return new Chart('BedDischargeLine', {
+                type: 'line',
+                data: {
+                    labels: apiData?.map(data => data?.DischargeDate) || [],
+                    datasets: [
+                        {
+                            label: 'Discharges',
+                            data: apiData?.map(data => data?.Count) || [],
+                            backgroundColor: 'rgba(99,179,237,0.15)',
+                            borderColor: '#5ac8fa',
+                            pointBackgroundColor: '#5ac8fa',
+                            pointRadius: 3,
+                            tension: 0.35,
+                            fill: true
+                        }
+                    ]
+                },
+                options: { maintainAspectRatio: false }
+            });
+          }, err => {
+
+            return new Chart('BedDischargeLine', {
+                type: 'line',
+                data: {
+                    labels: ['01 Mon','02 Tue','03 Wed','04 Thu','05 Fri','06 Sat','07 Sun','08 Mon','09 Tue','10 Wed','11 Thu','12 Fri','13 Sat','14 Sun'],
+                    datasets: [
+                        {
+                            label: 'Discharges',
+                            data: [22,20,30,38,52,40,35,38,18,24,35,32,28,85],
+                            backgroundColor: 'rgba(99,179,237,0.15)',
+                            borderColor: '#5ac8fa',
+                            pointBackgroundColor: '#5ac8fa',
+                            pointRadius: 3,
+                            tension: 0.35,
+                            fill: true
+                        }
+                    ]
+                },
+                options: { maintainAspectRatio: false }
+            });
+          })
+
+
     }
 
     onSelectWard(element: WardDetails) {
@@ -463,16 +527,21 @@ export class WardDetails {
     AvailableCount: number;
     LocationName: string;
     OccuipedCount: number;
-    RoomId: number;
-    RoomName: string;
+    OccupiedPercentage: number;
+    TotalCount: number;
     isSelected: boolean = false;
+    WardId: number;
+    WardName: string;
+
 
     constructor(wardData) {
         this.AvailableCount = wardData.AvailableCount || 0;
         this.LocationName = wardData.LocationName || '';
         this.OccuipedCount = wardData.OccuipedCount || 0;
-        this.RoomId = wardData.RoomId || 0;
-        this.RoomName = wardData.RoomName || '';
+        this.OccupiedPercentage = wardData.OccupiedPercentage || 0;
+        this.TotalCount = wardData.TotalCount || 0;
+        this.WardId = wardData.WardId || 0;
+        this.WardName = wardData.WardName || '';
         this.isSelected = wardData.isSelected || false;
     }
 }
