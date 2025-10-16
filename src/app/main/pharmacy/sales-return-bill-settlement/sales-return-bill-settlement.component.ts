@@ -719,7 +719,9 @@ this._SelseSettelmentservice.SalesBillList(vdata).subscribe((response)=>{
     this.vCheckBox = false;
     this.userFormGroup.get('RegID').setValue('');
   }
-
+onApplyDiscount(){
+  
+}
 }
 
 export class PaidItemList {

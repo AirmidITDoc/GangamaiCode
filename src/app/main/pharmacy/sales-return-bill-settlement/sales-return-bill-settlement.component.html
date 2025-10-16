@@ -544,7 +544,10 @@
                                             <div class="footer-navigation-container">
                                                 <div class="modal-footer-buttons">
                                                    <button class="btn btn-danger-outline" (click)="OnReset()">Close</button>
-                                        <button class="btn btn-primary" (click)="MultiplePaySave()">Save</button>
+                                                   <button class="btn btn-primary" (click)="MultiplePaySave()"
+                                                   *ngIf="!vglobledisc">Save</button>
+                                                   <button class="btn btn-primary" (click)="onApplyDiscount()"
+                                                   *ngIf="vglobledisc">Apply Discount</button>
                                                 </div>
                                             </div>
                                         </div>

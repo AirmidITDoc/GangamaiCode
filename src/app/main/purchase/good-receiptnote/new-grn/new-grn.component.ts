@@ -195,8 +195,7 @@ isExpanded = false;
     } 
     batchlistApiUrl:any='';
     //Item details selectedObj
-    getSelectedItem(item: GRNItemResponseType): void { 
-        debugger
+    getSelectedItem(item: GRNItemResponseType): void {  
         if (this.mock) {
             return;
         }
@@ -236,7 +235,7 @@ isExpanded = false;
         this.getLastThreeItemInfo(item)
     } 
     getchangegstper(rate: any): void {
-        debugger   
+       
         if (Number(rate?.value) >0) { 
             this.userFormGroup.patchValue({ 
                 SGST:Number((rate.value)/2),  
@@ -255,7 +254,7 @@ isExpanded = false;
     }
     
     getchangeIgstper(rate: any): void {
-        debugger    
+     
         if (Number(rate?.text) >0) { 
             this.userFormGroup.patchValue({ 
                 SGST:0, 
@@ -313,7 +312,8 @@ handleEnterKey(event: KeyboardEvent) {
         })
     }
     //BatchExpireDate calculation
-    calculateLastDay() {   
+    calculateLastDay() {  
+        //debugger 
         const NextExpiryDate = new Date();   
         const Months = 3 
         const inputDate = this.userFormGroup.get("ExpDate").value; 
@@ -323,8 +323,8 @@ handleEnterKey(event: KeyboardEvent) {
         const currentYear = CurrentDate.getFullYear();
         const NxtMonths =  ((currentMonth) + (Months)); 
         NextExpiryDate.setMonth(NxtMonths);
-        const newNextDate  = new Date(NextExpiryDate)
-        const getnextYear = newNextDate.getFullYear(); 
+        const newNextDate  = new Date(NextExpiryDate) 
+
         
         if ((inputDate && inputDate.length === 6) && numericPattern.test(inputDate)) {
             const month = +inputDate.substring(0, 2);
@@ -365,10 +365,21 @@ handleEnterKey(event: KeyboardEvent) {
                 if (QtyElement) {
                     QtyElement.focus();
                 }
-                }, 500);
+                }, 500); 
                
-                if (month <= NxtMonths && year <= getnextYear) {
-                    Swal.fire({
+                                  // Get values as strings in dd/MM/yyyy format
+        const NewNextExpiray = this.datePipe.transform(newNextDate, "dd/MM/yyyy");
+        const NewCurrentDate = this.vlastDay 
+        if (NewNextExpiray && NewCurrentDate) {
+            // Convert to Date objects
+            const [sDay, sMonth, sYear] = NewNextExpiray.split('/').map(Number);
+            const [aDay, aMonth, aYear] = NewCurrentDate.split('/').map(Number);
+
+            const NewNextExpiray_1 = new Date(sYear, sMonth - 1, sDay);      // Month is 0-based
+            const NewCurrentDate_1 = new Date(aYear, aMonth - 1, aDay);
+ 
+            if (NewCurrentDate_1 < NewNextExpiray_1) {
+              Swal.fire({
                         icon: 'warning',
                         title: '⚠️ Upcoming Expiry Alert',
                         html: `<strong>This item will expire within the next <span style="color:#e74c3c;">3 months</span>.</strong>`,
@@ -386,7 +397,8 @@ handleEnterKey(event: KeyboardEvent) {
                     if (QtyElement) {
                         QtyElement.focus();
                     }
-                }
+            }
+        }
             } else {
                 Swal.fire({
                         icon: 'warning',
@@ -750,7 +762,7 @@ setTimeout(() => {
         //     Swal.fire("Qty Should Be less than PO Qty : ",item.POQty); 
         //     return;
         // }
-        debugger
+       
         setTimeout(() => {
         item.Qty = Number(item.Qty); // ensure it's a number
         item.POQty = Number(item.POQty); // just in case
@@ -773,7 +785,7 @@ setTimeout(() => {
         this.updateGRNFinalForm();
     }
     updateGRNFinalForm() {
-        debugger
+      
         this.BaseNetpayAmt = 0;
         const form = this._GRNList.GRNFinalForm;
         const itemList = this.dsItemNameList.data;
@@ -798,7 +810,7 @@ setTimeout(() => {
     }
     BaseNetpayAmt:any=0;
     getcalculateothercharges(){
-        debugger 
+     
   const form = this._GRNList.GRNFinalForm.value;
 
   const baseNet = parseFloat(this.BaseNetpayAmt) || 0;
@@ -1131,6 +1143,7 @@ setTimeout(() => {
                         PurDetId: element.purDetId,
                         POBalQty: element.poBalQty,
                         POQty: element.poQty,
+                        purchaseNo:element.poNo,
                         LandedRate: element.landedRate,
                         purUnitRate: element.purUnitRate,      //Purchaserate
                         PurUnitRateWF: element.purUnitRateWf,
@@ -1365,8 +1378,7 @@ chkInvoiceNo(InvoiceNo){
         });
 
 }  
-  onBatchChange(event) {
-    debugger
+  onBatchChange(event) { 
     console.log(event)  
            if(((event?.cgstPer ?? 0) || 0)>0){
             this.userFormGroup.patchValue({

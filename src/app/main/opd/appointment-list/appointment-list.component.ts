@@ -88,6 +88,7 @@ export class AppointmentListComponent implements OnInit {
     ) { }
 
     ngOnInit(): void {
+        
         this.myformSearch = this._AppointmentlistService.filterForm();
         this.searchFormGroup = this.createSearchForm();
         // menu Button List
@@ -126,7 +127,7 @@ export class AppointmentListComponent implements OnInit {
         if (this.mode == "Bill" && Number(this.id) > 0) {
             this.gridConfig.filters.find(x => x.fieldName == "visitId").fieldValue = this.id;
         }
-        this.IsShowGrid = true;
+        this.IsShowGrid = true; 
     }
 
     handleNotificationEvent(data) {
@@ -154,17 +155,21 @@ export class AppointmentListComponent implements OnInit {
         this.gridConfig.columnsList.find(col => col.key === 'crossConsulFlag')!.template = this.actionsTemplate3;
         this.gridConfig.columnsList.find(col => col.key === 'isConvertRequestForIp')!.template = this.actionsTemplate4;
           this.gridConfig.columnsList.find(col => col.key === 'companyId')!.template = this.actionCompany;
-        this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
-
-    }
+        this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate; 
+        this.gridConfig.columnsList.find(col => col.key === 'patientName')!.template = this.patientNameWithBadgeTemplate; 
+ 
+    } 
+ 
     @ViewChild('actionsTemplate') actionsTemplate!: TemplateRef<any>;
     @ViewChild('actionsTemplate1') actionsTemplate1!: TemplateRef<any>;
     @ViewChild('actionsTemplate2') actionsTemplate2!: TemplateRef<any>;
     @ViewChild('actionsTemplate3') actionsTemplate3!: TemplateRef<any>;
     @ViewChild('actionsTemplate4') actionsTemplate4!: TemplateRef<any>;
- @ViewChild('actionCompany') actionCompany!: TemplateRef<any>;
+    @ViewChild('actionCompany') actionCompany!: TemplateRef<any>;
     @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
-
+    @ViewChild('patientNameWithBadgeTemplate') patientNameWithBadgeTemplate!: TemplateRef<any>;
+ 
+ 
     allcolumns = [
         { heading: "", key: "patientOldNew", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30 },
         { heading: "", key: "mPbillNo", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30 },
@@ -173,7 +178,7 @@ export class AppointmentListComponent implements OnInit {
         { heading: "", key: "isConvertRequestForIp", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30 },
         { heading: "UHID", key: "regNoWithPrefix", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "Date", key: "vistDateTime", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-        { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 350 },
+        { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 350, type: gridColumnTypes.template},
         { heading: "Doctor Name", key: "doctorname", sort: true, align: 'left', emptySign: 'NA', width: 230 },
 
         { heading: "Department", key: "departmentName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
@@ -186,7 +191,7 @@ export class AppointmentListComponent implements OnInit {
         { heading: "Mobile No", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "Check-InTime", key: "checkInTime", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 7 },
         { heading: "Check-OutTime", key: "checkOutTime", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 7 },
-        { heading: "Token No", key: "tariffId", sort: true, align: 'left', emptySign: 'NA', width: 100, },
+        { heading: "Token No", key: "tokenNo", sort: true, align: 'left', emptySign: 'NA', width: 100, },
         {
             heading: "Action", key: "action", align: "center", width: 150
             , sticky: true, type: gridColumnTypes.template,

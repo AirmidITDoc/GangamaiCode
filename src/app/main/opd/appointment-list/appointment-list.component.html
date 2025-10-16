@@ -20,7 +20,7 @@
     <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="space-between center"
         class="px-12 py-4 border-bottom gap-8">
         <div class="info-badge-top overflow-auto" fxLayout="row" fxLayoutAlign="space-between" flex>
-         
+
             <div fxLayout="row" fxLayoutAlign="start center" class="gap-8">
                 <!-- Registrations -->
                 <div class="dashboard-card registrations">
@@ -68,14 +68,13 @@
                     <mat-icon class="card-icon">groups</mat-icon>
                 </div>
             </div>
-            
+
         </div>
         <form [formGroup]="searchFormGroup" class="input-error-hidden w-400">
-            <airmid-autocomplete label="Search UHID / Patient Name / Mobile No" 
-            [formGroup]="searchFormGroup" formControlName="RegId" 
-            placeholderText="Search UHID / Patient Name / Mobile No" fxFlex 
-            ApiUrl="OutPatient/auto-complete?Keyword=" 
-            (selectionChange)="getSelectedObj($event)" ValueField="regId"></airmid-autocomplete>
+            <airmid-autocomplete label="Search UHID / Patient Name / Mobile No" [formGroup]="searchFormGroup"
+                formControlName="RegId" placeholderText="Search UHID / Patient Name / Mobile No" fxFlex
+                ApiUrl="OutPatient/auto-complete?Keyword=" (selectionChange)="getSelectedObj($event)"
+                ValueField="regId"></airmid-autocomplete>
 
             <!-- <airmid-autocomplete label="Search UHID / Patient Name / Mobile No" [formGroup]="searchFormGroup"
                 formControlName="RegId" fxFlex placeholderText="Search UHID / Patient Name / Mobile No"
@@ -83,7 +82,7 @@
                 ValueField="regId"></airmid-autocomplete> -->
 
 
-                 <!-- <airmid-autocomplete label="OP-UHID / First Name / Last Name / Mobile No"
+            <!-- <airmid-autocomplete label="OP-UHID / First Name / Last Name / Mobile No"
                                 [formGroup]="searchFormGroup" formControlName="RegId"
                                 placeholderText="OP-UHID / First Name / Last Name / Mobile No" fxFlex
                                 ApiUrl="VisitDetail/search-patient-1?Keyword="
@@ -113,23 +112,32 @@
         <ng-template #actionsTemplate1 let-element>
             <div fxLayout="row" fxLayoutAlign="center center">
 
-<!-- style=" border: black 1px solid;" -->
+                <!-- style=" border: black 1px solid;" -->
                 <mat-icon *ngIf="element.mPbillNo=='1'|| element.mPbillNo=='2' " matTooltip="Bill Generated"
                     class="pill red-600 s-16">circle</mat-icon>
-                <mat-icon  *ngIf="element.mPbillNo=='0' "
-                    matTooltip="Did not Generated Bill" class="pill white-600 s-16">
+                <mat-icon *ngIf="element.mPbillNo=='0' " matTooltip="Did not Generated Bill"
+                    class="pill white-600 s-16">
                     circle
                 </mat-icon>
             </div>
         </ng-template>
 
-            <ng-template #actionCompany let-element>
-        <div fxLayout="row" fxLayoutAlign="center center">
-            <button mat-icon-button (click)="getEditCompany(element)" matTooltip="Company">
-                <mat-icon *ngIf="element.companyId > 0">edit </mat-icon>
-            </button>
-        </div>
-    </ng-template>
+        <ng-template #actionCompany let-element>
+            <div fxLayout="row" fxLayoutAlign="center center">
+                <button mat-icon-button (click)="getEditCompany(element)" matTooltip="Company">
+                    <mat-icon *ngIf="element.companyId > 0">edit </mat-icon>
+                </button>
+            </div>
+        </ng-template>
+
+        <ng-template #patientNameWithBadgeTemplate let-element>
+            <span [matBadge]="element.tokenNo" matBadgeColor="warn" matBadgePosition="after" matBadgeOverlap="false"
+                matBadgeSize="small" [matBadgeHidden]="!element.tokenNo" matTooltip="Token No: {{ element.tokenNo }}"
+                matTooltipPosition="above" style="font-size: 14px; line-height: 18px; position: relative; top: 4px;">
+                {{ element.patientName }}
+            </span>
+        </ng-template>
+
         <ng-template #actionsTemplate2 let-element>
             <div>
                 <mat-icon *ngIf="element.phoneAppId !== 0" matTooltip="Phone Appointment" class=" cyan-600 s-16">
@@ -144,65 +152,60 @@
                     icon</mat-icon>
             </div>
         </ng-template>
-         <ng-template #actionsTemplate4 let-element>
+        <ng-template #actionsTemplate4 let-element>
             <div>
                 <mat-icon matTooltip="OPTOIPConvert" *ngIf="element.isConvertRequestForIp==true">
-                redo</mat-icon>
+                    redo</mat-icon>
             </div>
         </ng-template>
 
         <ng-template #actionButtonTemplate let-element>
             <div fxLayout="row" fxLayoutAlign="center center">
 
-                <button mat-icon-button matTooltip="Print Case papaer" style="margin-right: 8px; font-size: 16px; width: 16px; height: 16px;"  (click)="OnViewReportPdf(element,true)">
+                <button mat-icon-button matTooltip="Print Case papaer"
+                    style="margin-right: 8px; font-size: 16px; width: 16px; height: 16px;"
+                    (click)="OnViewReportPdf(element,true)">
                     <mat-icon> print</mat-icon>
                 </button>
 
-                <button mat-icon-button matTooltip="Bill"  style="margin-right: 8px; font-size: 16px; width: 16px; height: 16px;"  (click)="OnBillPayment(element)">
+                <button mat-icon-button matTooltip="Bill"
+                    style="margin-right: 8px; font-size: 16px; width: 16px; height: 16px;"
+                    (click)="OnBillPayment(element)">
                     <mat-icon> payment</mat-icon>
                 </button>
 
                 <button mat-icon-button matTooltip="Consultant start / Check-In"
-                        style="padding: 0 8px; min-width: unset;" (click)="onCheckIn(element.visitId)"
-                        [disabled]="timers[element.visitId]?.isCheckedIn || timers[element.visitId]?.isCheckedOut">
-                        <mat-icon style="margin-right: 8px; font-size: 16px; width: 16px; height: 16px;" 
+                    style="padding: 0 8px; min-width: unset;" (click)="onCheckIn(element.visitId)"
+                    [disabled]="timers[element.visitId]?.isCheckedIn || timers[element.visitId]?.isCheckedOut">
+                    <mat-icon style="margin-right: 8px; font-size: 16px; width: 16px; height: 16px;"
                         [style.color]="timers[element.visitId]?.isCheckedIn ? '#4caf50' : '#666'">check_circle</mat-icon>
 
-                        <!-- <img src="assets/images/logos/checkIn.png" alt="Check-In" width="24" height="24" /> -->
-                        <!-- Check-In -->
-                    </button>
+                    <!-- <img src="assets/images/logos/checkIn.png" alt="Check-In" width="24" height="24" /> -->
+                    <!-- Check-In -->
+                </button>
 
-                    <button mat-icon-button
-                     matTooltip="Consultant End / Check Out"
-                        style="padding: 0 8px; min-width: unset;" (click)="onCheckOut(element.visitId)"
-                        [disabled]="!timers[element.visitId]?.isCheckedIn || timers[element.visitId]?.isCheckedOut">
-                        <mat-icon style="margin-right: 8px; font-size: 16px; width: 16px; height: 16px;" 
-                                  [style.color]="timers[element.visitId]?.isCheckedOut ? '#f44336' : '#666'">exit_to_app</mat-icon>
+                <button mat-icon-button matTooltip="Consultant End / Check Out"
+                    style="padding: 0 8px; min-width: unset;" (click)="onCheckOut(element.visitId)"
+                    [disabled]="!timers[element.visitId]?.isCheckedIn || timers[element.visitId]?.isCheckedOut">
+                    <mat-icon style="margin-right: 8px; font-size: 16px; width: 16px; height: 16px;"
+                        [style.color]="timers[element.visitId]?.isCheckedOut ? '#f44336' : '#666'">exit_to_app</mat-icon>
 
-                        <!-- Check-Out -->
-                    </button>
+                    <!-- Check-Out -->
+                </button>
                 <!-- Material UI Icon Button with Menu -->
-                <button mat-icon-button
-                        [matMenuTriggerFor]="actionsMenu" 
-                        matTooltip="Actions"
-                        matTooltipPosition="above"
-                        (click)="$event.stopPropagation();">
+                <button mat-icon-button [matMenuTriggerFor]="actionsMenu" matTooltip="Actions"
+                    matTooltipPosition="above" (click)="$event.stopPropagation();">
                     <mat-icon>more_vert</mat-icon>
                 </button>
 
                 <!-- Material UI Menu with Compact Design -->
-                <mat-menu #actionsMenu="matMenu" 
-                          xPosition="before" 
-                          yPosition="below"
-                          [overlapTrigger]="false">
-                    
-                    <button mat-menu-item 
-                            (click)="OnEditRegistration(element)"
-                            style="height: 32px; min-height: 32px;">
+                <mat-menu #actionsMenu="matMenu" xPosition="before" yPosition="below" [overlapTrigger]="false">
+
+                    <button mat-menu-item (click)="OnEditRegistration(element)" style="height: 32px; min-height: 32px;">
                         <mat-icon style="margin-right: 8px; font-size: 16px; width: 16px; height: 16px;">edit</mat-icon>
                         <span style="font-size: 13px;">Edit Registration</span>
                     </button>
-                    
+
                     <!-- <button mat-menu-item 
                             (click)="OnViewReportPdf(element,true)"
                             style="height: 32px; min-height: 32px;">
@@ -234,46 +237,41 @@
                                   [style.color]="timers[element.visitId]?.isCheckedOut ? '#f44336' : '#666'">exit_to_app</mat-icon>
                         <span style="font-size: 13px;">Check-Out</span>
                     </button> -->
-                    
-                    <button mat-menu-item 
-                            (click)="OnNewCrossConsultation(element)"
-                            style="height: 32px; min-height: 32px;">
+
+                    <button mat-menu-item (click)="OnNewCrossConsultation(element)"
+                        style="height: 32px; min-height: 32px;">
                         <mat-icon style="margin-right: 8px; font-size: 16px; width: 16px; height: 16px;">sync</mat-icon>
                         <span style="font-size: 13px;">Cross Consultation</span>
                     </button>
-                    
-                    <button mat-menu-item 
-                            (click)="OnVitalInfo(element)"
-                            style="height: 32px; min-height: 32px;">
-                        <mat-icon style="margin-right: 8px; font-size: 16px; width: 16px; height: 16px;">favorite_border</mat-icon>
+
+                    <button mat-menu-item (click)="OnVitalInfo(element)" style="height: 32px; min-height: 32px;">
+                        <mat-icon
+                            style="margin-right: 8px; font-size: 16px; width: 16px; height: 16px;">favorite_border</mat-icon>
                         <span style="font-size: 13px;">Vital Information</span>
                     </button>
-                    
-                    <button mat-menu-item 
-                            (click)="OnPrintPatientIcard(element)"
-                            [disabled]="element.IsCancelled"
-                            style="height: 32px; min-height: 32px;">
-                        <mat-icon style="margin-right: 8px; font-size: 16px; width: 16px; height: 16px;">format_list_bulleted</mat-icon>
+
+                    <button mat-menu-item (click)="OnPrintPatientIcard(element)" [disabled]="element.IsCancelled"
+                        style="height: 32px; min-height: 32px;">
+                        <mat-icon
+                            style="margin-right: 8px; font-size: 16px; width: 16px; height: 16px;">format_list_bulleted</mat-icon>
                         <span style="font-size: 13px;">Patient Details Sticker</span>
                     </button>
-                    
-                    <button mat-menu-item 
-                            (click)="OnWhatsAppAppointmentSend(element)"
-                            style="height: 32px; min-height: 32px;">
+
+                    <button mat-menu-item (click)="OnWhatsAppAppointmentSend(element)"
+                        style="height: 32px; min-height: 32px;">
                         <mat-icon style="margin-right: 8px; font-size: 16px; width: 16px; height: 16px;">chat</mat-icon>
                         <span style="font-size: 13px;">Send WhatsApp Message</span>
                     </button>
-                    
+
                     <ng-container *ngFor="let m of menuActions">
-                        <button mat-menu-item 
-                                (click)="OngetRecord(element, m.text)"
-                                [disabled]="shouldDisableMenuItem(m.text, element)"
-                                style="height: 32px; min-height: 32px;">
-                            <mat-icon style="margin-right: 8px; font-size: 16px; width: 16px; height: 16px;">{{m.icon}}</mat-icon>
+                        <button mat-menu-item (click)="OngetRecord(element, m.text)"
+                            [disabled]="shouldDisableMenuItem(m.text, element)" style="height: 32px; min-height: 32px;">
+                            <mat-icon
+                                style="margin-right: 8px; font-size: 16px; width: 16px; height: 16px;">{{m.icon}}</mat-icon>
                             <span style="font-size: 13px;">{{ m.text }}</span>
                         </button>
                     </ng-container>
-                    
+
                 </mat-menu>
 
             </div>
@@ -282,23 +280,23 @@
         <airmid-table [gridConfig]="gridConfig" class="content" (onSelectRow)="getSelectedRow($event)">
             <ng-container filters>
                 <form [formGroup]="myformSearch">
-<!-- 
+                    <!-- 
                     <airmid-datepicker [formGroup]="myformSearch" [isRangePicker]="true" formStartControlName="fromDate"
                         formEndControlName="enddate" [(fromValue)]="gridConfig.filters[4].fieldValue" (dateChange)="GetAppointdetail()"
                         [(toValue)]="gridConfig.filters[5].fieldValue"></airmid-datepicker> -->
- <!-- (dateChange)="onChangeFirst1($event)" -->
+                    <!-- (dateChange)="onChangeFirst1($event)" -->
 
-                          <airmid-datepicker [formGroup]="myformSearch"
-                                [isRangePicker]="true" formStartControlName="fromDate" formEndControlName="enddate"
-                                [(fromValue)]="gridConfig.filters[4].fieldValue"
-                                [(toValue)]="gridConfig.filters[5].fieldValue">
-                            </airmid-datepicker>
+                    <airmid-datepicker [formGroup]="myformSearch" [isRangePicker]="true" formStartControlName="fromDate"
+                        formEndControlName="enddate" [(fromValue)]="gridConfig.filters[4].fieldValue"
+                        [(toValue)]="gridConfig.filters[5].fieldValue">
+                    </airmid-datepicker>
 
 
                     <mat-form-field appearance="outline">
                         <mat-label>UHID NO</mat-label>
                         <input matInput placeholder="Search UHID No" autocomplete="off" [formGroup]="myformSearch"
-                            formControlName="RegNo" (input)="onChangeFirst1($event)" (keypress)="keyPressAlphanumeric($event)"/>
+                            formControlName="RegNo" (input)="onChangeFirst1($event)"
+                            (keypress)="keyPressAlphanumeric($event)" />
                         <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('RegNo')">
                             <mat-icon>close</mat-icon>
                         </button>
@@ -332,7 +330,7 @@
                         (keyup)="ListView($event)">
                     </airmid-dropdown>
 
-                     <mat-radio-group name="IsMark" formControlName="IsMark" (change)="onChangeFirst1($event)">
+                    <mat-radio-group name="IsMark" formControlName="IsMark" (change)="onChangeFirst1($event)">
                         <mat-radio-button value="2">All</mat-radio-button>
                         <mat-radio-button value="1">Marked</mat-radio-button>
                         <mat-radio-button value="0">NotMarked</mat-radio-button>

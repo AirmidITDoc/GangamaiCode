@@ -2,6 +2,7 @@ import { ScrollingModule } from "@angular/cdk/scrolling";
 import { DatePipe } from "@angular/common";
 import { NgModule } from "@angular/core";
 import { ReactiveFormsModule } from "@angular/forms";
+import { MatBadgeModule } from '@angular/material/badge';
 import { MatAutocompleteModule } from "@angular/material/autocomplete";
 import { MatButtonModule } from "@angular/material/button";
 import { MatCardModule } from "@angular/material/card";
@@ -85,6 +86,7 @@ const routes: Routes = [
         MatSlideToggleModule,
         MatDividerModule,
         MatDialogModule,
+        MatBadgeModule,
         FuseSharedModule,
         FuseConfirmDialogModule,
         ReactiveFormsModule,
