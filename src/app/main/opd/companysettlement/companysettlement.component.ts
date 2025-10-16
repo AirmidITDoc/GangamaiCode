@@ -597,6 +597,7 @@ export class CompanysettlementComponent implements OnInit {
         }
 
         element.netAmount = this.roundAmount(billAmt - discAmt - element.CompanyDisc);
+        element.PaidAmount = this.roundAmount(billAmt - discAmt - element.CompanyDisc);
         this.recalculateTotals();
     }
 
@@ -761,11 +762,71 @@ export class CompanysettlementComponent implements OnInit {
     selection = new SelectionModel<MultiplePayList>(true, []);
     SelectedList: any = [];
 
+    // masterToggle() {
+    //     debugger;
+
+    //     if (this.isAllSelected() || this.isSomeSelected()) {
+    //         // Unselect all
+    //         this.selection.clear();
+    //         this.SelectedList = [];
+    //         this.vNetAmount = 0;
+    //         this.vPaidAmount = 0;
+    //         this.vBalanceAmount = 0;
+    //         this.vTDSAmount = 0;
+
+    //         this.dsMultiplepayList.data.forEach(element => {
+    //             if (element._origBalanceAmt !== undefined) {
+    //                 element.PaidAmount = 0;
+    //                 element.balanceAmt = element._origBalanceAmt;
+    //                 element.netAmount = element._origNetAmt;
+    //             }
+    //             element.tds = 0;
+    //             element.CompanyDisc = 0;
+    //         });
+
+    //     } else {
+    //         // Select all
+    //         this.SelectedList = [];
+    //         this.vNetAmount = 0;
+    //         this.vPaidAmount = 0;
+    //         this.vBalanceAmount = 0;
+    //         this.vTDSAmount = 0;
+
+    //         this.dsMultiplepayList.data.forEach(element => {
+    //             this.selection.select(element);
+
+    //             if (element._origPaidAmount === undefined && element._origBalanceAmt === undefined && element._origNetAmt !== undefined) {
+    //                 element._origPaidAmount = element.PaidAmount ?? 0;
+    //                 element._origBalanceAmt = element.balanceAmt;
+    //                 element.netAmount = element._origNetAmt;
+    //             }
+
+    //             element.PaidAmount = element.balanceAmt;
+    //             element.balanceAmt = 0;
+    //             element.tds = 0;
+    //             element.CompanyDisc = 0;
+
+    //             element.netAmount = this.roundAmount(
+    //                 element.billAmount - (element.discAmount ?? 0) - (element.CompanyDisc ?? 0)
+    //             );
+
+    //             this.SelectedList.push(element);
+    //             this.vNetAmount += element.billAmount;
+    //             this.vPaidAmount += element.PaidAmount;
+    //             this.vBalanceAmount += element.balanceAmt;
+    //             this.vTDSAmount += element.tds;
+    //         });
+    //     }
+
+    //     // Refresh the table view
+    //     this.dsMultiplepayList.data = [...this.dsMultiplepayList.data];
+    //     console.log(this.SelectedList);
+    // }
     masterToggle() {
-        // debugger;
+        debugger;
 
         if (this.isAllSelected() || this.isSomeSelected()) {
-            // Unselect all
+            
             this.selection.clear();
             this.SelectedList = [];
             this.vNetAmount = 0;
@@ -774,17 +835,20 @@ export class CompanysettlementComponent implements OnInit {
             this.vTDSAmount = 0;
 
             this.dsMultiplepayList.data.forEach(element => {
+                // Restore original values if present
                 if (element._origBalanceAmt !== undefined) {
+                    element.PaidAmount = element._origPaidAmount ?? 0;
+                    element.balanceAmt = element._origBalanceAmt ?? 0;
+                    element.netAmount = element._origNetAmt ?? element.netAmount;
+                } else {
                     element.PaidAmount = 0;
-                    element.balanceAmt = element._origBalanceAmt;
-                    element.netAmount = element._origNetAmt;
                 }
                 element.tds = 0;
                 element.CompanyDisc = 0;
             });
 
         } else {
-            // Select all
+            // 🟢 Select all
             this.SelectedList = [];
             this.vNetAmount = 0;
             this.vPaidAmount = 0;
@@ -794,13 +858,13 @@ export class CompanysettlementComponent implements OnInit {
             this.dsMultiplepayList.data.forEach(element => {
                 this.selection.select(element);
 
-                if (element._origPaidAmount === undefined && element._origBalanceAmt === undefined && element._origNetAmt !== undefined) {
+                if (element._origPaidAmount === undefined || element._origBalanceAmt === undefined || element._origNetAmt === undefined) {
                     element._origPaidAmount = element.PaidAmount ?? 0;
-                    element._origBalanceAmt = element.balanceAmt;
-                    element.netAmount = element._origNetAmt;
+                    element._origBalanceAmt = element.balanceAmt ?? 0;
+                    element._origNetAmt = element.netAmount ?? 0;
                 }
 
-                element.PaidAmount = element.balanceAmt;
+                element.PaidAmount = element.balanceAmt ?? 0;
                 element.balanceAmt = 0;
                 element.tds = 0;
                 element.CompanyDisc = 0;
@@ -808,19 +872,18 @@ export class CompanysettlementComponent implements OnInit {
                 element.netAmount = this.roundAmount(
                     element.billAmount - (element.discAmount ?? 0) - (element.CompanyDisc ?? 0)
                 );
-
                 this.SelectedList.push(element);
-                this.vNetAmount += element.billAmount;
-                this.vPaidAmount += element.PaidAmount;
-                this.vBalanceAmount += element.balanceAmt;
-                this.vTDSAmount += element.tds;
+                this.vNetAmount += element.billAmount ?? 0;
+                this.vPaidAmount += element.PaidAmount ?? 0;
+                this.vBalanceAmount += element.balanceAmt ?? 0;
+                this.vTDSAmount += element.tds ?? 0;
             });
         }
 
-        // Refresh the table view
         this.dsMultiplepayList.data = [...this.dsMultiplepayList.data];
         console.log(this.SelectedList);
     }
+
 
     isAllSelected() {
         const numSelected = this.selection.selected.length;

@@ -8,6 +8,8 @@ import { AdmissionService } from 'app/main/ipd/Admission/admission/admission.ser
 import { DatePipe } from '@angular/common';
 import { AirmidDropDownComponent } from 'app/main/shared/componets/airmid-dropdown/airmid-dropdown.component';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
+import { OtReqInsert } from '../ot-request.component';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-new-request',
@@ -36,29 +38,61 @@ export class NewRequestComponent implements OnInit {
   autocompleteModeDoctorSurgeon: String = "DoctorSurgion";
   autocompleteModeSurgeryMaster: String = "SurgeryMaster";
   autocompleteModeDoctorType: string = "DoctorType";
+  autocompleteModeConDoctor: String = "ConDoctor";
+  autocompleteModeRefDoctor: String = "RefDoctor";
 
   vRegNo: any;
   vPatientName: any;
   vbookingId: any;
   vOPDNo: any;
-  vTariffName: any;
-  vCompanyName: any;
-  vDoctorName: any;
-  vAge: any;
-  vGenderName: any;
-  vAgeMonth: any;
-  vAgeDay: any;
-  vDepartment: any;
-  vMobNo: any;
   vIPDNo: any;
-
   screenFromString = 'Common-form';
   opIpId: any;
+  surgId: any;
+  surgName: any;
+  surgeonId: any;
+  surgeonName: any;
+  surgeonId1: any;
+  surgeonName1: any;
+  AnthId: any;
+  AnthName: any;
+  AnthId1: any;
+  AnthName1: any;
+  editIndex: number | null = null;
+  editIndex1: number | null = null;
+
+  displayedColumns: string[] = [
+    'surgeryType',
+    'surgeryName',
+    'part',
+    'duration',
+    'fromTime',
+    'toTime',
+    'isprimary',
+    'surgeon',
+    'anesthesia',
+    'Action'
+  ];
+
+   displayedColumns1: string[] = [
+    'surgeon',
+    'anesthesia',
+    'Action'
+  ];
 
   @ViewChild('surgeonList') surgeonList: AirmidDropDownComponent;
   opIpType: number;
   RegId: string;
   registerObj: any;
+  registerObj1 = new OtReqInsert({});
+  BloodGroupNames: string[] = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
+  surgeryTypeNames: string[] = ["Normal", "Emergency"];
+
+  dssurgeryDetailList = new MatTableDataSource<OtReqInsert>();
+  dsattendentDetailList = new MatTableDataSource<OtReqInsert>();
+  Chargelist: any[] = [];
+  Chargelist1: any[] = [];
+
   constructor(public _OtRequestService: OtRequestService,
     public dialogRef: MatDialogRef<NewRequestComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -81,12 +115,6 @@ export class NewRequestComponent implements OnInit {
       this.vOPDNo = this.registerObj.opdNo
       this.vIPDNo = this.registerObj.opdNo
       this.vPatientName = this.registerObj.patientName
-      this.vAge = this.registerObj.ageYear
-      this.vDepartment = this.registerObj.departmentName
-      this.vMobNo = this.registerObj.mobileNo
-      this.vDoctorName = this.registerObj.doctorName
-      this.vTariffName = this.registerObj.tariffName
-      this.vCompanyName = this.registerObj.companyName
 
       if (this.registerObj.opIpType == 0) {
         this.vSelectedOption = "OP"
@@ -121,22 +149,27 @@ export class NewRequestComponent implements OnInit {
     this.requestForm.get("this.isCancelledDate")?.setValue('1900-01-01')
     this.requestForm.get("doctorTypeId")?.setValue(this.registerObj.categoryId)
   }
+
+  keyPressAlphanumeric(event) {
+    var inp = String.fromCharCode(event.keyCode);
+    if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
+      return true;
+    } else {
+      event.preventDefault();
+      return false;
+    }
+  }
+
   patientInfoReset() {
     this.requestForm.get('opIpId').setValue('');
     this.requestForm.get('opIpId').reset();
     this.vRegNo = '';
     this.vPatientName = '';
     this.vIPDNo = '';
-    this.vDoctorName = '';
-    this.vTariffName = '';
-    this.vCompanyName = '';
-    this.vGenderName = '';
-    this.vAge = '';
-    this.vAgeDay = '';
-    this.vAgeMonth = '';
-    this.vDepartment = '';
-    this.vMobNo = '';
+
+    this.registerObj1 = new OtReqInsert({});
   }
+
   dateTimeObj: any;
   getDateTime(dateTimeObj) {
 
@@ -156,43 +189,25 @@ export class NewRequestComponent implements OnInit {
   }
 
   getSelectedObjIP(obj) {
-
     if ((obj.regID ?? 0) > 0) {
-      console.log("Admitted patient:", obj)
+      this.registerObj1 = obj
+      console.log("Admitted patient:", this.registerObj1)
       this.vRegNo = obj.regNo
-      this.vDoctorName = obj.doctorName
       this.vPatientName = obj.firstName + " " + obj.middleName + " " + obj.lastName
-      this.vDepartment = obj.departmentName
       this.vIPDNo = obj.ipdNo
-      this.vAge = obj.age
-      this.vAgeMonth = obj.ageMonth
-      this.vAgeDay = obj.ageDay
-      this.vGenderName = obj.genderName
-      this.vTariffName = obj.tariffName
-      this.vCompanyName = obj.companyName
       this.opIpId = obj.admissionID;
-      this.vMobNo = obj.mobileNo;
     }
   }
   getSelectedObjOP(obj) {
-
     if ((obj.regId ?? 0) > 0) {
-      console.log("Visite Patient:", obj)
+      this.registerObj1 = obj
+      console.log("Visite Patient:", this.registerObj1)
       this.vRegNo = obj.regNo
-      this.vDoctorName = obj.doctorName
-      this.vDepartment = obj.departmentName
       this.vOPDNo = obj.opdNo
-      this.vAge = obj.age
-      this.vAgeMonth = obj.ageMonth
-      this.vAgeDay = obj.ageDay
-      this.vGenderName = obj.genderName
-      this.vTariffName = obj.tariffName
-      this.vCompanyName = obj.companyName
       let nameField = obj.formattedText;
       let extractedName = nameField.split('|')[0].trim();
       this.vPatientName = extractedName;
       this.opIpId = obj.visitId;
-      this.vMobNo = obj.mobileNo;
     }
   }
 
@@ -206,6 +221,233 @@ export class NewRequestComponent implements OnInit {
     this.opstartTime = time
     this.requestForm.get('otRequestTime')?.setValue(time, { emitEvent: false });
   }
+
+  addDiagnolist: any = [];
+  selectChangeDiagnosis(selectedChips: string[]) {
+    this.addDiagnolist = selectedChips;
+    this.requestForm.get('Diagnosis')?.setValue(this.addDiagnolist);
+  }
+
+  // onAdd() {
+  // if (!this.requestForm.get("surgeryType")?.value) {
+  //   this.toastr.warning('Please select a surgery Type', 'Warning !', {
+  //     toastClass: 'tostr-tost custom-toast-warning',
+  //   });
+  //   return;
+  // }
+  // if (!this.requestForm.get("surgeryId")?.value) {
+  //   this.toastr.warning('Please select a Surgery', 'Warning !', {
+  //     toastClass: 'tostr-tost custom-toast-warning',
+  //   });
+  //   return;
+  // }
+  // if (!this.requestForm.get("duration")?.value) {
+  //   this.toastr.warning('Please enter Duration', 'Warning !', {
+  //     toastClass: 'tostr-tost custom-toast-warning',
+  //   });
+  //   return;
+  // }
+  // if (!this.requestForm.get("fromTime")?.value) {
+  //   this.toastr.warning('Please enter From time', 'Warning !', {
+  //     toastClass: 'tostr-tost custom-toast-warning',
+  //   });
+  //   return;
+  // }
+  // if (!this.requestForm.get("toTime")?.value) {
+  //   this.toastr.warning('Please enter To time', 'Warning !', {
+  //     toastClass: 'tostr-tost custom-toast-warning',
+  //   });
+  //   return;
+  // }
+  // if (!this.requestForm.get("surgeonId")?.value) {
+  //   this.toastr.warning('Please select a Surgeon', 'Warning !', {
+  //     toastClass: 'tostr-tost custom-toast-warning',
+  //   });
+  //   return;
+  // }
+  // if (!this.requestForm.get("anestheticsDr")?.value) {
+  //   this.toastr.warning('Please select a AnestheticsDr', 'Warning !', {
+  //     toastClass: 'tostr-tost custom-toast-warning',
+  //   });
+  //   return;
+  // }
+  //   debugger
+
+  //   let newEntry = {
+  //     surgeryType: this.requestForm.get('surgeryType').value,
+  //     surgeryName: this.requestForm.get('surgeryId').value,
+  //     duration: this.requestForm.get('duration').value,
+  //     fromTime: this.requestForm.get('fromTime').value,
+  //     toTime: this.requestForm.get('toTime').value,
+  //     isprimary: this.requestForm.get('isprimary').value,
+  //   };
+  //   this.Chargelist.push(newEntry);
+  //   this.dssurgeryDetailList.data = [...this.Chargelist];
+  // }
+
+  selectChangeSurgery(obj: any) {
+    this.surgName = obj.text
+  }
+  selectChangeSurgeon(obj: any) {
+    this.surgeonName = obj.text
+  }
+  selectChangeAnesth(obj: any) {
+    this.AnthName = obj.text
+  }
+  selectChangeSurgeon1(obj: any) {
+    this.surgeonName1 = obj.text
+  }
+  selectChangeAnesth1(obj: any) {
+    this.AnthName1 = obj.text
+  }
+  /////////////////////////////// surgery detail part /////////////////////////////
+  onAdd() {
+    debugger
+
+    let newEntry = {
+      surgeryType: this.requestForm.get('surgeryType').value,
+      surgeryId: this.requestForm.get('surgeryId').value,//
+      surgeryName: this.surgName,
+      duration: this.requestForm.get('duration').value,
+      fromTime: this.requestForm.get('fromTime').value,
+      toTime: this.requestForm.get('toTime').value,
+      isprimary: this.requestForm.get('isprimary').value,
+      surgeonId: this.requestForm.get('surgeonId').value,//
+      surgeonName: this.surgeonName,
+      anestheticsId: this.requestForm.get('anestheticsDr').value, //
+      anestheticsName: this.AnthName,
+    };
+    // this.Chargelist.push(newEntry);
+    if (this.editIndex !== null) {
+      this.Chargelist[this.editIndex] = newEntry;
+      this.editIndex = null;
+    } else {
+      this.Chargelist.push(newEntry);
+    }
+    this.dssurgeryDetailList.data = [...this.Chargelist];
+
+    this.requestForm.patchValue({
+      surgeryType: '',
+      surgeryId: '',
+      duration: '',
+      fromTime: '',
+      toTime: '',
+      isprimary: false,
+      surgeonId: '',
+      anestheticsDr: ''
+    });
+
+    this.surgName = '';
+    this.surgeonName = '';
+    this.AnthName = '';
+  }
+
+  deleteTableRow(event, element) {
+
+    let index = this.Chargelist.indexOf(element);
+    if (index >= 0) {
+      this.Chargelist.splice(index, 1);
+      this.dssurgeryDetailList.data = [];
+      this.dssurgeryDetailList.data = this.Chargelist;
+    }
+    this.toastr.success('Record Deleted Successfully.', 'Deleted !', {
+      toastClass: 'tostr-tost custom-toast-success',
+    });
+  }
+
+  onEdit(contact: any) {
+    debugger
+    console.log("Editing row:", contact);
+
+    // Patch values into the form
+    this.requestForm.patchValue({
+      surgeryType: contact.surgeryType ?? '',
+      surgeryId: contact.surgeryId ?? '',
+      duration: contact.duration ?? '',
+      fromTime: contact.fromTime ?? '',
+      toTime: contact.toTime ?? '',
+      isprimary: contact.isprimary ?? false,
+      surgeonId: contact.surgeonId ?? '',
+      anestheticsDr: contact.anestheticsId ?? ''
+    });
+
+    // Set display names if you have them separately
+    this.surgName = contact.surgeryName ?? '';
+    this.surgeonName = contact.surgeonName ?? '';
+    this.AnthName = contact.anestheticsName ?? '';
+
+    // Remove this contact from list so it can be re-added after editing
+    const index = this.Chargelist.indexOf(contact);
+    if (index > -1) {
+      this.Chargelist.splice(index, 1);
+      this.dssurgeryDetailList.data = [...this.Chargelist];
+    }
+  }
+
+  /////////////////////////////// surgery detail part end /////////////////////////////
+
+  /////////////////////////////// attendent detail part /////////////////////////////
+  onAdd1() {
+    debugger
+
+    let newEntry = {
+      surgeonId1: this.requestForm.get('surgeonId1').value,//
+      surgeonName1: this.surgeonName1,
+      anestheticsId1: this.requestForm.get('anestheticsDr1').value, //
+      anestheticsName1: this.AnthName1,
+    };
+    // this.Chargelist.push(newEntry);
+    if (this.editIndex1 !== null) {
+      this.Chargelist1[this.editIndex1] = newEntry;
+      this.editIndex1 = null;
+    } else {
+      this.Chargelist1.push(newEntry);
+    }
+    this.dsattendentDetailList.data = [...this.Chargelist1];
+
+    this.requestForm.patchValue({
+      surgeonId1: '',
+      anestheticsDr1: ''
+    });
+    this.surgeonName1 = '';
+    this.AnthName1 = '';
+  }
+
+  deleteTableRow1(event, element) {
+
+    let index = this.Chargelist1.indexOf(element);
+    if (index >= 0) {
+      this.Chargelist1.splice(index, 1);
+      this.dsattendentDetailList.data = [];
+      this.dsattendentDetailList.data = this.Chargelist1;
+    }
+    this.toastr.success('Record Deleted Successfully.', 'Deleted !', {
+      toastClass: 'tostr-tost custom-toast-success',
+    });
+  }
+
+  onEdit1(contact: any) {
+    debugger
+    console.log("Editing row:", contact);
+
+    // Patch values into the form
+    this.requestForm.patchValue({
+      surgeonId1: contact.surgeonId1 ?? '',
+      anestheticsDr1: contact.anestheticsId1 ?? ''
+    });
+
+    this.surgeonName1 = contact.surgeonName1 ?? '';
+    this.AnthName1 = contact.anestheticsName1 ?? '';
+
+    // Remove this contact from list so it can be re-added after editing
+    const index = this.Chargelist1.indexOf(contact);
+    if (index > -1) {
+      this.Chargelist1.splice(index, 1);
+      this.dsattendentDetailList.data = [...this.Chargelist1];
+    }
+  }
+
+  /////////////////////////////// attendent detail part end/////////////////////////////
 
   onSubmit() {
     let opdate = this.datePipe.transform(this.requestForm.get('otRequestDate')?.value, 'yyyy-MM-dd');
@@ -339,6 +581,71 @@ export class NewRequestComponent implements OnInit {
     // this.requestForm.reset();
     this.dialogRef.close(val);
     this.requestForm.get('opIpType').setValue('OP')
+  }
+
+  onChangeDuration(event: any) {
+    // debugger
+    const durationHours = parseFloat(this.requestForm.get('duration')?.value); // e.g. 1.5
+    const startTime = this.requestForm.get('fromTime')?.value; // "HH:mm"
+
+    if (durationHours && startTime) {
+      const [sh, sm] = startTime.split(':').map(Number);
+
+      const startMinutes = sh * 60 + sm;
+      const durationMinutes = Math.round(durationHours * 60);
+
+      const endMinutes = startMinutes + durationMinutes;
+      const eh = Math.floor(endMinutes / 60) % 24;
+      const em = endMinutes % 60;
+
+      const endTime = `${this.pad(eh)}:${this.pad(em)}`;
+      this.requestForm.get('toTime')?.setValue(endTime);
+    }
+  }
+
+  onChangeTimefrom(event: any) {
+    const duration = this.requestForm.get('duration')?.value;
+    const startTime = this.requestForm.get('fromTime')?.value;
+
+    if (duration) {
+      this.onChangeDuration(null); // reuse logic for calculating end time
+    } else {
+      const endTime = this.requestForm.get('toTime')?.value;
+      if (endTime) {
+        this.calculateDuration(startTime, endTime);
+      }
+    }
+  }
+
+  onChangeTimeto(event: any) {
+    const startTime = this.requestForm.get('fromTime')?.value;
+    const endTime = this.requestForm.get('toTime')?.value;
+
+    if (startTime && endTime) {
+      this.calculateDuration(startTime, endTime);
+    }
+  }
+
+  calculateDuration(startTime: string, endTime: string) {
+    // debugger
+    const [sh, sm] = startTime.split(':').map(Number);
+    const [eh, em] = endTime.split(':').map(Number);
+
+    const startMinutes = sh * 60 + sm;
+    const endMinutes = eh * 60 + em;
+
+    let durationMinutes = endMinutes - startMinutes;
+    if (durationMinutes < 0) durationMinutes += 24 * 60; // handle next-day wrap
+
+    const dh = Math.floor(durationMinutes / 60);
+    const dm = durationMinutes % 60;
+
+    const duration = `${this.pad(dh)}:${this.pad(dm)}`;
+    this.requestForm.get('duration')?.setValue(duration);
+  }
+
+  pad(num: number): string {
+    return num.toString().padStart(2, '0');
   }
 }
 
