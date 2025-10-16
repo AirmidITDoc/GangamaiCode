@@ -44,22 +44,9 @@ import { Console } from 'console';
 })
 export class ResultEntryComponent implements OnInit {
     SpinLoading: boolean = false;
-
-
-    // displayedColumns: string[] = [
-    //     'OP_Ip_Type',
-    //     'Date',
-    //     // 'Time',
-    //     'RegNo',
-    //     'PatientName',
-    //     'DoctorName',
-    //     'PatientType',
-    //     'PBillNo',
-    //     'GenderName',
-    //     'AgeYear',
-    //     'action'
-    // ];
-
+    Vtotalcount = 0
+    VCompletedcount = 0
+    Vpendingcount = 0
 
     reportPrintObjList: SampleDetailObj[] = [];
     reportPrintObjs: SampleDetailObj;
@@ -106,9 +93,9 @@ export class ResultEntryComponent implements OnInit {
     toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
     searchregNo: any;
     vOPIPId = 0;
-    f_name: any = ""
+    f_name: any = "%"
     regNo: any = "0"
-    l_name: any = ""
+    l_name: any = "%"
 
     age = ''
     gendername = ''
@@ -139,7 +126,7 @@ export class ResultEntryComponent implements OnInit {
         'TestName',
         'SampleCollectionTime',
         'SampleNo',
-      
+
         'outSourceLabName',
         'outSourceSampleSentDateTime',
 
@@ -248,7 +235,7 @@ export class ResultEntryComponent implements OnInit {
         this.myformSearch = this._SampleService.createSearchForm()
         this.fromDate = this.myformSearch.get("start").value || "";
         this.toDate = this.myformSearch.get("end").value || "";
-        // this.getPatientsList();
+        this.GetResultdetail();
     }
 
     searchRecords(data) {
@@ -262,6 +249,8 @@ export class ResultEntryComponent implements OnInit {
         toDate = toDate ? this.datePipe.transform(toDate, "yyyy-MM-dd") : "";
         let patientType = this.myformSearch.get("PatientTypeSearch").value || "2";
         let status = this.myformSearch.get("StatusSearch").value || "0";
+
+        this.GetResultdetail()
         // Update the filters dynamically
         this.gridConfig = {
             apiUrl: "Pathology/PathologyPatientTestList",
@@ -373,6 +362,8 @@ export class ResultEntryComponent implements OnInit {
         this.status = this.myformSearch.get('StatusSearch').value
         this.opipType = this.myformSearch.get('PatientTypeSearch').value
         this.regNo = this.myformSearch.get('RegNoSearch').value || ""
+
+        this.GetResultdetail();
         this.getfilterdata();
     }
 
@@ -430,8 +421,8 @@ export class ResultEntryComponent implements OnInit {
         });
     }
 
-   
-   
+
+
     IsTemplateTest: any;
     chkresultentry(contact, flag) {
         // debugger
@@ -660,7 +651,7 @@ export class ResultEntryComponent implements OnInit {
         console.log(contact)
 
         if (contact.isTemplateTest)
-            
+
             Swal.fire({
                 title: 'Select Report Format',
                 text: "Choose how you want to view the report:",
@@ -700,7 +691,15 @@ export class ResultEntryComponent implements OnInit {
     // opiptype = this.selectedItem.opdipdtype;
     CompletdFlag = 1
     Printresultentry() {
-debugger
+        debugger
+
+        if (this.selection.selected.length == 0) {
+
+            this.toastr.warning('CheckBox Select !', 'Warning !', {
+                toastClass: 'tostr-tost custom-toast-warning',
+            });
+            return;
+        }
         console.log(this.selection.selected);
         let pathologyDelete = [];
 
@@ -708,7 +707,7 @@ debugger
 
         this.selection.selected.forEach((element) => {
             console.log(element);
-           
+
             if (element.isCompleted)
                 this.CompletdFlag = 1
             else
@@ -727,13 +726,13 @@ debugger
                     this.viewgetPathologyTestReportPdf(this.selectedItem)
                 }
             });
-        }else{
+        } else {
             Swal.fire("Selcted test Not Completd for Print.....")
         }
     }
 
     viewgetPathologyTestReportPdf(data) {
-     const param = {
+        const param = {
             searchFields: [
                 {
                     fieldName: "OP_IP_Type",
@@ -761,7 +760,7 @@ debugger
 
             });
         });
-        
+
     }
 
     Printresultentrywithheader() {
@@ -842,53 +841,6 @@ debugger
         // this.selection.clear();
     }
 
-
-    // exportResultentryReportExcel() {
-    //     this.sIsLoading == 'loading-data'
-    //     let exportHeaders = ['Date', 'Time', 'RegNo', 'PatientName', 'DoctorName', 'PatientType', 'PBillNo', 'GenderName', 'AgeYear', 'PathDues'];
-    //     this.reportDownloadService.getExportJsonData(this.dataSource.data, exportHeaders, 'Result Entry');
-    //     this.dataSource.data = [];
-    //     this.sIsLoading = '';
-    // }
-
-    // exportReportPdf() {
-    //     let actualData = [];
-    //     this.dataSource.data.forEach(e => {
-    //         var tempObj = [];
-    //         tempObj.push(e.DOA);
-    //         tempObj.push(e.DOT);
-    //         // tempObj.push(e.DVisitDate);
-    //         tempObj.push(e.RegNo);
-    //         tempObj.push(e.DoctorName);
-    //         tempObj.push(e.PatientType);
-    //         tempObj.push(e.PBillNo);
-    //         tempObj.push(e.GenderName);
-    //         tempObj.push(e.AgeYear);
-    //         // tempObj.push(e.PathAmount);
-    //         actualData.push(tempObj);
-    //     });
-    //     let headers = [['Date', 'Time', 'RegNo', 'DoctorName', 'PatientType', 'PBillNo', 'GenderName', 'AgeYear', 'PathAmount']];
-    //     this.reportDownloadService.exportPdfDownload(headers, actualData, 'Result Entry');
-    // }
-
-  
-    // onShow(event: MouseEvent) {
-    //     // this.click = false;// !this.click;
-    //     this.click = !this.click;
-
-    //     setTimeout(() => {
-    //         {
-    //             this.sIsLoading = 'loading-data';
-
-    //             // this.getPatientsList();
-    //         }
-
-    //     }, 50);
-    //     this.MouseEvent = true;
-    //     this.click = true;
-
-    // }
-
     onsamplecolltion(contact) {
         console.log(contact)
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
@@ -906,7 +858,7 @@ debugger
             });
 
         dialogRef1.afterClosed().subscribe(result => {
-            });
+        });
     }
     Editoutsoucedata(row) {
         console.log(row)
@@ -959,8 +911,89 @@ debugger
         // this.onEdit(row);
     }
 
- 
-     selection = new SelectionModel<SampleList>(true, []);
+    GetResultdetail() {
+
+        this.fromDate = this.datePipe.transform(this.myformSearch.get('start').value, "yyyy-MM-dd")
+        this.toDate = this.datePipe.transform(this.myformSearch.get('end').value, "yyyy-MM-dd")
+        this.Vtotalcount = 0;
+        this.VCompletedcount = 0;
+        this.Vpendingcount = 0;
+
+        let data =
+        {
+            "first": 0,
+            "rows": 150,
+            "sortField": "PresReId",
+            "sortOrder": 0,
+            "filters": [
+                {
+                    "fieldName": "F_Name",
+                    "fieldValue": String(this.f_name),
+                    "opType": "Contains"
+                },
+                {
+                    "fieldName": "L_Name",
+                    "fieldValue": String(this.l_name),
+                    "opType": "Contains"
+                },
+                {
+                    "fieldName": "Reg_No",
+                    "fieldValue": String(this.regNo),
+                    "opType": "Equals"
+                },
+
+                {
+                    "fieldName": "From_Dt",
+                    "fieldValue": this.fromDate,
+                    "opType": "Equals"
+                },
+                {
+                    "fieldName": "To_Dt",
+                    "fieldValue": this.toDate,
+                    "opType": "Equals"
+                },
+                {
+                    "fieldName": "IsCompleted",
+                    "fieldValue": String(this.status),
+                    "opType": "Equals"
+                },
+                {
+                    "fieldName": "OP_IP_Type",
+                    "fieldValue": String(this.myformSearch.get("PatientTypeSearch").value || "2"),
+                    "opType": "Equals"
+                }
+            ],
+            "exportType": "JSON",
+            "columns": [
+                {
+                    "data": "string",
+                    "name": "string"
+                }
+            ]
+        }
+
+
+        console.log(data)
+        this._SampleService.getresultenterylist(data).subscribe((response) => {
+            this.dataSource.data = response.data;
+            console.log(this.dataSource.data)
+            if (this.dataSource.data.length > 0) {
+                this.Vtotalcount = this.dataSource.data.length
+                this.dataSource.data.forEach(element => {
+                    debugger
+                    if (element.isCompleted == true) {
+                        this.VCompletedcount = this.VCompletedcount + 1;
+                    } else if (element.isCompleted == false) {
+                        this.Vpendingcount = this.Vpendingcount + 1;
+                    }
+
+                });
+                console.log(this.dataSource.data)
+            }
+        });
+    }
+
+    selection = new SelectionModel<SampleList>(true, []);
 
     masterToggle() {
         // Toggle selection
@@ -983,7 +1016,7 @@ debugger
         // console.log(this.selection.selected);
         return this.selection.selected.length > 0;
     }
- keyPressAlphanumeric(event) {
+    keyPressAlphanumeric(event) {
         var inp = String.fromCharCode(event.keyCode);
         if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
             return true;
@@ -1023,6 +1056,7 @@ export class PatientList {
     AgeYear: any;
     GenderName: String;
     MobileNo: any;
+    isCompleted: any
 
     constructor(PatientList) {
         this.DOA = PatientList.DOA || '0';
@@ -1035,6 +1069,9 @@ export class PatientList {
         this.AgeYear = PatientList.AgeYear || 0;
         this.GenderName = PatientList.GenderName;
         this.MobileNo = PatientList.MobileNo || ''
+        this.isCompleted = PatientList.isCompleted || ''
+
+
     }
 }
 
@@ -1067,7 +1104,7 @@ export class SampleList {
     genderId: any;
     sampleNo: any;
     suggestionNotes: any;
-isCompleted: any;
+    isCompleted: any;
 
     constructor(SampleList) {
         this.VADate = SampleList.VADate || '';

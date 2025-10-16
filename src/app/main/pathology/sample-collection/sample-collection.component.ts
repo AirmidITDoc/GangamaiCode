@@ -11,6 +11,8 @@ import { gridColumnTypes } from "app/core/models/tableActions";
 import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
 import { ToastrService } from 'ngx-toastr';
 import { SamplecollectionPageComponent } from './samplecollection-page/samplecollection-page.component';
+import { NursingPathRadRequestList } from '../sample-request/sample-request.component';
+import { MatTableDataSource } from '@angular/material/table';
 
 
 @Component({
@@ -22,6 +24,19 @@ import { SamplecollectionPageComponent } from './samplecollection-page/samplecol
 })
 export class SampleCollectionComponent implements OnInit {
     myformSearch: FormGroup;
+    isShowDetailTable: boolean = false;
+    fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+    toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+    vOPIPId = 0;
+    f_name: any = "%"
+    regNo: any = "0"
+    l_name: any = "%"
+    status: any = "0"
+    Ptype: any = "1"
+    Vtotalcount = 0
+    VCompletedcount = 0
+    Vpendingcount = 0
+    dataSource = new MatTableDataSource<NursingPathRadRequestList>();
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     @ViewChild('grid1') grid1: AirmidTableComponent;
 
@@ -40,16 +55,8 @@ export class SampleCollectionComponent implements OnInit {
     }
 
     gridConfig1: gridModel = new gridModel();
-    isShowDetailTable: boolean = false;
-    fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
-    toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
-    vOPIPId = 0;
-    f_name: any = ""
-    regNo: any = "0"
-    l_name: any = ""
 
-    status: any = "1"
-    Ptype: any = "1"
+
     allcolumns = [
         { heading: "-", key: "lbl", width: 30, sort: true, align: 'left', type: gridColumnTypes.template },
         { heading: "-", key: "companyName", width: 30, sort: true, align: 'left', type: gridColumnTypes.template },
@@ -95,6 +102,7 @@ export class SampleCollectionComponent implements OnInit {
 
     ngOnInit(): void {
         this.myformSearch = this._SampleCollectionService.createSearchForm()
+        this.GetSampleCollectiondetail()
     }
 
     getSelectedRow(row: any): void {
@@ -139,6 +147,8 @@ export class SampleCollectionComponent implements OnInit {
         setTimeout(() => {
             this.grid1.gridConfig = this.gridConfig1;
             this.grid1.bindGridData();
+            
+
         });
         console.log(this.gridConfig1)
     }
@@ -153,7 +163,6 @@ export class SampleCollectionComponent implements OnInit {
         this.regNo = this.myformSearch.get('RegNo').value || ""
         this.status = this.myformSearch.get('StatusSearch').value
         this.Ptype = this.myformSearch.get('PatientTypeSearch').value
-
         this.getfilterdata();
     }
 
@@ -177,6 +186,93 @@ export class SampleCollectionComponent implements OnInit {
         }
         this.grid.gridConfig = this.gridConfig;
         this.grid.bindGridData();
+        this.GetSampleCollectiondetail()
+
+    }
+
+
+    GetSampleCollectiondetail() {
+
+        let fromDateControl = this.datePipe.transform(this.myformSearch.get('start').value, "yyyy-MM-dd");
+        let toDateControl = this.datePipe.transform(this.myformSearch.get('end').value, "yyyy-MM-dd");
+
+        this.Vtotalcount = 0;
+        this.VCompletedcount = 0;
+        this.Vpendingcount = 0;
+        debugger
+        let filters: any[] = [];
+
+        // Handle date range
+        if (fromDateControl && toDateControl) {
+            this.fromDate = this.datePipe.transform(fromDateControl, "yyyy-MM-dd");
+            this.toDate = this.datePipe.transform(toDateControl, "yyyy-MM-dd");
+        }
+        filters.push(
+            {
+                "fieldName": "F_Name",
+                "fieldValue": String(this.f_name),
+                "opType": "Contains"
+            },
+            {
+                "fieldName": "L_Name",
+                "fieldValue": String(this.l_name),
+                "opType": "Contains"
+            },
+            {
+                "fieldName": "Reg_No",
+                "fieldValue": String(this.regNo),
+                "opType": "Equals"
+            },
+
+            {
+                "fieldName": "From_Dt",
+                "fieldValue": this.fromDate,
+                "opType": "GreaterThanOrEqual"
+            },
+            {
+                "fieldName": "To_Dt",
+                "fieldValue": this.toDate,
+                "opType": "GreaterThanOrEqual"
+            },
+            {
+                "fieldName": "IsCompleted",
+                "fieldValue": String(this.status),
+                "opType": "Equals"
+            },
+            {
+                "fieldName": "OP_IP_Type",
+                "fieldValue": String(this.Ptype),
+                "opType": "Equals"
+            }
+        );
+
+        let data = {
+            "first": 0,
+            "rows": 999999,
+            "sortField": "RegNo",
+            "sortOrder": 0,
+            "filters": filters,
+            "exportType": "JSON",
+            "columns": []
+        };
+        console.log(data)
+        this._SampleCollectionService.getSampleCollectionlist(data).subscribe((response) => {
+            this.dataSource.data = response.data;
+            console.log(this.dataSource.data)
+            if (this.dataSource.data.length > 0) {
+                debugger
+                this.Vtotalcount = this.dataSource.data.length
+                this.VCompletedcount = this.dataSource.data.filter(
+                    (element: any) => element.isSampleCollection=='True'
+                ).length;
+
+                this.Vpendingcount = this.dataSource.data.filter(
+                    (element: any) => element.isSampleCollection=='False'
+                ).length;
+
+                console.log(this.dataSource.data)
+            }
+        });
     }
 
 

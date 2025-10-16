@@ -22,9 +22,37 @@
                 <span>: IP </span>
             </div>
         </div>
-
+     
     </mat-toolbar>
+   <div class="info-badge-top overflow-auto" fxLayout="row" fxLayoutAlign="space-between" flex>
 
+            <div fxLayout="row" fxLayoutAlign="start center" class="gap-8">
+                
+                <div class="dashboard-card registrations">
+                    <div class="card-label">Total Sample</div>
+                    <div class="card-value">{{Vtotalcount}}</div>
+                    <mat-icon class="card-icon">person_add</mat-icon>
+                </div>
+                
+                <div class="dashboard-card appointments">
+                    <div class="card-label">Completed</div>
+                    <div class="card-value">{{VCompletedcount}}</div>
+                    <mat-icon class="card-icon">event</mat-icon>
+                </div>
+                
+                <div class="dashboard-card appointments-split">
+                    <div class="card-label">Pending</div>
+                    <div class="card-value">
+                        <div> {{Vpendingcount}}</div>
+                       
+                    </div>
+                    <mat-icon class="card-icon">group</mat-icon>
+                </div>
+                
+                
+            </div>
+
+        </div>
     <div fusePerfectScrollbar
         class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
         dynamicTableHeight>
@@ -129,7 +157,7 @@
 
                         <div fxLayout="column" fxLayoutAlign="start start">
                             <div fxFlex fxLayout="row">
-                                <mat-radio-group name="Istype" fxLayout="row"  [formGroup]="myformSearch"
+                                <mat-radio-group name="Istype" fxLayout="row" [formGroup]="myformSearch"
                                     formControlName="PatientTypeSearch" (change)="onChangeFirst()" style="padding: 6px;"
                                     class="gap-4">
                                     <mat-label>Type:</mat-label>
@@ -172,4 +200,3 @@
         </div>
     </div>
 </div>
-

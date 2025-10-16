@@ -1,6 +1,7 @@
 import { HttpBackend, HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
+import { ApiCaller } from 'app/core/services/apiCaller';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,7 @@ export class PathologyService {
   mysamplerequstform: FormGroup;
 
   myShowPathologyResultForm: FormGroup;
-  constructor(private handler: HttpBackend, private _httpClient: HttpClient, private _formBuilder: UntypedFormBuilder) {
+  constructor(private handler: HttpBackend, private _httpClient: ApiCaller, private _formBuilder: UntypedFormBuilder) {
     this.myform = this.createtemplateForm();
     this.myformSearch = this.createSearchForm();
 
@@ -78,7 +79,7 @@ export class PathologyService {
 
 
   public PathTemplateResultentryInsert(employee) {
-    return this._httpClient.post("Pathology/PathologyTemplateResult", employee);
+    return this._httpClient.PostData("Pathology/PathologyTemplateResult", employee);
   }
 
   // public getPathologyDoctorMaster1Combo() {
@@ -136,23 +137,27 @@ export class PathologyService {
 
   
 
-  populateForm(employee) {
-    this.myform.patchValue(employee);
-  }
+  // populateForm(employee) {
+  //   this.myform.patchValue(employee);
+  // }
 
-  populatePrintForm(employee) {
-    this.myform.patchValue(employee);
-  }
+  // populatePrintForm(employee) {
+  //   this.myform.patchValue(employee);
+  // }
 
-  Print(employee) {
-    return this._httpClient.post("Generic/GetByProc?procName=ps_rpt_radiologyTemplate", employee)
-  }
+  // Print(employee) {
+  //   return this._httpClient.post("Generic/GetByProc?procName=ps_rpt_radiologyTemplate", employee)
+  // }
 
 
-  getPathologyPrint(employee) {
-    return this._httpClient.post("Generic/GetByProc?procName=rptPathologyReportPrintMultiple", employee)
-  }
+  // getPathologyPrint(employee) {
+  //   return this._httpClient.post("Generic/GetByProc?procName=rptPathologyReportPrintMultiple", employee)
+  // }
+    public getsamplerequestlist(employee) {
+        return this._httpClient.PostData("PathlogySampleCollection/LabOrRadRequestPatientList", employee)
+    }
 
+  
   // public InsertLabDetail(employee) {
 
 

@@ -47,7 +47,9 @@ export class SampleCollectionService {
     });
   }
 
-
+ public getSampleCollectionlist(employee) {
+        return this._httpClient1.PostData("PathlogySampleCollection/SampleCollectionPatientList", employee)
+    }
   public getPatientSamplesList(employee) {
     return this._httpClient.post("Generic/GetByProc?procName=Rtrv_PathSamPatList", employee)
   }
@@ -56,9 +58,9 @@ export class SampleCollectionService {
     return this._httpClient1.PostData("PathlogySampleCollection/SampleCollectionTestList", employee)
   }
 
-  // public getSampleDetailsList(employee) {
-  //   return this._httpClient.post("Generic/GetByProc?procName=Rtrv_PathSamColllist_Pat_Dtls", employee)
-  // }
+  public getSampleDetailsList(employee) {
+    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_PathSamColllist_Pat_Dtls", employee)
+  }
 
   public UpdateSampleCollection(employee) {
     return this._httpClient1.PutData("PathlogySampleCollection/Update", employee);
