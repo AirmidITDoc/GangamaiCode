@@ -16,6 +16,8 @@ import { DoctorShareService } from './doctor-share.service';
 import { ProcessDoctorShareComponent } from './process-doctor-share/process-doctor-share.component';
 import { gridColumnTypes } from 'app/core/models/tableActions';
 import { DoctorShareListComponent } from 'app/main/setup/doctor/doctor-payoutpercentage/doctor-share-list/doctor-share-list.component';
+import { AdditionDocpayComponent } from './addition-docpay/addition-docpay.component';
+import { IPBillDoctorshareComponent } from './ipbill-doctorshare/ipbill-doctorshare.component';
 
 @Component({
   selector: 'app-doctor-share',
@@ -42,22 +44,19 @@ export class DoctorShareComponent implements OnInit {
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
-  autocompleteModeItem: string = "ConDoctor";
+  autocompleteModedoctor: string = "ConDoctor";
   autocompletedepartment: string = "Department";
 
   fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
   toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
-  pBillNo:any="0"
-  opipType:any="1"
+  pBillNo: any = "0"
+  opipType: any = "1"
 
-  // fromDate = this._DoctorShareService.UserFormGroup.get('fromDate').value
-  // toDate = this._DoctorShareService.UserFormGroup.get('enddate').value
+  @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
 
-  // fromdate = this.fromDate ? this.datePipe.transform(this.fromDate, "yyyy-MM-dd") : "";
-  // todate = this.toDate ? this.datePipe.transform(this.toDate, "yyyy-MM-dd") : "";
 
   @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
-
+@ViewChild(AirmidTableComponent) grid1: AirmidTableComponent;
   constructor(
     public _DoctorShareService: DoctorShareService,
     public datePipe: DatePipe,
@@ -76,32 +75,40 @@ export class DoctorShareComponent implements OnInit {
 
   }
   @ViewChild('actionsTemplate1') actionsTemplate1!: TemplateRef<any>;
-    @ViewChild('actionsTemplate') actionsTemplate!: TemplateRef<any>;
-   ngAfterViewInit() {
-        // Assign the template to the column dynamically
-        this.gridConfig.columnsList.find(col => col.key === 'patientType')!.template = this.actionsTemplate1;
-     this.gridConfig.columnsList.find(col => col.key === 'opdipdtype')!.template = this.actionsTemplate;
-     
-    }
+  @ViewChild('actionsTemplate') actionsTemplate!: TemplateRef<any>;
+  ngAfterViewInit() {
+    // Assign the template to the column dynamically
+    this.gridConfig.columnsList.find(col => col.key === 'patientType')!.template = this.actionsTemplate1;
+    this.gridConfig.columnsList.find(col => col.key === 'opdipdtype')!.template = this.actionsTemplate;
+    this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
+  }
 
-  allColumns=[
+  allColumns = [
     { heading: "-", key: "patientType", sort: true, align: 'left', type: gridColumnTypes.template, emptySign: 'NA', width: 25 },
-     { heading: "-", key: "opdipdtype", sort: true, align: 'left', type: gridColumnTypes.template, emptySign: 'NA', width: 25 },
+    { heading: "-", key: "opdipdtype", sort: true, align: 'left', type: gridColumnTypes.template, emptySign: 'NA', width: 25 },
     { heading: "PBillNo", key: "pbillNo", sort: true, align: 'left', emptySign: 'NA', width: 25 },
     { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
-    { heading: "Bill Amt", key: "totalAmt", sort: true, align: 'left', emptySign: 'NA' , type: gridColumnTypes.amount , width: 125},
-    { heading: "Discount Amt", key: "ConcessionAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount , width: 125 },
-    { heading: "Net Amt", key: "netPayableAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, width: 125  },
-    { heading: "Doctor Name", key: "admittedDoctorName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
     // { heading: "Patient Type", key: "patientType", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "Company Name", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 200 }
+
+    { heading: "Bill Amt", key: "totalAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, width: 125 },
+    { heading: "Discount Amt", key: "ConcessionAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, width: 125 },
+    { heading: "Net Amt", key: "netPayableAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, width: 125 },
+    { heading: "Doctor Name", key: "admittedDoctorName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
+    // { heading: "Hospital Amt", key: "hospitalAmt", sort: true, align: 'left', emptySign: 'NA' , type: gridColumnTypes.amount , width: 125},
+    // { heading: "Doctor Amt", key: "doctorAmt", sort: true, align: 'left', emptySign: 'NA' , type: gridColumnTypes.amount , width: 125},
+
+    { heading: "Company Name", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+    {
+      heading: "Action", key: "action", align: "right", width: 150, sticky: true, type: gridColumnTypes.template,
+      template: this.actionButtonTemplate  // Assign ng-template to the column
+    }
   ]
-  allFilters=[
+  allFilters = [
     { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.StartsWith },
     { fieldName: "ToDate", fieldValue: this.toDate, opType: OperatorComparer.StartsWith },
     { fieldName: "DoctorId", fieldValue: "0", opType: OperatorComparer.Equals },
     { fieldName: "PBillNo", fieldValue: "0", opType: OperatorComparer.Equals },
-    { fieldName: "OP_IP_TYpe", fieldValue: "0", opType: OperatorComparer.Equals },
+    { fieldName: "OP_IP_TYpe", fieldValue: "1", opType: OperatorComparer.Equals },
   ]
   gridConfig: gridModel = {
     apiUrl: "Doctor/DoctorshareBillList",
@@ -115,75 +122,126 @@ export class DoctorShareComponent implements OnInit {
     this.fromDate = this.datePipe.transform(this._DoctorShareService.UserFormGroup.get('fromDate').value, "yyyy-MM-dd")
     this.toDate = this.datePipe.transform(this._DoctorShareService.UserFormGroup.get('enddate').value, "yyyy-MM-dd")
     this.pBillNo = this._DoctorShareService.UserFormGroup.get('PbillNo').value || "0"
-    this.opipType = this._DoctorShareService.UserFormGroup.get('OP_IP_Type').value 
+    this.opipType = this._DoctorShareService.UserFormGroup.get('OP_IP_Type').value
     this.getfilterdata();
-}
+  }
 
-getfilterdata(){
-// debugger
-let fromD = this._DoctorShareService.UserFormGroup.get("fromDate").value || "";
-let toD = this._DoctorShareService.UserFormGroup.get("enddate").value || "";
-this.fromDate = fromD ? this.datePipe.transform(this._DoctorShareService.UserFormGroup.get('fromDate').value, "yyyy-MM-dd") : "";
-this.toDate = toD ? this.datePipe.transform(this._DoctorShareService.UserFormGroup.get('enddate').value, "yyyy-MM-dd") : "";
-this.DoctorId = this._DoctorShareService.UserFormGroup.get('DoctorID').value
+  getfilterdata() {
+    // debugger
+    let fromD = this._DoctorShareService.UserFormGroup.get("fromDate").value || "";
+    let toD = this._DoctorShareService.UserFormGroup.get("enddate").value || "";
+    this.fromDate = fromD ? this.datePipe.transform(this._DoctorShareService.UserFormGroup.get('fromDate').value, "yyyy-MM-dd") : "";
+    this.toDate = toD ? this.datePipe.transform(this._DoctorShareService.UserFormGroup.get('enddate').value, "yyyy-MM-dd") : "";
+    this.DoctorId = this._DoctorShareService.UserFormGroup.get('DoctorID').value
 
-console.log("fromDate:",this.fromDate)
-console.log("toDate:",this.toDate)
+    console.log("fromDate:", this.fromDate)
+    console.log("toDate:", this.toDate)
 
-this.gridConfig = {
-    apiUrl: "Doctor/DoctorshareBillList",
-    columnsList:this.allColumns , 
+    this.gridConfig = {
+      apiUrl: "Doctor/DoctorshareBillList",
+      columnsList: this.allColumns,
+      sortField: "DoctorId",
+      sortOrder: 0,
+      filters: [
+        { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.StartsWith },
+        { fieldName: "ToDate", fieldValue: this.toDate, opType: OperatorComparer.StartsWith },
+        { fieldName: "DoctorId", fieldValue: this.DoctorId, opType: OperatorComparer.Equals },
+        { fieldName: "PBillNo", fieldValue: this.pBillNo, opType: OperatorComparer.Equals },
+        { fieldName: "OP_IP_TYpe", fieldValue: this.opipType, opType: OperatorComparer.Equals },
+      ]
+    }
+    this.grid.gridConfig = this.gridConfig;
+    this.grid.bindGridData();
+  }
+///Additonla pay
+allColumns1 = [
+    { heading: "-", key: "patientType", sort: true, align: 'left', type: gridColumnTypes.template, emptySign: 'NA', width: 25 },
+    { heading: "-", key: "opdipdtype", sort: true, align: 'left', type: gridColumnTypes.template, emptySign: 'NA', width: 25 },
+    { heading: "PBillNo", key: "pbillNo", sort: true, align: 'left', emptySign: 'NA', width: 25 },
+    { heading: "Service Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
+    // { heading: "Patient Type", key: "patientType", sort: true, align: 'left', emptySign: 'NA' },
+
+    { heading: "Price", key: "totalAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, width: 125 },
+    { heading: "Qty", key: "ConcessionAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, width: 125 },
+    // { heading: "Total Amt", key: "hospitalAmt", sort: true, align: 'left', emptySign: 'NA' , type: gridColumnTypes.amount , width: 125},
+    // { heading: "Disc Amt", key: "doctorAmt", sort: true, align: 'left', emptySign: 'NA' , type: gridColumnTypes.amount , width: 125},
+
+    { heading: "Net Amt", key: "netPayableAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, width: 125 },
+    { heading: "Doctor Name", key: "admittedDoctorName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
+   
+    // { heading: "Doc Amt", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+    // { heading: "Hospital Amt", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+   
+    {
+      heading: "Action", key: "action", align: "right", width: 150, sticky: true, type: gridColumnTypes.template,
+      template: this.actionButtonTemplate  // Assign ng-template to the column
+    }
+  ]
+  allFilters1 = [
+    { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.StartsWith },
+    { fieldName: "ToDate", fieldValue: this.toDate, opType: OperatorComparer.StartsWith },
+    { fieldName: "DoctorId", fieldValue: "0", opType: OperatorComparer.Equals },
+    { fieldName: "PBillNo", fieldValue: "0", opType: OperatorComparer.Equals },
+    { fieldName: "OP_IP_TYpe", fieldValue: "1", opType: OperatorComparer.Equals },
+  ]
+  gridConfig1: gridModel = {
+    apiUrl: "DoctorPAy/DoctorPayList",
+    columnsList: this.allColumns1,
     sortField: "DoctorId",
     sortOrder: 0,
-    filters:  [
-      { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.StartsWith },
-      { fieldName: "ToDate", fieldValue: this.toDate, opType: OperatorComparer.StartsWith },
-      { fieldName: "DoctorId", fieldValue: this.DoctorId, opType: OperatorComparer.Equals },
-      { fieldName: "PBillNo", fieldValue: this.pBillNo, opType: OperatorComparer.Equals },
-      { fieldName: "OP_IP_TYpe", fieldValue: this.opipType, opType: OperatorComparer.Equals },
-    ]
-}
-this.grid.gridConfig = this.gridConfig;
-this.grid.bindGridData(); 
-}
+    filters: this.allFilters1
+  }
 
-Clearfilter(event) {
-  console.log(event)
-  if (event == 'PbillNo')
+  onChangeFirst1() {
+    this.fromDate = this.datePipe.transform(this._DoctorShareService.UserFormGroup.get('fromDate').value, "yyyy-MM-dd")
+    this.toDate = this.datePipe.transform(this._DoctorShareService.UserFormGroup.get('enddate').value, "yyyy-MM-dd")
+    this.pBillNo = this._DoctorShareService.UserFormGroup.get('PbillNo').value || "0"
+    this.opipType = this._DoctorShareService.UserFormGroup.get('OP_IP_Type').value
+    this.getfilterdata1();
+  }
+
+  getfilterdata1() {
+    // debugger
+    let fromD = this._DoctorShareService.UserFormGroup.get("fromDate").value || "";
+    let toD = this._DoctorShareService.UserFormGroup.get("enddate").value || "";
+    this.fromDate = fromD ? this.datePipe.transform(this._DoctorShareService.UserFormGroup.get('fromDate').value, "yyyy-MM-dd") : "";
+    this.toDate = toD ? this.datePipe.transform(this._DoctorShareService.UserFormGroup.get('enddate').value, "yyyy-MM-dd") : "";
+    this.DoctorId = this._DoctorShareService.UserFormGroup.get('DoctorID').value
+
+    console.log("fromDate:", this.fromDate)
+    console.log("toDate:", this.toDate)
+
+    this.gridConfig1 = {
+      apiUrl: "Doctor/DoctorshareBillList",
+      columnsList: this.allColumns,
+      sortField: "DoctorId",
+      sortOrder: 0,
+      filters: [
+        { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.StartsWith },
+        { fieldName: "ToDate", fieldValue: this.toDate, opType: OperatorComparer.StartsWith },
+        { fieldName: "DoctorId", fieldValue: this.DoctorId, opType: OperatorComparer.Equals },
+        { fieldName: "PBillNo", fieldValue: this.pBillNo, opType: OperatorComparer.Equals },
+        { fieldName: "OP_IP_TYpe", fieldValue: this.opipType, opType: OperatorComparer.Equals },
+      ]
+    }
+    this.grid1.gridConfig = this.gridConfig1;
+    this.grid.bindGridData();
+  }
+//
+  Clearfilter(event) {
+    console.log(event)
+    if (event == 'PbillNo')
       this._DoctorShareService.UserFormGroup.get('PbillNo').setValue("")
-  this.onChangeFirst();
-}
+    this.onChangeFirst();
+  }
 
-  // gridConfig1: gridModel = {
-  //   apiUrl: "CurrencyMaster/List",
-  //   columnsList: [
-  //     { heading: "-", key: "firstName", sort: true, align: 'left', emptySign: 'NA' },
-  //     { heading: "PBillNo", key: "middleName", sort: true, align: 'left', emptySign: 'NA' },
-  //     { heading: "PatientName", key: "lastName", sort: true, align: 'left', emptySign: 'NA' },
-  //     { heading: "BillAmt", key: "address", sort: true, align: 'left', emptySign: 'NA' },
-  //     { heading: "DiscountAmt", key: "City", sort: true, align: 'left', emptySign: 'NA' },
-  //     { heading: "NetAmt", key: "Age", sort: true, align: 'left', emptySign: 'NA' },
-  //     { heading: "DoctorName", key: "PhoneNo", sort: true, align: 'left', emptySign: 'NA' },
-  //     { heading: "PatientType", key: "oPBILL", sort: true, align: 'left', emptySign: 'NA' },
-  //     { heading: "CompanyName", key: "oPReceipt", sort: true, align: 'left', emptySign: 'NA' }
-  //   ],
-  //   sortField: "firstName",
-  //   sortOrder: 0,
-  //   filters: [
-  //     { fieldName: "firstName", fieldValue: "", opType: OperatorComparer.Contains },
-  //     { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals },
-  //     { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
-  //     { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
-  //     { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
-  //   ]
-  // }
-  // data: any;
 
-  onSave(row: any = null) {
+
+  onHold(row: any = null) {
     const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
     buttonElement.blur(); // Remove focus from the button
 
-    // let that = this;
+    let that = this;
     // const dialogRef = this._matDialog.open(NewconfigComponent,
     //     {
     //         maxWidth: "95vw",
@@ -200,15 +258,15 @@ Clearfilter(event) {
 
   DoctorId = "0";
 
-  ListView(value) {        
+  ListView(value) {
     console.log(value)
-     if(value.value!==0)
-        this.DoctorId=value.value
+    if (value.value !== 0)
+      this.DoctorId = value.value
     else
-    this.DoctorId="0"
+      this.DoctorId = "0"
 
     this.onChangeFirst();
-}
+  }
 
   getValidationMessages() {
     return {
@@ -220,26 +278,31 @@ Clearfilter(event) {
     };
   }
 
-  viewDocShareSummaryReport() {
-    
-    
-  }
-  viewDocShareReport() {
-    
-   
-  }
-
+  isDatePckrDisabled: boolean = false;
   NewDocShare() {
     const dialogRef = this._matDialog.open(DoctorShareListComponent,
       {
-          maxWidth: "85vw",
-      height: "45%",
-      width: "100%",
+        maxWidth: "35vw",
+        height: "75%",
+        width: "100%",
       });
     dialogRef.afterClosed().subscribe(result => {
       this.onChangeFirst()
     });
   }
+
+  Additiondocpay() {
+    const dialogRef = this._matDialog.open(AdditionDocpayComponent,
+      {
+        maxWidth: "85vw",
+        height: "65%",
+        width: "100%",
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      this.onChangeFirst()
+    });
+  }
+
   processDocShare() {
     const dialogRef = this._matDialog.open(ProcessDoctorShareComponent,
       {
@@ -251,6 +314,19 @@ Clearfilter(event) {
       console.log('The dialog was closed - Insert Action', result);
     });
   }
+
+  billdetail(element) {
+    const dialogRef = this._matDialog.open(IPBillDoctorshareComponent,
+      {
+        maxWidth: "90vw",
+        height: "75%",
+        width: "100%",
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      this.onChangeFirst()
+    });
+  }
+
   onClear() {
   }
   keyPressAlphanumeric(event) {

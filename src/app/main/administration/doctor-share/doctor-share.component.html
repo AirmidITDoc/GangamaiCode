@@ -8,17 +8,17 @@
         <div class="top-header-info">
             <div class="top-header-title">
                 <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                    Doctor Share
+                    Define Doctor Share
                 </span>
             </div>
         </div>
 
         <div fxLayout="row" fxLayoutAlign="end" class="left-icon">
-            <button mat-raised-button (click)="viewDocShareReport()" fxLayoutAlign="center center" class="py-8">
+            <!-- <button mat-raised-button (click)="viewDocShareReport()" fxLayoutAlign="center center" class="py-8">
                 <mat-icon>print</mat-icon><span>Doctor Share Report</span>
-            </button>&nbsp;
-            <button mat-raised-button (click)="viewDocShareSummaryReport()" fxLayoutAlign="center center" class="py-8">
-                <mat-icon>print</mat-icon> <span> Doctor Share Summary Report</span>
+            </button>&nbsp;-->
+            <button mat-raised-button (click)="Additiondocpay()" fxLayoutAlign="center center" class="py-8">
+                <mat-icon>add</mat-icon> <span>AdditionDocpay</span>
             </button>&nbsp;&nbsp;
             <button mat-raised-button (click)="processDocShare()" fxLayoutAlign="center center" class="py-8">
                 <span>Process Doctor Share</span>
@@ -56,13 +56,15 @@
                                         formEndControlName="enddate" [(fromValue)]="gridConfig.filters[0].fieldValue"
                                         [(toValue)]="gridConfig.filters[1].fieldValue">
                                     </airmid-datepicker>
+
+                                    
                                 </div>
 
                                 <div fxFlex="18%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <airmid-dropdown label="Select Doctor Name" formControlName="DoctorID"
                                         [formGroup]="_DoctorShareService.UserFormGroup"
                                         (selectionChange)="ListView($event)" (keyup)="ListView($event)"
-                                        [mode]="autocompleteModeItem">
+                                        [mode]="autocompleteModedoctor">
                                     </airmid-dropdown>
                                 </div>
 
@@ -127,6 +129,21 @@
                                         </div>
                                     </ng-template>
 
+                                    <ng-template #actionButtonTemplate let-element>
+
+                                        <div fxLayout="row" fxLayoutAlign="center center">
+                                            <mat-icon *ngIf="element.isBillShrHold==false" (click)="onHold(element)"
+                                                matTooltip="Hold Bill">
+                                                <img width="50px" height="50px" src="assets/images/logos/hold.png">
+                                            </mat-icon>
+
+                                            <mat-icon (click)="billdetail(element)" matTooltip=" Bill Detail">
+                                                edit
+                                            </mat-icon>
+                                        </div>
+
+                                    </ng-template>
+
                                     <airmid-table [gridConfig]="gridConfig" #grid :ShowFilter="false">
                                         <ng-container filters>
 
@@ -140,11 +157,43 @@
                                 <div fusePerfectScrollbar
                                     class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
                                     dynamicTableHeight>
-                                    <!-- <airmid-table [gridConfig]="gridConfig1" #grid :ShowFilter="false">
+                                    <ng-template #actionsTemplate1 let-element>
+                                        <div fxLayout="row" fxLayoutAlign="center center">
+                                            <mat-icon *ngIf="element.patientType=='Self'"
+                                                matTooltip="Patient Category Self">account_box
+                                            </mat-icon>
+                                            <mat-icon *ngIf="!element.patientType=='Self'"
+                                                matTooltip="Patient Category other">business
+                                            </mat-icon>
+                                        </div>
+
+                                    </ng-template>
+                                    <ng-template #actionsTemplate let-element>
+                                        <div fxLayout="row" fxLayoutAlign="center center">
+
+                                            <mat-icon *ngIf="element.opdipdtype=='0'" matTooltip="OPD"
+                                                class="pill orange-600 s-16">circle</mat-icon>
+
+                                            <mat-icon *ngIf="element.opdipdtype=='1'" matTooltip="IPD"
+                                                class="pill green-600 s-16">circle</mat-icon>
+                                        </div>
+                                    </ng-template>
+
+                                    <ng-template #actionButtonTemplate let-element>
+
+                                        <div fxLayout="row" fxLayoutAlign="center center">
+                                            <mat-icon *ngIf="element.isBillShrHold==false" (click)="onHold(element)"
+                                                matTooltip="Hold Bill">
+                                                <img width="50px" height="50px" src="assets/images/logos/hold.png">
+                                            </mat-icon>
+                                        </div>
+
+                                    </ng-template>
+                                    <airmid-table [gridConfig]="gridConfig1" #grid1 :ShowFilter="false">
                                         <ng-container filters>
 
                                         </ng-container>
-                                    </airmid-table> -->
+                                    </airmid-table>
                                 </div>
                             </mat-tab>
                         </mat-tab-group>

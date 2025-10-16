@@ -34,13 +34,11 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatTooltipModule } from '@angular/material/tooltip';
+
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
-import { AddDoctorShareComponent } from './add-doctor-share/add-doctor-share.component';
-import { DoctorShareComponent } from './doctor-share.component';
-import { ProcessDoctorShareComponent } from './process-doctor-share/process-doctor-share.component';
-import { AdditionDocpayComponent } from './addition-docpay/addition-docpay.component';
-import { IPBillDoctorshareComponent } from './ipbill-doctorshare/ipbill-doctorshare.component';
+
 import { MatTimepickerModule } from 'mat-timepicker';
+import { DoctorshareProcessComponent } from './doctorshare-process.component';
 import { SharedModule } from 'app/main/shared/shared.module';
 
 
@@ -48,12 +46,12 @@ import { SharedModule } from 'app/main/shared/shared.module';
 const routes: Routes = [
   {
       path: "**",
-      component: DoctorShareComponent,
+      component: DoctorshareProcessComponent,
   },
 ];
 
 @NgModule({
-    declarations: [DoctorShareComponent, AddDoctorShareComponent, ProcessDoctorShareComponent, AdditionDocpayComponent, IPBillDoctorshareComponent],
+    declarations: [DoctorshareProcessComponent],
     imports: [
         RouterModule.forChild(routes),
         CommonModule,
@@ -101,4 +99,4 @@ const routes: Routes = [
         DatePipe,
     ]
 })
-export class DOctorShareModule { }
+export class DoctorshareProcessModule { }

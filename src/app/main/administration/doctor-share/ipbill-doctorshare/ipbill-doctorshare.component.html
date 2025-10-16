@@ -1,0 +1,82 @@
+<div fusePerfectScrollbar
+    class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
+    dynamicTableHeight>
+
+    <div class="top-header header accent p-16" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
+        fxLayoutAlign.gt-xs="space-between center ">
+
+        <div class="top-header-info">
+            <div class="top-header-title">
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    Ip Bill Doctor Share
+                </span>
+            </div>
+        </div>
+
+
+    </div>
+
+    <div class="content">
+        <div class="center  pb-56" style="border-radius: 4px;padding: 6px 6px 6px 6px;">
+            <div class="content-card">
+                <div fxLayout="row" fxLayout="column" fxFlexFill fxLayoutGap="10px">
+                    <mat-card style="padding: 5px;">
+                        <form [formGroup]="_DoctorShareService.UserFormGroup">
+                            <div fxLayout="row wrap" fxLayoutGap="12px grid">
+
+                            <airmid-datepicker [formGroup]="_DoctorShareService.UserFormGroup" [isRangePicker]="true"
+                                    formStartControlName="startdate" formEndControlName="enddate">
+                                </airmid-datepicker>
+
+
+                                <div style="padding: 10px;">
+                                    <button mat-raised-button class="searchButton" matTooltip="search"
+                                        (click)="getfilterdata()">
+                                        <mat-icon class="searchiconbutton">search</mat-icon>
+                                    </button>
+                                </div>
+
+                            </div>
+                        </form>
+                    </mat-card>
+
+                    <mat-card style="padding: 5px;">
+                        <div fusePerfectScrollbar
+                            class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
+                            dynamicTableHeight>
+
+                            <ng-template #actionsTemplate1 let-element>
+                                <div fxLayout="row" fxLayoutAlign="center center">
+                                    <mat-icon *ngIf="element.patientType=='Self'"
+                                        matTooltip="Patient Category Self">account_box
+                                    </mat-icon>
+                                    <mat-icon *ngIf="!element.patientType=='Self'"
+                                        matTooltip="Patient Category other">business
+                                    </mat-icon>
+                                </div>
+
+                            </ng-template>
+                            <ng-template #actionsTemplate let-element>
+                                <div fxLayout="row" fxLayoutAlign="center center">
+
+                                    <mat-icon *ngIf="element.opdipdtype=='0'" matTooltip="OPD"
+                                        class="pill orange-600 s-16">circle</mat-icon>
+
+                                    <mat-icon *ngIf="element.opdipdtype=='1'" matTooltip="IPD"
+                                        class="pill green-600 s-16">circle</mat-icon>
+                                </div>
+                            </ng-template>
+
+                            <airmid-table [gridConfig]="gridConfig" #grid :ShowFilter="false">
+                                <ng-container filters>
+
+                                </ng-container>
+                            </airmid-table>
+                        </div>
+
+                    </mat-card>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

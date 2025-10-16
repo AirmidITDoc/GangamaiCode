@@ -86,7 +86,11 @@ export class DoctorShareService {
   public SaveProcessdocShare(Param) {
     return this._httpClient.PostData("DoctorShareProcess/DoctorShareProcess",Param) 
   } 
-
+  
+ public additionpayInsert(Param) {
+    return this._httpClient.PostData("DoctorPAy/Insert",Param) 
+  } 
+  
   // public getPdfDocShareSummaryRpt(FromDate,ToDate,DoctorId){
   //   return this._httpClient.GetData("DoctorShareReports/viewDoctorWiseSummaryReport?FromDate=" + FromDate +"&ToDate=" + ToDate +"&DoctorId" +DoctorId);
   // }

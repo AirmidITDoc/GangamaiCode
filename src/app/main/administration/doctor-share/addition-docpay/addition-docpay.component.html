@@ -1,0 +1,232 @@
+<div class="modal-wrapper grid-container">
+    <!-- Modal header -->
+    <div class="modal-header accent">
+        <div class="modal-header-content">
+            <div class="modal-header-title">
+                <span [@animate]="{ value: '*', params: { delay: '100ms', x: '-25px' } }">Addition Doctor Pay</span>
+            </div>
+            <div class="modal-header-right">
+                <div class="comman-date-container">
+                    <div class="comman-date">
+                        <app-common-date [screenFrom]="screenFromString"
+                            (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
+                    </div>
+                    <div class="close-icon">
+                        <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
+                            matTooltip="Close">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal body -->
+    <div class="modal-body" fusePerfectScrollbar>
+        <div class="modal-body-container">
+            <div fxLayout="column" class="gap-12">
+                <div class="modal-card-container">
+                    <!-- <mat-card>
+                        <div class="patient-info-container">
+                            <div class="patient-sub">
+                                <div class="patient-info-row patient-info-1-111 pt-8" fxLayout="row"
+                                    fxLayoutAlign="space-between">
+                                    <div fxLayout="column" fxLayoutGap="10px">
+                                        <div class="patient-col">
+                                            <span class="patient-col-key">UHID No</span>
+                                            <span>:</span>
+                                            <span class="patient-col-value">{{ Personaldata.regNo }}</span>
+                                        </div>
+                                        <div class="patient-col">
+                                            <span class="patient-col-key">Patient Name</span>
+                                            <span>:</span>
+                                            <span class="patient-col-value">{{ Personaldata.patientName }}</span>
+                                        </div>
+                                        <div class="patient-col">
+                                            <span class="patient-col-key">Doctor Name</span>
+                                            <span>:</span>
+                                            <span class="patient-col-value">{{ Personaldata.doctorname ||
+                                                Personaldata.doctorName}}</span>
+                                        </div>
+                                        <div class="patient-col">
+                                            <span class="patient-col-key">Department</span>
+                                            <span>:</span>
+                                            <span class="patient-col-value">{{ Personaldata.departmentName }}</span>
+                                        </div>
+                                    </div>
+                                    <div fxLayout="column" fxLayoutGap="10px">
+                                        <div class="patient-col">
+                                            <span class="patient-col-key">DOA | Time</span>
+                                            <span>:</span>
+                                            <span class="patient-col-value">{{ (Personaldata.admissionTime ||
+                                                Personaldata.emgTime) |
+                                                date:'dd-MM-yyyy | hh:mm a' }}</span>
+                                        </div>
+                                        <div class="patient-col">
+                                            <span class="patient-col-key">IPD No</span>
+                                            <span>:</span>
+                                            <span class="patient-col-value">{{ Personaldata.ipdno ??
+                                                Personaldata.seqNo}}</span>
+                                        </div>
+                                        <div class="patient-col">
+                                            <span class="patient-col-key">Age | Sex</span>
+                                            <span>:</span>
+                                            <span class="patient-col-value">{{ Personaldata.ageYear }}Y|{{
+                                                Personaldata.ageMonth }}M|{{
+                                                Personaldata.ageDay }} D | {{ Personaldata.GenderName }}</span>
+                                        </div>
+                                        <div class="patient-col">
+                                            <span class="patient-col-key">Ref-Doctor Name</span>
+                                            <span>:</span>
+                                            <span class="patient-col-value">{{ Personaldata.refDocName ||
+                                                Personaldata.refDoctorName }}</span>
+                                        </div>
+                                    </div>
+                                    <div fxLayout="column" fxLayoutGap="10px">
+                                        <div class="patient-col">
+                                            <span class="patient-col-key">Ward | Bed Name</span>
+                                            <span>:</span>
+                                            <span class="patient-col-value">{{ Personaldata.roomName }} | {{
+                                                Personaldata.bedName }}</span>
+                                        </div>
+                                        <div class="patient-col">
+                                            <span class="patient-col-key">Patient Type</span>
+                                            <span>:</span>
+                                            <span class="patient-col-value">{{ Personaldata.patientType }}</span>
+                                        </div>
+                                        <div class="patient-col">
+                                            <span class="patient-col-key">Tarrif Name</span>
+                                            <span>:</span>
+                                            <span class="patient-col-value">{{ Personaldata.tariffName }}</span>
+                                        </div>
+                                        <div class="patient-col">
+                                            <span class="patient-col-key">Company Name</span>
+                                            <span>:</span>
+                                            <span class="patient-col-value">{{ Personaldata.companyName }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </mat-card> -->
+                </div>
+                <div class="modal-card-container">
+                    <mat-card style="padding: 20px;">
+                        <div fxLayout="column" class="gap-8">
+                            <div class="form-title mb-2 border-bottom pb-2">
+                                <span class="h3 font-weight-600">Addition Doctor pay Information</span>
+                            </div>
+                            <form [formGroup]="AdddocpayFormGroup" style="border: blue">
+                                <div fxLayout="row wrap" fxLayoutGap="8px 0px grid">
+
+                                    <div fxFlex="25" fxFlex.xs="100" fxFlex.sm="33">
+                                        <mat-form-field appearance="outline" class="dateField" fxFlex>
+                                            <mat-label>Bill Date</mat-label>
+                                            <input matInput [matDatepicker]="picker1" [min]="minDate"
+                                                formControlName="billDate" (dateChange)="onChangeDate($event.value)" />
+                                            <mat-datepicker-toggle matSuffix [for]="picker1"
+                                                [disabled]="isDatePckrDisabled"></mat-datepicker-toggle>
+                                            <mat-datepicker #picker1></mat-datepicker>
+                                        </mat-form-field>
+                                    </div>
+
+                                    <div fxFlex="25" fxFlex.xs="100" fxFlex.sm="33">
+                                        <mat-form-field appearance="outline" class="timeField" fxFlex>
+                                            <mat-label>Bill Time</mat-label>
+                                            <input matTimepicker #t="matTimepicker" mode="12h"
+                                                formControlName="billTime" (timeChange)="onChangeTime($event)"
+                                                [disableDialogOpenOnClick]="isDatePckrDisabled" />
+                                            <mat-icon matSuffix
+                                                (click)="!isDatePckrDisabled ? t.showDialog() : ''">access_time</mat-icon>
+                                        </mat-form-field>
+                                    </div>
+                                    <div fxFlex="25" fxFlex.xs="100" fxFlex.sm="33">
+
+                                        <airmid-dropdown label="Select Doctor Name" formControlName="docId"
+                                            [formGroup]="AdddocpayFormGroup"  (selectionChange)="selectChangedoctor($event)"
+                                            [mode]="autocompleteModedoctor"  [validations]="getValidationMessages().docId">
+                                        </airmid-dropdown>
+                                    </div>
+                                </div>
+                                <div fxLayout="row wrap" fxLayoutGap="8px 0px grid">
+
+                                    <div fxFlex="25" fxFlex.xs="100" fxFlex.sm="33">
+                                        <airmid-textbox label="billno" formControlName="pbillNo"
+                                            [formGroup]="AdddocpayFormGroup"
+                                            [validations]="getValidationMessages().billno"
+                                            [maxLength]="15"></airmid-textbox>
+                                    </div>
+                                    <div fxFlex="25" fxFlex.xs="100" fxFlex.sm="33">
+                                        <airmid-textbox label="PatientName" formControlName="patientName"
+                                            [formGroup]="AdddocpayFormGroup"
+                                            [validations]="getValidationMessages().PatientName"
+                                            [maxLength]="50"></airmid-textbox>
+                                    </div>
+
+
+                                    <div fxFlex="25" fxFlex.xs="100" fxFlex.sm="33">
+                                        <airmid-autocomplete label="Enter Service Name" [formGroup]="AdddocpayFormGroup"
+                                            (selectionChange)="selectChangeService($event)"
+                                            formControlName="serviceName" placeholderText="Enter Service Name" fxFlex
+                                            ApiUrl="{{ ApiURL }}" TextField="formattedText"></airmid-autocomplete>
+                                    </div>
+
+                                    <div fxFlex="25" fxFlex.xs="100" fxFlex.sm="33">
+                                        <airmid-dropdown label="Company Name" formControlName="companyId"
+                                            [formGroup]="AdddocpayFormGroup"
+                                            [validations]="getValidationMessages().companyId"
+                                            [mode]="autocompleteModeCompany">
+                                        </airmid-dropdown>
+                                    </div>
+                                </div>
+
+                                <div fxLayout="row wrap" fxLayoutGap="8px 0px grid">
+                                    <div fxFlex="25" fxFlex.xs="100" fxFlex.sm="33">
+                                        <airmid-textbox label="price" formControlName="price" [type]="'number'"
+                                            [min]="0" [formGroup]="AdddocpayFormGroup"
+                                            (valueChange)="calculateTotalamt()"
+                                            [validations]="getValidationMessages().price"
+                                            [maxLength]="7"></airmid-textbox>
+
+                                    </div>
+
+                                    <div fxFlex="25" fxFlex.xs="100" fxFlex.sm="33">
+                                        <airmid-textbox label="qty" formControlName="qty" [type]="'number'" [min]="0"
+                                            (valueChange)="calculateTotalamt()" [formGroup]="AdddocpayFormGroup"
+                                            [validations]="getValidationMessages().qty"
+                                            [maxLength]="5"></airmid-textbox>
+                                    </div>
+
+                                    <div fxFlex="25" fxFlex.xs="100" fxFlex.sm="33">
+                                        <airmid-textbox label="total" formControlName="totalAmount" [type]="'number'"
+                                            rea [formGroup]="AdddocpayFormGroup"
+                                            [validations]="getValidationMessages().total" [value]="totalAmount"
+                                            [min]="0" [maxLength]="7"></airmid-textbox>
+                                    </div>
+
+                                     <div fxFlex="25" fxFlex.xs="100" fxFlex.sm="33">
+                                        <airmid-textbox label="docamt" formControlName="docAmount" [min]="0"
+                                            [formGroup]="AdddocpayFormGroup"
+                                            [validations]="getValidationMessages().docamt"
+                                            [maxLength]="10"></airmid-textbox>
+                                    </div>
+                                </div>
+
+
+
+                            </form>
+                        </div>
+                    </mat-card>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <div class="footer-navigation-container">
+            <div class="modal-footer-buttons">
+                <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
+                <button type="button" class="btn btn-primary" (click)="onSubmit()">Save</button>
+            </div>
+        </div>
+    </div>
+</div>

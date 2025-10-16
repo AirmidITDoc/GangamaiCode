@@ -51,8 +51,8 @@ export class DoctorPayoutpercentageComponent {
     { heading: "Share Type", key: "docShrTypeS", sort: true, align: 'left', emptySign: 'NA', width: 100 },
 
     { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
-    { heading: "ServiceName", key: "serviceName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
-    { heading: "ClassName", key: "className", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+    { heading: "ServiceName", key: "serviceName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+    { heading: "ClassName", key: "className", sort: true, align: 'left', emptySign: 'NA', width: 150 },
     { heading: "Share%", key: "servicePercentage", sort: true, align: 'left', emptySign: 'NA', width: 100 },
     { heading: "ShareAmt", key: "serviceAmount", sort: true, align: 'left', emptySign: 'NA', width: 100, type: gridColumnTypes.amount  },
 
@@ -136,9 +136,9 @@ export class DoctorPayoutpercentageComponent {
     buttonElement.blur();
 
     const dialogRef = this._matDialog.open(DoctorShareListComponent, {
-      maxWidth: "85vw",
-      height: "45%",
-      width: "100%",
+     maxWidth: "35vw",
+        height: "75%",
+        width: "100%",
 
     });
     dialogRef.afterClosed().subscribe((result) => {
@@ -152,10 +152,10 @@ export class DoctorPayoutpercentageComponent {
     buttonElement.blur();
 
     const dialogRef = this._matDialog.open(DoctorShareListComponent, {
-      maxWidth: "85vw",
-      height: "55%",
-      width: "100%",
-      data: row
+       maxWidth: "35vw",
+        height: "75%",
+        width: "100%",
+      data: row,
 
     });
     dialogRef.afterClosed().subscribe((result) => {
