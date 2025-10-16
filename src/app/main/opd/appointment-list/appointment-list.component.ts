@@ -46,7 +46,7 @@ export class AppointmentListComponent implements OnInit {
     myformSearch: FormGroup;
     searchFormGroup: FormGroup;
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
-    menuActions: Array<{icon:string, text: string}> = [];
+    menuActions: Array<{ icon: string, text: string }> = [];
     fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
     toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
 
@@ -92,9 +92,9 @@ export class AppointmentListComponent implements OnInit {
         this.myformSearch = this._AppointmentlistService.filterForm();
         this.searchFormGroup = this.createSearchForm();
         // menu Button List
-        this.menuActions.push({icon: "local_hospital", text: "Update Consultant Doctor"});
-        this.menuActions.push({icon: "people_outline", text:"Update Referred Doctor"});
-        this.menuActions.push({icon: "language", text:"Request For IP"});
+        this.menuActions.push({ icon: "local_hospital", text: "Update Consultant Doctor" });
+        this.menuActions.push({ icon: "people_outline", text: "Update Referred Doctor" });
+        this.menuActions.push({ icon: "language", text: "Request For IP" });
 
         const savedTimers = localStorage.getItem('consultTimers');
         if (savedTimers) {
@@ -187,7 +187,7 @@ export class AppointmentListComponent implements OnInit {
         { heading: "Patient Type", key: "patientType", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "Tariff Name", key: "tariffName", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "Company Name", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 230 },
-         { heading: "", key: "companyId", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
+        { heading: "", key: "companyId", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
         { heading: "Mobile No", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "Check-InTime", key: "checkInTime", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 7 },
         { heading: "Check-OutTime", key: "checkOutTime", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 7 },
@@ -623,9 +623,9 @@ export class AppointmentListComponent implements OnInit {
                 maxWidth: "95vw",
                 height: '95%',
                 width: '90%',
-               });
+            });
         dialogRef.afterClosed().subscribe(result => {
-          });
+        });
     }
 
 
@@ -737,66 +737,73 @@ export class AppointmentListComponent implements OnInit {
     }
 
     GetAppointdetail() {
-
-        this.fromDate = this.datePipe.transform(this.myformSearch.get('fromDate').value, "yyyy-MM-dd")
-        this.toDate = this.datePipe.transform(this.myformSearch.get('enddate').value, "yyyy-MM-dd")
         this.Vtotalcount = 0;
         this.VNewcount = 0;
         this.VFollowupcount = 0;
         this.VBillcount = 0;
         this.VCrossConscount = 0;
-        //    debugger
-        let data =
-        {
-            "first": 0,
-            "rows": 150,
-            "sortField": "VisitId",
-            "sortOrder": 0,
-            "filters": [
-                {
-                    "fieldName": "F_Name",
-                    "fieldValue": String(this.f_name),
-                    "opType": "Contains"
-                },
-                {
-                    "fieldName": "L_Name",
-                    "fieldValue": String(this.l_name),
-                    "opType": "Contains"
-                },
-                {
-                    "fieldName": "Reg_No",
-                    "fieldValue": String(this.regNo),
-                    "opType": "Equals"
-                },
-                {
-                    "fieldName": "Doctor_Id",
-                    "fieldValue": String(this.DoctorId),
-                    "opType": "Equals"
-                },
-                {
-                    "fieldName": "From_Dt",
-                    "fieldValue": this.fromDate,
-                    "opType": "Equals"
-                },
-                {
-                    "fieldName": "To_Dt",
-                    "fieldValue": this.toDate,
-                    "opType": "Equals"
-                },
-                {
-                    "fieldName": "IsMark",
-                    "fieldValue": "2",
-                    "opType": "Equals"
-                }
-            ],
-            "exportType": "JSON",
-            "columns": [
-                {
-                    "data": "string",
-                    "name": "string"
-                }
-            ]
+        let fromDateControl = this.datePipe.transform(this.myformSearch.get('fromDate').value, "yyyy-MM-dd");
+        let toDateControl = this.datePipe.transform(this.myformSearch.get('enddate').value, "yyyy-MM-dd");
+
+        let filters: any[] = [];
+
+        // Handle date range
+        if (fromDateControl && toDateControl) {
+            this.fromDate = this.datePipe.transform(fromDateControl, "yyyy-MM-dd");
+            this.toDate = this.datePipe.transform(toDateControl, "yyyy-MM-dd");
+        } else {
+            this.fromDate = "1900-01-01";
+            this.toDate = "1900-01-01";
         }
+
+        filters.push(
+
+            {
+                "fieldName": "F_Name",
+                "fieldValue": String(this.f_name),
+                "opType": "Contains"
+            },
+            {
+                "fieldName": "L_Name",
+                "fieldValue": String(this.l_name),
+                "opType": "Contains"
+            },
+            {
+                "fieldName": "Reg_No",
+                "fieldValue": String(this.regNo),
+                "opType": "Equals"
+            },
+            {
+                "fieldName": "Doctor_Id",
+                "fieldValue": String(this.DoctorId),
+                "opType": "Equals"
+            },
+            {
+                "fieldName": "From_Dt",
+                "fieldValue": this.fromDate,
+                "opType": "GreaterThanOrEqual"
+            },
+            {
+                "fieldName": "To_Dt",
+                "fieldValue": this.toDate,
+                "opType": "GreaterThanOrEqual"
+            },
+            {
+                "fieldName": "IsMark",
+                "fieldValue": "2",
+                "opType": "Equals"
+            }
+        );
+
+        let data = {
+            "first": 0,
+            "rows": 999999,
+            "sortField": "AdmissionId",
+            "sortOrder": 0,
+            "filters": filters,
+            "exportType": "JSON",
+            "columns": []
+        };
         console.log(data)
         this._AppointmentlistService.getVisitlist(data).subscribe((response) => {
             this.dataSource.data = response.data;
@@ -826,27 +833,27 @@ export class AppointmentListComponent implements OnInit {
         });
     }
 
-  registerObj = new RegInsert({});
-  getEditCompany(row) {
+    registerObj = new RegInsert({});
+    getEditCompany(row) {
 
-    this._registrationService.populateFormpersonal(row);
-    this.registerObj["RegId"] = row.RegID;
-    this.registerObj["RegID"] = row.RegID;
+        this._registrationService.populateFormpersonal(row);
+        this.registerObj["RegId"] = row.RegID;
+        this.registerObj["RegID"] = row.RegID;
 
-    const dialogRef = this._matDialog.open(CompanyInformationComponent,
-      {
-        maxWidth: "70vw",
-        height: '740px',
-        width: '100%',
-        data: {
-          registerObj: row,
-          Submitflag: true
-        }
-      });
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed - Insert Action', result);
-    });
-  }
+        const dialogRef = this._matDialog.open(CompanyInformationComponent,
+            {
+                maxWidth: "70vw",
+                height: '740px',
+                width: '100%',
+                data: {
+                    registerObj: row,
+                    Submitflag: true
+                }
+            });
+        dialogRef.afterClosed().subscribe(result => {
+            console.log('The dialog was closed - Insert Action', result);
+        });
+    }
 }
 
 
@@ -876,7 +883,7 @@ export class VisitMaster1 {
     doctorID: any;
     crossConsulFlag: any;
     mPbillNo: any;
-    emrReady:any;
+    emrReady: any;
     /**
      * Constructor
      *

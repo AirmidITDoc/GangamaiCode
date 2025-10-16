@@ -75,6 +75,11 @@ const approutes: Routes = [
     path: "otconsents",
     loadChildren: () =>
       import("./ot-consents/ot-consents.module").then((m) => m.OtConsentsModule),
+  },
+  {
+    path: "patienttemporarymovement",
+    loadChildren: () =>
+      import("./patient-temporary-movement/patient-temporary-movement.module").then((m) => m.PatientTemporaryMovementModule),
   }
 ];
 

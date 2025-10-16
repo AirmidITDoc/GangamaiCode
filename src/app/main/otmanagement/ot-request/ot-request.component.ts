@@ -32,7 +32,7 @@ export class OTRequestComponent implements OnInit {
   FirstName: any = ""
   RegNo: any = "0"
   LastName: any = ""
-  
+
   @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
   @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
   ngAfterViewInit() {
@@ -89,8 +89,8 @@ export class OTRequestComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.myFilterform=this._OtRequestService.createSearchForm();
-   }
+    this.myFilterform = this._OtRequestService.createSearchForm();
+  }
 
   onNewotrequest(row: any = null) {
     const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
@@ -109,7 +109,7 @@ export class OTRequestComponent implements OnInit {
     });
   }
 
-  OnEditRegistration(row) {
+  OnEdit(row) {
     this._OtRequestService.populateForm(row);
     const dialogRef = this._matDialog.open(
       NewRequestComponent,
@@ -128,7 +128,7 @@ export class OTRequestComponent implements OnInit {
   OnPrint(Param) {
     const param = {
       searchFields: [
-         {
+        {
           fieldName: "OTBookingId",
           fieldValue: String(Param.otBookingId),
           opType: "Equals"
@@ -160,7 +160,7 @@ export class OTRequestComponent implements OnInit {
       });
     });
   }
-  
+
   OnCancel(data: any) {
     Swal.fire({
       title: 'Do you want to cancel OT request?',
@@ -204,7 +204,7 @@ export class OTRequestComponent implements OnInit {
   }
 
   getfilterdata() {
-        this.FromDate = this.datePipe.transform(this.myFilterform.get('start').value, "yyyy-MM-dd")
+    this.FromDate = this.datePipe.transform(this.myFilterform.get('start').value, "yyyy-MM-dd")
     this.ToDate = this.datePipe.transform(this.myFilterform.get('end').value, "yyyy-MM-dd")
     this.gridConfig = {
       apiUrl: "OTBooking/OtbookingRequestList",
@@ -239,5 +239,136 @@ export class OTRequestComponent implements OnInit {
   }
   selectChange(obj: any) {
     console.log(obj);
+  }
+}
+
+export class OtReqInsert {
+  regId: Number;
+  regDate: Date;
+  patientName: string;
+  prefixId: number;
+  firstName: string;
+  middleName: string;
+  lastName: string;
+  address: string;
+  city: string;
+  regNo: string;
+  dateOfBirth: Date;
+  dateofBirth: Date;
+  age: any;
+  GenderId: Number;
+  genderId: any;
+  PhoneNo: string;
+  phoneNo: string;
+  MobileNo: string;
+  mobileNo: string;
+  AddedBy: number;
+  AgeYear: any;
+  AgeMonth: any;
+  AgeDay: any;
+  ageYear: any;
+  ageMonth: any;
+  ageDay: any;
+  CountryId: number;
+  countryId: number;
+  StateId: number;
+  stateId: number;
+  CityId: number;
+  cityId: number;
+  MaritalStatusId: number;
+  maritalStatusId: number;
+  religionId: number;
+  areaId: number;
+  aadharCardNo: string;
+  currentDate = new Date();
+  VisitId: any;
+  isSeniorCitizen: boolean
+  doctorName: any;
+  departmentName: any;
+  UnitId: any;
+  billNo: any;
+  departmentId: any;
+  doctorId: any;
+  emgId: any
+  ipdNo: any;
+  genderName: any;
+  admissionDate: any
+  roomName: any;
+  bedName: any;
+  patientType: any;
+  companyName: any;
+  tariffName: any;
+  surgeryType: any;
+  surgeryName: any;
+  duration: any;
+  fromTime: any;
+  toTime: any;
+  isprimary: any;
+  surgeonName: any;
+  anestheticsName: any;
+  surgeonName1: any;
+  anestheticsName1: any;
+  part: any;
+
+  /**
+   * Constructor
+   *
+   * @param OtReqInsert
+   */
+
+  constructor(OtReqInsert) {
+    {
+      this.regId = OtReqInsert.regId || 0;
+      this.regDate = OtReqInsert.regDate || this.currentDate;
+      this.patientName = OtReqInsert.patientName;
+      this.prefixId = OtReqInsert.prefixId || 0;
+      this.firstName = OtReqInsert.firstName || '';
+      this.middleName = OtReqInsert.middleName || '%';
+      this.lastName = OtReqInsert.lastName || '';
+      this.regNo = OtReqInsert.regNo || '';
+      this.dateOfBirth = OtReqInsert.dateOfBirth || this.currentDate;
+      this.dateofBirth = OtReqInsert.dateofBirth || this.currentDate;
+      this.genderId = OtReqInsert.genderId || 0;
+      this.phoneNo = OtReqInsert.phoneNo || '';
+      this.mobileNo = OtReqInsert.mobileNo || '';
+      this.ageYear = OtReqInsert.ageYear || '0';
+      this.ageMonth = OtReqInsert.ageMonth || '0';
+      this.ageDay = OtReqInsert.ageDay || '0';
+      this.countryId = OtReqInsert.countryId || 0;
+      this.stateId = OtReqInsert.stateId || 0;
+      this.cityId = OtReqInsert.cityId || 0;
+      this.religionId = OtReqInsert.religionId || 0;
+      this.areaId = OtReqInsert.areaId || 0;
+      this.aadharCardNo = OtReqInsert.aadharCardNo || '';
+      this.VisitId = OtReqInsert.VisitId || 0;
+      this.isSeniorCitizen = OtReqInsert.isSeniorCitizen || 0
+      this.maritalStatusId = OtReqInsert.maritalStatusId || 0;
+      this.doctorName = OtReqInsert.doctorName || "";
+      this.departmentName = OtReqInsert.departmentName || "";
+      this.UnitId = OtReqInsert.UnitId || 0;
+      this.billNo = OtReqInsert.billNo || 0;
+      this.departmentId = OtReqInsert.departmentId || 0;
+      this.doctorId = OtReqInsert.doctorId || 0;
+      this.emgId = OtReqInsert.emgId || 0
+      this.ipdNo = OtReqInsert.ipdNo || 0
+      this.genderName = OtReqInsert.genderName || ''
+      this.admissionDate = OtReqInsert.admissionDate || ''
+      this.roomName = OtReqInsert.roomName || ''
+      this.bedName = OtReqInsert.bedName || ''
+      this.patientType = OtReqInsert.patientType || ''
+      this.companyName = OtReqInsert.companyName || ''
+      this.tariffName = OtReqInsert.tariffName || ''
+      this.surgeryType = OtReqInsert.surgeryType || ''
+      this.surgeryName = OtReqInsert.surgeryName || ''
+      this.duration = OtReqInsert.duration || ''
+      this.fromTime = OtReqInsert.fromTime || ''
+      this.toTime = OtReqInsert.toTime || ''
+      this.isprimary = OtReqInsert.isprimary || ''
+      this.surgeonName = OtReqInsert.surgeonName || ''
+      this.anestheticsName = OtReqInsert.anestheticsName || ''
+      this.surgeonName1 = OtReqInsert.surgeonName1 || ''
+      this.anestheticsName1 = OtReqInsert.anestheticsName1 || ''
+      this.part = OtReqInsert.part || ''
+    }
   }
 }

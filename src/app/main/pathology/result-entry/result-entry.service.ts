@@ -178,4 +178,8 @@ export class ResultEntryService {
   public getPathTemplateById(Id) {
     return this._httpClient1.GetData("PathologyTemplate/PathReportId /" + Id);
   }
+
+   public getresultenterylist(employee) {
+        return this._httpClient1.PostData("Pathology/PathologyPatientTestList", employee)
+    }
 }
