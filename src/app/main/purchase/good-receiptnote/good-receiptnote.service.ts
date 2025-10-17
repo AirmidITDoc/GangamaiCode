@@ -204,7 +204,7 @@ export class GoodReceiptnoteService {
     if (loader) {
       this._loaderService.show();
     }
-    return this._httpClient1.PutData("GRN/InsertPO/"+Id, employee);
+    return this._httpClient1.PutData("GRN/EditPO/"+Id, employee);
   } 
   public GRNEdit(employee,Id, loader = true) {
     if (loader) {

@@ -48,4 +48,7 @@ export class SalesReturnBillSettlementService {
    public SalesBillList(employee) {//m_Rtrv_PatientVisitedListSearch
     return this._httpClient1.PostData("Sales/PharSalesSettlemet", employee)
   }
+     public ApplyglobleDisc(employee) {  
+    return this._httpClient1.PostData("paymentpharmacy/PhBillGlobalDiscount", employee)
+  }
 }

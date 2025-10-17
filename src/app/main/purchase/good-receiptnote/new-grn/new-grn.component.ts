@@ -1091,8 +1091,7 @@ setTimeout(() => {
     OnReset() {
         this.BaseNetpayAmt = 0;
         this._matDialog.closeAll();
-        this.resetForm();
-        this.PoID = 0;
+        this.resetForm(); 
         this.vPurchaseId = 0;
     }
     // item details retreving 
@@ -1108,7 +1107,7 @@ setTimeout(() => {
         }
         this._GRNList.getGRNrtrvItemlist(vdata).subscribe(response => {
             this.dsItemNameList.data = response.data
-            this.PoID = this.dsItemNameList.data[0]?.purchaseId || 0
+           this.vPurchaseId= this.dsItemNameList.data[0]?.purchaseId || 0
             console.log(this.dsItemNameList.data)
             this.dsItemNameList.data.forEach(element => {
                 this.chargeslist.push(
@@ -1597,7 +1596,7 @@ PoID:any=0;
             netAmount: [item?.NetAmount, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
             grossAmount: [item?.NetAmount, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
             totalQty: [item?.TotalQty, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-            pono: [item?.purchaseNo, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            pono: [item?.PurchaseId, [this._FormvalidationserviceService.onlyNumberValidator()]],
             batchNo: [item?.BatchNo, [this._FormvalidationserviceService.allowEmptyStringValidator()]],
             batchExpDate: [this.datePipe.transform(new Date(), "yyyy-MM-dd")],
             purUnitRate: [item?.PurUnitRate || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
@@ -1707,7 +1706,7 @@ PoID:any=0;
         });
         console.log(this.PoToGrnSaveForm.value)
         if (this.PoToGrnSaveForm.valid) {
-            if (!this.PoID) {
+            if (!this.vPurchaseId) {
                 //New GRN Save
                 this._GRNList.POtoGRNSave(this.PoToGrnSaveForm.value).subscribe(response => {
                     this.OnReset();

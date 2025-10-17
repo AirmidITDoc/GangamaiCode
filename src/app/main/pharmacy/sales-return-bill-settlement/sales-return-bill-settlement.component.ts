@@ -21,6 +21,7 @@ import { PrintserviceService } from 'app/main/shared/services/printservice.servi
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
+import { element } from 'protractor';
 
 @Component({
   selector: 'app-sales-return-bill-settlement',
@@ -47,6 +48,8 @@ export class SalesReturnBillSettlementComponent implements OnInit {
    
   userFormGroup: FormGroup;
   MutliSettlemForm: FormGroup;
+  globleDiscFrom:FormGroup;
+  chargelist:any=[];
   RegNo: any;
   TariffName: any;
   CompanyName: any;
@@ -72,6 +75,7 @@ export class SalesReturnBillSettlementComponent implements OnInit {
   mIPDNo: any
   mWardName: any = ''
   mRegId: any = '' 
+   autocompleteModeConcession: string = "Concession";
     @ViewChild(MatSort) sort: MatSort;
     @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -172,6 +176,7 @@ export class SalesReturnBillSettlementComponent implements OnInit {
     this.userFormGroup = this.CreateUseFrom();
     this.MutliSettlemForm = this.CreateMultipleFrom();
     this.PharmaSettlementfrom = this.createSettlementform();
+    this.globleDiscFrom = this.CreateApplyglobeDiscForm();
   }
   CreateUseFrom() {
     return this._formBuilder.group({
@@ -193,7 +198,8 @@ export class SalesReturnBillSettlementComponent implements OnInit {
       FinalPaidAmt: 0,
       FinalBalanceAmt: 0,
       globledisc:[false],
-      globlediscPer:[0]
+      globlediscPer:[0],
+      ConcessionId:[0]
     });
   }
 
@@ -493,6 +499,7 @@ export class SalesReturnBillSettlementComponent implements OnInit {
     this.getdataMultiple();
   }
   getdataMultiple() { 
+ this.SelectedList = [];
     let opiptype = this.MutliSettlemForm.get('PatientType')?.value || 0 
   var vdata= {
   "first": 0,
@@ -547,7 +554,14 @@ this._SelseSettelmentservice.SalesBillList(vdata).subscribe((response)=>{
     const datePipe = new DatePipe('en-US');
     const formattedTime = datePipe.transform(currentDate, 'shortTime');
     const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
-
+    if(!this.dssalesbillListMultiple.data.length){
+        this.toastr.warning('Please check, Table is empty.', 'Warning')
+        return
+    }
+     if(!this.SelectedList.length){
+        this.toastr.warning('Please selecte check box', 'Warning')
+        return
+    }
     console.log(this.SelectedList) 
 
      let PatientHeaderObj = {};
@@ -603,6 +617,7 @@ this._SelseSettelmentservice.SalesBillList(vdata).subscribe((response)=>{
     });
   } 
   OnReset() {
+    this.vglobledisc = false;
     this.userFormGroup.reset();
     this.MutliSettlemForm.reset(); 
     this.PatientInformRest();
@@ -636,7 +651,7 @@ this._SelseSettelmentservice.SalesBillList(vdata).subscribe((response)=>{
     const dialogRef = this._matDialog.open(DiscountAfterFinalBillComponent,
       {
         maxWidth: "100%",
-        height: '65%',
+        height: '55%',
         width: '45%',
         data: {
           Obj: contact,
@@ -663,7 +678,10 @@ this._SelseSettelmentservice.SalesBillList(vdata).subscribe((response)=>{
         // { name: "required", Message: "FinalNetAmt is required" }
       ],
        globlediscPer: [
-        // { name: "required", Message: "FinalNetAmt is required" }
+        // { name: "required", Message: "globlediscPer is required" }
+      ],
+       ConcessionId: [
+        // { name: "required", Message: "ConcessionId is required" }
       ]
     };
   }
@@ -672,6 +690,8 @@ this._SelseSettelmentservice.SalesBillList(vdata).subscribe((response)=>{
       this.vglobledisc = true;
     }else{
       this.vglobledisc = false;
+      this.MutliSettlemForm.get('globlediscPer').reset();
+      this.MutliSettlemForm.get('ConcessionId').reset();
     }
   }
   keyPressCharater(event) {
@@ -718,34 +738,130 @@ this._SelseSettelmentservice.SalesBillList(vdata).subscribe((response)=>{
     else
     this.vCheckBox = false;
     this.userFormGroup.get('RegID').setValue('');
+  } 
+  CreateApplyglobeDiscForm(){
+    return this._formBuilder.group({ 
+        sales: this._formBuilder.array([]) 
+    })
   }
-onApplyDiscount(){
-  
-}
+  CreateApplydiscDet(item :any){
+    return this._formBuilder.group({  
+      salesId:[item?.salesId,[this._FormvalidationserviceService.notEmptyOrZeroValidator(),this._FormvalidationserviceService.onlyNumberValidator()]],
+      netAmount:[item?.netAmount,[this._FormvalidationserviceService.notEmptyOrZeroValidator(),this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      discAmount:[item?.discAmount,[this._FormvalidationserviceService.notEmptyOrZeroValidator(),this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      balanceAmount: [item?.balanceAmount,[this._FormvalidationserviceService.notEmptyOrZeroValidator(),this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      concessionReasonId:[item?.concessionReasonId,[this._FormvalidationserviceService.notEmptyOrZeroValidator(),this._FormvalidationserviceService.onlyNumberValidator()]],
+    })
+  }
+    get applydiscgloblearray(): FormArray {
+    return this.globleDiscFrom.get('sales') as FormArray;
+  } 
+  onApplyDiscount() {
+    const formvalue = this.MutliSettlemForm.value
+    if(!this.dssalesbillListMultiple.data.length){
+        this.toastr.warning('Please check table is blank', 'Warning')
+        return
+    }
+      if(!(formvalue?.globlediscPer || 0)){
+        this.toastr.warning('Please add discount %', 'Warning')
+        return
+    }
+    if(!(formvalue?.ConcessionId || 0)){
+        this.toastr.warning('Please select concession reason', 'Warning')
+        return
+    }
+     let discountAmt = '0';
+     let netAmt = '0'; 
+    this.dssalesbillListMultiple.data.forEach(element => {
+      if((element?.discAmount || 0) > 0){
+        let discamt1 = '0';
+      discamt1 = Math.round(((element?.balanceAmount) * (formvalue?.globlediscPer || 0)) / 100).toFixed(2);
+      discountAmt = Math.round(parseFloat(element?.discAmount)  + parseFloat(discamt1)).toFixed(2);
+      netAmt = Math.round(parseFloat(element?.balanceAmount) - parseFloat(discamt1)).toFixed(2); 
+      }else{
+      discountAmt = Math.round(((element?.balanceAmount) * (formvalue?.globlediscPer || 0)) / 100).toFixed(2);
+      netAmt = Math.round((element?.balanceAmount) - parseFloat(discountAmt)).toFixed(2);
+      }
+      this.chargelist.push( 
+        {
+          salesId: element.salesId,
+          netAmount: netAmt,
+          discAmount: discountAmt,
+          balanceAmount: netAmt,
+          concessionReasonId: formvalue?.ConcessionId
+        }
+      )
+    })
+
+    if(this.globleDiscFrom.valid){
+      this.applydiscgloblearray.clear();
+      this.chargelist.forEach(element => {
+        this.applydiscgloblearray.push(this.CreateApplydiscDet(element))
+      });
+      console.log(this.globleDiscFrom.value)
+      this._SelseSettelmentservice.ApplyglobleDisc(this.globleDiscFrom.value).subscribe(response=>{
+        this.getdataMultiple(); 
+        this.vglobledisc = false;
+        this.MutliSettlemForm.get('globlediscPer').reset();
+        this.MutliSettlemForm.get('ConcessionId').reset();
+      })
+    }else{
+       let invalidFields = [];
+      if (this.globleDiscFrom.invalid) {
+        for (const controlName in this.globleDiscFrom.controls) {
+          const control = this.globleDiscFrom.get(controlName);
+          if (control instanceof FormGroup || control instanceof FormArray) {
+            for (const nestedKey in control.controls) {
+              if (control.get(nestedKey)?.invalid) {
+                invalidFields.push(`Globle Discount Date: ${controlName}.${nestedKey}`);
+              }
+            }
+          } else if (control?.invalid) {
+            invalidFields.push(`Globle Discount From: ${controlName}`);
+          }
+        }
+      }
+      if (invalidFields.length > 0) {
+        invalidFields.forEach(field => {
+          this.toastr.warning(`Please Check this field "${field}" is invalid.`, 'Warning',
+          );
+        });
+      }
+    }
+    } 
 }
 
 export class PaidItemList {
 
-  SalesDate: number;
-  PillNo: number;
-  RegNo: number;
-  BillAmt: any;
-  conAmount: any;
-  NetPayAmount: any;
-  PaidAmount: number;
-  BalanceAmt: number;
-  RefundAmt: any;
+  salesId: any;
+  regNo: any;
+  totalAmount: any;
+  discAmount: any;
+  netAmount: any;
+  paidAmount: any;
+  balanceAmount: any;
+ opipid:any; 
+  salesNo:any;   
+  regId:any;     
+    patientName:any;
+      refundAmt: any; 
+  date: any;
 
   constructor(PaidItemList) {
     {
-      this.SalesDate = PaidItemList.SalesDate || 0;
-      this.PillNo = PaidItemList.PillNo || 0;
-      this.RegNo = PaidItemList.RegNo || 0;
-      this.BillAmt = PaidItemList.BillAmt || 0;
-      this.conAmount = PaidItemList.conAmount || 0;
-      this.NetPayAmount = PaidItemList.NetPayAmount || 0;
-      this.PaidAmount = PaidItemList.PaidAmount || 0;
-      this.BalanceAmt = PaidItemList.BalanceAmt || 0;
+      this.date = PaidItemList.date || 0;
+      this.patientName = PaidItemList.patientName || '';
+      this.salesId = PaidItemList.salesId || 0;
+      this.regNo = PaidItemList.regNo || 0;
+      this.totalAmount = PaidItemList.totalAmount || 0;
+      this.discAmount = PaidItemList.discAmount || 0;
+      this.netAmount = PaidItemList.netAmount || 0;
+      this.paidAmount = PaidItemList.paidAmount || 0;
+      this.balanceAmount = PaidItemList.balanceAmount || 0; 
+      this.refundAmt = PaidItemList.refundAmt || 0;
+      this.opipid = PaidItemList.opipid || 0;
+      this.salesNo = PaidItemList.salesNo || 0;
+      this.regId = PaidItemList.regId || 0;
     }
   }
 }
