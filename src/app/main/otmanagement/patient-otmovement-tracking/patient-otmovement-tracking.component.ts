@@ -11,18 +11,17 @@ import { PrintserviceService } from "app/main/shared/services/printservice.servi
 import Swal from "sweetalert2";
 import { AuthenticationService } from "app/core/services/authentication.service";
 import { PdfviewerComponent } from "app/main/pdfviewer/pdfviewer.component";
-import { PatientTemporaryMovementService } from "./patient-temporary-movement.service";
-import { NewPatientTemporaryMovementComponent } from "./new-patient-temporary-movement/new-patient-temporary-movement.component";
-
+import { PatientOtmovementTrackingService } from "./patient-otmovement-tracking.service";
+import { NewCheckinComponent } from "./new-checkin/new-checkin.component";
 
 @Component({
-  selector: 'app-patient-temporary-movement',
-  templateUrl: './patient-temporary-movement.component.html',
-  styleUrls: ['./patient-temporary-movement.component.scss'],
+  selector: 'app-patient-otmovement-tracking',
+  templateUrl: './patient-otmovement-tracking.component.html',
+  styleUrls: ['./patient-otmovement-tracking.component.scss'],
   encapsulation: ViewEncapsulation.None,
   animations: fuseAnimations
 })
-export class PatientTemporaryMovementComponent {
+export class PatientOtmovementTrackingComponent {
   myFilterform: FormGroup
   msg: any;
   RequestName: any = "";
@@ -84,7 +83,7 @@ export class PatientTemporaryMovementComponent {
   }
 
   constructor(
-    public _PatientTemMoveService: PatientTemporaryMovementService,
+    public _PatientOtMoveTrackingService: PatientOtmovementTrackingService,
     public toastr: ToastrService, public _matDialog: MatDialog,
     public datePipe: DatePipe,
     private commonService: PrintserviceService,
@@ -92,7 +91,7 @@ export class PatientTemporaryMovementComponent {
   ) { }
 
   ngOnInit(): void {
-    this.myFilterform = this._PatientTemMoveService.createSearchForm();
+    this.myFilterform = this._PatientOtMoveTrackingService.createSearchForm();
   }
 
   onChangeFirst() {
@@ -139,12 +138,12 @@ export class PatientTemporaryMovementComponent {
     const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
     buttonElement.blur();
 
-    const dialogRef = this._matDialog.open(NewPatientTemporaryMovementComponent,
+    const dialogRef = this._matDialog.open(NewCheckinComponent,
       {
         maxWidth: "90vw",
         maxHeight: '90vh',
         // height: '90%',
-        width: '90%',
+        width: '85%',
       });
     dialogRef.afterClosed().subscribe(result => {
       this.grid.bindGridData();

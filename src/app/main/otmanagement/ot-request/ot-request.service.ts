@@ -46,7 +46,6 @@ export class OtRequestService {
             doctorTypeId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
 
             // new fields
-            patient: [],
             BloodGroup: [],
             CategoryTypeId: [],
             Theater: [],
@@ -72,8 +71,10 @@ export class OtRequestService {
             isprimary: [],
             surgeonId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             anestheticsDr: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-            surgeonId1: [0],
+            recourceType:[0],
+            anestypeId: [0],
             anestheticsDr1: [0],
+            bodyPartId:[]
         });
     }
     createSearchForm(): FormGroup {
