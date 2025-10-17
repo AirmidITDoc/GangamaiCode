@@ -71,6 +71,7 @@ export class AppComponent implements OnInit, OnDestroy {
         // console.log('this.url==', this.url);
         if (this.url !== '/auth/login') {
             alert('You are being timed out due to inactivity. Please Log-In again.');
+            this.authService.logout().subscribe((data) => { });
             this.dialogRef ? this.dialogRef.closeAll() : '';
             this.router.navigate(['auth/login'], { replaceUrl: true });
             //   this.logoutService();
