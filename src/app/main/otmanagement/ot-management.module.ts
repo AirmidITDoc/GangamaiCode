@@ -80,11 +80,16 @@ const approutes: Routes = [
     path: "patienttemporarymovement",
     loadChildren: () =>
       import("./patient-temporary-movement/patient-temporary-movement.module").then((m) => m.PatientTemporaryMovementModule),
+  },
+  {
+    path: "patientotmovementtracking",
+    loadChildren: () =>
+      import("./patient-otmovement-tracking/patient-otmovement-tracking.module").then((m) => m.PatientOtmovementTrackingModule),
   }
 ];
 
 @NgModule({
-  declarations: [ ],
+  declarations: [],
   imports: [
     MatCheckboxModule,
     MatDatepickerModule,
