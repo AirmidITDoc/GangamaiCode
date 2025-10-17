@@ -50,7 +50,7 @@ export class ChangePasswordComponent implements OnInit {
     this.changePasswordFormGroup.markAllAsTouched()
 
     var mdata = {
-      userName: this.accountService.currentUserValue?.userName,
+      userName: this.accountService.currentUserValue?.user.userName,
     };
     this.changePasswordFormGroup.patchValue(mdata);
   }
@@ -76,7 +76,7 @@ export class ChangePasswordComponent implements OnInit {
   createchangePasswordForm() {
     return this.formBuilder.group({
       userId: this.accountService.currentUserValue.userId,
-      userName: this.accountService.currentUserValue.userName,
+      userName: this.accountService.currentUserValue.user.userName,
       password: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(15), Validators.pattern(this.passwordPattern)]],
       confirmpassword: ['', [Validators.minLength(8), Validators.maxLength(15)]]
     }, { validators: this.passwordMatchValidator }

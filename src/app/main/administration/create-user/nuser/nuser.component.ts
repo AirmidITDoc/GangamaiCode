@@ -139,7 +139,7 @@ export class NUserComponent implements OnInit {
     this.LoginUnitDetailsArray.push(this.createLoginUnitDetails());
     this.LoginStoreDetailsArray.push(this.createLoginStoreDetails());
 
-    this.myuserApprovalform1=this.CreateMultidataform()
+    this.myuserApprovalform1 = this.CreateMultidataform()
   }
 
   getList() {
@@ -223,11 +223,11 @@ export class NUserComponent implements OnInit {
       //   multipleUnitId: assignedUnits
       // });
 
-  //     this.zone.run(() => {
-  //   this.myuserApprovalform.patchValue({
-  //     multipleUnitId: this.RtrvUnitList
-  //   });
-  // });
+      //     this.zone.run(() => {
+      //   this.myuserApprovalform.patchValue({
+      //     multipleUnitId: this.RtrvUnitList
+      //   });
+      // });
 
       setTimeout(() => {
         this.myuserApprovalform1.get('multipleUnitId')?.setValue(this.RtrvUnitList);
@@ -349,9 +349,9 @@ export class NUserComponent implements OnInit {
 
   CreateMultidataform(): FormGroup {
     return this._formBuilder.group({
-       multipleUnitId: [[], [Validators.required]],
+      multipleUnitId: [[], [Validators.required]],
       multipleStoreId: [[], [Validators.required]]
-      });
+    });
   }
 
   createLoginAccessDetails(item: any = {}): FormGroup {
@@ -368,7 +368,7 @@ export class NUserComponent implements OnInit {
     return this._formBuilder.group({
       loginUnitDetId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       loginId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      unitId: [Number(item.value) ?? 0],
+      unitId: [Number(item.value)],
     });
   }
 
@@ -376,7 +376,7 @@ export class NUserComponent implements OnInit {
     return this._formBuilder.group({
       loginUnitDetId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       loginId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      storeId: [Number(item.value) ?? 0],
+      storeId: [Number(item.value)],
     });
   }
 
@@ -458,7 +458,7 @@ export class NUserComponent implements OnInit {
       }
     }
 
-    if (this.myuserApprovalform.valid) {
+    if (this.myuserApprovalform.valid && this.myuserApprovalform1.valid ) {
       // debugger
       this.LoginAccessDetailsArray.clear();
       this.dsApprovalList.data.forEach((item) => {
@@ -467,21 +467,21 @@ export class NUserComponent implements OnInit {
 
       this.LoginUnitDetailsArray.clear();
       debugger
-      if(this.myuserApprovalform1.get('multipleUnitId').value){
-      this.myuserApprovalform1.get('multipleUnitId').value.forEach((item) => {
-        this.LoginUnitDetailsArray.push(this.createLoginUnitDetails(item))
-      })
-    }
+      if (this.myuserApprovalform1.get('multipleUnitId').value) {
+        this.myuserApprovalform1.get('multipleUnitId').value.forEach((item) => {
+          this.LoginUnitDetailsArray.push(this.createLoginUnitDetails(item))
+        })
+      }
       this.LoginStoreDetailsArray.clear();
-      if(this.myuserApprovalform1.get('multipleStoreId').value){
-      this.myuserApprovalform1.get('multipleStoreId').value.forEach((item) => {
-        this.LoginStoreDetailsArray.push(this.createLoginStoreDetails(item))
-      })
-    }
+      if (this.myuserApprovalform1.get('multipleStoreId').value) {
+        this.myuserApprovalform1.get('multipleStoreId').value.forEach((item) => {
+          this.LoginStoreDetailsArray.push(this.createLoginStoreDetails(item))
+        })
+      }
       // this.myuserApprovalform1.removeControl('multipleUnitId')
       // this.myuserApprovalform1.removeControl('multipleStoreId')
       this.myuserApprovalform.removeControl('IsPharmacyBalClearnace')
-debugger
+      debugger
       let formData = { ...this.myuserApprovalform.value };
 
       formData.pharExtOpt = formData.pharExtOpt === true ? 1 : 0;
@@ -511,14 +511,24 @@ debugger
     }
     else {
       let invalidFields = [];
+      let invalidFields1 = [];
       if (this.myuserApprovalform.invalid) {
         for (const controlName in this.myuserApprovalform.controls) {
           if (this.myuserApprovalform.controls[controlName].invalid) { invalidFields.push(`User Form: ${controlName}`); }
         }
       }
 
+       if (this.myuserApprovalform1.invalid) {
+        for (const controlName in this.myuserApprovalform1.controls) {
+          if (this.myuserApprovalform1.controls[controlName].invalid) { invalidFields1.push(`User Form: ${controlName}`); }
+        }
+      }
+
       if (invalidFields.length > 0) {
         invalidFields.forEach(field => { this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',); });
+      }
+      if (invalidFields1.length > 0) {
+        invalidFields1.forEach(field => { this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',); });
       }
 
     }
