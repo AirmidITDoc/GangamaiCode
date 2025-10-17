@@ -1,0 +1,132 @@
+<div class="dialog-content-wrapper modal-wrapper grid-container">
+    <div class="modal-header accent">
+        <div class="modal-header-content">
+            <div class="modal-header-title">
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">Patient In</span>
+            </div>
+            <div class="modal-header-right">
+                <div class="comman-date-container">
+                    <div class="close-icon">
+                        <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
+                            matTooltip="Close">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-card-container" style="padding: 10px 2px 5px 0px ;">
+        <div fxFlex.gt-sm="100%" fxFlex class="patient-info-container">
+            <div class="patient-info-container">
+                <form [formGroup]="CheckInFormGroup">
+                    <div class="patient-info-box gap-4" fxFlexFill fxLayout="column">
+                        <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 10px ;">
+                            <div fxFlex="85%" fxFlex.xs="100%" fxFlex.sm="80%" fxLayout="row wrap"
+                                fxLayoutGap="4px grid">
+
+                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <mat-form-field appearance="outline" fxFlex>
+                                        <mat-label>Movement Date</mat-label>
+                                        <input matInput [matDatepicker]="picker1" [min]="minDate"
+                                            formControlName="moveDate" (dateChange)="onChangeDate($event.value)"
+                                            [disabled]="true">
+                                        <mat-datepicker-toggle matSuffix [for]="picker1"
+                                            [disabled]="isDatePckrDisabled"></mat-datepicker-toggle>
+                                        <mat-datepicker #picker1></mat-datepicker>
+                                    </mat-form-field>
+                                </div>
+
+                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <mat-form-field appearance="outline" fxFlex>
+                                        <mat-label>Movement Time</mat-label>
+                                        <input matTimepicker #t="matTimepicker" mode="12h" formControlName="moveTime"
+                                            (timeChange)="onChangeTime($event)"
+                                            [disableDialogOpenOnClick]="isDatePckrDisabled">
+                                        <mat-icon matSuffix (click)="!isDatePckrDisabled ? t.showDialog() : ''">
+                                            access_time
+                                        </mat-icon>
+                                    </mat-form-field>
+                                </div>
+
+                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <airmid-dropdown label="From Department" formControlName="fromDepId"
+                                        [formGroup]="CheckInFormGroup" [mode]="autocompleteModeDepartment">
+                                    </airmid-dropdown>
+                                </div>
+
+                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <airmid-dropdown label="To Department" formControlName="toDepId"
+                                        [formGroup]="CheckInFormGroup" [mode]="autocompleteModeDepartment">
+                                    </airmid-dropdown>
+                                </div>
+
+                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <airmid-dropdown label="Mode Of Transfer" formControlName="modeTranId"
+                                        [formGroup]="CheckInFormGroup">
+                                    </airmid-dropdown>
+                                </div>
+
+                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <airmid-dropdown label="Authorised By" formControlName="authorisedId"
+                                        [formGroup]="CheckInFormGroup">
+                                    </airmid-dropdown>
+                                </div>
+
+                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <airmid-dropdown label="Accompanied" formControlName="accompaniedId"
+                                        [formGroup]="CheckInFormGroup">
+                                    </airmid-dropdown>
+                                </div>
+
+                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <airmid-dropdown label="Purpose Of Movement" formControlName="purMovingId"
+                                        [formGroup]="CheckInFormGroup" [mode]="autocompleteModeDepartment">
+                                    </airmid-dropdown>
+                                </div>
+
+                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <airmid-dropdown label="Moving Type" formControlName="movinfId"
+                                        [formGroup]="CheckInFormGroup">
+                                    </airmid-dropdown>
+                                </div>
+
+                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <airmid-dropdown label="Equipments Carried" formControlName="equipId"
+                                        [formGroup]="CheckInFormGroup">
+                                    </airmid-dropdown>
+                                </div>
+
+                                <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="33%" fxLayout="row" class="gap-4">
+                                    <mat-form-field appearance="outline" fxFlex="50%">
+                                        <mat-label>Remark</mat-label>
+                                        <textarea row="2" name="Remark" formControlName="Remark" matInput
+                                            type="text"></textarea>
+                                    </mat-form-field>
+                                    <mat-form-field appearance="outline" fxFlex="50%">
+                                        <textarea row="2" name="equipRemark" formControlName="equipRemark" matInput
+                                            placeholder="Enter Equipment Description here.." type="text"></textarea>
+                                    </mat-form-field>
+                                </div>
+
+                            </div>
+                        </mat-card>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-footer" style="margin-top: 10px;">
+        <div class="footer-navigation-container" fxLayout="row" fxLayoutAlign="end">
+
+            <div class="modal-footer-buttons">
+                <button class="btn btn-danger-outline" (click)="onClear(false)">Close</button>
+                <button class="btn btn-primary " color="accent" (click)="onSubmit()">
+                    <span>Save</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

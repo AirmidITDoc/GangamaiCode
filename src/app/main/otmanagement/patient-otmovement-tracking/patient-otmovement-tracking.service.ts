@@ -6,7 +6,7 @@ import { FormvalidationserviceService } from "app/main/shared/services/formvalid
 @Injectable({
   providedIn: 'root'
 })
-export class PatientTemporaryMovementService {
+export class PatientOtmovementTrackingService {
 
   constructor(
     private _httpClient: ApiCaller,
@@ -24,23 +24,22 @@ export class PatientTemporaryMovementService {
     });
   }
 
-  createPatienttemMoveForm(): FormGroup {
+  createCheckInForm(): FormGroup {
     return this._formBuilder.group({
       opIpType: ["OP"],
       opIpId: ["", [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      TransferType: ["1"],
-      moveDate: [],
+      moveDate: [new Date()],
       moveTime: [],
+      fromDepId:[],
       toDepId:[],
       accompaniedId: [],
       authorisedId: [],
       purMovingId: [],
       modeTranId: [],
       movinfId: [],
-      extra:[],
-      extraRemark:[''],
-      equipId:[],
-      equipRemark:[''],
+      Remark: [''],
+      equipId: [],
+      equipRemark: [''],
     });
   }
 }

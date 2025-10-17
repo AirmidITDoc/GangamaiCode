@@ -395,7 +395,7 @@
                                                     Sales Date
                                                 </mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    {{contact.date | date:'dd/MM/yyyy'}}
+                                                    {{contact.date}}
                                                 </mat-cell>
                                             </ng-container>
 
@@ -527,6 +527,13 @@
                                             [formGroup]="MutliSettlemForm" 
                                             [validations]="getValidationMessages().globlediscPer"></airmid-textbox>
                                             </div>
+
+                                            <div *ngIf="vglobledisc">
+                                                <airmid-dropdown label="Concession Reason" formControlName="ConcessionId" [formGroup]="MutliSettlemForm"
+                                                    [validations]="getValidationMessages().ConcessionId" [mode]="autocompleteModeConcession" fxFlex>
+                                                </airmid-dropdown>
+                                            </div>
+
                                            <airmid-textbox fxFlex label="Net Amt" formControlName="FinalNetAmt"
                                             [formGroup]="MutliSettlemForm" [readonly]="true"
                                             [validations]="getValidationMessages().FinalNetAmt"></airmid-textbox>
@@ -542,7 +549,7 @@
 
                                             <!-- [disabled]="!TotalRefundAmount || dataSource2.data.length==0" -->
                                             <div class="footer-navigation-container">
-                                                <div class="modal-footer-buttons">
+                                                <div class="modal-footer-buttons" fxLayoutGap="6px">
                                                    <button class="btn btn-danger-outline" (click)="OnReset()">Close</button>
                                                    <button class="btn btn-primary" (click)="MultiplePaySave()"
                                                    *ngIf="!vglobledisc">Save</button>

@@ -39,6 +39,7 @@ export class NewRequestComponent implements OnInit {
   autocompleteModeSurgeryMaster: String = "SurgeryMaster";
   autocompleteModeDoctorType: string = "DoctorType";
   autocompleteModeConDoctor: String = "ConDoctor";
+  autocompleteModeAnesthesiatypes: string = "Anesthesiatypes"
   autocompleteModeRefDoctor: String = "RefDoctor";
 
   vRegNo: any;
@@ -52,8 +53,8 @@ export class NewRequestComponent implements OnInit {
   surgName: any;
   surgeonId: any;
   surgeonName: any;
-  surgeonId1: any;
-  surgeonName1: any;
+  anestypeId: any;
+  anesthesiaType: any;
   AnthId: any;
   AnthName: any;
   AnthId1: any;
@@ -64,7 +65,6 @@ export class NewRequestComponent implements OnInit {
   displayedColumns: string[] = [
     'surgeryType',
     'surgeryName',
-    'part',
     'duration',
     'fromTime',
     'toTime',
@@ -74,7 +74,7 @@ export class NewRequestComponent implements OnInit {
     'Action'
   ];
 
-   displayedColumns1: string[] = [
+  displayedColumns1: string[] = [
     'surgeon',
     'anesthesia',
     'Action'
@@ -219,7 +219,7 @@ export class NewRequestComponent implements OnInit {
     }
     console.log("Time changed:", time); // "11:51"
     this.opstartTime = time
-    this.requestForm.get('otRequestTime')?.setValue(time, { emitEvent: false });
+    this.requestForm.get('estimateTime')?.setValue(time, { emitEvent: false });
   }
 
   addDiagnolist: any = [];
@@ -229,48 +229,7 @@ export class NewRequestComponent implements OnInit {
   }
 
   // onAdd() {
-  // if (!this.requestForm.get("surgeryType")?.value) {
-  //   this.toastr.warning('Please select a surgery Type', 'Warning !', {
-  //     toastClass: 'tostr-tost custom-toast-warning',
-  //   });
-  //   return;
-  // }
-  // if (!this.requestForm.get("surgeryId")?.value) {
-  //   this.toastr.warning('Please select a Surgery', 'Warning !', {
-  //     toastClass: 'tostr-tost custom-toast-warning',
-  //   });
-  //   return;
-  // }
-  // if (!this.requestForm.get("duration")?.value) {
-  //   this.toastr.warning('Please enter Duration', 'Warning !', {
-  //     toastClass: 'tostr-tost custom-toast-warning',
-  //   });
-  //   return;
-  // }
-  // if (!this.requestForm.get("fromTime")?.value) {
-  //   this.toastr.warning('Please enter From time', 'Warning !', {
-  //     toastClass: 'tostr-tost custom-toast-warning',
-  //   });
-  //   return;
-  // }
-  // if (!this.requestForm.get("toTime")?.value) {
-  //   this.toastr.warning('Please enter To time', 'Warning !', {
-  //     toastClass: 'tostr-tost custom-toast-warning',
-  //   });
-  //   return;
-  // }
-  // if (!this.requestForm.get("surgeonId")?.value) {
-  //   this.toastr.warning('Please select a Surgeon', 'Warning !', {
-  //     toastClass: 'tostr-tost custom-toast-warning',
-  //   });
-  //   return;
-  // }
-  // if (!this.requestForm.get("anestheticsDr")?.value) {
-  //   this.toastr.warning('Please select a AnestheticsDr', 'Warning !', {
-  //     toastClass: 'tostr-tost custom-toast-warning',
-  //   });
-  //   return;
-  // }
+
   //   debugger
 
   //   let newEntry = {
@@ -294,14 +253,56 @@ export class NewRequestComponent implements OnInit {
   selectChangeAnesth(obj: any) {
     this.AnthName = obj.text
   }
-  selectChangeSurgeon1(obj: any) {
-    this.surgeonName1 = obj.text
+  selectChangeanesthesiaType(obj: any) {
+    this.anesthesiaType = obj.text
   }
   selectChangeAnesth1(obj: any) {
     this.AnthName1 = obj.text
   }
   /////////////////////////////// surgery detail part /////////////////////////////
   onAdd() {
+    if (!this.requestForm.get("surgeryType")?.value) {
+      this.toastr.warning('Please select a surgery Type', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    if (!this.requestForm.get("surgeryId")?.value) {
+      this.toastr.warning('Please select a Surgery', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    if (!this.requestForm.get("duration")?.value) {
+      this.toastr.warning('Please enter Duration', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    if (!this.requestForm.get("fromTime")?.value) {
+      this.toastr.warning('Please enter From time', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    if (!this.requestForm.get("toTime")?.value) {
+      this.toastr.warning('Please enter To time', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    if (!this.requestForm.get("surgeonId")?.value) {
+      this.toastr.warning('Please select a Surgeon', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    if (!this.requestForm.get("anestheticsDr")?.value) {
+      this.toastr.warning('Please select a AnestheticsDr', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
     debugger
 
     let newEntry = {
@@ -325,6 +326,29 @@ export class NewRequestComponent implements OnInit {
       this.Chargelist.push(newEntry);
     }
     this.dssurgeryDetailList.data = [...this.Chargelist];
+
+    //  Also add surgeon & anesthetist to second table (attendants) ---
+    // if (this.surgeonName) {
+    //   let surgeonEntry = {
+    //     anestypeId: null,
+    //     anesthesiaType: "Surgeon",
+    //     anestheticsId1: newEntry.surgeonId,
+    //     anestheticsName1: this.surgeonName
+    //   };
+    //   this.Chargelist1.push(surgeonEntry);
+    // }
+
+    // if (this.AnthName) {
+    //   let anesthetistEntry = {
+    //     anestypeId: null,
+    //     anesthesiaType: "Anesthetist",
+    //     anestheticsId1: newEntry.anestheticsId,
+    //     anestheticsName1: this.AnthName
+    //   };
+    //   this.Chargelist1.push(anesthetistEntry);
+    // }
+
+    this.dsattendentDetailList.data = [...this.Chargelist1];
 
     this.requestForm.patchValue({
       surgeryType: '',
@@ -384,6 +408,29 @@ export class NewRequestComponent implements OnInit {
     }
   }
 
+  previewUrl: string | ArrayBuffer | null = null;
+
+  onFileSelected(event: any) {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.previewUrl = reader.result;
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
+  // Optional: use device camera directly
+  openCamera() {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = 'image/*';
+    input.capture = 'environment'; // opens back camera on mobile
+    input.onchange = (event: any) => this.onFileSelected(event);
+    input.click();
+  }
+
   /////////////////////////////// surgery detail part end /////////////////////////////
 
   /////////////////////////////// attendent detail part /////////////////////////////
@@ -391,8 +438,8 @@ export class NewRequestComponent implements OnInit {
     debugger
 
     let newEntry = {
-      surgeonId1: this.requestForm.get('surgeonId1').value,//
-      surgeonName1: this.surgeonName1,
+      anestypeId: this.requestForm.get('anestypeId').value,//
+      anesthesiaType: this.anesthesiaType,
       anestheticsId1: this.requestForm.get('anestheticsDr1').value, //
       anestheticsName1: this.AnthName1,
     };
@@ -406,10 +453,10 @@ export class NewRequestComponent implements OnInit {
     this.dsattendentDetailList.data = [...this.Chargelist1];
 
     this.requestForm.patchValue({
-      surgeonId1: '',
+      anestypeId: '',
       anestheticsDr1: ''
     });
-    this.surgeonName1 = '';
+    this.anesthesiaType = '';
     this.AnthName1 = '';
   }
 
@@ -432,11 +479,11 @@ export class NewRequestComponent implements OnInit {
 
     // Patch values into the form
     this.requestForm.patchValue({
-      surgeonId1: contact.surgeonId1 ?? '',
+      anestypeId: contact.anestypeId ?? '',
       anestheticsDr1: contact.anestheticsId1 ?? ''
     });
 
-    this.surgeonName1 = contact.surgeonName1 ?? '';
+    this.anesthesiaType = contact.anesthesiaType ?? '';
     this.AnthName1 = contact.anestheticsName1 ?? '';
 
     // Remove this contact from list so it can be re-added after editing

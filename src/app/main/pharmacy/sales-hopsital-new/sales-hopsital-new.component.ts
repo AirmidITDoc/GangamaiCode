@@ -1796,6 +1796,25 @@ export class SalesHospitalNewComponent implements OnInit {
     private pad(num: number): string {
         return num.toString().padStart(2, '0');
     }
+    allowOnlyDigits(event: KeyboardEvent) {
+        const charCode = event.which ? event.which : event.keyCode;
+
+        // Allow only digits (0-9)
+        if (charCode < 48 || charCode > 57) {
+            event.preventDefault();
+            return false;
+        }
+
+        // Prevent entering more than 10 digits
+        const input = event.target as HTMLInputElement;
+        if (input.value.length >= 10) {
+            event.preventDefault();
+            return false;
+        }
+
+        return true;
+    }
+
     getPRESCRIPTION() {
         if (this.ItemSubform.get('opIpType').value != '2') {
             const dialogRef = this._matDialog.open(PrescriptionComponent, {

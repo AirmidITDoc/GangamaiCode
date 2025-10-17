@@ -60,7 +60,7 @@ export class CreateUserComponent implements OnInit {
   pageSize = 25;
   resultsLength = 0;
 
-  signature: PageNames = PageNames.PATIENT_SIGNATURE;
+  signature: PageNames = PageNames.USER_SIGNATURE;
 
   constructor(public _CreateUserService: CreateUserService, private _formBuilder: UntypedFormBuilder,
     public _matDialog: MatDialog, public toastr: ToastrService) { }

@@ -306,7 +306,7 @@ export class OtReqInsert {
   isprimary: any;
   surgeonName: any;
   anestheticsName: any;
-  surgeonName1: any;
+  anesthesiaType: any;
   anestheticsName1: any;
   part: any;
 
@@ -366,7 +366,7 @@ export class OtReqInsert {
       this.isprimary = OtReqInsert.isprimary || ''
       this.surgeonName = OtReqInsert.surgeonName || ''
       this.anestheticsName = OtReqInsert.anestheticsName || ''
-      this.surgeonName1 = OtReqInsert.surgeonName1 || ''
+      this.anesthesiaType = OtReqInsert.anesthesiaType || ''
       this.anestheticsName1 = OtReqInsert.anestheticsName1 || ''
       this.part = OtReqInsert.part || ''
     }
