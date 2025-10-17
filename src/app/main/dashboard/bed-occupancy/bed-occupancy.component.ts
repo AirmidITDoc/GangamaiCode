@@ -125,9 +125,9 @@ export class BedOccupancyComponent implements OnInit {
             });
             this.warDataArr[0].isSelected = true;
             this.prevSelectedWard = this.warDataArr[0];
-            this.selectedRoom = this.prevSelectedWard.RoomName;
+            this.selectedRoom = this.prevSelectedWard.WardName;
             console.log(this.warDataArr);
-            this.getWardDetails(this.prevSelectedWard.RoomId);
+            this.getWardDetails(this.prevSelectedWard.WardId);
         });
     }
 
@@ -176,7 +176,7 @@ export class BedOccupancyComponent implements OnInit {
         const reserved = Math.max(Math.round(total * 0.07), 0);
         const percent = total ? Math.round((inUse / total) * 100) : 0;
         return {
-            name: w.RoomName,
+            name: w.WardName,
             image: this.departmentImages[index % this.departmentImages.length],
             total,
             inUse,
@@ -474,9 +474,9 @@ export class BedOccupancyComponent implements OnInit {
         this.prevSelectedWard.isSelected = false;
         this.prevSelectedWard = element;
         element.isSelected = true;
-        this.getWardDetails(element.RoomId);
+        this.getWardDetails(element.WardId);
         console.log(element)
-        this.selectedRoom = element.RoomName;
+        this.selectedRoom = element.WardName;
     }
 
     getWardDetails(item: any) {
