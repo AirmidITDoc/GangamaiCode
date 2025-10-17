@@ -13,6 +13,7 @@ import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
 import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
 import { ToastrService } from 'ngx-toastr';
 import { FormGroup } from '@angular/forms';
+import { PageNames } from 'app/main/shared/componets/airmid-fileupload/airmid-fileupload.component';
 
 
 @Component({
@@ -31,6 +32,8 @@ export class HospitalMasterComponent implements OnInit {
   hospitalname = '';
   active: any;
   autocompletecity: string = "City";
+   logo: PageNames = PageNames.HOSPITAL_LOGO;
+      // signature: PageNames = PageNames.HOSPITAL_LOGO;
 
   @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
   confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
@@ -50,20 +53,10 @@ export class HospitalMasterComponent implements OnInit {
     { heading: "Pin", key: "pin", sort: true, align: 'left', emptySign: 'NA', Width: 100 },
     { heading: "Phone", key: "phone", sort: true, align: 'left', emptySign: 'NA', Width: 100 },
     { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
-    {
-      heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
-        {
-          action: gridActions.edit, callback: (data: any) => {
-            this.onSave(data)
+   {
+              heading: "Files", key: "action", align: "right", width: 250, sticky: true, type: gridColumnTypes.template,
+              template: this.actionButtonTemplate  // Assign ng-template to the column
           }
-        }, {
-          action: gridActions.delete, callback: (data: any) => {
-            this._HospitalService.HospitalCancle(data.hospitalId).subscribe((response: any) => {
-              this.grid.bindGridData;
-            });
-          }
-        }]
-    }
   ]
 
   gridConfig: gridModel = {

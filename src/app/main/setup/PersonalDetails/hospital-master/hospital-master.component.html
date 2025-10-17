@@ -15,7 +15,19 @@
             </button>
         </div>
     </div>
-
+    <ng-template #actionButtonTemplate let-element>
+        <div fxLayout="row" fxLayoutAlign="center center">
+            <button mat-icon-button (click)="onSave(element)" style="color:black;">
+                <mat-icon title="Edit Menu">edit</mat-icon>
+            </button>
+            <button mat-icon-button (click)="onDelete(element)" color="warn">
+                <mat-icon>delete_outline</mat-icon>
+            </button>
+           
+            <airmid-signature-icon [refId]="element.hospitalId" [refType]="logo" [multiple]="true"
+                docName="HospitalLogo"></airmid-signature-icon>
+        </div>
+    </ng-template>
     <airmid-table [gridConfig]="gridConfig" class="content">
         <ng-container filters>
             <form [formGroup]="myformSearch">
