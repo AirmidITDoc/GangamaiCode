@@ -168,6 +168,13 @@
                                                     <mat-radio-button value="registrered">Registered</mat-radio-button>
                                                 </mat-radio-group>
 
+                                                <div  *ngIf="vRegNo > 0" style="padding-left: 10px;color: rgb(9, 53, 84);font-size: large;font-weight: bold;">
+                                                    <span  >Patient UHID:-</span>
+                                                    <span  >{{vRegNo}}</span>
+                                                    <!-- <mat-icon class="card-icon">group</mat-icon> -->
+                                                </div>
+
+
                                                 <div *ngIf="showEmergencyFlag" style="margin-left: 30px;">
                                                     <span style="font-size: 28px;">🚨</span>
                                                     <strong style="color: red;font-size: 20px;">Emergency
@@ -180,8 +187,11 @@
                                                 <!-- *ngIf="showOPtoIPFlag" -->
                                                 <div>
                                                     <button mat-icon-button (click)="openPatientTable()"
-                                                        style="padding: 0px;" matTooltip="View OP Patient notifications">
-                                                        <mat-icon style="font-size: 24px;"   [ngClass]="colstatus ? 'icon-alert' : 'icon-normal'"   title="Request ">notifications_none</mat-icon>
+                                                        style="padding: 0px;"
+                                                        matTooltip="View OP Patient notifications">
+                                                        <mat-icon style="font-size: 24px;"
+                                                            [ngClass]="colstatus ? 'icon-alert' : 'icon-normal'"
+                                                            title="Request ">notifications_none</mat-icon>
                                                     </button>
                                                 </div>
 
@@ -195,6 +205,8 @@
                                                     formControlName="HospitalId" [formGroup]="searchFormGroup"
                                                     [validations]="getValidationMessages().HospitalId"
                                                     [mode]="autocompleteModehospital"> </airmid-dropdown>
+
+
                                             </div>
                                         </div>
                                     </mat-card-content>
@@ -964,10 +976,10 @@
                             IsCharity
                         </mat-checkbox>
 
-                        <mat-checkbox aria-label="Op TO Ip Change" formControlName="IsSenior" style="margin-left:30px;"
+                        <!-- <mat-checkbox aria-label="Op TO Ip Change" formControlName="IsSenior" style="margin-left:30px;"
                             (change)="onIsSeniorChange($event)">
                             IsSeniorCitizen
-                        </mat-checkbox>
+                        </mat-checkbox> -->
                     </div>
                     <div class="modal-footer-buttons">
 
