@@ -53,6 +53,7 @@ export class NewReservationComponent implements OnInit {
   autocompleteModestatus: string = "State";
   autocompleteModeSurgery: String = "SurgeryMaster";
   autocompleteModeOTTable: String = "OttableMaster";
+  autocompleteModeLocation: string = "Location";
 
   vRegNo: any;
   vPatientName: any;

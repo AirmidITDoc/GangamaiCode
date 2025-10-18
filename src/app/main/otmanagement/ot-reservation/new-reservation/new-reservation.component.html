@@ -209,13 +209,13 @@
 
                                         <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                             <airmid-dropdown label="Theater" formControlName="Theater"
-                                                [formGroup]="reservationForm">
+                                                [formGroup]="reservationForm" [mode]="autocompleteModeOTTable">
                                             </airmid-dropdown>
                                         </div>
 
                                         <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                             <airmid-dropdown label="Theater Location" formControlName="TheaterLocation"
-                                                [formGroup]="reservationForm"></airmid-dropdown>
+                                                [formGroup]="reservationForm" [mode]="autocompleteModeLocation"></airmid-dropdown>
                                         </div>
 
                                         <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">

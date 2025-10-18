@@ -435,26 +435,29 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
             FirstName: ['', [
                 Validators.required,
                 Validators.maxLength(50),
-                Validators.pattern("^[A-Za-z/() ]*$")
+                Validators.pattern("^[A-Za-z/() ]*$"),
+                this._FormvalidationserviceService.noWhitespaceValidator()
             ]],
             MiddleName: ['', [
-                Validators.required,
+                // Validators.required,
                 Validators.maxLength(50),
-                Validators.pattern("^[A-Za-z/() ]*$")
+                Validators.pattern("^[A-Za-z/() ]*$"),
+                this._FormvalidationserviceService.allowEmptyStringValidatorOnly()
             ]],
             LastName: ['', [
                 Validators.required,
                 Validators.maxLength(50),
-                Validators.pattern("^[A-Za-z/() ]*$")
+                Validators.pattern("^[A-Za-z/() ]*$"),
+                this._FormvalidationserviceService.noWhitespaceValidator()
             ]],
             DateOfBirth: [{ value: new Date() }],
-            Address: ["", Validators.required],
-            City: ["", Validators.required],
-            pin: ["", this._FormvalidationserviceService.allowEmptyStringValidatorOnly()],
+            Address: ["", [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+            City: ["", [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+            pin: ['', this._FormvalidationserviceService.allowEmptyStringValidatorOnly()],
             mobile: [
                 "",
                 [
-                    , this._FormvalidationserviceService.allowEmptyStringValidatorOnly(),
+                    this._FormvalidationserviceService.allowEmptyStringValidatorOnly(),
                     Validators.pattern("^[- +()]*[0-9][- +()0-9]*$"),
                     Validators.minLength(10),
                     Validators.maxLength(10),
@@ -463,10 +466,11 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
             Phone: [
                 "",
                 [
-                    Validators.required,
+                    // Validators.required,
                     Validators.pattern("^[- +()]*[0-9][- +()0-9]*$"),
                     Validators.minLength(10),
                     Validators.maxLength(10),
+                    this._FormvalidationserviceService.allowEmptyStringValidatorOnly()
                 ],
             ],
             GenderId: ["", Validators.required],
@@ -474,6 +478,8 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
             Education: ["",
                 [
                     Validators.required,
+                    this._FormvalidationserviceService.allowEmptyStringValidatorOnly(),
+                    this._FormvalidationserviceService.noWhitespaceValidator()
                     // Validators.pattern("^[A-Za-z/() / [ ] ]*$")
                 ]
             ],
@@ -483,61 +489,66 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
             IsOnCallDoctor: [false],
             IsActive: [true],
             DoctorTypeId: ["", Validators.required],
-            ageYear: ['', [
-                Validators.maxLength(3),
-                Validators.pattern("^[0-9]*$")]],
+            ageYear: ['', [Validators.required,
+            Validators.maxLength(3),
+            Validators.pattern("^[0-9]*$")]],
             ageMonth: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly(),
             Validators.pattern("^[0-9]*$")]],
             ageDay: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly(),
             Validators.pattern("^[0-9]*$")]],
             PassportNo: ["", this._FormvalidationserviceService.allowEmptyStringValidatorOnly()],
             esino: [
-                "",
+                "0",
                 [
-                    Validators.required,
+                    // Validators.required,
                     // Validators.pattern("'^[a-zA-Z0-9]*$'"),
                     Validators.minLength(10),
                     Validators.maxLength(10),
+                    this._FormvalidationserviceService.allowEmptyStringValidatorOnly()
                 ],
             ],
             RegNo: [
-                "",
+                "0",
                 [
-                    Validators.required,
+                    // Validators.required,
                     //    Validators.pattern("'^[a-zA-Z0-9]*$'"),
                     Validators.minLength(10),
                     Validators.maxLength(10),
+                    this._FormvalidationserviceService.allowEmptyStringValidatorOnly()
                 ],
             ],
             RegDate: [{ value: new Date() }],
             MahRegNo: [
-                "",
+                "0",
                 [
-                    Validators.required,
+                    // Validators.required,
                     //    Validators.pattern("'^[a-zA-Z0-9]*$'"),
                     Validators.minLength(10),
                     Validators.maxLength(10),
+                    this._FormvalidationserviceService.allowEmptyStringValidatorOnly()
                 ],
             ],
             MahRegDate: [{ value: new Date() }],
             RefDocHospitalName: [
                 "",
                 [
-                    Validators.required
+                    // Validators.required
+                    this._FormvalidationserviceService.allowEmptyStringValidatorOnly()
                 ]
             ],
 
             MDoctorDepartmentDets: ["", Validators.required],
-            Pancardno: ["", Validators.required],
+            Pancardno: ["", [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
             AadharCardNo: ["",
                 [
-                    Validators.required,
+                    // Validators.required,
                     Validators.pattern("^[0-9]*$"),
                     Validators.minLength(12),
                     Validators.maxLength(12),
+                    this._FormvalidationserviceService.allowEmptyStringValidatorOnly()
                 ]
             ],
-            signature: "",
+            signature: ["",[this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
             mDoctorExperienceDetails: this.formBuilder.array([]),
             mDoctorQualificationDetails: this.formBuilder.array([]),
             mDoctorScheduleDetails: this.formBuilder.array([]),
