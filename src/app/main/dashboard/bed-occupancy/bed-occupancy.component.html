@@ -23,11 +23,11 @@
                                 <div class="overall-title">Overall statistics</div>
                                 <div class="overall-row">
                                     <div class="overall-left">
-                                        <div class="overall-value">{{totalOccupied}}</div>
+                                        <div class="overall-value">{{dashBedStatistics?.UsedCount || 0}}</div>
                                         <div class="overall-label">In Use</div>
                                     </div>
                                     <div class="overall-right">
-                                        <div class="overall-total">{{totalBeds}}</div>
+                                        <div class="overall-total">{{dashBedStatistics?.TotalBedCount || 0}}</div>
                                         <div class="overall-total-label">Total Beds</div>
                                     </div>
                                 </div>
@@ -36,10 +36,8 @@
                                 </div>
                                 <div class="legend-mini">
                                     <span class="legend-item"><span class="dot dot-red"></span> In use</span>
-                                    <span class="legend-item"><span class="dot dot-amber"></span> Reserved</span>
-                                    <span class="legend-item"><span class="dot dot-green"></span> Empty</span>
-                                    <span class="legend-item"><span class="dot dot-blue"></span> Clean up</span>
-                                    <span class="legend-item"><span class="dot dot-violet"></span> Other</span>
+                                    <span class="legend-item"><span class="dot dot-amber"></span> Empty</span>
+                                    
                                 </div>
                             </mat-card-content>
                         </mat-card>

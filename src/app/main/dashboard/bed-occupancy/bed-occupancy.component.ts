@@ -20,6 +20,7 @@ export class BedOccupancyComponent implements OnInit {
     public displayedColumns = ['RegNo', 'PatientName', 'DoctorName', 'IsAvailible', 'BedName'];
     warDataArr: WardDetails[] = [];
     warItemArr: WardItemDetails[] = [];
+    dashBedStatistics: any;
     prevSelectedWard: WardDetails;
     public isTableLoading = false;
     public selectedRoom!: string;
@@ -342,26 +343,47 @@ export class BedOccupancyComponent implements OnInit {
             }
         };
 
-        return new Chart('BedOverallDoughnut', {
-            type: 'doughnut',
-            data: {
-                labels: ['In use', 'Reserved', 'Empty', 'Clean up', 'Other'],
-                datasets: [
-                    {
-                        backgroundColor: ['#ff5a8a','#f6c542','#3ecf8e','#5ac8fa','#a283f6'],
-                        data: [Math.max(this.totalOccupied, 1), 4, Math.max(this.totalAvailable, 1), 2, 1]
-                    }
-                ]
-            },
-            options: { 
-                plugins: { 
-                    tooltip: { enabled: true },
-                    legend: { display: false }
+        const payload = {
+            "searchFields": [ ],
+            "mode": "DashBedStatistics"
+          };
+
+          this._dashboardServices.HomeDashboardAPI(payload).subscribe((res: any) => {
+            let apiData = res && res.length ? res[0] : {};
+            this.dashBedStatistics = apiData;
+            console.log("apiDataapiDataapiData",apiData)
+            
+            return new Chart('BedOverallDoughnut', {
+                type: 'doughnut',
+                data: {
+                    labels: Object.entries(apiData)
+                    .filter(([key]) => key !== 'TotalBedCount')
+                    .map(([key, _]) => key.replace(/Count/gi, ''))
+                    || [],
+                    datasets: [
+                        {
+                            backgroundColor: ['#ff5a8a','#f6c542','#3ecf8e'],
+                            data: Object.entries(apiData)
+                            .filter(([key]) => key !== 'TotalBedCount') // skip that key
+                            .map(([_, value]) => value) || []
+                        }
+                    ]
                 },
-                cutout: '70%'
-            },
-            plugins: [centerTextPlugin, dataLabelsPlugin]
-        });
+                options: { 
+                    plugins: { 
+                        tooltip: { enabled: true },
+                        legend: { display: false }
+                    },
+                    cutout: '70%'
+                },
+                plugins: [centerTextPlugin, dataLabelsPlugin]
+            });
+      
+          }, err => {
+            return []
+        })
+
+        
     }
 
     getLargeAdmissionsChart() {
