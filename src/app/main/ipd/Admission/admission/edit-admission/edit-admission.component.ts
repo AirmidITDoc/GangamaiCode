@@ -265,19 +265,19 @@ AdmissionFormSet(){
    this.admissionFormGroup.get('AdmissionType').setValue(this.registerObj1.admissionType)
     this.admissionFormGroup.get('ischarity').setValue(this.admissionFormGroup.get('ischarity').value)
     this.admissionFormGroup.get('convertId').setValue(this.registerObj1.converId || 0)
-   
-  //  isCharity
+  
+  delete this.registerObj.regNo
 
 
-    if (!this.admissionFormGroup.invalid) {
+     if (!this.admissionFormGroup.invalid) {
     
       let submitData = {
         "admissionReg": this.registerObj,// this.personalFormGroup.value,
         "admission": this.admissionFormGroup.value
       };
-      console.log(submitData);
+      console.log(this.admissionFormGroup.value);
 
-      this._AdmissionService.AdmissionUpdate(this.registerObj1.admissionId, submitData).subscribe(response => {
+      this._AdmissionService.AdmissionUpdate(this.registerObj1.admissionId, this.admissionFormGroup.value).subscribe(response => {
         this.getAdmittedPatientCasepaperview(response);
         this._matDialog.closeAll();
       });

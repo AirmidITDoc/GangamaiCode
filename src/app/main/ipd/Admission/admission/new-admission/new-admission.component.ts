@@ -518,6 +518,7 @@ export class NewAdmissionComponent implements OnInit {
     this.prevResults = [];
   }
   onNewSave() {
+
     if (this.Patientnewold == 2 && this.RegId == 0)
       this.toastr.warning("Please Select Registered Patient  ...");
     else {
@@ -602,6 +603,7 @@ export class NewAdmissionComponent implements OnInit {
 
       }
     }
+       
   }
 
 
