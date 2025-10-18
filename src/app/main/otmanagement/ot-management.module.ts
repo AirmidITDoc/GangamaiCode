@@ -85,6 +85,21 @@ const approutes: Routes = [
     path: "patientotmovementtracking",
     loadChildren: () =>
       import("./patient-otmovement-tracking/patient-otmovement-tracking.module").then((m) => m.PatientOtmovementTrackingModule),
+  },
+  {
+    path: "otpreoperation",
+    loadChildren: () =>
+      import("./ot-preoperation/ot-preoperation.module").then((m) => m.OtPreoperationModule),
+  },
+  {
+    path: "theaterin",
+    loadChildren: () =>
+      import("./theater-in/theater-in.module").then((m) => m.TheaterInModule),
+  },
+  {
+    path: "anesthesiarecord",
+    loadChildren: () =>
+      import("./anesthesia-record/anesthesia-record.module").then((m) => m.AnesthesiaRecordModule),
   }
 ];
 
