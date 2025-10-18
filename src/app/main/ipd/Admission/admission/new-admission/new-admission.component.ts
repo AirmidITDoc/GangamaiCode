@@ -40,6 +40,7 @@ export class NewAdmissionComponent implements OnInit {
   // subscriptionArr: Subscription[] = [];
 
   // matDialogRef: any;
+  vRegNo=0
   patienttype: any;
   AdmissionId: any = 0;
   isCompanySelected: boolean = false;
@@ -283,6 +284,7 @@ export class NewAdmissionComponent implements OnInit {
           this._AdmissionService.getRegistraionById(obj.value).subscribe((response) => {
             this.registerObj = response;
             this.value = response.dateofBirth
+            this.vRegNo=response.regNo
             this.onChangeDateofBirth(response.dateofBirth)
            this.personalFormGroup.patchValue({
               FirstName: this.registerObj.firstName.trim(),
@@ -516,6 +518,7 @@ export class NewAdmissionComponent implements OnInit {
     this.prevResults = [];
   }
   onNewSave() {
+
     if (this.Patientnewold == 2 && this.RegId == 0)
       this.toastr.warning("Please Select Registered Patient  ...");
     else {
@@ -600,6 +603,7 @@ export class NewAdmissionComponent implements OnInit {
 
       }
     }
+       
   }
 
 
@@ -657,7 +661,7 @@ export class NewAdmissionComponent implements OnInit {
 }
 
  onIsSeniorChange(event: any) {
-  this.admissionFormGroup.patchValue({ IsSenior: event.checked });
+  // this.admissionFormGroup.patchValue({ IsSenior: event.checked });
 }
 
   OnSaveAdmission() {
@@ -703,8 +707,8 @@ debugger
 
       if (this.searchFormGroup.get('regRadio').value == "registration" && this.AdmissionId == 0) {
         let submitData = {
-          "AdmissionReg": this.personalFormGroup.value,
-          "ADMISSION": this.admissionFormGroup.value
+          "admissionReg": this.personalFormGroup.value,
+          "admission": this.admissionFormGroup.value
         };
 
         debugger

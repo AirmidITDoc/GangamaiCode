@@ -42,7 +42,7 @@ export class NewAppointmentComponent implements OnInit {
     VisitFormGroup: FormGroup;
     searchFormGroup: FormGroup;
     abhaForm: FormGroup;
-
+    vRegNo = 0
     currentDate = new Date();
     minDate = new Date();
     registerObj = new RegInsert({});
@@ -163,10 +163,15 @@ export class NewAppointmentComponent implements OnInit {
     FromRegistration: any;
     chkregisterd: boolean = false;
     ngOnInit(): void {
-
+        debugger
         console.log(this._configue.configParams.OPDDefaultDepartment)
         console.log(this._configue.configParams.OPDDefaultDoctor)
         // Swal.fire("", this._configue.configParams)
+
+
+        //    const [DefaultDepartment, DepartmentId] = this._configue.configParams.OPDDefaultDepartment.split(":");
+        //       const [DefaultDoctor, DoctorId] = this._configue.configParams.OPDDefaultDoctor.split(":");
+
 
         this.personalFormGroup = this.createPesonalForm();
         this.personalFormGroup.markAllAsTouched();
@@ -222,18 +227,15 @@ export class NewAppointmentComponent implements OnInit {
             });
         }
 
-        this.VisitFormGroup.get("DepartmentId").setValue(this._configue.configParams.OPDDefaultDepartment)
+        // this.VisitFormGroup.get("DepartmentId").setValue(DepartmentId)
 
-        this.registerObj.departmentId = this._configue.configParams.OPDDefaultDepartment
-        this.registerObj.doctorId = this._configue.configParams.OPDDefaultDoctor
-        this.selectChangedepartment(this.registerObj)
+        // this.registerObj.departmentId = DepartmentId
+        // this.registerObj.doctorId = DoctorId
+        // this.selectChangedepartment(this.registerObj)
 
-        if (this._configue.configParams.OPDDefaultDoctor > 0)
-            this.setdoctor(this._configue.configParams.OPDDefaultDoctor)
+        // if (DoctorId > 0)
+        //     this.setdoctor(DoctorId)
 
-        // if (this._configue.configParams.OPDDefaultDoctor > 0) {
-        //     this.setdoctorconfig()
-        // }
     }
 
     // setdoctorconfig() {
@@ -241,11 +243,11 @@ export class NewAppointmentComponent implements OnInit {
     //     this._AppointmentlistService.getDoctorsByDepartment(this._configue.configParams.OPDDefaultDepartment).subscribe((data: any) => {
     //         console.log(data)
     //         if (data) {
-                
+
     //             this.ddlDoctor.options = data;
     //             this.ddlDoctor.bindGridAutoComplete();
     //             debugger
-    //             const incomingDoctorId = this._configue.configParams.OPDDefaultDoctor;
+    //             const incomingDoctorId = DoctorId;
     //             if (incomingDoctorId) {
     //                 const matchedDoctor = data.find(doc => doc.value === incomingDoctorId);
     //                 if (matchedDoctor) {
@@ -434,6 +436,7 @@ export class NewAppointmentComponent implements OnInit {
                     this._AppointmentlistService.getRegistraionById(this.RegId).subscribe((response) => {
                         this.registerObj = response;
                         this.value = response.dateofBirth
+                        this.vRegNo = response.regno
                         this.onChangeDateofBirth(response.dateofBirth)
                         console.log(response)
                         this.getLastDepartmetnNameList(this.registerObj)
@@ -642,90 +645,102 @@ export class NewAppointmentComponent implements OnInit {
     }
 
     onSave() {
+        Swal.fire({
+            title: 'Confirm Save',
+            text: 'Are you sure you want to save this OPD Appointment?',
+            icon: 'warning', // or 'question'
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6', // Blue
+            cancelButtonColor: '#d33',     // Red
+            confirmButtonText: 'Yes, save it!',
+            cancelButtonText: 'No, cancel'
+        }).then((result) => {
+            if (result.isConfirmed) {
+
+                if (this.Patientnewold == 2 && this.RegId == 0) {
+                    this.toastr.warning("Kindly select a patient from the list of registered patients.");
+                    return;
+                }
 
 
-        if (this.Patientnewold == 2 && this.RegId == 0) {
-            this.toastr.warning("Kindly select a patient from the list of registered patients.");
-            return;
-        }
+                let DateOfBirth1 = this.personalFormGroup.get("DateOfBirth").value
+                if (DateOfBirth1) {
+                    const todayDate = new Date();
+                    const dob = new Date(DateOfBirth1);
+                    const timeDiff = Math.abs(Date.now() - dob.getTime());
+                    this.ageYear = (todayDate.getFullYear() - dob.getFullYear());
+                    this.ageMonth = (todayDate.getMonth() - dob.getMonth());
+                    this.ageDay = (todayDate.getDate() - dob.getDate());
 
+                    if (this.ageDay < 0) {
+                        (this.ageMonth)--;
+                        const previousMonth = new Date(todayDate.getFullYear(), todayDate.getMonth(), 0);
+                        this.ageDay += previousMonth.getDate(); // Days in previous month
+                        // this.ageDay = this.ageDay+1
+                    }
 
-        let DateOfBirth1 = this.personalFormGroup.get("DateOfBirth").value
-        if (DateOfBirth1) {
-            const todayDate = new Date();
-            const dob = new Date(DateOfBirth1);
-            const timeDiff = Math.abs(Date.now() - dob.getTime());
-            this.ageYear = (todayDate.getFullYear() - dob.getFullYear());
-            this.ageMonth = (todayDate.getMonth() - dob.getMonth());
-            this.ageDay = (todayDate.getDate() - dob.getDate());
+                    if (this.ageMonth < 0) {
+                        this.ageYear--;
+                        this.ageMonth += 12;
+                    }
+                }
+                if (
+                    (!this.ageYear || this.ageYear == 0) &&
+                    (!this.ageMonth || this.ageMonth == 0) &&
+                    (!this.ageDay || this.ageDay == 0)
+                ) {
+                    this.toastr.warning('Please select the birthdate or enter the age of the patient.', 'Warning!', {
+                        toastClass: 'tostr-tost custom-toast-warning',
+                    });
+                    return;
+                }
 
-            if (this.ageDay < 0) {
-                (this.ageMonth)--;
-                const previousMonth = new Date(todayDate.getFullYear(), todayDate.getMonth(), 0);
-                this.ageDay += previousMonth.getDate(); // Days in previous month
-                // this.ageDay = this.ageDay+1
-            }
+                this.VisitFormGroup.get('visitDate').setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'))
+                this.VisitFormGroup.get('visitTime').setValue(this.dateTimeObj.time)
+                this.personalFormGroup.get('City').setValue(this.CityName)
+                this.personalFormGroup.get('Age').setValue(String(this.ageYear))
+                this.personalFormGroup.get('AgeYear').setValue(String(this.ageYear))
+                this.personalFormGroup.get('AgeMonth').setValue(String(this.ageMonth))
+                this.personalFormGroup.get('AgeDay').setValue(String(this.ageDay))
+                this.personalFormGroup.get("DateOfBirth").setValue(this.datePipe.transform(this.personalFormGroup.get("DateOfBirth").value, "yyyy-MM-dd"))
+                this.personalFormGroup.get('RegDate').setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'))
+                this.personalFormGroup.get('RegTime').setValue(this.dateTimeObj.time)
 
-            if (this.ageMonth < 0) {
-                this.ageYear--;
-                this.ageMonth += 12;
-            }
-        }
-        if (
-            (!this.ageYear || this.ageYear == 0) &&
-            (!this.ageMonth || this.ageMonth == 0) &&
-            (!this.ageDay || this.ageDay == 0)
-        ) {
-            this.toastr.warning('Please select the birthdate or enter the age of the patient.', 'Warning!', {
-                toastClass: 'tostr-tost custom-toast-warning',
-            });
-            return;
-        }
+                console.log('Personal Form : ', this.personalFormGroup.value)
+                console.log('Visit Form : ', this.VisitFormGroup.value)
+                if (!this.personalFormGroup.invalid && !this.VisitFormGroup.invalid) {
 
-        this.VisitFormGroup.get('visitDate').setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'))
-        this.VisitFormGroup.get('visitTime').setValue(this.dateTimeObj.time)
-        this.personalFormGroup.get('City').setValue(this.CityName)
-        this.personalFormGroup.get('Age').setValue(String(this.ageYear))
-        this.personalFormGroup.get('AgeYear').setValue(String(this.ageYear))
-        this.personalFormGroup.get('AgeMonth').setValue(String(this.ageMonth))
-        this.personalFormGroup.get('AgeDay').setValue(String(this.ageDay))
-        this.personalFormGroup.get("DateOfBirth").setValue(this.datePipe.transform(this.personalFormGroup.get("DateOfBirth").value, "yyyy-MM-dd"))
-        this.personalFormGroup.get('RegDate').setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'))
-        this.personalFormGroup.get('RegTime').setValue(this.dateTimeObj.time)
+                    if (this.isCompanySelected && this.VisitFormGroup.get('CompanyId').value == 0) {
+                        this.toastr.warning('Please select valid Company ', 'Warning !', {
+                            toastClass: 'tostr-tost custom-toast-warning',
+                        });
+                        return;
+                    }
+                    if (this.searchFormGroup.get('regRadio').value == "registration")
+                        this.OnsaveNewRegister();
+                    else if (this.searchFormGroup.get('regRadio').value == "registrered") {
+                        this.onSaveRegistered();
+                        this.onClose();
+                    }
 
-        console.log('Personal Form : ', this.personalFormGroup.value)
-        console.log('Visit Form : ', this.VisitFormGroup.value)
-        if (!this.personalFormGroup.invalid && !this.VisitFormGroup.invalid) {
+                } else {
+                    let invalidFields = [];
+                    if (this.personalFormGroup.invalid) {
+                        for (const controlName in this.personalFormGroup.controls) {
+                            if (this.personalFormGroup.controls[controlName].invalid) { invalidFields.push(`Personal Form: ${controlName}`); }
+                        }
+                    }
+                    if (this.VisitFormGroup.invalid) {
+                        for (const controlName in this.VisitFormGroup.controls) { if (this.VisitFormGroup.controls[controlName].invalid) { invalidFields.push(`Visit Form: ${controlName}`); } }
+                    }
 
-            if (this.isCompanySelected && this.VisitFormGroup.get('CompanyId').value == 0) {
-                this.toastr.warning('Please select valid Company ', 'Warning !', {
-                    toastClass: 'tostr-tost custom-toast-warning',
-                });
-                return;
-            }
-            if (this.searchFormGroup.get('regRadio').value == "registration")
-                this.OnsaveNewRegister();
-            else if (this.searchFormGroup.get('regRadio').value == "registrered") {
-                this.onSaveRegistered();
-                this.onClose();
-            }
+                    if (invalidFields.length > 0) {
+                        invalidFields.forEach(field => { this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',); });
+                    }
 
-        } else {
-            let invalidFields = [];
-            if (this.personalFormGroup.invalid) {
-                for (const controlName in this.personalFormGroup.controls) {
-                    if (this.personalFormGroup.controls[controlName].invalid) { invalidFields.push(`Personal Form: ${controlName}`); }
                 }
             }
-            if (this.VisitFormGroup.invalid) {
-                for (const controlName in this.VisitFormGroup.controls) { if (this.VisitFormGroup.controls[controlName].invalid) { invalidFields.push(`Visit Form: ${controlName}`); } }
-            }
-
-            if (invalidFields.length > 0) {
-                invalidFields.forEach(field => { this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',); });
-            }
-
-        }
+        });
     }
 
     OnsaveNewRegister() {
@@ -813,7 +828,7 @@ export class NewAppointmentComponent implements OnInit {
         })
 
         let submitData = {
-            "appReistrationUpdate": this.personalFormGroup.value,
+            // "appReistrationUpdate": this.personalFormGroup.value,
             "visit": this.VisitFormGroup.value
         };
         console.log(submitData)

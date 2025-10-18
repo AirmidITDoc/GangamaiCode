@@ -661,6 +661,10 @@
                                 <div class="net-amt-section">
                                   <div class="net-amt">
                                     <div class="net-amt-box">
+                                        <span class="net-amt-mat-label">No Of Item:</span>
+                                        <span class="net-amt-value">{{saleSelectedDatasource.data?.length}}</span>
+                                    </div>
+                                    <div class="net-amt-box">
                                       <div class="net-amt-label">Total GST Amt :</div>
                                       <div class="net-amt-value">{{ ItemSubform.get('vatAmount')?.value | currency :
                                         'INR':'symbol':'1.2-2' }}</div>

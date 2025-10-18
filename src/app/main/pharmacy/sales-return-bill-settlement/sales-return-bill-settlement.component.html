@@ -524,7 +524,7 @@
                                             </mat-slide-toggle>
                                             <div *ngIf="vglobledisc">
                                             <airmid-textbox fxFlex label="Globle Disc %" formControlName="globlediscPer"
-                                            [formGroup]="MutliSettlemForm" 
+                                            [formGroup]="MutliSettlemForm" (input)="onApplyDiscount()"
                                             [validations]="getValidationMessages().globlediscPer"></airmid-textbox>
                                             </div>
 
@@ -553,7 +553,7 @@
                                                    <button class="btn btn-danger-outline" (click)="OnReset()">Close</button>
                                                    <button class="btn btn-primary" (click)="MultiplePaySave()"
                                                    *ngIf="!vglobledisc">Save</button>
-                                                   <button class="btn btn-primary" (click)="onApplyDiscount()"
+                                                   <button class="btn btn-primary" (click)="OnSaveGlobelDisc()"
                                                    *ngIf="vglobledisc">Apply Discount</button>
                                                 </div>
                                             </div>

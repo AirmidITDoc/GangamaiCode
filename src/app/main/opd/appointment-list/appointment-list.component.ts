@@ -78,6 +78,7 @@ export class AppointmentListComponent implements OnInit {
     IsShowGrid: boolean = false;
     id: string;
     mode: string;
+    vRegNo=0
 
     constructor(public _AppointmentlistService: AppointmentlistService, public _matDialog: MatDialog,
         private commonService: PrintserviceService, public _registrationService: RegistrationService,
@@ -577,7 +578,7 @@ export class AppointmentListComponent implements OnInit {
         if ((obj.regId ?? 0) > 0) {
             console.log(obj)
             this.vOPIPId = obj.visitId
-
+           
             // setTimeout(() => {
             //     this._AppointmentlistService.getRegistraionById(obj.regId).subscribe((response) => {
             //         this.patientDetail = response;
