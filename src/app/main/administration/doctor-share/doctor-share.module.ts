@@ -37,9 +37,6 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { AddDoctorShareComponent } from './add-doctor-share/add-doctor-share.component';
 import { DoctorShareComponent } from './doctor-share.component';
-import { ProcessDoctorShareComponent } from './process-doctor-share/process-doctor-share.component';
-import { AdditionDocpayComponent } from './addition-docpay/addition-docpay.component';
-import { IPBillDoctorshareComponent } from './ipbill-doctorshare/ipbill-doctorshare.component';
 import { MatTimepickerModule } from 'mat-timepicker';
 import { SharedModule } from 'app/main/shared/shared.module';
 
@@ -53,7 +50,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    declarations: [DoctorShareComponent, AddDoctorShareComponent, ProcessDoctorShareComponent, AdditionDocpayComponent, IPBillDoctorshareComponent],
+    declarations: [DoctorShareComponent, AddDoctorShareComponent],
     imports: [
         RouterModule.forChild(routes),
         CommonModule,

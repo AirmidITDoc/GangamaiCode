@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { FormGroup, UntypedFormBuilder } from '@angular/forms';
 import { ApiCaller } from 'app/core/services/apiCaller';
+import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,7 @@ export class DoctorShareService {
   
   constructor(
     public _formBuilder: UntypedFormBuilder,
-    public _httpClient: ApiCaller
+    public _httpClient: ApiCaller,   private _FormvalidationserviceService: FormvalidationserviceService,
   ) { this.UserFormGroup = this.createUserFormGroup(),
     this.DocFormGroup = this.createDocFormGroup(),
     this.DocPrecessForm = this.createProDocFormGroup() 
@@ -39,13 +40,13 @@ export class DoctorShareService {
   createDocFormGroup() {
     return this._formBuilder.group({ 
       Type: ['1'],
-      DoctorID:'',
+      DoctorID: ['', [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       DoctorName: '', 
-      ServiceID:'',
-      GroupWise:'',
+      ServiceID: ['', [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      GroupWise: ['', [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       PatientType:'0',
       ServiceOrgrpType:'1',
-      ClassId:'',
+      ClassId: ['', [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       DocShareType:'P',
       Amount:'',
       Percentage:''
@@ -87,10 +88,7 @@ export class DoctorShareService {
     return this._httpClient.PostData("DoctorShareProcess/DoctorShareProcess",Param) 
   } 
   
- public additionpayInsert(Param) {
-    return this._httpClient.PostData("DoctorPAy/Insert",Param) 
-  } 
-  
+ 
   // public getPdfDocShareSummaryRpt(FromDate,ToDate,DoctorId){
   //   return this._httpClient.GetData("DoctorShareReports/viewDoctorWiseSummaryReport?FromDate=" + FromDate +"&ToDate=" + ToDate +"&DoctorId" +DoctorId);
   // }

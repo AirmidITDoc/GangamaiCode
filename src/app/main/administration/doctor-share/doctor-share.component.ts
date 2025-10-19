@@ -11,13 +11,10 @@ import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
 import { ToastrService } from 'ngx-toastr';
 import { Observable } from 'rxjs';
-import { AddDoctorShareComponent } from './add-doctor-share/add-doctor-share.component';
 import { DoctorShareService } from './doctor-share.service';
-import { ProcessDoctorShareComponent } from './process-doctor-share/process-doctor-share.component';
 import { gridColumnTypes } from 'app/core/models/tableActions';
 import { DoctorShareListComponent } from 'app/main/setup/doctor/doctor-payoutpercentage/doctor-share-list/doctor-share-list.component';
-import { AdditionDocpayComponent } from './addition-docpay/addition-docpay.component';
-import { IPBillDoctorshareComponent } from './ipbill-doctorshare/ipbill-doctorshare.component';
+
 
 @Component({
   selector: 'app-doctor-share',
@@ -156,38 +153,25 @@ export class DoctorShareComponent implements OnInit {
 ///Additonla pay
 allColumns1 = [
     { heading: "-", key: "patientType", sort: true, align: 'left', type: gridColumnTypes.template, emptySign: 'NA', width: 25 },
-    { heading: "-", key: "opdipdtype", sort: true, align: 'left', type: gridColumnTypes.template, emptySign: 'NA', width: 25 },
+    { heading: "-", key: "isBillShrHold", sort: true, align: 'left', type: gridColumnTypes.template, emptySign: 'NA', width: 25 },
     { heading: "PBillNo", key: "pbillNo", sort: true, align: 'left', emptySign: 'NA', width: 25 },
     { heading: "Service Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
-    // { heading: "Patient Type", key: "patientType", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "Price", key: "price", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, width: 125 },
+    { heading: "Qty", key: "qty", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, width: 125 },
+    { heading: "Total Amt", key: "totalAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, width: 125 },
+    { heading: "Doctor Name", key: "doctorName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
 
-    { heading: "Price", key: "totalAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, width: 125 },
-    { heading: "Qty", key: "ConcessionAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, width: 125 },
-    // { heading: "Total Amt", key: "hospitalAmt", sort: true, align: 'left', emptySign: 'NA' , type: gridColumnTypes.amount , width: 125},
-    // { heading: "Disc Amt", key: "doctorAmt", sort: true, align: 'left', emptySign: 'NA' , type: gridColumnTypes.amount , width: 125},
-
-    { heading: "Net Amt", key: "netPayableAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, width: 125 },
-    { heading: "Doctor Name", key: "admittedDoctorName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
-   
-    // { heading: "Doc Amt", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-    // { heading: "Hospital Amt", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-   
-    {
-      heading: "Action", key: "action", align: "right", width: 150, sticky: true, type: gridColumnTypes.template,
-      template: this.actionButtonTemplate  // Assign ng-template to the column
-    }
+    { heading: "Doc Amt", key: "docAmount", sort: true, align: 'left', emptySign: 'NA', width: 200 },
   ]
   allFilters1 = [
-    { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.StartsWith },
-    { fieldName: "ToDate", fieldValue: this.toDate, opType: OperatorComparer.StartsWith },
-    { fieldName: "DoctorId", fieldValue: "0", opType: OperatorComparer.Equals },
-    { fieldName: "PBillNo", fieldValue: "0", opType: OperatorComparer.Equals },
-    { fieldName: "OP_IP_TYpe", fieldValue: "1", opType: OperatorComparer.Equals },
+   { fieldName: "FromDate", fieldValue: "2025-06-10", opType: OperatorComparer.StartsWith },
+    { fieldName: "ToDate", fieldValue: "2025-10-10", opType: OperatorComparer.StartsWith },
+
   ]
   gridConfig1: gridModel = {
     apiUrl: "DoctorPAy/DoctorPayList",
     columnsList: this.allColumns1,
-    sortField: "DoctorId",
+    sortField: "PBillNo",
     sortOrder: 0,
     filters: this.allFilters1
   }
@@ -195,8 +179,7 @@ allColumns1 = [
   onChangeFirst1() {
     this.fromDate = this.datePipe.transform(this._DoctorShareService.UserFormGroup.get('fromDate').value, "yyyy-MM-dd")
     this.toDate = this.datePipe.transform(this._DoctorShareService.UserFormGroup.get('enddate').value, "yyyy-MM-dd")
-    this.pBillNo = this._DoctorShareService.UserFormGroup.get('PbillNo').value || "0"
-    this.opipType = this._DoctorShareService.UserFormGroup.get('OP_IP_Type').value
+  
     this.getfilterdata1();
   }
 
@@ -212,16 +195,14 @@ allColumns1 = [
     console.log("toDate:", this.toDate)
 
     this.gridConfig1 = {
-      apiUrl: "Doctor/DoctorshareBillList",
+      apiUrl: "DoctorPAy/DoctorPayList",
       columnsList: this.allColumns,
-      sortField: "DoctorId",
+      sortField: "PBillNo",
       sortOrder: 0,
       filters: [
         { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.StartsWith },
         { fieldName: "ToDate", fieldValue: this.toDate, opType: OperatorComparer.StartsWith },
-        { fieldName: "DoctorId", fieldValue: this.DoctorId, opType: OperatorComparer.Equals },
-        { fieldName: "PBillNo", fieldValue: this.pBillNo, opType: OperatorComparer.Equals },
-        { fieldName: "OP_IP_TYpe", fieldValue: this.opipType, opType: OperatorComparer.Equals },
+       
       ]
     }
     this.grid1.gridConfig = this.gridConfig1;
@@ -291,41 +272,41 @@ allColumns1 = [
     });
   }
 
-  Additiondocpay() {
-    const dialogRef = this._matDialog.open(AdditionDocpayComponent,
-      {
-        maxWidth: "85vw",
-        height: "65%",
-        width: "100%",
-      });
-    dialogRef.afterClosed().subscribe(result => {
-      this.onChangeFirst()
-    });
-  }
+  // Additiondocpay() {
+  //   const dialogRef = this._matDialog.open(AdditionDocpayComponent,
+  //     {
+  //       maxWidth: "85vw",
+  //       height: "65%",
+  //       width: "100%",
+  //     });
+  //   dialogRef.afterClosed().subscribe(result => {
+  //     this.onChangeFirst()
+  //   });
+  // }
 
-  processDocShare() {
-    const dialogRef = this._matDialog.open(ProcessDoctorShareComponent,
-      {
-        maxWidth: "45vw",
-        maxHeight: '35%',
-        width: '35%',
-      });
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed - Insert Action', result);
-    });
-  }
+  // processDocShare() {
+  //   const dialogRef = this._matDialog.open(ProcessDoctorShareComponent,
+  //     {
+  //       maxWidth: "45vw",
+  //       maxHeight: '35%',
+  //       width: '35%',
+  //     });
+  //   dialogRef.afterClosed().subscribe(result => {
+  //     console.log('The dialog was closed - Insert Action', result);
+  //   });
+  // }
 
-  billdetail(element) {
-    const dialogRef = this._matDialog.open(IPBillDoctorshareComponent,
-      {
-        maxWidth: "90vw",
-        height: "75%",
-        width: "100%",
-      });
-    dialogRef.afterClosed().subscribe(result => {
-      this.onChangeFirst()
-    });
-  }
+  // billdetail(element) {
+  //   const dialogRef = this._matDialog.open(IPBillDoctorshareComponent,
+  //     {
+  //       maxWidth: "90vw",
+  //       height: "75%",
+  //       width: "100%",
+  //     });
+  //   dialogRef.afterClosed().subscribe(result => {
+  //     this.onChangeFirst()
+  //   });
+  // }
 
   onClear() {
   }

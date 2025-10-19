@@ -74,8 +74,8 @@ export class DoctorshareProcessComponent {
   }
 
   allColumns = [
-    { heading: "-", key: "patientType", sort: true, align: 'left', type: gridColumnTypes.template, emptySign: 'NA', width: 25 },
-    { heading: "-", key: "isBillShrHold", sort: true, align: 'left', type: gridColumnTypes.template, emptySign: 'NA', width: 25 },
+    { heading: "PType", key: "patientType", sort: true, align: 'left', type: gridColumnTypes.template, emptySign: 'NA', width: 25 },
+    { heading: "BillHold", key: "isBillShrHold", sort: true, align: 'left', type: gridColumnTypes.template, emptySign: 'NA', width: 25 },
     { heading: "PBillNo", key: "pbillNo", sort: true, align: 'left', emptySign: 'NA', width: 25 },
     { heading: "Service Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
     { heading: "Price", key: "price", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, width: 125 },
@@ -92,8 +92,8 @@ export class DoctorshareProcessComponent {
     // }
   ]
   allFilters = [
-    { fieldName: "FromDate", fieldValue: "2025-06-10", opType: OperatorComparer.StartsWith },
-    { fieldName: "ToDate", fieldValue: "2025-10-10", opType: OperatorComparer.StartsWith },
+    { fieldName: "FromDate", fieldValue:this.fromDate, opType: OperatorComparer.StartsWith },
+    { fieldName: "ToDate", fieldValue:this.toDate, opType: OperatorComparer.StartsWith },
 
   ]
   gridConfig: gridModel = {

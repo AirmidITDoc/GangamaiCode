@@ -1,27 +1,23 @@
-import { Component, EventEmitter, Inject, Output, ViewEncapsulation } from '@angular/core';
-import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
-import { DoctorShareService } from '../doctor-share.service';
+import { Component, EventEmitter, Inject, Output } from '@angular/core';
+import { BillDoctorwiseService } from '../bill-doctorwise.service';
+import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
+import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
-import { AdvanceDataStored } from 'app/main/ipd/advance';
 import { ToastrService } from 'ngx-toastr';
 import { DatePipe } from '@angular/common';
 import { Router } from '@angular/router';
-import { fuseAnimations } from '@fuse/animations';
+import { AdvanceDataStored } from 'app/main/ipd/advance';
 
 @Component({
-  selector: 'app-addition-docpay',
-  templateUrl: './addition-docpay.component.html',
-  styleUrls: ['./addition-docpay.component.scss'],
-    encapsulation: ViewEncapsulation.None,
-    animations: fuseAnimations,
+  selector: 'app-doctor-addonpay',
+  templateUrl: './doctor-addonpay.component.html',
+  styleUrls: ['./doctor-addonpay.component.scss']
 })
-export class AdditionDocpayComponent {
+export class DoctorAddonpayComponent {
 
-
-  AdddocpayFormGroup: FormGroup;
+AdddocpayFormGroup: FormGroup;
   dateTimeObj: any;
   screenFromString = 'Common-form';
   autocompleteModeCompany: string = "Company";
@@ -40,7 +36,7 @@ export class AdditionDocpayComponent {
   dateTimeString: any;
   phdatetime: any;
   registerObj: any
-  constructor(public _DoctorShareService: DoctorShareService,
+  constructor(public _DoctorShareService: BillDoctorwiseService,
     private formBuilder: UntypedFormBuilder,
     private accountService: AuthenticationService,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -50,7 +46,7 @@ export class AdditionDocpayComponent {
     private commonService: PrintserviceService,
     public toastr: ToastrService,
     private advanceDataStored: AdvanceDataStored,
-    public dialogRef: MatDialogRef<AdditionDocpayComponent>,
+    public dialogRef: MatDialogRef<DoctorAddonpayComponent>,
     private router: Router
   ) {
     this.date = new Date().toISOString().slice(0, 16);
@@ -78,10 +74,10 @@ export class AdditionDocpayComponent {
     return this.formBuilder.group({
       pbillNo:  [0, [Validators.required]],
       patientName:  ['', [Validators.required]],
-      docId:['', [Validators.required]],
+      docId: ['', [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       // admissionId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       companyId: 0,
-      serviceName:  ['', [Validators.required]],
+      serviceName: ['', [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       billDate: [(new Date()).toISOString()],
       billTime: ['', [Validators.required]],
       price: [0, [Validators.required]],
@@ -258,3 +254,4 @@ doctorName=''
   }
 
 }
+

@@ -1,3 +1,4 @@
+import { M } from '@angular/cdk/keycodes';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
@@ -9,7 +10,7 @@ const appRoutes: Routes = [
   },
    {
     path: "doctorshare",
-    loadChildren: () => import("..//administration/doctor-share/doctor-share.module").then((m) => m.DOctorShareModule),
+      loadChildren: () => import("./bill-list-doctorwise/billlist-doctorwise.module").then((m) => m.BilllistDoctorwiseModule),
   },
    {
     path: "doctorshareprocess",
@@ -19,6 +20,8 @@ const appRoutes: Routes = [
 
 @NgModule({
   declarations: [
+    
+  
     
   ],
   imports: [

@@ -1,22 +1,19 @@
-import { DatePipe } from '@angular/common';
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { fuseAnimations } from '@fuse/animations';
+import { Component } from '@angular/core';
+import { BillDoctorwiseService } from '../bill-doctorwise.service';
 import { ToastrService } from 'ngx-toastr';
-import { DoctorShareService } from '../doctor-share.service';
+import { MatDialog } from '@angular/material/dialog';
+import { DatePipe } from '@angular/common';
 
 @Component({
-  selector: 'app-process-doctor-share',
-  templateUrl: './process-doctor-share.component.html',
-  styleUrls: ['./process-doctor-share.component.scss'],
-  encapsulation: ViewEncapsulation.None,
-  animations: fuseAnimations,
+  selector: 'app-process-doctorshare',
+  templateUrl: './process-doctorshare.component.html',
+  styleUrls: ['./process-doctorshare.component.scss']
 })
-export class ProcessDoctorShareComponent implements OnInit {
+export class ProcessDoctorshareComponent {
 
 
   constructor(
-    public _DoctorShareService: DoctorShareService,
+    public _DoctorShareService: BillDoctorwiseService,
     public datePipe: DatePipe,
     public _matDialog: MatDialog,
     public toastr: ToastrService,
@@ -42,3 +39,4 @@ export class ProcessDoctorShareComponent implements OnInit {
     this._DoctorShareService.DocPrecessForm.get("enddate").setValue(new Date());
   }
 }
+
