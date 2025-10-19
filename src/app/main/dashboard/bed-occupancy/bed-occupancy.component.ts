@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewEncapsulation, HostListener, OnDestroy } from '@angular/core';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
@@ -14,18 +14,31 @@ import { BedDetailsDialogComponent } from './bed-details-dialog/bed-details-dial
     encapsulation: ViewEncapsulation.None,
     animations: fuseAnimations,
 })
-export class BedOccupancyComponent implements OnInit {
+export class BedOccupancyComponent implements OnInit, OnDestroy {
     @ViewChild(MatSort) sort: MatSort;
 
     public displayedColumns = ['RegNo', 'PatientName', 'DoctorName', 'IsAvailible', 'BedName'];
     warDataArr: WardDetails[] = [];
     warItemArr: WardItemDetails[] = [];
+    dashBedStatistics: any;
     prevSelectedWard: WardDetails;
     public isTableLoading = false;
     public selectedRoom!: string;
     public dataSource = new MatTableDataSource<WardItemDetails>();
     public selectedMonth: string = 'Month';
     public months: string[] = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    public selectedDepartment: number = 0; // Track selected department index
+    public filteredBeds: any[] = []; // Filtered beds based on selected department
+    public isBedsLoading: boolean = false; // Loading state for bed data
+    public departments: any[] = []; // Department data from API
+    public isDepartmentsLoading: boolean = false; // Loading state for department data
+    
+    // Slider properties
+    public currentSlideIndex: number = 0;
+    public slideWidth: number = 296; // Width of each slide (280px card + 16px gap)
+    public slidesPerView: number = 4; // Number of slides visible at once
+    public maxSlideIndex: number = 0;
+    public sliderDots: any[] = [];
     public admissionSeries: any[] = [
         {
             name: 'Admissions',
@@ -69,14 +82,14 @@ export class BedOccupancyComponent implements OnInit {
     rooms = ['Oncology room 1', 'Oncology room 2', 'ICU', 'General Ward'];
   
     beds = [
-      { id: 1, status: 'In Use', patient: 'Michael Scott', admissionDate: '09/12/2019', age: 67, sex: 'Male', icon: 'hotel' },
-      { id: 2, status: 'Reserved', patient: 'Steve Smith', admissionDate: '01/20/2020', age: 43, sex: 'Male', icon: 'person_pin' },
-      { id: 3, status: 'In Use', patient: 'James Smith', admissionDate: '12/27/2019', age: 73, sex: 'Male', icon: 'hotel' },
-      { id: 4, status: 'In Use', patient: 'Cindy Love', admissionDate: '12/12/2019', age: 36, sex: 'Female', icon: 'hotel' },
-      { id: 5, status: 'In Use', patient: 'James Johnson', admissionDate: '11/12/2019', age: 56, sex: 'Male', icon: 'hotel' },
-      { id: 6, status: 'In Use', patient: 'Maria Garcia', admissionDate: '01/12/2020', age: 49, sex: 'Female', icon: 'hotel' },
-      { id: 7, status: 'Empty', patient: '', admissionDate: '', age: '', sex: '', icon: 'person_add' },
-      { id: 8, status: 'In Use', patient: 'Robert Scott', admissionDate: '01/01/2020', age: 60, sex: 'Male', icon: 'hotel' },
+      { id: 1, status: 'In Use', patient: 'Michael Scott', admissionDate: '09/12/2019', age: 67, sex: 'Male', icon: 'hotel', department: 0 },
+      { id: 2, status: 'Reserved', patient: 'Steve Smith', admissionDate: '01/20/2020', age: 43, sex: 'Male', icon: 'person_pin', department: 0 },
+      { id: 3, status: 'In Use', patient: 'James Smith', admissionDate: '12/27/2019', age: 73, sex: 'Male', icon: 'hotel', department: 1 },
+      { id: 4, status: 'In Use', patient: 'Cindy Love', admissionDate: '12/12/2019', age: 36, sex: 'Female', icon: 'hotel', department: 1 },
+      { id: 5, status: 'In Use', patient: 'James Johnson', admissionDate: '11/12/2019', age: 56, sex: 'Male', icon: 'hotel', department: 2 },
+      { id: 6, status: 'In Use', patient: 'Maria Garcia', admissionDate: '01/12/2020', age: 49, sex: 'Female', icon: 'hotel', department: 2 },
+      { id: 7, status: 'Empty', patient: '', admissionDate: '', age: '', sex: '', icon: 'person_add', department: 3 },
+      { id: 8, status: 'In Use', patient: 'Robert Scott', admissionDate: '01/01/2020', age: 60, sex: 'Male', icon: 'hotel', department: 3 },
     ];
     constructor(
         public _dashboardServices: DashboardService,
@@ -85,6 +98,8 @@ export class BedOccupancyComponent implements OnInit {
 
     ngOnInit(): void {
         // this.getWard();
+        // Load department data first, then load initial bed data
+        this.loadDepartments();
         // initialize charts using same helpers as Daily Dashboard
         setTimeout(() => {
             if (document.getElementById('BedMiniChart1')) {
@@ -148,35 +163,30 @@ export class BedOccupancyComponent implements OnInit {
         return Math.round((this.totalOccupied / this.totalBeds) * 100);
     }
 
-    get dept1() {
-        return this.getDeptData(0);
-    }
-
-    get dept2() {
-        return this.getDeptData(1);
-    }
-
-    get dept3() {
-        return this.getDeptData(2);
-    }
-
-    get dept4() {
-        return this.getDeptData(3);
-    }
-
-    private getDeptData(index: number) {
-
-
-        const w = this.warDataArr[index];
-        if (!w) return { name: 'Department ' + (index + 1), image: this.departmentImages[index], total: 0, inUse: 0, reserved: 0, empty: 0, percent: 0 };
+    public getDeptData(index: number) {
+        // Use API data if available, otherwise fall back to static data
+        const dept = this.departments[index];
+        if (!dept) {
+            return { 
+                name: 'Department ' + (index + 1), 
+                image: this.departmentImages[index], 
+                total: 0, 
+                inUse: 0, 
+                reserved: 0, 
+                empty: 0, 
+                percent: 0 
+            };
+        }
         
-        const total = (Number(w.AvailableCount) || 0) + (Number(w.OccuipedCount) || 0);
-        const inUse = Number(w.OccuipedCount) || 0;
-        const available = Number(w.AvailableCount) || 0;
-        const reserved = Math.max(Math.round(total * 0.07), 0);
+        // Extract data from API response
+        const total = this.extractNumberValue(dept.TotalCount) || this.extractNumberValue(dept.TotalBeds) || 0;
+        const inUse = this.extractNumberValue(dept.OccuipedCount) || this.extractNumberValue(dept.OccupiedCount) || 0;
+        const available = this.extractNumberValue(dept.AvailableCount) || 0;
+        const reserved = Math.max(Math.round(total * 0.07), 0); // Calculate reserved as 7% of total
         const percent = total ? Math.round((inUse / total) * 100) : 0;
+        
         return {
-            name: w.WardName,
+            name: this.extractStringValue(dept.WardName) || this.extractStringValue(dept.DepartmentName) || 'Department ' + (index + 1),
             image: this.departmentImages[index % this.departmentImages.length],
             total,
             inUse,
@@ -184,6 +194,16 @@ export class BedOccupancyComponent implements OnInit {
             empty: Math.max(total - inUse - reserved, 0),
             percent
         };
+    }
+
+    extractNumberValue(value: any): number {
+        if (!value) return 0;
+        if (typeof value === 'number') return value;
+        if (typeof value === 'string') {
+            const parsed = parseFloat(value);
+            return isNaN(parsed) ? 0 : parsed;
+        }
+        return 0;
     }
 
     // reverted: department cards helper removed
@@ -342,26 +362,47 @@ export class BedOccupancyComponent implements OnInit {
             }
         };
 
-        return new Chart('BedOverallDoughnut', {
-            type: 'doughnut',
-            data: {
-                labels: ['In use', 'Reserved', 'Empty', 'Clean up', 'Other'],
-                datasets: [
-                    {
-                        backgroundColor: ['#ff5a8a','#f6c542','#3ecf8e','#5ac8fa','#a283f6'],
-                        data: [Math.max(this.totalOccupied, 1), 4, Math.max(this.totalAvailable, 1), 2, 1]
-                    }
-                ]
-            },
-            options: { 
-                plugins: { 
-                    tooltip: { enabled: true },
-                    legend: { display: false }
+        const payload = {
+            "searchFields": [ ],
+            "mode": "DashBedStatistics"
+          };
+
+          this._dashboardServices.HomeDashboardAPI(payload).subscribe((res: any) => {
+            let apiData = res && res.length ? res[0] : {};
+            this.dashBedStatistics = apiData;
+            console.log("apiDataapiDataapiData",apiData)
+            
+            return new Chart('BedOverallDoughnut', {
+                type: 'doughnut',
+                data: {
+                    labels: Object.entries(apiData)
+                    .filter(([key]) => key !== 'TotalBedCount')
+                    .map(([key, _]) => key.replace(/Count/gi, ''))
+                    || [],
+                    datasets: [
+                        {
+                            backgroundColor: ['#ff5a8a','#f6c542','#3ecf8e'],
+                            data: Object.entries(apiData)
+                            .filter(([key]) => key !== 'TotalBedCount') // skip that key
+                            .map(([_, value]) => value) || []
+                        }
+                    ]
                 },
-                cutout: '70%'
-            },
-            plugins: [centerTextPlugin, dataLabelsPlugin]
-        });
+                options: { 
+                    plugins: { 
+                        tooltip: { enabled: true },
+                        legend: { display: false }
+                    },
+                    cutout: '70%'
+                },
+                plugins: [centerTextPlugin, dataLabelsPlugin]
+            });
+      
+          }, err => {
+            return []
+        })
+
+        
     }
 
     getLargeAdmissionsChart() {
@@ -519,6 +560,220 @@ export class BedOccupancyComponent implements OnInit {
     isBedEmpty(status: string): boolean {
         if (!status) return false;
         return status.toLowerCase().trim() === 'empty';
+    }
+
+    // Department selection methods
+    selectDepartment(departmentIndex: number): void {
+        this.selectedDepartment = departmentIndex;
+        this.loadBedsForDepartment(departmentIndex);
+    }
+
+    loadBedsForDepartment(departmentIndex: number): void {
+        this.isBedsLoading = true;
+        this.filteredBeds = [];
+        
+        // Get ward ID from department data
+        const dept = this.departments[departmentIndex];
+        let wardId = departmentIndex + 1; // Default fallback
+        
+        if (dept) {
+            wardId = this.extractNumberValue(dept.WardId) || this.extractNumberValue(dept.Id) || (departmentIndex + 1);
+        }
+        
+        this._dashboardServices.getBedWiseList(wardId).subscribe(
+            (response: any) => {
+                this.isBedsLoading = false;
+                console.log('API Response for WardId', wardId, ':', response);
+                if (response && response.length > 0) {
+                    this.filteredBeds = this.transformApiDataToBedFormat(response);
+                    console.log('Transformed bed data:', this.filteredBeds);
+                } else {
+                    this.filteredBeds = [];
+                }
+            },
+            (error) => {
+                this.isBedsLoading = false;
+                console.error('Error loading bed data:', error);
+                this.filteredBeds = [];
+            }
+        );
+    }
+
+    transformApiDataToBedFormat(apiData: any[]): any[] {
+        return apiData.map((item, index) => ({
+            id: item.BedId || (index + 1),
+            status: this.getBedStatus(item),
+            patient: this.extractStringValue(item.PatientName),
+            admissionDate: this.extractStringValue(item.AdmissionDate),
+            age: this.extractStringValue(item.Age),
+            sex: this.extractStringValue(item.Sex),
+            icon: this.getBedIcon(item),
+            department: this.selectedDepartment,
+            // Additional API fields
+            regNo: this.extractStringValue(item.RegNo),
+            doctorName: this.extractStringValue(item.DoctorName),
+            roomName: this.extractStringValue(item.RoomName),
+            wardName: this.extractStringValue(item.WardName)
+        }));
+    }
+
+    extractStringValue(value: any): string {
+        if (!value) return '';
+        
+        // If it's already a string, return it
+        if (typeof value === 'string') return value.trim();
+        
+        // If it's an object, try to extract meaningful data
+        if (typeof value === 'object') {
+            // Check for common object properties that might contain the actual value
+            if (value.name && typeof value.name === 'string') return value.name.trim();
+            if (value.value && typeof value.value === 'string') return value.value.trim();
+            if (value.text && typeof value.text === 'string') return value.text.trim();
+            if (value.label && typeof value.label === 'string') return value.label.trim();
+            if (value.displayName && typeof value.displayName === 'string') return value.displayName.trim();
+            
+            // Handle name objects with first and last name
+            if (value.firstName || value.lastName) {
+                const firstName = value.firstName ? String(value.firstName).trim() : '';
+                const lastName = value.lastName ? String(value.lastName).trim() : '';
+                return `${firstName} ${lastName}`.trim();
+            }
+            
+            // If it's an array, join the elements
+            if (Array.isArray(value)) {
+                return value.filter(v => v && typeof v === 'string').map(v => v.trim()).join(' ');
+            }
+            
+            // Log the object structure for debugging
+            console.warn('Unexpected object structure:', value);
+            
+            // If none of the above, return empty string to avoid [object Object]
+            return '';
+        }
+        
+        // For other types, convert to string
+        return String(value).trim();
+    }
+
+    getBedStatus(item: any): string {
+        if (item.IsAvailable === true || item.IsAvailable === 'true') {
+            return 'Empty';
+        } else if (item.IsReserved === true || item.IsReserved === 'true') {
+            return 'Reserved';
+        } else {
+            return 'In Use';
+        }
+    }
+
+    getBedIcon(item: any): string {
+        const status = this.getBedStatus(item);
+        switch (status) {
+            case 'In Use':
+                return 'hotel';
+            case 'Reserved':
+                return 'person_pin';
+            case 'Empty':
+            default:
+                return 'person_add';
+        }
+    }
+
+    isDepartmentSelected(departmentIndex: number): boolean {
+        return this.selectedDepartment === departmentIndex;
+    }
+
+    // Department loading methods
+    loadDepartments(): void {
+        this.isDepartmentsLoading = true;
+        
+        this._dashboardServices.getWardWiseBedData().subscribe(
+            (response: any) => {
+                this.isDepartmentsLoading = false;
+                console.log('Department API Response:', response);
+                if (response && response.length > 0) {
+                    this.departments = response;
+                    this.initializeSlider();
+                    // Load initial bed data for first department
+                    this.loadBedsForDepartment(0);
+                } else {
+                    this.departments = [];
+                    this.sliderDots = [];
+                    console.warn('No department data received from API');
+                }
+            },
+            (error) => {
+                this.isDepartmentsLoading = false;
+                console.error('Error loading department data:', error);
+                this.departments = [];
+                this.sliderDots = [];
+            }
+        );
+    }
+
+    // Slider methods
+    initializeSlider(): void {
+        this.currentSlideIndex = 0;
+        this.updateSliderSettings();
+        this.generateSliderDots();
+    }
+
+    updateSliderSettings(): void {
+        // Calculate how many slides we can show based on screen size
+        const screenWidth = window.innerWidth;
+        if (screenWidth < 768) {
+            this.slidesPerView = 1;
+            this.slideWidth = 296;
+        } else if (screenWidth < 1024) {
+            this.slidesPerView = 2;
+            this.slideWidth = 296;
+        } else if (screenWidth < 1440) {
+            this.slidesPerView = 3;
+            this.slideWidth = 296;
+        } else if (screenWidth < 1920) {
+            this.slidesPerView = 4;
+            this.slideWidth = 296;
+        } else {
+            this.slidesPerView = 5;
+            this.slideWidth = 296;
+        }
+        
+        // Calculate maximum slide index
+        this.maxSlideIndex = Math.max(0, this.departments.length - this.slidesPerView);
+    }
+
+    generateSliderDots(): void {
+        const totalSlides = Math.ceil(this.departments.length / this.slidesPerView);
+        this.sliderDots = Array(totalSlides).fill(0).map((_, index) => ({ index }));
+    }
+
+    nextSlide(): void {
+        if (this.currentSlideIndex < this.maxSlideIndex) {
+            this.currentSlideIndex++;
+        }
+    }
+
+    previousSlide(): void {
+        if (this.currentSlideIndex > 0) {
+            this.currentSlideIndex--;
+        }
+    }
+
+    goToSlide(slideIndex: number): void {
+        this.currentSlideIndex = slideIndex;
+    }
+
+    @HostListener('window:resize', ['$event'])
+    onResize(event?: any): void {
+        this.updateSliderSettings();
+        this.generateSliderDots();
+        // Ensure current slide index is still valid
+        if (this.currentSlideIndex > this.maxSlideIndex) {
+            this.currentSlideIndex = this.maxSlideIndex;
+        }
+    }
+
+    ngOnDestroy(): void {
+        // Cleanup if needed
     }
 
 }

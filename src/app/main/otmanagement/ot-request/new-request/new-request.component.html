@@ -23,7 +23,7 @@
 
     <div class="modal-body" fusePerfectScrollbar>
         <div class="modal-body-container">
-            <div fxLayout="column" class="gap-12"></div>
+            <!-- <div fxLayout="column" class="gap-12"></div> -->
             <form [formGroup]="requestForm">
                 <div class="modal-card-container">
 
@@ -206,13 +206,13 @@
 
                                         <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                             <airmid-dropdown label="Theater" formControlName="Theater"
-                                                [formGroup]="requestForm">
+                                                [formGroup]="requestForm" [mode]="autocompleteModeOTTable">
                                             </airmid-dropdown>
                                         </div>
 
                                         <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                             <airmid-dropdown label="Theater Location" formControlName="TheaterLocation"
-                                                [formGroup]="requestForm"></airmid-dropdown>
+                                                [formGroup]="requestForm" [mode]="autocompleteModeLocation"></airmid-dropdown>
                                         </div>
 
                                         <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">

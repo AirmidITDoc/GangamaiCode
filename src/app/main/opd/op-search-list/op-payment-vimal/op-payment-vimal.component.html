@@ -26,103 +26,69 @@
 
             <div fxLayout="column" class="gap-5">
                 <div class="patient-info-container patient-info">
-                    <mat-card>
+                    <mat-card fxLayout="column">
                         <div class="patient-info-box">
-                            <div class="patient-info-title border-bottom pb-2">
-                                <span class="h2">Patient Information</span>
+                            <div class="patient-info-title border-bottom pb-2"> 
+                                   <span class="h2">Patient Information</span>
                             </div>
                             <div class="patient-info-box my-8">
-                                <div class="patient-info-row row-gap-" fxLayout="row" fxLayoutAlign="space-between">
-
-                                    <div fxLayout="column" fxLayoutGap="6px">
+                                <div class="patient-info-row row-gap-" fxLayout="row" fxLayoutAlign="space-between"> 
+                                   
                                         <div class="patient-col gap-3">
                                             <span class="patient-col-key ">Patient Name</span>
                                             <span>:</span>
                                             <span
                                                 class="patient-col-value">{{advanceData.RegNo}}-{{advanceData.PatientName}}</span>
                                         </div>
-                                        <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%"
-                                            *ngIf="advanceData.DoctorName">
-                                            <span class="patient-col-key ">Doctor Name</span>
-                                            <span>:</span>
-                                            <span class="patient-col-value">{{advanceData.DoctorName}}</span>
-                                        </div>
 
-                                        <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%"
+                                            <div class="patient-col gap-3"  >
+                                                <span class="patient-col-key ">OPD | IPD No </span>
+                                                <span>:</span>
+                                                <span class="patient-col-value" *ngIf="advanceData.IPDNo">
+                                                    {{advanceData.IPDNo}}</span>
+                                                <span class="patient-col-value" *ngIf="advanceData.OPDNo">
+                                                    {{advanceData.OPDNo}}</span>
+                                            </div>
+                                      
+                                        <div class="patient-col gap-3"  
                                             *ngIf="advanceData.DepartmentName">
-                                            <span class="patient-col-key ">Department Name</span>
+                                            <span class="patient-col-key ">Department Name | Doctor Name</span>
                                             <span>:</span>
-                                            <span class="patient-col-value">{{advanceData.DepartmentName}}</span>
-                                        </div>
+                                            <span class="patient-col-value">{{advanceData.DepartmentName}} | {{advanceData.DoctorName}}</span>
+                                        </div> 
 
+                                        <div class="patient-col gap-3" >
+                                            <span class="patient-col-key">Net Amount</span>
+                                            <span>:</span>
+                                            <span class="patient-col-value"
+                                              style="background-color: orange;font-weight: bold;">{{advanceData.NetPayAmount |
+                                                currency:"INR":"symbol"}}</span>
+                                        </div> 
+
+                                
+                                    
+                                </div>
+                            </div>
+                        </div>
+                        <div class="patient-info-box">
+                            <div class="patient-info-title border-bottom"> 
+                            </div>
+                            <div class="patient-info-box my-8">
+                                 <div class="patient-info-row row-gap-" fxLayout="row" fxLayoutAlign="space-between"> 
+                                    <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%" >
+                                        <span class="patient-col-key "
+                                          >Bill Amount</span>
+                                        <span>:</span>
+                                        <span class="patient-col-value gap-4"  
+                                           style="background-color: orange;font-weight: bold;">
+                                            {{netPayAmt | currency:"INR":"symbol"}}
+                                        </span>
                                     </div>
-
-                                    <div fxLayout="column" fxLayoutGap="6px">
-                                        <div class="patient-col gap-3" fxFlex="30%" fxFlex.gt-sm="30%">
+                                      <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
                                             <span class="patient-col-key ">BillNo </span>
                                             <span>:</span>
                                             <span class="patient-col-value">{{advanceData.BillNo}}</span>
                                         </div>
-                                        <div class="patient-col gap-3" fxFlex="30%" fxFlex.gt-sm="30%"
-                                            *ngIf="advanceData.BillTime">
-                                            <span class="patient-col-key">BillDate </span>
-                                            <span>:</span>
-                                            <span class="patient-col-value">{{Date}}</span>
-                                        </div>
-
-                                        <div class="patient-col gap-3" fxFlex="30%" fxFlex.gt-sm="30%"
-                                            style="color: blue;font-weight: bold;">
-                                            <span class="patient-col-key">Net Amount</span>
-                                            <span>:</span>
-                                            <span class="patient-col-value">{{advanceData.NetPayAmount |
-                                                currency:"INR":"symbol"}}</span>
-                                        </div>
-                                    </div>
-
-                                    <div fxLayout="column" fxLayoutGap="6px">
-                                        <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%"
-                                            *ngIf="advanceData.Age">
-                                            <span class="patient-col-key ">Age</span>
-                                            <span>:</span>
-                                            <span class="patient-col-value">{{advanceData.Age}}</span>
-                                        </div>
-
-                                        <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
-                                            <span class="patient-col-key ">OPD | IPD No </span>
-                                            <span>:</span>
-                                            <span class="patient-col-value" *ngIf="advanceData.IPDNo">
-                                                {{advanceData.IPDNo}}</span>
-                                            <span class="patient-col-value" *ngIf="advanceData.OPDNo">
-                                                {{advanceData.OPDNo}}</span>
-                                        </div>
-
-                                        <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%"
-                                            *ngIf="advanceData.CompanyName">
-                                            <span class="patient-col-key ">Company Name</span>
-                                            <span>:</span>
-                                            <span class="patient-col-value">{{advanceData.CompanyName}}</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </mat-card>
-                </div>
-                <div class="patient-info-container payment-bill-info">
-                    <mat-card>
-                        <div class="patient-info-box">
-                            <div class="patient-info-title border-bottom pb-2">
-                                <span class="h2">Patient Bill Information</span>
-                            </div>
-                            <div class="patient-info-box my-8">
-                                <div class="patient-info-row row-gap-4" fxLayout="row wrap">
-                                    <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
-                                        <span class="patient-col-key ">Bill Amount</span>
-                                        <span>:</span>
-                                        <span class="patient-col-value gap-4" fxLayout="row">
-                                            {{netPayAmt | currency:"INR":"symbol"}}
-                                        </span>
-                                    </div>
                                     <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
                                         <span class="patient-col-key">Bill Date</span>
                                         <span>:</span>
@@ -140,6 +106,43 @@
                         </div>
                     </mat-card>
                 </div>
+                <!-- <div class="patient-info-container payment-bill-info">
+                    <mat-card>
+                        <div class="patient-info-box">
+                            <div class="patient-info-title border-bottom pb-2">
+                                <span class="h2">Patient Bill Information</span>
+                            </div>
+                            <div class="patient-info-box my-8">
+                                <div class="patient-info-row row-gap-4" fxLayout="row wrap">
+                                    <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
+                                        <span class="patient-col-key ">Bill Amount</span>
+                                        <span>:</span>
+                                        <span class="patient-col-value gap-4" fxLayout="row">
+                                            {{netPayAmt | currency:"INR":"symbol"}}
+                                        </span>
+                                    </div>
+                                      <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
+                                            <span class="patient-col-key ">BillNo </span>
+                                            <span>:</span>
+                                            <span class="patient-col-value">{{advanceData.BillNo}}</span>
+                                        </div>
+                                    <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
+                                        <span class="patient-col-key">Bill Date</span>
+                                        <span>:</span>
+                                        <span class="patient-col-value gap-4" fxLayout="row">
+                                            {{Date}}
+                                        </span>
+                                    </div>
+                                    <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="35%">
+                                        <mat-checkbox fxFlex [checked]="IsAdv" [(ngModel)]="IsAdv"
+                                            (change)="OnAdvAmt($event)">Advance Amount?</mat-checkbox>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </mat-card>
+                </div> -->
                 <div class="table-container" style="padding: 5px 5px 5px 5px;" *ngIf="IsAdv">
                     <mat-card style="padding: 6px;">
                         <div class="airmid-table-container">

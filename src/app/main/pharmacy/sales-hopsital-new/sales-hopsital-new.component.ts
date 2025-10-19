@@ -250,7 +250,7 @@ export class SalesHospitalNewComponent implements OnInit {
                 date: ['', [this._FormvalidationserviceService.allowEmptyStringValidator(), this._FormvalidationserviceService.validDateValidator()]],
                 time: ['', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
                 opIpId: [0, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-                opIpType: [1, [this._FormvalidationserviceService.onlyNumberValidator]],
+                opIpType: [1, [this._FormvalidationserviceService.onlyNumberValidator()]],
                 totalAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
                 vatAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
                 discAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
@@ -485,7 +485,7 @@ export class SalesHospitalNewComponent implements OnInit {
             this.saleSelectedDatasource.data = [];
             this.Itemchargeslist = [];
             this.paymethod = false;
-            this.Draftchk = false;
+             this.Draftchk = true;
             this.IPMedID = 0;
             this.DraftID = 0;
         }
@@ -1554,12 +1554,14 @@ export class SalesHospitalNewComponent implements OnInit {
         this.PharmaSalesDraftForm.get('salesDraft.netAmount').setValue(Number(Math.round(formValue?.netAmount)))
         this.PharmaSalesDraftForm.get('salesDraft.concessionReasonId').setValue(formValue?.concessionReasonId ?? 0)
         this.PharmaSalesDraftForm.get('salesDraft.paidAmount').setValue(Number(Math.round(formValue?.netAmount)))
-
+ 
         if (formValue.opIpType == 2) {
-            this.PharmaSalesDraftForm.get('salesDraft.externalPatientName').setValue(formValue?.externalPatientName)
-            this.PharmaSalesDraftForm.get('salesDraft.doctorName').setValue(formValue?.doctorName)
-            this.PharmaSalesDraftForm.get('salesDraft.extAddress').setValue(formValue?.extAddress)
-            this.PharmaSalesDraftForm.get('salesDraft.extMobileNo').setValue(formValue?.extMobileNo)
+            this.PharmaSalesDraftForm.get('salesDraft.externalPatientName').setValue((formValue.externalPatientName?.patientName ?? formValue.externalPatientName) || '')
+            this.PharmaSalesDraftForm.get('salesDraft.doctorName').setValue((formValue?.doctorName.doctorName ?? formValue?.doctorName) || '')
+            this.PharmaSalesDraftForm.get('salesDraft.extAddress').setValue(formValue?.extAddress || '')
+            this.PharmaSalesDraftForm.get('salesDraft.extMobileNo').setValue((formValue.extMobileNo.extMobileNo ?? formValue.extMobileNo) || '')
+            this.PharmaSalesDraftForm.get('salesDraft.opIpId').clearValidators();
+           this.PharmaSalesDraftForm.get('salesDraft.opIpId').updateValueAndValidity();
         } else {
             this.PharmaSalesDraftForm.get('salesDraft.externalPatientName').setValue(this.PatientName)
             this.PharmaSalesDraftForm.get('salesDraft.doctorName').setValue(this.Patientdetails?.doctorName)
@@ -1603,10 +1605,10 @@ export class SalesHospitalNewComponent implements OnInit {
     }
 
     onAddDraftList(contact) { 
+        debugger
         console.log(contact)
         this.DraftID = contact.dsalesId;
-        this.saleSelectedDatasource.data = [];
-        this.Tempchargeslist = [];
+        this.saleSelectedDatasource.data = []; 
         this.Itemchargeslist = [];
 
         if (contact.opipType == 2) {
@@ -1623,8 +1625,9 @@ export class SalesHospitalNewComponent implements OnInit {
             this.ItemSubform.get('doctorName').setValue(contact.admDoctorName)
             this.ItemSubform.get('extAddress').setValue(contact.extAddress)
             this.paymethod = false;
-            this.Draftchk = false;
+            this.Draftchk = true;
             this.RegId = '';
+           // console.log(this.ItemAddForm.value) 
         } else if (contact.opipType == 0) {
             this.paymethod = true;
             this.Draftchk = true;
@@ -1636,7 +1639,8 @@ export class SalesHospitalNewComponent implements OnInit {
             this.DoctorName = contact.admDoctorName;
             this.PatientName = contact.patientName;
             this.RegId = contact.regID;
-             this.RegNo =  contact?.regNo;
+            this.RegNo =  contact?.regNo;
+            this.OP_IP_Id = contact?.opipid
             this.ItemSubform.get('extMobileNo').clearValidators();
             this.ItemSubform.get('externalPatientName').clearValidators();
             this.ItemSubform.get('extMobileNo').updateValueAndValidity();
@@ -1654,6 +1658,7 @@ export class SalesHospitalNewComponent implements OnInit {
             this.PatientName = contact.patientName;
             this.RegId = contact.regID;
             this.RegNo =  contact?.regNo;
+            this.OP_IP_Id = contact?.opipid
             this.ItemSubform.get('extMobileNo').clearValidators();
             this.ItemSubform.get('externalPatientName').clearValidators();
             this.ItemSubform.get('extMobileNo').updateValueAndValidity();
@@ -1670,17 +1675,22 @@ export class SalesHospitalNewComponent implements OnInit {
         }
         this._salesService.getDraftItemDetailsList(vdata).subscribe((response) => {
             this.tempDatasource.data = response.data as any;
-             if (this.tempDatasource.data.length >= 1) {
+            //  if (this.tempDatasource.data.length >= 1) {
+            //     this.tempDatasource.data.forEach((element) => {
+            //         this.DraftQty = element.qtyPerDay;
+            //         this.onAddDraftListTosale(element, this.DraftQty);
+            //     });
+            // }
+            if (this.tempDatasource.data.length >= 1) {
                 this.tempDatasource.data.forEach((element) => {
-                    this.DraftQty = element.qtyPerDay;
-                    this.onAddDraftListTosale(element, this.DraftQty);
+                    const draftQty = element.qtyPerDay; // use local variable
+                    this.onAddDraftListTosale(element, draftQty); // safe per call
                 });
             }
         });
     }
     onAddDraftListTosale(contact, DraftQty) {
-        console.log(contact)
-        this.Tempchargeslist = [];
+        console.log(contact) 
         this.QtyBalchk = 0;
 
         var m_data = {
@@ -1695,29 +1705,32 @@ export class SalesHospitalNewComponent implements OnInit {
             "exportType": "JSON",
             "columns": [{ "data": "string", "name": "string" }]
         };
-        this._salesService.getDraftBillItemBalQty(m_data).subscribe((draftdata) => {
-            this.Tempchargeslist = draftdata.data as any;
-            console.log(this.Tempchargeslist);
-            if (this.Tempchargeslist.length == 0) {
+        this._salesService.getDraftBillItemBalQty(m_data).subscribe((response) => {
+              const tempChargesList = response?.data || []; 
+                let qtyBalChk = 0;  
+            if (tempChargesList.length == 0) {
                 Swal.fire(contact.ItemId + ' : ' + 'Item Stock is Not Avilable:');
-            } else if (this.Tempchargeslist.length > 0) {
-                this.Tempchargeslist.forEach((element) => {
+            } else if (tempChargesList.length > 0) {
+                tempChargesList.forEach((element) => {
                     if (contact.itemId != element.itemId) {
-                        this.QtyBalchk = 0;
+                        qtyBalChk = 0;
                     }
-                    if (this.QtyBalchk != 1) {
+                    if (qtyBalChk != 1) {
                         if (DraftQty <= element.balanceQty) {
-                            this.QtyBalchk = 1;
+                            qtyBalChk = 1;
                             this.getFinalCalculation(element, DraftQty);
                         } else {
                             Swal.fire('Balance Qty is :', element.balanceQty);
-                            this.QtyBalchk = 0;
+                            qtyBalChk = 0;
                             Swal.fire('Balance Qty is Less than Selected Item Qty for Item :' + element.itemId + 'Balance Qty:', element.balanceQty);
                         }
                     }
                 });
             }
+             this.QtyBalchk = qtyBalChk 
         });
+
+        
     }
     vExpDate: any;
     getFinalCalculation(contact, DraftQty) {

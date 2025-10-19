@@ -241,25 +241,10 @@ export class NewDashboardComponent implements OnInit {
     };
     this.dashboardService.HomeDashboardAPI(payload).subscribe((res: any) => {
       let apiData = res && res.length ? res : {};
-
-      this.departmentVisits = [
-        { name: 'Medicine', value: res.find(d => d.name.toLowerCase() === 'Medicine'.toLowerCase())?.value || 0 },
-        { name: 'Gastrologist', value: res.find(d => d.name.toLowerCase() === 'Gastrologist'.toLowerCase())?.value || 0 },
-        { name: 'Pathologist', value: res.find(d => d.name.toLowerCase() === 'pathologist'.toLowerCase())?.value || 0 },
-        { name: 'Physician', value: res.find(d => d.name.toLowerCase() === 'Physician'.toLowerCase())?.value || 0 },
-        { name: 'Plastic Surgeon', value: res.find(d => d.name.toLowerCase() === 'plastic surgeon'.toLowerCase())?.value || 0 },
-        { name: 'Surgeon', value: res.find(d => d.name.toLowerCase() === 'surgeon'.toLowerCase())?.value || 0 },
-      ];
+      return apiData;
     
     }, err => {
-      this.departmentVisits = [
-        { name: 'Medicine', value: 0 },
-        { name: 'Gastrologist', value: 0 },
-        { name: 'Pathologist', value: 0 },
-        { name: 'Physician', value: 0 },
-        { name: 'Plastic', value: 0 },
-        { name: 'Surgeon', value: 0 },
-      ];
+      return []
   })
   }
   getMatIcon(icon: string): string {
@@ -445,32 +430,32 @@ export class NewDashboardComponent implements OnInit {
   }
 
   // Chart.js doughnut chart with custom plugins
-  getPatientOverviewChart() {
-    const centerTextPlugin = {
-      id: 'centerText',
-      beforeDraw: (chart: any) => {
-        const { width, height, ctx } = chart;
-        ctx.restore();
+  async getPatientOverviewChart() {
+    // const centerTextPlugin = {
+    //   id: 'centerText',
+    //   beforeDraw: (chart: any) => {
+    //     const { width, height, ctx } = chart;
+    //     ctx.restore();
         
-        // Main percentage text
-        const percentText = `${this.registrationPercent}%`;
-        ctx.font = 'bold 36px Inter, sans-serif';
-        ctx.fillStyle = '#2c3e50';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        const percentX = width / 2;
-        const percentY = height / 2 - 8;
-        ctx.fillText(percentText, percentX, percentY);
+    //     // Main percentage text
+    //     const percentText = `${this.registrationPercent}%`;
+    //     ctx.font = 'bold 36px Inter, sans-serif';
+    //     ctx.fillStyle = '#2c3e50';
+    //     ctx.textAlign = 'center';
+    //     ctx.textBaseline = 'middle';
+    //     const percentX = width / 2;
+    //     const percentY = height / 2 - 8;
+    //     ctx.fillText(percentText, percentX, percentY);
         
-        // Subtitle text
-        ctx.font = '12px Inter, sans-serif';
-        ctx.fillStyle = '#6c757d';
-        const subtitleY = height / 2 + 20;
-        ctx.fillText('New Registrations', percentX, subtitleY);
+    //     // Subtitle text
+    //     ctx.font = '12px Inter, sans-serif';
+    //     ctx.fillStyle = '#6c757d';
+    //     const subtitleY = height / 2 + 20;
+    //     ctx.fillText('New Registrations', percentX, subtitleY);
         
-        ctx.save();
-      }
-    };
+    //     ctx.save();
+    //   }
+    // };
 
     const dataLabelsPlugin = {
       id: 'dataLabels',
@@ -528,81 +513,104 @@ export class NewDashboardComponent implements OnInit {
       }
     };
 
-    const chart = new Chart('PatientOverviewDoughnut', {
-      type: 'doughnut',
-      data: {
-        labels: ['New Registration', 'Old Registration', 'Referral', 'Other'],
-        datasets: [
-          {
-            backgroundColor: ['#ff5a8a', '#f6c542', '#3ecf8e', '#5ac8fa'],
-            data: [
-              this.registrationChartData[0].value,
-              this.registrationChartData[1].value,
-              this.registrationChartData[2].value,
-              this.registrationChartData[3].value
-            ]
-          }
-        ]
-      },
-      options: { 
-        responsive: true,
-        maintainAspectRatio: true,
-        aspectRatio: 1.4,
-        plugins: { 
-          tooltip: { enabled: false }, // Disable default tooltip
-          legend: { display: false }
+    const payload = {
+      "searchFields": [
+        {
+          "fieldName": "UnitId",
+          "fieldValue": "0",
+          "opType": "Equals"
         },
-        cutout: 0,
-        onHover: (event: any, elements: any) => {
-          console.log('Patient Chart Hover event triggered:', elements.length);
-          if (elements.length > 0) {
-            const element = elements[0];
-            const index = element.index;
-            const dataset = chart.data.datasets[element.datasetIndex];
-            const data = {
-              name: this.registrationChartData[index].name,
-              value: this.registrationChartData[index].value,
-              percentage: Math.round((this.registrationChartData[index].value / this.totalRegistrations) * 100),
-              color: dataset.backgroundColor[index]
-            };
-            console.log('Showing Patient popover for:', data);
-            this.showSegmentPopover(event, data);
-          } else {
-            console.log('Hiding Patient popover');
-            this.hideSegmentPopover();
-          }
+        {
+          "fieldName": "FromDate",
+          "fieldValue": "10/01/2025",
+          "opType": "Equals"
+        },
+       {
+          "fieldName": "ToDate",
+          "fieldValue": "10/11/2025",
+          "opType": "Equals"
         }
-      },
-      plugins: [dataLabelsPlugin]
-    });
+      ],
+      "mode": "DashRegistrationAgeWiseCount"
+    };
+    this.dashboardService.HomeDashboardAPI(payload).subscribe((res: any) => {
+      let apiData = res && res.length ? res : {};
+      console.log("apiDataapiDataapiData",apiData)
+      const chart = new Chart('PatientOverviewDoughnut', {
+        type: 'doughnut',
+        data: {
+          labels: apiData?.map(data => data.name) || [],
+          datasets: [
+            {
+              backgroundColor: ['#ff5a8a', '#f6c542', '#3ecf8e', '#5ac8fa', '#a283f6'],
+              data: apiData?.map(data => data.value) ||[]
+            }
+          ]
+        },
+        options: { 
+          responsive: true,
+          maintainAspectRatio: true,
+          aspectRatio: 1.4,
+          plugins: { 
+            tooltip: { enabled: true }, // Disable default tooltip
+            legend: { display: false }
+          },
+          cutout: 0,
+          // onHover: (event: any, elements: any) => {
+          //   console.log('Patient Chart Hover event triggered:', elements.length);
+          //   if (elements.length > 0) {
+          //     const element = elements[0];
+          //     const index = element.index;
+          //     const dataset = chart.data.datasets[element.datasetIndex];
+          //     const data = {
+          //       name: this.registrationChartData[index].name,
+          //       value: this.registrationChartData[index].value,
+          //       percentage: Math.round((this.registrationChartData[index].value / this.totalRegistrations) * 100),
+          //       color: dataset.backgroundColor[index]
+          //     };
+          //     console.log('Showing Patient popover for:', data);
+          //     this.showSegmentPopover(event, data);
+          //   } else {
+          //     console.log('Hiding Patient popover');
+          //     this.hideSegmentPopover();
+          //   }
+          // }
+        },
+        plugins: [dataLabelsPlugin]
+      });
+      return chart;
+
+    }, err => {
+      return []
+  })
+   
 
     // Add additional event listeners
-    chart.canvas.addEventListener('mousemove', (event: MouseEvent) => {
-      const elements = chart.getElementsAtEventForMode(event, 'nearest', { intersect: true }, true);
-      console.log('Canvas mousemove - elements:', elements.length);
-      if (elements.length > 0) {
-        const element = elements[0];
-        const index = element.index;
-        const dataset = chart.data.datasets[element.datasetIndex];
-        const data = {
-          name: this.registrationChartData[index].name,
-          value: this.registrationChartData[index].value,
-          percentage: Math.round((this.registrationChartData[index].value / this.totalRegistrations) * 100),
-          color: dataset.backgroundColor[index]
-        };
-        console.log('Canvas mousemove - showing popover for:', data);
-        this.showSegmentPopover(event, data);
-      } else {
-        this.hideSegmentPopover();
-      }
-    });
+    // chart.canvas.addEventListener('mousemove', (event: MouseEvent) => {
+    //   const elements = chart.getElementsAtEventForMode(event, 'nearest', { intersect: true }, true);
+    //   console.log('Canvas mousemove - elements:', elements.length);
+    //   if (elements.length > 0) {
+    //     const element = elements[0];
+    //     const index = element.index;
+    //     const dataset = chart.data.datasets[element.datasetIndex];
+    //     const data = {
+    //       name: this.registrationChartData[index].name,
+    //       value: this.registrationChartData[index].value,
+    //       percentage: Math.round((this.registrationChartData[index].value / this.totalRegistrations) * 100),
+    //       color: dataset.backgroundColor[index]
+    //     };
+    //     console.log('Canvas mousemove - showing popover for:', data);
+    //     this.showSegmentPopover(event, data);
+    //   } else {
+    //     this.hideSegmentPopover();
+    //   }
+    // });
 
-    chart.canvas.addEventListener('mouseleave', () => {
-      console.log('Canvas mouseleave - hiding popover');
-      this.hideSegmentPopover();
-    });
+    // chart.canvas.addEventListener('mouseleave', () => {
+    //   console.log('Canvas mouseleave - hiding popover');
+    //   this.hideSegmentPopover();
+    // });
 
-    return chart;
   }
 
   // OPD Overview Chart with custom plugins
