@@ -205,5 +205,27 @@ export class DashboardService {
   public HomeDashboardAPI(params: any) {
     return this._httpClient.PostData("Common", params);
   }
+
+  public getBedWiseList(wardId: number) {
+    const params = {
+      "searchFields": [
+        {
+          "fieldName": "WardId",
+          "fieldValue": wardId.toString(),
+          "opType": "Equals"
+        }
+      ],
+      "mode": "DashBedWiseList"
+    };
+    return this._httpClient.PostData("Common", params);
+  }
+
+  public getWardWiseBedData() {
+    const params = {
+      "searchFields": [],
+      "mode": "DashWardWiseBed"
+    };
+    return this._httpClient.PostData("Common", params);
+  }
 }
 
