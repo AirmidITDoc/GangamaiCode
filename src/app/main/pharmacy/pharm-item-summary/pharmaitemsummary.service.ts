@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FormGroup, UntypedFormBuilder } from '@angular/forms';
+import { ApiCaller } from 'app/core/services/apiCaller';
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +15,7 @@ export class PharmaitemsummaryService {
 
   constructor(
     public _httpClient: HttpClient,
+    public _httpClient1: ApiCaller,
     private _formBuilder: UntypedFormBuilder
   ) { 
     this.userFormGroup = this.createUserForm();
@@ -53,22 +55,17 @@ export class PharmaitemsummaryService {
     return this._httpClient.post("Generic/GetByProc?procName=m_PharSales_NonMovingItemList",Param);
   }
   public getItemWithoutBatchexpwiseList(Param){
-    return this._httpClient.post("Generic/GetByProc?procName=m_PharSales_NonMovingItemListWithoutBatchNo",Param);
+    return this._httpClient.post("PharmacyItemSummary/NonMovingItemWithoutBatchNoList",Param);
   }
   public getItemexpdatewise(Param){
     return this._httpClient.post("Generic/GetByProc?procName=m_Phar_ItemExpReportMonthWise",Param)
   }
   public getLoggedStoreList(Param){
     return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StoreNameForLogedUser_Conditional",Param);
-  }
-
-
+  } 
   public getNonMovingItemview(NonMovingDay,StoreId ){
     return this._httpClient.get("InventoryTransaction/view-NonMovingItem?NonMovingDay=" + NonMovingDay + "&StoreId=" +StoreId );
-  }
-
-
-
+  } 
   public getExpiryItemview(ExpMonth,ExpYear,StoreID){
     return this._httpClient.get("InventoryTransaction/view-ExpiryItemList?ExpMonth=" + ExpMonth +"&ExpYear="+ExpYear+ "&StoreID=" +StoreID );
   }

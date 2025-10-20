@@ -16,6 +16,7 @@ import { RegInsert } from '../../registration/registration.component';
 import { AppointmentBillService } from './appointment-bill.service';
 import { PacakgeList } from 'app/main/setup/billing/service-master/editpackage/editpackage.component';
 import { PackageDetailsComponent } from './package-details/package-details.component';
+import { ConfigService } from 'app/core/services/config.service';
 
 @Component({
   selector: 'app-appointment-billing',
@@ -100,7 +101,8 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
     public toastr: ToastrService,
     private _FormvalidationserviceService: FormvalidationserviceService,
     private formBuilder: FormBuilder,
-    private toastrService: ToastrService,
+    private toastrService: ToastrService, 
+            public _ConfigService: ConfigService,
     @Optional() public dialogRef: MatDialogRef<AppointmentBillingComponent>
   ) { };
 
@@ -1056,6 +1058,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
       });
 
       console.log("form values", this.OpBillForm.value)
+      const [ThermalPrint, ThermalPrintValue] = this._ConfigService.configParams.ThermalPrint.split(":"); 
 
       if (this.OPFooterForm.get('paymentType').value == 'PayOption') {
         let PatientHeaderObj = {};
@@ -1087,9 +1090,13 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
             this.OpBillForm.get('balanceAmt').setValue(result.BillBalanceAmount ||0)
             this.OpBillForm.get('payments').setValue(result.submitDataPay.ipPaymentInsert)
             console.log(this.OpBillForm.value)
-            this._AppointmentlistService.InsertOPBilling(this.OpBillForm.value).subscribe(response => {
-              this.viewgetOPBillReportPdf(response)
-              this.resetform();
+            this._AppointmentlistService.InsertOPBilling(this.OpBillForm.value).subscribe(response => { 
+                     if (ThermalPrint != 1) {
+                          this.viewgetOPBillReportPdf(response)
+                    } else {
+                          this.viewgetOPBillThermalReportPdf(response)
+                    } 
+               this.resetform();
               this._matDialog.closeAll();
               this.savebtn = true
             });
@@ -1104,7 +1111,11 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
         this.OpBillForm.get('payments.paymentTime')?.setValue(this.dateTimeObj.time)
         console.log(this.OpBillForm.value)
         this._AppointmentlistService.InsertOPBilling(this.OpBillForm.value).subscribe(response => {
-          this.viewgetOPBillReportPdf(response)
+                     if (ThermalPrint != 1) {
+                          this.viewgetOPBillReportPdf(response)
+                    } else {
+                          this.viewgetOPBillThermalReportPdf(response)
+                    } 
           this._matDialog.closeAll();
           this.savebtn = true
           this.resetform();
@@ -1116,7 +1127,11 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
         this.OpBillForm.removeControl('payments')
         console.log(this.OpBillForm.value)
         this._AppointmentlistService.InsertOPBillingCredit(this.OpBillForm.value).subscribe(response => {
-          this.viewgetCreditOPBillReportPdf(response)
+                    if (ThermalPrint != 1) {
+                          this.viewgetOPBillReportPdf(response)
+                    } else {
+                          this.viewgetOPBillThermalReportPdf(response)
+                    } 
           this._matDialog.closeAll();
           this.savebtn = true
           if (response)
@@ -1171,6 +1186,9 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
   }
   viewgetOPBillReportPdf(element) {
     this.commonService.Onprint("BillNo", element, "OpBillReceipt");
+  }
+    viewgetOPBillThermalReportPdf(element) {
+    this.commonService.Onprint("BillNo", element, "OpBillReceiptT");
   }
   selectChangeConcession(event) {
     this.ConcessionId = event.value

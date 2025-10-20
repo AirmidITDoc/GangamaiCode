@@ -141,7 +141,8 @@ export class BrowsSalesBillComponent implements OnInit {
   @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
   @ViewChild('isPrintTemplate') isPrintTemplate!: TemplateRef<any>; 
   @ViewChild('patientTypePaidType') patientTypePaidType!: TemplateRef<any>;
-  @ViewChild('patientPurBill') patientPurBill!: TemplateRef<any>;
+  @ViewChild('patientPurBill') patientPurBill!: TemplateRef<any>; 
+  @ViewChild('editablePatientName') editablePatientName!: TemplateRef<any>;
 
   //Sales Return
   @ViewChild('patientTypetempReturn') patientTypetempReturn!: TemplateRef<any>;
@@ -157,6 +158,7 @@ export class BrowsSalesBillComponent implements OnInit {
     this.gridConfig.columnsList.find(col => col.key === 'isPrint')!.template = this.isPrintTemplate;
     this.gridConfig.columnsList.find(col => col.key === 'paidType')!.template = this.patientTypePaidType;
     this.gridConfig.columnsList.find(col => col.key === 'isPurBill')!.template = this.patientPurBill;
+    this.gridConfig.columnsList.find(col => col.key === 'patientName')!.template = this.editablePatientName;
     //Sales Return
     this.gridConfig2.columnsList.find(col => col.key === 'Status')!.template = this.patientTypetempReturn;
     this.gridConfig2.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplateRetrun;
@@ -186,7 +188,8 @@ export class BrowsSalesBillComponent implements OnInit {
     { heading: "Sales No", key: "salesNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
     { heading: "UHID No", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
 
-    { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+    { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 200, type: gridColumnTypes.template,
+       template: this.editablePatientName},
     { heading: "IPD No", key: "ipno", sort: true, align: 'left', emptySign: 'NA', width: 130 },
 
     { heading: "Total Amt", key: "totalAmount", sort: true, align: 'left', emptySign: 'NA', width: 150, type: gridColumnTypes.amount },
@@ -205,7 +208,7 @@ export class BrowsSalesBillComponent implements OnInit {
     // },
 
     {
-      heading: "Action", key: "action", align: "right", width: 100, sticky: true, type: gridColumnTypes.template,
+      heading: "Action", key: "action", align: "right", width: 150, sticky: true, type: gridColumnTypes.template,
       template: this.actionButtonTemplate  // Assign ng-template to the column
     }
   ]
@@ -326,7 +329,27 @@ export class BrowsSalesBillComponent implements OnInit {
 
     this.onChangeFirst();
   }
-
+editPatientName(row: any) {
+  row.originalPatientName = row.patientName;  // backup original in case of cancel
+  row.isEditing = true;
+} 
+savePatientName(row: any) {
+  row.isEditing = false;
+  var vadat = { 
+  extMobileNo: row?.extMobileNo,
+  externalPatientName: row?.patientName,
+  extAddress:row?.extAddress,
+  doctorName: row?.doctorName,
+  salesId:row?.salesId,
+  }
+  this._BrowsSalesBillService.UpdateExtpatientName(vadat).subscribe(Response=>{
+  this.grid1.bindGridData();
+  })
+} 
+cancelEdit(row: any) {
+  row.patientName = row.originalPatientName;
+  row.isEditing = false;
+}
 
   ///tab 2 return
   //Sales return header list columns
@@ -376,13 +399,10 @@ export class BrowsSalesBillComponent implements OnInit {
       { fieldName: "OP_IP_Type", fieldValue: "0", opType: OperatorComparer.Equals }
     ],
     row: 25
-  }
-
+  } 
 
   ///tab 3 return
-  //patient  list columns
-
-
+  //patient  list columns 
   PatientlistColumns = [
     { heading: "", key: "Status", sort: true, align: 'left', type: gridColumnTypes.template, width: 50, template: this.isPatientTemplate },
 
@@ -420,19 +440,10 @@ export class BrowsSalesBillComponent implements OnInit {
       { fieldName: "IPNo", fieldValue: "0", opType: OperatorComparer.Equals },
     ],
     row: 25
-  }
-
-
-
-
-  isChecked: boolean = false;
-
-
+  } 
+  isChecked: boolean = false; 
   @ViewChild(MatSort) sort: MatSort;
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-
-
-
+  @ViewChild(MatPaginator) paginator: MatPaginator; 
 
   //Sales Retrun list 
   onChangeFirst_Retrun() {
@@ -566,7 +577,7 @@ export class BrowsSalesBillComponent implements OnInit {
       ]
 
     };
-  }
+  } 
 
   IsDischarge: any;
   onChangeIsactive(SiderOption) {
@@ -583,20 +594,12 @@ export class BrowsSalesBillComponent implements OnInit {
         this._AdmissionService.myFilterform.get('end').setValue('')
       //this.getAdmittedPatientList();
     }
-  }
-
-
-
-
+  } 
   dateTimeObj: any;
   getDateTime(dateTimeObj) {
     // console.log('dateTimeObj==', dateTimeObj);
     this.dateTimeObj = dateTimeObj;
-  }
-
-
-
-
+  } 
   // OnPayment(contact) {
   //   const currentDate = new Date();
   //   const datePipe = new DatePipe('en-US');
@@ -828,14 +831,11 @@ export class BrowsSalesBillComponent implements OnInit {
     });
   }
 
-  getPrint(el) {
-    //
-
+  getPrint(el) { 
     var D_data = {
       "SalesID": el.SalesId,// 
       "OP_IP_Type": el.OP_IP_Type
-    }
-
+    } 
     let printContents;
     this.subscriptionArr.push(
       this._BrowsSalesService.getSalesPrint(D_data).subscribe(res => {
@@ -845,20 +845,14 @@ export class BrowsSalesBillComponent implements OnInit {
         this.getTemplate();
       })
     );
-  }
-
-
+  } 
   @HostListener('document:keydown', ['$event']) onKeydownHandler(event: KeyboardEvent) {
 
     if (event.keyCode === 114) {
       // this. selectRow(event,this.dssaleList1.data);
       this.getWhatsappshareSales(this.rowid);
     }
-  }
-
-
-
-
+  } 
   // getPrint2(el) {
   //   //
   //   if (el.PaidType == 'Credit' && el.IsRefundFlag == false) {
@@ -1018,12 +1012,7 @@ export class BrowsSalesBillComponent implements OnInit {
         });
       });
     }, 100);
-  }
-
-
-
-
-
+  } 
   // viewSalesPdf(el) {
   //   // 
   //   this.sIsLoading = 'loading-data';

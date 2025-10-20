@@ -306,14 +306,19 @@ export class InterimBillComponent implements OnInit {
       this.dataSource.data.forEach(item => {
         this.BillDetailsArray.push(this.createBillDetails(item as ChargesList));
       });
-
+      const [InterimA5_Print, InterimA5_Value] = this._ConfigService.configParams.InterimBillA5Print.split(":");  
       if (this.InterimFooterForm.get('paymode').value == 'cashpay') {
         this.IPInterimBillForm.get('payments.cashPayAmount')?.setValue(this.InterimFooterForm.get('NetpayAmount')?.value)
         this.IPInterimBillForm.get('payments.paymentDate').setValue(formattedDate)
         this.IPInterimBillForm.get('payments.paymentTime').setValue(FormattedDateTime)
         console.log("form values", this.IPInterimBillForm.value)
         this._IpSearchListService.InsertInterim(this.IPInterimBillForm.value).subscribe(response => {
-          this.viewgetInterimBillReportPdf(response);
+            if (InterimA5_Print != 1) {
+                        this.viewgetInterimBillReportPdf(response);
+                    } else {
+                          this.viewgetInterim_A5ReportPdf(response)
+                    } 
+       
           this.getWhatsappshareIPInterimBill(response, this.selectedAdvanceObj.mobileNo);
           this.onClose()
         });
@@ -450,6 +455,9 @@ export class InterimBillComponent implements OnInit {
   viewgetInterimBillReportPdf(billNo) {
     this.commonService.Onprint("BillNo", billNo, "IPDInterimBill");
   }  
+    viewgetInterim_A5ReportPdf(billNo) {
+    this.commonService.Onprint("BillNo", billNo, "IPDInterimBillA5");
+  }
   keyPressAlphanumeric(event) {
     var inp = String.fromCharCode(event.keyCode);
     if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {

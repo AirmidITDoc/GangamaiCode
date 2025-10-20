@@ -132,7 +132,7 @@
 
         <ng-template #patientNameWithBadgeTemplate let-element>
             <span [matBadge]="element.tokenNo" matBadgeColor="warn" matBadgePosition="after" matBadgeOverlap="false"
-                matBadgeSize="small" [matBadgeHidden]="!element.tokenNo" matTooltip="Token No: {{ element.tokenNo }}"
+                matBadgeSize="small" [matBadgeHidden]="!element.tokenNo" matTooltip="{{ element.patientName }}-Token No: {{ element.tokenNo }}"
                 matTooltipPosition="above" style="font-size: 14px; line-height: 18px; position: relative; top: 4px;">
                 {{ element.patientName }}
             </span>

@@ -192,4 +192,8 @@ public getSalesDetail_Patientwise(FromDate,ToDate,SalesFromNumber,SalesToNumber,
     public getReportView(Param) {
     return this._httpClient1.PostData("Report/ViewReport", Param);
   }
+
+    public UpdateExtpatientName(Param) {
+    return this._httpClient1.PostData("Sales/ExtpatientDetUpdate", Param);
+  }
 }

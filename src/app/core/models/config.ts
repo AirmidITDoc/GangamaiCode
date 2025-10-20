@@ -104,6 +104,8 @@ IPNoEmg:any;
 IPdayCareNo:any;
 OPDDefaultDoctor:any;
 OPDDefaultDepartment:any;
+ThermalPrint:any;
+InterimBillA5Print:any;
  /**
      * Constructor
      *
@@ -183,8 +185,9 @@ OPDDefaultDepartment:any;
         this.IsDischargeInitiateflow =ConfigSettingParams.IsDischargeInitiateflow;
         this.IsDischargeTemplate=ConfigSettingParams.IsDischargeTemplate; 
         this.SystemLogOutTime=ConfigSettingParams.SystemLogOutTime; 
-        this.IPDraftPrintA4toA5=ConfigSettingParams.IPDraftPrintA4toA5;
-            
+        this.IPDraftPrintA4toA5=ConfigSettingParams.IPDraftPrintA4toA5; 
+        this.ThermalPrint=ConfigSettingParams.ThermalPrint; 
+        this.InterimBillA5Print=ConfigSettingParams.InterimBillA5Print;
 this.OPDNo=ConfigSettingParams.OPDNo;
 this.IsOPBillPrint=ConfigSettingParams.IsOPBillPrint;
 this.PrintAfterRegistration=ConfigSettingParams.PrintAfterRegistration;

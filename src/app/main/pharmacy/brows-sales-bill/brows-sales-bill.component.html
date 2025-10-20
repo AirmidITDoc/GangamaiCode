@@ -82,10 +82,15 @@
                     </ng-template>
 
                     <ng-template #actionButtonTemplate let-element>
-                        <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="4px">
-
+                        <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="4px"> 
+                            <button mat-icon-button matTooltip="Edit" (click)="editPatientName(element)" *ngIf="!element.isEditing">
+                                <mat-icon>edit</mat-icon>
+                            </button> 
+                           <button mat-icon-button matTooltip="Save" (click)="savePatientName(element)" *ngIf="element.isEditing">
+                                <mat-icon  class="active-icon green-600 s-16" matTooltip="Save">check</mat-icon>
+                            </button>
                             <button mat-icon-button matTooltip="Print2" (click)="viewgetSalesBillReportPdf(element)">
-                                <mat-icon>print</mat-icon>
+                                <mat-icon >print</mat-icon>
                             </button>
                             <button mat-icon-button matTooltip="View As Pdf" (click)="viewSalesPdf(element)">
                                 <mat-icon>visibility</mat-icon>
@@ -95,6 +100,20 @@
                                 <img width="100" height="20px" src="assets/images/logos/WhatsApp.png">
                             </button>
                         </div>
+                    </ng-template>
+
+                    <ng-template #editablePatientName let-row let-rowIndex="rowIndex">
+                        <div *ngIf="!row.isEditing">
+                            {{ row.patientName || 'NA' }} 
+                                <!-- <mat-icon (click)="editPatientName(row)" matTooltip="Edit" >edit</mat-icon>  -->
+                        </div>
+                        <div *ngIf="row.isEditing">
+                              <mat-form-field floatLabel="never">
+                              <input matInput [(ngModel)]="row.patientName" type="text"  placeholder="Patient Name">
+                            </mat-form-field> 
+                              <!-- <mat-icon  (click)="savePatientName(row)" class="active-icon green-600 s-16" matTooltip="Save" >check</mat-icon> -->
+                           <!-- <mat-icon (click)="cancelEdit(row)" matTooltip="Close" >cancel</mat-icon>  -->
+                        </div>  
                     </ng-template>
 
                     <airmid-table [gridConfig]="gridConfig" class="content" (onSelectRow)="getsalesdetaillist($event)"
