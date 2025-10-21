@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FormGroup, UntypedFormBuilder } from '@angular/forms';
+import { ApiCaller } from 'app/core/services/apiCaller';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,7 @@ export class CanteenmanagementService {
 
   constructor(
    public  _frombuilder:UntypedFormBuilder,
-   public  _httpClient:HttpClient
+   public  _httpClient:ApiCaller
   )
    {this.userFormGroup = this.createUseFrom(),
   this.BillListFrom =this.createBillListFrom()}
@@ -19,17 +20,19 @@ export class CanteenmanagementService {
    createUseFrom() {
     return this._frombuilder.group({
       Type:['1'],
-      Code:'',
+      Code:0,
       ItemID:'',
       CustomerName:'',
       Start:[(new Date())],
-      TotalAoumt:'',
+      TotalAmount:'',
       start: [new Date().toISOString()],
       end: [new Date().toISOString()],
       DiscAmt:'',
       Discount:'',
       Status:['1'],
-
+     roomId:0,
+     cashCounterId:0,
+     
     })
    }
    createBillListFrom(){
@@ -40,15 +43,19 @@ export class CanteenmanagementService {
     })
    }
    public getItemTable1List(Param){
-    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_CanteenItemList_by_Name",Param);
+    return this._httpClient.GetData("CanteenRequest/GetItemListforCanteen?ItemName="+Param);
   }
-  public getBillList(Param){
-    return this._httpClient.post("Generic/GetByProc?procName=rtrv_CanteenBillList",Param);
-  }
-  public getBillDetList(Param){
-    return this._httpClient.post("Generic/GetByProc?procName=RptCateenRepPrint",Param);
-  }
-  public getNursingBillList(Param){
-    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_CanteenRequestListFromWard",Param);
-  }
+
+      public canteenrequestSave(employee) {
+    return this._httpClient.PostData("CanteenRequest/Insert", employee);
+    }
+  // public getBillList(Param){
+  //   return this._httpClient.post("Generic/GetByProc?procName=rtrv_CanteenBillList",Param);
+  // }
+  // public getBillDetList(Param){
+  //   return this._httpClient.post("Generic/GetByProc?procName=RptCateenRepPrint",Param);
+  // }
+  // public getNursingBillList(Param){
+  //   return this._httpClient.post("Generic/GetByProc?procName=Rtrv_CanteenRequestListFromWard",Param);
+  // }
 }

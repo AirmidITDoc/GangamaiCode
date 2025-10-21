@@ -65,7 +65,10 @@ public getDateTimeChangeSalesId(m_data) {
   return this._httpClient.PutData("paymentpharmacy/UpdatePharmSalesDate",m_data);
 }
 
-public getDateTimeChangePaymentId(m_data) {
+public PaymentDateTimeChange(m_data) {
+  return this._httpClient.PutData("paymentpharmacy/UpdatePharmSalesPaymentDate",m_data);
+}
+public ChangeBillPaymentdate(m_data) {
   return this._httpClient.PutData("paymentpharmacy/UpdatePharmSalesPaymentDate",m_data);
 }
 }

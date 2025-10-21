@@ -1,5 +1,5 @@
 <div class="modal-wrapper grid-container">
-   
+
     <div class="modal-header accent">
         <div class="modal-header-content">
             <div class="modal-header-title">
@@ -7,7 +7,7 @@
             </div>
             <div class="modal-header-right">
                 <div class="comman-date-container">
-                   
+
                     <div class="close-icon">
                         <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
                             matTooltip="Close">
@@ -28,18 +28,54 @@
 
                             <div fxLayout="row" fxLayout.sm="column" class="gap-16" fxLayoutAlign="start center">
                                 <div class="radio-container">
-                                    <mat-radio-group formControlName="opIpType" fxFlex="5%">
+                                    <!-- <mat-radio-group formControlName="opIpType" fxFlex="5%">
                                         <mat-radio-button value="1">IP</mat-radio-button>
+                                    </mat-radio-group> -->
+
+
+                                    <mat-radio-group formControlName="opIpType" name="Type"
+                                        (change)="customertype($event)" style="padding: 10px 0px 10px 10px;">
+                                        <mat-radio-button style="margin-right: 5px;"
+                                            value="1">Patient</mat-radio-button>
+                                        <mat-radio-button style="margin-right: 5px;"
+                                            value="0">Employee</mat-radio-button>
                                     </mat-radio-group>
+
                                 </div>
                                 <div class="input-container gap-8" fxFlex="50%">
-                                    <airmid-autocomplete lbl="RgId" label="Search Reg No / Patient Name / Mobile No"
-                                        [formGroup]="CanteenInsertForm" formControlName="RegID"
-                                        placeholderText="IP-RegNo/FirstName/LastName"
+                                  
+
+                                    <!-- <airmid-autocomplete lbl="RegID" [formGroup]="CanteenInsertForm" *ngIf="!custflag"
+                                        label="Search UHID / Patient Name / Mobile No(DC)" formControlName="RegID"
+                                        fxFlex placeholderText="UHID / First Name / Last Name / Mobile No(DC)"
                                         ApiUrl="Admission/search-patient?Keyword="
-                                        (selectionChange)="getSelectedObj($event)" ValueField="admissionID"
+                                        (selectionChange)="getSelectedObj($event)" TextField="formattedText"
+                                        ValueField="regId">
+                                    </airmid-autocomplete> -->
+
+                                    <airmid-autocomplete lbl="RgId" [formGroup]="CanteenInsertForm"
+                                        formControlName="RegID" placeholderText="IP-RegNo/FirstName/LastName"
+                                        *ngIf="!custflag" label="Search UHID / Patient Name / Mobile No"
+                                        ApiUrl="Admission/search-patient?Keyword="
+                                        (selectionChange)="getSelectedObjIP($event)" ValueField="admissionID"
                                         TextField="formattedText">
                                     </airmid-autocomplete>
+
+
+                                    <!-- (keydown)="onEnterCustomer($event)" -->
+                                    <mat-form-field appearance="outline" fxFlex="28%" *ngIf="custflag">
+                                        <mat-label>Customer Name</mat-label>
+                                        <input matInput name="CustomerName" #CustomerName
+                                            formControlName="CustomerName">
+                                    </mat-form-field>&nbsp;&nbsp;&nbsp;
+
+                                    <airmid-dropdown label="Ward Name" formControlName="wardId" *ngIf="!custflag"
+                                        fxFlex="38%" [formGroup]="CanteenInsertForm"
+                                        [validations]="getValidationMessages().WardName"
+                                        [mode]="autocompleteModewardName">
+                                    </airmid-dropdown>
+
+
                                 </div>
                             </div>
 
@@ -61,7 +97,8 @@
                                                             <span class="patient-col-key">UHID No
                                                             </span>
                                                             <span>:</span>
-                                                            <span class="patient-col-value">{{registerObj?.regNo}}</span>
+                                                            <span
+                                                                class="patient-col-value">{{registerObj?.regNo}}</span>
                                                         </div>
                                                         <div class="patient-col">
                                                             <span class="patient-col-key">Patient Name
@@ -69,7 +106,8 @@
                                                             <span>:</span>
                                                             <span class="patient-col-value">
                                                                 {{ (registerObj?.firstName || '') + ' ' +
-                                                                (registerObj?.middleName || '') + ' ' + (registerObj?.lastName
+                                                                (registerObj?.middleName || '') + ' ' +
+                                                                (registerObj?.lastName
                                                                 || '')
                                                                 }}
                                                             </span>
@@ -77,12 +115,14 @@
                                                         <div class="patient-col">
                                                             <span class="patient-col-key">Doctor Name</span>
                                                             <span>:</span>
-                                                            <span class="patient-col-value">{{registerObj?.doctorName}}</span>
+                                                            <span
+                                                                class="patient-col-value">{{registerObj?.doctorName}}</span>
                                                         </div>
                                                         <div class="patient-col">
                                                             <span class="patient-col-key">Department</span>
                                                             <span>:</span>
-                                                            <span class="patient-col-value">{{registerObj?.departmentName}}</span>
+                                                            <span
+                                                                class="patient-col-value">{{registerObj?.departmentName}}</span>
                                                         </div>
                                                     </div>
                                                     <div fxLayout="column" fxLayoutGap="6px">
@@ -90,13 +130,15 @@
                                                         <div class="patient-col">
                                                             <span class="patient-col-key">DOA | Time</span>
                                                             <span>:</span>
-                                                            <span class="patient-col-value">{{registerObj?.admissionDate |
+                                                            <span class="patient-col-value">{{registerObj?.admissionDate
+                                                                |
                                                                 date:'dd/MM/YYYY'}}</span>
                                                         </div>
                                                         <div class="patient-col">
                                                             <span class="patient-col-key">IPD No</span>
                                                             <span>:</span>
-                                                            <span class="patient-col-value">{{registerObj?.ipdNo}}</span>
+                                                            <span
+                                                                class="patient-col-value">{{registerObj?.ipdNo}}</span>
                                                         </div>
                                                         <div class="patient-col">
                                                             <span class="patient-col-key">Age | Sex
@@ -110,7 +152,8 @@
                                                             <span class="patient-col-key">Ref-Doctor Name
                                                             </span>
                                                             <span>:</span>
-                                                            <span class="patient-col-value">{{registerObj?.refDocName}}</span>
+                                                            <span
+                                                                class="patient-col-value">{{registerObj?.refDocName}}</span>
                                                         </div>
 
                                                     </div>
@@ -126,13 +169,15 @@
                                                             <span class="patient-col-key">Patient Type
                                                             </span>
                                                             <span>:</span>
-                                                            <span class="patient-col-value">{{registerObj?.patientType}}</span>
+                                                            <span
+                                                                class="patient-col-value">{{registerObj?.patientType}}</span>
                                                         </div>
                                                         <div class="patient-col">
                                                             <span class="patient-col-key">Tarrif Name
                                                             </span>
                                                             <span>:</span>
-                                                            <span class="patient-col-value">{{registerObj?.tariffName}}</span>
+                                                            <span
+                                                                class="patient-col-value">{{registerObj?.tariffName}}</span>
                                                         </div>
                                                         <div class="patient-col">
                                                             <span class="patient-col-key">Company Name</span>
@@ -149,16 +194,10 @@
                             </mat-card>
                         </div>
                         <mat-card style="padding: 6px;">
-                            <div class="modal-card-container">
+                            <!-- <div class="modal-card-container">
 
                                 <div fxLayout="row wrap" fxLayoutGap="12px grid">
-                                    <!-- <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <airmid-dropdown label="Select Store" formControlName="StoreId"
-                                            [formGroup]="CanteenInsertForm" [readonly]="true"
-                                            [validations]="getValidationMessages().StoreId"
-                                            [mode]="autocompleteModestoreName">
-                                        </airmid-dropdown>
-                                    </div> -->
+                                  
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                         <airmid-dropdown label="Ward Name" formControlName="wardId"
                                             [formGroup]="CanteenInsertForm"
@@ -168,7 +207,7 @@
                                     </div>
                                 </div>
 
-                            </div>
+                            </div> -->
                             <div class="modal-card-container">
                                 <div fxFlex.gt-sm="100%" fxFlex>
                                     <form [formGroup]="_CanteenRequestservice.ItemForm">
@@ -182,22 +221,28 @@
                                                     placeholderText="Enter Item Name" fxFlex
                                                     ApiUrl="CanteenRequest/GetItemListforCanteen?ItemName="
                                                     (selectionChange)="getSelectedserviceObj($event)"
-                                                     (onClearSelection)="ItemFromReset()"
-                                                    TextField="itemName" ValueField="itemID"></airmid-autocomplete>
+                                                    (onClearSelection)="ItemFromReset()" TextField="itemName"
+                                                    ValueField="itemID"></airmid-autocomplete>
                                             </div>
 
-                                            <div fxFlex="30%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                            <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                 <airmid-textbox label="Qty" formControlName="Qty" [value]="data?.Qty"
                                                     [formGroup]="_CanteenRequestservice.ItemForm"
                                                     [validations]="getValidationMessages().Qty"
                                                     (keypress)="keyPressAlphanumeric($event)" [maxLength]="50">
                                                 </airmid-textbox>
                                             </div>
-                                            <div fxFlex="30%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                            <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                <airmid-textbox label="Price" formControlName="Price" [value]="price"
+                                                    [formGroup]="_CanteenRequestservice.ItemForm"
+                                                    [validations]="getValidationMessages().Price"
+                                                    (keypress)="keyPressAlphanumeric($event)" [maxLength]="50">
+                                                </airmid-textbox>
+                                            </div>
+                                            <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                 <airmid-textbox label="Remark" formControlName="Remark"
                                                     [value]="data?.Remark" [formGroup]="_CanteenRequestservice.ItemForm"
-                                                    [validations]="getValidationMessages().Remark"
-                                                    [maxLength]="50">
+                                                    [validations]="getValidationMessages().Remark" [maxLength]="50">
                                                 </airmid-textbox>
                                             </div>
                                             <!-- [disabled]="!add" -->
@@ -205,8 +250,7 @@
                                                 <div matTooltip="Select  name to enable this button!!"
                                                     [matTooltipDisabled]="!_CanteenRequestservice.ItemForm.invalid"
                                                     [matTooltipPosition]="'above'">
-                                                    <button class="btn btn-primary btn-with-icon"
-                                                        (click)="onAdd()">
+                                                    <button class="btn btn-primary btn-with-icon" (click)="onAdd()">
                                                         <span class="btn-icon">
                                                             <mat-icon> add </mat-icon>
                                                         </span>
@@ -220,17 +264,17 @@
                                 </div>
                             </div>
                         </mat-card>
-                        
+
                         <div class="modal-card-container table-container">
                             <div class="table-row gap-12" fxLayout="column" fxLayout.gt-md="row">
-                             
+
                                 <div class="table-left" fxFlex="70%" fxFlex.xs="100%" fxFlex.sm="70%">
                                     <mat-card>
 
                                         <div fusePerfectScrollbar
                                             class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
                                             dynamicTableHeight>
-                                          
+
                                         </div>
                                         <mat-table class="mat-table-1 h-250" matSort [dataSource]="dsItemList"
                                             [@animateStagger]="{value:'50'}">
@@ -281,14 +325,14 @@
                                     </mat-card>
 
                                 </div>
-                               
+
                                 <div class="table-right" fxFlex="30%" fxFlex.xs="100%" fxFlex.sm="30%">
                                     <mat-card>
 
                                         <div fusePerfectScrollbar
                                             class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
                                             dynamicTableHeight>
-                                           
+
                                         </div>
                                         <mat-table class="mat-table-2 h-250" matSort [dataSource]="dsCanteenDateList"
                                             [@animateStagger]="{value:'50'}">

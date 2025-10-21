@@ -17,6 +17,7 @@ import { ToastrService } from 'ngx-toastr';
 import Swal from 'sweetalert2';
 import { BillDateUpdateComponent } from './bill-date-update/bill-date-update.component';
 import { CancellationService } from './cancellation.service';
+import { DateUpdateComponent } from '../paymentmodechanges/date-update/date-update.component';
 
 @Component({
   selector: 'app-cancellation',
@@ -680,7 +681,18 @@ console.log(row)
     });
     this.grid1.bindGridData();
   }
-
+OnUpdatepayment(contact) {
+    const dialogRef = this._matDialog.open(DateUpdateComponent,
+      {
+        height: "35%",
+        width: '35%',
+        data:contact
+        
+      });
+    dialogRef.afterClosed().subscribe(result => {
+    });
+    this.grid1.bindGridData();
+  }
 
 }
 export class CancellationList {

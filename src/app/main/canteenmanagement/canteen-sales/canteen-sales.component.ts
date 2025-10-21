@@ -8,6 +8,9 @@ import { AuthenticationService } from 'app/core/services/authentication.service'
 import { parseInt } from 'lodash';
 import Swal from 'sweetalert2';
 import { CanteenmanagementService } from '../canteenmanagement.service';
+import { FormArray, FormGroup, UntypedFormBuilder } from '@angular/forms';
+import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-canteen-sales',
@@ -48,7 +51,8 @@ export class CanteenSalesComponent implements OnInit {
     'Qty',
     'NetAmount',
   ];
-
+CanteenForm:FormGroup;
+canteendetailform:FormGroup;
   sIsLoading: string;
   isItemIdSelected:boolean=false;
   chargeslist: any = [];
@@ -68,31 +72,145 @@ export class CanteenSalesComponent implements OnInit {
   
    
   constructor(
-    public  _CanteenmanagementService:CanteenmanagementService,
-    private _loggedService: AuthenticationService,
-    public datePipe: DatePipe,
+    public  _CanteenmanagementService:CanteenmanagementService, public toastr: ToastrService,
+    private _loggedService: AuthenticationService,   private _FormBuilder:UntypedFormBuilder,
+    public datePipe: DatePipe, private _FormvalidationserviceService: FormvalidationserviceService,
   ) { }
 
   ngOnInit(): void {
     this. getItemTable1List();
+    this.CanteenForm=this.createCanteenform()
+     this.CanteenForm.markAllAsTouched();
+
+    this.canteendetailform = this.tCanteenRequestDetails();
+    this.canteendetailform.markAllAsTouched();
+    this.canteendetailArray.push(this.tCanteenRequestDetails());
   }
+
+autocompleteModeCashcounter: string = "CashCounter";
+
+createCanteenform(): FormGroup {
+   
+    return this._FormBuilder.group({
+  "reqId":0,
+  "date":  [(new Date()).toISOString()],
+  "time":  [(new Date()).toISOString()],
+  "reqNo": "string",
+  "opIpId": 0,
+  "opIpType": 0,
+  "wardId": [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+  "cashCounterId": [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+  "isFree": true,
+  "unitId":  [1, [this._FormvalidationserviceService.onlyNumberValidator()]],
+  "isBillGenerated": true,
+  "isPrint": true,
+      tCanteenRequestDetails: this._FormBuilder.array([]),
+    })
+  }
+
+
+   tCanteenRequestDetails(element: any = {}): FormGroup {
+    return this._FormBuilder.group({
+      reqDetId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      requestId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      itemId: [Number(element.ItemID) ?? 0],
+      unitMrp: [element.Price ?? 0],
+      qty: element.Qty,
+      totalAmount: this.vTotalFinalAmount || 0,
+      isBillGenerated: true,
+      isCancelled: false
+    });
+  }
+
+  
+    get canteendetailArray(): FormArray {
+      return this.CanteenForm.get('tCanteenRequestDetails') as FormArray;
+    }
+  
+
+
   applyFilter() {
     this.dsItemTable1.filter = this.Itemsearch.trim().toLowerCase();
   }
+
+  Save(){
+   console.log(this.CanteenForm.value)
+  
+      if (this._CanteenmanagementService.userFormGroup.get('CustomerName').value == '') {
+        this.toastr.warning('Please select a Customer Name .', 'Warning!', {
+          toastClass: 'tostr-tost custom-toast-warning'
+        });
+        return;
+      }
+  
+      // if (!this.CanteenForm.invalid) {
+  
+        this.canteendetailArray.clear();
+        if (this.dsItemDetTable2.data.length === 0) {
+          this.toastr.warning('Data is not available in list ,please add item in the list.', 'Warning');
+          return;
+        }
+        this.dsItemDetTable2.data.forEach(item => {
+          this.canteendetailArray.push(this.tCanteenRequestDetails(item));
+        });
+  
+        this.CanteenForm.get("wardId").setValue(this.RoomId)
+        // this.CanteenForm.get("opIpId").setValue(this._CanteenmanagementService.userFormGroup.get('Code').value)
+        // this.CanteenForm.get("tCanteenRequestDetails.totalAmount").setValue(this._CanteenmanagementService.userFormGroup.get('TotalAmount').value)
+  
+        console.log(this.CanteenForm.value)
+  
+  
+        this._CanteenmanagementService.canteenrequestSave(this.CanteenForm.value).subscribe(response => {
+        //  this.viewgetLabrequestReportPdf(response)
+            // this.d.closeAll();
+          
+        });
+      // } else {
+      //   let invalidFields: string[] = [];
+  
+      //   if (this.CanteenForm.invalid) {
+      //     for (const controlName in this.CanteenForm.controls) {
+      //       const control = this.CanteenForm.get(controlName);
+  
+      //       if (control instanceof FormGroup || control instanceof FormArray) {
+      //         for (const nestedKey in control.controls) {
+      //           if (control.get(nestedKey)?.invalid) {
+      //             invalidFields.push(`Nested: ${controlName}.${nestedKey}`);
+      //           }
+      //         }
+      //       } else if (control?.invalid) {
+      //         invalidFields.push(`MainForm: ${controlName}`);
+      //       }
+      //     }
+      //   }
+      //   if (invalidFields.length > 0) {
+      //     invalidFields.forEach(field => {
+      //       this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
+      //       );
+      //     });
+      //   }
+      // }
+    }
+
+
   clearSearch() {
     this.Itemsearch = '';
     this.applyFilter();
   }
   getItemTable1List() {
     this.sIsLoading = 'loading-data';
-    var vdata = {   
-      "ItemName":'%',
-      "IsOtherOrIsEmployee": this._CanteenmanagementService.userFormGroup.get('Type').value 
-    }
+    // var vdata = {   
+    //   "ItemName":'%',
+    //   "IsOtherOrIsEmployee": this._CanteenmanagementService.userFormGroup.get('Type').value 
+    // }
+
+
+    var vdata=this._CanteenmanagementService.userFormGroup.get('ItemID').value
      //console.log(vdata);
       this._CanteenmanagementService.getItemTable1List(vdata).subscribe(data => {
       this.dsItemTable1.data = data as ItemTable1List[];
-    // console.log(this.dsItemTable1.data)
+    console.log(data)
       this.dsItemTable1.sort = this.sort;
       this.dsItemTable1.paginator = this.paginator;
       this.sIsLoading = '';
@@ -150,8 +268,8 @@ export class CanteenSalesComponent implements OnInit {
     
     this.chargeslist.push(
       {
-        // ItemID: row.ItemID,
-        ItemName: row.ItemName,
+        ItemID: row.itemID,
+        ItemName: row.itemName,
         Price: row.price || 0,
         Qty:0,
         Amount : 0
@@ -187,7 +305,7 @@ onQtyEdit(event: any, contact:ItemDetTable2List  ) {
       Swal.fire('Enter Disount Less Than 100')
       this._CanteenmanagementService.userFormGroup.get('Discount').setValue(0);
       this._CanteenmanagementService.userFormGroup.get('DiscAmt').setValue(0);
-      //this._CanteenmanagementService.userFormGroup.get('TotalAoumt').setValue(this.vTotalFinalAmount);
+      //this._CanteenmanagementService.userFormGroup.get('TotalAmount').setValue(this.vTotalFinalAmount);
       this.vTotalFinalAmount.toFixed(2);
     }
     if(disc){
@@ -216,64 +334,100 @@ onQtyEdit(event: any, contact:ItemDetTable2List  ) {
     }
   }
 
-//BillList
-  getBillList() {
-    this.sIsLoading = 'loading-data';
-    var vdata = {    
-      "FromDate":this.datePipe.transform(this._CanteenmanagementService.BillListFrom.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-      "ToDate":  this.datePipe.transform(this._CanteenmanagementService.BillListFrom.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-    }
-    // console.log(vdata);
-      this._CanteenmanagementService.getBillList(vdata).subscribe(data => {
-      this.dsBillList.data = data as BillList[];
-    // console.log(this.dsBillList.data)
-      this.dsBillList.sort = this.sort;
-      this.dsBillList.paginator = this.paginator;
-      this.sIsLoading = '';
-    },
-      error => {
-        this.sIsLoading = '';
-      });
-  } 
-  //BillDetailList
-  getBillDetList(Param) {
-    this.sIsLoading = 'loading-data';
-    var vdata = {    
-      "BillNo": Param.BillNo,
-     }
-    // console.log(vdata);
-      this._CanteenmanagementService.getBillDetList(vdata).subscribe(data => {
-      this.dsBillDetailList.data = data as BillDetailList[];
-    // console.log(this.dsBillDetailList.data)
-      this.dsBillDetailList.sort = this.sort;
-      this.dsBillDetailList.paginator = this.paginator;
-      this.sIsLoading = '';
-    },
-      error => {
-        this.sIsLoading = '';
-      });
-  } 
 
-  //Nursing List
-  getNursingBillList(){
-    this.sIsLoading = 'loading-data';
-    var vdata={
-      'FromDate': this.datePipe.transform(this._CanteenmanagementService.userFormGroup.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-        'ToDate': this.datePipe.transform(this._CanteenmanagementService.userFormGroup.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
-        'Reg_No':  0,    
-    }
-   // console.log(vdata);
-    this._CanteenmanagementService.getNursingBillList(vdata).subscribe(data =>{
-      this.dsNursingBillList.data = data as NursingBillList[];
-     // console.log(this.dsNursingBillList.data)
-       this.dsNursingBillList.sort = this.sort;
-       this.dsNursingBillList.paginator = this.paginator;
-       this.sIsLoading = '';
-     },
-       error => {
-         this.sIsLoading = '';
-       });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//BillList
+   getBillList() {
+  //   this.sIsLoading = 'loading-data';
+  //   var vdata = {    
+  //     "FromDate":this.datePipe.transform(this._CanteenmanagementService.BillListFrom.get('startdate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+  //     "ToDate":  this.datePipe.transform(this._CanteenmanagementService.BillListFrom.get('enddate').value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+  //   }
+  //   // console.log(vdata);
+  //     this._CanteenmanagementService.getBillList(vdata).subscribe(data => {
+  //     this.dsBillList.data = data as BillList[];
+  //   // console.log(this.dsBillList.data)
+  //     this.dsBillList.sort = this.sort;
+  //     this.dsBillList.paginator = this.paginator;
+  //     this.sIsLoading = '';
+  //   },
+  //     error => {
+  //       this.sIsLoading = '';
+  //     });
+   } 
+  //BillDetailList
+   getBillDetList(Param) {
+  //   this.sIsLoading = 'loading-data';
+  //   var vdata = {    
+  //     "BillNo": Param.BillNo,
+  //    }
+  //   // console.log(vdata);
+  //     this._CanteenmanagementService.getBillDetList(vdata).subscribe(data => {
+  //     this.dsBillDetailList.data = data as BillDetailList[];
+  //   // console.log(this.dsBillDetailList.data)
+  //     this.dsBillDetailList.sort = this.sort;
+  //     this.dsBillDetailList.paginator = this.paginator;
+  //     this.sIsLoading = '';
+  //   },
+  //     error => {
+  //       this.sIsLoading = '';
+  //     });
+   } 
+
+  // //Nursing List
+   getNursingBillList(){
+  //   this.sIsLoading = 'loading-data';
+  //   var vdata={
+  //     'FromDate': this.datePipe.transform(this._CanteenmanagementService.userFormGroup.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+  //       'ToDate': this.datePipe.transform(this._CanteenmanagementService.userFormGroup.get("end").value, "yyyy-MM-dd 00:00:00.000") || '01/01/1900',
+  //       'Reg_No':  0,    
+  //   }
+  //  // console.log(vdata);
+  //   this._CanteenmanagementService.getNursingBillList(vdata).subscribe(data =>{
+  //     this.dsNursingBillList.data = data as NursingBillList[];
+  //    // console.log(this.dsNursingBillList.data)
+  //      this.dsNursingBillList.sort = this.sort;
+  //      this.dsNursingBillList.paginator = this.paginator;
+  //      this.sIsLoading = '';
+  //    },
+  //      error => {
+  //        this.sIsLoading = '';
+  //      });
   }
+
+  RoomId=0
+  onChangeWard(e) {
+    // debugger
+    this.RoomId=e.roomId
+   
+  }
+
+
+   getValidationMessages() {
+    return {
+      roomId: [],
+      CashCounterID:[]
+
+    }
+    }
 }
 export class ItemTable1List {
  

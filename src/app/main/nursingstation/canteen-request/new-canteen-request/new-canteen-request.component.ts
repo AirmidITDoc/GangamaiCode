@@ -82,17 +82,19 @@ export class NewCanteenRequestComponent implements OnInit {
       date: this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
       time: this.datePipe.transform(new Date(), 'hh:mm:ss a'),
       reqNo: "",
-      opIpId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      opIpId: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       opIpType: ["1"],
-      wardId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      wardId: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       cashCounterId: 0,
       isFree: false,
       unitId: [this.accountService.currentUserValue.user.unitId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      isBillGenerated: false,
-      isPrint: false,
+      isBillGenerated: true,
+      isPrint: true,
       tCanteenRequestDetails: this.formBuilder.array([]),
-      RegID: [0],
-      StoreId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      CustomerName: "",
+      RegID:0
+      
+      // StoreId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
 
     });
   }
@@ -105,7 +107,7 @@ export class NewCanteenRequestComponent implements OnInit {
       unitMRP: [item.Price || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       qty: [Number(item.Qty) || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       totalAmount: [item.totalamt || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      isBillGenerated: false,
+      isBillGenerated: true,
       isCancelled: false
     });
   }
@@ -121,6 +123,8 @@ export class NewCanteenRequestComponent implements OnInit {
       ItemId: [],
       Qty: [],
       Remark: [],
+      Price: [],
+      
     }
   }
 
@@ -135,28 +139,44 @@ export class NewCanteenRequestComponent implements OnInit {
     'buttons'
   ]
 
-  getSelectedObj(obj) {
-    if (obj.IsDischarged == 1) {
-      Swal.fire('Selected Patient is already discharged');
-      this.PatientName = ''
-      this.vAdmissionID = ''
-      this.RegNo = ''
-      this.Doctorname = ''
-      this.Tarrifname = ''
-      this.CompanyName = ''
-      this.vOPDNo = ''
-      this.WardName = ''
-      this.BedNo = ''
-    }
-    else {
-      this.registerObj = obj;
+ getSelectedObjIP(obj) {
+
+    console.log(obj)
+    if ((obj.regID ?? 0) > 0) {
+      console.log("Admitted patient:", obj)
+      // this.vRegNo = obj.regNo
+      // this.vRegId = obj.regID
+      // this.vDoctorName = obj.doctorName
+      // this.vPatientName = obj.firstName + " " + obj.middleName + " " + obj.lastName
+      // this.vDepartment = obj.departmentName
+      // this.vAdmissionDate = obj.admissionDate
+      // this.vAdmissionTime = obj.admissionTime
+      // this.vAdmissionID = obj.admissionID
+      // this.vIPDNo = obj.ipdNo
+      // this.vAge = obj.age
+      // this.vAgeMonth = obj.ageMonth
+      // this.vAgeDay = obj.ageDay
+      // this.vGenderName = obj.genderName
+      // this.vRefDocName = obj.refDocName
+      // this.vRoomName = obj.roomName
+      // this.vBedName = obj.bedName
+      // this.vPatientType = obj.patientType
+      // this.vTariffName = obj.tariffName
+      // this.vCompanyName = obj.companyName
+      // this.vDOA = obj.admissionDate
+      // this.vTariffId = obj.tariffId
+      // this.vClassId = obj.classId
+
+       this.registerObj = obj;
       console.log(obj)
       this.RegNo = obj.regNo;
       this.vAdmissionID = obj.admissionID;
       this.vOpDId = obj.admissionID;
       console.log(obj);
+
+       this.CanteenInsertForm.get("opIpId").setValue(this.vOpDId)
     }
-    this.CanteenInsertForm.get("opIpId").setValue(this.vOpDId)
+  
   }
 
   onAdd() {
@@ -172,6 +192,7 @@ export class NewCanteenRequestComponent implements OnInit {
       });
       return;
     }
+    
     const iscekDuplicate = this.dsItemList.data.some(item => item.ItemID == this.ItemId)
     if (!iscekDuplicate) {
       this.dsItemList.data = [];
@@ -196,7 +217,12 @@ export class NewCanteenRequestComponent implements OnInit {
     this._CanteenRequestservice.ItemForm.get('Qty').reset('');
     this._CanteenRequestservice.ItemForm.get('Remark').reset('');
   }
-
+custflag=0
+  customertype(event){
+    console.log(event)
+    if(event.value==0)
+      this.custflag=1
+  }
   getSelectedserviceObj(obj) {
     console.log(obj)
     this.ItemId = obj.itemID
@@ -204,6 +230,24 @@ export class NewCanteenRequestComponent implements OnInit {
     this.price = obj.price
     this.isBatchRequired = obj.isBatchRequired
   }
+
+
+   getSelectedObj(obj) {
+        console.log(obj)
+        // this.RegId1 = obj.regID;
+        // this.registerObj = obj;
+        // this.PatientName = this.registerObj.firstName + ' ' + this.registerObj.middleName + ' ' + this.registerObj.lastName
+               
+        
+      // this.registerObj = obj;
+      // console.log(obj)
+      // this.RegNo = obj.regNo;
+      // this.vAdmissionID = obj.admissionID;
+      // this.vOpDId = obj.admissionID;
+      // console.log(obj);
+
+      //  this.CanteenInsertForm.get("opIpId").setValue(this.vOpDId)
+    }
 
   ItemFromReset() {
     this._CanteenRequestservice.ItemForm.patchValue({
@@ -246,7 +290,14 @@ export class NewCanteenRequestComponent implements OnInit {
       return;
     }
 
-    if ((this.vAdmissionID == 0)) {
+    if ((this.CanteenInsertForm.get('opIpType').value==1 && this.vAdmissionID == 0)) {
+      this.toastr.warning('Please Select Patient', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+debugger
+ if ((this.CanteenInsertForm.get('opIpType').value=="0" && this.CanteenInsertForm.get('CustomerName').value == '')) {
       this.toastr.warning('Please Select Patient', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
@@ -258,13 +309,19 @@ export class NewCanteenRequestComponent implements OnInit {
       this.CanteendetailArray.push(this.createdetailForm(item));
     });
 
-    ['RegID', 'StoreId'].forEach(controlName => {
-      this.CanteenInsertForm.removeControl(controlName);
-    });
+    // ['RegID', 'StoreId'].forEach(controlName => {
+    //   this.CanteenInsertForm.removeControl(controlName);
+    // });
 
+    this.CanteenInsertForm.removeControl('RegID')
+ 
+    this.CanteenInsertForm.removeControl('CustomerName')
+
+    console.log(this.CanteenInsertForm.value)
     if (!this.CanteenInsertForm.invalid) {
-      console.log(this.CanteenInsertForm.value)
+     
       this._CanteenRequestservice.CanteenReqSave(this.CanteenInsertForm.value).subscribe(response => {
+        console.log(response)
         this.onPrint(response)
         this.onClose();
       });

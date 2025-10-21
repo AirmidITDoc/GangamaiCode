@@ -161,7 +161,8 @@ export class CanteenRequestComponent implements OnInit {
     }
 
     onPrint(element) {
-        this.commonService.Onprint("ReqId", element.reqId, "CanteenRequestprint");
+        console.log(element)
+        this.commonService.Onprint("ReqId", 30059, "CanteenRequestprint");
     }
 
     NewRequest(row: any = null) {

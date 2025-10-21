@@ -64,8 +64,12 @@
 
                             <button class="btn btn-primary" *ngIf="element.isCancelled =='0'"
                                 (click)="OnUpdate(element)" matTooltip="Bill Date Update">
-                                Date Update
+                                BillDate 
                             </button>&nbsp;
+                            <button class="btn btn-primary" (click)="OnUpdatepayment(element,1)"
+                                matTooltip="Payment Date Update">
+                                PaymentDate
+                            </button>
                             <button class="btn btn-danger" *ngIf="element.isCancelled =='0'"
                                 (click)="BillCancelOP(element)" matTooltip="Cancle Bill" style="color: white;"> Bill
                                 Cancel
@@ -175,7 +179,9 @@
                                 <div fxFlexFill fxLayout="row" fxLayout.gt-xs="row">
                                     <mat-radio-group formControlName="OP_IP_Type" name="OP_IP_Type"
                                         (change)="onRadioChange($event)">
-                                        <mat-label style="color: rgb(4, 47, 78);font-weight: bold;font-size: large;">Type : </mat-label>
+                                        <mat-label
+                                            style="color: rgb(4, 47, 78);font-weight: bold;font-size: large;">Type :
+                                        </mat-label>
                                         <div>
 
                                             <div style="color: orange" fxLayout="row" fxLayoutAlign="start center"

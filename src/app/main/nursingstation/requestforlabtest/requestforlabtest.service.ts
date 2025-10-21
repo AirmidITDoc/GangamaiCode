@@ -32,37 +32,6 @@ export class RequestforlabtestService {
 
   }
 
-//   createBedForm(): FormGroup {
-//         return this._FormBuilder.group({
-//             requestId: [0],
-//             reqDate: "2025-10-03",
-//             reqTime: "10:45:00AM",
-//             opIpId: [""],
-//             opIpType: [""],
-//             isAddedBy: [""],
-//             isCancelled: true,
-//             isCancelledBy: 0,
-//             isCancelledDate: "2025-10-03",
-//             isCancelledTime:"2025-10-03",
-//             isType: [0],
-//             isOnFileTest: true,
-//             tDlabRequests: [
-//                 {
-//                     reqDetId: [0],
-//                     requestId: [""],
-//                     serviceId: [""],
-//                     price: [""],
-//                     isStatus: true,
-//                     addedBillingId: 0,
-//                     addedByDate: "2025-10-03",
-//                     addedByTime: "10:45:00AM",
-//                     charId: 0,
-//                     isTestCompted: true,
-//                     isOnFileTest: true,
-//                 }
-//             ]
-//         });
-//     }
 
     public getserviceList(param) {
         return this._httpClient1.PostData("PathlogySampleCollection/PathRadServiceList",param);

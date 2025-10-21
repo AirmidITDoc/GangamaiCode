@@ -135,7 +135,25 @@ export class BillDateUpdateComponent implements OnInit {
               "paymentId": this.PaymentId
             }
             console.log(data4);
-            this._CancellationService.getDateTimeChangePaymentId(data4).subscribe(response => {
+            this._CancellationService.PaymentDateTimeChange(data4).subscribe(response => {
+              this._matDialog.closeAll();
+            });
+          }
+        }else if (this.PaymentId && this.data.Id == 1) {
+
+          const d1 = new Date(this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd")!);
+          const d2 = new Date(this.SalesDate);
+          if (d1 < d2) {
+            Swal.fire("Enter Payment Date After Bill Date :" + this.datePipe.transform(this.SalesDate, "yyyy-MM-dd"))
+            return;
+          } else {
+            var data4 = {
+              "paymentDate": this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd"),
+              "paymentTime":  formattedDate + this.dateTimeObj.time,
+              "paymentId": this.PaymentId
+            }
+            console.log(data4);
+            this._CancellationService.ChangeBillPaymentdate(data4).subscribe(response => {
               this._matDialog.closeAll();
             });
           }
