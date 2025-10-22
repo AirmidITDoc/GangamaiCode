@@ -36,9 +36,8 @@
                     <button mat-icon-button matTooltip="Print Canteen Request" (click)="onPrint(element)">
                         <mat-icon>print</mat-icon>
                     </button>
-
-                    <button mat-icon-button (click)="Canteencancle(element)" matTooltip="Canteen Request Cancel"
-                    *ngIf="element.isCancelled==false">
+<!-- *ngIf="element.isCancelled==false" -->
+                    <button mat-icon-button (click)="Canteencancle(element)" matTooltip="Canteen Request Cancel">
                         <mat-icon title="Cancel Request">cancel</mat-icon>
                     </button>
 

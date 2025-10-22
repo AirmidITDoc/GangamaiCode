@@ -110,7 +110,7 @@ export class AmbulanceListComponent implements OnInit {
           const dialogRef = this._matDialog.open(NewAmbulanceDetailComponent,
               {
                   maxWidth: "95vw",
-                  height: '75%',
+                  height: '85%',
                   width: '90%',
                   data:row
   

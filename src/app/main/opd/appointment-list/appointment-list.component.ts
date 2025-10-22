@@ -31,6 +31,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ApointmentCardviewComponent } from './apointment-cardview/apointment-cardview.component';
 import { CompanyInformationComponent } from 'app/main/ipd/company-information/company-information.component';
 import { RegistrationService } from '../registration/registration.service';
+import { FollowpdateUpdateComponent } from './followpdate-update/followpdate-update.component';
 // const moment = _rollupMoment || _moment;
 
 @Component({
@@ -78,7 +79,7 @@ export class AppointmentListComponent implements OnInit {
     IsShowGrid: boolean = false;
     id: string;
     mode: string;
-    vRegNo=0
+    vRegNo = 0
 
     constructor(public _AppointmentlistService: AppointmentlistService, public _matDialog: MatDialog,
         private commonService: PrintserviceService, public _registrationService: RegistrationService,
@@ -89,13 +90,14 @@ export class AppointmentListComponent implements OnInit {
     ) { }
 
     ngOnInit(): void {
-        
+
         this.myformSearch = this._AppointmentlistService.filterForm();
         this.searchFormGroup = this.createSearchForm();
         // menu Button List
         this.menuActions.push({ icon: "local_hospital", text: "Update Consultant Doctor" });
         this.menuActions.push({ icon: "people_outline", text: "Update Referred Doctor" });
         this.menuActions.push({ icon: "language", text: "Request For IP" });
+        this.menuActions.push({ icon: "language", text: "Update Followup Date" });
 
         const savedTimers = localStorage.getItem('consultTimers');
         if (savedTimers) {
@@ -128,7 +130,7 @@ export class AppointmentListComponent implements OnInit {
         if (this.mode == "Bill" && Number(this.id) > 0) {
             this.gridConfig.filters.find(x => x.fieldName == "visitId").fieldValue = this.id;
         }
-        this.IsShowGrid = true; 
+        this.IsShowGrid = true;
     }
 
     handleNotificationEvent(data) {
@@ -155,12 +157,12 @@ export class AppointmentListComponent implements OnInit {
         this.gridConfig.columnsList.find(col => col.key === 'phoneAppId')!.template = this.actionsTemplate2;
         this.gridConfig.columnsList.find(col => col.key === 'crossConsulFlag')!.template = this.actionsTemplate3;
         this.gridConfig.columnsList.find(col => col.key === 'isConvertRequestForIp')!.template = this.actionsTemplate4;
-          this.gridConfig.columnsList.find(col => col.key === 'companyId')!.template = this.actionCompany;
-        this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate; 
-        this.gridConfig.columnsList.find(col => col.key === 'patientName')!.template = this.patientNameWithBadgeTemplate; 
- 
-    } 
- 
+        this.gridConfig.columnsList.find(col => col.key === 'companyId')!.template = this.actionCompany;
+        this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
+        this.gridConfig.columnsList.find(col => col.key === 'patientName')!.template = this.patientNameWithBadgeTemplate;
+
+    }
+
     @ViewChild('actionsTemplate') actionsTemplate!: TemplateRef<any>;
     @ViewChild('actionsTemplate1') actionsTemplate1!: TemplateRef<any>;
     @ViewChild('actionsTemplate2') actionsTemplate2!: TemplateRef<any>;
@@ -169,8 +171,8 @@ export class AppointmentListComponent implements OnInit {
     @ViewChild('actionCompany') actionCompany!: TemplateRef<any>;
     @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
     @ViewChild('patientNameWithBadgeTemplate') patientNameWithBadgeTemplate!: TemplateRef<any>;
- 
- 
+
+
     allcolumns = [
         { heading: "", key: "patientOldNew", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30 },
         { heading: "", key: "mPbillNo", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30 },
@@ -179,7 +181,7 @@ export class AppointmentListComponent implements OnInit {
         { heading: "", key: "isConvertRequestForIp", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30 },
         { heading: "UHID", key: "regNoWithPrefix", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "Date", key: "vistDateTime", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-        { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 350, type: gridColumnTypes.template},
+        { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 350, type: gridColumnTypes.template },
         { heading: "Doctor Name", key: "doctorname", sort: true, align: 'left', emptySign: 'NA', width: 230 },
 
         { heading: "Department", key: "departmentName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
@@ -460,6 +462,29 @@ export class AppointmentListComponent implements OnInit {
                     });
                 }
             });
+        } else if (m == "Update Followup Date") {
+            Swal.fire({
+                title: 'Do you want to Update Followup Date?',
+                text: "You won't be able to revert this!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes"
+            }).then((flag) => {
+                if (flag.isConfirmed) {
+                    const dialogRef = this._matDialog.open(FollowpdateUpdateComponent,
+                        {
+                            maxWidth: "85vw",
+                            maxHeight: '65%',
+                            width: '85%',
+                            data: element
+                        });
+                    dialogRef.afterClosed().subscribe(result => {
+                        this.grid.bindGridData();
+                    });
+                }
+            });
         }
     }
 
@@ -578,7 +603,7 @@ export class AppointmentListComponent implements OnInit {
         if ((obj.regId ?? 0) > 0) {
             console.log(obj)
             this.vOPIPId = obj.visitId
-           
+
             // setTimeout(() => {
             //     this._AppointmentlistService.getRegistraionById(obj.regId).subscribe((response) => {
             //         this.patientDetail = response;

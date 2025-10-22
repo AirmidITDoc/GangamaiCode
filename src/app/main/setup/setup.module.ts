@@ -1,5 +1,7 @@
 import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
+import { AmbulanceMasterComponent } from './ambulance-master/ambulance-master.component';
+import { NewAmbulanceComponent } from './ambulance-master/new-ambulance/new-ambulance.component';
 
 const appRoutes: Routes = [
     {
@@ -68,10 +70,19 @@ const appRoutes: Routes = [
                 (m) => m.NursingMasterModule
             ),
     },
+      {
+        path: "ambulance",
+        loadChildren: () =>
+            import("./ambulance-master/ambulancemaster.module").then(
+                (m) => m.AmbulancemasterModule
+            ),
+    },
 ];
 
 @NgModule({
-    declarations: [ ],
+    declarations: [ 
+    
+  ],
     imports: [RouterModule.forChild(appRoutes)],
 })
 export class SetupModule {}

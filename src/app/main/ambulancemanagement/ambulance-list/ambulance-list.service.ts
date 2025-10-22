@@ -21,4 +21,23 @@ export class AmbulanceListService {
        });
      }
    
+
+ambulanceallocaterForm(): FormGroup {
+       return this._formBuilder.group({
+     BillNo:'',
+CaseId:'',
+PatientName:'',
+
+VechicleNo:'',
+VechicleModel:'',
+DriverName:'',
+driverContactno:'',
+PatientAddress:'',
+Date: [(new Date()).toISOString()],
+Amount:'',
+PaidAmt:'',
+BalAmt:'',
+ });
+     }
+
 }

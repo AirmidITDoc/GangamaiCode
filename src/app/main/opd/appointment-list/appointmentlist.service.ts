@@ -15,11 +15,12 @@ export class AppointmentlistService {
     myformSearch: FormGroup;
     personalFormGroup: FormGroup;
     VisitFormGroup: FormGroup;
-
+FollowupFormGroup: FormGroup;
     constructor(public _httpClient1: ApiCaller, private _formBuilder: UntypedFormBuilder, private _loaderService: LoaderService,
         public _httpClient: HttpClient, private accountService: AuthenticationService, private _FormvalidationserviceService: FormvalidationserviceService
     ) {
         this.myformSearch = this.filterForm();
+        this.FollowupFormGroup=this.createFollowupDateupdateForm();
 
     }
 
@@ -158,6 +159,15 @@ export class AppointmentlistService {
             nameFormat: ['F_M_L']
         });
     }
+
+      createFollowupDateupdateForm() {
+    return this._formBuilder.group({ 
+      followupdate: [(new Date()).toISOString()],
+    //   enddate: [(new Date()).toISOString()], 
+    })
+  }
+
+  
 
     public documentuploadInsert(employee, loader = true) {
         if (loader) {
@@ -330,4 +340,10 @@ export class AppointmentlistService {
             return this._httpClient1.PutData("OPDEMRCertificate/TCertificateInformationUpdate/", Param);
         } else return this._httpClient1.PostData("OPDEMRCertificate/TCertificateInformationSave", Param)
     }
+///
+    public UpdateFollowupdate(param) {
+        return this._httpClient1.PostData("VisitDetail/RequestForOPTOIP", param);
+    }
+
+    
 }

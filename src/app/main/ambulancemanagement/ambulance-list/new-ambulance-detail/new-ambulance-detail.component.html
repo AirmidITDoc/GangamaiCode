@@ -1,1 +1,220 @@
-<p>new-ambulance-detail works!</p>
+<div class="modal-wrapper grid-container">
+    <!-- Modal header -->
+    <div class="modal-header accent">
+        <div class="modal-header-content">
+            <div class="modal-header-title">
+                <span [@animate]="{ value: '*', params: { delay: '100ms', x: '-25px' } }">Allocate Ambulance</span>
+            </div>
+            <div class="modal-header-right">
+                <div class="comman-date-container">
+                    <div class="comman-date">
+                        <app-common-date [screenFrom]="screenFromString"
+                            (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
+                    </div>
+                    <div class="close-icon">
+                        <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
+                            matTooltip="Close">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal body -->
+    <div class="modal-body" fusePerfectScrollbar>
+        <div class="modal-body-container">
+            <div fxLayout="column" class="gap-12">
+                <div class="modal-card-container">
+                    <form [formGroup]="searchFormGroup" fxLayoutAlign="space-between start">
+                         <div fxLayout="column" fxLayoutGap="8px 0px grid">
+                               <!-- <span style="font-size: large;font-weight: bold;">Select Patient --</span> -->
+                        <airmid-autocomplete lbl="RegID" [formGroup]="searchFormGroup"
+                            label="Search UHID / Patient Name / Mobile No(DC)" formControlName="RegId" fxFlex="50%"
+                            placeholderText="UHID / First Name / Last Name / Mobile No(DC)"
+                            ApiUrl="Admission/Dischargesearch-patient?Keyword="
+                            (selectionChange)="getSelectedObj($event)" TextField="formattedText" ValueField="regId">
+                        </airmid-autocomplete>
+                         </div>
+                    </form>
+
+                    <div fxFlex.gt-sm="100%" fxFlex class="patient-info-container">
+                        <div class="patient-info-container" *ngIf="PatientName">
+                            <div class="patient-info-box">
+                                <div class="patient-info-title border-bottom pb-2">
+                                    <span class="h1">Patient Information</span>
+                                </div>
+                                <div class="patient-info-box my-8">
+                                    <div class="patient-info-row ">
+
+                                        <div class="patient-col">
+                                            <span class="patient-col-key ">Patient Name</span>
+                                            <span>:</span>
+                                            <span class="patient-col-value">{{registerObj.regNo}}-{{PatientName}}</span>
+                                        </div>
+                                        <div class="patient-col gap-1">
+                                            <span class="patient-col-key ">Age | Gender</span>
+                                            <span>:</span>
+                                            <span class="patient-col-value">{{registerObj?.age}} |
+                                                {{registerObj?.genderName}}</span>
+                                        </div>
+
+                                        <div class="patient-col gap-1">
+                                            <span class="patient-col-key">IPDNo</span>
+                                            <span>:</span>
+                                            <span class="patient-col-value">{{registerObj?.ipdNo}}</span>
+                                        </div>
+                                        <div class="patient-col">
+                                            <span class="patient-col-key">Ward | Bed Name </span>
+                                            <span>:</span>
+                                            <span class="patient-col-value">{{registerObj?.roomName}} |
+                                                {{registerObj?.bedName}}</span>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-card-container">
+                    <mat-card>
+                        <div fxLayout="column" class="gap-8">
+                            <div class="form-title mb-2 border-bottom pb-2">
+                                <span class="h3 font-weight-600">Ambulance Information</span>
+                            </div>
+                            <form [formGroup]="AmbulanceFormGroup" style="border: blue">
+                              
+                                <div fxLayout="row wrap" fxLayoutGap="8px 0px grid">
+                                    <!-- <input type="hidden" name="mlcid" formControlName="mlcid" [(ngModel)]="registerObj.mlcid" /> -->
+                                    <input type="hidden" name="admissionId" formControlName="admissionId"
+                                        />
+ <!-- [(ngModel)]="registerObj.admissionId" -->
+                                    <div fxFlex="25" fxFlex.xs="100" fxFlex.sm="33">
+                                        <airmid-textbox label="BillNo" formControlName="BillNo"
+                                            [formGroup]="AmbulanceFormGroup"
+                                            [validations]="getValidationMessages().BillNo"
+                                            [maxLength]="15"></airmid-textbox>
+                                    </div>
+
+
+                                    <div fxFlex="25" fxFlex.xs="100" fxFlex.sm="33">
+                                        <airmid-textbox label="CaseId" formControlName="CaseId"
+                                            [formGroup]="AmbulanceFormGroup"
+                                            [maxLength]="15"></airmid-textbox>
+                                    </div>
+
+
+                                    <div fxFlex="25" fxFlex.xs="100" fxFlex.sm="33">
+                                        <mat-form-field appearance="outline" class="dateField" fxFlex>
+                                            <mat-label> Date</mat-label>
+                                            <input matInput [matDatepicker]="picker1" [min]="minDate"
+                                                formControlName="reportingDate"
+                                                (dateChange)="onChangeDate($event.value)" />
+                                            <mat-datepicker-toggle matSuffix [for]="picker1"
+                                                [disabled]="isDatePckrDisabled"></mat-datepicker-toggle>
+                                            <mat-datepicker #picker1></mat-datepicker>
+                                        </mat-form-field>
+                                    </div>
+
+                                    <div fxFlex="25" fxFlex.xs="100" fxFlex.sm="33">
+                                        <mat-form-field appearance="outline" class="timeField" fxFlex>
+                                            <mat-label> Time</mat-label>
+                                            <input matTimepicker #t="matTimepicker" mode="12h"
+                                                formControlName="reportingTime" (timeChange)="onChangeTime($event)"
+                                                [disableDialogOpenOnClick]="isDatePckrDisabled" />
+                                            <mat-icon matSuffix
+                                                (click)="!isDatePckrDisabled ? t.showDialog() : ''">access_time</mat-icon>
+                                        </mat-form-field>
+                                    </div>
+
+
+
+                                    <!-- <div fxFlex="25" fxFlex.xs="100" fxFlex.sm="33">
+                                        <airmid-textbox label="VechicleNo" formControlName="VechicleNo"
+                                            [value]="registerObj.VechicleNo" [formGroup]="AmbulanceFormGroup"
+                                            [validations]="getValidationMessages().VechicleNo"
+                                            [maxLength]="50"></airmid-textbox>
+                                    </div> -->
+
+                                    <div fxFlex="25" fxFlex.xs="100" fxFlex.sm="33">
+                                        <airmid-textbox label="PatientAddress" formControlName="PatientAddress"
+                                            [formGroup]="AmbulanceFormGroup"
+                                            [validations]="getValidationMessages().PatientAddress"
+                                            [maxLength]="200"></airmid-textbox>
+                                    </div>
+
+                                    <div fxFlex="25" fxFlex.xs="100" fxFlex.sm="33">
+                                        <airmid-textbox label="VechicleNo" formControlName="VechicleNo"
+                                            [formGroup]="AmbulanceFormGroup"
+                                            [validations]="getValidationMessages().VechicleNo"
+                                            [maxLength]="15"></airmid-textbox>
+                                    </div>
+
+                                    <div fxFlex="25" fxFlex.xs="100" fxFlex.sm="33">
+                                        <airmid-textbox label="VechicleModel" formControlName="VechicleModel"
+                                            [formGroup]="AmbulanceFormGroup"
+                                            [validations]="getValidationMessages().VechicleModel"
+                                            [maxLength]="50"></airmid-textbox>
+                                    </div>
+
+                                    <div fxFlex="25" fxFlex.xs="100" fxFlex.sm="33">
+                                        <airmid-textbox label="DriverName" formControlName="DriverName"
+                                            [formGroup]="AmbulanceFormGroup"
+                                            [validations]="getValidationMessages().DriverName"
+                                            [maxLength]="50"></airmid-textbox>
+                                    </div>
+
+
+                                    <div fxFlex="25" fxFlex.xs="100" fxFlex.sm="33">
+                                        <airmid-textbox label="driverContactno" formControlName="driverContactno"
+                                            [formGroup]="AmbulanceFormGroup"
+                                            [validations]="getValidationMessages().driverContactno"
+                                            [maxLength]="10"></airmid-textbox>
+                                    </div>
+
+                                    <div fxFlex="25" fxFlex.xs="100" fxFlex.sm="33">
+                                        <airmid-textbox label="Amount" formControlName="Amount"
+                                            [formGroup]="AmbulanceFormGroup" [maxLength]="7"></airmid-textbox>
+                                    </div>
+
+                                    <div fxFlex="25" fxFlex.xs="100" fxFlex.sm="33">
+                                        <airmid-textbox label="PaidAmt" formControlName="PaidAmt"
+                                            [formGroup]="AmbulanceFormGroup"
+                                           [maxLength]="7"></airmid-textbox>
+                                    </div>
+                                    <!-- [value]="registerObj.BalAmt" -->
+                                    <div fxFlex="25" fxFlex.xs="100" fxFlex.sm="33">
+                                        <airmid-textbox label="BalAmt" formControlName="BalAmt"
+                                            [formGroup]="AmbulanceFormGroup" [maxLength]="7"></airmid-textbox>
+                                    </div>
+                                </div>
+
+                                <div fxLayoutGap="5px" fxlayout="column">
+                                    <!-- <mat-form-field appearance="outline" fxFlex>
+                                        <mat-label>Detail Given</mat-label>
+                                        <textarea matInput name="Given" formControlName="detailGiven" cols="200"
+                                            rows="5" [(ngModel)]="DetailGiven"></textarea>
+                                    </mat-form-field> -->
+
+                                    <mat-form-field appearance="outline" fxFlex>
+                                        <mat-label>Remark</mat-label>
+                                        <textarea matInput name="Remark" formControlName="remark" cols="200" rows="2"></textarea>
+                                    </mat-form-field>
+                                </div>
+                            </form>
+                        </div>
+                    </mat-card>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <div class="footer-navigation-container">
+            <div class="modal-footer-buttons">
+                <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
+                <button type="button" class="btn btn-primary" (click)="onSubmit()">Save</button>
+            </div>
+        </div>
+    </div>
+</div>

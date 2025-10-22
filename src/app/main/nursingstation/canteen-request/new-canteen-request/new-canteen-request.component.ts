@@ -222,6 +222,8 @@ custflag=0
     console.log(event)
     if(event.value==0)
       this.custflag=1
+    else
+       this.custflag=0
   }
   getSelectedserviceObj(obj) {
     console.log(obj)
