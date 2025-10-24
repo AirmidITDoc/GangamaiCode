@@ -209,16 +209,7 @@ export class AppointmentListComponent implements OnInit {
         filters: this.allfilters
     }
 
-    // onChangeStartDate(value) {
-    //     this.gridConfig.filters[4].fieldValue = this.datePipe.transform(value, "yyyy-MM-dd")
-    // }
-    // onChangeEndDate(value) {
-    //     this.gridConfig.filters[5].fieldValue = this.datePipe.transform(value, "yyyy-MM-dd")
-    // }
-
-    // OnClearValues() {
-    //     this.myformSearch.reset();
-    // }
+   
     onChangeFirst() {
 
         this.fromDate = this.datePipe.transform(this.myformSearch.get('fromDate').value, "yyyy-MM-dd")

@@ -18,23 +18,27 @@ import { gridColumnTypes } from 'app/core/models/tableActions';
   styleUrls: ['./patient-billdetail.component.scss']
 })
 export class PatientBilldetailComponent {
-
-
-  displayedColumns: string[] = [
-
-    'serviceName',
-    'Price',
-    'Qty',
-    'TotalAmt',
-    'DoctorName',
-    'DocAmt',
-
-  ]
-
   registerObj: any;
   pBillNo = "0"
   opipType = "1"
   DoctorId = "0"
+  doctorName: any;
+sIsLoading: string = '';
+  displayedColumns: string[] = [
+
+    'serviceName',
+
+    'Price',
+    'Qty',
+    'TotalAmt',
+    'ConcessionAmount',
+    'NetAmount',
+    'DoctorName',
+    'DocAmt',
+    'HospitalAmt',
+  ]
+
+
   Billdetaildatasource = new MatTableDataSource<BillListForDocShrList>();
   @ViewChild('drawer') public drawer: MatDrawer;
 
@@ -66,13 +70,13 @@ export class PatientBilldetailComponent {
       // this.fromDate = this.data.BillDate
       // this.toDate=this.data.pbillNo
       this.opipType = this.data.opdipdtype
-
+      this.doctorName = this.data.admittedDoctorName
       this.DoctorId = this.data.doctorId || 0
-      this.getLastVisitDoctorList()
+      this.getBilldetailList()
     }
   }
 
-  getLastVisitDoctorList() {
+  getBilldetailList() {
     var vdata = {
       "first": 0,
       "rows": 20,
@@ -80,28 +84,13 @@ export class PatientBilldetailComponent {
       "sortOrder": 0,
       "filters": [
         {
-          "fieldName": "FromDate",
-          "fieldValue": "1900-01-01",
-          "opType": "Equals"
-        },
-        {
-          "fieldName": "ToDate",
-          "fieldValue": "1900-01-01",
+          "fieldName": "BillNo",
+          "fieldValue": "228677",//String(this.pBillNo),
           "opType": "Equals"
         },
         {
           "fieldName": "DoctorId",
           "fieldValue": String(this.DoctorId),
-          "opType": "Equals"
-        },
-        {
-          "fieldName": "PBillNo",
-          "fieldValue": String(this.pBillNo),
-          "opType": "Equals"
-        },
-        {
-          "fieldName": "OP_IP_TYpe",
-          "fieldValue": String(this.opipType),
           "opType": "Equals"
         }
       ],
@@ -112,9 +101,31 @@ export class PatientBilldetailComponent {
       this.Billdetaildatasource.data = data.data as BillListForDocShrList[]
     })
   }
-onClose(){
-  this._matDialog.closeAll()
-}
+
+
+  calculateshare() {
+    //  if (!this.MlcInfoFormGroup.invalid) {
+    // console.log(this.MlcInfoFormGroup.value)
+    var data = {}
+    this._DoctorShareService.Calculateshare(data).subscribe((response) => {
+      console.log(response)
+
+    });
+    // } 
+  }
+
+  Save() {
+    //  if (!this.MlcInfoFormGroup.invalid) {
+    // console.log(this.MlcInfoFormGroup.value)
+    var data = {}
+    this._DoctorShareService.Updatesharedoccharges(data).subscribe((response) => {
+      this._matDialog.closeAll();
+    });
+    // } 
+  }
+  onClose() {
+    this._matDialog.closeAll()
+  }
 }
 
 
@@ -126,11 +137,21 @@ export class BillListForDocShrList {
   NetAmt: number;
   PBillNo: number;
   // BillNo: number;
-  AdmittedDoctorName: string;
+  admittedDoctorName: string;
   PatientType: number;
   CompanyName: string;
   IsBillShrHold: boolean;
   GroupName: any;
+  price: any;
+  qty: any;
+  totalAmt: any;
+  concessionAmount: any;
+  netAmount: any;
+  doctorName: any;
+  docAmt: any;
+  hospitalAmt: any;
+  addChargeDrName: any;
+
   constructor(BillListForDocShrList) {
 
     this.PatientName = BillListForDocShrList.PatientName;
@@ -139,11 +160,23 @@ export class BillListForDocShrList {
     this.NetAmt = BillListForDocShrList.NetAmt || 0;
     this.PBillNo = BillListForDocShrList.PBillNo || 0;
     //this.BillNo= BillListForDocShrList.BillNo|| 0;
-    this.AdmittedDoctorName = BillListForDocShrList.AdmittedDoctorName;
+    this.admittedDoctorName = BillListForDocShrList.admittedDoctorName;
     this.PatientType = BillListForDocShrList.PatientType || 0;
     this.CompanyName = BillListForDocShrList.CompanyName;
     this.IsBillShrHold = BillListForDocShrList.IsBillShrHold || 0;
     this.GroupName = BillListForDocShrList.GroupName || '';
+
+
+    this.price = BillListForDocShrList.price || 0;
+    this.qty = BillListForDocShrList.qty || 0;
+    this.totalAmt = BillListForDocShrList.totalAmt || 0;
+    this.concessionAmount = BillListForDocShrList.concessionAmount || 0;
+    this.netAmount = BillListForDocShrList.netAmount || 0;
+    this.doctorName = BillListForDocShrList.doctorName || '';
+    this.docAmt = BillListForDocShrList.docAmt || 0;
+    this.hospitalAmt = BillListForDocShrList.hospitalAmt || 0;
+    this.addChargeDrName = BillListForDocShrList.addChargeDrName || '';
+
   }
 }
 

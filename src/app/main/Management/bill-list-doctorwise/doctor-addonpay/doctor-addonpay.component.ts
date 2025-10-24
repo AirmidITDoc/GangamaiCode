@@ -109,34 +109,34 @@ AdddocpayFormGroup: FormGroup;
 
     this.AdddocpayFormGroup.get('billDate').setValue(this.datePipe.transform(this.AdddocpayFormGroup.get('billDate').value, 'yyyy-MM-dd'))
     this.AdddocpayFormGroup.get('billTime').setValue(combinedDateTime)
-
+debugger
     this.AdddocpayFormGroup.get('serviceName').setValue(this.ServiceName)
     this.AdddocpayFormGroup.get('docId').setValue(this.doctorId)
     console.log(this.AdddocpayFormGroup.value)
     
     debugger
-    if (!this.AdddocpayFormGroup.invalid) {
+    // if (!this.AdddocpayFormGroup.invalid) {
 
       this._DoctorShareService.additionpayInsert(this.AdddocpayFormGroup.value).subscribe((response) => {
       this._matDialog.closeAll();
       });
-    } else {
-      let invalidFields = [];
+    // } else {
+    //   let invalidFields = [];
 
-      if (this.AdddocpayFormGroup.invalid) {
-        for (const controlName in this.AdddocpayFormGroup.controls) {
-          if (this.AdddocpayFormGroup.controls[controlName].invalid) {
-            invalidFields.push(`Addition Pay Form: ${controlName}`);
-          }
-        }
-      }
-      if (invalidFields.length > 0) {
-        invalidFields.forEach(field => {
-          this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
-          );
-        });
-      }
-    }
+    //   if (this.AdddocpayFormGroup.invalid) {
+    //     for (const controlName in this.AdddocpayFormGroup.controls) {
+    //       if (this.AdddocpayFormGroup.controls[controlName].invalid) {
+    //         invalidFields.push(`Addition Pay Form: ${controlName}`);
+    //       }
+    //     }
+    //   }
+    //   if (invalidFields.length > 0) {
+    //     invalidFields.forEach(field => {
+    //       this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
+    //       );
+    //     });
+    //   }
+    // }
   }
 ServiceId=0
 ServiceName=''
