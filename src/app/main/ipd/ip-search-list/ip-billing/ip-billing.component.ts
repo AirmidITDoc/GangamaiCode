@@ -185,8 +185,8 @@ export class IPBillingComponent implements OnInit {
     AdvanceBalAmt: any = 0;
     ApiURL: any;
     TariffId: any;
-    WardId:any;
-    BedId:any;
+    WardId: any;
+    BedId: any;
     autocompleteModeCashcounter: string = "CashCounter";
     autocompleteModedeptdoc: string = "ConDoctor";
     autocompleteModeService: string = "Service";
@@ -232,7 +232,7 @@ export class IPBillingComponent implements OnInit {
             //console.log(this.selectedAdvanceObj)
             this.opD_IPD_Id = this.selectedAdvanceObj.admissionId || "0"
             this.ApiURL = "VisitDetail/GetServiceListwithTraiff?TariffId=" + this.selectedAdvanceObj.tariffId + "&ClassId=" + this.selectedAdvanceObj.classId + "&ServiceName="
-       
+
             this.getdata(this.selectedAdvanceObj.admissionId)
             this.getadvancelist(this.selectedAdvanceObj.admissionId)
             this.Serviceform.get("classId").setValue(this.selectedAdvanceObj.classId)
@@ -273,16 +273,16 @@ export class IPBillingComponent implements OnInit {
                 this.openServiceTable();
             }, 1000);
         }
-          this.setupFormListener();
-            //Admin per retrevied
-          if (this.selectedAdvanceObj?.adminPer > 0) {
-                this.isAdminDisabled = true;
-                this.IpbillFooterform.get('Admincheck').setValue(true) 
-                this.IpbillFooterform.patchValue({AdminPer:this.selectedAdvanceObj?.adminPer})
-            } else {
-                this.isAdminDisabled = false;
-                this.IpbillFooterform.get('Admincheck').setValue(false)
-            } 
+        this.setupFormListener();
+        //Admin per retrevied
+        if (this.selectedAdvanceObj?.adminPer > 0) {
+            this.isAdminDisabled = true;
+            this.IpbillFooterform.get('Admincheck').setValue(true)
+            this.IpbillFooterform.patchValue({ AdminPer: this.selectedAdvanceObj?.adminPer })
+        } else {
+            this.isAdminDisabled = false;
+            this.IpbillFooterform.get('Admincheck').setValue(false)
+        }
     }
     private setupFormListener(): void {
         this.handleChange('price', () => this.calculateTotalCharge());
@@ -369,7 +369,7 @@ export class IPBillingComponent implements OnInit {
             chargesDate: this.datePipe.transform(new Date(), 'yyyy-MM-dd') || '1900-01-01',
             opdIpdType: [1, [this._FormvalidationserviceService.onlyNumberValidator()]],
             opdIpdId: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
-            unitId:  [this.accountService.currentUserValue.user.unitId, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            unitId: [this.accountService.currentUserValue.user.unitId, [this._FormvalidationserviceService.onlyNumberValidator()]],
             serviceId: [0, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             price: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
             qty: [1, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -393,8 +393,8 @@ export class IPBillingComponent implements OnInit {
             isPackage: [0],
             isSelfOrCompanyService: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             packageId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            wardId:[0, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-            bedId:[0, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            wardId: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            bedId: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             chargesTime: this.datePipe.transform(new Date(), 'yyyy-MM-dd') || '1900-01-01', // this.datePipe.transform(this.currentDate, "MM-dd-yyyy HH:mm:ss"),
             packageMainChargeId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             classId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -411,9 +411,9 @@ export class IPBillingComponent implements OnInit {
             chTotalAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             isBillableCharity: [false],
             salesId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            billNo: [1, [this._FormvalidationserviceService.onlyNumberValidator()]], 
+            billNo: [1, [this._FormvalidationserviceService.onlyNumberValidator()]],
             serviceCode: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
-            companyServiceName:['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+            companyServiceName: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
             isInclusionExclusion: [false],
             isHospMrk: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             createdBy: this.accountService.currentUserValue.userId,
@@ -449,11 +449,11 @@ export class IPBillingComponent implements OnInit {
             isSelfOrCompanyService: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             packageId: [item?.PackageServiceId, [this._FormvalidationserviceService.onlyNumberValidator()]],
             serviceCode: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
-            companyServiceName:['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+            companyServiceName: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
             isInclusionExclusion: [false],
             packageMainChargeId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            wardId:[this.WardId, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-            bedId:[this.BedId, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            wardId: [this.WardId, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            bedId: [this.BedId, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             chargesTime: this.datePipe.transform(new Date(), 'HH:mm:ss.SSS') || '00:00:00.000',
             createdBy: this.accountService.currentUserValue.userId,
         });
@@ -492,7 +492,7 @@ export class IPBillingComponent implements OnInit {
                 opdIpdId: [this.selectedAdvanceObj?.admissionId, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
                 totalAmt: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
                 concessionAmt: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-                netPayableAmt: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(),this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+                netPayableAmt: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
                 paidAmt: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
                 balanceAmt: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
                 billDate: ['', [this._FormvalidationserviceService.allowEmptyStringValidator(), this._FormvalidationserviceService.validDateValidator()]],
@@ -614,7 +614,7 @@ export class IPBillingComponent implements OnInit {
                 payTmtranNo: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
                 payTmdate: ['1999-01-01'],
                 tdsAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-                unitId:[this.accountService.currentUserValue.user.unitId],
+                unitId: [this.accountService.currentUserValue.user.unitId],
                 wfAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]]
             }),
             // BIll insert
@@ -662,7 +662,7 @@ export class IPBillingComponent implements OnInit {
         return this.draftSaveform.get('tdrBillDet') as FormArray;
     }
     //service selected data
-    getselectObj(obj) { 
+    getselectObj(obj) {
         this.Serviceform.patchValue({
             price: obj.classRate
         })
@@ -710,20 +710,20 @@ export class IPBillingComponent implements OnInit {
             if (formValue.doctorId)
                 doctorid = this.Serviceform.get("doctorId")?.value ?? 0;
         }
- 
-        this.Serviceform.get("opdIpdId").setValue(this.opD_IPD_Id) 
-        this.Serviceform.get("wardId").setValue(this.WardId) 
+
+        this.Serviceform.get("opdIpdId").setValue(this.opD_IPD_Id)
+        this.Serviceform.get("wardId").setValue(this.WardId)
         this.Serviceform.get("bedId").setValue(this.BedId)
-         this.Serviceform.get("isPathology").setValue(formValue.serviceName?.isPathology ?? 0)
+        this.Serviceform.get("isPathology").setValue(formValue.serviceName?.isPathology ?? 0)
         this.Serviceform.get("isRadiology").setValue(formValue.serviceName?.isRadiology ?? 0)
         this.Serviceform.get("isPackage").setValue(formValue.serviceName?.isPackage ?? 0)
         this.Serviceform.get("serviceId").setValue(formValue.serviceName?.serviceId)
         this.Serviceform.get("serviceName").setValue(formValue.serviceName?.serviceName)
-        this.Serviceform.get("serviceCode").setValue(formValue.serviceName?.companyCode ?? '') 
+        this.Serviceform.get("serviceCode").setValue(formValue.serviceName?.companyCode ?? '')
         this.Serviceform.get("isInclusionExclusion").setValue(formValue.serviceName?.isInclusionOrExclusion ?? false)
         this.Serviceform.get("doctorId")?.enable();
         this.Serviceform.get("doctorId").setValue(doctorid ?? 0)
-        this.Serviceform.get("tariffId").setValue(this.TariffId) 
+        this.Serviceform.get("tariffId").setValue(this.TariffId)
 
         console.log(this.Serviceform.get('doctorId'));
         console.log(this.Serviceform.get('doctorId')?.enabled);
@@ -959,7 +959,7 @@ export class IPBillingComponent implements OnInit {
         const Exclusionlist = this.chargeslist.filter(i => i.isInclusionExclusion === true)
         const Inclusionlist = this.chargeslist.filter(i => i.isInclusionExclusion !== true)
         this.ExclusionAmt = Exclusionlist.reduce((sum, { netAmount }) => sum += +(netAmount || 0), 0);
-        this.InclusionAmt = Inclusionlist.reduce((sum, { netAmount }) => sum += +(netAmount || 0), 0);  
+        this.InclusionAmt = Inclusionlist.reduce((sum, { netAmount }) => sum += +(netAmount || 0), 0);
     }
     //Admin Charge Check Box On 
     isAdminDisabled: boolean = false;
@@ -1191,7 +1191,7 @@ export class IPBillingComponent implements OnInit {
         this.IPBillMyForm.get('bill.cashCounterId')?.setValue(this.IpbillFooterform.get('CashCounterID')?.value)
         this.IPBillMyForm.get('bill.totalAdvanceAmount')?.setValue(this.TotalAdvanceAmt)
         this.IPBillMyForm.get('bill.speTaxPer')?.setValue(this.IpbillFooterform.get('AdminPer').value || 0)
-        this.IPBillMyForm.get('bill.speTaxAmt')?.setValue(this.IpbillFooterform.get('AdminAmt').value) 
+        this.IPBillMyForm.get('bill.speTaxAmt')?.setValue(this.IpbillFooterform.get('AdminAmt').value)
 
 
         if (this.IPBillMyForm.valid && this.dataSource.data.length > 0) {
@@ -1278,27 +1278,27 @@ export class IPBillingComponent implements OnInit {
                         this._IpSearchListService.InsertIPBilling(this.IPBillMyForm.value).subscribe(response => {
                             this._matDialog.closeAll();
                             this.viewgetBillReportPdf(response);
-                           // this.getWhatsappshareIPFinalBill(response, this.vMobileNo)
+                            // this.getWhatsappshareIPFinalBill(response, this.vMobileNo)
                         });
                     }
                 });
             }
         } else {
             let invalidFields = [];
-             if (this.IPBillMyForm.invalid) {
-                        for (const controlName in this.IPBillMyForm.controls) {
-                          const control = this.IPBillMyForm.get(controlName); 
-                          if (control instanceof FormGroup || control instanceof FormArray) {
-                            for (const nestedKey in control.controls) {
-                              if (control.get(nestedKey)?.invalid) {
+            if (this.IPBillMyForm.invalid) {
+                for (const controlName in this.IPBillMyForm.controls) {
+                    const control = this.IPBillMyForm.get(controlName);
+                    if (control instanceof FormGroup || control instanceof FormArray) {
+                        for (const nestedKey in control.controls) {
+                            if (control.get(nestedKey)?.invalid) {
                                 invalidFields.push(`IP Bill detail Data : ${controlName}.${nestedKey}`);
-                              }
                             }
-                          } else if (control?.invalid) {
-                            invalidFields.push(`IP Bill Form: ${controlName}`);
-                          }
                         }
-                      }
+                    } else if (control?.invalid) {
+                        invalidFields.push(`IP Bill Form: ${controlName}`);
+                    }
+                }
+            }
             if (invalidFields.length > 0) {
                 invalidFields.forEach(field => {
                     this.toastr.warning(`Please Check this field "${field}" is invalid.`, 'Warning',
@@ -1601,12 +1601,12 @@ export class IPBillingComponent implements OnInit {
     viewgetDraftBillservicewiseReportPdf(Id) {
         this.commonService.Onprint("AdmissionID", Id, "IpDraftBillGroupWise");
     }
-        //For draft print  A5
+    //For draft print  A5
     viewgetDraftBillclasswiseA5PageReportPdf(Id) {
         this.commonService.Onprint("AdmissionID", Id, "IpDraftBillClassWiseA5");
     }
 
-        //For draft print   A5
+    //For draft print   A5
     viewgetDraftBillservicewiseA5PageReportPdf(Id) {
         this.commonService.Onprint("AdmissionID", Id, "IpDraftBillGroupWiseA5");
     }
@@ -1933,6 +1933,17 @@ export class Bill {
     AdvanceUsedAmount: any;
     PatientName: any;
 
+
+    billTime: any;
+    pbillNo: any;
+    regNo: any;
+    patientName: any;
+    totalAmt: any;
+    concessionAmt: any;
+    netPayableAmt: any;
+    balanceAmt: any;
+
+
     constructor(InsertBillUpdateBillNoObj) {
         this.AdmissionID = InsertBillUpdateBillNoObj.AdmissionID || 0;
         this.BillNo = InsertBillUpdateBillNoObj.BillNo || 0;
@@ -1969,6 +1980,18 @@ export class Bill {
         this.CardPayAmount = InsertBillUpdateBillNoObj.CardPayAmount || '';
         this.AdvanceUsedAmount = InsertBillUpdateBillNoObj.AdvanceUsedAmount || '';
         this.PatientName = InsertBillUpdateBillNoObj.PatientName || ''
+
+
+        this.billTime = InsertBillUpdateBillNoObj.billTime || '';
+        this.pbillNo = InsertBillUpdateBillNoObj.pbillNo || '0';
+        this.regNo = InsertBillUpdateBillNoObj.regNo || '';
+        this.patientName = InsertBillUpdateBillNoObj.patientName || '';
+        this.totalAmt = InsertBillUpdateBillNoObj.totalAmt || '';
+        this.concessionAmt = InsertBillUpdateBillNoObj.concessionAmt || ''
+        this.netPayableAmt = InsertBillUpdateBillNoObj.netPayableAmt || '';
+        this.balanceAmt = InsertBillUpdateBillNoObj.balanceAmt || ''
+
+
     }
 
 }

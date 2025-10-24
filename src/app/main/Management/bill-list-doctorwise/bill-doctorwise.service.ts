@@ -71,7 +71,7 @@ public additionpayInsert(Param) {
     return this._httpClient.PostData("DoctorPAy/Insert",Param) 
   } 
    public Updatesharedoccharges(Param) {
-    return this._httpClient.PostData("DoctorShareProcess/DoctorShareProcess",Param) 
+    return this._httpClient.PostData("DoctorPAy/ShareDocAddCharges",Param) 
   } 
   
 }

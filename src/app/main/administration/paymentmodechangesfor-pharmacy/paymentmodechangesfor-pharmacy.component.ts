@@ -371,7 +371,7 @@ export class PaymentPharmayList {
   addBy: any
   chequeDate: any
   cardDate: any
-  // PaidAmount:any;
+  oP_IP_Type:any;
   
 
   constructor(PaymentPharmayList) {
@@ -412,7 +412,7 @@ export class PaymentPharmayList {
       this.ChequeAmt = PaymentPharmayList.ChequeAmt || 0;
       this.CardAmt = PaymentPharmayList.CardAmt || 0;
       this.NeftPay = PaymentPharmayList.NeftPay || 0;
-      // this.PaidAmount = PaymentPharmayList.PaidAmount || 0;
+      this.oP_IP_Type = PaymentPharmayList.oP_IP_Type || 1;
     }
   }
 }

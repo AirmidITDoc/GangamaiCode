@@ -62,7 +62,7 @@
                     </ng-template>
 
 
-                    <airmid-table [gridConfig]="gridConfig" class="content" #opBrowse>
+                    <airmid-table [gridConfig]="gridConfig" class="content" #ipBrowse>
                         <ng-container filters>
                             <form [formGroup]="_DoctorShareService.UserFormGroup">
 
@@ -115,8 +115,6 @@
                                 Doctor Pay Summary List
                             </span>
                         </div>
-
-
                     </div>
 
                 </div>
@@ -124,7 +122,7 @@
 
                 <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
 
-                    <airmid-table [gridConfig]="gridConfig1" #grid1 class="content">
+                    <airmid-table [gridConfig]="gridConfig1"  class="content" #summary>
                         <ng-container filters>
 
                             <form [formGroup]="_DoctorShareService.DocSummaryfilterForm">

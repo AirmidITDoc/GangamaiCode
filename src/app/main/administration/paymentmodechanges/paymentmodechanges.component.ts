@@ -145,7 +145,6 @@ export class PaymentmodechangesComponent implements OnInit {
     if (event == 'ReceiptNo')
       this._PaymentmodechangesService.UseFormGroup.get('ReceiptNo').setValue("")
 
-    // this.onChangeopd();
     this.onNameFieldChange();
   }
 
@@ -353,7 +352,7 @@ export class PaymentmodechangesComponent implements OnInit {
 
     const selectedValue = event.value;
     if (selectedValue === '0' || selectedValue === 0) {
-      this.onChangeopd();
+       this.onChangeopd();
     } else if (selectedValue === '1' || selectedValue === 1) {
       this.onChangeipd();
     } else if (selectedValue === '2' || selectedValue === 2) {

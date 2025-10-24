@@ -1,4 +1,4 @@
-import { Component, TemplateRef, ViewChild } from '@angular/core';
+import { Component, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormGroup, UntypedFormBuilder } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { gridColumnTypes } from 'app/core/models/tableActions';
@@ -17,11 +17,14 @@ import { DoctorAddonpayComponent } from './doctor-addonpay/doctor-addonpay.compo
 import { ProcessDoctorshareComponent } from './process-doctorshare/process-doctorshare.component';
 import { PatientBilldetailComponent } from './patient-billdetail/patient-billdetail.component';
 import Swal from 'sweetalert2';
+import { fuseAnimations } from '@fuse/animations';
 
 @Component({
   selector: 'app-bill-list-doctorwise',
   templateUrl: './bill-list-doctorwise.component.html',
-  styleUrls: ['./bill-list-doctorwise.component.scss']
+  styleUrls: ['./bill-list-doctorwise.component.scss'],
+      encapsulation: ViewEncapsulation.None,
+      animations: fuseAnimations
 })
 export class BillListDoctorwiseComponent {
 
@@ -57,8 +60,15 @@ export class BillListDoctorwiseComponent {
   @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
 
 
-  @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
-  @ViewChild(AirmidTableComponent) grid1: AirmidTableComponent;
+  // @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+  // @ViewChild(AirmidTableComponent) grid1: AirmidTableComponent;
+
+    @ViewChild('ipBrowse', { static: false }) grid: AirmidTableComponent;
+    @ViewChild('summary', { static: false }) grid1: AirmidTableComponent;
+
+
+
+
   constructor(
     public _DoctorShareService: BillDoctorwiseService,
     public datePipe: DatePipe,
@@ -145,8 +155,8 @@ debugger
       sortField: "DoctorId",
       sortOrder: 0,
       filters: [
-        { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.StartsWith },
-        { fieldName: "ToDate", fieldValue: this.toDate, opType: OperatorComparer.StartsWith },
+        { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.GreaterThanOrEqual },
+        { fieldName: "ToDate", fieldValue: this.toDate, opType: OperatorComparer.GreaterThanOrEqual },
         { fieldName: "DoctorId", fieldValue: this.DoctorId, opType: OperatorComparer.Equals },
         { fieldName: "PBillNo", fieldValue: this.pBillNo, opType: OperatorComparer.Equals },
         { fieldName: "OP_IP_TYpe", fieldValue: this.opipType, opType: OperatorComparer.Equals },
@@ -154,6 +164,8 @@ debugger
     }
     this.grid.gridConfig = this.gridConfig;
     this.grid.bindGridData();
+
+      
   }
   ///Summary pay
   allColumns1 = [
@@ -168,8 +180,6 @@ debugger
     { fieldName: "FromDate", fieldValue: this.fromDate1, opType: OperatorComparer.GreaterThanOrEqual },
     { fieldName: "ToDate", fieldValue: this.toDate1, opType: OperatorComparer.GreaterThanOrEqual },
     { fieldName: "DoctorId", fieldValue: "0", opType: OperatorComparer.Equals },
-
-
 
   ]
   gridConfig1: gridModel = {
@@ -300,7 +310,7 @@ debugger
     const dialogRef = this._matDialog.open(DoctorAddonpayComponent,
       {
         maxWidth: "85vw",
-        height: "65%",
+        height: "70%",
         width: "100%",
       });
     dialogRef.afterClosed().subscribe(result => {
@@ -324,7 +334,7 @@ debugger
     const dialogRef = this._matDialog.open(PatientBilldetailComponent,
       {
         maxWidth: "70vw",
-        height: '700px',
+        height: '900px',
         width: '100%',
         data: element
       });

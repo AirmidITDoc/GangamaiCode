@@ -1,4 +1,4 @@
-import { Component, Inject, TemplateRef, ViewChild } from '@angular/core';
+import { Component, Inject, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatDrawer } from '@angular/material/sidenav';
@@ -11,11 +11,14 @@ import { BillDoctorwiseService } from '../bill-doctorwise.service';
 import { DatePipe } from '@angular/common';
 import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
 import { gridColumnTypes } from 'app/core/models/tableActions';
+import { fuseAnimations } from '@fuse/animations';
 
 @Component({
   selector: 'app-patient-billdetail',
   templateUrl: './patient-billdetail.component.html',
-  styleUrls: ['./patient-billdetail.component.scss']
+  styleUrls: ['./patient-billdetail.component.scss'],
+  encapsulation: ViewEncapsulation.None,
+  animations: fuseAnimations
 })
 export class PatientBilldetailComponent {
   registerObj: any;
@@ -23,7 +26,7 @@ export class PatientBilldetailComponent {
   opipType = "1"
   DoctorId = "0"
   doctorName: any;
-sIsLoading: string = '';
+  sIsLoading: string = '';
   displayedColumns: string[] = [
 
     'serviceName',
@@ -66,7 +69,7 @@ sIsLoading: string = '';
 
     if (this.data) {
       console.log(this.data)
-      this.pBillNo = this.data.pbillNo
+      this.pBillNo = this.data.billNo
       // this.fromDate = this.data.BillDate
       // this.toDate=this.data.pbillNo
       this.opipType = this.data.opdipdtype
@@ -85,7 +88,7 @@ sIsLoading: string = '';
       "filters": [
         {
           "fieldName": "BillNo",
-          "fieldValue": "228677",//String(this.pBillNo),
+          "fieldValue": String(this.pBillNo),//"228677",//
           "opType": "Equals"
         },
         {
@@ -99,9 +102,29 @@ sIsLoading: string = '';
     }
     this._DoctorShareService.getBilldetailList(vdata).subscribe(data => {
       this.Billdetaildatasource.data = data.data as BillListForDocShrList[]
+      console.log(this.Billdetaildatasource.data)
+      if (this.Billdetaildatasource.data.length > 0)
+        this.getsumdetail()
     })
   }
 
+  TotAmt = 0
+  TotconAmt = 0
+  TotNetamt = 0
+  TotDocAmt = 0
+  TothospitalAmt = 0
+  count = 0
+
+  getsumdetail() {
+    this.count = this.Billdetaildatasource.data.length
+    this.TotAmt = this.Billdetaildatasource.data.reduce((sum, { totalAmt }) => sum += +(totalAmt || 0), 0);
+    this.TotconAmt = this.Billdetaildatasource.data.reduce((sum, { concessionAmount }) => sum += +(concessionAmount || 0), 0);
+    this.TotNetamt = this.Billdetaildatasource.data.reduce((sum, { netAmount }) => sum += +(netAmount || 0), 0);
+
+    this.TotDocAmt = this.Billdetaildatasource.data.reduce((sum, { docAmt }) => sum += +(docAmt || 0), 0);
+    this.TothospitalAmt = this.Billdetaildatasource.data.reduce((sum, { hospitalAmt }) => sum += +(hospitalAmt || 0), 0);
+
+  }
 
   calculateshare() {
     //  if (!this.MlcInfoFormGroup.invalid) {
@@ -112,12 +135,25 @@ sIsLoading: string = '';
 
     });
     // } 
+
+    
   }
 
   Save() {
-    //  if (!this.MlcInfoFormGroup.invalid) {
-    // console.log(this.MlcInfoFormGroup.value)
-    var data = {}
+      let Billdetsarr = []; 
+        this.Billdetaildatasource.data.forEach((element) => {
+          let BillDetailsInsertObj = {};
+          BillDetailsInsertObj['docAmt'] = element.docAmt;
+             BillDetailsInsertObj['hospitalAmt'] = element.hospitalAmt;
+          BillDetailsInsertObj['chargesId'] = element.chargesId;
+          Billdetsarr.push(BillDetailsInsertObj);
+        });
+
+
+    let data = {
+      "shareDoctAddCharge":Billdetsarr
+    }
+    console.log(data)
     this._DoctorShareService.Updatesharedoccharges(data).subscribe((response) => {
       this._matDialog.closeAll();
     });
@@ -151,6 +187,7 @@ export class BillListForDocShrList {
   docAmt: any;
   hospitalAmt: any;
   addChargeDrName: any;
+  chargesId: any;
 
   constructor(BillListForDocShrList) {
 
@@ -176,7 +213,7 @@ export class BillListForDocShrList {
     this.docAmt = BillListForDocShrList.docAmt || 0;
     this.hospitalAmt = BillListForDocShrList.hospitalAmt || 0;
     this.addChargeDrName = BillListForDocShrList.addChargeDrName || '';
-
+    this.chargesId= BillListForDocShrList.chargesId || 0;
   }
 }
 

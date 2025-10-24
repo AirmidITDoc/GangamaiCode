@@ -85,11 +85,7 @@ export class UserDetailComponent implements OnInit {
         }
       }
       console.log(this.registerObj)
-      this.getDoctorlist1();
-      this.getRoleNamelist1();
-      this.getwebRoleNamelist1();
-      this.gePharStoreList1();
-      this.getHospitalList1(); 
+    
     }
   
     createPesonalForm() {
@@ -135,138 +131,7 @@ export class UserDetailComponent implements OnInit {
   
     }
     HospitalList1: any = [];
-    getHospitalList1() {
-      this._UserService.getHospitalCombo().subscribe(data => {
-        this.HospitalList1 = data;
-        this.UserForm.get('HospitalId').setValue(this.HospitalList1[0]);
-      })
-    }
-    gePharStoreList() {
-      var vdata = {
-        Id: this._loggedService.currentUserValue.user.storeId
-      }
-      this._UserService.getLoggedStoreList(vdata).subscribe(data => {
-        this.StoreList = data;
-        this.UserForm.get('StoreId').setValue(this.StoreList[0]);
-      });
-    }
-  
-    getDoctorlist() {
-      this._UserService.getDoctorMasterCombo().subscribe(data => {
-        this.DoctortypecmbList = data;
-        // this.filteredDoctor.next(this.DoctortypecmbList.slice());
-      })
-    }
-    StoreId: any;
-    gePharStoreList1() {
-      this._UserService.getStoreList().subscribe(data => {
-        this.Store1List = data;
-        this.filteredOptionsStorename = this.UserForm.get('StoreId').valueChanges.pipe(
-          startWith(''), 
-          map(value => value ? this._filterStore(value) : this.Store1List.slice()),
-        );
-        if (this.data) {
-        const ddValue = this.Store1List.filter(c => c.StoreId == this.registerObj.StoreId);
-        this.UserForm.get('StoreId').setValue(ddValue[0]);
-        this.UserForm.updateValueAndValidity();
-        return;
-        } 
-      });
-    }
-    private _filterStore(value: any): string[] {
-      if (value) {
-        const filterValue = value && value.StoreName ? value.StoreName.toLowerCase() : value.toLowerCase();
-        return this.Store1List.filter(option => option.StoreName.toLowerCase().includes(filterValue));
-      }
-    }
-    getOptionTextStoreName(option) {
-      return option && option.StoreName ? option.StoreName : '';
-    }
-    getDoctorlist1() {
-      this._UserService.getDoctorMasterCombo().subscribe(data => {
-        this.DocotorList = data;
-        console.log(this.DocotorList)
-        this.filteredOptionsDoctorName = this.UserForm.get('DoctorId').valueChanges.pipe(
-          startWith(''), 
-          map(value => value ? this._filterDoctor(value) : this.DocotorList.slice()),
-        );
-        if (this.data) {
-          if(this.registerObj.DoctorID){
-            this.docflag = true
-          }
-          const ddValue = this.DocotorList.filter(c => c.DoctorId == this.registerObj.DoctorID);
-          this.UserForm.get('DoctorId').setValue(ddValue[0]);
-          this.UserForm.updateValueAndValidity();
-          return;
-        }
-      });
-    }
-    private _filterDoctor(value: any): string[] {
-      if (value) {
-        const filterValue = value && value.Doctorname ? value.Doctorname.toLowerCase() : value.toLowerCase();
-        return this.DocotorList.filter(option => option.Doctorname.toLowerCase().includes(filterValue));
-      }
-    }
-    getOptionTextDoctorName(option) {
-      return option && option.Doctorname ? option.Doctorname : '';
-    }
-  
-    getRoleNamelist1() {
-      // 
-      this._UserService.getRoleCombobox().subscribe(data => {
-        this.RoleNameList = data;
-        this.filteredOptionsRole = this.UserForm.get('RoleId').valueChanges.pipe(
-          startWith(''), 
-          map(value => value ? this._filterRole(value) : this.RoleNameList.slice()),
-        );
-        if (this.data) {
-          const ddValue = this.RoleNameList.filter(c => c.RoleId == this.registerObj.RoleId);
-          this.UserForm.get('RoleId').setValue(ddValue[0]);
-          this.UserForm.updateValueAndValidity();
-          return;
-        }
-      });
-    }
-  //role master
-    private _filterRole(value: any): string[] {
-      if (value) {
-        const filterValue = value && value.RoleName ? value.RoleName.toLowerCase() : value.toLowerCase();
-  
-        return this.RoleNameList.filter(option => option.RoleName.toLowerCase().includes(filterValue));
-      }
-    }
-    getOptionTextRoleName(option) {
-      return option && option.RoleName ? option.RoleName : '';
-    }
-  
-    getwebRoleNamelist1() {
-      this._UserService.getwebRoleCombobox().subscribe(data => {
-        this.WebRoleNameList = data;
-        
-      this.filteredOptionswebrollName = this.UserForm.get('WebroleId').valueChanges.pipe(
-        startWith(''), 
-        map(value => value ? this._filterwebRole(value) : this.WebRoleNameList.slice()),
-      );
-        console.log(data)
-        if (this.data) {
-          const ddValue = this.WebRoleNameList.filter(c => c.RoleId == this.registerObj.WebRoleId);
-          this.UserForm.get('WebroleId').setValue(ddValue[0]);
-          this.UserForm.updateValueAndValidity();
-          return;
-        }
-      });
-    }
-  //web role master
-    private _filterwebRole(value: any): string[] {
-      if (value) {
-        const filterValue = value && value.RoleName ? value.RoleName.toLowerCase() : value.toLowerCase();
-        return this.WebRoleNameList.filter(option => option.RoleName.toLowerCase().includes(filterValue));
-      }
-    }
-  
-    getOptionTextwebroleName(option) {
-      return option && option.RoleName ? option.RoleName : '';
-    }
+   
     chkdisclimit(){
       if(this.UserForm.get('DiscLimitPer').value > 100){
         this.toastr.warning('Enter Discount % lessthan 100 or graterthan 0', 'warning !', {
@@ -503,19 +368,19 @@ export class UserDetailComponent implements OnInit {
   
         console.log(m_data);
   
-        this._UserService.UserInsert(m_data).subscribe(response => {
-          console.log(response);
-          if (response) {
-            this.toastr.success('User Detail Save', 'Save !', {
-              toastClass: 'tostr-tost custom-toast-success',
-            });
-          } else {
-            this.toastr.error('API Error!', 'Error !', {
-              toastClass: 'tostr-tost custom-toast-error',
-            });
-          }
-          this._matDialog.closeAll();
-        });
+        // this._UserService.UserInsert(m_data).subscribe(response => {
+        //   console.log(response);
+        //   if (response) {
+        //     this.toastr.success('User Detail Save', 'Save !', {
+        //       toastClass: 'tostr-tost custom-toast-success',
+        //     });
+        //   } else {
+        //     this.toastr.error('API Error!', 'Error !', {
+        //       toastClass: 'tostr-tost custom-toast-error',
+        //     });
+        //   }
+        //   this._matDialog.closeAll();
+        // });
       }
       else {
   
@@ -561,18 +426,18 @@ export class UserDetailComponent implements OnInit {
   
         console.log(m_data1);
   
-        this._UserService.UserUpdate(m_data1).subscribe(response => {
-          console.log(response);
-          if (response) {
-            this.toastr.success('User Detail Update', 'Updated !', {
-              toastClass: 'tostr-tost custom-toast-success',
-            });
-          } else {
-            this.toastr.error('API Error!', 'Error !', {
-              toastClass: 'tostr-tost custom-toast-error',
-            });
-          }
-        });
+        // this._UserService.UserUpdate(m_data1).subscribe(response => {
+        //   console.log(response);
+        //   if (response) {
+        //     this.toastr.success('User Detail Update', 'Updated !', {
+        //       toastClass: 'tostr-tost custom-toast-success',
+        //     });
+        //   } else {
+        //     this.toastr.error('API Error!', 'Error !', {
+        //       toastClass: 'tostr-tost custom-toast-error',
+        //     });
+        //   }
+        // });
   
         this._matDialog.closeAll();
       }

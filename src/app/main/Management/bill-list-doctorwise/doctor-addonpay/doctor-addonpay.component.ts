@@ -163,31 +163,31 @@ doctorName=''
   getValidationMessages() {
     return {
       billno: [
-        { name: "required", Message: "billno is required" }
+        { name: "required", Message: "Billno is required" }
       ],
       PatientName: [
         { name: "required", Message: "PatientName is required" }
       ],
       companyId: [
-        { name: "required", Message: "companyId is required" }
+        // { name: "required", Message: "company is required" }
       ],
       serviceId: [
-        { name: "required", Message: "serviceId is required" }
+        { name: "required", Message: "service is required" }
       ],
       qty: [
-        { name: "required", Message: "qty is required" }
+        { name: "required", Message: "Qty is required" }
       ],
       total: [
-        { name: "required", Message: "total is required" }
+        { name: "required", Message: "Total is required" }
       ],
       docamt: [
-        { name: "required", Message: "docamt is required" }
+        { name: "required", Message: "Docamt is required" }
       ],
       price: [
-        { name: "required", Message: "serviceId is required" }
+        { name: "required", Message: "Price is required" }
       ],
       docId: [
-        { name: "required", Message: "docId is required" }
+        { name: "required", Message: "Doctor Name is required" }
       ],
     };
   }

@@ -70,6 +70,7 @@ export class EditPaymentComponent implements OnInit {
   vchequeNo: any;
   vNeftno: any;  
   vBillNo:any;
+  opiptype=1
   autocompleteModeBankName: string = "Bank";
   @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
   constructor(
@@ -91,10 +92,7 @@ export class EditPaymentComponent implements OnInit {
       this.vbalanceAmt = this.registerObj.paidAmount;
       this.vPaidAmount = this.registerObj.paidAmount;
       this.vBillNo=this.registerObj.billNo || 0;
-      
-// pBillNo advanceId
-
-
+      this.opiptype=this.registerObj.opdipdtype || 1
     }
 
     if (this.registerObj.cashPayAmount > 0) {
@@ -270,7 +268,9 @@ export class EditPaymentComponent implements OnInit {
       this._Paymentmodesevice.paymentInsertform.get('chAdvanceUsedAmount').setValue(this.registerObj.chAdvanceUsedAmount || 0)
       this._Paymentmodesevice.paymentInsertform.get('chNeftpayAmount').setValue(this.registerObj.chNeftpayAmount || 0)
       this._Paymentmodesevice.paymentInsertform.get('chPayTmamount').setValue(this.registerObj.chPayTmamount || 0)
-            this._Paymentmodesevice.paymentInsertform.get('tranMode').setValue(this.registerObj.tranMode ||"HOSP")
+      this._Paymentmodesevice.paymentInsertform.get('tranMode').setValue(this.registerObj.tranMode ||"HOSP")
+
+       this._Paymentmodesevice.paymentInsertform.get('opdipdtype').setValue(this.opiptype)
 
     
        
@@ -284,8 +284,11 @@ export class EditPaymentComponent implements OnInit {
 
       console.log(this._Paymentmodesevice.paymentInsertform.value);
       this._Paymentmodesevice.PaymentUpdate(this._Paymentmodesevice.paymentInsertform.value).subscribe(response => {
+        if(response){
           this.dialogRef.close();
+
           this.Reset();
+        }
       });
     }else{
       this.toastr.error('Please check Balance Amount', 'Check !', {
@@ -470,6 +473,45 @@ getValidationMessages(){
     this._Paymentmodesevice.paymentInsertform.get('Neftdate').setValue('1900-01-01')
     this._Paymentmodesevice.paymentInsertform.get('PayTmdate').setValue('1900-01-01')
     this._Paymentmodesevice.paymentInsertform.get('tdsamount').setValue(0)
+
+     this._Paymentmodesevice.paymentInsertform.get('ChequePayAmount').setValue('0')
+    this._Paymentmodesevice.paymentInsertform.get('ChequeNo').setValue('')
+    this._Paymentmodesevice.paymentInsertform.get('BankName').setValue('')
+
+      this._Paymentmodesevice.paymentInsertform.get('ChequeDate').setValue('1900-01-01')
+    this._Paymentmodesevice.paymentInsertform.get('CardBankName').setValue('')
+    this._Paymentmodesevice.paymentInsertform.get('NeftbankMaster').setValue('')
+
+      this._Paymentmodesevice.paymentInsertform.get('PayTmtranNo').setValue('0')
+    this._Paymentmodesevice.paymentInsertform.get('PayTmdate').setValue('1900-01-01')
+    // this._Paymentmodesevice.paymentInsertform.get('BankName').setValue('')
+
+    
+      // ChequeDate: '',
+      // CardPayAmount: '',
+      // CardNo: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+      // CardBankName: '',
+      // CardDate: '',
+      // AdvanceUsedAmount: '',
+      // AdvanceId: '',
+      // RefundId: '',
+      // TransactionType: '',
+      // Remark: '',
+      // AddBy: 0,
+      // IsCancelled: false,
+      // IsCancelledBy: 0,
+      // IsCancelledDate: '1900-01-01',
+      // NeftpayAmount: '',
+      // Neftno: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+      // NeftbankMaster: '',
+      // Neftdate: "1900-01-01",
+      // PayTmamount: '',
+      // PayTmtranNo: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+      // PayTmdate: "1900-01-01",
+
+
+
+
   }
   amount:any = 0;
  

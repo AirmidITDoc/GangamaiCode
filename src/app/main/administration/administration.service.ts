@@ -1,19 +1,22 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FormGroup, UntypedFormBuilder } from '@angular/forms';
+import { ApiCaller } from 'app/core/services/apiCaller';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AdministrationService {
   myDocShrformSearch: FormGroup;
-  constructor(private _httpClient: HttpClient, private _formBuilder: UntypedFormBuilder,
-    ) {
-      this.myDocShrformSearch = this.BillListForDocShr();
-     }
+  UserFormGroup: FormGroup;
+  constructor(private _httpClient: ApiCaller, private _formBuilder: UntypedFormBuilder,
+  ) {
+    this.myDocShrformSearch = this.BillListForDocShr();
+    this.UserFormGroup=this.createUserFormGroup()
+  }
 
 
-     
+
   BillListForDocShr(): FormGroup {
     return this._formBuilder.group({
 
@@ -25,73 +28,59 @@ export class AdministrationService {
 
     });
   }
-    //Hospital Combobox List
-    public getHospitalCombo() {
-      return this._httpClient.post("Generic/GetByProc?procName=rtrv_UnitMaster_1", {})
-    }
-  public getLoggedStoreList(Param) {
-    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StoreNameForLogedUser_Conditional", Param);
+//Admin task
+    createUserFormGroup() {
+    return this._formBuilder.group({
+      startdate: [(new Date()).toISOString()],
+      enddate: [(new Date()).toISOString()],
+      RegNo: '',
+      FirstName: '',
+      LastName: '',
+      PBillNo: '',
+      OP_IP_Type: ['0'],
+      IsIntrimOrFinal:"2"
+    })
   }
-  public getUserList(employee) {
-    return this._httpClient.post("Generic/GetByProc?procName=RtrvUserList", employee)
-  }
-  public ConfigSettingParamList() {
-    // ;
-    return this._httpClient.post(`Generic/GetByProc?procName=SS_ConfigSettingParam`, {})
-    // console.log(this.configSettingParam);
-  };
-  public SchedulerParamList() {
-    // ;
-    return this._httpClient.post(`Generic/GetByProc?procName=ss_get_schedulerList`, {})
 
-  };
-  public ConfigUpdate(employee) {
-    return this._httpClient.post("OutPatient/UpdateConfigSetting", employee);
+  public getUserList(employee) {
+    return this._httpClient.PostData("Generic/GetByProc?procName=RtrvUserList", employee)
   }
-  public getOPDBillingCombo() {
-    return this._httpClient.post("Generic/GetByProc?procName=RetrieveCashCounterMasterForCombo", {})
+  public getRegistraionById(Id) {
+    return this._httpClient.GetData("OutPatient/" + Id);
   }
-    //Patient Type Combobox List
-    public getPatientTypeCombo() {
-      return this._httpClient.post("Generic/GetByProc?procName=RetrievePatientTypeMasterForCombo", {})
-    }
-    public getPathDepartmentCombo() {
-      return this._httpClient.post("Generic/GetByProc?procName=RetrieveDocDepartmentMasterForCombo", {})
-    }
-    public getPathologistDoctorCombo(vdata: { Id: any; }) {
-      return this._httpClient.post("Generic/GetByProc?procName=Retrieve_PathologistDoctorMasterForCombo", {})
-    }
-    public getRoleCombobox() {
-      return this._httpClient.post("Generic/GetByProc?procName=Retrieve_RoleMasterForCombo", {})
-    }
+ public OpCancelBill(param) {
     
-    public getStoreCombo() {
-      return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StoreNameForCombo", {})
-    }
-    public getDoctorMasterCombo() {
-      return this._httpClient.post("Generic/GetByProc?procName=RetrieveConsultantDoctorMasterForCombo", {})
-    }
-    
-    public getwebRoleCombobox() {
-      return this._httpClient.post("Generic/GetByProc?procName=m_rtrv_WebRoleList", {})
-    }
-     
-    public UserInsert(employee) {
-      return this._httpClient.post("Administration/InsertLoginUser", employee);
-    }
-    
-    public UserUpdate(employee) {
-      return this._httpClient.post("Administration/UpdateLoginUser", employee);
-    }
-    public getStoreList(){
-      return this._httpClient.post("Generic/GetByProc?procName=Retrieve_ToStoreName",{});
-    }
-     // Doctor Master Combobox List
-  public getAdmittedDoctorCombo() {
-    return this._httpClient.post("Generic/GetByProc?procName=RetrieveConsultantDoctorMasterForCombo", {})
+    return this._httpClient.PutData("BillCancellation/OPCancelBill", param) 
   }
- //Doctor Share
- public getBillListForDocShrList(employee) {
-  return this._httpClient.post("Generic/GetByProc?procName=Rtrv_BillListForDocShr", employee)
+  public IpCancelBill(param) {    
+    return this._httpClient.PutData("BillCancellation/IPCancelBill", param) 
+  }
+
+  public SaveCancelAdvance(param) {    
+    return this._httpClient.PostData("Advance/Cancel", param) 
+  }
+  
+  public getDateTimeChangeBill(m_data) {
+    return this._httpClient.PutData("Administration/UpdateBilldatetime" + m_data.billNo,m_data);
 }
+
+  public OPBillDetailList(m_data) {
+    return this._httpClient.PostData("OPBill/BrowseOPDBillPagiList",m_data);
+}
+
+  public IPBillDetailList(m_data) {
+    return this._httpClient.PostData("Billing/BrowseIPBillList",m_data);
+}
+  public OPPaymentList(m_data) {
+    return this._httpClient.PostData("OPBill/BrowseOPDBillPagiList",m_data);
+}  
+  public IPPaymentList(m_data) {
+    return this._httpClient.PostData("paymentpharmacy/IPDPaymentReceiptList",m_data);
+} 
+public AdvanceList(m_data) {
+    return this._httpClient.PostData("Advance/BrowseAdvanceList",m_data);
+}  public refundList(m_data) {
+    return this._httpClient.PostData("Billing/BrowseIPRefundlist",m_data);
+}
+
 }

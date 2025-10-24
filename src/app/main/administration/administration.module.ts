@@ -11,6 +11,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTreeModule } from '@angular/material/tree';
 import { RouterModule, Routes } from '@angular/router';
 import { SharedModule } from '../shared/shared.module';
+import { NewAdministrativeTaskComponent } from './new-administrative-task/new-administrative-task.component';
 
 
 const appRoutes: Routes = [
@@ -38,9 +39,13 @@ const appRoutes: Routes = [
     path: "reportconfiguration",
     loadChildren: () => import("./report-configuration/report-configuration.module").then((m) => m.ReportConfigurationModule),
   },
-   {
+  //  {
+  //   path:"dischargecancel",
+  //   loadChildren: () => import("./discharge-cancel/discharge-cancel.module").then((m) => m.DischargeCancelModule),
+  //  },
+  {
     path:"dischargecancel",
-    loadChildren: () => import("./discharge-cancel/discharge-cancel.module").then((m) => m.DischargeCancelModule),
+    loadChildren: () => import("./new-administrative-task/administrativetask.module").then((m) => m.AdministrativetaskModule),
    },
    {
     path:"paymentmodechanges",
@@ -83,6 +88,8 @@ const appRoutes: Routes = [
 
 @NgModule({
   declarations: [ 
+    
+  
     
   ],
   imports: [
