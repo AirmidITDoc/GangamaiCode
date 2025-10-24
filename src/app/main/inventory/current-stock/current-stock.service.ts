@@ -83,21 +83,21 @@ export class CurrentStockService {
     });
   }
 
-  public getCurrentStockList(Param){//Retrieve_Storewise_CurrentStock
-    return this._httpClient.post("Generic/GetByProc?procName=m_Retrieve_Storewise_CurrentStock",Param);
-  }
-  public getLoggedStoreList(Param){
-    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StoreNameForLogedUser_Conditional",Param);
-  }
-  public getDayWiseStockList(Param){
-    return this._httpClient.post("Generic/GetByProc?procName=m_rptStockReportDayWise",Param)
-  }
-  public getItemWiseStockList(Param){
-    return this._httpClient.post("Generic/GetByProc?procName=m_rpt_ItemWiseSalesReport",Param)
-  }
-  public getIssueWiseItemStockList(Param){
-    return this._httpClient.post("Generic/GetByProc?procName=m_rpt_ItemWisePurchaseReport", Param)
-  }
+  // public getCurrentStockList(Param){//Retrieve_Storewise_CurrentStock
+  //   return this._httpClient.post("Generic/GetByProc?procName=m_Retrieve_Storewise_CurrentStock",Param);
+  // }
+  // public getLoggedStoreList(Param){
+  //   return this._httpClient.post("Generic/GetByProc?procName=Retrieve_StoreNameForLogedUser_Conditional",Param);
+  // }
+  // public getDayWiseStockList(Param){
+  //   return this._httpClient.post("Generic/GetByProc?procName=m_rptStockReportDayWise",Param)
+  // }
+  // public getItemWiseStockList(Param){
+  //   return this._httpClient.post("Generic/GetByProc?procName=m_rpt_ItemWiseSalesReport",Param)
+  // }
+  // public getIssueWiseItemStockList(Param){
+  //   return this._httpClient.post("Generic/GetByProc?procName=m_rpt_ItemWisePurchaseReport", Param)
+  // }
 
   // current stock inside list
   public getItemMovementsummeryList(Param){
@@ -114,13 +114,13 @@ export class CurrentStockService {
   public getSalesList(Param){
     return this._httpClient1.PostData("CurrentStock/SalesList",Param);
   }
-  public getSalesRetrunList(Param){
-    return this._httpClient.post("Generic/GetByProc?procName=m_PHAR_SalesReturnList",Param);
-  }
+  // public getSalesRetrunList(Param){
+  //   return this._httpClient.post("Generic/GetByProc?procName=m_PHAR_SalesReturnList",Param);
+  // }
    
-  public getItemFormList(param){
-    return this._httpClient.post("Generic/GetByProc?procName=m_rtrv_ItemName",param);
-  }
+  // public getItemFormList(param){
+  //   return this._httpClient.post("Generic/GetByProc?procName=m_rtrv_ItemName",param);
+  // }
 
   // 1.2
   public getIssueSummeryList(param){
