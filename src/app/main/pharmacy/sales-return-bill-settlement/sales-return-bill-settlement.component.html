@@ -437,6 +437,20 @@
                                                 </mat-cell>
                                             </ng-container>
 
+                                               
+                                            <!-- <ng-container matColumnDef="discPer">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                    Discount %
+                                                </mat-header-cell>
+                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                    <mat-form-field appearance="fill">
+                                                        <input matInput [(ngModel)]="contact.discper" type="text " (keyup)="getCellCalculation(contact)" min="0"
+                                                            max="100" name="discper" OnlyNumber (keypress)="keyPressDigitDecimalOnly($event)" />
+                                                    </mat-form-field>
+                                                </mat-cell>
+                                            </ng-container> -->
+
+
                                             <ng-container matColumnDef="discAmount">
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
                                                     Discount Amt

@@ -83,7 +83,7 @@
 
                     <ng-template #actionButtonTemplate let-element>
                         <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="4px"> 
-                            <button mat-icon-button matTooltip="Edit" (click)="editPatientName(element)" *ngIf="!element.isEditing">
+                            <button mat-icon-button matTooltip="Edit" (click)="editPatientName(element)" *ngIf="!element.isEditing && element.oP_IP_Type == 2">
                                 <mat-icon>edit</mat-icon>
                             </button> 
                            <button mat-icon-button matTooltip="Save" (click)="savePatientName(element)" *ngIf="element.isEditing">

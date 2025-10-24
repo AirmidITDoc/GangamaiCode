@@ -528,18 +528,18 @@ this._SelseSettelmentservice.SalesBillList(vdata).subscribe((response)=>{
   tableElementChecked(event, element) { 
     if (event.checked) { 
       this.SelectedList.push(element)
-      this.vNetAmount += element.netAmount
-      this.vPaidAmount += element.paidAmount
-      this.vBalanceAmount += Math.round(element.balanceAmount)
+      this.vNetAmount += Math.round(+element.netAmount)
+      this.vPaidAmount += Math.round(+element.paidAmount)
+      this.vBalanceAmount += Math.round(+element.balanceAmount)
     }
     else {
       let index = this.SelectedList.indexOf(element);
       if (index >= 0) {
         this.SelectedList.splice(index, 1);
       }
-      this.vNetAmount -= element.netAmount
-      this.vPaidAmount -= element.paidAmount
-      this.vBalanceAmount -= element.balanceAmount
+      this.vNetAmount -=  Math.round(+element.netAmount)
+      this.vPaidAmount -= Math.round(+element.paidAmount)
+      this.vBalanceAmount -= Math.round(+element.balanceAmount)
     }
     console.log(this.SelectedList)
     this.MutliSettlemForm.patchValue({
@@ -692,7 +692,8 @@ this._SelseSettelmentservice.SalesBillList(vdata).subscribe((response)=>{
     }else{
       this.vglobledisc = false;
       this.MutliSettlemForm.get('globlediscPer').reset();
-      this.MutliSettlemForm.get('ConcessionId').reset();
+      this.MutliSettlemForm.get('ConcessionId').reset(); 
+    this.dssalesbillListMultiple.data = this.chargelist; 
     }
   }
   keyPressCharater(event) {

@@ -1034,7 +1034,9 @@ setTimeout(() => {
         };
         this.GrnHeaderForm.get('grn')?.patchValue(grnPatchData);
         debugger
-        this.GrndetailArray.clear();
+
+         if (this.GrnHeaderForm.valid) {
+                    this.GrndetailArray.clear();
         this.dsItemNameList.data.forEach(item => {
             this.GrndetailArray.push(this.createGrndetailInsert(item));
         });
@@ -1042,10 +1044,9 @@ setTimeout(() => {
         this.dsItemNameList.data.forEach(item => {
             this.ItemArray.push(this.createGrnItemInsert(item));
         });
-        console.log(this.GrnHeaderForm.value)
-        if (this.GrnHeaderForm.valid) {
             if (!this.registerObj?.grnid) {
                 //New GRN Save
+                 console.log(this.GrnHeaderForm.value)
                 this._GRNList.GRNSave(this.GrnHeaderForm.value).subscribe(response => {
                     this.OnReset();
                     this.viewgetGRNReportPdf(response)
@@ -1054,7 +1055,10 @@ setTimeout(() => {
                 // GRN Update
                 this.GrnHeaderForm.get("grn.grnid").setValue(this.registerObj?.grnid)
                 this.GrnHeaderForm.get("grn.grnNumber").setValue(this.registerObj?.grnNumber)
+                this.GrnHeaderForm.get("grn.grndate")?.setValue(this.registerObj?.grndate || '1999-01-01')
+                this.GrnHeaderForm.get("grn.grntime")?.setValue(this.registerObj?.grntime || "12:00")
                 this.GrnHeaderForm.get("grn.updatedBy")?.setValue(this.accountService.currentUserValue.userId)
+                console.log(this.GrnHeaderForm.value)
                 this._GRNList.GRNEdit(this.GrnHeaderForm.value, this.registerObj?.grnid).subscribe(response => {
                     this.viewgetGRNReportPdf(this.registerObj?.grnid)
                     this.OnReset();

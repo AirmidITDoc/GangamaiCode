@@ -157,10 +157,10 @@ ngAfterViewInit() {
     var vdata = {
       Id: this._loggedService.currentUserValue.storeId
     }
-    this._CurrentStockService.getLoggedStoreList(vdata).subscribe(data => {
-      this.StoreList = data;
-      this._CurrentStockService.ItemSummeryFrom.get('StoreId').setValue(this.StoreList[0]);
-    });
+    // this._CurrentStockService.getLoggedStoreList(vdata).subscribe(data => {
+    //   this.StoreList = data;
+    //   this._CurrentStockService.ItemSummeryFrom.get('StoreId').setValue(this.StoreList[0]);
+    // });
   }
   //itemMovement Summery
   getItemMovementSummeryList() {
@@ -335,19 +335,19 @@ ngAfterViewInit() {
       "StoreId": this.registerObj.StoreId || 0
     }
     console.log(vdata)
-    setTimeout(() => {
-      this._CurrentStockService.getSalesRetrunList(vdata).subscribe((data) => {
-        this.dsSalesReturnList.data = data as SalesReturnList[];
-        console.log(this.dsSalesReturnList);
-        this.dsSalesReturnList.sort = this.sort;
-        this.dsSalesReturnList.paginator = this.Lastpaginator;
-        this.sIsLoading = '';
-      },
-        (error) => {
-          this.isLoadingStr = 'no-data';
-        }
-      );
-    }, 1000);
+    // setTimeout(() => {
+    //   this._CurrentStockService.getSalesRetrunList(vdata).subscribe((data) => {
+    //     this.dsSalesReturnList.data = data as SalesReturnList[];
+    //     console.log(this.dsSalesReturnList);
+    //     this.dsSalesReturnList.sort = this.sort;
+    //     this.dsSalesReturnList.paginator = this.Lastpaginator;
+    //     this.sIsLoading = '';
+    //   },
+    //     (error) => {
+    //       this.isLoadingStr = 'no-data';
+    //     }
+    //   );
+    // }, 1000);
   }
   onClose() {
     this._matDialog.closeAll();
