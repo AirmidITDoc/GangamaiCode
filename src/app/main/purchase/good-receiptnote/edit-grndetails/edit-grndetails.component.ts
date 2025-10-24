@@ -53,16 +53,18 @@ export class EditGRNDetailsComponent implements OnInit {
 
       const grnDateStr = this.registerObj?.grndate;
       if (grnDateStr) {
-        const [day, month, year] = grnDateStr.split('/');
+       const [year, month, day] = grnDateStr.split('-'); // <-- fix the order
         const parsedDate = new Date(+year, +month - 1, +day);
         this.EditGRNFrom.get('grndate').setValue(this.datePipe.transform(parsedDate, 'MM/dd/yyyy'));
-      }
-      const InvDateStr = this.registerObj?.grndate;
-      if (InvDateStr) {
-        const [day, month, year] = InvDateStr.split('/');
-        const parsedDate = new Date(+year, +month - 1, +day);
-        this.EditGRNFrom.get('invDate').setValue(this.datePipe.transform(parsedDate, 'MM/dd/yyyy'));
       } 
+
+      const InvDateStr = this.registerObj?.invDate;
+      if (InvDateStr) {
+          const [datePart, timePart] = InvDateStr.split(' '); // "14-10-2025" and "00:00:00"
+        const [day, month, year] = datePart.split('-');
+        const parsedDate = new Date(year, month - 1, day);
+        this.EditGRNFrom.get('invDate').setValue(this.datePipe.transform(parsedDate, 'MM/dd/yyyy'));
+      }  
     }
   }
 CreatebarcodeForm(){

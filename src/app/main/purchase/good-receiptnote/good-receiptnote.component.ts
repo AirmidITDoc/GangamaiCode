@@ -72,7 +72,8 @@ export class GoodReceiptnoteComponent implements OnInit {
             heading: "Status", key: "Status", align: "right", width: 80, sticky: true, type: gridColumnTypes.template,
             template: this.actionButtonTemplate
         },
-        { heading: "Date", key: "grntime", sort: true, align: 'left', emptySign: 'NA', width: 160},
+        { heading: "Date/Time", key: "grndate", sort: true, align: 'left', emptySign: 'NA', width: 90},
+        { heading: "", key: "grntime", sort: true, align: 'left', emptySign: 'NA', width: 90},
         { heading: "GRN No", key: "grnNumber", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "Invoice No", key: "invoiceNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "Supplier Name", key: "supplierName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
