@@ -25,13 +25,14 @@
                 <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="10px">
                     <div fxFlex.gt-sm="100%" fxFlex>
 
-                        <form [formGroup]="GSTAdjustment">
+                        <form [formGroup]="GSTAdjustment" fxLayout="column">
                             <div fxLayout="row" style="font-size: large;font-weight: bold;">
                                 <label style="margin-bottom: 15px;">ItemName :</label>
                                 <span style="padding: 0px 15px 15px 15px;">{{itemname}}</span>
                             </div>
 
-                            <div fxLayout="row" fxLayoutGap="4px">
+                            <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="80%" fxLayout="row wrap"
+                                fxLayoutGap="4px grid">
 
                                 <!-- <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>CGSTPer</mat-label>
@@ -40,10 +41,12 @@
                                         OnlyNUmber>
                                 </mat-form-field> -->
 
-                                <airmid-textbox label="CGSTPer" formControlName="oldCgstper" [formGroup]="GSTAdjustment"
-                                    [validations]="getValidationMessages().CGSTPer" [value]="vCGSTPer"
-                                    [readonly]="true">
-                                </airmid-textbox>
+                                <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <airmid-textbox label="CGSTPer" formControlName="oldCgstper"
+                                        [formGroup]="GSTAdjustment" [validations]="getValidationMessages().CGSTPer"
+                                        [value]="vCGSTPer" [readonly]="true">
+                                    </airmid-textbox>
+                                </div>
 
                                 <!-- <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>SGSTPer</mat-label>
@@ -52,10 +55,12 @@
                                         [(ngModel)]="vSGSTPer" readonly>
                                 </mat-form-field> -->
 
-                                <airmid-textbox label="SGSTPer" formControlName="oldSgstper" [formGroup]="GSTAdjustment"
-                                    [validations]="getValidationMessages().SGSTPer" [value]="vSGSTPer"
-                                    [readonly]="true">
-                                </airmid-textbox>
+                                <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <airmid-textbox label="SGSTPer" formControlName="oldSgstper"
+                                        [formGroup]="GSTAdjustment" [validations]="getValidationMessages().SGSTPer"
+                                        [value]="vSGSTPer" [readonly]="true">
+                                    </airmid-textbox>
+                                </div>
 
                                 <!-- <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>IGSTPer</mat-label>
@@ -64,47 +69,64 @@
                                         [(ngModel)]="vIGSTPer" readonly>
                                 </mat-form-field> -->
 
-                                <airmid-textbox label="IGSTPer" formControlName="oldIgstper" [formGroup]="GSTAdjustment"
-                                    [validations]="getValidationMessages().IGSTPer" [value]="vIGSTPer"
-                                    [readonly]="true">
-                                </airmid-textbox>
+                                <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <airmid-textbox label="IGSTPer" formControlName="oldIgstper"
+                                        [formGroup]="GSTAdjustment" [validations]="getValidationMessages().IGSTPer"
+                                        [value]="vIGSTPer" [readonly]="true">
+                                    </airmid-textbox>
+                                </div>
                             </div>
-                            <div fxLayout="row" fxLayoutGap="4px">
+                            <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="80%" fxLayout="row wrap"
+                                fxLayoutGap="4px grid">
+                                <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <airmid-dropdown label="CGST/SGST" formControlName="cgstper"
+                                        [formGroup]="GSTAdjustment" [mode]="autocompleteModeGSTTypesValues"
+                                        (selectionChange)="getchangegstper($event)"
+                                        (onClearSelection)="getchangegstper($event)">
+                                    </airmid-dropdown>
+                                </div>
 
-                             <!-- (valueChange)="getchangegstper(1,$event,CGST)" -->
-                                <airmid-textbox label="New CGSTPer" formControlName="cgstper" #CGST
+                                <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <airmid-dropdown label="IGST" formControlName="igstper" [formGroup]="GSTAdjustment"
+                                        [mode]="autocompleteModeGSTTypesValues"
+                                        (selectionChange)="getchangeIgstper($event)"
+                                        (onClearSelection)="getchangeIgstper($event)">
+                                    </airmid-dropdown>
+                                </div>
+
+                                <!-- (valueChange)="getchangegstper(1,$event,CGST)" -->
+                                <!-- <airmid-textbox label="New CGSTPer" formControlName="cgstper" #CGST
                                     [formGroup]="GSTAdjustment" [validations]="getValidationMessages().NewCGSTPer"
-                                    [value]="vNewCGSTPer"   [type]="'number'" >
+                                    [value]="vNewCGSTPer" [type]="'number'">
                                 </airmid-textbox>
 
                                 <airmid-textbox label="New SGSTPer" formControlName="sgstper" #SGST
                                     [formGroup]="GSTAdjustment" [validations]="getValidationMessages().NewSGSTPer"
-                                    [value]="vNewSGSTPer"  [type]="'number'" >
+                                    [value]="vNewSGSTPer" [type]="'number'">
                                 </airmid-textbox>
 
                                 <airmid-textbox label="New IGSTPer" formControlName="igstper" #IGST
                                     [formGroup]="GSTAdjustment" [validations]="getValidationMessages().NewIGSTPer"
-                                    [value]="vNewIGSTPer"   [type]="'number'" >
-                                </airmid-textbox>
+                                    [value]="vNewIGSTPer" [type]="'number'">
+                                </airmid-textbox> -->
 
                             </div>
                         </form>
-                          <form [formGroup]="GSTAdjfinal">
-                            <div class="modal-footer-buttons gap-8" fxLayoutAlign="end" style="margin-top: 20px;">
+                        <form [formGroup]="GSTAdjfinal">
+                            <div class="modal-footer-buttons gap-8" fxLayoutAlign="space-between"
+                                style="margin-top: 20px;">
 
-                               
-                                 <airmid-textbox label="OldTotalGSTPer" formControlName="OldTotalGSTPer"
-                                    [formGroup]="GSTAdjfinal" 
-                                    [value]="vOldTotalGSTPer" [readonly]="true">
-                                </airmid-textbox>
+                                <div fxLayout="row" class="gap-8">
+                                    <airmid-textbox label="OldTotalGSTPer" formControlName="OldTotalGSTPer"
+                                        [formGroup]="GSTAdjfinal" [value]="vOldTotalGSTPer" [readonly]="true">
+                                    </airmid-textbox>
 
+                                    <airmid-textbox label="New GSTPer" formControlName="TotalGSTPer"
+                                        [formGroup]="GSTAdjfinal" [value]="vTotalGSTPer" [readonly]="true">
+                                    </airmid-textbox>
+                                </div>
 
-                                      <airmid-textbox label="New GSTPer" formControlName="TotalGSTPer"
-                                    [formGroup]="GSTAdjfinal" 
-                                    [value]="vTotalGSTPer" [readonly]="true">
-                                </airmid-textbox>
-
-                            <div class="sales-footer-buttons gap-8" fxLayout="row" fxLayoutAlign="center center"
+                                <div class="sales-footer-buttons gap-8" fxLayout="row" fxLayoutAlign="center center"
                                     fxFlexAlign="center" style="margin-left: 30px;margin-right: 20px;">
 
                                     <button class="btn btn-primary" (click)="onSubmit()">Save</button>

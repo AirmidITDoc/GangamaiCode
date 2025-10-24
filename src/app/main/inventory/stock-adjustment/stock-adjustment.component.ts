@@ -27,6 +27,7 @@ export class StockAdjustmentComponent implements OnInit {
     hasSelectedContacts: boolean;
     StoreFrom: FormGroup;
     BatchForm: FormGroup;
+    StockUpdateForm: FormGroup;
     screenFromString = 'admission-form';
     autocompletestore: string = "Store";
     autocompleteitem: string = "ItemType";
@@ -42,11 +43,12 @@ export class StockAdjustmentComponent implements OnInit {
     vBalQty: any;
 
     vStatus: any;
+    vItemId: any;
     vStockId: any;
     AddType: any;
     vExpDate: any;
     vPurchaseRate: any;
-    vBatchEdit: any=0;
+    vBatchEdit: any = 0;
     vExpDateEdit: any;
     vDeudQty: any;
     OptionsItemName: any;
@@ -74,8 +76,8 @@ export class StockAdjustmentComponent implements OnInit {
         'purUnitRateWF',
         'landedRate',
         'balanceQty',
-        // 'Addition',
-        // 'Deduction',
+        'Addition',
+        'Deduction',
         'vatPercentage',
         'conversionFactor'
     ];
@@ -93,12 +95,12 @@ export class StockAdjustmentComponent implements OnInit {
     ngOnInit(): void {
         this.StoreFrom = this._StockAdjustmentService.CreateStoreFrom();
         this.BatchForm = this.CreateBatchFrom();
+        this.StockUpdateForm = this.CreateStockUpdateFrom();
         this.StoreFrom.markAllAsTouched();
         this.getStockList();
     }
 
     CreateBatchFrom() {
-
         return this._formBuilder.group({
             batchAdjId: 0,
             storeId: [this.accountService.currentUserValue.user.storeId || 0, [Validators.required, Validators.min(0), this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -111,6 +113,22 @@ export class StockAdjustmentComponent implements OnInit {
             addedBy: [this.accountService.currentUserValue.userId || 0, [Validators.min(0), this._FormvalidationserviceService.onlyNumberValidator()]],
         });
     }
+
+    CreateStockUpdateFrom() {
+        return this._formBuilder.group({
+            storeId: [this.accountService.currentUserValue.user.storeId || 0, [Validators.required, Validators.min(0), this._FormvalidationserviceService.onlyNumberValidator()]],
+            stkId: [this.vStockId || 0, [Validators.required, Validators.min(0), this._FormvalidationserviceService.onlyNumberValidator()]],
+            itemId: [0, [Validators.required, Validators.min(0), this._FormvalidationserviceService.onlyNumberValidator()]],
+            batchNo: [''],
+            adDdType: [0],
+            adDdQty: [0],
+            preBalQty: [0],
+            afterBalQty: [0],
+            addedBy: [this.accountService.currentUserValue.userId || 0, [Validators.min(0), this._FormvalidationserviceService.onlyNumberValidator()]],
+            stockAdgId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]]
+        });
+    }
+
     getStockList() {
         var Param = {
             "first": 0,
@@ -143,7 +161,6 @@ export class StockAdjustmentComponent implements OnInit {
             console.log(this.dsStockAdjList)
         });
     }
-
 
     batchEdit: boolean = false;
 
@@ -316,7 +333,7 @@ export class StockAdjustmentComponent implements OnInit {
         debugger
 
         const chkBatchNo = this.dsStockAdjList.data.some((item) => item.BatchEdit == this.Lastbatch);
-        if (this.vBatchEdit !=0) {
+        if (this.vBatchEdit != 0) {
 
             if ((!this.dsStockAdjList.data.length)) {
                 this.toastr.warning('Data is not available in list ,please add item in the list.', 'Warning !', {
@@ -346,12 +363,12 @@ export class StockAdjustmentComponent implements OnInit {
             //     "addedBy": this.accountService.currentUserValue.userId || 0,
             //     "stkId": this.vStockId || 0
             // }
-debugger
+            debugger
             this.BatchForm.get('oldBatchNo').setValue(this.vBatchNo || '')
             this.BatchForm.get('newBatchNo').setValue(this.vBatchEdit || '')
             this.BatchForm.get('storeId').setValue(this.accountService.currentUserValue.user.storeId || 0)
             this.BatchForm.get('stkId').setValue(this.vStockId || '')
-            this.BatchForm.get('itemId').setValue( this.itemId || 0)
+            this.BatchForm.get('itemId').setValue(this.itemId || 0)
             this.BatchForm.get('addedBy').setValue(this.accountService.currentUserValue.userId || 0)
             // this.BatchForm.get('itemId').setValue(this.StoreFrom.get('ItemID').value.itemId || 0)
 
@@ -372,7 +389,7 @@ debugger
                 toastClass: 'tostr-tost custom-toast-warning',
             });
         }
-        this.vBatchEdit=0
+        this.vBatchEdit = 0
     }
     EditMRP(contact) {
         console.log(contact)
@@ -394,9 +411,10 @@ debugger
         console.log(contact)
         const dialogRef = this._matDialog.open(GSTAdjustmentComponent,
             {
-                maxWidth: "100%",
-                height: '55%',
-                width: '50%',
+                maxWidth: "100vw",
+                maxHeight:'60vh',
+                // height: '55%',
+                width: '55%',
                 data: {
                     Obj: contact,
                 }
@@ -429,12 +447,11 @@ debugger
     }
     disableEditing(row: StockAdjList) {
         row.Addeditable = false;
-    }
-    deduenableEditing(row: StockAdjList) {
-        row.Dedueditable = true;
+        row.AddQty = null;
     }
     dedudisableEditing(row: StockAdjList) {
         row.Dedueditable = false;
+        row.DeduQty = null;
     }
     RateenableEditing(row: StockAdjList) {
         row.Rateeditable = true;
@@ -450,6 +467,12 @@ debugger
     }
     ExpDateenableEditing(row: StockAdjList) {
         row.Expeditable = true;
+    }
+    AddenableEditing(row: StockAdjList) {
+        row.Addeditable = true;
+    }
+    deduenableEditing(row: StockAdjList) {
+        row.Dedueditable = true;
     }
     // ExpDatedisableEditing(row: StockAdjList) {
     //     row.Expeditable = false;
@@ -482,10 +505,125 @@ debugger
 
     onClear() {
         this.StoreFrom.get('ItemID').reset('');
-
         this.dsStockAdjList.data = []
     }
 
+     keyPressAlphanumeric(event) {
+        var inp = String.fromCharCode(event.keyCode);
+        if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
+            return true;
+        } else {
+            event.preventDefault();
+            return false;
+        }
+    }
+    
+    AddQty(contact) {
+        console.log(contact)
+        if (contact.AddQty > 0) {
+            contact.UpdatedQty = parseFloat(contact.balanceQty) + parseFloat(contact.AddQty);
+            this.AddType = 1;
+        } else {
+            contact.UpdatedQty = 0;
+        }
+        this.vUpdatedQty = contact.UpdatedQty;
+        this.vQty = contact.AddQty
+        this.vBatchNo = contact.batchNo
+        this.vItemId = contact.itemId;
+        this.vStockId = contact.stockId;
+        this.vBalQty = contact.balanceQty;
+    }
+
+    DeduQty(contact) {
+        console.log(contact)
+        if (contact.DeduQty > 0) {
+            contact.UpdatedQty = parseFloat(contact.balanceQty) - parseFloat(contact.DeduQty);
+            this.AddType = 0;
+        } else {
+            contact.UpdatedQty = 0;
+        }
+        this.vUpdatedQty = contact.UpdatedQty,
+            this.vQty = contact.DeduQty
+        this.vBatchNo = contact.batchNo
+        this.vItemId = contact.itemId;
+        this.vStockId = contact.stockId;
+        this.vBalQty = contact.balanceQty;
+    }
+
+    onsaveStockAdj() {
+        debugger
+        let isCheckQty: any;
+        if (isCheckQty = this.dsStockAdjList.data.some(item => item.AddQty != '')) {
+            this.OnSaveStockAdjustment();
+        }
+        else if (isCheckQty = this.dsStockAdjList.data.some(item => item.DeduQty < this.vBalQty || item.AddQty == '')) {
+            this.OnSaveStockAdjustment();
+        }
+        else {
+            this.toastr.warning('Please enter a Qty', 'Warning !', {
+                toastClass: 'tostr-tost custom-toast-warning',
+            });
+        }
+    }
+
+    OnSaveStockAdjustment() {
+        debugger
+        if ((!this.dsStockAdjList.data.length)) {
+            this.toastr.warning('Data is not available in list ,please add item in the list.', 'Warning !', {
+                toastClass: 'tostr-tost custom-toast-warning',
+            });
+            return;
+        }
+        this.StockUpdateForm.get('stkId').setValue(this.vStockId)
+        this.StockUpdateForm.get('batchNo').setValue(this.vBatchNo)
+        this.StockUpdateForm.get('itemId').setValue(this.vItemId)
+        this.StockUpdateForm.get('adDdType').setValue(this.AddType)
+        this.StockUpdateForm.get('adDdQty').setValue(this.vQty)
+        this.StockUpdateForm.get('preBalQty').setValue(this.vBalQty)
+        this.StockUpdateForm.get('afterBalQty').setValue(this.vUpdatedQty)
+        console.log(this.StockUpdateForm.value)
+        if (!this.StockUpdateForm.invalid) {
+            console.log(this.StockUpdateForm.value)
+            this._StockAdjustmentService.StckupdateSave(this.StockUpdateForm.value).subscribe((response) => {
+                this.getStockList();
+            });
+        } {
+            let invalidFields = [];
+            if (this.StockUpdateForm.invalid) {
+                for (const controlName in this.StockUpdateForm.controls) {
+                    if (this.StockUpdateForm.controls[controlName].invalid) {
+                        invalidFields.push(`bank Form: ${controlName}`);
+                    }
+                }
+            }
+            if (invalidFields.length > 0) {
+                invalidFields.forEach(field => {
+                    this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
+                    );
+                });
+            }
+
+        }
+        // let insertMRPStockadju = {};
+        // insertMRPStockadju['storeID'] = this.accountService.currentUserValue.user.storeId || 0;
+        // insertMRPStockadju['stkId'] = this.vStockId || 0;
+        // insertMRPStockadju['itemId'] = this._StockAdjustment.userFormGroup.get('ItemID').value.ItemID || 0;
+        // insertMRPStockadju['batchNo'] = this.vBatchNo || '';
+        // insertMRPStockadju['ad_DD_Type'] = this.AddType;
+        // insertMRPStockadju['ad_DD_Qty'] = this.vQty || 0;
+        // insertMRPStockadju['preBalQty'] = this.vBalQty || 0;
+        // insertMRPStockadju['afterBalQty'] = this.vUpdatedQty || 0;
+        // insertMRPStockadju['addedBy'] = this.accountService.currentUserValue.user.id || 0;
+        // insertMRPStockadju['stockAdgId'] = 0;
+
+        // let submitData = {
+        //   'stockAdjustment': insertMRPStockadju,
+        // }
+        // console.log(submitData);
+        // this._StockAdjustment.StockAdjSave(submitData).subscribe(response => {
+        //     this.getStockList();
+        // });
+    }
 
 }
 

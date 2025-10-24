@@ -97,6 +97,9 @@ export class StockAdjustmentService {
   public GSTAdjSave(param){
     return this._httpClient1.PostData('StockAdjustment/GSTUpdate',param);
   }
+  public StckupdateSave(param){//InventoryTransaction/BatchAdjustmen
+    return this._httpClient1.PostData('StockAdjustment/StockUpdate',param);
+  }
 
   // NewApi
   public deactivateTheStatus(m_data) {
