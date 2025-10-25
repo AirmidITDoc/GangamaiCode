@@ -57,7 +57,7 @@ const appRoutes: Routes = [
   },
   {
     path:"discountaftersalesbill",
-    loadChildren: () => import("./discount-after-sales-bill/discount-after-sales-bill.module").then((m)=>m.DiscountAfterSalesBillModule),
+    loadChildren: () => import("./sales-in-patient/sales-in-patient.module").then((m)=>m.SalesInPatientModule),
   },
 ];
 

@@ -334,14 +334,16 @@ editPatientName(row: any) {
   row.isEditing = true;
 } 
 savePatientName(row: any) {
+  debugger
   row.isEditing = false;
   var vadat = { 
-  extMobileNo: row?.extMobileNo,
-  externalPatientName: row?.patientName,
-  extAddress:row?.extAddress,
-  doctorName: row?.doctorName,
-  salesId:row?.salesId,
+  "extMobileNo": row?.extMobileNo || 0,
+  "externalPatientName": row?.patientName || '',
+  "extAddress":row?.extAddress || '',
+  "doctorName": row?.doctorName || '',
+  "salesId":row?.salesId,
   }
+  console.log(vadat)
   this._BrowsSalesBillService.UpdateExtpatientName(vadat).subscribe(Response=>{
   this.grid1.bindGridData();
   })
