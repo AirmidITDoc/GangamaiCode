@@ -18,7 +18,7 @@
 
     <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
 
-        <ng-template #ColorCode let-element>
+        <!-- <ng-template #ColorCode let-element>
             <div fxLayout="row" fxLayoutAlign="center center">
                 <mat-icon *ngIf="element.expType == '0'" matTooltip="Cash" class="pill green-600 s-16">circle</mat-icon>
                 <mat-icon *ngIf="element.expType == '1'" matTooltip="Cheque"
@@ -26,12 +26,25 @@
                 <mat-icon *ngIf="element.expType == '2'" matTooltip="Online"
                     class="pill blue-600 s-16">circle</mat-icon>
             </div>
-        </ng-template>
+        </ng-template> -->
+
+        <ng-template #ColorCode let-element>
+  <div fxLayout="row" fxLayoutAlign="center center" class="symbol-wrapper">
+    <span *ngIf="element.expType == '0'" matTooltip="Cash" class="symbol large-symbol">💵</span>
+    <span *ngIf="element.expType == '1'" matTooltip="Cheque" class="symbol large-symbol">🧾</span>
+    <span *ngIf="element.expType == '2'" matTooltip="Online" class="symbol large-symbol">💳</span>
+  </div>
+</ng-template>
+
 
         <ng-template #actionButtonTemplate let-element>
             <div fxLayout="row" fxLayoutAlign="center center">
+                <button mat-icon-button matTooltip="Edit" (click)="addNewExpenses(element)"
+                    *ngIf="element.isCancelled==false">
+                    <mat-icon>edit</mat-icon>
+                </button>
                 <button mat-icon-button matTooltip="Cancel" (click)="OnCancel(element)"
-                *ngIf="element.isCancelled==false">
+                    *ngIf="element.isCancelled==false">
                     <mat-icon>cancel</mat-icon>
                 </button>
                 <button mat-icon-button matTooltip="Print" (click)="OnPrint(element)">
@@ -54,6 +67,11 @@
                         <airmid-dropdown label="Expenses Name" formControlName="ExpensenId"
                             [(ngModel)]="gridConfig.filters[2].fieldValue" [formGroup]="myFilterform"
                             [mode]="autocompleteExpensen" (selectionChange)="ListView1($event)">
+                        </airmid-dropdown>
+
+                        <airmid-dropdown label="Expenses Category" formControlName="expCategoryId"
+                            [formGroup]="myFilterform" [mode]="autocompleteExpensenCategory"
+                            [(ngModel)]="gridConfig.filters[4].fieldValue" (selectionChange)="ListView2($event)">
                         </airmid-dropdown>
 
                         <mat-radio-group formControlName="expType" name="expType" fxLayout="column"

@@ -26,25 +26,27 @@ export class ExpensesService {
       fromDate: [(new Date()).toISOString()],
       enddate: [(new Date()).toISOString()],
       ExpensenId: [0],
-      expType: ["3"]
+      expType: ["3"],
+      expCategoryId:[0]
     })
   }
 
   CreateMyForm() {
     return this._formBuilder.group({
-      expId: [0, this._FormvalidationserviceService.onlyNumberValidator()],
+      expID: [0, this._FormvalidationserviceService.onlyNumberValidator()],
       expDate: ['', [Validators.required]],
       expTime: ['', [Validators.required]],
+      expHeadId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      expCategoryId:[0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       expType: [0],
+      voucharNo: "",
       expAmount: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       personName: ['', [Validators.required]],
-      narration: [''],
-      isAddedby: this.accountService.currentUserValue.userId,
-      isUpdatedBy: this.accountService.currentUserValue.userId,
+      narration: ['',[Validators.required]],
+      utrno: ['',[Validators.maxLength(10)]],
       isCancelled: false,
       isCancelledBy: 0,
-      voucharNo: "",
-      expHeadId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      cancelledDate: "1900-01-01"
     })
   }
 
@@ -63,8 +65,8 @@ export class ExpensesService {
   }
 
   public ExpensesSave(Param: any) {
-    if (Param.expId) {
-      return this._httpClient.PutData("TExpense/TExpenseUpdate/" + Param.expId, Param);
+    if (Param.expID) {
+      return this._httpClient.PutData("TExpense/TExpenseUpdate" + Param.expID, Param);
     } else return this._httpClient.PostData("TExpense/TExpenseInsert", Param);
   }
   

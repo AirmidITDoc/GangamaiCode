@@ -78,7 +78,8 @@ export class OtReservationService {
             anestypeId: [0],
             anestheticsDr1: [0],
             bodyPartId:[],
-            RefNo:[]
+            RefNo:[],
+            id:[]
         });
     }
 

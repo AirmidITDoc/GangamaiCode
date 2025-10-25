@@ -100,6 +100,11 @@ const approutes: Routes = [
     path: "anesthesiarecord",
     loadChildren: () =>
       import("./anesthesia-record/anesthesia-record.module").then((m) => m.AnesthesiaRecordModule),
+  },
+  {
+    path: "inoperation",
+    loadChildren: () =>
+      import("./in-operation/in-operation.module").then((m) => m.InOperationModule),
   }
 ];
 

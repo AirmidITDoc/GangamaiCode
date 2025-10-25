@@ -145,7 +145,10 @@ export class AirmidTableComponent implements OnInit {
             'table-row-green': row?.isMark == true,
 
             // added by raksha on 20/8/25 for admission list if company present
-            'table-row-yellow' : row?.companyId > 0
+            'table-row-yellow' : row?.companyId > 0,
+
+            // added by raksha on 25/10/25 for cancelled row
+            'table-row-lightRed' : row?.isCancelled == true
         }
 
 

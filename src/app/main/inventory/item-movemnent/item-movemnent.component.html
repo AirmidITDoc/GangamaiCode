@@ -1,4 +1,3 @@
-
 <div class="page-layout simple inner-sidebar inner-scroll right-sidebar" style="height: 100%;" fusePerfectScrollbar
     dynamicTableHeight>
     <mat-toolbar class="top-header accent">
@@ -28,26 +27,35 @@
                             [(toValue)]="gridConfig.filters[1].fieldValue">
                         </airmid-datepicker> -->
 
-                          <airmid-datepicker [formGroup]="_ItemMovemnentService.ItemSearchGroup"
-                                    [isRangePicker]="true" formStartControlName="start" formEndControlName="end"
-                                          (dateChange)="onChangeFirst()">
-                                </airmid-datepicker>
+                        <airmid-datepicker [formGroup]="_ItemMovemnentService.ItemSearchGroup" [isRangePicker]="true"
+                            formStartControlName="start" formEndControlName="end"
+                            [(fromValue)]="gridConfig.filters[0].fieldValue"
+                            [(toValue)]="gridConfig.filters[1].fieldValue">
+                        </airmid-datepicker>
 
-                        <airmid-dropdown label="From Store" formControlName="FromStoreId" (selectionChange)="onChangeFirst()"
-                            [formGroup]="_ItemMovemnentService.ItemSearchGroup" [mode]="autocompletestore"
-                            [readonly]="true" >
+                        <airmid-dropdown label="From Store" formControlName="FromStoreId"
+                            (selectionChange)="onChangeFirst()" [formGroup]="_ItemMovemnentService.ItemSearchGroup"
+                            [mode]="autocompletestore" [readonly]="true">
                         </airmid-dropdown>
 
-                        <airmid-dropdown label="To Store" formControlName="ToStoreId" (selectionChange)="onChangeFirst()"
-                            [formGroup]="_ItemMovemnentService.ItemSearchGroup" [mode]="autocompletestore"
-                            (selectionChange)="selectChangeStore($event)">
+                        <airmid-dropdown label="To Store" formControlName="ToStoreId"
+                            (selectionChange)="onChangeFirst()" [formGroup]="_ItemMovemnentService.ItemSearchGroup"
+                            [(ngModel)]="gridConfig.filters[4].fieldValue"
+                            [mode]="autocompletestore" (selectionChange)="selectChangeStore($event)">
                         </airmid-dropdown>
 
+                        <!-- changed by raksha api name-->
                         <airmid-autocomplete label="Item Name" [formGroup]="_ItemMovemnentService.ItemSearchGroup"
+                            formControlName="ItemID" (onClearSelection)="ItemFromReset()"
+                            [ApiUrl]="'ItemMaster/GetItemListForGRNOrPO?StoreId=' + storeId + '&ItemName='"
+                            (selectionChange)="selectChangeItem($event)" TextField="formattedText" ValueField="ItemId">
+                        </airmid-autocomplete>
+
+                        <!-- <airmid-autocomplete label="Item Name" [formGroup]="_ItemMovemnentService.ItemSearchGroup"
                             formControlName="ItemID"
                             [ApiUrl]="'ItemMaster/GetItemListForPrescription?StoreId=' + TostoreId + '&ItemName='"
                             (selectionChange)="selectChangeItem($event)" TextField="formattedText" ValueField="ItemId">
-                        </airmid-autocomplete>
+                        </airmid-autocomplete> -->
 
                         <mat-form-field appearance="outline">
                             <mat-label>BatchNo</mat-label>

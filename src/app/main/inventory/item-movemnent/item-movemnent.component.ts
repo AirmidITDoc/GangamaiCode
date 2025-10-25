@@ -29,9 +29,10 @@ export class ItemMovemnentComponent implements OnInit {
     batchNo: any = "%"
     TostoreId: any = "0"
     FromstoreId = this.accountService.currentUserValue.user.storeId;
+    storeId = this.accountService.currentUserValue.user.storeId;
     itemId = "0"; //"77617"
 
-     @ViewChild('grid', { static: false }) grid: AirmidTableComponent;
+    @ViewChild('grid', { static: false }) grid: AirmidTableComponent;
 
     allColumns = [
         { heading: "No", key: "movementNo", sort: true, align: 'left', emptySign: 'NA', width: 80 },
@@ -89,7 +90,13 @@ export class ItemMovemnentComponent implements OnInit {
     }
 
     getfilterdata() {
-        debugger
+        // debugger
+        const fromDateControl = this._ItemMovemnentService.ItemSearchGroup.get('start')?.value;
+        const toDateControl = this._ItemMovemnentService.ItemSearchGroup.get('end')?.value;
+
+        this.fromDate = this.datePipe.transform(fromDateControl, 'yyyy-MM-dd');
+        this.toDate = this.datePipe.transform(toDateControl, 'yyyy-MM-dd');
+
         this.gridConfig = {
             apiUrl: "ItemMovement/ItemMovementList",
             columnsList: this.allColumns,
@@ -120,18 +127,25 @@ export class ItemMovemnentComponent implements OnInit {
 
     selectChangeStore(obj: any) {
         console.log(obj)
-        if (obj.value !== 0)
+        if (obj.value !== 0) {
             this.TostoreId = obj.value
-        else
+        }
+        else {
             this.TostoreId = "0"
-
+            this._ItemMovemnentService.ItemSearchGroup.get("ItemID")?.reset();
+            this.itemId = "0";
+        }
         this.getfilterdata();
     }
 
+    ItemFromReset() {
+        // this.TostoreId = 0
+    }
+
     selectChangeItem(obj: any) {
-        debugger;
+        // debugger;
         console.log(obj);
-        this.gridConfig.filters[1].fieldValue = obj.formattedText
+        this.gridConfig.filters[2].fieldValue = obj.formattedText
 
         if (obj && obj.itemId) {
             this.itemId = obj.itemId;

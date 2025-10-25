@@ -24,8 +24,10 @@ export class ExpensesComponent {
 
   myFilterform: FormGroup;
   autocompleteExpensen: string = "ExpHeadMaster"
+  autocompleteExpensenCategory: string = "ExpensesCategory"
   type: any = "3";
   expId: any = "0"
+  expCategoryId: any = "0"
   fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
   toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
 
@@ -58,9 +60,11 @@ export class ExpensesComponent {
     },
     { heading: "Expense Date", key: "expDate", sort: true, align: 'left', emptySign: 'NA', width: 80 },
     { heading: "Expense Time", key: "expTime", sort: true, align: 'left', emptySign: 'NA', width: 80 },
+    { heading: "Expense Category", key: "expCategoryName", sort: true, align: 'left', emptySign: 'NA', width: 60 },
     { heading: "Head Name", key: "headName", sort: true, align: 'left', emptySign: 'NA', width: 60 },
     { heading: "Person Name", key: "personName", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "Expense Amount", key: "expAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+    { heading: "UTR No", key: "utrno", sort: true, align: 'left', emptySign: 'NA'},
     { heading: "Reason", key: "narration", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "AddedBy", key: "userName", sort: true, align: 'left', emptySign: 'NA' },
     {
@@ -74,6 +78,7 @@ export class ExpensesComponent {
     { fieldName: "ToDate", fieldValue: this.toDate, opType: OperatorComparer.StartsWith },
     { fieldName: "ExpHeadId", fieldValue: "0", opType: OperatorComparer.Equals },
     { fieldName: "ExpType", fieldValue: this.type, opType: OperatorComparer.Equals },
+    { fieldName: "ExpCategoryId", fieldValue: this.expCategoryId, opType: OperatorComparer.Equals },
   ]
 
   gridConfig: gridModel = {
@@ -92,11 +97,20 @@ export class ExpensesComponent {
     this.onChangeFirst();
   }
 
+  ListView2(value) {
+    if (value.value !== 0)
+      this.expCategoryId = value.value
+    else
+      this.expCategoryId = "0"
+    this.onChangeFirst();
+  }
+
   onChangeFirst() {
     this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd") || "01/01/1900"
     this.toDate = this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd") || "01/01/1900"
     this.expId = this.myFilterform.get('ExpensenId').value
     this.type = this.myFilterform.get('expType').value
+    this.expCategoryId = this.myFilterform.get('expCategoryId').value
 
     this.getfilterdata();
   }
@@ -112,20 +126,21 @@ export class ExpensesComponent {
         { fieldName: "ToDate", fieldValue: this.toDate || "2100-12-31", opType: OperatorComparer.StartsWith },
         { fieldName: "ExpHeadId", fieldValue: this.expId, opType: OperatorComparer.Equals },
         { fieldName: "ExpType", fieldValue: this.type, opType: OperatorComparer.Equals },
+        { fieldName: "ExpCategoryId", fieldValue: String(this.expCategoryId), opType: OperatorComparer.Equals },
       ]
     }
     this.grid.gridConfig = this.gridConfig;
     this.grid.bindGridData();
   }
 
-  addNewExpenses() {
+  addNewExpenses(row?: any) {
     const dialogRef = this._matDialog.open(NewExpensesComponent,
       {
         maxWidth: "95vw",
         maxHeight: '90vh',
         // height: '90%',
         width: '60%',
-        // data: row
+        data: row || null
       });
     dialogRef.afterClosed().subscribe(result => {
       this.grid.bindGridData();

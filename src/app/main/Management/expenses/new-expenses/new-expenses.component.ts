@@ -33,6 +33,7 @@ export class NewExpensesComponent {
   vExpType: any = "0";
   vReason: any;
   autocompleteExpensen: string = "ExpHeadMaster"
+  autocompleteExpensenCategory: string = "ExpensesCategory"
 
   constructor(public _ExpensesService: ExpensesService,
     public _matDialog: MatDialog,
@@ -47,11 +48,36 @@ export class NewExpensesComponent {
   ngOnInit(): void {
     this.myForm = this._ExpensesService.CreateMyForm();
     this.myForm.markAllAsTouched();
+    if ((this.data?.expID ?? 0) > 0) {
+      this.vExpType = this.data.expType
+      this.vReason = this.data.narration
+      this.myForm.patchValue(this.data);
+      console.log(this.data)
+    }
   }
 
   getDateTime(dateTimeObj) {
     console.log(dateTimeObj)
     this.dateTimeObj = dateTimeObj;
+  }
+
+  onExpTypeChange() {
+    const expType = this.myForm.get('expType')?.value;
+    const utrControl = this.myForm.get('utrno');
+
+    if (expType === '0') {
+      utrControl?.clearValidators();
+      utrControl?.reset();
+    } else {
+      utrControl?.setValidators([Validators.required]);
+    }
+    utrControl?.updateValueAndValidity();
+  }
+
+  onUtrInput(event: any) {
+    const input = event.target.value;
+    event.target.value = input.replace(/[^0-9]/g, '').slice(0, 10);
+    this.myForm.get('utrno').setValue(event.target.value, { emitEvent: false });
   }
 
   onNewSave() {
@@ -81,11 +107,10 @@ export class NewExpensesComponent {
           );
         });
       }
-
     }
   }
 
-   OnPrint(element) {
+  OnPrint(element) {
     this.commonService.Onprint("ExpId", element, "ExpenseVoucharPrint");
   }
 

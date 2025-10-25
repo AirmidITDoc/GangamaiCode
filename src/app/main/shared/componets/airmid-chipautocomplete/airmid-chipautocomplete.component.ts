@@ -20,6 +20,8 @@ export class AirmidChipautocompleteComponent extends BaseFormControlComponent im
     @Output() chipsChange = new EventEmitter<string[]>();
     @Input() displayKey: string = ''; // default fallback
     @Input() allowCustom: boolean = true;
+    @Input() placeholder: string = "Select";
+    @Input() label: string = "";
 
     inputValue: string = '';
     allOptions: any[] = [];  // array of objects

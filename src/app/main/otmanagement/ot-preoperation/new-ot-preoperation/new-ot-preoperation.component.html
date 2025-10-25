@@ -538,14 +538,14 @@
                                 </div>
 
                                 <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%" fxLayout="column">
-                                    <span style="font-weight: 700;">
+                                    <!-- <span style="font-weight: 700;">
                                         Diagnosis
-                                    </span>
+                                    </span> -->
                                     <app-airmid-chipautocomplete fxFlex
                                         [chips]="preOperationForm.get('Diagnosis')?.value"
                                         [apiUrl]="'OPDPrescriptionMedical/GetDiagnosisList?descriptionType=Diagnosis'"
                                         [displayKey]="'descriptionName'" [allowCustom]="true"
-                                        (chipsChange)="selectChangeDiagnosis($event)">
+                                        (chipsChange)="selectChangeDiagnosis($event)" [placeholder]="'Select Diagnosis'" >
                                     </app-airmid-chipautocomplete>
                                 </div>
 
