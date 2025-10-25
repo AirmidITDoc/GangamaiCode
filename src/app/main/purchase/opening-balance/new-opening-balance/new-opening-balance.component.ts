@@ -145,6 +145,7 @@ export class NewOpeningBalanceComponent implements OnInit {
 
   getSelectedItem(item: GRNItemResponseType): void {
     console.log(item)
+    this.vItemId=item.itemId
     // if (this.mock) {
     //     return;
     // }
@@ -368,7 +369,7 @@ export class NewOpeningBalanceComponent implements OnInit {
         {
           ItemID: this.OPeningtemForm.get('ItemName').value.itemId || 0,
           ItemName: this.OPeningtemForm.get('ItemName').value.formattedText || '',
-          BatchNo: this.OPeningtemForm.get('BatchNo').value.batchNo || "",
+          BatchNo: this.OPeningtemForm.get('BatchNo').value.batchNo || this.OPeningtemForm.get('BatchNo').value || "",
           ExpDate: this.vlastDay, //this.OPeningtemForm.get('ExpDate').value || "",
           Pack: this.OPeningtemForm.get('pack').value || 0,
           TotalQty: this.OPeningtemForm.get('totalQty').value || 0,

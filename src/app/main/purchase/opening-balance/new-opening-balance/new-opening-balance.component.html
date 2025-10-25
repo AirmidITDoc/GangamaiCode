@@ -65,8 +65,9 @@
 
                                         <airmid-autocomplete label="BatchNo" [formGroup]="OPeningtemForm"
                                             formControlName="BatchNo" fxFlex="7%" TextField="batchNo"
-                                            ApiUrl="GRN/GetExisitingBatchList?StoreId={{StoreId}}&ItemId={{OPeningtemForm.get('ItemName').value.itemId}}&BatchNo="
+                                            [ApiUrl]="'GRN/GetExisitingBatchList?StoreId=' + StoreId + '&ItemId=' + vItemId + '&BatchNo='"
                                             (selectionChange)="onBatchChange($event)"></airmid-autocomplete>
+                                            <!-- ApiUrl="GRN/GetExisitingBatchList?StoreId={{StoreId}}&ItemId={{vItemId}}&BatchNo=" -->
 
                                         <mat-form-field appearance="outline" fxFlex="7%">
                                             <mat-label>ExpDate</mat-label>
