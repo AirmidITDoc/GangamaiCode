@@ -89,26 +89,26 @@
 
                                         <airmid-dropdown label="CGST/SGST" formControlName="CGST" fxFlex="8%"
                                             [formGroup]="OPeningtemForm" [mode]="autocompleteModeGSTTypesValues"
-                                            (selectionChange)="getchangegstper($event)"
+                                            (selectionChange)="getchangegstper($event)" [readonly]="isBatchSelected"
                                             (onClearSelection)="getchangegstper($event)">
                                         </airmid-dropdown>
 
-                                        <airmid-dropdown label="IGST" formControlName="IGST" fxFlex="7%"
+                                        <airmid-dropdown label="IGST" formControlName="IGST" fxFlex="7%" [readonly]="isBatchSelected"
                                             [formGroup]="OPeningtemForm" [mode]="autocompleteModeGSTTypesValues"
                                             (selectionChange)="getchangeIgstper($event)"> </airmid-dropdown>
 
                                         <airmid-textbox fxFlex="7%" label="MRP" formControlName="MRP" type="number"
-                                            [formGroup]="OPeningtemForm" placeholder="MRP" [min]="0"
+                                            [formGroup]="OPeningtemForm" placeholder="MRP" [min]="0" [readonly]="isBatchSelected"
                                             (input)="onMRPInput($event)"></airmid-textbox>
 
                                         <airmid-textbox fxFlex="7%" label="LandedRate" formControlName="LandedRate"
                                             [formGroup]="OPeningtemForm" type="number" placeholder="Landed Rate"
-                                            (input)="onLandedRateInput($event)" [min]="0"
+                                            (input)="onLandedRateInput($event)" [min]="0" [readonly]="isBatchSelected"
                                             (keypress)="keyPressCharater($event)"></airmid-textbox>
 
                                         <airmid-textbox fxFlex="7%" label="Rate PerUnit" formControlName="RatePerUnit"
                                             [formGroup]="OPeningtemForm" type="number" placeholder="Rate PerUnit"
-                                            (input)="onRatePerUnitInput($event)" [min]="0"
+                                            (input)="onRatePerUnitInput($event)" [min]="0" [readonly]="isBatchSelected"
                                             (keypress)="keyPressCharater($event)"></airmid-textbox>
 
                                         <div style="margin-left: 20px;"
