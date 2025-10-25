@@ -58,7 +58,7 @@ export class ItemMovemnentComponent implements OnInit {
 
     gridConfig: gridModel = {
         permissionCode: permissionCodes.Prefix,
-        apiUrl: "ItemMovement/c",
+        apiUrl: "ItemMovement/ItemMovementList",
         columnsList: this.allColumns,
         sortField: "MovementId",
         sortOrder: 0,
