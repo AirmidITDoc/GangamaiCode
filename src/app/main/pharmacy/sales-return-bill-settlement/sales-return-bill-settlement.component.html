@@ -378,7 +378,7 @@
                                                     class="w-100">
                                                 </mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100">
-                                                    <mat-checkbox aria-label="Checked"
+                                                    <mat-checkbox aria-label="Checked"  [disabled]="vglobledisc"
                                                         (change)="tableElementChecked($event, contact)">
                                                     </mat-checkbox> &nbsp;
                                                     <mat-icon *ngIf="contact.patientType=='Self'"
@@ -438,17 +438,18 @@
                                             </ng-container>
 
                                                
-                                            <!-- <ng-container matColumnDef="discPer">
+                                            <ng-container matColumnDef="discPer">
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
                                                     Discount %
                                                 </mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                                                    <mat-form-field appearance="fill">
+                                                    <span  *ngIf="!vglobledisc"> {{contact.discper || '-'}}</span>
+                                                    <mat-form-field appearance="fill" *ngIf="vglobledisc">
                                                         <input matInput [(ngModel)]="contact.discper" type="text " (keyup)="getCellCalculation(contact)" min="0"
                                                             max="100" name="discper" OnlyNumber (keypress)="keyPressDigitDecimalOnly($event)" />
                                                     </mat-form-field>
                                                 </mat-cell>
-                                            </ng-container> -->
+                                            </ng-container>
 
 
                                             <ng-container matColumnDef="discAmount">
@@ -489,8 +490,9 @@
                                             <ng-container matColumnDef="balanceAmount">
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
                                                     Balance Amt
-                                                </mat-header-cell>
-                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                </mat-header-cell> 
+                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm 
+                                                  [ngClass]="{'red-bg': contact.balanceAmount > 0}">
                                                     {{contact.balanceAmount | currency:'INR' }}
                                                 </mat-cell>
                                             </ng-container>

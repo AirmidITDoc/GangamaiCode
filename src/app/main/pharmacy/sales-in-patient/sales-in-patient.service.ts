@@ -5,8 +5,7 @@ import { FormGroup, UntypedFormBuilder } from '@angular/forms';
 @Injectable({
   providedIn: 'root'
 })
-export class DiscountAfterSalesBillService {
-
+export class SalesInPatientService { 
   SearchGroupForm : FormGroup;
   IPFinalform :FormGroup;
   constructor(

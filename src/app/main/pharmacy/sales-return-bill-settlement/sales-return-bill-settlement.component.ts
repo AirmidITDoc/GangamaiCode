@@ -38,6 +38,7 @@ export class SalesReturnBillSettlementComponent implements OnInit {
     'regNo',
     'patientName',
     'totalAmount',
+    'discPer',
     'discAmount',
     'netAmount',
     'paidAmount',
@@ -526,6 +527,7 @@ this._SelseSettelmentservice.SalesBillList(vdata).subscribe((response)=>{
   vPaidAmount: any = 0;
   SelectedList: any = [];
   tableElementChecked(event, element) { 
+    debugger
     if (event.checked) { 
       this.SelectedList.push(element)
       this.vNetAmount += Math.round(+element.netAmount)
@@ -626,6 +628,7 @@ this._SelseSettelmentservice.SalesBillList(vdata).subscribe((response)=>{
     this.MutliSettlemForm.get('RegID').setValue('a');
     this.userFormGroup.get('PatientType').setValue('1');
     this.MutliSettlemForm.get('PatientType').setValue('1');
+     this.getdataMultiple()
   }
   PatientInformRest() {
     this.PatientName = '';
@@ -688,13 +691,21 @@ this._SelseSettelmentservice.SalesBillList(vdata).subscribe((response)=>{
   }
   onChangeglobledisc(event){
     if(event.checked == true){
-      this.vglobledisc = true;
-    }else{
+      this.vglobledisc = true; 
+     }else{
       this.vglobledisc = false;
       this.MutliSettlemForm.get('globlediscPer').reset();
-      this.MutliSettlemForm.get('ConcessionId').reset(); 
-    this.dssalesbillListMultiple.data = this.chargelist; 
-    }
+      this.MutliSettlemForm.get('ConcessionId').reset();  
+     }
+      this.vNetAmount = 0;
+      this.vPaidAmount = 0;
+      this.vBalanceAmount = 0; 
+      this.MutliSettlemForm.patchValue({
+      FinalNetAmt: this.vNetAmount,
+      FinalPaidAmt: this.vPaidAmount,
+      FinalBalanceAmt: this.vBalanceAmount,
+    })
+    this.getdataMultiple();
   }
   keyPressCharater(event) {
     var inp = String.fromCharCode(event.keyCode);
@@ -753,7 +764,7 @@ this._SelseSettelmentservice.SalesBillList(vdata).subscribe((response)=>{
       discAmount:[item?.discAmount,[this._FormvalidationserviceService.notEmptyOrZeroValidator(),this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
       balanceAmount: [item?.balanceAmount,[this._FormvalidationserviceService.notEmptyOrZeroValidator(),this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
       concessionReasonId:[item?.concessionReasonId,[this._FormvalidationserviceService.notEmptyOrZeroValidator(),this._FormvalidationserviceService.onlyNumberValidator()]],
-    })
+    }) 
   }
     get applydiscgloblearray(): FormArray {
     return this.globleDiscFrom.get('sales') as FormArray;
@@ -774,24 +785,33 @@ this._SelseSettelmentservice.SalesBillList(vdata).subscribe((response)=>{
         let netAmt = '0';
 
         const globlediscPer = formvalue?.globlediscPer || 0;
-        if ((element?.discAmount || 0) > 0) {
-          discamt1 = Math.round(((element?.balanceAmount) * globlediscPer) / 100);
-          discountAmt = Math.round(parseFloat(element?.discAmount) + discamt1).toFixed(2);
-          netAmt = Math.round(parseFloat(element?.balanceAmount) - discamt1).toFixed(2);
-        } else {
-          discountAmt = Math.round(((element?.balanceAmount) * globlediscPer) / 100).toFixed(2);
-          netAmt = Math.round((element?.balanceAmount) - parseFloat(discountAmt)).toFixed(2);
-        }
+        // if ((element?.discAmount || 0) > 0) {
+        //   discamt1 = Math.round(((element?.balanceAmount) * globlediscPer) / 100);
+        //   discountAmt = Math.round(parseFloat(element?.discAmount) + discamt1).toFixed(2);
+        //   netAmt = Math.round(parseFloat(element?.balanceAmount) - discamt1).toFixed(2);
+        // } else {
+          discountAmt = Math.round(((element?.totalAmount) * globlediscPer) / 100).toFixed(2);
+          netAmt = Math.round((element?.totalAmount) - parseFloat(discountAmt)).toFixed(2);
+        //}
         // Return updated element to rebuild the list
         return {
           ...element,
           discAmount: discountAmt,
           netAmount: netAmt,
           balanceAmount: netAmt,
+          discper:globlediscPer
         };
       });
     } else {
       this.templist = this.chargelist
+      this.vNetAmount = 0;
+      this.vPaidAmount = 0;
+      this.vBalanceAmount = 0; 
+      this.MutliSettlemForm.patchValue({
+      FinalNetAmt: this.vNetAmount,
+      FinalPaidAmt: this.vPaidAmount,
+      FinalBalanceAmt: this.vBalanceAmount,
+    })
     }
     // Assign updated list back
     this.dssalesbillListMultiple.data = this.templist;  
@@ -852,6 +872,47 @@ this._SelseSettelmentservice.SalesBillList(vdata).subscribe((response)=>{
       }
     }
   }
+ 
+      getCellCalculation(item: PaidItemList): void {
+          let discPer = +item?.discper;
+          let totalMrp = +item?.totalAmount;
+  
+          if (discPer < 0 || discPer > 100) {
+              this.toastr.error('Enter discount between 0 - 100', 'Warning !', {
+                  toastClass: 'tostr-tost custom-toast-warning',
+              });
+              item.discper = 0;
+              item.discAmount = 0;
+              item.netAmount  = item.totalAmount ;
+              item.balanceAmount = item.netAmount ;
+              return;
+          }
+          item.discAmount = ((totalMrp * discPer) / 100).toFixed(2);
+          item.netAmount  = (totalMrp - item.discAmount).toFixed(2);
+          item.balanceAmount = item.netAmount;
+      }
+
+
+     // it allowed only Digit 
+     keyPressDigitsOnly(event) {
+         var inp = String.fromCharCode(event.keyCode);
+         if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
+             return true;
+         } else {
+             event.preventDefault();
+             return false;
+         }
+     }
+         // it allowed only Digit & decimal
+     keyPressDigitDecimalOnly(event) {
+         var inp = String.fromCharCode(event.keyCode);
+         if (/^\d*\.?\d*$/.test(inp)) {
+             return true;
+         } else {
+             event.preventDefault();
+             return false;
+         }
+     } 
 }
 
 export class PaidItemList {
@@ -869,6 +930,7 @@ export class PaidItemList {
     patientName:any;
       refundAmt: any; 
   date: any;
+  discper:any;
 
   constructor(PaidItemList) {
     {
