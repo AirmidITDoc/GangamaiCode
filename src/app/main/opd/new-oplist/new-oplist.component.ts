@@ -241,7 +241,7 @@ autocompleteModecompany1: string = "Company";
         this.myFilterpayform = this._OPListService.myFilterpaymentbrowseform();
         this.myFilterrefundform = this._OPListService.myFilterrefundbrowseform();
 
-        this.menuActions.push("Bill Print");
+        //this.menuActions.push("Bill Print");
         this.menuActions.push("Bill Print-Package Info");
     }
 
@@ -269,8 +269,13 @@ autocompleteModecompany1: string = "Company";
     getWhatsappshareRefundBill(Id) { }
 
     OnPrint(element) {
-        this.commonService.Onprint("BillNo", element.billNo, "OpBillReceipt");
-    }
+         const [ThermalPrint, ThermalPrintValue] = this._ConfigService.configParams.ThermalPrint.split(":");  
+         if (ThermalPrint != 1) {
+                     this.commonService.Onprint("BillNo", element.billNo, "OpBillReceipt");
+                    } else {
+                      this.commonService.Onprint("BillNo", element.billNo, "OpBillReceiptT");
+                    } 
+     }
 
 
     OngetRecord(element, m) {
