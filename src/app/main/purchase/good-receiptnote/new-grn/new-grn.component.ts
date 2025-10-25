@@ -1023,9 +1023,9 @@ setTimeout(() => {
             grntype: this.userFormGroup.get('GRNType')?.value === true ? true : false,
             paidAmount: this.userFormGroup.get('PaymentType')?.value === true ? this._GRNList.GRNFinalForm.get('NetPayamt')?.value : 0,
             balAmount: this.userFormGroup.get('PaymentType')?.value === false ? this._GRNList.GRNFinalForm.get('NetPayamt')?.value : 0,
-            totCgstamt: this.CGSTFinalAmount || 0,
-            totSgstamt: this.SGSTFinalAmount || 0,
-            totIgstamt: this.IGSTFinalAmount || 0,
+            totCgstamt: this.CGSTFinalAmount.toFixed(2) || 0,
+            totSgstamt: this.SGSTFinalAmount.toFixed(2) || 0,
+            totIgstamt: this.IGSTFinalAmount.toFixed(2) || 0,
             tranProcessId: this.userFormGroup.get('GSTType')?.value || 0,
             tranProcessMode: this.GSTTypeName || '',
             billDiscAmt: this._GRNList.GRNFinalForm.get('DiscAmount2')?.value || 0,
@@ -1037,9 +1037,15 @@ setTimeout(() => {
 
          if (this.GrnHeaderForm.valid) {
                     this.GrndetailArray.clear();
-        this.dsItemNameList.data.forEach(item => {
-            this.GrndetailArray.push(this.createGrndetailInsert(item));
-        });
+             this.dsItemNameList.data.forEach(item => {
+                // this.GrndetailArray.push(this.createGrndetailInsert(item));
+                 const input = item?.ExpDate;
+                 const [day, month, year] = input.split("/");
+                 const formattedDate = `${year}-${month}-${day}`;
+                 const formObj = this.createGrndetailInsert(item);
+                 formObj.patchValue({ batchExpDate: formattedDate || '1999-01-01' });
+                 this.GrndetailArray.push(formObj); 
+             }); 
         this.ItemArray.clear();
         this.dsItemNameList.data.forEach(item => {
             this.ItemArray.push(this.createGrnItemInsert(item));

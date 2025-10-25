@@ -11,6 +11,7 @@ import { PrintserviceService } from 'app/main/shared/services/printservice.servi
 import { ToastrService } from 'ngx-toastr';
 import { OpPaymentComponent } from '../op-search-list/op-payment/op-payment.component';
 import { OPListService } from './oplist.service';
+import { ConfigService } from 'app/core/services/config.service';
 
 
 @Component({
@@ -231,7 +232,8 @@ autocompleteModecompany1: string = "Company";
 
     constructor(public _OPListService: OPListService, public _matDialog: MatDialog,
         public toastr: ToastrService, public datePipe: DatePipe,
-        private commonService: PrintserviceService) { }
+        private commonService: PrintserviceService, 
+                public _ConfigService: ConfigService,) { }
 
 
     ngOnInit(): void {
@@ -239,7 +241,7 @@ autocompleteModecompany1: string = "Company";
         this.myFilterpayform = this._OPListService.myFilterpaymentbrowseform();
         this.myFilterrefundform = this._OPListService.myFilterrefundbrowseform();
 
-        this.menuActions.push("Bill Print");
+        //this.menuActions.push("Bill Print");
         this.menuActions.push("Bill Print-Package Info");
     }
 
@@ -267,24 +269,36 @@ autocompleteModecompany1: string = "Company";
     getWhatsappshareRefundBill(Id) { }
 
     OnPrint(element) {
-        this.commonService.Onprint("BillNo", element.billNo, "OpBillReceipt");
-    }
+         const [ThermalPrint, ThermalPrintValue] = this._ConfigService.configParams.ThermalPrint.split(":");  
+         if (ThermalPrint != 1) {
+                     this.commonService.Onprint("BillNo", element.billNo, "OpBillReceipt");
+                    } else {
+                      this.commonService.Onprint("BillNo", element.billNo, "OpBillReceiptT");
+                    } 
+     }
 
 
     OngetRecord(element, m) {
         console.log('Third action clicked for:', element);
-        if (m == "Bill Print")
-            this.commonService.Onprint("BillNo", element.billNo, "OpBillReceipt");
+        const [ThermalPrint, ThermalPrintValue] = this._ConfigService.configParams.ThermalPrint.split(":");  
+        if (m == "Bill Print"){
+              if (ThermalPrint != 1) {
+                     this.commonService.Onprint("BillNo", element.billNo, "OpBillReceipt");
+                    } else {
+                      this.commonService.Onprint("BillNo", element.billNo, "OpBillReceiptT");
+                    } 
+        }
         else if (m == "Bill Print-Package Info")
             this.commonService.Onprint("BillNo", element.billNo, "OPBillWithPackagePrint");
     }
 
-
+    viewgetOPBillThermalReportPdf(element) {
+  }
     openPaymentpopup(contact) {
         console.log(contact)
         let PatientHeaderObj = {};
         PatientHeaderObj['Date'] = this.datePipe.transform(contact.billDate, 'MM/dd/yyyy') || '01/01/1900',
-            PatientHeaderObj['RegNo'] = contact.regNo;
+        PatientHeaderObj['RegNo'] = contact.regNo;
         PatientHeaderObj['PatientName'] = contact.patientName;
         PatientHeaderObj['OPD_IPD_Id'] = contact.opD_IPD_ID;
         PatientHeaderObj['Age'] = contact.patientAge;
