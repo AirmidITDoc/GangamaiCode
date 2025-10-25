@@ -145,7 +145,7 @@ export class NewOpeningBalanceComponent implements OnInit {
 
   getSelectedItem(item: GRNItemResponseType): void {
     console.log(item)
-    this.vItemId=item.itemId
+    this.vItemId = item.itemId
     // if (this.mock) {
     //     return;
     // }
@@ -302,6 +302,7 @@ export class NewOpeningBalanceComponent implements OnInit {
     });
   }
 
+  isBatchSelected: boolean = false;
   onBatchChange(event) {
     console.log(event)
     const expDate = this.datePipe.transform(event.batchExpDate, 'MMYYYY')
@@ -316,7 +317,7 @@ export class NewOpeningBalanceComponent implements OnInit {
       QtyElement.focus();
     }
 
-        if ((event?.cgstPer ?? 0) > 0) {
+    if ((event?.cgstPer ?? 0) > 0) {
       this.OPeningtemForm.patchValue({
         CGST: event?.gst,
         SGST: event?.sgstPer,
@@ -356,6 +357,28 @@ export class NewOpeningBalanceComponent implements OnInit {
       this.OPeningtemForm.get('CGST').enable();
       this.OPeningtemForm.get('IGST').enable();
     }
+
+
+    // const hasBatchNo = !!event?.batchNo; // true if batchNo exists
+
+    // if (hasBatchNo) {
+    //   this.OPeningtemForm.get('CGST')?.disable();
+    //   this.OPeningtemForm.get('SGST')?.disable();
+    //   this.OPeningtemForm.get('IGST')?.disable();
+    //   this.OPeningtemForm.get('MRP')?.disable();
+    //   this.OPeningtemForm.get('LandedRate')?.disable();
+    //   this.OPeningtemForm.get('RatePerUnit')?.disable();
+    // } else {
+    //   this.OPeningtemForm.get('CGST')?.enable();
+    //   this.OPeningtemForm.get('SGST')?.enable();
+    //   this.OPeningtemForm.get('IGST')?.enable();
+    //   this.OPeningtemForm.get('MRP')?.enable();
+    //   this.OPeningtemForm.get('LandedRate')?.enable();
+    //   this.OPeningtemForm.get('RatePerUnit')?.enable();
+    // }
+
+    const hasBatchNo = !!event?.batchNo;
+    this.isBatchSelected = hasBatchNo;
   }
 
   Onadd() {
