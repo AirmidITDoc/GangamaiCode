@@ -8,6 +8,57 @@ import { DashboardService } from '../dashboard.service';
   styleUrls: ['./new-dashboard.component.scss']
 })
 export class NewDashboardComponent implements OnInit {
+  
+  // Date filter properties
+  fromDate: Date;
+  toDate: Date;
+  
+  constructor(private dashboardService: DashboardService) { 
+    // Set default dates to current week (Monday to today)
+    this.initializeDateRange();
+  }
+  
+  initializeDateRange() {
+    const today = new Date();
+    this.toDate = new Date(today);
+    
+    // Find Monday of current week
+    const day = today.getDay();
+    const diff = today.getDate() - day + (day === 0 ? -6 : 1); // Adjust when day is Sunday
+    const monday = new Date(today);
+    monday.setDate(diff);
+    this.fromDate = monday;
+  }
+  
+  onDateChange() {
+    // Reload all data when dates change, only if both dates are set
+    if (this.fromDate && this.toDate) {
+      this.loadDashboardData();
+    }
+  }
+  
+  // Format date to DD/MM/YYYY format for API
+  formatDateForAPI(date: Date): string {
+    const dd = String(date.getDate()).padStart(2, '0');
+    const mm = String(date.getMonth() + 1).padStart(2, '0');
+    const yyyy = date.getFullYear();
+    return `${dd}/${mm}/${yyyy}`;
+  }
+  
+  loadDashboardData() {
+    this.getHomeDashboardAPI();
+    this.getDashOPUserWiseRevenue();
+    this.getDashOPDepatmentWiseCount();
+    // Re-initialize charts with new date range
+    setTimeout(() => {
+      if (document.getElementById('PatientOverviewDoughnut')) {
+        this.patientOverviewChart = this.getPatientOverviewChart();
+      }
+      if (document.getElementById('OPDOverviewDoughnut')) {
+        this.opdOverviewChart = this.getOPDOverviewChart();
+      }
+    });
+  }
   public patientOverviewChart: any;
   public opdOverviewChart: any;
   
@@ -64,22 +115,8 @@ export class NewDashboardComponent implements OnInit {
     { name: 'Other', value: 10 }
   ];
 
-
-  constructor(private dashboardService: DashboardService) { }
-
   ngOnInit(): void {
-    this.getHomeDashboardAPI();
-    this.getDashOPUserWiseRevenue();
-    this.getDashOPDepatmentWiseCount();
-    // Initialize the charts
-    setTimeout(() => {
-      if (document.getElementById('PatientOverviewDoughnut')) {
-        this.patientOverviewChart = this.getPatientOverviewChart();
-      }
-      if (document.getElementById('OPDOverviewDoughnut')) {
-        this.opdOverviewChart = this.getOPDOverviewChart();
-      }
-    });
+    this.loadDashboardData();
   }
 
   getHomeDashboardAPI() {
@@ -128,12 +165,14 @@ export class NewDashboardComponent implements OnInit {
         },
        {
           "fieldName": "FromDate",
-          "fieldValue": "10/01/2025",
+          // "fieldValue": "10/01/2025",
+          "fieldValue": this.formatDateForAPI(this.fromDate),
           "opType": "Equals"
         },
        {
           "fieldName": "ToDate",
-          "fieldValue": "10/11/2025",
+          // "fieldValue": "10/11/2025",
+          "fieldValue": this.formatDateForAPI(this.toDate),
           "opType": "Equals"
         }
       ],
@@ -183,12 +222,12 @@ export class NewDashboardComponent implements OnInit {
           },
         {
             "fieldName": "FromDate",
-            "fieldValue": "10/01/2025",
+            "fieldValue": this.formatDateForAPI(this.fromDate),
             "opType": "Equals"
           },
         {
             "fieldName": "ToDate",
-            "fieldValue": "10/11/2025",
+            "fieldValue": this.formatDateForAPI(this.toDate),
             "opType": "Equals"
           }
         ],
@@ -228,12 +267,14 @@ export class NewDashboardComponent implements OnInit {
         },
         {
           "fieldName": "FromDate",
-          "fieldValue": "10/01/2025",
+          // "fieldValue": "10/01/2025",
+          "fieldValue": this.formatDateForAPI(this.fromDate),
           "opType": "Equals"
         },
        {
           "fieldName": "ToDate",
-          "fieldValue": "10/11/2025",
+          // "fieldValue": "10/11/2025",
+          "fieldValue": this.formatDateForAPI(this.toDate),
           "opType": "Equals"
         }
       ],
@@ -522,20 +563,48 @@ export class NewDashboardComponent implements OnInit {
         },
         {
           "fieldName": "FromDate",
-          "fieldValue": "10/01/2025",
+          // "fieldValue": "10/01/2025",
+          "fieldValue": this.formatDateForAPI(this.fromDate),
           "opType": "Equals"
         },
        {
           "fieldName": "ToDate",
-          "fieldValue": "10/11/2025",
+          // "fieldValue": "10/11/2025",
+          "fieldValue": this.formatDateForAPI(this.toDate),
           "opType": "Equals"
         }
       ],
       "mode": "DashRegistrationAgeWiseCount"
     };
     this.dashboardService.HomeDashboardAPI(payload).subscribe((res: any) => {
-      let apiData = res && res.length ? res : {};
+      let apiData = res && res.length ? res : [];
       console.log("apiDataapiDataapiData",apiData)
+      
+      // Check if data is empty or all values are zero
+      const hasData = apiData && apiData.length > 0 && apiData.some((item: any) => item.value > 0);
+      
+      if (!hasData) {
+        // Display empty state message
+        const canvas = document.getElementById('PatientOverviewDoughnut') as HTMLCanvasElement;
+        if (canvas) {
+          // Set canvas size if not already set
+          if (canvas.width === 0 || canvas.height === 0) {
+            canvas.width = 300;
+            canvas.height = 200;
+          }
+          const ctx = canvas.getContext('2d');
+          if (ctx) {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = '#9e9e9e';
+            ctx.font = '16px Inter, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('No data available', canvas.width / 2, canvas.height / 2);
+          }
+        }
+        return null;
+      }
+      
       const chart = new Chart('PatientOverviewDoughnut', {
         type: 'doughnut',
         data: {
@@ -697,6 +766,40 @@ export class NewDashboardComponent implements OnInit {
       }
     };
 
+    // Check if OPD data exists and has values
+    const opdDataArray = [
+      this.opdData[0].value,
+      this.opdData[1].value,
+      this.opdData[2].value,
+      this.opdData[3].value,
+      this.opdData[4].value,
+      this.opdData[5].value
+    ];
+    
+    const hasOpdData = opdDataArray.some(value => value > 0);
+    
+    if (!hasOpdData) {
+      // Display empty state message
+      const canvas = document.getElementById('OPDOverviewDoughnut') as HTMLCanvasElement;
+      if (canvas) {
+        // Set canvas size if not already set
+        if (canvas.width === 0 || canvas.height === 0) {
+          canvas.width = 300;
+          canvas.height = 200;
+        }
+        const ctx = canvas.getContext('2d');
+        if (ctx) {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          ctx.fillStyle = '#9e9e9e';
+          ctx.font = '16px Inter, sans-serif';
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+          ctx.fillText('No data available', canvas.width / 2, canvas.height / 2);
+        }
+      }
+      return null;
+    }
+
     const chart = new Chart('OPDOverviewDoughnut', {
       type: 'doughnut',
       data: {
@@ -704,14 +807,7 @@ export class NewDashboardComponent implements OnInit {
         datasets: [
           {
             backgroundColor: ['#ff5a8a', '#f6c542', '#3ecf8e', '#5ac8fa', '#a283f6', '#ff9f43'],
-            data: [
-              this.opdData[0].value,
-              this.opdData[1].value,
-              this.opdData[2].value,
-              this.opdData[3].value,
-              this.opdData[4].value,
-              this.opdData[5].value
-            ]
+            data: opdDataArray
           }
         ]
       },

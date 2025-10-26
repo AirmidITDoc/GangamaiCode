@@ -1,4 +1,29 @@
+<div class="page-layout simple inner-sidebar inner-scroll right-sidebar new-dashboard-section" dynamicTableHeight>
+    <!-- HEADER -->
+    <div class="top-header accent">
+        <div class="top-header-info">
+            <mat-icon class="logo-icon" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">dashboard</mat-icon>
+            <div class="top-header-title" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                <span>New Dashboard</span>
+            </div>
+        </div>
+        <div class="date-filter-container">
+            <mat-form-field class="date-range-field">
+                <mat-label>Date Range</mat-label>
+                <mat-date-range-input [rangePicker]="rangePicker" >
+                    <input matStartDate [(ngModel)]="fromDate" (dateChange)="onDateChange()" placeholder="Start date" readonly>
+                    <input matEndDate [(ngModel)]="toDate" (dateChange)="onDateChange()" placeholder="End date" readonly>
+                </mat-date-range-input>
+                <mat-datepicker-toggle matSuffix [for]="rangePicker"></mat-datepicker-toggle>
+                <mat-date-range-picker #rangePicker></mat-date-range-picker>
+            </mat-form-field>
+        </div>
+    </div>
+    <!-- / HEADER -->
 
+    <!-- CONTENT -->
+    <div class="content layout-body">
+        <div class="center p-12">
 <div class="dashboard-container">
     <div class="metrics-grid">
         <mat-card *ngFor="let m of metrics" class="metric-card mat-elevation-z2 count-cards" [ngClass]="'theme-' + m.color">
@@ -79,10 +104,9 @@
           </mat-card-content>
         </mat-card>
       </div>
-  </div>
-
-  <!-- Extended dashboard content below existing graphs -->
-  <div class="extra-sections">
+    </div>
+    <!-- Extended dashboard content below existing graphs -->
+    <div class="extra-sections">
     <!-- Finance summary cards -->
     <div class="metrics-grid finance-grid">
       <mat-card *ngFor="let f of financeSummary" class="metric-card mat-elevation-z2 count-cards" [ngClass]="'theme-' + f.color">
@@ -216,10 +240,14 @@
         </mat-card-content>
       </mat-card>
     </div>
-  </div>
+    </div>
+        </div>
+    </div>
+    <!-- / CONTENT -->
+</div>
 
   <!-- Individual Segment Popover -->
-  <div class="segment-popover" 
+<div class="segment-popover" 
        [class.show]="segmentPopoverVisible" 
        [ngClass]="segmentPopoverArrowClass"
        [style.left.px]="segmentPopoverPosition.x" 
@@ -247,5 +275,5 @@
         </div>
       </div>
     </div>
-  </div>
+</div>
 

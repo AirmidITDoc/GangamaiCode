@@ -2,8 +2,273 @@
 :host {
   display: block;
   box-sizing: border-box;
-  padding-left: max(12px, env(safe-area-inset-left));
-  padding-right: max(12px, env(safe-area-inset-right));
+}
+
+/* Make header sticky */
+.top-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+/* Date filter container */
+.date-filter-container {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  height: 100%;
+  justify-content: flex-end;
+  margin-top: 20px;
+}
+
+/* Date range field styling */
+.date-range-field {
+  width: 300px;
+  margin: 0;
+  
+  ::ng-deep {
+    .mat-form-field-wrapper {
+      padding-bottom: 0;
+      margin-bottom: 0;
+      vertical-align: middle;
+    }
+    
+    .mat-form-field-infix {
+      padding: 0;
+      border-top: none;
+      background-color: white;
+      min-height: 18px;
+    }
+    
+    .mat-form-field-label {
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 10px;
+    }
+    
+    .mat-form-field-flex {
+      background-color: white;
+      border-radius: 4px;
+      padding: 0 4px;
+      height: 18px;
+      min-height: 18px;
+      align-items: center;
+    }
+    
+    .mat-input-element {
+      color: #000000;
+      font-weight: 500;
+      font-size: 11px;
+      line-height: 18px;
+      height: 18px;
+      margin: 0;
+      cursor: pointer;
+      
+      &[readonly] {
+        cursor: pointer;
+        user-select: none;
+      }
+    }
+    
+    .mat-date-range-input {
+      input {
+        color: #000000 !important;
+        font-weight: 500;
+        font-size: 11px;
+        cursor: pointer;
+      }
+      .mat-date-range-input-separator {
+        color: #000000;
+        font-weight: 500;
+      }
+    }
+    
+    .mat-datepicker-toggle {
+      color: rgba(0, 0, 0, 0.54);
+      display: flex;
+      align-items: center;
+    }
+    
+    .mat-icon-button {
+      color: rgba(0, 0, 0, 0.54);
+      width: 18px;
+      height: 18px;
+      line-height: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      
+      .mat-icon {
+        font-size: 16px;
+        width: 16px;
+        height: 16px;
+      }
+    }
+    
+    .mat-form-field-subscript-wrapper {
+      display: none;
+    }
+    
+    /* Outline styling */
+    .mat-form-field-outline {
+      color: rgba(255, 255, 255, 0.4) !important;
+      top: 0.25em;
+    }
+    
+    .mat-form-field-outline-thick {
+      color: rgba(255, 255, 255, 0.7) !important;
+    }
+    
+    /* When focused */
+    &.mat-focused {
+      .mat-form-field-outline-thick {
+        color: white !important;
+      }
+      .mat-form-field-label {
+        color: white !important;
+      }
+    }
+    
+    /* When not empty */
+    &.mat-form-field-should-float {
+      .mat-form-field-label {
+        color: white !important;
+      }
+    }
+    
+    .mat-form-field-appearance-outline .mat-form-field-outline {
+      top: 0;
+      bottom: 0;
+    }
+    
+    .mat-form-field-appearance-outline .mat-form-field-outline-gap {
+      padding: 0;
+    }
+  }
+}
+
+.top-header {
+  display: flex;
+  align-items: center;
+  max-height: 80px;
+}
+
+/* Date filter field styling */
+.date-filter-field {
+  width: 140px;
+  height: 55px;
+  margin: 0;
+  
+  ::ng-deep {
+    display: flex;
+    align-items: center;
+    .mat-form-field-wrapper {
+      padding-bottom: 0;
+      margin-bottom: 0;
+      vertical-align: middle;
+    }
+    
+    .mat-form-field {
+      vertical-align: middle;
+    }
+    
+    .mat-form-field-infix {
+      padding: 0;
+      border-top: none;
+      background-color: white;
+      min-height: 18px;
+    }
+    
+    .mat-form-field-label {
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 10px;
+    }
+    
+    .mat-form-field-flex {
+      background-color: white;
+      border-radius: 4px;
+      padding: 0 4px;
+      height: 18px;
+      min-height: 18px;
+      align-items: center;
+    }
+    
+    .mat-input-element {
+      color: #000000;
+      font-weight: 500;
+      font-size: 11px;
+      line-height: 18px;
+      height: 18px;
+      margin: 0;
+      cursor: pointer;
+      
+      &[readonly] {
+        cursor: pointer;
+        user-select: none;
+      }
+    }
+    
+    .mat-datepicker-toggle {
+      color: rgba(0, 0, 0, 0.54);
+      display: flex;
+      align-items: center;
+    }
+    
+    .mat-icon-button {
+      color: rgba(0, 0, 0, 0.54);
+      width: 18px;
+      height: 18px;
+      line-height: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      
+      .mat-icon {
+        font-size: 16px;
+        width: 16px;
+        height: 16px;
+      }
+    }
+    
+    .mat-form-field-subscript-wrapper {
+      display: none;
+    }
+    
+    /* Outline styling */
+    .mat-form-field-outline {
+      color: rgba(255, 255, 255, 0.4) !important;
+      top: 0.25em;
+    }
+    
+    .mat-form-field-outline-thick {
+      color: rgba(255, 255, 255, 0.7) !important;
+    }
+    
+    /* When focused */
+    &.mat-focused {
+      .mat-form-field-outline-thick {
+        color: white !important;
+      }
+      .mat-form-field-label {
+        color: white !important;
+      }
+    }
+    
+    /* When not empty */
+    &.mat-form-field-should-float {
+      .mat-form-field-label {
+        color: white !important;
+      }
+    }
+    
+    .mat-form-field-appearance-outline .mat-form-field-outline {
+      top: 0;
+      bottom: 0;
+    }
+    
+    .mat-form-field-appearance-outline .mat-form-field-outline-gap {
+      padding: 0;
+    }
+  }
 }
 .metrics-grid {
     display: flex;
