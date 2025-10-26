@@ -269,31 +269,8 @@ export class BedOccupancyComponent implements OnInit, OnDestroy {
     }
 
     getOverallDoughnutChart() {
-        const centerTextPlugin = {
-            id: 'centerText',
-            beforeDraw: (chart: any) => {
-                const { width, height, ctx } = chart;
-                ctx.restore();
-                
-                // Main percentage text
-                const percentText = `${this.occupancyPercent}%`;
-                ctx.font = 'bold 42px Inter, sans-serif';
-                ctx.fillStyle = '#2c3e50';
-                ctx.textAlign = 'center';
-                ctx.textBaseline = 'middle';
-                const percentX = width / 2;
-                const percentY = height / 2 - 10;
-                ctx.fillText(percentText, percentX, percentY);
-                
-                // Subtitle text
-                ctx.font = '14px Inter, sans-serif';
-                ctx.fillStyle = '#6c757d';
-                const subtitleY = height / 2 + 25;
-                ctx.fillText('Occupancy', percentX, subtitleY);
-                
-                ctx.save();
-            }
-        };
+        
+        let totalOccupiedCount = 0;
 
         const dataLabelsPlugin = {
             id: 'dataLabels',
@@ -334,6 +311,10 @@ export class BedOccupancyComponent implements OnInit, OnDestroy {
                                 // Custom label text - Option 3: Label name with count and percentage
                                 const line1Text = labelName;
                                 const line2Text = `${value} (${percentage}%)`;
+                                console.log("================>>>>>>>..",line1Text, percentage)
+                                if (line1Text === 'Used') {
+                                    totalOccupiedCount = percentage;
+                                }
                                 
                                 // Draw labels with white text and shadow for contrast
                                 ctx.fillStyle = 'white';
@@ -359,6 +340,32 @@ export class BedOccupancyComponent implements OnInit, OnDestroy {
                         });
                     }
                 });
+            }
+        };
+
+        const centerTextPlugin = {
+            id: 'centerText',
+            beforeDraw: (chart: any) => {
+                const { width, height, ctx } = chart;
+                ctx.restore();
+                
+                // Main percentage text
+                const percentText = `${totalOccupiedCount}%`;
+                ctx.font = 'bold 42px Inter, sans-serif';
+                ctx.fillStyle = '#2c3e50';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                const percentX = width / 2;
+                const percentY = height / 2 - 10;
+                ctx.fillText(percentText, percentX, percentY);
+                
+                // Subtitle text
+                ctx.font = '14px Inter, sans-serif';
+                ctx.fillStyle = '#6c757d';
+                const subtitleY = height / 2 + 25;
+                ctx.fillText('Occupancy', percentX, subtitleY);
+                
+                ctx.save();
             }
         };
 
@@ -393,7 +400,7 @@ export class BedOccupancyComponent implements OnInit, OnDestroy {
                         tooltip: { enabled: true },
                         legend: { display: false }
                     },
-                    cutout: '70%'
+                    cutout: '50%'
                 },
                 plugins: [centerTextPlugin, dataLabelsPlugin]
             });
