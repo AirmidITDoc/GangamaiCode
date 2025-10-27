@@ -68,7 +68,7 @@ export class LoginComponent implements OnInit {
             this.captchaToken = data.token;
             this.licenseExpiryDate = data.expiry;
             const today = new Date();
-            this.isExpired = new Date(this.licenseExpiryDate) > today;
+            this.isExpired = new Date(this.licenseExpiryDate) < today;
         });
     }
     ngOnInit(): void {
