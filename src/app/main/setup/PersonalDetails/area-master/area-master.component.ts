@@ -7,6 +7,8 @@ import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/air
 import { ToastrService } from "ngx-toastr";
 import { AreaMasterService } from "./area-master.service";
 import { NewAreaComponent } from "./new-area/new-area.component";
+import { PagePermissionService } from "app/main/shared/services/page-permission.service";
+import { permissionCodes, permissionType } from "app/main/shared/model/permission.model";
 
 @Component({
     selector: "app-state-master",
@@ -18,12 +20,11 @@ import { NewAreaComponent } from "./new-area/new-area.component";
 export class AreaMasterComponent implements OnInit {
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     areaName: any = "";
-
+ IsAdd: boolean = this.permissionService.getPermission(permissionCodes.RelationshipMaster, permissionType.Add);
+     
     allcolumns = [
-        // { heading: "Code", key: "areaId", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "Area Name", key: "areaName", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "City Name", key: "cityId", sort: true, align: 'left', emptySign: 'NA' },
-        // { heading: "User Name", key: "username", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
         {
             heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
@@ -46,6 +47,7 @@ export class AreaMasterComponent implements OnInit {
         { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
     ]
     gridConfig: gridModel = {
+          permissionCode: permissionCodes.AreaMaster,
         apiUrl: "AreaMaster/List",
         columnsList: this.allcolumns,
         sortField: "areaId",
@@ -54,7 +56,7 @@ export class AreaMasterComponent implements OnInit {
     }
 
     constructor(
-        public _AreaMasterService: AreaMasterService,
+        public _AreaMasterService: AreaMasterService,public permissionService: PagePermissionService,
         public toastr: ToastrService, public _matDialog: MatDialog
     ) { }
 

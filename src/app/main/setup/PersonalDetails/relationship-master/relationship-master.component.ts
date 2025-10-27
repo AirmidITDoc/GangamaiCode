@@ -7,7 +7,8 @@ import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/air
 import { ToastrService } from "ngx-toastr";
 import { NewRelationshipComponent } from "./new-relationship/new-relationship.component";
 import { RelationshipMasterService } from "./relationship-master.service";
-
+import { PagePermissionService } from "app/main/shared/services/page-permission.service";
+import { permissionCodes, permissionType } from "app/main/shared/model/permission.model";
 
 @Component({
     selector: "app-relationship-master",
@@ -21,6 +22,9 @@ export class RelationshipMasterComponent implements OnInit {
     relationshipName: any = "";
     msg: any;
 
+     IsAdd: boolean = this.permissionService.getPermission(permissionCodes.RelationshipMaster, permissionType.Add);
+        
+
         allcolumns =  [
             // { heading: "Code", key: "relationshipId", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "RelationshipName", key: "relationshipName", sort: true, align: 'left', emptySign: 'NA' },
@@ -29,9 +33,11 @@ export class RelationshipMasterComponent implements OnInit {
             {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
                     {
-                        action: gridActions.edit, callback: (data: any) => {
+                       
+                         action: gridActions.edit, visible: this.permissionService.getPermission(permissionCodes.RelationshipMaster, permissionType.Edit), callback: (data: any) => {
                             this.onSave(data);
                         }
+
                     }, {
                         action: gridActions.delete, callback: (data: any) => {
                             this._relationshipService.deactivateTheStatus(data.relationshipId).subscribe((response: any) => {
@@ -47,6 +53,7 @@ export class RelationshipMasterComponent implements OnInit {
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
         ]
         gridConfig: gridModel = {
+             permissionCode: permissionCodes.RelationshipMaster,
         apiUrl: "RelationshipMaster/List",
         columnsList: this.allcolumns,
         sortField: "relationshipId",
@@ -56,48 +63,11 @@ export class RelationshipMasterComponent implements OnInit {
     
 
     constructor(public _relationshipService: RelationshipMasterService, public _matDialog: MatDialog,
-        public toastr: ToastrService,) { }
+        public toastr: ToastrService, public permissionService: PagePermissionService) { }
 
 
     ngOnInit(): void { }
-//filters addedby avdhoot vedpathak date-27/05/2025
-    // Clearfilter(event) {
-    //     console.log(event)
-    //     if (event == 'RelationshipNameSearch')
-    //         this._relationshipService.myformSearch.get('RelationshipNameSearch').setValue("")
 
-    //    // this.onChangeFirst();
-    // }
-
-    // onChangeFirst() {
-    //     this.relationshipName = this._relationshipService.myformSearch.get('RelationshipNameSearch').value
-    //     this.getfilterdata();
-    // }
-
-    // getfilterdata() {
-    //     debugger
-    //     let isActive = this._relationshipService.myformSearch.get("IsDeletedSearch").value || "";
-    //     this.gridConfig = {
-    //         apiUrl: "RelationshipMaster/List",
-    //         columnsList: this.allcolumns,
-    //         sortField: "relationshipId",
-    //         sortOrder: 0,
-    //         filters: [
-    //             { fieldName: "relationshipName", fieldValue: this.relationshipName, opType: OperatorComparer.Contains },
-    //             { fieldName: "isActive", fieldValue: isActive, opType: OperatorComparer.Equals }
-    //         ]
-    //     }
-    //     // this.grid.gridConfig = this.gridConfig;
-    //     // this.grid.bindGridData();
-    //     console.log("GridConfig:", this.gridConfig);
-
-    // if (this.grid) {
-    //     this.grid.gridConfig = this.gridConfig;
-    //     this.grid.bindGridData();
-    // } else {
-    //     console.error("Grid is undefined!");
-    // }
-    // }
 
     onSave(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element

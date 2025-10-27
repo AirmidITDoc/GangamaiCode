@@ -8,7 +8,7 @@
             </div>
         </div>
         <div class="gap-8" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
-            <button mat-raised-button (click)="onSave()">+ New PatientType
+            <button mat-raised-button (click)="onSave()" *ngIf="IsAdd">+ New PatientType
             </button>
         </div>
     </div>

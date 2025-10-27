@@ -14,7 +14,8 @@ import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/air
 import { ToastrService } from 'ngx-toastr';
 import { FormGroup } from '@angular/forms';
 import { PageNames } from 'app/main/shared/componets/airmid-fileupload/airmid-fileupload.component';
-
+import { permissionCodes, permissionType } from "app/main/shared/model/permission.model";
+import { PagePermissionService } from 'app/main/shared/services/page-permission.service';
 
 @Component({
   selector: 'app-hospital-master',
@@ -24,7 +25,8 @@ import { PageNames } from 'app/main/shared/componets/airmid-fileupload/airmid-fi
   animations: fuseAnimations,
 })
 export class HospitalMasterComponent implements OnInit {
-
+IsAdd: boolean = this.permissionService.getPermission(permissionCodes.Hospital, permissionType.Add);
+  
   myformSearch: FormGroup;
   msg: any;
   cityId = "0";
@@ -39,7 +41,7 @@ export class HospitalMasterComponent implements OnInit {
   confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
 
   constructor(public _HospitalService: HospitalService,
-    public _matDialog: MatDialog, public toastr: ToastrService
+    public _matDialog: MatDialog, public toastr: ToastrService,public permissionService: PagePermissionService,
   ) { }
   @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
   ngAfterViewInit() {
@@ -60,6 +62,7 @@ export class HospitalMasterComponent implements OnInit {
   ]
 
   gridConfig: gridModel = {
+      permissionCode:permissionCodes.Hospital,
     apiUrl: "HospitalMaster/HospitalMasterList",
     columnsList: this.allcolumns,
     sortField: "HospitalId",
@@ -134,20 +137,6 @@ export class HospitalMasterComponent implements OnInit {
       this.grid.bindGridData();
     });
   }
-
-  // onEdit(obj){
-  //   const dialogRef = this._matDialog.open(NewHospitalComponent, {
-  //      maxWidth: "95vw",
-  //       maxHeight: "100vh",
-  //       width: "100%",
-  //       data: obj
-
-  // });
-  // dialogRef.afterClosed().subscribe((result) => {
-  //   if(result)
-  //     this.grid.bindGridData();
-  // });
-  // }
 
   onSave(obj) {
     const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element

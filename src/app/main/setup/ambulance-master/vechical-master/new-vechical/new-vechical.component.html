@@ -1,0 +1,95 @@
+<div class="modal-wrapper grid-container">
+    <div class="modal-header accent">
+        <div class="modal-header-content">
+            <div class="modal-header-title">
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">New Ambulance Detail Master</span>
+            </div>
+            <div class="modal-header-right">
+                <div class="close-icon">
+                    <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
+                        matTooltip="Close">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-body" fusePerfectScrollbar>
+        <div class="modal-body-container">
+            <form [formGroup]="ambulanceform">
+                <!-- [(ngModel)]="regobj.vechicleId" -->
+                <input type="hidden" name="vechicleId" formControlName="vechicleId">
+
+                <div fxLayout="row wrap" fxLayoutGap="12px grid">
+
+
+                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <airmid-textbox label="Name" formControlName="name" [formGroup]="ambulanceform"
+                            [validations]="getValidationMessages().name" [maxLength]="50">
+                        </airmid-textbox>
+                    </div>
+
+
+                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <airmid-textbox label="Vechicalno" formControlName="vechicalno" [formGroup]="ambulanceform"
+                            [validations]="getValidationMessages().vechicalno" [maxLength]="18">
+                        </airmid-textbox>
+
+                    </div>
+
+                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <airmid-textbox label="VechicleModel" formControlName="VechicleModel"
+                            [formGroup]="ambulanceform" [validations]="getValidationMessages().VechicleModel"
+                            [maxLength]="50">
+                        </airmid-textbox>
+                    </div>
+
+
+
+                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <airmid-textbox label="Vechicaltype" formControlName="vechicaltype" [formGroup]="ambulanceform"
+                            [validations]="getValidationMessages().vechicaltype" [maxLength]="50">
+                        </airmid-textbox>
+
+                    </div>
+
+                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Manufactor Date</mat-label>
+                            <input matInput [matDatepicker]="picker" placeholder="Manufactor date"
+                                formControlName="manuDate">
+                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-datepicker #picker></mat-datepicker>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <airmid-textbox label="Note" formControlName="note" [formGroup]="ambulanceform"
+                            [maxLength]="50">
+                        </airmid-textbox>
+
+                    </div>
+                </div>
+
+
+
+                <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" fxLayoutAlign="space-between">
+
+                    <div>
+                        <app-airmid-slider label="IsActive/Deactive" formControlName="isActive"
+                            [formGroup]="ambulanceform"></app-airmid-slider>
+                    </div>
+
+                    <div class="new-appointment-actions gap-8" fxLayoutAlign="end center">
+                        <button class="btn btn-danger-outline" (click)="onClear(false)">Close</button>
+                        <button class="btn btn-primary " color="accent" (click)="onSubmit()">
+                            <span>Save</span>
+                        </button>
+                    </div>
+
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>

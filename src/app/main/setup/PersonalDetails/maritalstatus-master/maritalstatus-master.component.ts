@@ -7,7 +7,8 @@ import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/air
 import { ToastrService } from "ngx-toastr";
 import { MaritalstatusMasterService } from "./maritalstatus-master.service";
 import { NewMaritalstatusComponent } from "./new-maritalstatus/new-maritalstatus.component";
-
+import { permissionCodes, permissionType } from "app/main/shared/model/permission.model";
+import { PagePermissionService } from "app/main/shared/services/page-permission.service";
 @Component({
     selector: "app-maritalstatus-master",
     templateUrl: "./maritalstatus-master.component.html",
@@ -17,6 +18,8 @@ import { NewMaritalstatusComponent } from "./new-maritalstatus/new-maritalstatus
 })
 export class MaritalstatusMasterComponent implements OnInit {
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+    IsAdd: boolean = this.permissionService.getPermission(permissionCodes.MaritalStatusMaster, permissionType.Add);
+      
    Maritalstatus: any = "";
         allcolumns = [
             // { heading: "Code", key: "maritalStatusId", sort: true, align: 'left', emptySign: 'NA' },
@@ -44,6 +47,7 @@ export class MaritalstatusMasterComponent implements OnInit {
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
         ]
     gridConfig: gridModel = {
+           permissionCode:permissionCodes.MaritalStatusMaster,
         apiUrl: "MaritalStatus/List",
         columnsList: this.allcolumns,
         sortField: "maritalStatusId",
@@ -52,7 +56,7 @@ export class MaritalstatusMasterComponent implements OnInit {
     }
 
     constructor(public _maritalService: MaritalstatusMasterService, public _matDialog: MatDialog,
-        public toastr: ToastrService,) { }
+        public toastr: ToastrService,public permissionService: PagePermissionService,) { }
 
     ngOnInit(): void {
 

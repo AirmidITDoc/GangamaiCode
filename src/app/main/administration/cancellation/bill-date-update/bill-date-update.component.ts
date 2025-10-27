@@ -70,7 +70,7 @@ export class BillDateUpdateComponent implements OnInit {
     }).then((result) => {
       debugger
       if (result.isConfirmed) {
-
+debugger
         if (this.BillNo) {
           var data = {
             'billNo': this.BillNo,

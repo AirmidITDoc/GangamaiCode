@@ -7,7 +7,8 @@ import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/air
 import { ToastrService } from "ngx-toastr";
 import { CityMasterService } from "./city-master.service";
 import { NewCityComponent } from "./new-city/new-city.component";
-
+import { permissionCodes, permissionType } from "app/main/shared/model/permission.model";
+import { PagePermissionService } from "app/main/shared/services/page-permission.service";
 @Component({
     selector: "app-city-master",
     templateUrl: "./city-master.component.html",
@@ -19,7 +20,8 @@ export class CityMasterComponent implements OnInit {
 
     msg: any;
     cityName: any = "";
-
+IsAdd: boolean = this.permissionService.getPermission(permissionCodes.CityMaster, permissionType.Add);
+  
     options: any[] = [{ Text: 'Text-1', Id: 1 }, { Text: 'Text-2', Id: 2 }, { Text: 'Text-3', Id: 3 }];
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
 
@@ -49,6 +51,7 @@ export class CityMasterComponent implements OnInit {
         { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
     ]
     gridConfig: gridModel = {
+          permissionCode: permissionCodes.CityMaster,
         apiUrl: "CityMaster/List",
         columnsList: this.allColumns,
         sortField: "cityId",
@@ -58,7 +61,7 @@ export class CityMasterComponent implements OnInit {
     autocompleteMode: string = "CityMaster";
 
     constructor(
-        public _CityMasterService: CityMasterService,
+        public _CityMasterService: CityMasterService,public permissionService: PagePermissionService,
         public toastr: ToastrService, public _matDialog: MatDialog
     ) { }
 

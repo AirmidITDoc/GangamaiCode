@@ -1,7 +1,5 @@
 import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
-import { AmbulanceMasterComponent } from './ambulance-master/ambulance-master.component';
-import { NewAmbulanceComponent } from './ambulance-master/new-ambulance/new-ambulance.component';
 
 const appRoutes: Routes = [
     {

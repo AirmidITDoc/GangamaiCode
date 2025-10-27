@@ -27,15 +27,15 @@
             <div fxLayout="column" class="gap-12">
                 <div class="modal-card-container">
                     <form [formGroup]="searchFormGroup" fxLayoutAlign="space-between start">
-                         <div fxLayout="column" fxLayoutGap="8px 0px grid">
-                               <!-- <span style="font-size: large;font-weight: bold;">Select Patient --</span> -->
-                        <airmid-autocomplete lbl="RegID" [formGroup]="searchFormGroup"
-                            label="Search UHID / Patient Name / Mobile No(DC)" formControlName="RegId" fxFlex="50%"
-                            placeholderText="UHID / First Name / Last Name / Mobile No(DC)"
-                            ApiUrl="Admission/Dischargesearch-patient?Keyword="
-                            (selectionChange)="getSelectedObj($event)" TextField="formattedText" ValueField="regId">
-                        </airmid-autocomplete>
-                         </div>
+                        <div fxLayout="column" fxLayoutGap="8px 0px grid">
+                            <!-- <span style="font-size: large;font-weight: bold;">Select Patient --</span> -->
+                            <airmid-autocomplete lbl="RegID" [formGroup]="searchFormGroup"
+                                label="Search UHID / Patient Name / Mobile No(DC)" formControlName="RegId" fxFlex="50%"
+                                placeholderText="UHID / First Name / Last Name / Mobile No(DC)"
+                                ApiUrl="Admission/Dischargesearch-patient?Keyword="
+                                (selectionChange)="getSelectedObj($event)" TextField="formattedText" ValueField="regId">
+                            </airmid-autocomplete>
+                        </div>
                     </form>
 
                     <div fxFlex.gt-sm="100%" fxFlex class="patient-info-container">
@@ -84,12 +84,10 @@
                                 <span class="h3 font-weight-600">Ambulance Information</span>
                             </div>
                             <form [formGroup]="AmbulanceFormGroup" style="border: blue">
-                              
+
                                 <div fxLayout="row wrap" fxLayoutGap="8px 0px grid">
-                                    <!-- <input type="hidden" name="mlcid" formControlName="mlcid" [(ngModel)]="registerObj.mlcid" /> -->
-                                    <input type="hidden" name="admissionId" formControlName="admissionId"
-                                        />
- <!-- [(ngModel)]="registerObj.admissionId" -->
+                                    <input type="hidden" name="admissionId" formControlName="admissionId" />
+                                    <!-- [(ngModel)]="registerObj.admissionId" -->
                                     <div fxFlex="25" fxFlex.xs="100" fxFlex.sm="33">
                                         <airmid-textbox label="BillNo" formControlName="BillNo"
                                             [formGroup]="AmbulanceFormGroup"
@@ -99,9 +97,12 @@
 
 
                                     <div fxFlex="25" fxFlex.xs="100" fxFlex.sm="33">
-                                        <airmid-textbox label="CaseId" formControlName="CaseId"
+                                       <airmid-dropdown label="vehicle Name" formControlName="VehicleNo"
                                             [formGroup]="AmbulanceFormGroup"
-                                            [maxLength]="15"></airmid-textbox>
+                                            [validations]="getValidationMessages().VehicleNo" 
+                                            fxFlex="50%" [mode]="autocompletevehicle"
+                                            (selectionChange)="selectChangevehicle($event)">
+                                        </airmid-dropdown>
                                     </div>
 
 
@@ -129,14 +130,6 @@
                                     </div>
 
 
-
-                                    <!-- <div fxFlex="25" fxFlex.xs="100" fxFlex.sm="33">
-                                        <airmid-textbox label="VechicleNo" formControlName="VechicleNo"
-                                            [value]="registerObj.VechicleNo" [formGroup]="AmbulanceFormGroup"
-                                            [validations]="getValidationMessages().VechicleNo"
-                                            [maxLength]="50"></airmid-textbox>
-                                    </div> -->
-
                                     <div fxFlex="25" fxFlex.xs="100" fxFlex.sm="33">
                                         <airmid-textbox label="PatientAddress" formControlName="PatientAddress"
                                             [formGroup]="AmbulanceFormGroup"
@@ -144,12 +137,12 @@
                                             [maxLength]="200"></airmid-textbox>
                                     </div>
 
-                                    <div fxFlex="25" fxFlex.xs="100" fxFlex.sm="33">
+                                    <!-- <div fxFlex="25" fxFlex.xs="100" fxFlex.sm="33">
                                         <airmid-textbox label="VechicleNo" formControlName="VechicleNo"
                                             [formGroup]="AmbulanceFormGroup"
                                             [validations]="getValidationMessages().VechicleNo"
                                             [maxLength]="15"></airmid-textbox>
-                                    </div>
+                                    </div> -->
 
                                     <div fxFlex="25" fxFlex.xs="100" fxFlex.sm="33">
                                         <airmid-textbox label="VechicleModel" formControlName="VechicleModel"
@@ -159,10 +152,14 @@
                                     </div>
 
                                     <div fxFlex="25" fxFlex.xs="100" fxFlex.sm="33">
-                                        <airmid-textbox label="DriverName" formControlName="DriverName"
+
+
+                                        <airmid-dropdown label="Driver Name" formControlName="DriverName"
                                             [formGroup]="AmbulanceFormGroup"
-                                            [validations]="getValidationMessages().DriverName"
-                                            [maxLength]="50"></airmid-textbox>
+                                            [validations]="getValidationMessages().DriverName" 
+                                            fxFlex="50%" [mode]="autocompletedriver"
+                                            (selectionChange)="selectChangedriver($event)">
+                                        </airmid-dropdown>
                                     </div>
 
 
@@ -180,8 +177,7 @@
 
                                     <div fxFlex="25" fxFlex.xs="100" fxFlex.sm="33">
                                         <airmid-textbox label="PaidAmt" formControlName="PaidAmt"
-                                            [formGroup]="AmbulanceFormGroup"
-                                           [maxLength]="7"></airmid-textbox>
+                                            [formGroup]="AmbulanceFormGroup" [maxLength]="7"></airmid-textbox>
                                     </div>
                                     <!-- [value]="registerObj.BalAmt" -->
                                     <div fxFlex="25" fxFlex.xs="100" fxFlex.sm="33">
@@ -199,7 +195,8 @@
 
                                     <mat-form-field appearance="outline" fxFlex>
                                         <mat-label>Remark</mat-label>
-                                        <textarea matInput name="Remark" formControlName="remark" cols="200" rows="2"></textarea>
+                                        <textarea matInput name="Remark" formControlName="remark" cols="200"
+                                            rows="2"></textarea>
                                     </mat-form-field>
                                 </div>
                             </form>

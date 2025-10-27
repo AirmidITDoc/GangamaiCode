@@ -12,6 +12,7 @@ import { DatePipe } from '@angular/common';
 import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
 import { gridColumnTypes } from 'app/core/models/tableActions';
 import { fuseAnimations } from '@fuse/animations';
+import { ItemNameList } from 'app/main/purchase/purchase-order/purchase-order.component';
 
 @Component({
   selector: 'app-patient-billdetail',
@@ -37,6 +38,7 @@ export class PatientBilldetailComponent {
     'ConcessionAmount',
     'NetAmount',
     'DoctorName',
+    'DocPer',
     'DocAmt',
     'HospitalAmt',
   ]
@@ -159,6 +161,18 @@ export class PatientBilldetailComponent {
     });
     // } 
   }
+
+
+   getCellCalculation(item: ItemNameList) {
+        debugger
+          setTimeout(() => {
+         
+          item.hospitalAmt = Number(item.netAmount)-Number(item.docAmt); // just in case
+             
+      });
+        
+      }
+
   onClose() {
     this._matDialog.closeAll()
   }

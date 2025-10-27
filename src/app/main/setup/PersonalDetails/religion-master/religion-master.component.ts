@@ -7,7 +7,8 @@ import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/air
 import { ToastrService } from "ngx-toastr";
 import { NewReligionMasterComponent } from "./new-religion-master/new-religion-master.component";
 import { ReligionMasterService } from "./religion-master.service";
-
+import { permissionCodes, permissionType } from "app/main/shared/model/permission.model";
+import { PagePermissionService } from "app/main/shared/services/page-permission.service";
 @Component({
     selector: "app-religion-master",
     templateUrl: "./religion-master.component.html",
@@ -18,6 +19,8 @@ import { ReligionMasterService } from "./religion-master.service";
 export class ReligionMasterComponent implements OnInit {
    @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
  msg: any;
+ IsAdd: boolean = this.permissionService.getPermission(permissionCodes.ReligionMaster, permissionType.Add);
+   
  religionName: any = "";
 
     allcolumns = [
@@ -46,13 +49,14 @@ export class ReligionMasterComponent implements OnInit {
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
         ]
      gridConfig: gridModel = {
+          permissionCode:permissionCodes.ReligionMaster,
         apiUrl: "ReligionMaster/List",
         columnsList: this.allcolumns,
         sortField: "religionId",
         sortOrder: 0,
         filters: this.allfilters
     }
-    constructor(public _religionService: ReligionMasterService, public _matDialog: MatDialog,
+    constructor(public _religionService: ReligionMasterService, public _matDialog: MatDialog,public permissionService: PagePermissionService,
         public toastr: ToastrService,) { }
 
     ngOnInit(): void { }

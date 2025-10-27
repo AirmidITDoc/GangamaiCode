@@ -18,13 +18,14 @@ import { ProcessDoctorshareComponent } from './process-doctorshare/process-docto
 import { PatientBilldetailComponent } from './patient-billdetail/patient-billdetail.component';
 import Swal from 'sweetalert2';
 import { fuseAnimations } from '@fuse/animations';
+import { DoctorpaySummarydetailComponent } from './doctorpay-summarydetail/doctorpay-summarydetail.component';
 
 @Component({
   selector: 'app-bill-list-doctorwise',
   templateUrl: './bill-list-doctorwise.component.html',
   styleUrls: ['./bill-list-doctorwise.component.scss'],
-      encapsulation: ViewEncapsulation.None,
-      animations: fuseAnimations
+  encapsulation: ViewEncapsulation.None,
+  animations: fuseAnimations
 })
 export class BillListDoctorwiseComponent {
 
@@ -55,18 +56,14 @@ export class BillListDoctorwiseComponent {
   toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
   fromDate1 = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
   toDate1 = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
-  
+
 
   @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
 
+  @ViewChild('actionButtonTemplate1') actionButtonTemplate1!: TemplateRef<any>;
 
-  // @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
-  // @ViewChild(AirmidTableComponent) grid1: AirmidTableComponent;
-
-    @ViewChild('ipBrowse', { static: false }) grid: AirmidTableComponent;
-    @ViewChild('summary', { static: false }) grid1: AirmidTableComponent;
-
-
+   @ViewChild('ipBrowse', { static: false }) grid: AirmidTableComponent;
+  @ViewChild('summary', { static: false }) grid1: AirmidTableComponent;
 
 
   constructor(
@@ -93,6 +90,7 @@ export class BillListDoctorwiseComponent {
     this.gridConfig.columnsList.find(col => col.key === 'patientType')!.template = this.actionsTemplate1;
     this.gridConfig.columnsList.find(col => col.key === 'opdipdtype')!.template = this.actionsTemplate;
     this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
+    this.gridConfig1.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate1;
   }
 
   allColumns = [
@@ -120,7 +118,7 @@ export class BillListDoctorwiseComponent {
     { fieldName: "ToDate", fieldValue: this.toDate, opType: OperatorComparer.StartsWith },
     { fieldName: "DoctorId", fieldValue: "0", opType: OperatorComparer.Equals },
     { fieldName: "PBillNo", fieldValue: "0", opType: OperatorComparer.Equals },
-    { fieldName: "OP_IP_TYpe", fieldValue: "1", opType: OperatorComparer.Equals },
+    { fieldName: "OPIPTYpe", fieldValue: "1", opType: OperatorComparer.Equals },
   ]
   gridConfig: gridModel = {
     apiUrl: "Doctor/DoctorshareBillList",
@@ -145,7 +143,7 @@ export class BillListDoctorwiseComponent {
     this.fromDate = fromD ? this.datePipe.transform(this._DoctorShareService.UserFormGroup.get('fromDate').value, "yyyy-MM-dd") : "";
     this.toDate = toD ? this.datePipe.transform(this._DoctorShareService.UserFormGroup.get('enddate').value, "yyyy-MM-dd") : "";
     this.DoctorId = this._DoctorShareService.UserFormGroup.get('DoctorID').value
-debugger
+    debugger
     console.log("fromDate:", this.fromDate)
     console.log("toDate:", this.toDate)
 
@@ -159,13 +157,13 @@ debugger
         { fieldName: "ToDate", fieldValue: this.toDate, opType: OperatorComparer.GreaterThanOrEqual },
         { fieldName: "DoctorId", fieldValue: this.DoctorId, opType: OperatorComparer.Equals },
         { fieldName: "PBillNo", fieldValue: this.pBillNo, opType: OperatorComparer.Equals },
-        { fieldName: "OP_IP_TYpe", fieldValue: this.opipType, opType: OperatorComparer.Equals },
+        { fieldName: "OPIPTYpe", fieldValue: this.opipType, opType: OperatorComparer.Equals },
       ]
     }
     this.grid.gridConfig = this.gridConfig;
     this.grid.bindGridData();
 
-      
+
   }
   ///Summary pay
   allColumns1 = [
@@ -175,11 +173,16 @@ debugger
     { heading: "Doctor Amount", key: "docAmt", sort: true, align: 'left', emptySign: 'NA', width: 250 },
 
     { heading: "Hospital Amount", key: "hospitalAmt", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+    {
+      heading: "Action", key: "action", align: "right", width: 150, sticky: true, type: gridColumnTypes.template,
+      template: this.actionButtonTemplate1  // Assign ng-template to the column
+    }
   ]
   allFilters1 = [
     { fieldName: "FromDate", fieldValue: this.fromDate1, opType: OperatorComparer.GreaterThanOrEqual },
     { fieldName: "ToDate", fieldValue: this.toDate1, opType: OperatorComparer.GreaterThanOrEqual },
     { fieldName: "DoctorId", fieldValue: "0", opType: OperatorComparer.Equals },
+
 
   ]
   gridConfig1: gridModel = {
@@ -198,8 +201,8 @@ debugger
   }
 
   getfilterdata1() {
-   
-debugger
+
+    debugger
     this.gridConfig1 = {
       apiUrl: "DoctorPAy/DoctorPaySummaryList",
       columnsList: this.allColumns1,
@@ -294,17 +297,7 @@ debugger
   }
 
   isDatePckrDisabled: boolean = false;
-  //  NewDocShare() {
-  //    const dialogRef = this._matDialog.open(DoctorShareListComponent,
-  //      {
-  //        maxWidth: "35vw",
-  //        height: "75%",
-  //        width: "100%",
-  //      });
-  //    dialogRef.afterClosed().subscribe(result => {
-  //      this.onChangeFirst()
-  //    });
-  //  }
+ 
 
   Additiondocpay() {
     const dialogRef = this._matDialog.open(DoctorAddonpayComponent,
@@ -333,7 +326,7 @@ debugger
   billdetail(element) {
     const dialogRef = this._matDialog.open(PatientBilldetailComponent,
       {
-        maxWidth: "70vw",
+        maxWidth: "80vw",
         height: '900px',
         width: '100%',
         data: element
@@ -342,6 +335,26 @@ debugger
       this.onChangeFirst()
     });
   }
+
+  Doctorbilldetail(element) {
+    const dialogRef = this._matDialog.open(DoctorpaySummarydetailComponent,
+      {
+        maxWidth: "90vw",
+        height: '690px',
+        width: '100%',
+        data: {
+         obj: element,
+         fromDate:this.fromDate,
+         toDate:this.toDate
+
+        }
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      this.onChangeFirst()
+    });
+  }
+
+
 
   onClear() {
   }

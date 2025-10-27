@@ -7,7 +7,8 @@ import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/air
 import { ToastrService } from "ngx-toastr";
 import { NewPatientTypeComponent } from "./new-patient-type/new-patient-type.component";
 import { PatienttypeMasterService } from "./patienttype-master.service";
-
+import { permissionCodes, permissionType } from "app/main/shared/model/permission.model";
+import { PagePermissionService } from "app/main/shared/services/page-permission.service";
 @Component({
     selector: "app-patienttype-master",
     templateUrl: "./patienttype-master.component.html",
@@ -18,7 +19,8 @@ import { PatienttypeMasterService } from "./patienttype-master.service";
 export class PatienttypeMasterComponent implements OnInit {
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
 patientType: any = "";
-
+IsAdd: boolean = this.permissionService.getPermission(permissionCodes.PatientType, permissionType.Add);
+  
         allcolumns= [
             // { heading: "Code", key: "patientTypeId", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "Patient Type Name", key: "patientType", sort: true, align: 'left', emptySign: 'NA' },
@@ -44,6 +46,8 @@ patientType: any = "";
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
         ]
         gridConfig: gridModel = {
+               permissionCode:permissionCodes.PatientType,
+            
         apiUrl: "PatientType/List",
         columnsList: this.allcolumns,
         sortField: "patientTypeId",
@@ -53,7 +57,7 @@ patientType: any = "";
 
     constructor(
         public _PatienttypeMasterService: PatienttypeMasterService,
-        public toastr: ToastrService, public _matDialog: MatDialog
+        public toastr: ToastrService, public _matDialog: MatDialog,public permissionService: PagePermissionService,
     ) { }
 
     ngOnInit(): void { }

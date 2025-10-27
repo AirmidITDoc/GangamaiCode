@@ -348,6 +348,12 @@ export class ItemNameList {
   octriAmount: any;
   worrenty: any;
   remarks: any;
+
+  netAmount:any
+   docAmt:any
+    hospitalAmt:any
+    DocAmt:any
+    
   /**
    * Constructor
    *
@@ -437,6 +443,10 @@ export class ItemNameList {
       this.octriAmount = ItemNameList.octriAmount || 0;
       this.worrenty = ItemNameList.worrenty || "";
       this.remarks = ItemNameList.remarks || "";
+ this.netAmount = ItemNameList.netAmount || 0;
+      this.docAmt = ItemNameList.docAmt || "";
+      this.hospitalAmt = ItemNameList.hospitalAmt || "";
+      this.DocAmt= ItemNameList.DocAmt || "";
 
     }
   }

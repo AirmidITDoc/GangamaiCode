@@ -44,6 +44,7 @@ import { MatSidenavModule } from "@angular/material/sidenav";
 import { MatTooltipModule } from "@angular/material/tooltip";
 import { MatGridListModule } from "@angular/material/grid-list";
 import { PatientBilldetailComponent } from './patient-billdetail/patient-billdetail.component';
+import { DoctorpaySummarydetailComponent } from './doctorpay-summarydetail/doctorpay-summarydetail.component';
 
 
 
@@ -55,7 +56,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    declarations: [BillListDoctorwiseComponent, DoctorAddonpayComponent, ProcessDoctorshareComponent, PatientBilldetailComponent],
+    declarations: [BillListDoctorwiseComponent, DoctorAddonpayComponent, ProcessDoctorshareComponent, PatientBilldetailComponent, DoctorpaySummarydetailComponent],
     imports: [
         RouterModule.forChild(routes),
        MatButtonModule,

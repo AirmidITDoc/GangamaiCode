@@ -1,0 +1,97 @@
+<div class="modal-wrapper grid-container">
+    <div class="modal-header accent">
+        <div class="modal-header-content">
+            <div class="modal-header-title">
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">New Driver Detail Master</span>
+            </div>
+            <div class="modal-header-right">
+                <div class="close-icon">
+                    <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
+                        matTooltip="Close">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-body" fusePerfectScrollbar>
+        <div class="modal-body-container">
+            <form [formGroup]="Driverdataform">
+                <!-- [(ngModel)]="regobj.driverId" -->
+                <input type="hidden" name="driverId" formControlName="driverId">
+
+                <div fxLayout="row wrap" fxLayoutGap="12px grid">
+
+
+                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <airmid-textbox label="Driver Name" formControlName="driverName" [formGroup]="Driverdataform"
+                            [validations]="getValidationMessages().driverName" [maxLength]="50">
+                        </airmid-textbox>
+                    </div>
+<!-- [value]="registerObj?.cityId" -->
+                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <airmid-dropdown label="City" formControlName="cityId" [formGroup]="Driverdataform"
+                             [validations]="getValidationMessages().cityId" (selectionChange)="onChangecity($event)"
+                            ValueField="cityId" TextField="cityName" ApiUrl="CityMaster/get-cities"></airmid-dropdown>
+                    </div>
+                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <airmid-textbox label="address" formControlName="address" [formGroup]="Driverdataform"
+                            [validations]="getValidationMessages().address" [maxLength]="50">
+                        </airmid-textbox>
+
+                    </div>
+
+                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Date Of Birth</mat-label>
+                            <input matInput [matDatepicker]="picker" placeholder="Bdate" formControlName="dateOfBirth">
+                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-datepicker #picker></mat-datepicker>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <airmid-textbox label="mobileNo" formControlName="mobileNo" [formGroup]="Driverdataform"
+                            [validations]="getValidationMessages().mobileNo" [maxLength]="10">
+                        </airmid-textbox>
+                    </div>
+
+
+
+                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <airmid-textbox label="Experience" formControlName="experience" [formGroup]="Driverdataform"
+                            [validations]="getValidationMessages().experience" [maxLength]="10">
+                        </airmid-textbox>
+
+                    </div>
+
+                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <airmid-textbox label="LicenceNo" formControlName="licenceNo" [formGroup]="Driverdataform"
+                            [maxLength]="15" [validations]="getValidationMessages().licenceNo">
+                        </airmid-textbox>
+
+                    </div>
+                </div>
+
+
+
+                <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" fxLayoutAlign="space-between">
+
+                    <div>
+                        <app-airmid-slider label="IsActive/Deactive" formControlName="isActive"
+                            [formGroup]="Driverdataform"></app-airmid-slider>
+                    </div>
+
+                    <div class="new-appointment-actions gap-8" fxLayoutAlign="end center">
+                        <button class="btn btn-danger-outline" (click)="onClear(false)">Close</button>
+                        <button class="btn btn-primary " color="accent" (click)="onSubmit()">
+                            <span>Save</span>
+                        </button>
+                    </div>
+
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>

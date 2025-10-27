@@ -59,6 +59,10 @@ createDocSummaryFormGroup() {
         return this._httpClient.PostData("DoctorPAy/DoctorBilldetailList", param)
     }
 
+     public getSummarydetailList(param) {
+
+        return this._httpClient.PostData("DoctorPAy/DoctorsharSummarydetail", param)
+    }
 
 public additionpayInsert(Param) {
     return this._httpClient.PostData("DoctorPAy/Insert",Param) 
@@ -71,7 +75,12 @@ public additionpayInsert(Param) {
     return this._httpClient.PostData("DoctorPAy/Insert",Param) 
   } 
    public Updatesharedoccharges(Param) {
-    return this._httpClient.PostData("DoctorPAy/ShareDocAddCharges",Param) 
+    return this._httpClient.PutData("DoctorPAy/ShareDocAddCharges",Param) 
   } 
   
+  
+
+     public ProcessShareSave(Param) {
+    return this._httpClient.PostData("DoctorPAy/DoctorPayoutProcess",Param) 
+  } 
 }

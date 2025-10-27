@@ -7,7 +7,8 @@ import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/air
 import { ToastrService } from "ngx-toastr";
 import { CountryMasterService } from "./country-master.service";
 import { NewCountryMasterComponent } from "./new-country-master/new-country-master.component";
-
+import { permissionCodes, permissionType } from "app/main/shared/model/permission.model";
+import { PagePermissionService } from "app/main/shared/services/page-permission.service";
 @Component({
     selector: "app-country-master",
     templateUrl: "./country-master.component.html",
@@ -18,6 +19,8 @@ import { NewCountryMasterComponent } from "./new-country-master/new-country-mast
 export class CountryMasterComponent implements OnInit {
     msg: any;
     countryName:any=""
+    IsAdd: boolean = this.permissionService.getPermission(permissionCodes.CountryMaster, permissionType.Add);
+      
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     allcolumns= [
             // { heading: "Code", key: "countryId", sort: true, align: 'left', emptySign: 'NA' },
@@ -43,6 +46,7 @@ export class CountryMasterComponent implements OnInit {
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
         ]
     gridConfig: gridModel = {
+        permissionCode: permissionCodes.CountryMaster,
         apiUrl: "CountryMaster/List",
         columnsList: this.allcolumns,
         sortField: "countryId",
@@ -50,7 +54,7 @@ export class CountryMasterComponent implements OnInit {
         filters: this.allfilters
     }
 
-    constructor(public _CountryService: CountryMasterService, public _matDialog: MatDialog,
+    constructor(public _CountryService: CountryMasterService, public _matDialog: MatDialog,public permissionService: PagePermissionService,
         public toastr: ToastrService,) { }
 
     ngOnInit(): void { }

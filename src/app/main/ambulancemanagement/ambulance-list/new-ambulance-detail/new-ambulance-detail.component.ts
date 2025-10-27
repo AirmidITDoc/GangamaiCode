@@ -26,6 +26,9 @@ export class NewAmbulanceDetailComponent {
   dateTimeString: any;
   dateTimeObj: any;
   screenFromString = 'Common-form';
+  
+  autocompletevehicle: string = "vechicle";
+  autocompletedriver: string = "Driver";
 
     @Output() dateTimeEventEmitter = new EventEmitter<{}>();
     isDatePckrDisabled: boolean = false;
@@ -111,8 +114,8 @@ export class NewAmbulanceDetailComponent {
   onClose(){}
   getValidationMessages() {
     return {
-      VechicleNo: [
-        { name: "required", Message: "VechicleNo is required" }
+      VehicleNo: [
+        { name: "required", Message: "VehicleNo is required" }
       ],
       VechicleModel: [
         { name: "required", Message: "VechicleModel is required" }
@@ -148,6 +151,13 @@ export class NewAmbulanceDetailComponent {
       let splitTime = this.AmbulanceFormGroup.get('reportingDate').value.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }).split(',');
       this.eventEmitForParent(splitDate[0], splitTime[1]);
     }
+  }
+
+  selectChangevehicle($event){
+
+  }
+  selectChangedriver($event){
+
   }
 
   onChangeTime(event) {

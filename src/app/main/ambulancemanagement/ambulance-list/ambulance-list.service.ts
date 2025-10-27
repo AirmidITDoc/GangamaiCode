@@ -27,7 +27,7 @@ ambulanceallocaterForm(): FormGroup {
      BillNo:'',
 CaseId:'',
 PatientName:'',
-
+VehicleNo:0,
 VechicleNo:'',
 VechicleModel:'',
 DriverName:'',

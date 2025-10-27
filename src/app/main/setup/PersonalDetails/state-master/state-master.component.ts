@@ -7,7 +7,8 @@ import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/air
 import { ToastrService } from "ngx-toastr";
 import { NewStateMasterComponent } from "./new-state-master/new-state-master.component";
 import { StateMasterService } from "./state-master.service";
-
+import { permissionCodes, permissionType } from "app/main/shared/model/permission.model";
+import { PagePermissionService } from "app/main/shared/services/page-permission.service";
 @Component({
     selector: "app-state-master",
     templateUrl: "./state-master.component.html",
@@ -18,6 +19,8 @@ import { StateMasterService } from "./state-master.service";
 export class StateMasterComponent implements OnInit {
  @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     msg: any;
+    IsAdd: boolean = this.permissionService.getPermission(permissionCodes.StateMaster, permissionType.Add);
+      
    stateName: any = "";
    
         allcolumns =  [
@@ -47,6 +50,7 @@ export class StateMasterComponent implements OnInit {
         ]
     
  gridConfig: gridModel = {
+       permissionCode:permissionCodes.StateMaster,
         apiUrl: "StateMaster/List",
         columnsList: this.allcolumns,
         sortField: "stateId",
@@ -55,7 +59,7 @@ export class StateMasterComponent implements OnInit {
     }
     constructor(
         public _StateMasterService: StateMasterService,
-        public toastr: ToastrService, public _matDialog: MatDialog
+        public toastr: ToastrService, public _matDialog: MatDialog,public permissionService: PagePermissionService,
     ) { }
 
     ngOnInit(): void { }
