@@ -46,8 +46,10 @@ export class AppComponent implements OnInit, OnDestroy {
     subscriptions: Subscription[] = [];
     isLoading: boolean = true;
     configSettingParam: any = [];
-      configSettingParam1: any = [];
+    configSettingParam1: any = [];
     newconfigSettingParam: any = [];
+    UnitWiseSystemConfigu: any = [];
+
     LogOutTimeValue:any = 10;
     LogOutTimeID:any = 0;
     // Private
@@ -235,6 +237,7 @@ export class AppComponent implements OnInit, OnDestroy {
                 // debugger
                 this.authService.getNavigationData();
                 this.ConfigSettingParamNew();
+                this.ConfigSettingUnitWise();
             }
         }); 
   
@@ -261,29 +264,6 @@ export class AppComponent implements OnInit, OnDestroy {
     toggleSidebarOpen(key): void {
         this._fuseSidebarService.getSidebar(key).toggleOpen();
     }
-
-    // ConfigSettingParam() {
-    //     var Params =
-    //     {
-    //         "searchFields": [
-    //             {
-    //                 "fieldName": "ConfigId",
-    //                 "fieldValue": "1",
-    //                 "opType": "Equals"
-    //             }
-    //         ],
-    //         "mode": "SysConfig"
-    //     }
-    //     this._httpClient1
-    //         .PostData("Common", Params).subscribe(data => {
-    //             this.configSettingParam = data;
-    //             console.log(data);
-    //             this.configService.setCongiParam(this.configSettingParam[0]);
-    //             console.log(this.configSettingParam);
-    //         });
-    // }
-
-
     AddList: any = [];
     public dsconfigList = new MatTableDataSource<ConfigList>();
     ConfigSettingParamNew() {
@@ -294,12 +274,25 @@ export class AppComponent implements OnInit, OnDestroy {
         }
         this._httpClient1.PostData("Common", Params).subscribe(data => {
            this.configSettingParam1 = data;
-               /// console.log(data);
                 this.configService.setCongiParam(this.configSettingParam1[0]);
-                console.log(this.configSettingParam1); 
                 const [LogOutTimeID, LogOutTimeValue] =this.configService.configParams.SystemLogOutTime.split(":");
                 this.LogOutTimeID = LogOutTimeID
                 if(this.LogOutTimeID == 1){this.LogOutTimeValue = LogOutTimeValue}  
+        });
+    }
+
+    ConfigSettingUnitWise() {
+        var Params =
+        {
+            "searchFields": [ {
+                    "fieldName": "UnitId",
+                    "fieldValue": "1",
+                    "opType": "Equals"
+                }],
+            "mode": "UnitWiseSystemConfige"
+        }
+        this._httpClient1.PostData("Common", Params).subscribe(data => {
+           this.UnitWiseSystemConfigu = data;
         });
     }
 }
