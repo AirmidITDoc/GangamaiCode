@@ -35,6 +35,7 @@ export class InOperationService {
       toTime: ['', Validators.required],
       duration: ['', Validators.required],
       surgeryType: ['', [Validators.required]],
+      surgeonTypeId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       surgeryId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       partId: [],
       isprimary: [],
@@ -68,6 +69,11 @@ export class InOperationService {
       mopCount: ["1"],
       closureNote: [''],
       operativeFinding: [''],
+      recourceType: [0],
+      anestypeId1: [0],
+      anestheticsDr1: [0],
+      postOperNote: [''],
+      patientCondNote: [''],
     });
   }
 }

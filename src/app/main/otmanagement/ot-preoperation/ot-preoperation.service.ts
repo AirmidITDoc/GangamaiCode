@@ -44,6 +44,7 @@ export class OtPreoperationService {
       Clearance: [],
       Medical: [],
       Finance: [],
+      surgeonTypeId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       surgeryType: ['', [Validators.required]],
       surgeryId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       partId: [],
@@ -60,8 +61,8 @@ export class OtPreoperationService {
       anestypeId: [0],
       anestheticsDr1: [0],
       bodyPartId: [],
-      cathLabDiagnosis:[],
-      ConsentText:[],
+      cathLabDiagnosis: [],
+      ConsentText: [],
     });
   }
 

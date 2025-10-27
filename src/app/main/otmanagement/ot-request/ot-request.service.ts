@@ -69,6 +69,7 @@ export class OtRequestService {
             toTime: ['', Validators.required],
             duration: ['', Validators.required],
             isprimary: [],
+            surgeonTypeId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             surgeonId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             anestheticsDr: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             recourceType:[0],

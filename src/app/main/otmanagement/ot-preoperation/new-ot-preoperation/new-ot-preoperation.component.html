@@ -25,7 +25,7 @@
         <div class="modal-body-container">
             <div fxLayout="column" class="gap-12"></div>
             <form [formGroup]="preOperationForm">
-                <div class="modal-card-container">
+                <!-- <div class="modal-card-container">
                     <div fxLayout="row" fxLayout.sm="column" class="gap-16" fxLayoutAlign="start center center">
 
                         <div class="radio-container">
@@ -57,7 +57,7 @@
                             </airmid-autocomplete>
                         </div>
                     </div>
-                </div>
+                </div> -->
 
                 <div class="modal-card-container" style="padding: 10px 2px 5px 0px ;">
                     <div fxFlex.gt-sm="100%" fxFlex class="patient-info-container">
@@ -243,6 +243,12 @@
                                                 <input matInput type="time" formControlName="toTime" readonly
                                                     (change)="onChangeTimeto($event)">
                                             </mat-form-field>
+                                        </div>
+
+                                        <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                            <airmid-dropdown label="Surgeon Type" formControlName="surgeonTypeId"
+                                                [formGroup]="preOperationForm">
+                                            </airmid-dropdown>
                                         </div>
 
                                         <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
@@ -545,7 +551,8 @@
                                         [chips]="preOperationForm.get('Diagnosis')?.value"
                                         [apiUrl]="'OPDPrescriptionMedical/GetDiagnosisList?descriptionType=Diagnosis'"
                                         [displayKey]="'descriptionName'" [allowCustom]="true"
-                                        (chipsChange)="selectChangeDiagnosis($event)" [placeholder]="'Select Diagnosis'" >
+                                        (chipsChange)="selectChangeDiagnosis($event)"
+                                        [placeholder]="'Select Diagnosis'">
                                     </app-airmid-chipautocomplete>
                                 </div>
 

@@ -23,7 +23,7 @@ export class OtReservationService {
     createReservationForm(): FormGroup {
         return this._formBuilder.group({
 
-            otreservationId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+            otreservationId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             reservationDate: [new Date(), [Validators.required]],
             reservationTime: [new Date(), [Validators.required]],
             opIpId: [""],
@@ -32,7 +32,7 @@ export class OtReservationService {
             opstartTime: ['', Validators.required],
             opendTime: ['', Validators.required],
             // duration: ['', Validators.required],
-            ottableId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator(),this._FormvalidationserviceService.onlyNumberValidator()]],
+            ottableId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
             // surgeonId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             surgeonId1: [0],
             // anestheticsDr: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
@@ -46,9 +46,9 @@ export class OtReservationService {
             isCancelledBy: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             isCancelledDateTime: ['1900-01-01', [this._FormvalidationserviceService.validDateValidator]],
             departmentId: [0],
-            otrequestId:[0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+            otrequestId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
 
-             // new fields
+            // new fields
             BloodGroup: [],
             CategoryTypeId: [],
             Theater: [],
@@ -65,21 +65,22 @@ export class OtReservationService {
             Clearance: [],
             Medical: [],
             Finance: [],
-            surgeryType: ['',[Validators.required]],
+            surgeryType: ['', [Validators.required]],
             surgeryId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             partId: [],
             fromTime: ['', Validators.required],
             toTime: ['', Validators.required],
             duration: ['', Validators.required],
             isprimary: [],
+            surgeonTypeId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             surgeonId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             anestheticsDr: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-            recourceType:[0],
+            recourceType: [0],
             anestypeId: [0],
             anestheticsDr1: [0],
-            bodyPartId:[],
-            RefNo:[],
-            id:[]
+            bodyPartId: [],
+            RefNo: [],
+            id: []
         });
     }
 
@@ -90,10 +91,10 @@ export class OtReservationService {
             FirstName: ['', [Validators.pattern("^[A-Za-z/() ]*$")]],
             LastName: ['', [Validators.pattern("^[A-Za-z/() ]*$")]],
             RegNo: [],
-            ottableId:[0]
+            ottableId: [0]
         });
     }
-    
+
     CreateForm() {
         return this._formBuilder.group({
             PatientName: [''],
@@ -122,7 +123,7 @@ export class OtReservationService {
         return this._httpClient.PostData("", Param);
     }
 
-     public OnCancel(param) {
+    public OnCancel(param) {
         return this._httpClient.PostData('OTReservation/Cancel', param)
     }
 }

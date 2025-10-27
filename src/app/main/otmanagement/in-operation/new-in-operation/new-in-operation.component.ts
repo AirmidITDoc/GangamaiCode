@@ -64,6 +64,13 @@ export class NewInOperationComponent {
     'anesthesia',
     'Action'
   ];
+
+  displayedColumns1: string[] = [
+    'surgeon',
+    'anesthesia',
+    'Action'
+  ];
+
   autocompleteModeSurgeryMaster: String = "SurgeryMaster";
   autocompleteModeConDoctor: String = "ConDoctor";
   autocompleteModeRefDoctor: String = "RefDoctor";
@@ -76,6 +83,8 @@ export class NewInOperationComponent {
   dsattendentDetailList = new MatTableDataSource<OtReqInsert>();
   Chargelist1: any[] = [];
   surgeryTypeNames: string[] = ["Normal", "Emergency"];
+  AnthName1: any;
+  editIndex1: number | null = null;
 
   constructor(public _inOpearionService: InOperationService,
     public dialogRef: MatDialogRef<NewInOperationComponent>,
@@ -248,7 +257,12 @@ export class NewInOperationComponent {
     this.dialogRef.close(val);
   }
 
-
+  selectChangeanesthesiaType1(obj: any) {
+    this.anesthesiaType = obj.text
+  }
+  selectChangeAnesth1(obj: any) {
+    this.AnthName1 = obj.text
+  }
   /////////////////////////////// surgery detail part /////////////////////////////
   onAdd() {
     if (!this.inOperForm.get("surgeryType")?.value) {
@@ -320,7 +334,7 @@ export class NewInOperationComponent {
     //  Also add surgeon & anesthetist to second table (attendants) ---
     // if (this.surgeonName) {
     //   let surgeonEntry = {
-    //     anestypeId: null,
+    //     anestypeId1: null,
     //     anesthesiaType: "Surgeon",
     //     anestheticsId1: newEntry.surgeonId,
     //     anestheticsName1: this.surgeonName
@@ -330,7 +344,7 @@ export class NewInOperationComponent {
 
     // if (this.AnthName) {
     //   let anesthetistEntry = {
-    //     anestypeId: null,
+    //     anestypeId1: null,
     //     anesthesiaType: "Anesthetist",
     //     anestheticsId1: newEntry.anestheticsId,
     //     anestheticsName1: this.AnthName
@@ -423,6 +437,70 @@ export class NewInOperationComponent {
 
   /////////////////////////////// surgery detail part end /////////////////////////////
 
+
+  /////////////////////////////// attendent detail part /////////////////////////////
+  onAdd1() {
+    debugger
+
+    let newEntry = {
+      anestypeId1: this.inOperForm.get('anestypeId1').value,//
+      anesthesiaType: this.anesthesiaType,
+      anestheticsId1: this.inOperForm.get('anestheticsDr1').value, //
+      anestheticsName1: this.AnthName1,
+    };
+    // this.Chargelist.push(newEntry);
+    if (this.editIndex1 !== null) {
+      this.Chargelist1[this.editIndex1] = newEntry;
+      this.editIndex1 = null;
+    } else {
+      this.Chargelist1.push(newEntry);
+    }
+    this.dsattendentDetailList.data = [...this.Chargelist1];
+
+    this.inOperForm.patchValue({
+      anestypeId1: '',
+      anestheticsDr1: ''
+    });
+    this.anesthesiaType = '';
+    this.AnthName1 = '';
+  }
+
+  deleteTableRow1(event, element) {
+
+    let index = this.Chargelist1.indexOf(element);
+    if (index >= 0) {
+      this.Chargelist1.splice(index, 1);
+      this.dsattendentDetailList.data = [];
+      this.dsattendentDetailList.data = this.Chargelist1;
+    }
+    this.toastr.success('Record Deleted Successfully.', 'Deleted !', {
+      toastClass: 'tostr-tost custom-toast-success',
+    });
+  }
+
+  onEdit1(contact: any) {
+    debugger
+    console.log("Editing row:", contact);
+
+    // Patch values into the form
+    this.inOperForm.patchValue({
+      anestypeId1: contact.anestypeId1 ?? '',
+      anestheticsDr1: contact.anestheticsId1 ?? ''
+    });
+
+    this.anesthesiaType = contact.anesthesiaType ?? '';
+    this.AnthName1 = contact.anestheticsName1 ?? '';
+
+    // Remove this contact from list so it can be re-added after editing
+    const index = this.Chargelist1.indexOf(contact);
+    if (index > -1) {
+      this.Chargelist1.splice(index, 1);
+      this.dsattendentDetailList.data = [...this.Chargelist1];
+    }
+  }
+
+  /////////////////////////////// attendent detail part end/////////////////////////////
+
   onSubmit() {
 
   }
@@ -448,7 +526,7 @@ export class NewInOperationComponent {
     }
   }
 
-   onChangeTime(event: any) {
+  onChangeTime(event: any) {
     this.timeflag = 1;
 
     if (event) {
@@ -466,7 +544,7 @@ export class NewInOperationComponent {
     }
   }
 
-  
+
   onChangeOutDate(value: any) {
     // debugger;
     if (value) {
@@ -488,7 +566,7 @@ export class NewInOperationComponent {
     }
   }
 
-   onChangeOutTime(event: any) {
+  onChangeOutTime(event: any) {
     this.timeflag = 1;
 
     if (event) {

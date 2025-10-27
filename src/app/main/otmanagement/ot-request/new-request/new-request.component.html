@@ -21,10 +21,10 @@
         </div>
     </div>
 
-    <div class="modal-body" fusePerfectScrollbar>
+    <div class="modal-body">
         <div class="modal-body-container">
             <!-- <div fxLayout="column" class="gap-12"></div> -->
-            <form [formGroup]="requestForm">
+            <form [formGroup]="requestForm" fxLayout="column" class="gap-8">
                 <div class="modal-card-container">
 
                     <div fxLayout="row" fxLayout.sm="column" class="gap-16" fxLayoutAlign="start center center">
@@ -181,231 +181,223 @@
                                         </div>
                                     </div>
                                 </mat-card>
-
-                                <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 10px ;">
-                                    <div fxFlex="85%" fxFlex.xs="100%" fxFlex.sm="80%" fxLayout="row wrap"
-                                        fxLayoutGap="4px grid">
-
-                                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                            <mat-form-field appearance="outline" fxFlex>
-                                                <mat-label>Blood Group</mat-label>
-                                                <mat-select placeholder="BloodGroup" id="bloodField"
-                                                    formControlName="BloodGroup" name="BloodGroup">
-                                                    <mat-option *ngFor="let i of BloodGroupNames" [value]="i">
-                                                        {{i}}</mat-option>
-                                                </mat-select>
-                                            </mat-form-field>
-                                        </div>
-
-                                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                            <airmid-dropdown label="Category Type" formControlName="CategoryTypeId"
-                                                [formGroup]="requestForm" [value]="registerObj?.surgeryCategoryId"
-                                                [mode]="autocompleteModeSurgeryCategory">
-                                            </airmid-dropdown>
-                                        </div>
-
-                                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                            <airmid-dropdown label="Theater" formControlName="Theater"
-                                                [formGroup]="requestForm" [mode]="autocompleteModeOTTable">
-                                            </airmid-dropdown>
-                                        </div>
-
-                                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                            <airmid-dropdown label="Theater Location" formControlName="TheaterLocation"
-                                                [formGroup]="requestForm" [mode]="autocompleteModeLocation"></airmid-dropdown>
-                                        </div>
-
-                                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                            <mat-form-field appearance="outline" style="width: 100%;">
-                                                <mat-label>Estimate Time</mat-label>
-                                                <input matInput type="time" formControlName="estimateTime"
-                                                    (change)="onChangeTime($event)">
-                                            </mat-form-field>
-                                        </div>
-
-                                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                            <mat-form-field appearance="outline" fxFlex>
-                                                <mat-label>Surgery Dt</mat-label>
-                                                <input name="Surgerydate" matInput [matDatepicker]="picker1"
-                                                    formControllName="Surgerydate" />
-                                                <mat-datepicker-toggle matSuffix
-                                                    [for]="picker1"></mat-datepicker-toggle>
-                                                <mat-datepicker #picker1></mat-datepicker>
-                                            </mat-form-field>
-                                        </div>
-
-                                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                            <airmid-textbox label="Surgeon MobileNo" formControlName="MobileNo"
-                                                [formGroup]="requestForm" (keypress)="keyPressAlphanumeric($event)"
-                                                [maxLength]="10">
-                                            </airmid-textbox>
-                                        </div>
-
-                                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                            <!-- <mat-form-field appearance="outline" fxFlex>
-                                                <mat-label>Remarks</mat-label>
-                                                <textarea row="1" name="Remarks" formControlName="Remarks" matInput
-                                                    type="text"></textarea>
-                                            </mat-form-field> -->
-                                            <airmid-textbox label="Remark" formControlName="Remarks"
-                                                [formGroup]="requestForm">
-                                            </airmid-textbox>
-                                        </div>
-
-                                        <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%" fxLayout="column"
-                                            style="margin-bottom: 5px;">
-                                            <span style="font-weight: 700;">
-                                                Diagnosis
-                                            </span>
-                                            <app-airmid-chipautocomplete fxFlex
-                                                [chips]="requestForm.get('Diagnosis')?.value"
-                                                [apiUrl]="'OPDPrescriptionMedical/GetDiagnosisList?descriptionType=Diagnosis'"
-                                                [displayKey]="'descriptionName'" [allowCustom]="true"
-                                                (chipsChange)="selectChangeDiagnosis($event)">
-                                            </app-airmid-chipautocomplete>
-                                        </div>
-
-                                    </div>
-                                </mat-card>
-
-                                <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 10px ;">
-                                    <div fxFlex="85%" fxFlex.xs="100%" fxFlex.sm="80%" fxLayout="row wrap"
-                                        fxLayoutGap="4px grid">
-
-                                        <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                            <mat-radio-group formControlName="reqtype">
-                                                <label style="font-weight: bold;">Request Type:</label>
-                                                <mat-radio-button value="1">Emergency</mat-radio-button>
-                                                <mat-radio-button value="0">Elective</mat-radio-button>
-                                            </mat-radio-group>
-                                        </div>
-
-                                        <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                            <mat-radio-group formControlName="pacReq">
-                                                <label style="font-weight: bold;">PAC Required:</label>
-                                                <mat-radio-button value="1">Yes</mat-radio-button>
-                                                <mat-radio-button value="0">No</mat-radio-button>
-                                            </mat-radio-group>
-                                        </div>
-
-                                        <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                            <mat-radio-group formControlName="EquReq">
-                                                <label style="font-weight: bold;">Equipments Required:</label>
-                                                <mat-radio-button value="1">Yes</mat-radio-button>
-                                                <mat-radio-button value="0">No</mat-radio-button>
-                                            </mat-radio-group>
-                                        </div>
-
-                                        <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                            <mat-radio-group formControlName="Infective">
-                                                <label style="font-weight: bold;">Infective:</label>
-                                                <mat-radio-button value="1">Yes</mat-radio-button>
-                                                <mat-radio-button value="0">No</mat-radio-button>
-                                            </mat-radio-group>
-                                        </div>
-
-                                        <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                            <label style="font-weight: bold;">Clearance:</label>
-                                            <mat-checkbox formControlName="Medical">Medical</mat-checkbox>
-                                            <mat-checkbox formControlName="Finance">Finance</mat-checkbox>
-                                        </div>
-
-                                    </div>
-
-
-                                </mat-card>
                             </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="dialog-content-wrapper modal-wrapper grid-container">
-                    <div class="modal-header accent">
-                        <div class="modal-header-content">
-                            <div class="modal-header-title">
-                                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">Surgery Details
-                                </span>
-                            </div>
-
                         </div>
                     </div>
                 </div>
 
                 <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start">
-                    <mat-tab label="Surgery Details">
-                        <div class="modal-body" fusePerfectScrollbar>
-                            <div class="modal-body-container">
-                                <div fxFlexFill fxLayout="row" class="gap-8">
+                    <mat-tab label="Details" class="gap-4">
+                        <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 10px ;">
+                            <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="80%" fxLayout="row wrap" fxLayoutGap="4px grid">
 
-                                    <div fxFlex="10%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <mat-form-field appearance="outline" style="width: 100%;">
-                                            <mat-label>Surgery Type</mat-label>
-                                            <mat-select formControlName="surgeryType" name="surgeryType">
-                                                <mat-option *ngFor="let i of surgeryTypeNames" [value]="i">
-                                                    {{i}}</mat-option>
-                                            </mat-select>
-                                        </mat-form-field>
-                                    </div>
-
-                                    <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <airmid-dropdown label="Surgery Name" formControlName="surgeryId"
-                                            [formGroup]="requestForm" [mode]="autocompleteModeSurgeryMaster"
-                                            (selectionChange)="selectChangeSurgery($event)">
-                                        </airmid-dropdown>
-                                    </div>
-
-                                    <div fxFlex="8%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <mat-form-field appearance="outline" style="width: 100%;">
-                                            <mat-label>Duration (hours)</mat-label>
-                                            <input matInput type="number" formControlName="duration"
-                                                (change)="onChangeDuration($event)" min="0" step="0.5">
-                                        </mat-form-field>
-                                    </div>
-
-                                    <div fxFlex="5%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <mat-form-field appearance="outline" style="width: 100%;">
-                                            <mat-label>From Time</mat-label>
-                                            <input matInput type="time" formControlName="fromTime"
-                                                (change)="onChangeTimefrom($event)">
-                                        </mat-form-field>
-                                    </div>
-
-                                    <div fxFlex="5%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <mat-form-field appearance="outline" style="width: 100%;">
-                                            <mat-label>To Time</mat-label>
-                                            <input matInput type="time" formControlName="toTime" readonly
-                                                (change)="onChangeTimeto($event)">
-                                        </mat-form-field>
-                                    </div>
-
-                                    <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <airmid-dropdown label="Surgeon Name" formControlName="surgeonId"
-                                            [formGroup]="requestForm" [mode]="autocompleteModeConDoctor"
-                                            (selectionChange)="selectChangeSurgeon($event)">
-                                        </airmid-dropdown>
-                                    </div>
-
-                                    <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <airmid-dropdown label="Anathesia doctor" formControlName="anestheticsDr"
-                                            [formGroup]="requestForm" [mode]="autocompleteModeRefDoctor"
-                                            (selectionChange)="selectChangeAnesth($event)">
-                                        </airmid-dropdown>
-                                    </div>
-
-                                    <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%" fxLayout="column">
-                                        <label style="font-weight: bold;">Is Primary:</label>
-                                        <mat-checkbox formControlName="isprimary">Medical</mat-checkbox>
-                                    </div>
-
-                                    <div class="input-add-button">
-                                        <button class="btn btn-primary btn-with-icon" (click)="onAdd()">
-                                            <span class="btn-icon">
-                                                <mat-icon> add </mat-icon>
-                                            </span>
-                                        </button>
-                                    </div>
-
+                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <mat-form-field appearance="outline" fxFlex>
+                                        <mat-label>Blood Group</mat-label>
+                                        <mat-select placeholder="BloodGroup" id="bloodField"
+                                            formControlName="BloodGroup" name="BloodGroup">
+                                            <mat-option *ngFor="let i of BloodGroupNames" [value]="i">
+                                                {{i}}</mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
                                 </div>
+
+                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <airmid-dropdown label="Category Type" formControlName="CategoryTypeId"
+                                        [formGroup]="requestForm" [value]="registerObj?.surgeryCategoryId"
+                                        [mode]="autocompleteModeSurgeryCategory">
+                                    </airmid-dropdown>
+                                </div>
+
+                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <airmid-dropdown label="Theater" formControlName="Theater" [formGroup]="requestForm"
+                                        [mode]="autocompleteModeOTTable">
+                                    </airmid-dropdown>
+                                </div>
+
+                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <airmid-dropdown label="Theater Location" formControlName="TheaterLocation"
+                                        [formGroup]="requestForm" [mode]="autocompleteModeLocation"></airmid-dropdown>
+                                </div>
+
+                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%" class="gap-4">
+                                    <mat-form-field appearance="outline" fxFlex>
+                                        <mat-label>Estimate Time</mat-label>
+                                        <input matInput type="time" formControlName="estimateTime"
+                                            (change)="onChangeTime($event)">
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" fxFlex>
+                                        <mat-label>Surgery Dt</mat-label>
+                                        <input name="Surgerydate" matInput [matDatepicker]="picker1"
+                                            formControllName="Surgerydate" />
+                                        <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                                        <mat-datepicker #picker1></mat-datepicker>
+                                    </mat-form-field>
+                                </div>
+
+                                <!-- <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                            <airmid-textbox label="Surgeon MobileNo" formControlName="MobileNo"
+                                                [formGroup]="requestForm" (keypress)="keyPressAlphanumeric($event)"
+                                                [maxLength]="10">
+                                            </airmid-textbox>
+                                        </div> -->
+
+                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <!-- <mat-form-field appearance="outline" fxFlex>
+                                                <mat-label>Remarks</mat-label>
+                                                <textarea row="1" name="Remarks" formControlName="Remarks" matInput
+                                                    type="text"></textarea>
+                                            </mat-form-field> -->
+                                    <airmid-textbox label="Remark" formControlName="Remarks" [formGroup]="requestForm">
+                                    </airmid-textbox>
+                                </div>
+
+                                <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%" fxLayout="column"
+                                    style="margin-bottom: 5px;">
+                                    <app-airmid-chipautocomplete fxFlex [placeholder]="'Select Diagnosis'"
+                                        [chips]="requestForm.get('Diagnosis')?.value"
+                                        [apiUrl]="'OPDPrescriptionMedical/GetDiagnosisList?descriptionType=Diagnosis'"
+                                        [displayKey]="'descriptionName'" [allowCustom]="true"
+                                        (chipsChange)="selectChangeDiagnosis($event)">
+                                    </app-airmid-chipautocomplete>
+                                </div>
+
+                            </div>
+                        </mat-card>
+
+                        <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 10px ;">
+                            <div fxFlex="85%" fxFlex.xs="100%" fxFlex.sm="80%" fxLayout="row wrap"
+                                fxLayoutGap="4px grid">
+
+                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <mat-radio-group formControlName="reqtype">
+                                        <label style="font-weight: bold;">Request Type:</label>
+                                        <mat-radio-button value="1">Emergency</mat-radio-button>
+                                        <mat-radio-button value="0">Elective</mat-radio-button>
+                                    </mat-radio-group>
+                                </div>
+
+                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <mat-radio-group formControlName="pacReq">
+                                        <label style="font-weight: bold;">PAC Required:</label>
+                                        <mat-radio-button value="1">Yes</mat-radio-button>
+                                        <mat-radio-button value="0">No</mat-radio-button>
+                                    </mat-radio-group>
+                                </div>
+
+                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <mat-radio-group formControlName="EquReq">
+                                        <label style="font-weight: bold;">Equipments Required:</label>
+                                        <mat-radio-button value="1">Yes</mat-radio-button>
+                                        <mat-radio-button value="0">No</mat-radio-button>
+                                    </mat-radio-group>
+                                </div>
+
+                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <mat-radio-group formControlName="Infective">
+                                        <label style="font-weight: bold;">Infective:</label>
+                                        <mat-radio-button value="1">Yes</mat-radio-button>
+                                        <mat-radio-button value="0">No</mat-radio-button>
+                                    </mat-radio-group>
+                                </div>
+
+                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <label style="font-weight: bold;">Clearance:</label>
+                                    <mat-checkbox formControlName="Medical">Medical</mat-checkbox>
+                                    <mat-checkbox formControlName="Finance">Finance</mat-checkbox>
+                                </div>
+
+                            </div>
+                        </mat-card>
+
+                        <!-- Surgery detail part -->
+                        <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 10px ; gap: 4px;">
+                            <div class="modal-header accent">
+                                <div class="modal-header-content">
+                                    <div class="modal-header-title">
+                                        <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">Surgery Details
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div fxFlexFill fxLayout="row" class="gap-8">
+
+                                <div fxFlex="10%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <mat-form-field appearance="outline" style="width: 100%;">
+                                        <mat-label>Surgery Type</mat-label>
+                                        <mat-select formControlName="surgeryType" name="surgeryType">
+                                            <mat-option *ngFor="let i of surgeryTypeNames" [value]="i">
+                                                {{i}}</mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+
+                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <airmid-dropdown label="Surgery Name" formControlName="surgeryId"
+                                        [formGroup]="requestForm" [mode]="autocompleteModeSurgeryMaster"
+                                        (selectionChange)="selectChangeSurgery($event)">
+                                    </airmid-dropdown>
+                                </div>
+
+                                <div fxFlex="8%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <mat-form-field appearance="outline" style="width: 100%;">
+                                        <mat-label>Duration (hours)</mat-label>
+                                        <input matInput type="number" formControlName="duration"
+                                            (change)="onChangeDuration($event)" min="0" step="0.5">
+                                    </mat-form-field>
+                                </div>
+
+                                <div fxFlex="5%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <mat-form-field appearance="outline" style="width: 100%;">
+                                        <mat-label>From Time</mat-label>
+                                        <input matInput type="time" formControlName="fromTime"
+                                            (change)="onChangeTimefrom($event)">
+                                    </mat-form-field>
+                                </div>
+
+                                <div fxFlex="5%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <mat-form-field appearance="outline" style="width: 100%;">
+                                        <mat-label>To Time</mat-label>
+                                        <input matInput type="time" formControlName="toTime" readonly
+                                            (change)="onChangeTimeto($event)">
+                                    </mat-form-field>
+                                </div>
+
+                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <airmid-dropdown label="Surgeon Type" formControlName="surgeonTypeId"
+                                        [formGroup]="requestForm" >
+                                    </airmid-dropdown>
+                                </div>
+
+                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <airmid-dropdown label="Surgeon Name" formControlName="surgeonId"
+                                        [formGroup]="requestForm" [mode]="autocompleteModeConDoctor"
+                                        (selectionChange)="selectChangeSurgeon($event)">
+                                    </airmid-dropdown>
+                                </div>
+
+                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <airmid-dropdown label="Anathesia doctor" formControlName="anestheticsDr"
+                                        [formGroup]="requestForm" [mode]="autocompleteModeRefDoctor"
+                                        (selectionChange)="selectChangeAnesth($event)">
+                                    </airmid-dropdown>
+                                </div>
+
+                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%" fxLayout="column">
+                                    <label style="font-weight: bold;">Is Primary:</label>
+                                    <mat-checkbox formControlName="isprimary"></mat-checkbox>
+                                </div>
+
+                                <div class="input-add-button">
+                                    <button class="btn btn-primary btn-with-icon" (click)="onAdd()">
+                                        <span class="btn-icon">
+                                            <mat-icon> add </mat-icon>
+                                        </span>
+                                    </button>
+                                </div>
+
                             </div>
 
                             <div class="airmid-table-container">
@@ -438,7 +430,8 @@
                                     </ng-container>
 
                                     <ng-container matColumnDef="fromTime">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>From Time
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>From
+                                            Time
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
                                             <span> {{element.fromTime}} </span>
@@ -446,7 +439,8 @@
                                     </ng-container>
 
                                     <ng-container matColumnDef="toTime">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>To Time
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>To
+                                            Time
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
                                             <span> {{element.toTime}} </span>
@@ -505,34 +499,116 @@
                                         [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
                                 </mat-table>
                             </div>
+                        </mat-card>
 
-                        </div>
+                        <!-- attendent detail part -->
+                        <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 10px ; gap: 4px;">
+                            <div class="modal-header accent">
+                                <div class="modal-header-content">
+                                    <div class="modal-header-title">
+                                        <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">Attendent
+                                            Details
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div fxFlexFill fxLayout="row wrap" class="gap-8">
+
+                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <airmid-dropdown label="Resource Type" formControlName="recourceType"
+                                        [formGroup]="requestForm">
+                                    </airmid-dropdown>
+                                </div>
+
+                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <airmid-dropdown label="Anesthesia Type" formControlName="anestypeId"
+                                        [formGroup]="requestForm" [mode]="autocompleteModeAnesthesiatypes"
+                                        (selectionChange)="selectChangeanesthesiaType($event)">
+                                    </airmid-dropdown>
+                                </div>
+
+                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <airmid-dropdown label="Anathesia doctor" formControlName="anestheticsDr1"
+                                        [formGroup]="requestForm" [mode]="autocompleteModeRefDoctor"
+                                        (selectionChange)="selectChangeAnesth1($event)">
+                                    </airmid-dropdown>
+                                </div>
+
+                                <div class="input-add-button">
+                                    <button class="btn btn-primary btn-with-icon" (click)="onAdd1()">
+                                        <span class="btn-icon">
+                                            <mat-icon> add </mat-icon>
+                                        </span>
+                                        <span>Add</span>
+                                    </button>
+                                </div>
+
+                            </div>
+
+                            <div class="airmid-table-container">
+                                <mat-table matSort [dataSource]="dsattendentDetailList" [@animateStagger]="{value:'50'}"
+                                    class="airmid-table">
+
+                                    <ng-container matColumnDef="surgeon">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Surgeon
+                                            Name
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                            <span> {{element.anesthesiaType}} </span>
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="anesthesia">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
+                                            fxShow.gt-sm>Anesthesia Name
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                            <span> {{element.anestheticsName1}} </span>
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="Action" stickyEnd>
+                                        <mat-header-cell *matHeaderCellDef class="table-actions">Action
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact">
+                                            <ng-container class="actions">
+
+                                                <mat-icon (click)="onEdit1(contact)" color="primary">edit</mat-icon>
+
+                                                <mat-icon (click)="deleteTableRow1($event ,contact)" color="warn">
+                                                    delete
+                                                </mat-icon>
+                                            </ng-container>
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <mat-header-row class="accent" *matHeaderRowDef="displayedColumns1; sticky: true">
+                                    </mat-header-row>
+                                    <mat-row *matRowDef="let row; columns: displayedColumns1;" class="element"
+                                        [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                                </mat-table>
+                            </div>
+
+                        </mat-card>
                     </mat-tab>
-
                     <mat-tab label="Parts">
                         <div fxLayout="column" fxLayoutGap="16px" fxLayoutAlign="start start" fxLayoutWrap
-                         style="height: 200px;">
+                            style="height: 200px;">
 
-                            <!-- Dropdown -->
                             <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                                 <airmid-dropdown label="Select Body Part" formControlName="bodyPartId"
                                     [formGroup]="requestForm">
                                 </airmid-dropdown>
                             </div>
 
-                            <!-- Image Upload & Capture -->
                             <div fxFlex="30%" fxFlex.xs="100%" fxFlex.sm="50%" fxLayout="column" fxLayoutGap="8px">
                                 <label class="mat-body-1 font-semibold">Upload / Capture Image</label>
 
-                                <!-- Upload from device -->
-                                <!-- <input type="file" accept="image/*" (change)="onFileSelected($event)" /> -->
-
-                                <!-- Capture from camera -->
                                 <button mat-raised-button color="primary" type="button" (click)="openCamera()">
                                     <mat-icon>photo_camera</mat-icon> Capture from Camera
                                 </button>
 
-                                <!-- Preview -->
                                 <div *ngIf="previewUrl" class="preview-box">
                                     <img [src]="previewUrl" alt="Preview" style="max-width: 200px; border-radius: 8px;">
                                 </div>
@@ -540,100 +616,7 @@
 
                         </div>
                     </mat-tab>
-
                 </mat-tab-group>
-
-                <div class="dialog-content-wrapper modal-wrapper grid-container">
-                    <div class="modal-header accent">
-                        <div class="modal-header-content">
-                            <div class="modal-header-title">
-                                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">Attendent Details
-                                </span>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-
-                <div class="modal-body" fusePerfectScrollbar>
-                    <div class="modal-body-container">
-                        <div fxFlexFill fxLayout="row wrap" class="gap-8">
-
-                            <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                <airmid-dropdown label="Resource Type" formControlName="recourceType"
-                                    [formGroup]="requestForm">
-                                </airmid-dropdown>
-                            </div>
-
-                            <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                <airmid-dropdown label="Anesthesia Type" formControlName="anestypeId"
-                                    [formGroup]="requestForm" [mode]="autocompleteModeAnesthesiatypes"
-                                    (selectionChange)="selectChangeanesthesiaType($event)">
-                                </airmid-dropdown>
-                            </div>
-
-                            <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                <airmid-dropdown label="Anathesia doctor" formControlName="anestheticsDr1"
-                                    [formGroup]="requestForm" [mode]="autocompleteModeRefDoctor"
-                                    (selectionChange)="selectChangeAnesth1($event)">
-                                </airmid-dropdown>
-                            </div>
-
-                            <div class="input-add-button">
-                                <button class="btn btn-primary btn-with-icon" (click)="onAdd1()">
-                                    <span class="btn-icon">
-                                        <mat-icon> add </mat-icon>
-                                    </span>
-                                    <span>Add</span>
-                                </button>
-                            </div>
-
-                        </div>
-                    </div>
-
-                    <div class="airmid-table-container">
-                        <mat-table matSort [dataSource]="dsattendentDetailList" [@animateStagger]="{value:'50'}"
-                            class="airmid-table">
-
-                            <ng-container matColumnDef="surgeon">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Surgeon Name
-                                </mat-header-cell>
-                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                    <span> {{element.anesthesiaType}} </span>
-                                </mat-cell>
-                            </ng-container>
-
-                            <ng-container matColumnDef="anesthesia">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Anesthesia Name
-                                </mat-header-cell>
-                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                    <span> {{element.anestheticsName1}} </span>
-                                </mat-cell>
-                            </ng-container>
-
-                            <ng-container matColumnDef="Action" stickyEnd>
-                                <mat-header-cell *matHeaderCellDef class="table-actions">Action
-                                </mat-header-cell>
-                                <mat-cell *matCellDef="let contact">
-                                    <ng-container class="actions">
-
-                                        <mat-icon (click)="onEdit1(contact)" color="primary">edit</mat-icon>
-
-                                        <mat-icon (click)="deleteTableRow1($event ,contact)" color="warn">
-                                            delete
-                                        </mat-icon>
-                                    </ng-container>
-                                </mat-cell>
-                            </ng-container>
-
-                            <mat-header-row class="accent" *matHeaderRowDef="displayedColumns1; sticky: true">
-                            </mat-header-row>
-                            <mat-row *matRowDef="let row; columns: displayedColumns1;" class="element"
-                                [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
-                        </mat-table>
-                    </div>
-
-                </div>
 
             </form>
 

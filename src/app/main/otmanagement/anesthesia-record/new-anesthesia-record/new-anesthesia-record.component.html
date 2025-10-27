@@ -265,10 +265,11 @@
 
                                         <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%" fxLayout="column"
                                             style="margin-bottom: 5px;">
-                                            <span style="font-weight: 700;">
+                                            <!-- <span style="font-weight: 700;">
                                                 Pre-OP Diagnosis
-                                            </span>
+                                            </span> -->
                                             <app-airmid-chipautocomplete fxFlex
+                                                [placeholder]="'Select Pre-OP Diagnosis'"
                                                 [chips]="anesthRecordForm.get('Diagnosis')?.value"
                                                 [apiUrl]="'OPDPrescriptionMedical/GetDiagnosisList?descriptionType=Diagnosis'"
                                                 [displayKey]="'descriptionName'" [allowCustom]="true"
