@@ -25,6 +25,8 @@ export class LoginComponent implements OnInit {
     captcha: string;
     captchaToken: string;
     obj: any;
+    licenseExpiryDate: Date;
+    isExpired: boolean = false;
     autocompleteModeUnitName: string = "Hospital";
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
     constructor(
@@ -64,6 +66,9 @@ export class LoginComponent implements OnInit {
         this.authenticationService.getCaptcha().subscribe((data) => {
             this.captcha = 'data:image/jpg;base64,' + data.img;
             this.captchaToken = data.token;
+            this.licenseExpiryDate = data.expiry;
+            const today = new Date();
+            this.isExpired = new Date(this.licenseExpiryDate) > today;
         });
     }
     ngOnInit(): void {
@@ -93,7 +98,7 @@ export class LoginComponent implements OnInit {
         };
         this.authenticationService.login(data).subscribe(
             (data) => {
-               // debugger
+                // debugger
                 if ((data?.status ?? 'Ok') != 'Ok') {
                     this.confirmDialogRef = this._matDialog.open(
                         FuseConfirmDialogComponent,
