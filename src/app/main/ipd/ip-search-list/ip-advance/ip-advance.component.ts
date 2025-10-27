@@ -16,6 +16,7 @@ import { PrintserviceService } from 'app/main/shared/services/printservice.servi
 import { WhatsAppEmailService } from 'app/main/shared/services/whats-app-email.service';
 import { ToastrService } from 'ngx-toastr';
 import { IPSearchListService } from '../ip-search-list.service';
+import Swal from 'sweetalert2';
 
 
 @Component({
@@ -199,6 +200,20 @@ export class IPAdvanceComponent implements OnInit {
 
   onSave() {
     debugger
+
+     Swal.fire({
+          title: 'Do you want to Add Advance ',
+          text: "You won't be able to revert this!",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Yes, Add!"
+    
+        }).then((result) => {
+          if (result.isConfirmed) {
+         
+
     this.AdvFormGroup.get('advance.date').setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'))
     this.AdvFormGroup.get('advanceDetail.date').setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'))
     this.AdvFormGroup.get('advanceDetail.time').setValue(this.dateTimeObj.time)
@@ -302,6 +317,8 @@ export class IPAdvanceComponent implements OnInit {
         return
       }
     }
+     }
+        });
   }
 
   onClose() {
