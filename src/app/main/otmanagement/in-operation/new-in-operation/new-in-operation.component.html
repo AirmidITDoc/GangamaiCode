@@ -25,7 +25,7 @@
         <div class="modal-body-container">
             <div fxLayout="column" class="gap-12"></div>
             <form [formGroup]="inOperForm">
-                <div class="modal-card-container">
+                <!-- <div class="modal-card-container">
                     <div fxLayout="row" fxLayout.sm="column" class="gap-16" fxLayoutAlign="start center center">
 
                         <div class="radio-container">
@@ -57,7 +57,7 @@
                             </airmid-autocomplete>
                         </div>
                     </div>
-                </div>
+                </div> -->
 
                 <div class="modal-card-container" style="padding: 10px 2px 5px 0px ;">
                     <div fxFlex.gt-sm="100%" fxFlex class="patient-info-container">
@@ -245,6 +245,12 @@
                                     </div>
 
                                     <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                        <airmid-dropdown label="Surgeon Type" formControlName="surgeonTypeId"
+                                            [formGroup]="inOperForm">
+                                        </airmid-dropdown>
+                                    </div>
+
+                                    <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                                         <airmid-dropdown label="Surgeon Name" formControlName="surgeonId"
                                             [formGroup]="inOperForm" [mode]="autocompleteModeConDoctor"
                                             (selectionChange)="selectChangeSurgeon($event)">
@@ -373,6 +379,85 @@
                             </div>
 
                         </div>
+                    </mat-tab>
+
+                    <mat-tab label="Attendent Details">
+                        <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 10px;">
+                            <div fxFlexFill fxLayout="row wrap" class="gap-8">
+
+                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <airmid-dropdown label="Resource Type" formControlName="recourceType"
+                                        [formGroup]="inOperForm">
+                                    </airmid-dropdown>
+                                </div>
+
+                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <airmid-dropdown label="Anesthesia Type" formControlName="anestypeId1"
+                                        [formGroup]="inOperForm" [mode]="autocompleteModeAnesthesiatypes"
+                                        (selectionChange)="selectChangeanesthesiaType1($event)">
+                                    </airmid-dropdown>
+                                </div>
+
+                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <airmid-dropdown label="Anathesia doctor" formControlName="anestheticsDr1"
+                                        [formGroup]="inOperForm" [mode]="autocompleteModeRefDoctor"
+                                        (selectionChange)="selectChangeAnesth1($event)">
+                                    </airmid-dropdown>
+                                </div>
+
+                                <div class="input-add-button">
+                                    <button class="btn btn-primary btn-with-icon" (click)="onAdd1()">
+                                        <span class="btn-icon">
+                                            <mat-icon> add </mat-icon>
+                                        </span>
+                                        <span>Add</span>
+                                    </button>
+                                </div>
+
+                            </div>
+
+                            <div class="airmid-table-container">
+                                <mat-table matSort [dataSource]="dsattendentDetailList" [@animateStagger]="{value:'50'}"
+                                    class="airmid-table">
+
+                                    <ng-container matColumnDef="surgeon">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Surgeon
+                                            Name
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                            <span> {{element.anesthesiaType}} </span>
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="anesthesia">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
+                                            fxShow.gt-sm>Anesthesia Name
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                            <span> {{element.anestheticsName1}} </span>
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="Action" stickyEnd>
+                                        <mat-header-cell *matHeaderCellDef class="table-actions">Action
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let contact">
+                                            <ng-container class="actions">
+                                                <mat-icon (click)="onEdit1(contact)" color="primary">edit</mat-icon>
+                                                <mat-icon (click)="deleteTableRow1($event ,contact)" color="warn">
+                                                    delete
+                                                </mat-icon>
+                                            </ng-container>
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <mat-header-row class="accent" *matHeaderRowDef="displayedColumns1; sticky: true">
+                                    </mat-header-row>
+                                    <mat-row *matRowDef="let row; columns: displayedColumns1;" class="element"
+                                        [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                                </mat-table>
+                            </div>
+                        </mat-card>
                     </mat-tab>
 
                     <mat-tab label="Check List">
@@ -609,7 +694,7 @@
                                 fxLayoutGap="4px grid">
                                 <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <label style="font-size: 16px; font-weight: bold;">Closure Notes</label>
-                                    <airmid-editor  formControlName="closureNote" [formGroup]="inOperForm">
+                                    <airmid-editor formControlName="closureNote" [formGroup]="inOperForm">
                                     </airmid-editor>
                                 </div>
 
@@ -619,6 +704,38 @@
                                     </airmid-editor>
                                 </div>
                             </div>
+                        </mat-card>
+                    </mat-tab>
+
+                    <mat-tab label="Post Operative Notes/Patient Condition">
+                        <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 10px;">
+                            <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="80%" fxLayout="row wrap"
+                                fxLayoutGap="4px grid">
+                                <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <label style="font-size: 16px; font-weight: bold;">Post Operative Plan Of
+                                        Care</label>
+                                    <airmid-editor formControlName="postOperNote" [formGroup]="inOperForm">
+                                    </airmid-editor>
+                                </div>
+
+                                <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <label style="font-size: 16px; font-weight: bold;">Condition Of The Patient</label>
+                                    <airmid-editor formControlName="patientCondNote" [formGroup]="inOperForm">
+                                    </airmid-editor>
+                                </div>
+                            </div>
+                        </mat-card>
+                    </mat-tab>
+
+                    <mat-tab label="Sample Collection">
+                        <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 10px;">
+
+                        </mat-card>
+                    </mat-tab>
+
+                    <mat-tab label="Digital Copy">
+                        <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 10px;">
+
                         </mat-card>
                     </mat-tab>
 

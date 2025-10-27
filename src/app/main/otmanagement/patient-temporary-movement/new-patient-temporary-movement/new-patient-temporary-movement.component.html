@@ -25,7 +25,7 @@
         <div class="modal-body-container">
             <div fxLayout="column" class="gap-12"></div>
             <form [formGroup]="patientTemMoveFormGroup">
-                <div class="modal-card-container">
+                <!-- <div class="modal-card-container">
 
                     <div fxLayout="row" fxLayout.sm="column" class="gap-16" fxLayoutAlign="start center center">
 
@@ -61,7 +61,7 @@
                         </div>
                     </div>
 
-                </div>
+                </div> -->
 
                 <div class="modal-card-container" style="padding: 10px 2px 5px 0px ;">
                     <div fxFlex.gt-sm="100%" fxFlex class="patient-info-container">
@@ -242,10 +242,9 @@
                                         </div>
 
                                         <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                            <airmid-dropdown label="Purpose Of Movement" formControlName="purMovingId"
-                                                [formGroup]="patientTemMoveFormGroup"
-                                                [mode]="autocompleteModeDepartment">
-                                            </airmid-dropdown>
+                                            <airmid-textbox label="Purpose Of Movement" formControlName="purMovingId"
+                                                [formGroup]="patientTemMoveFormGroup">
+                                            </airmid-textbox>
                                         </div>
 
                                         <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
@@ -261,7 +260,8 @@
                                         </div>
 
                                         <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%" fxLayout="row" class="gap-8">
-                                            <mat-checkbox formControlName="extra" (change)="toggleExtra($event)">Need Extra</mat-checkbox>
+                                            <mat-checkbox formControlName="extra" (change)="toggleExtra($event)">Need
+                                                Extra</mat-checkbox>
 
                                             <mat-form-field appearance="outline" fxFlex>
                                                 <textarea row="2" name="extraRemark" formControlName="extraRemark"
