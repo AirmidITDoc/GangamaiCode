@@ -2,6 +2,7 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import Chart from 'chart.js/auto';
 import { DashboardService } from '../dashboard.service';
 import { fuseAnimations } from '@fuse/animations';
+import { AuthenticationService } from 'app/core/services/authentication.service';
 
 @Component({
   selector: 'app-new-dashboard',
@@ -16,7 +17,9 @@ export class NewDashboardComponent implements OnInit {
   fromDate: Date;
   toDate: Date;
   
-  constructor(private dashboardService: DashboardService) { 
+  constructor(private dashboardService: DashboardService,
+     private accountService: AuthenticationService,
+  ) { 
     // Set default dates to current week (Monday to today)
     this.initializeDateRange();
   }
@@ -158,23 +161,21 @@ export class NewDashboardComponent implements OnInit {
       "searchFields": [
         {
           "fieldName": "UnitId",
-          "fieldValue": "0",
+          "fieldValue": this.accountService.currentUserValue.user.unitId.toString(),
           "opType": "Equals"
         },
      {
           "fieldName": "UserId",
-          "fieldValue": "0",
+          "fieldValue": this.accountService.currentUserValue.userId.toString(),
           "opType": "Equals"
         },
        {
           "fieldName": "FromDate",
-          // "fieldValue": "10/01/2025",
           "fieldValue": this.formatDateForAPI(this.fromDate),
           "opType": "Equals"
         },
        {
           "fieldName": "ToDate",
-          // "fieldValue": "10/11/2025",
           "fieldValue": this.formatDateForAPI(this.toDate),
           "opType": "Equals"
         }
@@ -220,7 +221,7 @@ export class NewDashboardComponent implements OnInit {
         "searchFields": [
           {
             "fieldName": "UnitId",
-            "fieldValue": "0",
+            "fieldValue": this.accountService.currentUserValue.user.unitId.toString(),
             "opType": "Equals"
           },
         {
@@ -265,18 +266,16 @@ export class NewDashboardComponent implements OnInit {
       "searchFields": [
         {
           "fieldName": "UnitId",
-          "fieldValue": "0",
+          "fieldValue": this.accountService.currentUserValue.user.unitId.toString(),
           "opType": "Equals"
         },
         {
           "fieldName": "FromDate",
-          // "fieldValue": "10/01/2025",
           "fieldValue": this.formatDateForAPI(this.fromDate),
           "opType": "Equals"
         },
        {
           "fieldName": "ToDate",
-          // "fieldValue": "10/11/2025",
           "fieldValue": this.formatDateForAPI(this.toDate),
           "opType": "Equals"
         }
