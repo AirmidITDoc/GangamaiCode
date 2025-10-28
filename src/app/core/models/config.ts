@@ -222,3 +222,73 @@ this.OPDDefaultDepartment=ConfigSettingParams.OPDDefaultDepartment;
     }
 
 }
+
+export class HospitalConfigSettingParams {
+    HospitalId: number;
+    HospitalHeaderLine:String; 
+    HospitalName: String; 
+    HospitalAddress: String;
+    City: String;
+    Pin: String;
+    Phone: String;
+    EmailID: String;
+    WebSiteInfo: String;
+    Header: String;
+    IsActive: any; 
+    OPD_Billing_CounterId: number;
+    OPD_Receipt_CounterId: number;
+    OPD_Refund_Bill_CounterId: number;
+    OPD_Refund_Bill_Receipt_CounterId: number;
+    OPD_Advance_CounterId: number;
+    OPD_Refund_Advance_CounterId: number;
+    IPD_Advance_CounterId: number
+    IPD_Advance_Receipt_CounterId: number;
+    IPD_Billing_CounterId: number;
+    IPD_Receipt_CounterId: number
+    IPD_Refund_of_Bill_CounterId: number;
+    IPD_Refund_of_Bill_Receipt_CounterId: number;
+    IPD_Refund_of_Advance_Receipt_CounterId: number;
+    CreatedBy: number
+    CreatedDate: number;
+    ModifiedBy: number
+    ModifiedDate: number;
+    CityId: number;  
+ /**
+     * Constructor
+     *
+     * @param HospitalConfigSettingParams
+     */
+     
+    constructor(HospitalConfigSettingParams) { 
+        this.HospitalId = HospitalConfigSettingParams.HospitalId;
+        this.HospitalHeaderLine =HospitalConfigSettingParams.HospitalHeaderLine;
+        this.HospitalName =HospitalConfigSettingParams.HospitalName;
+        this.HospitalAddress =HospitalConfigSettingParams.HospitalAddress;
+        this.City =HospitalConfigSettingParams.City;
+        this.Pin =HospitalConfigSettingParams.Pin;
+        this.Phone =HospitalConfigSettingParams.Phone;
+        this.EmailID =HospitalConfigSettingParams.EmailID;
+        this.WebSiteInfo =HospitalConfigSettingParams.WebSiteInfo;
+        this.Header =HospitalConfigSettingParams.Header;
+        this.IsActive = HospitalConfigSettingParams.IsActive; 
+        this.CityId = HospitalConfigSettingParams.CityId;
+        this.ModifiedDate = HospitalConfigSettingParams.ModifiedDate;
+        this.ModifiedBy = HospitalConfigSettingParams.ModifiedBy;
+        this.CreatedDate = HospitalConfigSettingParams.CreatedDate;
+        this.CreatedBy = HospitalConfigSettingParams.CreatedBy; 
+        this.OPD_Billing_CounterId = HospitalConfigSettingParams.OPD_Billing_CounterId;
+        this.OPD_Receipt_CounterId = HospitalConfigSettingParams.OPD_Receipt_CounterId;
+        this.OPD_Refund_Bill_CounterId = HospitalConfigSettingParams.OPD_Refund_Bill_CounterId;
+        this.OPD_Refund_Bill_Receipt_CounterId = HospitalConfigSettingParams.OPD_Refund_Bill_Receipt_CounterId;
+        this.OPD_Advance_CounterId = HospitalConfigSettingParams.OPD_Advance_CounterId;
+        this.OPD_Refund_Advance_CounterId = HospitalConfigSettingParams.OPD_Refund_Advance_CounterId;
+        this.IPD_Advance_CounterId = HospitalConfigSettingParams.IPD_Advance_CounterId;
+        this.IPD_Advance_Receipt_CounterId = HospitalConfigSettingParams.IPD_Advance_Receipt_CounterId;
+        this.IPD_Billing_CounterId = HospitalConfigSettingParams.IPD_Billing_CounterId;
+        this.IPD_Receipt_CounterId = HospitalConfigSettingParams.IPD_Receipt_CounterId;
+        this.IPD_Refund_of_Bill_CounterId = HospitalConfigSettingParams.IPD_Refund_of_Bill_CounterId;
+        this.IPD_Refund_of_Bill_Receipt_CounterId = HospitalConfigSettingParams.IPD_Refund_of_Bill_Receipt_CounterId;
+        this.IPD_Refund_of_Advance_Receipt_CounterId = HospitalConfigSettingParams.IPD_Refund_of_Advance_Receipt_CounterId;
+    }
+
+}

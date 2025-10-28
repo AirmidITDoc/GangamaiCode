@@ -29,6 +29,7 @@ import { element } from 'protractor';
 import { PackageDetailsComponent } from 'app/main/opd/appointment-list/appointment-billing/package-details/package-details.component';
 import { IPUpdatesComponent } from './ipupdates/ipupdates.component';
 import { ActivatedRoute } from '@angular/router';
+import { HospitalConfigService } from 'app/core/services/hospital-config.service';
 
 @Component({
     selector: 'app-ip-billing',
@@ -217,6 +218,7 @@ export class IPBillingComponent implements OnInit {
         private commonService: PrintserviceService,
         @Inject(MAT_DIALOG_DATA) public data: any,
         private route: ActivatedRoute,
+        private hospitalconfigservice:HospitalConfigService,
         private _FormvalidationserviceService: FormvalidationserviceService,
         private formBuilder: UntypedFormBuilder) {
     }
@@ -471,7 +473,7 @@ export class IPBillingComponent implements OnInit {
             totalconcessionAmt: [0, [Validators.min(0), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
             ConcessionId: [0, this._FormvalidationserviceService.onlyNumberValidator()],
             FinalAmount: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-            CashCounterID: [4, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator(), Validators.min(1)]],
+            CashCounterID: [this.hospitalconfigservice.HospitalconfigParams?.IPD_Billing_CounterId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator(), Validators.min(1)]],
             Remark: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
             Admincheck: [''],
             GenerateBill: [false],

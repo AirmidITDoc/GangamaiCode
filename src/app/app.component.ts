@@ -28,6 +28,7 @@ import { ApiCaller } from './core/services/apiCaller';
 import { BandwidthService } from './core/services/bandwidth.service';
 import { SignalRService } from './core/services/signalr.service';
 import { MatTableDataSource } from '@angular/material/table';
+import { HospitalConfigService } from './core/services/hospital-config.service';
 
 @Component({
     selector: 'app',
@@ -101,6 +102,7 @@ export class AppComponent implements OnInit, OnDestroy {
         private router: Router,
         private bandwidthService: BandwidthService,
         private signalRService: SignalRService,
+        private HospitalConfigService : HospitalConfigService
     ) {
 
         this.bandwidthService.monitorBandwidth();
@@ -292,7 +294,8 @@ export class AppComponent implements OnInit, OnDestroy {
             "mode": "UnitWiseSystemConfige"
         }
         this._httpClient1.PostData("Common", Params).subscribe(data => {
-           this.UnitWiseSystemConfigu = data;
+           this.UnitWiseSystemConfigu = data;  
+           this.HospitalConfigService.setCongiParam(this.UnitWiseSystemConfigu[0])
         });
     }
 }

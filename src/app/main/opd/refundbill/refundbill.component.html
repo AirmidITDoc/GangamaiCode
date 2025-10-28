@@ -36,12 +36,18 @@
                       (selectionChange)="getSelectedObj($event)"></airmid-autocomplete> -->
 
 
-                      <airmid-autocomplete label="OP-UHID / First Name / Last Name / Mobile No" class="w-350"
+                      <airmid-autocomplete label="OP-UHID / First Name / Last Name / Mobile No"  
                                 [formGroup]="searchFormGroup" formControlName="RegId"
-                                placeholderText="OP-UHID / First Name / Last Name / Mobile No" fxFlex
+                                placeholderText="OP-UHID / First Name / Last Name / Mobile No" fxFlex="40%"
                                 ApiUrl="VisitDetail/search-patient-1?Keyword="
                                 (selectionChange)="getSelectedObj($event)" ValueField="regId"  
                                 TextField="formattedText"></airmid-autocomplete> 
+
+
+                                <airmid-dropdown label="CashCounterID" formControlName="CashCounterID" fxFlex="30%"
+                                        [formGroup]="searchFormGroup" [validations]="getValidationMessages().CashCounterID"
+                                        [mode]="autocompleteModeCashcounter"  >
+                                    </airmid-dropdown>
 
                   </div>
                 </div>

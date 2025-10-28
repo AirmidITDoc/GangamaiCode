@@ -1,11 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import Chart from 'chart.js/auto';
 import { DashboardService } from '../dashboard.service';
+import { fuseAnimations } from '@fuse/animations';
 
 @Component({
   selector: 'app-new-dashboard',
   templateUrl: './new-dashboard.component.html',
-  styleUrls: ['./new-dashboard.component.scss']
+  styleUrls: ['./new-dashboard.component.scss'],
+    encapsulation: ViewEncapsulation.None,
+    animations: fuseAnimations,
 })
 export class NewDashboardComponent implements OnInit {
   

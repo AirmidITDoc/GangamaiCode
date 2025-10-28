@@ -196,7 +196,7 @@
       <div class="modal-header-content">
         <div class="modal-header-title">
           <span [@animate]="{ value: '*', params: { delay: '100ms', x: '-25px' } }">
-            Sales:
+            Sales In Patient:
             <b>{{ StoreName }}</b>
           </span>
         </div>
@@ -226,25 +226,13 @@
                           class="gap-8">
                           <div class="radio-group-left gap-8" fxLayout="row" fxLayoutAlign="start center" fxFlex>
                             <mat-radio-group aria-label="Select an option" formControlName="opIpType"
-                              [(ngModel)]="vSelectedOption" name="paymode" (change)="onChangePatientType($event)"
-                              (blur)="onChangePatientType($event)" fxLayout="row">
-                              <mat-radio-button value="0">OP</mat-radio-button>
-                              <mat-radio-button value="1">IP</mat-radio-button>
-                              <mat-radio-button value="2">External</mat-radio-button>
+                              [(ngModel)]="vSelectedOption" name="paymode" fxLayout="row"> 
+                              <mat-radio-button value="1">IP</mat-radio-button> 
                             </mat-radio-group>
 
-                            <div fxFlex="30%" fxFlex.sm="100%"
-                              *ngIf="ItemSubform.get('opIpType').value != '1' && ItemSubform.get('opIpType').value != '2'">
-                              <airmid-autocomplete label="OP-RegNo / First Name / Last Name / Mobile No"
-                                [formGroup]="ItemSubform" formControlName="regId"
-                                placeholderText="OP-RegNo / First Name / Last Name / Mobile No" fxFlex
-                                ApiUrl="VisitDetail/search-patient-1?Keyword="
-                                (selectionChange)="getSelectedObjOP($event)" ValueField="regId"  
-                                TextField="formattedText"></airmid-autocomplete>
-                            </div>
+                            
 
-                            <div fxFlex="30%" fxFlex.sm="100%"
-                              *ngIf="ItemSubform.get('opIpType').value != '0' && ItemSubform.get('opIpType').value != '2'">
+                            <div fxFlex="40%" fxFlex.sm="100%">
                               <airmid-autocomplete label="IP RegNo / First Name / Last Name / Mobile No"
                                 [formGroup]="ItemSubform" formControlName="regId" 
                                 placeholderText="IP RegNo / First Name / Last Name / Mobile No" fxFlex
@@ -252,50 +240,10 @@
                                 (selectionChange)="getSelectedObjRegIP($event)" TextField="formattedText"
                                 ValueField="itemId"></airmid-autocomplete>
                             </div>
-
-                            <div fxFlex="100%" fxFlex.sm="100%" *ngIf="ItemSubform.get('opIpType').value == '2'"> 
-                              <!-- <mat-form-field appearance="outline" fxFlex>
-                                <mat-label>MobileNo</mat-label>
-                                <input matInput formControlName="extMobileNo" placeholder="Enter 10 digit Mobile No."
-                                  autocomplete="off" maxlength="10" minlength="10"
-                                  oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 10);">
-                              </mat-form-field> -->
-
-                               <airmid-autocomplete label="Mobile No"
-                                [formGroup]="ItemSubform" formControlName="extMobileNo" maxlength="10"
-                                placeholder="Enter 10 digit Mobile No." fxFlex   TextField="text" 
-                                ApiUrl="Sales/External-auto-complete?Keyword="   (keypress)="allowOnlyDigits($event)"
-                                (selectionChange)="getSelectedObjextMobile($event)"   
-                               ></airmid-autocomplete>  
-                            </div> 
-                       
-                            <div fxFlex="100%" fxFlex.sm="100%" *ngIf="ItemSubform.get('opIpType').value == '2'">
-                              <airmid-autocomplete label="Patient Name"  
-                                [formGroup]="ItemSubform" formControlName="externalPatientName"
-                                placeholderText="Patient Name" fxFlex
-                               ApiUrl="Sales/External-auto-complete?Keyword="  TextField="text" 
-                                (selectionChange)="getSelectedObjextPatient($event)"  
-                                ></airmid-autocomplete> 
-                            </div>
-
-                            <div fxFlex="100%" fxFlex.sm="100%" *ngIf="ItemSubform.get('opIpType').value == '2'">
-
-                            <airmid-autocomplete label="Doctor Name"
-                                [formGroup]="ItemSubform" formControlName="doctorName"  
-                                placeholderText="First Name / Last Name" fxFlex   TextField="doctorName" 
-                                ApiUrl="Sales/ExternalDoctor-auto-complete?Keyword=" 
-                                (selectionChange)="getSelectedObjExtDocName($event)" ></airmid-autocomplete> 
-                            </div> 
-
-                            <div fxFlex="100%" fxFlex.sm="100%" *ngIf="ItemSubform.get('opIpType').value == '2' ">
-                              <airmid-textbox label="Address" [(ngModel)]="vextAddress" formControlName="extAddress"
-                                placeholder="extAddress" [formGroup]="ItemSubform"    
-                                [validations]="getValidationMessages().extAddress" [type]="'text'"
-                                (input)="onEnterAddress($event)"></airmid-textbox>
-                            </div>
+ 
                           </div>
                         </div>
-                        <div *ngIf="ItemSubform.get('opIpType').value != '2' && RegId != ''">
+                        <div *ngIf="RegId != ''">
                           <div class="content-card">
                             <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="5px">
                               <div fxFlex.gt-sm="100%" fxFlex>
@@ -318,17 +266,13 @@
                                             <span class="patient-col-value">{{RegNo }}-{{ PatientName
                                               }}</span>
                                           </div>
-                                          <div class="patient-col" *ngIf="IPDNocheck">
+                                          <div class="patient-col"  >
                                             <span class="patient-col-key">IPDNo</span>
                                             <span>:</span>
                                             <span class="patient-col-value">{{ IPDNo }}</span>
                                           </div>
-                                          <div class="patient-col" *ngIf="OPDNoCheck">
-                                            <span class="patient-col-key">OPDNo</span>
-                                            <span>:</span>
-                                            <span class="patient-col-value">{{ OPDNo }}</span>
-                                          </div>
-                                          <div class="patient-col" *ngIf="DoctorNamecheck">
+                                          
+                                          <div class="patient-col"  >
                                             <span class="patient-col-key">Doctor Name</span>
                                             <span>:</span>
                                             <span class="patient-col-value">{{DoctorName}}</span>
@@ -346,11 +290,7 @@
                                             <span>:</span>
                                             <span class="patient-col-value">{{ Patientdetails?.tariffName }}</span>
                                           </div>
-                                          <!-- <div class="patient-col">
-                                            <span class="patient-col-key">Company Name</span>
-                                            <span>:</span>
-                                            <span class="patient-col-value" style="color: #e26d14">{{ Patientdetails?.CompanyName }}</span>
-                                          </div> -->
+                                          
                                         </div>
                                       </div>
                                     </div>
@@ -604,7 +544,7 @@
                                   </airmid-dropdown>
                                 </div>
 
-                                  <div style="width: 160px" *ngIf="CreditReasonShow">
+                                  <div style="width: 160px" >
                                   <airmid-dropdown label="Credit Reason" formControlName="CredirReasonId"
                                     [formGroup]="ItemSubform" [validations]="getValidationMessages().CredirReasonId"
                                     [mode]="autocompleteModeCreditReason"  (selectionChange)="OnCreditReasonchange($event)" >
@@ -666,8 +606,7 @@
                                   <button class="btn btn-danger-outline" (click)="onClose()"
                                     (keydown.enter)="onF6Reset($event)">Reset</button>
                                 </div>
-                                <!-- [disabled]="ItemSubform.invalid || saleSelectedDatasource.data.length == 0" -->
-                              </div>
+                               </div>
                             </div>
                           </div>
                         </div>
@@ -845,19 +784,6 @@
           </mat-card>
         </div>
       </div>
-    </div>
-
-    <!-- Modal footer -->
-    <!-- <div class="modal-footer">
-            <div class="footer-navigation-container">
-                <div class="modal-footer-buttons">
-                    <button type="button" class="btn btn-danger-outline" [mat-dialog-close]="true"
-                        aria-label="Close dialog" matTooltip="Close">Close</button>
-                    <button type="button" class="btn btn-primary"
-                        [disabled]="!totalChargeForm.valid || !chargeList.length || savebtn"
-                        (click)="onsave()">Save</button>
-                </div>
-            </div>
-        </div> -->
+    </div> 
   </div>
 </div>
