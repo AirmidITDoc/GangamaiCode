@@ -188,7 +188,7 @@ export class BrowsSalesBillComponent implements OnInit {
     { heading: "Sales No", key: "salesNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
     { heading: "UHID No", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
 
-    { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 200, type: gridColumnTypes.template,
+    { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 300, type: gridColumnTypes.template,
        template: this.editablePatientName},
     { heading: "IPD No", key: "ipno", sort: true, align: 'left', emptySign: 'NA', width: 130 },
 

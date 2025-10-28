@@ -116,8 +116,9 @@
                         </div>  
                     </ng-template>
 
+              
                     <airmid-table [gridConfig]="gridConfig" class="content" (onSelectRow)="getsalesdetaillist($event)"
-                        #grid>
+                        #grid >
                         <ng-container filters>
                             <form [formGroup]="_BrowsSalesBillService.userForm" fxLayout="column">
 
@@ -162,23 +163,23 @@
 
                             </form>
                         </ng-container>
+                    </airmid-table> 
+ 
+                     <!-- <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll"
+                    *ngIf="isShowDetailTable">
+                    <airmid-table [gridConfig]="gridConfig1" class="content" #grid1 [ShowFilter]="false"
+                        [ShowButtons]="false">
                     </airmid-table>
+                      </div>  -->
+                      
+                </div>
 
-
-                     <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll"
+                <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll"
                     *ngIf="isShowDetailTable">
                     <airmid-table [gridConfig]="gridConfig1" class="content" #grid1 [ShowFilter]="false"
                         [ShowButtons]="false">
                     </airmid-table>
                 </div>
-                </div>
-
-                <!-- <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll"
-                    *ngIf="isShowDetailTable">
-                    <airmid-table [gridConfig]="gridConfig1" class="content" #grid1 [ShowFilter]="false"
-                        [ShowButtons]="false">
-                    </airmid-table>
-                </div> -->
             </div>
 
 
