@@ -104,7 +104,7 @@ export class ConfigurationComponent implements OnInit {
       OPDNo: 0,
       OPSalesdisc: 0,
       IPSalesdisc: 0,
-
+      SystemLogOutTime:0
     });
   }
   onSubmit() {

@@ -23,6 +23,7 @@ import { RefundbillService } from './refundbill.service';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
 import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
+import { HospitalConfigService } from 'app/core/services/hospital-config.service';
 
 @Component({
   selector: 'app-refundbill',
@@ -63,6 +64,7 @@ export class RefundbillComponent implements OnInit {
   } 
  
   screenFromString = 'Common-form'; 
+  autocompleteModeCashcounter: string = "CashCounter";
   searchFormGroup: FormGroup; 
   RefundOfBillFormFooter:FormGroup
   vRefundOfBillFormGroup:FormGroup
@@ -85,6 +87,7 @@ export class RefundbillComponent implements OnInit {
     public _WhatsAppEmailService: WhatsAppEmailService, 
     private commonService: PrintserviceService,
     private accountService: AuthenticationService,
+    private hospitalconfigservice:HospitalConfigService,
     private _FormvalidationserviceService: FormvalidationserviceService,
   ) { }
 
@@ -108,7 +111,8 @@ export class RefundbillComponent implements OnInit {
 
   createSearchForm() {
     return this.formBuilder.group({
-      RegId: ['']
+      RegId: [''],
+      CashCounterID:[this.hospitalconfigservice.HospitalconfigParams?.OPD_Refund_Bill_CounterId]
     });
   }
 
@@ -446,6 +450,13 @@ debugger
       }
     });
   }  
+    getValidationMessages() {
+    return {
+      CashCounterID: [
+        { name: "pattern", Message: "only Number allowed." }
+      ] 
+    }
+  }
   keyPressCharater(event) {
     var inp = String.fromCharCode(event.keyCode);
     if (/^\d*\.?\d*$/.test(inp)) {

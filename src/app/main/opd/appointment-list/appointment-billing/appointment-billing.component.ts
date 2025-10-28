@@ -17,6 +17,7 @@ import { AppointmentBillService } from './appointment-bill.service';
 import { PacakgeList } from 'app/main/setup/billing/service-master/editpackage/editpackage.component';
 import { PackageDetailsComponent } from './package-details/package-details.component';
 import { ConfigService } from 'app/core/services/config.service';
+import { HospitalConfigService } from 'app/core/services/hospital-config.service';
 
 @Component({
   selector: 'app-appointment-billing',
@@ -102,6 +103,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
     private _FormvalidationserviceService: FormvalidationserviceService,
     private formBuilder: FormBuilder,
     private toastrService: ToastrService, 
+    private hospitalconfigservice :HospitalConfigService,
             public _ConfigService: ConfigService,
     @Optional() public dialogRef: MatDialogRef<AppointmentBillingComponent>
   ) { };
@@ -296,7 +298,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
   createSearchForm() {
     return this.formBuilder.group({
       regId: [''],
-      CashCounterID: [1],
+      CashCounterID: [this.hospitalconfigservice.HospitalconfigParams?.OPD_Billing_CounterId],
       TariffId: [this.patientDetail.tariffId]
     });
   }
