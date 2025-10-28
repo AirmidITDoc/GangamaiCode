@@ -147,26 +147,12 @@ export class DischargeCancelComponent implements OnInit {
 
       this.date = (this.datePipe.transform(new Date(), "MM-dd-YYYY hh:mm tt"));
       
-      // var now = new Date(obj.admissionTime);
-      // now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
-      // this.date = now.toISOString().slice(0, 16);
-debugger
+   debugger
 
-      // setInterval(() => {
-        // var now = new Date(obj.admissionTime);
-        //   now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
-          // this.date = now.toISOString().slice(0, 16);
-
-
-  // this.date = obj.admissionTime.toISOString().slice(15,21);
-
-        // this.dateTimeString = this.now.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }).split(',');
-        // if (!this.isTimeChanged) {
+     
           this._DischargeCancelService.DischargeForm.get('AdmissionDate').setValue(obj.admissionTime);
-          // if (this._DischargeCancelService.DischargeForm.get('AdmissionTime'))
-            this._DischargeCancelService.DischargeForm.get('AdmissionTime').setValue(this.date);
-        // }
-      // }, 1);
+          this._DischargeCancelService.DischargeForm.get('AdmissionTime').setValue(this.date);
+     
     }
 
   }
@@ -259,12 +245,21 @@ debugger
       confirmButtonText: "Yes, Update it!"
     }).then((result) => {
       if (result.isConfirmed) {
+
+           const formattedDate = this.datePipe.transform(this._DischargeCancelService.DischargeForm.get('AdmissionDate').value, "yyyy-MM-dd");
+        const formattedTime = this.datePipe.transform(new Date(), "HH:mm:ss");
+        this._DischargeCancelService.DischargeForm.get('AdmissionDate').setValue(formattedDate);
+        // this._DischargeCancelService.DischargeForm.get('AdmissionTime').setValue(formattedDate + ' ' + formattedTime);
+        let Admissiontime=formattedDate + ' ' + formattedTime
+
+
+
         debugger
         if (!this._DischargeCancelService.DischargeForm.invalid) {
           var data = {
             'admissionID': this.AdmissionId,
-            'admissionDate': this.datePipe.transform(this._DischargeCancelService.DischargeForm.get('AdmissionDate').value, "yyyy-MM-dd"),
-            'admissionTime': this.datePipe.transform(this._DischargeCancelService.DischargeForm.get('AdmissionTime').value, 'HH:mm'),
+            'admissionDate':formattedDate,// this.datePipe.transform(this._DischargeCancelService.DischargeForm.get('AdmissionDate').value, "yyyy-MM-dd"),
+            'admissionTime':Admissiontime,// this.datePipe.transform(this._DischargeCancelService.DischargeForm.get('AdmissionTime').value, 'yyyy-MM-dd HH:mm'),
             'ipdno': this._DischargeCancelService.DischargeForm.get('NewIpdNo').value
           }
           console.log(data);
