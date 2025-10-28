@@ -17,6 +17,7 @@ import { WhatsAppEmailService } from 'app/main/shared/services/whats-app-email.s
 import { ToastrService } from 'ngx-toastr';
 import { IPSearchListService } from '../ip-search-list.service';
 import Swal from 'sweetalert2';
+import { HospitalConfigService } from 'app/core/services/hospital-config.service';
 
 
 @Component({
@@ -91,7 +92,10 @@ export class IPAdvanceComponent implements OnInit {
     private commonService: PrintserviceService,
     public toastr: ToastrService,
     public _FormvalidationserviceService: FormvalidationserviceService,
-    private formBuilder: FormBuilder) { }
+    private formBuilder: FormBuilder,
+    private hospitalconfigservice:HospitalConfigService
+  
+  ) { }
 
   ngOnInit(): void {
 
@@ -138,7 +142,7 @@ export class IPAdvanceComponent implements OnInit {
   }
   createAdvform() {
     this.AdvFormGroup = this.formBuilder.group({
-      CashCounterID: ['5', [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator(), Validators.min(1)]],
+      CashCounterID: [this.hospitalconfigservice.HospitalconfigParams.IPD_Advance_CounterId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator(), Validators.min(1)]],
       advanceAmount: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       reason: [''],
 

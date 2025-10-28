@@ -14,6 +14,7 @@ import { WhatsAppEmailService } from 'app/main/shared/services/whats-app-email.s
 import { ToastrService } from 'ngx-toastr';
 import { AdvanceDataStored } from '../advance';
 import { IPSearchListService } from '../ip-search-list/ip-search-list.service';
+import { HospitalConfigService } from 'app/core/services/hospital-config.service';
 
 @Component({
   selector: 'app-ip-refundof-advance',
@@ -61,7 +62,9 @@ export class IPRefundofAdvanceComponent implements OnInit {
     public toastr: ToastrService,
     public _WhatsAppEmailService: WhatsAppEmailService,
     public _FormvalidationserviceService: FormvalidationserviceService,
-    private formBuilder: UntypedFormBuilder,) { }
+    private formBuilder: UntypedFormBuilder,
+    private hospitalConfigservice:HospitalConfigService
+  ) { }
 
   ngOnInit(): void {
     this.RefundOfAdvanceFormGroup = this.createRefAdvForm();
@@ -74,7 +77,7 @@ export class IPRefundofAdvanceComponent implements OnInit {
   } 
   createRefAdvForm() {
     return this.formBuilder.group({
-      CashCounterID: ['8', [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator(), Validators.min(1)]],
+      CashCounterID: [this.hospitalConfigservice.HospitalconfigParams?.IPD_Refund_of_Advance_Receipt_CounterId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator(), Validators.min(1)]],
       refundAmount: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator,
       this._FormvalidationserviceService.onlyNumberValidator, Validators.min(1)]],
       balanceAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator, Validators.min(0)]],

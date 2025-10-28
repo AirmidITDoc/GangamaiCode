@@ -15,6 +15,7 @@ import { PrintserviceService } from 'app/main/shared/services/printservice.servi
 import { WhatsAppEmailService } from 'app/main/shared/services/whats-app-email.service';
 import { ToastrService } from 'ngx-toastr';
 import { IPSearchListService } from '../ip-search-list.service';
+import { HospitalConfigService } from 'app/core/services/hospital-config.service';
 
 @Component({
   selector: 'app-ip-refundof-bill',
@@ -93,6 +94,7 @@ export class IPRefundofBillComponent implements OnInit {
     public toastr: ToastrService,
     private dialogRef: MatDialogRef<IPRefundofBillComponent>,
     private _formBuilder: UntypedFormBuilder,
+    private hospitalconfigservice:HospitalConfigService,
     private _FormvalidationserviceService: FormvalidationserviceService,
     @Inject(MAT_DIALOG_DATA) public data: any,
   ) { }
@@ -184,7 +186,7 @@ export class IPRefundofBillComponent implements OnInit {
     return this._formBuilder.group({
       TotalRefundAmount: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator(), Validators.min(1)]],
       Remark: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly(), Validators.maxLength(200)]],
-      CashCounterID: [7, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator(), Validators.min(1)]]
+      CashCounterID: [this.hospitalconfigservice.HospitalconfigParams.IPD_Refund_of_Bill_CounterId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator(), Validators.min(1)]]
     });
   }
 

@@ -14,6 +14,7 @@ import { WhatsAppEmailService } from 'app/main/shared/services/whats-app-email.s
 import { ToastrService } from 'ngx-toastr'; 
 import { ChargesList } from '../ip-search-list.component';
 import { IPSearchListService } from '../ip-search-list.service'; 
+import { HospitalConfigService } from 'app/core/services/hospital-config.service';
 
 @Component({
   selector: 'app-interim-bill',
@@ -65,6 +66,7 @@ export class InterimBillComponent implements OnInit {
     private commonService: PrintserviceService,
     public _WhatsAppEmailService:WhatsAppEmailService,
     public _ConfigService : ConfigService,
+    private hospitalconfigservice:HospitalConfigService,
     public _FormvalidationserviceService:FormvalidationserviceService,
     @Inject(MAT_DIALOG_DATA) public data: any) {} 
 
@@ -85,7 +87,7 @@ export class InterimBillComponent implements OnInit {
   } 
   CreateFooterForm(): FormGroup {
     return this.formBuilder.group({  
-        CashCounterID:[4,[this._FormvalidationserviceService.notEmptyOrZeroValidator(),Validators.min(1)]], 
+        CashCounterID:[this.hospitalconfigservice.HospitalconfigParams.IPD_Billing_CounterId,[this._FormvalidationserviceService.notEmptyOrZeroValidator(),Validators.min(1)]], 
         TotalAmt: [0,[this._FormvalidationserviceService.notEmptyOrZeroValidator(),this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
         discPer: [0, [Validators.min(0), Validators.max(100),this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
         concessionAmt: [0, [Validators.min(0),this._FormvalidationserviceService.AllowDecimalNumberValidator()]],

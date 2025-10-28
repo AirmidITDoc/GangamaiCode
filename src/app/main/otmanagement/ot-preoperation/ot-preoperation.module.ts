@@ -39,6 +39,7 @@ import { MatSidenavModule } from "@angular/material/sidenav";
 import { OtPreoperationService } from "./ot-preoperation.service";
 import { OtPreoperationComponent } from "./ot-preoperation.component";
 import { NewOtPreoperationComponent } from './new-ot-preoperation/new-ot-preoperation.component';
+import { NewOtPostOperationComponent } from './new-ot-post-operation/new-ot-post-operation.component';
 
 const routes: Routes = [
   {
@@ -48,7 +49,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [OtPreoperationComponent, NewOtPreoperationComponent],
+  declarations: [OtPreoperationComponent, NewOtPreoperationComponent, NewOtPostOperationComponent],
   imports: [
     RouterModule.forChild(routes),
     CommonModule,

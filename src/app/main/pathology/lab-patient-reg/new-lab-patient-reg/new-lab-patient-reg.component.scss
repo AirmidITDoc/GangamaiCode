@@ -1,0 +1,32 @@
+.labpatientMain {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  max-height: 90vh; /* or 100vh if full screen */
+}
+
+.labpatientHeader {
+  flex-shrink: 0;
+  background: #f5f5f5;
+}
+
+.labpatientMiddle {
+  flex: 1;
+  overflow-y: auto;  /* ✅ only body scrolls */
+  padding: 16px;
+  background: #fff;
+}
+
+.labpatientfooter {
+  flex-shrink: 0;
+  background: #fff;
+  border-top: 1px solid #ddd;
+  padding: 10px 16px;
+  text-align: right;
+  position: sticky;
+  bottom: 0; /* ✅ keeps footer visible if body scrolls */
+}
+
+.labpatientbtn {
+  margin-left: 8px;
+}
