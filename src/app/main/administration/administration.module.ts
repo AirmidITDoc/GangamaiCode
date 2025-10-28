@@ -39,12 +39,12 @@ const appRoutes: Routes = [
     path: "reportconfiguration",
     loadChildren: () => import("./report-configuration/report-configuration.module").then((m) => m.ReportConfigurationModule),
   },
-  //  {
-  //   path:"dischargecancel",
-  //   loadChildren: () => import("./discharge-cancel/discharge-cancel.module").then((m) => m.DischargeCancelModule),
-  //  },
-  {
+   {
     path:"dischargecancel",
+    loadChildren: () => import("./discharge-cancel/discharge-cancel.module").then((m) => m.DischargeCancelModule),
+   },
+  {
+    path:"dischargecancel1",
     loadChildren: () => import("./new-administrative-task/administrativetask.module").then((m) => m.AdministrativetaskModule),
    },
    {
