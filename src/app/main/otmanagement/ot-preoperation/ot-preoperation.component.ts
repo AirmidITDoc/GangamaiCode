@@ -13,6 +13,7 @@ import { AuthenticationService } from "app/core/services/authentication.service"
 import { PdfviewerComponent } from "app/main/pdfviewer/pdfviewer.component";
 import { OtPreoperationService } from "./ot-preoperation.service";
 import { NewOtPreoperationComponent } from "./new-ot-preoperation/new-ot-preoperation.component";
+import { NewOtPostOperationComponent } from "./new-ot-post-operation/new-ot-post-operation.component";
 
 @Component({
   selector: 'app-ot-preoperation',
@@ -139,6 +140,21 @@ export class OtPreoperationComponent {
     buttonElement.blur();
 
     const dialogRef = this._matDialog.open(NewOtPreoperationComponent,
+      {
+        maxWidth: "90vw",
+        maxHeight: '90vh',
+        width: '90%',
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      this.grid.bindGridData();
+    });
+  }
+
+  onNew1(row: any = null) {
+    const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+    buttonElement.blur();
+
+    const dialogRef = this._matDialog.open(NewOtPostOperationComponent,
       {
         maxWidth: "90vw",
         maxHeight: '90vh',

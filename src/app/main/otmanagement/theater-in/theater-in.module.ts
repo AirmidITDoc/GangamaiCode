@@ -38,6 +38,7 @@ import { MatButtonToggleModule } from "@angular/material/button-toggle";
 import { MatSidenavModule } from "@angular/material/sidenav";
 import { TheaterInService } from "./theater-in.service";
 import { TheaterInComponent } from "./theater-in.component";
+import { NewTheaterInComponent } from './new-theater-in/new-theater-in.component';
 
 const routes: Routes = [
   {
@@ -47,7 +48,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [TheaterInComponent],
+  declarations: [TheaterInComponent, NewTheaterInComponent],
   imports: [
     RouterModule.forChild(routes),
     CommonModule,

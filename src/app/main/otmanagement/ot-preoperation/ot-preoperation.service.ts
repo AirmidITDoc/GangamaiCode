@@ -66,4 +66,55 @@ export class OtPreoperationService {
     });
   }
 
+  createOtPostOperationForm(): FormGroup {
+    return this._formBuilder.group({
+      opIpType: ["OP"],
+      opIpId: ["", [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      surgeonTypeId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      surgeryType: ['', [Validators.required]],
+      surgeryId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      partId: [],
+      fromTime: ['', Validators.required],
+      toTime: ['', Validators.required],
+      duration: ['', Validators.required],
+      surgeryAmt: [],
+      DiscPer: [],
+      concAmt: [],
+      InfectivePer: [],
+      InfectiveAmt: [],
+      netAmt: [],
+      Surgerydate: [new Date()],
+      totalGrossAmt: [0],
+      totalDiscAmt: [0],
+      totalNetAmt: [0],
+      billProcess: ['1'],
+      isresourcecharge: [],
+      isBilling: [],
+      closureNote: [''],
+      operativeFinding: [''],
+      postOperNote: [''],
+      patientCondNote: [''],
+
+      BloodGroup: [],
+      CategoryTypeId: [],
+      Theater: [],
+      TheaterLocation: [],
+      estimateTime: [],
+      Surgerydate1: [new Date()],
+      MobileNo: [],
+      Diagnosis: [[]],
+      Remarks: [],
+      fromTime1: ['', Validators.required],
+      toTime1: ['', Validators.required],
+      duration1: ['', Validators.required],
+      cathLabDiagnosis: [],
+      bloodArg: ["1"],
+      pacReq: ["1"],
+      EquReq: ["1"],
+      Infective: ["1"],
+      Medical: [],
+      Finance: [],
+    });
+  }
+
 }

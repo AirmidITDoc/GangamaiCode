@@ -24,4 +24,36 @@ export class TheaterInService {
       RegNo: []
     });
   }
+
+  createTheaterInForm(): FormGroup {
+    return this._formBuilder.group({
+      otbookingId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      opIpId: ["", [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      departmentId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      // surgeryId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      categoryId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]], //doctortype value passing here
+      siteDescId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+
+      surgeryTypeId: [0, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator()]],
+      surgeryCategoryId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      doctorTypeId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+
+      // new fields
+      BloodGroup: [],
+      CategoryTypeId: [],
+      Theater: [],
+      TheaterLocation: [],
+      estimateTime: [],
+      Surgerydate: [new Date()],
+      MobileNo: [],
+      Diagnosis: [[]],
+      Remarks: [],
+      partId: [],
+      bodyPartId: [],
+      theaterInDt: [],
+      theaterInTime: [],
+      startTime: [],
+      endTime: [],
+    });
+  }
 }

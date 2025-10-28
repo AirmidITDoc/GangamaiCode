@@ -1,0 +1,161 @@
+<div fusePerfectScrollbar
+    class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
+    dynamicTableHeight>
+    <div class="top-header header accent p-16" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
+        fxLayoutAlign.gt-xs="space-between center ">
+        <div class="top-header-info">
+            <div class="top-header-title">
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    Lab Patient Registration List
+                </span>
+            </div>
+        </div>
+        <div class="gap-8" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
+            <button mat-raised-button (click)="new()">New PatientReg
+            </button>
+        </div>
+    </div>
+
+    <!-- <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="space-between center"
+        class="px-12 py-4 border-bottom gap-8">
+        <div class="info-badge-top overflow-auto" fxLayout="row" fxLayoutAlign="start" flex>
+            <div fxLayout="row" fxLayoutAlign="start center" class="gap-8">
+               
+                <div class="dashboard-card emg">
+                    <div class="card-label">New Emergency</div>
+                    <div class="card-value">{{VEmgcount}} </div>
+                    <mat-icon class="card-icon">person_add</mat-icon>
+                </div>
+                
+                <div class="dashboard-card emg-split">
+                    <div class="card-label">Total Emergency</div>
+                    <div class="card-value">{{AllCount}}</div>
+                    <mat-icon class="card-icon">event</mat-icon>
+                </div>
+
+                <div class="dashboard-card checkout">
+                    <div class="card-label">Converted Emergency</div>
+                    <div class="card-value">
+                        <div>OP {{VOPcount}}</div>
+                        <div>IP {{VIPcount}}</div>
+                    </div>
+                    <mat-icon class="card-icon">group</mat-icon>
+                </div>
+                
+                <div class="dashboard-card bills">
+                    <div class="card-label">Total BillGenerated</div>
+                    <div class="card-value">{{VBillcount}}</div>
+                    <mat-icon class="card-icon">receipt_long</mat-icon>
+                </div>
+            </div>
+        </div>
+    </div> -->
+
+    <!-- <ng-template #actionButtonTemplate let-element>
+        <div fxLayout="row" fxLayoutAlign="center center">
+            <button mat-icon-button matTooltip="Edit Emergency" (click)="newEmergency(element)"
+                *ngIf="element.isCancelled==false">
+                <mat-icon>edit</mat-icon>
+            </button>
+
+            <button mat-icon-button matTooltip="Convert to OPD or IPD" (click)="getConvert(element)"
+                *ngIf="element.isCancelled==false" [disabled]="element.convertedIntoAdm > 0">
+                <mat-icon>cached icon</mat-icon>
+            </button>
+
+            <button mat-icon-button matTooltip="Cancel" (click)="EmergencyCancel(element)"
+                *ngIf="element.isCancelled==false"
+                [disabled]="element.isAfter24Hrs === 1 || element.convertedIntoAdm > 0">
+                <mat-icon> cancel</mat-icon>
+            </button>
+
+            <button mat-icon-button matTooltip="Emg Print" *ngIf="element.isCancelled==false"
+                (click)="OnViewReportPdf(element)">
+                <mat-icon> print</mat-icon>
+            </button>
+        </div>
+    </ng-template> -->
+
+    <ng-template #actionsTemplate let-element>
+        <div class="pill-icon">
+            <mat-icon style="border-radius:100% ;" *ngIf="element.isCancelled==true" matTooltip="Cancelled"
+                class="red-600 s-16">circle
+            </mat-icon>
+
+            <mat-icon style="border-radius:100% ;" *ngIf="element.isCancelled==false" matTooltip="Not Cancelled"
+                class="green-600 s-16">circle
+            </mat-icon>
+        </div>
+    </ng-template>
+
+    <ng-template #oldNewTemplate let-element>
+        <div class="pill-icon">
+            <mat-icon style="border-radius:100% ;" *ngIf="element.regId==0" matTooltip="NewPatient"
+                class="orange-600 s-16">circle
+            </mat-icon>
+        </div>
+    </ng-template>
+
+    <ng-template #after24Hr let-element>
+        <div fxLayout="row" fxLayoutAlign="center center">
+            <mat-icon style="border-radius:100% ;" *ngIf="element.isAfter24Hrs==1" matTooltip="24hrs Completed">
+                <img width="20px" height="20px" src="assets/images/logos/alarm.png">
+            </mat-icon>
+        </div>
+    </ng-template>
+
+    <!-- <ng-template #isConverted let-element>
+        <div fxLayout="row" fxLayoutAlign="center center">
+             <mat-icon style="border-radius:100% ;" *ngIf="element.convertedIntoAdm > 0" matTooltip="ConvertedToIP">
+                redo  
+            </mat-icon>
+        </div>
+    </ng-template> -->
+
+    <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+
+        <airmid-table [gridConfig]="gridConfig" class="content">
+            <ng-container filters>
+                <form [formGroup]="myFilterform">
+
+                    <div fxLayout="column" fxLayoutAlign="start none">
+
+                        <mat-form-field appearance="outline">
+                            <mat-label>Enter a date range</mat-label>
+                            <mat-date-range-input [rangePicker]="picker">
+                                <input matStartDate formControlName="fromDate" placeholder="Start date"
+                                    (dateChange)="onChangeFirst()">
+                                <input matEndDate formControlName="enddate" placeholder="End date"
+                                    (dateChange)="onChangeFirst()">
+                            </mat-date-range-input>
+                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-date-range-picker #picker></mat-date-range-picker>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline">
+                            <mat-label>FirstName</mat-label>
+                            <input matInput placeholder="FirstName" autocomplete="off" [formGroup]="myFilterform"
+                                formControlName="firstName" (input)="onChangeFirst()" />
+                            <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('firstName')">
+                                <mat-icon>close</mat-icon>
+                            </button>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline">
+                            <mat-label>LastName</mat-label>
+                            <input matInput placeholder="LastName" autocomplete="off" [formGroup]="myFilterform"
+                                formControlName="L_Name" (input)="onChangeFirst()" />
+                            <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('L_Name')">
+                                <mat-icon>close</mat-icon>
+                            </button>
+                        </mat-form-field>
+
+                    </div>
+
+                </form>
+            </ng-container>
+        </airmid-table>
+
+    </div>
+
+</div>

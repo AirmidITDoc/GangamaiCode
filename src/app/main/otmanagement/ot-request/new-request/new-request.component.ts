@@ -39,7 +39,7 @@ export class NewRequestComponent implements OnInit {
   autocompleteModeSurgeryMaster: String = "SurgeryMaster";
   autocompleteModeDoctorType: string = "DoctorType";
   autocompleteModeConDoctor: String = "ConDoctor";
-  autocompleteModeAnesthesiatypes: string = "Anesthesiatypes"
+  autocompleteModeAnesthesiatypes: string = "DoctorType"
   autocompleteModeRefDoctor: String = "RefDoctor";
   autocompleteModeOTTable: String = "OttableMaster";
   autocompleteModeLocation: string = "Location";
@@ -67,6 +67,7 @@ export class NewRequestComponent implements OnInit {
   displayedColumns: string[] = [
     'surgeryType',
     'surgeryName',
+    'surgerypart',
     'duration',
     'fromTime',
     'toTime',
@@ -89,6 +90,7 @@ export class NewRequestComponent implements OnInit {
   registerObj1 = new OtReqInsert({});
   BloodGroupNames: string[] = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
   surgeryTypeNames: string[] = ["Normal", "Emergency"];
+  partTypes: string[] = ["Left", "Middle", "Right"];
 
   dssurgeryDetailList = new MatTableDataSource<OtReqInsert>();
   dsattendentDetailList = new MatTableDataSource<OtReqInsert>();
@@ -311,6 +313,7 @@ export class NewRequestComponent implements OnInit {
       surgeryType: this.requestForm.get('surgeryType').value,
       surgeryId: this.requestForm.get('surgeryId').value,//
       surgeryName: this.surgName,
+      surgerypart: this.requestForm.get('surgerypart').value,
       duration: this.requestForm.get('duration').value,
       fromTime: this.requestForm.get('fromTime').value,
       toTime: this.requestForm.get('toTime').value,
@@ -355,6 +358,7 @@ export class NewRequestComponent implements OnInit {
     this.requestForm.patchValue({
       surgeryType: '',
       surgeryId: '',
+      surgerypart: '',
       duration: '',
       fromTime: '',
       toTime: '',
@@ -389,6 +393,7 @@ export class NewRequestComponent implements OnInit {
     this.requestForm.patchValue({
       surgeryType: contact.surgeryType ?? '',
       surgeryId: contact.surgeryId ?? '',
+      surgerypart: contact.surgerypart ?? '',
       duration: contact.duration ?? '',
       fromTime: contact.fromTime ?? '',
       toTime: contact.toTime ?? '',

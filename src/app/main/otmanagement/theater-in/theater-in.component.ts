@@ -12,6 +12,7 @@ import Swal from "sweetalert2";
 import { AuthenticationService } from "app/core/services/authentication.service";
 import { PdfviewerComponent } from "app/main/pdfviewer/pdfviewer.component";
 import { TheaterInService } from "./theater-in.service";
+import { NewTheaterInComponent } from "./new-theater-in/new-theater-in.component";
 
 @Component({
   selector: 'app-theater-in',
@@ -131,5 +132,21 @@ export class TheaterInComponent {
       this.myFilterform.get('RegNo').setValue("")
 
     this.onChangeFirst();
+  }
+
+  onNew(row: any = null) {
+    const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+    buttonElement.blur();
+
+    const dialogRef = this._matDialog.open(NewTheaterInComponent,
+      {
+        maxWidth: "90vw",
+        maxHeight: '90vh',
+        // height: '90%',
+        width: '85%',
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      this.grid.bindGridData();
+    });
   }
 }
