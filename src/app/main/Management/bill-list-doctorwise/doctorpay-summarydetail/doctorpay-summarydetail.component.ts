@@ -77,8 +77,8 @@ export class DoctorpaySummarydetailComponent {
 
     if (this.data) {
       console.log(this.data)
-      this.fromDate = this.data.obj.fromDate
-      this.toDate = this.data.obj.toDate
+      this.fromDate = this.data.fromDate
+      this.toDate = this.data.toDate
 
       this.doctorName = this.data.addChargeDrName
 
@@ -122,6 +122,7 @@ export class DoctorpaySummarydetailComponent {
 
 
   getBilldetailList() {
+    
     var vdata = {
       "first": 0,
       "rows": 20,
@@ -130,23 +131,25 @@ export class DoctorpaySummarydetailComponent {
       "filters": [
         {
           "fieldName": "DoctorId",
-          "fieldValue": String(this.DoctorId),
+          "fieldValue": "1",//String(this.DoctorId),
           "opType": "Equals"
         },
         {
           "fieldName": "FromDate",
-          "fieldValue": "2025-10-25",
+          "fieldValue":"2025-10-26",// this.fromDate,
           "opType": "Equals"
         },
         {
           "fieldName": "ToDate",
-          "fieldValue": "2025-10-26",
+          "fieldValue": "2025-10-28",
           "opType": "Equals"
         }
       ],
       "Columns": [],
       "exportType": "JSON"
     }
+
+    debugger
     this._DoctorShareService.getSummarydetailList(vdata).subscribe(data => {
       this.Billdetaildatasource.data = data.data as BillListForDocShrList[]
       console.log(this.Billdetaildatasource.data)

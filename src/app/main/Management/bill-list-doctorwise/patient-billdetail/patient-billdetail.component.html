@@ -132,7 +132,7 @@
                                 <mat-form-field appearance="fill">
                                     <input matInput [(ngModel)]="contact.docAmt" type="text" OnlyNumber
                                         [id]="'DocAmt' + index" (ngModelChange)="getCellCalculation(contact)"
-                                        [min]="0" />
+                                        [min]="0"  type="number" />
                                 </mat-form-field>
                             </mat-cell>
                         </ng-container>

@@ -66,7 +66,7 @@ export class DoctorPayoutpercentageComponent {
     { fieldName: "ShrTypeSerOrGrp", fieldValue: String(this.type), opType: OperatorComparer.StartsWith }
   ]
   gridConfig: gridModel = {
-    apiUrl: "Doctor/DoctorshareListbyName",
+    apiUrl: "DoctorPAy/DoctorshareListByName",
     columnsList: this.allColumns,
     sortField: "DoctorShareId",
     sortOrder: 0,

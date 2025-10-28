@@ -61,9 +61,11 @@ export class BillListDoctorwiseComponent {
   @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
 
   @ViewChild('actionButtonTemplate1') actionButtonTemplate1!: TemplateRef<any>;
+  @ViewChild('actionButtonTemplate2') actionButtonTemplate2!: TemplateRef<any>;
 
-   @ViewChild('ipBrowse', { static: false }) grid: AirmidTableComponent;
+  @ViewChild('ipBrowse', { static: false }) grid: AirmidTableComponent;
   @ViewChild('summary', { static: false }) grid1: AirmidTableComponent;
+  @ViewChild('summarydetail', { static: false }) grid2: AirmidTableComponent;
 
 
   constructor(
@@ -91,6 +93,7 @@ export class BillListDoctorwiseComponent {
     this.gridConfig.columnsList.find(col => col.key === 'opdipdtype')!.template = this.actionsTemplate;
     this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
     this.gridConfig1.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate1;
+     this.gridConfig2.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate2;
   }
 
   allColumns = [
@@ -121,7 +124,7 @@ export class BillListDoctorwiseComponent {
     { fieldName: "OPIPTYpe", fieldValue: "1", opType: OperatorComparer.Equals },
   ]
   gridConfig: gridModel = {
-    apiUrl: "Doctor/DoctorshareBillList",
+    apiUrl: "Doctor/DoctorPay",
     columnsList: this.allColumns,
     sortField: "DoctorId",
     sortOrder: 0,
@@ -148,7 +151,7 @@ export class BillListDoctorwiseComponent {
     console.log("toDate:", this.toDate)
 
     this.gridConfig = {
-      apiUrl: "Doctor/DoctorshareBillList",
+      apiUrl: "DoctorPay/DoctorshareBillList",
       columnsList: this.allColumns,
       sortField: "DoctorId",
       sortOrder: 0,
@@ -262,7 +265,7 @@ export class BillListDoctorwiseComponent {
   }
 
   DoctorId = "0";
-  DoctorId1 = "0";
+  DoctorId1 = "1";
 
   ListView(value) {
     console.log(value)
@@ -282,9 +285,81 @@ export class BillListDoctorwiseComponent {
     else
       this.DoctorId1 = "0"
 
-    this.onChangeFirst1();
+    // this.onChangeFirst1();
   }
 
+  ListView2(value) {
+    console.log(value)
+    if (value.value !== 0)
+      this.DoctorId1 = value.value
+    else
+      this.DoctorId1 = "0"
+
+    this.onChangeFirst2();
+  }
+
+
+
+  ///Summary pay
+  allColumns2 = [
+
+    { heading: "AddCharge DrName", key: "addChargeDrName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
+    { heading: "BillNo", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA', width: 125 },
+    { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
+    { heading: "Service Name", key: "serviceName", sort: true, align: 'left', emptySign: 'NA', width: 125 },
+    { heading: "Net Amount", key: "netAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, width: 125 },
+    { heading: "Doctor Amount", key: "docAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, width: 125 },
+    { heading: "Hospital Amount", key: "hospitalAmt", sort: true, align: 'left', type: gridColumnTypes.amount, emptySign: 'NA', width: 125 },
+
+    { heading: "Refund Amount", key: "refundAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, width: 125 },
+    { heading: "Type", key: "lbl", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+
+    {
+      heading: "Action", key: "action", align: "right", width: 150, sticky: true, type: gridColumnTypes.template,
+      template: this.actionButtonTemplate2  // Assign ng-template to the column
+    }
+  ]
+  allFilters2 = [
+    { fieldName: "DoctorId", fieldValue: this.DoctorId1, opType: OperatorComparer.Equals },
+    { fieldName: "FromDate", fieldValue: "2025-10-26", opType: OperatorComparer.GreaterThanOrEqual },
+    { fieldName: "ToDate", fieldValue: "2025-10-28", opType: OperatorComparer.GreaterThanOrEqual }
+
+
+
+  ]
+  gridConfig2: gridModel = {
+    apiUrl: "DoctorPAy/DoctorsharSummarydetail",
+    columnsList: this.allColumns2,
+    sortField: "DoctorId",
+    sortOrder: 0,
+    filters: this.allFilters2
+  }
+
+  onChangeFirst2() {
+    this.fromDate1 = this.datePipe.transform(this._DoctorShareService.DocSummaryfilterForm.get('fromDate').value, "yyyy-MM-dd")
+    this.toDate1 = this.datePipe.transform(this._DoctorShareService.DocSummaryfilterForm.get('enddate').value, "yyyy-MM-dd")
+
+    this.getfilterdata2();
+  }
+
+  getfilterdata2() {
+
+    debugger
+    this.gridConfig2 = {
+      apiUrl: "DoctorPAy/DoctorsharSummarydetail",
+      columnsList: this.allColumns2,
+      sortField: "DoctorId",
+      sortOrder: 0,
+      filters: [
+        { fieldName: "DoctorId", fieldValue: this.DoctorId1, opType: OperatorComparer.Equals },
+        { fieldName: "FromDate", fieldValue: this.fromDate1, opType: OperatorComparer.StartsWith },
+        { fieldName: "ToDate", fieldValue: this.toDate1, opType: OperatorComparer.StartsWith }
+
+      ]
+    }
+    this.grid2.gridConfig = this.gridConfig2;
+    this.grid2.bindGridData();
+  }
 
   getValidationMessages() {
     return {
@@ -297,7 +372,7 @@ export class BillListDoctorwiseComponent {
   }
 
   isDatePckrDisabled: boolean = false;
- 
+
 
   Additiondocpay() {
     const dialogRef = this._matDialog.open(DoctorAddonpayComponent,
@@ -343,9 +418,9 @@ export class BillListDoctorwiseComponent {
         height: '690px',
         width: '100%',
         data: {
-         obj: element,
-         fromDate:this.fromDate,
-         toDate:this.toDate
+          obj: element,
+          fromDate: this.fromDate,
+          toDate: this.toDate
 
         }
       });

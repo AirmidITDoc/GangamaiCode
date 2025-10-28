@@ -70,7 +70,7 @@
                 </div>
             </div>
         </mat-tab>
-        <mat-tab label="Browse Patient Bill List">
+        <!-- <mat-tab label="Browse Patient Bill List">
             <div fusePerfectScrollbar
                 class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
                 dynamicTableHeight>
@@ -162,8 +162,75 @@
                     </airmid-table>
                 </div>
             </div>
-        </mat-tab>
+        </mat-tab> -->
 
+
+           <mat-tab label="Browse Patient Bill List">
+            <div fusePerfectScrollbar
+                class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
+                dynamicTableHeight>
+
+
+                <div class="top-header header accent p-16" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
+                    fxLayoutAlign.gt-xs="space-between center ">
+                    <div class="top-header-info">
+                        <div class="top-header-title">
+                            <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                                Browse Patient Bill List
+                            </span>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+                  
+
+                    <ng-template #actionButtonTemplate2 let-element>
+
+                        <div fxLayout="row" fxLayoutAlign="center center">
+                            <mat-icon  (click)="onHold(element)"
+                                matTooltip="Hold Bill">
+                                <img width="50px" height="50px" src="assets/images/logos/hold.png">
+                            </mat-icon>
+
+                            <mat-icon (click)="billdetail(element)" matTooltip="Bill Detail">
+                                edit
+                            </mat-icon>
+
+                            
+                             <mat-icon (click)="updateAddon(element)" matTooltip="Update AddON Charges">
+                                edit
+                            </mat-icon> 
+                        </div>
+
+                    </ng-template>
+
+
+                    <airmid-table [gridConfig]="gridConfig2"  class="content" #summarydetail>
+                        <ng-container filters>
+                            <form [formGroup]="_DoctorShareService.UserFormGroup">
+
+                                <airmid-datepicker [formGroup]="_DoctorShareService.UserFormGroup"
+                                    [isRangePicker]="true" formStartControlName="fromDate" formEndControlName="enddate"
+                                    [(fromValue)]="gridConfig2.filters[1].fieldValue"
+                                    [(toValue)]="gridConfig2.filters[2].fieldValue">
+                                </airmid-datepicker>
+
+                              
+                                <airmid-dropdown label="Select Doctor Name" formControlName="DoctorID"
+                                    [(ngModel)]="gridConfig2.filters[0].fieldValue"
+                                    [formGroup]="_DoctorShareService.UserFormGroup" (selectionChange)="ListView2($event)"
+                                    (keyup)="ListView2($event)" [mode]="autocompleteModedoctor">
+                                </airmid-dropdown>
+
+                              
+                            </form>
+                        </ng-container>
+                    </airmid-table>
+                </div>
+            </div>
+        </mat-tab>
 
 
     </mat-tab-group>

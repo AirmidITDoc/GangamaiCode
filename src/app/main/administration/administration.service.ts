@@ -83,4 +83,18 @@ public AdvanceList(m_data) {
     return this._httpClient.PostData("Billing/BrowseIPRefundlist",m_data);
 }
 
+public getPatientListOP(param){
+    return this._httpClient.PostData("Common",param)
+  }
+ 
+  public getBillDetailList(param){
+    return this._httpClient.PostData("Common",param)
+  }
+
+   public getPaymentDetailList(param){
+    return this._httpClient.PostData("Common",param)
+  }
+
+
+
 }

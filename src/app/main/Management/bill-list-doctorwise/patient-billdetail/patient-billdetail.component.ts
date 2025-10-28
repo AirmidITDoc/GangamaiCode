@@ -72,6 +72,7 @@ export class PatientBilldetailComponent {
     if (this.data) {
       console.log(this.data)
       this.pBillNo = this.data.billNo
+
       // this.fromDate = this.data.BillDate
       // this.toDate=this.data.pbillNo
       this.opipType = this.data.opdipdtype
@@ -90,7 +91,7 @@ export class PatientBilldetailComponent {
       "filters": [
         {
           "fieldName": "BillNo",
-          "fieldValue": String(this.pBillNo),//"228677",//
+          "fieldValue":"228677",// String(this.pBillNo),//"228677",//
           "opType": "Equals"
         },
         {
@@ -102,6 +103,7 @@ export class PatientBilldetailComponent {
       "Columns": [],
       "exportType": "JSON"
     }
+    console.log(vdata)
     this._DoctorShareService.getBilldetailList(vdata).subscribe(data => {
       this.Billdetaildatasource.data = data.data as BillListForDocShrList[]
       console.log(this.Billdetaildatasource.data)
@@ -167,10 +169,10 @@ export class PatientBilldetailComponent {
         debugger
           setTimeout(() => {
          
-          item.hospitalAmt = Number(item.netAmount)-Number(item.docAmt); // just in case
+          item.hospitalAmt = (Number(item.netAmount)-Number(item.docAmt)).toFixed(2); // just in case
              
       });
-        
+        this.getsumdetail()
       }
 
   onClose() {
