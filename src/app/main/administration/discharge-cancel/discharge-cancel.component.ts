@@ -147,26 +147,12 @@ export class DischargeCancelComponent implements OnInit {
 
       this.date = (this.datePipe.transform(new Date(), "MM-dd-YYYY hh:mm tt"));
       
-      // var now = new Date(obj.admissionTime);
-      // now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
-      // this.date = now.toISOString().slice(0, 16);
-debugger
+   debugger
 
-      // setInterval(() => {
-        // var now = new Date(obj.admissionTime);
-        //   now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
-          // this.date = now.toISOString().slice(0, 16);
-
-
-  // this.date = obj.admissionTime.toISOString().slice(15,21);
-
-        // this.dateTimeString = this.now.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }).split(',');
-        // if (!this.isTimeChanged) {
+     
           this._DischargeCancelService.DischargeForm.get('AdmissionDate').setValue(obj.admissionTime);
-          // if (this._DischargeCancelService.DischargeForm.get('AdmissionTime'))
-            this._DischargeCancelService.DischargeForm.get('AdmissionTime').setValue(this.date);
-        // }
-      // }, 1);
+          this._DischargeCancelService.DischargeForm.get('AdmissionTime').setValue(this.date);
+     
     }
 
   }

@@ -59,7 +59,7 @@ export class PaymentmodechangesComponent implements OnInit {
 
   allopdColumns = [
     { heading: "-", key: "label", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
-    { heading: "Pay Date", key: "paymentDate", sort: true, align: 'left', emptySign: 'NA', width: 200, type: 9 },
+    { heading: "Pay Date", key: "paymentTime", sort: true, align: 'left', emptySign: 'NA', width: 200, type: 9 },
     { heading: "Bill Date", key: "billDate", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 6 },
 
     { heading: "Receipt No", key: "receiptNo", sort: true, align: 'left', emptySign: 'NA' },

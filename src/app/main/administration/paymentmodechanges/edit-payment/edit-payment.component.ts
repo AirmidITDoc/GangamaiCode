@@ -234,6 +234,15 @@ export class EditPaymentComponent implements OnInit {
       if (this._Paymentmodesevice.paymentInsertform.get('NEFTBankName').value)
       NFTBank = this.NFTBankdd
 
+
+        // const formattedDate = this.datePipe.transform(this._DischargeCancelService.DischargeForm.get('AdmissionDate').value, "yyyy-MM-dd");
+        // const formattedTime = this.datePipe.transform(new Date(), "HH:mm:ss");
+        // this._DischargeCancelService.DischargeForm.get('AdmissionDate').setValue(formattedDate);
+        // let Admissiontime=formattedDate + ' ' + formattedTime
+
+
+
+
       this._Paymentmodesevice.paymentInsertform.get('PaymentId').setValue(this.registerObj.paymentId || 0)
       this._Paymentmodesevice.paymentInsertform.get('BillNo').setValue(this.vBillNo)
       this._Paymentmodesevice.paymentInsertform.get('ReceiptNo').setValue(String(this.registerObj.receiptNo) || '0')
@@ -359,26 +368,6 @@ export class EditPaymentComponent implements OnInit {
       let NFTBank = 0;
       if (this._Paymentmodesevice.paymentInsertform.get('NEFTBankName').value)
       NFTBank = this.NFTBankdd
-      // this._Paymentmodesevice.paymentInsertform.get('PaymentId').setValue(this.registerObj.paymentId || 0)
-      // this._Paymentmodesevice.paymentInsertform.get('BillNo').setValue(this.vBillNo || 0)
-      // this._Paymentmodesevice.paymentInsertform.get('ReceiptNo').setValue(String(this.registerObj.receiptNo) || '0')
-      // this._Paymentmodesevice.paymentInsertform.get('PaymentDate').setValue(datePipe.transform(new Date(), 'yyyy-MM-dd'))
-      // this._Paymentmodesevice.paymentInsertform.get('PaymentTime').setValue(datePipe.transform(new Date(), 'shortTime'))
-      // this._Paymentmodesevice.paymentInsertform.get('BankName').setValue(ChequeBank || '')
-      // this._Paymentmodesevice.paymentInsertform.get('ChequeDate').setValue("2024-08-10")
-      // this._Paymentmodesevice.paymentInsertform.get('CardBankName').setValue(CardBank || "")
-      // this._Paymentmodesevice.paymentInsertform.get('CardDate').setValue("2024-08-10")
-      // this._Paymentmodesevice.paymentInsertform.get('AdvanceUsedAmount').setValue(this.registerObj.advanceUsedAmount || 0)
-      // this._Paymentmodesevice.paymentInsertform.get('AdvanceId').setValue(this.registerObj.advanceId || 0)
-      // this._Paymentmodesevice.paymentInsertform.get('RefundId').setValue(this.registerObj.refundId || 0)
-      // this._Paymentmodesevice.paymentInsertform.get('TransactionType').setValue(this.registerObj.transactionType || 0)
-      // this._Paymentmodesevice.paymentInsertform.get('Remark').setValue(this.registerObj.remark || '')
-      // this._Paymentmodesevice.paymentInsertform.get('AddBy').setValue(this.accountService.currentUserValue.userId|| 0)
-      // this._Paymentmodesevice.paymentInsertform.get('NeftbankMaster').setValue( NFTBank || "")
-      // this._Paymentmodesevice.paymentInsertform.get('ChequeNo').setValue( this._Paymentmodesevice.paymentInsertform.get('ChequeNo').value || "")
-      // this._Paymentmodesevice.paymentInsertform.get('CardNo').setValue( this._Paymentmodesevice.paymentInsertform.get('CardNo').value || "")
-      // this._Paymentmodesevice.paymentInsertform.get('Neftno').setValue( this._Paymentmodesevice.paymentInsertform.get('Neftno').value || "")
-      // this._Paymentmodesevice.paymentInsertform.get('PayTmtranNo').setValue( this._Paymentmodesevice.paymentInsertform.get('PayTmtranNo').value || "")
     
      this._Paymentmodesevice.paymentInsertform.get('PaymentId').setValue(this.registerObj.paymentId || 0)
       this._Paymentmodesevice.paymentInsertform.get('BillNo').setValue(this.vBillNo)
@@ -486,33 +475,7 @@ getValidationMessages(){
     this._Paymentmodesevice.paymentInsertform.get('PayTmdate').setValue('1900-01-01')
     // this._Paymentmodesevice.paymentInsertform.get('BankName').setValue('')
 
-    
-      // ChequeDate: '',
-      // CardPayAmount: '',
-      // CardNo: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
-      // CardBankName: '',
-      // CardDate: '',
-      // AdvanceUsedAmount: '',
-      // AdvanceId: '',
-      // RefundId: '',
-      // TransactionType: '',
-      // Remark: '',
-      // AddBy: 0,
-      // IsCancelled: false,
-      // IsCancelledBy: 0,
-      // IsCancelledDate: '1900-01-01',
-      // NeftpayAmount: '',
-      // Neftno: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
-      // NeftbankMaster: '',
-      // Neftdate: "1900-01-01",
-      // PayTmamount: '',
-      // PayTmtranNo: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
-      // PayTmdate: "1900-01-01",
-
-
-
-
-  }
+      }
   amount:any = 0;
  
   getPaidAmount(event) {
