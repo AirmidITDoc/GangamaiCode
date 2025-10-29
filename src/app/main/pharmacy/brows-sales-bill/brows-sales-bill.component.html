@@ -131,23 +131,23 @@
                                 <airmid-dropdown label="Store Name" formControlName="StoreId"
                                     [formGroup]="_BrowsSalesBillService.userForm"
                                     [validations]="getValidationMessages().StoreId" fxFlex [mode]="autocompletestore"
-                                    (keyup)="selectChangeStore($event)">
+                                    (input)="selectChangeStore($event)">
                                 </airmid-dropdown>
 
                                 <airmid-textbox fxFlex label="Search RegNo" formControlName="RegNo"
-                                    [formGroup]="_BrowsSalesBillService.userForm" (keyup)="onChangeFirst()"
+                                    [formGroup]="_BrowsSalesBillService.userForm" (input)="onChangeFirst()"
                                     [validations]="getValidationMessages().RegNo"></airmid-textbox>
 
                                 <airmid-textbox fxFlex label="Search First Name" formControlName="F_Name"
-                                    [formGroup]="_BrowsSalesBillService.userForm" (keyup)="onChangeFirst()"
+                                    [formGroup]="_BrowsSalesBillService.userForm" (input)="onChangeFirst()"
                                     [validations]="getValidationMessages().F_Name"></airmid-textbox>
 
                                 <airmid-textbox fxFlex label="Search Last Name" formControlName="L_Name"
-                                    [formGroup]="_BrowsSalesBillService.userForm" (keyup)="onChangeFirst()"
+                                    [formGroup]="_BrowsSalesBillService.userForm" (input)="onChangeFirst()"
                                     [validations]="getValidationMessages().L_Name"></airmid-textbox>
 
                                 <airmid-textbox fxFlex label="Search SalesNo" formControlName="SalesNo"
-                                    [formGroup]="_BrowsSalesBillService.userForm" (keyup)="onChangeFirst()"
+                                    [formGroup]="_BrowsSalesBillService.userForm" (input)="onChangeFirst()"
                                     [validations]="getValidationMessages().SalesNo"></airmid-textbox>
 
 
@@ -254,15 +254,15 @@
                                 <airmid-dropdown label="Store Name" formControlName="StoreId"
                                     [formGroup]="_BrowsSalesBillService.formReturn"
                                     [validations]="getValidationMessages().StoreId" fxFlex [mode]="autocompletestore"
-                                    (keyup)="selectChangeStoreRetrun($event)">
+                                    (input)="selectChangeStoreRetrun($event)">
                                 </airmid-dropdown>
 
                                 <airmid-textbox fxFlex label="Search RegNo" formControlName="RegNo"
-                                    [formGroup]="_BrowsSalesBillService.formReturn" (keyup)="onChangeFirst_Retrun()"
+                                    [formGroup]="_BrowsSalesBillService.formReturn" (input)="onChangeFirst_Retrun()"
                                     [validations]="getValidationMessages().RegNo"></airmid-textbox>
 
                                 <airmid-textbox fxFlex label="Search First Name" formControlName="F_Name"
-                                    [formGroup]="_BrowsSalesBillService.formReturn" (keyup)="onChangeFirst_Retrun()"
+                                    [formGroup]="_BrowsSalesBillService.formReturn" (input)="onChangeFirst_Retrun()"
                                     [validations]="getValidationMessages().F_Name"></airmid-textbox>
 
                                 <!-- <airmid-textbox fxFlex label="Search Last Name" formControlName="L_Name"
@@ -359,29 +359,29 @@
                                     <mat-date-range-picker #picker></mat-date-range-picker>
                                 </mat-form-field>
 
-                                <airmid-textbox fxFlex label="Search RegNo" formControlName="RegNo"
+                                <airmid-textbox fxFlex label="Search UHID No" formControlName="RegNo"
                                     [formGroup]="_BrowsSalesBillService.SalesPatientForm"
-                                    (keyup)="onChangeFirstPatient()"
+                                    (input)="onChangeFirstPatient()"
                                     [validations]="getValidationMessages().RegNo"></airmid-textbox>
 
                                 <airmid-textbox fxFlex label="Search IPD NO" formControlName="IPDNo"
                                     [formGroup]="_BrowsSalesBillService.SalesPatientForm"
-                                    (keyup)="onChangeFirstPatient()"
+                                    (input)="onChangeFirstPatient()"
                                     [validations]="getValidationMessages().IPDNo"></airmid-textbox>
 
                                 <airmid-textbox fxFlex label="Search First Name" formControlName="F_Name"
                                     [formGroup]="_BrowsSalesBillService.SalesPatientForm"
-                                    (keyup)="onChangeFirstPatient()"
+                                    (input)="onChangeFirstPatient()"
                                     [validations]="getValidationMessages().F_Name"></airmid-textbox>
 
                                 <airmid-textbox fxFlex label="Search Middle Name" formControlName="M_Name"
                                     [formGroup]="_BrowsSalesBillService.SalesPatientForm"
-                                    (keyup)="onChangeFirstPatient()"
+                                    (input)="onChangeFirstPatient()"
                                     [validations]="getValidationMessages().M_Name"></airmid-textbox>
 
                                 <airmid-textbox fxFlex label="Search Last Name" formControlName="L_Name"
                                     [formGroup]="_BrowsSalesBillService.SalesPatientForm"
-                                    (keyup)="onChangeFirstPatient()"
+                                    (input)="onChangeFirstPatient()"
                                     [validations]="getValidationMessages().L_Name"></airmid-textbox>
 
 

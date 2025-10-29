@@ -496,17 +496,21 @@ handleEnterKey(event: KeyboardEvent) {
     //Add item list
     onAddGRNItem() {
         debugger
+         const formValue =  this.userFormGroup.value
         if (!this.newGRNService.validateGRNForm(this.userFormGroup)) {
             return;
         }
         // Check if the item is already in the list
         //console.log("Form values : ", this.userFormGroup.value);
-        const isDuplicate = this.dsItemNameList.data.some(item => item.BatchNo === this.userFormGroup.get('BatchNo').value);
+     const isDuplicate = this.dsItemNameList.data.some(item =>Number(item?.ItemId) === Number(formValue?.ItemName?.itemId) && 
+     item.BatchNo?.trim().toLowerCase() === formValue.BatchNo?.trim().toLowerCase() &&
+     Number(item.MRP).toFixed(2) === Number(formValue.MRP).toFixed(2) && Number(item.Rate).toFixed(2) === Number(formValue.Rate).toFixed(2)
+     );
         if (isDuplicate) {
-            this.newGRNService.showToast('Item already added with same Batch no in the list', ToastType.WARNING);
+            this.newGRNService.showToast('Item already added with same Batch no , MRP & Rate in the list', ToastType.WARNING);
             return;
         }
-        const formValue =  this.userFormGroup.value
+       
         this.userFormGroup.patchValue({
             BatchNo:(formValue.BatchNo?.batchNo ?? formValue.BatchNo).toUpperCase(),
             CGST:formValue.SGST
@@ -657,7 +661,7 @@ handleEnterKey(event: KeyboardEvent) {
         const values = this.newGRNService.normalizeValues(formValues);
 
         // Get GST Calculation
-        const calculation = this.newGRNService.getGSTCalculation(formValues.GSTType || type, values);
+        const calculation = this.newGRNService.getGSTCalculation(type, values);
 
         // Update form with calculated values
         form.patchValue({
@@ -669,6 +673,7 @@ handleEnterKey(event: KeyboardEvent) {
             NetAmount: calculation.netAmount.toFixed(2)
         }, { emitEvent: false });
     }
+    
     calculateCellGSTType(item: ItemNameList): ItemNameList {
         // Validate input
         if (!item) return item;
@@ -1508,7 +1513,7 @@ convertUppercase(value: string): string {
                         LandedRate: Number(element.LandedRate) || 0,
                         purUnitRate: Number(FinalpurUnitRate) || 0,
                         PurUnitRateWF: Number(FinalpurUnitrateWF) || 0,
-                        unitMRP: Number(FinalUnitMRP) || 0,
+                        UnitMRP: Number(FinalUnitMRP) || 0,
                         IsVerifiedUserId: 0,
                         IsVerified: false,
                         IsVerifiedDatetime: '1999-01-01',
@@ -1593,7 +1598,7 @@ PoID:any=0;
             uomid: [item?.UOMId, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             receiveQty: [item?.Qty, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             freeQty: [item?.FreeQty || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            mrp: [item?.MRP, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            mrp: [item?.UnitMRP, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
             rate: [item?.Rate, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
             totalAmount: [item?.TotalAmount, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
             conversionFactor: [item?.ConversionFactor, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],

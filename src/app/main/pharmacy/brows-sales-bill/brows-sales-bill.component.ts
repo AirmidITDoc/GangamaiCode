@@ -229,26 +229,7 @@ export class BrowsSalesBillComponent implements OnInit {
     { heading: "IGST%", key: "igstPer", sort: true, align: 'left', emptySign: 'NA', width: 100, type: gridColumnTypes.amount },
 
   ]
-  // gridConfig1: gridModel = new gridModel();
-
-  // gridConfig: gridModel = {
-  //   apiUrl: "Sales/salesbrowselist",
-  //   columnsList: this.BrowseHColumns,
-  //   sortField: "SalesId",
-  //   sortOrder: 0,
-  //   filters: [
-  //     { fieldName: "LName", fieldValue: "%", opType: OperatorComparer.Equals },
-  //     { fieldName: "FName", fieldValue: "%", opType: OperatorComparer.Equals },
-  //     { fieldName: "FromDt", fieldValue: this.FromDate, opType: OperatorComparer.Equals },
-  //     { fieldName: "ToDt", fieldValue: this.ToDate, opType: OperatorComparer.Equals },
-  //     { fieldName: "StoreId", fieldValue: String(this.StoreId1), opType: OperatorComparer.Equals },
-  //     { fieldName: "RegNo", fieldValue: "0", opType: OperatorComparer.Equals },
-  //     { fieldName: "SalesNo", fieldValue: "0", opType: OperatorComparer.Equals },
-  //     { fieldName: "OPIPType", fieldValue: "0", opType: OperatorComparer.Equals }
-  //   ],
-  //   row: 25
-  // }
-
+ 
   gridConfig: gridModel = {
     apiUrl: "Sales/salesbrowselist",
     columnsList: this.BrowseHColumns,
@@ -268,15 +249,15 @@ export class BrowsSalesBillComponent implements OnInit {
 
   onChangeFirst() {
     this.isShowDetailTable = false;
-    this.firstName = this._BrowsSalesBillService.userForm.get('F_Name').value || "%"
-    this.LastName = this._BrowsSalesBillService.userForm.get('L_Name').value || "%"
+    this.firstName = this._BrowsSalesBillService.userForm.get('F_Name').value + "%" 
+    this.LastName = this._BrowsSalesBillService.userForm.get('L_Name').value + "%" 
     this.StoreId1 = this._BrowsSalesBillService.userForm.get('StoreId').value || "0"
     this.FromDate = this.datePipe.transform(this._BrowsSalesBillService.userForm.get('startdate').value, "yyyy-MM-dd")
     this.ToDate = this.datePipe.transform(this._BrowsSalesBillService.userForm.get('enddate').value, "yyyy-MM-dd")
     this.regNo = this._BrowsSalesBillService.userForm.get('RegNo').value || "0"
     this.salesNo = this._BrowsSalesBillService.userForm.get('SalesNo').value || "0"
     this.OpIpType = this._BrowsSalesBillService.userForm.get('OP_IP_Type').value || "0"
-    this.getSaleslistdata();
+    this.getSaleslistdata(); 
   }
   getSaleslistdata() {
     debugger
@@ -286,8 +267,8 @@ export class BrowsSalesBillComponent implements OnInit {
       sortField: "SalesId",
       sortOrder: 0,
       filters: [
-        { fieldName: "LName", fieldValue: this.firstName, opType: OperatorComparer.Equals },
-        { fieldName: "FName", fieldValue: this.LastName, opType: OperatorComparer.Equals },
+        { fieldName: "LName", fieldValue: this.LastName, opType: OperatorComparer.Equals },
+        { fieldName: "FName", fieldValue: this.firstName , opType: OperatorComparer.Equals },
         { fieldName: "StoreId", fieldValue: String(this.StoreId1), opType: OperatorComparer.Equals },
         { fieldName: "FromDt", fieldValue: this.FromDate, opType: OperatorComparer.Equals },
         { fieldName: "ToDt", fieldValue: this.ToDate, opType: OperatorComparer.Equals },
@@ -296,7 +277,8 @@ export class BrowsSalesBillComponent implements OnInit {
         { fieldName: "OPIPType", fieldValue: this.OpIpType, opType: OperatorComparer.Equals }
       ],
     }
-    // this.grid.bindGridData();
+        // this.grid.gridConfig = this.gridConfig;
+        // this.grid.bindGridData();
   }
 
 
@@ -450,9 +432,9 @@ cancelEdit(row: any) {
   //Sales Retrun list 
   onChangeFirst_Retrun() {
     this.isShowDetailTableRetrun = false;
-    this.first_Name = this._BrowsSalesBillService.formReturn.get('F_Name').value || "%"
-    this.Last_Name = this._BrowsSalesBillService.formReturn.get('L_Name').value || "%"
-    this.Store_Id = this._BrowsSalesBillService.formReturn.get('StoreId').value || 2
+    this.first_Name = this._BrowsSalesBillService.formReturn.get('F_Name').value + "%"
+    this.Last_Name = this._BrowsSalesBillService.formReturn.get('L_Name').value + "%"
+    this.Store_Id = this._BrowsSalesBillService.formReturn.get('StoreId').value
     this.From_Date = this.datePipe.transform(this._BrowsSalesBillService.formReturn.get('startdate1').value, "yyyy-MM-dd")
     this.To_Date = this.datePipe.transform(this._BrowsSalesBillService.formReturn.get('enddate1').value, "yyyy-MM-dd")
     this.reg_No = this._BrowsSalesBillService.formReturn.get('RegNo').value || "0"
@@ -525,9 +507,9 @@ cancelEdit(row: any) {
       this.T_Date = this.datePipe.transform(this._BrowsSalesBillService.SalesPatientForm.get('enddate1').value, "yyyy-MM-dd")
 
     }
-    this.first_N = this._BrowsSalesBillService.SalesPatientForm.get('F_Name').value || "%"
-    this.middle_N = this._BrowsSalesBillService.SalesPatientForm.get('M_Name').value || "%"
-    this.Last_N = this._BrowsSalesBillService.SalesPatientForm.get('L_Name').value || "%"
+    this.first_N = this._BrowsSalesBillService.SalesPatientForm.get('F_Name').value + "%" 
+    this.middle_N = this._BrowsSalesBillService.SalesPatientForm.get('M_Name').value + "%" 
+    this.Last_N = this._BrowsSalesBillService.SalesPatientForm.get('L_Name').value + "%" 
     this.reg_No_Pt = this._BrowsSalesBillService.SalesPatientForm.get('RegNo').value || "0"
     this.ipdno = this._BrowsSalesBillService.SalesPatientForm.get('IPDNo').value || "0"
     this.getPatientlistdata();
