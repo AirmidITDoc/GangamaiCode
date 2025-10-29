@@ -36,8 +36,8 @@ export class TestmasterService {
     createPathtestForm(): FormGroup {
         return this._formBuilder.group({
             TestId: [0],
-            TestName: ["", [Validators.required, Validators.pattern('^[a-zA-Z ]*$')]],
-            PrintTestName: ["", [Validators.required, Validators.pattern('^[a-zA-Z ]*$')]],
+            TestName: ["", [Validators.required, Validators.pattern('^[a-zA-Z .\\*-]+$')]],
+            PrintTestName: ["", [Validators.required, Validators.pattern('^[a-zA-Z .\\*-]+$')]], //Validators.pattern('^[a-zA-Z .-]*$')
             CategoryId: ["",[Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             IsSubTest: true,
             TechniqueName: [""],
@@ -170,13 +170,13 @@ export class TestmasterService {
         return {
             TestName: [
                 { name: "required", Message: "TestName is required" },
-                { name: "maxlength", Message: "TestName should not be greater than 50 char." },
-                { name: "pattern", Message: "Special char not allowed." }
+                // { name: "maxlength", Message: "TestName should not be greater than 50 char." },
+                // { name: "pattern", Message: "Special char not allowed." }
             ],
             PrintTestName:[
                 { name: "required", Message: "PrintTestName is required" },
-                { name: "maxlength", Message: "PrintTestName should not be greater than 50 char." },
-                { name: "pattern", Message: "Special char not allowed." }
+                // { name: "maxlength", Message: "PrintTestName should not be greater than 50 char." },
+                // { name: "pattern", Message: "Special char not allowed." }
             ],
             CategoryId:[
                 { name: "required", Message: "Category is required" },
