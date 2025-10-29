@@ -34,8 +34,8 @@ export class NewLabPatientRegComponent {
   RegId = 0;
   CityName = ""
   vRegNo: any;
-  vTariffId: any = 0;
-  vClassId: any = 0;
+  vTariffId: any = 1;
+  vClassId: any = 1;
   vRegId: any;
   isServiceIdSelected: boolean = false;
   isDoctor: boolean = false;
@@ -44,11 +44,14 @@ export class NewLabPatientRegComponent {
   autocompleteModegender: string = "Gender";
   autocompleteModecountry: string = "Country";
   autocompleteModeDepartment: string = "Department";
+  autocompleteModerefdoc: string = "RefDoctor";
   dsLabRequest2 = new MatTableDataSource<LabRequest>();
   dstable1 = new MatTableDataSource<LabRequest>();
   chargeslist: any = [];
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
+  dateTimeObj: any;
+  minDate = new Date();
 
   displayedServiceColumns: string[] = [
     'ServiceName',
@@ -70,26 +73,84 @@ export class NewLabPatientRegComponent {
     public _matDialog: MatDialog,
     public dialogRef: MatDialogRef<NewLabPatientRegComponent>,
     public datePipe: DatePipe,
-    private formBuilder: UntypedFormBuilder,
     private commonService: PrintserviceService,
+    public _formbuilder: UntypedFormBuilder,
+    private _FormvalidationserviceService: FormvalidationserviceService,
+    private accountService: AuthenticationService,
     public toastr: ToastrService,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) { }
 
   ngOnInit(): void {
-    this.myForm = this._labPatientRegService.CreateMyForm();
+    this.myForm = this.CreateMyForm();
     this.myForm.markAllAsTouched();
     this.getServiceList();
   }
 
-  dateTimeObj: any;
-  minDate = new Date();
+  CreateMyForm() {
+    return this._formbuilder.group({
+      regId: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+      IsPathRad: ['1'],
+      ServiceId: [''],
+
+      firstName: ['', [Validators.required, Validators.maxLength(50), Validators.pattern("^[A-Za-z/() ]*$")]],
+      middleName: ['', [Validators.maxLength(50), Validators.pattern("^[A-Za-z/() ]*$"), this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+      lastName: ['', [Validators.required, Validators.maxLength(50), Validators.pattern("^[A-Za-z/() ]*$")]],
+      address: ['', [Validators.maxLength(100), this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+      mobileNo: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(15), Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")]],
+      departmentId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      doctorId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      refdoctorId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      prefixId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      genderId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      StateId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      CountryId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      cityId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      DateOfBirth: [(new Date()).toISOString(), this._FormvalidationserviceService.validDateValidator()],
+      ageYear: ['', [Validators.maxLength(3), Validators.pattern("^[0-9]*$")]],
+      ageMonth: ['', [Validators.pattern("^[0-9]*$")]],
+      ageDay: ['', [Validators.pattern("^[0-9]*$")]],
+      unitId: this.accountService.currentUserValue.unitId,
+      tariffId: [1], // need to ask sir what value to pass
+      classId: [1],
+      createdBy: this.accountService.currentUserValue.userId,
+      modifiedBy: this.accountService.currentUserValue.userId,
+
+      totalAmt: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      totalDiscountPer: [0, [Validators.min(0), Validators.max(100), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      discountAmt: [0, [Validators.min(0), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      netPayableAmt: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      paymentType: ['CashPay'],
+    })
+  }
+
   getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;
   }
 
   getSelectedObjextPatient(event: any): void {
-    console.log(event)
+    console.log("Patient Data:", event)
+    if (event) {
+      this.myForm.get('mobileNo').setValue(event)
+      // this.myForm.get('doctorName').setValue(event)
+    }
+    const extAddressNameElement = document.querySelector(`[name='middleName']`) as HTMLElement;
+    if (extAddressNameElement) {
+      extAddressNameElement.focus();
+    }
+  }
+
+  getSelectedObjextMobile(event) {
+    console.log("Mobile Data:", event)
+    if (event) {
+      this.myForm.get('firstName').setValue(event)
+      // this.myForm.get('doctorName').setValue(event)
+    }
+    // this.PatientName = event.patientName
+    const extAddressNameElement = document.querySelector(`[name='address']`) as HTMLElement;
+    if (extAddressNameElement) {
+      extAddressNameElement.focus();
+    }
   }
 
   // called this fun becasue externel api only provide minimum data so i cant featch in field
@@ -109,45 +170,45 @@ export class NewLabPatientRegComponent {
     let ServiceName = this.myForm.get("ServiceId").value + "%" || "%";
     let IsPathRad = this.myForm.get("IsPathRad").value || "1"
     // if (this.vRegNo) {
-      var param = {
-        "first": 0,
-        "rows": 10,
-        "sortField": "ServiceId",
-        "sortOrder": 0,
-        "filters": [
-          {
-            "fieldName": "ServiceName",
-            "fieldValue": ServiceName,
-            "opType": "Equals"
-          },
-          {
-            "fieldName": "TariffId",
-            "fieldValue": String(this.vTariffId),
-            "opType": "Equals"
-          },
-          {
-            "fieldName": "IsPathRad",
-            "fieldValue": String(IsPathRad),
-            "opType": "Equals"
-          },
-          {
-            "fieldName": "ClassId",
-            "fieldValue": String(this.vClassId),
-            "opType": "Equals"
-          }
-        ],
-        "Columns": [],
-        "exportType": "JSON"
-      }
-      console.log(param)
+    var param = {
+      "first": 0,
+      "rows": 10,
+      "sortField": "ServiceId",
+      "sortOrder": 0,
+      "filters": [
+        {
+          "fieldName": "ServiceName",
+          "fieldValue": ServiceName,
+          "opType": "Equals"
+        },
+        {
+          "fieldName": "TariffId",
+          "fieldValue": String(this.vTariffId),
+          "opType": "Equals"
+        },
+        {
+          "fieldName": "IsPathRad",
+          "fieldValue": String(IsPathRad),
+          "opType": "Equals"
+        },
+        {
+          "fieldName": "ClassId",
+          "fieldValue": String(this.vClassId),
+          "opType": "Equals"
+        }
+      ],
+      "Columns": [],
+      "exportType": "JSON"
+    }
+    console.log(param)
 
-      this._labPatientRegService.getserviceList(param).subscribe(Menu => {
+    this._labPatientRegService.getserviceList(param).subscribe(Menu => {
 
-        this.dsLabRequest2.data = Menu.data as LabRequest[];
-        this.dsLabRequest2.sort = this.sort;
-        this.dsLabRequest2.paginator = this.paginator;
-        console.log(this.dsLabRequest2.data)
-      });
+      this.dsLabRequest2.data = Menu.data as LabRequest[];
+      this.dsLabRequest2.sort = this.sort;
+      this.dsLabRequest2.paginator = this.paginator;
+      console.log(this.dsLabRequest2.data)
+    });
     // } else {
     //   if (!this.myForm.get('regId')?.value && !this.vRegId) {
     //     this.toastr.warning('Please Select Patient', 'Warning!', {
@@ -203,9 +264,25 @@ export class NewLabPatientRegComponent {
       });
 
     console.log(this.chargeslist);
+    this.updateCalculation();
     this.dstable1.data = this.chargeslist;
     this.dstable1.sort = this.sort;
     this.dstable1.paginator = this.paginator;
+  }
+
+  updateCalculation() {
+    debugger
+    const total = this.chargeslist.reduce((sum, item) => sum + (item.Price || 0), 0);
+    const discPer = Number(this.myForm.get('totalDiscountPer')?.value) || 0;
+
+    const discountAmt = (total * discPer) / 100;
+    const netAmt = total - discountAmt;
+
+    this.myForm.patchValue({
+      totalAmt: total,
+      discountAmt: discountAmt,
+      netPayableAmt: netAmt
+    });
   }
 
   deleteTableRow(element) {
@@ -215,6 +292,17 @@ export class NewLabPatientRegComponent {
       this.chargeslist.splice(index, 1);
       this.dstable1.data = [];
       this.dstable1.data = this.chargeslist;
+
+      if (this.chargeslist.length === 0) {
+        this.myForm.patchValue({
+          totalAmt: 0,
+          totalDiscountPer: 0,
+          discountAmt: 0,
+          netPayableAmt: 0
+        });
+      } else {
+        this.updateCalculation();
+      }
     }
     this.toastr.success('Record Deleted Successfully.', 'Deleted !', {
       toastClass: 'tostr-tost custom-toast-success',
@@ -268,6 +356,22 @@ export class NewLabPatientRegComponent {
         }, 100);
       });
     }
+  }
+
+  allowOnlyDigits(event: KeyboardEvent) {
+    const charCode = event.which ? event.which : event.keyCode;
+    // Allow only digits (0-9)
+    if (charCode < 48 || charCode > 57) {
+      event.preventDefault();
+      return false;
+    }
+    // Prevent entering more than 10 digits
+    const input = event.target as HTMLInputElement;
+    if (input.value.length >= 10) {
+      event.preventDefault();
+      return false;
+    }
+    return true;
   }
 
   keyPressAlphanumeric(event) {

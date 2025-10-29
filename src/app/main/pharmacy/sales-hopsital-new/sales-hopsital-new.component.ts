@@ -581,9 +581,10 @@ export class SalesHospitalNewComponent implements OnInit {
             }
             // const QtyElement = this.getElementByName(isEditable ? 'tableQty' : 'Qty') as HTMLInputElement;
             const QtyElement = this.getElementByName(isEditable ? 'tableQty' : 'Qty') as HTMLElement;
-            if (QtyElement) {
-                  QtyElement.focus();
-            }
+if (QtyElement) {
+  setTimeout(() => QtyElement.focus(), 500);
+}
+
             this.selectedItem = result;
             let MRP = 0;
             let IsPurRate= 0;
@@ -1355,6 +1356,7 @@ export class SalesHospitalNewComponent implements OnInit {
         this.calculateCellNetAmount(item);
     }
     getCellCalculation(item: IndentList) { 
+        debugger
         let qty = +item?.Qty;
         if (!qty) {
             qty = 0;
@@ -1371,17 +1373,17 @@ export class SalesHospitalNewComponent implements OnInit {
         let MRP;
         let IsPurRate
         if (this.ItemSubform.get('IsPurchaseWsie')?.value == true) {
-            MRP = +item?.LandedRate;
+            MRP = +item?.LandedRate || 0;
             IsPurRate=1  
         } else {
-            MRP = +item?.MRP;
+            MRP = +item?.MRP || 0;
             IsPurRate=0; 
         }
         const unitMrp = MRP
         const totalMrp = qty * unitMrp;
         const gstAmount = (totalMrp * gstPer) / 100;
-        const landedRateandedTotal = qty * item.LandedRate;
-        const mrpRateTotal = qty * item.MRPRate;
+        const landedRateandedTotal = qty * item?.LandedRate || 0;
+        const mrpRateTotal = qty * item?.MRPRate || 0;
         const marginAmt = totalMrp - landedRateandedTotal;
 
         const updatedItem = {
@@ -1738,7 +1740,7 @@ export class SalesHospitalNewComponent implements OnInit {
         if (DraftQty && contact.unitMrp) {
             this.saleSelectedDatasource.data = [];
             let LandedRateandedTotal = '0', TotalMRP = '0', PurTotAmt = '0',
-                v_marginamt = '0', GSTAmount = '0', CGSTAmt = '0', SGSTAmt = '0', IGSTAmt = '0', NetAmt = '0';
+                v_marginamt = '0', GSTAmount = '0', CGSTAmt = '0', SGSTAmt = '0', IGSTAmt = '0', NetAmt = '0',MRPRateTotal = '0';
 
             TotalMRP = (parseInt(DraftQty) * contact.unitMrp).toFixed(2);
             LandedRateandedTotal = (parseInt(DraftQty) * contact.landedRate).toFixed(2);
@@ -1748,8 +1750,9 @@ export class SalesHospitalNewComponent implements OnInit {
             CGSTAmt = (((contact.unitMrp * contact.cgstper) / 100) * parseInt(DraftQty)).toFixed(2);
             SGSTAmt = (((contact.unitMrp * contact.sgstper) / 100) * parseInt(DraftQty)).toFixed(2);
             IGSTAmt = (((contact.unitMrp * contact.igstper) / 100) * parseInt(DraftQty)).toFixed(2);
+            MRPRateTotal =  (parseInt(DraftQty) * contact.unitMrp).toFixed(2);
             NetAmt = (parseFloat(TotalMRP) - 0).toFixed(2);
-
+            
             // if (contact.DiscPer > 0) {
             // this.DiscAmt = ((TotalMRP * contact.DiscPer) / 100).toFixed(2);
             // NetAmt = (tTotalMRP - this.DiscAmt).toFixed(2);
@@ -1798,7 +1801,10 @@ export class SalesHospitalNewComponent implements OnInit {
                     MarginAmt: v_marginamt,
                     BalanceQty: contact?.balanceQty,
                     SalesDraftId: 0,
-                    StoreId: contact?.storeId
+                    StoreId: contact?.storeId, 
+                    MRP: contact?.unitMrp,
+                    MRPRate:contact?.unitMrp,
+                    MRPRateTotal:MRPRateTotal
                 }
             )
             this.saleSelectedDatasource.data = this.Itemchargeslist;

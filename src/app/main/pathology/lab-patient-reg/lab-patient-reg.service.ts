@@ -18,8 +18,6 @@ export class LabPatientRegService {
   constructor(
     public _frombuilder: UntypedFormBuilder,
     public _httpClient: ApiCaller,
-    private _loaderService: LoaderService,
-    private accountService: AuthenticationService,
     private _FormvalidationserviceService: FormvalidationserviceService,
   ) { }
 
@@ -29,33 +27,6 @@ export class LabPatientRegService {
       enddate: [],
       firstName: [''],
       L_Name: ['']
-    })
-  }
-
-  CreateMyForm() {
-    return this._frombuilder.group({
-      regId: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
-      IsPathRad: ['1'],
-      ServiceId: [''],
-
-      firstName: ['', [Validators.required, Validators.maxLength(50), Validators.pattern("^[A-Za-z/() ]*$")]],
-      middleName: ['', [Validators.maxLength(50), Validators.pattern("^[A-Za-z/() ]*$"), this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
-      lastName: ['', [Validators.required, Validators.maxLength(50), Validators.pattern("^[A-Za-z/() ]*$")]],
-      address: ['', [Validators.maxLength(100), this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
-      mobileNo: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(15), Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")]],
-      departmentId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      doctorId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      prefixId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      genderId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      StateId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      CountryId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      cityId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      DateOfBirth: [(new Date()).toISOString(), this._FormvalidationserviceService.validDateValidator()],
-      ageYear: ['', [Validators.maxLength(3), Validators.pattern("^[0-9]*$")]],
-      ageMonth: ['', [Validators.pattern("^[0-9]*$")]],
-      ageDay: ['', [Validators.pattern("^[0-9]*$")]],
-      createdBy: this.accountService.currentUserValue.userId,
-      modifiedBy: this.accountService.currentUserValue.userId,
     })
   }
 

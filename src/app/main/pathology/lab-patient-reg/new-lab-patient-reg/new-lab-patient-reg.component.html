@@ -64,9 +64,13 @@
                                     </div>
 
                                     <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <airmid-textbox label="First Name" formControlName="firstName"
+                                        <!-- <airmid-textbox label="First Name" formControlName="firstName"
                                             [formGroup]="myForm" [maxLength]="50" [value]="registerObj?.firstName">
-                                        </airmid-textbox>
+                                        </airmid-textbox> -->
+                                        <airmid-autocomplete label="First Name" [formGroup]="myForm"
+                                            formControlName="firstName" placeholderText="First Name" fxFlex
+                                            ApiUrl="Sales/External-auto-complete?Keyword=" TextField="text"
+                                            (selectionChange)="getSelectedObjextPatient($event)"></airmid-autocomplete>
                                     </div>
 
                                     <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
@@ -88,10 +92,23 @@
                                         </airmid-dropdown>
                                     </div>
 
-                                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="67%">
+                                    <div fxFlex="60%" fxFlex.xs="100%" fxFlex.sm="67%">
                                         <app-airmid-dateofbirth [formGroup]="myForm" formControlName="DateOfBirth"
                                             [(value)]="registerObj.dateofBirth" dateStyle="Year"
                                             (dateChange)="chkChange()"></app-airmid-dateofbirth>
+                                    </div>
+
+                                    <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                        <!-- <airmid-textbox label="MobileNo" formControlName="mobileNo"
+                                            (keypress)="keyPressAlphanumeric($event)" [formGroup]="myForm"
+                                            [maxLength]="10" [value]="registerObj?.mobileNo">
+                                        </airmid-textbox> -->
+                                        <airmid-autocomplete label="Mobile No" [formGroup]="myForm"
+                                            formControlName="mobileNo" maxlength="10"
+                                            placeholder="Enter 10 digit Mobile No." fxFlex TextField="text"
+                                            ApiUrl="Sales/External-auto-complete?Keyword="
+                                            (keypress)="allowOnlyDigits($event)"
+                                            (selectionChange)="getSelectedObjextMobile($event)"></airmid-autocomplete>
                                     </div>
 
                                     <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
@@ -122,13 +139,6 @@
                                         </airmid-dropdown>
                                     </div>
 
-                                    <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <airmid-textbox label="MobileNo" formControlName="mobileNo"
-                                            (keypress)="keyPressAlphanumeric($event)" [formGroup]="myForm"
-                                            [maxLength]="10" [value]="registerObj?.mobileNo">
-                                        </airmid-textbox>
-                                    </div>
-
                                 </div>
                             </mat-card-content>
                         </mat-card>
@@ -144,7 +154,7 @@
                                 </div>
                                 <div fxLayout="row wrap" fxLayoutGap="12px 0px grid">
 
-                                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                                         <airmid-dropdown label="Department Name" formControlName="departmentId"
                                             [formGroup]="myForm" [mode]="autocompleteModeDepartment"
                                             (selectionChange)="selectChangedepartment($event)"
@@ -152,9 +162,16 @@
                                         </airmid-dropdown>
                                     </div>
 
-                                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                                         <airmid-dropdown label="Doctor Name" formControlName="doctorId"
                                             [formGroup]="myForm" #ddlDoctor [value]="registerObj?.doctorId">
+                                        </airmid-dropdown>
+                                    </div>
+
+                                    <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                        <airmid-dropdown label="RefDoctor Name" formControlName="refdoctorId"
+                                            [formGroup]="myForm" [mode]="autocompleteModerefdoc"
+                                            [value]="registerObj?.refdoctorId">
                                         </airmid-dropdown>
                                     </div>
                                 </div>
@@ -251,6 +268,42 @@
                                 </div>
                             </div>
                         </mat-card-content>
+                    </mat-card>
+                </div>
+
+                <div class="detail-container">
+                    <mat-card>
+                        <form [formGroup]="myForm">
+                            <div fxLayout="row" fxLayoutGap="6px" style="padding: 10px;">
+                                <div fxFlex="10%" fxFlex.xs="100%" fxFlex.sm="100%">
+                                    <airmid-textbox label="Total Amount" formControlName="totalAmt" [formGroup]="myForm"
+                                        [type]="'number'" [readonly]="true">
+                                    </airmid-textbox>
+                                </div>
+                                <div fxFlex="10%" fxFlex.xs="100%" fxFlex.sm="100%">
+                                    <airmid-textbox label="Discount %" formControlName="totalDiscountPer"
+                                        [formGroup]="myForm" [type]="'number'" min="0" (valueChange)="updateCalculation()">
+                                    </airmid-textbox>
+                                </div>
+                                <div fxFlex="10%" fxFlex.xs="100%" fxFlex.sm="100%">
+                                    <airmid-textbox label="Discount Amount" formControlName="discountAmt"
+                                        [formGroup]="myForm" [type]="'number'" [readonly]="true">
+                                    </airmid-textbox>
+                                </div>
+                                <div fxFlex="10%" fxFlex.xs="100%" fxFlex.sm="100%">
+                                    <airmid-textbox label="Total Net Amount" formControlName="netPayableAmt"
+                                        [formGroup]="myForm" [type]="'number'" [readonly]="true">
+                                    </airmid-textbox>
+                                </div>
+                            </div>
+                            <div class="radio-container">
+                                <mat-radio-group formControlName="paymentType" fxLayout="row" class="gap-4">
+                                    <mat-radio-button value="CashPay">Cash Payment</mat-radio-button>
+                                    <mat-radio-button value="CreditPay">Credit Payment</mat-radio-button>
+                                    <mat-radio-button value="PayOption">Pay Option</mat-radio-button>
+                                </mat-radio-group>
+                            </div>
+                        </form>
                     </mat-card>
                 </div>
 

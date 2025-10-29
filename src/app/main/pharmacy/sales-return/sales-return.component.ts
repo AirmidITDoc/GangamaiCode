@@ -363,8 +363,12 @@ getbillllist(){
       });
       return
     }
+    debugger
     if (this.selectedssaleDetailList.data.length > 0) {
-      if (this.selectedssaleDetailList.data.find(item => item.ItemId == contact.ItemId)) {
+      if (this.selectedssaleDetailList.data.find(item => item.ItemId == contact.ItemId && item.BatchNo == contact.BatchNo &&
+        Number(item.UnitMRP).toFixed(2) === Number(contact.UnitMRP).toFixed(2)
+ 
+      )) {
         Swal.fire({
           icon: "warning",
           title: "Selected Item already added in list",

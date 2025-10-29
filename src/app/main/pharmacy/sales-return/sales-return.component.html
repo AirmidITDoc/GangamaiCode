@@ -49,7 +49,7 @@
                             <mat-date-range-picker #picker></mat-date-range-picker>
                         </mat-form-field>
     
-                        <airmid-textbox fxFlex label="Search RegNo" formControlName="RegNo" fxFlex="10%"
+                        <airmid-textbox fxFlex label="Search UHID No" formControlName="RegNo" fxFlex="10%"
                             [formGroup]="SearchForm"
                             [validations]="getValidationMessages().RegNo"></airmid-textbox>
     
@@ -61,7 +61,7 @@
                             [formGroup]="SearchForm" (keyup)="getbillllist()"
                             [validations]="getValidationMessages().L_Name"></airmid-textbox>
     
-                        <airmid-textbox fxFlex label="Search Sales Retrun No" formControlName="SalesNo" fxFlex="10%"
+                        <airmid-textbox fxFlex label="Search Sales No" formControlName="SalesNo" fxFlex="10%"
                             [formGroup]="SearchForm" (keyup)="getbillllist()"
                             [validations]="getValidationMessages().SalesNo"></airmid-textbox>
     
@@ -85,12 +85,12 @@
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-120">Date
                                 </mat-header-cell>
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-120">
-                                    {{contact.date | date:'dd/MM/yyyy'}}
+                                    {{contact.date}}
                                 </mat-cell>
                             </ng-container>
     
                             <ng-container matColumnDef="SalesNo">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-120">SalesNo
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-120">Sales No
                                 </mat-header-cell>
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-120">
                                     {{contact.salesNo}}
@@ -98,7 +98,7 @@
                             </ng-container>
     
                             <ng-container matColumnDef="RegNo">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-120">RegNo
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-120">UHID No
                                 </mat-header-cell>
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-120"> 
                                     {{contact.regNo}}
@@ -106,7 +106,7 @@
                             </ng-container>
     
                             <ng-container matColumnDef="PatientName">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>PatientName
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Patient Name
                                 </mat-header-cell>
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                     <span> {{contact.patientName}}</span>
@@ -114,7 +114,7 @@
                             </ng-container>
 
                               <ng-container matColumnDef="patientType">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-120"> PatientType
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-120"> Patient Type
                                 </mat-header-cell>
                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-120">
                                     {{contact.patientType}}
