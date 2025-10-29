@@ -200,7 +200,9 @@ export class LabPatientList {
   spO2: any;
   isMlc: any;
   convertedIntoAdm: any;
-  age:any;
+  age: any;
+  refdoctorId: any;
+
   constructor(LabPatientList) {
     {
       this.Date = LabPatientList.Date || 0;
@@ -227,6 +229,7 @@ export class LabPatientList {
       this.departmentId = LabPatientList.departmentId || 0
       this.docNameId = LabPatientList.docNameId || 0
       this.doctorId = LabPatientList.doctorId || 0
+      this.refdoctorId = LabPatientList.refdoctorId || 0
       this.genderID = LabPatientList.genderID || 0
       this.emgId = LabPatientList.emgId || 0
       this.comment = LabPatientList.comment || ''
