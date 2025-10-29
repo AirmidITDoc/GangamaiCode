@@ -36,8 +36,9 @@ export class BillDateUpdateComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.data.data) {
+      console.log(this.data)
       debugger
-      this.BillNo = this.data.data.billNo;
+      this.BillNo = this.data.data.BillNo;
       this.AdvanceDetailId = this.data.data.advanceDetailID
       this.RefundId = this.data.data.refundId
       this.SalesId = this.data.data.salesId

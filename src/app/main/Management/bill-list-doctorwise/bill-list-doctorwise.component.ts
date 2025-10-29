@@ -19,6 +19,7 @@ import { PatientBilldetailComponent } from './patient-billdetail/patient-billdet
 import Swal from 'sweetalert2';
 import { fuseAnimations } from '@fuse/animations';
 import { DoctorpaySummarydetailComponent } from './doctorpay-summarydetail/doctorpay-summarydetail.component';
+import { element } from 'protractor';
 
 @Component({
   selector: 'app-bill-list-doctorwise',
@@ -89,85 +90,85 @@ export class BillListDoctorwiseComponent {
   @ViewChild('actionsTemplate') actionsTemplate!: TemplateRef<any>;
   ngAfterViewInit() {
     // Assign the template to the column dynamically
-    this.gridConfig.columnsList.find(col => col.key === 'patientType')!.template = this.actionsTemplate1;
-    this.gridConfig.columnsList.find(col => col.key === 'opdipdtype')!.template = this.actionsTemplate;
-    this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
+    // this.gridConfig.columnsList.find(col => col.key === 'patientType')!.template = this.actionsTemplate1;
+    // this.gridConfig.columnsList.find(col => col.key === 'opdipdtype')!.template = this.actionsTemplate;
+    // this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
     this.gridConfig1.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate1;
      this.gridConfig2.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate2;
   }
 
-  allColumns = [
-    { heading: "-", key: "patientType", sort: true, align: 'left', type: gridColumnTypes.template, emptySign: 'NA', width: 25 },
-    { heading: "-", key: "opdipdtype", sort: true, align: 'left', type: gridColumnTypes.template, emptySign: 'NA', width: 25 },
-    { heading: "PBillNo", key: "pbillNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-    { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-    // { heading: "Patient Type", key: "patientType", sort: true, align: 'left', emptySign: 'NA' },
+  // allColumns = [
+  //   { heading: "-", key: "patientType", sort: true, align: 'left', type: gridColumnTypes.template, emptySign: 'NA', width: 25 },
+  //   { heading: "-", key: "opdipdtype", sort: true, align: 'left', type: gridColumnTypes.template, emptySign: 'NA', width: 25 },
+  //   { heading: "PBillNo", key: "pbillNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+  //   { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+  //   // { heading: "Patient Type", key: "patientType", sort: true, align: 'left', emptySign: 'NA' },
 
-    { heading: "Bill Amt", key: "totalAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, width: 100 },
-    { heading: "Discount Amt", key: "ConcessionAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, width: 100 },
-    { heading: "Net Amt", key: "netPayableAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, width: 100 },
-    { heading: "Doctor Name", key: "admittedDoctorName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-    { heading: "Hospital Amt", key: "hospitalAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, width: 125 },
-    { heading: "Doctor Amt", key: "doctorShareAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, width: 125 },
+  //   { heading: "Bill Amt", key: "totalAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, width: 100 },
+  //   { heading: "Discount Amt", key: "ConcessionAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, width: 100 },
+  //   { heading: "Net Amt", key: "netPayableAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, width: 100 },
+  //   { heading: "Doctor Name", key: "admittedDoctorName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+  //   { heading: "Hospital Amt", key: "hospitalAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, width: 125 },
+  //   { heading: "Doctor Amt", key: "doctorShareAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, width: 125 },
 
-    { heading: "Company Name", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-    {
-      heading: "Action", key: "action", align: "right", width: 150, sticky: true, type: gridColumnTypes.template,
-      template: this.actionButtonTemplate  // Assign ng-template to the column
-    }
-  ]
-  allFilters = [
-    { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.StartsWith },
-    { fieldName: "ToDate", fieldValue: this.toDate, opType: OperatorComparer.StartsWith },
-    { fieldName: "DoctorId", fieldValue: "0", opType: OperatorComparer.Equals },
-    { fieldName: "PBillNo", fieldValue: "0", opType: OperatorComparer.Equals },
-    { fieldName: "OPIPTYpe", fieldValue: "1", opType: OperatorComparer.Equals },
-  ]
-  gridConfig: gridModel = {
-    apiUrl: "Doctor/DoctorPay",
-    columnsList: this.allColumns,
-    sortField: "DoctorId",
-    sortOrder: 0,
-    filters: this.allFilters
-  }
+  //   { heading: "Company Name", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+  //   {
+  //     heading: "Action", key: "action", align: "right", width: 150, sticky: true, type: gridColumnTypes.template,
+  //     template: this.actionButtonTemplate  // Assign ng-template to the column
+  //   }
+  // ]
+  // allFilters = [
+  //   { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.StartsWith },
+  //   { fieldName: "ToDate", fieldValue: this.toDate, opType: OperatorComparer.StartsWith },
+  //   { fieldName: "DoctorId", fieldValue: "0", opType: OperatorComparer.Equals },
+  //   { fieldName: "PBillNo", fieldValue: "0", opType: OperatorComparer.Equals },
+  //   { fieldName: "OPIPTYpe", fieldValue: "1", opType: OperatorComparer.Equals },
+  // ]
+  // gridConfig: gridModel = {
+  //   apiUrl: "Doctor/DoctorPay",
+  //   columnsList: this.allColumns,
+  //   sortField: "DoctorId",
+  //   sortOrder: 0,
+  //   filters: this.allFilters
+  // }
 
-  onChangeFirst() {
-    this.fromDate = this.datePipe.transform(this._DoctorShareService.UserFormGroup.get('fromDate').value, "yyyy-MM-dd")
-    this.toDate = this.datePipe.transform(this._DoctorShareService.UserFormGroup.get('enddate').value, "yyyy-MM-dd")
-    this.pBillNo = this._DoctorShareService.UserFormGroup.get('PbillNo').value || "0"
-    this.opipType = this._DoctorShareService.UserFormGroup.get('OP_IP_Type').value
-    this.getfilterdata();
-  }
+  // onChangeFirst() {
+  //   this.fromDate = this.datePipe.transform(this._DoctorShareService.UserFormGroup.get('fromDate').value, "yyyy-MM-dd")
+  //   this.toDate = this.datePipe.transform(this._DoctorShareService.UserFormGroup.get('enddate').value, "yyyy-MM-dd")
+  //   this.pBillNo = this._DoctorShareService.UserFormGroup.get('PbillNo').value || "0"
+  //   this.opipType = this._DoctorShareService.UserFormGroup.get('OP_IP_Type').value
+  //   this.getfilterdata();
+  // }
 
-  getfilterdata() {
-    // debugger
-    let fromD = this._DoctorShareService.UserFormGroup.get("fromDate").value || "";
-    let toD = this._DoctorShareService.UserFormGroup.get("enddate").value || "";
-    this.fromDate = fromD ? this.datePipe.transform(this._DoctorShareService.UserFormGroup.get('fromDate').value, "yyyy-MM-dd") : "";
-    this.toDate = toD ? this.datePipe.transform(this._DoctorShareService.UserFormGroup.get('enddate').value, "yyyy-MM-dd") : "";
-    this.DoctorId = this._DoctorShareService.UserFormGroup.get('DoctorID').value
-    debugger
-    console.log("fromDate:", this.fromDate)
-    console.log("toDate:", this.toDate)
+  // getfilterdata() {
+  //   // debugger
+  //   let fromD = this._DoctorShareService.UserFormGroup.get("fromDate").value || "";
+  //   let toD = this._DoctorShareService.UserFormGroup.get("enddate").value || "";
+  //   this.fromDate = fromD ? this.datePipe.transform(this._DoctorShareService.UserFormGroup.get('fromDate').value, "yyyy-MM-dd") : "";
+  //   this.toDate = toD ? this.datePipe.transform(this._DoctorShareService.UserFormGroup.get('enddate').value, "yyyy-MM-dd") : "";
+  //   this.DoctorId = this._DoctorShareService.UserFormGroup.get('DoctorID').value
+  //   debugger
+  //   console.log("fromDate:", this.fromDate)
+  //   console.log("toDate:", this.toDate)
 
-    this.gridConfig = {
-      apiUrl: "DoctorPay/DoctorshareBillList",
-      columnsList: this.allColumns,
-      sortField: "DoctorId",
-      sortOrder: 0,
-      filters: [
-        { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.GreaterThanOrEqual },
-        { fieldName: "ToDate", fieldValue: this.toDate, opType: OperatorComparer.GreaterThanOrEqual },
-        { fieldName: "DoctorId", fieldValue: this.DoctorId, opType: OperatorComparer.Equals },
-        { fieldName: "PBillNo", fieldValue: this.pBillNo, opType: OperatorComparer.Equals },
-        { fieldName: "OPIPTYpe", fieldValue: this.opipType, opType: OperatorComparer.Equals },
-      ]
-    }
-    this.grid.gridConfig = this.gridConfig;
-    this.grid.bindGridData();
+  //   this.gridConfig = {
+  //     apiUrl: "DoctorPay/DoctorshareBillList",
+  //     columnsList: this.allColumns,
+  //     sortField: "DoctorId",
+  //     sortOrder: 0,
+  //     filters: [
+  //       { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.GreaterThanOrEqual },
+  //       { fieldName: "ToDate", fieldValue: this.toDate, opType: OperatorComparer.GreaterThanOrEqual },
+  //       { fieldName: "DoctorId", fieldValue: this.DoctorId, opType: OperatorComparer.Equals },
+  //       { fieldName: "PBillNo", fieldValue: this.pBillNo, opType: OperatorComparer.Equals },
+  //       { fieldName: "OPIPTYpe", fieldValue: this.opipType, opType: OperatorComparer.Equals },
+  //     ]
+  //   }
+  //   this.grid.gridConfig = this.gridConfig;
+  //   this.grid.bindGridData();
 
 
-  }
+  // }
   ///Summary pay
   allColumns1 = [
 
@@ -225,7 +226,7 @@ export class BillListDoctorwiseComponent {
     console.log(event)
     if (event == 'PbillNo')
       this._DoctorShareService.UserFormGroup.get('PbillNo').setValue("")
-    this.onChangeFirst();
+    // this.onChangeFirst();
   }
 
 
@@ -274,7 +275,7 @@ export class BillListDoctorwiseComponent {
     else
       this.DoctorId = "0"
 
-    this.onChangeFirst();
+    // this.onChangeFirst();
   }
 
 
@@ -379,10 +380,23 @@ export class BillListDoctorwiseComponent {
       {
         maxWidth: "85vw",
         height: "70%",
-        width: "100%",
+        width: "100%"
       });
     dialogRef.afterClosed().subscribe(result => {
-      this.onChangeFirst()
+      // this.onChangeFirst()
+    });
+  }
+  
+    EditAdditiondocpay(element) {
+    const dialogRef = this._matDialog.open(DoctorAddonpayComponent,
+      {
+        maxWidth: "85vw",
+        height: "70%",
+        width: "100%",
+        data:element
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      // this.onChangeFirst()
     });
   }
 
@@ -407,7 +421,7 @@ export class BillListDoctorwiseComponent {
         data: element
       });
     dialogRef.afterClosed().subscribe(result => {
-      this.onChangeFirst()
+      // this.onChangeFirst()
     });
   }
 
@@ -425,7 +439,7 @@ export class BillListDoctorwiseComponent {
         }
       });
     dialogRef.afterClosed().subscribe(result => {
-      this.onChangeFirst()
+      // this.onChangeFirst()
     });
   }
 

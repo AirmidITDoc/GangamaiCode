@@ -36,6 +36,9 @@ import { FuseSharedModule } from '@fuse/shared.module';
 import { SharedModule } from 'app/main/shared/shared.module';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { NewAdministrativeTaskComponent } from './new-administrative-task.component';
+import { AdmissiontaskComponent } from './admissiontask/admissiontask.component';
+import { MatTimepickerModule } from 'mat-timepicker';
+import { AppointmenttaskComponent } from './appointmenttask/appointmenttask.component';
 
 
 
@@ -48,7 +51,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    declarations: [NewAdministrativeTaskComponent],
+    declarations: [NewAdministrativeTaskComponent, AdmissiontaskComponent, AppointmenttaskComponent],
     imports: [
         RouterModule.forChild(routes),
         CommonModule,
@@ -89,8 +92,9 @@ const routes: Routes = [
         NgxMatSelectSearchModule,
         MatDatepickerModule,
         //  NgMultiSelectDropDownModule.forRoot(),
-        MatTooltipModule
-    ],
+        MatTooltipModule,
+ MatTimepickerModule
+   ],
     providers: [DatePipe]
 })
 export class AdministrativetaskModule { }
