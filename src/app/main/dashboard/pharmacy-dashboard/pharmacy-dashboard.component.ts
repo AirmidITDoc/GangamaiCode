@@ -131,14 +131,17 @@ export class PharmacyDashboardComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.username = this._accountServices.currentUserValue.userName
-            ? this._accountServices.currentUserValue.userName
-            : 'User';
+        // Safely get username with null check
+        if (this._accountServices && this._accountServices.currentUserValue) {
+            this.username = this._accountServices.currentUserValue.userName || 'User';
+        } else {
+            this.username = 'User';
+        }
 
         // Initialize all charts after view is loaded
         setTimeout(() => {
             this.initializeCharts();
-        }, 100);
+        }, 500);
     }
 
     onDateRangeChanged(): void {
@@ -209,82 +212,143 @@ export class PharmacyDashboardComponent implements OnInit {
     }
 
     initializeCharts(): void {
+        console.log('Initializing charts...');
+        
         // Weekly Revenue Chart (NOT affected by date filter)
-        if (document.getElementById('weeklyRevenueChart')) {
-            this.weeklyRevenueChart = this.getLineChartData(
-                'weeklyRevenueChart',
-                '#d4bbf4',
-                '#c5aae6',
-                this.weeklyRevenueData.map(d => d.day),
-                this.weeklyRevenueData.map(d => d.revenue),
-                'Days',
-                'Revenue (₹)'
-            );
+        const weeklyCanvas = document.getElementById('weeklyRevenueChart');
+        if (weeklyCanvas) {
+            console.log('Creating weekly revenue chart');
+            try {
+                this.weeklyRevenueChart = this.getLineChartData(
+                    'weeklyRevenueChart',
+                    '#d4bbf4',
+                    '#c5aae6',
+                    this.weeklyRevenueData.map(d => d.day),
+                    this.weeklyRevenueData.map(d => d.revenue),
+                    'Days',
+                    'Revenue (₹)'
+                );
+            } catch (error) {
+                console.error('Error creating weekly revenue chart:', error);
+            }
+        } else {
+            console.warn('Weekly revenue chart canvas not found');
         }
 
         // Monthly Revenue Chart (NOT affected by date filter)
-        if (document.getElementById('monthlyRevenueChart')) {
-            this.monthlyRevenueChart = this.getLineChartData(
-                'monthlyRevenueChart',
-                '#f3ddb3',
-                '#ebcf9a',
-                this.monthlyRevenueData.slice(-7).map(d => d.month),
-                this.monthlyRevenueData.slice(-7).map(d => d.revenue),
-                'Months',
-                'Revenue (₹)'
-            );
+        const monthlyCanvas = document.getElementById('monthlyRevenueChart');
+        if (monthlyCanvas) {
+            console.log('Creating monthly revenue chart');
+            try {
+                this.monthlyRevenueChart = this.getLineChartData(
+                    'monthlyRevenueChart',
+                    '#f3ddb3',
+                    '#ebcf9a',
+                    this.monthlyRevenueData.slice(-7).map(d => d.month),
+                    this.monthlyRevenueData.slice(-7).map(d => d.revenue),
+                    'Months',
+                    'Revenue (₹)'
+                );
+            } catch (error) {
+                console.error('Error creating monthly revenue chart:', error);
+            }
+        } else {
+            console.warn('Monthly revenue chart canvas not found');
         }
 
         // Orders Chart (AFFECTED by date filter)
-        if (document.getElementById('ordersChart')) {
-            this.ordersChart = this.getLineChartData(
-                'ordersChart',
-                '#d1efad',
-                '#c5e999',
-                ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-                [45, 52, 48, 65, 58, 72, 38],
-                'Days',
-                'Orders'
-            );
+        const ordersCanvas = document.getElementById('ordersChart');
+        if (ordersCanvas) {
+            console.log('Creating orders chart');
+            try {
+                this.ordersChart = this.getLineChartData(
+                    'ordersChart',
+                    '#d1efad',
+                    '#c5e999',
+                    ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                    [45, 52, 48, 65, 58, 72, 38],
+                    'Days',
+                    'Orders'
+                );
+            } catch (error) {
+                console.error('Error creating orders chart:', error);
+            }
+        } else {
+            console.warn('Orders chart canvas not found');
         }
 
         // Customers Chart (AFFECTED by date filter)
-        if (document.getElementById('customersChart')) {
-            this.customersChart = this.getLineChartData(
-                'customersChart',
-                '#c5f1ef',
-                '#a1e6e3',
-                ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-                [28, 35, 32, 42, 38, 45, 25],
-                'Days',
-                'Customers'
-            );
+        const customersCanvas = document.getElementById('customersChart');
+        if (customersCanvas) {
+            console.log('Creating customers chart');
+            try {
+                this.customersChart = this.getLineChartData(
+                    'customersChart',
+                    '#c5f1ef',
+                    '#a1e6e3',
+                    ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                    [28, 35, 32, 42, 38, 45, 25],
+                    'Days',
+                    'Customers'
+                );
+            } catch (error) {
+                console.error('Error creating customers chart:', error);
+            }
+        } else {
+            console.warn('Customers chart canvas not found');
         }
 
         // Payment Mode Doughnut Chart (AFFECTED by date filter)
         if (document.getElementById('paymentModeChart')) {
-            this.paymentModeChart = this.getPaymentDoughnutChart();
+            console.log('Creating payment mode chart');
+            try {
+                this.paymentModeChart = this.getPaymentDoughnutChart();
+            } catch (error) {
+                console.error('Error creating payment mode chart:', error);
+            }
         }
 
         // Top Medicines Bar Chart (AFFECTED by date filter)
         if (document.getElementById('topMedicinesChart')) {
-            this.topMedicinesChart = this.getTopMedicinesChart();
+            console.log('Creating top medicines chart');
+            try {
+                this.topMedicinesChart = this.getTopMedicinesChart();
+            } catch (error) {
+                console.error('Error creating top medicines chart:', error);
+            }
         }
 
         // Stock Value Chart (NOT affected by date filter)
         if (document.getElementById('stockValueChart')) {
-            this.stockValueChart = this.getStockValueChart();
+            console.log('Creating stock value chart');
+            try {
+                this.stockValueChart = this.getStockValueChart();
+            } catch (error) {
+                console.error('Error creating stock value chart:', error);
+            }
         }
 
         // Expiry Chart (NOT affected by date filter)
         if (document.getElementById('expiryChart')) {
-            this.expiryChart = this.getExpiryChart();
+            console.log('Creating expiry chart');
+            try {
+                this.expiryChart = this.getExpiryChart();
+            } catch (error) {
+                console.error('Error creating expiry chart:', error);
+            }
         }
 
         // Category Chart (NOT affected by date filter)
         if (document.getElementById('categoryChart')) {
-            this.categoryChart = this.getCategoryChart();
+            console.log('Creating category chart');
+            try {
+                this.categoryChart = this.getCategoryChart();
+            } catch (error) {
+                console.error('Error creating category chart:', error);
+            }
         }
+        
+        console.log('Charts initialization complete');
     }
 
     // Small line chart for cards
