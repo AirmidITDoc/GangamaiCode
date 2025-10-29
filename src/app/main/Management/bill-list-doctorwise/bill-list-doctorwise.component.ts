@@ -1,5 +1,5 @@
 import { Component, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
-import { FormGroup, UntypedFormBuilder } from '@angular/forms';
+import { FormBuilder, FormGroup, UntypedFormBuilder } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { gridColumnTypes } from 'app/core/models/tableActions';
 import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
@@ -74,16 +74,32 @@ export class BillListDoctorwiseComponent {
     public datePipe: DatePipe,
     public _matDialog: MatDialog,
     public toastr: ToastrService,
+    private fb: FormBuilder,
   ) { }
 
   ngOnInit(): void {
-    const today = new Date();
-    const oneMonthAgo = new Date();
-    oneMonthAgo.setMonth(today.getMonth() - 1);
+    // const today = new Date();
+    // const oneMonthAgo = new Date();
+    // oneMonthAgo.setMonth(today.getMonth() - 1);
 
-    this._DoctorShareService.UserFormGroup.patchValue({
-      startdate: oneMonthAgo
+    // this._DoctorShareService.UserFormGroup.patchValue({
+    //   startdate: oneMonthAgo
+    // });
+
+
+    const today = new Date();
+    const lastMonth = new Date();
+    lastMonth.setMonth(lastMonth.getMonth() - 1);
+
+    this._DoctorShareService.DocSummaryfilterForm = this.fb.group({
+      fromDate: [this.datePipe.transform(lastMonth, 'yyyy-MM-dd')],
+      enddate: [this.datePipe.transform(today, 'yyyy-MM-dd')]
     });
+
+    // If grid filter also needs default values
+    this.gridConfig1.filters[0].fieldValue = this.datePipe.transform(lastMonth, 'yyyy-MM-dd');
+    this.gridConfig1.filters[1].fieldValue = this.datePipe.transform(today, 'yyyy-MM-dd');
+
 
   }
   @ViewChild('actionsTemplate1') actionsTemplate1!: TemplateRef<any>;
