@@ -156,7 +156,12 @@ export class DischargeCancelComponent implements OnInit {
     }
 
   }
-
+  myFilter = (d: Date | null): boolean => {
+    return this.isDisableFuture ? d <= new Date() : true;
+  };
+  today: Date = new Date();
+  formattedDate: string;
+  @Input() isDisableFuture: boolean = false;
 
   DischargeCancel() {
     if (this.vRegNo == '0' || this.vRegNo == '' || this.vRegNo == undefined || this.vRegNo == null) {
@@ -220,12 +225,6 @@ export class DischargeCancelComponent implements OnInit {
     });
   }
 
-  myFilter = (d: Date | null): boolean => {
-    return this.isDisableFuture ? d <= new Date() : true;
-  };
-  today: Date = new Date();
-  formattedDate: string;
-  @Input() isDisableFuture: boolean = false;
 
   public now: Date = new Date();
   OnAdmDateTimeUpdate() {

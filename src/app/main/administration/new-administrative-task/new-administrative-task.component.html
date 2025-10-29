@@ -20,13 +20,15 @@
 
                     <mat-card style="padding: 5px;">
                         <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" class="gap-8">
-                            <!-- <div fxFlexFill fxlayout="row" style="padding: 20px;" class="gap-8"> -->
-
-                            <div fxLayout="row wrap" fxLayoutAlign="space-between center" fxLayoutGap="12px">
+                           
+                            <div>
                                 <mat-radio-group formControlName="opiptype" (change)="onChangeRadio($event)">
                                     <mat-radio-button value="0">OP</mat-radio-button>
                                     <mat-radio-button value="1">IP</mat-radio-button>
                                 </mat-radio-group>
+
+                                <!-- <app-airmid-slider label="OP/IP" formControlName="opiptype" [formGroup]="myForm"></app-airmid-slider> -->
+
 
                             </div>
 
@@ -46,11 +48,7 @@
                                 (selectionChange)="getSelectedObjOP($event)" ValueField="regId"
                                 TextField="formattedText"></airmid-autocomplete>
 
-                            <!-- [(fromValue)]="gridConfig2.filters[2].fieldValue"
-                                    [(toValue)]="gridConfig2.filters[3].fieldValue" -->
-                            <airmid-datepicker [formGroup]="myForm" [isRangePicker]="true"
-                                formStartControlName="startdate" formEndControlName="enddate">
-                            </airmid-datepicker>
+
                         </div>
                     </mat-card>
 
@@ -162,8 +160,8 @@
                 <div fxLayout="column" style="padding: 8px 12px 0px 12px;">
 
                     <div fxFlex.gt-sm="100%" fxFlex>
-                        <mat-card style="padding: 5px;">
-                            <span style="color: rgb(4, 54, 66);font-size: large;font-weight: bold;">Bill List</span>
+                        <mat-card style="padding: 5px;" *ngIf="!OPIPType">
+                            <span style="color: rgb(4, 54, 66);font-size: large;font-weight: bold;">Visit List</span>
                             <mat-table class="table h-200" #table matSort [dataSource]="dataSource"
                                 [@animateStagger]="{value:'50'}" style="overflow: auto;width: 100%;">
 
@@ -171,7 +169,7 @@
                                 <ng-container matColumnDef="VisitId">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md
                                         class="w-170">
-                                        VisitId
+                                        Visit Id
                                     </mat-header-cell>
                                     <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="w-170">
                                         {{contact.VisitId}}
@@ -181,7 +179,7 @@
                                 <ng-container matColumnDef="VisitTime">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md
                                         class="w-170">
-                                        VisitTime
+                                        Visit Date
                                     </mat-header-cell>
                                     <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="w-170">
                                         {{contact.VisitTime | date:'short'}}
@@ -191,7 +189,7 @@
                                 <ng-container matColumnDef="OPDNo">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md
                                         class="w-170">
-                                        OPDNo
+                                        OPD No
                                     </mat-header-cell>
                                     <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="w-170">
                                         {{contact.OPDNo}}
@@ -215,15 +213,23 @@
                                         Action</mat-header-cell>
                                     <mat-cell *matCellDef="let contact">
 
-                                        <button class="btn btn-primary" (click)="Billdateupdate(contact)"
-                                            matTooltip="IPD NO Update">
-                                            IPDNOEdit
+                                        <button class="btn btn-primary" (click)="EditConsultant(contact)"
+                                            matTooltip="Edit Consultant Doctor">
+                                            <img width="30px" height="30px" src="assets/images/logos/consultantdr.jpg">
                                         </button>&nbsp;
 
-                                        <button class="btn btn-danger" (click)="BillCancelOP(contact)"
-                                            matTooltip="Admission Cancle" style="color: white;"> Admission
-                                            Cancel
+                                        <button class="btn btn-danger" (click)="EditRefDoctor(contact)"
+                                            matTooltip="Edit Refrance Doctor" style="color: white;">
+                                            <img width="30px" height="30px"
+                                                src="assets/images/logos/refdr.png">
                                         </button>
+
+                                          <button class="btn btn-danger" (click)="VisitDateUpdate(contact)"
+                                            matTooltip="Edit Visit Date" style="color: white;">
+                                            <img width="30px" height="30px"
+                                                src="assets/images/logos/dischargedate.png">
+                                        </button>
+
                                     </mat-cell>
                                 </ng-container>
 
@@ -251,6 +257,119 @@
                                 </mat-footer-row>
                             </mat-table>
                         </mat-card>
+                        <!-- //Admission List -->
+                        <mat-card style="padding: 5px;" *ngIf="OPIPType">
+                            <span style="color: rgb(4, 54, 66);font-size: large;font-weight: bold;">Admission
+                                List</span>
+                            <mat-table class="table h-200" #table matSort [dataSource]="dataSource1"
+                                [@animateStagger]="{value:'50'}" style="overflow: auto;width: 100%;">
+
+
+                                <ng-container matColumnDef="AdmissionID">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md
+                                        class="w-170">
+                                        Admission Id
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="w-170">
+                                        {{contact.AdmissionID}}
+                                    </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="AdmissionTime">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md
+                                        class="w-170">
+                                        Admission Date
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="w-170">
+                                        {{contact.AdmissionTime | date:'short'}}
+                                    </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="RegID">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md
+                                        class="w-170">
+                                        UHID
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="w-170">
+                                        {{contact.RegID}}
+                                    </mat-cell>
+                                </ng-container>
+
+                                 <ng-container matColumnDef="IPDNo">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md
+                                        class="w-170">
+                                        IPD No
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="w-170">
+                                        {{contact.IPDNo}}
+                                    </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="DoctorName">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md
+                                        class="w-300">
+                                        Doctor Name
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="w-300">
+                                        {{contact.DoctorName}}
+                                    </mat-cell>
+                                </ng-container>
+                               
+
+
+                                <ng-container matColumnDef="action" stickyEnd>
+                                    <mat-header-cell *matHeaderCellDef fxShow.gt-sm style="color: white;">
+                                        Action</mat-header-cell>
+                                    <mat-cell *matCellDef="let contact">
+
+                                        <button class="btn btn-primary" (click)="Admissiontask(contact)"
+                                            matTooltip="IPD NO Update">
+                                            <img width="30px" height="30px" src="assets/images/logos/Admission.png">
+                                        </button>&nbsp;
+
+                                        <button class="btn btn-danger" (click)="Admissiontask(contact)"
+                                            matTooltip="Admission Cancle" style="color: white;">
+                                            <img width="30px" height="30px"
+                                                src="assets/images/logos/cancelappointment.png">
+                                        </button>
+
+                                          <button class="btn btn-danger" (click)="DischargeCancel(contact)"
+                                            matTooltip="Discharge Cancle" style="color: white;">
+                                            <img width="30px" height="30px"
+                                                src="assets/images/logos/discharge.jpeg">
+                                        </button>
+
+                                          <button class="btn btn-danger" (click)="Admissiontask(contact)"
+                                            matTooltip="Edit Discharge Date" style="color: white;">
+                                            <img width="30px" height="30px"
+                                                src="assets/images/logos/dischargedate.png">
+                                        </button>
+                                    </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="loading">
+                                    <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
+                                    </mat-header-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="noData">
+                                    <mat-footer-cell *matFooterCellDef colspan="6">
+                                        no data found...
+                                    </mat-footer-cell>
+                                </ng-container>
+
+                                <mat-header-row class="accent" *matHeaderRowDef="displayedColumns5; sticky: true">
+                                </mat-header-row>
+                                <mat-row *matRowDef="let contact; columns: displayedColumns5;"
+                                    [@animate]="{value:'*',params:{y:'100%'}}" (click)="GetBillData(contact)"></mat-row>
+                                <mat-footer-row *matFooterRowDef="['loading']"
+                                    [ngClass]="{'hide':!(sIsLoading == 'loading-data')}">
+                                </mat-footer-row>
+                                <mat-footer-row *matFooterRowDef="['noData']"
+                                    [ngClass]="{'hide':!(dataSource1!=null && dataSource1.data.length==0)}">
+                                </mat-footer-row>
+                            </mat-table>
+                        </mat-card>
                     </div>
                 </div>
                 <!-- Bill list  -->
@@ -263,11 +382,12 @@
                             <mat-table class="table h-200" #table matSort [dataSource]="dataSourceBill"
                                 [@animateStagger]="{value:'50'}" style="overflow: auto;width: 100%;">
 
-                             
+
 
                                 <ng-container matColumnDef="pbillNo">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md class="w-170">
-                                        PBillNo
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md
+                                        class="w-170">
+                                        PBill No
                                     </mat-header-cell>
                                     <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="w-170">
                                         {{contact.PBillNo}}
@@ -282,12 +402,12 @@
                                         {{contact.BillTime | date:'short'}}
                                     </mat-cell>
                                 </ng-container>
-                              
+
 
                                 <ng-container matColumnDef="totalAmt">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md
                                         class="w-170">
-                                        Bill Amt
+                                        Bill Amount
                                     </mat-header-cell>
                                     <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="w-170">
                                         {{contact.TotalAmt | currency:"INR":"symbol"}}
@@ -295,11 +415,11 @@
                                 </ng-container>
 
 
-                               
+
                                 <ng-container matColumnDef="netPayableAmt">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md
                                         class="w-170">
-                                        Net Amt
+                                        Net Amount
                                     </mat-header-cell>
                                     <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="w-170">
                                         {{contact.NetPayableAmt | currency:"INR":"symbol"}}
@@ -312,12 +432,13 @@
                                         Action</mat-header-cell>
                                     <mat-cell *matCellDef="let contact">
 
-                                        <button class="btn btn-primary" (click)="Billdateupdate(contact)" matTooltip="Bill Date Update">
-                                            BillDate
+                                        <button class="btn btn-primary" (click)="Billdateupdate(contact)"
+                                            matTooltip="Bill Date Update">
+                                            <img width="30px" height="30px" src="assets/images/logos/Billdate.jpg">
                                         </button>&nbsp;
-                                       <button class="btn btn-danger"
-                                            (click)="BillCancelOP(contact)" matTooltip="Cancle Bill"
-                                            style="color: white;"> Bill Cancel
+                                        <button class="btn btn-danger" (click)="BillCancle(contact)"
+                                            matTooltip="Cancle Bill" style="color: white;"> <img width="30px"
+                                                height="30px" src="assets/images/logos/Billcancle.jpg">
                                         </button>
                                     </mat-cell>
                                 </ng-container>
@@ -335,7 +456,8 @@
 
                                 <mat-header-row class="accent" *matHeaderRowDef="displayedColumns1; sticky: true">
                                 </mat-header-row>
-                                <mat-row *matRowDef="let contact; columns: displayedColumns1;" (click)="GetPaymentData(contact)"
+                                <mat-row *matRowDef="let contact; columns: displayedColumns1;"
+                                    (click)="GetPaymentData(contact)"
                                     [ngClass]="contact.patientType !== 'Self' ? 'self-row' : ''"
                                     [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
                                 <mat-footer-row *matFooterRowDef="['loading']"
@@ -358,8 +480,9 @@
                                 [@animateStagger]="{value:'50'}" style="overflow: auto;width: 100%;">
 
 
-                                 <ng-container matColumnDef="PaymentId">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md class="w-170">
+                                <ng-container matColumnDef="PaymentId">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md
+                                        class="w-170">
                                         Transaction Id
                                     </mat-header-cell>
                                     <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="w-170">
@@ -369,20 +492,20 @@
 
                                 <ng-container matColumnDef="paymentDate">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md
-                                        class="w-170">
+                                        class="w-270">
                                         Payment Date
                                     </mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="w-170">
+                                    <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="w-270">
                                         {{contact.PaymentTime | date:'short'}}
                                     </mat-cell>
                                 </ng-container>
 
                                 <ng-container matColumnDef="ReceiptNo">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md
-                                        class="w-170">
-                                       ReceiptNo
+                                        class="w-270">
+                                        Receipt No
                                     </mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="w-170">
+                                    <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="w-270">
                                         {{contact.ReceiptNo}}
                                     </mat-cell>
                                 </ng-container>
@@ -392,14 +515,15 @@
                                         Action</mat-header-cell>
                                     <mat-cell *matCellDef="let contact">
 
-                                        <button class="btn btn-primary" (click)="PaymentDate(element,2)"
+                                        <button class="btn btn-primary" (click)="PaymentDate(contact)"
                                             matTooltip="Payment Date Update">
-                                            Date Update
+                                            <img width="40px" height="40px" src="assets/images/logos/Paymentdate.jpg">
                                         </button>&nbsp;
-                                        <button class="btn btn-danger" (click)="onEdit(element)"
-                                            matTooltip="Cancle Bill" style="color: white;">
+
+                                        <!-- <button class="btn btn-danger" (click)="onEdit(element)"
+                                            matTooltip="Edit Payment Mode" style="color: white;">
                                             Edit
-                                        </button>
+                                        </button> -->
                                     </mat-cell>
                                 </ng-container>
 
@@ -469,7 +593,7 @@
                                 <ng-container matColumnDef="advanceNo">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md
                                         class="w-100">
-                                        AdvanceNo
+                                        Advance No
                                     </mat-header-cell>
                                     <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="w-100">
                                         {{contact.advanceNo}}
@@ -498,7 +622,7 @@
                                 <ng-container matColumnDef="advanceAmount">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md
                                         class="w-150">
-                                        Advance Amt
+                                        Advance Amount
                                     </mat-header-cell>
                                     <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="w-150">
                                         {{contact.advanceAmount | currency:"INR":"symbol"}}
@@ -508,7 +632,7 @@
                                 <ng-container matColumnDef="balanceAmount">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md
                                         class="w-150">
-                                        Balance Amt
+                                        Balance Amount
                                     </mat-header-cell>
                                     <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="w-150">
                                         {{contact.balanceAmount | currency:"INR":"symbol"}}
@@ -573,7 +697,7 @@
                 <div fxLayout="column" style="padding: 8px 12px 0px 12px;">
                     <div fxFlex.gt-sm="100%" fxFlex>
                         <mat-card style="padding: 5px;">
-                            <span style="color: rgb(4, 54, 66);font-size: large;font-weight: bold;">Advance List</span>
+                            <span style="color: rgb(4, 54, 66);font-size: large;font-weight: bold;">Refund List</span>
                             <mat-table class="table h-225" #table matSort [dataSource]="dataSourceRefund"
                                 [@animateStagger]="{value:'50'}" style="overflow: auto;width: 100%;">
 
@@ -639,7 +763,7 @@
                                 <ng-container matColumnDef="refundAmount">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md
                                         class="w-150">
-                                        Refund Amt
+                                        Refund Amount
                                     </mat-header-cell>
                                     <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="w-150">
                                         {{contact.refundAmount | currency:"INR":"symbol"}}

@@ -1220,6 +1220,8 @@ export class AdmissionPersonlModel {
   ischarity: any;
   converId: any;
 
+
+
   /**
 * Constructor
 *

@@ -896,7 +896,7 @@ setTimeout(() => {
             uomid: [item?.UOMId, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             receiveQty: [item?.Qty, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             freeQty: [item?.FreeQty || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            mrp: [item?.MRP, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            mrp: [item?.UnitMRP, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
             rate: [item?.Rate, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
             totalAmount: [item?.TotalAmount, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
             conversionFactor: [item?.ConversionFactor, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
@@ -1041,9 +1041,9 @@ setTimeout(() => {
                 // this.GrndetailArray.push(this.createGrndetailInsert(item));
                  const input = item?.ExpDate;
                  const [day, month, year] = input.split("/");
-                 const formattedDate = `${year}-${month}-${day}`;
+                 const formattedDate = `${year}-${month}-${day}`; 
                  const formObj = this.createGrndetailInsert(item);
-                 formObj.patchValue({ batchExpDate: formattedDate || '1999-01-01' });
+                 formObj.patchValue({ batchExpDate: formattedDate || '1999-01-01'});
                  this.GrndetailArray.push(formObj); 
              }); 
         this.ItemArray.clear();
@@ -1157,7 +1157,7 @@ setTimeout(() => {
                         purUnitRate: element.purUnitRate,      //Purchaserate
                         PurUnitRateWF: element.purUnitRateWf,
                         //unitmrp
-                        unitMRP: element.unitMRP,
+                        UnitMRP: element.unitMRP,
                         IsVerifiedUserId: element.isVerifiedUserId,
                         IsVerified: element.isVerified,
                         IsVerifiedDatetime: element.isVerifiedDatetime,

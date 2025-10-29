@@ -465,6 +465,7 @@ export class PaymentChange {
   tdsamount:any
   strId:any
       opdipdtype:any
+      PaymentId:any
 
   constructor(PaymentChange) {
     {
@@ -506,7 +507,7 @@ export class PaymentChange {
       this.transactionType = PaymentChange.transactionType || 0;
       this.remark = PaymentChange.remark || 0;
       this.addBy = PaymentChange.addBy || 0;
-      // this.PaymentId = PaymentPharmayList.PaymentId || 0;
+      this.PaymentId = PaymentChange.PaymentId || 0;
       this.payTMAmount = PaymentChange.payTMAmount || 0;
       this.PayTMTranNo = PaymentChange.PayTMTranNo || 0;
       this.TarrifName = PaymentChange.TarrifName || 0;
