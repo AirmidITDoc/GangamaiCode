@@ -28,7 +28,7 @@
               [value]="registerObj?.testName"
               [formGroup]="testForm"
               [validations]="_TestmasterService.getValidationMessages().TestName"
-              [maxLength]="50"
+              [maxLength]="200"
             ></airmid-textbox>
           </div>
 
@@ -39,7 +39,7 @@
               [value]="registerObj?.printTestName"
               [formGroup]="testForm"
               [validations]="_TestmasterService.getValidationMessages().PrintTestName"
-              [maxLength]="50"
+              [maxLength]="200"
             ></airmid-textbox>
           </div>
 
@@ -292,7 +292,7 @@
               formControlName="TechniqueName"
               [value]="registerObj?.techniqueName"
               [formGroup]="testForm"
-              [maxLength]="50"
+              [maxLength]="400"
             ></airmid-textbox>
           </div>
           <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
@@ -301,7 +301,7 @@
               formControlName="MachineName"
               [value]="registerObj?.machineName"
               [formGroup]="testForm"
-              [maxLength]="50"
+              [maxLength]="400"
             ></airmid-textbox>
           </div>
           <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
@@ -310,7 +310,7 @@
               formControlName="FootNote"
               [value]="registerObj?.footNote"
               [formGroup]="testForm"
-              [maxLength]="50"
+              [maxLength]="400"
             ></airmid-textbox>
           </div>
 
@@ -320,7 +320,7 @@
               formControlName="SuggestionNote"
               [value]="registerObj?.suggestionNote"
               [formGroup]="testForm"
-              [maxLength]="50"
+              [maxLength]="400"
             ></airmid-textbox>
           </div>
         </div>
