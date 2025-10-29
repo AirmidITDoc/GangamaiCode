@@ -663,7 +663,7 @@ export class ItemNameList {
     ItemName: string;
     UOMId: number;
     HSNCode: number;
-    BatchNo: number;
+    BatchNo: any;
     ExpDate: string;
     Qty: number;
     FreeQty: number;

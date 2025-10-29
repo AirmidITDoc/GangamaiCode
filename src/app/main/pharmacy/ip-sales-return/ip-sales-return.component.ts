@@ -284,6 +284,7 @@ export class IpSalesReturnComponent implements OnInit {
     return option && option.ItemName ? option.ItemName : '';
   }
   getSelectedItemObj(obj) {
+    debugger
     this.selcteditemObj = obj;
     this.ItemFormGroup.patchValue({
       TotalQty: obj.Qty
@@ -312,7 +313,7 @@ export class IpSalesReturnComponent implements OnInit {
       });
       return
     }
-
+    debugger
     const formValues = this.ItemFormGroup.value
     if (!(formValues.PatientName.admissionID > 0)) {
       this.toastr.warning('Please select Patient Name', 'Warning !', {
@@ -321,7 +322,9 @@ export class IpSalesReturnComponent implements OnInit {
       return
     }
     if (this.dsIpSaleItemList.data.length > 0) {
-      const isItemAlreadyAdded = this.dsIpSaleItemList.data.some((element) => element.BatchNo === this.selcteditemObj.BatchNo);
+      const isItemAlreadyAdded = this.dsIpSaleItemList.data.some((element) =>element.ItemId === this.selcteditemObj?.ItemId 
+       && element.BatchNo === this.selcteditemObj?.BatchNo 
+    && Number(element?.MRP).toFixed(2) === Number(this.selcteditemObj?.UnitMRP).toFixed(2));
       if (isItemAlreadyAdded) {
         this.toastr.warning('Selected Item already added in the list', 'Warning !', {
           toastClass: 'tostr-tost custom-toast-warning',

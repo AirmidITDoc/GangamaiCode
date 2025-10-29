@@ -1,3 +1,76 @@
+<ng-template #serviceTable>
+    <mat-toolbar class="accent" style="width: 100%;height: 40px;justify-content: space-between;">
+    <div fxLayout="row" fxLayoutAlign="start center">
+      <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
+        style="color: white;">account_box
+      </mat-icon>
+      <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"> Admission Task</span>
+    </div>
+    <div class="close-icon">
+      <button mat-icon-button [mat-dialog-close]="true" aria-label="Close dialog" matTooltip="Close">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+  </mat-toolbar>
+
+
+    <div class="modal-body" fusePerfectScrollbar>
+        <div class="modal-body-container">
+            <div class="center p-12 pb-56" style="border-radius: 4px;">
+                <!-- CONTENT -->
+                <div class="content-card">
+                    <form [formGroup]="AdmissionTaskForm">
+
+                        <div fxFlexFill fxlayout="row" fxLayout="column" fxLayoutGap="6px">
+
+                          
+                            <div fxFlexFill fxlayout="row" fxLayoutGap="8px">
+
+                                <mat-form-field appearance="outline" class="dateField">
+                                    <mat-label>{{dateLabel}}</mat-label>
+                                    <input matInput [matDatepicker]="picker1" [matDatepickerFilter]="myFilter"
+                                        formControlName="AdmissionDate" readonly
+                                        (dateChange)="onChangeDate($event.value)">
+                                    <mat-datepicker-toggle matSuffix [for]="picker1"
+                                        [disabled]="isDatePckrDisabled"></mat-datepicker-toggle>
+                                    <mat-datepicker #picker1></mat-datepicker>
+                                </mat-form-field>
+
+
+                                <mat-form-field appearance="outline" class="timeField">
+                                    <mat-label>{{timeLabel}}</mat-label>
+                                      <input matTimepicker #t="matTimepicker" mode="12h" formControlName="AdmissionTime"
+                                        [readonly]="true" (timeChange)="onChangeTime($event)"
+                                        [disableDialogOpenOnClick]="isDatePckrDisabled">
+
+                                    <mat-icon matSuffix
+                                        (click)="!isDatePckrDisabled ? t.showDialog() : ''">access_time</mat-icon>
+                                </mat-form-field>
+
+                                <airmid-textbox label="New IPDNo" formControlName="NewIpdNo" fxFlex="47%"
+                                    [formGroup]="AdmissionTaskForm" [value]="vIPDNo">
+                                </airmid-textbox>
+                            </div>
+
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer" fxLayoutAlign="end">
+        <div class="next-div button-row-group" style="padding-right: 20px;">
+            <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
+            <button class="btn btn-primary" color="accent" (click)="OnAdmDateTimeUpdate()">
+                <span>Save</span>
+            </button>
+        </div>
+    </div>
+
+</ng-template>
+
+
+<!-- //// -->
 <div fusePerfectScrollbar
     class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
     dynamicTableHeight>
@@ -20,7 +93,7 @@
 
                     <mat-card style="padding: 5px;">
                         <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" class="gap-8">
-                           
+
                             <div>
                                 <mat-radio-group formControlName="opiptype" (change)="onChangeRadio($event)">
                                     <mat-radio-button value="0">OP</mat-radio-button>
@@ -33,21 +106,11 @@
                             </div>
 
 
-                            <airmid-autocomplete lbl="RegID" *ngIf="opiptype" [formGroup]="myForm"
-                                label="Search Reg No / Patient Name / Mobile No(DC)" formControlName="RegID"
-                                fxFlex="30%" placeholderText="RegNo / First Name / Last Name / Mobile No(DC)"
-                                ApiUrl="Admission/search-patient?Keyword=" (selectionChange)="getSelectedObjIP($event)"
-                                TextField="formattedText" ValueField="regId">
-                            </airmid-autocomplete>
-
-
-                            <airmid-autocomplete label="OP-UHID / First Name / Last Name / Mobile No" fxFlex="30%"
-                                [formGroup]="myForm" formControlName="RegID" *ngIf="!opiptype"
-                                placeholderText="OP-UHID / First Name / Last Name / Mobile No"
-                                ApiUrl="VisitDetail/search-patient-1?Keyword="
-                                (selectionChange)="getSelectedObjOP($event)" ValueField="regId"
-                                TextField="formattedText"></airmid-autocomplete>
-
+                            <airmid-autocomplete class="w-350" label="Search Reg No / Patient Name / Mobile No"
+                                [formGroup]="myForm" formControlName="RegID"
+                                placeholderText="Search Reg No / Patient Name / Mobile No"
+                                ApiUrl="OutPatient/auto-complete?Keyword=" (selectionChange)="getSelectedObj($event)"
+                                fxFlex="40%"></airmid-autocomplete>
 
                         </div>
                     </mat-card>
@@ -74,38 +137,17 @@
                                                     <span>:</span>
                                                     <span class="patient-col-value">{{vRegNo}}</span>
                                                 </div>
+
+                                            </div>
+                                            <div fxLayout="column" fxLayoutGap="10px">
                                                 <div class="patient-col">
                                                     <span class="patient-col-key">Patient Name
                                                     </span>
                                                     <span>:</span>
                                                     <span class="patient-col-value">{{vPatientName}}</span>
                                                 </div>
-                                                <div class="patient-col">
-                                                    <span class="patient-col-key">Doctor Name</span>
-                                                    <span>:</span>
-                                                    <span class="patient-col-value">Dr.{{vDoctorName}}</span>
-                                                </div>
-                                                <div class="patient-col">
-                                                    <span class="patient-col-key">Department</span>
-                                                    <span>:</span>
-                                                    <span class="patient-col-value">{{vDepartment}}</span>
-                                                </div>
                                             </div>
                                             <div fxLayout="column" fxLayoutGap="10px">
-
-                                                <div class="patient-col">
-                                                    <span class="patient-col-key">DOA | Time</span>
-                                                    <span>:</span>
-                                                    <span class="patient-col-value">{{vAdmissionDate |
-                                                        date:'dd/MM/YYYY'}} |
-                                                        {{vAdmissionTime | date:'hh:mm a' }}
-                                                    </span>
-                                                </div>
-                                                <div class="patient-col">
-                                                    <span class="patient-col-key">IPD No</span>
-                                                    <span>:</span>
-                                                    <span class="patient-col-value">{{vIPDNo}}</span>
-                                                </div>
                                                 <div class="patient-col">
                                                     <span class="patient-col-key">Age | Sex
                                                     </span>
@@ -114,41 +156,8 @@
                                                         D |
                                                         {{vGenderName}}</span>
                                                 </div>
-                                                <div class="patient-col">
-                                                    <span class="patient-col-key">Ref-Doctor Name
-                                                    </span>
-                                                    <span>:</span>
-                                                    <span class="patient-col-value">{{vRefDocName}}</span>
-                                                </div>
+                                            </div>
 
-                                            </div>
-                                            <div fxLayout="column" fxLayoutGap="10px">
-                                                <div class="patient-col">
-                                                    <span class="patient-col-key">Ward | Bed Name
-                                                    </span>
-                                                    <span>:</span>
-                                                    <span class="patient-col-value">{{vRoomName}} |
-                                                        {{vBedName}}</span>
-                                                </div>
-                                                <div class="patient-col">
-                                                    <span class="patient-col-key">Patient Type
-                                                    </span>
-                                                    <span>:</span>
-                                                    <span class="patient-col-value">{{vPatientType}}</span>
-                                                </div>
-                                                <div class="patient-col">
-                                                    <span class="patient-col-key">Tarrif Name
-                                                    </span>
-                                                    <span>:</span>
-                                                    <span class="patient-col-value">{{vTariffName}}</span>
-                                                </div>
-                                                <div class="patient-col">
-                                                    <span class="patient-col-key">Company Name</span>
-                                                    <span>:</span>
-                                                    <span class="patient-col-value"
-                                                        style="color: orange;">{{vCompanyName}}</span>
-                                                </div>
-                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -213,21 +222,10 @@
                                         Action</mat-header-cell>
                                     <mat-cell *matCellDef="let contact">
 
-                                        <button class="btn btn-primary" (click)="EditConsultant(contact)"
-                                            matTooltip="Edit Consultant Doctor">
-                                            <img width="30px" height="30px" src="assets/images/logos/consultantdr.jpg">
-                                        </button>&nbsp;
 
-                                        <button class="btn btn-danger" (click)="EditRefDoctor(contact)"
-                                            matTooltip="Edit Refrance Doctor" style="color: white;">
-                                            <img width="30px" height="30px"
-                                                src="assets/images/logos/refdr.png">
-                                        </button>
-
-                                          <button class="btn btn-danger" (click)="VisitDateUpdate(contact)"
+                                        <button class="btn btn-danger" (click)="VisitDateUpdate(contact)"
                                             matTooltip="Edit Visit Date" style="color: white;">
-                                            <img width="30px" height="30px"
-                                                src="assets/images/logos/dischargedate.png">
+                                            <img width="30px" height="30px" src="assets/images/logos/dischargedate.png">
                                         </button>
 
                                     </mat-cell>
@@ -265,6 +263,37 @@
                                 [@animateStagger]="{value:'50'}" style="overflow: auto;width: 100%;">
 
 
+                                <ng-container matColumnDef="IsBillGenerated" sticky>
+                                    <mat-header-cell *matHeaderCellDef fxShow.gt-sm class="w-90"
+                                        style="color: white;">Status
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let contact" class="w-90">
+                                        <mat-icon *ngIf="contact.IsBillGenerated=='1'; else noMLC "
+                                            matTooltip="Bill Generated" class="pill green-600 s-16">
+                                        </mat-icon>
+                                        <ng-template #noMLC>
+                                            <span>--</span>
+                                        </ng-template>
+
+                                    </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="IsDischarged" sticky>
+                                    <mat-header-cell *matHeaderCellDef fxShow.gt-sm class="w-90"
+                                        style="color: white;">Discharged
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let contact" class="w-90">
+                                        <mat-icon *ngIf="contact.IsDischarged=='1'; else noMLC "
+                                            matTooltip="Patient Discharged" class="pill red-600 s-16">
+                                        </mat-icon>
+                                        <ng-template #noMLC>
+                                            <span>--</span>
+                                        </ng-template>
+
+                                    </mat-cell>
+                                </ng-container>
+
+
                                 <ng-container matColumnDef="AdmissionID">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md
                                         class="w-170">
@@ -295,7 +324,7 @@
                                     </mat-cell>
                                 </ng-container>
 
-                                 <ng-container matColumnDef="IPDNo">
+                                <ng-container matColumnDef="IPDNo">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md
                                         class="w-170">
                                         IPD No
@@ -314,7 +343,7 @@
                                         {{contact.DoctorName}}
                                     </mat-cell>
                                 </ng-container>
-                               
+
 
 
                                 <ng-container matColumnDef="action" stickyEnd>
@@ -322,28 +351,28 @@
                                         Action</mat-header-cell>
                                     <mat-cell *matCellDef="let contact">
 
-                                        <button class="btn btn-primary" (click)="Admissiontask(contact)"
+                                        <button class="btn btn-primary" (click)="openServiceTable(contact)"
                                             matTooltip="IPD NO Update">
                                             <img width="30px" height="30px" src="assets/images/logos/Admission.png">
                                         </button>&nbsp;
 
-                                        <button class="btn btn-danger" (click)="Admissiontask(contact)"
+                                        <button class="btn btn-danger" (click)="openServiceTable(contact)"
                                             matTooltip="Admission Cancle" style="color: white;">
                                             <img width="30px" height="30px"
                                                 src="assets/images/logos/cancelappointment.png">
                                         </button>
 
-                                          <button class="btn btn-danger" (click)="DischargeCancel(contact)"
-                                            matTooltip="Discharge Cancle" style="color: white;">
-                                            <img width="30px" height="30px"
-                                                src="assets/images/logos/discharge.jpeg">
+                                        <button class="btn btn-danger" (click)="DischargeCancel(contact)"
+                                            *ngIf="IsChargesAmount==0" matTooltip="Discharge Cancle"
+                                            style="color: white;">
+                                            <img width="30px" height="30px" src="assets/images/logos/discharge.jpeg">
                                         </button>
 
-                                          <button class="btn btn-danger" (click)="Admissiontask(contact)"
+                                        <button class="btn btn-danger" (click)="Admissiontask(contact)"
                                             matTooltip="Edit Discharge Date" style="color: white;">
-                                            <img width="30px" height="30px"
-                                                src="assets/images/logos/dischargedate.png">
+                                            <img width="30px" height="30px" src="assets/images/logos/dischargedate.png">
                                         </button>
+
                                     </mat-cell>
                                 </ng-container>
 
@@ -383,6 +412,20 @@
                                 [@animateStagger]="{value:'50'}" style="overflow: auto;width: 100%;">
 
 
+                                <ng-container matColumnDef="IsCancelled" sticky>
+                                    <mat-header-cell *matHeaderCellDef fxShow.gt-sm class="w-90"
+                                        style="color: white;">Status
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let contact" class="w-90">
+                                        <mat-icon *ngIf="contact.IsCancelled=='1'; else noMLC "
+                                            matTooltip="Bill Cancelled" class="pill red-600 s-16">
+                                        </mat-icon>
+                                        <ng-template #noMLC>
+                                            <span>--</span>
+                                        </ng-template>
+
+                                    </mat-cell>
+                                </ng-container>
 
                                 <ng-container matColumnDef="pbillNo">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md
@@ -437,8 +480,8 @@
                                             <img width="30px" height="30px" src="assets/images/logos/Billdate.jpg">
                                         </button>&nbsp;
                                         <button class="btn btn-danger" (click)="BillCancle(contact)"
-                                            matTooltip="Cancle Bill" style="color: white;"> <img width="30px"
-                                                height="30px" src="assets/images/logos/Billcancle.jpg">
+                                            *ngIf="!IsCancelled" matTooltip="Cancle Bill" style="color: white;"> <img
+                                                width="30px" height="30px" src="assets/images/logos/Billcancle.jpg">
                                         </button>
                                     </mat-cell>
                                 </ng-container>
@@ -480,15 +523,6 @@
                                 [@animateStagger]="{value:'50'}" style="overflow: auto;width: 100%;">
 
 
-                                <ng-container matColumnDef="PaymentId">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md
-                                        class="w-170">
-                                        Transaction Id
-                                    </mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="w-170">
-                                        {{contact.PaymentId}}
-                                    </mat-cell>
-                                </ng-container>
 
                                 <ng-container matColumnDef="paymentDate">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md

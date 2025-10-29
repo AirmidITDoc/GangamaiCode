@@ -1,4 +1,4 @@
-import { Component, Inject, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, Inject, Input, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
@@ -45,6 +45,9 @@ import { AppointmenttaskComponent } from './appointmenttask/appointmenttask.comp
   animations: fuseAnimations,
 })
 export class NewAdministrativeTaskComponent {
+
+  @ViewChild('serviceTable') serviceTable!: TemplateRef<any>;
+
   myForm: FormGroup;
   vRegNo: any = "0";
   vPatientName: any;
@@ -72,6 +75,15 @@ export class NewAdministrativeTaskComponent {
   vbillNo: any
 
   OPIPType = 1
+  //
+  AdmissionTaskForm: FormGroup
+  date: any;
+  dateTimeString: any;
+  isTimeChanged: boolean = false;
+  dateLabel: string = 'Admission Date';
+  timeLabel: string = 'Admission Time';
+
+  isDatePckrDisabled: boolean = false;
 
 
   displayedColumns: string[] = [
@@ -85,28 +97,32 @@ export class NewAdministrativeTaskComponent {
 
   displayedColumns5: string[] = [
     // 'action1',
+    'IsBillGenerated',
+    'IsDischarged',
     'AdmissionID',
     'AdmissionTime',
     'RegID',
     'DoctorName',
     'IPDNo',
+    // 'DischargeTime',
     'action'
   ];
 
 
   displayedColumns1: string[] = [
-    // 'action1',
+    'IsCancelled',
     'billDate',
     'pbillNo',
     'totalAmt',
     'netPayableAmt',
+
     'action'
   ];
 
 
   displayedColumns2: string[] = [
     // 'action1',
-    'PaymentId',
+    // 'PaymentId',
     'paymentDate',
     'ReceiptNo',
 
@@ -139,7 +155,7 @@ export class NewAdministrativeTaskComponent {
 
   dataSource = new MatTableDataSource<VisitMaster1>();
   dataSource1 = new MatTableDataSource<AdmissionPersonlModel>();
-  
+
   dataSourceBill = new MatTableDataSource<Bill>();
   dataSourcepayment = new MatTableDataSource<Payment>();
   dataSourceAdvance = new MatTableDataSource<AdvanceDetail>();
@@ -163,6 +179,15 @@ export class NewAdministrativeTaskComponent {
     public _matDialog: MatDialog,
     public datePipe: DatePipe, private _fuseSidebarService: FuseSidebarService,
   ) {
+    setInterval(() => {
+      this.now = new Date();
+      this.dateTimeString = this.now.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }).split(',');
+      if (!this.isTimeChanged) {
+        this.AdmissionTaskForm.get('AdmissionTime').setValue(this.now);
+        if (this.AdmissionTaskForm.get('AdmissionTime'))
+          this.AdmissionTaskForm.get('AdmissionTime').setValue(this.now);
+      }
+    }, 1);
   }
   opiptype = true
   ngOnInit(): void {
@@ -170,9 +195,28 @@ export class NewAdministrativeTaskComponent {
     this.myForm = this.createMyForm();
     this.myForm.markAllAsTouched();
 
+    this.AdmissionTaskForm = this.CreateAdmissionForm()
+    this.AdmissionTaskForm.get('RegID').setValue('');
+    var now = new Date();
+    now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+    this.date = now.toISOString().slice(0, 16);
 
   }
 
+
+  CreateAdmissionForm() {
+    return this.formBuilder.group({
+      RegID: '',
+      Op_ip_id: '1',
+      // IsDischargedit: 0, 
+      // IsIPDnoEdit: 0,
+      AdmissionDate: [(new Date()).toISOString(), Validators.required],
+      AdmissionTime: [''],
+      start: [(new Date()).toISOString()],
+      end: [(new Date()).toISOString()],
+      NewIpdNo: ['', Validators.required]
+    });
+  }
 
   createMyForm() {
     return this.formBuilder.group({
@@ -184,31 +228,31 @@ export class NewAdministrativeTaskComponent {
   }
 
   onChangeRadio(event) {
-    
+
 
     if (this.myForm.get('opiptype').value == "0") {
       this.opiptype = false
       this.OPIPType = 0
-     this.myForm.get('RegID').setValue('')
-     this.dataSource.data=[]
-     this.dataSource1.data=[]
-     this.dataSourceBill.data=[]
-     this.dataSourcepayment.data=[]
+      this.myForm.get('RegID').setValue('')
+      this.dataSource.data = []
+      this.dataSource1.data = []
+      this.dataSourceBill.data = []
+      this.dataSourcepayment.data = []
 
     }
     else {
       this.opiptype = true
       this.OPIPType = 1
-       this.myForm.get('RegID').setValue('')
-        this.dataSource.data=[]
-     this.dataSource1.data=[]
-     this.dataSourceBill.data=[]
-     this.dataSourcepayment.data=[]
+      this.myForm.get('RegID').setValue('')
+      this.dataSource.data = []
+      this.dataSource1.data = []
+      this.dataSourceBill.data = []
+      this.dataSourcepayment.data = []
     }
   }
 
   getOpPatientdata() {
-    
+
     var SelectQuery =
     {
       "searchFields": [
@@ -227,29 +271,30 @@ export class NewAdministrativeTaskComponent {
     }
 
     console.log(SelectQuery);
-   
+
     this._AdministrativetaskService.getPatientListOP(SelectQuery).subscribe(Visit => {
       console.log(Visit)
-      if(Visit){
-        
-       if(!this.OPIPType){
-      this.dataSource.data = Visit as VisitMaster1[];
+      if (Visit) {
+
+        if (!this.OPIPType) {
+          this.dataSource.data = Visit as VisitMaster1[];
+        }
+        else {
+          this.dataSource1.data = Visit as AdmissionPersonlModel[];
+          console.log(this.dataSource1.data)
+        }
       }
-    else{
-      this.dataSource1.data = Visit as AdmissionPersonlModel[];
-      console.log(this.dataSource1.data)
-    }}
     });
   }
 
-VistId=0
+  VistId = 0
   GetBillData(element) {
-    
 
-    if(element.VisitId)
-    this.VistId=element.VisitId
-  else
-     this.VistId=element.AdmissionID
+
+    if (element.VisitId)
+      this.VistId = element.VisitId
+    else
+      this.VistId = element.AdmissionID
 
 
     var SelectQuery =
@@ -279,7 +324,7 @@ VistId=0
 
 
   GetPaymentData(element) {
-    
+
     var SelectQuery =
     {
       "searchFields": [
@@ -482,7 +527,7 @@ VistId=0
 
   //   });
   // }
- DischargeCancel(contact) {
+  DischargeCancel(contact) {
     if (this.vRegNo == '0' || this.vRegNo == '' || this.vRegNo == undefined || this.vRegNo == null) {
       this.toastr.warning('Please select patient', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-Warning',
@@ -512,42 +557,42 @@ VistId=0
     })
   }
 
-  EditConsultant(contact){
-   const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
-            buttonElement.blur(); // Remove focus from the button
+  EditConsultant(contact) {
+    const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+    buttonElement.blur(); // Remove focus from the button
 
-            let that = this;
-            const dialogRef = this._matDialog.open(EditConsultantDoctorComponent,
-                {
-                    maxWidth: "90vw",
-                    height: "430px",
-                    width: "80%",
-                    data: contact
-                });
-            dialogRef.afterClosed().subscribe(result => {
-               this.getOpPatientdata()
-            });
+    let that = this;
+    const dialogRef = this._matDialog.open(EditConsultantDoctorComponent,
+      {
+        maxWidth: "90vw",
+        height: "430px",
+        width: "80%",
+        data: contact
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      this.getOpPatientdata()
+    });
   }
 
 
-   EditRefDoctor(contact){
-   const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
-            buttonElement.blur(); // Remove focus from the button
+  EditRefDoctor(contact) {
+    const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+    buttonElement.blur(); // Remove focus from the button
 
-            let that = this;
-            const dialogRef = this._matDialog.open(EditRefranceDoctorComponent,
-                {
-                    maxWidth: "90vw",
-                    height: "430px",
-                    width: "80%",
-                    data: contact
-                });
-            dialogRef.afterClosed().subscribe(result => {
-               this.getOpPatientdata()
-            });
+    let that = this;
+    const dialogRef = this._matDialog.open(EditRefranceDoctorComponent,
+      {
+        maxWidth: "90vw",
+        height: "430px",
+        width: "80%",
+        data: contact
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      this.getOpPatientdata()
+    });
   }
-VisitDateUpdate(contact){
-   console.log(contact)
+  VisitDateUpdate(contact) {
+    console.log(contact)
     const dialogRef = this._matDialog.open(AppointmenttaskComponent,
       {
         maxHeight: "35vh",
@@ -558,7 +603,7 @@ VisitDateUpdate(contact){
     dialogRef.afterClosed().subscribe(result => {
 
     });
-}
+  }
   PaymentDate(contact) {
     console.log(contact)
     const dialogRef = this._matDialog.open(DateUpdateComponent,
@@ -574,19 +619,19 @@ VisitDateUpdate(contact){
   }
 
 
-  Admissiontask(contact) {
-    console.log(contact)
-    const dialogRef = this._matDialog.open(AdmissiontaskComponent,
-      {
-        maxHeight: "35vh",
-        maxWidth: '90vh',
-        width: '100%',
-        data: contact
-      });
-    dialogRef.afterClosed().subscribe(result => {
+  // Admissiontask(contact) {
+  //   console.log(contact)
+  //   const dialogRef = this._matDialog.open(AdmissiontaskComponent,
+  //     {
+  //       maxHeight: "35vh",
+  //       maxWidth: '90vh',
+  //       width: '100%',
+  //       data: contact
+  //     });
+  //   dialogRef.afterClosed().subscribe(result => {
 
-    });
-  }
+  //   });
+  // }
 
 
   toggleSidebar(name): void {
@@ -634,7 +679,7 @@ VisitDateUpdate(contact){
   }
 
   BillCancelIP(contact) {
-    
+
     console.log("Data:", contact)
     Swal.fire({
       title: 'Do you want to cancel the Final Bill ',
@@ -672,7 +717,7 @@ VisitDateUpdate(contact){
       cancelButtonColor: "#d33",
       confirmButtonText: "Yes, Cancel it!"
     }).then((result) => {
-      
+
       if (result.isConfirmed) {
         let SubmitDate = {
           "advanceId": contact.advanceId || 0,
@@ -733,70 +778,80 @@ VisitDateUpdate(contact){
   }
   registerObj = new RegInsert({});
 
-  getSelectedObjIP(obj) {
-    console.log(obj)
-    if ((obj.regID ?? 0) > 0) {
-      console.log("Discharge patient:", obj)
-      this.vRegNo = obj.regNo
-      this.vRegId = obj.regID
+  // getSelectedObjIP(obj) {
+  //   console.log(obj)
+  //   if ((obj.regID ?? 0) > 0) {
+  //     console.log("Discharge patient:", obj)
+  //     this.vRegNo = obj.regNo
+  //     this.vRegId = obj.regID
 
-      this.vDoctorName = obj.doctorName
-      this.vDepartment = obj.departmentName
-      this.vAdmissionDate = obj.admissionDate
-      this.vAdmissionTime = obj.admissionTime
-      this.vIPDNo = obj.ipdNo
-      this.vAge = obj.age
-      this.vAgeMonth = obj.ageMonth
-      this.vAgeDay = obj.ageDay
-      this.vGenderName = obj.genderName
-      this.vRefDocName = obj.refDoctorName
-      this.vRoomName = obj.roomName
-      this.vBedName = obj.bedName
-      this.vPatientType = obj.patientType
-      this.vTariffName = obj.tariffName
-      this.vCompanyName = obj.companyName
-      let nameField = obj.formattedText;
-      let extractedName = nameField.split('|')[0].trim();
-      this.vPatientName = extractedName;
-      this.AdmissionId = obj.admissionID
-      this.getOpPatientdata()
+  //     this.vDoctorName = obj.doctorName
+  //     this.vDepartment = obj.departmentName
+  //     this.vAdmissionDate = obj.admissionDate
+  //     this.vAdmissionTime = obj.admissionTime
+  //     this.vIPDNo = obj.ipdNo
+  //     this.vAge = obj.age
+  //     this.vAgeMonth = obj.ageMonth
+  //     this.vAgeDay = obj.ageDay
+  //     this.vGenderName = obj.genderName
+  //     this.vRefDocName = obj.refDoctorName
+  //     this.vRoomName = obj.roomName
+  //     this.vBedName = obj.bedName
+  //     this.vPatientType = obj.patientType
+  //     this.vTariffName = obj.tariffName
+  //     this.vCompanyName = obj.companyName
+  //     let nameField = obj.formattedText;
+  //     let extractedName = nameField.split('|')[0].trim();
+  //     this.vPatientName = extractedName;
+  //     this.AdmissionId = obj.admissionID
+  //     this.getOpPatientdata()
 
-    }
+  //   }
 
 
+  // }
+
+  // getSelectedObjOP(obj) {
+  //   console.log(obj);
+
+
+  //   if (obj) {
+
+  //     setTimeout(() => {
+  //       this._AdministrativetaskService.getRegistraionById(obj.regId).subscribe((response) => {
+  //         if (response) {
+  //           this.registerObj = response;
+  //           this.vRegId = this.registerObj?.regId
+  //           this.vRegNo = this.registerObj?.regNo
+  //           this.vPatientName = this.registerObj?.firstName + " " + this.registerObj?.middleName + " " + this.registerObj?.lastName
+  //           this.vbillNo = this.registerObj.billNo;
+  //           this.getOpPatientdata()
+  //           console.log(response)
+
+  //         }
+  //       });
+  //     }, 500);
+  //   }
+
+  // }
+
+  getSelectedObj(obj) {
+    this.vRegId = obj.value;
+    this.vRegNo = obj.regNo
+    this.registerObj = obj
+    this.getOpPatientdata()
   }
 
-  getSelectedObjOP(obj) {
-    console.log(obj);
 
-    
-    if (obj) {
-
-      setTimeout(() => {
-        this._AdministrativetaskService.getRegistraionById(obj.regId).subscribe((response) => {
-          if (response) {
-            this.registerObj = response;
-            this.vRegId = this.registerObj?.regId
-            this.vRegNo = this.registerObj?.regNo
-            this.vPatientName = this.registerObj?.firstName + " " + this.registerObj?.middleName + " " + this.registerObj?.lastName
-            this.vbillNo = this.registerObj.billNo;
-            this.getOpPatientdata()
-            console.log(response)
-
-          }
-        });
-      }, 500);
-    }
-
-  }
-
+  //Admission task
+  public now: Date = new Date();
   OnAdmDateTimeUpdate() {
-    if (this.vRegNo == '0' || this.vRegNo == '' || this.vRegNo == undefined || this.vRegNo == null) {
-      this.toastr.success('Please select patient', 'Save !', {
-        toastClass: 'tostr-tost custom-toast-success',
-      });
-      return
-    }
+    // if (this.vRegNo == '0' || this.vRegNo == '' || this.vRegNo == undefined || this.vRegNo == null) {
+    //   this.toastr.success('Please select patient', 'Save !', {
+    //     toastClass: 'tostr-tost custom-toast-success',
+    //   });
+    //   return
+    // }
     Swal.fire({
       title: 'Do you want to Update Admission Date & Time ',
       text: "You won't be able to revert this!",
@@ -806,45 +861,101 @@ VisitDateUpdate(contact){
       cancelButtonColor: "#d33",
       confirmButtonText: "Yes, Update it!"
     }).then((result) => {
-      // if (result.isConfirmed) {
+      if (result.isConfirmed) {
 
-      //      const formattedDate = this.datePipe.transform(this._DischargeCancelService.DischargeForm.get('AdmissionDate').value, "yyyy-MM-dd");
-      //   const formattedTime = this.datePipe.transform(new Date(), "HH:mm:ss");
-      //   this._DischargeCancelService.DischargeForm.get('AdmissionDate').setValue(formattedDate);
-      //   let Admissiontime=formattedDate + ' ' + formattedTime
+        const formattedDate = this.datePipe.transform(this.AdmissionTaskForm.get('AdmissionDate').value, "yyyy-MM-dd");
+        const formattedTime = this.datePipe.transform(new Date(), "HH:mm:ss");
+        this.AdmissionTaskForm.get('AdmissionDate').setValue(formattedDate);
+        // this.AdmissionTaskForm.get('AdmissionTime').setValue(formattedDate + ' ' + formattedTime);
+        let Admissiontime = formattedDate + ' ' + formattedTime
 
-      //   
-      //   if (!this._DischargeCancelService.DischargeForm.invalid) {
-      //     var data = {
-      //       'admissionID': this.AdmissionId,
-      //       'admissionDate':formattedDate
-      //       'admissionTime':Admissiontime,
-      //       'ipdno': this._DischargeCancelService.DischargeForm.get('NewIpdNo').value
-      //     }
-      //     console.log(data);
-      //     this._DischargeCancelService.getDateTimeChange(data).subscribe(response => {
-      //       this.resetform()
 
-      //     });
-      //   } else {
-      //     let invalidFields = [];
 
-      //     if (this._DischargeCancelService.DischargeForm.invalid) {
-      //       for (const controlName in this._DischargeCancelService.DischargeForm.controls) {
-      //         if (this._DischargeCancelService.DischargeForm.controls[controlName].invalid) {
-      //           invalidFields.push(`MlcInfo Form: ${controlName}`);
-      //         }
-      //       }
-      //     }
-      //     if (invalidFields.length > 0) {
-      //       invalidFields.forEach(field => {
-      //         this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
-      //         );
-      //       });
-      //     }
-      //   }
-      // }
+        debugger
+        if (!this.AdmissionTaskForm.invalid) {
+          var data = {
+            'admissionID': this.AdmissionId,
+            'admissionDate': formattedDate,// this.datePipe.transform(this.AdmissionTaskForm.get('AdmissionDate').value, "yyyy-MM-dd"),
+            'admissionTime': Admissiontime,// this.datePipe.transform(this.AdmissionTaskForm.get('AdmissionTime').value, 'yyyy-MM-dd HH:mm'),
+            'ipdno': this.AdmissionTaskForm.get('NewIpdNo').value
+          }
+          console.log(data);
+          this._AdministrativetaskService.getDateTimeChange(data).subscribe(response => {
+            // this.resetform()
+
+          });
+        } else {
+          let invalidFields = [];
+
+          if (this.AdmissionTaskForm.invalid) {
+            for (const controlName in this.AdmissionTaskForm.controls) {
+              if (this.AdmissionTaskForm.controls[controlName].invalid) {
+                invalidFields.push(`MlcInfo Form: ${controlName}`);
+              }
+            }
+          }
+          if (invalidFields.length > 0) {
+            invalidFields.forEach(field => {
+              this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
+              );
+            });
+          }
+        }
+      }
     });
+  }
+
+  onChangeDate(value) {
+    if (value) {
+      const dateOfReg = new Date(value);
+      let splitDate = dateOfReg.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }).split(',');
+      let splitTime = this.AdmissionTaskForm.get('AdmissionTime').value.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }).split(',');
+      this.eventEmitForParent(splitDate[0], splitTime[1]);
+    }
+  }
+  onChangeTime(event) {
+    if (event) {
+      let selectedDate = new Date(this.AdmissionTaskForm.get('AdmissionDate').value);
+      let splitDate = selectedDate.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }).split(',');
+      let splitTime = this.AdmissionTaskForm.get('AdmissionTime').value.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }).split(',');
+      this.isTimeChanged = true;
+      this.eventEmitForParent(splitDate[0], splitTime[1]);
+    }
+  }
+
+  eventEmitForParent(actualDate, actualTime) {
+    let localaDateValues = actualDate.split('/');
+    let localaDateStr = localaDateValues[1] + '/' + localaDateValues[0] + '/' + localaDateValues[2];
+    // this.dateTimeEventEmitter.emit({ date: actualDate, time: actualTime });
+  }
+  @Input() isDisableFuture: boolean = false;
+  myFilter = (d: Date | null): boolean => {
+    return this.isDisableFuture ? d <= new Date() : true;
+  };
+
+  openServiceTable(contact): void {
+    debugger
+    this.vIPDNo=contact.IPDNo
+    this.AdmissionId=contact.AdmissionID
+
+      this.AdmissionTaskForm.get('NewIpdNo').setValue(contact.IPDNo);
+      this.AdmissionTaskForm.get('AdmissionDate').setValue(contact.AdmissionTime);
+      this.AdmissionTaskForm.get('AdmissionTime').setValue(contact.AdmissionDate);
+     
+
+    this._matDialog.open(this.serviceTable, {
+      maxHeight: "55vh",
+      maxWidth: '90vh',
+      
+    })
+  }
+  oncloseservice() {
+    // this._.close(this.serviceTable);
+  }
+
+
+  onClose() {
+    this._matDialog.closeAll()
   }
 }
 
