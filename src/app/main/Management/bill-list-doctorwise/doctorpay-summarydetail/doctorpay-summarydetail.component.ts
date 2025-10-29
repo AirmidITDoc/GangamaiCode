@@ -122,7 +122,7 @@ export class DoctorpaySummarydetailComponent {
 
 
   getBilldetailList() {
-    
+
     var vdata = {
       "first": 0,
       "rows": 20,
@@ -136,7 +136,7 @@ export class DoctorpaySummarydetailComponent {
         },
         {
           "fieldName": "FromDate",
-          "fieldValue":"2025-10-26",// this.fromDate,
+          "fieldValue": "2025-10-26",// this.fromDate,
           "opType": "Equals"
         },
         {
@@ -214,15 +214,15 @@ export class DoctorpaySummarydetailComponent {
 
   isSomeSelected() {
     console.log(this.selection.selected);
-     console.log(this.resultSource);
+    console.log(this.resultSource);
     return this.selection.selected.length > 0;
   }
 
   selection = new SelectionModel<BillListForDocShrList>(true, []);
   Save() {
 
-   console.log(this.selection.selected);
-     console.log(this.resultSource);
+    console.log(this.selection.selected);
+    console.log(this.resultSource);
     if (this.selection.selected.length == 0) {
       this.toastr.warning('CheckBox Select !', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
@@ -301,7 +301,7 @@ export class BillListForDocShrList {
   hospitalAmt: any;
   addChargeDrName: any;
   chargesId: any;
-chargeId: any;
+  chargeId: any;
   pBillNo: any;
   serviceName: any;
   refundAmount: any;
@@ -343,8 +343,8 @@ chargeId: any;
     this.companyName = BillListForDocShrList.companyName || 0;
     this.lbl = BillListForDocShrList.lbl || '';
     this.isDoctorShareGenerated = BillListForDocShrList.isDoctorShareGenerated || 0;
-    this.chargeId= BillListForDocShrList.chargeId || 0;
-   
+    this.chargeId = BillListForDocShrList.chargeId || 0;
+
   }
 }
 

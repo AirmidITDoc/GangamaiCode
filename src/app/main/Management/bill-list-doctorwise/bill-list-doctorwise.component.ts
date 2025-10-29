@@ -172,13 +172,11 @@ export class BillListDoctorwiseComponent {
   ///Summary pay
   allColumns1 = [
 
-    { heading: "AddChargeDrName", key: "addChargeDrName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
+    { heading: "DoctorName", key: "addChargeDrName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
     { heading: "Net Amount", key: "netAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, width: 125 },
-    { heading: "Doctor Amount", key: "docAmt", sort: true, align: 'left', emptySign: 'NA', width: 250 },
-
-    { heading: "Hospital Amount", key: "hospitalAmt", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-    {
-      heading: "Action", key: "action", align: "right", width: 150, sticky: true, type: gridColumnTypes.template,
+    { heading: "Doctor Amount", key: "docAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, width: 250 },
+    { heading: "Hospital Amount", key: "hospitalAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, width: 200 },
+    { heading: "Action", key: "action", align: "right", width: 150, sticky: true, type: gridColumnTypes.template,
       template: this.actionButtonTemplate1  // Assign ng-template to the column
     }
   ]
@@ -232,24 +230,6 @@ export class BillListDoctorwiseComponent {
 
 
   onHold(row: any = null) {
-    //  const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
-    //  buttonElement.blur(); // Remove focus from the button
-
-    //  let that = this;
-    // const dialogRef = this._matDialog.open(NewconfigComponent,
-    //     {
-    //         maxWidth: "95vw",
-    //         height: '95%',
-    //         width: '95%',
-    //         data: row
-    //     });
-    // dialogRef.afterClosed().subscribe(result => {
-    //     if (result) {
-    //         that.grid.bindGridData();
-    //     }
-    // });
-
-
     Swal.fire({
       title: 'Do you want to Hold Bill ',
       text: "You won't be able to revert this!",
@@ -304,15 +284,14 @@ export class BillListDoctorwiseComponent {
   ///Summary pay
   allColumns2 = [
 
-    { heading: "AddCharge DrName", key: "addChargeDrName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
-    { heading: "BillNo", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA', width: 125 },
-    { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
-    { heading: "Service Name", key: "serviceName", sort: true, align: 'left', emptySign: 'NA', width: 125 },
-    { heading: "Net Amount", key: "netAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, width: 125 },
-    { heading: "Doctor Amount", key: "docAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, width: 125 },
-    { heading: "Hospital Amount", key: "hospitalAmt", sort: true, align: 'left', type: gridColumnTypes.amount, emptySign: 'NA', width: 125 },
-
-    { heading: "Refund Amount", key: "refundAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, width: 125 },
+    { heading: "Doctor Name", key: "addChargeDrName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
+    { heading: "BillNo", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA', width: 80 },
+    { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
+    { heading: "Service Name", key: "serviceName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
+    { heading: "Net Amount", key: "netAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, width: 100 },
+    { heading: "Doctor Amount", key: "docAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, width: 100 },
+    { heading: "Hospital Amount", key: "hospitalAmt", sort: true, align: 'left', type: gridColumnTypes.amount, emptySign: 'NA', width: 100 },
+    { heading: "Refund Amount", key: "refundAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, width: 100 },
     { heading: "Type", key: "lbl", sort: true, align: 'left', emptySign: 'NA', width: 200 },
 
     {

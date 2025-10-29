@@ -3,8 +3,7 @@
     <div class="modal-header accent">
         <div class="modal-header-content">
             <div class="modal-header-title">
-                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"> DoctorPay Summary detail
-                    List</span>
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"> Doctor Payout Summary </span>
             </div>
             <div class="modal-header-right">
                 <div class="comman-date-container">
@@ -45,12 +44,12 @@
                                   (change)="$event ? selection.toggle(contact) : null"
                                     [checked]="selection.isSelected(contact)">
                                 </mat-checkbox>
-                                <ng-template #noMLC>
+                                <!-- <ng-template #noMLC>
                                     <div
                                         style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;">
                                         <span>----</span>
                                     </div>
-                                </ng-template>
+                                </ng-template> -->
                             </td>
                         </ng-container>
 
@@ -82,19 +81,19 @@
                         </ng-container>
 
                         <ng-container matColumnDef="patientName">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-200">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
                                 Patient Name
                             </mat-header-cell>
-                            <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-200">
+                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                 <span> {{contact.patientName}}</span>
                             </mat-cell>
                         </ng-container>
 
                         <ng-container matColumnDef="serviceName">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-200">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm >
                                 Service Name
                             </mat-header-cell>
-                            <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-200">
+                            <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                 <span> {{contact.serviceName}}</span>
                             </mat-cell>
                         </ng-container>
@@ -105,7 +104,7 @@
                                 Net Amt
                             </mat-header-cell>
                             <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100">
-                                <span> {{contact.netAmount}}</span>
+                                <span> {{contact.netAmount | currency : 'INR'}}</span>
                             </mat-cell>
                         </ng-container>
 
@@ -114,7 +113,7 @@
                                 Doctor Amt
                             </mat-header-cell>
                             <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100">
-                                <span> {{contact.docAmt}}</span>
+                                <span> {{contact.docAmt | currency : 'INR'}}</span>
                             </mat-cell>
                         </ng-container>
 
@@ -123,7 +122,7 @@
                                 Hospital Amt
                             </mat-header-cell>
                             <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100">
-                                <span> {{contact.hospitalAmt}}</span>
+                                <span> {{contact.hospitalAmt | currency : 'INR'}}</span>
                             </mat-cell>
                         </ng-container>
 
@@ -132,13 +131,13 @@
                                 Refund Amt
                             </mat-header-cell>
                             <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100">
-                                <span> {{contact.refundAmount}}</span>
+                                <span> {{contact.refundAmount | currency : 'INR'}}</span>
                             </mat-cell>
                         </ng-container>
 
                         <ng-container matColumnDef="lbl">
                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-120">
-                                OPIpType
+                                Type
                             </mat-header-cell>
                             <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-120">
                                 <span> {{contact.lbl}}</span>
@@ -171,36 +170,25 @@
 
 
                     <div class="net-amt-section mb-2 mt-16">
-                        <div class="net-amt gap-12" style="margin-left:20%;">
+                        <div class="net-amt gap-12" style="margin-left:55%;">
 
                             <div class="net-amt-box">
                                 <span class="net-amt-label">No of Items :</span>
                                 <span class="net-amt-value">{{ count }}</span>
                             </div>
 
-
-                            <!-- <div class="net-amt-box">
-                                <div class="net-amt-label">Total Amt :</div>
-                                <div class="net-amt-value">{{ TotAmt | currency : 'INR':'symbol':'1.2-2' }}</div>
-                            </div> -->
-                            <!-- <div class="net-amt-box">
-                                <span class="net-amt-label">Concession Amt :</span>
-                                <span class="net-amt-value">{{ TotconAmt | currency : 'INR' }}</span>
-                            </div> -->
-
-
                             <div class="net-amt-box">
                                 <span class="net-amt-label">Total Net :</span>
                                 <span class="net-amt-value">{{ TotNetamt | currency : 'INR' }}</span>
                             </div>
-                            <div class="net-amt-box">
-                                <span class="net-amt-label">Doctor Amt :</span>
-                                <span class="net-amt-value">{{ TotDocAmt | currency :'INR' }}</span>
+                            <div class="final-amt-box">
+                                <span class="final-amt-label">Doctor Amt :</span>
+                                <span class="final-amt-value">{{ TotDocAmt | currency :'INR' }}</span>
                             </div>
 
-                            <div class="final-amt-box">
-                                <span class="final-amt-label">Hospiatl Amt :</span>
-                                <span class="final-amt-value">{{ TothospitalAmt | currency : 'INR'}}</span>
+                            <div class="net-amt-box">
+                                <span class="net-amt-label">Hospiatl Amt :</span>
+                                <span class="net-amt-value">{{ TothospitalAmt | currency : 'INR'}}</span>
                             </div>
                         </div>
                     </div>

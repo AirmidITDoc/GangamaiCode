@@ -23,21 +23,11 @@
                         </button>
                         <button mat-raised-button (click)="processDocShare()">Calculate Doctor Share
                         </button>
-
                     </div>
-
                 </div>
-
-
                 <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
                     <ng-template #actionButtonTemplate1 let-element>
-
                         <div fxLayout="row" fxLayoutAlign="center center">
-                            <!-- <mat-icon *ngIf="element.isBillShrHold==false" (click)="onHold(element)"
-                                matTooltip="Hold Bill">
-                                <img width="50px" height="50px" src="assets/images/logos/hold.png">
-                            </mat-icon> -->
-
                             <mat-icon (click)="Doctorbilldetail(element)" matTooltip=" Summary Detail">
                                 remove_red_eye
                             </mat-icon>
@@ -70,18 +60,16 @@
                 </div>
             </div>
         </mat-tab>
-        <!-- <mat-tab label="Browse Patient Bill List">
+        <mat-tab label="Doctor Wise Bill List">
             <div fusePerfectScrollbar
                 class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
                 dynamicTableHeight>
-
-
                 <div class="top-header header accent p-16" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
                     fxLayoutAlign.gt-xs="space-between center ">
                     <div class="top-header-info">
                         <div class="top-header-title">
                             <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                                Browse Patient Bill List
+                                Doctor Wise Bill List
                             </span>
                         </div>
                     </div>
@@ -89,108 +77,12 @@
                 </div>
 
                 <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
-                    <ng-template #actionsTemplate1 let-element>
-                        <div fxLayout="row" fxLayoutAlign="center center">
-                            <mat-icon *ngIf="element.patientType=='Self'" matTooltip="Patient Category Self">account_box
-                            </mat-icon>
-                            <mat-icon *ngIf="!element.patientType=='Self'" matTooltip="Patient Category other">business
-                            </mat-icon>
-                        </div>
 
-                    </ng-template>
-                    <ng-template #actionsTemplate let-element>
-                        <div fxLayout="row" fxLayoutAlign="center center">
-
-                            <mat-icon *ngIf="element.opdipdtype=='0'" matTooltip="OPD"
-                                class="pill orange-600 s-16">circle</mat-icon>
-
-                            <mat-icon *ngIf="element.opdipdtype=='1'" matTooltip="IPD"
-                                class="pill green-600 s-16">circle</mat-icon>
-                        </div>
-                    </ng-template>
-
-                    <ng-template #actionButtonTemplate let-element>
-
-                        <div fxLayout="row" fxLayoutAlign="center center">
-                            <mat-icon *ngIf="element.isBillShrHold==false" (click)="onHold(element)"
-                                matTooltip="Hold Bill">
-                                <img width="50px" height="50px" src="assets/images/logos/hold.png">
-                            </mat-icon>
-
-                            <mat-icon (click)="billdetail(element)" matTooltip=" Bill Detail">
-                                edit
-                            </mat-icon>
-                        </div>
-
-                    </ng-template>
-
-
-                    <airmid-table [gridConfig]="gridConfig" class="content" #ipBrowse>
-                        <ng-container filters>
-                            <form [formGroup]="_DoctorShareService.UserFormGroup">
-
-                                <airmid-datepicker [formGroup]="_DoctorShareService.UserFormGroup"
-                                    [isRangePicker]="true" formStartControlName="fromDate" formEndControlName="enddate"
-                                    [(fromValue)]="gridConfig.filters[0].fieldValue"
-                                    [(toValue)]="gridConfig.filters[1].fieldValue">
-                                </airmid-datepicker>
-
-                                <mat-form-field appearance="outline">
-                                    <mat-label>Pbill No.</mat-label>
-                                    <input matInput placeholder="PbillNo" autocomplete="off" formControlName="PbillNo"
-                                        (input)="onChangeFirst()" />
-                                    <button matSuffix mat-icon-button aria-label="Clear"
-                                        (click)="Clearfilter('PbillNo')">
-                                        <mat-icon>close</mat-icon>
-                                    </button>
-                                </mat-form-field>
-
-                                <airmid-dropdown label="Select Doctor Name" formControlName="DoctorID"
-                                    [(ngModel)]="gridConfig.filters[2].fieldValue"
-                                    [formGroup]="_DoctorShareService.UserFormGroup" (selectionChange)="ListView($event)"
-                                    (keyup)="ListView($event)" [mode]="autocompleteModedoctor">
-                                </airmid-dropdown>
-
-                                <mat-radio-group formControlName="OP_IP_Type" name="Radio" (change)="onChangeFirst()">
-                                    <mat-radio-button value="2">ALL</mat-radio-button>&nbsp;
-                                    <mat-radio-button value="0">OP</mat-radio-button>&nbsp;
-                                    <mat-radio-button value="1">IP</mat-radio-button>&nbsp;
-                                </mat-radio-group>
-
-                            </form>
-                        </ng-container>
-                    </airmid-table>
-                </div>
-            </div>
-        </mat-tab> -->
-
-
-           <mat-tab label="Browse Patient Bill List">
-            <div fusePerfectScrollbar
-                class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
-                dynamicTableHeight>
-
-
-                <div class="top-header header accent p-16" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
-                    fxLayoutAlign.gt-xs="space-between center ">
-                    <div class="top-header-info">
-                        <div class="top-header-title">
-                            <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                                Browse Patient Bill List
-                            </span>
-                        </div>
-                    </div>
-
-                </div>
-
-                <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
-                  
 
                     <ng-template #actionButtonTemplate2 let-element>
 
                         <div fxLayout="row" fxLayoutAlign="center center">
-                            <mat-icon  (click)="onHold(element)"
-                                matTooltip="Hold Bill">
+                            <mat-icon (click)="onHold(element)" matTooltip="Hold Bill">
                                 <img width="50px" height="50px" src="assets/images/logos/hold.png">
                             </mat-icon>
 
@@ -198,16 +90,16 @@
                                 edit
                             </mat-icon>
 
-                            
-                             <mat-icon (click)="EditAdditiondocpay(element)" matTooltip="Update AddON Charges">
+
+                            <mat-icon (click)="EditAdditiondocpay(element)" matTooltip="Update AddON Charges">
                                 edit
-                            </mat-icon> 
+                            </mat-icon>
                         </div>
 
                     </ng-template>
 
 
-                    <airmid-table [gridConfig]="gridConfig2"  class="content" #summarydetail>
+                    <airmid-table [gridConfig]="gridConfig2" class="content" #summarydetail>
                         <ng-container filters>
                             <form [formGroup]="_DoctorShareService.UserFormGroup">
 
@@ -217,14 +109,15 @@
                                     [(toValue)]="gridConfig2.filters[2].fieldValue">
                                 </airmid-datepicker>
 
-                              
+
                                 <airmid-dropdown label="Select Doctor Name" formControlName="DoctorID"
                                     [(ngModel)]="gridConfig2.filters[0].fieldValue"
-                                    [formGroup]="_DoctorShareService.UserFormGroup" (selectionChange)="ListView2($event)"
-                                    (keyup)="ListView2($event)" [mode]="autocompleteModedoctor">
+                                    [formGroup]="_DoctorShareService.UserFormGroup"
+                                    (selectionChange)="ListView2($event)" (keyup)="ListView2($event)"
+                                    [mode]="autocompleteModedoctor">
                                 </airmid-dropdown>
 
-                              
+
                             </form>
                         </ng-container>
                     </airmid-table>
