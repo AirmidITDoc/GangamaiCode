@@ -1,10 +1,9 @@
 import { DatePipe } from "@angular/common";
 import { Component, OnInit, ViewEncapsulation } from "@angular/core";
-import { UntypedFormBuilder } from "@angular/forms";
-import { MatDialog } from "@angular/material/dialog";
-import { MatTableDataSource } from "@angular/material/table";
+import { UntypedFormBuilder, UntypedFormGroup } from "@angular/forms";
 import { fuseAnimations } from "@fuse/animations";
-import { DashboardService } from "../dashboard.service";
+import Chart, { Color } from 'chart.js/auto';
+import { AuthenticationService } from "app/core/services/authentication.service";
 
 @Component({
     selector: "app-pharmacy-dashboard",
@@ -14,371 +13,499 @@ import { DashboardService } from "../dashboard.service";
     animations: fuseAnimations,
 })
 export class PharmacyDashboardComponent implements OnInit {
-  displayedColumns:string[]=[
-    'OPD',
-    'IPD',
-    'External',
-    'Company'
-  ]
-  displayedAdvaColumns:string[]=[
-    'Cash',
-    'Cheque',
-    'Online',
-    'Company'
-  ]
-  displayedBillColumns:string[]=[
-    'Cash',
-    'Cheque',
-    'Online',
-    'Company'
-  ]
-  displayedPurchaseColumns:string[]=[
-    'Cash',
-    'Cheque',
-    'Online',
-    'Company'
-  ]
-  displayedsupplierColumns:string[]=[
-    'SupplierName',
-    'InvoiceNo',
-    'Amount' 
-  ]
-    sIsLoading: any;
-    PharmStoreList: any = [];
-    dashCardsData: any = [];
+    
+    username: any;
+    dateFilterForm: UntypedFormGroup;
 
-    dsPharmaCountList= new MatTableDataSource
-    dsPharmaAdvancList = new MatTableDataSource
-    dsPharmaBillList = new MatTableDataSource
-    dsPharmaPurchaseList = new MatTableDataSource
-    dsPharmaSupplierList = new MatTableDataSource
+    // Static data for dashboard (NOT affected by date filter)
+    totalRevenue: number = 1250000;
+    weeklyRevenue: number = 285000;
+    monthlyRevenue: number = 1050000;
+    inventoryValue: number = 4500000;
+    lowStockItems: number = 15;
+    expiringMedicines: number = 8;
+    totalSuppliers: number = 45;
 
-  constructor(
-    public _DashboardService: DashboardService,
-    public datePipe: DatePipe,
-    private formBuilder: UntypedFormBuilder,
-    public _matDialog: MatDialog,
-  ) { }
-  ngOnInit(): void {
-    this.getPharmStoreList();
-  }
+    // Date-filtered data (AFFECTED by date filter)
+    totalOrders: number = 3456;
+    totalCustomers: number = 892;
+    pendingOrders: number = 23;
 
-  getPharmStoreList() {
-    this._DashboardService.getPharmStoreList().subscribe(data => {
-      this.PharmStoreList = data;
-      this._DashboardService.UseFrom.get('StoreId').setValue(this.PharmStoreList[0]);
-      this.fetchStaticData();
-      this.getPharCollSummStoreWiseDashboard()
-      this.fetchThreeMonSalesSumData();
-      this.getPieChart_CurrentValueData();
-      this.fetchLineChartData();
-    });
-  }
-  public getPharCollSummStoreWiseDashboard() {
-    var m_data = {
-      "FromDate": this.datePipe.transform(this._DashboardService.UseFrom.get("start").value, "yyyy-MM-dd 00:00:00.000") || '01/01/2020',
-      "ToDate": this.datePipe.transform(this._DashboardService.UseFrom.get("end").value, "yyyy-MM-dd 00:00:00.000") || '03/01/2024',
-      "StoreId": this._DashboardService.UseFrom.get("StoreId").value?.storeid ?? 0,
-    }
-    this._DashboardService.getPharCollSummStoreWiseDashboard(m_data).subscribe(data => {
-      this.dashCardsData = data;
-    });
-  }
+    // Charts
+    public weeklyRevenueChart: any;
+    public monthlyRevenueChart: any;
+    public ordersChart: any;
+    public customersChart: any;
+    public paymentModeChart: any;
+    public topMedicinesChart: any;
+    public stockValueChart: any;
+    public expiryChart: any;
+    public categoryChart: any;
 
-  onChangeStore() {
-    this.fetchStaticData();
-    this.fetchThreeMonSalesSumData();
-    this.getPharCollSummStoreWiseDashboard();
-    this.getPieChart_CurrentValueData();
-    this.fetchLineChartData();
-  }
-  onDateRangeChanged() {
-    this.fetchStaticData();
-    this.fetchThreeMonSalesSumData();
-    this.getPharCollSummStoreWiseDashboard();
-    this.getPieChart_CurrentValueData();
-    this.fetchLineChartData();
-  }
-
-    onChangeStatic(event) {
-        this.selectedStatic = event.value;
-        this.fetchStaticData();
-    }
-
-    staticOptions: any[] = [
-        { value: "CollectionAmount", viewValue: "Collection Amount" },
-        { value: "BillCount", viewValue: "Bill Count" },
+    // Weekly revenue data (last 7 days) - NOT affected by date filter
+    weeklyRevenueData = [
+        { day: 'Mon', revenue: 38000 },
+        { day: 'Tue', revenue: 42000 },
+        { day: 'Wed', revenue: 35000 },
+        { day: 'Thu', revenue: 48000 },
+        { day: 'Fri', revenue: 45000 },
+        { day: 'Sat', revenue: 52000 },
+        { day: 'Sun', revenue: 25000 }
     ];
 
-    selectedStatic = this.staticOptions[0].value;
+    // Monthly revenue data (last 12 months) - NOT affected by date filter
+    monthlyRevenueData = [
+        { month: 'Jan', revenue: 95000 },
+        { month: 'Feb', revenue: 88000 },
+        { month: 'Mar', revenue: 102000 },
+        { month: 'Apr', revenue: 98000 },
+        { month: 'May', revenue: 115000 },
+        { month: 'Jun', revenue: 108000 },
+        { month: 'Jul', revenue: 125000 },
+        { month: 'Aug', revenue: 118000 },
+        { month: 'Sep', revenue: 105000 },
+        { month: 'Oct', revenue: 132000 },
+        { month: 'Nov', revenue: 128000 },
+        { month: 'Dec', revenue: 142000 }
+    ];
 
-    StaticChartConfig: any = {
-        gradient: true,
-        showLegend: true,
-        showLabels: true,
-        isDoughnut: true,
-        legendPosition: "below",
-        colorScheme: { domain: [] },
-        view: [300, 250],
-        data: [],
-    };
+    // Payment mode distribution - AFFECTED by date filter
+    paymentModeData = [
+        { mode: 'Cash', amount: 450000 },
+        { mode: 'Card', amount: 380000 },
+        { mode: 'Online', amount: 320000 },
+        { mode: 'Insurance', amount: 100000 }
+    ];
 
-    fetchStaticData() {
-        this.sIsLoading = "loading-data";
-        var m_data = {
-            FromDate:
-                this.datePipe.transform(
-                    this._DashboardService.UseFrom.get("start").value,
-                    "yyyy-MM-dd 00:00:00.000"
-                ) || "01/01/2020",
-            ToDate:
-                this.datePipe.transform(
-                    this._DashboardService.UseFrom.get("end").value,
-                    "yyyy-MM-dd 00:00:00.000"
-                ) || "03/01/2024",
-            StoreId:
-                this._DashboardService.UseFrom.get("StoreId").value?.storeid ??
-                0,
-            Mode: this.selectedStatic || "CollectionAmount",
-        };
-        console.log(m_data);
-        this._DashboardService
-            .getPharDashboardPeichart(
-                "m_pharPayModeColSummaryDashboard",
-                m_data
-            )
-            .subscribe(
-                (data : any) => {
-                    if(data && data.data.length){
-                        for(let item of data.data){
-                            item.value = +item.value
+    // Top selling medicines - AFFECTED by date filter
+    topMedicinesData = [
+        { name: 'Paracetamol', sales: 12500 },
+        { name: 'Amoxicillin', sales: 9800 },
+        { name: 'Ibuprofen', sales: 8500 },
+        { name: 'Metformin', sales: 7200 },
+        { name: 'Aspirin', sales: 6800 }
+    ];
+
+    // Inventory status - NOT affected by date filter
+    inventoryData = [
+        { category: 'In Stock', count: 450 },
+        { category: 'Low Stock', count: 15 },
+        { category: 'Out of Stock', count: 8 }
+    ];
+
+    // Medicine categories - NOT affected by date filter
+    categoryData = [
+        { category: 'Tablets', count: 250 },
+        { category: 'Syrups', count: 85 },
+        { category: 'Injections', count: 65 },
+        { category: 'Capsules', count: 120 },
+        { category: 'Ointments', count: 45 }
+    ];
+
+    // Expiring medicines - NOT affected by date filter
+    expiryData = [
+        { period: 'This Month', count: 8 },
+        { period: 'Next Month', count: 12 },
+        { period: '3 Months', count: 25 }
+    ];
+
+    // Stock value by category - NOT affected by date filter
+    stockValueData = [
+        { category: 'Antibiotics', value: 850000 },
+        { category: 'Pain Relief', value: 650000 },
+        { category: 'Diabetes Care', value: 720000 },
+        { category: 'Cardiac', value: 580000 },
+        { category: 'Others', value: 1700000 }
+    ];
+
+    constructor(
+        public datePipe: DatePipe,
+        private formBuilder: UntypedFormBuilder,
+        public _accountServices: AuthenticationService
+    ) { 
+        // Initialize date filter form
+        this.dateFilterForm = this.formBuilder.group({
+            start: [new Date(new Date().setDate(new Date().getDate() - 30))],
+            end: [new Date()]
+        });
+    }
+
+    ngOnInit(): void {
+        this.username = this._accountServices.currentUserValue.userName
+            ? this._accountServices.currentUserValue.userName
+            : 'User';
+
+        // Initialize all charts after view is loaded
+        setTimeout(() => {
+            this.initializeCharts();
+        }, 100);
+    }
+
+    onDateRangeChanged(): void {
+        // This method will be called when date range changes
+        // Here you would filter the date-dependent data
+        console.log('Date range changed:', this.dateFilterForm.value);
+        
+        // For now, using static data
+        // When you add APIs, filter these data based on date:
+        // - totalOrders
+        // - totalCustomers
+        // - paymentModeData
+        // - topMedicinesData
+        
+        // Re-render affected charts
+        this.updateDateFilteredCharts();
+    }
+
+    updateDateFilteredCharts(): void {
+        // Update charts that are affected by date filter
+        if (this.ordersChart) {
+            this.ordersChart.destroy();
+        }
+        if (this.customersChart) {
+            this.customersChart.destroy();
+        }
+        if (this.paymentModeChart) {
+            this.paymentModeChart.destroy();
+        }
+        if (this.topMedicinesChart) {
+            this.topMedicinesChart.destroy();
+        }
+
+        // Reinitialize the affected charts
+        setTimeout(() => {
+            if (document.getElementById('ordersChart')) {
+                this.ordersChart = this.getLineChartData(
+                    'ordersChart',
+                    '#d1efad',
+                    '#c5e999',
+                    ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                    [45, 52, 48, 65, 58, 72, 38],
+                    'Days',
+                    'Orders'
+                );
+            }
+
+            if (document.getElementById('customersChart')) {
+                this.customersChart = this.getLineChartData(
+                    'customersChart',
+                    '#c5f1ef',
+                    '#a1e6e3',
+                    ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                    [28, 35, 32, 42, 38, 45, 25],
+                    'Days',
+                    'Customers'
+                );
+            }
+
+            if (document.getElementById('paymentModeChart')) {
+                this.paymentModeChart = this.getPaymentDoughnutChart();
+            }
+
+            if (document.getElementById('topMedicinesChart')) {
+                this.topMedicinesChart = this.getTopMedicinesChart();
+            }
+        }, 100);
+    }
+
+    initializeCharts(): void {
+        // Weekly Revenue Chart (NOT affected by date filter)
+        if (document.getElementById('weeklyRevenueChart')) {
+            this.weeklyRevenueChart = this.getLineChartData(
+                'weeklyRevenueChart',
+                '#d4bbf4',
+                '#c5aae6',
+                this.weeklyRevenueData.map(d => d.day),
+                this.weeklyRevenueData.map(d => d.revenue),
+                'Days',
+                'Revenue (₹)'
+            );
+        }
+
+        // Monthly Revenue Chart (NOT affected by date filter)
+        if (document.getElementById('monthlyRevenueChart')) {
+            this.monthlyRevenueChart = this.getLineChartData(
+                'monthlyRevenueChart',
+                '#f3ddb3',
+                '#ebcf9a',
+                this.monthlyRevenueData.slice(-7).map(d => d.month),
+                this.monthlyRevenueData.slice(-7).map(d => d.revenue),
+                'Months',
+                'Revenue (₹)'
+            );
+        }
+
+        // Orders Chart (AFFECTED by date filter)
+        if (document.getElementById('ordersChart')) {
+            this.ordersChart = this.getLineChartData(
+                'ordersChart',
+                '#d1efad',
+                '#c5e999',
+                ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                [45, 52, 48, 65, 58, 72, 38],
+                'Days',
+                'Orders'
+            );
+        }
+
+        // Customers Chart (AFFECTED by date filter)
+        if (document.getElementById('customersChart')) {
+            this.customersChart = this.getLineChartData(
+                'customersChart',
+                '#c5f1ef',
+                '#a1e6e3',
+                ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                [28, 35, 32, 42, 38, 45, 25],
+                'Days',
+                'Customers'
+            );
+        }
+
+        // Payment Mode Doughnut Chart (AFFECTED by date filter)
+        if (document.getElementById('paymentModeChart')) {
+            this.paymentModeChart = this.getPaymentDoughnutChart();
+        }
+
+        // Top Medicines Bar Chart (AFFECTED by date filter)
+        if (document.getElementById('topMedicinesChart')) {
+            this.topMedicinesChart = this.getTopMedicinesChart();
+        }
+
+        // Stock Value Chart (NOT affected by date filter)
+        if (document.getElementById('stockValueChart')) {
+            this.stockValueChart = this.getStockValueChart();
+        }
+
+        // Expiry Chart (NOT affected by date filter)
+        if (document.getElementById('expiryChart')) {
+            this.expiryChart = this.getExpiryChart();
+        }
+
+        // Category Chart (NOT affected by date filter)
+        if (document.getElementById('categoryChart')) {
+            this.categoryChart = this.getCategoryChart();
+        }
+    }
+
+    // Small line chart for cards
+    getLineChartData(chartId: string, backgroundColor: Color, borderColor: Color, labels: string[], data: number[], xAxisLabel?: string, yAxisLabel?: string) {
+        return new Chart(chartId, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [
+                    {
+                        label: 'Value',
+                        data: data,
+                        backgroundColor: backgroundColor,
+                        borderColor: borderColor,
+                        tension: 0.4,
+                        fill: true
+                    }
+                ]
+            },
+            options: {
+                maintainAspectRatio: false,
+                elements: { point: { radius: 2 } },
+                plugins: {
+                    legend: { display: false }
+                },
+                scales: {
+                    x: { 
+                        display: true,
+                        title: {
+                            display: !!xAxisLabel,
+                            text: xAxisLabel || '',
+                            font: {
+                                size: 10,
+                                weight: 'bold'
+                            }
+                        },
+                        grid: {
+                            display: false
+                        },
+                        ticks: {
+                            font: {
+                                size: 9
+                            }
+                        }
+                    },
+                    y: { 
+                        display: true,
+                        title: {
+                            display: !!yAxisLabel,
+                            text: yAxisLabel || '',
+                            font: {
+                                size: 10,
+                                weight: 'bold'
+                            }
+                        },
+                        grid: {
+                            display: true,
+                            color: 'rgba(0, 0, 0, 0.05)'
+                        },
+                        ticks: {
+                            font: {
+                                size: 9
+                            },
+                            callback: function(value: any) {
+                                if (Number(value) >= 1000) {
+                                    return '₹' + (Number(value) / 1000) + 'K';
+                                }
+                                return '₹' + value;
+                            }
                         }
                     }
-                    this.StaticChartConfig.data = data["data"] as any[];
-                    console.log(this.StaticChartConfig.data);
-                    this.StaticChartConfig.colorScheme.domain = data[
-                        "colors"
-                    ] as any[];
-                    this.sIsLoading = "";
-                },
-                (error) => {
-                    this.sIsLoading = "noPharSumData";
                 }
-            );
+            }
+        });
     }
 
-    CurrentValChartConfig: any = {
-        gradient: true,
-        showLegend: false,
-        showLabels: true,
-        isDoughnut: true,
-        legendPosition: "below",
-        colorScheme: { domain: ["#f44336", "#9c27b0", "#03a9f4", "#e91e63"] },
-        view: [300, 250],
-        data: [],
-    };
-
-    public getPieChart_CurrentValueData() {
-        var m_data = {
-            StoreId:
-                this._DashboardService.UseFrom.get("StoreId").value?.storeid ??
-                0, // this.pieChartCurStkData.currentRange,
-        };
-        this._DashboardService
-            .getPharDashboardPeichart(
-                "m_pharCurStockValueSummaryDashboard",
-                m_data
-            )
-            .subscribe((data) => {
-                this.CurrentValChartConfig.data = data["data"] as any[];
-                console.log(this.CurrentValChartConfig.data);
-                // this.CurrentValChartConfig.colorScheme.domain = data["colors"] as any[];
-            });
+    // Payment Mode Doughnut Chart
+    getPaymentDoughnutChart() {
+        return new Chart('paymentModeChart', {
+            type: 'doughnut',
+            data: {
+                labels: this.paymentModeData.map(d => d.mode),
+                datasets: [
+                    {
+                        backgroundColor: ['#FF3784', '#36A2EB', '#4BC0C0', '#F77825'],
+                        data: this.paymentModeData.map(d => d.amount)
+                    }
+                ]
+            },
+            options: {
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom'
+                    },
+                    tooltip: {
+                        enabled: true,
+                        callbacks: {
+                            label: function(context) {
+                                let label = context.label || '';
+                                if (label) {
+                                    label += ': ';
+                                }
+                                label += '₹' + context.parsed.toLocaleString('en-IN');
+                                return label;
+                            }
+                        }
+                    }
+                }
+            }
+        });
     }
 
-    ThreeMonSalesConfig: any = {
-        data: [],
-        multi: [],
-        view: [500, 300],
-        showXAxis: true,
-        showYAxis: true,
-        gradient: false,
-        showLegend: true,
-        showXAxisLabel: true,
-        xAxisLabel: "Store",
-        showYAxisLabel: true,
-        yAxisLabel: "Amount",
-        legendTitle: "Month",
-        showGridLines: true,
-        showDataLabel: true,
-        colorScheme: {
-            domain: ["#5AA454", "#C7B42C", "#AAAAAA"],
-            //['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA'],
-        },
-        onSelect: null,
-    };
+    // Top Medicines Horizontal Bar Chart
+    getTopMedicinesChart() {
+        return new Chart('topMedicinesChart', {
+            type: 'bar',
+            data: {
+                labels: this.topMedicinesData.map(d => d.name),
+                datasets: [
+                    {
+                        label: 'Sales Count',
+                        data: this.topMedicinesData.map(d => d.sales),
+                        backgroundColor: ['#ff5a8a', '#f6c542', '#3ecf8e', '#5ac8fa', '#a283f6']
+                    }
+                ]
+            },
+            options: {
+                indexAxis: 'y',
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false }
+                },
+                scales: {
+                    x: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    }
 
-  fetchThreeMonSalesSumData() {
-    this.ThreeMonSalesConfig.data = [];
-    this.ThreeMonSalesConfig.multi = [];
-    this.sIsLoading = 'loading-data';
-    var m_data = {
-      "StoreId": this._DashboardService.UseFrom.get("StoreId").value?.storeid?? 0,
+    // Stock Value by Category Chart
+    getStockValueChart() {
+        return new Chart('stockValueChart', {
+            type: 'bar',
+            data: {
+                labels: this.stockValueData.map(d => d.category),
+                datasets: [
+                    {
+                        label: 'Stock Value (₹)',
+                        data: this.stockValueData.map(d => d.value),
+                        backgroundColor: ['#9661db', '#e9ac1b', '#28af28', '#70c7bd', '#ff5a8a']
+                    }
+                ]
+            },
+            options: {
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function(value: any) {
+                                return '₹' + (Number(value) / 1000) + 'K';
+                            }
+                        }
+                    }
+                }
+            }
+        });
     }
-    this._DashboardService.getPharDashboardBarchart("m_pharlast3MonthSalesSummaryDashboard", m_data).subscribe(data => {
-      if ((this._DashboardService.UseFrom.get("StoreId").value?.storeid ?? 0) > 0) {
-        this.ThreeMonSalesConfig.data = data["data"] as any[];
-      }
-      else {
-        this.ThreeMonSalesConfig.multi = data["data"] as any[];
-      }
-      // this.ThreeMonSalesConfig.colorScheme.domain = data["color"] as any[];
-      this.sIsLoading = '';
-    }, error => {
-      this.sIsLoading = 'noPharSumData';
-    });
-  }
-  LineChartConfig: any = {
-    data: [],
-    multi: [],
-    view: [500, 300],
-    showXAxis: true,
-    showYAxis: true,
-    gradient: false,
-    showLegend: true,
-    showXAxisLabel: true,
-    xAxisLabel: 'Store',
-    showYAxisLabel: true,
-    yAxisLabel: 'Amount',
-    legendTitle: 'Month',
-    showGridLines: true,
-    showDataLabel: true,
-    timeline:false,
-    schemeType:"linear",
-    colorScheme : {
-      domain: ['#5AA454', '#E44D25', '#CFC0BB', '#7aa3e5', '#a8385d', '#aae3f5']
+
+    // Expiring Medicines Chart
+    getExpiryChart() {
+        return new Chart('expiryChart', {
+            type: 'doughnut',
+            data: {
+                labels: this.expiryData.map(d => d.period),
+                datasets: [
+                    {
+                        backgroundColor: ['#ff5a8a', '#f6c542', '#3ecf8e'],
+                        data: this.expiryData.map(d => d.count)
+                    }
+                ]
+            },
+            options: {
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom'
+                    }
+                }
+            }
+        });
     }
-  }
-  
-  fetchLineChartData() {
-    this.LineChartConfig.data = [];
-    this.LineChartConfig.multi = [];
-    this.sIsLoading = 'loading-data';
-    var m_data = {
-      "StoreId": this._DashboardService.UseFrom.get("StoreId").value?.storeid?? 0,
+
+    // Medicine Categories Chart
+    getCategoryChart() {
+        return new Chart('categoryChart', {
+            type: 'pie',
+            data: {
+                labels: this.categoryData.map(d => d.category),
+                datasets: [
+                    {
+                        backgroundColor: ['#9661db', '#e9ac1b', '#28af28', '#70c7bd', '#ff5a8a'],
+                        data: this.categoryData.map(d => d.count)
+                    }
+                ]
+            },
+            options: {
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom'
+                    }
+                }
+            }
+        });
     }
-    this._DashboardService.getPharDashboardBarchart("m_PharSalesMonthWiseSummaryDashboard", m_data).subscribe(data => {
-      if ((this._DashboardService.UseFrom.get("StoreId").value?.storeid ?? 0) > 0) {
-        this.LineChartConfig.data = data["data"] as any[];
-      }
-      else {
-        this.LineChartConfig.multi = data["data"] as any[];
-      }
-     // this.LineChartConfig.colorScheme.domain=data["colors"] as any[];
-      this.sIsLoading = '';
-    }, error => {
-      this.sIsLoading = 'noPharSumData';
-    });
-  }
 }
-// export class PharDashSummary {
-//   StoreName: number;
-//   CollectionAmount: any;
-//   RefundAmount: number;
-//   NetAmount: any;
 
-//   constructor(PharDashSummary) {
-//     this.StoreName = PharDashSummary.StoreName || 0;
-//     this.CollectionAmount = PharDashSummary.CollectionAmount || 0;
-//     this.RefundAmount = PharDashSummary.RefundAmount || 0;
-//     this.NetAmount = PharDashSummary.NetAmount || 0;
-//   }
-// }
-// export class PieChartOPData {
-//   currentRange = 'Todays';
-//   mainChart = {
-//     'Todays': [],
-//     'Last Weeks': [],
-//     'Last Month': []
-//   };
-//   footerLeft = {
-//     title: '',
-//     count: 0
-//   };
-//   footerRight = {
-//     title: '',
-//     count: 0
-//   };
-// }
-
-// export class pieChartCurStkData {
-//   currentRange = 'Todays';
-//   mainChart = {
-//     'Todays': [],
-//     'Last Weeks': [],
-//     'Last Month': []
-//   };
-//   footerLeft = {
-//     title: '',
-//     count: 0
-//   };
-//   footerRight = {
-//     title: '',
-//     count: 0
-//   };
-// }
-// export class PathTestSummary {
-//   StoreName: string;
-//   CollectionAmount: number;
-//   RefundAmount: number;
-//   NetAmount :number;
-//   BillCount: number;
-
-//   constructor(PathTestSummary) {
-//     this.StoreName = PathTestSummary.StoreName || '';
-//     this.CollectionAmount = PathTestSummary.CollectionAmount || 0;
-//     this.RefundAmount = PathTestSummary.RefundAmount || 0;
-//     this.NetAmount = PathTestSummary.NetAmount || 0;
-//     this.BillCount = PathTestSummary.BillCount || 0;
-//     }
-// }
-
-// export class PaymentSummary {
-//   StoreName: string;
-//   CashPay: number;
-//   ChequePay: number;
-//   OnlinePay :number;
-//   NetColAmt: number;
-
-//   constructor(PaymentSummary) {
-//     this.StoreName = PaymentSummary.StoreName || '';
-//     this.CashPay = PaymentSummary.CashPay || 0;
-//     this.ChequePay = PaymentSummary.ChequePay || 0;
-//     this.OnlinePay = PaymentSummary.OnlinePay || 0;
-//     this.NetColAmt = PaymentSummary.NetColAmt || 0;
-
-//     }
-// }
-
-// export class Employee {
-//   StoreName: string;
-//   EmpCount: number;
-
-//   constructor(Employee) {
-//     this.StoreName = Employee.StoreName || '';
-//     this.EmpCount = Employee.EmpCount || 0;
-//   }
-// }
-
-// export class PathCateSummary {
-//   PathDate: Date;
-//   CategoryName:string;
-//   TCount: number;
-
-//   constructor(PathCateSummary) {
-//     this.PathDate = PathCateSummary.PathDate || '';
-//     this.CategoryName = PathCateSummary.CategoryName || 0;
-//     this.TCount = PathCateSummary.TCount || 0 ;
-
-//     }
-// }

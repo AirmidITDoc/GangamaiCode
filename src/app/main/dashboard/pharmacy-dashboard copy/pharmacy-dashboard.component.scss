@@ -1,0 +1,84 @@
+@media (max-width: 480px) {
+    .MatcardContent {
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    .Spinner {
+        margin-left: 10px;
+    }
+}
+
+// @media (min-width: 1025px) {
+//   .dashboard-project {
+//     font-size: 18px;
+//   }
+// }
+.card-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    align-items: center;
+}
+
+// Added by nikunj
+.dashboard-pharmacy {
+    .chart-card {
+        height: 400px;
+        .mat-card {
+            height: 100%;
+            .mat-card-header {
+                height: 45px;
+            }
+        }
+    }
+    .manual-css-chart {
+        ngx-charts-advanced-pie-chart {
+            .advanced-pie-legend-wrapper {
+                .advanced-pie-legend {
+                    .total-value {
+                        font-size: 32px;
+                        font-weight: 600;
+                    }
+                    .total-label {
+                    }
+                    .legend-items-container {
+                        max-height: 210px;
+                        overflow: auto;
+                        .legend-items {
+                            display: flex;
+                            flex-flow: column;
+                            gap: 8px;
+                            .legend-item {
+                                display: flex;
+                                flex-flow: row;
+                                align-items: center;
+                                .item-color {
+                                }
+                                .item-value {
+                                    flex: 1;
+                                }
+                                .item-label {
+                                    flex: 1;
+                                    font-size: 16px;
+                                }
+                                .item-percent {
+                                    font-weight: 600;
+                                    font-size: 20px;
+                                    // color: #00acc1;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    .ngx-charts {
+        text {
+            fill: currentColor;
+        }
+    }
+}
