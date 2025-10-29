@@ -29,6 +29,13 @@ import { fuseAnimations } from '@fuse/animations';
 import { BillRefundMaster } from 'app/main/ipd/ip-search-list/ip-refundof-bill/ip-refundof-bill.component';
 import { VisitMaster1 } from 'app/main/opd/appointment-list/appointment-list.component';
 import { BillDetails } from 'app/main/ipd/ip-search-list/company-bill/company-bill.component';
+import { EditPaymentComponent } from '../paymentmodechanges/edit-payment/edit-payment.component';
+import { AdmissiontaskComponent } from './admissiontask/admissiontask.component';
+import { AdmissionModule } from 'app/main/ipd/Admission/admission/admission.module';
+import { AdmissionPersonlModel } from 'app/main/ipd/Admission/admission/admission.component';
+import { EditConsultantDoctorComponent } from 'app/main/opd/appointment-list/edit-consultant-doctor/edit-consultant-doctor.component';
+import { EditRefranceDoctorComponent } from 'app/main/opd/appointment-list/edit-refrance-doctor/edit-refrance-doctor.component';
+import { AppointmenttaskComponent } from './appointmenttask/appointmenttask.component';
 
 @Component({
   selector: 'app-new-administrative-task',
@@ -64,9 +71,9 @@ export class NewAdministrativeTaskComponent {
   vRegId: any
   vbillNo: any
 
-  //
+  OPIPType = 1
 
-  
+
   displayedColumns: string[] = [
     // 'action1',
     'VisitId',
@@ -75,6 +82,17 @@ export class NewAdministrativeTaskComponent {
     'DoctorName',
     'action'
   ];
+
+  displayedColumns5: string[] = [
+    // 'action1',
+    'AdmissionID',
+    'AdmissionTime',
+    'RegID',
+    'DoctorName',
+    'IPDNo',
+    'action'
+  ];
+
 
   displayedColumns1: string[] = [
     // 'action1',
@@ -91,7 +109,7 @@ export class NewAdministrativeTaskComponent {
     'PaymentId',
     'paymentDate',
     'ReceiptNo',
-   
+
     'action'
   ];
 
@@ -119,7 +137,9 @@ export class NewAdministrativeTaskComponent {
     'action'
   ];
 
-  dataSource=new MatTableDataSource<VisitMaster1>();
+  dataSource = new MatTableDataSource<VisitMaster1>();
+  dataSource1 = new MatTableDataSource<AdmissionPersonlModel>();
+  
   dataSourceBill = new MatTableDataSource<Bill>();
   dataSourcepayment = new MatTableDataSource<Payment>();
   dataSourceAdvance = new MatTableDataSource<AdvanceDetail>();
@@ -150,7 +170,7 @@ export class NewAdministrativeTaskComponent {
     this.myForm = this.createMyForm();
     this.myForm.markAllAsTouched();
 
-   
+
   }
 
 
@@ -164,124 +184,157 @@ export class NewAdministrativeTaskComponent {
   }
 
   onChangeRadio(event) {
-    debugger
+    
 
     if (this.myForm.get('opiptype').value == "0") {
       this.opiptype = false
-      // this.getOPBilldata()
-      // this.getOPpaymentdata()
+      this.OPIPType = 0
+     this.myForm.get('RegID').setValue('')
+     this.dataSource.data=[]
+     this.dataSource1.data=[]
+     this.dataSourceBill.data=[]
+     this.dataSourcepayment.data=[]
+
     }
     else {
       this.opiptype = true
-      // this.getIPBilldata()
-      // this.getIPpaymentdata()
+      this.OPIPType = 1
+       this.myForm.get('RegID').setValue('')
+        this.dataSource.data=[]
+     this.dataSource1.data=[]
+     this.dataSourceBill.data=[]
+     this.dataSourcepayment.data=[]
     }
   }
 
-  getOpPatientdata(){
-    debugger
-   var SelectQuery =
+  getOpPatientdata() {
+    
+    var SelectQuery =
+    {
+      "searchFields": [
         {
-            "searchFields": [
-                {
-                    "fieldName": "RegId",
-                    "fieldValue": String(this.vRegId),
-                    "opType": "Equals"
-                }
-            ],
-            "mode": "Admin_Visitlist"
+          "fieldName": "RegId",
+          "fieldValue": String(this.vRegId),
+          "opType": "Equals"
+        },
+        {
+          "fieldName": "OPIPType",
+          "fieldValue": String(this.OPIPType),
+          "opType": "Equals"
         }
+      ],
+      "mode": "Admin_Visitlist"
+    }
 
-        console.log(SelectQuery);
-        this._AdministrativetaskService.getPatientListOP(SelectQuery).subscribe(Visit => {
-          console.log(Visit)
-            this.dataSource.data = Visit as VisitMaster1[];
-           console.log(this.dataSource.data)
-            
-        });
+    console.log(SelectQuery);
+   
+    this._AdministrativetaskService.getPatientListOP(SelectQuery).subscribe(Visit => {
+      console.log(Visit)
+      if(Visit){
+        
+       if(!this.OPIPType){
+      this.dataSource.data = Visit as VisitMaster1[];
+      }
+    else{
+      this.dataSource1.data = Visit as AdmissionPersonlModel[];
+      console.log(this.dataSource1.data)
+    }}
+    });
+  }
+
+VistId=0
+  GetBillData(element) {
+    
+
+    if(element.VisitId)
+    this.VistId=element.VisitId
+  else
+     this.VistId=element.AdmissionID
+
+
+    var SelectQuery =
+    {
+      "searchFields": [
+        {
+          "fieldName": "VisitId",
+          "fieldValue": String(this.VistId),
+          "opType": "Equals"
+        },
+        {
+          "fieldName": "OPIPType",
+          "fieldValue": String(this.OPIPType),
+          "opType": "Equals"
+        }
+      ],
+      "mode": "Admin_VisitWiseBilllist"
+    }
+
+    console.log(SelectQuery);
+    this._AdministrativetaskService.getBillDetailList(SelectQuery).subscribe(data => {
+      this.dataSourceBill.data = data as Bill[];
+      console.log(this.dataSourceBill.data)
+
+    });
   }
 
 
-  GetBillData(element){
-    debugger
- var SelectQuery =
+  GetPaymentData(element) {
+    
+    var SelectQuery =
+    {
+      "searchFields": [
         {
-            "searchFields": [
-                {
-                    "fieldName": "VisitId",
-                    "fieldValue": String(element.VisitId),
-                    "opType": "Equals"
-                }
-            ],
-            "mode": "Admin_VisitWiseBilllist"
+          "fieldName": "BillNo",
+          "fieldValue": String(element.BillNo),
+          "opType": "Equals"
         }
+      ],
+      "mode": "Admin_VisitBillWisePaymentlist"
+    }
 
-        console.log(SelectQuery);
-        this._AdministrativetaskService.getBillDetailList(SelectQuery).subscribe(data => {
-            this.dataSourceBill.data = data as Bill[];
-           console.log(this.dataSourceBill.data)
-            
-        });
+    console.log(SelectQuery);
+    this._AdministrativetaskService.getPaymentDetailList(SelectQuery).subscribe(data => {
+      this.dataSourcepayment.data = data as Payment[];
+      console.log(this.dataSourcepayment.data)
+
+    });
   }
 
+  //   getOPBilldata() {
+  //     this.fromDate = this.datePipe.transform(this.myForm.get('startdate').value,"yyyy-MM-dd")
+  //     this.toDate = this.datePipe.transform(this.myForm.get('enddate').value,"yyyy-MM-dd")
+  // 
 
-   GetPaymentData(element){
-    debugger
- var SelectQuery =
-        {
-            "searchFields": [
-                {
-                    "fieldName": "BillNo",
-                    "fieldValue": String(element.BillNo),
-                    "opType": "Equals"
-                }
-            ],
-            "mode": "Admin_VisitBillWisePaymentlist"
-        }
+  //     var m_data = {
+  //       "first": 0,
+  //       "rows": 20,
+  //       "sortField": "BillNo",
+  //       "sortOrder": 0,
+  //       "filters": [
+  //         { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.StartsWith },
+  //         { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.StartsWith },
+  //         { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.GreaterThanOrEqual }, //year from 2021 to 2025
+  //         { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.GreaterThanOrEqual },
+  //         { fieldName: "Reg_No", fieldValue: this.vRegNo, opType: OperatorComparer.Equals },
+  //         { fieldName: "PBillNo", fieldValue: "%", opType: OperatorComparer.StartsWith },
+  //         { fieldName: "CompanyId", fieldValue: '0', opType: OperatorComparer.Equals }
+  //       ],
+  //       "Columns": [],
+  //       "exportType": "JSON"
+  //     }
 
-        console.log(SelectQuery);
-        this._AdministrativetaskService.getPaymentDetailList(SelectQuery).subscribe(data => {
-            this.dataSourcepayment.data = data as Payment[];
-           console.log(this.dataSourcepayment.data)
-            
-        });
-  }
-  
-//   getOPBilldata() {
-//     this.fromDate = this.datePipe.transform(this.myForm.get('startdate').value,"yyyy-MM-dd")
-//     this.toDate = this.datePipe.transform(this.myForm.get('enddate').value,"yyyy-MM-dd")
-// debugger
+  //     console.log(m_data);
+  //     this._AdministrativetaskService.OPBillDetailList(m_data).subscribe(Visit => {
+  //       this.dataSourceBill.data = Visit.data as Bill[];
+  //       console.log("ResultList:", this.dataSourceBill.data)
 
-//     var m_data = {
-//       "first": 0,
-//       "rows": 20,
-//       "sortField": "BillNo",
-//       "sortOrder": 0,
-//       "filters": [
-//         { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.StartsWith },
-//         { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.StartsWith },
-//         { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.GreaterThanOrEqual }, //year from 2021 to 2025
-//         { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.GreaterThanOrEqual },
-//         { fieldName: "Reg_No", fieldValue: this.vRegNo, opType: OperatorComparer.Equals },
-//         { fieldName: "PBillNo", fieldValue: "%", opType: OperatorComparer.StartsWith },
-//         { fieldName: "CompanyId", fieldValue: '0', opType: OperatorComparer.Equals }
-//       ],
-//       "Columns": [],
-//       "exportType": "JSON"
-//     }
-
-//     console.log(m_data);
-//     this._AdministrativetaskService.OPBillDetailList(m_data).subscribe(Visit => {
-//       this.dataSourceBill.data = Visit.data as Bill[];
-//       console.log("ResultList:", this.dataSourceBill.data)
-
-//     });
-//   }
+  //     });
+  //   }
 
 
   // getIPBilldata() {
 
-  //   debugger
+  //   
 
   //      this.fromDate = this.datePipe.transform(this.myForm.get('startdate').value,"yyyy-MM-dd")
   //   this.toDate = this.datePipe.transform(this.myForm.get('enddate').value,"yyyy-MM-dd")
@@ -405,7 +458,7 @@ export class NewAdministrativeTaskComponent {
   // }
 
   // getRefunddata() {
-  //   debugger
+  //   
   //   var m_data = {
   //     "first": 0,
   //     "rows": 20,
@@ -429,8 +482,83 @@ export class NewAdministrativeTaskComponent {
 
   //   });
   // }
+ DischargeCancel(contact) {
+    if (this.vRegNo == '0' || this.vRegNo == '' || this.vRegNo == undefined || this.vRegNo == null) {
+      this.toastr.warning('Please select patient', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-Warning',
+      });
+      return
+    }
+
+    Swal.fire({
+      title: 'Do you want to cancel the Discharge ',
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, Cancel it!"
+    }).then((result) => {
+      if (result.isConfirmed) {
+
+        let SubmitDate = {
+          "admissionID": contact.AdmissionID
+        }
+        console.log(SubmitDate)
+        this._AdministrativetaskService.SaveDischargeCancel(SubmitDate).subscribe(response => {
+          // this.resetform();
+        });
+      }
+    })
+  }
+
+  EditConsultant(contact){
+   const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+            buttonElement.blur(); // Remove focus from the button
+
+            let that = this;
+            const dialogRef = this._matDialog.open(EditConsultantDoctorComponent,
+                {
+                    maxWidth: "90vw",
+                    height: "430px",
+                    width: "80%",
+                    data: contact
+                });
+            dialogRef.afterClosed().subscribe(result => {
+               this.getOpPatientdata()
+            });
+  }
 
 
+   EditRefDoctor(contact){
+   const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+            buttonElement.blur(); // Remove focus from the button
+
+            let that = this;
+            const dialogRef = this._matDialog.open(EditRefranceDoctorComponent,
+                {
+                    maxWidth: "90vw",
+                    height: "430px",
+                    width: "80%",
+                    data: contact
+                });
+            dialogRef.afterClosed().subscribe(result => {
+               this.getOpPatientdata()
+            });
+  }
+VisitDateUpdate(contact){
+   console.log(contact)
+    const dialogRef = this._matDialog.open(AppointmenttaskComponent,
+      {
+        maxHeight: "35vh",
+        maxWidth: '90vh',
+        width: '100%',
+        data: contact
+      });
+    dialogRef.afterClosed().subscribe(result => {
+
+    });
+}
   PaymentDate(contact) {
     console.log(contact)
     const dialogRef = this._matDialog.open(DateUpdateComponent,
@@ -445,6 +573,22 @@ export class NewAdministrativeTaskComponent {
     });
   }
 
+
+  Admissiontask(contact) {
+    console.log(contact)
+    const dialogRef = this._matDialog.open(AdmissiontaskComponent,
+      {
+        maxHeight: "35vh",
+        maxWidth: '90vh',
+        width: '100%',
+        data: contact
+      });
+    dialogRef.afterClosed().subscribe(result => {
+
+    });
+  }
+
+
   toggleSidebar(name): void {
     this._fuseSidebarService.getSidebar(name).toggleOpen();
   }
@@ -456,6 +600,7 @@ export class NewAdministrativeTaskComponent {
   resultsLength = 0;
 
   BillCancle(contact) {
+    debugger
     if (this.myForm.get('opiptype').value == "0")
       this.BillCancelOP(contact)
     else
@@ -476,11 +621,12 @@ export class NewAdministrativeTaskComponent {
 
       if (result.isConfirmed) {
         let SubmitDate = {
-          "billNo": contact.billNo || 0
+          "billNo": contact.BillNo || 0
         }
+        debugger
         console.log("Json:", SubmitDate)
         this._AdministrativetaskService.OpCancelBill(SubmitDate).subscribe(response => {
-          // this.getOPBilldata()
+          // this.GetBillData()
         });
       }
     })
@@ -488,7 +634,7 @@ export class NewAdministrativeTaskComponent {
   }
 
   BillCancelIP(contact) {
-    debugger
+    
     console.log("Data:", contact)
     Swal.fire({
       title: 'Do you want to cancel the Final Bill ',
@@ -502,8 +648,9 @@ export class NewAdministrativeTaskComponent {
 
       if (result.isConfirmed) {
         let SubmitDate = {
-          "billNo": contact.billNo || 0
+          "billNo": contact.BillNo || 0
         }
+        debugger
         console.log("Json:", SubmitDate)
         this._AdministrativetaskService.IpCancelBill(SubmitDate).subscribe(response => {
           //  this.grid.bindGridData();
@@ -525,7 +672,7 @@ export class NewAdministrativeTaskComponent {
       cancelButtonColor: "#d33",
       confirmButtonText: "Yes, Cancel it!"
     }).then((result) => {
-      debugger
+      
       if (result.isConfirmed) {
         let SubmitDate = {
           "advanceId": contact.advanceId || 0,
@@ -566,19 +713,24 @@ export class NewAdministrativeTaskComponent {
   }
 
 
-  OnUpdatepayment(contact) {
-    const dialogRef = this._matDialog.open(DateUpdateComponent,
+  onEdit(row) {
+    console.log(row)
+    const dialogRef = this._matDialog.open(EditPaymentComponent,
       {
-        height: "35%",
-        width: '35%',
-        data: contact
+        height: "99%",
+        width: '80%',
+        data: {
+          registerObj: row,
+          FromName: "IP-PaymentModeChange"
+        },
 
       });
     dialogRef.afterClosed().subscribe(result => {
-    });
-    // this.grid1.bindGridData();
-  }
+      console.log('The dialog was closed - Insert Action', result);
+      // this.grid.bindGridData();
 
+    });
+  }
   registerObj = new RegInsert({});
 
   getSelectedObjIP(obj) {
@@ -607,35 +759,35 @@ export class NewAdministrativeTaskComponent {
       let extractedName = nameField.split('|')[0].trim();
       this.vPatientName = extractedName;
       this.AdmissionId = obj.admissionID
- this.getOpPatientdata()
+      this.getOpPatientdata()
 
     }
-   
+
 
   }
 
   getSelectedObjOP(obj) {
     console.log(obj);
 
-    debugger
+    
     if (obj) {
 
       setTimeout(() => {
         this._AdministrativetaskService.getRegistraionById(obj.regId).subscribe((response) => {
-          if(response){
-          this.registerObj = response;
-          this.vRegId = this.registerObj?.regId
-          this.vRegNo = this.registerObj?.regNo
-          this.vPatientName = this.registerObj?.firstName + " " + this.registerObj?.middleName + " " + this.registerObj?.lastName
-          this.vbillNo = this.registerObj.billNo;
+          if (response) {
+            this.registerObj = response;
+            this.vRegId = this.registerObj?.regId
+            this.vRegNo = this.registerObj?.regNo
+            this.vPatientName = this.registerObj?.firstName + " " + this.registerObj?.middleName + " " + this.registerObj?.lastName
+            this.vbillNo = this.registerObj.billNo;
             this.getOpPatientdata()
-          console.log(response)
+            console.log(response)
 
           }
         });
       }, 500);
     }
-   
+
   }
 
   OnAdmDateTimeUpdate() {
@@ -661,7 +813,7 @@ export class NewAdministrativeTaskComponent {
       //   this._DischargeCancelService.DischargeForm.get('AdmissionDate').setValue(formattedDate);
       //   let Admissiontime=formattedDate + ' ' + formattedTime
 
-      //   debugger
+      //   
       //   if (!this._DischargeCancelService.DischargeForm.invalid) {
       //     var data = {
       //       'admissionID': this.AdmissionId,

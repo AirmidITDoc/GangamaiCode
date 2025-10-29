@@ -30,11 +30,12 @@ export class DateUpdateComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    debugger
     if (this.data) {
-      debugger
+      
       console.log(this.data)
-      this.PaymentId = this.data.paymentId;
-      this.BillDate = this.data.billDate
+      this.PaymentId = this.data.PaymentId;
+      this.BillDate = this.data.BillDate
       console.log(this.PaymentId)
     }
   }

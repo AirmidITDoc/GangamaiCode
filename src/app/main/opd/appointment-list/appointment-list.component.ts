@@ -209,7 +209,7 @@ export class AppointmentListComponent implements OnInit {
         filters: this.allfilters
     }
 
-   
+
     onChangeFirst() {
 
         this.fromDate = this.datePipe.transform(this.myformSearch.get('fromDate').value, "yyyy-MM-dd")
@@ -901,6 +901,14 @@ export class VisitMaster1 {
     crossConsulFlag: any;
     mPbillNo: any;
     emrReady: any;
+
+    DoctorName: any;
+    HospitalName: any;
+    VisitDate: any;
+    VisitId: any;
+    VisitTime: any;
+
+
     /**
      * Constructor
      *
@@ -932,6 +940,13 @@ export class VisitMaster1 {
             this.crossConsulFlag = VisitMaster1.crossConsulFlag || 0;
             this.mPbillNo = VisitMaster1.mPbillNo || 0;
             this.emrReady = VisitMaster1.emrReady || 0
+
+
+            this.DoctorName = VisitMaster1.DoctorName || ''
+            this.HospitalName = VisitMaster1.HospitalName || ''
+            this.VisitDate = VisitMaster1.VisitDate || ''
+            this.VisitId = VisitMaster1.VisitId || 0
+            this.VisitTime = VisitMaster1.VisitTime || ''
 
         }
     }

@@ -95,6 +95,16 @@ public getPatientListOP(param){
     return this._httpClient.PostData("Common",param)
   }
 
+  public SaveDischargeCancel(employee){
+    return this._httpClient.PostData("Administration/IP_DISCHARGE_CANCELLATION", employee)
+  }
 
+public AdmissionCancel(data){
+  return this._httpClient.PostData("",data)
+}
+
+public getDateTimeChange(employee){
+  return this._httpClient.PutData("Administration/UpdateAdmissiondatetime"+ employee.admissionID, employee)
+}
 
 }

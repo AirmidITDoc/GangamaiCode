@@ -16,16 +16,16 @@ import { NewAdministrativeTaskComponent } from './new-administrative-task/new-ad
 
 const appRoutes: Routes = [
   {
-      path: "createuser",
-      loadChildren: () => import("./create-user/create-user.module").then((m) => m.CreateUserModule),
+    path: "createuser",
+    loadChildren: () => import("./create-user/create-user.module").then((m) => m.CreateUserModule),
   },
   {
     path: "configuration",
-   loadChildren: () => import("./configuration/configuration.module").then((m) => m.ConfigurationModule),
+    loadChildren: () => import("./configuration/configuration.module").then((m) => m.ConfigurationModule),
   },
   {
     path: "roletemplatemaster",
-   loadChildren: () => import("./role-template-master/role-template-master.module").then((m) => m.RoleTemplateMasterModule),
+    loadChildren: () => import("./role-template-master/role-template-master.module").then((m) => m.RoleTemplateMasterModule),
   },
   {
     path: "doctorshare",
@@ -33,69 +33,75 @@ const appRoutes: Routes = [
   },
   {
     path: "cancellation",
-    loadChildren: () => import("./cancellation/cancellation.module").then((m)=>m.CancellationModule),
+    loadChildren: () => import("./cancellation/cancellation.module").then((m) => m.CancellationModule),
   },
   {
     path: "reportconfiguration",
     loadChildren: () => import("./report-configuration/report-configuration.module").then((m) => m.ReportConfigurationModule),
   },
-   {
-    path:"dischargecancel",
-    loadChildren: () => import("./discharge-cancel/discharge-cancel.module").then((m) => m.DischargeCancelModule),
-   },
   {
-    path:"dischargecancel1",
-    loadChildren: () => import("./new-administrative-task/administrativetask.module").then((m) => m.AdministrativetaskModule),
-   },
-   {
-    path:"paymentmodechanges",
+    path: "dischargecancel",
+    loadChildren: () => import("./discharge-cancel/discharge-cancel.module").then((m) => m.DischargeCancelModule),
+  },
+  // {
+  //   path:"dischargecancel",
+  //   loadChildren: () => import("./new-administrative-task/administrativetask.module").then((m) => m.AdministrativetaskModule),
+  //  },
+  {
+    path: "paymentmodechanges",
     loadChildren: () => import("./paymentmodechanges/paymentmodechanges.module").then((m) => m.PaymentmodechangesModule),
-   },
-   {
-    path:"paymentmodechangesforpharmacy",
+  },
+  {
+    path: "paymentmodechangesforpharmacy",
     loadChildren: () => import("./paymentmodechangesfor-pharmacy/paymentmodechangesfor-pharmacy.module").then((m) => m.PaymentmodechangesforPharmacyModule),
-   },
-   {
-    path:"tallyinterface",
-    loadChildren: () => import("./tally-interface/tally-interface.module").then((m)=>m.TallyInterfaceModule),
-   },
-   {
-    path:"pharamacypayipadvmode", 
-    loadChildren: () => import("./pharmacypayipadvmode/pharmacypayipadvmode.module").then((m)=>m.PharmacypayipadvmodeModule),
-   },
+  },
+  //  {
+  //   path:"tallyinterface",
+  //   loadChildren: () => import("./tally-interface/tally-interface.module").then((m)=>m.TallyInterfaceModule),
+  //  },
+  {
+    path: "tallyinterface",
+    loadChildren: () => import("./new-administrative-task/administrativetask.module").then((m) => m.AdministrativetaskModule),
+  },
+
+
+  {
+    path: "pharamacypayipadvmode",
+    loadChildren: () => import("./pharmacypayipadvmode/pharmacypayipadvmode.module").then((m) => m.PharmacypayipadvmodeModule),
+  },
   //  {
   //   path:"scheduler",
   //   loadChildren: () => import("./scheduler/scheduler.module").then((m)=>m.NewScdulerModule),
   //  },
-   {
+  {
     path: "smsconfigrationtool",
     loadChildren: () => import("./smsconfuguration/smsconfuguration.module").then((m) => m.SMSConfugurationModule),
-},
-{
+  },
+  {
     path: "Template Description",
     loadChildren: () => import("./template-description/templatedescription.module").then((m) => m.TemplatedescriptionModule),
-},
-{
+  },
+  {
     path: "barcode-config",
     loadChildren: () => import("./barcode-config/barcodeconfig.module").then((m) => m.BarcodeConfigModule),
-},
-{
-  path: "import-excel",
-  loadChildren: () => import("./import-excel/import-excel.module").then((m) => m.ImportExcelModule),
-}
- 
+  },
+  {
+    path: "import-excel",
+    loadChildren: () => import("./import-excel/import-excel.module").then((m) => m.ImportExcelModule),
+  }
+
 ];
 
 @NgModule({
-  declarations: [ 
-    
-  
-    
+  declarations: [
+
+
+
   ],
   imports: [
     RouterModule.forChild(appRoutes),
     MatToolbarModule,
-    MatIconModule,MatTableModule,MatPaginatorModule,MatSortModule,MatCheckboxModule,MatButtonModule,CdkTreeModule,CdkTableModule,MatTreeModule,
+    MatIconModule, MatTableModule, MatPaginatorModule, MatSortModule, MatCheckboxModule, MatButtonModule, CdkTreeModule, CdkTableModule, MatTreeModule,
     SharedModule
   ]
 })
