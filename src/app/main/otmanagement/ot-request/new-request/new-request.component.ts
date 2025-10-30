@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, ElementRef, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormArray, FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { fuseAnimations } from '@fuse/animations';
@@ -23,13 +23,15 @@ export class NewRequestComponent implements OnInit {
   requestForm: FormGroup;
   requestSurgeryForm: FormGroup;
   requestAttendentForm: FormGroup;
+  requestDiagnosisForm: FormGroup;
 
   vSelectedOption: any = "OP";
 
   isActive: boolean = true;
   autocompleteModeDepartment: String = "Department";
-  autocompleteModeSiteDescriptionId: String = "SiteDescription";
-  autocompleteModeSurgeryCategory: String = "SurgeryCategory";
+  autocompleteModeSiteDescription: String = "SiteDescription";
+  autocompleteModeSurgeryCategory: String = "OttypeMaster";
+  // autocompleteModeSurgeryCategory: String = "SurgeryCategory";
   autocompleteModeDoctorSurgeon: String = "DoctorSurgion";
   autocompleteModeSurgeryMaster: String = "SurgeryMaster";
   autocompleteModeDoctorType: string = "DoctorType";
@@ -51,13 +53,14 @@ export class NewRequestComponent implements OnInit {
   surgeonId: any;
   surgeonName: any;
   doctorTypeId: any;
-  anesthesiaType: any;
+  doctorType: any;
   AnthId: any;
   AnthName: any;
   AnthId1: any;
   AnthName1: any;
   editIndex: number | null = null;
   editIndex1: number | null = null;
+  AllTypeDescription: any = []
 
   displayedColumns: string[] = [
     'surgeryCategoryId',
@@ -84,7 +87,7 @@ export class NewRequestComponent implements OnInit {
   registerObj: any;
   registerObj1 = new OtReqInsert({});
   BloodGroupNames: string[] = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
-  surgeryCategoryIdNames: string[] = ["Normal", "Emergency"];
+  // surgeryCategoryIdNames: string[] = ["Normal", "Emergency"];
   partTypes: string[] = ["Left", "Middle", "Right"];
 
   dssurgeryDetailList = new MatTableDataSource<OtReqInsert>();
@@ -113,6 +116,9 @@ export class NewRequestComponent implements OnInit {
 
     this.requestAttendentForm = this.createRequestAttendentArrayForm();
     this.reqAttendingArray.push(this.createRequestAttendentArrayForm())
+
+    this.requestDiagnosisForm = this.createRequestDignosis();
+    this.requestDignosisArray.push(this.createRequestDignosis())
 
 
     if ((this.data?.otBookingId) > 0) {
@@ -152,7 +158,7 @@ export class NewRequestComponent implements OnInit {
 
       console.log(this.registerObj)
       this.requestForm.patchValue(this.registerObj);
-      this.selectChangedoctorType(this.registerObj)
+      this.selectChangedepdoctorType(this.registerObj)
     }
   }
 
@@ -166,8 +172,8 @@ export class NewRequestComponent implements OnInit {
       bloodGroup: ['', [Validators.required]],
       categoryType: ["", [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       ottable: ["", [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],  // means location theater
-      surgeryDate: [],
-      estimateTime: [''],//"10:00:00AM",
+      surgeryDate: ['', [Validators.required]],
+      estimateTime: ['', [Validators.required]],//"10:00:00AM",
       diagnosis: [[], [Validators.required]],
       comments: [''],
       requestType: ['1'],
@@ -182,6 +188,7 @@ export class NewRequestComponent implements OnInit {
 
       tOtRequestSurgeryDetails: this._formBuilder.array([]),
       tOtRequestAttendingDetails: this._formBuilder.array([]),
+      tOtRequestDiagnoses: this._formBuilder.array([]),
 
       ////////surgery det parameters ////////////
       surgeryCategoryId: [''],
@@ -207,7 +214,7 @@ export class NewRequestComponent implements OnInit {
   }
 
   createRequestSurgeryArrayForm(element: any = {}): FormGroup {
-    debugger
+    // debugger
     return this._formBuilder.group({
       otrequestSurgeryDetId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       otrequestId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -217,7 +224,7 @@ export class NewRequestComponent implements OnInit {
       surgeryFromTime: [element.surgeryFromTime],
       surgeryEndTime: [element.surgeryEndTime],
       surgeryDuration: [element.surgeryDuration],
-      isPrimary: [element.isPrimary ?? false],
+      isPrimary: [String(element.isPrimary ?? false)],
       surgeonId: [element.surgeonId],
       anesthetistId: [element.anestheticsId],
     });
@@ -227,7 +234,7 @@ export class NewRequestComponent implements OnInit {
   }
 
   createRequestAttendentArrayForm(element: any = {}): FormGroup {
-    debugger
+    // debugger
     return this._formBuilder.group({
       otrequestAttendingDetId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       otrequestId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -237,6 +244,18 @@ export class NewRequestComponent implements OnInit {
   }
   get reqAttendingArray(): FormArray {
     return this.requestForm.get('tOtRequestAttendingDetails') as FormArray;
+  }
+
+  createRequestDignosis(element: any = {}): FormGroup {
+    return this._formBuilder.group({
+      otrequestDiagnosisDetId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      otrequestId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      descriptionType: [element.descriptionType ?? '', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
+      descriptionName: [element.descriptionName ?? '', [this._FormvalidationserviceService.allowEmptyStringValidator()]]
+    });
+  }
+  get requestDignosisArray(): FormArray {
+    return this.requestForm.get('tOtRequestDiagnoses') as FormArray;
   }
 
   keyPressAlphanumeric(event) {
@@ -325,10 +344,10 @@ export class NewRequestComponent implements OnInit {
   selectChangeAnesth(obj: any) {
     this.AnthName = obj.text
   }
-  selectChangeanesthesiaType(obj: any) {
-    this.anesthesiaType = obj.text
+  selectChangedoctorType(obj: any) {
+    this.doctorType = obj.text
   }
-  selectChangeAnesth1(obj: any) {
+  selectChangedoctor(obj: any) {
     this.AnthName1 = obj.text
   }
   /////////////////////////////// surgery detail part /////////////////////////////
@@ -410,9 +429,9 @@ export class NewRequestComponent implements OnInit {
     // if (this.surgeonName) {
     //   let surgeonEntry = {
     //     doctorTypeId: null,
-    //     anesthesiaType: "Surgeon",
+    //     doctorType: "Surgeon",
     //     anestheticsId1: newEntry.surgeonId,
-    //     anestheticsName1: this.surgeonName
+    //     doctorName: this.surgeonName
     //   };
     //   this.Chargelist1.push(surgeonEntry);
     // }
@@ -420,9 +439,9 @@ export class NewRequestComponent implements OnInit {
     // if (this.AnthName) {
     //   let anesthetistEntry = {
     //     doctorTypeId: null,
-    //     anesthesiaType: "Anesthetist",
+    //     doctorType: "Anesthetist",
     //     anestheticsId1: newEntry.anestheticsId,
-    //     anestheticsName1: this.AnthName
+    //     doctorName: this.AnthName
     //   };
     //   this.Chargelist1.push(anesthetistEntry);
     // }
@@ -530,9 +549,9 @@ export class NewRequestComponent implements OnInit {
     }
     let newEntry = {
       doctorTypeId: this.requestForm.get('doctorTypeId').value,//
-      anesthesiaType: this.anesthesiaType,
+      doctorType: this.doctorType,
       anestheticsId1: this.requestForm.get('doctorId').value, //
-      anestheticsName1: this.AnthName1,
+      doctorName: this.AnthName1,
     };
     // this.Chargelist.push(newEntry);
     if (this.editIndex1 !== null) {
@@ -547,7 +566,7 @@ export class NewRequestComponent implements OnInit {
       doctorTypeId: '',
       doctorId: ''
     });
-    this.anesthesiaType = '';
+    this.doctorType = '';
     this.AnthName1 = '';
   }
 
@@ -573,8 +592,8 @@ export class NewRequestComponent implements OnInit {
       doctorId: contact.anestheticsId1 ?? ''
     });
 
-    this.anesthesiaType = contact.anesthesiaType ?? '';
-    this.AnthName1 = contact.anestheticsName1 ?? '';
+    this.doctorType = contact.doctorType ?? '';
+    this.AnthName1 = contact.doctorName ?? '';
 
     // Remove this contact from list so it can be re-added after editing
     const index = this.Chargelist1.indexOf(contact);
@@ -594,10 +613,25 @@ export class NewRequestComponent implements OnInit {
     this.requestForm.get('otrequestId')?.setValue(this.vbookingId || 0);
     this.requestForm.get('otRequestDate').setValue(formattedDate);
     this.requestForm.get('otRequestTime').setValue(formattedTime);
+    this.requestForm.get('surgeryDate')?.setValue(this.datePipe.transform(this.requestForm.get('surgeryDate')?.value, 'yyyy-MM-dd'));
+
+    if (this.addDiagnolist.length > 0) {
+      this.addDiagnolist.forEach(element => {
+        this.AllTypeDescription.push({
+          descriptionName: element.descriptionName,
+          descriptionType: "Diagnosis"
+        });
+      });
+    }
 
     console.log(this.requestForm.value)
     if (!this.requestForm.invalid) {
       debugger
+      this.requestForm.get('opiptype')?.setValue(this.requestForm.get('opiptype')?.value === 'IP' ? '1' : '0');
+      this.requestForm.get('requestType')?.setValue(this.requestForm.get('requestType')?.value === '1' ? true : false);
+      this.requestForm.get('pacrequired')?.setValue(this.requestForm.get('pacrequired')?.value === '1' ? true : false);
+      this.requestForm.get('equipmentsRequired')?.setValue(this.requestForm.get('equipmentsRequired')?.value === '1' ? true : false);
+      this.requestForm.get('infective')?.setValue(this.requestForm.get('infective')?.value === '1' ? true : false);
 
       this.reqSurgeryArray.clear();
       if (this.dssurgeryDetailList.data.length === 0) {
@@ -613,17 +647,32 @@ export class NewRequestComponent implements OnInit {
         this.reqAttendingArray.push(this.createRequestAttendentArrayForm(item));
       });
 
-      const controlsToRemove = ['TheaterLocation', 'bodyPartId', 'surgeryCategoryId', 'surgeryId', 'surgeryPart', 'surgeryFromTime', 'surgeryEndTime', 'surgeryDuration', 'isPrimary',
-        'surgeonId', 'anesthetistId', 'recourceType', 'doctorTypeId', 'doctorId'];
-      controlsToRemove.forEach(controlName => {
-        this.requestForm.removeControl(controlName);
+      this.requestDignosisArray.clear();
+      this.AllTypeDescription.forEach(item => {
+        this.requestDignosisArray.push(this.createRequestDignosis(item));
       });
 
-      console.log(this.requestForm.value)
-      // this._OtRequestService.requestSave(this.requestForm.value).subscribe((response) => {
-      //   this.OnPrint(response)
-      //   this.onClear(true);
-      // });
+      this.requestDignosisArray.clear();
+      if (this.AllTypeDescription.length === 0) {
+        const requestDiagnosisForm: FormGroup = this.createRequestDignosis({});
+        this.requestDignosisArray.push(requestDiagnosisForm);
+      } else {
+        this.AllTypeDescription.forEach(element => {
+          const requestDiagnosisForm: FormGroup = this.createRequestDignosis(element);
+          this.requestDignosisArray.push(requestDiagnosisForm);
+        });
+      }
+
+      const formValue = { ...this.requestForm.value };
+      const controlsToRemove = ['TheaterLocation', 'bodyPartId', 'surgeryCategoryId', 'surgeryId', 'surgeryPart', 'surgeryFromTime', 'surgeryEndTime', 'surgeryDuration', 'isPrimary',
+        'surgeonId', 'anesthetistId', 'recourceType', 'doctorTypeId', 'doctorId', 'diagnosis'];
+      controlsToRemove.forEach(key => delete formValue[key]);
+
+      console.log(formValue)
+      this._OtRequestService.requestSave(formValue).subscribe((response) => {
+        this.OnPrint(response)
+        this.onClear(true);
+      });
     } else {
       let invalidFields: string[] = [];
 
@@ -653,7 +702,7 @@ export class NewRequestComponent implements OnInit {
     }
   }
 
-  selectChangedoctorType(obj: any) {
+  selectChangedepdoctorType(obj: any) {
     if (obj.value) {
       this._OtRequestService.getSurgeonsByDoctorType(obj.value).subscribe((data: any[]) => {
         this.surgeonList.options = data;
@@ -743,6 +792,10 @@ export class NewRequestComponent implements OnInit {
     // this.requestForm.reset();
     this.dialogRef.close(val);
     this.requestForm.get('opiptype').setValue('OP')
+    this.requestForm.get('requestType').setValue('1')
+    this.requestForm.get('pacrequired').setValue('1')
+    this.requestForm.get('equipmentsRequired').setValue('1')
+    this.requestForm.get('infective').setValue('1')
   }
 
   onChangeDuration(event: any) {
@@ -809,6 +862,96 @@ export class NewRequestComponent implements OnInit {
   pad(num: number): string {
     return num.toString().padStart(2, '0');
   }
+  selectedImage: string | null = null;
+  penColor: string = '#ff0000';
+  penSize: number = 3;
+
+  @ViewChild('canvas', { static: false }) canvas!: ElementRef<HTMLCanvasElement>;
+  private ctx!: CanvasRenderingContext2D | null;
+  private isDrawing = false;
+
+  openEditor(imageSrc: string) {
+    this.selectedImage = imageSrc;
+    setTimeout(() => this.loadImageOnCanvas(), 0);
+  }
+
+  private loadImageOnCanvas() {
+    const canvas = this.canvas.nativeElement;
+    this.ctx = canvas.getContext('2d');
+    const img = new Image();
+    img.src = this.selectedImage!;
+
+    img.onload = () => {
+      this.ctx?.clearRect(0, 0, canvas.width, canvas.height);
+      this.ctx?.drawImage(img, 0, 0, canvas.width, canvas.height);
+    };
+
+    // Remove previous listeners
+    canvas.replaceWith(canvas.cloneNode(true));
+    const newCanvas = (this.canvas.nativeElement = document.querySelector('canvas')!);
+    this.ctx = newCanvas.getContext('2d');
+    img.onload = () => {
+      this.ctx?.clearRect(0, 0, newCanvas.width, newCanvas.height);
+      this.ctx?.drawImage(img, 0, 0, newCanvas.width, newCanvas.height);
+    };
+
+    // --- Drawing Events ---
+    newCanvas.addEventListener('mousedown', (e) => this.startDrawing(e));
+    newCanvas.addEventListener('mousemove', (e) => this.draw(e));
+    newCanvas.addEventListener('mouseup', () => this.stopDrawing());
+    newCanvas.addEventListener('mouseleave', () => this.stopDrawing());
+  }
+
+  private startDrawing(event: MouseEvent) {
+    this.isDrawing = true;
+    const rect = this.canvas.nativeElement.getBoundingClientRect();
+    this.ctx?.beginPath();
+    this.ctx?.moveTo(event.clientX - rect.left, event.clientY - rect.top);
+  }
+
+  private draw(event: MouseEvent) {
+    if (!this.isDrawing || !this.ctx) return;
+    const rect = this.canvas.nativeElement.getBoundingClientRect();
+    const x = event.clientX - rect.left;
+    const y = event.clientY - rect.top;
+
+    this.ctx.lineWidth = this.penSize;
+    this.ctx.lineCap = 'round';
+    this.ctx.strokeStyle = this.penColor;
+    this.ctx.lineTo(x, y);
+    this.ctx.stroke();
+  }
+
+  private stopDrawing() {
+    if (!this.ctx) return;
+    this.isDrawing = false;
+    this.ctx.closePath();
+  }
+
+  saveMarkedImage() {
+    const canvas = this.canvas.nativeElement;
+    const markedImage = canvas.toDataURL('image/png');
+    console.log(markedImage)
+    const link = document.createElement('a');
+    // link.download = 'marked-body.png';
+    // link.href = markedImage;
+    // link.click();
+  }
+
+  closeEditor() {
+    this.selectedImage = null;
+  }
+
+  clearCanvas() {
+    const canvas = this.canvas.nativeElement;
+    const img = new Image();
+    img.src = this.selectedImage!;
+    img.onload = () => {
+      this.ctx?.clearRect(0, 0, canvas.width, canvas.height);
+      this.ctx?.drawImage(img, 0, 0, canvas.width, canvas.height);
+    };
+  }
+
 }
 
 

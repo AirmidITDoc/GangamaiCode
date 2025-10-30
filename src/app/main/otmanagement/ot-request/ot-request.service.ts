@@ -26,33 +26,20 @@ export class OtRequestService {
             RegNo: []
         });
     }
-
-    // getOtRequestList(fromDate: string, toDate: string) {
-    //     return this._httpClient.PostData('OTBooking/OTBookingRequestEmergencyList', {
-    //         fromDate,
-    //         toDate
-    //     });
-    // }
-
-    populateForm(param) {
-        // this.personalFormGroup.patchValue(param);
-    }
+    
     public getSurgeonsByDoctorType(doctTypeId) {
         return this._httpClient.GetData("VisitDetail/DoctorTypeDoctorList?DocTypeId=" + doctTypeId)
     }
 
     public OnCancel(param) {
-        return this._httpClient.PostData('OTBooking/Cancel', param)
+        return this._httpClient.PostData('OTRequest/Cancel', param)
     }
     public requestSave(Param: any) {
         if (Param.otrequestId) {
-            return this._httpClient.PutData("OTBooking/Edit/" + Param.otrequestId, Param);
-        } else return this._httpClient.PostData("OTBooking/Insert", Param);
+            return this._httpClient.PutData("OTRequest/Edit/" + Param.otrequestId, Param);
+        } else return this._httpClient.PostData("OTRequest/Insert", Param);
     }
 
-    // public deactivateTheStatus(m_data) {
-    //     return this._httpClient.DeleteData("CityMaster?Id=" + m_data.toString());
-    // }
     public getReportView(Param) {
         return this._httpClient.PostData("Report/ViewReport", Param);
     }

@@ -189,7 +189,8 @@
                 <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start">
                     <mat-tab label="Details" class="gap-4">
                         <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 10px ;">
-                            <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="80%" fxLayout="row wrap" fxLayoutGap="4px grid">
+                            <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="80%" fxLayout="row wrap"
+                                fxLayoutGap="4px grid">
 
                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <mat-form-field appearance="outline" fxFlex>
@@ -204,7 +205,7 @@
 
                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <airmid-dropdown label="Category Type" formControlName="categoryType"
-                                        [formGroup]="requestForm" [value]="registerObj?.surgeryCategoryId"
+                                        [formGroup]="requestForm" [value]="registerObj?.categoryType"
                                         [mode]="autocompleteModeSurgeryCategory">
                                     </airmid-dropdown>
                                 </div>
@@ -325,13 +326,17 @@
                             <div fxFlexFill fxLayout="row" class="gap-8">
 
                                 <div fxFlex="10%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <mat-form-field appearance="outline" style="width: 100%;">
+                                    <!-- <mat-form-field appearance="outline" style="width: 100%;">
                                         <mat-label>Surgery Type</mat-label>
                                         <mat-select formControlName="surgeryCategoryId" name="surgeryCategoryId">
                                             <mat-option *ngFor="let i of surgeryCategoryIdNames" [value]="i">
                                                 {{i}}</mat-option>
                                         </mat-select>
-                                    </mat-form-field>
+                                    </mat-form-field> -->
+                                    <airmid-dropdown label="Surgery Type" formControlName="surgeryCategoryId"
+                                        [formGroup]="requestForm" [value]="registerObj?.surgeryCategoryId"
+                                        [mode]="autocompleteModeSiteDescription">
+                                    </airmid-dropdown>
                                 </div>
 
                                 <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
@@ -540,16 +545,16 @@
                                 </div>
 
                                 <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <airmid-dropdown label="Anesthesia Type" formControlName="doctorTypeId"
+                                    <airmid-dropdown label="Doctor Type" formControlName="doctorTypeId"
                                         [formGroup]="requestForm" [mode]="autocompleteModeAnesthesiatypes"
-                                        (selectionChange)="selectChangeanesthesiaType($event)">
+                                        (selectionChange)="selectChangedoctorType($event)">
                                     </airmid-dropdown>
                                 </div>
 
                                 <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <airmid-dropdown label="Anathesia doctor" formControlName="doctorId"
+                                    <airmid-dropdown label="Doctor Name" formControlName="doctorId"
                                         [formGroup]="requestForm" [mode]="autocompleteModeRefDoctor"
-                                        (selectionChange)="selectChangeAnesth1($event)">
+                                        (selectionChange)="selectChangedoctor($event)">
                                     </airmid-dropdown>
                                 </div>
 
@@ -569,20 +574,20 @@
                                     class="airmid-table">
 
                                     <ng-container matColumnDef="surgeon">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Surgeon
-                                            Name
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Doctor
+                                            Type
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                            <span> {{element.anesthesiaType}} </span>
+                                            <span> {{element.doctorType}} </span>
                                         </mat-cell>
                                     </ng-container>
 
                                     <ng-container matColumnDef="anesthesia">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
-                                            fxShow.gt-sm>Anesthesia Name
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Doctor
+                                            Name
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                            <span> {{element.anestheticsName1}} </span>
+                                            <span> {{element.doctorName}} </span>
                                         </mat-cell>
                                     </ng-container>
 
@@ -610,7 +615,40 @@
 
                         </mat-card>
                     </mat-tab>
+
                     <mat-tab label="Parts">
+                        <div fxLayout="column" fxLayoutGap="16px" fxLayoutAlign="start start" fxLayoutWrap
+                            style="height: auto;">
+                            <!-- Body Images -->
+                            <div class="surgery-parts pt-8">
+                                <img src="assets/images/logos/doctor.png"
+                                    (click)="openEditor('assets/images/logos/doctor.png')" />
+                                <img src="assets/images/logos/1.jpeg"
+                                    (click)="openEditor('assets/images/logos/1.jpeg')" />
+                                <img src="assets/images/logos/2.jpeg"
+                                    (click)="openEditor('assets/images/logos/2.jpeg')" />
+                            </div>
+
+                            <!-- Drawing Editor -->
+                            <div *ngIf="selectedImage" class="editor">
+                                <canvas #canvas width="500" height="600"></canvas>
+
+                                <div class="buttons" style="justify-content: space-around; display: flex;">
+                                    <button class="btn btn-primary" color="accent" (click)="saveMarkedImage()">
+                                        Save
+                                    </button>
+                                    <button mat-raised-button color="accent" (click)="clearCanvas()">
+                                        Clear
+                                    </button>
+                                    <button class="btn btn-danger-outline" (click)="closeEditor()">
+                                        Close
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </mat-tab>
+
+                    <!-- <mat-tab label="Parts">
                         <div fxLayout="column" fxLayoutGap="16px" fxLayoutAlign="start start" fxLayoutWrap
                             style="height: 200px;">
 
@@ -633,7 +671,7 @@
                             </div>
 
                         </div>
-                    </mat-tab>
+                    </mat-tab> -->
                 </mat-tab-group>
 
             </form>
@@ -645,7 +683,7 @@
         <div class="footer-navigation-container">
             <div class="modal-footer-buttons">
                 <button class="btn btn-danger-outline" (click)="onClear(false)">Close</button>
-                <button class="btn btn-primary " color="accent" (click)="onSubmit()">
+                <button class="btn btn-primary" color="accent" (click)="onSubmit()">
                     <span>Save</span>
                 </button>
             </div>
