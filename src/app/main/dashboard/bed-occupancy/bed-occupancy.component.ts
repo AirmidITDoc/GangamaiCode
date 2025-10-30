@@ -613,11 +613,11 @@ export class BedOccupancyComponent implements OnInit, OnDestroy {
             patient: this.extractStringValue(item.PatientName),
             admissionDate: this.extractStringValue(item.AdmissionDate),
             age: this.extractStringValue(item.Age),
-            sex: this.extractStringValue(item.Sex),
+            sex: this.extractStringValue(item.GenderName),
             icon: this.getBedIcon(item),
             department: this.selectedDepartment,
             // Additional API fields
-            regNo: this.extractStringValue(item.RegNo),
+            regNo: this.extractStringValue(item.UHID),
             doctorName: this.extractStringValue(item.DoctorName),
             roomName: this.extractStringValue(item.RoomName),
             wardName: this.extractStringValue(item.WardName)

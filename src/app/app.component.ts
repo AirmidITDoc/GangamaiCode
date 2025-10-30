@@ -275,11 +275,23 @@ export class AppComponent implements OnInit, OnDestroy {
             "mode": "NewSysConfig"  //SystemConfigList
         }
         this._httpClient1.PostData("Common", Params).subscribe(data => {
-           this.configSettingParam1 = data;
-                this.configService.setCongiParam(this.configSettingParam1[0]);
-                const [LogOutTimeID, LogOutTimeValue] =this.configService.configParams.SystemLogOutTime.split(":");
-                this.LogOutTimeID = LogOutTimeID
-                if(this.LogOutTimeID == 1){this.LogOutTimeValue = LogOutTimeValue}  
+            this.configSettingParam1 = data;
+            this.configService.setCongiParam(this.configSettingParam1[0]);
+            const [LogOutTimeID, LogOutTimeValue] = this.configService.configParams.SystemLogOutTime.split(":");
+            this.LogOutTimeID = LogOutTimeID
+            if (this.LogOutTimeID == 1) { this.LogOutTimeValue = LogOutTimeValue 
+            this.idle = new Idle().whenNotInteractive().within(this.LogOutTimeValue).do(() => {
+                this.url = this.router.url;
+                // console.log('this.url==', this.url);
+                if (this.url !== '/auth/login') {
+                    alert('You are being timed out due to inactivity. Please Log-In again.');
+                    this.authService.logout().subscribe((data) => { });
+                    this.dialogRef ? this.dialogRef.closeAll() : '';
+                    this.router.navigate(['auth/login'], { replaceUrl: true });
+                    //   this.logoutService();
+                }
+            }).start();
+            }
         });
     }
 

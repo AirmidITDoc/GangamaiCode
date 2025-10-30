@@ -95,20 +95,23 @@ export class IPBillingComponent implements OnInit {
         }
     ]
     AdvanceColumns = [
-        { heading: "Date", key: "date", sort: true, align: 'left', emptySign: 'NA', width: 200, type: 9 },
+        { heading: "Date", key: "date", sort: true, align: 'left', emptySign: 'NA', width: 110 },
+        { heading: "", key: "Time", sort: true, align: 'left', emptySign: 'NA', width: 110 },
         { heading: "Advance No", key: "advanceNo", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "Advance Amt", key: "advanceAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
         { heading: "UsedAmt", key: "usedAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
         { heading: "Balance Amt", key: "balanceAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
         { heading: "Refund Amt", key: "refundAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
         { heading: "User Name", key: "userName", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "Payment Date", key: "paymentDate", sort: true, align: 'left', emptySign: 'NA', width: 200, type: 9 },
+        { heading: "Payment Date", key: "paymentDate", sort: true, align: 'left', emptySign: 'NA', width:120 },
+        { heading: "", key: "PaymentTime", sort: true, align: 'left', emptySign: 'NA', width:120},
         { heading: "Cash Pay", key: "cashPayAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
         { heading: "Cheque Pay", key: "chequePayAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
         { heading: "Card Pay", key: "cardPayAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
-        { heading: "NEFT Pay", key: "neftPayAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
-        { heading: "PayTM Pay", key: "payTMAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
-        { heading: "Reason", key: "reason", sort: true, align: 'left', emptySign: 'NA', width: 300 },
+        // { heading: "NEFT Pay", key: "neftPayAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+        // { heading: "PayTM Pay", key: "payTMAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+        { heading: "Online Pay", key: "OnlineAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+        { heading: "Reason", key: "reason", sort: true, align: 'left', emptySign: 'NA', width: 190 },
         {
             heading: "Action", key: "action", align: "right", width: 80, sticky: true, type: gridColumnTypes.template,
             template: this.actionButtonTemplate  // Assign ng-template to the column
