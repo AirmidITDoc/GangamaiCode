@@ -73,7 +73,7 @@ export class OTRequestComponent implements OnInit {
     { fieldName: "ToDate", fieldValue: this.ToDate, opType: OperatorComparer.StartsWith },
   ]
   gridConfig: gridModel = {
-    apiUrl: "OTBooking/OtbookingRequestList",
+    apiUrl: "OTRequest/OtbookingRequestList",
     columnsList: this.allcolumns,
     sortField: "DoctorId",
     sortOrder: 0,
@@ -110,7 +110,7 @@ export class OTRequestComponent implements OnInit {
   }
 
   OnEdit(row) {
-    this._OtRequestService.populateForm(row);
+    // this._OtRequestService.populateForm(row);
     const dialogRef = this._matDialog.open(
       NewRequestComponent,
       {
@@ -129,7 +129,7 @@ export class OTRequestComponent implements OnInit {
     const param = {
       searchFields: [
         {
-          fieldName: "OTBookingId",
+          fieldName: "OTRequestId",
           fieldValue: String(Param.otBookingId),
           opType: "Equals"
         },
@@ -207,7 +207,7 @@ export class OTRequestComponent implements OnInit {
     this.FromDate = this.datePipe.transform(this.myFilterform.get('start').value, "yyyy-MM-dd")
     this.ToDate = this.datePipe.transform(this.myFilterform.get('end').value, "yyyy-MM-dd")
     this.gridConfig = {
-      apiUrl: "OTBooking/OtbookingRequestList",
+      apiUrl: "OTRequest/OtbookingRequestList",
       columnsList: this.allcolumns,
       sortField: "DoctorId",
       sortOrder: 0,

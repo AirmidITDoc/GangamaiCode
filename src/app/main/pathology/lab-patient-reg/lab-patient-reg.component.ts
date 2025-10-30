@@ -55,8 +55,7 @@ export class LabPatientRegComponent {
   }
 
   allcolumns = [
-    { heading: "Date", key: "emgDate", sort: true, align: 'left', emptySign: 'NA', type: 6 },
-    { heading: "Time", key: "emgTime", sort: true, align: 'left', emptySign: 'NA', type: 7 },
+    { heading: "Date-Time", key: "reqDateTime", sort: true, align: 'left', emptySign: 'NA'},
     { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
     { heading: "ageYear", key: "ageYear", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "MobileNo", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA' },
@@ -72,16 +71,16 @@ export class LabPatientRegComponent {
   ]
 
   allfilters = [
-    { fieldName: "From_Dt", fieldValue: "", opType: OperatorComparer.StartsWith },
-    { fieldName: "To_Dt", fieldValue: "", opType: OperatorComparer.StartsWith },
-    { fieldName: "FirstName", fieldValue: "%", opType: OperatorComparer.StartsWith },
-    { fieldName: "LastName", fieldValue: "%", opType: OperatorComparer.StartsWith },
+    { fieldName: "FromDate", fieldValue: "", opType: OperatorComparer.StartsWith },
+    { fieldName: "ToDate", fieldValue: "", opType: OperatorComparer.StartsWith },
+    // { fieldName: "FirstName", fieldValue: "%", opType: OperatorComparer.StartsWith },
+    // { fieldName: "LastName", fieldValue: "%", opType: OperatorComparer.StartsWith },
   ]
 
   gridConfig: gridModel = {
-    apiUrl: "",
+    apiUrl: "LabPatientRegistration/LabPatientRegistrationList",
     columnsList: this.allcolumns,
-    sortField: "EmgId",
+    sortField: "LabPatientId",
     sortOrder: 0,
     filters: this.allfilters
   }
@@ -98,23 +97,23 @@ export class LabPatientRegComponent {
   onChangeFirst() {
     this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd") || "01/01/1900"
     this.toDate = this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd") || "01/01/1900"
-    this.f_name = this.myFilterform.get('firstName').value + "%"
-    console.log(this.myFilterform.get('firstName').value)
-    this.l_name = this.myFilterform.get('L_Name').value + "%"
+    // this.f_name = this.myFilterform.get('firstName').value + "%"
+    // this.l_name = this.myFilterform.get('L_Name').value + "%"
     this.getfilterdata();
   }
 
   getfilterdata() {
     this.gridConfig = {
-      apiUrl: "",
+      apiUrl: "LabPatientRegistration/LabPatientRegistrationList",
       columnsList: this.allcolumns,
-      sortField: "EmgId",
+      sortField: "LabPatientId",
+      
       sortOrder: 0,
       filters: [
-        { fieldName: "From_Dt", fieldValue: this.fromDate || "1900-01-01", opType: OperatorComparer.StartsWith },
-        { fieldName: "To_Dt", fieldValue: this.toDate || "2100-12-31", opType: OperatorComparer.StartsWith },
-        { fieldName: "FirstName", fieldValue: this.f_name, opType: OperatorComparer.StartsWith },
-        { fieldName: "LastName", fieldValue: this.l_name, opType: OperatorComparer.StartsWith }
+        { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.StartsWith },
+        { fieldName: "ToDate", fieldValue: this.toDate, opType: OperatorComparer.StartsWith },
+        // { fieldName: "FirstName", fieldValue: this.f_name, opType: OperatorComparer.StartsWith },
+        // { fieldName: "LastName", fieldValue: this.l_name, opType: OperatorComparer.StartsWith }
       ]
     }
     this.grid.gridConfig = this.gridConfig;
@@ -201,7 +200,7 @@ export class LabPatientList {
   isMlc: any;
   convertedIntoAdm: any;
   age: any;
-  refdoctorId: any;
+  refDocId: any;
 
   constructor(LabPatientList) {
     {
@@ -229,7 +228,7 @@ export class LabPatientList {
       this.departmentId = LabPatientList.departmentId || 0
       this.docNameId = LabPatientList.docNameId || 0
       this.doctorId = LabPatientList.doctorId || 0
-      this.refdoctorId = LabPatientList.refdoctorId || 0
+      this.refDocId = LabPatientList.refDocId || 0
       this.genderID = LabPatientList.genderID || 0
       this.emgId = LabPatientList.emgId || 0
       this.comment = LabPatientList.comment || ''

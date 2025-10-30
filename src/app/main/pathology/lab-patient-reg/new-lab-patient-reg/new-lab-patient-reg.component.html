@@ -68,7 +68,7 @@
                                             [formGroup]="myForm" [maxLength]="50" [value]="registerObj?.firstName">
                                         </airmid-textbox> -->
                                         <airmid-autocomplete label="First Name" [formGroup]="myForm"
-                                            formControlName="firstName" placeholderText="First Name" fxFlex
+                                            formControlName="patientName" placeholderText="First Name" fxFlex
                                             ApiUrl="Sales/External-auto-complete?Keyword=" TextField="text"
                                             (selectionChange)="getSelectedObjextPatient($event)"></airmid-autocomplete>
                                     </div>
@@ -93,22 +93,22 @@
                                     </div>
 
                                     <div fxFlex="60%" fxFlex.xs="100%" fxFlex.sm="67%">
-                                        <app-airmid-dateofbirth [formGroup]="myForm" formControlName="DateOfBirth"
+                                        <app-airmid-dateofbirth [formGroup]="myForm" formControlName="dateofBirth"
                                             [(value)]="registerObj.dateofBirth" dateStyle="Year"
                                             (dateChange)="chkChange()"></app-airmid-dateofbirth>
                                     </div>
 
                                     <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <!-- <airmid-textbox label="MobileNo" formControlName="mobileNo"
+                                        <airmid-textbox label="MobileNo" formControlName="mobileNo"
                                             (keypress)="keyPressAlphanumeric($event)" [formGroup]="myForm"
                                             [maxLength]="10" [value]="registerObj?.mobileNo">
-                                        </airmid-textbox> -->
-                                        <airmid-autocomplete label="Mobile No" [formGroup]="myForm"
+                                        </airmid-textbox>
+                                        <!-- <airmid-autocomplete label="Mobile No" [formGroup]="myForm"
                                             formControlName="mobileNo" maxlength="10"
                                             placeholder="Enter 10 digit Mobile No." fxFlex TextField="text"
                                             ApiUrl="Sales/External-auto-complete?Keyword="
                                             (keypress)="allowOnlyDigits($event)"
-                                            (selectionChange)="getSelectedObjextMobile($event)"></airmid-autocomplete>
+                                            (selectionChange)="getSelectedObjextMobile($event)"></airmid-autocomplete> -->
                                     </div>
 
                                     <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
@@ -125,7 +125,7 @@
                                     </div>
 
                                     <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <airmid-dropdown label="StateId" formControlName="StateId" [formGroup]="myForm"
+                                        <airmid-dropdown label="State" formControlName="stateId" [formGroup]="myForm"
                                             ValueField="stateId" TextField="stateName" #ddlState
                                             [value]="registerObj?.stateId" ApiUrl="StateMaster/get-state"
                                             [readonly]="true">
@@ -133,7 +133,7 @@
                                     </div>
 
                                     <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <airmid-dropdown label="Country" formControlName="CountryId"
+                                        <airmid-dropdown label="Country" formControlName="countryId"
                                             [formGroup]="myForm" [value]="registerObj?.countryId" [disabled]="true"
                                             #ddlCountry [mode]="autocompleteModecountry" [readonly]="true">
                                         </airmid-dropdown>
@@ -169,9 +169,9 @@
                                     </div>
 
                                     <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <airmid-dropdown label="RefDoctor Name" formControlName="refdoctorId"
+                                        <airmid-dropdown label="RefDoctor Name" formControlName="refDocId"
                                             [formGroup]="myForm" [mode]="autocompleteModerefdoc"
-                                            [value]="registerObj?.refdoctorId">
+                                            [value]="registerObj?.refDocId">
                                         </airmid-dropdown>
                                     </div>
                                 </div>
@@ -282,7 +282,8 @@
                                 </div>
                                 <div fxFlex="10%" fxFlex.xs="100%" fxFlex.sm="100%">
                                     <airmid-textbox label="Discount %" formControlName="totalDiscountPer"
-                                        [formGroup]="myForm" [type]="'number'" min="0" (valueChange)="updateCalculation()">
+                                        [formGroup]="myForm" [type]="'number'" min="0"
+                                        (valueChange)="updateCalculation()">
                                     </airmid-textbox>
                                 </div>
                                 <div fxFlex="10%" fxFlex.xs="100%" fxFlex.sm="100%">
@@ -296,13 +297,6 @@
                                     </airmid-textbox>
                                 </div>
                             </div>
-                            <div class="radio-container">
-                                <mat-radio-group formControlName="paymentType" fxLayout="row" class="gap-4">
-                                    <mat-radio-button value="CashPay">Cash Payment</mat-radio-button>
-                                    <mat-radio-button value="CreditPay">Credit Payment</mat-radio-button>
-                                    <mat-radio-button value="PayOption">Pay Option</mat-radio-button>
-                                </mat-radio-group>
-                            </div>
                         </form>
                     </mat-card>
                 </div>
@@ -313,7 +307,15 @@
 
     <div class="modal-footer labpatientfooter">
         <div class="footer-navigation-container">
-            <div class="modal-footer-container" fxLayoutAlign="end">
+            <div class="modal-footer-container p-8" fxLayoutAlign="space-between">
+                <form [formGroup]="myForm">
+                    <mat-radio-group formControlName="paymentType" fxLayout="row" class="gap-4">
+                        <mat-radio-button value="CashPay">Cash Payment</mat-radio-button>
+                        <mat-radio-button value="CreditPay">Credit Payment</mat-radio-button>
+                        <mat-radio-button value="PayOption">Pay Option</mat-radio-button>
+                    </mat-radio-group>
+                </form>
+
                 <div class="modal-footer-buttons labpatientbtn">
                     <button class="btn btn-primary" (click)="onNewSave()">Save </button>
                     <button class="btn btn-danger-outline" (click)="onClose()">Close</button>

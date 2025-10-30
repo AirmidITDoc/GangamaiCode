@@ -42,4 +42,9 @@ export class LabPatientRegService {
   public getserviceList(param) {
     return this._httpClient.PostData("PathlogySampleCollection/PathRadServiceList", param);
   }
+    public labPatientSave(Param: any) {
+        if (Param.labPatientId) {
+            return this._httpClient.PutData("LabPatientRegistration/Edit/" + Param.labPatientId, Param);
+        } else return this._httpClient.PostData("LabPatientRegistration/Insert", Param);
+    }
 }
