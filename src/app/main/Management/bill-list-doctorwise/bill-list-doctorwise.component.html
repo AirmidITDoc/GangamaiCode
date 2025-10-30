@@ -23,13 +23,17 @@
                         </button>
                         <button mat-raised-button (click)="processDocShare()">Calculate Doctor Share
                         </button>
+                        <button mat-raised-button (click)="DefineDoctorShare()">Define Doctor Share
+                        </button>
                     </div>
                 </div>
                 <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
                     <ng-template #actionButtonTemplate1 let-element>
                         <div fxLayout="row" fxLayoutAlign="center center">
-                            <mat-icon (click)="Doctorbilldetail(element)" matTooltip=" Summary Detail">
-                                remove_red_eye
+                            <mat-icon (click)="Doctorbilldetail(element)" matTooltip="Summary Detail">
+                                <!-- remove_red_eye -->
+                                <img width="70px" height="70px" src="assets/images/logos/Docsharesummary.png">
+
                             </mat-icon>
                         </div>
 
@@ -37,20 +41,20 @@
                     <airmid-table [gridConfig]="gridConfig1" class="content" #summary>
                         <ng-container filters>
 
-                            <form [formGroup]="_DoctorShareService.DocSummaryfilterForm">
+                            <form [formGroup]="DocSummaryfilterForm">
 
-                                <airmid-datepicker [formGroup]="_DoctorShareService.DocSummaryfilterForm"
+                                <airmid-datepicker [formGroup]="DocSummaryfilterForm"
                                     [isRangePicker]="true" formStartControlName="fromDate" formEndControlName="enddate"
                                     [(fromValue)]="gridConfig1.filters[0].fieldValue"
                                     [(toValue)]="gridConfig1.filters[1].fieldValue">
                                 </airmid-datepicker>
 
-
-                                <airmid-dropdown label="Select Doctor Name" formControlName="DoctorID"
-                                    [(ngModel)]="gridConfig1.filters[2].fieldValue"
-                                    [formGroup]="_DoctorShareService.DocSummaryfilterForm"
-                                    (selectionChange)="ListView1($event)" (keyup)="ListView1($event)"
-                                    [mode]="autocompleteModedoctor1">
+ 
+                                <airmid-dropdown label="Doctor Name" formControlName="DoctorID"
+                                    [formGroup]="DocSummaryfilterForm" [(ngModel)]="gridConfig1.filters[2].fieldValue"
+                                    [validations]="getValidationdoctorMessages().searchDoctorId"
+                                    [mode]="autocompleteModedoctor1" (selectionChange)="ListView1($event)"
+                                    (keyup)="ListView1($event)">
                                 </airmid-dropdown>
 
 
@@ -60,6 +64,7 @@
                 </div>
             </div>
         </mat-tab>
+        <!-- //summarydetail -->
         <mat-tab label="Doctor Wise Bill List">
             <div fusePerfectScrollbar
                 class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
@@ -83,16 +88,16 @@
 
                         <div fxLayout="row" fxLayoutAlign="center center">
                             <mat-icon (click)="onHold(element)" matTooltip="Hold Bill">
-                                <img width="50px" height="50px" src="assets/images/logos/hold.png">
+                                <img width="50px" height="50px" src="assets/images/logos/Holdbill.png">
                             </mat-icon>
 
                             <mat-icon (click)="billdetail(element)" matTooltip="Bill Detail">
-                                edit
+                                <img width="30px" height="30px" src="assets/images/logos/Billdate.jpg">
                             </mat-icon>
 
 
                             <mat-icon (click)="EditAdditiondocpay(element)" matTooltip="Update AddON Charges">
-                                edit
+                                <img width="60px" height="60px" src="assets/images/logos/Addon.png">
                             </mat-icon>
                         </div>
 
@@ -101,9 +106,9 @@
 
                     <airmid-table [gridConfig]="gridConfig2" class="content" #summarydetail>
                         <ng-container filters>
-                            <form [formGroup]="_DoctorShareService.UserFormGroup">
+                            <form [formGroup]="DocSummarydetailfilterForm">
 
-                                <airmid-datepicker [formGroup]="_DoctorShareService.UserFormGroup"
+                                <airmid-datepicker [formGroup]="DocSummarydetailfilterForm"
                                     [isRangePicker]="true" formStartControlName="fromDate" formEndControlName="enddate"
                                     [(fromValue)]="gridConfig2.filters[1].fieldValue"
                                     [(toValue)]="gridConfig2.filters[2].fieldValue">
@@ -112,7 +117,7 @@
 
                                 <airmid-dropdown label="Select Doctor Name" formControlName="DoctorID"
                                     [(ngModel)]="gridConfig2.filters[0].fieldValue"
-                                    [formGroup]="_DoctorShareService.UserFormGroup"
+                                    [formGroup]="DocSummarydetailfilterForm"
                                     (selectionChange)="ListView2($event)" (keyup)="ListView2($event)"
                                     [mode]="autocompleteModedoctor">
                                 </airmid-dropdown>

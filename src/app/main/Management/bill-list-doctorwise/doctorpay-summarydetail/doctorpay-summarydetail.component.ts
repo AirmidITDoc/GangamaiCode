@@ -23,6 +23,7 @@ export class DoctorpaySummarydetailComponent {
 
   DoctorId = "1"
   doctorName: any;
+   Pbillno: any;
   sIsLoading: string = '';
   fromDate: any;
   toDate: any;
@@ -65,22 +66,17 @@ export class DoctorpaySummarydetailComponent {
     debugger
     this.ProcessForm = this.createcanteenInsertForm();
     this.ProcessForm.markAllAsTouched();
-
-
     this.ProcessdetailArray.push(this.createdetailForm());
-
     this._DoctorShareService.UserFormGroup.patchValue({
       startdate: oneMonthAgo
     });
-
-
 
     if (this.data) {
       console.log(this.data)
       this.fromDate = this.data.fromDate
       this.toDate = this.data.toDate
 
-      this.doctorName = this.data.addChargeDrName
+      // this.doctorName = this.data.addChargeDrName
 
       //  need to chk// this.DoctorId = this.data.obj.doctorId || 0
       this.getBilldetailList()
@@ -131,17 +127,18 @@ export class DoctorpaySummarydetailComponent {
       "filters": [
         {
           "fieldName": "DoctorId",
-          "fieldValue": "1",//String(this.DoctorId),
+          "fieldValue": String(this.DoctorId),
           "opType": "Equals"
         },
         {
           "fieldName": "FromDate",
-          "fieldValue": "2025-10-26",// this.fromDate,
+          "fieldValue": this.fromDate,// this.fromDate,
           "opType": "Equals"
         },
         {
           "fieldName": "ToDate",
-          "fieldValue": "2025-10-28",
+          "fieldValue": this.toDate,
+          
           "opType": "Equals"
         }
       ],
@@ -153,8 +150,12 @@ export class DoctorpaySummarydetailComponent {
     this._DoctorShareService.getSummarydetailList(vdata).subscribe(data => {
       this.Billdetaildatasource.data = data.data as BillListForDocShrList[]
       console.log(this.Billdetaildatasource.data)
-      if (this.Billdetaildatasource.data.length > 0)
+      if (this.Billdetaildatasource.data.length > 0){
+        debugger
+        this.doctorName=this.Billdetaildatasource.data[0].addChargeDrName
+        this.Pbillno=this.Billdetaildatasource.data[0].pBillNo
         this.getsumdetail()
+      }
     })
   }
 

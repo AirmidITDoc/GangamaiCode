@@ -344,7 +344,6 @@ export class RegInsert {
     ipdNo: any;
     genderName: any;
 
-
     /**
      * Constructor
      *
@@ -442,6 +441,7 @@ export class RegInsert {
             this.emgId = RegInsert.emgId || 0
             this.ipdNo = RegInsert.ipdNo || 0
             this.genderName = RegInsert.genderName || ''
+                  
         }
     }
 }

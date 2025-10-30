@@ -9,11 +9,13 @@ export class BillDoctorwiseService {
 UserFormGroup:FormGroup
 DocPrecessForm:FormGroup
 DocSummaryfilterForm:FormGroup
+DocSummarydetailfilterForm:FormGroup
   constructor( public _formBuilder: UntypedFormBuilder,
       public _httpClient: ApiCaller) {
         this.UserFormGroup=this.createUserFormGroup()
         this.DocPrecessForm=this.createProDocFormGroup()
         this.DocSummaryfilterForm=this.createDocSummaryFormGroup()
+        this.DocSummarydetailfilterForm=this.createDocSummarydetailFormGroup()
        }
 
   public deactivateTheStatus(m_data) {
@@ -50,10 +52,22 @@ createDocSummaryFormGroup() {
             DoctorID:0,
     })
   }
+  createDocSummarydetailFormGroup() {
+    return this._formBuilder.group({ 
+      fromDate: [(new Date()).toISOString()],
+      enddate: [(new Date()).toISOString()], 
+            DoctorID:0,
+    })
+  }
 
+     createMyForm() {
+        return this._formBuilder.group({
+          RegID: [0],
+          Op_ip_id: ['1'],
+          })
+      }
   
-
-  
+    
     public getBilldetailList(param) {
 
         return this._httpClient.PostData("DoctorPAy/DoctorBilldetailList", param)
@@ -70,7 +84,7 @@ public additionpayInsert(Param) {
    public SaveProcessdocShare(Param) {
     return this._httpClient.PostData("DoctorShareProcess/DoctorShareProcess",Param) 
   } 
-
+// /APi req
   public Calculateshare(Param) {
     return this._httpClient.PostData("DoctorPAy/Insert",Param) 
   } 

@@ -95,6 +95,11 @@ public getPatientListOP(param){
     return this._httpClient.PostData("Common",param)
   }
 
+   public getRefundDetailList(param){
+    return this._httpClient.PostData("Common",param)
+  }
+  
+
   public SaveDischargeCancel(employee){
     return this._httpClient.PostData("Administration/IP_DISCHARGE_CANCELLATION", employee)
   }
@@ -106,5 +111,13 @@ public AdmissionCancel(data){
 public getDateTimeChange(employee){
   return this._httpClient.PutData("Administration/UpdateAdmissiondatetime"+ employee.admissionID, employee)
 }
+public getDateTimeChangeRefundId(m_data) {
+  return this._httpClient.PutData("Billing/UpdateRefund",m_data);
+}
+
+public geVisittDateTimeChange(m_data) {
+  return this._httpClient.PutData("Billing/UpdateRefund",m_data);
+}
+
 
 }

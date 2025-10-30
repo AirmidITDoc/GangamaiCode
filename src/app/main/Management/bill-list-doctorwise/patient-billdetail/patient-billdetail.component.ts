@@ -70,13 +70,11 @@ export class PatientBilldetailComponent {
 
 
     if (this.data) {
+      debugger
       console.log(this.data)
-      this.pBillNo = this.data.billNo
-
-      // this.fromDate = this.data.BillDate
-      // this.toDate=this.data.pbillNo
-      this.opipType = this.data.opdipdtype
-      this.doctorName = this.data.admittedDoctorName
+      this.pBillNo = this.data.obj.billNo//"460203",//----------------------fr table
+      this.opipType = this.data.obj.opdipdtype
+      this.doctorName = this.data.obj.addChargeDrName
       this.DoctorId = this.data.doctorId || 0
       this.getBilldetailList()
     }
@@ -91,7 +89,7 @@ export class PatientBilldetailComponent {
       "filters": [
         {
           "fieldName": "BillNo",
-          "fieldValue":"228677",// String(this.pBillNo),//"228677",//
+          "fieldValue": String(this.pBillNo),//"228677",//
           "opType": "Equals"
         },
         {
@@ -131,16 +129,13 @@ export class PatientBilldetailComponent {
   }
 
   calculateshare() {
-    //  if (!this.MlcInfoFormGroup.invalid) {
-    // console.log(this.MlcInfoFormGroup.value)
+   
     var data = {}
     this._DoctorShareService.Calculateshare(data).subscribe((response) => {
       console.log(response)
 
     });
-    // } 
-
-    
+      
   }
 
   Save() {

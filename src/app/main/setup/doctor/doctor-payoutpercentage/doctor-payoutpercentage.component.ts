@@ -101,7 +101,7 @@ export class DoctorPayoutpercentageComponent {
   getfilterdata() {
     debugger
     this.gridConfig = {
-      apiUrl: "Doctor/DoctorshareListbyName",
+      apiUrl: "DoctorPAy/DoctorshareListbyName",
       columnsList: this.allColumns,
       sortField: "DoctorShareId",
       sortOrder: 0,

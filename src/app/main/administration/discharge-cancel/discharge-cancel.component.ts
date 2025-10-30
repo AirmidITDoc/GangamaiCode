@@ -81,9 +81,6 @@ export class DischargeCancelComponent implements OnInit {
     now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
     this.date = now.toISOString().slice(0, 16);
 
-
-
-
   }
 
 
@@ -151,7 +148,7 @@ export class DischargeCancelComponent implements OnInit {
 
      
           this._DischargeCancelService.DischargeForm.get('AdmissionDate').setValue(obj.admissionTime);
-          this._DischargeCancelService.DischargeForm.get('AdmissionTime').setValue(this.date);
+          this._DischargeCancelService.DischargeForm.get('AdmissionTime').setValue(this.date,"HH:mm:ss");
      
     }
 

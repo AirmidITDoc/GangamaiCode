@@ -541,6 +541,7 @@ export class SearchInforObj1
           
            this.isMLC=SearchInforObj1.isMLC || 0;
            this.hospitalId=SearchInforObj1.hospitalId||0;
+           this.doctorId=SearchInforObj1.doctorId||0;
         }
     }
 }

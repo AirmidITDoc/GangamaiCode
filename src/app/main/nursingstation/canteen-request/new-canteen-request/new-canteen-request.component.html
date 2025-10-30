@@ -37,8 +37,8 @@
                                         (change)="customertype($event)" style="padding: 10px 0px 10px 10px;">
                                         <mat-radio-button style="margin-right: 5px;"
                                             value="1">Patient</mat-radio-button>
-                                        <mat-radio-button style="margin-right: 5px;"
-                                            value="0">Employee</mat-radio-button>
+                                        <!-- <mat-radio-button style="margin-right: 5px;"
+                                            value="0">Employee</mat-radio-button> -->
                                     </mat-radio-group>
 
                                 </div>
@@ -232,13 +232,13 @@
                                                     (keypress)="keyPressAlphanumeric($event)" [maxLength]="50">
                                                 </airmid-textbox>
                                             </div>
-                                            <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                            <!-- <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                 <airmid-textbox label="Price" formControlName="Price" [value]="price"
                                                     [formGroup]="_CanteenRequestservice.ItemForm"
                                                     [validations]="getValidationMessages().Price"
                                                     (keypress)="keyPressAlphanumeric($event)" [maxLength]="50">
                                                 </airmid-textbox>
-                                            </div>
+                                            </div> -->
                                             <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                 <airmid-textbox label="Remark" formControlName="Remark"
                                                     [value]="data?.Remark" [formGroup]="_CanteenRequestservice.ItemForm"

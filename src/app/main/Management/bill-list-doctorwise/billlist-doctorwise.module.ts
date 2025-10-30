@@ -29,7 +29,6 @@ import { MatToolbarModule } from "@angular/material/toolbar";
 import { RouterModule, Routes } from "@angular/router";
 import { FuseConfirmDialogModule, FuseSidebarModule } from "@fuse/components";
 import { FuseSharedModule } from "@fuse/shared.module";
-import { SharedModule } from "app/main/shared/shared.module";
 import { NgxMatSelectSearchModule } from "ngx-mat-select-search";
 
 import { MatTabsModule } from "@angular/material/tabs";
@@ -45,6 +44,7 @@ import { MatTooltipModule } from "@angular/material/tooltip";
 import { MatGridListModule } from "@angular/material/grid-list";
 import { PatientBilldetailComponent } from './patient-billdetail/patient-billdetail.component';
 import { DoctorpaySummarydetailComponent } from './doctorpay-summarydetail/doctorpay-summarydetail.component';
+import { SharedModule } from "app/main/shared/shared.module";
 
 
 

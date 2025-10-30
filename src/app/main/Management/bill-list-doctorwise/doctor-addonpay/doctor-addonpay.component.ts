@@ -9,6 +9,7 @@ import { ToastrService } from 'ngx-toastr';
 import { DatePipe } from '@angular/common';
 import { Router } from '@angular/router';
 import { AdvanceDataStored } from 'app/main/ipd/advance';
+import { RegInsert } from 'app/main/opd/registration/registration.component';
 
 @Component({
   selector: 'app-doctor-addonpay',
@@ -17,13 +18,18 @@ import { AdvanceDataStored } from 'app/main/ipd/advance';
 })
 export class DoctorAddonpayComponent {
 
-AdddocpayFormGroup: FormGroup;
+  AdddocpayFormGroup: FormGroup;
+  myForm: FormGroup;
   dateTimeObj: any;
   screenFromString = 'Common-form';
   autocompleteModeCompany: string = "Company";
-    autocompleteModedoctor: string = "ConDoctor";
-  
+  autocompleteModedoctor: string = "ConDoctor";
+
   AdmissionId: any;
+  ServiceId = 0
+  ServiceName = ''
+  doctorId = 0
+  doctorName = ''
 
   public value = new Date();
   date: string;
@@ -35,7 +41,28 @@ AdddocpayFormGroup: FormGroup;
   public now: Date = new Date();
   dateTimeString: any;
   phdatetime: any;
-  registerObj: any
+  registerObj = new RegInsert({})
+  vRegNo: any = 0;
+  vPatientName: any;
+  vAdmissionDate: any;
+  vIPDNo: any;
+  vTariffName: any;
+  vCompanyName: any;
+  vDoctorName: any;
+  vRoomName: any;
+  vBedName: any;
+  vAge: any;
+  vGenderName: any;
+  vAdmissionTime: any;
+  vAgeMonth: any;
+  vAgeDay: any;
+  vDepartment: any;
+  vRefDocName: any;
+  vPatientType: any;
+  vDOA: any;
+ vAdmissionID: any;
+ vClassId: any;
+
   constructor(public _DoctorShareService: BillDoctorwiseService,
     private formBuilder: UntypedFormBuilder,
     private accountService: AuthenticationService,
@@ -56,6 +83,9 @@ AdddocpayFormGroup: FormGroup;
     console.log(this.data);
     this.AdddocpayFormGroup = this.createadddocpayForm();
     this.AdddocpayFormGroup.markAllAsTouched();
+    this.myForm = this._DoctorShareService.createMyForm();
+
+
     this.ApiURL = "VisitDetail/GetServiceListwithTraiff?TariffId=" + 1 + "&ClassId=" + 1 + "&ServiceName="
 
 
@@ -72,8 +102,8 @@ AdddocpayFormGroup: FormGroup;
 
   createadddocpayForm() {
     return this.formBuilder.group({
-      pbillNo:  [0, [Validators.required]],
-      patientName:  ['', [Validators.required]],
+      pbillNo: [0, [Validators.required]],
+      patientName: ['', [Validators.required]],
       docId: ['', [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       // admissionId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       companyId: 0,
@@ -92,7 +122,7 @@ AdddocpayFormGroup: FormGroup;
   }
 
   onSubmit() {
-    
+
 
     let selectedDate = this.datePipe.transform(this.AdddocpayFormGroup.get('billDate')?.value, 'yyyy-MM-dd');
     let timeValue = this.AdddocpayFormGroup.get('billTime')?.value;
@@ -109,17 +139,17 @@ AdddocpayFormGroup: FormGroup;
 
     this.AdddocpayFormGroup.get('billDate').setValue(this.datePipe.transform(this.AdddocpayFormGroup.get('billDate').value, 'yyyy-MM-dd'))
     this.AdddocpayFormGroup.get('billTime').setValue(combinedDateTime)
-debugger
+    debugger
     this.AdddocpayFormGroup.get('serviceName').setValue(this.ServiceName)
     this.AdddocpayFormGroup.get('docId').setValue(this.doctorId)
     console.log(this.AdddocpayFormGroup.value)
-    
+
     debugger
     // if (!this.AdddocpayFormGroup.invalid) {
 
-      this._DoctorShareService.additionpayInsert(this.AdddocpayFormGroup.value).subscribe((response) => {
+    this._DoctorShareService.additionpayInsert(this.AdddocpayFormGroup.value).subscribe((response) => {
       this._matDialog.closeAll();
-      });
+    });
     // } else {
     //   let invalidFields = [];
 
@@ -138,21 +168,48 @@ debugger
     //   }
     // }
   }
-ServiceId=0
-ServiceName=''
-doctorId=0
-doctorName=''
-  selectChangeService(event){
-    
-    this.ServiceId=event.serviceId
-    this.ServiceName=event.serviceName
+
+
+
+  getSelectedObjIP(obj) {
+
+    if ((obj.regID ?? 0) > 0) {
+      console.log("Admitted patient:", obj)
+      this.registerObj = obj
+      this.vRegNo = obj.regNo
+      this.vDoctorName = obj.doctorName
+      this.vPatientName = obj.firstName + " " + obj.middleName + " " + obj.lastName
+      this.vDepartment = obj.departmentName
+      this.vAdmissionDate = obj.admissionDate
+      this.vAdmissionTime = obj.admissionTime
+      this.vIPDNo = obj.ipdNo
+      this.vAge = obj.age
+      this.vAgeMonth = obj.ageMonth
+      this.vAgeDay = obj.ageDay
+      this.vGenderName = obj.genderName
+      this.vRefDocName = obj.refDoctorName
+      this.vRoomName = obj.roomName
+      this.vBedName = obj.bedName
+      this.vPatientType = obj.patientType
+      this.vTariffName = obj.tariffName
+      this.vCompanyName = obj.companyName
+      this.vDOA = obj.admissionDate
+      this.vAdmissionID = obj.admissionID
+      this.vClassId = obj.classId
+    }
+  }
+
+  selectChangeService(event) {
+
+    this.ServiceId = event.serviceId
+    this.ServiceName = event.serviceName
 
   }
 
-  selectChangedoctor(event){
+  selectChangedoctor(event) {
     console.log(event)
-  this.doctorId=event.value
-    this.doctorName=event.text
+    this.doctorId = event.value
+    this.doctorName = event.text
 
   }
 

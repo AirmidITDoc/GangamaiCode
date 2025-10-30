@@ -1081,6 +1081,11 @@ export class IPSearchListService {
   public InsertIPpacakgeAddCharges(param) {
     return this._httpClient1.PostData("IPBill/AddBedServiceCharges", param);
   }
+
+   public getBedByWard(RoomId) {
+        return this._httpClient1.GetData("Admission/BedList?RoomId=" + RoomId)
+    }
+    
 }
 
 // Set NODE_OPTIONS="--max-old-space-size=8192"

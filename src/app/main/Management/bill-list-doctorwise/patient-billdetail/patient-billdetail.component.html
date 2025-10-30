@@ -26,14 +26,7 @@
                 <span style="font-weight: bold;color: rgb(7, 57, 85);font-size: large;">Doctor Name :-{{doctorName}} |
                     BillNo :-{{pBillNo}}</span>
 
-                <div class="modal-footer">
-                    <div class="footer-navigation-container">
-                        <div class="modal-footer-buttons">
-                            <button type="button" class="btn btn-primary" (click)="calculateshare()">Calculate Share
-                            </button>
-                        </div>
-                    </div>
-                </div>
+
             </mat-card>
 
             <!-- Item Entry and Table Section -->
@@ -110,8 +103,7 @@
                                 class="w-100">DocPer</mat-header-cell>
                             <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100">
                                 <mat-form-field appearance="fill">
-                                    <input matInput  type="number" OnlyNumber
-                                        [id]="'docPer' + index" [min]="0" />
+                                    <input matInput type="number" OnlyNumber [id]="'docPer' + index" [min]="0" />
                                 </mat-form-field>
                             </mat-cell>
                         </ng-container>
@@ -131,21 +123,21 @@
                             <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100">
                                 <mat-form-field appearance="fill">
                                     <input matInput [(ngModel)]="contact.docAmt" type="text" OnlyNumber
-                                        [id]="'DocAmt' + index" (ngModelChange)="getCellCalculation(contact)"
-                                        [min]="0"  type="number" />
+                                        [id]="'DocAmt' + index" (ngModelChange)="getCellCalculation(contact)" [min]="0"
+                                        type="number" />
                                 </mat-form-field>
                             </mat-cell>
                         </ng-container>
 
 
-                       
-                         <ng-container matColumnDef="HospitalAmt">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-100">
-                                    Hospital Amt</mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100">
-                                    {{contact.hospitalAmt | number:'1.2-2'}}
-                                </mat-cell>
-                            </ng-container>
+
+                        <ng-container matColumnDef="HospitalAmt">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-100">
+                                Hospital Amt</mat-header-cell>
+                            <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100">
+                                {{contact.hospitalAmt | number:'1.2-2'}}
+                            </mat-cell>
+                        </ng-container>
 
 
 
@@ -216,7 +208,10 @@
     <!-- Footer -->
     <div class="modal-footer" style="margin-top: 10px;">
         <div class="footer-navigation-container">
+
             <div class="modal-footer-buttons">
+                <button type="button" class="btn btn-primary" (click)="calculateshare()">Calculate Share
+                </button>
                 <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
                 <button class="btn btn-primary" (click)="Save()">Save</button>
             </div>

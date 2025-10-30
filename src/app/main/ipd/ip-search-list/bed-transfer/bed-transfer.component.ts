@@ -130,10 +130,29 @@ BedFinalform: FormGroup;
   }
 
 
+  // onChangeWard(e) {
+  //   this.ddlClassName.SetSelection(e.classId);
+  // }
+ @ViewChild('ddlBedName') ddlBedName: AirmidDropDownComponent;
+  RoomId=0
   onChangeWard(e) {
+    // debugger
+    this.RoomId=e.roomId
     this.ddlClassName.SetSelection(e.classId);
+     this. selectChangeward(e)
   }
 
+    selectChangeward(obj: any) {
+      // debugger
+    if (obj.roomId) {
+      this._IpSearchListService.getBedByWard(obj.roomId).subscribe((data: any) => {
+        console.log(data)
+        this.ddlBedName.options = data;
+        this.ddlBedName.bindGridAutoComplete();
+      });
+   
+    }
+  }
 
   bedsaveForm(): FormGroup {
     return this._formBuilder.group({

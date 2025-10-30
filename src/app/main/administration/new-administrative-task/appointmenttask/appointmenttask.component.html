@@ -1,0 +1,103 @@
+<!-- <div fusePerfectScrollbar
+    class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
+    dynamicTableHeight>
+    <div class="top-header header accent p-16" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
+        fxLayoutAlign.gt-xs="space-between center ">
+        <div class="top-header-info">
+            <div class="top-header-title">
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    Administration Task
+                </span>
+            </div>
+        </div>
+    </div>
+    <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+        <div class="modal-body-container p-12">
+            <mat-card style="padding: 8px;">
+                <form [formGroup]="myForm" fxLayoutAlign="space-between start">
+                    <div fxLayout="column" fxLayoutAlign="start none" style="width: 100%;" fxLayoutGap="6px">
+
+
+                        <div fxLayout="row" fxLayoutGap="8px">
+
+                            <mat-radio-group formControlName="opiptype" (change)="onChangeRadio($event)">
+                                <mat-radio-button value="0">OP</mat-radio-button>
+                                <mat-radio-button value="1">IP</mat-radio-button>
+                            </mat-radio-group>
+                            <div fxFlex="50%" fxFlex.sm="100%">
+                                <airmid-autocomplete class="w-350" label="Search Reg No / Patient Name / Mobile No"
+                                    [formGroup]="myForm" formControlName="RegID"
+                                    placeholderText="Search Reg No / Patient Name / Mobile No"
+                                    ApiUrl="OutPatient/auto-complete?Keyword="
+                                    (selectionChange)="getSelectedObj($event)" fxFlex="40%"></airmid-autocomplete>
+                            </div>
+                        </div>
+
+
+
+                        <div fxFlex.gt-sm="100%" fxFlex class="patient-info-container">
+                            <div class="patient-info-container" *ngIf="vPatientName">
+                                <div class="patient-info-box">
+                                    <div class="patient-info-title border-bottom pb-2">
+                                        <span class="h1">Patient Information</span>
+                                    </div>
+                                    <div class="patient-info-box my-8">
+                                        <div class="patient-sub">
+                                            <div class="patient-info-row patient-info-1-111 pt-8" fxLayout="row"
+                                                fxLayoutAlign="space-between">
+                                                <div fxLayout="column" fxLayoutGap="10px">
+                                                    <div class="patient-col">
+                                                        <span class="patient-col-key">UHID No
+                                                        </span>
+                                                        <span>:</span>
+                                                        <span class="patient-col-value">{{vRegNo}}</span>
+                                                    </div>
+
+                                                </div>
+                                                <div fxLayout="column" fxLayoutGap="10px">
+                                                    <div class="patient-col">
+                                                        <span class="patient-col-key">Patient Name
+                                                        </span>
+                                                        <span>:</span>
+                                                        <span class="patient-col-value">{{vPatientName}}</span>
+                                                    </div>
+                                                </div>
+                                                <div fxLayout="column" fxLayoutGap="10px">
+                                                    <div class="patient-col">
+                                                        <span class="patient-col-key">Age | Sex
+                                                        </span>
+                                                        <span>:</span>
+                                                      
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </mat-card>
+        </div>
+
+       
+        <ng-template #actionButtonTemplate let-element>
+            <div fxLayout="row" fxLayoutAlign="center center">
+
+                <button class="btn btn-danger" (click)="VisitDateUpdate(contact)" matTooltip="Edit Visit Date"
+                    style="color: white;">
+                    <img width="30px" height="30px" src="assets/images/logos/dischargedate.png">
+                </button>
+
+            </div>
+        </ng-template>
+
+
+        <airmid-table [gridConfig]="gridConfig" #grid :ShowFilter="false" >
+        </airmid-table>
+    </div>
+
+
+</div> -->

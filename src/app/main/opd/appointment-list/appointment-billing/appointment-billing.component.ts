@@ -117,7 +117,10 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
     this.OPFooterForm = this.CreateOPFooter();
     this.OPFooterForm.markAllAsTouched();
     if (this.data) {
+      // console.log(this.data)
       this.patientDetail = this.advanceDataStored.storage; 
+  console.log(this.patientDetail)
+      debugger
       this.ApiURL = "VisitDetail/GetServiceListwithTraiff?TariffId=" + this.patientDetail.tariffId + "&ClassId=" + this.patientDetail.classId + "&ServiceName="
       console.log("Data", this.patientDetail) 
       this.PatientName = this.patientDetail.patientName
@@ -969,6 +972,11 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
   getSelectedObj(obj) {
     console.log(obj)
     this.patientDetail = obj 
+    
+
+    this.patientDetail.doctorId=obj.consultantDocId
+
+     this.patientDetail.doctorname=obj.doctorName
     this.PatientName = obj.formattedText
     this.DepartmentName = this.patientDetail.departmentName
     this.AgeYear = this.patientDetail.ageYear

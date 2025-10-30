@@ -35,14 +35,15 @@ export class BillDateUpdateComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    debugger
     if (this.data.data) {
       console.log(this.data)
-      debugger
+      
       this.BillNo = this.data.data.BillNo;
       this.AdvanceDetailId = this.data.data.advanceDetailID
-      this.RefundId = this.data.data.refundId
+      this.RefundId = this.data.data.RefundId
       this.SalesId = this.data.data.salesId
-      this.PaymentId = this.data.data.paymentId
+      this.PaymentId = this.data.data.PaymentId
       this.SalesDate = this.data.data.date
       this.refundDate = this.data.data.refundDate
       console.log(this.BillNo)
