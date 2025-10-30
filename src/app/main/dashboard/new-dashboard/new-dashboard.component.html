@@ -10,9 +10,9 @@
         <div class="date-filter-container">
             <mat-form-field class="date-range-field">
                 <mat-label>Date Range</mat-label>
-                <mat-date-range-input [rangePicker]="rangePicker" >
-                    <input matStartDate [(ngModel)]="fromDate" (dateChange)="onDateChange()" placeholder="Start date" readonly>
-                    <input matEndDate [(ngModel)]="toDate" (dateChange)="onDateChange()" placeholder="End date" readonly>
+                <mat-date-range-input appearance="outline" [rangePicker]="rangePicker" >
+                    <input matStartDate class="date-range-input" [(ngModel)]="fromDate" (dateChange)="onDateChange()" placeholder="Start date" readonly>
+                    <input matEndDate class="date-range-input" [(ngModel)]="toDate" (dateChange)="onDateChange()" placeholder="End date" readonly>
                 </mat-date-range-input>
                 <mat-datepicker-toggle matSuffix [for]="rangePicker"></mat-datepicker-toggle>
                 <mat-date-range-picker #rangePicker></mat-date-range-picker>
