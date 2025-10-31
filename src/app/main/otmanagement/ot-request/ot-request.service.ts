@@ -23,10 +23,11 @@ export class OtRequestService {
             end: [(new Date()).toISOString()],
             FirstName: ['', [Validators.pattern("^[A-Za-z/() ]*$")]],
             LastName: ['', [Validators.pattern("^[A-Za-z/() ]*$")]],
-            RegNo: []
+            RegNo: [],
+            opipType: ["1"],
         });
     }
-    
+
     public getSurgeonsByDoctorType(doctTypeId) {
         return this._httpClient.GetData("VisitDetail/DoctorTypeDoctorList?DocTypeId=" + doctTypeId)
     }
@@ -42,5 +43,15 @@ export class OtRequestService {
 
     public getReportView(Param) {
         return this._httpClient.PostData("Report/ViewReport", Param);
+    }
+
+    public getRtrvdiagnosisList(employee) {
+        return this._httpClient.PostData("OTRequest/OtRequestDiagnosisList", employee);
+    }
+    public getRtrvRequestSurgeryList(employee) {
+        return this._httpClient.PostData("OTRequest/OtRequestSurgeryDetailList", employee);
+    }
+    public getRtrvRequestAttendentList(employee) {
+        return this._httpClient.PostData("OTRequest/OtRequestAttendingDetailList", employee);
     }
 }

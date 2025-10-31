@@ -31,6 +31,7 @@ export class OTRequestComponent implements OnInit {
   ToDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
   FirstName: any = ""
   RegNo: any = "0"
+  opipType: any = "1"
   LastName: any = ""
 
   @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
@@ -46,18 +47,18 @@ export class OTRequestComponent implements OnInit {
   @ViewChild('actionsTemplate1') actionsTemplate1!: TemplateRef<any>;
 
   allcolumns = [
-    { heading: "", key: "opIpType", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 40 },
-    { heading: "", key: "surgeryTypeId", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 40 },
+    { heading: "-", key: "opIpType", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 40 },
+    // { heading: "", key: "surgeryTypeId", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 40 },
 
-    { heading: "Date&Time", key: "otbookingTime", sort: true, align: 'left', emptySign: 'NA', type: 8, width: 200 },
-    { heading: "OTReq-Date&Time", key: "otRequestTime", sort: true, align: 'left', emptySign: 'NA', type: 8, width: 200 },
+    { heading: "Date&Time", key: "otRequestTime", sort: true, align: 'left', emptySign: 'NA', type: 8, width: 200 },
+    // { heading: "OTReq-Date&Time", key: "otRequestTime", sort: true, align: 'left', emptySign: 'NA', type: 8, width: 200 },
     { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA', },
     { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
-    { heading: "Department Name", key: "departmentName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-    { heading: "Category Name", key: "surgeryCategoryName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-    { heading: "Surgery Name", key: "surgeryName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-    { heading: "Surgeon Name", key: "doctorName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
-    { heading: "Site Description", key: "siteDescriptionName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+    { heading: "Blood Group", key: "bloodGroup", sort: true, align: 'left', emptySign: 'NA', width: 300 },
+    { heading: "Category Type", key: "typeName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+    { heading: "Theater Name", key: "otTableName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+    { heading: "Surgery Date", key: "surgeryDate", sort: true, align: 'left', emptySign: 'NA', type: 6, width: 150 },
+    { heading: "Estimate Time", key: "estimateTime", sort: true, align: 'left', emptySign: 'NA', type: 7, width: 150 },
     { heading: "AddedBy", key: "addedBy", sort: true, align: 'left', emptySign: 'NA', width: 150 },
     {
       heading: "Action", key: "action", align: "right", width: 150, sticky: true, type: gridColumnTypes.template,
@@ -66,16 +67,17 @@ export class OTRequestComponent implements OnInit {
   ];
 
   allFilters = [
+    { fieldName: "From_Dt", fieldValue: this.FromDate, opType: OperatorComparer.StartsWith },
+    { fieldName: "To_Dt", fieldValue: this.ToDate, opType: OperatorComparer.StartsWith },
     { fieldName: "FirstName", fieldValue: "%", opType: OperatorComparer.StartsWith },
     { fieldName: "LastName", fieldValue: "%", opType: OperatorComparer.StartsWith },
-    { fieldName: "RegNo", fieldValue: "0", opType: OperatorComparer.Equals },
-    { fieldName: "FromDate", fieldValue: this.FromDate, opType: OperatorComparer.StartsWith },
-    { fieldName: "ToDate", fieldValue: this.ToDate, opType: OperatorComparer.StartsWith },
+    { fieldName: "RegNo", fieldValue: this.RegNo, opType: OperatorComparer.Equals },
+    { fieldName: "OPIPType", fieldValue: this.opipType, opType: OperatorComparer.Equals },
   ]
   gridConfig: gridModel = {
-    apiUrl: "OTRequest/OtbookingRequestList",
+    apiUrl: "OTRequest/RequestList",
     columnsList: this.allcolumns,
-    sortField: "DoctorId",
+    sortField: "OtrequestId",
     sortOrder: 0,
     filters: this.allFilters
   }
@@ -90,6 +92,51 @@ export class OTRequestComponent implements OnInit {
 
   ngOnInit(): void {
     this.myFilterform = this._OtRequestService.createSearchForm();
+  }
+
+  onChangeFirst() {
+    this.FirstName = this.myFilterform.get('FirstName').value + "%"
+    this.LastName = this.myFilterform.get('LastName').value + "%"
+    this.RegNo = this.myFilterform.get('RegNo').value || "0"
+    this.opipType = this.myFilterform.get('opipType').value
+    this.getfilterdata();
+  }
+
+  getfilterdata() {
+    this.FromDate = this.datePipe.transform(this.myFilterform.get('start').value, "yyyy-MM-dd")
+    this.ToDate = this.datePipe.transform(this.myFilterform.get('end').value, "yyyy-MM-dd")
+    this.gridConfig = {
+      apiUrl: "OTRequest/RequestList",
+      columnsList: this.allcolumns,
+      sortField: "OtrequestId",
+      sortOrder: 0,
+      filters: [
+        { fieldName: "From_Dt", fieldValue: this.FromDate, opType: OperatorComparer.StartsWith },
+        { fieldName: "To_Dt", fieldValue: this.ToDate, opType: OperatorComparer.StartsWith },
+        { fieldName: "FirstName", fieldValue: this.FirstName, opType: OperatorComparer.StartsWith },
+        { fieldName: "LastName", fieldValue: this.LastName, opType: OperatorComparer.StartsWith },
+        { fieldName: "RegNo", fieldValue: this.RegNo, opType: OperatorComparer.Equals },
+        { fieldName: "OPIPType", fieldValue: this.opipType, opType: OperatorComparer.Equals },
+      ],
+      row: 25
+    }
+    this.grid.gridConfig = this.gridConfig;
+    this.grid.bindGridData();
+  }
+
+  Clearfilter(event) {
+    console.log(event)
+    if (event == 'FirstName')
+      this.myFilterform.get('FirstName').setValue("")
+    else
+      if (event == 'LastName')
+        this.myFilterform.get('LastName').setValue("")
+    if (event == 'RegNo')
+      this.myFilterform.get('RegNo').setValue("")
+    // if (event == 'MobileNo')
+    //     this.myFilterform.get('MobileNo').setValue("")
+
+    this.onChangeFirst();
   }
 
   onNewotrequest(row: any = null) {
@@ -194,49 +241,6 @@ export class OTRequestComponent implements OnInit {
     });
   }
 
-
-  onChangeFirst() {
-    this.FirstName = this.myFilterform.get('FirstName').value + "%"
-    this.LastName = this.myFilterform.get('LastName').value + "%"
-    this.RegNo = this.myFilterform.get('RegNo').value || "0"
-    //this.mobileno = this.myFilterform.get('MobileNo').value || "%"
-    this.getfilterdata();
-  }
-
-  getfilterdata() {
-    this.FromDate = this.datePipe.transform(this.myFilterform.get('start').value, "yyyy-MM-dd")
-    this.ToDate = this.datePipe.transform(this.myFilterform.get('end').value, "yyyy-MM-dd")
-    this.gridConfig = {
-      apiUrl: "OTRequest/OtbookingRequestList",
-      columnsList: this.allcolumns,
-      sortField: "DoctorId",
-      sortOrder: 0,
-      filters: [
-        { fieldName: "FromDate", fieldValue: this.FromDate, opType: OperatorComparer.StartsWith },
-        { fieldName: "ToDate", fieldValue: this.ToDate, opType: OperatorComparer.StartsWith },
-        { fieldName: "FirstName", fieldValue: this.FirstName, opType: OperatorComparer.StartsWith },
-        { fieldName: "LastName", fieldValue: this.LastName, opType: OperatorComparer.StartsWith },
-        { fieldName: "RegNo", fieldValue: this.RegNo, opType: OperatorComparer.Equals },
-      ],
-      row: 25
-    }
-    this.grid.gridConfig = this.gridConfig;
-    this.grid.bindGridData();
-  }
-  Clearfilter(event) {
-    console.log(event)
-    if (event == 'FirstName')
-      this.myFilterform.get('FirstName').setValue("")
-    else
-      if (event == 'LastName')
-        this.myFilterform.get('LastName').setValue("")
-    if (event == 'RegNo')
-      this.myFilterform.get('RegNo').setValue("")
-    // if (event == 'MobileNo')
-    //     this.myFilterform.get('MobileNo').setValue("")
-
-    this.onChangeFirst();
-  }
   selectChange(obj: any) {
     console.log(obj);
   }

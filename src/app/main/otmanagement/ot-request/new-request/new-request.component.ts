@@ -36,18 +36,19 @@ export class NewRequestComponent implements OnInit {
   autocompleteModeSurgeryMaster: String = "SurgeryMaster";
   autocompleteModeDoctorType: string = "DoctorType";
   autocompleteModeConDoctor: String = "ConDoctor";
-  autocompleteModeAnesthesiatypes: string = "DoctorType"
   autocompleteModeRefDoctor: String = "RefDoctor";
   autocompleteModeOTTable: String = "OttableMaster";
   autocompleteModeLocation: string = "Location";
+  autocompleteModeResourseType: string = "ResourcesTypes";
 
   vRegNo: any;
   vPatientName: any;
-  vbookingId: any;
+  vrequestId: any;
   vOPDNo: any;
   vIPDNo: any;
   screenFromString = 'Common-form';
   opIpId: any;
+  surgCategoryName: any;
   surgId: any;
   surgName: any;
   surgeonId: any;
@@ -63,7 +64,7 @@ export class NewRequestComponent implements OnInit {
   AllTypeDescription: any = []
 
   displayedColumns: string[] = [
-    'surgeryCategoryId',
+    'surgeryCategoryName',
     'surgeryName',
     'surgeryPart',
     'surgeryDuration',
@@ -94,13 +95,13 @@ export class NewRequestComponent implements OnInit {
   dsattendentDetailList = new MatTableDataSource<OtReqInsert>();
   Chargelist: any[] = [];
   Chargelist1: any[] = [];
+  RtrvDescriptionList: any = [];
 
   constructor(public _OtRequestService: OtRequestService,
     public dialogRef: MatDialogRef<NewRequestComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public _matDialog: MatDialog,
     private ref: MatDialogRef<NewRequestComponent>,
-    public _AdmissionService: AdmissionService,
     public datePipe: DatePipe,
     private _formBuilder: UntypedFormBuilder,
     private _FormvalidationserviceService: FormvalidationserviceService,
@@ -120,17 +121,16 @@ export class NewRequestComponent implements OnInit {
     this.requestDiagnosisForm = this.createRequestDignosis();
     this.requestDignosisArray.push(this.createRequestDignosis())
 
-
-    if ((this.data?.otBookingId) > 0) {
+    if ((this.data?.otrequestId) > 0) {
       this.registerObj = this.data
-      this.vbookingId = this.registerObj.otBookingId
-      this.opIpId = this.registerObj.visitId
+      this.vrequestId = this.registerObj.otrequestId
+      this.opIpId = this.registerObj.opipid
       this.vRegNo = this.registerObj.regNo
       this.vOPDNo = this.registerObj.opdNo
       this.vIPDNo = this.registerObj.opdNo
       this.vPatientName = this.registerObj.patientName
 
-      if (this.registerObj.opIpType == 0) {
+      if (this.registerObj.opipType == 0) {
         this.vSelectedOption = "OP"
       }
       else {
@@ -156,9 +156,12 @@ export class NewRequestComponent implements OnInit {
         }
       }
 
-      console.log(this.registerObj)
+      console.log("Data:",this.registerObj)
       this.requestForm.patchValue(this.registerObj);
       this.selectChangedepdoctorType(this.registerObj)
+      this.getdiagnosisList(this.registerObj);
+      this.getRequestSurgeryDetList(this.registerObj);
+      this.getRequestAttendentDetList(this.registerObj);
     }
   }
 
@@ -239,7 +242,7 @@ export class NewRequestComponent implements OnInit {
       otrequestAttendingDetId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       otrequestId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       doctorTypeId: [element.doctorTypeId, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      doctorId: [element.anestheticsId1, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      doctorId: [element.doctorId, [this._FormvalidationserviceService.onlyNumberValidator()]],
     });
   }
   get reqAttendingArray(): FormArray {
@@ -329,12 +332,57 @@ export class NewRequestComponent implements OnInit {
     this.requestForm.get('estimateTime')?.setValue(time, { emitEvent: false });
   }
 
+  getdiagnosisList(obj) {
+    this.addDiagnolist = [];
+    this.AllTypeDescription = [];
+
+    const vdata = {
+      "first": 0,
+      "rows": 10,
+      "sortField": "OtrequestId",
+      "sortOrder": 0,
+      "filters": [
+        { "fieldName": "OtrequestId", "fieldValue": "19", "opType": "Equals" }
+        // { "fieldName": "OtrequestId", "fieldValue": String(obj.otrequestId), "opType": "Equals" }
+      ],
+      "Columns": [],
+      "exportType": "JSON"
+    };
+
+    this._OtRequestService.getRtrvdiagnosisList(vdata).subscribe(response => {
+
+      if (response && Array.isArray(response.data)) {
+        this.RtrvDescriptionList = response.data;
+        // Process Diagnosis
+        let Diagnosis = this.RtrvDescriptionList.filter(item => item.descriptionType === 'Diagnosis');
+        if (Diagnosis.length > 0) {
+          Diagnosis.forEach(element => {
+            this.addDiagnolist.push(
+              {
+                otrequestDiagnosisDetId: element.otrequestDiagnosisDetId,
+                descriptionName: element.descriptionName
+              }
+            )
+          })
+          this.requestForm.get('diagnosis').setValue(this.addDiagnolist);
+          console.log("DIAGNOSIS DATA:", this.requestForm.get('diagnosis').value)
+        }
+      }
+    }, error => {
+      console.error("Error fetching Chief Complaints:", error);
+    });
+
+  }
+
   addDiagnolist: any = [];
   selectChangeDiagnosis(selectedChips: string[]) {
     this.addDiagnolist = selectedChips;
     this.requestForm.get('diagnosis')?.setValue(this.addDiagnolist);
   }
 
+  selectChangeSurgeryCategory(obj: any) {
+    this.surgCategoryName = obj.text
+  }
   selectChangeSurgery(obj: any) {
     this.surgName = obj.text
   }
@@ -350,6 +398,54 @@ export class NewRequestComponent implements OnInit {
   selectChangedoctor(obj: any) {
     this.AnthName1 = obj.text
   }
+
+  FetchList: any = [];
+  getRequestSurgeryDetList(obj) {
+    var m_data2 = {
+      "first": 0,
+      "rows": 10,
+      "sortField": "OtrequestId",
+      "sortOrder": 0,
+      "filters": [
+        { "fieldName": "OtrequestId", "fieldValue": String(obj.otrequestId), "opType": "Equals" }
+      ],
+      "Columns": [],
+      "exportType": "JSON"
+    };
+
+    this._OtRequestService.getRtrvRequestSurgeryList(m_data2).subscribe(records => {
+      this.FetchList = records.data as OtReqInsert[];
+      this.FetchList.forEach(element => {
+
+        const from = new Date(element.surgeryFromTime);
+        const end = new Date(element.surgeryEndTime);
+
+        const surgeryFromTime = from.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
+        const surgeryEndTime = end.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
+
+        this.Chargelist.push(
+          {
+            surgeryCategoryName: '',
+            surgeryCategoryId: element.surgeryCategoryId,
+            surgeryId: element.surgeryId,//
+            surgeryName: element.surgeryName,
+            surgeryPart: element.surgeryPart,
+            surgeryDuration: element.surgeryDuration,
+            surgeryFromTime: surgeryFromTime,
+            surgeryEndTime: surgeryEndTime,
+            isPrimary: element.isPrimary,
+            surgeonId: element.surgeonId,//
+            surgeonName: element.surgeonName,
+            anestheticsId: element.anesthetistId, //
+            anestheticsName: element.anestheticsName,
+          });
+      })
+      this.dssurgeryDetailList.data = this.Chargelist
+      console.log("surgeryDet Data:", this.dssurgeryDetailList.data)
+    });
+
+  }
+
   /////////////////////////////// surgery detail part /////////////////////////////
   onAdd() {
     if (!this.requestForm.get("surgeryCategoryId")?.value) {
@@ -403,6 +499,7 @@ export class NewRequestComponent implements OnInit {
     // debugger
 
     let newEntry = {
+      surgeryCategoryName: this.surgCategoryName,
       surgeryCategoryId: this.requestForm.get('surgeryCategoryId').value,
       surgeryId: this.requestForm.get('surgeryId').value,//
       surgeryName: this.surgName,
@@ -430,7 +527,7 @@ export class NewRequestComponent implements OnInit {
     //   let surgeonEntry = {
     //     doctorTypeId: null,
     //     doctorType: "Surgeon",
-    //     anestheticsId1: newEntry.surgeonId,
+    //     doctorId: newEntry.surgeonId,
     //     doctorName: this.surgeonName
     //   };
     //   this.Chargelist1.push(surgeonEntry);
@@ -440,7 +537,7 @@ export class NewRequestComponent implements OnInit {
     //   let anesthetistEntry = {
     //     doctorTypeId: null,
     //     doctorType: "Anesthetist",
-    //     anestheticsId1: newEntry.anestheticsId,
+    //     doctorId: newEntry.anestheticsId,
     //     doctorName: this.AnthName
     //   };
     //   this.Chargelist1.push(anesthetistEntry);
@@ -463,6 +560,7 @@ export class NewRequestComponent implements OnInit {
     this.surgName = '';
     this.surgeonName = '';
     this.AnthName = '';
+    this.surgCategoryName = '';
   }
 
   deleteTableRow(event, element) {
@@ -495,6 +593,7 @@ export class NewRequestComponent implements OnInit {
     });
 
     // Set display names if you have them separately
+    this.surgCategoryName = contact.surgeryCategoryName ?? '';
     this.surgName = contact.surgeryName ?? '';
     this.surgeonName = contact.surgeonName ?? '';
     this.AnthName = contact.anestheticsName ?? '';
@@ -550,7 +649,7 @@ export class NewRequestComponent implements OnInit {
     let newEntry = {
       doctorTypeId: this.requestForm.get('doctorTypeId').value,//
       doctorType: this.doctorType,
-      anestheticsId1: this.requestForm.get('doctorId').value, //
+      doctorId: this.requestForm.get('doctorId').value, //
       doctorName: this.AnthName1,
     };
     // this.Chargelist.push(newEntry);
@@ -585,11 +684,10 @@ export class NewRequestComponent implements OnInit {
 
   onEdit1(contact: any) {
     console.log("Editing row:", contact);
-
     // Patch values into the form
     this.requestForm.patchValue({
       doctorTypeId: contact.doctorTypeId ?? '',
-      doctorId: contact.anestheticsId1 ?? ''
+      doctorId: contact.doctorId ?? ''
     });
 
     this.doctorType = contact.doctorType ?? '';
@@ -603,6 +701,38 @@ export class NewRequestComponent implements OnInit {
     }
   }
 
+  FetchList1: any = [];
+  getRequestAttendentDetList(obj) {
+    var m_data2 = {
+      "first": 0,
+      "rows": 10,
+      "sortField": "OtrequestId",
+      "sortOrder": 0,
+      "filters": [
+        { "fieldName": "OtrequestId", "fieldValue": String(obj.otrequestId), "opType": "Equals" }
+      ],
+      "Columns": [],
+      "exportType": "JSON"
+    };
+
+    this._OtRequestService.getRtrvRequestAttendentList(m_data2).subscribe(records => {
+      this.FetchList1 = records.data as OtReqInsert[];
+      this.FetchList1.forEach(element => {
+
+        this.Chargelist1.push(
+          {
+            doctorTypeId: element.doctorTypeId,//
+            doctorType: element.doctorType,
+            doctorId: element.doctorId, //
+            doctorName: element.doctorName,
+          });
+      })
+      this.dsattendentDetailList.data = this.Chargelist1
+      console.log("attendentDet Data:", this.dsattendentDetailList.data)
+    });
+
+  }
+
   /////////////////////////////// attendent detail part end/////////////////////////////
 
   onSubmit() {
@@ -610,7 +740,7 @@ export class NewRequestComponent implements OnInit {
     const formattedTime = formattedDate + this.dateTimeObj.time;
 
     this.requestForm.get('opipid').setValue(this.opIpId);
-    this.requestForm.get('otrequestId')?.setValue(this.vbookingId || 0);
+    this.requestForm.get('otrequestId')?.setValue(this.vrequestId || 0);
     this.requestForm.get('otRequestDate').setValue(formattedDate);
     this.requestForm.get('otRequestTime').setValue(formattedTime);
     this.requestForm.get('surgeryDate')?.setValue(this.datePipe.transform(this.requestForm.get('surgeryDate')?.value, 'yyyy-MM-dd'));
