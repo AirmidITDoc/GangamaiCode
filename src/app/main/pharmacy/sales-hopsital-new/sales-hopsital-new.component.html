@@ -448,6 +448,17 @@
                 <div class="airmid-table-container">
                   <mat-table class="airmid-table sales-table" #table matSort [dataSource]="saleSelectedDatasource"
                     [@animateStagger]="{ value: '50' }" style="overflow: auto">
+
+                    <ng-container matColumnDef="itemMolecule">
+                      <mat-header-cell *matHeaderCellDef mat-sort-header   class="w-70">  </mat-header-cell>
+                      <mat-cell *matCellDef="let contact"  class="w-70">
+                        <mat-icon style="cursor: pointer; color: #1976d2;" matTooltip="View molecule details"
+                          (click)="Oncheckitemmolecule(contact)">
+                          local_offer
+                        </mat-icon>  
+                      </mat-cell>
+                    </ng-container>
+
                     <ng-container matColumnDef="ItemName">
                       <mat-header-cell *matHeaderCellDef class="w-220" mat-sort-header>ItemName</mat-header-cell>
                       <mat-cell *matCellDef="let contact" class="w-220">

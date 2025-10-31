@@ -72,7 +72,7 @@ export class CrossConsultationComponent implements OnInit {
       companyId: [this.data?.companyId, [this._FormvalidationserviceService.onlyNumberValidator()]],
       addedBy: [this.accountService.currentUserValue.userId, this._FormvalidationserviceService.notEmptyOrZeroValidator()],
       updatedBy: [this.accountService.currentUserValue.userId, this._FormvalidationserviceService.notEmptyOrZeroValidator()],
-      isCancelled: true,
+      isCancelled: false,
       isCancelledBy: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       isCancelledDate: ['1900-01-01'],
       classId: [this.data?.classId, [this._FormvalidationserviceService.onlyNumberValidator()]],

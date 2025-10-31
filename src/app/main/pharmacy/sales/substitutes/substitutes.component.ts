@@ -23,6 +23,8 @@ export class SubstitutesComponent implements OnInit {
 
   SubtituteForm: FormGroup;
   sIsLoading: string = '';
+  itemDetails:any;
+  itemnamelist:any=[];
   autocompleteModeItemGenericName: string = "ItemGeneric";
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -37,6 +39,18 @@ export class SubstitutesComponent implements OnInit {
     private _formBuilder: UntypedFormBuilder
   ) { this.SubtituteForm = this.CreateSubtituteForm();}
   ngOnInit(): void {
+    if(this.data){
+      this.itemDetails = this.data?.obj
+      console.log( this.itemDetails )
+       this.itemnamelist.push(
+        {
+          itemName:this.itemDetails?.ItemName,
+          itemId:this.itemDetails?.ItemId,
+        }
+       )
+       
+       this.SubtituteForm.get('ItemId').setValue(this.itemnamelist)
+    }
   }
   CreateSubtituteForm() {
     return this._formBuilder.group({
