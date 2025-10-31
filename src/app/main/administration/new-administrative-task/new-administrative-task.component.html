@@ -69,13 +69,13 @@
 
 </ng-template>
 <!-- //Visitdate -->
-<ng-template #serviceTable1>
+<ng-template #visitTable>
     <mat-toolbar class="accent" style="width: 100%;height: 40px;justify-content: space-between;">
     <div fxLayout="row" fxLayoutAlign="start center">
       <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
         style="color: white;">account_box
       </mat-icon>
-      <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"> Visit Task</span>
+      <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"> VisitDetail Task</span>
     </div>
     <div class="close-icon">
       <button mat-icon-button [mat-dialog-close]="true" aria-label="Close dialog" matTooltip="Close">
@@ -133,6 +133,78 @@
         <div class="next-div button-row-group" style="padding-right: 20px;">
             <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
             <button class="btn btn-primary" color="accent" (click)="OnVisitDateTimeUpdate()">
+                <span>Save</span>
+            </button>
+        </div>
+    </div>
+
+</ng-template>
+<!-- //Bill Date update -->
+<ng-template #Billdate>
+    <mat-toolbar class="accent" style="width: 100%;height: 40px;justify-content: space-between;">
+    <div fxLayout="row" fxLayoutAlign="start center">
+      <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
+        style="color: white;">account_box
+      </mat-icon>
+      <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"> BIll Date & Time Update</span>
+    </div>
+    <div class="close-icon">
+      <button mat-icon-button [mat-dialog-close]="true" aria-label="Close dialog" matTooltip="Close">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+  </mat-toolbar>
+
+
+    <div class="modal-body" fusePerfectScrollbar>
+        <div class="modal-body-container">
+            <div class="center p-12 pb-56" style="border-radius: 4px;">
+                <!-- CONTENT -->
+                <div class="content-card">
+                    <!-- <form [formGroup]="VisitForm"> -->
+
+                        <div fxFlexFill fxlayout="row" fxLayout="column" fxLayoutGap="6px">
+
+                          
+                            <div fxFlexFill fxlayout="row" fxLayoutGap="8px">
+
+                                <!-- <mat-form-field appearance="outline" class="dateField">
+                                    <mat-label>{{dateLabel1}}</mat-label>
+                                    <input matInput [matDatepicker]="picker1" [matDatepickerFilter]="myFilter"
+                                        formControlName="VisitDate" readonly
+                                        (dateChange)="onChangeDate1($event.value)">
+                                    <mat-datepicker-toggle matSuffix [for]="picker1"
+                                        [disabled]="isDatePckrDisabled"></mat-datepicker-toggle>
+                                    <mat-datepicker #picker1></mat-datepicker>
+                                </mat-form-field>
+
+
+                                <mat-form-field appearance="outline" class="timeField">
+                                    <mat-label>{{timeLabel1}}</mat-label>
+                                      <input matTimepicker #t="matTimepicker" mode="12h" formControlName="VisitTime"
+                                        [readonly]="true" (timeChange)="onChangeTime1($event)"
+                                        [disableDialogOpenOnClick]="isDatePckrDisabled">
+
+                                    <mat-icon matSuffix
+                                        (click)="!isDatePckrDisabled ? t.showDialog() : ''">access_time</mat-icon>
+                                </mat-form-field> -->
+
+                                 <app-common-date [screenFrom]="screenFromString" (dateTimeEventEmitter)="getDateTime($event)"
+                                    style="width: 200px;">
+                                    </app-common-date> 
+
+                            </div>
+
+                        </div>
+                    <!-- </form> -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer" fxLayoutAlign="end">
+        <div class="next-div button-row-group" style="padding-right: 20px;">
+            <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
+            <button class="btn btn-primary" color="accent" (click)="Billdateupdate1()">
                 <span>Save</span>
             </button>
         </div>
@@ -245,7 +317,7 @@
                                 [@animateStagger]="{value:'50'}" style="overflow: auto;width: 100%;">
 
 
-                                <ng-container matColumnDef="VisitId">
+                                <!-- <ng-container matColumnDef="VisitId">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md
                                         class="w-170">
                                         Visit Id
@@ -253,7 +325,7 @@
                                     <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="w-170">
                                         {{contact.VisitId}}
                                     </mat-cell>
-                                </ng-container>
+                                </ng-container> -->
 
                                 <ng-container matColumnDef="VisitTime">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md
@@ -293,7 +365,7 @@
                                     <mat-cell *matCellDef="let contact">
 
 
-                                        <button class="btn btn-danger" (click)="VisitDateUpdate(contact)"
+                                        <button class="btn btn-danger" (click)="OnopenVisitDateUpdate(contact)"
                                             matTooltip="Edit Visit Date" style="color: white;">
                                             <img width="30px" height="30px" src="assets/images/logos/dischargedate.png">
                                         </button>
@@ -364,7 +436,7 @@
                                 </ng-container>
 
 
-                                <ng-container matColumnDef="AdmissionID">
+                                <!-- <ng-container matColumnDef="AdmissionID">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md
                                         class="w-170">
                                         Admission Id
@@ -372,7 +444,7 @@
                                     <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="w-170">
                                         {{contact.AdmissionID}}
                                     </mat-cell>
-                                </ng-container>
+                                </ng-container> -->
 
                                 <ng-container matColumnDef="AdmissionTime">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md
@@ -441,6 +513,12 @@
                                         <button class="btn btn-danger" (click)="Admissiontask(contact)"
                                             matTooltip="Edit Discharge Date" style="color: white;">
                                             <img width="30px" height="30px" src="assets/images/logos/dischargedate.png">
+                                        </button>
+
+                                         <button class="btn btn-danger" (click)="refunddata(contact)"
+                                            matTooltip="Refund Data" style="color: white;">
+                                            <img width="30px" height="30px"
+                                                src="assets/images/logos/cancelappointment.png">
                                         </button>
 
                                     </mat-cell>
@@ -545,7 +623,7 @@
                                         Action</mat-header-cell>
                                     <mat-cell *matCellDef="let contact">
 
-                                        <button class="btn btn-primary" (click)="Billdateupdate(contact)"
+                                        <button class="btn btn-primary" (click)="openBilldateupdatetask(contact)"
                                             matTooltip="Bill Date Update">
                                             <img width="30px" height="30px" src="assets/images/logos/Billdate.jpg">
                                         </button>&nbsp;
@@ -596,23 +674,86 @@
 
                                 <ng-container matColumnDef="paymentDate">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md
-                                        class="w-270">
+                                        class="w-170">
                                         Payment Date
                                     </mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="w-270">
+                                    <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="w-170">
                                         {{contact.PaymentTime | date:'short'}}
                                     </mat-cell>
                                 </ng-container>
 
+                                                               
                                 <ng-container matColumnDef="ReceiptNo">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md
-                                        class="w-270">
+                                        class="w-170">
                                         Receipt No
                                     </mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="w-270">
+                                    <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="w-170">
                                         {{contact.ReceiptNo}}
                                     </mat-cell>
                                 </ng-container>
+
+                                
+                                <ng-container matColumnDef="AdvanceUsedAmount">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md
+                                        class="w-170">
+                                        AdvanceUsedAmount
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="w-170">
+                                        {{contact.AdvanceUsedAmount | currency:"INR":"symbol"}}
+                                    </mat-cell>
+                                </ng-container>
+                                
+                                <ng-container matColumnDef="CashPayAmount">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md
+                                        class="w-170">
+                                      CashPayAmount
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="w-170">
+                                        {{contact.CashPayAmount | currency:"INR":"symbol"}}
+                                    </mat-cell>
+                                </ng-container>
+                                
+                                <ng-container matColumnDef="ChequePayAmount">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md
+                                        class="w-170">
+                                       ChequePayAmount
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="w-170">
+                                        {{contact.ChequePayAmount | currency:"INR":"symbol"}}
+                                    </mat-cell>
+                                </ng-container>
+                                
+                                <ng-container matColumnDef="CardPayAmount">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md
+                                        class="w-170">
+                                      CardPayAmount
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="w-170">
+                                        {{contact.CardPayAmount | currency:"INR":"symbol"}}
+                                    </mat-cell>
+                                </ng-container>
+                                
+                                <ng-container matColumnDef="NEFTPayAmount">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md
+                                        class="w-170">
+                                       NEFTPayAmount
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="w-170">
+                                        {{contact.NEFTPayAmount | currency:"INR":"symbol"}}
+                                    </mat-cell>
+                                </ng-container>
+
+                                  <ng-container matColumnDef="OnlineAmount">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md
+                                        class="w-170">
+                                      OnlineAmount
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="w-170">
+                                        {{contact.OnlineAmount | currency:"INR":"symbol"}}
+                                    </mat-cell>
+                                </ng-container>
+
 
                                 <ng-container matColumnDef="action" stickyEnd>
                                     <mat-header-cell *matHeaderCellDef fxShow.gt-sm style="color: white;">
@@ -692,8 +833,6 @@
                                     </mat-cell>
                                 </ng-container>
 
-
-
                                 <ng-container matColumnDef="advanceNo">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md
                                         class="w-100">
@@ -743,26 +882,14 @@
                                     </mat-cell>
                                 </ng-container>
 
-                                <!-- <ng-container matColumnDef="refundAmount">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md
-                                        class="w-100">
-                                        Refund Amount
-                                    </mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md
-                                        [ngClass]="{'positive-balance': contact.BalanceAmt > 0 }" class="w-100">
-                                        {{contact.refundAmount | currency:"INR":"symbol"}}
-                                    </mat-cell>
-                                </ng-container> -->
-
-
-
+                              
                                 <ng-container matColumnDef="action" stickyEnd>
                                     <mat-header-cell *matHeaderCellDef fxShow.gt-sm style="color: white;">
                                         Action</mat-header-cell>
                                     <mat-cell *matCellDef="let contact">
 
-                                        <button class="btn btn-primary" (click)="OnUpdate(element)"
-                                            matTooltip="Bill Date Update">
+                                        <button class="btn btn-primary" (click)="openBilldateupdatetask(element)"
+                                            matTooltip="Advance Date Update">
                                             Date Update
                                         </button>&nbsp;
                                         <button class="btn btn-danger" (click)="CancelAdvance(element)"
@@ -798,7 +925,7 @@
                 </div>
 
                 <!-- //Refund -->
-                <div fxLayout="column" style="padding: 8px 12px 0px 12px;" *ngIf="dataSourceRefund.data.length">
+                <div fxLayout="column" style="padding: 8px 12px 0px 12px;" *ngIf="dataSourceRefund.data.length > 0">
                     <div fxFlex.gt-sm="100%" fxFlex>
                         <mat-card style="padding: 5px;">
                             <span style="color: rgb(4, 54, 66);font-size: large;font-weight: bold;">Refund List</span>
@@ -854,14 +981,24 @@
                                     </mat-cell>
                                 </ng-container>
 
-                              
+                                  <ng-container matColumnDef="RefundDate">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md
+                                        class="w-170">
+                                        Refund Date
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="w-170">
+                                        {{contact.RefundTime | date:'short'}}
+                                    </mat-cell>
+                                </ng-container>
+
+                                                               
 
                                 <ng-container matColumnDef="action" stickyEnd>
                                     <mat-header-cell *matHeaderCellDef fxShow.gt-sm style="color: white;">
                                         Action</mat-header-cell>
                                     <mat-cell *matCellDef="let contact">
 
-                                        <button class="btn btn-primary" (click)="Billdateupdate(contact)"
+                                        <button class="btn btn-primary" (click)="openBilldateupdatetask(contact)"
                                             matTooltip="Bill Date Update">
                                             <img width="30px" height="30px" src="assets/images/logos/Billdate.jpg">
                                         </button>&nbsp;

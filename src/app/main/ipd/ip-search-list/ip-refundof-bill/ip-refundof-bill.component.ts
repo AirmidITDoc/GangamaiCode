@@ -572,13 +572,18 @@ export class BillRefundMaster {
   RefundAmount: number;
   // ConcessionAmt: number;
   // NetPayableAmt: number;
+   RefundNo:any;
+   Remark:any;
+   RefundTime:any;
+
 
   constructor(BillRefundMaster) {
     {
       this.RefundDate = BillRefundMaster.RefundDate || '';
       this.RefundAmount = BillRefundMaster.RefundAmount || 0;
-      // this.ConcessionAmt = BillRefundMaster.ConcessionAmt || 0;
-      // this.NetPayableAmt = BillRefundMaster.NetPayableAmt || 0;
+      this.RefundNo = BillRefundMaster.RefundNo || 0;
+      this.Remark = BillRefundMaster.Remark || '';
+      this.RefundTime = BillRefundMaster.RefundTime || 0;
     }
   }
 }

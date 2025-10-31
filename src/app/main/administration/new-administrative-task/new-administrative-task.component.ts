@@ -20,22 +20,17 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { CreditBilldetail } from 'app/main/opd/op-search-list/opd-search-list/opd-search-list.component';
-import {
-  Bill
-
-} from 'app/main/ipd/ip-search-list/ip-billing/ip-billing.component';
+import {Bill} from 'app/main/ipd/ip-search-list/ip-billing/ip-billing.component';
 import { AdvanceDetail, Payment } from 'app/main/ipd/ip-search-list/ip-search-list.component';
 import { fuseAnimations } from '@fuse/animations';
 import { BillRefundMaster } from 'app/main/ipd/ip-search-list/ip-refundof-bill/ip-refundof-bill.component';
 import { VisitMaster1 } from 'app/main/opd/appointment-list/appointment-list.component';
 import { BillDetails } from 'app/main/ipd/ip-search-list/company-bill/company-bill.component';
 import { EditPaymentComponent } from '../paymentmodechanges/edit-payment/edit-payment.component';
-import { AdmissiontaskComponent } from './admissiontask/admissiontask.component';
 import { AdmissionModule } from 'app/main/ipd/Admission/admission/admission.module';
 import { AdmissionPersonlModel } from 'app/main/ipd/Admission/admission/admission.component';
 import { EditConsultantDoctorComponent } from 'app/main/opd/appointment-list/edit-consultant-doctor/edit-consultant-doctor.component';
 import { EditRefranceDoctorComponent } from 'app/main/opd/appointment-list/edit-refrance-doctor/edit-refrance-doctor.component';
-import { AppointmenttaskComponent } from './appointmenttask/appointmenttask.component';
 
 @Component({
   selector: 'app-new-administrative-task',
@@ -47,7 +42,7 @@ import { AppointmenttaskComponent } from './appointmenttask/appointmenttask.comp
 export class NewAdministrativeTaskComponent {
 
   @ViewChild('serviceTable') serviceTable!: TemplateRef<any>;
-
+ @ViewChild('Billdate') Billdate!: TemplateRef<any>;
   @ViewChild('visitTable') visitTable!: TemplateRef<any>;
 
 
@@ -94,7 +89,6 @@ export class NewAdministrativeTaskComponent {
 
   displayedColumns: string[] = [
     // 'action1',
-    'VisitId',
     'VisitTime',
     'OPDNo',
     'DoctorName',
@@ -105,7 +99,6 @@ export class NewAdministrativeTaskComponent {
     // 'action1',
     'IsBillGenerated',
     'IsDischarged',
-    'AdmissionID',
     'AdmissionTime',
     'RegID',
     'DoctorName',
@@ -128,10 +121,14 @@ export class NewAdministrativeTaskComponent {
 
   displayedColumns2: string[] = [
     // 'action1',
-    // 'PaymentId',
     'paymentDate',
     'ReceiptNo',
-
+     'AdvanceUsedAmount',
+    'CashPayAmount',
+    'ChequePayAmount',
+    'CardPayAmount',
+    'NEFTPayAmount',
+    'OnlineAmount',
     'action'
   ];
 
@@ -153,9 +150,7 @@ export class NewAdministrativeTaskComponent {
     'RefundNo',
     'RefundAmount',
     'Remark',
-    // 'patientName',
-    // 'refundAmount',
-    // 'userName',
+    'RefundTime',
     'action'
   ];
 
@@ -312,19 +307,25 @@ export class NewAdministrativeTaskComponent {
           this.dataSource1.data = Visit as AdmissionPersonlModel[];
           console.log(this.dataSource1.data)
           debugger
-          //  this.VistId =  this.dataSource1.data[0].AdmissionID
-
+           this.VistId =  this.dataSource1.data[0].AdmissionID
+          //  if(this.VistId > 0)
+          //     this.GetRefundData()
+       
         }
 
 
       }
     });
   }
+//  refunddata()
+// {
+//      this.GetRefundData()
+// }
 
   VistId = 0
   GetBillData(element) {
-    this.GetRefundData(this.dataSource1.data[0])
-
+    debugger
+  
     if (element.VisitId)
       this.VistId = element.VisitId
     else
@@ -379,15 +380,9 @@ export class NewAdministrativeTaskComponent {
     });
   }
 
-
-
-  GetRefundData(element) {
-
-    if (element.VisitId)
-      this.VistId = element.VisitId
-    else
-      this.VistId = element.AdmissionID
-
+  GetRefundData() {
+    debugger
+  
     var SelectQuery =
     {
       "searchFields": [
@@ -404,11 +399,41 @@ export class NewAdministrativeTaskComponent {
       ],
       "mode": "Admin_VisitRefundBillWiselist"
     }
-    debugger
+
     console.log(SelectQuery);
-    this._AdministrativetaskService.getRefundDetailList(SelectQuery).subscribe(data => {
+    debugger
+    this._AdministrativetaskService.getBillRefundDetailList(SelectQuery).subscribe(data => {
       this.dataSourceRefund.data = data as BillRefundMaster[];
-      console.log(this.dataSourceRefund.data)
+      console.log(this.dataSourceBill.data)
+
+    });
+  }
+
+  GetAdvanceData() {
+    debugger
+  
+    var SelectQuery =
+    {
+      "searchFields": [
+        {
+          "fieldName": "VisitId",
+          "fieldValue": String(this.VistId),
+          "opType": "Equals"
+        },
+        {
+          "fieldName": "OPIPType",
+          "fieldValue": String(this.OPIPType),
+          "opType": "Equals"
+        }
+      ],
+      "mode": "Admin_VisitRefundBillWiselist"
+    }
+
+    console.log(SelectQuery);
+    debugger
+    this._AdministrativetaskService.getAdvanceList(SelectQuery).subscribe(data => {
+      this.dataSourceAdvance.data = data as AdvanceDetail[];
+      console.log(this.dataSourceBill.data)
 
     });
   }
@@ -596,13 +621,7 @@ export class NewAdministrativeTaskComponent {
   //   });
   // }
   DischargeCancel(contact) {
-    if (this.vRegNo == '0' || this.vRegNo == '' || this.vRegNo == undefined || this.vRegNo == null) {
-      this.toastr.warning('Please select patient', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-Warning',
-      });
-      return
-    }
-
+    
     Swal.fire({
       title: 'Do you want to cancel the Discharge ',
       text: "You won't be able to revert this!",
@@ -619,72 +638,42 @@ export class NewAdministrativeTaskComponent {
         }
         console.log(SubmitDate)
         this._AdministrativetaskService.SaveDischargeCancel(SubmitDate).subscribe(response => {
-          // this.resetform();
+          this._matDialog.closeAll()
         });
       }
     })
   }
 
-  EditConsultant(contact) {
-    const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
-    buttonElement.blur(); // Remove focus from the button
+ 
+  OnopenVisitDateUpdate(contact) {
+    debugger
+    this.vIPDNo = contact.IPDNo
+    this.AdmissionId = contact.AdmissionID
 
-    let that = this;
-    const dialogRef = this._matDialog.open(EditConsultantDoctorComponent,
-      {
-        maxWidth: "90vw",
-        height: "430px",
-        width: "80%",
-        data: contact
-      });
-    dialogRef.afterClosed().subscribe(result => {
-      this.getOpPatientdata()
-    });
+    // this.VisitForm.get('NewIpdNo').setValue(contact.IPDNo);
+    this.VisitForm.get('VisitDate').setValue(contact.VisitDate);
+    this.VisitForm.get('VisitTime').setValue(contact.VisitTime, "HH:mm:ss");
+
+
+    this._matDialog.open(this.visitTable, {
+      maxHeight: "55vh",
+      maxWidth: '90vh',
+
+    })
   }
+  // PaymentDate(contact) {
+  //   console.log(contact)
+  //   const dialogRef = this._matDialog.open(DateUpdateComponent,
+  //     {
+  //       maxHeight: "35vh",
+  //       maxWidth: '90vh',
+  //       width: '100%',
+  //       data: contact
+  //     });
+  //   dialogRef.afterClosed().subscribe(result => {
 
-
-  EditRefDoctor(contact) {
-    const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
-    buttonElement.blur(); // Remove focus from the button
-
-    let that = this;
-    const dialogRef = this._matDialog.open(EditRefranceDoctorComponent,
-      {
-        maxWidth: "90vw",
-        height: "430px",
-        width: "80%",
-        data: contact
-      });
-    dialogRef.afterClosed().subscribe(result => {
-      this.getOpPatientdata()
-    });
-  }
-  VisitDateUpdate(contact) {
-    console.log(contact)
-    const dialogRef = this._matDialog.open(AppointmenttaskComponent,
-      {
-        maxHeight: "35vh",
-        maxWidth: '90vh',
-        width: '100%',
-        data: contact
-      });
-    dialogRef.afterClosed().subscribe(result => {
-
-    });
-  }
-  PaymentDate(contact) {
-    console.log(contact)
-    const dialogRef = this._matDialog.open(DateUpdateComponent,
-      {
-        maxHeight: "35vh",
-        maxWidth: '90vh',
-        width: '100%',
-        data: contact
-      });
-    dialogRef.afterClosed().subscribe(result => {
-
-    });
-  }
+  //   });
+  // }
 
 
   // Admissiontask(contact) {
@@ -739,7 +728,7 @@ export class NewAdministrativeTaskComponent {
         debugger
         console.log("Json:", SubmitDate)
         this._AdministrativetaskService.OpCancelBill(SubmitDate).subscribe(response => {
-          // this.GetBillData()
+         this._matDialog.closeAll()
         });
       }
     })
@@ -766,7 +755,7 @@ export class NewAdministrativeTaskComponent {
         debugger
         console.log("Json:", SubmitDate)
         this._AdministrativetaskService.IpCancelBill(SubmitDate).subscribe(response => {
-          //  this.grid.bindGridData();
+           this._matDialog.closeAll()
         });
       }
     })
@@ -802,28 +791,27 @@ export class NewAdministrativeTaskComponent {
     })
 
   }
+//All common
 
+  // Billdateupdate(row) {
+  //   const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+  //   buttonElement.blur(); // Remove focus from the button
+  //   console.log(row)
+  //   let that = this;
+  //   const dialogRef = this._matDialog.open(BillDateUpdateComponent,
+  //     {
+  //       maxHeight: "35vh",
+  //       maxWidth: '90vh',
+  //       width: '100%',
+  //       data: {
+  //         data: row,
+  //         Id: 4
+  //       }
+  //     });
+  //   dialogRef.afterClosed().subscribe(result => {
 
-
-  Billdateupdate(row) {
-    const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
-    buttonElement.blur(); // Remove focus from the button
-    console.log(row)
-    let that = this;
-    const dialogRef = this._matDialog.open(BillDateUpdateComponent,
-      {
-        maxHeight: "35vh",
-        maxWidth: '90vh',
-        width: '100%',
-        data: {
-          data: row,
-          Id: 4
-        }
-      });
-    dialogRef.afterClosed().subscribe(result => {
-
-    });
-  }
+  //   });
+  // }
 
 
   onEdit(row) {
@@ -847,10 +835,16 @@ export class NewAdministrativeTaskComponent {
   registerObj = new RegInsert({});
 
   getSelectedObj(obj) {
+    console.log(obj)
     this.vRegId = obj.value;
     this.vRegNo = obj.regNo
+    this.vPatientName = obj.patientName
+    this.vAge = obj.ageYear
+    this.vAgeMonth = obj.ageMonth
+    this.vAgeDay = obj.ageDay
     this.registerObj = obj
     this.getOpPatientdata()
+      
   }
 
 
@@ -884,7 +878,7 @@ export class NewAdministrativeTaskComponent {
           }
           console.log(data);
           this._AdministrativetaskService.getDateTimeChange(data).subscribe(response => {
-            // this.resetform()
+          this._matDialog.closeAll();
 
           });
         } else {
@@ -991,9 +985,10 @@ export class NewAdministrativeTaskComponent {
         let VisitTime = formattedDate + ' ' + formattedTime
 
         var data2 = {
+          "visitId": contact.VisitId,
           "visitDate": this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd"),
-          "visitTime": formattedDate + this.dateTimeObj.time,
-          "visitId": contact.VisitId
+          "visitTime": formattedDate + this.dateTimeObj.time
+          
         }
         console.log(data2);
         this._AdministrativetaskService.geVisittDateTimeChange(data2).subscribe(response => {
@@ -1007,7 +1002,7 @@ export class NewAdministrativeTaskComponent {
     const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
     buttonElement.blur(); // Remove focus from the button
     console.log(row)
-   
+
     const dialogRef = this._matDialog.open(BillDateUpdateComponent,
       {
         maxHeight: "35vh",
@@ -1022,6 +1017,152 @@ export class NewAdministrativeTaskComponent {
 
     });
   }
+//Bill Date Update
+//  this.SalesDate = this.data.data.date
+ BillNo: any;
+  AdvanceDetailId: any;
+  RefundId: any;
+  SalesId: any;
+  PaymentId: any;
+  SalesDate: any;
+  refundDate: any;
+  Billdateupdate1() {
+
+
+    const formattedDate = this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd");
+    const formattedTime = formattedDate + this.dateTimeObj.time;//this.datePipe.transform(this.dateTimeObj.date,"yyyy-MM-dd")+this.dateTimeObj.time;  
+
+    Swal.fire({
+      title: 'Do you want to Update Bill Date & Time ',
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, Update it!"
+    }).then((result) => {
+      debugger
+      if (result.isConfirmed) {
+debugger
+        if (this.BillNo) {
+          var data = {
+            'billNo': this.BillNo,
+            'billDate': this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd"),
+            'billTime': formattedDate + this.dateTimeObj.time
+          }
+          console.log(data);
+          this._AdministrativetaskService.getDateTimeChangeBill(data).subscribe(response => {
+            this._matDialog.closeAll();
+          });
+
+        } else if (this.AdvanceDetailId) {
+          var data1 = {
+            "date": this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd"),
+            "time": formattedDate + this.dateTimeObj.time,
+            "advanceDetailId": this.AdvanceDetailId
+          }
+          console.log(data1);
+          this._AdministrativetaskService.getDateTimeChangeAdvanceDetId(data1).subscribe(response => {
+            this._matDialog.closeAll();
+          });
+
+        } else if (this.RefundId) {
+          const d1 = new Date(this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd")!);
+          const d2 = new Date(this.refundDate);
+          if (d1 < d2) {
+            Swal.fire("Enter Payment Date After Return Date :" + this.datePipe.transform(this.refundDate, "yyyy-MM-dd"))
+            return;
+          } else {
+            var data2 = {
+              "refundDate": this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd"),
+              "refundTime": formattedDate + this.dateTimeObj.time,
+              "refundId": this.RefundId
+            }
+            console.log(data2);
+            this._AdministrativetaskService.getDateTimeChangeRefundId(data2).subscribe(response => {
+              this._matDialog.closeAll();
+            });
+          }
+        } 
+        // else if (this.SalesId && this.data.Id == 1) {
+        //   var data3 = {
+        //     "date": this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd"),
+        //     "time": formattedDate + this.dateTimeObj.time,
+        //     "salesId": this.SalesId
+        //   }
+        //   console.log(data3);
+        //   this._AdministrativetaskService.getDateTimeChangeSalesId(data3).subscribe(response => {
+        //     this._matDialog.closeAll();
+        //   });
+
+        // } 
+        else if (this.PaymentId) {
+
+          const d1 = new Date(this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd")!);
+          const d2 = new Date(this.SalesDate);
+          if (d1 < d2) {
+            Swal.fire("Enter Payment Date After Bill Date :" + this.datePipe.transform(this.SalesDate, "yyyy-MM-dd"))
+            return;
+          } else {
+            var data4 = {
+              "paymentDate": this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd"),
+              "paymentTime":  formattedDate + this.dateTimeObj.time,
+              "paymentId": this.PaymentId
+            }
+            console.log(data4);
+            this._AdministrativetaskService.PaymentDateTimeChange(data4).subscribe(response => {
+              this._matDialog.closeAll();
+            });
+          }
+        }
+        else if (this.PaymentId ) {
+
+          const d1 = new Date(this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd")!);
+          const d2 = new Date(this.SalesDate);
+          if (d1 < d2) {
+            Swal.fire("Enter Payment Date After Bill Date :" + this.datePipe.transform(this.SalesDate, "yyyy-MM-dd"))
+            return;
+          } else {
+            var data4 = {
+              "paymentDate": this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd"),
+              "paymentTime":  formattedDate + this.dateTimeObj.time,
+              "paymentId": this.PaymentId
+            }
+            console.log(data4);
+            this._AdministrativetaskService.ChangeSalesBillPaymentdate(data4).subscribe(response => {
+              this._matDialog.closeAll();
+            });
+          }
+        }
+      }
+    });
+
+  }
+ screenFromString = 'billform-form';
+    openBilldateupdatetask(contact): void {
+    debugger
+
+    this.BillNo = contact.BillNo;
+      this.AdvanceDetailId = contact.advanceDetailID
+      this.RefundId = contact.RefundId
+      this.SalesId = contact.salesId
+      this.PaymentId = contact.PaymentId
+      this.SalesDate = contact.date
+      this.refundDate = contact.refundDate
+      console.log(this.BillNo)
+      console.log(this.AdvanceDetailId)
+      console.log(this.RefundId)
+      console.log(this.SalesId)
+      console.log(this.PaymentId)
+
+
+    this._matDialog.open(this.Billdate, {
+        maxHeight: "55vh",
+      maxWidth: '90vh'
+
+    })
+  }
+
 
   oncloseservice() {
     // this.di.closea(this.serviceTable);

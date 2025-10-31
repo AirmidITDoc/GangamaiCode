@@ -43,13 +43,13 @@
 
                             <form [formGroup]="DocSummaryfilterForm">
 
-                                <airmid-datepicker [formGroup]="DocSummaryfilterForm"
-                                    [isRangePicker]="true" formStartControlName="fromDate" formEndControlName="enddate"
+                                <airmid-datepicker [formGroup]="DocSummaryfilterForm" [isRangePicker]="true"
+                                    formStartControlName="fromDate" formEndControlName="enddate"
                                     [(fromValue)]="gridConfig1.filters[0].fieldValue"
                                     [(toValue)]="gridConfig1.filters[1].fieldValue">
                                 </airmid-datepicker>
 
- 
+
                                 <airmid-dropdown label="Doctor Name" formControlName="DoctorID"
                                     [formGroup]="DocSummaryfilterForm" [(ngModel)]="gridConfig1.filters[2].fieldValue"
                                     [validations]="getValidationdoctorMessages().searchDoctorId"
@@ -82,7 +82,20 @@
                 </div>
 
                 <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+                    <ng-template #actionsshare let-element>
+                        <div fxLayout="row" fxLayoutAlign="center center">
 
+                            <mat-icon *ngIf="element.isDoctorShareGenerated!==0" matTooltip="Doctor Share Generated"
+                                style="color: rgb(41, 129, 12);">check_circle</mat-icon>
+                            <mat-icon *ngIf="element.isDoctorShareGenerated==0" matTooltip="Doctor Share Not Generated"
+                                style="color: brown;">hourglass_full</mat-icon>
+
+                                 <!-- <mat-icon *ngIf="element.isDoctorShareGenerated==false" matTooltip="Doctor Share Generated"
+                                style="color: rgb(41, 129, 12);">check_circle</mat-icon>
+                            <mat-icon *ngIf="element.isDoctorShareGenerated!==False" matTooltip="Doctor Share Not Generated"
+                                style="color: brown;">hourglass_full</mat-icon> -->
+                        </div>
+                    </ng-template>
 
                     <ng-template #actionButtonTemplate2 let-element>
 
@@ -96,7 +109,8 @@
                             </mat-icon>
 
 
-                            <mat-icon (click)="EditAdditiondocpay(element)" matTooltip="Update AddON Charges">
+                            <mat-icon (click)="EditAdditiondocpay(element)" matTooltip="Update AddON Charges"
+                                *ngIf="element.lbl=='Additional Bill'">
                                 <img width="60px" height="60px" src="assets/images/logos/Addon.png">
                             </mat-icon>
                         </div>
@@ -108,8 +122,8 @@
                         <ng-container filters>
                             <form [formGroup]="DocSummarydetailfilterForm">
 
-                                <airmid-datepicker [formGroup]="DocSummarydetailfilterForm"
-                                    [isRangePicker]="true" formStartControlName="fromDate" formEndControlName="enddate"
+                                <airmid-datepicker [formGroup]="DocSummarydetailfilterForm" [isRangePicker]="true"
+                                    formStartControlName="fromDate" formEndControlName="enddate"
                                     [(fromValue)]="gridConfig2.filters[1].fieldValue"
                                     [(toValue)]="gridConfig2.filters[2].fieldValue">
                                 </airmid-datepicker>
@@ -117,9 +131,8 @@
 
                                 <airmid-dropdown label="Select Doctor Name" formControlName="DoctorID"
                                     [(ngModel)]="gridConfig2.filters[0].fieldValue"
-                                    [formGroup]="DocSummarydetailfilterForm"
-                                    (selectionChange)="ListView2($event)" (keyup)="ListView2($event)"
-                                    [mode]="autocompleteModedoctor">
+                                    [formGroup]="DocSummarydetailfilterForm" (selectionChange)="ListView2($event)"
+                                    (keyup)="ListView2($event)" [mode]="autocompleteModedoctor">
                                 </airmid-dropdown>
 
 

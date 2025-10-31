@@ -36,18 +36,6 @@ export class BillListDoctorwiseComponent {
   autocompleteModedoctor: string = "ConDoctor";
   autocompleteModedoctor1: string = "ConDoctor";
   autocompletedepartment: string = "Department";
-
-  // @ViewChild('drawer') public drawer: MatDrawer;
-  // isRegIdSelected: boolean = false;
-  // isDoctorIDSelected: boolean = false;
-  // isgroupIdSelected: boolean = false;
-
-  // doctorNameCmbList: any = [];
-  // groupNameList: any = [];
-  // sIsLoading: string = '';
-  // PatientListfilteredOptions: any;
-  // noOptionFound: any;
-  // pBillNo: any = "0"
  
 
   opipType: any = "1"
@@ -69,7 +57,7 @@ export class BillListDoctorwiseComponent {
   @ViewChild('ipBrowse', { static: false }) grid: AirmidTableComponent;
   @ViewChild('summary', { static: false }) grid1: AirmidTableComponent;
   @ViewChild('summarydetail', { static: false }) grid2: AirmidTableComponent;
-
+  @ViewChild('actionsshare') actionsshare!: TemplateRef<any>;
 
   constructor(
     public _DoctorShareService: BillDoctorwiseService,
@@ -125,7 +113,7 @@ debugger
     // Assign the template to the column dynamically
     // this.gridConfig.columnsList.find(col => col.key === 'patientType')!.template = this.actionsTemplate1;
     // this.gridConfig.columnsList.find(col => col.key === 'opdipdtype')!.template = this.actionsTemplate;
-    // this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
+     this.gridConfig2.columnsList.find(col => col.key === 'isDoctorShareGenerated')!.template = this.actionsshare;
     this.gridConfig1.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate1;
      this.gridConfig2.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate2;
   }
@@ -204,7 +192,7 @@ debugger
   
   ///Summary detail pay
   allColumns2 = [
-
+      { heading: "Status", key: "isDoctorShareGenerated", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
     { heading: "Doctor Name", key: "addChargeDrName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
     { heading: "BillNo", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA', width: 80 },
     { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
@@ -288,7 +276,7 @@ debugger
     const dialogRef = this._matDialog.open(DoctorAddonpayComponent,
       {
         maxWidth: "85vw",
-        height: "80%",
+        height: "50%",
         width: "100%"
       });
     dialogRef.afterClosed().subscribe(result => {
@@ -300,7 +288,7 @@ debugger
     const dialogRef = this._matDialog.open(DoctorAddonpayComponent,
       {
         maxWidth: "85vw",
-        height: "70%",
+        height: "50%",
         width: "100%",
         data:element
       });

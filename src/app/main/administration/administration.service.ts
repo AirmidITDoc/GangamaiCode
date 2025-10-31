@@ -95,10 +95,15 @@ public getPatientListOP(param){
     return this._httpClient.PostData("Common",param)
   }
 
-   public getRefundDetailList(param){
+   public getAdvanceList(param){
+    debugger
     return this._httpClient.PostData("Common",param)
   }
-  
+
+   public getBillRefundDetailList(param){
+    debugger
+    return this._httpClient.PostData("Common",param)
+  }
 
   public SaveDischargeCancel(employee){
     return this._httpClient.PostData("Administration/IP_DISCHARGE_CANCELLATION", employee)
@@ -116,8 +121,18 @@ public getDateTimeChangeRefundId(m_data) {
 }
 
 public geVisittDateTimeChange(m_data) {
-  return this._httpClient.PutData("Billing/UpdateRefund",m_data);
+  return this._httpClient.PutData("VisitDetail/UpdateVisitdatetime",m_data);
 }
+public getDateTimeChangeAdvanceDetId(m_data) {
+  return this._httpClient.PutData("Advance/UpdateAdvanceDate",m_data);
+}
+public PaymentDateTimeChange(m_data) {
+  return this._httpClient.PutData("paymentpharmacy/UpdatePharmSalesPaymentDate",m_data);
+}
+public ChangeSalesBillPaymentdate(m_data) {
+  return this._httpClient.PutData("paymentpharmacy/UpdatePharmSalesPaymentDate",m_data);
+}
+
 
 
 }
