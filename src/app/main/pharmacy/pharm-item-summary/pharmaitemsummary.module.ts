@@ -35,6 +35,20 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatListModule } from '@angular/material/list';
 import { MatChipsModule } from '@angular/material/chips';
 import { PharmItemSummaryComponent } from './pharm-item-summary.component';
+import {  DateAdapter,   MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
+import { MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
+
+export const MONTH_YEAR_FORMATS = {
+  parse: {
+    dateInput: 'MM/YYYY',
+  },
+  display: {
+    dateInput: 'MM/YYYY',
+    monthYearLabel: 'MMM YYYY',
+    dateA11yLabel: 'LL',
+    monthYearA11yLabel: 'MMMM YYYY',
+  },
+};
 
 
 const routes: Routes = [
@@ -88,10 +102,16 @@ const routes: Routes = [
         MatSelectModule,
         MatChipsModule,
         // NgMultiSelectDropDownModule.forRoot(),
-        MatTooltipModule
+        MatTooltipModule,
+        MatDatepickerModule,
+    MatFormFieldModule,
+    MatInputModule
     ],
     providers: [
+        
         DatePipe,
-    ]
+    { provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS] },
+    { provide: MAT_DATE_FORMATS, useValue: MONTH_YEAR_FORMATS },
+  ],
 })
 export class PharmaitemsummaryModule { }

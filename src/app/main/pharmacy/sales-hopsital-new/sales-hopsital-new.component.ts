@@ -36,7 +36,7 @@ import { FakeDbService } from 'app/fake-db/fake-db.service';
 export class SalesHospitalNewComponent implements OnInit {
     // Display Columns
     DraftSaleDisplayedCol: string[] = ['Action', 'UHID', 'PatientName', 'NetAmt', 'MobileNo', 'UserName', 'DraftClose'];
-     selectedSaleDisplayedCol = ['ItemName', 'BatchNo', 'BatchExpDate', 'Qty', 'UnitMRP', 'GSTPer', 'GSTAmount', 'TotalMRP', 'DiscPer', 'DiscAmt', 'NetAmt', 'buttons'];
+     selectedSaleDisplayedCol = ['itemMolecule','ItemName', 'BatchNo', 'BatchExpDate', 'Qty', 'UnitMRP', 'GSTPer', 'GSTAmount', 'TotalMRP', 'DiscPer', 'DiscAmt', 'NetAmt', 'buttons'];
     DraftAvbStkListDisplayedCol = ['StoreName', 'BalQty'];
     // View Children
     @ViewChild('qtyInputRef') qtyInputRef: ElementRef;
@@ -548,9 +548,9 @@ export class SalesHospitalNewComponent implements OnInit {
     // NOTE: If `isEditable` true then it means this popup will open for table row data 
     getBatch(itemId: number, storeId: number, isEditable = false) {
         const dialogRef = this._matDialog.open(SalePopupComponent, {
-            maxWidth: '800px',
-            minWidth: '800px',
-            width: '800px',
+            maxWidth: '900px',
+            minWidth: '900px',
+            width: '900px',
             height: '380px',
             disableClose: true,
             data: {
@@ -2320,6 +2320,19 @@ if (QtyElement) {
           {
                  width:"45%",
                 height:"60%",
+           });
+        dialogRef.afterClosed().subscribe((result) => {
+            console.log('The dialog was closed - Insert Action', result);
+        });
+    }
+     Oncheckitemmolecule(contact) {
+        const dialogRef = this._matDialog.open(SubstitutesComponent,
+          {
+                 width:"45%",
+                height:"60%",
+                data:{
+                    obj:contact
+                }
            });
         dialogRef.afterClosed().subscribe((result) => {
             console.log('The dialog was closed - Insert Action', result);

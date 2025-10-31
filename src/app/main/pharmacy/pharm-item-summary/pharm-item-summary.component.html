@@ -1,85 +1,181 @@
- <div fusePerfectScrollbar
+<div fusePerfectScrollbar
     class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
     dynamicTableHeight>
-    <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" style="width: 100%;"> 
+    <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" style="width: 100%;">
 
         <mat-tab label="Non Moving Item Summary Stock">
             <div fusePerfectScrollbar
                 class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
-                dynamicTableHeight> 
-               
-                <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">  
+                dynamicTableHeight>
+
+                <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
                     <airmid-table [gridConfig]="gridConfig" class="content" #grid>
                         <ng-container filters>
-                            <form [formGroup]="searchFormGroup" fxLayout="column"> 
+                            <form [formGroup]="searchFormGroup" fxLayout="column">
 
                                 <airmid-dropdown label="Store Name" formControlName="StoreId"
-                                    [formGroup]="searchFormGroup"
-                                    [validations]="getValidationMessages().StoreId" fxFlex [mode]="autocompletestore"
-                                    (keyup)="selectChangeStore($event)">
-                                </airmid-dropdown> 
-                                 
-                                  <airmid-textbox fxFlex label="NonMoving Day" formControlName="NonMovingDay"
+                                    [formGroup]="searchFormGroup" [validations]="getValidationMessages().StoreId" fxFlex
+                                    [mode]="autocompletestore" (keyup)="selectChangeStore($event)">
+                                </airmid-dropdown>
+
+                                <airmid-textbox fxFlex label="NonMoving Day" formControlName="NonMovingDay"
                                     [formGroup]="searchFormGroup" (keyup)="onChangeNonMoving()"
-                                    [validations]="getValidationMessages().NonMovingDay"></airmid-textbox> 
+                                    [validations]="getValidationMessages().NonMovingDay"></airmid-textbox>
 
 
-                                    <mat-radio-group aria-label="Select an option" formControlName="BatchRadio" name="BatchRadio"
-                                        (change)="onChangeNonMoving()" fxFlex="100%" fxFlex.xs="100%">
-                                        <mat-radio-button value="Batch">With BatchExp </mat-radio-button>
-                                        <mat-radio-button value="NoBatch">Without BatchExp</mat-radio-button>
-                                    </mat-radio-group>
-
-                            </form>
-                        </ng-container>
-                    </airmid-table>
-                </div> 
-            </div>
-        </mat-tab>
-
-       <mat-tab label="Item ExpReport MonthWise">
-            <div fusePerfectScrollbar
-                class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
-                dynamicTableHeight>
-                <div class="page-layout simple left-sidebar inner-sidebar inner-scroll"> 
-                
- 
-                    <airmid-table [gridConfig]="gridConfig2" class="content">
-                        <ng-container filters>
-                            <form [formGroup]="searchFormGroup" fxLayout="column"> 
-                              
-                                  <!-- <mat-form-field appearance="outline" fxFlex>
-                                            <input matInput [matDatepicker]="picker" placeholder="Choose a date"
-                                                formControlName="startdate">
-                                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                                            <mat-datepicker #picker startView="multi-year"
-                                                (yearSelected)="chosenYearHandler($event)"
-                                                (monthSelected)="chosenMonthHandler($event)"></mat-datepicker>
-                                  </mat-form-field> -->
-
-                              <airmid-dropdown label="Store Name" formControlName="ExpStoreId"
-                                    [formGroup]="searchFormGroup"
-                                    [validations]="getValidationMessages().ExpStoreId" fxFlex [mode]="autocompletestore"
-                                    (keyup)="selectChangeStoreExp($event)">
-                                </airmid-dropdown> 
-
-                                <airmid-textbox fxFlex label="Exp Month" formControlName="ExpMonth"
-                                    [formGroup]="searchFormGroup"
-                                    (keyup)="onChangeExplist()"
-                                    [validations]="getValidationMessages().ExpMonth"></airmid-textbox>
-
-                                <airmid-textbox fxFlex label="Exp Year" formControlName="ExpYear"
-                                    [formGroup]="searchFormGroup"
-                                    (keyup)="onChangeExplist()"
-                                    [validations]="getValidationMessages().ExpYear"></airmid-textbox> 
+                                <mat-radio-group aria-label="Select an option" formControlName="BatchRadio"
+                                    name="BatchRadio" (change)="onChangeNonMoving()" fxFlex="100%" fxFlex.xs="100%">
+                                    <mat-radio-button value="Batch">With BatchExp </mat-radio-button>
+                                    <mat-radio-button value="NoBatch">Without BatchExp</mat-radio-button>
+                                </mat-radio-group>
 
                             </form>
                         </ng-container>
                     </airmid-table>
                 </div>
             </div>
-        </mat-tab>  
+        </mat-tab>
+
+        <mat-tab label="Item ExpReport MonthWise">
+            <div fusePerfectScrollbar
+                class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
+                dynamicTableHeight>
+                <div class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+
+
+                    <airmid-table [gridConfig]="gridConfig2" class="content" (onSelectRow)="openServiceTable()">
+                        <ng-container filters>
+                            <form [formGroup]="searchFormGroup" fxLayout="column">
+
+                                <mat-form-field appearance="outline" fxFlex>
+                                     <mat-label>Month and Year</mat-label>
+                                    <input matInput [matDatepicker]="picker" placeholder="Choose a date"
+                                        formControlName="startdate"  (dateChange)="onchangeDate()"> 
+                                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                    <mat-datepicker #picker startView="multi-year"></mat-datepicker>
+                                </mat-form-field> 
+
+ 
+
+                                <airmid-dropdown label="Store Name" formControlName="ExpStoreId"
+                                    [formGroup]="searchFormGroup" [validations]="getValidationMessages().ExpStoreId"
+                                    fxFlex [mode]="autocompletestore" (keyup)="selectChangeStoreExp($event)">
+                                </airmid-dropdown>
+
+                                <airmid-textbox fxFlex label="Exp Month" formControlName="ExpMonth"
+                                    [formGroup]="searchFormGroup" (keyup)="onChangeExplist()"
+                                    [validations]="getValidationMessages().ExpMonth"></airmid-textbox>
+
+                                <airmid-textbox fxFlex label="Exp Year" formControlName="ExpYear"
+                                    [formGroup]="searchFormGroup" (keyup)="onChangeExplist()"
+                                    [validations]="getValidationMessages().ExpYear"></airmid-textbox>
+
+                            </form>
+                        </ng-container>
+                    </airmid-table>
+                </div>
+            </div>
+        </mat-tab>
 
     </mat-tab-group>
 </div>
 
+
+
+<ng-template #SupplierdetTable>
+  <mat-toolbar class="accent" style="width: 100%;height: 40px;justify-content: space-between;">
+    <div fxLayout="row" fxLayoutAlign="start center">
+      <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
+        style="color: white;">account_box
+      </mat-icon>
+      <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">Supplier Details</span>
+    </div>
+    <div class="close-icon">
+      <button mat-icon-button [mat-dialog-close]="true" aria-label="Close dialog" matTooltip="Close">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+  </mat-toolbar>
+
+  <div class="supplier-table1 p-12" fxFlex="100%">
+    <mat-table #table matSort [dataSource]="dssupplierdet" [@animateStagger]="{ value: '50' }">
+      <ng-container matColumnDef="GRNDate">
+        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-120">GRN Date</mat-header-cell>
+        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-120">
+          <span>{{ contact.GRNDate }}</span>
+        </mat-cell>
+      </ng-container>
+  
+        <ng-container matColumnDef="GRNNO">
+        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-110">GRN No</mat-header-cell>
+        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-110">
+          <span>{{ contact.GrnNumber }}</span>
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="InvoiceDate">
+        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-120">Invoice Date</mat-header-cell>
+        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-120">
+          <span>{{ contact.InvDate }}</span>
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="InvoiceNo">
+        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-110">Invoice No</mat-header-cell>
+        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-110">
+          <span>{{ contact.InvoiceNo }}</span>
+        </mat-cell>
+      </ng-container>
+
+        <ng-container matColumnDef="SupplierName">
+        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-250">Supplier Name</mat-header-cell>
+        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-250">
+          <span>{{ contact.SupplierName }}</span>
+        </mat-cell>
+      </ng-container>
+
+       <ng-container matColumnDef="qty">
+        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-100">Qty</mat-header-cell>
+        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100">
+          <span>{{ contact.ReceiveQty }}</span>
+        </mat-cell>
+      </ng-container> 
+
+      <ng-container matColumnDef="mrp">
+        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-120">MRP</mat-header-cell>
+        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-120">
+          <span>{{ contact.MRP | currency:'INR'}}</span>
+        </mat-cell>
+      </ng-container> 
+
+        <ng-container matColumnDef="Rate">
+        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-120">Rate</mat-header-cell>
+        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-120">
+          <span>{{ contact.Rate | currency:'INR' }}</span>
+        </mat-cell>
+      </ng-container> 
+
+              <ng-container matColumnDef="GST">
+        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-100">GST%</mat-header-cell>
+        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100">
+          <span>{{ contact.VatPercentage }}</span>
+        </mat-cell>
+      </ng-container> 
+       
+      <ng-container matColumnDef="loading">
+        <mat-footer-cell *matFooterCellDef colspan="6">loading data...</mat-footer-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="noData">
+        <mat-footer-cell *matFooterCellDef colspan="6">no data found...</mat-footer-cell>
+      </ng-container>
+
+      <mat-header-row class="accent" *matHeaderRowDef="SupplietDetColumns; sticky: true"></mat-header-row>
+      <mat-row *matRowDef="let contact; columns: SupplietDetColumns" 
+        [@animate]="{ value: '*', params: { y: '100%' } }"></mat-row>
+      <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{ hide: dssupplierdet != null }"></mat-footer-row>
+      <mat-footer-row *matFooterRowDef="['noData']"
+        [ngClass]="{ hide: !(dssupplierdet != null && dssupplierdet.data.length == 0) }"></mat-footer-row>
+    </mat-table>
+  </div>
+</ng-template>

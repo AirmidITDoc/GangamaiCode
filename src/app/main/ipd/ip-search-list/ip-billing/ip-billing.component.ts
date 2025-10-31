@@ -95,17 +95,15 @@ export class IPBillingComponent implements OnInit {
         }
     ]
     AdvanceColumns = [
-        { heading: "Date", key: "date", sort: true, align: 'left', emptySign: 'NA', width: 110 },
-        { heading: "", key: "time", sort: true, align: 'left', emptySign: 'NA', width: 110 },
-        { heading: "Advance No", key: "advanceNo", sort: true, align: 'left', emptySign: 'NA' },
+         { heading: "Date", key: "date", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+         { heading: "Advance No", key: "advanceNo", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "Advance Amt", key: "advanceAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
         { heading: "UsedAmt", key: "usedAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
         { heading: "Balance Amt", key: "balanceAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
         { heading: "Refund Amt", key: "refundAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
         { heading: "User Name", key: "userName", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "Payment Date", key: "paymentDate", sort: true, align: 'left', emptySign: 'NA', width:120 },
-        { heading: "", key: "paymentTime", sort: true, align: 'left', emptySign: 'NA', width:120},
-        { heading: "Cash Pay", key: "cashPayAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+        { heading: "Payment Date", key: "paymentDate", sort: true, align: 'left', emptySign: 'NA', width:160 },
+         { heading: "Cash Pay", key: "cashPayAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
         { heading: "Cheque Pay", key: "chequePayAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
         { heading: "Card Pay", key: "cardPayAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
         // { heading: "NEFT Pay", key: "neftPayAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },

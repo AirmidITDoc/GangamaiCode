@@ -40,15 +40,15 @@ import { IPRefundofBillComponent } from './ip-refundof-bill/ip-refundof-bill.com
 export class IPSearchListComponent implements OnInit {
     myFilterform: FormGroup;
     vOPIPId = 0;
-    f_name: any = ""
+    f_name: any = "%"
     regNo: any = "0"
-    l_name: any = ""
-    m_name: any = ""
-    IPDNo: any = ""
+    l_name: any = "%"
+    m_name: any = "%"
+    IPDNo: any = "0"
     status = "0"
 
-    fromDate = '';// this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
-    toDate = ''; // this.datePipe.transform(Date.now(), 'yyyy-MM-dd');
+    fromDate = '1999-01-01';// this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+    toDate = '1999-01-01'; // this.datePipe.transform(Date.now(), 'yyyy-MM-dd');
 
 
     dataSource1 = new MatTableDataSource<AdvanceDetailObj>();
@@ -451,15 +451,11 @@ export class IPSearchListComponent implements OnInit {
         debugger
         console.log(event)
         if (this.myFilterform.get('IsDischarge').value == false) {
-            this.myFilterform.get('fromDate').setValue('')
-            this.myFilterform.get('enddate').setValue('')
             this.fromDate = "1900-01-01"
             this.toDate = "1900-01-01"
             this.apiUrl = "Admission/AdmissionList"
             this.status = '0'
-        } else {
-            this.myFilterform.get('fromDate').setValue(new Date())
-            this.myFilterform.get('enddate').setValue(new Date())
+        } else { 
             this.apiUrl = "Admission/AdmissionDischargeList"
             this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd") || "1900-01-01"
             this.toDate = this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd") || "1900-01-01"
@@ -473,7 +469,24 @@ export class IPSearchListComponent implements OnInit {
 
         this.getfilterdata();
     }
-
+onChangeDiscahrge(event){
+ if (this.myFilterform.get('IsDischarge').value == false) { 
+            this.myFilterform.get('fromDate').setValue('')
+            this.myFilterform.get('enddate').setValue('')
+            this.fromDate = "1900-01-01"
+            this.toDate = "1900-01-01"
+            this.status = '0'
+            this.apiUrl = "Admission/AdmissionList"
+ }else{
+            this.myFilterform.get('fromDate').setValue(new Date())
+            this.myFilterform.get('enddate').setValue(new Date())
+            this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd") || "1900-01-01"
+            this.toDate = this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd") || "1900-01-01"
+            this.status = '1'
+              this.apiUrl = "Admission/AdmissionDischargeList"
+ }
+  this.getfilterdata();
+}
     getchangeDate() {
         if (this.myFilterform.get('IsDischarge').value != false) {
             this.apiUrl = "Admission/AdmissionDischargeList"
