@@ -258,7 +258,7 @@
                                     style="margin-bottom: 5px;">
                                     <app-airmid-chipautocomplete fxFlex [placeholder]="'Select Diagnosis'"
                                         [chips]="requestForm.get('diagnosis')?.value"
-                                        [apiUrl]="'OPDPrescriptionMedical/GetDiagnosisList?descriptionType=Diagnosis'"
+                                        [apiUrl]="'OTRequest/GetRequestDiagnosisList?DescriptionType=Diagnosis'"
                                         [displayKey]="'descriptionName'" [allowCustom]="true"
                                         (chipsChange)="selectChangeDiagnosis($event)">
                                     </app-airmid-chipautocomplete>
@@ -335,7 +335,8 @@
                                     </mat-form-field> -->
                                     <airmid-dropdown label="Surgery Type" formControlName="surgeryCategoryId"
                                         [formGroup]="requestForm" [value]="registerObj?.surgeryCategoryId"
-                                        [mode]="autocompleteModeSiteDescription">
+                                        [mode]="autocompleteModeSiteDescription"
+                                        (selectionChange)="selectChangeSurgeryCategory($event)">
                                     </airmid-dropdown>
                                 </div>
 
@@ -419,11 +420,11 @@
                                 <mat-table matSort [dataSource]="dssurgeryDetailList" [@animateStagger]="{value:'50'}"
                                     class="airmid-table">
 
-                                    <ng-container matColumnDef="surgeryCategoryId">
+                                    <ng-container matColumnDef="surgeryCategoryName">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
                                             Surgery Type</mat-header-cell>
                                         <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                            <span> {{element.surgeryCategoryId}}</span>
+                                            <span> {{element.surgeryCategoryName}}</span>
                                         </mat-cell>
                                     </ng-container>
 
@@ -540,13 +541,13 @@
 
                                 <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <airmid-dropdown label="Resource Type" formControlName="recourceType"
-                                        [formGroup]="requestForm">
+                                        [formGroup]="requestForm" [mode]="autocompleteModeResourseType">
                                     </airmid-dropdown>
                                 </div>
 
                                 <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <airmid-dropdown label="Doctor Type" formControlName="doctorTypeId"
-                                        [formGroup]="requestForm" [mode]="autocompleteModeAnesthesiatypes"
+                                        [formGroup]="requestForm" [mode]="autocompleteModeDoctorType"
                                         (selectionChange)="selectChangedoctorType($event)">
                                     </airmid-dropdown>
                                 </div>
