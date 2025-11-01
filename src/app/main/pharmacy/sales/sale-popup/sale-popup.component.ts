@@ -12,7 +12,6 @@ import Swal from 'sweetalert2';
 })
 export class SalePopupComponent implements OnInit {
   displayedColumns: string[] = [
-    'itemGenericName',
     'batchNo',
     'batchExpDate',
     'balanceQty',
@@ -21,7 +20,8 @@ export class SalePopupComponent implements OnInit {
     'converFacto',
     'landedRate',
     'ExpDays',
-    'prodLocation'
+    'prodLocation',
+    'itemGenericName',
     // 'ItemCode',
   ];
   isLoadingStr: string = '';

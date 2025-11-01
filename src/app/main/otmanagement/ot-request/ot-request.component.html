@@ -31,25 +31,21 @@
                     <span class="orange-600-fg">OP
                     </span>
                 </div>
-                <div style="color: red" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                <!-- <div style="color: red" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
                     <mat-icon class="pill red-600 s-16">circle</mat-icon>
                     <span class="red-600-fg">Emergency </span>
                 </div>
                 <div style="color: blue;" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
                     <mat-icon class="pill blue-600 s-16">circle</mat-icon>
                     <span class="blue-600-fg">normal </span>
-                </div>
-                <!-- <div style="color: yellow;" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
-                <mat-icon class="pill yellow-600 s-16">circle</mat-icon>
-                <span class="yellow-600-fg">cancel </span>
-            </div> -->
+                </div> -->
             </div>
         </div>
-        <ng-template #actionsTemplate let-element>
+        <ng-template #ColorCode let-element>
             <div fxLayout="row" fxLayoutAlign="center center">
-                <mat-icon *ngIf="element.opIpType=='1'" matTooltip="IP" class="pill green-600 s-16">circle</mat-icon>
+                <mat-icon *ngIf="element.opiptype=='1'" matTooltip="IP" class="pill green-600 s-16">circle</mat-icon>
 
-                <mat-icon *ngIf="element.opIpType=='0'" matTooltip="OP" class="pill orange-600 s-16">circle</mat-icon>
+                <mat-icon *ngIf="element.opiptype=='0'" matTooltip="OP" class="pill orange-600 s-16">circle</mat-icon>
             </div>
         </ng-template>
         <ng-template #actionsTemplate1 let-element>
@@ -61,24 +57,22 @@
                     class="pill blue-600 s-16">circle</mat-icon>
             </div>
         </ng-template>
+
         <ng-template #actionButtonTemplate let-element>
             <div fxLayout="row" fxLayoutAlign="center center">
-
-                <button mat-icon-button matTooltip="Edit" (click)="OnEdit(element)" [disabled]="element.isCancelled">
+                <button mat-icon-button matTooltip="Edit" (click)="OnEdit(element)">
                     <mat-icon>edit</mat-icon>
                 </button>
-
-                <button mat-icon-button matTooltip="Print" (click)="OnPrint(element)" [disabled]="element.isCancelled">
-                    <mat-icon> print</mat-icon>
+                <!-- *ngIf="element.isCancelled==false" -->
+                <button mat-icon-button matTooltip="Cancel" (click)="OnCancel(element)">
+                    <mat-icon>cancel</mat-icon>
                 </button>
-
-                <button mat-icon-button matTooltip="Cancel" (click)="OnCancel(element)"
-                    *ngIf="element.isCancelled==false">
-                    <mat-icon> cancel</mat-icon>
+                <button mat-icon-button matTooltip="Print" (click)="OnPrint(element)">
+                    <mat-icon>print</mat-icon>
                 </button>
-
             </div>
         </ng-template>
+
         <airmid-table [gridConfig]="gridConfig" class="content">
             <ng-container filters>
                 <form [formGroup]="myFilterform">

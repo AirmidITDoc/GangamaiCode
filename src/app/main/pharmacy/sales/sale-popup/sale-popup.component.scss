@@ -17,7 +17,17 @@ app-sale-popup{
    
   }
 
- 
+ .mat-column-itemGenericName {
+    width:150px;
+    max-width: 150px;
+    min-width: 150px;
+    text-align: left;
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis; 
+    overflow: hidden !important;
+   justify-content:left; 
+  }
   .mat-column-BatchNo {
     width: 80px;
     max-width: 80px;
@@ -66,6 +76,22 @@ app-sale-popup{
     min-width: 100px;
     text-align: left;
   }
+
+// .ellipsis{
+//     white-space: nowrap; 
+//     overflow: hidden;    
+//     text-overflow: ellipsis; 
+//     display: block;    
+//     max-width: 150px; 
+//   }
+.ellipsis-text {
+  display: inline-block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+  vertical-align: bottom; 
+}
   .mat-header-cell {
     color: white !important;
   }

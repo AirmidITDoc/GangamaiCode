@@ -55,30 +55,32 @@ export class LabPatientRegComponent {
   }
 
   allcolumns = [
-    { heading: "Date-Time", key: "reqDateTime", sort: true, align: 'left', emptySign: 'NA'},
-    { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
-    { heading: "ageYear", key: "ageYear", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "Date-Time", key: "regTime", sort: true, align: 'left', emptySign: 'NA', width: 150},
+    { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
+    { heading: "Age", key: "ageYear", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "MobileNo", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "Address", key: "address", sort: true, align: 'left', emptySign: 'NA', width: 300 },
+    { heading: "Address", key: "address", sort: true, align: 'left', emptySign: 'NA', width: 250 },
     { heading: "City", key: "cityName", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "DepartmentName", key: "departmentName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
     { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-    { heading: "AddedBy", key: "addedBy", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "RefDoctorName", key: "refDoctorName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+    { heading: "HospitalName", key: "hospitalName", sort: true, align: 'left', emptySign: 'NA', width: 350 },
+    { heading: "AddedBy", key: "userName", sort: true, align: 'left', emptySign: 'NA' },
     {
       heading: "Action", key: "action", align: "right", width: 190, sticky: true, type: gridColumnTypes.template,
-      template: this.actionButtonTemplate  // Assign ng-template to the column
+      template: this.actionButtonTemplate
     }
   ]
 
   allfilters = [
-    { fieldName: "FromDate", fieldValue: "", opType: OperatorComparer.StartsWith },
-    { fieldName: "ToDate", fieldValue: "", opType: OperatorComparer.StartsWith },
+    { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.StartsWith },
+    { fieldName: "ToDate", fieldValue: this.toDate, opType: OperatorComparer.StartsWith },
     // { fieldName: "FirstName", fieldValue: "%", opType: OperatorComparer.StartsWith },
     // { fieldName: "LastName", fieldValue: "%", opType: OperatorComparer.StartsWith },
   ]
 
   gridConfig: gridModel = {
-    apiUrl: "LabPatientRegistration/LabPatientRegistrationList",
+    apiUrl: "LabPatientRegistration/List",
     columnsList: this.allcolumns,
     sortField: "LabPatientId",
     sortOrder: 0,
@@ -104,7 +106,7 @@ export class LabPatientRegComponent {
 
   getfilterdata() {
     this.gridConfig = {
-      apiUrl: "LabPatientRegistration/LabPatientRegistrationList",
+      apiUrl: "LabPatientRegistration/List",
       columnsList: this.allcolumns,
       sortField: "LabPatientId",
       

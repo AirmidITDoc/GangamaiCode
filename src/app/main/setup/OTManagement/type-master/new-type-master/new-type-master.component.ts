@@ -7,40 +7,39 @@ import { NewSurgeryMasterComponent } from '../../surgery-master/new-surgery-mast
 import { TypeMasterService } from '../type-master.service';
 
 @Component({
-  selector: 'app-new-type-master',
-  templateUrl: './new-type-master.component.html',
-  styleUrls: ['./new-type-master.component.scss'],
+    selector: 'app-new-type-master',
+    templateUrl: './new-type-master.component.html',
+    styleUrls: ['./new-type-master.component.scss'],
     encapsulation: ViewEncapsulation.None,
-          animations: fuseAnimations,
+    animations: fuseAnimations,
 })
 export class NewTypeMasterComponent implements OnInit {
-myForm: FormGroup;
-    isActive:boolean=true;
-      
+    myForm: FormGroup;
+    isActive: boolean = true;
+
     constructor(
-                    public _TypeMasterService: TypeMasterService,
-                    public dialogRef: MatDialogRef<NewSurgeryMasterComponent>,
-                    @Inject(MAT_DIALOG_DATA) public data: any,
-                    public toastr: ToastrService
-                ) { }
-    
-      
+        public _TypeMasterService: TypeMasterService,
+        public dialogRef: MatDialogRef<NewSurgeryMasterComponent>,
+        @Inject(MAT_DIALOG_DATA) public data: any,
+        public toastr: ToastrService
+    ) { }
+
+
     ngOnInit(): void {
-    
+
         this.myForm = this._TypeMasterService.createTypeForm();
-         this.myForm.markAllAsTouched();
+        this.myForm.markAllAsTouched();
 
         console.log(this.data)
-        if ((this.data?.ottypeId??0) > 0) 
-        {
-            this.isActive=this.data.isActive
+        if ((this.data?.ottypeId ?? 0) > 0) {
+            this.isActive = this.data.isActive
             this.myForm.patchValue(this.data);
-        }   
+        }
     }
-    
-      
-        onSubmit() {
-         if (!this.myForm.invalid) {
+
+
+    onSubmit() {
+        if (!this.myForm.invalid) {
             console.log(this.myForm.value)
             this._TypeMasterService.stateMasterSave(this.myForm.value).subscribe((response) => {
                 this.onClear(true);
@@ -63,23 +62,23 @@ myForm: FormGroup;
 
         }
     }
-          
-        getValidationMessages() {
-            return {
-                // talukaName: [
-                //     { name: "required", Message: "City Name is required" }
-                // ],
-                typeName: [
-                    { name: "required", Message: "ottype Name is required" },
-                    { name: "maxlength", Message: "Taluka Name should not be greater than 50 char." },
-                    { name: "pattern", Message: "Only char allowed." }
-                ]
-            };
-        }
-    
-        
-        onClear(val: boolean) {
-          this.myForm.reset();
-          this.dialogRef.close(val);
-        }
+
+    getValidationMessages() {
+        return {
+            // talukaName: [
+            //     { name: "required", Message: "City Name is required" }
+            // ],
+            typeName: [
+                { name: "required", Message: "Table Category Name is required" },
+                { name: "maxlength", Message: "Table Category Name should not be greater than 50 char." },
+                { name: "pattern", Message: "Only char allowed." }
+            ]
+        };
+    }
+
+
+    onClear(val: boolean) {
+        this.myForm.reset();
+        this.dialogRef.close(val);
+    }
 }

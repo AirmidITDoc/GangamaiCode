@@ -11,6 +11,7 @@ import { FormvalidationserviceService } from 'app/main/shared/services/formvalid
 import { MatTableDataSource } from '@angular/material/table';
 import { MatDateFormats } from '@angular/material/core';
 import { MAT_DATE_FORMATS } from '@angular/material/core';
+import { gridColumnTypes } from 'app/core/models/tableActions';
 
 export const MONTH_YEAR_FORMATS: MatDateFormats = {
   parse: {
@@ -36,7 +37,7 @@ export const MONTH_YEAR_FORMATS: MatDateFormats = {
 
 }) 
 export class PharmItemSummaryComponent implements OnInit {
-  SupplietDetColumns : [
+  SupplietDetColumns : string[] =[
      'GRNDate',
         'GRNNO', 
         'InvoiceDate',
@@ -60,7 +61,8 @@ export class PharmItemSummaryComponent implements OnInit {
   chosenYear: number;
   chosenMonth: number; 
 
-  dssupplierdet = new MatTableDataSource<ItemWiseStockList>();
+  dssupplierdet = new MatTableDataSource<any>();
+  
 
   @ViewChild('grid') grid: AirmidTableComponent;
   @ViewChild('grid2') grid2: AirmidTableComponent;
@@ -85,8 +87,18 @@ export class PharmItemSummaryComponent implements OnInit {
     row: 25
   }
 
+
+
+      ngAfterViewInit() {
+        // Assign the template to the column dynamically
+        this.gridConfig2.columnsList.find(col => col.key === 'action')!.template = this.supplierdetTemplate;
+    }
+
+    @ViewChild('supplierdetTemplate') supplierdetTemplate!: TemplateRef<any>; 
   //Item Batch Expwise list
   ItemExpWiseColumns = [
+     { heading: "", key: "action", align: "left", width: 50, sticky: true, type: gridColumnTypes.template,
+       template: this.supplierdetTemplate },
     { heading: "Item Name", key: "itemName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
     { heading: "Batch No", key: "batchNo", sort: true, align: 'left', emptySign: 'NA', width: 130 },
     { heading: "Batch ExpDate", key: "batchExpDate", sort: true, align: 'left', emptySign: 'NA', width: 160, type: 6 },
@@ -123,7 +135,7 @@ export class PharmItemSummaryComponent implements OnInit {
         this.ExpYear = CurrentDate.getFullYear(); 
         this.ExpMonth = CurrentDate.getMonth() + 1;
         this.getExpwiseData();  
-  }
+  } 
   createSearchForm() {
     return this.formBuilder.group({
       BatchRadio: ['Batch'],
@@ -191,11 +203,11 @@ export class PharmItemSummaryComponent implements OnInit {
     else
       this.ExpStoreId = "0"
 
-    this.onChangeExplist();
+    this.onchangeDate();
   }
  
   onchangeDate() { 
-    const selectedDate =new Date(this.datePipe.transform(this.searchFormGroup.get('startdate').value,'yyyy-MM-dd'))
+  const selectedDate =new Date(this.datePipe.transform(this.searchFormGroup.get('startdate').value,'yyyy-MM-dd'))
   this.ExpStoreId = this.searchFormGroup.get('StoreId').value || "0";
   this.ExpYear = selectedDate.getFullYear();
   this.ExpMonth = selectedDate.getMonth() + 1;
@@ -229,20 +241,36 @@ export class PharmItemSummaryComponent implements OnInit {
     // this.grid2.gridConfig = this.gridConfig2;
     // this.grid2.bindGridData();
   }
+  chargelist:any=[];
+    getItemSupplierDetList(row) { 
+       const Filters = [
+        { "fieldName": "ItemId", "fieldValue": String(row?.itemId ?? 0), "opType": "Equals" }, 
+      ] 
+         var param = {
+          "searchFields": Filters,
+          "mode": "ItemSupplierDetails"
+        }
+  
+      this._PharmaitemsummaryService.getitemsupplierdet(param).subscribe(response => { 
+        debugger
+        console.log('response',response)
+        this.chargelist = response
+        this.dssupplierdet.data = this.chargelist 
+      })
+    }
     @ViewChild('SupplierdetTable') SupplierdetTable!: TemplateRef<any>;
-    dialogRef!: MatDialogRef<any>;
-
-      openServiceTable(): void { 
+    dialogRef!: MatDialogRef<any>; 
+      openServiceTable(row): void { 
+       this.getItemSupplierDetList(row); 
         this._matDialog.open(this.SupplierdetTable, {
-            width: '70%',
-            height: '60%',
+            width: '65%',
+            height: '50%',
         })
     }
     oncloseservice() { 
-            if (this.dialogRef) {
-       this.dialogRef.close(this.SupplierdetTable);
-    }
-
+           if (this.dialogRef) {
+      this.dialogRef.close(this.SupplierdetTable);
+   } 
     }
   getValidationMessages() {
     return {

@@ -6,12 +6,12 @@
         <div class="top-header-info">
             <div class="top-header-title">
                 <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                    OTtype List
+                    Table Category List
                 </span>
             </div>
         </div>
         <div class="gap-8" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
-            <button mat-raised-button (click)="onSave()">+ New OTtype
+            <button mat-raised-button (click)="onSave()">+ New Table Category
             </button>
         </div>
     </div>
@@ -19,8 +19,8 @@
         <airmid-table [gridConfig]="gridConfig" class="content">
             <ng-container filters>
                 <mat-form-field appearance="outline" fxFlex>
-                    <mat-label>Search Type list</mat-label>
-                    <input matInput placeholder="Search Gender Name" autocomplete="off"
+                    <mat-label>Search Table Category</mat-label>
+                    <input matInput placeholder="Search Table Category" autocomplete="off"
                         [(ngModel)]="gridConfig.filters[0].fieldValue" />
                     <button matSuffix mat-icon-button aria-label="Clear"
                         (click)="gridConfig.filters[0].fieldValue=''">

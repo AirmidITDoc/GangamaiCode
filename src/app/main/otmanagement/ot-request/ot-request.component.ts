@@ -31,38 +31,34 @@ export class OTRequestComponent implements OnInit {
   ToDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
   FirstName: any = ""
   RegNo: any = "0"
-  opipType: any = "1"
+  opipType: any = "2"
   LastName: any = ""
 
   @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
   @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
-  ngAfterViewInit() {
-    // Assign the template to the column dynamically
-    this.gridConfig.columnsList.find(col => col.key === 'opIpType')!.template = this.actionsTemplate;
-    this.gridConfig.columnsList.find(col => col.key === 'surgeryTypeId')!.template = this.actionsTemplate1;
-    this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
-
-  }
-  @ViewChild('actionsTemplate') actionsTemplate!: TemplateRef<any>;
+  @ViewChild('ColorCode') ColorCode!: TemplateRef<any>;
   @ViewChild('actionsTemplate1') actionsTemplate1!: TemplateRef<any>;
 
-  allcolumns = [
-    { heading: "-", key: "opIpType", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 40 },
-    // { heading: "", key: "surgeryTypeId", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 40 },
+  ngAfterViewInit() {
+    this.gridConfig.columnsList.find(col => col.key === 'opiptype')!.template = this.ColorCode;
+    this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
+  }
 
-    { heading: "Date&Time", key: "otRequestTime", sort: true, align: 'left', emptySign: 'NA', type: 8, width: 200 },
-    // { heading: "OTReq-Date&Time", key: "otRequestTime", sort: true, align: 'left', emptySign: 'NA', type: 8, width: 200 },
-    { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA', },
-    { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
-    { heading: "Blood Group", key: "bloodGroup", sort: true, align: 'left', emptySign: 'NA', width: 300 },
+  allcolumns = [
+    { heading: "-", key: "opiptype", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 40 },
+    // { heading: "Date&Time", key: "otrequestTime", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+    { heading: "OTReq-Date&Time", key: "otRequestDateTime", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+    { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 120 },
+    { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
+    { heading: "Blood Group", key: "bloodGroup", sort: true, align: 'left', emptySign: 'NA', width: 120 },
     { heading: "Category Type", key: "typeName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
     { heading: "Theater Name", key: "otTableName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
     { heading: "Surgery Date", key: "surgeryDate", sort: true, align: 'left', emptySign: 'NA', type: 6, width: 150 },
     { heading: "Estimate Time", key: "estimateTime", sort: true, align: 'left', emptySign: 'NA', type: 7, width: 150 },
-    { heading: "AddedBy", key: "addedBy", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+    { heading: "AddedBy", key: "userName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
     {
-      heading: "Action", key: "action", align: "right", width: 150, sticky: true, type: gridColumnTypes.template,
-      template: this.actionButtonTemplate  // Assign ng-template to the column
+      heading: "Action", key: "action", align: "right", width: 190, sticky: true, type: gridColumnTypes.template,
+      template: this.actionButtonTemplate
     }
   ];
 
@@ -75,7 +71,7 @@ export class OTRequestComponent implements OnInit {
     { fieldName: "OPIPType", fieldValue: this.opipType, opType: OperatorComparer.Equals },
   ]
   gridConfig: gridModel = {
-    apiUrl: "OTRequest/RequestList",
+    apiUrl: "OTRequest/OTRequestList",
     columnsList: this.allcolumns,
     sortField: "OtrequestId",
     sortOrder: 0,
@@ -106,7 +102,7 @@ export class OTRequestComponent implements OnInit {
     this.FromDate = this.datePipe.transform(this.myFilterform.get('start').value, "yyyy-MM-dd")
     this.ToDate = this.datePipe.transform(this.myFilterform.get('end').value, "yyyy-MM-dd")
     this.gridConfig = {
-      apiUrl: "OTRequest/RequestList",
+      apiUrl: "OTRequest/OTRequestList",
       columnsList: this.allcolumns,
       sortField: "OtrequestId",
       sortOrder: 0,
@@ -313,7 +309,18 @@ export class OtReqInsert {
   anesthesiaType: any;
   anestheticsName1: any;
   part: any;
-
+  otrequestId: any;
+  opipid: any;
+  opdNo: any;
+  opiptype: any;
+  otRequestTime: any;
+  categoryType: any;
+  surgeryCategoryId: any;
+  estimateTime: any;
+  requestType: any;
+  pacrequired: any;
+  equipmentsRequired: any;
+  infective: any;
   /**
    * Constructor
    *
@@ -373,6 +380,18 @@ export class OtReqInsert {
       this.anesthesiaType = OtReqInsert.anesthesiaType || ''
       this.anestheticsName1 = OtReqInsert.anestheticsName1 || ''
       this.part = OtReqInsert.part || ''
+      this.otrequestId = OtReqInsert.otrequestId || ''
+      this.opipid = OtReqInsert.opipid || ''
+      this.opdNo = OtReqInsert.opdNo || ''
+      this.opiptype = OtReqInsert.opiptype || ''
+      this.otRequestTime = OtReqInsert.otRequestTime || ''
+      this.categoryType = OtReqInsert.categoryType || ''
+      this.surgeryCategoryId = OtReqInsert.surgeryCategoryId || ''
+      this.estimateTime = OtReqInsert.estimateTime || ''
+      this.requestType = OtReqInsert.requestType || ''
+      this.pacrequired = OtReqInsert.pacrequired || ''
+      this.equipmentsRequired = OtReqInsert.equipmentsRequired || ''
+      this.infective = OtReqInsert.infective || ''
     }
   }
 }

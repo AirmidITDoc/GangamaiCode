@@ -24,14 +24,16 @@ export class OtRequestService {
             FirstName: ['', [Validators.pattern("^[A-Za-z/() ]*$")]],
             LastName: ['', [Validators.pattern("^[A-Za-z/() ]*$")]],
             RegNo: [],
-            opipType: ["1"],
+            opipType: ["2"],
         });
     }
 
-    public getSurgeonsByDoctorType(doctTypeId) {
+    public getDoctorsByDoctorType(doctTypeId) {
         return this._httpClient.GetData("VisitDetail/DoctorTypeDoctorList?DocTypeId=" + doctTypeId)
     }
-
+    public getotRequestById(Id) {
+        return this._httpClient.GetData("OTRequest/" + Id);
+    }
     public OnCancel(param) {
         return this._httpClient.PostData('OTRequest/Cancel', param)
     }

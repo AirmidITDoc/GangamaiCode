@@ -26,7 +26,7 @@ export class NewCategoryMasterComponent implements OnInit {
 
 
     ngOnInit(): void {
-        this.myForm = this._CategoryMasterService.createCategoryForm();
+        this.myForm = this._CategoryMasterService.createSurgeryCategoryForm();
         this.myForm.markAllAsTouched();
 
         console.log(this.data)
@@ -69,8 +69,8 @@ export class NewCategoryMasterComponent implements OnInit {
             //     { name: "required", Message: "City Name is required" }
             // ],
             SurgeryCategoryName: [
-                { name: "required", Message: "category Name is required" },
-                { name: "maxlength", Message: "category Name should not be greater than 50 char." },
+                { name: "required", Message: "Surgerycategory Name is required" },
+                { name: "maxlength", Message: "Surgery Category Name should not be greater than 50 char." },
                 { name: "pattern", Message: "Only char allowed." }
             ]
         };

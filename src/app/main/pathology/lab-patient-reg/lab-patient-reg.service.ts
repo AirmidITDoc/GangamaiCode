@@ -23,8 +23,8 @@ export class LabPatientRegService {
 
   CreateSearchGroup() {
     return this._frombuilder.group({
-      fromDate: [],
-      enddate: [],
+      fromDate: [(new Date()).toISOString()],
+      enddate: [(new Date()).toISOString()],
       firstName: [''],
       L_Name: ['']
     })

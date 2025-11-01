@@ -51,30 +51,20 @@
         </div>
     </div> -->
 
-    <!-- <ng-template #actionButtonTemplate let-element>
+    <ng-template #actionButtonTemplate let-element>
         <div fxLayout="row" fxLayoutAlign="center center">
-            <button mat-icon-button matTooltip="Edit Emergency" (click)="newEmergency(element)"
-                *ngIf="element.isCancelled==false">
+            <!-- <button mat-icon-button matTooltip="Edit" (click)="OnEdit(element)">
                 <mat-icon>edit</mat-icon>
+            </button> -->
+            <!-- *ngIf="element.isCancelled==false" -->
+            <button mat-icon-button matTooltip="Cancel">
+                <mat-icon>cancel</mat-icon>
             </button>
-
-            <button mat-icon-button matTooltip="Convert to OPD or IPD" (click)="getConvert(element)"
-                *ngIf="element.isCancelled==false" [disabled]="element.convertedIntoAdm > 0">
-                <mat-icon>cached icon</mat-icon>
-            </button>
-
-            <button mat-icon-button matTooltip="Cancel" (click)="EmergencyCancel(element)"
-                *ngIf="element.isCancelled==false"
-                [disabled]="element.isAfter24Hrs === 1 || element.convertedIntoAdm > 0">
-                <mat-icon> cancel</mat-icon>
-            </button>
-
-            <button mat-icon-button matTooltip="Emg Print" *ngIf="element.isCancelled==false"
-                (click)="OnViewReportPdf(element)">
-                <mat-icon> print</mat-icon>
+            <button mat-icon-button matTooltip="Print">
+                <mat-icon>print</mat-icon>
             </button>
         </div>
-    </ng-template> -->
+    </ng-template>
 
     <ng-template #actionsTemplate let-element>
         <div class="pill-icon">
