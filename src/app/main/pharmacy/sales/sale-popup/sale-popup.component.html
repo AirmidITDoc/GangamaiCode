@@ -81,10 +81,16 @@ fxLayoutAlign.gt-xs="space-between center " style="height:40px;">
         <mat-cell *matCellDef="let element"> {{element.prodLocation || '-'}} </mat-cell>
     </ng-container>
 
-       <ng-container matColumnDef="itemGenericName">
-        <mat-header-cell *matHeaderCellDef>ItemGenericName </mat-header-cell>
-        <mat-cell *matCellDef="let element"> {{element.itemGenericName}} </mat-cell>
-    </ng-container>
+        <ng-container matColumnDef="itemGenericName">
+            <mat-header-cell *matHeaderCellDef  class="w-150">
+                itemGenericName</mat-header-cell>
+            <mat-cell *matCellDef="let element" fxShow.gt-sm class="w-150">
+                <!-- {{contact.ReportHeader || '-'}} -->
+                <span class="ellipsis-text" [matTooltip]="element.itemGenericName">
+                    {{ element.itemGenericName || '-' }}
+                </span>
+            </mat-cell>
+        </ng-container>
 
     <!-- "minQty": 0,      "maxQty": 0,      "itemGenericNameId": 1318,      "itemGenericName": "NA", -->
  

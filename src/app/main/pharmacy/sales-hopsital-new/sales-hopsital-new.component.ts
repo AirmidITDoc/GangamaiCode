@@ -548,7 +548,7 @@ export class SalesHospitalNewComponent implements OnInit {
     // NOTE: If `isEditable` true then it means this popup will open for table row data 
     getBatch(itemId: number, storeId: number, isEditable = false) {
         const dialogRef = this._matDialog.open(SalePopupComponent, {
-            maxWidth: '900px',
+            maxWidth: '950px',
             minWidth: '900px',
             width: '900px',
             height: '380px',
