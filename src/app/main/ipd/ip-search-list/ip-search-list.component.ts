@@ -71,19 +71,19 @@ export class IPSearchListComponent implements OnInit {
         { heading: "Bill", key: "isBillGenerated", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
         { heading: "IsMLC", key: "isMLC", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 70 },
         { heading: "RegNo", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 350},
+        { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 350 },
         { heading: "DOA", key: "admissionTime", sort: true, align: 'left', emptySign: 'NA', type: 8, width: 200 },
         { heading: "IPD No", key: "ipdno", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "Doctor Name", key: "doctorname", sort: true, align: 'left', emptySign: 'NA', width: 250 },
         { heading: "Ref Doc Name", key: "refDocName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
-          { heading: "Ward / Bed No", key: "roomName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
+        { heading: "Ward / Bed No", key: "roomName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
         { heading: "Company Name", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 350 },
         { heading: "Advance Amount", key: "advanceAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
         { heading: "Charges Amount", key: "chargesAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
-      
+
         { heading: "Payer Name", key: "tariffName", sort: true, align: 'left', emptySign: 'NA' },
         {
-            heading: "Action", key: "action", align: "right",  type: gridColumnTypes.template, width: 200,
+            heading: "Action", key: "action", align: "right", type: gridColumnTypes.template, width: 200,
             template: this.actionButtonTemplate  // Assign ng-template to the column
         }
 
@@ -346,7 +346,7 @@ export class IPSearchListComponent implements OnInit {
                         Obj: element
                     }
                 });
-            dialogRef.afterClosed().subscribe(result => { 
+            dialogRef.afterClosed().subscribe(result => {
                 if (this.myFilterform.get('IsDischarge').value == false) {
                     const currentPath = this.router.url.split('?')[0];
                     this.router.navigate([currentPath], { queryParams: {} });
@@ -455,7 +455,7 @@ export class IPSearchListComponent implements OnInit {
             this.toDate = "1900-01-01"
             this.apiUrl = "Admission/AdmissionList"
             this.status = '0'
-        } else { 
+        } else {
             this.apiUrl = "Admission/AdmissionDischargeList"
             this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd") || "1900-01-01"
             this.toDate = this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd") || "1900-01-01"
@@ -469,24 +469,24 @@ export class IPSearchListComponent implements OnInit {
 
         this.getfilterdata();
     }
-onChangeDiscahrge(event){
- if (this.myFilterform.get('IsDischarge').value == false) { 
+    onChangeDiscahrge(event) {
+        if (this.myFilterform.get('IsDischarge').value == false) {
             this.myFilterform.get('fromDate').setValue('')
             this.myFilterform.get('enddate').setValue('')
             this.fromDate = "1900-01-01"
             this.toDate = "1900-01-01"
             this.status = '0'
             this.apiUrl = "Admission/AdmissionList"
- }else{
+        } else {
             this.myFilterform.get('fromDate').setValue(new Date())
             this.myFilterform.get('enddate').setValue(new Date())
             this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd") || "1900-01-01"
             this.toDate = this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd") || "1900-01-01"
             this.status = '1'
-              this.apiUrl = "Admission/AdmissionDischargeList"
- }
-  this.getfilterdata();
-}
+            this.apiUrl = "Admission/AdmissionDischargeList"
+        }
+        this.getfilterdata();
+    }
     getchangeDate() {
         if (this.myFilterform.get('IsDischarge').value != false) {
             this.apiUrl = "Admission/AdmissionDischargeList"
@@ -643,7 +643,7 @@ export class AdvanceDetail {
     IsCancelledBy: number;
     IsCancelledDate: Date;
     Reason: string;
-
+    AdvancedetailId: any
     /**
     * Constructor
     *
@@ -669,6 +669,8 @@ export class AdvanceDetail {
             this.IsCancelledBy = AdvanceDetail.IsCancelledBy || '';
             this.IsCancelledDate = AdvanceDetail.IsCancelledDate || '';
             this.Reason = AdvanceDetail.Reason || '';
+            this.AdvancedetailId = AdvanceDetail.AdvancedetailId || 0;
+
         }
     }
 }
@@ -745,6 +747,7 @@ export class AdvanceDetailObj {
     PatientAge: any;
     AdvTotalAmount: any;
     IsInitinatedDischarge: any;
+    AdvancedetailId: any;
     /**
     * Constructor
     *
@@ -797,6 +800,7 @@ export class AdvanceDetailObj {
             this.mobileNo = AdvanceDetailObj.MobileNo || ''
             this.AdvTotalAmount = AdvanceDetailObj.AdvTotalAmount || 0
             this.IsInitinatedDischarge = AdvanceDetailObj.IsInitinatedDischarge || ''
+            this.AdvancedetailId = AdvanceDetailObj.AdvancedetailId || 0
         }
     }
 }

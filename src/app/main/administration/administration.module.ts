@@ -40,7 +40,7 @@ const appRoutes: Routes = [
     loadChildren: () => import("./report-configuration/report-configuration.module").then((m) => m.ReportConfigurationModule),
   },
   {
-    path: "dischargecancel",
+    path: "dischargecancel1",
     loadChildren: () => import("./discharge-cancel/discharge-cancel.module").then((m) => m.DischargeCancelModule),
   },
   // {
@@ -60,7 +60,7 @@ const appRoutes: Routes = [
   //   loadChildren: () => import("./tally-interface/tally-interface.module").then((m)=>m.TallyInterfaceModule),
   //  },
   {
-    path: "tallyinterface",
+    path: "dischargecancel",
     loadChildren: () => import("./new-administrative-task/administrativetask.module").then((m) => m.AdministrativetaskModule),
   },
 

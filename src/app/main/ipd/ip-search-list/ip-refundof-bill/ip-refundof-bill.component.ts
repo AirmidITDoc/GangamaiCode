@@ -568,22 +568,22 @@ export class RegRefundBillMaster {
 
 export class BillRefundMaster {
 
+  RefundId:any;
   RefundDate: Date;
-  RefundAmount: number;
-  // ConcessionAmt: number;
-  // NetPayableAmt: number;
-   RefundNo:any;
+  RefundAmount: any;
+  RefundNo:any;
    Remark:any;
    RefundTime:any;
 
 
   constructor(BillRefundMaster) {
     {
+        this.RefundId = BillRefundMaster.RefundId || '';
       this.RefundDate = BillRefundMaster.RefundDate || '';
       this.RefundAmount = BillRefundMaster.RefundAmount || 0;
-      this.RefundNo = BillRefundMaster.RefundNo || 0;
+      this.RefundNo = BillRefundMaster.RefundNo || '';
       this.Remark = BillRefundMaster.Remark || '';
-      this.RefundTime = BillRefundMaster.RefundTime || 0;
+      this.RefundTime = BillRefundMaster.RefundTime || '';
     }
   }
 }
