@@ -16,11 +16,11 @@ export class CategoryMasterService {
            private _formBuilder: UntypedFormBuilder,
             private _FormvalidationserviceService: FormvalidationserviceService
        ) {
-           this.myForm = this.createCategoryForm();
+           this.myForm = this.createSurgeryCategoryForm();
            this.myformSearch = this.createSearchForm();
        }
 
-         createCategoryForm(): FormGroup {
+         createSurgeryCategoryForm(): FormGroup {
                 return this._formBuilder.group({
                     SurgeryCategoryId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
                     SurgeryCategoryName: ["",
@@ -42,7 +42,7 @@ export class CategoryMasterService {
             }
         
             initializeFormGroup() {
-                this.createCategoryForm();
+                this.createSurgeryCategoryForm();
             }
         
             public CatMasterSave(Param: any) {

@@ -9,44 +9,41 @@ import { NewTypeMasterComponent } from './new-type-master/new-type-master.compon
 import { TypeMasterService } from './type-master.service';
 
 @Component({
-  selector: 'app-type-master',
-  templateUrl: './type-master.component.html',
-  styleUrls: ['./type-master.component.scss'],
-   encapsulation: ViewEncapsulation.None,
-            animations: fuseAnimations,
+    selector: 'app-type-master',
+    templateUrl: './type-master.component.html',
+    styleUrls: ['./type-master.component.scss'],
+    encapsulation: ViewEncapsulation.None,
+    animations: fuseAnimations,
 })
 export class TypeMasterComponent implements OnInit {
- msg: any;
-typeName: any = "";
+    msg: any;
+    typeName: any = "";
 
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
-   
-         allColumns = [
-            // { heading: "Code", key: "ottypeId", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "OT Type Name", key: "typeName", sort: true, align: 'left', emptySign: 'NA' },
-            // { heading: "AddedBy", key: "addedBy", sort: true, align: 'left', emptySign: 'NA' },
-           // { heading: "SurgeryCategoryName", key: "addedByName", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "isActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
-            {
-                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
-                    {
-                        action: gridActions.edit, callback: (data: any) => {
-                            this.onSave(data);
-                        }
-                    }, {
-                        action: gridActions.delete, callback: (data: any) => {
-                            this._TypeMasterService.deactivateTheStatus(data.ottypeId).subscribe((response: any) => {
-                                this.grid.bindGridData();
-                            });
-                        }
-                    }]
-            } //Action 1-view, 2-Edit,3-delete
-        ]
-        allFilters = [
-            { fieldName: "OTtypeName", fieldValue: "", opType: OperatorComparer.StartsWith },
-            { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
-        ]
-     gridConfig: gridModel = {
+
+    allColumns = [
+        { heading: "Table Category Name", key: "typeName", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "isActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
+        {
+            heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+                {
+                    action: gridActions.edit, callback: (data: any) => {
+                        this.onSave(data);
+                    }
+                }, {
+                    action: gridActions.delete, callback: (data: any) => {
+                        this._TypeMasterService.deactivateTheStatus(data.ottypeId).subscribe((response: any) => {
+                            this.grid.bindGridData();
+                        });
+                    }
+                }]
+        } //Action 1-view, 2-Edit,3-delete
+    ]
+    allFilters = [
+        { fieldName: "OTtypeName", fieldValue: "", opType: OperatorComparer.StartsWith },
+        { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+    ]
+    gridConfig: gridModel = {
         apiUrl: "OtTypeMaster/List",
         columnsList: this.allColumns,
         sortField: "OttypeId",

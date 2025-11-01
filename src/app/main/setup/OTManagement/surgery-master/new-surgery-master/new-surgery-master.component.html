@@ -19,72 +19,49 @@
             <form [formGroup]="myForm">
                 <input type="hidden" name="SurgeryId" formControlName="SurgeryId" [(ngModel)]="SurgeryId">
                 <div fxLayout="row wrap" fxLayoutGap="12px grid">
-                     <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="30%">
-                        <airmid-dropdown 
-                            label="Department" 
-                            [value]="data?.departmentId" 
-                            formControlName="departmentId"
-                            [formGroup]="myForm" 
-                            [validations]="getValidationMessages().departmentId"
+                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="30%">
+                        <airmid-dropdown label="Department" [value]="data?.departmentId" formControlName="departmentId"
+                            [formGroup]="myForm" [validations]="getValidationMessages().departmentId"
                             [mode]="autocompleteModeDepartment">
                         </airmid-dropdown>
                     </div>
                     <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="30%">
-                        <airmid-dropdown 
-                            label="Surgery Category" 
-                            [value]="data?.surgeryCategoryId" 
-                            formControlName="surgeryCategoryId"
-                            [formGroup]="myForm" 
+                        <airmid-dropdown label="Surgery Category" [value]="data?.surgeryCategoryId"
+                            formControlName="surgeryCategoryId" [formGroup]="myForm"
                             [validations]="getValidationMessages().surgeryCategoryId"
                             [mode]="autocompleteModeSurgeryCategory">
                         </airmid-dropdown>
                     </div>
                     <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="30%">
-                        <airmid-dropdown 
-                            label="site Description" 
-                            formControlName="siteDescId" 
-                            [value]="data?.siteDescId"
-                            [formGroup]="myForm" 
-                            [validations]="getValidationMessages().siteDescId" 
+                        <airmid-dropdown label="Surgery Type" formControlName="siteDescId" [value]="data?.siteDescId"
+                            [formGroup]="myForm" [validations]="getValidationMessages().siteDescId"
                             [mode]="autocompleteModeSiteDescription">
                         </airmid-dropdown>
                     </div>
                     <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="30%">
-                        <airmid-textbox 
-                            label="Template Name" 
-                            formControlName="ottemplateId" 
-                            [value]="data?.ottemplateId"
-                            [formGroup]="myForm" 
-                            [maxLength]="50">
+                        <airmid-textbox label="Template Name" formControlName="ottemplateId"
+                            [value]="data?.ottemplateId" [formGroup]="myForm" [maxLength]="50">
                         </airmid-textbox>
                     </div>
                     <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="30%">
-                        <airmid-textbox 
-                            label="Surgery Name" 
-                            formControlName="SurgeryName" 
-                            [formGroup]="myForm" 
-                            [validations]="getValidationMessages().SurgeryName" 
-                            [maxLength]="50">
+                        <airmid-textbox label="Surgery Name" formControlName="SurgeryName" [formGroup]="myForm"
+                            [validations]="getValidationMessages().SurgeryName" [maxLength]="50">
                         </airmid-textbox>
                     </div>
 
                     <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="30%">
-                        <airmid-textbox
-                            label="Amount" 
-                            [value]="data?.surgeryAmount"   (keypress)="keyPressCharater($event)"
-                            formControlName="surgeryAmount"
-                            [formGroup]="myForm" 
-                            [validations]="getValidationMessages().surgeryAmount"
-                            [maxLength]="50">
+                        <airmid-textbox label="Amount" [value]="data?.surgeryAmount"
+                            (keypress)="keyPressCharater($event)" formControlName="surgeryAmount" [formGroup]="myForm"
+                            [validations]="getValidationMessages().surgeryAmount" [maxLength]="50">
                         </airmid-textbox>
                     </div>
 
                 </div>
-            
+
             </form>
         </div>
     </div>
-     <div class="modal-footer">
+    <div class="modal-footer">
         <div class="footer-navigation-container">
             <div class="modal-footer-buttons">
                 <button type="button" class="btn btn-danger-outline" (click)="onClear(false)">Close</button>
@@ -93,4 +70,3 @@
         </div>
     </div>
 </div>
-

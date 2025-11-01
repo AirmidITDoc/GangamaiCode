@@ -11,6 +11,8 @@ import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { OtReqInsert } from '../ot-request.component';
 import { MatTableDataSource } from '@angular/material/table';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
+import { CdkDragDrop, CdkDragMove, moveItemInArray } from '@angular/cdk/drag-drop';
+import { CdkScrollable } from '@angular/cdk/scrolling';
 
 @Component({
   selector: 'app-new-request',
@@ -26,6 +28,10 @@ export class NewRequestComponent implements OnInit {
   requestDiagnosisForm: FormGroup;
 
   vSelectedOption: any = "OP";
+  vrequestType: any = "1";
+  vpacrequired: any = "1";
+  vequipmentsRequired: any = "1";
+  vinfective: any = "1";
 
   isActive: boolean = true;
   autocompleteModeDepartment: String = "Department";
@@ -64,6 +70,7 @@ export class NewRequestComponent implements OnInit {
   AllTypeDescription: any = []
 
   displayedColumns: string[] = [
+    'sequence',
     'surgeryCategoryName',
     'surgeryName',
     'surgeryPart',
@@ -77,15 +84,16 @@ export class NewRequestComponent implements OnInit {
   ];
 
   displayedColumns1: string[] = [
+    'sequence',
     'surgeon',
     'anesthesia',
     'Action'
   ];
 
-  @ViewChild('surgeonList') surgeonList: AirmidDropDownComponent;
+  @ViewChild('ddlDoctor') ddlDoctor: AirmidDropDownComponent;
   opIpType: number;
   RegId: string;
-  registerObj: any;
+  // registerObj: any;
   registerObj1 = new OtReqInsert({});
   BloodGroupNames: string[] = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
   // surgeryCategoryIdNames: string[] = ["Normal", "Emergency"];
@@ -122,23 +130,43 @@ export class NewRequestComponent implements OnInit {
     this.requestDignosisArray.push(this.createRequestDignosis())
 
     if ((this.data?.otrequestId) > 0) {
-      this.registerObj = this.data
-      this.vrequestId = this.registerObj.otrequestId
-      this.opIpId = this.registerObj.opipid
-      this.vRegNo = this.registerObj.regNo
-      this.vOPDNo = this.registerObj.opdNo
-      this.vIPDNo = this.registerObj.opdNo
-      this.vPatientName = this.registerObj.patientName
+      this.registerObj1 = this.data
 
-      if (this.registerObj.opipType == 0) {
-        this.vSelectedOption = "OP"
-      }
-      else {
-        this.vSelectedOption = "IP"
-      }
+      // setTimeout(() => {
+      //   this._OtRequestService.getotRequestById(this.data.otrequestId).subscribe((response) => {
+      //     this.registerObj1 = response;
+      //     console.log(this.registerObj1)
+      //     this.vrequestId = this.registerObj1.otrequestId
+      //     this.opIpId = this.registerObj1.opipid
+      //     this.vRegNo = this.registerObj1.regNo
+      //     this.vOPDNo = this.registerObj1.opdNo
+      //     this.vIPDNo = this.registerObj1.ipdNo
+      //     this.vPatientName = this.registerObj1.patientName
 
-      if (this.registerObj?.otRequestTime) {
-        const date = new Date(this.registerObj.otRequestTime);
+      //     this.vSelectedOption = this.registerObj1.opiptype == 0 ? 'OP' : 'IP';
+      //     this.vrequestType = this.registerObj1.pacrequired == true ? '1' : '0';
+      //     this.vpacrequired = this.registerObj1.equipmentsRequired == true ? '1' : '0';
+      //     this.vequipmentsRequired = this.registerObj1.infective == true ? '1' : '0';
+      //     this.vinfective = this.registerObj1.requestType == true ? '1' : '0';
+
+      //   });
+      // }, 500);
+
+      this.vrequestId = this.registerObj1.otrequestId
+      this.opIpId = this.registerObj1.opipid
+      this.vRegNo = this.registerObj1.regNo
+      this.vOPDNo = this.registerObj1.opdNo
+      this.vIPDNo = this.registerObj1.ipdNo
+      this.vPatientName = this.registerObj1.patientName
+
+      this.vSelectedOption = this.registerObj1.opiptype == 0 ? 'OP' : 'IP';
+      this.vrequestType = this.registerObj1.pacrequired == true ? '1' : '0';
+      this.vpacrequired = this.registerObj1.equipmentsRequired == true ? '1' : '0';
+      this.vequipmentsRequired = this.registerObj1.infective == true ? '1' : '0';
+      this.vinfective = this.registerObj1.requestType == true ? '1' : '0';
+
+      if (this.registerObj1?.estimateTime) {
+        const date = new Date(this.registerObj1.estimateTime);
 
         if (!isNaN(date.getTime())) {
           const hours = date.getHours().toString().padStart(2, '0');
@@ -147,21 +175,21 @@ export class NewRequestComponent implements OnInit {
           const formattedTime = `${hours}:${minutes}`; // e.g. "13:01"
 
           setTimeout(() => {
-            this.requestForm.get('otRequestTime')?.setValue(formattedTime);
+            this.requestForm.get('estimateTime')?.setValue(formattedTime);
           });
 
-          console.log("Raw from backend:", this.registerObj.otRequestTime);
+          console.log("Raw from backend:", this.registerObj1.estimateTime);
           console.log("Formatted:", formattedTime);
-          console.log("Control value after patch:", this.requestForm.get('otRequestTime')?.value);
+          console.log("Control value after patch:", this.requestForm.get('estimateTime')?.value);
         }
       }
 
-      console.log("Data:",this.registerObj)
-      this.requestForm.patchValue(this.registerObj);
-      this.selectChangedepdoctorType(this.registerObj)
-      this.getdiagnosisList(this.registerObj);
-      this.getRequestSurgeryDetList(this.registerObj);
-      this.getRequestAttendentDetList(this.registerObj);
+      console.log("Data:", this.registerObj1)
+      this.requestForm.patchValue(this.registerObj1);
+      this.selectChangedepdoctorType(this.registerObj1)
+      this.getdiagnosisList(this.registerObj1);
+      this.getRequestSurgeryDetList(this.registerObj1);
+      this.getRequestAttendentDetList(this.registerObj1);
     }
   }
 
@@ -216,7 +244,7 @@ export class NewRequestComponent implements OnInit {
     });
   }
 
-  createRequestSurgeryArrayForm(element: any = {}): FormGroup {
+  createRequestSurgeryArrayForm(element: any = {}, index: number = 0): FormGroup {
     // debugger
     return this._formBuilder.group({
       otrequestSurgeryDetId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -230,19 +258,21 @@ export class NewRequestComponent implements OnInit {
       isPrimary: [String(element.isPrimary ?? false)],
       surgeonId: [element.surgeonId],
       anesthetistId: [element.anestheticsId],
+      seqNo: [index + 1]
     });
   }
   get reqSurgeryArray(): FormArray {
     return this.requestForm.get('tOtRequestSurgeryDetails') as FormArray;
   }
 
-  createRequestAttendentArrayForm(element: any = {}): FormGroup {
+  createRequestAttendentArrayForm(element: any = {}, index: number = 0): FormGroup {
     // debugger
     return this._formBuilder.group({
       otrequestAttendingDetId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       otrequestId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       doctorTypeId: [element.doctorTypeId, [this._FormvalidationserviceService.onlyNumberValidator()]],
       doctorId: [element.doctorId, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      seqNo: [index + 1]
     });
   }
   get reqAttendingArray(): FormArray {
@@ -339,11 +369,10 @@ export class NewRequestComponent implements OnInit {
     const vdata = {
       "first": 0,
       "rows": 10,
-      "sortField": "OtrequestId",
+      "sortField": "OTRequestId",
       "sortOrder": 0,
       "filters": [
-        { "fieldName": "OtrequestId", "fieldValue": "19", "opType": "Equals" }
-        // { "fieldName": "OtrequestId", "fieldValue": String(obj.otrequestId), "opType": "Equals" }
+        { "fieldName": "OTRequestId", "fieldValue": String(obj.otrequestId), "opType": "Equals" }
       ],
       "Columns": [],
       "exportType": "JSON"
@@ -404,10 +433,10 @@ export class NewRequestComponent implements OnInit {
     var m_data2 = {
       "first": 0,
       "rows": 10,
-      "sortField": "OtrequestId",
+      "sortField": "OTRequestId",
       "sortOrder": 0,
       "filters": [
-        { "fieldName": "OtrequestId", "fieldValue": String(obj.otrequestId), "opType": "Equals" }
+        { "fieldName": "OTRequestId", "fieldValue": String(obj.otrequestId), "opType": "Equals" }
       ],
       "Columns": [],
       "exportType": "JSON"
@@ -425,7 +454,7 @@ export class NewRequestComponent implements OnInit {
 
         this.Chargelist.push(
           {
-            surgeryCategoryName: '',
+            surgeryCategoryName: element.surgeryCategoryName,
             surgeryCategoryId: element.surgeryCategoryId,
             surgeryId: element.surgeryId,//
             surgeryName: element.surgeryName,
@@ -629,6 +658,26 @@ export class NewRequestComponent implements OnInit {
     input.click();
   }
 
+  drop1(event: CdkDragDrop<any[]>) {
+    const data = this.dssurgeryDetailList.data; // Extract raw array from MatTableDataSource
+    moveItemInArray(data, event.previousIndex, event.currentIndex);
+    this.dssurgeryDetailList.data = data; // Update table with reordered data
+  }
+  @ViewChild(CdkScrollable, { static: true }) scrollable1!: CdkScrollable;
+  onDragMoved1(event: CdkDragMove) {
+    const scrollContainer = this.scrollable1.getElementRef().nativeElement;
+    const scrollRect = scrollContainer.getBoundingClientRect();
+    const pointerY = event.pointerPosition.y;
+
+    const edgeMargin = 60; // px from top/bottom where scrolling starts
+    const scrollSpeed = 40; // 🔥 increase for faster scrolling
+
+    if (pointerY < scrollRect.top + edgeMargin) {
+      scrollContainer.scrollTop -= scrollSpeed;
+    } else if (pointerY > scrollRect.bottom - edgeMargin) {
+      scrollContainer.scrollTop += scrollSpeed;
+    }
+  }
   /////////////////////////////// surgery detail part end /////////////////////////////
 
   /////////////////////////////// attendent detail part /////////////////////////////
@@ -662,6 +711,7 @@ export class NewRequestComponent implements OnInit {
     this.dsattendentDetailList.data = [...this.Chargelist1];
 
     this.requestForm.patchValue({
+      recourceType: '',
       doctorTypeId: '',
       doctorId: ''
     });
@@ -706,10 +756,10 @@ export class NewRequestComponent implements OnInit {
     var m_data2 = {
       "first": 0,
       "rows": 10,
-      "sortField": "OtrequestId",
+      "sortField": "OTRequestId",
       "sortOrder": 0,
       "filters": [
-        { "fieldName": "OtrequestId", "fieldValue": String(obj.otrequestId), "opType": "Equals" }
+        { "fieldName": "OTRequestId", "fieldValue": String(obj.otrequestId), "opType": "Equals" }
       ],
       "Columns": [],
       "exportType": "JSON"
@@ -731,6 +781,28 @@ export class NewRequestComponent implements OnInit {
       console.log("attendentDet Data:", this.dsattendentDetailList.data)
     });
 
+  }
+
+  drop2(event: CdkDragDrop<any[]>) {
+    const data = this.dsattendentDetailList.data; // Extract raw array from MatTableDataSource
+    moveItemInArray(data, event.previousIndex, event.currentIndex);
+    this.dsattendentDetailList.data = data; // Update table with reordered data
+  }
+
+  @ViewChild(CdkScrollable, { static: true }) scrollable2!: CdkScrollable;
+  onDragMoved2(event: CdkDragMove) {
+    const scrollContainer = this.scrollable2.getElementRef().nativeElement;
+    const scrollRect = scrollContainer.getBoundingClientRect();
+    const pointerY = event.pointerPosition.y;
+
+    const edgeMargin = 60; // px from top/bottom where scrolling starts
+    const scrollSpeed = 40; // 🔥 increase for faster scrolling
+
+    if (pointerY < scrollRect.top + edgeMargin) {
+      scrollContainer.scrollTop -= scrollSpeed;
+    } else if (pointerY > scrollRect.bottom - edgeMargin) {
+      scrollContainer.scrollTop += scrollSpeed;
+    }
   }
 
   /////////////////////////////// attendent detail part end/////////////////////////////
@@ -757,6 +829,7 @@ export class NewRequestComponent implements OnInit {
     console.log(this.requestForm.value)
     if (!this.requestForm.invalid) {
       debugger
+      this.requestForm.get('otrequestId')?.setValue(this.vrequestId ?? 0);
       this.requestForm.get('opiptype')?.setValue(this.requestForm.get('opiptype')?.value === 'IP' ? '1' : '0');
       this.requestForm.get('requestType')?.setValue(this.requestForm.get('requestType')?.value === '1' ? true : false);
       this.requestForm.get('pacrequired')?.setValue(this.requestForm.get('pacrequired')?.value === '1' ? true : false);
@@ -834,26 +907,28 @@ export class NewRequestComponent implements OnInit {
 
   selectChangedepdoctorType(obj: any) {
     if (obj.value) {
-      this._OtRequestService.getSurgeonsByDoctorType(obj.value).subscribe((data: any[]) => {
-        this.surgeonList.options = data;
-        this.surgeonList.bindGridAutoComplete();
-      });
-    } else {
-      this._OtRequestService.getSurgeonsByDoctorType(obj.categoryId).subscribe((data: any[]) => {
-        this.surgeonList.options = data;
-        // this.surgeonList.bindGridAutoComplete();
-        const incomingDoctorId = obj.surgeonId;
-        setTimeout(() => {
-          this.surgeonList.bindGridAutoComplete();
-          if (incomingDoctorId) {
-            const matchedDoctor = data.find(doc => doc.value === incomingDoctorId);
-            if (matchedDoctor) {
-              this.requestForm.get('surgeonId')?.setValue(matchedDoctor.value);
-            }
-          }
-        }, 100);
+      this.doctorType = obj.text
+      this._OtRequestService.getDoctorsByDoctorType(obj.value).subscribe((data: any[]) => {
+        this.ddlDoctor.options = data;
+        this.ddlDoctor.bindGridAutoComplete();
       });
     }
+    // else {
+    //   this._OtRequestService.getDoctorsByDoctorType(obj.categoryId).subscribe((data: any[]) => {
+    //     this.ddlDoctor.options = data;
+    //     // this.ddlDoctor.bindGridAutoComplete();
+    //     const incomingDoctorId = obj.doctorId;
+    //     setTimeout(() => {
+    //       this.ddlDoctor.bindGridAutoComplete();
+    //       if (incomingDoctorId) {
+    //         const matchedDoctor = data.find(doc => doc.value === incomingDoctorId);
+    //         if (matchedDoctor) {
+    //           this.requestForm.get('doctorId')?.setValue(matchedDoctor.value);
+    //         }
+    //       }
+    //     }, 100);
+    //   });
+    // }
   }
 
   OnPrint(Param) {

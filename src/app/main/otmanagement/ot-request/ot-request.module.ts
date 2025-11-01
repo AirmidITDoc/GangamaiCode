@@ -20,41 +20,28 @@ import { FuseConfirmDialogModule, FuseSidebarModule } from "@fuse/components";
 import { FuseSharedModule } from "@fuse/shared.module";
 import { SharedModule } from "app/main/shared/shared.module";
 import { NgxMatSelectSearchModule } from "ngx-mat-select-search";
-// import { CompanyMasterListComponent } from "./company-master-list/company-master-list.component";
 import { MatDatepickerModule } from "@angular/material/datepicker";
-
 import { CommonModule, DatePipe } from "@angular/common";
-
 import { NewRequestComponent } from "./new-request/new-request.component";
 import { OTRequestComponent } from "./ot-request.component";
 import { OtRequestService } from "./ot-request.service";
-
 import { ScrollingModule } from "@angular/cdk/scrolling";
-
 import { MatCardModule } from "@angular/material/card";
-
 import { MatDialogModule } from "@angular/material/dialog";
 import { MatDividerModule } from "@angular/material/divider";
 import { MatExpansionModule } from "@angular/material/expansion";
-
 import { MatListModule } from "@angular/material/list";
-
 import { MatSlideToggleModule } from "@angular/material/slide-toggle";
 import { MatSnackBarModule } from "@angular/material/snack-bar";
-
 import { MatStepperModule } from "@angular/material/stepper";
 import { MatTabsModule } from "@angular/material/tabs";
-
-
-//import { NgxPrintModule } from "ngx-print";
 import { MatTooltipModule } from "@angular/material/tooltip";
-// import { NgxQRCodeModule } from "@techiediaries/ngx-qrcode";
-//import { WebcamModule } from "ngx-webcam";
 import { MatButtonToggleModule } from "@angular/material/button-toggle";
 import { MatSidenavModule } from "@angular/material/sidenav";
-
-
-
+import { DragDropModule } from "@angular/cdk/drag-drop";
+import { MatTimepickerModule } from "mat-timepicker";
+import { FormsModule } from "@angular/forms";
+import { MatChipsModule } from "@angular/material/chips";
 const routes: Routes = [
     {
         path: "**",
@@ -91,17 +78,18 @@ const routes: Routes = [
         SharedModule,
         NgxMatSelectSearchModule,
         MatCardModule,
-MatDialogModule,
-MatDividerModule,
-MatExpansionModule,
-MatListModule,
-MatSlideToggleModule, 
-MatSnackBarModule,
-MatStepperModule,
-MatTabsModule,
-MatTooltipModule,
-MatButtonToggleModule,
-MatSidenavModule,
+        MatDialogModule,
+        MatDividerModule,
+        MatExpansionModule,
+        MatListModule,
+        MatSlideToggleModule,
+        MatSnackBarModule,
+        MatStepperModule,
+        MatTabsModule,
+        MatTooltipModule,
+        MatButtonToggleModule,
+        MatSidenavModule,
+        DragDropModule,
     ],
     providers: [DatePipe, OtRequestService]
 })

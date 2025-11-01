@@ -2,7 +2,7 @@
     <div class="modal-header accent">
         <div class="modal-header-content">
             <div class="modal-header-title">
-                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">New OT Booking Request</span>
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">New OT Request</span>
             </div>
             <div class="modal-header-right">
                 <div class="comman-date-container">
@@ -165,7 +165,7 @@
                                                             </span>
                                                             <span>:</span>
                                                             <span
-                                                                class="patient-col-value">{{registerObj1.age}}Y|{{registerObj1.ageMonth}}M|{{registerObj1.ageDay}}D
+                                                                class="patient-col-value">{{registerObj1.ageYear}}Y|{{registerObj1.ageMonth}}M|{{registerObj1.ageDay}}D
                                                                 | {{registerObj1.genderName}}</span>
                                                         </div>
                                                         <div class="patient-col">
@@ -205,7 +205,7 @@
 
                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <airmid-dropdown label="Category Type" formControlName="categoryType"
-                                        [formGroup]="requestForm" [value]="registerObj?.categoryType"
+                                        [formGroup]="requestForm" [value]="registerObj1?.categoryType"
                                         [mode]="autocompleteModeSurgeryCategory">
                                     </airmid-dropdown>
                                 </div>
@@ -272,34 +272,35 @@
                                 fxLayoutGap="4px grid">
 
                                 <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <mat-radio-group formControlName="requestType">
+                                    <mat-radio-group formControlName="requestType" [(ngModel)]="vrequestType">
                                         <label style="font-weight: bold;">Request Type:</label>
-                                        <mat-radio-button value="1">Emergency</mat-radio-button>
-                                        <mat-radio-button value="0">Elective</mat-radio-button>
+                                        <mat-radio-button value='1'>Emergency</mat-radio-button>
+                                        <mat-radio-button value='0'>Elective</mat-radio-button>
                                     </mat-radio-group>
                                 </div>
 
                                 <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <mat-radio-group formControlName="pacrequired">
+                                    <mat-radio-group formControlName="pacrequired" [(ngModel)]="vpacrequired">
                                         <label style="font-weight: bold;">PAC Required:</label>
-                                        <mat-radio-button value="1">Yes</mat-radio-button>
-                                        <mat-radio-button value="0">No</mat-radio-button>
+                                        <mat-radio-button value='1'>Yes</mat-radio-button>
+                                        <mat-radio-button value='0'>No</mat-radio-button>
                                     </mat-radio-group>
                                 </div>
 
                                 <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <mat-radio-group formControlName="equipmentsRequired">
+                                    <mat-radio-group formControlName="equipmentsRequired"
+                                        [(ngModel)]="vequipmentsRequired">
                                         <label style="font-weight: bold;">Equipments Required:</label>
-                                        <mat-radio-button value="1">Yes</mat-radio-button>
-                                        <mat-radio-button value="0">No</mat-radio-button>
+                                        <mat-radio-button value='1'>Yes</mat-radio-button>
+                                        <mat-radio-button value='0'>No</mat-radio-button>
                                     </mat-radio-group>
                                 </div>
 
                                 <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <mat-radio-group formControlName="infective">
+                                    <mat-radio-group formControlName="infective" [(ngModel)]="vinfective">
                                         <label style="font-weight: bold;">Infective:</label>
-                                        <mat-radio-button value="1">Yes</mat-radio-button>
-                                        <mat-radio-button value="0">No</mat-radio-button>
+                                        <mat-radio-button value='1'>Yes</mat-radio-button>
+                                        <mat-radio-button value='0'>No</mat-radio-button>
                                     </mat-radio-group>
                                 </div>
 
@@ -334,7 +335,7 @@
                                         </mat-select>
                                     </mat-form-field> -->
                                     <airmid-dropdown label="Surgery Type" formControlName="surgeryCategoryId"
-                                        [formGroup]="requestForm" [value]="registerObj?.surgeryCategoryId"
+                                        [formGroup]="requestForm" [value]="registerObj1?.surgeryCategoryId"
                                         [mode]="autocompleteModeSiteDescription"
                                         (selectionChange)="selectChangeSurgeryCategory($event)">
                                     </airmid-dropdown>
@@ -418,7 +419,14 @@
 
                             <div class="airmid-table-container">
                                 <mat-table matSort [dataSource]="dssurgeryDetailList" [@animateStagger]="{value:'50'}"
-                                    class="airmid-table">
+                                    class="airmid-table" cdkDropList (cdkDropListDropped)="drop1($event)">
+                                     <ng-container matColumnDef="sequence">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Sr.No
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let element; let i = index" fxShow.gt-sm>
+                                            {{ i + 1 }}
+                                        </mat-cell>
+                                    </ng-container>
 
                                     <ng-container matColumnDef="surgeryCategoryName">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
@@ -520,7 +528,8 @@
                                     <mat-header-row class="accent" *matHeaderRowDef="displayedColumns; sticky: true">
                                     </mat-header-row>
                                     <mat-row *matRowDef="let row; columns: displayedColumns;" class="element"
-                                        [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                                        [@animate]="{value:'*',params:{y:'100%'}}"cdkDrag
+                                    (cdkDragMoved)="onDragMoved1($event)"></mat-row>
                                 </mat-table>
                             </div>
                         </mat-card>
@@ -548,14 +557,14 @@
                                 <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <airmid-dropdown label="Doctor Type" formControlName="doctorTypeId"
                                         [formGroup]="requestForm" [mode]="autocompleteModeDoctorType"
-                                        (selectionChange)="selectChangedoctorType($event)">
+                                        (selectionChange)="selectChangedepdoctorType($event)">
                                     </airmid-dropdown>
                                 </div>
 
                                 <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <airmid-dropdown label="Doctor Name" formControlName="doctorId"
-                                        [formGroup]="requestForm" [mode]="autocompleteModeRefDoctor"
-                                        (selectionChange)="selectChangedoctor($event)">
+                                        [formGroup]="requestForm" (selectionChange)="selectChangedoctor($event)"
+                                        #ddlDoctor>
                                     </airmid-dropdown>
                                 </div>
 
@@ -572,7 +581,15 @@
 
                             <div class="airmid-table-container">
                                 <mat-table matSort [dataSource]="dsattendentDetailList" [@animateStagger]="{value:'50'}"
-                                    class="airmid-table">
+                                    class="airmid-table" cdkDropList (cdkDropListDropped)="drop2($event)">
+
+                                    <ng-container matColumnDef="sequence">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Sr.No
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let element; let i = index" fxShow.gt-sm>
+                                            {{ i + 1 }}
+                                        </mat-cell>
+                                    </ng-container>
 
                                     <ng-container matColumnDef="surgeon">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Doctor
@@ -610,7 +627,8 @@
                                     <mat-header-row class="accent" *matHeaderRowDef="displayedColumns1; sticky: true">
                                     </mat-header-row>
                                     <mat-row *matRowDef="let row; columns: displayedColumns1;" class="element"
-                                        [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                                        [@animate]="{value:'*',params:{y:'100%'}}"cdkDrag
+                                    (cdkDragMoved)="onDragMoved2($event)"></mat-row>
                                 </mat-table>
                             </div>
 

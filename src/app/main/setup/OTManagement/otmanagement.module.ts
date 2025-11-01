@@ -8,38 +8,37 @@ const appRoutes: Routes = [
     path: "ottablemaster",
     loadChildren: () =>
       import("./ottablemaster/ottablemaster.module").then((m) => m.OTTablemasterModule
-      ), 
-  }, 
+      ),
+  },
   {
-    path: "categorymaster",
+    path: "surgerycategorymaster",
     loadChildren: () =>
       import("./category-master/category-master.module").then((m) => m.CategoryMasterModule
-      ), 
+      ),
   },
-
   {
     path: "surgerymaster",
     loadChildren: () =>
       import("./surgery-master/surgery-master.module").then((m) => m.SurgeryMasterModule
-      ), 
+      ),
   },
-   {
-    path: "typemaster",
+  {
+    path: "tablecategorymaster",
     loadChildren: () =>
       import("./type-master/type-master.module").then((m) => m.TypeMasterModule
-      ), 
+      ),
   },
-   {
-    path: "sitediscriptionmaster",
+  {
+    path: "surgerytypemaster",
     loadChildren: () =>
       import("./site-description/site-description.module").then((m) => m.SiteDescriptionModule
-      ), 
+      ),
   },
   {
     path: "consentmaster",
     loadChildren: () =>
       import("./consent-master/consent-master.module").then((m) => m.ConsentMasterModule
-      ), 
+      ),
   },
 ];
 

@@ -6,42 +6,38 @@ import { ToastrService } from 'ngx-toastr';
 import { SiteDescriptionService } from '../site-description.service';
 
 @Component({
-  selector: 'app-new-site-description-master',
-  templateUrl: './new-site-description-master.component.html',
-  styleUrls: ['./new-site-description-master.component.scss'],
+    selector: 'app-new-site-description-master',
+    templateUrl: './new-site-description-master.component.html',
+    styleUrls: ['./new-site-description-master.component.scss'],
     encapsulation: ViewEncapsulation.None,
-            animations: fuseAnimations,
+    animations: fuseAnimations,
 })
 export class NewSiteDescriptionMasterComponent {
-myForm: FormGroup;
-    isActive:boolean=true;
-       SiteDescId = 0;
-       autocompleteModecategory:string='SurgeryCategory'
+    myForm: FormGroup;
+    isActive: boolean = true;
+    SiteDescId = 0;
+    autocompleteModecategory: string = 'SurgeryCategory'
     constructor(
-                    public _SiteDescriptionService: SiteDescriptionService,
-                    public dialogRef: MatDialogRef<NewSiteDescriptionMasterComponent>,
-                    @Inject(MAT_DIALOG_DATA) public data: any,
-                    public toastr: ToastrService
-                ) { }
-    
-   
-    
+        public _SiteDescriptionService: SiteDescriptionService,
+        public dialogRef: MatDialogRef<NewSiteDescriptionMasterComponent>,
+        @Inject(MAT_DIALOG_DATA) public data: any,
+        public toastr: ToastrService
+    ) { }
+
     ngOnInit(): void {
         this.myForm = this._SiteDescriptionService.createSiteDescForm();
-         this.myForm.markAllAsTouched();
+        this.myForm.markAllAsTouched();
 
         console.log(this.data)
-        if ((this.data?.siteDescId??0) > 0) 
-        {
-            this.isActive=this.data.isActive
-            this.SiteDescId=this.data.siteDescId
+        if ((this.data?.siteDescId ?? 0) > 0) {
+            this.isActive = this.data.isActive
+            this.SiteDescId = this.data.siteDescId
 
             this.myForm.patchValue(this.data);
-        }   
+        }
     }
-    
-      
-        onSubmit() {
+
+    onSubmit() {
         if (!this.myForm.invalid) {
             console.log(this.myForm.value)
             this._SiteDescriptionService.siteDescriptionSave(this.myForm.value).subscribe((response) => {
@@ -52,7 +48,7 @@ myForm: FormGroup;
             if (this.myForm.invalid) {
                 for (const controlName in this.myForm.controls) {
                     if (this.myForm.controls[controlName].invalid) {
-                        invalidFields.push(`Site Description Form: ${controlName}`);
+                        invalidFields.push(`Surgery Type Form: ${controlName}`);
                     }
                 }
             }
@@ -66,28 +62,28 @@ myForm: FormGroup;
         }
     }
 
-          
-        getValidationMessages() {
-            return {
-                surgeryCategoryId: [
-                    { name: "required", Message: "surgeryCategory Name is required" }
-                ],
-                siteDescriptionName: [
-                    { name: "required", Message: "siteDesc Name is required" },
-                    { name: "maxlength", Message: "siteDesc Name should not be greater than 50 char." },
-                    { name: "pattern", Message: "Only char allowed." }
-                ]
-            };
-        }
-    
-    
-        // selectChangecountry(obj: any){
-        //     console.log(obj);
-        //     this.surgeryCategoryId=obj.value
-        // }
-    
-        onClear(val: boolean) {
-          this.myForm.reset();
-          this.dialogRef.close(val);
-        }
+
+    getValidationMessages() {
+        return {
+            surgeryCategoryId: [
+                { name: "required", Message: "surgeryCategory Name is required" }
+            ],
+            siteDescriptionName: [
+                { name: "required", Message: "Surgery Type Name is required" },
+                { name: "maxlength", Message: "Surgery Type Name should not be greater than 50 char." },
+                { name: "pattern", Message: "Only char allowed." }
+            ]
+        };
+    }
+
+
+    // selectChangecountry(obj: any){
+    //     console.log(obj);
+    //     this.surgeryCategoryId=obj.value
+    // }
+
+    onClear(val: boolean) {
+        this.myForm.reset();
+        this.dialogRef.close(val);
+    }
 }

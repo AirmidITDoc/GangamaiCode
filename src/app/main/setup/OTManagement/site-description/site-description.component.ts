@@ -9,45 +9,44 @@ import { NewSiteDescriptionMasterComponent } from './new-site-description-master
 import { SiteDescriptionService } from './site-description.service';
 
 @Component({
-  selector: 'app-site-description',
-  templateUrl: './site-description.component.html',
-  styleUrls: ['./site-description.component.scss'],
-   encapsulation: ViewEncapsulation.None,
-              animations: fuseAnimations,
+    selector: 'app-site-description',
+    templateUrl: './site-description.component.html',
+    styleUrls: ['./site-description.component.scss'],
+    encapsulation: ViewEncapsulation.None,
+    animations: fuseAnimations,
 })
 export class SiteDescriptionComponent implements OnInit {
- msg: any;
+    msg: any;
     siteDescName: any = "";
 
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
-   
-        allColumns = [
-            // { heading: "Code", key: "siteDescId", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "OT SiteDesc Name", key: "siteDescriptionName", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Surgery Category", key: "surgeryCategoryId", sort: true, align: 'left', emptySign: 'NA' },
-            // { heading: "AddedBy", key: "addedBy", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "isActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
-            {
-                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
-                    {
-                        action: gridActions.edit, callback: (data: any) => {
-                            this.onSave(data);
-                        }
-                    }, {
-                        action: gridActions.delete, callback: (data: any) => {
-                            debugger
-                            this._SiteDescriptionService.deactivateTheStatus(data.siteDescId).subscribe((response: any) => {
-                                this.grid.bindGridData();
-                            });
-                        }
-                    }]
-            } //Action 1-view, 2-Edit,3-delete
-        ]
-        allFilters = [
-            { fieldName: "OTtypeName", fieldValue: "", opType: OperatorComparer.StartsWith },
-            { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
-        ]
-     gridConfig: gridModel = {
+
+    allColumns = [
+        { heading: "OT Surgery Type Name", key: "siteDescriptionName", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Surgery Category", key: "surgeryCategoryId", sort: true, align: 'left', emptySign: 'NA' },
+        // { heading: "AddedBy", key: "addedBy", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "isActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
+        {
+            heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+                {
+                    action: gridActions.edit, callback: (data: any) => {
+                        this.onSave(data);
+                    }
+                }, {
+                    action: gridActions.delete, callback: (data: any) => {
+                        debugger
+                        this._SiteDescriptionService.deactivateTheStatus(data.siteDescId).subscribe((response: any) => {
+                            this.grid.bindGridData();
+                        });
+                    }
+                }]
+        } //Action 1-view, 2-Edit,3-delete
+    ]
+    allFilters = [
+        { fieldName: "OTtypeName", fieldValue: "", opType: OperatorComparer.StartsWith },
+        { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+    ]
+    gridConfig: gridModel = {
         apiUrl: "SiteDescriptionMaster/List",
         columnsList: this.allColumns,
         sortField: "SiteDescId",

@@ -9,47 +9,44 @@ import { CategoryMasterService } from './category-master.service';
 import { NewCategoryMasterComponent } from './new-category-master/new-category-master.component';
 
 @Component({
-  selector: 'app-category-master',
-  templateUrl: './category-master.component.html',
-  styleUrls: ['./category-master.component.scss'],
-   encapsulation: ViewEncapsulation.None,
-        animations: fuseAnimations,
+    selector: 'app-category-master',
+    templateUrl: './category-master.component.html',
+    styleUrls: ['./category-master.component.scss'],
+    encapsulation: ViewEncapsulation.None,
+    animations: fuseAnimations,
 })
 export class CategoryMasterComponent implements OnInit {
-msg: any;
- categoryName: any = "";
+    msg: any;
+    categoryName: any = "";
 
 
- @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
-   
-        allColumns =  [
-            // { heading: "Code", key: "surgeryCategoryId", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "SystemName", key: "surgeryCategoryName", sort: true, align: 'left', emptySign: 'NA' },
-            // { heading: "AddedBy", key: "addedBy", sort: true, align: 'left', emptySign: 'NA' },
-            //{ heading: "UserName", key: "addedByName", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
-            {
-                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
-                    {
-                        action: gridActions.edit, callback: (data: any) => {
-                            this.onSave(data);
-                        }
-                    }, {
-                        action: gridActions.delete, callback: (data: any) => {
-                            this._CategoryMasterService.deactivateTheStatus(data.surgeryCategoryId).subscribe((response: any) => {
-                                this.grid.bindGridData();
-                            });
-                        }
-                    }]
-            } //Action 1-view, 2-Edit,3-delete
-        ]
-       
-        allFilters = [
-            { fieldName: "categoryName", fieldValue: "", opType: OperatorComparer.StartsWith },
-            { fieldName: "IsActive", fieldValue: "", opType: OperatorComparer.Equals }
-        ]
-    
- gridConfig: gridModel = {
+    @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+
+    allColumns = [
+        { heading: "Surgery Category", key: "surgeryCategoryName", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
+        {
+            heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+                {
+                    action: gridActions.edit, callback: (data: any) => {
+                        this.onSave(data);
+                    }
+                }, {
+                    action: gridActions.delete, callback: (data: any) => {
+                        this._CategoryMasterService.deactivateTheStatus(data.surgeryCategoryId).subscribe((response: any) => {
+                            this.grid.bindGridData();
+                        });
+                    }
+                }]
+        } //Action 1-view, 2-Edit,3-delete
+    ]
+
+    allFilters = [
+        { fieldName: "categoryName", fieldValue: "", opType: OperatorComparer.StartsWith },
+        { fieldName: "IsActive", fieldValue: "", opType: OperatorComparer.Equals }
+    ]
+
+    gridConfig: gridModel = {
         apiUrl: "SurgeryCategoryMaster/List",
         columnsList: this.allColumns,
         sortField: "SurgeryCategoryId",

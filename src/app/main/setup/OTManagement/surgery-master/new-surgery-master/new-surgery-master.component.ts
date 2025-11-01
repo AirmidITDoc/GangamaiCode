@@ -73,19 +73,19 @@ export class NewSurgeryMasterComponent implements OnInit {
                 { name: "required", Message: "surgery Name is required" }
             ],
             surgeryCategoryId: [
-                { name: "required", Message: "surgeryCategory Id is required" }
+                { name: "required", Message: "surgeryCategory is required" }
             ],
             departmentId: [
-                { name: "required", Message: "department id is required" }
+                { name: "required", Message: "department is required" }
             ],
             surgeryAmount: [
                 { name: "required", Message: "amount is required" }
             ],
             ottemplateId: [
-                { name: "required", Message: "Table id is required" }
+                { name: "required", Message: "Table is required" }
             ],
             siteDescId: [
-                { name: "required", Message: "siteDesc id is required" }
+                { name: "required", Message: "Surgery Type is required" }
             ],
             departmentName: [
                 {
