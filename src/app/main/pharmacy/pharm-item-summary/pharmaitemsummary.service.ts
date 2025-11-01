@@ -69,4 +69,7 @@ export class PharmaitemsummaryService {
   public getExpiryItemview(ExpMonth,ExpYear,StoreID){
     return this._httpClient.get("InventoryTransaction/view-ExpiryItemList?ExpMonth=" + ExpMonth +"&ExpYear="+ExpYear+ "&StoreID=" +StoreID );
   }
+      public getitemsupplierdet(param){
+    return this._httpClient1.PostData("Common",param)
+  }
 }

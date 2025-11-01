@@ -592,26 +592,26 @@ export class NewGrnComponent implements OnInit, OnDestroy {
     //item Total amt
     calculateTotalamt() {
         const form = this.userFormGroup;
-        const enteredRate = Number(form.get('Rate').value).toFixed(2);
-        const lastRates = this.dsLastThreeItemList.data.map(item => Number(item.rate).toFixed(2));
+        // const enteredRate = Number(form.get('Rate').value).toFixed(2);
+        // const lastRates = this.dsLastThreeItemList.data.map(item => Number(item.rate).toFixed(2));
 
-        // Check if rate matches any of last three
-        const isRateSame = lastRates.includes(enteredRate);
+        // // Check if rate matches any of last three
+        // const isRateSame = lastRates.includes(enteredRate);
         
-        if (!isRateSame && (Number(enteredRate) > 0)) { 
-            Swal.fire({
-                icon: 'warning',
-                title: 'Price Verification Required',
-                html: ` <p>⚠️ The entered rate <strong>(${enteredRate})</strong> differs from your last three purchase rates 
-                <strong>(${lastRates.join(', ')})</strong>.</p> <p>Please verify before saving.</p>
-                <hr>  `,
-                confirmButtonText: 'OK',
-                confirmButtonColor: '#f39c12',
-                background: '#fff',
-                timer: 4000,
-                timerProgressBar: true
-            });
-        }
+        // if (!isRateSame && (Number(enteredRate) > 0)) { 
+        //     Swal.fire({
+        //         icon: 'warning',
+        //         title: 'Price Verification Required',
+        //         html: ` <p>⚠️ The entered rate <strong>(${enteredRate})</strong> differs from your last three purchase rates 
+        //         <strong>(${lastRates.join(', ')})</strong>.</p> <p>Please verify before saving.</p>
+        //         <hr>  `,
+        //         confirmButtonText: 'OK',
+        //         confirmButtonColor: '#f39c12',
+        //         background: '#fff',
+        //         timer: 4000,
+        //         timerProgressBar: true
+        //     });
+        // }
 
             this.validateFormValues();
         // Get values with proper type conversion
