@@ -1,17 +1,17 @@
 <ng-template #serviceTable>
     <mat-toolbar class="accent" style="width: 100%;height: 40px;justify-content: space-between;">
-    <div fxLayout="row" fxLayoutAlign="start center">
-      <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
-        style="color: white;">account_box
-      </mat-icon>
-      <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"> Admission Task</span>
-    </div>
-    <div class="close-icon">
-      <button mat-icon-button [mat-dialog-close]="true" aria-label="Close dialog" matTooltip="Close">
-        <mat-icon>close</mat-icon>
-      </button>
-    </div>
-  </mat-toolbar>
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
+                style="color: white;">account_box
+            </mat-icon>
+            <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"> Admission Task</span>
+        </div>
+        <div class="close-icon">
+            <button mat-icon-button [mat-dialog-close]="true" aria-label="Close dialog" matTooltip="Close">
+                <mat-icon>close</mat-icon>
+            </button>
+        </div>
+    </mat-toolbar>
 
 
     <div class="modal-body" fusePerfectScrollbar>
@@ -23,7 +23,7 @@
 
                         <div fxFlexFill fxlayout="row" fxLayout="column" fxLayoutGap="6px">
 
-                          
+
                             <div fxFlexFill fxlayout="row" fxLayoutGap="8px">
 
                                 <mat-form-field appearance="outline" class="dateField">
@@ -39,7 +39,7 @@
 
                                 <mat-form-field appearance="outline" class="timeField">
                                     <mat-label>{{timeLabel}}</mat-label>
-                                      <input matTimepicker #t="matTimepicker" mode="12h" formControlName="AdmissionTime"
+                                    <input matTimepicker #t="matTimepicker" mode="12h" formControlName="AdmissionTime"
                                         [readonly]="true" (timeChange)="onChangeTime($event)"
                                         [disableDialogOpenOnClick]="isDatePckrDisabled">
 
@@ -71,18 +71,18 @@
 <!-- //Visitdate -->
 <ng-template #visitTable>
     <mat-toolbar class="accent" style="width: 100%;height: 40px;justify-content: space-between;">
-    <div fxLayout="row" fxLayoutAlign="start center">
-      <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
-        style="color: white;">account_box
-      </mat-icon>
-      <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"> VisitDetail Task</span>
-    </div>
-    <div class="close-icon">
-      <button mat-icon-button [mat-dialog-close]="true" aria-label="Close dialog" matTooltip="Close">
-        <mat-icon>close</mat-icon>
-      </button>
-    </div>
-  </mat-toolbar>
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
+                style="color: white;">account_box
+            </mat-icon>
+            <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"> VisitDetail Task</span>
+        </div>
+        <div class="close-icon">
+            <button mat-icon-button [mat-dialog-close]="true" aria-label="Close dialog" matTooltip="Close">
+                <mat-icon>close</mat-icon>
+            </button>
+        </div>
+    </mat-toolbar>
 
 
     <div class="modal-body" fusePerfectScrollbar>
@@ -94,14 +94,13 @@
 
                         <div fxFlexFill fxlayout="row" fxLayout="column" fxLayoutGap="6px">
 
-                          
+
                             <div fxFlexFill fxlayout="row" fxLayoutGap="8px">
 
                                 <mat-form-field appearance="outline" class="dateField">
                                     <mat-label>{{dateLabel1}}</mat-label>
                                     <input matInput [matDatepicker]="picker1" [matDatepickerFilter]="myFilter"
-                                        formControlName="VisitDate" readonly
-                                        (dateChange)="onChangeDate1($event.value)">
+                                        formControlName="VisitDate" readonly (dateChange)="onChangeDate1($event.value)">
                                     <mat-datepicker-toggle matSuffix [for]="picker1"
                                         [disabled]="isDatePckrDisabled"></mat-datepicker-toggle>
                                     <mat-datepicker #picker1></mat-datepicker>
@@ -110,7 +109,7 @@
 
                                 <mat-form-field appearance="outline" class="timeField">
                                     <mat-label>{{timeLabel1}}</mat-label>
-                                      <input matTimepicker #t="matTimepicker" mode="12h" formControlName="VisitTime"
+                                    <input matTimepicker #t="matTimepicker" mode="12h" formControlName="VisitTime"
                                         [readonly]="true" (timeChange)="onChangeTime1($event)"
                                         [disableDialogOpenOnClick]="isDatePckrDisabled">
 
@@ -142,18 +141,18 @@
 <!-- //Bill Date update -->
 <ng-template #Billdate>
     <mat-toolbar class="accent" style="width: 100%;height: 40px;justify-content: space-between;">
-    <div fxLayout="row" fxLayoutAlign="start center">
-      <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
-        style="color: white;">account_box
-      </mat-icon>
-      <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"> BIll Date & Time Update</span>
-    </div>
-    <div class="close-icon">
-      <button mat-icon-button [mat-dialog-close]="true" aria-label="Close dialog" matTooltip="Close">
-        <mat-icon>close</mat-icon>
-      </button>
-    </div>
-  </mat-toolbar>
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
+                style="color: white;">account_box
+            </mat-icon>
+            <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"> BIll Date & Time Update</span>
+        </div>
+        <div class="close-icon">
+            <button mat-icon-button [mat-dialog-close]="true" aria-label="Close dialog" matTooltip="Close">
+                <mat-icon>close</mat-icon>
+            </button>
+        </div>
+    </mat-toolbar>
 
 
     <div class="modal-body" fusePerfectScrollbar>
@@ -163,12 +162,12 @@
                 <div class="content-card">
                     <!-- <form [formGroup]="VisitForm"> -->
 
-                        <div fxFlexFill fxlayout="row" fxLayout="column" fxLayoutGap="6px">
+                    <div fxFlexFill fxlayout="row" fxLayout="column" fxLayoutGap="6px">
 
-                          
-                            <div fxFlexFill fxlayout="row" fxLayoutGap="8px">
 
-                                <!-- <mat-form-field appearance="outline" class="dateField">
+                        <div fxFlexFill fxlayout="row" fxLayoutGap="8px">
+
+                            <!-- <mat-form-field appearance="outline" class="dateField">
                                     <mat-label>{{dateLabel1}}</mat-label>
                                     <input matInput [matDatepicker]="picker1" [matDatepickerFilter]="myFilter"
                                         formControlName="VisitDate" readonly
@@ -189,13 +188,13 @@
                                         (click)="!isDatePckrDisabled ? t.showDialog() : ''">access_time</mat-icon>
                                 </mat-form-field> -->
 
-                                 <app-common-date [screenFrom]="screenFromString" (dateTimeEventEmitter)="getDateTime($event)"
-                                    style="width: 200px;">
-                                    </app-common-date> 
-
-                            </div>
+                            <app-common-date [screenFrom]="screenFromString"
+                                (dateTimeEventEmitter)="getDateTime($event)" style="width: 200px;">
+                            </app-common-date>
 
                         </div>
+
+                    </div>
                     <!-- </form> -->
                 </div>
             </div>
@@ -226,6 +225,7 @@
             </div>
         </div>
     </div>
+
     <mat-card style="padding: 8px;">
 
         <div class="modal-body">
@@ -269,9 +269,9 @@
                                 <hr>
                                 <div class="Ipd-patient-info" fxFlexFill fxLayout="row"
                                     fxLayoutAlign="space-between center" class="patient-info">
-                                    <div class="patient-sub">
+                                    <div class="patient-sub" >
                                         <div class="patient-info-row patient-info-1-111 pt-8" fxLayout="row"
-                                            fxLayoutAlign="space-between">
+                                            fxLayoutAlign="space-between" style="font-size: large;">
                                             <div fxLayout="column" fxLayoutGap="10px">
                                                 <div class="patient-col">
                                                     <span class="patient-col-key">UHID No
@@ -327,32 +327,29 @@
                                     </mat-cell>
                                 </ng-container> -->
 
-                                <ng-container matColumnDef="VisitTime">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md
-                                        class="w-170">
+                                <ng-container matColumnDef="VisitDateTime">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
                                         Visit Date
                                     </mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="w-170">
-                                        {{contact.VisitTime | date:'short'}}
+                                    <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
+                                        {{contact.VisitDateTime}}
                                     </mat-cell>
                                 </ng-container>
 
                                 <ng-container matColumnDef="OPDNo">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md
-                                        class="w-170">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
                                         OPD No
                                     </mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="w-170">
+                                    <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
                                         {{contact.OPDNo}}
                                     </mat-cell>
                                 </ng-container>
 
                                 <ng-container matColumnDef="DoctorName">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md
-                                        class="w-300">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
                                         Doctor Name
                                     </mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="w-300">
+                                    <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
                                         {{contact.DoctorName}}
                                     </mat-cell>
                                 </ng-container>
@@ -436,57 +433,52 @@
                                 </ng-container>
 
 
-                                <!-- <ng-container matColumnDef="AdmissionID">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md
-                                        class="w-170">
-                                        Admission Id
-                                    </mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="w-170">
-                                        {{contact.AdmissionID}}
-                                    </mat-cell>
-                                </ng-container> -->
-
-                                <ng-container matColumnDef="AdmissionTime">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md
-                                        class="w-170">
+                                <ng-container matColumnDef="VisitDateTime">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
                                         Admission Date
                                     </mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="w-170">
-                                        {{contact.AdmissionTime | date:'short'}}
+                                    <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
+                                        {{contact.VisitDateTime}}
                                     </mat-cell>
                                 </ng-container>
 
                                 <ng-container matColumnDef="RegID">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md
-                                        class="w-170">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
                                         UHID
                                     </mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="w-170">
+                                    <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
                                         {{contact.RegID}}
                                     </mat-cell>
                                 </ng-container>
 
                                 <ng-container matColumnDef="IPDNo">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md
-                                        class="w-170">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
                                         IPD No
                                     </mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="w-170">
+                                    <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
                                         {{contact.IPDNo}}
                                     </mat-cell>
                                 </ng-container>
 
                                 <ng-container matColumnDef="DoctorName">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md
-                                        class="w-300">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
                                         Doctor Name
                                     </mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="w-300">
+                                    <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
                                         {{contact.DoctorName}}
                                     </mat-cell>
                                 </ng-container>
 
 
+
+                                <ng-container matColumnDef="DischargeDateTime">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
+                                        DOD
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
+                                        {{contact.DischargeDateTime}}
+                                    </mat-cell>
+                                </ng-container>
 
                                 <ng-container matColumnDef="action" stickyEnd>
                                     <mat-header-cell *matHeaderCellDef fxShow.gt-sm style="color: white;">
@@ -494,19 +486,19 @@
                                     <mat-cell *matCellDef="let contact">
 
                                         <button class="btn btn-primary" (click)="openAdmissiontask(contact)"
-                                            matTooltip="IPD NO Update">
+                                            matTooltip="Admission Date-Time / IPD NO Update">
                                             <img width="30px" height="30px" src="assets/images/logos/Admission.png">
                                         </button>&nbsp;
 
                                         <button class="btn btn-danger" (click)="openAdmissiontask(contact)"
-                                            matTooltip="Admission Cancle" style="color: white;" *ngIf="IsChargesAmount==0 && IsBillGenerated==0">
+                                            matTooltip="Admission Cancle" style="color: white;"
+                                            *ngIf="IsChargesAmount==0 && IsBillGenerated==0">
                                             <img width="30px" height="30px"
                                                 src="assets/images/logos/cancelappointment.png">
                                         </button>
-
+                                        <!-- *ngIf="IsChargesAmount==0 && IsBillGenerated==0" -->
                                         <button class="btn btn-danger" (click)="DischargeCancel(contact)"
-                                            *ngIf="IsChargesAmount==0 && IsBillGenerated==0" matTooltip="Discharge Cancle"
-                                            style="color: white;">
+                                            matTooltip="Discharge Cancle" style="color: white;">
                                             <img width="30px" height="30px" src="assets/images/logos/discharge.jpeg">
                                         </button>
 
@@ -515,12 +507,7 @@
                                             <img width="30px" height="30px" src="assets/images/logos/dischargedate.png">
                                         </button>
 
-                                         <button class="btn btn-danger" (click)="AdmissionCancle(contact)"
-                                            matTooltip="Refund Data" style="color: white;">
-                                            <img width="30px" height="30px"
-                                                src="assets/images/logos/cancelappointment.png">
-                                        </button>
-
+                                       
                                     </mat-cell>
                                 </ng-container>
 
@@ -538,7 +525,7 @@
                                 <mat-header-row class="accent" *matHeaderRowDef="displayedColumns5; sticky: true">
                                 </mat-header-row>
                                 <mat-row *matRowDef="let contact; columns: displayedColumns5;"
-                                    [@animate]="{value:'*',params:{y:'100%'}}" (click)="GetBillData(contact)"></mat-row>
+                                    [@animate]="{value:'*',params:{y:'100%'}}" (click)="GetBillData()"></mat-row>
                                 <mat-footer-row *matFooterRowDef="['loading']"
                                     [ngClass]="{'hide':!(sIsLoading == 'loading-data')}">
                                 </mat-footer-row>
@@ -576,31 +563,28 @@
                                 </ng-container>
 
                                 <ng-container matColumnDef="pbillNo">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md
-                                        class="w-170">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
                                         PBill No
                                     </mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="w-170">
+                                    <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
                                         {{contact.PBillNo}}
                                     </mat-cell>
                                 </ng-container>
                                 <ng-container matColumnDef="billDate">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md
-                                        class="w-170">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
                                         Bill Date
                                     </mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="w-170">
-                                        {{contact.BillTime | date:'short'}}
+                                    <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
+                                        {{contact.BillDateTime}}
                                     </mat-cell>
                                 </ng-container>
 
 
                                 <ng-container matColumnDef="totalAmt">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md
-                                        class="w-170">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
                                         Bill Amount
                                     </mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="w-170">
+                                    <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
                                         {{contact.TotalAmt | currency:"INR":"symbol"}}
                                     </mat-cell>
                                 </ng-container>
@@ -608,11 +592,10 @@
 
 
                                 <ng-container matColumnDef="netPayableAmt">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md
-                                        class="w-170">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
                                         Net Amount
                                     </mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="w-170">
+                                    <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
                                         {{contact.NetPayableAmt | currency:"INR":"symbol"}}
                                     </mat-cell>
                                 </ng-container>
@@ -648,7 +631,7 @@
                                 <mat-header-row class="accent" *matHeaderRowDef="displayedColumns1; sticky: true">
                                 </mat-header-row>
                                 <mat-row *matRowDef="let contact; columns: displayedColumns1;"
-                                    (click)="GetPaymentData(contact)"
+                                    (click)="GetPaymentData(contact.BillNo)"
                                     [ngClass]="contact.patientType !== 'Self' ? 'self-row' : ''"
                                     [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
                                 <mat-footer-row *matFooterRowDef="['loading']"
@@ -672,83 +655,67 @@
 
 
                                 <ng-container matColumnDef="paymentDate">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md
-                                        class="w-170">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
                                         Payment Date
                                     </mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="w-170">
-                                        {{contact.PaymentTime | date:'short'}}
+                                    <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
+                                        {{contact.PaymentDateTime}}
                                     </mat-cell>
                                 </ng-container>
 
-                                                               
+
                                 <ng-container matColumnDef="ReceiptNo">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md
-                                        class="w-170">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
                                         Receipt No
                                     </mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="w-170">
+                                    <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
                                         {{contact.ReceiptNo}}
                                     </mat-cell>
                                 </ng-container>
 
-                                
+
                                 <ng-container matColumnDef="AdvanceUsedAmount">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md
-                                        class="w-170">
-                                        AdvanceUsedAmount
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
+                                        Adv UsedAmt
                                     </mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="w-170">
+                                    <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
                                         {{contact.AdvanceUsedAmount | currency:"INR":"symbol"}}
                                     </mat-cell>
                                 </ng-container>
-                                
+
                                 <ng-container matColumnDef="CashPayAmount">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md
-                                        class="w-170">
-                                      CashPayAmount
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
+                                        Cash Pay
                                     </mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="w-170">
+                                    <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
                                         {{contact.CashPayAmount | currency:"INR":"symbol"}}
                                     </mat-cell>
                                 </ng-container>
-                                
+
                                 <ng-container matColumnDef="ChequePayAmount">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md
-                                        class="w-170">
-                                       ChequePayAmount
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
+                                        Cheque Pay
                                     </mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="w-170">
+                                    <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
                                         {{contact.ChequePayAmount | currency:"INR":"symbol"}}
                                     </mat-cell>
                                 </ng-container>
-                                
+
                                 <ng-container matColumnDef="CardPayAmount">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md
-                                        class="w-170">
-                                      CardPayAmount
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
+                                        Card Pay
                                     </mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="w-170">
+                                    <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
                                         {{contact.CardPayAmount | currency:"INR":"symbol"}}
                                     </mat-cell>
                                 </ng-container>
-                                
-                                <ng-container matColumnDef="NEFTPayAmount">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md
-                                        class="w-170">
-                                       NEFTPayAmount
-                                    </mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="w-170">
-                                        {{contact.NEFTPayAmount | currency:"INR":"symbol"}}
-                                    </mat-cell>
-                                </ng-container>
 
-                                  <ng-container matColumnDef="OnlineAmount">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md
-                                        class="w-170">
-                                      OnlineAmount
+
+                                <ng-container matColumnDef="OnlineAmount">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
+                                        Online Pay
                                     </mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="w-170">
+                                    <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
                                         {{contact.OnlineAmount | currency:"INR":"symbol"}}
                                     </mat-cell>
                                 </ng-container>
@@ -759,7 +726,7 @@
                                         Action</mat-header-cell>
                                     <mat-cell *matCellDef="let contact">
 
-                                        <button class="btn btn-primary" (click)="PaymentDate(contact)"
+                                        <button class="btn btn-primary" (click)="openBilldateupdatetask(contact)"
                                             matTooltip="Payment Date Update">
                                             <img width="40px" height="40px" src="assets/images/logos/Paymentdate.jpg">
                                         </button>&nbsp;
@@ -823,47 +790,53 @@
 
 
                                 <ng-container matColumnDef="Date">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md
-                                        class="w-200">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
                                         Advance Date
                                     </mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="w-200">
-                                        {{contact.Date | date:'short'}}
+                                    <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
+                                        {{contact.AdvDateTime}}
                                     </mat-cell>
                                 </ng-container>
-        
+
 
                                 <ng-container matColumnDef="AdvanceAmount">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md
-                                        class="w-150">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
                                         Advance Amount
                                     </mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="w-150">
+                                    <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
                                         {{contact.AdvanceAmount | currency:"INR":"symbol"}}
                                     </mat-cell>
                                 </ng-container>
 
-                                 <ng-container matColumnDef="AdvanceusedAmount">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md
-                                        class="w-150">
+                                <ng-container matColumnDef="AdvanceusedAmount">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
                                         Adv.Used Amount
                                     </mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="w-150">
-                                        {{contact.AdvanceusedAmount | currency:"INR":"symbol"}}
+                                    <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
+                                        {{contact.UsedAmount | currency:"INR":"symbol"}}
                                     </mat-cell>
                                 </ng-container>
 
+
                                 <ng-container matColumnDef="BalanceAmount">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md
-                                        class="w-150">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
                                         Balance Amount
                                     </mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="w-150">
+                                    <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
                                         {{contact.BalanceAmount | currency:"INR":"symbol"}}
                                     </mat-cell>
                                 </ng-container>
 
-                              
+                                <ng-container matColumnDef="Reason">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
+                                        Reason
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
+                                        {{contact.Reason}}
+                                    </mat-cell>
+                                </ng-container>
+
+
                                 <ng-container matColumnDef="action" stickyEnd>
                                     <mat-header-cell *matHeaderCellDef fxShow.gt-sm style="color: white;">
                                         Action</mat-header-cell>
@@ -871,7 +844,7 @@
 
                                         <button class="btn btn-primary" (click)="openBilldateupdatetask(contact)"
                                             matTooltip="Advance Date Update">
-                                           <img width="40px" height="40px" src="assets/images/logos/Paymentdate.jpg">
+                                            <img width="40px" height="40px" src="assets/images/logos/Paymentdate.jpg">
                                         </button>&nbsp;
                                         <!-- <button class="btn btn-danger" (click)="CancelAdvance(contact)"
                                             matTooltip="Cancle Bill" style="color: white;"> Cancel
@@ -930,13 +903,21 @@
                                     </mat-cell>
                                 </ng-container> -->
 
+                                  <ng-container matColumnDef="RefundTime">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
+                                        Refund Date
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
+                                        {{contact.RefundDateTime}}
+                                    </mat-cell>
+                                </ng-container>
+
 
                                 <ng-container matColumnDef="RefundNo">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md
-                                        class="w-200">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
                                         Refund No
                                     </mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="w-200">
+                                    <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
                                         {{contact.RefundNo}}
                                     </mat-cell>
                                 </ng-container>
@@ -944,35 +925,24 @@
 
 
                                 <ng-container matColumnDef="RefundAmount">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md
-                                        class="w-150">
-                                       RefundAmount
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
+                                        Refund Amount
                                     </mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="w-150">
+                                    <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
                                         {{contact.RefundAmount}}
                                     </mat-cell>
                                 </ng-container>
                                 <ng-container matColumnDef="Remark">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md
-                                        class="w-200">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
                                         Remark
                                     </mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="w-200">
+                                    <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
                                         {{contact.Remark}}
                                     </mat-cell>
                                 </ng-container>
 
-                                  <ng-container matColumnDef="RefundTime">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md
-                                        class="w-170">
-                                        Refund Date
-                                    </mat-header-cell>
-                                    <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="w-170">
-                                        {{contact.RefundTime | date:'short'}}
-                                    </mat-cell>
-                                </ng-container>
+                              
 
-                                                               
 
                                 <ng-container matColumnDef="action" stickyEnd>
                                     <mat-header-cell *matHeaderCellDef fxShow.gt-sm style="color: white;">

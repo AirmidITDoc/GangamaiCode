@@ -72,7 +72,7 @@ export class NewAdministrativeTaskComponent {
   AdmissionId: any
   vRegId: any
   vbillNo: any
-
+FBillNo=0
   OPIPType = 1
   //
   AdmissionTaskForm: FormGroup
@@ -83,13 +83,14 @@ export class NewAdministrativeTaskComponent {
   timeLabel: string = 'Admission Time';
   dateLabel1: string = 'Visit Date';
   timeLabel1: string = 'Visit Time';
-
+ VistId = 0
   isDatePckrDisabled: boolean = false;
 
+ 
 
   displayedColumns: string[] = [
     // 'action1',
-    'VisitTime',
+    'VisitDateTime',
     'OPDNo',
     'DoctorName',
     'action'
@@ -99,11 +100,11 @@ export class NewAdministrativeTaskComponent {
     // 'action1',
     'IsBillGenerated',
     'IsDischarged',
-    'AdmissionTime',
+    'VisitDateTime',
     'RegID',
     'DoctorName',
     'IPDNo',
-    // 'DischargeTime',
+    'DischargeDateTime',
     'action'
   ];
 
@@ -127,7 +128,6 @@ export class NewAdministrativeTaskComponent {
     'CashPayAmount',
     'ChequePayAmount',
     'CardPayAmount',
-    'NEFTPayAmount',
     'OnlineAmount',
     'action'
   ];
@@ -140,20 +140,21 @@ export class NewAdministrativeTaskComponent {
     'AdvanceAmount',
     'AdvanceusedAmount',
     'BalanceAmount',
-
+    'Reason',
     'action'
   ];
 
   displayedColumns4: string[] = [
+    'RefundTime',
     'RefundNo',
     'RefundAmount',
     'Remark',
-    'RefundTime',
+    
     'action'
   ];
 
-  dataSource = new MatTableDataSource<VisitMaster1>();
-  dataSource1 = new MatTableDataSource<AdmissionPersonlModel>();
+  dataSource = new MatTableDataSource<VisitAdmissionList>();
+  dataSource1 = new MatTableDataSource<VisitAdmissionList>();
 
   dataSourceBill = new MatTableDataSource<Bill>();
   dataSourcepayment = new MatTableDataSource<Payment>();
@@ -272,7 +273,7 @@ export class NewAdministrativeTaskComponent {
   }
 
   getOpPatientdata() {
-
+debugger
     var SelectQuery =
     {
       "searchFields": [
@@ -296,13 +297,13 @@ export class NewAdministrativeTaskComponent {
       console.log(Visit)
       if (Visit) {
       if (!this.OPIPType) {
-          this.dataSource.data = Visit as VisitMaster1[];
+          this.dataSource.data = Visit as VisitAdmissionList[];
+          this.VistId=this.dataSource.data[0].VisAdmId
         }
         else {
-          this.dataSource1.data = Visit as AdmissionPersonlModel[];
+          this.dataSource1.data = Visit as VisitAdmissionList[];
           console.log(this.dataSource1.data)
-
-          this.VistId = this.dataSource1.data[0].AdmissionID
+          this.VistId = this.dataSource1.data[0].VisAdmId
           if (this.VistId > 0) {
             this.GetRefundData()
             this.GetAdvanceData()
@@ -314,12 +315,12 @@ export class NewAdministrativeTaskComponent {
     });
   }
  
-  VistId = 0
-  GetBillData(element) {
-if (element.VisitId)
-      this.VistId = element.VisitId
-    else
-      this.VistId = element.AdmissionID
+ 
+  GetBillData() {
+// if (element.VisitId)
+//       this.VistId = element.VisitId
+//     else
+//       this.VistId = element.AdmissionID
 
 
     var SelectQuery =
@@ -338,7 +339,7 @@ if (element.VisitId)
       ],
       "mode": "Admin_VisitWiseBilllist"
     }
-
+debugger
     console.log(SelectQuery);
     this._AdministrativetaskService.getBillDetailList(SelectQuery).subscribe(data => {
       this.dataSourceBill.data = data as Bill[];
@@ -349,13 +350,14 @@ if (element.VisitId)
 
 
   GetPaymentData(element) {
-
+    debugger
+    this.FBillNo=element
     var SelectQuery =
     {
       "searchFields": [
         {
           "fieldName": "BillNo",
-          "fieldValue": String(element.BillNo),
+          "fieldValue": String(element),
           "opType": "Equals"
         }
       ],
@@ -444,11 +446,13 @@ if (element.VisitId)
       if (result.isConfirmed) {
 
         let SubmitDate = {
-          "admissionID": contact.AdmissionID
+          "admissionID": contact.VisAdmId
         }
         console.log(SubmitDate)
         this._AdministrativetaskService.SaveDischargeCancel(SubmitDate).subscribe(response => {
           this._matDialog.closeAll()
+          if(response)
+             this.getOpPatientdata()
         });
       }
     })
@@ -468,7 +472,7 @@ if (element.VisitId)
       if (result.isConfirmed) {
 
         let SubmitDate = {
-          "admissionID": contact.AdmissionID
+          "admissionID": contact.VisAdmId
         }
         console.log(SubmitDate)
         this._AdministrativetaskService.AdmissionCancel(SubmitDate).subscribe(response => {
@@ -479,13 +483,12 @@ if (element.VisitId)
   }
 
   OnopenVisitDateUpdate(contact) {
-
+debugger
     this.vIPDNo = contact.IPDNo
-    this.AdmissionId = contact.AdmissionID
-
-    // this.VisitForm.get('NewIpdNo').setValue(contact.IPDNo);
-    this.VisitForm.get('VisitDate').setValue(contact.VisitDate);
-    this.VisitForm.get('VisitTime').setValue(contact.VisitTime, "HH:mm:ss");
+    this.AdmissionId = contact.VisAdmId
+   
+    this.VisitForm.get('VisitDate').setValue(contact.VisAdmTime);
+    // this.VisitForm.get('VisitTime').setValue(contact.VisAdmTime, "HH:mm:ss");
 
 
     this._matDialog.open(this.visitTable, {
@@ -493,6 +496,7 @@ if (element.VisitId)
       maxWidth: '90vh',
 
     })
+     this.getOpPatientdata()
   }
   // PaymentDate(contact) {
   //   console.log(contact)
@@ -711,8 +715,10 @@ if (element.VisitId)
           }
           console.log(data);
           this._AdministrativetaskService.getDateTimeChange(data).subscribe(response => {
+            if(response){
             this._matDialog.closeAll();
-
+            this.getOpPatientdata()
+            }
           });
         } else {
           let invalidFields = [];
@@ -733,6 +739,7 @@ if (element.VisitId)
         }
       }
     });
+    
   }
 
 
@@ -767,10 +774,10 @@ if (element.VisitId)
   openAdmissiontask(contact): void {
 
     this.vIPDNo = contact.IPDNo
-    this.AdmissionId = contact.AdmissionID
+    this.AdmissionId = contact.VisAdmId
 
     this.AdmissionTaskForm.get('NewIpdNo').setValue(contact.IPDNo);
-    this.AdmissionTaskForm.get('AdmissionDate').setValue(contact.AdmissionTime);
+    this.AdmissionTaskForm.get('AdmissionDate').setValue(contact.VisAdmTime);
     // this.AdmissionTaskForm.get('AdmissionTime').setValue(contact.AdmissionDate,"HH:mm:ss");
 
 
@@ -779,6 +786,7 @@ if (element.VisitId)
       maxWidth: '90vh',
 
     })
+     this.getOpPatientdata()
   }
 
   onChangeDate1(value) {
@@ -813,6 +821,8 @@ if (element.VisitId)
       if (result.isConfirmed) {
 
         const formattedDate = this.datePipe.transform(this.VisitForm.get('VisitDate').value, "yyyy-MM-dd");
+        //  const formattedTime = this.datePipe.transform(this.VisitForm.get('VisitTime').value, "HH:mm:ss");
+
         const formattedTime = this.datePipe.transform(new Date(), "HH:mm:ss");
         this.VisitForm.get('VisitDate').setValue(formattedDate);
         let VisitTime = formattedDate + ' ' + formattedTime
@@ -826,7 +836,10 @@ if (element.VisitId)
         debugger
         console.log(data2);
         this._AdministrativetaskService.geVisittDateTimeChange(data2).subscribe(response => {
+          if(response){
           this._matDialog.closeAll();
+          this.getOpPatientdata()
+          }
         });
       }
     });
@@ -887,6 +900,7 @@ if (element.VisitId)
           console.log(data);
           this._AdministrativetaskService.getDateTimeChangeBill(data).subscribe(response => {
             this._matDialog.closeAll();
+            this.GetBillData()
           });
 
         } else if (this.AdvanceDetailId) {
@@ -898,6 +912,7 @@ if (element.VisitId)
           console.log(data1);
           this._AdministrativetaskService.getDateTimeChangeAdvanceDetId(data1).subscribe(response => {
             this._matDialog.closeAll();
+            this.GetAdvanceData()
           });
 
         } else if (this.RefundId) {
@@ -915,6 +930,7 @@ if (element.VisitId)
             console.log(data2);
             this._AdministrativetaskService.getDateTimeChangeRefundId(data2).subscribe(response => {
               this._matDialog.closeAll();
+              this.GetRefundData()
             });
           }
         }
@@ -931,7 +947,7 @@ if (element.VisitId)
 
         // } 
         else if (this.PaymentId) {
-
+debugger
           const d1 = new Date(this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd")!);
           const d2 = new Date(this.SalesDate);
           if (d1 < d2) {
@@ -946,6 +962,8 @@ if (element.VisitId)
             console.log(data4);
             this._AdministrativetaskService.PaymentDateTimeChange(data4).subscribe(response => {
               this._matDialog.closeAll();
+              if(response)
+              this.GetPaymentData(this.FBillNo)
             });
           }
         }
@@ -965,6 +983,8 @@ if (element.VisitId)
             console.log(data4);
             this._AdministrativetaskService.ChangeSalesBillPaymentdate(data4).subscribe(response => {
               this._matDialog.closeAll();
+              if(response)
+                this.GetPaymentData(this.BillNo)
             });
           }
         }
@@ -1008,6 +1028,49 @@ if (element.VisitId)
   }
 }
 
+
+export class VisitAdmissionList{
+  VisAdmId: any;
+ VisAdmTime: any;
+  OPDNo: any;
+  DoctorName: any;
+  IsBillGenerated: any;
+  IsDischarged: any;
+  RegID: any;
+  IPDNo: any;
+   VisitDateTime: any;
+  DischargeDate: any;
+ DischargeTime: any;
+  HospitalName: any;
+  departmentId: any;
+  IsChargesAmount: any;
+  DischargeDateTime: any;
+  /**
+  * Constructor
+  *
+  * @param VisitAdmissionList
+  */
+  constructor(VisitAdmissionList) {
+    {
+       
+      this.VisAdmId = VisitAdmissionList.VisAdmId || '';
+      this.VisAdmTime = VisitAdmissionList.VisAdmTime || '';
+      this.OPDNo = VisitAdmissionList.OPDNo || '';
+      this.DoctorName = VisitAdmissionList.DoctorName || '';
+      this.IsBillGenerated = VisitAdmissionList.IsBillGenerated || '';
+      this.IsDischarged = VisitAdmissionList.IsDischarged || '';
+      this.RegID = VisitAdmissionList.RegID || '';
+       this.VisitDateTime = VisitAdmissionList.VisitDateTime || '';
+      this.IPDNo = VisitAdmissionList.IPDNo || '';
+       this.DischargeDate = VisitAdmissionList.DischargeDate || '';
+      this.DischargeTime = VisitAdmissionList.DischargeTime || '';
+       this.HospitalName = VisitAdmissionList.HospitalName || '';
+      this.departmentId = VisitAdmissionList.departmentId || '';
+        this.IsChargesAmount = VisitAdmissionList.IsChargesAmount || '';
+        this.DischargeDateTime= VisitAdmissionList.DischargeDateTime || '';
+    }
+  }
+}
 
 
 export class RefundBillMaster {

@@ -1219,7 +1219,7 @@ export class AdmissionPersonlModel {
   isMlc: any;
   ischarity: any;
   converId: any;
-
+VisAdmTime: any;
 
 
   /**

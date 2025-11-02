@@ -121,13 +121,13 @@ public getDateTimeChangeRefundId(m_data) {
 }
 
 public geVisittDateTimeChange(m_data) {
-  return this._httpClient.PutData("VisitDetail/UpdateVisitdatetime",m_data);
+  return this._httpClient.PutData("VisitDetail/UpdateVisitdatetime"+ m_data.visitId, m_data)
 }
 public getDateTimeChangeAdvanceDetId(m_data) {
   return this._httpClient.PutData("Advance/UpdateAdvanceDate",m_data);
 }
 public PaymentDateTimeChange(m_data) {
-  return this._httpClient.PutData("paymentpharmacy/UpdatePharmSalesPaymentDate",m_data);
+  return this._httpClient.PutData("Administration/UpdatePaymentdatetime"+m_data.paymentId,m_data);
 }
 public ChangeSalesBillPaymentdate(m_data) {
   return this._httpClient.PutData("paymentpharmacy/UpdatePharmSalesPaymentDate",m_data);
