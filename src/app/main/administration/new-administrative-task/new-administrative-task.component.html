@@ -269,7 +269,7 @@
                                 <hr>
                                 <div class="Ipd-patient-info" fxFlexFill fxLayout="row"
                                     fxLayoutAlign="space-between center" class="patient-info">
-                                    <div class="patient-sub" >
+                                    <div class="patient-sub">
                                         <div class="patient-info-row patient-info-1-111 pt-8" fxLayout="row"
                                             fxLayoutAlign="space-between" style="font-size: large;">
                                             <div fxLayout="column" fxLayoutGap="10px">
@@ -507,7 +507,7 @@
                                             <img width="30px" height="30px" src="assets/images/logos/dischargedate.png">
                                         </button>
 
-                                       
+
                                     </mat-cell>
                                 </ng-container>
 
@@ -652,6 +652,21 @@
                             <span style="color: rgb(4, 54, 66);font-size: large;font-weight: bold;">Payment List</span>
                             <mat-table class="table h-200" #table matSort [dataSource]="dataSourcepayment"
                                 [@animateStagger]="{value:'50'}" style="overflow: auto;width: 100%;">
+
+                                <ng-container matColumnDef="IsCancelled" sticky>
+                                    <mat-header-cell *matHeaderCellDef fxShow.gt-sm class="w-90"
+                                        style="color: white;">Status
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let contact" class="w-90">
+                                        <mat-icon *ngIf="contact.Iscancelled=='1'; else noMLC "
+                                            matTooltip="Payment Cancelled" class="pill red-600 s-16">
+                                        </mat-icon>
+                                        <ng-template #noMLC>
+                                            <span>--</span>
+                                        </ng-template>
+
+                                    </mat-cell>
+                                </ng-container>
 
 
                                 <ng-container matColumnDef="paymentDate">
@@ -903,7 +918,7 @@
                                     </mat-cell>
                                 </ng-container> -->
 
-                                  <ng-container matColumnDef="RefundTime">
+                                <ng-container matColumnDef="RefundTime">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
                                         Refund Date
                                     </mat-header-cell>
@@ -941,7 +956,7 @@
                                     </mat-cell>
                                 </ng-container>
 
-                              
+
 
 
                                 <ng-container matColumnDef="action" stickyEnd>
@@ -950,7 +965,7 @@
                                     <mat-cell *matCellDef="let contact">
 
                                         <button class="btn btn-primary" (click)="openBilldateupdatetask(contact)"
-                                            matTooltip="Bill Date Update">
+                                            matTooltip="Refund Date Update">
                                             <img width="30px" height="30px" src="assets/images/logos/Billdate.jpg">
                                         </button>&nbsp;
                                     </mat-cell>

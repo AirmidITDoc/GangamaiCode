@@ -121,7 +121,7 @@ FBillNo=0
 
 
   displayedColumns2: string[] = [
-    // 'action1',
+    'IsCancelled',
     'paymentDate',
     'ReceiptNo',
     'AdvanceUsedAmount',
