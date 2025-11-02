@@ -992,7 +992,10 @@ export class ResultEntryComponent implements OnInit {
             }
         });
     }
-
+    OnPrintPatientIcard(element) {
+        console.log('Third action clicked for:', element);
+        this.commonService.Onprint("AdmissionId", element.visit_Adm_ID, "IPStickerPrint");
+    }
     selection = new SelectionModel<SampleList>(true, []);
 
     masterToggle() {

@@ -161,6 +161,10 @@
                                                 (click)="onSampleCollSave(element)">
                                                 <mat-icon>description</mat-icon>
                                             </button>
+                                              <button mat-icon-button matTooltip="Patient Details Sticker"
+                                            (click)="OnPrintPatientIcard(element)">
+                                            <mat-icon>pages</mat-icon>
+                                        </button>
                                             <!-- <airmid-fileupload-icon [refId]="element.opdipdid" [refType]="pathFiles" [multiple]="true" 
                                          [title]="element.patientName + ' Report'"></airmid-fileupload-icon>-->
                                         </div>
@@ -201,6 +205,7 @@
                                             *ngIf="selection.selected.length>0" style="margin-left: 5px;">
                                             Print With Header
                                         </button>
+                                      
                                     </div>
 
                                     <mat-table class="mat-table-2 h-210" #table matSort [dataSource]="dataSource1"
@@ -411,7 +416,7 @@
                                             <mat-header-cell *matHeaderCellDef fxShow.gt-sm class="w-150">
                                                 Action</mat-header-cell>
                                             <mat-cell *matCellDef="let contact" class="w-150">
-                                           
+
                                                 <button mat-icon-button (click)="Printresultentry()" matTooltip="Print"
                                                     *ngIf="contact.isCompleted">
                                                     <mat-icon>print</mat-icon>

@@ -13,6 +13,7 @@ import { ToastrService } from 'ngx-toastr';
 import { SamplecollectionPageComponent } from './samplecollection-page/samplecollection-page.component';
 import { NursingPathRadRequestList } from '../sample-request/sample-request.component';
 import { MatTableDataSource } from '@angular/material/table';
+import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 
 
 @Component({
@@ -96,7 +97,7 @@ export class SampleCollectionComponent implements OnInit {
     }
 
     constructor(public _SampleCollectionService: SampleCollectionService,
-        public _matDialog: MatDialog,
+        public _matDialog: MatDialog, private commonService: PrintserviceService,
         public datePipe: DatePipe,
         public toastr: ToastrService,) { }
 
@@ -305,5 +306,9 @@ export class SampleCollectionComponent implements OnInit {
 
         });
     }
+  OnPrintPatientIcard(element) {
+    console.log('Third action clicked for:', element);
+    this.commonService.Onprint("AdmissionId", element.visit_Adm_ID, "IPStickerPrint");
+  }
 
 }
