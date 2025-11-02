@@ -51,7 +51,7 @@ export class AppComponent implements OnInit, OnDestroy {
     newconfigSettingParam: any = [];
     UnitWiseSystemConfigu: any = [];
 
-    LogOutTimeValue:any = 10;
+    LogOutTimeValue:any = 10000;
     LogOutTimeID:any = 0;
     // Private
     private _unsubscribeAll: Subject<any>;
