@@ -166,13 +166,14 @@ export class DischargeComponent implements OnInit {
   }
 
   onDischarge() {
-    this.DischargeInsertForm.get('discharge.dischargeTypeId')?.setValue(Number(this.DischargeInsertForm.get("dischargeTypeId").value))
-    this.DischargeInsertForm.get('discharge.dischargedDocId')?.setValue(Number(this.DischargeInsertForm.get("dischargedDocId").value) || 0)
-    this.DischargeInsertForm.get('discharge.modeOfDischargeId')?.setValue(Number(this.DischargeInsertForm.get("modeOfDischargeId").value) || 0)
-    this.DischargeInsertForm.get("discharge.dischargeDate")?.setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd')),
-    this.DischargeInsertForm.get("discharge.dischargeTime")?.setValue(this.dateTimeObj.time)
-    this.DischargeInsertForm.get("admission.dischargeDate")?.setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd')),
-    this.DischargeInsertForm.get("admission.dischargeTime")?.setValue(this.dateTimeObj.time)
+      const formattedDate = this.datePipe.transform(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'));
+      this.DischargeInsertForm.get('discharge.dischargeTypeId')?.setValue(Number(this.DischargeInsertForm.get("dischargeTypeId").value))
+      this.DischargeInsertForm.get('discharge.dischargedDocId')?.setValue(Number(this.DischargeInsertForm.get("dischargedDocId").value) || 0)
+      this.DischargeInsertForm.get('discharge.modeOfDischargeId')?.setValue(Number(this.DischargeInsertForm.get("modeOfDischargeId").value) || 0)
+      this.DischargeInsertForm.get("discharge.dischargeDate")?.setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd')),
+      this.DischargeInsertForm.get("discharge.dischargeTime")?.setValue(formattedDate + ' ' + this.dateTimeObj.time)
+      this.DischargeInsertForm.get("admission.dischargeDate")?.setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd')),
+      this.DischargeInsertForm.get("admission.dischargeTime")?.setValue(formattedDate + ' ' + this.dateTimeObj.time)
 
     if (!this.DischargeInsertForm.invalid) {
 
