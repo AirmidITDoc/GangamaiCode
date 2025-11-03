@@ -20,4 +20,8 @@ export class DoctorshareProcessService {
       
     })
   }
+
+ public DoctorProcPayment(Param){
+   return this._httpClient.PostData("DoctorPAy/DoctorPayoutProcess",Param) 
+ }
 }

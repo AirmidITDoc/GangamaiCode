@@ -25,9 +25,10 @@ export class PatientBilldetailComponent {
   registerObj: any;
   pBillNo = "0"
   opipType = "1"
-  DoctorId = "0"
+  DoctorId = "1"
   doctorName: any;
   sIsLoading: string = '';
+  BillId = 0
   displayedColumns: string[] = [
 
     'serviceName',
@@ -73,6 +74,7 @@ export class PatientBilldetailComponent {
       debugger
       console.log(this.data)
       this.pBillNo = this.data.obj.billNo//"460203",//----------------------fr table
+      this.BillId = this.data.obj.BillId
       this.opipType = this.data.obj.opdipdtype
       this.doctorName = this.data.obj.addChargeDrName
       this.DoctorId = this.data.doctorId || 0
@@ -83,7 +85,7 @@ export class PatientBilldetailComponent {
   getBilldetailList() {
     var vdata = {
       "first": 0,
-      "rows": 20,
+      "rows": 200,
       "sortField": "DoctorId",
       "sortOrder": 0,
       "filters": [
@@ -129,28 +131,32 @@ export class PatientBilldetailComponent {
   }
 
   calculateshare() {
-   
-    var data = {}
-    this._DoctorShareService.Calculateshare(data).subscribe((response) => {
+    debugger
+    var data = {
+      billNo: this.pBillNo,
+      doctorId: parseInt(this.DoctorId)
+    }
+    console.log(data)
+    this._DoctorShareService.DoctorCalculateshare(data).subscribe((response) => {
       console.log(response)
-
+      this._matDialog.closeAll()
     });
-      
+
   }
 
   Save() {
-      let Billdetsarr = []; 
-        this.Billdetaildatasource.data.forEach((element) => {
-          let BillDetailsInsertObj = {};
-          BillDetailsInsertObj['docAmt'] = element.docAmt;
-             BillDetailsInsertObj['hospitalAmt'] = element.hospitalAmt;
-          BillDetailsInsertObj['chargesId'] = element.chargesId;
-          Billdetsarr.push(BillDetailsInsertObj);
-        });
+    let Billdetsarr = [];
+    this.Billdetaildatasource.data.forEach((element) => {
+      let BillDetailsInsertObj = {};
+      BillDetailsInsertObj['docAmt'] = element.docAmt;
+      BillDetailsInsertObj['hospitalAmt'] = element.hospitalAmt;
+      BillDetailsInsertObj['chargesId'] = element.chargesId;
+      Billdetsarr.push(BillDetailsInsertObj);
+    });
 
 
     let data = {
-      "shareDoctAddCharge":Billdetsarr
+      "shareDoctAddCharge": Billdetsarr
     }
     console.log(data)
     this._DoctorShareService.Updatesharedoccharges(data).subscribe((response) => {
@@ -160,15 +166,15 @@ export class PatientBilldetailComponent {
   }
 
 
-   getCellCalculation(item: ItemNameList) {
-        debugger
-          setTimeout(() => {
-         
-          item.hospitalAmt = (Number(item.netAmount)-Number(item.docAmt)).toFixed(2); // just in case
-             
-      });
-        this.getsumdetail()
-      }
+  getCellCalculation(item: ItemNameList) {
+    
+    setTimeout(() => {
+
+      item.hospitalAmt = (Number(item.netAmount) - Number(item.docAmt)).toFixed(2); // just in case
+
+    });
+    this.getsumdetail()
+  }
 
   onClose() {
     this._matDialog.closeAll()
@@ -224,7 +230,7 @@ export class BillListForDocShrList {
     this.docAmt = BillListForDocShrList.docAmt || 0;
     this.hospitalAmt = BillListForDocShrList.hospitalAmt || 0;
     this.addChargeDrName = BillListForDocShrList.addChargeDrName || '';
-    this.chargesId= BillListForDocShrList.chargesId || 0;
+    this.chargesId = BillListForDocShrList.chargesId || 0;
   }
 }
 

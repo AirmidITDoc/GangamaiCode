@@ -18,6 +18,8 @@ import { PrintserviceService } from 'app/main/shared/services/printservice.servi
 import { MLCInformationComponent } from 'app/main/ipd/Admission/admission/mlcinformation/mlcinformation.component';
 import { LabPatientRegService } from './lab-patient-reg.service';
 import { NewLabPatientRegComponent } from './new-lab-patient-reg/new-lab-patient-reg.component';
+import { NewPatientLabComponent } from './new-patient-lab/new-patient-lab.component';
+// import { NewLabPatientregComponent } from './new-lab-patientreg/new-lab-patientreg.component';
 
 @Component({
   selector: 'app-lab-patient-reg',
@@ -124,12 +126,12 @@ export class LabPatientRegComponent {
   }
 
   new(row: any = null) {
-    const dialogRef = this._matDialog.open(NewLabPatientRegComponent,
+    const dialogRef = this._matDialog.open(NewPatientLabComponent,
       {
-        maxWidth: "95vw",
+        maxWidth: "110vw",
         maxHeight: '90vh',
         // height: '90%',
-        width: '90%',
+        width: '95%',
         data: row
       });
     dialogRef.afterClosed().subscribe(result => {

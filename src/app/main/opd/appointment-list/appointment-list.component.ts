@@ -907,7 +907,7 @@ export class VisitMaster1 {
     VisitDate: any;
     VisitId: any;
     VisitTime: any;
-
+    VisAdmTime: any;
 
     /**
      * Constructor
@@ -947,7 +947,9 @@ export class VisitMaster1 {
             this.VisitDate = VisitMaster1.VisitDate || ''
             this.VisitId = VisitMaster1.VisitId || 0
             this.VisitTime = VisitMaster1.VisitTime || ''
+ this.VisAdmTime = VisitMaster1.VisAdmTime || ''
 
+            
         }
     }
 

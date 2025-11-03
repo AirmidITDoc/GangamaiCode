@@ -1,5 +1,5 @@
 import { Component, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
-import { FormBuilder, FormGroup, UntypedFormBuilder } from '@angular/forms';
+import { FormBuilder, FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { gridColumnTypes } from 'app/core/models/tableActions';
 import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
@@ -41,8 +41,8 @@ export class BillListDoctorwiseComponent {
   opipType: any = "1"
   DoctorId = "0";
   DoctorId1 = "0";
-  fromDate =""// this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
-  toDate =""//this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+  fromDate =this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+  toDate =this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
   fromDate1 = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
   toDate1 = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
 
@@ -68,43 +68,20 @@ export class BillListDoctorwiseComponent {
   ) { }
 
   ngOnInit(): void {
-    // const today = new Date();
-    // const oneMonthAgo = new Date();
-    // oneMonthAgo.setMonth(today.getMonth() - 1);
-
-    // this._DoctorShareService.UserFormGroup.patchValue({
-    //   startdate: oneMonthAgo
-    // });
-
-    // this.DocSummaryfilterForm=this._DoctorShareService.createDocSummaryFormGroup()
-    const today = new Date();
-    const lastMonth = new Date();
-    lastMonth.setMonth(lastMonth.getMonth() - 1);
-
-    this.fromDate = this.datePipe.transform(lastMonth, "yyyy-MM-dd")
-    this.toDate = this.datePipe.transform(today, "yyyy-MM-dd")
-  // fromDate1 = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
-  // toDate1 = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
-
-
-debugger
-    this.DocSummaryfilterForm = this.fb.group({
-      fromDate: [this.datePipe.transform(lastMonth, 'yyyy-MM-dd')],
-      enddate: [this.datePipe.transform(today, 'yyyy-MM-dd')],
-      DoctorID:"0"
+ 
+  this.DocSummaryfilterForm = this.fb.group({
+      fromDate: [this.datePipe.transform(new Date(), 'yyyy-MM-dd')],
+      enddate: [this.datePipe.transform(new Date(), 'yyyy-MM-dd')],
+      DoctorID:["0",  Validators.required]
     });
 
     this.DocSummarydetailfilterForm=this.fb.group({
-       fromDate: [this.datePipe.transform(lastMonth, 'yyyy-MM-dd')],
-      enddate: [this.datePipe.transform(today, 'yyyy-MM-dd')],
-      DoctorID:"0"
+       fromDate: [this.datePipe.transform(new Date(), 'yyyy-MM-dd')],
+      enddate: [this.datePipe.transform(new Date(), 'yyyy-MM-dd')],
+      DoctorID:["0",  Validators.required]
     });
 
-    // If grid filter also needs default values
-    this.gridConfig1.filters[0].fieldValue = this.datePipe.transform(lastMonth, 'yyyy-MM-dd');
-    this.gridConfig1.filters[1].fieldValue = this.datePipe.transform(today, 'yyyy-MM-dd');
-
-
+   
   }
 
   @ViewChild('actionsTemplate1') actionsTemplate1!: TemplateRef<any>;
@@ -124,8 +101,9 @@ debugger
 
     { heading: "DoctorName", key: "addChargeDrName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
     { heading: "Net Amount", key: "netAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, width: 125 },
-    { heading: "Doctor Amount", key: "docAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, width: 250 },
     { heading: "Hospital Amount", key: "hospitalAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, width: 200 },
+     { heading: "Doctor Amount", key: "docAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, width: 250 },
+   
     { heading: "Action", key: "action", align: "right", width: 150, sticky: true, type: gridColumnTypes.template,
       template: this.actionButtonTemplate1  // Assign ng-template to the column
     }
@@ -151,6 +129,7 @@ debugger
     this.toDate = this.datePipe.transform(this.DocSummaryfilterForm.get('enddate').value, "yyyy-MM-dd")
 
     this.getfilterdata1();
+     this.getAllDoctorBillList()
   }
 
   getfilterdata1() {
@@ -169,6 +148,7 @@ debugger
     }
     this.grid1.gridConfig = this.gridConfig1;
     this.grid1.bindGridData();
+   
   }
   //
   Clearfilter(event) {
@@ -179,8 +159,7 @@ debugger
   }
 
     ListView1(value) {
-      debugger
-    console.log(value)
+      console.log(value)
     if (value.value !== 0)
       this.DoctorId = value.value
     else
@@ -270,9 +249,7 @@ debugger
   }
 
   isDatePckrDisabled: boolean = false;
-
-
-  Additiondocpay() {
+Additiondocpay() {
     const dialogRef = this._matDialog.open(DoctorAddonpayComponent,
       {
         maxWidth: "85vw",
@@ -343,6 +320,8 @@ debugger
 
   billdetail(element) {
     console.log(element)
+    debugger
+    
     const dialogRef = this._matDialog.open(PatientBilldetailComponent,
       {
         maxWidth: "89vw",
@@ -355,6 +334,7 @@ debugger
     dialogRef.afterClosed().subscribe(result => {
       this.onChangeFirst2()
     });
+  
   }
 
   Doctorbilldetail(element) {
@@ -366,15 +346,71 @@ debugger
         data: {
           obj: element,
           fromDate: this.fromDate,
-          toDate: this.toDate
+          toDate: this.toDate,
           
         }
       });
     dialogRef.afterClosed().subscribe(result => {
       // this.onChangeFirst()
     });
+  
   }
 
+  Billdetaildatasource = new MatTableDataSource<BillListForDocShrList>();
+
+   getAllDoctorBillList() {
+      var vdata = {
+        "first": 0,
+        "rows": 200,
+        "sortField": "DoctorId",
+        "sortOrder": 0,
+        "filters": [
+          {
+            "fieldName": "FromDate",
+            "fieldValue": this.fromDate,
+            "opType": "Equals"
+          },
+          {
+            "fieldName": "ToDate",
+            "fieldValue": this.toDate,
+            "opType": "Equals"
+          },
+          {
+            "fieldName": "DoctorId",
+            "fieldValue": this.DoctorId,
+            "opType": "Equals"
+          }
+        ],
+        "Columns": [],
+        "exportType": "JSON"
+      }
+      
+      console.log(vdata)
+      debugger
+      this._DoctorShareService.getAllDoctorBilldetailList(vdata).subscribe(data => {
+        this.Billdetaildatasource.data = data.data as BillListForDocShrList[]
+        console.log(this.Billdetaildatasource.data)
+        if (this.Billdetaildatasource.data.length > 0)
+          this.getsumdetail()
+      })
+    }
+  
+
+TotAmt = 0
+  TotconAmt = 0
+  TotNetamt = 0
+  TotDocAmt = 0
+  TothospitalAmt = 0
+  count = 0
+
+  getsumdetail() {
+    this.count = this.Billdetaildatasource.data.length
+    this.TotNetamt = this.Billdetaildatasource.data.reduce((sum, { netAmount }) => sum += +(netAmount || 0), 0);
+
+    this.TotDocAmt = this.Billdetaildatasource.data.reduce((sum, { docAmt }) => sum += +(docAmt || 0), 0);
+    this.TothospitalAmt = this.Billdetaildatasource.data.reduce((sum, { hospitalAmt }) => sum += +(hospitalAmt || 0), 0);
+
+  }
 
 
   onClear() {
@@ -425,6 +461,10 @@ export class BillListForDocShrList {
   CompanyName: string;
   IsBillShrHold: boolean;
   GroupName: any;
+  docAmt:any
+  netAmount:any
+  hospitalAmt:any
+
   constructor(BillListForDocShrList) {
 
     this.PatientName = BillListForDocShrList.PatientName;
@@ -438,6 +478,10 @@ export class BillListForDocShrList {
     this.CompanyName = BillListForDocShrList.CompanyName;
     this.IsBillShrHold = BillListForDocShrList.IsBillShrHold || 0;
     this.GroupName = BillListForDocShrList.GroupName || '';
+     this.docAmt = BillListForDocShrList.docAmt || 0;
+      this.netAmount = BillListForDocShrList.netAmount || 0;
+       this.hospitalAmt = BillListForDocShrList.hospitalAmt || 0;
+
   }
 }
 

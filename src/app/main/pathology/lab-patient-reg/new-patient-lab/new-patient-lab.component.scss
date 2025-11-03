@@ -1,0 +1,65 @@
+.page-container {
+  height: 100%;
+  background-color: #f3f5f7;
+}
+
+.header-toolbar {
+  color: white;
+}
+
+.title {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+.content-container {
+  padding: 10px;
+}
+
+.section-card {
+  background-color: #fdfdfd;
+  border-top: 4px solid #140339;
+}
+
+.section-title {
+  background-color: #140339;
+  color: white;
+  padding: 6px 10px;
+  font-size: 16px;
+}
+
+.full-width-btn {
+  width: 100%;
+}
+
+.table-container {
+  margin-top: 10px;
+  overflow-x: auto;
+}
+
+.mat-form-field {
+  width: 100%;
+}
+
+.totals-section {
+  margin-top: 15px;
+}
+.table-title {
+  font-weight: bold;
+  font-size: 18px;
+  color: #270425;
+  margin: 8px 0 12px 8px;
+}
+
+mat-card {
+  padding: 10px;
+}
+
+mat-table {
+  width: 100%;
+  min-height: 250px;
+}

@@ -9,6 +9,7 @@ import { FormArray, FormGroup, UntypedFormBuilder, Validators } from '@angular/f
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 import { fuseAnimations } from '@fuse/animations';
 import { SelectionModel } from '@angular/cdk/collections';
+import { AuthenticationService } from 'app/core/services/authentication.service';
 
 @Component({
   selector: 'app-doctorpay-summarydetail',
@@ -21,9 +22,9 @@ export class DoctorpaySummarydetailComponent {
 
   registerObj: any;
 
-  DoctorId = "1"
+  DoctorId = "0"
   doctorName: any;
-   Pbillno: any;
+  Pbillno: any;
   sIsLoading: string = '';
   fromDate: any;
   toDate: any;
@@ -52,7 +53,7 @@ export class DoctorpaySummarydetailComponent {
   ProcessForm: FormGroup
   constructor(
     public _DoctorShareService: BillDoctorwiseService,
-    public datePipe: DatePipe,
+    public datePipe: DatePipe, private accountService: AuthenticationService,
     public _matDialog: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data: any, private formBuilder: UntypedFormBuilder,
     private _FormvalidationserviceService: FormvalidationserviceService,
@@ -64,7 +65,7 @@ export class DoctorpaySummarydetailComponent {
     const oneMonthAgo = new Date();
     oneMonthAgo.setMonth(today.getMonth() - 1);
     debugger
-    this.ProcessForm = this.createcanteenInsertForm();
+    this.ProcessForm = this.createDoctorsharensertForm();
     this.ProcessForm.markAllAsTouched();
     this.ProcessdetailArray.push(this.createdetailForm());
     this._DoctorShareService.UserFormGroup.patchValue({
@@ -77,14 +78,15 @@ export class DoctorpaySummarydetailComponent {
       this.toDate = this.data.toDate
 
       // this.doctorName = this.data.addChargeDrName
-
-      //  need to chk// this.DoctorId = this.data.obj.doctorId || 0
+      // debugger Add Doctor
+      this.DoctorId = this.data.obj.doctorId || 1
       this.getBilldetailList()
     }
   }
 
-  createcanteenInsertForm(): FormGroup {
-    return this.formBuilder.group({
+  createDoctorsharensertForm(): FormGroup {
+   return this.formBuilder.group({
+            doctorPayoutProcess: this.formBuilder.group({
       doctorPayoutId: 0,
       doctorId: [this.DoctorId, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       processStartDate: this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
@@ -95,10 +97,12 @@ export class DoctorpaySummarydetailComponent {
       doctorAmount: [this.TotDocAmt, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       hospitalAmount: [this.TothospitalAmt, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       tdsamount: [0],
-      tDoctorPayoutProcessDetails: this.formBuilder.array([]),
-
-    });
-  }
+     
+      createdBy: [this.accountService.currentUserValue.userId, [this._FormvalidationserviceService.onlyNumberValidator()]]
+       }),
+       doctorPayoutProcessDetail: this.formBuilder.array([])
+  });
+    }
 
   createdetailForm(item: any = {}): FormGroup {
     debugger
@@ -107,12 +111,12 @@ export class DoctorpaySummarydetailComponent {
       doctorPayoutId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       doctorId: [this.DoctorId, [this._FormvalidationserviceService.onlyNumberValidator()]],
       chargeId: [item.chargesId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-
+      createdBy: [this.accountService.currentUserValue.userId, [this._FormvalidationserviceService.onlyNumberValidator()]]
     });
   }
 
   get ProcessdetailArray(): FormArray {
-    return this.ProcessForm.get('tDoctorPayoutProcessDetails') as FormArray;
+    return this.ProcessForm.get('doctorPayoutProcessDetail') as FormArray;
   }
 
 
@@ -121,13 +125,13 @@ export class DoctorpaySummarydetailComponent {
 
     var vdata = {
       "first": 0,
-      "rows": 20,
+      "rows": 200,
       "sortField": "DoctorId",
       "sortOrder": 0,
       "filters": [
         {
           "fieldName": "DoctorId",
-          "fieldValue": String(this.DoctorId),
+          "fieldValue": "1",//String(this.DoctorId),
           "opType": "Equals"
         },
         {
@@ -138,7 +142,7 @@ export class DoctorpaySummarydetailComponent {
         {
           "fieldName": "ToDate",
           "fieldValue": this.toDate,
-          
+
           "opType": "Equals"
         }
       ],
@@ -150,10 +154,10 @@ export class DoctorpaySummarydetailComponent {
     this._DoctorShareService.getSummarydetailList(vdata).subscribe(data => {
       this.Billdetaildatasource.data = data.data as BillListForDocShrList[]
       console.log(this.Billdetaildatasource.data)
-      if (this.Billdetaildatasource.data.length > 0){
+      if (this.Billdetaildatasource.data.length > 0) {
         debugger
-        this.doctorName=this.Billdetaildatasource.data[0].addChargeDrName
-        this.Pbillno=this.Billdetaildatasource.data[0].pBillNo
+        this.doctorName = this.Billdetaildatasource.data[0].addChargeDrName
+        this.Pbillno = this.Billdetaildatasource.data[0].pBillNo
         this.getsumdetail()
       }
     })
@@ -179,7 +183,7 @@ export class DoctorpaySummarydetailComponent {
     //  if (!this.MlcInfoFormGroup.invalid) {
     // console.log(this.MlcInfoFormGroup.value)
     var data = {}
-    this._DoctorShareService.Calculateshare(data).subscribe((response) => {
+    this._DoctorShareService.DoctorCalculateshare(data).subscribe((response) => {
       console.log(response)
 
     });
@@ -230,25 +234,25 @@ export class DoctorpaySummarydetailComponent {
       });
       return;
     }
-    debugger
+    
+debugger
+    this.ProcessForm.get('doctorPayoutProcess.doctorId').setValue(this.DoctorId)
+    this.ProcessForm.get('doctorPayoutProcess.netAmount').setValue(this.TotNetamt)
+    this.ProcessForm.get('doctorPayoutProcess.doctorAmount').setValue(this.TotDocAmt)
+    this.ProcessForm.get('doctorPayoutProcess.hospitalAmount').setValue(this.TothospitalAmt)
+    this.ProcessForm.get('doctorPayoutProcess.tdsamount').setValue(this.tdsamount)
 
-    this.ProcessdetailArray.clear();
+  this.ProcessdetailArray.clear();
     this.selection.selected.forEach(item => {
       this.ProcessdetailArray.push(this.createdetailForm(item));
     });
-
-
-
-    this.ProcessForm.get('doctorId').setValue(this.DoctorId)
-    this.ProcessForm.get('netAmount').setValue(this.TotNetamt)
-    this.ProcessForm.get('doctorAmount').setValue(this.TotDocAmt)
-    this.ProcessForm.get('hospitalAmount').setValue(this.TothospitalAmt)
-    this.ProcessForm.get('tdsamount').setValue(this.tdsamount)
-
-
     console.log(this.ProcessForm.value)
     if (!this.ProcessForm.invalid) {
 
+      // var Data = {
+      //   doctorPayoutProcess: this.ProcessForm.value
+      // }
+      console.log(this.ProcessForm.value)
       this._DoctorShareService.ProcessShareSave(this.ProcessForm.value).subscribe(response => {
         console.log(response)
 

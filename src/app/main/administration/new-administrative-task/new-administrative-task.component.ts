@@ -273,7 +273,7 @@ FBillNo=0
   }
 
   getOpPatientdata() {
-debugger
+
     var SelectQuery =
     {
       "searchFields": [
@@ -339,7 +339,7 @@ debugger
       ],
       "mode": "Admin_VisitWiseBilllist"
     }
-debugger
+
     console.log(SelectQuery);
     this._AdministrativetaskService.getBillDetailList(SelectQuery).subscribe(data => {
       this.dataSourceBill.data = data as Bill[];
@@ -350,7 +350,7 @@ debugger
 
 
   GetPaymentData(element) {
-    debugger
+    
     this.FBillNo=element
     var SelectQuery =
     {
@@ -483,50 +483,19 @@ debugger
   }
 
   OnopenVisitDateUpdate(contact) {
-debugger
+
     this.vIPDNo = contact.IPDNo
     this.AdmissionId = contact.VisAdmId
    
     this.VisitForm.get('VisitDate').setValue(contact.VisAdmTime);
-    // this.VisitForm.get('VisitTime').setValue(contact.VisAdmTime, "HH:mm:ss");
-
-
-    this._matDialog.open(this.visitTable, {
+       this._matDialog.open(this.visitTable, {
       maxHeight: "55vh",
       maxWidth: '90vh',
 
     })
      this.getOpPatientdata()
   }
-  // PaymentDate(contact) {
-  //   console.log(contact)
-  //   const dialogRef = this._matDialog.open(DateUpdateComponent,
-  //     {
-  //       maxHeight: "35vh",
-  //       maxWidth: '90vh',
-  //       width: '100%',
-  //       data: contact
-  //     });
-  //   dialogRef.afterClosed().subscribe(result => {
-
-  //   });
-  // }
-
-
-  // Admissiontask(contact) {
-  //   console.log(contact)
-  //   const dialogRef = this._matDialog.open(AdmissiontaskComponent,
-  //     {
-  //       maxHeight: "35vh",
-  //       maxWidth: '90vh',
-  //       width: '100%',
-  //       data: contact
-  //     });
-  //   dialogRef.afterClosed().subscribe(result => {
-
-  //   });
-  // }
-
+ 
 
   toggleSidebar(name): void {
     this._fuseSidebarService.getSidebar(name).toggleOpen();
@@ -833,7 +802,7 @@ debugger
           "visitTime": VisitTime//formattedDate + this.dateTimeObj.time
 
         }
-        debugger
+        
         console.log(data2);
         this._AdministrativetaskService.geVisittDateTimeChange(data2).subscribe(response => {
           if(response){
@@ -873,11 +842,21 @@ debugger
   PaymentId: any;
   SalesDate: any;
   refundDate: any;
+   minDate= this.datePipe.transform(new Date(), "yyyy-MM-dd")
+   formattedDate:any
   Billdateupdate1() {
 
 
-    const formattedDate = this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd");
-    const formattedTime = formattedDate + this.dateTimeObj.time;//this.datePipe.transform(this.dateTimeObj.date,"yyyy-MM-dd")+this.dateTimeObj.time;  
+    this.formattedDate = this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd");
+    const formattedTime = this.formattedDate + this.dateTimeObj.time;//this.datePipe.transform(this.dateTimeObj.date,"yyyy-MM-dd")+this.dateTimeObj.time;  
+debugger
+     if (this.formattedDate > this.minDate) {
+          this.toastr.warning('Select Date Before Todays Date', 'warning !', {
+              toastClass: 'tostr-tost custom-toast-success',
+          });
+          return;
+      }
+
 
     Swal.fire({
       title: 'Do you want to Update Bill Date & Time ',
@@ -895,7 +874,7 @@ debugger
           var data = {
             'billNo': this.BillNo,
             'billDate': this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd"),
-            'billTime': formattedDate + this.dateTimeObj.time
+            'billTime': this.formattedDate + this.dateTimeObj.time
           }
           console.log(data);
           this._AdministrativetaskService.getDateTimeChangeBill(data).subscribe(response => {
@@ -906,7 +885,7 @@ debugger
         } else if (this.AdvanceDetailId) {
           var data1 = {
             "date": this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd"),
-            "time": formattedDate + this.dateTimeObj.time,
+            "time": this.formattedDate + this.dateTimeObj.time,
             "advanceDetailId": this.AdvanceDetailId
           }
           console.log(data1);
@@ -924,7 +903,7 @@ debugger
           } else {
             var data2 = {
               "refundDate": this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd"),
-              "refundTime": formattedDate + this.dateTimeObj.time,
+              "refundTime": this.formattedDate + this.dateTimeObj.time,
               "refundId": this.RefundId
             }
             console.log(data2);
@@ -947,7 +926,7 @@ debugger
 
         // } 
         else if (this.PaymentId) {
-debugger
+
           const d1 = new Date(this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd")!);
           const d2 = new Date(this.SalesDate);
           if (d1 < d2) {
@@ -956,7 +935,7 @@ debugger
           } else {
             var data4 = {
               "paymentDate": this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd"),
-              "paymentTime": formattedDate + this.dateTimeObj.time,
+              "paymentTime": this.formattedDate + this.dateTimeObj.time,
               "paymentId": this.PaymentId
             }
             console.log(data4);
@@ -977,7 +956,7 @@ debugger
           } else {
             var data4 = {
               "paymentDate": this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd"),
-              "paymentTime": formattedDate + this.dateTimeObj.time,
+              "paymentTime": this.formattedDate + this.dateTimeObj.time,
               "paymentId": this.PaymentId
             }
             console.log(data4);

@@ -1,83 +1,94 @@
-<div fusePerfectScrollbar
-    class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
+<div class="page-layout simple inner-sidebar inner-scroll right-sidebar" style="height: 100%;" fusePerfectScrollbar
     dynamicTableHeight>
+    <mat-toolbar class="top-header accent">
+        <div fxLayout="row" fxLayoutAlign="start center" class="top-header-info">
+            <button mat-icon-button class="sidebar-toggle ">
+                <mat-icon>menu</mat-icon>
+            </button>
+            <mat-icon class="logo-icon" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">account_box
+            </mat-icon>
+            <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                Doctor Share Process List
+            </span>
+        </div>
 
-    <div class="top-header header accent p-16" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
-        fxLayoutAlign.gt-xs="space-between center ">
-
-        <div class="top-header-info">
-            <div class="top-header-title">
-                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                    Doctor Share Process List
-                </span>
+        <div class="gap-8" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
+            <div fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                <mat-icon class="pill orange-600 s-16">circle</mat-icon>
+                <span>: OP </span>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                <mat-icon class="pill green s-16">circle</mat-icon>
+                <span>: IP </span>
             </div>
         </div>
 
+    </mat-toolbar>
 
-    </div>
+    <div fusePerfectScrollbar
+        class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
+        dynamicTableHeight>
 
-    <div class="content">
-        <div class="center  pb-56" style="border-radius: 4px;padding: 6px 6px 6px 6px;">
-            <div class="content-card">
-                <div fxLayout="row" fxLayout="column" fxFlexFill fxLayoutGap="10px">
-                    <mat-card style="padding: 5px;">
-                        <form [formGroup]="_DoctorShareService.UserFormGroup">
-                            <div fxLayout="row wrap" fxLayoutGap="12px grid">
-
-                                <airmid-datepicker [formGroup]="_DoctorShareService.UserFormGroup" [isRangePicker]="true"
-                                    formStartControlName="startdate" formEndControlName="enddate">
-                                </airmid-datepicker>
-
-                                <div style="padding: 10px;">
-                                    <button mat-raised-button class="searchButton" matTooltip="search"
-                                        (click)="getfilterdata()">
-                                        <mat-icon class="searchiconbutton">search</mat-icon>
-                                    </button>
-                                </div>
-
-                            </div>
-                        </form>
-                    </mat-card>
-
-                    <mat-card style="padding: 5px;">
-                        <div fusePerfectScrollbar
-                            class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
-                            dynamicTableHeight>
-
-                            <ng-template #actionsTemplate1 let-element>
-                                <div fxLayout="row" fxLayoutAlign="center center">
-                                    <mat-icon *ngIf="element.patientType=='Self'"
-                                        matTooltip="Patient Category Self">account_box
-                                    </mat-icon>
-                                    <mat-icon *ngIf="!element.patientType=='Self'"
-                                        matTooltip="Patient Category other">business
-                                    </mat-icon>
-                                </div>
-
-                            </ng-template>
-                            <ng-template #actionsTemplate let-element>
-                                <div fxLayout="row" fxLayoutAlign="center center">
-
-                                    <mat-icon *ngIf="element.isBillShrHold=='0'" matTooltip="OPD"
-                                        class="pill green-600 s-16">circle</mat-icon>
-
-                                    <mat-icon *ngIf="element.isBillShrHold=='1'" matTooltip="IPD"
-                                        class="pill red-600 s-16">circle</mat-icon>
-                                </div>
-                            </ng-template>
-
-                            <airmid-table [gridConfig]="gridConfig" #grid :ShowFilter="false">
-                                <ng-container filters>
-
-                                </ng-container>
-                            </airmid-table>
-                        </div>
+        <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
 
 
-
-                    </mat-card>
+            <!-- <ng-template #actionsPtype let-element>
+                <div fxLayout="row" fxLayoutAlign="center center">
+                    <mat-icon *ngIf="element.oPdIpdType==1" title="IP" class="pill green-600 s-16">circle</mat-icon>
+                    <mat-icon *ngIf="element.oPdIpdType==0'" title="OP" class="pill orange s-16">circle</mat-icon>
                 </div>
-            </div>
+            </ng-template> -->
+
+         
+            <ng-template #actionButtonTemplate2 let-element>
+
+                <div fxLayout="row" fxLayoutAlign="center center">
+
+
+                    <mat-icon (click)="OnPaymentdetail(element)" matTooltip="Payment Detail">
+                        <img width="30px" height="30px" src="assets/images/logos/Billdate.jpg">
+                    </mat-icon>
+
+                    <mat-icon (click)="onPrint(element)" matTooltip="Print Bill">print
+                       </mat-icon>
+
+                   
+                </div>
+
+            </ng-template>
+
+
+            <airmid-table [gridConfig]="gridConfig" class="content" :ShowButtons="false">
+                <ng-container filters>
+                    <form [formGroup]="DocProcessfilterForm">
+                        <!-- <mat-form-field appearance="outline">
+                            <mat-label>Enter a date range</mat-label>
+                            <mat-date-range-input [rangePicker]="picker">
+                                <input matStartDate formControlName="fromDate" placeholder="Start date"
+                                    (dateChange)="onChangeFirst()">
+                                <input matEndDate formControlName="enddate" placeholder="End date"
+                                    (dateChange)="onChangeFirst()">
+                            </mat-date-range-input>
+                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-date-range-picker #picker></mat-date-range-picker>
+                        </mat-form-field> -->
+                        <airmid-datepicker [formGroup]="DocProcessfilterForm" [isRangePicker]="true"
+                            formStartControlName="fromDate" formEndControlName="enddate"
+                            [(fromValue)]="gridConfig.filters[1].fieldValue"
+                            [(toValue)]="gridConfig.filters[2].fieldValue">
+                        </airmid-datepicker>
+
+                        <airmid-dropdown label="Doctor Name" formControlName="DoctorID"
+                            [formGroup]="DocProcessfilterForm" [(ngModel)]="gridConfig.filters[0].fieldValue"
+                            [validations]="getValidationdoctorMessages().searchDoctorId" [mode]="autocompleteModedoctor"
+                            (selectionChange)="ListView($event)" (keyup)="ListView($event)">
+                        </airmid-dropdown>
+                    </form>
+
+                </ng-container>
+            </airmid-table>
         </div>
+
+
     </div>
 </div>

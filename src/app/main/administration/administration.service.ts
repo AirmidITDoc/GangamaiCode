@@ -96,12 +96,12 @@ public getPatientListOP(param){
   }
 
    public getAdvanceList(param){
-    debugger
+    
     return this._httpClient.PostData("Common",param)
   }
 
    public getBillRefundDetailList(param){
-    debugger
+    
     return this._httpClient.PostData("Common",param)
   }
 

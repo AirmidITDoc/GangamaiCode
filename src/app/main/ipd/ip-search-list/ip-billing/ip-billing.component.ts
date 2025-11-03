@@ -1935,7 +1935,7 @@ export class Bill {
     CardPayAmount: any;
     AdvanceUsedAmount: any;
     PatientName: any;
-
+BillDateTime: any;
 
     billTime: any;
     pbillNo: any;
@@ -1994,7 +1994,7 @@ export class Bill {
         this.netPayableAmt = InsertBillUpdateBillNoObj.netPayableAmt || '';
         this.balanceAmt = InsertBillUpdateBillNoObj.balanceAmt || ''
 
-
+        this.BillDateTime= InsertBillUpdateBillNoObj.BillDateTime || ''
     }
 
 }

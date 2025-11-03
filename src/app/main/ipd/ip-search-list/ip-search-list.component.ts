@@ -644,6 +644,7 @@ export class AdvanceDetail {
     IsCancelledDate: Date;
     Reason: string;
     AdvancedetailId: any
+
     /**
     * Constructor
     *
@@ -956,7 +957,8 @@ export class Payment {
     PayTMAmount: number;
     PayTMTranNo: string;
     PayTMDate: Date;
-
+PaymentDateTime:any
+Iscancelled:any
     /**
     * Constructor
     *
@@ -997,8 +999,8 @@ export class Payment {
             this.PayTMAmount = Payment.PayTMAmount || '';
             this.PayTMTranNo = Payment.PaymentId || '';
             this.PayTMDate = Payment.PayTMDate || '';
-
-
+            this.PaymentDateTime= Payment.PaymentDateTime || '';
+            this.Iscancelled= Payment.Iscancelled || '';
         }
     }
 
