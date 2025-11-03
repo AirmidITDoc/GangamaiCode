@@ -95,6 +95,7 @@ export class NewRequestComponent implements OnInit {
   RegId: string;
   // registerObj: any;
   registerObj1 = new OtReqInsert({});
+  registerObj2 = new OtReqInsert({});
   BloodGroupNames: string[] = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
   // surgeryCategoryIdNames: string[] = ["Normal", "Emergency"];
   partTypes: string[] = ["Left", "Middle", "Right"];
@@ -132,38 +133,24 @@ export class NewRequestComponent implements OnInit {
     if ((this.data?.otrequestId) > 0) {
       this.registerObj1 = this.data
 
-      // setTimeout(() => {
-      //   this._OtRequestService.getotRequestById(this.data.otrequestId).subscribe((response) => {
-      //     this.registerObj1 = response;
-      //     console.log(this.registerObj1)
-      //     this.vrequestId = this.registerObj1.otrequestId
-      //     this.opIpId = this.registerObj1.opipid
-      //     this.vRegNo = this.registerObj1.regNo
-      //     this.vOPDNo = this.registerObj1.opdNo
-      //     this.vIPDNo = this.registerObj1.ipdNo
-      //     this.vPatientName = this.registerObj1.patientName
-
-      //     this.vSelectedOption = this.registerObj1.opiptype == 0 ? 'OP' : 'IP';
-      //     this.vrequestType = this.registerObj1.pacrequired == true ? '1' : '0';
-      //     this.vpacrequired = this.registerObj1.equipmentsRequired == true ? '1' : '0';
-      //     this.vequipmentsRequired = this.registerObj1.infective == true ? '1' : '0';
-      //     this.vinfective = this.registerObj1.requestType == true ? '1' : '0';
-
-      //   });
-      // }, 500);
-
-      this.vrequestId = this.registerObj1.otrequestId
-      this.opIpId = this.registerObj1.opipid
       this.vRegNo = this.registerObj1.regNo
       this.vOPDNo = this.registerObj1.opdNo
-      this.vIPDNo = this.registerObj1.ipdNo
+      this.vIPDNo = this.registerObj1.opdNo
       this.vPatientName = this.registerObj1.patientName
 
-      this.vSelectedOption = this.registerObj1.opiptype == 0 ? 'OP' : 'IP';
-      this.vrequestType = this.registerObj1.pacrequired == true ? '1' : '0';
-      this.vpacrequired = this.registerObj1.equipmentsRequired == true ? '1' : '0';
-      this.vequipmentsRequired = this.registerObj1.infective == true ? '1' : '0';
-      this.vinfective = this.registerObj1.requestType == true ? '1' : '0';
+      setTimeout(() => {
+        this._OtRequestService.getotRequestById(this.data.otrequestId).subscribe((response) => {
+          this.registerObj2 = response;
+          console.log("Get Data:", this.registerObj2)
+          this.vrequestId = this.registerObj2.otrequestId
+          this.opIpId = this.registerObj2.opipid
+          this.vSelectedOption = this.registerObj2.opiptype == 0 ? 'OP' : 'IP';
+          this.vrequestType = this.registerObj2.requestType == true ? '1' : '0';
+          this.vpacrequired = this.registerObj2.pacrequired == true ? '1' : '0';
+          this.vequipmentsRequired = this.registerObj2.equipmentsRequired == true ? '1' : '0';
+          this.vinfective = this.registerObj2.infective == true ? '1' : '0';
+        });
+      }, 500);
 
       if (this.registerObj1?.estimateTime) {
         const date = new Date(this.registerObj1.estimateTime);
@@ -177,9 +164,6 @@ export class NewRequestComponent implements OnInit {
           setTimeout(() => {
             this.requestForm.get('estimateTime')?.setValue(formattedTime);
           });
-
-          console.log("Raw from backend:", this.registerObj1.estimateTime);
-          console.log("Formatted:", formattedTime);
           console.log("Control value after patch:", this.requestForm.get('estimateTime')?.value);
         }
       }
@@ -475,6 +459,27 @@ export class NewRequestComponent implements OnInit {
 
   }
 
+  // focusNext(nextId: string) {
+  //   setTimeout(() => {
+  //     document.getElementById(nextId)?.focus();
+  //   }, 0);
+  // }
+
+  focusNext(nextId: string) {
+  setTimeout(() => {
+    const nextElement = document.getElementById(nextId);
+    if (nextElement) {
+      // Try to focus inner input/select if present
+      const inputEl = nextElement.querySelector('input, select, textarea, [tabindex]');
+      if (inputEl) {
+        (inputEl as HTMLElement).focus();
+      } else {
+        (nextElement as HTMLElement).focus();
+      }
+    }
+  }, 0);
+}
+
   /////////////////////////////// surgery detail part /////////////////////////////
   onAdd() {
     if (!this.requestForm.get("surgeryCategoryId")?.value) {
@@ -749,6 +754,20 @@ export class NewRequestComponent implements OnInit {
       this.Chargelist1.splice(index, 1);
       this.dsattendentDetailList.data = [...this.Chargelist1];
     }
+    this._OtRequestService.getDoctorsByDoctorType(contact.doctorTypeId).subscribe((data: any[]) => {
+      this.ddlDoctor.options = data;
+      // this.ddlDoctor.bindGridAutoComplete();
+      const incomingDoctorId = contact.doctorId;
+      setTimeout(() => {
+        this.ddlDoctor.bindGridAutoComplete();
+        if (incomingDoctorId) {
+          const matchedDoctor = data.find(doc => doc.value === incomingDoctorId);
+          if (matchedDoctor) {
+            this.requestForm.get('doctorId')?.setValue(matchedDoctor.value);
+          }
+        }
+      }, 100);
+    });
   }
 
   FetchList1: any = [];
@@ -914,7 +933,8 @@ export class NewRequestComponent implements OnInit {
       });
     }
     // else {
-    //   this._OtRequestService.getDoctorsByDoctorType(obj.categoryId).subscribe((data: any[]) => {
+    //   this._OtRequestService.getDoctorsByDoctorType(obj.doctorTypeId).subscribe((data: any[]) => {
+    //     debugger
     //     this.ddlDoctor.options = data;
     //     // this.ddlDoctor.bindGridAutoComplete();
     //     const incomingDoctorId = obj.doctorId;
