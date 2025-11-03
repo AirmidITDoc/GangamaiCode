@@ -45,7 +45,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatTimepickerModule } from 'mat-timepicker';
 import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
-
+import { DragDropModule } from "@angular/cdk/drag-drop";
 
 const routes: Routes = [
     {
@@ -99,7 +99,7 @@ const routes: Routes = [
         MatSidenavModule,
         MatCardModule,
         MatTimepickerModule,
-
+        DragDropModule,
     ],
     providers: [DatePipe, OtReservationService, MatDatepickerInput]
 })

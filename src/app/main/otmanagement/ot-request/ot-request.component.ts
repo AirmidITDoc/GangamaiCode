@@ -37,16 +37,21 @@ export class OTRequestComponent implements OnInit {
   @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
   @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
   @ViewChild('ColorCode') ColorCode!: TemplateRef<any>;
+  @ViewChild('clearanceMedicalCode') clearanceMedicalCode!: TemplateRef<any>;
+  @ViewChild('clearanceFinancialCode') clearanceFinancialCode!: TemplateRef<any>;
   @ViewChild('actionsTemplate1') actionsTemplate1!: TemplateRef<any>;
 
   ngAfterViewInit() {
     this.gridConfig.columnsList.find(col => col.key === 'opiptype')!.template = this.ColorCode;
+    this.gridConfig.columnsList.find(col => col.key === 'clearanceMedical')!.template = this.clearanceMedicalCode;
+    this.gridConfig.columnsList.find(col => col.key === 'clearanceFinancial')!.template = this.clearanceFinancialCode;
     this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
   }
 
   allcolumns = [
     { heading: "-", key: "opiptype", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 40 },
-    // { heading: "Date&Time", key: "otrequestTime", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+    { heading: "-", key: "clearanceMedical", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 40 },
+    { heading: "-", key: "clearanceFinancial", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 40 },
     { heading: "OTReq-Date&Time", key: "otRequestDateTime", sort: true, align: 'left', emptySign: 'NA', width: 200 },
     { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 120 },
     { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },

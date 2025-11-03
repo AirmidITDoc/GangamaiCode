@@ -27,10 +27,9 @@
             <form [formGroup]="reservationForm">
                 <div class="modal-card-container">
                     <div fxLayout="row" fxLayout.sm="column" class="gap-16" fxLayoutAlign="start center center">
-
                         <div class="radio-container">
                             <mat-radio-group aria-label="Select an option" [formGroup]="reservationForm"
-                                formControlName="opIpType" name="opIpType" (change)="onChangeReg($event)"
+                                formControlName="opiptype" name="opiptype" (change)="onChangeReg($event)"
                                 (blur)="onChangeReg($event)" [(ngModel)]="vSelectedOption">
                                 <mat-radio-button value="OP">OP</mat-radio-button>
                                 <mat-radio-button value="IP">IP</mat-radio-button>
@@ -39,8 +38,8 @@
 
                         <div class="input-container gap-8" fxFlex>
 
-                            <airmid-autocomplete lbl="RgId" *ngIf="reservationForm.get('opIpType').value == 'OP'"
-                                [formGroup]="reservationForm" formControlName="opIpId"
+                            <airmid-autocomplete lbl="RgId" *ngIf="reservationForm.get('opiptype').value == 'OP'"
+                                [formGroup]="reservationForm" formControlName="opipid"
                                 placeholderText="OP-RegNo/Patient Name/Mobile No"
                                 label="Search Reg No / Patient Name / Mobile No"
                                 ApiUrl="VisitDetail/search-patient?Keyword="
@@ -48,21 +47,17 @@
                                 ValueField="opIpId">
                             </airmid-autocomplete>
 
-                            <airmid-autocomplete lbl="RgId" *ngIf="reservationForm.get('opIpType').value == 'IP'"
-                                [formGroup]="reservationForm" formControlName="opIpId"
+                            <airmid-autocomplete lbl="RgId" *ngIf="reservationForm.get('opiptype').value == 'IP'"
+                                [formGroup]="reservationForm" formControlName="opipid"
                                 placeholderText="IP-RegNo/Patient Name/Mobile No"
                                 label="Search Reg No / Patient Name / Mobile No"
                                 ApiUrl="Admission/search-patient?Keyword=" (selectionChange)="getSelectedObjIP($event)"
                                 ValueField="admissionID" TextField="formattedText">
                             </airmid-autocomplete>
                         </div>
-                        <!-- <div class="ot-request-button" style="margin-right: 12px;">
-                            <button class="btn btn-danger-outline" (click)="onOTRequest()">
-                                <span>New OT Request</span>
-                            </button>
-                        </div> -->
-                        <airmid-dropdown class="w-400" label="Get OT-Request" formControlName="id"
-                            [formGroup]="reservationForm" ApiUrl="OTBooking/OtbookingRequestList"></airmid-dropdown>
+                        <airmid-dropdown class="w-400" label="Get OT-Request" formControlName="otrequestId"
+                            [formGroup]="reservationForm"
+                            ApiUrl="OTReservation/search-patient-OTRequest?Keyword=%"></airmid-dropdown>
                     </div>
                 </div>
 
@@ -202,7 +197,7 @@
                                     <mat-form-field appearance="outline" fxFlex>
                                         <mat-label>Blood Group</mat-label>
                                         <mat-select placeholder="BloodGroup" id="bloodField"
-                                            formControlName="BloodGroup" name="BloodGroup">
+                                            formControlName="bloodGroup" name="BloodGroup">
                                             <mat-option *ngFor="let i of BloodGroupNames" [value]="i">
                                                 {{i}}</mat-option>
                                         </mat-select>
@@ -210,37 +205,37 @@
                                 </div>
 
                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <airmid-dropdown label="Category Type" formControlName="CategoryTypeId"
-                                        [formGroup]="reservationForm" [value]="registerObj?.surgeryCategoryId"
+                                    <airmid-dropdown label="Category Type" formControlName="categoryType"
+                                        [formGroup]="reservationForm" [value]="registerObj1?.surgeryCategoryId"
                                         [mode]="autocompleteModeSurgeryCategory">
                                     </airmid-dropdown>
                                 </div>
 
                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <airmid-dropdown label="Theater" formControlName="Theater"
-                                        [formGroup]="reservationForm" [mode]="autocompleteModeOTTable">
+                                    <airmid-dropdown label="Theater" formControlName="ottable"
+                                        [formGroup]="reservationForm" ValueField="ottableId" TextField="ottableName"
+                                        (selectionChange)="onChangeOtTable($event)"
+                                        ApiUrl="OTRequest/getlocationByOttable">
                                     </airmid-dropdown>
                                 </div>
 
                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <airmid-dropdown label="Theater Location" formControlName="TheaterLocation"
-                                        [formGroup]="reservationForm"
+                                        [formGroup]="reservationForm" #ddlLocation [readonly]="true"
                                         [mode]="autocompleteModeLocation"></airmid-dropdown>
                                 </div>
 
-                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%" class="gap-4">
                                     <mat-form-field appearance="outline" fxFlex>
                                         <mat-label>Estimate Time</mat-label>
                                         <input matInput type="time" formControlName="estimateTime"
-                                            (change)="onChangeTime($event)">
+                                            (change)="onChangeTime($event)" (keydown.enter)="surgeryDateInput.focus()">
                                     </mat-form-field>
-                                </div>
 
-                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <mat-form-field appearance="outline" fxFlex>
                                         <mat-label>Surgery Dt</mat-label>
                                         <input name="Surgerydate" matInput [matDatepicker]="picker1"
-                                            formControllName="Surgerydate" />
+                                            formControllName="surgeryDate" #surgeryDateInput />
                                         <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
                                         <mat-datepicker #picker1></mat-datepicker>
                                     </mat-form-field>
@@ -254,22 +249,22 @@
                                         </div> -->
 
                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <airmid-textbox label="Remark" formControlName="Remarks"
+                                    <airmid-textbox label="Remark" formControlName="comments"
                                         [formGroup]="reservationForm">
                                     </airmid-textbox>
                                 </div>
 
-                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                <!-- <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <airmid-textbox label="ReferenceNo" formControlName="refNo"
                                         [formGroup]="reservationForm">
                                     </airmid-textbox>
-                                </div>
+                                </div> -->
 
                                 <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%" fxLayout="column"
                                     style="margin-bottom: 5px;">
                                     <app-airmid-chipautocomplete fxFlex
-                                        [chips]="reservationForm.get('Diagnosis')?.value"
-                                        [apiUrl]="'OPDPrescriptionMedical/GetDiagnosisList?descriptionType=Diagnosis'"
+                                        [chips]="reservationForm.get('diagnosis')?.value"
+                                        [apiUrl]="'OTRequest/GetRequestDiagnosisList?DescriptionType=Diagnosis'"
                                         [displayKey]="'descriptionName'" [allowCustom]="true"
                                         [placeholder]="'Select Diagnosis'"
                                         (chipsChange)="selectChangeDiagnosis($event)">
@@ -284,7 +279,7 @@
                                 fxLayoutGap="4px grid">
 
                                 <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <mat-radio-group formControlName="reqtype">
+                                    <mat-radio-group formControlName="requestType" [(ngModel)]="vrequestType">
                                         <label style="font-weight: bold;">Request Type:</label>
                                         <mat-radio-button value="1">Emergency</mat-radio-button>
                                         <mat-radio-button value="0">Elective</mat-radio-button>
@@ -292,7 +287,7 @@
                                 </div>
 
                                 <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <mat-radio-group formControlName="pacReq">
+                                    <mat-radio-group formControlName="pacrequired" [(ngModel)]="vpacrequired">
                                         <label style="font-weight: bold;">PAC Required:</label>
                                         <mat-radio-button value="1">Yes</mat-radio-button>
                                         <mat-radio-button value="0">No</mat-radio-button>
@@ -300,7 +295,8 @@
                                 </div>
 
                                 <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <mat-radio-group formControlName="EquReq">
+                                    <mat-radio-group formControlName="equipmentsRequired"
+                                        [(ngModel)]="vequipmentsRequired">
                                         <label style="font-weight: bold;">Equipments Required:</label>
                                         <mat-radio-button value="1">Yes</mat-radio-button>
                                         <mat-radio-button value="0">No</mat-radio-button>
@@ -308,7 +304,7 @@
                                 </div>
 
                                 <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <mat-radio-group formControlName="Infective">
+                                    <mat-radio-group formControlName="infective" [(ngModel)]="vinfective">
                                         <label style="font-weight: bold;">Infective:</label>
                                         <mat-radio-button value="1">Yes</mat-radio-button>
                                         <mat-radio-button value="0">No</mat-radio-button>
@@ -317,8 +313,8 @@
 
                                 <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <label style="font-weight: bold;">Clearance:</label>
-                                    <mat-checkbox formControlName="Medical">Medical</mat-checkbox>
-                                    <mat-checkbox formControlName="Finance">Finance</mat-checkbox>
+                                    <mat-checkbox formControlName="clearanceMedical">Medical</mat-checkbox>
+                                    <mat-checkbox formControlName="clearanceFinancial">Finance</mat-checkbox>
                                 </div>
 
                             </div>
@@ -338,50 +334,54 @@
                             <div fxFlexFill fxLayout="row" class="gap-8">
 
                                 <div fxFlex="10%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <airmid-dropdown label="Surgery Type" formControlName="surgeryCategoryId"
+                                        [formGroup]="reservationForm" [value]="registerObj1?.surgeryCategoryId"
+                                        [mode]="autocompleteModeSiteDescription" #ddlSurgerytype [readonly]="true"
+                                        (selectionChange)="selectChangeSurgeryCategory($event)">
+                                    </airmid-dropdown>
+                                </div>
+
+                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <airmid-dropdown label="Surgery Name" formControlName="surgeryId"
+                                        [formGroup]="reservationForm"
+                                        (selectionChange)="selectChangeSurgery($event)" ValueField="surgeryId"
+                                        TextField="surgeryName" ApiUrl="SurgeryMaster/GetSurgeryTypeByOTSurgery">
+                                    </airmid-dropdown>
+                                </div>
+
+                                <div fxFlex="10%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <mat-form-field appearance="outline" style="width: 100%;">
-                                        <mat-label>Surgery Type</mat-label>
-                                        <mat-select formControlName="surgeryType" name="surgeryType">
-                                            <mat-option *ngFor="let i of surgeryTypeNames" [value]="i">
+                                        <mat-label>Part</mat-label>
+                                        <mat-select formControlName="surgeryPart" name="surgeryPart">
+                                            <mat-option *ngFor="let i of partTypes" [value]="i">
                                                 {{i}}</mat-option>
                                         </mat-select>
                                     </mat-form-field>
                                 </div>
 
-                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <airmid-dropdown label="Surgery Name" formControlName="surgeryId"
-                                        [formGroup]="reservationForm" [mode]="autocompleteModeSurgeryMaster"
-                                        (selectionChange)="selectChangeSurgery($event)">
-                                    </airmid-dropdown>
-                                </div>
-
                                 <div fxFlex="8%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <mat-form-field appearance="outline" style="width: 100%;">
                                         <mat-label>Duration (hours)</mat-label>
-                                        <input matInput type="number" formControlName="duration"
-                                            (change)="onChangeDuration($event)" min="0" step="0.5">
+                                        <input matInput type="number" formControlName="surgeryDuration"
+                                            (change)="onChangeDuration($event)" min="0" step="0.5"
+                                            (keydown.enter)="surgeryFromTimeInput.focus()">
                                     </mat-form-field>
                                 </div>
 
                                 <div fxFlex="5%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <mat-form-field appearance="outline" style="width: 100%;">
                                         <mat-label>From Time</mat-label>
-                                        <input matInput type="time" formControlName="fromTime"
-                                            (change)="onChangeTimefrom($event)">
+                                        <input matInput type="time" formControlName="surgeryFromTime"
+                                            (change)="onChangeTimefrom($event)" #surgeryFromTimeInput>
                                     </mat-form-field>
                                 </div>
 
                                 <div fxFlex="5%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <mat-form-field appearance="outline" style="width: 100%;">
                                         <mat-label>To Time</mat-label>
-                                        <input matInput type="time" formControlName="toTime" readonly
+                                        <input matInput type="time" formControlName="surgeryEndTime" readonly
                                             (change)="onChangeTimeto($event)">
                                     </mat-form-field>
-                                </div>
-
-                                 <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <airmid-dropdown label="Surgeon Type" formControlName="surgeonTypeId"
-                                        [formGroup]="reservationForm" >
-                                    </airmid-dropdown>
                                 </div>
 
                                 <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
@@ -392,7 +392,7 @@
                                 </div>
 
                                 <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <airmid-dropdown label="Anathesia doctor" formControlName="anestheticsDr"
+                                    <airmid-dropdown label="Anathesia doctor" formControlName="anesthetistId"
                                         [formGroup]="reservationForm" [mode]="autocompleteModeRefDoctor"
                                         (selectionChange)="selectChangeAnesth($event)">
                                     </airmid-dropdown>
@@ -400,7 +400,7 @@
 
                                 <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%" fxLayout="column">
                                     <label style="font-weight: bold;">Is Primary:</label>
-                                    <mat-checkbox formControlName="isprimary"></mat-checkbox>
+                                    <mat-checkbox formControlName="isPrimary"></mat-checkbox>
                                 </div>
 
                                 <div class="input-add-button">
@@ -415,13 +415,21 @@
 
                             <div class="airmid-table-container">
                                 <mat-table matSort [dataSource]="dssurgeryDetailList" [@animateStagger]="{value:'50'}"
-                                    class="airmid-table">
+                                    class="airmid-table" cdkDropList (cdkDropListDropped)="drop1($event)">
 
-                                    <ng-container matColumnDef="surgeryType">
+                                    <ng-container matColumnDef="sequence">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Sr.No
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let element; let i = index" fxShow.gt-sm>
+                                            {{ i + 1 }}
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="surgeryCategoryName">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
                                             Surgery Type</mat-header-cell>
                                         <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                            <span> {{element.surgeryType}}</span>
+                                            <span> {{element.surgeryCategoryName}}</span>
                                         </mat-cell>
                                     </ng-container>
 
@@ -433,40 +441,48 @@
                                         </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="duration">
+                                    <ng-container matColumnDef="surgeryPart">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Part
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                            <span> {{element.surgeryPart}} </span>
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="surgeryDuration">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Duration
                                             (hrs)
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                            <span> {{element.duration}} </span>
+                                            <span> {{element.surgeryDuration}} </span>
                                         </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="fromTime">
+                                    <ng-container matColumnDef="surgeryFromTime">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>From Time
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                            <span> {{element.fromTime}} </span>
+                                            <span> {{element.surgeryFromTime}} </span>
                                         </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="toTime">
+                                    <ng-container matColumnDef="surgeryEndTime">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>To Time
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                            <span> {{element.toTime}} </span>
+                                            <span> {{element.surgeryEndTime}} </span>
                                         </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="isprimary">
+                                    <ng-container matColumnDef="isPrimary">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Is
                                             Primary
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
                                             <span>
                                                 <mat-icon color="primary"
-                                                    *ngIf="element.isprimary">check_circle</mat-icon>
-                                                <mat-icon color="warn" *ngIf="!element.isprimary">cancel</mat-icon>
+                                                    *ngIf="element.isPrimary">check_circle</mat-icon>
+                                                <mat-icon color="warn" *ngIf="!element.isPrimary">cancel</mat-icon>
                                             </span>
                                         </mat-cell>
                                     </ng-container>
@@ -505,7 +521,8 @@
                                     <mat-header-row class="accent" *matHeaderRowDef="displayedColumns; sticky: true">
                                     </mat-header-row>
                                     <mat-row *matRowDef="let row; columns: displayedColumns;" class="element"
-                                        [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                                        [@animate]="{value:'*',params:{y:'100%'}}" cdkDrag
+                                        (cdkDragMoved)="onDragMoved1($event)"></mat-row>
                                 </mat-table>
                             </div>
                         </mat-card>
@@ -526,21 +543,20 @@
 
                                 <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <airmid-dropdown label="Resource Type" formControlName="recourceType"
-                                        [formGroup]="reservationForm">
+                                        [formGroup]="reservationForm" [mode]="autocompleteModeResourseType">
                                     </airmid-dropdown>
                                 </div>
 
                                 <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <airmid-dropdown label="Anesthesia Type" formControlName="anestypeId"
-                                        [formGroup]="reservationForm" [mode]="autocompleteModeAnesthesiatypes"
-                                        (selectionChange)="selectChangeanesthesiaType($event)">
+                                    <airmid-dropdown label="Doctor Type" formControlName="doctorTypeId"
+                                        [formGroup]="reservationForm" [mode]="autocompleteModeDoctorType"
+                                        (selectionChange)="selectChangedepdoctorType($event)">
                                     </airmid-dropdown>
                                 </div>
 
                                 <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <airmid-dropdown label="Anathesia doctor" formControlName="anestheticsDr1"
-                                        [formGroup]="reservationForm" [mode]="autocompleteModeRefDoctor"
-                                        (selectionChange)="selectChangeAnesth1($event)">
+                                    <airmid-dropdown label="Doctor Name" formControlName="doctorId" #ddlDoctor
+                                        [formGroup]="reservationForm" (selectionChange)="selectChangedoctor($event)">
                                     </airmid-dropdown>
                                 </div>
 
@@ -558,14 +574,22 @@
 
                             <div class="airmid-table-container">
                                 <mat-table matSort [dataSource]="dsattendentDetailList" [@animateStagger]="{value:'50'}"
-                                    class="airmid-table">
+                                    class="airmid-table" cdkDropList (cdkDropListDropped)="drop2($event)">
+
+                                    <ng-container matColumnDef="sequence">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Sr.No
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let element; let i = index" fxShow.gt-sm>
+                                            {{ i + 1 }}
+                                        </mat-cell>
+                                    </ng-container>
 
                                     <ng-container matColumnDef="surgeon">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Surgeon
                                             Name
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                            <span> {{element.anesthesiaType}} </span>
+                                            <span> {{element.doctorType}} </span>
                                         </mat-cell>
                                     </ng-container>
 
@@ -574,7 +598,7 @@
                                             fxShow.gt-sm>Anesthesia Name
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                            <span> {{element.anestheticsName1}} </span>
+                                            <span> {{element.doctorName}} </span>
                                         </mat-cell>
                                     </ng-container>
 
@@ -594,7 +618,8 @@
                                     <mat-header-row class="accent" *matHeaderRowDef="displayedColumns1; sticky: true">
                                     </mat-header-row>
                                     <mat-row *matRowDef="let row; columns: displayedColumns1;" class="element"
-                                        [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                                        [@animate]="{value:'*',params:{y:'100%'}}" cdkDrag
+                                        (cdkDragMoved)="onDragMoved2($event)"></mat-row>
                                 </mat-table>
                             </div>
 
