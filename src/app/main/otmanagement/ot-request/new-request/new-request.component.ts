@@ -105,6 +105,8 @@ export class NewRequestComponent implements OnInit {
   Chargelist: any[] = [];
   Chargelist1: any[] = [];
   RtrvDescriptionList: any = [];
+  @ViewChild('ddlLocation') ddlLocation: AirmidDropDownComponent;
+  @ViewChild('ddlSurgerytype') ddlSurgerytype: AirmidDropDownComponent;
 
   constructor(public _OtRequestService: OtRequestService,
     public dialogRef: MatDialogRef<NewRequestComponent>,
@@ -137,6 +139,14 @@ export class NewRequestComponent implements OnInit {
       this.vOPDNo = this.registerObj1.opdNo
       this.vIPDNo = this.registerObj1.opdNo
       this.vPatientName = this.registerObj1.patientName
+
+       setTimeout(() => {
+        this._OtRequestService.getotTableById(this.data.ottable).subscribe((response) => {
+          this.registerObj2 = response;
+          console.log("Get ottable Data:", this.registerObj2)
+          this.ddlLocation.SetSelection(this.registerObj2.locationId);
+        });
+      }, 500);
 
       setTimeout(() => {
         this._OtRequestService.getotRequestById(this.data.otrequestId).subscribe((response) => {
@@ -397,7 +407,17 @@ export class NewRequestComponent implements OnInit {
     this.surgCategoryName = obj.text
   }
   selectChangeSurgery(obj: any) {
-    this.surgName = obj.text
+    this.surgName = obj.surgeryName
+    this.ddlSurgerytype.SetSelection(obj.siteDescId);
+    // debugger
+    // const selectedCategory = this.ddlSurgerytype.options.find(
+    //   (item: any) => item.siteDescId === obj.siteDescId
+    // );
+
+    // // Set the category name if found
+    // if (selectedCategory) {
+    //   this.surgCategoryName = selectedCategory.text;
+    // }
   }
   selectChangeSurgeon(obj: any) {
     this.surgeonName = obj.text
@@ -410,6 +430,9 @@ export class NewRequestComponent implements OnInit {
   }
   selectChangedoctor(obj: any) {
     this.AnthName1 = obj.text
+  }
+  onChangeOtTable(e) {
+    this.ddlLocation.SetSelection(e.locationId);
   }
 
   FetchList: any = [];
@@ -466,19 +489,19 @@ export class NewRequestComponent implements OnInit {
   // }
 
   focusNext(nextId: string) {
-  setTimeout(() => {
-    const nextElement = document.getElementById(nextId);
-    if (nextElement) {
-      // Try to focus inner input/select if present
-      const inputEl = nextElement.querySelector('input, select, textarea, [tabindex]');
-      if (inputEl) {
-        (inputEl as HTMLElement).focus();
-      } else {
-        (nextElement as HTMLElement).focus();
+    setTimeout(() => {
+      const nextElement = document.getElementById(nextId);
+      if (nextElement) {
+        // Try to focus inner input/select if present
+        const inputEl = nextElement.querySelector('input, select, textarea, [tabindex]');
+        if (inputEl) {
+          (inputEl as HTMLElement).focus();
+        } else {
+          (nextElement as HTMLElement).focus();
+        }
       }
-    }
-  }, 0);
-}
+    }, 0);
+  }
 
   /////////////////////////////// surgery detail part /////////////////////////////
   onAdd() {

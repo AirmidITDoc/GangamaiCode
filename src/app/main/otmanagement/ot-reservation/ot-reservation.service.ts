@@ -42,6 +42,12 @@ export class OtReservationService {
     public getReportView(Param) {
         return this._httpClient.PostData("Report/ViewReport", Param);
     }
+    public getotRequestById(Id) {
+        return this._httpClient.GetData("OTRequest/" + Id);
+    }
+     public getotTableById(Id) {
+        return this._httpClient.GetData("OtTableMaster/" + Id);
+    }
     public getDoctorsByDoctorType(doctTypeId) {
         return this._httpClient.GetData("VisitDetail/DoctorTypeDoctorList?DocTypeId=" + doctTypeId)
     }

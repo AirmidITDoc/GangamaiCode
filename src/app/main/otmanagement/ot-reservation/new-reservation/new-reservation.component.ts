@@ -117,7 +117,6 @@ export class NewReservationComponent implements OnInit {
     public dialogRef: MatDialogRef<NewReservationComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private ref: MatDialogRef<NewReservationComponent>,
-    public _AdmissionService: AdmissionService,
     private _FormvalidationserviceService: FormvalidationserviceService,
     private _formBuilder: FormBuilder,
     public datePipe: DatePipe,
@@ -145,19 +144,27 @@ export class NewReservationComponent implements OnInit {
       this.vIPDNo = this.registerObj1.ipdNo
       this.vPatientName = this.registerObj1.patientName
 
-      // setTimeout(() => {
-      //   this._OtReservationService.getotRequestById(this.data.otrequestId).subscribe((response) => {
-      //     this.registerObj2 = response;
-      //     console.log("Get Data:", this.registerObj2)
-      //     this.vrequestId = this.registerObj2.otrequestId
-      //     this.opIpId = this.registerObj2.opipid
-      //     this.vSelectedOption = this.registerObj2.opiptype == 0 ? 'OP' : 'IP';
-      //     this.vrequestType = this.registerObj2.requestType == true ? '1' : '0';
-      //     this.vpacrequired = this.registerObj2.pacrequired == true ? '1' : '0';
-      //     this.vequipmentsRequired = this.registerObj2.equipmentsRequired == true ? '1' : '0';
-      //     this.vinfective = this.registerObj2.infective == true ? '1' : '0';
-      //   });
-      // }, 500);
+      setTimeout(() => {
+        this._OtReservationService.getotTableById(this.data.ottable).subscribe((response) => {
+          this.registerObj2 = response;
+          console.log("Get ottable Data:", this.registerObj2)
+          this.ddlLocation.SetSelection(this.registerObj2.locationId);
+        });
+      }, 500);
+
+      setTimeout(() => {
+        this._OtReservationService.getotRequestById(this.data.otrequestId).subscribe((response) => {
+          this.registerObj2 = response;
+          console.log("Get Data:", this.registerObj2)
+          this.vrequestId = this.registerObj2.otrequestId
+          this.opIpId = this.registerObj2.opipid
+          this.vSelectedOption = this.registerObj2.opiptype == 0 ? 'OP' : 'IP';
+          this.vrequestType = this.registerObj2.requestType == true ? '1' : '0';
+          this.vpacrequired = this.registerObj2.pacrequired == true ? '1' : '0';
+          this.vequipmentsRequired = this.registerObj2.equipmentsRequired == true ? '1' : '0';
+          this.vinfective = this.registerObj2.infective == true ? '1' : '0';
+        });
+      }, 500);
       this.reservationForm.patchValue(this.registerObj1);
     }
 

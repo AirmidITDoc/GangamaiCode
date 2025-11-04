@@ -36,8 +36,8 @@ export class TestmasterService {
     createPathtestForm(): FormGroup {
         return this._formBuilder.group({
             TestId: [0],
-            TestName: ["", [Validators.required, Validators.pattern('^[a-zA-Z .\\*-]+$')]],
-            PrintTestName: ["", [Validators.required, Validators.pattern('^[a-zA-Z .\\*-]+$')]], //Validators.pattern('^[a-zA-Z .-]*$')
+            TestName: ["", [Validators.required]], //, Validators.pattern('^[a-zA-Z .\\*-]+$')
+            PrintTestName: ["", [Validators.required]], //Validators.pattern('^[a-zA-Z .-]*$')
             CategoryId: ["",[Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             IsSubTest: true,
             TechniqueName: [""],
@@ -94,22 +94,7 @@ export class TestmasterService {
     initializeFormGroup() {
         this.createPathtestForm();
     }
-    // public getTestMasterList(param,loader = true) {//Retrieve_PathologyTestList
-    //     if (loader) {
-    //         this._loaderService.show();
-    //     }
-    //     return this._httpClient.PostData("Generic/GetByProc?procName=m_Rtrv_PathologyTestList",
-    //         param
-    //     );
-    // }
-    // get sub Test Master list
-    // public getSubTestMasterList(param) {
-    //     return this._httpClient.PostData("Generic/GetByProc?procName=m_Rtrv_PathologySubTestList",
-    //         param
-    //     );
-    // }
-
-    // retrieve list  remain
+    
     // get Test master list
     public getTestListfor(param) {
         return this._httpClient.PostData("PathTestMaster/PathTestForUpdateList",param);
@@ -139,32 +124,6 @@ export class TestmasterService {
     public getSubTestListfor(param) {
         return this._httpClient.PostData("Pathology/PathSubtestFillList",param);
     }
-    
-   
-
-    // public getParameterMasterCombo(emp,loader = true){
-    //     if (loader) {
-    //         this._loaderService.show();
-    //     }
-    //     return this._httpClient.PostData(//Retrieve_PathParameterListForCombo
-    //         "Generic/GetByProc?procName=m_Rtrv_PathParameterList_by_Name1",emp);
-    // }
-
-    // public getNewSubTestList(emp) {
-    //     return this._httpClient.PostData("Generic/GetByProc?procName=m_Retrieve_PathSubTestListForCombo",emp);
-    // }
-
-    // public getNewSubTestMasterList() {
-    //     return this._httpClient.PostData("Generic/GetByProc?procName=m_Rtrv_PathSubTestListForCombo",
-    //         {}
-    //     );
-    // }
-
-    // public getquerydata(data){
-        
-    //     return this._httpClient.PostData("Generic/GetBySelectQuery?query="+data, {})
-    // }
-
 
     getValidationMessages() {
         return {

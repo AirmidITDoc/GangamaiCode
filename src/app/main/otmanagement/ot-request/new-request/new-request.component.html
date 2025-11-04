@@ -215,13 +215,15 @@
 
                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <airmid-dropdown label="Theater" formControlName="ottable" [formGroup]="requestForm"
-                                        [mode]="autocompleteModeOTTable">
+                                        ValueField="ottableId" TextField="ottableName"
+                                        (selectionChange)="onChangeOtTable($event)" ApiUrl="OTRequest/getlocationByOttable">
                                     </airmid-dropdown>
                                 </div>
 
                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <airmid-dropdown label="Theater Location" formControlName="TheaterLocation"
-                                        [formGroup]="requestForm" [mode]="autocompleteModeLocation"></airmid-dropdown>
+                                        [formGroup]="requestForm" [mode]="autocompleteModeLocation"
+                                         #ddlLocation [readonly]="true"></airmid-dropdown>
                                 </div>
 
                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%" class="gap-4">
@@ -329,7 +331,7 @@
                                 <div fxFlex="10%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <airmid-dropdown label="Surgery Type" formControlName="surgeryCategoryId"
                                         [formGroup]="requestForm" [value]="registerObj1?.surgeryCategoryId"
-                                        [mode]="autocompleteModeSiteDescription"
+                                        [mode]="autocompleteModeSiteDescription" #ddlSurgerytype [readonly]="true"
                                         (selectionChange)="selectChangeSurgeryCategory($event)">
                                     </airmid-dropdown>
                                 </div>
@@ -337,7 +339,8 @@
                                 <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <airmid-dropdown label="Surgery Name" formControlName="surgeryId"
                                         [formGroup]="requestForm" [mode]="autocompleteModeSurgeryMaster"
-                                        (selectionChange)="selectChangeSurgery($event)">
+                                        (selectionChange)="selectChangeSurgery($event)" ValueField="surgeryId"
+                                        TextField="surgeryName" ApiUrl="SurgeryMaster/GetSurgeryTypeByOTSurgery">
                                     </airmid-dropdown>
                                 </div>
 
