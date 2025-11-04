@@ -89,6 +89,8 @@ export class OpPaymentComponent implements OnInit {
         this.patientDetailsFormGrp.get('referenceNo1').setValidators([Validators.required]);
         this.patientDetailsFormGrp.get('regDate1').setValidators([Validators.required]);
         this.patientDetailsFormGrp.get('referenceNo1').updateValueAndValidity();
+        this.patientDetailsFormGrp.get('bankName1').clearValidators();
+        this.patientDetailsFormGrp.get('bankName1').updateValueAndValidity();
           // Optionally revalidate the whole form
         this.patientDetailsFormGrp.updateValueAndValidity();
         this.Upiflag = 1

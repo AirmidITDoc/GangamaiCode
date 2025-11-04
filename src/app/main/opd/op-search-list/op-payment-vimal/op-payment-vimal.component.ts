@@ -99,6 +99,15 @@ export class OpPaymentVimalComponent implements OnInit {
     GetBalanceAmt() {
         this.IsMoreAmt = Number(this.netPayAmt || 0) - (Number(this.paidAmt || 0) + Number(this.amount1 || 0)) < 0;
         this.balanceAmt = Number(this.netPayAmt || 0) - ((Number(this.paidAmt || 0) + Number(this.amount1 || 0)));
+           if (this.balanceAmt < 0) {
+            this.toastr.warning('Balance amt should not be nagative', 'warning !', {
+                toastClass: 'tostr-tost custom-toast-warning',
+            })
+            this.amount1 = 0
+            this.setPaidAmount();
+            this.GetBalanceAmt()
+            return;
+        }
     }
     GetAmt() {
         if (this.amount1 > this.netPayAmt) {
@@ -314,28 +323,30 @@ export class OpPaymentVimalComponent implements OnInit {
     onSubmit() {
         this.onAddPayment();
         debugger
-        if (this.patientDetailsFormGrp.get('balanceAmountController').value != 0) {
-            Swal.fire({
-                title: 'Balance Amount is : ' + this.balanceAmt,
-                text: "Please pay remaing amount",
-                icon: "warning",
-                confirmButtonColor: "#3085d6",
-                confirmButtonText: "Ok"
-            }).then((result) => {
-            })
-            return
-        }
-        if (this.amount1 != 0) {
-            let balamt = this.netPayAmt - this.paidAmt
-            Swal.fire({
-                title: 'Balance Amount is : ' + balamt,
-                text: "select payment mode and pay remaing amount",
-                icon: "warning",
-                confirmButtonColor: "#3085d6",
-                confirmButtonText: "Ok"
-            }).then((result) => {
-            })
-            return
+        if (this.data.FromName != "IP-Bill" && this.data.FromName != "IP-SETTLEMENT") {
+            if (this.patientDetailsFormGrp.get('balanceAmountController').value != 0) {
+                Swal.fire({
+                    title: 'Balance Amount is : ' + this.balanceAmt,
+                    text: "Please pay remaing amount",
+                    icon: "warning",
+                    confirmButtonColor: "#3085d6",
+                    confirmButtonText: "Ok"
+                }).then((result) => {
+                })
+                return
+            }
+            if (this.amount1 != 0) {
+                let balamt = this.netPayAmt - this.paidAmt
+                Swal.fire({
+                    title: 'Balance Amount is : ' + balamt,
+                    text: "select payment mode and pay remaing amount",
+                    icon: "warning",
+                    confirmButtonColor: "#3085d6",
+                    confirmButtonText: "Ok"
+                }).then((result) => {
+                })
+                return
+            }
         }
         if (this.data.FromName == "IP-SETTLEMENT") {
             this.Paymentobj['paymentId'] = 0;

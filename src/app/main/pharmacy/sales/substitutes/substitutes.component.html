@@ -136,7 +136,7 @@
                             [formGroup]="SubtituteForm" formControlName="ItemId"
                             placeholderText="Item Name (enter 2 char)" fxFlex id="ItemId"
                             ApiUrl="ItemMaster/GetItemListforSalesPage?StoreId=2&ItemName=" TextField="itemName"
-                            ValueField="itemId" (selectionChange)="onItemChange($event)"  
+                            (selectionChange)="onItemChange($event)"  
                             #ItemId></airmid-autocomplete>
 
 

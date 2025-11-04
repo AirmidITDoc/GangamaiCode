@@ -39,6 +39,7 @@ export class SubstitutesComponent implements OnInit {
     private _formBuilder: UntypedFormBuilder
   ) { this.SubtituteForm = this.CreateSubtituteForm();}
   ngOnInit(): void {
+    debugger
     if(this.data){
       this.itemDetails = this.data?.obj
       console.log( this.itemDetails )
@@ -50,8 +51,14 @@ export class SubstitutesComponent implements OnInit {
        )
        
        this.SubtituteForm.get('ItemId').setValue(this.itemnamelist)
+       this.getSelectedObjextMobile(this.itemnamelist)
     }
   }
+      getSelectedObjextMobile(event) { 
+        if (event) {
+        this.SubtituteForm.get('ItemId').setValue(event) 
+        }  
+    }
   CreateSubtituteForm() {
     return this._formBuilder.group({
       ItemId: [0],
