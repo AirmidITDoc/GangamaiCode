@@ -56,10 +56,10 @@ export class TestFormMasterComponent implements OnInit {
     Statusflag: any = false;
     isActive: boolean = true;
     vTestName: any;
-    showTemplateTable: boolean=false;
-   displayedColumns5: string[] = ['TemplateName', 'Action'];
+    showTemplateTable: boolean = false;
+    displayedColumns5: string[] = ['TemplateName', 'Action'];
+    vUnitId = this._loggedService.currentUserValue.user.unitId;
 
-    
     constructor(
         public _TestmasterService: TestmasterService,
         public dialogRef: MatDialogRef<TestFormMasterComponent>,
@@ -81,7 +81,7 @@ export class TestFormMasterComponent implements OnInit {
 
         this.templatedetailsForm = this._TestmasterService.templatedetailsForm();
         this.testdetailsForm = this._TestmasterService.testdetailsForm();
-        debugger
+        // debugger
         this.testForm.get("Status").setValue(1)
         if (this.data) {
             this.registerObj = this.data;
@@ -135,19 +135,19 @@ export class TestFormMasterComponent implements OnInit {
     createPathtestInsertForm(): FormGroup {
         return this._formBuilder.group({
             pathTest: this._formBuilder.group({
-                testName: ["",[this._FormvalidationserviceService.allowEmptyStringValidator()]],
-                printTestName: ["",[this._FormvalidationserviceService.allowEmptyStringValidator()]],
+                testName: ["", [this._FormvalidationserviceService.allowEmptyStringValidator()]],
+                printTestName: ["", [this._FormvalidationserviceService.allowEmptyStringValidator()]],
                 categoryId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
                 isSubTest: false,
-                techniqueName: ["",[this._FormvalidationserviceService.allowEmptyStringValidator()]],
-                machineName: ["",[this._FormvalidationserviceService.allowEmptyStringValidator()]],
-                suggestionNote: ["",[this._FormvalidationserviceService.allowEmptyStringValidator()]],
-                footNote: ["",[this._FormvalidationserviceService.allowEmptyStringValidator()]],
+                techniqueName: ["", [this._FormvalidationserviceService.allowEmptyStringValidator()]],
+                machineName: ["", [this._FormvalidationserviceService.allowEmptyStringValidator()]],
+                suggestionNote: ["", [this._FormvalidationserviceService.allowEmptyStringValidator()]],
+                footNote: ["", [this._FormvalidationserviceService.allowEmptyStringValidator()]],
                 isActive: Boolean(JSON.parse(this.testForm.get("isActive").value)), //true
                 addedBy: [this._loggedService.currentUserValue.userId, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator()]],
                 updatedBy: [this._loggedService.currentUserValue.userId, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator()]],
                 serviceId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-                isTemplateTest: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+                isTemplateTest: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
                 TestId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]]
             }),
             pathTemplateDetail: this._formBuilder.array([]),
@@ -186,12 +186,16 @@ export class TestFormMasterComponent implements OnInit {
             this.Statusflag = false;
             this.serviceflag = true;
             this._TestmasterService.is_templatetest = false;
+            this.testForm.get('ServiceId')?.setValidators([Validators.required])
+            this.testForm.get('ServiceId')?.updateValueAndValidity();
         } else if (val == "2") {
             this._TestmasterService.is_subtest = true;
             this._TestmasterService.is_Test = false;
             this.serviceflag = false;
             this.Subtest = true
             this._TestmasterService.is_templatetest = false;
+            this.testForm.get('ServiceId')?.clearValidators();
+            this.testForm.get('ServiceId')?.updateValueAndValidity();
             // get issubtest list
         } else if (val == "3") {
             this._TestmasterService.is_templatetest = true;
@@ -200,6 +204,8 @@ export class TestFormMasterComponent implements OnInit {
             this.Statusflag = true;
             this.serviceflag = true;
             this.Subtest = false
+            this.testForm.get('ServiceId')?.setValidators([Validators.required])
+            this.testForm.get('ServiceId')?.updateValueAndValidity();
         }
     }
 
@@ -303,7 +309,7 @@ export class TestFormMasterComponent implements OnInit {
     invalidFields1 = [];
 
     onSubmit() {
-        debugger
+        // debugger
 
         if (!this.testForm.invalid && !this.testFormInsert.invalid) {
             this.invalidFields1 = [];
@@ -333,13 +339,13 @@ export class TestFormMasterComponent implements OnInit {
             const isUpdate = this.vTestId;
 
             if (isUpdate) {
-            this.testFormInsert.get("pathTest.updatedBy")?.setValue(this._loggedService.currentUserValue.userId);
-             (this.testFormInsert.get('pathTest') as FormGroup).removeControl('addedBy');
+                this.testFormInsert.get("pathTest.updatedBy")?.setValue(this._loggedService.currentUserValue.userId);
+                (this.testFormInsert.get('pathTest') as FormGroup).removeControl('addedBy');
             } else {
-            this.testFormInsert.get("pathTest.addedBy")?.setValue(this._loggedService.currentUserValue.userId);
-             (this.testFormInsert.get('pathTest') as FormGroup).removeControl('updatedBy');
+                this.testFormInsert.get("pathTest.addedBy")?.setValue(this._loggedService.currentUserValue.userId);
+                (this.testFormInsert.get('pathTest') as FormGroup).removeControl('updatedBy');
             }
-         
+
             this.testFormInsert.get("pathTest.TestId")?.setValue(this.vTestId ?? 0)
             this.testFormInsert.get("pathTest.testName")?.setValue(this.testForm.get("TestName").value)
             this.testFormInsert.get("pathTest.printTestName")?.setValue(this.testForm.get("PrintTestName").value)
@@ -366,7 +372,7 @@ export class TestFormMasterComponent implements OnInit {
                     }
                 }
             }
-            
+
             // checks nested error 
             if (this.testFormInsert.invalid) {
                 for (const controlName in this.testFormInsert.controls) {
@@ -395,7 +401,7 @@ export class TestFormMasterComponent implements OnInit {
     }
 
     getParameterList() {
-        debugger
+        // debugger
         let parameter = this.testForm.get("ParameterNameSearch").value + "%" || '%';
         var param = {
             "first": 0,
@@ -410,7 +416,7 @@ export class TestFormMasterComponent implements OnInit {
                 },
                 {
                     "fieldName": "UnitId",
-                    "fieldValue": "0",
+                    "fieldValue": String(this.vUnitId),
                     "opType": "Equals"
                 },
                 {
@@ -461,7 +467,7 @@ export class TestFormMasterComponent implements OnInit {
     }
 
     onAdd(event) {
-        debugger
+        // debugger
         if (this.testForm.get("IsSubTest").value) {
             this.addSubTest(event);
 
@@ -513,35 +519,35 @@ export class TestFormMasterComponent implements OnInit {
 
     onAddTemplate() {
         if (!this.list) {
-    this.list = [];
-  }
+            this.list = [];
+        }
 
-  const newItem = {
-    templateId: this.DDtemplateId,
-    templateName: this.DDtemplateName
-  };
+        const newItem = {
+            templateId: this.DDtemplateId,
+            templateName: this.DDtemplateName
+        };
 
-  this.list.push(newItem);
-  this.Templatetdatasource.data = [...this.Templatetdatasource.data, newItem];
+        this.list.push(newItem);
+        this.Templatetdatasource.data = [...this.Templatetdatasource.data, newItem];
 
-  this.templatedetailsForm.get("TemplateId").reset();
-  this.templatedetailsForm.get("TemplateName").reset();
+        this.templatedetailsForm.get("TemplateId").reset();
+        this.templatedetailsForm.get("TemplateName").reset();
 
-  this.showTemplateTable = true;
-}
+        this.showTemplateTable = true;
+    }
 
     addParameter(row) {
-      
+
         if (!row || !row.parameterId) {
             console.error("Invalid row data!");
             return;
         }
 
-        if (!this.chargeslist) 
+        if (!this.chargeslist)
             this.chargeslist = [];
-               
-        if (this.chargeslist.length > 0 && this.chargeslist.length!=1) {
-         let isDuplicate = this.chargeslist.some(ele => ele.parameterId === row.parameterId);
+
+        if (this.chargeslist.length > 0 && this.chargeslist.length != 1) {
+            let isDuplicate = this.chargeslist.some(ele => ele.parameterId === row.parameterId);
 
             if (isDuplicate) {
                 this.toastr.warning('Selected Parameter already added in the list', 'Warning!', {
@@ -554,7 +560,7 @@ export class TestFormMasterComponent implements OnInit {
         this.chargeslist.push(row);
 
         this.addparameterdata(row);
-debugger
+        // debugger
         this.DSTestListtemp.data = [...this.chargeslist];
         this.DSTestListtemp.sort = this.sort;
         this.DSTestListtemp.paginator = this.paginator;
@@ -580,6 +586,7 @@ debugger
     }
 
     addSubTest(row) {
+        // call list here
         if (!row || !row.testId) {
             console.error("Invalid row data!");
             return;
@@ -638,9 +645,14 @@ debugger
     }
 
     onClose(val: boolean) {
-        this.testForm.reset({ Status: [1] });
+        this._TestmasterService.is_Test = true;
+        this._TestmasterService.is_subtest = false;
+        this._TestmasterService.is_templatetest = false;
+
+        this.testForm.reset({ Status: 1 });
         this.dialogRef.close(val);
     }
+
 }
 
 

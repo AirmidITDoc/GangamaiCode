@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
-import { FormBuilder, FormGroup, UntypedFormBuilder } from '@angular/forms';
+import { FormBuilder, FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { fuseAnimations } from '@fuse/animations';
 import { ToastrService } from 'ngx-toastr';
@@ -50,19 +50,19 @@ export class TemplateFormComponent implements OnInit {
 
     createTemplateForm(): FormGroup {
         return this._formBuilder1.group({
-            templateId: [this.TemplateId,this._FormvalidationserviceService.allowEmptyStringValidator()],
+            templateId: [this.TemplateId, this._FormvalidationserviceService.allowEmptyStringValidator()],
             templateName: '',
-            templateDesc: this.vTemplateDesc,
-            templateDescInHtml: ''
+            templateDesc: ['',[Validators.required]],
+            templateDescInHtml: ['',[Validators.required]]
             // IsDeleted: ['true']
         });
     }
 
-     onEditorValueChange(content: string) {
+    onEditorValueChange(content: string) {
         this.templateForm.get('templateDesc')?.setValue(content);
+        this.templateForm.get('templateDescInHtml')?.setValue(content);
     }
 
-  
     onSubmit() {
         if (!this.templateForm.invalid) {
             console.log(this.templateForm.value)

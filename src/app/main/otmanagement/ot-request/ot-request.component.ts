@@ -326,6 +326,7 @@ export class OtReqInsert {
   pacrequired: any;
   equipmentsRequired: any;
   infective: any;
+  locationId:any;
   /**
    * Constructor
    *
@@ -397,6 +398,7 @@ export class OtReqInsert {
       this.pacrequired = OtReqInsert.pacrequired || ''
       this.equipmentsRequired = OtReqInsert.equipmentsRequired || ''
       this.infective = OtReqInsert.infective || ''
+      this.locationId = OtReqInsert.locationId || ''
     }
   }
 }

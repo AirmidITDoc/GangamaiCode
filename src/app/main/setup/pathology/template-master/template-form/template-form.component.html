@@ -25,7 +25,6 @@
                                         <input type="hidden" name="templateId" formControlName="templateId"
                                             [(ngModel)]="TemplateId">
 
-
                                         <mat-form-field appearance="outline" fxFlex>
                                             <mat-label>Template Name</mat-label>
                                             <input matInput placeholder="Template Name" [(ngModel)]="vTemplateName"
@@ -36,11 +35,8 @@
                                             </mat-error>
                                         </mat-form-field>
 
-
-
                                         <airmid-editor label="Template Details" formControlName="templateDesc"
-                                            [formGroup]="templateForm"
-                                            (valueChange)="onEditorValueChange($event)">
+                                            [formGroup]="templateForm" (valueChange)="onEditorValueChange($event)">
                                         </airmid-editor>
 
                                     </div>

@@ -39,14 +39,14 @@ export class ParametermasterService {
             parameterId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             parameterShortName: ["",[
                     Validators.required,
-                    Validators.pattern("^[A-Za-z ]*$")
+                    // Validators.pattern("^[A-Za-z ]*$")
                 ],
             ],
             parameterName: [
                 "",
                 [
                     Validators.required,
-                    Validators.pattern("^[A-Za-z ]*$"),
+                    // Validators.pattern("^[A-Za-z ]*$"),
                       this._FormvalidationserviceService.allowEmptyStringValidator()
                 ],
             ],
@@ -55,7 +55,7 @@ export class ParametermasterService {
                 "",
                 [
                     Validators.required,
-                    Validators.pattern("^[A-Za-z ]*$"),
+                    // Validators.pattern("^[A-Za-z ]*$"),
                       this._FormvalidationserviceService.allowEmptyStringValidator()
                 ],
             ],
