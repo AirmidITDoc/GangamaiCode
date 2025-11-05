@@ -923,21 +923,21 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
     this.isUpdating = false;
   }
   getSelectedserviceObj(obj) {
-    const isItemAlreadyAdded = this.dsChargeList.data.some((element) => element.ServiceId === obj.serviceId);
-    if (isItemAlreadyAdded) {
-      Swal.fire({
-        title: 'Message',
-        text: "Selected Service already available in the list",
-        icon: "warning"
-      });
-      this.resetForm();
-      this.chargeForm.get("qty").setValue(1);
-      const serviceNameElement = document.querySelector(`[name='serviceName']`) as HTMLElement;
-      if (serviceNameElement) {
-        serviceNameElement.focus();
-      }
-      return;  // Exit the function early
-    } else {
+    // const isItemAlreadyAdded = this.dsChargeList.data.some((element) => element.ServiceId === obj.serviceId);
+    // if (isItemAlreadyAdded) {
+    //   Swal.fire({
+    //     title: 'Message',
+    //     text: "Selected Service already available in the list",
+    //     icon: "warning"
+    //   });
+    //   this.resetForm();
+    //   this.chargeForm.get("qty").setValue(1);
+    //   const serviceNameElement = document.querySelector(`[name='serviceName']`) as HTMLElement;
+    //   if (serviceNameElement) {
+    //     serviceNameElement.focus();
+    //   }
+    //   return;  // Exit the function early
+    // } else {
       console.log(obj)
       this.SrvcName1 = obj.serviceName;
       this.serviceId = obj.serviceId; 
@@ -966,7 +966,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
       this.chkIsEditable = true;
       }
       this.serviceSelct = true
-    }
+   // }
     this.getRtevPackageDetList(obj)
   }
   getSelectedObj(obj) {
