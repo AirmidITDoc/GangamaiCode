@@ -243,8 +243,20 @@ export class TestFormMasterComponent implements OnInit {
         }
 
         this._TestmasterService.getTestListfor(m_data).subscribe(Visit => {
-            this.DSTestList.data = Visit.data as TestList[];
-            this.dsTemparoryList.data = Visit as TestList[];
+            const newData = Visit.data as TestList[] || [];
+
+            // Initialize lists if not defined
+            if (!this.DSTestList.data) this.DSTestList.data = [];
+            if (!this.dsTemparoryList.data) this.dsTemparoryList.data = [];
+
+            // 🔹 Append new data instead of replacing
+            this.DSTestList.data = [...this.DSTestList.data, ...newData];
+            this.dsTemparoryList.data = [...this.dsTemparoryList.data, ...newData];
+
+            console.log('Updated DSTestList:', this.DSTestList.data);
+
+            // this.DSTestList.data = Visit.data as TestList[];
+            // this.dsTemparoryList.data = Visit as TestList[];
         });
 
     }
@@ -586,7 +598,6 @@ export class TestFormMasterComponent implements OnInit {
     }
 
     addSubTest(row) {
-        // call list here
         if (!row || !row.testId) {
             console.error("Invalid row data!");
             return;
@@ -615,20 +626,40 @@ export class TestFormMasterComponent implements OnInit {
     }
 
     addsubtestdata(row) {
-        this.ChargeList = this.DSTestList.data || [];
+        const param = {
+            "first": 0,
+            "rows": 10,
+            "sortField": "TestId",
+            "sortOrder": 0,
+            "filters": [
+                {
+                    "fieldName": "TestId",
+                    "fieldValue": String(row.testId),
+                    "opType": "Equals"
+                }
+            ],
+            "exportType": "JSON",
+            "columns": []
+        };
 
-        let exists = this.ChargeList.some(item => item.testId === row.testId);
-        if (!exists) {
-            this.ChargeList.push({
+        this._TestmasterService.getIsSubTestDetaileList(param).subscribe(data => {
+            const apiData = data.data as TestList[] || [];
+            console.log('API returned:', apiData);
+            if (!this.ChargeList) this.ChargeList = [];
+
+            let newItems = apiData.length > 0 ? apiData : [{
                 parameterID: row.parameterId || 0,
                 parameterName: row.parameterName,
                 subTestID: row.subTestID || 0,
                 testId: row.testId
-            });
+            }];
+            this.ChargeList = [...this.ChargeList, ...newItems];
 
             this.DSTestList.data = [...this.ChargeList];
             this.dsTemparoryList.data = [...this.ChargeList];
-        }
+
+            console.log('Merged final list:', this.ChargeList);
+        });
     }
 
     CategoryId = 0;

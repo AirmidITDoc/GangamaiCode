@@ -140,7 +140,7 @@ export class NewRequestComponent implements OnInit {
       this.vIPDNo = this.registerObj1.opdNo
       this.vPatientName = this.registerObj1.patientName
 
-       setTimeout(() => {
+      setTimeout(() => {
         this._OtRequestService.getotTableById(this.data.ottable).subscribe((response) => {
           this.registerObj2 = response;
           console.log("Get ottable Data:", this.registerObj2)
@@ -409,15 +409,12 @@ export class NewRequestComponent implements OnInit {
   selectChangeSurgery(obj: any) {
     this.surgName = obj.surgeryName
     this.ddlSurgerytype.SetSelection(obj.siteDescId);
-    // debugger
-    // const selectedCategory = this.ddlSurgerytype.options.find(
-    //   (item: any) => item.siteDescId === obj.siteDescId
-    // );
-
-    // // Set the category name if found
-    // if (selectedCategory) {
-    //   this.surgCategoryName = selectedCategory.text;
-    // }
+    setTimeout(() => {
+      this._OtRequestService.getotsiteDiscById(obj.siteDescId).subscribe((response) => {
+        this.surgCategoryName = response.siteDescriptionName;
+        console.log("Get siteDisc Data:", this.surgCategoryName)
+      });
+    }, 100);
   }
   selectChangeSurgeon(obj: any) {
     this.surgeonName = obj.text
@@ -511,7 +508,7 @@ export class NewRequestComponent implements OnInit {
       });
       return;
     }
-    if (!this.requestForm.get("surgeryId")?.value) {
+    if (!this.requestForm.get("surgeryId")?.value || this.requestForm.get("surgeryId")?.value=="0") {
       this.toastr.warning('Please select a Surgery', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
@@ -541,13 +538,13 @@ export class NewRequestComponent implements OnInit {
       });
       return;
     }
-    if (!this.requestForm.get("surgeonId")?.value) {
+    if (!this.requestForm.get("surgeonId")?.value || this.requestForm.get("surgeonId")?.value=="0") {
       this.toastr.warning('Please select a Surgeon', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       return;
     }
-    if (!this.requestForm.get("anesthetistId")?.value) {
+    if (!this.requestForm.get("anesthetistId")?.value || this.requestForm.get("anesthetistId")?.value=="0") {
       this.toastr.warning('Please select a AnestheticsDr', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
@@ -711,13 +708,13 @@ export class NewRequestComponent implements OnInit {
   /////////////////////////////// attendent detail part /////////////////////////////
   onAdd1() {
     // debugger
-    if (!this.requestForm.get("doctorTypeId")?.value) {
+    if (!this.requestForm.get("doctorTypeId")?.value || this.requestForm.get("doctorTypeId")?.value == "0") {
       this.toastr.warning('Please select a Doctor Type', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       return;
     }
-    if (!this.requestForm.get("doctorId")?.value) {
+    if (!this.requestForm.get("doctorId")?.value || this.requestForm.get("doctorId")?.value == "0") {
       this.toastr.warning('Please select a Doctor', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });

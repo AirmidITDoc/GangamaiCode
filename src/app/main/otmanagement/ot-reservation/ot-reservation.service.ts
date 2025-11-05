@@ -45,6 +45,9 @@ export class OtReservationService {
     public getotRequestById(Id) {
         return this._httpClient.GetData("OTRequest/" + Id);
     }
+    public getotsiteDiscById(Id) {
+        return this._httpClient.GetData("SiteDescriptionMaster/" + Id);
+    }
      public getotTableById(Id) {
         return this._httpClient.GetData("OtTableMaster/" + Id);
     }

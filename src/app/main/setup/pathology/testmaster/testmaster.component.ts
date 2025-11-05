@@ -230,6 +230,7 @@ export class TestMaster {
 }
 export class TestList {
   TestId: number;
+  testId: number;
   TestName: any;
   ParameterName: any;
   parameterName: any;
@@ -237,6 +238,7 @@ export class TestList {
   Isdeleted: any;
   IsDeleted: any;
   ParameterId: any;
+  subTestID:any;
   /**
    * Constructor
    *
@@ -247,9 +249,11 @@ export class TestList {
       this.ParameterName = TestList.ParameterName || "";
       this.parameterName = TestList.parameterName || "";
       this.TestId = TestList.TestId || "";
+      this.testId = TestList.testId || "";
       this.TestName = TestList.TestName || "";
       this.Isdeleted = TestList.Isdeleted || "";
       this.IsDeleted = TestList.IsDeleted || "true";
+      this.subTestID = TestList.subTestID || ""
     }
   }
 }

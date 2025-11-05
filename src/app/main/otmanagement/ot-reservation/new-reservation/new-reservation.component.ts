@@ -379,6 +379,12 @@ export class NewReservationComponent implements OnInit {
   selectChangeSurgery(obj: any) {
     this.surgName = obj.surgeryName
     this.ddlSurgerytype.SetSelection(obj.siteDescId);
+    setTimeout(() => {
+      this._OtReservationService.getotsiteDiscById(obj.siteDescId).subscribe((response) => {
+        this.surgCategoryName = response.siteDescriptionName;
+        console.log("Get siteDisc Data:", this.surgCategoryName)
+      });
+    }, 100);
   }
   selectChangeSurgeon(obj: any) {
     this.surgeonName = obj.text
@@ -494,7 +500,7 @@ export class NewReservationComponent implements OnInit {
       });
       return;
     }
-    if (!this.reservationForm.get("surgeryId")?.value) {
+    if (!this.reservationForm.get("surgeryId")?.value || this.reservationForm.get("surgeryId")?.value == "0") {
       this.toastr.warning('Please select a Surgery', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
@@ -524,13 +530,13 @@ export class NewReservationComponent implements OnInit {
       });
       return;
     }
-    if (!this.reservationForm.get("surgeonId")?.value) {
+    if (!this.reservationForm.get("surgeonId")?.value || this.reservationForm.get("surgeonId")?.value == "0") {
       this.toastr.warning('Please select a Surgeon', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       return;
     }
-    if (!this.reservationForm.get("anesthetistId")?.value) {
+    if (!this.reservationForm.get("anesthetistId")?.value || this.reservationForm.get("anesthetistId")?.value == "0") {
       this.toastr.warning('Please select a AnestheticsDr', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
@@ -690,6 +696,18 @@ export class NewReservationComponent implements OnInit {
 
   /////////////////////////////// attendent detail part /////////////////////////////
   onAdd1() {
+    if (!this.reservationForm.get("doctorTypeId")?.value || this.reservationForm.get("doctorTypeId")?.value == "0") {
+      this.toastr.warning('Please select a Doctor Type', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    if (!this.reservationForm.get("doctorId")?.value || this.reservationForm.get("doctorId")?.value == "0") {
+      this.toastr.warning('Please select a Doctor', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
     let newEntry = {
       doctorTypeId: this.reservationForm.get('doctorTypeId').value,//
       doctorType: this.doctorType,

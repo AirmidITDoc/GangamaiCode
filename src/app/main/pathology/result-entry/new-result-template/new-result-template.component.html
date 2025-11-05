@@ -177,13 +177,13 @@
                                 </angular-editor> -->
                         </div>
 
-                        <div fxLayout="column" fxLayout="row" fxLayout="4px" style="margin-top: 10px;">
+                        <div fxLayout="column" fxLayout="row" fxLayout="4px" style="margin-top: 10px; gap: 4px;">
 
                            <div fxFlex="50%">
                             <mat-form-field appearance="outline" fxFlex>
                                 <mat-label>Comment </mat-label>
                                 <textarea rows="1" name="suggestionNotes" formControlName="suggestionNotes" matInput
-                                    [(ngModel)]="vsuggestionNotes" (keydown)="onEnterSugg($event)" required></textarea>
+                                    [(ngModel)]="vsuggestionNotes" (keydown)="onEnterSugg($event)"></textarea>
                                 <mat-error>Please enter Comment </mat-error>
                             </mat-form-field>
                            </div>

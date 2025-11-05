@@ -417,7 +417,7 @@
                                                 Action</mat-header-cell>
                                             <mat-cell *matCellDef="let contact" class="w-150">
 
-                                                <button mat-icon-button (click)="Printresultentry()" matTooltip="Print"
+                                                <button mat-icon-button (click)="Printresultentry(contact)" matTooltip="Print"
                                                     *ngIf="contact.isCompleted">
                                                     <mat-icon>print</mat-icon>
                                                 </button>

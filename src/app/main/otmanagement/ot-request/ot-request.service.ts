@@ -37,6 +37,9 @@ export class OtRequestService {
     public getotTableById(Id) {
         return this._httpClient.GetData("OtTableMaster/" + Id);
     }
+    public getotsiteDiscById(Id) {
+        return this._httpClient.GetData("SiteDescriptionMaster/" + Id);
+    }
     public OnCancel(param) {
         return this._httpClient.PostData('OTRequest/Cancel', param)
     }

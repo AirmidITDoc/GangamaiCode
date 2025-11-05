@@ -497,6 +497,7 @@ export class ResultEntryComponent implements OnInit {
             dialogRef.afterClosed().subscribe(result => {
                 console.log('Pathology Template  Saved ..', result);
             });
+            return;
         }
         this.searchRecords(contact)
         // this.selection.clear(); // Clears all selected items
@@ -690,30 +691,61 @@ export class ResultEntryComponent implements OnInit {
     selectedItem: any;
     // opiptype = this.selectedItem.opdipdtype;
     CompletdFlag = 1
-    Printresultentry() {
+    // Printresultentry() {
+    //     debugger
+
+    //     if (this.selection.selected.length == 0) {
+
+    //         this.toastr.warning('CheckBox Select !', 'Warning !', {
+    //             toastClass: 'tostr-tost custom-toast-warning',
+    //         });
+    //         return;
+    //     }
+    //     console.log(this.selection.selected);
+    //     let pathologyDelete = [];
+
+    //     this.selectedItem = this.selection.selected[0];
+
+    //     this.selection.selected.forEach((element) => {
+    //         console.log(element);
+
+    //         if (element.isCompleted)
+    //             this.CompletdFlag = 1
+    //         else
+    //             this.CompletdFlag = 0
+    //         pathologyDelete.push({ pathReportId: element.pathReportId });
+    //     });
+
+    //     const submitData = {
+    //         pathPrintResultEntry: pathologyDelete
+    //     };
+
+    //     console.log(submitData);
+    //     if (this.CompletdFlag) {
+    //         this._SampleService.PathPrintResultentryInsert(submitData).subscribe(res => {
+    //             if (res) {
+    //                 this.viewgetPathologyTestReportPdf(this.selectedItem)
+    //             }
+    //         });
+    //     } else {
+    //         Swal.fire("Selcted test Not Completd for Print.....")
+    //     }
+    // }
+
+
+    // changed by raksha 5/11/25
+    Printresultentry(row?: any[]) {
         debugger
-
-        if (this.selection.selected.length == 0) {
-
-            this.toastr.warning('CheckBox Select !', 'Warning !', {
-                toastClass: 'tostr-tost custom-toast-warning',
-            });
-            return;
-        }
-        console.log(this.selection.selected);
+        console.log(row);
         let pathologyDelete = [];
 
-        this.selectedItem = this.selection.selected[0];
+        this.selectedItem = row;
 
-        this.selection.selected.forEach((element) => {
-            console.log(element);
-
-            if (element.isCompleted)
-                this.CompletdFlag = 1
-            else
-                this.CompletdFlag = 0
-            pathologyDelete.push({ pathReportId: element.pathReportId });
-        });
+        if (this.selectedItem.isCompleted)
+            this.CompletdFlag = 1
+        else
+            this.CompletdFlag = 0
+        pathologyDelete.push({ pathReportId: this.selectedItem.pathReportId });
 
         const submitData = {
             pathPrintResultEntry: pathologyDelete

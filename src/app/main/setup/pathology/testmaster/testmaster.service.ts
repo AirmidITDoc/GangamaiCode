@@ -111,6 +111,9 @@ export class TestmasterService {
 
     // checkbox list
     // get subTest master list of checkbox
+    public getIsSubTestDetaileList(param) {
+        return this._httpClient.PostData("PathTestMaster/PathTestDetailList",param);
+    }
     public getIsSubTestList(param) {
         return this._httpClient.PostData("PathTestMaster/PathSubTestList",param);
     }
