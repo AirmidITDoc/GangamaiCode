@@ -20,6 +20,9 @@ import Swal from "sweetalert2";
 import { AuthenticationService } from "app/core/services/authentication.service";
 import { EventColor, WeekViewHourSegment } from "calendar-utils";
 import { addDays, addMinutes, endOfDay, endOfWeek, isSameDay, endOfMonth, isSameMonth, startOfDay } from "date-fns";
+import { NewCheckinComponent } from "../patient-otmovement-tracking/new-checkin/new-checkin.component";
+import { NewOtPreoperationComponent } from "../ot-preoperation/new-ot-preoperation/new-ot-preoperation.component";
+import { NewOtPostOperationComponent } from "../ot-preoperation/new-ot-post-operation/new-ot-post-operation.component";
 
 const colors: Record<string, EventColor> = {
     red: {
@@ -55,19 +58,23 @@ export class OTReservationComponent implements OnInit {
     FirstName: any = ""
     regNo: any = "0"
     LastName: any = ""
+    opipType: any = "2"
 
     votbookingId: any = ""
     registerobj: any;
 
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
+    @ViewChild('clearanceMedicalCode') clearanceMedicalCode!: TemplateRef<any>;
+    @ViewChild('clearanceFinancialCode') clearanceFinancialCode!: TemplateRef<any>;
 
     ngAfterViewInit() {
-        // Assign the template to the column dynamically
-        this.gridConfig.columnsList.find(col => col.key === 'opIpId')!.template = this.actionsTemplate;
+        this.gridConfig.columnsList.find(col => col.key === 'opiptype')!.template = this.actionsTemplate;
         this.gridConfig.columnsList.find(col => col.key === 'otRequestId')!.template = this.actionsTemplate1;
-        this.gridConfig.columnsList.find(col => col.key === 'isNewRecord')!.template = this.actionsTemplate2;
+        // this.gridConfig.columnsList.find(col => col.key === 'isNewRecord')!.template = this.actionsTemplate2;
         this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
+        this.gridConfig.columnsList.find(col => col.key === 'clearanceMedical')!.template = this.clearanceMedicalCode;
+        this.gridConfig.columnsList.find(col => col.key === 'clearanceFinancial')!.template = this.clearanceFinancialCode;
     }
 
     @ViewChild('actionsTemplate') actionsTemplate!: TemplateRef<any>;
@@ -75,38 +82,36 @@ export class OTReservationComponent implements OnInit {
     @ViewChild('actionsTemplate2') actionsTemplate2!: TemplateRef<any>;
 
     allcolumns = [
-        { heading: "", key: "opIpId", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 40 },
-        { heading: "", key: "otRequestId", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 40 },
-        { heading: "", key: "isNewRecord", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 40 },
-        { heading: "Date-Time", key: "reservationTime", sort: true, align: 'left', emptySign: 'NA', type: 8, width: 180 },
-        { heading: "Operation Date-Time", key: "opstartTime", sort: true, align: 'left', emptySign: 'NA', type: 8, width: 180 },
+        { heading: "-", key: "opiptype", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 40 },
+        { heading: "-", key: "otRequestId", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 40 },
+        { heading: "-", key: "clearanceMedical", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 40 },
+        { heading: "-", key: "clearanceFinancial", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 40 },
+        // { heading: "", key: "isNewRecord", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 40 },
+        { heading: "OTReser-Date&Time", key: "otReservationDateTime", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+        { heading: "Surgery Date", key: "surgeryDate", sort: true, align: 'left', emptySign: 'NA', type: 6, width: 150 },
+        { heading: "Estimate Time", key: "estimateTime", sort: true, align: 'left', emptySign: 'NA', type: 7, width: 150 },
+        // { heading: "Operation Date-Time", key: "opstartTime", sort: true, align: 'left', emptySign: 'NA', type: 8, width: 180 },
         { heading: "UHID NO", key: "regNo", sort: true, align: 'left', emptySign: 'NA', },
         { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
-        { heading: "Surgeon Name1", key: "surgenName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
-        { heading: "Surgeon Name2", key: "surgenName1", sort: true, align: 'left', emptySign: 'NA', width: 250 },
-        { heading: "AnathesDrName1", key: "anestheticsDr", sort: true, align: 'left', emptySign: 'NA', width: 250 },
-        { heading: "AnathesDrName2", key: "anestheticsDr1", sort: true, align: 'left', emptySign: 'NA', width: 250 },
-        { heading: "Surgery name", key: "surgeryName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-        { heading: "OTTableName", key: "otTableName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-        { heading: "AnesthType", key: "anesthTypeId", sort: true, align: 'left', emptySign: 'NA', width: 130 },
-        { heading: "Instruction", key: "instruction", sort: true, align: 'left', emptySign: 'NA', width: 180 },
+        { heading: "Blood Group", key: "bloodGroup", sort: true, align: 'left', emptySign: 'NA', width: 120 },
+        { heading: "Category Type", key: "typeName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+        { heading: "Theater Name", key: "otTableName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         { heading: "UserName", key: "userName", sort: true, align: 'left', emptySign: 'NA', width: 180 },
-        { heading: "IsCancelledDate", key: "isCancelledDateTime", sort: true, align: 'left', emptySign: 'NA', width: 180, type: 8 },
-        { heading: "Reasons", key: "reason", sort: true, align: 'left', emptySign: 'NA', width: 180 },
         {
-            heading: "Action", key: "action", align: "right", width: 180, sticky: true, type: gridColumnTypes.template,
-            template: this.actionButtonTemplate  // Assign ng-template to the column
+            heading: "Action", key: "action", align: "right", width: 150, sticky: true, type: gridColumnTypes.template,
+            template: this.actionButtonTemplate
         }
     ];
 
     allFilters = [
-        { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
-        { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
+        { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.StartsWith },
+        { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.StartsWith },
         { fieldName: "FirstName", fieldValue: "%", opType: OperatorComparer.StartsWith },
         { fieldName: "LastName", fieldValue: "%", opType: OperatorComparer.StartsWith },
-        { fieldName: "RegNo", fieldValue: "0", opType: OperatorComparer.Equals },
-
+        { fieldName: "RegNo", fieldValue: this.regNo, opType: OperatorComparer.Equals },
+        { fieldName: "OPIPType", fieldValue: this.opipType, opType: OperatorComparer.Equals },
     ]
+
     gridConfig: gridModel = {
         apiUrl: "OTReservation/OTReservationlist",
         columnsList: this.allcolumns,
@@ -170,6 +175,52 @@ export class OTReservationComponent implements OnInit {
         });
     }
 
+    checkInForm(row: any = null) {
+        const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+        buttonElement.blur();
+
+        const dialogRef = this._matDialog.open(NewCheckinComponent,
+            {
+                maxWidth: "90vw",
+                maxHeight: '90vh',
+                // height: '90%',
+                width: '85%',
+            });
+        dialogRef.afterClosed().subscribe(result => {
+            this.grid.bindGridData();
+        });
+    }
+
+    preOperationForm(row: any = null) {
+        const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+        buttonElement.blur();
+
+        const dialogRef = this._matDialog.open(NewOtPreoperationComponent,
+            {
+                maxWidth: "90vw",
+                maxHeight: '90vh',
+                width: '90%',
+            });
+        dialogRef.afterClosed().subscribe(result => {
+            this.grid.bindGridData();
+        });
+    }
+
+    postOperationForm(row: any = null) {
+        const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+        buttonElement.blur();
+
+        const dialogRef = this._matDialog.open(NewOtPostOperationComponent,
+            {
+                maxWidth: "90vw",
+                maxHeight: '90vh',
+                width: '90%',
+            });
+        dialogRef.afterClosed().subscribe(result => {
+            this.grid.bindGridData();
+        });
+    }
+
     OnEdit(row) {
         this._OtReservationService.populateForm(row);
         const dialogRef = this._matDialog.open(NewReservationComponent,
@@ -227,6 +278,7 @@ export class OTReservationComponent implements OnInit {
         this.FirstName = this.myFilterform.get('FirstName').value + "%"
         this.LastName = this.myFilterform.get('LastName').value + "%"
         this.regNo = this.myFilterform.get('RegNo').value || "0"
+        this.opipType = this.myFilterform.get('opipType').value
         this.getfilterdata();
     }
     getfilterdata() {
@@ -236,12 +288,12 @@ export class OTReservationComponent implements OnInit {
             sortField: "OtreservationId",
             sortOrder: 0,
             filters: [
-                { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
-                { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
-                { fieldName: "FirstName", fieldValue: this.FirstName, opType: OperatorComparer.Contains },
-                { fieldName: "LastName", fieldValue: this.LastName, opType: OperatorComparer.Contains },
+                { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.StartsWith },
+                { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.StartsWith },
+                { fieldName: "FirstName", fieldValue: "%", opType: OperatorComparer.StartsWith },
+                { fieldName: "LastName", fieldValue: "%", opType: OperatorComparer.StartsWith },
                 { fieldName: "RegNo", fieldValue: this.regNo, opType: OperatorComparer.Equals },
-
+                { fieldName: "OPIPType", fieldValue: this.opipType, opType: OperatorComparer.Equals },
             ],
             row: 25
         }
@@ -286,7 +338,7 @@ export class OTReservationComponent implements OnInit {
         }).then((result) => {
             if (result.isConfirmed) {
                 let submitData = {
-                    otreservationId: data.otreservationId,
+                    otReservationId: data.otReservationId,
                     reason: result.value,
                     isCancelledBy: this._loggedService.currentUserValue.userId
                 };
@@ -415,7 +467,7 @@ export class OTReservationComponent implements OnInit {
                 this.confirmDialogRef.afterClosed().subscribe((result) => {
                     if (result) {
                         // let submitData = {
-                        //     otreservationId: event.id,
+                        //     otReservationId: event.id,
                         //     reason: result.value || result,
                         //     isCancelledBy: this._loggedService.currentUserValue.userId
                         // };
@@ -656,5 +708,169 @@ export class OTReservationComponent implements OnInit {
         setTimeout(() => {
             this.bindData();
         }, 100);
+    }
+}
+
+export class OtReserInsert {
+    regId: Number;
+    regDate: Date;
+    patientName: string;
+    prefixId: number;
+    firstName: string;
+    middleName: string;
+    lastName: string;
+    address: string;
+    city: string;
+    regNo: string;
+    dateOfBirth: Date;
+    dateofBirth: Date;
+    age: any;
+    GenderId: Number;
+    genderId: any;
+    PhoneNo: string;
+    phoneNo: string;
+    MobileNo: string;
+    mobileNo: string;
+    AddedBy: number;
+    AgeYear: any;
+    AgeMonth: any;
+    AgeDay: any;
+    ageYear: any;
+    ageMonth: any;
+    ageDay: any;
+    CountryId: number;
+    countryId: number;
+    StateId: number;
+    stateId: number;
+    CityId: number;
+    cityId: number;
+    MaritalStatusId: number;
+    maritalStatusId: number;
+    religionId: number;
+    areaId: number;
+    aadharCardNo: string;
+    currentDate = new Date();
+    VisitId: any;
+    isSeniorCitizen: boolean
+    doctorName: any;
+    departmentName: any;
+    UnitId: any;
+    billNo: any;
+    departmentId: any;
+    doctorId: any;
+    emgId: any
+    ipdNo: any;
+    genderName: any;
+    admissionDate: any
+    roomName: any;
+    bedName: any;
+    patientType: any;
+    companyName: any;
+    tariffName: any;
+    surgeryType: any;
+    surgeryName: any;
+    duration: any;
+    fromTime: any;
+    toTime: any;
+    isprimary: any;
+    surgeonName: any;
+    anestheticsName: any;
+    anesthesiaType: any;
+    anestheticsName1: any;
+    part: any;
+    otrequestId: any;
+    opipid: any;
+    opdNo: any;
+    opiptype: any;
+    otRequestTime: any;
+    categoryType: any;
+    surgeryCategoryId: any;
+    estimateTime: any;
+    requestType: any;
+    pacrequired: any;
+    equipmentsRequired: any;
+    infective: any;
+    locationId: any;
+    otReservationId: any;
+    otreservationId: any;
+    reservationType: any;
+    surgeryDate:any
+    /**
+     * Constructor
+     *
+     * @param OtReserInsert
+     */
+
+    constructor(OtReserInsert) {
+        {
+            this.regId = OtReserInsert.regId || 0;
+            this.regDate = OtReserInsert.regDate || this.currentDate;
+            this.patientName = OtReserInsert.patientName;
+            this.prefixId = OtReserInsert.prefixId || 0;
+            this.firstName = OtReserInsert.firstName || '';
+            this.middleName = OtReserInsert.middleName || '%';
+            this.lastName = OtReserInsert.lastName || '';
+            this.regNo = OtReserInsert.regNo || '';
+            this.dateOfBirth = OtReserInsert.dateOfBirth || this.currentDate;
+            this.dateofBirth = OtReserInsert.dateofBirth || this.currentDate;
+            this.genderId = OtReserInsert.genderId || 0;
+            this.phoneNo = OtReserInsert.phoneNo || '';
+            this.mobileNo = OtReserInsert.mobileNo || '';
+            this.ageYear = OtReserInsert.ageYear || '0';
+            this.ageMonth = OtReserInsert.ageMonth || '0';
+            this.ageDay = OtReserInsert.ageDay || '0';
+            this.countryId = OtReserInsert.countryId || 0;
+            this.stateId = OtReserInsert.stateId || 0;
+            this.cityId = OtReserInsert.cityId || 0;
+            this.religionId = OtReserInsert.religionId || 0;
+            this.areaId = OtReserInsert.areaId || 0;
+            this.aadharCardNo = OtReserInsert.aadharCardNo || '';
+            this.VisitId = OtReserInsert.VisitId || 0;
+            this.isSeniorCitizen = OtReserInsert.isSeniorCitizen || 0
+            this.maritalStatusId = OtReserInsert.maritalStatusId || 0;
+            this.doctorName = OtReserInsert.doctorName || "";
+            this.departmentName = OtReserInsert.departmentName || "";
+            this.UnitId = OtReserInsert.UnitId || 0;
+            this.billNo = OtReserInsert.billNo || 0;
+            this.departmentId = OtReserInsert.departmentId || 0;
+            this.doctorId = OtReserInsert.doctorId || 0;
+            this.emgId = OtReserInsert.emgId || 0
+            this.ipdNo = OtReserInsert.ipdNo || 0
+            this.genderName = OtReserInsert.genderName || ''
+            this.admissionDate = OtReserInsert.admissionDate || ''
+            this.roomName = OtReserInsert.roomName || ''
+            this.bedName = OtReserInsert.bedName || ''
+            this.patientType = OtReserInsert.patientType || ''
+            this.companyName = OtReserInsert.companyName || ''
+            this.tariffName = OtReserInsert.tariffName || ''
+            this.surgeryType = OtReserInsert.surgeryType || ''
+            this.surgeryName = OtReserInsert.surgeryName || ''
+            this.duration = OtReserInsert.duration || ''
+            this.fromTime = OtReserInsert.fromTime || ''
+            this.toTime = OtReserInsert.toTime || ''
+            this.isprimary = OtReserInsert.isprimary || ''
+            this.surgeonName = OtReserInsert.surgeonName || ''
+            this.anestheticsName = OtReserInsert.anestheticsName || ''
+            this.anesthesiaType = OtReserInsert.anesthesiaType || ''
+            this.anestheticsName1 = OtReserInsert.anestheticsName1 || ''
+            this.part = OtReserInsert.part || ''
+            this.otrequestId = OtReserInsert.otrequestId || ''
+            this.opipid = OtReserInsert.opipid || ''
+            this.opdNo = OtReserInsert.opdNo || ''
+            this.opiptype = OtReserInsert.opiptype || ''
+            this.otRequestTime = OtReserInsert.otRequestTime || ''
+            this.categoryType = OtReserInsert.categoryType || ''
+            this.surgeryCategoryId = OtReserInsert.surgeryCategoryId || ''
+            this.estimateTime = OtReserInsert.estimateTime || ''
+            this.requestType = OtReserInsert.requestType || ''
+            this.pacrequired = OtReserInsert.pacrequired || ''
+            this.equipmentsRequired = OtReserInsert.equipmentsRequired || ''
+            this.infective = OtReserInsert.infective || ''
+            this.locationId = OtReserInsert.locationId || ''
+            this.otReservationId = OtReserInsert.otReservationId || ''
+            this.reservationType = OtReserInsert.reservationType || ''
+            this.surgeryDate = OtReserInsert.surgeryDate || ''
+            this.otreservationId = OtReserInsert.otreservationId || ''
+        }
     }
 }

@@ -24,7 +24,7 @@ export class OtReservationService {
             FirstName: ['', [Validators.pattern("^[A-Za-z/() ]*$")]],
             LastName: ['', [Validators.pattern("^[A-Za-z/() ]*$")]],
             RegNo: [],
-            ottableId: [0]
+            opipType: ["2"],
         });
     }
 
@@ -44,6 +44,9 @@ export class OtReservationService {
     }
     public getotRequestById(Id) {
         return this._httpClient.GetData("OTRequest/" + Id);
+    }
+    public getotReservationById(Id) {
+        return this._httpClient.GetData("OTReservation/" + Id);
     }
     public getotsiteDiscById(Id) {
         return this._httpClient.GetData("SiteDescriptionMaster/" + Id);
@@ -66,5 +69,8 @@ export class OtReservationService {
 
     public OnCancel(param) {
         return this._httpClient.PostData('OTReservation/Cancel', param)
+    }
+    public getRtrvReservationAttendentList(employee) {
+        return this._httpClient.PostData("OTReservation/OtReservationAttendingDetailList", employee);
     }
 }

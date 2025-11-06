@@ -56,6 +56,20 @@
                         </div>
                     </ng-template>
 
+                    <ng-template #clearanceMedicalCode let-element>
+                        <div fxLayout="row" fxLayoutAlign="center center">
+                            <mat-icon *ngIf="element.clearanceMedical==true" color="primary"
+                                matTooltip="Medical Clearance">local_hospital</mat-icon>
+                        </div>
+                    </ng-template>
+
+                    <ng-template #clearanceFinancialCode let-element>
+                        <div fxLayout="row" fxLayoutAlign="center center">
+                            <mat-icon *ngIf="element.clearanceFinancial==true" color="accent"
+                                matTooltip="Financial Clearance">account_balance</mat-icon>
+                        </div>
+                    </ng-template>
+
                     <ng-template #actionsTemplate1 let-element>
                         <div fxLayout="row" fxLayoutAlign="center center">
                             <mat-icon *ngIf="element.otRequestId > 0 ; else noRequest" matTooltip="Request Accepted"
@@ -81,15 +95,44 @@
                                 <mat-icon> print</mat-icon>
                             </button>
 
-                            <button mat-icon-button matTooltip="OT Reservation Date Change"
-                                (click)="tOTBookingDateChange(element)">
-                                <mat-icon>date_range</mat-icon>
-                            </button>
-
                             <button mat-icon-button matTooltip="Cancel" (click)="OnCancel(element)">
                                 <mat-icon> cancel</mat-icon>
                             </button>
 
+                            <!-- Material UI Icon Button with Menu -->
+                            <button mat-icon-button [matMenuTriggerFor]="actionsMenu" matTooltip="Actions"
+                                matTooltipPosition="above" (click)="$event.stopPropagation();">
+                                <mat-icon>more_vert</mat-icon>
+                            </button>
+
+                            <!-- Material UI Menu with Compact Design -->
+                            <mat-menu #actionsMenu="matMenu" xPosition="before" yPosition="below"
+                                [overlapTrigger]="false">
+
+                                <button mat-menu-item (click)="tOTBookingDateChange(element)"
+                                    style="height: 32px; min-height: 32px;">
+                                    <mat-icon>date_range</mat-icon>
+                                    <span style="font-size: 13px;">Reservation PostPone</span>
+                                </button>
+
+                                <button mat-menu-item (click)="checkInForm(element)"
+                                    style="height: 32px; min-height: 32px;">
+                                    <mat-icon>check_circle_outline</mat-icon>
+                                    <span style="font-size: 13px;">Check-IN</span>
+                                </button>
+
+                                <button mat-menu-item (click)="preOperationForm(element)"
+                                    style="height: 32px; min-height: 32px;">
+                                    <mat-icon>local_hospital</mat-icon>
+                                    <span style="font-size: 13px;">Pre-Operation</span>
+                                </button>
+
+                                <button mat-menu-item (click)="postOperationForm(element)"
+                                    style="height: 32px; min-height: 32px;">
+                                    <mat-icon>local_hospital</mat-icon>
+                                    <span style="font-size: 13px;">Post-Operation</span>
+                                </button>
+                            </mat-menu>
                         </div>
                     </ng-template>
                     <airmid-table [gridConfig]="gridConfig" class="content">
@@ -133,6 +176,24 @@
                                     </button>
                                 </mat-form-field>
 
+                                <mat-radio-group formControlName="opipType" name="opipType" fxLayout="column"
+                                    (change)="onChangeFirst()" style="padding: 8px;">
+
+                                    <div fxLayout="row" fxLayoutAlign="start center" style="gap: 8px;">
+                                        <mat-icon class="pill">circle</mat-icon>
+                                        <mat-radio-button value="2">ALL</mat-radio-button>
+                                    </div>
+
+                                    <div fxLayout="row" fxLayoutAlign="start center" style="gap: 8px;">
+                                        <mat-icon class="pill orange-600 s-16">circle</mat-icon>
+                                        <mat-radio-button value="0">OP</mat-radio-button>
+                                    </div>
+
+                                    <div fxLayout="row" fxLayoutAlign="start center" style="gap: 8px;">
+                                        <mat-icon class="pill green-600 s-16">circle</mat-icon>
+                                        <mat-radio-button value="1">IP</mat-radio-button>
+                                    </div>
+                                </mat-radio-group>
                             </form>
                         </ng-container>
                     </airmid-table>
@@ -150,7 +211,7 @@
                                     <div class="modal-card-container calender-header input-error-hidden">
                                         <div fxLayout="row" fxLayoutGap="16px" fxLayoutAlign="start center">
                                             <div fxFlex="40%" fxFlex.xs="100%">
-                                                <div fxLayout="row" fxLayoutGap="8px">                                                    
+                                                <div fxLayout="row" fxLayoutGap="8px">
                                                     <airmid-dropdown label="OT Table" formControlName="ottableId"
                                                         [formGroup]="myFilterform" [mode]="autocompleteModeOTTable"
                                                         (selectionChange)="selectChangeTable($event)">
@@ -187,13 +248,13 @@
                                             </div>
                                         </div>
 
-                                       <div fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="16px"
+                                        <div fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="16px"
                                             *ngIf="false">
-                                            
+
                                             <div fxFlex.gt-sm="50%" fxFlex="100%" *ngIf="TableId > 0">
                                                 <div fxLayout="row wrap" fxLayoutGap="16px"
                                                     fxLayoutAlign="start center">
-                                                    
+
                                                     <div fxFlex="100%" fxFlex.gt-sm="auto">
                                                         <button mat-raised-button mwlCalendarPreviousView [view]="view"
                                                             [(viewDate)]="viewDate"
@@ -228,7 +289,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div> 
+                                        </div>
                                     </div>
                                     <div class="modal-card-container overflow-auto">
                                         <div class="calendar-scroll-container" [ngSwitch]="view" *ngIf="TableId > 0">
@@ -265,7 +326,7 @@
                                                 </div>
                                             </div>
                                         </ng-template>
-                                    </div> 
+                                    </div>
                                 </div>
                             </div>
                         </div>

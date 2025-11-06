@@ -56,7 +56,7 @@
                             </airmid-autocomplete>
                         </div>
                         <airmid-dropdown class="w-400" label="Get OT-Request" formControlName="otrequestId"
-                            [formGroup]="reservationForm"
+                            [formGroup]="reservationForm" (selectionChange)="onChangeOtRequest($event)"
                             ApiUrl="OTReservation/search-patient-OTRequest?Keyword=%"></airmid-dropdown>
                     </div>
                 </div>
@@ -235,7 +235,7 @@
                                     <mat-form-field appearance="outline" fxFlex>
                                         <mat-label>Surgery Dt</mat-label>
                                         <input name="Surgerydate" matInput [matDatepicker]="picker1"
-                                            formControllName="surgeryDate" #surgeryDateInput />
+                                            formControlName="surgeryDate" #surgeryDateInput/>
                                         <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
                                         <mat-datepicker #picker1></mat-datepicker>
                                     </mat-form-field>
@@ -279,7 +279,7 @@
                                 fxLayoutGap="4px grid">
 
                                 <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <mat-radio-group formControlName="requestType" [(ngModel)]="vrequestType">
+                                    <mat-radio-group formControlName="reservationType" [(ngModel)]="vreservationType">
                                         <label style="font-weight: bold;">Request Type:</label>
                                         <mat-radio-button value="1">Emergency</mat-radio-button>
                                         <mat-radio-button value="0">Elective</mat-radio-button>

@@ -23,8 +23,7 @@ export class ItemGenericMasterComponent implements OnInit {
     gridConfig: gridModel = {
         apiUrl: "GenericMaster/List",
         columnsList: [
-            // { heading: "Code", key: "genericId", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "GenericName", key: "genericName", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "GenericName", key: "itemGenericName", sort: true, align: 'left', emptySign: 'NA' },
             // { heading: "UserName", key: "username", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
             {
@@ -35,18 +34,17 @@ export class ItemGenericMasterComponent implements OnInit {
                         }
                     }, {
                         action: gridActions.delete, callback: (data: any) => {
-                            this._ItemGenericMasterService.deactivateTheStatus(data.genericId).subscribe((response: any) => {
-                                this.toastr.success(response.message);
+                            this._ItemGenericMasterService.deactivateTheStatus(data.itemGenericNameId).subscribe((response: any) => {
                                 this.grid.bindGridData();
                             });
                         }
                     }]
-            } //Action 1-view, 2-Edit,3-delete
+            }
         ],
-        sortField: "genericId",
+        sortField: "ItemGenericNameId",
         sortOrder: 0,
         filters: [
-            { fieldName: "GenericName", fieldValue: "", opType: OperatorComparer.Contains },
+            { fieldName: "ItemGenericName", fieldValue: "", opType: OperatorComparer.Contains },
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
         ]
     }
@@ -59,11 +57,11 @@ export class ItemGenericMasterComponent implements OnInit {
 
     ngOnInit(): void { }
 
-   
+
     onSave(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button
-        
+
         let that = this;
         const dialogRef = this._matDialog.open(NewGenericComponent,
             {
@@ -74,8 +72,8 @@ export class ItemGenericMasterComponent implements OnInit {
             });
 
         dialogRef.afterClosed().subscribe(result => {
-           that.grid.bindGridData();
-            
+            that.grid.bindGridData();
+
         });
     }
 
