@@ -19,18 +19,18 @@ export class ItemGenericMasterService {
 
     createItemgenericForm(): FormGroup {
         return this._formBuilder.group({
-                genericId: [0],
-                genericName: ["",
+            itemGenericNameId: [0],
+            itemGenericName: ["",
                 [
                     Validators.required, Validators.maxLength(50),
-                    Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
+                    // Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                 ]
             ],
             isDeleted: false,
-            isActive:[true,[Validators.required]]
+            isActive: [true, [Validators.required]]
         });
     }
-    
+
     createSearchForm(): FormGroup {
         return this._formBuilder.group({
             ItemGenericNameSearch: [""],
@@ -41,10 +41,10 @@ export class ItemGenericMasterService {
     initializeFormGroup() {
         this.createItemgenericForm();
     }
- 
+
     public genericMasterSave(Param: any) {
-        if (Param.genericId) {
-            return this._httpClient.PutData("GenericMaster/" + Param.genericId, Param);
+        if (Param.itemGenericNameId) {
+            return this._httpClient.PutData("GenericMaster/" + Param.itemGenericNameId, Param);
         } else return this._httpClient.PostData("GenericMaster", Param);
     }
 

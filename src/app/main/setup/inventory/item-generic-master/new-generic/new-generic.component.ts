@@ -6,68 +6,72 @@ import { ToastrService } from 'ngx-toastr';
 import { ItemGenericMasterService } from '../item-generic-master.service';
 
 @Component({
-    selector: 'app-new-generic',
-    templateUrl: './new-generic.component.html',
-    styleUrls: ['./new-generic.component.scss'],
-    encapsulation: ViewEncapsulation.None,
-    animations: fuseAnimations,
+  selector: 'app-new-generic',
+  templateUrl: './new-generic.component.html',
+  styleUrls: ['./new-generic.component.scss'],
+  encapsulation: ViewEncapsulation.None,
+  animations: fuseAnimations,
 })
 export class NewGenericComponent implements OnInit {
   genericForm: FormGroup;
-  isActive:boolean=true;
+  isActive: boolean = true;
 
-    constructor(
-      public _ItemGenericMasterService: ItemGenericMasterService,
-      public dialogRef: MatDialogRef<NewGenericComponent>,
-      @Inject(MAT_DIALOG_DATA) public data: any,
-      public toastr: ToastrService
-    ) { }
+  constructor(
+    public _ItemGenericMasterService: ItemGenericMasterService,
+    public dialogRef: MatDialogRef<NewGenericComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    public toastr: ToastrService
+  ) { }
 
 
-    ngOnInit(): void {
-      this.genericForm = this._ItemGenericMasterService.createItemgenericForm();
-      if((this.data?.genericId??0) > 0)
-        {
-        this.isActive=this.data.isActive
-        this.genericForm.patchValue(this.data);
-     }
+  ngOnInit(): void {
+    this.genericForm = this._ItemGenericMasterService.createItemgenericForm();
+    if ((this.data?.itemGenericNameId ?? 0) > 0) {
+      this.isActive = this.data.isActive
+      this.genericForm.get('itemGenericName').setValue(this.data.itemGenericName)
+      this.genericForm.patchValue(this.data);
     }
+  }
 
-    onSubmit() {
-      if(this.genericForm.valid) 
-       {
+  onSubmit() {
+    if (this.genericForm.valid) {
 
-        console.log(this.genericForm.value);
-        
-        this._ItemGenericMasterService.genericMasterSave(this.genericForm.value).subscribe((response) => {
-            this.toastr.success(response.message);
-            this.onClear(true);
-          }, (error) => {
-            this.toastr.error(error.message);
-          });
+      console.log(this.genericForm.value);
+
+      this._ItemGenericMasterService.genericMasterSave(this.genericForm.value).subscribe((response) => {
+        this.onClear(true);
+      });
+    } else {
+      let invalidFields = [];
+      if (this.genericForm.invalid) {
+        for (const controlName in this.genericForm.controls) {
+          if (this.genericForm.controls[controlName].invalid) {
+            invalidFields.push(`Form: ${controlName}`);
+          }
+        }
       }
-      else
-      {
-        this.toastr.warning('please check from is invalid', 'Warning !', {
-            toastClass: 'tostr-tost custom-toast-warning',
+      if (invalidFields.length > 0) {
+        invalidFields.forEach(field => {
+          this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
+          );
         });
-        return;
       }
     }
+  }
 
-    onClear(val: boolean) {
-        this.genericForm.reset();
-        this.dialogRef.close(val);
-    }
+  onClear(val: boolean) {
+    this.genericForm.reset();
+    this.dialogRef.close(val);
+  }
 
-    getValidationMessages() {
-        return {
-            itemGenericName: [
-                { name: "required", Message: "ItemGeneric Name is required" },
-                { name: "maxlength", Message: "ItemGeneric name should not be greater than 50 char." },
-                { name: "pattern", Message: "Special char not allowed." }
-            ]
-        };
-    }
+  getValidationMessages() {
+    return {
+      itemGenericName: [
+        { name: "required", Message: "ItemGeneric Name is required" },
+        { name: "maxlength", Message: "ItemGeneric name should not be greater than 50 char." },
+        { name: "pattern", Message: "Special char not allowed." }
+      ]
+    };
+  }
 }
 

@@ -9,11 +9,11 @@ import { DatePipe } from '@angular/common';
 import { OtrequestlistComponent } from '../otrequestlist/otrequestlist.component';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
-import { OtReqInsert } from '../../ot-request/ot-request.component';
 import { MatTableDataSource } from '@angular/material/table';
 import { AirmidDropDownComponent } from 'app/main/shared/componets/airmid-dropdown/airmid-dropdown.component';
 import { CdkDragDrop, CdkDragMove, moveItemInArray } from '@angular/cdk/drag-drop';
 import { CdkScrollable } from '@angular/cdk/scrolling';
+import { OtReserInsert } from '../ot-reservation.component';
 
 
 @Component({
@@ -35,6 +35,7 @@ export class NewReservationComponent implements OnInit {
   RegId: string;
   vSelectedOption: any = 'OP';
   vrequestType: any = "1";
+  vreservationType: any = "1";
   vpacrequired: any = "1";
   vequipmentsRequired: any = "1";
   vinfective: any = "1";
@@ -96,21 +97,21 @@ export class NewReservationComponent implements OnInit {
     'Action'
   ];
 
-  registerObj1 = new OtReqInsert({});
+  registerObj1 = new OtReserInsert({});
   BloodGroupNames: string[] = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
   partTypes: string[] = ["Left", "Middle", "Right"];
   @ViewChild('ddlLocation') ddlLocation: AirmidDropDownComponent;
   @ViewChild('ddlSurgerytype') ddlSurgerytype: AirmidDropDownComponent;
 
-  dssurgeryDetailList = new MatTableDataSource<OtReqInsert>();
-  dsattendentDetailList = new MatTableDataSource<OtReqInsert>();
+  dssurgeryDetailList = new MatTableDataSource<OtReserInsert>();
+  dsattendentDetailList = new MatTableDataSource<OtReserInsert>();
   Chargelist: any[] = [];
   Chargelist1: any[] = [];
   addDiagnolist: any = [];
   dateTimeObj: any;
   vrequestId: any;
   vreservationId: any;
-  registerObj2 = new OtReqInsert({});
+  registerObj2 = new OtReserInsert({});
   AllTypeDescription: any = []
 
   constructor(public _OtReservationService: OtReservationService,
@@ -133,61 +134,45 @@ export class NewReservationComponent implements OnInit {
     this.reservationAttendentForm = this.createReservationAttendentArrayForm();
     this.reqAttendingArray.push(this.createReservationAttendentArrayForm())
 
-    this.reservationDiagnosisForm = this.createReservationDignosis();
-    this.reservationDignosisArray.push(this.createReservationDignosis())
+    // this.reservationDiagnosisForm = this.createReservationDignosis();
+    // this.reservationDignosisArray.push(this.createReservationDignosis())
 
-    if ((this.data?.otreservationId) > 0) {
+    if ((this.data?.otReservationId) > 0) {
       this.registerObj1 = this.data
       console.log(this.registerObj1)
       this.vRegNo = this.registerObj1.regNo
       this.vOPDNo = this.registerObj1.opdNo
-      this.vIPDNo = this.registerObj1.ipdNo
+      this.vIPDNo = this.registerObj1.opdNo
       this.vPatientName = this.registerObj1.patientName
 
       setTimeout(() => {
         this._OtReservationService.getotTableById(this.data.ottable).subscribe((response) => {
           this.registerObj2 = response;
-          console.log("Get ottable Data:", this.registerObj2)
+          // console.log("Get ottable Data:", this.registerObj2)
           this.ddlLocation.SetSelection(this.registerObj2.locationId);
         });
       }, 500);
 
-      setTimeout(() => {
-        this._OtReservationService.getotRequestById(this.data.otrequestId).subscribe((response) => {
-          this.registerObj2 = response;
-          console.log("Get Data:", this.registerObj2)
-          this.vrequestId = this.registerObj2.otrequestId
-          this.opIpId = this.registerObj2.opipid
-          this.vSelectedOption = this.registerObj2.opiptype == 0 ? 'OP' : 'IP';
-          this.vrequestType = this.registerObj2.requestType == true ? '1' : '0';
-          this.vpacrequired = this.registerObj2.pacrequired == true ? '1' : '0';
-          this.vequipmentsRequired = this.registerObj2.equipmentsRequired == true ? '1' : '0';
-          this.vinfective = this.registerObj2.infective == true ? '1' : '0';
-        });
-      }, 500);
-      this.reservationForm.patchValue(this.registerObj1);
-    }
-
-    if (this.registerObj1?.estimateTime) {
-      const date = new Date(this.registerObj1.estimateTime);
-      if (!isNaN(date.getTime())) {
-        const hours = date.getHours().toString().padStart(2, '0');
-        const minutes = date.getMinutes().toString().padStart(2, '0');
-
-        const formattedTime = `${hours}:${minutes}`; // e.g. "13:01"
-
+      if (this.data.otReservationId) {
         setTimeout(() => {
-          this.reservationForm.get('estimateTime')?.setValue(formattedTime);
-        });
+          this._OtReservationService.getotReservationById(this.data.otReservationId).subscribe((response) => {
+            this.registerObj2 = response;
+            console.log("Get Data:", this.registerObj2)
+            this.vreservationId = this.registerObj2.otreservationId
+            this.opIpId = this.registerObj2.opipid
+            this.vSelectedOption = this.registerObj2.opiptype == 0 ? 'OP' : 'IP';
+            this.vreservationType = this.registerObj2.reservationType == true ? '1' : '0';
+            this.vpacrequired = this.registerObj2.pacrequired == true ? '1' : '0';
+            this.vequipmentsRequired = this.registerObj2.equipmentsRequired == true ? '1' : '0';
+            this.vinfective = this.registerObj2.infective == true ? '1' : '0';
+            this.reservationForm.get('surgeryDate')?.setValue(this.registerObj2.surgeryDate)
+          });
+        }, 500);
       }
-    }
 
-    /////// calendar code ///////
-    if (this.data) {
-      console.log("CalenderData:", this.data)
 
-      if (this.data?.startTime) {
-        const date = new Date(this.data.startTime);
+      if (this.registerObj1?.estimateTime) {
+        const date = new Date(this.registerObj1.estimateTime);
         if (!isNaN(date.getTime())) {
           const hours = date.getHours().toString().padStart(2, '0');
           const minutes = date.getMinutes().toString().padStart(2, '0');
@@ -200,30 +185,54 @@ export class NewReservationComponent implements OnInit {
         }
       }
 
-      if (this.data?.endTime) {
-        const date = new Date(this.data.endTime);
-        if (!isNaN(date.getTime())) {
-          const hours = date.getHours().toString().padStart(2, '0');
-          const minutes = date.getMinutes().toString().padStart(2, '0');
-
-          const formattedTime = `${hours}:${minutes}`; // e.g. "13:01"
-
-          setTimeout(() => {
-            this.reservationForm.get('opendTime')?.setValue(formattedTime);
-          });
-        }
-      }
-      // this.reservationForm.get('ottableId').setValue(this.data?.otTableId);
-      this.reservationForm.get('surgeryDuration').setValue(this.data?.duration);
-
+      this.reservationForm.patchValue(this.registerObj1);
+      // this.getdiagnosisList(this.registerObj1);
+      // this.getRequestSurgeryDetList(this.registerObj1);
+      this.getReservationAttendentDetList(this.registerObj1);
     }
+
+    /////// calendar code required///////
+    // if (this.data) {
+    //   console.log("CalenderData:", this.data)
+
+    //   if (this.data?.startTime) {
+    //     const date = new Date(this.data.startTime);
+    //     if (!isNaN(date.getTime())) {
+    //       const hours = date.getHours().toString().padStart(2, '0');
+    //       const minutes = date.getMinutes().toString().padStart(2, '0');
+
+    //       const formattedTime = `${hours}:${minutes}`; // e.g. "13:01"
+
+    //       setTimeout(() => {
+    //         this.reservationForm.get('estimateTime')?.setValue(formattedTime);
+    //       });
+    //     }
+    //   }
+
+    //   if (this.data?.endTime) {
+    //     const date = new Date(this.data.endTime);
+    //     if (!isNaN(date.getTime())) {
+    //       const hours = date.getHours().toString().padStart(2, '0');
+    //       const minutes = date.getMinutes().toString().padStart(2, '0');
+
+    //       const formattedTime = `${hours}:${minutes}`; // e.g. "13:01"
+
+    //       setTimeout(() => {
+    //         this.reservationForm.get('opendTime')?.setValue(formattedTime);
+    //       });
+    //     }
+    //   }
+    //   // this.reservationForm.get('ottableId').setValue(this.data?.otTableId);
+    //   this.reservationForm.get('surgeryDuration').setValue(this.data?.duration);
+
+    // }
   }
 
   createReservationForm(): FormGroup {
     return this._formBuilder.group({
-      otReservationId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      otReservationDate: [new Date()],
-      otReservationTime: ['', [Validators.required]],
+      otreservationId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      otreservationDate: [new Date()],
+      otreservationTime: ['', [Validators.required]],
       otrequestId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       opipid: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       opiptype: ["OP"],
@@ -234,7 +243,7 @@ export class NewReservationComponent implements OnInit {
       estimateTime: ['', [Validators.required]],
       diagnosis: [[], [Validators.required]],
       comments: [''],
-      requestType: ['1'],
+      reservationType: ['1'],
       pacrequired: ['1'],
       equipmentsRequired: ['1'],
       clearanceMedical: false,
@@ -246,7 +255,7 @@ export class NewReservationComponent implements OnInit {
 
       tOtReservationSurgeryDetails: this._formBuilder.array([]),
       tOtReservationAttendingDetails: this._formBuilder.array([]),
-      tOtReservationDiagnoses: this._formBuilder.array([]),
+      // tOtReservationDiagnoses: this._formBuilder.array([]),
 
       ////////surgery det parameters ////////////
       surgeryCategoryId: [''],
@@ -274,8 +283,8 @@ export class NewReservationComponent implements OnInit {
   createReservationSurgeryArrayForm(element: any = {}, index: number = 0): FormGroup {
     // debugger
     return this._formBuilder.group({
-      otReservationSurgeryDetId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      otReservationId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      otreservationSurgeryDetId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      otreservationId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       surgeryCategoryId: [element.surgeryCategoryId],
       surgeryId: [element.surgeryId],
       surgeryPart: [element.surgeryPart],
@@ -295,8 +304,8 @@ export class NewReservationComponent implements OnInit {
   createReservationAttendentArrayForm(element: any = {}, index: number = 0): FormGroup {
     // debugger
     return this._formBuilder.group({
-      otReservationAttendingDetId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      otReservationId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      otreservationAttendingDetId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      otreservationId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       doctorTypeId: [element.doctorTypeId, [this._FormvalidationserviceService.onlyNumberValidator()]],
       doctorId: [element.doctorId, [this._FormvalidationserviceService.onlyNumberValidator()]],
       seqNo: [index + 1]
@@ -309,7 +318,7 @@ export class NewReservationComponent implements OnInit {
   createReservationDignosis(element: any = {}): FormGroup {
     return this._formBuilder.group({
       otrequestDiagnosisDetId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      otReservationId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      otreservationId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       descriptionType: [element.descriptionType ?? '', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
       descriptionName: [element.descriptionName ?? '', [this._FormvalidationserviceService.allowEmptyStringValidator()]]
     });
@@ -324,12 +333,31 @@ export class NewReservationComponent implements OnInit {
     this.vRegNo = '';
     this.vPatientName = '';
     this.vIPDNo = '';
-    this.registerObj1 = new OtReqInsert({});
+    this.registerObj1 = new OtReserInsert({});
+  }
+
+  onChangeOtRequest(obj: any) {
+
+    if (this.data.otrequestId) {
+      setTimeout(() => {
+        this._OtReservationService.getotRequestById(this.data.otrequestId).subscribe((response) => {
+          this.registerObj2 = response;
+          console.log("Get Data:", this.registerObj2)
+          this.vrequestId = this.registerObj2.otrequestId
+          this.opIpId = this.registerObj2.opipid
+          this.vSelectedOption = this.registerObj2.opiptype == 0 ? 'OP' : 'IP';
+          this.vreservationType = this.registerObj2.requestType == true ? '1' : '0';
+          this.vpacrequired = this.registerObj2.pacrequired == true ? '1' : '0';
+          this.vequipmentsRequired = this.registerObj2.equipmentsRequired == true ? '1' : '0';
+          this.vinfective = this.registerObj2.infective == true ? '1' : '0';
+        });
+      }, 500);
+    }
   }
 
   getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;
-    console.log(this.dateTimeObj)
+    // console.log(this.dateTimeObj)
   }
 
   onChangeReg(event) {
@@ -346,7 +374,7 @@ export class NewReservationComponent implements OnInit {
 
   selectChangeDiagnosis(selectedChips: string[]) {
     this.addDiagnolist = selectedChips;
-    this.reservationForm.get('Diagnosis')?.setValue(this.addDiagnolist);
+    this.reservationForm.get('diagnosis')?.setValue(this.addDiagnolist);
   }
 
   getSelectedObjIP(obj) {
@@ -494,12 +522,12 @@ export class NewReservationComponent implements OnInit {
 
   /////////////////////////////// surgery detail part /////////////////////////////
   onAdd() {
-    if (!this.reservationForm.get("surgeryCategoryId")?.value) {
-      this.toastr.warning('Please select a surgery Type', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-    }
+    // if (!this.reservationForm.get("surgeryCategoryId")?.value) {
+    //   this.toastr.warning('Please select a surgery Type', 'Warning !', {
+    //     toastClass: 'tostr-tost custom-toast-warning',
+    //   });
+    //   return;
+    // }
     if (!this.reservationForm.get("surgeryId")?.value || this.reservationForm.get("surgeryId")?.value == "0") {
       this.toastr.warning('Please select a Surgery', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
@@ -811,6 +839,38 @@ export class NewReservationComponent implements OnInit {
     }
   }
 
+  FetchList1: any = [];
+  getReservationAttendentDetList(obj) {
+    var m_data2 = {
+      "first": 0,
+      "rows": 10,
+      "sortField": "OTReservationId",
+      "sortOrder": 0,
+      "filters": [
+        { "fieldName": "OTReservationId", "fieldValue": String(obj.otReservationId), "opType": "Equals" }
+      ],
+      "Columns": [],
+      "exportType": "JSON"
+    };
+
+    this._OtReservationService.getRtrvReservationAttendentList(m_data2).subscribe(records => {
+      this.FetchList1 = records.data as OtReserInsert[];
+      this.FetchList1.forEach(element => {
+
+        this.Chargelist1.push(
+          {
+            doctorTypeId: element.doctorTypeId,//
+            doctorType: element.doctorType,
+            doctorId: element.doctorId, //
+            doctorName: element.doctorName,
+          });
+      })
+      this.dsattendentDetailList.data = this.Chargelist1
+      console.log("attendentDet Data:", this.dsattendentDetailList.data)
+    });
+
+  }
+
   /////////////////////////////// attendent detail part end/////////////////////////////
 
   onSubmit() {
@@ -820,25 +880,26 @@ export class NewReservationComponent implements OnInit {
 
     this.reservationForm.get('opipid').setValue(this.opIpId);
     this.reservationForm.get('otrequestId')?.setValue(this.vrequestId || 0);
-    this.reservationForm.get('otRequestDate').setValue(formattedDate);
-    this.reservationForm.get('otRequestTime').setValue(formattedTime);
+    this.reservationForm.get('otreservationDate').setValue(formattedDate);
+    this.reservationForm.get('otreservationTime').setValue(formattedTime);
     this.reservationForm.get('surgeryDate')?.setValue(this.datePipe.transform(this.reservationForm.get('surgeryDate')?.value, 'yyyy-MM-dd'));
 
-    if (this.addDiagnolist.length > 0) {
-      this.addDiagnolist.forEach(element => {
-        this.AllTypeDescription.push({
-          descriptionName: element.descriptionName,
-          descriptionType: "Diagnosis"
-        });
-      });
-    }
+    // if (this.addDiagnolist.length > 0) {
+    //   this.addDiagnolist.forEach(element => {
+    //     this.AllTypeDescription.push({
+    //       descriptionName: element.descriptionName,
+    //       descriptionType: "Diagnosis"
+    //     });
+    //   });
+    // }
 
     if (!this.reservationForm.invalid) {
       debugger
 
       this.reservationForm.get('otrequestId')?.setValue(this.vrequestId ?? 0);
+      this.reservationForm.get('otreservationId')?.setValue(this.vreservationId ?? 0);
       this.reservationForm.get('opiptype')?.setValue(this.reservationForm.get('opiptype')?.value === 'IP' ? '1' : '0');
-      this.reservationForm.get('requestType')?.setValue(this.reservationForm.get('requestType')?.value === '1' ? true : false);
+      this.reservationForm.get('reservationType')?.setValue(this.reservationForm.get('reservationType')?.value === '1' ? true : false);
       this.reservationForm.get('pacrequired')?.setValue(this.reservationForm.get('pacrequired')?.value === '1' ? true : false);
       this.reservationForm.get('equipmentsRequired')?.setValue(this.reservationForm.get('equipmentsRequired')?.value === '1' ? true : false);
       this.reservationForm.get('infective')?.setValue(this.reservationForm.get('infective')?.value === '1' ? true : false);
@@ -857,21 +918,21 @@ export class NewReservationComponent implements OnInit {
         this.reqAttendingArray.push(this.createReservationAttendentArrayForm(item));
       });
 
-      this.reservationDignosisArray.clear();
-      this.AllTypeDescription.forEach(item => {
-        this.reservationDignosisArray.push(this.createReservationDignosis(item));
-      });
+      // this.reservationDignosisArray.clear();
+      // this.AllTypeDescription.forEach(item => {
+      //   this.reservationDignosisArray.push(this.createReservationDignosis(item));
+      // });
 
-      this.reservationDignosisArray.clear();
-      if (this.AllTypeDescription.length === 0) {
-        const reservationDiagnosisForm: FormGroup = this.createReservationDignosis({});
-        this.reservationDignosisArray.push(reservationDiagnosisForm);
-      } else {
-        this.AllTypeDescription.forEach(element => {
-          const reservationDiagnosisForm: FormGroup = this.createReservationDignosis(element);
-          this.reservationDignosisArray.push(reservationDiagnosisForm);
-        });
-      }
+      // this.reservationDignosisArray.clear();
+      // if (this.AllTypeDescription.length === 0) {
+      //   const reservationDiagnosisForm: FormGroup = this.createReservationDignosis({});
+      //   this.reservationDignosisArray.push(reservationDiagnosisForm);
+      // } else {
+      //   this.AllTypeDescription.forEach(element => {
+      //     const reservationDiagnosisForm: FormGroup = this.createReservationDignosis(element);
+      //     this.reservationDignosisArray.push(reservationDiagnosisForm);
+      //   });
+      // }
 
       const formValue = { ...this.reservationForm.value };
       const controlsToRemove = ['TheaterLocation', 'bodyPartId', 'surgeryCategoryId', 'surgeryId', 'surgeryPart', 'surgeryFromTime', 'surgeryEndTime', 'surgeryDuration', 'isPrimary',
@@ -911,7 +972,7 @@ export class NewReservationComponent implements OnInit {
     }
   }
 
-  onOTRequest(): void {
+  onOTReservation(): void {
     const dialogRef = this._matDialog.open(OtrequestlistComponent, {
       width: '80%',
       height: '80%',
@@ -936,8 +997,8 @@ export class NewReservationComponent implements OnInit {
         }
         // this.votbookingId = selectedData.otBookingId
 
-        if (selectedData?.otReservationTime) {
-          const date = new Date(selectedData.otReservationTime);
+        if (selectedData?.otreservationTime) {
+          const date = new Date(selectedData.otreservationTime);
           if (!isNaN(date.getTime())) {
             const hours = date.getHours().toString().padStart(2, '0');
             const minutes = date.getMinutes().toString().padStart(2, '0');

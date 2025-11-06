@@ -8,7 +8,8 @@
                 </div>
                 <div class="modal-header-right">
                     <div class="close-icon">
-                        <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog" matTooltip="Close">
+                        <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
+                            matTooltip="Close">
                             <mat-icon>close</mat-icon>
                         </button>
                     </div>
@@ -22,7 +23,9 @@
                 <input type="hidden" name="itemGenericNameId" formControlName="itemGenericNameId">
                 <div fxLayout="row wrap" fxLayoutGap="12px grid">
                     <div fxFlex>
-                        <airmid-textbox label="GenericName" formControlName="genericName" [value]="data?.genericName" [formGroup]="genericForm" [validations]="getValidationMessages().itemGenericName" [maxLength]="50">
+                        <airmid-textbox label="Item Generic Name" formControlName="itemGenericName"
+                            [formGroup]="genericForm" [validations]="getValidationMessages().itemGenericName"
+                            [maxLength]="50">
                         </airmid-textbox>
                     </div>
                 </div>
@@ -33,7 +36,8 @@
         <div class="modal-footer">
             <div class="footer-navigation-container" fxLayout="row" fxLayoutAlign="space-between center">
                 <div class="modal-footer-actins">
-                    <app-airmid-slider label="IsActive/Deactive" formControlName="isActive" [formGroup]="genericForm" [(ngModel)]="isActive"></app-airmid-slider>
+                    <app-airmid-slider label="IsActive/Deactive" formControlName="isActive" [formGroup]="genericForm"
+                        [(ngModel)]="isActive"></app-airmid-slider>
                 </div>
                 <div class="modal-footer-buttons">
                     <button class="btn btn-danger-outline" (click)="onClear(false)">Close</button>
