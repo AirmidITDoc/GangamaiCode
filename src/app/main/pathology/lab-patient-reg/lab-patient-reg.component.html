@@ -1,6 +1,6 @@
-<div fusePerfectScrollbar
-    class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
-    dynamicTableHeight>
+<div class="page-layout simple inner-sidebar inner-scroll right-sidebar" fusePerfectScrollbar dynamicTableHeight>
+
+
     <div class="top-header header accent p-16" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
         fxLayoutAlign.gt-xs="space-between center ">
         <div class="top-header-info">
@@ -11,98 +11,119 @@
             </div>
         </div>
         <div class="gap-8" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
-            <button mat-raised-button (click)="new()">New PatientReg
+            <button mat-raised-button (click)="onnew()">+ Add new
             </button>
+            <button mat-raised-button (click)="OnallList()">All Patient List
+            </button>
+            <!-- <button mat-raised-button (click)="DefineDoctorShare()">Define Doctor Share
+            </button> -->
         </div>
     </div>
-
-    <!-- <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="space-between center"
-        class="px-12 py-4 border-bottom gap-8">
-        <div class="info-badge-top overflow-auto" fxLayout="row" fxLayoutAlign="start" flex>
-            <div fxLayout="row" fxLayoutAlign="start center" class="gap-8">
-               
-                <div class="dashboard-card emg">
-                    <div class="card-label">New Emergency</div>
-                    <div class="card-value">{{VEmgcount}} </div>
-                    <mat-icon class="card-icon">person_add</mat-icon>
-                </div>
-                
-                <div class="dashboard-card emg-split">
-                    <div class="card-label">Total Emergency</div>
-                    <div class="card-value">{{AllCount}}</div>
-                    <mat-icon class="card-icon">event</mat-icon>
-                </div>
-
-                <div class="dashboard-card checkout">
-                    <div class="card-label">Converted Emergency</div>
-                    <div class="card-value">
-                        <div>OP {{VOPcount}}</div>
-                        <div>IP {{VIPcount}}</div>
-                    </div>
-                    <mat-icon class="card-icon">group</mat-icon>
-                </div>
-                
-                <div class="dashboard-card bills">
-                    <div class="card-label">Total BillGenerated</div>
-                    <div class="card-value">{{VBillcount}}</div>
-                    <mat-icon class="card-icon">receipt_long</mat-icon>
-                </div>
-            </div>
+    <ng-template #actionsTemplate2 let-element>
+        <div>
+            <mat-icon title="Bill Cancelled" *ngIf="element.isCancelled==1" [disabled]="element.disabled"
+                class="disabled-icon">
+                close</mat-icon>
         </div>
-    </div> -->
+    </ng-template>
+
+
+    <ng-template #actionsTemplate4 let-element>
+        <div>
+
+            <button mat-icon-button (click)="openPaymentpopup(element)" matTooltip="Settlement"
+                *ngIf="element.balanceAmt!='0'">
+                <mat-icon title="Settlement" *ngIf="element.balanceAmt!=0" class="disabled-icon">receipt</mat-icon>
+                <mat-icon title="paid" *ngIf="element.balanceAmt==0" [disabled]="element.disabled"
+                    class="disabled-icon">payment</mat-icon>
+            </button>
+        </div>
+    </ng-template>
 
     <ng-template #actionButtonTemplate let-element>
         <div fxLayout="row" fxLayoutAlign="center center">
-            <!-- <button mat-icon-button matTooltip="Edit" (click)="OnEdit(element)">
-                <mat-icon>edit</mat-icon>
-            </button> -->
-            <!-- *ngIf="element.isCancelled==false" -->
-            <button mat-icon-button matTooltip="Cancel">
-                <mat-icon>cancel</mat-icon>
-            </button>
-            <button mat-icon-button matTooltip="Print">
+
+            <mat-icon (click)="billdetail(element)" matTooltip="Bill Detail">
+                <img width="30px" height="30px" src="assets/images/logos/Billdate.jpg">
+            </mat-icon>
+            <button mat-icon-button matTooltip="Print" (click)="OnPrint(element)">
                 <mat-icon>print</mat-icon>
             </button>
+
+            <button mat-icon-button matTooltip="EMail" (click)="Onemail(element)">
+                <mat-icon>email</mat-icon>
+            </button>
+
+            <button *ngIf="true" mat-icon-button matTooltip="Message" (click)="Onmessage(element,m)">
+                <mat-icon>message</mat-icon>
+            </button>
+
+            <button mat-icon-button matTooltip="Send message On WhatsApp" (click)="getWhatsappshareBill(element)">
+                <img width="100" height="20px" src="assets/images/logos/WhatsApp.png">
+            </button>
+
+
         </div>
     </ng-template>
-
-    <ng-template #actionsTemplate let-element>
-        <div class="pill-icon">
-            <mat-icon style="border-radius:100% ;" *ngIf="element.isCancelled==true" matTooltip="Cancelled"
-                class="red-600 s-16">circle
-            </mat-icon>
-
-            <mat-icon style="border-radius:100% ;" *ngIf="element.isCancelled==false" matTooltip="Not Cancelled"
-                class="green-600 s-16">circle
-            </mat-icon>
-        </div>
-    </ng-template>
-
-    <ng-template #oldNewTemplate let-element>
-        <div class="pill-icon">
-            <mat-icon style="border-radius:100% ;" *ngIf="element.regId==0" matTooltip="NewPatient"
-                class="orange-600 s-16">circle
-            </mat-icon>
-        </div>
-    </ng-template>
-
-    <ng-template #after24Hr let-element>
-        <div fxLayout="row" fxLayoutAlign="center center">
-            <mat-icon style="border-radius:100% ;" *ngIf="element.isAfter24Hrs==1" matTooltip="24hrs Completed">
-                <img width="20px" height="20px" src="assets/images/logos/alarm.png">
-            </mat-icon>
-        </div>
-    </ng-template>
-
-    <!-- <ng-template #isConverted let-element>
-        <div fxLayout="row" fxLayoutAlign="center center">
-             <mat-icon style="border-radius:100% ;" *ngIf="element.convertedIntoAdm > 0" matTooltip="ConvertedToIP">
-                redo  
-            </mat-icon>
-        </div>
-    </ng-template> -->
 
     <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+        <ng-template #actionButtonTemplate let-element>
+            <div fxLayout="row" fxLayoutAlign="center center">
+
+
+                <button mat-icon-button matTooltip="Print" (click)="OnPrint(element)">
+                    <mat-icon>print</mat-icon>
+                </button>
+
+                <button mat-icon-button matTooltip="EMail" (click)="Onemail(element)">
+                    <mat-icon>email</mat-icon>
+                </button>
+
+                <button *ngIf="true" mat-icon-button matTooltip="Message" (click)="Onmessage(element,m)">
+                    <mat-icon>message</mat-icon>
+                </button>
+
+                <button mat-icon-button matTooltip="Send message On WhatsApp" (click)="getWhatsappshareBill(element)">
+                    <img width="100" height="20px" src="assets/images/logos/WhatsApp.png">
+                </button>
+
+            </div>
+        </ng-template>
+        <!-- 
+            <ng-template #actionsTemplate let-element>
+                <div class="pill-icon">
+                    <mat-icon style="border-radius:100% ;" *ngIf="element.isCancelled==true" matTooltip="Cancelled"
+                        class="red-600 s-16">circle
+                    </mat-icon>
+
+                    <mat-icon style="border-radius:100% ;" *ngIf="element.isCancelled==false" matTooltip="Not Cancelled"
+                        class="green-600 s-16">circle
+                    </mat-icon>
+                </div>
+            </ng-template> -->
+
+
+
+        <ng-template #actionsTemplate4 let-element>
+            <div>
+
+                <button mat-icon-button (click)="openPaymentpopup(element)" matTooltip="Settlement"
+                    *ngIf="element.balanceAmt!='0'">
+                    <mat-icon title="Settlement" *ngIf="element.balanceAmt!=0" class="disabled-icon">receipt</mat-icon>
+                    <mat-icon title="paid" *ngIf="element.balanceAmt==0" [disabled]="element.disabled"
+                        class="disabled-icon">payment</mat-icon>
+                </button>
+            </div>
+        </ng-template>
+
+
+        <ng-template #after24Hr let-element>
+            <div fxLayout="row" fxLayoutAlign="center center">
+                <mat-icon style="border-radius:100% ;" *ngIf="element.isAfter24Hrs==1" matTooltip="24hrs Completed">
+                    <img width="20px" height="20px" src="assets/images/logos/alarm.png">
+                </mat-icon>
+            </div>
+        </ng-template>
 
         <airmid-table [gridConfig]="gridConfig" class="content">
             <ng-container filters>
@@ -122,11 +143,11 @@
                             <mat-date-range-picker #picker></mat-date-range-picker>
                         </mat-form-field>
 
-                        <!-- <mat-form-field appearance="outline">
+                        <mat-form-field appearance="outline">
                             <mat-label>FirstName</mat-label>
                             <input matInput placeholder="FirstName" autocomplete="off" [formGroup]="myFilterform"
-                                formControlName="firstName" (input)="onChangeFirst()" />
-                            <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('firstName')">
+                                formControlName="FirstName" (input)="onChangeFirst()" />
+                            <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('FirstName')">
                                 <mat-icon>close</mat-icon>
                             </button>
                         </mat-form-field>
@@ -134,18 +155,33 @@
                         <mat-form-field appearance="outline">
                             <mat-label>LastName</mat-label>
                             <input matInput placeholder="LastName" autocomplete="off" [formGroup]="myFilterform"
-                                formControlName="L_Name" (input)="onChangeFirst()" />
-                            <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('L_Name')">
+                                formControlName="LastName" (input)="onChangeFirst()" />
+                            <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('LastName')">
                                 <mat-icon>close</mat-icon>
                             </button>
-                        </mat-form-field> -->
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline">
+                            <mat-label>PBillNo</mat-label>
+                            <input matInput placeholder="Search PBillNo" autocomplete="off" [formGroup]="myFilterform"
+                                formControlName="PBillNo" (keypress)="keyPressAlphanumeric($event)"
+                                (input)="onChangeFirst()" />
+                            <button matSuffix mat-icon-button aria-label="Clear" (click)=" Clearfilter('PBillNo')">
+                                <mat-icon>close</mat-icon>
+                            </button>
+                        </mat-form-field>
+
+                        <airmid-dropdown label="Select Doctor Name" formControlName="DoctorID"
+                            [(ngModel)]="gridConfig.filters[5].fieldValue" [formGroup]="myFilterform"
+                            (selectionChange)="ListView($event)" (keyup)="ListView($event)"
+                            [mode]="autocompleteModedoctor">
+                        </airmid-dropdown>
 
                     </div>
 
                 </form>
             </ng-container>
         </airmid-table>
-
     </div>
-
 </div>
+

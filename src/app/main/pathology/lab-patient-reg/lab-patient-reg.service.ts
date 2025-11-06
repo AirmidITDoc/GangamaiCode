@@ -25,8 +25,10 @@ export class LabPatientRegService {
     return this._frombuilder.group({
       fromDate: [(new Date()).toISOString()],
       enddate: [(new Date()).toISOString()],
-      firstName: [''],
-      L_Name: ['']
+      FirstName: [''],
+      LastName: [''],
+      PBillNo: [''],
+      DoctorID: [''],
     })
   }
 
@@ -54,4 +56,29 @@ export class LabPatientRegService {
     return this._httpClient.PostData("IPPrescription/LabRequestInsert", employee);
     }
 
+
+    public InsertIPBillingCredit(employee, loader = true) {
+   
+    return this._httpClient.PostData("IPBill/IPBilllCreditInsert", employee)
+  }
+  public InsertIPDraftBilling(e, loader = true) {
+   
+    return this._httpClient.PostData("IPBill/InsertIPDraftBill", e)
+  }
+  public InsertIPBilling(employee, loader = true) {
+  
+    return this._httpClient.PostData("IPBill/IPBilllwithCashCounterInsert", employee)
+  }
+  
+  public InsertlabregCredit(param) {
+    return this._httpClient.PostData("LabPatientRegistration/PatientRegistrationcreditbill", param)
+  }
+  public InsertLabRegBilling(param) {
+    return this._httpClient.PostData("LabPatientRegistration/PatientRegistrationPaidBill", param)
+  }
+  public InsertLabBillingsettlement(param) {
+    return this._httpClient.PostData("LabPatientRegistration/PatientRegistrationPaidBill", param)
+  }
+
+  
 }

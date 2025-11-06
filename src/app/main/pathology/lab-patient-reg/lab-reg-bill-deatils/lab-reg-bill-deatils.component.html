@@ -1,0 +1,141 @@
+<div class="page-layout simple inner-sidebar inner-scroll right-sidebar" style="height: 100%;" fusePerfectScrollbar
+    dynamicTableHeight>
+    <mat-toolbar class="top-header accent">
+        <div fxLayout="row" fxLayoutAlign="start center" class="top-header-info">
+            <button mat-icon-button class="sidebar-toggle ">
+                <mat-icon>menu</mat-icon>
+            </button>
+            <mat-icon class="logo-icon" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">account_box
+            </mat-icon>
+            <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                Lab Bill Detail List <span style="margin-left: 20px;font-weight: bold;">Doctor:- {{doctorName}} |
+                    {{BillNo}}</span>
+            </span>
+            <div class="close-icon">
+                <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
+                    matTooltip="Close">
+                    <mat-icon>close</mat-icon>
+                </button>
+            </div>
+        </div>
+
+    </mat-toolbar>
+    <div class="info-badge-top overflow-auto" fxLayout="row" fxLayoutAlign="space-between" flex>
+
+        <div fusePerfectScrollbar
+            class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
+            dynamicTableHeight>
+
+            <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+
+
+                <!-- <ng-template #actionButtonTemplate let-element>
+
+                <div fxLayout="row" fxLayoutAlign="center center">
+                    <mat-icon *ngIf="element.isSampleCollection?.toString().trim() === 'False'"
+                        (click)="onSave(element)" matTooltip="Edit">
+                        edit
+                    </mat-icon>
+                     <button mat-icon-button matTooltip="Patient Details Sticker" (click)="OnPrintPatientIcard(element)">
+                <mat-icon>pages</mat-icon>
+            </button>
+                </div>
+
+            </ng-template> -->
+
+
+                <ng-template #iconisPathology let-element>
+                    <div fxLayout="row" fxLayoutAlign="center center">
+
+                        <mat-icon *ngIf="element.isPathology == 1" matTooltip="Ispathology">
+                            <img width="30px" height="30px" src="assets/images/logos/pathology.png">
+                        </mat-icon>
+                        <!-- <mat-icon *ngIf="element.isPathology == 0" class="active-icon red-500 s-16">
+                    close
+                </mat-icon> -->
+                    </div>
+                </ng-template>
+
+                <ng-template #iconisRadiology let-element>
+                    <div>
+                        <mat-icon *ngIf="element.isRadiology == 1" matTooltip="IsRadiology">
+                            <img width="18px" height="14px" src="assets/images/logos/radiology.png">
+                        </mat-icon>
+                        <!-- <mat-icon *ngIf="element.isRadiology != 1" class="active-icon red-500 s-16">close
+                </mat-icon> -->
+                    </div>
+
+                </ng-template>
+
+
+                <airmid-table [gridConfig]="gridConfig" #grid :ShowFilter="false" :ShowButtons="false">
+                    <ng-container filters>
+                        <!-- <form [formGroup]="myformSearch">
+                        <airmid-datepicker [formGroup]="myformSearch" [isRangePicker]="true"
+                            formStartControlName="start" formEndControlName="end"
+                            [(fromValue)]="gridConfig.filters[3].fieldValue"
+                            [(toValue)]="gridConfig.filters[4].fieldValue">
+                        </airmid-datepicker>
+
+                        <mat-form-field appearance="outline">
+                            <mat-label>UHID</mat-label>
+                            <input matInput placeholder="Search UHID" autocomplete="off" [formGroup]="myformSearch"
+                                formControlName="RegNo" (input)="onChangeFirst()" />
+                            <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('RegNo')">
+                                <mat-icon>close</mat-icon>
+                            </button>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline">
+                            <mat-label>First Name</mat-label>
+                            <input matInput placeholder="Search First Name" autocomplete="off"
+                                [formGroup]="myformSearch" formControlName="FirstName" (input)="onChangeFirst()" />
+                            <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('FirstName')">
+                                <mat-icon>close</mat-icon>
+                            </button>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline">
+                            <mat-label>Last Name</mat-label>
+                            <input matInput placeholder="Search Last Name" autocomplete="off" [formGroup]="myformSearch"
+                                formControlName="LastName" (input)="onChangeFirst()" />
+                            <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('LastName')">
+                                <mat-icon>close</mat-icon>
+                            </button>
+                        </mat-form-field>
+
+                        <div fxLayout="column" fxLayoutAlign="start start">
+                            <div fxFlex fxLayout="row">
+                                <mat-radio-group name="Istype" fxLayout="row" [formGroup]="myformSearch"
+                                    formControlName="PatientTypeSearch" (change)="onChangeFirst()" style="padding: 6px;"
+                                    class="gap-4">
+                                    <mat-label>Type:</mat-label>
+                                    <div fxLayout="row">
+                                        <mat-radio-button value='2'>All</mat-radio-button>
+                                        <mat-radio-button value='1'>IP</mat-radio-button>
+                                        <mat-radio-button value='0'>OP</mat-radio-button>
+                                    </div>
+                                </mat-radio-group>
+                            </div>
+
+                            <div fxFlex fxLayout="row">
+                                <mat-radio-group name="StatusSearch" fxLayout="row" [formGroup]="myformSearch"
+                                    formControlName="StatusSearch" (change)="onChangeFirst()" style="padding: 6px;"
+                                    class="gap-4">
+                                    <mat-label>Status:</mat-label>
+                                    <div fxLayout="row">
+                                        <mat-radio-button value='0'>Pending</mat-radio-button>
+                                        <mat-radio-button value='1'>Completed</mat-radio-button>
+                                    </div>
+                                </mat-radio-group>
+                            </div>
+                        </div>
+                    </form> -->
+
+                    </ng-container>
+                </airmid-table>
+            </div>
+
+
+        </div>
+    </div>

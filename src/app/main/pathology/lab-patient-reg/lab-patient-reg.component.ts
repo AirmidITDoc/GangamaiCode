@@ -8,7 +8,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { ToastrService } from 'ngx-toastr';
 import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
-import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
+import { Color, gridModel, OperatorComparer } from 'app/core/models/gridRequest';
 import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
 import { FormGroup } from '@angular/forms';
 import Swal from 'sweetalert2';
@@ -18,7 +18,8 @@ import { PrintserviceService } from 'app/main/shared/services/printservice.servi
 import { MLCInformationComponent } from 'app/main/ipd/Admission/admission/mlcinformation/mlcinformation.component';
 import { LabPatientRegService } from './lab-patient-reg.service';
 import { NewLabPatientRegComponent } from './new-lab-patient-reg/new-lab-patient-reg.component';
-import { NewPatientLabComponent } from './new-patient-lab/new-patient-lab.component';
+import { OpPaymentComponent } from 'app/main/opd/op-search-list/op-payment/op-payment.component';
+import { LabRegBillDeatilsComponent } from './lab-reg-bill-deatils/lab-reg-bill-deatils.component';
 // import { NewLabPatientregComponent } from './new-lab-patientreg/new-lab-patientreg.component';
 
 @Component({
@@ -34,10 +35,15 @@ export class LabPatientRegComponent {
   f_name: any = ""
   l_name: any = ""
   Status: any = "0";
+   PBillNo: any = "%";
+  DoctorId: any = "0";
+  vbalanceamt: any;
+  vpaidamt: any;
+  autocompleteModedoctor: string = "ConDoctor";
   fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
   toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
   @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
-
+  @ViewChild('actionsTemplate4') actionsTemplate4!: TemplateRef<any>;
   constructor(
     public _labPatientRegService: LabPatientRegService,
     private _loggedService: AuthenticationService,
@@ -49,24 +55,36 @@ export class LabPatientRegComponent {
 
   ngOnInit(): void {
     this.myFilterform = this._labPatientRegService.CreateSearchGroup();
-    // this.GetAppointdetail();
+    // this.GetlabAppointdetail();
   }
 
   ngAfterViewInit() {
     this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
+    this.gridConfig.columnsList.find(col => col.key === 'balanceAmt1')!.template = this.actionsTemplate4;
   }
 
   allcolumns = [
-    { heading: "Date-Time", key: "regTime", sort: true, align: 'left', emptySign: 'NA', width: 150},
+    { heading: "", key: "balanceAmt1", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
+
+    { heading: "Date-Time", key: "regTime", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 6 },
     { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
-    { heading: "Age", key: "ageYear", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "MobileNo", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "Address", key: "address", sort: true, align: 'left', emptySign: 'NA', width: 250 },
-    { heading: "City", key: "cityName", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "Age", key: "ageYear", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+    { heading: "MobileNo", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+    { heading: "Address", key: "address", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+    { heading: "City", key: "cityName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
     { heading: "DepartmentName", key: "departmentName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
     { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
     { heading: "RefDoctorName", key: "refDoctorName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-    { heading: "HospitalName", key: "hospitalName", sort: true, align: 'left', emptySign: 'NA', width: 350 },
+    { heading: "Paid Amount", key: "paidAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+    { heading: "Balance Amount", key: "balanceAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, columnClass: (element) => element["balanceAmt"] > 0 ? Color.RED : "" },
+    { heading: "Cash Pay", key: "cashPay", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+    { heading: "Cheque Pay", key: "chequePay", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+    { heading: "Card Pay", key: "cardPay", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+    { heading: "Online Pay", key: "onlinePay", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+
+
+
+    { heading: "HospitalName", key: "hospitalName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
     { heading: "AddedBy", key: "userName", sort: true, align: 'left', emptySign: 'NA' },
     {
       heading: "Action", key: "action", align: "right", width: 190, sticky: true, type: gridColumnTypes.template,
@@ -75,10 +93,13 @@ export class LabPatientRegComponent {
   ]
 
   allfilters = [
-    { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.StartsWith },
-    { fieldName: "ToDate", fieldValue: this.toDate, opType: OperatorComparer.StartsWith },
-    // { fieldName: "FirstName", fieldValue: "%", opType: OperatorComparer.StartsWith },
-    // { fieldName: "LastName", fieldValue: "%", opType: OperatorComparer.StartsWith },
+      { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.StartsWith },
+        { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.StartsWith },
+        { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.GreaterThanOrEqual },
+        { fieldName: "ToDate", fieldValue: this.toDate, opType: OperatorComparer.GreaterThanOrEqual },
+        { fieldName: "PBillNo", fieldValue:"%", opType: OperatorComparer.Equals },
+        { fieldName: "DoctorId", fieldValue: "0", opType: OperatorComparer.Equals }
+
   ]
 
   gridConfig: gridModel = {
@@ -91,46 +112,72 @@ export class LabPatientRegComponent {
 
   Clearfilter(event) {
     console.log(event)
-    if (event == 'firstName')
-      this.myFilterform.get('firstName').setValue("")
-    if (event == 'L_Name')
-      this.myFilterform.get('L_Name').setValue("")
+    if (event == 'FirstName')
+      this.myFilterform.get('FirstName').setValue("")
+    else
+      if (event == 'LastName')
+        this.myFilterform.get('LastName').setValue("")
+    // if (event == 'RegNo')
+    //   this.myFilterform.get('RegNo').setValue("")
+    if (event == 'PBillNo')
+      this.myFilterform.get('PBillNo').setValue("")
     this.onChangeFirst();
   }
 
   onChangeFirst() {
     this.fromDate = this.datePipe.transform(this.myFilterform.get('fromDate').value, "yyyy-MM-dd") || "01/01/1900"
     this.toDate = this.datePipe.transform(this.myFilterform.get('enddate').value, "yyyy-MM-dd") || "01/01/1900"
-    // this.f_name = this.myFilterform.get('firstName').value + "%"
-    // this.l_name = this.myFilterform.get('L_Name').value + "%"
+    this.f_name = this.myFilterform.get('FirstName').value + "%"
+    this.l_name = this.myFilterform.get('LastName').value + "%"
     this.getfilterdata();
   }
-
+ 
   getfilterdata() {
     this.gridConfig = {
       apiUrl: "LabPatientRegistration/List",
       columnsList: this.allcolumns,
       sortField: "LabPatientId",
-      
+
       sortOrder: 0,
       filters: [
+        { fieldName: "F_Name", fieldValue: this.f_name, opType: OperatorComparer.StartsWith },
+        { fieldName: "L_Name", fieldValue: this.l_name, opType: OperatorComparer.StartsWith },
         { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.StartsWith },
         { fieldName: "ToDate", fieldValue: this.toDate, opType: OperatorComparer.StartsWith },
-        // { fieldName: "FirstName", fieldValue: this.f_name, opType: OperatorComparer.StartsWith },
-        // { fieldName: "LastName", fieldValue: this.l_name, opType: OperatorComparer.StartsWith }
+        { fieldName: "PBillNo", fieldValue: this.PBillNo, opType: OperatorComparer.Equals },
+        { fieldName: "DoctorId", fieldValue: this.DoctorId, opType: OperatorComparer.Equals }
+
       ]
     }
     this.grid.gridConfig = this.gridConfig;
     this.grid.bindGridData();
     // this.GetAppointdetail();
   }
+  ListView(value) {
+    console.log(value)
+    if (value.value !== 0)
+      this.DoctorId = value.value
+    else
+      this.DoctorId = 0
+
+    this.onChangeFirst();
+  }
+
+  keyPressAlphanumeric(event) {
+        var inp = String.fromCharCode(event.keyCode);
+        if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
+            return true;
+        } else {
+            event.preventDefault();
+            return false;
+        }
+    }
 
   new(row: any = null) {
-    const dialogRef = this._matDialog.open(NewPatientLabComponent,
+    const dialogRef = this._matDialog.open(NewLabPatientRegComponent,
       {
-        maxWidth: "110vw",
+        maxWidth: "90vw",
         maxHeight: '90vh',
-        // height: '90%',
         width: '95%',
         data: row
       });
@@ -140,6 +187,193 @@ export class LabPatientRegComponent {
       this.grid.bindGridData();
       // this.GetAppointdetail();
     });
+  }
+  openPaymentpopup(contact) {
+    console.log(contact)
+    let PatientHeaderObj = {};
+    PatientHeaderObj['Date'] = this.datePipe.transform(contact.billDate, 'MM/dd/yyyy') || '01/01/1900',
+      PatientHeaderObj['RegNo'] = contact.regNo;
+    PatientHeaderObj['PatientName'] = contact.patientName;
+    PatientHeaderObj['OPD_IPD_Id'] = contact.opD_IPD_ID;
+    PatientHeaderObj['Age'] = contact.ageYear;
+    PatientHeaderObj['DepartmentName'] = contact.departmentName;
+    PatientHeaderObj['DoctorName'] = contact.doctorName;
+    PatientHeaderObj['TariffName'] = contact.tariffName;
+    PatientHeaderObj['CompanyName'] = contact.companyName;
+    PatientHeaderObj['NetPayAmount'] = contact.balanceAmt;
+    // this.vMobileNo = contact.mobileNo;
+    const dialogRef = this._matDialog.open(OpPaymentComponent,
+      {
+        maxWidth: "80vw",
+        width: '70%',
+        maxHeight: "90vw",
+        height: '90%',
+        data: {
+          vPatientHeaderObj: PatientHeaderObj,
+          FromName: "OP-Bill"
+        }
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result.IsSubmitFlag == true) {
+        let PaymentObj = result.submitDataPay.ipPaymentInsert
+        this.vpaidamt = result.PaidAmt;
+        this.vbalanceamt = result.BalAmt
+        PaymentObj['BillNo'] = contact.billNo;
+        let updateBillobj = {};
+        updateBillobj['BillNo'] = contact.billNo;
+        updateBillobj['balanceAmt'] = result.BillBalanceAmount;
+        console.log(result.submitDataPay.ipPaymentInsert)
+        let data = {
+          opCreditPayment: PaymentObj,
+          "billUpdate": {
+            "billNo": contact.billNo,
+            "balanceAmt": result.BillBalanceAmount
+          },
+        }
+        console.log(data)
+        this._labPatientRegService.InsertLabBillingsettlement(data).subscribe(response => {
+          this.toastr.success(response.message);
+          this.grid.gridConfig = this.gridConfig;
+          this.grid.bindGridData();
+          // this.viewgetOPPayemntPdf(response, true);
+
+        }, (error) => {
+          this.toastr.error(error.message);
+        });
+
+      }
+    });
+
+  }
+
+
+  billdetail(element) {
+    console.log(element)
+    debugger
+
+    const dialogRef = this._matDialog.open(LabRegBillDeatilsComponent,
+      {
+        maxWidth: "80vw",
+        height: '650px',
+        width: '100%',
+        data: element
+
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      // this.onChangeFirst2()
+    });
+
+  }
+
+
+  //  Vtotalcount = 0;
+  //     VNewcount = 0;
+  //     VFollowupcount = 0;
+  //     VBillcount = 0;
+
+
+  //        GetlabAppointdetail() {
+  //         this.Vtotalcount = 0;
+  //         this.VNewcount = 0;
+  //         this.VFollowupcount = 0;
+  //         this.VBillcount = 0;
+
+  //         let fromDateControl = this.datePipe.transform(this.myformSearch.get('fromDate').value, "yyyy-MM-dd");
+  //         let toDateControl = this.datePipe.transform(this.myformSearch.get('enddate').value, "yyyy-MM-dd");
+
+  //         let filters: any[] = [];
+
+  //         // Handle date range
+  //         if (fromDateControl && toDateControl) {
+  //             this.fromDate = this.datePipe.transform(fromDateControl, "yyyy-MM-dd");
+  //             this.toDate = this.datePipe.transform(toDateControl, "yyyy-MM-dd");
+  //         } else {
+  //             this.fromDate = "1900-01-01";
+  //             this.toDate = "1900-01-01";
+  //         }
+
+  //         filters.push(
+  //           {
+  //                 "fieldName": "From_Dt",
+  //                 "fieldValue": this.fromDate,
+  //                 "opType": "GreaterThanOrEqual"
+  //             },
+  //             {
+  //                 "fieldName": "To_Dt",
+  //                 "fieldValue": this.toDate,
+  //                 "opType": "GreaterThanOrEqual"
+  //             },
+  //             {
+  //                 "fieldName": "IsMark",
+  //                 "fieldValue": "2",
+  //                 "opType": "Equals"
+  //             }
+  //         );
+
+  //         let data = {
+  //             "first": 0,
+  //             "rows": 999999,
+  //             "sortField": "AdmissionId",
+  //             "sortOrder": 0,
+  //             "filters": filters,
+  //             "exportType": "JSON",
+  //             "columns": []
+  //         };
+  //         console.log(data)
+  //         this._AppointmentlistService.getVisitlist(data).subscribe((response) => {
+  //             this.dataSource.data = response.data;
+  //             if (this.dataSource.data.length > 0) {
+  //                 this.Vtotalcount = this.dataSource.data.length
+  //                 this.vEMRReady = 0;
+  //                 this.dataSource.data.forEach(element => {
+  //                     if (element.patientOldNew == 1) {
+  //                         this.VNewcount = this.VNewcount + 1;
+  //                     }
+  //                     else if (element.patientOldNew == 2) {
+  //                         this.VFollowupcount = this.VFollowupcount + 1;
+  //                     }
+
+  //                     if (element.mPbillNo == 1 || element.mPbillNo == 2) {
+  //                         this.VBillcount = this.VBillcount + 1;
+  //                     }
+  //                     if (element.crossConsulFlag == 1) {
+  //                         this.VCrossConscount = this.VCrossConscount + 1;
+  //                     }
+  //                     if (element.emrReady == 1) {
+  //                         this.vEMRReady++;
+  //                     }
+  //                 });
+  //                 console.log(this.dataSource.data)
+  //             }
+  //         });
+  //     }
+
+
+  OnPrintPatientIcard(element) {
+    console.log('Third action clicked for:', element);
+    this.commonService.Onprint("BillNo", element.BillNo, "OPStickerPrint");
+  }
+
+  Onmessage(){
+
+  }
+  Onemail(){}
+  getWhatsappshareBill(){}
+  OnCancle() {
+    Swal.fire({
+      title: 'Confirm Save',
+      text: 'Are you sure you want to save this Lab Registration?',
+      icon: 'warning', // or 'question'
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6', // Blue
+      cancelButtonColor: '#d33',     // Red
+      confirmButtonText: 'Yes, save it!',
+      cancelButtonText: 'No, cancel'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        //call 
+      }
+    })
   }
 }
 

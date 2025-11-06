@@ -64,9 +64,7 @@
                                     </div>
 
                                     <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <!-- <airmid-textbox label="First Name" formControlName="firstName"
-                                            [formGroup]="myForm" [maxLength]="50" [value]="registerObj?.firstName">
-                                        </airmid-textbox> -->
+                                     
                                         <airmid-autocomplete label="First Name" [formGroup]="myForm"
                                             formControlName="patientName" placeholderText="First Name" fxFlex
                                             ApiUrl="Sales/External-auto-complete?Keyword=" TextField="text"
@@ -103,12 +101,7 @@
                                             (keypress)="keyPressAlphanumeric($event)" [formGroup]="myForm"
                                             [maxLength]="10" [value]="registerObj?.mobileNo">
                                         </airmid-textbox>
-                                        <!-- <airmid-autocomplete label="Mobile No" [formGroup]="myForm"
-                                            formControlName="mobileNo" maxlength="10"
-                                            placeholder="Enter 10 digit Mobile No." fxFlex TextField="text"
-                                            ApiUrl="Sales/External-auto-complete?Keyword="
-                                            (keypress)="allowOnlyDigits($event)"
-                                            (selectionChange)="getSelectedObjextMobile($event)"></airmid-autocomplete> -->
+                                   
                                     </div>
 
                                     <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
@@ -163,7 +156,7 @@
                                     </div>
 
                                     <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <airmid-dropdown label="Doctor Name" formControlName="doctorId"
+                                        <airmid-dropdown label="Doctor Name" formControlName="doctorId"  (selectionChange)="chkDoctor($event)"
                                             [formGroup]="myForm" #ddlDoctor [value]="registerObj?.doctorId">
                                         </airmid-dropdown>
                                     </div>
@@ -317,7 +310,7 @@
                 </form>
 
                 <div class="modal-footer-buttons labpatientbtn">
-                    <button class="btn btn-primary" (click)="onNewSave()">Save </button>
+                    <button class="btn btn-primary" (click)="BillSave()">Save </button>
                     <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
                 </div>
             </div>
