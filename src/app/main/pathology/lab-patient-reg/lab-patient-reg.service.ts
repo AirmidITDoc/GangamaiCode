@@ -77,7 +77,7 @@ export class LabPatientRegService {
     return this._httpClient.PostData("LabPatientRegistration/PatientRegistrationPaidBill", param)
   }
   public InsertLabBillingsettlement(param) {
-    return this._httpClient.PostData("LabPatientRegistration/PatientRegistrationPaidBill", param)
+    return this._httpClient.PostData("OPSettlement/InsertSettlement", param)
   }
 
   
