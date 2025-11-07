@@ -173,7 +173,7 @@ export class LabPatientRegComponent {
         }
     }
 
-  new(row: any = null) {
+  onnew(row: any = null) {
     const dialogRef = this._matDialog.open(NewLabPatientRegComponent,
       {
         maxWidth: "90vw",
@@ -235,7 +235,7 @@ export class LabPatientRegComponent {
           this.toastr.success(response.message);
           this.grid.gridConfig = this.gridConfig;
           this.grid.bindGridData();
-          // this.viewgetOPPayemntPdf(response, true);
+          this.viewgetOPPayemntPdf(response, true);
 
         }, (error) => {
           this.toastr.error(error.message);
@@ -246,6 +246,13 @@ export class LabPatientRegComponent {
 
   }
 
+   viewgetOPPayemntPdf(data, status) {
+        if (status == true)
+            this.commonService.Onprint("PaymentId", data, "OPPaymentReceipt");
+        else
+            this.commonService.Onprint("PaymentId", data.paymentId, "OPPaymentReceipt");
+    }
+OnallList(){}
 
   billdetail(element) {
     console.log(element)
@@ -349,10 +356,10 @@ export class LabPatientRegComponent {
   //     }
 
 
-  OnPrintPatientIcard(element) {
-    console.log('Third action clicked for:', element);
-    this.commonService.Onprint("BillNo", element.BillNo, "OPStickerPrint");
-  }
+   viewgetOPBillReportPdf(element) {
+        this.commonService.Onprint("BillNo", element.billNo, "LabregisterBillReceipt");
+    }
+
 
   Onmessage(){
 
