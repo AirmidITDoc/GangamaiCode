@@ -14,8 +14,7 @@ import { RequestforlabtestService } from 'app/main/nursingstation/requestforlabt
 import { MatDrawer } from '@angular/material/sidenav';
 import { ToastrService } from 'ngx-toastr';
 import { BrowsSalesBillService } from '../brows-sales-bill/brows-sales-bill.service';
-import { SalePopupComponent } from '../sales/sale-popup/sale-popup.component';
-import { SubstitutesComponent } from '../sales/substitutes/substitutes.component';
+import { SalePopupComponent } from '../sales/sale-popup/sale-popup.component'; 
 import { SalesHospitalService } from './sales-hospital-new.service';
 import { BalAvaListStore, DraftSale, PatientType, Printsal, SalesBatchItemModel, SalesItemModel } from './types';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
@@ -25,6 +24,7 @@ import { PrintserviceService } from 'app/main/shared/services/printservice.servi
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { AppointmentlistService } from 'app/main/opd/appointment-list/appointmentlist.service';
 import { FakeDbService } from 'app/fake-db/fake-db.service';
+import { SubstitutesComponent } from './substitutes/substitutes.component';
 
 @Component({
     selector: 'app-sales-hospital',
@@ -2320,6 +2320,7 @@ if (QtyElement) {
           {
                  width:"45%",
                 height:"60%",
+                panelClass: 'responsive-dialog'
            });
         dialogRef.afterClosed().subscribe((result) => {
             console.log('The dialog was closed - Insert Action', result);

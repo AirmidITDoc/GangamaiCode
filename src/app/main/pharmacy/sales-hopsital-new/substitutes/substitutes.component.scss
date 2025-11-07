@@ -1,0 +1,33 @@
+.modal-page,
+.modal-wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.modal-header {
+  padding: 8px 16px;
+  color: #fff;
+}
+
+.airmid-table-container,
+.table-scroll {
+  overflow: auto;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .modal-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  mat-card {
+    padding: 8px !important;
+  }
+
+  mat-header-cell,
+  mat-cell {
+    font-size: 0.85rem;
+  }
+}

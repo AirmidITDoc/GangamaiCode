@@ -36,6 +36,7 @@ import { SharedModule } from 'app/main/shared/shared.module';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { SalesHospitalNewComponent } from './sales-hopsital-new.component';
 import { PrescriptionComponent } from './prescription/prescription.component';
+import { SubstitutesComponent } from './substitutes/substitutes.component';
 
 
 const routes: Routes = [
@@ -48,7 +49,8 @@ const routes: Routes = [
 @NgModule({
     declarations: [
         SalesHospitalNewComponent,
-        PrescriptionComponent
+        PrescriptionComponent,
+        SubstitutesComponent
     ],
     imports: [
         CommonModule,
