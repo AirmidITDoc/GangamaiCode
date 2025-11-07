@@ -72,5 +72,8 @@ export class OtReservationService {
     }
     public getRtrvReservationAttendentList(employee) {
         return this._httpClient.PostData("OTReservation/OtReservationAttendingDetailList", employee);
+    }    
+    public getRtrvReservationSurgeryList(employee) {
+        return this._httpClient.PostData("OTReservation/OtReservationSurgeryDetailList", employee);
     }
 }

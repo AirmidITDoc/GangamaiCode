@@ -187,7 +187,7 @@ export class NewReservationComponent implements OnInit {
 
       this.reservationForm.patchValue(this.registerObj1);
       // this.getdiagnosisList(this.registerObj1);
-      // this.getRequestSurgeryDetList(this.registerObj1);
+      this.getRequestSurgeryDetList(this.registerObj1);
       this.getReservationAttendentDetList(this.registerObj1);
     }
 
@@ -571,6 +571,16 @@ export class NewReservationComponent implements OnInit {
       return;
     }
     // debugger
+    // const surgeryDate = this.reservationForm.get('surgeryDate')?.value;
+    // const surgeryFromTime = this.reservationForm.get('surgeryFromTime')?.value;
+
+    // let combinedDateTime = null;
+
+    // if (surgeryDate && surgeryFromTime) {
+    //   combinedDateTime = new Date(surgeryDate);
+    //   const [hours, minutes] = surgeryFromTime.split(':');
+    //   combinedDateTime.setHours(+hours, +minutes, 0, 0);
+    // }
 
     let newEntry = {
       surgeryCategoryName: this.surgCategoryName,
@@ -579,6 +589,7 @@ export class NewReservationComponent implements OnInit {
       surgeryName: this.surgName,
       surgeryPart: this.reservationForm.get('surgeryPart').value,
       surgeryDuration: this.reservationForm.get('surgeryDuration').value,
+      // surgeryFromTime: combinedDateTime,
       surgeryFromTime: this.reservationForm.get('surgeryFromTime').value,
       surgeryEndTime: this.reservationForm.get('surgeryEndTime').value,
       isPrimary: this.reservationForm.get('isPrimary').value,
@@ -720,6 +731,52 @@ export class NewReservationComponent implements OnInit {
     }
   }
 
+  FetchList: any = [];
+  getRequestSurgeryDetList(obj) {
+    var m_data2 = {
+      "first": 0,
+      "rows": 10,
+      "sortField": "OTReservationId",
+      "sortOrder": 0,
+      "filters": [
+        { "fieldName": "OTReservationId", "fieldValue": String(obj.otReservationId), "opType": "Equals" }
+      ],
+      "Columns": [],
+      "exportType": "JSON"
+    };
+
+    this._OtReservationService.getRtrvReservationSurgeryList(m_data2).subscribe(records => {
+      this.FetchList = records.data as OtReserInsert[];
+      this.FetchList.forEach(element => {
+
+        const from = new Date(element.surgeryFromTime);
+        const end = new Date(element.surgeryEndTime);
+
+        const surgeryFromTime = from.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
+        const surgeryEndTime = end.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
+
+        this.Chargelist.push(
+          {
+            surgeryCategoryName: element.surgeryCategoryName,
+            surgeryCategoryId: element.surgeryCategoryId,
+            surgeryId: element.surgeryId,//
+            surgeryName: element.surgeryName,
+            surgeryPart: element.surgeryPart,
+            surgeryDuration: element.surgeryDuration,
+            surgeryFromTime: surgeryFromTime,
+            surgeryEndTime: surgeryEndTime,
+            isPrimary: element.isPrimary,
+            surgeonId: element.surgeonId,//
+            surgeonName: element.surgeonName,
+            anestheticsId: element.anesthetistId, //
+            anestheticsName: element.anestheticsName,
+          });
+      })
+      this.dssurgeryDetailList.data = this.Chargelist
+      console.log("surgeryDet Data:", this.dssurgeryDetailList.data)
+    });
+
+  }
   /////////////////////////////// surgery detail part end /////////////////////////////
 
   /////////////////////////////// attendent detail part /////////////////////////////
