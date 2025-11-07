@@ -32,7 +32,7 @@ export class NewGRNReturnComponent implements OnInit {
     "BatchExpDate",
     "ConversionFactor",
     "BalanceQty",
-    // 'ReceivedQty',
+    'receiveQty',
     "ReturnQty",
     "MRP",
     //"Rate",
@@ -288,6 +288,13 @@ export class NewGRNReturnComponent implements OnInit {
 
     this._GRNReturnService.getGrnItemList(Param).subscribe(data => {
       const itemList = data.data as ItemNameList[];
+      if (!itemList || itemList.length === 0) {
+        this.toastr.warning(
+          `Some items have balance 0.`,'Warning!',
+          { toastClass: 'tostr-tost custom-toast-warning' }
+        );
+        return;
+      }
 
       // ✅ check balanceQty here
       const zeroBalanceItems = itemList.filter(x => x.balanceQty == 0);
@@ -310,7 +317,7 @@ export class NewGRNReturnComponent implements OnInit {
           balanceQty: element.balanceQty,
           returnQty: 0,
           mrp: element.mrp || 0,
-          ReceiveQty: element.receiveQty || 0,
+          receiveQty: element.receiveQty || 0,
           landedTotalAmount: 0,
           cgst: (element.vatPer || 0) / 2,
           sgst: (element.vatPer || 0) / 2,
@@ -453,8 +460,8 @@ export class NewGRNReturnComponent implements OnInit {
 
   getCellCalculation(contact, returnQty) {
     debugger
-    if (parseInt(contact.returnQty) > parseInt(contact.balanceQty)) {
-      this.toastr.warning('Return Qty cannot be greater than BalQty', 'Warning !', {
+    if (parseInt(contact.returnQty) > parseInt(contact.receiveQty)) {
+      this.toastr.warning('Return Qty cannot be greater than Received Qty', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       contact.returnQty = 0;

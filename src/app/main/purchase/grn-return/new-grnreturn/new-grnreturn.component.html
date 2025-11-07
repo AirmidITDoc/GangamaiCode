@@ -141,6 +141,14 @@
                                         </mat-cell>
                                     </ng-container>
 
+                                    <ng-container matColumnDef="receiveQty" sticky>
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-100">
+                                            Recevied Qty</mat-header-cell>
+                                        <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100">
+                                            {{contact.receiveQty}}
+                                        </mat-cell>
+                                    </ng-container>
+
                                     <ng-container matColumnDef="ReturnQty" sticky>
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
                                             class="w-100">ReturnQty
