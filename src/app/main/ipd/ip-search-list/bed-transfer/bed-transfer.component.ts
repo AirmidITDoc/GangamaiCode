@@ -11,6 +11,7 @@ import { AdmissionPersonlModel, RegInsert } from '../../Admission/admission/admi
 import { AdvanceDataStored } from '../../advance';
 import { IPSearchListComponent } from '../ip-search-list.component';
 import { IPSearchListService } from '../ip-search-list.service';
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 
 @Component({
   selector: 'app-bed-transfer',
@@ -59,7 +60,7 @@ export class BedTransferComponent implements OnInit {
   BedtofreeForm: FormGroup;
   BedtoupdateForm: FormGroup;
   admissionForm: FormGroup;
-BedFinalform: FormGroup;
+  BedFinalform: FormGroup;
   ngOnInit(): void {
     if (this.data) {
       this.registerObj1 = this.data
@@ -69,7 +70,7 @@ BedFinalform: FormGroup;
 
       this.AdmissionId = this.data.admissionId;
 
-      this.BedFinalform=this.createBedtransferInsert();
+      this.BedFinalform = this.createBedtransferInsert();
       // this.BedInsertForm = this.createBedtransfer()
       this.BedtofreeForm = this.createbedtofreeForm()
       this.BedtoupdateForm = this.createbedupdateForm()
@@ -133,24 +134,24 @@ BedFinalform: FormGroup;
   // onChangeWard(e) {
   //   this.ddlClassName.SetSelection(e.classId);
   // }
- @ViewChild('ddlBedName') ddlBedName: AirmidDropDownComponent;
-  RoomId=0
+  @ViewChild('ddlBedName') ddlBedName: AirmidDropDownComponent;
+  RoomId = 0
   onChangeWard(e) {
     // debugger
-    this.RoomId=e.roomId
+    this.RoomId = e.roomId
     this.ddlClassName.SetSelection(e.classId);
-     this. selectChangeward(e)
+    this.selectChangeward(e)
   }
 
-    selectChangeward(obj: any) {
-      // debugger
+  selectChangeward(obj: any) {
+    // debugger
     if (obj.roomId) {
       this._IpSearchListService.getBedByWard(obj.roomId).subscribe((data: any) => {
         console.log(data)
         this.ddlBedName.options = data;
         this.ddlBedName.bindGridAutoComplete();
       });
-   
+
     }
   }
 
@@ -267,7 +268,7 @@ BedFinalform: FormGroup;
       //   }
       // }
 
-       
+
 
       this.BedtofreeForm.get("bedId").setValue(this.data.bedId)
       this.BedtoupdateForm.get("bedId").setValue(parseInt(this.Bedtransfer.get("toBedId").value))
@@ -280,11 +281,11 @@ BedFinalform: FormGroup;
       this.BedFinalform.get("bedUpdate").setValue(this.BedtoupdateForm.value)
       this.BedFinalform.get("admssion").setValue(this.admissionForm.value)
 
-
       console.log(this.BedFinalform.value);
 
       this._IpSearchListService.BedtransferUpdate(this.BedFinalform.value).subscribe((response) => {
-      this._matDialog.closeAll()
+        this._matDialog.closeAll()
+        this.PrintPdf(response)
       }, (error) => {
         this.toastr.error(error.message);
       });
@@ -307,6 +308,37 @@ BedFinalform: FormGroup;
       }
 
     }
+  }
+
+  PrintPdf(response) {
+    // debugger
+    setTimeout(() => {
+      let param = {
+        "searchFields": [
+          {
+            "fieldName": "AdmissionId",
+            "fieldValue": String(response),
+            "opType": "Equals"
+          }
+        ],
+        "mode": "BedTransferReceipt"
+      }
+      this._IpSearchListService.getReportView(param).subscribe(res => {
+
+        const matDialog = this._matDialog.open(PdfviewerComponent,
+          {
+            maxWidth: "85vw",
+            height: '750px',
+            width: '100%',
+            data: {
+              base64: res["base64"] as string,
+              title: "Bed Transfer" + " " + "Viewer"
+            }
+          });
+        matDialog.afterClosed().subscribe(result => {
+        });
+      });
+    }, 100);
   }
 
   onClear(val: boolean) {

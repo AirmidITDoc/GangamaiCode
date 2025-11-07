@@ -23,6 +23,8 @@ import { addDays, addMinutes, endOfDay, endOfWeek, isSameDay, endOfMonth, isSame
 import { NewCheckinComponent } from "../patient-otmovement-tracking/new-checkin/new-checkin.component";
 import { NewOtPreoperationComponent } from "../ot-preoperation/new-ot-preoperation/new-ot-preoperation.component";
 import { NewOtPostOperationComponent } from "../ot-preoperation/new-ot-post-operation/new-ot-post-operation.component";
+import { NewTheaterInComponent } from "../theater-in/new-theater-in/new-theater-in.component";
+import { NewInOperationComponent } from "../in-operation/new-in-operation/new-in-operation.component";
 
 const colors: Record<string, EventColor> = {
     red: {
@@ -65,30 +67,34 @@ export class OTReservationComponent implements OnInit {
 
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
+    @ViewChild('firstActionButtonTemplate') firstActionButtonTemplate!: TemplateRef<any>;
     @ViewChild('clearanceMedicalCode') clearanceMedicalCode!: TemplateRef<any>;
     @ViewChild('clearanceFinancialCode') clearanceFinancialCode!: TemplateRef<any>;
 
     ngAfterViewInit() {
         this.gridConfig.columnsList.find(col => col.key === 'opiptype')!.template = this.actionsTemplate;
         this.gridConfig.columnsList.find(col => col.key === 'otRequestId')!.template = this.actionsTemplate1;
-        // this.gridConfig.columnsList.find(col => col.key === 'isNewRecord')!.template = this.actionsTemplate2;
         this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
-        this.gridConfig.columnsList.find(col => col.key === 'clearanceMedical')!.template = this.clearanceMedicalCode;
-        this.gridConfig.columnsList.find(col => col.key === 'clearanceFinancial')!.template = this.clearanceFinancialCode;
+        // this.gridConfig.columnsList.find(col => col.key === 'clearanceMedical')!.template = this.clearanceMedicalCode;
+        // this.gridConfig.columnsList.find(col => col.key === 'clearanceFinancial')!.template = this.clearanceFinancialCode;
+        this.gridConfig.columnsList.find(col => col.key === 'firstAction')!.template = this.firstActionButtonTemplate;
     }
 
     @ViewChild('actionsTemplate') actionsTemplate!: TemplateRef<any>;
     @ViewChild('actionsTemplate1') actionsTemplate1!: TemplateRef<any>;
-    @ViewChild('actionsTemplate2') actionsTemplate2!: TemplateRef<any>;
 
     allcolumns = [
         { heading: "-", key: "opiptype", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 40 },
+        {
+            heading: "", key: "firstAction", width: 300, align: 'left', type: gridColumnTypes.template,
+            template: this.firstActionButtonTemplate
+        },
+        // { heading: "-", key: "clearanceMedical", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 40 },
+        // { heading: "-", key: "clearanceFinancial", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 40 },
         { heading: "-", key: "otRequestId", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 40 },
-        { heading: "-", key: "clearanceMedical", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 40 },
-        { heading: "-", key: "clearanceFinancial", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 40 },
         // { heading: "", key: "isNewRecord", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 40 },
         { heading: "OTReser-Date&Time", key: "otReservationDateTime", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-        { heading: "Surgery Date", key: "surgeryDate", sort: true, align: 'left', emptySign: 'NA', type: 6, width: 150 },
+        { heading: "Surgery Date", key: "surgeryDate", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "Estimate Time", key: "estimateTime", sort: true, align: 'left', emptySign: 'NA', type: 7, width: 150 },
         // { heading: "Operation Date-Time", key: "opstartTime", sort: true, align: 'left', emptySign: 'NA', type: 8, width: 180 },
         { heading: "UHID NO", key: "regNo", sort: true, align: 'left', emptySign: 'NA', },
@@ -98,7 +104,7 @@ export class OTReservationComponent implements OnInit {
         { heading: "Theater Name", key: "otTableName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         { heading: "UserName", key: "userName", sort: true, align: 'left', emptySign: 'NA', width: 180 },
         {
-            heading: "Action", key: "action", align: "right", width: 150, sticky: true, type: gridColumnTypes.template,
+            heading: "Action", key: "action", align: "right", width: 120, sticky: true, type: gridColumnTypes.template,
             template: this.actionButtonTemplate
         }
     ];
@@ -200,6 +206,38 @@ export class OTReservationComponent implements OnInit {
                 maxWidth: "90vw",
                 maxHeight: '90vh',
                 width: '90%',
+            });
+        dialogRef.afterClosed().subscribe(result => {
+            this.grid.bindGridData();
+        });
+    }
+
+    theaterIn(row: any = null) {
+        const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+        buttonElement.blur();
+
+        const dialogRef = this._matDialog.open(NewTheaterInComponent,
+            {
+                maxWidth: "90vw",
+                maxHeight: '90vh',
+                // height: '90%',
+                width: '85%',
+            });
+        dialogRef.afterClosed().subscribe(result => {
+            this.grid.bindGridData();
+        });
+    }
+
+    onInOperation(row: any = null) {
+        const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+        buttonElement.blur();
+
+        const dialogRef = this._matDialog.open(NewInOperationComponent,
+            {
+                maxWidth: "90vw",
+                maxHeight: '90vh',
+                // height: '90%',
+                width: '85%',
             });
         dialogRef.afterClosed().subscribe(result => {
             this.grid.bindGridData();
@@ -794,7 +832,7 @@ export class OtReserInsert {
     otReservationId: any;
     otreservationId: any;
     reservationType: any;
-    surgeryDate:any
+    surgeryDate: any
     /**
      * Constructor
      *

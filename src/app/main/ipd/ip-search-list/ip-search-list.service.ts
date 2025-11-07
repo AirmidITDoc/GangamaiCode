@@ -554,14 +554,14 @@ export class IPSearchListService {
 
 
   public InsertRefundOfBill(employee) {
-       return this._httpClient1.PostData("RefundOfBill/IPRefundOfBILLInsert", employee)
+    return this._httpClient1.PostData("RefundOfBill/IPRefundOfBILLInsert", employee)
   }
   public InsertAdvanceHeader(employee) {
-  
+
     return this._httpClient1.PostData("Advance/InsertSP", employee)
   }
   public UpdateAdvanceHeader(employee) {
-   
+
     return this._httpClient1.PutData("Advance/Edit", employee)
   }
 
@@ -946,13 +946,13 @@ export class IPSearchListService {
     return this._httpClient.get("InPatient/view-IP-ReturnOfAdvanceReceipt?RefundId=" + RefundId);
   }
 
-  public getAdvancedetail(Id){
-    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_IPAdvanceDetails",Id);
+  public getAdvancedetail(Id) {
+    return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_IPAdvanceDetails", Id);
   }
-  
-  public getpreviousbilldetail(Id){
-  return this._httpClient.post("Generic/GetByProc?procName=Rtrv_IPPreviousBill_info",Id);
-}
+
+  public getpreviousbilldetail(Id) {
+    return this._httpClient.post("Generic/GetByProc?procName=Rtrv_IPPreviousBill_info", Id);
+  }
 
 
   public getRefundofbillview(RefundId) {
@@ -1055,10 +1055,10 @@ export class IPSearchListService {
 
   public insertIPDDischargSummaryTemplate(employee) {
     debugger
-    if(employee.discharge.dischargeSummaryId==0)
-    return this._httpClient1.PostData("DischargeSummary/DischargeTemplateInsert", employee);
-  else
-     return this._httpClient1.PutData("DischargeSummary/DischargeTemplateUpdate", employee);
+    if (employee.discharge.dischargeSummaryId == 0)
+      return this._httpClient1.PostData("DischargeSummary/DischargeTemplateInsert", employee);
+    else
+      return this._httpClient1.PutData("DischargeSummary/DischargeTemplateUpdate", employee);
   }
   public UpdateIPDDischargSummaryTemplate(employee) {
     return this._httpClient1.PutData("DischargeSummary/DischargeTemplateUpdate", employee);
@@ -1082,10 +1082,13 @@ export class IPSearchListService {
     return this._httpClient1.PostData("IPBill/AddBedServiceCharges", param);
   }
 
-   public getBedByWard(RoomId) {
-        return this._httpClient1.GetData("Admission/BedList?RoomId=" + RoomId)
-    }
-    
+  public getBedByWard(RoomId) {
+    return this._httpClient1.GetData("Admission/BedList?RoomId=" + RoomId)
+  }
+  public getReportView(Param) {
+    return this._httpClient1.PostData("Report/ViewReport", Param);
+  }
+
 }
 
 // Set NODE_OPTIONS="--max-old-space-size=8192"
