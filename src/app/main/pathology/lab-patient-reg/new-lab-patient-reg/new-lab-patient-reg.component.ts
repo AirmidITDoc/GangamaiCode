@@ -864,11 +864,7 @@ export class NewLabPatientRegComponent {
 
 
             this._labPatientRegService.InsertLabRegBilling(this.LabBillfinalform.value).subscribe(response => {
-              //        if (ThermalPrint != 1) {
-              //             this.viewgetOPBillReportPdf(response)
-              //       } else {
-              //             this.viewgetOPBillThermalReportPdf(response)
-              //       } 
+                 this.viewgetOPBillReportPdf(response)
               //  this.resetform();
               this._matDialog.closeAll();
               this.savebtn = true
@@ -890,11 +886,7 @@ export class NewLabPatientRegComponent {
         console.log(this.LabBillfinalform.value)
 
         this._labPatientRegService.InsertLabRegBilling(this.LabBillfinalform.value).subscribe(response => {
-          //  if (ThermalPrint != 1) {
-          //       this.viewgetOPBillReportPdf(response)
-          // } else {
-          //       this.viewgetOPBillThermalReportPdf(response)
-          // } 
+         this.viewgetOPBillReportPdf(response)
           this._matDialog.closeAll();
           this.savebtn = true
           // this.resetform();
@@ -913,11 +905,7 @@ export class NewLabPatientRegComponent {
 
 
         this._labPatientRegService.InsertlabregCredit(this.LabBillfinalform.value).subscribe(response => {
-          // if (ThermalPrint != 1) {
-          //       this.viewgetOPBillReportPdf(response)
-          // } else {
-          //       this.viewgetOPBillThermalReportPdf(response)
-          // } 
+        this.viewgetOPBillReportPdf(response)
           this._matDialog.closeAll();
           this.savebtn = true
           // if (response)
@@ -951,6 +939,11 @@ export class NewLabPatientRegComponent {
       }
     }
   }
+
+     viewgetOPBillReportPdf(element) {
+        this.commonService.Onprint("BillNo", element.billNo, "LabregisterBillReceipt");
+    }
+
 
   resetform() {
    
