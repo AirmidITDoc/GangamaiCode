@@ -22,10 +22,13 @@ export class RadiologyTestMasterService {
     createRadiologytestForm(): FormGroup {
         return this._formBuilder.group({
             testId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            testName: ["", [Validators.required, Validators.pattern('^[a-zA-Z ]*$'),
-                          this._FormvalidationserviceService.allowEmptyStringValidator()
+            testName: ["", [Validators.required,
+            //  Validators.pattern('^[a-zA-Z ]*$'),
+            this._FormvalidationserviceService.allowEmptyStringValidator()
             ]],
-            printTestName: ["", [Validators.required, Validators.pattern('^[a-zA-Z ]*$')]],
+            printTestName: ["", [Validators.required, 
+                // Validators.pattern('^[a-zA-Z ]*$')
+            ]],
             categoryId: ["", [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             serviceId: ["", [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             templateName: [""],
@@ -44,7 +47,7 @@ export class RadiologyTestMasterService {
         return this._formBuilder.group({
             TestNameSearch: [""],
             CategoryId: ["0"],
-             ServiceId: ["0"],
+            ServiceId: ["0"],
         });
     }
 
@@ -68,7 +71,7 @@ export class RadiologyTestMasterService {
     }
 
     public gettemplateMasterComboList(param) {
-        return this._httpClient.PostData("RadiologyTest/RetriveTemplateMasterList",param);
+        return this._httpClient.PostData("RadiologyTest/RetriveTemplateMasterList", param);
     }
 
     populateForm(employee) {

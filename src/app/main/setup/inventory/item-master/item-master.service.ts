@@ -45,7 +45,6 @@ export class ItemMasterService {
                     Validators.maxLength(150),
                     // Validators.pattern('^[a-zA-Z0-9 ]*$'),
                     this._FormvalidationserviceService.allowEmptyStringValidator()
-
                 ]
             ],
             itemName: ["",
@@ -75,8 +74,8 @@ export class ItemMasterService {
             ],
             itemClassId: [0,
                 [
-                    Validators.required,
-                    this._FormvalidationserviceService.notEmptyOrZeroValidator()
+                    // Validators.required,
+                    // this._FormvalidationserviceService.notEmptyOrZeroValidator()
                 ]
             ],
             purchaseUomid: [0,
@@ -86,7 +85,8 @@ export class ItemMasterService {
             ],
             stockUomid: [0,
                 [
-                    Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()
+                    // Validators.required, 
+                    // this._FormvalidationserviceService.notEmptyOrZeroValidator()
                 ]
             ],
             conversionFactor: ["",
@@ -105,16 +105,16 @@ export class ItemMasterService {
             taxPer: ["0"],
             isActive: [true],
             isBatchRequired: [true as boolean],
-            minQty: ["",
+            minQty: [0,
                 [
-                    Validators.required,
+                    // Validators.required,
                     Validators.maxLength(50),
                     Validators.pattern('^[0-9]*$')
                 ]
             ],
-            maxQty: ["",
+            maxQty: [0,
                 [
-                    Validators.required,
+                    // Validators.required,
                     Validators.maxLength(50),
                     Validators.pattern('^[0-9]*$')
                 ]
@@ -127,7 +127,7 @@ export class ItemMasterService {
             ],
             hsNcode: ["",
                 [
-                    Validators.required,
+                    // Validators.required,
                     Validators.maxLength(50),
                     Validators.pattern('^[a-zA-Z0-9 ]*$')
                 ]
@@ -138,8 +138,8 @@ export class ItemMasterService {
 
             manufId: [0,
                 [
-                    Validators.required,
-                    this._FormvalidationserviceService.notEmptyOrZeroValidator()
+                    // Validators.required,
+                    // this._FormvalidationserviceService.notEmptyOrZeroValidator()
                 ]
             ],
             isNarcotic: true,
@@ -149,20 +149,20 @@ export class ItemMasterService {
             isScheduleX: true,
             isLasa: true,
             isEmgerency: true,
-            drugType: ['',
+            drugType: ["0",
                 [
-                    Validators.required,
+                    // Validators.required,
                 ]
             ],
-            drugTypeName: [""
+            drugTypeName: ["",
             [
-                Validators.required,
-                this._FormvalidationserviceService.notEmptyOrZeroValidator()
+                // Validators.required,
+                // this._FormvalidationserviceService.notEmptyOrZeroValidator()
             ]
             ],
             prodLocation: ["",
                 [
-                    Validators.required,
+                    // Validators.required,
                     Validators.maxLength(50),
                     Validators.pattern('^[a-zA-Z0-9 ]*$')
 
@@ -170,8 +170,8 @@ export class ItemMasterService {
             ],
             itemCompnayId: [0,
                 [
-                    Validators.required,
-                    this._FormvalidationserviceService.notEmptyOrZeroValidator()
+                    // Validators.required,
+                    // this._FormvalidationserviceService.notEmptyOrZeroValidator()
                 ]
             ],
             itemTime: [(new Date()).toISOString()],
@@ -188,10 +188,10 @@ export class ItemMasterService {
 
     createItemwiseSuppRateForm(): FormGroup {
         return this._formBuilder.group({
-            itemId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+            itemId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             itemName: ["", [Validators.required, Validators.maxLength(50)]],
-            supplierId: [0,[Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-            price:[0,[Validators.required]],
+            supplierId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            price: [0, [Validators.required]],
             period: [new Date()]
         });
     }

@@ -11,7 +11,7 @@ export class DischargetypeMasterService {
     constructor(
         private _httpClient: ApiCaller,
         private _formBuilder: UntypedFormBuilder,
-         private _FormvalidationserviceService: FormvalidationserviceService
+        private _FormvalidationserviceService: FormvalidationserviceService
     ) {
         this.myform = this.createDischargetypeForm();
         this.myformSearch = this.createSearchForm();
@@ -19,20 +19,19 @@ export class DischargetypeMasterService {
 
     createDischargetypeForm(): FormGroup {
         return this._formBuilder.group({
-            dischargeTypeId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+            dischargeTypeId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             dischargeTypeName: ["",
                 [
                     Validators.required, Validators.maxLength(50),
-                    //Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
-                    Validators.pattern('^[a-zA-Z0-9 ]*$'),
-                     this._FormvalidationserviceService.allowEmptyStringValidator()
+                    // Validators.pattern('^[a-zA-Z0-9 ]*$'),
+                    this._FormvalidationserviceService.allowEmptyStringValidator()
                 ]
             ],
             IsDeleted: true,
             AddedBy: ["0"],
             UpdatedBy: ["0"],
             AddedByName: [""],
-            isActive:[true,[Validators.required]],
+            isActive: [true, [Validators.required]],
         });
     }
 

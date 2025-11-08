@@ -25,15 +25,14 @@ export class SurgeryMasterService {
             SurgeryName: ["",
                 [
                     Validators.required,
-                    // Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
-                    Validators.pattern('^[a-zA-Z0-9 ]*$'),
+                    // Validators.pattern('^[a-zA-Z0-9 ]*$'),
                     this._FormvalidationserviceService.allowEmptyStringValidator()
                 ]
             ],
             surgeryCategoryId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            departmentId: [0, [ Validators.required,this._FormvalidationserviceService.onlyNumberValidator()]],
-            surgeryAmount: [0, [ Validators.required,this._FormvalidationserviceService.onlyNumberValidator()]],
-            ottemplateId:[0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            departmentId: [0, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator()]],
+            surgeryAmount: [0, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator()]],
+            ottemplateId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             siteDescId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             serviceId: 0,
             isCancelled: false,

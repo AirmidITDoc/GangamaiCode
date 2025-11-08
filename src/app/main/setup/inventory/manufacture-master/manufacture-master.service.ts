@@ -19,23 +19,21 @@ export class ManufactureMasterService {
         this.myformSearch = this.createSearchForm();
     }
 
-  
+
     createManufactureForm(): FormGroup {
         return this._formBuilder.group({
             manufId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             manufName: ["",
                 [
                     Validators.required, Validators.maxLength(50),
-                    //Validators.pattern("^[A-Za-z @#&]+$")
-                    Validators.pattern('^[a-zA-Z0-9 ]*$'),
+                    // Validators.pattern('^[a-zA-Z0-9 ]*$'),
                     this._FormvalidationserviceService.allowEmptyStringValidator()
                 ]
             ],
             manufShortName: ["",
                 [
                     Validators.required, Validators.maxLength(50),
-                    // Validators.pattern("^[A-Za-z @#&]+$")
-                    Validators.pattern('^[a-zA-Z0-9 ]*$'),
+                    // Validators.pattern('^[a-zA-Z0-9 ]*$'),
                     this._FormvalidationserviceService.allowEmptyStringValidator()
                 ]
             ],

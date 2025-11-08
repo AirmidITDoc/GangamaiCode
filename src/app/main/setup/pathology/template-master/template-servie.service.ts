@@ -23,7 +23,8 @@ export class TemplateServieService {
     return this._formBuilder.group({
       TemplateNameSearch: ["",
          [ Validators.required,
-         Validators.pattern('^[a-zA-Z0-9 ]*$')],
+        //  Validators.pattern('^[a-zA-Z0-9 ]*$')
+        ],
            this._FormvalidationserviceService.allowEmptyStringValidator()
       ],
         IsDeletedSearch: [""],

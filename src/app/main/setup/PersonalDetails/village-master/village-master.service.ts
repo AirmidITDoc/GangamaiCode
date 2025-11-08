@@ -24,7 +24,7 @@ export class VillageMasterService {
             villageId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
             villageName: ["",
                 [ Validators.required,
-                    Validators.pattern('^[a-zA-Z0-9 ]*$'),
+                    // Validators.pattern('^[a-zA-Z0-9 ]*$'),
                     this._FormvalidationserviceService.allowEmptyStringValidator()
                    ]
             ],

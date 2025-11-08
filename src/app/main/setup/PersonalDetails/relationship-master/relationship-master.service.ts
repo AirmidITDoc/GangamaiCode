@@ -12,7 +12,7 @@ export class RelationshipMasterService {
     constructor(
         private _httpClient: ApiCaller,
         private _formBuilder: UntypedFormBuilder,
-         private _FormvalidationserviceService: FormvalidationserviceService
+        private _FormvalidationserviceService: FormvalidationserviceService
     ) {
         this.myform = this.createRelationshipForm();
         this.myformSearch = this.createSearchForm();
@@ -20,16 +20,15 @@ export class RelationshipMasterService {
 
     createRelationshipForm(): FormGroup {
         return this._formBuilder.group({
-            relationshipId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+            relationshipId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             relationshipName: ["",
                 [
                     Validators.required, Validators.maxLength(50),
-                    //Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
-                    Validators.pattern('^[a-zA-Z0-9 ]*$'),
+                    // Validators.pattern('^[a-zA-Z0-9 ]*$'),
                     this._FormvalidationserviceService.allowEmptyStringValidator()
                 ]
             ],
-            isActive:[true,[Validators.required]]
+            isActive: [true, [Validators.required]]
         });
     }
 

@@ -11,7 +11,7 @@ export class DrugmasterService {
     constructor(
         private _httpClient: ApiCaller,
         private _formBuilder: UntypedFormBuilder,
-         private _FormvalidationserviceService: FormvalidationserviceService
+        private _FormvalidationserviceService: FormvalidationserviceService
     ) {
         this.myform = this.createDrugForm();
         this.myformSearch = this.createSearchForm();
@@ -19,24 +19,23 @@ export class DrugmasterService {
 
     createDrugForm(): FormGroup {
         return this._formBuilder.group({
-            drugId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
-            drugName: ["", 
+            drugId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            drugName: ["",
                 [
                     Validators.required, Validators.maxLength(50),
-                   // Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
-                   Validators.pattern('^[a-zA-Z0-9 ]*$'),
-                   this._FormvalidationserviceService.allowEmptyStringValidator()
-                ] 
+                    //    Validators.pattern('^[a-zA-Z0-9 ]*$'),
+                    this._FormvalidationserviceService.allowEmptyStringValidator()
+                ]
             ],
             genericId: ["",
-               // Validators.required,
-                [Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]
+                // Validators.required,
+                [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]
             ],
             classId: ["",
                 //Validators.required,
-                [Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]
+                [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]
             ],
-            isActive:[true,[Validators.required]]
+            isActive: [true, [Validators.required]]
         });
     }
 
@@ -49,7 +48,7 @@ export class DrugmasterService {
 
     initializeFormGroup() {
         this.createDrugForm();
-    } 
+    }
 
     public drugMasterSave(Param: any) {
         if (Param.drugId) {

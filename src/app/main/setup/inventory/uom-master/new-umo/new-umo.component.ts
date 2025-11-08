@@ -68,8 +68,8 @@ export class NewUMOComponent implements OnInit {
     getValidationMessages() {
         return {
             unitofMeasurementName: [
-                { name: "required", Message: "Currency Name is required" },
-                { name: "maxlength", Message: "Currency name should not be greater than 50 char." },
+                { name: "required", Message: "Unit Of Measurement Name is required" },
+                { name: "maxlength", Message: "Unit Of Measurement Name should not be greater than 50 char." },
                 { name: "pattern", Message: "Special char not allowed." }
             ]
         };
