@@ -113,6 +113,7 @@ export class NewReservationComponent implements OnInit {
   vreservationId: any;
   registerObj2 = new OtReserInsert({});
   AllTypeDescription: any = []
+  RtrvDescriptionList: any = [];
 
   constructor(public _OtReservationService: OtReservationService,
     public dialogRef: MatDialogRef<NewReservationComponent>,
@@ -134,8 +135,8 @@ export class NewReservationComponent implements OnInit {
     this.reservationAttendentForm = this.createReservationAttendentArrayForm();
     this.reqAttendingArray.push(this.createReservationAttendentArrayForm())
 
-    // this.reservationDiagnosisForm = this.createReservationDignosis();
-    // this.reservationDignosisArray.push(this.createReservationDignosis())
+    this.reservationDiagnosisForm = this.createReservationDignosis();
+    this.reservationDignosisArray.push(this.createReservationDignosis())
 
     if ((this.data?.otReservationId) > 0) {
       this.registerObj1 = this.data
@@ -186,8 +187,8 @@ export class NewReservationComponent implements OnInit {
       }
 
       this.reservationForm.patchValue(this.registerObj1);
-      // this.getdiagnosisList(this.registerObj1);
-      this.getRequestSurgeryDetList(this.registerObj1);
+      this.getdiagnosisList(this.registerObj1);
+      this.getReservationSurgeryDetList(this.registerObj1);
       this.getReservationAttendentDetList(this.registerObj1);
     }
 
@@ -255,7 +256,7 @@ export class NewReservationComponent implements OnInit {
 
       tOtReservationSurgeryDetails: this._formBuilder.array([]),
       tOtReservationAttendingDetails: this._formBuilder.array([]),
-      // tOtReservationDiagnoses: this._formBuilder.array([]),
+      tOtReservationDiagnoses: this._formBuilder.array([]),
 
       ////////surgery det parameters ////////////
       surgeryCategoryId: [''],
@@ -317,7 +318,7 @@ export class NewReservationComponent implements OnInit {
 
   createReservationDignosis(element: any = {}): FormGroup {
     return this._formBuilder.group({
-      otrequestDiagnosisDetId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      otreservationDiagnosisDetId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       otreservationId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       descriptionType: [element.descriptionType ?? '', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
       descriptionName: [element.descriptionName ?? '', [this._FormvalidationserviceService.allowEmptyStringValidator()]]
@@ -430,6 +431,44 @@ export class NewReservationComponent implements OnInit {
     this.ddlLocation.SetSelection(e.locationId);
   }
 
+  getdiagnosisList(obj) {
+    this.addDiagnolist = [];
+    this.AllTypeDescription = [];
+
+    const vdata = {
+      "first": 0,
+      "rows": 10,
+      "sortField": "OTReservationId",
+      "sortOrder": 0,
+      "filters": [
+        { "fieldName": "OTReservationId", "fieldValue": String(obj.otReservationId), "opType": "Equals" }
+      ],
+      "Columns": [],
+      "exportType": "JSON"
+    };
+
+    this._OtReservationService.getRtrvdiagnosisList(vdata).subscribe(response => {
+
+      if (response && Array.isArray(response.data)) {
+        this.RtrvDescriptionList = response.data;
+        // Process Diagnosis
+        let Diagnosis = this.RtrvDescriptionList.filter(item => item.descriptionType === 'Diagnosis');
+        if (Diagnosis.length > 0) {
+          Diagnosis.forEach(element => {
+            this.addDiagnolist.push(
+              {
+                otreservationDiagnosisDetId: element.otreservationDiagnosisDetId,
+                descriptionName: element.descriptionName
+              }
+            )
+          })
+          this.reservationForm.get('diagnosis').setValue(this.addDiagnolist);
+          console.log("DIAGNOSIS DATA:", this.reservationForm.get('diagnosis').value)
+        }
+      }
+    });
+  }
+
   opstartTime: any;
   opendTime: any;
   optime: any;
@@ -518,7 +557,6 @@ export class NewReservationComponent implements OnInit {
       return false;
     }
   }
-
 
   /////////////////////////////// surgery detail part /////////////////////////////
   onAdd() {
@@ -732,7 +770,7 @@ export class NewReservationComponent implements OnInit {
   }
 
   FetchList: any = [];
-  getRequestSurgeryDetList(obj) {
+  getReservationSurgeryDetList(obj) {
     var m_data2 = {
       "first": 0,
       "rows": 10,
@@ -941,14 +979,14 @@ export class NewReservationComponent implements OnInit {
     this.reservationForm.get('otreservationTime').setValue(formattedTime);
     this.reservationForm.get('surgeryDate')?.setValue(this.datePipe.transform(this.reservationForm.get('surgeryDate')?.value, 'yyyy-MM-dd'));
 
-    // if (this.addDiagnolist.length > 0) {
-    //   this.addDiagnolist.forEach(element => {
-    //     this.AllTypeDescription.push({
-    //       descriptionName: element.descriptionName,
-    //       descriptionType: "Diagnosis"
-    //     });
-    //   });
-    // }
+    if (this.addDiagnolist.length > 0) {
+      this.addDiagnolist.forEach(element => {
+        this.AllTypeDescription.push({
+          descriptionName: element.descriptionName,
+          descriptionType: "Diagnosis"
+        });
+      });
+    }
 
     if (!this.reservationForm.invalid) {
       debugger
@@ -975,21 +1013,21 @@ export class NewReservationComponent implements OnInit {
         this.reqAttendingArray.push(this.createReservationAttendentArrayForm(item));
       });
 
-      // this.reservationDignosisArray.clear();
-      // this.AllTypeDescription.forEach(item => {
-      //   this.reservationDignosisArray.push(this.createReservationDignosis(item));
-      // });
+      this.reservationDignosisArray.clear();
+      this.AllTypeDescription.forEach(item => {
+        this.reservationDignosisArray.push(this.createReservationDignosis(item));
+      });
 
-      // this.reservationDignosisArray.clear();
-      // if (this.AllTypeDescription.length === 0) {
-      //   const reservationDiagnosisForm: FormGroup = this.createReservationDignosis({});
-      //   this.reservationDignosisArray.push(reservationDiagnosisForm);
-      // } else {
-      //   this.AllTypeDescription.forEach(element => {
-      //     const reservationDiagnosisForm: FormGroup = this.createReservationDignosis(element);
-      //     this.reservationDignosisArray.push(reservationDiagnosisForm);
-      //   });
-      // }
+      this.reservationDignosisArray.clear();
+      if (this.AllTypeDescription.length === 0) {
+        const reservationDiagnosisForm: FormGroup = this.createReservationDignosis({});
+        this.reservationDignosisArray.push(reservationDiagnosisForm);
+      } else {
+        this.AllTypeDescription.forEach(element => {
+          const reservationDiagnosisForm: FormGroup = this.createReservationDignosis(element);
+          this.reservationDignosisArray.push(reservationDiagnosisForm);
+        });
+      }
 
       const formValue = { ...this.reservationForm.value };
       const controlsToRemove = ['TheaterLocation', 'bodyPartId', 'surgeryCategoryId', 'surgeryId', 'surgeryPart', 'surgeryFromTime', 'surgeryEndTime', 'surgeryDuration', 'isPrimary',

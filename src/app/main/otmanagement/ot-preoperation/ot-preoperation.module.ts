@@ -40,6 +40,7 @@ import { OtPreoperationService } from "./ot-preoperation.service";
 import { OtPreoperationComponent } from "./ot-preoperation.component";
 import { NewOtPreoperationComponent } from './new-ot-preoperation/new-ot-preoperation.component';
 import { NewOtPostOperationComponent } from './new-ot-post-operation/new-ot-post-operation.component';
+import { DragDropModule } from "@angular/cdk/drag-drop";
 
 const routes: Routes = [
   {
@@ -88,6 +89,7 @@ const routes: Routes = [
     MatTooltipModule,
     MatButtonToggleModule,
     MatSidenavModule,
+    DragDropModule
   ],
   providers: [DatePipe, OtPreoperationService]
 })

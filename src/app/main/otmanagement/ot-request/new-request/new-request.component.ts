@@ -391,8 +391,6 @@ export class NewRequestComponent implements OnInit {
           console.log("DIAGNOSIS DATA:", this.requestForm.get('diagnosis').value)
         }
       }
-    }, error => {
-      console.error("Error fetching Chief Complaints:", error);
     });
 
   }

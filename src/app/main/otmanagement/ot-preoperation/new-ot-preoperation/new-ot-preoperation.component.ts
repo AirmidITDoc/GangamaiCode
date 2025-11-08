@@ -10,6 +10,9 @@ import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { MatTableDataSource } from '@angular/material/table';
 import { OtReqInsert } from '../../ot-request/ot-request.component';
 import { OtPreoperationService } from '../ot-preoperation.service';
+import { OtReserInsert } from '../../ot-reservation/ot-reservation.component';
+import { CdkDragDrop, CdkDragMove, moveItemInArray } from '@angular/cdk/drag-drop';
+import { CdkScrollable } from '@angular/cdk/scrolling';
 
 @Component({
   selector: 'app-new-ot-preoperation',
@@ -20,19 +23,13 @@ import { OtPreoperationService } from '../ot-preoperation.service';
 })
 export class NewOtPreoperationComponent {
   preOperationForm: FormGroup;
-
-  personalFormGroup: FormGroup;
-  Regflag: boolean = false;
-  Patientnewold: any = 1;
-  admissionFormGroup: FormGroup;
-  Regdisplay: boolean = false;
   searchFormGroup: FormGroup;
 
   vSelectedOption: any = "OP";
   vsurgeryType: any = "1";
 
   isActive: boolean = true;
-  autocompleteModeSurgeryCategory: String = "SurgeryCategory";
+  autocompleteModeSurgeryCategory: String = "OttypeMaster";
   autocompleteModeDoctorSurgeon: String = "DoctorSurgion";
   autocompleteModeSurgeryMaster: String = "SurgeryMaster";
   autocompleteModeDoctorType: string = "DoctorType";
@@ -51,7 +48,7 @@ export class NewOtPreoperationComponent {
   surgName: any;
   surgeonId: any;
   surgeonName: any;
-  anestypeId: any;
+  doctorTypeId: any;
   anesthesiaType: any;
   AnthId: any;
   AnthName: any;
@@ -61,11 +58,13 @@ export class NewOtPreoperationComponent {
   editIndex1: number | null = null;
 
   displayedColumns: string[] = [
-    'surgeryType',
+    'sequence',
+    'surgeryCategoryName',
     'surgeryName',
-    'duration',
-    'fromTime',
-    'toTime',
+    'surgeryPart',
+    'surgeryDuration',
+    'surgeryFromTime',
+    'surgeryEndTime',
     'isprimary',
     'surgeon',
     'anesthesia',
@@ -87,11 +86,27 @@ export class NewOtPreoperationComponent {
   surgeryTypeNames: string[] = ["Normal", "Emergency"];
   autocompleteModeOTTable: String = "OttableMaster";
   autocompleteModeLocation: string = "Location";
+  autocompleteModeResourseType: string = "ResourcesTypes";
 
   dssurgeryDetailList = new MatTableDataSource<OtReqInsert>();
   dsattendentDetailList = new MatTableDataSource<OtReqInsert>();
   Chargelist: any[] = [];
   Chargelist1: any[] = [];
+  registerObj2 = new OtReserInsert({});
+  vreservationType: any = "1";
+  vpacrequired: any = "1";
+  vequipmentsRequired: any = "1";
+  vinfective: any = "1";
+  vreservationId: any;
+  @ViewChild('ddlLocation') ddlLocation: AirmidDropDownComponent;
+  @ViewChild('ddlSurgerytype') ddlSurgerytype: AirmidDropDownComponent;
+  dateTimeObj: any;
+  AllTypeDescription: any = []
+  RtrvDescriptionList: any = [];
+  surgCategoryName: any;
+  partTypes: string[] = ["Left", "Middle", "Right"];
+  @ViewChild('ddlDoctor') ddlDoctor: AirmidDropDownComponent;
+  doctorType: any;
 
   constructor(public _OTPreOperationService: OtPreoperationService,
     public dialogRef: MatDialogRef<NewOtPreoperationComponent>,
@@ -107,25 +122,40 @@ export class NewOtPreoperationComponent {
     this.preOperationForm = this._OTPreOperationService.createOtPreOperationForm();
     this.preOperationForm.markAllAsTouched();
 
-    if ((this.data?.otBookingId) > 0) {
-      this.registerObj = this.data
-      this.vbookingId = this.registerObj.otBookingId
-      this.opIpId = this.registerObj.visitId
-      this.vRegNo = this.registerObj.regNo
-      this.vOPDNo = this.registerObj.opdNo
-      this.vIPDNo = this.registerObj.opdNo
-      this.vPatientName = this.registerObj.patientName
+    if ((this.data?.otReservationId) > 0) {
+      this.registerObj1 = this.data
+      console.log(this.registerObj1)
+      this.vRegNo = this.registerObj1.regNo
+      this.vOPDNo = this.registerObj1.opdNo
+      this.vIPDNo = this.registerObj1.opdNo
+      this.vPatientName = this.registerObj1.patientName
 
-      if (this.registerObj.opIpType == 0) {
-        this.vSelectedOption = "OP"
+      setTimeout(() => {
+        this._OTPreOperationService.getotTableById(this.data.ottable).subscribe((response) => {
+          this.registerObj2 = response;
+          this.ddlLocation.SetSelection(this.registerObj2.locationId);
+        });
+      }, 500);
+
+      if (this.data.otReservationId) {
+        setTimeout(() => {
+          this._OTPreOperationService.getotReservationById(this.data.otReservationId).subscribe((response) => {
+            this.registerObj2 = response;
+            console.log("Get Data:", this.registerObj2)
+            this.vreservationId = this.registerObj2.otreservationId
+            this.opIpId = this.registerObj2.opipid
+            this.vSelectedOption = this.registerObj2.opiptype == 0 ? 'OP' : 'IP';
+            this.vreservationType = this.registerObj2.reservationType == true ? '1' : '0';
+            this.vpacrequired = this.registerObj2.pacrequired == true ? '1' : '0';
+            this.vequipmentsRequired = this.registerObj2.equipmentsRequired == true ? '1' : '0';
+            this.vinfective = this.registerObj2.infective == true ? '1' : '0';
+            this.preOperationForm.get('surgeryDate')?.setValue(this.registerObj2.surgeryDate)
+          });
+        }, 500);
       }
-      else {
-        this.vSelectedOption = "IP"
-      }
 
-      if (this.registerObj?.otRequestTime) {
-        const date = new Date(this.registerObj.otRequestTime);
-
+      if (this.registerObj1?.estimateTime) {
+        const date = new Date(this.registerObj1.estimateTime);
         if (!isNaN(date.getTime())) {
           const hours = date.getHours().toString().padStart(2, '0');
           const minutes = date.getMinutes().toString().padStart(2, '0');
@@ -133,20 +163,16 @@ export class NewOtPreoperationComponent {
           const formattedTime = `${hours}:${minutes}`; // e.g. "13:01"
 
           setTimeout(() => {
-            this.preOperationForm.get('otRequestTime')?.setValue(formattedTime);
+            this.preOperationForm.get('estimateTime')?.setValue(formattedTime);
           });
-
-          console.log("Raw from backend:", this.registerObj.otRequestTime);
-          console.log("Formatted:", formattedTime);
-          console.log("Control value after patch:", this.preOperationForm.get('otRequestTime')?.value);
         }
       }
 
-      console.log(this.registerObj)
-      this.preOperationForm.patchValue(this.registerObj);
+      this.preOperationForm.patchValue(this.registerObj1);
+      this.getdiagnosisList(this.registerObj1);
+      this.getReservationSurgeryDetList(this.registerObj1);
+      this.getReservationAttendentDetList(this.registerObj1);
     }
-    this.preOperationForm.get("this.isCancelledDate")?.setValue('1900-01-01')
-    this.preOperationForm.get("doctorTypeId")?.setValue(this.registerObj.categoryId)
   }
 
   keyPressAlphanumeric(event) {
@@ -165,15 +191,11 @@ export class NewOtPreoperationComponent {
     this.vRegNo = '';
     this.vPatientName = '';
     this.vIPDNo = '';
-
     this.registerObj1 = new OtReqInsert({});
   }
 
-  dateTimeObj: any;
   getDateTime(dateTimeObj) {
-
     this.dateTimeObj = dateTimeObj;
-    console.log(this.dateTimeObj)
   }
   onChangeReg(event) {
     if (event.value == 'OP') {
@@ -215,9 +237,55 @@ export class NewOtPreoperationComponent {
     this.addDiagnolist = selectedChips;
     this.preOperationForm.get('Diagnosis')?.setValue(this.addDiagnolist);
   }
+  getdiagnosisList(obj) {
+    this.addDiagnolist = [];
+    this.AllTypeDescription = [];
 
+    const vdata = {
+      "first": 0,
+      "rows": 10,
+      "sortField": "OTReservationId",
+      "sortOrder": 0,
+      "filters": [
+        { "fieldName": "OTReservationId", "fieldValue": String(obj.otReservationId), "opType": "Equals" }
+      ],
+      "Columns": [],
+      "exportType": "JSON"
+    };
+
+    this._OTPreOperationService.getRtrvdiagnosisList(vdata).subscribe(response => {
+
+      if (response && Array.isArray(response.data)) {
+        this.RtrvDescriptionList = response.data;
+        // Process Diagnosis
+        let Diagnosis = this.RtrvDescriptionList.filter(item => item.descriptionType === 'Diagnosis');
+        if (Diagnosis.length > 0) {
+          Diagnosis.forEach(element => {
+            this.addDiagnolist.push(
+              {
+                otrequestDiagnosisDetId: element.otrequestDiagnosisDetId,
+                descriptionName: element.descriptionName
+              }
+            )
+          })
+          this.preOperationForm.get('diagnosis').setValue(this.addDiagnolist);
+          console.log("DIAGNOSIS DATA:", this.preOperationForm.get('diagnosis').value)
+        }
+      }
+    });
+  }
+
+  selectChangeSurgeryCategory(obj: any) {
+    this.surgCategoryName = obj.text
+  }
   selectChangeSurgery(obj: any) {
-    this.surgName = obj.text
+    this.surgName = obj.surgeryName
+    this.ddlSurgerytype.SetSelection(obj.siteDescId);
+    setTimeout(() => {
+      this._OTPreOperationService.getotsiteDiscById(obj.siteDescId).subscribe((response) => {
+        this.surgCategoryName = response.siteDescriptionName;
+      });
+    }, 100);
   }
   selectChangeSurgeon(obj: any) {
     this.surgeonName = obj.text
@@ -225,41 +293,56 @@ export class NewOtPreoperationComponent {
   selectChangeAnesth(obj: any) {
     this.AnthName = obj.text
   }
-  selectChangeanesthesiaType(obj: any) {
-    this.anesthesiaType = obj.text
+  selectChangedepdoctorType(obj: any) {
+    if (obj.value) {
+      this.doctorType = obj.text
+      this._OTPreOperationService.getDoctorsByDoctorType(obj.value).subscribe((data: any[]) => {
+        this.ddlDoctor.options = data;
+        this.ddlDoctor.bindGridAutoComplete();
+      });
+    }
   }
-  selectChangeAnesth1(obj: any) {
+  selectChangedoctor(obj: any) {
     this.AnthName1 = obj.text
+  }
+  onChangeOtTable(e) {
+    this.ddlLocation.SetSelection(e.locationId);
   }
 
   /////////////////////////////// surgery detail part /////////////////////////////
   onAdd() {
-    if (!this.preOperationForm.get("surgeryType")?.value) {
-      this.toastr.warning('Please select a surgery Type', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-    }
+    // if (!this.preOperationForm.get("surgeryType")?.value) {
+    //   this.toastr.warning('Please select a surgery Type', 'Warning !', {
+    //     toastClass: 'tostr-tost custom-toast-warning',
+    //   });
+    //   return;
+    // }
     if (!this.preOperationForm.get("surgeryId")?.value) {
       this.toastr.warning('Please select a Surgery', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       return;
     }
-    if (!this.preOperationForm.get("duration")?.value) {
+    if (!this.preOperationForm.get("surgeryDuration")?.value) {
       this.toastr.warning('Please enter Duration', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       return;
     }
-    if (!this.preOperationForm.get("fromTime")?.value) {
+    if (!this.preOperationForm.get("surgeryFromTime")?.value) {
       this.toastr.warning('Please enter From time', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       return;
     }
-    if (!this.preOperationForm.get("toTime")?.value) {
+    if (!this.preOperationForm.get("surgeryEndTime")?.value) {
       this.toastr.warning('Please enter To time', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    if (!this.preOperationForm.get("surgeryPart")?.value) {
+      this.toastr.warning('Please select a Surgery Part', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       return;
@@ -279,12 +362,14 @@ export class NewOtPreoperationComponent {
     debugger
 
     let newEntry = {
-      surgeryType: this.preOperationForm.get('surgeryType').value,
+      surgeryCategoryName: this.surgCategoryName,
+      surgeryCategoryId: this.preOperationForm.get('surgeryCategoryId').value,
       surgeryId: this.preOperationForm.get('surgeryId').value,//
       surgeryName: this.surgName,
-      duration: this.preOperationForm.get('duration').value,
-      fromTime: this.preOperationForm.get('fromTime').value,
-      toTime: this.preOperationForm.get('toTime').value,
+      surgeryPart: this.preOperationForm.get('surgeryPart').value,
+      surgeryDuration: this.preOperationForm.get('surgeryDuration').value,
+      surgeryFromTime: this.preOperationForm.get('surgeryFromTime').value,
+      surgeryEndTime: this.preOperationForm.get('surgeryEndTime').value,
       isprimary: this.preOperationForm.get('isprimary').value,
       surgeonId: this.preOperationForm.get('surgeonId').value,//
       surgeonName: this.surgeonName,
@@ -303,7 +388,7 @@ export class NewOtPreoperationComponent {
     //  Also add surgeon & anesthetist to second table (attendants) ---
     // if (this.surgeonName) {
     //   let surgeonEntry = {
-    //     anestypeId: null,
+    //     doctorTypeId: null,
     //     anesthesiaType: "Surgeon",
     //     anestheticsId1: newEntry.surgeonId,
     //     anestheticsName1: this.surgeonName
@@ -313,7 +398,7 @@ export class NewOtPreoperationComponent {
 
     // if (this.AnthName) {
     //   let anesthetistEntry = {
-    //     anestypeId: null,
+    //     doctorTypeId: null,
     //     anesthesiaType: "Anesthetist",
     //     anestheticsId1: newEntry.anestheticsId,
     //     anestheticsName1: this.AnthName
@@ -324,11 +409,12 @@ export class NewOtPreoperationComponent {
     this.dsattendentDetailList.data = [...this.Chargelist1];
 
     this.preOperationForm.patchValue({
-      surgeryType: '',
+      surgeryCategoryId: '',
       surgeryId: '',
-      duration: '',
-      fromTime: '',
-      toTime: '',
+      surgeryPart: '',
+      surgeryDuration: '',
+      surgeryFromTime: '',
+      surgeryEndTime: '',
       isprimary: false,
       surgeonId: '',
       anestheticsDr: ''
@@ -337,6 +423,7 @@ export class NewOtPreoperationComponent {
     this.surgName = '';
     this.surgeonName = '';
     this.AnthName = '';
+    this.surgCategoryName = '';
   }
 
   deleteTableRow(event, element) {
@@ -356,11 +443,12 @@ export class NewOtPreoperationComponent {
     console.log("Editing row:", contact);
     // Patch values into the form
     this.preOperationForm.patchValue({
-      surgeryType: contact.surgeryType ?? '',
+      surgeryCategoryId: contact.surgeryCategoryId ?? '',
       surgeryId: contact.surgeryId ?? '',
-      duration: contact.duration ?? '',
-      fromTime: contact.fromTime ?? '',
-      toTime: contact.toTime ?? '',
+      surgeryPart: contact.surgeryPart ?? '',
+      surgeryDuration: contact.surgeryDuration ?? '',
+      surgeryFromTime: contact.surgeryFromTime ?? '',
+      surgeryEndTime: contact.surgeryEndTime ?? '',
       isprimary: contact.isprimary ?? false,
       surgeonId: contact.surgeonId ?? '',
       anestheticsDr: contact.anestheticsId ?? ''
@@ -370,6 +458,7 @@ export class NewOtPreoperationComponent {
     this.surgName = contact.surgeryName ?? '';
     this.surgeonName = contact.surgeonName ?? '';
     this.AnthName = contact.anestheticsName ?? '';
+    this.surgCategoryName = contact.surgeryCategoryName ?? '';
 
     // Remove this contact from list so it can be re-added after editing
     const index = this.Chargelist.indexOf(contact);
@@ -402,17 +491,95 @@ export class NewOtPreoperationComponent {
     input.click();
   }
 
+  drop1(event: CdkDragDrop<any[]>) {
+    const data = this.dssurgeryDetailList.data; // Extract raw array from MatTableDataSource
+    moveItemInArray(data, event.previousIndex, event.currentIndex);
+    this.dssurgeryDetailList.data = data; // Update table with reordered data
+  }
+  @ViewChild(CdkScrollable, { static: true }) scrollable1!: CdkScrollable;
+  onDragMoved1(event: CdkDragMove) {
+    const scrollContainer = this.scrollable1.getElementRef().nativeElement;
+    const scrollRect = scrollContainer.getBoundingClientRect();
+    const pointerY = event.pointerPosition.y;
+
+    const edgeMargin = 60; // px from top/bottom where scrolling starts
+    const scrollSpeed = 40; // 🔥 increase for faster scrolling
+
+    if (pointerY < scrollRect.top + edgeMargin) {
+      scrollContainer.scrollTop -= scrollSpeed;
+    } else if (pointerY > scrollRect.bottom - edgeMargin) {
+      scrollContainer.scrollTop += scrollSpeed;
+    }
+  }
+
+  FetchList: any = [];
+  getReservationSurgeryDetList(obj) {
+    var m_data2 = {
+      "first": 0,
+      "rows": 10,
+      "sortField": "OTReservationId",
+      "sortOrder": 0,
+      "filters": [
+        { "fieldName": "OTReservationId", "fieldValue": String(obj.otReservationId), "opType": "Equals" }
+      ],
+      "Columns": [],
+      "exportType": "JSON"
+    };
+
+    this._OTPreOperationService.getRtrvReservationSurgeryList(m_data2).subscribe(records => {
+      this.FetchList = records.data as OtReserInsert[];
+      this.FetchList.forEach(element => {
+
+        const from = new Date(element.surgeryFromTime);
+        const end = new Date(element.surgeryEndTime);
+
+        const surgeryFromTime = from.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
+        const surgeryEndTime = end.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
+
+        this.Chargelist.push(
+          {
+            surgeryCategoryName: element.surgeryCategoryName,
+            surgeryCategoryId: element.surgeryCategoryId,
+            surgeryId: element.surgeryId,//
+            surgeryName: element.surgeryName,
+            surgeryPart: element.surgeryPart,
+            surgeryDuration: element.surgeryDuration,
+            surgeryFromTime: surgeryFromTime,
+            surgeryEndTime: surgeryEndTime,
+            isPrimary: element.isPrimary,
+            surgeonId: element.surgeonId,//
+            surgeonName: element.surgeonName,
+            anestheticsId: element.anesthetistId, //
+            anestheticsName: element.anestheticsName,
+          });
+      })
+      this.dssurgeryDetailList.data = this.Chargelist
+      console.log("surgeryDet Data:", this.dssurgeryDetailList.data)
+    });
+
+  }
   /////////////////////////////// surgery detail part end /////////////////////////////
 
   /////////////////////////////// attendent detail part /////////////////////////////
   onAdd1() {
-    debugger
+    if (!this.preOperationForm.get("doctorTypeId")?.value || this.preOperationForm.get("doctorTypeId")?.value == "0") {
+      this.toastr.warning('Please select a Doctor Type', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    if (!this.preOperationForm.get("doctorId")?.value || this.preOperationForm.get("doctorId")?.value == "0") {
+      this.toastr.warning('Please select a Doctor', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
 
     let newEntry = {
-      anestypeId: this.preOperationForm.get('anestypeId').value,//
-      anesthesiaType: this.anesthesiaType,
-      anestheticsId1: this.preOperationForm.get('anestheticsDr1').value, //
-      anestheticsName1: this.AnthName1,
+      doctorTypeId: this.preOperationForm.get('doctorTypeId').value,//
+      doctorType: this.doctorType,
+      doctorId: this.preOperationForm.get('doctorId').value, //
+      doctorName: this.AnthName1,
     };
     // this.Chargelist.push(newEntry);
     if (this.editIndex1 !== null) {
@@ -424,10 +591,11 @@ export class NewOtPreoperationComponent {
     this.dsattendentDetailList.data = [...this.Chargelist1];
 
     this.preOperationForm.patchValue({
-      anestypeId: '',
-      anestheticsDr1: ''
+      recourceType: '',
+      doctorTypeId: '',
+      doctorId: ''
     });
-    this.anesthesiaType = '';
+    this.doctorType = '';
     this.AnthName1 = '';
   }
 
@@ -450,12 +618,12 @@ export class NewOtPreoperationComponent {
 
     // Patch values into the form
     this.preOperationForm.patchValue({
-      anestypeId: contact.anestypeId ?? '',
-      anestheticsDr1: contact.anestheticsId1 ?? ''
+      doctorTypeId: contact.doctorTypeId ?? '',
+      doctorId: contact.doctorId ?? ''
     });
 
-    this.anesthesiaType = contact.anesthesiaType ?? '';
-    this.AnthName1 = contact.anestheticsName1 ?? '';
+    this.doctorType = contact.doctorType ?? '';
+    this.AnthName1 = contact.doctorName ?? '';
 
     // Remove this contact from list so it can be re-added after editing
     const index = this.Chargelist1.indexOf(contact);
@@ -465,6 +633,59 @@ export class NewOtPreoperationComponent {
     }
   }
 
+  drop2(event: CdkDragDrop<any[]>) {
+    const data = this.dsattendentDetailList.data;
+    moveItemInArray(data, event.previousIndex, event.currentIndex);
+    this.dsattendentDetailList.data = data; // Update table with reordered data
+  }
+
+  @ViewChild(CdkScrollable, { static: true }) scrollable2!: CdkScrollable;
+  onDragMoved2(event: CdkDragMove) {
+    const scrollContainer = this.scrollable2.getElementRef().nativeElement;
+    const scrollRect = scrollContainer.getBoundingClientRect();
+    const pointerY = event.pointerPosition.y;
+
+    const edgeMargin = 60; // px from top/bottom where scrolling starts
+    const scrollSpeed = 40; // 🔥 increase for faster scrolling
+
+    if (pointerY < scrollRect.top + edgeMargin) {
+      scrollContainer.scrollTop -= scrollSpeed;
+    } else if (pointerY > scrollRect.bottom - edgeMargin) {
+      scrollContainer.scrollTop += scrollSpeed;
+    }
+  }
+
+  FetchList1: any = [];
+  getReservationAttendentDetList(obj) {
+    var m_data2 = {
+      "first": 0,
+      "rows": 10,
+      "sortField": "OTReservationId",
+      "sortOrder": 0,
+      "filters": [
+        { "fieldName": "OTReservationId", "fieldValue": String(obj.otReservationId), "opType": "Equals" }
+      ],
+      "Columns": [],
+      "exportType": "JSON"
+    };
+
+    this._OTPreOperationService.getRtrvReservationAttendentList(m_data2).subscribe(records => {
+      this.FetchList1 = records.data as OtReserInsert[];
+      this.FetchList1.forEach(element => {
+
+        this.Chargelist1.push(
+          {
+            doctorTypeId: element.doctorTypeId,//
+            doctorType: element.doctorType,
+            doctorId: element.doctorId, //
+            doctorName: element.doctorName,
+          });
+      })
+      this.dsattendentDetailList.data = this.Chargelist1
+      console.log("attendentDet Data:", this.dsattendentDetailList.data)
+    });
+
+  }
   /////////////////////////////// attendent detail part end/////////////////////////////
 
   onSubmit() { }
@@ -476,8 +697,8 @@ export class NewOtPreoperationComponent {
 
   onChangeDuration(event: any) {
     // debugger
-    const durationHours = parseFloat(this.preOperationForm.get('duration')?.value); // e.g. 1.5
-    const startTime = this.preOperationForm.get('fromTime')?.value; // "HH:mm"
+    const durationHours = parseFloat(this.preOperationForm.get('surgeryDuration')?.value); // e.g. 1.5
+    const startTime = this.preOperationForm.get('surgeryFromTime')?.value; // "HH:mm"
 
     if (durationHours && startTime) {
       const [sh, sm] = startTime.split(':').map(Number);
@@ -490,18 +711,18 @@ export class NewOtPreoperationComponent {
       const em = endMinutes % 60;
 
       const endTime = `${this.pad(eh)}:${this.pad(em)}`;
-      this.preOperationForm.get('toTime')?.setValue(endTime);
+      this.preOperationForm.get('surgeryEndTime')?.setValue(endTime);
     }
   }
 
   onChangeTimefrom(event: any) {
-    const duration = this.preOperationForm.get('duration')?.value;
-    const startTime = this.preOperationForm.get('fromTime')?.value;
+    const duration = this.preOperationForm.get('surgeryDuration')?.value;
+    const startTime = this.preOperationForm.get('surgeryFromTime')?.value;
 
     if (duration) {
       this.onChangeDuration(null); // reuse logic for calculating end time
     } else {
-      const endTime = this.preOperationForm.get('toTime')?.value;
+      const endTime = this.preOperationForm.get('surgeryEndTime')?.value;
       if (endTime) {
         this.calculateDuration(startTime, endTime);
       }
@@ -509,8 +730,8 @@ export class NewOtPreoperationComponent {
   }
 
   onChangeTimeto(event: any) {
-    const startTime = this.preOperationForm.get('fromTime')?.value;
-    const endTime = this.preOperationForm.get('toTime')?.value;
+    const startTime = this.preOperationForm.get('surgeryFromTime')?.value;
+    const endTime = this.preOperationForm.get('surgeryEndTime')?.value;
 
     if (startTime && endTime) {
       this.calculateDuration(startTime, endTime);
@@ -532,7 +753,7 @@ export class NewOtPreoperationComponent {
     const dm = durationMinutes % 60;
 
     const duration = `${this.pad(dh)}:${this.pad(dm)}`;
-    this.preOperationForm.get('duration')?.setValue(duration);
+    this.preOperationForm.get('surgeryDuration')?.setValue(duration);
   }
 
   pad(num: number): string {
