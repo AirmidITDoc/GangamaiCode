@@ -23,7 +23,7 @@ export class WardMasterService {
             roomName: ["",
                 [
                     Validators.required, Validators.maxLength(50),
-                    Validators.pattern('^[a-zA-Z0-9 ]*$'),
+                    // Validators.pattern('^[a-zA-Z0-9 ]*$'),
                     this._FormvalidationserviceService.allowEmptyStringValidator()
                 ]
             ],

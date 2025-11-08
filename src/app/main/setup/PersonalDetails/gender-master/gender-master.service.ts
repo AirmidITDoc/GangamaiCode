@@ -25,7 +25,7 @@ export class GenderMasterService {
             genderId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
             genderName: ['', [
                 Validators.required, Validators.maxLength(50),
-                Validators.pattern('^[a-zA-Z () ]*$'),
+                // Validators.pattern('^[a-zA-Z () ]*$'),
                 this._FormvalidationserviceService.allowEmptyStringValidator()
             ]],
             isActive:[true,[Validators.required]],

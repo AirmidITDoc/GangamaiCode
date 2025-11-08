@@ -5,7 +5,7 @@ import { FormvalidationserviceService } from "app/main/shared/services/formvalid
 
 @Injectable()
 export class BedMasterService {
-    
+
     myform: FormGroup;
     myformSearch: FormGroup;
 
@@ -20,20 +20,19 @@ export class BedMasterService {
 
     createBedForm(): FormGroup {
         return this._formBuilder.group({
-            bedId:[0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+            bedId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             bedName: ["",
                 [
                     Validators.required,
-                   // Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
-                    Validators.pattern('^[a-zA-Z0-9 ]*$'),
-                     this._FormvalidationserviceService.allowEmptyStringValidator()
+                    // Validators.pattern('^[a-zA-Z0-9 ]*$'),
+                    this._FormvalidationserviceService.allowEmptyStringValidator()
                 ]
             ],
             roomId: [0,
-                [Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]
+                [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]
             ],
             isAvailible: true,
-            isActive:[true,[Validators.required]]
+            isActive: [true, [Validators.required]]
         });
     }
 

@@ -25,13 +25,17 @@ export class CompanyMasterService {
         return this._formBuilder.group({
             companyId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
 
-            companyName: ['', [Validators.required, Validators.maxLength(50), Validators.pattern('^[a-zA-Z0-9 ]*$'),
+            companyName: ['', [Validators.required, Validators.maxLength(50), 
+                // Validators.pattern('^[a-zA-Z0-9 ]*$'),
             this._FormvalidationserviceService.allowEmptyStringValidator()]],
             serviceId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
 
-            companyShortName: ['', [Validators.required, Validators.maxLength(50), Validators.pattern('^[a-zA-Z0-9 ]*$')]],
+            companyShortName: ['', [Validators.required, Validators.maxLength(50), 
+                // Validators.pattern('^[a-zA-Z0-9 ]*$')
+            ]],
             // tariffId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-            companyCode: ['', [Validators.maxLength(50), Validators.pattern('^[a-zA-Z0-9 ]*$'),
+            companyCode: ['', [Validators.maxLength(50),
+                //  Validators.pattern('^[a-zA-Z0-9 ]*$'),
             this._FormvalidationserviceService.allowEmptyStringValidator()]],
 
             address: ['', [Validators.required, Validators.maxLength(100), this._FormvalidationserviceService.allowEmptyStringValidator()]],
@@ -42,7 +46,9 @@ export class CompanyMasterService {
 
             countryId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
 
-            contactPerson: ['', [Validators.maxLength(50), Validators.pattern('^[a-zA-Z0-9 ]*$')]],
+            contactPerson: ['', [Validators.maxLength(50),
+                //  Validators.pattern('^[a-zA-Z0-9 ]*$')
+                ]],
             companyServicePrint: ['', [Validators.maxLength(50), Validators.pattern('^[a-zA-Z0-9 ]*$'),
             this._FormvalidationserviceService.allowEmptyStringValidator()]],
             inInclusionOrExclusion: [0],

@@ -23,8 +23,8 @@ export class NursingMasterService {
   templateForm(): FormGroup {
     return this._formBuilder.group({
       nursingId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      templateDesc: ['', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
-      nursTempName: ['', [this._FormvalidationserviceService.allowEmptyStringValidator(), Validators.maxLength(100)]],
+      templateDesc: ['', [Validators.required,this._FormvalidationserviceService.allowEmptyStringValidator()]],
+      nursTempName: ['', [Validators.required,this._FormvalidationserviceService.allowEmptyStringValidator(), Validators.maxLength(100)]],
       category:['0',[this._FormvalidationserviceService.onlyNumberValidator()]]
     });
   }

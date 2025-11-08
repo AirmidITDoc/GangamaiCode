@@ -22,14 +22,16 @@ export class SubtpaCompanyMasterService {
             companyId: [0,[Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()],],
             compTypeId: [0,[Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()],],
             companyName:["",[Validators.required, Validators.maxLength(50),
-                    Validators.pattern('^[a-zA-Z0-9 ]*$')]
+                    // Validators.pattern('^[a-zA-Z0-9 ]*$')
+                ]
             ],
             companyShortName: ["",[Validators.required, Validators.maxLength(50),
-                    Validators.pattern('^[a-zA-Z0-9 ]*$')]
+                    // Validators.pattern('^[a-zA-Z0-9 ]*$')
+                ]
             ],
             address: ["", 
                 Validators.required,Validators.maxLength(100),
-                Validators.pattern('^[a-zA-Z0-9 ]*$')
+                // Validators.pattern('^[a-zA-Z0-9 ]*$')
             ],
             cityId: [0,[Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()
                 ],

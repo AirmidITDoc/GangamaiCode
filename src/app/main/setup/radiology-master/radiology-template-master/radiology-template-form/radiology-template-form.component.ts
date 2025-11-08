@@ -16,10 +16,10 @@ import Swal from 'sweetalert2';
 })
 export class RadiologyTemplateFormComponent implements OnInit {
     templateForm: FormGroup;
-   vTemplateDesc = '';
+    vTemplateDesc = '';
     vTemplateName: any;
     isActive: boolean = true;
-     TemplateId = 0;
+    TemplateId = 0;
 
     onBlur(e: any) {
         this.vTemplateDesc = e.target.innerHTML;
@@ -27,34 +27,33 @@ export class RadiologyTemplateFormComponent implements OnInit {
     }
 
     constructor(
-        public _TemplateServieService: RadiologyTemplateMasterService,private _formBuilder: UntypedFormBuilder,
+        public _TemplateServieService: RadiologyTemplateMasterService, private _formBuilder: UntypedFormBuilder,
         public dialogRef: MatDialogRef<RadiologyTemplateFormComponent>,
         @Inject(MAT_DIALOG_DATA) public data: any, private _FormvalidationserviceService: FormvalidationserviceService,
         public toastr: ToastrService
     ) { }
 
-   
+
     ngOnInit(): void {
         this.templateForm = this.createRadiologytemplateForm();
         this.templateForm.markAllAsTouched();
         if ((this.data?.templateId ?? 0) > 0) {
-             this.vTemplateName = this.data.templateName;
+            this.vTemplateName = this.data.templateName;
             this.isActive = this.data.isActive
             this.vTemplateDesc = this.data.templateDesc;
-             this.TemplateId = this.data.templateId;
-             
+            this.TemplateId = this.data.templateId;
+
             this.templateForm.patchValue(this.data);
         }
     }
 
-     createRadiologytemplateForm(): FormGroup {
+    createRadiologytemplateForm(): FormGroup {
         return this._formBuilder.group({
             templateId: [this.TemplateId, [this._FormvalidationserviceService.onlyNumberValidator()]],
             templateName: ["",
                 [
                     Validators.required, Validators.maxLength(50),
-                    // Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
-                    Validators.pattern('^[a-zA-Z0-9 ]*$'),
+                    // Validators.pattern('^[a-zA-Z0-9 ]*$'),
                     this._FormvalidationserviceService.allowEmptyStringValidator()
                 ]
             ],
@@ -63,7 +62,7 @@ export class RadiologyTemplateFormComponent implements OnInit {
         });
     }
 
-        onEditorValueChange(content: string) {
+    onEditorValueChange(content: string) {
         this.templateForm.get('templateDesc')?.setValue(content);
     }
 
@@ -73,11 +72,11 @@ export class RadiologyTemplateFormComponent implements OnInit {
         console.log(this.templateForm.value)
         if (!this.templateForm.invalid) {
             console.log(this.templateForm.value)
-            if(this.templateForm.get('templateDesc').value!==''){
-            this._TemplateServieService.templateMasterSave(this.templateForm.value).subscribe((response) => {
-                this.onClear(true);
-            });
-        }else Swal.fire("Enter Data In Editor..")
+            if (this.templateForm.get('templateDesc').value !== '') {
+                this._TemplateServieService.templateMasterSave(this.templateForm.value).subscribe((response) => {
+                    this.onClear(true);
+                });
+            } else Swal.fire("Enter Data In Editor..")
         } {
             let invalidFields = [];
             if (this.templateForm.invalid) {

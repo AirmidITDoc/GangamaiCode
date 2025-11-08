@@ -14,7 +14,7 @@ export class DepartmentMasterService {
     constructor(
         private _httpClient: ApiCaller,
         private _formBuilder: UntypedFormBuilder,
-         private _FormvalidationserviceService: FormvalidationserviceService
+        private _FormvalidationserviceService: FormvalidationserviceService
     ) {
         this.myform = this.createDepartmentForm();
         this.myformSearch = this.createSearchForm();
@@ -22,16 +22,15 @@ export class DepartmentMasterService {
 
     createDepartmentForm(): FormGroup {
         return this._formBuilder.group({
-            departmentId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+            departmentId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             departmentName: ["",
                 [
                     Validators.required, Validators.maxLength(50),
-                   // Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
-                    Validators.pattern('^[a-zA-Z0-9 ]*$'),
+                    // Validators.pattern('^[a-zA-Z0-9 ]*$'),
                     this._FormvalidationserviceService.allowEmptyStringValidator()
                 ]
             ],
-            isActive:[true,[Validators.required]],
+            isActive: [true, [Validators.required]],
             AddedBy: ["0"],
             UpdatedBy: ["0"],
         });
@@ -49,7 +48,7 @@ export class DepartmentMasterService {
     public getdepartmentMasterList(param: gridRequest) {
         return this._httpClient.PostData("DepartmentMaster/List", param);
     }
-    
+
     public departmentMasterSave(Param: any) {
         if (Param.departmentId) {
             return this._httpClient.PutData("DepartmentMaster/" + Param.departmentId, Param);

@@ -668,9 +668,9 @@ FBillNo=0
       confirmButtonText: "Yes, Update it!"
     }).then((result) => {
       if (result.isConfirmed) {
-
+debugger
         const formattedDate = this.datePipe.transform(this.AdmissionTaskForm.get('AdmissionDate').value, "yyyy-MM-dd");
-        const formattedTime = this.datePipe.transform(new Date(), "HH:mm:ss");
+        const formattedTime = this.datePipe.transform(this.AdmissionTaskForm.get('AdmissionTime').value, "HH:mm:ss");
         this.AdmissionTaskForm.get('AdmissionDate').setValue(formattedDate);
         let Admissiontime = formattedDate + ' ' + formattedTime
 
@@ -790,9 +790,9 @@ FBillNo=0
       if (result.isConfirmed) {
 
         const formattedDate = this.datePipe.transform(this.VisitForm.get('VisitDate').value, "yyyy-MM-dd");
-        //  const formattedTime = this.datePipe.transform(this.VisitForm.get('VisitTime').value, "HH:mm:ss");
+         const formattedTime = this.datePipe.transform(this.VisitForm.get('VisitTime').value, "HH:mm:ss");
 
-        const formattedTime = this.datePipe.transform(new Date(), "HH:mm:ss");
+        // const formattedTime = this.datePipe.transform(new Date(), "HH:mm:ss");
         this.VisitForm.get('VisitDate').setValue(formattedDate);
         let VisitTime = formattedDate + ' ' + formattedTime
 

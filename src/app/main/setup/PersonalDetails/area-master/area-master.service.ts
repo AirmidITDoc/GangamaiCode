@@ -13,7 +13,7 @@ export class AreaMasterService {
     constructor(
         private _httpClient: ApiCaller,
         private _formBuilder: UntypedFormBuilder,
-         private _FormvalidationserviceService: FormvalidationserviceService
+        private _FormvalidationserviceService: FormvalidationserviceService
     ) {
         this.myform = this.createAreaForm();
         this.myformSearch = this.createSearchForm();
@@ -21,21 +21,20 @@ export class AreaMasterService {
 
     createAreaForm(): FormGroup {
         return this._formBuilder.group({
-            areaId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+            areaId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             areaName: ["",
                 [
-                    Validators.required, 
+                    Validators.required,
                     Validators.maxLength(50),
-                   // Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
-                    Validators.pattern('^[a-zA-Z0-9 ]*$'),
+                    // Validators.pattern('^[a-zA-Z0-9 ]*$'),
                     this._FormvalidationserviceService.allowEmptyStringValidator()
                 ]
             ],
             cityId: [0,
-                [Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]
+                [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]
             ],
             cityName: [""],
-            isActive:[true,[Validators.required]]
+            isActive: [true, [Validators.required]]
         });
     }
     createSearchForm(): FormGroup {

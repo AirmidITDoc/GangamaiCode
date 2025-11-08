@@ -23,7 +23,7 @@ export class TalukaMasterService {
             talukaId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
             talukaName: ['',
                [ Validators.required,
-                Validators.pattern('^[a-zA-Z0-9 ]*$'),
+                // Validators.pattern('^[a-zA-Z0-9 ]*$'),
                  this._FormvalidationserviceService.allowEmptyStringValidator()
                ]
             ],
