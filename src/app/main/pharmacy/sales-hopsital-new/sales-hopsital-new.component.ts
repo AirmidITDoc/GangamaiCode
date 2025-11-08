@@ -1605,15 +1605,34 @@ if (QtyElement) {
             }
         }
     }
-
+draftpatientlist:any=[];
+draftextMobilenolist:any=[];
     onAddDraftList(contact) { 
         debugger
         console.log(contact)
         this.DraftID = contact.dsalesId;
         this.saleSelectedDatasource.data = []; 
         this.Itemchargeslist = [];
+        this.draftpatientlist=[];
 
         if (contact.opipType == 2) {
+         
+            this.draftpatientlist.push(
+            {
+                text:contact?.patientName, 
+                extMobileNo:contact?.extMobileNo,
+                doctorName:contact?.admDoctorName,
+                patientName:contact?.patientName
+            } 
+        )
+          this.draftextMobilenolist.push(
+            {
+                text:contact?.extMobileNo, 
+                extMobileNo:contact?.extMobileNo,
+                doctorName:contact?.admDoctorName,
+                patientName:contact?.patientName
+            } 
+        )
             this.vSelectedOption = '2';
             this.ItemSubform.get('extMobileNo').reset();
             this.ItemSubform.get('extMobileNo').setValidators([Validators.required]);
@@ -1621,11 +1640,11 @@ if (QtyElement) {
             this.ItemSubform.get('externalPatientName').reset();
             this.ItemSubform.get('externalPatientName').setValidators([Validators.required]);
             this.ItemSubform.get('externalPatientName').enable();
-            this.ItemSubform.updateValueAndValidity();
-            this.ItemSubform.get('extMobileNo').setValue(contact.extMobileNo)
-            this.ItemSubform.get('externalPatientName').setValue(contact.patientName)
-            this.ItemSubform.get('doctorName').setValue(contact.admDoctorName)
-            this.ItemSubform.get('extAddress').setValue(contact.extAddress)
+            this.ItemSubform.get('extAddress').setValue(contact?.extAddress);
+            this.ItemSubform.get('extMobileNo').setValue(this.draftextMobilenolist[0]);
+            this.ItemSubform.get('externalPatientName').setValue(this.draftpatientlist[0]);
+            this.ItemSubform.get('doctorName').setValue(this.draftpatientlist[0]);
+            this.ItemSubform.updateValueAndValidity(); 
             this.paymethod = false;
             this.Draftchk = true;
             this.RegId = '';
@@ -1708,10 +1727,11 @@ if (QtyElement) {
             "columns": [{ "data": "string", "name": "string" }]
         };
         this._salesService.getDraftBillItemBalQty(m_data).subscribe((response) => {
+            console.log(response)
               const tempChargesList = response?.data || []; 
                 let qtyBalChk = 0;  
             if (tempChargesList.length == 0) {
-                Swal.fire(contact.ItemId + ' : ' + 'Item Stock is Not Avilable:');
+                Swal.fire(contact.itemId + ' : ' + 'Item Stock is Not Avilable:');
             } else if (tempChargesList.length > 0) {
                 tempChargesList.forEach((element) => {
                     if (contact.itemId != element.itemId) {

@@ -163,7 +163,8 @@
 
                     <airmid-textbox fxFlex="5%" label="Rate" formControlName="Rate" [formGroup]="userFormGroup"
                       placeholder="Rate" type="number" [min]="0" (valueChange)="calculateTotalamt()"
-                      [validations]="getValidationMessages().rate"></airmid-textbox>
+                      [validations]="getValidationMessages().rate"
+                       (change)="chkpreviouserates(userFormGroup.get('Rate')?.value)"></airmid-textbox>
 
                     <airmid-textbox fxFlex="5%" label="Total Amount" formControlName="TotalAmount"
                       [formGroup]="userFormGroup" [readonly]="true"></airmid-textbox>

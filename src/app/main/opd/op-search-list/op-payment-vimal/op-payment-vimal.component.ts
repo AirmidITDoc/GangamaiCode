@@ -20,6 +20,15 @@ import { OPSearhlistService } from '../op-searhlist.service';
     animations: fuseAnimations
 })
 export class OpPaymentVimalComponent implements OnInit {
+    Payments = new MatTableDataSource<PaymentList>();
+    selectedSaleDisplayedCol = [
+        'PaymentType',
+        'Amount',
+        'BankName',
+        'RefNo',
+        'RegDate',
+        'buttons'
+    ];
     autocompleteModebank: string = "Bank";
     currentDate = new Date();
     patientDetailsFormGrp: FormGroup;
@@ -36,51 +45,53 @@ export class OpPaymentVimalComponent implements OnInit {
         });
         this.paymentArr1 = final;
     }
-    onChangePaymentType() {
-        if (this.selectedPaymnet1 == 'cash') {
-            this.patientDetailsFormGrp.get('referenceNo1').clearValidators();
-            this.patientDetailsFormGrp.get('referenceNo1').updateValueAndValidity();
-            this.patientDetailsFormGrp.get('regDate1').clearValidators();
-            this.patientDetailsFormGrp.get('regDate1').updateValueAndValidity();
-            this.patientDetailsFormGrp.get('bankName1').clearValidators();
-            this.patientDetailsFormGrp.get('bankName1').updateValueAndValidity();
-        }
-        else if (this.selectedPaymnet1 == 'tds' || this.selectedPaymnet1 == 'wf') {
-            this.patientDetailsFormGrp.get('referenceNo1').clearValidators();
-            this.patientDetailsFormGrp.get('referenceNo1').updateValueAndValidity();
-            this.patientDetailsFormGrp.get('regDate1').clearValidators();
-            this.patientDetailsFormGrp.get('regDate1').updateValueAndValidity();
-            this.patientDetailsFormGrp.get('bankName1').clearValidators();
-            this.patientDetailsFormGrp.get('bankName1').updateValueAndValidity();
-        }
-        else {
-            this.patientDetailsFormGrp.get('referenceNo1').setValidators([Validators.required]);
-            this.patientDetailsFormGrp.get('regDate1').setValidators([Validators.required]);
-            if (this.selectedPaymnet1 == 'cheque') {
-                this.patientDetailsFormGrp.get('bankName1').setValidators([Validators.required]);
-            }
-            else if (this.selectedPaymnet1 == 'card') {
-                this.patientDetailsFormGrp.get('bankName1').setValidators([Validators.required]);
-            }
-            else if (this.selectedPaymnet1 == 'net banking') {
-                this.patientDetailsFormGrp.get('bankName1').setValidators([Validators.required]);
-            }
-
-            else {
-                this.patientDetailsFormGrp.get('bankName1').clearValidators();
-                this.patientDetailsFormGrp.get('bankName1').updateValueAndValidity();
-            }
-        }
+  onChangePaymentType() {
+    if (this.selectedPaymnet1 == 'cash') {
+      this.patientDetailsFormGrp.get('referenceNo1').clearValidators();
+      this.patientDetailsFormGrp.get('referenceNo1').updateValueAndValidity();
+      this.patientDetailsFormGrp.get('regDate1').clearValidators();
+      this.patientDetailsFormGrp.get('regDate1').updateValueAndValidity();
+      this.patientDetailsFormGrp.get('bankName1').clearValidators();
+      this.patientDetailsFormGrp.get('bankName1').updateValueAndValidity();
     }
-    Payments = new MatTableDataSource<PaymentList>();
-    selectedSaleDisplayedCol = [
-        'PaymentType',
-        'Amount',
-        'BankName',
-        'RefNo',
-        'RegDate',
-        'buttons'
-    ];
+    else if (this.selectedPaymnet1 == 'tds' || this.selectedPaymnet1 == 'wf') {
+      this.patientDetailsFormGrp.get('referenceNo1').clearValidators();
+      this.patientDetailsFormGrp.get('referenceNo1').updateValueAndValidity();
+      this.patientDetailsFormGrp.get('regDate1').clearValidators();
+      this.patientDetailsFormGrp.get('regDate1').updateValueAndValidity();
+      this.patientDetailsFormGrp.get('bankName1').clearValidators();
+      this.patientDetailsFormGrp.get('bankName1').updateValueAndValidity();
+    }
+    else {
+      this.patientDetailsFormGrp.get('referenceNo1').setValidators([Validators.required]);
+      this.patientDetailsFormGrp.get('regDate1').setValidators([Validators.required]);
+      if (this.selectedPaymnet1 == 'cheque') {
+        this.patientDetailsFormGrp.get('bankName1').setValidators([Validators.required]);
+      }
+      else if (this.selectedPaymnet1 == 'card') {
+        this.patientDetailsFormGrp.get('bankName1').setValidators([Validators.required]);
+      }
+      else if (this.selectedPaymnet1 == 'net banking') {
+        this.patientDetailsFormGrp.get('bankName1').setValidators([Validators.required]);
+      }
+      else if (this.selectedPaymnet1 == 'upi') {
+        this.patientDetailsFormGrp.get('referenceNo1').setValidators([Validators.required]);
+        this.patientDetailsFormGrp.get('regDate1').setValidators([Validators.required]);
+        this.patientDetailsFormGrp.get('referenceNo1').updateValueAndValidity();
+        this.patientDetailsFormGrp.get('bankName1').clearValidators();
+        this.patientDetailsFormGrp.get('bankName1').updateValueAndValidity();
+          // Optionally revalidate the whole form
+        this.patientDetailsFormGrp.updateValueAndValidity(); 
+      }
+      else {
+        this.patientDetailsFormGrp.get('bankName1').clearValidators();
+        this.patientDetailsFormGrp.get('bankName1').updateValueAndValidity();
+      }
+    }
+    this.patientDetailsFormGrp.markAllAsTouched();
+    this.patientDetailsFormGrp.updateValueAndValidity();
+  }
+
     netPayAmt: any = 0;
     nowDate: Date;
     amount1: number;
@@ -318,11 +329,38 @@ export class OpPaymentVimalComponent implements OnInit {
     onClose() {
         this.dialogRef.close();
     }
+      OnCheckFormValidity(): number {
+    this.patientDetailsFormGrp.markAllAsTouched();
+    this.patientDetailsFormGrp.updateValueAndValidity();
+
+    if (this.patientDetailsFormGrp.invalid) {
+
+      let invalidFields = [];
+      if (this.patientDetailsFormGrp.invalid) {
+        for (const controlName in this.patientDetailsFormGrp.controls) {
+          const control = this.patientDetailsFormGrp.get(controlName);
+          if (control?.invalid) {
+            invalidFields.push(`Payment From: ${controlName}`);
+          }
+        }
+      }
+      if (invalidFields.length > 0) {
+        invalidFields.forEach(field => {
+          this.toastr.warning(`Please Check this field "${field}" is invalid.`, 'Warning',
+          );
+        });
+        return 0
+      }
+    }
+    return 1;
+  }
     Paymentobj = {};
     RemainingAmt: any = [];
     onSubmit() {
-        this.onAddPayment();
         debugger
+        let result = this.OnCheckFormValidity(); 
+        this.onAddPayment();
+         if (result === 0) return; // stop execution if invalid
         if (this.data.FromName != "IP-Bill" && this.data.FromName != "IP-SETTLEMENT") {
             if (this.patientDetailsFormGrp.get('balanceAmountController').value != 0) {
                 Swal.fire({
@@ -471,11 +509,22 @@ export class OpPaymentVimalComponent implements OnInit {
                 Advanceobj['RefundAmount'] = element?.refundAmount || 0;
                 Advancesarr.push(Advanceobj);
             });
+             let balamt = 0;
+             debugger
+            if(this.data.FromName == "IP-Bill" || this.data.FromName == "IP-SETTLEMENT"){
+                if(this.patientDetailsFormGrp.get('balanceAmountController')?.value > 0){
+                balamt = this.patientDetailsFormGrp.get('balanceAmountController')?.value || 0;
+                }else{ 
+                balamt = this.amount1 || 0;
+                } 
+            }else{
+               balamt = this.patientDetailsFormGrp.get('balanceAmountController')?.value || 0;
+            }
             IsSubmit = {
                 "submitDataPay": submitDataPay,
                 "submitDataAdvancePay": Advancesarr,
                 "PaidAmt": this.paidAmt, // this.patientDetailsFormGrp.get('paidAmountController').value,
-                "BalAmt": this.patientDetailsFormGrp.get('balanceAmountController').value,
+                "BalAmt":balamt, // this.patientDetailsFormGrp.get('balanceAmountController').value,
                 "IsSubmitFlag": true,
             }
         } else {
