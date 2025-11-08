@@ -20,10 +20,31 @@ export class SMSConfugurationService {
    }
    CreateSearchForm(){
     return this._formbuilder.group({
-      startdate: [new Date().toISOString()],
+      fromDate: [new Date().toISOString()],
       enddate: [new Date().toISOString()]
     });
    }
+
+   CreatewhatsappSearchForm(){
+    return this._formbuilder.group({
+      fromDate: [new Date().toISOString()],
+      enddate: [new Date().toISOString()],
+      Mobile:''
+    });
+   }
+
+     CreateemailSearchForm(){
+    return this._formbuilder.group({
+      fromDate: [new Date().toISOString()],
+      enddate: [new Date().toISOString()],
+      NotificationType:''
+    });
+   }
+
+
+
+
+
    CreateSMSForm(){
     return this._formbuilder.group({ 
       TemplateCreation:[''],

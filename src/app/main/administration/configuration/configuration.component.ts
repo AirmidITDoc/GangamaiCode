@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, Inject, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { fuseAnimations } from '@fuse/animations';
 import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
@@ -12,6 +12,7 @@ import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 import Swal from 'sweetalert2';
+import { DatePipe } from '@angular/common';
 
 
 @Component({
@@ -26,14 +27,26 @@ export class ConfigurationComponent implements OnInit {
   myform: FormGroup
   ConfigFormGroup: FormGroup
   myConfigform: FormGroup
-  //  isActive: any
-  //  isPatientSelected: boolean = false;
+  smsSearchForm: FormGroup
+  emailSearchForm: FormGroup
+  auditFilterForm: FormGroup;
+  smsUserName = ""
+  emailUserName = ""
+  ActionByName = ""
   autocompleteModeItem: string = "PatientType";
   autocompleteModeCashcounter: string = "CashCounter";
   autocompleteModeDepartment: String = "Department";
   autocompleteModedoctorty: string = "ConDoctor";
   screenFromString = 'Common-form';
   autocompleteModeClass: string = "Class";
+
+  fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+  toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+  fromDate1 = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+  toDate1 = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+  fromDate2 = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+  toDate2 = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+
 
 
   DSServiceList = new MatTableDataSource<logervicedetail>();
@@ -49,23 +62,128 @@ export class ConfigurationComponent implements OnInit {
     'IsInputField',
     'SystemInputValue'
   ];
+
+  @ViewChild(AirmidTableComponent) smsgrid: AirmidTableComponent;
+  @ViewChild(AirmidTableComponent) emailgrid: AirmidTableComponent;
+  @ViewChild(AirmidTableComponent) auditgrid: AirmidTableComponent;
+  // @ViewChild(AirmidTableComponent) grid3: AirmidTableComponent;
+  @ViewChild('actionAuthanticate') actionAuthanticate!: TemplateRef<any>;
+  @ViewChild('actionAuthanticatepass') actionAuthanticatepass!: TemplateRef<any>;
+
+  ngAfterViewInit() {
+    this.gridConfig1.columnsList.find(col => col.key === 'reqAuthenticate')!.template = this.actionAuthanticate;
+    this.gridConfig1.columnsList.find(col => col.key === 'passauthenticate')!.template = this.actionAuthanticatepass;
+    //  this.gridConfig2.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate2;
+  }
+
+  //SMS
+  allColumnssms = [
+    { heading: "SenderId", key: "senderId", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+    { heading: "URL", key: "url", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+    { heading: "Keys", key: "keys", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+    { heading: "Campaign", key: "campaign", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+    { heading: "User Name", key: "userName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+    { heading: "SPassword", key: "sPassword", sort: true, align: 'left', emptySign: 'NA', width: 120 },
+    { heading: "StorageLocLink", key: "storageLocLink", sort: true, align: 'left', emptySign: 'NA', width: 120 },
+    { heading: "ConType", key: "conType", sort: true, align: 'left', emptySign: 'NA', width: 120 },
+
+    // {
+    //   heading: "Action", key: "action", align: "right", width: 180, sticky: true, type: gridColumnTypes.template,
+    //   template: this.actionButtonTemplate2  // Assign ng-template to the column
+    // }
+  ]
+  allFilterssms = [
+    // { fieldName: "UserName", fieldValue: this.smsUserName, opType: OperatorComparer.StartsWith },
+    // { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
+    // { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
+
+  ]
+
+  gridConfig: gridModel = {
+    apiUrl: "Configuration/SmsconfigList",
+    columnsList: this.allColumnssms,
+    sortField: "UserName",
+    sortOrder: 0,
+    filters: this.allFilterssms
+  }
+  //Email
+  allColumnsemail = [
+    { heading: "Status", key: "reqAuthenticate", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
+    { heading: "Status", key: "passauthenticate", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
+    { heading: "Display Name", key: "displayname", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+    { heading: "Email Address", key: "emailaddress", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+    { heading: "Mail Server", key: "mailserver", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+    { heading: "UserName", key: "userName", sort: true, align: 'left', emptySign: 'NA', width: 120 },
+    { heading: "Password", key: "password", sort: true, align: 'left', emptySign: 'NA', width: 120 },
+    { heading: "isActive", key: "isActive", sort: true, align: 'left', emptySign: 'NA', width: 120 },
+
+    // {
+    //   heading: "Action", key: "action", align: "right", width: 180, sticky: true, type: gridColumnTypes.template,
+    //   template: this.actionButtonTemplate2  // Assign ng-template to the column
+    // }
+  ]
+  allFiltersemail = [
+    // { fieldName: "UserName", fieldValue: this.emailUserName, opType: OperatorComparer.StartsWith },
+    // { fieldName: "From_Dt", fieldValue: this.fromDate1, opType: OperatorComparer.Equals },
+    // { fieldName: "To_Dt", fieldValue: this.toDate1, opType: OperatorComparer.Equals },
+
+  ]
+
+  gridConfig1: gridModel = {
+    apiUrl: "Configuration/EmailconfigList",
+    columnsList: this.allColumnsemail,
+    sortField: "UserName",
+    sortOrder: 0,
+    filters: this.allFiltersemail
+  }
+  //audit
+
+  allColumnsaudit = [
+    { heading: "ActionBy Name", key: "actionByName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+    { heading: "Entity Name", key: "entityName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+    { heading: "Description", key: "description", sort: true, align: 'left', emptySign: 'NA', width: 300 },
+    { heading: "Additional Info", key: "additionalInfo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+    { heading: "LogTypeId", key: "logTypeId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+    { heading: "LogSource", key: "logSourceId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+    { heading: "Created On", key: "createdOn", sort: true, align: 'left', emptySign: 'NA', width: 100, type: 6 },
+
+    // {
+    //   heading: "Action", key: "action", align: "right", width: 180, sticky: true, type: gridColumnTypes.template,
+    //   template: this.actionButtonTemplate2  // Assign ng-template to the column
+    // }
+  ]
+  allFiltersaudit = [
+    { fieldName: "ActionByName", fieldValue: this.ActionByName, opType: OperatorComparer.StartsWith },
+    { fieldName: "From_Dt", fieldValue: this.fromDate2, opType: OperatorComparer.Equals },
+    { fieldName: "To_Dt", fieldValue: this.toDate2, opType: OperatorComparer.Equals },
+  ]
+
+  gridConfig2: gridModel = {
+    apiUrl: "Configuration/AuditLogList",
+    columnsList: this.allColumnsaudit,
+    sortField: "Id",
+    sortOrder: 0,
+    filters: this.allFiltersaudit
+  }
+
+
   constructor(
     public _ConfigurationService: ConfigurationService,
     private formBuilder: FormBuilder,
     private _FormvalidationserviceService: FormvalidationserviceService,
-    //    public dialogRef: MatDialogRef<EditConfigurationComponent>,
-    //    @Inject(MAT_DIALOG_DATA) public data: any,
-    public toastr: ToastrService
+    public toastr: ToastrService, public datePipe: DatePipe
   ) { }
 
   ngOnInit(): void {
     this.ConfigFormGroup = this.vConfigInsert()
-    // this.myform = this._ConfigurationService.createConfigForm();
+    this.smsSearchForm = this._ConfigurationService.createsmsfilterConfigForm();
+    this.emailSearchForm = this._ConfigurationService.createemailfilterConfigForm();
+
     this.myConfigform = this.vConfigFormInsert()
     this.getServiceList()
 
     this.serviceDetailsArray.push(this.createserviceDetail());
-
+    this.auditFilterForm = this._ConfigurationService.CreateauditForm();
   }
 
 
@@ -104,7 +222,7 @@ export class ConfigurationComponent implements OnInit {
       OPDNo: 0,
       OPSalesdisc: 0,
       IPSalesdisc: 0,
-      SystemLogOutTime:0
+      SystemLogOutTime: 0
     });
   }
   onSubmit() {
@@ -136,9 +254,9 @@ export class ConfigurationComponent implements OnInit {
             this.getServiceList()
           });
         }
-       });
+      });
 
-      }
+    }
 
     else {
       this.toastr.warning('please check List is invalid', 'Warning !', {
@@ -152,7 +270,7 @@ export class ConfigurationComponent implements OnInit {
 
 
   getServiceList() {
-    debugger
+
     var param = {
       "searchFields": [
 
@@ -166,6 +284,7 @@ export class ConfigurationComponent implements OnInit {
       console.log(this.DSServiceList.data)
     });
   }
+
 
   selectChangeDept(event) {
     this.Department = event.value
@@ -183,6 +302,110 @@ export class ConfigurationComponent implements OnInit {
       return false;
     }
   }
+
+
+  //sms config
+  onChangesmsuser() {
+    this.fromDate = this.datePipe.transform(this.smsSearchForm.get('fromDate').value, "yyyy-MM-dd")
+    this.toDate = this.datePipe.transform(this.smsSearchForm.get('enddate').value, "yyyy-MM-dd")
+
+    this.smsUserName = this.smsSearchForm.get('UserName').value
+
+    this.getsmsfilterdata();
+  }
+
+  getsmsfilterdata() {
+
+    this.gridConfig = {
+      apiUrl: "Configuration/SmsconfigList",
+      columnsList: this.allColumnssms,
+      sortField: "UserName",
+      sortOrder: 0,
+      filters: [
+        // { fieldName: "UserName", fieldValue: this.smsUserName, opType: OperatorComparer.Equals },
+
+      ]
+    }
+    this.smsgrid.gridConfig = this.gridConfig;
+    this.smsgrid.bindGridData();
+  }
+
+  Clearfiltersmsuser(event) {
+    console.log(event)
+    if (event == 'UserName')
+      this.smsSearchForm.get('UserName').setValue("")
+    this.onChangesmsuser()
+  }
+
+  //email config
+  onChangeemailuser() {
+    this.fromDate1 = this.datePipe.transform(this.emailSearchForm.get('fromDate').value, "yyyy-MM-dd")
+    this.toDate1 = this.datePipe.transform(this.emailSearchForm.get('enddate').value, "yyyy-MM-dd")
+
+    this.emailUserName = this.emailSearchForm.get('UserName').value
+
+    this.getemailfilterdata();
+  }
+
+  getemailfilterdata() {
+    this.gridConfig1 = {
+      apiUrl: "Configuration/EmailconfigList",
+      columnsList: this.allColumnsemail,
+      sortField: "UserName",
+      sortOrder: 0,
+      filters: [
+        // { fieldName: "UserName", fieldValue: this.emailUserName, opType: OperatorComparer.StartsWith },
+
+      ]
+    }
+    this.emailgrid.gridConfig = this.gridConfig1;
+    this.emailgrid.bindGridData();
+  }
+
+  Clearfilteremailuser(event) {
+    console.log(event)
+    if (event == 'UserName')
+      this.emailSearchForm.get('UserName').setValue("")
+    this.onChangeemailuser()
+  }
+  //Audit
+
+  onChangeaudit() {
+    this.fromDate2 = this.datePipe.transform(this.auditFilterForm.get('fromDate').value, "yyyy-MM-dd")
+    this.toDate2 = this.datePipe.transform(this.auditFilterForm.get('enddate').value, "yyyy-MM-dd")
+
+    this.ActionByName = this.auditFilterForm.get('ActionByName').value
+
+    this.getfilterdataaudit();
+  }
+
+  getfilterdataaudit() {
+    debugger
+
+    this.gridConfig2 = {
+      apiUrl: "Configuration/AuditLogList",
+      columnsList: this.allColumnsaudit,
+      sortField: "Id",
+      sortOrder: 0,
+      filters: [
+        { fieldName: "ActionByName", fieldValue: this.ActionByName, opType: OperatorComparer.StartsWith },
+    { fieldName: "From_Dt", fieldValue: this.fromDate2, opType: OperatorComparer.Equals },
+    { fieldName: "To_Dt", fieldValue: this.toDate2, opType: OperatorComparer.Equals },
+      ]
+    }
+    this.auditgrid.gridConfig = this.gridConfig2;
+    this.auditgrid.bindGridData();
+  }
+
+  Clearfilteraudit(event) {
+    console.log(event)
+    if (event == 'ActionByName') {
+      this.auditFilterForm.get('ActionByName').setValue("")
+      this.onChangeaudit()
+    }
+  }
+
+
   onClear(val: boolean) {
     this.myform.reset();
     //  this.dialogRef.close(val);
@@ -196,7 +419,6 @@ export class ConfigurationComponent implements OnInit {
   onClose() {
     //  this.dialogRef.close();
   }
-
 }
 
 

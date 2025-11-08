@@ -42,6 +42,7 @@ import { ScrollingModule } from '@angular/cdk/scrolling';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { EditConfigurationComponent } from './edit-configuration/edit-configuration.component';
 import { AddAutoServiceComponent } from './add-auto-service/add-auto-service.component';
+import { AllConfigDetailsComponent } from './all-config-details/all-config-details.component';
 
 
 const routes: Routes = [
@@ -51,7 +52,7 @@ const routes: Routes = [
   },
 ];
 @NgModule({
-  declarations: [ConfigurationComponent,NewConfigurationComponent, EditConfigurationComponent, AddAutoServiceComponent],
+  declarations: [ConfigurationComponent,NewConfigurationComponent, EditConfigurationComponent, AddAutoServiceComponent, AllConfigDetailsComponent],
   imports: [
     RouterModule.forChild(routes),
    MatChipsModule,

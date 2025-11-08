@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { fuseAnimations } from '@fuse/animations';
@@ -10,6 +10,7 @@ import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/air
 import { ToastrService } from 'ngx-toastr';
 import { SMSConfugurationService } from './smsconfuguration.service';
 import { UpdateSMSComponent } from './update-sms/update-sms.component';
+import { EmailSendComponent } from 'app/main/shared/componets/email-send/email-send.component';
 
 @Component({
   selector: 'app-smsconfuguration',
@@ -19,66 +20,143 @@ import { UpdateSMSComponent } from './update-sms/update-sms.component';
   animations: fuseAnimations,
 })
 export class SMSConfugurationComponent implements OnInit {
-  MySearchForm:FormGroup;
-    msg: any;
-    fromDate ="01/01/2024" //this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
-    toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+  MySearchForm: FormGroup;
+  whatsappfilterForm: FormGroup;
+  emailfilterForm: FormGroup;
 
-    @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
-    gridConfig: gridModel = {
-        apiUrl: "smsConfig/SMSconfigList",
-        columnsList: [
-            { heading: "OutGoingCode", key: "smsOutGoingID", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Date", key: "smsDate", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "MobileNo", key: "mobileNumber", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "SMSString", key: "smsString", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "IsSent", key: "isSent", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
-            {
-                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
-                    {
-                        action: gridActions.edit, callback: (data: any) => {
-                            this.onSave(data);
-                        }
-                    }, {
-                        action: gridActions.delete, callback: (data: any) => {
-                            this._SMSConfigService.deactivateTheStatus(data.talukaId).subscribe((response: any) => {
-                                this.toastr.success(response.message);
-                                this.grid.bindGridData();
-                            });
-                        }
-                    }]
-            } //Action 1-view, 2-Edit,3-delete
-        ],
-        sortField: "SMSOutGoingID",
-        sortOrder: 0,
-        filters: [
-            { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.Contains },
-            { fieldName: "ToDate", fieldValue: this.toDate, opType: OperatorComparer.Equals }
-        ]
-    }
-    onSave(row: any = null) {
-        const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
-        buttonElement.blur(); // Remove focus from the button
 
-        let that = this;
-        const dialogRef = this._matDialog.open(UpdateSMSComponent,
-            {
-                maxWidth: "85vw",
-                height: '90%',
-                width: '90%',
-                data: row
-            });
-        dialogRef.afterClosed().subscribe(result => {
-            if (result) {
-                that.grid.bindGridData();
+  msg: any;
+  fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+  toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+
+
+  fromDate1 = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+  toDate1 = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+  fromDate2 = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+  toDate2 = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+  MobileNumber = ""
+  ActionByName = ""
+  NotificationType = "0"
+
+  @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+  @ViewChild(AirmidTableComponent) grid1: AirmidTableComponent;
+  @ViewChild(AirmidTableComponent) grid2: AirmidTableComponent;
+
+   @ViewChild('actionisSent') actionisSent!: TemplateRef<any>;
+  @ViewChild('actionisSendMail') actionisSendMail!: TemplateRef<any>;
+  ngAfterViewInit() {
+     this.gridConfig.columnsList.find(col => col.key === 'isSent')!.template = this.actionisSent;
+    this.gridConfig2.columnsList.find(col => col.key === 'isSendMail')!.template = this.actionisSendMail;
+  
+    //  this.gridConfig2.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate2;
+  }
+
+
+
+  gridConfig: gridModel = {
+    apiUrl: "smsConfig/SMSendoutList",
+    columnsList: [
+     
+       { heading: "IsSent", key: "isSent", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
+  
+      { heading: "Date", key: "smsDate", sort: true, align: 'left', emptySign: 'NA',type:6 },
+      { heading: "MobileNo", key: "mobileNumber", sort: true, align: 'left', emptySign: 'NA' },
+      { heading: "SMSString", key: "smsString", sort: true, align: 'left', emptySign: 'NA' },
+      // { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
+      {
+        heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+          {
+            action: gridActions.edit, callback: (data: any) => {
+              this.onSave(data);
             }
-        });
-    }
+          }, {
+            action: gridActions.delete, callback: (data: any) => {
+              this._SMSConfigService.deactivateTheStatus(data.talukaId).subscribe((response: any) => {
+                this.toastr.success(response.message);
+                this.grid.bindGridData();
+              });
+            }
+          }]
+      } //Action 1-view, 2-Edit,3-delete
+    ],
+    sortField: "SMSOutGoingID",
+    sortOrder: 0,
+    filters: [
+      { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.Contains },
+      { fieldName: "ToDate", fieldValue: this.toDate, opType: OperatorComparer.Equals }
+    ]
+  }
 
 
-   constructor(
-    public _SMSConfigService : SMSConfugurationService,
+  allColumns2 = [
+     { heading: "Sms Date", key: "smsDate", sort: true, align: 'left', emptySign: 'NA', width: 100, type: 6 },
+   { heading: "Mobile Number", key: "mobileNumber", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+    { heading: "Sms String", key: "smsString", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+    { heading: "Sms Type", key: "smsType", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+    { heading: "TranNo", key: "tranNo", sort: true, align: 'left', emptySign: 'NA', width: 80 },
+    // { heading: "smSurl", key: "smSurl", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, width: 120 },
+    { heading: "File Path", key: "filePath", sort: true, align: 'left', emptySign: 'NA', width: 120 },
+    { heading: "Last Try", key: "lastTry", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+    { heading: "Last Response", key: "lastResponse", sort: true, align: 'left', emptySign: 'NA', width: 120 },
+
+    // {
+    //   heading: "Action", key: "action", align: "right", width: 180, sticky: true, type: gridColumnTypes.template,
+    //   template: this.actionButtonTemplate2  // Assign ng-template to the column
+    // }
+  ]
+  allFilters2 = [
+    { fieldName: "MobileNumber", fieldValue: this.MobileNumber, opType: OperatorComparer.Equals },
+    { fieldName: "FromDate", fieldValue: this.fromDate1, opType: OperatorComparer.GreaterThanOrEqual },
+    { fieldName: "ToDate", fieldValue: this.toDate1, opType: OperatorComparer.GreaterThanOrEqual }
+
+
+
+  ]
+  gridConfig1: gridModel = {
+    apiUrl: "smsConfig/WhatsappSendoutList",
+    columnsList: this.allColumns2,
+    sortField: "SMSOutGoingID",
+    sortOrder: 0,
+    filters: this.allFilters2
+  }
+
+  //email
+
+  allColumnsemail = [
+   
+    { heading: "Status", key: "isSendMail", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
+      
+    { heading: "NotificationType", key: "notificationType", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+    { heading: "SendDate", key: "sendDate", sort: true, align: 'left', emptySign: 'NA', width: 100, type: 6 },
+    { heading: "ToAddress", key: "toAddress", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+    { heading: "Subject", key: "subject", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+    { heading: "EmailBody", key: "emailBody", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+    // { heading: "smSurl", key: "smSurl", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, width: 120 },
+    { heading: "EmailCC", key: "emailCC", sort: true, align: 'left', emptySign: 'NA', width: 120 },
+    { heading: "AttachmentPath", key: "attachmentPath", sort: true, align: 'left', emptySign: 'NA', width: 120 },
+    // {
+    //   heading: "Action", key: "action", align: "right", width: 180, sticky: true, type: gridColumnTypes.template,
+    //   template: this.actionButtonTemplate2  // Assign ng-template to the column
+    // }
+  ]
+  allFiltersemail = [
+    { fieldName: "NotificationType", fieldValue: this.NotificationType, opType: OperatorComparer.Equals },
+    { fieldName: "FromDate", fieldValue: this.fromDate2, opType: OperatorComparer.Equals },
+    { fieldName: "ToDate", fieldValue: this.toDate2, opType: OperatorComparer.Equals }
+
+  ]
+
+  gridConfig2: gridModel = {
+    apiUrl: "smsConfig/EmailsendoutList",
+    columnsList: this.allColumnsemail,
+    sortField: "Id",
+    sortOrder: 0,
+    filters: this.allFiltersemail
+  }
+
+
+  constructor(
+    public _SMSConfigService: SMSConfugurationService,
     private _loggedService: AuthenticationService,
     public datePipe: DatePipe,
     public _matDialog: MatDialog,
@@ -87,21 +165,160 @@ export class SMSConfugurationComponent implements OnInit {
 
   ngOnInit(): void {
     this.MySearchForm = this._SMSConfigService.CreateSearchForm();
+    this.whatsappfilterForm = this._SMSConfigService.CreatewhatsappSearchForm();
+    this.emailfilterForm = this._SMSConfigService.CreateemailSearchForm();
+
   }
 
- 
-  NewSMS(){ 
+
+
+  onSave(row: any = null) {
+    const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+    buttonElement.blur(); // Remove focus from the button
+
+    let that = this;
+    const dialogRef = this._matDialog.open(UpdateSMSComponent,
+      {
+        maxWidth: "85vw",
+        height: '90%',
+        width: '90%',
+        data: row
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        that.grid.bindGridData();
+      }
+    });
+  }
+
+
+
+  NewSMS() {
     const dialogRef = this._matDialog.open(UpdateSMSComponent,
       {
         maxWidth: "100%",
         height: '90%',
-        width: '90%', 
+        width: '90%',
       });
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed - Insert Action', result);
-      
+
     });
   }
+  //Whats app
+
+  onChangewhatsapp() {
+    this.fromDate1 = this.datePipe.transform(this.whatsappfilterForm.get('fromDate').value, "yyyy-MM-dd")
+    this.toDate1 = this.datePipe.transform(this.whatsappfilterForm.get('enddate').value, "yyyy-MM-dd")
+    this.MobileNumber = this.whatsappfilterForm.get('Mobile').value
+
+    this.getfilterdata1();
+  }
+
+  getfilterdata1() {
+
+    debugger
+    this.gridConfig1 = {
+      apiUrl: "smsConfig/WhatsappSendoutList",
+      columnsList: this.allColumns2,
+      sortField: "SMSOutGoingID",
+      sortOrder: 0,
+      filters: [
+        { fieldName: "MobileNumber", fieldValue: this.MobileNumber, opType: OperatorComparer.Equals },
+        { fieldName: "FromDate", fieldValue: this.fromDate1, opType: OperatorComparer.StartsWith },
+        { fieldName: "ToDate", fieldValue: this.toDate1, opType: OperatorComparer.StartsWith }
+
+      ]
+    }
+    this.grid1.gridConfig = this.gridConfig1;
+    this.grid1.bindGridData();
+  }
+
+  Clearfilterwhatsapp(event) {
+    console.log(event)
+    if (event == 'Mobile')
+      this.whatsappfilterForm.get('Mobile').setValue("")
+    this.onChangewhatsapp()
+  }
+  //email
+
+  onChangeemail() {
+    this.NotificationType = this.emailfilterForm.get('NotificationType').value
+    this.fromDate2 = this.datePipe.transform(this.emailfilterForm.get('fromDate').value, "yyyy-MM-dd")
+    this.toDate = this.datePipe.transform(this.emailfilterForm.get('enddate').value, "yyyy-MM-dd")
+
+    this.getfilterdataemail();
+  }
+
+  getfilterdataemail() {
+
+    debugger
+    this.gridConfig2 = {
+      apiUrl: "smsConfig/EmailsendoutList",
+      columnsList: this.allColumnsemail,
+      sortField: "Id",
+      sortOrder: 0,
+      filters: [
+        { fieldName: "NotificationType", fieldValue: this.NotificationType, opType: OperatorComparer.Equals },
+        { fieldName: "FromDate", fieldValue: this.fromDate2, opType: OperatorComparer.Equals },
+        { fieldName: "ToDate", fieldValue: this.toDate2, opType: OperatorComparer.Equals }
+
+      ]
+    }
+    this.grid2.gridConfig = this.gridConfig2;
+    this.grid2.bindGridData();
+  }
+
+  Clearfilteremail(event) {
+    console.log(event)
+    if (event == 'NotificationType')
+      this.emailfilterForm.get('NotificationType').setValue("")
+    this.onChangeemail()
+  }
+
+
+  openResend(contact) {
+    const dialogRef = this._matDialog.open(EmailSendComponent,
+      {
+        maxWidth: "100%",
+        height: '75%',
+        width: '55%',
+        data: {
+          Obj: contact
+        }
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      this.grid.bindGridData();
+    });
+
+  }
+
+    openSMS(contact) {
+    const dialogRef = this._matDialog.open(EmailSendComponent,
+      {
+        maxWidth: "100%",
+        height: '75%',
+        width: '55%',
+        data: {
+          Obj: contact
+        }
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      this.grid.bindGridData();
+    });
+
+  }
+
+
+  getValidationMessages() {
+    return {
+      registrationNo: [],
+      ipNo: [],
+      opNo: [],
+      patientType: [],
+
+    };
+  }
 }
- 
+
 

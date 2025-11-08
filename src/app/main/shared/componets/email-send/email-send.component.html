@@ -31,7 +31,7 @@
 
                     <div fxLayout="column" fxLayoutAlign="start none">
 
-                        <form [formGroup]="_PurchaseOrder.POEmailFrom"
+                        <form [formGroup]="EmailFrom"
                             style="overflow:hidden;">
 
                             <div fxFlexFill fxLayout="row" fxLayout.gt-xs="column">
@@ -66,11 +66,11 @@
                                         id="Body" type="text"  required style="height: 100px;"
                                         [(ngModel)]="vBody"></textarea>
                                 </mat-form-field>
-
+<!-- [disabled]="EmailFrom.invalid" -->
                                 <div matTooltip="Fill All Data  to enable this button!!">
                                     <button class="next-btn"
                                         style="border-radius: 16px;margin-left: 600px; margin-top: 10px;"
-                                        [disabled]="_PurchaseOrder.POEmailFrom.invalid" (click)="OnSend()">Send</button>
+                                         (click)="OnSend()">Send</button>
                                     <button class="footer-btn" style="border-radius: 16px;"
                                         (click)="OnReset()">Reset</button>&nbsp;&nbsp;
                                 </div>

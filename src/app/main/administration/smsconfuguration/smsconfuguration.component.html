@@ -1,27 +1,147 @@
-
- <div fusePerfectScrollbar
-    class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
+<div class="page-layout simple inner-sidebar inner-scroll right-sidebar" style="height: 100%;" fusePerfectScrollbar
     dynamicTableHeight>
-    <div class="top-header header accent p-16" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
-        fxLayoutAlign.gt-xs="space-between center ">
-        <div class="top-header-info">
-            <div class="top-header-title">
-                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                    SMS Configuration List
-                </span>
-            </div>
-        </div>
-        <div class="gap-8" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
-            <button mat-raised-button (click)="onSave()">+ New SMS Configuration
-            </button>
-        </div>
-    </div>
-    <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
-        <airmid-table [gridConfig]="gridConfig"  class="content">
-            <ng-container filters>
-            <airmid-datepicker [formGroup]="MySearchForm" [isRangePicker]="true" formStartControlName="fromDate" formEndControlName="enddate" [(fromValue)]="gridConfig.filters[0].fieldValue" [(toValue)]="gridConfig.filters[1].fieldValue"></airmid-datepicker>
 
-            </ng-container>
-        </airmid-table>
-    </div>
+    <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start">
+
+        <mat-tab label="Sms Status Detail List">
+
+            <div fusePerfectScrollbar
+                class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
+                dynamicTableHeight>
+
+                <div class="top-header header accent p-16" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
+                    fxLayoutAlign.gt-xs="space-between center ">
+                    <div class="top-header-info">
+                        <div class="top-header-title">
+                            <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                                SMS Send List
+                            </span>
+                        </div>
+                    </div>
+                    <div class="gap-8" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
+                        <button mat-raised-button (click)="onSave()">+ New SMS
+                        </button>
+
+                    </div>
+                </div>
+
+                <div class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+                    <ng-template #actionisSent let-element>
+                        <div>
+                            <button mat-icon-button (click)="onSave(element)" matTooltip="Resend SMS"
+                                *ngIf="element.isSent==true">
+                                <mat-icon *ngIf="element.isSent==true" matTooltip="SMS ReSend">
+                                <img width="30px" height="30px" src="assets/images/logos/resend.png">
+                            </mat-icon>
+                            </button>
+                        </div>
+                    </ng-template>
+                    <airmid-table [gridConfig]="gridConfig" class="content">
+                        <ng-container filters>
+                            <airmid-datepicker [formGroup]="MySearchForm" [isRangePicker]="true"
+                                formStartControlName="fromDate" formEndControlName="enddate"
+                                [(fromValue)]="gridConfig.filters[0].fieldValue"
+                                [(toValue)]="gridConfig.filters[1].fieldValue"></airmid-datepicker>
+
+                        </ng-container>
+                    </airmid-table>
+                </div>
+            </div>
+
+        </mat-tab>
+
+        <mat-tab label="WhatsApp Send List">
+
+            <div fusePerfectScrollbar
+                class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
+                dynamicTableHeight>
+                <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+
+                    <airmid-table [gridConfig]="gridConfig1" class="content" #grid1>
+                        <ng-container filters>
+                            <form [formGroup]="whatsappfilterForm">
+
+                                <airmid-datepicker [formGroup]="whatsappfilterForm" [isRangePicker]="true"
+                                    formStartControlName="fromDate" formEndControlName="enddate"
+                                    [(fromValue)]="gridConfig1.filters[1].fieldValue"
+                                    [(toValue)]="gridConfig1.filters[2].fieldValue">
+                                </airmid-datepicker>
+
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Mobile No</mat-label>
+                                    <input matInput placeholder="Search Mobile" autocomplete="off"
+                                        [formGroup]="whatsappfilterForm" formControlName="Mobile"
+                                        (input)="onChangewhatsapp()" />
+                                    <button matSuffix mat-icon-button aria-label="Clear"
+                                        (click)=" Clearfilterwhatsapp('Mobile')">
+                                        <mat-icon>close</mat-icon>
+                                    </button>
+                                </mat-form-field>
+
+
+                            </form>
+                        </ng-container>
+                    </airmid-table>
+                </div>
+            </div>
+
+        </mat-tab>
+
+
+        <mat-tab label="Email Status Detail List">
+
+            <div fusePerfectScrollbar
+                class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
+                dynamicTableHeight>
+                <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+                 
+                   
+                      <ng-template #actionisSendMail let-element>
+                        <div fxLayout="row" fxLayoutAlign="center center">
+
+                            <mat-icon *ngIf="element.isSendMail==0" (click)="openResend(element)" matTooltip="Resend EMail">
+                                <img width="30px" height="30px" src="assets/images/logos/resend.png">
+                            </mat-icon>
+
+                             <!-- <mat-icon title="Email ReSend" *ngIf="element.isSendMail==0" (click)="openResend(element)" matTooltip="Resend EMail">redo</mat-icon> -->
+
+                        </div>
+                    </ng-template>
+
+                    <airmid-table [gridConfig]="gridConfig2" class="content" #grid2>
+                        <ng-container filters>
+                            <form [formGroup]="emailfilterForm">
+                                <airmid-datepicker [formGroup]="emailfilterForm" [isRangePicker]="true"
+                                    formStartControlName="fromDate" formEndControlName="enddate"
+                                    [(fromValue)]="gridConfig2.filters[1].fieldValue"
+                                    [(toValue)]="gridConfig2.filters[2].fieldValue">
+                                </airmid-datepicker>
+
+                                <mat-form-field appearance="outline">
+                                    <mat-label>NotificationType</mat-label>
+                                    <input matInput placeholder="Search NotificationType" autocomplete="off"
+                                        [formGroup]="emailfilterForm" formControlName="NotificationType"
+                                        (input)="onChangeemail()" />
+                                    <button matSuffix mat-icon-button aria-label="Clear"
+                                        (click)=" Clearfilteremail('NotificationType')">
+                                        <mat-icon>close</mat-icon>
+                                    </button>
+                                </mat-form-field>
+
+
+                            </form>
+                        </ng-container>
+                    </airmid-table>
+                </div>
+            </div>
+
+        </mat-tab>
+
+
+
+
+
+    </mat-tab-group>
+
+
 </div>

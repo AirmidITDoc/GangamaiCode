@@ -1,53 +1,127 @@
 import { Injectable } from '@angular/core';
-import { FormGroup, UntypedFormBuilder } from '@angular/forms';
+import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { ApiCaller } from 'app/core/services/apiCaller';
+import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 
 @Injectable({
-    providedIn: 'root'
+  providedIn: 'root'
 })
 export class ConfigurationService {
-    myform: FormGroup;
-    myformSearch: FormGroup;
+  mysmsform: FormGroup;
+  myemailform: FormGroup;
+  mywhatsappform: FormGroup;
+  myAuditform: FormGroup;
+  myformSearch: FormGroup;
 
-    constructor(private _httpClient: ApiCaller,
-        private _formBuilder: UntypedFormBuilder) {
-        // this.myform = this.createConfigForm();
-        // this.myformSearch = this.createSearchForm();
-    }
+  constructor(private _httpClient: ApiCaller, private _FormvalidationserviceService: FormvalidationserviceService,
+    private _formBuilder: UntypedFormBuilder) {
+    this.mysmsform = this.createsmsfilterConfigForm();
+    this.myemailform = this.createemailfilterConfigForm();
+    this.mywhatsappform = this.createwhatsappfilterConfigForm();
+    this.myAuditform = this.createauditfilterConfigForm();
+  }
 
-    createConfigForm(): FormGroup {
-        return this._formBuilder.group({
-          
+  createConfigForm(): FormGroup {
+    return this._formBuilder.group({
 
-        });
-    }
 
-    createSearchForm(): FormGroup {
-        return this._formBuilder.group({
-            ConfigNameSearch: [""],
-            IsDeletedSearch: ["2"],
-        });
-    }
+    });
+  }
 
-    initializeFormGroup() {
-        this.createConfigForm();
-    }
+  createSearchForm(): FormGroup {
+    return this._formBuilder.group({
+      ConfigNameSearch: [""],
+      IsDeletedSearch: ["2"],
+    });
+  }
 
-    public ConfigSave(Param: any) {
-        // if (Param.currencyId) {
-        //     return this._httpClient.PutData("Configuration/" + Param.currencyId, Param);
-        // } else
-             return this._httpClient.PutData("Configuration/SystemConfig", Param);
-    }
+  createsmsfilterConfigForm(): FormGroup {
+    return this._formBuilder.group({
 
-    public deactivateTheStatus(m_data) {
-        return this._httpClient.DeleteData("Configuration?Id=" + m_data.toString());
-    }
+      UserName: [''],
+      fromDate: [(new Date()).toISOString(), this._FormvalidationserviceService.validDateValidator()],
+      enddate: [(new Date()).toISOString(), this._FormvalidationserviceService.validDateValidator()],
 
-    
+    });
+  }
 
-      public getloginaccessRetrive(param) {
-        return this._httpClient.PostData("Common", param);
-    }
+  createemailfilterConfigForm(): FormGroup {
+    return this._formBuilder.group({
+
+      UserName: [''],
+      fromDate: [(new Date()).toISOString(), this._FormvalidationserviceService.validDateValidator()],
+      enddate: [(new Date()).toISOString(), this._FormvalidationserviceService.validDateValidator()],
+
+    });
+  }
+
+  CreateauditForm() {
+    return this._formBuilder.group({
+      ActionByName: '',
+      fromDate: [(new Date()).toISOString(), this._FormvalidationserviceService.validDateValidator()],
+      enddate: [(new Date()).toISOString(), this._FormvalidationserviceService.validDateValidator()],
+
+    });
+  }
+
+  createwhatsappfilterConfigForm(): FormGroup {
+    return this._formBuilder.group({
+      PBillNo: [''],
+      RegNo: [''],
+      FirstName: ['', [
+        Validators.pattern("^[A-Za-z0-9 () ] *[a-zA-Z0-9 () ]*[0-9 ]*$"),
+      ]],
+      LastName: ['', [
+        Validators.pattern("^[A-Za-z0-9 () ] *[a-zA-Z0-9 () ]*[0-9 ]*$"),
+      ]],
+      IsInterimOrFinal: ['2'],
+      CompanyId: [''],
+      fromDate: [(new Date()).toISOString()],
+      enddate: [(new Date()).toISOString()],
+      ReceiptNo: '',
+
+    });
+  }
+
+  createauditfilterConfigForm(): FormGroup {
+    return this._formBuilder.group({
+      PBillNo: [''],
+      RegNo: [''],
+      FirstName: ['', [
+        Validators.pattern("^[A-Za-z0-9 () ] *[a-zA-Z0-9 () ]*[0-9 ]*$"),
+      ]],
+      LastName: ['', [
+        Validators.pattern("^[A-Za-z0-9 () ] *[a-zA-Z0-9 () ]*[0-9 ]*$"),
+      ]],
+      IsInterimOrFinal: ['2'],
+      CompanyId: [''],
+      fromDate: [(new Date()).toISOString()],
+      enddate: [(new Date()).toISOString()],
+      ReceiptNo: '',
+
+    });
+  }
+
+
+  initializeFormGroup() {
+    this.createConfigForm();
+  }
+
+  public ConfigSave(Param: any) {
+    // if (Param.currencyId) {
+    //     return this._httpClient.PutData("Configuration/" + Param.currencyId, Param);
+    // } else
+    return this._httpClient.PutData("Configuration/SystemConfig", Param);
+  }
+
+  public deactivateTheStatus(m_data) {
+    return this._httpClient.DeleteData("Configuration?Id=" + m_data.toString());
+  }
+
+
+
+  public getloginaccessRetrive(param) {
+    return this._httpClient.PostData("Common", param);
+  }
 
 }
