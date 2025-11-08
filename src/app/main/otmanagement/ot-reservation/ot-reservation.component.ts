@@ -191,6 +191,7 @@ export class OTReservationComponent implements OnInit {
                 maxHeight: '90vh',
                 // height: '90%',
                 width: '85%',
+                data: row
             });
         dialogRef.afterClosed().subscribe(result => {
             this.grid.bindGridData();
@@ -206,6 +207,7 @@ export class OTReservationComponent implements OnInit {
                 maxWidth: "90vw",
                 maxHeight: '90vh',
                 width: '90%',
+                data: row
             });
         dialogRef.afterClosed().subscribe(result => {
             this.grid.bindGridData();
@@ -222,6 +224,7 @@ export class OTReservationComponent implements OnInit {
                 maxHeight: '90vh',
                 // height: '90%',
                 width: '85%',
+                data: row
             });
         dialogRef.afterClosed().subscribe(result => {
             this.grid.bindGridData();
@@ -238,6 +241,7 @@ export class OTReservationComponent implements OnInit {
                 maxHeight: '90vh',
                 // height: '90%',
                 width: '85%',
+                data: row
             });
         dialogRef.afterClosed().subscribe(result => {
             this.grid.bindGridData();
@@ -253,6 +257,7 @@ export class OTReservationComponent implements OnInit {
                 maxWidth: "90vw",
                 maxHeight: '90vh',
                 width: '90%',
+                data: row
             });
         dialogRef.afterClosed().subscribe(result => {
             this.grid.bindGridData();

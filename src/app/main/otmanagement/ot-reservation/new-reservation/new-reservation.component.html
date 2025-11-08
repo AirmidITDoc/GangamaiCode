@@ -264,7 +264,7 @@
                                     style="margin-bottom: 5px;">
                                     <app-airmid-chipautocomplete fxFlex
                                         [chips]="reservationForm.get('diagnosis')?.value"
-                                        [apiUrl]="'OTRequest/GetRequestDiagnosisList?DescriptionType=Diagnosis'"
+                                        [apiUrl]="'OTReservation/GetReservationDiagnosisList?DescriptionType=Diagnosis'"
                                         [displayKey]="'descriptionName'" [allowCustom]="true"
                                         [placeholder]="'Select Diagnosis'"
                                         (chipsChange)="selectChangeDiagnosis($event)">

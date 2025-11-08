@@ -30,8 +30,8 @@ export class PatientOtmovementTrackingService {
       opIpId: ["", [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       moveDate: [new Date()],
       moveTime: [],
-      fromDepId:[],
-      toDepId:[],
+      fromDepId: [],
+      toDepId: [],
       accompaniedId: [],
       authorisedId: [],
       purMovingId: [],
@@ -41,5 +41,10 @@ export class PatientOtmovementTrackingService {
       equipId: [],
       equipRemark: [''],
     });
+  }
+
+
+  public getotReservationById(Id) {
+    return this._httpClient.GetData("OTReservation/" + Id);
   }
 }

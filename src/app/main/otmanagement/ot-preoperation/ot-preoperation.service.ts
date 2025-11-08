@@ -44,13 +44,12 @@ export class OtPreoperationService {
       Clearance: [],
       Medical: [],
       Finance: [],
-      surgeonTypeId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      surgeryType: ['', [Validators.required]],
-      surgeryId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      surgeryCategoryId: [''],
+      surgeryId: [0],
       partId: [],
-      fromTime: ['', Validators.required],
-      toTime: ['', Validators.required],
-      duration: ['', Validators.required],
+      surgeryFromTime: [''],
+      surgeryEndTime: [''],
+      surgeryDuration: [''],
       fromTime1: ['', Validators.required],
       toTime1: ['', Validators.required],
       duration1: ['', Validators.required],
@@ -58,11 +57,12 @@ export class OtPreoperationService {
       surgeonId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       anestheticsDr: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       recourceType: [0],
-      anestypeId: [0],
-      anestheticsDr1: [0],
+      doctorTypeId: [0],
+      doctorId: [0],
       bodyPartId: [],
       cathLabDiagnosis: [],
       ConsentText: [],
+      surgeryPart: [''],
     });
   }
 
@@ -70,8 +70,8 @@ export class OtPreoperationService {
     return this._formBuilder.group({
       opIpType: ["OP"],
       opIpId: ["", [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      surgeonTypeId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      surgeryType: ['', [Validators.required]],
+      surgeonTypeId: [0],
+      surgeryCategoryId: [''],
       surgeryId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       partId: [],
       fromTime: ['', Validators.required],
@@ -116,5 +116,27 @@ export class OtPreoperationService {
       Finance: [],
     });
   }
+
+  public getotReservationById(Id) {
+    return this._httpClient.GetData("OTReservation/" + Id);
+  }
+  public getotTableById(Id) {
+    return this._httpClient.GetData("OtTableMaster/" + Id);
+  }
+  public getRtrvdiagnosisList(employee) {
+    return this._httpClient.PostData("OTReservation/OtReservationDiagnosisList", employee);
+  }
+  public getRtrvReservationAttendentList(employee) {
+    return this._httpClient.PostData("OTReservation/OtReservationAttendingDetailList", employee);
+  }
+  public getRtrvReservationSurgeryList(employee) {
+    return this._httpClient.PostData("OTReservation/OtReservationSurgeryDetailList", employee);
+  }
+  public getotsiteDiscById(Id) {
+    return this._httpClient.GetData("SiteDescriptionMaster/" + Id);
+  }
+    public getDoctorsByDoctorType(doctTypeId) {
+        return this._httpClient.GetData("VisitDetail/DoctorTypeDoctorList?DocTypeId=" + doctTypeId)
+    }
 
 }
