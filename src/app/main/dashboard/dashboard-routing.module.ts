@@ -31,7 +31,7 @@ const routes: Routes = [
     component: PathologyDashboardComponent
   },
   {
-    path: 'Radiololgy-dashboard',
+    path: 'Radiology-dashboard',
     component: RadiologyDashboardComponent
   },
   {

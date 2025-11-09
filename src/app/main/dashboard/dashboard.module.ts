@@ -28,6 +28,9 @@ import { HomePageComponent } from './home-page/home-page.component';
 import { PharmacyDashboardComponent } from './pharmacy-dashboard/pharmacy-dashboard.component';
 import { SalesSummaryComponent } from './pharmacy-dashboard/sales-summary/sales-summary.component';
 import { NewDashboardComponent } from './new-dashboard/new-dashboard.component';
+import { RadiologyDashboardComponent } from './radiology-dashboard/radiology-dashboard.component';
+import { PathologyDashboardComponent } from './pathology-dashboard/pathology-dashboard.component';
+import { CashlessDashboardComponent } from './cashless-dashboard/cashless-dashboard.component';
 
 @NgModule({
     declarations: [
@@ -37,7 +40,10 @@ import { NewDashboardComponent } from './new-dashboard/new-dashboard.component';
         PharmacyDashboardComponent,
         SalesSummaryComponent,
         HomePageComponent,
-        NewDashboardComponent
+        NewDashboardComponent,
+        RadiologyDashboardComponent,
+        PathologyDashboardComponent,
+        CashlessDashboardComponent
     ],
     imports: [
         CommonModule,
