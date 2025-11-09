@@ -38,8 +38,8 @@ export class LabPatientRegService {
   public getstateId(Id) {
     return this._httpClient.GetData("StateMaster/" + Id);
   }
-  public getRegistraionById(Id) {
-    return this._httpClient.GetData("OutPatient/" + Id);
+  public getLabRegistraionById(Id) {
+    return this._httpClient.GetData("LabPatientRegistration/" + Id);
   }
   public getserviceList(param) {
     return this._httpClient.PostData("PathlogySampleCollection/PathRadServiceList", param);

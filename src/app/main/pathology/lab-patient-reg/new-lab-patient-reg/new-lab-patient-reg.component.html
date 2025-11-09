@@ -64,11 +64,18 @@
                                     </div>
 
                                     <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                     
+
                                         <airmid-autocomplete label="First Name" [formGroup]="myForm"
                                             formControlName="patientName" placeholderText="First Name" fxFlex
                                             ApiUrl="Sales/External-auto-complete?Keyword=" TextField="text"
-                                            (selectionChange)="getSelectedObjextPatient($event)"></airmid-autocomplete>
+                                            (selectionChange)="getSelectedObj($event)"></airmid-autocomplete>
+
+                                        <!-- <airmid-autocomplete label="Patient Name / Mobile No" [formGroup]="myForm"
+                                            formControlName="patientName" placeholderText="Patient Name / Mobile No"
+                                            fxFlex ApiUrl="LabPatientRegistration/Labauto-complete?Keyword="
+                                            (selectionChange)="getSelectedObj($event)"
+                                            ValueField="regId"></airmid-autocomplete> -->
+
                                     </div>
 
                                     <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
@@ -91,9 +98,14 @@
                                     </div>
 
                                     <div fxFlex="60%" fxFlex.xs="100%" fxFlex.sm="67%">
-                                        <app-airmid-dateofbirth [formGroup]="myForm" formControlName="dateofBirth"
+                                        <!-- <app-airmid-dateofbirth [formGroup]="myForm" formControlName="dateofBirth"
                                             [(value)]="registerObj.dateofBirth" dateStyle="Year"
-                                            (dateChange)="chkChange()"></app-airmid-dateofbirth>
+                                            (dateChange)="chkChange()"></app-airmid-dateofbirth> -->
+
+                                              <app-airmid-dateofbirth [formGroup]="myForm"
+                                               dateStyle="Year" formControlName="dateofBirth"
+                                                [(value)]="registerObj.dateofBirth"></app-airmid-dateofbirth>
+                                          
                                     </div>
 
                                     <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
@@ -101,7 +113,7 @@
                                             (keypress)="keyPressAlphanumeric($event)" [formGroup]="myForm"
                                             [maxLength]="10" [value]="registerObj?.mobileNo">
                                         </airmid-textbox>
-                                   
+
                                     </div>
 
                                     <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
@@ -156,8 +168,9 @@
                                     </div>
 
                                     <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <airmid-dropdown label="Doctor Name" formControlName="doctorId"  (selectionChange)="chkDoctor($event)"
-                                            [formGroup]="myForm" #ddlDoctor [value]="registerObj?.doctorId">
+                                        <airmid-dropdown label="Doctor Name" formControlName="doctorId"
+                                            (selectionChange)="chkDoctor($event)" [formGroup]="myForm" #ddlDoctor
+                                            [value]="registerObj?.doctorId">
                                         </airmid-dropdown>
                                     </div>
 
@@ -207,7 +220,7 @@
                             </form>
 
                             <div fxLayout="row wrap" fxLayoutGap="16px">
-                                <div fxFlex.gt-sm="40%">
+                                <div fxFlex.gt-sm="48%">
                                     <mat-card>
                                         <mat-table #table matSort [dataSource]="dsLabRequest2"
                                             class="h-280 fix-first-col" [@animateStagger]="{value:'50'}">
@@ -216,6 +229,13 @@
                                                     Name</mat-header-cell>
                                                 <mat-cell *matCellDef="let contact">{{contact.serviceName}}</mat-cell>
                                             </ng-container>
+
+                                            <ng-container matColumnDef="price">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header>Service
+                                                    Price</mat-header-cell>
+                                                <mat-cell *matCellDef="let contact">{{contact.price}}</mat-cell>
+                                            </ng-container>
+
                                             <ng-container matColumnDef="Action" stickyEnd>
                                                 <mat-header-cell *matHeaderCellDef class="w-80">Action</mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" class="w-80">
@@ -230,33 +250,70 @@
                                     </mat-card>
                                 </div>
 
-                                <div fxFlex.gt-sm="58%">
+                                <div fxFlex.gt-sm="50%">
                                     <mat-card>
-                                        <mat-table #table matSort [dataSource]="dstable1" class="h-280"
-                                            [@animateStagger]="{value:'50'}">
+                                        <!-- <mat-table #table matSort [dataSource]="dstable1" class="h-280"
+                                            [@animateStagger]="{value:'50'}"> -->
+
+                                        <mat-table #table1 matSort [dataSource]="dstable1"
+                                            [@animateStagger]="{ value: '50' }" class="airmid-table table h-280">
+
                                             <ng-container matColumnDef="ServiceName">
-                                                <mat-header-cell *matHeaderCellDef mat-sort-header>Service
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header class="w-650">Service
                                                     Name</mat-header-cell>
-                                                <mat-cell *matCellDef="let contact">{{contact.ServiceName}}</mat-cell>
+                                                <mat-cell *matCellDef="let contact"
+                                                    class="w-650">{{contact.ServiceName}}</mat-cell>
                                             </ng-container>
-                                            <ng-container matColumnDef="Price">
+                                            <!-- <ng-container matColumnDef="Price">
                                                 <mat-header-cell *matHeaderCellDef
                                                     mat-sort-header>Price</mat-header-cell>
                                                 <mat-cell *matCellDef="let contact">{{contact.Price |
                                                     currency:'INR'}}</mat-cell>
+                                            </ng-container> -->
+
+                                            <ng-container matColumnDef="Price">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
+                                                    class="w-150">Price</mat-header-cell>
+                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-150">
+                                                    <mat-form-field appearance="fill">
+                                                        <input matInput [(ngModel)]="contact.Price" type="text"
+                                                            OnlyNumber [id]="'Price' + index" [min]="0"
+                                                            (ngModelChange)="getCellCalculation(contact)"
+                                                            type="number" />
+                                                    </mat-form-field>
+                                                </mat-cell>
                                             </ng-container>
-                                            <ng-container matColumnDef="buttons">
+
+
+
+                                            <!-- <ng-container matColumnDef="buttons">
                                                 <mat-header-cell *matHeaderCellDef>Action</mat-header-cell>
                                                 <mat-cell *matCellDef="let row">
                                                     <button mat-icon-button (click)="deleteTableRow(row)" color="warn">
                                                         <mat-icon>delete_outline</mat-icon>
                                                     </button>
                                                 </mat-cell>
+                                            </ng-container> -->
+                                            <ng-container matColumnDef="buttons" stickyEnd>
+                                                <mat-header-cell *matHeaderCellDef class="w-80">Action</mat-header-cell>
+                                                <mat-cell *matCellDef="let contact" class="w-80">
+                                                    <button mat-icon-button color="warn"
+                                                        (click)="deleteTableRow(contact)"><mat-icon>delete_outline</mat-icon></button>
+                                                </mat-cell>
                                             </ng-container>
-                                            <mat-header-row *matHeaderRowDef="displayedServiceselected" class="accent"
-                                                sticky></mat-header-row>
-                                            <mat-row *matRowDef="let row; columns: displayedServiceselected"></mat-row>
+
+
+                                            <mat-header-row class="accent h-32"
+                                                *matHeaderRowDef="displayedServiceselected; sticky: true"></mat-header-row>
+                                            <mat-row
+                                                *matRowDef="let contact; columns: displayedServiceselected; let i = index"
+                                                tabindex="999" class="h-32"
+                                                [@animate]="{ value: '*', params: { y: '100%' } }"
+                                                appHighlight></mat-row>
+
                                         </mat-table>
+
+
                                     </mat-card>
                                 </div>
                             </div>

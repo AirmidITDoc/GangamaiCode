@@ -1,4 +1,4 @@
-import { Component, Inject, TemplateRef, ViewChild } from '@angular/core';
+import { Component, Inject, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
 import { gridColumnTypes } from 'app/core/models/tableActions';
 import { LabPatientRegService } from '../lab-patient-reg.service';
@@ -8,11 +8,14 @@ import { AuthenticationService } from 'app/core/services/authentication.service'
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
+import { fuseAnimations } from '@fuse/animations';
 
 @Component({
     selector: 'app-lab-reg-bill-deatils',
     templateUrl: './lab-reg-bill-deatils.component.html',
-    styleUrls: ['./lab-reg-bill-deatils.component.scss']
+    styleUrls: ['./lab-reg-bill-deatils.component.scss'],
+    encapsulation: ViewEncapsulation.None,
+    animations: fuseAnimations,
 })
 export class LabRegBillDeatilsComponent {
 
@@ -29,19 +32,21 @@ export class LabRegBillDeatilsComponent {
     @ViewChild('iconisPathology') iconisPathology!: TemplateRef<any>;
     @ViewChild('iconisRadiology') iconisRadiology!: TemplateRef<any>;
     ngOnInit(): void {
-        if (this.data){
+        if (this.data) {
+            debugger
             this.BillNo = this.data.billNo
-        this.doctorName = this.data.doctorName
-    }
+            this.doctorName = this.data.doctorName
+            this.getBilldetail()
+        }
     }
     allcolumns = [
         {
             heading: "IsPathology", key: "isPathology", sort: true, align: 'center', emptySign: 'NA', width: 80, type: gridColumnTypes.template,
-            template: this.iconisPathology 
+            template: this.iconisPathology
         },
         {
             heading: "IsRadiology", key: "isRadiology", sort: true, align: 'center', emptySign: 'NA', width: 80, type: gridColumnTypes.template,
-            template: this.iconisRadiology 
+            template: this.iconisRadiology
         },
         { heading: "BillNo", key: "billNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "Service Name", key: "serviceName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
@@ -61,7 +66,7 @@ export class LabRegBillDeatilsComponent {
         sortField: "BillNo",
         sortOrder: 0,
         filters: [
-            { fieldName: "BillNo", fieldValue: "120207", opType: OperatorComparer.Equals },
+            { fieldName: "BillNo", fieldValue: this.BillNo, opType: OperatorComparer.Equals }
 
         ]
     }
@@ -73,6 +78,22 @@ export class LabRegBillDeatilsComponent {
         public toastr: ToastrService,
         private commonService: PrintserviceService,) { }
 
+    getBilldetail() {
+        this.gridConfig = {
+            apiUrl: "LabPatientRegistration/LabBillDetailList",
+            columnsList: this.allcolumns,
+            sortField: "BillNo",
+            sortOrder: 0,
+            filters: [
+                { fieldName: "BillNo", fieldValue: this.BillNo, opType: OperatorComparer.Equals }
 
+            ]
+        }
+        this.grid.gridConfig = this.gridConfig;
+        this.grid.bindGridData();
 
+    }
+onClose(){
+    this._matDialog.closeAll()
+}
 }

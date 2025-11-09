@@ -1,25 +1,26 @@
-<div class="page-layout simple inner-sidebar inner-scroll right-sidebar" style="height: 100%;" fusePerfectScrollbar
-    dynamicTableHeight>
-    <mat-toolbar class="top-header accent">
-        <div fxLayout="row" fxLayoutAlign="start center" class="top-header-info">
-            <button mat-icon-button class="sidebar-toggle ">
-                <mat-icon>menu</mat-icon>
-            </button>
-            <mat-icon class="logo-icon" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">account_box
-            </mat-icon>
-            <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                Lab Bill Detail List <span style="margin-left: 20px;font-weight: bold;">Doctor:- {{doctorName}} |
-                    {{BillNo}}</span>
-            </span>
-            <div class="close-icon">
-                <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
-                    matTooltip="Close">
-                    <mat-icon>close</mat-icon>
-                </button>
+<div class="dialog-content-wrapper modal-wrapper grid-container">
+    <!-- Modal Header -->
+    <div class="modal-header accent">
+        <div class="modal-header-content">
+            <div class="modal-header-title">
+                <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    Lab Bill Detail List <span style="margin-left: 20px;font-weight: bold;">Doctor:- {{doctorName}} |
+                        {{BillNo}}</span>
+                </span>
+            </div>
+            <div class="modal-header-right">
+                <div class="comman-date-container">
+
+                    <div class="close-icon">
+                        <button mat-icon-button tabIndex="-1" (click)="onClose()" aria-label="Close dialog">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
+    </div>
 
-    </mat-toolbar>
     <div class="info-badge-top overflow-auto" fxLayout="row" fxLayoutAlign="space-between" flex>
 
         <div fusePerfectScrollbar

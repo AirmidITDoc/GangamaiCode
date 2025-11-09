@@ -20,6 +20,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { OpPaymentComponent } from 'app/main/opd/op-search-list/op-payment/op-payment.component';
 import { ConfigService } from 'app/core/services/config.service';
+import { ItemNameList } from 'app/main/purchase/purchase-order/purchase-order.component';
 
 @Component({
   selector: 'app-new-lab-patient-reg',
@@ -93,6 +94,7 @@ export class NewLabPatientRegComponent {
 
   displayedServiceColumns: string[] = [
     'ServiceName',
+    'price',
     'Action'
   ]
 
@@ -122,12 +124,13 @@ export class NewLabPatientRegComponent {
   ngOnInit(): void {
     this.myForm = this.CreateMyForm();
     this.myForm.markAllAsTouched();
-    this.getServiceList();
 
     this.LabBillfinalform = this.createFinalFormView()
     //  this.chargeForm = this.createChargeForm();
     this.OpBillForm = this.createTotalChargeForm();
     this.OPFooterForm = this.CreateOPFooter();
+    this.getServiceList();
+
   }
 
   createFinalFormView() {
@@ -150,7 +153,7 @@ export class NewLabPatientRegComponent {
       middleName: ['', [Validators.maxLength(50), Validators.pattern("^[A-Za-z/() ]*$"), this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
       lastName: ['', [Validators.required, Validators.maxLength(50), Validators.pattern("^[A-Za-z/() ]*$")]],
       genderId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      dateofBirth: [(new Date()).toISOString(), this._FormvalidationserviceService.validDateValidator()],
+      dateofBirth:[(new Date()).toISOString(), this._FormvalidationserviceService.validDateValidator()],
       ageYear: ['', [Validators.maxLength(3), Validators.pattern("^[0-9]*$")]],
       ageMonth: ['', [Validators.pattern("^[0-9]*$")]],
       ageDay: ['', [Validators.pattern("^[0-9]*$")]],
@@ -163,7 +166,7 @@ export class NewLabPatientRegComponent {
       classId: [1],
       departmentId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       doctorId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      refDocId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      refDocId: [0],
       // extra fields
       mobileNo: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(15), Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")]],
       regId: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
@@ -215,7 +218,7 @@ export class NewLabPatientRegComponent {
       paidAmt: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
       balanceAmt: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
       billDate: [this.datePipe.transform(new Date(), 'yyyy-MM-dd'), [this._FormvalidationserviceService.allowEmptyStringValidator(), this._FormvalidationserviceService.validDateValidator()]],
-      opdipdType: [1, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      opdipdType: [4, [this._FormvalidationserviceService.onlyNumberValidator()]],
       addedBy: [this.accountService.currentUserValue.userId],
       totalAdvanceAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
       advanceUsedAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
@@ -283,11 +286,11 @@ export class NewLabPatientRegComponent {
     });
   }
   CreateAddchargeform(item: any): FormGroup {
-    debugger
+
     return this._formbuilder.group({
       chargesId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       chargesDate: this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
-      opdIpdType: [1, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      opdIpdType: [4, [this._FormvalidationserviceService.onlyNumberValidator()]],
       opdIpdId: [this.vOPIPId, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
       serviceId: [item?.ServiceId, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
       price: [item?.Price, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -349,14 +352,14 @@ export class NewLabPatientRegComponent {
 
   getSelectedObjextPatient(event: any): void {
     console.log("Patient Data:", event);
-
+    this.registerObj = event
     if (event) {
       const fullName = event.patientName?.trim() || '';
       this.PatientName = event.patientName?.trim() || ''
-    
+
       const nameParts = fullName.split(' ');
       const firstName = nameParts[0] || '';
-        // this.myForm.get('patientName').setValue(firstName)
+      // this.myForm.get('patientName').setValue(firstName)
       const middleName = nameParts[1] || '';
       const lastName = nameParts[1] || '';
       this.myForm.patchValue({
@@ -372,10 +375,98 @@ export class NewLabPatientRegComponent {
     if (extAddressNameElement) {
       extAddressNameElement.focus();
     }
+
+    this.data.labPatientId = 117
+    if ((this.data?.labPatientId ?? 0) > 0) {
+      setTimeout(() => {
+
+        this._labPatientRegService.getLabRegistraionById(this.data.labPatientId).subscribe((response) => {
+          this.registerObj = response;
+          console.log(this.registerObj)
+          // this.regNo = this.registerObj.regNo
+          // this.personalFormGroup.get("RegId").setValue(this.registerObj.regId)
+          // this.value=this.registerObj.dateofBirth
+          this.onChangeDateofBirth(this.registerObj.dateofBirth)
+        });
+      }, 500);
+    }
+
   }
 
- 
+  getSelectedObj(obj) {
+    console.log(obj)
 
+    this.PatientName = obj.firstName + ' ' + obj.lastName;
+    this.RegId = 117 //obj.labPatientId ;
+    if (this.RegId) {
+
+      // setTimeout(() => {
+
+      this._labPatientRegService.getLabRegistraionById(this.RegId).subscribe((response) => {
+        console.log(response)
+        
+        this.registerObj = response;
+        this.value = response.dateofBirth
+        this.vRegNo = response.regno
+        this.onChangeDateofBirth(response.dateofBirth)
+
+        this.myForm.patchValue({
+          firstName: this.registerObj.firstName.trim(),
+          middleName: this.registerObj.middleName.trim(),
+          LastName: this.registerObj.lastName.trim(),
+          MobileNo: this.registerObj.mobileNo.trim(),
+          address: this.registerObj.address.trim(),
+          // DateOfBirth:this.registerObj.dateofBirth,
+
+        });
+        console.log(this.registerObj)
+      });
+
+      // }, 100);
+    }
+
+    // this.onChangeDateofBirth(this.registerObj.dateofBirth)
+  }
+
+
+  value = new Date()
+  onChangeDateofBirth(DateOfBirth: Date) {
+
+    if (DateOfBirth > this.minDate) {
+      this.toastr.warning('Enter Proper Birth Date..', 'warning !', {
+        toastClass: 'tostr-tost custom-toast-success',
+      });
+      return;
+    }
+    if (DateOfBirth) {
+      const todayDate = new Date();
+      const dob = new Date(DateOfBirth);
+      const timeDiff = Math.abs(Date.now() - dob.getTime());
+
+      this.ageYear = todayDate.getFullYear() - dob.getFullYear();
+      this.ageMonth = (todayDate.getMonth() - dob.getMonth());
+      this.ageDay = (todayDate.getDate() - dob.getDate());
+
+      if (this.ageDay < 0) {
+        this.ageMonth--;
+        const previousMonth = new Date(todayDate.getFullYear(), todayDate.getMonth(), 0);
+        this.ageDay += previousMonth.getDate(); // Days in previous month
+        // this.ageDay =this.ageDay +1;
+      }
+
+      if (this.ageMonth < 0) {
+        this.ageYear--;
+        this.ageMonth += 12;
+      }
+
+      this.value = DateOfBirth;
+      this.myForm.get('dateofBirth').setValue(DateOfBirth);
+      if (this.ageYear > 110)
+        this.toastr.warning('Please Enter Valid BirthDate..', 'warning !', {
+          toastClass: 'tostr-tost custom-toast-success',
+        });
+    }
+  }
   getServiceList() {
     let ServiceName = this.myForm.get("ServiceId").value + "%" || "%";
     let IsPathRad = this.myForm.get("IsPathRad").value || "1"
@@ -415,45 +506,18 @@ export class NewLabPatientRegComponent {
       this.dsLabRequest2.data = Menu.data as LabRequest[];
       this.dsLabRequest2.sort = this.sort;
       this.dsLabRequest2.paginator = this.paginator;
-      
+
     });
 
   }
 
-  //   onSaveEntry(row) {
-  //     let doctorid = 0;
-  //     const formValue = this.myForm.value
 
-  // debugger
-  //     this.dstable1.data = [];
-  //     if (this.chargeslist && this.chargeslist.length > 0) {
-  //       debugger
-  //       let duplicateItem = this.chargeslist.filter((ele, index) => ele.ServiceId === row.serviceId);
-  //       if (duplicateItem && duplicateItem.length == 0) {
-  //         this.onAddCharges(row);
-  //         return;
-  //       }
-
-  //       this.dstable1.data = this.chargeslist;
-  //       this.dstable1.sort = this.sort;
-  //       this.dstable1.paginator = this.paginator;
-  //     } else if (this.chargeslist && this.chargeslist.length == 0) {
-  //       // this.addChargList(row);
-  //       this.onAddCharges(row)
-  //     }
-  //     else {
-  //       this.toastr.warning('Selected Item already added in the list ', 'Warning !', {
-  //         toastClass: 'tostr-tost custom-toast-warning',
-  //       });
-  //       return;
-  //     }
-  //   }
 
   onSaveEntry(row) {
     let doctorid = 0;
     const formValue = this.myForm.value
 
-    debugger
+
     // this.dstable1.data = [];
     const isDuplicate = this.dstable1.data.some(item => item.ServiceId === row.serviceId);
     if (!isDuplicate) {
@@ -468,26 +532,11 @@ export class NewLabPatientRegComponent {
   }
 
 
-  // addChargList(row) {
-  //   this.chargeslist.push(
-  //     {
-  //       ServiceId: row.serviceId,
-  //       ServiceName: row.serviceName,
-  //       Price: row.price || 0
-  //     });
-
-  //   console.log(this.chargeslist);
-  //   this.updateCalculation();
-  //   this.dstable1.data = this.chargeslist;
-  //   this.dstable1.sort = this.sort;
-  //   this.dstable1.paginator = this.paginator;
-  // }
-
   updateCalculation() {
 
-    const total = this.chargeList.reduce((sum, item) => sum + (item.Price || 0), 0);
+    const total = this.chargeList.reduce((sum, item) => sum + (parseFloat(item.Price.toString()) || 0), 0);
     const discPer = Number(this.myForm.get('totalDiscountPer')?.value) || 0;
-// this.myForm.get('discountAmt').value
+    // this.myForm.get('discountAmt').value
     const discountAmt = (total * discPer) / 100;
     const netAmt = total - discountAmt;
 
@@ -497,7 +546,22 @@ export class NewLabPatientRegComponent {
       netPayableAmt: netAmt
     });
   }
-  ///
+  total = 0
+  getCellCalculation(element) {
+
+    const total = this.dstable1.data.reduce((sum, item) => sum + (parseFloat(item.Price.toString()) || 0), 0);
+    const discPer = Number(this.myForm.get('totalDiscountPer')?.value) || 0;
+    // this.myForm.get('discountAmt').value
+    const discountAmt = (total * discPer) / 100;
+    const netAmt = total - discountAmt;
+
+
+    this.myForm.patchValue({
+      totalAmt: total,
+      discountAmt: discountAmt,
+      netPayableAmt: netAmt
+    });
+  }
 
   onAddCharges(row): void {
 
@@ -507,17 +571,18 @@ export class NewLabPatientRegComponent {
       this.IsRadiology = true
 
     const formValue = this.myForm.value;
-    
+
     const totalAmount = row.price * 1;
     const discountAmount = formValue.discountAmt;//(totalAmount * formValue.discountPer) / 100;
     const netAmount = totalAmount - discountAmount;
 
     if (totalAmount > 0) {
+    
       const newRow = {
         ServiceId: row.serviceId,
         ServiceName: row.serviceName,
         Price: row.price || 0,
-        Qty: 0,
+        Qty: 1,
         TotalAmt: totalAmount,
         DiscPer: 0,
         DiscAmt: discountAmount || 0,
@@ -543,7 +608,7 @@ export class NewLabPatientRegComponent {
     } else {
       Swal.fire({
         title: 'Message',
-        text: "Please Enter Service Detail.. !",
+        text: "Please Define Price For Selected Service .. !",
         icon: "warning"
       });
 
@@ -655,7 +720,7 @@ export class NewLabPatientRegComponent {
   BillSave() {
     Swal.fire({
       title: 'Confirm Save',
-      text: 'Are you sure you want to save this OPD bill?',
+      text: 'Are you sure you want to save this Lab Bill?',
       icon: 'warning', // or 'question'
       showCancelButton: true,
       confirmButtonColor: '#3085d6', // Blue
@@ -664,9 +729,7 @@ export class NewLabPatientRegComponent {
       cancelButtonText: 'No, cancel'
     }).then((result) => {
       if (result.isConfirmed) {
-
-        this.myForm.get('firstName').setValue(this.myForm.get('patientName').value.patientName)
-        console.log(this.myForm.value)
+      console.log(this.myForm.value)
         if (!this.myForm.invalid)
           this.OnSave();
         else {
@@ -707,35 +770,35 @@ export class NewLabPatientRegComponent {
     this.myForm.get('regDate').setValue(formattedDate);
     this.myForm.get('regTime').setValue(formattedTime);
 
-    if (this.selectedPatient) {
-      const fullName = this.selectedPatient.patientName?.trim() || '';
-      const nameParts = fullName.split(' ');
+    // if (this.selectedPatient) {
+    //   const fullName = this.selectedPatient.patientName?.trim() || '';
+    //   const nameParts = fullName.split(' ');
 
-      const firstNameControl = this.myForm.get('patientName');
-      const lastNameControl = this.myForm.get('lastName');
-      const mobileControl = this.myForm.get('mobileNo');
+    //   const firstNameControl = this.myForm.get('patientName');
+    //   const lastNameControl = this.myForm.get('lastName');
+    //   const mobileControl = this.myForm.get('mobileNo');
 
-      if (this.myForm.get('patientName')) {
-        // 
-        const firstName = fullName.split(' ')[0] || '';
-        this.myForm.get('firstName').setValue(firstName)
-      }
-      if (!lastNameControl?.value) {
-        const lastName = nameParts.slice(1).join(' ');
-        lastNameControl?.setValue(lastName || '');
-      }
-      if (!mobileControl?.value) {
-        mobileControl?.setValue(this.selectedPatient.extMobileNo || '');
-      }
-    } else {
-      this.myForm.get('firstName').setValue(this.myForm.get('patientName').value)
-    }
-
+    //   if (this.myForm.get('patientName')) {
+    //     const firstName = fullName.split(' ')[0] || '';
+    //     this.myForm.get('firstName').setValue(firstName)
+    //   }
+    //   if (!lastNameControl?.value) {
+    //     const lastName = nameParts.slice(1).join(' ');
+    //     lastNameControl?.setValue(lastName || '');
+    //   }
+    //   if (!mobileControl?.value) {
+    //     mobileControl?.setValue(this.selectedPatient.extMobileNo || '');
+    //   }
+    // } else {
+    //   this.myForm.get('firstName').setValue(this.myForm.get('patientName').value)
+    // }
+    // this.myForm.get('firstName').setValue(this.myForm.get('patientName').value)
     console.log(this.myForm.value)
 
-
-    let DateOfBirth1 = this.myForm.get('dateofBirth')?.value;
+debugger
+    let DateOfBirth1 =  this.myForm.get('dateofBirth')?.value;
     if (DateOfBirth1) {
+      
       const todayDate = new Date();
       const dob = new Date(DateOfBirth1);
       let ageYear = (todayDate.getFullYear() - dob.getFullYear());
@@ -769,23 +832,23 @@ export class NewLabPatientRegComponent {
       this.myForm.get('ageYear')?.setValue(String(ageYear), { emitEvent: false });
       this.myForm.get('ageMonth')?.setValue(String(ageMonth), { emitEvent: false });
       this.myForm.get('ageDay')?.setValue(String(ageDay), { emitEvent: false });
-      this.myForm.get('genderId').setValue(parseInt(this.myForm.get('genderId').value))
-      this.myForm.get('stateId').setValue(parseInt(this.myForm.get('stateId').value))
-      this.myForm.get('countryId').setValue(parseInt(this.myForm.get('countryId').value))
-      this.myForm.get('departmentId').setValue(parseInt(this.myForm.get('departmentId').value))
-      this.myForm.get('refDocId').setValue(parseInt(this.myForm.get('refDocId').value))
+      // this.myForm.get('genderId').setValue(parseInt(this.myForm.get('genderId').value))
+      // this.myForm.get('stateId').setValue(parseInt(this.myForm.get('stateId').value))
+      // this.myForm.get('countryId').setValue(parseInt(this.myForm.get('countryId').value))
+      // this.myForm.get('departmentId').setValue(parseInt(this.myForm.get('departmentId').value))
+      // this.myForm.get('refDocId').setValue(parseInt(this.myForm.get('refDocId').value))
     }
 
     const formValue = { ...this.myForm.value };
     const controlsToRemove = ['patientName', 'regId', 'IsPathRad', 'ServiceId', 'totalAmt', 'totalDiscountPer', 'discountAmt', 'netPayableAmt', 'paymentType'];
     controlsToRemove.forEach(key => delete formValue[key]);
-       console.log(formValue)
+    console.log(formValue)
 
 
     // Bill data
     const formattedDate1 = this.datePipe.transform(this.OpBillForm.get('billDate').value, "yyyy-MM-dd");
     const formattedTime1 = this.datePipe.transform(new Date(), "HH:mm:ss");
-    debugger
+
     this.OpBillForm.get('billDate').setValue(formattedDate1);
     this.OpBillForm.get('billTime').setValue(formattedDate1 + ' ' + formattedTime1);
     this.OpBillForm.get('opdipdid')?.setValue(0)
@@ -861,10 +924,8 @@ export class NewLabPatientRegComponent {
             this.LabBillfinalform.get('labPatientRegistration').setValue(formValue)
             this.LabBillfinalform.get('opBillIngModels').setValue(this.OpBillForm.value)
 
-
-
             this._labPatientRegService.InsertLabRegBilling(this.LabBillfinalform.value).subscribe(response => {
-                 this.viewgetOPBillReportPdf(response)
+              this.viewgetOPBillReportPdf(response)
               //  this.resetform();
               this._matDialog.closeAll();
               this.savebtn = true
@@ -878,15 +939,15 @@ export class NewLabPatientRegComponent {
         this.OpBillForm.get('payments.cashPayAmount')?.setValue(Number(this.myForm.get('netPayableAmt')?.value))
         this.OpBillForm.get('payments.paymentDate')?.setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'))
         this.OpBillForm.get('payments.paymentTime')?.setValue(this.dateTimeObj.time)
-        debugger
+
         console.log(this.OpBillForm.value)
         this.LabBillfinalform.get('labPatientRegistration').setValue(formValue)
         this.LabBillfinalform.get('opBillIngModels').setValue(this.OpBillForm.value)
 
         console.log(this.LabBillfinalform.value)
-
+        
         this._labPatientRegService.InsertLabRegBilling(this.LabBillfinalform.value).subscribe(response => {
-         this.viewgetOPBillReportPdf(response)
+          this.viewgetOPBillReportPdf(response)
           this._matDialog.closeAll();
           this.savebtn = true
           // this.resetform();
@@ -905,7 +966,7 @@ export class NewLabPatientRegComponent {
 
 
         this._labPatientRegService.InsertlabregCredit(this.LabBillfinalform.value).subscribe(response => {
-        this.viewgetOPBillReportPdf(response)
+          this.viewgetOPBillReportPdf(response)
           this._matDialog.closeAll();
           this.savebtn = true
           // if (response)
@@ -940,13 +1001,13 @@ export class NewLabPatientRegComponent {
     }
   }
 
-     viewgetOPBillReportPdf(element) {
-        this.commonService.Onprint("BillNo", element.billNo, "LabregisterBillReceipt");
-    }
+  viewgetOPBillReportPdf(element) {
+    this.commonService.Onprint("BillNo", element.billNo, "LabregisterBillReceipt");
+  }
 
 
   resetform() {
-   
+
     this.OPFooterForm.reset({
       totalAmt: 0,
       totalDiscountPer: 0,
@@ -956,120 +1017,8 @@ export class NewLabPatientRegComponent {
     });
     this.OPFooterForm.get('paymentType').setValue('CashPay')
   }
-  // onNewSave() {
-  //   const formattedDate = this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd");
-  //   const formattedTime = formattedDate + this.dateTimeObj.time;
 
-  //   this.myForm.get('regDate').setValue(formattedDate);
-  //   this.myForm.get('regTime').setValue(formattedTime);
 
-  //   if (this.selectedPatient) {
-  //     const fullName = this.selectedPatient.patientName?.trim() || '';
-  //     const nameParts = fullName.split(' ');
-
-  //     const firstNameControl = this.myForm.get('patientName');
-  //     const lastNameControl = this.myForm.get('lastName');
-  //     const mobileControl = this.myForm.get('mobileNo');
-
-  //     if (this.myForm.get('patientName')) {
-  //       // 
-  //       const firstName = fullName.split(' ')[0] || '';
-  //       this.myForm.get('firstName').setValue(firstName)
-  //     }
-  //     if (!lastNameControl?.value) {
-  //       const lastName = nameParts.slice(1).join(' ');
-  //       lastNameControl?.setValue(lastName || '');
-  //     }
-  //     if (!mobileControl?.value) {
-  //       mobileControl?.setValue(this.selectedPatient.extMobileNo || '');
-  //     }
-  //   }else{
-  //     this.myForm.get('firstName').setValue(this.myForm.get('patientName').value)
-  //   }
-
-  //   console.log(this.myForm.value)
-
-  //   if (!this.myForm.invalid) {
-  //     
-  //     let DateOfBirth1 = this.myForm.get('dateofBirth')?.value;
-  //     if (DateOfBirth1) {
-  //       const todayDate = new Date();
-  //       const dob = new Date(DateOfBirth1);
-  //       let ageYear = (todayDate.getFullYear() - dob.getFullYear());
-  //       let ageMonth = (todayDate.getMonth() - dob.getMonth());
-  //       let ageDay = (todayDate.getDate() - dob.getDate());
-
-  //       if (ageDay < 0) {
-  //         (ageMonth)--;
-  //         const previousMonth = new Date(todayDate.getFullYear(), todayDate.getMonth(), 0);
-  //         ageDay += previousMonth.getDate();
-  //       }
-
-  //       if (ageMonth < 0) {
-  //         ageYear--;
-  //         ageMonth += 12;
-  //       }
-  //       if (
-  //         (!ageYear || ageYear == 0) &&
-  //         (!ageMonth || ageMonth == 0) &&
-  //         (!ageDay || ageDay == 0)
-  //       ) {
-  //         this.toastr.warning('Please select the birthdate or enter the age of the patient.', 'Warning!', {
-  //           toastClass: 'tostr-tost custom-toast-warning',
-  //         });
-  //         return;
-  //       }
-  //       this.myForm.get('ageYear')?.setValue(String(ageYear), { emitEvent: false });
-  //       this.myForm.get('ageMonth')?.setValue(String(ageMonth), { emitEvent: false });
-  //       this.myForm.get('ageDay')?.setValue(String(ageDay), { emitEvent: false });
-  //     }
-
-  //     this.labTestArray.clear();
-  //     if (this.dstable1.data.length === 0) {
-  //       this.toastr.warning('Data is not available in list ,please add data in the list.', 'Warning');
-  //       return;
-  //     }
-  //     this.dstable1.data.forEach(item => {
-  //       this.labTestArray.push(this.createLabTestReqArrayForm(item));
-  //     });
-
-  //     const formValue = { ...this.myForm.value };
-  //     const controlsToRemove = ['patientName','mobileNo', 'regId', 'IsPathRad', 'ServiceId', 'totalAmt', 'totalDiscountPer', 'discountAmt', 'netPayableAmt', 'paymentType'];
-  //     controlsToRemove.forEach(key => delete formValue[key]);
-
-  //     console.log(formValue)
-  //     this._labPatientRegService.labPatientSave(formValue).subscribe((response) => {
-  //       // this.OnPrint(response)
-  //       this.onClose();
-  //     });
-  //   } else {
-  //     let invalidFields: string[] = [];
-
-  //     const validateFormGroup = (formGroup: FormGroup | FormArray, parentKey: string = '') => {
-  //       Object.keys(formGroup.controls).forEach(key => {
-  //         const control = formGroup.get(key);
-  //         const fieldKey = parentKey ? `${parentKey}.${key}` : key;
-
-  //         if (control instanceof FormGroup || control instanceof FormArray) {
-  //           validateFormGroup(control, fieldKey);
-  //         } else {
-  //           if (control?.invalid) {
-  //             invalidFields.push(fieldKey);
-  //           }
-  //         }
-  //       });
-  //     };
-
-  //     validateFormGroup(this.myForm);
-
-  //     if (invalidFields.length > 0) {
-  //       invalidFields.forEach(field => {
-  //         this.toastr.warning(`Please check this field "${field}"`, 'Warning!');
-  //       });
-  //       return;
-  //     }
-  //   }
-  // }
   chkDoctor(event) {
     console.log(event)
     this.doctorname = event.text
