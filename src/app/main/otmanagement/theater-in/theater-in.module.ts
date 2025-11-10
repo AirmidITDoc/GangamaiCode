@@ -39,6 +39,7 @@ import { MatSidenavModule } from "@angular/material/sidenav";
 import { TheaterInService } from "./theater-in.service";
 import { TheaterInComponent } from "./theater-in.component";
 import { NewTheaterInComponent } from './new-theater-in/new-theater-in.component';
+import { DragDropModule } from "@angular/cdk/drag-drop";
 
 const routes: Routes = [
   {
@@ -87,6 +88,7 @@ const routes: Routes = [
     MatTooltipModule,
     MatButtonToggleModule,
     MatSidenavModule,
+    DragDropModule
   ],
   providers: [DatePipe, TheaterInService]
 })

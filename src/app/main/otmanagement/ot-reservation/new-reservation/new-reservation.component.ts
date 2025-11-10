@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, ElementRef, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { fuseAnimations } from '@fuse/animations';
@@ -42,7 +42,7 @@ export class NewReservationComponent implements OnInit {
 
   autocompleteModeDepartment: String = "Department";
   autocompleteModeSiteDescription: String = "SiteDescription";
-  autocompleteModeSurgeryCategory: String = "OttypeMaster";
+  autocompleteModeotTableCategory: String = "OttypeMaster";
   autocompleteModeDoctorSurgeon: String = "DoctorSurgion";
   autocompleteModeSurgeryMaster: String = "SurgeryMaster";
   autocompleteModeDoctorType: string = "DoctorType";
@@ -725,29 +725,6 @@ export class NewReservationComponent implements OnInit {
     }
   }
 
-  previewUrl: string | ArrayBuffer | null = null;
-
-  onFileSelected(event: any) {
-    const file = event.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = () => {
-        this.previewUrl = reader.result;
-      };
-      reader.readAsDataURL(file);
-    }
-  }
-
-  // Optional: use device camera directly
-  openCamera() {
-    const input = document.createElement('input');
-    input.type = 'file';
-    input.accept = 'image/*';
-    input.capture = 'environment'; // opens back camera on mobile
-    input.onchange = (event: any) => this.onFileSelected(event);
-    input.click();
-  }
-
   drop1(event: CdkDragDrop<any[]>) {
     const data = this.dssurgeryDetailList.data; // Extract raw array from MatTableDataSource
     moveItemInArray(data, event.previousIndex, event.currentIndex);
@@ -966,6 +943,115 @@ export class NewReservationComponent implements OnInit {
 
   }
 
+  //////////////////// body parts code //////////////////////
+  selectedImage: string | null = null;
+  uploadedImage: string | null = null;
+  penColor: string = '#ff0000';
+  penSize: number = 3;
+
+  @ViewChild('canvas', { static: false }) canvas!: ElementRef<HTMLCanvasElement>;
+  private ctx!: CanvasRenderingContext2D | null;
+  private isDrawing = false;
+
+  onFileSelected(event: Event): void {
+  const fileInput = event.target as HTMLInputElement;
+  if (fileInput.files && fileInput.files[0]) {
+    const file = fileInput.files[0];
+    const reader = new FileReader();
+    reader.onload = (e: any) => {
+      this.uploadedImage = e.target.result; // Base64 URL
+    };
+    reader.readAsDataURL(file);
+  }
+}
+
+  openEditor(imageSrc: string) {
+    this.selectedImage = imageSrc;
+    setTimeout(() => this.loadImageOnCanvas(), 0);
+  }
+
+  private loadImageOnCanvas() {
+    const canvas = this.canvas.nativeElement;
+    this.ctx = canvas.getContext('2d');
+    const img = new Image();
+    img.src = this.selectedImage!;
+
+    img.onload = () => {
+      this.ctx?.clearRect(0, 0, canvas.width, canvas.height);
+      this.ctx?.drawImage(img, 0, 0, canvas.width, canvas.height);
+    };
+
+    // Remove previous listeners
+    canvas.replaceWith(canvas.cloneNode(true));
+    const newCanvas = (this.canvas.nativeElement = document.querySelector('canvas')!);
+    this.ctx = newCanvas.getContext('2d');
+    img.onload = () => {
+      this.ctx?.clearRect(0, 0, newCanvas.width, newCanvas.height);
+      this.ctx?.drawImage(img, 0, 0, newCanvas.width, newCanvas.height);
+    };
+
+    // --- Drawing Events ---
+    newCanvas.addEventListener('mousedown', (e) => this.startDrawing(e));
+    newCanvas.addEventListener('mousemove', (e) => this.draw(e));
+    newCanvas.addEventListener('mouseup', () => this.stopDrawing());
+    newCanvas.addEventListener('mouseleave', () => this.stopDrawing());
+  }
+
+  private startDrawing(event: MouseEvent) {
+    this.isDrawing = true;
+    const rect = this.canvas.nativeElement.getBoundingClientRect();
+    this.ctx?.beginPath();
+    this.ctx?.moveTo(event.clientX - rect.left, event.clientY - rect.top);
+  }
+
+  private draw(event: MouseEvent) {
+    if (!this.isDrawing || !this.ctx) return;
+    const rect = this.canvas.nativeElement.getBoundingClientRect();
+    const x = event.clientX - rect.left;
+    const y = event.clientY - rect.top;
+
+    this.ctx.lineWidth = this.penSize;
+    this.ctx.lineCap = 'round';
+    this.ctx.strokeStyle = this.penColor;
+    this.ctx.lineTo(x, y);
+    this.ctx.stroke();
+  }
+
+  private stopDrawing() {
+    if (!this.ctx) return;
+    this.isDrawing = false;
+    this.ctx.closePath();
+  }
+
+  saveMarkedImage() {
+    const canvas = this.canvas.nativeElement;
+    const markedImage = canvas.toDataURL('image/png');
+    console.log(markedImage)
+    const link = document.createElement('a');
+    // link.download = 'marked-body.png';
+    // link.href = markedImage;
+    // link.click();
+  }
+
+  closeEditor() {
+    this.selectedImage = null;
+  }
+
+  clearCanvas() {
+    const canvas = this.canvas.nativeElement;
+    const img = new Image();
+    img.src = this.selectedImage!;
+    img.onload = () => {
+      this.ctx?.clearRect(0, 0, canvas.width, canvas.height);
+      this.ctx?.drawImage(img, 0, 0, canvas.width, canvas.height);
+    };
+  }
+
+  deleteUploadedImage(): void {
+  this.uploadedImage = null;
+}
+
+  /////////////////// body parts code end ///////////////////
   /////////////////////////////// attendent detail part end/////////////////////////////
 
   onSubmit() {

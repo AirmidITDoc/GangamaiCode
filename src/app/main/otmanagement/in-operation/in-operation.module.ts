@@ -43,6 +43,7 @@ import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { InOperationComponent } from "./in-operation.component";
 import { InOperationService } from "./in-operation.service";
 import { NewInOperationComponent } from './new-in-operation/new-in-operation.component';
+import { DragDropModule } from "@angular/cdk/drag-drop";
 
 const routes: Routes = [
   {
@@ -96,7 +97,7 @@ const routes: Routes = [
     MatSidenavModule,
     MatCardModule,
     MatTimepickerModule,
-
+    DragDropModule,
   ],
   providers: [DatePipe, InOperationService, MatDatepickerInput]
 })

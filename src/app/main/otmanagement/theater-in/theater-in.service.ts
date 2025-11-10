@@ -40,13 +40,13 @@ export class TheaterInService {
 
       // new fields
       BloodGroup: [],
-      CategoryTypeId: [],
-      Theater: [],
+      categoryType: [],
+      ottable: [],
       TheaterLocation: [],
       estimateTime: [],
-      Surgerydate: [new Date()],
+      surgeryDate: [''],
       MobileNo: [],
-      Diagnosis: [[]],
+      diagnosis: [[]],
       Remarks: [],
       partId: [],
       bodyPartId: [],
@@ -55,5 +55,27 @@ export class TheaterInService {
       startTime: [],
       endTime: [],
     });
+  }
+
+  public getotReservationById(Id) {
+    return this._httpClient.GetData("OTReservation/" + Id);
+  }
+  public getotTableById(Id) {
+    return this._httpClient.GetData("OtTableMaster/" + Id);
+  }
+  public getRtrvdiagnosisList(employee) {
+    return this._httpClient.PostData("OTReservation/OtReservationDiagnosisList", employee);
+  }
+  public getRtrvReservationAttendentList(employee) {
+    return this._httpClient.PostData("OTReservation/OtReservationAttendingDetailList", employee);
+  }
+  public getRtrvReservationSurgeryList(employee) {
+    return this._httpClient.PostData("OTReservation/OtReservationSurgeryDetailList", employee);
+  }
+  public getotsiteDiscById(Id) {
+    return this._httpClient.GetData("SiteDescriptionMaster/" + Id);
+  }
+  public getDoctorsByDoctorType(doctTypeId) {
+    return this._httpClient.GetData("VisitDetail/DoctorTypeDoctorList?DocTypeId=" + doctTypeId)
   }
 }

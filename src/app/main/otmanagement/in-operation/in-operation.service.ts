@@ -29,22 +29,38 @@ export class InOperationService {
       otreservationId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       opIpId: [""],
       opIpType: ["OP"],
-
-      // new fields
-      fromTime: ['', Validators.required],
-      toTime: ['', Validators.required],
-      duration: ['', Validators.required],
-      surgeryType: ['', [Validators.required]],
-      surgeonTypeId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      surgeryId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      partId: [],
-      isprimary: [],
-      surgeonId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      anestheticsDr: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      Theater: [],
+      diagnosis: [[]],
+      categoryType: ["", [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      ottable: ["", [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      reservationType: ['1'],
+      pacrequired: ['1'],
+      equipmentsRequired: ['1'],
+      clearanceMedical: false,
+      clearanceFinancial: false,
+      infective: ['1'],
       TheaterLocation: [],
+      surgeryDate: ['', [Validators.required]],
+
+      ////////surgery det parameters ////////////
+      surgeryCategoryId: [''],
+      surgeryId: [0],
+      surgeryPart: [''],
+      surgeryFromTime: [''],
+      surgeryEndTime: [''],
+      surgeryDuration: [''],
+      isPrimary: [false],
+      surgeonId: [0],
+      anesthetistId: [0],
+
+      ////////attendent det parameters ////////////
+      recourceType: [0],
+      doctorTypeId: [0],
+      doctorId: [0],
+
+      surgeonTypeId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      // surgeryId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      partId: [],
       CategoryTypeId: [],
-      Surgerydate: [new Date()],
       fromTime1: ['', Validators.required],
       toTime1: ['', Validators.required],
       duration1: ['', Validators.required],
@@ -69,11 +85,33 @@ export class InOperationService {
       mopCount: ["1"],
       closureNote: [''],
       operativeFinding: [''],
-      recourceType: [0],
+      // recourceType: [0],
       anestypeId1: [0],
       anestheticsDr1: [0],
       postOperNote: [''],
       patientCondNote: [''],
     });
+  }
+
+  public getotReservationById(Id) {
+    return this._httpClient.GetData("OTReservation/" + Id);
+  }
+  public getotTableById(Id) {
+    return this._httpClient.GetData("OtTableMaster/" + Id);
+  }
+  public getRtrvdiagnosisList(employee) {
+    return this._httpClient.PostData("OTReservation/OtReservationDiagnosisList", employee);
+  }
+  public getRtrvReservationAttendentList(employee) {
+    return this._httpClient.PostData("OTReservation/OtReservationAttendingDetailList", employee);
+  }
+  public getRtrvReservationSurgeryList(employee) {
+    return this._httpClient.PostData("OTReservation/OtReservationSurgeryDetailList", employee);
+  }
+  public getotsiteDiscById(Id) {
+    return this._httpClient.GetData("SiteDescriptionMaster/" + Id);
+  }
+  public getDoctorsByDoctorType(doctTypeId) {
+    return this._httpClient.GetData("VisitDetail/DoctorTypeDoctorList?DocTypeId=" + doctTypeId)
   }
 }

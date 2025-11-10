@@ -207,8 +207,7 @@
 
                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <airmid-dropdown label="Category Type" formControlName="categoryType"
-                                        [formGroup]="requestForm" [value]="registerObj1?.categoryType"
-                                        [mode]="autocompleteModeSurgeryCategory">
+                                        [formGroup]="requestForm" [mode]="autocompleteModeSurgeryCategory">
                                     </airmid-dropdown>
                                     <!--  id="categoryType" tabindex="0" -->
                                 </div>
@@ -216,14 +215,15 @@
                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <airmid-dropdown label="Theater" formControlName="ottable" [formGroup]="requestForm"
                                         ValueField="ottableId" TextField="ottableName"
-                                        (selectionChange)="onChangeOtTable($event)" ApiUrl="OTRequest/getlocationByOttable">
+                                        (selectionChange)="onChangeOtTable($event)"
+                                        ApiUrl="OTRequest/getlocationByOttable">
                                     </airmid-dropdown>
                                 </div>
 
                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <airmid-dropdown label="Theater Location" formControlName="TheaterLocation"
-                                        [formGroup]="requestForm" [mode]="autocompleteModeLocation"
-                                         #ddlLocation [readonly]="true"></airmid-dropdown>
+                                        [formGroup]="requestForm" [mode]="autocompleteModeLocation" #ddlLocation
+                                        [readonly]="true"></airmid-dropdown>
                                 </div>
 
                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%" class="gap-4">
@@ -631,12 +631,10 @@
                             style="height: auto;">
                             <!-- Body Images -->
                             <div class="surgery-parts pt-8">
-                                <img src="assets/images/logos/doctor.png"
-                                    (click)="openEditor('assets/images/logos/doctor.png')" />
-                                <img src="assets/images/logos/1.jpeg"
-                                    (click)="openEditor('assets/images/logos/1.jpeg')" />
-                                <img src="assets/images/logos/2.jpeg"
-                                    (click)="openEditor('assets/images/logos/2.jpeg')" />
+                                <img src="assets/images/logos/bodyAnatomyFront.jpg"
+                                    (click)="openEditor('assets/images/logos/bodyAnatomyFront.jpg')" />
+                                <img src="assets/images/logos/bodyAnatomyback.jpg"
+                                    (click)="openEditor('assets/images/logos/bodyAnatomyback.jpg')" />
                             </div>
 
                             <!-- Drawing Editor -->
