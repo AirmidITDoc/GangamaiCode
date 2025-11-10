@@ -21,6 +21,8 @@ import { MatTableDataSource } from '@angular/material/table';
 import { OpPaymentComponent } from 'app/main/opd/op-search-list/op-payment/op-payment.component';
 import { ConfigService } from 'app/core/services/config.service';
 import { ItemNameList } from 'app/main/purchase/purchase-order/purchase-order.component';
+import { HospitalConfigService } from 'app/core/services/hospital-config.service';
+import { debounce } from 'lodash';
 
 @Component({
   selector: 'app-new-lab-patient-reg',
@@ -117,6 +119,7 @@ export class NewLabPatientRegComponent {
     public _formbuilder: UntypedFormBuilder,
     private _FormvalidationserviceService: FormvalidationserviceService,
     private accountService: AuthenticationService,
+    private hospitalconfigservice: HospitalConfigService,
     public toastr: ToastrService, public _ConfigService: ConfigService,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) { }
@@ -130,7 +133,8 @@ export class NewLabPatientRegComponent {
     this.OpBillForm = this.createTotalChargeForm();
     this.OPFooterForm = this.CreateOPFooter();
     this.getServiceList();
-
+    console.log(this.hospitalconfigservice.HospitalconfigParams)
+    console.log(this._ConfigService.configParams)
   }
 
   createFinalFormView() {
@@ -153,7 +157,7 @@ export class NewLabPatientRegComponent {
       middleName: ['', [Validators.maxLength(50), Validators.pattern("^[A-Za-z/() ]*$"), this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
       lastName: ['', [Validators.required, Validators.maxLength(50), Validators.pattern("^[A-Za-z/() ]*$")]],
       genderId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      dateofBirth:[(new Date()).toISOString(), this._FormvalidationserviceService.validDateValidator()],
+      DateOfBirth: [(new Date()).toISOString(), this._FormvalidationserviceService.validDateValidator()],
       ageYear: ['', [Validators.maxLength(3), Validators.pattern("^[0-9]*$")]],
       ageMonth: ['', [Validators.pattern("^[0-9]*$")]],
       ageDay: ['', [Validators.pattern("^[0-9]*$")]],
@@ -162,8 +166,8 @@ export class NewLabPatientRegComponent {
       stateId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       countryId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       patientTypeId: [1],
-      tariffId: [1], // need to ask sir what value to pass
-      classId: [1],
+      tariffId: [1],//this.hospitalconfigservice.HospitalconfigParams?.IPD_Billing_CounterId], // need to ask sir what value to pass
+      classId: [1],// [this.hospitalconfigservice.HospitalconfigParams?.IPD_Billing_CounterId],
       departmentId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       doctorId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       refDocId: [0],
@@ -350,88 +354,90 @@ export class NewLabPatientRegComponent {
     this.dateTimeObj = dateTimeObj;
   }
 
-  getSelectedObjextPatient(event: any): void {
-    console.log("Patient Data:", event);
-    this.registerObj = event
-    if (event) {
-      const fullName = event.patientName?.trim() || '';
-      this.PatientName = event.patientName?.trim() || ''
+  // getSelectedObjextPatient(event: any): void {
+  //   console.log("Patient Data:", event);
+  //   this.registerObj = event
+  //   if (event) {
+  //     const fullName = event.patientName?.trim() || '';
+  //     this.PatientName = event.patientName?.trim() || ''
 
-      const nameParts = fullName.split(' ');
-      const firstName = nameParts[0] || '';
-      // this.myForm.get('patientName').setValue(firstName)
-      const middleName = nameParts[1] || '';
-      const lastName = nameParts[1] || '';
-      this.myForm.patchValue({
-        // firstName: firstName,
-        middleName: middleName,
-        lastName: lastName,
-        mobileNo: event.extMobileNo ?? '',
-      });
+  //     const nameParts = fullName.split(' ');
+  //     const firstName = nameParts[0] || '';
+  //     // this.myForm.get('patientName').setValue(firstName)
+  //     const middleName = nameParts[1] || '';
+  //     const lastName = nameParts[1] || '';
+  //     this.myForm.patchValue({
+  //       // firstName: firstName,
+  //       middleName: middleName,
+  //       lastName: lastName,
+  //       mobileNo: event.extMobileNo ?? '',
+  //     });
 
-      this.selectedPatient = event;
-    }
-    const extAddressNameElement = document.querySelector(`[name='middleName']`) as HTMLElement;
-    if (extAddressNameElement) {
-      extAddressNameElement.focus();
-    }
+  //     this.selectedPatient = event;
+  //   }
+  //   const extAddressNameElement = document.querySelector(`[name='middleName']`) as HTMLElement;
+  //   if (extAddressNameElement) {
+  //     extAddressNameElement.focus();
+  //   }
 
-    this.data.labPatientId = 117
-    if ((this.data?.labPatientId ?? 0) > 0) {
-      setTimeout(() => {
+  //   this.data.labPatientId = 117
+  //   if ((this.data?.labPatientId ?? 0) > 0) {
+  //     setTimeout(() => {
 
-        this._labPatientRegService.getLabRegistraionById(this.data.labPatientId).subscribe((response) => {
-          this.registerObj = response;
-          console.log(this.registerObj)
-          // this.regNo = this.registerObj.regNo
-          // this.personalFormGroup.get("RegId").setValue(this.registerObj.regId)
-          // this.value=this.registerObj.dateofBirth
-          this.onChangeDateofBirth(this.registerObj.dateofBirth)
-        });
-      }, 500);
-    }
+  //       this._labPatientRegService.getLabRegistraionById(this.data.labPatientId).subscribe((response) => {
+  //         this.registerObj = response;
+  //         console.log(this.registerObj)
+  //         // this.regNo = this.registerObj.regNo
+  //         // this.personalFormGroup.get("RegId").setValue(this.registerObj.regId)
+  //         // this.value=this.registerObj.dateofBirth
+  //         this.onChangeDateofBirth(this.registerObj.dateofBirth)
+  //       });
+  //     }, 500);
+  //   }
 
-  }
-
+  // }
+  regflag = false
   getSelectedObj(obj) {
     console.log(obj)
 
     this.PatientName = obj.firstName + ' ' + obj.lastName;
-    this.RegId = 117 //obj.labPatientId ;
+    this.RegId = obj.value;
     if (this.RegId) {
 
-      // setTimeout(() => {
+      setTimeout(() => {
 
-      this._labPatientRegService.getLabRegistraionById(this.RegId).subscribe((response) => {
-        console.log(response)
-        
-        this.registerObj = response;
-        this.value = response.dateofBirth
-        this.vRegNo = response.regno
-        this.onChangeDateofBirth(response.dateofBirth)
+        this._labPatientRegService.getLabRegistraionById(this.RegId).subscribe((response) => {
+          console.log(response)
 
-        this.myForm.patchValue({
-          firstName: this.registerObj.firstName.trim(),
-          middleName: this.registerObj.middleName.trim(),
-          LastName: this.registerObj.lastName.trim(),
-          MobileNo: this.registerObj.mobileNo.trim(),
-          address: this.registerObj.address.trim(),
-          // DateOfBirth:this.registerObj.dateofBirth,
+          this.registerObj = response;
+          this.value = response.dateofBirth
+          this.vRegNo = response.regno
+          this.onChangeDateofBirth(response.dateofBirth)
+          this.regflag = true
+          this.myForm.patchValue({
+            firstName: this.registerObj.firstName.trim(),
+            middleName: this.registerObj.middleName.trim(),
+            LastName: this.registerObj.lastName.trim(),
+            MobileNo: this.registerObj.mobileNo.trim(),
+            address: this.registerObj.address.trim(),
+            // DateOfBirth:this.registerObj.dateofBirth,
 
+          });
+            this.selectChangedepartment(this.registerObj)
+          console.log(this.registerObj)
         });
+      
         console.log(this.registerObj)
-      });
 
-      // }, 100);
+      }, 100);
     }
 
-    // this.onChangeDateofBirth(this.registerObj.dateofBirth)
   }
 
 
   value = new Date()
   onChangeDateofBirth(DateOfBirth: Date) {
-
+    debugger
     if (DateOfBirth > this.minDate) {
       this.toastr.warning('Enter Proper Birth Date..', 'warning !', {
         toastClass: 'tostr-tost custom-toast-success',
@@ -460,7 +466,7 @@ export class NewLabPatientRegComponent {
       }
 
       this.value = DateOfBirth;
-      this.myForm.get('dateofBirth').setValue(DateOfBirth);
+      this.myForm.get('DateOfBirth').setValue(DateOfBirth);
       if (this.ageYear > 110)
         this.toastr.warning('Please Enter Valid BirthDate..', 'warning !', {
           toastClass: 'tostr-tost custom-toast-success',
@@ -511,14 +517,9 @@ export class NewLabPatientRegComponent {
 
   }
 
-
-
   onSaveEntry(row) {
     let doctorid = 0;
     const formValue = this.myForm.value
-
-
-    // this.dstable1.data = [];
     const isDuplicate = this.dstable1.data.some(item => item.ServiceId === row.serviceId);
     if (!isDuplicate) {
       this.onAddCharges(row)
@@ -538,7 +539,7 @@ export class NewLabPatientRegComponent {
     const discPer = Number(this.myForm.get('totalDiscountPer')?.value) || 0;
     // this.myForm.get('discountAmt').value
     const discountAmt = (total * discPer) / 100;
-    const netAmt = total - discountAmt;
+    const netAmt = Math.round(total - discountAmt);
 
     this.myForm.patchValue({
       totalAmt: total,
@@ -577,7 +578,7 @@ export class NewLabPatientRegComponent {
     const netAmount = totalAmount - discountAmount;
 
     if (totalAmount > 0) {
-    
+
       const newRow = {
         ServiceId: row.serviceId,
         ServiceName: row.serviceName,
@@ -664,8 +665,10 @@ export class NewLabPatientRegComponent {
     console.log(obj)
     this.departmentId = obj.value
     this.departmentname = obj.text
+    debugger
     if (obj.value) {
       this._labPatientRegService.getDoctorsByDepartment(obj.value).subscribe((data: any) => {
+        console.log(data)
         this.ddlDoctor.options = data;
         this.ddlDoctor.bindGridAutoComplete();
       });
@@ -674,7 +677,6 @@ export class NewLabPatientRegComponent {
       this._labPatientRegService.getDoctorsByDepartment(obj.departmentId).subscribe((data: any) => {
         // 
         this.ddlDoctor.options = data;
-        // this.ddlDoctor.bindGridAutoComplete();
         const incomingDoctorId = obj.doctorId;
         console.log("Id:", incomingDoctorId)
         setTimeout(() => {
@@ -683,12 +685,14 @@ export class NewLabPatientRegComponent {
             const matchedDoctor = data.find(doc => doc.value === incomingDoctorId);
             if (matchedDoctor) {
               this.ddlDoctor.SetSelection(matchedDoctor.value);
-              // this.myForm.get('doctorId')?.setValue(matchedDoctor.value);
             }
           }
         }, 100);
       });
     }
+
+    // this.myForm.get('departmentId').setValue(this.departmentId)
+    // this.myForm.get('doctorId').setValue(parseInt(this.myForm.get('refDocId').value))
   }
 
   allowOnlyDigits(event: KeyboardEvent) {
@@ -729,7 +733,13 @@ export class NewLabPatientRegComponent {
       cancelButtonText: 'No, cancel'
     }).then((result) => {
       if (result.isConfirmed) {
-      console.log(this.myForm.value)
+        console.log(this.myForm.value)
+
+
+        if (!this.regflag) {
+          this.myForm.get('firstName').setValue(this.myForm.get('patientName').value)
+        }
+
         if (!this.myForm.invalid)
           this.OnSave();
         else {
@@ -793,12 +803,13 @@ export class NewLabPatientRegComponent {
     //   this.myForm.get('firstName').setValue(this.myForm.get('patientName').value)
     // }
     // this.myForm.get('firstName').setValue(this.myForm.get('patientName').value)
-    console.log(this.myForm.value)
 
-debugger
-    let DateOfBirth1 =  this.myForm.get('dateofBirth')?.value;
+
+    debugger
+    console.log(this.myForm.getRawValue())
+    let DateOfBirth1 = this.myForm.get('DateOfBirth')?.value;
     if (DateOfBirth1) {
-      
+
       const todayDate = new Date();
       const dob = new Date(DateOfBirth1);
       let ageYear = (todayDate.getFullYear() - dob.getFullYear());
@@ -854,7 +865,7 @@ debugger
     this.OpBillForm.get('opdipdid')?.setValue(0)
     this.OpBillForm.get('tariffId')?.setValue(this.vTariffId)
     this.OpBillForm.get('regNo')?.setValue(this.regNo)
-    this.OpBillForm.get('patientName')?.setValue(this.PatientName)
+    this.OpBillForm.get('patientName')?.setValue(this.PatientName || this.myForm.get('firstName').value)
     this.OpBillForm.get('ipdno')?.setValue(this.opdNo)
     this.OpBillForm.get('ageYear')?.setValue(Number(this.ageYear) || 0)
     this.OpBillForm.get('ageMonth')?.setValue(Number(this.ageMonth) || 0)
@@ -919,14 +930,13 @@ debugger
             console.log(result.BillBalanceAmount)
             this.OpBillForm.get('balanceAmt').setValue(result.BillBalanceAmount || 0)
             this.OpBillForm.get('payments').setValue(result.submitDataPay.ipPaymentInsert)
-            console.log(this.OpBillForm.value)
+         
 
             this.LabBillfinalform.get('labPatientRegistration').setValue(formValue)
             this.LabBillfinalform.get('opBillIngModels').setValue(this.OpBillForm.value)
-
+            console.log(this.LabBillfinalform.value)
             this._labPatientRegService.InsertLabRegBilling(this.LabBillfinalform.value).subscribe(response => {
-              this.viewgetOPBillReportPdf(response)
-              //  this.resetform();
+            this.viewgetOPBillReportPdf(response)
               this._matDialog.closeAll();
               this.savebtn = true
             });
@@ -945,8 +955,10 @@ debugger
         this.LabBillfinalform.get('opBillIngModels').setValue(this.OpBillForm.value)
 
         console.log(this.LabBillfinalform.value)
-        
+
         this._labPatientRegService.InsertLabRegBilling(this.LabBillfinalform.value).subscribe(response => {
+          console.log(response)
+
           this.viewgetOPBillReportPdf(response)
           this._matDialog.closeAll();
           this.savebtn = true
@@ -966,7 +978,7 @@ debugger
 
 
         this._labPatientRegService.InsertlabregCredit(this.LabBillfinalform.value).subscribe(response => {
-          this.viewgetOPBillReportPdf(response)
+          // this.viewgetOPBillReportPdf(response)
           this._matDialog.closeAll();
           this.savebtn = true
           // if (response)
@@ -1002,7 +1014,7 @@ debugger
   }
 
   viewgetOPBillReportPdf(element) {
-    this.commonService.Onprint("BillNo", element.billNo, "LabregisterBillReceipt");
+    this.commonService.Onprint("BillNo", element, "LabregisterBillReceipt");
   }
 
 

@@ -65,16 +65,16 @@
 
                                     <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
 
-                                        <airmid-autocomplete label="First Name" [formGroup]="myForm"
+                                        <!-- <airmid-autocomplete label="First Name" [formGroup]="myForm"
                                             formControlName="patientName" placeholderText="First Name" fxFlex
                                             ApiUrl="Sales/External-auto-complete?Keyword=" TextField="text"
-                                            (selectionChange)="getSelectedObj($event)"></airmid-autocomplete>
+                                            (selectionChange)="getSelectedObj($event)"></airmid-autocomplete> -->
 
-                                        <!-- <airmid-autocomplete label="Patient Name / Mobile No" [formGroup]="myForm"
+                                        <airmid-autocomplete label="Patient Name / Mobile No" [formGroup]="myForm"
                                             formControlName="patientName" placeholderText="Patient Name / Mobile No"
                                             fxFlex ApiUrl="LabPatientRegistration/Labauto-complete?Keyword="
                                             (selectionChange)="getSelectedObj($event)"
-                                            ValueField="regId"></airmid-autocomplete> -->
+                                            ValueField="regId"></airmid-autocomplete>
 
                                     </div>
 
@@ -101,10 +101,10 @@
                                         <!-- <app-airmid-dateofbirth [formGroup]="myForm" formControlName="dateofBirth"
                                             [(value)]="registerObj.dateofBirth" dateStyle="Year"
                                             (dateChange)="chkChange()"></app-airmid-dateofbirth> -->
-
-                                              <app-airmid-dateofbirth [formGroup]="myForm"
-                                               dateStyle="Year" formControlName="dateofBirth"
-                                                [(value)]="registerObj.dateofBirth"></app-airmid-dateofbirth>
+<!--  -->
+                                              <app-airmid-dateofbirth [formGroup]="myForm" [(value)]="registerObj.dateofBirth"
+                                               dateStyle="Year" formControlName="DateOfBirth"
+                                                ></app-airmid-dateofbirth>
                                           
                                     </div>
 
@@ -332,7 +332,7 @@
                                 </div>
                                 <div fxFlex="10%" fxFlex.xs="100%" fxFlex.sm="100%">
                                     <airmid-textbox label="Discount %" formControlName="totalDiscountPer"
-                                        [formGroup]="myForm" [type]="'number'" min="0"
+                                        [formGroup]="myForm" [min]="0" [max]="100" [type]="'text'"
                                         (valueChange)="updateCalculation()">
                                     </airmid-textbox>
                                 </div>

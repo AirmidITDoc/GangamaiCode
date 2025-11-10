@@ -80,5 +80,7 @@ export class LabPatientRegService {
     return this._httpClient.PostData("OPSettlement/InsertSettlement", param)
   }
 
-  
+     public getReportView(Param) {
+        return this._httpClient.PostData("Report/ViewReport", Param);
+    }
 }

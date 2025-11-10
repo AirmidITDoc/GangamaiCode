@@ -20,6 +20,7 @@ import { LabPatientRegService } from './lab-patient-reg.service';
 import { NewLabPatientRegComponent } from './new-lab-patient-reg/new-lab-patient-reg.component';
 import { OpPaymentComponent } from 'app/main/opd/op-search-list/op-payment/op-payment.component';
 import { LabRegBillDeatilsComponent } from './lab-reg-bill-deatils/lab-reg-bill-deatils.component';
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 // import { NewLabPatientregComponent } from './new-lab-patientreg/new-lab-patientreg.component';
 
 @Component({
@@ -67,6 +68,8 @@ export class LabPatientRegComponent {
     { heading: "", key: "balanceAmt1", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
 
     { heading: "Date-Time", key: "regTime", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 6 },
+    { heading: "PBillNo", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+   
     { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
     { heading: "Age", key: "ageYear", sort: true, align: 'left', emptySign: 'NA', width: 100 },
     { heading: "MobileNo", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
@@ -248,11 +251,60 @@ export class LabPatientRegComponent {
 
    viewgetOPPayemntPdf(data, status) {
         if (status == true)
-            this.commonService.Onprint("PaymentId", data, "OPPaymentReceipt");
+            this.commonService.Onprint("PaymentId", data, "LabPaymentReceipt");
         else
-            this.commonService.Onprint("PaymentId", data.paymentId, "OPPaymentReceipt");
+            this.commonService.Onprint("PaymentId", data.paymentId, "LabPaymentReceipt");
     }
-OnallList(){}
+
+  OnallList() {
+    setTimeout(() => {
+
+      let param = {
+
+        "searchFields": [
+          {
+            "fieldName": "DoctorId",
+            "fieldValue": this.DoctorId,
+            "opType": "13"
+          },
+          {
+            "fieldName": "From_Dt",
+            "fieldValue": "2025-11-11",
+            "opType": "13"
+          },
+          {
+            "fieldName": "To_Dt",
+            "fieldValue": "2025-11-11",
+            "opType": "13"
+          }
+
+        ],
+        "mode": "LabRegistrationListReport"
+      }
+
+      console.log(param)
+      this._labPatientRegService.getReportView(param).subscribe(res => {
+        const matDialog = this._matDialog.open(PdfviewerComponent,
+          {
+            maxWidth: "85vw",
+            height: '750px',
+            width: '100%',
+            data: {
+              base64: res["base64"] as string,
+              title: "Lab Registration List  Viewer"
+
+            }
+          });
+
+        matDialog.afterClosed().subscribe(result => {
+
+        });
+      });
+
+    }, 100);
+
+  }
+
 
   billdetail(element) {
     console.log(element)
