@@ -17,29 +17,6 @@
     </div>
     <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
 
-        <!-- <div class="info-badge-top p-12 border-bottom">
-            <div fxLayout="row wrap" fxLayoutAlign="start center" class="gap-8">
-
-                <div style="color: green" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
-                    <mat-icon class="pill green-600 s-16">circle</mat-icon>
-                    <span class="green-600-fg"> IP </span>
-                </div>
-
-                <div style="color: orange" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
-                    <mat-icon class="pill orange-600 s-16">circle</mat-icon>
-                    <span class="orange-600-fg">OP
-                    </span>
-                </div>
-                <div style="color: red" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
-                    <mat-icon class="pill red-600 s-16">circle</mat-icon>
-                    <span class="red-600-fg">Emergency </span>
-                </div>
-                <div style="color: blue;" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
-                    <mat-icon class="pill blue-600 s-16">circle</mat-icon>
-                    <span class="blue-600-fg">normal </span>
-                </div>
-            </div>
-        </div> -->
         <ng-template #actionsTemplate let-element>
             <div fxLayout="row" fxLayoutAlign="center center">
                 <mat-icon *ngIf="element.opIpType=='1'" matTooltip="IP" class="pill green-600 s-16">circle</mat-icon>
@@ -47,20 +24,11 @@
                 <mat-icon *ngIf="element.opIpType=='0'" matTooltip="OP" class="pill orange-600 s-16">circle</mat-icon>
             </div>
         </ng-template>
-        <ng-template #actionsTemplate1 let-element>
-            <div fxLayout="row" fxLayoutAlign="center center">
-                <mat-icon *ngIf="element.surgeryTypeId=='2'" matTooltip="Emergency"
-                    class="pill red-600 s-16">circle</mat-icon>
 
-                <mat-icon *ngIf="element.surgeryTypeId=='1'" matTooltip="Normal"
-                    class="pill blue-600 s-16">circle</mat-icon>
-            </div>
-        </ng-template>
         <ng-template #actionButtonTemplate let-element>
             <div fxLayout="row" fxLayoutAlign="center center">
 
-                <button mat-icon-button matTooltip="Edit" (click)="onNew(element)"
-                    [disabled]="element.isCancelled">
+                <button mat-icon-button matTooltip="Edit" (click)="onNew(element)" [disabled]="element.isCancelled">
                     <mat-icon>edit</mat-icon>
                 </button>
 
@@ -71,7 +39,7 @@
                 <button mat-icon-button matTooltip="Cancel">
                     <mat-icon> cancel</mat-icon>
                 </button>
-                
+
             </div>
         </ng-template>
         <airmid-table [gridConfig]="gridConfig" class="content">
@@ -79,17 +47,18 @@
                 <form [formGroup]="myFilterform">
 
                     <airmid-datepicker [formGroup]="myFilterform" [isRangePicker]="true" formStartControlName="start"
-                        formEndControlName="end" [(fromValue)]="gridConfig.filters[3].fieldValue"
-                        [(toValue)]="gridConfig.filters[4].fieldValue"></airmid-datepicker>
+                        formEndControlName="end" [(fromValue)]="gridConfig.filters[0].fieldValue"
+                        [(toValue)]="gridConfig.filters[1].fieldValue"></airmid-datepicker>
 
                     <mat-form-field appearance="outline">
                         <mat-label>UHID No</mat-label>
-                        <input matInput placeholder="Search Reg No" autocomplete="off" [formGroup]="myFilterform"
+                        <input matInput placeholder="Search UHID No" autocomplete="off" [formGroup]="myFilterform"
                             formControlName="RegNo" (input)="onChangeFirst()" />
                         <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('RegNo')">
                             <mat-icon>close</mat-icon>
                         </button>
                     </mat-form-field>
+
 
                     <mat-form-field appearance="outline">
                         <mat-label>First Name</mat-label>
@@ -109,6 +78,24 @@
                         </button>
                     </mat-form-field>
 
+                    <mat-radio-group formControlName="opipType" name="opipType" fxLayout="column"
+                        (change)="onChangeFirst()" style="padding: 8px;">
+
+                        <div fxLayout="row" fxLayoutAlign="start center" style="gap: 8px;">
+                            <mat-icon class="pill">circle</mat-icon>
+                            <mat-radio-button value="2">ALL</mat-radio-button>
+                        </div>
+
+                        <div fxLayout="row" fxLayoutAlign="start center" style="gap: 8px;">
+                            <mat-icon class="pill orange-600 s-16">circle</mat-icon>
+                            <mat-radio-button value="0">OP</mat-radio-button>
+                        </div>
+
+                        <div fxLayout="row" fxLayoutAlign="start center" style="gap: 8px;">
+                            <mat-icon class="pill green-600 s-16">circle</mat-icon>
+                            <mat-radio-button value="1">IP</mat-radio-button>
+                        </div>
+                    </mat-radio-group>
                 </form>
             </ng-container>
         </airmid-table>

@@ -87,6 +87,8 @@ export class NewOtPreoperationComponent {
   autocompleteModeOTTable: String = "OttableMaster";
   autocompleteModeLocation: string = "Location";
   autocompleteModeResourseType: string = "ResourcesTypes";
+  autocompleteModeSiteDescription: String = "SiteDescription";
+  autocompleteModeDepartment: string = "Department";
 
   dssurgeryDetailList = new MatTableDataSource<OtReqInsert>();
   dsattendentDetailList = new MatTableDataSource<OtReqInsert>();
@@ -133,6 +135,7 @@ export class NewOtPreoperationComponent {
       setTimeout(() => {
         this._OTPreOperationService.getotTableById(this.data.ottable).subscribe((response) => {
           this.registerObj2 = response;
+          console.log("Get ottable Data:", this.registerObj2)
           this.ddlLocation.SetSelection(this.registerObj2.locationId);
         });
       }, 500);
@@ -235,7 +238,7 @@ export class NewOtPreoperationComponent {
   addDiagnolist: any = [];
   selectChangeDiagnosis(selectedChips: string[]) {
     this.addDiagnolist = selectedChips;
-    this.preOperationForm.get('Diagnosis')?.setValue(this.addDiagnolist);
+    this.preOperationForm.get('diagnosis')?.setValue(this.addDiagnolist);
   }
   getdiagnosisList(obj) {
     this.addDiagnolist = [];
@@ -284,6 +287,7 @@ export class NewOtPreoperationComponent {
     setTimeout(() => {
       this._OTPreOperationService.getotsiteDiscById(obj.siteDescId).subscribe((response) => {
         this.surgCategoryName = response.siteDescriptionName;
+        console.log("Get siteDisc Data:", this.surgCategoryName)
       });
     }, 100);
   }

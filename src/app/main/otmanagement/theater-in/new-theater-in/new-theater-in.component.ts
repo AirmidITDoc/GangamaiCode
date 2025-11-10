@@ -10,6 +10,9 @@ import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { MatTableDataSource } from '@angular/material/table';
 import { OtReqInsert } from '../../ot-request/ot-request.component';
 import { TheaterInService } from '../theater-in.service';
+import { OtReserInsert } from '../../ot-reservation/ot-reservation.component';
+import { CdkDragDrop, CdkDragMove, moveItemInArray } from '@angular/cdk/drag-drop';
+import { CdkScrollable } from '@angular/cdk/scrolling';
 
 @Component({
   selector: 'app-new-theater-in',
@@ -22,7 +25,7 @@ export class NewTheaterInComponent {
   theaterInForm: FormGroup;
   autocompleteModeDepartment: String = "Department";
   autocompleteModeSiteDescriptionId: String = "SiteDescription";
-  autocompleteModeSurgeryCategory: String = "SurgeryCategory";
+  autocompleteModeotTableCategory: String = "OttypeMaster";
   autocompleteModeDoctorSurgeon: String = "DoctorSurgion";
   autocompleteModeSurgeryMaster: String = "SurgeryMaster";
   autocompleteModeDoctorType: string = "DoctorType";
@@ -55,21 +58,24 @@ export class NewTheaterInComponent {
   opTime: any;
   opendTime: any;
   displayedColumns: string[] = [
-    'surgeryType',
+    'sequence',
+    'surgeryCategoryName',
     'surgeryName',
-    'duration',
-    'fromTime',
-    'toTime',
-    'isprimary',
+    'surgeryPart',
+    'surgeryDuration',
+    'surgeryFromTime',
+    'surgeryEndTime',
+    'isPrimary',
     'surgeon',
     'anesthesia',
-    'Action'
+    // 'Action'
   ];
 
   displayedColumns1: string[] = [
+    'sequence',
     'surgeon',
     'anesthesia',
-    'Action'
+    // 'Action'
   ];
 
   @ViewChild('surgeonList') surgeonList: AirmidDropDownComponent;
@@ -87,6 +93,12 @@ export class NewTheaterInComponent {
   opTheaterInTime: any;
   addDiagnolist: any = [];
   vSelectedOption: any = "OP";
+  registerObj2 = new OtReserInsert({});
+  @ViewChild('ddlLocation') ddlLocation: AirmidDropDownComponent;
+  @ViewChild('ddlSurgerytype') ddlSurgerytype: AirmidDropDownComponent;
+  vreservationId: any;
+  AllTypeDescription: any = []
+  RtrvDescriptionList: any = [];
 
   constructor(
     public _TheaterinService: TheaterInService,
@@ -100,23 +112,53 @@ export class NewTheaterInComponent {
     this.theaterInForm = this._TheaterinService.createTheaterInForm();
     this.theaterInForm.markAllAsTouched();
 
-    if ((this.data?.otBookingId) > 0) {
-      this.registerObj = this.data
-      this.vbookingId = this.registerObj.otBookingId
-      this.opIpId = this.registerObj.visitId
-      this.vRegNo = this.registerObj.regNo
-      this.vOPDNo = this.registerObj.opdNo
-      this.vIPDNo = this.registerObj.opdNo
-      this.vPatientName = this.registerObj.patientName
-      if (this.registerObj.opIpType == 0) {
-        this.vSelectedOption = "OP"
-      }
-      else {
-        this.vSelectedOption = "IP"
+    if ((this.data?.otReservationId) > 0) {
+      this.registerObj1 = this.data
+      console.log(this.registerObj1)
+      this.vRegNo = this.registerObj1.regNo
+      this.vOPDNo = this.registerObj1.opdNo
+      this.vIPDNo = this.registerObj1.opdNo
+      this.vPatientName = this.registerObj1.patientName
+
+      setTimeout(() => {
+        this._TheaterinService.getotTableById(this.data.ottable).subscribe((response) => {
+          this.registerObj2 = response;
+          console.log("Get ottable Data:", this.registerObj2)
+          this.ddlLocation.SetSelection(this.registerObj2.locationId);
+        });
+      }, 500);
+
+      if (this.data.otReservationId) {
+        setTimeout(() => {
+          this._TheaterinService.getotReservationById(this.data.otReservationId).subscribe((response) => {
+            this.registerObj2 = response;
+            console.log("Get Data:", this.registerObj2)
+            this.vreservationId = this.registerObj2.otreservationId
+            this.opIpId = this.registerObj2.opipid
+            this.vSelectedOption = this.registerObj2.opiptype == 0 ? 'OP' : 'IP';
+            this.theaterInForm.get('surgeryDate')?.setValue(this.registerObj2.surgeryDate)
+          });
+        }, 500);
       }
 
-      console.log(this.registerObj)
-      this.theaterInForm.patchValue(this.registerObj);
+      if (this.registerObj1?.estimateTime) {
+        const date = new Date(this.registerObj1.estimateTime);
+        if (!isNaN(date.getTime())) {
+          const hours = date.getHours().toString().padStart(2, '0');
+          const minutes = date.getMinutes().toString().padStart(2, '0');
+
+          const formattedTime = `${hours}:${minutes}`; // e.g. "13:01"
+
+          setTimeout(() => {
+            this.theaterInForm.get('estimateTime')?.setValue(formattedTime);
+          });
+        }
+      }
+
+      this.theaterInForm.patchValue(this.registerObj1);
+      this.getdiagnosisList(this.registerObj1);
+      this.getReservationSurgeryDetList(this.registerObj1);
+      this.getReservationAttendentDetList(this.registerObj1);
     }
   }
 
@@ -177,7 +219,7 @@ export class NewTheaterInComponent {
 
   selectChangeDiagnosis(selectedChips: string[]) {
     this.addDiagnolist = selectedChips;
-    this.theaterInForm.get('Diagnosis')?.setValue(this.addDiagnolist);
+    this.theaterInForm.get('diagnosis')?.setValue(this.addDiagnolist);
   }
 
   selectChangeSurgery(obj: any) {
@@ -195,9 +237,168 @@ export class NewTheaterInComponent {
   selectChangeAnesth1(obj: any) {
     this.AnthName1 = obj.text
   }
+  onChangeOtTable(e) {
+    this.ddlLocation.SetSelection(e.locationId);
+  }
+  getdiagnosisList(obj) {
+    this.addDiagnolist = [];
+    this.AllTypeDescription = [];
 
+    const vdata = {
+      "first": 0,
+      "rows": 10,
+      "sortField": "OTReservationId",
+      "sortOrder": 0,
+      "filters": [
+        { "fieldName": "OTReservationId", "fieldValue": String(obj.otReservationId), "opType": "Equals" }
+      ],
+      "Columns": [],
+      "exportType": "JSON"
+    };
+
+    this._TheaterinService.getRtrvdiagnosisList(vdata).subscribe(response => {
+
+      if (response && Array.isArray(response.data)) {
+        this.RtrvDescriptionList = response.data;
+        // Process Diagnosis
+        let Diagnosis = this.RtrvDescriptionList.filter(item => item.descriptionType === 'Diagnosis');
+        if (Diagnosis.length > 0) {
+          Diagnosis.forEach(element => {
+            this.addDiagnolist.push(
+              {
+                otreservationDiagnosisDetId: element.otreservationDiagnosisDetId,
+                descriptionName: element.descriptionName
+              }
+            )
+          })
+          this.theaterInForm.get('diagnosis').setValue(this.addDiagnolist);
+          console.log("DIAGNOSIS DATA:", this.theaterInForm.get('diagnosis').value)
+        }
+      }
+    });
+  }
 
   /////////////////////////////// surgery detail part /////////////////////////////
+  drop1(event: CdkDragDrop<any[]>) {
+    const data = this.dssurgeryDetailList.data; // Extract raw array from MatTableDataSource
+    moveItemInArray(data, event.previousIndex, event.currentIndex);
+    this.dssurgeryDetailList.data = data; // Update table with reordered data
+  }
+  @ViewChild(CdkScrollable, { static: true }) scrollable1!: CdkScrollable;
+  onDragMoved1(event: CdkDragMove) {
+    const scrollContainer = this.scrollable1.getElementRef().nativeElement;
+    const scrollRect = scrollContainer.getBoundingClientRect();
+    const pointerY = event.pointerPosition.y;
+
+    const edgeMargin = 60; // px from top/bottom where scrolling starts
+    const scrollSpeed = 40; // 🔥 increase for faster scrolling
+
+    if (pointerY < scrollRect.top + edgeMargin) {
+      scrollContainer.scrollTop -= scrollSpeed;
+    } else if (pointerY > scrollRect.bottom - edgeMargin) {
+      scrollContainer.scrollTop += scrollSpeed;
+    }
+  }
+
+  FetchList: any = [];
+  getReservationSurgeryDetList(obj) {
+    var m_data2 = {
+      "first": 0,
+      "rows": 10,
+      "sortField": "OTReservationId",
+      "sortOrder": 0,
+      "filters": [
+        { "fieldName": "OTReservationId", "fieldValue": String(obj.otReservationId), "opType": "Equals" }
+      ],
+      "Columns": [],
+      "exportType": "JSON"
+    };
+
+    this._TheaterinService.getRtrvReservationSurgeryList(m_data2).subscribe(records => {
+      this.FetchList = records.data as OtReserInsert[];
+      this.FetchList.forEach(element => {
+
+        const from = new Date(element.surgeryFromTime);
+        const end = new Date(element.surgeryEndTime);
+
+        const surgeryFromTime = from.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
+        const surgeryEndTime = end.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
+
+        this.Chargelist.push(
+          {
+            surgeryCategoryName: element.surgeryCategoryName,
+            surgeryCategoryId: element.surgeryCategoryId,
+            surgeryId: element.surgeryId,//
+            surgeryName: element.surgeryName,
+            surgeryPart: element.surgeryPart,
+            surgeryDuration: element.surgeryDuration,
+            surgeryFromTime: surgeryFromTime,
+            surgeryEndTime: surgeryEndTime,
+            isPrimary: element.isPrimary,
+            surgeonId: element.surgeonId,//
+            surgeonName: element.surgeonName,
+            anestheticsId: element.anesthetistId, //
+            anestheticsName: element.anestheticsName,
+          });
+      })
+      this.dssurgeryDetailList.data = this.Chargelist
+      console.log("surgeryDet Data:", this.dssurgeryDetailList.data)
+    });
+
+  }
+
+  drop2(event: CdkDragDrop<any[]>) {
+    const data = this.dsattendentDetailList.data;
+    moveItemInArray(data, event.previousIndex, event.currentIndex);
+    this.dsattendentDetailList.data = data; // Update table with reordered data
+  }
+
+  @ViewChild(CdkScrollable, { static: true }) scrollable2!: CdkScrollable;
+  onDragMoved2(event: CdkDragMove) {
+    const scrollContainer = this.scrollable2.getElementRef().nativeElement;
+    const scrollRect = scrollContainer.getBoundingClientRect();
+    const pointerY = event.pointerPosition.y;
+
+    const edgeMargin = 60; // px from top/bottom where scrolling starts
+    const scrollSpeed = 40; // 🔥 increase for faster scrolling
+
+    if (pointerY < scrollRect.top + edgeMargin) {
+      scrollContainer.scrollTop -= scrollSpeed;
+    } else if (pointerY > scrollRect.bottom - edgeMargin) {
+      scrollContainer.scrollTop += scrollSpeed;
+    }
+  }
+  FetchList1: any = [];
+  getReservationAttendentDetList(obj) {
+    var m_data2 = {
+      "first": 0,
+      "rows": 10,
+      "sortField": "OTReservationId",
+      "sortOrder": 0,
+      "filters": [
+        { "fieldName": "OTReservationId", "fieldValue": String(obj.otReservationId), "opType": "Equals" }
+      ],
+      "Columns": [],
+      "exportType": "JSON"
+    };
+
+    this._TheaterinService.getRtrvReservationAttendentList(m_data2).subscribe(records => {
+      this.FetchList1 = records.data as OtReserInsert[];
+      this.FetchList1.forEach(element => {
+
+        this.Chargelist1.push(
+          {
+            doctorTypeId: element.doctorTypeId,//
+            doctorType: element.doctorType,
+            doctorId: element.doctorId, //
+            doctorName: element.doctorName,
+          });
+      })
+      this.dsattendentDetailList.data = this.Chargelist1
+      console.log("attendentDet Data:", this.dsattendentDetailList.data)
+    });
+
+  }
 
   previewUrl: string | ArrayBuffer | null = null;
 

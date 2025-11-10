@@ -27,58 +27,55 @@ export class AnesthesiaRecordComponent {
   msg: any;
   RequestName: any = "";
 
-  FromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
-  ToDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+  fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+  toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
   FirstName: any = ""
-  RegNo: any = "0"
+  regNo: any = "0"
   LastName: any = ""
+  opipType: any = "2"
 
   @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
   @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
   ngAfterViewInit() {
-    // Assign the template to the column dynamically
-    this.gridConfig.columnsList.find(col => col.key === 'opIpType')!.template = this.actionsTemplate;
-    this.gridConfig.columnsList.find(col => col.key === 'surgeryTypeId')!.template = this.actionsTemplate1;
+    this.gridConfig.columnsList.find(col => col.key === 'opiptype')!.template = this.actionsTemplate;
     this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
-
   }
+  
   @ViewChild('actionsTemplate') actionsTemplate!: TemplateRef<any>;
   @ViewChild('actionsTemplate1') actionsTemplate1!: TemplateRef<any>;
 
   allcolumns = [
-    { heading: "", key: "opIpType", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 40 },
-    { heading: "", key: "surgeryTypeId", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 40 },
-
-    { heading: "Manage", key: "otbookingTime", sort: true, align: 'left', emptySign: 'NA', type: 8, width: 200 },
-    { heading: "Movement", key: "otRequestTime", sort: true, align: 'left', emptySign: 'NA', type: 8, width: 200 },
-    { heading: "Movement-Type", key: "regNo", sort: true, align: 'left', emptySign: 'NA', },
-    { heading: "Movement Date", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
-    { heading: "To Department", key: "departmentName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-    { heading: "Purpose", key: "surgeryCategoryName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-    { heading: "Transfer Mode", key: "surgeryName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-    { heading: "Employees", key: "doctorName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
-    { heading: "Equipments", key: "siteDescriptionName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-    { heading: "PurposeDesc", key: "addedBy", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-    { heading: "To Location Point", key: "aa", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-    { heading: "Transfer Out By", key: "bb", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-    { heading: "OT Status", key: "ss", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+    { heading: "-", key: "opiptype", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 40 },
+    // { heading: "", key: "isNewRecord", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 40 },
+    { heading: "OTReser-Date&Time", key: "otReservationDateTime", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+    { heading: "Surgery Date", key: "surgeryDate", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+    { heading: "Estimate Time", key: "estimateTime", sort: true, align: 'left', emptySign: 'NA', type: 7, width: 150 },
+    // { heading: "Operation Date-Time", key: "opstartTime", sort: true, align: 'left', emptySign: 'NA', type: 8, width: 180 },
+    { heading: "UHID NO", key: "regNo", sort: true, align: 'left', emptySign: 'NA', },
+    { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
+    { heading: "Blood Group", key: "bloodGroup", sort: true, align: 'left', emptySign: 'NA', width: 120 },
+    { heading: "Category Type", key: "typeName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+    { heading: "Theater Name", key: "otTableName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+    { heading: "UserName", key: "userName", sort: true, align: 'left', emptySign: 'NA', width: 180 },
     {
-      heading: "Action", key: "action", align: "right", width: 150, sticky: true, type: gridColumnTypes.template,
-      template: this.actionButtonTemplate  // Assign ng-template to the column
+      heading: "Action", key: "action", align: "right", width: 120, sticky: true, type: gridColumnTypes.template,
+      template: this.actionButtonTemplate
     }
   ];
 
   allFilters = [
+    { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.StartsWith },
+    { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.StartsWith },
     { fieldName: "FirstName", fieldValue: "%", opType: OperatorComparer.StartsWith },
     { fieldName: "LastName", fieldValue: "%", opType: OperatorComparer.StartsWith },
-    { fieldName: "RegNo", fieldValue: "0", opType: OperatorComparer.Equals },
-    { fieldName: "FromDate", fieldValue: this.FromDate, opType: OperatorComparer.StartsWith },
-    { fieldName: "ToDate", fieldValue: this.ToDate, opType: OperatorComparer.StartsWith },
+    { fieldName: "RegNo", fieldValue: this.regNo, opType: OperatorComparer.Equals },
+    { fieldName: "OPIPType", fieldValue: this.opipType, opType: OperatorComparer.Equals },
   ]
+
   gridConfig: gridModel = {
-    apiUrl: "",
+    apiUrl: "OTReservation/OTReservationlist",
     columnsList: this.allcolumns,
-    sortField: "DoctorId",
+    sortField: "OtreservationId",
     sortOrder: 0,
     filters: this.allFilters
   }
@@ -96,26 +93,27 @@ export class AnesthesiaRecordComponent {
   }
 
   onChangeFirst() {
+    this.fromDate = this.datePipe.transform(this.myFilterform.get('start').value, "yyyy-MM-dd")
+    this.toDate = this.datePipe.transform(this.myFilterform.get('end').value, "yyyy-MM-dd")
     this.FirstName = this.myFilterform.get('FirstName').value + "%"
     this.LastName = this.myFilterform.get('LastName').value + "%"
-    this.RegNo = this.myFilterform.get('RegNo').value || "0"
+    this.regNo = this.myFilterform.get('RegNo').value || "0"
+    this.opipType = this.myFilterform.get('opipType').value
     this.getfilterdata();
   }
-
   getfilterdata() {
-    this.FromDate = this.datePipe.transform(this.myFilterform.get('start').value, "yyyy-MM-dd")
-    this.ToDate = this.datePipe.transform(this.myFilterform.get('end').value, "yyyy-MM-dd")
     this.gridConfig = {
-      apiUrl: "",
+      apiUrl: "OTReservation/OTReservationlist",
       columnsList: this.allcolumns,
-      sortField: "DoctorId",
+      sortField: "OtreservationId",
       sortOrder: 0,
       filters: [
-        { fieldName: "FromDate", fieldValue: this.FromDate, opType: OperatorComparer.StartsWith },
-        { fieldName: "ToDate", fieldValue: this.ToDate, opType: OperatorComparer.StartsWith },
-        { fieldName: "FirstName", fieldValue: this.FirstName, opType: OperatorComparer.StartsWith },
-        { fieldName: "LastName", fieldValue: this.LastName, opType: OperatorComparer.StartsWith },
-        { fieldName: "RegNo", fieldValue: this.RegNo, opType: OperatorComparer.Equals },
+        { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.StartsWith },
+        { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.StartsWith },
+        { fieldName: "FirstName", fieldValue: "%", opType: OperatorComparer.StartsWith },
+        { fieldName: "LastName", fieldValue: "%", opType: OperatorComparer.StartsWith },
+        { fieldName: "RegNo", fieldValue: this.regNo, opType: OperatorComparer.Equals },
+        { fieldName: "OPIPType", fieldValue: this.opipType, opType: OperatorComparer.Equals },
       ],
       row: 25
     }
@@ -131,7 +129,6 @@ export class AnesthesiaRecordComponent {
         this.myFilterform.get('LastName').setValue("")
     if (event == 'RegNo')
       this.myFilterform.get('RegNo').setValue("")
-
     this.onChangeFirst();
   }
 
@@ -144,6 +141,7 @@ export class AnesthesiaRecordComponent {
         maxWidth: "90vw",
         maxHeight: '90vh',
         width: '90%',
+        data: row
       });
     dialogRef.afterClosed().subscribe(result => {
       this.grid.bindGridData();

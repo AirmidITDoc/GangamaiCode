@@ -21,24 +21,31 @@ export class AnesthesiaRecordService {
       end: [(new Date()).toISOString()],
       FirstName: ['', [Validators.pattern("^[A-Za-z/() ]*$")]],
       LastName: ['', [Validators.pattern("^[A-Za-z/() ]*$")]],
-      RegNo: []
+      RegNo: [],
+      opipType: ["2"],
     });
   }
 
   createAnesthRecordForm(): FormGroup {
-        return this._formBuilder.group({
-           
-            AnethStartDt: [''],
-            AnethStartTime: [''],
-            AnethEndDt: [''],
-            AnethEndTime: [],
-            RecoveryStartDt: [''],
-            RecoveryStartTime: [''],
-            RecoveryEndDt: [''],
-            RecoveryEndTime: [],
-            anestypeId: [0],
-            Diagnosis:[[]],
-            notes:[],
-        });
-    }
+    return this._formBuilder.group({
+      AnethStartDt: [''],
+      AnethStartTime: [''],
+      AnethEndDt: [''],
+      AnethEndTime: [],
+      RecoveryStartDt: [''],
+      RecoveryStartTime: [''],
+      RecoveryEndDt: [''],
+      RecoveryEndTime: [],
+      anestypeId: [0],
+      Diagnosis: [[]],
+      notes: [],
+    });
+  }
+
+  public getotRequestById(Id) {
+    return this._httpClient.GetData("OTRequest/" + Id);
+  }
+  public getotReservationById(Id) {
+    return this._httpClient.GetData("OTReservation/" + Id);
+  }
 }

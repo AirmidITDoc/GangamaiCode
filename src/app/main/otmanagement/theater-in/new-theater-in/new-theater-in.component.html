@@ -169,21 +169,23 @@
                                 </div>
 
                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <airmid-dropdown label="Category Type" formControlName="CategoryTypeId"
-                                        [formGroup]="theaterInForm" [value]="registerObj?.surgeryCategoryId"
-                                        [mode]="autocompleteModeSurgeryCategory">
+                                    <airmid-dropdown label="Category Type" formControlName="categoryType"
+                                        [formGroup]="theaterInForm" [mode]="autocompleteModeotTableCategory">
                                     </airmid-dropdown>
                                 </div>
 
                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <airmid-dropdown label="Theater" formControlName="Theater"
-                                        [formGroup]="theaterInForm" [mode]="autocompleteModeOTTable">
+                                    <airmid-dropdown label="Theater" formControlName="ottable"
+                                        [formGroup]="theaterInForm" ValueField="ottableId" TextField="ottableName"
+                                        (selectionChange)="onChangeOtTable($event)"
+                                        ApiUrl="OTRequest/getlocationByOttable">
                                     </airmid-dropdown>
                                 </div>
 
                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <airmid-dropdown label="Theater Location" formControlName="TheaterLocation"
-                                        [formGroup]="theaterInForm" [mode]="autocompleteModeLocation"></airmid-dropdown>
+                                        [formGroup]="theaterInForm" #ddlLocation [readonly]="true"
+                                        [mode]="autocompleteModeLocation"></airmid-dropdown>
                                 </div>
 
                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%" class="gap-4">
@@ -196,7 +198,7 @@
                                     </mat-form-field>
 
                                     <mat-form-field appearance="outline" fxFlex>
-                                        <mat-label>Theater In Date</mat-label>
+                                        <mat-label>Theater In Time</mat-label>
                                         <input matInput type="time" formControlName="theaterInTime"
                                             (change)="onChangeTheaterInTime($event)">
                                     </mat-form-field>
@@ -206,15 +208,15 @@
                                     <mat-form-field appearance="outline" fxFlex>
                                         <mat-label>Surgery Dt</mat-label>
                                         <input name="Surgerydate" matInput [matDatepicker]="picker1"
-                                            formControllName="Surgerydate" />
+                                            formControlName="surgeryDate" #surgeryDateInput />
                                         <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
                                         <mat-datepicker #picker1></mat-datepicker>
                                     </mat-form-field>
 
-                                    <mat-form-field appearance="outline" fxFlex>
+                                     <mat-form-field appearance="outline" fxFlex>
                                         <mat-label>Estimate Time</mat-label>
-                                        <input matInput type="number" formControlName="estimateTime"
-                                            (change)="onChangeTime($event)" min="0" step="0.5">
+                                        <input matInput type="time" formControlName="estimateTime"
+                                            (change)="onChangeTime($event)">
                                     </mat-form-field>
                                 </div>
 
@@ -240,11 +242,6 @@
                                         </div> -->
 
                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <!-- <mat-form-field appearance="outline" fxFlex>
-                                                <mat-label>Remarks</mat-label>
-                                                <textarea row="1" name="Remarks" formControlName="Remarks" matInput
-                                                    type="text"></textarea>
-                                            </mat-form-field> -->
                                     <airmid-textbox label="Remark" formControlName="Remarks"
                                         [formGroup]="theaterInForm">
                                     </airmid-textbox>
@@ -252,10 +249,10 @@
 
                                 <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%" fxLayout="column"
                                     style="margin-bottom: 5px;">
-                                    <app-airmid-chipautocomplete fxFlex [placeholder]="'Select Diagnosis'"
-                                        [chips]="theaterInForm.get('Diagnosis')?.value"
-                                        [apiUrl]="'OPDPrescriptionMedical/GetDiagnosisList?descriptionType=Diagnosis'"
+                                    <app-airmid-chipautocomplete fxFlex [chips]="theaterInForm.get('diagnosis')?.value"
+                                        [apiUrl]="'OTReservation/GetReservationDiagnosisList?DescriptionType=Diagnosis'"
                                         [displayKey]="'descriptionName'" [allowCustom]="true"
+                                        [placeholder]="'Select Diagnosis'"
                                         (chipsChange)="selectChangeDiagnosis($event)">
                                     </app-airmid-chipautocomplete>
                                 </div>
@@ -276,13 +273,21 @@
 
                             <div class="airmid-table-container">
                                 <mat-table matSort [dataSource]="dssurgeryDetailList" [@animateStagger]="{value:'50'}"
-                                    class="airmid-table">
+                                    class="airmid-table" cdkDropList (cdkDropListDropped)="drop1($event)">
 
-                                    <ng-container matColumnDef="surgeryType">
+                                    <ng-container matColumnDef="sequence">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Sr.No
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let element; let i = index" fxShow.gt-sm>
+                                            {{ i + 1 }}
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="surgeryCategoryName">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
                                             Surgery Type</mat-header-cell>
                                         <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                            <span> {{element.surgeryType}}</span>
+                                            <span> {{element.surgeryCategoryName}}</span>
                                         </mat-cell>
                                     </ng-container>
 
@@ -294,42 +299,48 @@
                                         </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="duration">
+                                    <ng-container matColumnDef="surgeryPart">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Part
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                            <span> {{element.surgeryPart}} </span>
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="surgeryDuration">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Duration
                                             (hrs)
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                            <span> {{element.duration}} </span>
+                                            <span> {{element.surgeryDuration}} </span>
                                         </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="fromTime">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>From
-                                            Time
+                                    <ng-container matColumnDef="surgeryFromTime">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>From Time
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                            <span> {{element.fromTime}} </span>
+                                            <span> {{element.surgeryFromTime}} </span>
                                         </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="toTime">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>To
-                                            Time
+                                    <ng-container matColumnDef="surgeryEndTime">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>To Time
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                            <span> {{element.toTime}} </span>
+                                            <span> {{element.surgeryEndTime}} </span>
                                         </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="isprimary">
+                                    <ng-container matColumnDef="isPrimary">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Is
                                             Primary
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
                                             <span>
                                                 <mat-icon color="primary"
-                                                    *ngIf="element.isprimary">check_circle</mat-icon>
-                                                <mat-icon color="warn" *ngIf="!element.isprimary">cancel</mat-icon>
+                                                    *ngIf="element.isPrimary">check_circle</mat-icon>
+                                                <mat-icon color="warn" *ngIf="!element.isPrimary">cancel</mat-icon>
                                             </span>
                                         </mat-cell>
                                     </ng-container>
@@ -352,25 +363,11 @@
                                         </mat-cell>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="Action" stickyEnd>
-                                        <mat-header-cell *matHeaderCellDef class="table-actions">Action
-                                        </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact">
-                                            <ng-container class="actions">
-
-                                                <mat-icon (click)="onEdit(contact)" color="primary">edit</mat-icon>
-
-                                                <mat-icon (click)="deleteTableRow($event ,contact)" color="warn">
-                                                    delete
-                                                </mat-icon>
-                                            </ng-container>
-                                        </mat-cell>
-                                    </ng-container>
-
                                     <mat-header-row class="accent" *matHeaderRowDef="displayedColumns; sticky: true">
                                     </mat-header-row>
                                     <mat-row *matRowDef="let row; columns: displayedColumns;" class="element"
-                                        [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                                        [@animate]="{value:'*',params:{y:'100%'}}" cdkDrag
+                                        (cdkDragMoved)="onDragMoved1($event)"></mat-row>
                                 </mat-table>
                             </div>
                         </mat-card>
@@ -389,14 +386,22 @@
 
                             <div class="airmid-table-container">
                                 <mat-table matSort [dataSource]="dsattendentDetailList" [@animateStagger]="{value:'50'}"
-                                    class="airmid-table">
+                                    class="airmid-table" cdkDropList (cdkDropListDropped)="drop2($event)">
+
+                                    <ng-container matColumnDef="sequence">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Sr.No
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let element; let i = index" fxShow.gt-sm>
+                                            {{ i + 1 }}
+                                        </mat-cell>
+                                    </ng-container>
 
                                     <ng-container matColumnDef="surgeon">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Surgeon
                                             Name
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                            <span> {{element.anesthesiaType}} </span>
+                                            <span> {{element.doctorType}} </span>
                                         </mat-cell>
                                     </ng-container>
 
@@ -405,29 +410,15 @@
                                             fxShow.gt-sm>Anesthesia Name
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                            <span> {{element.anestheticsName1}} </span>
-                                        </mat-cell>
-                                    </ng-container>
-
-                                    <ng-container matColumnDef="Action" stickyEnd>
-                                        <mat-header-cell *matHeaderCellDef class="table-actions">Action
-                                        </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact">
-                                            <ng-container class="actions">
-
-                                                <mat-icon (click)="onEdit1(contact)" color="primary">edit</mat-icon>
-
-                                                <mat-icon (click)="deleteTableRow1($event ,contact)" color="warn">
-                                                    delete
-                                                </mat-icon>
-                                            </ng-container>
+                                            <span> {{element.doctorName}} </span>
                                         </mat-cell>
                                     </ng-container>
 
                                     <mat-header-row class="accent" *matHeaderRowDef="displayedColumns1; sticky: true">
                                     </mat-header-row>
                                     <mat-row *matRowDef="let row; columns: displayedColumns1;" class="element"
-                                        [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                                        [@animate]="{value:'*',params:{y:'100%'}}" cdkDrag
+                                        (cdkDragMoved)="onDragMoved2($event)"></mat-row>
                                 </mat-table>
                             </div>
 

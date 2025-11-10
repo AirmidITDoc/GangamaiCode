@@ -29,21 +29,21 @@ export class OtPreoperationService {
       opIpType: ["OP"],
       opIpId: ["", [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       BloodGroup: [],
-      CategoryTypeId: [],
-      Theater: [],
+      categoryType: [],
+      ottable: [],
       TheaterLocation: [],
       estimateTime: [],
-      Surgerydate: [new Date()],
+      surgeryDate: [new Date()],
       MobileNo: [],
-      Diagnosis: [[]],
+      diagnosis: [[], [Validators.required]],
       Remarks: [],
       bloodArg: ["1"],
-      pacReq: ["1"],
-      EquReq: ["1"],
-      Infective: ["1"],
       Clearance: [],
-      Medical: [],
-      Finance: [],
+      pacrequired: ['1'],
+      equipmentsRequired: ['1'],
+      clearanceMedical: false,
+      clearanceFinancial: false,
+      infective: ['1'],
       surgeryCategoryId: [''],
       surgeryId: [0],
       partId: [],
@@ -61,7 +61,9 @@ export class OtPreoperationService {
       doctorId: [0],
       bodyPartId: [],
       cathLabDiagnosis: [],
-      ConsentText: [],
+      consentName: [''],
+      departmentId: [0],
+      ConsentText: [''],
       surgeryPart: [''],
     });
   }
@@ -135,8 +137,8 @@ export class OtPreoperationService {
   public getotsiteDiscById(Id) {
     return this._httpClient.GetData("SiteDescriptionMaster/" + Id);
   }
-    public getDoctorsByDoctorType(doctTypeId) {
-        return this._httpClient.GetData("VisitDetail/DoctorTypeDoctorList?DocTypeId=" + doctTypeId)
-    }
+  public getDoctorsByDoctorType(doctTypeId) {
+    return this._httpClient.GetData("VisitDetail/DoctorTypeDoctorList?DocTypeId=" + doctTypeId)
+  }
 
 }
