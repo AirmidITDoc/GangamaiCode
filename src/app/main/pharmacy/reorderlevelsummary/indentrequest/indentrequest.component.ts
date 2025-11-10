@@ -11,6 +11,8 @@ import { Observable } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import Swal from 'sweetalert2';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 
 @Component({
   selector: 'app-indentrequest',
@@ -29,10 +31,12 @@ export class IndentrequestComponent implements OnInit {
     'Action',
   ]
   dateTimeObj: any;
+  IndentSaveFrom:FormGroup;
   sIsLoading: string = '';
   isLoadingStr: string = "";
   isLoading: String = '';
   screenFromString = 'indent-form';
+    autocompletestore: string = "Store";
   isStoreSelected: boolean = false;
   filteredOptionsStore: Observable<string[]>;
   ToStoreList: any = [];
@@ -44,58 +48,99 @@ export class IndentrequestComponent implements OnInit {
   @ViewChild('paginator', { static: true }) public paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
-  constructor(
-    
+  constructor( 
     public _Reorderlevelsummery: ReorderlevelsummaryService,
     public _matDialog: MatDialog,
     public datePipe: DatePipe,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public _dialogRef: MatDialogRef<IndentrequestComponent>,
     public toastr: ToastrService,
-    private accountService: AuthenticationService,
-    private _loggedService: AuthenticationService
-  ) { 
-    
-  }
+    private _formBuilder: FormBuilder,
+    private _loggedService: AuthenticationService,
+    public _FormvalidationserviceService:FormvalidationserviceService
+  ) {}
 
   ngOnInit(): void {
+       this.IndentSaveFrom = this.CreateIndentSaveFrom();
     if (this.data.Obj) {
       this.registerObbj = this.data.Obj;
-     // console.log(this.registerObbj)
-      //this.dsRaisedIndent = this.registerObbj
+      console.log(this.registerObbj) 
       this.chargeslist.data = this.registerObbj;
       this.getRaisedIndent();
-    }
-    this.filteredOptionsStore = this._Reorderlevelsummery.RaisedIndentFrom.get('ToStoreId').valueChanges.pipe(
-      startWith(''),
-      map(value => this._filterToStore(value)),
-    );
-
-    this.getToStoreSearchList();
-  }
+    } 
+   }
   getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;
-  }
-  getToStoreSearchList() {
-    this._Reorderlevelsummery.getToStoreNameSearch().subscribe(data => {
-      this.ToStoreList = data;
-    });
-  }
-  private _filterToStore(value: any): string[] {
-    if (value) {
-      const filterValue = value && value.StoreName ? value.StoreName.toLowerCase() : value.toLowerCase();
-      return this.ToStoreList.filter(option => option.StoreName.toLowerCase().includes(filterValue));
-    }
-  }
-  getOptionTextStores(option) {
-    return option && option.StoreName ? option.StoreName : '';
-  }
+  } 
   getRaisedIndent() {
     this.dsRaisedIndent.data = this.chargeslist.data;
     this.dsRaisedIndent.sort = this.sort;
     this.dsRaisedIndent.paginator = this.paginator;
   }
+  CreateIndentSaveFrom() {
+    return this._formBuilder.group({
+      unitId: [this._loggedService.currentUserValue.user.unitId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      indentId: 0,
+      IndentDate: this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
+      IndentTime: this.datePipe.transform(new Date(), 'shortTime'),
+      FromStoreId: [this._loggedService.currentUserValue.user.storeId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      ToStoreId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      isdeleted: 0,
+      isverify: false,
+      isclosed: false,
+      comments: "",
+      priority: [false],
+      tIndentDetails: this._formBuilder.array([]),
+    });
+  }
+    get IndentdetailArray(): FormArray {
+      return this.IndentSaveFrom.get('tIndentDetails') as FormArray;
+    } 
+    // || element.VerifyQuantit
+    createdetailInsert(element: any = {}): FormGroup {
+      debugger
+      return this._formBuilder.group({
+        indentId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        itemId: [element.ItemID || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        qty: [element.Qty || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        isclosed: [false],
+        indQty: [0 | 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        issQty: [0],
+        verifiedQty: [element.VerifyQuantity || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+  
+      });
+    }
+    OnSave1() { 
+    if ((!this.dsRaisedIndent.data.length)) {
+      this.toastr.warning('Data is not a vailable in list ,please add item in the list.', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    } 
+    this.IndentdetailArray.clear(); 
+    this.dsRaisedIndent.data.forEach(item => {
+      this.IndentdetailArray.push(this.createdetailInsert(item));
+    }); 
+ 
+    if (!this.IndentSaveFrom.invalid) {
+      this.IndentSaveFrom.get("indentId").setValue(0)
+      console.log(this.IndentSaveFrom.value)
 
+      this._Reorderlevelsummery.RaisedIndentSave(this.IndentSaveFrom.value).subscribe(response => {
+         this._matDialog.closeAll(); 
+      });
+    } else {
+      let invalidFields = [];
+      if (this.IndentSaveFrom.invalid) {
+        for (const controlName in this.IndentSaveFrom.controls) {
+          if (this.IndentSaveFrom.controls[controlName].invalid) { invalidFields.push(`Indent Form: ${controlName}`); }
+        }
+      }
+      if (invalidFields.length > 0) {
+        invalidFields.forEach(field => { this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',); });
+      } 
+    } 
+  }
   OnSave() {
     if ((!this.dsRaisedIndent.data.length)) {
       this.toastr.warning('Data is not available in list ,please add item in the list.', 'Warning !', {
@@ -117,7 +162,7 @@ export class IndentrequestComponent implements OnInit {
       InsertIndentObj['indentTime'] = this.dateTimeObj.time;
       InsertIndentObj['fromStoreId'] = this._loggedService.currentUserValue.storeId;
       InsertIndentObj['toStoreId'] = this._Reorderlevelsummery.RaisedIndentFrom.get('ToStoreId').value.StoreId;
-      InsertIndentObj['addedby'] = this.accountService.currentUserValue.userId;
+      InsertIndentObj['addedby'] = this._loggedService.currentUserValue.userId;
       InsertIndentObj['comments'] = '';
   
       let InsertIndentDetObj = [];
@@ -182,6 +227,14 @@ export class IndentrequestComponent implements OnInit {
   }
   onClose() {
     this._matDialog.closeAll();
+  }
+    getValidationMessages() {
+    return {
+      ToStoreId: [
+        // { name: "required", Message: "Invoice No is storeid" }
+      ]
+
+    };
   }
 }
 export class RaisedIndentList {

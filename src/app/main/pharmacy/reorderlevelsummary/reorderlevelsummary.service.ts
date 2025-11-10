@@ -1,6 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FormGroup, UntypedFormBuilder } from '@angular/forms';
+import { ApiCaller } from 'app/core/services/apiCaller';
+import { AuthenticationService } from 'app/core/services/authentication.service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +12,9 @@ export class ReorderlevelsummaryService {
   RaisedIndentFrom:FormGroup;
   constructor(
     public _httpClient: HttpClient,
-    private _formBuilder: UntypedFormBuilder
+    private _formBuilder: UntypedFormBuilder,
+    public _httpClient1:ApiCaller,
+    public _accountservice:AuthenticationService
   ) 
   {this.SearchFrom = this.createSearchFrom(); 
   this.RaisedIndentFrom = this.createRaisedIndentFrom();}
@@ -23,19 +27,16 @@ export class ReorderlevelsummaryService {
   }
   createRaisedIndentFrom(){
     return this._formBuilder.group({
-      ToStoreId:[''],
+      ToStoreId:[this._accountservice.currentUserValue.user.storeId],
       IndentQty:[''],
 
     });
   }
   
-  public getIssuTrackerList(params){
-    return this._httpClient.post("Generic/GetByProc?procName=m_rtrvItemReorderList",params);
+  public getReorderlevelList(params){//m_rtrvItemReorderList
+    return this._httpClient1.PostData("PharamacyReorder/ItemReorderList",params);
   }
-  public getToStoreNameSearch(){
-    return this._httpClient.post("Generic/GetByProc?procName=Retrieve_ToStoreName",{});
-  }
-  
+ 
   public RaisedIndentSave(Param){
     return this._httpClient.post("InventoryTransaction/IndentSave", Param)
   }

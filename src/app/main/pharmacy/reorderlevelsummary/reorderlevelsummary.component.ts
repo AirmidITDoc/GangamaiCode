@@ -29,7 +29,8 @@ export class ReorderlevelsummaryComponent implements OnInit {
   isLoadingStr: string = "";
   isLoading: String = '';
   RaisedIndentList:any=[];
-  
+  autocompleteReorderType:'ConstantType'
+  autocompleteReorderQty:'ConstantType'
 
   dsReorderlevelSummery = new MatTableDataSource<ReorderlvlList>();
   @ViewChild('paginator', { static: true }) public paginator: MatPaginator;
@@ -48,14 +49,22 @@ export class ReorderlevelsummaryComponent implements OnInit {
     this.dateTimeObj = dateTimeObj;
   }
   getReorderlvlList(){
-    var vdata={
-      'StoreID':this._loggedService.currentUserValue.storeId || 0,
-      'ReOderQty':this._Reorderlevelsummery.SearchFrom.get('ReorderQty').value,
-      'vType': this._Reorderlevelsummery.SearchFrom.get('Type').value
-    }
-    this.sIsLoading = 'loading-data';
-     this._Reorderlevelsummery.getIssuTrackerList(vdata).subscribe(data => {
-     this.dsReorderlevelSummery.data = data as ReorderlvlList[];
+    debugger
+    var vdata = {
+      "first": 0,
+      "rows": 25,
+      "sortField": "ItemName",
+      "sortOrder": 0,
+      "filters": [
+        { "fieldName": "StoreID", "fieldValue": String(this._loggedService.currentUserValue.user.storeId), "opType": "Equals" },
+        { "fieldName": "ReOderQty", "fieldValue": String(this._Reorderlevelsummery.SearchFrom.get('ReorderQty').value), "opType": "Equals" },
+        { "fieldName": "vType", "fieldValue": String(this._Reorderlevelsummery.SearchFrom.get('Type').value), "opType": "StartsWith" }
+      ],
+      "exportType": "JSON",
+      "columns": [{ "data": "string", "name": "string" }]
+    } 
+     this._Reorderlevelsummery.getReorderlevelList(vdata).subscribe(response => { 
+     this.dsReorderlevelSummery.data = response?.data as ReorderlvlList[];
      this.dsReorderlevelSummery.sort = this.sort;
      this.dsReorderlevelSummery.paginator = this.paginator;
      this.sIsLoading = '';
@@ -87,6 +96,17 @@ export class ReorderlevelsummaryComponent implements OnInit {
   }
   OnClear(){
     this._Reorderlevelsummery.SearchFrom.reset();
+  }
+      getValidationMessages() {
+    return {
+       Type: [
+        // { name: "required", Message: "Invoice No is storeid" }
+      ],
+       ReorderQty: [
+        // { name: "required", Message: "Invoice No is storeid" }
+      ]
+
+    };
   }
 }
 export class ReorderlvlList{
