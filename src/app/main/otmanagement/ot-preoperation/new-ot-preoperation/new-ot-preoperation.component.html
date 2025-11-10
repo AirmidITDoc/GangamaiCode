@@ -173,16 +173,18 @@
                                         <div fxFlex="10%" fxFlex.xs="100%" fxFlex.sm="33%">
                                             <airmid-dropdown label="Surgery Type" formControlName="surgeryCategoryId"
                                                 [formGroup]="preOperationForm" [value]="registerObj1?.surgeryCategoryId"
-                                                #ddlSurgerytype [readonly]="true"
+                                                [mode]="autocompleteModeSiteDescription" #ddlSurgerytype
+                                                [readonly]="true"
                                                 (selectionChange)="selectChangeSurgeryCategory($event)">
                                             </airmid-dropdown>
                                         </div>
 
                                         <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                                             <airmid-dropdown label="Surgery Name" formControlName="surgeryId"
-                                                [formGroup]="preOperationForm" ValueField="surgeryId"
-                                                TextField="surgeryName" ApiUrl="SurgeryMaster/GetSurgeryTypeByOTSurgery"
-                                                (selectionChange)="selectChangeSurgery($event)">
+                                                [formGroup]="preOperationForm" [mode]="autocompleteModeSurgeryMaster"
+                                                (selectionChange)="selectChangeSurgery($event)" ValueField="surgeryId"
+                                                TextField="surgeryName"
+                                                ApiUrl="SurgeryMaster/GetSurgeryTypeByOTSurgery">
                                             </airmid-dropdown>
                                         </div>
 
@@ -487,14 +489,13 @@
                                 fxLayoutGap="4px grid">
 
                                 <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <airmid-dropdown label="Category Type" formControlName="CategoryTypeId"
-                                        [formGroup]="preOperationForm" [value]="registerObj?.surgeryCategoryId"
-                                        [mode]="autocompleteModeSurgeryCategory">
+                                    <airmid-dropdown label="Category Type" formControlName="categoryType"
+                                        [formGroup]="preOperationForm" [mode]="autocompleteModeSurgeryCategory">
                                     </airmid-dropdown>
                                 </div>
 
                                 <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <airmid-dropdown label="Theater" formControlName="Theater"
+                                    <airmid-dropdown label="Theater" formControlName="ottable"
                                         [formGroup]="preOperationForm" ValueField="ottableId" TextField="ottableName"
                                         (selectionChange)="onChangeOtTable($event)"
                                         ApiUrl="OTRequest/getlocationByOttable">
@@ -503,15 +504,15 @@
 
                                 <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <airmid-dropdown label="Theater Location" formControlName="TheaterLocation"
-                                        [formGroup]="preOperationForm" #ddlLocation [readonly]="true"
-                                        [mode]="autocompleteModeLocation"></airmid-dropdown>
+                                        [formGroup]="preOperationForm" [mode]="autocompleteModeLocation" #ddlLocation
+                                        [readonly]="true"></airmid-dropdown>
                                 </div>
 
                                 <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <mat-form-field appearance="outline" fxFlex>
                                         <mat-label>Surgery Dt</mat-label>
                                         <input name="Surgerydate" matInput [matDatepicker]="picker1"
-                                            formControllName="Surgerydate" />
+                                            formControlName="surgeryDate" #surgeryDateInput />
                                         <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
                                         <mat-datepicker #picker1></mat-datepicker>
                                     </mat-form-field>
@@ -544,15 +545,11 @@
                                 </div>
 
                                 <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%" fxLayout="column">
-                                    <!-- <span style="font-weight: 700;">
-                                        Diagnosis
-                                    </span> -->
-                                    <app-airmid-chipautocomplete fxFlex
-                                        [chips]="preOperationForm.get('Diagnosis')?.value"
-                                        [apiUrl]="'OPDPrescriptionMedical/GetDiagnosisList?descriptionType=Diagnosis'"
+                                    <app-airmid-chipautocomplete fxFlex [placeholder]="'Select Diagnosis'"
+                                        [chips]="preOperationForm.get('diagnosis')?.value"
+                                        [apiUrl]="'OTRequest/GetRequestDiagnosisList?DescriptionType=Diagnosis'"
                                         [displayKey]="'descriptionName'" [allowCustom]="true"
-                                        (chipsChange)="selectChangeDiagnosis($event)"
-                                        [placeholder]="'Select Diagnosis'">
+                                        (chipsChange)="selectChangeDiagnosis($event)">
                                     </app-airmid-chipautocomplete>
                                 </div>
 
@@ -571,7 +568,7 @@
                                 </div>
 
                                 <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <mat-radio-group formControlName="pacReq">
+                                    <mat-radio-group formControlName="pacrequired" [(ngModel)]="vpacrequired">
                                         <label style="font-weight: bold;">PAC Required:</label>
                                         <mat-radio-button value="1">Yes</mat-radio-button>
                                         <mat-radio-button value="0">No</mat-radio-button>
@@ -579,7 +576,8 @@
                                 </div>
 
                                 <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <mat-radio-group formControlName="EquReq">
+                                    <mat-radio-group formControlName="equipmentsRequired"
+                                        [(ngModel)]="vequipmentsRequired">
                                         <label style="font-weight: bold;">Equipments Required:</label>
                                         <mat-radio-button value="1">Yes</mat-radio-button>
                                         <mat-radio-button value="0">No</mat-radio-button>
@@ -587,7 +585,7 @@
                                 </div>
 
                                 <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <mat-radio-group formControlName="Infective">
+                                    <mat-radio-group formControlName="infective" [(ngModel)]="vinfective">
                                         <label style="font-weight: bold;">Infective:</label>
                                         <mat-radio-button value="1">Yes</mat-radio-button>
                                         <mat-radio-button value="0">No</mat-radio-button>
@@ -596,8 +594,8 @@
 
                                 <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <label style="font-weight: bold;">Clearance:</label>
-                                    <mat-checkbox formControlName="Medical">Medical</mat-checkbox>
-                                    <mat-checkbox formControlName="Finance">Finance</mat-checkbox>
+                                    <mat-checkbox formControlName="clearanceMedical">Medical</mat-checkbox>
+                                    <mat-checkbox formControlName="clearanceFinancial">Finance</mat-checkbox>
                                 </div>
 
                             </div>
@@ -629,9 +627,28 @@
                     </mat-tab>
 
                     <mat-tab label="Consent Form">
-                        <airmid-editor label="Consent Details" formControlName="ConsentText"
-                            [formGroup]="preOperationForm">
-                        </airmid-editor>
+
+                        <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="33%" fxLayout="column">
+                            <div fxLayout="row" class="gap-8">
+                                <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="40%">
+                                    <airmid-textbox label="consent Name" formControlName="consentName"
+                                        [value]="data?.consentName" [formGroup]="preOperationForm" [maxLength]="50">
+                                    </airmid-textbox>
+                                </div>
+
+                                <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="40%">
+                                    <airmid-dropdown label="Department" [value]="data?.departmentId"
+                                        formControlName="departmentId" [formGroup]="preOperationForm"
+                                        [mode]="autocompleteModeDepartment">
+                                    </airmid-dropdown>
+                                </div>
+                            </div>
+
+                            <airmid-editor label="Consent Details" formControlName="ConsentText"
+                                [formGroup]="preOperationForm">
+                            </airmid-editor>
+                        </div>
+
                     </mat-tab>
                 </mat-tab-group>
 

@@ -10,6 +10,7 @@ import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { MatTableDataSource } from '@angular/material/table';
 import { OtReqInsert } from '../../ot-request/ot-request.component';
 import { AnesthesiaRecordService } from '../anesthesia-record.service';
+import { OtReserInsert } from '../../ot-reservation/ot-reservation.component';
 
 
 @Component({
@@ -21,8 +22,6 @@ import { AnesthesiaRecordService } from '../anesthesia-record.service';
 })
 export class NewAnesthesiaRecordComponent {
   screenFromString = 'Common-form';
-  registerObj1 = new OtReqInsert({});
-  registerObj: any;
   dateTimeObj: any;
   vSelectedOption: any = "OP";
   vRegNo: any;
@@ -32,6 +31,9 @@ export class NewAnesthesiaRecordComponent {
   opIpId: any;
   anesthRecordForm: FormGroup;
   autocompleteModeAnesthesiatypes: string = "Anesthesiatypes"
+  registerObj1 = new OtReserInsert({});
+  registerObj2 = new OtReserInsert({});
+  vreservationId:any;
 
   constructor(public _anesthesiaRecordService: AnesthesiaRecordService,
     public dialogRef: MatDialogRef<NewAnesthesiaRecordComponent>,
@@ -45,23 +47,26 @@ export class NewAnesthesiaRecordComponent {
     this.anesthRecordForm = this._anesthesiaRecordService.createAnesthRecordForm();
     this.anesthRecordForm.markAllAsTouched();
 
-    if ((this.data?.otBookingId) > 0) {
-      this.registerObj = this.data
-      this.opIpId = this.registerObj.visitId
-      this.vRegNo = this.registerObj.regNo
-      this.vOPDNo = this.registerObj.opdNo
-      this.vIPDNo = this.registerObj.opdNo
-      this.vPatientName = this.registerObj.patientName
+    if ((this.data?.otReservationId) > 0) {
+      this.registerObj1 = this.data
+      console.log(this.registerObj1)
+      this.vRegNo = this.registerObj1.regNo
+      this.vOPDNo = this.registerObj1.opdNo
+      this.vIPDNo = this.registerObj1.opdNo
+      this.vPatientName = this.registerObj1.patientName
 
-      if (this.registerObj.opIpType == 0) {
-        this.vSelectedOption = "OP"
-      }
-      else {
-        this.vSelectedOption = "IP"
+      if (this.data.otReservationId) {
+        setTimeout(() => {
+          this._anesthesiaRecordService.getotReservationById(this.data.otReservationId).subscribe((response) => {
+            this.registerObj2 = response;
+            console.log("Get Data:", this.registerObj2)
+            this.vreservationId = this.registerObj2.otreservationId
+            this.opIpId = this.registerObj2.opipid
+          });
+        }, 500);
       }
 
-      console.log(this.registerObj)
-      this.anesthRecordForm.patchValue(this.registerObj);
+      this.anesthRecordForm.patchValue(this.registerObj1);
     }
   }
 

@@ -206,8 +206,7 @@
 
                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <airmid-dropdown label="Category Type" formControlName="categoryType"
-                                        [formGroup]="reservationForm" [value]="registerObj1?.surgeryCategoryId"
-                                        [mode]="autocompleteModeSurgeryCategory">
+                                        [formGroup]="reservationForm" [mode]="autocompleteModeotTableCategory">
                                     </airmid-dropdown>
                                 </div>
 
@@ -235,7 +234,7 @@
                                     <mat-form-field appearance="outline" fxFlex>
                                         <mat-label>Surgery Dt</mat-label>
                                         <input name="Surgerydate" matInput [matDatepicker]="picker1"
-                                            formControlName="surgeryDate" #surgeryDateInput/>
+                                            formControlName="surgeryDate" #surgeryDateInput />
                                         <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
                                         <mat-datepicker #picker1></mat-datepicker>
                                     </mat-form-field>
@@ -343,9 +342,9 @@
 
                                 <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <airmid-dropdown label="Surgery Name" formControlName="surgeryId"
-                                        [formGroup]="reservationForm"
-                                        (selectionChange)="selectChangeSurgery($event)" ValueField="surgeryId"
-                                        TextField="surgeryName" ApiUrl="SurgeryMaster/GetSurgeryTypeByOTSurgery">
+                                        [formGroup]="reservationForm" (selectionChange)="selectChangeSurgery($event)"
+                                        ValueField="surgeryId" TextField="surgeryName"
+                                        ApiUrl="SurgeryMaster/GetSurgeryTypeByOTSurgery">
                                     </airmid-dropdown>
                                 </div>
 
@@ -571,7 +570,6 @@
 
                             </div>
 
-
                             <div class="airmid-table-container">
                                 <mat-table matSort [dataSource]="dsattendentDetailList" [@animateStagger]="{value:'50'}"
                                     class="airmid-table" cdkDropList (cdkDropListDropped)="drop2($event)">
@@ -627,34 +625,41 @@
                     </mat-tab>
 
                     <mat-tab label="Parts">
-                        <div fxLayout="column" fxLayoutGap="16px" fxLayoutAlign="start start" fxLayoutWrap
-                            style="height: 200px;">
 
-                            <!-- Dropdown -->
-                            <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                <airmid-dropdown label="Select Body Part" formControlName="bodyPartId"
-                                    [formGroup]="reservationForm">
-                                </airmid-dropdown>
+                        <div fxLayout="column" fxLayoutGap="16px" fxLayoutAlign="start start" fxLayoutWrap
+                            style="height: auto;">
+                            <!-- Body Images -->
+                            <div class="surgery-parts pt-8">
+                                <img src="assets/images/logos/bodyAnatomyFront.jpg"
+                                    (click)="openEditor('assets/images/logos/bodyAnatomyFront.jpg')" />
+                                <img src="assets/images/logos/bodyAnatomyback.jpg"
+                                    (click)="openEditor('assets/images/logos/bodyAnatomyback.jpg')" />
+
+                                <!-- Uploaded Image -->
+                                <img *ngIf="uploadedImage" [src]="uploadedImage" (click)="openEditor(uploadedImage)"
+                                    style="cursor: pointer; border: 2px solid #ccc; border-radius: 8px; margin-top: 10px;" />
                             </div>
 
-                            <!-- Image Upload & Capture -->
-                            <div fxFlex="30%" fxFlex.xs="100%" fxFlex.sm="50%" fxLayout="column" fxLayoutGap="8px">
-                                <label class="mat-body-1 font-semibold">Upload / Capture Image</label>
-
-                                <!-- Upload from device -->
-                                <!-- <input type="file" accept="image/*" (change)="onFileSelected($event)" /> -->
-
-                                <!-- Capture from camera -->
-                                <button mat-raised-button color="primary" type="button" (click)="openCamera()">
-                                    <mat-icon>photo_camera</mat-icon> Capture from Camera
+                            <div fxLayout="row">
+                                <div style="margin-top: 10px;">
+                                    <input type="file" accept="image/*" (change)="onFileSelected($event)" 
+                                    style="color: transparent; width: 120px;"/>
+                                </div>
+                                <button class="btn btn-primary" (click)="deleteUploadedImage()">
+                                    ✕
                                 </button>
+                            </div>
 
-                                <!-- Preview -->
-                                <div *ngIf="previewUrl" class="preview-box">
-                                    <img [src]="previewUrl" alt="Preview" style="max-width: 200px; border-radius: 8px;">
+                            <!-- Drawing Editor -->
+                            <div *ngIf="selectedImage" class="editor">
+                                <canvas #canvas width="500" height="600"></canvas>
+
+                                <div class="buttons" style="justify-content: space-around; display: flex;">
+                                    <button class="btn btn-primary" (click)="saveMarkedImage()">Save</button>
+                                    <button mat-raised-button color="accent" (click)="clearCanvas()">Clear</button>
+                                    <button class="btn btn-danger-outline" (click)="closeEditor()">Close</button>
                                 </div>
                             </div>
-
                         </div>
                     </mat-tab>
                 </mat-tab-group>
@@ -667,7 +672,7 @@
         <div class="footer-navigation-container">
             <div class="modal-footer-buttons">
                 <button class="btn btn-danger-outline" (click)="onClear(false)">Close</button>
-                <button class="btn btn-primary " color="accent" (click)="onSubmit()">
+                <button class="btn btn-primary" color="accent" (click)="onSubmit()">
                     <span>Save</span>
                 </button>
             </div>
