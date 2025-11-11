@@ -3,7 +3,7 @@ import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
-import { Subscription } from 'rxjs';
+import { interval, Subscription, switchMap } from 'rxjs';
 import { DatePipe } from '@angular/common';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { AdvanceDataStored } from 'app/main/ipd/advance';
@@ -120,7 +120,6 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
             // console.log(this.data)
             this.patientDetail = this.advanceDataStored.storage;
             console.log(this.patientDetail)
-            debugger
             this.ApiURL = "VisitDetail/GetServiceListwithTraiff?TariffId=" + this.patientDetail.tariffId + "&ClassId=" + this.patientDetail.classId + "&ServiceName="
             console.log("Data", this.patientDetail)
             this.PatientName = this.patientDetail.patientName
@@ -166,7 +165,6 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
             "exportType": "JSON",
             "columns": [{ "data": "string", "name": "string" }]
         }
-        debugger
         this._AppointmentlistService.getOPDEmrId(Data).subscribe((response) => {
             this.dsServiceList.data = response.data;
             console.log(this.dsServiceList.data)
@@ -559,7 +557,6 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
             const totalAmount = formValue.price * formValue.qty;
             const discountAmount = (totalAmount * formValue.discountPer) / 100;
             const netAmount = totalAmount - discountAmount;
-            debugger
             if (totalAmount > 0) {
                 const newRow = {
                     ServiceId: formValue.serviceName.serviceId,
@@ -696,7 +693,6 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
                 }
             });
         dialogRef.afterClosed().subscribe(result => {
-            debugger
             console.log('The dialog was closed - Insert Action', result);
             if (result) {
                 this.dsPackageList.data = result
@@ -1127,9 +1123,12 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
                     } else {
                         this.viewgetOPBillThermalReportPdf(response)
                     }
-                    this._matDialog.closeAll();
-                    this.savebtn = true
-                    this.resetform();
+                    this.mpesaResponse = response.mPesaResponse;
+                    this.openWaitingScreen();
+                    this.startPolling();
+                    // this._matDialog.closeAll();
+                    // this.savebtn = true
+                    // this.resetform();
                 });
             }
             else if (this.OPFooterForm.get('paymentType').value == 'CreditPay') {//Credit pay 
@@ -1212,6 +1211,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
         if (this.subscription.length > 0) {
             this.subscription.forEach(s => s.unsubscribe());
         }
+        this.stopPolling();
     }
     getValidationMessages() {
         return {
@@ -1257,6 +1257,50 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
             this.OPFooterForm.get('paymentType').setValue('CashPay');
         }
     }
+    isWaiting = false;
+    mpesaResponse: any;
+    statusMessage = 'Waiting for customer approval...';
+    pollingSub?: Subscription;
+    openWaitingScreen() {
+        this.isWaiting = true;
+        this.statusMessage = 'Waiting for customer approval...';
+    }
+
+    manualRefresh() {
+        this.checkStatus();
+    }
+
+    startPolling() {
+        this.pollingSub = interval(10000)
+            .pipe(switchMap(() => this._AppointmentlistService.checkStatus(this.mpesaResponse)))
+            .subscribe((status: any) => this.handleStatus(status));
+    }
+
+    stopPolling() {
+        if (this.pollingSub) this.pollingSub.unsubscribe();
+        this._matDialog.closeAll();
+        this.savebtn = true
+        this.resetform();
+    }
+
+    checkStatus() {
+        this._AppointmentlistService.checkStatus(this.mpesaResponse)
+            .subscribe((status: any) => this.handleStatus(status));
+    }
+    handleStatus(status: any) {
+        if (status?.state === 'SUCCESS') {
+            this.statusMessage = 'Payment successful.';
+            this.stopPolling();
+            setTimeout(() => this.isWaiting = false, 1500);
+        }
+
+        if (status?.state === 'FAILED') {
+            this.statusMessage = 'Payment failed.';
+            this.stopPolling();
+            setTimeout(() => this.isWaiting = false, 1500);
+        }
+    }
+
 }
 
 export class ChargesList {

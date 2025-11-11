@@ -779,3 +779,14 @@
         </div>
     </div>
 </div>
+<!-- Waiting Screen -->
+<div class="waiting-overlay" *ngIf="isWaiting">
+  <div class="waiting-box">
+    <div class="spinner"></div>
+    <p>{{ statusMessage }}</p>
+
+    <button class="btn btn-outline-secondary" (click)="manualRefresh()">
+      Refresh Status
+    </button>
+  </div>
+</div>
