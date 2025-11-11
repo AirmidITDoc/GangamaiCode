@@ -14,6 +14,8 @@ import { AirmidDropDownComponent } from 'app/main/shared/componets/airmid-dropdo
 import { CdkDragDrop, CdkDragMove, moveItemInArray } from '@angular/cdk/drag-drop';
 import { CdkScrollable } from '@angular/cdk/scrolling';
 import { OtReserInsert } from '../ot-reservation.component';
+import { OtReqInsert } from '../../ot-request/ot-request.component';
+import Swal from 'sweetalert2';
 
 
 @Component({
@@ -337,24 +339,181 @@ export class NewReservationComponent implements OnInit {
     this.registerObj1 = new OtReserInsert({});
   }
 
+  /////////////////////////////// ot request detail part /////////////////////////////
   onChangeOtRequest(obj: any) {
+    console.log("search data:", obj);
 
-    if (this.data.otrequestId) {
-      setTimeout(() => {
-        this._OtReservationService.getotRequestById(this.data.otrequestId).subscribe((response) => {
-          this.registerObj2 = response;
-          console.log("Get Data:", this.registerObj2)
-          this.vrequestId = this.registerObj2.otrequestId
-          this.opIpId = this.registerObj2.opipid
-          this.vSelectedOption = this.registerObj2.opiptype == 0 ? 'OP' : 'IP';
-          this.vreservationType = this.registerObj2.requestType == true ? '1' : '0';
-          this.vpacrequired = this.registerObj2.pacrequired == true ? '1' : '0';
-          this.vequipmentsRequired = this.registerObj2.equipmentsRequired == true ? '1' : '0';
-          this.vinfective = this.registerObj2.infective == true ? '1' : '0';
-        });
-      }, 500);
+    if (obj.otReservationId > 0) {
+      const name = obj.patientName?.split('|')[0]?.trim();
+      Swal.fire({
+        icon: 'warning',
+        title: 'OT Reservation already completed',
+        text: `${name} already has a reservation.`,
+        confirmButtonText: 'OK',
+        confirmButtonColor: '#3085d6'
+      });
+      return;
+    }
+
+    if (obj.otRequestId) {
+      this._OtReservationService.getotRequestById(obj.otRequestId).subscribe((response) => {
+        this.registerObj2 = response;
+        console.log("Get otrequest Data:", this.registerObj2);
+
+        this.vrequestId = this.registerObj2.otrequestId;
+        this.opIpId = this.registerObj2.opipid;
+
+        this.reservationForm.patchValue(this.registerObj2);
+
+        this.vSelectedOption = this.registerObj2.opiptype == 0 ? 'OP' : 'IP';
+        this.vreservationType = this.registerObj2.requestType ? '1' : '0';
+        this.vequipmentsRequired = this.registerObj2.equipmentsRequired ? '1' : '0';
+        this.reservationForm.get('pacrequired').setValue(this.registerObj2.pacrequired ? '1' : '0')
+        this.reservationForm.get('infective').setValue(this.registerObj2.infective ? '1' : '0')
+
+        setTimeout(() => {
+          this._OtReservationService.getotTableById(this.registerObj2.ottable).subscribe((response) => {
+            this.registerObj2 = response;
+            this.ddlLocation.SetSelection(this.registerObj2.locationId);
+          });
+        }, 200);
+
+        if (this.registerObj2?.estimateTime) {
+          const date = new Date(this.registerObj2.estimateTime);
+          if (!isNaN(date.getTime())) {
+            const hours = date.getHours().toString().padStart(2, '0');
+            const minutes = date.getMinutes().toString().padStart(2, '0');
+
+            const formattedTime = `${hours}:${minutes}`; // e.g. "13:01"
+
+            setTimeout(() => {
+              this.reservationForm.get('estimateTime')?.setValue(formattedTime);
+            });
+          }
+        }
+
+        // this.reservationForm.patchValue(this.registerObj2);
+        this.getotReqdiagnosisList(obj.otRequestId);
+        this.getRequestSurgeryDetList(obj.otRequestId);
+        this.getRequestAttendentDetList(obj.otRequestId);
+      });
     }
   }
+
+  FetchotRequestList: any = [];
+  getRequestSurgeryDetList(obj) {
+    var m_data2 = {
+      "first": 0,
+      "rows": 10,
+      "sortField": "OTRequestId",
+      "sortOrder": 0,
+      "filters": [
+        { "fieldName": "OTRequestId", "fieldValue": String(obj), "opType": "Equals" }
+      ],
+      "Columns": [],
+      "exportType": "JSON"
+    };
+
+    this._OtReservationService.getRtrvRequestSurgeryList(m_data2).subscribe(records => {
+      this.FetchotRequestList = records.data as OtReqInsert[];
+      this.FetchotRequestList.forEach(element => {
+
+        const from = new Date(element.surgeryFromTime);
+        const end = new Date(element.surgeryEndTime);
+
+        const surgeryFromTime = from.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
+        const surgeryEndTime = end.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
+
+        this.Chargelist.push(
+          {
+            surgeryCategoryName: element.surgeryCategoryName,
+            surgeryCategoryId: element.surgeryCategoryId,
+            surgeryId: element.surgeryId,//
+            surgeryName: element.surgeryName,
+            surgeryPart: element.surgeryPart,
+            surgeryDuration: element.surgeryDuration,
+            surgeryFromTime: surgeryFromTime,
+            surgeryEndTime: surgeryEndTime,
+            isPrimary: element.isPrimary,
+            surgeonId: element.surgeonId,//
+            surgeonName: element.surgeonName,
+            anestheticsId: element.anesthetistId, //
+            anestheticsName: element.anestheticsName,
+          });
+      })
+      this.dssurgeryDetailList.data = this.Chargelist
+      console.log("surgeryDet Data:", this.dssurgeryDetailList.data)
+    });
+  }
+
+  FetchotRequestList1: any = [];
+  getRequestAttendentDetList(obj) {
+    var m_data2 = {
+      "first": 0,
+      "rows": 10,
+      "sortField": "OTRequestId",
+      "sortOrder": 0,
+      "filters": [
+        { "fieldName": "OTRequestId", "fieldValue": String(obj), "opType": "Equals" }
+      ],
+      "Columns": [],
+      "exportType": "JSON"
+    };
+
+    this._OtReservationService.getRtrvRequestAttendentList(m_data2).subscribe(records => {
+      this.FetchotRequestList1 = records.data as OtReqInsert[];
+      this.FetchotRequestList1.forEach(element => {
+
+        this.Chargelist1.push(
+          {
+            doctorTypeId: element.doctorTypeId,//
+            doctorType: element.doctorType,
+            doctorId: element.doctorId, //
+            doctorName: element.doctorName,
+          });
+      })
+      this.dsattendentDetailList.data = this.Chargelist1
+      console.log("attendentDet Data:", this.dsattendentDetailList.data)
+    });
+  }
+  getotReqdiagnosisList(obj) {
+    this.addDiagnolist = [];
+    this.AllTypeDescription = [];
+
+    const vdata = {
+      "first": 0,
+      "rows": 10,
+      "sortField": "OTRequestId",
+      "sortOrder": 0,
+      "filters": [
+        { "fieldName": "OTRequestId", "fieldValue": String(obj), "opType": "Equals" }
+      ],
+      "Columns": [],
+      "exportType": "JSON"
+    };
+
+    this._OtReservationService.getRtrvotReqdiagnosisList(vdata).subscribe(response => {
+
+      if (response && Array.isArray(response.data)) {
+        this.RtrvDescriptionList = response.data;
+        // Process Diagnosis
+        let Diagnosis = this.RtrvDescriptionList.filter(item => item.descriptionType === 'Diagnosis');
+        if (Diagnosis.length > 0) {
+          Diagnosis.forEach(element => {
+            this.addDiagnolist.push(
+              {
+                otrequestDiagnosisDetId: element.otrequestDiagnosisDetId,
+                descriptionName: element.descriptionName
+              }
+            )
+          })
+          this.reservationForm.get('diagnosis').setValue(this.addDiagnolist);
+          console.log("DIAGNOSIS DATA:", this.reservationForm.get('diagnosis').value)
+        }
+      }
+    });
+  }
+  /////////////////////////////// ot request detail part /////////////////////////////
 
   getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;
@@ -560,12 +719,6 @@ export class NewReservationComponent implements OnInit {
 
   /////////////////////////////// surgery detail part /////////////////////////////
   onAdd() {
-    // if (!this.reservationForm.get("surgeryCategoryId")?.value) {
-    //   this.toastr.warning('Please select a surgery Type', 'Warning !', {
-    //     toastClass: 'tostr-tost custom-toast-warning',
-    //   });
-    //   return;
-    // }
     if (!this.reservationForm.get("surgeryId")?.value || this.reservationForm.get("surgeryId")?.value == "0") {
       this.toastr.warning('Please select a Surgery', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
@@ -954,16 +1107,16 @@ export class NewReservationComponent implements OnInit {
   private isDrawing = false;
 
   onFileSelected(event: Event): void {
-  const fileInput = event.target as HTMLInputElement;
-  if (fileInput.files && fileInput.files[0]) {
-    const file = fileInput.files[0];
-    const reader = new FileReader();
-    reader.onload = (e: any) => {
-      this.uploadedImage = e.target.result; // Base64 URL
-    };
-    reader.readAsDataURL(file);
+    const fileInput = event.target as HTMLInputElement;
+    if (fileInput.files && fileInput.files[0]) {
+      const file = fileInput.files[0];
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        this.uploadedImage = e.target.result; // Base64 URL
+      };
+      reader.readAsDataURL(file);
+    }
   }
-}
 
   openEditor(imageSrc: string) {
     this.selectedImage = imageSrc;
@@ -1048,8 +1201,8 @@ export class NewReservationComponent implements OnInit {
   }
 
   deleteUploadedImage(): void {
-  this.uploadedImage = null;
-}
+    this.uploadedImage = null;
+  }
 
   /////////////////// body parts code end ///////////////////
   /////////////////////////////// attendent detail part end/////////////////////////////

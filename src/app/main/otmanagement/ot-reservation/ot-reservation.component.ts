@@ -85,13 +85,13 @@ export class OTReservationComponent implements OnInit {
 
     allcolumns = [
         { heading: "-", key: "opiptype", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 40 },
+        { heading: "-", key: "otRequestId", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 40 },
         {
             heading: "", key: "firstAction", width: 300, align: 'left', type: gridColumnTypes.template,
             template: this.firstActionButtonTemplate
         },
         // { heading: "-", key: "clearanceMedical", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 40 },
         // { heading: "-", key: "clearanceFinancial", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 40 },
-        { heading: "-", key: "otRequestId", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 40 },
         // { heading: "", key: "isNewRecord", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 40 },
         { heading: "OTReser-Date&Time", key: "otReservationDateTime", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         { heading: "Surgery Date", key: "surgeryDate", sort: true, align: 'left', emptySign: 'NA', width: 150 },
@@ -838,6 +838,13 @@ export class OtReserInsert {
     otreservationId: any;
     reservationType: any;
     surgeryDate: any
+    discPer: any;
+    InfectivePer: any;
+    surgeryAmt: any;
+    ConcAmt: any;
+    infectiveAmt: any;
+    netAmt: any;
+    ottable:any;
     /**
      * Constructor
      *
@@ -914,6 +921,13 @@ export class OtReserInsert {
             this.reservationType = OtReserInsert.reservationType || ''
             this.surgeryDate = OtReserInsert.surgeryDate || ''
             this.otreservationId = OtReserInsert.otreservationId || ''
+            this.discPer = OtReserInsert.discPer || ''
+            this.InfectivePer = OtReserInsert.InfectivePer || ''
+            this.surgeryAmt = OtReserInsert.surgeryAmt || ''
+            this.ConcAmt = OtReserInsert.ConcAmt || ''
+            this.infectiveAmt = OtReserInsert.infectiveAmt || ''
+            this.netAmt = OtReserInsert.netAmt || ''
+            this.ottable = OtReserInsert.ottable || ''
         }
     }
 }

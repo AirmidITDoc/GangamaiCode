@@ -189,7 +189,8 @@ debugger
 
   VpathResultDr1 = 0
   selectChangeDoctorName(row) {
-    this.VpathResultDr1 = row.value
+    console.log(row)
+    this.VpathResultDr1 = row.doctorId
   }
 
 

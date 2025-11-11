@@ -145,33 +145,29 @@
                     <form [formGroup]="otherForm" style="border: blue;">
                         <div fxFlexFill fxLayout="row">
 
-                            <airmid-dropdown label="Template Name" 
-                                formControlName="TemplateName" 
-                                [formGroup]="otherForm"  fxFlex="50%"
-                                ValueField="templateId" 
-                                TextField="templateName"
-                                (selectionChange)="selectChangeTemplateName($event)" 
+                            <airmid-dropdown label="Template Name" formControlName="TemplateName"
+                                [formGroup]="otherForm" fxFlex="50%" ValueField="templateId" TextField="templateName"
+                                (selectionChange)="selectChangeTemplateName($event)"
                                 ApiUrl="Pathology/get-PathologyTemplates">
                             </airmid-dropdown>
 
-                           <div>
-                            <button (click)="onAddTemplate()" class="btn btn-primary btn-with-icon py-8"
-                            style="margin-left: 10px;" [disabled]="!isSelected">
-                            <span class="btn-icon">
-                                <mat-icon> add </mat-icon>
-                            </span>
-                        </button>
-                           </div>
+                            <div>
+                                <button (click)="onAddTemplate()" class="btn btn-primary btn-with-icon py-8"
+                                    style="margin-left: 10px;" [disabled]="!isSelected">
+                                    <span class="btn-icon">
+                                        <mat-icon> add </mat-icon>
+                                    </span>
+                                </button>
+                            </div>
 
                         </div>
 
                         <div fxLayoutGap="5px">
-                               <mat-label>Template Details</mat-label>
-                                <airmid-editor label="Template Details" formControlName="ResultEntry"
-                                [(value)]="vTemplateDesc" 
-                                [formGroup]="otherForm"></airmid-editor>
-                             
-                                <!-- <angular-editor (blur)="onBlur($event)" [config]="editorConfig"
+                            <mat-label>Template Details</mat-label>
+                            <airmid-editor label="Template Details" formControlName="ResultEntry"
+                                [(value)]="vTemplateDesc" [formGroup]="otherForm"></airmid-editor>
+
+                            <!-- <angular-editor (blur)="onBlur($event)" [config]="editorConfig"
                                     style="height:400px;" [(ngModel)]="vTemplateDesc" required
                                     formControlName="ResultEntry">
                                 </angular-editor> -->
@@ -179,31 +175,34 @@
 
                         <div fxLayout="column" fxLayout="row" fxLayout="4px" style="margin-top: 10px; gap: 4px;">
 
-                           <div fxFlex="50%">
-                            <mat-form-field appearance="outline" fxFlex>
-                                <mat-label>Comment </mat-label>
-                                <textarea rows="1" name="suggestionNotes" formControlName="suggestionNotes" matInput
-                                    [(ngModel)]="vsuggestionNotes" (keydown)="onEnterSugg($event)"></textarea>
-                                <mat-error>Please enter Comment </mat-error>
-                            </mat-form-field>
-                           </div>
+                            <div fxFlex="50%">
+                                <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>Comment </mat-label>
+                                    <textarea rows="1" name="suggestionNotes" formControlName="suggestionNotes" matInput
+                                        [(ngModel)]="vsuggestionNotes" (keydown)="onEnterSugg($event)"></textarea>
+                                    <mat-error>Please enter Comment </mat-error>
+                                </mat-form-field>
+                            </div>
 
-                           <div fxFlex="50%">
-                                <airmid-dropdown label="Pathologist Name" formControlName="PathResultDoctorId"
+                            <div fxFlex="50%">
+                                <!-- <airmid-dropdown label="Pathologist Name" formControlName="PathResultDoctorId"
                                     fxFlex [formGroup]="otherForm"
                                     [mode]="autocompleteModeDoctor"
                                     (selectionChange)="selectChangeDoctorName($event)">
-                                </airmid-dropdown>
-                           </div>
+                                </airmid-dropdown> -->
+                                <airmid-dropdown label="Pathologist Name" formControlName="PathResultDoctorId"
+                                    [formGroup]="otherForm" (selectionChange)="selectChangeDoctorName($event)"
+                                    ValueField="doctorId" TextField="doctorName"
+                                    ApiUrl="Pathology/search-pathologistdoctor"></airmid-dropdown>
+                            </div>
                         </div>
                         <div fxLayoutGap="5px">
 
                             <div class="footer-navigation-container">
                                 <div fxLayout="row" fxLayoutAlign="end start" fxLayoutGap="6px">
                                     <button class="btn btn-danger-outline" (click)="onClose()">Clear</button>
-                                    <button class="btn btn-primary" (click)="onSubmit()"
-                                        >Save</button>
-                                        <!-- [disabled]="otherForm.invalid" -->
+                                    <button class="btn btn-primary" (click)="onSubmit()">Save</button>
+                                    <!-- [disabled]="otherForm.invalid" -->
                                 </div>
                             </div>
 

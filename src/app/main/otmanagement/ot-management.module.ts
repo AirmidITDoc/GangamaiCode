@@ -105,6 +105,11 @@ const approutes: Routes = [
     path: "inoperation",
     loadChildren: () =>
       import("./in-operation/in-operation.module").then((m) => m.InOperationModule),
+  },
+  {
+    path: "otbilling",
+    loadChildren: () =>
+      import("./ot-billing/ot-billing.module").then((m) => m.OtBillingModule),
   }
 ];
 

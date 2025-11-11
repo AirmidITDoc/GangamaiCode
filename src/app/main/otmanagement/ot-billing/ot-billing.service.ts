@@ -6,7 +6,7 @@ import { FormvalidationserviceService } from "app/main/shared/services/formvalid
 @Injectable({
   providedIn: 'root'
 })
-export class OtPreoperationService {
+export class OtBillingService {
 
   constructor(
     private _httpClient: ApiCaller,
@@ -20,55 +20,12 @@ export class OtPreoperationService {
       end: [(new Date()).toISOString()],
       FirstName: ['', [Validators.pattern("^[A-Za-z/() ]*$")]],
       LastName: ['', [Validators.pattern("^[A-Za-z/() ]*$")]],
-      RegNo: []
+      RegNo: [],
+      opipType: ["2"],
     });
   }
 
-  createOtPreOperationForm(): FormGroup {
-    return this._formBuilder.group({
-      opIpType: ["OP"],
-      opIpId: ["", [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      BloodGroup: [],
-      categoryType: [],
-      ottable: [],
-      TheaterLocation: [],
-      estimateTime: [],
-      surgeryDate: [new Date()],
-      MobileNo: [],
-      diagnosis: [[], [Validators.required]],
-      Remarks: [],
-      bloodArg: ["1"],
-      Clearance: [],
-      pacrequired: ['1'],
-      equipmentsRequired: ['1'],
-      clearanceMedical: false,
-      clearanceFinancial: false,
-      infective: ['1'],
-      surgeryCategoryId: [''],
-      surgeryId: [0],
-      partId: [],
-      surgeryFromTime: [''],
-      surgeryEndTime: [''],
-      surgeryDuration: [''],
-      fromTime1: ['', Validators.required],
-      toTime1: ['', Validators.required],
-      duration1: ['', Validators.required],
-      isprimary: [],
-      surgeonId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      anestheticsDr: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      recourceType: [0],
-      doctorTypeId: [0],
-      doctorId: [0],
-      bodyPartId: [],
-      cathLabDiagnosis: [],
-      consentName: [''],
-      departmentId: [0],
-      ConsentText: [''],
-      surgeryPart: [''],
-    });
-  }
-
-  createOtPostOperationForm(): FormGroup {
+  createOtbillForm(): FormGroup {
     return this._formBuilder.group({
       opIpType: ["OP"],
       opIpId: ["", [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
@@ -93,32 +50,12 @@ export class OtPreoperationService {
       billProcess: ['0'],
       isresourcecharge: [],
       isBilling: [],
-      closureNote: [''],
-      operativeFinding: [''],
-      postOperNote: [''],
-      patientCondNote: [''],
-
-      BloodGroup: [],
-      categoryType: [],
-      ottable: [],
-      TheaterLocation: [],
-      estimateTime: [],
-      surgeryDate1: [new Date()],
-      MobileNo: [],
-      diagnosis: [[]],
-      Remarks: [],
-      fromTime1: ['', Validators.required],
-      toTime1: ['', Validators.required],
-      duration1: ['', Validators.required],
-      cathLabDiagnosis: [],
-      bloodArg: ["1"],
       pacrequired: ['1'],
       equipmentsRequired: ['1'],
       clearanceMedical: false,
       clearanceFinancial: false,
       infective: ['1'],
-      bodyPartId: [],
-      paymentMode:[1],
+      paymentMode: [1],
     });
   }
 
@@ -143,5 +80,4 @@ export class OtPreoperationService {
   public getDoctorsByDoctorType(doctTypeId) {
     return this._httpClient.GetData("VisitDetail/DoctorTypeDoctorList?DocTypeId=" + doctTypeId)
   }
-
 }

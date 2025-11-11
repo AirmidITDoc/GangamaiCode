@@ -8,35 +8,24 @@ import { DatePipe } from '@angular/common';
 import { AirmidDropDownComponent } from 'app/main/shared/componets/airmid-dropdown/airmid-dropdown.component';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { MatTableDataSource } from '@angular/material/table';
-import { OtPreoperationService } from '../ot-preoperation.service';
 import { OtReserInsert } from '../../ot-reservation/ot-reservation.component';
 import { CdkScrollable } from '@angular/cdk/scrolling';
 import { CdkDragDrop, CdkDragMove, moveItemInArray } from '@angular/cdk/drag-drop';
+import { OtBillingService } from '../ot-billing.service';
 
 @Component({
-  selector: 'app-new-ot-post-operation',
-  templateUrl: './new-ot-post-operation.component.html',
-  styleUrls: ['./new-ot-post-operation.component.scss'],
+  selector: 'app-new-ot-billing',
+  templateUrl: './new-ot-billing.component.html',
+  styleUrls: ['./new-ot-billing.component.scss'],
   encapsulation: ViewEncapsulation.None,
   animations: fuseAnimations
 })
-export class NewOtPostOperationComponent {
-  postOperationForm: FormGroup;
+export class NewOtBillingComponent {
+  billForm: FormGroup;
   vSelectedOption: any = "OP";
   vpacrequired: any = "1";
   vequipmentsRequired: any = "1";
   vinfective: any = "1";
-
-  autocompleteModeSiteDescription: String = "SiteDescription";
-  autocompleteModeSurgeryCategory: String = "SurgeryCategory";
-  autocompleteModeDoctorSurgeon: String = "DoctorSurgion";
-  autocompleteModeSurgeryMaster: String = "SurgeryMaster";
-  autocompleteModeDoctorType: string = "DoctorType";
-  autocompleteModeConDoctor: String = "ConDoctor";
-  autocompleteModeAnesthesiatypes: string = "Anesthesiatypes"
-  autocompleteModeRefDoctor: String = "RefDoctor";
-  autocompletePaymentMode: String = "PaymentMode";
-
   vRegNo: any;
   vPatientName: any;
   vbookingId: any;
@@ -77,6 +66,17 @@ export class NewOtPostOperationComponent {
   autocompleteModeotTableCategory: String = "OttypeMaster";
   addDiagnolist: any = [];
   surgCategoryName: any;
+  dateTimeObj: any;
+
+  autocompleteModeSiteDescription: String = "SiteDescription";
+  autocompleteModeSurgeryCategory: String = "SurgeryCategory";
+  autocompleteModeDoctorSurgeon: String = "DoctorSurgion";
+  autocompleteModeSurgeryMaster: String = "SurgeryMaster";
+  autocompleteModeDoctorType: string = "DoctorType";
+  autocompleteModeConDoctor: String = "ConDoctor";
+  autocompleteModeAnesthesiatypes: string = "Anesthesiatypes"
+  autocompleteModeRefDoctor: String = "RefDoctor";
+  autocompletePaymentMode: String = "PaymentMode";
 
   displayedColumns1: string[] = [
     'surgeryCategoryName',
@@ -85,7 +85,7 @@ export class NewOtPostOperationComponent {
     'surgeryDuration',
     'surgeryFromTime',
     'surgeryEndTime',
-    'surgeryDt',
+    'surgeryDate',
     'surgeryAmt',
     'discPer',
     'concAmt',
@@ -103,22 +103,25 @@ export class NewOtPostOperationComponent {
     'fromTime',
     'toTime',
     'priceType',
-    'base',
+    'baseRs',
     'basePer',
     'grossAmt',
+    'concPer',
+    'concAmt',
+    'netAmt',
     // 'Action'
   ]
 
-  constructor(public _OTPostOperationService: OtPreoperationService,
-    public dialogRef: MatDialogRef<NewOtPostOperationComponent>,
+  constructor(public _otBillService: OtBillingService,
+    public dialogRef: MatDialogRef<NewOtBillingComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public _matDialog: MatDialog,
     public datePipe: DatePipe,
     public toastr: ToastrService) { }
 
   ngOnInit(): void {
-    this.postOperationForm = this._OTPostOperationService.createOtPostOperationForm();
-    this.postOperationForm.markAllAsTouched();
+    this.billForm = this._otBillService.createOtbillForm();
+    this.billForm.markAllAsTouched();
     if ((this.data?.otReservationId) > 0) {
       this.registerObj1 = this.data
       console.log(this.registerObj1)
@@ -127,17 +130,9 @@ export class NewOtPostOperationComponent {
       this.vIPDNo = this.registerObj1.opdNo
       this.vPatientName = this.registerObj1.patientName
 
-      setTimeout(() => {
-        this._OTPostOperationService.getotTableById(this.data.ottable).subscribe((response) => {
-          this.registerObj2 = response;
-          // console.log("Get ottable Data:", this.registerObj2)
-          this.ddlLocation.SetSelection(this.registerObj2.locationId);
-        });
-      }, 500);
-
       if (this.data.otReservationId) {
         setTimeout(() => {
-          this._OTPostOperationService.getotReservationById(this.data.otReservationId).subscribe((response) => {
+          this._otBillService.getotReservationById(this.data.otReservationId).subscribe((response) => {
             this.registerObj2 = response;
             console.log("Get Data:", this.registerObj2)
             this.vreservationId = this.registerObj2.otreservationId
@@ -146,7 +141,7 @@ export class NewOtPostOperationComponent {
             this.vpacrequired = this.registerObj2.pacrequired == true ? '1' : '0';
             this.vequipmentsRequired = this.registerObj2.equipmentsRequired == true ? '1' : '0';
             this.vinfective = this.registerObj2.infective == true ? '1' : '0';
-            this.postOperationForm.get('surgeryDate1')?.setValue(this.registerObj2.surgeryDate)
+            this.billForm.get('surgeryDate1')?.setValue(this.registerObj2.surgeryDate)
           });
         }, 500);
       }
@@ -161,13 +156,12 @@ export class NewOtPostOperationComponent {
           const formattedTime = `${hours}:${minutes}`; // e.g. "13:01"
 
           setTimeout(() => {
-            this.postOperationForm.get('estimateTime')?.setValue(formattedTime);
+            this.billForm.get('estimateTime')?.setValue(formattedTime);
           });
         }
       }
 
-      this.postOperationForm.patchValue(this.registerObj1);
-      this.getdiagnosisList(this.registerObj1);
+      this.billForm.patchValue(this.registerObj1);
       this.getReservationSurgeryDetList(this.registerObj1);
       this.getReservationAttendentDetList(this.registerObj1);
     }
@@ -182,53 +176,11 @@ export class NewOtPostOperationComponent {
       return false;
     }
   }
-  dateTimeObj: any;
+
   getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;
-    console.log(this.dateTimeObj)
   }
 
-  getdiagnosisList(obj) {
-    this.addDiagnolist = [];
-    this.AllTypeDescription = [];
-
-    const vdata = {
-      "first": 0,
-      "rows": 10,
-      "sortField": "OTReservationId",
-      "sortOrder": 0,
-      "filters": [
-        { "fieldName": "OTReservationId", "fieldValue": String(obj.otReservationId), "opType": "Equals" }
-      ],
-      "Columns": [],
-      "exportType": "JSON"
-    };
-
-    this._OTPostOperationService.getRtrvdiagnosisList(vdata).subscribe(response => {
-
-      if (response && Array.isArray(response.data)) {
-        this.RtrvDescriptionList = response.data;
-        // Process Diagnosis
-        let Diagnosis = this.RtrvDescriptionList.filter(item => item.descriptionType === 'Diagnosis');
-        if (Diagnosis.length > 0) {
-          Diagnosis.forEach(element => {
-            this.addDiagnolist.push(
-              {
-                otreservationDiagnosisDetId: element.otreservationDiagnosisDetId,
-                descriptionName: element.descriptionName
-              }
-            )
-          })
-          this.postOperationForm.get('diagnosis').setValue(this.addDiagnolist);
-          console.log("DIAGNOSIS DATA:", this.postOperationForm.get('diagnosis').value)
-        }
-      }
-    });
-  }
-  selectChangeDiagnosis(selectedChips: string[]) {
-    this.addDiagnolist = selectedChips;
-    this.postOperationForm.get('diagnosis')?.setValue(this.addDiagnolist);
-  }
   selectChangeSurgeryCategory(obj: any) {
     this.surgCategoryName = obj.text
   }
@@ -236,38 +188,35 @@ export class NewOtPostOperationComponent {
     this.surgName = obj.surgeryName
     this.ddlSurgerytype.SetSelection(obj.siteDescId);
     setTimeout(() => {
-      this._OTPostOperationService.getotsiteDiscById(obj.siteDescId).subscribe((response) => {
+      this._otBillService.getotsiteDiscById(obj.siteDescId).subscribe((response) => {
         this.surgCategoryName = response.siteDescriptionName;
         console.log("Get siteDisc Data:", this.surgCategoryName)
       });
     }, 100);
   }
-  onChangeOtTable(e) {
-    this.ddlLocation.SetSelection(e.locationId);
-  }
 
   //////////////////////// details part start ////////////////////////////
 
   onAdd() {
-    if (!this.postOperationForm.get("surgeryId")?.value) {
+    if (!this.billForm.get("surgeryId")?.value) {
       this.toastr.warning('Please select a Surgery', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       return;
     }
-    if (!this.postOperationForm.get("surgeryDuration")?.value) {
+    if (!this.billForm.get("surgeryDuration")?.value) {
       this.toastr.warning('Please enter Duration', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       return;
     }
-    if (!this.postOperationForm.get("surgeryFromTime")?.value) {
+    if (!this.billForm.get("surgeryFromTime")?.value) {
       this.toastr.warning('Please enter From time', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       return;
     }
-    if (!this.postOperationForm.get("surgeryEndTime")?.value) {
+    if (!this.billForm.get("surgeryEndTime")?.value) {
       this.toastr.warning('Please enter To time', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
@@ -277,20 +226,20 @@ export class NewOtPostOperationComponent {
 
     let newEntry = {
       surgeryCategoryName: this.surgCategoryName,
-      surgeryCategoryId: this.postOperationForm.get('surgeryCategoryId').value,
-      surgeryId: this.postOperationForm.get('surgeryId').value,//
+      surgeryCategoryId: this.billForm.get('surgeryCategoryId').value,
+      surgeryId: this.billForm.get('surgeryId').value,//
       surgeryName: this.surgName,
-      surgeryPart: this.postOperationForm.get('surgeryPart').value,
-      surgeryDuration: this.postOperationForm.get('surgeryDuration').value,
-      surgeryFromTime: this.postOperationForm.get('surgeryFromTime').value,
-      surgeryEndTime: this.postOperationForm.get('surgeryEndTime').value,
-      surgeryDt: this.postOperationForm.get('surgeryDate').value,
-      surgeryAmt: this.postOperationForm.get('surgeryAmt').value,
-      discPer: this.postOperationForm.get('DiscPer').value,
-      concAmt: this.postOperationForm.get('concAmt').value,
-      InfectivePer: this.postOperationForm.get('InfectivePer').value,
-      infectiveAmt: this.postOperationForm.get('InfectiveAmt').value,
-      netAmt: this.postOperationForm.get('netAmt').value,
+      surgeryPart: this.billForm.get('surgeryPart').value,
+      surgeryDuration: this.billForm.get('surgeryDuration').value,
+      surgeryFromTime: this.billForm.get('surgeryFromTime').value,
+      surgeryEndTime: this.billForm.get('surgeryEndTime').value,
+      surgeryDate: this.billForm.get('surgeryDate').value,
+      surgeryAmt: this.billForm.get('surgeryAmt').value,
+      discPer: this.billForm.get('DiscPer').value,
+      concAmt: this.billForm.get('concAmt').value,
+      InfectivePer: this.billForm.get('InfectivePer').value,
+      infectiveAmt: this.billForm.get('InfectiveAmt').value,
+      netAmt: this.billForm.get('netAmt').value,
     };
     // this.Chargelist.push(newEntry);
     if (this.editIndex !== null) {
@@ -305,14 +254,14 @@ export class NewOtPostOperationComponent {
     // Recalculate totals
     this.calculateTotals();
 
-    this.postOperationForm.patchValue({
+    this.billForm.patchValue({
       surgeryCategoryId: '',
       surgeryId: '',
       surgeryPart: '',
       surgeryDuration: '',
       surgeryFromTime: '',
       surgeryEndTime: '',
-      surgeryDt: '',
+      surgeryDate: '',
       surgeryAmt: '',
       DiscPer: '',
       concAmt: '',
@@ -327,7 +276,6 @@ export class NewOtPostOperationComponent {
   }
 
   deleteTableRow(event, element) {
-
     let index = this.Chargelist.indexOf(element);
     if (index >= 0) {
       this.Chargelist.splice(index, 1);
@@ -346,7 +294,6 @@ export class NewOtPostOperationComponent {
 
     let formattedDate = null;
     const rawDate = contact.surgeryDate || contact.surgeryDt;
-
     if (rawDate) {
       // Check if format is dd/MM/yyyy
       if (rawDate.includes('/')) {
@@ -361,7 +308,7 @@ export class NewOtPostOperationComponent {
       }
     }
 
-    this.postOperationForm.patchValue({
+    this.billForm.patchValue({
       surgeryCategoryId: contact.surgeryCategoryId ?? '',
       surgeryId: contact.surgeryId ?? '',
       surgeryPart: contact.surgeryPart ?? '',
@@ -369,7 +316,7 @@ export class NewOtPostOperationComponent {
       surgeryFromTime: contact.surgeryFromTime ?? '',
       surgeryEndTime: contact.surgeryEndTime ?? '',
       surgeryDate: formattedDate,
-      // surgeryDate: contact.surgeryDt ?? '',
+      // surgeryDate: contact.surgeryDate ?? '',
       surgeryAmt: contact.surgeryAmt ?? '',
       DiscPer: contact.discPer ?? '',
       concAmt: contact.concAmt ?? '',
@@ -378,13 +325,11 @@ export class NewOtPostOperationComponent {
       netAmt: contact.netAmt ?? '',
     });
 
-    // Set display names if you have them separately
     this.surgName = contact.surgeryName ?? '';
     this.surgCategoryName = contact.surgeryCategoryName ?? '';
     this.surgeonName = contact.surgeonName ?? '';
     this.AnthName = contact.anestheticsName ?? '';
 
-    // Remove this contact from list so it can be re-added after editing
     const index = this.Chargelist.indexOf(contact);
     if (index > -1) {
       this.Chargelist.splice(index, 1);
@@ -393,15 +338,15 @@ export class NewOtPostOperationComponent {
   }
 
   calculateAmt() {
-    const surgeryAmt = +this.postOperationForm.get('surgeryAmt')?.value || 0;
-    const discPer = +this.postOperationForm.get('DiscPer')?.value || 0;
-    const InfectivePer = +this.postOperationForm.get('InfectivePer')?.value || 0;
+    const surgeryAmt = +this.billForm.get('surgeryAmt')?.value || 0;
+    const discPer = +this.billForm.get('DiscPer')?.value || 0;
+    const InfectivePer = +this.billForm.get('InfectivePer')?.value || 0;
 
     const concAmt = +((surgeryAmt * discPer) / 100).toFixed(2);
     const infectiveAmt = +(((surgeryAmt - concAmt) * InfectivePer) / 100).toFixed(2);
     const netAmt = +(surgeryAmt - concAmt + infectiveAmt).toFixed(2);
 
-    this.postOperationForm.patchValue({
+    this.billForm.patchValue({
       concAmt,
       InfectiveAmt: infectiveAmt,
       netAmt
@@ -414,15 +359,12 @@ export class NewOtPostOperationComponent {
     const discPer = parseFloat(row.discPer) || 0;
     const InfectivePer = parseFloat(row.InfectivePer) || 0;
 
-    // Calculations
     row.concAmt = (surgeryAmt * discPer) / 100;
     row.infectiveAmt = (surgeryAmt * InfectivePer) / 100;
     row.netAmt = surgeryAmt - row.concAmt + row.infectiveAmt;
 
-    // Refresh table view
     this.dsDetailList.data = [...this.dsDetailList.data];
 
-    // Update totals
     this.calculateTotals();
   }
 
@@ -432,7 +374,6 @@ export class NewOtPostOperationComponent {
     let totalDisc = 0;
     let totalNet = 0;
 
-    // Loop through all rows in table data
     this.dsDetailList.data.forEach((row: any) => {
       const amt = parseFloat(row.surgeryAmt) || 0;
       const disc = parseFloat(row.concAmt) || 0;
@@ -443,8 +384,7 @@ export class NewOtPostOperationComponent {
       totalNet += net;
     });
 
-    // Update the form controls
-    this.postOperationForm.patchValue({
+    this.billForm.patchValue({
       totalGrossAmt: totalGross.toFixed(2),
       totalDiscAmt: totalDisc.toFixed(2),
       totalNetAmt: totalNet.toFixed(2)
@@ -465,7 +405,7 @@ export class NewOtPostOperationComponent {
       "exportType": "JSON"
     };
 
-    this._OTPostOperationService.getRtrvReservationSurgeryList(m_data2).subscribe(records => {
+    this._otBillService.getRtrvReservationSurgeryList(m_data2).subscribe(records => {
       this.FetchList = records.data as OtReserInsert[];
       this.FetchList.forEach(element => {
 
@@ -487,7 +427,7 @@ export class NewOtPostOperationComponent {
             surgeryEndTime: surgeryEndTime,
 
             /// extra fields
-            surgeryDt: this.registerObj1.surgeryDate ?? '',
+            surgeryDate: this.registerObj1.surgeryDate ?? '',
             surgeryAmt: element.surgeryAmt ?? '',
             DiscPer: element.discPer ?? '',
             concAmt: element.concAmt ?? '',
@@ -517,7 +457,7 @@ export class NewOtPostOperationComponent {
       "exportType": "JSON"
     };
 
-    this._OTPostOperationService.getRtrvReservationAttendentList(m_data2).subscribe(records => {
+    this._otBillService.getRtrvReservationAttendentList(m_data2).subscribe(records => {
       this.FetchList1 = records.data as OtReserInsert[];
       this.FetchList1.forEach(element => {
 
@@ -527,6 +467,14 @@ export class NewOtPostOperationComponent {
             doctorType: element.doctorType,
             doctorId: element.doctorId, //
             doctorName: element.doctorName,
+
+            // extra fields
+            baseRs: element.baseRs,
+            basePer: element.basePer,
+            grossAmt: element.grossAmt,
+            concPer: element.concPer,
+            concAmt: element.concAmt,
+            netAmt: element.netAmt,
           });
       })
       this.dsattendentDetailList.data = this.Chargelist1
@@ -556,46 +504,19 @@ export class NewOtPostOperationComponent {
     }
   }
   //////////////////////// details part end ////////////////////////////
-
-  //////////////////////// PartOfBody start ////////////////////////////
-  previewUrl: string | ArrayBuffer | null = null;
-
-  onFileSelected(event: any) {
-    const file = event.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = () => {
-        this.previewUrl = reader.result;
-      };
-      reader.readAsDataURL(file);
-    }
-  }
-
-  // Optional: use device camera directly
-  openCamera() {
-    const input = document.createElement('input');
-    input.type = 'file';
-    input.accept = 'image/*';
-    input.capture = 'environment'; // opens back camera on mobile
-    input.onchange = (event: any) => this.onFileSelected(event);
-    input.click();
-  }
-
-  //////////////////////// PartOfBody end ////////////////////////////
-
   onSubmit() {
 
   }
 
   onClear(val: boolean) {
     this.dialogRef.close(val);
-    this.postOperationForm.get('opIpType').setValue('OP')
+    this.billForm.get('opIpType').setValue('OP')
   }
 
   onChangeDuration(event: any) {
     // debugger
-    const durationHours = parseFloat(this.postOperationForm.get('surgeryDuration')?.value); // e.g. 1.5
-    const startTime = this.postOperationForm.get('surgeryFromTime')?.value; // "HH:mm"
+    const durationHours = parseFloat(this.billForm.get('surgeryDuration')?.value); // e.g. 1.5
+    const startTime = this.billForm.get('surgeryFromTime')?.value; // "HH:mm"
 
     if (durationHours && startTime) {
       const [sh, sm] = startTime.split(':').map(Number);
@@ -608,18 +529,18 @@ export class NewOtPostOperationComponent {
       const em = endMinutes % 60;
 
       const endTime = `${this.pad(eh)}:${this.pad(em)}`;
-      this.postOperationForm.get('surgeryEndTime')?.setValue(endTime);
+      this.billForm.get('surgeryEndTime')?.setValue(endTime);
     }
   }
 
   onChangeTimefrom(event: any) {
-    const duration = this.postOperationForm.get('surgeryDuration')?.value;
-    const startTime = this.postOperationForm.get('surgeryFromTime')?.value;
+    const duration = this.billForm.get('surgeryDuration')?.value;
+    const startTime = this.billForm.get('surgeryFromTime')?.value;
 
     if (duration) {
       this.onChangeDuration(null); // reuse logic for calculating end time
     } else {
-      const endTime = this.postOperationForm.get('surgeryEndTime')?.value;
+      const endTime = this.billForm.get('surgeryEndTime')?.value;
       if (endTime) {
         this.calculateDuration(startTime, endTime);
       }
@@ -627,8 +548,8 @@ export class NewOtPostOperationComponent {
   }
 
   onChangeTimeto(event: any) {
-    const startTime = this.postOperationForm.get('surgeryFromTime')?.value;
-    const endTime = this.postOperationForm.get('surgeryEndTime')?.value;
+    const startTime = this.billForm.get('surgeryFromTime')?.value;
+    const endTime = this.billForm.get('surgeryEndTime')?.value;
 
     if (startTime && endTime) {
       this.calculateDuration(startTime, endTime);
@@ -650,7 +571,7 @@ export class NewOtPostOperationComponent {
     const dm = durationMinutes % 60;
 
     const duration = `${this.pad(dh)}:${this.pad(dm)}`;
-    this.postOperationForm.get('surgeryDuration')?.setValue(duration);
+    this.billForm.get('surgeryDuration')?.setValue(duration);
   }
 
   pad(num: number): string {
