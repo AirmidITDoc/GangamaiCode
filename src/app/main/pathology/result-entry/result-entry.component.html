@@ -13,11 +13,11 @@
 
         <div class="gap-8" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
             <div fxLayout="row" fxLayoutAlign="start center" class="gap-4">
-                <mat-icon class="pill orange-600 s-16">circle</mat-icon>
+                <mat-icon class="pill orange-600 s-16" matTooltip="OutPatient">circle</mat-icon>
                 <span>: OP </span>
             </div>
             <div fxLayout="row" fxLayoutAlign="start center" class="gap-4">
-                <mat-icon class="pill green s-16">circle</mat-icon>
+                <mat-icon class="pill green s-16" matTooltip="InPatient">circle</mat-icon>
                 <span>: IP </span>
             </div>
         </div>
@@ -26,20 +26,20 @@
     <div class="layout-body p-12">
         <mat-card>
             <div class="layout-body-container center">
-                <div class="info-badge-top overflow-auto" fxLayout="row" fxLayoutAlign="space-between" flex>
+                <div class="info-badge-top overflow-auto mb-3" fxLayout="row" fxLayoutAlign="space-between" flex>
 
-                    <div fxLayout="row" fxLayoutAlign="start center" class="gap-8">
+                    <div fxLayout="row" fxLayoutAlign="start center" class="gap-8 mb-8">
 
                         <div class="dashboard-card registrations">
                             <div class="card-label">TotalTest Result</div>
                             <div class="card-value">{{Vtotalcount}}</div>
-                            <mat-icon class="card-icon">person_add</mat-icon>
+                            <mat-icon class="card-icon" matTooltip="Total Test Results">assignment</mat-icon>
                         </div>
 
                         <div class="dashboard-card appointments">
                             <div class="card-label">Completed</div>
                             <div class="card-value">{{VCompletedcount}}</div>
-                            <mat-icon class="card-icon">event</mat-icon>
+                            <mat-icon class="card-icon" matTooltip="Completed Tests">check_circle</mat-icon>
                         </div>
 
                         <div class="dashboard-card appointments-split">
@@ -48,7 +48,7 @@
                                 <div> {{Vpendingcount}}</div>
 
                             </div>
-                            <mat-icon class="card-icon">group</mat-icon>
+                            <mat-icon class="card-icon" matTooltip="Pending Tests">schedule</mat-icon>
                         </div>
 
 
@@ -173,9 +173,11 @@
                                     <ng-template #actionsIPOP let-element>
                                         <div fxLayout="row" fxLayoutAlign="center center">
 
-                                            <mat-icon *ngIf="element.patientType=='OP'" title="OP"
+                                            <mat-icon *ngIf="element.patientType=='OP'" 
+                                                matTooltip="OutPatient"
                                                 class="pill orange s-16">circle</mat-icon>
-                                            <mat-icon *ngIf="element.patientType=='IP'" title="IP"
+                                            <mat-icon *ngIf="element.patientType=='IP'" 
+                                                matTooltip="InPatient"
                                                 class="pill green s-16">circle</mat-icon>
 
                                         </div>
@@ -289,50 +291,55 @@
                                     </ng-container> -->
 
                                         <ng-container matColumnDef="action1">
-                                            <mat-header-cell *matHeaderCellDef fxShow.gt-sm>Status</mat-header-cell>
-                                            <mat-cell *matCellDef="let contact">
+                                            <mat-header-cell *matHeaderCellDef fxShow.gt-sm class="w-200">Status</mat-header-cell>
+                                            <mat-cell *matCellDef="let contact" class="w-200">
 
                                                 <div fxLayout="row" fxLayoutAlign="center center">
 
-                                                    <mat-icon *ngIf="contact.isTemplateTest=='1'" class="w-50"
-                                                        matTooltip="TemplateTest">assignment</mat-icon>
-                                                    <mat-icon *ngIf="contact.isTemplateTest !='1'" class="w-50"
-                                                        matTooltip="Result Test">
-                                                        <img width="30px" height="30px"
-                                                            src="assets/images/logos/pathology.png">
+                                                    <mat-icon *ngIf="contact.isTemplateTest=='1'" 
+                                                        matTooltip="Template Test"
+                                                        class="s-20 mr-4" color="primary">
+                                                        assignment
+                                                    </mat-icon>
+                                                    <mat-icon *ngIf="contact.isTemplateTest !='1'" 
+                                                        matTooltip="Result Test"
+                                                        class="s-20 mr-4" style="color: #9c27b0;">
+                                                        description
                                                     </mat-icon>
 
-                                                    <mat-icon *ngIf="contact.isCompleted" matTooltip="Report Completed"
-                                                        class="w-50"
-                                                        class="active-icon green-500 s-16">check_circle</mat-icon>
+                                                    <mat-icon *ngIf="contact.isCompleted" 
+                                                        matTooltip="Report Completed"
+                                                        class="s-20 mr-4" style="color: #4caf50;">
+                                                        check_circle
+                                                    </mat-icon>
                                                     <mat-icon *ngIf="!contact.isCompleted"
-                                                        matTooltip="Report Not Completed" class="w-50"
-                                                        class="active-icon red-500 s-16">hourglass_empty</mat-icon>
-
+                                                        matTooltip="Report Not Completed" 
+                                                        class="s-20 mr-4" style="color: #f44336;">
+                                                        hourglass_empty
+                                                    </mat-icon>
 
                                                     <mat-icon *ngIf="contact.outSourceStatus"
-                                                        matTooltip="OutSource Completed" class="w-30"
-                                                        style="background-color: rgb(232, 127, 52);">
-                                                        <img width="30px" height="30px"
-                                                            src="assets/images/logos/outsource.jpg">
+                                                        matTooltip="OutSource Completed" 
+                                                        class="s-20 mr-4" color="warn">
+                                                        send
                                                     </mat-icon>
 
-
-                                                    <mat-icon *ngIf="!contact.outSourceStatus" matTooltip="No OutSource"
-                                                        class="w-40">
-                                                        <img width="40px" height="40px"
-                                                            src="assets/images/logos/labtest.png">
+                                                    <mat-icon *ngIf="!contact.outSourceStatus" 
+                                                        matTooltip="Lab Test"
+                                                        class="s-20 mr-4" color="accent">
+                                                        local_hospital
                                                     </mat-icon>
-                                                    <mat-icon *ngIf="contact.isVerifyid" matTooltip="Report Verified"
-                                                        class="w-50">
-                                                        <img width="50px" height="50px"
-                                                            src="assets/images/logos/verify.png">
+
+                                                    <mat-icon *ngIf="contact.isVerifyid" 
+                                                        matTooltip="Report Verified"
+                                                        class="s-20 mr-4" style="color: #4caf50;">
+                                                        verified_user
                                                     </mat-icon>
 
                                                     <mat-icon *ngIf="!contact.isVerifyid"
-                                                        matTooltip="Report Not Verified" class="w-25">
-                                                        <img width="25px" height="25px"
-                                                            src="assets/images/logos/notverify.png">
+                                                        matTooltip="Report Not Verified" 
+                                                        class="s-20 mr-4" style="color: #9e9e9e;">
+                                                        schedule
                                                     </mat-icon>
                                                 </div>
 
@@ -413,45 +420,52 @@
                                         </ng-container>
 
                                         <ng-container matColumnDef="action" stickyEnd>
-                                            <mat-header-cell *matHeaderCellDef fxShow.gt-sm class="w-150">
+                                            <mat-header-cell *matHeaderCellDef fxShow.gt-sm class="w-180">
                                                 Action</mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" class="w-150">
+                                            <mat-cell *matCellDef="let contact" class="w-180">
 
-                                                <button mat-icon-button (click)="Printresultentry(contact)" matTooltip="Print"
+                                                <button mat-icon-button (click)="Printresultentry(contact)" 
+                                                    matTooltip="Print Report"
                                                     *ngIf="contact.isCompleted">
-                                                    <mat-icon>print</mat-icon>
+                                                    <mat-icon color="primary">print</mat-icon>
                                                 </button>
-                                                <button mat-icon-button class="material-icons"
-                                                    (click)="Cancleresult(contact)" matTooltip="Cancel Result">
-                                                    <mat-icon title="Cancel Result">highlight_off</mat-icon>
+
+                                                <button mat-icon-button 
+                                                    (click)="Cancleresult(contact)" 
+                                                    matTooltip="Cancel Result">
+                                                    <mat-icon color="warn">cancel</mat-icon>
                                                 </button>
 
                                                 <airmid-fileupload-icon [refId]="contact.pathReportId"
                                                     [refType]="pathFiles" [multiple]="true"
                                                     [title]="contact.patientName + ' Report'"></airmid-fileupload-icon>
 
-                                                <button *ngIf="contact.isTemplateTest == 1" title="IsTemplateTest"
-                                                    (click)="chkresultentry(contact, false)"
-                                                    style="background: none; border: none; padding: 0; cursor: pointer;">
-                                                    <mat-icon title="IsTemplateTest">edit</mat-icon>
+                                                <button mat-icon-button 
+                                                    *ngIf="contact.isTemplateTest == 1" 
+                                                    matTooltip="Edit Template Test"
+                                                    (click)="chkresultentry(contact, false)">
+                                                    <mat-icon style="color: #ff9800;">edit</mat-icon>
                                                 </button>
 
-                                                <button mat-icon-button (click)="onVerify(contact)"
-                                                    *ngIf="contact.isVerifyid==null">
-                                                    <mat-icon class="disabled-icon" style="color: rgb(44, 82, 5);"
-                                                        matTooltip="verify Menu">verified_user</mat-icon>
+                                                <button mat-icon-button 
+                                                    (click)="onVerify(contact)"
+                                                    *ngIf="contact.isVerifyid==null"
+                                                    matTooltip="Verify Report">
+                                                    <mat-icon style="color: #4caf50;">verified_user</mat-icon>
                                                 </button>
 
-                                                <button title="IsPathOutSource" *ngIf="contact.isPathOutSource== 1"
+                                                <button mat-icon-button 
+                                                    *ngIf="contact.isPathOutSource== 1"
                                                     (click)="Editoutsoucedata(contact)"
-                                                    style="background: none; border: none; padding: 0; cursor: pointer;">
-                                                    <mat-icon title="Add OutSouce">edit</mat-icon>
+                                                    matTooltip="Edit OutSource Data">
+                                                    <mat-icon style="color: #ff5722;">local_shipping</mat-icon>
                                                 </button>
-                                                <button mat-icon-button matTooltip="Send Result On WhatsApp"
+
+                                                <button mat-icon-button 
+                                                    matTooltip="Send Result On WhatsApp"
                                                     *ngIf="contact.isCompleted"
                                                     (click)="getWhatsappshareResult(contact)">
-                                                    <img width="100" height="20px"
-                                                        src="assets/images/logos/WhatsApp.png">
+                                                    <mat-icon style="color: #25d366;">chat</mat-icon>
                                                 </button>
 
                                                 <ng-template #noMLC>

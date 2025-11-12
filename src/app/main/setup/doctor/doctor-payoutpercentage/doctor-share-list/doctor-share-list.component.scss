@@ -1,0 +1,208 @@
+// Doctor Share Payout Modal Styles
+.doctor-share-modal {
+    display: flex;
+    flex-direction: column;
+    width: 950px;
+    max-width: 950px;
+    height: auto;
+    background: #ffffff;
+    border-radius: 0;
+
+    // Modal Header
+    .modal-header-modern {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 16px 20px;
+
+        .header-title {
+            margin: 0;
+            font-size: 18px;
+            font-weight: 500;
+            letter-spacing: 0.3px;
+        }
+
+        .close-button {
+            &:hover {
+                background-color: rgba(255, 255, 255, 0.1);
+            }
+
+            mat-icon {
+                font-size: 22px;
+            }
+        }
+    }
+
+    // Modal Body
+    .modal-body-modern {
+        padding: 16px 20px;
+        background-color: #ffffff;
+
+        .form-container {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        // Type Selection Section
+        .selection-section {
+            .type-card {
+                padding: 16px;
+                border-radius: 0;
+                box-shadow: none;
+                background: white;
+                border: 1px solid #e0e0e0;
+
+                .radio-group-container {
+                    display: flex;
+                    align-items: center;
+                    gap: 20px;
+                    flex-wrap: nowrap;
+
+                    .radio-group-wrapper {
+                        display: flex;
+                        flex-direction: column;
+                        gap: 8px;
+
+                        .group-label {
+                            font-size: 12px;
+                            font-weight: 600;
+                            color: #666;
+                            text-transform: uppercase;
+                        }
+
+                        .custom-radio-group {
+                            display: flex;
+                            gap: 16px;
+
+                            .custom-radio-button {
+                                .radio-label {
+                                    font-size: 14px;
+                                    color: #333;
+                                }
+                            }
+                        }
+                    }
+
+                    .vertical-divider {
+                        height: 40px;
+                        margin: 0 8px;
+                    }
+                }
+            }
+        }
+
+        // Form Fields Section
+        .form-fields-section {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+
+            .form-field-wrapper {
+                airmid-dropdown {
+                    width: 100%;
+                }
+            }
+
+            // Share Section
+            .share-section {
+                .share-card {
+                    padding: 16px;
+                    border-radius: 0;
+                    box-shadow: none;
+                    background: white;
+                    border: 1px solid #e0e0e0;
+
+                    .share-type-container {
+                        display: flex;
+                        flex-direction: column;
+                        gap: 8px;
+                        margin-bottom: 12px;
+
+                        .share-label {
+                            font-size: 12px;
+                            font-weight: 600;
+                            color: #666;
+                            text-transform: uppercase;
+                        }
+
+                        .share-radio-group {
+                            display: flex;
+                            gap: 16px;
+
+                            .share-radio-button {
+                                .radio-label {
+                                    font-size: 14px;
+                                    color: #333;
+                                }
+                            }
+                        }
+                    }
+
+                    .value-input-wrapper {
+                        .value-input {
+                            width: 100%;
+
+                            input {
+                                font-size: 14px;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .mat-mdc-form-field-icon-suffix {
+        padding-right: 10px !important;
+    }
+    .mat-mdc-form-field-icon-prefix {
+        padding-left: 10px !important;
+    }
+
+    // Modal Footer
+    .modal-footer-modern {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 12px;
+        padding: 12px 20px;
+        background: white;
+        border-top: 1px solid #e0e0e0;
+
+        .cancel-button {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 16px;
+            font-weight: 500;
+            border: 1px solid #d0d0d0;
+            color: #666;
+
+            mat-icon {
+                font-size: 18px;
+                width: 18px;
+                height: 18px;
+            }
+
+            &:hover {
+                background-color: #f5f5f5;
+            }
+        }
+
+        .save-button {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 20px;
+            font-weight: 500;
+
+            mat-icon {
+                font-size: 18px;
+                width: 18px;
+                height: 18px;
+            }
+        }
+    }
+}
+

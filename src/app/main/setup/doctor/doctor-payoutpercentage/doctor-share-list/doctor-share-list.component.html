@@ -1,123 +1,165 @@
-<div class="modal-wrapper grid-container">
-    <!-- Modal header -->
-    <div class="modal-header accent">
-        <div class="modal-header-content">
-            <div class="modal-header-title">
-                <span [@animate]="{ value: '*', params: { delay: '100ms', x: '-25px' } }"> Doctor Share Payout </span>
-            </div>
-            <div class="modal-header-right">
-                <div class="comman-date-container">
-
-                    <div class="close-icon">
-                        <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
-                            matTooltip="Close">
-                            <mat-icon>close</mat-icon>
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
+<div class="doctor-share-modal">
+    <!-- Modal Header -->
+    <div class="modal-header-modern accent">
+        <h2 class="header-title" [@animate]="{ value: '*', params: { delay: '100ms', x: '-25px' } }">
+            Doctor Share Payout
+        </h2>
+        <button mat-icon-button class="close-button" [mat-dialog-close]="true" aria-label="Close dialog" matTooltip="Close">
+            <mat-icon>close</mat-icon>
+        </button>
     </div>
-    <!-- Modal body -->
-    <div class="modal-body" fusePerfectScrollbar>
-        <div class="modal-body-container">
-            <div fxLayout="column" class="gap-12">
 
-                <div class="modal-card-container">
-                    <mat-card>
-                        <div fxLayout="column" class="gap-8">
+    <!-- Modal Body -->
+    <div class="modal-body-modern">
+        <form [formGroup]="Doctorshare" class="form-container">
+            
+            <!-- Type Selection Section -->
+            <div class="selection-section">
+                <mat-card class="type-card">
+                    <div class="radio-group-container">
+                        <div class="radio-group-wrapper">
+                            <label class="group-label">Type</label>
+                            <mat-radio-group formControlName="shrTypeSerOrGrp" class="custom-radio-group">
+                                <mat-radio-button value="1" class="custom-radio-button">
+                                    <span class="radio-label">Service Wise</span>
+                                </mat-radio-button>
+                                <mat-radio-button value="2" class="custom-radio-button">
+                                    <span class="radio-label">Group Wise</span>
+                                </mat-radio-button>
+                            </mat-radio-group>
+                        </div>
+                        
+                        <mat-divider [vertical]="true" class="vertical-divider"></mat-divider>
+                        
+                        <div class="radio-group-wrapper">
+                            <label class="group-label">Patient Type</label>
+                            <mat-radio-group formControlName="opIpType" class="custom-radio-group">
+                                <mat-radio-button value="0" class="custom-radio-button">
+                                    <span class="radio-label">OP</span>
+                                </mat-radio-button>
+                                <mat-radio-button value="1" class="custom-radio-button">
+                                    <span class="radio-label">IP</span>
+                                </mat-radio-button>
+                            </mat-radio-group>
+                        </div>
+                    </div>
+                </mat-card>
+            </div>
 
-                            <form [formGroup]="Doctorshare">
-                                <div fxLayout="row wrap" fxLayoutGap="8px 0px grid">
+            <!-- Form Fields Section -->
+            <div class="form-fields-section">
+                
+                <!-- Doctor Name -->
+                <div class="form-field-wrapper">
+                    <airmid-dropdown 
+                        label="Select Doctor Name" 
+                        formControlName="doctorId"
+                        [value]="data?.DoctorID" 
+                        [formGroup]="Doctorshare"
+                        (selectionChange)="selectChangeDoctor($event)" 
+                        [mode]="autocompleteModeDoctor">
+                    </airmid-dropdown>
+                </div>
 
-                                    <div fxLayout="row" fxLayoutGap="5px" style="padding-top: 50px;padding-left: 30px;">
-                                        <div fxLayout="row wrap" fxLayoutGap="12px grid">
-                                            <mat-radio-group formControlName="shrTypeSerOrGrp" name="ServiceOrgrpType"
-                                                fxLayout="row">
-                                                <mat-radio-button value="1">Service Wise</mat-radio-button>
-                                                <mat-radio-button value="2">Group Wise</mat-radio-button>
-                                            </mat-radio-group>
-                                            <mat-divider [vertical]="true"></mat-divider>&nbsp;
-                                            <mat-radio-group formControlName="opIpType" name="opIpType" fxLayout="row">
-                                                <mat-radio-button value="0">OP</mat-radio-button>
-                                                <mat-radio-button value="1">IP</mat-radio-button>
-                                            </mat-radio-group>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div fxLayout="row wrap" style="padding-top: 23px;padding-left: 30px;">
-                                    <!-- <div fxFlex="20" fxFlex.xs="100" fxFlex.sm="33"> -->
-                                    <airmid-dropdown label="Select Doctor Name" formControlName="doctorId"
-                                        [value]="data?.DoctorID" [formGroup]="Doctorshare"
-                                        (selectionChange)="selectChangeDoctor($event)" [mode]="autocompleteModeDoctor">
-                                    </airmid-dropdown>
-                                </div>
+                <!-- Service Name (Conditional) -->
+                <div class="form-field-wrapper" *ngIf="Doctorshare.get('shrTypeSerOrGrp').value=='1'">
+                    <airmid-dropdown 
+                        label="Service Name" 
+                        formControlName="serviceId"
+                        [formGroup]="Doctorshare" 
+                        [value]="data?.serviceId"
+                        [validations]="getValidationMessages().ServiceID"
+                        [mode]="autocompleteModeService">
+                    </airmid-dropdown>
+                </div>
 
-                                <div fxLayout="row wrap" style="padding-left: 30px;"
-                                    *ngIf="Doctorshare.get('shrTypeSerOrGrp').value=='1'">
+                <!-- Group Name (Conditional) -->
+                <div class="form-field-wrapper" *ngIf="Doctorshare.get('shrTypeSerOrGrp').value=='2'">
+                    <airmid-dropdown 
+                        label="Select Group Name" 
+                        formControlName="GroupWise"
+                        [value]="data?.GroupWise" 
+                        [formGroup]="Doctorshare"
+                        (selectionChange)="selectChangeGroup($event)" 
+                        [mode]="autocompleteGroupName">
+                    </airmid-dropdown>
+                </div>
 
-                                    <airmid-dropdown label="Service Name" formControlName="serviceId"
-                                        [formGroup]="Doctorshare" [value]="data?.serviceId"
-                                        [validations]="getValidationMessages().ServiceID"
-                                        [mode]="autocompleteModeService"></airmid-dropdown>
-                                </div>
-                                <div fxLayout="row wrap" style="padding-left: 30px;"
-                                    *ngIf="Doctorshare.get('shrTypeSerOrGrp').value=='2'">
-                                    <airmid-dropdown label="Select Group Name" formControlName="GroupWise"
-                                        [value]="data?.GroupWise" [formGroup]="Doctorshare"
-                                        (selectionChange)="selectChangeGroup($event)" [mode]="autocompleteGroupName">
-                                    </airmid-dropdown>
-                                </div>
-                                <div fxLayout="row wrap" style="padding-left: 30px;">
+                <!-- Class Name -->
+                <div class="form-field-wrapper">
+                    <airmid-dropdown 
+                        label="Select Class Name" 
+                        formControlName="classId"
+                        [value]="data?.classId" 
+                        [formGroup]="Doctorshare"
+                        (selectionChange)="selectChangeClass($event)" 
+                        [mode]="autocompleteClass"
+                        [validations]="getValidationMessages().classId">
+                    </airmid-dropdown>
+                </div>
 
-                                    <airmid-dropdown label="Select Class Name" formControlName="classId"
-                                        [value]="data?.classId" [formGroup]="Doctorshare"
-                                        (selectionChange)="selectChangeClass($event)" [mode]="autocompleteClass"
-                                        [validations]="getValidationMessages().classId">
-                                    </airmid-dropdown>
-                                </div>
-                                <div fxLayout="row wrap" style="padding-left: 30px;">
-                                    <mat-radio-group formControlName="docShrType" name="docShrType" fxLayout="row">
-                                        <mat-label
-                                            style="font-weight: bold;font-size: large;color: rgb(5, 77, 101);">Doctor
-                                            Share :</mat-label>&nbsp;&nbsp;
-                                        <mat-radio-button value="P">%</mat-radio-button> &nbsp;
-                                        <mat-radio-button value="A">Amount</mat-radio-button>
-                                    </mat-radio-group>
+                <!-- Doctor Share Type Section -->
+                <div class="share-section">
+                    <mat-card class="share-card">
+                        <div class="share-type-container">
+                            <label class="share-label">Doctor Share</label>
+                            <mat-radio-group formControlName="docShrType" class="share-radio-group">
+                                <mat-radio-button value="P" class="share-radio-button">
+                                    <span class="radio-label">Percentage (%)</span>
+                                </mat-radio-button>
+                                <mat-radio-button value="A" class="share-radio-button">
+                                    <span class="radio-label">Fixed Amount</span>
+                                </mat-radio-button>
+                            </mat-radio-group>
+                        </div>
 
-                                </div>
-                                <div fxLayout="row wrap" style="padding-left: 30px;"
-                                    *ngIf="Doctorshare.get('docShrType').value=='P'">
-                                    <mat-form-field appearance="outline">
-                                        <mat-label>%</mat-label>
-                                        <input name="Percentage" formControlName="servicePercentage" matInput
-                                            [(ngModel)]="vServicePerc" (keypress)="keyPressAlphanumeric($event)">
-                                    </mat-form-field>
-                                </div>
-                                <div fxLayout="row wrap" style="padding-left: 30px;"
-                                    *ngIf="Doctorshare.get('docShrType').value=='A'">
-                                    <mat-form-field appearance="outline">
-                                        <mat-label>Amount</mat-label>
-                                        <input name="Amount" formControlName="serviceAmount" matInput
-                                            [(ngModel)]="vServiceAmt" (keypress)="keyPressAlphanumeric($event)">
-                                    </mat-form-field>
-                                </div>
+                        <!-- Percentage Input -->
+                        <div class="value-input-wrapper" *ngIf="Doctorshare.get('docShrType').value=='P'">
+                            <mat-form-field appearance="outline" class="value-input">
+                                <mat-label>Percentage Value</mat-label>
+                                <input 
+                                    name="Percentage" 
+                                    formControlName="servicePercentage" 
+                                    matInput
+                                    type="number"
+                                    [(ngModel)]="vServicePerc" 
+                                    (keypress)="keyPressAlphanumeric($event)"
+                                    placeholder="0">
+                                <span matSuffix>%</span>
+                            </mat-form-field>
+                        </div>
 
-
-
-                            </form>
+                        <!-- Amount Input -->
+                        <div class="value-input-wrapper" *ngIf="Doctorshare.get('docShrType').value=='A'">
+                            <mat-form-field appearance="outline" class="value-input">
+                                <mat-label>Amount Value</mat-label>
+                                <input 
+                                    name="Amount" 
+                                    formControlName="serviceAmount" 
+                                    matInput
+                                    type="number"
+                                    [(ngModel)]="vServiceAmt" 
+                                    (keypress)="keyPressAlphanumeric($event)"
+                                    placeholder="0">
+                                <span matPrefix>₹&nbsp;</span>
+                            </mat-form-field>
                         </div>
                     </mat-card>
                 </div>
+
             </div>
-        </div>
+        </form>
     </div>
-    <div class="modal-footer">
-        <div class="footer-navigation-container">
-            <div class="modal-footer-buttons">
-                <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
-                <button class="btn btn-primary" (click)="OnSave()">Save</button>
-            </div>
-        </div>
+
+    <!-- Modal Footer -->
+    <div class="modal-footer-modern">
+        <button mat-stroked-button class="cancel-button" (click)="onClose()">
+            <mat-icon>close</mat-icon>
+            Cancel
+        </button>
+        <button mat-raised-button color="primary" class="save-button" (click)="OnSave()">
+            <mat-icon>check</mat-icon>
+            Save
+        </button>
     </div>
 </div>

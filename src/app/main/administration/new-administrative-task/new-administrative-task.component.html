@@ -361,10 +361,10 @@
                                         Action</mat-header-cell>
                                     <mat-cell *matCellDef="let contact">
 
-
-                                        <button class="btn btn-danger" (click)="OnopenVisitDateUpdate(contact)"
-                                            matTooltip="Edit Visit Date" style="color: white;">
-                                            <img width="30px" height="30px" src="assets/images/logos/dischargedate.png">
+                                        <button mat-icon-button color="accent" 
+                                            (click)="OnopenVisitDateUpdate(contact)"
+                                            matTooltip="Edit Visit Date">
+                                            <mat-icon>edit_calendar</mat-icon>
                                         </button>
 
                                     </mat-cell>
@@ -485,21 +485,23 @@
                                         Action</mat-header-cell>
                                     <mat-cell *matCellDef="let contact">
 
-                                        <button class="btn btn-primary" (click)="openAdmissiontask(contact)"
+                                        <button mat-icon-button color="primary" 
+                                            (click)="openAdmissiontask(contact)"
                                             matTooltip="Admission Date-Time / IPD NO Update">
-                                            <img width="30px" height="30px" src="assets/images/logos/Admission.png">
-                                        </button>&nbsp;
-
-                                        <button class="btn btn-danger" (click)="openAdmissiontask(contact)"
-                                            matTooltip="Admission Cancle" style="color: white;"
-                                            *ngIf="IsChargesAmount==0 && IsBillGenerated==0">
-                                            <img width="30px" height="30px"
-                                                src="assets/images/logos/cancelappointment.png">
+                                            <mat-icon>meeting_room</mat-icon>
                                         </button>
-                                        <!-- *ngIf="IsChargesAmount==0 && IsBillGenerated==0" -->
-                                        <button class="btn btn-danger" (click)="DischargeCancel(contact)"
-                                            matTooltip="Discharge Cancle" style="color: white;">
-                                            <img width="30px" height="30px" src="assets/images/logos/discharge.jpeg">
+
+                                        <button mat-icon-button color="warn" 
+                                            (click)="openAdmissiontask(contact)"
+                                            matTooltip="Admission Cancel"
+                                            *ngIf="IsChargesAmount==0 && IsBillGenerated==0">
+                                            <mat-icon>cancel</mat-icon>
+                                        </button>
+
+                                        <button mat-icon-button color="warn" 
+                                            (click)="DischargeCancel(contact)"
+                                            matTooltip="Discharge Cancel">
+                                            <mat-icon>exit_to_app</mat-icon>
                                         </button>
 
                                         <!-- <button class="btn btn-danger" (click)="Admissiontask(contact)"
@@ -606,13 +608,17 @@
                                         Action</mat-header-cell>
                                     <mat-cell *matCellDef="let contact">
 
-                                        <button class="btn btn-primary" (click)="openBilldateupdatetask(contact)"
+                                        <button mat-icon-button color="primary" 
+                                            (click)="openBilldateupdatetask(contact)"
                                             matTooltip="Bill Date Update">
-                                            <img width="30px" height="30px" src="assets/images/logos/Billdate.jpg">
-                                        </button>&nbsp;
-                                        <button class="btn btn-danger" (click)="BillCancle(contact)"
-                                            *ngIf="!IsCancelled" matTooltip="Cancle Bill" style="color: white;"> <img
-                                                width="30px" height="30px" src="assets/images/logos/Billcancle.jpg">
+                                            <mat-icon>event_note</mat-icon>
+                                        </button>
+
+                                        <button mat-icon-button color="warn" 
+                                            (click)="BillCancle(contact)"
+                                            *ngIf="!IsCancelled" 
+                                            matTooltip="Cancel Bill">
+                                            <mat-icon>cancel_presentation</mat-icon>
                                         </button>
                                     </mat-cell>
                                 </ng-container>
@@ -741,10 +747,11 @@
                                         Action</mat-header-cell>
                                     <mat-cell *matCellDef="let contact">
 
-                                        <button class="btn btn-primary" (click)="openBilldateupdatetask(contact)"
+                                        <button mat-icon-button color="primary" 
+                                            (click)="openBilldateupdatetask(contact)"
                                             matTooltip="Payment Date Update">
-                                            <img width="40px" height="40px" src="assets/images/logos/Paymentdate.jpg">
-                                        </button>&nbsp;
+                                            <mat-icon>payment</mat-icon>
+                                        </button>
 
                                         <!-- <button class="btn btn-danger" (click)="onEdit(contact)"
                                             matTooltip="Edit Payment Mode" style="color: white;">
@@ -857,10 +864,11 @@
                                         Action</mat-header-cell>
                                     <mat-cell *matCellDef="let contact">
 
-                                        <button class="btn btn-primary" (click)="openBilldateupdatetask(contact)"
+                                        <button mat-icon-button color="primary" 
+                                            (click)="openBilldateupdatetask(contact)"
                                             matTooltip="Advance Date Update">
-                                            <img width="40px" height="40px" src="assets/images/logos/Paymentdate.jpg">
-                                        </button>&nbsp;
+                                            <mat-icon>account_balance_wallet</mat-icon>
+                                        </button>
                                         <!-- <button class="btn btn-danger" (click)="CancelAdvance(contact)"
                                             matTooltip="Cancle Bill" style="color: white;"> Cancel
                                         </button> -->
@@ -964,10 +972,11 @@
                                         Action</mat-header-cell>
                                     <mat-cell *matCellDef="let contact">
 
-                                        <button class="btn btn-primary" (click)="openBilldateupdatetask(contact)"
+                                        <button mat-icon-button color="primary" 
+                                            (click)="openBilldateupdatetask(contact)"
                                             matTooltip="Refund Date Update">
-                                            <img width="30px" height="30px" src="assets/images/logos/Billdate.jpg">
-                                        </button>&nbsp;
+                                            <mat-icon>money_off</mat-icon>
+                                        </button>
                                     </mat-cell>
                                 </ng-container>
 
