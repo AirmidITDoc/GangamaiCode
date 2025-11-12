@@ -366,10 +366,10 @@ export class NewReservationComponent implements OnInit {
         this.reservationForm.patchValue(this.registerObj2);
 
         this.vSelectedOption = this.registerObj2.opiptype == 0 ? 'OP' : 'IP';
-        this.vreservationType = this.registerObj2.requestType ? '1' : '0';
-        this.vequipmentsRequired = this.registerObj2.equipmentsRequired ? '1' : '0';
         this.reservationForm.get('pacrequired').setValue(this.registerObj2.pacrequired ? '1' : '0')
         this.reservationForm.get('infective').setValue(this.registerObj2.infective ? '1' : '0')
+        this.reservationForm.get('equipmentsRequired').setValue(this.registerObj2.equipmentsRequired ? '1' : '0')
+        this.reservationForm.get('reservationType').setValue(this.registerObj2.requestType ? '1' : '0')
 
         setTimeout(() => {
           this._OtReservationService.getotTableById(this.registerObj2.ottable).subscribe((response) => {

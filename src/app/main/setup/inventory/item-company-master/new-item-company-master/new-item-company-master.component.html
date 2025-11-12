@@ -1,0 +1,51 @@
+<div class="modal-wrapper grid-container">
+    <div class="modal-header accent">
+        <div class="modal-header-content">
+            <div class="modal-header-title">
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">New Item Company Master</span>
+            </div>
+            <div class="modal-header-right">
+                <div class="close-icon">
+                    <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
+                        matTooltip="Close">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-body" fusePerfectScrollbar>
+        <div class="modal-body-container">
+            <form [formGroup]="ItemCompanyForm">
+                <div fxLayout="row wrap" fxLayoutGap="12px grid">
+                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <airmid-textbox label="Item Company Name" formControlName="companyName"
+                            [value]="data?.companyName" [formGroup]="ItemCompanyForm" [maxLength]="50">
+                        </airmid-textbox>
+                    </div>
+
+                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <airmid-textbox label="Item Company Short Name" formControlName="compShortName"
+                            [value]="data?.compShortName" [formGroup]="ItemCompanyForm" [maxLength]="50">
+                        </airmid-textbox>
+                    </div>
+                </div>
+
+                <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" fxLayoutAlign="space-between">
+                    <div>
+                        <app-airmid-slider label="IsActive/Deactive" formControlName="isActive"
+                            [formGroup]="ItemCompanyForm" [(ngModel)]="isActive"></app-airmid-slider>
+                    </div>
+
+                    <div class="new-appointment-actions gap-8" fxLayoutAlign="end center">
+                        <button class="btn btn-danger-outline" (click)="onClear(false)">Close</button>
+                        <button class="btn btn-primary " color="accent" (click)="onSubmit()">
+                            <span>Save</span>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

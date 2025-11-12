@@ -148,7 +148,7 @@ export class OTReservationComponent implements OnInit {
         this.gridConfig.filters[2].fieldValue = this.datePipe.transform(value, "yyyy-MM-dd")
     }
 
-    onNewotrequest(row: any = null) {
+    onNewotReservation(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button
         let that = this;
@@ -169,8 +169,8 @@ export class OTReservationComponent implements OnInit {
     tOTBookingDateChange(contact) {
         const dialogRef = this._matDialog.open(OtPopupComponent,
             {
-                maxWidth: "80vh",
-                height: '55%',
+                maxWidth: "90vh",
+                height: '45%',
                 width: '100%',
                 data: contact
             });

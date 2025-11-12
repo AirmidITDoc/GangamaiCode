@@ -20,7 +20,7 @@ export class OtPopupComponent {
   registeredObj: any;
   vPatientName: any;
   vHeadingName: any = ''
-  screenFromString = 'otBooking-form';
+  screenFromString = 'Common-form';
 
   constructor(
     public _OtReservationService: OtReservationService,

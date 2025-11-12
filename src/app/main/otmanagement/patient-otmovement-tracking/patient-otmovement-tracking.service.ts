@@ -34,11 +34,11 @@ export class PatientOtmovementTrackingService {
       toDepId: [],
       accompaniedId: [],
       authorisedId: [],
-      purMovingId: [],
+      purMoving: [],
       modeTranId: [],
-      movinfId: [],
+      // movinfId: [],
       Remark: [''],
-      equipId: [],
+      // equipId: [],
       equipRemark: [''],
     });
   }

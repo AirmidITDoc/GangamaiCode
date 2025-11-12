@@ -94,10 +94,17 @@ const appRoutes: Routes = [
                 "./terms-of-payment-master/terms-of-payment-master.module"
             ).then((m) => m.TermsOfPaymentMasterModule),
     },
+    {
+        path:"item-company-master",
+        loadChildren:()=>
+            import("./item-company-master/item-company-master.module").then((m)=> m.ItemCompanyMasterModule),
+    }
 ];
 
 @NgModule({
-    declarations: [],
+    declarations: [
+    
+  ],
     imports: [RouterModule.forChild(appRoutes)],
 })
 export class InventoryModule {}

@@ -145,7 +145,7 @@
                             <div fxFlex="85%" fxFlex.xs="100%" fxFlex.sm="80%" fxLayout="row wrap"
                                 fxLayoutGap="4px grid">
 
-                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <mat-form-field appearance="outline" fxFlex>
                                         <mat-label>Movement Date</mat-label>
                                         <input matInput [matDatepicker]="picker1" [min]="minDate"
@@ -157,7 +157,7 @@
                                     </mat-form-field>
                                 </div>
 
-                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <mat-form-field appearance="outline" fxFlex>
                                         <mat-label>Movement Time</mat-label>
                                         <input matTimepicker #t="matTimepicker" mode="12h" formControlName="moveTime"
@@ -169,53 +169,53 @@
                                     </mat-form-field>
                                 </div>
 
-                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <airmid-dropdown label="From Department" formControlName="fromDepId"
                                         [formGroup]="CheckInFormGroup" [mode]="autocompleteModeDepartment">
                                     </airmid-dropdown>
                                 </div>
 
-                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <airmid-dropdown label="To Department" formControlName="toDepId"
                                         [formGroup]="CheckInFormGroup" [mode]="autocompleteModeDepartment">
                                     </airmid-dropdown>
                                 </div>
 
-                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <airmid-dropdown label="Mode Of Transfer" formControlName="modeTranId"
                                         [formGroup]="CheckInFormGroup">
                                     </airmid-dropdown>
                                 </div>
 
-                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <airmid-dropdown label="Authorised By" formControlName="authorisedId"
-                                        [formGroup]="CheckInFormGroup">
+                                        [formGroup]="CheckInFormGroup" [mode]="autocompleteModeDoctor">
                                     </airmid-dropdown>
                                 </div>
 
-                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <airmid-dropdown label="Accompanied" formControlName="accompaniedId"
                                         [formGroup]="CheckInFormGroup">
                                     </airmid-dropdown>
                                 </div>
 
-                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <airmid-dropdown label="Purpose Of Movement" formControlName="purMovingId"
-                                        [formGroup]="CheckInFormGroup" [mode]="autocompleteModeDepartment">
-                                    </airmid-dropdown>
+                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <airmid-textbox label="Purpose Of Movement" formControlName="purMoving"
+                                        [formGroup]="CheckInFormGroup">
+                                    </airmid-textbox>
                                 </div>
 
-                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                <!-- <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <airmid-dropdown label="Moving Type" formControlName="movinfId"
                                         [formGroup]="CheckInFormGroup">
                                     </airmid-dropdown>
-                                </div>
+                                </div> -->
 
-                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                <!-- <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <airmid-dropdown label="Equipments Carried" formControlName="equipId"
                                         [formGroup]="CheckInFormGroup">
                                     </airmid-dropdown>
-                                </div>
+                                </div> -->
 
                                 <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="33%" fxLayout="row" class="gap-4">
                                     <mat-form-field appearance="outline" fxFlex="50%">

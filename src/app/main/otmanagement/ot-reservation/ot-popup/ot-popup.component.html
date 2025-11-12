@@ -20,24 +20,17 @@
         </div>
     </div>
     <div class="modal-body">
-        <form [formGroup]="reservationDateForm" class="p-12">
+        <form [formGroup]="reservationDateForm">
             <div fxLayout="column" fxLayoutGap="10px" fxFlexFill>
-                <mat-form-field appearance="outline" fxFlex>
-                    <mat-label>Patient Name</mat-label>
-                    <input name="PatientName" formControlName="PatientName" placeholder="PatientName" matInput
-                        type="text" [(ngModel)]="vPatientName" readonly>
-                </mat-form-field>
-
                 <div fxLayout="row" fxLayoutGap="4px">
-                    <div class="comman-date" fxLayout="row">
-                        <span style="margin-top: 7px; font-weight: 500; font-size:large">Operation Date &
-                            Time</span>
-                        <span style="margin-top: 7px; font-weight: 500; font-size:large">:</span>&nbsp;&nbsp;&nbsp;
-                        <span>
-                            <app-common-date [screenFrom]="screenFromString"
-                                (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
-                        </span>
-                    </div>
+                    <mat-form-field appearance="outline" fxFlex>
+                        <mat-label>Patient Name</mat-label>
+                        <input name="PatientName" formControlName="PatientName" placeholder="PatientName" matInput
+                            type="text" [(ngModel)]="vPatientName" readonly>
+                    </mat-form-field>
+
+                    <app-common-date [screenFrom]="screenFromString"
+                        (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
                 </div>
 
                 <mat-form-field appearance="outline" fxFlex>

@@ -27,6 +27,7 @@ export class NewCheckinComponent {
   movedatetime: any;
   @Output() dateTimeEventEmitter = new EventEmitter<{}>();
   autocompleteModeDepartment: String = "Department";
+  autocompleteModeDoctor: String = "ConDoctor";
   registerObj1 = new OtReserInsert({});
   registerObj2 = new OtReserInsert({});
   vRegNo: any;
