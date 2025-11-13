@@ -228,11 +228,14 @@
 
                     <div fxLayout="column" fxLayout="row" fxLayout="4px">
 
-                        <airmid-dropdown label="Pathologist Name" formControlName="PathResultDoctorId"
+                        <!-- <airmid-dropdown label="Pathologist Name" formControlName="PathResultDoctorId"
                             [mode]="autocompleteModeDoctor" [formGroup]="otherForm" fxFlex="40%"
                             (selectionChange)="selectChangeDoctor($event)">
-                        </airmid-dropdown>
-
+                        </airmid-dropdown> -->
+                        <airmid-dropdown label="Pathologist Name" formControlName="PathResultDoctorId"
+                            [formGroup]="otherForm" (selectionChange)="selectChangeDoctor($event)"
+                            ValueField="doctorId" TextField="doctorName"
+                            ApiUrl="Pathology/search-pathologistdoctor"></airmid-dropdown>
                     </div>
 
 

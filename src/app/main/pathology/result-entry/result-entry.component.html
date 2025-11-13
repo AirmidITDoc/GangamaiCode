@@ -431,6 +431,7 @@
                                                 <button mat-icon-button (click)="Printresultentry(contact)"
                                                     matTooltip="Print" *ngIf="contact.isCompleted">
                                                     <mat-icon>print</mat-icon>
+                                                </button>
                                                 <button mat-icon-button (click)="Printresultentry(contact)" 
                                                     matTooltip="Print Report"
                                                     *ngIf="contact.isCompleted">
@@ -475,9 +476,9 @@
                                                     <mat-icon style="color: #25d366;">chat</mat-icon>
                                                 </button>
 
-                                                <ng-template #noMLC>
+                                                <!-- <ng-template #noMLC>
                                                     <span>------</span>
-                                                </ng-template>
+                                                </ng-template> -->
                                             </mat-cell>
                                         </ng-container>
 

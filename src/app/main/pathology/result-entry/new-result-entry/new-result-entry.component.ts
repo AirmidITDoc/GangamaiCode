@@ -120,7 +120,7 @@ export class NewResultEntryComponent {
             this.selectedAdvanceObj2 = data.patientdata;
               console.log(this.data.patientdata)
 
-          debugger
+          
             this.opipnumber = this.data.patientdata.oP_IP_No
             this.ageY = this. data.patientdata.ageYear.trim()
             this.ageM = this. data.patientdata.ageMonth.trim()
@@ -229,7 +229,7 @@ export class NewResultEntryComponent {
             });
             items[i].ResultValue = isNaN(eval(formula)) ? "" : eval(formula);
             if (!isNaN(items[i].ResultValue))
-                items[i].ResultValue = Math.round(items[i].ResultValue * 100) / 100;
+                items[i].ResultValue = String(Math.round(items[i].ResultValue * 100) / 100);
         }
 
         data.ParaBoldFlag = '';
@@ -300,7 +300,7 @@ export class NewResultEntryComponent {
     }
 
     getResultList1(rbj) {
-        debugger
+        
         if (this.OP_IPType == 0) {
             var param = {
                 "searchFields": [
@@ -328,7 +328,7 @@ export class NewResultEntryComponent {
 
         console.log(param)
         this._SampleService.getPathologyResultListforOP(param).subscribe(Visit => {
-            debugger
+            
             this.dataSource.data = Visit as Pthologyresult[];
             console.log(this.dataSource.data)
             // this.Pthologyresult = Visit as Pthologyresult[];
@@ -349,7 +349,7 @@ export class NewResultEntryComponent {
     }
 
     getResultListIP(obj, rbj) {
-        debugger
+        
         var SelectQuery =
         {
             "searchFields": [
@@ -409,7 +409,7 @@ export class NewResultEntryComponent {
         const serviceIds = rbj.map(r => String(r.ServiceId));
         const pathReportIds = rbj.map(r => String(r.PathReportId));
 
-        debugger
+        
         var SelectQuery =
         {
             "searchFields": [
@@ -471,7 +471,7 @@ export class NewResultEntryComponent {
 
     selectChangeDoctor(row) {
 
-        this.vPathResultDoctorId = row.value;
+        this.vPathResultDoctorId = row.doctorId
 
     }
     onReload() {
@@ -479,7 +479,7 @@ export class NewResultEntryComponent {
     }
 
     onUpload() {
-        //    debugger
+       
         if ((this.vPathResultDoctorId == '')) {
             this.toastr.warning('Please select valid Pathalogist', 'Warning !', {
                 toastClass: 'tostr-tost custom-toast-warning',
@@ -522,9 +522,8 @@ console.log(element)
             pathologyInsertReportObj['SampleID'] = element.SampleID || '';
 
             pathologyInsertReportObj['ParaBoldFlag'] = element.ParaBoldFlag || '';
-
-            // pathologyInsertReportObj['opipnumber'] = element.UnitName || '';
-            // pathologyInsertReportObj['ageY'] = this.selectedAdvanceObj2.PatientName || '';
+  
+          
             // pathologyInsertReportObj['ageM'] = this.selectedAdvanceObj2.regNo;
             // pathologyInsertReportObj['ageD'] = parseFloat(element.MinValue) || 0;
             // pathologyInsertReportObj['genderId'] = parseFloat(element.MaxValue) || 0;
@@ -582,7 +581,7 @@ console.log(element)
 
 
     Printresultentry() {
-        debugger
+        
         let pathologyDelete = [];
 
         this.data.RIdData.forEach((element) => {
@@ -603,7 +602,7 @@ console.log(element)
     }
 
     viewgetPathologyTestReportPdf() {
-        // debugger;
+      
         const param = {
             searchFields: [
                 {
@@ -639,7 +638,7 @@ console.log(element)
     printf: boolean = true;
 
     onSave() {
-        debugger
+        
         if ((this.vPathResultDoctorId == 0 || this.vPathResultDoctorId == undefined)) {
             this.toastr.warning('Please select valid Pathalogist', 'Warning !', {
                 toastClass: 'tostr-tost custom-toast-warning',
@@ -651,6 +650,7 @@ console.log(element)
         this.PathResultForm.get("pathResultDr1").setValue(this.vPathResultDoctorId)
         this.PathResultForm.get("suggestionNotes").setValue(this.otherForm.get("suggestionNotes").value)
 
+      
         this.ResultForm.get("pathologyReport").setValue(this.PathResultForm.value)
 
         this.pathologyResultArray.clear();
@@ -672,12 +672,6 @@ console.log(element)
 
     }
 
-
-    // public onEnterSugg(event:KeyboardEvent): void {
-    //     if (event.which === 13) {
-    //         this.PathResultDoctorId.nativeElement.focus();
-    //     }
-    // }
 
     public onEnterSugg(event: KeyboardEvent): void {
         if (event.key === 'Enter' && event.ctrlKey) {
@@ -701,6 +695,13 @@ console.log(element)
             }
         }
     }
+
+
+    //  selectChangeDoctorName(row) {
+    //     console.log(row)
+    //     this.VpathResultDr1 = row.doctorId
+    //   }
+
 
     onClear() {
         this.otherForm.reset();
@@ -737,7 +738,7 @@ console.log(element)
     }
 
     createResultdetailForm(item: any = {}): FormGroup {
-        debugger
+        
         return this.formBuilder.group({
             pathReportDetId: [item.pathReportDetId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             pathReportId: [item.PathReportId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -757,14 +758,14 @@ console.log(element)
             parameterName: [item.ParameterName || '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
             unitName: [item.UnitName || '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
             patientName: [this.selectedAdvanceObj2.patientName || '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
-            regNo: [this.selectedAdvanceObj2.regNo || '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+            regNo: [this.selectedAdvanceObj2.regNo || '321', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
             sampleId: [item.SampleID || "", [this._FormvalidationserviceService.onlyNumberValidator()]],
 
             paraBoldFlag: [item.ParaBoldFlag || '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
             minValue: [parseFloat(item.MinValue), [this._FormvalidationserviceService.onlyNumberValidator()]],
             maxValue: [parseFloat(item.MaxValue), [this._FormvalidationserviceService.onlyNumberValidator()]],
 
-            opipnumber: this.opipnumber,
+            opipnumber: this.opipnumber || "Lab87",
             ageY:this.ageY,
             ageM:this.ageM,
             ageD:this.ageD,
@@ -781,7 +782,7 @@ console.log(element)
 
 
       // onResultUp(data) {
-    //     debugger
+    //     
     // let items = this.dataSource.data.filter(x => (x?.Formula ?? "").indexOf('{{' + data.ParameterShortName + '}}') > 0);
     //     let items = this.dataSource.data.filter(x => String(x?.Formula ?? "").indexOf('{{' + data.ParameterShortName + '}}') > 0);
 
