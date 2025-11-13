@@ -20,6 +20,10 @@
                 <mat-icon class="pill green s-16">circle</mat-icon>
                 <span>: IP </span>
             </div>
+            <div fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                <mat-icon class="pill blue s-16">circle</mat-icon>
+                <span>: Lab </span>
+            </div>
         </div>
     </div>
 
@@ -107,7 +111,7 @@
                                             </button>
                                         </mat-form-field>
                                     </div>
-                                    <div fxFlex="14%" fxLayout="row">
+                                    <div fxFlex="16%" fxLayout="row">
                                         <mat-radio-group name="PatientTypeSearch" formControlName="PatientTypeSearch"
                                             (change)="onChangeFirst()" fxLayout="column" value="2" class="gap-4"
                                             [(ngModel)]="gridConfig.filters[6].fieldValue">
@@ -116,6 +120,7 @@
                                                 <mat-radio-button value='2'>All</mat-radio-button>
                                                 <mat-radio-button value='1'>IP</mat-radio-button>
                                                 <mat-radio-button value='0'>OP</mat-radio-button>
+                                                  <mat-radio-button value='4'>LAB</mat-radio-button>
                                             </div>
                                         </mat-radio-group>
                                     </div>
@@ -161,10 +166,10 @@
                                                 (click)="onSampleCollSave(element)">
                                                 <mat-icon>description</mat-icon>
                                             </button>
-                                              <button mat-icon-button matTooltip="Patient Details Sticker"
-                                            (click)="OnPrintPatientIcard(element)">
-                                            <mat-icon>pages</mat-icon>
-                                        </button>
+                                            <button mat-icon-button matTooltip="Patient Details Sticker"
+                                                (click)="OnPrintPatientIcard(element)">
+                                                <mat-icon>pages</mat-icon>
+                                            </button>
                                             <!-- <airmid-fileupload-icon [refId]="element.opdipdid" [refType]="pathFiles" [multiple]="true" 
                                          [title]="element.patientName + ' Report'"></airmid-fileupload-icon>-->
                                         </div>
@@ -177,7 +182,8 @@
                                                 class="pill orange s-16">circle</mat-icon>
                                             <mat-icon *ngIf="element.patientType=='IP'" title="IP"
                                                 class="pill green s-16">circle</mat-icon>
-
+                                            <mat-icon *ngIf="element.patientType=='LAB'" title="LAB"
+                                                class="pill blue s-16">circle</mat-icon>
                                         </div>
                                     </ng-template>
 
@@ -205,7 +211,7 @@
                                             *ngIf="selection.selected.length>0" style="margin-left: 5px;">
                                             Print With Header
                                         </button>
-                                      
+
                                     </div>
 
                                     <mat-table class="mat-table-2 h-210" #table matSort [dataSource]="dataSource1"
@@ -378,8 +384,6 @@
                                             </mat-cell>
                                         </ng-container>
 
-
-
                                         <ng-container matColumnDef="outSourceLabName">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md
                                                 class="w-130">
@@ -417,8 +421,8 @@
                                                 Action</mat-header-cell>
                                             <mat-cell *matCellDef="let contact" class="w-150">
 
-                                                <button mat-icon-button (click)="Printresultentry(contact)" matTooltip="Print"
-                                                    *ngIf="contact.isCompleted">
+                                                <button mat-icon-button (click)="Printresultentry(contact)"
+                                                    matTooltip="Print" *ngIf="contact.isCompleted">
                                                     <mat-icon>print</mat-icon>
                                                 </button>
                                                 <button mat-icon-button class="material-icons"
