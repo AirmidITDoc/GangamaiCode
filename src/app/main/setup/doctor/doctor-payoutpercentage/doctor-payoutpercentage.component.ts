@@ -136,10 +136,11 @@ export class DoctorPayoutpercentageComponent {
     buttonElement.blur();
 
     const dialogRef = this._matDialog.open(DoctorShareListComponent, {
-     maxWidth: "35vw",
-        height: "75%",
-        width: "100%",
-
+        width: "950px",
+        maxWidth: "95vw",
+        height: "auto",
+        autoFocus: false,
+        disableClose: false
     });
     dialogRef.afterClosed().subscribe((result) => {
      this.gridConfig.filters[0].fieldValue="0"
@@ -152,11 +153,12 @@ export class DoctorPayoutpercentageComponent {
     buttonElement.blur();
 
     const dialogRef = this._matDialog.open(DoctorShareListComponent, {
-       maxWidth: "35vw",
-        height: "75%",
-        width: "100%",
-      data: row,
-
+        width: "950px",
+        maxWidth: "95vw",
+        height: "auto",
+        autoFocus: false,
+        disableClose: false,
+        data: row
     });
     dialogRef.afterClosed().subscribe((result) => {
       this.gridConfig.filters[0].fieldValue="0"
