@@ -1107,9 +1107,9 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
                         console.log(this.OpBillForm.value)
                         this._AppointmentlistService.InsertOPBilling(this.OpBillForm.value).subscribe(response => {
                             if (ThermalPrint != 1) {
-                                this.viewgetOPBillReportPdf(response.billNo)
+                                this.viewgetOPBillReportPdf(response)
                             } else {
-                                this.viewgetOPBillThermalReportPdf(response.billNo)
+                                this.viewgetOPBillThermalReportPdf(response)
                             }
                             this.resetform();
                             this._matDialog.closeAll();
@@ -1129,9 +1129,9 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
                     debugger
                     console.log(response)
                     if (ThermalPrint != 1) {
-                        this.viewgetOPBillReportPdf(response.billNo)
+                        this.viewgetOPBillReportPdf(response)
                     } else {
-                        this.viewgetOPBillThermalReportPdf(response.billNo)
+                        this.viewgetOPBillThermalReportPdf(response)
                     }
 
                     this.mpesaResponse = response.data;
