@@ -419,6 +419,38 @@ export class ConfigurationComponent implements OnInit {
   onClose() {
     //  this.dialogRef.close();
   }
+
+  // Get unique category names from the data
+  getCategoryNames(): string[] {
+    if (!this.DSServiceList || !this.DSServiceList.data) {
+      return [];
+    }
+
+    // Extract unique category names from the data
+    const categories = this.DSServiceList.data
+      .map(item => item.Name)
+      .filter((value, index, self) => value && self.indexOf(value) === index);
+    
+    return categories;
+  }
+
+  // Get configurations by category name
+  getConfigByName(categoryName: string): any[] {
+    if (!this.DSServiceList || !this.DSServiceList.data) {
+      return [];
+    }
+
+    return this.DSServiceList.data.filter(item => item.Name === categoryName);
+  }
+
+  // Handle checkbox change event
+  tableElementChecked(event: any, element: any) {
+    console.log('Configuration changed:', element.SystemName, event);
+    // Update the element's IsInputField property
+    if (event.checked !== undefined) {
+      element.IsInputField = event.checked;
+    }
+  }
 }
 
 
