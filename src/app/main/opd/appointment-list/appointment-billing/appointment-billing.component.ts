@@ -996,28 +996,28 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
     BillSave() {
 
         debugger
-        if(this.OPFooterForm.get('paymentType')?.value === 'Mpesa'){
-        this.openWaitingScreen();
-      this.startPolling();    
-    }
-        else{
+        if (this.OPFooterForm.get('paymentType')?.value === 'Mpesa') {
+            this.openWaitingScreen();
+            this.startPolling();
+        }
+        else {
 
-        Swal.fire({
-            title: 'Confirm Save',
-            text: 'Are you sure you want to save this OPD bill?',
-            icon: 'warning', // or 'question'
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6', // Blue
-            cancelButtonColor: '#d33',     // Red
-            confirmButtonText: 'Yes, save it!',
-            cancelButtonText: 'No, cancel'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                this.OnSave(); // Call your save function
-            }
-        });
+            Swal.fire({
+                title: 'Confirm Save',
+                text: 'Are you sure you want to save this OPD bill?',
+                icon: 'warning', // or 'question'
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6', // Blue
+                cancelButtonColor: '#d33',     // Red
+                confirmButtonText: 'Yes, save it!',
+                cancelButtonText: 'No, cancel'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    this.OnSave(); // Call your save function
+                }
+            });
 
-    }
+        }
     }
     OnSave() {
         if (this.OPFooterForm.get('concessionAmt').value > 0 && this.Consessionres) {
@@ -1067,7 +1067,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
                     this.packcagechargesArray.clear();
                     this.dsPackageList.data.forEach(item => {
                         this.packcagechargesArray.push(this.Createpacakgechargeform(item as ChargesList));
-                       
+
                     });
                 }
             });
@@ -1107,9 +1107,9 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
                         console.log(this.OpBillForm.value)
                         this._AppointmentlistService.InsertOPBilling(this.OpBillForm.value).subscribe(response => {
                             if (ThermalPrint != 1) {
-                                this.viewgetOPBillReportPdf(response)
+                                this.viewgetOPBillReportPdf(response.billNo)
                             } else {
-                                this.viewgetOPBillThermalReportPdf(response)
+                                this.viewgetOPBillThermalReportPdf(response.billNo)
                             }
                             this.resetform();
                             this._matDialog.closeAll();
@@ -1126,10 +1126,12 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
                 this.OpBillForm.get('payments.paymentTime')?.setValue(this.dateTimeObj.time)
                 console.log(this.OpBillForm.value)
                 this._AppointmentlistService.InsertOPBilling(this.OpBillForm.value).subscribe(response => {
-                   if (ThermalPrint != 1) {
-                        this.viewgetOPBillReportPdf(response)
+                    debugger
+                    console.log(response)
+                    if (ThermalPrint != 1) {
+                        this.viewgetOPBillReportPdf(response.billNo)
                     } else {
-                        this.viewgetOPBillThermalReportPdf(response)
+                        this.viewgetOPBillThermalReportPdf(response.billNo)
                     }
 
                     this.mpesaResponse = response.data;
