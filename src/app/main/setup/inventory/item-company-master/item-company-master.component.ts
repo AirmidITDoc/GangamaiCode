@@ -21,7 +21,7 @@ export class ItemCompanyMasterComponent {
 
   allcolumns = [
     { heading: "Item Company Name", key: "companyName", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "Item Company Short Name", key: "compshortName", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "Item Company Short Name", key: "compShortName", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
     {
       heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
@@ -40,11 +40,11 @@ export class ItemCompanyMasterComponent {
   ]
 
   allfilters = [
-    { fieldName: "itemCompanyName", fieldValue: "", opType: OperatorComparer.StartsWith },
+    { fieldName: "CompanyName", fieldValue: "", opType: OperatorComparer.StartsWith },
     { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
   ]
   gridConfig: gridModel = {
-    apiUrl: "ItemCompany/List",
+    apiUrl: "ItemCompanyMaster/List",
     columnsList: this.allcolumns,
     sortField: "companyId",
     sortOrder: 0,

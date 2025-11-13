@@ -46,7 +46,8 @@ export class ItemFormMasterComponent implements OnInit {
     autocompleteModeCurrency: string = "Currency";
     autocompleteModePurchaseUOM: string = "UnitOfMeasurment";
     autocompleteModeStockUOM: string = "UnitOfMeasurment";
-    autocompleteModeCompany: string = "Company";
+    // autocompleteModeCompany: string = "Company";
+    autocompleteModeItemCompany: string = "ItemCompanyMaster"
     autocompleteModeStore: string = "Store";
     autocompleteModeDrugType: string = "ItemDrugType";
     autocompleteModeMenu: string = "ItemManufacture";

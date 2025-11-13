@@ -26,7 +26,7 @@ export class NewItemCompanyMasterComponent {
   ngOnInit(): void {
     this.ItemCompanyForm = this._ItemCompanyMasterService.createItemCompanyForm();
     this.ItemCompanyForm.markAllAsTouched();
-    if ((this.data?.itemCategoryId ?? 0) > 0) {
+    if ((this.data?.companyId ?? 0) > 0) {
       this.isActive = this.data.isActive
       this.ItemCompanyForm.patchValue(this.data);
     }

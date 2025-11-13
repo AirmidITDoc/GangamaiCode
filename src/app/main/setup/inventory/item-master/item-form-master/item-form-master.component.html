@@ -139,9 +139,15 @@
                     fxFlex="25%">
                   </airmid-dropdown>
 
-                  <airmid-dropdown label="Company Name" formControlName="itemCompnayId"
+                  <!-- changed by raksha 13/11/25 -->
+                  <!-- <airmid-dropdown label="Company Name" formControlName="itemCompnayId"
                     [value]="registerObj?.itemCompnayId" [formGroup]="itemForm"
                     [validations]="getValidationMessages().itemCompnayId" [mode]="autocompleteModeCompany" fxFlex="25%">
+                  </airmid-dropdown> -->
+
+                  <airmid-dropdown label="Item Company Name" formControlName="itemCompnayId"
+                    [value]="registerObj?.itemCompnayId" [formGroup]="itemForm"
+                    [validations]="getValidationMessages().itemCompnayId" [mode]="autocompleteModeItemCompany" fxFlex="25%">
                   </airmid-dropdown>
 
                 </div>
