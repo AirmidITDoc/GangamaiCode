@@ -24,6 +24,7 @@ export class LabRegBillDeatilsComponent {
     ngAfterViewInit() {
         this.gridConfig.columnsList.find(col => col.key === 'isPathology')!.template = this.iconisPathology;
         this.gridConfig.columnsList.find(col => col.key === 'isRadiology')!.template = this.iconisRadiology;
+ this.gridConfig.columnsList.find(col => col.key === 'isCompleted')!.template = this.iconisCompleted;
 
     }
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
@@ -31,28 +32,29 @@ export class LabRegBillDeatilsComponent {
     @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
     @ViewChild('iconisPathology') iconisPathology!: TemplateRef<any>;
     @ViewChild('iconisRadiology') iconisRadiology!: TemplateRef<any>;
+     @ViewChild('isCompleted') iconisCompleted!: TemplateRef<any>;
     ngOnInit(): void {
         if (this.data) {
-            debugger
+            
             this.BillNo = this.data.billNo
             this.doctorName = this.data.doctorName
             this.getBilldetail()
         }
     }
     allcolumns = [
-        {
-            heading: "IsPathology", key: "isPathology", sort: true, align: 'center', emptySign: 'NA', width: 80, type: gridColumnTypes.template,
-            template: this.iconisPathology
-        },
-        {
-            heading: "IsRadiology", key: "isRadiology", sort: true, align: 'center', emptySign: 'NA', width: 80, type: gridColumnTypes.template,
-            template: this.iconisRadiology
-        },
-        { heading: "BillNo", key: "billNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "Service Name", key: "serviceName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
+       
+         { heading: "--", key: "isCompleted", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
+
+        { heading: "--", key: "isPathology", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
+
+        { heading: "--", key: "isRadiology", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
+         { heading: "BillNo", key: "billNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+       
+        { heading: "Doctor Name", key: "doctorName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
+
+       { heading: "Service Name", key: "serviceName", sort: true, align: 'left', emptySign: 'NA', width: 320 },
         { heading: "Price", key: "price", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "Charges Date", key: "chargesTime", sort: true, align: 'left', emptySign: 'NA', width: 100, type: 6 },
-        { heading: "Doctor Name", key: "doctorName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+        { heading: "Charges Date", key: "chargesTime", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 6 },
 
         // {
         //     heading: "Action", key: "action", align: "right", width: 250, sticky: true, type: gridColumnTypes.template,
@@ -93,7 +95,7 @@ export class LabRegBillDeatilsComponent {
         this.grid.bindGridData();
 
     }
-onClose(){
-    this._matDialog.closeAll()
-}
+    onClose() {
+        this._matDialog.closeAll()
+    }
 }

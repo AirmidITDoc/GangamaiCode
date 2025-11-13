@@ -21,6 +21,10 @@
                 <mat-icon class="pill green s-16">circle</mat-icon>
                 <span>: IP </span>
             </div>
+            <div fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                <mat-icon class="pill blue s-16">circle</mat-icon>
+                <span>: Lab </span>
+            </div>
         </div>
      
     </mat-toolbar>
@@ -64,6 +68,7 @@
                 <div fxLayout="row" fxLayoutAlign="center center">
                     <mat-icon *ngIf="element.lbl=='IP'" title="IP" class="pill green-600 s-16">circle</mat-icon>
                     <mat-icon *ngIf="element.lbl=='OP'" title="OP" class="pill orange s-16">circle</mat-icon>
+                     <mat-icon *ngIf="element.lbl=='Lab'" title="Lab" class="pill blue s-16">circle</mat-icon>
                 </div>
             </ng-template>
 
@@ -165,9 +170,10 @@
                                     class="gap-4">
                                     <mat-label>Type:</mat-label>
                                     <div fxLayout="row">
-                                        <mat-radio-button value='2'>All</mat-radio-button>
+                                        <mat-radio-button value='4'>All</mat-radio-button>
                                         <mat-radio-button value='1'>IP</mat-radio-button>
                                         <mat-radio-button value='0'>OP</mat-radio-button>
+                                         <mat-radio-button value='4'>LAB</mat-radio-button>
                                     </div>
                                 </mat-radio-group>
                             </div>

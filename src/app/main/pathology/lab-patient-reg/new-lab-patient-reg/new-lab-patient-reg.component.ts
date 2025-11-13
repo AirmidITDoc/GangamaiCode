@@ -437,7 +437,7 @@ export class NewLabPatientRegComponent {
 
   value = new Date()
   onChangeDateofBirth(DateOfBirth: Date) {
-    debugger
+    
     if (DateOfBirth > this.minDate) {
       this.toastr.warning('Enter Proper Birth Date..', 'warning !', {
         toastClass: 'tostr-tost custom-toast-success',
@@ -665,7 +665,7 @@ export class NewLabPatientRegComponent {
     console.log(obj)
     this.departmentId = obj.value
     this.departmentname = obj.text
-    debugger
+    
     if (obj.value) {
       this._labPatientRegService.getDoctorsByDepartment(obj.value).subscribe((data: any) => {
         console.log(data)
@@ -805,7 +805,7 @@ export class NewLabPatientRegComponent {
     // this.myForm.get('firstName').setValue(this.myForm.get('patientName').value)
 
 
-    debugger
+    
     console.log(this.myForm.getRawValue())
     let DateOfBirth1 = this.myForm.get('DateOfBirth')?.value;
     if (DateOfBirth1) {

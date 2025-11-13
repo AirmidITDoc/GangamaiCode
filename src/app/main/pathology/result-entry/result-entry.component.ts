@@ -22,7 +22,6 @@ import { WhatsAppEmailService } from 'app/main/shared/services/whats-app-email.s
 import { ToastrService } from 'ngx-toastr';
 import { Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
-import { SampledetailtwoComponent } from '../sample-collection/sampledetailtwo/sampledetailtwo.component';
 import { ResultEntryService } from './result-entry.service';
 import { PageNames } from 'app/main/shared/componets/airmid-fileupload/airmid-fileupload.component';
 import { NewResultTemplateComponent } from './new-result-template/new-result-template.component';
@@ -296,7 +295,7 @@ export class ResultEntryComponent implements OnInit {
     }
 
     getSampledetailList1(row) {
-        // debugger
+        debugger
         this.dataSource1.data = [];
         let rawDate = row.pathDate;
         let day = rawDate.split("T")[0];
@@ -309,6 +308,11 @@ export class ResultEntryComponent implements OnInit {
         console.log(formattedDate);
 
         let OPIP = row.patientType === 'OP' ? "0" : "1";
+        // debugger
+
+        console.log( this.opipType)
+        if(this.opipType=='4')
+            OPIP="4"
 
         var m_data = {
             "first": 0,

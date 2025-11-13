@@ -994,6 +994,14 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
         this.ApiURL = "VisitDetail/GetServiceListwithTraiff?TariffId=" + event.value + "&ClassId=" + this.patientDetail.classId + "&ServiceName="
     }
     BillSave() {
+
+        debugger
+        if(this.OPFooterForm.get('paymentType')?.value === 'Mpesa'){
+        this.openWaitingScreen();
+      this.startPolling();    
+    }
+        else{
+
         Swal.fire({
             title: 'Confirm Save',
             text: 'Are you sure you want to save this OPD bill?',
@@ -1008,6 +1016,8 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
                 this.OnSave(); // Call your save function
             }
         });
+
+    }
     }
     OnSave() {
         if (this.OPFooterForm.get('concessionAmt').value > 0 && this.Consessionres) {
@@ -1040,8 +1050,6 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
         this.OpBillForm.get('totalAmt')?.setValue(this.OPFooterForm.get('totalAmt')?.value)
         this.OpBillForm.get('concessionAmt')?.setValue(this.OPFooterForm.get('concessionAmt')?.value)
         this.OpBillForm.get('netPayableAmt')?.setValue(this.OPFooterForm.get('netPayableAmt')?.value)
-        // this.OpBillForm.get('billDate').setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'))
-        // this.OpBillForm.get('billTime').setValue(this.dateTimeObj.time)
         this.OpBillForm.get('concessionReasonId')?.setValue(this.ConcessionId)
         this.OpBillForm.get('discComments')?.setValue(this.ConcessionReason)
         this.OpBillForm.get('cashCounterId')?.setValue(this.searchForm.get('CashCounterID')?.value)
@@ -1059,7 +1067,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
                     this.packcagechargesArray.clear();
                     this.dsPackageList.data.forEach(item => {
                         this.packcagechargesArray.push(this.Createpacakgechargeform(item as ChargesList));
-                        //  this.BillDetailsArray.push(this.createBillDetails(item as ChargesList));
+                       
                     });
                 }
             });
@@ -1118,17 +1126,17 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
                 this.OpBillForm.get('payments.paymentTime')?.setValue(this.dateTimeObj.time)
                 console.log(this.OpBillForm.value)
                 this._AppointmentlistService.InsertOPBilling(this.OpBillForm.value).subscribe(response => {
-                    if (ThermalPrint != 1) {
+                   if (ThermalPrint != 1) {
                         this.viewgetOPBillReportPdf(response)
                     } else {
                         this.viewgetOPBillThermalReportPdf(response)
                     }
-                    this.mpesaResponse = response.mPesaResponse;
-                    this.openWaitingScreen();
-                    this.startPolling();
-                    // this._matDialog.closeAll();
-                    // this.savebtn = true
-                    // this.resetform();
+
+                    this.mpesaResponse = response.data;
+                    // this.startPolling();
+                    this._matDialog.closeAll();
+                    this.savebtn = true
+                    this.resetform();
                 });
             }
             else if (this.OPFooterForm.get('paymentType').value == 'CreditPay') {//Credit pay 

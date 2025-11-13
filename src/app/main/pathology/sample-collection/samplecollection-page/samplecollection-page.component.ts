@@ -106,6 +106,9 @@ debugger
     else if (row.lbl == "OP" || row.patientType == "OP") {
       OPIP = "0";
     }
+    else if (row.lbl == "Lab" || row.opdipdtype == 4) {
+      OPIP = "4";
+    }
 
     let rawDate = row.pathDate; 
     let day = rawDate.split("T")[0];

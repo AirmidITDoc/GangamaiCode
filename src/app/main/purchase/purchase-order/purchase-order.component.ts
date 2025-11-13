@@ -353,7 +353,7 @@ export class ItemNameList {
    docAmt:any
     hospitalAmt:any
     DocAmt:any
-    
+    Price:any
   /**
    * Constructor
    *
@@ -447,7 +447,9 @@ export class ItemNameList {
       this.docAmt = ItemNameList.docAmt || "";
       this.hospitalAmt = ItemNameList.hospitalAmt || "";
       this.DocAmt= ItemNameList.DocAmt || "";
+this.Price= ItemNameList.Price || "";
 
+      
     }
   }
 }

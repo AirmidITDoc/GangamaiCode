@@ -241,8 +241,9 @@ autocompleteModecompany1: string = "Company";
         this.myFilterpayform = this._OPListService.myFilterpaymentbrowseform();
         this.myFilterrefundform = this._OPListService.myFilterrefundbrowseform();
 
-        //this.menuActions.push("Bill Print");
+        
         this.menuActions.push("Bill Print-Package Info");
+        this.menuActions.push("Bill Print");
     }
 
 
@@ -290,6 +291,9 @@ autocompleteModecompany1: string = "Company";
         }
         else if (m == "Bill Print-Package Info")
             this.commonService.Onprint("BillNo", element.billNo, "OPBillWithPackagePrint");
+        else if (m == "Bill Print")
+            // this.commonService.Onprint("BillNo", element.billNo, "OPBillWithPackagePrint");
+        this.viewgetOPBillReportPdf(element)
     }
 
     viewgetOPBillThermalReportPdf(element) {

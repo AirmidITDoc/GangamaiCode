@@ -308,7 +308,7 @@ export class LabPatientRegComponent {
 
   billdetail(element) {
     console.log(element)
-    debugger
+    
 
     const dialogRef = this._matDialog.open(LabRegBillDeatilsComponent,
       {
