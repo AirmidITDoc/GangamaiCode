@@ -26,8 +26,11 @@ export class NewCheckinComponent {
   isDatePckrDisabled: boolean = false;
   movedatetime: any;
   @Output() dateTimeEventEmitter = new EventEmitter<{}>();
-  autocompleteModeDepartment: String = "Department";
+  autocompleteModeFromDepartment: string = "Room";
   autocompleteModeDoctor: String = "ConDoctor";
+  autocompleteModeToDepartment: String = "OttableMaster";
+  autocompleteModerelationship: string = "Relationship";
+  autocompleteModeOfTransfer: string = "ModeOfTransfer";
   registerObj1 = new OtReserInsert({});
   registerObj2 = new OtReserInsert({});
   vRegNo: any;

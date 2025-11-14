@@ -25,6 +25,7 @@ import { NewOtPreoperationComponent } from "../ot-preoperation/new-ot-preoperati
 import { NewOtPostOperationComponent } from "../ot-preoperation/new-ot-post-operation/new-ot-post-operation.component";
 import { NewTheaterInComponent } from "../theater-in/new-theater-in/new-theater-in.component";
 import { NewInOperationComponent } from "../in-operation/new-in-operation/new-in-operation.component";
+import { NewAnesthesiaRecordComponent } from "../anesthesia-record/new-anesthesia-record/new-anesthesia-record.component";
 
 const colors: Record<string, EventColor> = {
     red: {
@@ -95,7 +96,7 @@ export class OTReservationComponent implements OnInit {
         // { heading: "", key: "isNewRecord", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 40 },
         { heading: "OTReser-Date&Time", key: "otReservationDateTime", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         { heading: "Surgery Date", key: "surgeryDate", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-        { heading: "Estimate Time", key: "estimateTime", sort: true, align: 'left', emptySign: 'NA', type: 7, width: 150 },
+        // { heading: "Estimate Time", key: "estimateTime", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         // { heading: "Operation Date-Time", key: "opstartTime", sort: true, align: 'left', emptySign: 'NA', type: 8, width: 180 },
         { heading: "UHID NO", key: "regNo", sort: true, align: 'left', emptySign: 'NA', },
         { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
@@ -241,6 +242,22 @@ export class OTReservationComponent implements OnInit {
                 maxHeight: '90vh',
                 // height: '90%',
                 width: '85%',
+                data: row
+            });
+        dialogRef.afterClosed().subscribe(result => {
+            this.grid.bindGridData();
+        });
+    }
+
+    onAnesthesiaRecord(row: any = null) {
+        const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+        buttonElement.blur();
+
+        const dialogRef = this._matDialog.open(NewAnesthesiaRecordComponent,
+            {
+                maxWidth: "90vw",
+                maxHeight: '90vh',
+                width: '90%',
                 data: row
             });
         dialogRef.afterClosed().subscribe(result => {
@@ -844,7 +861,7 @@ export class OtReserInsert {
     ConcAmt: any;
     infectiveAmt: any;
     netAmt: any;
-    ottable:any;
+    ottable: any;
     /**
      * Constructor
      *

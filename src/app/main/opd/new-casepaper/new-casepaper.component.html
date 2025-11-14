@@ -133,7 +133,7 @@
                                                     <mat-form-field appearance="outline" fxFlex="9%">
                                                         <mat-label>Height</mat-label>
                                                         <input matInput formControlName="Height"
-                                                            placeholder="Height in cm" required [maxLength]="20"
+                                                            placeholder="Height in cm" [maxLength]="20"
                                                             (keydown)="onEnter($event, 'weightField')" OnlyNumber
                                                             (keyup)="getBMIcalculation()" [(ngModel)]="vHeight"
                                                             (keypress)="keyPressCharater($event)">
@@ -146,7 +146,7 @@
                                                     <mat-form-field appearance="outline" fxFlex="9%">
                                                         <mat-label>Weight</mat-label>
                                                         <input matInput formControlName="Weight" id="weightField"
-                                                            placeholder="Weight in Kg" required [maxLength]="20"
+                                                            placeholder="Weight in Kg" [maxLength]="20"
                                                             (keydown)="onEnter($event, 'bmiField')" OnlyNumber
                                                             (keyup)="getBMIcalculation()" [(ngModel)]="vWeight"
                                                             (keypress)="keyPressCharater($event)">
@@ -159,7 +159,8 @@
                                                     <mat-form-field appearance="outline" fxFlex="9%">
                                                         <mat-label>BMI</mat-label>
                                                         <input matInput formControlName="BMI" placeholder="BMI" readonly
-                                                            [(ngModel)]="vBMI" id="bmiField" (keydown)="onEnter($event, 'bslField')"
+                                                            [(ngModel)]="vBMI" id="bmiField"
+                                                            (keydown)="onEnter($event, 'bslField')"
                                                             [style.color]="getVitalColorClass('BMI', vBMI)"
                                                             [style.fontWeight]="'500'" />
                                                     </mat-form-field>
@@ -167,16 +168,18 @@
                                                     <!-- BSL [(ngModel)]="vBSL"-->
                                                     <mat-form-field appearance="outline" fxFlex="9%">
                                                         <mat-label>BSL</mat-label>
-                                                        <input matInput formControlName="BSL" placeholder="BSL" id="bslField"
-                                                            [maxLength]="20" (keydown)="onEnter($event, 'spo2Field')" OnlyNumber
+                                                        <input matInput formControlName="BSL" placeholder="BSL"
+                                                            id="bslField" [maxLength]="20"
+                                                            (keydown)="onEnter($event, 'spo2Field')" OnlyNumber
                                                             (keypress)="keyPressCharater($event)" [(ngModel)]="vBSL">
                                                     </mat-form-field>
 
                                                     <!-- SpO2 [(ngModel)]="vSpO2" -->
                                                     <mat-form-field appearance="outline" fxFlex="9%">
                                                         <mat-label>SpO2</mat-label>
-                                                        <input matInput formControlName="SpO2" placeholder="SpO2" id="spo2Field"
-                                                            [maxLength]="20" (keydown)="onEnter($event, 'pulseField')" OnlyNumber
+                                                        <input matInput formControlName="SpO2" placeholder="SpO2"
+                                                            id="spo2Field" [maxLength]="20"
+                                                            (keydown)="onEnter($event, 'pulseField')" OnlyNumber
                                                             (keypress)="keyPressCharater($event)" [(ngModel)]="vSpO2"
                                                             [style.color]="getVitalColorClass('SpO2', vSpO2)"
                                                             [style.fontWeight]="'500'">
@@ -185,8 +188,9 @@
                                                     <!-- Pulse [(ngModel)]="vPulse" -->
                                                     <mat-form-field appearance="outline" fxFlex="9%">
                                                         <mat-label>Pulse</mat-label>
-                                                        <input matInput formControlName="Pulse" placeholder="Pulse" id="pulseField"
-                                                            [maxLength]="10" (keydown)="onEnter($event, 'bpField')" OnlyNumber
+                                                        <input matInput formControlName="Pulse" placeholder="Pulse"
+                                                            id="pulseField" [maxLength]="10"
+                                                            (keydown)="onEnter($event, 'bpField')" OnlyNumber
                                                             (keypress)="keyPressCharater($event)" [(ngModel)]="vPulse"
                                                             [style.color]="getVitalColorClass('Pulse', vPulse)"
                                                             [style.fontWeight]="'500'">
@@ -198,8 +202,9 @@
                                                     <!-- BP [(ngModel)]="vBP"-->
                                                     <mat-form-field appearance="outline" fxFlex="13%">
                                                         <mat-label>BP</mat-label>
-                                                        <input matInput formControlName="BP" placeholder="BP" id="bpField"
-                                                            [maxLength]="10" (keydown)="onEnter($event, 'tempField')" OnlyNumber
+                                                        <input matInput formControlName="BP" placeholder="BP"
+                                                            id="bpField" [maxLength]="10"
+                                                            (keydown)="onEnter($event, 'tempField')" OnlyNumber
                                                             (keypress)="keyPressOk($event)" [(ngModel)]="vBP"
                                                             [style.color]="getVitalColorClass('BP', vBP)"
                                                             [style.fontWeight]="'500'" placeholder="Enter as 120/80">
@@ -211,8 +216,9 @@
                                                     <!-- Temperature [(ngModel)]="vTemp" -->
                                                     <mat-form-field appearance="outline" fxFlex="9%">
                                                         <mat-label>Temp</mat-label>
-                                                        <input matInput formControlName="Temp" placeholder="Temp" id="tempField"
-                                                            [maxLength]="10" OnlyNumber (keydown)="onEnter($event, 'bloodField')"
+                                                        <input matInput formControlName="Temp" placeholder="Temp"
+                                                            id="tempField" [maxLength]="10" OnlyNumber
+                                                            (keydown)="onEnter($event, 'bloodField')"
                                                             (keypress)="keyPressCharater($event)" [(ngModel)]="vTemp"
                                                             [style.color]="getVitalColorClass('Temp', vTemp)"
                                                             [style.fontWeight]="'500'">
@@ -224,7 +230,8 @@
 
                                                     <mat-form-field appearance="outline" fxFlex="9%">
                                                         <mat-label>B.Group</mat-label>
-                                                        <mat-select placeholder="BloodGroup" id="bloodField" (selectionChange)="focusNext('allergyField')"
+                                                        <mat-select placeholder="BloodGroup" id="bloodField"
+                                                            (selectionChange)="focusNext('allergyField')"
                                                             formControlName="BloodGroup" name="BloodGroup">
                                                             <mat-option *ngFor="let i of BloodGroupNames" [value]="i">
                                                                 {{i}}</mat-option>
@@ -327,7 +334,8 @@
                                                             (onClearSelection)="ItemFromReset()">
                                                         </airmid-autocomplete>
 
-                                                        <airmid-dropdown label="Dose Name" formControlName="DoseId" *ngIf="showDoseDropdownRefresh"
+                                                        <airmid-dropdown label="Dose Name" formControlName="DoseId"
+                                                            *ngIf="showDoseDropdownRefresh"
                                                             [formGroup]="MedicineItemForm" #doseDropdown
                                                             [validations]="getValidationMessages().DoseId"
                                                             [mode]="autocompleteModeDose" [(ngModel)]="vdoseName"
@@ -366,8 +374,9 @@
 
                                                         <mat-divider [vertical]="true"></mat-divider>&nbsp;
 
-                                                        <airmid-dropdown label="Template List" *ngIf="showTemplateRefresh"
-                                                            formControlName="TemplateId" [formGroup]="MedicineItemForm"
+                                                        <airmid-dropdown label="Template List"
+                                                            *ngIf="showTemplateRefresh" formControlName="TemplateId"
+                                                            [formGroup]="MedicineItemForm"
                                                             [validations]="getValidationMessages().TemplateId"
                                                             [mode]="autocompleteModeTemplate"
                                                             (selectionChange)="selectChangeTemplateName($event)">
@@ -416,8 +425,9 @@
                                                                     <!-- Display text when not in edit mode -->
                                                                     <span *ngIf="editingIndex1 !== in">
                                                                         {{ element.GenericName || element.genericName }}
-                                                                        <mat-icon *ngIf="element.precriptionId" 
-                                                                        (click)="editItem(in, element)" class="edit-icon">edit</mat-icon>
+                                                                        <mat-icon *ngIf="element.precriptionId"
+                                                                            (click)="editItem(in, element)"
+                                                                            class="edit-icon">edit</mat-icon>
                                                                     </span>
 
                                                                     <!-- Show dropdown and save button when in edit mode -->
@@ -462,8 +472,9 @@
                                                                     <span *ngIf="editingIndex !== i">
                                                                         {{ element.DoseName || element.doseName }}
                                                                         <!-- {{ element.DoseName || vDoseName }} -->
-                                                                        <mat-icon *ngIf="element.precriptionId" 
-                                                                        (click)="editDose(i, element)" class="edit-icon">edit</mat-icon>
+                                                                        <mat-icon *ngIf="element.precriptionId"
+                                                                            (click)="editDose(i, element)"
+                                                                            class="edit-icon">edit</mat-icon>
                                                                     </span>
 
                                                                     <div *ngIf="editingIndex === i"
@@ -1417,7 +1428,7 @@
 
                                                 <div>
                                                     <airmid-editor label="Certificate Details"
-                                                        formControlName="certificateText" 
+                                                        formControlName="certificateText"
                                                         [formGroup]="mycertificateForm"
                                                         (valueChange)="onEditorValueChange($event)">
                                                     </airmid-editor>

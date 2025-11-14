@@ -389,10 +389,8 @@ export class NewCasepaperComponent implements OnInit {
     return this._formBuilder.group({
       LetteHeadRadio: ['NormalHead'],
       LangaugeRadio: ["true"],
-      Height: ['', [Validators.required, Validators.maxLength(20),
-      this._FormvalidationserviceService.allowEmptyStringValidator()]],
-      Weight: ['', [Validators.required, Validators.maxLength(20),
-      this._FormvalidationserviceService.allowEmptyStringValidator()]],
+      Height: ['', [Validators.maxLength(20)]],
+      Weight: ['', [Validators.maxLength(20)]],
       BMI: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly, Validators.maxLength(20)]],
       BSL: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly, Validators.maxLength(20)]],
       SpO2: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly, Validators.maxLength(20)]],
