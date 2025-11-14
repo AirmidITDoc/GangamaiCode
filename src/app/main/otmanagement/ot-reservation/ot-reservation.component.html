@@ -53,13 +53,13 @@
                         </mat-icon>
                     </button>
 
-                    <button mat-icon-button matTooltip="Theater-In" (click)="theaterIn(element)">
-                        <!-- this icon should disable when i do preOper then only 
+                    <!-- <button mat-icon-button matTooltip="Theater-In" (click)="theaterIn(element)"> -->
+                    <!-- this icon should disable when i do preOper then only 
                          (To confirm patient is inside OT) -->
-                        <mat-icon>
+                    <!-- <mat-icon>
                             <img width="30px" height="30px" src="assets/images/logos/theaterIn.png">
                         </mat-icon>
-                    </button>
+                    </button> -->
 
                     <button mat-icon-button matTooltip="In-Operation" (click)="onInOperation(element)">
                         <!-- this icon should disable when i do theaterIn then only 
@@ -69,8 +69,16 @@
                         </mat-icon>
                     </button>
 
+                    <button mat-icon-button matTooltip="Anesthesia Record" (click)="onAnesthesiaRecord(element)">
+                        <!-- this icon should disable when i do inOper then only 
+                         (To record complete drugs ) -->
+                        <mat-icon>
+                            <img width="30px" height="30px" src="assets/images/logos/anesthesia.png">
+                        </mat-icon>
+                    </button>
+
                     <button mat-icon-button matTooltip="Post-Operation" (click)="postOperationForm(element)">
-                        <!-- this icon should disable when i do inOper then only enable -->
+                        <!-- this icon should disable when i do aneths then only enable -->
                         <mat-icon>
                             <img width="30px" height="30px" src="assets/images/logos/postOper.png">
                         </mat-icon>

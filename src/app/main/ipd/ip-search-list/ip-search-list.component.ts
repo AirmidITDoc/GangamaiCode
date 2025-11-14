@@ -401,7 +401,7 @@ export class IPSearchListComponent implements OnInit {
             } else {
 
                 Swal.fire({
-                    title: 'Selected Patient Bill Is Already Generated',
+                    title: 'Selected Patient Bill Is Already Generated or Patient Already Discharged',
                     icon: "warning",
                     showCancelButton: false,
                     confirmButtonColor: "#3085d6",

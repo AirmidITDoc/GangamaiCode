@@ -506,7 +506,7 @@ export class NewRequestComponent implements OnInit {
       });
       return;
     }
-    if (!this.requestForm.get("surgeryId")?.value || this.requestForm.get("surgeryId")?.value=="0") {
+    if (!this.requestForm.get("surgeryId")?.value || this.requestForm.get("surgeryId")?.value == "0") {
       this.toastr.warning('Please select a Surgery', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
@@ -536,13 +536,13 @@ export class NewRequestComponent implements OnInit {
       });
       return;
     }
-    if (!this.requestForm.get("surgeonId")?.value || this.requestForm.get("surgeonId")?.value=="0") {
+    if (!this.requestForm.get("surgeonId")?.value || this.requestForm.get("surgeonId")?.value == "0") {
       this.toastr.warning('Please select a Surgeon', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       return;
     }
-    if (!this.requestForm.get("anesthetistId")?.value || this.requestForm.get("anesthetistId")?.value=="0") {
+    if (!this.requestForm.get("anesthetistId")?.value || this.requestForm.get("anesthetistId")?.value == "0") {
       this.toastr.warning('Please select a AnestheticsDr', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
@@ -847,6 +847,13 @@ export class NewRequestComponent implements OnInit {
   onSubmit() {
     const formattedDate = this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd");
     const formattedTime = formattedDate + this.dateTimeObj.time;
+
+    const surgeryDate = this.datePipe.transform(this.requestForm.get('surgeryDate')?.value, 'yyyy-MM-dd');
+    const time = this.requestForm.get('estimateTime')?.value; 
+    if (surgeryDate && time) {
+      const combinedDateTime = `${surgeryDate} ${time}`;
+      this.requestForm.get('estimateTime')?.setValue(combinedDateTime, { emitEvent: false });
+    }
 
     this.requestForm.get('opipid').setValue(this.opIpId);
     this.requestForm.get('otrequestId')?.setValue(this.vrequestId || 0);

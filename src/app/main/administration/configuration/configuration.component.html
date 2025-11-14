@@ -1,5 +1,17 @@
 <div class="page-layout simple inner-sidebar inner-scroll right-sidebar" style="height: 100%;" fusePerfectScrollbar
     dynamicTableHeight>
+    <mat-toolbar class="top-header accent">
+        <div fxLayout="row" fxLayoutAlign="start center" class="top-header-info">
+            <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                Config Manager
+            </span>
+        </div>
+        <div>
+            <button mat-raised-button (click)="getAutoservice()">
+                <mat-icon>add</mat-icon>Auto Service
+            </button>
+        </div>
+    </mat-toolbar>
 
     <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start">
 
@@ -23,9 +35,9 @@
                 <div class="configuration-container" style="padding: 30px;">
                     <div style="width: 40%;">
                         <form [formGroup]="myConfigform">
-                            
+
                             <!-- Dynamic sections based on category names from data -->
-                            <mat-card class="config-section-card" style="margin-bottom: 20px;" 
+                            <mat-card class="config-section-card" style="margin-bottom: 20px;"
                                 *ngFor="let categoryName of getCategoryNames()">
                                 <mat-card-header style="margin-bottom: 12px;">
                                     <mat-card-title style="font-size: 18px; font-weight: 500; color: #333;">
@@ -34,12 +46,14 @@
                                 </mat-card-header>
                                 <mat-card-content>
                                     <mat-list>
-                                        <mat-list-item *ngFor="let element of getConfigByName(categoryName)" 
+                                        <mat-list-item *ngFor="let element of getConfigByName(categoryName)"
                                             style="height: auto; padding: 8px 0; border-bottom: 1px solid #f0f0f0;">
-                                            <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+                                            <div
+                                                style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
                                                 <div style="flex: 1;">
-                                                    <span style="font-size: 14px; color: #555;">{{ element.SystemName }}</span>
-                                                    <mat-icon *ngIf="element.Description" 
+                                                    <span style="font-size: 14px; color: #555;">{{ element.SystemName
+                                                        }}</span>
+                                                    <mat-icon *ngIf="element.Description"
                                                         style="font-size: 18px; height: 18px; width: 18px; color: #999; margin-left: 8px; cursor: pointer; vertical-align: middle;"
                                                         [matTooltip]="element.Description">
                                                         info_outline
@@ -47,79 +61,95 @@
                                                 </div>
                                                 <div style="display: flex; align-items: center; gap: 16px;">
                                                     <!-- Input fields for specific configs -->
-                                                    <mat-form-field *ngIf="element.IsInputField && element.SystemName=='RegNo'" 
+                                                    <mat-form-field
+                                                        *ngIf="element.IsInputField && element.SystemName=='RegNo'"
                                                         appearance="outline" style="width: 200px;">
-                                                        <input matInput [maxLength]="100" (keypress)="keyPressCharater($event)"
-                                                            formControlName="RegNo" [(ngModel)]="element.SystemInputValue" 
-                                                            placeholder="Enter value"/>
-                                                    </mat-form-field>
-                                                    
-                                                    <mat-form-field *ngIf="element.IsInputField && element.SystemName=='OPDNo'" 
-                                                        appearance="outline" style="width: 200px;">
-                                                        <input matInput [maxLength]="100" (keypress)="keyPressCharater($event)"
-                                                            formControlName="OPDNo" [(ngModel)]="element.SystemInputValue" 
-                                                            placeholder="Enter value"/>
+                                                        <input matInput [maxLength]="100"
+                                                            (keypress)="keyPressCharater($event)"
+                                                            formControlName="RegNo"
+                                                            [(ngModel)]="element.SystemInputValue"
+                                                            placeholder="Enter value" />
                                                     </mat-form-field>
 
-                                                    <div *ngIf="element.IsInputField && element.SystemName=='OPDDefaultDepartment'" 
+                                                    <mat-form-field
+                                                        *ngIf="element.IsInputField && element.SystemName=='OPDNo'"
+                                                        appearance="outline" style="width: 200px;">
+                                                        <input matInput [maxLength]="100"
+                                                            (keypress)="keyPressCharater($event)"
+                                                            formControlName="OPDNo"
+                                                            [(ngModel)]="element.SystemInputValue"
+                                                            placeholder="Enter value" />
+                                                    </mat-form-field>
+
+                                                    <div *ngIf="element.IsInputField && element.SystemName=='OPDDefaultDepartment'"
                                                         style="width: 250px;">
-                                                        <airmid-dropdown label="OPD Department" formControlName="opdDepartment"
-                                                            [formGroup]="myConfigform" [(ngModel)]="element.SystemInputValue"
+                                                        <airmid-dropdown label="OPD Department"
+                                                            formControlName="opdDepartment" [formGroup]="myConfigform"
+                                                            [(ngModel)]="element.SystemInputValue"
                                                             [mode]="autocompleteModeDepartment">
                                                         </airmid-dropdown>
                                                     </div>
 
-                                                    <div *ngIf="element.IsInputField && element.SystemName=='OPDDefaultDoctor'" 
+                                                    <div *ngIf="element.IsInputField && element.SystemName=='OPDDefaultDoctor'"
                                                         style="width: 250px;">
-                                                        <airmid-dropdown label="OPD Doctor" formControlName="opdDoctorId"
-                                                            [formGroup]="myConfigform" [(ngModel)]="element.SystemInputValue"
+                                                        <airmid-dropdown label="OPD Doctor"
+                                                            formControlName="opdDoctorId" [formGroup]="myConfigform"
+                                                            [(ngModel)]="element.SystemInputValue"
                                                             [mode]="autocompleteModedoctorty">
                                                         </airmid-dropdown>
                                                     </div>
 
-                                                    <div *ngIf="element.IsInputField && element.SystemName=='IsPathDepartment'" 
+                                                    <div *ngIf="element.IsInputField && element.SystemName=='IsPathDepartment'"
                                                         style="width: 250px;">
-                                                        <airmid-dropdown label="Pathology Department" formControlName="Department"
-                                                            [formGroup]="myConfigform" [(ngModel)]="element.SystemInputValue"
+                                                        <airmid-dropdown label="Pathology Department"
+                                                            formControlName="Department" [formGroup]="myConfigform"
+                                                            [(ngModel)]="element.SystemInputValue"
                                                             [mode]="autocompleteModeDepartment">
                                                         </airmid-dropdown>
                                                     </div>
 
-                                                    <div *ngIf="element.IsInputField && element.SystemName=='IsPathDoctorId'" 
+                                                    <div *ngIf="element.IsInputField && element.SystemName=='IsPathDoctorId'"
                                                         style="width: 250px;">
-                                                        <airmid-dropdown label="Pathology Doctor" formControlName="DoctorId"
-                                                            [formGroup]="myConfigform" [(ngModel)]="element.SystemInputValue"
+                                                        <airmid-dropdown label="Pathology Doctor"
+                                                            formControlName="DoctorId" [formGroup]="myConfigform"
+                                                            [(ngModel)]="element.SystemInputValue"
                                                             [mode]="autocompleteModedoctorty">
                                                         </airmid-dropdown>
                                                     </div>
 
-                                                    <mat-form-field *ngIf="element.IsInputField && element.SystemName=='OPSalesdisc'" 
+                                                    <mat-form-field
+                                                        *ngIf="element.IsInputField && element.SystemName=='OPSalesdisc'"
                                                         appearance="outline" style="width: 200px;">
-                                                        <input matInput [maxLength]="100" (keypress)="keyPressCharater($event)"
-                                                            formControlName="OPSalesdisc" [(ngModel)]="element.SystemInputValue" 
-                                                            placeholder="Enter discount %"/>
+                                                        <input matInput [maxLength]="100"
+                                                            (keypress)="keyPressCharater($event)"
+                                                            formControlName="OPSalesdisc"
+                                                            [(ngModel)]="element.SystemInputValue"
+                                                            placeholder="Enter discount %" />
                                                     </mat-form-field>
 
-                                                    <mat-form-field *ngIf="element.IsInputField && element.SystemName=='IPSalesdisc'" 
+                                                    <mat-form-field
+                                                        *ngIf="element.IsInputField && element.SystemName=='IPSalesdisc'"
                                                         appearance="outline" style="width: 200px;">
-                                                        <input matInput [maxLength]="100" (keypress)="keyPressCharater($event)"
-                                                            formControlName="IPSalesdisc" [(ngModel)]="element.SystemInputValue" 
-                                                            placeholder="Enter discount %"/>
+                                                        <input matInput [maxLength]="100"
+                                                            (keypress)="keyPressCharater($event)"
+                                                            formControlName="IPSalesdisc"
+                                                            [(ngModel)]="element.SystemInputValue"
+                                                            placeholder="Enter discount %" />
                                                     </mat-form-field>
 
-                                                    <mat-form-field *ngIf="element.IsInputField && element.SystemName=='SystemLogOutTime'" 
+                                                    <mat-form-field
+                                                        *ngIf="element.IsInputField && element.SystemName=='SystemLogOutTime'"
                                                         appearance="outline" style="width: 200px;">
                                                         <input matInput (keypress)="keyPressCharater($event)"
-                                                            formControlName="SystemLogOutTime" [(ngModel)]="element.SystemInputValue" 
-                                                            placeholder="Enter time (mins)"/>
+                                                            formControlName="SystemLogOutTime"
+                                                            [(ngModel)]="element.SystemInputValue"
+                                                            placeholder="Enter time (mins)" />
                                                     </mat-form-field>
 
                                                     <!-- Toggle for all configs -->
-                                                    <mat-slide-toggle 
-                                                        (change)="tableElementChecked($event, element)"
+                                                    <mat-slide-toggle (change)="tableElementChecked($event, element)"
                                                         [(ngModel)]="element.IsInputField"
-                                                        [ngModelOptions]="{standalone: true}"
-                                                        color="primary">
+                                                        [ngModelOptions]="{standalone: true}" color="primary">
                                                     </mat-slide-toggle>
                                                 </div>
                                             </div>
@@ -133,7 +163,7 @@
                 </div>
 
                 <div style="padding: 16px 24px; display: flex; justify-content: flex-end; background: #f5f5f5;">
-                    <button mat-raised-button color="primary" (click)="onSubmit()" 
+                    <button mat-raised-button color="primary" (click)="onSubmit()"
                         style="padding: 8px 32px; font-size: 14px;">
                         Save Configuration
                     </button>
@@ -276,7 +306,6 @@
 
         </mat-tab>
 
-    </mat-tab-group>
-
+    </mat-tab-group> 
 
 </div>

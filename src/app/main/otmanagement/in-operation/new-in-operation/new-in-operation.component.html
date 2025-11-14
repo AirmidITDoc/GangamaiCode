@@ -1,5 +1,5 @@
-<div class="dialog-content-wrapper modal-wrapper grid-container">
-    <div class="modal-header accent">
+<div class="dialog-content-wrapper modal-wrapper grid-container inOperMain">
+    <div class="modal-header accent inOperHeader">
         <div class="modal-header-content">
             <div class="modal-header-title">
                 <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">New In-Operation</span>
@@ -21,7 +21,7 @@
         </div>
     </div>
 
-    <div class="modal-body" fusePerfectScrollbar>
+    <div class="modal-body inOperMiddle" fusePerfectScrollbar>
         <div class="modal-body-container">
             <div fxLayout="column" class="gap-12"></div>
             <form [formGroup]="inOperForm">
@@ -146,7 +146,6 @@
                                         </div>
                                     </div>
                                 </mat-card>
-
                             </div>
                         </div>
                     </div>
@@ -159,298 +158,336 @@
                                 <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">Surgery Details
                                 </span>
                             </div>
-
                         </div>
                     </div>
                 </div>
 
                 <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start">
-                    <mat-tab label="Surgery Details">
+                    <mat-tab label="Surgery & Attendent Details">
                         <div class="modal-body" fusePerfectScrollbar>
-                            <div class="modal-body-container">
-                                <div fxFlexFill fxLayout="row" class="gap-8">
+                            <div>
+                                <div class="dialog-content-wrapper modal-wrapper grid-container"
+                                    style="margin-bottom: 5px;">
+                                    <div class="modal-header accent">
+                                        <div class="modal-header-content">
+                                            <div class="modal-header-title">
+                                                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">Surgery
+                                                    Details
+                                                </span>
+                                            </div>
 
-                                    <div fxFlex="10%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <airmid-dropdown label="Surgery Type" formControlName="surgeryCategoryId"
-                                            [formGroup]="inOperForm" [value]="registerObj1?.surgeryCategoryId"
-                                            [mode]="autocompleteModeSiteDescription" #ddlSurgerytype [readonly]="true"
-                                            (selectionChange)="selectChangeSurgeryCategory($event)">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-body-container">
+                                    <div fxFlexFill fxLayout="row" class="gap-8">
+
+                                        <div fxFlex="10%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                            <airmid-dropdown label="Surgery Type" formControlName="surgeryCategoryId"
+                                                [formGroup]="inOperForm" [value]="registerObj1?.surgeryCategoryId"
+                                                [mode]="autocompleteModeSiteDescription" #ddlSurgerytype
+                                                [readonly]="true"
+                                                (selectionChange)="selectChangeSurgeryCategory($event)">
+                                            </airmid-dropdown>
+                                        </div>
+
+                                        <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                            <airmid-dropdown label="Surgery Name" formControlName="surgeryId"
+                                                [formGroup]="inOperForm" (selectionChange)="selectChangeSurgery($event)"
+                                                ValueField="surgeryId" TextField="surgeryName"
+                                                ApiUrl="SurgeryMaster/GetSurgeryTypeByOTSurgery">
+                                            </airmid-dropdown>
+                                        </div>
+
+                                        <div fxFlex="10%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                            <mat-form-field appearance="outline" style="width: 100%;">
+                                                <mat-label>Part</mat-label>
+                                                <mat-select formControlName="surgeryPart" name="surgeryPart">
+                                                    <mat-option *ngFor="let i of partTypes" [value]="i">
+                                                        {{i}}</mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                        </div>
+
+                                        <div fxFlex="8%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                            <mat-form-field appearance="outline" style="width: 100%;">
+                                                <mat-label>Duration (hours)</mat-label>
+                                                <input matInput type="number" formControlName="surgeryDuration"
+                                                    (change)="onChangeDuration($event)" min="0" step="0.5"
+                                                    (keydown.enter)="surgeryFromTimeInput.focus()">
+                                            </mat-form-field>
+                                        </div>
+
+                                        <div fxFlex="5%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                            <mat-form-field appearance="outline" style="width: 100%;">
+                                                <mat-label>From Time</mat-label>
+                                                <input matInput type="time" formControlName="surgeryFromTime"
+                                                    (change)="onChangeTimefrom($event)" #surgeryFromTimeInput>
+                                            </mat-form-field>
+                                        </div>
+
+                                        <div fxFlex="5%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                            <mat-form-field appearance="outline" style="width: 100%;">
+                                                <mat-label>To Time</mat-label>
+                                                <input matInput type="time" formControlName="surgeryEndTime" readonly
+                                                    (change)="onChangeTimeto($event)">
+                                            </mat-form-field>
+                                        </div>
+
+                                        <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                            <airmid-dropdown label="Surgeon Name" formControlName="surgeonId"
+                                                [formGroup]="inOperForm" [mode]="autocompleteModeConDoctor"
+                                                (selectionChange)="selectChangeSurgeon($event)">
+                                            </airmid-dropdown>
+                                        </div>
+
+                                        <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                            <airmid-dropdown label="Anathesia doctor" formControlName="anesthetistId"
+                                                [formGroup]="inOperForm" [mode]="autocompleteModeRefDoctor"
+                                                (selectionChange)="selectChangeAnesth($event)">
+                                            </airmid-dropdown>
+                                        </div>
+
+                                        <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%" fxLayout="column">
+                                            <label style="font-weight: bold;">Is Primary:</label>
+                                            <mat-checkbox formControlName="isPrimary"></mat-checkbox>
+                                        </div>
+
+                                        <div class="input-add-button">
+                                            <button class="btn btn-primary btn-with-icon" (click)="onAdd()">
+                                                <span class="btn-icon">
+                                                    <mat-icon> add </mat-icon>
+                                                </span>
+                                            </button>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                                <div class="airmid-table-container">
+                                    <mat-table matSort [dataSource]="dssurgeryDetailList"
+                                        [@animateStagger]="{value:'50'}" class="airmid-table" cdkDropList
+                                        (cdkDropListDropped)="drop1($event)">
+
+                                        <ng-container matColumnDef="sequence">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Sr.No
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let element; let i = index" fxShow.gt-sm>
+                                                {{ i + 1 }}
+                                            </mat-cell>
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="surgeryCategoryName">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                Surgery Type</mat-header-cell>
+                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                <span> {{element.surgeryCategoryName}}</span>
+                                            </mat-cell>
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="surgeryName">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
+                                                fxShow.gt-sm>Surgery
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                <span> {{element.surgeryName}} </span>
+                                            </mat-cell>
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="surgeryPart">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Part
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                <span> {{element.surgeryPart}} </span>
+                                            </mat-cell>
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="surgeryDuration">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
+                                                fxShow.gt-sm>Duration
+                                                (hrs)
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                <span> {{element.surgeryDuration}} </span>
+                                            </mat-cell>
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="surgeryFromTime">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>From
+                                                Time
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                <span> {{element.surgeryFromTime}} </span>
+                                            </mat-cell>
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="surgeryEndTime">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>To
+                                                Time
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                <span> {{element.surgeryEndTime}} </span>
+                                            </mat-cell>
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="isPrimary">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Is
+                                                Primary
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                <span>
+                                                    <mat-icon color="primary"
+                                                        *ngIf="element.isPrimary">check_circle</mat-icon>
+                                                    <mat-icon color="warn" *ngIf="!element.isPrimary">cancel</mat-icon>
+                                                </span>
+                                            </mat-cell>
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="surgeon">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
+                                                fxShow.gt-sm>Surgeon
+                                                Name
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                <span> {{element.surgeonName}} </span>
+                                            </mat-cell>
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="anesthesia">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
+                                                fxShow.gt-sm>Anesthesia Name
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                <span> {{element.anestheticsName}} </span>
+                                            </mat-cell>
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="Action" stickyEnd>
+                                            <mat-header-cell *matHeaderCellDef class="table-actions">Action
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let contact">
+                                                <ng-container class="actions">
+                                                    <mat-icon (click)="onEdit(contact)" color="primary">edit</mat-icon>
+                                                    <mat-icon (click)="deleteTableRow($event ,contact)" color="warn">
+                                                        delete
+                                                    </mat-icon>
+                                                </ng-container>
+                                            </mat-cell>
+                                        </ng-container>
+
+                                        <mat-header-row class="accent"
+                                            *matHeaderRowDef="displayedColumns; sticky: true">
+                                        </mat-header-row>
+                                        <mat-row *matRowDef="let row; columns: displayedColumns;" class="element"
+                                            [@animate]="{value:'*',params:{y:'100%'}}" cdkDrag
+                                            (cdkDragMoved)="onDragMoved1($event)"></mat-row>
+                                    </mat-table>
+                                </div>
+                            </div>
+
+                            <div>
+                                <div class="dialog-content-wrapper modal-wrapper grid-container"
+                                    style="margin-bottom: 5px;">
+                                    <div class="modal-header accent">
+                                        <div class="modal-header-content">
+                                            <div class="modal-header-title">
+                                                <span
+                                                    [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">Attendent
+                                                    Details
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div fxFlexFill fxLayout="row wrap" class="gap-8">
+
+                                    <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                        <airmid-dropdown label="Resource Type" formControlName="recourceType"
+                                            [formGroup]="inOperForm" [mode]="autocompleteModeResourseType">
                                         </airmid-dropdown>
                                     </div>
 
                                     <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <airmid-dropdown label="Surgery Name" formControlName="surgeryId"
-                                            [formGroup]="inOperForm" (selectionChange)="selectChangeSurgery($event)"
-                                            ValueField="surgeryId" TextField="surgeryName"
-                                            ApiUrl="SurgeryMaster/GetSurgeryTypeByOTSurgery">
-                                        </airmid-dropdown>
-                                    </div>
-
-                                    <div fxFlex="10%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <mat-form-field appearance="outline" style="width: 100%;">
-                                            <mat-label>Part</mat-label>
-                                            <mat-select formControlName="surgeryPart" name="surgeryPart">
-                                                <mat-option *ngFor="let i of partTypes" [value]="i">
-                                                    {{i}}</mat-option>
-                                            </mat-select>
-                                        </mat-form-field>
-                                    </div>
-
-                                    <div fxFlex="8%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <mat-form-field appearance="outline" style="width: 100%;">
-                                            <mat-label>Duration (hours)</mat-label>
-                                            <input matInput type="number" formControlName="surgeryDuration"
-                                                (change)="onChangeDuration($event)" min="0" step="0.5"
-                                                (keydown.enter)="surgeryFromTimeInput.focus()">
-                                        </mat-form-field>
-                                    </div>
-
-                                    <div fxFlex="5%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <mat-form-field appearance="outline" style="width: 100%;">
-                                            <mat-label>From Time</mat-label>
-                                            <input matInput type="time" formControlName="surgeryFromTime"
-                                                (change)="onChangeTimefrom($event)" #surgeryFromTimeInput>
-                                        </mat-form-field>
-                                    </div>
-
-                                    <div fxFlex="5%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <mat-form-field appearance="outline" style="width: 100%;">
-                                            <mat-label>To Time</mat-label>
-                                            <input matInput type="time" formControlName="surgeryEndTime" readonly
-                                                (change)="onChangeTimeto($event)">
-                                        </mat-form-field>
-                                    </div>
-
-                                    <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <airmid-dropdown label="Surgeon Name" formControlName="surgeonId"
-                                            [formGroup]="inOperForm" [mode]="autocompleteModeConDoctor"
-                                            (selectionChange)="selectChangeSurgeon($event)">
+                                        <airmid-dropdown label="Doctor Type" formControlName="doctorTypeId"
+                                            [formGroup]="inOperForm" [mode]="autocompleteModeDoctorType"
+                                            (selectionChange)="selectChangedepdoctorType($event)">
                                         </airmid-dropdown>
                                     </div>
 
                                     <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <airmid-dropdown label="Anathesia doctor" formControlName="anesthetistId"
-                                            [formGroup]="inOperForm" [mode]="autocompleteModeRefDoctor"
-                                            (selectionChange)="selectChangeAnesth($event)">
+                                        <airmid-dropdown label="Doctor Name" formControlName="doctorId" #ddlDoctor
+                                            [formGroup]="inOperForm" (selectionChange)="selectChangedoctor($event)">
                                         </airmid-dropdown>
-                                    </div>
-
-                                    <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%" fxLayout="column">
-                                        <label style="font-weight: bold;">Is Primary:</label>
-                                        <mat-checkbox formControlName="isPrimary"></mat-checkbox>
                                     </div>
 
                                     <div class="input-add-button">
-                                        <button class="btn btn-primary btn-with-icon" (click)="onAdd()">
+                                        <button class="btn btn-primary btn-with-icon" (click)="onAdd1()">
                                             <span class="btn-icon">
                                                 <mat-icon> add </mat-icon>
                                             </span>
+                                            <span>Add</span>
                                         </button>
                                     </div>
 
                                 </div>
-                            </div>
 
-                            <div class="airmid-table-container">
-                                <mat-table matSort [dataSource]="dssurgeryDetailList" [@animateStagger]="{value:'50'}"
-                                    class="airmid-table" cdkDropList (cdkDropListDropped)="drop1($event)">
+                                <div class="airmid-table-container">
+                                    <mat-table matSort [dataSource]="dsattendentDetailList"
+                                        [@animateStagger]="{value:'50'}" class="airmid-table" cdkDropList
+                                        (cdkDropListDropped)="drop2($event)">
 
-                                    <ng-container matColumnDef="sequence">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Sr.No
-                                        </mat-header-cell>
-                                        <mat-cell *matCellDef="let element; let i = index" fxShow.gt-sm>
-                                            {{ i + 1 }}
-                                        </mat-cell>
-                                    </ng-container>
+                                        <ng-container matColumnDef="sequence">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Sr.No
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let element; let i = index" fxShow.gt-sm>
+                                                {{ i + 1 }}
+                                            </mat-cell>
+                                        </ng-container>
 
-                                    <ng-container matColumnDef="surgeryCategoryName">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
-                                            Surgery Type</mat-header-cell>
-                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                            <span> {{element.surgeryCategoryName}}</span>
-                                        </mat-cell>
-                                    </ng-container>
+                                        <ng-container matColumnDef="surgeon">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
+                                                fxShow.gt-sm>Surgeon
+                                                Name
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                <span> {{element.doctorType}} </span>
+                                            </mat-cell>
+                                        </ng-container>
 
-                                    <ng-container matColumnDef="surgeryName">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Surgery
-                                        </mat-header-cell>
-                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                            <span> {{element.surgeryName}} </span>
-                                        </mat-cell>
-                                    </ng-container>
+                                        <ng-container matColumnDef="anesthesia">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
+                                                fxShow.gt-sm>Anesthesia Name
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                <span> {{element.doctorName}} </span>
+                                            </mat-cell>
+                                        </ng-container>
 
-                                    <ng-container matColumnDef="surgeryPart">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Part
-                                        </mat-header-cell>
-                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                            <span> {{element.surgeryPart}} </span>
-                                        </mat-cell>
-                                    </ng-container>
+                                        <ng-container matColumnDef="Action" stickyEnd>
+                                            <mat-header-cell *matHeaderCellDef class="table-actions">Action
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let contact">
+                                                <ng-container class="actions">
+                                                    <mat-icon (click)="onEdit1(contact)" color="primary">edit</mat-icon>
+                                                    <mat-icon (click)="deleteTableRow1($event ,contact)" color="warn">
+                                                        delete
+                                                    </mat-icon>
+                                                </ng-container>
+                                            </mat-cell>
+                                        </ng-container>
 
-                                    <ng-container matColumnDef="surgeryDuration">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Duration
-                                            (hrs)
-                                        </mat-header-cell>
-                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                            <span> {{element.surgeryDuration}} </span>
-                                        </mat-cell>
-                                    </ng-container>
+                                        <mat-header-row class="accent"
+                                            *matHeaderRowDef="displayedColumns1; sticky: true">
+                                        </mat-header-row>
+                                        <mat-row *matRowDef="let row; columns: displayedColumns1;" class="element"
+                                            [@animate]="{value:'*',params:{y:'100%'}}" cdkDrag
+                                            (cdkDragMoved)="onDragMoved2($event)"></mat-row>
+                                    </mat-table>
+                                </div>
 
-                                    <ng-container matColumnDef="surgeryFromTime">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>From Time
-                                        </mat-header-cell>
-                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                            <span> {{element.surgeryFromTime}} </span>
-                                        </mat-cell>
-                                    </ng-container>
-
-                                    <ng-container matColumnDef="surgeryEndTime">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>To Time
-                                        </mat-header-cell>
-                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                            <span> {{element.surgeryEndTime}} </span>
-                                        </mat-cell>
-                                    </ng-container>
-
-                                    <ng-container matColumnDef="isPrimary">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Is
-                                            Primary
-                                        </mat-header-cell>
-                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                            <span>
-                                                <mat-icon color="primary"
-                                                    *ngIf="element.isPrimary">check_circle</mat-icon>
-                                                <mat-icon color="warn" *ngIf="!element.isPrimary">cancel</mat-icon>
-                                            </span>
-                                        </mat-cell>
-                                    </ng-container>
-
-                                    <ng-container matColumnDef="surgeon">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Surgeon
-                                            Name
-                                        </mat-header-cell>
-                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                            <span> {{element.surgeonName}} </span>
-                                        </mat-cell>
-                                    </ng-container>
-
-                                    <ng-container matColumnDef="anesthesia">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
-                                            fxShow.gt-sm>Anesthesia Name
-                                        </mat-header-cell>
-                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                            <span> {{element.anestheticsName}} </span>
-                                        </mat-cell>
-                                    </ng-container>
-
-                                    <ng-container matColumnDef="Action" stickyEnd>
-                                        <mat-header-cell *matHeaderCellDef class="table-actions">Action
-                                        </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact">
-                                            <ng-container class="actions">
-                                                <mat-icon (click)="onEdit(contact)" color="primary">edit</mat-icon>
-                                                <mat-icon (click)="deleteTableRow($event ,contact)" color="warn">
-                                                    delete
-                                                </mat-icon>
-                                            </ng-container>
-                                        </mat-cell>
-                                    </ng-container>
-
-                                    <mat-header-row class="accent" *matHeaderRowDef="displayedColumns; sticky: true">
-                                    </mat-header-row>
-                                    <mat-row *matRowDef="let row; columns: displayedColumns;" class="element"
-                                        [@animate]="{value:'*',params:{y:'100%'}}" cdkDrag
-                                        (cdkDragMoved)="onDragMoved1($event)"></mat-row>
-                                </mat-table>
                             </div>
                         </div>
-                    </mat-tab>
-
-                    <mat-tab label="Attendent Details">
-                        <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 10px;">
-                            <div fxFlexFill fxLayout="row wrap" class="gap-8">
-
-                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <airmid-dropdown label="Resource Type" formControlName="recourceType"
-                                        [formGroup]="inOperForm" [mode]="autocompleteModeResourseType">
-                                    </airmid-dropdown>
-                                </div>
-
-                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <airmid-dropdown label="Doctor Type" formControlName="doctorTypeId"
-                                        [formGroup]="inOperForm" [mode]="autocompleteModeDoctorType"
-                                        (selectionChange)="selectChangedepdoctorType($event)">
-                                    </airmid-dropdown>
-                                </div>
-
-                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <airmid-dropdown label="Doctor Name" formControlName="doctorId" #ddlDoctor
-                                        [formGroup]="inOperForm" (selectionChange)="selectChangedoctor($event)">
-                                    </airmid-dropdown>
-                                </div>
-
-                                <div class="input-add-button">
-                                    <button class="btn btn-primary btn-with-icon" (click)="onAdd1()">
-                                        <span class="btn-icon">
-                                            <mat-icon> add </mat-icon>
-                                        </span>
-                                        <span>Add</span>
-                                    </button>
-                                </div>
-
-                            </div>
-
-                            <div class="airmid-table-container">
-                                <mat-table matSort [dataSource]="dsattendentDetailList" [@animateStagger]="{value:'50'}"
-                                    class="airmid-table" cdkDropList (cdkDropListDropped)="drop2($event)">
-
-                                    <ng-container matColumnDef="sequence">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Sr.No
-                                        </mat-header-cell>
-                                        <mat-cell *matCellDef="let element; let i = index" fxShow.gt-sm>
-                                            {{ i + 1 }}
-                                        </mat-cell>
-                                    </ng-container>
-
-                                    <ng-container matColumnDef="surgeon">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Surgeon
-                                            Name
-                                        </mat-header-cell>
-                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                            <span> {{element.doctorType}} </span>
-                                        </mat-cell>
-                                    </ng-container>
-
-                                    <ng-container matColumnDef="anesthesia">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide
-                                            fxShow.gt-sm>Anesthesia Name
-                                        </mat-header-cell>
-                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                            <span> {{element.doctorName}} </span>
-                                        </mat-cell>
-                                    </ng-container>
-
-                                    <ng-container matColumnDef="Action" stickyEnd>
-                                        <mat-header-cell *matHeaderCellDef class="table-actions">Action
-                                        </mat-header-cell>
-                                        <mat-cell *matCellDef="let contact">
-                                            <ng-container class="actions">
-                                                <mat-icon (click)="onEdit1(contact)" color="primary">edit</mat-icon>
-                                                <mat-icon (click)="deleteTableRow1($event ,contact)" color="warn">
-                                                    delete
-                                                </mat-icon>
-                                            </ng-container>
-                                        </mat-cell>
-                                    </ng-container>
-
-                                    <mat-header-row class="accent" *matHeaderRowDef="displayedColumns1; sticky: true">
-                                    </mat-header-row>
-                                    <mat-row *matRowDef="let row; columns: displayedColumns1;" class="element"
-                                        [@animate]="{value:'*',params:{y:'100%'}}" cdkDrag
-                                        (cdkDragMoved)="onDragMoved2($event)"></mat-row>
-                                </mat-table>
-                            </div>
-                        </mat-card>
                     </mat-tab>
 
                     <mat-tab label="Check List">
@@ -651,7 +688,7 @@
                         </mat-card>
                     </mat-tab>
 
-                    <mat-tab label="Parts Of Surgery">
+                    <mat-tab label="Parts Of Surgery/Digital Copy">
                         <div fxLayout="column" fxLayoutGap="16px" fxLayoutAlign="start start" fxLayoutWrap
                             style="height: 200px;">
 
@@ -683,8 +720,8 @@
                         </div>
                     </mat-tab>
 
-                    <mat-tab label="Closure/Operative Findings">
-                        <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 10px;">
+                    <mat-tab label="Closure/Operative Findings & Post Operative Notes/Patient Condition">
+                        <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 10px; height: 50%;" fxLayout="column">
                             <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="80%" fxLayout="row wrap"
                                 fxLayoutGap="4px grid">
                                 <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
@@ -699,13 +736,9 @@
                                     </airmid-editor>
                                 </div>
                             </div>
-                        </mat-card>
-                    </mat-tab>
 
-                    <mat-tab label="Post Operative Notes/Patient Condition">
-                        <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 10px;">
                             <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="80%" fxLayout="row wrap"
-                                fxLayoutGap="4px grid">
+                                fxLayoutGap="4px grid" style="margin-top: 5px;">
                                 <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <label style="font-size: 16px; font-weight: bold;">Post Operative Plan Of
                                         Care</label>
@@ -728,12 +761,6 @@
                         </mat-card>
                     </mat-tab>
 
-                    <mat-tab label="Digital Copy">
-                        <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 10px;">
-
-                        </mat-card>
-                    </mat-tab>
-
                 </mat-tab-group>
 
             </form>
@@ -741,9 +768,9 @@
         </div>
     </div>
 
-    <div class="modal-footer" style="margin-top: 10px;">
+    <div class="modal-footer inOperfooter" style="margin-top: 10px;">
         <div class="footer-navigation-container">
-            <div class="modal-footer-buttons">
+            <div class="modal-footer-buttons inOperbtn">
                 <button class="btn btn-danger-outline" (click)="onClear(false)">Close</button>
                 <button class="btn btn-primary " color="accent" (click)="onSubmit()">
                     <span>Save</span>

@@ -13,6 +13,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 import Swal from 'sweetalert2';
 import { DatePipe } from '@angular/common';
+import { AddAutoServiceComponent } from './add-auto-service/add-auto-service.component';
 
 
 @Component({
@@ -171,7 +172,8 @@ export class ConfigurationComponent implements OnInit {
     public _ConfigurationService: ConfigurationService,
     private formBuilder: FormBuilder,
     private _FormvalidationserviceService: FormvalidationserviceService,
-    public toastr: ToastrService, public datePipe: DatePipe
+    public toastr: ToastrService, public datePipe: DatePipe,
+    private _matDialog:MatDialog
   ) { }
 
   ngOnInit(): void {
@@ -451,6 +453,17 @@ export class ConfigurationComponent implements OnInit {
       element.IsInputField = event.checked;
     }
   }
+      getAutoservice(){ 
+            const dialogRef = this._matDialog.open(AddAutoServiceComponent,
+                    {
+                        maxWidth: "100%",
+                        height: '75%',
+                        width: '70%', 
+                    });
+                dialogRef.afterClosed().subscribe(result => {
+                    console.log('The dialog was closed - Insert Action', result); 
+                });
+    }
 }
 
 
