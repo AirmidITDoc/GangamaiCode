@@ -171,19 +171,19 @@
 
                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <airmid-dropdown label="From Department" formControlName="fromDepId"
-                                        [formGroup]="CheckInFormGroup" [mode]="autocompleteModeDepartment">
+                                        [formGroup]="CheckInFormGroup" [mode]="autocompleteModeFromDepartment">
                                     </airmid-dropdown>
                                 </div>
 
                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <airmid-dropdown label="To Department" formControlName="toDepId"
-                                        [formGroup]="CheckInFormGroup" [mode]="autocompleteModeDepartment">
+                                        [formGroup]="CheckInFormGroup" [mode]="autocompleteModeToDepartment">
                                     </airmid-dropdown>
                                 </div>
 
                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <airmid-dropdown label="Mode Of Transfer" formControlName="modeTranId"
-                                        [formGroup]="CheckInFormGroup">
+                                        [formGroup]="CheckInFormGroup" [mode]="autocompleteModeOfTransfer">
                                     </airmid-dropdown>
                                 </div>
 
@@ -195,7 +195,7 @@
 
                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <airmid-dropdown label="Accompanied" formControlName="accompaniedId"
-                                        [formGroup]="CheckInFormGroup">
+                                        [formGroup]="CheckInFormGroup" [mode]="autocompleteModerelationship">
                                     </airmid-dropdown>
                                 </div>
 

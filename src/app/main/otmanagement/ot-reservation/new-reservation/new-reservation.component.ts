@@ -147,6 +147,7 @@ export class NewReservationComponent implements OnInit {
       this.vOPDNo = this.registerObj1.opdNo
       this.vIPDNo = this.registerObj1.opdNo
       this.vPatientName = this.registerObj1.patientName
+      this.reservationForm.get('estimateTime')?.setValue(this.registerObj1.estimateTime.trim())
 
       setTimeout(() => {
         this._OtReservationService.getotTableById(this.data.ottable).subscribe((response) => {
@@ -174,19 +175,19 @@ export class NewReservationComponent implements OnInit {
       }
 
 
-      if (this.registerObj1?.estimateTime) {
-        const date = new Date(this.registerObj1.estimateTime);
-        if (!isNaN(date.getTime())) {
-          const hours = date.getHours().toString().padStart(2, '0');
-          const minutes = date.getMinutes().toString().padStart(2, '0');
+      // if (this.registerObj1?.estimateTime) {
+      //   const date = new Date(this.registerObj1.estimateTime);
+      //   if (!isNaN(date.getTime())) {
+      //     const hours = date.getHours().toString().padStart(2, '0');
+      //     const minutes = date.getMinutes().toString().padStart(2, '0');
 
-          const formattedTime = `${hours}:${minutes}`; // e.g. "13:01"
+      //     const formattedTime = `${hours}:${minutes}`; // e.g. "13:01"
 
-          setTimeout(() => {
-            this.reservationForm.get('estimateTime')?.setValue(formattedTime);
-          });
-        }
-      }
+      //     setTimeout(() => {
+      //       this.reservationForm.get('estimateTime')?.setValue(formattedTime);
+      //     });
+      //   }
+      // }
 
       this.reservationForm.patchValue(this.registerObj1);
       this.getdiagnosisList(this.registerObj1);
@@ -1211,6 +1212,13 @@ export class NewReservationComponent implements OnInit {
 
     const formattedDate = this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd");
     const formattedTime = formattedDate + this.dateTimeObj.time;
+
+    const surgeryDate = this.datePipe.transform(this.reservationForm.get('surgeryDate')?.value, 'yyyy-MM-dd');
+    const time = this.reservationForm.get('estimateTime')?.value;
+    if (surgeryDate && time) {
+      const combinedDateTime = `${surgeryDate} ${time}`;
+      this.reservationForm.get('estimateTime')?.setValue(combinedDateTime, { emitEvent: false });
+    }
 
     this.reservationForm.get('opipid').setValue(this.opIpId);
     this.reservationForm.get('otrequestId')?.setValue(this.vrequestId || 0);
