@@ -30,18 +30,31 @@
             <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
 
 
-                <ng-template #iconisCompleted let-element>
+                <!-- <ng-template #iconisCompleted let-element>
                     <div fxLayout="row" fxLayoutAlign="center center">
-                        <mat-icon *ngIf="contact.isCompleted" matTooltip="IsCompleted"
+                        <mat-icon *ngIf="element.isCompleted==true" matTooltip="IsCompleted"
                             class="active-icon green-500 s-16">check_circle</mat-icon>
-                        <mat-icon *ngIf="!contact.isCompleted" matTooltip="Not Completed"
+                        <mat-icon *ngIf="!element.isCompleted" matTooltip="Not Completed"
                             class="active-icon red-500 s-16">hourglass_empty</mat-icon>
                     </div>
+                </ng-template> -->
+
+                <ng-template #actionButtonTemplate let-element>
+                    <div fxLayout="row" fxLayoutAlign="center center">
+
+                        <mat-icon *ngIf="element.isCompleted==true" title="Print Bill" (click)="viewgetPathologyTestReportPdf()">print
+                        </mat-icon>
+                        <!-- 
+                    <mat-icon *ngIf="element.isCompleted==1" title="Is File Off">markunread_mailbox
+                    </mat-icon> -->
+
+                    </div>
                 </ng-template>
+
                 <ng-template #iconisPathology let-element>
                     <div fxLayout="row" fxLayoutAlign="center center">
 
-                        <mat-icon *ngIf="element.isPathology == 1" title="Pathology Service">
+                        <mat-icon *ngIf="element.isPathology==1" title="Pathology Service">
                             <img width="50px" height="50px" src="assets/images/logos/pathology.png">
                         </mat-icon>
                     </div>
@@ -50,7 +63,7 @@
                 <ng-template #iconisRadiology let-element>
                     <div fxLayout="row" fxLayoutAlign="center center">
 
-                        <mat-icon *ngIf="element.isRadiology == 1" title="Radiology Service">
+                        <mat-icon *ngIf="element.isRadiology==1" title="Radiology Service">
                             <img width="50px" height="50px" src="assets/images/logos/radiology.png">
                         </mat-icon>
                     </div>

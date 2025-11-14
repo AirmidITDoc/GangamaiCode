@@ -741,15 +741,27 @@ export class ResultEntryComponent implements OnInit {
     Printresultentry(row?: any[]) {
         debugger
         console.log(row);
+        // let pathologyDelete = [];
+
+        // this.selectedItem = row;
+
+
+        console.log(this.selection.selected);
         let pathologyDelete = [];
 
-        this.selectedItem = row;
+        this.selectedItem = this.selection.selected[0];
 
+        this.selection.selected.forEach((element) => {
+            pathologyDelete.push({ pathReportId: element.pathReportId });
+        });
         if (this.selectedItem.isCompleted)
             this.CompletdFlag = 1
         else
             this.CompletdFlag = 0
+
         pathologyDelete.push({ pathReportId: this.selectedItem.pathReportId });
+
+      
 
         const submitData = {
             pathPrintResultEntry: pathologyDelete

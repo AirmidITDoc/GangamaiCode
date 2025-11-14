@@ -246,12 +246,6 @@ autocompleteModecompany1: string = "Company";
         this.menuActions.push("Bill Print");
     }
 
-
-    viewgetOPBillReportPdf(element) {
-        this.commonService.Onprint("BillNo", element.billNo, "OpBillReceipt");
-    }
-
-
     getWhatsappshareBill(Id) { }
 
     viewgetOPPayemntPdf(data, status) {
@@ -270,6 +264,7 @@ autocompleteModecompany1: string = "Company";
     getWhatsappshareRefundBill(Id) { }
 
     OnPrint(element) {
+        debugger
          const [ThermalPrint, ThermalPrintValue] = this._ConfigService.configParams.ThermalPrint.split(":");  
          if (ThermalPrint != 1) {
                      this.commonService.Onprint("BillNo", element.billNo, "OpBillReceipt");
@@ -280,24 +275,24 @@ autocompleteModecompany1: string = "Company";
 
 
     OngetRecord(element, m) {
+        debugger
         console.log('Third action clicked for:', element);
         const [ThermalPrint, ThermalPrintValue] = this._ConfigService.configParams.ThermalPrint.split(":");  
-        if (m == "Bill Print"){
-              if (ThermalPrint != 1) {
-                     this.commonService.Onprint("BillNo", element.billNo, "OpBillReceipt");
-                    } else {
-                      this.commonService.Onprint("BillNo", element.billNo, "OpBillReceiptT");
-                    } 
-        }
-        else if (m == "Bill Print-Package Info")
+        // if (m == "Bill Print"){
+        //       if (ThermalPrint != 1) {
+        //              this.commonService.Onprint("BillNo", element.billNo, "OpBillReceipt");
+        //             } else {
+        //               this.commonService.Onprint("BillNo", element.billNo, "OpBillReceiptT");
+        //             } 
+        // }
+        // else 
+            if (m == "Bill Print-Package Info")
             this.commonService.Onprint("BillNo", element.billNo, "OPBillWithPackagePrint");
         else if (m == "Bill Print")
-            // this.commonService.Onprint("BillNo", element.billNo, "OPBillWithPackagePrint");
-        this.viewgetOPBillReportPdf(element)
+            this.commonService.Onprint("BillNo", element.billNo, "OpBillReceipt");
     }
 
-    viewgetOPBillThermalReportPdf(element) {
-  }
+
     openPaymentpopup(contact) {
         console.log(contact)
         let PatientHeaderObj = {};

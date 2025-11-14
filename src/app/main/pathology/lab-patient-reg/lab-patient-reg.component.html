@@ -32,7 +32,7 @@
         <div>
 
             <button mat-icon-button (click)="openPaymentpopup(element)" matTooltip="Settlement"
-                *ngIf="element.balanceAmt!='0'">
+                *ngIf="element.balanceAmt!='0'" style="color: #9c27b0;">
                 <mat-icon title="Settlement" *ngIf="element.balanceAmt!=0" class="disabled-icon">receipt</mat-icon>
                 <mat-icon title="paid" *ngIf="element.balanceAmt==0" [disabled]="element.disabled"
                     class="disabled-icon">payment</mat-icon>

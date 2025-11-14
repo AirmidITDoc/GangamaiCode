@@ -1322,6 +1322,7 @@ export class NewCasepaperComponent implements OnInit {
   }
 
   OnViewReportWithHeaderPdf(element: any) {
+    debugger
     this.commonService.Onprint("VisitId", element, "OPPrescription");
   }
   OnViewReportWithoutHeaderPdf(element: any) {

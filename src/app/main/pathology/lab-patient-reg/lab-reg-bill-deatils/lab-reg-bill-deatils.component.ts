@@ -9,6 +9,7 @@ import { PrintserviceService } from 'app/main/shared/services/printservice.servi
 import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
 import { fuseAnimations } from '@fuse/animations';
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 
 @Component({
     selector: 'app-lab-reg-bill-deatils',
@@ -18,50 +19,44 @@ import { fuseAnimations } from '@fuse/animations';
     animations: fuseAnimations,
 })
 export class LabRegBillDeatilsComponent {
-
+  @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     BillNo = "0"
     doctorName = ""
-    ngAfterViewInit() {
-        this.gridConfig.columnsList.find(col => col.key === 'isPathology')!.template = this.iconisPathology;
-        this.gridConfig.columnsList.find(col => col.key === 'isRadiology')!.template = this.iconisRadiology;
- this.gridConfig.columnsList.find(col => col.key === 'isCompleted')!.template = this.iconisCompleted;
-
-    }
-    @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
-
+   
     @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
     @ViewChild('iconisPathology') iconisPathology!: TemplateRef<any>;
     @ViewChild('iconisRadiology') iconisRadiology!: TemplateRef<any>;
-     @ViewChild('isCompleted') iconisCompleted!: TemplateRef<any>;
-    ngOnInit(): void {
-        if (this.data) {
-            
-            this.BillNo = this.data.billNo
-            this.doctorName = this.data.doctorName
-            this.getBilldetail()
-        }
+    // @ViewChild('isCompleted') iconisCompleted!: TemplateRef<any>;
+    ngAfterViewInit() {
+        this.gridConfig.columnsList.find(col => col.key === 'isPathology')!.template = this.iconisPathology;
+        this.gridConfig.columnsList.find(col => col.key === 'isRadiology')!.template = this.iconisRadiology;
+        // this.gridConfig.columnsList.find(col => col.key === 'isCompleted')!.template = this.iconisCompleted;
+  this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
     }
+
     allcolumns = [
-       
-         { heading: "--", key: "isCompleted", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
 
-        { heading: "--", key: "isPathology", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
+        // { heading: "--", key: "isCompleted", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width:10 },
 
-        { heading: "--", key: "isRadiology", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
-         { heading: "BillNo", key: "billNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-       
-        { heading: "Doctor Name", key: "doctorName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
+        { heading: "--", key: "isPathology", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width:30 },
 
-       { heading: "Service Name", key: "serviceName", sort: true, align: 'left', emptySign: 'NA', width: 320 },
+        { heading: "--", key: "isRadiology", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width:30 },
+        { heading: "BillNo", key: "billNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+
+        { heading: "Doctor Name", key: "doctorName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+
+        { heading: "Service Name", key: "serviceName", sort: true, align: 'left', emptySign: 'NA', width: 220 },
         { heading: "Price", key: "price", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "Charges Date", key: "chargesTime", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 6 },
 
-        // {
-        //     heading: "Action", key: "action", align: "right", width: 250, sticky: true, type: gridColumnTypes.template,
-        //     template: this.actionButtonTemplate  // Assign ng-template to the column
-        // }
+        {
+            heading: "Action", key: "action", align: "right", width: 150, sticky: true, type: gridColumnTypes.template,
+            template: this.actionButtonTemplate  // Assign ng-template to the column
+        }
 
     ];
+
+
     gridConfig: gridModel = {
         apiUrl: "LabPatientRegistration/LabBillDetailList",
         columnsList: this.allcolumns,
@@ -73,6 +68,17 @@ export class LabRegBillDeatilsComponent {
         ]
     }
 
+
+
+    ngOnInit(): void {
+        if (this.data) {
+            debugger
+            this.BillNo = this.data.billNo
+            this.doctorName = this.data.doctorName
+            this.getBilldetail()
+        }
+    }
+
     constructor(public _labPatientRegService: LabPatientRegService,
         private _loggedService: AuthenticationService,
         public datePipe: DatePipe, @Inject(MAT_DIALOG_DATA) public data: any,
@@ -81,6 +87,12 @@ export class LabRegBillDeatilsComponent {
         private commonService: PrintserviceService,) { }
 
     getBilldetail() {
+        this.getfilterdata()
+
+    }
+
+
+    getfilterdata() {
         this.gridConfig = {
             apiUrl: "LabPatientRegistration/LabBillDetailList",
             columnsList: this.allcolumns,
@@ -89,12 +101,48 @@ export class LabRegBillDeatilsComponent {
             filters: [
                 { fieldName: "BillNo", fieldValue: this.BillNo, opType: OperatorComparer.Equals }
 
+
             ]
         }
+        debugger
         this.grid.gridConfig = this.gridConfig;
         this.grid.bindGridData();
 
     }
+
+
+     viewgetPathologyTestReportPdf(data) {
+            const param = {
+                searchFields: [
+                    {
+                        fieldName: "OP_IP_Type",
+                        fieldValue: "4",
+                        opType: "Equals"
+                    }
+                ],
+                mode: "PathologyReportWithOutHeader"
+            };
+    
+            console.log(param);
+    
+            this._labPatientRegService.getReportView(param).subscribe(res => {
+                const matDialog = this._matDialog.open(PdfviewerComponent, {
+                    maxWidth: "85vw",
+                    height: '750px',
+                    width: '100%',
+                    data: {
+                        base64: res["base64"] as string,
+                        title: "Pathology Test Report Viewer"
+                    }
+                });
+    
+                matDialog.afterClosed().subscribe(result => {
+    
+                });
+            });
+    
+        }
+
     onClose() {
         this._matDialog.closeAll()
     }

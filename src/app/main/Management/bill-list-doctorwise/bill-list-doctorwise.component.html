@@ -90,19 +90,6 @@
                                     [(toValue)]="gridConfig1.filters[1].fieldValue">
                                 </airmid-datepicker>
 
-
-                                <!-- <mat-form-field appearance="outline">
-                                    <mat-label>Enter a date range</mat-label>
-                                    <mat-date-range-input [rangePicker]="picker">
-                                        <input matStartDate formControlName="fromDate" placeholder="Start date">
-                                        <input matEndDate formControlName="enddate" placeholder="End date"
-                                            (dateChange)="onChangeFirst1()">
-                                    </mat-date-range-input>
-                                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                                    <mat-date-range-picker #picker></mat-date-range-picker>
-                                </mat-form-field> -->
-
-
                                 <airmid-dropdown label="Doctor Name" formControlName="DoctorID"
                                     [formGroup]="DocSummaryfilterForm" [(ngModel)]="gridConfig1.filters[2].fieldValue"
                                     [validations]="getValidationdoctorMessages().searchDoctorId"
@@ -175,20 +162,6 @@
                                     [(fromValue)]="gridConfig2.filters[1].fieldValue"
                                     [(toValue)]="gridConfig2.filters[2].fieldValue">
                                 </airmid-datepicker>
-
-
-
-                                <!-- <mat-form-field appearance="outline">
-                                    <mat-label>Enter a date range</mat-label>
-                                    <mat-date-range-input [rangePicker]="picker1">
-                                        <input matStartDate formControlName="fromDate" placeholder="Start date">
-                                        <input matEndDate formControlName="enddate" placeholder="End date"
-                                            (dateChange)="onChangeFirst2()">
-                                    </mat-date-range-input>
-                                    <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-                                    <mat-date-range-picker #picker1></mat-date-range-picker>
-                                </mat-form-field> -->
-
 
                                 <airmid-dropdown label="Select Doctor Name" formControlName="DoctorID"
                                     [(ngModel)]="gridConfig2.filters[0].fieldValue"

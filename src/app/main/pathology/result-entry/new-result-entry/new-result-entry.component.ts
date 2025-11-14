@@ -217,7 +217,7 @@ export class NewResultEntryComponent {
   
 
     onResultUp(data) {
-        debugger
+        
         let items = this.dataSource.data.filter(x => String(x?.Formula ?? "").indexOf('{{' + data.ParameterShortName + '}}') > 0);
         for (let i = 0; i < items.length; i++) {
             let formula = items[i].Formula;
@@ -602,7 +602,7 @@ console.log(element)
     }
 
     viewgetPathologyTestReportPdf() {
-      
+      debugger
         const param = {
             searchFields: [
                 {

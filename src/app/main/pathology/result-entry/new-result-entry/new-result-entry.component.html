@@ -233,7 +233,7 @@
                             (selectionChange)="selectChangeDoctor($event)">
                         </airmid-dropdown> -->
                         <airmid-dropdown label="Pathologist Name" formControlName="PathResultDoctorId"
-                            [formGroup]="otherForm" (selectionChange)="selectChangeDoctor($event)"
+                            [formGroup]="otherForm" (selectionChange)="selectChangeDoctor($event)" fxFlex="40%"
                             ValueField="doctorId" TextField="doctorName"
                             ApiUrl="Pathology/search-pathologistdoctor"></airmid-dropdown>
                     </div>
