@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
@@ -9,11 +9,15 @@ import { Observable, ReplaySubject, Subject } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { AdministrationService } from '../../administration.service';
 import { ConfigurationService } from '../configuration.service';
+import { AddAutoServiceComponent } from '../add-auto-service/add-auto-service.component';
+import { fuseAnimations } from '@fuse/animations';
 
 @Component({
     selector: 'app-new-configuration',
     templateUrl: './new-configuration.component.html',
-    styleUrls: ['./new-configuration.component.scss']
+    styleUrls: ['./new-configuration.component.scss'],
+      encapsulation: ViewEncapsulation.None,
+      animations: fuseAnimations,
 })
 export class NewConfigurationComponent implements OnInit {
 
@@ -46,7 +50,8 @@ export class NewConfigurationComponent implements OnInit {
         public _ConfigurationService: ConfigurationService,
         public dialogRef: MatDialogRef<NewConfigurationComponent>,
         @Inject(MAT_DIALOG_DATA) public data: any,
-        public toastr: ToastrService
+        public toastr: ToastrService,
+        private _matDialog:MatDialog
     ) { }
 
     ngOnInit(): void {
@@ -162,7 +167,7 @@ export class NewConfigurationComponent implements OnInit {
 
     onClose() {
         this.dialogRef.close();
-    }
+    } 
 }
 
 

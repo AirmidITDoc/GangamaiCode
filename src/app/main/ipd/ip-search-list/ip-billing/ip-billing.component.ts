@@ -79,7 +79,7 @@ export class IPBillingComponent implements OnInit {
         this.gridConfig2.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate5;
     }
     allColumns = [
-        { heading: "Date", key: "bDate", sort: true, align: 'left', emptySign: 'NA', width: 110, type: 9 },
+        { heading: "Date", key: "bDate", sort: true, align: 'left', emptySign: 'NA', width: 110},
         { heading: "billNo", key: "billNo", sort: true, align: 'left', emptySign: 'NA', width: 110 },
         { heading: "Total Amt", key: "totalAmt", sort: true, align: 'left', emptySign: 'NA', width: 130, type: gridColumnTypes.amount },
         { heading: "Disc Amt", key: "concessionAmt", sort: true, align: 'left', emptySign: 'NA', width: 130, type: gridColumnTypes.amount },
@@ -1391,7 +1391,7 @@ export class IPBillingComponent implements OnInit {
     }
     PacakgeList: any = [];
     ////Pacakge Section
-    getRtrvpackagedetList() {
+    getRtrvpackagedetList() { 
         var vdata = {
             "first": 0,
             "rows": 10,
@@ -1402,9 +1402,14 @@ export class IPBillingComponent implements OnInit {
             "exportType": "JSON"
         }
         this._IpSearchListService.getRtevIPPackageDetList(vdata).subscribe((response) => {
+            debugger
             this.PackageDatasource.data = response.data as ChargesList[];
-            console.log(this.PackageDatasource.data)
-            this.PackageDatasource.data.forEach(element => {
+            console.log(this.PackageDatasource.data) 
+           this.PackageDatasource.data.forEach(element => {
+            const fitleredList = this.PacakgeList.filter(item=> item.serviceId != element.packageServiceId)
+            this.PacakgeList = fitleredList
+           }) 
+            this.PackageDatasource.data.forEach(element => { 
                 this.PacakgeList.push(
                     {
                         serviceId: element.packageServiceId,
@@ -1594,8 +1599,14 @@ export class IPBillingComponent implements OnInit {
     }
     // exec rptIPDInterimBill 193667 9507 
     viewgetInterimBillReportPdf(element) {
-        this.commonService.Onprint("BillNo", element.billNo, "IpInterimBill");
+        const [InterimA5_Print, InterimA5_Value] = this._ConfigService.configParams.InterimBillA5Print.split(":");
+        if (InterimA5_Print != 1) {
+            this.commonService.Onprint("BillNo", element?.billNo, "IPDInterimBill");
+        } else {
+            this.commonService.Onprint("BillNo", element?.billNo, "IPDInterimBillA5");
+        } 
     }
+    
     //For draft print   
     viewgetDraftBillReportPdf(Id) {
         this.commonService.Onprint("AdmissionID", Id, "IpDraftBillClassWise");

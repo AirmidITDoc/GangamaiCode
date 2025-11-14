@@ -722,7 +722,7 @@
                             Total Amt
                           </mat-header-cell>
                           <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                            <span> {{contact.TotalAmt || '-'}}</span>
+                            <span> {{contact.TotalAmt || '0'}}</span>
                           </mat-cell>
                         </ng-container>
 
@@ -730,7 +730,7 @@
                           <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>DoctorName
                           </mat-header-cell>
                           <mat-cell *matCellDef="let contact" fxShow.gt-sm mat-Tooltip="{{contact.doctorName}}">
-                            <span> {{contact.doctorName || '-'}}</span>
+                            <span> {{contact.doctorName || '0'}}</span>
                           </mat-cell>
                         </ng-container>
 
@@ -740,7 +740,7 @@
                           </mat-header-cell>
                           <mat-cell *matCellDef="let contact" fxShow.gt-sm>
 
-                            <span> {{contact.DiscAmt || '-' }}</span>
+                            <span> {{contact.DiscAmt || '0' }}</span>
                           </mat-cell>
                         </ng-container>
 
@@ -749,7 +749,7 @@
                             NetAmt
                           </mat-header-cell>
                           <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                            <span> {{contact.NetAmount || '-'}}</span>
+                            <span> {{contact.NetAmount || '0'}}</span>
                           </mat-cell>
                         </ng-container>
 
