@@ -45,7 +45,7 @@ export class NewOPListComponent implements OnInit {
     CompanyId = 0
     PBillNo: any = "%"
     autocompleteModecompany: string = "Company";
-autocompleteModecompany1: string = "Company";
+    autocompleteModecompany1: string = "Company";
     pf_name: any = ""
     pregNo: any = "0"
     pl_name: any = ""
@@ -232,8 +232,8 @@ autocompleteModecompany1: string = "Company";
 
     constructor(public _OPListService: OPListService, public _matDialog: MatDialog,
         public toastr: ToastrService, public datePipe: DatePipe,
-        private commonService: PrintserviceService, 
-                public _ConfigService: ConfigService,) { }
+        private commonService: PrintserviceService,
+        public _ConfigService: ConfigService,) { }
 
 
     ngOnInit(): void {
@@ -241,7 +241,7 @@ autocompleteModecompany1: string = "Company";
         this.myFilterpayform = this._OPListService.myFilterpaymentbrowseform();
         this.myFilterrefundform = this._OPListService.myFilterrefundbrowseform();
 
-        
+
         this.menuActions.push("Bill Print-Package Info");
         this.menuActions.push("Bill Print");
     }
@@ -265,19 +265,23 @@ autocompleteModecompany1: string = "Company";
 
     OnPrint(element) {
         debugger
-         const [ThermalPrint, ThermalPrintValue] = this._ConfigService.configParams.ThermalPrint.split(":");  
-         if (ThermalPrint != 1) {
-                     this.commonService.Onprint("BillNo", element.billNo, "OpBillReceipt");
-                    } else {
-                      this.commonService.Onprint("BillNo", element.billNo, "OpBillReceiptT");
-                    } 
-     }
+        const [ThermalPrint, ThermalPrintValue] = this._ConfigService.configParams.ThermalPrint.split(":");
+        if (ThermalPrint != 1) {
+            this.commonService.Onprint("BillNo", element.billNo, "OpBillReceipt");
+        } else {
+            this.commonService.Onprint("BillNo", element.billNo, "OpBillReceiptT");
+        }
+    }
+
+    OnCompanyBill(element) {
+
+    }
 
 
     OngetRecord(element, m) {
         debugger
         console.log('Third action clicked for:', element);
-        const [ThermalPrint, ThermalPrintValue] = this._ConfigService.configParams.ThermalPrint.split(":");  
+        const [ThermalPrint, ThermalPrintValue] = this._ConfigService.configParams.ThermalPrint.split(":");
         // if (m == "Bill Print"){
         //       if (ThermalPrint != 1) {
         //              this.commonService.Onprint("BillNo", element.billNo, "OpBillReceipt");
@@ -286,7 +290,7 @@ autocompleteModecompany1: string = "Company";
         //             } 
         // }
         // else 
-            if (m == "Bill Print-Package Info")
+        if (m == "Bill Print-Package Info")
             this.commonService.Onprint("BillNo", element.billNo, "OPBillWithPackagePrint");
         else if (m == "Bill Print")
             this.commonService.Onprint("BillNo", element.billNo, "OpBillReceipt");
@@ -297,7 +301,7 @@ autocompleteModecompany1: string = "Company";
         console.log(contact)
         let PatientHeaderObj = {};
         PatientHeaderObj['Date'] = this.datePipe.transform(contact.billDate, 'MM/dd/yyyy') || '01/01/1900',
-        PatientHeaderObj['RegNo'] = contact.regNo;
+            PatientHeaderObj['RegNo'] = contact.regNo;
         PatientHeaderObj['PatientName'] = contact.patientName;
         PatientHeaderObj['OPD_IPD_Id'] = contact.opD_IPD_ID;
         PatientHeaderObj['Age'] = contact.patientAge;
@@ -436,7 +440,7 @@ autocompleteModecompany1: string = "Company";
     }
 
 
-    CompanyId1=0
+    CompanyId1 = 0
     ListView1(value) {
         console.log(value)
         if (value.value !== 0)
@@ -456,7 +460,7 @@ autocompleteModecompany1: string = "Company";
         this.pregNo = this.myFilterpayform.get('RegNo').value || "0"
         this.pPBillNo = this.myFilterpayform.get('PBillNo').value || "0"
         this.precptNo = this.myFilterpayform.get('ReceiptNo').value || "0"
-         this.CompanyId1 = this.myFilterpayform.get('CompanyId').value || "0"
+        this.CompanyId1 = this.myFilterpayform.get('CompanyId').value || "0"
         this.getfilterdataOpPayment();
     }
 

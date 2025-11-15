@@ -147,8 +147,19 @@
 
                   <airmid-dropdown label="Item Company Name" formControlName="itemCompnayId"
                     [value]="registerObj?.itemCompnayId" [formGroup]="itemForm"
-                    [validations]="getValidationMessages().itemCompnayId" [mode]="autocompleteModeItemCompany" fxFlex="25%">
+                    [validations]="getValidationMessages().itemCompnayId" [mode]="autocompleteModeItemCompany"
+                    fxFlex="25%">
                   </airmid-dropdown>
+
+                  <airmid-textbox label="Content" formControlName="contend" [value]="registerObj?.contend"
+                    [formGroup]="itemForm" fxFlex="25%">
+                  </airmid-textbox>
+
+                  <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                    <mat-checkbox formControlName="IsVerifiedContent">
+                      IsVerifiedContent
+                    </mat-checkbox>
+                  </div>
 
                 </div>
               </mat-card>

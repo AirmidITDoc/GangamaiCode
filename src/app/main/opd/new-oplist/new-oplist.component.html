@@ -48,6 +48,11 @@
     <ng-template #actionButtonTemplate let-element>
         <div fxLayout="row" fxLayoutAlign="center center">
 
+            <button mat-icon-button matTooltip="Review Company Bill" (click)="OnCompanyBill(element)"
+                *ngIf="element.companyId > 0">
+                <mat-icon>remove_red_eye</mat-icon>
+            </button>
+
             <button mat-icon-button matTooltip="Print" (click)="OnPrint(element)">
                 <mat-icon>print</mat-icon>
             </button>

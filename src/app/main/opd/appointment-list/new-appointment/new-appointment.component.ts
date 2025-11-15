@@ -377,6 +377,14 @@ export class NewAppointmentComponent implements OnInit {
         }
     }
 
+    onChangeCompany(value) {
+        this._AppointmentlistService.getCompanyById(value.value).subscribe((response) => {
+            this.registerObj = response;
+            console.log("Company Data:",this.registerObj)
+            this.VisitFormGroup.get('TariffId').setValue(this.registerObj.traiffId);
+        });
+    }
+
     getregdetails() {
         let RegId = this.searchFormGroup.get("RegId").value
         if (RegId > 0) {

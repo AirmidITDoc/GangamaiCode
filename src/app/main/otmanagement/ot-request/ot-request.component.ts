@@ -55,7 +55,7 @@ export class OTRequestComponent implements OnInit {
     { heading: "OTReq-Date&Time", key: "otRequestDateTime", sort: true, align: 'left', emptySign: 'NA', width: 200 },
     { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 120 },
     { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
-    { heading: "Blood Group", key: "bloodGroup", sort: true, align: 'left', emptySign: 'NA', width: 120 },
+    // { heading: "Blood Group", key: "bloodGroup", sort: true, align: 'left', emptySign: 'NA', width: 120 },
     { heading: "Category Type", key: "typeName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
     { heading: "Theater Name", key: "otTableName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
     { heading: "Surgery Date", key: "surgeryDate", sort: true, align: 'left', emptySign: 'NA', type: 6, width: 150 },

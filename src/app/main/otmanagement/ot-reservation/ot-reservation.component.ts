@@ -100,7 +100,7 @@ export class OTReservationComponent implements OnInit {
         // { heading: "Operation Date-Time", key: "opstartTime", sort: true, align: 'left', emptySign: 'NA', type: 8, width: 180 },
         { heading: "UHID NO", key: "regNo", sort: true, align: 'left', emptySign: 'NA', },
         { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
-        { heading: "Blood Group", key: "bloodGroup", sort: true, align: 'left', emptySign: 'NA', width: 120 },
+        // { heading: "Blood Group", key: "bloodGroup", sort: true, align: 'left', emptySign: 'NA', width: 120 },
         { heading: "Category Type", key: "typeName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         { heading: "Theater Name", key: "otTableName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         { heading: "UserName", key: "userName", sort: true, align: 'left', emptySign: 'NA', width: 180 },
@@ -862,6 +862,9 @@ export class OtReserInsert {
     infectiveAmt: any;
     netAmt: any;
     ottable: any;
+    otCheckInId:any;
+    otRequestId:any;
+    otcheckInTime:any;
     /**
      * Constructor
      *
@@ -945,6 +948,9 @@ export class OtReserInsert {
             this.infectiveAmt = OtReserInsert.infectiveAmt || ''
             this.netAmt = OtReserInsert.netAmt || ''
             this.ottable = OtReserInsert.ottable || ''
+            this.otCheckInId = OtReserInsert.otCheckInId || ''
+            this.otRequestId = OtReserInsert.otRequestId || ''
+            this.otcheckInTime = OtReserInsert.otcheckInTime || ''
         }
     }
 }

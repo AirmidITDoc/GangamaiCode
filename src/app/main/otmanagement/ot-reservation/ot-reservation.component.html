@@ -35,12 +35,14 @@
                         </mat-icon>
                     </button>
 
-                    <button mat-icon-button matTooltip="Reservation PostPond" (click)="tOTBookingDateChange(element)">
+                    <button mat-icon-button matTooltip="Reservation PostPond" (click)="tOTBookingDateChange(element)"
+                        [disabled]="element.otCheckInId">
                         <mat-icon>date_range</mat-icon>
                     </button>
 
                     <button mat-icon-button matTooltip="Check In" (click)="checkInForm(element)">
-                        <!-- matTooltip]="element.isCheckedIn ? 'Check Out' : 'Check In'" -->
+                        <!-- matTooltip]="element.isCheckedIn ? 'Check Out' : 'Check In'" 
+                         need to change in list proc-->
                         <mat-icon>
                             <img width="30px" height="30px" src="assets/images/logos/check-in.png">
                         </mat-icon>
@@ -117,37 +119,6 @@
                     <button mat-icon-button matTooltip="Cancel" (click)="OnCancel(element)">
                         <mat-icon> cancel</mat-icon>
                     </button>
-
-                    <!-- <button mat-icon-button [matMenuTriggerFor]="actionsMenu" matTooltip="Actions"
-                        matTooltipPosition="above" (click)="$event.stopPropagation();">
-                        <mat-icon>more_vert</mat-icon>
-                    </button>
-
-                    <mat-menu #actionsMenu="matMenu" xPosition="before" yPosition="below" [overlapTrigger]="false">
-
-                        <button mat-menu-item (click)="tOTBookingDateChange(element)"
-                            style="height: 32px; min-height: 32px;">
-                            <mat-icon>date_range</mat-icon>
-                            <span style="font-size: 13px;">Reservation PostPone</span>
-                        </button>
-
-                        <button mat-menu-item (click)="checkInForm(element)" style="height: 32px; min-height: 32px;">
-                            <mat-icon>check_circle_outline</mat-icon>
-                            <span style="font-size: 13px;">Check-IN</span>
-                        </button>
-
-                        <button mat-menu-item (click)="preOperationForm(element)"
-                            style="height: 32px; min-height: 32px;">
-                            <mat-icon>local_hospital</mat-icon>
-                            <span style="font-size: 13px;">Pre-Operation</span>
-                        </button>
-
-                        <button mat-menu-item (click)="postOperationForm(element)"
-                            style="height: 32px; min-height: 32px;">
-                            <mat-icon>local_hospital</mat-icon>
-                            <span style="font-size: 13px;">Post-Operation</span>
-                        </button>
-                    </mat-menu> -->
                 </div>
             </ng-template>
             <airmid-table [gridConfig]="gridConfig" class="content">

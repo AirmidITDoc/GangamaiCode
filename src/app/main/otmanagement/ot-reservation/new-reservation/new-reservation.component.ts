@@ -52,7 +52,7 @@ export class NewReservationComponent implements OnInit {
   autocompleteModeAnesthesiatypes: string = "Anesthesiatypes"
   autocompleteModeRefDoctor: String = "RefDoctor";
   autocompleteModeResourseType: string = "ResourcesTypes";
-
+  autocompleteModebloodGroup: string = "BloodGroupTypes";
   autocompleteModestatus: string = "State";
   autocompleteModeSurgery: String = "SurgeryMaster";
   autocompleteModeOTTable: String = "OttableMaster";
@@ -100,7 +100,6 @@ export class NewReservationComponent implements OnInit {
   ];
 
   registerObj1 = new OtReserInsert({});
-  BloodGroupNames: string[] = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
   partTypes: string[] = ["Left", "Middle", "Right"];
   @ViewChild('ddlLocation') ddlLocation: AirmidDropDownComponent;
   @ViewChild('ddlSurgerytype') ddlSurgerytype: AirmidDropDownComponent;
@@ -147,6 +146,7 @@ export class NewReservationComponent implements OnInit {
       this.vOPDNo = this.registerObj1.opdNo
       this.vIPDNo = this.registerObj1.opdNo
       this.vPatientName = this.registerObj1.patientName
+      this.vrequestId = this.registerObj1.otRequestId;
       this.reservationForm.get('estimateTime')?.setValue(this.registerObj1.estimateTime.trim())
 
       setTimeout(() => {
@@ -900,6 +900,13 @@ export class NewReservationComponent implements OnInit {
     }
   }
 
+  convertToISOFormat(dateStr: string): string {
+    // convert in to "2025-11-15T02:01:00"
+    const [datePart, timePart] = dateStr.split(" ");
+    const [DD, MM, YYYY] = datePart.split("-"); 
+    return `${YYYY}-${MM}-${DD}T${timePart}`;
+  }
+
   FetchList: any = [];
   getReservationSurgeryDetList(obj) {
     var m_data2 = {
@@ -918,9 +925,10 @@ export class NewReservationComponent implements OnInit {
       this.FetchList = records.data as OtReserInsert[];
       this.FetchList.forEach(element => {
 
-        const from = new Date(element.surgeryFromTime);
-        const end = new Date(element.surgeryEndTime);
-
+        const fromISO = this.convertToISOFormat(element.surgeryFromTime);
+        const endISO = this.convertToISOFormat(element.surgeryEndTime);
+        const from = new Date(fromISO);
+        const end = new Date(endISO);
         const surgeryFromTime = from.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
         const surgeryEndTime = end.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
 

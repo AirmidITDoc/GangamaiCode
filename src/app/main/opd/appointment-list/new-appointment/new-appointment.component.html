@@ -243,7 +243,7 @@
                                 </div>
                               </div>
                               <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                <airmid-textbox label="Aadharcardno" formControlName="aadharCardNo"
+                                <airmid-textbox label="Aadhaar No. / National ID" formControlName="aadharCardNo"
                                   [value]="registerObj.aadharCardNo ?? ''" [formGroup]="personalFormGroup"
                                   (keypress)="keyPressAlphanumeric($event)" [maxLength]="12"
                                   [validations]="getValidationMessages().aadharCardNo"></airmid-textbox>
@@ -325,7 +325,7 @@
                             </div>
 
                             <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                              <airmid-textbox label="AadharCardNo" formControlName="emgAadharCardNo"
+                              <airmid-textbox label="Aadhaar No. / National ID" formControlName="emgAadharCardNo"
                                 [formGroup]="personalFormGroup" [maxLength]="12"
                                 [validations]="getValidationMessages().aadharCardNo"
                                 [value]="registerObj.emgAadharCardNo ?? ''"></airmid-textbox>
@@ -450,7 +450,7 @@
                         <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%" *ngIf="isCompanySelected">
                           <airmid-dropdown label="Company Name" formControlName="CompanyId" [formGroup]="VisitFormGroup"
                             [value]="data?.companyId" [validations]="getValidationMessages().CompanyId"
-                            [mode]="autocompleteModecompany"></airmid-dropdown>
+                            [mode]="autocompleteModecompany" (selectionChange)="onChangeCompany($event)"></airmid-dropdown>
                         </div>
 
                         <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%" *ngIf="isCompanySelected">

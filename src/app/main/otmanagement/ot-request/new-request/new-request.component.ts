@@ -46,6 +46,7 @@ export class NewRequestComponent implements OnInit {
   autocompleteModeOTTable: String = "OttableMaster";
   autocompleteModeLocation: string = "Location";
   autocompleteModeResourseType: string = "ResourcesTypes";
+  autocompleteModebloodGroup: string = "BloodGroupTypes";
 
   vRegNo: any;
   vPatientName: any;
@@ -96,8 +97,6 @@ export class NewRequestComponent implements OnInit {
   // registerObj: any;
   registerObj1 = new OtReqInsert({});
   registerObj2 = new OtReqInsert({});
-  BloodGroupNames: string[] = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
-  // surgeryCategoryIdNames: string[] = ["Normal", "Emergency"];
   partTypes: string[] = ["Left", "Middle", "Right"];
 
   dssurgeryDetailList = new MatTableDataSource<OtReqInsert>();
@@ -849,10 +848,20 @@ export class NewRequestComponent implements OnInit {
     const formattedTime = formattedDate + this.dateTimeObj.time;
 
     const surgeryDate = this.datePipe.transform(this.requestForm.get('surgeryDate')?.value, 'yyyy-MM-dd');
-    const time = this.requestForm.get('estimateTime')?.value; 
+    const time = this.requestForm.get('estimateTime')?.value;
     if (surgeryDate && time) {
       const combinedDateTime = `${surgeryDate} ${time}`;
       this.requestForm.get('estimateTime')?.setValue(combinedDateTime, { emitEvent: false });
+    }
+    let est = this.requestForm.get('estimateTime')?.value;
+    if (est) {
+      const parts = est.split(" ");
+
+      // If first two parts are a date → remove one
+      if (parts.length >= 3 && parts[0] === parts[1]) {
+        est = parts.slice(1).join(" ");
+      }
+      this.requestForm.get('estimateTime')?.setValue(est, { emitEvent: false });
     }
 
     this.requestForm.get('opipid').setValue(this.opIpId);

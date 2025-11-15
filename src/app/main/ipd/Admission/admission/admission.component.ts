@@ -633,6 +633,7 @@ export class AdmissionComponent implements OnInit {
       });
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed - Insert Action', result);
+      this.grid.bindGridData();
     });
   }
 
@@ -781,50 +782,50 @@ export class AdmissionComponent implements OnInit {
     // Push filters like GetAppointdetail()
     filters.push(
       {
-          "fieldName": "F_Name",
-          "fieldValue": String(this.f_name),
-          "opType": "Contains"
-        },
-        {
-          "fieldName": "L_Name",
-          "fieldValue": String(this.l_name),
-          "opType": "Contains"
-        },
-        {
-          "fieldName": "Reg_No",
-          "fieldValue": String(this.regNo),
-          "opType": "Equals"
-        },
-        {
-          "fieldName": "Doctor_Id",
-          "fieldValue": String(this.DoctorId),
-          "opType": "Equals"
-        },
-        {
-          "fieldName": "From_Dt",
-          "fieldValue": this.fromDate,
-          "opType": "GreaterThanOrEqual"
-        },
-        {
-          "fieldName": "To_Dt",
-          "fieldValue": this.toDate,
-          "opType": "LessThanOrEqual"
-        },
-        {
-          "fieldName": "Admtd_Dschrgd_All",
-          "fieldValue": "0",
-          "opType": "Equals"
-        },
-        {
-          "fieldName": "M_Name",
-          "fieldValue": String(this.m_name),
-          "opType": "Equals"
-        },
-        {
-          "fieldName": "IPNo",
-          "fieldValue": String(this.IPDNo),
-          "opType": "Equals"
-        }
+        "fieldName": "F_Name",
+        "fieldValue": String(this.f_name),
+        "opType": "Contains"
+      },
+      {
+        "fieldName": "L_Name",
+        "fieldValue": String(this.l_name),
+        "opType": "Contains"
+      },
+      {
+        "fieldName": "Reg_No",
+        "fieldValue": String(this.regNo),
+        "opType": "Equals"
+      },
+      {
+        "fieldName": "Doctor_Id",
+        "fieldValue": String(this.DoctorId),
+        "opType": "Equals"
+      },
+      {
+        "fieldName": "From_Dt",
+        "fieldValue": this.fromDate,
+        "opType": "GreaterThanOrEqual"
+      },
+      {
+        "fieldName": "To_Dt",
+        "fieldValue": this.toDate,
+        "opType": "LessThanOrEqual"
+      },
+      {
+        "fieldName": "Admtd_Dschrgd_All",
+        "fieldValue": "0",
+        "opType": "Equals"
+      },
+      {
+        "fieldName": "M_Name",
+        "fieldValue": String(this.m_name),
+        "opType": "Equals"
+      },
+      {
+        "fieldName": "IPNo",
+        "fieldValue": String(this.IPDNo),
+        "opType": "Equals"
+      }
     );
 
     let data = {
@@ -1219,7 +1220,7 @@ export class AdmissionPersonlModel {
   isMlc: any;
   ischarity: any;
   converId: any;
-VisAdmTime: any;
+  VisAdmTime: any;
 
 
   /**
