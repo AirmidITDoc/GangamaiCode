@@ -333,7 +333,7 @@ export class OpPaymentVimalComponent implements OnInit {
     this.patientDetailsFormGrp.markAllAsTouched();
     this.patientDetailsFormGrp.updateValueAndValidity();
 
-    if (this.patientDetailsFormGrp.invalid) {
+    if (this.patientDetailsFormGrp.invalid && this.balanceAmt != 0) {
 
       let invalidFields = [];
       if (this.patientDetailsFormGrp.invalid) {

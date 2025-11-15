@@ -123,5 +123,7 @@ export class ConfigurationService {
   public getloginaccessRetrive(param) {
     return this._httpClient.PostData("Common", param);
   }
-
+  public AutoServiceInsert(Param: any) { 
+    return this._httpClient.PostData("Administration/AutoServiceListInsert", Param);
+  }
 }

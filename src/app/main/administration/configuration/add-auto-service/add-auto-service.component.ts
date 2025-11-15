@@ -8,6 +8,8 @@ import { fuseAnimations } from '@fuse/animations';
 import { ConfigurationService } from '../configuration.service';
 import { DatePipe } from '@angular/common'; 
 import { ToastrService } from 'ngx-toastr';
+import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
+import { element } from 'protractor';
 
 @Component({
   selector: 'app-add-auto-service',
@@ -18,18 +20,16 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class AddAutoServiceComponent {
   displayedColumns = [
-    'Status',
-    'serviceName'
+    'Serviceid',
+    'serviceName',
+    'action'
   ];
 
   AutoServiceForm: FormGroup;
-  ApiURL:any='';
-  sIsLoading: string = '';
-  itemDetails:any;
-  itemnamelist:any=[];
+  sIsLoading: string = ''; 
+  registerObj:any;
   autocompleteModeService: string = "Service"; 
-  autocompleteModeClass: string = "Class";
-  @ViewChild(MatSort) sort: MatSort;
+   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
  
   dsServicelist = new MatTableDataSource<ItemList>();
@@ -41,101 +41,95 @@ export class AddAutoServiceComponent {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private _formBuilder: FormBuilder,
     public datePipe:DatePipe,
-    public toastr:ToastrService
-  ) {this.AutoServiceForm = this.CreateAutoServiceForm();}
+    public toastr:ToastrService,
+    public _formvalidatorsaervice:FormvalidationserviceService
+  ) {}
 
-  ngOnInit(): void {
-    debugger
-    this.AutoServiceForm.markAllAsTouched();
-    if(this.data){
-      this.itemDetails = this.data?.obj
-      console.log( this.itemDetails ) 
+  ngOnInit(): void { 
+    this.AutoServiceForm = this.CreateAutoServiceForm()
+    this.AutoServiceForm.markAllAsTouched(); 
+    
      }
-     this.ApiURL = "VisitDetail/GetServiceListwithTraiff?TariffId=" + 1 + "&ClassId=" + 1 + "&ServiceName="
-    }
   CreateAutoServiceForm() {
-    return this._formBuilder.group({
-      classId: [0],
+    return this._formBuilder.group({ 
       serviceName: [0,[Validators.required]]
     });
   }
-  onItemChange(obj): void {
-    console.log(obj) 
+  onServiceChange(obj): void {
+    console.log(obj)
+  this.registerObj = obj
   } 
-  getSelectedClassObj(obj) {
-    console.log(obj); 
-         this.ApiURL = "VisitDetail/GetServiceListwithTraiff?TariffId=" + 1 + "&ClassId=" + obj.value + "&ServiceName="
-
-  }
-  chargelist:any=[];
- OnAddService(){ 
-  debugger
-        // const formattedDate = this.datePipe.transform(this.Serviceform.get('chargesDate').value, "yyyy-MM-dd");
-        // const formattedTime = this.datePipe.transform(new Date(), "HH:mm:ss"); 
-        const formValue = this.AutoServiceForm.value
-
-        if(this.dsServicelist.data.length>0){
-          const deuplicateRecord = this.dsServicelist.data.find(item=> item.serviceId == formValue?.serviceName.serviceId)
-          if(deuplicateRecord){
-              this.toastr.warning('Please check selected Service already added in list', 'Warning !', {
-                    toastClass: 'tostr-tost custom-toast-warning',
-                });
-                return;
-          }
-        }
-
-        // let doctorid = 0;
-        // if (this.isDoctor) {
-        //     if ((formValue.doctorId == '' || formValue.doctorId == null || formValue.doctorId == '0')) {
-        //         this.toastr.warning('Please select Doctor', 'Warning !', {
-        //             toastClass: 'tostr-tost custom-toast-warning',
-        //         });
-        //         return;
-        //     }
-        //     if (formValue.doctorId)
-        //         doctorid = this.Serviceform.get("doctorId")?.value ?? 0;
-        // } 
  
-         if (this.AutoServiceForm.valid) {
-           this.chargelist.push(
-             {
-               serviceId: formValue?.serviceName.serviceId,
-               serviceName: formValue?.serviceName.serviceName, 
-               tariffId:formValue?.serviceName.tariffId,
-               classId: formValue?.serviceName.classId,
-               creditedtoDoctor:formValue?.serviceName.creditedtoDoctor,
-               isPathology: formValue?.serviceName.isPathology,
-               isRadiology: formValue?.serviceName.isRadiology,
-               isPackage: formValue?.serviceName.isPackage,
-               doctorId: formValue?.serviceName.doctorId,
-             }
-           ) 
-           this.dsServicelist.data = this.chargelist
-            console.log('valida service form', this.AutoServiceForm.value)
-        } else {
-            let invalidFields = [];
-            if (this.AutoServiceForm.invalid) {
-                for (const controlName in this.AutoServiceForm.controls) {
-                    if (this.AutoServiceForm.controls[controlName].invalid) {
-                        invalidFields.push(`${controlName}`);
-                    }
-                }
-            }
-            if (invalidFields.length > 0) {
-                invalidFields.forEach(field => {
-                    this.toastr.warning(`Please Check this field "${field}" is invalid.`, 'Warning',
-                    );
-                });
-            }
-        } 
-        const serviceIdElement = document.querySelector(`[name='serviceName']`) as HTMLElement;
-        if (serviceIdElement) {
-            serviceIdElement.focus();
-        }
-        this.AutoServiceForm.markAllAsTouched();
-         this.AutoServiceForm.reset(); 
-    
- }
+  chargelist:any=[];
+  OnAddService() { 
+     const formValue = this.AutoServiceForm.value 
+    if (!formValue?.serviceName) {
+      this.toastr.warning('Please select service name', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    } 
+    if (this.dsServicelist.data.length > 0) {
+      const deuplicateRecord = this.dsServicelist.data.find(item => item.serviceId == this.registerObj?.value)
+      if (deuplicateRecord) {
+        this.toastr.warning('Please check selected Service already added in list', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+      }
+    }
+    this.chargelist.push(
+      {
+        serviceId: this.registerObj?.value,
+        serviceName: this.registerObj?.text,
+      }
+    )
+    this.dsServicelist.data = this.chargelist
+     const serviceIdElement = document.querySelector(`[name='serviceName']`) as HTMLElement;
+    if (serviceIdElement) {
+      serviceIdElement.focus();
+    }
+    this.AutoServiceForm.reset(); 
+    this.AutoServiceForm.markAllAsTouched();
+  }
+ 
+  deleteTableRow(element) {
+    let index = this.chargelist.indexOf(element);
+    if (index >= 0) {
+      this.chargelist.splice(index, 1);
+      this.dsServicelist.data = [];
+      this.dsServicelist.data = this.chargelist;
+    }
+    this.toastr.success('Record Deleted Successfully.', 'Deleted !', {
+      toastClass: 'tostr-tost custom-toast-success',
+    });
+  }
+ 
+  OnSave(){ 
+    if (!this.dsServicelist.data) {
+      this.toastr.warning('Please check data not availble in list', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    const saveList: any[] = [];
+    this.dsServicelist.data.forEach(element => {
+     saveList.push(
+      {
+        sysId: 0,
+        serviceId: element.serviceId,
+        isAutoBedCharges:true
+      }
+    )
+    }); 
+    if(saveList){
+      console.log(saveList)
+       this._ConfigurationService.AutoServiceInsert(saveList).subscribe(response => {
+        this.onClose();
+         })
+    }
+   
+  }
   onClose() {
     this.AutoServiceForm.reset();
     this.dialogRef.close();
@@ -144,6 +138,9 @@ export class AddAutoServiceComponent {
     return {
       classId: [
         { name: "required", Message: "class Name No is required" }
+      ],
+       serviceName: [
+        { name: "required", Message: "service Name No is required" }
       ]
     };
   }
