@@ -245,6 +245,10 @@ FollowupFormGroup: FormGroup;
         return this._httpClient1.GetData("OutPatient/" + Id);
     }
 
+    public getCompanyById(Id) {
+        return this._httpClient1.GetData("CompanyMaster/" + Id);
+    }
+
     public getEmergencyById(Id) {
         return this._httpClient1.GetData("Emergency/" + Id);
     }

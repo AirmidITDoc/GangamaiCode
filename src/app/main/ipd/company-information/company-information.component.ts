@@ -29,8 +29,11 @@ export class CompanyInformationComponent implements OnInit {
   screenFromString = 'Common-form';
   // registerObj: AdmissionPersonlModel;
   AdmissionID: any;
+  visitId: any;
   dsCompanyList = new MatTableDataSource<CompanyDetails>();
   Chargelist: any = [];
+  vOPDNo: any;
+  vIPDNo: any;
   displayedColumns: string[] = [
     'EstimateAmt',
     'ApprovedAmt',
@@ -40,6 +43,7 @@ export class CompanyInformationComponent implements OnInit {
     'Active',
     'Action'
   ]
+
   @ViewChild('grid') grid: AirmidTableComponent;
   constructor(
     public _AdmissionService: AdmissionService,
@@ -54,6 +58,7 @@ export class CompanyInformationComponent implements OnInit {
   ) { }
 
   registerObj = new CompanyDetails({});
+  vSelectedOption:any;
 
   ngOnInit(): void {
     this.companyApprovalFormGroup = this.createCompanyAprrovalForm();
@@ -64,7 +69,10 @@ export class CompanyInformationComponent implements OnInit {
 
     console.log("company data:", this.data.registerObj)
     this.registerObj = this.data.registerObj
-    this.AdmissionID = this.registerObj.admissionId
+    this.AdmissionID = this.registerObj.admissionId ?? this.registerObj.visitId
+    this.vOPDNo=this.registerObj.ipdno
+    this.vIPDNo=this.registerObj.opdNo
+    this.vSelectedOption== this.vOPDNo ? this.vOPDNo : this.vIPDNo
     this.companyInformationFormGroup.patchValue(this.registerObj)
 
     if ((this.data?.companyId) > 0) {
@@ -75,21 +83,21 @@ export class CompanyInformationComponent implements OnInit {
     }
 
     // date validation
-    this.companyApprovalFormGroup.get('validDate')?.valueChanges.subscribe(selectedDate => {
-      if (selectedDate) {
-        const today = new Date();
-        today.setHours(0, 0, 0, 0); // remove time portion
-        const chosen = new Date(selectedDate);
-        chosen.setHours(0, 0, 0, 0);
+    // this.companyApprovalFormGroup.get('validDate')?.valueChanges.subscribe(selectedDate => {
+    //   if (selectedDate) {
+    //     const today = new Date();
+    //     today.setHours(0, 0, 0, 0); // remove time portion
+    //     const chosen = new Date(selectedDate);
+    //     chosen.setHours(0, 0, 0, 0);
 
-        if (chosen < today) {
-          this.toastr.warning('Valid Date cannot be earlier than today.', 'Warning!',
-            { toastClass: 'tostr-tost custom-toast-warning' }
-          );
-          this.companyApprovalFormGroup.get('validDate')?.setValue(null);
-        }
-      }
-    });
+    //     if (chosen < today) {
+    //       this.toastr.warning('Valid Date cannot be earlier than today.', 'Warning!',
+    //         { toastClass: 'tostr-tost custom-toast-warning' }
+    //       );
+    //       this.companyApprovalFormGroup.get('validDate')?.setValue(null);
+    //     }
+    //   }
+    // });
 
     this.getfilterdata();
   }
@@ -102,12 +110,12 @@ export class CompanyInformationComponent implements OnInit {
 
   createCompanyInfoForm() {
     return this.formBuilder.group({
-      policyNo: ['', [Validators.required, this._FormvalidationserviceService.onlyNumberValidator()]],
+      policyNo: ['', [Validators.required]],
       approvedAmount: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       admissionId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
 
       // PolicyLimit: ['', [Validators.required, this._FormvalidationserviceService.onlyNumberValidator()]],
-      validDate: [new Date()],
+      validDate: [new Date(), [Validators.required, this._FormvalidationserviceService.validDateValidator()]],
     });
   }
 
@@ -118,7 +126,7 @@ export class CompanyInformationComponent implements OnInit {
       estimateAmount: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       approvedAmount: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       alentry: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
-      dateApproved: [new Date()],
+      dateApproved: [new Date(), [Validators.required, this._FormvalidationserviceService.validDateValidator()]],
       comments: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
     });
   }
@@ -137,7 +145,7 @@ export class CompanyInformationComponent implements OnInit {
     { heading: "Estimate Amt", key: "estimateAmount", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "Approved Amt", key: "approvedAmount", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "Al Entry", key: "alentry", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "Valid Date", key: "dateApproved", sort: true, align: 'left', emptySign: 'NA', type:6 },
+    { heading: "Valid Date", key: "dateApproved", sort: true, align: 'left', emptySign: 'NA', type: 6 },
     { heading: "Remark", key: "comments", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
     {
@@ -222,6 +230,32 @@ export class CompanyInformationComponent implements OnInit {
   //     }
   //   }
   // }
+
+  onValidDateChange(event: any) {
+    const selectedDate = new Date(event.value);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    if (selectedDate < today) {
+      this.toastr.warning('Valid Date cannot be earlier than today.', 'Warning!',
+        { toastClass: 'tostr-tost custom-toast-warning' }
+      );
+      this.companyInformationFormGroup.get('validDate')?.setValue('');
+    }
+  }
+
+  onDateApprovedChange(event: any) {
+    const selectedDate = new Date(event.value);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // normalize
+
+    if (selectedDate > today) {
+      this.toastr.warning('Future date is not allowed! Please select today or past date.', 'Warning!',
+        { toastClass: 'tostr-tost custom-toast-warning' }
+      );
+      this.companyApprovalFormGroup.get('dateApproved')?.setValue('');
+    }
+  }
 
   OnEdit(row) {
     console.log(row)
@@ -416,6 +450,9 @@ export class CompanyDetails {
   H_BalAmt: any;
   CompanyId: any;
   admissionId: any
+  visitId: any;
+  vistDateTime: any;
+  opdNo: any;
   /**
    * Constructor
    *
@@ -494,9 +531,9 @@ export class CompanyDetails {
       this.CompanyId = CompanyDetails.CompanyId || '';
       this.admissionId = CompanyDetails.admissionId || '';
       this.approvedAmount = CompanyDetails.approvedAmount || '';
-      // this.VillageId = CompanyDetails.VillageId || '';
-      // this.TalukaId = CompanyDetails.TalukaId || '';
-      // this.PatientWeight = CompanyDetails.PatientWeight || '';
+      this.visitId = CompanyDetails.visitId || '';
+      this.vistDateTime = CompanyDetails.vistDateTime || '';
+      this.opdNo = CompanyDetails.opdNo || '';
       // this.AreaName = CompanyDetails.AreaName || '';
       // this.AadharCardNo = CompanyDetails.AadharCardNo || '';
       // this.PanCardNo = CompanyDetails.PanCardNo || '';

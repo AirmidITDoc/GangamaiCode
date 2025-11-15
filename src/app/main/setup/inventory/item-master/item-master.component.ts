@@ -295,7 +295,7 @@ export class ItemMaster {
     position: any;
     mAssignItemToStores: any[];
     isActive: any;
-
+    contend:any;
     stockUomid: any;
 
 
@@ -358,7 +358,7 @@ export class ItemMaster {
             this.itemCompnayId = ItemMaster.itemCompnayId || 0
             this.isActive = ItemMaster.isActiuve || true;
             this.mAssignItemToStores = ItemMaster.mAssignItemToStores || [];
-
+            this.contend = ItemMaster.contend ||''
             this.stockUomid = ItemMaster.stockUomid || 0
         }
     }

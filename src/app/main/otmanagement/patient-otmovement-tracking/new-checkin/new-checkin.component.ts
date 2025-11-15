@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Inject, OnInit, Output, ViewChild, ViewEncapsulation } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormArray, FormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { fuseAnimations } from '@fuse/animations';
 import { ToastrService } from 'ngx-toastr';
@@ -33,6 +33,7 @@ export class NewCheckinComponent {
   autocompleteModeOfTransfer: string = "ModeOfTransfer";
   registerObj1 = new OtReserInsert({});
   registerObj2 = new OtReserInsert({});
+  registerObj3 = new OtReserInsert({});
   vRegNo: any;
   vPatientName: any;
   vOPDNo: any;
@@ -40,6 +41,7 @@ export class NewCheckinComponent {
   vreservationId: any;
   opIpId: any;
   vSelectedOption: any = 'OP';
+  vCheckinId: any;
 
   constructor(
     public _PatientOtMoveTrackingService: PatientOtmovementTrackingService,
@@ -56,17 +58,18 @@ export class NewCheckinComponent {
 
     if ((this.data?.otReservationId) > 0) {
       this.registerObj1 = this.data
-      console.log(this.registerObj1)
+      // console.log(this.registerObj1)
       this.vRegNo = this.registerObj1.regNo
       this.vOPDNo = this.registerObj1.opdNo
       this.vIPDNo = this.registerObj1.opdNo
       this.vPatientName = this.registerObj1.patientName
+      this.vCheckinId = this.registerObj1.otCheckInId
 
       if (this.data.otReservationId) {
         setTimeout(() => {
           this._PatientOtMoveTrackingService.getotReservationById(this.data.otReservationId).subscribe((response) => {
             this.registerObj2 = response;
-            console.log("Get Data:", this.registerObj2)
+            // console.log("Get Data:", this.registerObj2)
             this.vreservationId = this.registerObj2.otreservationId
             this.opIpId = this.registerObj2.opipid
             this.vSelectedOption = this.registerObj2.opiptype == 0 ? 'OP' : 'IP';
@@ -74,22 +77,31 @@ export class NewCheckinComponent {
         }, 500);
       }
 
+      if (this.data.otCheckInId) {
+        setTimeout(() => {
+          this._PatientOtMoveTrackingService.getotcheckInOutById(this.data.otCheckInId).subscribe((response) => {
+            this.registerObj3 = response;
 
-      if (this.registerObj1?.estimateTime) {
-        const date = new Date(this.registerObj1.estimateTime);
-        if (!isNaN(date.getTime())) {
-          const hours = date.getHours().toString().padStart(2, '0');
-          const minutes = date.getMinutes().toString().padStart(2, '0');
+            const tempObj = { ...this.registerObj3 };
+            delete tempObj.otcheckInTime;
 
-          const formattedTime = `${hours}:${minutes}`; // e.g. "13:01"
+            Object.keys(tempObj).forEach(key => {
+              if (this.CheckInFormGroup.contains(key)) {
+                this.CheckInFormGroup.get(key)?.patchValue(tempObj[key]);
+              }
+            });
 
-          setTimeout(() => {
-            this.CheckInFormGroup.get('estimateTime')?.setValue(formattedTime);
+            if (this.registerObj3.otcheckInTime) {
+              const timePart = this.registerObj3.otcheckInTime.split(" ")[1];
+              const [hours, minutes, seconds] = timePart.split(":").map(Number);
+              const timeOnly = new Date();
+              timeOnly.setHours(hours, minutes, seconds || 0, 0);
+              this.CheckInFormGroup.get("otcheckInTime")?.setValue(timeOnly);
+            }
+            console.log("Get CheckIN Data:", this.registerObj3)
           });
-        }
+        }, 500);
       }
-
-      this.CheckInFormGroup.patchValue(this.registerObj1);
     }
   }
 
@@ -113,7 +125,7 @@ export class NewCheckinComponent {
       this.eventEmitForParent(datePart, timePart);
 
       const isoDateString = dateOfReg.toISOString();
-      this.CheckInFormGroup.get('moveDate').setValue(isoDateString);
+      this.CheckInFormGroup.get('otcheckInDate').setValue(isoDateString);
     }
   }
 
@@ -129,7 +141,7 @@ export class NewCheckinComponent {
       this.isTimeChanged = true;
       this.movedatetime = timePart;
 
-      this.CheckInFormGroup.get('moveTime').setValue(selectedTime);
+      this.CheckInFormGroup.get('otcheckInTime').setValue(selectedTime);
 
       this.eventEmitForParent(datePart, timePart);
     }
@@ -141,7 +153,52 @@ export class NewCheckinComponent {
   }
 
   onSubmit() {
+    const inDate = this.datePipe.transform(this.CheckInFormGroup.get('otcheckInDate')?.value, 'yyyy-MM-dd');
+    const inTime = this.datePipe.transform(this.CheckInFormGroup.get('otcheckInTime')?.value, 'HH:mm:ss');
+    if (inDate && inTime) {
+      const combinedDateTime = new Date(`${inDate}T${inTime}`); //`${inDate} ${inTime}`;
+      this.CheckInFormGroup.get('otcheckInTime')?.setValue(combinedDateTime);
 
+      this.CheckInFormGroup.get('checkOutTime')?.setValue(combinedDateTime);
+    }
+    this.CheckInFormGroup.get('otcheckInDate')?.setValue(inDate);
+    this.CheckInFormGroup.get('otreservationId')?.setValue(this.vreservationId);
+    this.CheckInFormGroup.get('opipid')?.setValue(this.opIpId);
+    this.CheckInFormGroup.get('opiptype')?.setValue(this.vSelectedOption == 'IP' ? true : false);
+    this.CheckInFormGroup.get('otcheckInId')?.setValue(this.vCheckinId || 0);
+
+    console.log(this.CheckInFormGroup.value)
+    if (!this.CheckInFormGroup.invalid) {
+      this._PatientOtMoveTrackingService.CheckINOutSave(this.CheckInFormGroup.value).subscribe((response) => {
+        // this.OnPrint(response)
+        this.onClear(true);
+      });
+    } else {
+      let invalidFields: string[] = [];
+
+      const validateFormGroup = (formGroup: FormGroup | FormArray, parentKey: string = '') => {
+        Object.keys(formGroup.controls).forEach(key => {
+          const control = formGroup.get(key);
+          const fieldKey = parentKey ? `${parentKey}.${key}` : key;
+
+          if (control instanceof FormGroup || control instanceof FormArray) {
+            validateFormGroup(control, fieldKey); // ✅ recursion for deeper levels
+          } else {
+            if (control?.invalid) {
+              invalidFields.push(fieldKey);
+            }
+          }
+        });
+      };
+
+      validateFormGroup(this.CheckInFormGroup);
+      if (invalidFields.length > 0) {
+        invalidFields.forEach(field => {
+          this.toastr.warning(`Please check this field "${field}"`, 'Warning!');
+        });
+        return;
+      }
+    }
   }
 
   onClear(val: boolean) {

@@ -194,15 +194,9 @@
                                 fxLayoutGap="4px grid">
 
                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <mat-form-field appearance="outline" fxFlex>
-                                        <mat-label>Blood Group</mat-label>
-                                        <mat-select placeholder="BloodGroup" id="bloodField"
-                                            formControlName="bloodGroup" name="bloodGroup">
-                                            <mat-option *ngFor="let i of BloodGroupNames" [value]="i">
-                                                {{i}}</mat-option>
-                                        </mat-select>
-                                    </mat-form-field>
-                                    <!--  (selectionChange)="focusNext('categoryType')" -->
+                                    <airmid-dropdown label="Blood Group" formControlName="bloodGroup"
+                                        [formGroup]="requestForm" [mode]="autocompleteModebloodGroup">
+                                    </airmid-dropdown>
                                 </div>
 
                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">

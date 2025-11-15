@@ -26,25 +26,40 @@ export class PatientOtmovementTrackingService {
 
   createCheckInForm(): FormGroup {
     return this._formBuilder.group({
-      opIpType: ["OP"],
-      opIpId: ["", [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      moveDate: [new Date()],
-      moveTime: [],
-      fromDepId: [],
-      toDepId: [],
-      accompaniedId: [],
-      authorisedId: [],
-      purMoving: [],
-      modeTranId: [],
-      // movinfId: [],
-      Remark: [''],
-      // equipId: [],
-      equipRemark: [''],
+      otcheckInId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      otreservationId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      otcheckInDate: [new Date()],
+      otcheckInTime: ['',[Validators.required]],
+      opipid: ["", [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      opiptype: ["OP"],//true
+      fromDepartment: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      toDepartment: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      movingType: ['OTRequest'],
+      modeOfTransfer: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      authorisedBy: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      accompanied: [],
+      equipmentCarried: [''],
+      remark: [''],
+      purPoseOfMovement: ['',[Validators.required]],
+      checkInOut: [1], //if checkinid then pass 0
+      checkOutTime: [''], //if checkinid then pass time or else no
+      checkOutFromDepartment: [0], //if checkinid then pass id or else no
+      checkOutToDepartment: [0], //if checkinid then pass id or else no
     });
   }
 
 
   public getotReservationById(Id) {
     return this._httpClient.GetData("OTReservation/" + Id);
+  }
+
+  public getotcheckInOutById(Id) {
+    return this._httpClient.GetData("OTReservation/Getcheckinout/" + Id);
+  }
+
+  public CheckINOutSave(Param: any) {
+    if (Param.otcheckInId) {
+      return this._httpClient.PutData("OTReservation/OtReservationCheckInOut", Param);
+    } else return this._httpClient.PostData("OTReservation/OtReservationCheckInOut", Param);
   }
 }

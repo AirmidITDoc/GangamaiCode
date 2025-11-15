@@ -149,7 +149,7 @@
                                     <mat-form-field appearance="outline" fxFlex>
                                         <mat-label>Movement Date</mat-label>
                                         <input matInput [matDatepicker]="picker1" [min]="minDate"
-                                            formControlName="moveDate" (dateChange)="onChangeDate($event.value)"
+                                            formControlName="otcheckInDate" (dateChange)="onChangeDate($event.value)"
                                             [disabled]="true">
                                         <mat-datepicker-toggle matSuffix [for]="picker1"
                                             [disabled]="isDatePckrDisabled"></mat-datepicker-toggle>
@@ -160,7 +160,7 @@
                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <mat-form-field appearance="outline" fxFlex>
                                         <mat-label>Movement Time</mat-label>
-                                        <input matTimepicker #t="matTimepicker" mode="12h" formControlName="moveTime"
+                                        <input matTimepicker #t="matTimepicker" mode="12h" formControlName="otcheckInTime"
                                             (timeChange)="onChangeTime($event)"
                                             [disableDialogOpenOnClick]="isDatePckrDisabled">
                                         <mat-icon matSuffix (click)="!isDatePckrDisabled ? t.showDialog() : ''">
@@ -170,37 +170,37 @@
                                 </div>
 
                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <airmid-dropdown label="From Department" formControlName="fromDepId"
+                                    <airmid-dropdown label="From Department" formControlName="fromDepartment"
                                         [formGroup]="CheckInFormGroup" [mode]="autocompleteModeFromDepartment">
                                     </airmid-dropdown>
                                 </div>
 
                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <airmid-dropdown label="To Department" formControlName="toDepId"
+                                    <airmid-dropdown label="To Department" formControlName="toDepartment"
                                         [formGroup]="CheckInFormGroup" [mode]="autocompleteModeToDepartment">
                                     </airmid-dropdown>
                                 </div>
 
                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <airmid-dropdown label="Mode Of Transfer" formControlName="modeTranId"
+                                    <airmid-dropdown label="Mode Of Transfer" formControlName="modeOfTransfer"
                                         [formGroup]="CheckInFormGroup" [mode]="autocompleteModeOfTransfer">
                                     </airmid-dropdown>
                                 </div>
 
                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <airmid-dropdown label="Authorised By" formControlName="authorisedId"
+                                    <airmid-dropdown label="Authorised By" formControlName="authorisedBy"
                                         [formGroup]="CheckInFormGroup" [mode]="autocompleteModeDoctor">
                                     </airmid-dropdown>
                                 </div>
 
                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <airmid-dropdown label="Accompanied" formControlName="accompaniedId"
+                                    <airmid-dropdown label="Accompanied" formControlName="accompanied"
                                         [formGroup]="CheckInFormGroup" [mode]="autocompleteModerelationship">
                                     </airmid-dropdown>
                                 </div>
 
                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <airmid-textbox label="Purpose Of Movement" formControlName="purMoving"
+                                    <airmid-textbox label="Purpose Of Movement" formControlName="purPoseOfMovement"
                                         [formGroup]="CheckInFormGroup">
                                     </airmid-textbox>
                                 </div>
@@ -211,20 +211,14 @@
                                     </airmid-dropdown>
                                 </div> -->
 
-                                <!-- <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <airmid-dropdown label="Equipments Carried" formControlName="equipId"
-                                        [formGroup]="CheckInFormGroup">
-                                    </airmid-dropdown>
-                                </div> -->
-
                                 <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="33%" fxLayout="row" class="gap-4">
                                     <mat-form-field appearance="outline" fxFlex="50%">
                                         <mat-label>Remark</mat-label>
-                                        <textarea row="2" name="Remark" formControlName="Remark" matInput
+                                        <textarea row="2" name="Remark" formControlName="remark" matInput
                                             type="text"></textarea>
                                     </mat-form-field>
                                     <mat-form-field appearance="outline" fxFlex="50%">
-                                        <textarea row="2" name="equipRemark" formControlName="equipRemark" matInput
+                                        <textarea row="2" name="equipmentCarried" formControlName="equipmentCarried" matInput
                                             placeholder="Enter Equipment Description here.." type="text"></textarea>
                                     </mat-form-field>
                                 </div>

@@ -343,6 +343,7 @@ export class RegInsert {
     emgId: any
     ipdNo: any;
     genderName: any;
+    traiffId:any;
 
     /**
      * Constructor
@@ -441,7 +442,7 @@ export class RegInsert {
             this.emgId = RegInsert.emgId || 0
             this.ipdNo = RegInsert.ipdNo || 0
             this.genderName = RegInsert.genderName || ''
-                  
+            this.traiffId = RegInsert.traiffId || ''
         }
     }
 }

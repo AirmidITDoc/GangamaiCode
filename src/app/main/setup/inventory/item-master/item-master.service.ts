@@ -155,10 +155,10 @@ export class ItemMasterService {
                 ]
             ],
             drugTypeName: ["",
-            [
-                // Validators.required,
-                // this._FormvalidationserviceService.notEmptyOrZeroValidator()
-            ]
+                [
+                    // Validators.required,
+                    // this._FormvalidationserviceService.notEmptyOrZeroValidator()
+                ]
             ],
             prodLocation: ["",
                 [
@@ -181,8 +181,10 @@ export class ItemMasterService {
             doseName: "",
             doseDay: 0,
             instruction: "",
-            mAssignItemToStores: [[], Validators.required] // empty array, not an object
+            mAssignItemToStores: [[], Validators.required], // empty array, not an object
 
+            contend: ['', [Validators.required]],
+            IsVerifiedContent: [false, Validators.requiredTrue],
         });
     }
 
