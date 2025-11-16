@@ -25,7 +25,7 @@ export class VechicalMasterComponent {
  @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
    
     allColumns =  [
-        // { heading: "Code", key: "subCompanyId", sort: true, align: 'left', emptySign: 'NA'},
+        
         { heading: "VehicleName", key: "vehicleName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         { heading: "VehicleNo", key: "vehicleNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "VehicleModel", key: "vehicleModel", sort: true, align: 'left', emptySign: 'NA', width: 250 },
@@ -52,48 +52,48 @@ export class VechicalMasterComponent {
 
 
     allFilters = [
-        // { fieldName: "vehicleName", fieldValue: "%", opType: OperatorComparer.StartsWith },
-        // { fieldName: "IsActive", fieldValue: "1", opType: OperatorComparer.Equals }
+        { fieldName: "vehicleName", fieldValue: "", opType: OperatorComparer.StartsWith },
+        { fieldName: "IsActive", fieldValue: "1", opType: OperatorComparer.Equals }
     ]
     
 
     gridConfig: gridModel = {
         apiUrl: "Ambulance/List",
         columnsList: this.allColumns,
-        sortField: "VehicleId",
+        sortField: "vehicleId",
         sortOrder: 0,
         filters: this.allFilters
     }
 
-    Clearfilter(event) {
-        console.log(event)
-        if (event == 'NameSearch')
-            this.myformSearch.get('NameSearch').setValue("")
+    // Clearfilter(event) {
+    //     console.log(event)
+    //     if (event == 'NameSearch')
+    //         this.myformSearch.get('NameSearch').setValue("")
 
-        this.onChangeFirst();
-    }
+    //     this.onChangeFirst();
+    // }
 
-    onChangeFirst() {
-        this.Name = this.myformSearch.get('NameSearch').value + "%"
-        // this.type = this.myformSearch.get('IsDeletedSearch').value
-        this.getfilterdata();
-    }
+    // onChangeFirst() {
+    //     this.Name = this.myformSearch.get('NameSearch').value + "%"
+    //     // this.type = this.myformSearch.get('IsDeletedSearch').value
+    //     this.getfilterdata();
+    // }
 
-    getfilterdata() {
-        debugger
-        this.gridConfig = {
-            apiUrl: "Ambulance/List",
-            columnsList: this.allColumns,
-            sortField: "VehicleId",
-            sortOrder: 0,
-            filters: [
-                // { fieldName: "driverName", fieldValue: this.Name, opType: OperatorComparer.Contains },
-                // { fieldName: "IsActive", fieldValue: "1", opType: OperatorComparer.Equals }
-            ]
-        }
-        this.grid.gridConfig = this.gridConfig;
-        this.grid.bindGridData();
-    }
+    // getfilterdata() {
+    //     debugger
+    //     this.gridConfig = {
+    //         apiUrl: "Ambulance/List",
+    //         columnsList: this.allColumns,
+    //         sortField: "vehicleId",
+    //         sortOrder: 0,
+    //         filters: [
+    //             // { fieldName: "driverName", fieldValue: this.Name, opType: OperatorComparer.Contains },
+    //             // { fieldName: "IsActive", fieldValue: "1", opType: OperatorComparer.Equals }
+    //         ]
+    //     }
+    //     this.grid.gridConfig = this.gridConfig;
+    //     this.grid.bindGridData();
+    // }
     constructor(
         public _AmbulancemasterService: VechicalMasterService,
         public toastr: ToastrService, public _matDialog: MatDialog

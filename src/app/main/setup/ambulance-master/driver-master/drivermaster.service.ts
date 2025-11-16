@@ -35,7 +35,7 @@ export class DrivermasterService {
             Validators.maxLength(15)
             ]],
              
-              isActive:'1'
+              // isActive:'1'
             
           });
       }
@@ -55,7 +55,7 @@ export class DrivermasterService {
 
        public DriverInsert(Param: any) {
         if (Param.driverId) {
-            return this._httpClient.PutData("Driver/" + Param.driverd, Param);
+            return this._httpClient.PutData("Driver/" + Param.driverId, Param);
         } else return this._httpClient.PostData("Driver", Param);
     }
 }

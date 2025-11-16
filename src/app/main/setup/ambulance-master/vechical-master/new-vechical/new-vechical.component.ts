@@ -1,14 +1,17 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, ViewEncapsulation } from '@angular/core';
 
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormGroup } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { VechicalMasterService } from '../vechical-master.service';
+import { fuseAnimations } from '@fuse/animations';
 
 @Component({
     selector: 'app-new-vechical',
     templateUrl: './new-vechical.component.html',
-    styleUrls: ['./new-vechical.component.scss']
+    styleUrls: ['./new-vechical.component.scss'],
+          encapsulation: ViewEncapsulation.None,
+          animations: fuseAnimations,
 })
 export class NewVechicalComponent {
 
@@ -25,15 +28,16 @@ export class NewVechicalComponent {
 
         this.ambulanceform = this._AmbulancemasterService.createAmbulanceForm();
         this.ambulanceform.markAllAsTouched();
-
-          if ((this.data?.vechicleId ?? 0) > 0) {
-            console.log(this.data);
+   console.log(this.data);
            
-             this.ambulanceform.get("name").setValue(this.data.name)
+          if ((this.data?.vehicleId ?? 0) > 0) {
+           this.ambulanceform.get("vehicleId").setValue(this.data.vehicleId)
+           
+             this.ambulanceform.get("vehicleName").setValue(this.data.vehicleName)
              this.ambulanceform.get("manuDate").setValue(this.data.manuDate)
-             this.ambulanceform.get("vechicalno").setValue(this.data.vechicalno)
-                 this.ambulanceform.get("VechicleModel").setValue(this.data.VechicleModel)
-             this.ambulanceform.get("vechicaltype").setValue(this.data.vechicaltype)
+             this.ambulanceform.get("vehicleNo").setValue(this.data.vehicleNo)
+                 this.ambulanceform.get("vehicleModel").setValue(this.data.vehicleModel)
+             this.ambulanceform.get("vehicleType").setValue(this.data.vehicleType)
              this.ambulanceform.get("note").setValue(this.data.note)
         }
     }
@@ -44,6 +48,8 @@ export class NewVechicalComponent {
 
         console.log(this.ambulanceform.value)
         debugger
+
+
         if (!this.ambulanceform.invalid) {
             this._AmbulancemasterService.AmbulanceInsert(this.ambulanceform.value).subscribe((response) => {
                 this.dialogRef.close()

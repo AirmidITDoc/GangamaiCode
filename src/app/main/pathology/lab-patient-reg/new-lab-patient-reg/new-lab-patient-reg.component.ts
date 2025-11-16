@@ -780,32 +780,7 @@ export class NewLabPatientRegComponent {
     this.myForm.get('regDate').setValue(formattedDate);
     this.myForm.get('regTime').setValue(formattedTime);
 
-    // if (this.selectedPatient) {
-    //   const fullName = this.selectedPatient.patientName?.trim() || '';
-    //   const nameParts = fullName.split(' ');
-
-    //   const firstNameControl = this.myForm.get('patientName');
-    //   const lastNameControl = this.myForm.get('lastName');
-    //   const mobileControl = this.myForm.get('mobileNo');
-
-    //   if (this.myForm.get('patientName')) {
-    //     const firstName = fullName.split(' ')[0] || '';
-    //     this.myForm.get('firstName').setValue(firstName)
-    //   }
-    //   if (!lastNameControl?.value) {
-    //     const lastName = nameParts.slice(1).join(' ');
-    //     lastNameControl?.setValue(lastName || '');
-    //   }
-    //   if (!mobileControl?.value) {
-    //     mobileControl?.setValue(this.selectedPatient.extMobileNo || '');
-    //   }
-    // } else {
-    //   this.myForm.get('firstName').setValue(this.myForm.get('patientName').value)
-    // }
-    // this.myForm.get('firstName').setValue(this.myForm.get('patientName').value)
-
-
-    
+       
     console.log(this.myForm.getRawValue())
     let DateOfBirth1 = this.myForm.get('DateOfBirth')?.value;
     if (DateOfBirth1) {
@@ -843,11 +818,7 @@ export class NewLabPatientRegComponent {
       this.myForm.get('ageYear')?.setValue(String(ageYear), { emitEvent: false });
       this.myForm.get('ageMonth')?.setValue(String(ageMonth), { emitEvent: false });
       this.myForm.get('ageDay')?.setValue(String(ageDay), { emitEvent: false });
-      // this.myForm.get('genderId').setValue(parseInt(this.myForm.get('genderId').value))
-      // this.myForm.get('stateId').setValue(parseInt(this.myForm.get('stateId').value))
-      // this.myForm.get('countryId').setValue(parseInt(this.myForm.get('countryId').value))
-      // this.myForm.get('departmentId').setValue(parseInt(this.myForm.get('departmentId').value))
-      // this.myForm.get('refDocId').setValue(parseInt(this.myForm.get('refDocId').value))
+    
     }
 
     const formValue = { ...this.myForm.value };

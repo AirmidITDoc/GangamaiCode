@@ -622,11 +622,24 @@ export class NewCasepaperComponent implements OnInit {
       this.casePaperInsertForm.get(['visitDetails', 'followupDate'])?.setValue(this.MedicineItemForm.get('start')?.value);
       console.log('form:', this.casePaperInsertForm.value)
       this._CasepaperService.onSaveCasepaper(this.casePaperInsertForm.value).subscribe(response => {
-
         if (this.caseFormGroup.get("LetteHeadRadio").value == 'LetterHead')
-          this.OnViewReportWithHeaderPdf(this.VisitId)
+          this.commonService.Onprint("VisitId", this.VisitId, "OPPrescriptionA5");
         else
-          this.OnViewReportWithoutHeaderPdf(this.VisitId)
+          this.commonService.Onprint("VisitId", this.VisitId, "OPPrescriptionwithoutHeaderA5");
+
+
+        // if (this.caseFormGroup.get("LetteHeadRadio").value == 'LetterHead')
+        //   this.OnViewReportWithHeaderPdf(this.VisitId)
+        // else
+        //   this.OnViewReportWithoutHeaderPdf(this.VisitId)
+
+        //   if (InterimA5_Print != 1) {
+        //     this.commonService.Onprint("BillNo", element?.billNo, "IPDInterimBill");
+        // } else {
+        //     this.commonService.Onprint("BillNo", element?.billNo, "IPDInterimBillA5");
+        // } 
+
+
         this.getWhatsappshareSales(this.vOPIPId, this.vMobileNo)
         this.onClear();
         this.onClose();
@@ -1320,11 +1333,19 @@ export class NewCasepaperComponent implements OnInit {
   }
 
   OnViewReportWithHeaderPdf(element: any) {
-    debugger
+
     this.commonService.Onprint("VisitId", element, "OPPrescription");
   }
   OnViewReportWithoutHeaderPdf(element: any) {
     this.commonService.Onprint("VisitId", element, "OPPrescriptionwithoutHeader");
+  }
+
+  OnViewReportWithHeaderA5Pdf(element: any) {
+
+    this.commonService.Onprint("VisitId", element, "OPPrescriptionA5");
+  }
+  OnViewReportWithoutHeaderA5Pdf(element: any) {
+    this.commonService.Onprint("VisitId", element, "OPPrescriptionwithoutHeaderA5");
   }
 
   onClose() {

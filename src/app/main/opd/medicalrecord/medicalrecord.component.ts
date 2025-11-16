@@ -297,15 +297,22 @@ export class MedicalrecordComponent implements OnInit {
         this.OnViewReportPdf(element, true);
       } else if (result.isDenied) {
         // Step 3B: Call function with "Without Header"
-        this.OnViewReportPdf(element, false);
+        this.OnViewReportPdf1(element, false);
       }
     });
   }
 
+ 
   OnViewReportPdf(element: any, withHeader: boolean) {
-    const reportName = withHeader ? "OPPrescription" : "OPPrescriptionwithoutHeader";
+    const reportName = withHeader ? "OPPrescription" : "OPPrescriptionA5";
     this.commonService.Onprint("VisitId", element.visitId, reportName);
   }
+
+   OnViewReportPdf1(element: any, withHeader: boolean) {
+    const reportName = withHeader ? "OPPrescription" : "OPPrescriptionwithoutHeaderA5";
+    this.commonService.Onprint("VisitId", element.visitId, reportName);
+  }
+
 
   OnNewCrossConsultation(element) {
     console.log('Third action clicked for:', element);

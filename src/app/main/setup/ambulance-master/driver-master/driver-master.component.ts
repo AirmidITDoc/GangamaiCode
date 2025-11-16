@@ -53,8 +53,8 @@ export class DriverMasterComponent {
 
 
     allFilters = [
-        // { fieldName: "driverName", fieldValue: "%", opType: OperatorComparer.StartsWith },
-        // { fieldName: "IsActive", fieldValue: "1", opType: OperatorComparer.Equals }
+        { fieldName: "driverName", fieldValue: "", opType: OperatorComparer.StartsWith },
+        { fieldName: "IsActive", fieldValue: "1", opType: OperatorComparer.Equals }
     ]
     
 
@@ -66,35 +66,35 @@ export class DriverMasterComponent {
         filters: this.allFilters
     }
 
-    Clearfilter(event) {
-        console.log(event)
-        if (event == 'NameSearch')
-            this.myformSearch.get('NameSearch').setValue("")
+    // Clearfilter(event) {
+    //     console.log(event)
+    //     if (event == 'NameSearch')
+    //         this.myformSearch.get('NameSearch').setValue("")
 
-        this.onChangeFirst();
-    }
+    //     this.onChangeFirst();
+    // }
 
-    onChangeFirst() {
-        this.Name = this.myformSearch.get('NameSearch').value + "%"
-        // this.type = this.myformSearch.get('IsDeletedSearch').value
-        this.getfilterdata();
-    }
+    // onChangeFirst() {
+    //     this.Name = this.myformSearch.get('NameSearch').value + "%"
+    //     // this.type = this.myformSearch.get('IsDeletedSearch').value
+    //     this.getfilterdata();
+    // }
 
-    getfilterdata() {
-        debugger
-        this.gridConfig = {
-            apiUrl: "Driver/List",
-            columnsList: this.allColumns,
-            sortField: "driverId",
-            sortOrder: 0,
-            filters: [
-                { fieldName: "driverName", fieldValue: this.Name, opType: OperatorComparer.Contains },
-                { fieldName: "IsActive", fieldValue: "1", opType: OperatorComparer.Equals }
-            ]
-        }
-        this.grid.gridConfig = this.gridConfig;
-        this.grid.bindGridData();
-    }
+    // getfilterdata() {
+    //     debugger
+    //     this.gridConfig = {
+    //         apiUrl: "Driver/List",
+    //         columnsList: this.allColumns,
+    //         sortField: "driverId",
+    //         sortOrder: 0,
+    //         filters: [
+    //             { fieldName: "driverName", fieldValue: this.Name, opType: OperatorComparer.Contains },
+    //             { fieldName: "IsActive", fieldValue: "1", opType: OperatorComparer.Equals }
+    //         ]
+    //     }
+    //     this.grid.gridConfig = this.gridConfig;
+    //     this.grid.bindGridData();
+    // }
     constructor(
         public _DrivermasterService: DrivermasterService,
         public toastr: ToastrService, public _matDialog: MatDialog

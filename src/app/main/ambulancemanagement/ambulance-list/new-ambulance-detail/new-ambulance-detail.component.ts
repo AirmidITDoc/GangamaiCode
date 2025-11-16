@@ -75,12 +75,15 @@ export class NewAmbulanceDetailComponent {
     });
   }
 
+
+
   ambulanceallocaterForm(): FormGroup {
     return this.formBuilder.group({
+      AmbulanceTransId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       BillNo: '',
       admissionId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       PatientName: '',
-    
+      VechileId:[0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       VechicleNo: ['',Validators.required],
       VechicleModel:['',Validators.required],
       DriverName:['',Validators.required],
@@ -90,13 +93,18 @@ export class NewAmbulanceDetailComponent {
             Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
             ]],
       PatientAddress:['',Validators.required],
-      Date: [(new Date()).toISOString()],
-      Amount: '',
-      PaidAmt: '',
-      BalAmt: '',
-      Remark:'',
-      reportingDate: [(new Date()).toISOString()],
-      reportingTime:['']
+      StateId :[0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      CityId :[0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      PickupDate: [(new Date()).toISOString()],
+      Pickupaddress:['',Validators.required],
+      DropoffAddress:['',Validators.required],
+      IsFress :0,
+      // Amount: '',
+      // PaidAmt: '',
+      // BalAmt: '',
+      Note:'',
+      // reportingDate: [(new Date()).toISOString()],
+      // reportingTime:['']
     });
   }
 
@@ -108,6 +116,34 @@ export class NewAmbulanceDetailComponent {
     this.registerObj = obj;
     this.PatientName = this.registerObj.firstName + ' ' + this.registerObj.middleName + ' ' + this.registerObj.lastName
    
+  }
+  
+  getSelectedObjIP(obj) {
+
+    if ((obj.regID ?? 0) > 0) {
+      console.log("Admitted patient:", obj)
+      this.registerObj = obj
+      // this.vRegNo = obj.regNo
+      // this.vDoctorName = obj.doctorName
+      this.PatientName = obj.firstName + " " + obj.middleName + " " + obj.lastName
+      // this.vDepartment = obj.departmentName
+      // this.vAdmissionDate = obj.admissionDate
+      // this.vAdmissionTime = obj.admissionTime
+      // this.vIPDNo = obj.ipdNo
+      // this.vAge = obj.age
+      // this.vAgeMonth = obj.ageMonth
+      // this.vAgeDay = obj.ageDay
+      // this.vGenderName = obj.genderName
+      // this.vRefDocName = obj.refDoctorName
+      // this.vRoomName = obj.roomName
+      // this.vBedName = obj.bedName
+      // this.vPatientType = obj.patientType
+      // this.vTariffName = obj.tariffName
+      // this.vCompanyName = obj.companyName
+      // this.vDOA = obj.admissionDate
+      // this.vAdmissionID = obj.admissionID
+      // this.vClassId = obj.classId
+    }
   }
 
   onSubmit(){}

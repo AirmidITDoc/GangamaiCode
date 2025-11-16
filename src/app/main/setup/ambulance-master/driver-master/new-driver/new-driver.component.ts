@@ -31,7 +31,7 @@ export class NewDriverComponent {
 
         if ((this.data?.driverId ?? 0) > 0) {
             console.log(this.data);
-
+            this.Driverdataform.get("driverId").setValue(this.data.driverId)
             this.Driverdataform.get("driverName").setValue(this.data.driverName)
             this.Driverdataform.get("address").setValue(this.data.address)
             this.Driverdataform.get("dateOfBirth").setValue(this.data.dateOfBirth)
@@ -48,7 +48,7 @@ export class NewDriverComponent {
         console.log(this.Driverdataform.value)
         debugger
 
-        this.Driverdataform.get('cityId').setValue(this.CityId )
+        this.Driverdataform.get('cityId').setValue(this.CityId)
         if (!this.Driverdataform.invalid) {
             this._DrivermasterService.DriverInsert(this.Driverdataform.value).subscribe((response) => {
                 this.dialogRef.close()
