@@ -2,7 +2,9 @@
     <div class="modal-header accent">
         <div class="modal-header-content">
             <div class="modal-header-title">
-                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">Patient In</span>
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    {{ vCheckinId ? 'Patient CheckOut' : 'Patient CheckIn' }}
+                </span>
             </div>
             <div class="modal-header-right">
                 <div class="comman-date-container">
@@ -160,8 +162,8 @@
                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <mat-form-field appearance="outline" fxFlex>
                                         <mat-label>Movement Time</mat-label>
-                                        <input matTimepicker #t="matTimepicker" mode="12h" formControlName="otcheckInTime"
-                                            (timeChange)="onChangeTime($event)"
+                                        <input matTimepicker #t="matTimepicker" mode="12h"
+                                            formControlName="otcheckInTime" (timeChange)="onChangeTime($event)"
                                             [disableDialogOpenOnClick]="isDatePckrDisabled">
                                         <mat-icon matSuffix (click)="!isDatePckrDisabled ? t.showDialog() : ''">
                                             access_time
@@ -169,15 +171,25 @@
                                     </mat-form-field>
                                 </div>
 
-                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <airmid-dropdown label="From Department" formControlName="fromDepartment"
+                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%" class="gap-4">
+                                    <airmid-dropdown label="From Department" formControlName="fromDepartment" fxFlex
                                         [formGroup]="CheckInFormGroup" [mode]="autocompleteModeFromDepartment">
+                                    </airmid-dropdown>
+
+                                    <airmid-dropdown label="CheckOutFrom Department" fxFlex
+                                        formControlName="checkOutFromDepartment" *ngIf="vCheckinId > 0"
+                                        [formGroup]="CheckInFormGroup" [mode]="autocompleteModeToDepartment">
                                     </airmid-dropdown>
                                 </div>
 
-                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <airmid-dropdown label="To Department" formControlName="toDepartment"
+                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%" class="gap-4">
+                                    <airmid-dropdown label="To Department" formControlName="toDepartment" fxFlex
                                         [formGroup]="CheckInFormGroup" [mode]="autocompleteModeToDepartment">
+                                    </airmid-dropdown>
+
+                                    <airmid-dropdown label="CheckOutTo Department" fxFlex
+                                        formControlName="checkOutToDepartment" *ngIf="vCheckinId > 0"
+                                        [formGroup]="CheckInFormGroup" [mode]="autocompleteModeFromDepartment">
                                     </airmid-dropdown>
                                 </div>
 
@@ -218,8 +230,9 @@
                                             type="text"></textarea>
                                     </mat-form-field>
                                     <mat-form-field appearance="outline" fxFlex="50%">
-                                        <textarea row="2" name="equipmentCarried" formControlName="equipmentCarried" matInput
-                                            placeholder="Enter Equipment Description here.." type="text"></textarea>
+                                        <textarea row="2" name="equipmentCarried" formControlName="equipmentCarried"
+                                            matInput placeholder="Enter Equipment Description here.."
+                                            type="text"></textarea>
                                     </mat-form-field>
                                 </div>
 
@@ -237,7 +250,7 @@
             <div class="modal-footer-buttons">
                 <button class="btn btn-danger-outline" (click)="onClear(false)">Close</button>
                 <button class="btn btn-primary " color="accent" (click)="onSubmit()">
-                    <span>Save</span>
+                    <span>{{ vCheckinId ? 'CheckOut' : 'CheckIn' }}</span>
                 </button>
             </div>
         </div>
