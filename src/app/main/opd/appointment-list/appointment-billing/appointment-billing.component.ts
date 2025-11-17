@@ -33,6 +33,8 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
     public displayedPrescriptionColumns =
         ['groupName', 'serviceName', 'classRate', 'userName'];
 
+    countdown: number = 180; // 3 minutes
+    countdownColorClass = 'green';
     //new
     doctorName: any
     IsPathology: any;
@@ -110,6 +112,8 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
 
     @ViewChild('regIdfocus') regIdfocus: ElementRef;
     ngOnInit() {
+        
+
         this.isModal = !!this.dialogRef;
         this.searchForm = this.createSearchForm();
         this.chargeForm = this.createChargeForm();
@@ -142,6 +146,8 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
         this.dsServiceList = new MatTableDataSource(this.serviceList);
 
         this.setupFormListener();
+
+        this.startCountdown();
     }
     private setupFormListener(): void {
         this.handleChange('price', () => this.calculateTotalCharge());
@@ -171,6 +177,24 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
         });
     }
 
+    startCountdown() {
+        const interval = setInterval(() => {
+            this.countdown--;
+            // Update color dynamically
+            if (this.countdown > 120) {
+                this.countdownColorClass = 'green';
+            } else if (this.countdown > 60) {
+                this.countdownColorClass = 'orange';
+            } else {
+                this.countdownColorClass = 'red';
+            }
+            if (this.countdown <= 0) {
+                clearInterval(interval);
+                this.isWaiting = false;
+            }
+
+        }, 1000);
+    }
     getService(contact) {
         console.log(contact)
         const isItemAlreadyAdded = this.dsChargeList.data.some((element) => element.ServiceId === contact.serviceId);
@@ -1269,11 +1293,25 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
     }
     isWaiting = false;
     mpesaResponse: any;
-    statusMessage = 'Waiting for customer approval...';
+    statusMessage:any;
     pollingSub?: Subscription;
     openWaitingScreen() {
-        this.isWaiting = true;
-        this.statusMessage = 'Waiting for customer approval...';
+        let payload = {
+            phone: "254712345678",
+            amount: 1,
+            reference: "INV-001"
+        };
+        this._AppointmentlistService.mpesaPay(payload)
+            .subscribe((response: any) => {
+                console.log("Response received:", response);
+                this.mpesaResponse = response;
+                // Build message AFTER response arrives
+                this.statusMessage =
+                    '' + response.responseDescription + '\n' +
+                    'CheckoutRequestId  : ' + response.checkoutRequestID  + '\n' + 
+                    'MerchantRequestId  : ' + response.merchantRequestID  ;
+                this.isWaiting = true;
+            });
     }
 
     manualRefresh() {

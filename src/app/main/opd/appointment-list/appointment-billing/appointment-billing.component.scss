@@ -81,6 +81,23 @@
   padding: 4px 8px;
   border-radius: 4px;
 }
+
+// message box  ---- mpesa
+.message-box {
+  background: #1f1f33;
+  padding: 18px 20px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-family: 'Courier New', monospace; /* perfect alignment */
+  white-space: pre-wrap;
+  color: #fff;
+  line-height: 1.6;
+  border-left: 4px solid #4caf50;
+  text-align: left;
+  width: 90%;
+  margin: 0 auto;
+}
+
 .waiting-overlay {
   position: fixed;
   top: 0;
@@ -99,7 +116,7 @@
   padding: 30px;
   text-align: center;
   border-radius: 8px;
-  width: 320px;
+  width: 520px;
 }
 
 .spinner {
@@ -110,6 +127,47 @@
   border-radius: 50%;
   margin: 0 auto 20px;
   animation: spin 1s linear infinite;
+}
+
+/* Timer */
+.timer-box {
+  background: #4e83bd;
+  color: white;
+  padding: 10px 0;
+  font-size: 20px;
+  border-radius: 10px;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+.timer-label {
+  display: block;
+  font-size: 12px;
+  margin-top: 2px;
+  opacity: 0.8;
+}
+
+/* Timer changes color when under 1 minute */
+.timer-box.warning {
+  background: #ec7d5b;
+}
+
+/* Title */
+.waiting-title {
+  font-size: 18px;
+  margin-bottom: 15px;
+  color: #333;
+}
+
+/* Color classes */
+.green {
+  color: #4caf50;
+}
+.orange {
+  color: #ff9800;
+}
+.red {
+  color: #f44336;
 }
 
 @keyframes spin {

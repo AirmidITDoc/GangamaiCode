@@ -53,4 +53,9 @@ export class AppointmentBillService {
     public checkStatus(mpesaResponse: any) {
         return this._httpClient1.GetData("MPesa/check-payment?MerchantRequestID="+mpesaResponse.merchantRequestID+"&CheckoutRequestID="+mpesaResponse.checkoutRequestID);
     }
+
+    public mpesaPay(param: any) {
+       const params = `phone=${param.phone}&amount=${param.amount}&reference=${param.reference}`;
+       return this._httpClient1.PostData("MPesa/pay?" + params, {});
+    }
 }
