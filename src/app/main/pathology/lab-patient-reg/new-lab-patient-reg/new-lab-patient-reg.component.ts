@@ -555,7 +555,10 @@ export class NewLabPatientRegComponent {
     // this.myForm.get('discountAmt').value
     const discountAmt = (total * discPer) / 100;
     const netAmt = total - discountAmt;
-
+    element.TotalAmt=total
+         element.DiscPer= 0,
+         element.DiscAmt=discountAmt | 0,
+         element.NetAmount= netAmt,
 
     this.myForm.patchValue({
       totalAmt: total,
@@ -577,17 +580,17 @@ export class NewLabPatientRegComponent {
     const discountAmount = formValue.discountAmt;//(totalAmount * formValue.discountPer) / 100;
     const netAmount = totalAmount - discountAmount;
 
-    if (totalAmount > 0) {
+    // if (totalAmount > 0) {
 
       const newRow = {
         ServiceId: row.serviceId,
         ServiceName: row.serviceName,
         Price: row.price || 0,
         Qty: 1,
-        TotalAmt: totalAmount,
+        TotalAmt: totalAmount || 0,
         DiscPer: 0,
         DiscAmt: discountAmount || 0,
-        NetAmount: netAmount,
+        NetAmount: netAmount || 0,
         DoctorName: this.doctorname || '-',
         ClassName: 1,//this.className || '-',
         DoctorId: this.myForm.get('doctorId').value,
@@ -606,15 +609,67 @@ export class NewLabPatientRegComponent {
       this.dstable1.data = this.chargeList;
       this.updateCalculation();
 
-    } else {
-      Swal.fire({
-        title: 'Message',
-        text: "Please Define Price For Selected Service .. !",
-        icon: "warning"
-      });
+    // } else {
+    //   Swal.fire({
+    //     title: 'Message',
+    //     text: "Please Define Price For Selected Service .. !",
+    //     icon: "warning"
+    //   });
 
-    }
+    // }
   }
+
+
+    // onAddCharges(): void {
+    //       const serviceNameValue = this.chargeForm.get('serviceName')?.value;
+        
+    //       if (this.chargeForm.valid) {
+    //           const formValue = this.chargeForm.value;
+    //           // if (this.chargeForm.value.discountPer > 0)
+    //           //     this.Consessionres = true
+    //           // Calculate total amount, discount amount, and net amount
+    //           const totalAmount = formValue.price * formValue.qty;
+    //           const discountAmount = (totalAmount * formValue.discountPer) / 100;
+    //           const netAmount = totalAmount - discountAmount;
+    //           if (totalAmount > 0) {
+    //               const newRow = {
+    //                   ServiceId: formValue.serviceName.serviceId,
+    //                   ServiceName: formValue.serviceName.serviceName,
+    //                   Price: formValue.price,
+    //                   Qty: formValue.qty,
+    //                   TotalAmt: totalAmount,
+    //                   DiscPer: formValue.discountPer || 0,
+    //                   DiscAmt: discountAmount || 0,
+    //                   NetAmount: netAmount,
+    //                   DoctorName:this.doctorname || '-',
+    //                   ClassName: 1,//this.className || '-',
+    //                   DoctorId: formValue.DoctorID,
+    //                   ChargesAddedName: this.accountService.currentUserValue.userName,
+    //                   IsPathology: this.IsPathology,
+    //                   IsRadiology: this.IsRadiology,
+    //                   IsPackage: this.vIsPackage,
+    //                   serviceCode: formValue.serviceName.companyCode,
+    //                   isInclusionExclusion: formValue.serviceName.isInclusionOrExclusion
+    //               };
+    //               // if (!this.isDiscountApplied && discountAmount > 0) {
+    //               //     this.isDiscountApplied = true;
+    //               //     this.Consessionres = true
+    //               // }
+    //                const newCharge = new ChargesList(newRow);
+    //   newCharge.DiscAmt = newCharge.DiscAmt || 0;
+    //   newCharge.DiscPer = newCharge.DiscPer || 0;
+    //   this.chargeList.push(newCharge);
+    //   this.dstable1.data = this.chargeList;
+    //   this.updateCalculation();
+    //           } else {
+    //               Swal.fire({
+    //                   title: 'Message',
+    //                   text: "Please Enter Service Detail.. !",
+    //                   icon: "warning"
+    //               });
+    //           }
+    //       }
+    //   }
 
   deleteTableRow(element) {
     this.chargeslist = this.dstable1.data;
@@ -741,7 +796,7 @@ export class NewLabPatientRegComponent {
         }
 
         if (!this.myForm.invalid)
-          this.OnSave();
+              this.OnSave();
         else {
           let invalidFields = [];
           if (this.myForm.invalid) {
@@ -856,7 +911,7 @@ export class NewLabPatientRegComponent {
 
     // this.OpBillForm.get('cashCounterId')?.setValue(this.searchForm.get('CashCounterID')?.value)
     console.log("form values", this.OpBillForm.value)
-
+debugger
     console.log("form values", this.LabBillfinalform.value)
     if (this.OpBillForm.invalid) {
 

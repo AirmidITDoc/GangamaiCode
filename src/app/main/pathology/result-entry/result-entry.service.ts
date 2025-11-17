@@ -102,6 +102,10 @@ export class ResultEntryService {
     return this._httpClient1.PostData("Common",param)
   }
 
+ public getPathologyResultListforLab(param){
+    return this._httpClient1.PostData("Common",param)
+  }
+  
 
   // public getPathologyTemplateforIP(query){
   //   return this._httpClient.post("Generic/GetBySelectQuery?query=" + query, {})

@@ -1333,6 +1333,7 @@ export class IPBillingComponent implements OnInit {
                 debugger
                 const [IpDraftPrint_A4, IpDraftPrintValue] = this._ConfigService.configParams.IPDraftPrintA4toA5.split(":");
                 if (this.IpbillFooterform.get("BillType").value == 1) {
+                  debugger
                     if (IpDraftPrint_A4 != 1) {
                         this.viewgetDraftBillReportPdf(response.drbno);
                     } else {
@@ -1599,6 +1600,7 @@ export class IPBillingComponent implements OnInit {
     }
     // exec rptIPDInterimBill 193667 9507 
     viewgetInterimBillReportPdf(element) {
+        debugger
         const [InterimA5_Print, InterimA5_Value] = this._ConfigService.configParams.InterimBillA5Print.split(":");
         if (InterimA5_Print != 1) {
             this.commonService.Onprint("BillNo", element?.billNo, "IPDInterimBill");
