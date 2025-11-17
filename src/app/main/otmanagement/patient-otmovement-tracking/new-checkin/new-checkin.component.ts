@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Inject, OnInit, Output, ViewChild, ViewEncapsulation } from '@angular/core';
-import { FormArray, FormGroup } from '@angular/forms';
+import { FormArray, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { fuseAnimations } from '@fuse/animations';
 import { ToastrService } from 'ngx-toastr';
@@ -9,6 +9,7 @@ import { PatientOtmovementTrackingService } from '../patient-otmovement-tracking
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { PatientOtmovementTrackingComponent } from '../patient-otmovement-tracking.component';
 import { OtReserInsert } from '../../ot-reservation/ot-reservation.component';
+import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 
 @Component({
   selector: 'app-new-checkin',
@@ -50,6 +51,7 @@ export class NewCheckinComponent {
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<PatientOtmovementTrackingComponent>,
     private _loggedService: AuthenticationService,
+    private _FormvalidationserviceService: FormvalidationserviceService
   ) { }
 
   ngOnInit(): void {
@@ -152,20 +154,35 @@ export class NewCheckinComponent {
     this.dateTimeEventEmitter.emit({ date: actualDate, time: actualTime });
   }
 
+  getCurrentTime(): Date {
+    const now = new Date();
+    now.setSeconds(0);    // optional, remove seconds
+    return now;
+  }
+
   onSubmit() {
+    const currentTime = this.getCurrentTime();
     const inDate = this.datePipe.transform(this.CheckInFormGroup.get('otcheckInDate')?.value, 'yyyy-MM-dd');
     const inTime = this.datePipe.transform(this.CheckInFormGroup.get('otcheckInTime')?.value, 'HH:mm:ss');
     if (inDate && inTime) {
       const combinedDateTime = new Date(`${inDate}T${inTime}`); //`${inDate} ${inTime}`;
       this.CheckInFormGroup.get('otcheckInTime')?.setValue(combinedDateTime);
-
-      this.CheckInFormGroup.get('checkOutTime')?.setValue(combinedDateTime);
     }
     this.CheckInFormGroup.get('otcheckInDate')?.setValue(inDate);
     this.CheckInFormGroup.get('otreservationId')?.setValue(this.vreservationId);
     this.CheckInFormGroup.get('opipid')?.setValue(this.opIpId);
     this.CheckInFormGroup.get('opiptype')?.setValue(this.vSelectedOption == 'IP' ? true : false);
     this.CheckInFormGroup.get('otcheckInId')?.setValue(this.vCheckinId || 0);
+      this.CheckInFormGroup.get('checkOutTime')?.setValue(currentTime);
+
+    if (this.vCheckinId > 0) {
+      this.CheckInFormGroup.get('checkInOut')?.setValue(0);
+      // this.CheckInFormGroup.get('checkOutTime')?.setValue(currentTime);
+      this.CheckInFormGroup.get('checkOutFromDepartment')?.setValidators([Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]);
+      this.CheckInFormGroup.get('checkOutToDepartment')?.setValidators([Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]);
+      this.CheckInFormGroup.get('checkOutFromDepartment')?.updateValueAndValidity();
+      this.CheckInFormGroup.get('checkOutToDepartment')?.updateValueAndValidity();
+    }
 
     console.log(this.CheckInFormGroup.value)
     if (!this.CheckInFormGroup.invalid) {

@@ -921,6 +921,7 @@ export class NewGrnComponent implements OnInit, OnDestroy {
             grnid: [this.registerObj?.grnid || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             itemId: [item?.ItemId, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             uomid: [item?.UOMId, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            returnQty: [0],
             receiveQty: [item?.Qty, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             freeQty: [item?.FreeQty || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             mrp: [item?.UnitMRP, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
