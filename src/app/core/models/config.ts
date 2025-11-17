@@ -106,6 +106,7 @@ OPDDefaultDoctor:any;
 OPDDefaultDepartment:any;
 ThermalPrint:any;
 InterimBillA5Print:any;
+OPEmrPrescriptionA5:any;
  /**
      * Constructor
      *
@@ -219,6 +220,7 @@ this.IPNoEmg=ConfigSettingParams.IPNoEmg;
 this.IPdayCareNo=ConfigSettingParams.IPdayCareNo;
 this.OPDDefaultDoctor=ConfigSettingParams.OPDDefaultDoctor;
 this.OPDDefaultDepartment=ConfigSettingParams.OPDDefaultDepartment;
+this.OPEmrPrescriptionA5=ConfigSettingParams.OPEmrPrescriptionA5;
     }
 
 }

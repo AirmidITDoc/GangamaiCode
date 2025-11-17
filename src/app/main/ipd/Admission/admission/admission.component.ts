@@ -1544,7 +1544,7 @@ export class RegInsert {
   medTourismVisaValidityDate: Date;
   medTourismDateOfEntry: Date;
   emgId: any;
-  // addedBy:any;
+  traiffId:any;
   // updatedBy:any;
 
 
@@ -1636,7 +1636,7 @@ export class RegInsert {
       this.medTourismVisaValidityDate = RegInsert.medTourismVisaValidityDate || this.currentDate;
       this.medTourismDateOfEntry = RegInsert.medTourismDateOfEntry || this.currentDate;
       this.emgId = RegInsert.emgId || 0
-      // this.addedBy = RegInsert.addedBy || 0 ;
+      this.traiffId = RegInsert.traiffId || 0 ;
       // this.updatedBy = RegInsert.updatedBy || 0 ;
 
     }

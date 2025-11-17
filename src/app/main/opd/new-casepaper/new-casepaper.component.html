@@ -328,7 +328,7 @@
                                                         <airmid-autocomplete label="Enter Drug Name"
                                                             [formGroup]="MedicineItemForm" formControlName="ItemId"
                                                             placeholderText="Enter Drug Name" fxFlex
-                                                            ApiUrl="ItemMaster/GetItemListForPrescription?StoreId=2&ItemName="
+                                                            [ApiUrl]="'ItemMaster/GetItemListForPrescription?StoreId=' + vstoreId + '&ItemName='"
                                                             (selectionChange)="selectChangeItemName($event)"
                                                             TextField="formattedText" ValueField="ItemId"
                                                             (onClearSelection)="ItemFromReset()">
@@ -1490,11 +1490,11 @@
                         <mat-radio-button value="NormalHead">Print Normal</mat-radio-button>
                     </mat-radio-group>
 
-                    <mat-radio-group aria-label="Select an option" formControlName="LangaugeRadio"
+                    <!-- <mat-radio-group aria-label="Select an option" formControlName="LangaugeRadio"
                         (change)="onChangeLangaugeRadio($event)" fxLayout="row">
                         <mat-radio-button value="false">Print In Marathi</mat-radio-button>
                         <mat-radio-button value="true">Print In English</mat-radio-button>
-                    </mat-radio-group>
+                    </mat-radio-group> -->
                 </form>
 
                 <div class="sales-footer-buttons gap-6" fxLayout="row">

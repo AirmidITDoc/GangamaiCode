@@ -46,6 +46,7 @@ export class NewAppointmentComponent implements OnInit {
     currentDate = new Date();
     minDate = new Date();
     registerObj = new RegInsert({});
+    companyDet = new RegInsert({});
     isRegSearchDisabled: boolean = false;
     Regdisplay: boolean = false;
     Regflag: boolean = false;
@@ -379,9 +380,9 @@ export class NewAppointmentComponent implements OnInit {
 
     onChangeCompany(value) {
         this._AppointmentlistService.getCompanyById(value.value).subscribe((response) => {
-            this.registerObj = response;
-            console.log("Company Data:",this.registerObj)
-            this.VisitFormGroup.get('TariffId').setValue(this.registerObj.traiffId);
+            this.companyDet = response;
+            console.log("Company Data:",this.companyDet)
+            this.VisitFormGroup.get('TariffId').setValue(this.companyDet.traiffId);
         });
     }
 

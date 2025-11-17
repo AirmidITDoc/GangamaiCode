@@ -40,7 +40,7 @@ export class NewAdmissionComponent implements OnInit {
   // subscriptionArr: Subscription[] = [];
 
   // matDialogRef: any;
-  vRegNo=0
+  vRegNo = 0
   patienttype: any;
   AdmissionId: any = 0;
   isCompanySelected: boolean = false;
@@ -60,6 +60,7 @@ export class NewAdmissionComponent implements OnInit {
   filteredOptionsRegSearch: Observable<string[]>;
   registerObj1 = new AdmissionPersonlModel({});
   registerObj = new RegInsert({});
+  companyDet = new RegInsert({});
   RegId: any;
   currentDate = new Date();
   public now: Date = new Date();
@@ -76,7 +77,7 @@ export class NewAdmissionComponent implements OnInit {
 
   @ViewChild('ddlClassName') ddlClassName: AirmidDropDownComponent;
   @ViewChild('ddlBedName') ddlBedName: AirmidDropDownComponent;
-  
+
 
   constructor(public _AdmissionService: AdmissionService,
     private accountService: AuthenticationService,
@@ -121,7 +122,7 @@ export class NewAdmissionComponent implements OnInit {
   showEmergencyFlag: boolean = false;
   showOPtoIPFlag: boolean = false;
   public opdList: OpList[] = [];
-  colstatus=0
+  colstatus = 0
   ngOnInit(): void {
 
     this.searchFormGroup = this.createSearchForm();
@@ -284,9 +285,9 @@ export class NewAdmissionComponent implements OnInit {
           this._AdmissionService.getRegistraionById(obj.value).subscribe((response) => {
             this.registerObj = response;
             this.value = response.dateofBirth
-            this.vRegNo=response.regNo
+            this.vRegNo = response.regNo
             this.onChangeDateofBirth(response.dateofBirth)
-           this.personalFormGroup.patchValue({
+            this.personalFormGroup.patchValue({
               FirstName: this.registerObj.firstName.trim(),
               MiddleName: this.registerObj.middleName.trim(),
               LastName: this.registerObj.lastName.trim(),
@@ -603,7 +604,7 @@ export class NewAdmissionComponent implements OnInit {
 
       }
     }
-       
+
   }
 
 
@@ -624,6 +625,14 @@ export class NewAdmissionComponent implements OnInit {
       this.patienttype = 1;
     }
 
+  }
+
+  onChangeCompany(value) {
+    this._AdmissionService.getCompanyById(value.value).subscribe((response) => {
+      this.companyDet = response;
+      console.log("Company Data:", this.companyDet)
+      this.admissionFormGroup.get('TariffId').setValue(this.companyDet.traiffId);
+    });
   }
 
   rawDate1: Date | string = '1900-01-01';
@@ -653,19 +662,19 @@ export class NewAdmissionComponent implements OnInit {
   }
 
   onIsMLCChange(event: any) {
-  this.admissionFormGroup.patchValue({ IsMLC: event.checked });
-}
+    this.admissionFormGroup.patchValue({ IsMLC: event.checked });
+  }
 
- onISCharChange(event: any) {
-  this.admissionFormGroup.patchValue({ IsCharity: event.checked });
-}
+  onISCharChange(event: any) {
+    this.admissionFormGroup.patchValue({ IsCharity: event.checked });
+  }
 
- onIsSeniorChange(event: any) {
-  // this.admissionFormGroup.patchValue({ IsSenior: event.checked });
-}
+  onIsSeniorChange(event: any) {
+    // this.admissionFormGroup.patchValue({ IsSenior: event.checked });
+  }
 
   OnSaveAdmission() {
-debugger
+    debugger
     if (this.EmgId > 0) {
       this.admissionFormGroup.get('convertId').setValue(this.EmgId)
       this.admissionFormGroup.get('AdmissionType').setValue(2)
@@ -793,7 +802,7 @@ debugger
     // debugger
     if (obj.value) {
       this._AdmissionService.getDoctorsByDepartment(obj.value).subscribe((data: any) => {
-          console.log(data)
+        console.log(data)
         this.ddlDoctor.options = data;
         this.ddlDoctor.bindGridAutoComplete();
       });
@@ -814,7 +823,7 @@ debugger
   }
 
 
-  
+
   getAdmittedPatientCasepaperview(AdmissionId) {
     this.commonService.Onprint("AdmissionId", AdmissionId, "IpCasepaperReport");
   }
@@ -829,35 +838,35 @@ debugger
   onChangestate(e) {
     // this.ddlCountry.SetSelection(e.stateId);
   }
-RoomId=0
+  RoomId = 0
   onChangeWard(e) {
     // debugger
-    this.RoomId=e.roomId
+    this.RoomId = e.roomId
     this.ddlClassName.SetSelection(e.classId);
-     this. selectChangeward(e)
+    this.selectChangeward(e)
   }
 
-    selectChangeward(obj: any) {
-      // debugger
+  selectChangeward(obj: any) {
+    // debugger
     if (obj.roomId) {
       this._AdmissionService.getBedByWard(obj.roomId).subscribe((data: any) => {
         console.log(data)
         this.ddlBedName.options = data;
         this.ddlBedName.bindGridAutoComplete();
       });
-    // } else {
-    //   this._AdmissionService.getDoctorsByDepartment(obj.departmentId).subscribe((data: any) => {
-    //     // console.log(data)
-    //     this.ddlDoctor.options = data;
-    //     this.ddlDoctor.bindGridAutoComplete();
-    //     const incomingDoctorId = obj.docNameId || obj.doctorId;
-    //     if (incomingDoctorId) {
-    //       const matchedDoctor = data.find(doc => doc.value === incomingDoctorId);
-    //       if (matchedDoctor) {
-    //         this.admissionFormGroup.get('DocNameId')?.setValue(matchedDoctor.value);
-    //       }
-    //     }
-    //   });
+      // } else {
+      //   this._AdmissionService.getDoctorsByDepartment(obj.departmentId).subscribe((data: any) => {
+      //     // console.log(data)
+      //     this.ddlDoctor.options = data;
+      //     this.ddlDoctor.bindGridAutoComplete();
+      //     const incomingDoctorId = obj.docNameId || obj.doctorId;
+      //     if (incomingDoctorId) {
+      //       const matchedDoctor = data.find(doc => doc.value === incomingDoctorId);
+      //       if (matchedDoctor) {
+      //         this.admissionFormGroup.get('DocNameId')?.setValue(matchedDoctor.value);
+      //       }
+      //     }
+      //   });
     }
   }
   onChangecity(e) {
@@ -1153,8 +1162,8 @@ RoomId=0
 
     this._AdmissionService.getOPDToIpConvertList(Data).subscribe((response) => {
       this.dataSource.data = response.data;
-      if(this.dataSource.data.length > 0)
-        this.colstatus=1
+      if (this.dataSource.data.length > 0)
+        this.colstatus = 1
     });
   }
 

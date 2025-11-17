@@ -67,7 +67,7 @@ export class AdmissionService {
                 Validators.required,
                 Validators.maxLength(50),
                 Validators.pattern("^[A-Za-z/() ]*$"),
-                 this._FormvalidationserviceService.noWhitespaceValidator()
+                this._FormvalidationserviceService.noWhitespaceValidator()
             ]],
             MiddleName: ['', [
                 Validators.maxLength(50),
@@ -78,7 +78,7 @@ export class AdmissionService {
                 Validators.required,
                 Validators.maxLength(50),
                 Validators.pattern("^[A-Za-z/() ]*$"),
-                 this._FormvalidationserviceService.noWhitespaceValidator()
+                this._FormvalidationserviceService.noWhitespaceValidator()
             ]],
             GenderId: new FormControl(0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]),
             Address: ['', [this._FormvalidationserviceService.allowEmptyStringValidator(), Validators.maxLength(150)]],
@@ -121,7 +121,7 @@ export class AdmissionService {
 
             //emergency form
             emgContactPersonName: ['',
-                 [Validators.maxLength(50), this._FormvalidationserviceService.allowEmptyStringValidator()]],
+                [Validators.maxLength(50), this._FormvalidationserviceService.allowEmptyStringValidator()]],
             emgRelationshipId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             emgMobileNo: ['', [Validators.minLength(10), Validators.maxLength(10),
             Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$"), this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -130,7 +130,7 @@ export class AdmissionService {
             engAddress: ['', [this._FormvalidationserviceService.allowEmptyStringValidator(), Validators.maxLength(100)]],
             emgAadharCardNo: ['', [Validators.minLength(12), Validators.maxLength(12),
             Validators.pattern("^[0-9]*$"), this._FormvalidationserviceService.onlyNumberValidator()]],
-            emgDrivingLicenceNo: ['', [Validators.minLength(16), Validators.maxLength(16),Validators.pattern(/^[A-Za-z0-9\- ]{5,16}$/)]],
+            emgDrivingLicenceNo: ['', [Validators.minLength(16), Validators.maxLength(16), Validators.pattern(/^[A-Za-z0-9\- ]{5,16}$/)]],
             //Validators.pattern(/^[A-Z]{2}-\d{2}-\d{7,11}$/) eg:MH-14-20210001234
 
             // medical tourisum
@@ -194,7 +194,7 @@ export class AdmissionService {
             PolicyNo: "",
             AprovAmount: 0,
             compDOd: [(new Date()).toISOString()],
-            convertId:0,
+            convertId: 0,
             IsOpToIpconv: false,
             RefDoctorDept: "",
             AdmissionType: 0,
@@ -208,7 +208,7 @@ export class AdmissionService {
             // Emergancy: [false],
             // template: [false]
         });
-    }  
+    }
 
     public AdmissionNewInsert(employee) {
         return this._httpClient1.PostData("Admission/AdmissionRegInsertSP", employee);
@@ -271,10 +271,10 @@ export class AdmissionService {
     public getDoctorsByDepartment(deptId) {
         return this._httpClient1.GetData("VisitDetail/DeptDoctorList?DeptId=" + deptId)
     }
- public getBedByWard(RoomId) {
+    public getBedByWard(RoomId) {
         return this._httpClient1.GetData("Admission/BedList?RoomId=" + RoomId)
     }
-    
+
 
     public getMLCById(Id) {
         return this._httpClient1.GetData("MlcInformation/" + Id);
@@ -292,8 +292,8 @@ export class AdmissionService {
         return this._httpClient1.GetData("OutPatient/" + Id);
     }
 
-     public getCheckAdmittedPatient(Param) {
-        return this._httpClient1.PostData("Common",Param);
+    public getCheckAdmittedPatient(Param) {
+        return this._httpClient1.PostData("Common", Param);
     }
 
     public getEmergencyById(Id) {
@@ -309,18 +309,18 @@ export class AdmissionService {
     }
 
     public CompanyInfoUpdate(param) {
-         if (param.admissionId) {
+        if (param.admissionId) {
             return this._httpClient1.PutData("Admission/Companyinformation/" + param.admissionId, param);
         }
     }
 
-     public CompanyApprovalInsert(Param: any) {
+    public CompanyApprovalInsert(Param: any) {
         if (Param.id) {
             return this._httpClient1.PutData("CompanyTPAApproval/" + Param.id, Param);
         } else return this._httpClient1.PostData("CompanyTPAApproval", Param);
     }
 
-      public getOPDToIpConvertList(employee) {
+    public getOPDToIpConvertList(employee) {
         return this._httpClient1.PostData("Admission/OPRequestListForIPAdmission", employee)
     }
 
@@ -328,18 +328,21 @@ export class AdmissionService {
         return this._httpClient1.GetData(apiUrl + inputValue);
     }
 
-     public getVisitById(Id) {
+    public getVisitById(Id) {
         return this._httpClient1.GetData("VisitDetail/" + Id);
     }
 
-    public getadmissionlist(employee){
-            return this._httpClient1.PostData("Admission/AdmissionList", employee)
+    public getadmissionlist(employee) {
+        return this._httpClient1.PostData("Admission/AdmissionList", employee)
     }
 
-     public getReportView(Param) {
+    public getReportView(Param) {
         return this._httpClient1.PostData("Report/ViewReport", Param);
     }
 
+    public getCompanyById(Id) {
+        return this._httpClient1.GetData("CompanyMaster/" + Id);
+    }
 }
 
 

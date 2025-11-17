@@ -20,6 +20,7 @@ import { PatientcertificateComponent } from './patientcertificate/patientcertifi
 import Swal from 'sweetalert2';
 import { PageNames } from 'app/main/shared/componets/airmid-fileupload/airmid-fileupload.component';
 import { MatTableDataSource } from '@angular/material/table';
+import { ConfigService } from 'app/core/services/config.service';
 // const moment = _rollupMoment || _moment;
 
 @Component({
@@ -67,6 +68,7 @@ export class MedicalrecordComponent implements OnInit {
     private commonService: PrintserviceService,
     private advanceDataStored: AdvanceDataStored,
     private formBuilder: FormBuilder,
+    public _ConfigService: ConfigService,
     public toastr: ToastrService, public datePipe: DatePipe,
   ) { }
 
@@ -297,21 +299,34 @@ export class MedicalrecordComponent implements OnInit {
         this.OnViewReportPdf(element, true);
       } else if (result.isDenied) {
         // Step 3B: Call function with "Without Header"
-        this.OnViewReportPdf1(element, false);
+        this.OnViewReportPdf(element, false);
+        // this.OnViewReportPdf1(element, false);
       }
     });
   }
 
- 
   OnViewReportPdf(element: any, withHeader: boolean) {
-    const reportName = withHeader ? "OPPrescription" : "OPPrescriptionA5";
-    this.commonService.Onprint("VisitId", element.visitId, reportName);
+    debugger
+    const [PrescriptionA5_Print, Prescription_Print] = this._ConfigService.configParams.OPEmrPrescriptionA5.split(":");
+    if (PrescriptionA5_Print != 1) {
+      const reportName = withHeader ? "OPPrescription" : "OPPrescriptionwithoutHeader";
+      this.commonService.Onprint("VisitId", element.visitId, reportName);
+    }
+    else {
+      const reportName = withHeader ? "OPPrescriptionA5" : "OPPrescriptionwithoutHeaderA5";
+      this.commonService.Onprint("VisitId", element.visitId, reportName);
+    }
   }
 
-   OnViewReportPdf1(element: any, withHeader: boolean) {
-    const reportName = withHeader ? "OPPrescription" : "OPPrescriptionwithoutHeaderA5";
-    this.commonService.Onprint("VisitId", element.visitId, reportName);
-  }
+  // OnViewReportPdf(element: any, withHeader: boolean) {
+  //   const reportName = withHeader ? "OPPrescription" : "OPPrescriptionA5";
+  //   this.commonService.Onprint("VisitId", element.visitId, reportName);
+  // }
+
+  // OnViewReportPdf1(element: any, withHeader: boolean) {
+  //   const reportName = withHeader ? "OPPrescription" : "OPPrescriptionwithoutHeaderA5";
+  //   this.commonService.Onprint("VisitId", element.visitId, reportName);
+  // }
 
 
   OnNewCrossConsultation(element) {
@@ -541,7 +556,7 @@ export class VisitMaster1 {
   mPbillNo: any;
   crossConsulFlag: any;
   IsMark: any;
-  emrReady:any;
+  emrReady: any;
   /**
    * Constructor
    *

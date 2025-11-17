@@ -207,7 +207,8 @@ export class NewCasepaperComponent implements OnInit {
     private _FormvalidationserviceService: FormvalidationserviceService,
     private commonService: PrintserviceService,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    public speechService: SpeechRecognitionService
+    public speechService: SpeechRecognitionService,
+    public _ConfigService: ConfigService,
   ) { }
 
   ngOnInit(): void {
@@ -622,22 +623,30 @@ export class NewCasepaperComponent implements OnInit {
       this.casePaperInsertForm.get(['visitDetails', 'followupDate'])?.setValue(this.MedicineItemForm.get('start')?.value);
       console.log('form:', this.casePaperInsertForm.value)
       this._CasepaperService.onSaveCasepaper(this.casePaperInsertForm.value).subscribe(response => {
-        if (this.caseFormGroup.get("LetteHeadRadio").value == 'LetterHead')
-          this.commonService.Onprint("VisitId", this.VisitId, "OPPrescriptionA5");
-        else
-          this.commonService.Onprint("VisitId", this.VisitId, "OPPrescriptionwithoutHeaderA5");
+        // if (this.caseFormGroup.get("LetteHeadRadio").value == 'LetterHead')
+        //   this.commonService.Onprint("VisitId", this.VisitId, "OPPrescriptionA5");
+        // else
+        //   this.commonService.Onprint("VisitId", this.VisitId, "OPPrescriptionwithoutHeaderA5");
 
 
         // if (this.caseFormGroup.get("LetteHeadRadio").value == 'LetterHead')
         //   this.OnViewReportWithHeaderPdf(this.VisitId)
         // else
         //   this.OnViewReportWithoutHeaderPdf(this.VisitId)
+        debugger
+        const [PrescriptionA5_Print, Prescription_Print] = this._ConfigService.configParams.OPEmrPrescriptionA5.split(":");
 
-        //   if (InterimA5_Print != 1) {
-        //     this.commonService.Onprint("BillNo", element?.billNo, "IPDInterimBill");
-        // } else {
-        //     this.commonService.Onprint("BillNo", element?.billNo, "IPDInterimBillA5");
-        // } 
+        if (PrescriptionA5_Print != 1) {
+          if (this.caseFormGroup.get("LetteHeadRadio").value == 'LetterHead')
+            this.OnViewReportWithHeaderPdf(this.VisitId)
+          else
+            this.OnViewReportWithoutHeaderPdf(this.VisitId)
+        } else {
+          if (this.caseFormGroup.get("LetteHeadRadio").value == 'LetterHead')
+            this.OnViewReportWithHeaderA5Pdf(this.VisitId)
+          else
+            this.OnViewReportWithoutHeaderA5Pdf(this.VisitId)
+        }
 
 
         this.getWhatsappshareSales(this.vOPIPId, this.vMobileNo)
