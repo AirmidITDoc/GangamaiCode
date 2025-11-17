@@ -50,7 +50,7 @@ export class CancellationService {
   }
   
   public getDateTimeChangeBill(m_data) {
-    return this._httpClient.PutData("Administration/UpdateBilldatetime" + m_data.billNo,m_data);
+    return this._httpClient.PutData("AdminTask/UpdateBilldatetime" + m_data.billNo,m_data);
 }
 
 public getDateTimeChangeAdvanceDetId(m_data) {
