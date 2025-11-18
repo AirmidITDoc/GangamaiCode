@@ -143,7 +143,7 @@ export class IPSearchListComponent implements OnInit {
             this.menuActions.push('Discharge');
         }
         else if (this._ActRoute.url == '/ipd/dischargesummary') {
-            const [IpDischargeSummaryId, IpDischargeSummaryValue] = this._configue.configParams.IsDischargeSUmmaryTemplate.split(":");
+            const [IpDischargeSummaryId, IpDischargeSummaryValue] = this._configue.configParams.IsDischargeSummaryTemplate.split(":");
             if (IpDischargeSummaryId != 1) {
                 this.menuActions.push('Discharge Summary');
             } else {
@@ -583,7 +583,7 @@ export class IPSearchListComponent implements OnInit {
 
     getfeedback(event) { }
     printDischargesummaryWithoutletterhead(event) {
-        const [IpDischargeSummaryId, IpDischargeSummaryValue] = this._configue.configParams.IsDischargeSUmmaryTemplate.split(":");
+        const [IpDischargeSummaryId, IpDischargeSummaryValue] = this._configue.configParams.IsDischargeSummaryTemplate.split(":");
         if (IpDischargeSummaryId != 1) {
             this.commonService.Onprint("AdmissionID", event.admissionId, "IpDischargeSummaryReportWithoutHeader");
         } else {
@@ -591,7 +591,7 @@ export class IPSearchListComponent implements OnInit {
         }
     }
     printDischargesummary(event) {
-        const [IpDischargeSummaryId, IpDischargeSummaryValue] = this._configue.configParams.IsDischargeSUmmaryTemplate.split(":");
+        const [IpDischargeSummaryId, IpDischargeSummaryValue] = this._configue.configParams.IsDischargeSummaryTemplate.split(":");
         if (IpDischargeSummaryId != 1) {
             this.commonService.Onprint("AdmissionID", event.admissionId, "IpDischargeSummaryReport");
         } else {

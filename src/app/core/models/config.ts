@@ -72,7 +72,7 @@ export class ConfigSettingParams {
     IsDischargeTemplate:any;
     SystemLogOutTime:any;
      IPDraftPrintA4toA5:any;
-     IsDischargeSUmmaryTemplate:any;
+     IsDischargeSummaryTemplate:any;
 OPDNo:any;
 IsOPBillPrint:any;
 PrintAfterRegistration:any;
@@ -222,7 +222,7 @@ this.IPdayCareNo=ConfigSettingParams.IPdayCareNo;
 this.OPDDefaultDoctor=ConfigSettingParams.OPDDefaultDoctor;
 this.OPDDefaultDepartment=ConfigSettingParams.OPDDefaultDepartment;
 this.OPEmrPrescriptionA5=ConfigSettingParams.OPEmrPrescriptionA5;
-this.IsDischargeSUmmaryTemplate=ConfigSettingParams.IsDischargeSUmmaryTemplate;
+this.IsDischargeSummaryTemplate=ConfigSettingParams.IsDischargeSummaryTemplate;
     }
 
 }
