@@ -112,7 +112,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
 
     @ViewChild('regIdfocus') regIdfocus: ElementRef;
     ngOnInit() {
-        
+
 
         this.isModal = !!this.dialogRef;
         this.searchForm = this.createSearchForm();
@@ -1018,30 +1018,20 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
         this.ApiURL = "VisitDetail/GetServiceListwithTraiff?TariffId=" + event.value + "&ClassId=" + this.patientDetail.classId + "&ServiceName="
     }
     BillSave() {
-
-        debugger
-        if (this.OPFooterForm.get('paymentType')?.value === 'Mpesa') {
-            this.openWaitingScreen();
-            this.startPolling();
-        }
-        else {
-
-            Swal.fire({
-                title: 'Confirm Save',
-                text: 'Are you sure you want to save this OPD bill?',
-                icon: 'warning', // or 'question'
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6', // Blue
-                cancelButtonColor: '#d33',     // Red
-                confirmButtonText: 'Yes, save it!',
-                cancelButtonText: 'No, cancel'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    this.OnSave(); // Call your save function
-                }
-            });
-
-        }
+        Swal.fire({
+            title: 'Confirm Save',
+            text: 'Are you sure you want to save this OPD bill?',
+            icon: 'warning', // or 'question'
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6', // Blue
+            cancelButtonColor: '#d33',     // Red
+            confirmButtonText: 'Yes, save it!',
+            cancelButtonText: 'No, cancel'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                this.OnSave(); // Call your save function
+            }
+        });
     }
     OnSave() {
         if (this.OPFooterForm.get('concessionAmt').value > 0 && this.Consessionres) {
@@ -1079,7 +1069,6 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
         this.OpBillForm.get('cashCounterId')?.setValue(this.searchForm.get('CashCounterID')?.value)
 
         if (!this.OpBillForm.invalid) {
-            debugger
             this.ChargeddetailsArray.clear();
             this.BillDetailsArray.clear();
             this.dsChargeList.data.forEach(item => {
@@ -1181,6 +1170,10 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
                     if (response)
                         this.resetform();
                 });
+            }
+            else if (this.OPFooterForm.get('paymentType')?.value === 'Mpesa') {
+                this.openWaitingScreen();
+                this.startPolling();
             }
         }
         else {
@@ -1293,25 +1286,17 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
     }
     isWaiting = false;
     mpesaResponse: any;
-    statusMessage:any;
+    statusMessage: any;
     pollingSub?: Subscription;
     openWaitingScreen() {
-        let payload = {
-            phone: "254712345678",
-            amount: 1,
-            reference: "INV-001"
-        };
-        this._AppointmentlistService.mpesaPay(payload)
-            .subscribe((response: any) => {
-                console.log("Response received:", response);
-                this.mpesaResponse = response;
-                // Build message AFTER response arrives
-                this.statusMessage =
-                    '' + response.responseDescription + '\n' +
-                    'CheckoutRequestId  : ' + response.checkoutRequestID  + '\n' + 
-                    'MerchantRequestId  : ' + response.merchantRequestID  ;
-                this.isWaiting = true;
-            });
+        this._AppointmentlistService.postpayment(this.OpBillForm.controls["netPayableAmt"].value, this.OPFooterForm.get('mpesaMobile').value).subscribe(response => {
+            this.mpesaResponse = response;
+            // Build message AFTER response arrives
+            this.statusMessage = '' + response.responseDescription + '\n' +
+                'CheckoutRequestId  : ' + response.checkoutRequestID + '\n' +
+                'MerchantRequestId  : ' + response.merchantRequestID;
+            this.isWaiting = true;
+        });
     }
 
     manualRefresh() {
@@ -1326,26 +1311,33 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
 
     stopPolling() {
         if (this.pollingSub) this.pollingSub.unsubscribe();
-        this._matDialog.closeAll();
-        this.savebtn = true
-        this.resetform();
+        // this._matDialog.closeAll();
+        //this.savebtn = true
+        // this.resetform();
     }
 
     checkStatus() {
-        this._AppointmentlistService.checkStatus(this.mpesaResponse)
-            .subscribe((status: any) => this.handleStatus(status));
+        if (this.mpesaResponse) {
+            this._AppointmentlistService.checkStatus(this.mpesaResponse)
+                .subscribe((status: any) => this.handleStatus(status));
+        }
     }
     handleStatus(status: any) {
-        if (status?.state === 'SUCCESS') {
-            this.statusMessage = 'Payment successful.';
+        if (status?.resultCode == 0 && (status?.mpesaReceiptNumber ?? '') != '') {
+            // here you can get json response.
+            this.statusMessage = 'Payment successful.' + this.mpesaResponse.responseDescription + '\n' +
+                'CheckoutRequestId  : ' + this.mpesaResponse.checkoutRequestID + '\n' +
+                'MerchantRequestId  : ' + this.mpesaResponse.merchantRequestID + '\n' +
+                'Receipt No=' + status.mpesaReceiptNumber;
             this.stopPolling();
-            setTimeout(() => this.isWaiting = false, 1500);
+            // setTimeout(() => this.isWaiting = false, 1500);
         }
-
-        if (status?.state === 'FAILED') {
-            this.statusMessage = 'Payment failed.';
-            this.stopPolling();
-            setTimeout(() => this.isWaiting = false, 1500);
+        else {
+            if (status?.resultDesc) {
+                this.statusMessage = status?.resultDesc;
+                this.stopPolling();
+                // setTimeout(() => this.isWaiting = false, 1500);
+            }
         }
     }
 

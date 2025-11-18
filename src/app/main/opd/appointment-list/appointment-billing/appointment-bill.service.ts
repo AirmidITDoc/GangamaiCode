@@ -51,11 +51,14 @@ export class AppointmentBillService {
         return this._httpClient1.PostData("OPDPrescriptionMedical/OPRequestListFromEMR", param)
     }
     public checkStatus(mpesaResponse: any) {
-        return this._httpClient1.GetData("MPesa/check-payment?MerchantRequestID="+mpesaResponse.merchantRequestID+"&CheckoutRequestID="+mpesaResponse.checkoutRequestID);
+        return this._httpClient1.GetData("MPesa/check-payment?MerchantRequestID=" + mpesaResponse.merchantRequestID + "&CheckoutRequestID=" + mpesaResponse.checkoutRequestID);
     }
 
     public mpesaPay(param: any) {
-       const params = `phone=${param.phone}&amount=${param.amount}&reference=${param.reference}`;
-       return this._httpClient1.PostData("MPesa/pay?" + params, {});
+        const params = `phone=${param.phone}&amount=${param.amount}&reference=${param.reference}`;
+        return this._httpClient1.PostData("MPesa/pay?" + params, {});
+    }
+    public postpayment(amount, phone) {
+        return this._httpClient1.PostData("MPesa/pay", { amount: amount, phone: phone })
     }
 }
