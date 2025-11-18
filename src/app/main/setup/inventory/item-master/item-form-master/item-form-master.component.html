@@ -151,12 +151,12 @@
                     fxFlex="25%">
                   </airmid-dropdown>
 
-                  <airmid-textbox label="Content/Molecule" formControlName="contend" [value]="registerObj?.contend"
+                  <airmid-textbox label="Content/Molecule" formControlName="content" [value]="registerObj?.content"
                     [formGroup]="itemForm" fxFlex="50%">
                   </airmid-textbox>
 
                   <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                    <mat-checkbox formControlName="IsVerifiedContent">
+                    <mat-checkbox formControlName="isValidContent" [(ngModel)]="VisValidContent">
                       IsVerifiedContent
                     </mat-checkbox>
                   </div>

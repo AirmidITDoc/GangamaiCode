@@ -1088,6 +1088,12 @@ export class IPSearchListService {
   public getReportView(Param) {
     return this._httpClient1.PostData("Report/ViewReport", Param);
   }
+  public getTempPrescriptionList(param) {
+    return this._httpClient1.PostData("OPDPrescriptionMedical/OPPrescriptionTemplateList", param)
+  }
+  public getDoseMasterById(Id) {
+  return this._httpClient1.GetData("DoseMaster/" + Id);
+}
 
 }
 

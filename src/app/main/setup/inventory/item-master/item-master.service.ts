@@ -183,8 +183,8 @@ export class ItemMasterService {
             instruction: "",
             mAssignItemToStores: [[], Validators.required], // empty array, not an object
 
-            contend: ['', [Validators.required]],
-            IsVerifiedContent: [false, Validators.requiredTrue],
+            content: ['', [Validators.required]],
+            isValidContent: [false, Validators.requiredTrue],
         });
     }
 

@@ -35,7 +35,8 @@ import { SharedModule } from "app/main/shared/shared.module";
 import { NgxMatSelectSearchModule } from "ngx-mat-select-search";
 import { NewOPListComponent } from "./new-oplist.component";
 import { OPListService } from "./oplist.service"; 
-import { MatButtonToggleModule } from "@angular/material/button-toggle";  
+import { MatButtonToggleModule } from "@angular/material/button-toggle";
+import { ReviewcompanyBillComponent } from './reviewcompany-bill/reviewcompany-bill.component';  
 
 const routes: Routes = [
     {
@@ -45,7 +46,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    declarations: [NewOPListComponent],
+    declarations: [NewOPListComponent, ReviewcompanyBillComponent],
     imports: [
         RouterModule.forChild(routes),
         SharedModule,

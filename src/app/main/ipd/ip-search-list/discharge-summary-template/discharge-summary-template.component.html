@@ -116,9 +116,8 @@
                 <div fxLayout="row" fxLayoutGap="8px" fxLayoutAlign="start center">
                   <airmid-dropdown label="Template" formControlName="TemplateId" [formGroup]="DischargesumForm"
                     fxFlex="40%" [value]="TemplateId" ValueField="templateId" TextField="templateName"
-                    (selectionChange)="onChangetemp($event)" ApiUrl="ReportTemplate/get-Templates"
-                   ></airmid-dropdown>
- <!-- [readonly]="!isItemIdSelected" -->
+                    (selectionChange)="onChangetemp($event)" ApiUrl="ReportTemplate/get-Templates"></airmid-dropdown>
+                  <!-- [readonly]="!isItemIdSelected" -->
                   <div class="mt-2">
                     <button type="button" (click)="onAddTemplate($event)" class="btn btn-primary btn-with-icon py-8"
                       [disabled]="!isItemIdSelected" fxFlex>
@@ -129,9 +128,9 @@
                   </div>
                 </div>
 
-              
+
                 <airmid-editor label="Template Details" formControlName="templateDescriptionHtml"
-                  [(value)]="vTemplateDesc" [formGroup]="DischargesumForm" >
+                  [(value)]="vTemplateDesc" [formGroup]="DischargesumForm">
                 </airmid-editor>
 
 
@@ -167,13 +166,13 @@
                     <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" class="gap-8">
                       <airmid-autocomplete label="Enter Item Name" [formGroup]="MedicineItemForm"
                         formControlName="ItemId" placeholderText="Enter Item Name" fxFlex
-                        ApiUrl="ItemMaster/GetItemListForPrescription?StoreId=2&ItemName="
-                        (selectionChange)="getSelectedserviceObj($event)" TextField="itemName"
-                        ValueField="itemId"></airmid-autocomplete>
+                        [ApiUrl]="'ItemMaster/GetItemListForPrescription?StoreId=' + vstoreId + '&ItemName='"
+                        (selectionChange)="getSelectedserviceObj($event)" TextField="itemName" ValueField="itemId"
+                        (onClearSelection)="ItemFromReset()"></airmid-autocomplete>
 
                       <airmid-dropdown label="Dose Name" formControlName="DoseId" [formGroup]="MedicineItemForm"
                         [validations]="getValidationMessages().DoseId" (selectionChange)="getdose($event)"
-                        [mode]="autocompleteModeDose"></airmid-dropdown>
+                        [mode]="autocompleteModeDose" [(ngModel)]="doseId"></airmid-dropdown>
 
                       <airmid-textbox label="Day" formControlName="Day" [value]="vDay" [formGroup]="MedicineItemForm"
                         [type]="'text'" (keypress)="keyPressCharater($event)"></airmid-textbox>
@@ -189,6 +188,28 @@
                           </button>
                         </div>
                       </div>
+
+                      <mat-divider [vertical]="true"></mat-divider>&nbsp;
+
+                      <button mat-raised-button (click)="SaveTemplate()">
+                        <mat-icon>save</mat-icon>
+                        Save Template</button>
+
+                      <airmid-dropdown label="Template List" *ngIf="showTemplateRefresh" formControlName="TemplateId"
+                        [formGroup]="MedicineItemForm" [mode]="autocompleteModeTemplate"
+                        (selectionChange)="selectChangeTemplateName($event)">
+                      </airmid-dropdown>
+
+                      <div class="input-add-button">
+                        <div matTooltip="Select Drug to enable this button!!" [matTooltipPosition]="'above'">
+                          <button #addbutton class="btn btn-primary btn-with-icon" (click)="onTemplDetAdd()">
+                            <span class="btn-icon">
+                              <mat-icon> add </mat-icon>
+                            </span>
+                          </button>
+                        </div>
+                      </div>
+
                     </div>
                   </form>
                 </div>

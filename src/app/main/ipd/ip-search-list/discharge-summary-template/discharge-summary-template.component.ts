@@ -15,6 +15,7 @@ import { AdmissionPersonlModel } from '../../Admission/admission/admission.compo
 import { AdvanceDetailObj } from '../ip-search-list.component';
 import { IPSearchListService } from '../ip-search-list.service';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
+import { PrescriptionTemplateComponent } from 'app/main/opd/new-casepaper/prescription-template/prescription-template.component';
 
 @Component({
   selector: 'app-discharge-summary-template',
@@ -37,7 +38,7 @@ export class DischargeSummaryTemplateComponent {
   TemplateId = 0;
   autocompleteModetemplate: string = "DischargeTemplate";
   DischargeSummaryId: any = 0;
-  Chargeslist: any = [];
+  // Chargeslist: any = [];
   registerObj = new DischargeSummary({});
   RetrDischargeSumryList: any = [];
   registerObj1 = new AdmissionPersonlModel({});
@@ -59,12 +60,14 @@ export class DischargeSummaryTemplateComponent {
   vTemplateDesc = '';
   Tempdesc: any;
   @ViewChild('itemid') itemid: ElementRef;
+  vstoreId = this.accountService.currentUserValue.user.storeId
 
   autocompleteModeDose: string = "DoseMaster";
   autocompleteModeRefDoctor: string = "RefDoctor";
   autocompleteModeDoctor: string = "ConDoctor";
   autocompleteitem: string = "Item";
   autocompletetemplate: string = "DischargeTemplate";
+  autocompleteModeTemplate: string = "PrescriptionTemplateMaster";
 
   dsItemList = new MatTableDataSource<MedicineItemList>();
 
@@ -81,9 +84,6 @@ export class DischargeSummaryTemplateComponent {
     public datePipe: DatePipe) { }
 
   ngOnInit(): void {
-
-
-
     this.DischargesumForm = this.showDischargeSummaryForm();
     this.DischargesumForm.markAllAsTouched();
 
@@ -126,6 +126,7 @@ export class DischargeSummaryTemplateComponent {
       DoseId: '',
       Day: '',
       Instruction: '',
+      TemplateId: ['']
     });
   }
 
@@ -332,11 +333,11 @@ export class DischargeSummaryTemplateComponent {
           console.log(insertData)
           console.log(this.DischargesumForm.value)
 
-debugger
+          debugger
           this._IpSearchListService.insertIPDDischargSummaryTemplate(this.DischargesumForm.value).subscribe(response => {
-             console.log(response)
-            if(response)
-            this.getPrint(this.vAdmissionId)
+            console.log(response)
+            if (response)
+              this.getPrint(this.vAdmissionId)
             this._matDialog.closeAll();
           });
         }
@@ -398,34 +399,163 @@ debugger
     this.doseName1 = event.text
     this.doseId = event.value
   }
+
   getSelectedserviceObj(obj) {
     this.ItemId = obj.itemId
     this.ItemName = obj.itemName
+    this.doseId = obj.doseName
+    this.vDay = obj.doseDay
     console.log(obj)
+
+    if (this.doseId) {
+      this._IpSearchListService.getDoseMasterById(this.doseId).subscribe((response) => {
+        this.doseName1 = response.doseName;
+      });
+      const doseRow = {
+        value: this.doseId,
+        text: this.doseName1
+      };
+      this.getdose(doseRow);
+    }
+  }
+  ItemFromReset() {
+    const form = this.MedicineItemForm;
+    form.patchValue({
+      ItemId: "",
+      DoseId: "",
+      vDay: "",
+      Day: "",
+    });
+  }
+
+  showTemplateRefresh = true;
+  templateId: any;
+  templateName: any;
+  Chargelist: any[] = [];
+
+  SaveTemplate() {
+    if (this.dsItemList.data.length == 0) {
+      Swal.fire('Error !', 'Please add prescription in table', 'error');
+      return
+    }
+    const dialogRef = this._matDialog.open(PrescriptionTemplateComponent,
+      {
+        maxWidth: "50vw",
+        maxHeight: "35vh",
+        width: '100%',
+        // height: "100%",
+        data: {
+          Obj: this.dsItemList.data,
+          opiptype:1
+        }
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      this.showTemplateRefresh = false;
+      setTimeout(() => {
+        this.showTemplateRefresh = true;
+      }, 100);
+    });
+  }
+  selectChangeTemplateName(row) {
+    this.templateId = row.value
+    this.templateName = row.text
+  }
+
+  FetchList: any = [];
+  onTemplDetAdd() {
+    if (!this.MedicineItemForm.get("TemplateId")?.value) {
+      this.toastr.warning('Please select a Template Name', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    const iscekDuplicate = 0
+    //  this.dsItemList.data.some(item => item.Presid == this.MedicineItemForm.get('TemplateId').value)
+    if (!iscekDuplicate) {
+      var vdata = {
+        "first": 0,
+        "rows": 10,
+        "sortField": "Presid",
+        "sortOrder": 0,
+        "filters": [
+          {
+            "fieldName": "Presid",
+            "fieldValue": String(this.templateId),//"40773",	
+            "opType": "Equals"
+          }
+        ],
+        "Columns": [],
+        "exportType": "JSON"
+      }
+
+      this._IpSearchListService.getTempPrescriptionList(vdata).subscribe(data => {
+        // this.dsItemList.data = data.data as MedicineItemList[];
+        this.Chargelist = data.data as MedicineItemList[];
+
+        this.Chargelist = data.data.map(x => ({
+          itemID: x.itemID ?? x.drugId,
+          itemName: x.itemName ?? x.drugName,
+          ...x
+        }));
+
+        // add FetchList items
+        this.FetchList.forEach(element => {
+          this.Chargelist.push({
+            itemID: element.drugId,
+            itemName: element.drugName
+          });
+        });
+        this.dsItemList.data = this.Chargelist;
+        console.log('Template data:', this.dsItemList.data)
+      });
+    }
+    else {
+      this.toastr.warning('Selected Template Details already added in the list ', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    this.MedicineItemForm.get('TemplateId').reset('');
   }
 
   onAdd() {
-
     if ((this.MedicineItemForm.get("ItemId").value == "" || this.MedicineItemForm.get("DoseId").value == "")) {
       this.toastr.warning('Please select Item', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       return;
     }
+    if (!this.MedicineItemForm.get("DoseId")?.value) {
+      this.toastr.warning('Please select a Dose Name', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    //  if ((this.vDay == '' || this.vDay == null || this.vDay == undefined)) {
+    //   this.toastr.warning('Please enter a Day', 'Warning !', {
+    //     toastClass: 'tostr-tost custom-toast-warning',
+    //   });
+    //   return;
+    // }
+
+     if (!Array.isArray(this.Chargelist)) {
+      console.warn("Chargelist was not an array. Resetting...");
+      this.Chargelist = [...this.dsItemList.data];
+    }
 
     const iscekDuplicate = this.dsItemList.data.some(item => item.itemID == this.ItemId)
     if (!iscekDuplicate) {
-      this.dsItemList.data = [];
-      this.Chargeslist.push(
-        {
-          itemID: this.MedicineItemForm.get('ItemId').value.itemId || 0,
-          itemName: this.MedicineItemForm.get('ItemId').value.itemName || '',
-          doseName: this.doseName1,//this.MedicineItemForm.get('DoseId').value || '',
-          doseId: this.doseId,// this.MedicineItemForm.get('DoseId').value || 0,
-          days: this.MedicineItemForm.get('Day').value || 0,
-          instruction: this.vInstruction || ''
-        });
-      this.dsItemList.data = this.Chargeslist
+      // this.dsItemList.data = [];
+      let newEntry = {
+        itemID: this.MedicineItemForm.get('ItemId').value.itemId || 0,
+        itemName: this.MedicineItemForm.get('ItemId').value.itemName || '',
+        doseName: this.doseName1,//this.MedicineItemForm.get('DoseId').value || '',
+        doseId: this.doseId,// this.MedicineItemForm.get('DoseId').value || 0,
+        days: this.MedicineItemForm.get('Day').value || 0,
+        instruction: this.vInstruction || ''
+      }
+      this.Chargelist.push(newEntry);
+      this.dsItemList.data = [...this.Chargelist];
     } else {
       this.toastr.warning('Selected Item already added in the list ', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
@@ -440,11 +570,12 @@ debugger
   }
 
   deleteTableRow(event, element) {
-    let index = this.Chargeslist.indexOf(element);
+
+    let index = this.Chargelist.indexOf(element);
     if (index >= 0) {
-      this.Chargeslist.splice(index, 1);
+      this.Chargelist.splice(index, 1);
       this.dsItemList.data = [];
-      this.dsItemList.data = this.Chargeslist;
+      this.dsItemList.data = this.Chargelist;
     }
     this.toastr.success('Record Deleted Successfully.', 'Deleted !', {
       toastClass: 'tostr-tost custom-toast-success',
@@ -475,9 +606,10 @@ debugger
     }
     console.log(m_data2)
     this._IpSearchListService.getPrescriptionList(m_data2).subscribe((data) => {
-      this.dsItemList.data = data?.data as MedicineItemList[];
-      if (this.dsItemList.data)
-        this.Chargeslist = data.data as MedicineItemList[];
+      // this.dsItemList.data = data?.data as MedicineItemList[];
+      // if (this.dsItemList.data)
+        this.Chargelist = data.data as MedicineItemList[];
+         this.dsItemList.data = [...this.Chargelist];
       // console.log(this.dsItemList.data);
     });
   }
@@ -510,15 +642,15 @@ debugger
       this.RetrDischargeSumryList = data?.data as DischargeSummary;
       console.log(this.RetrDischargeSumryList);
       if (this.RetrDischargeSumryList.length != 0) {
-      
+
         this.DischargeSummaryId = this.RetrDischargeSumryList[0].dischargeSummaryId || 0
         this.vIsNormalDeath = this.RetrDischargeSumryList[0].isNormalOrDeath
         this.vTemplateDesc = this.RetrDischargeSumryList[0].templateDescriptionHtml
         console.log(this.RetrDischargeSumryList[0].templateDescriptionHtml)
-          debugger
+        // debugger
         //  this.isItemIdSelected = false
-        if(this.RetrDischargeSumryList[0].templateDescriptionHtml !=="")
-           this.DischargesumForm.get('TemplateId').disable();
+        if (this.RetrDischargeSumryList[0].templateDescriptionHtml !== "")
+          this.DischargesumForm.get('TemplateId').disable();
         console.log(this.vTemplateDesc);
         this.DischargesumForm.get("discharge.dischargeDoctor1").setValue(Number(this.RetrDischargeSumryList[0].dischargeDoctor1))
         this.DischargesumForm.get("discharge.dischargeDoctor2").setValue(Number(this.RetrDischargeSumryList[0].dischargeDoctor2))
