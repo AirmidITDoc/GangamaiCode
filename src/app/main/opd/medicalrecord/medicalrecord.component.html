@@ -108,8 +108,9 @@
                 <!-- <button mat-icon-button matTooltip="OPD CasePaper" (click)="getOpCasePaper(element)">
                     <mat-icon> list_alt</mat-icon>
                 </button> -->
-                <button mat-icon-button matTooltip="OPD CasePaper" (click)="getOpCasePaper(element)">
-                    <mat-icon [ngStyle]="{ color: element.emrReady === 1 ? 'green' : 'inherit' }">
+                <button mat-icon-button [matTooltip]="element.emrReady ? 'OPD CasePaper Ready' : 'OPD CasePaper'"
+                    (click)="getOpCasePaper(element)">
+                    <mat-icon [ngClass]="element.emrReady === 1 ? 'circle-icon' : ''">
                         list_alt
                     </mat-icon>
                 </button>

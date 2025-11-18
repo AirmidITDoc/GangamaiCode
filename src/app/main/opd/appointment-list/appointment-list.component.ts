@@ -196,7 +196,7 @@ export class AppointmentListComponent implements OnInit {
         { heading: "Check-OutTime", key: "checkOutTime", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 7 },
         { heading: "Token No", key: "tokenNo", sort: true, align: 'left', emptySign: 'NA', width: 100, },
         {
-            heading: "Action", key: "action", align: "center", width: 150
+            heading: "Action", key: "action", align: "center", width: 155
             , sticky: true, type: gridColumnTypes.template,
             template: this.actionButtonTemplate  // Assign ng-template to the column
         }
@@ -481,6 +481,27 @@ export class AppointmentListComponent implements OnInit {
 
     OnViewReportPdf(element) {
         this.commonService.Onprint("VisitId", element.visitId, "AppointmentReceipt");
+    }
+
+    getOpCasePaper(row: any = null) {
+        const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+        buttonElement.blur(); // Remove focus from the button
+
+        let that = this;
+        const dialogRef = this._matDialog.open(NewCasepaperComponent,
+            {
+                maxWidth: "95vw",
+                maxHeight: '95vh',
+                height: '95%',
+                width: '90%',
+                data: row
+            });
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                that.grid.bindGridData();
+                this.GetAppointdetail();
+            }
+        });
     }
 
     OnBillPayment(row) {
@@ -947,9 +968,9 @@ export class VisitMaster1 {
             this.VisitDate = VisitMaster1.VisitDate || ''
             this.VisitId = VisitMaster1.VisitId || 0
             this.VisitTime = VisitMaster1.VisitTime || ''
- this.VisAdmTime = VisitMaster1.VisAdmTime || ''
+            this.VisAdmTime = VisitMaster1.VisAdmTime || ''
 
-            
+
         }
     }
 

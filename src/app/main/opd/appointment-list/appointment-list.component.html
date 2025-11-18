@@ -92,7 +92,7 @@
 
             <!-- <airmid-autocomplete class="w-350" label="Search Reg No / Patient Name / Mobile No" [formGroup]="searchFormGroup" formControlName="regId"  placeholderText="Search Reg No / Patient Name / Mobile No" ApiUrl="VisitDetail/search-patient?Keyword=" (selectionChange)="getSelectedObj($event)"
             TextField="formattedText" ValueField="regId"></airmid-autocomplete> -->
- 
+
         </form>
     </div>
 
@@ -132,8 +132,9 @@
 
         <ng-template #patientNameWithBadgeTemplate let-element>
             <span [matBadge]="element.tokenNo" matBadgeColor="warn" matBadgePosition="after" matBadgeOverlap="false"
-                matBadgeSize="small" [matBadgeHidden]="!element.tokenNo" matTooltip="{{ element.patientName }}-Token No: {{ element.tokenNo }}"
-                matTooltipPosition="above" style="font-size: 14px; line-height: 18px; position: relative; top: 4px;">
+                matBadgeSize="small" [matBadgeHidden]="!element.tokenNo"
+                matTooltip="{{ element.patientName }}-Token No: {{ element.tokenNo }}" matTooltipPosition="above"
+                style="font-size: 14px; line-height: 18px; position: relative; top: 4px;">
                 {{ element.patientName }}
             </span>
         </ng-template>
@@ -166,6 +167,13 @@
                     style="margin-right: 8px; font-size: 16px; width: 16px; height: 16px;"
                     (click)="OnViewReportPdf(element,true)">
                     <mat-icon> print</mat-icon>
+                </button>
+
+                <button mat-icon-button [matTooltip]="element.emrReady ? 'OPD CasePaper Ready' : 'OPD CasePaper'" 
+                 (click)="getOpCasePaper(element)">
+                    <mat-icon [ngClass]="element.emrReady === 1 ? 'circle-icon' : ''">
+                        list_alt
+                    </mat-icon>
                 </button>
 
                 <button mat-icon-button matTooltip="Bill"
