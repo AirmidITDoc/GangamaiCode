@@ -5,7 +5,7 @@
             <button mat-icon-button class="sidebar-toggle ">
                 <mat-icon>menu</mat-icon>
             </button>
-            <mat-icon class="logo-icon" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">account_box
+            <mat-icon class="logo-icon" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">biotech
             </mat-icon>
             <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
                 Sample Collection List
@@ -35,13 +35,13 @@
                 <div class="dashboard-card registrations">
                     <div class="card-label">Total Sample</div>
                     <div class="card-value">{{Vtotalcount}}</div>
-                    <mat-icon class="card-icon">person_add</mat-icon>
+                    <mat-icon class="card-icon">inventory_2</mat-icon>
                 </div>
                 
                 <div class="dashboard-card appointments">
                     <div class="card-label">Completed</div>
                     <div class="card-value">{{VCompletedcount}}</div>
-                    <mat-icon class="card-icon">event</mat-icon>
+                    <mat-icon class="card-icon">task_alt</mat-icon>
                 </div>
                 
                 <div class="dashboard-card appointments-split">
@@ -50,7 +50,7 @@
                         <div> {{Vpendingcount}}</div>
                        
                     </div>
-                    <mat-icon class="card-icon">group</mat-icon>
+                    <mat-icon class="card-icon">pending_actions</mat-icon>
                 </div>
                 
                 
@@ -74,7 +74,7 @@
 
             <ng-template #iconcompanyName let-element>
                 <div fxLayout="row" fxLayoutAlign="center center">
-                    <mat-icon *ngIf="!element.companyName" matTooltip="Patient Category Self">account_box
+                    <mat-icon *ngIf="!element.companyName" matTooltip="Patient Category Self">person
                     </mat-icon>
 
                     <mat-icon *ngIf="element.companyName" matTooltip="Patient Category Company">business
@@ -86,13 +86,13 @@
                 <div fxLayout="row" fxLayoutAlign="center center">
 
                     <mat-icon *ngIf="element.isSampleCollection == 'True'" title="Sample Collected"
-                        style="background-color: rgb(69, 181, 16);">
-                        <img width="50px" height="50px" src="assets/images/logos/samplecoll1.png">
+                        style="color: #4caf50; font-size: 24px; height: 24px; width: 24px;">
+                        science
                     </mat-icon>
 
                     <mat-icon *ngIf="element.isSampleCollection !== 'True'" title="Sample Not Collected"
-                        style="background-color: rgb(232, 127, 52);">
-                        <img width="50px" height="50px" src="assets/images/logos/samplenotcoll.jpg">
+                        style="color: #ff9800; font-size: 24px; height: 24px; width: 24px;">
+                        schedule
                     </mat-icon>
 
                 </div>
@@ -100,12 +100,14 @@
 
             <ng-template #iconisCompeleted let-element>
                 <div fxLayout="row" fxLayoutAlign="center center">
-                    <mat-icon *ngIf="element.isSampleCollection == 'True'" matTooltip="IsCompleted"
-                        class="active-icon green-500 s-16">check_circle
+                    <mat-icon *ngIf="element.isSampleCollection == 'True'"
+                        matTooltip="Completed"
+                        style="color: #4caf50; font-size: 24px; height: 24px; width: 24px;">check_circle
                     </mat-icon>
 
                     <mat-icon *ngIf="element.isSampleCollection == 'False'" matTooltip="Not Completed"
-                        class="active-icon red-500 s-16">hourglass_empty
+                        matTooltip="Pending"
+                        style="color: #ff9800; font-size: 24px; height: 24px; width: 24px;">pending
                     </mat-icon>
 
                 </div>
@@ -119,7 +121,7 @@
                         edit
                     </mat-icon>
                      <button mat-icon-button matTooltip="Patient Details Sticker" (click)="OnPrintPatientIcard(element)">
-                <mat-icon>pages</mat-icon>
+                <mat-icon>print</mat-icon>
             </button>
                 </div>
 
