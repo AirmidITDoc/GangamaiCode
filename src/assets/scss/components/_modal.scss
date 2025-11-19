@@ -77,6 +77,18 @@ $modalHeader: 60px;
             .modal-body {
                 padding: $modal-gap;
                 overflow: auto;
+                
+                // Reduce form field spacing in modals
+                mat-form-field,
+                .mat-mdc-form-field {
+                    margin-bottom: 0.5rem;
+                }
+                
+                .mat-form-field-wrapper {
+                    padding-bottom: 4px;
+                    margin-bottom: 0;
+                }
+                
                 .modal-body-container{
                     height: 100%;
                 }

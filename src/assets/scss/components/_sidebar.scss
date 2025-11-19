@@ -32,7 +32,8 @@ fuse-sidebar {
         mat-form-field {
             width: 100%;
             .mat-form-field-wrapper {
-                padding-bottom: 10px;
+                padding-bottom: 4px;
+                margin-bottom: 0;
             }
         }
         .action-buttons {

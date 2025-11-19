@@ -24,7 +24,8 @@
 }
 
 .mat-form-field-wrapper {
-    padding-bottom: 0.34375em;
+    padding-bottom: 0.15em;
+    margin-bottom: 0;
 }
 // Balance Amount color code
 .positive-balance {
@@ -328,6 +329,17 @@ body .accent {
 fieldset {
     // border-color: #039be5;// #fff9f9;
     border-color: $primary-400; // #fff9f9;
+    
+    // Reduce form field spacing inside fieldsets
+    mat-form-field,
+    .mat-mdc-form-field {
+        margin-bottom: 0.5rem;
+    }
+    
+    .mat-form-field-wrapper {
+        padding-bottom: 4px;
+        margin-bottom: 0;
+    }
 }
 .fieldset-div {
     // background-color: #191a1c21;
@@ -444,3 +456,129 @@ legend {
 //     --ae-picker-option-active-bg-color: rgba(237, 237, 62, 0.9);
 //     --ae-picker-option-focused-bg-color: rgb(255, 255, 0);  
 //   }
+
+:root {
+    --dense-form-field-height: 40px;
+    --dense-form-field-label-offset: 8px;
+  }
+  
+  .mat-mdc-form-field {
+    --mat-form-field-container-height: var(--dense-form-field-height);
+    --mat-form-field-container-vertical-padding: 4px;
+    --mat-form-field-filled-with-label-container-padding-top: 10px;
+    --mat-form-field-filled-with-label-container-padding-bottom: 2px;
+    margin-bottom: 0.5rem;
+  }
+  
+  .mat-mdc-form-field .mdc-text-field--filled,
+  .mat-mdc-form-field .mdc-text-field--outlined {
+    height: var(--mat-form-field-container-height);
+  }
+  
+  .mat-mdc-form-field .mat-mdc-form-field-infix {
+    min-height: var(--mat-form-field-container-height);
+    padding-top: 8px !important;
+    padding-bottom: 8px !important;
+  }
+  
+  .mat-mdc-form-field .mdc-text-field__input {
+    height: auto;
+    line-height: 24px;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+  
+  .mat-mdc-form-field .mdc-text-field--filled .mdc-floating-label--float-above {
+    transform: translateY(
+        calc(
+          (var(--mat-form-field-container-height) * -0.5) +
+            var(--dense-form-field-label-offset)
+        )
+      )
+      scale(var(--mat-mdc-form-field-floating-label-scale, 0.75));
+  }
+  
+  .mat-mdc-form-field .mdc-text-field--outlined .mdc-floating-label--float-above,
+  .mat-mdc-form-field
+    .mdc-text-field--outlined.mdc-notched-outline--upgraded
+    .mdc-floating-label--float-above {
+    font-size: calc(
+      var(--mat-form-field-outlined-label-text-size, var(--mat-sys-body-large-size)) *
+        var(--mat-mdc-form-field-floating-label-scale, 0.75)
+    );
+  }
+
+  // Center the placeholder label vertically
+  .mat-mdc-form-field .mdc-floating-label {
+    top: 18px !important;
+    // transform: translateY(-50%);
+  }
+
+//   // Position floating label on the border line
+  .mat-mdc-form-field .mdc-floating-label--float-above {
+    top: 28px !important;
+  }
+  
+  // Reduce subscript wrapper spacing
+  .mat-mdc-form-field-subscript-wrapper {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+  }
+  
+  .mat-mdc-form-field-bottom-align::before {
+    height: 0 !important;
+  }
+  
+  // Reduce hint wrapper spacing
+  .mat-mdc-form-field-hint-wrapper,
+  .mat-mdc-form-field-error-wrapper {
+    padding: 0 !important;
+  }
+  
+  .mdc-icon-button {
+    padding-top: 5px !important;
+  }
+  
+  // Global reduction of gaps between form fields
+  form,
+  .form-section,
+  .form-container {
+    .mat-mdc-form-field + .mat-mdc-form-field {
+      margin-top: 0;
+    }
+    
+    .mat-mdc-form-field {
+      margin-bottom: 0.5rem;
+    }
+  }
+  
+  // Reduce spacing in flex/grid layouts with form fields
+  .fxLayout,
+  .fxLayoutAlign,
+  [class*="fxLayout"],
+  .row,
+  .form-row,
+  .field-row,
+  [class*="-row"] {
+    .mat-mdc-form-field {
+      margin-bottom: 0.5rem;
+    }
+    
+    .mat-form-field-wrapper {
+      padding-bottom: 4px;
+      margin-bottom: 0;
+    }
+  }
+  
+  // Specific rule for mat-dialog-content to reduce spacing
+  .mat-dialog-content,
+  .mat-mdc-dialog-content {
+    .mat-mdc-form-field {
+      margin-bottom: 0.5rem;
+    }
+    
+    .mat-form-field-wrapper {
+      padding-bottom: 4px;
+      margin-bottom: 0;
+    }
+  }

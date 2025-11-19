@@ -79,10 +79,14 @@
       flex-flow: column;
       h2 {
         color: $primary-800;
-        margin-bottom: 2rem;
+        // margin-bottom: 1.5rem;
         font-size: 1.8rem;
         font-weight: 600;
         text-align: center;
+      }
+
+      mat-form-field {
+        margin-bottom: 0.8rem;
       }
 
       .captcha-container {
@@ -90,7 +94,7 @@
         border: 1px solid $primary-100;
         border-radius: 4px;
         padding: 0.5rem 0.5rem 0.5rem 1rem;
-        margin-bottom: 1.5rem;
+        margin-bottom: 0.8rem;
         display: flex;
         align-items: center;
         justify-content: space-between;

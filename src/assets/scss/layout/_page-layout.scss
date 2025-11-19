@@ -70,6 +70,9 @@ $layout-gap: 12px;
                     color: $gray-200;
                 }
             }
+            .mat-mdc-form-field {
+                margin-bottom: 0.5rem;
+            }
             &.padding-div {
                 padding: 0;
             }

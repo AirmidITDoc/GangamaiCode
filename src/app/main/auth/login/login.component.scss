@@ -82,6 +82,7 @@ login {
 
                     mat-form-field {
                         width: 100%;
+                        margin-bottom: 0.5rem;
 
                         @include media-breakpoint("xs") {
                             width: 80%;
@@ -197,3 +198,64 @@ login {
         }
     }
 }
+
+// :root {
+//     --dense-form-field-height: 40px;
+//     --dense-form-field-label-offset: 8px;
+//   }
+  
+//   .mat-mdc-form-field {
+//     --mat-form-field-container-height: var(--dense-form-field-height);
+//     --mat-form-field-container-vertical-padding: 10px;
+//     --mat-form-field-filled-with-label-container-padding-top: 14px;
+//     --mat-form-field-filled-with-label-container-padding-bottom: 6px;
+//   }
+  
+//   .mat-mdc-form-field .mdc-text-field--filled,
+//   .mat-mdc-form-field .mdc-text-field--outlined {
+//     height: var(--mat-form-field-container-height);
+//   }
+  
+//   .mat-mdc-form-field .mat-mdc-form-field-infix {
+//     min-height: var(--mat-form-field-container-height);
+//     padding-top: 8px !important;
+//     padding-bottom: 8px !important;
+//   }
+  
+//   .mat-mdc-form-field .mdc-text-field__input {
+//     height: auto;
+//     line-height: 24px;
+//     padding-top: 0;
+//     padding-bottom: 0;
+//   }
+  
+//   .mat-mdc-form-field .mdc-text-field--filled .mdc-floating-label--float-above {
+//     transform: translateY(
+//         calc(
+//           (var(--mat-form-field-container-height) * -0.5) +
+//             var(--dense-form-field-label-offset)
+//         )
+//       )
+//       scale(var(--mat-mdc-form-field-floating-label-scale, 0.75));
+//   }
+  
+//   .mat-mdc-form-field .mdc-text-field--outlined .mdc-floating-label--float-above,
+//   .mat-mdc-form-field
+//     .mdc-text-field--outlined.mdc-notched-outline--upgraded
+//     .mdc-floating-label--float-above {
+//     font-size: calc(
+//       var(--mat-form-field-outlined-label-text-size, var(--mat-sys-body-large-size)) *
+//         var(--mat-mdc-form-field-floating-label-scale, 0.75)
+//     );
+//   }
+
+//   // Center the placeholder label vertically
+//   .mat-mdc-form-field .mdc-floating-label {
+//     top: 18px !important;
+//     // transform: translateY(-50%);
+//   }
+
+// //   // Position floating label on the border line
+//   .mat-mdc-form-field .mdc-floating-label--float-above {
+//     top: 28px !important;
+//   }

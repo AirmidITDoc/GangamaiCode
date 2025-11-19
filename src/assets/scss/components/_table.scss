@@ -89,6 +89,7 @@
       &.mat-form-field-appearance-legacy {
         .mat-form-field-wrapper {
           padding: 0;
+          margin-bottom: 0;
           .mat-form-field-flex {
             .mat-form-field-infix {
               width: auto;
@@ -100,6 +101,10 @@
           }
         }
       }
+    }
+    
+    .mat-mdc-form-field {
+      margin-bottom: 0.5rem;
     }
     .mat-checkbox {
       .mat-checkbox-ripple {
