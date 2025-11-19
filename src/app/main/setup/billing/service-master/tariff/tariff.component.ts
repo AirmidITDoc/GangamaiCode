@@ -83,7 +83,10 @@ export class TariffComponent implements OnInit {
     if (!this.serviceForm.invalid) {
       console.log('Insert tariff:', this.serviceForm.value);
       this._ServiceMasterService.UpdateTariff(this.serviceForm.value).subscribe(response => {
-        this.onClear(true);
+        if (response.statusCode === 200) {
+          this.dialogRef.close(true);  // SUCCESS = true
+        }
+        this.onClear();
       });
     } else {
       let invalidFields = [];
@@ -104,10 +107,13 @@ export class TariffComponent implements OnInit {
     }
   }
 
+  onCancel() {
+    this.dialogRef.close(false);   // return FALSE to parent
+  }  
 
-  onClear(val: boolean) {
+  onClear() {
     this.serviceForm.reset();
-    this.dialogRef.close(val);
+    // this.dialogRef.close();
   }
 
   onSubmitTariff() {

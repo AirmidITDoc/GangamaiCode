@@ -77,6 +77,7 @@ export class ItemMasterComponent implements OnInit {
         { heading: "SGST", key: "sgst", sort: true, align: 'left', emptySign: 'NA', width: 80  },
         { heading: "IGST", key: "igst", sort: true, align: 'left', emptySign: 'NA' , width: 80 },
         { heading: "Manufacture Name", key: "manufName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+        { heading: "Dose Name", key: "doseName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         { heading: "Location", key: "prodLocation", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         { heading: "User Name", key: "userName", sort: true, align: 'left', emptySign: 'NA' },
 

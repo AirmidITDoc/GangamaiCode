@@ -403,11 +403,11 @@ export class DischargeSummaryTemplateComponent {
   getSelectedserviceObj(obj) {
     this.ItemId = obj.itemId
     this.ItemName = obj.itemName
-    this.doseId = obj.doseName
+    this.doseId = Number(obj.doseName)
     this.vDay = obj.doseDay
     console.log(obj)
 
-    if (this.doseId) {
+    if (this.doseId >0) {
       this._IpSearchListService.getDoseMasterById(this.doseId).subscribe((response) => {
         this.doseName1 = response.doseName;
       });

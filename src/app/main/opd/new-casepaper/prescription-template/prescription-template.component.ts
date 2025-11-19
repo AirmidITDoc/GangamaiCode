@@ -72,15 +72,15 @@ export class PrescriptionTemplateComponent implements OnInit {
       date: this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
       classId: [item.classID ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       genericId: [item.genericId ?? item.GenericId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      drugId: [item.drugId ?? item.DrugId ?? item.itemID, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      drugId: [item.drugId ?? item.DrugId ?? item.itemID ?? item.ItemID, [this._FormvalidationserviceService.onlyNumberValidator()]],
       doseId: [item.doseId != null ? Number(item.doseId) : item.DoseId != null ? Number(item.DoseId) : 0,
       [this._FormvalidationserviceService.onlyNumberValidator()]],
       days: [item.days ?? item.Days ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       instructionId: [item.instructionId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       qtyPerDay: [item.qtyPerDay ?? item.QtyPerDay ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      totalQty: [(item.days * item.qtyPerDay) || (item.Days * item.QtyPerDay) || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      instruction: [item.instruction ?? item.Instruction ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
-      remark: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+      totalQty: [(item.days * item.qtyPerDay) || (item.Days * item.QtyPerDay) || item.Qty || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      instruction: [item.instruction ?? item.Instruction ?? item.Remark ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+      remark: [''],
       isEnglishOrIsMarathi: true
     });
   }
@@ -118,28 +118,57 @@ export class PrescriptionTemplateComponent implements OnInit {
     }
     else {
       let invalidFields: string[] = [];
-      // checks nested error 
-      if (this.TemplateInsertForm.invalid) {
-        for (const controlName in this.TemplateInsertForm.controls) {
-          const control = this.TemplateInsertForm.get(controlName);
+      for (const controlName in this.TemplateInsertForm.controls) {
+        const control = this.TemplateInsertForm.get(controlName);
 
-          if (control instanceof FormGroup || control instanceof FormArray) {
-            for (const nestedKey in control.controls) {
-              if (control.get(nestedKey)?.invalid) {
-                invalidFields.push(`NestedForm: ${controlName}.${nestedKey}`);
+        if (control instanceof FormArray) {
+          control.controls.forEach((group, index) => {
+            if (group instanceof FormGroup) {
+              for (const nestedKey in group.controls) {
+                if (group.get(nestedKey)?.invalid) {
+                  invalidFields.push(`presTemplate[${index}].${nestedKey}`);
+                }
               }
             }
-          } else if (control?.invalid) {
-            invalidFields.push(`MainForm: ${controlName}`);
+          });
+        }
+
+        else if (control instanceof FormGroup) {
+          for (const nestedKey in control.controls) {
+            if (control.get(nestedKey)?.invalid) {
+              invalidFields.push(`${controlName}.${nestedKey}`);
+            }
           }
         }
+
+        else if (control?.invalid) {
+          invalidFields.push(`${controlName}`);
+        }
       }
-      if (invalidFields.length > 0) {
-        invalidFields.forEach(field => {
-          this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
-          );
-        });
-      }
+
+
+      // // checks nested error 
+      // if (this.TemplateInsertForm.invalid) {
+      //   for (const controlName in this.TemplateInsertForm.controls) {
+      //     const control = this.TemplateInsertForm.get(controlName);
+
+      //     if (control instanceof FormGroup || control instanceof FormArray) {
+      //       for (const nestedKey in control.controls) {
+      //         if (control.get(nestedKey)?.invalid) {
+      //           invalidFields.push(`NestedForm: ${controlName}.${nestedKey}`);
+      //         }
+      //       }
+      //     } else if (control?.invalid) {
+      //       invalidFields.push(`MainForm: ${controlName}`);
+      //     }
+      //   }
+      // }
+      // if (invalidFields.length > 0) {
+      //   invalidFields.forEach(field => {
+      //     this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
+      //     );
+      //   });
+      // }
     }
   }
 

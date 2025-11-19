@@ -32,6 +32,7 @@ import { ApointmentCardviewComponent } from './apointment-cardview/apointment-ca
 import { CompanyInformationComponent } from 'app/main/ipd/company-information/company-information.component';
 import { RegistrationService } from '../registration/registration.service';
 import { FollowpdateUpdateComponent } from './followpdate-update/followpdate-update.component';
+import { ConfigService } from 'app/core/services/config.service';
 // const moment = _rollupMoment || _moment;
 
 @Component({
@@ -85,6 +86,7 @@ export class AppointmentListComponent implements OnInit {
         private commonService: PrintserviceService, public _registrationService: RegistrationService,
         private advanceDataStored: AdvanceDataStored,
         private formBuilder: FormBuilder,
+        public _ConfigService: ConfigService,
         public toastr: ToastrService, public datePipe: DatePipe,
         private _ActRoute: Router, private route: ActivatedRoute,
     ) { }
@@ -98,6 +100,7 @@ export class AppointmentListComponent implements OnInit {
         this.menuActions.push({ icon: "people_outline", text: "Update Referred Doctor" });
         this.menuActions.push({ icon: "language", text: "Request For IP" });
         this.menuActions.push({ icon: "language", text: "Update Followup Date" });
+        this.menuActions.push({ icon: "print", text: "CasePaper Print" });
 
         const savedTimers = localStorage.getItem('consultTimers');
         if (savedTimers) {
@@ -196,8 +199,7 @@ export class AppointmentListComponent implements OnInit {
         { heading: "Check-OutTime", key: "checkOutTime", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 7 },
         { heading: "Token No", key: "tokenNo", sort: true, align: 'left', emptySign: 'NA', width: 100, },
         {
-            heading: "Action", key: "action", align: "center", width: 155
-            , sticky: true, type: gridColumnTypes.template,
+            heading: "Action", key: "action", align: "center", width: 175, sticky: true, type: gridColumnTypes.template,
             template: this.actionButtonTemplate  // Assign ng-template to the column
         }
     ]
@@ -453,7 +455,8 @@ export class AppointmentListComponent implements OnInit {
                     });
                 }
             });
-        } else if (m == "Update Followup Date") {
+        }
+        else if (m == "Update Followup Date") {
             Swal.fire({
                 title: 'Do you want to Update Followup Date?',
                 text: "You won't be able to revert this!",
@@ -476,6 +479,39 @@ export class AppointmentListComponent implements OnInit {
                     });
                 }
             });
+        }
+        else if (m == "CasePaper Print") {
+            Swal.fire({
+                title: 'Select Report Format',
+                text: "Choose how you want to view the report:",
+                icon: "warning",
+                showDenyButton: true,
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                denyButtonColor: "#6c757d",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "With Header",
+                denyButtonText: "Without Header",
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    this.OnViewCasepaperReportPdf(element, true);
+                } else if (result.isDenied) {
+                    this.OnViewCasepaperReportPdf(element, false);
+                }
+            });
+        }
+    }
+
+    OnViewCasepaperReportPdf(element: any, withHeader: boolean) {
+        debugger
+        const [PrescriptionA5_Print, Prescription_Print] = this._ConfigService.configParams.OPEmrPrescriptionA5.split(":");
+        if (PrescriptionA5_Print != 1) {
+            const reportName = withHeader ? "OPPrescription" : "OPPrescriptionwithoutHeader";
+            this.commonService.Onprint("VisitId", element.visitId, reportName);
+        }
+        else {
+            const reportName = withHeader ? "OPPrescriptionA5" : "OPPrescriptionwithoutHeaderA5";
+            this.commonService.Onprint("VisitId", element.visitId, reportName);
         }
     }
 

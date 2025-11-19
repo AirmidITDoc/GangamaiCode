@@ -45,7 +45,7 @@ export class SubstitutesComponent implements OnInit {
       console.log( this.itemDetails )
       this.itemnamelist.push(
         { 
-          itemId: this.itemDetails?.ItemId,
+          itemId: this.itemDetails?.ItemId ?? this.itemDetails.itemID,
           itemName: this.itemDetails?.ItemName, 
         } 
       ) 

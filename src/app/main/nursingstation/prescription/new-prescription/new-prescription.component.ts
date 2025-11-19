@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, ElementRef, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, ElementRef, HostListener, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
@@ -14,6 +14,9 @@ import { ToastrService } from 'ngx-toastr';
 import { PrescriptionService } from '../prescription.service';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 import { RegInsert } from 'app/main/opd/registration/registration.component';
+import { PrescriptionTemplateComponent } from 'app/main/opd/new-casepaper/prescription-template/prescription-template.component';
+import Swal from 'sweetalert2';
+import { SubstitutesComponent } from 'app/main/pharmacy/sales-hopsital-new/substitutes/substitutes.component';
 
 @Component({
   selector: 'app-new-prescription',
@@ -74,6 +77,8 @@ export class NewPrescriptionComponent implements OnInit {
   autocompletestore: string = "PharmacyStore";
   autocompleteward: string = "Room";
   autocompleteitem: string = "ItemType";
+  autocompleteModetemplate: string = "PrescriptionTemplateMaster";
+  autocompleteModeDose: string = "DoseMaster";
   Regstatus: boolean = true;
   add: boolean = false;
   PresItemlist: any = [];
@@ -83,6 +88,7 @@ export class NewPrescriptionComponent implements OnInit {
 
 
   displayedColumns: string[] = [
+    'itemMolecule',
     'ItemName',
     'Qty',
     'Remark',
@@ -241,6 +247,100 @@ export class NewPrescriptionComponent implements OnInit {
     };
   }
 
+  showTemplateRefresh = true;
+  templateId: any;
+  templateName: any;
+
+  SaveTemplate() {
+    if (this.dsItemList.data.length == 0) {
+      Swal.fire('Error !', 'Please add prescription in table', 'error');
+      return
+    }
+    const dialogRef = this._matDialog.open(PrescriptionTemplateComponent,
+      {
+        maxWidth: "50vw",
+        maxHeight: "35vh",
+        width: '100%',
+        // height: "100%",
+        data: {
+          Obj: this.dsItemList.data,
+          opiptype: 1
+        }
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      this.showTemplateRefresh = false;
+      setTimeout(() => {
+        this.showTemplateRefresh = true;
+      }, 100);
+    });
+  }
+
+  selectChangeTemplateName(row) {
+    this.templateId = row.value
+    this.templateName = row.text
+  }
+
+  FetchList: any = [];
+  onTemplDetAdd() {
+    if (!this.ItemForm.get("TemplateId")?.value) {
+      this.toastr.warning('Please select a Template Name', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    const iscekDuplicate = 0
+    //  this.dsItemList.data.some(item => item.Presid == this.ItemForm.get('TemplateId').value)
+    if (!iscekDuplicate) {
+      var vdata = {
+        "first": 0,
+        "rows": 10,
+        "sortField": "Presid",
+        "sortOrder": 0,
+        "filters": [
+          {
+            "fieldName": "Presid",
+            "fieldValue": String(this.templateId),//"40773",	
+            "opType": "Equals"
+          }
+        ],
+        "Columns": [],
+        "exportType": "JSON"
+      }
+
+      this._PrescriptionService.getTempPrescriptionList(vdata).subscribe(data => {
+        // this.dsItemList.data = data.data as MedicineItemList[];
+        this.Chargelist = data.data as MedicineItemList[];
+
+        this.Chargelist = data.data.map(x => ({
+          itemID: x.itemID ?? x.drugId,
+          ItemName: x.itemName ?? x.drugName,
+          Qty:x.totalQty,
+          Remark:x.remark,
+          ...x
+        }));
+
+        // add FetchList items
+        this.FetchList.forEach(element => {
+          this.Chargelist.push({
+            itemID: element.drugId,
+            ItemName: element.drugName,
+            Qty:element.totalQty,
+            Remark:element.remark,
+          });
+        });
+        this.dsItemList.data = this.Chargelist;
+        console.log('Template data:', this.dsItemList.data)
+      });
+    }
+    else {
+      this.toastr.warning('Selected Template Details already added in the list ', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    this.ItemForm.get('TemplateId').reset('');
+  }
+
   // onEdit(row) {
   //   console.log(row);
   //   this.registerObj = row;
@@ -307,6 +407,25 @@ export class NewPrescriptionComponent implements OnInit {
         }
       }
     }, 100);
+  }
+
+  @HostListener('document:keydown', ['$event']) onKeydownHandler(event: KeyboardEvent) {
+    if (event.keyCode === 119) {
+        this.Oncheckitemmolecule(1);
+    }
+}
+  Oncheckitemmolecule(contact) {
+    const dialogRef = this._matDialog.open(SubstitutesComponent,
+      {
+        width: "45%",
+        height: "60%",
+        data: {
+          obj: contact
+        }
+      });
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log('The dialog was closed - Insert Action', result);
+    });
   }
 
   deleteTableRow(event, element) {
