@@ -51,7 +51,7 @@ export class AppointmentBillService {
         return this._httpClient1.PostData("OPDPrescriptionMedical/OPRequestListFromEMR", param)
     }
     public checkStatus(mpesaResponse: any) {
-        return this._httpClient1.GetData("MPesa/check-payment?MerchantRequestID=" + mpesaResponse.merchantRequestID + "&CheckoutRequestID=" + mpesaResponse.checkoutRequestID);
+        return this._httpClient1.GetData("MPesa/check-payment?MerchantRequestID=" + mpesaResponse?.merchantRequestID + "&CheckoutRequestID=" + mpesaResponse?.checkoutRequestID);
     }
 
     public mpesaPay(param: any) {

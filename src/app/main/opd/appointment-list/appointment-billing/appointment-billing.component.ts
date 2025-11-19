@@ -138,6 +138,8 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
             this.savebtn = false
             this.searchForm.get('TariffId').setValue(this.patientDetail.tariffId)
             this.checkCompanypatient(this.patientDetail?.companyId ?? 0)
+            this.patientDetail.mobileNo
+            this.OPFooterForm.patchValue({mpesaMobile:this.patientDetail?.mobileNo || 0})
         }
 
 
@@ -993,10 +995,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
     getSelectedObj(obj) {
         console.log(obj)
         this.patientDetail = obj
-
-
         this.patientDetail.doctorId = obj.consultantDocId
-
         this.patientDetail.doctorname = obj.doctorName
         this.PatientName = obj.formattedText
         this.DepartmentName = this.patientDetail.departmentName
@@ -1008,7 +1007,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
         this.vhospitalId = this.patientDetail.hospitalId;
         this.searchForm.get('TariffId').setValue(this.patientDetail.tariffId)
         this.ApiURL = "VisitDetail/GetServiceListwithTraiff?TariffId=" + this.patientDetail.tariffId + "&ClassId=" + this.patientDetail.classId + "&ServiceName="
-
+        this.OPFooterForm.patchValue({mpesaMobile:this.patientDetail?.mobileNo || 0})
         if (this.vOPIPId > 0)
             this.savebtn = false
         this.Regstatus = false
@@ -1174,6 +1173,30 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
             else if (this.OPFooterForm.get('paymentType')?.value === 'Mpesa') {
                 this.openWaitingScreen();
                 this.startPolling();
+
+                if(this.mPesa_ReceiptNo && this.mpesaResponse){
+                const mPesaMerchant_CheckoutRequest_Id  = this.mpesaResponse?.checkoutRequestID +"|"+ this.mpesaResponse?.merchantRequestID
+                this.OpBillForm.get('balanceAmt').setValue(0)
+                this.OpBillForm.get('paidAmt')?.setValue(this.OPFooterForm.get('netPayableAmt')?.value)
+                this.OpBillForm.get('payments.payTmamount')?.setValue(Number(this.OPFooterForm.get('netPayableAmt')?.value))
+                this.OpBillForm.get('payments.payTmdate')?.setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'))
+                this.OpBillForm.get('payments.payTmtranNo')?.setValue(this.mPesa_ReceiptNo)
+                this.OpBillForm.get('payments.remark')?.setValue(mPesaMerchant_CheckoutRequest_Id) 
+
+                console.log(this.OpBillForm.value)
+                this._AppointmentlistService.InsertOPBilling(this.OpBillForm.value).subscribe(response => {
+                    debugger
+                    console.log(response)
+                    if (ThermalPrint != 1) {
+                        this.viewgetOPBillReportPdf(response)
+                    } else {
+                        this.viewgetOPBillThermalReportPdf(response)
+                    } 
+                    this._matDialog.closeAll();
+                    this.savebtn = true
+                    this.resetform();
+                }); 
+                }
             }
         }
         else {
@@ -1288,7 +1311,9 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
     mpesaResponse: any;
     statusMessage: any;
     pollingSub?: Subscription;
+    mPesa_ReceiptNo:any='0';
     openWaitingScreen() {
+        debugger
         this._AppointmentlistService.postpayment(this.OpBillForm.controls["netPayableAmt"].value, this.OPFooterForm.get('mpesaMobile').value).subscribe(response => {
             this.mpesaResponse = response;
             // Build message AFTER response arrives
@@ -1330,6 +1355,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
                 'MerchantRequestId  : ' + this.mpesaResponse.merchantRequestID + '\n' +
                 'Receipt No=' + status.mpesaReceiptNumber;
             this.stopPolling();
+            this.mPesa_ReceiptNo  = status.mpesaReceiptNumber
             // setTimeout(() => this.isWaiting = false, 1500);
         }
         else {
