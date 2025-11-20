@@ -130,34 +130,7 @@
                                 <div class="patient-info-title border-bottom pb-2">
                                 <span class="h1">Previous Bed Information:-{{ data.roomName}} | {{ data.className }} </span>
                             </div>
-                                <!-- <div class="patient-info-row patient-info-1-40 pt-8" fxLayout="row"
-                                    fxLayoutAlign="space-between">
-                                    <div fxLayout="column" fxLayoutGap="10px">
-                                        <div class="patient-col">
-                                            <span class="patient-col-key">Previous Ward</span>
-                                            <span>:</span>
-                                            <span class="patient-col-value">{{ data.roomName}}</span>
-                                        </div>
-
-                                    </div>
-
-                                    <div fxLayout="column" fxLayoutGap="10px">
-                                        <div class="patient-col">
-                                            <span class="patient-col-key">Previous Bed</span>
-                                            <span>:</span>
-                                            <span class="patient-col-value">{{ data.bedtName }}</span>
-                                        </div>
-                                    </div>
-                                    <div fxLayout="column" fxLayoutGap="10px">
-                                        <div class="patient-col">
-                                            <span class="patient-col-key">Previous Class</span>
-                                            <span>:</span>
-                                            <span class="patient-col-value">{{ data.className }}</span>
-                                        </div>
-
-                                    </div>
-
-                                </div> -->
+                         
                             </div>
                         </div>
                     </mat-card>
@@ -176,28 +149,13 @@
                                         </div>
                                         <hr>
                                         <div fxLayout="row wrap" fxLayoutGap="8px">
-
-
-
-                                            <!-- <airmid-dropdown label="Ward Name" formControlName="toWardId" fxFlex="32%"
-                                                [formGroup]="Bedtransfer"
-                                                [validations]="getValidationMessages().toWardId" ValueField="roomId"
-                                                TextField="roomName" (selectionChange)="onChangeWard($event)"
-                                                ApiUrl="WardMaster/get-WardClass" #ddlWard>
-                                            </airmid-dropdown> -->
-
                                                <airmid-dropdown label="Ward Name" formControlName="toWardId" fxFlex="32%"
                                                    [validations]="getValidationMessages().toWardId" ValueField="roomId"
                                                     TextField="roomName" (selectionChange)="onChangeWard($event)" [formGroup]="Bedtransfer"
                                                     ApiUrl="WardMaster/get-WardClass" #ddlWard>
                                                 </airmid-dropdown>
 
-                                            <!-- <airmid-dropdown label="Bed Name" formControlName="toBedId"
-                                                [formGroup]="Bedtransfer"
-                                                [validations]="getValidationMessages().toBedId" [mode]="autocompletebed"
-                                                fxFlex="32%">
-                                            </airmid-dropdown> -->
-
+                                           
                                                <airmid-dropdown label="Bed Name" formControlName="toBedId" fxFlex="32%"
                                                    [formGroup]="Bedtransfer" TextField="bedName"
                                                     ValueField="bedId" [validations]="getValidationMessages().toBedId"

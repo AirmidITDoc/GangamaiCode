@@ -32,6 +32,7 @@ import { ApointmentCardviewComponent } from './apointment-cardview/apointment-ca
 import { CompanyInformationComponent } from 'app/main/ipd/company-information/company-information.component';
 import { RegistrationService } from '../registration/registration.service';
 import { FollowpdateUpdateComponent } from './followpdate-update/followpdate-update.component';
+import { NewAppointmentwithBillComponent } from './new-appointmentwith-bill/new-appointmentwith-bill.component';
 // const moment = _rollupMoment || _moment;
 
 @Component({
@@ -890,6 +891,24 @@ export class AppointmentListComponent implements OnInit {
             });
         dialogRef.afterClosed().subscribe(result => {
             console.log('The dialog was closed - Insert Action', result);
+        });
+    }
+
+     onAppointmentwithBill(row: any = null) {
+        const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+        buttonElement.blur(); // Remove focus from the button
+
+        let that = this;
+        const dialogRef = this._matDialog.open(NewAppointmentwithBillComponent,
+            {
+                maxWidth: "95vw",
+                height: '95%',
+                width: '90%',
+                data: row
+            });
+        dialogRef.afterClosed().subscribe(result => {
+            that.grid.bindGridData();
+            this.GetAppointdetail()
         });
     }
 }

@@ -12,6 +12,8 @@
         <div class="gap-8" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
             <button mat-raised-button (click)="onSave($event)">New Appointment
             </button>
+            <button mat-raised-button (click)="onAppointmentwithBill($event)">+ Add Bill
+            </button>
 
         </div>
 
@@ -169,8 +171,8 @@
                     <mat-icon> print</mat-icon>
                 </button>
 
-                <button mat-icon-button [matTooltip]="element.emrReady ? 'OPD CasePaper Ready' : 'OPD CasePaper'" 
-                 (click)="getOpCasePaper(element)">
+                <button mat-icon-button [matTooltip]="element.emrReady ? 'OPD CasePaper Ready' : 'OPD CasePaper'"
+                    (click)="getOpCasePaper(element)">
                     <mat-icon [ngClass]="element.emrReady === 1 ? 'circle-icon' : ''">
                         list_alt
                     </mat-icon>
