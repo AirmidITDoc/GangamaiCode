@@ -32,6 +32,8 @@ import { ApointmentCardviewComponent } from './apointment-cardview/apointment-ca
 import { CompanyInformationComponent } from 'app/main/ipd/company-information/company-information.component';
 import { RegistrationService } from '../registration/registration.service';
 import { FollowpdateUpdateComponent } from './followpdate-update/followpdate-update.component';
+import { ConfigService } from 'app/core/services/config.service';
+import { NewAppointmentwithBillComponent } from './new-appointmentwith-bill/new-appointmentwith-bill.component';
 // const moment = _rollupMoment || _moment;
 
 @Component({
