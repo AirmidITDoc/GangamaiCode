@@ -1279,8 +1279,8 @@ export class NewCasepaperComponent implements OnInit {
   }
 
   selectChangeTemplateName(row) {
-    this.templateId = row.value
-    this.templateName = row.text
+    this.templateId = row.presId
+    this.templateName = row.presTemplateName
   }
   itemObjects1: any[] = [];
 
@@ -1770,7 +1770,8 @@ export class NewCasepaperComponent implements OnInit {
         width: '100%',
         // height: "100%",
         data: {
-          Obj: this.dsItemList.data
+          Obj: this.dsItemList.data,          
+          category:'CasePaperTemplate'
         }
       });
     dialogRef.afterClosed().subscribe(result => {

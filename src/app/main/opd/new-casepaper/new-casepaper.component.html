@@ -378,7 +378,9 @@
                                                             *ngIf="showTemplateRefresh" formControlName="TemplateId"
                                                             [formGroup]="MedicineItemForm"
                                                             [validations]="getValidationMessages().TemplateId"
-                                                            [mode]="autocompleteModeTemplate"
+                                                            [mode]="autocompleteModeTemplate" ValueField="presId"
+                                                            TextField="presTemplateName"
+                                                            ApiUrl="OPDPrescriptionMedical/GetTemplatePrescriptionList?TemplateCategory=CasePaperTemplate"
                                                             (selectionChange)="selectChangeTemplateName($event)">
                                                         </airmid-dropdown>
 

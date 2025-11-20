@@ -197,7 +197,9 @@
 
                       <airmid-dropdown label="Template List" *ngIf="showTemplateRefresh" formControlName="TemplateId"
                         [formGroup]="MedicineItemForm" [mode]="autocompleteModeTemplate"
-                        (selectionChange)="selectChangeTemplateName($event)">
+                        (selectionChange)="selectChangeTemplateName($event)" ValueField="presId"
+                        TextField="presTemplateName"
+                        ApiUrl="OPDPrescriptionMedical/GetTemplatePrescriptionList?TemplateCategory=DischargeSummeryTemplate">
                       </airmid-dropdown>
 
                       <div class="input-add-button">
