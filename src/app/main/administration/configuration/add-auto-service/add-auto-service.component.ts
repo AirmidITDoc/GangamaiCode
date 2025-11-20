@@ -118,7 +118,7 @@ export class AddAutoServiceComponent {
       {
         sysId: 0,
         serviceId: element.serviceId,
-        isAutoBedCharges:true
+        isAutoBedCharges:false
       }
     )
     }); 
