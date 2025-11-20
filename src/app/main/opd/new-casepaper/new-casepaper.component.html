@@ -325,7 +325,7 @@
                                                 <form [formGroup]="MedicineItemForm">
                                                     <div fxLayout="row" class="gap-8">
 
-                                                        <airmid-autocomplete label="Enter Drug Name"
+                                                        <!-- <airmid-autocomplete label="Enter Drug Name"
                                                             [formGroup]="MedicineItemForm" formControlName="ItemId"
                                                             placeholderText="Enter Drug Name" fxFlex
                                                             [ApiUrl]="'ItemMaster/GetItemListForPrescription?StoreId=' + vstoreId + '&ItemName='"
@@ -356,7 +356,7 @@
                                                                 [(ngModel)]="vInstruction" formControlName="Instruction"
                                                                 matInput #Instruction
                                                                 (keydown.enter)="onEnterremark($event)">
-                                                        </mat-form-field>
+                                                        </mat-form-field> -->
 
                                                         <div class="input-add-button">
                                                             <div matTooltip="Select Drug to enable this button!!"
@@ -400,161 +400,143 @@
                                                 <div class="table" fxFlex="100%">
 
                                                     <div class="airmid-table-container">
-                                                        <mat-table matSort [dataSource]="dsItemList"
-                                                            [@animateStagger]="{value:'50'}" class="airmid-table">
+                                                        <form [formGroup]="MedicineItemForm">
+                                                            <mat-table matSort [dataSource]="dsItemList"
+                                                                [@animateStagger]="{value:'50'}" class="airmid-table">
 
-                                                            <ng-container matColumnDef="ItemName">
-                                                                <mat-header-cell *matHeaderCellDef mat-sort-header
-                                                                    fxHide fxShow.gt-sm>
-                                                                    Drug Name</mat-header-cell>
-                                                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                                                    <span> {{element.DrugName ||
-                                                                        element.drugName}}</span>
-                                                                    <!-- <span> {{element.DrugName || vDrugName}}</span> -->
-                                                                </mat-cell>
-                                                            </ng-container>
+                                                                <ng-container matColumnDef="ItemName">
+                                                                    <mat-header-cell *matHeaderCellDef mat-sort-header
+                                                                        fxHide fxShow.gt-sm>
+                                                                        Drug Name</mat-header-cell>
+                                                                    <mat-cell *matCellDef="let element" fxHide
+                                                                        fxShow.gt-sm>
+                                                                        <span *ngIf="!element.editable">
+                                                                            {{element.DrugName ||
+                                                                            element.drugName}}</span>
+                                                                        <airmid-autocomplete label="Enter Drug Name"
+                                                                            *ngIf="element.editable"
+                                                                            [formGroup]="MedicineItemForm"
+                                                                            formControlName="ItemId"
+                                                                            placeholderText="Enter Drug Name" fxFlex
+                                                                            [ApiUrl]="'ItemMaster/GetItemListForPrescription?StoreId=' + vstoreId + '&ItemName='"
+                                                                            (selectionChange)="selectChangeItemName($event)"
+                                                                            TextField="formattedText"
+                                                                            ValueField="ItemId"
+                                                                            (onClearSelection)="ItemFromReset()">
+                                                                        </airmid-autocomplete>
+                                                                    </mat-cell>
+                                                                </ng-container>
 
-                                                            <ng-container matColumnDef="ItemGenericName">
-                                                                <mat-header-cell *matHeaderCellDef mat-sort-header
-                                                                    fxHide fxShow.gt-sm class="w-300">
-                                                                    ItemGenericName
-                                                                </mat-header-cell>
+                                                                <ng-container matColumnDef="ItemGenericName">
+                                                                    <mat-header-cell *matHeaderCellDef mat-sort-header
+                                                                        fxHide fxShow.gt-sm class="w-300">
+                                                                        ItemGenericName
+                                                                    </mat-header-cell>
 
-                                                                <mat-cell *matCellDef="let element; let in = index"
-                                                                    fxHide fxShow.gt-sm class="w-300">
-                                                                    <!-- Display text when not in edit mode -->
-                                                                    <span *ngIf="editingIndex1 !== in">
-                                                                        {{ element.GenericName || element.genericName }}
-                                                                        <mat-icon *ngIf="element.precriptionId"
-                                                                            (click)="editItem(in, element)"
-                                                                            class="edit-icon">edit</mat-icon>
-                                                                    </span>
+                                                                    <mat-cell *matCellDef="let element; let in = index"
+                                                                        fxHide fxShow.gt-sm class="w-300">
+                                                                        <span *ngIf="!element.editable">
+                                                                            {{ element.GenericName ||
+                                                                            element.genericName }}
+                                                                        </span>
 
-                                                                    <!-- Show dropdown and save button when in edit mode -->
-                                                                    <div *ngIf="editingIndex1 === in"
-                                                                        style="display: flex; align-items: center; gap: 10px; width: 300px;">
                                                                         <airmid-dropdown label="ItemGeneric Name"
-                                                                            fxFlex="80%"
+                                                                            *ngIf="element.editable" fxFlex="80%"
                                                                             formControlName="ItemGenericNameId"
                                                                             [formGroup]="MedicineItemForm"
                                                                             [mode]="autocompleteModeItemGeneric"
                                                                             (selectionChange)="selectChangeItemGenericName($event)">
                                                                         </airmid-dropdown>
+                                                                    </mat-cell>
+                                                                </ng-container>
 
-                                                                        <ng-container *ngIf="element.precriptionId">
-                                                                            <button mat-icon-button
-                                                                                (click)="OnSaveEditGeneric(element)"
-                                                                                matTooltip="Save">
-                                                                                <mat-icon
-                                                                                    class="active-icon green-600 s-16">check</mat-icon>
-                                                                            </button>
+                                                                <ng-container matColumnDef="DoseName">
+                                                                    <mat-header-cell *matHeaderCellDef mat-sort-header
+                                                                        fxHide fxShow.gt-sm class="w-300">
+                                                                        Dose Name
+                                                                    </mat-header-cell>
 
-                                                                            <button mat-icon-button
-                                                                                (click)="GenericdisableEditing(element)"
-                                                                                matTooltip="Close">
-                                                                                <mat-icon
-                                                                                    class="active-icon red-600 s-16">close</mat-icon>
-                                                                            </button>
-                                                                        </ng-container>
-                                                                    </div>
-                                                                </mat-cell>
-                                                            </ng-container>
+                                                                    <mat-cell *matCellDef="let element; let i = index"
+                                                                        fxHide fxShow.gt-sm class="w-300">
 
-                                                            <ng-container matColumnDef="DoseName">
-                                                                <mat-header-cell *matHeaderCellDef mat-sort-header
-                                                                    fxHide fxShow.gt-sm class="w-300">
-                                                                    Dose Name
-                                                                </mat-header-cell>
-
-                                                                <mat-cell *matCellDef="let element; let i = index"
-                                                                    fxHide fxShow.gt-sm class="w-300">
-
-                                                                    <span *ngIf="editingIndex !== i">
-                                                                        {{ element.DoseName || element.doseName }}
-                                                                        <!-- {{ element.DoseName || vDoseName }} -->
-                                                                        <mat-icon *ngIf="element.precriptionId"
-                                                                            (click)="editDose(i, element)"
-                                                                            class="edit-icon">edit</mat-icon>
-                                                                    </span>
-
-                                                                    <div *ngIf="editingIndex === i"
-                                                                        style="display: flex; align-items: center; gap: 5px; width: 300px;">
-                                                                        <airmid-dropdown formControlName="DoseId1"
-                                                                            fxFlex="50%" [formGroup]="MedicineItemForm"
+                                                                        <span *ngIf="!element.editable">
+                                                                            {{ element.DoseName || element.doseName }}
+                                                                        </span>
+                                                                        <airmid-dropdown formControlName="DoseId"
+                                                                            fxFlex="50%" *ngIf="element.editable"
+                                                                            [formGroup]="MedicineItemForm"
                                                                             [mode]="autocompleteModeDose"
                                                                             (selectionChange)="selectChangeDoseName($event)">
                                                                         </airmid-dropdown>
+                                                                    </mat-cell>
+                                                                </ng-container>
 
-                                                                        <ng-container *ngIf="element.precriptionId">
-                                                                            <button mat-icon-button
-                                                                                (click)="OnSaveEditDose(element)"
-                                                                                matTooltip="Save">
-                                                                                <mat-icon
-                                                                                    class="active-icon green-600 s-16">check</mat-icon>
+                                                                <ng-container matColumnDef="Days">
+                                                                    <mat-header-cell *matHeaderCellDef mat-sort-header
+                                                                        fxHide fxShow.gt-sm>Days</mat-header-cell>
+                                                                    <mat-cell *matCellDef="let element" fxHide
+                                                                        fxShow.gt-sm>
+                                                                        <span *ngIf="!element.editable">
+                                                                            {{ element.Days || element.days }}
+                                                                        </span>
+                                                                        <mat-form-field appearance="fill"
+                                                                            *ngIf="element.editable" floatLabel="never">
+                                                                            <input matInput
+                                                                                [(ngModel)]="element.Days || element.days"
+                                                                                type="number" OnlyNumber>
+                                                                        </mat-form-field>
+                                                                    </mat-cell>
+                                                                </ng-container>
+                                                                <ng-container matColumnDef="Remark">
+                                                                    <mat-header-cell *matHeaderCellDef mat-sort-header
+                                                                        fxShow.gt-sm>Instruction
+                                                                    </mat-header-cell>
+                                                                    <mat-cell *matCellDef="let element" fxShow.gt-sm>
+                                                                        <span *ngIf="!element.editable">
+                                                                            {{ element.Instruction ||
+                                                                            element.instruction }}
+                                                                        </span>
+                                                                        <mat-form-field appearance="fill"
+                                                                            floatLabel="never" *ngIf="element.editable">
+                                                                            <input matInput [maxLength]="200"
+                                                                                [(ngModel)]="element.instruction"
+                                                                                type="text">
+                                                                        </mat-form-field>
+                                                                    </mat-cell>
+                                                                </ng-container>
+                                                                <ng-container matColumnDef="Action" stickyEnd>
+                                                                    <mat-header-cell *matHeaderCellDef
+                                                                        class="table-actions">Action
+                                                                    </mat-header-cell>
+                                                                    <mat-cell *matCellDef="let contact">
+                                                                        <ng-container class="actions">
+                                                                            <mat-icon
+                                                                                (click)="deleteTableRow($event ,contact)"
+                                                                                color="warn">
+                                                                                delete
+                                                                            </mat-icon>
+                                                                            <button *ngIf="!contact.editable"
+                                                                                mat-icon-button color="primary"
+                                                                                (click)="enableEdit(contact)">
+                                                                                <mat-icon>edit</mat-icon>
                                                                             </button>
-
-                                                                            <button mat-icon-button
-                                                                                (click)="DosedisableEditing(i)"
-                                                                                matTooltip="Close">
-                                                                                <mat-icon
-                                                                                    class="active-icon red-600 s-16">close</mat-icon>
+                                                                            <button *ngIf="contact.editable"
+                                                                                mat-icon-button color="primary">
+                                                                                <mat-icon>save</mat-icon>
                                                                             </button>
                                                                         </ng-container>
-                                                                    </div>
-                                                                </mat-cell>
-                                                            </ng-container>
+                                                                    </mat-cell>
+                                                                </ng-container>
 
-                                                            <ng-container matColumnDef="Days">
-                                                                <mat-header-cell *matHeaderCellDef mat-sort-header
-                                                                    fxHide fxShow.gt-sm>Days</mat-header-cell>
-                                                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                                                    <mat-form-field appearance="fill"
-                                                                        floatLabel="never">
-                                                                        <input matInput
-                                                                            [(ngModel)]="element.Days || element.days"
-                                                                            type="number" OnlyNumber>
-                                                                    </mat-form-field>
-                                                                </mat-cell>
-                                                            </ng-container>
-                                                            <!-- [(ngModel)]="element.Days || vDayys" -->
-
-                                                            <ng-container matColumnDef="Remark">
-                                                                <mat-header-cell *matHeaderCellDef mat-sort-header
-                                                                    fxShow.gt-sm>Instruction
-                                                                </mat-header-cell>
-                                                                <mat-cell *matCellDef="let element" fxShow.gt-sm>
-                                                                    <mat-form-field appearance="fill"
-                                                                        floatLabel="never">
-                                                                        <input matInput [maxLength]="200"
-                                                                            [(ngModel)]="element.instruction"
-                                                                            type="text">
-                                                                    </mat-form-field>
-                                                                </mat-cell>
-                                                            </ng-container>
-                                                            <!-- [(ngModel)]="element.Instruction || vInst" -->
-
-                                                            <ng-container matColumnDef="Action" stickyEnd>
-                                                                <mat-header-cell *matHeaderCellDef
-                                                                    class="table-actions">Action
-                                                                </mat-header-cell>
-                                                                <mat-cell *matCellDef="let contact">
-                                                                    <ng-container class="actions">
-                                                                        <mat-icon
-                                                                            (click)="deleteTableRow($event ,contact)"
-                                                                            color="warn">
-                                                                            delete
-                                                                        </mat-icon>
-                                                                    </ng-container>
-                                                                </mat-cell>
-                                                            </ng-container>
-
-                                                            <mat-header-row class="accent"
-                                                                *matHeaderRowDef="displayedItemColumn; sticky: true">
-                                                            </mat-header-row>
-                                                            <mat-row *matRowDef="let row; columns: displayedItemColumn;"
-                                                                class="element"
-                                                                [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
-                                                        </mat-table>
+                                                                <mat-header-row class="accent"
+                                                                    *matHeaderRowDef="displayedItemColumn; sticky: true">
+                                                                </mat-header-row>
+                                                                <mat-row
+                                                                    *matRowDef="let row; columns: displayedItemColumn;"
+                                                                    class="element"
+                                                                    [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                                                            </mat-table>
+                                                        </form>
                                                     </div>
                                                 </div>
                                             </div>
