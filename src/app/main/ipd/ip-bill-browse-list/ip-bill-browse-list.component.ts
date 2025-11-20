@@ -15,6 +15,7 @@ import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/air
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 import { ToastrService } from 'ngx-toastr';
 import { IPAdvanceComponent, IpPaymentInsert } from '../ip-search-list/ip-advance/ip-advance.component';
+import { ReviewcompanyBillComponent } from 'app/main/opd/new-oplist/reviewcompany-bill/reviewcompany-bill.component';
 
 @Component({
     selector: 'app-ip-bill-browse-list',
@@ -398,6 +399,19 @@ export class IPBillBrowseListComponent implements OnInit {
         this.commonService.Onprint("BillNo", billNo, "IPFinalBillGroupwise");
     }
 
+ OnCompanyBill(element) {
+        const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+        buttonElement.blur();
+        const dialogRef = this._matDialog.open(ReviewcompanyBillComponent, {
+            maxWidth: "95vw",
+            height: "95vh",
+            width: "100%",
+            data: element
+        });
+        dialogRef.afterClosed().subscribe(result => {
+            this.grid.bindGridData();
+        });
+    }
 
     getValidationMessages() {
         return {

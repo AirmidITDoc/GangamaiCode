@@ -182,7 +182,8 @@ export class NewLabPatientRegComponent {
       netPayableAmt: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
       paymentType: ['CashPay'],
       patientName: [''],
-      createdBy: this.accountService.currentUserValue.userId
+      createdBy: this.accountService.currentUserValue.userId,
+      LabPatRegId:0
     })
   }
 
@@ -777,6 +778,7 @@ export class NewLabPatientRegComponent {
   }
 
   BillSave() {
+    
     Swal.fire({
       title: 'Confirm Save',
       text: 'Are you sure you want to save this Lab Bill?',

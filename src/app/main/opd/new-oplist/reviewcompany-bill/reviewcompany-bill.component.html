@@ -177,12 +177,26 @@
                                                                 </mat-cell>
                                                             </ng-container>
 
-                                                            <ng-container matColumnDef="Qty">
+                                                            <!-- <ng-container matColumnDef="Qty">
                                                                 <mat-header-cell *matHeaderCellDef>Qty</mat-header-cell>
                                                                 <mat-cell *matCellDef="let contact">
                                                                     {{contact.Qty}}
                                                                 </mat-cell>
+                                                            </ng-container> -->
+
+                                                               <ng-container matColumnDef="Qty">
+                                                                <mat-header-cell
+                                                                    *matHeaderCellDef>Qty</mat-header-cell>
+                                                                <mat-cell *matCellDef="let contact">
+                                                                    <mat-form-field floatLabel="never">
+                                                                        <input matInput placeholder="Qty"
+                                                                            type="number" [(ngModel)]="contact.Qty"
+                                                                            required
+                                                                            (ngModelChange)="onPriceOrQtyChange(contact)">
+                                                                    </mat-form-field>
+                                                                </mat-cell>
                                                             </ng-container>
+
 
                                                             <ng-container matColumnDef="TotalAmount">
                                                                 <mat-header-cell *matHeaderCellDef>Total
@@ -329,7 +343,7 @@
                                                     </div>
                                                 </div>
                                             </mat-tab>
-                                            <!-- <mat-tab label="Package List">
+                                            <mat-tab label="Package List">
                                                 <div fxLayout="column" class="h-100-p">
                                                     <div class="airmid-table-container ">
                                                         <mat-table #table1 matSort [dataSource]="dsPackageList"
@@ -465,7 +479,7 @@
                                                         </mat-table>
                                                     </div>
                                                 </div>
-                                            </mat-tab> -->
+                                            </mat-tab>
                                         </mat-tab-group>
                                     </div>
                                 </div>
