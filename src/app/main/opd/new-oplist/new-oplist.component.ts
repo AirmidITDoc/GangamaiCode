@@ -12,6 +12,7 @@ import { ToastrService } from 'ngx-toastr';
 import { OpPaymentComponent } from '../op-search-list/op-payment/op-payment.component';
 import { OPListService } from './oplist.service';
 import { ConfigService } from 'app/core/services/config.service';
+import { ReviewcompanyBillComponent } from './reviewcompany-bill/reviewcompany-bill.component';
 
 
 @Component({
@@ -274,9 +275,18 @@ export class NewOPListComponent implements OnInit {
     }
 
     OnCompanyBill(element) {
-
+        const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+        buttonElement.blur();
+        const dialogRef = this._matDialog.open(ReviewcompanyBillComponent, {
+            maxWidth: "95vw",
+            height: "95vh",
+            width: "100%",
+            data: element
+        });
+        dialogRef.afterClosed().subscribe(result => {
+            this.grid.bindGridData();
+        });
     }
-
 
     OngetRecord(element, m) {
         debugger

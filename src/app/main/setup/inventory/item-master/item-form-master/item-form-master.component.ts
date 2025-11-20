@@ -61,6 +61,7 @@ export class ItemFormMasterComponent implements OnInit {
     vCGST: any;
     vIGST: any;
     vSGST: any;
+    VisValidContent:any;
 
     constructor(
         public _itemService: ItemMasterService,
@@ -82,6 +83,7 @@ export class ItemFormMasterComponent implements OnInit {
             this.vCGST = this.data.cgst
             this.vSGST = this.data.sgst
             this.vIGST = this.data.igst
+            this.VisValidContent = this.data.isValidContent
 
             if (this.data.igst == 0)
                 this.itemForm.get('cgst').setValue(this.data.taxPer)

@@ -77,6 +77,7 @@ export class ItemMasterComponent implements OnInit {
         { heading: "SGST", key: "sgst", sort: true, align: 'left', emptySign: 'NA', width: 80  },
         { heading: "IGST", key: "igst", sort: true, align: 'left', emptySign: 'NA' , width: 80 },
         { heading: "Manufacture Name", key: "manufName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+        { heading: "Dose Name", key: "doseName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         { heading: "Location", key: "prodLocation", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         { heading: "User Name", key: "userName", sort: true, align: 'left', emptySign: 'NA' },
 
@@ -295,7 +296,7 @@ export class ItemMaster {
     position: any;
     mAssignItemToStores: any[];
     isActive: any;
-    contend:any;
+    content:any;
     stockUomid: any;
 
 
@@ -358,7 +359,7 @@ export class ItemMaster {
             this.itemCompnayId = ItemMaster.itemCompnayId || 0
             this.isActive = ItemMaster.isActiuve || true;
             this.mAssignItemToStores = ItemMaster.mAssignItemToStores || [];
-            this.contend = ItemMaster.contend ||''
+            this.content = ItemMaster.content ||''
             this.stockUomid = ItemMaster.stockUomid || 0
         }
     }

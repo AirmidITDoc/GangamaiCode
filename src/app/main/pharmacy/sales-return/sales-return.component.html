@@ -169,50 +169,52 @@
                             class="airmid-table">
     
                             <ng-container matColumnDef="ItemName">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-200">ItemName
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-250">ItemName
                                 </mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-200">
-                                    {{contact.ItemName}}
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-250"> 
+                                     <span class="ellipsis-text" [matTooltip]="contact.ItemName">
+                                        {{ contact.ItemName}}
+                                     </span>
                                 </mat-cell>
                             </ng-container>
     
                             <ng-container matColumnDef="BatchNo">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-120">BatchNo
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-130">BatchNo
                                 </mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-120">
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-130">
                                     {{contact.BatchNo}}
                                 </mat-cell>
                             </ng-container>
     
                             <ng-container matColumnDef="UnitMRP">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>UnitMRP
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-120">UnitMRP
                                 </mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-120">
                                     {{contact.UnitMRP}}
                                 </mat-cell>
                             </ng-container>
     
                             <ng-container matColumnDef="Qty">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-120">Qty
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-90">Qty
                                 </mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-120">
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-90">
                                     {{contact.Qty}}
                                 </mat-cell>
                             </ng-container>
     
                             <ng-container matColumnDef="TotalAmount">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>TotalAmt
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-130">TotalAmt
                                 </mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-130">
                                     {{contact.TotalAmount | currency:"INR":"symbol"}}
                                 </mat-cell>
                             </ng-container>
     
     
-                            <ng-container matColumnDef="DiscPer" stickyEnd>
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-120">Disc %
+                            <ng-container matColumnDef="DiscPer" StickyEnd>
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-90">Disc %
                                 </mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-120">
+                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-90">
                                     {{contact.DiscPer | number:'1.2-2'}}
                                 </mat-cell>
                             </ng-container>

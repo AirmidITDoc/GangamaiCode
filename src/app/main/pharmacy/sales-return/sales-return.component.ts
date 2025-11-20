@@ -277,7 +277,7 @@ getbillllist(){
     this.Itemselectedlist = [];   
     var vdata = { 
     "first": 0,
-    "rows": 25,
+    "rows": 200,
     "sortField": "SalesId",
     "sortOrder": 0,
     "filters": [ 
@@ -324,7 +324,7 @@ getbillllist(){
       { "fieldName": "SalesNo", "fieldValue": String(Parama?.salesNo), "opType": "Equals" },
       { "fieldName": "CashCounterId", "fieldValue": String(Parama?.cashCounterID), "opType": "Equals" },
       { "fieldName": "Start", "fieldValue": String(0), "opType": "Equals" },
-      { "fieldName": "Length", "fieldValue": String(25), "opType": "Equals" } 
+      { "fieldName": "Length", "fieldValue": String(250), "opType": "Equals" } 
     ] 
     if (Parama.paidType == 'Paid') {
       var vdata = {

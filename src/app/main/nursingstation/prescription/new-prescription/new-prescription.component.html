@@ -75,12 +75,14 @@
                                                     <div class="patient-col">
                                                         <span class="patient-col-key">Doctor Name</span>
                                                         <span>:</span>
-                                                        <span class="patient-col-value">{{registerObj.doctorName}}</span>
+                                                        <span
+                                                            class="patient-col-value">{{registerObj.doctorName}}</span>
                                                     </div>
                                                     <div class="patient-col">
                                                         <span class="patient-col-key">Department</span>
                                                         <span>:</span>
-                                                        <span class="patient-col-value">{{registerObj.departmentName}}</span>
+                                                        <span
+                                                            class="patient-col-value">{{registerObj.departmentName}}</span>
                                                     </div>
                                                 </div>
                                                 <div fxLayout="column" fxLayoutGap="6px">
@@ -88,7 +90,8 @@
                                                     <div class="patient-col">
                                                         <span class="patient-col-key">DOA | Time</span>
                                                         <span>:</span>
-                                                        <span class="patient-col-value">{{vDOA |date:'dd/MM/YYYY'}}</span>
+                                                        <span class="patient-col-value">{{vDOA
+                                                            |date:'dd/MM/YYYY'}}</span>
                                                     </div>
                                                     <div class="patient-col">
                                                         <span class="patient-col-key">IPD No</span>
@@ -179,20 +182,20 @@
                     <form [formGroup]="ItemForm">
                         <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" class="gap-8">
                             <airmid-autocomplete label="Enter Item Name" [formGroup]="ItemForm" required
-                                #itemAutocomplete formControlName="ItemId" placeholderText="Enter Item Name"
-                                fxFlex="45%" (onClearSelection)="ItemFromReset()"
+                                #itemAutocomplete formControlName="ItemId" placeholderText="Enter Item Name" fxFlex
+                                (onClearSelection)="ItemFromReset()"
                                 [ApiUrl]="'ItemMaster/GetItemListForPrescription?StoreId=' + vstoreId + '&ItemName='"
                                 (selectionChange)="selectChangeItem($event)" TextField="formattedText"
                                 ValueField="ItemId" [validations]="getValidationMessages().ItemId">
                             </airmid-autocomplete>
 
-                            <airmid-textbox label="Qty" formControlName="Qty" fxFlex="15%" [formGroup]="ItemForm"
-                                [(ngModel)]="vQty" [validations]="getValidationMessages().Qty" #qtyTextboxRef
+                            <airmid-textbox label="Qty" formControlName="Qty" [formGroup]="ItemForm" [(ngModel)]="vQty"
+                                [validations]="getValidationMessages().Qty" #qtyTextboxRef
                                 (keypress)="keyPressAlphanumeric($event)">
                             </airmid-textbox>
 
-                            <airmid-textbox label="Instruction" formControlName="Instruction" fxFlex="35%"
-                                [maxLength]="200" [formGroup]="ItemForm" [(ngModel)]="vInstruction">
+                            <airmid-textbox label="Instruction" formControlName="Instruction" [maxLength]="200"
+                                [formGroup]="ItemForm" [(ngModel)]="vInstruction">
                             </airmid-textbox>
 
                             <div class="input-add-button">
@@ -206,6 +209,27 @@
                                     </button>
                                 </div>
                             </div>
+
+                            <mat-divider [vertical]="true"></mat-divider>&nbsp;
+
+                            <button mat-raised-button (click)="SaveTemplate()">
+                                <mat-icon>save</mat-icon>
+                                Save Template</button>
+
+                            <airmid-dropdown label="Template List" formControlName="TemplateId" [formGroup]="ItemForm"
+                                [mode]="autocompleteModetemplate" (selectionChange)="selectChangeTemplateName($event)"
+                                *ngIf="showTemplateRefresh">
+                            </airmid-dropdown>
+
+                            <div class="input-add-button">
+                                <div matTooltip="Select Drug to enable this button!!" [matTooltipPosition]="'above'">
+                                    <button #addbutton class="btn btn-primary btn-with-icon" (click)="onTemplDetAdd()">
+                                        <span class="btn-icon">
+                                            <mat-icon> add </mat-icon>
+                                        </span>
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     </form>
 
@@ -216,6 +240,18 @@
                                 <mat-card>
                                     <mat-table class="h-280" matSort [dataSource]="dsItemList"
                                         [@animateStagger]="{value:'50'}">
+
+                                        <ng-container matColumnDef="itemMolecule">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header class="w-70">
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let contact" class="w-70">
+                                                <mat-icon style="cursor: pointer; color: #1976d2;"
+                                                    matTooltip="View molecule details"
+                                                    (click)="Oncheckitemmolecule(contact)">
+                                                    local_offer
+                                                </mat-icon>
+                                            </mat-cell>
+                                        </ng-container>
 
                                         <ng-container matColumnDef="ItemName">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>

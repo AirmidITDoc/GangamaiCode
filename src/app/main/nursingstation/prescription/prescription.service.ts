@@ -70,7 +70,8 @@ export class PrescriptionService {
         DoseId: 0,
         Day: [''],
         Qty: ['',[Validators.required,Validators.pattern("^[0-9]*$")]],
-        Instruction: ['',[Validators.maxLength(200)]]
+        Instruction: ['',[Validators.maxLength(200)]],
+        TemplateId: ['']
       })
     }
 
@@ -173,5 +174,8 @@ public getDoseMasterById(Id) {
 
   public PrescriptionCancle(Param){
   return this._httpClient1.PostData("Prescription/PrescriptionCancel", Param);
+  }
+  public getTempPrescriptionList(param) {
+    return this._httpClient1.PostData("OPDPrescriptionMedical/OPPrescriptionTemplateList", param)
   }
 }

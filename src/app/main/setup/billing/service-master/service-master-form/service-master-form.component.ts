@@ -247,7 +247,7 @@ export class ServiceMasterFormComponent implements OnInit {
     onDocEditableChange(event: any) {
         const doctorControl = this.serviceForm.get('doctorId');
         if (event.checked) {
-            doctorControl?.setValidators([Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]);
+            doctorControl?.setValidators([Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]);
         } else {
             doctorControl?.clearValidators();
             this.serviceForm.get('doctorId').setValue('0')
@@ -320,38 +320,13 @@ export class ServiceMasterFormComponent implements OnInit {
                             // data: { context: 'new' }
                         });
                     dialogRef.afterClosed().subscribe(result => {
-
+                        if (result == true) {
+                            this.runNoPart();
+                        }
                     });
 
                 } else if (result.isDenied) {
-                    this.serviceDetailsArray.clear();
-                    this.DSServicedetailList.data.forEach(item => {
-                        this.serviceDetailsArray.push(this.createserviceDetails(item));
-                    });
-
-                    const controlsToRemove = ['EffectiveDate', 'tariffId', 'opipType'];
-                    controlsToRemove.forEach(control => {
-                        this.serviceForm.removeControl(control);
-                    });
-                    this.serviceForm.get('price').setValue(0)
-                    this.serviceForm.get('doctorId')?.setValue(this.serviceForm.get('doctorId')?.value || 0);
-                    this.serviceForm.get("isPathology")?.setValue(this.serviceForm.get("isPathology")?.value ? 1 : 0);
-                    this.serviceForm.get("isRadiology")?.setValue(this.serviceForm.get("isRadiology")?.value ? 1 : 0);
-                    this.serviceForm.get("isPackage")?.setValue(this.serviceForm.get("isPackage")?.value ? 1 : 0);
-                    this.serviceForm.get("subGroupId")?.setValue(this.serviceForm.get("subGroupId")?.value ?? 0);
-                    this.serviceForm.get("isDiscount")?.setValue(this.serviceForm.get("isDiscount")?.value ? true : false);
-                    this.serviceForm.get("isEditable")?.setValue(this.serviceForm.get("isEditable")?.value ? true : false);
-                    this.serviceForm.get("isPathOutSource")?.setValue(this.serviceForm.get("isPathOutSource")?.value ? true : false);
-                    this.serviceForm.get("isRadOutSource")?.setValue(this.serviceForm.get("isRadOutSource")?.value ? true : false);
-                    this.serviceForm.get("isActive")?.setValue(this.serviceForm.get("isActive")?.value ? true : false);
-                    this.serviceForm.get("creditedtoDoctor")?.setValue(this.serviceForm.get("creditedtoDoctor")?.value ? true : false);
-                    // this.serviceForm.get("isApplicableFor")?.setValue(this.serviceForm.get("opipType")?.value);
-
-                    console.log("FormValue", this.serviceForm.value)
-                    this._serviceMasterService.serviceMasterInsert(this.serviceForm.value).subscribe((response) => {
-                        this.onClear(true);
-                        this.onClose();
-                    })
+                    this.runNoPart();
                 } else if (result.isDismissed) {
 
                 }
@@ -374,6 +349,39 @@ export class ServiceMasterFormComponent implements OnInit {
                 });
             }
         }
+    }
+
+    runNoPart() {
+        // debugger
+
+        this.serviceDetailsArray.clear();
+        this.DSServicedetailList.data.forEach(item => {
+            this.serviceDetailsArray.push(this.createserviceDetails(item));
+        });
+
+        const controlsToRemove = ['EffectiveDate', 'tariffId', 'opipType'];
+        controlsToRemove.forEach(control => {
+            this.serviceForm.removeControl(control);
+        });
+        this.serviceForm.get('price').setValue(0)
+        this.serviceForm.get('doctorId')?.setValue(this.serviceForm.get('doctorId')?.value || 0);
+        this.serviceForm.get("isPathology")?.setValue(this.serviceForm.get("isPathology")?.value ? 1 : 0);
+        this.serviceForm.get("isRadiology")?.setValue(this.serviceForm.get("isRadiology")?.value ? 1 : 0);
+        this.serviceForm.get("isPackage")?.setValue(this.serviceForm.get("isPackage")?.value ? 1 : 0);
+        this.serviceForm.get("subGroupId")?.setValue(this.serviceForm.get("subGroupId")?.value ?? 0);
+        this.serviceForm.get("isDiscount")?.setValue(this.serviceForm.get("isDiscount")?.value ? true : false);
+        this.serviceForm.get("isEditable")?.setValue(this.serviceForm.get("isEditable")?.value ? true : false);
+        this.serviceForm.get("isPathOutSource")?.setValue(this.serviceForm.get("isPathOutSource")?.value ? true : false);
+        this.serviceForm.get("isRadOutSource")?.setValue(this.serviceForm.get("isRadOutSource")?.value ? true : false);
+        this.serviceForm.get("isActive")?.setValue(this.serviceForm.get("isActive")?.value ? true : false);
+        this.serviceForm.get("creditedtoDoctor")?.setValue(this.serviceForm.get("creditedtoDoctor")?.value ? true : false);
+        // this.serviceForm.get("isApplicableFor")?.setValue(this.serviceForm.get("opipType")?.value);
+
+        console.log("FormValue", this.serviceForm.value)
+        this._serviceMasterService.serviceMasterInsert(this.serviceForm.value).subscribe((response) => {
+            this.onClear(true);
+            this.onClose();
+        })
     }
 
     // onSubmit() {
@@ -494,7 +502,7 @@ export class ServiceMasterFormComponent implements OnInit {
             this.isDocEditableBoolen = true;
         }
         else {
-            this.showDoctor=false
+            this.showDoctor = false
             this.serviceForm.get('doctorId').setValue('0')
             this.isDocEditableBoolen = false;
         }

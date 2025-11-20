@@ -90,7 +90,7 @@ export class IPRefundofAdvanceComponent implements OnInit {
         billId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         advanceId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator(),
         this._FormvalidationserviceService.onlyNumberValidator()]],
-        opdIpdType: [true],
+        opdIpdType: [1],
         opdIpdId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator(),
         this._FormvalidationserviceService.onlyNumberValidator()]],
         refundAmount: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator(),
@@ -131,7 +131,7 @@ export class IPRefundofAdvanceComponent implements OnInit {
   }
   createAdvDetailsUpdate(item: any): FormGroup {
     return this.formBuilder.group({
-      advanceDetailID: [item?.advanceDetailID, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator(),
+      advanceDetailId: [item?.advanceDetailID, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator(),
       this._FormvalidationserviceService.onlyNumberValidator()]],
       refundAmount: [item?.refundAmt || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       balanceAmount: [item?.balanceAmount || 0, [this._FormvalidationserviceService.onlyNumberValidator()]]

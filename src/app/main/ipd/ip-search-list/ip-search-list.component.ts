@@ -122,7 +122,7 @@ export class IPSearchListComponent implements OnInit {
         private _configue: ConfigService,
         public toastr: ToastrService,
         private route: ActivatedRoute,
-        private router: Router,
+        private router: Router, 
         private advanceDataStored: AdvanceDataStored) {
     }
     IsShowGrid: boolean = false;
@@ -143,13 +143,12 @@ export class IPSearchListComponent implements OnInit {
             this.menuActions.push('Discharge');
         }
         else if (this._ActRoute.url == '/ipd/dischargesummary') {
-
-            if (this._configue.configParams.IsDischargeTemplate)
-                this.menuActions.push('Discharge Summary Template');
-            else
+            const [IpDischargeSummaryId, IpDischargeSummaryValue] = this._configue.configParams.IsDischargeSummaryTemplate.split(":");
+            if (IpDischargeSummaryId != 1) {
                 this.menuActions.push('Discharge Summary');
-            this.menuActions.push('Discharge Summary Template');
-
+            } else {
+                this.menuActions.push('Discharge Summary Template');
+            }
         }
         else if (this._ActRoute.url == '/ipd/refund/iprefundofadvance') {
 
@@ -584,12 +583,21 @@ export class IPSearchListComponent implements OnInit {
 
     getfeedback(event) { }
     printDischargesummaryWithoutletterhead(event) {
-        this.commonService.Onprint("AdmissionID", event.admissionId, "IpDischargeSummaryReportWithoutHeader");
+        const [IpDischargeSummaryId, IpDischargeSummaryValue] = this._configue.configParams.IsDischargeSummaryTemplate.split(":");
+        if (IpDischargeSummaryId != 1) {
+            this.commonService.Onprint("AdmissionID", event.admissionId, "IpDischargeSummaryReportWithoutHeader");
+        } else {
+            this.commonService.Onprint("AdmissionID", event.admissionId, "IpDischargeSummaryTemplateWithoutHeader");
+        }
     }
     printDischargesummary(event) {
-        this.commonService.Onprint("AdmissionID", event.admissionId, "IpDischargeSummaryReport");
+        const [IpDischargeSummaryId, IpDischargeSummaryValue] = this._configue.configParams.IsDischargeSummaryTemplate.split(":");
+        if (IpDischargeSummaryId != 1) {
+            this.commonService.Onprint("AdmissionID", event.admissionId, "IpDischargeSummaryReport");
+        } else {
+            this.commonService.Onprint("AdmissionID", event.admissionId, "IpDischargeSummaryTemplate");
+        }
     }
-
 
     printDischargeslip(data) {
         this.commonService.Onprint("AdmId", data.admissionId, "IpDischargeReceipt");
