@@ -151,7 +151,8 @@ export class ItemMasterService {
             isEmgerency: true,
             drugType: ["0",
                 [
-                    // Validators.required,
+                    Validators.required,
+                    this._FormvalidationserviceService.notEmptyOrZeroValidator()
                 ]
             ],
             drugTypeName: ["",

@@ -15,12 +15,12 @@ export class AppointmentlistService {
     myformSearch: FormGroup;
     personalFormGroup: FormGroup;
     VisitFormGroup: FormGroup;
-FollowupFormGroup: FormGroup;
+    FollowupFormGroup: FormGroup;
     constructor(public _httpClient1: ApiCaller, private _formBuilder: UntypedFormBuilder, private _loaderService: LoaderService,
         public _httpClient: HttpClient, private accountService: AuthenticationService, private _FormvalidationserviceService: FormvalidationserviceService
     ) {
         this.myformSearch = this.filterForm();
-        this.FollowupFormGroup=this.createFollowupDateupdateForm();
+        this.FollowupFormGroup = this.createFollowupDateupdateForm();
 
     }
 
@@ -123,11 +123,11 @@ FollowupFormGroup: FormGroup;
             regId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             visitDate: [(new Date()).toISOString(), this._FormvalidationserviceService.validDateValidator()],
             visitTime: [(new Date()).toISOString()],
-            PatientTypeId: [1, [Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-            UnitId: [this.accountService.currentUserValue.user.unitId, [Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            PatientTypeId: [1, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            UnitId: [this.accountService.currentUserValue.user.unitId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             ConsultantDocId: ['', [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             RefDocId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            TariffId: [1, [Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            TariffId: [1, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             CompanyId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             SubCompanyId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             addedBy: [this.accountService.currentUserValue.userId, this._FormvalidationserviceService.onlyNumberValidator()],
@@ -135,7 +135,7 @@ FollowupFormGroup: FormGroup;
             isCancelledBy: 0,
             isCancelled: false,
             isCancelledDate: ['1900-01-01'],
-            ClassId: [1, [Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            ClassId: [1, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             DepartmentId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
             patientOldNew: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             firstFollowupVisit: 0,
@@ -160,14 +160,14 @@ FollowupFormGroup: FormGroup;
         });
     }
 
-      createFollowupDateupdateForm() {
-    return this._formBuilder.group({ 
-      followupdate: [(new Date()).toISOString()],
-    //   enddate: [(new Date()).toISOString()], 
-    })
-  }
+    createFollowupDateupdateForm() {
+        return this._formBuilder.group({
+            followupdate: [(new Date()).toISOString()],
+            //   enddate: [(new Date()).toISOString()], 
+        })
+    }
 
-  
+
 
     public documentuploadInsert(employee, loader = true) {
         if (loader) {
@@ -184,9 +184,13 @@ FollowupFormGroup: FormGroup;
     public RregisteredappointmentSave(Param: any) {
 
         return this._httpClient1.PostData("VisitDetail/Update", Param);
+    }
+    
+    public InsertAppointmentBilling(Param: any) {
+
+        return this._httpClient1.PostData("OPBill/AppointmentBillingInsert", Param);
 
     }
-
     public EditConDoctor(Param: any) {
 
         return this._httpClient1.PutData("VisitDetail/ConsultantDoctorUpdate/" + Param.visitId, Param);
@@ -282,7 +286,7 @@ FollowupFormGroup: FormGroup;
         return this._httpClient1.GetData("VisitDetail/DeptDoctorList?DeptId=" + deptId)
     }
 
-  
+
     public getVisitlist(employee) {
         return this._httpClient1.PostData("VisitDetail/AppVisitList", employee)
     }
@@ -295,7 +299,12 @@ FollowupFormGroup: FormGroup;
         return this._httpClient1.PostData("OPBill/OPCreditBillingInsert", employee)
     }
 
+    
 
+
+    public InsertAppointmentCreditBill(employee) {
+        return this._httpClient1.PostData("OPBill/AppointmentCreditBillingInsert", employee)
+    }
     public InsertOPBillingpayment(employee) {
         return this._httpClient1.PostData("Payment/PaymentInsert", employee)
     }
@@ -330,11 +339,11 @@ FollowupFormGroup: FormGroup;
     public getSuggestions(apiUrl: string, inputValue: string): Observable<any[]> {
         return this._httpClient1.GetData(apiUrl + inputValue);
     }
-     public converOPtoIP(param) {
+    public converOPtoIP(param) {
         return this._httpClient1.PostData("VisitDetail/RequestForOPTOIP", param);
     }
 
-    
+
     public getCertificateList(param) {
         return this._httpClient1.PostData("OPDEMRCertificate/CertificateInformationList", param);
     }
@@ -344,10 +353,24 @@ FollowupFormGroup: FormGroup;
             return this._httpClient1.PutData("OPDEMRCertificate/TCertificateInformationUpdate/", Param);
         } else return this._httpClient1.PostData("OPDEMRCertificate/TCertificateInformationSave", Param)
     }
-///
+    ///
     public UpdateFollowupdate(param) {
         return this._httpClient1.PostData("VisitDetail/RequestForOPTOIP", param);
     }
+    public InsertRegistrationBilling(Param: any) {
 
-    
+        return this._httpClient1.PostData("VisitDetail/Update", Param);
+
+    }
+    public InsertlabregCredit(Param: any) {
+
+        return this._httpClient1.PostData("VisitDetail/Update", Param);
+
+    }
+    public getRtevPackageDetList(param) {
+        return this._httpClient1.PostData("BillingService/PackageDetailList", param);
+    }
+    public getOPDEmrId(param) {
+        return this._httpClient1.PostData("OPDPrescriptionMedical/OPRequestListFromEMR", param)
+    }
 }

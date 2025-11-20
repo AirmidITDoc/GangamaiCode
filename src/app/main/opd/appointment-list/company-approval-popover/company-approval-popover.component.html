@@ -1,0 +1,70 @@
+<div class="company-approval-popover-container">
+  <div class="popover-header">
+    <h3>Company Approval Information</h3>
+  </div>
+  
+  <div class="popover-body">
+    <!-- Company Approval Form -->
+    <form [formGroup]="companyApprovalFormGroup" class="approval-form">
+      <div class="form-row">
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Estimate Amt<span style="color: red;">*</span></mat-label>
+          <input matInput type="number" formControlName="estimateAmount" maxlength="15">
+          <mat-error *ngIf="companyApprovalFormGroup.get('estimateAmount')?.hasError('required')">
+            Estimate Amount is required
+          </mat-error>
+          <mat-error *ngIf="companyApprovalFormGroup.get('estimateAmount')?.hasError('min')">
+            Estimate Amount must be greater than 0
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Approved Amt<span style="color: red;">*</span></mat-label>
+          <input matInput type="number" formControlName="approvedAmount" maxlength="15">
+          <mat-error *ngIf="companyApprovalFormGroup.get('approvedAmount')?.hasError('required')">
+            Approved Amount is required
+          </mat-error>
+          <mat-error *ngIf="companyApprovalFormGroup.get('approvedAmount')?.hasError('min')">
+            Approved Amount must be greater than 0
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="form-row">
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>AL Entry</mat-label>
+          <input matInput formControlName="alentry" maxlength="15">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Date Approved</mat-label>
+          <input matInput [matDatepicker]="picker" formControlName="dateApproved"
+                 (dateChange)="onDateApprovedChange($event)">
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+      </div>
+
+      <div class="form-row">
+        <mat-form-field appearance="outline" class="form-field-full">
+          <mat-label>Enter Reason</mat-label>
+          <input matInput formControlName="comments" maxlength="100">
+        </mat-form-field>
+
+        <button mat-raised-button color="primary" (click)="onSave()" class="save-btn">
+          Save
+        </button>
+      </div>
+    </form>
+
+    <!-- Company Approval History -->
+    <div class="history-section">
+      <h4>Approval History</h4>
+      <div class="history-grid-container">
+        <airmid-table [gridConfig]="gridConfig" #grid [ShowFilter]="false" [ShowButtons]="false">
+        </airmid-table>
+      </div>
+    </div>
+  </div>
+</div>
+

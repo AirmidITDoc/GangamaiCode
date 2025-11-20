@@ -446,7 +446,8 @@ export class DischargeSummaryTemplateComponent {
         // height: "100%",
         data: {
           Obj: this.dsItemList.data,
-          opiptype:1
+          opiptype:1,
+          category:'DischargeSummeryTemplate'
         }
       });
     dialogRef.afterClosed().subscribe(result => {
@@ -457,8 +458,8 @@ export class DischargeSummaryTemplateComponent {
     });
   }
   selectChangeTemplateName(row) {
-    this.templateId = row.value
-    this.templateName = row.text
+    this.templateId = row.presId
+    this.templateName = row.presTemplateName
   }
 
   FetchList: any = [];

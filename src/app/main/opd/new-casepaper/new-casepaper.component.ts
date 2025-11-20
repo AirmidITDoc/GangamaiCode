@@ -1281,11 +1281,11 @@ export class NewCasepaperComponent implements OnInit {
         });
     }
 
-    selectChangeTemplateName(row) {
-        this.templateId = row.value
-        this.templateName = row.text
-    }
-    itemObjects1: any[] = [];
+  selectChangeTemplateName(row) {
+    this.templateId = row.presId
+    this.templateName = row.presTemplateName
+  }
+  itemObjects1: any[] = [];
 
     onTemplDetAdd() {
         if ((this.vOPIPId == '' || this.vOPIPId == '0')) {
@@ -1760,29 +1760,29 @@ export class NewCasepaperComponent implements OnInit {
         });
     }
 
-    showTemplateRefresh = true;
-    SaveTemplate() {
-        if (this.dsItemList.data.length == 0) {
-            Swal.fire('Error !', 'Please add prescription in table', 'error');
-            return
-        }
-        const dialogRef = this._matDialog.open(PrescriptionTemplateComponent,
-            {
-                maxWidth: "50vw",
-                maxHeight: "35vh",
-                width: '100%',
-                // height: "100%",
-                data: {
-                    Obj: this.dsItemList.data
-                }
-            });
-        dialogRef.afterClosed().subscribe(result => {
-            this.showTemplateRefresh = false;
-            setTimeout(() => {
-                this.showTemplateRefresh = true;
-            }, 100);
-        });
+  showTemplateRefresh = true;
+  SaveTemplate() {
+    if (this.dsItemList.data.length == 0) {
+      Swal.fire('Error !', 'Please add prescription in table', 'error');
+      return
     }
+    const dialogRef = this._matDialog.open(PrescriptionTemplateComponent,
+      {
+        maxWidth: "50vw",
+        maxHeight: "35vh",
+        width: '100%',
+        // height: "100%",
+        data: {
+          Obj: this.dsItemList.data
+        }
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      this.showTemplateRefresh = false;
+      setTimeout(() => {
+        this.showTemplateRefresh = true;
+      }, 100);
+    });
+  }
 
     filteredHistory: Observable<string[]>;
 

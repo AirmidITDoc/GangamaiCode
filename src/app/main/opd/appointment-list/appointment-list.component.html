@@ -12,6 +12,8 @@
         <div class="gap-8" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
             <button mat-raised-button (click)="onSave($event)">New Appointment
             </button>
+            <button mat-raised-button (click)="onAppointmentwithBill($event)">+ Add Bill
+            </button>
 
         </div>
 
@@ -130,13 +132,36 @@
             </div>
         </ng-template>
 
-        <ng-template #patientNameWithBadgeTemplate let-element>
-            <span [matBadge]="element.tokenNo" matBadgeColor="warn" matBadgePosition="after" matBadgeOverlap="false"
-                matBadgeSize="small" [matBadgeHidden]="!element.tokenNo"
-                matTooltip="{{ element.patientName }}-Token No: {{ element.tokenNo }}" matTooltipPosition="above"
-                style="font-size: 14px; line-height: 18px; position: relative; top: 4px;">
-                {{ element.patientName }}
-            </span>
+        <ng-template #patientNameWithPopoverTemplate let-element>
+            <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="8px">
+                <!-- Policy Info Icon - Only show if company exists -->
+                <button mat-icon-button 
+                        *ngIf="element.companyId > 0"
+                        (click)="openPolicyInfoPopover($event, element)"
+                        matTooltip="Policy Information"
+                        matTooltipPosition="above"
+                        class="popover-icon-btn">
+                    <mat-icon class="s-18" style="color: #2196F3;">description</mat-icon>
+                </button>
+
+                <!-- Company Approval Icon - Only show if company exists -->
+                <button mat-icon-button 
+                        *ngIf="element.companyId > 0"
+                        (click)="openCompanyApprovalPopover($event, element)"
+                        matTooltip="Company Approval Information"
+                        matTooltipPosition="above"
+                        class="popover-icon-btn">
+                    <mat-icon class="s-18" style="color: #4CAF50;">check_circle</mat-icon>
+                </button>
+
+                <!-- Patient Name with Token Badge -->
+                <span [matBadge]="element.tokenNo" matBadgeColor="warn" matBadgePosition="after" matBadgeOverlap="false"
+                    matBadgeSize="small" [matBadgeHidden]="!element.tokenNo"
+                    matTooltip="{{ element.patientName }}-Token No: {{ element.tokenNo }}" matTooltipPosition="above"
+                    style="font-size: 14px; line-height: 18px; position: relative; top: 4px;">
+                    {{ element.patientName }}
+                </span>
+            </div>
         </ng-template>
 
         <ng-template #actionsTemplate2 let-element>
@@ -169,8 +194,8 @@
                     <mat-icon> print</mat-icon>
                 </button>
 
-                <button mat-icon-button [matTooltip]="element.emrReady ? 'OPD CasePaper Ready' : 'OPD CasePaper'" 
-                 (click)="getOpCasePaper(element)">
+                <button mat-icon-button [matTooltip]="element.emrReady ? 'OPD CasePaper Ready' : 'OPD CasePaper'"
+                    (click)="getOpCasePaper(element)">
                     <mat-icon [ngClass]="element.emrReady === 1 ? 'circle-icon' : ''">
                         list_alt
                     </mat-icon>

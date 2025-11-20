@@ -1,4 +1,5 @@
 import { ScrollingModule } from "@angular/cdk/scrolling";
+import { OverlayModule } from "@angular/cdk/overlay";
 import { DatePipe } from "@angular/common";
 import { NgModule } from "@angular/core";
 import { ReactiveFormsModule } from "@angular/forms";
@@ -52,6 +53,9 @@ import { WebcamModule } from "ngx-webcam";
 import { MatChipsModule } from "@angular/material/chips";
 import { SharedModule } from "app/main/shared/shared.module";
 import { FollowpdateUpdateComponent } from './followpdate-update/followpdate-update.component';
+import { PolicyInfoPopoverComponent } from './policy-info-popover/policy-info-popover.component';
+import { CompanyApprovalPopoverComponent } from './company-approval-popover/company-approval-popover.component';
+// import { NewAppointmentwithBillComponent } from './new-appointmentwith-bill/new-appointmentwith-bill.component';
 
 
 const routes: Routes = [
@@ -62,9 +66,20 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    declarations: [AppointmentListComponent, NewAppointmentComponent, EditConsultantDoctorComponent, EditRefranceDoctorComponent, CrossConsultationComponent, ImageViewComponent, PatientvitalInformationComponent, UpdateRegPatientInfoComponent,
+    declarations: [
+        AppointmentListComponent, 
+        NewAppointmentComponent, 
+        EditConsultantDoctorComponent, 
+        EditRefranceDoctorComponent, 
+        CrossConsultationComponent, 
+        ImageViewComponent, 
+        PatientvitalInformationComponent, 
+        UpdateRegPatientInfoComponent,
         PreviousDeptListComponent,
-        FollowpdateUpdateComponent],
+        FollowpdateUpdateComponent,
+        PolicyInfoPopoverComponent,
+        CompanyApprovalPopoverComponent
+    ],
     imports: [
         RouterModule.forChild(routes),
         SharedModule,
@@ -96,24 +111,17 @@ const routes: Routes = [
         MatStepperModule,
         MatAutocompleteModule,
         MatProgressSpinnerModule,
-        SharedModule,
         NgxMatSelectSearchModule,
         MatCardModule,
-        MatListModule,
         MatTooltipModule,
         MatExpansionModule,
-        MatListModule,
-        //WebcamModule,
         ScrollingModule,
         MatSidenavModule,
-        //NgxQRCodeModule,
-        //NgxPrintModule,
         MatButtonToggleModule,
         WebcamModule,
-        MatCardModule,
         MatChipsModule,
-
-        ],
+        OverlayModule
+    ],
     providers: [AppointmentlistService, DatePipe]
 })
 export class AppointmentlistModule { }

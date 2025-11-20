@@ -18,6 +18,24 @@ app-appointment-list {
       height: 16px !important;
     }
   }
+
+  .popover-icon-btn {
+    width: 24px !important;
+    height: 24px !important;
+    line-height: 24px;
+    padding: 0;
+    min-width: 24px;
+    
+    mat-icon {
+      font-size: 18px !important;
+      width: 18px !important;
+      height: 18px !important;
+    }
+
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.04);
+    }
+  }
 }
 
 .info-badge-top {

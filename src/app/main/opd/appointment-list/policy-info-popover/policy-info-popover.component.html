@@ -1,0 +1,81 @@
+<div class="policy-info-popover-container">
+  <div class="popover-header">
+    <h3>Policy Information</h3>
+  </div>
+  
+  <div class="popover-body">
+    <!-- Policy Information Form -->
+    <form [formGroup]="policyFormGroup" class="policy-form">
+      <div class="form-row">
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Policy No / Member No</mat-label>
+          <input matInput formControlName="policyNo" maxlength="15">
+          <mat-error *ngIf="policyFormGroup.get('policyNo')?.hasError('required')">
+            Policy No is required
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Valid Date</mat-label>
+          <input matInput [matDatepicker]="picker" formControlName="validDate"
+                 (dateChange)="onValidDateChange($event)">
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+      </div>
+
+      <div class="form-row">
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Policy Limit</mat-label>
+          <input matInput type="number" formControlName="approvedAmount" maxlength="15">
+          <mat-error *ngIf="policyFormGroup.get('approvedAmount')?.hasError('required')">
+            Policy Limit is required
+          </mat-error>
+        </mat-form-field>
+
+        <button mat-raised-button color="primary" (click)="onSave()" class="save-btn">
+          Save
+        </button>
+      </div>
+    </form>
+
+    <!-- Policy History -->
+    <div class="history-section">
+      <h4>Policy History</h4>
+      <div class="history-table-container">
+        <table mat-table [dataSource]="policyHistory" class="history-table">
+          <ng-container matColumnDef="policyNo">
+            <th mat-header-cell *matHeaderCellDef>Policy No</th>
+            <td mat-cell *matCellDef="let element">{{element.policyNo || 'N/A'}}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="approvedAmount">
+            <th mat-header-cell *matHeaderCellDef>Policy Limit</th>
+            <td mat-cell *matCellDef="let element">{{element.approvedAmount || 0}}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="validDate">
+            <th mat-header-cell *matHeaderCellDef>Valid Date</th>
+            <td mat-cell *matCellDef="let element">{{element.validDate | date:'dd/MM/yyyy'}}</td>
+          </ng-container>
+
+          <!-- No data row -->
+          <ng-container matColumnDef="noData">
+            <td mat-footer-cell *matFooterCellDef colspan="3" class="no-data-cell">
+              Data not found
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="['policyNo', 'approvedAmount', 'validDate']"></tr>
+          <tr mat-row *matRowDef="let row; columns: ['policyNo', 'approvedAmount', 'validDate'];"></tr>
+          <tr mat-footer-row *matFooterRowDef="['noData']" [style.display]="policyHistory.length === 0 && !isLoading ? '' : 'none'"></tr>
+        </table>
+        
+        <div *ngIf="isLoading" class="loading">
+          Loading...
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
