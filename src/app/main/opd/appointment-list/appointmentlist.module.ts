@@ -52,7 +52,7 @@ import { WebcamModule } from "ngx-webcam";
 import { MatChipsModule } from "@angular/material/chips";
 import { SharedModule } from "app/main/shared/shared.module";
 import { FollowpdateUpdateComponent } from './followpdate-update/followpdate-update.component';
-import { NewAppointmentwithBillComponent } from './new-appointmentwith-bill/new-appointmentwith-bill.component';
+// import { NewAppointmentwithBillComponent } from './new-appointmentwith-bill/new-appointmentwith-bill.component';
 
 
 const routes: Routes = [
@@ -66,7 +66,7 @@ const routes: Routes = [
     declarations: [AppointmentListComponent, NewAppointmentComponent, EditConsultantDoctorComponent, EditRefranceDoctorComponent, CrossConsultationComponent, ImageViewComponent, PatientvitalInformationComponent, UpdateRegPatientInfoComponent,
         PreviousDeptListComponent,
         FollowpdateUpdateComponent,
-        NewAppointmentwithBillComponent],
+        NewAppointmentComponent],
     imports: [
         RouterModule.forChild(routes),
         SharedModule,

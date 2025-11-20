@@ -33,7 +33,7 @@ import { CompanyInformationComponent } from 'app/main/ipd/company-information/co
 import { RegistrationService } from '../registration/registration.service';
 import { FollowpdateUpdateComponent } from './followpdate-update/followpdate-update.component';
 import { ConfigService } from 'app/core/services/config.service';
-import { NewAppointmentwithBillComponent } from './new-appointmentwith-bill/new-appointmentwith-bill.component';
+// import { NewAppointmentwithBillComponent } from './new-appointmentwith-bill/new-appointmentwith-bill.component';
 // const moment = _rollupMoment || _moment;
 
 @Component({
@@ -935,7 +935,7 @@ export class AppointmentListComponent implements OnInit {
         buttonElement.blur(); // Remove focus from the button
 
         let that = this;
-        const dialogRef = this._matDialog.open(NewAppointmentwithBillComponent,
+        const dialogRef = this._matDialog.open(NewAppointmentComponent,
             {
                 maxWidth: "95vw",
                 height: '95%',
