@@ -28,12 +28,12 @@ export class CompanyInformationComponent implements OnInit {
   dateTimeObj: any;
   screenFromString = 'Common-form';
   // registerObj: AdmissionPersonlModel;
-  AdmissionID: any;
+  OpdIpdID: any;
   visitId: any;
   dsCompanyList = new MatTableDataSource<CompanyDetails>();
   Chargelist: any = [];
-  vOPDNo: any;
-  vIPDNo: any;
+  vOPDNo: any = 0;
+  vIPDNo: any = 0;
   displayedColumns: string[] = [
     'EstimateAmt',
     'ApprovedAmt',
@@ -58,7 +58,7 @@ export class CompanyInformationComponent implements OnInit {
   ) { }
 
   registerObj = new CompanyDetails({});
-  vSelectedOption:any;
+  vSelectedOption: any;
 
   ngOnInit(): void {
     this.companyApprovalFormGroup = this.createCompanyAprrovalForm();
@@ -69,10 +69,13 @@ export class CompanyInformationComponent implements OnInit {
 
     console.log("company data:", this.data.registerObj)
     this.registerObj = this.data.registerObj
-    this.AdmissionID = this.registerObj.admissionId ?? this.registerObj.visitId
-    this.vOPDNo=this.registerObj.ipdno
-    this.vIPDNo=this.registerObj.opdNo
-    this.vSelectedOption== this.vOPDNo ? this.vOPDNo : this.vIPDNo
+    this.OpdIpdID = this.registerObj.admissionId ?? this.registerObj.visitId
+    this.vOPDNo = this.registerObj.opdNo
+    this.vIPDNo = this.registerObj.ipdno
+    if (this.vOPDNo)
+      this.vSelectedOption == this.vOPDNo
+    else
+      this.vSelectedOption == this.vIPDNo
     this.companyInformationFormGroup.patchValue(this.registerObj)
 
     if ((this.data?.companyId) > 0) {
@@ -83,7 +86,7 @@ export class CompanyInformationComponent implements OnInit {
     }
 
     // date validation
-    // this.companyApprovalFormGroup.get('validDate')?.valueChanges.subscribe(selectedDate => {
+    // this.companyApprovalFormGroup.get('policyValidateDate')?.valueChanges.subscribe(selectedDate => {
     //   if (selectedDate) {
     //     const today = new Date();
     //     today.setHours(0, 0, 0, 0); // remove time portion
@@ -94,7 +97,7 @@ export class CompanyInformationComponent implements OnInit {
     //       this.toastr.warning('Valid Date cannot be earlier than today.', 'Warning!',
     //         { toastClass: 'tostr-tost custom-toast-warning' }
     //       );
-    //       this.companyApprovalFormGroup.get('validDate')?.setValue(null);
+    //       this.companyApprovalFormGroup.get('policyValidateDate')?.setValue(null);
     //     }
     //   }
     // });
@@ -110,12 +113,12 @@ export class CompanyInformationComponent implements OnInit {
 
   createCompanyInfoForm() {
     return this.formBuilder.group({
+      patientPolicyId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      opipid: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      opiptype: [0],
       policyNo: ['', [Validators.required]],
+      policyValidateDate: [new Date(), [Validators.required, this._FormvalidationserviceService.validDateValidator()]],
       approvedAmount: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      admissionId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-
-      // PolicyLimit: ['', [Validators.required, this._FormvalidationserviceService.onlyNumberValidator()]],
-      validDate: [new Date(), [Validators.required, this._FormvalidationserviceService.validDateValidator()]],
     });
   }
 
@@ -181,7 +184,7 @@ export class CompanyInformationComponent implements OnInit {
       sortField: "Id",
       sortOrder: 0,
       filters: [
-        { fieldName: "AdmissionId", fieldValue: String(this.AdmissionID), opType: OperatorComparer.Contains }
+        { fieldName: "AdmissionId", fieldValue: String(this.OpdIpdID), opType: OperatorComparer.Contains }
       ]
     }
     this.grid.gridConfig = this.gridConfig;
@@ -240,7 +243,7 @@ export class CompanyInformationComponent implements OnInit {
       this.toastr.warning('Valid Date cannot be earlier than today.', 'Warning!',
         { toastClass: 'tostr-tost custom-toast-warning' }
       );
-      this.companyInformationFormGroup.get('validDate')?.setValue('');
+      this.companyInformationFormGroup.get('policyValidateDate')?.setValue('');
     }
   }
 
@@ -268,7 +271,7 @@ export class CompanyInformationComponent implements OnInit {
     const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
 
     this.companyApprovalFormGroup.get('dateApproved').setValue(formattedDate)
-    this.companyApprovalFormGroup.get('admissionId').setValue(this.AdmissionID)
+    this.companyApprovalFormGroup.get('admissionId').setValue(this.OpdIpdID)
     console.log(this.companyApprovalFormGroup.value)
 
     if (!this.companyApprovalFormGroup.invalid) {
@@ -311,11 +314,18 @@ export class CompanyInformationComponent implements OnInit {
 
   CompanyInfoSave() {
 
-    this.companyInformationFormGroup.get('admissionId').setValue(this.AdmissionID)
+    const currentDate = this.companyInformationFormGroup.get('policyValidateDate').value;
+    const datePipe = new DatePipe('en-US');
+    const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
+    this.companyInformationFormGroup.get('policyValidateDate').setValue(formattedDate)
+
+    this.companyInformationFormGroup.get('opipid').setValue(this.OpdIpdID)
+    if (this.vIPDNo)
+      this.companyInformationFormGroup.get('opiptype').setValue(1)
+
     console.log(this.companyInformationFormGroup.value)
 
     if (!this.companyInformationFormGroup.invalid) {
-      this.companyInformationFormGroup.removeControl('validDate')
       console.log(this.companyInformationFormGroup.value)
       this._AdmissionService.CompanyInfoUpdate(this.companyInformationFormGroup.value).subscribe((response) => {
         console.log(response)
@@ -338,36 +348,6 @@ export class CompanyInformationComponent implements OnInit {
       }
     }
   }
-
-  getCompanydetailview(AdmissionId) {
-    // this.sIsLoading = 'loading-data';
-
-    // setTimeout(() => {
-
-    //   this._AdmissionService.getCompanyDetailsView(
-    //     AdmissionId
-    //   ).subscribe(res => {
-    //     const matDialog = this._matDialog.open(PdfviewerComponent,
-    //       {
-    //         maxWidth: "85vw",
-    //         height: '750px',
-    //         width: '100%',
-    //         data: {
-    //           base64: res["base64"] as string,
-    //           title: "Company Detail Viewer"
-    //         }
-    //       });
-
-    //     matDialog.afterClosed().subscribe(result => {
-    //       // this.AdList = false;
-    //       // this.sIsLoading = ' ';
-    //     });
-    //   });
-
-    // }, 100);
-
-  }
-
 
   getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;
@@ -419,7 +399,7 @@ export class CompanyDetails {
   MedicalAmt: any;
   RecoverAmtbyPatient: any;
   PolicyLimit: any;
-  validDate: any;
+  policyValidateDate: any;
   alentry: any;
   dateApproved: any;
   comments: any;
@@ -492,7 +472,7 @@ export class CompanyDetails {
       this.DisallowAmt = CompanyDetails.DisallowAmt || 0
       this.RefundAmt = CompanyDetails.RefundAmt || 0
       this.PolicyLimit = CompanyDetails.PolicyLimit || 0
-      this.validDate = CompanyDetails.validDate || '1900-01-01'
+      this.policyValidateDate = CompanyDetails.policyValidateDate || '1900-01-01'
       this.dateApproved = CompanyDetails.dateApproved || '1900-01-01'
       this.alentry = CompanyDetails.alentry || ''
       this.comments = CompanyDetails.comments || ''

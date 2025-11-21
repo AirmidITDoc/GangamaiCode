@@ -62,10 +62,10 @@
                                             <span class="patient-col-value">{{ registerObj.admissionTime ?? registerObj.vistDateTime }}</span>
                                         </div>
                                         <div class="patient-col">
-                                            <span class="patient-col-key">{{vSelectedOption === vOPDNo ? 'OPD No' : 'IPD No'}}
+                                            <span class="patient-col-key">{{vSelectedOption === vOPDNo ? 'IPD No' : 'OPD No'}}
                                                 </span>
                                             <span>:</span>
-                                            <span class="patient-col-value">{{vSelectedOption === vOPDNo ? registerObj.opdNo : registerObj.ipdno}}</span>
+                                            <span class="patient-col-value">{{vSelectedOption == vOPDNo ? vIPDNo : vOPDNo}}</span>
                                         </div>
                                         <div class="patient-col">
                                             <span class="patient-col-key">Age | Sex</span>
@@ -128,8 +128,8 @@
                                     <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                                         <mat-form-field appearance="outline" fxFlex>
                                             <mat-label>Valid Date</mat-label>
-                                            <input matInput [matDatepicker]="picker1" formControlName="validDate"
-                                                [value]="registerObj.validDate ?? '1900-01-01'"
+                                            <input matInput [matDatepicker]="picker1" formControlName="policyValidateDate"
+                                                [value]="registerObj.policyValidateDate ?? '1900-01-01'"
                                                 (dateChange)="onValidDateChange($event)">
                                             <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
                                             <mat-datepicker #picker1></mat-datepicker>

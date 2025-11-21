@@ -239,6 +239,9 @@ export class AdmissionService {
     public deactivateTheStatus(m_data) {
         return this._httpClient1.DeleteData("CompanyTPAApproval?Id=" + m_data.toString());
     }
+    public deactivatePolicyTheStatus(m_data) {
+        return this._httpClient1.DeleteData("PatientPolicy?Id=" + m_data.toString());
+    }
     //new admission api 
     public getMaster(mode, Id) {
         return this._httpClient1.GetData("Dropdown/GetBindDropDown?mode=" + mode + "&Id=" + Id);
@@ -308,10 +311,13 @@ export class AdmissionService {
         return this._httpClient1.GetData("OutPatient/auto-complete?Keyword=" + keyword);
     }
 
-    public CompanyInfoUpdate(param) {
-        if (param.admissionId) {
-            return this._httpClient1.PutData("Admission/Companyinformation/" + param.admissionId, param);
-        }
+    public CompanyInfoUpdate(Param) {
+        // if (param.admissionId) {
+        //     return this._httpClient1.PutData("Admission/Companyinformation/" + param.admissionId, param);
+        // }
+        if (Param.id) {
+            return this._httpClient1.PutData("PatientPolicy/" + Param.id, Param);
+        } else return this._httpClient1.PostData("PatientPolicy", Param);
     }
 
     public CompanyApprovalInsert(Param: any) {

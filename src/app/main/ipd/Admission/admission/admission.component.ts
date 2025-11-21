@@ -1,5 +1,5 @@
 import { DatePipe, Time } from '@angular/common';
-import { Component, EventEmitter, Input, OnInit, Output, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, TemplateRef, ViewChild, ViewEncapsulation,ComponentRef } from '@angular/core';
 import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
@@ -29,7 +29,10 @@ import { NewAdmissionComponent } from './new-admission/new-admission.component';
 import { SubCompanyTPAInfoComponent } from './sub-company-tpainfo/sub-company-tpainfo.component';
 import { MatTableDataSource } from '@angular/material/table';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
-
+import { Overlay, OverlayRef } from '@angular/cdk/overlay';
+import { ComponentPortal } from '@angular/cdk/portal';
+import { PolicyInfoPopoverComponent } from 'app/main/opd/appointment-list/policy-info-popover/policy-info-popover.component';
+import { CompanyApprovalPopoverComponent } from 'app/main/opd/appointment-list/company-approval-popover/company-approval-popover.component';
 
 @Component({
   selector: 'app-admission',
@@ -113,7 +116,7 @@ export class AdmissionComponent implements OnInit {
   m_name: any = "%"
   IPDNo: any = "0"
   DoctorId = "0";
-
+  private overlayRef: OverlayRef | null = null;
 
   ngOnInit(): void {
 
@@ -138,6 +141,7 @@ export class AdmissionComponent implements OnInit {
   @ViewChild('actionsTemplate2') actionsTemplate2!: TemplateRef<any>;
   @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
   @ViewChild('actionCompany') actionCompany!: TemplateRef<any>;
+  @ViewChild('patientNameWithPopoverTemplate') patientNameWithPopoverTemplate!: TemplateRef<any>;
 
   ngAfterViewInit() {
     // Assign the template to the column dynamically
@@ -146,6 +150,7 @@ export class AdmissionComponent implements OnInit {
     this.gridConfig.columnsList.find(col => col.key === 'admissionType')!.template = this.actionsTemplate2;
     this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
     this.gridConfig.columnsList.find(col => col.key === 'companyId')!.template = this.actionCompany;
+    this.gridConfig.columnsList.find(col => col.key === 'companyName')!.template = this.patientNameWithPopoverTemplate;
 
   }
 
@@ -166,8 +171,8 @@ export class AdmissionComponent implements OnInit {
     { heading: "Ward Name", key: "roomName", sort: true, align: 'left', emptySign: 'NA', type: 14, width: 170 },
     { heading: "Tariff Name", key: "tariffName", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "Class Name", key: "className", sort: true, align: 'left', emptySign: 'NA', width: 170 },
-    { heading: "Company Name", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 120 },
-    { heading: "", key: "companyId", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
+    { heading: "Company Name", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 250,type: gridColumnTypes.template },
+    { heading: "", key: "companyId", sort: true, align: 'left', emptySign: 'NA', width: 50 },
     { heading: "Relative Name", key: "relativeName", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 14 },
     {
       heading: "Action", key: "action", align: "right", width: 150, sticky: true, type: gridColumnTypes.template,
@@ -206,6 +211,7 @@ export class AdmissionComponent implements OnInit {
     private formBuilder: UntypedFormBuilder,
     public toastr: ToastrService,
     private commonService: PrintserviceService,
+    private overlay: Overlay
   ) { }
 
 
@@ -868,6 +874,125 @@ export class AdmissionComponent implements OnInit {
     });
   }
 
+  openPolicyInfoPopover(event: MouseEvent, patientData: any) {
+        event.stopPropagation();
+        
+        // Close any existing popover
+        if (this.overlayRef) {
+            this.overlayRef.dispose();
+            this.overlayRef = null;
+            return;
+        }
+
+        const positionStrategy = this.overlay.position()
+            .flexibleConnectedTo(event.target as HTMLElement)
+            .withPositions([
+                {
+                    // Prefer bottom position
+                    originX: 'center',
+                    originY: 'bottom',
+                    overlayX: 'center',
+                    overlayY: 'top',
+                },
+                {
+                    // Fallback to top if no space below
+                    originX: 'center',
+                    originY: 'top',
+                    overlayX: 'center',
+                    overlayY: 'bottom',
+                },
+                {
+                    // Fallback to right
+                    originX: 'end',
+                    originY: 'center',
+                    overlayX: 'start',
+                    overlayY: 'center',
+                },
+                {
+                    // Fallback to left
+                    originX: 'start',
+                    originY: 'center',
+                    overlayX: 'end',
+                    overlayY: 'center',
+                }
+            ]);
+
+        this.overlayRef = this.overlay.create({
+            positionStrategy,
+            scrollStrategy: this.overlay.scrollStrategies.close(),
+            hasBackdrop: true,
+            backdropClass: 'cdk-overlay-transparent-backdrop'
+        });
+
+        const portal = new ComponentPortal(PolicyInfoPopoverComponent);
+        const componentRef: ComponentRef<PolicyInfoPopoverComponent> = this.overlayRef.attach(portal);
+        componentRef.instance.patientData = patientData;
+
+        this.overlayRef.backdropClick().subscribe(() => {
+            this.overlayRef?.dispose();
+            this.overlayRef = null;
+        });
+    }
+
+    openCompanyApprovalPopover(event: MouseEvent, patientData: any) {
+        event.stopPropagation();
+        
+        // Close any existing popover
+        if (this.overlayRef) {
+            this.overlayRef.dispose();
+            this.overlayRef = null;
+            return;
+        }
+
+        const positionStrategy = this.overlay.position()
+            .flexibleConnectedTo(event.target as HTMLElement)
+            .withPositions([
+                {
+                    // Prefer bottom position
+                    originX: 'center',
+                    originY: 'bottom',
+                    overlayX: 'center',
+                    overlayY: 'top',
+                },
+                {
+                    // Fallback to top if no space below
+                    originX: 'center',
+                    originY: 'top',
+                    overlayX: 'center',
+                    overlayY: 'bottom',
+                },
+                {
+                    // Fallback to right
+                    originX: 'end',
+                    originY: 'center',
+                    overlayX: 'start',
+                    overlayY: 'center',
+                },
+                {
+                    // Fallback to left
+                    originX: 'start',
+                    originY: 'center',
+                    overlayX: 'end',
+                    overlayY: 'center',
+                }
+            ]);
+
+        this.overlayRef = this.overlay.create({
+            positionStrategy,
+            scrollStrategy: this.overlay.scrollStrategies.close(),
+            hasBackdrop: true,
+            backdropClass: 'cdk-overlay-transparent-backdrop'
+        });
+
+        const portal = new ComponentPortal(CompanyApprovalPopoverComponent);
+        const componentRef: ComponentRef<CompanyApprovalPopoverComponent> = this.overlayRef.attach(portal);
+        componentRef.instance.patientData = patientData;
+
+        this.overlayRef.backdropClick().subscribe(() => {
+            this.overlayRef?.dispose();
+            this.overlayRef = null;
+        });
+    }
 
   // GetAdmissiondetail() {
   //   debugger

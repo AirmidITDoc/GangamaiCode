@@ -296,10 +296,11 @@
                                     <!-- prescription part -->
                                     <mat-card style="padding: 5px;">
                                         <div fxLayout="column" style="margin-left: 10px;">
-
                                             <div>
-                                                <div class="prescription-title" fxLayoutAlign="space-between">
-                                                    <span style="font-weight: 700;margin: 10px 10px 0px 5px">
+                                                <div class="prescription-title" fxLayoutAlign="space-between"
+                                                    style="height: 65px;">
+                                                    <span
+                                                        style="font-weight: 700;margin: 10px 10px 0px 5px; font-size: 15px;">
                                                         Prescription List
                                                     </span>
                                                     <div fxLayout="row" fxLayoutGap="6px">
@@ -319,11 +320,26 @@
                                                         <button mat-raised-button (click)="SaveTemplate()">
                                                             <mat-icon>save</mat-icon>
                                                             Save Template</button>
+
+                                                        <airmid-dropdown label="Template List"
+                                                            *ngIf="showTemplateRefresh" formControlName="TemplateId"
+                                                            [formGroup]="MedicineItemForm"
+                                                            [validations]="getValidationMessages().TemplateId"
+                                                            [mode]="autocompleteModeTemplate" ValueField="presId"
+                                                            TextField="presTemplateName"
+                                                            ApiUrl="OPDPrescriptionMedical/GetTemplatePrescriptionList?TemplateCategory=CasePaperTemplate"
+                                                            (selectionChange)="selectChangeTemplateName($event)">
+                                                        </airmid-dropdown>
+
+                                                        <button #addbutton mat-raised-button color="primary"
+                                                            (click)="onTemplDetAdd()">
+                                                            <mat-icon> add </mat-icon>Add
+                                                        </button>
                                                     </div>
                                                 </div>
-                                                <hr>
-                                                <form [formGroup]="MedicineItemForm">
-                                                    <div fxLayout="row" class="gap-8">
+                                                <!-- <hr> -->
+                                                <!--<form [formGroup]="MedicineItemForm">
+                                                    <div fxLayout="row" class="gap-8" fxLayoutAlign="end">
 
                                                         <airmid-autocomplete label="Enter Drug Name"
                                                             [formGroup]="MedicineItemForm" formControlName="ItemId"
@@ -369,8 +385,7 @@
                                                                     <span>Add</span>
                                                                 </button>
                                                             </div>
-                                                        </div>&nbsp;
-                                                        <!-- #addbutton  -->
+                                                        </div>&nbsp; 
 
                                                         <mat-divider [vertical]="true"></mat-divider>&nbsp;
 
@@ -394,9 +409,9 @@
                                                                     </span>
                                                                 </button>
                                                             </div>
-                                                        </div>
+                                                        </div> 
                                                     </div>
-                                                </form>
+                                                </form>-->
                                             </div>
                                             <div class="modal-card-container table-container fusePerfectScrollbar">
                                                 <div class="table" fxFlex="100%">
@@ -483,8 +498,7 @@
                                                                         </span>
                                                                         <mat-form-field appearance="fill"
                                                                             *ngIf="element.editable" floatLabel="never">
-                                                                            <input matInput
-                                                                                [(ngModel)]="element.Days || element.days"
+                                                                            <input matInput formControlName="Day"
                                                                                 type="number" OnlyNumber>
                                                                         </mat-form-field>
                                                                     </mat-cell>
@@ -501,6 +515,7 @@
                                                                         <mat-form-field appearance="fill"
                                                                             floatLabel="never" *ngIf="element.editable">
                                                                             <input matInput [maxLength]="200"
+                                                                                formControlName="Instruction"
                                                                                 [(ngModel)]="element.instruction"
                                                                                 type="text">
                                                                         </mat-form-field>
@@ -517,17 +532,32 @@
                                                                                 color="warn">
                                                                                 delete
                                                                             </mat-icon>
+
+                                                                            <button *ngIf="contact.editable"
+                                                                                mat-icon-button color="primary"
+                                                                                (click)="confirmRow(contact)">
+                                                                                <mat-icon>check</mat-icon>
+                                                                            </button>
+
                                                                             <button *ngIf="!contact.editable"
                                                                                 mat-icon-button color="primary"
                                                                                 (click)="enableEdit(contact)">
                                                                                 <mat-icon>edit</mat-icon>
                                                                             </button>
-                                                                            <button *ngIf="contact.editable"
+                                                                            <!-- <button *ngIf="contact.editable"
                                                                                 mat-icon-button color="primary">
                                                                                 <mat-icon>save</mat-icon>
-                                                                            </button>
+                                                                            </button> -->
                                                                         </ng-container>
                                                                     </mat-cell>
+                                                                </ng-container>
+                                                                <ng-container matColumnDef="Add" stickyEnd>
+                                                                    <mat-header-cell *matHeaderCellDef
+                                                                        class="table-actions">
+                                                                        <mat-icon style="cursor:pointer"
+                                                                            (click)="addNewRow()">add</mat-icon>
+                                                                    </mat-header-cell>
+                                                                    <mat-cell *matCellDef="let element"></mat-cell>
                                                                 </ng-container>
 
                                                                 <mat-header-row class="accent"

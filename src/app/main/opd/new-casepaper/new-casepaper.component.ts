@@ -59,7 +59,8 @@ export class NewCasepaperComponent implements OnInit {
         'DoseName',
         'Days',
         'Remark',
-        'Action'
+        'Action',
+        'Add'
     ]
     displayedpreviousColumn: string[] = [
         'ItemName',
@@ -167,7 +168,7 @@ export class NewCasepaperComponent implements OnInit {
         'CertificateName',
         'CertificateText',
         'doctorName',
-        'Action'
+        'Action',
     ]
     mycertificateForm: FormGroup;
     onBlur(e: any) {
@@ -210,10 +211,7 @@ export class NewCasepaperComponent implements OnInit {
         public speechService: SpeechRecognitionService,
         public _ConfigService: ConfigService,
     ) { }
-    enableEdit(row: any) {
-        row.editable = true;
-       // this.MedicineItemform();
-    }
+
     ngOnInit(): void {
         //Common language list
         this.languages = this.speechService.supportedLanguages;
@@ -745,7 +743,7 @@ export class NewCasepaperComponent implements OnInit {
 
         this._CasepaperService.RtrvPreviousprescriptionDetailsdemo(m_data2).subscribe(Visit => {
             const allItems = Visit?.data as MedicineItemList[] || [];
-            debugger
+            // debugger
             if (allItems.length > 0 && allItems[0].precriptionId) {
                 const firstItem = allItems[0];
 
@@ -800,7 +798,6 @@ export class NewCasepaperComponent implements OnInit {
             }
         });
     }
-
 
     getRtrvCheifComplaintList(obj) {
         this.addCheiflist = [];
@@ -896,6 +893,7 @@ export class NewCasepaperComponent implements OnInit {
         this.vDay = row.doseDay
         const dayControl = this.vDay //used for focus purpose
         this.vInstruction = row.instruction
+        this.MedicineItemForm.get('DoseId').setValue(this.vdoseName)
 
         if (this.vdoseName) {
             const doseRow = {
@@ -909,6 +907,7 @@ export class NewCasepaperComponent implements OnInit {
                 this._CasepaperService.getItemMasterById(this.durgId).subscribe((response) => {
                     this.itemObjects = response;
                     this.vItemGenericNameId = this.itemObjects.itemGenericNameId
+                    this.MedicineItemForm.get('ItemGenericNameId').setValue(this.vItemGenericNameId)
 
                     if ((this.vItemGenericNameId ?? 0) > 0) {
                         setTimeout(() => {
@@ -1195,10 +1194,26 @@ export class NewCasepaperComponent implements OnInit {
         }
     }
 
-    Day1: any = 0;
-    Day2: any = 0;
-    onAdd() {
+    addNewRow() {
+        this.MedicineItemForm.get('ItemId').reset('');
+        this.MedicineItemForm.get('ItemGenericNameId').reset('');
+        this.MedicineItemForm.get('DoseId').reset('');
+        this.MedicineItemForm.get('Day').reset('');
+        this.vdoseName = ""
+        const newRow = {
+            DrugName: '',
+            GenericName: '',
+            DoseName: '',
+            Days: '',
+            Instruction: '',
+            editable: true
+        } as unknown as MedicineItemList;
 
+        this.Chargelist.push(newRow);
+        this.dsItemList.data = [...this.Chargelist];
+    }
+
+    confirmRow(row) {
         if (!this.MedicineItemForm.get("ItemId")?.value) {
             this.toastr.warning('Please select a Item Name', 'Warning !', {
                 toastClass: 'tostr-tost custom-toast-warning',
@@ -1211,18 +1226,64 @@ export class NewCasepaperComponent implements OnInit {
             });
             return;
         }
-        if ((this.vDay == '' || this.vDay == null || this.vDay == undefined)) {
+        if (!this.MedicineItemForm.get("Day")?.value) {
             this.toastr.warning('Please enter a Day', 'Warning !', {
                 toastClass: 'tostr-tost custom-toast-warning',
             });
             return;
         }
+        debugger
 
+        let Qty = this.DoseQtyPerDay || 0
+        row.DrugId = this.durgId || 0,
+            row.DrugName = this.durgName || '',
+            row.DoseId = this.doseId || 0,
+            row.GenericName = this.vItemGenericName || '',
+            row.GenericId = this.vItemGenericNameId || 0,
+            row.DoseName = this.doseName || '',
+            row.Days = this.MedicineItemForm.get('Day').value || this.vDay,
+            row.QtyPerDay = this.DoseQtyPerDay || 0,
+            row.totalQty = Qty * (this.DoseQtyPerDay || 0),
+            row.DoseId1 = this.doseId || 0,
+            row.DoseName1 = this.doseName || '',
+            row.Day1 = this.Day1,
+            row.DoseId2 = this.durgId || 0,
+            row.DoseName2 = this.durgName || '',
+            row.Day2 = this.Day1,
+            row.instruction = this.MedicineItemForm.get("Instruction").value || ''
+
+        row.editable = false;
+
+        // Refresh table
+        this.dsItemList.data = [...this.dsItemList.data];
+        console.log("Confirm List", this.dsItemList.data)
+    }
+
+    enableEdit(row: any) {
+        console.log("edit:", row)
+        // only one edit will work
+        this.dsItemList.data.forEach(r => (r.editable = false));
+        row.editable = true;
+        this.dsItemList.data = [...this.dsItemList.data];
+
+        if (row.precriptionId > 0) {
+            this.MedicineItemForm.patchValue({
+                ItemId: row.drugId || row.DrugId,
+                Day: row.days || row.Days,
+                Instruction: row.instruction || row.Instruction,
+                ItemGenericNameId: row.genericId,
+                DoseId: row.doseId
+            });
+        }
+    }
+
+    Day1: any = 0;
+    Day2: any = 0;
+    onAdd() {
         if (!Array.isArray(this.Chargelist)) {
             console.warn("Chargelist was not an array. Resetting...");
             this.Chargelist = [...this.dsItemList.data];
         }
-
         const iscekDuplicate = this.dsItemList.data.some(item => item.DrugId == this.durgId)
         if (!iscekDuplicate) {
 
@@ -1269,7 +1330,6 @@ export class NewCasepaperComponent implements OnInit {
     }
 
     deleteTableRow(event, element) {
-
         let index = this.Chargelist.indexOf(element);
         if (index >= 0) {
             this.Chargelist.splice(index, 1);
@@ -1281,11 +1341,11 @@ export class NewCasepaperComponent implements OnInit {
         });
     }
 
-  selectChangeTemplateName(row) {
-    this.templateId = row.presId
-    this.templateName = row.presTemplateName
-  }
-  itemObjects1: any[] = [];
+    selectChangeTemplateName(row) {
+        this.templateId = row.presId
+        this.templateName = row.presTemplateName
+    }
+    itemObjects1: any[] = [];
 
     onTemplDetAdd() {
         if ((this.vOPIPId == '' || this.vOPIPId == '0')) {
@@ -1760,30 +1820,30 @@ export class NewCasepaperComponent implements OnInit {
         });
     }
 
-  showTemplateRefresh = true;
-  SaveTemplate() {
-    if (this.dsItemList.data.length == 0) {
-      Swal.fire('Error !', 'Please add prescription in table', 'error');
-      return
-    }
-    const dialogRef = this._matDialog.open(PrescriptionTemplateComponent,
-      {
-        maxWidth: "50vw",
-        maxHeight: "35vh",
-        width: '100%',
-        // height: "100%",
-        data: {
-          Obj: this.dsItemList.data,       
-          category:'CasePaperTemplate'
+    showTemplateRefresh = true;
+    SaveTemplate() {
+        if (this.dsItemList.data.length == 0) {
+            Swal.fire('Error !', 'Please add prescription in table', 'error');
+            return
         }
-      });
-    dialogRef.afterClosed().subscribe(result => {
-      this.showTemplateRefresh = false;
-      setTimeout(() => {
-        this.showTemplateRefresh = true;
-      }, 100);
-    });
-  }
+        const dialogRef = this._matDialog.open(PrescriptionTemplateComponent,
+            {
+                maxWidth: "50vw",
+                maxHeight: "35vh",
+                width: '100%',
+                // height: "100%",
+                data: {
+                    Obj: this.dsItemList.data,
+                    category: 'CasePaperTemplate'
+                }
+            });
+        dialogRef.afterClosed().subscribe(result => {
+            this.showTemplateRefresh = false;
+            setTimeout(() => {
+                this.showTemplateRefresh = true;
+            }, 100);
+        });
+    }
 
     filteredHistory: Observable<string[]>;
 
@@ -2488,6 +2548,7 @@ export class MedicineItemList {
     genericid: any;
     allergy: any;
     bloodGroup: any;
+    editable: any;
     /**
     * Constructor
     *
@@ -2572,6 +2633,7 @@ export class MedicineItemList {
             this.genericid = MedicineItemList.genericid || 0
             this.allergy = MedicineItemList.allergy || ''
             this.bloodGroup = MedicineItemList.bloodGroup || ''
+            this.editable = MedicineItemList.editable || ''
         }
     }
 }
