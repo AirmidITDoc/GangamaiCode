@@ -23,6 +23,7 @@ export class DosemasterComponent implements OnInit {
             // { heading: "Code", key: "doseId", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "Dose Name", key: "doseName", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "Dose Name In English", key: "doseNameInEnglish", sort: true, align: 'left', emptySign: 'NA' },
+            { heading: "Dose Name In Marathi", key: "doseNameInMarathi", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "DoseQtyPerDay", key: "doseQtyPerDay", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
             {

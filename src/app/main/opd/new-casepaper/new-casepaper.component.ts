@@ -1773,7 +1773,8 @@ export class NewCasepaperComponent implements OnInit {
         width: '100%',
         // height: "100%",
         data: {
-          Obj: this.dsItemList.data
+          Obj: this.dsItemList.data,       
+          category:'CasePaperTemplate'
         }
       });
     dialogRef.afterClosed().subscribe(result => {

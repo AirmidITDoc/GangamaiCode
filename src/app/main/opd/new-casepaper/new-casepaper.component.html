@@ -325,7 +325,7 @@
                                                 <form [formGroup]="MedicineItemForm">
                                                     <div fxLayout="row" class="gap-8">
 
-                                                        <!-- <airmid-autocomplete label="Enter Drug Name"
+                                                        <airmid-autocomplete label="Enter Drug Name"
                                                             [formGroup]="MedicineItemForm" formControlName="ItemId"
                                                             placeholderText="Enter Drug Name" fxFlex
                                                             [ApiUrl]="'ItemMaster/GetItemListForPrescription?StoreId=' + vstoreId + '&ItemName='"
@@ -356,7 +356,7 @@
                                                                 [(ngModel)]="vInstruction" formControlName="Instruction"
                                                                 matInput #Instruction
                                                                 (keydown.enter)="onEnterremark($event)">
-                                                        </mat-form-field> -->
+                                                        </mat-form-field>
 
                                                         <div class="input-add-button">
                                                             <div matTooltip="Select Drug to enable this button!!"

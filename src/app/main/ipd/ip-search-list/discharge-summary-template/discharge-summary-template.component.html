@@ -172,7 +172,7 @@
 
                       <airmid-dropdown label="Dose Name" formControlName="DoseId" [formGroup]="MedicineItemForm"
                         [validations]="getValidationMessages().DoseId" (selectionChange)="getdose($event)"
-                        [mode]="autocompleteModeDose" [(ngModel)]="doseId"></airmid-dropdown>
+                        [mode]="autocompleteModeDose" [(ngModel)]="doseId" *ngIf="showDoseDropdownRefresh"></airmid-dropdown>
 
                       <airmid-textbox label="Day" formControlName="Day" [value]="vDay" [formGroup]="MedicineItemForm"
                         [type]="'text'" (keypress)="keyPressCharater($event)"></airmid-textbox>
@@ -190,6 +190,10 @@
                       </div>
 
                       <mat-divider [vertical]="true"></mat-divider>&nbsp;
+
+                      <button mat-raised-button (click)="getDosemaster()">
+                        <mat-icon>add</mat-icon>
+                        Dose</button>
 
                       <button mat-raised-button (click)="SaveTemplate()">
                         <mat-icon>save</mat-icon>

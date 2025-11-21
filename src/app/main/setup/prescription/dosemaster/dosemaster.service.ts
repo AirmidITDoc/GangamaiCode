@@ -13,7 +13,7 @@ export class DosemasterService {
     constructor(
         private _httpClient: ApiCaller,
         private _formBuilder: UntypedFormBuilder,
-         private _FormvalidationserviceService: FormvalidationserviceService
+        private _FormvalidationserviceService: FormvalidationserviceService
     ) {
         this.myForm = this.createDoseForm();
         this.myformSearch = this.createSearchForm();
@@ -21,27 +21,25 @@ export class DosemasterService {
 
     createDoseForm(): FormGroup {
         return this._formBuilder.group({
-            doseId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
-            doseName: ["", 
+            doseId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            doseName: ["",
                 [
-                    Validators.required, Validators.maxLength(50),
-                //    Validators.pattern("^[A-Za-z0-9\\-/]*$"),
+                    Validators.required, Validators.maxLength(200),
+                    Validators.pattern('^[a-zA-Z0-9 .&/-]*$'),
                     this._FormvalidationserviceService.allowEmptyStringValidator()
                 ]
             ],
-            doseNameInEnglish: ["", 
+            doseNameInEnglish: ["",
                 [
                     Validators.required, Validators.maxLength(50),
-                   // Validators.pattern("^[A-Za-z0-9\\-/]*$")
-                   Validators.pattern('^[a-zA-Z0-9 ]*$')
+                    Validators.pattern('^[a-zA-Z0-9 .&-]*$')
                 ]
             ],
-            doseNameInMarathi :["0",
-              
-                // [
-                //     Validators.required, Validators.maxLength(50),
-                //      Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
-                // ]
+            doseNameInMarathi: ["",
+                [
+                    Validators.required, Validators.maxLength(50),
+                    Validators.pattern('^[a-zA-Z0-9 .&-]*$')
+                ]
             ],
             doseQtyPerDay: ["",
                 [
@@ -49,7 +47,7 @@ export class DosemasterService {
                     Validators.pattern('^[0-9]*$')
                 ]
             ],
-            isActive:[true,[Validators.required]]
+            isActive: [true, [Validators.required]]
         });
     }
 
@@ -73,5 +71,5 @@ export class DosemasterService {
     public deactivateTheStatus(m_data) {
         return this._httpClient.DeleteData("DoseMaster?Id=" + m_data.toString());
     }
-  
+
 }
