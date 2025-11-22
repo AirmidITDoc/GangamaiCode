@@ -477,9 +477,9 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
             // GenderName: [""],
             Education: ["",
                 [
-                    Validators.required,
-                    this._FormvalidationserviceService.allowEmptyStringValidatorOnly(),
-                    this._FormvalidationserviceService.noWhitespaceValidator()
+                    // Validators.required,
+                    // this._FormvalidationserviceService.allowEmptyStringValidatorOnly(),
+                    // this._FormvalidationserviceService.noWhitespaceValidator()
                     // Validators.pattern("^[A-Za-z/() / [ ] ]*$")
                 ]
             ],
@@ -498,34 +498,34 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
             Validators.pattern("^[0-9]*$")]],
             PassportNo: ["", this._FormvalidationserviceService.allowEmptyStringValidatorOnly()],
             esino: [
-                "0",
+                "",
                 [
                     // Validators.required,
                     // Validators.pattern("'^[a-zA-Z0-9]*$'"),
                     Validators.minLength(10),
                     Validators.maxLength(10),
-                    this._FormvalidationserviceService.allowEmptyStringValidatorOnly()
+                    // this._FormvalidationserviceService.allowEmptyStringValidatorOnly()
                 ],
             ],
             RegNo: [
-                "0",
+                "",
                 [
                     // Validators.required,
                     //    Validators.pattern("'^[a-zA-Z0-9]*$'"),
                     Validators.minLength(10),
                     Validators.maxLength(10),
-                    this._FormvalidationserviceService.allowEmptyStringValidatorOnly()
+                    // this._FormvalidationserviceService.allowEmptyStringValidatorOnly()
                 ],
             ],
             RegDate: [{ value: new Date() }],
             MahRegNo: [
-                "0",
+                "",
                 [
                     // Validators.required,
                     //    Validators.pattern("'^[a-zA-Z0-9]*$'"),
                     Validators.minLength(10),
                     Validators.maxLength(10),
-                    this._FormvalidationserviceService.allowEmptyStringValidatorOnly()
+                    // this._FormvalidationserviceService.allowEmptyStringValidatorOnly()
                 ],
             ],
             MahRegDate: [{ value: new Date() }],

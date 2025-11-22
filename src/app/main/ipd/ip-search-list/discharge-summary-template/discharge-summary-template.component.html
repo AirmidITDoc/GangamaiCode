@@ -116,7 +116,7 @@
                 <div fxLayout="row" fxLayoutGap="8px" fxLayoutAlign="start center">
                   <airmid-dropdown label="Template" formControlName="TemplateId" [formGroup]="DischargesumForm"
                     fxFlex="40%" [value]="TemplateId" ValueField="templateId" TextField="templateName"
-                    (selectionChange)="onChangetemp($event)" ApiUrl="ReportTemplate/get-Templates"></airmid-dropdown>
+                    (selectionChange)="onChangetemp($event)" ApiUrl="TemplateDescriptionConfig/GetDischargeTemplateList?CategoryName=DischargeSummaryTemplate"></airmid-dropdown>
                   <!-- [readonly]="!isItemIdSelected" -->
                   <div class="mt-2">
                     <button type="button" (click)="onAddTemplate($event)" class="btn btn-primary btn-with-icon py-8"

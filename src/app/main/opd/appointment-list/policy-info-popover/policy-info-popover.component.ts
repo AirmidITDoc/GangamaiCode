@@ -181,7 +181,7 @@ export class PolicyInfoPopoverComponent implements OnInit {
   allColumns = [
     { heading: "Policy No", key: "policyNo", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "Policy Limit", key: "approvedAmount", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "Valid Date", key: "dateApproved", sort: true, align: 'left', emptySign: 'NA', type: 6 },
+    { heading: "Valid Date", key: "policyValidateDate", sort: true, align: 'left', emptySign: 'NA', type: 6 },
     { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
     {
       heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
@@ -191,7 +191,7 @@ export class PolicyInfoPopoverComponent implements OnInit {
           }
         }, {
           action: gridActions.delete, callback: (data: any) => {
-            this._AdmissionService.deactivatePolicyTheStatus(data.id).subscribe((response: any) => {
+            this._AdmissionService.deactivatePolicyTheStatus(data.patientPolicyId).subscribe((response: any) => {
               this.getfilterdata()
             });
           }
@@ -205,7 +205,7 @@ export class PolicyInfoPopoverComponent implements OnInit {
     sortField: "PatientPolicyId",
     sortOrder: 0,
     filters: [
-      { fieldName: "PatientPolicyId", fieldValue: "0", opType: OperatorComparer.Contains }
+      { fieldName: "Opipid", fieldValue: "0", opType: OperatorComparer.Contains }
     ]
   }
 
@@ -216,7 +216,7 @@ export class PolicyInfoPopoverComponent implements OnInit {
       sortField: "PatientPolicyId",
       sortOrder: 0,
       filters: [
-        { fieldName: "PatientPolicyId", fieldValue: String(this.OpdIpdID), opType: OperatorComparer.Contains }
+        { fieldName: "Opipid", fieldValue: String(this.OpdIpdID), opType: OperatorComparer.Contains }
       ]
     }
     this.grid.gridConfig = this.gridConfig;

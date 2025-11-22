@@ -315,8 +315,8 @@ export class AdmissionService {
         // if (param.admissionId) {
         //     return this._httpClient1.PutData("Admission/Companyinformation/" + param.admissionId, param);
         // }
-        if (Param.id) {
-            return this._httpClient1.PutData("PatientPolicy/" + Param.id, Param);
+        if (Param.patientPolicyId) {
+            return this._httpClient1.PutData("PatientPolicy/" + Param.patientPolicyId, Param);
         } else return this._httpClient1.PostData("PatientPolicy", Param);
     }
 
