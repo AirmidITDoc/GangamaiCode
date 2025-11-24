@@ -30,6 +30,8 @@ export class OpPaymentVimalComponent implements OnInit {
         'buttons'
     ];
     autocompleteModebank: string = "Bank";
+    autocompleteModecompany: string = "Company";
+    isCompanySelected:boolean=false
     currentDate = new Date();
     patientDetailsFormGrp: FormGroup;
     selectedPaymnet1: string = '';
@@ -323,7 +325,8 @@ export class OpPaymentVimalComponent implements OnInit {
             bankName1: [''],
             regDate1: [(new Date()).toISOString()],
             paidAmountController: [this.paidAmt],
-            balanceAmountController: [this.balanceAmt]
+            balanceAmountController: [this.balanceAmt],
+            CompanyId:[0]
         });
     }
     onClose() {
@@ -707,8 +710,14 @@ export class OpPaymentVimalComponent implements OnInit {
             ],
             consultantDocId: [
                 { name: "required", Message: "Doctor Name is required" }
-            ]
+            ],
+              CompanyId: [
+                { name: "required", Message: "Company is required" }
+            ],
         };
+    }
+        onChangeCompany(value) {
+            console.log(value) 
     }
 }
 export class PharPaymentInsert {

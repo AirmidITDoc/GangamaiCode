@@ -1409,6 +1409,8 @@ SavemPesaBill() {
 
     this.OpBillForm.get('balanceAmt').setValue(0);
     this.OpBillForm.get('paidAmt').setValue(this.OPFooterForm.get('netPayableAmt').value);
+    this.OpBillForm.get('payments.paymentDate')?.setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'))
+    this.OpBillForm.get('payments.paymentTime')?.setValue(this.dateTimeObj.time)
     this.OpBillForm.get('payments.payTmamount').setValue(Number(this.OPFooterForm.get('netPayableAmt').value));
     this.OpBillForm.get('payments.payTmdate').setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'));
     this.OpBillForm.get('payments.payTmtranNo').setValue(this.mPesa_ReceiptNo);

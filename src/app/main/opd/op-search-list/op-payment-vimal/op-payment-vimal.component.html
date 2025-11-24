@@ -271,7 +271,7 @@
                                                 <div *ngIf="IsMoreAmt" class="invalid-feedback">
                                                     <div>Entered Amount must not be greater than Net Amount. </div>
                                                 </div>
-                                            </mat-form-field>
+                                            </mat-form-field>  
 
                                             <ng-container
                                                 *ngIf="selectedPaymnet1 != 'cash' && selectedPaymnet1 != 'tds' && selectedPaymnet1 != 'wf'">
@@ -316,6 +316,11 @@
                                                     </div>
                                                 </mat-form-field>
                                             </ng-container>
+                                             <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%" *ngIf="isCompanySelected">
+                                                <airmid-dropdown label="Company Name" formControlName="CompanyId" [formGroup]="patientDetailsFormGrp"
+                                                   [validations]="getValidationMessages().CompanyId" [mode]="autocompleteModecompany"
+                                                    (selectionChange)="onChangeCompany($event)"></airmid-dropdown>
+                                            </div>
                                             <div class="btn-container">
                                                 <div class="add-icon-btn" *ngIf="IsAllowAdd()">
                                                     <button class="btn btn-primary"
