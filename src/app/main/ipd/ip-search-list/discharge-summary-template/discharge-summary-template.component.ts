@@ -310,7 +310,7 @@ export class DischargeSummaryTemplateComponent {
           this.DischargesumForm.get("discharge.isNormalOrDeath")?.setValue(Number(this.vIsNormalDeath))
           this.DischargesumForm.get("discharge.dischargeSummaryId")?.setValue(this.DischargeSummaryId);
 
-          debugger
+          // debugger
           this.prescriptionTemplateArray.clear();
           this.dsItemList.data.forEach(item => {
             this.prescriptionTemplateArray.push(this.createprescriptionTemplate(item));
@@ -335,7 +335,7 @@ export class DischargeSummaryTemplateComponent {
           console.log(insertData)
           console.log(this.DischargesumForm.value)
 
-          debugger
+          // debugger
           this._IpSearchListService.insertIPDDischargSummaryTemplate(this.DischargesumForm.value).subscribe(response => {
             console.log(response)
             if (response)
@@ -711,12 +711,14 @@ export class DischargeSummaryTemplateComponent {
 
   viewgetDischargesummaryPdf(AdmId) {
     console.log(AdmId)
-    this.commonService.Onprint("AdmissionID", AdmId, "IpDischargeSummaryTemplate");
+    this.commonService.Onprint("AdmissionID", AdmId, "IpDischargeSummaryTemplatewithPatientHeader");
+    // this.commonService.Onprint("AdmissionID", AdmId, "IpDischargeSummaryTemplate");
   }
 
   viewgetDischargesummaryTempPdf(AdmId) {
     console.log(AdmId)
-    this.commonService.Onprint("AdmissionID", AdmId, "IpDischargeSummaryTemplateWithoutHeader");
+    this.commonService.Onprint("AdmissionID", AdmId, "IpDischargeSummaryTemplatepatientWithoutHeader");
+    // this.commonService.Onprint("AdmissionID", AdmId, "IpDischargeSummaryTemplateWithoutHeader");
   }
 
   getValidationMessages() {
@@ -848,7 +850,6 @@ export class DischargeSummaryTemplateComponent {
   }
 
   onAddTemplate(e) {
-    debugger
     this.vTemplateDesc = this.Tempdesc
     // this.DischargesumForm.get('templateDescriptionHtml').setValue(this.Tempdesc)
 
