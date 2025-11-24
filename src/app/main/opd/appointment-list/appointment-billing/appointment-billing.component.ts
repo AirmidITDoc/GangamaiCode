@@ -1357,28 +1357,52 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
         }
     }
     handleStatus(status: any) {
+        console.log(status)
         debugger
-        if (status?.resultCode == 0 && (status?.mpesaReceiptNumber ?? '') != '') {
-            // here you can get json response.
-            this.statusMessage = 'Payment successful.' + this.mpesaResponse.responseDescription + '\n' +
+        // if (status?.resultCode == 0 && (status?.mpesaReceiptNumber ?? '') != '') {
+        //     // here you can get json response.
+        //     this.statusMessage = 'Payment successful.' + this.mpesaResponse.responseDescription + '\n' +
+        //         'CheckoutRequestId  : ' + this.mpesaResponse.checkoutRequestID + '\n' +
+        //         'MerchantRequestId  : ' + this.mpesaResponse.merchantRequestID + '\n' +
+        //         'Receipt No=' + status.mpesaReceiptNumber;
+        //     this.mPesa_ReceiptNo  = status.mpesaReceiptNumber
+        //     this.stopPolling();
+        //     this.isWaiting = false
+        //     // setTimeout(() => this.isWaiting = false, 1500);
+        //      this.SavemPesaBill();
+        // }
+        // else {
+        //     if (status?.resultDesc) {
+        //         this.statusMessage = status?.resultDesc;
+        //         this.stopPolling();
+        //         this.isWaiting = false
+        //         // setTimeout(() => this.isWaiting = false, 1500);
+        //     }
+        // }
+        const isSuccess = status?.resultCode == 0 || status?.resultCode == "0" || status?.resultCode == "000000";
+        const receipt = status?.mpesaReceiptNumber || status?.ReceiptNumber || status?.MpesaReceiptNumber || status?.TransID || status?.transactionId;
+
+        if (isSuccess && receipt) {
+            this.statusMessage =
+                'Payment successful.' + this.mpesaResponse.responseDescription + '\n' +
                 'CheckoutRequestId  : ' + this.mpesaResponse.checkoutRequestID + '\n' +
                 'MerchantRequestId  : ' + this.mpesaResponse.merchantRequestID + '\n' +
-                'Receipt No=' + status.mpesaReceiptNumber;
-            this.mPesa_ReceiptNo  = status.mpesaReceiptNumber
+                'Receipt No=' + receipt;
+            this.mPesa_ReceiptNo = receipt;
             this.stopPolling();
-            this.isWaiting = false
-            // setTimeout(() => this.isWaiting = false, 1500);
-             this.SavemPesaBill();
+            this.isWaiting = false;
+            this.SavemPesaBill();
         }
         else {
             if (status?.resultDesc) {
                 this.statusMessage = status?.resultDesc;
                 this.stopPolling();
-                this.isWaiting = false
-                // setTimeout(() => this.isWaiting = false, 1500);
+                this.isWaiting = false;
             }
         }
+
     }
+    
 SavemPesaBill() {
     debugger
     const [ThermalPrint, ThermalPrintValue] = this._ConfigService.configParams.ThermalPrint.split(":");
