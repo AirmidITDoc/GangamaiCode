@@ -1175,41 +1175,32 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
             else if (this.OPFooterForm.get('paymentType')?.value === 'Mpesa') {
                 debugger
                 this.openWaitingScreen();
-                this.startPolling(); 
-            //     this.mpesaResponse_1.push(
-            //         {
-            //           checkoutRequestID:'CheckReqId12344',
-            //           merchantRequestID: 'MerchantReqId123'
-            //         }
-            //     ) 
-            // this.mpesaResponse = this.mpesaResponse_1
-            // this.mPesa_ReceiptNo  = 'asassasasaa' 
+               // this.startPolling();  
+                // if(this.mPesa_ReceiptNo && this.mpesaResponse){
+                //     console.log(this.mPesa_ReceiptNo)
+                //      console.log(this.mpesaResponse)
+                // const mPesaMerchant_CheckoutRequest_Id  = this.mpesaResponse?.checkoutRequestID +"|"+ this.mpesaResponse?.merchantRequestID
+                // this.OpBillForm.get('balanceAmt').setValue(0)
+                // this.OpBillForm.get('paidAmt')?.setValue(this.OPFooterForm.get('netPayableAmt')?.value)
+                // this.OpBillForm.get('payments.payTmamount')?.setValue(Number(this.OPFooterForm.get('netPayableAmt')?.value))
+                // this.OpBillForm.get('payments.payTmdate')?.setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'))
+                // this.OpBillForm.get('payments.payTmtranNo')?.setValue(this.mPesa_ReceiptNo)
+                // this.OpBillForm.get('payments.remark')?.setValue(mPesaMerchant_CheckoutRequest_Id) 
 
-                if(this.mPesa_ReceiptNo && this.mpesaResponse){
-                    console.log(this.mPesa_ReceiptNo)
-                     console.log(this.mpesaResponse)
-                const mPesaMerchant_CheckoutRequest_Id  = this.mpesaResponse?.checkoutRequestID +"|"+ this.mpesaResponse?.merchantRequestID
-                this.OpBillForm.get('balanceAmt').setValue(0)
-                this.OpBillForm.get('paidAmt')?.setValue(this.OPFooterForm.get('netPayableAmt')?.value)
-                this.OpBillForm.get('payments.payTmamount')?.setValue(Number(this.OPFooterForm.get('netPayableAmt')?.value))
-                this.OpBillForm.get('payments.payTmdate')?.setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'))
-                this.OpBillForm.get('payments.payTmtranNo')?.setValue(this.mPesa_ReceiptNo)
-                this.OpBillForm.get('payments.remark')?.setValue(mPesaMerchant_CheckoutRequest_Id) 
-
-                console.log(this.OpBillForm.value)
-                this._AppointmentlistService.InsertOPBilling(this.OpBillForm.value).subscribe(response => {
-                    debugger
-                    console.log(response)
-                    if (ThermalPrint != 1) {
-                        this.viewgetOPBillReportPdf(response)
-                    } else {
-                        this.viewgetOPBillThermalReportPdf(response)
-                    } 
-                    this._matDialog.closeAll();
-                    this.savebtn = true
-                    this.resetform();
-                }); 
-                }
+                // console.log(this.OpBillForm.value)
+                // this._AppointmentlistService.InsertOPBilling(this.OpBillForm.value).subscribe(response => {
+                //     debugger
+                //     console.log(response)
+                //     if (ThermalPrint != 1) {
+                //         this.viewgetOPBillReportPdf(response)
+                //     } else {
+                //         this.viewgetOPBillThermalReportPdf(response)
+                //     } 
+                //     this._matDialog.closeAll();
+                //     this.savebtn = true
+                //     this.resetform();
+                // }); 
+                // }
             }
         }
         else {
@@ -1335,6 +1326,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
                 'CheckoutRequestId  : ' + response.checkoutRequestID + '\n' +
                 'MerchantRequestId  : ' + response.merchantRequestID;
             this.isWaiting = true;
+             this.startPolling();
         });
     }
 
@@ -1365,6 +1357,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
         }
     }
     handleStatus(status: any) {
+        debugger
         if (status?.resultCode == 0 && (status?.mpesaReceiptNumber ?? '') != '') {
             // here you can get json response.
             this.statusMessage = 'Payment successful.' + this.mpesaResponse.responseDescription + '\n' +
@@ -1373,16 +1366,43 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
                 'Receipt No=' + status.mpesaReceiptNumber;
             this.mPesa_ReceiptNo  = status.mpesaReceiptNumber
             this.stopPolling();
+            this.isWaiting = false
             // setTimeout(() => this.isWaiting = false, 1500);
+             this.SavemPesaBill();
         }
         else {
             if (status?.resultDesc) {
                 this.statusMessage = status?.resultDesc;
                 this.stopPolling();
+                this.isWaiting = false
                 // setTimeout(() => this.isWaiting = false, 1500);
             }
         }
     }
+SavemPesaBill() {
+    debugger
+    const [ThermalPrint, ThermalPrintValue] = this._ConfigService.configParams.ThermalPrint.split(":");
+    const mPesaMerchant_CheckoutRequest_Id = this.mpesaResponse.checkoutRequestID + "|" + this.mpesaResponse.merchantRequestID;
+
+    this.OpBillForm.get('balanceAmt').setValue(0);
+    this.OpBillForm.get('paidAmt').setValue(this.OPFooterForm.get('netPayableAmt').value);
+    this.OpBillForm.get('payments.payTmamount').setValue(Number(this.OPFooterForm.get('netPayableAmt').value));
+    this.OpBillForm.get('payments.payTmdate').setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'));
+    this.OpBillForm.get('payments.payTmtranNo').setValue(this.mPesa_ReceiptNo);
+    this.OpBillForm.get('payments.remark').setValue(mPesaMerchant_CheckoutRequest_Id);
+
+    this._AppointmentlistService.InsertOPBilling(this.OpBillForm.value)
+        .subscribe(response => {  
+            if (ThermalPrint != 1) {
+                this.viewgetOPBillReportPdf(response);
+            } else {
+                this.viewgetOPBillThermalReportPdf(response);
+            } 
+            this._matDialog.closeAll();
+            this.savebtn = true;
+            this.resetform();
+        });
+}
 
 }
 
