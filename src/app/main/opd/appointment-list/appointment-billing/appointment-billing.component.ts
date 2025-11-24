@@ -1032,6 +1032,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
             }
         });
     }
+    mpesaResponse_1:any=[];
     OnSave() {
         if (this.OPFooterForm.get('concessionAmt').value > 0 && this.Consessionres) {
             if (!this.OPFooterForm.get('concessionReasonId').value) {
@@ -1171,10 +1172,21 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
                 });
             }
             else if (this.OPFooterForm.get('paymentType')?.value === 'Mpesa') {
+                debugger
                 this.openWaitingScreen();
-                this.startPolling();
+                this.startPolling(); 
+            //     this.mpesaResponse_1.push(
+            //         {
+            //           checkoutRequestID:'CheckReqId12344',
+            //           merchantRequestID: 'MerchantReqId123'
+            //         }
+            //     ) 
+            // this.mpesaResponse = this.mpesaResponse_1
+            // this.mPesa_ReceiptNo  = 'asassasasaa' 
 
                 if(this.mPesa_ReceiptNo && this.mpesaResponse){
+                    console.log(this.mPesa_ReceiptNo)
+                     console.log(this.mpesaResponse)
                 const mPesaMerchant_CheckoutRequest_Id  = this.mpesaResponse?.checkoutRequestID +"|"+ this.mpesaResponse?.merchantRequestID
                 this.OpBillForm.get('balanceAmt').setValue(0)
                 this.OpBillForm.get('paidAmt')?.setValue(this.OPFooterForm.get('netPayableAmt')?.value)
@@ -1316,6 +1328,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
         debugger
         this._AppointmentlistService.postpayment(this.OpBillForm.controls["netPayableAmt"].value, this.OPFooterForm.get('mpesaMobile').value).subscribe(response => {
             this.mpesaResponse = response;
+            console.log(this.mpesaResponse)
             // Build message AFTER response arrives
             this.statusMessage = '' + response.responseDescription + '\n' +
                 'CheckoutRequestId  : ' + response.checkoutRequestID + '\n' +
