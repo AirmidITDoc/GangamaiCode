@@ -23,29 +23,18 @@
         </div>
     </div>
 
+    <!-- <div id="popupOverlay" class="overlay">
+        <div class="popup">
+            <h2>Popup Title</h2>
+            <p>This is a CSS-only popup overlay example.</p>
+            <a href="#" class="close-btn">Close</a>
+        </div>
+    </div> -->
+
     <div class="modal-body labpatientMiddle" fusePerfectScrollbar>
         <div class="modal-body-container detail-wrapper">
             <div fxLayout="column" fxLayoutGap="8px">
 
-                <!-- <div class="detail-container input-error-hidden">
-                    <form [formGroup]="myForm">
-                        <mat-card>
-                            <mat-card-content>
-                                <div fxLayout="row" fxLayout.sm="column" class="gap-16"
-                                    fxLayoutAlign="start center center">
-                                    <div class="input-container gap-8" fxFlex="40%">
-                                        <airmid-autocomplete label="Search Reg No / Patient Name / Mobile No"
-                                            [formGroup]="myForm" formControlName="regId"
-                                            placeholderText="RegNo/Patient Name/Mobile No"
-                                            ApiUrl="OutPatient/auto-complete?Keyword="
-                                            (selectionChange)="getSelectedObj($event)">
-                                        </airmid-autocomplete>
-                                    </div>
-                                </div>
-                            </mat-card-content>
-                        </mat-card>
-                    </form>
-                </div> -->
 
                 <div class="detail-container">
                     <form [formGroup]="myForm">
@@ -65,14 +54,9 @@
 
                                     <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
 
-                                        <!-- <airmid-autocomplete label="First Name" [formGroup]="myForm"
-                                            formControlName="patientName" placeholderText="First Name" fxFlex
-                                            ApiUrl="Sales/External-auto-complete?Keyword=" TextField="text"
-                                            (selectionChange)="getSelectedObj($event)"></airmid-autocomplete> -->
-
                                         <airmid-autocomplete label="Patient Name / Mobile No" [formGroup]="myForm"
                                             formControlName="patientName" placeholderText="Patient Name / Mobile No"
-                                            fxFlex ApiUrl="LabPatientRegistration/Labauto-complete?Keyword="
+                                            fxFlex ApiUrl="LabPatientRegistration/search-patient-1?Keyword="
                                             (selectionChange)="getSelectedObj($event)"
                                             ValueField="regId"></airmid-autocomplete>
 
@@ -101,11 +85,10 @@
                                         <!-- <app-airmid-dateofbirth [formGroup]="myForm" formControlName="dateofBirth"
                                             [(value)]="registerObj.dateofBirth" dateStyle="Year"
                                             (dateChange)="chkChange()"></app-airmid-dateofbirth> -->
-<!--  -->
-                                              <app-airmid-dateofbirth [formGroup]="myForm" [(value)]="registerObj.dateofBirth"
-                                               dateStyle="Year" formControlName="DateOfBirth"
-                                                ></app-airmid-dateofbirth>
-                                          
+                                        <!--  -->
+                                        <app-airmid-dateofbirth [formGroup]="myForm" [(value)]="registerObj.dateofBirth"
+                                            dateStyle="Year" formControlName="DateOfBirth"></app-airmid-dateofbirth>
+
                                     </div>
 
                                     <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">

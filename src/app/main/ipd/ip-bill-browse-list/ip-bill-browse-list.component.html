@@ -9,23 +9,23 @@
                 class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
                 dynamicTableHeight>
                 <div class="info-badge-top p-12 border-bottom">
-                <div fxLayout="row wrap" fxLayoutAlign="space-between" flex>
-                    <div fxLayout="row" fxLayoutAlign="start center" class="gap-8">
-                        <div style="color: orange" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
-                            <mat-icon class="pill orange-600 s-16">circle</mat-icon>
-                            <span class="orange-600-fg">Intrim Bills</span>
-                        </div>
-                        <div style="color: green" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
-                            <mat-icon class="pill green-600 s-16">circle</mat-icon>
-                            <span class="green-600-fg">Final Bills</span>
-                        </div>
-                        <div style="color: red" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
-                            <mat-icon class="pill red-600 s-16">circle</mat-icon>
-                            <span class="red-600-fg">Cancelled Bills</span>
-                        </div>
+                    <div fxLayout="row wrap" fxLayoutAlign="space-between" flex>
+                        <div fxLayout="row" fxLayoutAlign="start center" class="gap-8">
+                            <div style="color: orange" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                                <mat-icon class="pill orange-600 s-16">circle</mat-icon>
+                                <span class="orange-600-fg">Intrim Bills</span>
+                            </div>
+                            <div style="color: green" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                                <mat-icon class="pill green-600 s-16">circle</mat-icon>
+                                <span class="green-600-fg">Final Bills</span>
+                            </div>
+                            <div style="color: red" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                                <mat-icon class="pill red-600 s-16">circle</mat-icon>
+                                <span class="red-600-fg">Cancelled Bills</span>
+                            </div>
 
+                        </div>
                     </div>
-                </div>
                 </div>
                 <div class="page-layout simple left-sidebar inner-sidebar inner-scroll">
                     <ng-template #patientTypetemp let-element>
@@ -58,14 +58,19 @@
                     <ng-template #isCancelledstatus let-element>
                         <div fxLayout="row" fxLayoutAlign="center center">
                             <mat-icon title="Cancelled Bill" *ngIf="element.isCancelled=='1'" class="pill red s-16"
-                            matTooltip="Cancelled Bill">circle</mat-icon> 
-                         
+                                matTooltip="Cancelled Bill">circle</mat-icon>
+
                         </div>
                     </ng-template>
 
 
                     <ng-template #actionButtonTemplateIP let-element>
                         <div fxLayout="row" fxLayoutAlign="center center">
+                            <button mat-icon-button matTooltip="Review Company Bill" (click)="OnCompanyBill(element)"
+                                *ngIf="element.PatientTypeId !='1'">
+                                <mat-icon>remove_red_eye</mat-icon>
+                            </button>
+
                             <button mat-icon-button (click)="getFinalBillview(element)" matTooltip="Bill Print">
                                 <mat-icon>print</mat-icon>
                             </button>
@@ -78,74 +83,83 @@
                             <button mat-icon-button matTooltip="Send message On WhatsApp">
                                 <img width="500" height="20px" src="assets/images/logos/WhatsApp.png">
                             </button>
-                            <button mat-icon-button [matMenuTriggerFor]="moreMenu" aria-label="More" (click)="$event.stopPropagation();">
+                            <button mat-icon-button [matMenuTriggerFor]="moreMenu" aria-label="More"
+                                (click)="$event.stopPropagation();">
                                 <mat-icon class="secondary-text">more_vert</mat-icon>
                             </button>
-                        <mat-menu #moreMenu="matMenu">
-                            <ng-container *ngFor="let m of menuActions, let n of menuActions">
-                                <button mat-menu-item aria-label="remove" (click)="OngetRecord(element,m)">
-                                    <span>{{m}}</span>
-                                </button>
-                            </ng-container>
-                        </mat-menu>
+                            <mat-menu #moreMenu="matMenu">
+                                <ng-container *ngFor="let m of menuActions, let n of menuActions">
+                                    <button mat-menu-item aria-label="remove" (click)="OngetRecord(element,m)">
+                                        <span>{{m}}</span>
+                                    </button>
+                                </ng-container>
+                            </mat-menu>
                         </div>
                     </ng-template>
                     <airmid-table [gridConfig]="gridConfig" class="content" #ipBrowse>
                         <ng-container filters>
-                        <form [formGroup]="myFilterform">
-                            <airmid-datepicker [formGroup]="myFilterform"
-                                [isRangePicker]="true" formStartControlName="fromDate" formEndControlName="enddate"
-                                [(fromValue)]="gridConfig.filters[2].fieldValue"
-                                [(toValue)]="gridConfig.filters[3].fieldValue">
-                            </airmid-datepicker>
-
-                            <mat-form-field appearance="outline">
-                                <mat-label>PBillNo</mat-label>
-                                <input matInput placeholder="Search PBillNo" autocomplete="off"
-                                    [formGroup]="myFilterform" formControlName="PBillNo" (input)="onChangeIPBill()" />
-                                <button matSuffix mat-icon-button aria-label="Clear" (click)=" ClearfilterIPbill('PBillNo')">
-                                    <mat-icon>close</mat-icon>
-                                </button>
-                            </mat-form-field>
-
-                            <mat-form-field appearance="outline">
-                                <mat-label>UHID</mat-label>
-                                <input matInput placeholder="Search UHID" autocomplete="off"
-                                    [formGroup]="myFilterform" formControlName="RegNo" (input)="onChangeIPBill()" />
-                                <button matSuffix mat-icon-button aria-label="Clear" (click)=" ClearfilterIPbill('RegNo')">
-                                    <mat-icon>close</mat-icon>
-                                </button>
-                            </mat-form-field>
-
-                            <mat-form-field appearance="outline">
-                                <mat-label>First Name</mat-label>
-                                <input matInput placeholder="Search First Name" autocomplete="off"
-                                    [formGroup]="myFilterform" formControlName="FirstName" (input)="onChangeIPBill()" />
-                                <button matSuffix mat-icon-button aria-label="Clear" (click)=" ClearfilterIPbill('FirstName')">
-                                    <mat-icon>close</mat-icon>
-                                </button>
-                            </mat-form-field>
-
-                            <mat-form-field appearance="outline">
-                                <mat-label>Last Name</mat-label>
-                                <input matInput placeholder="Search Last Name" autocomplete="off"
-                                    [formGroup]="myFilterform" formControlName="LastName" (input)="onChangeIPBill()" />
-                                <button matSuffix mat-icon-button aria-label="Clear" (click)=" ClearfilterIPbill('LastName')">
-                                    <mat-icon>close</mat-icon>
-                                </button>
-                            </mat-form-field>
-
                             <form [formGroup]="myFilterform">
-                                <mat-radio-group value="2" [(ngModel)]="gridConfig.filters[6].fieldValue" (change)="onChangeIPBill()"
-                                    fxLayoutAlign="center center" formControlName="IsInterimOrFinal">
+                                <airmid-datepicker [formGroup]="myFilterform" [isRangePicker]="true"
+                                    formStartControlName="fromDate" formEndControlName="enddate"
+                                    [(fromValue)]="gridConfig.filters[2].fieldValue"
+                                    [(toValue)]="gridConfig.filters[3].fieldValue">
+                                </airmid-datepicker>
 
-                                    <mat-radio-button mat-fab value="2">All</mat-radio-button>
-                                    <mat-radio-button mat-fab value="1">IsInterim</mat-radio-button>
-                                    <mat-radio-button mat-fab value="0">IsFinal</mat-radio-button>
-                                </mat-radio-group>
+                                <mat-form-field appearance="outline">
+                                    <mat-label>PBillNo</mat-label>
+                                    <input matInput placeholder="Search PBillNo" autocomplete="off"
+                                        [formGroup]="myFilterform" formControlName="PBillNo"
+                                        (input)="onChangeIPBill()" />
+                                    <button matSuffix mat-icon-button aria-label="Clear"
+                                        (click)=" ClearfilterIPbill('PBillNo')">
+                                        <mat-icon>close</mat-icon>
+                                    </button>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline">
+                                    <mat-label>UHID</mat-label>
+                                    <input matInput placeholder="Search UHID" autocomplete="off"
+                                        [formGroup]="myFilterform" formControlName="RegNo" (input)="onChangeIPBill()" />
+                                    <button matSuffix mat-icon-button aria-label="Clear"
+                                        (click)=" ClearfilterIPbill('RegNo')">
+                                        <mat-icon>close</mat-icon>
+                                    </button>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline">
+                                    <mat-label>First Name</mat-label>
+                                    <input matInput placeholder="Search First Name" autocomplete="off"
+                                        [formGroup]="myFilterform" formControlName="FirstName"
+                                        (input)="onChangeIPBill()" />
+                                    <button matSuffix mat-icon-button aria-label="Clear"
+                                        (click)=" ClearfilterIPbill('FirstName')">
+                                        <mat-icon>close</mat-icon>
+                                    </button>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Last Name</mat-label>
+                                    <input matInput placeholder="Search Last Name" autocomplete="off"
+                                        [formGroup]="myFilterform" formControlName="LastName"
+                                        (input)="onChangeIPBill()" />
+                                    <button matSuffix mat-icon-button aria-label="Clear"
+                                        (click)=" ClearfilterIPbill('LastName')">
+                                        <mat-icon>close</mat-icon>
+                                    </button>
+                                </mat-form-field>
+
+                                <form [formGroup]="myFilterform">
+                                    <mat-radio-group value="2" [(ngModel)]="gridConfig.filters[6].fieldValue"
+                                        (change)="onChangeIPBill()" fxLayoutAlign="center center"
+                                        formControlName="IsInterimOrFinal">
+
+                                        <mat-radio-button mat-fab value="2">All</mat-radio-button>
+                                        <mat-radio-button mat-fab value="1">IsInterim</mat-radio-button>
+                                        <mat-radio-button mat-fab value="0">IsFinal</mat-radio-button>
+                                    </mat-radio-group>
+                                </form>
+
                             </form>
-
-                        </form>
                         </ng-container>
                     </airmid-table>
                 </div>
@@ -161,70 +175,81 @@
                 <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
                     <ng-template #actionButtonTemplatepayment let-element>
                         <div fxLayout="row" fxLayoutAlign="center center">
-                            <button mat-icon-button (click)="getPaymentreceiptview(element)" matTooltip="IP Payment Receipt List">
+                            <button mat-icon-button (click)="getPaymentreceiptview(element)"
+                                matTooltip="IP Payment Receipt List">
                                 <mat-icon>print</mat-icon>
                             </button>
-            
-                           <button mat-icon-button matTooltip="Send message On WhatsApp">
+
+                            <button mat-icon-button matTooltip="Send message On WhatsApp">
                                 <img width="500" height="20px" src="assets/images/logos/WhatsApp.png">
                             </button>
-                           
+
                         </div>
                     </ng-template>
                     <airmid-table [gridConfig]="gridConfig1" class="content" #ipPayment>
                         <ng-container filters>
-                        <form [formGroup]="myFilterFormIPBrowsePayment">
-                            <airmid-datepicker [formGroup]="myFilterFormIPBrowsePayment" [isRangePicker]="true"
-                                formStartControlName="fromDate" formEndControlName="enddate"
-                                [(fromValue)]="gridConfig1.filters[2].fieldValue"
-                                [(toValue)]="gridConfig1.filters[3].fieldValue">
-                            </airmid-datepicker>
+                            <form [formGroup]="myFilterFormIPBrowsePayment">
+                                <airmid-datepicker [formGroup]="myFilterFormIPBrowsePayment" [isRangePicker]="true"
+                                    formStartControlName="fromDate" formEndControlName="enddate"
+                                    [(fromValue)]="gridConfig1.filters[2].fieldValue"
+                                    [(toValue)]="gridConfig1.filters[3].fieldValue">
+                                </airmid-datepicker>
 
-                            <mat-form-field appearance="outline">
-                                <mat-label>UHID</mat-label>
-                                <input matInput placeholder="Search UHID" autocomplete="off"
-                                    [formGroup]="myFilterFormIPBrowsePayment" formControlName="RegNo" (input)="onChangeIPPayment()" />
-                                <button matSuffix mat-icon-button aria-label="Clear" (click)=" ClearfilterIPpayment('RegNo')">
-                                    <mat-icon>close</mat-icon>
-                                </button>
-                            </mat-form-field>
+                                <mat-form-field appearance="outline">
+                                    <mat-label>UHID</mat-label>
+                                    <input matInput placeholder="Search UHID" autocomplete="off"
+                                        [formGroup]="myFilterFormIPBrowsePayment" formControlName="RegNo"
+                                        (input)="onChangeIPPayment()" />
+                                    <button matSuffix mat-icon-button aria-label="Clear"
+                                        (click)=" ClearfilterIPpayment('RegNo')">
+                                        <mat-icon>close</mat-icon>
+                                    </button>
+                                </mat-form-field>
 
-                            <mat-form-field appearance="outline">
-                                <mat-label>Receipt No</mat-label>
-                                <input matInput placeholder="Search Receipt No" autocomplete="off"
-                                    [formGroup]="myFilterFormIPBrowsePayment" formControlName="ReceiptNo" (input)="onChangeIPPayment()" />
-                                <button matSuffix mat-icon-button aria-label="Clear" (click)=" ClearfilterIPpayment('ReceiptNo')">
-                                    <mat-icon>close</mat-icon>
-                                </button>
-                            </mat-form-field>
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Receipt No</mat-label>
+                                    <input matInput placeholder="Search Receipt No" autocomplete="off"
+                                        [formGroup]="myFilterFormIPBrowsePayment" formControlName="ReceiptNo"
+                                        (input)="onChangeIPPayment()" />
+                                    <button matSuffix mat-icon-button aria-label="Clear"
+                                        (click)=" ClearfilterIPpayment('ReceiptNo')">
+                                        <mat-icon>close</mat-icon>
+                                    </button>
+                                </mat-form-field>
 
-                            <mat-form-field appearance="outline">
-                                <mat-label>PBillNo</mat-label>
-                                <input matInput placeholder="Search PBillNo" autocomplete="off"
-                                    [formGroup]="myFilterFormIPBrowsePayment" formControlName="PBillNo" (input)="onChangeIPPayment()" />
-                                <button matSuffix mat-icon-button aria-label="Clear" (click)=" ClearfilterIPpayment('PBillNo')">
-                                    <mat-icon>close</mat-icon>
-                                </button>
-                            </mat-form-field>
+                                <mat-form-field appearance="outline">
+                                    <mat-label>PBillNo</mat-label>
+                                    <input matInput placeholder="Search PBillNo" autocomplete="off"
+                                        [formGroup]="myFilterFormIPBrowsePayment" formControlName="PBillNo"
+                                        (input)="onChangeIPPayment()" />
+                                    <button matSuffix mat-icon-button aria-label="Clear"
+                                        (click)=" ClearfilterIPpayment('PBillNo')">
+                                        <mat-icon>close</mat-icon>
+                                    </button>
+                                </mat-form-field>
 
-                            <mat-form-field appearance="outline">
-                                <mat-label>First Name</mat-label>
-                                <input matInput placeholder="Search First Name" autocomplete="off"
-                                    [formGroup]="myFilterFormIPBrowsePayment" formControlName="FirstName" (input)="onChangeIPPayment()" />
-                                <button matSuffix mat-icon-button aria-label="Clear" (click)=" ClearfilterIPpayment('FirstName')">
-                                    <mat-icon>close</mat-icon>
-                                </button>
-                            </mat-form-field>
+                                <mat-form-field appearance="outline">
+                                    <mat-label>First Name</mat-label>
+                                    <input matInput placeholder="Search First Name" autocomplete="off"
+                                        [formGroup]="myFilterFormIPBrowsePayment" formControlName="FirstName"
+                                        (input)="onChangeIPPayment()" />
+                                    <button matSuffix mat-icon-button aria-label="Clear"
+                                        (click)=" ClearfilterIPpayment('FirstName')">
+                                        <mat-icon>close</mat-icon>
+                                    </button>
+                                </mat-form-field>
 
-                            <mat-form-field appearance="outline">
-                                <mat-label>Last Name</mat-label>
-                                <input matInput placeholder="Search Last Name" autocomplete="off"
-                                    [formGroup]="myFilterFormIPBrowsePayment" formControlName="LastName" (input)="onChangeIPPayment()" />
-                                <button matSuffix mat-icon-button aria-label="Clear" (click)=" ClearfilterIPpayment('LastName')">
-                                    <mat-icon>close</mat-icon>
-                                </button>
-                            </mat-form-field>
-                        </form>
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Last Name</mat-label>
+                                    <input matInput placeholder="Search Last Name" autocomplete="off"
+                                        [formGroup]="myFilterFormIPBrowsePayment" formControlName="LastName"
+                                        (input)="onChangeIPPayment()" />
+                                    <button matSuffix mat-icon-button aria-label="Clear"
+                                        (click)=" ClearfilterIPpayment('LastName')">
+                                        <mat-icon>close</mat-icon>
+                                    </button>
+                                </mat-form-field>
+                            </form>
                         </ng-container>
                     </airmid-table>
                 </div>
@@ -252,40 +277,46 @@
                     <airmid-table [gridConfig]="gridConfig2" class="content" #ipRefund>
                         <ng-container filters>
                             <form [formGroup]="myFilterFormIPBrowseRefund">
-                            <airmid-datepicker [formGroup]="myFilterFormIPBrowseRefund"
-                                [isRangePicker]="true" formStartControlName="fromDate" formEndControlName="enddate"
-                                [(fromValue)]="gridConfig2.filters[2].fieldValue"
-                                [(toValue)]="gridConfig2.filters[3].fieldValue">
-                            </airmid-datepicker>
+                                <airmid-datepicker [formGroup]="myFilterFormIPBrowseRefund" [isRangePicker]="true"
+                                    formStartControlName="fromDate" formEndControlName="enddate"
+                                    [(fromValue)]="gridConfig2.filters[2].fieldValue"
+                                    [(toValue)]="gridConfig2.filters[3].fieldValue">
+                                </airmid-datepicker>
 
-                            <mat-form-field appearance="outline">
-                                <mat-label>UHID</mat-label>
-                                <input matInput placeholder="Search UHID" autocomplete="off"
-                                    [formGroup]="myFilterFormIPBrowseRefund" formControlName="RegNo" (input)="onChangeIPRefund()" />
-                                <button matSuffix mat-icon-button aria-label="Clear" (click)=" ClearfilterIPRefund('RegNo')">
-                                    <mat-icon>close</mat-icon>
-                                </button>
-                            </mat-form-field>
+                                <mat-form-field appearance="outline">
+                                    <mat-label>UHID</mat-label>
+                                    <input matInput placeholder="Search UHID" autocomplete="off"
+                                        [formGroup]="myFilterFormIPBrowseRefund" formControlName="RegNo"
+                                        (input)="onChangeIPRefund()" />
+                                    <button matSuffix mat-icon-button aria-label="Clear"
+                                        (click)=" ClearfilterIPRefund('RegNo')">
+                                        <mat-icon>close</mat-icon>
+                                    </button>
+                                </mat-form-field>
 
-                            <mat-form-field appearance="outline">
-                                <mat-label>First Name</mat-label>
-                                <input matInput placeholder="Search First Name" autocomplete="off"
-                                    [formGroup]="myFilterFormIPBrowseRefund" formControlName="FirstName" (input)="onChangeIPRefund()" />
-                                <button matSuffix mat-icon-button aria-label="Clear" (click)=" ClearfilterIPRefund('FirstName')">
-                                    <mat-icon>close</mat-icon>
-                                </button>
-                            </mat-form-field>
+                                <mat-form-field appearance="outline">
+                                    <mat-label>First Name</mat-label>
+                                    <input matInput placeholder="Search First Name" autocomplete="off"
+                                        [formGroup]="myFilterFormIPBrowseRefund" formControlName="FirstName"
+                                        (input)="onChangeIPRefund()" />
+                                    <button matSuffix mat-icon-button aria-label="Clear"
+                                        (click)=" ClearfilterIPRefund('FirstName')">
+                                        <mat-icon>close</mat-icon>
+                                    </button>
+                                </mat-form-field>
 
-                            <mat-form-field appearance="outline">
-                                <mat-label>Last Name</mat-label>
-                                <input matInput placeholder="Search Last Name" autocomplete="off"
-                                    [formGroup]="myFilterFormIPBrowseRefund" formControlName="LastName" (input)="onChangeIPRefund()" />
-                                <button matSuffix mat-icon-button aria-label="Clear" (click)=" ClearfilterIPRefund('LastName')">
-                                    <mat-icon>close</mat-icon>
-                                </button>
-                            </mat-form-field>
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Last Name</mat-label>
+                                    <input matInput placeholder="Search Last Name" autocomplete="off"
+                                        [formGroup]="myFilterFormIPBrowseRefund" formControlName="LastName"
+                                        (input)="onChangeIPRefund()" />
+                                    <button matSuffix mat-icon-button aria-label="Clear"
+                                        (click)=" ClearfilterIPRefund('LastName')">
+                                        <mat-icon>close</mat-icon>
+                                    </button>
+                                </mat-form-field>
 
-                            <!-- <mat-form-field appearance="outline" fxFlex>
+                                <!-- <mat-form-field appearance="outline" fxFlex>
                                 <mat-label>RegNo</mat-label>
                                 <input matInput placeholder="Search RegNo" autocomplete="off"
                                     [(ngModel)]="gridConfig2.filters[4].fieldValue" />
@@ -313,13 +344,13 @@
                                 </button>
                             </mat-form-field> -->
 
-                            <!-- <mat-radio-group value="" [(ngModel)]="gridConfig2.filters[5].fieldValue"
+                                <!-- <mat-radio-group value="" [(ngModel)]="gridConfig2.filters[5].fieldValue"
                                 fxLayoutAlign="center center">
                                 <mat-radio-button value="">All</mat-radio-button>
                                 <mat-radio-button mat-fab value="1">IsActive</mat-radio-button>
                                 <mat-radio-button mat-fab value="0">IsDeactive</mat-radio-button>
                             </mat-radio-group> -->
-                        </form>
+                            </form>
                         </ng-container>
                     </airmid-table>
                 </div>
