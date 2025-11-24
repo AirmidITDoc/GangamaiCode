@@ -191,13 +191,13 @@ export class NewPrescriptionComponent implements OnInit {
     console.log("Item:", obj);
     this.vitemId = obj.itemId;
     this.vitemname = obj.itemName;
-    this.vdoseId = obj.doseName;
+    this.vdoseId = Number(obj.doseName);
     this.day = obj.doseDay;
     this.vInstruction = obj.instruction;
     this.vQty = obj.balanceQty;
     this.ItemForm.get('ItemId').setValue(obj);
-
-    if ((this.vdoseId ?? 0) > 0) {
+debugger
+    if (this.vdoseId > 0) {
       setTimeout(() => {
         this._PrescriptionService.getDoseMasterById(this.vdoseId).subscribe((response) => {
           this.doseName = response;
@@ -264,7 +264,8 @@ export class NewPrescriptionComponent implements OnInit {
         // height: "100%",
         data: {
           Obj: this.dsItemList.data,
-          opiptype: 1
+          opiptype: 1,
+          category:'PrescriptionTemplate'
         }
       });
     dialogRef.afterClosed().subscribe(result => {
@@ -276,8 +277,8 @@ export class NewPrescriptionComponent implements OnInit {
   }
 
   selectChangeTemplateName(row) {
-    this.templateId = row.value
-    this.templateName = row.text
+    this.templateId = row.presId
+    this.templateName = row.presTemplateName
   }
 
   FetchList: any = [];
@@ -312,20 +313,20 @@ export class NewPrescriptionComponent implements OnInit {
         this.Chargelist = data.data as MedicineItemList[];
 
         this.Chargelist = data.data.map(x => ({
-          itemID: x.itemID ?? x.drugId,
+          ItemID: x.itemID ?? x.drugId,
           ItemName: x.itemName ?? x.drugName,
           Qty:x.totalQty,
-          Remark:x.remark,
+          Remark:x.instruction,
           ...x
         }));
 
         // add FetchList items
         this.FetchList.forEach(element => {
           this.Chargelist.push({
-            itemID: element.drugId,
+            ItemID: element.drugId,
             ItemName: element.drugName,
             Qty:element.totalQty,
-            Remark:element.remark,
+            Remark:element.instruction,
           });
         });
         this.dsItemList.data = this.Chargelist;
@@ -368,7 +369,9 @@ export class NewPrescriptionComponent implements OnInit {
             ItemID: this.vitemId || 0,
             ItemName: this.vitemname || '',
             Qty: this.ItemForm.get('Qty').value || this.vQty,
-            Remark: this.ItemForm.get('Instruction').value || ''
+            Remark: this.ItemForm.get('Instruction').value || '',
+            doseId:this.vdoseId ?? 0,
+            day:this.day ?? 0
           });
         this.dsItemList.data = this.Chargelist
         this.ItemForm.get('ItemId').reset('');
@@ -458,8 +461,8 @@ export class NewPrescriptionComponent implements OnInit {
       classId: [this.vClassId, [this._FormvalidationserviceService.onlyNumberValidator()]],
       genericId: [1, [this._FormvalidationserviceService.onlyNumberValidator()]],
       drugId: [element.ItemID, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      doseId: [Number(this.vdoseId), [this._FormvalidationserviceService.onlyNumberValidator()]],
-      days: [this.day, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      doseId: [Number(element.doseId) ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      days: [this.day ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       qtyPerDay: [Number(element.Qty) ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       totalQty: [Number(element.Qty) ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       remark: [element.Remark ?? '', [this._FormvalidationserviceService.allowEmptyStringValidator()]],

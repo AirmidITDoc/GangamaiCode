@@ -39,13 +39,12 @@ export class SubstitutesComponent implements OnInit {
   ) { this.SubtituteForm = this.CreateSubtituteForm();}
 
   ngOnInit(): void {
-    debugger
     if(this.data){
       this.itemDetails = this.data?.obj
       console.log( this.itemDetails )
       this.itemnamelist.push(
         { 
-          itemId: this.itemDetails?.ItemId ?? this.itemDetails.itemID,
+          itemId: this.itemDetails?.ItemId ?? this.itemDetails.itemID ?? this.itemDetails.ItemID,
           itemName: this.itemDetails?.ItemName, 
         } 
       ) 
@@ -63,12 +62,14 @@ export class SubstitutesComponent implements OnInit {
     console.log(obj)
     this.getItemList(obj);
   } 
+
+  itemGenericNameId:any;
   getSelectedObjGeneric(obj) {
     console.log(obj);
+    this.itemGenericNameId = obj.value
     this.getItemList(obj);
   }
   getItemList(Param) {
-    debugger
     var data = {
       "first": 0,
       "rows": 25,
@@ -76,7 +77,8 @@ export class SubstitutesComponent implements OnInit {
       "sortOrder": 0,
       "filters": [
         { "fieldName": "ItemId", "fieldValue": String(Param?.itemId || 0), "opType": "Contains" },
-        { "fieldName": "ItemGenericId", "fieldValue": String(Param?.itemGenericNameId || 0), "opType": "Contains" }
+        { "fieldName": "ItemGenericId", "fieldValue": String(this.itemGenericNameId || 0), "opType": "Contains" }
+        // { "fieldName": "ItemGenericId", "fieldValue": String(Param?.itemGenericNameId || 0), "opType": "Contains" }
       ],
       "exportType": "JSON",
       "columns": [

@@ -1336,7 +1336,10 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
     }
 
     stopPolling() {
-        if (this.pollingSub) this.pollingSub.unsubscribe();
+    if (this.pollingSub) {
+    this.pollingSub.unsubscribe();
+    this.pollingSub = null;
+  }
         // this._matDialog.closeAll();
         //this.savebtn = true
         // this.resetform();
@@ -1355,8 +1358,8 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
                 'CheckoutRequestId  : ' + this.mpesaResponse.checkoutRequestID + '\n' +
                 'MerchantRequestId  : ' + this.mpesaResponse.merchantRequestID + '\n' +
                 'Receipt No=' + status.mpesaReceiptNumber;
-            this.stopPolling();
             this.mPesa_ReceiptNo  = status.mpesaReceiptNumber
+            this.stopPolling();
             // setTimeout(() => this.isWaiting = false, 1500);
         }
         else {

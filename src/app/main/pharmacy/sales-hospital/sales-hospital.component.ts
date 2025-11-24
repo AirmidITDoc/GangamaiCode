@@ -1232,10 +1232,13 @@ getSelectedObjOplist(obj) {
       // this.Functionflag = 1
       this.onSave(event);
     }
-
+ 
+  if (event.altKey && event.key.toLowerCase() === 'a') {
+    event.preventDefault();
+    event.stopPropagation();
+    this.OnAddUpdate();
   }
-
-
+  }
   loadingarry: any = [];
   getWhatsappshare() {
 
@@ -1337,7 +1340,7 @@ getSelectedObjOplist(obj) {
 
   }
 
-  OnAddUpdate(event) {
+  OnAddUpdate() {
     this.sIsLoading = 'save';
     if (this.Itemchargeslist.length > 0) {
       this.Itemchargeslist.forEach((element) => {

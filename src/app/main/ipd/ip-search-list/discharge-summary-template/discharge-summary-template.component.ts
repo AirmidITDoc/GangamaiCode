@@ -16,6 +16,8 @@ import { AdvanceDetailObj } from '../ip-search-list.component';
 import { IPSearchListService } from '../ip-search-list.service';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 import { PrescriptionTemplateComponent } from 'app/main/opd/new-casepaper/prescription-template/prescription-template.component';
+import { DosemasterComponent } from 'app/main/setup/prescription/dosemaster/dosemaster.component';
+import { NewDoseMasterComponent } from 'app/main/setup/prescription/dosemaster/new-dose-master/new-dose-master.component';
 
 @Component({
   selector: 'app-discharge-summary-template',
@@ -407,7 +409,7 @@ export class DischargeSummaryTemplateComponent {
     this.vDay = obj.doseDay
     console.log(obj)
 
-    if (this.doseId >0) {
+    if (this.doseId > 0) {
       this._IpSearchListService.getDoseMasterById(this.doseId).subscribe((response) => {
         this.doseName1 = response.doseName;
       });
@@ -446,7 +448,8 @@ export class DischargeSummaryTemplateComponent {
         // height: "100%",
         data: {
           Obj: this.dsItemList.data,
-          opiptype:1
+          opiptype: 1,
+          category: 'DischargeSummeryTemplate'
         }
       });
     dialogRef.afterClosed().subscribe(result => {
@@ -457,8 +460,8 @@ export class DischargeSummaryTemplateComponent {
     });
   }
   selectChangeTemplateName(row) {
-    this.templateId = row.value
-    this.templateName = row.text
+    this.templateId = row.presId
+    this.templateName = row.presTemplateName
   }
 
   FetchList: any = [];
@@ -538,7 +541,7 @@ export class DischargeSummaryTemplateComponent {
     //   return;
     // }
 
-     if (!Array.isArray(this.Chargelist)) {
+    if (!Array.isArray(this.Chargelist)) {
       console.warn("Chargelist was not an array. Resetting...");
       this.Chargelist = [...this.dsItemList.data];
     }
@@ -608,8 +611,8 @@ export class DischargeSummaryTemplateComponent {
     this._IpSearchListService.getPrescriptionList(m_data2).subscribe((data) => {
       // this.dsItemList.data = data?.data as MedicineItemList[];
       // if (this.dsItemList.data)
-        this.Chargelist = data.data as MedicineItemList[];
-         this.dsItemList.data = [...this.Chargelist];
+      this.Chargelist = data.data as MedicineItemList[];
+      this.dsItemList.data = [...this.Chargelist];
       // console.log(this.dsItemList.data);
     });
   }
@@ -665,18 +668,24 @@ export class DischargeSummaryTemplateComponent {
 
   }
 
-
-  // getTemplateList() {
-  //   if (this.data) {
-  //     this._IpSearchListService.gettemplateId(this.TemplateId).subscribe(data => {
-  //       console.log(data)
-  //       this.DischargesumForm.get('TemplateId').setValue(data.templateId);
-  //       this.vTemplateDesc = data.templateDescription
-  //         //  this.isItemIdSelected = false
-  //          this.DischargesumForm.get('TemplateId').disable();
-  //     });
-  //   }
-  // }
+  showDoseDropdownRefresh = true;
+  getDosemaster() {
+    const buttonElement = document.activeElement as HTMLElement;
+    buttonElement.blur();
+    const dialogRef = this._matDialog.open(NewDoseMasterComponent,
+      {
+        maxWidth: "50vw",
+        maxHeight: '50%',
+        width: '70%',
+      });
+    // dialogRef.componentInstance.openedFromOPD = true;
+    dialogRef.afterClosed().subscribe(result => {
+      this.showDoseDropdownRefresh = false;
+      setTimeout(() => {
+        this.showDoseDropdownRefresh = true;
+      }, 100);
+    });
+  }
 
   getPrint(contact) {
     Swal.fire({

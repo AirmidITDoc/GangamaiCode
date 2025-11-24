@@ -62,7 +62,11 @@ export class NewTemplateComponent implements OnInit {
       }
     });
   }
-  onEditorValueChange(content: string) {
+  onEditorValueChange1(content: string) {
+    this.TemplateSaveForm.get('templateHeader')?.setValue(content);
+  }
+
+  onEditorValueChange2(content: string) {
     this.TemplateSaveForm.get('templateDescription')?.setValue(content);
   }
 
@@ -70,6 +74,7 @@ export class NewTemplateComponent implements OnInit {
     return this._formBuilder.group({
       templateId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       templateName: ['', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
+      templateHeader:['', Validators.required],
       templateDescription: ['', Validators.required],
       categoryId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       categoryName: ['', [Validators.required]],

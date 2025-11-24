@@ -55,8 +55,10 @@ export class PrescriptionTemplateComponent implements OnInit {
         presTemplateName: ['', [Validators.required, this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
         isActive: true,
         opIpType: [this.data.opiptype ?? 0],
+        templateCategory: [this.data.category ?? ''],
         isAddBy: [this._loggedService.currentUserValue.userId, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
         isUpdatedBy: [this._loggedService.currentUserValue.userId, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+        createdBy: [this._loggedService.currentUserValue.userId, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       }),
 
       presTemplate: this._formBuilder.array([
@@ -75,7 +77,7 @@ export class PrescriptionTemplateComponent implements OnInit {
       drugId: [item.drugId ?? item.DrugId ?? item.itemID ?? item.ItemID, [this._FormvalidationserviceService.onlyNumberValidator()]],
       doseId: [item.doseId != null ? Number(item.doseId) : item.DoseId != null ? Number(item.DoseId) : 0,
       [this._FormvalidationserviceService.onlyNumberValidator()]],
-      days: [item.days ?? item.Days ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      days: [item.days ?? item.Days ?? item.day ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       instructionId: [item.instructionId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       qtyPerDay: [item.qtyPerDay ?? item.QtyPerDay ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       totalQty: [(item.days * item.qtyPerDay) || (item.Days * item.QtyPerDay) || item.Qty || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],

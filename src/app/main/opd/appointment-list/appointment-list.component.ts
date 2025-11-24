@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild, ViewEncapsulation, ComponentRef } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog, MatDialogRef } from "@angular/material/dialog";
 import { fuseAnimations } from '@fuse/animations';
@@ -33,7 +33,11 @@ import { CompanyInformationComponent } from 'app/main/ipd/company-information/co
 import { RegistrationService } from '../registration/registration.service';
 import { FollowpdateUpdateComponent } from './followpdate-update/followpdate-update.component';
 import { ConfigService } from 'app/core/services/config.service';
-import { NewAppointmentwithBillComponent } from './new-appointmentwith-bill/new-appointmentwith-bill.component';
+import { Overlay, OverlayRef } from '@angular/cdk/overlay';
+import { ComponentPortal } from '@angular/cdk/portal';
+import { PolicyInfoPopoverComponent } from './policy-info-popover/policy-info-popover.component';
+import { CompanyApprovalPopoverComponent } from './company-approval-popover/company-approval-popover.component';
+// import { NewAppointmentwithBillComponent } from './new-appointmentwith-bill/new-appointmentwith-bill.component';
 // const moment = _rollupMoment || _moment;
 
 @Component({
@@ -83,6 +87,8 @@ export class AppointmentListComponent implements OnInit {
     mode: string;
     vRegNo = 0
 
+    private overlayRef: OverlayRef | null = null;
+    
     constructor(public _AppointmentlistService: AppointmentlistService, public _matDialog: MatDialog,
         private commonService: PrintserviceService, public _registrationService: RegistrationService,
         private advanceDataStored: AdvanceDataStored,
@@ -90,6 +96,7 @@ export class AppointmentListComponent implements OnInit {
         public _ConfigService: ConfigService,
         public toastr: ToastrService, public datePipe: DatePipe,
         private _ActRoute: Router, private route: ActivatedRoute,
+        private overlay: Overlay
     ) { }
 
     ngOnInit(): void {
@@ -163,7 +170,7 @@ export class AppointmentListComponent implements OnInit {
         this.gridConfig.columnsList.find(col => col.key === 'isConvertRequestForIp')!.template = this.actionsTemplate4;
         this.gridConfig.columnsList.find(col => col.key === 'companyId')!.template = this.actionCompany;
         this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
-        this.gridConfig.columnsList.find(col => col.key === 'patientName')!.template = this.patientNameWithBadgeTemplate;
+        this.gridConfig.columnsList.find(col => col.key === 'companyName')!.template = this.patientNameWithPopoverTemplate;
 
     }
 
@@ -174,7 +181,7 @@ export class AppointmentListComponent implements OnInit {
     @ViewChild('actionsTemplate4') actionsTemplate4!: TemplateRef<any>;
     @ViewChild('actionCompany') actionCompany!: TemplateRef<any>;
     @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
-    @ViewChild('patientNameWithBadgeTemplate') patientNameWithBadgeTemplate!: TemplateRef<any>;
+    @ViewChild('patientNameWithPopoverTemplate') patientNameWithPopoverTemplate!: TemplateRef<any>;
 
 
     allcolumns = [
@@ -185,7 +192,7 @@ export class AppointmentListComponent implements OnInit {
         { heading: "", key: "isConvertRequestForIp", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30 },
         { heading: "UHID", key: "regNoWithPrefix", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "Date", key: "vistDateTime", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-        { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 350, type: gridColumnTypes.template },
+        { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 350,},
         { heading: "Doctor Name", key: "doctorname", sort: true, align: 'left', emptySign: 'NA', width: 230 },
 
         { heading: "Department", key: "departmentName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
@@ -193,8 +200,8 @@ export class AppointmentListComponent implements OnInit {
         { heading: "Ref Doctor Name", key: "refDocName", sort: true, align: 'left', emptySign: 'NA', width: 230 },
         { heading: "Patient Type", key: "patientType", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "Tariff Name", key: "tariffName", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "Company Name", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 230 },
-        { heading: "", key: "companyId", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
+        { heading: "Company Name", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 250, type: gridColumnTypes.template  },
+        { heading: "", key: "companyId", sort: true, align: 'left', emptySign: 'NA', width: 50 },
         { heading: "Mobile No", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "Check-InTime", key: "checkInTime", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 7 },
         { heading: "Check-OutTime", key: "checkOutTime", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 7 },
@@ -930,12 +937,12 @@ export class AppointmentListComponent implements OnInit {
         });
     }
 
-     onAppointmentwithBill(row: any = null) {
+    onAppointmentwithBill(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button
 
         let that = this;
-        const dialogRef = this._matDialog.open(NewAppointmentwithBillComponent,
+        const dialogRef = this._matDialog.open(NewAppointmentComponent,
             {
                 maxWidth: "95vw",
                 height: '95%',
@@ -946,6 +953,132 @@ export class AppointmentListComponent implements OnInit {
             that.grid.bindGridData();
             this.GetAppointdetail()
         });
+    }
+
+    openPolicyInfoPopover(event: MouseEvent, patientData: any) {
+        event.stopPropagation();
+        
+        // Close any existing popover
+        if (this.overlayRef) {
+            this.overlayRef.dispose();
+            this.overlayRef = null;
+            return;
+        }
+
+        const positionStrategy = this.overlay.position()
+            .flexibleConnectedTo(event.target as HTMLElement)
+            .withPositions([
+                {
+                    // Prefer bottom position
+                    originX: 'center',
+                    originY: 'bottom',
+                    overlayX: 'center',
+                    overlayY: 'top',
+                },
+                {
+                    // Fallback to top if no space below
+                    originX: 'center',
+                    originY: 'top',
+                    overlayX: 'center',
+                    overlayY: 'bottom',
+                },
+                {
+                    // Fallback to right
+                    originX: 'end',
+                    originY: 'center',
+                    overlayX: 'start',
+                    overlayY: 'center',
+                },
+                {
+                    // Fallback to left
+                    originX: 'start',
+                    originY: 'center',
+                    overlayX: 'end',
+                    overlayY: 'center',
+                }
+            ]);
+
+        this.overlayRef = this.overlay.create({
+            positionStrategy,
+            scrollStrategy: this.overlay.scrollStrategies.close(),
+            hasBackdrop: true,
+            backdropClass: 'cdk-overlay-transparent-backdrop'
+        });
+
+        const portal = new ComponentPortal(PolicyInfoPopoverComponent);
+        const componentRef: ComponentRef<PolicyInfoPopoverComponent> = this.overlayRef.attach(portal);
+        componentRef.instance.patientData = patientData;
+
+        this.overlayRef.backdropClick().subscribe(() => {
+            this.overlayRef?.dispose();
+            this.overlayRef = null;
+        });
+    }
+
+    openCompanyApprovalPopover(event: MouseEvent, patientData: any) {
+        event.stopPropagation();
+        
+        // Close any existing popover
+        if (this.overlayRef) {
+            this.overlayRef.dispose();
+            this.overlayRef = null;
+            return;
+        }
+
+        const positionStrategy = this.overlay.position()
+            .flexibleConnectedTo(event.target as HTMLElement)
+            .withPositions([
+                {
+                    // Prefer bottom position
+                    originX: 'center',
+                    originY: 'bottom',
+                    overlayX: 'center',
+                    overlayY: 'top',
+                },
+                {
+                    // Fallback to top if no space below
+                    originX: 'center',
+                    originY: 'top',
+                    overlayX: 'center',
+                    overlayY: 'bottom',
+                },
+                {
+                    // Fallback to right
+                    originX: 'end',
+                    originY: 'center',
+                    overlayX: 'start',
+                    overlayY: 'center',
+                },
+                {
+                    // Fallback to left
+                    originX: 'start',
+                    originY: 'center',
+                    overlayX: 'end',
+                    overlayY: 'center',
+                }
+            ]);
+
+        this.overlayRef = this.overlay.create({
+            positionStrategy,
+            scrollStrategy: this.overlay.scrollStrategies.close(),
+            hasBackdrop: true,
+            backdropClass: 'cdk-overlay-transparent-backdrop'
+        });
+
+        const portal = new ComponentPortal(CompanyApprovalPopoverComponent);
+        const componentRef: ComponentRef<CompanyApprovalPopoverComponent> = this.overlayRef.attach(portal);
+        componentRef.instance.patientData = patientData;
+
+        this.overlayRef.backdropClick().subscribe(() => {
+            this.overlayRef?.dispose();
+            this.overlayRef = null;
+        });
+    }
+
+    ngOnDestroy() {
+        if (this.overlayRef) {
+            this.overlayRef.dispose();
+        }
     }
 }
 

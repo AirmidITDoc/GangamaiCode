@@ -1,6 +1,6 @@
-<div class="page-layout modal-wrapper grid-container" fusePerfectScrollbar>
+<div class="page-layout modal-wrapper grid-container templateMain" fusePerfectScrollbar>
 
-    <div class="modal-header accent">
+    <div class="modal-header accent templateHeader">
         <div class="modal-header-content">
             <div class="modal-header-title">
                 <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"> Template Description </span>
@@ -20,7 +20,7 @@
         </div>
     </div>
 
-    <div class="modal-body content">
+    <div class="modal-body content templateMiddle">
         <div fxLayout="column" class="gap-8 h-100-p">
             <div class="modal-card-container">
                 <form [formGroup]="TemplateSaveForm">
@@ -78,10 +78,24 @@
 
                     <div fxFlexFill fxLayout="row" fxLayout.gt-xs="column" fxLayoutGap="6px">
                         <div class="modal-card-header">
+                            <span style="font-weight: bold;">Header Content</span>
+                        </div>
+                        <airmid-editor formControlName="templateHeader" [formGroup]="TemplateSaveForm"
+                            (valueChange)="onEditorValueChange1($event)">
+                        </airmid-editor>
+                    </div>
+                </form>
+            </div>
+            
+            <div class="modal-card-container">
+                <form [formGroup]="TemplateSaveForm">
+
+                    <div fxFlexFill fxLayout="row" fxLayout.gt-xs="column" fxLayoutGap="6px">
+                        <div class="modal-card-header">
                             <span style="font-weight: bold;">Template Content</span>
                         </div>
                         <airmid-editor formControlName="templateDescription" [formGroup]="TemplateSaveForm"
-                            (valueChange)="onEditorValueChange($event)">
+                            (valueChange)="onEditorValueChange2($event)">
                         </airmid-editor>
                     </div>
                 </form>
@@ -91,7 +105,7 @@
 
     </div>
 
-    <div class="modal-footer" fxLayout="row" fxLayoutAlign="space-between">
+    <div class="modal-footer templatefooter" fxLayout="row" fxLayoutAlign="space-between">
         <form [formGroup]="TemplateSaveForm">
             <div>
                 <!-- <app-airmid-slider label="IsActive/Deactive" formControlName="isActive"

@@ -116,7 +116,7 @@
                 <div fxLayout="row" fxLayoutGap="8px" fxLayoutAlign="start center">
                   <airmid-dropdown label="Template" formControlName="TemplateId" [formGroup]="DischargesumForm"
                     fxFlex="40%" [value]="TemplateId" ValueField="templateId" TextField="templateName"
-                    (selectionChange)="onChangetemp($event)" ApiUrl="ReportTemplate/get-Templates"></airmid-dropdown>
+                    (selectionChange)="onChangetemp($event)" ApiUrl="TemplateDescriptionConfig/GetDischargeTemplateList?CategoryName=DischargeSummaryTemplate"></airmid-dropdown>
                   <!-- [readonly]="!isItemIdSelected" -->
                   <div class="mt-2">
                     <button type="button" (click)="onAddTemplate($event)" class="btn btn-primary btn-with-icon py-8"
@@ -172,7 +172,7 @@
 
                       <airmid-dropdown label="Dose Name" formControlName="DoseId" [formGroup]="MedicineItemForm"
                         [validations]="getValidationMessages().DoseId" (selectionChange)="getdose($event)"
-                        [mode]="autocompleteModeDose" [(ngModel)]="doseId"></airmid-dropdown>
+                        [mode]="autocompleteModeDose" [(ngModel)]="doseId" *ngIf="showDoseDropdownRefresh"></airmid-dropdown>
 
                       <airmid-textbox label="Day" formControlName="Day" [value]="vDay" [formGroup]="MedicineItemForm"
                         [type]="'text'" (keypress)="keyPressCharater($event)"></airmid-textbox>
@@ -191,13 +191,19 @@
 
                       <mat-divider [vertical]="true"></mat-divider>&nbsp;
 
+                      <button mat-raised-button (click)="getDosemaster()">
+                        <mat-icon>add</mat-icon>
+                        Dose</button>
+
                       <button mat-raised-button (click)="SaveTemplate()">
                         <mat-icon>save</mat-icon>
                         Save Template</button>
 
                       <airmid-dropdown label="Template List" *ngIf="showTemplateRefresh" formControlName="TemplateId"
                         [formGroup]="MedicineItemForm" [mode]="autocompleteModeTemplate"
-                        (selectionChange)="selectChangeTemplateName($event)">
+                        (selectionChange)="selectChangeTemplateName($event)" ValueField="presId"
+                        TextField="presTemplateName"
+                        ApiUrl="OPDPrescriptionMedical/GetTemplatePrescriptionList?TemplateCategory=DischargeSummeryTemplate">
                       </airmid-dropdown>
 
                       <div class="input-add-button">
