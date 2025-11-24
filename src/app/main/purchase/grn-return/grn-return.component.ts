@@ -18,6 +18,7 @@ import { gridColumnTypes } from 'app/core/models/tableActions';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
+import { GrnreturnWithoutGrnNewComponent } from './grnreturn-without-grn-new/grnreturn-without-grn-new.component';
 
 @Component({
   selector: 'app-grn-return',
@@ -325,7 +326,21 @@ export class GRNReturnComponent implements OnInit {
       this.getfilterdata();
       // this.getGRNReturnList();
     });
+  }
 
+   getNew(row?: any) {
+    const dialogRef = this._matDialog.open(GrnreturnWithoutGrnNewComponent,
+      {
+        maxWidth: "95vw",
+        maxHeight: '100vh',
+        width: '90%',
+        // height:'90%',
+        data: row ?? ''
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed - Insert Action', result);
+      this.getfilterdata();
+    });
   }
 
   onPrint(row) {

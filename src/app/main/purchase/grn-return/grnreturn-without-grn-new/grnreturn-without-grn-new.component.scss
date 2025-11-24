@@ -1,0 +1,28 @@
+.grnReturnMain {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  max-height: 90vh; /* or 100vh if full screen */
+}
+
+.grnReturnHeader {
+  flex-shrink: 0;
+  background: #f5f5f5;
+}
+
+.grnReturnMiddle {
+  flex: 1;
+  overflow-y: auto;  /* ✅ only body scrolls */
+  padding: 16px;
+  background: #fff;
+}
+
+.grnReturnfooter {
+  flex-shrink: 0;
+  background: #fff;
+  border-top: 1px solid #ddd;
+  padding: 10px 16px;
+  text-align: right;
+  position: sticky;
+  bottom: 0; /* ✅ keeps footer visible if body scrolls */
+}

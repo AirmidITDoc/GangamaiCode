@@ -37,6 +37,7 @@ import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { GRNReturnComponent } from '../grn-return/grn-return.component';
 import { GrnListComponent } from './new-grnreturn/grn-list/grn-list.component';
 import { NewGRNReturnComponent } from './new-grnreturn/new-grnreturn.component';
+import { GrnreturnWithoutGrnNewComponent } from './grnreturn-without-grn-new/grnreturn-without-grn-new.component';
 
 
 const routes: Routes = [
@@ -51,6 +52,7 @@ const routes: Routes = [
         GRNReturnComponent,
         GrnListComponent,
         NewGRNReturnComponent,
+        GrnreturnWithoutGrnNewComponent,
     ],
     imports: [
         CommonModule,
