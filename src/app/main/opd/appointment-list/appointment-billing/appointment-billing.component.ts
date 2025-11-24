@@ -1380,8 +1380,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
         //     }
         // }
         const isSuccess = status?.resultCode == 0 || status?.resultCode == "0" || status?.resultCode == "000000";
-        const receipt = status?.mpesaReceiptNumber || status?.ReceiptNumber || status?.MpesaReceiptNumber || status?.TransID || status?.transactionId;
-
+        const receipt = status?.mpesaReceiptNumber;
         if (isSuccess && receipt) {
             this.statusMessage =
                 'Payment successful.' + this.mpesaResponse.responseDescription + '\n' +
