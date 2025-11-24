@@ -120,6 +120,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
         this.OpBillForm = this.createTotalChargeForm();
         this.OPFooterForm = this.CreateOPFooter();
         this.OPFooterForm.markAllAsTouched();
+        
         if (this.data) {
             // console.log(this.data)
             this.patientDetail = this.advanceDataStored.storage;
@@ -1090,7 +1091,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
             if (this.OPFooterForm.get('paymentType').value == 'PayOption') {
                 let PatientHeaderObj = {};
                 PatientHeaderObj['Date'] = this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd') || '01/01/1900',
-                    PatientHeaderObj['PatientName'] = this.PatientName; // this.patientDetail.patientName;
+                PatientHeaderObj['PatientName'] = this.PatientName; // this.patientDetail.patientName;
                 PatientHeaderObj['RegNo'] = this.RegNo;
                 PatientHeaderObj['DoctorName'] = this.Doctorname;
                 PatientHeaderObj['CompanyName'] = this.CompanyName;
