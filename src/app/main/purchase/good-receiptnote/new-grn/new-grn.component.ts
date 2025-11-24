@@ -960,11 +960,12 @@ export class NewGrnComponent implements OnInit, OnDestroy {
     //Insert current stk form
     createGrnItemInsert(item: any = {}): FormGroup {
         return this.formBuilder.group({
-            itemId: [item.ItemId, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
-            hsncode: [item.HSNCode, [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
-            cgst: [item.CGST, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-            sgst: [item.SGST, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-            igst: [item.IGST, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            itemId: [item?.ItemId, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
+            hsncode: [item?.HSNCode, [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+            cgst: [item?.CGST, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            sgst: [item?.SGST, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            igst: [item?.IGST, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            conversionFactor: [item?.ConversionFactor, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
         });
     }
     get GrndetailArray(): FormArray {
@@ -1397,8 +1398,8 @@ export class NewGrnComponent implements OnInit, OnDestroy {
         var vdata = {
             "searchFields": [
                 { "fieldName": "InvoiceNo", "fieldValue": String(InvoiceNo), "opType": "13" },
-                { "fieldName": "SupplierId", "fieldValue": String(this.userFormGroup.get('StoreId')?.value), "opType": "13" },
-                { "fieldName": "StoreId", "fieldValue": String(this.userFormGroup.get('SupplierId')?.value), "opType": "13" }
+                { "fieldName": "SupplierId", "fieldValue": String(this.userFormGroup.get('SupplierId')?.value), "opType": "13" },
+                { "fieldName": "StoreId", "fieldValue": String(this.userFormGroup.get('StoreId')?.value), "opType": "13" }
             ],
             "mode": "grnInvoicenocheck"
         }
@@ -1523,8 +1524,14 @@ export class NewGrnComponent implements OnInit, OnDestroy {
                 const FinalTotalQty = (element.Qty * element?.ConversionFactor || 1);
                 const FinalpurUnitRate = (((element.TotalAmount) / (element.Qty)) * (element?.ConversionFactor || 1))
                 const FinalpurUnitrateWF = (((element.TotalAmount) / (FinalTotalQty)) * (element?.ConversionFactor || 1))
-                const FinalUnitMRP = (element.MRP) / (element?.ConversionFactor || 1)
-
+                let  FinalUnitMRP_1 = 0 
+                if(element?.MRP){
+                 FinalUnitMRP_1 = (element.MRP) / (element?.ConversionFactor || 1)
+                }else{
+                 let FinalMRP = (element.Rate) * (element?.ConversionFactor || 1)
+                 FinalUnitMRP_1 = (FinalMRP) / (element?.ConversionFactor || 1)   
+                } 
+                const FinalUnitMRP = FinalUnitMRP_1 || 0;
                 this.chargeslist.push(
                     {
                         ItemId: element.ItemId ?? 0,
@@ -1681,11 +1688,12 @@ export class NewGrnComponent implements OnInit, OnDestroy {
     //Insert Po to grn current stk form
     createGrnPOItemInsert(item: any = {}): FormGroup {
         return this.formBuilder.group({
-            itemId: [item.ItemId, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
-            hsncode: [item.HSNCode, [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
-            cgst: [item.CGST, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-            sgst: [item.SGST, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-            igst: [item.IGST, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            itemId: [item?.ItemId, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
+            hsncode: [item?.HSNCode, [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+            cgst: [item?.CGST, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            sgst: [item?.SGST, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            igst: [item?.IGST, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            conversionFactor: [item?.ConversionFactor, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
         });
     }
     //Insert Po to grn PoDetails stk form

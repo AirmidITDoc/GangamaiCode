@@ -2334,6 +2334,11 @@ draftextMobilenolist:any=[];
         if (event.keyCode === 120) {
             this.BillSave(event);
         }
+        if (event.altKey && event.key.toLowerCase() === 'a') {
+            event.preventDefault();
+            event.stopPropagation();
+            this.OnAddItem();
+        }
     }
     onsubstitutes() {
         const dialogRef = this._matDialog.open(SubstitutesComponent,
