@@ -146,3 +146,80 @@
   padding: 4px 8px;
   border-radius: 4px;
 }
+
+// Compact form fields for inline table editing
+.compact-field {
+  width: 100%;
+  
+  ::ng-deep {
+    .mat-form-field-wrapper {
+      padding-bottom: 0;
+      margin-bottom: 0;
+    }
+    
+    .mat-form-field-infix {
+      padding: 4px 0;
+      border-top: 0;
+    }
+    
+    .mat-form-field-underline {
+      bottom: 0;
+    }
+    
+    .mat-form-field-subscript-wrapper {
+      display: none;
+    }
+    
+    input {
+      font-size: 13px;
+      padding: 4px 8px;
+    }
+    
+    .mat-select {
+      font-size: 13px;
+    }
+  }
+}
+
+// Adjust table cell padding for inputs
+mat-cell {
+  .compact-field {
+    margin: -8px 0;
+    
+    ::ng-deep .mat-form-field-appearance-outline {
+      .mat-form-field-wrapper {
+        padding-bottom: 0;
+      }
+      
+      .mat-form-field-flex {
+        padding: 0 8px;
+        margin-top: 0;
+      }
+      
+      .mat-form-field-outline {
+        top: 0;
+      }
+      
+      .mat-form-field-infix {
+        padding: 8px 0;
+      }
+    }
+  }
+}
+
+// Ensure proper width for table cells with forms
+.w-100-p {
+  width: 100% !important;
+}
+
+// Add New Charge button styling
+.btn-with-icon {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  
+  .btn-icon {
+    display: flex;
+    align-items: center;
+  }
+}

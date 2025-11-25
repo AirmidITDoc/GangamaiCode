@@ -247,8 +247,9 @@ export class IPBillingComponent implements OnInit {
         }
         this.getChargesList();
         this.getLabRequestChargelist();
-        this.getRtrvpackagedetList()
+        this.getRtrvpackagedetList();
         this.AddBedCharge();
+        this.loadClassList(); // Load class list for inline table editing
 
         // this.getBillheaderList();
         // this.getPharmacyAmount();
@@ -1756,19 +1757,33 @@ export class IPBillingComponent implements OnInit {
     }
     //Table calculation
     gettablecalculation(element) {
-        // Checking if old value is same as new value
-        const oldElement = this.copiedData.find(i => i.chargesId === element.chargesId);
-        element.isUpdated = oldElement.price != element.price || oldElement.qty != element.qty || oldElement.isInclusionExclusion != element.isInclusionExclusion;
+        // Checking if old value is same as new value (skip for new rows)
+        if (!element.isNewRow) {
+            const oldElement = this.copiedData.find(i => i.chargesId === element.chargesId);
+            if (oldElement) {
+                element.isUpdated = oldElement.price != element.price || oldElement.qty != element.qty || oldElement.isInclusionExclusion != element.isInclusionExclusion;
+            }
+        }
 
         if (element.price > 0 && element.qty > 0) {
             element.totalAmt = element.qty * element.price || 0;
-            element.DiscAmt = (element.ConcessionPercentage * element.totalAmt) / 100 || 0;
-            element.netAmount = element.totalAmt - element.DiscAmt
+            element.TotalAmt = element.totalAmt; // Sync uppercase property
+            
+            // Use concessionPercentage or ConcessionPercentage
+            const discountPercent = element.concessionPercentage || element.ConcessionPercentage || 0;
+            element.DiscAmt = (discountPercent * element.totalAmt) / 100 || 0;
+            element.concessionAmount = element.DiscAmt; // Sync lowercase property
+            
+            element.netAmount = element.totalAmt - element.DiscAmt;
+            element.NetAmount = element.netAmount; // Sync uppercase property
         }
         else if (element.price == 0 || element.price == '' || element.qty == '' || element.qty == 0) {
             element.totalAmt = 0;
+            element.TotalAmt = 0;
             element.DiscAmt = 0;
+            element.concessionAmount = 0;
             element.netAmount = 0;
+            element.NetAmount = 0;
         }
         this.getNetAmtSum()
         this.getbillbalamt();
@@ -1910,6 +1925,298 @@ export class IPBillingComponent implements OnInit {
         //         this.interimArray.splice(index, 1);
         //     }
         // }
+    }
+
+    // New methods for inline table editing
+    classList: any[] = [];
+    
+    // Compare function for mat-select to handle string/number comparison
+    compareClassValues(val1: any, val2: any): boolean {
+        // Convert both to string for comparison to handle type mismatches
+        return String(val1) === String(val2);
+    }
+    
+    addNewTableRow() {
+        // Create a new empty row matching ChargesList structure
+        const newRow: any = {
+            chargesId: 0,
+            ChargesId: 0,
+            chargesDate: this.datePipe.transform(new Date(), 'dd/MM/yyyy'),
+            ChargesDate: new Date(),
+            serviceId: '',
+            ServiceId: 0,
+            serviceName: '',
+            ServiceName: '',
+            serviceCode: '',
+            price: 0,
+            Price: 0,
+            qty: 1,
+            Qty: 1,
+            totalAmt: 0,
+            TotalAmt: 0,
+            concessionPercentage: 0,
+            ConcessionPercentage: 0,
+            concessionAmount: 0,
+            DiscAmt: 0,
+            netAmount: 0,
+            NetAmount: 0,
+            classId: this.selectedAdvanceObj?.classId || '',
+            ClassId: this.selectedAdvanceObj?.classId || 0,
+            className: this.selectedAdvanceObj?.className || '',
+            ClassName: this.selectedAdvanceObj?.className || '',
+            doctorId: this.selectedAdvanceObj?.doctorId || 0,
+            DoctorId: this.selectedAdvanceObj?.doctorId || 0,
+            doctorName: this.selectedAdvanceObj?.doctorname || '',
+            ChargeDoctorName: this.selectedAdvanceObj?.doctorname || '',
+            ChargesAddedName: '',
+            isNewRow: true,
+            isEditMode: false,
+            isUpdated: false,
+            isInclusionExclusion: false,
+            isPathology: 0,
+            IsPathology: false,
+            isRadiology: 0,
+            IsRadiology: false,
+            isPackage: 0,
+            creditedtoDoctor: false,
+            CreditedtoDoctor: false,
+            EditDoctor: null
+        };
+        
+        // Add to beginning of array
+        const data = this.dataSource.data;
+        data.unshift(newRow);
+        this.dataSource.data = data;
+    }
+
+    loadClassList() {
+        // Load class list from service using GetBindDropDown API
+        this._IpSearchListService.getMaster("Class", 0).subscribe((response: any) => {
+            this.classList = response || [];
+            console.log('Class List Loaded:', this.classList);
+        });
+    }
+
+    onTableDateChange(contact: any) {
+        contact.chargesDate = this.datePipe.transform(contact.chargesDate, 'dd/MM/yyyy');
+    }
+
+    onTableClassSelect(contact: any) {
+        // Find class name from classList using API property names (value/text)
+        // Use string comparison to handle type mismatches
+        const selectedClass = this.classList.find((c: any) => String(c.value) === String(contact.classId));
+        if (selectedClass) {
+            contact.className = selectedClass.text;
+            contact.ClassId = contact.classId;
+            contact.ClassName = selectedClass.text;
+            console.log('Class selected:', selectedClass.text, 'ID:', contact.classId);
+        } else {
+            console.warn('Class not found for classId:', contact.classId, 'Available classes:', this.classList);
+        }
+    }
+
+    onServiceSelect(contact: any) {
+        // This would typically trigger a service lookup
+        // For now, we'll just keep the manually entered name
+        // You may want to add autocomplete functionality here
+    }
+
+    saveNewTableRow(contact: any) {
+        // Validate required fields
+        if (!contact.serviceName || contact.serviceName.trim() === '') {
+            this.toastr.warning('Please enter Service Name', 'Warning !', {
+                toastClass: 'tostr-tost custom-toast-warning',
+            });
+            return;
+        }
+
+        if (!contact.price || contact.price <= 0) {
+            this.toastr.warning('Please enter valid Price', 'Warning !', {
+                toastClass: 'tostr-tost custom-toast-warning',
+            });
+            return;
+        }
+
+        if (!contact.qty || contact.qty <= 0) {
+            this.toastr.warning('Please enter valid Quantity', 'Warning !', {
+                toastClass: 'tostr-tost custom-toast-warning',
+            });
+            return;
+        }
+
+        // Prepare data for saving
+        const formattedDate = this.datePipe.transform(contact.chargesDate, "yyyy-MM-dd");
+        const formattedTime = this.datePipe.transform(new Date(), "HH:mm:ss");
+
+        const saveData = {
+            chargesId: 0,
+            chargesDate: formattedDate,
+            chargesTime: formattedDate + ' ' + formattedTime,
+            opdIpdType: 1,
+            opdIpdId: this.opD_IPD_Id,
+            unitId: this.accountService.currentUserValue.user.unitId,
+            wardId: this.WardId,
+            bedId: this.BedId,
+            serviceId: contact.serviceId || 0,
+            serviceName: contact.serviceName,
+            serviceCode: contact.serviceCode || '',
+            price: contact.price,
+            qty: contact.qty,
+            totalAmt: contact.totalAmt,
+            concessionPercentage: contact.concessionPercentage || 0,
+            concessionAmount: contact.concessionAmount || 0,
+            netAmount: contact.netAmount,
+            classId: contact.classId,
+            doctorId: contact.doctorId || 0,
+            tariffId: this.TariffId,
+            isPathology: contact.isPathology || 0,
+            isRadiology: contact.isRadiology || 0,
+            isPackage: contact.isPackage || 0,
+            isInclusionExclusion: contact.isInclusionExclusion || false,
+            docPercentage: 0,
+            docAmt: 0,
+            hospitalAmt: 0,
+            isGenerated: false,
+            addedBy: this.accountService.currentUserValue.userId,
+            isCancelled: false,
+            isCancelledBy: 0,
+            isCancelledDate: "1900-01-01",
+            isDoctorShareGenerated: 0,
+            isInterimBillFlag: 0,
+            isSelfOrCompanyService: 0,
+            packageId: 0,
+            packageMainChargeId: 0,
+            refundAmount: 0,
+            cPrice: 0,
+            cQty: 0,
+            cTotalAmount: 0,
+            isComServ: false,
+            isPrintCompSer: false,
+            chPrice: 0,
+            chQty: 0,
+            chTotalAmount: 0,
+            isBillableCharity: false,
+            salesId: 0,
+            billNo: 1,
+            companyServiceName: '',
+            isHospMrk: 0,
+            createdBy: this.accountService.currentUserValue.userId,
+            packcagecharges: []
+        };
+
+        // Save to database
+        this._IpSearchListService.InsertIPAddCharges(saveData).subscribe(response => {
+            this.toastr.success('Charge added successfully');
+            this.getChargesList();
+        }, error => {
+            this.toastr.error('Error adding charge');
+        });
+    }
+
+    cancelNewTableRow(contact: any) {
+        // Remove the new row from the table
+        const data = this.dataSource.data.filter(item => item !== contact);
+        this.dataSource.data = data;
+    }
+
+    enableTableRowEdit(contact: any) {
+        // Store original data BEFORE enabling edit mode
+        contact.originalData = JSON.parse(JSON.stringify(contact)); // Deep copy
+        
+        // Ensure classId is set from ClassId - handle undefined/null vs 0
+        if ((contact.classId === undefined || contact.classId === null) && contact.ClassId !== undefined) {
+            contact.classId = contact.ClassId;
+        }
+        
+        // Ensure all lowercase properties are populated from uppercase
+        if ((contact.price === undefined || contact.price === null) && contact.Price !== undefined) {
+            contact.price = contact.Price;
+        }
+        if ((contact.qty === undefined || contact.qty === null) && contact.Qty !== undefined) {
+            contact.qty = contact.Qty;
+        }
+        if ((contact.totalAmt === undefined || contact.totalAmt === null) && contact.TotalAmt !== undefined) {
+            contact.totalAmt = contact.TotalAmt;
+        }
+        if ((contact.concessionPercentage === undefined || contact.concessionPercentage === null) && contact.ConcessionPercentage !== undefined) {
+            contact.concessionPercentage = contact.ConcessionPercentage;
+        }
+        if ((contact.concessionAmount === undefined || contact.concessionAmount === null) && contact.DiscAmt !== undefined) {
+            contact.concessionAmount = contact.DiscAmt;
+        }
+        if ((contact.netAmount === undefined || contact.netAmount === null) && contact.NetAmount !== undefined) {
+            contact.netAmount = contact.NetAmount;
+        }
+        if ((contact.serviceName === undefined || contact.serviceName === null || contact.serviceName === '') && contact.ServiceName) {
+            contact.serviceName = contact.ServiceName;
+        }
+        if ((contact.className === undefined || contact.className === null || contact.className === '') && contact.ClassName) {
+            contact.className = contact.ClassName;
+        }
+        
+        // Convert date if needed for datepicker
+        if (contact.chargesDate && typeof contact.chargesDate === 'string') {
+            // Parse the date string if it's in DD/MM/YYYY format
+            const dateParts = contact.chargesDate.split('/');
+            if (dateParts.length === 3) {
+                // Create date object for datepicker
+                contact.chargesDate = new Date(dateParts[2], dateParts[1] - 1, dateParts[0]);
+            }
+        } else if (contact.ChargesDate && !contact.chargesDate) {
+            // If ChargesDate exists but chargesDate doesn't
+            contact.chargesDate = contact.ChargesDate;
+        }
+        
+        // Enable edit mode
+        contact.isEditMode = true;
+        
+        console.log('Edit mode enabled. classId:', contact.classId, 'ClassId:', contact.ClassId);
+        console.log('classList:', this.classList);
+        console.log('Full contact:', contact);
+    }
+
+    saveEditedTableRow(contact: any) {
+        // Sync all properties (lowercase to uppercase)
+        if (contact.price) contact.Price = contact.price;
+        if (contact.qty) contact.Qty = contact.qty;
+        if (contact.totalAmt) contact.TotalAmt = contact.totalAmt;
+        if (contact.concessionPercentage) contact.ConcessionPercentage = contact.concessionPercentage;
+        if (contact.concessionAmount) contact.DiscAmt = contact.concessionAmount;
+        if (contact.netAmount) contact.NetAmount = contact.netAmount;
+        if (contact.classId) contact.ClassId = contact.classId;
+        if (contact.className) contact.ClassName = contact.className;
+        if (contact.serviceName) contact.ServiceName = contact.serviceName;
+        
+        // Mark as updated and exit edit mode
+        contact.isEditMode = false;
+        contact.isUpdated = true;
+        
+        // Remove original data
+        delete contact.originalData;
+        
+        console.log('Saving edited row:', contact);
+        
+        // Call existing save method
+        this.OnSaveEditedValue(contact);
+    }
+
+    cancelEditTableRow(contact: any) {
+        // Restore original data and exit edit mode
+        if (contact.originalData) {
+            // Get the index of the current contact in the datasource
+            const index = this.dataSource.data.findIndex(item => item === contact);
+            if (index !== -1) {
+                // Replace the entire object with the original data
+                this.dataSource.data[index] = contact.originalData;
+                // Refresh the datasource
+                this.dataSource.data = [...this.dataSource.data];
+            }
+        } else {
+            // If no original data, just exit edit mode
+            contact.isEditMode = false;
+        }
+        
+        console.log('Edit cancelled');
     }
 }
 

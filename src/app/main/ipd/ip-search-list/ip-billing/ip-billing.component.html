@@ -460,6 +460,16 @@
                 mat-align-tabs="start" style="width: 100%">
                 <mat-tab label="Charges List">
                   <div class="airmid-table-container">
+                    <!-- Add New Record Button -->
+                    <div class="px-12 py-8" fxLayout="row" fxLayoutAlign="start center">
+                      <button class="btn btn-primary btn-with-icon" (click)="addNewTableRow()">
+                        <span class="btn-icon">
+                          <mat-icon>add</mat-icon>
+                        </span>
+                        <span>Add New Charge</span>
+                      </button>
+                    </div>
+                    
                     <div class="content-card">
                       <mat-table #table matSort [dataSource]="dataSource" [@animateStagger]="{ value: '50' }"
                         class="airmid-table table">
@@ -469,7 +479,7 @@
                           </mat-header-cell>
                           <mat-cell *matCellDef="let contact" class="w-60">
                             <mat-checkbox aria-label="Checked"
-                              (change)="tableElementChecked($event, contact)"></mat-checkbox>
+                              (change)="tableElementChecked($event, contact)" *ngIf="!contact.isNewRow"></mat-checkbox>
                           </mat-cell>
                         </ng-container>
 
@@ -494,7 +504,17 @@
                         <ng-container matColumnDef="ChargesDate">
                           <mat-header-cell *matHeaderCellDef mat-sort-header>ChargesDate</mat-header-cell>
                           <mat-cell *matCellDef="let contact">
-                            <span>{{ contact.chargesDate }}</span>
+                            <ng-container *ngIf="contact.isNewRow || contact.isEditMode; else showDate">
+                              <mat-form-field appearance="outline" class="compact-field">
+                                <input matInput [matDatepicker]="pickerRow" placeholder="Select date" 
+                                  [(ngModel)]="contact.chargesDate" (dateChange)="onTableDateChange(contact)" />
+                                <mat-datepicker-toggle matSuffix [for]="pickerRow"></mat-datepicker-toggle>
+                                <mat-datepicker #pickerRow></mat-datepicker>
+                              </mat-form-field>
+                            </ng-container>
+                            <ng-template #showDate>
+                              <span>{{ contact.chargesDate }}</span>
+                            </ng-template>
                           </mat-cell>
                         </ng-container>
 
@@ -510,17 +530,26 @@
                           <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
                             class="w-200 border-right">Service Name</mat-header-cell>
                           <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-200 border-right">
-                            <span>{{ contact.serviceName }}</span>
+                            <ng-container *ngIf="contact.isNewRow || contact.isEditMode; else showService">
+                              <mat-form-field appearance="outline" class="compact-field w-100-p">
+                                <input matInput placeholder="Enter Service Name" 
+                                  [(ngModel)]="contact.serviceName"
+                                  (blur)="onServiceSelect(contact)" />
+                              </mat-form-field>
+                            </ng-container>
+                            <ng-template #showService>
+                              <span>{{ contact.serviceName }}</span>
+                            </ng-template>
                           </mat-cell>
                         </ng-container>
 
                         <ng-container matColumnDef="Price">
                           <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Price</mat-header-cell>
                           <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                            <!-- <span>{{ contact.price }}</span> -->
-                            <mat-form-field floatLabel="never">
+                            <mat-form-field floatLabel="never" class="compact-field">
                               <input matInput [(ngModel)]="contact.price" type="text" OnlyNumber placeholder="price"
-                                (keyup)="gettablecalculation(contact)" (keypress)="keyPressCharater($event)">
+                                (keyup)="gettablecalculation(contact)" (keypress)="keyPressCharater($event)"
+                                [readonly]="!contact.isNewRow && !contact.isEditMode">
                             </mat-form-field>
                           </mat-cell>
                         </ng-container>
@@ -528,10 +557,10 @@
                         <ng-container matColumnDef="Qty">
                           <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Qty</mat-header-cell>
                           <mat-cell *matCellDef="let contact;" fxShow.gt-sm>
-                            <!-- <span>{{ contact.qty }}</span> -->
-                            <mat-form-field floatLabel="never">
+                            <mat-form-field floatLabel="never" class="compact-field">
                               <input matInput [(ngModel)]="contact.qty" type="text" OnlyNumber placeholder="qty"
-                                (keyup)="gettablecalculation(contact)" (keypress)="keyPressCharater($event)">
+                                (keyup)="gettablecalculation(contact)" (keypress)="keyPressCharater($event)"
+                                [readonly]="!contact.isNewRow && !contact.isEditMode">
                             </mat-form-field>
                           </mat-cell>
                         </ng-container>
@@ -546,14 +575,32 @@
                         <ng-container matColumnDef="DiscPer">
                           <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Disc %</mat-header-cell>
                           <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                            <span>{{ contact.concessionPercentage || '-' }}</span>
+                            <ng-container *ngIf="contact.isNewRow || contact.isEditMode; else showDiscPer">
+                              <mat-form-field floatLabel="never" class="compact-field">
+                                <input matInput [(ngModel)]="contact.concessionPercentage" type="text" 
+                                  placeholder="Disc %" (keyup)="gettablecalculation(contact)" 
+                                  (keypress)="keyPressCharater($event)" min="0" max="100">
+                              </mat-form-field>
+                            </ng-container>
+                            <ng-template #showDiscPer>
+                              <span>{{ contact.concessionPercentage || '-' }}</span>
+                            </ng-template>
                           </mat-cell>
                         </ng-container>
 
                         <ng-container matColumnDef="DiscAmt">
                           <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Disc Amt</mat-header-cell>
                           <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                            <span>{{ contact.concessionAmount | currency : 'INR' }}</span>
+                            <ng-container *ngIf="contact.isNewRow || contact.isEditMode; else showDiscAmt">
+                              <mat-form-field floatLabel="never" class="compact-field">
+                                <input matInput [(ngModel)]="contact.concessionAmount" type="text" 
+                                  placeholder="Disc Amt" (keyup)="gettablecalculation(contact)" 
+                                  (keypress)="keyPressCharater($event)" min="0">
+                              </mat-form-field>
+                            </ng-container>
+                            <ng-template #showDiscAmt>
+                              <span>{{ contact.concessionAmount | currency : 'INR' }}</span>
+                            </ng-template>
                           </mat-cell>
                         </ng-container>
 
@@ -591,7 +638,20 @@
                           <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="accent"
                             class="w-200">ClassName</mat-header-cell>
                           <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-200">
-                            <span>{{ contact.className }}</span>
+                            <ng-container *ngIf="contact.isNewRow || contact.isEditMode; else showClass">
+                              <mat-form-field appearance="outline" floatLabel="never" class="compact-field w-100-p">
+                                <mat-select [(ngModel)]="contact.classId" placeholder="Select Class"
+                                  (selectionChange)="onTableClassSelect(contact)"
+                                  [compareWith]="compareClassValues">
+                                  <mat-option *ngFor="let classItem of classList" [value]="classItem.value">
+                                    {{ classItem.text }}
+                                  </mat-option>
+                                </mat-select>
+                              </mat-form-field>
+                            </ng-container>
+                            <ng-template #showClass>
+                              <span>{{ contact.className }}</span>
+                            </ng-template>
                           </mat-cell>
                         </ng-container>
 
@@ -612,17 +672,46 @@
                         </ng-container>
 
                         <ng-container matColumnDef="buttons" stickyEnd>
-                          <mat-header-cell *matHeaderCellDef class="table-actions" class="w-80">Action</mat-header-cell>
-                          <mat-cell *matCellDef="let contact" class="w-80">
+                          <mat-header-cell *matHeaderCellDef class="table-actions" class="w-120">Action</mat-header-cell>
+                          <mat-cell *matCellDef="let contact" class="w-120">
                             <div fxLayout="row" fxLayoutAlign="center center" fxFlexFill>
-                              <button mat-icon-button (click)="OnSaveEditedValue(contact)" matTooltip="Save"
-                                [disabled]="!contact.EditDoctor && !contact.isUpdated">
-                                <mat-icon class="active-icon green-600 s-16">check</mat-icon>
-                              </button>
-                              <button mat-icon-button (click)="deletecharges(contact)" matTooltip="Delete"
-                                *ngIf="!contact.EditDoctor ">
-                                <mat-icon class="active-icon red-600-fg s-16">delete</mat-icon>
-                              </button>
+                              <!-- New Row Actions -->
+                              <ng-container *ngIf="contact.isNewRow">
+                                <button mat-icon-button (click)="saveNewTableRow(contact)" matTooltip="Save"
+                                  class="mr-4">
+                                  <mat-icon class="active-icon green-600 s-16">save</mat-icon>
+                                </button>
+                                <button mat-icon-button (click)="cancelNewTableRow(contact)" matTooltip="Cancel">
+                                  <mat-icon class="active-icon red-600-fg s-16">close</mat-icon>
+                                </button>
+                              </ng-container>
+                              
+                              <!-- Edit Mode Actions -->
+                              <ng-container *ngIf="contact.isEditMode && !contact.isNewRow">
+                                <button mat-icon-button (click)="saveEditedTableRow(contact)" matTooltip="Save"
+                                  class="mr-4">
+                                  <mat-icon class="active-icon green-600 s-16">save</mat-icon>
+                                </button>
+                                <button mat-icon-button (click)="cancelEditTableRow(contact)" matTooltip="Cancel">
+                                  <mat-icon class="active-icon red-600-fg s-16">close</mat-icon>
+                                </button>
+                              </ng-container>
+                              
+                              <!-- Normal Row Actions -->
+                              <ng-container *ngIf="!contact.isNewRow && !contact.isEditMode">
+                                <button mat-icon-button (click)="enableTableRowEdit(contact)" matTooltip="Edit"
+                                  class="mr-4">
+                                  <mat-icon class="active-icon blue-600 s-16">edit</mat-icon>
+                                </button>
+                                <button mat-icon-button (click)="OnSaveEditedValue(contact)" matTooltip="Save"
+                                  [disabled]="!contact.EditDoctor && !contact.isUpdated" class="mr-4">
+                                  <mat-icon class="active-icon green-600 s-16">check</mat-icon>
+                                </button>
+                                <button mat-icon-button (click)="deletecharges(contact)" matTooltip="Delete"
+                                  *ngIf="!contact.EditDoctor">
+                                  <mat-icon class="active-icon red-600-fg s-16">delete</mat-icon>
+                                </button>
+                              </ng-container>
                             </div>
                           </mat-cell>
                         </ng-container>
