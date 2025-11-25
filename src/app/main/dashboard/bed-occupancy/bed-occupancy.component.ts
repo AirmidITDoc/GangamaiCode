@@ -32,7 +32,7 @@ export class BedOccupancyComponent implements OnInit, OnDestroy {
     public isBedsLoading: boolean = false; // Loading state for bed data
     public departments: any[] = []; // Department data from API
     public isDepartmentsLoading: boolean = false; // Loading state for department data
-    
+
     // Slider properties
     public currentSlideIndex: number = 0;
     public slideWidth: number = 296; // Width of each slide (280px card + 16px gap)
@@ -80,16 +80,16 @@ export class BedOccupancyComponent implements OnInit, OnDestroy {
 
     // selectedRoom = 'Oncology room 1';
     rooms = ['Oncology room 1', 'Oncology room 2', 'ICU', 'General Ward'];
-  
+
     beds = [
-      { id: 1, status: 'In Use', patient: 'Michael Scott', admissionDate: '09/12/2019', age: 67, sex: 'Male', icon: 'hotel', department: 0 },
-      { id: 2, status: 'Reserved', patient: 'Steve Smith', admissionDate: '01/20/2020', age: 43, sex: 'Male', icon: 'person_pin', department: 0 },
-      { id: 3, status: 'In Use', patient: 'James Smith', admissionDate: '12/27/2019', age: 73, sex: 'Male', icon: 'hotel', department: 1 },
-      { id: 4, status: 'In Use', patient: 'Cindy Love', admissionDate: '12/12/2019', age: 36, sex: 'Female', icon: 'hotel', department: 1 },
-      { id: 5, status: 'In Use', patient: 'James Johnson', admissionDate: '11/12/2019', age: 56, sex: 'Male', icon: 'hotel', department: 2 },
-      { id: 6, status: 'In Use', patient: 'Maria Garcia', admissionDate: '01/12/2020', age: 49, sex: 'Female', icon: 'hotel', department: 2 },
-      { id: 7, status: 'Empty', patient: '', admissionDate: '', age: '', sex: '', icon: 'person_add', department: 3 },
-      { id: 8, status: 'In Use', patient: 'Robert Scott', admissionDate: '01/01/2020', age: 60, sex: 'Male', icon: 'hotel', department: 3 },
+        { id: 1, status: 'In Use', patient: 'Michael Scott', admissionDate: '09/12/2019', age: 67, sex: 'Male', icon: 'hotel', department: 0 },
+        { id: 2, status: 'Reserved', patient: 'Steve Smith', admissionDate: '01/20/2020', age: 43, sex: 'Male', icon: 'person_pin', department: 0 },
+        { id: 3, status: 'In Use', patient: 'James Smith', admissionDate: '12/27/2019', age: 73, sex: 'Male', icon: 'hotel', department: 1 },
+        { id: 4, status: 'In Use', patient: 'Cindy Love', admissionDate: '12/12/2019', age: 36, sex: 'Female', icon: 'hotel', department: 1 },
+        { id: 5, status: 'In Use', patient: 'James Johnson', admissionDate: '11/12/2019', age: 56, sex: 'Male', icon: 'hotel', department: 2 },
+        { id: 6, status: 'In Use', patient: 'Maria Garcia', admissionDate: '01/12/2020', age: 49, sex: 'Female', icon: 'hotel', department: 2 },
+        { id: 7, status: 'Empty', patient: '', admissionDate: '', age: '', sex: '', icon: 'person_add', department: 3 },
+        { id: 8, status: 'In Use', patient: 'Robert Scott', admissionDate: '01/01/2020', age: 60, sex: 'Male', icon: 'hotel', department: 3 },
     ];
     constructor(
         public _dashboardServices: DashboardService,
@@ -167,24 +167,24 @@ export class BedOccupancyComponent implements OnInit, OnDestroy {
         // Use API data if available, otherwise fall back to static data
         const dept = this.departments[index];
         if (!dept) {
-            return { 
-                name: 'Department ' + (index + 1), 
-                image: this.departmentImages[index], 
-                total: 0, 
-                inUse: 0, 
-                reserved: 0, 
-                empty: 0, 
-                percent: 0 
+            return {
+                name: 'Department ' + (index + 1),
+                image: this.departmentImages[index],
+                total: 0,
+                inUse: 0,
+                reserved: 0,
+                empty: 0,
+                percent: 0
             };
         }
-        
+
         // Extract data from API response
         const total = this.extractNumberValue(dept.TotalCount) || this.extractNumberValue(dept.TotalBeds) || 0;
         const inUse = this.extractNumberValue(dept.OccuipedCount) || this.extractNumberValue(dept.OccupiedCount) || 0;
         const available = this.extractNumberValue(dept.AvailableCount) || 0;
         const reserved = Math.max(Math.round(total * 0.07), 0); // Calculate reserved as 7% of total
         const percent = total ? Math.round((inUse / total) * 100) : 0;
-        
+
         return {
             name: this.extractStringValue(dept.WardName) || this.extractStringValue(dept.DepartmentName) || 'Department ' + (index + 1),
             image: this.departmentImages[index % this.departmentImages.length],
@@ -213,7 +213,7 @@ export class BedOccupancyComponent implements OnInit, OnDestroy {
         return new Chart(charId, {
             type: 'line',
             data: {
-                labels: ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
+                labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
                 datasets: [
                     {
                         label: 'Count',
@@ -242,7 +242,7 @@ export class BedOccupancyComponent implements OnInit, OnDestroy {
         return new Chart('BedSurveyChart', {
             type: 'line',
             data: {
-                labels: ['Mon','Tue','Wed','Thu','Fri','Sat'],
+                labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
                 datasets: [
                     { label: 'Admissions', data: [26, 34, 28, 22, 30, 42], backgroundColor: gradient1 as any, borderColor: 'rgba(10,10,10,.2)' },
                     { label: 'Discharges', data: [20, 24, 18, 25, 22, 30], backgroundColor: gradient2 as any, borderColor: 'rgb(156 76 186 / 20%)' }
@@ -257,7 +257,7 @@ export class BedOccupancyComponent implements OnInit, OnDestroy {
             data: {
                 datasets: [
                     {
-                        backgroundColor: ['#FF3784','#36A2EB','#4BC0C0','#F77825','#9966FF'],
+                        backgroundColor: ['#FF3784', '#36A2EB', '#4BC0C0', '#F77825', '#9966FF'],
                         data: [this.totalOccupied, this.totalAvailable, 8, 3, 1]
                     }
                 ]
@@ -269,7 +269,7 @@ export class BedOccupancyComponent implements OnInit, OnDestroy {
     }
 
     getOverallDoughnutChart() {
-        
+
         let totalOccupiedCount = 0;
 
         const dataLabelsPlugin = {
@@ -277,7 +277,7 @@ export class BedOccupancyComponent implements OnInit, OnDestroy {
             afterDatasetDraw: (chart: any) => {
                 const { ctx, chartArea } = chart;
                 const labels = chart.data.labels;
-                
+
                 chart.data.datasets.forEach((dataset: any, datasetIndex: number) => {
                     const meta = chart.getDatasetMeta(datasetIndex);
                     if (!meta.hidden) {
@@ -285,56 +285,56 @@ export class BedOccupancyComponent implements OnInit, OnDestroy {
                             const value = dataset.data[index];
                             if (value > 0) {
                                 ctx.save();
-                                
+
                                 // Get arc properties
                                 const model = element;
                                 const centerX = chart.width / 2;
                                 const centerY = chart.height / 2;
-                                
+
                                 // Calculate middle angle of the arc
                                 const startAngle = model.startAngle;
                                 const endAngle = model.endAngle;
                                 const midAngle = startAngle + (endAngle - startAngle) / 2;
-                                
+
                                 // Position in the middle of the arc segment
                                 const radius = (model.outerRadius + model.innerRadius) / 2;
                                 const labelX = centerX + Math.cos(midAngle) * radius;
                                 const labelY = centerY + Math.sin(midAngle) * radius;
-                                
+
                                 // Calculate percentage
                                 const total = dataset.data.reduce((sum: number, val: number) => sum + val, 0);
                                 const percentage = Math.round((value / total) * 100);
-                                
+
                                 // Get label name
                                 const labelName = labels[index];
-                                
+
                                 // Custom label text - Option 3: Label name with count and percentage
                                 const line1Text = labelName;
                                 const line2Text = `${value} (${percentage}%)`;
-                                console.log("================>>>>>>>..",line1Text, percentage)
+                                console.log("================>>>>>>>..", line1Text, percentage)
                                 if (line1Text === 'Used') {
                                     totalOccupiedCount = percentage;
                                 }
-                                
+
                                 // Draw labels with white text and shadow for contrast
                                 ctx.fillStyle = 'white';
                                 ctx.textAlign = 'center';
                                 ctx.textBaseline = 'middle';
-                                
+
                                 // Draw label name (e.g., "In use")
                                 ctx.font = 'bold 13px Inter, sans-serif';
                                 ctx.strokeStyle = 'rgba(0, 0, 0, 0.4)';
                                 ctx.lineWidth = 3;
                                 ctx.strokeText(line1Text, labelX, labelY - 10);
                                 ctx.fillText(line1Text, labelX, labelY - 10);
-                                
+
                                 // Draw count and percentage (e.g., "5 (25%)")
                                 ctx.font = 'bold 15px Inter, sans-serif';
                                 ctx.strokeStyle = 'rgba(0, 0, 0, 0.3)';
                                 ctx.lineWidth = 2.5;
                                 ctx.strokeText(line2Text, labelX, labelY + 8);
                                 ctx.fillText(line2Text, labelX, labelY + 8);
-                                
+
                                 ctx.restore();
                             }
                         });
@@ -348,7 +348,7 @@ export class BedOccupancyComponent implements OnInit, OnDestroy {
             beforeDraw: (chart: any) => {
                 const { width, height, ctx } = chart;
                 ctx.restore();
-                
+
                 // Main percentage text
                 const percentText = `${totalOccupiedCount}%`;
                 ctx.font = 'bold 42px Inter, sans-serif';
@@ -358,45 +358,45 @@ export class BedOccupancyComponent implements OnInit, OnDestroy {
                 const percentX = width / 2;
                 const percentY = height / 2 - 10;
                 ctx.fillText(percentText, percentX, percentY);
-                
+
                 // Subtitle text
                 ctx.font = '14px Inter, sans-serif';
                 ctx.fillStyle = '#6c757d';
                 const subtitleY = height / 2 + 25;
                 ctx.fillText('Occupancy', percentX, subtitleY);
-                
+
                 ctx.save();
             }
         };
 
         const payload = {
-            "searchFields": [ ],
+            "searchFields": [],
             "mode": "DashBedStatistics"
-          };
+        };
 
-          this._dashboardServices.HomeDashboardAPI(payload).subscribe((res: any) => {
+        this._dashboardServices.HomeDashboardAPI(payload).subscribe((res: any) => {
             let apiData = res && res.length ? res[0] : {};
             this.dashBedStatistics = apiData;
-            console.log("apiDataapiDataapiData",apiData)
-            
+            console.log("apiDataapiDataapiData", apiData)
+
             return new Chart('BedOverallDoughnut', {
                 type: 'doughnut',
                 data: {
                     labels: Object.entries(apiData)
-                    .filter(([key]) => key !== 'TotalBedCount')
-                    .map(([key, _]) => key.replace(/Count/gi, ''))
-                    || [],
+                        .filter(([key]) => key !== 'TotalBedCount')
+                        .map(([key, _]) => key.replace(/Count/gi, ''))
+                        || [],
                     datasets: [
                         {
-                            backgroundColor: ['#ff5a8a','#f6c542','#3ecf8e'],
+                            backgroundColor: ['#ff5a8a', '#f6c542', '#3ecf8e'],
                             data: Object.entries(apiData)
-                            .filter(([key]) => key !== 'TotalBedCount') // skip that key
-                            .map(([_, value]) => value) || []
+                                .filter(([key]) => key !== 'TotalBedCount') // skip that key
+                                .map(([_, value]) => value) || []
                         }
                     ]
                 },
-                options: { 
-                    plugins: { 
+                options: {
+                    plugins: {
                         tooltip: { enabled: true },
                         legend: { display: false }
                     },
@@ -404,22 +404,22 @@ export class BedOccupancyComponent implements OnInit, OnDestroy {
                 },
                 plugins: [centerTextPlugin, dataLabelsPlugin]
             });
-      
-          }, err => {
+
+        }, err => {
             return []
         })
 
-        
+
     }
 
     getLargeAdmissionsChart() {
         const payload = {
             "searchFields": [],
             "mode": "DashAdmissionDateWiseCount"
-          };
-          this._dashboardServices.HomeDashboardAPI(payload).subscribe((res: any) => {
+        };
+        this._dashboardServices.HomeDashboardAPI(payload).subscribe((res: any) => {
             let apiData = res && res.length ? res : {};
-      
+
             return new Chart('BedAdmissionsLine', {
                 type: 'line',
                 data: {
@@ -439,8 +439,8 @@ export class BedOccupancyComponent implements OnInit, OnDestroy {
                 },
                 options: { maintainAspectRatio: false }
             });
-          
-          }, err => {
+
+        }, err => {
             return new Chart('BedAdmissionsLine', {
                 type: 'line',
                 data: {
@@ -461,18 +461,18 @@ export class BedOccupancyComponent implements OnInit, OnDestroy {
                 options: { maintainAspectRatio: false }
             });
         })
-        
+
     }
 
     getLargeDischargeChart() {
         const payload = {
             "searchFields": [],
             "mode": "DashDischargeDateWiseCount"
-          };
+        };
 
-          this._dashboardServices.HomeDashboardAPI(payload).subscribe((res: any) => {
+        this._dashboardServices.HomeDashboardAPI(payload).subscribe((res: any) => {
             let apiData = res && res.length ? res : {};
-      
+
             return new Chart('BedDischargeLine', {
                 type: 'line',
                 data: {
@@ -492,16 +492,16 @@ export class BedOccupancyComponent implements OnInit, OnDestroy {
                 },
                 options: { maintainAspectRatio: false }
             });
-          }, err => {
+        }, err => {
 
             return new Chart('BedDischargeLine', {
                 type: 'line',
                 data: {
-                    labels: ['01 Mon','02 Tue','03 Wed','04 Thu','05 Fri','06 Sat','07 Sun','08 Mon','09 Tue','10 Wed','11 Thu','12 Fri','13 Sat','14 Sun'],
+                    labels: ['01 Mon', '02 Tue', '03 Wed', '04 Thu', '05 Fri', '06 Sat', '07 Sun', '08 Mon', '09 Tue', '10 Wed', '11 Thu', '12 Fri', '13 Sat', '14 Sun'],
                     datasets: [
                         {
                             label: 'Discharges',
-                            data: [22,20,30,38,52,40,35,38,18,24,35,32,28,85],
+                            data: [22, 20, 30, 38, 52, 40, 35, 38, 18, 24, 35, 32, 28, 85],
                             backgroundColor: 'rgba(99,179,237,0.15)',
                             borderColor: '#5ac8fa',
                             pointBackgroundColor: '#5ac8fa',
@@ -513,7 +513,7 @@ export class BedOccupancyComponent implements OnInit, OnDestroy {
                 },
                 options: { maintainAspectRatio: false }
             });
-          })
+        })
 
 
     }
@@ -553,7 +553,7 @@ export class BedOccupancyComponent implements OnInit, OnDestroy {
     getBedStatusClass(status: string): string {
         if (!status) return '';
         const normalizedStatus = status.toLowerCase().trim();
-        
+
         if (normalizedStatus === 'in use' || normalizedStatus === 'inuse') {
             return 'use';
         } else if (normalizedStatus === 'reserved') {
@@ -578,15 +578,15 @@ export class BedOccupancyComponent implements OnInit, OnDestroy {
     loadBedsForDepartment(departmentIndex: number): void {
         this.isBedsLoading = true;
         this.filteredBeds = [];
-        
+
         // Get ward ID from department data
         const dept = this.departments[departmentIndex];
         let wardId = departmentIndex + 1; // Default fallback
-        
+
         if (dept) {
             wardId = this.extractNumberValue(dept.WardId) || this.extractNumberValue(dept.Id) || (departmentIndex + 1);
         }
-        
+
         this._dashboardServices.getBedWiseList(wardId).subscribe(
             (response: any) => {
                 this.isBedsLoading = false;
@@ -626,10 +626,10 @@ export class BedOccupancyComponent implements OnInit, OnDestroy {
 
     extractStringValue(value: any): string {
         if (!value) return '';
-        
+
         // If it's already a string, return it
         if (typeof value === 'string') return value.trim();
-        
+
         // If it's an object, try to extract meaningful data
         if (typeof value === 'object') {
             // Check for common object properties that might contain the actual value
@@ -638,26 +638,26 @@ export class BedOccupancyComponent implements OnInit, OnDestroy {
             if (value.text && typeof value.text === 'string') return value.text.trim();
             if (value.label && typeof value.label === 'string') return value.label.trim();
             if (value.displayName && typeof value.displayName === 'string') return value.displayName.trim();
-            
+
             // Handle name objects with first and last name
             if (value.firstName || value.lastName) {
                 const firstName = value.firstName ? String(value.firstName).trim() : '';
                 const lastName = value.lastName ? String(value.lastName).trim() : '';
                 return `${firstName} ${lastName}`.trim();
             }
-            
+
             // If it's an array, join the elements
             if (Array.isArray(value)) {
                 return value.filter(v => v && typeof v === 'string').map(v => v.trim()).join(' ');
             }
-            
+
             // Log the object structure for debugging
             console.warn('Unexpected object structure:', value);
-            
+
             // If none of the above, return empty string to avoid [object Object]
             return '';
         }
-        
+
         // For other types, convert to string
         return String(value).trim();
     }
@@ -692,7 +692,7 @@ export class BedOccupancyComponent implements OnInit, OnDestroy {
     // Department loading methods
     loadDepartments(): void {
         this.isDepartmentsLoading = true;
-        
+
         this._dashboardServices.getWardWiseBedData().subscribe(
             (response: any) => {
                 this.isDepartmentsLoading = false;
@@ -743,7 +743,7 @@ export class BedOccupancyComponent implements OnInit, OnDestroy {
             this.slidesPerView = 5;
             this.slideWidth = 296;
         }
-        
+
         // Calculate maximum slide index
         this.maxSlideIndex = Math.max(0, this.departments.length - this.slidesPerView);
     }
@@ -781,6 +781,13 @@ export class BedOccupancyComponent implements OnInit, OnDestroy {
 
     ngOnDestroy(): void {
         // Cleanup if needed
+    }
+
+    // Added by raksha 25/11/25
+    onReset() {
+        this._dashboardServices.bedReset().subscribe((response) => {
+            // this.toastr.success(response.message);
+        });
     }
 
 }

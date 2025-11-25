@@ -41,11 +41,15 @@ export class NewTemplateComponent implements OnInit {
       this.vTemplateName = this.data.templateName
       this.vTemplateDesc = this.data.templateDescription
       // this.TemplateSaveForm.get('CategoryId')?.setValue(this.data.categoryName);
-      this.categoryName=this.data.categoryName
+      this.categoryName = this.data.categoryName
       this.TemplateSaveForm.get('isTemplateWithHeader')?.setValue(this.data.isTemplateWithHeader);
       this.TemplateSaveForm.get('isTemplateHeaderWithImage')?.setValue(this.data.isTemplateHeaderWithImage);
       this.TemplateSaveForm.get('templateDescription')?.setValue(this.data.templateDescription);
       this.TemplateSaveForm.patchValue(this.data);
+    }
+
+    if (this.data?.categoryName == "DischargeSummaryTemplate") {
+      this.getCategoryData(this.data.categoryId)
     }
 
     this.TemplateSaveForm.get('isTemplateHeaderWithImage')?.valueChanges.subscribe((value: boolean) => {
@@ -62,6 +66,35 @@ export class NewTemplateComponent implements OnInit {
       }
     });
   }
+
+  getCategoryData(categoryId) {
+    var m_data2 = {
+      "first": 0,
+      "rows": 10,
+      "sortField": "TemplateId",
+      "sortOrder": 0,
+      "filters": [
+        {
+          "fieldName": "CategoryId",
+          "fieldValue": String(categoryId),// "40622",	
+          "opType": "Equals"
+        }
+      ],
+      "exportType": "JSON",
+      "columns": []
+    }
+    this._TemplatedescriptionService.getCategoryById(m_data2).subscribe((value) => {
+      debugger
+      console.log(value);
+      this.TemplateSaveForm.get('hospitalHeader')?.setValue(value.data[0].hospitalHeader);
+      this.TemplateSaveForm.get('templateHeader')?.setValue(value.data[0].templateHeader);
+    });
+  }
+
+  onEditorValueChange(content: string) {
+    this.TemplateSaveForm.get('hospitalHeader')?.setValue(content);
+  }
+
   onEditorValueChange1(content: string) {
     this.TemplateSaveForm.get('templateHeader')?.setValue(content);
   }
@@ -74,7 +107,8 @@ export class NewTemplateComponent implements OnInit {
     return this._formBuilder.group({
       templateId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       templateName: ['', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
-      templateHeader:['', Validators.required],
+      hospitalHeader: ['', Validators.required],
+      templateHeader: ['', Validators.required],
       templateDescription: ['', Validators.required],
       categoryId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       categoryName: ['', [Validators.required]],
@@ -132,6 +166,10 @@ export class NewTemplateComponent implements OnInit {
   selectChangeTemplate(obj: any) {
     if (obj.value) {
       this.categoryName = obj.text
+    }
+
+    if (obj.text == "DischargeSummaryTemplate") {
+      this.getCategoryData(obj.value)
     }
   }
 

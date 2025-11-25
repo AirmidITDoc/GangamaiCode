@@ -78,6 +78,20 @@
 
                     <div fxFlexFill fxLayout="row" fxLayout.gt-xs="column" fxLayoutGap="6px">
                         <div class="modal-card-header">
+                            <span style="font-weight: bold;">Hospita Header</span>
+                        </div>
+                        <airmid-editor formControlName="hospitalHeader" [formGroup]="TemplateSaveForm"
+                            (valueChange)="onEditorValueChange($event)">
+                        </airmid-editor>
+                    </div>
+                </form>
+            </div>
+
+            <div class="modal-card-container">
+                <form [formGroup]="TemplateSaveForm">
+
+                    <div fxFlexFill fxLayout="row" fxLayout.gt-xs="column" fxLayoutGap="6px">
+                        <div class="modal-card-header">
                             <span style="font-weight: bold;">Header Content</span>
                         </div>
                         <airmid-editor formControlName="templateHeader" [formGroup]="TemplateSaveForm"

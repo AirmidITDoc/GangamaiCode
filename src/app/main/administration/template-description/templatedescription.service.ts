@@ -3,7 +3,7 @@ import { FormGroup, UntypedFormBuilder } from '@angular/forms';
 import { ApiCaller } from 'app/core/services/apiCaller';
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class TemplatedescriptionService {
     myform: FormGroup;
@@ -18,34 +18,19 @@ export class TemplatedescriptionService {
         // this.myform=this.createRadiologytemplateForm();
     }
 
-    // createRadiologytemplateForm(): FormGroup {
-    //     return this._formBuilder.group({
-    //         templateId:[0],
-    //         templateName:['',
-    //         [
-    //         // Validators.required,
-    //         // Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
-    //     ]
-    //     ],
-    //     templateDesc:['', 
-    //         // Validators.required
-    //     ],
-    //     });
-    // }
-
     createBankForm(): FormGroup {
         return this._formBuilder.group({
             bankId: [0],
-            templateid:[""],
-            templatename:[""],
-            bankName: ["", 
+            templateid: [""],
+            templatename: [""],
+            bankName: ["",
                 [
                     // Validators.required,
                     // Validators.maxLength(50),
                     // Validators.pattern("^[A-Za-z]*[a-zA-Z]*$")
                 ]
             ],
-            isActive:[true,
+            isActive: [true,
                 // [Validators.required]
             ]
         });
@@ -71,6 +56,9 @@ export class TemplatedescriptionService {
 
     public deactivateTheStatus(m_data) {
         return this._httpClient.DeleteData("TemplateDescriptionConfig?Id=" + m_data.toString());
+    }
+    public getCategoryById(Param: any) {
+        return this._httpClient.PostData("TemplateDescriptionConfig/TemlateByCategoryList/",Param);
     }
 
 }

@@ -227,5 +227,10 @@ export class DashboardService {
     };
     return this._httpClient.PostData("Common", params);
   }
+
+  // Added by raksha 25/11/25
+  public bedReset() {
+    return this._httpClient.PutData("BedMaster/Edit",{});
+  }
 }
 

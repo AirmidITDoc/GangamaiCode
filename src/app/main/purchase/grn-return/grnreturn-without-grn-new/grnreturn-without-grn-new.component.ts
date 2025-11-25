@@ -27,9 +27,10 @@ export class GrnreturnWithoutGrnNewComponent {
   displayedColumns1 = [
     'ItemName',
     'BalQty',
+    'GRNNo',
     'BatchNo',
     'ExpDate',
-    'StockId',
+    // 'StockId',
   ];
 
   displayedColumns2 = [
@@ -678,7 +679,7 @@ export class GrnreturnWithoutGrnNewComponent {
       return;
     }
     this.dsItemList.data = [...this.dsItemList.data, converted];
-    this.dsItemList.paginator = this.paginator;
+    // this.dsItemList.paginator = this.paginator;
     this.getGSTTotalAmt(this.dsItemList.data);
   }
 
