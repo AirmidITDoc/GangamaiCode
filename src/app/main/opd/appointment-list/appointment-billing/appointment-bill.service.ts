@@ -54,11 +54,14 @@ export class AppointmentBillService {
         return this._httpClient1.GetData("MPesa/check-payment?MerchantRequestID=" + mpesaResponse?.merchantRequestID + "&CheckoutRequestID=" + mpesaResponse?.checkoutRequestID);
     }
 
-    public mpesaPay(param: any) {
-        const params = `phone=${param.phone}&amount=${param.amount}&reference=${param.reference}`;
-        return this._httpClient1.PostData("MPesa/pay?" + params, {});
+    // public mpesaPay(param: any) {
+    //     const params = `phone=${param.phone}&amount=${param.amount}&reference=${param.reference}`;
+    //     return this._httpClient1.PostData("MPesa/pay?" + params, {});
+    // }
+    public postpayment(amount, phone, opdipdid) {
+        return this._httpClient1.PostData("MPesa/pay", { amount: amount, phone: phone ,opdipdid:opdipdid})
     }
-    public postpayment(amount, phone) {
-        return this._httpClient1.PostData("MPesa/pay", { amount: amount, phone: phone })
+        public getmPesaTranscationlist(param) {
+        return this._httpClient1.PostData("MPesa/List", param)
     }
 }

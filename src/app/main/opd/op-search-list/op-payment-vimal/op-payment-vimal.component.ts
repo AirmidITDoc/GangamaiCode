@@ -30,8 +30,7 @@ export class OpPaymentVimalComponent implements OnInit {
         'buttons'
     ];
     autocompleteModebank: string = "Bank";
-    autocompleteModecompany: string = "Company";
-    isCompanySelected:boolean=false
+    autocompleteModecompany: string = "Company"; 
     currentDate = new Date();
     patientDetailsFormGrp: FormGroup;
     selectedPaymnet1: string = '';
@@ -336,7 +335,7 @@ export class OpPaymentVimalComponent implements OnInit {
     this.patientDetailsFormGrp.markAllAsTouched();
     this.patientDetailsFormGrp.updateValueAndValidity();
 
-    if (this.patientDetailsFormGrp.invalid && this.balanceAmt != 0) {
+    if (this.patientDetailsFormGrp.invalid && this.amount1 != 0) {
 
       let invalidFields = [];
       if (this.patientDetailsFormGrp.invalid) {
@@ -423,6 +422,7 @@ export class OpPaymentVimalComponent implements OnInit {
             this.Paymentobj['tdsAmount'] = this.Payments.data.find(x => x.PaymentType == "tds")?.Amount ?? 0; 
             this.Paymentobj['unitId'] = this._loggedService.currentUserValue.user.unitId
             this.Paymentobj['wfamount'] = this.Payments.data.find(x => x.PaymentType == "wf")?.Amount ?? 0; 
+            this.Paymentobj['companyId'] = this.patientDetailsFormGrp.get('CompanyId')?.value || 0
         }
         else if (this.data.FromName == "IP-Pharma-SETTLEMENT") {
             this.Paymentobj['paymentId'] = 0;
@@ -538,6 +538,7 @@ export class OpPaymentVimalComponent implements OnInit {
         }
         console.log(IsSubmit);
         this.dialogRef.close(IsSubmit);
+        this.advanceData =null
     }
 
     onClose1() {
