@@ -8,6 +8,8 @@ import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/air
 import { ToastrService } from "ngx-toastr";
 import { DrugmasterService } from "./drugmaster.service";
 import { NewDrugMasterComponent } from "./new-drug-master/new-drug-master.component";
+import { permissionCodes, permissionType } from "app/main/shared/model/permission.model";
+import { PagePermissionService } from "app/main/shared/services/page-permission.service";
 
 @Component({
     selector: "app-drugmaster",
@@ -17,55 +19,57 @@ import { NewDrugMasterComponent } from "./new-drug-master/new-drug-master.compon
     animations: fuseAnimations,
 })
 export class DrugmasterComponent implements OnInit {
-   
+
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
-    
+    IsAdd: boolean = this.permissionService.getPermission(permissionCodes.DrugMaster, permissionType.Add);
+
     drugName: any = "";
-       allcolumns =  [
-            // { heading: "Code", key: "drugId", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Drug Name", key: "drugName", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Generic Name", key: "genericId", sort: true, align: 'left', emptySign: 'NA'  },
-            { heading: "Class Name", key: "classId", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "IsActive", key: "isActive", type: gridColumnTypes.status,align: "center" },
-            {
-                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
-                    {
-                        action: gridActions.edit, callback: (data: any) => {
-                            this.onSave(data);
-                        }
-                    }, 
-                    {
-                        action: gridActions.delete, callback: (data: any) => {
-                            this._drugService.deactivateTheStatus(data.drugId).subscribe((data: any) => {
-                                this.grid.bindGridData();
-                            });
-                        }
+    allcolumns = [
+        // { heading: "Code", key: "drugId", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Drug Name", key: "drugName", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Generic Name", key: "genericId", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Class Name", key: "classId", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
+        {
+            heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+                {
+                    action: gridActions.edit, visible: this.permissionService.getPermission(permissionCodes.DrugMaster, permissionType.Edit), callback: (data: any) => {
+                        this.onSave(data);
                     }
-                ]
-            } //Action 1-view, 2-Edit,3-delete
-        ]
-        
-       allfilters = [
-            { fieldName: "drugName", fieldValue: "", opType: OperatorComparer.StartsWith },
-            { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
-        ]
-     gridConfig: gridModel = {
+                },
+                {
+                    action: gridActions.delete, visible: this.permissionService.getPermission(permissionCodes.DrugMaster, permissionType.Delete), callback: (data: any) => {
+                        this._drugService.deactivateTheStatus(data.drugId).subscribe((data: any) => {
+                            this.grid.bindGridData();
+                        });
+                    }
+                }
+            ]
+        }
+    ]
+
+    allfilters = [
+        { fieldName: "drugName", fieldValue: "", opType: OperatorComparer.StartsWith },
+        { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+    ]
+    gridConfig: gridModel = {
         apiUrl: "DrugMaster/List",
         columnsList: this.allcolumns,
         sortField: "drugId",
         sortOrder: 0,
         filters: this.allfilters
     }
-    constructor(public _drugService: DrugmasterService,public _matDialog: MatDialog,
-        public toastr : ToastrService,) {}
+    constructor(public _drugService: DrugmasterService, public _matDialog: MatDialog,
+        public toastr: ToastrService,
+        public permissionService: PagePermissionService) { }
 
-    ngOnInit(): void {}
+    ngOnInit(): void { }
 
-    onSave(row: any=null) {
+    onSave(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button
-        
+
         let that = this;
         const dialogRef = this._matDialog.open(NewDrugMasterComponent,
             {
@@ -75,7 +79,7 @@ export class DrugmasterComponent implements OnInit {
                 data: row
             });
         dialogRef.afterClosed().subscribe(result => {
-            if(result){
+            if (result) {
                 that.grid.bindGridData();
             }
         });

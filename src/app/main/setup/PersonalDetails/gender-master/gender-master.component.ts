@@ -33,11 +33,11 @@ export class GenderMasterComponent implements OnInit {
             {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
                     {
-                        action: gridActions.edit, callback: (data: any) => {
+                        action: gridActions.edit,visible: this.permissionService.getPermission(permissionCodes.Gender, permissionType.Edit), callback: (data: any) => {
                             this.onSave(data);
                         }
                     }, {
-                        action: gridActions.delete, callback: (data: any) => {
+                        action: gridActions.delete,visible: this.permissionService.getPermission(permissionCodes.Gender, permissionType.Delete), callback: (data: any) => {
                             this._GenderService.deactivateTheStatus(data.genderId).subscribe((response: any) => {
                                 this.grid.bindGridData();
                             });
