@@ -20,8 +20,8 @@ export class CityMasterComponent implements OnInit {
 
     msg: any;
     cityName: any = "";
-IsAdd: boolean = this.permissionService.getPermission(permissionCodes.CityMaster, permissionType.Add);
-  
+    IsAdd: boolean = this.permissionService.getPermission(permissionCodes.CityMaster, permissionType.Add);
+
     options: any[] = [{ Text: 'Text-1', Id: 1 }, { Text: 'Text-2', Id: 2 }, { Text: 'Text-3', Id: 3 }];
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
 
@@ -33,11 +33,11 @@ IsAdd: boolean = this.permissionService.getPermission(permissionCodes.CityMaster
         {
             heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
                 {
-                    action: gridActions.edit, callback: (data: any) => {
+                    action: gridActions.edit, visible: this.permissionService.getPermission(permissionCodes.CityMaster, permissionType.Edit), callback: (data: any) => {
                         this.onSave(data);
                     }
                 }, {
-                    action: gridActions.delete, callback: (data: any) => {
+                    action: gridActions.delete, visible: this.permissionService.getPermission(permissionCodes.CityMaster, permissionType.Delete), callback: (data: any) => {
                         this._CityMasterService.deactivateTheStatus(data.cityId).subscribe((response: any) => {
                             this.grid.bindGridData();
                         });
@@ -51,7 +51,7 @@ IsAdd: boolean = this.permissionService.getPermission(permissionCodes.CityMaster
         { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
     ]
     gridConfig: gridModel = {
-          permissionCode: permissionCodes.CityMaster,
+        permissionCode: permissionCodes.CityMaster,
         apiUrl: "CityMaster/List",
         columnsList: this.allColumns,
         sortField: "cityId",
@@ -61,13 +61,13 @@ IsAdd: boolean = this.permissionService.getPermission(permissionCodes.CityMaster
     autocompleteMode: string = "CityMaster";
 
     constructor(
-        public _CityMasterService: CityMasterService,public permissionService: PagePermissionService,
+        public _CityMasterService: CityMasterService, public permissionService: PagePermissionService,
         public toastr: ToastrService, public _matDialog: MatDialog
     ) { }
 
     ngOnInit(): void { }
 
-  
+
     onSave(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button

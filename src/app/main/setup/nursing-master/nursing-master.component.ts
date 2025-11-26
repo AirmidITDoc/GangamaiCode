@@ -7,6 +7,8 @@ import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/air
 import { ToastrService } from 'ngx-toastr';
 import { NursingMasterService } from './nursing-master.service';
 import { NursingTemplateComponent } from './nursing-template/nursing-template.component';
+import { permissionCodes, permissionType } from 'app/main/shared/model/permission.model';
+import { PagePermissionService } from 'app/main/shared/services/page-permission.service';
 
 @Component({
   selector: 'app-nursing-master',
@@ -18,7 +20,7 @@ import { NursingTemplateComponent } from './nursing-template/nursing-template.co
 export class NursingMasterComponent {
   msg: any;
   consentName: any = "";
-
+  IsAdd: boolean = this.permissionService.getPermission(permissionCodes.Nursing, permissionType.Add);
   @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
 
   allColumns = [
@@ -29,11 +31,11 @@ export class NursingMasterComponent {
     {
       heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
         {
-          action: gridActions.edit, callback: (data: any) => {
+          action: gridActions.edit, visible: this.permissionService.getPermission(permissionCodes.Nursing, permissionType.Edit), callback: (data: any) => {
             this.onSave(data);
           }
         }, {
-          action: gridActions.delete, callback: (data: any) => {
+          action: gridActions.delete, visible: this.permissionService.getPermission(permissionCodes.Nursing, permissionType.Delete), callback: (data: any) => {
             this._NursingService.deactivateTheStatus(data.nursingId).subscribe((response: any) => {
               this.grid.bindGridData();
             });
@@ -46,6 +48,7 @@ export class NursingMasterComponent {
     { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
   ]
   gridConfig: gridModel = {
+    permissionCode: permissionCodes.Nursing,
     apiUrl: "Nursing/NursingTemplateList",
     columnsList: this.allColumns,
     sortField: "NursingId",
@@ -55,7 +58,7 @@ export class NursingMasterComponent {
 
   constructor(
     public _NursingService: NursingMasterService,
-    public toastr: ToastrService, public _matDialog: MatDialog
+    public toastr: ToastrService, public _matDialog: MatDialog, public permissionService: PagePermissionService
   ) { }
 
   ngOnInit(): void { }

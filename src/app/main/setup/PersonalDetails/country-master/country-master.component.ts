@@ -18,33 +18,34 @@ import { PagePermissionService } from "app/main/shared/services/page-permission.
 })
 export class CountryMasterComponent implements OnInit {
     msg: any;
-    countryName:any=""
+    countryName: any = ""
     IsAdd: boolean = this.permissionService.getPermission(permissionCodes.CountryMaster, permissionType.Add);
-      
+
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
-    allcolumns= [
-            // { heading: "Code", key: "countryId", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Country Name", key: "countryName", sort: true, align: 'left', emptySign: 'NA' },
-            // { heading: "User Name", key: "username", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
-            { heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
-                    {
-                        action: gridActions.edit, callback: (data: any) => {
-                            this.onSave(data);
-                        }
-                    }, {
-                        action: gridActions.delete, callback: (data: any) => {
-                            this._CountryService.deactivateTheStatus(data.countryId).subscribe((response: any) => {
-                                this.grid.bindGridData();
-                            });
-                        }
-                    }]
-            } //Action 1-view, 2-Edit,3-delete
-        ]
-        allfilters=[
-            { fieldName: "countryName", fieldValue: "", opType: OperatorComparer.StartsWith },
-            { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
-        ]
+    allcolumns = [
+        // { heading: "Code", key: "countryId", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Country Name", key: "countryName", sort: true, align: 'left', emptySign: 'NA' },
+        // { heading: "User Name", key: "username", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
+        {
+            heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+                {
+                    action: gridActions.edit, visible: this.permissionService.getPermission(permissionCodes.CompanyMaster, permissionType.Edit), callback: (data: any) => {
+                        this.onSave(data);
+                    }
+                }, {
+                    action: gridActions.delete, visible: this.permissionService.getPermission(permissionCodes.CompanyMaster, permissionType.Delete), callback: (data: any) => {
+                        this._CountryService.deactivateTheStatus(data.countryId).subscribe((response: any) => {
+                            this.grid.bindGridData();
+                        });
+                    }
+                }]
+        }
+    ]
+    allfilters = [
+        { fieldName: "countryName", fieldValue: "", opType: OperatorComparer.StartsWith },
+        { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+    ]
     gridConfig: gridModel = {
         permissionCode: permissionCodes.CountryMaster,
         apiUrl: "CountryMaster/List",
@@ -54,7 +55,7 @@ export class CountryMasterComponent implements OnInit {
         filters: this.allfilters
     }
 
-    constructor(public _CountryService: CountryMasterService, public _matDialog: MatDialog,public permissionService: PagePermissionService,
+    constructor(public _CountryService: CountryMasterService, public _matDialog: MatDialog, public permissionService: PagePermissionService,
         public toastr: ToastrService,) { }
 
     ngOnInit(): void { }

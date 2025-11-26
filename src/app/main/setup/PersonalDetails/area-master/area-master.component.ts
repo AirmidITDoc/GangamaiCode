@@ -20,8 +20,8 @@ import { permissionCodes, permissionType } from "app/main/shared/model/permissio
 export class AreaMasterComponent implements OnInit {
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     areaName: any = "";
- IsAdd: boolean = this.permissionService.getPermission(permissionCodes.RelationshipMaster, permissionType.Add);
-     
+    IsAdd: boolean = this.permissionService.getPermission(permissionCodes.AreaMaster, permissionType.Add);
+
     allcolumns = [
         { heading: "Area Name", key: "areaName", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "City Name", key: "cityId", sort: true, align: 'left', emptySign: 'NA' },
@@ -29,12 +29,12 @@ export class AreaMasterComponent implements OnInit {
         {
             heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
                 {
-                    action: gridActions.edit, callback: (data: any) => {
+                    action: gridActions.edit, visible: this.permissionService.getPermission(permissionCodes.AreaMaster, permissionType.Edit), callback: (data: any) => {
                         this.onSave(data);
                     }
                 },
                 {
-                    action: gridActions.delete, callback: (data: any) => {
+                    action: gridActions.delete, visible: this.permissionService.getPermission(permissionCodes.AreaMaster, permissionType.Delete), callback: (data: any) => {
                         this._AreaMasterService.deactivateTheStatus(data.areaId).subscribe((response: any) => {
                             this.grid.bindGridData();
                         });
@@ -47,7 +47,7 @@ export class AreaMasterComponent implements OnInit {
         { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
     ]
     gridConfig: gridModel = {
-          permissionCode: permissionCodes.AreaMaster,
+        permissionCode: permissionCodes.AreaMaster,
         apiUrl: "AreaMaster/List",
         columnsList: this.allcolumns,
         sortField: "areaId",
@@ -56,12 +56,12 @@ export class AreaMasterComponent implements OnInit {
     }
 
     constructor(
-        public _AreaMasterService: AreaMasterService,public permissionService: PagePermissionService,
+        public _AreaMasterService: AreaMasterService, public permissionService: PagePermissionService,
         public toastr: ToastrService, public _matDialog: MatDialog
     ) { }
 
     ngOnInit(): void { }
-   
+
 
     onSave(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element

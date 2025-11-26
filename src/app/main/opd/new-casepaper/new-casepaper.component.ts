@@ -1195,6 +1195,13 @@ export class NewCasepaperComponent implements OnInit {
     }
 
     addNewRow() {
+        const pendingRow = this.dsItemList.data.find(x => x.editable === true);
+
+        if (pendingRow) {
+            this.toastr.warning("Please confirm the current row before adding a new one!");
+            return;
+        }
+
         this.MedicineItemForm.get('ItemId').reset('');
         this.MedicineItemForm.get('ItemGenericNameId').reset('');
         this.MedicineItemForm.get('DoseId').reset('');
@@ -1209,7 +1216,7 @@ export class NewCasepaperComponent implements OnInit {
             editable: true
         } as unknown as MedicineItemList;
 
-        this.Chargelist.push(newRow);
+        this.Chargelist.unshift(newRow);
         this.dsItemList.data = [...this.Chargelist];
     }
 
@@ -1266,15 +1273,19 @@ export class NewCasepaperComponent implements OnInit {
         row.editable = true;
         this.dsItemList.data = [...this.dsItemList.data];
 
-        if (row.precriptionId > 0) {
+        if (row.precriptionId ?? row.presId > 0) {
             this.MedicineItemForm.patchValue({
                 ItemId: row.drugId || row.DrugId,
                 Day: row.days || row.Days,
                 Instruction: row.instruction || row.Instruction,
-                ItemGenericNameId: row.genericId,
+                ItemGenericNameId: row.genericId || row.genericid,
                 DoseId: row.doseId
             });
         }
+    }
+
+    cancelEdit(contact: any) {
+        contact.editable = false;
     }
 
     Day1: any = 0;

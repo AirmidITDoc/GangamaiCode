@@ -7,6 +7,8 @@ import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/air
 import { ToastrService } from "ngx-toastr";
 import { NewVillageComponent } from "./new-village/new-village.component";
 import { VillageMasterService } from "./village-master.service";
+import { PagePermissionService } from "app/main/shared/services/page-permission.service";
+import { permissionCodes, permissionType } from "app/main/shared/model/permission.model";
 
 @Component({
     selector: "app-village-master",
@@ -17,38 +19,40 @@ import { VillageMasterService } from "./village-master.service";
 })
 export class VillageMasterComponent implements OnInit {
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
-     msg: any;
-     villageName: any = "";
+    msg: any;
+    villageName: any = "";
+    IsAdd: boolean = this.permissionService.getPermission(permissionCodes.VillageMaster, permissionType.Add);
 
-        allcolumns = [
-            // { heading: "Code", key: "villageId", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "VillageName", key: "villageName", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "TalukaName", key: "talukaName", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "UserName", key: "addedByName", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
-            {
-                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
-                    {
-                        action: gridActions.edit, callback: (data: any) => {
-                            this.onSave(data);
-                        }
-                    }, {
-                        action: gridActions.delete, callback: (data: any) => {
-                            this._VillageMasterService.deactivateTheStatus(data.villageId).subscribe((response: any) => {
-                                this.toastr.success(response.message);
-                                this.grid.bindGridData();
-                            });
-                        }
-                    }]
-            } //Action 1-view, 2-Edit,3-delete
-        ]
-        
-         allfilters = [
-            { fieldName: "villageName", fieldValue: "", opType: OperatorComparer.Contains },
-            { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
-        ]
+    allcolumns = [
+        // { heading: "Code", key: "villageId", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "VillageName", key: "villageName", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "TalukaName", key: "talukaName", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "UserName", key: "addedByName", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
+        {
+            heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+                {
+                    action: gridActions.edit, visible: this.permissionService.getPermission(permissionCodes.VillageMaster, permissionType.Edit), callback: (data: any) => {
+                        this.onSave(data);
+                    }
+                }, {
+                    action: gridActions.delete, visible: this.permissionService.getPermission(permissionCodes.VillageMaster, permissionType.Delete), callback: (data: any) => {
+                        this._VillageMasterService.deactivateTheStatus(data.villageId).subscribe((response: any) => {
+                            this.toastr.success(response.message);
+                            this.grid.bindGridData();
+                        });
+                    }
+                }]
+        } //Action 1-view, 2-Edit,3-delete
+    ]
 
-     gridConfig: gridModel = {
+    allfilters = [
+        { fieldName: "villageName", fieldValue: "", opType: OperatorComparer.Contains },
+        { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+    ]
+
+    gridConfig: gridModel = {
+        permissionCode: permissionCodes.VillageMaster,
         apiUrl: "VillageMaster/List",
         columnsList: this.allcolumns,
         sortField: "VillageName",
@@ -58,11 +62,12 @@ export class VillageMasterComponent implements OnInit {
 
     constructor(
         public _VillageMasterService: VillageMasterService,
-        public toastr: ToastrService, public _matDialog: MatDialog
+        public toastr: ToastrService, public _matDialog: MatDialog,
+        public permissionService: PagePermissionService
     ) { }
 
     ngOnInit(): void { }
-//filters addedby avdhoot vedpathak date-27/05/2025
+    //filters addedby avdhoot vedpathak date-27/05/2025
     // Clearfilter(event) {
     //     console.log(event)
     //     if (event == 'VillageNameSearch')

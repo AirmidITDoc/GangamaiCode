@@ -17,50 +17,50 @@ import { PagePermissionService } from "app/main/shared/services/page-permission.
     animations: fuseAnimations,
 })
 export class ReligionMasterComponent implements OnInit {
-   @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
- msg: any;
- IsAdd: boolean = this.permissionService.getPermission(permissionCodes.ReligionMaster, permissionType.Add);
-   
- religionName: any = "";
+    @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+    msg: any;
+    IsAdd: boolean = this.permissionService.getPermission(permissionCodes.ReligionMaster, permissionType.Add);
+
+    religionName: any = "";
 
     allcolumns = [
-            // { heading: "Code", key: "religionId", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Religion Name", key: "religionName", sort: true, align: 'left', emptySign: 'NA' },
-            // { heading: "User Name", key: "username", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
-            {
-                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
-                    {
-                        action: gridActions.edit, callback: (data: any) => {
-                            this.onSave(data);
-                        }
-                    }, {
-                        action: gridActions.delete, callback: (data: any) => {
-                            this._religionService.deactivateTheStatus(data.religionId).subscribe((response: any) => {
-                                this.grid.bindGridData();
-                            });
-                        }
-                    }]
-            } //Action 1-view, 2-Edit,3-delete
-        ]
-        
-        allfilters =  [
-            { fieldName: "religionName", fieldValue: "", opType: OperatorComparer.StartsWith },
-            { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
-        ]
-     gridConfig: gridModel = {
-          permissionCode:permissionCodes.ReligionMaster,
+        // { heading: "Code", key: "religionId", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Religion Name", key: "religionName", sort: true, align: 'left', emptySign: 'NA' },
+        // { heading: "User Name", key: "username", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
+        {
+            heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+                {
+                    action: gridActions.edit, visible: this.permissionService.getPermission(permissionCodes.ReligionMaster, permissionType.Edit), callback: (data: any) => {
+                        this.onSave(data);
+                    }
+                }, {
+                    action: gridActions.delete, visible: this.permissionService.getPermission(permissionCodes.ReligionMaster, permissionType.Delete), callback: (data: any) => {
+                        this._religionService.deactivateTheStatus(data.religionId).subscribe((response: any) => {
+                            this.grid.bindGridData();
+                        });
+                    }
+                }]
+        } //Action 1-view, 2-Edit,3-delete
+    ]
+
+    allfilters = [
+        { fieldName: "religionName", fieldValue: "", opType: OperatorComparer.StartsWith },
+        { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+    ]
+    gridConfig: gridModel = {
+        permissionCode: permissionCodes.ReligionMaster,
         apiUrl: "ReligionMaster/List",
         columnsList: this.allcolumns,
         sortField: "religionId",
         sortOrder: 0,
         filters: this.allfilters
     }
-    constructor(public _religionService: ReligionMasterService, public _matDialog: MatDialog,public permissionService: PagePermissionService,
+    constructor(public _religionService: ReligionMasterService, public _matDialog: MatDialog, public permissionService: PagePermissionService,
         public toastr: ToastrService,) { }
 
     ngOnInit(): void { }
-   
+
 
     onSave(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element

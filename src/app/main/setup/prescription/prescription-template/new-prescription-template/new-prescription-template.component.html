@@ -1,0 +1,208 @@
+<div class="dialog-content-wrapper modal-wrapper grid-container">
+    <!-- Modal Header -->
+    <div class="modal-header accent">
+        <div class="modal-header-content">
+            <div class="modal-header-title">
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">New Template </span>
+            </div>
+            <div class="modal-header-right">
+                <div class="comman-date-container">
+                    <div class="comman-date">
+                        <app-common-date [screenFrom]="screenFromString"
+                            (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
+                    </div>
+                    <div class="close-icon">
+                        <button mat-icon-button tabIndex="-1" (click)="onClose()" aria-label="Close dialog">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Body -->
+    <div class="modal-body" fusePerfectScrollbar>
+        <div class="modal-body-container">
+            <form [formGroup]="MedicineItemForm">
+                <div fxLayout="column" class="gap-12">
+
+                    <!-- Store and Ward Dropdown -->
+                    <div class="modal-card-container" style="padding:1px 2px 5px 0px ;">
+                        <mat-card style="padding: 5px;">
+                            <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" class="gap-8">
+                                <mat-radio-group formControlName="opIpType" [(ngModel)]="vSelectedOption">
+                                    <mat-radio-button value='0'>OP</mat-radio-button>
+                                    <mat-radio-button value='1'>IP</mat-radio-button>
+                                </mat-radio-group>
+
+                                <mat-form-field appearance="outline" fxFlex="25%">
+                                    <mat-label>Template Category</mat-label>
+                                    <mat-select placeholder="Template Category" formControlName="templateCategory"
+                                        name="templateCategory">
+                                        <mat-option *ngFor="let i of categoryNames" [value]="i">
+                                            {{i}}</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+
+                                <airmid-textbox label="Template Name" fxFlex="25%" formControlName="presTemplateName"
+                                    [formGroup]="MedicineItemForm">
+                                </airmid-textbox>
+                            </div>
+                        </mat-card>
+                    </div>
+                </div>
+            </form>
+
+            <!-- Item Entry and Table Section -->
+            <div class="modal-card-container">
+                <mat-card style="padding: 5px;">
+                    <form [formGroup]="MedicineItemForm">
+                        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row wrap" class="gap-8">
+                            <airmid-autocomplete label="Enter Drug Name" [formGroup]="MedicineItemForm"
+                                formControlName="drugId" placeholderText="Enter Drug Name" fxFlex
+                                [ApiUrl]="'ItemMaster/GetItemListForPrescription?StoreId=' + vstoreId + '&ItemName='"
+                                (selectionChange)="selectChangeItemName($event)" TextField="formattedText"
+                                ValueField="ItemId" (onClearSelection)="ItemFromReset()">
+                            </airmid-autocomplete>
+
+                            <airmid-dropdown label="Dose Name" formControlName="doseId" fxFlex="15%"
+                                [formGroup]="MedicineItemForm" [mode]="autocompleteModeDose"
+                                (selectionChange)="selectChangeDoseName($event)">
+                            </airmid-dropdown>
+
+                            <airmid-textbox label="Days" formControlName="days" [formGroup]="MedicineItemForm"
+                                fxFlex="8%" [(ngModel)]="vDay" (keypress)="keyPressAlphanumeric($event)">
+                            </airmid-textbox>
+
+                            <airmid-textbox label="Qty Per Day" formControlName="qtyPerDay" fxFlex="8%"
+                                [formGroup]="MedicineItemForm" (keypress)="keyPressAlphanumeric($event)">
+                            </airmid-textbox>
+
+                            <airmid-textbox label="Total Qty" formControlName="totalQty" fxFlex="8%"
+                                [formGroup]="MedicineItemForm" readonly (keypress)="keyPressAlphanumeric($event)">
+                            </airmid-textbox>
+
+                            <airmid-textbox label="Instruction" formControlName="instruction" fxFlex="15%"
+                                [maxLength]="200" [formGroup]="MedicineItemForm" [(ngModel)]="vInstruction">
+                            </airmid-textbox>
+
+                            <div class="input-add-button">
+                                <div matTooltip="Select name to enable this button!!"
+                                    [matTooltipDisabled]="!MedicineItemForm.invalid" [matTooltipPosition]="'above'">
+                                    <button #addbutton class="btn btn-primary btn-with-icon" (click)="onAdd()">
+                                        <span class="btn-icon">
+                                            <mat-icon> add </mat-icon>
+                                        </span>
+                                        <span>Add</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+
+                    <!-- Item Table Section -->
+                    <div class="modal-card-container table-container">
+                        <div class="table-row gap-12" fxLayout="column" fxLayout.gt-md="row">
+                            <div class="table-left" fxFlex fxFlex.xs="100%" fxFlex.sm="70%">
+                                <mat-card>
+                                    <mat-table class="h-280" matSort [dataSource]="dsItemList"
+                                        [@animateStagger]="{value:'50'}">
+
+                                        <ng-container matColumnDef="ItemName">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                ItemName
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                <span> {{element.drugName}}</span>
+                                            </mat-cell>
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="DoseName">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                DoseName
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                <span> {{element.doseName}}</span>
+                                            </mat-cell>
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="day">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                Day
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                <span> {{element.days}}</span>
+                                            </mat-cell>
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="QtyPerday">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                QtyPerDay
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                <span> {{element.qtyPerDay}}</span>
+                                            </mat-cell>
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="totalQty">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                TotalQty
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                <span> {{element.totalQty}}</span>
+                                            </mat-cell>
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="instr">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                Instruction
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                <span> {{element.instruction}}</span>
+                                            </mat-cell>
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="Action" stickyEnd>
+                                            <mat-header-cell *matHeaderCellDef class="table-actions">Action
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let contact">
+                                                <ng-container class="actions">
+                                                    <mat-icon (click)="deleteTableRow($event ,contact)" color="warn">
+                                                        delete
+                                                    </mat-icon>
+                                                </ng-container>
+                                            </mat-cell>
+                                        </ng-container>
+
+                                        <mat-header-row class="accent"
+                                            *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+                                        <mat-row *matRowDef="let row; columns: displayedColumns;" class="element"
+                                            [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                                    </mat-table>
+                                </mat-card>
+                            </div>
+                        </div>
+                    </div>
+                </mat-card>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="modal-footer" style="margin-top: 10px;">
+        <!-- <div>
+            <app-airmid-slider label="IsActive/Deactive" formControlName="isActive" [formGroup]="doseForm"
+                [(ngModel)]="isActive"></app-airmid-slider>
+        </div> -->
+
+        <div class="footer-navigation-container">
+            <div class="modal-footer-buttons">
+                <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
+                <button class="btn btn-primary" (click)="onSave()">
+                    Save
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

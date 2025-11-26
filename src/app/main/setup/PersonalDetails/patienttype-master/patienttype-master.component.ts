@@ -18,36 +18,35 @@ import { PagePermissionService } from "app/main/shared/services/page-permission.
 })
 export class PatienttypeMasterComponent implements OnInit {
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
-patientType: any = "";
-IsAdd: boolean = this.permissionService.getPermission(permissionCodes.PatientType, permissionType.Add);
-  
-        allcolumns= [
-            // { heading: "Code", key: "patientTypeId", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Patient Type Name", key: "patientType", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
-            {
-                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
-                    {
-                        action: gridActions.edit, callback: (data: any) => {
-                            this.onSave(data);
-                        }
-                    }, {
-                        action: gridActions.delete, callback: (data: any) => {
-                            this._PatienttypeMasterService.deactivateTheStatus(data.patientTypeId).subscribe((response: any) => {
-                                this.grid.bindGridData();
-                            });
-                        }
-                    }]
-            } //Action 1-view, 2-Edit,3-delete
-        ]
-        
-        allfilters= [
-            { fieldName: "patientType", fieldValue: "", opType: OperatorComparer.StartsWith },
-            { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
-        ]
-        gridConfig: gridModel = {
-               permissionCode:permissionCodes.PatientType,
-            
+    patientType: any = "";
+    IsAdd: boolean = this.permissionService.getPermission(permissionCodes.PatientType, permissionType.Add);
+
+    allcolumns = [
+        // { heading: "Code", key: "patientTypeId", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Patient Type Name", key: "patientType", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
+        {
+            heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+                {
+                    action: gridActions.edit, visible: this.permissionService.getPermission(permissionCodes.PatientType, permissionType.Edit), callback: (data: any) => {
+                        this.onSave(data);
+                    }
+                }, {
+                    action: gridActions.delete, visible: this.permissionService.getPermission(permissionCodes.PatientType, permissionType.Delete), callback: (data: any) => {
+                        this._PatienttypeMasterService.deactivateTheStatus(data.patientTypeId).subscribe((response: any) => {
+                            this.grid.bindGridData();
+                        });
+                    }
+                }]
+        } //Action 1-view, 2-Edit,3-delete
+    ]
+
+    allfilters = [
+        { fieldName: "patientType", fieldValue: "", opType: OperatorComparer.StartsWith },
+        { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+    ]
+    gridConfig: gridModel = {
+        permissionCode: permissionCodes.PatientType,
         apiUrl: "PatientType/List",
         columnsList: this.allcolumns,
         sortField: "patientTypeId",
@@ -57,12 +56,12 @@ IsAdd: boolean = this.permissionService.getPermission(permissionCodes.PatientTyp
 
     constructor(
         public _PatienttypeMasterService: PatienttypeMasterService,
-        public toastr: ToastrService, public _matDialog: MatDialog,public permissionService: PagePermissionService,
+        public toastr: ToastrService, public _matDialog: MatDialog, public permissionService: PagePermissionService,
     ) { }
 
     ngOnInit(): void { }
 
-    
+
     onSave(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button

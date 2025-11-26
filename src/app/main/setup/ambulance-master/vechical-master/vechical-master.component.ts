@@ -8,56 +8,53 @@ import { FormGroup } from '@angular/forms';
 import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
 import { VechicalMasterService } from './vechical-master.service';
 import { fuseAnimations } from '@fuse/animations';
+import { permissionCodes, permissionType } from 'app/main/shared/model/permission.model';
+import { PagePermissionService } from 'app/main/shared/services/page-permission.service';
 
 @Component({
-  selector: 'app-vechical-master',
-  templateUrl: './vechical-master.component.html',
-  styleUrls: ['./vechical-master.component.scss'],
-      encapsulation: ViewEncapsulation.None,
-      animations: fuseAnimations,
+    selector: 'app-vechical-master',
+    templateUrl: './vechical-master.component.html',
+    styleUrls: ['./vechical-master.component.scss'],
+    encapsulation: ViewEncapsulation.None,
+    animations: fuseAnimations,
 })
 export class VechicalMasterComponent {
-
- myformSearch:FormGroup
+    myformSearch: FormGroup
     Name: any = "";
-   
+    IsAdd: boolean = this.permissionService.getPermission(permissionCodes.VehicleMaster, permissionType.Add);
+    @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
 
- @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
-   
-    allColumns =  [
-        
+    allColumns = [
         { heading: "VehicleName", key: "vehicleName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         { heading: "VehicleNo", key: "vehicleNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "VehicleModel", key: "vehicleModel", sort: true, align: 'left', emptySign: 'NA', width: 250 },
         { heading: "Vechicaltype", key: "vehicleType", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-        { heading: "Note", key: "note", sort: true, align: 'left', emptySign: 'NA', width: 150  },
-       { heading: "ManuDate", key: "manuDate", sort: true, align: 'left', emptySign: 'NA', width: 150  },
-        { heading: "isActive", key: "isActive", type: gridColumnTypes.status, align: "center" , width: 150 },
+        { heading: "Note", key: "note", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "ManuDate", key: "manuDate", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "isActive", key: "isActive", type: gridColumnTypes.status, align: "center", width: 150 },
         {
             heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, width: 100, actions: [
 
                 {
-                    action: gridActions.edit, callback: (data: any) => {
+                    action: gridActions.edit, visible: this.permissionService.getPermission(permissionCodes.VillageMaster, permissionType.Edit), callback: (data: any) => {
                         this.onNew(data)
                     }
                 }, {
-                    action: gridActions.delete, callback: (data: any) => {
+                    action: gridActions.delete, visible: this.permissionService.getPermission(permissionCodes.VillageMaster, permissionType.Delete), callback: (data: any) => {
                         this._AmbulancemasterService.deactivateTheStatus(data.vehicleId).subscribe((response: any) => {
                             this.grid.bindGridData();
                         });
                     }
                 }]
-        } 
+        }
     ]
-
-
     allFilters = [
         { fieldName: "vehicleName", fieldValue: "", opType: OperatorComparer.StartsWith },
         { fieldName: "IsActive", fieldValue: "1", opType: OperatorComparer.Equals }
     ]
-    
 
     gridConfig: gridModel = {
+        permissionCode: permissionCodes.VillageMaster,
         apiUrl: "Ambulance/List",
         columnsList: this.allColumns,
         sortField: "vehicleId",
@@ -96,13 +93,13 @@ export class VechicalMasterComponent {
     // }
     constructor(
         public _AmbulancemasterService: VechicalMasterService,
-        public toastr: ToastrService, public _matDialog: MatDialog
+        public toastr: ToastrService, public _matDialog: MatDialog,
+        public permissionService: PagePermissionService
     ) { }
 
-    ngOnInit(): void { 
-        this.myformSearch=this._AmbulancemasterService.createSearchForm()
+    ngOnInit(): void {
+        this.myformSearch = this._AmbulancemasterService.createSearchForm()
     }
-
 
     onNew(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element

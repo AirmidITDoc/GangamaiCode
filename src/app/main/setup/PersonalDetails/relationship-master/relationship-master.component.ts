@@ -18,49 +18,49 @@ import { permissionCodes, permissionType } from "app/main/shared/model/permissio
     animations: fuseAnimations,
 })
 export class RelationshipMasterComponent implements OnInit {
-     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+    @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     relationshipName: any = "";
     msg: any;
 
-     IsAdd: boolean = this.permissionService.getPermission(permissionCodes.RelationshipMaster, permissionType.Add);
-        
+    IsAdd: boolean = this.permissionService.getPermission(permissionCodes.RelationshipMaster, permissionType.Add);
 
-        allcolumns =  [
-            // { heading: "Code", key: "relationshipId", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "RelationshipName", key: "relationshipName", sort: true, align: 'left', emptySign: 'NA' },
-            // { heading: "UserName", key: "username", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
-            {
-                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
-                    {
-                       
-                         action: gridActions.edit, visible: this.permissionService.getPermission(permissionCodes.RelationshipMaster, permissionType.Edit), callback: (data: any) => {
-                            this.onSave(data);
-                        }
 
-                    }, {
-                        action: gridActions.delete, callback: (data: any) => {
-                            this._relationshipService.deactivateTheStatus(data.relationshipId).subscribe((response: any) => {
-                                this.grid.bindGridData();
-                            });
-                        }
-                    }]
-            } //Action 1-view, 2-Edit,3-delete
-        ]
-        
-        allfilters =  [
-            { fieldName: "relationshipName", fieldValue: "", opType: OperatorComparer.StartsWith },
-            { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
-        ]
-        gridConfig: gridModel = {
-             permissionCode: permissionCodes.RelationshipMaster,
+    allcolumns = [
+        // { heading: "Code", key: "relationshipId", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "RelationshipName", key: "relationshipName", sort: true, align: 'left', emptySign: 'NA' },
+        // { heading: "UserName", key: "username", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
+        {
+            heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+                {
+
+                    action: gridActions.edit, visible: this.permissionService.getPermission(permissionCodes.RelationshipMaster, permissionType.Edit), callback: (data: any) => {
+                        this.onSave(data);
+                    }
+
+                }, {
+                    action: gridActions.delete,visible: this.permissionService.getPermission(permissionCodes.RelationshipMaster, permissionType.Delete), callback: (data: any) => {
+                        this._relationshipService.deactivateTheStatus(data.relationshipId).subscribe((response: any) => {
+                            this.grid.bindGridData();
+                        });
+                    }
+                }]
+        } //Action 1-view, 2-Edit,3-delete
+    ]
+
+    allfilters = [
+        { fieldName: "relationshipName", fieldValue: "", opType: OperatorComparer.StartsWith },
+        { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+    ]
+    gridConfig: gridModel = {
+        permissionCode: permissionCodes.RelationshipMaster,
         apiUrl: "RelationshipMaster/List",
         columnsList: this.allcolumns,
         sortField: "relationshipId",
         sortOrder: 0,
         filters: this.allfilters
     }
-    
+
 
     constructor(public _relationshipService: RelationshipMasterService, public _matDialog: MatDialog,
         public toastr: ToastrService, public permissionService: PagePermissionService) { }
