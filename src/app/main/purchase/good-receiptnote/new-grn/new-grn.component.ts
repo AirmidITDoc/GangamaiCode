@@ -965,7 +965,7 @@ export class NewGrnComponent implements OnInit, OnDestroy {
             cgst: [item?.CGST, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
             sgst: [item?.SGST, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
             igst: [item?.IGST, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-            conversionFactor: [item?.ConversionFactor, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            conversionFactor: [String(item?.ConversionFactor), [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
         });
     }
     get GrndetailArray(): FormArray {
