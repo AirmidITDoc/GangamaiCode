@@ -82,23 +82,30 @@
                                 <div class="patient-info-title border-bottom pb-2">
                                     <span class="h2">Bill Information</span>
                                 </div>
-                                <div class="patient-info-box my-8">
-                                    <div class="patient-info-row row-gap-4" fxLayout="row wrap">
+                                <div class="patient-info-box" >
+                                    <div class="patient-info-row row-gap-4"  fxLayoutAlign="space-between">
                                         <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
                                             <span class="patient-col-key ">Payment Amount</span>
                                             <span>:</span>
                                             <span class="patient-col-value gap-4" fxLayout="row" style="background-color: yellow;">
                                                 ₹ {{netPayAmt}}
                                             </span>
-                                        </div> 
+                                        </div>
                                         <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
                                             <span class="patient-col-key">Bill Date</span>
                                             <span>:</span>
                                             <span class="patient-col-value gap-4" fxLayout="row">
                                                 {{Date}}
                                             </span>
-                                        </div> 
+                                        </div>
+
+                                         <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%"
+                                        *ngIf="advanceData?.CompanyId != null && advanceData?.CompanyId !== ''">
+                                        <airmid-dropdown label="Company Name" formControlName="CompanyId" [formGroup]="patientDetailsFormGrp"
+                                            [validations]="getValidationMessages().CompanyId" [mode]="autocompleteModecompany"></airmid-dropdown>
                                     </div>
+                                    </div>
+                                   
                                 </div>
                             </div>
                         </mat-card>
@@ -171,11 +178,7 @@
                                                 </mat-form-field>
                                             </ng-container>
 
-                                             <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%" *ngIf="advanceData?.CompanyId != null && advanceData?.CompanyId !== ''">
-                                                <airmid-dropdown label="Company Name" formControlName="CompanyId" [formGroup]="patientDetailsFormGrp"
-                                                   [validations]="getValidationMessages().CompanyId" [mode]="autocompleteModecompany"
-                                                   ></airmid-dropdown>
-                                            </div>
+                                            
                                             <div class="btn-container">
                                                 <div class="add-icon-btn" *ngIf="IsAllowAdd()">
                                                     <button class="btn btn-primary"

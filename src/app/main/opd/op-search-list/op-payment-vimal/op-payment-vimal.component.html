@@ -71,8 +71,8 @@
                             <div class="patient-info-title border-bottom"> 
                             </div>
                             <div class="patient-info-box my-8">
-                                 <div class="patient-info-row row-gap-" fxLayout="row" fxLayoutAlign="space-between"> 
-                                    <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%" >
+                                 <div class="patient-info-row row" fxLayout="row" fxLayoutAlign="space-between"> 
+                                    <div class="patient-col gap-3" fxFlex="20%" fxFlex.gt-sm="25%" >
                                         <span class="patient-col-key "
                                           >Bill Amount</span>
                                         <span>:</span>
@@ -81,21 +81,27 @@
                                             {{netPayAmt | currency:"INR":"symbol"}}
                                         </span>
                                     </div>
-                                      <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
+                                      <div class="patient-col gap-3" fxFlex="20%" fxFlex.gt-sm="25%">
                                             <span class="patient-col-key ">BillNo </span>
                                             <span>:</span>
                                             <span class="patient-col-value">{{advanceData.BillNo}}</span>
                                         </div>
-                                    <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
+                                    <div class="patient-col gap-3" fxFlex="20%" fxFlex.gt-sm="25%">
                                         <span class="patient-col-key">Bill Date</span>
                                         <span>:</span>
                                         <span class="patient-col-value gap-4" fxLayout="row">
                                             {{Date}}
                                         </span>
                                     </div>
-                                    <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="35%">
+                                    <div class="patient-col gap-3" fxFlex="20%" fxFlex.gt-sm="35%">
                                         <mat-checkbox fxFlex [checked]="IsAdv" [(ngModel)]="IsAdv"
                                             (change)="OnAdvAmt($event)">Advance Amount?</mat-checkbox>
+                                    </div>
+
+                                     <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%" *ngIf="advanceData?.CompanyName != null && advanceData?.CompanyName !== ''">
+                                                <airmid-dropdown label="Company Name" formControlName="CompanyId" [formGroup]="patientDetailsFormGrp"
+                                                   [validations]="getValidationMessages().CompanyId" [mode]="autocompleteModecompany"
+                                                ></airmid-dropdown>
                                     </div>
 
                                 </div>
@@ -313,11 +319,7 @@
                                                     </div>
                                                 </mat-form-field>
                                             </ng-container>
-                                             <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%" *ngIf="advanceData?.CompanyName != null && advanceData?.CompanyName !== ''">
-                                                <airmid-dropdown label="Company Name" formControlName="CompanyId" [formGroup]="patientDetailsFormGrp"
-                                                   [validations]="getValidationMessages().CompanyId" [mode]="autocompleteModecompany"
-                                                ></airmid-dropdown>
-                                            </div>
+                                            
                                             <div class="btn-container">
                                                 <div class="add-icon-btn" *ngIf="IsAllowAdd()">
                                                     <button class="btn btn-primary"

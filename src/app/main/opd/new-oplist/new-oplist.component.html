@@ -49,7 +49,7 @@
         <div fxLayout="row" fxLayoutAlign="center center">
 
             <button mat-icon-button matTooltip="Review Company Bill" (click)="OnCompanyBill(element)"
-                *ngIf="element.companyId > 0">
+                *ngIf="element.companyId !=0 && element.balanceAmt !=0 ">
                 <mat-icon>remove_red_eye</mat-icon>
             </button>
 

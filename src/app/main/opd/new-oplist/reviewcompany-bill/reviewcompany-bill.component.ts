@@ -198,7 +198,7 @@ export class ReviewcompanyBillComponent {
   } 
   calculateTotalAmount(): void { 
     let totalSum = this.chargeList.reduce((sum, charge) => sum + (+charge.totalAmt), 0);
-    let DiscPerSum = this.chargeList.reduce((sum, charge) => sum + (+charge.totalAmt), 0);
+    let DiscPerSum = this.chargeList.reduce((sum, charge) => sum + (+charge.concessionPercentage), 0);
     let totalDiscount = this.chargeList.reduce((sum, charge) => sum + (+charge.concessionAmount), 0);
     let totalNet = totalSum - totalDiscount;
 
