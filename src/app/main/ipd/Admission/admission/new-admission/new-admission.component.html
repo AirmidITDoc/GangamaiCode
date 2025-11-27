@@ -416,7 +416,7 @@
                                                         <airmid-textbox label="Aadhaar No. / National ID"
                                                             formControlName="aadharCardNo"
                                                             [value]="registerObj.aadharCardNo ?? ''"
-                                                            [formGroup]="personalFormGroup" [maxLength]="12"
+                                                            [formGroup]="personalFormGroup"  [maxLength]="Is9_Digit_National_Id ? 9 : 12"
                                                             [validations]="getValidationMessages().aadharCardNo">
                                                         </airmid-textbox>
                                                     </div>

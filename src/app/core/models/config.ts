@@ -73,6 +73,7 @@ export class ConfigSettingParams {
     SystemLogOutTime:any;
      IPDraftPrintA4toA5:any;
      IsDischargeSummaryTemplate:any;
+     Is9_Digit_NationalId:any;
 OPDNo:any;
 IsOPBillPrint:any;
 PrintAfterRegistration:any;
@@ -189,7 +190,8 @@ OPEmrPrescriptionA5:any;
         this.SystemLogOutTime=ConfigSettingParams.SystemLogOutTime; 
         this.IPDraftPrintA4toA5=ConfigSettingParams.IPDraftPrintA4toA5; 
         this.ThermalPrint=ConfigSettingParams.ThermalPrint; 
-        this.InterimBillA5Print=ConfigSettingParams.InterimBillA5Print;
+        this.InterimBillA5Print=ConfigSettingParams.InterimBillA5Print; 
+        this.Is9_Digit_NationalId=ConfigSettingParams.Is9_Digit_NationalId;
 this.OPDNo=ConfigSettingParams.OPDNo;
 this.IsOPBillPrint=ConfigSettingParams.IsOPBillPrint;
 this.PrintAfterRegistration=ConfigSettingParams.PrintAfterRegistration;
