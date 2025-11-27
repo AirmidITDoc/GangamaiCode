@@ -48,8 +48,8 @@
                         </mat-icon>
                     </button>
 
-                    <button mat-icon-button matTooltip="Pre-Operation" (click)="preOperationForm(element)">
-                        <!-- this icon should disable when i do checkin then only enable -->
+                    <button mat-icon-button matTooltip="Pre-Operation" (click)="preOperationForm(element)"
+                        [disabled]="!(element.otCheckInId > 0)">
                         <mat-icon>
                             <img width="30px" height="30px" src="assets/images/logos/preOper.png">
                         </mat-icon>
@@ -63,9 +63,8 @@
                         </mat-icon>
                     </button> -->
 
-                    <button mat-icon-button matTooltip="In-Operation" (click)="onInOperation(element)">
-                        <!-- this icon should disable when i do theaterIn then only 
-                         (To record complete surgical procedure ) -->
+                    <button mat-icon-button matTooltip="In-Operation" (click)="onInOperation(element)"
+                    [disabled]="!(element.otPreOperationId > 0)">
                         <mat-icon>
                             <img width="30px" height="30px" src="assets/images/logos/inOper.png">
                         </mat-icon>

@@ -1221,12 +1221,12 @@ export class NewReservationComponent implements OnInit {
     const formattedDate = this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd");
     const formattedTime = formattedDate + this.dateTimeObj.time;
 
-    const surgeryDate = this.datePipe.transform(this.reservationForm.get('surgeryDate')?.value, 'yyyy-MM-dd');
-    const time = this.reservationForm.get('estimateTime')?.value;
-    if (surgeryDate && time) {
-      const combinedDateTime = `${surgeryDate} ${time}`;
-      this.reservationForm.get('estimateTime')?.setValue(combinedDateTime, { emitEvent: false });
-    }
+    // const surgeryDate = this.datePipe.transform(this.reservationForm.get('surgeryDate')?.value, 'yyyy-MM-dd');
+    // const time = this.reservationForm.get('estimateTime')?.value;
+    // if (surgeryDate && time) {
+    //   const combinedDateTime = `${surgeryDate} ${time}`;
+    //   this.reservationForm.get('estimateTime')?.setValue(combinedDateTime, { emitEvent: false });
+    // }
 
     this.reservationForm.get('opipid').setValue(this.opIpId);
     this.reservationForm.get('otrequestId')?.setValue(this.vrequestId || 0);

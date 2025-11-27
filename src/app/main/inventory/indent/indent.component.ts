@@ -43,7 +43,7 @@ export class IndentComponent implements OnInit {
   IsVerify = "0"
   IsActive = "0"
   IsClosed = "0"
-
+  IsIndentVerify: any;
 
   fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
   toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
@@ -61,19 +61,17 @@ export class IndentComponent implements OnInit {
   isShowDetailTable: boolean = false;
 
   ngAfterViewInit() {
-
     this.gridConfig.columnsList.find(col => col.key === 'isclosed')!.template = this.actionsTemplate1;
     this.gridConfig.columnsList.find(col => col.key === 'priority')!.template = this.actionsTemplate2;
     this.gridConfig.columnsList.find(col => col.key === 'isverify')!.template = this.isverifyTemplate;
     this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
     // this.gridConfig1.columnsList.find(col => col.key === 'isclosed')!.template = this.detailactionsTemplate;
-
   }
 
   allcolumns = [
     // { heading: "Status", key: "isclosed", sort: true, align: 'left', type: gridColumnTypes.template, width: 90 },
 
-     { heading: "Status", key: "isclosed", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
+    { heading: "Status", key: "isclosed", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
     { heading: "Priority", key: "priority", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
     { heading: "Is Verify", key: "isverify", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
     { heading: "Indent No", key: "indentNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
@@ -137,12 +135,12 @@ export class IndentComponent implements OnInit {
     public toastr: ToastrService, public _matDialog: MatDialog, private accountService: AuthenticationService,
     public datePipe: DatePipe
   ) { }
-IsPoverify=0;
+
   ngOnInit(): void {
     this.IndentSearchGroup = this._IndentService.IndentSearchFrom();
 
     console.log(this.accountService)
-    // this.IsPoverify=this.accountService.currentUser.Is
+    this.IsIndentVerify = this.accountService.currentUserValue.user.isIndentVerify
   }
 
   ListView(value) {
@@ -164,7 +162,7 @@ IsPoverify=0;
   }
 
   onChangeFirst(value) {
-debugger
+    debugger
     if (this.IndentSearchGroup.get('Verify').value == true) {
       this.IsVerify = "1"
     } else {
@@ -192,7 +190,7 @@ debugger
   }
 
   getfilterdata() {
-debugger
+    debugger
     this.gridConfig = {
       apiUrl: "Indent/IndentList",
       columnsList: this.allcolumns,
@@ -234,23 +232,23 @@ debugger
 
   OnEdit(contact) {
     console.log(contact)
-   
-      const dialogRef = this._matDialog.open(NewIndentComponent,
-        {
-          maxWidth: "90vw",
-          height: '700px',
-          width: '100%',
-          data: {
-            Obj: contact,
-            // chkNewGRN: this.chkNewGRN
-          }
-        });
-      dialogRef.afterClosed().subscribe(result => {
-        console.log('The dialog was closed - Insert Action', result);
-        this.isShowDetailTable = true;
-        this.grid.bindGridData();
+
+    const dialogRef = this._matDialog.open(NewIndentComponent,
+      {
+        maxWidth: "90vw",
+        height: '700px',
+        width: '100%',
+        data: {
+          Obj: contact,
+          // chkNewGRN: this.chkNewGRN
+        }
       });
-   
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed - Insert Action', result);
+      this.isShowDetailTable = true;
+      this.grid.bindGridData();
+    });
+
   }
 
   deleteIndent(data) {

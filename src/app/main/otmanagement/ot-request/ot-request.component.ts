@@ -327,6 +327,7 @@ export class OtReqInsert {
   equipmentsRequired: any;
   infective: any;
   locationId:any;
+  otPreOperationId:any;
   /**
    * Constructor
    *
@@ -399,6 +400,7 @@ export class OtReqInsert {
       this.equipmentsRequired = OtReqInsert.equipmentsRequired || ''
       this.infective = OtReqInsert.infective || ''
       this.locationId = OtReqInsert.locationId || ''
+      this.otPreOperationId = OtReqInsert.otPreOperationId || ''
     }
   }
 }

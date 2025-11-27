@@ -1,5 +1,5 @@
 import { DatePipe, Time } from '@angular/common';
-import { Component, EventEmitter, Input, OnInit, Output, TemplateRef, ViewChild, ViewEncapsulation,ComponentRef } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, TemplateRef, ViewChild, ViewEncapsulation, ComponentRef } from '@angular/core';
 import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
@@ -142,6 +142,7 @@ export class AdmissionComponent implements OnInit {
   @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
   @ViewChild('actionCompany') actionCompany!: TemplateRef<any>;
   @ViewChild('patientNameWithPopoverTemplate') patientNameWithPopoverTemplate!: TemplateRef<any>;
+  @ViewChild('patientNameWithBadgeTemplate') patientNameWithBadgeTemplate!: TemplateRef<any>;
 
   ngAfterViewInit() {
     // Assign the template to the column dynamically
@@ -151,18 +152,16 @@ export class AdmissionComponent implements OnInit {
     this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
     this.gridConfig.columnsList.find(col => col.key === 'companyId')!.template = this.actionCompany;
     this.gridConfig.columnsList.find(col => col.key === 'companyName')!.template = this.patientNameWithPopoverTemplate;
-
+    this.gridConfig.columnsList.find(col => col.key === 'patientName')!.template = this.patientNameWithBadgeTemplate;
   }
 
   allcolumns = [
     { heading: "-", key: "patientTypeID", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
     { heading: "-", key: "admissionType", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 60 },
-
     { heading: "-", key: "isMLC", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 80 },
 
-
     { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
+    { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 300, type: gridColumnTypes.template },
     { heading: "Date", key: "admissionTime", sort: true, align: 'left', emptySign: 'NA', width: 200, type: 8 },
     { heading: "Doctor Name", key: "doctorname", sort: true, align: 'left', emptySign: 'NA', width: 200 },
     { heading: "Ref Doc Name", key: "refDocName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
@@ -171,7 +170,7 @@ export class AdmissionComponent implements OnInit {
     { heading: "Ward Name", key: "roomName", sort: true, align: 'left', emptySign: 'NA', type: 14, width: 170 },
     { heading: "Tariff Name", key: "tariffName", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "Class Name", key: "className", sort: true, align: 'left', emptySign: 'NA', width: 170 },
-    { heading: "Company Name", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 250,type: gridColumnTypes.template },
+    { heading: "Company Name", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 300, type: gridColumnTypes.template },
     { heading: "", key: "companyId", sort: true, align: 'left', emptySign: 'NA', width: 50 },
     { heading: "Relative Name", key: "relativeName", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 14 },
     {
@@ -875,124 +874,124 @@ export class AdmissionComponent implements OnInit {
   }
 
   openPolicyInfoPopover(event: MouseEvent, patientData: any) {
-        event.stopPropagation();
-        
-        // Close any existing popover
-        if (this.overlayRef) {
-            this.overlayRef.dispose();
-            this.overlayRef = null;
-            return;
-        }
+    event.stopPropagation();
 
-        const positionStrategy = this.overlay.position()
-            .flexibleConnectedTo(event.target as HTMLElement)
-            .withPositions([
-                {
-                    // Prefer bottom position
-                    originX: 'center',
-                    originY: 'bottom',
-                    overlayX: 'center',
-                    overlayY: 'top',
-                },
-                {
-                    // Fallback to top if no space below
-                    originX: 'center',
-                    originY: 'top',
-                    overlayX: 'center',
-                    overlayY: 'bottom',
-                },
-                {
-                    // Fallback to right
-                    originX: 'end',
-                    originY: 'center',
-                    overlayX: 'start',
-                    overlayY: 'center',
-                },
-                {
-                    // Fallback to left
-                    originX: 'start',
-                    originY: 'center',
-                    overlayX: 'end',
-                    overlayY: 'center',
-                }
-            ]);
-
-        this.overlayRef = this.overlay.create({
-            positionStrategy,
-            scrollStrategy: this.overlay.scrollStrategies.close(),
-            hasBackdrop: true,
-            backdropClass: 'cdk-overlay-transparent-backdrop'
-        });
-
-        const portal = new ComponentPortal(PolicyInfoPopoverComponent);
-        const componentRef: ComponentRef<PolicyInfoPopoverComponent> = this.overlayRef.attach(portal);
-        componentRef.instance.patientData = patientData;
-
-        this.overlayRef.backdropClick().subscribe(() => {
-            this.overlayRef?.dispose();
-            this.overlayRef = null;
-        });
+    // Close any existing popover
+    if (this.overlayRef) {
+      this.overlayRef.dispose();
+      this.overlayRef = null;
+      return;
     }
 
-    openCompanyApprovalPopover(event: MouseEvent, patientData: any) {
-        event.stopPropagation();
-        
-        // Close any existing popover
-        if (this.overlayRef) {
-            this.overlayRef.dispose();
-            this.overlayRef = null;
-            return;
+    const positionStrategy = this.overlay.position()
+      .flexibleConnectedTo(event.target as HTMLElement)
+      .withPositions([
+        {
+          // Prefer bottom position
+          originX: 'center',
+          originY: 'bottom',
+          overlayX: 'center',
+          overlayY: 'top',
+        },
+        {
+          // Fallback to top if no space below
+          originX: 'center',
+          originY: 'top',
+          overlayX: 'center',
+          overlayY: 'bottom',
+        },
+        {
+          // Fallback to right
+          originX: 'end',
+          originY: 'center',
+          overlayX: 'start',
+          overlayY: 'center',
+        },
+        {
+          // Fallback to left
+          originX: 'start',
+          originY: 'center',
+          overlayX: 'end',
+          overlayY: 'center',
         }
+      ]);
 
-        const positionStrategy = this.overlay.position()
-            .flexibleConnectedTo(event.target as HTMLElement)
-            .withPositions([
-                {
-                    // Prefer bottom position
-                    originX: 'center',
-                    originY: 'bottom',
-                    overlayX: 'center',
-                    overlayY: 'top',
-                },
-                {
-                    // Fallback to top if no space below
-                    originX: 'center',
-                    originY: 'top',
-                    overlayX: 'center',
-                    overlayY: 'bottom',
-                },
-                {
-                    // Fallback to right
-                    originX: 'end',
-                    originY: 'center',
-                    overlayX: 'start',
-                    overlayY: 'center',
-                },
-                {
-                    // Fallback to left
-                    originX: 'start',
-                    originY: 'center',
-                    overlayX: 'end',
-                    overlayY: 'center',
-                }
-            ]);
+    this.overlayRef = this.overlay.create({
+      positionStrategy,
+      scrollStrategy: this.overlay.scrollStrategies.close(),
+      hasBackdrop: true,
+      backdropClass: 'cdk-overlay-transparent-backdrop'
+    });
 
-        this.overlayRef = this.overlay.create({
-            positionStrategy,
-            scrollStrategy: this.overlay.scrollStrategies.close(),
-            hasBackdrop: true,
-            backdropClass: 'cdk-overlay-transparent-backdrop'
-        });
+    const portal = new ComponentPortal(PolicyInfoPopoverComponent);
+    const componentRef: ComponentRef<PolicyInfoPopoverComponent> = this.overlayRef.attach(portal);
+    componentRef.instance.patientData = patientData;
 
-        const portal = new ComponentPortal(CompanyApprovalPopoverComponent);
-        const componentRef: ComponentRef<CompanyApprovalPopoverComponent> = this.overlayRef.attach(portal);
-        componentRef.instance.patientData = patientData;
+    this.overlayRef.backdropClick().subscribe(() => {
+      this.overlayRef?.dispose();
+      this.overlayRef = null;
+    });
+  }
 
-        this.overlayRef.backdropClick().subscribe(() => {
-            this.overlayRef?.dispose();
-            this.overlayRef = null;
-        });
+  openCompanyApprovalPopover(event: MouseEvent, patientData: any) {
+    event.stopPropagation();
+
+    // Close any existing popover
+    if (this.overlayRef) {
+      this.overlayRef.dispose();
+      this.overlayRef = null;
+      return;
     }
+
+    const positionStrategy = this.overlay.position()
+      .flexibleConnectedTo(event.target as HTMLElement)
+      .withPositions([
+        {
+          // Prefer bottom position
+          originX: 'center',
+          originY: 'bottom',
+          overlayX: 'center',
+          overlayY: 'top',
+        },
+        {
+          // Fallback to top if no space below
+          originX: 'center',
+          originY: 'top',
+          overlayX: 'center',
+          overlayY: 'bottom',
+        },
+        {
+          // Fallback to right
+          originX: 'end',
+          originY: 'center',
+          overlayX: 'start',
+          overlayY: 'center',
+        },
+        {
+          // Fallback to left
+          originX: 'start',
+          originY: 'center',
+          overlayX: 'end',
+          overlayY: 'center',
+        }
+      ]);
+
+    this.overlayRef = this.overlay.create({
+      positionStrategy,
+      scrollStrategy: this.overlay.scrollStrategies.close(),
+      hasBackdrop: true,
+      backdropClass: 'cdk-overlay-transparent-backdrop'
+    });
+
+    const portal = new ComponentPortal(CompanyApprovalPopoverComponent);
+    const componentRef: ComponentRef<CompanyApprovalPopoverComponent> = this.overlayRef.attach(portal);
+    componentRef.instance.patientData = patientData;
+
+    this.overlayRef.backdropClick().subscribe(() => {
+      this.overlayRef?.dispose();
+      this.overlayRef = null;
+    });
+  }
 
   // GetAdmissiondetail() {
   //   debugger
@@ -1669,7 +1668,7 @@ export class RegInsert {
   medTourismVisaValidityDate: Date;
   medTourismDateOfEntry: Date;
   emgId: any;
-  traiffId:any;
+  traiffId: any;
   // updatedBy:any;
 
 
@@ -1761,7 +1760,7 @@ export class RegInsert {
       this.medTourismVisaValidityDate = RegInsert.medTourismVisaValidityDate || this.currentDate;
       this.medTourismDateOfEntry = RegInsert.medTourismDateOfEntry || this.currentDate;
       this.emgId = RegInsert.emgId || 0
-      this.traiffId = RegInsert.traiffId || 0 ;
+      this.traiffId = RegInsert.traiffId || 0;
       // this.updatedBy = RegInsert.updatedBy || 0 ;
 
     }
