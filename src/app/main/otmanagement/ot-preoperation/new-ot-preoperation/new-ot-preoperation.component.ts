@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormArray, FormGroup, UntypedFormBuilder } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { fuseAnimations } from '@fuse/animations';
 import { ToastrService } from 'ngx-toastr';
@@ -13,6 +13,7 @@ import { OtPreoperationService } from '../ot-preoperation.service';
 import { OtReserInsert } from '../../ot-reservation/ot-reservation.component';
 import { CdkDragDrop, CdkDragMove, moveItemInArray } from '@angular/cdk/drag-drop';
 import { CdkScrollable } from '@angular/cdk/scrolling';
+import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 
 @Component({
   selector: 'app-new-ot-preoperation',
@@ -24,6 +25,8 @@ import { CdkScrollable } from '@angular/cdk/scrolling';
 export class NewOtPreoperationComponent {
   preOperationForm: FormGroup;
   searchFormGroup: FormGroup;
+  preOperationFinalForm: FormGroup;
+
 
   vSelectedOption: any = "OP";
   vsurgeryType: any = "1";
@@ -113,16 +116,26 @@ export class NewOtPreoperationComponent {
   constructor(public _OTPreOperationService: OtPreoperationService,
     public dialogRef: MatDialogRef<NewOtPreoperationComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    public _matDialog: MatDialog,
+    public _matDialog: MatDialog, private _formBuilder: UntypedFormBuilder,
     private ref: MatDialogRef<NewOtPreoperationComponent>,
     public _AdmissionService: AdmissionService,
-    public datePipe: DatePipe,
+    public datePipe: DatePipe, private _FormvalidationserviceService: FormvalidationserviceService,
     public toastr: ToastrService) { }
 
 
   ngOnInit(): void {
     this.preOperationForm = this._OTPreOperationService.createOtPreOperationForm();
     this.preOperationForm.markAllAsTouched();
+
+    this.preOperationFinalForm = this.createOtPreOperationFinalForm();
+
+     this.tOtPreOperationAttendingDetailsArray.push(this.createtOtPreOperationAttendingDetailsInsert());
+    this.tOtPreOperationCathlabDiagnosesArray.push(this.createtOtPreOperationCathlabDiagnosesInsert());
+    this.tOtPreOperationDiagnoses.push(this.createtOtPreOperationDiagnosesInsert());
+    this.tOtPreOperationSurgeryDetailsArray.push(this.createtOtPreOperationSurgeryDetailsInsert());
+
+
+
 
     if ((this.data?.otReservationId) > 0) {
       this.registerObj1 = this.data
@@ -177,6 +190,111 @@ export class NewOtPreoperationComponent {
       this.getReservationAttendentDetList(this.registerObj1);
     }
   }
+
+
+
+  createOtPreOperationFinalForm() {
+    return this._formBuilder.group({
+      otpreOperationId:[0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      otreservationId:[0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      otpreOperationDate:  [this.datePipe.transform(new Date(), 'yyyy-MM-dd'), [this._FormvalidationserviceService.allowEmptyStringValidator(), this._FormvalidationserviceService.validDateValidator()]],
+      otpreOperationTime: [this.datePipe.transform(new Date(), 'shortTime'), [this._FormvalidationserviceService.allowEmptyStringValidator()]],
+      opipid: [0],
+      opiptype: 1,
+      categoryType:[1, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      ottable: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      surgeryDate: [this.datePipe.transform(new Date(), 'yyyy-MM-dd'), [this._FormvalidationserviceService.allowEmptyStringValidator(), this._FormvalidationserviceService.validDateValidator()]],
+      duration: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      fromTime: [this.datePipe.transform(new Date(), 'shortTime'), [this._FormvalidationserviceService.allowEmptyStringValidator()]],
+      toTime:[this.datePipe.transform(new Date(), 'shortTime'), [this._FormvalidationserviceService.allowEmptyStringValidator()]],
+      bloodArranged: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      pacrequired:[0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      equipmentsRequired:[0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      infective:[0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      clearanceMedical: true,
+      clearanceFinancial: true,
+
+      tOtPreOperationAttendingDetails: this._formBuilder.array([]),
+      tOtPreOperationCathlabDiagnose: this._formBuilder.array([]),
+      tOtPreOperationDiagnoses: this._formBuilder.array([]),
+      tOtPreOperationSurgeryDetails: this._formBuilder.array([]),
+    });
+  }
+  // || element.VerifyQuantit
+  createtOtPreOperationAttendingDetailsInsert(element: any = {}): FormGroup {
+    debugger
+    return this._formBuilder.group({
+      otpreOperationAttendingDetId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      otpreOperationId: [element.ItemID || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      doctorTypeId: [element.Qty || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      doctorId: [false],
+      seqNo: [0 | 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+    
+    });
+  }
+ createtOtPreOperationCathlabDiagnosesInsert(element: any = {}): FormGroup {
+    debugger
+    return this._formBuilder.group({
+      otpreOperationCathLabDiagnosisDetId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      otpreOperationId: [element.ItemID || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      descriptionName: [element.Qty || ""],
+     
+    });
+  }
+ createtOtPreOperationDiagnosesInsert(element: any = {}): FormGroup {
+    debugger
+    return this._formBuilder.group({
+      otpreOperationDiagnosisDetId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      otpreOperationId: [element.ItemID || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      descriptionName: [element.Qty || ''],
+      descriptionType: [0],
+     
+    });
+  }
+ createtOtPreOperationSurgeryDetailsInsert(element: any = {}): FormGroup {
+    debugger
+    return this._formBuilder.group({
+      otpreOperationSurgeryDetId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      otpreOperationId: [element.otpreOperationId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      surgeryCategoryId: [element.surgeryCategoryId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      surgeryId:  [element.surgeryId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      surgeryPart:  [''],
+      surgeryFromTime: [this.datePipe.transform(new Date(), 'shortTime'), [this._FormvalidationserviceService.allowEmptyStringValidator()]],
+      surgeryEndTime: [this.datePipe.transform(new Date(), 'shortTime'), [this._FormvalidationserviceService.allowEmptyStringValidator()]],
+      surgeryDuration:  [ 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      isPrimary:  [0],
+      surgeonId:  [element.surgeonId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      anesthetistId:  [element.anesthetistId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+     
+      seqNo: [''],
+    
+    });
+  }
+
+
+
+
+ 
+  get tOtPreOperationAttendingDetailsArray(): FormArray {
+    return this.preOperationForm.get('tOtPreOperationAttendingDetails') as FormArray;
+  }
+
+
+  get tOtPreOperationCathlabDiagnosesArray(): FormArray {
+    return this.preOperationForm.get('tOtPreOperationCathlabDiagnoses') as FormArray;
+  }
+
+
+  get tOtPreOperationDiagnoses(): FormArray {
+    return this.preOperationForm.get('tOtPreOperationDiagnoses') as FormArray;
+  }
+
+
+  get tOtPreOperationSurgeryDetailsArray(): FormArray {
+    return this.preOperationForm.get('tOtPreOperationSurgeryDetails') as FormArray;
+  }
+
+
 
   keyPressAlphanumeric(event) {
     var inp = String.fromCharCode(event.keyCode);
@@ -692,7 +810,77 @@ export class NewOtPreoperationComponent {
   }
   /////////////////////////////// attendent detail part end/////////////////////////////
 
-  onSubmit() { }
+
+
+   onSubmit() {
+
+    if ((!this.dssurgeryDetailList.data.length)) {
+      this.toastr.warning('Data is not available in list ,please add item in the list.', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+
+    this.tOtPreOperationAttendingDetailsArray.clear();
+    if (this.dsattendentDetailList.data.length === 0) {
+      this.toastr.warning('No data in the item list!', 'Warning');
+      return;
+    }
+
+    this.dsattendentDetailList.data.forEach(item => {
+      this.tOtPreOperationAttendingDetailsArray.push(this.createtOtPreOperationAttendingDetailsInsert(item));
+    });
+
+     this.dsattendentDetailList.data.forEach(item => {
+      this.tOtPreOperationCathlabDiagnosesArray.push(this.createtOtPreOperationCathlabDiagnosesInsert(item));
+    });
+     this.dsattendentDetailList.data.forEach(item => {
+      this.tOtPreOperationDiagnoses.push(this.createtOtPreOperationDiagnosesInsert(item));
+    });
+     this.dsattendentDetailList.data.forEach(item => {
+      this.tOtPreOperationSurgeryDetailsArray.push(this.createtOtPreOperationSurgeryDetailsInsert(item));
+    });
+
+   
+
+    // if (this.status == "1")
+    //   this.IndentSaveFrom.get('priority').setValue(true)
+    // else
+    //   this.IndentSaveFrom.get('priority').setValue(false)
+
+    if (!this.preOperationForm.invalid) {
+      // this.IndentSaveFrom.get("indentId").setValue(this.IndentId)
+
+      console.log(this.preOperationForm.value)
+
+       this.preOperationFinalForm.get("tOtPreOperationAttendingDetails").setValue(this.tOtPreOperationAttendingDetailsArray)
+this.preOperationFinalForm.get("tOtPreOperationCathlabDiagnose").setValue(this.tOtPreOperationCathlabDiagnosesArray)
+this.preOperationFinalForm.get("tOtPreOperationDiagnoses").setValue(this.tOtPreOperationDiagnoses)
+this.preOperationFinalForm.get("tOtPreOperationSurgeryDetails").setValue(this.tOtPreOperationSurgeryDetailsArray)
+
+
+        console.log(this.preOperationFinalForm.value)
+     
+      this._OTPreOperationService.InsertOTPreOperation(this.preOperationFinalForm.value).subscribe(response => {
+        // this.viewgetIndentReportPdf(response)
+        this._matDialog.closeAll();
+
+
+      });
+    } else {
+      let invalidFields = [];
+      if (this.preOperationForm.invalid) {
+        for (const controlName in this.preOperationForm.controls) {
+          if (this.preOperationForm.controls[controlName].invalid) { invalidFields.push(`preOperationForm Form: ${controlName}`); }
+        }
+      }
+      if (invalidFields.length > 0) {
+        invalidFields.forEach(field => { this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',); });
+      }
+
+    }
+
+  }
 
   onClear(val: boolean) {
     this.dialogRef.close(val);

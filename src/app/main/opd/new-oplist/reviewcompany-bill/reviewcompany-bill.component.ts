@@ -54,7 +54,7 @@ export class ReviewcompanyBillComponent {
   vPrice = '0';
   vQty: any;
 
-
+  autocompleteModeConcession: string = "Concession";
   public isDiscountApplied = false;
   Consessionres: boolean = false;
   // 'Status', 'ServiceCode',
@@ -332,7 +332,7 @@ export class ReviewcompanyBillComponent {
   calculateTotalAmount(): void {
    debugger
     let totalSum = this.chargeList.reduce((sum, charge) => sum + (+charge.TotalAmt), 0);
-    let totalDiscount = this.chargeList.reduce((sum, charge) => sum + (+charge.DiscAmt), 0);
+    let totalDiscount = this.chargeList.reduce((sum, charge) => sum + (+charge.DiscAmt || 0), 0);
     let totalNet = totalSum - totalDiscount;
 
     this.OPFooterForm.patchValue({
