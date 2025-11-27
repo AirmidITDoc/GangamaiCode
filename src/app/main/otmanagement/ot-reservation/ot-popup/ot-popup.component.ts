@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
 import { fuseAnimations } from '@fuse/animations';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { DatePipe } from '@angular/common';
@@ -16,7 +16,7 @@ import { OtReservationService } from '../ot-reservation.service';
   animations: fuseAnimations
 })
 export class OtPopupComponent {
- reservationDateForm: FormGroup;
+  reservationDateForm: FormGroup;
   registeredObj: any;
   vPatientName: any;
   vHeadingName: any = ''
@@ -34,7 +34,7 @@ export class OtPopupComponent {
   ) { }
 
   ngOnInit(): void {
-    this.reservationDateForm=this._OtReservationService.CreateForm()
+    this.reservationDateForm = this._OtReservationService.CreateForm()
     if (this.data) {
       this.registeredObj = this.data;
       this.vPatientName = this.registeredObj.patientName + "-" + this.registeredObj.regNo
@@ -43,11 +43,8 @@ export class OtPopupComponent {
   }
 
   onSubmit() {
-    const currentDate = new Date();
-    const datePipe = new DatePipe('en-US');
-    const formattedTime = datePipe.transform(currentDate, 'shortTime');
-    const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
-    const formattedDateTime = formattedTime + ' ' + formattedDate
+    const surgeryDate = this.reservationDateForm.get('surgeryDate')?.value;
+    const formattedDate = this.datePipe.transform(surgeryDate, 'yyyy-MM-dd');
 
     Swal.fire({
       title: 'Do you want to Change the Reservation Date?',
@@ -58,31 +55,56 @@ export class OtPopupComponent {
       cancelButtonColor: "#d33",
       confirmButtonText: "Yes, Cancel it!"
     }).then((flag) => {
-      debugger
       if (flag.isConfirmed) {
+        debugger
+        this.reservationDateForm.get('opipid').setValue(this.registeredObj.opIpId);
+        this.reservationDateForm.get('otreservationId')?.setValue(this.registeredObj.otReservationId);
+        this.reservationDateForm.get('surgeryDate')?.setValue(formattedDate);
+        if (!this.reservationDateForm.invalid) {
+          this.reservationDateForm.removeControl('PatientName');
+          console.log(this.reservationDateForm.value);
 
-        let bookingcancle = {};
-        bookingcancle['otBookingID'] = 0;
-        bookingcancle['oldOTBookingID'] = this.registeredObj?.OTBookingID;
-        bookingcancle['oP_IP_ID'] = this.registeredObj?.OP_IP_ID;
-        bookingcancle['opDate'] = this.dateTimeObj.date
-        bookingcancle['opTime'] = this.dateTimeObj.time
-        bookingcancle['createdBy'] = this._loggedService.currentUserValue.user.id;
-        bookingcancle['reason'] = this.reservationDateForm.get('Reason').value || ''
-        let submitData = {
-          "saveOTBookingParamPostPone": bookingcancle,
-        };
-        console.log(submitData);
-
-        this._OtReservationService.getBookingDatePostpone(submitData).subscribe(
-          (response) => {
-            if (response) {
-              this.onClose();
+          this._OtReservationService.getBookingDatePostpone(this.reservationDateForm.value).subscribe(
+            (response) => {
+              if (response) {
+                this.onClose();
+              }
             }
+          );
+        }
+        else {
+          const invalidFields = this.collectErrors(this.reservationDateForm);
+
+          if (invalidFields.length > 0) {
+            invalidFields.forEach(field => {
+              this.toastr.warning(`Field "${field}" is invalid.`, 'Warning');
+            });
+            return;
           }
-        );
+        }
+
       }
     });
+  }
+
+  collectErrors(formGroup: FormGroup | FormArray, parentKey: string = ''): string[] {
+    let errors: string[] = [];
+
+    Object.keys(formGroup.controls).forEach(key => {
+      const control = formGroup.get(key);
+      const newKey = parentKey ? `${parentKey}.${key}` : key;
+
+      if (control instanceof FormGroup || control instanceof FormArray) {
+        // go deeper
+        errors = errors.concat(this.collectErrors(control, newKey));
+      } else {
+        if (control?.invalid) {
+          errors.push(newKey);
+        }
+      }
+    });
+
+    return errors;
   }
 
   onClose() {

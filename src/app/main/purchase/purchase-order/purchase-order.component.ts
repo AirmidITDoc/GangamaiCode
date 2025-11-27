@@ -30,7 +30,7 @@ export class PurchaseOrderComponent implements OnInit {
   StoreId: any = String(this.accountService.currentUserValue.user.storeId);
   SupplierId: any = "0";
   status = "0";
-
+IsPoverify=0;
 
   @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
   @ViewChild('grid1') grid1: AirmidTableComponent;
@@ -127,6 +127,7 @@ export class PurchaseOrderComponent implements OnInit {
 
   ngOnInit(): void {
     this.mysearchform = this._PurchaseOrderService.PurchaseSearchFrom();
+    this.IsPoverify=this.accountService.currentUserValue.user.isPoverify
   }
 
 

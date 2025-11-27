@@ -29,13 +29,18 @@
                             type="text" [(ngModel)]="vPatientName" readonly>
                     </mat-form-field>
 
-                    <app-common-date [screenFrom]="screenFromString"
-                        (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
+                    <mat-form-field appearance="outline" fxFlex>
+                        <mat-label>Surgery Date</mat-label>
+                        <input name="Surgerydate" matInput [matDatepicker]="picker1" formControlName="surgeryDate"
+                            #surgeryDateInput />
+                        <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                        <mat-datepicker #picker1></mat-datepicker>
+                    </mat-form-field>
                 </div>
 
                 <mat-form-field appearance="outline" fxFlex>
                     <mat-label>Enter Reason...</mat-label>
-                    <textarea rows="5" name="Reason" formControlName="Reason" placeholder="Enter Reason...." matInput
+                    <textarea rows="5" name="Reason" formControlName="reason" placeholder="Enter Reason...." matInput
                         type="text"></textarea>
                 </mat-form-field>
             </div>

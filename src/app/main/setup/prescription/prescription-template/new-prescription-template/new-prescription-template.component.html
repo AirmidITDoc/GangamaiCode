@@ -88,15 +88,14 @@
                             </airmid-textbox>
 
                             <div class="input-add-button">
-                                <div matTooltip="Select name to enable this button!!"
-                                    [matTooltipDisabled]="!MedicineItemForm.invalid" [matTooltipPosition]="'above'">
+                                <!-- <div [matTooltipPosition]="'above'"> -->
                                     <button #addbutton class="btn btn-primary btn-with-icon" (click)="onAdd()">
                                         <span class="btn-icon">
                                             <mat-icon> add </mat-icon>
                                         </span>
                                         <span>Add</span>
                                     </button>
-                                </div>
+                                <!-- </div> -->
                             </div>
                         </div>
                     </form>

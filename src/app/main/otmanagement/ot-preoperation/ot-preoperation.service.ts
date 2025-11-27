@@ -118,7 +118,7 @@ export class OtPreoperationService {
       clearanceFinancial: false,
       infective: ['1'],
       bodyPartId: [],
-      paymentMode:[1],
+      paymentMode: [1],
     });
   }
 
@@ -134,8 +134,14 @@ export class OtPreoperationService {
   public getRtrvReservationAttendentList(employee) {
     return this._httpClient.PostData("OTReservation/OtReservationAttendingDetailList", employee);
   }
+   public getRtrvpreOperAttendentList(employee) {
+    return this._httpClient.PostData("OTPreOperation/preOperationAttendentList", employee);
+  }
   public getRtrvReservationSurgeryList(employee) {
     return this._httpClient.PostData("OTReservation/OtReservationSurgeryDetailList", employee);
+  }
+  public getRtrvPreOperSurgeryList(employee) {
+    return this._httpClient.PostData("OTPreOperation/perOperationsurgeryList", employee);
   }
   public getotsiteDiscById(Id) {
     return this._httpClient.GetData("SiteDescriptionMaster/" + Id);
@@ -144,8 +150,14 @@ export class OtPreoperationService {
     return this._httpClient.GetData("VisitDetail/DoctorTypeDoctorList?DocTypeId=" + doctTypeId)
   }
 
- public InsertOTPreOperation(employee) {
-    return this._httpClient.PostData("OTPreOperation/Insert", employee);
+  public InsertOTPreOperation(employee) {
+    if (employee.otpreOperationId) {
+      return this._httpClient.PutData("OTPreOperation/Edit/" + employee.otpreOperationId, employee);
+    } else return this._httpClient.PostData("OTPreOperation/Insert", employee);
+  }
+
+  public getpreOPerById(Id) {
+    // return this._httpClient.GetData("OTReservation/Getcheckinout/" + Id);
   }
 
 }

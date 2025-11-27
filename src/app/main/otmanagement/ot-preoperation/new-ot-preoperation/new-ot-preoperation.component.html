@@ -24,7 +24,7 @@
     <div class="modal-body preOperMiddle" fusePerfectScrollbar>
         <div class="modal-body-container">
             <div fxLayout="column" class="gap-12"></div>
-            <form [formGroup]="preOperationForm">
+            <form [formGroup]="preOperationFinalForm">
                 <div class="modal-card-container" style="padding: 10px 2px 5px 0px ;">
                     <div fxFlex.gt-sm="100%" fxFlex class="patient-info-container">
                         <div class="patient-info-container">
@@ -172,7 +172,7 @@
 
                                         <div fxFlex="10%" fxFlex.xs="100%" fxFlex.sm="33%">
                                             <airmid-dropdown label="Surgery Type" formControlName="surgeryCategoryId"
-                                                [formGroup]="preOperationForm" [value]="registerObj1?.surgeryCategoryId"
+                                                [formGroup]="preOperationFinalForm" [value]="registerObj1?.surgeryCategoryId"
                                                 [mode]="autocompleteModeSiteDescription" #ddlSurgerytype
                                                 [readonly]="true"
                                                 (selectionChange)="selectChangeSurgeryCategory($event)">
@@ -181,7 +181,7 @@
 
                                         <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                                             <airmid-dropdown label="Surgery Name" formControlName="surgeryId"
-                                                [formGroup]="preOperationForm" [mode]="autocompleteModeSurgeryMaster"
+                                                [formGroup]="preOperationFinalForm" [mode]="autocompleteModeSurgeryMaster"
                                                 (selectionChange)="selectChangeSurgery($event)" ValueField="surgeryId"
                                                 TextField="surgeryName"
                                                 ApiUrl="SurgeryMaster/GetSurgeryTypeByOTSurgery">
@@ -225,21 +225,21 @@
 
                                         <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                                             <airmid-dropdown label="Surgeon Name" formControlName="surgeonId"
-                                                [formGroup]="preOperationForm" [mode]="autocompleteModeConDoctor"
+                                                [formGroup]="preOperationFinalForm" [mode]="autocompleteModeConDoctor"
                                                 (selectionChange)="selectChangeSurgeon($event)">
                                             </airmid-dropdown>
                                         </div>
 
                                         <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                            <airmid-dropdown label="Anathesia doctor" formControlName="anestheticsDr"
-                                                [formGroup]="preOperationForm" [mode]="autocompleteModeRefDoctor"
+                                            <airmid-dropdown label="Anathesia doctor" formControlName="anesthetistId"
+                                                [formGroup]="preOperationFinalForm" [mode]="autocompleteModeRefDoctor"
                                                 (selectionChange)="selectChangeAnesth($event)">
                                             </airmid-dropdown>
                                         </div>
 
                                         <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%" fxLayout="column">
                                             <label style="font-weight: bold;">Is Primary:</label>
-                                            <mat-checkbox formControlName="isprimary">Medical</mat-checkbox>
+                                            <mat-checkbox formControlName="isPrimary"></mat-checkbox>
                                         </div>
 
                                         <div class="input-add-button">
@@ -319,15 +319,15 @@
                                             </mat-cell>
                                         </ng-container>
 
-                                        <ng-container matColumnDef="isprimary">
+                                        <ng-container matColumnDef="isPrimary">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Is
                                                 Primary
                                             </mat-header-cell>
                                             <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
                                                 <span>
                                                     <mat-icon color="primary"
-                                                        *ngIf="element.isprimary">check_circle</mat-icon>
-                                                    <mat-icon color="warn" *ngIf="!element.isprimary">cancel</mat-icon>
+                                                        *ngIf="element.isPrimary">check_circle</mat-icon>
+                                                    <mat-icon color="warn" *ngIf="!element.isPrimary">cancel</mat-icon>
                                                 </span>
                                             </mat-cell>
                                         </ng-container>
@@ -396,20 +396,20 @@
 
                                         <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                                             <airmid-dropdown label="Resource Type" formControlName="recourceType"
-                                                [formGroup]="preOperationForm" [mode]="autocompleteModeResourseType">
+                                                [formGroup]="preOperationFinalForm" [mode]="autocompleteModeResourseType">
                                             </airmid-dropdown>
                                         </div>
 
                                         <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                                             <airmid-dropdown label="Doctor Type" formControlName="doctorTypeId"
-                                                [formGroup]="preOperationForm" [mode]="autocompleteModeDoctorType"
+                                                [formGroup]="preOperationFinalForm" [mode]="autocompleteModeDoctorType"
                                                 (selectionChange)="selectChangedepdoctorType($event)">
                                             </airmid-dropdown>
                                         </div>
 
                                         <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                                             <airmid-dropdown label="Doctor Name" formControlName="doctorId" #ddlDoctor
-                                                [formGroup]="preOperationForm" [mode]="autocompleteModeRefDoctor"
+                                                [formGroup]="preOperationFinalForm" [mode]="autocompleteModeRefDoctor"
                                                 (selectionChange)="selectChangedoctor($event)">
                                             </airmid-dropdown>
                                         </div>
@@ -490,13 +490,13 @@
 
                                 <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <airmid-dropdown label="Category Type" formControlName="categoryType"
-                                        [formGroup]="preOperationForm" [mode]="autocompleteModeSurgeryCategory">
+                                        [formGroup]="preOperationFinalForm" [mode]="autocompleteModeSurgeryCategory">
                                     </airmid-dropdown>
                                 </div>
 
                                 <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <airmid-dropdown label="Theater" formControlName="ottable"
-                                        [formGroup]="preOperationForm" ValueField="ottableId" TextField="ottableName"
+                                        [formGroup]="preOperationFinalForm" ValueField="ottableId" TextField="ottableName"
                                         (selectionChange)="onChangeOtTable($event)"
                                         ApiUrl="OTRequest/getlocationByOttable">
                                     </airmid-dropdown>
@@ -504,7 +504,7 @@
 
                                 <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <airmid-dropdown label="Theater Location" formControlName="TheaterLocation"
-                                        [formGroup]="preOperationForm" [mode]="autocompleteModeLocation" #ddlLocation
+                                        [formGroup]="preOperationFinalForm" [mode]="autocompleteModeLocation" #ddlLocation
                                         [readonly]="true"></airmid-dropdown>
                                 </div>
 
@@ -522,45 +522,48 @@
                                     <div fxFlex="30%" fxFlex.xs="100%" fxFlex.sm="33%">
                                         <mat-form-field appearance="outline" style="width: 100%;">
                                             <mat-label>Duration (hours)</mat-label>
-                                            <input matInput type="number" formControlName="duration1"
-                                                (change)="onChangeDuration($event)" min="0" step="0.5">
+                                            <input matInput type="number" formControlName="duration"
+                                                (change)="onChangeDuration1($event)" min="0" step="0.5">
                                         </mat-form-field>
                                     </div>
 
                                     <div fxFlex="30%" fxFlex.xs="100%" fxFlex.sm="33%">
                                         <mat-form-field appearance="outline" style="width: 100%;">
                                             <mat-label>From Time</mat-label>
-                                            <input matInput type="time" formControlName="fromTime1"
-                                                (change)="onChangeTimefrom($event)">
+                                            <input matInput type="time" formControlName="fromTime"
+                                                (change)="onChangeTimefrom1($event)">
                                         </mat-form-field>
                                     </div>
 
                                     <div fxFlex="30%" fxFlex.xs="100%" fxFlex.sm="33%">
                                         <mat-form-field appearance="outline" style="width: 100%;">
                                             <mat-label>To Time</mat-label>
-                                            <input matInput type="time" formControlName="toTime1" readonly
-                                                (change)="onChangeTimeto($event)">
+                                            <input matInput type="time" formControlName="toTime" readonly
+                                                (change)="onChangeTimeto1($event)">
                                         </mat-form-field>
                                     </div>
                                 </div>
 
                                 <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%" fxLayout="column">
                                     <app-airmid-chipautocomplete fxFlex [placeholder]="'Select Diagnosis'"
-                                        [chips]="preOperationForm.get('diagnosis')?.value"
-                                        [apiUrl]="'OTRequest/GetRequestDiagnosisList?DescriptionType=Diagnosis'"
+                                        [chips]="preOperationFinalForm.get('diagnosis')?.value"
+                                        [apiUrl]="'OTPreOperation/GetPreOperationDiagnosisList?DescriptionType=Diagnosis'"
                                         [displayKey]="'descriptionName'" [allowCustom]="true"
                                         (chipsChange)="selectChangeDiagnosis($event)">
                                     </app-airmid-chipautocomplete>
                                 </div>
 
-                                <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <airmid-textbox label="cath Lab Diagnosis" formControlName="cathLabDiagnosis"
-                                        [formGroup]="preOperationForm">
-                                    </airmid-textbox>
+                                <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%" fxLayout="column">
+                                    <app-airmid-chipautocomplete fxFlex [placeholder]="'cath Lab Diagnosis'"
+                                        [chips]="preOperationFinalForm.get('cathLabDiagnosis')?.value"
+                                        [apiUrl]="'OTRequest/GetRequestDiagnosisList?DescriptionType=CathLabDiagnosis'"
+                                        [displayKey]="'descriptionName'" [allowCustom]="true"
+                                        (chipsChange)="selectChangeCathLabDiagnosis($event)">
+                                    </app-airmid-chipautocomplete>
                                 </div>
 
                                 <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <mat-radio-group formControlName="bloodArg">
+                                    <mat-radio-group formControlName="bloodArg" [(ngModel)]="vbloodArg">
                                         <label style="font-weight: bold;">Blood Arranged:</label>
                                         <mat-radio-button value="1">Yes</mat-radio-button>
                                         <mat-radio-button value="0">No</mat-radio-button>
@@ -608,7 +611,7 @@
 
                             <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                                 <airmid-dropdown label="Select Body Part" formControlName="bodyPartId"
-                                    [formGroup]="preOperationForm">
+                                    [formGroup]="preOperationFinalForm">
                                 </airmid-dropdown>
                             </div>
 
@@ -632,20 +635,20 @@
                             <div fxLayout="row" class="gap-8">
                                 <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="40%">
                                     <airmid-textbox label="consent Name" formControlName="consentName"
-                                        [value]="data?.consentName" [formGroup]="preOperationForm" [maxLength]="50">
+                                        [value]="data?.consentName" [formGroup]="preOperationFinalForm" [maxLength]="50">
                                     </airmid-textbox>
                                 </div>
 
                                 <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="40%">
                                     <airmid-dropdown label="Department" [value]="data?.departmentId"
-                                        formControlName="departmentId" [formGroup]="preOperationForm"
+                                        formControlName="departmentId" [formGroup]="preOperationFinalForm"
                                         [mode]="autocompleteModeDepartment">
                                     </airmid-dropdown>
                                 </div>
                             </div>
 
                             <airmid-editor label="Consent Details" formControlName="ConsentText"
-                                [formGroup]="preOperationForm">
+                                [formGroup]="preOperationFinalForm">
                             </airmid-editor>
                         </div>
 

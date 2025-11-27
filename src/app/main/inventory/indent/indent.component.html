@@ -66,7 +66,7 @@
                         <mat-icon>signal_cellular_no_sim</mat-icon>
                     </button>
 
-                    <button *ngIf="!element.isInchargeVerify" mat-icon-button (click)="onVerify(element)">
+                    <button *ngIf="!element.isInchargeVerify && IsIndentVerify" mat-icon-button (click)="onVerify(element)">
                         <mat-icon class="disabled-icon" matTooltip="verify Menu">verified_user</mat-icon>
                     </button>
 
@@ -93,7 +93,7 @@
 
                         <airmid-datepicker [formGroup]="IndentSearchGroup" [isRangePicker]="true"
                             formStartControlName="startdate" formEndControlName="enddate"
-                            [(fromValue)]="gridConfig.filters[2].fieldValue" (dateChange)="onChangeFirst($event)"
+                            [(fromValue)]="gridConfig.filters[2].fieldValue"
                             [(toValue)]="gridConfig.filters[3].fieldValue">
                         </airmid-datepicker>
 

@@ -29,8 +29,8 @@ import { EditGRNDetailsComponent } from './edit-grndetails/edit-grndetails.compo
 
 })
 export class GoodReceiptnoteComponent implements OnInit {
-    reportPrintObjList:any=[]
-    finalamt:any=0;
+    reportPrintObjList: any = []
+    finalamt: any = 0;
     screenFromString = 'admission-form';
     isChecked: boolean = true;
     labelPosition: 'before' | 'after' = 'after';
@@ -45,6 +45,7 @@ export class GoodReceiptnoteComponent implements OnInit {
     StoreId: any = "0";
     SupplierId: any = "0";
     IsVerify: any;
+    IsGRNverify:any;
 
     autocompletestore: string = "Store";
     autocompleteSupplier: string = "SupplierMaster";
@@ -55,31 +56,32 @@ export class GoodReceiptnoteComponent implements OnInit {
     @ViewChild('grid1') grid1: AirmidTableComponent;
 
     @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
-    @ViewChild('actionButtonTemplateStatus') actionButtonTemplateStatus!: TemplateRef<any>; 
+    @ViewChild('actionButtonTemplateStatus') actionButtonTemplateStatus!: TemplateRef<any>;
     @ViewChild('actionButtonTemplateIsClose') actionButtonTemplateIsClose!: TemplateRef<any>;
     @ViewChild('actionButtonTemplateIscheck') actionButtonTemplateIscheck!: TemplateRef<any>;
     @ViewChild('actionButtonTemplateEditsupplier') actionButtonTemplateEditsupplier!: TemplateRef<any>;
     ngAfterViewInit() {
         this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
         this.gridConfig.columnsList.find(col => col.key === 'Status')!.template = this.actionButtonTemplateStatus;
-         this.gridConfig.columnsList.find(col => col.key === 'isClosed')!.template = this.actionButtonTemplateIsClose;
+        this.gridConfig.columnsList.find(col => col.key === 'isClosed')!.template = this.actionButtonTemplateIsClose;
         this.gridConfig.columnsList.find(col => col.key === 'editSupplier')!.template = this.actionButtonTemplateEditsupplier;
-         this.gridConfig1.columnsList.find(col => col.key === 'check')!.template = this.actionButtonTemplateIscheck;
-       
+        this.gridConfig1.columnsList.find(col => col.key === 'check')!.template = this.actionButtonTemplateIscheck;
+
     }
     AllColumns = [
         {
             heading: "Status", key: "Status", align: "right", width: 80, sticky: true, type: gridColumnTypes.template,
             template: this.actionButtonTemplate
         },
-        { heading: "Date/Time", key: "grndate", sort: true, align: 'left', emptySign: 'NA', width: 90},
-        { heading: "", key: "grntime", sort: true, align: 'left', emptySign: 'NA', width: 90},
+        { heading: "Date/Time", key: "grndate", sort: true, align: 'left', emptySign: 'NA', width: 90 },
+        { heading: "", key: "grntime", sort: true, align: 'left', emptySign: 'NA', width: 90 },
         { heading: "GRN No", key: "grnNumber", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "Invoice No", key: "invoiceNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "Supplier Name", key: "supplierName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-        { heading: "", key: "editSupplier", sort: true, align: 'left', emptySign: 'NA', width: 30,type: gridColumnTypes.template,
-         template: this.actionButtonTemplateEditsupplier
-         },
+        {
+            heading: "", key: "editSupplier", sort: true, align: 'left', emptySign: 'NA', width: 30, type: gridColumnTypes.template,
+            template: this.actionButtonTemplateEditsupplier
+        },
         { heading: "Total Amt", key: "totalAmount", sort: true, align: 'left', emptySign: 'NA', width: 150, type: gridColumnTypes.amount },
         { heading: "Disc Amt", key: "totalDiscAmount", sort: true, align: 'left', emptySign: 'NA', width: 140, type: gridColumnTypes.amount },
         { heading: "GST Amt", key: "totalVatamount", sort: true, align: 'left', emptySign: 'NA', width: 140, type: gridColumnTypes.amount },
@@ -88,9 +90,10 @@ export class GoodReceiptnoteComponent implements OnInit {
         { heading: "Debit Note", key: "debitNote", sort: true, align: 'left', emptySign: 'NA', width: 130, type: gridColumnTypes.amount },
         { heading: "Credit Note", key: "creditNote", sort: true, align: 'left', emptySign: 'NA', width: 130, type: gridColumnTypes.amount },
         { heading: "Received By", key: "receivedBy", sort: true, align: 'left', emptySign: 'NA', width: 180 },
-        { heading: "IsClosed", key: "isClosed", sort: true, align: 'left', emptySign: 'NA', width: 70,type: gridColumnTypes.template,
-              template: this.actionButtonTemplateIsClose
-         },
+        {
+            heading: "IsClosed", key: "isClosed", sort: true, align: 'left', emptySign: 'NA', width: 70, type: gridColumnTypes.template,
+            template: this.actionButtonTemplateIsClose
+        },
         {
             heading: "Action", key: "action", align: "right", width: 180, sticky: true, type: gridColumnTypes.template,
             template: this.actionButtonTemplate  // Assign ng-template to the column
@@ -98,8 +101,10 @@ export class GoodReceiptnoteComponent implements OnInit {
     ]
 
     AllDetailsColumns = [
-          { heading: "-", key: "check", sort: false, align: 'left', emptySign: 'NA',width:60,type: gridColumnTypes.template,
-            template:this.actionButtonTemplateIscheck},
+        {
+            heading: "-", key: "check", sort: false, align: 'left', emptySign: 'NA', width: 60, type: gridColumnTypes.template,
+            template: this.actionButtonTemplateIscheck
+        },
         { heading: "Item Name", key: "itemName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         { heading: "UMO", key: "umo", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         { heading: "Batch No", key: "batchNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
@@ -117,7 +122,7 @@ export class GoodReceiptnoteComponent implements OnInit {
         { heading: "Total Qty", key: "totalQty", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "StockId", key: "stockid", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "Verified", key: "isVerified", sort: true, align: 'left', emptySign: 'NA', width: 100, },
-        { heading: "VerifiedDatetime", key: "isVerifiedDatetime", sort: true, align: 'left', emptySign: 'NA', width: 160}
+        { heading: "VerifiedDatetime", key: "isVerifiedDatetime", sort: true, align: 'left', emptySign: 'NA', width: 160 }
     ]
     gridConfig1: gridModel = new gridModel();
     isShowDetailTable: boolean = false;
@@ -133,7 +138,7 @@ export class GoodReceiptnoteComponent implements OnInit {
             { fieldName: "IsVerify", fieldValue: "0", opType: OperatorComparer.Equals },
             { fieldName: "Supplier_Id", fieldValue: "0", opType: OperatorComparer.Equals }
         ],
-    } 
+    }
 
     constructor(
         public _GRNService: GoodReceiptnoteService,
@@ -142,47 +147,51 @@ export class GoodReceiptnoteComponent implements OnInit {
         public datePipe: DatePipe,
         public toastr: ToastrService,
         private accountService: AuthenticationService,
-        private commonService: PrintserviceService, 
-    ) { } 
+        private commonService: PrintserviceService,
+    ) { }
     ngOnInit(): void {
         this._GRNService.GRNSearchGroup.get('ToStoreId').setValue(this.accountService.currentUserValue.user.storeId)
-    } 
-    getSelectedRow(event) { 
+
+        this.IsGRNverify = this.accountService.currentUserValue.user.isGrnverify
+    }
+    getSelectedRow(event) {
         console.log(event)
         this.isShowDetailTable = true;
         this.gridConfig1 = {
             apiUrl: "GRN/GRNDetailsList",
             columnsList: [
-          { heading: "-", key: "check", sort: false, align: 'left', emptySign: 'NA',width:60,type: gridColumnTypes.template,
-            template:this.actionButtonTemplateIscheck},
-        { heading: "Item Name", key: "itemName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-        { heading: "UMO", key: "umo", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-        { heading: "Batch No", key: "batchNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "BatchExpDate", key: "batchExpDate", sort: true, align: 'left', emptySign: 'NA', width: 180 },
-        { heading: "Package", key: "conversionFactor", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "R Qty", key: "receiveQty", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "Free Qty", key: "freeQty", sort: true, align: 'left', emptySign: 'NA', width: 90 },
-        { heading: "MRP", key: "mrp", sort: true, align: 'left', emptySign: 'NA', width: 120, type: gridColumnTypes.amount },
-        { heading: "Rate", key: "rate", sort: true, align: 'left', emptySign: 'NA', width: 120, type: gridColumnTypes.amount },
-        { heading: "Total Amt", key: "totalAmount", sort: true, align: 'left', emptySign: 'NA', width: 120, type: gridColumnTypes.amount },
-        { heading: "GST Amt", key: "vatPercentage", sort: true, align: 'left', emptySign: 'NA', width: 120, type: gridColumnTypes.amount },
-        { heading: "Disc Amt", key: "discPercentage", sort: true, align: 'left', emptySign: 'NA', width: 120, type: gridColumnTypes.amount },
-        { heading: "Landed Rate", key: "landedRate", sort: true, align: 'left', emptySign: 'NA', width: 120, type: gridColumnTypes.amount },
-        { heading: "Net Amt", key: "netAmount", sort: true, align: 'left', emptySign: 'NA', width: 130, type: gridColumnTypes.amount },
-        { heading: "Total Qty", key: "totalQty", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "StockId", key: "stockid", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "Verified", key: "isVerified", sort: true, align: 'left', emptySign: 'NA', width: 100, },
-        { heading: "VerifiedDatetime", key: "isVerifiedDatetime", sort: true, align: 'left', emptySign: 'NA', width: 160}
-    ],
+                {
+                    heading: "-", key: "check", sort: false, align: 'left', emptySign: 'NA', width: 60, type: gridColumnTypes.template,
+                    template: this.actionButtonTemplateIscheck
+                },
+                { heading: "Item Name", key: "itemName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+                { heading: "UMO", key: "umo", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+                { heading: "Batch No", key: "batchNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+                { heading: "BatchExpDate", key: "batchExpDate", sort: true, align: 'left', emptySign: 'NA', width: 180 },
+                { heading: "Package", key: "conversionFactor", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+                { heading: "R Qty", key: "receiveQty", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+                { heading: "Free Qty", key: "freeQty", sort: true, align: 'left', emptySign: 'NA', width: 90 },
+                { heading: "MRP", key: "mrp", sort: true, align: 'left', emptySign: 'NA', width: 120, type: gridColumnTypes.amount },
+                { heading: "Rate", key: "rate", sort: true, align: 'left', emptySign: 'NA', width: 120, type: gridColumnTypes.amount },
+                { heading: "Total Amt", key: "totalAmount", sort: true, align: 'left', emptySign: 'NA', width: 120, type: gridColumnTypes.amount },
+                { heading: "GST Amt", key: "vatPercentage", sort: true, align: 'left', emptySign: 'NA', width: 120, type: gridColumnTypes.amount },
+                { heading: "Disc Amt", key: "discPercentage", sort: true, align: 'left', emptySign: 'NA', width: 120, type: gridColumnTypes.amount },
+                { heading: "Landed Rate", key: "landedRate", sort: true, align: 'left', emptySign: 'NA', width: 120, type: gridColumnTypes.amount },
+                { heading: "Net Amt", key: "netAmount", sort: true, align: 'left', emptySign: 'NA', width: 130, type: gridColumnTypes.amount },
+                { heading: "Total Qty", key: "totalQty", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+                { heading: "StockId", key: "stockid", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+                { heading: "Verified", key: "isVerified", sort: true, align: 'left', emptySign: 'NA', width: 100, },
+                { heading: "VerifiedDatetime", key: "isVerifiedDatetime", sort: true, align: 'left', emptySign: 'NA', width: 160 }
+            ],
             sortField: "GRNDetID",
             sortOrder: 0,
             filters: [
                 { fieldName: "GrnId", fieldValue: String(event.grnid), opType: OperatorComparer.Equals }
             ],
-        } 
+        }
         setTimeout(() => {
-        this.grid1.gridConfig = this.gridConfig1;
-        this.grid1.bindGridData();
+            this.grid1.gridConfig = this.gridConfig1;
+            this.grid1.bindGridData();
         }, 1000);
     }
     getValidationMessages() {
@@ -204,7 +213,7 @@ export class GoodReceiptnoteComponent implements OnInit {
             ]
 
         };
-    }  
+    }
     onChangeFirst() {
         this.isShowDetailTable = false;
         if (this._GRNService.GRNSearchGroup.get('Status1').value == true) {
@@ -215,7 +224,7 @@ export class GoodReceiptnoteComponent implements OnInit {
         this.fromDate = this.datePipe.transform(this._GRNService.GRNSearchGroup.get('start').value, "yyyy-MM-dd")
         this.toDate = this.datePipe.transform(this._GRNService.GRNSearchGroup.get('end').value, "yyyy-MM-dd")
         this.getfilterdata();
-    } 
+    }
     getfilterdata() {
         this.gridConfig = {
             apiUrl: "GRN/GRNHeaderList",
@@ -229,7 +238,7 @@ export class GoodReceiptnoteComponent implements OnInit {
                 { fieldName: "IsVerify", fieldValue: this.IsVerify, opType: OperatorComparer.Equals },
                 { fieldName: "Supplier_Id", fieldValue: this.SupplierId, opType: OperatorComparer.Equals }
             ],
-        }  
+        }
     }
     selectChangeStore(value) {
         if (value.value !== 0)
@@ -249,7 +258,7 @@ export class GoodReceiptnoteComponent implements OnInit {
     }
     data: any[];
     FullData: GRNList = {} as GRNList;
-    selection = new SelectionModel<GrnItemList>(true, []); 
+    selection = new SelectionModel<GrnItemList>(true, []);
     onFileChange(evt: any) {
         const target: DataTransfer = <DataTransfer>(evt.target);
         if (target.files.length !== 1) throw new Error('Cannot use multiple files');
@@ -332,7 +341,7 @@ export class GoodReceiptnoteComponent implements OnInit {
         };
 
         reader.readAsBinaryString(target.files[0]);
-    } 
+    }
     newGRNEntry(chkNewGRN) {
         const dialogRef = this._matDialog.open(NewGrnComponent,
             {
@@ -345,9 +354,9 @@ export class GoodReceiptnoteComponent implements OnInit {
                 }
             });
         dialogRef.afterClosed().subscribe(result => {
-              this.grid.bindGridData();
-        }); 
-        
+            this.grid.bindGridData();
+        });
+
     }
     GRNEmail(contact) {
         const dialogRef = this._matDialog.open(EmailSendComponent,
@@ -360,9 +369,9 @@ export class GoodReceiptnoteComponent implements OnInit {
                 }
             });
         dialogRef.afterClosed().subscribe(result => {
-              this.grid.bindGridData(); 
-        }); 
-     
+            this.grid.bindGridData();
+        });
+
     }
     onEdit(contact) {
         this.chkNewGRN = 2;
@@ -377,10 +386,10 @@ export class GoodReceiptnoteComponent implements OnInit {
                     chkNewGRN: this.chkNewGRN
                 }
             });
-        dialogRef.afterClosed().subscribe(result => {  
-               this.grid.bindGridData();
+        dialogRef.afterClosed().subscribe(result => {
+            this.grid.bindGridData();
         });
-       
+
     }
     onVerify(row) {
         let GRNVerifyObj = {};
@@ -388,12 +397,12 @@ export class GoodReceiptnoteComponent implements OnInit {
         GRNVerifyObj['verifiedBy'] = this.accountService.currentUserValue.userId;
 
         this._GRNService.getVerifyGRN(GRNVerifyObj).subscribe(response => {
-        }); 
+        });
         // this.onChangeFirst();
         setTimeout(() => {
             this.grid.bindGridData();
         }, 1000);
-         
+
     }
     LastThreeItemList(contact) {
         var vdata = {
@@ -505,38 +514,38 @@ export class GoodReceiptnoteComponent implements OnInit {
     isSomeSelected() {
         // console.log(this.selection.selected);
         return this.selection.selected.length > 0;
-    } 
+    }
 
-    
-    Onbarcode(contact){
+
+    Onbarcode(contact) {
         const dialogRef = this._matDialog.open(CreateBarcodeComponent,
             {
-                width:"40%",
-                height:"50%",
-                data:{
-                    Obj:contact
+                width: "40%",
+                height: "50%",
+                data: {
+                    Obj: contact
                 }
             });
-            dialogRef.afterClosed().subscribe(result =>{
-                console.log('The dialog was closed - Insert Action', result);
-                 this.grid.bindGridData();
-            }) 
+        dialogRef.afterClosed().subscribe(result => {
+            console.log('The dialog was closed - Insert Action', result);
+            this.grid.bindGridData();
+        })
     }
-        EditSupplierdetails(contact){
+    EditSupplierdetails(contact) {
         const dialogRef = this._matDialog.open(EditGRNDetailsComponent,
             {
-                width:"35%",
-                height:"40%",
-                data:{
-                    Obj:contact
+                width: "35%",
+                height: "40%",
+                data: {
+                    Obj: contact
                 }
             });
-            dialogRef.afterClosed().subscribe(result =>{
-                console.log('The dialog was closed - Insert Action', result);
-                 this.grid.bindGridData();
-            }) 
+        dialogRef.afterClosed().subscribe(result => {
+            console.log('The dialog was closed - Insert Action', result);
+            this.grid.bindGridData();
+        })
     }
-    viewgetGRNReportPdf(row) { 
+    viewgetGRNReportPdf(row) {
         this.commonService.Onprint("GRNID", row.grnid, "GRNReport");
     }
 }
@@ -766,11 +775,11 @@ export class ItemNameList {
     DebitAmount: any;
     GSTType: GSTType | null;
 
-  cgst: number;
-  sgst: number;
-  igst: number;
-  gst: number;
-  finalTotalQty: number;
+    cgst: number;
+    sgst: number;
+    igst: number;
+    gst: number;
+    finalTotalQty: number;
 
     itemId: any;
     itemName: any;

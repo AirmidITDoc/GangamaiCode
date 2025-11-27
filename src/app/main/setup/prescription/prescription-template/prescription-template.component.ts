@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ViewEncapsulation } from "@angular/core";
+import { Component, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from "@angular/core";
 import { MatDialog, MatDialogRef } from "@angular/material/dialog";
 import { fuseAnimations } from "@fuse/animations";
 import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
@@ -35,11 +35,16 @@ export class PrescriptionTemplateComponent {
   ngOnInit(): void {
   }
 
+  ngAfterViewInit() {
+    this.gridConfig.columnsList.find(col => col.key === 'opIpType')!.template = this.actionsTemplate;
+  }
+  @ViewChild('actionsTemplate') actionsTemplate!: TemplateRef<any>;
+
   gridConfig: gridModel = {
     permissionCode: permissionCodes.PrescriptionTemplate,
-    apiUrl: "",
+    apiUrl: "OPDPrescriptionMedical/PresTemplateList",
     columnsList: [
-      { heading: "-", key: "opipType", sort: true, align: 'left', emptySign: 'NA' },
+      { heading: "-", key: "opIpType", sort: true, align: 'left', emptySign: 'NA',type: gridColumnTypes.template,},
       { heading: "TemplateCategory", key: "templateCategory", sort: true, align: 'left', emptySign: 'NA' },
       { heading: "TemplateName", key: "presTemplateName", sort: true, align: 'left', emptySign: 'NA' },
       { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
@@ -51,9 +56,9 @@ export class PrescriptionTemplateComponent {
             }
           }, {
             action: gridActions.delete, visible: this.permissionService.getPermission(permissionCodes.PrescriptionTemplate, permissionType.Edit), callback: (data: any) => {
-              // this._PrescriptionTemplateService.deactivateTheStatus(data.prefixId).subscribe((response: any) => {
-              //   this.grid.bindGridData();
-              // });
+              this._PrescriptionTemplateService.deactivateTheStatus(data.presId).subscribe((response: any) => {
+                this.grid.bindGridData();
+              });
             }
           }]
       }

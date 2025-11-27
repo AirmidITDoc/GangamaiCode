@@ -41,6 +41,17 @@
                 </div>
             </ng-template>
 
+            <!-- <ng-template #ColorCode let-element>
+                <div fxLayout="row" fxLayoutAlign="center center" class="status-box">
+                    <span [ngClass]="{
+                'status-completed': element.isVerified === true,
+                'status-pending': element.isVerified === false
+                        }">
+                        {{ element.isVerified ? 'Completed' : 'Pending' }}
+                    </span>
+                </div>
+            </ng-template> -->
+
             <ng-template #actionButtonTemplate let-element>
                 <div fxLayout="row" fxLayoutAlign="center center">
                     <button mat-icon-button matTooltip="Edit GRNReturn Without GRN" (click)="newGRNRetunr(element)"
@@ -52,7 +63,7 @@
                         <mat-icon>edit</mat-icon>
                     </button>
                     <button mat-icon-button matTooltip="Verify" (click)="getVerify(element)"
-                        *ngIf="!element.isVerified">
+                        *ngIf="!element.isVerified && IsGRNverify">
                         <mat-icon>verified_user</mat-icon>
                     </button>
                     <button mat-icon-button matTooltip="Print" (click)="onPrint(element)">
