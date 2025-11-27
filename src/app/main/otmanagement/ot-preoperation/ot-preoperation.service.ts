@@ -144,4 +144,8 @@ export class OtPreoperationService {
     return this._httpClient.GetData("VisitDetail/DoctorTypeDoctorList?DocTypeId=" + doctTypeId)
   }
 
+ public InsertOTPreOperation(employee) {
+    return this._httpClient.PostData("OTPreOperation/Insert", employee);
+  }
+
 }

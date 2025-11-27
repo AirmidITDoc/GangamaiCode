@@ -57,7 +57,7 @@ export class ReviewcompanyBillComponent {
   vPrice = '0';
   vQty: any;
 
-
+  autocompleteModeConcession: string = "Concession";
   public isDiscountApplied = false;
   Consessionres: boolean = false;
   // 'Status', 'ServiceCode',
