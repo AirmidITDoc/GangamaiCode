@@ -544,10 +544,12 @@
                                                                                 (click)="enableEdit(contact)">
                                                                                 <mat-icon>edit</mat-icon>
                                                                             </button>
-                                                                            <!-- <button *ngIf="contact.editable"
+                                                                            
+                                                                            <button *ngIf="contact.editable"
+                                                                                (click)="cancelEdit(contact)"
                                                                                 mat-icon-button color="primary">
-                                                                                <mat-icon>save</mat-icon>
-                                                                            </button> -->
+                                                                                <mat-icon>close</mat-icon>
+                                                                            </button>
                                                                         </ng-container>
                                                                     </mat-cell>
                                                                 </ng-container>

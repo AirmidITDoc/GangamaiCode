@@ -50,7 +50,7 @@
                                                     {{advanceData.OPDNo}}</span>
                                             </div>
                                       
-                                        <div class="patient-col gap-3"  
+                                         <div class="patient-col gap-3"  
                                             *ngIf="advanceData.DepartmentName">
                                             <span class="patient-col-key ">Department Name | Doctor Name</span>
                                             <span>:</span>
@@ -58,15 +58,12 @@
                                         </div> 
 
                                         <div class="patient-col gap-3" >
-                                            <span class="patient-col-key">Net Amount</span>
+                                            <span class="patient-col-key">Company Name</span>
                                             <span>:</span>
                                             <span class="patient-col-value"
-                                              style="background-color: orange;font-weight: bold;">{{advanceData.NetPayAmount |
-                                                currency:"INR":"symbol"}}</span>
+                                              style="background-color: orange;font-weight: bold;">{{advanceData.CompanyName}}</span>
                                         </div> 
-
-                                
-                                    
+                                          
                                 </div>
                             </div>
                         </div>
@@ -316,10 +313,10 @@
                                                     </div>
                                                 </mat-form-field>
                                             </ng-container>
-                                             <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%" *ngIf="isCompanySelected">
+                                             <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%" *ngIf="advanceData?.CompanyName != null && advanceData?.CompanyName !== ''">
                                                 <airmid-dropdown label="Company Name" formControlName="CompanyId" [formGroup]="patientDetailsFormGrp"
                                                    [validations]="getValidationMessages().CompanyId" [mode]="autocompleteModecompany"
-                                                    (selectionChange)="onChangeCompany($event)"></airmid-dropdown>
+                                                ></airmid-dropdown>
                                             </div>
                                             <div class="btn-container">
                                                 <div class="add-icon-btn" *ngIf="IsAllowAdd()">

@@ -157,7 +157,7 @@
                                                 </div>
 
                                                 <mat-form-field appearance="outline" fxFlex>
-                                                    <mat-label>Registration Date</mat-label>
+                                                    <mat-label>Date</mat-label>
                                                     <input matInput [matDatepicker]="datepickerReg"
                                                         formControlName="regDate1" (click)="datepickerReg.open()"
                                                         [max]="nowDate">
@@ -166,10 +166,16 @@
                                                     <mat-datepicker #datepickerReg>
                                                     </mat-datepicker>
                                                     <div *ngIf="submitted && f.regDate1.errors" class="invalid-feedback">
-                                                        <div *ngIf="f.regDate1.errors.required">Registration Date is required</div>
+                                                        <div *ngIf="f.regDate1.errors.required">Date is required</div>
                                                     </div>
                                                 </mat-form-field>
                                             </ng-container>
+
+                                             <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%" *ngIf="advanceData?.CompanyId != null && advanceData?.CompanyId !== ''">
+                                                <airmid-dropdown label="Company Name" formControlName="CompanyId" [formGroup]="patientDetailsFormGrp"
+                                                   [validations]="getValidationMessages().CompanyId" [mode]="autocompleteModecompany"
+                                                   ></airmid-dropdown>
+                                            </div>
                                             <div class="btn-container">
                                                 <div class="add-icon-btn" *ngIf="IsAllowAdd()">
                                                     <button class="btn btn-primary"
@@ -283,8 +289,8 @@
         <div class="footer-navigation-container">
             <div class="modal-footer-buttons">
                 <button class="btn btn-danger-outline " (click)="onClose1()">Close</button>
-                <button class="btn btn-primary" *ngIf="data?.FromName != 'OP-Bill'" [disabled]="balanceAmt>0" (click)="onSubmit()">Save</button>
-                <button class="btn btn-primary"  *ngIf="data?.FromName == 'OP-Bill'" (click)="onSubmit()">Save</button>
+                <button class="btn btn-primary"  *ngIf="data?.FromName !== 'OP-Bill' && data?.FromName !== 'OP-SETTLEMENT'"  [disabled]="balanceAmt>0" (click)="onSubmit()">Save</button>
+                <button class="btn btn-primary"   *ngIf="data?.FromName === 'OP-Bill' || data?.FromName === 'OP-SETTLEMENT'"  (click)="onSubmit()">Save</button>
             </div>
         </div>
     </div>

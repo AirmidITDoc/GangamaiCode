@@ -82,12 +82,12 @@ public InsertOPBillingsettlement(Param: any) {
 }
 
 public UpdateCompanyBilling(Param: any) {
-  return this._httpClient.PostData("OPSettlement/InsertSettlement", Param);
+  return this._httpClient.PostData("IPBill/BillUpdate", Param);
       
 }
 
 
     public getCompanyBillList(param) {
-  return this._httpClient1.PostData("Common", param);
+  return this._httpClient1.PostData("IPBill/BillChargeDetailsList", param);
     }
 }

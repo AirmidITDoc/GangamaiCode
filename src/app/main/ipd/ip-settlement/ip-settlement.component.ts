@@ -187,7 +187,8 @@ export class IPSettlementComponent implements OnInit {
                 payTmdate: ['1999-01-01'],
                 tdsAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
                 unitId: [this.accountService.currentUserValue.user.unitId, [this._FormvalidationserviceService.onlyNumberValidator()]],
-                wfamount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]]
+                wfamount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+                companyId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             }),
             // BIll update
             billupdate: this.formBuilder.group({
@@ -246,8 +247,9 @@ export class IPSettlementComponent implements OnInit {
         PatientHeaderObj['OPD_IPD_Id'] = contact.opdipdid;
         PatientHeaderObj['IPDNo'] = contact.ipdNo;
         PatientHeaderObj['RegNo'] = contact.regNo;
-        PatientHeaderObj['DoctorName'] = contact.doctorname;
+        PatientHeaderObj['DoctorName'] = contact.doctorName;
         PatientHeaderObj['CompanyName'] = contact.companyName;
+        PatientHeaderObj['CompanyId'] = contact.companyId;
         PatientHeaderObj['DepartmentName'] = contact.departmentName;
         PatientHeaderObj['Age'] = this.registerObj.age;
 

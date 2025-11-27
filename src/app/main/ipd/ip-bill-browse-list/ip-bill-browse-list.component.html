@@ -67,7 +67,7 @@
                     <ng-template #actionButtonTemplateIP let-element>
                         <div fxLayout="row" fxLayoutAlign="center center">
                             <button mat-icon-button matTooltip="Review Company Bill" (click)="OnCompanyBill(element)"
-                                *ngIf="element.PatientTypeId !='1'">
+                                *ngIf="element.PatientTypeId !='1' && element.isCancelled !='1'">
                                 <mat-icon>remove_red_eye</mat-icon>
                             </button>
 

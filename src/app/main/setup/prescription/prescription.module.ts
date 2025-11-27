@@ -45,6 +45,13 @@ const appRoutes: Routes = [
                 (m) => m.InstructionmasterModule
             ),
     },
+    {
+        path: "prescriptiontemplate",
+        loadChildren: () =>
+            import("./prescription-template/prescription-template.module").then(
+                (m) => m.PrescriptionTemplateModule
+            ),
+    },
 ];
 
 @NgModule({

@@ -32,6 +32,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
         ['IsCheck', 'ServiceNamePackage', 'ServiceName', 'Price', 'Qty', 'TotalAmt', 'DoctorName', 'DiscAmt', 'NetAmount'];
     public displayedPrescriptionColumns =
         ['groupName', 'serviceName', 'classRate', 'userName'];
+    public  mPesaColumns = ['PayStatus','transactionDate','phoneNumber','mpesaReceiptNumber','amount','ResponseDate','Description', 'Action' ];
 
     countdown: number = 180; // 3 minutes
     countdownColorClass = 'green';
@@ -87,9 +88,11 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
     serviceSelct = false
 
     @ViewChild('serviceTable') serviceTable!: TemplateRef<any>;
+    @ViewChild('MpesatranscationlistTable') MpesatranscationlistTable!: TemplateRef<any>;
     public dsChargeList = new MatTableDataSource<ChargesList>();
     public dsPackageList = new MatTableDataSource<ChargesList>();
-    public dsServiceList = new MatTableDataSource<ChargesList>();
+    public dsServiceList = new MatTableDataSource<ChargesList>(); 
+    public dsMpesaTransactionlist = new MatTableDataSource<ChargesList>();
     public chargeList: ChargesList[] = [];
     public packageList: ChargesList[] = [];
     public serviceList: ChargesList[] = [];
@@ -177,6 +180,39 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
         this._AppointmentlistService.getOPDEmrId(Data).subscribe((response) => {
             this.dsServiceList.data = response.data;
             console.log(this.dsServiceList.data)
+        });
+    }
+    getMpesaTransactionlist(): void {
+            if(!this.dsChargeList.data.length){
+                this.toastrService.warning('Charges are not available in list, Please add Charges', 'Warning !', {
+                toastClass: 'tostr-tost custom-toast-warning',
+            });
+            return;
+            }
+             if(!this.OPFooterForm.get('mpesaMobile')?.value){
+                this.toastrService.warning('Enter Mobile number', 'Warning !', {
+                toastClass: 'tostr-tost custom-toast-warning',
+            });
+            return;
+            }
+        this._matDialog.open(this.MpesatranscationlistTable, { 
+             width: '65vw',
+             maxHeight: '60vh'
+        })
+        //424929
+        let Data = {
+            "first": 0,
+            "rows": 100,
+            "sortField": "Id",
+            "sortOrder": 0,
+            "filters": [{ "fieldName": "Opdipdid", "fieldValue": String(this.vOPIPId), "opType": "Equals" },
+                { "fieldName": "PhoneNumber", "fieldValue": String(this.OPFooterForm.get('mpesaMobile')?.value || 0), "opType": "Equals" }],
+            "exportType": "JSON",
+            "columns": [{ "data": "string", "name": "string" }]
+        }
+        this._AppointmentlistService.getmPesaTranscationlist(Data).subscribe((response) => {  
+            this.dsMpesaTransactionlist.data = response.data;
+            console.log(this.dsMpesaTransactionlist.data)
         });
     }
 
@@ -444,6 +480,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
                 tdsamount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
                 unitId: [this.accountService.currentUserValue.user.unitId],
                 wfamount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+                companyId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             })
         });
     }
@@ -1138,6 +1175,8 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
                 this.OpBillForm.get('payments.cashPayAmount')?.setValue(Number(this.OPFooterForm.get('netPayableAmt')?.value))
                 this.OpBillForm.get('payments.paymentDate')?.setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'))
                 this.OpBillForm.get('payments.paymentTime')?.setValue(this.dateTimeObj.time)
+                this.OpBillForm.get('payments.companyId')?.setValue(this.patientDetail?.companyId || 0)
+
                 console.log(this.OpBillForm.value)
                 this._AppointmentlistService.InsertOPBilling(this.OpBillForm.value).subscribe(response => {
                     debugger
@@ -1318,7 +1357,8 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
     mPesa_ReceiptNo:any='0';
     openWaitingScreen() {
         debugger
-        this._AppointmentlistService.postpayment(this.OpBillForm.controls["netPayableAmt"].value, this.OPFooterForm.get('mpesaMobile').value).subscribe(response => {
+        this._AppointmentlistService.postpayment(this.OpBillForm.controls["netPayableAmt"]?.value, this.OPFooterForm.get('mpesaMobile')?.value,
+    this.OpBillForm.get('opdipdid')?.value ).subscribe(response => {
             this.mpesaResponse = response;
             console.log(this.mpesaResponse)
             // Build message AFTER response arrives
@@ -1415,6 +1455,7 @@ SavemPesaBill() {
     this.OpBillForm.get('payments.payTmdate').setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'));
     this.OpBillForm.get('payments.payTmtranNo').setValue(this.mPesa_ReceiptNo);
     this.OpBillForm.get('payments.remark').setValue(mPesaMerchant_CheckoutRequest_Id);
+    this.OpBillForm.get('payments.companyId')?.setValue(this.patientDetail?.companyId || 0)
 
     this._AppointmentlistService.InsertOPBilling(this.OpBillForm.value)
         .subscribe(response => {  
@@ -1428,7 +1469,9 @@ SavemPesaBill() {
             this.resetform();
         });
 }
+ OnmPesaSave(row){
 
+ }
 }
 
 export class ChargesList {

@@ -35,7 +35,8 @@ export class OpPaymentComponent implements OnInit {
   netPayAmt: any = 0;
   nowDate: Date;
   amount1: number;
-  screenFromString = 'payment-form';
+  screenFromString = 'payment-form'; 
+  autocompleteModecompany: string = "Company"; 
   paidAmt: number;
   balanceAmt: number = 0;
   advanceData: any = {};
@@ -354,7 +355,8 @@ export class OpPaymentComponent implements OnInit {
       bankName1: [''],
       regDate1: [(new Date()).toISOString()],
       paidAmountController: [this.paidAmt],
-      balanceAmountController: [this.balanceAmt]
+      balanceAmountController: [this.balanceAmt],
+      CompanyId:[0]
     });
   }
 
@@ -393,18 +395,18 @@ export class OpPaymentComponent implements OnInit {
     const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
     
     this.onAddPayment();
-    if (this.balanceAmt != 0 && this.data?.FromName != 'OP-Bill') {
+    if (this.balanceAmt != 0 && this.data?.FromName != 'OP-Bill' && this.data?.FromName != 'OP-SETTLEMENT') {
       Swal.fire('Please select payment mode, Balance Amount is' + this.balanceAmt)
       return
     }
     // -------------- If you comment this code -- OP Billing and Browse List - you can't do the parital payment
-    if (this.amount1 != 0 && this.data?.FromName == 'OP-Bill') {
+    if (this.amount1 != 0 && this.data?.FromName == 'OP-Bill' && this.data?.FromName != 'OP-SETTLEMENT') {
       let balamt = this.netPayAmt - this.paidAmt
       // Swal.fire('Please pay remaing amount, Balance Amount is ' + balamt)
       this.patientDetailsFormGrp.get("balanceAmountController").setValue(balamt);
       // return
     }
-    if (this.amount1 != 0 && this.data?.FromName != 'OP-Bill') {
+    if (this.amount1 != 0 && this.data?.FromName != 'OP-Bill' && this.data?.FromName != 'OP-SETTLEMENT') {
       let balamt = this.netPayAmt - this.paidAmt
       Swal.fire('Please pay remaing amount, Balance Amount is ' + balamt)
       return
@@ -444,6 +446,7 @@ export class OpPaymentComponent implements OnInit {
       this.Paymentobj['tdsamount'] = this.Payments.data.find(x => x.PaymentType == "tds")?.Amount ?? 0;
       this.Paymentobj['unitId'] = this._loggedService.currentUserValue.user.unitId
       this.Paymentobj['wfamount'] = this.Payments.data.find(x => x.PaymentType == "wf")?.Amount ?? 0;
+      this.Paymentobj['companyId'] = this.patientDetailsFormGrp.get('CompanyId')?.value || 0
     }
     else if (this.data.FromName == "OP-Pharma-SETTLEMENT") {
 
@@ -465,7 +468,7 @@ export class OpPaymentComponent implements OnInit {
       this.Paymentobj['TransactionType'] = 4;
       this.Paymentobj['Remark'] = '';
       this.Paymentobj['AddBy'] = this._loggedService.currentUserValue.user.id,
-        this.Paymentobj['IsCancelled'] = 0;
+      this.Paymentobj['IsCancelled'] = 0;
       this.Paymentobj['IsCancelledBy'] = 0;
       this.Paymentobj['IsCancelledDate'] = this.datePipe.transform(this.currentDate, 'MM/dd/yyyy') || this.datePipe.transform(this.currentDate, 'MM/dd/yyyy')
       this.Paymentobj['opD_IPD_Type'] = 3;
@@ -698,6 +701,7 @@ export class OpPaymentComponent implements OnInit {
       this.Paymentobj['tdsamount'] = this.Payments.data.find(x => x.PaymentType == "tds")?.Amount ?? 0;
       this.Paymentobj['unitId'] = this._loggedService.currentUserValue.user.unitId
       this.Paymentobj['wfamount'] = this.Payments.data.find(x => x.PaymentType == "wf")?.Amount ?? 0;
+      this.Paymentobj['companyId'] = 0;
     }
     //new changes done by Ambadas sales hospital pay 20/6/2025
     else if (this.data.FromName == "Phar-SalesPay") {
@@ -827,7 +831,9 @@ export class OpPaymentComponent implements OnInit {
       "IsSubmitFlag": false,
       "BalAmt": this.netPayAmt
     }
+ 
     this.dialogRef.close(IsSubmit);
+    this.advanceData = null;
   }
   keyPressAlphanumeric(event) {
     var inp = String.fromCharCode(event.keyCode);

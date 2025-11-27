@@ -17,40 +17,40 @@ import { PagePermissionService } from "app/main/shared/services/page-permission.
     animations: fuseAnimations,
 })
 export class StateMasterComponent implements OnInit {
- @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+    @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     msg: any;
     IsAdd: boolean = this.permissionService.getPermission(permissionCodes.StateMaster, permissionType.Add);
-      
-   stateName: any = "";
-   
-        allcolumns =  [
-            // { heading: "Code", key: "stateId", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "State Name", key: "stateName", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Country Name", key: "countryId", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
-            {
-                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
-                    {
-                        action: gridActions.edit, callback: (data: any) => {
-                            this.onSave(data);
-                        }
-                    }, {
-                        action: gridActions.delete, callback: (data: any) => {
-                            this._StateMasterService.deactivateTheStatus(data.stateId).subscribe((response: any) => {
-                                this.grid.bindGridData();
-                            });
-                        }
-                    }]
-            } //Action 1-view, 2-Edit,3-delete
-        ]
-        
-        allfilters = [
-            { fieldName: "stateName", fieldValue: "", opType: OperatorComparer.StartsWith },
-            { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
-        ]
-    
- gridConfig: gridModel = {
-       permissionCode:permissionCodes.StateMaster,
+
+    stateName: any = "";
+
+    allcolumns = [
+        // { heading: "Code", key: "stateId", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "State Name", key: "stateName", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Country Name", key: "countryId", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
+        {
+            heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+                {
+                    action: gridActions.edit, visible: this.permissionService.getPermission(permissionCodes.StateMaster, permissionType.Edit), callback: (data: any) => {
+                        this.onSave(data);
+                    }
+                }, {
+                    action: gridActions.delete, visible: this.permissionService.getPermission(permissionCodes.StateMaster, permissionType.Delete), callback: (data: any) => {
+                        this._StateMasterService.deactivateTheStatus(data.stateId).subscribe((response: any) => {
+                            this.grid.bindGridData();
+                        });
+                    }
+                }]
+        } //Action 1-view, 2-Edit,3-delete
+    ]
+
+    allfilters = [
+        { fieldName: "stateName", fieldValue: "", opType: OperatorComparer.StartsWith },
+        { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+    ]
+
+    gridConfig: gridModel = {
+        permissionCode: permissionCodes.StateMaster,
         apiUrl: "StateMaster/List",
         columnsList: this.allcolumns,
         sortField: "stateId",
@@ -59,11 +59,11 @@ export class StateMasterComponent implements OnInit {
     }
     constructor(
         public _StateMasterService: StateMasterService,
-        public toastr: ToastrService, public _matDialog: MatDialog,public permissionService: PagePermissionService,
+        public toastr: ToastrService, public _matDialog: MatDialog, public permissionService: PagePermissionService,
     ) { }
 
     ngOnInit(): void { }
-   
+
     onSave(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button

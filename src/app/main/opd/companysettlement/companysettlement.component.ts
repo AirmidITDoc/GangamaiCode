@@ -250,7 +250,7 @@ export class CompanysettlementComponent implements OnInit {
                 tdsamount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
                 unitId: [this.accountService.currentUserValue.user.unitId, [this._FormvalidationserviceService.onlyNumberValidator()]],
                 wfamount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-
+                companyId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             }),
             //bill update 
             billUpdate: this.formBuilder.group({
@@ -316,7 +316,7 @@ export class CompanysettlementComponent implements OnInit {
             tdsamount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
             unitId: [this.accountService.currentUserValue.user.unitId, [this._FormvalidationserviceService.onlyNumberValidator()]],
             wfamount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-
+            companyId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             // })
         })
     }
@@ -353,7 +353,7 @@ export class CompanysettlementComponent implements OnInit {
     openPaymentpopup(contact) {
         let PatientHeaderObj = {};
         PatientHeaderObj['Date'] = this.datePipe.transform(contact.billDate, 'MM/dd/yyyy') || '01/01/1900',
-            PatientHeaderObj['RegNo'] = this.registerObj?.regNo;
+        PatientHeaderObj['RegNo'] = this.registerObj?.regNo;
         PatientHeaderObj['PatientName'] = this.registerObj?.patientName
         PatientHeaderObj['OPD_IPD_Id'] = contact.opdNo;
         PatientHeaderObj['Age'] = this.registerObj?.ageYear
@@ -361,6 +361,7 @@ export class CompanysettlementComponent implements OnInit {
         PatientHeaderObj['billNo'] = contact.billNo;
         PatientHeaderObj['CompanyName'] = contact.companyName;
         PatientHeaderObj['NetPayAmount'] = contact.balanceAmt;
+        PatientHeaderObj['CompanyId'] = contact.companyId;
 
         const dialogRef = this._matDialog.open(OpPaymentComponent,
             {
@@ -374,7 +375,8 @@ export class CompanysettlementComponent implements OnInit {
             });
         dialogRef.afterClosed().subscribe(result => {
             if (result && result.IsSubmitFlag == true) {
-                this.OpSettlementForm.get('billUpdate.billNo').setValue(contact.billNo)
+                this.OpSettlementForm.get('billUpdate.billNo').setValue(contact.billNo) 
+                this.OpSettlementForm.get('billUpdate.balanceAmt').setValue(result.BillBalanceAmount)
                 this.OpSettlementForm.get('opCreditPayment').setValue(result.submitDataPay.ipPaymentInsert)
 
                 debugger
@@ -882,9 +884,7 @@ export class CompanysettlementComponent implements OnInit {
 
         this.dsMultiplepayList.data = [...this.dsMultiplepayList.data];
         console.log(this.SelectedList);
-    }
-
-
+    } 
     isAllSelected() {
         const numSelected = this.selection.selected.length;
         const numRows = this.dsMultiplepayList.data.length;

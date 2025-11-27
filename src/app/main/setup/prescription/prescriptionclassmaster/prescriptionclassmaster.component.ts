@@ -8,6 +8,8 @@ import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/air
 import { ToastrService } from "ngx-toastr";
 import { NewPrescriptionClassComponent } from "./new-prescription-class/new-prescription-class.component";
 import { PrescriptionclassmasterService } from "./prescriptionclassmaster.service";
+import { PagePermissionService } from "app/main/shared/services/page-permission.service";
+import { permissionCodes, permissionType } from "app/main/shared/model/permission.model";
 
 
 @Component({
@@ -21,51 +23,51 @@ export class PrescriptionclassmasterComponent implements OnInit {
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     className: any = "";
-   
-      allcolumns = [
-            // { heading: "Code", key: "classId", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "ClassName", key: "className", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "TemplateDesc Name", key: "templateDescName", sort: true, align: 'left', emptySign: 'NA' },
-            // { heading: "UserName", key: "username", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
-            {
-                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
-                    {
-                        action: gridActions.edit, callback: (data: any) => {
-                            this.onSave(data)
-                        }
-                    }, {
-                        action: gridActions.delete, callback: (data: any) => {
-                            
-                            this.confirmDialogRef = this._matDialog.open(
-                                FuseConfirmDialogComponent,
-                                {
-                                    disableClose: false,
-                                }
-                            );
-                            this.confirmDialogRef.componentInstance.confirmMessage =
-                                "Are you sure you want to deactive?";
-                            this.confirmDialogRef.afterClosed().subscribe((result) => {
-                                
-                                if (result) {
-                                    let that=this;
-                                    this._PrescriptionclassService.deactivateTheStatus(data.classId).subscribe((data: any) => {
-                                        that.grid.bindGridData();
-                                    });
-                                }
-                                this.confirmDialogRef = null;
-                            });
-                        }
-                    }]
-            } //Action 1-view, 2-Edit,3-delete
-        ]
-       
-        
-    allfilters =  [
-            { fieldName: "className", fieldValue: "", opType: OperatorComparer.StartsWith },
-            { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
-        ]
+    IsAdd: boolean = this.permissionService.getPermission(permissionCodes.Prescription, permissionType.Add);
+
+    allcolumns = [
+        { heading: "ClassName", key: "className", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "TemplateDesc Name", key: "templateDescName", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
+        {
+            heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+                {
+                    action: gridActions.edit, visible: this.permissionService.getPermission(permissionCodes.Prescription, permissionType.Edit), callback: (data: any) => {
+                        this.onSave(data)
+                    }
+                }, {
+                    action: gridActions.delete, visible: this.permissionService.getPermission(permissionCodes.Prescription, permissionType.Delete), callback: (data: any) => {
+
+                        this.confirmDialogRef = this._matDialog.open(
+                            FuseConfirmDialogComponent,
+                            {
+                                disableClose: false,
+                            }
+                        );
+                        this.confirmDialogRef.componentInstance.confirmMessage =
+                            "Are you sure you want to deactive?";
+                        this.confirmDialogRef.afterClosed().subscribe((result) => {
+
+                            if (result) {
+                                let that = this;
+                                this._PrescriptionclassService.deactivateTheStatus(data.classId).subscribe((data: any) => {
+                                    that.grid.bindGridData();
+                                });
+                            }
+                            this.confirmDialogRef = null;
+                        });
+                    }
+                }]
+        }
+    ]
+
+
+    allfilters = [
+        { fieldName: "className", fieldValue: "", opType: OperatorComparer.StartsWith },
+        { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+    ]
     gridConfig: gridModel = {
+        permissionCode: permissionCodes.Prescription,
         apiUrl: "Priscriptionclass/List",
         columnsList: this.allcolumns,
         sortField: "classId",
@@ -73,16 +75,17 @@ export class PrescriptionclassmasterComponent implements OnInit {
         filters: this.allfilters
     }
     constructor(
-        public _PrescriptionclassService: PrescriptionclassmasterService,public _matDialog: MatDialog,
-        public toastr : ToastrService,
-    ) {}
+        public _PrescriptionclassService: PrescriptionclassmasterService, public _matDialog: MatDialog,
+        public toastr: ToastrService,
+        public permissionService: PagePermissionService
+    ) { }
 
 
     onSave(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button
-        
-        
+
+
         let that = this;
         const dialogRef = this._matDialog.open(NewPrescriptionClassComponent,
             {
@@ -99,5 +102,5 @@ export class PrescriptionclassmasterComponent implements OnInit {
     }
 
     ngOnInit(): void { }
-  
+
 }

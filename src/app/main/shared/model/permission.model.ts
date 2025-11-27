@@ -13,6 +13,10 @@ export enum permissionCodes {
     AreaMaster = 'AreaMaster',
     PatientType = 'PatientType',
     Hospital = 'HospitalMaster',
+    TalukaMaster = 'TalukaMaster',
+    VillageMaster = 'VillageMaster',
+    HospitalMaster = 'HospitalMaster',
+    CampMaster = 'CampMaster',
 
 
     //  BillingMaster
@@ -42,7 +46,6 @@ export enum permissionCodes {
     DoctorMaster = 'DoctorMaster',
     DoctorTypeMaster = 'DoctorTypeMaster',
 
-
     // Inventory
 
     CurrencyMaster = 'CurrencyMaster',
@@ -57,7 +60,27 @@ export enum permissionCodes {
     StoreMaster = 'StoreMaster',
     SupplierMaster = 'SupplierMaster',
     TaxMaster = 'TaxMaster',
-TermsofPayment = 'TermsofPayment',
+    TermsofPayment = 'TermsofPayment',
     UnitOfMeasurement = 'UnitOfMeasurement',
     // TaxMaster = 'TaxMaster',
+
+    // Prescription Master
+    Prescription = 'Prescription',
+    PGenericMaster = 'GenericMaster',
+    DrugMaster = 'DrugMaster',
+    DoseMaster = 'DoseMaster',
+    CertificateTemplateMaster = 'CertificateTemplateMaster',
+    InstructionMaster = 'InstructionMaster',
+    PrescriptionTemplate = 'PrescriptionTemplate',
+
+    // Radiology Master
+    RadiologyCategoryMaster = 'RadiologyCategoryMaster',
+    RadiologyTemplateMaster = 'RadiologyTemplateMaster',
+    RadiologyTestMaster = 'RadiologyTestMaster',
+
+    // Ambulance Master
+    VehicleMaster = 'VehicleMaster',
+
+    // Nursing master
+    Nursing='Nursing',
 }

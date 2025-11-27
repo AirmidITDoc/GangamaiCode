@@ -11,6 +11,8 @@ import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/air
 import { ToastrService } from 'ngx-toastr';
 import { RadiologyTestMasterService } from './radiology-test-master.service';
 import { UpdateradiologymasterComponent } from './updateradiologymaster/updateradiologymaster.component';
+import { PagePermissionService } from 'app/main/shared/services/page-permission.service';
+import { permissionCodes, permissionType } from 'app/main/shared/model/permission.model';
 
 
 @Component({
@@ -21,7 +23,6 @@ import { UpdateradiologymasterComponent } from './updateradiologymaster/updatera
     animations: fuseAnimations
 })
 export class RadiologyTestMasterComponent implements OnInit {
-
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     testName: any = "";
@@ -29,7 +30,7 @@ export class RadiologyTestMasterComponent implements OnInit {
     CatId = "0"
     ServiceId = "0"
     UnitId = "0"
-
+    IsAdd: boolean = this.permissionService.getPermission(permissionCodes.RadiologyTestMaster, permissionType.Add);
 
     autocompleteModeCategoryId: string = "RadioCategory";
     autocompleteModeServiceID: string = "RadiologyService";
@@ -45,12 +46,12 @@ export class RadiologyTestMasterComponent implements OnInit {
         {
             heading: "Action", key: "action", width: 100, align: "right", type: gridColumnTypes.action, actions: [
                 {
-                    action: gridActions.edit, callback: (data: any) => {
+                    action: gridActions.edit, visible: this.permissionService.getPermission(permissionCodes.RadiologyTestMaster, permissionType.Edit), callback: (data: any) => {
                         this.onSave(data) // EDIT Records
                     }
                 },
                 {
-                    action: gridActions.delete, callback: (data: any) => {
+                    action: gridActions.delete, visible: this.permissionService.getPermission(permissionCodes.RadiologyTestMaster, permissionType.Delete), callback: (data: any) => {
                         this._radiologytestService.deactivateTheStatus(data.testId).subscribe((response: any) => {
                             this.grid.bindGridData();
                         });
@@ -67,6 +68,7 @@ export class RadiologyTestMasterComponent implements OnInit {
     ]
 
     gridConfig: gridModel = {
+        permissionCode: permissionCodes.RadiologyTestMaster,
         apiUrl: "RadiologyTest/RadiologyTestList",
         columnsList: this.allColumns,
         sortField: "TestId",
@@ -114,6 +116,7 @@ export class RadiologyTestMasterComponent implements OnInit {
         public _matDialog: MatDialog,
         private accountService: AuthenticationService,
         private _fuseSidebarService: FuseSidebarService,
+        public permissionService: PagePermissionService
     ) { }
 
     ngOnInit(): void {
@@ -131,7 +134,7 @@ export class RadiologyTestMasterComponent implements OnInit {
             });
         dialogRef.afterClosed().subscribe(result => {
             this.grid.bindGridData()
-            });
+        });
     }
 
     onDeactive(testId) {
@@ -145,7 +148,7 @@ export class RadiologyTestMasterComponent implements OnInit {
         this.confirmDialogRef.afterClosed().subscribe((result) => {
             if (result) {
                 this._radiologytestService.deactivateTheStatus(testId).subscribe((response: any) => {
-                  
+
                 });
             }
             this.confirmDialogRef = null;
@@ -167,7 +170,7 @@ export class RadiologyTestMasterComponent implements OnInit {
         });
         dialogRef.afterClosed().subscribe((result) => {
             this.grid.bindGridData()
-         
+
         });
     }
 

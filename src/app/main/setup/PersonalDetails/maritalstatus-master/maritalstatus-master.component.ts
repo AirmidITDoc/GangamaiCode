@@ -19,35 +19,35 @@ import { PagePermissionService } from "app/main/shared/services/page-permission.
 export class MaritalstatusMasterComponent implements OnInit {
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     IsAdd: boolean = this.permissionService.getPermission(permissionCodes.MaritalStatusMaster, permissionType.Add);
-      
-   Maritalstatus: any = "";
-        allcolumns = [
-            // { heading: "Code", key: "maritalStatusId", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Marital Status", key: "maritalStatusName", sort: true, align: 'left', emptySign: 'NA' },
-            // { heading: "User Name", key: "username", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
-            {
-                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
-                    {
-                        action: gridActions.edit, callback: (data: any) => {
-                            this.onSave(data);
-                        }
-                    }, {
-                        action: gridActions.delete, callback: (data: any) => {
-                            this._maritalService.deactivateTheStatus(data.maritalStatusId).subscribe((response: any) => {
-                                this.grid.bindGridData();
-                            });
-                        }
-                    }]
-            } //Action 1-view, 2-Edit,3-delete
-        ]
-        
-        allfilters = [
-            { fieldName: "maritalStatusName", fieldValue: "", opType: OperatorComparer.StartsWith },
-            { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
-        ]
+
+    Maritalstatus: any = "";
+    allcolumns = [
+        // { heading: "Code", key: "maritalStatusId", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Marital Status", key: "maritalStatusName", sort: true, align: 'left', emptySign: 'NA' },
+        // { heading: "User Name", key: "username", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
+        {
+            heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+                {
+                    action: gridActions.edit, visible: this.permissionService.getPermission(permissionCodes.MaritalStatusMaster, permissionType.Edit), callback: (data: any) => {
+                        this.onSave(data);
+                    }
+                }, {
+                    action: gridActions.delete, visible: this.permissionService.getPermission(permissionCodes.MaritalStatusMaster, permissionType.Delete), callback: (data: any) => {
+                        this._maritalService.deactivateTheStatus(data.maritalStatusId).subscribe((response: any) => {
+                            this.grid.bindGridData();
+                        });
+                    }
+                }]
+        } //Action 1-view, 2-Edit,3-delete
+    ]
+
+    allfilters = [
+        { fieldName: "maritalStatusName", fieldValue: "", opType: OperatorComparer.StartsWith },
+        { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+    ]
     gridConfig: gridModel = {
-           permissionCode:permissionCodes.MaritalStatusMaster,
+        permissionCode: permissionCodes.MaritalStatusMaster,
         apiUrl: "MaritalStatus/List",
         columnsList: this.allcolumns,
         sortField: "maritalStatusId",
@@ -56,12 +56,12 @@ export class MaritalstatusMasterComponent implements OnInit {
     }
 
     constructor(public _maritalService: MaritalstatusMasterService, public _matDialog: MatDialog,
-        public toastr: ToastrService,public permissionService: PagePermissionService,) { }
+        public toastr: ToastrService, public permissionService: PagePermissionService,) { }
 
     ngOnInit(): void {
 
     }
-  
+
     onSave(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button
