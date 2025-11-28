@@ -191,6 +191,16 @@ export class AppointmentlistService {
         return this._httpClient1.PostData("OPBill/AppointmentBillingInsert", Param);
 
     }
+
+public RegistredAppointmentBilling(Param: any) {
+
+        return this._httpClient1.PostData("OPBill/AppointmentBillingRegisteredInsert", Param);
+
+    }
+    
+     public InsertAppointmentCreditBill(employee) {
+        return this._httpClient1.PostData("OPBill/AppointmentCreditBillingInsert", employee)
+    }
     public EditConDoctor(Param: any) {
 
         return this._httpClient1.PutData("VisitDetail/ConsultantDoctorUpdate/" + Param.visitId, Param);
@@ -302,9 +312,7 @@ export class AppointmentlistService {
     
 
 
-    public InsertAppointmentCreditBill(employee) {
-        return this._httpClient1.PostData("OPBill/AppointmentCreditBillingInsert", employee)
-    }
+   
     public InsertOPBillingpayment(employee) {
         return this._httpClient1.PostData("Payment/PaymentInsert", employee)
     }
