@@ -189,6 +189,15 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
             });
             return;
             }
+           if (this.OPFooterForm.get('concessionAmt').value > 0 && this.Consessionres) {
+            if (!this.OPFooterForm.get('concessionReasonId').value) {
+                this.toastr.warning('Please select ConcessionReason.', 'Warning !', {
+                    toastClass: 'tostr-tost custom-toast-warning',
+                });
+                return;
+            }
+        }
+
              if(!this.OPFooterForm.get('mpesaMobile')?.value){
                 this.toastrService.warning('Enter Mobile number', 'Warning !', {
                 toastClass: 'tostr-tost custom-toast-warning',
@@ -199,13 +208,13 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
              width: '65vw',
              maxHeight: '60vh'
         })
-        //424929
+        //424929  this.vOPIPId
         let Data = {
             "first": 0,
             "rows": 100,
             "sortField": "Id",
             "sortOrder": 0,
-            "filters": [{ "fieldName": "Opdipdid", "fieldValue": String(this.vOPIPId), "opType": "Equals" },
+            "filters": [{ "fieldName": "Opdipdid", "fieldValue": String(424929), "opType": "Equals" },
                 { "fieldName": "PhoneNumber", "fieldValue": String(this.OPFooterForm.get('mpesaMobile')?.value || 0), "opType": "Equals" }],
             "exportType": "JSON",
             "columns": [{ "data": "string", "name": "string" }]
@@ -1441,7 +1450,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
         }
 
     }
-    
+  // Mpesa Save  
 SavemPesaBill() {
     debugger
     const [ThermalPrint, ThermalPrintValue] = this._ConfigService.configParams.ThermalPrint.split(":");
@@ -1469,9 +1478,113 @@ SavemPesaBill() {
             this.resetform();
         });
 }
- OnmPesaSave(row){
+// mpesa Save through history
+    OnmPesaSave(row) {
+        Swal.fire({
+            title: 'Confirm Save',
+            text: 'Are you sure you want to save this OPD bill?',
+            icon: 'warning', // or 'question'
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6', // Blue
+            cancelButtonColor: '#d33',     // Red
+            confirmButtonText: 'Yes, save it!',
+            cancelButtonText: 'No, cancel'
+        }).then((result) => {
+            if (result.isConfirmed) { 
+                const formattedDate = this.datePipe.transform(this.OpBillForm.get('billDate').value, "yyyy-MM-dd");
+                const formattedTime = this.datePipe.transform(new Date(), "HH:mm:ss");
+                this.OpBillForm.get('billDate').setValue(formattedDate);
+                this.OpBillForm.get('billTime').setValue(formattedDate + ' ' + formattedTime);
+                this.OpBillForm.get('opdipdid')?.setValue(this.vOPIPId)
+                this.OpBillForm.get('tariffId')?.setValue(this.vTariffId)
+                this.OpBillForm.get('regNo')?.setValue(this.patientDetail?.regNo)
+                this.OpBillForm.get('patientName')?.setValue(this.PatientName)
+                this.OpBillForm.get('ipdno')?.setValue(this.patientDetail?.opdNo)
+                this.OpBillForm.get('ageYear')?.setValue(Number(this.patientDetail?.ageYear) || 0)
+                this.OpBillForm.get('ageMonth')?.setValue(Number(this.patientDetail?.ageMonth) || 0)
+                this.OpBillForm.get('ageDays')?.setValue(Number(this.patientDetail?.ageDays) || 0)
+                this.OpBillForm.get('doctorId')?.setValue(this.patientDetail?.doctorId || 0)
+                this.OpBillForm.get('doctorName')?.setValue(this.patientDetail?.doctorname || '')
+                this.OpBillForm.get('patientType')?.setValue(this.patientDetail?.companyId ? true : false)
+                this.OpBillForm.get('companyName')?.setValue(this.patientDetail?.companyName || '')
+                this.OpBillForm.get('companyAmt')?.setValue(this.ExclusionAmt)
+                this.OpBillForm.get('patientAmt')?.setValue(this.InclusionAmt)
+                this.OpBillForm.get('totalAmt')?.setValue(this.OPFooterForm.get('totalAmt')?.value)
+                this.OpBillForm.get('concessionAmt')?.setValue(this.OPFooterForm.get('concessionAmt')?.value)
+                this.OpBillForm.get('netPayableAmt')?.setValue(this.OPFooterForm.get('netPayableAmt')?.value)
+                this.OpBillForm.get('concessionReasonId')?.setValue(this.ConcessionId)
+                this.OpBillForm.get('discComments')?.setValue(this.ConcessionReason)
+                this.OpBillForm.get('cashCounterId')?.setValue(this.searchForm.get('CashCounterID')?.value)
 
- }
+                if (!this.OpBillForm.invalid) {
+                    this.ChargeddetailsArray.clear();
+                    this.BillDetailsArray.clear();
+                    this.dsChargeList.data.forEach(item => {
+                        this.ChargeddetailsArray.push(this.CreateAddchargeform(item as ChargesList));
+                        this.BillDetailsArray.push(this.createBillDetails(item as ChargesList));
+
+                        if (item.IsPackage == 1) {
+                            this.packcagechargesArray.clear();
+                            this.dsPackageList.data.forEach(item => {
+                                this.packcagechargesArray.push(this.Createpacakgechargeform(item as ChargesList));
+                            });
+                        }
+                    });  
+                    if (this.OPFooterForm.get('paymentType')?.value === 'Mpesa') {
+                        this.mPesa_ReceiptNo = row?.mpesaReceiptNumber || 0
+                        const [ThermalPrint, ThermalPrintValue] = this._ConfigService.configParams.ThermalPrint.split(":");
+                        const mPesaMerchant_CheckoutRequest_Id = row?.checkoutRequestId + "|" + row?.merchantRequestId;
+
+                        this.OpBillForm.get('balanceAmt').setValue(0);
+                        this.OpBillForm.get('paidAmt').setValue(this.OPFooterForm.get('netPayableAmt').value);
+                        this.OpBillForm.get('payments.paymentDate')?.setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'))
+                        this.OpBillForm.get('payments.paymentTime')?.setValue(this.dateTimeObj.time)
+                        this.OpBillForm.get('payments.payTmamount').setValue(Number(this.OPFooterForm.get('netPayableAmt').value));
+                        this.OpBillForm.get('payments.payTmdate').setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'));
+                        this.OpBillForm.get('payments.payTmtranNo').setValue(this.mPesa_ReceiptNo);
+                        this.OpBillForm.get('payments.remark').setValue(mPesaMerchant_CheckoutRequest_Id);
+                        this.OpBillForm.get('payments.companyId')?.setValue(this.patientDetail?.companyId || 0)
+
+                        this._AppointmentlistService.InsertOPBilling(this.OpBillForm.value)
+                            .subscribe(response => {
+                                if (ThermalPrint != 1) {
+                                    this.viewgetOPBillReportPdf(response);
+                                } else {
+                                    this.viewgetOPBillThermalReportPdf(response);
+                                }
+                                this._matDialog.closeAll();
+                                this.savebtn = true;
+                                this.resetform();
+                            });
+                    }
+                }
+                else {
+                    let invalidFields = [];
+                    if (this.OpBillForm.invalid) {
+                        for (const controlName in this.OpBillForm.controls) {
+                            const control = this.OpBillForm.get(controlName);
+                            if (control instanceof FormGroup || control instanceof FormArray) {
+                                for (const nestedKey in control.controls) {
+                                    if (control.get(nestedKey)?.invalid) {
+                                        invalidFields.push(`OP Bill Data : ${controlName}.${nestedKey}`);
+                                    }
+                                }
+                            } else if (control?.invalid) {
+                                invalidFields.push(`OpBill From: ${controlName}`);
+                            }
+                        }
+                    }
+                    if (invalidFields.length > 0) {
+                        invalidFields.forEach(field => {
+                            this.toastr.warning(`Please Check this field "${field}" is invalid.`, 'Warning',
+                            );
+                        });
+                        return
+                    }
+                }
+            }
+        }); 
+    }
 }
 
 export class ChargesList {

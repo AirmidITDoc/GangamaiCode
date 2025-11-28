@@ -141,7 +141,7 @@ export class IPSettlementComponent implements OnInit {
                 }
             }
         });
-        this.getmultiplePaymentList(true);
+       // this.getmultiplePaymentList(true);
     }
     createSearchForm() {
         return this.formBuilder.group({

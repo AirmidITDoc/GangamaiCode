@@ -65,7 +65,7 @@
                                     <airmid-textbox label="PinCode" formControlName="pinNo" [value]="registerObj?.pinNo"
                                       (keypress)="keyPressAlphanumeric($event)"
                                         [formGroup]="companyFormDemo" [validations]="getValidationMessages().pinNo" fxFlex
-                                        [maxLength]="6">
+                                        [maxLength]="Is5_Digit_Pincode_Id ? 5 : 6">
                                     </airmid-textbox>
 
                                 </div>

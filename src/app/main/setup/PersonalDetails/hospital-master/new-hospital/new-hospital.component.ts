@@ -12,6 +12,7 @@ import { HospitalService } from '../hospital.service';
 import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 import { MatTabChangeEvent } from '@angular/material/tabs';
+import { ConfigService } from 'app/core/services/config.service';
 
 @Component({
   selector: 'app-new-hospital',
@@ -36,6 +37,7 @@ export class NewHospitalComponent implements OnInit {
   isExpanded = false;
   selectedTabIndex = 0;
   isActive=true
+    Is5_Digit_Pincode_Id: boolean = false;
   autocompleteOPDBillingCounterId: string = "CashCounter";
   autocompleteOPDReceiptCounterId: string = "CashCounter";
   autocompleteOPDRefundBillCounterId: string = "CashCounter";
@@ -56,6 +58,7 @@ export class NewHospitalComponent implements OnInit {
     public _matDialog: MatDialog,
     public toastr: ToastrService,
     @Inject(MAT_DIALOG_DATA) public data: any,
+    public _configue:ConfigService,
     public dialogRef: MatDialogRef<NewHospitalComponent>) { }
 
   ngOnInit(): void {
@@ -83,7 +86,10 @@ export class NewHospitalComponent implements OnInit {
         });
       }, 500);
     }
-
+            //this code for Mediforte 5 digit pincode id
+const rawValue = this?._configue?.configParams?.Is9_Digit_NationalId || "";
+const [id, val] = rawValue.includes(":") ? rawValue.split(":") : [null, null]; 
+this.Is5_Digit_Pincode_Id = id === "1";
   }
 
   selectChangecity(obj: any) {
@@ -140,6 +146,7 @@ export class NewHospitalComponent implements OnInit {
   }
 
   getValidationMessages() {
+    const maxLen = this.Is5_Digit_Pincode_Id ? 5 : 6;
     return {
       cityId: [
         { name: "required", Message: "CityName  is required" },
@@ -163,7 +170,12 @@ export class NewHospitalComponent implements OnInit {
       ],
       website: [],
       Phone: [],
-      Pin: []
+      // Pin: []
+                  Pin: [ ,
+                { name: "required", Message: "Pin / Country ID is required" },
+                { name: "minLength", Message: `${maxLen} digits required.` },
+                { name: "maxLength", Message: `More than ${maxLen} digits not allowed.` }
+            ],
     };
   }
 

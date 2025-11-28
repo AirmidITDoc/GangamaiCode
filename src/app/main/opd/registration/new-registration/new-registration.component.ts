@@ -12,6 +12,9 @@ import { RegistrationService } from '../registration.service';
 import { ImageViewComponent } from '../../appointment-list/image-view/image-view.component';
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 import { map, Observable, startWith } from 'rxjs';
+import { ConfigSettingParams } from 'app/core/models/config';
+import { ConfigurationService } from 'app/main/administration/configuration/configuration.service';
+import { ConfigService } from 'app/core/services/config.service';
 
 @Component({
     selector: 'app-new-registration',
@@ -70,7 +73,8 @@ export class NewRegistrationComponent implements OnInit {
         public dialogRef: MatDialogRef<NewRegistrationComponent>,
         public datePipe: DatePipe,
         private commonService: PrintserviceService,
-        private readonly changeDetectorRef: ChangeDetectorRef
+        private readonly changeDetectorRef: ChangeDetectorRef,
+        public _configue:ConfigService
     ) { }
 
     ngAfterViewChecked(): void {
@@ -80,8 +84,9 @@ export class NewRegistrationComponent implements OnInit {
     onChangePrefix(e) {
         this.ddlGender.SetSelection(e.sexId);
     }
- options: string[]
-     filteredOptions: Observable<string[]>;
+     options: string[]
+     filteredOptions: Observable<string[]>; 
+    Is9_Digit_National_Id: boolean = false;
     ngOnInit(): void {
         this.personalFormGroup = this._registerService.createPesonalForm1();
         this.personalFormGroup.markAllAsTouched();
@@ -106,6 +111,11 @@ export class NewRegistrationComponent implements OnInit {
       map(value => this._filter(value)),
 
     );
+
+            //this code for Mediforte 9 digit national id
+const rawValue = this?._configue?.configParams?.Is9_Digit_NationalId || "";
+const [id, val] = rawValue.includes(":") ? rawValue.split(":") : [null, null]; 
+this.Is9_Digit_National_Id = id === "1";
     }
 
 
@@ -289,6 +299,7 @@ debugger
     }
 
     getValidationMessages() {
+                 const maxLen = this.Is9_Digit_National_Id ? 9 : 12;
         return {
             firstName: [
                 { name: "required", Message: "First Name is required" },
@@ -343,12 +354,18 @@ debugger
                 { name: "maxLength", Message: "More than 10 digits not allowed." }
 
             ],
-            aadharCardNo: [
-                // { name: "pattern", Message: "Only numbers allowed" },
-                { name: "required", Message: "AAdharcard No is required" },
-                { name: "minLength", Message: "12 digit required." },
-                { name: "maxLength", Message: "More than 12 digits not allowed." }
+            // aadharCardNo: [
+            //     // { name: "pattern", Message: "Only numbers allowed" },
+            //     { name: "required", Message: "AAdharcard No is required" },
+            //     { name: "minLength", Message: "12 digit required." },
+            //     { name: "maxLength", Message: "More than 12 digits not allowed." }
 
+            // ],
+            aadharCardNo: [
+                { name: "pattern", Message: "Only numbers allowed" },
+                { name: "required", Message: "Aadhaar / National ID is required" },
+                { name: "minLength", Message: `${maxLen} digits required.` },
+                { name: "maxLength", Message: `More than ${maxLen} digits not allowed.` }
             ],
             emgDrivingLicenceNo: [
                 { name: "pattern", Message: "e.g., MH14-20210001234" },

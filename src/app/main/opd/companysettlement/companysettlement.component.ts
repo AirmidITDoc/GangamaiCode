@@ -37,8 +37,7 @@ export class CompanysettlementComponent implements OnInit {
     regNo: any = "0"
     regNo2: any = "0"
     l_name: any = ""
-    CompanyId = "0"
-    OPIPType = "0"
+    CompanyId = "0" 
     PBillNo: any = "%"
     autocompleteModecompany: string = "Company";
     searchFormGroup: FormGroup
@@ -177,7 +176,7 @@ export class CompanysettlementComponent implements OnInit {
             }
         });
 
-        this.getmultiplePaymentList(true);
+       // this.getmultiplePaymentList(true);
     }
 
     createSearchForm() {
@@ -271,12 +270,7 @@ export class CompanysettlementComponent implements OnInit {
         const currentDate = new Date();
         const datePipe = new DatePipe('en-US');
         const formattedTime = datePipe.transform(currentDate, 'shortTime');
-        const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
-
-        if (element.opdNo)
-            this.OPIPType = "0"
-        else
-            this.OPIPType = "1"
+        const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd'); 
 
         return this.formBuilder.group({
             // opCreditPayment: this.formBuilder.group({
@@ -304,7 +298,7 @@ export class CompanysettlementComponent implements OnInit {
             isCancelledBy: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             isCancelledDate: ['1999-01-01'],
 
-            opdipdType: [this.OPIPType],
+            opdipdType: [0],
             neftpayAmount: [element.PaidAmount, [this._FormvalidationserviceService.onlyNumberValidator()]],
             neftno: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
             neftbankMaster: [this.BankNam, [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
@@ -663,8 +657,7 @@ export class CompanysettlementComponent implements OnInit {
     @ViewChild('paginator', { static: true }) public paginator: MatPaginator;
     getmultiplePaymentList(validate = true) {
         this.CompanyId = String(this.OPMultipleSettlForm.get('CompanyId').value)
-        this.RegId2 = this.OPMultipleSettlForm.get('RegId')?.value.value
-        this.OPIPType = this.OPMultipleSettlForm.get('opipType')?.value
+        this.RegId2 = this.OPMultipleSettlForm.get('RegId')?.value.value 
 
         if (validate &&
             (this.CompanyId === "0" || this.CompanyId === "" || this.CompanyId === null) &&
@@ -728,7 +721,7 @@ export class CompanysettlementComponent implements OnInit {
                 },
                 {
                     "fieldName": "OPIPType",
-                    "fieldValue": this.OPIPType,
+                    "fieldValue": "0",
                     "opType": "Contains"
                 }
             ],

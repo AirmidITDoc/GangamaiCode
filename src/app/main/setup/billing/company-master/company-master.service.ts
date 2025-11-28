@@ -126,10 +126,10 @@ export class CompanyMasterService {
         return this._formBuilder.group({
             companyId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
 
-            companyName: ['', [Validators.required, Validators.maxLength(50), Validators.pattern('^[a-zA-Z0-9 ]*$'),
+            companyName: ['', [Validators.required, Validators.maxLength(50), Validators.pattern('^[a-zA-Z0-9&()\\/\\- ]*$'),
             this._FormvalidationserviceService.allowEmptyStringValidator()]],
 
-            companyShortName: ['', [Validators.required, Validators.maxLength(50), Validators.pattern('^[a-zA-Z0-9 ]*$'),
+            companyShortName: ['', [Validators.required, Validators.maxLength(50), Validators.pattern('^[a-zA-Z0-9&()\\/\\- ]*$'),
             this._FormvalidationserviceService.allowEmptyStringValidator()]],
 
             address: ['', [Validators.maxLength(100), this._FormvalidationserviceService.allowEmptyStringValidator()]],
