@@ -4,6 +4,7 @@ import { FormControl, FormGroup, UntypedFormBuilder, Validators } from '@angular
 import { LoaderService } from 'app/core/components/loader/loader.service';
 import { ApiCaller } from 'app/core/services/apiCaller';
 import { AuthenticationService } from 'app/core/services/authentication.service';
+import { ConfigService } from 'app/core/services/config.service';
 import { RegInsert } from 'app/main/opd/registration/registration.component';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 import { Observable } from 'rxjs';
@@ -15,13 +16,20 @@ export class AdmissionService {
 
     myFilterform: FormGroup;
     mySaveForm: FormGroup;
+        Is9_Digit_National_Id: boolean = false;
     populateFormpersonal(registerObj: RegInsert) {
         throw new Error('Method not implemented.');
     }
 
     constructor(public _httpClient: HttpClient, public _httpClient1: ApiCaller, private accountService: AuthenticationService,
+        public _configue:ConfigService,
         public _formBuilder: UntypedFormBuilder, private _loaderService: LoaderService, private _FormvalidationserviceService: FormvalidationserviceService
-    ) { this.myFilterform = this.filterForm(); }
+    ) { this.myFilterform = this.filterForm(); 
+                //this code for Mediforte 9 digit national id
+const rawValue = this?._configue?.configParams?.Is9_Digit_NationalId || "";
+const [id, val] = rawValue.includes(":") ? rawValue.split(":") : [null, null]; 
+this.Is9_Digit_National_Id = id === "1";
+    }
 
     filterForm(): FormGroup {
         return this._formBuilder.group({
@@ -59,6 +67,7 @@ export class AdmissionService {
     }
 
     createPesonalForm() {
+         const maxLen = this.Is9_Digit_National_Id ? 9 : 12;
         return this._formBuilder.group({
             RegId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             RegNo: ['', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
@@ -97,8 +106,8 @@ export class AdmissionService {
             Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
             ]],
             aadharCardNo: ['', [
-                Validators.minLength(12),
-                Validators.maxLength(12),
+                Validators.minLength(maxLen),
+                Validators.maxLength(maxLen),
                 Validators.pattern("^[0-9]*$")
             ]],
 

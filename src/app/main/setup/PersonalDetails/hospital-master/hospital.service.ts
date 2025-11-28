@@ -22,7 +22,7 @@ export class HospitalService {
       hospitalName: ["",[Validators.required]],
       hospitalAddress:  ["",[Validators.required]],
       City:   ["",[Validators.required]],
-      pin: ["", Validators.pattern("[0-9]")],
+      pin: ["", Validators.pattern("^[0-9]*$")],
       phone: ['', [Validators.required,
       Validators.minLength(10),
       Validators.maxLength(10),

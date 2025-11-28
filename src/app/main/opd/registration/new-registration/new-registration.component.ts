@@ -88,6 +88,8 @@ export class NewRegistrationComponent implements OnInit {
      filteredOptions: Observable<string[]>; 
     Is9_Digit_National_Id: boolean = false;
     ngOnInit(): void {
+
+
         this.personalFormGroup = this._registerService.createPesonalForm1();
         this.personalFormGroup.markAllAsTouched();
         this.minDate = new Date();
@@ -111,11 +113,11 @@ export class NewRegistrationComponent implements OnInit {
       map(value => this._filter(value)),
 
     );
-
-            //this code for Mediforte 9 digit national id
+//this code for Mediforte 9 digit national id
 const rawValue = this?._configue?.configParams?.Is9_Digit_NationalId || "";
 const [id, val] = rawValue.includes(":") ? rawValue.split(":") : [null, null]; 
 this.Is9_Digit_National_Id = id === "1";
+
     }
 
 

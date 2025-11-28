@@ -11,7 +11,7 @@ import { FormvalidationserviceService } from 'app/main/shared/services/formvalid
     providedIn: 'root'
 })
 export class RegistrationService {
-    Is9_Digit_National_Id:any=0;
+    Is9_Digit_National_Id: boolean = false;
     constructor(
         public _httpClient: HttpClient, public _httpClient1: ApiCaller,
         private _formBuilder: UntypedFormBuilder, private _FormvalidationserviceService: FormvalidationserviceService,
@@ -22,6 +22,7 @@ export class RegistrationService {
 //this code for Mediforte 9 digit national id
 const rawValue = this?._configue?.configParams?.Is9_Digit_NationalId || "";
 const [id, val] = rawValue.includes(":") ? rawValue.split(":") : [null, null];
+this.Is9_Digit_National_Id = id === "1";
      }
 
     filterForm(): FormGroup {
@@ -72,11 +73,18 @@ const [id, val] = rawValue.includes(":") ? rawValue.split(":") : [null, null];
             ]],
 
             Address: ['', [this._FormvalidationserviceService.allowEmptyStringValidator(), Validators.maxLength(200)]],
-            aadharCardNo: ['', [
+            // aadharCardNo: ['', [
+            //     Validators.minLength(maxLen),
+            //     Validators.maxLength(maxLen),
+            //      Validators.pattern("^[0-9]*$")
+            //     // this._FormvalidationserviceService.onlyNumberValidator()
+            // ]], // Validators.pattern("^[0-9]*$"),Validators.pattern(/^[xX]{8}\d{4}$/),
+             aadharCardNo: ['', [
                 Validators.minLength(maxLen),
                 Validators.maxLength(maxLen),
-                // this._FormvalidationserviceService.onlyNumberValidator()
-            ]], // Validators.pattern("^[0-9]*$"),Validators.pattern(/^[xX]{8}\d{4}$/),
+                Validators.pattern("^[0-9]*$")
+            ]],
+            
             GenderId: [0, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
 
             DateOfBirth: [(new Date()).toISOString(), this._FormvalidationserviceService.validDateValidator()],

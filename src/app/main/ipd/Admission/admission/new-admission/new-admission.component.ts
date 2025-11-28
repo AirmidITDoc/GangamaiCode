@@ -127,6 +127,10 @@ export class NewAdmissionComponent implements OnInit {
   public opdList: OpList[] = [];
   colstatus = 0
   ngOnInit(): void {
+const rawValue = this?._configue?.configParams?.Is9_Digit_NationalId || "";
+const [id, val] = rawValue.includes(":") ? rawValue.split(":") : [null, null]; 
+this.Is9_Digit_National_Id = id === "1";
+
 
     this.searchFormGroup = this.createSearchForm();
     this.personalFormGroup.markAllAsTouched();
@@ -159,9 +163,7 @@ export class NewAdmissionComponent implements OnInit {
       });
       // this.dsOpList = new MatTableDataSource(this.opdList);
     }
-const rawValue = this?._configue?.configParams?.Is9_Digit_NationalId || "";
-const [id, val] = rawValue.includes(":") ? rawValue.split(":") : [null, null]; 
-this.Is9_Digit_National_Id = id === "1";
+
   }
 
   createSearchForm() {

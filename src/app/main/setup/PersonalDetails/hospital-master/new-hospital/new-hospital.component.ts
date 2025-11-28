@@ -62,6 +62,12 @@ export class NewHospitalComponent implements OnInit {
     public dialogRef: MatDialogRef<NewHospitalComponent>) { }
 
   ngOnInit(): void {
+                //this code for Mediforte 5 digit pincode id
+const rawValue = this?._configue?.configParams?.Is9_Digit_NationalId || "";
+const [id, val] = rawValue.includes(":") ? rawValue.split(":") : [null, null]; 
+this.Is5_Digit_Pincode_Id = id === "1";
+
+
     this.HospitalForm = this._HospitalService.createHospitalForm();
     this.HospitalForm.markAllAsTouched();
     console.log(this.data)
@@ -86,10 +92,7 @@ export class NewHospitalComponent implements OnInit {
         });
       }, 500);
     }
-            //this code for Mediforte 5 digit pincode id
-const rawValue = this?._configue?.configParams?.Is9_Digit_NationalId || "";
-const [id, val] = rawValue.includes(":") ? rawValue.split(":") : [null, null]; 
-this.Is5_Digit_Pincode_Id = id === "1";
+
   }
 
   selectChangecity(obj: any) {

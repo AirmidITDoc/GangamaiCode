@@ -224,6 +224,9 @@ Is9_Digit_National_Id: boolean = false;
     }
     doctorId = 0
     ngOnInit(): void {
+const rawValue = this?._configue?.configParams?.Is9_Digit_NationalId || "";
+const [id, val] = rawValue.includes(":") ? rawValue.split(":") : [null, null]; 
+this.Is9_Digit_National_Id = id === "1";
         this.isEditMode = this.data?.formMode === 'edit';
         this.myForm = this.createdDoctormasterForm();
         this.myForm.markAllAsTouched();
@@ -297,9 +300,7 @@ Is9_Digit_National_Id: boolean = false;
             });
         }
 //this code for Mediforte 9 digit national id
-const rawValue = this?._configue?.configParams?.Is9_Digit_NationalId || "";
-const [id, val] = rawValue.includes(":") ? rawValue.split(":") : [null, null]; 
-this.Is9_Digit_National_Id = id === "1";
+
     }
     ///////////////////// digital signature code started /////////////////////
 
@@ -545,15 +546,20 @@ this.Is9_Digit_National_Id = id === "1";
 
             MDoctorDepartmentDets: ["", Validators.required],
             Pancardno: ["", [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
-            AadharCardNo: ["",
-                [
-                    // Validators.required,
-                    Validators.pattern("^[0-9]*$"),
-                    Validators.minLength(maxLen),
-                    Validators.maxLength(maxLen),
-                    this._FormvalidationserviceService.allowEmptyStringValidatorOnly()
-                ]
-            ],
+            // AadharCardNo: ["",
+            //     [
+            //         // Validators.required,
+            //         Validators.minLength(maxLen),
+            //         Validators.maxLength(maxLen),
+            //         Validators.pattern("^[0-9]*$"),
+            //         // this._FormvalidationserviceService.allowEmptyStringValidatorOnly()
+            //     ]
+            // ], 
+             AadharCardNo: ['', [
+                            Validators.minLength(maxLen),
+                            Validators.maxLength(maxLen),
+                            Validators.pattern("^[0-9]*$")
+                        ]],
             signature: ["",[this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
             mDoctorExperienceDetails: this.formBuilder.array([]),
             mDoctorQualificationDetails: this.formBuilder.array([]),
@@ -965,7 +971,7 @@ this.Is9_Digit_National_Id = id === "1";
             //     { name: "minLength", Message: "12 digit required." },
             //     { name: "maxLength", Message: "More than 12 digits not allowed." }
             // ],
-             aadharCardNo: [
+             AadharCardNo: [
                 { name: "pattern", Message: "Only numbers allowed" },
                 { name: "required", Message: "Aadhaar / National ID is required" },
                 { name: "minLength", Message: `${maxLen} digits required.` },
