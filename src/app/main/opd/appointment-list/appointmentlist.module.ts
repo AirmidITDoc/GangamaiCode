@@ -55,6 +55,7 @@ import { SharedModule } from "app/main/shared/shared.module";
 import { FollowpdateUpdateComponent } from './followpdate-update/followpdate-update.component';
 import { PolicyInfoPopoverComponent } from './policy-info-popover/policy-info-popover.component';
 import { CompanyApprovalPopoverComponent } from './company-approval-popover/company-approval-popover.component';
+import { NewAppointmentwithBillComponent } from "./new-appointmentwith-bill/new-appointmentwith-bill.component";
 // import { NewAppointmentwithBillComponent } from './new-appointmentwith-bill/new-appointmentwith-bill.component';
 
 
@@ -78,7 +79,8 @@ const routes: Routes = [
         PreviousDeptListComponent,
         FollowpdateUpdateComponent,
         PolicyInfoPopoverComponent,
-        CompanyApprovalPopoverComponent
+        CompanyApprovalPopoverComponent,
+        NewAppointmentwithBillComponent
     ],
     imports: [
         RouterModule.forChild(routes),

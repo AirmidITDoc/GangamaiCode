@@ -1,0 +1,182 @@
+
+
+
+.ellipsis-text {
+  display: inline-block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+  vertical-align: bottom; 
+}
+.net-amt-box {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid #1976d2;   /* Material primary color */
+  border-radius: 8px;
+  padding: 6px 10px;           /* reduced padding */
+  margin: 10px 0;
+  background-color: #f1f8ff;   /* light background */
+  font-weight: 500;
+}
+
+.net-amt-label {
+  font-size: 14px;
+  color: #555;
+}
+
+.net-amt-value {
+  font-size: 16px;
+  font-weight: bold;
+  color: #1976d2;   /* highlight color */
+}
+
+.amount-positive {
+  border: 2px solid #4caf50;
+  background: #e8f5e9;
+  color: #2e7d32;
+  font-weight: bold;
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+.amount-zero {
+  border: 2px solid #ff9800;
+  background: #fff8e1;
+  color: #ef6c00;
+  font-weight: bold;
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+.amount-negative {
+  border: 2px solid #f44336;
+  background: #ffebee;
+  color: #c62828;
+  font-weight: bold;
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+/// 
+/// 
+.final-amt-box {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 2px solid #4caf50;   /* Material primary color */
+  border-radius: 8px;
+  padding: 6px 10px;           /* reduced padding */
+  margin: 10px 0;
+  background-color: #f1f8ff;   /* light background */
+  font-weight: 500;
+}
+
+.final-amt-label {
+  margin-right: 5px;
+  font-weight: 500;
+  
+}
+
+.final-amt-value {
+  font-size: 18px;
+  font-weight: bold;
+  border: 2px solid #ff9800;
+  background: #fff8e1;
+  color: #ef6c00;
+  font-weight: bold;
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+// message box  ---- mpesa
+.message-box {
+  background: #1f1f33;
+  padding: 18px 20px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-family: 'Courier New', monospace; /* perfect alignment */
+  white-space: pre-wrap;
+  color: #fff;
+  line-height: 1.6;
+  border-left: 4px solid #4caf50;
+  text-align: left;
+  width: 90%;
+  margin: 0 auto;
+}
+
+.waiting-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.waiting-box {
+  background: white;
+  padding: 30px;
+  text-align: center;
+  border-radius: 8px;
+  width: 520px;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #ddd;
+  border-top-color: #3f51b5;
+  border-radius: 50%;
+  margin: 0 auto 20px;
+  animation: spin 1s linear infinite;
+}
+
+/* Timer */
+.timer-box {
+  background: #4e83bd;
+  color: white;
+  padding: 10px 0;
+  font-size: 20px;
+  border-radius: 10px;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+.timer-label {
+  display: block;
+  font-size: 12px;
+  margin-top: 2px;
+  opacity: 0.8;
+}
+
+/* Timer changes color when under 1 minute */
+.timer-box.warning {
+  background: #ec7d5b;
+}
+
+/* Title */
+.waiting-title {
+  font-size: 18px;
+  margin-bottom: 15px;
+  color: #333;
+}
+
+/* Color classes */
+.green {
+  color: #4caf50;
+}
+.orange {
+  color: #ff9800;
+}
+.red {
+  color: #f44336;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
