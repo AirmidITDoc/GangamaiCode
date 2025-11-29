@@ -490,7 +490,10 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
                 unitId: [this.accountService.currentUserValue.user.unitId],
                 wfamount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
                 companyId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            })
+            }),
+            //New Payments
+            // ✅ Fixed: should be FormArray
+            tPayments: this.formBuilder.array([]),
         });
     }
     CreateAddchargeform(item: any): FormGroup {
@@ -594,6 +597,33 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
             createdBy: [this.accountService.currentUserValue.userId, [this._FormvalidationserviceService.onlyNumberValidator()]]
         });
     }
+    CreateModePaymentform(item: any): FormGroup {
+        return this.formBuilder.group({
+            paymentId: [item?.paymentId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            unitId: [item?.unitId ?? this.accountService.currentUserValue.user.unitId],
+            billNo: [item?.billNo ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            opdipdtype: [item?.opdipdtype ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            paymentDate: [item?.paymentDate ?? ''],
+            paymentTime: [item?.paymentTime ?? ''],
+            payAmount: [item?.payAmount ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            tranNo: [item?.tranNo ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+            bankName: [item?.bankName ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+            validationDate: [item?.validationDate ?? ''],
+            advanceUsedAmount: [item?.advanceUsedAmount ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            comments: [item?.comments ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+            payMode: [item?.payMode ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+            onlineTranNo: [item?.onlineTranNo ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+            onlineTranResponse: [item?.onlineTranResponse ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+            companyId: [item?.companyId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            advanceId: [item?.advanceId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            refundId: [item?.refundId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            cashCounterId: [item?.cashCounterId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            transactionType: [item?.transactionType ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            isSelfOrcompany: [item?.isSelfOrcompany ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            tranMode: [item?.tranMode ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+            createdBy: [item?.createdBy ?? this.accountService.currentUserValue.userId]
+        });
+    }
     // Getters
     get ChargeddetailsArray(): FormArray {
         return this.OpBillForm.get('addCharges') as FormArray;
@@ -603,6 +633,9 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
     }
     get packcagechargesArray(): FormArray {
         return this.OpBillForm.get('packcagecharges') as FormArray;
+    }
+    get ModeOfPaymentsArray(): FormArray {
+        return this.OpBillForm.get('tPayments') as FormArray;
     }
 
     getdocdetail(event) {
@@ -1142,8 +1175,10 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
                 PatientHeaderObj['RegNo'] = this.RegNo;
                 PatientHeaderObj['DoctorName'] = this.Doctorname;
                 PatientHeaderObj['CompanyName'] = this.CompanyName;
+                PatientHeaderObj['CompanyName'] = this.CompanyName;
                 PatientHeaderObj['DepartmentName'] = this.DepartmentName;
                 PatientHeaderObj['OPD_IPD_Id'] = this.vOPIPId;
+                 PatientHeaderObj['CompanyId'] = this.patientDetail?.companyId || 0;
                 PatientHeaderObj['Age'] = this.AgeYear;
                 PatientHeaderObj['NetPayAmount'] = Math.round(this.OPFooterForm.get('netPayableAmt').value);
                 const dialogRef = this._matDialog.open(OpPaymentComponent,
@@ -1163,7 +1198,13 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
                         console.log(result.submitDataPay.ipPaymentInsert)
                         console.log(result.BillBalanceAmount)
                         this.OpBillForm.get('balanceAmt').setValue(result.BillBalanceAmount || 0)
-                        this.OpBillForm.get('payments').setValue(result.submitDataPay.ipPaymentInsert)
+                        this.OpBillForm.get('payments').setValue(result.submitDataPay.ipPaymentInsert) 
+
+                        this.ModeOfPaymentsArray.clear(); 
+                        result.submitDataPay.ipModePaymentInsert.forEach(item => {
+                        this.ModeOfPaymentsArray.push(this.CreateModePaymentform(item as ChargesList));
+                        });  
+
                         console.log(this.OpBillForm.value)
                         this._AppointmentlistService.InsertOPBilling(this.OpBillForm.value).subscribe(response => {
                             if (ThermalPrint != 1) {
@@ -1179,12 +1220,43 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
                 });
             }
             else if (this.OPFooterForm.get('paymentType').value == 'CashPay') {//Cash pay  
+                let ModePaymentObj = [];
+                 ModePaymentObj.push({
+                    paymentId: 0,
+                    unitId: this.accountService.currentUserValue.user.unitId,
+                    billNo: 0,
+                    opdipdtype: 0,
+                    paymentDate: formattedDate,
+                    paymentTime: formattedTime,
+                    payAmount: this.OPFooterForm.get('netPayableAmt')?.value ?? 0,
+                    tranNo: "",
+                    bankName: "",
+                    validationDate: this.datePipe.transform(this.currentDate, 'yyyy-MM-dd'),
+                    advanceUsedAmount: 0,
+                    comments: "",
+                    payMode: "Cash",
+                    onlineTranNo: "0",
+                    onlineTranResponse: "0",
+                    companyId: this.patientDetail?.CompanyId ?? 0,
+                    advanceId: 0,
+                    refundId: 0,
+                    cashCounterId: 0,
+                    transactionType: 0,
+                    isSelfOrcompany: this.patientDetail?.CompanyId ? 1 : 0,
+                    tranMode: "Cash",
+                    createdBy: this.accountService.currentUserValue?.userId ?? 0
+                }); 
                 this.OpBillForm.get('balanceAmt').setValue(0)
                 this.OpBillForm.get('paidAmt')?.setValue(this.OPFooterForm.get('netPayableAmt')?.value)
                 this.OpBillForm.get('payments.cashPayAmount')?.setValue(Number(this.OPFooterForm.get('netPayableAmt')?.value))
                 this.OpBillForm.get('payments.paymentDate')?.setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'))
                 this.OpBillForm.get('payments.paymentTime')?.setValue(this.dateTimeObj.time)
                 this.OpBillForm.get('payments.companyId')?.setValue(this.patientDetail?.companyId || 0)
+
+                       this.ModeOfPaymentsArray.clear(); 
+                        ModePaymentObj.forEach(item => {
+                        this.ModeOfPaymentsArray.push(this.CreateModePaymentform(item as ChargesList));
+                        });  
 
                 console.log(this.OpBillForm.value)
                 this._AppointmentlistService.InsertOPBilling(this.OpBillForm.value).subscribe(response => {

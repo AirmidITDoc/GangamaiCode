@@ -19,10 +19,7 @@ export class RegistrationService {
         private _loaderService: LoaderService,
         public _configue:ConfigService,
     ) {
-//this code for Mediforte 9 digit national id
-const rawValue = this?._configue?.configParams?.Is9_Digit_NationalId || "";
-const [id, val] = rawValue.includes(":") ? rawValue.split(":") : [null, null];
-this.Is9_Digit_National_Id = id === "1";
+
      }
 
     filterForm(): FormGroup {
@@ -47,6 +44,10 @@ this.Is9_Digit_National_Id = id === "1";
     }
 
     createPesonalForm1() {
+        //this code for Mediforte 9 digit national id
+        const rawValue = this?._configue?.configParams?.Is9_Digit_NationalId || "";
+        const [id, val] = rawValue.includes(":") ? rawValue.split(":") : [null, null];
+        this.Is9_Digit_National_Id = id === "1";
         const maxLen = this.Is9_Digit_National_Id ? 9 : 12;
         return this._formBuilder.group({
             RegId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -79,12 +80,12 @@ this.Is9_Digit_National_Id = id === "1";
             //      Validators.pattern("^[0-9]*$")
             //     // this._FormvalidationserviceService.onlyNumberValidator()
             // ]], // Validators.pattern("^[0-9]*$"),Validators.pattern(/^[xX]{8}\d{4}$/),
-             aadharCardNo: ['', [
+            aadharCardNo: ['', [
                 Validators.minLength(maxLen),
                 Validators.maxLength(maxLen),
                 Validators.pattern("^[0-9]*$")
             ]],
-            
+
             GenderId: [0, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
 
             DateOfBirth: [(new Date()).toISOString(), this._FormvalidationserviceService.validDateValidator()],
@@ -134,9 +135,9 @@ this.Is9_Digit_National_Id = id === "1";
             emgLandlineNo: ['', [Validators.minLength(10), Validators.maxLength(10),
             Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$"), this._FormvalidationserviceService.onlyNumberValidator()]],
             engAddress: ['', [this._FormvalidationserviceService.allowEmptyStringValidator(), Validators.maxLength(100)]],
-            emgAadharCardNo: ['', [Validators.minLength(12), Validators.maxLength(12), 
-            // this._FormvalidationserviceService.onlyNumberValidator(),Validators.pattern("^[0-9]*$")
-        ]],
+            emgAadharCardNo: ['', [Validators.minLength(12), Validators.maxLength(12),
+                // this._FormvalidationserviceService.onlyNumberValidator(),Validators.pattern("^[0-9]*$")
+            ]],
             emgDrivingLicenceNo: ['', [Validators.minLength(16), Validators.maxLength(16),
             Validators.pattern(/^[A-Za-z0-9\- ]{5,16}$/)]],
             //Validators.pattern(/^[A-Z]{2}-\d{2}-\d{7,11}$/) eg:MH14-20210001234

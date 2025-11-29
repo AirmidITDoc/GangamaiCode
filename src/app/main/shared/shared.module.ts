@@ -74,6 +74,7 @@ import { Error0Component } from './APIerrorpages/error-0/error-0.component';
 import { AirmidImageviewComponent } from './componets/airmid-imageview/airmid-imageview.component';
 import { AirmidImageIconComponent } from './componets/airmid-image-icon/airmid-image-icon.component';
 import { AirmidFileViewerComponent } from './componets/airmid-fileviewer/airmid-fileviewer.component';
+import { WhatsAppEmailService } from './services/whats-app-email.service';
 
 
 @NgModule({
@@ -120,7 +121,8 @@ import { AirmidFileViewerComponent } from './componets/airmid-fileviewer/airmid-
         ExcelDownloadService,
         SnackBarService,
         ToasterService,
-        OnlinePaymentService
+        OnlinePaymentService,
+        WhatsAppEmailService
     ],
     exports: [
         TrimPipe,

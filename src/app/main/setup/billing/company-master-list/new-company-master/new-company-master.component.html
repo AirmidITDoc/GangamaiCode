@@ -69,7 +69,7 @@
                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                   <airmid-textbox label="PinCode" formControlName="pinNo" [value]="registerObj?.pinNo"
                     (keypress)="keyPressAlphanumeric($event)" [formGroup]="companyFormDemo"
-                    [validations]="getValidationMessages().pinNo" fxFlex [maxLength]="6">
+                    [validations]="getValidationMessages().pinNo" fxFlex [maxLength]="Is5_Digit_Pincode_Id ? 5 : 6">
                   </airmid-textbox>
 
                 </div>
@@ -247,7 +247,7 @@
 
           <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" fxLayoutAlign="space-between">
 
-            <div fxLayout="row" style="padding-left: 10px;">
+            <div fxLayout="row" style="padding-left: 10px;" fxFlex="20%">
               <app-airmid-slider label="Sub Company" formControlName="isSubCompany" [formGroup]="companyFormDemo" [value]="registerObj?.isSubCompany">
               </app-airmid-slider>
 

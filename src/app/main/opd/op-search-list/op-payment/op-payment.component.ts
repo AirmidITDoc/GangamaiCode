@@ -8,7 +8,7 @@ import { AuthenticationService } from 'app/core/services/authentication.service'
 import { ToastrService } from 'ngx-toastr';
 import { Observable } from 'rxjs';
 import Swal from 'sweetalert2';
-import { OPSearhlistService } from '../op-searhlist.service';
+import { OPSearhlistService } from '../op-searhlist.service'; 
 
 @Component({
   selector: 'app-op-payment',
@@ -382,6 +382,7 @@ export class OpPaymentComponent implements OnInit {
   }
 
   Paymentobj = {};
+  ModePaymentObj:any =[];
   // Paymentobj: any[] = [];   //changed by raksha
   onSubmit() {
     
@@ -667,7 +668,7 @@ export class OpPaymentComponent implements OnInit {
       this.Paymentobj['wfamount'] = this.Payments.data.find(x => x.PaymentType == "wf")?.Amount ?? 0;
     }
     //new changes done by Ambadas op bill 10/6/2025
-    else if (this.data.FromName == "OP-Bill") {
+    else if (this.data.FromName == "OP-Bill") {   
       this.Paymentobj['paymentId'] = 0;
       this.Paymentobj['billNo'] = 0;
       this.Paymentobj['receiptNo'] = '';
@@ -813,8 +814,37 @@ export class OpPaymentComponent implements OnInit {
       })
       this.Paymentobj = PaymentMul
     }
+         this.Payments.data.forEach(element => {
+        this.ModePaymentObj.push({
+          paymentId: 0,
+          unitId: this._loggedService.currentUserValue.user.unitId,
+          billNo: this.advanceData?.billNo || 0,
+          opdipdtype: 0,
+          paymentDate: formattedDate,
+          paymentTime: formattedTime,
+          payAmount: element.Amount ?? 0,
+          tranNo: element.RefNo ?? "",
+          bankName: element.BankName ?? "",
+          validationDate: this.datePipe.transform(element.RegDate, 'yyyy-MM-dd') || this.datePipe.transform(this.currentDate, 'yyyy-MM-dd'),
+          advanceUsedAmount: 0,
+          comments: "",
+          payMode: element.PaymentType ?? "",
+          onlineTranNo: '0',
+          onlineTranResponse: '0',
+          companyId: this.advanceData?.CompanyId ?? 0,
+          advanceId: 0,
+          refundId: 0,
+          cashCounterId: 0,
+          transactionType: 0,
+          isSelfOrcompany: this.advanceData?.CompanyId ? 1 : 0,
+          tranMode: "HOSP",
+          createdBy: this._loggedService.currentUserValue?.userId ?? 0
+        });
+      });
+
     let submitDataPay = {
-      ipPaymentInsert: this.Paymentobj
+      ipPaymentInsert: this.Paymentobj,
+      ipModePaymentInsert:this.ModePaymentObj
     };
     let IsSubmit = {
       "submitDataPay": submitDataPay,

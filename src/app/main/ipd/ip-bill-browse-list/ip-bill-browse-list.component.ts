@@ -62,7 +62,7 @@ export class IPBillBrowseListComponent implements OnInit {
         this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplateIP;
         this.gridConfig.columnsList.find(col => col.key === 'patientTypeId')!.template = this.patientTypetemp;
         this.gridConfig.columnsList.find(col => col.key === 'interimOrFinal')!.template = this.Billstatus;
-        this.gridConfig.columnsList.find(col => col.key === 'balanceAmt')!.template = this.balancestatus;
+        this.gridConfig.columnsList.find(col => col.key === 'creditbill')!.template = this.balancestatus;
         this.gridConfig.columnsList.find(col => col.key === 'isCancelled')!.template = this.isCancelledstatus;
 
         this.gridConfig1.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplatepayment;
@@ -93,7 +93,7 @@ export class IPBillBrowseListComponent implements OnInit {
     allIPBillListColumns = [
         { heading: "", key: "patientTypeId", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30 },
         { heading: "", key: "interimOrFinal", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30 },
-        { heading: "", key: "balanceAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30 },
+        { heading: "", key: "creditbill", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30 },
         { heading: "", key: "isCancelled", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30 },
         { heading: "BillDate", key: "billTime", sort: true, align: 'left', emptySign: 'NA', width: 200, type: 9 },
         { heading: "PBillNo", key: "pbillNo", sort: true, align: 'left', emptySign: 'NA' },
@@ -113,7 +113,7 @@ export class IPBillBrowseListComponent implements OnInit {
         { heading: "Disc Amount", key: "concessionAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
         { heading: "Company DiscAmt", key: "compDiscAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
         { heading: "Net Amount", key: "netPayableAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
-        { heading: "Balance Amt", key: "bAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+        { heading: "Balance Amt", key: "balanceAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
         { heading: "Cash Pay", key: "cashPay", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
         { heading: "Card Pay", key: "cardPay", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
         { heading: "Cheque Pay", key: "chequePay", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
@@ -617,11 +617,15 @@ export class IPBillBrowseListComponent implements OnInit {
         PatientHeaderObj['Date'] = contact.billDate;
         PatientHeaderObj['PatientName'] = contact.patientName;
         PatientHeaderObj['AdvanceAmount'] = contact.advUsedPay;
-        PatientHeaderObj['NetPayAmount'] = contact.netPayableAmt;
+        PatientHeaderObj['NetPayAmount'] = contact.balanceAmt;
         PatientHeaderObj['BillNo'] = contact.billNo;
         PatientHeaderObj['OPD_IPD_Id'] = contact.opdipdid;
         PatientHeaderObj['IPDNo'] = contact.ipdNo;
         PatientHeaderObj['RegNo'] = contact.regNo;
+        PatientHeaderObj['DoctorName'] = contact.doctorName;
+        PatientHeaderObj['CompanyName'] = contact.companyName;
+        PatientHeaderObj['CompanyId'] = contact.companyId;
+        PatientHeaderObj['DepartmentName'] = contact.departmentName;
         console.log(PatientHeaderObj)
 
         const dialogRef = this._matDialog.open(OpPaymentVimalComponent,

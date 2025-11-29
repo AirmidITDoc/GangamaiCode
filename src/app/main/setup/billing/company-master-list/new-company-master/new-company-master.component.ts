@@ -7,6 +7,7 @@ import { CompanyMasterService } from '../company-master.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { fuseAnimations } from '@fuse/animations';
+import { ConfigService } from 'app/core/services/config.service';
 
 @Component({
   selector: 'app-new-company-master',
@@ -25,7 +26,7 @@ export class NewCompanyMasterComponent {
      autocompleteModetypeName: string = "CompanyType";
      autocompleteModetariff: string = "Tariff";
      autocompleteModeofpayment: string = "PaymentMode";
-     
+      Is5_Digit_Pincode_Id: boolean = false;
      autocompleteModestate: string = "State";
      autocompleteModecountry: string = "Country";
      registerObj = new CompanyMaster({});
@@ -37,10 +38,16 @@ export class NewCompanyMasterComponent {
          public _CompanyMasterService: CompanyMasterService,
          public dialogRef: MatDialogRef<NewCompanyMasterComponent>,
          @Inject(MAT_DIALOG_DATA) public data: any,
+    public _configue:ConfigService,
          public toastr: ToastrService
      ) { }
  
      ngOnInit(): void {
+const rawValue = this?._configue?.configParams?.Is9_Digit_NationalId || "";
+const [id, val] = rawValue.includes(":") ? rawValue.split(":") : [null, null]; 
+this.Is5_Digit_Pincode_Id = id === "1";
+
+
         this.companyFormDemo = this._CompanyMasterService.createCompanymasterFormDemo();
          this.companyFormDemo.markAllAsTouched();
  
@@ -113,6 +120,7 @@ export class NewCompanyMasterComponent {
  
  
      getValidationMessages() {
+                const maxLen = this.Is5_Digit_Pincode_Id ? 5 : 6;
          return {
              companyName: [
                  { name: "required", Message: "Company Name is required" },
@@ -140,11 +148,16 @@ export class NewCompanyMasterComponent {
                  { name: "maxlength", Message: "Number be not be greater than 10 digits" },
                  { name: "pattern", Message: "Only Digits allowed." }
              ],
-             pinNo: [
-                 { name: "required", Message: "Pin Code is required" },
-                 { name: "maxlength", Message: "Pincode must be greater than 2 digits" },
-                 { name: "pattern", Message: "Only Digits allowed." }
-             ],
+            //  pinNo: [
+            //      { name: "required", Message: "Pin Code is required" },
+            //      { name: "maxlength", Message: "Pincode must be greater than 2 digits" },
+            //      { name: "pattern", Message: "Only Digits allowed." }
+            //  ],
+               pinNo: [ ,
+                { name: "required", Message: "Pin / Country ID is required" },
+                { name: "minLength", Message: `${maxLen} digits required.` },
+                { name: "maxLength", Message: `More than ${maxLen} digits not allowed.` }
+            ],
              address: [
                  { name: "required", Message: "Address is required" },
                  { name: "maxlength", Message: "Address must be between 1 and 100 characters." },

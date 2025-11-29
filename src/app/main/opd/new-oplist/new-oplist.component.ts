@@ -14,6 +14,7 @@ import { OPListService } from './oplist.service';
 import { ConfigService } from 'app/core/services/config.service';
 import { ReviewcompanyBillComponent } from './reviewcompany-bill/reviewcompany-bill.component';
 import { AuthenticationService } from 'app/core/services/authentication.service';
+import { WhatsAppEmailService } from 'app/main/shared/services/whats-app-email.service';
 
 
 @Component({
@@ -236,7 +237,8 @@ export class NewOPListComponent implements OnInit {
         public toastr: ToastrService, public datePipe: DatePipe,
         private commonService: PrintserviceService,
         public _ConfigService: ConfigService,
-        public _accountService : AuthenticationService
+        public _accountService : AuthenticationService,
+        public _whatsppService:WhatsAppEmailService
     ) { }
 
 
@@ -570,49 +572,26 @@ export class NewOPListComponent implements OnInit {
             event.preventDefault();
             return false;
         }
-    }
-currentDate = new Date();
-    Onemail(el) { 
-        var m_data = {
-            "fromEmail": "support@airmidtechinnovations.com",
-            "fromName": "AirmidTech",
-            "toEmail": "ambadasgajul1999@gmail.com",
-            "cc": "string",
-            "bcc": "string",
-            "mailSubject": "AirmidTech",
-            "mailBody": "AirmidTech",
-            "status": 1,
-            "retry": 2,
-            "attachmentName": "",
-            "attachmentLink": "",
-            "id": 0,
-            "tranNo": el.billNo,
-            "emailType": "OPBill"
-        }   
-        this._OPListService.InsertWhatsappEmail(m_data).subscribe(response => { 
-        });  
-    }
-    Onmessage(data) { }
+    } 
+Onemail(el) {
+  this._whatsppService.OnEmailMsgSent({
+    toEmail: el?.email ?? "ambadasgajul1999@gmail.com",   // patient email or fallback
+    cc: "",
+    mailSubject: `OPD Bill Print – Bill No: ${el.billNo}`,
+    mailBody: `Dear Patient,\n\nPlease find attached your OPD Bill (Bill No: ${el.billNo}).\n\nRegards,\nAirmidTech Innovations`,
+    billNo: el.billNo,
+    emailType: "OPBill"
+  });
+}
+ Onmessage(data) { }
 
-   getWhatsappshareBill(el) {
-        var m_data = { 
-                "mobileNumber": el.mobileNo,
-                "smsString": "Dear " + el.patientName + ",Your Bill has been successfully Generated. Thank You" || '',
-                "isSent": true,
-                "smsType": 'OPBill',
-                "smsFlag": '0',
-                "smsDate":this.datePipe.transform(this.currentDate,'yyyy-MM-dd') || '1999-01-01',
-                "tranNo": el.billNo, 
-                "templateId": 0,
-                "smSurl": "info@gmail.com",
-                "filePath":  '',
-                "sourceType":0,
-                "createdBy": this._accountService.currentUserValue.userId,
-                "smsOutGoingID": 0 
-            } 
-        this._OPListService.InsertWhatsapp(m_data).subscribe(response => {
-            
-        }); 
+    getWhatsappshareBill(el) {
+        this._whatsppService.OnWhatsAppMsgSent({
+            mobileNo: el.mobileNo,
+            patientName: el.patientName,
+            billNo: el.billNo,
+            smsType: el.smsType,
+        })
     }
 }
 

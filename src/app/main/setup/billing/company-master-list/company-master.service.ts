@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AbstractControl, FormGroup, UntypedFormBuilder, ValidationErrors, Validators } from '@angular/forms';
 import { ApiCaller } from 'app/core/services/apiCaller';
+import { ConfigService } from 'app/core/services/config.service';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 
 @Injectable({
@@ -9,19 +10,26 @@ import { FormvalidationserviceService } from 'app/main/shared/services/formvalid
 export class CompanyMasterService {
 
 
+ Is5_Digit_Pincode_Id: boolean = false;
     companyForm: FormGroup;
     myformSearch: FormGroup;
 
     constructor(
         private _httpClient: ApiCaller,
         private _formBuilder: UntypedFormBuilder,
+            public _configue:ConfigService,
         private _FormvalidationserviceService: FormvalidationserviceService
     ) {
         // this.companyForm = this.createCompanymasterForm();
         // this.myformSearch = this.createSearchForm();
+
     }
 
     createCompanymasterFormDemo(): FormGroup {
+const rawValue = this?._configue?.configParams?.Is9_Digit_NationalId || "";
+const [id, val] = rawValue.includes(":") ? rawValue.split(":") : [null, null]; 
+this.Is5_Digit_Pincode_Id = id === "1";
+            const maxLen = this.Is5_Digit_Pincode_Id ? 5 : 6;
         return this._formBuilder.group({
             companyId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
 
@@ -56,11 +64,11 @@ export class CompanyMasterService {
             // designation: ['', [Validators.maxLength(50), Validators.pattern('^[a-zA-Z0-9 ]*$'),
             // this._FormvalidationserviceService.allowEmptyStringValidator()]],
 
-            phoneNo: ["", [Validators.required, Validators.pattern("^[- +()]*[0-9][- +()0-9]*$"),
+            phoneNo: ["", [Validators.required, Validators.pattern("^[- +()]*[0-9][- +()0-9]*$"),Validators.minLength(10),
             Validators.maxLength(10)]],
 
             contactNumber: ["", [Validators.required, Validators.pattern("^[- +()]*[0-9][- +()0-9]*$"),
-            Validators.maxLength(10)]],
+            Validators.maxLength(10),Validators.minLength(10),]],
 
             emailId: ['', [Validators.email]],
             website: [''],
@@ -74,9 +82,10 @@ export class CompanyMasterService {
             panNo: ['', Validators.maxLength(10)],
             adminCharges: [0, Validators.maxLength(5)],
             // isActive: [true],
-            pinNo: ['', [Validators.required, Validators.pattern("^[0-9]*$"),
-            Validators.minLength(6),
-            Validators.maxLength(6),]],
+            pinNo: ['', [Validators.required,
+            Validators.minLength(maxLen),
+            Validators.maxLength(maxLen)  //, Validators.pattern("^[0-9]*$")
+            ]],
             faxNo: [" ", [Validators.required, Validators.maxLength(10)]],
             traiffId: ["", [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             creditDays: [0, Validators.maxLength(3)],
