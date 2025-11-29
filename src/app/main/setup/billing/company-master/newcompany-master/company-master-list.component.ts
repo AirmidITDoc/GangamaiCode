@@ -6,6 +6,7 @@ import { ToastrService } from "ngx-toastr";
 import { CompanyMaster } from "../company-master.component";
 import { CompanyMasterService } from "../company-master.service";
 import { AirmidDropDownComponent } from "app/main/shared/componets/airmid-dropdown/airmid-dropdown.component";
+import { ConfigService } from "app/core/services/config.service";
 
 @Component({
     selector: "app-company-master-list",
@@ -28,13 +29,14 @@ export class CompanyMasterListComponent implements OnInit {
     registerObj = new CompanyMaster({});
     @ViewChild('ddlCountry') ddlCountry: AirmidDropDownComponent;
     CityName = ""
-
+    Is5_Digit_Pincode_Id: boolean = false;
 
     constructor(
         public _CompanyMasterService: CompanyMasterService,
         public dialogRef: MatDialogRef<CompanyMasterListComponent>,
         @Inject(MAT_DIALOG_DATA) public data: any,
-        public toastr: ToastrService
+        public toastr: ToastrService,
+            public _configue:ConfigService,
     ) { }
 
     ngOnInit(): void {
@@ -66,6 +68,9 @@ export class CompanyMasterListComponent implements OnInit {
                 });
             }, 500);
         }
+const rawValue = this?._configue?.configParams?.Is9_Digit_NationalId || "";
+const [id, val] = rawValue.includes(":") ? rawValue.split(":") : [null, null]; 
+this.Is5_Digit_Pincode_Id = id === "1";
     }
 
     onChangecity(e) {
@@ -123,6 +128,7 @@ export class CompanyMasterListComponent implements OnInit {
 
 
     getValidationMessages() {
+        const maxLen = this.Is5_Digit_Pincode_Id ? 5 : 6;
         return {
             companyName: [
                 { name: "required", Message: "Company Name is required" },
@@ -150,10 +156,15 @@ export class CompanyMasterListComponent implements OnInit {
                 { name: "maxlength", Message: "Number be not be greater than 10 digits" },
                 { name: "pattern", Message: "Only Digits allowed." }
             ],
-            pinNo: [
-                { name: "required", Message: "Pin Code is required" },
-                { name: "maxlength", Message: "Pincode must be greater than 2 digits" },
-                { name: "pattern", Message: "Only Digits allowed." }
+            // pinNo: [
+            //     { name: "required", Message: "Pin Code is required" },
+            //     { name: "maxlength", Message: "Pincode must be greater than 2 digits" },
+            //     { name: "pattern", Message: "Only Digits allowed." }
+            // ],
+             pinNo: [ ,
+                { name: "required", Message: "Pin / Country ID is required" },
+                { name: "minLength", Message: `${maxLen} digits required.` },
+                { name: "maxLength", Message: `More than ${maxLen} digits not allowed.` }
             ],
             address: [
                 { name: "required", Message: "Address is required" },

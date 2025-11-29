@@ -13,6 +13,7 @@ import { OpPaymentComponent } from '../op-search-list/op-payment/op-payment.comp
 import { OPListService } from './oplist.service';
 import { ConfigService } from 'app/core/services/config.service';
 import { ReviewcompanyBillComponent } from './reviewcompany-bill/reviewcompany-bill.component';
+import { AuthenticationService } from 'app/core/services/authentication.service';
 
 
 @Component({
@@ -234,7 +235,9 @@ export class NewOPListComponent implements OnInit {
     constructor(public _OPListService: OPListService, public _matDialog: MatDialog,
         public toastr: ToastrService, public datePipe: DatePipe,
         private commonService: PrintserviceService,
-        public _ConfigService: ConfigService,) { }
+        public _ConfigService: ConfigService,
+        public _accountService : AuthenticationService
+    ) { }
 
 
     ngOnInit(): void {
@@ -247,7 +250,7 @@ export class NewOPListComponent implements OnInit {
         this.menuActions.push("Bill Print");
     }
 
-    getWhatsappshareBill(Id) { }
+ 
 
     viewgetOPPayemntPdf(data, status) {
         if (status == true)
@@ -568,11 +571,49 @@ export class NewOPListComponent implements OnInit {
             return false;
         }
     }
-
-    Onemail(data) { }
+currentDate = new Date();
+    Onemail(el) { 
+        var m_data = {
+            "fromEmail": "support@airmidtechinnovations.com",
+            "fromName": "AirmidTech",
+            "toEmail": "ambadasgajul1999@gmail.com",
+            "cc": "string",
+            "bcc": "string",
+            "mailSubject": "AirmidTech",
+            "mailBody": "AirmidTech",
+            "status": 1,
+            "retry": 2,
+            "attachmentName": "",
+            "attachmentLink": "",
+            "id": 0,
+            "tranNo": el.billNo,
+            "emailType": "OPBill"
+        }   
+        this._OPListService.InsertWhatsappEmail(m_data).subscribe(response => { 
+        });  
+    }
     Onmessage(data) { }
 
-
+   getWhatsappshareBill(el) {
+        var m_data = { 
+                "mobileNumber": el.mobileNo,
+                "smsString": "Dear " + el.patientName + ",Your Bill has been successfully Generated. Thank You" || '',
+                "isSent": true,
+                "smsType": 'OPBill',
+                "smsFlag": '0',
+                "smsDate":this.datePipe.transform(this.currentDate,'yyyy-MM-dd') || '1999-01-01',
+                "tranNo": el.billNo, 
+                "templateId": 0,
+                "smSurl": "info@gmail.com",
+                "filePath":  '',
+                "sourceType":0,
+                "createdBy": this._accountService.currentUserValue.userId,
+                "smsOutGoingID": 0 
+            } 
+        this._OPListService.InsertWhatsapp(m_data).subscribe(response => {
+            
+        }); 
+    }
 }
 
 export class BrowseOPDBill {

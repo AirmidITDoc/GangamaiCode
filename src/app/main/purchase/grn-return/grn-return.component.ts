@@ -81,7 +81,7 @@ export class GRNReturnComponent implements OnInit {
   vRoundingAmt: any;
   autocompletestore: string = "Store";
   autocompleteSupplier: string = "SupplierMaster"
-
+  IsGRNverify: any;
   dsGRNReturnList = new MatTableDataSource<GRNReturnList>();
   dsGRNReturnItemDetList = new MatTableDataSource<GRNReturnItemDetList>();
 
@@ -115,6 +115,7 @@ export class GRNReturnComponent implements OnInit {
     // this.getStoreList();
     // this.getGRNReturnList();
     console.log("main list:", this.gridConfig);
+    this.IsGRNverify = this.accountService.currentUserValue.user.isGrnverify
   }
   // fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
   // toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
@@ -139,7 +140,7 @@ export class GRNReturnComponent implements OnInit {
       template: this.ColorCode
     },
     { heading: "GRNReturnNo", key: "grnReturnNo", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "GRNReturnDateTime", key: "grnReturnDate", sort: true, align: 'left', emptySign: 'NA', width: 150},
+    { heading: "GRNReturnDateTime", key: "grnReturnDate", sort: true, align: 'left', emptySign: 'NA', width: 150 },
     { heading: "SupplierName", key: "supplierName", sort: true, align: 'left', emptySign: 'NA', width: 350 },
     { heading: "TotalAmount", key: "totalAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
     // { heading: "GSTAmount", key: "totalVatAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
@@ -328,7 +329,7 @@ export class GRNReturnComponent implements OnInit {
     });
   }
 
-   getNew(row?: any) {
+  getNew(row?: any) {
     const dialogRef = this._matDialog.open(GrnreturnWithoutGrnNewComponent,
       {
         maxWidth: "95vw",

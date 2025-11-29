@@ -149,8 +149,8 @@ export class ServiceMasterFormComponent implements OnInit {
         return this._formBuilder.group({
             serviceId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             groupId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-            serviceShortDesc: ["", [Validators.required, Validators.pattern('^[a-zA-Z0-9&\\- ]*$')]],
-            serviceName: ["", [Validators.required, Validators.pattern('^[a-zA-Z0-9&\\- ]*$')]],
+            serviceShortDesc: ["", [Validators.required,Validators.pattern('^[a-zA-Z0-9&()\\/\\- ]*$')]],
+            serviceName: ["", [Validators.required, Validators.pattern('^[a-zA-Z0-9&()\\/\\- ]*$')]],
             price: 0,
             isEditable: [false],
             creditedtoDoctor: [false],

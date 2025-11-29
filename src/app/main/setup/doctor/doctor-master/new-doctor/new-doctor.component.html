@@ -131,14 +131,15 @@
                                                     </div>
 
                                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                                        <airmid-textbox label="Aadhar Card No"
+                                                        <airmid-textbox label="Aadhar Card No \ National ID"
                                                             formControlName="AadharCardNo"
                                                             (keypress)="keyPressAlphanumeric($event)"
                                                             [value]="registerObj.aadharCardNo" [formGroup]="myForm"
+                                                             [maxLength]="Is9_Digit_National_Id ? 9 : 12"
                                                             [validations]="getValidationMessages().AadharCardNo"
-                                                            [maxLength]="12"></airmid-textbox>
-                                                    </div>
-
+                                                          ></airmid-textbox>
+                                                    </div> 
+                                                    
                                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                         <airmid-textbox label="Phone" formControlName="Phone"
                                                             (keypress)="keyPressAlphanumeric($event)"

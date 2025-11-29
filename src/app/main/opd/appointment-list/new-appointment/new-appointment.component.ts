@@ -162,11 +162,20 @@ export class NewAppointmentComponent implements OnInit {
 
     ) { }
     FromRegistration: any;
-    chkregisterd: boolean = false;
+    chkregisterd: boolean = false; 
+    Is9_Digit_National_Id: boolean = false;
     ngOnInit(): void {
         debugger
         console.log(this._configue.configParams.OPDDefaultDepartment)
         console.log(this._configue.configParams.OPDDefaultDoctor)
+   
+        //this code for Mediforte 9 digit national id
+const rawValue = this?._configue?.configParams?.Is9_Digit_NationalId || "";
+const [id, val] = rawValue.includes(":") ? rawValue.split(":") : [null, null]; 
+this.Is9_Digit_National_Id = id === "1";
+
+
+
         // Swal.fire("", this._configue.configParams)
 
 
@@ -901,6 +910,7 @@ export class NewAppointmentComponent implements OnInit {
     }
 
     getValidationMessages() {
+         const maxLen = this.Is9_Digit_National_Id ? 9 : 12;
         return {
             RegId: [],
             firstName: [
@@ -958,12 +968,18 @@ export class NewAppointmentComponent implements OnInit {
                 { name: "maxLength", Message: "More than 10 digits not allowed." }
 
             ],
+            // aadharCardNo: [
+            //     { name: "pattern", Message: "Only numbers allowed" },
+            //     { name: "required", Message: "AadharCard No is required" },
+            //     { name: "minLength", Message: "12 digit required." },
+            //     { name: "maxLength", Message: "More than 12 digits not allowed." }
+            // ],
             aadharCardNo: [
-                { name: "pattern", Message: "Only numbers allowed" },
-                { name: "required", Message: "AadharCard No is required" },
-                { name: "minLength", Message: "12 digit required." },
-                { name: "maxLength", Message: "More than 12 digits not allowed." }
-            ],
+      { name: "pattern", Message: "Only numbers allowed" },
+      { name: "required", Message: "Aadhaar / National ID is required" },
+      { name: "minLength", Message: `${maxLen} digits required.` },
+      { name: "maxLength", Message: `More than ${maxLen} digits not allowed.` }
+    ],
             MaritalStatusId: [
                 { Message: "Mstatus Name is required" }
             ],
@@ -1060,6 +1076,7 @@ export class NewAppointmentComponent implements OnInit {
     }
 
     createPesonalForm() {
+        const maxLen = this.Is9_Digit_National_Id ? 9 : 12;
         return this._formBuilder.group({
             RegId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             // RegNo: ['', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
@@ -1105,13 +1122,13 @@ export class NewAppointmentComponent implements OnInit {
             Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$"),
             this._FormvalidationserviceService.onlyNumberValidator()
             ]],
-            aadharCardNo: ['', [
-                Validators.minLength(12),
-                Validators.maxLength(12),
+             aadharCardNo: ['', [
+           Validators.minLength(maxLen),  //     Validators.minLength(12),
+            Validators.maxLength(maxLen), //     Validators.maxLength(12),
                 Validators.pattern("^[0-9]*$"),
                 this._FormvalidationserviceService.onlyNumberValidator()
-            ]],
-
+         ]],
+             
             panCardNo: ['', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
             MaritalStatusId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             ReligionId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],

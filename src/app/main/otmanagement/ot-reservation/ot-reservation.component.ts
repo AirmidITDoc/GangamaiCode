@@ -176,9 +176,7 @@ export class OTReservationComponent implements OnInit {
                 data: contact
             });
         dialogRef.afterClosed().subscribe(result => {
-            if (result) {
-                this.grid.bindGridData();
-            }
+            this.grid.bindGridData();
         });
     }
 
@@ -862,9 +860,10 @@ export class OtReserInsert {
     infectiveAmt: any;
     netAmt: any;
     ottable: any;
-    otCheckInId:any;
-    otRequestId:any;
-    otcheckInTime:any;
+    otCheckInId: any;
+    otRequestId: any;
+    otcheckInTime: any;
+    bloodArg: any;
     /**
      * Constructor
      *
@@ -951,6 +950,13 @@ export class OtReserInsert {
             this.otCheckInId = OtReserInsert.otCheckInId || ''
             this.otRequestId = OtReserInsert.otRequestId || ''
             this.otcheckInTime = OtReserInsert.otcheckInTime || ''
+            this.bloodArg = OtReserInsert.bloodArg || ''
+            // this.requestType = OtReqInsert.requestType || ''
+            // this.pacrequired = OtReqInsert.pacrequired || ''
+            // this.equipmentsRequired = OtReqInsert.equipmentsRequired || ''
+            // this.infective = OtReqInsert.infective || ''
+            // this.locationId = OtReqInsert.locationId || ''
+            // this.OTPreOperationId = OtReqInsert.OTPreOperationId || ''
         }
     }
 }

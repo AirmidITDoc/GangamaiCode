@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
 import { FormGroup, UntypedFormBuilder, Validators } from "@angular/forms";
 import { ApiCaller } from "app/core/services/apiCaller";
+import { AuthenticationService } from "app/core/services/authentication.service";
 import { FormvalidationserviceService } from "app/main/shared/services/formvalidationservice.service";
 
 @Injectable({
@@ -12,6 +13,7 @@ export class OtReservationService {
     constructor(
         private _httpClient: ApiCaller,
         private _formBuilder: UntypedFormBuilder,
+        private _loggedService: AuthenticationService,
         private _FormvalidationserviceService: FormvalidationserviceService
     ) {
         this.myformSearch = this.createSearchForm();
@@ -30,8 +32,15 @@ export class OtReservationService {
 
     CreateForm() {
         return this._formBuilder.group({
+            otreservationId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            opipid: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            surgeryDate: ['', [Validators.required]],
+            createdby: [this._loggedService.currentUserValue.userId, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            reason: ["", [Validators.required]],
+            newOTReservationId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+
+            // extra field
             PatientName: [''],
-            Reason: ['']
         })
     }
 
@@ -51,7 +60,7 @@ export class OtReservationService {
     public getotsiteDiscById(Id) {
         return this._httpClient.GetData("SiteDescriptionMaster/" + Id);
     }
-     public getotTableById(Id) {
+    public getotTableById(Id) {
         return this._httpClient.GetData("OtTableMaster/" + Id);
     }
     public getDoctorsByDoctorType(doctTypeId) {
@@ -64,7 +73,7 @@ export class OtReservationService {
     }
 
     public getBookingDatePostpone(Param: any) {
-        return this._httpClient.PostData("", Param);
+        return this._httpClient.PostData("OTReservation/OTBookingPostPone", Param);
     }
 
     public OnCancel(param) {
@@ -72,7 +81,7 @@ export class OtReservationService {
     }
     public getRtrvReservationAttendentList(employee) {
         return this._httpClient.PostData("OTReservation/OtReservationAttendingDetailList", employee);
-    }    
+    }
     public getRtrvReservationSurgeryList(employee) {
         return this._httpClient.PostData("OTReservation/OtReservationSurgeryDetailList", employee);
     }

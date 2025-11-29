@@ -131,6 +131,16 @@
         </div>
     </ng-template>
 
+     <ng-template #patientNameWithBadgeTemplate let-element>
+            <!-- Patient Name with Token Badge -->
+            <span [matBadge]="element.tokenNo" matBadgeColor="warn" matBadgePosition="after" matBadgeOverlap="false"
+                matBadgeSize="small" [matBadgeHidden]="!element.tokenNo"
+                matTooltip="{{ element.patientName }}-Token No: {{ element.tokenNo }}" matTooltipPosition="above"
+                style="font-size: 14px; line-height: 18px; position: relative; top: 4px;">
+                {{ element.patientName }}
+            </span>
+        </ng-template>
+
     <ng-template #patientNameWithPopoverTemplate let-element>
         <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="8px">
             <!-- Policy Info Icon - Only show if company exists -->
@@ -154,11 +164,8 @@
             </button>
 
             <!-- Patient Name with Token Badge -->
-            <span [matBadge]="element.tokenNo" matBadgeColor="warn" matBadgePosition="after" matBadgeOverlap="false"
-                matBadgeSize="small" [matBadgeHidden]="!element.tokenNo"
-                matTooltip="{{ element.patientName }}-Token No: {{ element.tokenNo }}" matTooltipPosition="above"
-                style="font-size: 14px; line-height: 18px; position: relative; top: 4px;">
-                {{ element.patientName }}
+            <span style="font-size: 14px; line-height: 18px; position: relative; top: 4px;">
+                {{ element.companyName }}
             </span>
         </div>
     </ng-template>

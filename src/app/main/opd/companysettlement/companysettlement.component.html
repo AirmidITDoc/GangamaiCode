@@ -165,14 +165,14 @@
                                                         (selectionChange)="ListView($event)"
                                                         [mode]="autocompleteModecompany"></airmid-dropdown>
 
-                                                    <mat-radio-group name="opipType" formControlName="opipType" (change)="getmultiplePaymentList()"
+                                                    <!-- <mat-radio-group name="opipType" formControlName="opipType" (change)="getmultiplePaymentList()"
                                                         fxLayout="column" value="0" class="gap-4">
                                                         <mat-label><b>Patient Type:</b></mat-label>
                                                         <div fxLayout="row">
                                                             <mat-radio-button value='0'>OP</mat-radio-button>
                                                             <mat-radio-button value='1'>IP</mat-radio-button>
                                                         </div>
-                                                    </mat-radio-group>
+                                                    </mat-radio-group> -->
 
                                                     <div class="action-buttons" style="padding: 10px;">
                                                         <!-- <button mat-raised-button (click)="onClear()"
@@ -276,7 +276,7 @@
                                                 <mat-cell *matCellDef="let element" fxShow.gt-sm>
                                                     <mat-form-field appearance="fill">
                                                         <input matInput [(ngModel)]="element.CompanyDisc" type="text"
-                                                            (input)="onCompanyDiscChange(element)" OnlyNumber
+                                                            (ngModelChange)="onCompanyDiscChange(element)" OnlyNumber
                                                             [disabled]="!selection.isSelected(element)">
                                                     </mat-form-field>
                                                 </mat-cell>

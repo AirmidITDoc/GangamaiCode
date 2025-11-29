@@ -89,7 +89,7 @@ export class AppointmentListComponent implements OnInit {
     vRegNo = 0
 
     private overlayRef: OverlayRef | null = null;
-    
+
     constructor(public _AppointmentlistService: AppointmentlistService, public _matDialog: MatDialog,
         private commonService: PrintserviceService, public _registrationService: RegistrationService,
         private advanceDataStored: AdvanceDataStored,
@@ -172,7 +172,7 @@ export class AppointmentListComponent implements OnInit {
         this.gridConfig.columnsList.find(col => col.key === 'companyId')!.template = this.actionCompany;
         this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
         this.gridConfig.columnsList.find(col => col.key === 'companyName')!.template = this.patientNameWithPopoverTemplate;
-
+        this.gridConfig.columnsList.find(col => col.key === 'patientName')!.template = this.patientNameWithBadgeTemplate;
     }
 
     @ViewChild('actionsTemplate') actionsTemplate!: TemplateRef<any>;
@@ -183,7 +183,7 @@ export class AppointmentListComponent implements OnInit {
     @ViewChild('actionCompany') actionCompany!: TemplateRef<any>;
     @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
     @ViewChild('patientNameWithPopoverTemplate') patientNameWithPopoverTemplate!: TemplateRef<any>;
-
+    @ViewChild('patientNameWithBadgeTemplate') patientNameWithBadgeTemplate!: TemplateRef<any>;
 
     allcolumns = [
         { heading: "", key: "patientOldNew", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30 },
@@ -193,15 +193,14 @@ export class AppointmentListComponent implements OnInit {
         { heading: "", key: "isConvertRequestForIp", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30 },
         { heading: "UHID", key: "regNoWithPrefix", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "Date", key: "vistDateTime", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-        { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 350,},
+        { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 350,type: gridColumnTypes.template },
         { heading: "Doctor Name", key: "doctorname", sort: true, align: 'left', emptySign: 'NA', width: 230 },
-
         { heading: "Department", key: "departmentName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "OPNo", key: "opdNo", sort: true, align: 'left', emptySign: 'NA', },
         { heading: "Ref Doctor Name", key: "refDocName", sort: true, align: 'left', emptySign: 'NA', width: 230 },
         { heading: "Patient Type", key: "patientType", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "Tariff Name", key: "tariffName", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "Company Name", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 250, type: gridColumnTypes.template  },
+        { heading: "Company Name", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 300, type: gridColumnTypes.template },
         { heading: "", key: "companyId", sort: true, align: 'left', emptySign: 'NA', width: 50 },
         { heading: "Mobile No", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "Check-InTime", key: "checkInTime", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 7 },
@@ -958,7 +957,7 @@ export class AppointmentListComponent implements OnInit {
 
     openPolicyInfoPopover(event: MouseEvent, patientData: any) {
         event.stopPropagation();
-        
+
         // Close any existing popover
         if (this.overlayRef) {
             this.overlayRef.dispose();
@@ -1018,7 +1017,7 @@ export class AppointmentListComponent implements OnInit {
 
     openCompanyApprovalPopover(event: MouseEvent, patientData: any) {
         event.stopPropagation();
-        
+
         // Close any existing popover
         if (this.overlayRef) {
             this.overlayRef.dispose();

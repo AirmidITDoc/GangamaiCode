@@ -66,17 +66,22 @@ export class NewPrescriptionTemplateComponent {
   ) { }
 
   ngOnInit(): void {
-    if (this.data) {
-      this.registerObj = this.data.Obj;
-      console.log(this.registerObj)
-      this.gettemplatePrecList(this.registerObj);
-    }
 
     this.TemplateInsertForm = this.TemplateForm();
     this.TemplateInsertForm.markAllAsTouched();
 
     this.MedicineItemform();
     this.MedicineItemForm.markAllAsTouched();
+
+    if (this.data) {
+      this.registerObj = this.data;
+      console.log(this.registerObj)
+      this.vSelectedOption = String(this.registerObj.opIpType)
+      // this.MedicineItemForm.get('opIpType').setValue(String(this.vSelectedOption));
+      this.MedicineItemForm.get('templateCategory').setValue(this.registerObj.templateCategory);
+      this.MedicineItemForm.get('presTemplateName').setValue(this.registerObj.presTemplateName);
+      this.gettemplatePrecList(this.registerObj);
+    }
 
     this.prescriptionArray.push(this.createprescription());
 
@@ -94,17 +99,16 @@ export class NewPrescriptionTemplateComponent {
 
   TemplateForm() {
     return this._formBuilder.group({
-      prescriptionOPTemplate: this._formBuilder.group({
-        presId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        presTemplateName: ['', [Validators.required]],
-        isActive: true,
-        opIpType: [0, [Validators.required]],
-        templateCategory: ['', [Validators.required]],
-        isAddBy: [this._loggedService.currentUserValue.userId, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-        isUpdatedBy: [this._loggedService.currentUserValue.userId, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-        createdBy: [this._loggedService.currentUserValue.userId, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      }),
-      presTemplate: this._formBuilder.array([])
+      presId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      presTemplateName: ['', [Validators.required]],
+      isActive: true,
+      opIpType: [0, [Validators.required]],
+      templateCategory: ['', [Validators.required]],
+      isAddBy: [this._loggedService.currentUserValue.userId, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      isUpdatedBy: [this._loggedService.currentUserValue.userId, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      createdBy: [this._loggedService.currentUserValue.userId, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+
+      mPresTemplateDs: this._formBuilder.array([])
     });
   }
 
@@ -129,7 +133,7 @@ export class NewPrescriptionTemplateComponent {
   }
 
   get prescriptionArray(): FormArray {
-    return this.TemplateInsertForm.get('presTemplate') as FormArray;
+    return this.TemplateInsertForm.get('mPresTemplateDs') as FormArray;
   }
 
   MedicineItemform() {
@@ -229,7 +233,7 @@ export class NewPrescriptionTemplateComponent {
       "filters": [
         {
           "fieldName": "Presid",
-          "fieldValue": "18", //String(row.presId),//"40773",	
+          "fieldValue": String(row.presId),//"40773",	
           "opType": "Equals"
         }
       ],
@@ -338,9 +342,10 @@ export class NewPrescriptionTemplateComponent {
   }
 
   onSave() {
-    this.TemplateInsertForm.get('prescriptionOPTemplate.templateCategory').setValue(this.MedicineItemForm.get('templateCategory').value)
-    this.TemplateInsertForm.get('prescriptionOPTemplate.presTemplateName').setValue(this.MedicineItemForm.get('presTemplateName').value)
-    this.TemplateInsertForm.get('prescriptionOPTemplate.opIpType').setValue(this.MedicineItemForm.get('opIpType').value)
+    this.TemplateInsertForm.get('presId').setValue(this.registerObj.presId ?? 0)
+    this.TemplateInsertForm.get('templateCategory').setValue(this.MedicineItemForm.get('templateCategory').value)
+    this.TemplateInsertForm.get('presTemplateName').setValue(this.MedicineItemForm.get('presTemplateName').value)
+    this.TemplateInsertForm.get('opIpType').setValue(this.MedicineItemForm.get('opIpType').value)
     if (!this.TemplateInsertForm.invalid) {
       this.prescriptionArray.clear();
 

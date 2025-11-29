@@ -29,6 +29,7 @@ import { ImageCropComponent } from "app/main/shared/componets/image-crop/image-c
 import { ApiCaller } from "app/core/services/apiCaller";
 import { filter } from 'rxjs/operators';
 import { AirmidSignatureComponent } from "app/main/shared/componets/airmid-signature/airmid-signature.component";
+import { ConfigService } from "app/core/services/config.service";
 
 @Component({
     selector: "app-new-doctor",
@@ -175,7 +176,7 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
     }
     onCloseDialog = new EventEmitter<any>();
     multiple: boolean = false
-
+Is9_Digit_National_Id: boolean = false;
     private signaturePad!: SignaturePad;
     private canvas!: HTMLCanvasElement;
     objFile: AirmidFileModel;
@@ -193,6 +194,7 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
         public datePipe: DatePipe,
         private _formBuilder: UntypedFormBuilder,
         private _service: ApiCaller,
+         public _configue:ConfigService,
     ) { }
     ngAfterViewChecked(): void {
         this.changeDetectorRef.detectChanges();
@@ -222,6 +224,9 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
     }
     doctorId = 0
     ngOnInit(): void {
+const rawValue = this?._configue?.configParams?.Is9_Digit_NationalId || "";
+const [id, val] = rawValue.includes(":") ? rawValue.split(":") : [null, null]; 
+this.Is9_Digit_National_Id = id === "1";
         this.isEditMode = this.data?.formMode === 'edit';
         this.myForm = this.createdDoctormasterForm();
         this.myForm.markAllAsTouched();
@@ -294,6 +299,7 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
                 this.files = data;
             });
         }
+//this code for Mediforte 9 digit national id
 
     }
     ///////////////////// digital signature code started /////////////////////
@@ -428,6 +434,7 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
     ///////////////////// Attachment code ended /////////////////////
 
     createdDoctormasterForm(): FormGroup {
+        const maxLen = this.Is9_Digit_National_Id ? 9 : 12;
         return this._formBuilder.group({
             DoctorId: [0],
             PrefixID: ["", Validators.required],
@@ -539,15 +546,20 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
 
             MDoctorDepartmentDets: ["", Validators.required],
             Pancardno: ["", [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
-            AadharCardNo: ["",
-                [
-                    // Validators.required,
-                    Validators.pattern("^[0-9]*$"),
-                    Validators.minLength(12),
-                    Validators.maxLength(12),
-                    this._FormvalidationserviceService.allowEmptyStringValidatorOnly()
-                ]
-            ],
+            // AadharCardNo: ["",
+            //     [
+            //         // Validators.required,
+            //         Validators.minLength(maxLen),
+            //         Validators.maxLength(maxLen),
+            //         Validators.pattern("^[0-9]*$"),
+            //         // this._FormvalidationserviceService.allowEmptyStringValidatorOnly()
+            //     ]
+            // ], 
+             AadharCardNo: ['', [
+                            Validators.minLength(maxLen),
+                            Validators.maxLength(maxLen),
+                            Validators.pattern("^[0-9]*$")
+                        ]],
             signature: ["",[this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
             mDoctorExperienceDetails: this.formBuilder.array([]),
             mDoctorQualificationDetails: this.formBuilder.array([]),
@@ -896,6 +908,7 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
         this.dateTimeObj = dateTimeObj;
     }
     getValidationMessages() {
+        const maxLen = this.Is9_Digit_National_Id ? 9 : 12;
         return {
             PrefixID: [
                 { name: "required", Message: "Prefix Name is required" }
@@ -952,11 +965,17 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
             Pancardno: [
                 { name: "required", Message: "Pancard No is required" }
             ],
-            AadharCardNo: [
+            // AadharCardNo: [
+            //     { name: "pattern", Message: "Only numbers allowed" },
+            //     { name: "required", Message: "AadharCard No is required" },
+            //     { name: "minLength", Message: "12 digit required." },
+            //     { name: "maxLength", Message: "More than 12 digits not allowed." }
+            // ],
+             AadharCardNo: [
                 { name: "pattern", Message: "Only numbers allowed" },
-                { name: "required", Message: "AadharCard No is required" },
-                { name: "minLength", Message: "12 digit required." },
-                { name: "maxLength", Message: "More than 12 digits not allowed." }
+                { name: "required", Message: "Aadhaar / National ID is required" },
+                { name: "minLength", Message: `${maxLen} digits required.` },
+                { name: "maxLength", Message: `More than ${maxLen} digits not allowed.` }
             ],
             City: [
                 { name: "required", Message: "City is required" }

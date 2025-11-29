@@ -16,7 +16,9 @@ export class PrescriptionTemplateService {
   ) { }
 
   public SavePrescriptionTemplate(param) {
-    return this._httpClient.PostData("OPDPrescriptionMedical/OPTemplateInsert", param);
+    if (param.presId) {
+      return this._httpClient.PutData("OPDPrescriptionMedical/OPTemplateUpdate/" + param.presId, param);
+    } else return this._httpClient.PostData("OPDPrescriptionMedical/NewOPTemplateInsert", param);
   }
   public getItemMasterById(Id) {
     return this._httpClient.GetData("ItemMaster/" + Id);
@@ -29,5 +31,8 @@ export class PrescriptionTemplateService {
   }
   public getTempPrescriptionList(param) {
     return this._httpClient.PostData("OPDPrescriptionMedical/OPPrescriptionTemplateList", param)
+  }
+  public deactivateTheStatus(m_data) {
+    return this._httpClient.DeleteData("OPDPrescriptionMedical/OPTemplateDelete?Id=" + m_data.toString());
   }
 }

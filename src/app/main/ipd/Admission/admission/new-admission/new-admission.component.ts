@@ -18,6 +18,7 @@ import { AdmissionService } from '../admission.service';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { MatTableDataSource } from '@angular/material/table';
 import { VisitMaster1 } from 'app/main/opd/appointment-list/appointment-list.component';
+import { ConfigService } from 'app/core/services/config.service';
 
 @Component({
   selector: 'app-new-admission',
@@ -79,6 +80,7 @@ export class NewAdmissionComponent implements OnInit {
   @ViewChild('ddlBedName') ddlBedName: AirmidDropDownComponent;
 
 
+    Is9_Digit_National_Id: boolean = false;
   constructor(public _AdmissionService: AdmissionService,
     private accountService: AuthenticationService,
     public _matDialog: MatDialog,
@@ -88,7 +90,8 @@ export class NewAdmissionComponent implements OnInit {
     private router: Router,
     private commonService: PrintserviceService,
     private _FormvalidationserviceService: FormvalidationserviceService,
-    public toastr: ToastrService,
+    public toastr: ToastrService, 
+    private _configue: ConfigService,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     dialogRef.disableClose = true;
@@ -124,6 +127,10 @@ export class NewAdmissionComponent implements OnInit {
   public opdList: OpList[] = [];
   colstatus = 0
   ngOnInit(): void {
+const rawValue = this?._configue?.configParams?.Is9_Digit_NationalId || "";
+const [id, val] = rawValue.includes(":") ? rawValue.split(":") : [null, null]; 
+this.Is9_Digit_National_Id = id === "1";
+
 
     this.searchFormGroup = this.createSearchForm();
     this.personalFormGroup.markAllAsTouched();
@@ -156,6 +163,7 @@ export class NewAdmissionComponent implements OnInit {
       });
       // this.dsOpList = new MatTableDataSource(this.opdList);
     }
+
   }
 
   createSearchForm() {
@@ -885,6 +893,7 @@ export class NewAdmissionComponent implements OnInit {
     this.dateTimeObj = dateTimeObj;
   }
   getValidationMessages() {
+             const maxLen = this.Is9_Digit_National_Id ? 9 : 12;
     return {
       RegId: [],
       firstName: [
@@ -941,12 +950,18 @@ export class NewAdmissionComponent implements OnInit {
         { name: "maxLength", Message: "More than 10 digits not allowed." }
 
       ],
-      aadharCardNo: [
-        { name: "pattern", Message: "Only numbers allowed" },
-        { name: "required", Message: "AadharCard No is required" },
-        { name: "minLength", Message: "12 digit required." },
-        { name: "maxLength", Message: "More than 12 digits not allowed." }
-      ],
+      // aadharCardNo: [
+      //   { name: "pattern", Message: "Only numbers allowed" },
+      //   { name: "required", Message: "AadharCard No is required" },
+      //   { name: "minLength", Message: "12 digit required." },
+      //   { name: "maxLength", Message: "More than 12 digits not allowed." }
+      // ],
+       aadharCardNo: [
+      { name: "pattern", Message: "Only numbers allowed" },
+      { name: "required", Message: "Aadhaar / National ID is required" },
+      { name: "minLength", Message: `${maxLen} digits required.` },
+      { name: "maxLength", Message: `More than ${maxLen} digits not allowed.` }
+    ],
       MaritalStatusId: [
         { name: "required", Message: "Mstatus Name is required" }
       ],
