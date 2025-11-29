@@ -1,0 +1,1151 @@
+<ng-template #serviceTable>
+    <mat-toolbar class="accent" style="width: 100%;height: 40px;justify-content: space-between;">
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
+                style="color: white;">account_box
+            </mat-icon>
+            <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"> Service list</span>
+        </div>
+        <div class="close-icon">
+            <button mat-icon-button [mat-dialog-close]="true" aria-label="Close dialog" matTooltip="Close">
+                <mat-icon>close</mat-icon>
+            </button>
+        </div>
+    </mat-toolbar>
+
+    <div class="service-table1 p-12" fxFlex="100%">
+        <div class="table-body">
+            <div class="airmid-table">
+                <mat-table matSort [dataSource]="dsServiceList" [@animateStagger]="{value:'50'}">
+
+                    <ng-container matColumnDef="groupName">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>
+                            Group Name
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let contact">
+                            <span> {{contact.groupName}}</span>
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="serviceName">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header class="w-280">
+                            Service Name
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let contact" class="w-280">
+                            <span> {{contact.serviceName}}</span>
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="classRate">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>
+                            class Rate
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let contact">
+                            <span> {{contact.classRate}}</span>
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="userName">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>
+                            UserName
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let contact">
+                            <span> {{contact.userName }}</span>
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="NoData">
+                        <mat-footer-cell *matFooterCellDef>
+                            <span>No Data Found</span>
+                        </mat-footer-cell>
+                    </ng-container>
+
+                    <mat-header-row class="accent" *matHeaderRowDef="displayedPrescriptionColumns; sticky: true">
+                    </mat-header-row>
+
+                    <mat-row *matRowDef="let contact; columns: displayedPrescriptionColumns;"
+                        [@animate]="{value:'*',params:{y:'100%'}}" (click)="getService(contact)"></mat-row>
+                    <mat-footer-row *matFooterRowDef="['NoData']"
+                        [ngClass]="{'hide':dsServiceList.data.length > 0}"></mat-footer-row>
+                </mat-table>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <div class="footer-navigation-container">
+            <div class="modal-footer-buttons">
+                <button type="button" class="btn btn-danger-outline" [mat-dialog-close]="true" aria-label="Close dialog"
+                    matTooltip="Close">Close</button>
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+<div class="modal-page page-layout inner-scroll">
+    <div class="modal-wrapper grid-container">
+        <!-- Modal header -->
+        <div class="modal-header accent">
+            <div class="modal-header-content">
+                <div class="modal-header-title">
+                    <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">Appointment With Billing</span>
+                </div>
+                <div class="modal-header-right">
+                    <div class="comman-date-container">
+                        <app-common-date [screenFrom]="'OP-billing'"
+                            (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
+                        <div class="close-icon" *ngIf="isModal">
+                            <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
+                                matTooltip="Close">
+                                <mat-icon>close</mat-icon>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal body -->
+
+        <!-- //Bill -->
+        <div class="modal-body" fusePerfectScrollbar>
+            <div>
+                <form [formGroup]="searchFormGroup">
+                    <mat-card>
+                        <mat-card-content class="py-8">
+                            <div fxLayout="row wrap" fxLayoutGap="12px 0px grid" fxLayoutAlign="space-between center"
+                                class="input-error-hidden">
+                                <div class="radio-container" fxLayout="row" fxLayoutAlign="start center">
+                                    <mat-radio-group aria-label="Select an option" formControlName="regRadio"
+                                        name="regRadio" (change)="onChangeReg($event)">
+                                        <mat-radio-button value="registration" [disabled]="chkregisterd">
+                                            New Registration / Phone Appointment</mat-radio-button>
+                                        <mat-radio-button value="registrered">Registered</mat-radio-button>
+                                    </mat-radio-group>
+
+                                    <div *ngIf="showEmergencyFlag">
+                                        <span style="font-size: 28px;">🚨</span>
+                                        <strong style="color: red;font-size: 20px;">Emergency Patient</strong>
+                                    </div>
+                                </div>
+
+                                <div class="select-container" fxLayout="row" fxLayout.lt-sm="column" class="gap-8">
+
+                                    <airmid-autocomplete class="w-450" label="Search Reg No / Patient Name / Mobile No"
+                                        [formGroup]="searchFormGroup" formControlName="RegId" *ngIf="Regflag"
+                                        placeholderText="Search Reg No / Patient Name / Mobile No"
+                                        ApiUrl="OutPatient/auto-complete?Keyword="
+                                        (selectionChange)="getSelectedObj($event)"></airmid-autocomplete>
+
+                                    <!-- <airmid-dropdown class="w-450" label="Phone Appointment"
+                                        formControlName="PhoneRegId" [formGroup]="searchFormGroup"
+                                        *ngIf="IsPhoneAppflag" ApiUrl="PhoneAppointment2/auto-complete?Keyword=%"
+                                        (selectionChange)="getSelectedObjphone($event)"></airmid-dropdown> -->
+
+                                    <div *ngIf="vRegNo > 0"
+                                        style="padding-left: 10px;color: rgb(9, 53, 84);font-size: large;font-weight: bold;">
+                                        <span>Patient UHID:-</span>
+                                        <span>{{vRegNo}}</span>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </mat-card-content>
+                    </mat-card>
+                </form>
+            </div>
+            <div class="modal-body-container">
+                <!-- <mat-accordion multi> -->
+                <!-- <mat-expansion-panel expanded class="mt-12">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>Personal Details</mat-panel-title> -->
+
+                <form [formGroup]="myForm" class="mat-form-field-100">
+                    <input type="hidden" formControlName="RegId" [(ngModel)]="registerObj.regId">
+                    <input type="hidden" name="AgeYear" formControlName="AgeYear" [(ngModel)]="ageYear">
+                    <input type="hidden" name="AgeMonth" formControlName="AgeMonth" [(ngModel)]="ageMonth">
+                    <input type="hidden" name="AgeDay" formControlName="AgeDay" [(ngModel)]="ageDay">
+
+                    <div fxLayout="column" class="gap-12">
+                        <div class="modal-card-container">
+
+                            <div class="form-container mat-form-field-auto">
+
+                                <div fxLayout="row wrap" fxLayoutGap="12px grid">
+
+                                    <div fxFlex="95%" fxFlex.xs="100%" fxFlex.sm="80%" fxLayout="row wrap"
+                                        fxLayoutGap="4px grid">
+                                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                            <airmid-dropdown label="Prefix" formControlName="PrefixId"
+                                                [formGroup]="myForm" [value]="registerObj?.prefixId"
+                                                [validations]="getValidationMessages().prefixId" ValueField="prefixId"
+                                                TextField="prefixName" (selectionChange)="onChangePrefix($event)"
+                                                ApiUrl="Prefix/get-prefixs">
+                                            </airmid-dropdown>
+
+                                        </div>
+
+                                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                            <airmid-textbox label="First Name" formControlName="FirstName"
+                                                [value]="registerObj.firstName" [formGroup]="myForm"
+                                                [validations]="getValidationMessages().firstName" [maxLength]="100">
+                                            </airmid-textbox>
+                                        </div>
+
+                                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                            <airmid-textbox label="Middle Name" formControlName="MiddleName"
+                                                [value]="registerObj.middleName" [formGroup]="myForm"
+                                                [validations]="getValidationMessages().middleName" [maxLength]="100">
+                                            </airmid-textbox>
+                                        </div>
+
+                                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                            <airmid-textbox label="Last Name" formControlName="LastName"
+                                                [value]="registerObj.lastName" [formGroup]="myForm"
+                                                [validations]="getValidationMessages().lastName" [maxLength]="100">
+                                            </airmid-textbox>
+                                        </div>
+
+                                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                            <airmid-dropdown label="Gender" formControlName="GenderId"
+                                                [formGroup]="myForm" [value]="registerObj?.genderId"
+                                                [validations]="getValidationMessages().genderId" #ddlGender
+                                                [readonly]="true" [mode]="autocompleteModegender">
+                                            </airmid-dropdown>
+                                        </div>
+
+                                        <div fxFlex="75%" fxFlex.xs="100%" fxFlex.sm="100%">
+
+                                            <app-airmid-dateofbirth [formGroup]="myForm" dateStyle="Year"
+                                                formControlName="DateOfBirth"
+                                                [(value)]="registerObj.dateofBirth"></app-airmid-dateofbirth>
+                                        </div>
+                                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                            <airmid-textbox label="Address" formControlName="Address"
+                                                [value]="registerObj.address" [formGroup]="myForm"
+                                                [validations]="getValidationMessages().address" [maxLength]="200">
+                                            </airmid-textbox>
+
+                                        </div>
+
+                                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                            <airmid-dropdown label="Area" formControlName="AreaId"
+                                                [value]="registerObj?.areaId" [formGroup]="myForm"
+                                                [validations]="getValidationMessages().areaId"
+                                                [mode]="autocompleteModearea">
+                                            </airmid-dropdown>
+
+                                        </div>
+
+                                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+
+                                            <airmid-dropdown label="City" formControlName="CityId" [formGroup]="myForm"
+                                                [value]="registerObj?.cityId"
+                                                [validations]="getValidationMessages().cityId" ValueField="cityId"
+                                                TextField="cityName" (selectionChange)="onChangecity($event)"
+                                                ApiUrl="CityMaster/get-cities">
+                                            </airmid-dropdown>
+                                        </div>
+
+                                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                            <airmid-dropdown label="State" formControlName="StateId"
+                                                [value]="registerObj?.stateId" [formGroup]="myForm" [disabled]="true"
+                                                [validations]="getValidationMessages().stateId" #ddlState
+                                                [mode]="autocompleteModestate" (optionSelected)="onChangestate($event)"
+                                                [readonly]="true">
+                                            </airmid-dropdown>
+                                        </div>
+
+                                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                            <airmid-dropdown label="Country" formControlName="CountryId"
+                                                [value]="registerObj?.countryId" [formGroup]="myForm" [disabled]="true"
+                                                [validations]="getValidationMessages().countryId" #ddlCountry
+                                                [mode]="autocompleteModecountry" [readonly]="true">
+                                            </airmid-dropdown>
+                                        </div>
+
+                                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                            <div fxLayout="row" class="gap-4" style="margin-left: 5px;">
+                                                <airmid-dropdown fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%"
+                                                    label="MaritalStatus" formControlName="MaritalStatusId"
+                                                    [value]="registerObj?.maritalStatusId" [formGroup]="myForm"
+                                                    [validations]="getValidationMessages().maritalStatusId"
+                                                    [mode]="autocompleteModemstatus">
+                                                </airmid-dropdown>
+                                                <airmid-dropdown fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%"
+                                                    label="Religion Name" formControlName="ReligionId"
+                                                    [value]="registerObj?.religionId" [formGroup]="myForm"
+                                                    [validations]="getValidationMessages().religionId"
+                                                    [mode]="autocompleteModereligion">
+                                                </airmid-dropdown>
+                                            </div>
+                                        </div>
+
+                                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                            <div fxLayout="row" class="gap-4">
+
+                                                <airmid-textbox label="MobileNo" formControlName="MobileNo" fxFlex="50%"
+                                                    fxFlex.xs="100%" fxFlex.sm="50%" [value]="registerObj.mobileNo"
+                                                    [formGroup]="myForm"
+                                                    [validations]="getValidationMessages().mobileNo"
+                                                    (keypress)="keyPressAlphanumeric($event)" [maxLength]="10">
+                                                </airmid-textbox>
+                                                <airmid-textbox label="PhoneNo" formControlName="PhoneNo" fxFlex="50%"
+                                                    fxFlex.xs="100%" fxFlex.sm="50%"
+                                                    [validations]="getValidationMessages().phoneNo"
+                                                    [value]="registerObj.phoneNo" [formGroup]="myForm" [maxLength]="10"
+                                                    (keypress)="keyPressAlphanumeric($event)">
+                                                </airmid-textbox>
+                                            </div>
+                                        </div>
+                                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                            <airmid-textbox label="Aadharcardno" formControlName="aadharCardNo"
+                                                [value]="registerObj.aadharCardNo" [formGroup]="myForm" [maxLength]="12"
+                                                (input)="onAadhaarInput($event)"
+                                                [validations]="getValidationMessages().aadharCardNo"
+                                                (keypress)="keyPressAlphanumeric($event)">
+                                            </airmid-textbox>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </form>
+                <!-- </mat-expansion-panel-header>
+                </mat-expansion-panel> -->
+                <!-- </mat-accordion> -->
+
+
+                <!-- <div class="detail-container">
+                <form [formGroup]="myForm">
+                    <mat-card>
+                        <mat-card-content>
+                            <div class="detail-header">
+                                Doctor Details
+                            </div>
+                            <div fxLayout="row wrap" fxLayoutGap="12px 0px grid">
+
+                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <airmid-dropdown label="Department Name" formControlName="departmentId"
+                                        [formGroup]="myForm" [mode]="autocompleteModeDepartment"
+                                        (selectionChange)="selectChangedepartment($event)"
+                                        [value]="registerObj?.departmentId">
+                                    </airmid-dropdown>
+                                </div>
+
+                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <airmid-dropdown label="Doctor Name" formControlName="doctorId"
+                                        (selectionChange)="chkDoctor($event)" [formGroup]="myForm" #ddlDoctor
+                                        [value]="registerObj?.doctorId">
+                                    </airmid-dropdown>
+                                </div>
+
+                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <airmid-dropdown label="RefDoctor Name" formControlName="refDocId"
+                                        [formGroup]="myForm" [mode]="autocompleteModerefdoc">
+                                    </airmid-dropdown>
+                                </div>
+                            </div>
+                        </mat-card-content>
+                    </mat-card>
+                </form>
+            </div> -->
+                <mat-expansion-panel expanded class="mt-12">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>Visit Details</mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <form [formGroup]="VisitFormGroup" class="mat-form-field-100">
+                        <div fxFlex="100" fxLayout="row wrap" fxLayoutGap="10px grid">
+                            <input type="hidden" name="RegId" formControlName="regId" [(ngModel)]="registerObj.regId" />
+
+                            <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                <airmid-dropdown label="Unit Name" formControlName="UnitId" [value]="data?.unitId"
+                                    [validations]="getValidationMessages().UnitId" [formGroup]="VisitFormGroup"
+                                    [mode]="autocompleteModeunit"></airmid-dropdown>
+                            </div>
+                            <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                <airmid-dropdown label="Class Name" formControlName="ClassId" [value]="data?.classId"
+                                    [validations]="getValidationMessages().ClassId" [formGroup]="VisitFormGroup"
+                                    [mode]="autocompleteModeClass"></airmid-dropdown>
+                            </div>
+
+                            <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                <airmid-dropdown label="Payer Type" formControlName="PatientTypeId"
+                                    [value]="data?.patientTypeId" [formGroup]="VisitFormGroup"
+                                    [validations]="getValidationMessages().patientTypeId"
+                                    [mode]="autocompleteModepatienttype"
+                                    (selectionChange)="onChangePatient($event)"></airmid-dropdown>
+                            </div>
+
+                            <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%" *ngIf="isCompanySelected">
+                                <airmid-dropdown label="Company Name" formControlName="CompanyId"
+                                    [formGroup]="VisitFormGroup" [value]="data?.companyId"
+                                    [validations]="getValidationMessages().CompanyId" [mode]="autocompleteModecompany"
+                                    (selectionChange)="onChangeCompany($event)"></airmid-dropdown>
+                            </div>
+
+                            <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%" *ngIf="isCompanySelected">
+                                <airmid-dropdown label="SubCompany Name" formControlName="SubCompanyId"
+                                    [formGroup]="VisitFormGroup" [validations]="getValidationMessages().SubCompanyId"
+                                    [mode]="autocompleteModesubcompany"></airmid-dropdown>
+                            </div>
+
+                            <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                <airmid-dropdown label="Tariff Name" formControlName="TariffId"
+                                    [formGroup]="VisitFormGroup" [value]="data?.tariffId"
+                                    [validations]="getValidationMessages().tariffId"
+                                    [mode]="autocompleteModetariff"></airmid-dropdown>
+                            </div>
+                            <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                <airmid-dropdown label="Department Name" formControlName="DepartmentId"
+                                    [value]="registerObj?.departmentId || vDepId" [formGroup]="VisitFormGroup"
+                                    [validations]="getValidationMessages().departmentId" [mode]="autocompletedepartment"
+                                    (selectionChange)="selectChangedepartment($event)"></airmid-dropdown>
+                            </div>
+
+                            <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                <airmid-dropdown label="Doctor Name" formControlName="ConsultantDocId"
+                                    [value]="registerObj?.doctorId" [formGroup]="VisitFormGroup"
+                                    [validations]="getValidationMessages().DoctorID" #ddlDoctor></airmid-dropdown>
+                            </div>
+
+                            <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                <airmid-dropdown label="RefDoctor Name" formControlName="RefDocId"
+                                    [formGroup]="VisitFormGroup" [value]="data?.refDocId"
+                                    [validations]="getValidationMessages().refDocId"
+                                    [mode]="autocompleteModerefdoc"></airmid-dropdown>
+                            </div>
+
+                            <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                <airmid-dropdown label="Purpose" formControlName="AppPurposeId"
+                                    [formGroup]="VisitFormGroup" [validations]="getValidationMessages().PurposeId"
+                                    [mode]="autocompleteModepurpose"></airmid-dropdown>
+                            </div>
+
+                            <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                <airmid-dropdown label="Camp" formControlName="campId" [formGroup]="VisitFormGroup"
+                                    [mode]="autocompleteModecamp"></airmid-dropdown>
+                            </div>
+
+
+                        </div>
+                    </form>
+                </mat-expansion-panel>
+            </div>
+            <div class="modal-body-container" fusePerfectScrollbar>
+                <div class="detail-container">
+                    <mat-card>
+                        <mat-card-content>
+                            <div class="detail-header">
+                                Bill Details
+                            </div>
+                            <div fxLayout="column" class="gap-2 h-100-p">
+                                <div class="modal-card-container search-container">
+                                    <div class="patient-search-container input-error-hidden">
+                                        <form [formGroup]="searchForm">
+                                            <div fxLayout="row" fxLayoutAlign="space-between" fxLayoutGap="5px">
+
+                                                <airmid-dropdown label="CashCounterID" formControlName="CashCounterID"
+                                                    fxFlex [formGroup]="searchForm"
+                                                    [validations]="getValidationMessages().CashCounterID"
+                                                    [mode]="autocompleteModeCashcounter" [readonly]="true">
+                                                </airmid-dropdown>
+
+                                                <airmid-dropdown label="Tariff Name" formControlName="TariffId"
+                                                    [formGroup]="searchForm"
+                                                    [validations]="getValidationMessages().tariffId"
+                                                    [mode]="autocompleteModetariff"
+                                                    (selectionChange)="getSelectedTariffObj($event)" fxFlex
+                                                    [readonly]="true">
+                                                </airmid-dropdown>
+                                                <div fxFlex="5%" fxFlex.xs="5%" fxFlex.sm="5%"
+                                                    style="margin-left: 30px;" fxLayoutAlign="end">
+                                                    <button mat-icon-button (click)="openServiceTable()"
+                                                        style="padding: 0px;">
+                                                        <mat-icon>notifications_none</mat-icon>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+
+                                <div fxLayout="row wrap" fxLayoutGap="10px">
+                                    <div fxFlex.gt-sm="26%">
+
+                                        <div class="modal-card-container">
+                                            <mat-card fxFlex.gt-sm="100%" fxFlex>
+                                                <mat-card-content>
+                                                    <form [formGroup]="chargeForm">
+
+                                                        <div fxLayout="column" fxLayoutGap="5px">
+                                                            <div fxFlex="15%" fxFlex.xs="15%" fxFlex.sm="15%">
+                                                                <airmid-dropdown label="Group Name"
+                                                                    formControlName="GroupId" [formGroup]="chargeForm"
+                                                                    [mode]="autocompleteModeGroup"></airmid-dropdown>
+                                                            </div>
+
+                                                            <div fxFlex="20%" fxFlex.xs="20%" fxFlex.sm="30%">
+                                                                <airmid-autocomplete label="Enter Service Name"
+                                                                    [formGroup]="chargeForm"
+                                                                    formControlName="serviceName"
+                                                                    placeholderText="Enter Service Name" fxFlex
+                                                                    ApiUrl="{{ApiURL}}"
+                                                                    (selectionChange)="getSelectedserviceObj($event)"
+                                                                    TextField="formattedText"
+                                                                    ValueField="serviceId"></airmid-autocomplete>
+                                                            </div>
+                                                            <div fxFlex="10%" fxFlex.xs="10%" fxFlex.sm="8%">
+                                                                <airmid-textbox label="Price" formControlName="price"
+                                                                    [formGroup]="chargeForm"
+                                                                    [validations]="getValidationMessages().price"
+                                                                    [type]="'number'" [value]="vPrice"
+                                                                    [readonly]="chkIsEditable" [min]="0">
+                                                                </airmid-textbox>
+                                                            </div>
+
+                                                            <div fxFlex="20%" fxFlex.xs="20%" fxFlex.sm="20%"
+                                                                *ngIf="isDoctor">
+                                                                <airmid-dropdown label="Doctor Name"
+                                                                    formControlName="DoctorID" [formGroup]="chargeForm"
+                                                                    [validations]="getValidationMessages().DoctorID"
+                                                                    [mode]="autocompleteModedeptdoc"
+                                                                    (selectionChange)="getdocdetail($event)">
+                                                                </airmid-dropdown>
+                                                            </div>
+                                                            <!-- <div fxFlex="10%" fxFlex.xs="10%" fxFlex.sm="6%">
+                                                        <airmid-textbox label="Discount per"
+                                                            formControlName="discountPer" [formGroup]="chargeForm"
+                                                            [validations]="getValidationMessages().discountPer"
+                                                            [min]="0" [max]="100" [type]="'number'">
+                                                        </airmid-textbox>
+
+                                                    </div>
+                                                    <div fxFlex="10%" fxFlex.xs="10%" fxFlex.sm="6%">
+                                                        <airmid-textbox label="Discount amount" [formGroup]="chargeForm"
+                                                            formControlName="discountAmount"
+                                                            [validations]="getValidationMessages().discountAmount"
+                                                            [type]="'number'" [min]="0"
+                                                            [max]="chargeForm.get('totalAmount')?.value">
+                                                        </airmid-textbox>
+                                                    </div> -->
+                                                            <div fxFlex="10%" fxFlex.xs="10%" fxFlex.sm="10%">
+                                                                <airmid-textbox label="Net amount"
+                                                                    formControlName="netAmount" [formGroup]="chargeForm"
+                                                                    [validations]="getValidationMessages().netAmount"
+                                                                    [type]="'number'" [readonly]="true">
+                                                                </airmid-textbox>
+                                                            </div>
+                                                            <div fxFlex="5%" fxFlex.xs="5%" fxFlex.sm="5%">
+                                                                <div class="mt-2">
+                                                                    <button type="button" (click)="onAddCharges()"
+                                                                        class="btn btn-primary btn-with-icon py-8"
+                                                                        [disabled]="!chargeForm.valid"
+                                                                        [matTooltip]="!chargeForm.valid?'Enter all data to enable this button!!':''"
+                                                                        [matTooltipPosition]="'above'" fxFlex>
+                                                                        <span class="btn-icon">
+                                                                            <mat-icon> add </mat-icon>
+                                                                        </span>
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+
+
+                                                        </div>
+                                                    </form>
+                                                </mat-card-content>
+                                            </mat-card>
+                                        </div>
+                                    </div>
+
+                                    <div fxFlex.gt-sm="70%">
+
+                                        <div class="modal-card-container" >
+                                            <mat-card fxFlex.gt-sm="100%">
+                                                <mat-card-content class="py-4 h-300-p">
+                                                    <div fxLayout="row" fxLayoutGap="6px" class="h-300-p">
+                                                        <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%">
+                                                            <div fxLayout="column" class="h-300-p">
+                                                                <div class="airmid-table-container">
+
+                                                                    <!-- <mat-table #table matSort
+                                                                        [dataSource]="dsChargeList"
+                                                                        class="h-380 fix-first-col"
+                                                                        [@animateStagger]="{value:'50'}"> -->
+                                                                    <mat-table matSort [dataSource]="dsChargeList"
+                                                                        [@animateStagger]="{value:'50'}"
+                                                                        class="airmid-table " style="overflow: auto;">
+
+                                                                        <ng-container matColumnDef="Status" sticky>
+                                                                            <mat-header-cell *matHeaderCellDef
+                                                                                mat-sort-header
+                                                                                class="w-90">Status</mat-header-cell>
+                                                                            <mat-cell *matCellDef="let contact"
+                                                                                class="w-90">
+                                                                                <mat-icon
+                                                                                    *ngIf="contact.IsRadiology == 1"
+                                                                                    matTooltip="IsRadiology">
+                                                                                    <img width="15px" height="8px"
+                                                                                        src="/assets/images/logos/radiology.png">
+                                                                                </mat-icon>
+                                                                                <mat-icon
+                                                                                    *ngIf="contact.IsPathology == 1"
+                                                                                    matTooltip="IsPatholgy">
+                                                                                    <img width="15px" height="9px"
+                                                                                        src="/assets/images/logos/pathology.png">
+                                                                                </mat-icon>
+                                                                                <mat-icon
+                                                                                    *ngIf="contact.IsPackage == '1'"
+                                                                                    matTooltip="Package Edit"
+                                                                                    (click)="getPacakgeDetail(contact)">
+                                                                                    <img width="15px" height="9px"
+                                                                                        src="/assets/images/logos/package.png">
+                                                                                </mat-icon>
+                                                                            </mat-cell>
+                                                                        </ng-container>
+
+
+                                                                        <!-- <ng-container matColumnDef="ServiceCode">
+                                                                            <mat-header-cell *matHeaderCellDef
+                                                                                mat-sort-header class="w-100">Service
+                                                                                Code</mat-header-cell>
+                                                                            <mat-cell *matCellDef="let contact"
+                                                                                class="w-100">
+                                                                                <span>{{ contact.serviceCode ||
+                                                                                    '-'
+                                                                                    }}</span>
+                                                                            </mat-cell>
+                                                                        </ng-container> -->
+
+                                                                        <ng-container matColumnDef="ServiceName">
+                                                                            <mat-header-cell *matHeaderCellDef
+                                                                                class="w-300">Service
+                                                                                Name</mat-header-cell>
+                                                                            <mat-cell *matCellDef="let contact"
+                                                                                class="w-300"><span
+                                                                                    class="text-overflow">{{contact.ServiceName}}
+                                                                                </span></mat-cell>
+                                                                        </ng-container>
+
+                                                                        <ng-container matColumnDef="Price">
+                                                                            <mat-header-cell class="w-100"
+                                                                                *matHeaderCellDef>Price</mat-header-cell>
+                                                                            <!-- <mat-cell *matCellDef="let contact"><span class="text-overflow"> {{contact.Price || 0}} </span></mat-cell> -->
+                                                                            <mat-cell *matCellDef="let contact"
+                                                                                class="w-100">
+                                                                                <!-- {{contact.Price}} -->
+                                                                                <mat-form-field floatLabel="never">
+                                                                                    <input matInput placeholder="Price"
+                                                                                        type="number"
+                                                                                        [(ngModel)]="contact.Price"
+                                                                                        required
+                                                                                        (ngModelChange)="onPriceOrQtyChange(contact)">
+                                                                                </mat-form-field>
+                                                                            </mat-cell>
+                                                                        </ng-container>
+
+                                                                        <!-- <ng-container matColumnDef="Qty">
+                                                                            <mat-header-cell
+                                                                                *matHeaderCellDef>Qty</mat-header-cell>
+
+                                                                            <mat-cell *matCellDef="let contact">
+                                                                                {{contact.Qty}}
+
+                                                                            </mat-cell>
+                                                                        </ng-container> -->
+
+                                                                        <ng-container matColumnDef="TotalAmount">
+                                                                            <mat-header-cell *matHeaderCellDef
+                                                                                class="w-100">Total
+                                                                                Amt</mat-header-cell>
+                                                                            <mat-cell *matCellDef="let contact"
+                                                                                class="w-100"><span
+                                                                                    class="text-overflow">
+                                                                                    {{(contact.TotalAmt || 0 )|
+                                                                                    currency:"INR"}}
+                                                                                </span></mat-cell>
+                                                                        </ng-container>
+
+                                                                        <!-- <ng-container matColumnDef="DiscountPer">
+                                                                            <mat-header-cell *matHeaderCellDef>Disc
+                                                                                %</mat-header-cell>
+
+                                                                            <mat-cell *matCellDef="let contact">
+                                                                                <mat-form-field floatLabel="never"
+                                                                                    appearance="fill">
+                                                                                    <input matInput placeholder="Disc %"
+                                                                                        [(ngModel)]="contact.DiscPer"
+                                                                                        type="number" [min]="0"
+                                                                                        [max]="100"
+                                                                                        (ngModelChange)="onDiscountPerChange(contact)">
+                                                                                </mat-form-field>
+                                                                            </mat-cell>
+                                                                        </ng-container>
+
+                                                                        <ng-container matColumnDef="DiscountAmount">
+                                                                            <mat-header-cell *matHeaderCellDef>Disc
+                                                                                Amt</mat-header-cell>
+
+                                                                            <mat-cell *matCellDef="let contact">
+                                                                                <mat-form-field floatLabel="never"
+                                                                                    appearance="fill">
+                                                                                    <input matInput
+                                                                                        placeholder="Disc Amt"
+                                                                                        [(ngModel)]="contact.DiscAmt"
+                                                                                        type="number" [min]="0"
+                                                                                        [max]="contact.TotalAmt"
+                                                                                        (ngModelChange)="onDiscountAmtChange(contact)">
+                                                                                </mat-form-field>
+                                                                            </mat-cell>
+                                                                        </ng-container> -->
+
+                                                                        <ng-container matColumnDef="NetAmount">
+                                                                            <mat-header-cell *matHeaderCellDef
+                                                                                class="w-100">Net
+                                                                                Amt</mat-header-cell>
+                                                                            <mat-cell *matCellDef="let contact"
+                                                                                class="w-100"><span
+                                                                                    class="text-overflow">
+                                                                                    {{(contact.NetAmount || 0) |
+                                                                                    currency:"INR"}}
+                                                                                </span></mat-cell>
+                                                                        </ng-container>
+
+                                                                        <!-- <ng-container matColumnDef="DoctorName">
+                                                                            <mat-header-cell *matHeaderCellDef>Doctor
+                                                                                Name</mat-header-cell>
+                                                                            <mat-cell *matCellDef="let contact"><span
+                                                                                    class="text-overflow">
+                                                                                    {{contact.DoctorName}}
+                                                                                </span></mat-cell>
+                                                                        </ng-container>
+
+                                                                        <ng-container matColumnDef="ClassName">
+                                                                            <mat-header-cell *matHeaderCellDef>Class
+                                                                                Name</mat-header-cell>
+                                                                            <mat-cell *matCellDef="let contact"><span
+                                                                                    class="text-overflow">
+                                                                                    {{contact.ClassName}}
+                                                                                </span></mat-cell>
+                                                                        </ng-container>
+
+                                                                        <ng-container matColumnDef="ChargesAddedName">
+                                                                            <mat-header-cell *matHeaderCellDef>Added
+                                                                                By</mat-header-cell>
+                                                                            <mat-cell
+                                                                                *matCellDef="let contact">{{contact.ChargesAddedName}}</mat-cell>
+                                                                        </ng-container>
+
+                                                                        <ng-container matColumnDef="Exclucion"
+                                                                            stickyEnd>
+                                                                            <mat-header-cell *matHeaderCellDef
+                                                                                mat-sort-header
+                                                                                class="w-90">Exclusion</mat-header-cell>
+                                                                            <mat-cell *matCellDef="let contact"
+                                                                                class="w-90">
+                                                                                <mat-checkbox aria-label="Checked"
+                                                                                    [(ngModel)]="contact.isInclusionExclusion"></mat-checkbox>
+                                                                            </mat-cell>
+                                                                        </ng-container> -->
+
+                                                                        <ng-container matColumnDef="Action" stickyEnd>
+                                                                            <mat-header-cell *matHeaderCellDef>
+                                                                                Action
+                                                                            </mat-header-cell>
+                                                                            <mat-cell
+                                                                                *matCellDef="let contact; let i=index">
+                                                                                <button mat-icon-button color="warn"
+                                                                                    (click)="deleteCharge(i,contact)">
+                                                                                    <mat-icon>delete_outline</mat-icon>
+                                                                                </button>
+                                                                            </mat-cell>
+                                                                        </ng-container>
+
+                                                                        <ng-container matColumnDef="NoData">
+                                                                            <mat-footer-cell *matFooterCellDef>
+                                                                                <span>No Data Found</span>
+                                                                            </mat-footer-cell>
+                                                                        </ng-container>
+
+                                                                        <mat-header-row class="accent min-width-850"
+                                                                            *matHeaderRowDef="displayedChargeColumns; sticky: true">
+                                                                        </mat-header-row>
+                                                                        <mat-row
+                                                                            *matRowDef="let contact; columns: displayedChargeColumns;"
+                                                                            class="min-width-850"
+                                                                            [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                                                                        <mat-footer-row *matFooterRowDef="['NoData']"
+                                                                            [ngClass]="{'hide':dsChargeList.data.length > 0}"></mat-footer-row>
+                                                                    </mat-table>
+                                                                </div>
+                                                                <div class="amt-container py-4">
+                                                                    <div class="net-amt-section">
+                                                                        <div class="net-amt">
+                                                                            <div class="net-amt-box">
+                                                                                <span class="net-amt-label">No
+                                                                                    Of
+                                                                                    Item:</span>
+                                                                                <span class="net-amt-value">
+                                                                                    {{chargeList.length}}</span>
+                                                                            </div>
+                                                                            <div class="net-amt-box">
+                                                                                <div class="net-amt-label">
+                                                                                    Company Amt :
+                                                                                </div>
+                                                                                <div class="net-amt-value">{{
+                                                                                    ExclusionAmt |
+                                                                                    currency :
+                                                                                    'INR':'symbol':'1.2-2' }}
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="net-amt-box">
+                                                                                <span class="net-amt-label">Patient
+                                                                                    Amt
+                                                                                    :</span>
+                                                                                <span class="net-amt-value">{{
+                                                                                    InclusionAmt |
+                                                                                    currency : 'INR' }}</span>
+                                                                            </div>
+
+
+                                                                            <!-- <div class="net-amt-box">
+                                                                                <span class="net-amt-label">Discount
+                                                                                    Amount :</span>
+                                                                                <span class="net-amt-value">
+                                                                                    {{OPFooterForm?.get("concessionAmt")?.value
+                                                                                    |
+                                                                                    currency:'INR' }}</span>
+                                                                            </div> -->
+
+                                                                            <div class="final-amt-box">
+                                                                                <span class="final-amt-label">Net
+                                                                                    Amt
+                                                                                    :</span>
+                                                                                <span
+                                                                                    class="final-amt-value">{{OPFooterForm?.get("netPayableAmt")?.value
+                                                                                    | currency : 'INR'
+                                                                                    }}</span>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <!--</mat-tab>
+                                                             <mat-tab label="Package List">
+                                                            <div fxLayout="column" class="h-100-p">
+                                                                <div class="airmid-table-container ">
+                                                                    <mat-table #table1 matSort
+                                                                        [dataSource]="dsPackageList"
+                                                                        [@animateStagger]="{value:'50'}"
+                                                                        class="airmid-table">
+
+                                                                        <ng-container matColumnDef="IsCheck" sticky>
+                                                                            <mat-header-cell *matHeaderCellDef
+                                                                                mat-sort-header
+                                                                                class="w-90">Status</mat-header-cell>
+                                                                            <mat-cell *matCellDef="let contact"
+                                                                                class="w-90">
+                                                                                <mat-icon
+                                                                                    *ngIf="contact.isRadiology == 1"
+                                                                                    matTooltip="IsRadiology">
+                                                                                    <img width="15px" height="8px"
+                                                                                        src="assets/images/logos/radiology.png">
+                                                                                </mat-icon>
+                                                                                <mat-icon
+                                                                                    *ngIf="contact.isPathology == 1"
+                                                                                    matTooltip="IsPatholgy">
+                                                                                    <img width="15px" height="9px"
+                                                                                        src="assets/images/logos/pathology.png">
+                                                                                </mat-icon>
+                                                                            </mat-cell>
+                                                                        </ng-container>
+
+                                                                        <ng-container matColumnDef="ServiceNamePackage">
+                                                                            <mat-header-cell *matHeaderCellDef
+                                                                                mat-sort-header fxShow.gt-sm
+                                                                                class="w-250">
+                                                                                Package Name
+                                                                            </mat-header-cell>
+                                                                            <mat-cell *matCellDef="let contact"
+                                                                                fxShow.gt-sm class="w-250"
+                                                                                mat-Tooltip="{{contact.pacakgeServiceName}}">
+                                                                                <span>
+                                                                                    {{contact.pacakgeServiceName}}</span>
+                                                                            </mat-cell>
+                                                                        </ng-container>
+
+                                                                        <ng-container matColumnDef="ServiceName">
+                                                                            <mat-header-cell *matHeaderCellDef
+                                                                                mat-sort-header fxShow.gt-sm
+                                                                                class="w-200">
+                                                                                Service Name
+                                                                            </mat-header-cell>
+                                                                            <mat-cell *matCellDef="let contact"
+                                                                                fxShow.gt-sm class="w-200"
+                                                                                mat-Tooltip="{{contact.serviceName}}">
+                                                                                <span> {{contact.serviceName}}</span>
+                                                                            </mat-cell>
+                                                                        </ng-container>
+
+                                                                        <ng-container matColumnDef="Price">
+                                                                            <mat-header-cell *matHeaderCellDef
+                                                                                mat-sort-header fxShow.gt-sm
+                                                                                lass="w-110">Price
+                                                                            </mat-header-cell>
+                                                                            <mat-cell *matCellDef="let contact"
+                                                                                fxShow.gt-sm lass="w-110">
+                                                                                <span> {{contact.price}}</span>
+                                                                            </mat-cell>
+                                                                        </ng-container>
+
+                                                                        <ng-container matColumnDef="Qty">
+                                                                            <mat-header-cell *matHeaderCellDef
+                                                                                mat-sort-header fxShow.gt-sm
+                                                                                class="w-90">Qty
+                                                                            </mat-header-cell>
+                                                                            <mat-cell *matCellDef="let contact"
+                                                                                fxShow.gt-sm class="w-90">
+                                                                                <span> {{contact.Qty}}</span>
+                                                                            </mat-cell>
+                                                                        </ng-container>
+
+                                                                        <ng-container matColumnDef="TotalAmt">
+                                                                            <mat-header-cell *matHeaderCellDef
+                                                                                mat-sort-header fxShow.gt-sm>
+                                                                                Total Amt
+                                                                            </mat-header-cell>
+                                                                            <mat-cell *matCellDef="let contact"
+                                                                                fxShow.gt-sm>
+                                                                                <span> {{contact.TotalAmt ||
+                                                                                    '-'}}</span>
+                                                                            </mat-cell>
+                                                                        </ng-container>
+
+                                                                        <ng-container matColumnDef="DoctorName">
+                                                                            <mat-header-cell *matHeaderCellDef
+                                                                                mat-sort-header fxShow.gt-sm>DoctorName
+                                                                            </mat-header-cell>
+                                                                            <mat-cell *matCellDef="let contact"
+                                                                                fxShow.gt-sm
+                                                                                mat-Tooltip="{{contact.doctorName}}">
+                                                                                <span> {{contact.doctorName ||
+                                                                                    '-'}}</span>
+                                                                            </mat-cell>
+                                                                        </ng-container>
+
+                                                                        <ng-container matColumnDef="DiscAmt">
+                                                                            <mat-header-cell *matHeaderCellDef
+                                                                                mat-sort-header fxShow.gt-sm>Disc
+                                                                                Amt
+                                                                            </mat-header-cell>
+                                                                            <mat-cell *matCellDef="let contact"
+                                                                                fxShow.gt-sm>
+
+                                                                                <span> {{contact.DiscAmt || '-'
+                                                                                    }}</span>
+                                                                            </mat-cell>
+                                                                        </ng-container>
+
+                                                                        <ng-container matColumnDef="NetAmount">
+                                                                            <mat-header-cell *matHeaderCellDef
+                                                                                mat-sort-header fxShow.gt-sm>
+                                                                                NetAmt
+                                                                            </mat-header-cell>
+                                                                            <mat-cell *matCellDef="let contact"
+                                                                                fxShow.gt-sm>
+                                                                                <span> {{contact.NetAmount ||
+                                                                                    '-'}}</span>
+                                                                            </mat-cell>
+                                                                        </ng-container>
+
+                                                                        <ng-container matColumnDef="loading">
+                                                                            <mat-footer-cell *matFooterCellDef
+                                                                                colspan="6">
+                                                                                loading data...
+                                                                            </mat-footer-cell>
+                                                                        </ng-container>
+
+                                                                        <ng-container matColumnDef="noData">
+                                                                            <mat-footer-cell *matFooterCellDef
+                                                                                colspan="6">
+                                                                                <span>No Data Found</span>
+                                                                            </mat-footer-cell>
+                                                                        </ng-container>
+
+                                                                        <mat-header-row class="accent"
+                                                                            *matHeaderRowDef="displayedColumnspackage; sticky: true">
+                                                                        </mat-header-row>
+                                                                        <mat-row
+                                                                            *matRowDef="let contact; columns: displayedColumnspackage;"
+                                                                            [ngClass]="{'row-yellow': contact.ServiceName == 'CBC'}"
+                                                                            [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                                                                        <mat-footer-row *matFooterRowDef="['loading']"
+                                                                            [ngClass]="{'hide':dsPackageList!=null}">
+                                                                        </mat-footer-row>
+                                                                        <mat-footer-row *matFooterRowDef="['noData']"
+                                                                            [ngClass]="{'hide':!(dsPackageList!=null && dsPackageList.data.length==0)}">
+                                                                        </mat-footer-row>
+                                                                        phar-label
+                                                                    </mat-table>
+                                                                </div>
+                                                            </div>
+                                                        </mat-tab> 
+                                                            </mat-tab-group>-->
+                                                        </div>
+                                                    </div>
+                                                </mat-card-content>
+                                            </mat-card>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="modal-card-container">
+                                <mat-card fxFlex.gt-sm="100%" fxFlex>
+                                    <mat-card-content class="py-4">
+                                        <form [formGroup]="OPFooterForm">
+                                            <div fxLayout="row" fxLayoutGap="6px">
+                                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="100%">
+                                                    <airmid-textbox label="Total Amount" formControlName="totalAmt"
+                                                        [formGroup]="OPFooterForm"
+                                                        [validations]="getValidationMessages().totalAmount"
+                                                        [type]="'number'" [readonly]="true">
+                                                    </airmid-textbox>
+                                                </div>
+                                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="100%"
+                                                    *ngIf="!isDiscountApplied">
+                                                    <airmid-textbox label="Discount %"
+                                                        formControlName="totalDiscountPer" [formGroup]="OPFooterForm"
+                                                        [validations]="getValidationMessages().discountPer"
+                                                        [type]="'number'" [readonly]="isDiscountApplied">
+                                                    </airmid-textbox>
+                                                </div>
+                                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="100%">
+                                                    <airmid-textbox label="Discount Amount"
+                                                        formControlName="concessionAmt" [formGroup]="OPFooterForm"
+                                                        [validations]="getValidationMessages().discountAmount"
+                                                        [type]="'number'" [readonly]="isDiscountApplied">
+                                                    </airmid-textbox>
+                                                </div>
+                                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="100%"
+                                                    *ngIf="Consessionres">
+                                                    <airmid-dropdown label="Concession Reason"
+                                                        formControlName="concessionReasonId" [formGroup]="OPFooterForm"
+                                                        [validations]="getValidationMessages().concessionId"
+                                                        [mode]="autocompleteModeConcession"
+                                                        (selectionChange)="selectChangeConcession($event)">
+                                                    </airmid-dropdown>
+                                                </div>
+                                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="100%">
+                                                    <airmid-textbox label="Total Net Amount"
+                                                        formControlName="netPayableAmt" [formGroup]="OPFooterForm"
+                                                        [validations]="getValidationMessages().totalNetAmount"
+                                                        [type]="'number'" [readonly]="true">
+                                                    </airmid-textbox>
+                                                </div>
+                                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="100%"
+                                                    *ngIf="OPFooterForm.get('paymentType')?.value === 'Mpesa'">
+                                                    <airmid-textbox label="PMesa Mobile" formControlName="mpesaMobile"
+                                                        [formGroup]="OPFooterForm"
+                                                        [validations]="getValidationMessages().mpesaMobile">
+                                                    </airmid-textbox>
+                                                </div>
+                                                  <div class="amt-container py-4">
+                                                                    <div class="net-amt-section">
+                                                                        <div class="net-amt">
+                                                                            <div class="net-amt-box">
+                                                                                <span class="net-amt-label">No
+                                                                                    Of
+                                                                                    Item:</span>
+                                                                                <span class="net-amt-value">
+                                                                                    {{chargeList.length}}</span>
+                                                                            </div>
+                                                                            <div class="net-amt-box">
+                                                                                <div class="net-amt-label">
+                                                                                    Company Amt :
+                                                                                </div>
+                                                                                <div class="net-amt-value">{{
+                                                                                    ExclusionAmt |
+                                                                                    currency :
+                                                                                    'INR':'symbol':'1.2-2' }}
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="net-amt-box">
+                                                                                <span class="net-amt-label">Patient
+                                                                                    Amt
+                                                                                    :</span>
+                                                                                <span class="net-amt-value">{{
+                                                                                    InclusionAmt |
+                                                                                    currency : 'INR' }}</span>
+                                                                            </div>
+
+
+                                                                            <!-- <div class="net-amt-box">
+                                                                                <span class="net-amt-label">Discount
+                                                                                    Amount :</span>
+                                                                                <span class="net-amt-value">
+                                                                                    {{OPFooterForm?.get("concessionAmt")?.value
+                                                                                    |
+                                                                                    currency:'INR' }}</span>
+                                                                            </div> -->
+
+                                                                            <div class="final-amt-box">
+                                                                                <span class="final-amt-label">Net
+                                                                                    Amt
+                                                                                    :</span>
+                                                                                <span
+                                                                                    class="final-amt-value">{{OPFooterForm?.get("netPayableAmt")?.value
+                                                                                    | currency : 'INR'
+                                                                                    }}</span>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                            </div>
+                                            <div class="radio-container">
+                                                <mat-radio-group formControlName="paymentType" fxLayout="row"
+                                                    class="gap-4">
+                                                    <mat-radio-button value="CashPay">Cash
+                                                        Payment</mat-radio-button>
+                                                    <mat-radio-button value="CreditPay">Credit
+                                                        Payment</mat-radio-button>
+                                                    <mat-radio-button value="PayOption">Pay
+                                                        Option</mat-radio-button>
+                                                    <mat-radio-button value="Mpesa">MPesa</mat-radio-button>
+                                                </mat-radio-group>
+                                            </div>
+                                        </form>
+                                    </mat-card-content>
+                                </mat-card>
+                            </div>
+                        </mat-card-content>
+                    </mat-card>
+                    <div class="modal-footer">
+                        <div class="footer-navigation-container">
+                            <div class="modal-footer-buttons">
+                                <button type="button" class="btn btn-danger-outline" [mat-dialog-close]="true"
+                                    aria-label="Close dialog" matTooltip="Close">Close</button>
+                                <button type="button" class="btn btn-primary" [disabled]="!chargeList.length"
+                                    (click)="BillSave()">Save</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <!-- Waiting Screen -->
+    <div class="waiting-overlay" *ngIf="isWaiting">
+        <div class="waiting-box">
+            <div class="spinner"></div>
+            <p>{{ statusMessage }}</p>
+
+            <button class="btn btn-outline-secondary" (click)="manualRefresh()">
+                Refresh Status
+            </button>
+        </div>
+    </div>
