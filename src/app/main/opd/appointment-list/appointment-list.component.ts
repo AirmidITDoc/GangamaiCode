@@ -37,6 +37,7 @@ import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
 import { PolicyInfoPopoverComponent } from './policy-info-popover/policy-info-popover.component';
 import { CompanyApprovalPopoverComponent } from './company-approval-popover/company-approval-popover.component';
+import { NewAppointmentwithBillComponent } from './new-appointmentwith-bill/new-appointmentwith-bill.component';
 // import { NewAppointmentwithBillComponent } from './new-appointmentwith-bill/new-appointmentwith-bill.component';
 // const moment = _rollupMoment || _moment;
 
@@ -942,7 +943,7 @@ export class AppointmentListComponent implements OnInit {
         buttonElement.blur(); // Remove focus from the button
 
         let that = this;
-        const dialogRef = this._matDialog.open(NewAppointmentComponent,
+        const dialogRef = this._matDialog.open(NewAppointmentwithBillComponent,
             {
                 maxWidth: "95vw",
                 height: '95%',
