@@ -237,8 +237,8 @@ export class NewOPListComponent implements OnInit {
         public toastr: ToastrService, public datePipe: DatePipe,
         private commonService: PrintserviceService,
         public _ConfigService: ConfigService,
-        public _accountService : AuthenticationService,
-        public _whatsppService:WhatsAppEmailService
+        public _accountService: AuthenticationService,
+        public _whatsppService: WhatsAppEmailService
     ) { }
 
 
@@ -252,7 +252,7 @@ export class NewOPListComponent implements OnInit {
         this.menuActions.push("Bill Print");
     }
 
- 
+
 
     viewgetOPPayemntPdf(data, status) {
         if (status == true)
@@ -316,7 +316,7 @@ export class NewOPListComponent implements OnInit {
         console.log(contact)
         let PatientHeaderObj = {};
         PatientHeaderObj['Date'] = this.datePipe.transform(contact.billDate, 'MM/dd/yyyy') || '01/01/1900',
-        PatientHeaderObj['RegNo'] = contact.regNo;
+            PatientHeaderObj['RegNo'] = contact.regNo;
         PatientHeaderObj['PatientName'] = contact.patientName;
         PatientHeaderObj['OPD_IPD_Id'] = contact.opD_IPD_ID;
         PatientHeaderObj['Age'] = contact.patientAge;
@@ -572,25 +572,28 @@ export class NewOPListComponent implements OnInit {
             event.preventDefault();
             return false;
         }
-    } 
-Onemail(el) {
-  this._whatsppService.OnEmailMsgSent({
-    toEmail: el?.email ?? "ambadasgajul1999@gmail.com",   // patient email or fallback
-    cc: "",
-    mailSubject: `OPD Bill Print – Bill No: ${el.billNo}`,
-    mailBody: `Dear Patient,\n\nPlease find attached your OPD Bill (Bill No: ${el.billNo}).\n\nRegards,\nAirmidTech Innovations`,
-    billNo: el.billNo,
-    emailType: "OPBill"
-  });
-}
- Onmessage(data) { }
+    }
+    Onemail(el) {
+        this._whatsppService.OnEmailMsgSent({
+            toEmail: el?.email ?? "ambadasgajul1999@gmail.com",   // patient email or fallback
+            cc: "",
+            mailSubject: `OPD Bill Print – Bill No: ${el.billNo}`,
+            mailBody: `Dear Patient,\n\nPlease find attached your OPD Bill (Bill No: ${el.billNo}).\n\nRegards,\nAirmidTech Innovations`,
+            billNo: el.billNo,
+            emailType: "OPBill",
+            patientId:el.regNo
+        });
+    }
+    Onmessage(data) { }
 
     getWhatsappshareBill(el) {
+        console.log(el);
         this._whatsppService.OnWhatsAppMsgSent({
             mobileNo: el.mobileNo,
             patientName: el.patientName,
             billNo: el.billNo,
-            smsType: el.smsType,
+            smsType: "OPBill",
+            patientId:el.regNo
         })
     }
 }

@@ -25,13 +25,13 @@ export class WhatsAppEmailService {
     return this._httpClient.post("WhatsappEmail/WhatsappSalesSave", emp);
   }
  
-  OnWhatsAppMsgSent(params: { mobileNo: any; patientName: string; billNo: any; smsType: string }){
+  OnWhatsAppMsgSent(params: { mobileNo: any; patientName: string; billNo: any; smsType: string, patientId:any }){
     setTimeout(() => {
       let param = {
         "mobileNumber": params?.mobileNo,
         "smsString": "Dear " + params?.patientName + ",Your Bill has been successfully Generated. Thank You" || '',
         "isSent": true,
-        "smsType": params?.smsType,
+        "smsType": params?.smsType ?? '',
         "smsFlag": '0',
         "smsDate": this.datePipe.transform(new Date(), 'yyyy-MM-dd') || '1999-01-01',
         "tranNo": params?.billNo,
@@ -40,7 +40,9 @@ export class WhatsAppEmailService {
         "filePath": '',
         "sourceType": 0,
         "createdBy": this._accountService.currentUserValue.userId,
-        "smsOutGoingID": 0
+        "smsOutGoingID": 0,
+        "patientId": params?.patientId,
+
       }
       this._OPListService.InsertWhatsapp(param).subscribe(response => {
 
@@ -48,7 +50,7 @@ export class WhatsAppEmailService {
     }, 100);
   }
 
-OnEmailMsgSent(params: { toEmail: string; cc: string; mailSubject: string; mailBody: string; billNo: any; emailType: string }){
+OnEmailMsgSent(params: { toEmail: string; cc: string; mailSubject: string; mailBody: string; billNo: any; emailType: string, patientId:any }){
     setTimeout(() => {
       let param = {
             "fromEmail": "support@airmidtechinnovations.com",
@@ -58,13 +60,13 @@ OnEmailMsgSent(params: { toEmail: string; cc: string; mailSubject: string; mailB
             "bcc": "",
             "mailSubject": params?.mailSubject,
             "mailBody": params?.mailBody,
-            "status": -2,
-            "retry": 1,
             "attachmentName": "",
             "attachmentLink": "",
             "id": 0,
             "tranNo": params.billNo,
-            "emailType": params.emailType
+            "emailType": params.emailType,
+            "patientId": params?.patientId,
+            "createdBy": this._accountService.currentUserValue.userId,
       }
       this._OPListService.InsertWhatsappEmail(param).subscribe(response => { 
       });
