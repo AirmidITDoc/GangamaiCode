@@ -55,7 +55,7 @@ OnEmailMsgSent(params: { toEmail: string; cc: string; mailSubject: string; mailB
             "fromName": "AirmidTech",
             "toEmail": params?.toEmail,
             "cc": params?.cc,
-            "bcc": "string",
+            "bcc": "",
             "mailSubject": params?.mailSubject,
             "mailBody": params?.mailBody,
             "status": -2,
