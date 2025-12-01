@@ -621,7 +621,8 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
             transactionType: [item?.transactionType ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             isSelfOrcompany: [item?.isSelfOrcompany ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             tranMode: [item?.tranMode ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
-            createdBy: [item?.createdBy ?? this.accountService.currentUserValue.userId]
+            createdBy: [item?.createdBy ?? this.accountService.currentUserValue.userId],
+            transactionLabel: [item?.transactionLabel ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
         });
     }
     // Getters
@@ -1179,7 +1180,9 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
                 PatientHeaderObj['DepartmentName'] = this.DepartmentName;
                 PatientHeaderObj['OPD_IPD_Id'] = this.vOPIPId;
                  PatientHeaderObj['CompanyId'] = this.patientDetail?.companyId || 0;
+                PatientHeaderObj['CashCounterId'] = this.searchForm.get('CashCounterID')?.value || 0;
                 PatientHeaderObj['Age'] = this.AgeYear;
+                PatientHeaderObj['TransactionLabel'] = 'OP Bill';
                 PatientHeaderObj['NetPayAmount'] = Math.round(this.OPFooterForm.get('netPayableAmt').value);
                 const dialogRef = this._matDialog.open(OpPaymentComponent,
                     {
@@ -1240,11 +1243,12 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
                     companyId: this.patientDetail?.CompanyId ?? 0,
                     advanceId: 0,
                     refundId: 0,
-                    cashCounterId: 0,
+                    cashCounterId:this.searchForm.get('CashCounterID')?.value || 0,
                     transactionType: 0,
                     isSelfOrcompany: this.patientDetail?.CompanyId ? 1 : 0,
                     tranMode: "Cash",
-                    createdBy: this.accountService.currentUserValue?.userId ?? 0
+                    createdBy: this.accountService.currentUserValue?.userId ?? 0,
+                    transactionLabel:'OP Bill'
                 }); 
                 this.OpBillForm.get('balanceAmt').setValue(0)
                 this.OpBillForm.get('paidAmt')?.setValue(this.OPFooterForm.get('netPayableAmt')?.value)

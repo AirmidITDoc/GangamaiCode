@@ -258,7 +258,7 @@ export class CompanysettlementComponent implements OnInit {
             }),
                         //New Payments
             // ✅ Fixed: should be FormArray
-            tpayment: this.formBuilder.array([]),
+            tPayments: this.formBuilder.array([]),
         })
     }
     CreateModePaymentform(item: any): FormGroup { 
@@ -285,11 +285,12 @@ export class CompanysettlementComponent implements OnInit {
             transactionType: [item?.transactionType ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             isSelfOrcompany: [item?.isSelfOrcompany ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             tranMode: [item?.tranMode ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
-            createdBy: [item?.createdBy ?? this.accountService.currentUserValue.userId]
+            createdBy: [item?.createdBy ?? this.accountService.currentUserValue.userId],
+            transactionLabel: [item?.transactionLabel ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
         });
     }
     get ModeOfPaymentsArray(): FormArray {
-    return this.OpSettlementForm.get('tpayment') as FormArray;
+    return this.OpSettlementForm.get('tPayments') as FormArray;
     }
     CreateOPMultipleSettlInsertForm() {
         return this.formBuilder.group({
@@ -389,7 +390,8 @@ export class CompanysettlementComponent implements OnInit {
         PatientHeaderObj['billNo'] = contact.billNo;
         PatientHeaderObj['CompanyName'] = contact.companyName;
         PatientHeaderObj['NetPayAmount'] = contact.balanceAmt;
-        PatientHeaderObj['CompanyId'] = contact.companyId;
+        PatientHeaderObj['CompanyId'] = contact.companyId;  
+        PatientHeaderObj['TransactionLabel'] = 'OP Settlement';
 
         const dialogRef = this._matDialog.open(OpPaymentComponent,
             {

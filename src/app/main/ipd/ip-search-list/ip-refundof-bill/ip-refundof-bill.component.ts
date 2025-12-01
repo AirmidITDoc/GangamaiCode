@@ -147,7 +147,10 @@ export class IPRefundofBillComponent implements OnInit {
 
       tRefundDetails: this.formBuilder.array([]), // FormArray for details
       addCharges: this.formBuilder.array([]), // FormArray for charges
-      payment: ''
+      payment: '',
+            //New Payments
+      // ✅ Fixed: should be FormArray
+       tPayments: this.formBuilder.array([]),
     });
   }
 
@@ -172,15 +175,44 @@ export class IPRefundofBillComponent implements OnInit {
       refundAmount: [item.refundAmount ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]]
     });
   }
-
+  CreateModePaymentform(item: any): FormGroup {
+    return this.formBuilder.group({
+      paymentId: [item?.paymentId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      unitId: [item?.unitId ?? this.accountService.currentUserValue.user.unitId],
+      billNo: [item?.billNo ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      opdipdtype: [item?.opdipdtype ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      paymentDate: [item?.paymentDate ?? ''],
+      paymentTime: [item?.paymentTime ?? ''],
+      payAmount: [item?.payAmount ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      tranNo: [item?.tranNo ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+      bankName: [item?.bankName ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+      validationDate: [item?.validationDate ?? ''],
+      advanceUsedAmount: [item?.advanceUsedAmount ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      comments: [item?.comments ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+      payMode: [item?.payMode ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+      onlineTranNo: [item?.onlineTranNo ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+      onlineTranResponse: [item?.onlineTranResponse ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+      companyId: [item?.companyId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      advanceId: [item?.advanceId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      refundId: [item?.refundId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      cashCounterId: [item?.cashCounterId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      transactionType: [item?.transactionType ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      isSelfOrcompany: [item?.isSelfOrcompany ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      tranMode: [item?.tranMode ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+      createdBy: [item?.createdBy ?? this.accountService.currentUserValue.userId],
+      transactionLabel: [item?.transactionLabel ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+    });
+  }
   // 5.FormArray Getters
   get refundDetailsArray(): FormArray {
     return this.vRefundOfBillFormGroup.get('tRefundDetails') as FormArray;
   }
-
+    get ModeOfPaymentsArray(): FormArray {
+        return this.vRefundOfBillFormGroup.get('tPayments') as FormArray;
+    }
   get addChargesArray(): FormArray {
     return this.vRefundOfBillFormGroup.get('addCharges') as FormArray;
-  }
+  } 
 
   refundFormFooter(): FormGroup {
     return this._formBuilder.group({
@@ -280,6 +312,7 @@ calculateTotalAmount(): void {
     this.vRefundOfBillFormGroup.get("refund.remark")?.setValue(this.RefundOfBillFormFooter.get('Remark')?.value)
     this.vRefundOfBillFormGroup.get("refund.refundDate")?.setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd') || '1900-01-01')
     this.vRefundOfBillFormGroup.get("refund.refundTime")?.setValue(this.dateTimeObj.time)
+    this.vRefundOfBillFormGroup.get("refund.billId")?.setValue(this.BillNo || 0)
 
     if (!this.RefundOfBillFormFooter.invalid && !this.vRefundOfBillFormGroup.invalid) {
 
@@ -301,7 +334,11 @@ calculateTotalAmount(): void {
       PatientHeaderObj['DepartmentName'] = this.selectedAdvanceObj?.departmentName;
       PatientHeaderObj['OPD_IPD_Id'] = this.selectedAdvanceObj?.admissionId;
       PatientHeaderObj['Age'] = this.selectedAdvanceObj?.ageYear;
+      PatientHeaderObj['TransactionLabel'] = 'IP-Refund Of Bill';
+      PatientHeaderObj['billNo']= this.BillNo || 0,
       PatientHeaderObj['NetPayAmount'] =Math.round(this.RefundOfBillFormFooter.get('TotalRefundAmount').value) || 0
+      PatientHeaderObj['CashCounterId'] =this.RefundOfBillFormFooter.get('CashCounterID').value || 0 
+      PatientHeaderObj['CashCounterId'] =this.RefundOfBillFormFooter.get('CashCounterID').value || 0 
 
       const dialogRef = this._matDialog.open(OpPaymentComponent,
         {
@@ -317,7 +354,16 @@ calculateTotalAmount(): void {
       dialogRef.afterClosed().subscribe(result => {
         if (result && result.submitDataPay) {
           this.vRefundOfBillFormGroup.get('payment')?.setValue(result.submitDataPay.ipPaymentInsert);
-          console.log(this.vRefundOfBillFormGroup.value);
+            this.ModeOfPaymentsArray.clear();
+           result.submitDataPay.ipModePaymentInsert.forEach(item => {
+            this.ModeOfPaymentsArray.push(this.CreateModePaymentform(item));
+          }); 
+
+          this.ModeOfPaymentsArray.clear();
+          result.submitDataPay.ipModePaymentInsert.forEach(item => {
+            this.ModeOfPaymentsArray.push(this.CreateModePaymentform(item));
+          });   
+          console.log(this.vRefundOfBillFormGroup.value); 
         
           this._IpSearchListService.InsertRefundOfBill(this.vRefundOfBillFormGroup.value).subscribe(response => {
             this.viewgetRefundofBillReportPdf(response)

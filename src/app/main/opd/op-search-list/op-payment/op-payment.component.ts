@@ -385,7 +385,7 @@ export class OpPaymentComponent implements OnInit {
   ModePaymentObj:any =[];
   // Paymentobj: any[] = [];   //changed by raksha
   onSubmit() {
-    
+    let transactionType = 0;
     let result = this.OnCheckFormValidity();
     if (result === 0) return; // stop execution if invalid
 
@@ -414,6 +414,7 @@ export class OpPaymentComponent implements OnInit {
     }
     //new changes done by Ambadas op SETTLEMENT 10/6/2025
     if (this.data.FromName == "OP-SETTLEMENT") {
+      transactionType = 0; 
       this.Paymentobj['paymentId'] = 0;
       this.Paymentobj['billNo'] = this.advanceData?.billNo;
       this.Paymentobj['paymentDate'] = formattedDate
@@ -555,7 +556,7 @@ export class OpPaymentComponent implements OnInit {
     }
     else if (this.data.FromName == "IP-Advance" || this.data.FromName == "IP-RefundOfAdvance" ||
       this.data.FromName == "IP-RefundOfBill") {
-
+      transactionType = 2
       this.Paymentobj['billNo'] = 0;
       this.Paymentobj['receiptNo'] = "";
       this.Paymentobj['paymentDate'] = formattedDate
@@ -630,6 +631,7 @@ export class OpPaymentComponent implements OnInit {
       this.Paymentobj['wfamount'] = this.Payments.data.find(x => x.PaymentType == "wf")?.Amount ?? 0;
     }
     else if (this.data.FromName == "OP-RefundOfBill") {
+      transactionType = 2
       this.Paymentobj['BillNo'] = this.advanceData.billNo; //this.data?.billNo;
       this.Paymentobj['ReceiptNo'] = '';
       this.Paymentobj['PaymentId'] = 0;
@@ -668,7 +670,8 @@ export class OpPaymentComponent implements OnInit {
       this.Paymentobj['wfamount'] = this.Payments.data.find(x => x.PaymentType == "wf")?.Amount ?? 0;
     }
     //new changes done by Ambadas op bill 10/6/2025
-    else if (this.data.FromName == "OP-Bill") {   
+    else if (this.data.FromName == "OP-Bill") { 
+      transactionType = 0;  
       this.Paymentobj['paymentId'] = 0;
       this.Paymentobj['billNo'] = 0;
       this.Paymentobj['receiptNo'] = '';
@@ -834,11 +837,12 @@ export class OpPaymentComponent implements OnInit {
           companyId: this.advanceData?.CompanyId ?? 0,
           advanceId: 0,
           refundId: 0,
-          cashCounterId: 0,
-          transactionType: 0,
+          cashCounterId: this.advanceData?.CashCounterId || 0,
+          transactionType: transactionType,
           isSelfOrcompany: this.advanceData?.CompanyId ? 1 : 0,
           tranMode: "HOSP",
-          createdBy: this._loggedService.currentUserValue?.userId ?? 0
+          createdBy: this._loggedService.currentUserValue?.userId ?? 0,
+          transactionLabel:this.advanceData?.TransactionLabel || 0,
         });
       });
 
