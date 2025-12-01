@@ -1,0 +1,479 @@
+// Medicine Table Component Styles
+// Modern, clean design with proper height adjustments
+
+$primary-color: #5c2d91;
+$primary-light: #7c4dba;
+$primary-dark: #421e6b;
+$success-color: #28a745;
+$danger-color: #dc3545;
+$warning-color: #ffc107;
+$border-color: #e0e0e0;
+$header-bg: $primary-color;
+$row-hover-bg: #f8f5fc;
+$edit-row-bg: #fef9e7;
+$control-height: 46px;
+
+.medicine-table-wrapper {
+    width: 100%;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    background: #fff;
+    padding: 16px;
+}
+
+.table-toolbar {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 12px;
+}
+
+.add-record-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    height: 40px;
+    font-weight: 600;
+
+    mat-icon {
+        font-size: 18px;
+        width: 18px;
+        height: 18px;
+    }
+}
+
+.table-container {
+    width: 100%;
+    max-height: 400px;
+    min-height: 320px;
+    overflow: auto;
+    position: relative;
+
+    &::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+    }
+
+    &::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 3px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background: $primary-light;
+        border-radius: 3px;
+
+        &:hover {
+            background: $primary-color;
+        }
+    }
+}
+
+.medicine-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+
+    // Header styles
+    .mat-header-row {
+        background: $header-bg;
+        height: 48px;
+        position: sticky;
+        top: 0;
+        z-index: 10;
+
+        .mat-header-cell {
+            color: #fff;
+            font-weight: 600;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: none;
+            padding: 12px 16px;
+            white-space: nowrap;
+
+            &:first-child {
+                padding-left: 20px;
+            }
+        }
+    }
+
+    // Row styles
+    .mat-row {
+        min-height: 56px;
+        height: auto;
+        transition: background-color 0.2s ease;
+        border-bottom: 1px solid $border-color;
+
+        &:hover {
+            background-color: $row-hover-bg;
+        }
+
+        &.editing-row {
+            background-color: $edit-row-bg;
+            box-shadow: inset 0 0 0 2px $warning-color;
+
+            &:hover {
+                background-color: $edit-row-bg;
+            }
+        }
+
+        &:last-child {
+            border-bottom: none;
+        }
+    }
+
+    // Cell styles
+    .mat-cell {
+        padding: 8px 16px;
+        font-size: 13px;
+        color: #333;
+        vertical-align: middle;
+        border-bottom: none;
+
+        &:first-child {
+            padding-left: 20px;
+        }
+    }
+}
+
+// Column widths
+.col-drug-name {
+    flex: 2 1 240px;
+    min-width: 200px;
+}
+
+.col-generic-name {
+    flex: 1.6 1 200px;
+    min-width: 180px;
+}
+
+.col-dose-name {
+    flex: 1.4 1 180px;
+    min-width: 160px;
+}
+
+.col-days {
+    flex: 0.7 0 90px;
+    min-width: 80px;
+    text-align: center;
+}
+
+.col-instruction {
+    flex: 2 1 260px;
+    min-width: 200px;
+}
+
+.col-action {
+    flex: 0 0 150px;
+    text-align: center;
+    position: sticky;
+    right: 0;
+    background: inherit;
+}
+
+// Cell text styles
+.cell-text {
+    display: block;
+    line-height: 1.4;
+    word-break: break-word;
+
+    &.cell-text-center {
+        text-align: center;
+    }
+}
+
+// Edit cell container - CRITICAL FOR HEIGHT ADJUSTMENT
+.edit-cell {
+    width: 100%;
+    min-height: $control-height;
+    display: flex;
+    align-items: center;
+
+    // Override airmid-autocomplete styles
+    ::ng-deep {
+        airmid-autocomplete,
+        airmid-dropdown {
+            width: 100%;
+            display: flex;
+            align-items: center;
+
+            .mat-form-field {
+                width: 100%;
+
+                .mat-form-field-wrapper {
+                    padding-bottom: 0;
+                    margin: 0;
+                }
+
+                .mat-form-field-infix {
+                    padding: 6px 0;
+                    border-top: 0;
+                    height: auto;
+                    min-height: $control-height;
+                    display: flex;
+                    align-items: center;
+                }
+
+                .mat-form-field-outline {
+                    top: 0;
+                }
+
+                .mat-form-field-subscript-wrapper {
+                    display: none;
+                }
+
+                .mat-form-field-flex {
+                    padding: 0 8px;
+                    align-items: center;
+                    min-height: $control-height;
+                    height: $control-height;
+                }
+
+                .mat-form-field-label-wrapper {
+                    top: -4px;
+                }
+
+                input.mat-input-element {
+                    margin: 0;
+                    font-size: 13px;
+                    height: $control-height;
+                    line-height: $control-height;
+                }
+
+                .mat-select {
+                    height: auto;
+                    min-height: $control-height;
+
+                    .mat-select-trigger {
+                        height: auto;
+                        min-height: $control-height;
+                        display: flex;
+                        align-items: center;
+                    }
+                }
+            }
+
+            // Autocomplete panel positioning
+            .mat-autocomplete-panel {
+                max-height: 250px;
+            }
+        }
+
+        .mat-select-panel {
+            max-height: 250px;
+        }
+    }
+
+    &.edit-cell-compact {
+        max-width: 80px;
+    }
+}
+
+// Days input field
+.days-input {
+    width: 100%;
+    height: $control-height;
+    line-height: $control-height;
+    padding: 0 12px;
+    border: 1px solid $border-color;
+    border-radius: 4px;
+    font-size: 13px;
+    text-align: center;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    box-sizing: border-box;
+
+    &:focus {
+        outline: none;
+        border-color: $primary-color;
+        box-shadow: 0 0 0 2px rgba($primary-color, 0.15);
+    }
+
+    &::-webkit-inner-spin-button,
+    &::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    appearance: textfield;
+    -moz-appearance: textfield;
+}
+
+// Instruction input field
+.instruction-input {
+    width: 100%;
+    height: $control-height;
+    line-height: $control-height;
+    padding: 0 14px;
+    border: 1px solid $border-color;
+    border-radius: 4px;
+    font-size: 13px;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    box-sizing: border-box;
+
+    &:focus {
+        outline: none;
+        border-color: $primary-color;
+        box-shadow: 0 0 0 2px rgba($primary-color, 0.15);
+    }
+
+    &::placeholder {
+        color: #999;
+    }
+}
+
+// Action buttons container
+.action-buttons {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+}
+
+// Action button styles
+.action-btn {
+    width: 36px !important;
+    height: 36px !important;
+    line-height: 36px !important;
+    border-radius: 8px !important;
+    background-color: #f5f5f8 !important;
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    padding: 0 !important;
+    transition: all 0.2s ease;
+
+    .mat-icon {
+        font-size: 18px;
+        width: 18px;
+        height: 18px;
+        line-height: 18px;
+    }
+
+    &.delete-btn {
+        color: $danger-color;
+
+        &:hover {
+            background-color: rgba($danger-color, 0.15) !important;
+        }
+    }
+
+    &.confirm-btn {
+        color: $success-color;
+
+        &:hover {
+            background-color: rgba($success-color, 0.15) !important;
+        }
+    }
+
+    &.cancel-btn {
+        color: #666;
+
+        &:hover {
+            background-color: rgba(#000, 0.08) !important;
+        }
+    }
+
+    &.edit-btn {
+        color: $primary-color;
+
+        &:hover {
+            background-color: rgba($primary-color, 0.18) !important;
+        }
+    }
+}
+.action-btn:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+// Empty state
+.empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 48px 24px;
+    color: #888;
+    background: #fafafa;
+    border-top: 1px solid $border-color;
+
+    mat-icon {
+        font-size: 48px;
+        width: 48px;
+        height: 48px;
+        color: #ccc;
+        margin-bottom: 16px;
+    }
+
+    p {
+        margin: 0 0 20px;
+        font-size: 14px;
+    }
+
+    button {
+        mat-icon {
+            font-size: 18px;
+            width: 18px;
+            height: 18px;
+            color: $primary-color;
+            margin-bottom: 0;
+            margin-right: 4px;
+        }
+    }
+}
+
+// Responsive adjustments
+@media screen and (max-width: 1200px) {
+    .col-drug-name {
+        min-width: 180px;
+    }
+
+    .col-generic-name {
+        min-width: 150px;
+    }
+
+    .col-instruction {
+        min-width: 140px;
+    }
+}
+
+@media screen and (max-width: 992px) {
+    .medicine-table {
+        .mat-header-cell,
+        .mat-cell {
+            padding: 8px 12px;
+        }
+    }
+
+    .col-drug-name {
+        min-width: 160px;
+    }
+
+    .col-generic-name {
+        min-width: 130px;
+    }
+}
+
+// Fix for mat-table sticky column backgrounds
+.mat-row {
+    &:hover {
+        .col-action {
+            background-color: $row-hover-bg;
+        }
+    }
+
+    &.editing-row {
+        .col-action {
+            background-color: $edit-row-bg;
+        }
+    }
+}
+
+.mat-header-row {
+    .col-action {
+        background-color: $header-bg;
+    }
+}
+
+
+

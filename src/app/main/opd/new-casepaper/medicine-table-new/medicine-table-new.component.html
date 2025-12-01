@@ -1,0 +1,179 @@
+<div class="medicine-table-wrapper" #tableWrapper>
+    <form [formGroup]="medicineForm">
+        <div class="table-toolbar">
+            <button mat-raised-button
+                color="primary"
+                type="button"
+                class="add-record-btn"
+                (click)="addNewRow()">
+                <mat-icon>add</mat-icon>
+                Add Record
+            </button>
+        </div>
+        <div class="table-container">
+            <table mat-table [dataSource]="dsItemList" class="medicine-table">
+
+                <!-- Drug Name Column -->
+                <ng-container matColumnDef="ItemName">
+                    <th mat-header-cell *matHeaderCellDef class="col-drug-name">Drug Name</th>
+                    <td mat-cell *matCellDef="let element" class="col-drug-name">
+                        <ng-container *ngIf="!element.editable">
+                            <span class="cell-text">{{ element.DrugName || element.drugName }}</span>
+                        </ng-container>
+                        <ng-container *ngIf="element.editable">
+                            <div class="edit-cell">
+                                <airmid-autocomplete 
+                                    [formGroup]="medicineForm"
+                                    formControlName="ItemId"
+                                    placeholderText="Enter Drug Name"
+                                    [ApiUrl]="itemApiUrlFull"
+                                    (selectionChange)="onDrugSelected($event)"
+                                    TextField="formattedText"
+                                    ValueField="ItemId"
+                                    (onClearSelection)="onFormReset()">
+                                </airmid-autocomplete>
+                            </div>
+                        </ng-container>
+                    </td>
+                </ng-container>
+
+                <!-- Generic Name Column -->
+                <ng-container matColumnDef="ItemGenericName">
+                    <th mat-header-cell *matHeaderCellDef class="col-generic-name">Generic Name</th>
+                    <td mat-cell *matCellDef="let element" class="col-generic-name">
+                        <ng-container *ngIf="!element.editable">
+                            <span class="cell-text">{{ element.GenericName || element.genericName }}</span>
+                        </ng-container>
+                        <ng-container *ngIf="element.editable">
+                            <div class="edit-cell">
+                                <airmid-dropdown 
+                                    [formGroup]="medicineForm"
+                                    formControlName="ItemGenericNameId"
+                                    [mode]="autocompleteModeItemGeneric"
+                                    (selectionChange)="onGenericSelected($event)">
+                                </airmid-dropdown>
+                            </div>
+                        </ng-container>
+                    </td>
+                </ng-container>
+
+                <!-- Dose Name Column -->
+                <ng-container matColumnDef="DoseName">
+                    <th mat-header-cell *matHeaderCellDef class="col-dose-name">Dose Name</th>
+                    <td mat-cell *matCellDef="let element" class="col-dose-name">
+                        <ng-container *ngIf="!element.editable">
+                            <span class="cell-text">{{ element.DoseName || element.doseName }}</span>
+                        </ng-container>
+                        <ng-container *ngIf="element.editable">
+                            <div class="edit-cell">
+                                <airmid-dropdown 
+                                    [formGroup]="medicineForm"
+                                    formControlName="DoseId"
+                                    [mode]="autocompleteModeDose"
+                                    (selectionChange)="onDoseSelected($event)">
+                                </airmid-dropdown>
+                            </div>
+                        </ng-container>
+                    </td>
+                </ng-container>
+
+                <!-- Days Column -->
+                <ng-container matColumnDef="Days">
+                    <th mat-header-cell *matHeaderCellDef class="col-days">Days</th>
+                    <td mat-cell *matCellDef="let element" class="col-days">
+                        <ng-container *ngIf="!element.editable">
+                            <span class="cell-text cell-text-center">{{ element.Days || element.days }}</span>
+                        </ng-container>
+                        <ng-container *ngIf="element.editable">
+                            <div class="edit-cell edit-cell-compact">
+                                <input matInput 
+                                    formControlName="Day" 
+                                    type="number" 
+                                    class="days-input"
+                                    placeholder="Days"
+                                    appFocusNext
+                                    [formGroup]="medicineForm"
+                                    name="Day">
+                            </div>
+                        </ng-container>
+                    </td>
+                </ng-container>
+
+                <!-- Instruction Column -->
+                <ng-container matColumnDef="Instruction">
+                    <th mat-header-cell *matHeaderCellDef class="col-instruction">Instruction</th>
+                    <td mat-cell *matCellDef="let element" class="col-instruction">
+                        <ng-container *ngIf="!element.editable">
+                            <span class="cell-text">{{ element.Instruction || element.instruction }}</span>
+                        </ng-container>
+                        <ng-container *ngIf="element.editable">
+                            <div class="edit-cell">
+                                <input matInput 
+                                    formControlName="Instruction" 
+                                    type="text" 
+                                    [maxLength]="200"
+                                    class="instruction-input"
+                                    placeholder="Enter instruction"
+                                    (keydown.enter)="onInstructionEnter(element, $event)">
+                            </div>
+                        </ng-container>
+                    </td>
+                </ng-container>
+
+                <!-- Action Column -->
+                <ng-container matColumnDef="Action" stickyEnd>
+                    <th mat-header-cell *matHeaderCellDef class="col-action">Action</th>
+                    <td mat-cell *matCellDef="let element" class="col-action">
+                        <div class="action-buttons">
+                            <button mat-icon-button 
+                                class="action-btn delete-btn"
+                                (click)="deleteRow($event, element)"
+                                matTooltip="Delete">
+                                <mat-icon>delete</mat-icon>
+                            </button>
+
+                            <ng-container *ngIf="element.editable">
+                                <button mat-icon-button 
+                                    class="action-btn confirm-btn"
+                                    (click)="onConfirmClick(element, $event)"
+                                    matTooltip="Confirm">
+                                    <mat-icon>check</mat-icon>
+                                </button>
+                                <button mat-icon-button 
+                                    class="action-btn cancel-btn"
+                                    (click)="cancelEdit(element)"
+                                    matTooltip="Cancel">
+                                    <mat-icon>close</mat-icon>
+                                </button>
+                            </ng-container>
+
+                            <ng-container *ngIf="!element.editable">
+                                <button mat-icon-button 
+                                    class="action-btn edit-btn"
+                                    (click)="enableEdit(element)"
+                                    matTooltip="Edit">
+                                    <mat-icon>edit</mat-icon>
+                                </button>
+                            </ng-container>
+                        </div>
+                    </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;" 
+                    [class.editing-row]="row.editable"
+                    [@animate]="{value:'*',params:{y:'100%'}}"></tr>
+            </table>
+
+            <!-- Empty State -->
+            <div *ngIf="dsItemList.data.length === 0" class="empty-state">
+                <mat-icon>medication</mat-icon>
+                <p>No medicines added yet</p>
+                <button mat-stroked-button color="primary" (click)="addNewRow()">
+                    <mat-icon>add</mat-icon>
+                    Add Medicine
+                </button>
+            </div>
+        </div>
+    </form>
+</div>

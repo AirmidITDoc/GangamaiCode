@@ -24,6 +24,7 @@ import { ToastrService } from 'ngx-toastr';
 import { AddItemComponent } from './add-item/add-item.component';
 import { PrePresciptionListComponent } from './pre-presciption-list/pre-presciption-list.component';
 import { PrescriptionTemplateComponent } from './prescription-template/prescription-template.component';
+import { MedicineTableNewComponent } from './medicine-table-new/medicine-table-new.component';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 import { LanguageOption, SpeechRecognitionService } from 'app/main/shared/services/speech-recognition.service';
 import { setValue } from '@ngx-translate/core';
@@ -193,6 +194,7 @@ export class NewCasepaperComponent implements OnInit {
     @ViewChild('ddlChiefComplaint') ddlChiefComplaint: AirmidDropDownComponent;
     @ViewChild('ddlExamination') ddlExamination: AirmidDropDownComponent;
     @ViewChild('ddlService') ddlService: AirmidDropDownComponent;
+    @ViewChild('medicineTableRef') medicineTableRef: MedicineTableNewComponent;
 
     BloodGroupNames: string[] = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
 
@@ -779,6 +781,7 @@ export class NewCasepaperComponent implements OnInit {
                 const filteredItems = allItems.filter(item => item.drugId !== 0);
                 this.dsItemList.data = filteredItems;
                 this.Chargelist = filteredItems;
+                this.syncMedicineTableData();
             } else {
                 this._CasepaperService.getVisitById(this.visitIdRefresh).subscribe(data => {
                     const current = this.caseFormGroup.value;
@@ -1352,6 +1355,19 @@ export class NewCasepaperComponent implements OnInit {
         });
     }
 
+    // Handle medicine data changes from the new MedicineTableComponent
+    onMedicineDataChanged(data: MedicineItemList[]) {
+        this.Chargelist = [...data];
+        this.dsItemList.data = this.Chargelist;
+    }
+
+    // Sync data to medicine table component
+    syncMedicineTableData() {
+        if (this.medicineTableRef) {
+            this.medicineTableRef.setData(this.dsItemList.data);
+        }
+    }
+
     selectChangeTemplateName(row) {
         this.templateId = row.presId
         this.templateName = row.presTemplateName
@@ -1403,6 +1419,7 @@ export class NewCasepaperComponent implements OnInit {
                     }, 500 * (index + 1));
                 });
                 this.Chargelist = data.data as MedicineItemList[];
+                this.syncMedicineTableData();
             });
         }
         else {
@@ -1821,6 +1838,7 @@ export class NewCasepaperComponent implements OnInit {
 
                         this.Chargelist.push(newItem);
                         this.dsItemList.data = [...this.Chargelist];
+                        this.syncMedicineTableData();
                     } else {
                         this.toastr.warning('This Drug is already added', 'Warning !', {
                             toastClass: 'tostr-tost custom-toast-warning',
