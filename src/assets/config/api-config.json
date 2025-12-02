@@ -1,4 +1,4 @@
 {
-  "apiBaseUrl": "http://192.168.2.100:9091/api/v1/",
-  "notificationHub": "http://192.168.2.100:9091/himshub"
+  "apiBaseUrl": "https://api.airmid.co.in/api/v1/",
+  "notificationHub": "https://api.airmid.co.in/himshub"
 }

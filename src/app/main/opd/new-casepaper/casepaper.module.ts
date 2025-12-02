@@ -5,7 +5,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { RouterModule, Routes } from '@angular/router';
 //import { BrowseOpdRefundListComponent } from './browse-opd-refund-list/browse-opd-refund-list.component';
 //import { BrowseOpdRefundSidebarComponent } from './browse-opd-refund-sidebar/browse-opd-refund-sidebar.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatButtonToggleModule } from "@angular/material/button-toggle";
 import { MatCardModule } from '@angular/material/card';
@@ -42,11 +42,13 @@ import { SharedModule } from 'app/main/shared/shared.module';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { AddItemComponent } from './add-item/add-item.component';
 import { CasepaperService } from './casepaper.service';
+import { MedicineTableComponent } from './medicine-table/medicine-table.component';
 import { NewCasepaperComponent } from './new-casepaper.component';
 import { PrePresciptionListComponent } from './pre-presciption-list/pre-presciption-list.component';
 import { PrescriptionTemplateComponent } from './prescription-template/prescription-template.component';
 // import { FocusNextDirective } from './directives/focus-next/focus-next.directive';
 import { FocusNextDirective } from 'app/main/shared/directives/focus-next/focus-next.directive';
+import { MedicineTableNewComponent } from './medicine-table-new/medicine-table-new.component';
 
 const routes: Routes = [
     {
@@ -60,10 +62,13 @@ const routes: Routes = [
         PrescriptionTemplateComponent,
         PrePresciptionListComponent,
         AddItemComponent,
-        FocusNextDirective
+        MedicineTableComponent,
+        FocusNextDirective,
+        MedicineTableNewComponent
     ],
     imports: [
         RouterModule.forChild(routes),
+        FormsModule,
         MatButtonModule,
         MatCheckboxModule,
         MatDatepickerModule,

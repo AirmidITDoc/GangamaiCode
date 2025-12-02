@@ -1,5 +1,6 @@
 import { CommonModule, DatePipe } from "@angular/common";
 import { NgModule } from "@angular/core";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { MatAutocompleteModule } from "@angular/material/autocomplete";
 import { MatButtonModule } from "@angular/material/button";
 import { MatButtonToggleModule } from "@angular/material/button-toggle";
@@ -31,6 +32,7 @@ import { FuseSharedModule } from "@fuse/shared.module";
 import { SharedModule } from "app/main/shared/shared.module";
 import { AppointmentlistService } from "../appointment-list/appointmentlist.service";
 import { AddItemComponent } from "../new-casepaper/add-item/add-item.component";
+import { MedicineTableNewComponent } from "../new-casepaper/medicine-table-new/medicine-table-new.component";
 import { NewCasepaperComponent } from "../new-casepaper/new-casepaper.component";
 import { PrePresciptionListComponent } from "../new-casepaper/pre-presciption-list/pre-presciption-list.component";
 import { PrescriptionTemplateComponent } from "../new-casepaper/prescription-template/prescription-template.component";
@@ -44,11 +46,19 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [MedicalrecordComponent, PrescriptionTemplateComponent,
-    PrePresciptionListComponent,NewCasepaperComponent,AddItemComponent, PatientcertificateComponent
+  declarations: [
+    MedicalrecordComponent,
+    PrescriptionTemplateComponent,
+    PrePresciptionListComponent,
+    NewCasepaperComponent,
+    AddItemComponent,
+    PatientcertificateComponent,
+    MedicineTableNewComponent
   ],
   imports: [
     RouterModule.forChild(routes),
+            FormsModule,
+            ReactiveFormsModule,
             MatButtonModule,
             MatCheckboxModule,
             MatDatepickerModule,
