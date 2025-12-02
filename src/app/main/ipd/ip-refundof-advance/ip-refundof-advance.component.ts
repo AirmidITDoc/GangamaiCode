@@ -176,7 +176,10 @@ export class IPRefundofAdvanceComponent implements OnInit {
       PatientHeaderObj['DepartmentName'] = this.registerObj?.departmentName;
       PatientHeaderObj['OPD_IPD_Id'] = this.registerObj?.ipdno;
       PatientHeaderObj['Age'] = this.registerObj?.ageYear;
-      PatientHeaderObj['NetPayAmount'] = Math.round(this.RefundOfAdvanceFormGroup.get('refundAmount').value) || 0;
+      PatientHeaderObj['NetPayAmount'] = Math.round(this.RefundOfAdvanceFormGroup.get('refundAmount').value) || 0; 
+      PatientHeaderObj['CashCounterId'] = this.RefundOfAdvanceFormGroup.get('CashCounterID')?.value || 0; 
+      PatientHeaderObj['CompanyId'] = this.registerObj?.companyId;
+      PatientHeaderObj['TransactionLabel'] = 'IP-Refund Of Advance'; 
 
       const dialogRef = this._matDialog.open(OpPaymentComponent,
         {
@@ -196,7 +199,8 @@ export class IPRefundofAdvanceComponent implements OnInit {
             "advanceHeaderupdate": this.RefundOfAdvanceFormGroup.value.advanceHeaderupdate,
             "advDetailRefund": this.RefundOfAdvanceFormGroup.value.AdvDetailsnew,
             "adveDetailupdate": this.RefundOfAdvanceFormGroup.value.AdvDetailsUpdate,
-            "payment": result.submitDataPay.ipPaymentInsert
+            "payment": result.submitDataPay.ipPaymentInsert,
+            "tPayments":result.submitDataPay.ipModePaymentInsert
           };
          // console.log(submitData);
           this._IpSearchListService.insertIPRefundOfAdvance(submitData).subscribe(response => {

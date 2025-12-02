@@ -297,6 +297,8 @@ export class CompanysettlementComponent implements OnInit {
             opCreditPayment: this.formBuilder.array([]), 
             // ✅ Fixed: should be FormArray 
             billUpdate: this.formBuilder.array([]),
+            // ✅ Fixed: should be FormArray
+            tPayments: this.formBuilder.array([]),
         })
     }
 
@@ -348,10 +350,46 @@ export class CompanysettlementComponent implements OnInit {
             // })
         })
     }
+
+        CreateMultipleModePaymentform(item: any): FormGroup { 
+                    const currentDate = new Date();
+        const datePipe = new DatePipe('en-US');
+        const formattedTime = datePipe.transform(currentDate, 'shortTime');
+        const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd'); 
+
+        return this.formBuilder.group({
+            paymentId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            unitId: [this.accountService.currentUserValue.user.unitId],
+            billNo: [item?.billNo, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            opdipdtype: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            paymentDate: [formattedDate],
+            paymentTime: [formattedTime],
+            payAmount: [item?.payAmount ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            tranNo: [item?.tranNo ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+            bankName: [item?.bankName ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+            validationDate: [formattedDate],
+            advanceUsedAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            comments: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+            payMode: [item?.payMode ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+            onlineTranNo: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+            onlineTranResponse: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+            companyId: [item?.companyId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            advanceId: [ 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            refundId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            cashCounterId: [ 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            transactionType: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            isSelfOrcompany: [item?.isSelfOrcompany ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            tranMode: ['HOSP', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+            createdBy: [this.accountService.currentUserValue.userId],
+            transactionLabel: ['OP Multiple Settlement', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+        });
+    }
     get OPMulSetLoopArray(): FormArray {
         return this.OPMultipleSettlLoopInsertForm.get('opCreditPayment') as FormArray;
     } 
-
+    get ModeOfPaymentsMultipleArray(): FormArray {
+    return this.OPMultipleSettlLoopInsertForm.get('tPayments') as FormArray;
+    }
     CreateOPMultipleSettlBillLoopInsertForm(element: any = {}): FormGroup {
         return this.formBuilder.group({
             // billUpdate: this.formBuilder.group({
@@ -362,23 +400,19 @@ export class CompanysettlementComponent implements OnInit {
     }
     get OPMulSetBillLoopArray(): FormArray {
         return this.OPMultipleSettlLoopInsertForm.get('billUpdate') as FormArray;
-    }
-
-
+    } 
     getSelectedObj(obj) {
         this.RegId1 = obj.value;
         this.regNo = obj.regNo
         this.registerObj = obj
         this.GetDetails(obj.value)
-    }
-
+    } 
     getSelectedObj2(obj) {
         this.RegId2 = obj.value;
         this.regNo2 = obj.regNo
         this.registerObj = obj
         this.getmultiplePaymentList();
-    }
-
+    } 
     openPaymentpopup(contact) {
         let PatientHeaderObj = {};
         PatientHeaderObj['Date'] = this.datePipe.transform(contact.billDate, 'MM/dd/yyyy') || '01/01/1900',
@@ -450,8 +484,7 @@ export class CompanysettlementComponent implements OnInit {
             }
         });
         this.searchFormGroup.get('RegId').setValue('')
-    }
-
+    } 
     viewgetOPPayemntPdf(data, status) {
         if (status)
             this.commonService.Onprint("PaymentId", data, "OPPaymentReceipt");
@@ -776,11 +809,9 @@ export class CompanysettlementComponent implements OnInit {
 
         // Clear table
         this.dsMultiplepayList.data = [];
-    }
-
+    } 
     selection = new SelectionModel<MultiplePayList>(true, []);
-    SelectedList: any = [];
-
+    SelectedList: any = []; 
     // masterToggle() {
     //     debugger;
 
@@ -1049,42 +1080,23 @@ export class CompanysettlementComponent implements OnInit {
                 this.OPMulSetBillLoopArray.push(this.CreateOPMultipleSettlBillLoopInsertForm(item))
             });
 
-                //       let ModePaymentObj = [];
-                //   this.SelectedList.forEach(item => {
-                //  ModePaymentObj.push({
-                //     paymentId: 0,
-                //     unitId: this.accountService.currentUserValue.user.unitId,
-                //     billNo: 0,
-                //     opdipdtype: 0,
-                //     paymentDate: formattedDate,
-                //     paymentTime: formattedTime,
-                //     payAmount: this.OPFooterForm.get('netPayableAmt')?.value ?? 0,
-                //     tranNo: this.OPMultipleSettlForm.get('UPINO').value || 0,
-                //     bankName: "",
-                //     validationDate: this.datePipe.transform(this.currentDate, 'yyyy-MM-dd'),
-                //     advanceUsedAmount: 0,
-                //     comments: "",
-                //     payMode: "Cash",
-                //     onlineTranNo: "0",
-                //     onlineTranResponse: "0",
-                //     companyId: this.patientDetail?.CompanyId ?? 0,
-                //     advanceId: 0,
-                //     refundId: 0,
-                //     cashCounterId: 0,
-                //     transactionType: 0,
-                //     isSelfOrcompany: this.patientDetail?.CompanyId ? 1 : 0,
-                //     tranMode: "Cash",
-                //     isCancelled: false,
-                //     isCancelledBy: 0,
-                //     isCancelledDate: "1999-01-01",
-                //     createdBy: this.accountService.currentUserValue?.userId ?? 0
-                // }); 
+                let ModePaymentObj = [];
+                this.SelectedList.forEach(item => {
+                 ModePaymentObj.push({  
+                    billNo:item?.billNo,
+                    payAmount: item?.PaidAmount,
+                    tranNo: this.OPMultipleSettlForm.get('UPINO').value || 0,
+                    bankName: this.BankNam, 
+                    payMode: "net banking",
+                    companyId: item?.companyId ?? 0,  
+                    isSelfOrcompany: item?.companyId ? 1 : 0, 
+                }); 
+                  })
 
-                //    this.OPMulModePaymentArray.clear(); 
-                //                         ModePaymentObj.forEach(item => {
-                //                         this.OPMulModePaymentArray.push(this.CreateModePaymentform(item));
-                //                         });  
-
+                this.ModeOfPaymentsMultipleArray.clear();
+                ModePaymentObj.forEach(item => {
+                    this.ModeOfPaymentsMultipleArray.push(this.CreateMultipleModePaymentform(item));
+                });   
             console.log(this.OPMultipleSettlLoopInsertForm.value)
             this._CompanysettlementService.InsertOPMultiplesettlement(this.OPMultipleSettlLoopInsertForm.value).subscribe(response => {
                 this.getmultiplePaymentList();

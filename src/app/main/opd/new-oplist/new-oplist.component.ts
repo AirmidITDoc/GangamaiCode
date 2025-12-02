@@ -15,6 +15,7 @@ import { ConfigService } from 'app/core/services/config.service';
 import { ReviewcompanyBillComponent } from './reviewcompany-bill/reviewcompany-bill.component';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { WhatsAppEmailService } from 'app/main/shared/services/whats-app-email.service';
+import { EmailSendComponent } from 'app/main/shared/componets/email-send/email-send.component';
 
 
 @Component({
@@ -573,7 +574,7 @@ export class NewOPListComponent implements OnInit {
             return false;
         }
     }
-    Onemail(el) {
+    Onemailold(el) {
         this._whatsppService.OnEmailMsgSent({
             toEmail: el?.email ?? "ambadasgajul1999@gmail.com",   // patient email or fallback
             cc: "",
@@ -595,6 +596,22 @@ export class NewOPListComponent implements OnInit {
             smsType: "OPBill",
             patientId:el.regNo
         })
+    }
+    
+    Onemail(contact) {
+        const dialogRef = this._matDialog.open(EmailSendComponent,
+            {
+                maxWidth: "100%",
+                height: '75%',
+                width: '55%',
+                data: {
+                    Obj: contact,
+                    emailType:'OP-Bill'
+                }
+            });
+        dialogRef.afterClosed().subscribe(result => {
+            this.grid.bindGridData();
+        });
     }
 }
 

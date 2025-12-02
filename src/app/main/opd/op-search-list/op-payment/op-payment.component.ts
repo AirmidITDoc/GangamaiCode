@@ -555,8 +555,7 @@ export class OpPaymentComponent implements OnInit {
       // this.Paymentobj.push(this.Paymentobj);
     }
     else if (this.data.FromName == "IP-Advance" || this.data.FromName == "IP-RefundOfAdvance" ||
-      this.data.FromName == "IP-RefundOfBill") {
-      transactionType = 2
+      this.data.FromName == "IP-RefundOfBill") { 
       this.Paymentobj['billNo'] = 0;
       this.Paymentobj['receiptNo'] = "";
       this.Paymentobj['paymentDate'] = formattedDate
@@ -575,8 +574,10 @@ export class OpPaymentComponent implements OnInit {
       this.Paymentobj['refundId'] = 0;
       if (this.data.FromName == "IP-Advance") {
         this.Paymentobj['transactionType'] = 1;
+         transactionType = 1
       } else {
         this.Paymentobj['transactionType'] = 2;
+         transactionType = 2
       }
       this.Paymentobj['remark'] = " ";
       this.Paymentobj['addBy'] = this._loggedService.currentUserValue.userId,

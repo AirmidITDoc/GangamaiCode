@@ -174,7 +174,7 @@ export class IPAdvanceComponent implements OnInit {
         advanceId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         refId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator(),
         this._FormvalidationserviceService.onlyNumberValidator()]],
-        transactionId: [2],
+        transactionId: [1],
         opdIpdType: [1],
         opdIpdId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator(),
         this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -245,7 +245,10 @@ export class IPAdvanceComponent implements OnInit {
         PatientHeaderObj['DoctorName'] = this.registerObj?.doctorname;
       PatientHeaderObj['CompanyName'] = this.registerObj?.companyName;
       PatientHeaderObj['DepartmentName'] = this.registerObj?.departmentName;
+       PatientHeaderObj['CashCounterId'] = this.AdvFormGroup.get('CashCounterID')?.value || 0;
       PatientHeaderObj['OPD_IPD_Id'] = this.registerObj?.ipdno;
+      PatientHeaderObj['CompanyId'] = this.registerObj?.companyId;
+      PatientHeaderObj['TransactionLabel'] = 'IP-Advance';
       PatientHeaderObj['Age'] = this.registerObj?.ageYear;
       PatientHeaderObj['NetPayAmount'] = this.AdvFormGroup.get('advanceAmount').value || 0;
 
@@ -262,11 +265,12 @@ export class IPAdvanceComponent implements OnInit {
         });
       dialogRef.afterClosed().subscribe(result => {
         console.log('Payment Details', result);
-        if (!this.AdvFormGroup.get('advanceupdate.advanceId').value) {
+        if (!this.AdvFormGroup.get('advanceupdate.advanceId').value) {  
           let submitData = {
             "advance": this.AdvFormGroup.value.advance,
             "advanceDetail": this.AdvFormGroup.value.advanceDetail,
-            "advancePayment": result.submitDataPay.ipPaymentInsert
+            "advancePayment": result.submitDataPay.ipPaymentInsert,
+            "tPayments":result.submitDataPay.ipModePaymentInsert
           };
           console.log(submitData);
           this._IpSearchListService.InsertAdvanceHeader(submitData).subscribe(response => {
@@ -280,7 +284,8 @@ export class IPAdvanceComponent implements OnInit {
           let submitData = {
             "advance": this.AdvFormGroup.value.advanceupdate,
             "advanceDetail": this.AdvFormGroup.value.advanceDetail,
-            "advancePayment": result.submitDataPay.ipPaymentInsert
+            "advancePayment": result.submitDataPay.ipPaymentInsert,
+            "tPayments":result.submitDataPay.ipModePaymentInsert
           };
           console.log(submitData);
           this._IpSearchListService.UpdateAdvanceHeader(submitData).subscribe(response => {

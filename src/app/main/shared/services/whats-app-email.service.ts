@@ -4,6 +4,7 @@ import { Injectable } from '@angular/core';
 import { LoaderService } from 'app/core/components/loader/loader.service';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { OPListService } from 'app/main/opd/new-oplist/oplist.service';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -50,26 +51,28 @@ export class WhatsAppEmailService {
     }, 100);
   }
 
-OnEmailMsgSent(params: { toEmail: string; cc: string; mailSubject: string; mailBody: string; billNo: any; emailType: string, patientId:any }){
-    setTimeout(() => {
-      let param = {
-            "fromEmail": "support@airmidtechinnovations.com",
-            "fromName": "AirmidTech",
-            "toEmail": params?.toEmail,
-            "cc": params?.cc,
-            "bcc": "",
-            "mailSubject": params?.mailSubject,
-            "mailBody": params?.mailBody,
-            "attachmentName": "",
-            "attachmentLink": "",
-            "id": 0,
-            "tranNo": params.billNo,
-            "emailType": params.emailType,
-            "patientId": params?.patientId,
-            "createdBy": this._accountService.currentUserValue.userId,
-      }
-      this._OPListService.InsertWhatsappEmail(param).subscribe(response => { 
-      });
-    }, 100);
-  }
+  OnEmailMsgSent(params: { toEmail: string; cc: string; mailSubject: string; mailBody: string; billNo: any; emailType: string, patientId:any }): Observable<any> {
+  let param = {
+    "fromEmail": "support@airmidtechinnovations.com",
+    "fromName": "AirmidTech",
+    "toEmail": params?.toEmail,
+    "cc": params?.cc,
+    "bcc": "",
+    "mailSubject": params?.mailSubject,
+    "mailBody": params?.mailBody,
+    "attachmentName": "",
+    "attachmentLink": "",
+    "id": 0,
+    "tranNo": params.billNo,
+    "emailType": params.emailType,
+    "patientId": params?.patientId,
+    "createdBy": this._accountService.currentUserValue.userId,
+  };
+
+  console.log(param);
+
+  // Return the Observable directly, no setTimeout needed here
+  return this._OPListService.InsertWhatsappEmail(param);
+}
+
 }
