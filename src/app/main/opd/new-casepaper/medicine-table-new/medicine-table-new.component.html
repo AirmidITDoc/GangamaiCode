@@ -22,16 +22,31 @@
                         </ng-container>
                         <ng-container *ngIf="element.editable">
                             <div class="edit-cell">
-                                <airmid-autocomplete 
-                                    [formGroup]="medicineForm"
-                                    formControlName="ItemId"
-                                    placeholderText="Enter Drug Name"
-                                    [ApiUrl]="itemApiUrlFull"
-                                    (selectionChange)="onDrugSelected($event)"
-                                    TextField="formattedText"
-                                    ValueField="ItemId"
-                                    (onClearSelection)="onFormReset()">
-                                </airmid-autocomplete>
+                                <mat-form-field appearance="outline" class="inline-autocomplete" floatLabel="never">
+                                    <input matInput
+                                        placeholder="Enter Drug Name"
+                                        formControlName="ItemId"
+                                        [matAutocomplete]="drugAuto"
+                                        appFocusNext
+                                        [formGroup]="medicineForm"
+                                        name="ItemId">
+                                    <button mat-icon-button
+                                        matSuffix
+                                        type="button"
+                                        class="clear-btn"
+                                        *ngIf="medicineForm.get('ItemId')?.value"
+                                        (click)="clearDrugSelection($event)">
+                                        <mat-icon>close</mat-icon>
+                                    </button>
+                                    <mat-autocomplete
+                                        #drugAuto="matAutocomplete"
+                                        [displayWith]="displayDrugOption"
+                                        (optionSelected)="onDrugOptionSelected($event.option.value)">
+                                        <mat-option *ngFor="let option of drugOptions$ | async" [value]="option">
+                                            {{ option.formattedText || option.itemName || option.DrugName || option.drugName }}
+                                        </mat-option>
+                                    </mat-autocomplete>
+                                </mat-form-field>
                             </div>
                         </ng-container>
                     </td>
@@ -46,12 +61,20 @@
                         </ng-container>
                         <ng-container *ngIf="element.editable">
                             <div class="edit-cell">
-                                <airmid-dropdown 
-                                    [formGroup]="medicineForm"
-                                    formControlName="ItemGenericNameId"
-                                    [mode]="autocompleteModeItemGeneric"
-                                    (selectionChange)="onGenericSelected($event)">
-                                </airmid-dropdown>
+                                <mat-form-field appearance="outline" class="inline-select" floatLabel="never">
+                                    <mat-select
+                                        placeholder="Select Generic"
+                                        formControlName="ItemGenericNameId"
+                                        appFocusNext
+                                        [formGroup]="medicineForm"
+                                        name="ItemGenericNameId"
+                                        (selectionChange)="onGenericSelectionChange($event)">
+                                        <mat-option *ngFor="let option of genericOptions"
+                                            [value]="option.value || option.Value">
+                                            {{ option.text || option.Text }}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
                             </div>
                         </ng-container>
                     </td>
@@ -66,12 +89,20 @@
                         </ng-container>
                         <ng-container *ngIf="element.editable">
                             <div class="edit-cell">
-                                <airmid-dropdown 
-                                    [formGroup]="medicineForm"
-                                    formControlName="DoseId"
-                                    [mode]="autocompleteModeDose"
-                                    (selectionChange)="onDoseSelected($event)">
-                                </airmid-dropdown>
+                                <mat-form-field appearance="outline" class="inline-select" floatLabel="never">
+                                    <mat-select
+                                        placeholder="Select Dose"
+                                        formControlName="DoseId"
+                                        appFocusNext
+                                        [formGroup]="medicineForm"
+                                        name="DoseId"
+                                        (selectionChange)="onDoseSelectionChange($event)">
+                                        <mat-option *ngFor="let option of doseOptions"
+                                            [value]="option.value || option.Value">
+                                            {{ option.text || option.Text }}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
                             </div>
                         </ng-container>
                     </td>

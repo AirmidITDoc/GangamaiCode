@@ -1,9 +1,13 @@
-import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
+import { MatSelectChange } from '@angular/material/select';
 import { MatTableDataSource } from '@angular/material/table';
 import { ToastrService } from 'ngx-toastr';
 import { fuseAnimations } from '@fuse/animations';
 import { CasepaperService } from '../casepaper.service';
+import { ApiCaller } from 'app/core/services/apiCaller';
+import { Observable, of, Subject } from 'rxjs';
+import { debounceTime, distinctUntilChanged, switchMap, takeUntil } from 'rxjs/operators';
 
 export interface MedicineItem {
     DrugId?: number;
@@ -40,7 +44,7 @@ export interface MedicineItem {
     encapsulation: ViewEncapsulation.None,
     animations: fuseAnimations
 })
-export class MedicineTableNewComponent implements OnInit {
+export class MedicineTableNewComponent implements OnInit, OnDestroy {
 
     @ViewChild('tableWrapper') tableWrapper: ElementRef<HTMLElement>;
     @Input() storeId: number;
@@ -62,6 +66,10 @@ export class MedicineTableNewComponent implements OnInit {
     dsItemList = new MatTableDataSource<MedicineItem>();
     medicineForm: FormGroup;
     chargeList: MedicineItem[] = [];
+    drugOptions$: Observable<any[]> = of([]);
+    genericOptions: any[] = [];
+    doseOptions: any[] = [];
+    private destroy$ = new Subject<void>();
 
     // Selected values
     private drugId: number = 0;
@@ -77,23 +85,31 @@ export class MedicineTableNewComponent implements OnInit {
     constructor(
         private _formBuilder: UntypedFormBuilder,
         private toastr: ToastrService,
-        private _casepaperService: CasepaperService
+        private _casepaperService: CasepaperService,
+        private apiCaller: ApiCaller
     ) {
         this.initForm();
     }
 
     ngOnInit(): void {
         this.ensurePlaceholderRowExists(false);
+        this.loadDropdownOptions();
+    }
+
+    ngOnDestroy(): void {
+        this.destroy$.next();
+        this.destroy$.complete();
     }
 
     private initForm(): void {
         this.medicineForm = this._formBuilder.group({
-            ItemId: [0, [Validators.required]],
+            ItemId: ['', [Validators.required]],
             DoseId: [0, [Validators.required]],
             Day: ['', [Validators.required, Validators.pattern('^[1-9]+[0-9]*$')]],
             ItemGenericNameId: [''],
             Instruction: ['', [Validators.maxLength(200)]]
         });
+        this.setupDrugAutocomplete();
     }
 
     get itemApiUrlFull(): string {
@@ -429,5 +445,83 @@ export class MedicineTableNewComponent implements OnInit {
             doseName: row.DoseName || row.doseName || '',
             doseDay: row.Days || row.days || this.vDay
         };
+    }
+
+    private setupDrugAutocomplete(): void {
+        const control = this.medicineForm.get('ItemId');
+        if (!control) {
+            return;
+        }
+        this.drugOptions$ = control.valueChanges.pipe(
+            takeUntil(this.destroy$),
+            debounceTime(300),
+            distinctUntilChanged(),
+            switchMap(value => {
+                if (typeof value === 'string' && value.trim().length > 0) {
+                    return this.apiCaller.GetData(`${this.itemApiUrlFull}${value}`);
+                }
+                return of([]);
+            })
+        );
+    }
+
+    displayDrugOption = (option: any): string => {
+        if (!option) {
+            return '';
+        }
+        if (typeof option === 'string') {
+            return option;
+        }
+        return option.formattedText || option.itemName || option.DrugName || option.drugName || '';
+    };
+
+    onDrugOptionSelected(option: any): void {
+        this.onDrugSelected(option);
+    }
+
+    clearDrugSelection(event: Event): void {
+        event.stopPropagation();
+        this.medicineForm.get('ItemId').setValue('');
+        this.onFormReset();
+    }
+
+    onGenericSelectionChange(event: MatSelectChange): void {
+        const option = this.genericOptions.find(opt => opt.value === event.value || opt.Value === event.value);
+        if (option) {
+            this.onGenericSelected({
+                value: option.value ?? option.Value,
+                text: option.text ?? option.Text
+            });
+        }
+    }
+
+    onDoseSelectionChange(event: MatSelectChange): void {
+        const option = this.doseOptions.find(opt => opt.value === event.value || opt.Value === event.value);
+        if (option) {
+            this.onDoseSelected({
+                value: option.value ?? option.Value,
+                text: option.text ?? option.Text
+            });
+        }
+    }
+
+    private loadDropdownOptions(): void {
+        this.fetchDropdownOptions(this.autocompleteModeItemGeneric)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(options => {
+                this.genericOptions = options || [];
+            });
+        this.fetchDropdownOptions(this.autocompleteModeDose)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(options => {
+                this.doseOptions = options || [];
+            });
+    }
+
+    private fetchDropdownOptions(mode: string): Observable<any[]> {
+        if (!mode) {
+            return of([]);
+        }
+        return this.apiCaller.GetData(`Dropdown/GetBindDropDown?mode=${mode}`);
     }
 }

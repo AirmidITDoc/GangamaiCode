@@ -89,11 +89,11 @@ $control-height: 46px;
             text-transform: uppercase;
             letter-spacing: 0.5px;
             border-bottom: none;
-            padding: 12px 16px;
+            padding: 10px 4px;
             white-space: nowrap;
 
             &:first-child {
-                padding-left: 20px;
+                padding-left: 8px;
             }
         }
     }
@@ -125,14 +125,14 @@ $control-height: 46px;
 
     // Cell styles
     .mat-cell {
-        padding: 8px 16px;
+        padding: 0;
         font-size: 13px;
         color: #333;
         vertical-align: middle;
         border-bottom: none;
 
         &:first-child {
-            padding-left: 20px;
+            padding-left: 8px;
         }
     }
 }
@@ -184,75 +184,79 @@ $control-height: 46px;
 }
 
 // Edit cell container - CRITICAL FOR HEIGHT ADJUSTMENT
-.edit-cell {
-    width: 100%;
-    min-height: $control-height;
-    display: flex;
-    align-items: center;
+    .edit-cell {
+        width: 100%;
+        min-height: $control-height;
+        display: flex;
+        align-items: stretch;
+        gap: 0;
 
     // Override airmid-autocomplete styles
     ::ng-deep {
         airmid-autocomplete,
         airmid-dropdown {
-            width: 100%;
-            display: flex;
-            align-items: center;
-
-            .mat-form-field {
                 width: 100%;
+                display: flex;
+                align-items: stretch;
 
-                .mat-form-field-wrapper {
-                    padding-bottom: 0;
+                .mat-form-field {
+                    width: 100%;
                     margin: 0;
-                }
 
-                .mat-form-field-infix {
-                    padding: 6px 0;
-                    border-top: 0;
-                    height: auto;
-                    min-height: $control-height;
-                    display: flex;
-                    align-items: center;
-                }
+                    .mat-form-field-wrapper {
+                        padding-bottom: 0;
+                        margin: 0;
+                    }
 
-                .mat-form-field-outline {
-                    top: 0;
-                }
-
-                .mat-form-field-subscript-wrapper {
-                    display: none;
-                }
-
-                .mat-form-field-flex {
-                    padding: 0 8px;
-                    align-items: center;
-                    min-height: $control-height;
-                    height: $control-height;
-                }
-
-                .mat-form-field-label-wrapper {
-                    top: -4px;
-                }
-
-                input.mat-input-element {
-                    margin: 0;
-                    font-size: 13px;
-                    height: $control-height;
-                    line-height: $control-height;
-                }
-
-                .mat-select {
-                    height: auto;
-                    min-height: $control-height;
-
-                    .mat-select-trigger {
+                    .mat-form-field-infix {
+                        padding: 6px 0;
+                        border-top: 0;
                         height: auto;
                         min-height: $control-height;
                         display: flex;
                         align-items: center;
                     }
+
+                    .mat-form-field-outline {
+                        top: 0;
+                        border-radius: 0;
+                    }
+
+                    .mat-form-field-subscript-wrapper {
+                        display: none;
+                    }
+
+                    .mat-form-field-flex {
+                        padding: 0 8px;
+                        align-items: center;
+                        min-height: $control-height;
+                        height: $control-height;
+                        border-radius: 0;
+                    }
+
+                    .mat-form-field-label-wrapper {
+                        top: -4px;
+                    }
+
+                    input.mat-input-element {
+                        margin: 0;
+                        font-size: 13px;
+                        height: $control-height;
+                        line-height: $control-height;
+                    }
+
+                    .mat-select {
+                        height: auto;
+                        min-height: $control-height;
+
+                        .mat-select-trigger {
+                            height: auto;
+                            min-height: $control-height;
+                            display: flex;
+                            align-items: center;
+                        }
+                    }
                 }
-            }
 
             // Autocomplete panel positioning
             .mat-autocomplete-panel {
@@ -270,6 +274,124 @@ $control-height: 46px;
     }
 }
 
+.inline-autocomplete {
+    width: 100%;
+    margin: 0;
+
+    .mat-form-field {
+        width: 100%;
+        margin: 0;
+        display: flex;
+        align-items: center;
+    }
+    .mat-form-field {
+        width: 100%;
+        margin: 0;
+        display: flex;
+        align-items: center;
+    }
+
+    .mat-form-field-wrapper {
+        padding-bottom: 0;
+        margin: 0;
+    }
+
+    .mat-form-field-flex {
+        padding: 0 8px;
+        align-items: center;
+        min-height: $control-height;
+        height: $control-height;
+        border-radius: 0;
+    }
+
+    .mat-form-field-outline {
+        top: 0;
+        border-radius: 0;
+    }
+
+    .mat-form-field-infix {
+        padding: 6px 0;
+        border-top: 0;
+        min-height: $control-height;
+        display: flex;
+        align-items: center;
+    }
+
+    input.mat-input-element {
+        height: $control-height;
+        line-height: $control-height;
+        font-size: 13px;
+    }
+}
+
+.inline-select {
+    width: 100%;
+    margin: 0;
+
+    .mat-form-field-wrapper {
+        padding-bottom: 0;
+        margin: 0;
+    }
+
+    .mat-form-field-flex {
+        padding: 0 8px;
+        align-items: center;
+        min-height: $control-height;
+        height: $control-height;
+        border-radius: 0;
+    }
+
+    .mat-form-field-outline {
+        top: 0;
+        border-radius: 0;
+    }
+
+    .mat-form-field-outline-start,
+    .mat-form-field-outline-end {
+        border-radius: 0;
+    }
+
+    .mat-form-field-infix {
+        padding: 6px 0;
+        border-top: 0;
+        min-height: $control-height;
+        display: flex;
+        align-items: center;
+    }
+
+    .mat-select-trigger {
+        min-height: $control-height;
+        height: $control-height;
+        display: flex;
+        align-items: center;
+    }
+}
+
+.clear-btn {
+    width: 32px !important;
+    height: 32px !important;
+    min-width: 32px !important;
+    line-height: 32px !important;
+    color: #999;
+    margin: 0 !important;
+    border-radius: 0 !important;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    padding: 0 !important;
+
+    .mat-icon {
+        line-height: 20px;
+        width: 20px;
+        height: 20px;
+    }
+
+    &:hover {
+        color: $danger-color;
+        background: rgba($danger-color, 0.1);
+    }
+}
+
 // Days input field
 .days-input {
     width: 100%;
@@ -277,11 +399,14 @@ $control-height: 46px;
     line-height: $control-height;
     padding: 0 12px;
     border: 1px solid $border-color;
-    border-radius: 4px;
+    border-radius: 0;
     font-size: 13px;
     text-align: center;
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
     box-sizing: border-box;
+    margin: 0;
+    display: flex;
+    align-items: center;
 
     &:focus {
         outline: none;
@@ -304,12 +429,15 @@ $control-height: 46px;
     width: 100%;
     height: $control-height;
     line-height: $control-height;
-    padding: 0 14px;
+    padding: 0 12px;
     border: 1px solid $border-color;
-    border-radius: 4px;
+    border-radius: 0;
     font-size: 13px;
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
     box-sizing: border-box;
+    margin: 0;
+    display: flex;
+    align-items: center;
 
     &:focus {
         outline: none;
