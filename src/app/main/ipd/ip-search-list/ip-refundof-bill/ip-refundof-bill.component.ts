@@ -337,8 +337,7 @@ calculateTotalAmount(): void {
       PatientHeaderObj['TransactionLabel'] = 'IP-Refund Of Bill';
       PatientHeaderObj['billNo']= this.BillNo || 0,
       PatientHeaderObj['NetPayAmount'] =Math.round(this.RefundOfBillFormFooter.get('TotalRefundAmount').value) || 0
-      PatientHeaderObj['CashCounterId'] =this.RefundOfBillFormFooter.get('CashCounterID').value || 0 
-      PatientHeaderObj['CashCounterId'] =this.RefundOfBillFormFooter.get('CashCounterID').value || 0 
+      PatientHeaderObj['CashCounterId'] =this.RefundOfBillFormFooter.get('CashCounterID').value || 0  
 
       const dialogRef = this._matDialog.open(OpPaymentComponent,
         {

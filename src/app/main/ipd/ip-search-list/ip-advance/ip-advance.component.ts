@@ -192,7 +192,7 @@ export class IPAdvanceComponent implements OnInit {
         reason: [''],
         advanceDetailId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         unitId: [this.accountService.currentUserValue.user.unitId],
-        cashCounterId:[5, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator(), Validators.min(1)]],
+        cashCounterId:[0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator(), Validators.min(1)]],
       }),
       //advanceupdate header
       advanceupdate: this.formBuilder.group({
@@ -235,17 +235,18 @@ export class IPAdvanceComponent implements OnInit {
     this.AdvFormGroup.get('advanceDetail.opdIpdId').setValue(this.registerObj.admissionId)
     this.AdvFormGroup.get('advanceDetail.refId').setValue(this.registerObj.regId)
     this.AdvFormGroup.get('advance.refId').setValue(this.registerObj.regId)
+    this.AdvFormGroup.get('advanceDetail.cashCounterId').setValue(this.AdvFormGroup.get('CashCounterID')?.value)
 
     if (this.AdvFormGroup.valid) {
       console.log(this.AdvFormGroup.value)
       let PatientHeaderObj = {};
       PatientHeaderObj['Date'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '1900-01-01',
-        PatientHeaderObj['PatientName'] = this.registerObj?.patientName;
+      PatientHeaderObj['PatientName'] = this.registerObj?.patientName;
       PatientHeaderObj['RegNo'] = this.registerObj?.regNo,
-        PatientHeaderObj['DoctorName'] = this.registerObj?.doctorname;
+      PatientHeaderObj['DoctorName'] = this.registerObj?.doctorname;
       PatientHeaderObj['CompanyName'] = this.registerObj?.companyName;
       PatientHeaderObj['DepartmentName'] = this.registerObj?.departmentName;
-       PatientHeaderObj['CashCounterId'] = this.AdvFormGroup.get('CashCounterID')?.value || 0;
+      PatientHeaderObj['CashCounterId'] = this.AdvFormGroup.get('CashCounterID')?.value || 0;
       PatientHeaderObj['OPD_IPD_Id'] = this.registerObj?.ipdno;
       PatientHeaderObj['CompanyId'] = this.registerObj?.companyId;
       PatientHeaderObj['TransactionLabel'] = 'IP-Advance';

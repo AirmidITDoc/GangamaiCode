@@ -317,7 +317,7 @@ export class NewOPListComponent implements OnInit {
         console.log(contact)
         let PatientHeaderObj = {};
         PatientHeaderObj['Date'] = this.datePipe.transform(contact.billDate, 'MM/dd/yyyy') || '01/01/1900',
-            PatientHeaderObj['RegNo'] = contact.regNo;
+        PatientHeaderObj['RegNo'] = contact.regNo;
         PatientHeaderObj['PatientName'] = contact.patientName;
         PatientHeaderObj['OPD_IPD_Id'] = contact.opD_IPD_ID;
         PatientHeaderObj['Age'] = contact.patientAge;
@@ -326,7 +326,9 @@ export class NewOPListComponent implements OnInit {
         PatientHeaderObj['TariffName'] = contact.tariffName;
         PatientHeaderObj['CompanyName'] = contact.companyName;
         PatientHeaderObj['NetPayAmount'] = contact.balanceAmt;
-        PatientHeaderObj['CompanyId'] = contact.companyId;
+        PatientHeaderObj['CompanyId'] = contact.companyId; 
+        PatientHeaderObj['billNo'] = contact.billNo;  
+        PatientHeaderObj['TransactionLabel'] = 'OP-Settlement';
         this.vMobileNo = contact.mobileNo;
         const dialogRef = this._matDialog.open(OpPaymentComponent,
             {

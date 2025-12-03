@@ -425,7 +425,7 @@ export class CompanysettlementComponent implements OnInit {
         PatientHeaderObj['CompanyName'] = contact.companyName;
         PatientHeaderObj['NetPayAmount'] = contact.balanceAmt;
         PatientHeaderObj['CompanyId'] = contact.companyId;  
-        PatientHeaderObj['TransactionLabel'] = 'OP Settlement';
+        PatientHeaderObj['TransactionLabel'] = 'OP-Settlement';
 
         const dialogRef = this._matDialog.open(OpPaymentComponent,
             {

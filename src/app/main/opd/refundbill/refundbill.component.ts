@@ -138,6 +138,7 @@ export class RefundbillComponent implements OnInit {
         isCancelledBy: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         isCancelledDate: ['1900-01-01', [this._FormvalidationserviceService.validDateValidator]],
         refundId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        cashCounterId:[0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       }),
 
       tRefundDetails: this.formBuilder.array([]), // FormArray for details
@@ -305,6 +306,7 @@ debugger
     this.vRefundOfBillFormGroup.get("refund.remark")?.setValue(this.RefundOfBillFormFooter.get('Remark')?.value)
     this.vRefundOfBillFormGroup.get("refund.refundDate")?.setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd') || '1900-01-01')
     this.vRefundOfBillFormGroup.get("refund.refundTime")?.setValue(this.dateTimeObj.time)
+    this.vRefundOfBillFormGroup.get("refund.cashCounterId")?.setValue(this.searchFormGroup.get('CashCounterID')?.value)
 
     if (!this.RefundOfBillFormFooter.invalid && !this.vRefundOfBillFormGroup.invalid) { 
        console.log("FormValue", this.vRefundOfBillFormGroup.value)

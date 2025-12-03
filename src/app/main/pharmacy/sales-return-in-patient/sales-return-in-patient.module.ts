@@ -33,20 +33,20 @@ import { RouterModule, Routes } from '@angular/router';
 import { FuseConfirmDialogModule, FuseSidebarModule } from '@fuse/components';
 import { FuseSharedModule } from '@fuse/shared.module';
 import { SharedModule } from 'app/main/shared/shared.module';
-import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
-import { SalesHospitalComponent } from './sales-hospital.component';
+import { NgxMatSelectSearchModule } from 'ngx-mat-select-search'; 
+import { SalesReturnInPatientComponent } from './sales-return-in-patient.component';
 
 
 const routes: Routes = [
   { 
       path: '**', 
-      component: SalesHospitalComponent 
+      component: SalesReturnInPatientComponent 
   },
 ];
 
 @NgModule({
     declarations: [
-        SalesHospitalComponent,
+        SalesReturnInPatientComponent,
         // SalePopupComponent,
         // SubstitutesComponent,
         // PrescriptionComponent,
@@ -96,4 +96,4 @@ const routes: Routes = [
         DatePipe
     ]
 })
-export class SalesHospitalModule { }
+export class SalesReturnInPatientModule { }

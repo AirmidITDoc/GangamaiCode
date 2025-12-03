@@ -184,7 +184,9 @@ export class InterimBillComponent implements OnInit {
         tdsamount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
         unitId:[this.accountService.currentUserValue.user.unitId],
         wfamount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-      })
+      }),
+            // ✅ Fixed: should be FormArray
+       tPayments: this.formBuilder.array([])
     });
   }   
     createBillDetails(item: any): FormGroup {
@@ -193,10 +195,41 @@ export class InterimBillComponent implements OnInit {
         chargesId: [item?.chargesId, [, this._FormvalidationserviceService.onlyNumberValidator(),this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       });
     }  
+      CreateModePaymentform(item: any): FormGroup {
+    return this.formBuilder.group({
+      paymentId: [ 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      unitId: [this.accountService.currentUserValue.user.unitId],
+      billNo: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      opdipdtype: [1, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      paymentDate: [item?.paymentDate ?? ''],
+      paymentTime: [item?.paymentTime ?? ''],
+      payAmount: [item?.payAmount ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      tranNo: [item?.tranNo ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+      bankName: [item?.bankName ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+      validationDate: [item?.validationDate ?? ''],
+      advanceUsedAmount: [ 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      comments: [item?.comments ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+      payMode: [item?.payMode ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+      onlineTranNo: [item?.onlineTranNo ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+      onlineTranResponse: [item?.onlineTranResponse ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+      companyId: [item?.companyId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      advanceId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      refundId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      cashCounterId: [item?.cashCounterId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      transactionType: [item?.transactionType ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      isSelfOrcompany: [item?.isSelfOrcompany ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      tranMode: ['HOSP', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+      createdBy: [item?.createdBy ?? this.accountService.currentUserValue.userId],
+      transactionLabel: ['IP-Interim Bill', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+    });
+  }
     // Getters 
     get BillDetailsArray(): FormArray { 
       return this.IPInterimBillForm.get('billingDetails') as FormArray;
-    }   
+    } 
+        get ModeOfPaymentsArray(): FormArray {
+        return this.IPInterimBillForm.get('tPayments') as FormArray;
+    }  
   getNetAmtSum() { 
     this.FinalNetAmt =  this.interimArray.reduce((sum, { netAmount }) => sum += +(netAmount || 0), 0); 
     let totalAmt =  this.interimArray.reduce((sum, { totalAmt }) => sum += +(totalAmt || 0), 0);
@@ -313,6 +346,29 @@ export class InterimBillComponent implements OnInit {
         this.IPInterimBillForm.get('payments.cashPayAmount')?.setValue(this.InterimFooterForm.get('NetpayAmount')?.value)
         this.IPInterimBillForm.get('payments.paymentDate').setValue(formattedDate)
         this.IPInterimBillForm.get('payments.paymentTime').setValue(FormattedDateTime)
+        let ModePaymentObj = [];
+        ModePaymentObj.push({
+          paymentDate: formattedDate,
+          paymentTime: formattedTime,
+          payAmount: formValue?.NetpayAmount ?? 0,
+          tranNo: "",
+          bankName: "",
+          validationDate: this.datePipe.transform(this.currentDate, 'yyyy-MM-dd'),
+          comments: "",
+          payMode: "Cash",
+          onlineTranNo: "0",
+          onlineTranResponse: "0",
+          companyId: this.selectedAdvanceObj?.CompanyId ?? 0,
+          cashCounterId: formValue?.CashCounterID || 0,
+          transactionType: 0,
+          isSelfOrcompany: this.selectedAdvanceObj?.CompanyId ? 1 : 0,
+          createdBy: this.accountService.currentUserValue?.userId ?? 0
+        });
+        this.ModeOfPaymentsArray.clear();
+        ModePaymentObj.forEach(item => {
+          this.ModeOfPaymentsArray.push(this.CreateModePaymentform(item as ChargesList));
+        });
+
         console.log("form values", this.IPInterimBillForm.value)
         this._IpSearchListService.InsertInterim(this.IPInterimBillForm.value).subscribe(response => {
             if (InterimA5_Print != 1) {
@@ -326,17 +382,41 @@ export class InterimBillComponent implements OnInit {
         });
       }
       else if (this.InterimFooterForm.get('paymode').value == 'onlinepay') {
-        if(!(this.InterimFooterForm.get('UPINO')?.value)){
-           this.toastr.warning('Please enter upi no', 'Warning !', {
-          toastClass: 'tostr-tost custom-toast-warning',
-        });
-        return;
+        if (!(this.InterimFooterForm.get('UPINO')?.value)) {
+          this.toastr.warning('Please enter upi no', 'Warning !', {
+            toastClass: 'tostr-tost custom-toast-warning',
+          });
+          return;
         }
         this.IPInterimBillForm.get('payments.payTmamount')?.setValue(this.InterimFooterForm.get('NetpayAmount')?.value)
         this.IPInterimBillForm.get('payments.payTmtranNo').setValue(this.InterimFooterForm.get('UPINO')?.value || 0)
         this.IPInterimBillForm.get('payments.payTmdate').setValue(formattedDate)
         this.IPInterimBillForm.get('payments.paymentDate').setValue(formattedDate)
         this.IPInterimBillForm.get('payments.paymentTime').setValue(FormattedDateTime)
+
+        let ModePaymentObj = [];
+        ModePaymentObj.push({
+          paymentDate: formattedDate,
+          paymentTime: formattedTime,
+          payAmount: formValue?.NetpayAmount ?? 0,
+          tranNo: this.InterimFooterForm.get('UPINO')?.value || 0,
+          bankName: "",
+          validationDate: this.datePipe.transform(this.currentDate, 'yyyy-MM-dd'),
+          comments: "",
+          payMode: "UPI",
+          onlineTranNo: "0",
+          onlineTranResponse: "0",
+          companyId: this.selectedAdvanceObj?.CompanyId ?? 0,
+          cashCounterId: formValue?.CashCounterID || 0,
+          transactionType: 0,
+          isSelfOrcompany: this.selectedAdvanceObj?.CompanyId ? 1 : 0,
+          createdBy: this.accountService.currentUserValue?.userId ?? 0
+        });
+        this.ModeOfPaymentsArray.clear();
+        ModePaymentObj.forEach(item => {
+          this.ModeOfPaymentsArray.push(this.CreateModePaymentform(item as ChargesList));
+        });
+
         console.log("form values", this.IPInterimBillForm.value)
         this._IpSearchListService.InsertInterim(this.IPInterimBillForm.value).subscribe(response => {
           this.viewgetInterimBillReportPdf(response);
@@ -354,7 +434,9 @@ export class InterimBillComponent implements OnInit {
         PatientHeaderObj['DepartmentName'] = this.selectedAdvanceObj?.departmentName;
         PatientHeaderObj['OPD_IPD_Id'] = this.selectedAdvanceObj?.admissionId;
         PatientHeaderObj['Age'] = this.selectedAdvanceObj?.ageYear;
-        PatientHeaderObj['NetPayAmount'] = Math.round(this.InterimFooterForm.get('NetpayAmount')?.value)
+        PatientHeaderObj['NetPayAmount'] = Math.round(this.InterimFooterForm.get('NetpayAmount')?.value) 
+        PatientHeaderObj['TransactionLabel'] = 'IP-Interim Bill', 
+        PatientHeaderObj['CashCounterId'] =this.InterimFooterForm.get('CashCounterID').value || 0
         const dialogRef = this._matDialog.open(OpPaymentComponent,
           {
            maxWidth: "80vw",
@@ -369,6 +451,10 @@ export class InterimBillComponent implements OnInit {
         dialogRef.afterClosed().subscribe(result => {
           console.log(result.submitDataPay.ipPaymentInsert)
           this.IPInterimBillForm.get('payments').setValue(result.submitDataPay.ipPaymentInsert)
+          this.ModeOfPaymentsArray.clear();
+          result.submitDataPay.ipModePaymentInsert.forEach(item => {
+          this.ModeOfPaymentsArray.push(this.CreateModePaymentform(item));
+          }); 
 
           console.log("form values", this.IPInterimBillForm.value)
           this._IpSearchListService.InsertInterim(this.IPInterimBillForm.value).subscribe(response => {

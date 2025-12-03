@@ -239,7 +239,7 @@ export class ReviewcompanyBillComponent {
   }
   OnSave() {
     debugger 
-    
+    const [ThermalPrint, ThermalPrintValue] = this._ConfigService.configParams.ThermalPrint.split(":");
     const formValue = this.OPFooterForm.value
     this.OpBillEditSaveForm.get('billUpdates').patchValue({
       billNo:this.patientDetail?.billNo || 0,
@@ -266,6 +266,11 @@ export class ReviewcompanyBillComponent {
         this.savebtn = true
         if (response)
           this.resetform();
+        if (ThermalPrint != 1) {
+          this.viewgetOPBillReportPdf(response)
+        } else {
+          this.viewgetOPBillThermalReportPdf(response)
+        }
       });
     } 
     else {

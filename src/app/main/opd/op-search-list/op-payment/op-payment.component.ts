@@ -598,6 +598,7 @@ export class OpPaymentComponent implements OnInit {
     }
     //new changes done by Ambadas ip IntrimBIll 13/6/2025
     else if (this.data.FromName == "IP-IntrimBIll") {
+      transactionType = 0;  
       this.Paymentobj['billNo'] = 0;
       this.Paymentobj['receiptNo'] = "";
       this.Paymentobj['paymentDate'] = formattedDate

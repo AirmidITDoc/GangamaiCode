@@ -1246,7 +1246,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
                     cashCounterId:this.searchForm.get('CashCounterID')?.value || 0,
                     transactionType: 0,
                     isSelfOrcompany: this.patientDetail?.CompanyId ? 1 : 0,
-                    tranMode: "Cash",
+                    tranMode: "HOSP",
                     createdBy: this.accountService.currentUserValue?.userId ?? 0,
                     transactionLabel:'OP Bill'
                 }); 
