@@ -159,7 +159,7 @@ export class NewOtPreoperationComponent {
       setTimeout(() => {
         this._OTPreOperationService.getotTableById(this.data.ottable).subscribe((response) => {
           this.registerObj2 = response;
-          console.log("Get ottable Data:", this.registerObj2)
+          // console.log("Get ottable Data:", this.registerObj2)
           this.ddlLocation.SetSelection(this.registerObj2.locationId);
         });
       }, 500);
@@ -202,7 +202,8 @@ export class NewOtPreoperationComponent {
 
       this.preOperationFinalForm.patchValue(this.registerObj1);
       if (this.vPreOperationId > 0) {
-        // this.getPreOperdiagnosisList(this.registerObj3);
+        this.getPreOperCatLabdiagnosisList();
+        // this.getPreOperdiagnosisList();
         this.getPreOperSurgeryDetList();
         this.getPreOperAttendentDetList();
       } else {
@@ -402,7 +403,7 @@ export class NewOtPreoperationComponent {
       "exportType": "JSON"
     };
 
-    this._OTPreOperationService.getRtrvdiagnosisList(vdata).subscribe(response => {
+    this._OTPreOperationService.getRtrvRservdiagnosisList(vdata).subscribe(response => {
 
       if (response && Array.isArray(response.data)) {
         this.RtrvDescriptionList = response.data;
@@ -418,28 +419,30 @@ export class NewOtPreoperationComponent {
             )
           })
           this.preOperationFinalForm.get('diagnosis').setValue(this.addDiagnolist);
-          console.log("DIAGNOSIS DATA:", this.preOperationFinalForm.get('diagnosis').value)
+          console.log("OT pre-OPEr DIAGNOSIS DATA:", this.preOperationFinalForm.get('diagnosis').value)
         }
       }
     });
   }
-  // getPreOperdiagnosisList(obj) {
+
+  // api pending
+  // getPreOperdiagnosisList() {
   //   this.addDiagnolist = [];
   //   this.AllTypeDescription = [];
 
   //   const vdata = {
   //     "first": 0,
   //     "rows": 10,
-  //     "sortField": "OTReservationId",
+  //     "sortField": "OTPreOperationId",
   //     "sortOrder": 0,
   //     "filters": [
-  //       { "fieldName": "OTReservationId", "fieldValue": String(obj.otReservationId), "opType": "Equals" }
+  //       { "fieldName": "OTPreOperationId", "fieldValue": String(this.vPreOperationId), "opType": "Equals" }
   //     ],
-  //     "Columns": [],
-  //     "exportType": "JSON"
-  //   };
+  //     "exportType": "JSON",
+  //     "columns": []
+  //   }
 
-  //   this._OTPreOperationService.getRtrvdiagnosisList(vdata).subscribe(response => {
+  //   this._OTPreOperationService.getRtrvPreOPrdiagnosisList(vdata).subscribe(response => {
 
   //     if (response && Array.isArray(response.data)) {
   //       this.RtrvDescriptionList = response.data;
@@ -449,7 +452,7 @@ export class NewOtPreoperationComponent {
   //         Diagnosis.forEach(element => {
   //           this.addDiagnolist.push(
   //             {
-  //               otrequestDiagnosisDetId: element.otrequestDiagnosisDetId,
+  //               otpreOperationAttendingDetId: element.otpreOperationAttendingDetId,
   //               descriptionName: element.descriptionName
   //             }
   //           )
@@ -460,6 +463,43 @@ export class NewOtPreoperationComponent {
   //     }
   //   });
   // }
+
+  getPreOperCatLabdiagnosisList() {
+    this.addDiagnolist = [];
+    this.AllTypeDescription = [];
+
+    const vdata = {
+      "first": 0,
+      "rows": 10,
+      "sortField": "OTPreOperationId",
+      "sortOrder": 0,
+      "filters": [
+        { "fieldName": "OTPreOperationId", "fieldValue": String(this.vPreOperationId), "opType": "Equals" }
+      ],
+      "exportType": "JSON",
+      "columns": []
+    }
+    this._OTPreOperationService.getRtrvCathlabdiagnosisList(vdata).subscribe(response => {
+
+      if (response && Array.isArray(response.data)) {
+        this.RtrvDescriptionList = response.data;
+        // Process Diagnosis
+        let Diagnosis = this.RtrvDescriptionList.filter(item => item.descriptionType === 'CathLabDiagnosis');
+        if (Diagnosis.length > 0) {
+          Diagnosis.forEach(element => {
+            this.addDiagnolist.push(
+              {
+                otpreOperationCathLabDiagnosisDetId: element.otpreOperationCathLabDiagnosisDetId,
+                descriptionName: element.descriptionName
+              }
+            )
+          })
+          this.preOperationFinalForm.get('cathLabDiagnosis').setValue(this.addDiagnolist);
+          console.log("Cath lab DIAGNOSIS DATA:", this.preOperationFinalForm.get('cathLabDiagnosis').value)
+        }
+      }
+    });
+  }
 
   addcathLabDiagnolist: any = [];
   selectChangeCathLabDiagnosis(selectedChips: string[]) {

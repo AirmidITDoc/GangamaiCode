@@ -18,6 +18,7 @@ import { FormvalidationserviceService } from 'app/main/shared/services/formvalid
 import { PrescriptionTemplateComponent } from 'app/main/opd/new-casepaper/prescription-template/prescription-template.component';
 import { DosemasterComponent } from 'app/main/setup/prescription/dosemaster/dosemaster.component';
 import { NewDoseMasterComponent } from 'app/main/setup/prescription/dosemaster/new-dose-master/new-dose-master.component';
+import { PrescriptionTemplateComponent as SetupPrescriptionTemplateMaster } from 'app/main/setup/prescription/prescription-template/prescription-template.component';
 
 @Component({
   selector: 'app-discharge-summary-template',
@@ -452,6 +453,24 @@ export class DischargeSummaryTemplateComponent {
           category: 'DischargeSummeryTemplate'
         }
       });
+    dialogRef.afterClosed().subscribe(result => {
+      this.showTemplateRefresh = false;
+      setTimeout(() => {
+        this.showTemplateRefresh = true;
+      }, 100);
+    });
+  }
+
+  TemplateList() {
+    const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+    buttonElement.blur();
+    const dialogRef = this._matDialog.open(SetupPrescriptionTemplateMaster,
+      {
+        maxWidth: "100vw",
+        maxHeight: '90%',
+        width: '90%',
+      });
+    dialogRef.componentInstance.openedFromIPD = true;
     dialogRef.afterClosed().subscribe(result => {
       this.showTemplateRefresh = false;
       setTimeout(() => {

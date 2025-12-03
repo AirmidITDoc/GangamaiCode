@@ -864,6 +864,7 @@ export class OtReserInsert {
     otRequestId: any;
     otcheckInTime: any;
     bloodArg: any;
+    otInOperationId:any;
     /**
      * Constructor
      *
@@ -951,7 +952,7 @@ export class OtReserInsert {
             this.otRequestId = OtReserInsert.otRequestId || ''
             this.otcheckInTime = OtReserInsert.otcheckInTime || ''
             this.bloodArg = OtReserInsert.bloodArg || ''
-            // this.requestType = OtReqInsert.requestType || ''
+            this.otInOperationId = OtReserInsert.otInOperationId || ''
             // this.pacrequired = OtReqInsert.pacrequired || ''
             // this.equipmentsRequired = OtReqInsert.equipmentsRequired || ''
             // this.infective = OtReqInsert.infective || ''

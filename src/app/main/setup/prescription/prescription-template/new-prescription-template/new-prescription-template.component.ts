@@ -342,7 +342,7 @@ export class NewPrescriptionTemplateComponent {
   }
 
   onSave() {
-    this.TemplateInsertForm.get('presId').setValue(this.registerObj.presId ?? 0)
+    this.TemplateInsertForm.get('presId').setValue(this.registerObj?.presId ?? 0)
     this.TemplateInsertForm.get('templateCategory').setValue(this.MedicineItemForm.get('templateCategory').value)
     this.TemplateInsertForm.get('presTemplateName').setValue(this.MedicineItemForm.get('presTemplateName').value)
     this.TemplateInsertForm.get('opIpType').setValue(this.MedicineItemForm.get('opIpType').value)
