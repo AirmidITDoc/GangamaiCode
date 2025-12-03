@@ -11,7 +11,7 @@ $border-color: #e0e0e0;
 $header-bg: $primary-color;
 $row-hover-bg: #f8f5fc;
 $edit-row-bg: #fef9e7;
-$control-height: 46px;
+$control-height: 36px;
 
 .medicine-table-wrapper {
     width: 100%;
@@ -100,7 +100,7 @@ $control-height: 46px;
 
     // Row styles
     .mat-row {
-        min-height: 56px;
+        min-height: 44px;
         height: auto;
         transition: background-color 0.2s ease;
         border-bottom: 1px solid $border-color;
@@ -139,13 +139,13 @@ $control-height: 46px;
 
 // Column widths
 .col-drug-name {
-    flex: 2 1 240px;
-    min-width: 200px;
+    flex: 2.5 1 280px;
+    min-width: 220px;
 }
 
 .col-generic-name {
-    flex: 1.6 1 200px;
-    min-width: 180px;
+    flex: 2 1 240px;
+    min-width: 200px;
 }
 
 .col-dose-name {
@@ -154,8 +154,9 @@ $control-height: 46px;
 }
 
 .col-days {
-    flex: 0.7 0 90px;
-    min-width: 80px;
+    flex: 0 0 70px;
+    min-width: 70px;
+    max-width: 70px;
     text-align: center;
 }
 
@@ -165,11 +166,13 @@ $control-height: 46px;
 }
 
 .col-action {
-    flex: 0 0 150px;
+    flex: 0 0 130px;
     text-align: center;
     position: sticky;
     right: 0;
     background: inherit;
+    vertical-align: top;
+    padding-top: 12px !important;
 }
 
 // Cell text styles
@@ -184,12 +187,12 @@ $control-height: 46px;
 }
 
 // Edit cell container - CRITICAL FOR HEIGHT ADJUSTMENT
-    .edit-cell {
-        width: 100%;
-        min-height: $control-height;
-        display: flex;
-        align-items: stretch;
-        gap: 0;
+.edit-cell {
+    width: 100%;
+    min-height: $control-height;
+    display: flex;
+    align-items: center;
+    gap: 0;
 
     // Override airmid-autocomplete styles
     ::ng-deep {
@@ -209,7 +212,7 @@ $control-height: 46px;
                     }
 
                     .mat-form-field-infix {
-                        padding: 6px 0;
+                        padding: 4px 0;
                         border-top: 0;
                         height: auto;
                         min-height: $control-height;
@@ -270,20 +273,22 @@ $control-height: 46px;
     }
 
     &.edit-cell-compact {
-        max-width: 80px;
+        width: 100%;
+        justify-content: center;
     }
 }
 
 .inline-autocomplete {
     width: 100%;
     margin: 0;
+    position: relative;
 
-    .mat-form-field {
-        width: 100%;
-        margin: 0;
+    .mat-mdc-form-field-icon-suffix {
+        position: relative;
         display: flex;
         align-items: center;
     }
+
     .mat-form-field {
         width: 100%;
         margin: 0;
@@ -292,8 +297,9 @@ $control-height: 46px;
     }
 
     .mat-form-field-wrapper {
-        padding-bottom: 0;
+        padding-bottom: 0 !important;
         margin: 0;
+        margin-bottom: 0 !important;
     }
 
     .mat-form-field-flex {
@@ -301,16 +307,17 @@ $control-height: 46px;
         align-items: center;
         min-height: $control-height;
         height: $control-height;
-        border-radius: 0;
+        border-radius: 4px;
+        position: relative;
     }
 
     .mat-form-field-outline {
         top: 0;
-        border-radius: 0;
+        border-radius: 4px;
     }
 
     .mat-form-field-infix {
-        padding: 6px 0;
+        padding: 4px 0;
         border-top: 0;
         min-height: $control-height;
         display: flex;
@@ -329,8 +336,9 @@ $control-height: 46px;
     margin: 0;
 
     .mat-form-field-wrapper {
-        padding-bottom: 0;
+        padding-bottom: 0 !important;
         margin: 0;
+        margin-bottom: 0 !important;
     }
 
     .mat-form-field-flex {
@@ -338,21 +346,21 @@ $control-height: 46px;
         align-items: center;
         min-height: $control-height;
         height: $control-height;
-        border-radius: 0;
+        border-radius: 4px;
     }
 
     .mat-form-field-outline {
         top: 0;
-        border-radius: 0;
+        border-radius: 4px;
     }
 
     .mat-form-field-outline-start,
     .mat-form-field-outline-end {
-        border-radius: 0;
+        border-radius: 4px;
     }
 
     .mat-form-field-infix {
-        padding: 6px 0;
+        padding: 4px 0;
         border-top: 0;
         min-height: $control-height;
         display: flex;
@@ -368,22 +376,27 @@ $control-height: 46px;
 }
 
 .clear-btn {
-    width: 32px !important;
-    height: 32px !important;
-    min-width: 32px !important;
-    line-height: 32px !important;
+    width: 24px !important;
+    height: 24px !important;
+    min-width: 24px !important;
+    line-height: 24px !important;
     color: #999;
     margin: 0 !important;
-    border-radius: 0 !important;
-    display: flex !important;
+    border-radius: 50% !important;
+    display: inline-flex !important;
     align-items: center;
     justify-content: center;
     padding: 0 !important;
+    position: absolute;
+    right: 4px;
+    top: 50%;
+    transform: translateY(-50%);
 
     .mat-icon {
-        line-height: 20px;
-        width: 20px;
-        height: 20px;
+        font-size: 16px;
+        line-height: 16px;
+        width: 16px;
+        height: 16px;
     }
 
     &:hover {
@@ -392,61 +405,65 @@ $control-height: 46px;
     }
 }
 
-// Days input field
-.days-input {
+// Inline input mat-form-field
+.inline-input {
     width: 100%;
-    height: $control-height;
-    line-height: $control-height;
-    padding: 0 12px;
-    border: 1px solid $border-color;
-    border-radius: 0;
-    font-size: 13px;
-    text-align: center;
-    transition: border-color 0.2s ease, box-shadow 0.2s ease;
-    box-sizing: border-box;
     margin: 0;
-    display: flex;
-    align-items: center;
 
-    &:focus {
-        outline: none;
-        border-color: $primary-color;
-        box-shadow: 0 0 0 2px rgba($primary-color, 0.15);
-    }
-
-    &::-webkit-inner-spin-button,
-    &::-webkit-outer-spin-button {
-        -webkit-appearance: none;
+    .mat-form-field-wrapper {
+        padding-bottom: 0 !important;
         margin: 0;
+        margin-bottom: 0 !important;
     }
 
-    appearance: textfield;
-    -moz-appearance: textfield;
-}
-
-// Instruction input field
-.instruction-input {
-    width: 100%;
-    height: $control-height;
-    line-height: $control-height;
-    padding: 0 12px;
-    border: 1px solid $border-color;
-    border-radius: 0;
-    font-size: 13px;
-    transition: border-color 0.2s ease, box-shadow 0.2s ease;
-    box-sizing: border-box;
-    margin: 0;
-    display: flex;
-    align-items: center;
-
-    &:focus {
-        outline: none;
-        border-color: $primary-color;
-        box-shadow: 0 0 0 2px rgba($primary-color, 0.15);
+    .mat-form-field-flex {
+        padding: 0 8px;
+        align-items: center;
+        min-height: $control-height;
+        height: $control-height;
+        border-radius: 4px;
     }
 
-    &::placeholder {
-        color: #999;
+    .mat-form-field-outline {
+        top: 0;
+        border-radius: 4px;
+    }
+
+    .mat-form-field-outline-start,
+    .mat-form-field-outline-end {
+        border-radius: 4px;
+    }
+
+    .mat-form-field-infix {
+        padding: 4px 0;
+        border-top: 0;
+        min-height: $control-height;
+        display: flex;
+        align-items: center;
+    }
+
+    input.mat-input-element {
+        height: $control-height;
+        line-height: $control-height;
+        font-size: 13px;
+    }
+
+    &.days-field {
+        width: 100%;
+        max-width: 60px;
+
+        input {
+            text-align: center;
+
+            &::-webkit-inner-spin-button,
+            &::-webkit-outer-spin-button {
+                -webkit-appearance: none;
+                margin: 0;
+            }
+
+            appearance: textfield;
+            -moz-appearance: textfield;
+        }
     }
 }
 
@@ -460,10 +477,10 @@ $control-height: 46px;
 
 // Action button styles
 .action-btn {
-    width: 36px !important;
-    height: 36px !important;
-    line-height: 36px !important;
-    border-radius: 8px !important;
+    width: 32px !important;
+    height: 32px !important;
+    line-height: 32px !important;
+    border-radius: 6px !important;
     background-color: #f5f5f8 !important;
     display: inline-flex !important;
     align-items: center;
@@ -472,10 +489,10 @@ $control-height: 46px;
     transition: all 0.2s ease;
 
     .mat-icon {
-        font-size: 18px;
-        width: 18px;
-        height: 18px;
-        line-height: 18px;
+        font-size: 16px;
+        width: 16px;
+        height: 16px;
+        line-height: 16px;
     }
 
     &.delete-btn {
@@ -605,3 +622,167 @@ $control-height: 46px;
 
 
 
+
+:root {
+    --dense-form-field-height: 36px;
+    --dense-form-field-label-offset: 8px;
+  }
+  
+  .mat-mdc-form-field {
+    --mat-form-field-container-height: var(--dense-form-field-height);
+    --mat-form-field-container-vertical-padding: 0px;
+    --mat-form-field-filled-with-label-container-padding-top: 6px;
+    --mat-form-field-filled-with-label-container-padding-bottom: 0px;
+    margin-bottom: 0;
+  }
+  .mdc-data-table__cell {
+    padding: 4px 10px !important;
+  }
+
+  // Remove bottom space from table inputs
+  .medicine-table {
+    .mat-mdc-form-field,
+    .mat-form-field {
+      margin-bottom: 0 !important;
+      
+      .mat-mdc-form-field-wrapper,
+      .mat-form-field-wrapper {
+        padding-bottom: 0 !important;
+        margin-bottom: 0 !important;
+      }
+      
+      .mat-mdc-form-field-subscript-wrapper,
+      .mat-form-field-subscript-wrapper {
+        display: none !important;
+        height: 0 !important;
+        min-height: 0 !important;
+        margin-top: 0 !important;
+        padding-top: 0 !important;
+      }
+      
+      .mat-mdc-form-field-bottom-align,
+      .mat-form-field-bottom-align {
+        display: none !important;
+        height: 0 !important;
+        min-height: 0 !important;
+        
+        &::before {
+          display: none !important;
+          height: 0 !important;
+        }
+      }
+    }
+  }
+  
+  .mat-mdc-form-field .mdc-text-field--filled,
+  .mat-mdc-form-field .mdc-text-field--outlined {
+    height: var(--mat-form-field-container-height);
+  }
+  
+  .mat-mdc-form-field .mat-mdc-form-field-infix {
+    min-height: var(--mat-form-field-container-height);
+    padding-top: 4px !important;
+    padding-bottom: 4px !important;
+  }
+  
+  .mat-mdc-form-field .mdc-text-field__input {
+    height: auto;
+    line-height: 24px;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+  
+  .mat-mdc-form-field .mdc-text-field--filled .mdc-floating-label--float-above {
+    transform: translateY(
+        calc(
+          (var(--mat-form-field-container-height) * -0.5) +
+            var(--dense-form-field-label-offset)
+        )
+      )
+      scale(var(--mat-mdc-form-field-floating-label-scale, 0.75));
+  }
+  
+  .mat-mdc-form-field .mdc-text-field--outlined .mdc-floating-label--float-above,
+  .mat-mdc-form-field
+    .mdc-text-field--outlined.mdc-notched-outline--upgraded
+    .mdc-floating-label--float-above {
+    font-size: calc(
+      var(--mat-form-field-outlined-label-text-size, var(--mat-sys-body-large-size)) *
+        var(--mat-mdc-form-field-floating-label-scale, 0.75)
+    );
+  }
+
+  // Center the placeholder label vertically
+  .mat-mdc-form-field .mdc-floating-label {
+    top: 18px !important;
+    // transform: translateY(-50%);
+  }
+
+//   // Position floating label on the border line
+  .mat-mdc-form-field .mdc-floating-label--float-above {
+    top: 28px !important;
+  }
+  
+  // Reduce subscript wrapper spacing
+  .mat-mdc-form-field-subscript-wrapper {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+  }
+  
+  .mat-mdc-form-field-bottom-align::before {
+    height: 0 !important;
+  }
+  
+  // Reduce hint wrapper spacing
+  .mat-mdc-form-field-hint-wrapper,
+  .mat-mdc-form-field-error-wrapper {
+    padding: 0 !important;
+  }
+  
+  .mdc-icon-button {
+    padding-top: 5px !important;
+  }
+  
+  // Global reduction of gaps between form fields
+  form,
+  .form-section,
+  .form-container {
+    .mat-mdc-form-field + .mat-mdc-form-field {
+      margin-top: 0;
+    }
+    
+    .mat-mdc-form-field {
+      margin-bottom: 0.5rem;
+    }
+  }
+  
+  // Reduce spacing in flex/grid layouts with form fields
+  .fxLayout,
+  .fxLayoutAlign,
+  [class*="fxLayout"],
+  .row,
+  .form-row,
+  .field-row,
+  [class*="-row"] {
+    .mat-mdc-form-field {
+      margin-bottom: 0.5rem;
+    }
+    
+    .mat-form-field-wrapper {
+      padding-bottom: 4px;
+      margin-bottom: 0;
+    }
+  }
+  
+  // Specific rule for mat-dialog-content to reduce spacing
+  .mat-dialog-content,
+  .mat-mdc-dialog-content {
+    .mat-mdc-form-field {
+      margin-bottom: 0.5rem;
+    }
+    
+    .mat-form-field-wrapper {
+      padding-bottom: 4px;
+      margin-bottom: 0;
+    }
+  }

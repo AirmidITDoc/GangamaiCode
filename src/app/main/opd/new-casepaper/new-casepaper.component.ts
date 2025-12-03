@@ -1910,6 +1910,12 @@ export class NewCasepaperComponent implements OnInit {
         });
     }
 
+    onAddRecordClick(): void {
+        if (this.medicineTableRef) {
+            this.medicineTableRef.addNewRow();
+        }
+    }
+
     //Diagnosis
     addDiagnos(event: any): void {
         const input = event.input;

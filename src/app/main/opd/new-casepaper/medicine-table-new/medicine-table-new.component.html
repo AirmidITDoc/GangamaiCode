@@ -1,15 +1,5 @@
 <div class="medicine-table-wrapper" #tableWrapper>
-    <form [formGroup]="medicineForm">
-        <div class="table-toolbar">
-            <button mat-raised-button
-                color="primary"
-                type="button"
-                class="add-record-btn"
-                (click)="addNewRow()">
-                <mat-icon>add</mat-icon>
-                Add Record
-            </button>
-        </div>
+    <form [formGroup]="medicineForm" (submit)="$event.preventDefault()">
         <div class="table-container">
             <table mat-table [dataSource]="dsItemList" class="medicine-table">
 
@@ -27,9 +17,9 @@
                                         placeholder="Enter Drug Name"
                                         formControlName="ItemId"
                                         [matAutocomplete]="drugAuto"
-                                        appFocusNext
-                                        [formGroup]="medicineForm"
-                                        name="ItemId">
+                                        #drugInput
+                                        name="ItemId"
+                                        (keydown.enter)="onDrugEnter($event)">
                                     <button mat-icon-button
                                         matSuffix
                                         type="button"
@@ -65,10 +55,9 @@
                                     <mat-select
                                         placeholder="Select Generic"
                                         formControlName="ItemGenericNameId"
-                                        appFocusNext
-                                        [formGroup]="medicineForm"
+                                        #genericSelect
                                         name="ItemGenericNameId"
-                                        (selectionChange)="onGenericSelectionChange($event)">
+                                        (selectionChange)="onGenericSelectionChange($event); focusNextField($event, 'dose')">
                                         <mat-option *ngFor="let option of genericOptions"
                                             [value]="option.value || option.Value">
                                             {{ option.text || option.Text }}
@@ -93,10 +82,9 @@
                                     <mat-select
                                         placeholder="Select Dose"
                                         formControlName="DoseId"
-                                        appFocusNext
-                                        [formGroup]="medicineForm"
+                                        #doseSelect
                                         name="DoseId"
-                                        (selectionChange)="onDoseSelectionChange($event)">
+                                        (selectionChange)="onDoseSelectionChange($event); focusNextField($event, 'days')">
                                         <mat-option *ngFor="let option of doseOptions"
                                             [value]="option.value || option.Value">
                                             {{ option.text || option.Text }}
@@ -117,14 +105,15 @@
                         </ng-container>
                         <ng-container *ngIf="element.editable">
                             <div class="edit-cell edit-cell-compact">
-                                <input matInput 
-                                    formControlName="Day" 
-                                    type="number" 
-                                    class="days-input"
-                                    placeholder="Days"
-                                    appFocusNext
-                                    [formGroup]="medicineForm"
-                                    name="Day">
+                                <mat-form-field appearance="outline" class="inline-input days-field" floatLabel="never">
+                                    <input matInput 
+                                        formControlName="Day" 
+                                        type="number" 
+                                        placeholder="Days"
+                                        #daysInput
+                                        name="Day"
+                                        (keydown.enter)="focusNextField($event, 'instruction')">
+                                </mat-form-field>
                             </div>
                         </ng-container>
                     </td>
@@ -139,13 +128,15 @@
                         </ng-container>
                         <ng-container *ngIf="element.editable">
                             <div class="edit-cell">
-                                <input matInput 
-                                    formControlName="Instruction" 
-                                    type="text" 
-                                    [maxLength]="200"
-                                    class="instruction-input"
-                                    placeholder="Enter instruction"
-                                    (keydown.enter)="onInstructionEnter(element, $event)">
+                                <mat-form-field appearance="outline" class="inline-input" floatLabel="never">
+                                    <input matInput 
+                                        formControlName="Instruction" 
+                                        type="text" 
+                                        [maxLength]="200"
+                                        placeholder="Enter instruction"
+                                        #instructionInput
+                                        (keydown.enter)="onInstructionEnter(element, $event)">
+                                </mat-form-field>
                             </div>
                         </ng-container>
                     </td>

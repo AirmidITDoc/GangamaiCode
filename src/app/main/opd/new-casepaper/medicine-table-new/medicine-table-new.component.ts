@@ -330,6 +330,55 @@ export class MedicineTableNewComponent implements OnInit, OnDestroy {
         }
     }
 
+    onDrugEnter(event: KeyboardEvent): void {
+        event.preventDefault();
+        event.stopPropagation();
+        // Focus the generic name select after drug selection
+        setTimeout(() => {
+            this.focusNextField(event, 'generic');
+        }, 100);
+    }
+
+    focusNextField(event: any, fieldName: string): void {
+        if (event?.preventDefault) {
+            event.preventDefault();
+        }
+        if (event?.stopPropagation) {
+            event.stopPropagation();
+        }
+        
+        setTimeout(() => {
+            const host = this.tableWrapper?.nativeElement;
+            if (!host) {
+                return;
+            }
+            const editingRow = host.querySelector('tr.editing-row');
+            if (!editingRow) {
+                return;
+            }
+
+            let targetElement: HTMLElement | null = null;
+
+            if (fieldName === 'instruction') {
+                targetElement = editingRow.querySelector('input[formcontrolname="Instruction"]');
+            } else if (fieldName === 'days') {
+                targetElement = editingRow.querySelector('input[formcontrolname="Day"]');
+            } else if (fieldName === 'generic') {
+                targetElement = editingRow.querySelector('mat-select[formcontrolname="ItemGenericNameId"]');
+            } else if (fieldName === 'dose') {
+                targetElement = editingRow.querySelector('mat-select[formcontrolname="DoseId"]');
+            }
+
+            if (targetElement instanceof HTMLInputElement) {
+                targetElement.focus();
+                targetElement.select();
+            } else if (targetElement) {
+                // For mat-select elements
+                targetElement.focus();
+            }
+        }, 50);
+    }
+
     onConfirmClick(row: MedicineItem, event?: Event): void {
         event?.preventDefault();
         const wasExistingRecord = this.isExistingRow(row);
