@@ -204,7 +204,7 @@ export class NewOtPostOperationComponent {
       "exportType": "JSON"
     };
 
-    this._OTPostOperationService.getRtrvdiagnosisList(vdata).subscribe(response => {
+    this._OTPostOperationService.getRtrvRservdiagnosisList(vdata).subscribe(response => {
 
       if (response && Array.isArray(response.data)) {
         this.RtrvDescriptionList = response.data;

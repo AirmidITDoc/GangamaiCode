@@ -195,9 +195,13 @@
                         <mat-icon>add</mat-icon>
                         Dose</button>
 
-                      <button mat-raised-button (click)="SaveTemplate()">
+                        <button mat-raised-button (click)="TemplateList()">
                         <mat-icon>save</mat-icon>
-                        Save Template</button>
+                        Template List</button>
+
+                      <!-- <button mat-raised-button (click)="SaveTemplate()">
+                        <mat-icon>save</mat-icon>
+                        Save Template</button> -->
 
                       <airmid-dropdown label="Template List" *ngIf="showTemplateRefresh" formControlName="TemplateId"
                         [formGroup]="MedicineItemForm" [mode]="autocompleteModeTemplate"

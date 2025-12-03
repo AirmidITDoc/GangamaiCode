@@ -114,4 +114,21 @@ export class InOperationService {
   public getDoctorsByDoctorType(doctTypeId) {
     return this._httpClient.GetData("VisitDetail/DoctorTypeDoctorList?DocTypeId=" + doctTypeId)
   }
+  public InsertOTInOperation(employee) {
+    if (employee.otinOperationId) {
+      return this._httpClient.PutData("OTInOperation/Edit/" + employee.otinOperationId, employee);
+    } else return this._httpClient.PostData("OTInOperation/Insert", employee);
+  }
+   public getRtrvinOperAttendentList(employee) {
+    return this._httpClient.PostData("OTInOperation/InOperationAttendingDetailsList", employee);
+  }
+   public getRtrvinOperSurgeryList(employee) {
+    return this._httpClient.PostData("OTInOperation/InOperationSurgeryDetailsList", employee);
+  }
+   public getRtrvInoprdiagnosisList(employee) {
+    return this._httpClient.PostData("OTInOperation/OTInOperationDiagnosisList", employee);
+  }
+   public getRtrvInoprPostdiagnosisList(employee) {
+    return this._httpClient.PostData("OTInOperation/OTInOperationPostOperDiagnosisList", employee);
+  }
 }

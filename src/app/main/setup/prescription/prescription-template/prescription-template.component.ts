@@ -1,4 +1,4 @@
-import { Component, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from "@angular/core";
+import { Component, OnInit, Optional, TemplateRef, ViewChild, ViewEncapsulation } from "@angular/core";
 import { MatDialog, MatDialogRef } from "@angular/material/dialog";
 import { fuseAnimations } from "@fuse/animations";
 import { FuseConfirmDialogComponent } from "@fuse/components/confirm-dialog/confirm-dialog.component";
@@ -22,6 +22,7 @@ export class PrescriptionTemplateComponent {
   PrefixMasterList: any;
   msg: any;
   IsAdd: boolean = this.permissionService.getPermission(permissionCodes.PrescriptionTemplate, permissionType.Add);
+  openedFromIPD = false;
 
   @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
   confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
@@ -29,7 +30,8 @@ export class PrescriptionTemplateComponent {
   constructor(
     public _PrescriptionTemplateService: PrescriptionTemplateService,
     public toastr: ToastrService, public _matDialog: MatDialog,
-    public permissionService: PagePermissionService
+    public permissionService: PagePermissionService,
+    @Optional() private dialogRef: MatDialogRef<PrescriptionTemplateComponent>
   ) { }
 
   ngOnInit(): void {
@@ -44,7 +46,7 @@ export class PrescriptionTemplateComponent {
     permissionCode: permissionCodes.PrescriptionTemplate,
     apiUrl: "OPDPrescriptionMedical/PresTemplateList",
     columnsList: [
-      { heading: "-", key: "opIpType", sort: true, align: 'left', emptySign: 'NA',type: gridColumnTypes.template,},
+      { heading: "-", key: "opIpType", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, },
       { heading: "TemplateCategory", key: "templateCategory", sort: true, align: 'left', emptySign: 'NA' },
       { heading: "TemplateName", key: "presTemplateName", sort: true, align: 'left', emptySign: 'NA' },
       { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
@@ -92,4 +94,10 @@ export class PrescriptionTemplateComponent {
       }
     });
   }
+
+   closeDialog() {
+        if (this.dialogRef) {
+            this.dialogRef.close();
+        }
+    }
 }

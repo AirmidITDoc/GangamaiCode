@@ -556,7 +556,7 @@
                                 <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%" fxLayout="column">
                                     <app-airmid-chipautocomplete fxFlex [placeholder]="'cath Lab Diagnosis'"
                                         [chips]="preOperationFinalForm.get('cathLabDiagnosis')?.value"
-                                        [apiUrl]="'OTRequest/GetRequestDiagnosisList?DescriptionType=CathLabDiagnosis'"
+                                        [apiUrl]="'OTPreOperation/GetPreOperationCathlabDiagnosisList?DescriptionType=CathLabDiagnosis'"
                                         [displayKey]="'descriptionName'" [allowCustom]="true"
                                         (chipsChange)="selectChangeCathLabDiagnosis($event)">
                                     </app-airmid-chipautocomplete>
