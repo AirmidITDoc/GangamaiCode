@@ -7,6 +7,8 @@ import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/air
 import { ToastrService } from 'ngx-toastr';
 import { NewSurgeryMasterComponent } from './new-surgery-master/new-surgery-master.component';
 import { SurgeryMasterService } from './surgery-master.service';
+import { PagePermissionService } from 'app/main/shared/services/page-permission.service';
+import { permissionCodes, permissionType } from 'app/main/shared/model/permission.model';
 
 @Component({
     selector: 'app-surgery-master',
@@ -18,6 +20,7 @@ import { SurgeryMasterService } from './surgery-master.service';
 export class SurgeryMasterComponent implements OnInit {
     msg: any;
     surgeryName: any = "";
+    IsAdd: boolean = this.permissionService.getPermission(permissionCodes.SetupOtManagment, permissionType.Add);
 
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
 
@@ -32,11 +35,11 @@ export class SurgeryMasterComponent implements OnInit {
         {
             heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
                 {
-                    action: gridActions.edit, callback: (data: any) => {
+                    action: gridActions.edit, visible: this.permissionService.getPermission(permissionCodes.SetupOtManagment, permissionType.Edit), callback: (data: any) => {
                         this.onSave(data);
                     }
                 }, {
-                    action: gridActions.delete, callback: (data: any) => {
+                    action: gridActions.delete, visible: this.permissionService.getPermission(permissionCodes.SetupOtManagment, permissionType.Delete), callback: (data: any) => {
                         this._SurgeryMasterService.deactivateTheStatus(data.surgeryId).subscribe((response: any) => {
                             this.grid.bindGridData();
                         });
@@ -49,6 +52,7 @@ export class SurgeryMasterComponent implements OnInit {
         { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
     ]
     gridConfig: gridModel = {
+        permissionCode: permissionCodes.SetupOtManagment,
         apiUrl: "SurgeryMaster/List",
         columnsList: this.allColumns,
         sortField: "SurgeryId",
@@ -58,6 +62,7 @@ export class SurgeryMasterComponent implements OnInit {
 
     constructor(
         public _SurgeryMasterService: SurgeryMasterService,
+        public permissionService: PagePermissionService,
         public toastr: ToastrService, public _matDialog: MatDialog
     ) { }
 

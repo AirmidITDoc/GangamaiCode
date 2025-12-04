@@ -7,6 +7,8 @@ import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/air
 import { ToastrService } from 'ngx-toastr';
 import { NewTypeMasterComponent } from './new-type-master/new-type-master.component';
 import { TypeMasterService } from './type-master.service';
+import { PagePermissionService } from 'app/main/shared/services/page-permission.service';
+import { permissionCodes, permissionType } from 'app/main/shared/model/permission.model';
 
 @Component({
     selector: 'app-type-master',
@@ -18,6 +20,7 @@ import { TypeMasterService } from './type-master.service';
 export class TypeMasterComponent implements OnInit {
     msg: any;
     typeName: any = "";
+    IsAdd: boolean = this.permissionService.getPermission(permissionCodes.SetupOtManagment, permissionType.Add);
 
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
 
@@ -27,11 +30,11 @@ export class TypeMasterComponent implements OnInit {
         {
             heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
                 {
-                    action: gridActions.edit, callback: (data: any) => {
+                    action: gridActions.edit, visible: this.permissionService.getPermission(permissionCodes.SetupOtManagment, permissionType.Edit), callback: (data: any) => {
                         this.onSave(data);
                     }
                 }, {
-                    action: gridActions.delete, callback: (data: any) => {
+                    action: gridActions.delete, visible: this.permissionService.getPermission(permissionCodes.SetupOtManagment, permissionType.Delete), callback: (data: any) => {
                         this._TypeMasterService.deactivateTheStatus(data.ottypeId).subscribe((response: any) => {
                             this.grid.bindGridData();
                         });
@@ -44,6 +47,7 @@ export class TypeMasterComponent implements OnInit {
         { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
     ]
     gridConfig: gridModel = {
+        permissionCode: permissionCodes.SetupOtManagment,
         apiUrl: "OtTypeMaster/List",
         columnsList: this.allColumns,
         sortField: "OttypeId",
@@ -53,6 +57,7 @@ export class TypeMasterComponent implements OnInit {
 
     constructor(
         public _TypeMasterService: TypeMasterService,
+        public permissionService: PagePermissionService,
         public toastr: ToastrService, public _matDialog: MatDialog
     ) { }
 

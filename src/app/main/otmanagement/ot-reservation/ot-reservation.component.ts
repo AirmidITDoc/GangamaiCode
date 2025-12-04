@@ -864,7 +864,22 @@ export class OtReserInsert {
     otRequestId: any;
     otcheckInTime: any;
     bloodArg: any;
-    otInOperationId:any;
+    otInOperationId: any;
+    bloodArranged: any;
+    mopCount: any;
+    intraOpeChangeInSurgeryPlan: any;
+    clearanceMedical: any;
+    clearanceFinancial: any;
+    theaterInDate: any;
+    theaterOutData: any;
+    theaterInTime: any;
+    theaterOutTime: any;
+    stepsOfProc: any;
+    bloodLoss: any;
+    closureNotes: any;
+    operativeFindingsNotes: any;
+    postOperativeNotes: any;
+    conditionOfPatientNotes: any;
     /**
      * Constructor
      *
@@ -953,11 +968,22 @@ export class OtReserInsert {
             this.otcheckInTime = OtReserInsert.otcheckInTime || ''
             this.bloodArg = OtReserInsert.bloodArg || ''
             this.otInOperationId = OtReserInsert.otInOperationId || ''
-            // this.pacrequired = OtReqInsert.pacrequired || ''
-            // this.equipmentsRequired = OtReqInsert.equipmentsRequired || ''
-            // this.infective = OtReqInsert.infective || ''
-            // this.locationId = OtReqInsert.locationId || ''
-            // this.OTPreOperationId = OtReqInsert.OTPreOperationId || ''
+            this.bloodArranged = OtReserInsert.bloodArranged || ''
+            this.mopCount = OtReserInsert.mopCount || ''
+            this.intraOpeChangeInSurgeryPlan = OtReserInsert.intraOpeChangeInSurgeryPlan || ''
+            this.clearanceMedical = OtReserInsert.clearanceMedical || ''
+            this.clearanceFinancial = OtReserInsert.clearanceFinancial || ''
+            this.theaterInDate = OtReserInsert.theaterInDate || ''
+            this.theaterOutData = OtReserInsert.theaterOutData || ''
+            this.theaterInTime = OtReserInsert.theaterInTime || ''
+            this.theaterOutTime = OtReserInsert.theaterOutTime || ''
+            this.stepsOfProc = OtReserInsert.stepsOfProc || ''
+            this.bloodLoss = OtReserInsert.bloodLoss || ''
+            this.closureNotes = OtReserInsert.closureNotes || ''
+            this.operativeFindingsNotes = OtReserInsert.operativeFindingsNotes || ''
+            this.postOperativeNotes = OtReserInsert.postOperativeNotes || ''
+            this.conditionOfPatientNotes = OtReserInsert.conditionOfPatientNotes || ''
+            // this.bloodLoss = OtReserInsert.bloodLoss || ''
         }
     }
 }
