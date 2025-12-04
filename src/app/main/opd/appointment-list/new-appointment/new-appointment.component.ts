@@ -366,7 +366,7 @@ this.Is9_Digit_National_Id = id === "1";
     }
 
     OnViewReportPdf(element) {
-        this.commonService.Onprint("VisitId", element.data, "AppointmentReceipt");
+        this.commonService.Onprint("VisitId", element, "AppointmentReceipt");
     }
 
     onChangePatient(value) {
