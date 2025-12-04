@@ -358,8 +358,11 @@ export class OpPaymentVimalComponent implements OnInit {
   }
     Paymentobj = {};
     RemainingAmt: any = [];
+    ModePaymentObj:any =[];
     onSubmit() {
         debugger
+        let transactionType = 0;
+        let opdipdtype = 1;
         let result = this.OnCheckFormValidity(); 
         this.onAddPayment();
          if (result === 0) return; // stop execution if invalid
@@ -408,7 +411,7 @@ export class OpPaymentVimalComponent implements OnInit {
             this.Paymentobj['transactionType'] = 0;
             this.Paymentobj['remark'] = '';
             this.Paymentobj['addBy'] = this._loggedService.currentUserValue.userId,
-                this.Paymentobj['isCancelled'] = false;
+            this.Paymentobj['isCancelled'] = false;
             this.Paymentobj['isCancelledBy'] = 0;
             this.Paymentobj['isCancelledDate'] = this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd') || '1999-01-01';
             this.Paymentobj['opdipdType'] = 1;
@@ -460,6 +463,7 @@ export class OpPaymentVimalComponent implements OnInit {
             this.Paymentobj['wfamount'] = this.Payments.data.find(x => x.PaymentType == "wf")?.Amount ?? 0; 
         }
         else if (this.data.FromName == "IP-Bill") {
+            transactionType = 0
             this.Paymentobj['billNo'] = 0;
             this.Paymentobj['receiptNo'] = '0';
             this.Paymentobj['paymentDate'] = this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd') || '1999-01-01';
@@ -493,10 +497,40 @@ export class OpPaymentVimalComponent implements OnInit {
             this.Paymentobj['unitId'] = this._loggedService.currentUserValue.user.unitId
             this.Paymentobj['wfAmount'] = this.Payments.data.find(x => x.PaymentType == "wf")?.Amount ?? 0; 
         }
+          this.Payments.data.forEach(element => {
+        this.ModePaymentObj.push({
+          paymentId: 0,
+          unitId: this._loggedService.currentUserValue.user.unitId,
+          billNo: this.advanceData?.billNo || 0,
+          opdipdtype:  opdipdtype || 1,
+          paymentDate: this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd') || '1999-01-01',
+          paymentTime: this.dateTimeObj.time,
+          payAmount: element.Amount ?? 0,
+          tranNo: element.RefNo ?? "",
+          bankName: element.BankName ?? "",
+          validationDate: this.datePipe.transform(element.RegDate, 'yyyy-MM-dd') || this.datePipe.transform(this.currentDate, 'yyyy-MM-dd'),
+          advanceUsedAmount:this.advanceUsedAmt || 0,
+          comments: "",
+          payMode: element.PaymentType ?? "",
+          onlineTranNo: '0',
+          onlineTranResponse: '0',
+          companyId: this.advanceData?.CompanyId ?? 0,
+          advanceId:  this.AdvanceId || 0,
+          refundId: 0,
+          cashCounterId: this.advanceData?.CashCounterId || 0,
+          transactionType: transactionType,
+          isSelfOrcompany: this.advanceData?.CompanyId ? 1 : 0,
+          tranMode: "HOSP",
+          createdBy: this._loggedService.currentUserValue?.userId ?? 0,
+          transactionLabel:this.advanceData?.TransactionLabel || 0,
+        });
+      });
         console.log(JSON.stringify(this.Paymentobj));
 
         let submitDataPay = {
-            ipPaymentInsert: this.Paymentobj
+            ipPaymentInsert: this.Paymentobj,
+            ipModePaymentInsert:this.ModePaymentObj
+            
         };
         let IsSubmit
         if (this.data.FromName == "IP-SETTLEMENT" || this.data.FromName == "IP-Pharma-SETTLEMENT" || this.data.FromName == "IP-Bill") {
