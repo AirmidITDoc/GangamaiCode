@@ -266,11 +266,11 @@ export class ReviewcompanyBillComponent {
         this.savebtn = true
         if (response)
           this.resetform();
-        if (ThermalPrint != 1) {
-          this.viewgetOPBillReportPdf(response)
-        } else {
-          this.viewgetOPBillThermalReportPdf(response)
-        }
+        // if (ThermalPrint != 1) {
+        //   this.viewgetOPBillReportPdf(response)
+        // } else {
+        //   this.viewgetOPBillThermalReportPdf(response)
+        // }
       });
     } 
     else {
