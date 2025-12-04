@@ -83,4 +83,7 @@ export enum permissionCodes {
 
     // Nursing master
     Nursing='Nursing',
+
+    // Ot Master
+    SetupOtManagment='SetupOtManagment',
 }

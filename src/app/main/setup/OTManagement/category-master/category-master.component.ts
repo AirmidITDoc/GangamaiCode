@@ -7,6 +7,8 @@ import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/air
 import { ToastrService } from 'ngx-toastr';
 import { CategoryMasterService } from './category-master.service';
 import { NewCategoryMasterComponent } from './new-category-master/new-category-master.component';
+import { PagePermissionService } from 'app/main/shared/services/page-permission.service';
+import { permissionCodes, permissionType } from 'app/main/shared/model/permission.model';
 
 @Component({
     selector: 'app-category-master',
@@ -18,7 +20,7 @@ import { NewCategoryMasterComponent } from './new-category-master/new-category-m
 export class CategoryMasterComponent implements OnInit {
     msg: any;
     categoryName: any = "";
-
+    IsAdd: boolean = this.permissionService.getPermission(permissionCodes.SetupOtManagment, permissionType.Add);
 
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
 
@@ -28,11 +30,11 @@ export class CategoryMasterComponent implements OnInit {
         {
             heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
                 {
-                    action: gridActions.edit, callback: (data: any) => {
+                    action: gridActions.edit, visible: this.permissionService.getPermission(permissionCodes.SetupOtManagment, permissionType.Edit), callback: (data: any) => {
                         this.onSave(data);
                     }
                 }, {
-                    action: gridActions.delete, callback: (data: any) => {
+                    action: gridActions.delete, visible: this.permissionService.getPermission(permissionCodes.SetupOtManagment, permissionType.Delete), callback: (data: any) => {
                         this._CategoryMasterService.deactivateTheStatus(data.surgeryCategoryId).subscribe((response: any) => {
                             this.grid.bindGridData();
                         });
@@ -47,6 +49,7 @@ export class CategoryMasterComponent implements OnInit {
     ]
 
     gridConfig: gridModel = {
+        permissionCode: permissionCodes.SetupOtManagment,
         apiUrl: "SurgeryCategoryMaster/List",
         columnsList: this.allColumns,
         sortField: "SurgeryCategoryId",
@@ -55,6 +58,7 @@ export class CategoryMasterComponent implements OnInit {
     }
     constructor(
         public _CategoryMasterService: CategoryMasterService,
+        public permissionService: PagePermissionService,
         public toastr: ToastrService, public _matDialog: MatDialog
     ) { }
 

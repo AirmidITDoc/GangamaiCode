@@ -137,7 +137,7 @@ export class OtPreoperationService {
   public getRtrvReservationAttendentList(employee) {
     return this._httpClient.PostData("OTReservation/OtReservationAttendingDetailList", employee);
   }
-   public getRtrvpreOperAttendentList(employee) {
+  public getRtrvpreOperAttendentList(employee) {
     return this._httpClient.PostData("OTPreOperation/preOperationAttendentList", employee);
   }
   public getRtrvReservationSurgeryList(employee) {
@@ -159,12 +159,12 @@ export class OtPreoperationService {
     } else return this._httpClient.PostData("OTPreOperation/Insert", employee);
   }
 
-  // public getpreOPerById(Id) {
-  //   return this._httpClient.GetData("OTReservation/Getcheckinout/" + Id);
-  // }
+  public getpreOPerById(Id) {
+    return this._httpClient.GetData("OTPreOperation/" + Id);
+  }
 
-  // public getRtrvPreOPrdiagnosisList(employee) {
-  //   return this._httpClient.PostData("OTReservation/OtReservationDiagnosisList", employee);
-  // }
+  public getRtrvPreOPrdiagnosisList(employee) {
+    return this._httpClient.PostData("OTPreOperation/OtPreOperationDiagnosisList", employee);
+  }
 
 }

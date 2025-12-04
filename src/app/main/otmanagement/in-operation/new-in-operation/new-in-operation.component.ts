@@ -98,6 +98,7 @@ export class NewInOperationComponent {
   @ViewChild('ddlSurgerytype') ddlSurgerytype: AirmidDropDownComponent;
   @ViewChild('ddlDoctor') ddlDoctor: AirmidDropDownComponent;
   vreservationId: any;
+  registerObj3 = new OtReserInsert({});
   registerObj2 = new OtReserInsert({});
   registerObj1 = new OtReserInsert({});
   surgCategoryName: any;
@@ -159,11 +160,84 @@ export class NewInOperationComponent {
         });
       }, 500);
 
-      if (this.data.otReservationId) {
+      if (this.vInOperationId > 0) {
+        setTimeout(() => {
+          this._inOpearionService.getinOPerById(this.vInOperationId).subscribe((response) => {
+            this.registerObj3 = response;
+            console.log("Get InOper Data:", this.registerObj3)
+            this.vreservationId = this.registerObj3.otreservationId
+            this.opIpId = this.registerObj3.opipid
+            this.vSelectedOption = this.registerObj3.opiptype == 0 ? 'OP' : 'IP';
+            this.vbloodArranged = this.registerObj3.bloodArranged == true ? '1' : '0';
+            this.vpacrequired = this.registerObj3.pacrequired == true ? '1' : '0';
+            this.vequipmentsRequired = this.registerObj3.equipmentsRequired == true ? '1' : '0';
+            this.vinfective = this.registerObj3.infective == true ? '1' : '0';
+            this.vmopCount = this.registerObj3.mopCount == true ? '1' : '0';
+            this.vInterOPe = this.registerObj3.intraOpeChangeInSurgeryPlan == true ? '1' : '0';
+            this.inOperFinalForm.get('duration')?.setValue(this.registerObj3.duration)
+            this.inOperFinalForm.get('surgeryDate')?.setValue(this.registerObj3.surgeryDate)
+            this.inOperFinalForm.get('theaterInDate')?.setValue(this.registerObj3.theaterInDate)
+            this.inOperFinalForm.get('theaterOutData')?.setValue(this.registerObj3.theaterOutData)
+            this.inOperFinalForm.get('closureNotes')?.setValue(this.registerObj3.closureNotes)
+            this.inOperFinalForm.get('operativeFindingsNotes')?.setValue(this.registerObj3.operativeFindingsNotes)
+            this.inOperFinalForm.get('postOperativeNotes')?.setValue(this.registerObj3.postOperativeNotes)
+            this.inOperFinalForm.get('conditionOfPatientNotes')?.setValue(this.registerObj3.conditionOfPatientNotes)
+
+            if (this.registerObj3?.fromTime) {
+              const date = new Date(this.registerObj3.fromTime);
+              if (!isNaN(date.getTime())) {
+                const hours = date.getHours().toString().padStart(2, '0');
+                const minutes = date.getMinutes().toString().padStart(2, '0');
+                const formattedTime = `${hours}:${minutes}`; // e.g. "13:01"
+                setTimeout(() => {
+                  this.inOperFinalForm.get('fromTime')?.setValue(formattedTime);
+                });
+              }
+            }
+
+            if (this.registerObj3?.toTime) {
+              const date = new Date(this.registerObj3.toTime);
+              if (!isNaN(date.getTime())) {
+                const hours = date.getHours().toString().padStart(2, '0');
+                const minutes = date.getMinutes().toString().padStart(2, '0');
+                const formattedTime = `${hours}:${minutes}`; // e.g. "13:01"
+                setTimeout(() => {
+                  this.inOperFinalForm.get('toTime')?.setValue(formattedTime);
+                });
+              }
+            }
+
+            const formatted = this.registerObj3.theaterInTime; // "04-12-2025 13:00:00"
+
+            if (formatted) {
+              const timePart = formatted.split(' ')[1]; // "13:00:00"
+              let [h, m] = timePart.split(':').map(Number);
+              const ampm = h >= 12 ? 'PM' : 'AM';
+              h = h % 12;
+              if (h === 0) h = 12; // convert 0 to 12 for 12h format
+              const finalTime = `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')} ${ampm}`;
+              this.inOperFinalForm.get('theaterInTime')?.setValue(finalTime);
+            }
+
+
+            const formatted2 = this.registerObj3.theaterOutTime;
+            if (formatted2) {
+              const timePart = formatted2.split(' ')[1]; // "13:00:00"
+              const [hours, minutes, seconds] = timePart.split(':').map(Number);
+
+              const timeOnly = new Date();
+              timeOnly.setHours(hours, minutes, seconds || 0, 0);
+
+              this.inOperFinalForm.get('theaterOutTime')?.setValue(timeOnly);
+            }
+
+          });
+        }, 500);
+      } else if (this.data.otReservationId) {
         setTimeout(() => {
           this._inOpearionService.getotReservationById(this.data.otReservationId).subscribe((response) => {
             this.registerObj2 = response;
-            console.log("Get Data:", this.registerObj2)
+            console.log("Get Rserv Data:", this.registerObj2)
             this.vreservationId = this.registerObj2.otreservationId
             this.opIpId = this.registerObj2.opipid
             this.vSelectedOption = this.registerObj2.opiptype == 0 ? 'OP' : 'IP';
@@ -173,28 +247,6 @@ export class NewInOperationComponent {
             this.inOperFinalForm.get('surgeryDate')?.setValue(this.registerObj2.surgeryDate)
           });
         }, 500);
-      }
-
-      if (this.vInOperationId > 0) {
-        // setTimeout(() => {
-        //   this._inOpearionService.getpreOPerById(this.vPreOperationId).subscribe((response) => {
-        //     this.registerObj3 = response;
-        //     console.log("Get Data:", this.registerObj3)
-        //     this.vreservationId = this.registerObj3.otreservationId
-        //     this.opIpId = this.registerObj3.opipid
-        //     this.vSelectedOption = this.registerObj3.opiptype == 0 ? 'OP' : 'IP';
-        //     this.vbloodArg = this.registerObj3.bloodArranged == true ? '1' : '0';
-        //     this.vpacrequired = this.registerObj3.pacrequired == true ? '1' : '0';
-        //     this.vequipmentsRequired = this.registerObj3.equipmentsRequired == true ? '1' : '0';
-        //     this.vinfective = this.registerObj3.infective == true ? '1' : '0';
-        //     this.vbloodArranged = this.registerObj3.infective == true ? '1' : '0';
-        //     this.vmopCount = this.registerObj3.mopCount == true ? '1' : '0';
-        //     this.vInterOPe = this.registerObj3.intraOpeChangeInSurgeryPlan == true ? '1' : '0';
-        //     this.inOperFinalForm.get('duration')?.setValue(this.registerObj3.duration)
-        //     this.inOperFinalForm.get('fromTime')?.setValue(this.registerObj3.fromTime.trim())
-        //     this.inOperFinalForm.get('toTime')?.setValue(this.registerObj3.toTime.trim())
-        //   });
-        // }, 500);
       }
 
       this.inOperFinalForm.patchValue(this.registerObj1);
@@ -226,7 +278,7 @@ export class NewInOperationComponent {
       duration: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       fromTime: [this.datePipe.transform(new Date(), 'shortTime'), [this._FormvalidationserviceService.allowEmptyStringValidator()]],
       toTime: [this.datePipe.transform(new Date(), 'shortTime'), [this._FormvalidationserviceService.allowEmptyStringValidator()]],
-      bloodLoss: [0, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator()]],
+      bloodLoss: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       stepsOfProc: [''],
       anesthesiaType: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       theaterInDate: [this.datePipe.transform(new Date(), 'yyyy-MM-dd'), [this._FormvalidationserviceService.allowEmptyStringValidator(), this._FormvalidationserviceService.validDateValidator()]],
@@ -643,8 +695,8 @@ export class NewInOperationComponent {
     });
   }
 
-   getInOperPostdiagnosisList() {
-    this.addDiagnolist = [];
+  getInOperPostdiagnosisList() {
+    this.addDiagnolist1 = [];
     this.AllTypeDescription = [];
 
     const vdata = {
@@ -667,14 +719,14 @@ export class NewInOperationComponent {
         let Diagnosis = this.RtrvDescriptionList.filter(item => item.descriptionType === 'postDiagnosis');
         if (Diagnosis.length > 0) {
           Diagnosis.forEach(element => {
-            this.addDiagnolist.push(
+            this.addDiagnolist1.push(
               {
                 otinOperationPostOperDiagnosisDetId: element.otinOperationPostOperDiagnosisDetId,
                 descriptionName: element.descriptionName
               }
             )
           })
-          this.inOperFinalForm.get('postDiagnosis').setValue(this.addDiagnolist);
+          this.inOperFinalForm.get('postDiagnosis').setValue(this.addDiagnolist1);
           console.log("Post DIAGNOSIS DATA:", this.inOperFinalForm.get('postDiagnosis').value)
         }
       }
@@ -1134,12 +1186,16 @@ export class NewInOperationComponent {
 
   onSubmit() {
     const formattedDate = this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd");
+    const formattedtheaterInDate = this.datePipe.transform(this.inOperFinalForm.get('theaterInDate').value, "yyyy-MM-dd");
+    const formattedtheaterOutDate = this.datePipe.transform(this.inOperFinalForm.get('theaterOutData').value, "yyyy-MM-dd");
     const formattedTime = formattedDate + this.dateTimeObj.time;
 
     this.inOperFinalForm.get('opipid').setValue(this.opIpId);
     this.inOperFinalForm.get('otinOperationId')?.setValue(this.vInOperationId || 0);
     this.inOperFinalForm.get('otinOperationDate').setValue(formattedDate);
     this.inOperFinalForm.get('otinOperationTime').setValue(formattedTime);
+    this.inOperFinalForm.get('theaterInDate').setValue(formattedtheaterInDate);
+    this.inOperFinalForm.get('theaterOutData').setValue(formattedtheaterOutDate);
 
     if (this.addDiagnolist.length > 0) {
       this.addDiagnolist.forEach(element => {
@@ -1166,11 +1222,11 @@ export class NewInOperationComponent {
 
       this.inOperFinalForm.get('otreservationId')?.setValue(this.vreservationId ?? 0);
       this.inOperFinalForm.get('otinOperationId')?.setValue(this.vInOperationId ?? 0);
-      this.inOperFinalForm.get('opiptype')?.setValue(this.inOperFinalForm.get('opiptype')?.value === 'IP' ? '1' : '0');
-      this.inOperFinalForm.get('bloodArranged')?.setValue(this.inOperFinalForm.get('bloodArranged')?.value === true ? 1 : 0);
-      this.inOperFinalForm.get('pacrequired')?.setValue(this.inOperFinalForm.get('pacrequired')?.value === true ? 1 : 0);
-      this.inOperFinalForm.get('equipmentsRequired')?.setValue(this.inOperFinalForm.get('equipmentsRequired')?.value === true ? 1 : 0);
-      this.inOperFinalForm.get('infective')?.setValue(this.inOperFinalForm.get('infective')?.value === true ? 1 : 0);
+      this.inOperFinalForm.get('opiptype').setValue(this.vSelectedOption === "OP" ? 0 : 1);
+      // this.inOperFinalForm.get('bloodArranged')?.setValue(this.inOperFinalForm.get('bloodArranged')?.value === true ? 1 : 0);
+      // this.inOperFinalForm.get('pacrequired')?.setValue(this.inOperFinalForm.get('pacrequired')?.value === true ? 1 : 0);
+      // this.inOperFinalForm.get('equipmentsRequired')?.setValue(this.inOperFinalForm.get('equipmentsRequired')?.value === true ? 1 : 0);
+      // this.inOperFinalForm.get('infective')?.setValue(this.inOperFinalForm.get('infective')?.value === true ? 1 : 0);
       this.inOperFinalForm.get('clearanceMedical')?.setValue(this.inOperFinalForm.get('clearanceMedical')?.value === true ? 1 : 0);
       this.inOperFinalForm.get('clearanceFinancial')?.setValue(this.inOperFinalForm.get('clearanceFinancial')?.value === true ? 1 : 0);
 

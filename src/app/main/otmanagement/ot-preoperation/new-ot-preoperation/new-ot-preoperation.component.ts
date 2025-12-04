@@ -98,7 +98,7 @@ export class NewOtPreoperationComponent {
   registerObj3 = new OtReserInsert({});
   vreservationType: any = "1";
   vpacrequired: any = "1";
-  vbloodArg: any = "1";
+  vbloodArranged: any = "1";
   vequipmentsRequired: any = "1";
   vinfective: any = "1";
   vreservationId: any;
@@ -164,11 +164,55 @@ export class NewOtPreoperationComponent {
         });
       }, 500);
 
-      if (this.data.otReservationId) {
+
+      if (this.vPreOperationId > 0) {
+        setTimeout(() => {
+          this._OTPreOperationService.getpreOPerById(this.vPreOperationId).subscribe((response) => {
+            this.registerObj3 = response;
+            console.log("Get PreOper Data:", this.registerObj3)
+            this.vreservationId = this.registerObj3.otreservationId
+            this.opIpId = this.registerObj3.opipid
+            this.vSelectedOption = this.registerObj3.opiptype == 0 ? 'OP' : 'IP';
+            this.vbloodArranged = this.registerObj3.bloodArranged == true ? '1' : '0';
+            this.vpacrequired = this.registerObj3.pacrequired == true ? '1' : '0';
+            this.vequipmentsRequired = this.registerObj3.equipmentsRequired == true ? '1' : '0';
+            this.vinfective = this.registerObj3.infective == true ? '1' : '0';
+            this.preOperationFinalForm.get('clearanceMedical')?.setValue(this.registerObj3.clearanceMedical)
+            this.preOperationFinalForm.get('clearanceFinancial')?.setValue(this.registerObj3.clearanceFinancial)
+            this.preOperationFinalForm.get('duration')?.setValue(this.registerObj3.duration)
+            this.preOperationFinalForm.get('surgeryDate')?.setValue(this.registerObj3.surgeryDate)
+            if (this.registerObj3?.fromTime) {
+              const date = new Date(this.registerObj3.fromTime);
+              if (!isNaN(date.getTime())) {
+                const hours = date.getHours().toString().padStart(2, '0');
+                const minutes = date.getMinutes().toString().padStart(2, '0');
+                const formattedTime = `${hours}:${minutes}`; // e.g. "13:01"
+                setTimeout(() => {
+                  this.preOperationFinalForm.get('fromTime')?.setValue(formattedTime);
+                });
+                console.log("Control value after patch:", this.preOperationFinalForm.get('fromTime')?.value);
+              }
+            }
+
+            if (this.registerObj3?.toTime) {
+              const date = new Date(this.registerObj3.toTime);
+              if (!isNaN(date.getTime())) {
+                const hours = date.getHours().toString().padStart(2, '0');
+                const minutes = date.getMinutes().toString().padStart(2, '0');
+                const formattedTime = `${hours}:${minutes}`; // e.g. "13:01"
+                setTimeout(() => {
+                  this.preOperationFinalForm.get('toTime')?.setValue(formattedTime);
+                });
+                console.log("Control value after patch:", this.preOperationFinalForm.get('toTime')?.value);
+              }
+            }
+          });
+        }, 500);
+      } else if (this.data.otReservationId) {
         setTimeout(() => {
           this._OTPreOperationService.getotReservationById(this.data.otReservationId).subscribe((response) => {
             this.registerObj2 = response;
-            console.log("Get Data:", this.registerObj2)
+            console.log("Get Reservation Data:", this.registerObj2)
             this.vreservationId = this.registerObj2.otreservationId
             this.opIpId = this.registerObj2.opipid
             this.vSelectedOption = this.registerObj2.opiptype == 0 ? 'OP' : 'IP';
@@ -181,29 +225,10 @@ export class NewOtPreoperationComponent {
         }, 500);
       }
 
-      if (this.vPreOperationId > 0) {
-        // setTimeout(() => {
-        //   this._OTPreOperationService.getpreOPerById(this.vPreOperationId).subscribe((response) => {
-        //     this.registerObj3 = response;
-        //     console.log("Get Data:", this.registerObj3)
-        //     this.vreservationId = this.registerObj3.otreservationId
-        //     this.opIpId = this.registerObj3.opipid
-        //     this.vSelectedOption = this.registerObj3.opiptype == 0 ? 'OP' : 'IP';
-        //     this.vbloodArg = this.registerObj3.bloodArg == true ? '1' : '0';
-        //     this.vpacrequired = this.registerObj3.pacrequired == true ? '1' : '0';
-        //     this.vequipmentsRequired = this.registerObj3.equipmentsRequired == true ? '1' : '0';
-        //     this.vinfective = this.registerObj3.infective == true ? '1' : '0';
-        //     this.preOperationFinalForm.get('duration')?.setValue(this.registerObj3.duration)
-        //     this.preOperationFinalForm.get('fromTime')?.setValue(this.registerObj3.fromTime.trim())
-        //     this.preOperationFinalForm.get('toTime')?.setValue(this.registerObj3.toTime.trim())
-        //   });
-        // }, 500);
-      }
-
       this.preOperationFinalForm.patchValue(this.registerObj1);
       if (this.vPreOperationId > 0) {
         this.getPreOperCatLabdiagnosisList();
-        // this.getPreOperdiagnosisList();
+        this.getPreOperdiagnosisList();
         this.getPreOperSurgeryDetList();
         this.getPreOperAttendentDetList();
       } else {
@@ -214,6 +239,21 @@ export class NewOtPreoperationComponent {
     }
   }
 
+  formatDateTime(isoString: string) {
+    const date = new Date(isoString);
+
+    const dd = String(date.getDate()).padStart(2, '0');
+    const mm = String(date.getMonth() + 1).padStart(2, '0'); // months are 0-based
+    const yyyy = date.getFullYear();
+
+    const hh = String(date.getHours()).padStart(2, '0');
+    const min = String(date.getMinutes()).padStart(2, '0');
+    const sec = String(date.getSeconds()).padStart(2, '0');
+
+    return `${dd}-${mm}-${yyyy} ${hh}:${min}:${sec}`;
+  }
+
+
   createOtPreOperationFinalForm() {
     return this._formBuilder.group({
       otpreOperationId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -221,14 +261,14 @@ export class NewOtPreoperationComponent {
       otpreOperationDate: [this.datePipe.transform(new Date(), 'yyyy-MM-dd'), [this._FormvalidationserviceService.allowEmptyStringValidator(), this._FormvalidationserviceService.validDateValidator()]],
       otpreOperationTime: [this.datePipe.transform(new Date(), 'shortTime'), [this._FormvalidationserviceService.allowEmptyStringValidator()]],
       opipid: [0],
-      opiptype: 1,
+      opiptype: 0,
       categoryType: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       ottable: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       surgeryDate: [this.datePipe.transform(new Date(), 'yyyy-MM-dd'), [this._FormvalidationserviceService.allowEmptyStringValidator(), this._FormvalidationserviceService.validDateValidator()]],
       duration: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       fromTime: [this.datePipe.transform(new Date(), 'shortTime'), [this._FormvalidationserviceService.allowEmptyStringValidator()]],
       toTime: [this.datePipe.transform(new Date(), 'shortTime'), [this._FormvalidationserviceService.allowEmptyStringValidator()]],
-      bloodArg: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      bloodArranged: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       pacrequired: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       equipmentsRequired: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       infective: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -347,40 +387,6 @@ export class NewOtPreoperationComponent {
   getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;
   }
-  onChangeReg(event) {
-    if (event.value == 'OP') {
-      this.opIpType = 0;
-      this.opIpId = "";
-    }
-    else if (event.value == 'IP') {
-      this.opIpType = 1;
-      this.opIpId = "";
-    }
-    this.patientInfoReset();
-  }
-
-  getSelectedObjIP(obj) {
-    if ((obj.regID ?? 0) > 0) {
-      this.registerObj1 = obj
-      console.log("Admitted patient:", this.registerObj1)
-      this.vRegNo = obj.regNo
-      this.vPatientName = obj.firstName + " " + obj.middleName + " " + obj.lastName
-      this.vIPDNo = obj.ipdNo
-      this.opIpId = obj.admissionID;
-    }
-  }
-  getSelectedObjOP(obj) {
-    if ((obj.regId ?? 0) > 0) {
-      this.registerObj1 = obj
-      console.log("Visite Patient:", this.registerObj1)
-      this.vRegNo = obj.regNo
-      this.vOPDNo = obj.opdNo
-      let nameField = obj.formattedText;
-      let extractedName = nameField.split('|')[0].trim();
-      this.vPatientName = extractedName;
-      this.opIpId = obj.visitId;
-    }
-  }
 
   addDiagnolist: any = [];
   selectChangeDiagnosis(selectedChips: string[]) {
@@ -426,46 +432,46 @@ export class NewOtPreoperationComponent {
   }
 
   // api pending
-  // getPreOperdiagnosisList() {
-  //   this.addDiagnolist = [];
-  //   this.AllTypeDescription = [];
+  getPreOperdiagnosisList() {
+    this.addDiagnolist = [];
+    this.AllTypeDescription = [];
 
-  //   const vdata = {
-  //     "first": 0,
-  //     "rows": 10,
-  //     "sortField": "OTPreOperationId",
-  //     "sortOrder": 0,
-  //     "filters": [
-  //       { "fieldName": "OTPreOperationId", "fieldValue": String(this.vPreOperationId), "opType": "Equals" }
-  //     ],
-  //     "exportType": "JSON",
-  //     "columns": []
-  //   }
+    const vdata = {
+      "first": 0,
+      "rows": 10,
+      "sortField": "OTPreOperationId",
+      "sortOrder": 0,
+      "filters": [
+        { "fieldName": "OTPreOperationId", "fieldValue": String(this.vPreOperationId), "opType": "Equals" }
+      ],
+      "exportType": "JSON",
+      "columns": []
+    }
 
-  //   this._OTPreOperationService.getRtrvPreOPrdiagnosisList(vdata).subscribe(response => {
+    this._OTPreOperationService.getRtrvPreOPrdiagnosisList(vdata).subscribe(response => {
 
-  //     if (response && Array.isArray(response.data)) {
-  //       this.RtrvDescriptionList = response.data;
-  //       // Process Diagnosis
-  //       let Diagnosis = this.RtrvDescriptionList.filter(item => item.descriptionType === 'Diagnosis');
-  //       if (Diagnosis.length > 0) {
-  //         Diagnosis.forEach(element => {
-  //           this.addDiagnolist.push(
-  //             {
-  //               otpreOperationAttendingDetId: element.otpreOperationAttendingDetId,
-  //               descriptionName: element.descriptionName
-  //             }
-  //           )
-  //         })
-  //         this.preOperationFinalForm.get('diagnosis').setValue(this.addDiagnolist);
-  //         console.log("DIAGNOSIS DATA:", this.preOperationFinalForm.get('diagnosis').value)
-  //       }
-  //     }
-  //   });
-  // }
+      if (response && Array.isArray(response.data)) {
+        this.RtrvDescriptionList = response.data;
+        // Process Diagnosis
+        let Diagnosis = this.RtrvDescriptionList.filter(item => item.descriptionType === 'Diagnosis');
+        if (Diagnosis.length > 0) {
+          Diagnosis.forEach(element => {
+            this.addDiagnolist.push(
+              {
+                otpreOperationDiagnosisDetId: element.otpreOperationDiagnosisDetId,
+                descriptionName: element.descriptionName
+              }
+            )
+          })
+          this.preOperationFinalForm.get('diagnosis').setValue(this.addDiagnolist);
+          console.log("DIAGNOSIS DATA:", this.preOperationFinalForm.get('diagnosis').value)
+        }
+      }
+    });
+  }
 
   getPreOperCatLabdiagnosisList() {
-    this.addDiagnolist = [];
+    this.addcathLabDiagnolist = [];
     this.AllTypeDescription = [];
 
     const vdata = {
@@ -487,14 +493,14 @@ export class NewOtPreoperationComponent {
         let Diagnosis = this.RtrvDescriptionList.filter(item => item.descriptionType === 'CathLabDiagnosis');
         if (Diagnosis.length > 0) {
           Diagnosis.forEach(element => {
-            this.addDiagnolist.push(
+            this.addcathLabDiagnolist.push(
               {
                 otpreOperationCathLabDiagnosisDetId: element.otpreOperationCathLabDiagnosisDetId,
                 descriptionName: element.descriptionName
               }
             )
           })
-          this.preOperationFinalForm.get('cathLabDiagnosis').setValue(this.addDiagnolist);
+          this.preOperationFinalForm.get('cathLabDiagnosis').setValue(this.addcathLabDiagnolist);
           console.log("Cath lab DIAGNOSIS DATA:", this.preOperationFinalForm.get('cathLabDiagnosis').value)
         }
       }
@@ -1001,6 +1007,12 @@ export class NewOtPreoperationComponent {
 
   /////////////////////////////// attendent detail part end/////////////////////////////
 
+  selectedDate:any;
+  onSurgeryDateChange(event: any) {
+    this.selectedDate = event.value;   // This is a Date object
+    console.log("Selected:", this.selectedDate);
+  }
+
   onSubmit() {
     const formattedDate = this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd");
     const formattedTime = formattedDate + this.dateTimeObj.time;
@@ -1035,11 +1047,8 @@ export class NewOtPreoperationComponent {
 
       this.preOperationFinalForm.get('otreservationId')?.setValue(this.vreservationId ?? 0);
       this.preOperationFinalForm.get('otpreOperationId')?.setValue(this.vPreOperationId ?? 0);
-      this.preOperationFinalForm.get('opiptype')?.setValue(this.preOperationFinalForm.get('opiptype')?.value === 'IP' ? '1' : '0');
-      this.preOperationFinalForm.get('bloodArg')?.setValue(this.preOperationFinalForm.get('bloodArg')?.value === true ? 1 : 0);
-      this.preOperationFinalForm.get('pacrequired')?.setValue(this.preOperationFinalForm.get('pacrequired')?.value === true ? 1 : 0);
-      this.preOperationFinalForm.get('equipmentsRequired')?.setValue(this.preOperationFinalForm.get('equipmentsRequired')?.value === true ? 1 : 0);
-      this.preOperationFinalForm.get('infective')?.setValue(this.preOperationFinalForm.get('infective')?.value === true ? 1 : 0);
+      this.preOperationFinalForm.get('opiptype').setValue(this.vSelectedOption === "OP" ? 0 : 1);
+    this.preOperationFinalForm.get('surgeryDate')?.setValue(this.selectedDate);
 
       if (this.dssurgeryDetailList.data.length === 0) {
         this.toastr.warning('Data is not available in list ,please add surgery details in the list.', 'Warning');

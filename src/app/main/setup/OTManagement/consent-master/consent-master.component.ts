@@ -7,46 +7,50 @@ import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/air
 import { ToastrService } from 'ngx-toastr';
 import { ConsentMasterService } from './consent-master.service';
 import { NewConsentMasterComponent } from './new-consent-master/new-consent-master.component';
+import { PagePermissionService } from 'app/main/shared/services/page-permission.service';
+import { permissionCodes, permissionType } from 'app/main/shared/model/permission.model';
 
 @Component({
-  selector: 'app-consent-master',
-  templateUrl: './consent-master.component.html',
-  styleUrls: ['./consent-master.component.scss'],
-  encapsulation: ViewEncapsulation.None,
-                animations: fuseAnimations,
+    selector: 'app-consent-master',
+    templateUrl: './consent-master.component.html',
+    styleUrls: ['./consent-master.component.scss'],
+    encapsulation: ViewEncapsulation.None,
+    animations: fuseAnimations,
 })
 export class ConsentMasterComponent implements OnInit {
- msg: any;
+    msg: any;
     consentName: any = "";
+    IsAdd: boolean = this.permissionService.getPermission(permissionCodes.SetupOtManagment, permissionType.Add);
 
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
-   
-        allColumns = [
-            // { heading: "Code", key: "consentId", sort: true, align: 'left', emptySign: 'NA' ,width:150},
-            { heading: "OT Consent Name", key: "consentName", sort: true, align: 'left', emptySign: 'NA',width:300 },
-            { heading: "Consent Desc ", key: "consentDesc", sort: true, align: 'left', emptySign: 'NA' ,width:350 },
-            { heading: "Department Name", key: "departmentName", sort: true, align: 'left', emptySign: 'NA' ,width:200 },
-           // { heading: "isActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
-            {
-                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
-                    {
-                        action: gridActions.edit, callback: (data: any) => {
-                            this.onSave(data);
-                        }
-                    }, {
-                        action: gridActions.delete, callback: (data: any) => {
-                            this._ConsentMasterService.deactivateTheStatus(data.consentId).subscribe((response: any) => {
-                                this.grid.bindGridData();
-                            });
-                        }
-                    }]
-            } //Action 1-view, 2-Edit,3-delete
-        ]
-       allFilters =  [
-            { fieldName: "consent name", fieldValue: "", opType: OperatorComparer.StartsWith },
-            { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
-        ]
+
+    allColumns = [
+        // { heading: "Code", key: "consentId", sort: true, align: 'left', emptySign: 'NA' ,width:150},
+        { heading: "OT Consent Name", key: "consentName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
+        { heading: "Consent Desc ", key: "consentDesc", sort: true, align: 'left', emptySign: 'NA', width: 350 },
+        { heading: "Department Name", key: "departmentName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+        // { heading: "isActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
+        {
+            heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+                {
+                    action: gridActions.edit, visible: this.permissionService.getPermission(permissionCodes.SetupOtManagment, permissionType.Edit), callback: (data: any) => {
+                        this.onSave(data);
+                    }
+                }, {
+                    action: gridActions.delete, visible: this.permissionService.getPermission(permissionCodes.SetupOtManagment, permissionType.Delete), callback: (data: any) => {
+                        this._ConsentMasterService.deactivateTheStatus(data.consentId).subscribe((response: any) => {
+                            this.grid.bindGridData();
+                        });
+                    }
+                }]
+        } //Action 1-view, 2-Edit,3-delete
+    ]
+    allFilters = [
+        { fieldName: "consent name", fieldValue: "", opType: OperatorComparer.StartsWith },
+        { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+    ]
     gridConfig: gridModel = {
+        permissionCode: permissionCodes.SetupOtManagment,
         apiUrl: "ConsentMaster/List",
         columnsList: this.allColumns,
         sortField: "ConsentId",
@@ -56,6 +60,7 @@ export class ConsentMasterComponent implements OnInit {
 
     constructor(
         public _ConsentMasterService: ConsentMasterService,
+        public permissionService: PagePermissionService,
         public toastr: ToastrService, public _matDialog: MatDialog
     ) { }
 
