@@ -49,26 +49,26 @@ export class UpdateSMSComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.getMappingSMS();
-    this.getMSGCategoryList();
-    this.getMSGCategory();
+    // this.getMappingSMS();
+    // this.getMSGCategoryList();
+    // this.getMSGCategory();
   }
-  getMSGCategory(){
-    this._SMSConfigService.getMSGCategory().subscribe(data =>{
-      this.MSGCategory = data ;
-    });
-  }
-  getMappingSMS(){
-    this._SMSConfigService.getMappinfSMS().subscribe(data =>{
-      this.dsmappingList.data = data as MappingList[];
-    });
-  }
-  getMSGCategoryList(){
-    this._SMSConfigService.getMSGCategoryList().subscribe(data =>{
-      this.dsTemplateList.data = data as TemplateList[] ;
-      console.log(this.dsTemplateList.data)
-    });
-  }
+  // getMSGCategory(){
+  //   this._SMSConfigService.getMSGCategory().subscribe(data =>{
+  //     this.MSGCategory = data ;
+  //   });
+  // }
+  // getMappingSMS(){
+  //   this._SMSConfigService.getMappinfSMS().subscribe(data =>{
+  //     this.dsmappingList.data = data as MappingList[];
+  //   });
+  // }
+  // getMSGCategoryList(){
+  //   this._SMSConfigService.getMSGCategoryList().subscribe(data =>{
+  //     this.dsTemplateList.data = data as TemplateList[] ;
+  //     console.log(this.dsTemplateList.data)
+  //   });
+  // }
   OnSelectTemplate(contact){
     console.log(contact)
     this.vTemplateId = contact.TemplateId;

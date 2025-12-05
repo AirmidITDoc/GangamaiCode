@@ -23,7 +23,7 @@ export class SMSConfugurationComponent implements OnInit {
   MySearchForm: FormGroup;
   whatsappfilterForm: FormGroup;
   emailfilterForm: FormGroup;
-
+  auditFilterForm: FormGroup;
 
   msg: any;
   fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
@@ -44,6 +44,9 @@ export class SMSConfugurationComponent implements OnInit {
 
    @ViewChild('actionisSent') actionisSent!: TemplateRef<any>;
   @ViewChild('actionisSendMail') actionisSendMail!: TemplateRef<any>;
+   @ViewChild(AirmidTableComponent) auditgrid: AirmidTableComponent;
+
+
   ngAfterViewInit() {
      this.gridConfig.columnsList.find(col => col.key === 'isSent')!.template = this.actionisSent;
     this.gridConfig2.columnsList.find(col => col.key === 'isSendMail')!.template = this.actionisSendMail;
@@ -153,6 +156,35 @@ export class SMSConfugurationComponent implements OnInit {
     sortOrder: 0,
     filters: this.allFiltersemail
   }
+//audit
+
+  allColumnsaudit = [
+    { heading: "ActionBy Name", key: "actionByName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+    { heading: "Entity Name", key: "entityName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+    { heading: "Description", key: "description", sort: true, align: 'left', emptySign: 'NA', width: 300 },
+    { heading: "Additional Info", key: "additionalInfo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+    { heading: "LogTypeId", key: "logTypeId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+    { heading: "LogSource", key: "logSourceId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+    { heading: "Created On", key: "createdOn", sort: true, align: 'left', emptySign: 'NA', width: 100, type: 6 },
+
+    // {
+    //   heading: "Action", key: "action", align: "right", width: 180, sticky: true, type: gridColumnTypes.template,
+    //   template: this.actionButtonTemplate2  // Assign ng-template to the column
+    // }
+  ]
+  allFiltersaudit = [
+    { fieldName: "ActionByName", fieldValue: this.ActionByName, opType: OperatorComparer.StartsWith },
+    { fieldName: "From_Dt", fieldValue: this.fromDate2, opType: OperatorComparer.Equals },
+    { fieldName: "To_Dt", fieldValue: this.toDate2, opType: OperatorComparer.Equals },
+  ]
+
+  gridConfig3: gridModel = {
+    apiUrl: "Configuration/AuditLogList",
+    columnsList: this.allColumnsaudit,
+    sortField: "Id",
+    sortOrder: 0,
+    filters: this.allFiltersaudit
+  }
 
 
   constructor(
@@ -167,7 +199,7 @@ export class SMSConfugurationComponent implements OnInit {
     this.MySearchForm = this._SMSConfigService.CreateSearchForm();
     this.whatsappfilterForm = this._SMSConfigService.CreatewhatsappSearchForm();
     this.emailfilterForm = this._SMSConfigService.CreateemailSearchForm();
-
+this.auditFilterForm = this._SMSConfigService.CreateauditForm();
   }
 
 
@@ -308,7 +340,40 @@ export class SMSConfugurationComponent implements OnInit {
     });
 
   }
+  onChangeaudit() {
+    this.fromDate2 = this.datePipe.transform(this.auditFilterForm.get('fromDate').value, "yyyy-MM-dd")
+    this.toDate2 = this.datePipe.transform(this.auditFilterForm.get('enddate').value, "yyyy-MM-dd")
 
+    this.ActionByName = this.auditFilterForm.get('ActionByName').value
+
+    this.getfilterdataaudit();
+  }
+
+  getfilterdataaudit() {
+    debugger
+
+    this.gridConfig3 = {
+      apiUrl: "Configuration/AuditLogList",
+      columnsList: this.allColumnsaudit,
+      sortField: "Id",
+      sortOrder: 0,
+      filters: [
+        { fieldName: "ActionByName", fieldValue: this.ActionByName, opType: OperatorComparer.StartsWith },
+    { fieldName: "From_Dt", fieldValue: this.fromDate2, opType: OperatorComparer.Equals },
+    { fieldName: "To_Dt", fieldValue: this.toDate2, opType: OperatorComparer.Equals },
+      ]
+    }
+    this.auditgrid.gridConfig = this.gridConfig3;
+    this.auditgrid.bindGridData();
+  }
+
+  Clearfilteraudit(event) {
+    console.log(event)
+    if (event == 'ActionByName') {
+      this.auditFilterForm.get('ActionByName').setValue("")
+      this.onChangeaudit()
+    }
+  }
 
   getValidationMessages() {
     return {

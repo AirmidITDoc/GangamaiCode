@@ -1,0 +1,101 @@
+<div id="content" class="simple page-layout inner-scroll inner-sidebar left-sidebar" dynamicTableHeight>
+    <mat-toolbar class="accent" style="width: 100%;justify-content: space-between;height: 40px;">
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="color: white;">
+                Edit SMS Configuration
+            </span>
+        </div>
+        <div class="close-icon">
+            <button mat-icon-button tabIndex="-1" (click)="onClose()" aria-label="Close dialog">
+                <mat-icon>close</mat-icon>
+            </button>
+        </div>
+    </mat-toolbar>
+    <div class="content">
+        <div class="center p-12 pb-56" style="border-radius: 4px;">
+            <div fxLayout="column" fxLayoutGap="10px">
+                <div fxLayout="row" fxLayoutGap="10px">
+
+
+                    <div fxFlex.gt-sm="95%" fxFlex>
+                        <form [formGroup]="EmailForm">
+                            <div fxLayout="column" fxLayoutGap="10px">
+
+                                <div fxLayout="row" fxLayoutGap="100px">
+                                    <mat-form-field appearance="outline" fxFlex="25%">
+                                        <mat-label>Display Name </mat-label>
+                                        <input matInput name="displayName" formControlName="displayName"
+                                            type="text" [(ngModel)]="displayName" required>
+                                    </mat-form-field>
+
+                                  
+
+                                     <mat-form-field appearance="outline" fxFlex="25%">
+                                        <mat-label>Email Address</mat-label>
+                                        <input matInput name="emailAddress" formControlName="emailAddress"
+                                            type="text" [(ngModel)]="emailAddress" required>
+                                    </mat-form-field>
+
+                                   <mat-form-field appearance="outline" fxFlex="25%">
+                                        <mat-label>Smtp Port</mat-label>
+                                        <input matInput name="smtpPort" formControlName="smtpPort"
+                                            type="text" [(ngModel)]="smtpPort" required>
+                                    </mat-form-field>
+
+                                  
+
+                                     <mat-form-field appearance="outline" fxFlex="25%">
+                                        <mat-label>Mail Server Smtp</mat-label>
+                                        <input matInput name="mailServerSmtp" formControlName="mailServerSmtp"
+                                            type="text" [(ngModel)]="mailServerSmtp" required>
+                                    </mat-form-field>
+
+
+                                </div>
+
+                                 <div fxLayout="row" fxLayoutGap="100px">
+                                    <mat-form-field appearance="outline" fxFlex="25%">
+                                        <mat-label>Server Timeout</mat-label>
+                                        <input matInput name="serverTimeout" formControlName="serverTimeout"
+                                            type="text" [(ngModel)]="serverTimeout" required>
+                                    </mat-form-field>
+
+                                  
+
+                                     <mat-form-field appearance="outline" fxFlex="25%">
+                                        <mat-label>userName</mat-label>
+                                        <input matInput name="userName" formControlName="userName"
+                                            type="text" [(ngModel)]="userName" required>
+                                    </mat-form-field>
+
+                                   <mat-form-field appearance="outline" fxFlex="25%">
+                                        <mat-label>password</mat-label>
+                                        <input matInput name="password" formControlName="password"
+                                            type="text" [(ngModel)]="password" required>
+                                    </mat-form-field>
+
+                                  
+
+                                     <mat-form-field appearance="outline" fxFlex="25%">
+                                        <mat-label>smtpSsl</mat-label>
+                                        <input matInput name="smtpSsl" formControlName="smtpSsl"
+                                            type="text" [(ngModel)]="smtpSsl" required>
+                                    </mat-form-field>
+
+
+                                </div>
+
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div>
+        <div class="modal-footer-buttons" fxLayoutAlign="end center" style="padding: 10px;">
+            <button class="btn btn-danger-outline" (click)="OnReset()">Close</button>&nbsp;
+            <button class="btn btn-primary" (click)="OnSave">Save</button>
+        </div>
+    </div>
+</div>
