@@ -7,6 +7,8 @@ import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/air
 import { ToastrService } from "ngx-toastr";
 import { DoctortypeMasterService } from "./doctortype-master.service";
 import { NewDoctorTypeComponent } from "./new-doctor-type/new-doctor-type.component";
+import { PagePermissionService } from "app/main/shared/services/page-permission.service";
+import { permissionCodes, permissionType } from "app/main/shared/model/permission.model";
 
 @Component({
     selector: "app-doctortype-master",
@@ -16,19 +18,24 @@ import { NewDoctorTypeComponent } from "./new-doctor-type/new-doctor-type.compon
     animations: fuseAnimations,
 })
 export class DoctortypeMasterComponent implements OnInit {
+    IsAdd: boolean = this.permissionService.getPermission(permissionCodes.DoctorTypeMaster, permissionType.Add);
+
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
 
 
     gridConfig: gridModel = {
+        permissionCode: permissionCodes.DoctorTypeMaster,
         apiUrl: "DoctorTypeMaster/List",
         columnsList: [
-            // { heading: "Code", key: "id", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "DoctorType", key: "doctorType", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
             {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
                     {
-                        action: gridActions.edit, callback: (data: any) => {
+                        // action: gridActions.edit, callback: (data: any) => {
+                        //     this.onSave(data);
+                        // }
+                        action: gridActions.edit, visible: this.permissionService.getPermission(permissionCodes.DoctorTypeMaster, permissionType.Edit), callback: (data: any) => {
                             this.onSave(data);
                         }
                     }, {
@@ -38,7 +45,7 @@ export class DoctortypeMasterComponent implements OnInit {
                             });
                         }
                     }]
-            } //Action 1-view, 2-Edit,3-delete
+            }
         ],
         sortField: "id",
         sortOrder: 0,
@@ -50,7 +57,7 @@ export class DoctortypeMasterComponent implements OnInit {
 
 
     constructor(public _doctortypeService: DoctortypeMasterService, public _matDialog: MatDialog,
-        public toastr: ToastrService,) { }
+        public toastr: ToastrService, public permissionService: PagePermissionService) { }
 
     ngOnInit(): void {
 

@@ -7,6 +7,8 @@ import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/air
 import { ToastrService } from "ngx-toastr";
 import { ItemClassMasterService } from "./item-class-master.service";
 import { NewItemClassComponent } from "./new-item-class/new-item-class.component";
+import { PagePermissionService } from "app/main/shared/services/page-permission.service";
+import { permissionCodes, permissionType } from "app/main/shared/model/permission.model";
 
 @Component({
     selector: "app-item-class-master",
@@ -16,21 +18,23 @@ import { NewItemClassComponent } from "./new-item-class/new-item-class.component
     animations: fuseAnimations,
 })
 export class ItemClassMasterComponent implements OnInit {
-    
+    IsAdd: boolean = this.permissionService.getPermission(permissionCodes.ItemClassMaster, permissionType.Add);
+        
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     itemClassName: any = "";
    
          allcolumns = [
-            // { heading: "Code", key: "itemClassId", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "ItemClass Name", key: "itemClassName", sort: true, align: 'left', emptySign: 'NA' },
-            // { heading: "User Name", key: "username", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
             {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
                     {
-                        action: gridActions.edit, callback: (data: any) => {
-                            this.onSave(data);
-                        }
+                        // action: gridActions.edit, callback: (data: any) => {
+                        //     this.onSave(data);
+                        // }
+                        action: gridActions.edit, visible: this.permissionService.getPermission(permissionCodes.ItemClassMaster, permissionType.Edit), callback: (data: any) => {
+                                                    this.onSave(data);
+                                                }
                     }, {
                         action: gridActions.delete, callback: (data: any) => {
                             this._ItemClassMasterService.deactivateTheStatus(data.itemClassId).subscribe((response: any) => {
@@ -46,6 +50,7 @@ export class ItemClassMasterComponent implements OnInit {
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
         ]
      gridConfig: gridModel = {
+        permissionCode: permissionCodes.ItemClassMaster,
         apiUrl: "ItemClassMaster/List",
         columnsList: this.allcolumns,
         sortField: "itemClassId",
@@ -54,7 +59,7 @@ export class ItemClassMasterComponent implements OnInit {
     }
 
     constructor(public _ItemClassMasterService: ItemClassMasterService, public _matDialog: MatDialog,
-        public toastr: ToastrService,) { }
+        public toastr: ToastrService, public permissionService: PagePermissionService) { }
         
     ngOnInit(): void { }
     

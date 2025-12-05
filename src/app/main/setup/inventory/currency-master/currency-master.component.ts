@@ -7,6 +7,8 @@ import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/air
 import { ToastrService } from "ngx-toastr";
 import { CurrencymasterService } from "./currencymaster.service";
 import { NewCurrencyComponent } from "./new-currency/new-currency.component";
+import { PagePermissionService } from "app/main/shared/services/page-permission.service";
+import { permissionCodes, permissionType } from "app/main/shared/model/permission.model";
 
 @Component({
     selector: "app-currency-master",
@@ -16,20 +18,22 @@ import { NewCurrencyComponent } from "./new-currency/new-currency.component";
     animations: fuseAnimations,
 })
 export class CurrencyMasterComponent implements OnInit {
-    
+     IsAdd: boolean = this.permissionService.getPermission(permissionCodes.CurrencyMaster, permissionType.Add);
+        
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     currencyName: any = "";
         allcolumns = [
-            // { heading: "Code", key: "currencyId", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "Currency Name", key: "currencyName", sort: true, align: 'left', emptySign: 'NA' },
-            // { heading: "User Name", key: "userName", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
             {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
                     {
-                        action: gridActions.edit, callback: (data: any) => {
-                            this.onSave(data);
-                        }
+                        // action: gridActions.edit, callback: (data: any) => {
+                        //     this.onSave(data);
+                        // }
+                          action: gridActions.edit, visible: this.permissionService.getPermission(permissionCodes.CurrencyMaster, permissionType.Edit), callback: (data: any) => {
+                                                    this.onSave(data);
+                                                }
                     }, {
                         action: gridActions.delete, callback: (data: any) => {
                             this._CurrencymasterService.deactivateTheStatus(data.currencyId).subscribe((response: any) => {
@@ -45,6 +49,7 @@ export class CurrencyMasterComponent implements OnInit {
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
         ]
     gridConfig: gridModel = {
+          permissionCode: permissionCodes.CurrencyMaster,
         apiUrl: "CurrencyMaster/List",
         columnsList: this.allcolumns,
         sortField: "currencyId",
@@ -53,7 +58,7 @@ export class CurrencyMasterComponent implements OnInit {
     }
 
     constructor(public _CurrencymasterService: CurrencymasterService, public _matDialog: MatDialog,
-        public toastr: ToastrService,) { }
+        public toastr: ToastrService,public permissionService: PagePermissionService) { }
 
     ngOnInit(): void { }
   

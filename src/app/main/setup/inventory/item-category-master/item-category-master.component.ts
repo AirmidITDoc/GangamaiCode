@@ -7,6 +7,8 @@ import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/air
 import { ToastrService } from "ngx-toastr";
 import { ItemCategoryMasterService } from "./item-category-master.service";
 import { NewItemcategoryComponent } from "./new-itemcategory/new-itemcategory.component";
+import { PagePermissionService } from "app/main/shared/services/page-permission.service";
+import { permissionCodes, permissionType } from "app/main/shared/model/permission.model";
 
 @Component({
     selector: "app-item-category-master",
@@ -16,38 +18,40 @@ import { NewItemcategoryComponent } from "./new-itemcategory/new-itemcategory.co
     animations: fuseAnimations,
 })
 export class ItemCategoryMasterComponent implements OnInit {
+    IsAdd: boolean = this.permissionService.getPermission(permissionCodes.ItemCategoryMaster, permissionType.Add);
+
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
- itemCategoryName: any = "";
+    itemCategoryName: any = "";
 
+    allcolumns = [
+        { heading: "ItemCategory Name", key: "itemCategoryName", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "ItemType Name", key: "itemTypeId", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
+        {
+            heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+                {
+                    // action: gridActions.edit, callback: (data: any) => {
+                    //     this.onSave(data);
+                    // }
+                    action: gridActions.edit, visible: this.permissionService.getPermission(permissionCodes.ItemCategoryMaster, permissionType.Edit), callback: (data: any) => {
+                        this.onSave(data);
+                    }
+                }, {
+                    action: gridActions.delete, callback: (data: any) => {
+                        this._categorymasterService.deactivateTheStatus(data.itemCategoryId).subscribe((response: any) => {
+                            this.grid.bindGridData();
+                        });
+                    }
+                }]
+        } //Action 1-view, 2-Edit,3-delete
+    ]
 
-   
-        allcolumns =  [
-            // { heading: "Code", key: "itemCategoryId", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "ItemCategory Name", key: "itemCategoryName", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "ItemType Name", key: "itemTypeId", sort: true, align: 'left', emptySign: 'NA' },
-            // { heading: "User Name", key: "username", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
-            {
-                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
-                    {
-                        action: gridActions.edit, callback: (data: any) => {
-                            this.onSave(data);
-                        }
-                    }, {
-                        action: gridActions.delete, callback: (data: any) => {
-                            this._categorymasterService.deactivateTheStatus(data.itemCategoryId).subscribe((response: any) => {
-                                this.grid.bindGridData();
-                            });
-                        }
-                    }]
-            } //Action 1-view, 2-Edit,3-delete
-        ]
-      
-        allfilters =  [
-            { fieldName: "itemCategoryName", fieldValue: "", opType: OperatorComparer.StartsWith },
-            { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
-        ]
-     gridConfig: gridModel = {
+    allfilters = [
+        { fieldName: "itemCategoryName", fieldValue: "", opType: OperatorComparer.StartsWith },
+        { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+    ]
+    gridConfig: gridModel = {
+        permissionCode: permissionCodes.ItemCategoryMaster,
         apiUrl: "ItemCategoryMaster/List",
         columnsList: this.allcolumns,
         sortField: "itemCategoryId",
@@ -57,7 +61,7 @@ export class ItemCategoryMasterComponent implements OnInit {
     constructor(
         public _categorymasterService: ItemCategoryMasterService,
         public _matDialog: MatDialog,
-        public toastr: ToastrService,
+        public toastr: ToastrService, public permissionService: PagePermissionService
     ) { }
 
     ngOnInit(): void { }
@@ -65,7 +69,7 @@ export class ItemCategoryMasterComponent implements OnInit {
     onSave(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button
-        
+
         let that = this;
         const dialogRef = this._matDialog.open(NewItemcategoryComponent,
             {
