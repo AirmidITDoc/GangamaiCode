@@ -37,6 +37,8 @@ import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
 import { PolicyInfoPopoverComponent } from './policy-info-popover/policy-info-popover.component';
 import { CompanyApprovalPopoverComponent } from './company-approval-popover/company-approval-popover.component';
+import { PatientDetailsPopoverComponent } from './patient-details-popover/patient-details-popover.component';
+import { DoctorDetailsPopoverComponent } from './doctor-details-popover/doctor-details-popover.component';
 import { NewAppointmentwithBillComponent } from './new-appointmentwith-bill/new-appointmentwith-bill.component';
 // import { NewAppointmentwithBillComponent } from './new-appointmentwith-bill/new-appointmentwith-bill.component';
 // const moment = _rollupMoment || _moment;
@@ -89,6 +91,11 @@ export class AppointmentListComponent implements OnInit {
     vRegNo = 0
 
     private overlayRef: OverlayRef | null = null;
+    private patientOverlayRef: OverlayRef | null = null;
+    private doctorOverlayRef: OverlayRef | null = null;
+    private hoverTimeout: any = null;
+    private patientCloseTimeout: any = null;
+    private doctorCloseTimeout: any = null;
 
     constructor(public _AppointmentlistService: AppointmentlistService, public _matDialog: MatDialog,
         private commonService: PrintserviceService, public _registrationService: RegistrationService,
@@ -173,6 +180,7 @@ export class AppointmentListComponent implements OnInit {
         this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
         this.gridConfig.columnsList.find(col => col.key === 'companyName')!.template = this.patientNameWithPopoverTemplate;
         this.gridConfig.columnsList.find(col => col.key === 'patientName')!.template = this.patientNameWithBadgeTemplate;
+        this.gridConfig.columnsList.find(col => col.key === 'doctorname')!.template = this.doctorNameWithPopoverTemplate;
     }
 
     @ViewChild('actionsTemplate') actionsTemplate!: TemplateRef<any>;
@@ -184,6 +192,7 @@ export class AppointmentListComponent implements OnInit {
     @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
     @ViewChild('patientNameWithPopoverTemplate') patientNameWithPopoverTemplate!: TemplateRef<any>;
     @ViewChild('patientNameWithBadgeTemplate') patientNameWithBadgeTemplate!: TemplateRef<any>;
+    @ViewChild('doctorNameWithPopoverTemplate') doctorNameWithPopoverTemplate!: TemplateRef<any>;
 
     allcolumns = [
         { heading: "", key: "patientOldNew", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30 },
@@ -194,7 +203,7 @@ export class AppointmentListComponent implements OnInit {
         { heading: "UHID", key: "regNoWithPrefix", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "Date", key: "vistDateTime", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 350,type: gridColumnTypes.template },
-        { heading: "Doctor Name", key: "doctorname", sort: true, align: 'left', emptySign: 'NA', width: 230 },
+        { heading: "Doctor Name", key: "doctorname", sort: true, align: 'left', emptySign: 'NA', width: 230, type: gridColumnTypes.template },
         { heading: "Department", key: "departmentName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "OPNo", key: "opdNo", sort: true, align: 'left', emptySign: 'NA', },
         { heading: "Ref Doctor Name", key: "refDocName", sort: true, align: 'left', emptySign: 'NA', width: 230 },
@@ -1075,9 +1084,206 @@ export class AppointmentListComponent implements OnInit {
         });
     }
 
+    openPatientDetailsPopover(event: MouseEvent, patientData: any) {
+        event.stopPropagation();
+
+        // Clear any existing timeout
+        if (this.hoverTimeout) {
+            clearTimeout(this.hoverTimeout);
+        }
+
+        // Add small delay to prevent flickering
+        this.hoverTimeout = setTimeout(() => {
+            // Close any existing patient popover
+            if (this.patientOverlayRef) {
+                this.patientOverlayRef.dispose();
+                this.patientOverlayRef = null;
+            }
+
+            const positionStrategy = this.overlay.position()
+                .flexibleConnectedTo(event.target as HTMLElement)
+                .withPositions([
+                    {
+                        originX: 'start',
+                        originY: 'bottom',
+                        overlayX: 'start',
+                        overlayY: 'top',
+                    },
+                    {
+                        originX: 'start',
+                        originY: 'top',
+                        overlayX: 'start',
+                        overlayY: 'bottom',
+                    },
+                    {
+                        originX: 'end',
+                        originY: 'center',
+                        overlayX: 'start',
+                        overlayY: 'center',
+                    },
+                    {
+                        originX: 'start',
+                        originY: 'center',
+                        overlayX: 'end',
+                        overlayY: 'center',
+                    }
+                ]);
+
+            this.patientOverlayRef = this.overlay.create({
+                positionStrategy,
+                scrollStrategy: this.overlay.scrollStrategies.close(),
+                hasBackdrop: false,
+            });
+
+            const portal = new ComponentPortal(PatientDetailsPopoverComponent);
+            const componentRef: ComponentRef<PatientDetailsPopoverComponent> = this.patientOverlayRef.attach(portal);
+            componentRef.instance.patientData = patientData;
+            
+            // Handle mouse events on the overlay element
+            const overlayElement = this.patientOverlayRef.overlayElement;
+            overlayElement.addEventListener('mouseenter', () => this.keepPatientPopoverOpen());
+            overlayElement.addEventListener('mouseleave', () => this.closePatientDetailsPopover());
+        }, 300); // 300ms delay before showing popover
+    }
+
+    closePatientDetailsPopover() {
+        // Clear timeout if popover hasn't opened yet
+        if (this.hoverTimeout) {
+            clearTimeout(this.hoverTimeout);
+            this.hoverTimeout = null;
+        }
+
+        // Clear any existing close timeout
+        if (this.patientCloseTimeout) {
+            clearTimeout(this.patientCloseTimeout);
+        }
+
+        // Add delay before closing to allow moving mouse to popover
+        this.patientCloseTimeout = setTimeout(() => {
+            if (this.patientOverlayRef) {
+                this.patientOverlayRef.dispose();
+                this.patientOverlayRef = null;
+            }
+        }, 200);
+    }
+
+    keepPatientPopoverOpen() {
+        // Clear close timeout when hovering over popover
+        if (this.patientCloseTimeout) {
+            clearTimeout(this.patientCloseTimeout);
+            this.patientCloseTimeout = null;
+        }
+    }
+
+    openDoctorDetailsPopover(event: MouseEvent, doctorData: any) {
+        event.stopPropagation();
+
+        // Clear any existing timeout
+        if (this.hoverTimeout) {
+            clearTimeout(this.hoverTimeout);
+        }
+
+        // Add small delay to prevent flickering
+        this.hoverTimeout = setTimeout(() => {
+            // Close any existing doctor popover
+            if (this.doctorOverlayRef) {
+                this.doctorOverlayRef.dispose();
+                this.doctorOverlayRef = null;
+            }
+
+            const positionStrategy = this.overlay.position()
+                .flexibleConnectedTo(event.target as HTMLElement)
+                .withPositions([
+                    {
+                        originX: 'start',
+                        originY: 'bottom',
+                        overlayX: 'start',
+                        overlayY: 'top',
+                    },
+                    {
+                        originX: 'start',
+                        originY: 'top',
+                        overlayX: 'start',
+                        overlayY: 'bottom',
+                    },
+                    {
+                        originX: 'end',
+                        originY: 'center',
+                        overlayX: 'start',
+                        overlayY: 'center',
+                    },
+                    {
+                        originX: 'start',
+                        originY: 'center',
+                        overlayX: 'end',
+                        overlayY: 'center',
+                    }
+                ]);
+
+            this.doctorOverlayRef = this.overlay.create({
+                positionStrategy,
+                scrollStrategy: this.overlay.scrollStrategies.close(),
+                hasBackdrop: false,
+            });
+
+            const portal = new ComponentPortal(DoctorDetailsPopoverComponent);
+            const componentRef: ComponentRef<DoctorDetailsPopoverComponent> = this.doctorOverlayRef.attach(portal);
+            componentRef.instance.doctorData = doctorData;
+            
+            // Handle mouse events on the overlay element
+            const overlayElement = this.doctorOverlayRef.overlayElement;
+            overlayElement.addEventListener('mouseenter', () => this.keepDoctorPopoverOpen());
+            overlayElement.addEventListener('mouseleave', () => this.closeDoctorDetailsPopover());
+        }, 300); // 300ms delay before showing popover
+    }
+
+    closeDoctorDetailsPopover() {
+        // Clear timeout if popover hasn't opened yet
+        if (this.hoverTimeout) {
+            clearTimeout(this.hoverTimeout);
+            this.hoverTimeout = null;
+        }
+
+        // Clear any existing close timeout
+        if (this.doctorCloseTimeout) {
+            clearTimeout(this.doctorCloseTimeout);
+        }
+
+        // Add delay before closing to allow moving mouse to popover
+        this.doctorCloseTimeout = setTimeout(() => {
+            if (this.doctorOverlayRef) {
+                this.doctorOverlayRef.dispose();
+                this.doctorOverlayRef = null;
+            }
+        }, 200);
+    }
+
+    keepDoctorPopoverOpen() {
+        // Clear close timeout when hovering over popover
+        if (this.doctorCloseTimeout) {
+            clearTimeout(this.doctorCloseTimeout);
+            this.doctorCloseTimeout = null;
+        }
+    }
+
     ngOnDestroy() {
         if (this.overlayRef) {
             this.overlayRef.dispose();
+        }
+        if (this.patientOverlayRef) {
+            this.patientOverlayRef.dispose();
+        }
+        if (this.doctorOverlayRef) {
+            this.doctorOverlayRef.dispose();
+        }
+        if (this.hoverTimeout) {
+            clearTimeout(this.hoverTimeout);
+        }
+        if (this.patientCloseTimeout) {
+            clearTimeout(this.patientCloseTimeout);
+        }
+        if (this.doctorCloseTimeout) {
+            clearTimeout(this.doctorCloseTimeout);
         }
     }
 }

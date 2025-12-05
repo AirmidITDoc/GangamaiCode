@@ -9,7 +9,7 @@
             </mat-icon>
             <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
                 Radiology Report Entry
-            </span>
+            </span> 
         </div>
     </mat-toolbar>
     <div class="layout-body p-2">
@@ -107,7 +107,7 @@
                                     </button>
 
                                     <button mat-icon-button matTooltip="Send message On WhatsApp">
-                                        <img width="100" height="20px" src="assets/images/logos/WhatsApp.png">
+                                        <mat-icon title="WhatsApp">chat</mat-icon>
                                     </button>
 
 
@@ -168,26 +168,18 @@
                             <ng-template #actionsverify let-element>
                                 <div fxLayout="row" fxLayoutAlign="center center">
 
-                                    <mat-icon *ngIf="element.isVerified" matTooltip="Report Verified" class="w-50">
-                                        <img width="50px" height="50px" src="assets/images/logos/verify.png">
-                                    </mat-icon>
+                                    <mat-icon *ngIf="element.isVerified" matTooltip="Report Verified" class="w-50">verified</mat-icon>
 
-                                    <mat-icon *ngIf="!element.isVerified" matTooltip="Report Not Verified" class="w-25">
-                                        <img width="25px" height="25px" src="assets/images/logos/notverify.png">
-                                    </mat-icon>
+                                    <mat-icon *ngIf="!element.isVerified" matTooltip="Report Not Verified" class="w-25">cancel</mat-icon>
                                 </div>
                             </ng-template>
                             <ng-template #actionsoutSourceStatus let-element>
                                 <div fxLayout="row" fxLayoutAlign="center center">
 
                                     <mat-icon *ngIf="element.outSourceStatus" matTooltip="OutSource Completed"
-                                        class="w-30" style="background-color: rgb(232, 127, 52);">
-                                        <img width="30px" height="30px" src="assets/images/logos/outsource.jpg">
-                                    </mat-icon>
+                                        class="w-30" style="background-color: rgb(232, 127, 52);">business_center</mat-icon>
 
-                                    <mat-icon *ngIf="!element.outSourceStatus" matTooltip="No OutSource" class="w-40">
-                                        <img width="40px" height="40px" src="assets/images/logos/labtest.png">
-                                    </mat-icon>
+                                    <mat-icon *ngIf="!element.outSourceStatus" matTooltip="No OutSource" class="w-40">invert_colors</mat-icon>
                                 </div>
                             </ng-template>
                             <airmid-table [gridConfig]="gridConfig" #grid :ShowFilter="false" :ShowButtons="false">

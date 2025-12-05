@@ -55,6 +55,8 @@ import { SharedModule } from "app/main/shared/shared.module";
 import { FollowpdateUpdateComponent } from './followpdate-update/followpdate-update.component';
 import { PolicyInfoPopoverComponent } from './policy-info-popover/policy-info-popover.component';
 import { CompanyApprovalPopoverComponent } from './company-approval-popover/company-approval-popover.component';
+import { PatientDetailsPopoverComponent } from './patient-details-popover/patient-details-popover.component';
+import { DoctorDetailsPopoverComponent } from './doctor-details-popover/doctor-details-popover.component';
 import { NewAppointmentwithBillComponent } from "./new-appointmentwith-bill/new-appointmentwith-bill.component";
 // import { NewAppointmentwithBillComponent } from './new-appointmentwith-bill/new-appointmentwith-bill.component';
 
@@ -80,6 +82,8 @@ const routes: Routes = [
         FollowpdateUpdateComponent,
         PolicyInfoPopoverComponent,
         CompanyApprovalPopoverComponent,
+        PatientDetailsPopoverComponent,
+        DoctorDetailsPopoverComponent,
         NewAppointmentwithBillComponent
     ],
     imports: [
