@@ -7,6 +7,8 @@ import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
 import { MatDialog } from "@angular/material/dialog";
 import { NewBankComponent } from "./new-bank/new-bank.component";
 import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
+import { PagePermissionService } from "app/main/shared/services/page-permission.service";
+import { permissionCodes, permissionType } from "app/main/shared/model/permission.model";
 
 
 @Component({
@@ -17,20 +19,25 @@ import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/air
     animations: fuseAnimations,
 })
 export class BankMasterComponent implements OnInit {
+     IsAdd: boolean = this.permissionService.getPermission(permissionCodes.Prefix, permissionType.Add);
+       
+     
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
-bankName: any = "";
+        bankName: any = "";
    
          allcolumns = [
-            // { heading: "Code", key: "bankId", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "BankName", key: "bankName", sort: true, align: 'left', emptySign: 'NA' },
-            // { heading: "UserName", key: "username", sort: true, align: 'left', emptySign: 'NA' },
+             { heading: "BankName", key: "bankName", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
             {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
                     {
-                        action: gridActions.edit, callback: (data: any) => {
-                            this.onSave(data) // EDIT Records
+                        // action: gridActions.edit, callback: (data: any) => {
+                        //     this.onSave(data) // EDIT Records
+                        // }
+ action: gridActions.edit, visible: this.permissionService.getPermission(permissionCodes.Prefix, permissionType.Edit), callback: (data: any) => {
+                            this.onSave(data);
                         }
+                        
                     }, {
                         action: gridActions.delete, callback: (data: any) => {
                             this._bankService.deactivateTheStatus(data.bankId).subscribe((response: any) => {
@@ -47,13 +54,14 @@ bankName: any = "";
         ]
     
   gridConfig: gridModel = {
+        permissionCode: permissionCodes.BankMaster,
         apiUrl: "BankMaster/List",
         columnsList: this.allcolumns,
         sortField: "bankId",
         sortOrder: 0,
         filters: this.allfilters
     }
-    constructor(public _bankService: BankMasterService, public _matDialog: MatDialog,
+    constructor(public _bankService: BankMasterService, public _matDialog: MatDialog,public permissionService: PagePermissionService,
         public toastr: ToastrService,) { }
 
     ngOnInit(): void { }

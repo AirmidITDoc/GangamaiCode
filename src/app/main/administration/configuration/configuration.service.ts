@@ -122,7 +122,19 @@ export class ConfigurationService {
 
   public getloginaccessRetrive(param) {
     return this._httpClient.PostData("Common", param);
+    
   }
+
+  
+
+  public SMSconfigedit(Param: any) { 
+    return this._httpClient.PostData("smsConfig/EmailConfiguration", Param);
+  }
+
+  public Emailconfigedit(Param: any) { 
+    return this._httpClient.PostData("smsConfig/EmailConfiguration", Param);
+  }
+
   public AutoServiceInsert(Param: any) { 
     return this._httpClient.PostData("Administration/AutoServiceListInsert", Param);
   }

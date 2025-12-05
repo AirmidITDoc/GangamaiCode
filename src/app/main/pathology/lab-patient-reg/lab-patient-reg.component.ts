@@ -21,6 +21,7 @@ import { NewLabPatientRegComponent } from './new-lab-patient-reg/new-lab-patient
 import { OpPaymentComponent } from 'app/main/opd/op-search-list/op-payment/op-payment.component';
 import { LabRegBillDeatilsComponent } from './lab-reg-bill-deatils/lab-reg-bill-deatils.component';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
+import { EstimateForPatientComponent } from './estimate-for-patient/estimate-for-patient.component';
 // import { NewLabPatientregComponent } from './new-lab-patientreg/new-lab-patientreg.component';
 
 @Component({
@@ -325,96 +326,26 @@ export class LabPatientRegComponent {
   }
 
 
-  //  Vtotalcount = 0;
-  //     VNewcount = 0;
-  //     VFollowupcount = 0;
-  //     VBillcount = 0;
-
-
-  //        GetlabAppointdetail() {
-  //         this.Vtotalcount = 0;
-  //         this.VNewcount = 0;
-  //         this.VFollowupcount = 0;
-  //         this.VBillcount = 0;
-
-  //         let fromDateControl = this.datePipe.transform(this.myformSearch.get('fromDate').value, "yyyy-MM-dd");
-  //         let toDateControl = this.datePipe.transform(this.myformSearch.get('enddate').value, "yyyy-MM-dd");
-
-  //         let filters: any[] = [];
-
-  //         // Handle date range
-  //         if (fromDateControl && toDateControl) {
-  //             this.fromDate = this.datePipe.transform(fromDateControl, "yyyy-MM-dd");
-  //             this.toDate = this.datePipe.transform(toDateControl, "yyyy-MM-dd");
-  //         } else {
-  //             this.fromDate = "1900-01-01";
-  //             this.toDate = "1900-01-01";
-  //         }
-
-  //         filters.push(
-  //           {
-  //                 "fieldName": "From_Dt",
-  //                 "fieldValue": this.fromDate,
-  //                 "opType": "GreaterThanOrEqual"
-  //             },
-  //             {
-  //                 "fieldName": "To_Dt",
-  //                 "fieldValue": this.toDate,
-  //                 "opType": "GreaterThanOrEqual"
-  //             },
-  //             {
-  //                 "fieldName": "IsMark",
-  //                 "fieldValue": "2",
-  //                 "opType": "Equals"
-  //             }
-  //         );
-
-  //         let data = {
-  //             "first": 0,
-  //             "rows": 999999,
-  //             "sortField": "AdmissionId",
-  //             "sortOrder": 0,
-  //             "filters": filters,
-  //             "exportType": "JSON",
-  //             "columns": []
-  //         };
-  //         console.log(data)
-  //         this._AppointmentlistService.getVisitlist(data).subscribe((response) => {
-  //             this.dataSource.data = response.data;
-  //             if (this.dataSource.data.length > 0) {
-  //                 this.Vtotalcount = this.dataSource.data.length
-  //                 this.vEMRReady = 0;
-  //                 this.dataSource.data.forEach(element => {
-  //                     if (element.patientOldNew == 1) {
-  //                         this.VNewcount = this.VNewcount + 1;
-  //                     }
-  //                     else if (element.patientOldNew == 2) {
-  //                         this.VFollowupcount = this.VFollowupcount + 1;
-  //                     }
-
-  //                     if (element.mPbillNo == 1 || element.mPbillNo == 2) {
-  //                         this.VBillcount = this.VBillcount + 1;
-  //                     }
-  //                     if (element.crossConsulFlag == 1) {
-  //                         this.VCrossConscount = this.VCrossConscount + 1;
-  //                     }
-  //                     if (element.emrReady == 1) {
-  //                         this.vEMRReady++;
-  //                     }
-  //                 });
-  //                 console.log(this.dataSource.data)
-  //             }
-  //         });
-  //     }
-
-
    viewgetOPBillReportPdf(element) {
         this.commonService.Onprint("BillNo", element.billNo, "LabregisterBillReceipt");
     }
 
 
-  Onmessage(){
+  Onmessage(element){
+ console.log(element)
+    
 
+    const dialogRef = this._matDialog.open(EstimateForPatientComponent,
+      {
+        maxWidth: "80vw",
+        height: '650px',
+        width: '100%',
+        data: element
+
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      // this.onChangeFirst2()
+    });
   }
   Onemail(){}
   getWhatsappshareBill(){}
@@ -567,11 +498,13 @@ export class LabPatientList {
 export class LabRequest {
   ServiceName: any;
   Price: number;
+  price: number;
   ServiceId: any;
   CreditedtoDoctor: any;
   constructor(LabRequest) {
     this.ServiceName = LabRequest.ServiceName || '';
     this.Price = LabRequest.Price || 0;
+      this.price = LabRequest.price || 0;
     this.ServiceId = LabRequest.ServiceId || 0;
     this.CreditedtoDoctor = LabRequest.CreditedtoDoctor || 0;
   }

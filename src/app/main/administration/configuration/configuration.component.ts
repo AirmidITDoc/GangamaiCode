@@ -14,6 +14,7 @@ import { FormvalidationserviceService } from 'app/main/shared/services/formvalid
 import Swal from 'sweetalert2';
 import { DatePipe } from '@angular/common';
 import { AddAutoServiceComponent } from './add-auto-service/add-auto-service.component';
+import { EditSMSConfigComponent } from './edit-smsconfig/edit-smsconfig.component';
 
 
 @Component({
@@ -71,10 +72,16 @@ export class ConfigurationComponent implements OnInit {
   @ViewChild('actionAuthanticate') actionAuthanticate!: TemplateRef<any>;
   @ViewChild('actionAuthanticatepass') actionAuthanticatepass!: TemplateRef<any>;
 
+    @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
+    @ViewChild('actionButtonTemplate1') actionButtonTemplate1!: TemplateRef<any>;
+  
+
+
   ngAfterViewInit() {
     this.gridConfig1.columnsList.find(col => col.key === 'reqAuthenticate')!.template = this.actionAuthanticate;
     this.gridConfig1.columnsList.find(col => col.key === 'passauthenticate')!.template = this.actionAuthanticatepass;
-    //  this.gridConfig2.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate2;
+     this.gridConfig1.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate1;
+     this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
   }
 
   //SMS
@@ -88,10 +95,10 @@ export class ConfigurationComponent implements OnInit {
     { heading: "StorageLocLink", key: "storageLocLink", sort: true, align: 'left', emptySign: 'NA', width: 120 },
     { heading: "ConType", key: "conType", sort: true, align: 'left', emptySign: 'NA', width: 120 },
 
-    // {
-    //   heading: "Action", key: "action", align: "right", width: 180, sticky: true, type: gridColumnTypes.template,
-    //   template: this.actionButtonTemplate2  // Assign ng-template to the column
-    // }
+    {
+      heading: "Action", key: "action", align: "right", width: 180, sticky: true, type: gridColumnTypes.template,
+      template: this.actionButtonTemplate  // Assign ng-template to the column
+    }
   ]
   allFilterssms = [
     // { fieldName: "UserName", fieldValue: this.smsUserName, opType: OperatorComparer.StartsWith },
@@ -118,10 +125,10 @@ export class ConfigurationComponent implements OnInit {
     { heading: "Password", key: "password", sort: true, align: 'left', emptySign: 'NA', width: 120 },
     { heading: "isActive", key: "isActive", sort: true, align: 'left', emptySign: 'NA', width: 120 },
 
-    // {
-    //   heading: "Action", key: "action", align: "right", width: 180, sticky: true, type: gridColumnTypes.template,
-    //   template: this.actionButtonTemplate2  // Assign ng-template to the column
-    // }
+    {
+      heading: "Action", key: "action", align: "right", width: 180, sticky: true, type: gridColumnTypes.template,
+      template: this.actionButtonTemplate1  // Assign ng-template to the column
+    }
   ]
   allFiltersemail = [
     // { fieldName: "UserName", fieldValue: this.emailUserName, opType: OperatorComparer.StartsWith },
@@ -137,36 +144,7 @@ export class ConfigurationComponent implements OnInit {
     sortOrder: 0,
     filters: this.allFiltersemail
   }
-  //audit
-
-  allColumnsaudit = [
-    { heading: "ActionBy Name", key: "actionByName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-    { heading: "Entity Name", key: "entityName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-    { heading: "Description", key: "description", sort: true, align: 'left', emptySign: 'NA', width: 300 },
-    { heading: "Additional Info", key: "additionalInfo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-    { heading: "LogTypeId", key: "logTypeId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-    { heading: "LogSource", key: "logSourceId", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-    { heading: "Created On", key: "createdOn", sort: true, align: 'left', emptySign: 'NA', width: 100, type: 6 },
-
-    // {
-    //   heading: "Action", key: "action", align: "right", width: 180, sticky: true, type: gridColumnTypes.template,
-    //   template: this.actionButtonTemplate2  // Assign ng-template to the column
-    // }
-  ]
-  allFiltersaudit = [
-    { fieldName: "ActionByName", fieldValue: this.ActionByName, opType: OperatorComparer.StartsWith },
-    { fieldName: "From_Dt", fieldValue: this.fromDate2, opType: OperatorComparer.Equals },
-    { fieldName: "To_Dt", fieldValue: this.toDate2, opType: OperatorComparer.Equals },
-  ]
-
-  gridConfig2: gridModel = {
-    apiUrl: "Configuration/AuditLogList",
-    columnsList: this.allColumnsaudit,
-    sortField: "Id",
-    sortOrder: 0,
-    filters: this.allFiltersaudit
-  }
-
+  
 
   constructor(
     public _ConfigurationService: ConfigurationService,
@@ -372,40 +350,7 @@ export class ConfigurationComponent implements OnInit {
   }
   //Audit
 
-  onChangeaudit() {
-    this.fromDate2 = this.datePipe.transform(this.auditFilterForm.get('fromDate').value, "yyyy-MM-dd")
-    this.toDate2 = this.datePipe.transform(this.auditFilterForm.get('enddate').value, "yyyy-MM-dd")
 
-    this.ActionByName = this.auditFilterForm.get('ActionByName').value
-
-    this.getfilterdataaudit();
-  }
-
-  getfilterdataaudit() {
-    debugger
-
-    this.gridConfig2 = {
-      apiUrl: "Configuration/AuditLogList",
-      columnsList: this.allColumnsaudit,
-      sortField: "Id",
-      sortOrder: 0,
-      filters: [
-        { fieldName: "ActionByName", fieldValue: this.ActionByName, opType: OperatorComparer.StartsWith },
-    { fieldName: "From_Dt", fieldValue: this.fromDate2, opType: OperatorComparer.Equals },
-    { fieldName: "To_Dt", fieldValue: this.toDate2, opType: OperatorComparer.Equals },
-      ]
-    }
-    this.auditgrid.gridConfig = this.gridConfig2;
-    this.auditgrid.bindGridData();
-  }
-
-  Clearfilteraudit(event) {
-    console.log(event)
-    if (event == 'ActionByName') {
-      this.auditFilterForm.get('ActionByName').setValue("")
-      this.onChangeaudit()
-    }
-  }
 
 
   onClear(val: boolean) {
@@ -464,6 +409,43 @@ export class ConfigurationComponent implements OnInit {
                     console.log('The dialog was closed - Insert Action', result); 
                 });
     }
+
+    
+
+      OnEditSms(row: any = null) {
+            const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+            buttonElement.blur(); // Remove focus from the button 
+            let that = this;
+            const dialogRef = this._matDialog.open(EditSMSConfigComponent,
+                {
+                    maxWidth: "95vw",
+                    height: '95%',
+                    width: '90%',
+                    data: row
+    
+                });
+            dialogRef.afterClosed().subscribe(result => {
+                // that.grid.bindGridData();
+            });
+        }
+
+          OnEditEmail(row: any = null) {
+            const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+            buttonElement.blur(); // Remove focus from the button 
+            let that = this;
+            const dialogRef = this._matDialog.open(EditSMSConfigComponent,
+                {
+                    maxWidth: "95vw",
+                    height: '95%',
+                    width: '90%',
+                    data: row
+    
+                });
+            dialogRef.afterClosed().subscribe(result => {
+                // that.grid.bindGridData();
+            });
+        }
+
 }
 
 

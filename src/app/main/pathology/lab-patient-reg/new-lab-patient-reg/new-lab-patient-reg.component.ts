@@ -47,6 +47,7 @@ export class NewLabPatientRegComponent {
   vTariffId: any = 1;
   vClassId: any = 1;
   vRegId: any;
+
   isServiceIdSelected: boolean = false;
   isDoctor: boolean = false;
 
@@ -57,9 +58,10 @@ export class NewLabPatientRegComponent {
   autocompleteModerefdoc: string = "RefDoctor";
   dsLabRequest2 = new MatTableDataSource<LabRequest>();
   // dstable1 = new MatTableDataSource<LabRequest>();
-
+  filteredOptions: any[] = [];
+  prevResults: any[] = [];
   public dstable1 = new MatTableDataSource<ChargesList>();
-
+  debounceTimers: { [key: string]: any } = {};
 
   chargeslist: any = [];
   @ViewChild(MatSort) sort: MatSort;
@@ -183,7 +185,7 @@ export class NewLabPatientRegComponent {
       paymentType: ['CashPay'],
       patientName: [''],
       createdBy: this.accountService.currentUserValue.userId,
-      LabPatRegId:0
+      LabPatRegId: 0
     })
   }
 
@@ -287,6 +289,7 @@ export class NewLabPatientRegComponent {
         tdsamount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
         unitId: [this.accountService.currentUserValue.user.unitId],
         wfamount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+        companyId: 0
       })
     });
   }
@@ -424,10 +427,10 @@ export class NewLabPatientRegComponent {
             // DateOfBirth:this.registerObj.dateofBirth,
 
           });
-            this.selectChangedepartment(this.registerObj)
+          this.selectChangedepartment(this.registerObj)
           console.log(this.registerObj)
         });
-      
+
         console.log(this.registerObj)
 
       }, 100);
@@ -435,10 +438,9 @@ export class NewLabPatientRegComponent {
 
   }
 
-
   value = new Date()
   onChangeDateofBirth(DateOfBirth: Date) {
-    
+
     if (DateOfBirth > this.minDate) {
       this.toastr.warning('Enter Proper Birth Date..', 'warning !', {
         toastClass: 'tostr-tost custom-toast-success',
@@ -556,16 +558,16 @@ export class NewLabPatientRegComponent {
     // this.myForm.get('discountAmt').value
     const discountAmt = (total * discPer) / 100;
     const netAmt = total - discountAmt;
-    element.TotalAmt=total
-         element.DiscPer= 0,
-         element.DiscAmt=discountAmt | 0,
-         element.NetAmount= netAmt,
+    element.TotalAmt = total
+    element.DiscPer = 0,
+      element.DiscAmt = discountAmt | 0,
+      element.NetAmount = netAmt,
 
-    this.myForm.patchValue({
-      totalAmt: total,
-      discountAmt: discountAmt,
-      netPayableAmt: netAmt
-    });
+      this.myForm.patchValue({
+        totalAmt: total,
+        discountAmt: discountAmt,
+        netPayableAmt: netAmt
+      });
   }
 
   onAddCharges(row): void {
@@ -583,94 +585,35 @@ export class NewLabPatientRegComponent {
 
     // if (totalAmount > 0) {
 
-      const newRow = {
-        ServiceId: row.serviceId,
-        ServiceName: row.serviceName,
-        Price: row.price || 0,
-        Qty: 1,
-        TotalAmt: totalAmount || 0,
-        DiscPer: 0,
-        DiscAmt: discountAmount || 0,
-        NetAmount: netAmount || 0,
-        DoctorName: this.doctorname || '-',
-        ClassName: 1,//this.className || '-',
-        DoctorId: this.myForm.get('doctorId').value,
-        ChargesAddedName: this.accountService.currentUserValue.userName,
-        IsPathology: this.IsPathology,
-        IsRadiology: this.IsRadiology,
-        IsPackage: 0,
-        serviceCode: 0,//formValue.serviceName.companyCode, 
-        isInclusionExclusion: 1,//formValue.serviceName.isInclusionOrExclusion
-      };
+    const newRow = {
+      ServiceId: row.serviceId,
+      ServiceName: row.serviceName,
+      Price: row.price || 0,
+      Qty: 1,
+      TotalAmt: totalAmount || 0,
+      DiscPer: 0,
+      DiscAmt: discountAmount || 0,
+      NetAmount: netAmount || 0,
+      DoctorName: this.doctorname || '-',
+      ClassName: 1,//this.className || '-',
+      DoctorId: this.myForm.get('doctorId').value,
+      ChargesAddedName: this.accountService.currentUserValue.userName,
+      IsPathology: this.IsPathology,
+      IsRadiology: this.IsRadiology,
+      IsPackage: 0,
+      serviceCode: 0,//formValue.serviceName.companyCode, 
+      isInclusionExclusion: 1,//formValue.serviceName.isInclusionOrExclusion
+    };
 
-      const newCharge = new ChargesList(newRow);
-      newCharge.DiscAmt = newCharge.DiscAmt || 0;
-      newCharge.DiscPer = newCharge.DiscPer || 0;
-      this.chargeList.push(newCharge);
-      this.dstable1.data = this.chargeList;
-      this.updateCalculation();
+    const newCharge = new ChargesList(newRow);
+    newCharge.DiscAmt = newCharge.DiscAmt || 0;
+    newCharge.DiscPer = newCharge.DiscPer || 0;
+    this.chargeList.push(newCharge);
+    this.dstable1.data = this.chargeList;
+    this.updateCalculation();
 
-    // } else {
-    //   Swal.fire({
-    //     title: 'Message',
-    //     text: "Please Define Price For Selected Service .. !",
-    //     icon: "warning"
-    //   });
-
-    // }
   }
 
-
-    // onAddCharges(): void {
-    //       const serviceNameValue = this.chargeForm.get('serviceName')?.value;
-        
-    //       if (this.chargeForm.valid) {
-    //           const formValue = this.chargeForm.value;
-    //           // if (this.chargeForm.value.discountPer > 0)
-    //           //     this.Consessionres = true
-    //           // Calculate total amount, discount amount, and net amount
-    //           const totalAmount = formValue.price * formValue.qty;
-    //           const discountAmount = (totalAmount * formValue.discountPer) / 100;
-    //           const netAmount = totalAmount - discountAmount;
-    //           if (totalAmount > 0) {
-    //               const newRow = {
-    //                   ServiceId: formValue.serviceName.serviceId,
-    //                   ServiceName: formValue.serviceName.serviceName,
-    //                   Price: formValue.price,
-    //                   Qty: formValue.qty,
-    //                   TotalAmt: totalAmount,
-    //                   DiscPer: formValue.discountPer || 0,
-    //                   DiscAmt: discountAmount || 0,
-    //                   NetAmount: netAmount,
-    //                   DoctorName:this.doctorname || '-',
-    //                   ClassName: 1,//this.className || '-',
-    //                   DoctorId: formValue.DoctorID,
-    //                   ChargesAddedName: this.accountService.currentUserValue.userName,
-    //                   IsPathology: this.IsPathology,
-    //                   IsRadiology: this.IsRadiology,
-    //                   IsPackage: this.vIsPackage,
-    //                   serviceCode: formValue.serviceName.companyCode,
-    //                   isInclusionExclusion: formValue.serviceName.isInclusionOrExclusion
-    //               };
-    //               // if (!this.isDiscountApplied && discountAmount > 0) {
-    //               //     this.isDiscountApplied = true;
-    //               //     this.Consessionres = true
-    //               // }
-    //                const newCharge = new ChargesList(newRow);
-    //   newCharge.DiscAmt = newCharge.DiscAmt || 0;
-    //   newCharge.DiscPer = newCharge.DiscPer || 0;
-    //   this.chargeList.push(newCharge);
-    //   this.dstable1.data = this.chargeList;
-    //   this.updateCalculation();
-    //           } else {
-    //               Swal.fire({
-    //                   title: 'Message',
-    //                   text: "Please Enter Service Detail.. !",
-    //                   icon: "warning"
-    //               });
-    //           }
-    //       }
-    //   }
 
   deleteTableRow(element) {
     this.chargeslist = this.dstable1.data;
@@ -721,7 +664,7 @@ export class NewLabPatientRegComponent {
     console.log(obj)
     this.departmentId = obj.value
     this.departmentname = obj.text
-    
+
     if (obj.value) {
       this._labPatientRegService.getDoctorsByDepartment(obj.value).subscribe((data: any) => {
         console.log(data)
@@ -778,7 +721,7 @@ export class NewLabPatientRegComponent {
   }
 
   BillSave() {
-    
+
     Swal.fire({
       title: 'Confirm Save',
       text: 'Are you sure you want to save this Lab Bill?',
@@ -792,13 +735,21 @@ export class NewLabPatientRegComponent {
       if (result.isConfirmed) {
         console.log(this.myForm.value)
 
+debugger
+        let priceflag = this.dstable1.data.filter(row => row.Price == 0);
 
-        if (!this.regflag) {
-          this.myForm.get('firstName').setValue(this.myForm.get('patientName').value)
+        if (priceflag.length) {
+          this.toastr.warning('Please Enter Price For Service', 'Warning !', {
+            toastClass: 'tostr-tost custom-toast-warning',
+          });
+          return;
+
         }
+        debugger
+        this.myForm.get('firstName').setValue(this.myForm.get('firstName').value)
 
         if (!this.myForm.invalid)
-              this.OnSave();
+          this.OnSave();
         else {
           let invalidFields = [];
           if (this.myForm.invalid) {
@@ -837,7 +788,7 @@ export class NewLabPatientRegComponent {
     this.myForm.get('regDate').setValue(formattedDate);
     this.myForm.get('regTime').setValue(formattedTime);
 
-       
+
     console.log(this.myForm.getRawValue())
     let DateOfBirth1 = this.myForm.get('DateOfBirth')?.value;
     if (DateOfBirth1) {
@@ -875,9 +826,9 @@ export class NewLabPatientRegComponent {
       this.myForm.get('ageYear')?.setValue(String(ageYear), { emitEvent: false });
       this.myForm.get('ageMonth')?.setValue(String(ageMonth), { emitEvent: false });
       this.myForm.get('ageDay')?.setValue(String(ageDay), { emitEvent: false });
-    
-    }
 
+    }
+    debugger
     const formValue = { ...this.myForm.value };
     const controlsToRemove = ['patientName', 'regId', 'IsPathRad', 'ServiceId', 'totalAmt', 'totalDiscountPer', 'discountAmt', 'netPayableAmt', 'paymentType'];
     controlsToRemove.forEach(key => delete formValue[key]);
@@ -913,7 +864,7 @@ export class NewLabPatientRegComponent {
 
     // this.OpBillForm.get('cashCounterId')?.setValue(this.searchForm.get('CashCounterID')?.value)
     console.log("form values", this.OpBillForm.value)
-debugger
+    debugger
     console.log("form values", this.LabBillfinalform.value)
     if (this.OpBillForm.invalid) {
 
@@ -958,13 +909,13 @@ debugger
             console.log(result.BillBalanceAmount)
             this.OpBillForm.get('balanceAmt').setValue(result.BillBalanceAmount || 0)
             this.OpBillForm.get('payments').setValue(result.submitDataPay.ipPaymentInsert)
-         
+
 
             this.LabBillfinalform.get('labPatientRegistration').setValue(formValue)
             this.LabBillfinalform.get('opBillIngModels').setValue(this.OpBillForm.value)
             console.log(this.LabBillfinalform.value)
             this._labPatientRegService.InsertLabRegBilling(this.LabBillfinalform.value).subscribe(response => {
-            this.viewgetOPBillReportPdf(response)
+              this.viewgetOPBillReportPdf(response)
               this._matDialog.closeAll();
               this.savebtn = true
             });
@@ -984,9 +935,10 @@ debugger
 
         console.log(this.LabBillfinalform.value)
 
+
         this._labPatientRegService.InsertLabRegBilling(this.LabBillfinalform.value).subscribe(response => {
           console.log(response)
-
+          debugger
           this.viewgetOPBillReportPdf(response)
           this._matDialog.closeAll();
           this.savebtn = true
@@ -1044,7 +996,207 @@ debugger
   viewgetOPBillReportPdf(element) {
     this.commonService.Onprint("BillNo", element, "LabregisterBillReceipt");
   }
+  filterResults(results: any[], fields: { firstName: string, lastName: string, mobileNo: string }) {
+    const { firstName, lastName, mobileNo } = fields;
+    return results.filter(item => {
+      return (!firstName || item.patientName?.toLowerCase().includes(firstName.toLowerCase()))
+        && (!lastName || item.patientName?.toLowerCase().includes(lastName.toLowerCase()))
+        && (!mobileNo || item.mobileNo?.startsWith(mobileNo));
+    });
+  }
+  handleInputChange(changedField: string): void {
+    // Get all current field values
+    debugger
+    const firstName = this.myForm.get('firstName').value?.trim() || '';
+    const lastName = this.myForm.get('lastName').value?.trim() || '';
+    const mobileNo = this.myForm.get('mobileNo').value?.trim() || '';
 
+    // If all fields are empty, clear everything
+    if (!firstName && !lastName && !mobileNo) {
+      // this.resetFilteredOptions();
+      return;
+    }
+
+    // Count how many fields are filled
+    const filledFields = [firstName, mobileNo].filter(Boolean).length;
+
+    // If only one field is filled, and it's FirstName or MobileNo, call API
+    if (filledFields === 1 && (changedField === 'firstName' || changedField === 'mobileNo')) {
+      const keyword = firstName || mobileNo;
+      this._labPatientRegService.getlabSuggestions("LabPatientRegistration/Labauto-complete?Keyword=", keyword).subscribe(results => {
+        this.prevResults = results || [];
+        console.log(results)
+        this.filteredOptions = this.filterResults(this.prevResults, { firstName, lastName, mobileNo });
+      });
+      return;
+    }
+
+    // If only one field is filled, and it's LastName, just filter prevResults (do not call API)
+    if (filledFields === 1 && changedField === 'lastName') {
+      this.filteredOptions = this.filterResults(this.prevResults, { firstName, lastName, mobileNo });
+      return;
+    }
+
+    // If more than one field is filled, filter from prevResults
+    if (this.prevResults.length > 0) {
+      this.filteredOptions = this.filterResults(this.prevResults, { firstName, lastName, mobileNo });
+    } else if (changedField === 'firstName' || changedField === 'mobileNo') {
+      // Fallback: if prevResults is empty, call API with the changed field (if allowed)
+      const keyword = this.myForm.get(changedField).value?.trim();
+      if (keyword) {
+        this._labPatientRegService.getlabSuggestions("LabPatientRegistration/Labauto-complete?Keyword=", keyword).subscribe(results => {
+          this.prevResults = results || [];
+          this.filteredOptions = this.filterResults(this.prevResults, { firstName, lastName, mobileNo });
+        });
+      }
+    } else {
+      // If changedField is LastName and prevResults is empty, do nothing
+      this.filteredOptions = [];
+    }
+  }
+
+  handleInputChangeDebounced(changedField: string): void {
+    // Clear any existing timer for this field
+    if (this.debounceTimers[changedField]) {
+      clearTimeout(this.debounceTimers[changedField]);
+    }
+    // Set a new timer
+    this.debounceTimers[changedField] = setTimeout(() => {
+      this.handleInputChange(changedField);
+    }, 300); // 300ms debounce
+  }
+
+  onSelectPatient(row: any) {
+    this.getSelectedObj(row);
+    this.resetFilteredOptions();
+  }
+  resetFilteredOptions() {
+    this.filteredOptions = [];
+    this.prevResults = [];
+  }
+  Is9_Digit_National_Id: boolean = false;
+
+  getValidationMessages() {
+    const maxLen = this.Is9_Digit_National_Id ? 9 : 12;
+    return {
+      RegId: [],
+      firstName: [
+        { name: "required", Message: "First Name is required" },
+        { name: "maxLength", Message: "Enter only upto 50 chars" },
+        { name: "pattern", Message: "only char allowed." }
+      ],
+      middleName: [
+        // { name: "required", Message: "Middle Name is required" },
+        // { name: "maxLength", Message: "Enter only upto 50 chars" },
+        { name: "pattern", Message: "only char allowed." }
+      ],
+      lastName: [
+        { name: "required", Message: "Last Name is required" },
+        // { name: "maxLength", Message: "Enter only upto 50 chars" },
+        { name: "pattern", Message: "only char allowed." }
+      ],
+      address: [
+        { name: "required", Message: "Address is required" },
+
+      ],
+      prefixId: [
+        { name: "required", Message: "Prefix Name is required" }
+      ],
+      genderId: [
+        { name: "required", Message: "Gender is required" }
+      ],
+      areaId: [
+        { name: "required", Message: "Area Name is required" }
+      ],
+      cityId: [
+        { name: "required", Message: "City Name is required" }
+      ],
+      religionId: [
+        { name: "required", Message: "Religion Name is required" }
+      ],
+      countryId: [
+        { name: "required", Message: "Country Name is required" }
+      ],
+
+      stateId: [
+        { name: "required", Message: "State Name is required" }
+      ],
+      mobileNo: [
+        { name: "pattern", Message: "Only numbers allowed" },
+        { name: "required", Message: "Mobile No is required" },
+        { name: "minLength", Message: "10 digit required." },
+        { name: "maxLength", Message: "More than 10 digits not allowed." }
+
+      ],
+      phoneNo: [
+        { name: "pattern", Message: "Only numbers allowed" },
+        // { name: "required", Message: "phoneNo No is required" },
+        { name: "minLength", Message: "10 digit required." },
+        { name: "maxLength", Message: "More than 10 digits not allowed." }
+
+      ],
+      // aadharCardNo: [
+      //     { name: "pattern", Message: "Only numbers allowed" },
+      //     { name: "required", Message: "AadharCard No is required" },
+      //     { name: "minLength", Message: "12 digit required." },
+      //     { name: "maxLength", Message: "More than 12 digits not allowed." }
+      // ],
+      aadharCardNo: [
+        { name: "pattern", Message: "Only numbers allowed" },
+        { name: "required", Message: "Aadhaar / National ID is required" },
+        { name: "minLength", Message: `${maxLen} digits required.` },
+        { name: "maxLength", Message: `More than ${maxLen} digits not allowed.` }
+      ],
+      MaritalStatusId: [
+        { Message: "Mstatus Name is required" }
+      ],
+      patientTypeId: [
+        { name: "required", Message: "Country Name is required" }
+      ],
+      tariffId: [
+        { name: "required", Message: "Mstatus Name is required" }
+      ],
+      departmentId: [
+        { name: "required", Message: "Department Name is required" }
+      ],
+      DoctorID: [
+        { name: "required", Message: "Doctor Name is required" }
+      ],
+      refDocId: [
+        { name: "required", Message: "Ref Doctor Name is required" }
+      ],
+      PurposeId: [
+        { name: "required", Message: "Purpose Name is required" }
+      ],
+      CompanyId: [
+        { name: "required", Message: "Company Name is required" }
+      ],
+      SubCompanyId: [
+        { name: "required", Message: "SubCompany Name is required" }
+      ],
+      emgDrivingLicenceNo: [
+        { name: "pattern", Message: "e.g., MH14-20210001234" },
+        { name: "minLength", Message: "16 digit required." },
+        { name: "maxLength", Message: "More than 16 digits not allowed." }
+      ],
+      medTourismPassportNo: [
+        { name: "pattern", Message: "e.g., A1234567" },
+        { name: "minLength", Message: "8 digit required." },
+        { name: "maxLength", Message: "More than 8 digits not allowed." }
+      ],
+      medTourismNationalityId: [
+        { name: "pattern", Message: "Only alphanumeric, 10 to 15 characters" },
+        { name: "minLength", Message: "Minimum 10 characters required." },
+        { name: "maxLength", Message: "Maximum 15 characters allowed." }
+      ],
+      UnitId: [
+        { name: "required", Message: "Unit Name is required" }
+      ],
+      ClassId: [
+        { name: "required", Message: "Class Name is required" }
+      ],
+    };
+  }
 
   resetform() {
 

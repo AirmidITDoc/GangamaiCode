@@ -74,6 +74,7 @@ export class LabPatientRegService {
     return this._httpClient.PostData("LabPatientRegistration/PatientRegistrationcreditbill", param)
   }
   public InsertLabRegBilling(param) {
+    debugger
     return this._httpClient.PostData("LabPatientRegistration/PatientRegistrationPaidBill", param)
   }
   public InsertLabBillingsettlement(param) {
@@ -82,5 +83,9 @@ export class LabPatientRegService {
 
      public getReportView(Param) {
         return this._httpClient.PostData("Report/ViewReport", Param);
+    }
+      public getlabSuggestions(apiUrl: string, inputValue: string): Observable<any[]> {
+        debugger
+        return this._httpClient.GetData(apiUrl + inputValue);
     }
 }

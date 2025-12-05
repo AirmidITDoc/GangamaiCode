@@ -7,6 +7,8 @@ import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/air
 import { ToastrService } from "ngx-toastr";
 import { CashCounterMasterService } from "./cash-counter-master.service";
 import { NewCashCounterComponent } from "./new-cash-counter/new-cash-counter.component";
+import { PagePermissionService } from "app/main/shared/services/page-permission.service";
+import { permissionCodes, permissionType } from "app/main/shared/model/permission.model";
 
 
 
@@ -18,20 +20,24 @@ import { NewCashCounterComponent } from "./new-cash-counter/new-cash-counter.com
     animations: fuseAnimations,
 })
 export class CashCounterMasterComponent implements OnInit {
+     IsAdd: boolean = this.permissionService.getPermission(permissionCodes.Prefix, permissionType.Add);
+        
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
 cashCounterName: any = "";
      allcolumns = [
-            // { heading: "Code", key: "cashCounterId", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Cash Counter Name", key: "cashCounterName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
+           { heading: "Cash Counter Name", key: "cashCounterName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
             { heading: "Prefix Name", key: "prefix", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "BillNo", key: "billNo", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
             {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
                     {
-                        action: gridActions.edit, callback: (data: any) => {
-                            this.onSave(data);
-                        }
+                        // action: gridActions.edit, callback: (data: any) => {
+                        //     this.onSave(data);
+                        // }
+                           action: gridActions.edit, visible: this.permissionService.getPermission(permissionCodes.CashCounter, permissionType.Edit), callback: (data: any) => {
+                                                    this.onSave(data);
+                                                }
                     }, {
                         action: gridActions.delete, callback: (data: any) => {
                             this._CashCounterMasterService.deactivateTheStatus(data.cashCounterId).subscribe((response: any) => {
@@ -47,6 +53,7 @@ cashCounterName: any = "";
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
         ]
     gridConfig: gridModel = {
+          permissionCode: permissionCodes.CashCounter,
         apiUrl: "CashCounter/List",
         columnsList: this.allcolumns,
         sortField: "cashCounterId",
@@ -55,7 +62,7 @@ cashCounterName: any = "";
     }
 
     constructor(
-        public _CashCounterMasterService: CashCounterMasterService,
+        public _CashCounterMasterService: CashCounterMasterService,public permissionService: PagePermissionService,
         public toastr: ToastrService, public _matDialog: MatDialog
     ) { }
 

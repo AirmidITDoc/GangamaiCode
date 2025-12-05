@@ -7,6 +7,8 @@ import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/air
 import { ToastrService } from "ngx-toastr";
 import { BillingClassMasterService } from "./billing-class-master.service";
 import { NewClassComponent } from "./new-class/new-class.component";
+import { PagePermissionService } from "app/main/shared/services/page-permission.service";
+import { permissionCodes, permissionType } from "app/main/shared/model/permission.model";
 
 @Component({
     selector: "app-billing-class-master",
@@ -16,17 +18,21 @@ import { NewClassComponent } from "./new-class/new-class.component";
     animations: fuseAnimations,
 })
 export class BillingClassMasterComponent implements OnInit {
+      IsAdd: boolean = this.permissionService.getPermission(permissionCodes.Prefix, permissionType.Add);
+       
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
  className: any = "";
    
         allcolumns = [
-            // { heading: "Code", key: "classId", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "Billing Class Name", key: "className", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
             {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
                     {
-                        action: gridActions.edit, callback: (data: any) => {
+                        // action: gridActions.edit, callback: (data: any) => {
+                        //     this.onSave(data);
+                        // }
+                         action: gridActions.edit, visible: this.permissionService.getPermission(permissionCodes.ClassMaster, permissionType.Edit), callback: (data: any) => {
                             this.onSave(data);
                         }
                     }, {
@@ -44,6 +50,7 @@ export class BillingClassMasterComponent implements OnInit {
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
         ]
      gridConfig: gridModel = {
+         permissionCode: permissionCodes.ClassMaster,
         apiUrl: "ClassMaster/List",
         columnsList: this.allcolumns,
         sortField: "classId",
@@ -54,7 +61,8 @@ export class BillingClassMasterComponent implements OnInit {
 
     constructor(
         public _BillingClassMasterService: BillingClassMasterService,
-        public toastr: ToastrService, public _matDialog: MatDialog
+        public toastr: ToastrService, public _matDialog: MatDialog,
+                public permissionService: PagePermissionService
     ) { }
 
     ngOnInit(): void { }

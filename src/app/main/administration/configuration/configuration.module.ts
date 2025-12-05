@@ -43,6 +43,8 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { EditConfigurationComponent } from './edit-configuration/edit-configuration.component';
 import { AddAutoServiceComponent } from './add-auto-service/add-auto-service.component';
 import { AllConfigDetailsComponent } from './all-config-details/all-config-details.component';
+import { EditSMSConfigComponent } from './edit-smsconfig/edit-smsconfig.component';
+import { EditEmailconfigComponent } from './edit-emailconfig/edit-emailconfig.component';
 
 
 const routes: Routes = [
@@ -52,7 +54,7 @@ const routes: Routes = [
   },
 ];
 @NgModule({
-  declarations: [ConfigurationComponent,NewConfigurationComponent, EditConfigurationComponent, AddAutoServiceComponent, AllConfigDetailsComponent],
+  declarations: [ConfigurationComponent,NewConfigurationComponent, EditConfigurationComponent, AddAutoServiceComponent, AllConfigDetailsComponent, EditSMSConfigComponent, EditEmailconfigComponent],
   imports: [
     RouterModule.forChild(routes),
    MatChipsModule,

@@ -180,6 +180,16 @@
                 dynamicTableHeight>
                 <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
 
+
+                    <ng-template #actionButtonTemplate let-element>
+                        <div fxLayout="row" fxLayoutAlign="center center">
+                            <button mat-icon-button matTooltip="Edit SMS Config" (click)="OnEditSms(element)">
+                                <mat-icon>edit</mat-icon>
+                            </button>
+
+                        </div>
+                    </ng-template>
+
                     <airmid-table [gridConfig]="gridConfig" #smsgrid [ShowFilter]="false" [ShowButtons]="false">
                         <ng-container filters>
                             <!-- <form [formGroup]="smsSearchForm">
@@ -237,7 +247,14 @@
 
                         </div>
                     </ng-template>
+                    <ng-template #actionButtonTemplate1 let-element>
+                        <div fxLayout="row" fxLayoutAlign="center center">
+                            <button mat-icon-button matTooltip="Edit Email" (click)="OnEditEmail(element)">
+                                <mat-icon>edit</mat-icon>
+                            </button>
 
+                        </div>
+                    </ng-template>
 
 
                     <airmid-table [gridConfig]="gridConfig1" #smsgrid [ShowFilter]="false" [ShowButtons]="false">
@@ -269,43 +286,8 @@
 
         </mat-tab>
 
-        <mat-tab label="Audit Log Detail List">
-
-            <div fusePerfectScrollbar
-                class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
-                dynamicTableHeight>
-                <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
-
-                    <airmid-table [gridConfig]="gridConfig2" class="content" #auditgrid>
-                        <ng-container filters>
-                            <form [formGroup]="auditFilterForm">
-
-                                <airmid-datepicker [formGroup]="auditFilterForm" [isRangePicker]="true"
-                                    formStartControlName="fromDate" formEndControlName="enddate"
-                                    [(fromValue)]="gridConfig2.filters[1].fieldValue"
-                                    [(toValue)]="gridConfig2.filters[2].fieldValue">
-                                </airmid-datepicker>
-
-                                <mat-form-field appearance="outline">
-                                    <mat-label>Search Name</mat-label>
-                                    <input matInput placeholder="Search ByName" autocomplete="off"
-                                        [formGroup]="auditFilterForm" formControlName="ActionByName"
-                                        (input)="onChangeaudit()" />
-                                    <button matSuffix mat-icon-button aria-label="Clear"
-                                        (click)="Clearfilteraudit('ActionByName')">
-                                        <mat-icon>close</mat-icon>
-                                    </button>
-                                </mat-form-field>
 
 
-                            </form>
-                        </ng-container>
-                    </airmid-table>
-                </div>
-            </div>
-
-        </mat-tab>
-
-    </mat-tab-group> 
+    </mat-tab-group>
 
 </div>

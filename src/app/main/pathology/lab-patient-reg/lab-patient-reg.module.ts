@@ -43,6 +43,7 @@ import { MatTreeModule } from '@angular/material/tree';
 import { LabPatientRegComponent } from './lab-patient-reg.component';
 import { NewLabPatientRegComponent } from './new-lab-patient-reg/new-lab-patient-reg.component';
 import { LabRegBillDeatilsComponent } from './lab-reg-bill-deatils/lab-reg-bill-deatils.component';
+import { EstimateForPatientComponent } from './estimate-for-patient/estimate-for-patient.component';
 
 const routes: Routes = [
   {
@@ -52,7 +53,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [LabPatientRegComponent, NewLabPatientRegComponent, LabRegBillDeatilsComponent],
+  declarations: [LabPatientRegComponent, NewLabPatientRegComponent, LabRegBillDeatilsComponent, EstimateForPatientComponent],
   imports: [
     CommonModule,
     RouterModule.forChild(routes),
