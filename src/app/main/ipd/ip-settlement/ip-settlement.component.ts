@@ -203,6 +203,8 @@ export class IPSettlementComponent implements OnInit {
                 advanceUsedAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
                 balanceAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
             }),
+             // ✅ Fixed: should be FormArray
+             tPayments: this.formBuilder.array([])
         });
     }
     createAdvanceUpdate(item: any): FormGroup {
@@ -212,10 +214,41 @@ export class IPSettlementComponent implements OnInit {
             balanceAmount: [item?.BalanceAmount ?? 0, [, this._FormvalidationserviceService.AllowDecimalNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
         });
     }
+    CreateModePaymentform(item: any): FormGroup {
+        return this.formBuilder.group({
+            paymentId: [item?.paymentId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            unitId: [item?.unitId ?? this.accountService.currentUserValue.user.unitId],
+            billNo: [item?.billNo ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            opdipdtype: [item?.opdipdtype ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            paymentDate: [item?.paymentDate ?? ''],
+            paymentTime: [item?.paymentTime ?? ''],
+            payAmount: [item?.payAmount ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            tranNo: [item?.tranNo ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+            bankName: [item?.bankName ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+            validationDate: [item?.validationDate ?? ''],
+            advanceUsedAmount: [item?.advanceUsedAmount ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            comments: [item?.comments ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+            payMode: [item?.payMode ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+            onlineTranNo: [item?.onlineTranNo ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+            onlineTranResponse: [item?.onlineTranResponse ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+            companyId: [item?.companyId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            advanceId: [item?.advanceId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            refundId: [item?.refundId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            cashCounterId: [item?.cashCounterId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            transactionType: [item?.transactionType ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            isSelfOrcompany: [item?.isSelfOrcompany ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            tranMode: [item?.tranMode ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+            createdBy: [item?.createdBy ?? this.accountService.currentUserValue.userId],
+            transactionLabel: [item?.transactionLabel ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+        });
+    }
     // Getters  
     get AdvacnedetUpdateArray(): FormArray {
         return this.IPBillMyForm.get('advanceDetailupdate') as FormArray;
     }
+    get ModeOfPaymentsArray(): FormArray {
+        return this.IPBillMyForm.get('tPayments') as FormArray;
+    } 
     //    110193 
     getSelectedObj(obj) {
         console.log(obj)
@@ -251,7 +284,8 @@ export class IPSettlementComponent implements OnInit {
         PatientHeaderObj['CompanyName'] = contact.companyName;
         PatientHeaderObj['CompanyId'] = contact.companyId;
         PatientHeaderObj['DepartmentName'] = contact.departmentName;
-        PatientHeaderObj['Age'] = this.registerObj.age;
+        PatientHeaderObj['Age'] = this.registerObj.age; 
+        PatientHeaderObj['TransactionLabel'] = 'IP-Settlement'
 
         const dialogRef = this._matDialog.open(OpPaymentVimalComponent,
             {
@@ -289,6 +323,10 @@ export class IPSettlementComponent implements OnInit {
                 }
 
                 this.IPBillMyForm.get('payment').setValue(result.submitDataPay.ipPaymentInsert)
+                this.ModeOfPaymentsArray.clear();
+                result.submitDataPay.ipModePaymentInsert.forEach(item => {
+                this.ModeOfPaymentsArray.push(this.CreateModePaymentform(item));
+                 }); 
                 console.log(this.IPBillMyForm.value);
                 this._IPSettlementService.InsertIPSettlementPayment(this.IPBillMyForm.value).subscribe(response => {
                     this.GetDetails(this.RegId1)

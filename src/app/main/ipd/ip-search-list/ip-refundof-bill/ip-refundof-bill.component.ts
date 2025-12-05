@@ -142,7 +142,7 @@ export class IPRefundofBillComponent implements OnInit {
         isCancelledBy: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         isCancelledDate: ['1900-01-01', [this._FormvalidationserviceService.validDateValidator]],
         refundId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        unitId: [1],
+        unitId: [this.accountService.currentUserValue.user.unitId],
       }),
 
       tRefundDetails: this.formBuilder.array([]), // FormArray for details
@@ -207,9 +207,9 @@ export class IPRefundofBillComponent implements OnInit {
   get refundDetailsArray(): FormArray {
     return this.vRefundOfBillFormGroup.get('tRefundDetails') as FormArray;
   }
-    get ModeOfPaymentsArray(): FormArray {
-        return this.vRefundOfBillFormGroup.get('tPayments') as FormArray;
-    }
+  get ModeOfPaymentsArray(): FormArray {
+   return this.vRefundOfBillFormGroup.get('tPayments') as FormArray;
+  }
   get addChargesArray(): FormArray {
     return this.vRefundOfBillFormGroup.get('addCharges') as FormArray;
   } 

@@ -512,7 +512,8 @@
                                     <mat-form-field appearance="outline" fxFlex>
                                         <mat-label>Surgery Dt</mat-label>
                                         <input name="Surgerydate" matInput [matDatepicker]="picker1"
-                                            formControlName="surgeryDate" #surgeryDateInput />
+                                            formControlName="surgeryDate" #surgeryDateInput
+                                            (dateChange)="onSurgeryDateChange($event)" />
                                         <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
                                         <mat-datepicker #picker1></mat-datepicker>
                                     </mat-form-field>
@@ -563,7 +564,7 @@
                                 </div>
 
                                 <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <mat-radio-group formControlName="bloodArg" [(ngModel)]="vbloodArg">
+                                    <mat-radio-group formControlName="bloodArranged" [(ngModel)]="vbloodArranged">
                                         <label style="font-weight: bold;">Blood Arranged:</label>
                                         <mat-radio-button value="1">Yes</mat-radio-button>
                                         <mat-radio-button value="0">No</mat-radio-button>

@@ -135,11 +135,10 @@
                                                             formControlName="AadharCardNo"
                                                             (keypress)="keyPressAlphanumeric($event)"
                                                             [value]="registerObj.aadharCardNo" [formGroup]="myForm"
-                                                             [maxLength]="Is9_Digit_National_Id ? 9 : 12"
-                                                            [validations]="getValidationMessages().AadharCardNo"
-                                                          ></airmid-textbox>
-                                                    </div> 
-                                                    
+                                                            [maxLength]="Is9_Digit_National_Id ? 9 : 12"
+                                                            [validations]="getValidationMessages().AadharCardNo"></airmid-textbox>
+                                                    </div>
+
                                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                         <airmid-textbox label="Phone" formControlName="Phone"
                                                             (keypress)="keyPressAlphanumeric($event)"
@@ -781,7 +780,7 @@
                                             </div>
 
                                             <!-- Signature Drawing Section -->
-                                            <div *ngIf="!isFileUpload"  [class.readonly-wrapper]="true">
+                                            <div *ngIf="!isFileUpload" [class.readonly-wrapper]="true">
                                                 <h3 style="margin-bottom: 16px;">Signature</h3>
                                                 <div
                                                     style="background-color: #f9f9f9; border: 1px solid #ccc; border-radius: 8px; padding: 16px; display: flex; flex-direction: column; gap: 16px;">
@@ -793,8 +792,10 @@
                                                 </div>
                                             </div>
 
-                                            <div style="margin-top: 24px; display: flex; justify-content: flex-end; gap: 8px;">
-                                                <button mat-raised-button color="primary" (click)="loadSignaturePreview()">Refresh
+                                            <div
+                                                style="margin-top: 24px; display: flex; justify-content: flex-end; gap: 8px;">
+                                                <button mat-raised-button color="primary"
+                                                    (click)="loadSignaturePreview()">Refresh
                                                 </button>
 
                                                 <button mat-raised-button color="primary" (click)="editSignature()">Edit
@@ -852,7 +853,16 @@
     </div>
 
     <div class="modal-footer">
-        <div class="footer-navigation-container">
+        <div class="footer-navigation-container" fxLayoutAlign="space-between">
+            <form [formGroup]="myForm">
+                <div fxLayout="row">
+                <app-airmid-slider label="IsConsultant" formControlName="IsConsultant"
+                    [formGroup]="myForm" [(ngModel)]="visConsultant"></app-airmid-slider>
+
+                <app-airmid-slider label="IsRefDoctor" formControlName="IsRefDoc"
+                    [formGroup]="myForm" [(ngModel)]="visRefDoc"></app-airmid-slider>
+            </div>
+            </form>
             <div class="modal-footer-buttons">
                 <button type="button" class="btn btn-danger-outline" (click)="onClose()">Close</button>
                 <button type="button" class="btn btn-primary" (click)="onSubmit()">Save</button>

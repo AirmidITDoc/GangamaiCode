@@ -193,8 +193,9 @@
 
                                         <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                                             <airmid-dropdown label="Surgery Name" formControlName="surgeryId"
-                                                [formGroup]="inOperFinalForm" (selectionChange)="selectChangeSurgery($event)"
-                                                ValueField="surgeryId" TextField="surgeryName"
+                                                [formGroup]="inOperFinalForm"
+                                                (selectionChange)="selectChangeSurgery($event)" ValueField="surgeryId"
+                                                TextField="surgeryName"
                                                 ApiUrl="SurgeryMaster/GetSurgeryTypeByOTSurgery">
                                             </airmid-dropdown>
                                         </div>
@@ -417,7 +418,8 @@
 
                                     <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                                         <airmid-dropdown label="Doctor Name" formControlName="doctorId" #ddlDoctor
-                                            [formGroup]="inOperFinalForm" (selectionChange)="selectChangedoctor($event)">
+                                            [formGroup]="inOperFinalForm"
+                                            (selectionChange)="selectChangedoctor($event)">
                                         </airmid-dropdown>
                                     </div>
 
@@ -502,8 +504,8 @@
                                 </div>
 
                                 <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <airmid-dropdown label="Theater" formControlName="ottable" [formGroup]="inOperFinalForm"
-                                        ValueField="ottableId" TextField="ottableName"
+                                    <airmid-dropdown label="Theater" formControlName="ottable"
+                                        [formGroup]="inOperFinalForm" ValueField="ottableId" TextField="ottableName"
                                         (selectionChange)="onChangeOtTable($event)"
                                         ApiUrl="OTRequest/getlocationByOttable">
                                     </airmid-dropdown>
@@ -552,7 +554,8 @@
                                 </div>
 
                                 <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%" fxLayout="column">
-                                    <app-airmid-chipautocomplete fxFlex [chips]="inOperFinalForm.get('diagnosis')?.value"
+                                    <app-airmid-chipautocomplete fxFlex
+                                        [chips]="inOperFinalForm.get('diagnosis')?.value"
                                         [apiUrl]="'OTReservation/GetReservationDiagnosisList?DescriptionType=Diagnosis'"
                                         [displayKey]="'descriptionName'" [allowCustom]="true"
                                         [placeholder]="'Select Diagnosis'"
@@ -561,8 +564,9 @@
                                 </div>
 
                                 <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                     <app-airmid-chipautocomplete fxFlex [chips]="inOperFinalForm.get('postDiagnosis')?.value"
-                                        [apiUrl]="'OTReservation/GetReservationDiagnosisList?DescriptionType=Diagnosis'"
+                                    <app-airmid-chipautocomplete fxFlex
+                                        [chips]="inOperFinalForm.get('postDiagnosis')?.value"
+                                        [apiUrl]="'OTInOperation/GetOtInOperationPostOperDiagnosisList=postDiagnosis'"
                                         [displayKey]="'descriptionName'" [allowCustom]="true"
                                         [placeholder]="'Select Post Operative Diagnosis'"
                                         (chipsChange)="selectChangeDiagnosis1($event)">
@@ -570,32 +574,29 @@
                                 </div>
                                 <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <airmid-textbox label="Steps of Procedure" formControlName="stepsOfProc"
-                                        [formGroup]="inOperFinalForm">
+                                        [formGroup]="inOperFinalForm" [value]="registerObj3?.stepsOfProc">
                                     </airmid-textbox>
                                 </div>
 
                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <airmid-textbox label="Blood Loss" formControlName="bloodLoss"
-                                        [formGroup]="inOperFinalForm">
+                                        [formGroup]="inOperFinalForm" [value]="registerObj3?.bloodLoss">
                                     </airmid-textbox>
                                 </div>
 
                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <airmid-dropdown label="Anesthesia Type" formControlName="anesthesiaType"
                                         [formGroup]="inOperFinalForm" [mode]="autocompleteModeAnesthesiatypes"
-                                        (selectionChange)="selectChangeanesthesiaType($event)">
+                                        (selectionChange)="selectChangeanesthesiaType($event)"  [value]="registerObj3?.anesthesiaType">
                                     </airmid-dropdown>
                                 </div>
 
                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%" class="gap-4">
                                     <mat-form-field appearance="outline" fxFlex>
                                         <mat-label>Theater-In Dt</mat-label>
-                                        <input matInput [matDatepicker]="picker1" [min]="minDate"
-                                            formControlName="theaterInDate" (dateChange)="onChangeDate($event.value)"
-                                            [disabled]="true">
-                                        <mat-datepicker-toggle matSuffix [for]="picker1"
-                                            [disabled]="isDatePckrDisabled"></mat-datepicker-toggle>
-                                        <mat-datepicker #picker1></mat-datepicker>
+                                        <input matInput [matDatepicker]="picker3" formControlName="theaterInDate">
+                                        <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
+                                        <mat-datepicker #picker3></mat-datepicker>
                                     </mat-form-field>
 
                                     <mat-form-field appearance="outline" fxFlex>
@@ -612,12 +613,9 @@
                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%" class="gap-4">
                                     <mat-form-field appearance="outline" fxFlex>
                                         <mat-label>Theater-Out Dt</mat-label>
-                                        <input matInput [matDatepicker]="picker1" [min]="minDate"
-                                            formControlName="theaterOutData" (dateChange)="onChangeOutDate($event.value)"
-                                            [disabled]="true">
-                                        <mat-datepicker-toggle matSuffix [for]="picker1"
-                                            [disabled]="isDatePckrDisabled"></mat-datepicker-toggle>
-                                        <mat-datepicker #picker1></mat-datepicker>
+                                        <input matInput [matDatepicker]="picker2" formControlName="theaterOutData">
+                                        <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                                        <mat-datepicker #picker2></mat-datepicker>
                                     </mat-form-field>
 
                                     <mat-form-field appearance="outline" fxFlex>
@@ -671,7 +669,8 @@
                                 </div>
 
                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <mat-radio-group formControlName="intraOpeChangeInSurgeryPlan" [(ngModel)]="vInterOPe">
+                                    <mat-radio-group formControlName="intraOpeChangeInSurgeryPlan"
+                                        [(ngModel)]="vInterOPe">
                                         <label style="font-weight: bold;">Intra Operative Change In Surgical
                                             Plan:</label>
                                         <mat-radio-button value="1">Yes</mat-radio-button>
@@ -735,7 +734,8 @@
 
                                 <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <label style="font-size: 16px; font-weight: bold;">Operative Findings</label>
-                                    <airmid-editor formControlName="operativeFindingsNotes" [formGroup]="inOperFinalForm">
+                                    <airmid-editor formControlName="operativeFindingsNotes"
+                                        [formGroup]="inOperFinalForm">
                                     </airmid-editor>
                                 </div>
                             </div>
@@ -751,7 +751,8 @@
 
                                 <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <label style="font-size: 16px; font-weight: bold;">Condition Of The Patient</label>
-                                    <airmid-editor formControlName="conditionOfPatientNotes" [formGroup]="inOperFinalForm">
+                                    <airmid-editor formControlName="conditionOfPatientNotes"
+                                        [formGroup]="inOperFinalForm">
                                     </airmid-editor>
                                 </div>
                             </div>

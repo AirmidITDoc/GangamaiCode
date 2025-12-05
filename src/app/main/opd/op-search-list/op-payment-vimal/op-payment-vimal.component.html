@@ -38,30 +38,30 @@
                                             <span class="patient-col-key ">Patient Name</span>
                                             <span>:</span>
                                             <span
-                                                class="patient-col-value">{{advanceData.RegNo}}-{{advanceData.PatientName}}</span>
+                                                class="patient-col-value">{{advanceData?.RegNo}}-{{advanceData?.PatientName}}</span>
                                         </div>
 
                                             <div class="patient-col gap-3"  >
                                                 <span class="patient-col-key ">OPD | IPD No </span>
                                                 <span>:</span>
                                                 <span class="patient-col-value" *ngIf="advanceData.IPDNo">
-                                                    {{advanceData.IPDNo}}</span>
+                                                    {{advanceData?.IPDNo}}</span>
                                                 <span class="patient-col-value" *ngIf="advanceData.OPDNo">
-                                                    {{advanceData.OPDNo}}</span>
+                                                    {{advanceData?.OPDNo}}</span>
                                             </div>
                                       
                                          <div class="patient-col gap-3"  
                                             *ngIf="advanceData.DepartmentName">
                                             <span class="patient-col-key ">Department Name | Doctor Name</span>
                                             <span>:</span>
-                                            <span class="patient-col-value">{{advanceData.DepartmentName}} | {{advanceData.DoctorName}}</span>
+                                            <span class="patient-col-value">{{advanceData?.DepartmentName}} | {{advanceData?.DoctorName}}</span>
                                         </div> 
 
                                         <div class="patient-col gap-3" >
                                             <span class="patient-col-key">Company Name</span>
                                             <span>:</span>
                                             <span class="patient-col-value"
-                                              style="background-color: orange;font-weight: bold;">{{advanceData.CompanyName}}</span>
+                                              style="background-color: orange;font-weight: bold;">{{advanceData?.CompanyName}}</span>
                                         </div> 
                                           
                                 </div>

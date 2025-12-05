@@ -134,6 +134,12 @@
                                                 </div>
                                             </mat-form-field>
 
+                                             <!-- <airmid-dropdown label="Payment Type" formControlName="paymentType1" fxFlex
+                                              [formGroup]="patientDetailsFormGrp" [mode]="autocompleteModePaymentMode"
+                                              [validations]="getValidationMessages().paymentType1"  TextField="text"
+                                               (selectionChange)="getselectObjPayMode($event)">
+                                              </airmid-dropdown> -->
+
                                             <mat-form-field appearance="outline" fxFlex>
                                                 <mat-label>Amount</mat-label>
                                                 <input matInput formControlName="amount1" (keyup)="GetBalanceAmt()" [readonly]="MultipleSettlement"

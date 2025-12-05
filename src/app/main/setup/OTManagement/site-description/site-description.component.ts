@@ -7,6 +7,8 @@ import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/air
 import { ToastrService } from 'ngx-toastr';
 import { NewSiteDescriptionMasterComponent } from './new-site-description-master/new-site-description-master.component';
 import { SiteDescriptionService } from './site-description.service';
+import { permissionCodes, permissionType } from 'app/main/shared/model/permission.model';
+import { PagePermissionService } from 'app/main/shared/services/page-permission.service';
 
 @Component({
     selector: 'app-site-description',
@@ -18,6 +20,7 @@ import { SiteDescriptionService } from './site-description.service';
 export class SiteDescriptionComponent implements OnInit {
     msg: any;
     siteDescName: any = "";
+    IsAdd: boolean = this.permissionService.getPermission(permissionCodes.SetupOtManagment, permissionType.Add);
 
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
 
@@ -29,11 +32,11 @@ export class SiteDescriptionComponent implements OnInit {
         {
             heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
                 {
-                    action: gridActions.edit, callback: (data: any) => {
+                    action: gridActions.edit, visible: this.permissionService.getPermission(permissionCodes.SetupOtManagment, permissionType.Edit), callback: (data: any) => {
                         this.onSave(data);
                     }
                 }, {
-                    action: gridActions.delete, callback: (data: any) => {
+                    action: gridActions.delete, visible: this.permissionService.getPermission(permissionCodes.SetupOtManagment, permissionType.Delete), callback: (data: any) => {
                         debugger
                         this._SiteDescriptionService.deactivateTheStatus(data.siteDescId).subscribe((response: any) => {
                             this.grid.bindGridData();
@@ -47,6 +50,7 @@ export class SiteDescriptionComponent implements OnInit {
         { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
     ]
     gridConfig: gridModel = {
+        permissionCode: permissionCodes.SetupOtManagment,
         apiUrl: "SiteDescriptionMaster/List",
         columnsList: this.allColumns,
         sortField: "SiteDescId",
@@ -55,6 +59,7 @@ export class SiteDescriptionComponent implements OnInit {
     }
     constructor(
         public _SiteDescriptionService: SiteDescriptionService,
+        public permissionService: PagePermissionService,
         public toastr: ToastrService, public _matDialog: MatDialog
     ) { }
 

@@ -176,7 +176,7 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
     }
     onCloseDialog = new EventEmitter<any>();
     multiple: boolean = false
-Is9_Digit_National_Id: boolean = false;
+    Is9_Digit_National_Id: boolean = false;
     private signaturePad!: SignaturePad;
     private canvas!: HTMLCanvasElement;
     objFile: AirmidFileModel;
@@ -194,7 +194,7 @@ Is9_Digit_National_Id: boolean = false;
         public datePipe: DatePipe,
         private _formBuilder: UntypedFormBuilder,
         private _service: ApiCaller,
-         public _configue:ConfigService,
+        public _configue: ConfigService,
     ) { }
     ngAfterViewChecked(): void {
         this.changeDetectorRef.detectChanges();
@@ -224,9 +224,9 @@ Is9_Digit_National_Id: boolean = false;
     }
     doctorId = 0
     ngOnInit(): void {
-const rawValue = this?._configue?.configParams?.Is9_Digit_NationalId || "";
-const [id, val] = rawValue.includes(":") ? rawValue.split(":") : [null, null]; 
-this.Is9_Digit_National_Id = id === "1";
+        const rawValue = this?._configue?.configParams?.Is9_Digit_NationalId || "";
+        const [id, val] = rawValue.includes(":") ? rawValue.split(":") : [null, null];
+        this.Is9_Digit_National_Id = id === "1";
         this.isEditMode = this.data?.formMode === 'edit';
         this.myForm = this.createdDoctormasterForm();
         this.myForm.markAllAsTouched();
@@ -237,6 +237,8 @@ this.Is9_Digit_National_Id = id === "1";
             this._doctorService.getDoctorById(this.data.doctorId).subscribe((response) => {
                 this.registerObj = response;
                 console.log(this.registerObj)
+                this.visConsultant = this.data.isConsultant
+                this.visRefDoc = this.data.isRefDoc
                 this.ddlDepartment.SetSelection(this.registerObj.mDoctorDepartmentDets);
                 // debugger
                 if (this.registerObj.signature) {
@@ -299,7 +301,7 @@ this.Is9_Digit_National_Id = id === "1";
                 this.files = data;
             });
         }
-//this code for Mediforte 9 digit national id
+        //this code for Mediforte 9 digit national id
 
     }
     ///////////////////// digital signature code started /////////////////////
@@ -555,12 +557,12 @@ this.Is9_Digit_National_Id = id === "1";
             //         // this._FormvalidationserviceService.allowEmptyStringValidatorOnly()
             //     ]
             // ], 
-             AadharCardNo: ['', [
-                            Validators.minLength(maxLen),
-                            Validators.maxLength(maxLen),
-                            Validators.pattern("^[0-9]*$")
-                        ]],
-            signature: ["",[this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+            AadharCardNo: ['', [
+                Validators.minLength(maxLen),
+                Validators.maxLength(maxLen),
+                Validators.pattern("^[0-9]*$")
+            ]],
+            signature: ["", [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
             mDoctorExperienceDetails: this.formBuilder.array([]),
             mDoctorQualificationDetails: this.formBuilder.array([]),
             mDoctorScheduleDetails: this.formBuilder.array([]),
@@ -800,8 +802,8 @@ this.Is9_Digit_National_Id = id === "1";
         if (!this.myForm.invalid) {
 
             let data = this.myForm.value;
-            data.IsConsultant = true
-            data.IsRefDoc = false
+            // data.IsConsultant = true
+            // data.IsRefDoc = false
             data.IsInHouseDoctor = false
             data.IsOnCallDoctor = false
             data.IsActive = true
@@ -971,7 +973,7 @@ this.Is9_Digit_National_Id = id === "1";
             //     { name: "minLength", Message: "12 digit required." },
             //     { name: "maxLength", Message: "More than 12 digits not allowed." }
             // ],
-             AadharCardNo: [
+            AadharCardNo: [
                 { name: "pattern", Message: "Only numbers allowed" },
                 { name: "required", Message: "Aadhaar / National ID is required" },
                 { name: "minLength", Message: `${maxLen} digits required.` },

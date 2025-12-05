@@ -37,6 +37,7 @@ export class OpPaymentComponent implements OnInit {
   amount1: number;
   screenFromString = 'payment-form'; 
   autocompleteModecompany: string = "Company"; 
+  autocompleteModePaymentMode: string = "paymentMode";
   paidAmt: number;
   balanceAmt: number = 0;
   advanceData: any = {};
@@ -165,7 +166,10 @@ export class OpPaymentComponent implements OnInit {
     }
     return 1;
   }
-
+getselectObjPayMode(obj){
+  console.log(obj)
+  // this.selectedPaymnet1 = obj.text
+}   
   onAddPayment() {
     this.submitted = true;
     if (this.patientDetailsFormGrp.invalid) {
@@ -226,7 +230,7 @@ export class OpPaymentComponent implements OnInit {
     public datePipe: DatePipe,
     public toastr: ToastrService,
     // private snackBarService: SnackBarService
-  ) {
+  ) { 
     this.nowDate = new Date();
     console.log(this.data)
     if (data) {
@@ -286,7 +290,7 @@ export class OpPaymentComponent implements OnInit {
       this.OPD_IPD_Id = this.advanceData.OPD_IPD_Id;
       this.DepartmentName = this.advanceData.DepartmentName;
       this.Paymentobj['transactionType'] = 0;
-      this.selectedPaymnet1 = 'cash';
+      this.selectedPaymnet1 = 'cash'; 
     }
     else if (this.data.FromName == "OP-SETTLEMENT") {
       this.netPayAmt = parseInt(this.advanceData.NetPayAmount) || this.advanceData.NetPayableAmt;
@@ -340,7 +344,7 @@ export class OpPaymentComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.patientDetailsFormGrp = this.createForm();
+  this.patientDetailsFormGrp = this.createForm();
   }
   dateTimeObj: Date;
   getDateTime(dateTimeObj) {
@@ -374,6 +378,9 @@ export class OpPaymentComponent implements OnInit {
     return {
       bankName1: [
         { name: "required", Message: "bankName is required" }
+      ],
+       paymentType1: [
+        { name: "required", Message: "Payment mode is required" }
       ]
     };
   }
@@ -386,6 +393,7 @@ export class OpPaymentComponent implements OnInit {
   // Paymentobj: any[] = [];   //changed by raksha
   onSubmit() {
     let transactionType = 0;
+    let opdipdtype = 0;
     let result = this.OnCheckFormValidity();
     if (result === 0) return; // stop execution if invalid
 
@@ -555,8 +563,9 @@ export class OpPaymentComponent implements OnInit {
       // this.Paymentobj.push(this.Paymentobj);
     }
     else if (this.data.FromName == "IP-Advance" || this.data.FromName == "IP-RefundOfAdvance" ||
-      this.data.FromName == "IP-RefundOfBill") { 
-      this.Paymentobj['billNo'] = 0;
+      this.data.FromName == "IP-RefundOfBill") {
+      opdipdtype = 1; 
+      this.Paymentobj['billNo'] = this.advanceData?.billNo || 0,
       this.Paymentobj['receiptNo'] = "";
       this.Paymentobj['paymentDate'] = formattedDate
       this.Paymentobj['paymentTime'] = formattedTime
@@ -598,7 +607,8 @@ export class OpPaymentComponent implements OnInit {
     }
     //new changes done by Ambadas ip IntrimBIll 13/6/2025
     else if (this.data.FromName == "IP-IntrimBIll") {
-      transactionType = 0;  
+      transactionType = 0; 
+       opdipdtype = 1; 
       this.Paymentobj['billNo'] = 0;
       this.Paymentobj['receiptNo'] = "";
       this.Paymentobj['paymentDate'] = formattedDate
@@ -824,7 +834,7 @@ export class OpPaymentComponent implements OnInit {
           paymentId: 0,
           unitId: this._loggedService.currentUserValue.user.unitId,
           billNo: this.advanceData?.billNo || 0,
-          opdipdtype: 0,
+          opdipdtype: opdipdtype || 0,
           paymentDate: formattedDate,
           paymentTime: formattedTime,
           payAmount: element.Amount ?? 0,
@@ -871,6 +881,7 @@ export class OpPaymentComponent implements OnInit {
     this.dialogRef.close(IsSubmit);
     this.advanceData = null;
   }
+ 
   keyPressAlphanumeric(event) {
     var inp = String.fromCharCode(event.keyCode);
     if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {

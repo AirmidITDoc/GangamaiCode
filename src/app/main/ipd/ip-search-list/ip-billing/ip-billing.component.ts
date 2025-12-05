@@ -638,6 +638,8 @@ export class IPBillingComponent implements OnInit {
             addChargessupdate: this.formBuilder.group({
                 chargesID: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             }),
+             // ✅ Fixed: should be FormArray
+             tPayments: this.formBuilder.array([])
         });
     }
     //IP BIll Det
@@ -655,6 +657,34 @@ export class IPBillingComponent implements OnInit {
             balanceAmount: [item?.BalanceAmount ?? 0, [, this._FormvalidationserviceService.AllowDecimalNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
         });
     }
+    CreateModePaymentform(item: any): FormGroup {
+        return this.formBuilder.group({
+            paymentId: [item?.paymentId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            unitId: [item?.unitId ?? this.accountService.currentUserValue.user.unitId],
+            billNo: [item?.billNo ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            opdipdtype: [item?.opdipdtype ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            paymentDate: [item?.paymentDate ?? ''],
+            paymentTime: [item?.paymentTime ?? ''],
+            payAmount: [item?.payAmount ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            tranNo: [item?.tranNo ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+            bankName: [item?.bankName ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+            validationDate: [item?.validationDate ?? ''],
+            advanceUsedAmount: [item?.advanceUsedAmount ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            comments: [item?.comments ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+            payMode: [item?.payMode ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+            onlineTranNo: [item?.onlineTranNo ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+            onlineTranResponse: [item?.onlineTranResponse ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+            companyId: [item?.companyId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            advanceId: [item?.advanceId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            refundId: [item?.refundId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            cashCounterId: [item?.cashCounterId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            transactionType: [item?.transactionType ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            isSelfOrcompany: [item?.isSelfOrcompany ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            tranMode: [item?.tranMode ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+            createdBy: [item?.createdBy ?? this.accountService.currentUserValue.userId],
+            transactionLabel: [item?.transactionLabel ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+        });
+    }
     // Getters 
     get BillDetailsArray(): FormArray {
         return this.IPBillMyForm.get('billDetail') as FormArray;
@@ -665,6 +695,9 @@ export class IPBillingComponent implements OnInit {
     get DraftBillDetArray(): FormArray {
         return this.draftSaveform.get('tdrBillDet') as FormArray;
     }
+    get ModeOfPaymentsArray(): FormArray {
+        return this.IPBillMyForm.get('tPayments') as FormArray;
+    } 
     //service selected data
     getselectObj(obj) {
         this.Serviceform.patchValue({
@@ -1221,8 +1254,8 @@ export class IPBillingComponent implements OnInit {
                 let PatientHeaderObj = {};
                 PatientHeaderObj['Date'] = this.dateTimeObj.date;
                 PatientHeaderObj['PatientName'] = this.selectedAdvanceObj.patientName;
-                PatientHeaderObj['AdvanceAmount'] = this.IpbillFooterform.get('FinalAmount').value;
-                PatientHeaderObj['NetPayAmount'] = this.IpbillFooterform.get('FinalAmount').value;
+                PatientHeaderObj['AdvanceAmount'] = this.IpbillFooterform.get('FinalAmount')?.value;
+                PatientHeaderObj['NetPayAmount'] = this.IpbillFooterform.get('FinalAmount')?.value;
                 PatientHeaderObj['BillNo'] = 0;
                 PatientHeaderObj['OPD_IPD_Id'] = this.selectedAdvanceObj.admissionId;
                 PatientHeaderObj['IPDNo'] = this.selectedAdvanceObj.ipdno;
@@ -1230,7 +1263,9 @@ export class IPBillingComponent implements OnInit {
                 PatientHeaderObj['DoctorName'] = this.selectedAdvanceObj.doctorname;
                 PatientHeaderObj['CompanyName'] = this.selectedAdvanceObj.companyName;
                 PatientHeaderObj['DepartmentName'] = this.selectedAdvanceObj.departmentName;
-                PatientHeaderObj['Age'] = this.selectedAdvanceObj.ageYear;
+                PatientHeaderObj['Age'] = this.selectedAdvanceObj.ageYear; 
+                PatientHeaderObj['TransactionLabel'] = 'IP-Final Bill', 
+                PatientHeaderObj['CashCounterId'] =this.IpbillFooterform.get('ConcessionId')?.value || 0
                 //==============-======--==============Payment====================== 
                 this.advanceDataStored.storage = new AdvanceDetailObj(PatientHeaderObj);
                 const dialogRef = this._matDialog.open(OpPaymentVimalComponent,
@@ -1276,6 +1311,11 @@ export class IPBillingComponent implements OnInit {
                             this.AdvacnedetUpdateArray.push(this.createAdvanceUpdate(item));
                         });
                         this.IPBillMyForm.get('payment')?.setValue(result.submitDataPay.ipPaymentInsert)
+                        this.ModeOfPaymentsArray.clear();
+                        result.submitDataPay.ipModePaymentInsert.forEach(item => {
+                         this.ModeOfPaymentsArray.push(this.CreateModePaymentform(item));
+                         }); 
+
                         //this.IPBillMyForm.get('payment').setValue()
                         console.log("form values", this.IPBillMyForm.value)
 
