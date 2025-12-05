@@ -1,0 +1,202 @@
+<!-- <div class="modal-wrapper grid-container">
+    
+    <div class="modal-header accent">
+        <div class="modal-header-content">
+            <div class="modal-header-title">
+                <span [@animate]="{ value: '*', params: { delay: '100ms', x: '-25px' } }">Patient Test Details</span>
+            </div>
+            <div class="modal-header-right">
+                <div class="comman-date-container">
+
+                    <div class="close-icon">
+                        <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
+                            matTooltip="Close">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  <div style="width: 95%; margin: 20px auto; background: white; border: 1px solid #ccc; padding: 20px;">
+
+            <h2 style="margin-bottom: 10px;">Patient Details</h2>
+
+            <div style="display: flex;">
+
+                <div style="width: 30%; padding-right: 20px; border-right: 1px solid #ddd;">
+
+                    <form [formGroup]="myformSearch">
+                     
+                        <mat-form-field appearance="outline">
+                            <mat-label>UHID</mat-label>
+                            <input matInput placeholder="Search UHID" autocomplete="off" [formGroup]="myformSearch"
+                                formControlName="RegNo" (input)="onChangeFirst()" />
+                            <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('RegNo')">
+                                <mat-icon>close</mat-icon>
+                            </button>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline">
+                            <mat-label>First Name</mat-label>
+                            <input matInput placeholder="Search First Name" autocomplete="off"
+                                [formGroup]="myformSearch" formControlName="FirstName" (input)="onChangeFirst()" />
+                            <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('FirstName')">
+                                <mat-icon>close</mat-icon>
+                            </button>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline">
+                            <mat-label>Last Name</mat-label>
+                            <input matInput placeholder="Search Last Name" autocomplete="off" [formGroup]="myformSearch"
+                                formControlName="LastName" (input)="onChangeFirst()" />
+                            <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('LastName')">
+                                <mat-icon>close</mat-icon>
+                            </button>
+                        </mat-form-field>
+
+                        <div fxLayout="column" fxLayoutAlign="start start">
+                            <div fxFlex fxLayout="row">
+                                <mat-radio-group name="Istype" fxLayout="row" [formGroup]="myformSearch"
+                                    formControlName="PatientTypeSearch" (change)="onChangeFirst()" style="padding: 6px;"
+                                    class="gap-4">
+                                    <mat-label>Type:</mat-label>
+                                    <div fxLayout="row">
+                                        <mat-radio-button value='4'>All</mat-radio-button>
+                                        <mat-radio-button value='1'>IP</mat-radio-button>
+                                        <mat-radio-button value='0'>OP</mat-radio-button>
+                                        <mat-radio-button value='4'>LAB</mat-radio-button>
+                                    </div>
+                                </mat-radio-group>
+                            </div>
+
+                            <div fxFlex fxLayout="row">
+                                <mat-radio-group name="StatusSearch" fxLayout="row" [formGroup]="myformSearch"
+                                    formControlName="StatusSearch" (change)="onChangeFirst()" style="padding: 6px;"
+                                    class="gap-4">
+                                    <mat-label>Status:</mat-label>
+                                    <div fxLayout="row">
+                                        <mat-radio-button value='0'>Pending</mat-radio-button>
+                                        <mat-radio-button value='1'>Completed</mat-radio-button>
+                                    </div>
+                                </mat-radio-group>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <div style="width: 70%; padding-left: 20px;">
+
+                    <h2>Test Details</h2>
+
+                    <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
+                        <tr style="background: #e9f5ff;">
+                            <th style="border: 1px solid #ccc; padding: 6px;">Test Name</th>
+                            <th style="border: 1px solid #ccc; padding: 6px;">Qty</th>
+                            <th style="border: 1px solid #ccc; padding: 6px;">Rate</th>
+                            <th style="border: 1px solid #ccc; padding: 6px;">Consumable</th>
+                            <th style="border: 1px solid #ccc; padding: 6px;">Gross</th>
+                            <th style="border: 1px solid #ccc; padding: 6px;">Report Date</th>
+                            <th style="border: 1px solid #ccc; padding: 6px;">Disc.%</th>
+                            <th style="border: 1px solid #ccc; padding: 6px;">Discount</th>
+                            <th style="border: 1px solid #ccc; padding: 6px;">Amount</th>
+                            <th style="border: 1px solid #ccc; padding: 6px;">Action</th>
+                        </tr>
+
+                        <tr>
+                            <td style="border: 1px solid #ccc; padding: 4px;">STOOL RE (RT)</td>
+                            <td style="border: 1px solid #ccc; padding: 4px;">1</td>
+                            <td style="border: 1px solid #ccc; padding: 4px;">250</td>
+                            <td style="border: 1px solid #ccc; padding: 4px;">0.00</td>
+                            <td style="border: 1px solid #ccc; padding: 4px;">250</td>
+                            <td style="border: 1px solid #ccc; padding: 4px;">12/08/2025</td>
+                            <td style="border: 1px solid #ccc; padding: 4px;">0</td>
+                            <td style="border: 1px solid #ccc; padding: 4px;">0</td>
+                            <td style="border: 1px solid #ccc; padding: 4px;">250</td>
+                            <td style="border: 1px solid #ccc; padding: 4px;">
+                                <button
+                                    style="background: red; color: white; border: none; padding: 4px 8px; cursor: pointer;">Delete</button>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td style="border: 1px solid #ccc; padding: 4px;">SGPT(ALT)</td>
+                            <td style="border: 1px solid #ccc; padding: 4px;">1</td>
+                            <td style="border: 1px solid #ccc; padding: 4px;">300</td>
+                            <td style="border: 1px solid #ccc; padding: 4px;">0.00</td>
+                            <td style="border: 1px solid #ccc; padding: 4px;">300</td>
+                            <td style="border: 1px solid #ccc; padding: 4px;">12/08/2025</td>
+                            <td style="border: 1px solid #ccc; padding: 4px;">0</td>
+                            <td style="border: 1px solid #ccc; padding: 4px;">0</td>
+                            <td style="border: 1px solid #ccc; padding: 4px;">300</td>
+                            <td style="border: 1px solid #ccc; padding: 4px;">
+                                <button
+                                    style="background: red; color: white; border: none; padding: 4px 8px; cursor: pointer;">Delete</button>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td style="border: 1px solid #ccc; padding: 4px;">DENGU NS1 AND IGGM ELISA</td>
+                            <td style="border: 1px solid #ccc; padding: 4px;">1</td>
+                            <td style="border: 1px solid #ccc; padding: 4px;">3250</td>
+                            <td style="border: 1px solid #ccc; padding: 4px;">0.00</td>
+                            <td style="border: 1px solid #ccc; padding: 4px;">3250</td>
+                            <td style="border: 1px solid #ccc; padding: 4px;">12/08/2025</td>
+                            <td style="border: 1px solid #ccc; padding: 4px;">0</td>
+                            <td style="border: 1px solid #ccc; padding: 4px;">0</td>
+                            <td style="border: 1px solid #ccc; padding: 4px;">3250</td>
+                            <td style="border: 1px solid #ccc; padding: 4px;">
+                                <button
+                                    style="background: red; color: white; border: none; padding: 4px 8px; cursor: pointer;">Delete</button>
+                            </td>
+                        </tr>
+                    </table>
+
+                   <div style="margin-top: 20px; width: 100%; border-top: 1px solid #ccc; padding-top: 20px;">
+
+                        <div style="display: flex; justify-content: space-between;">
+                            <div>
+                                <label>Discount Type</label><br>
+                                <select style="padding: 6px; width: 200px; border: 1px solid #ccc;">
+                                    <option>Not Applicable</option>
+                                </select>
+
+                                <br><br>
+
+                                <label>Discount %</label><br>
+                                <input type="number" value="0.00"
+                                    style="padding: 6px; width: 200px; border: 1px solid #ccc;">
+                            </div>
+
+                            <div style="text-align: right;">
+                                <label>Gross</label><br>
+                                <input type="text" value="3800"
+                                    style="padding: 6px; width: 150px; border: 1px solid #ccc;"><br><br>
+
+                                <label>Discount Amt</label><br>
+                                <input type="text" value="0"
+                                    style="padding: 6px; width: 150px; border: 1px solid #ccc;"><br><br>
+
+                                <label>Net Amount</label><br>
+                                <input type="text" value="3800"
+                                    style="padding: 6px; width: 150px; border: 1px solid #ccc;">
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div style="margin-top: 20px; text-align: right;">
+                <button style="padding: 8px 15px; background: #ccc; border: none; cursor: pointer;">Close</button>
+                <button
+                    style="padding: 8px 15px; background: #28a745; color: white; border: none; cursor: pointer;">Save &
+                    Print</button>
+            </div>
+
+        </div>
+
+   
+</div> -->
