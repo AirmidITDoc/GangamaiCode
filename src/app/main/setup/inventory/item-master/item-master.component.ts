@@ -10,6 +10,8 @@ import { gridColumnTypes, gridActions } from "app/core/models/tableActions";
 import { FormGroup } from "@angular/forms";
 import { AuthenticationService } from "app/core/services/authentication.service";
 import { ItemGenericMasterComponent } from "../item-generic-master/item-generic-master.component";
+import { PagePermissionService } from "app/main/shared/services/page-permission.service";
+import { permissionCodes, permissionType } from "app/main/shared/model/permission.model";
 
 @Component({
     selector: "app-item-master",
@@ -19,6 +21,8 @@ import { ItemGenericMasterComponent } from "../item-generic-master/item-generic-
     animations: fuseAnimations,
 })
 export class ItemMasterComponent implements OnInit {
+    IsAdd: boolean = this.permissionService.getPermission(permissionCodes.ItemMaster, permissionType.Add);
+       
     hasSelectedContacts: boolean;
     autocompleteModestoreName: string = "StoreName";
     autocompleteModeItemCategory: string = "ItemCategory";
@@ -101,6 +105,7 @@ export class ItemMasterComponent implements OnInit {
     ]
 
     gridConfig: gridModel = {
+         permissionCode: permissionCodes.ItemMaster,
         apiUrl: "ItemMaster/ItemMasterList",
         columnsList: this.allColumns,
         sortField: "ItemID",
@@ -112,7 +117,7 @@ export class ItemMasterComponent implements OnInit {
     constructor(
         public _itemService: ItemMasterService, private accountService: AuthenticationService,
         public _matDialog: MatDialog,
-        public toastr: ToastrService,
+        public toastr: ToastrService, public permissionService: PagePermissionService
     ) { }
 
     ngOnInit(): void {

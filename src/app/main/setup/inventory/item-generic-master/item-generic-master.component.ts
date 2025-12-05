@@ -8,6 +8,8 @@ import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/air
 import { ToastrService } from "ngx-toastr";
 import { ItemGenericMasterService } from "./item-generic-master.service";
 import { NewGenericComponent } from "./new-generic/new-generic.component";
+import { PagePermissionService } from "app/main/shared/services/page-permission.service";
+import { permissionCodes, permissionType } from "app/main/shared/model/permission.model";
 
 @Component({
     selector: "app-item-generic-master",
@@ -17,21 +19,26 @@ import { NewGenericComponent } from "./new-generic/new-generic.component";
     animations: fuseAnimations,
 })
 export class ItemGenericMasterComponent implements OnInit {
+    IsAdd: boolean = this.permissionService.getPermission(permissionCodes.GenericMaster, permissionType.Add);
+        
     genericForm: FormGroup;
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
 
     gridConfig: gridModel = {
+           permissionCode: permissionCodes.GenericMaster,
         apiUrl: "GenericMaster/List",
         columnsList: [
             { heading: "GenericName", key: "itemGenericName", sort: true, align: 'left', emptySign: 'NA' },
-            // { heading: "UserName", key: "username", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
+           { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
             {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
                     {
-                        action: gridActions.edit, callback: (data: any) => {
-                            this.onSave(data);
-                        }
+                        // action: gridActions.edit, callback: (data: any) => {
+                        //     this.onSave(data);
+                        // }
+                          action: gridActions.edit, visible: this.permissionService.getPermission(permissionCodes.GenericMaster, permissionType.Edit), callback: (data: any) => {
+                                                    this.onSave(data);
+                                                }
                     }, {
                         action: gridActions.delete, callback: (data: any) => {
                             this._ItemGenericMasterService.deactivateTheStatus(data.itemGenericNameId).subscribe((response: any) => {
@@ -52,7 +59,7 @@ export class ItemGenericMasterComponent implements OnInit {
     constructor(public _ItemGenericMasterService: ItemGenericMasterService,
         public _matDialog: MatDialog,
         public toastr: ToastrService,
-        @Inject(MAT_DIALOG_DATA) public data: any,
+        @Inject(MAT_DIALOG_DATA) public data: any, public permissionService: PagePermissionService,
         public dialogRef: MatDialogRef<ItemGenericMasterComponent>,) { }
 
     ngOnInit(): void { }

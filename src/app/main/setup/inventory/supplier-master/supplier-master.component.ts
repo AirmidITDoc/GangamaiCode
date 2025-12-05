@@ -10,6 +10,8 @@ import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/air
 import { ToastrService } from "ngx-toastr";
 import { FixSupplierComponent } from "./fix-supplier/fix-supplier.component";
 import { SupplierMasterService } from "./supplier-master.service";
+import { PagePermissionService } from "app/main/shared/services/page-permission.service";
+import { permissionCodes, permissionType } from "app/main/shared/model/permission.model";
 
 @Component({
     selector: "app-supplier-master",
@@ -19,6 +21,8 @@ import { SupplierMasterService } from "./supplier-master.service";
     animations: fuseAnimations,
 })
 export class SupplierMasterComponent implements OnInit {
+    IsAdd: boolean = this.permissionService.getPermission(permissionCodes.SupplierMaster, permissionType.Add);
+       
     myformSearch: FormGroup;
     autocompleteModestoreName: string = "Store";
     autocompletecity: string = "City";
@@ -49,9 +53,12 @@ export class SupplierMasterComponent implements OnInit {
         {
             heading: "Action", key: "action", width: 100, sticky: true, align: "right", type: gridColumnTypes.action, actions: [
                 {
-                    action: gridActions.edit, callback: (data: any) => {
-                        this.onSave(data);
-                    }
+                    // action: gridActions.edit, callback: (data: any) => {
+                    //     this.onSave(data);
+                    // }
+                     action: gridActions.edit, visible: this.permissionService.getPermission(permissionCodes.SupplierMaster, permissionType.Edit), callback: (data: any) => {
+                                                this.onSave(data);
+                                            }
                 },
                 {
                     action: gridActions.delete, callback: (data: any) => {
@@ -73,6 +80,7 @@ export class SupplierMasterComponent implements OnInit {
     ]
 
     gridConfig: gridModel = {
+        permissionCode: permissionCodes.SupplierMaster,
         apiUrl: "Supplier/SupplierList",
         columnsList: this.allColumns,
         sortField: "SupplierId", //SupplierName
@@ -82,7 +90,7 @@ export class SupplierMasterComponent implements OnInit {
 
     constructor(public _supplierService: SupplierMasterService, public _matDialog: MatDialog,
         private accountService: AuthenticationService,
-        public toastr: ToastrService,) { }
+        public toastr: ToastrService, public permissionService: PagePermissionService) { }
 
     ngOnInit(): void {
         this.myformSearch = this._supplierService.createSearchForm();

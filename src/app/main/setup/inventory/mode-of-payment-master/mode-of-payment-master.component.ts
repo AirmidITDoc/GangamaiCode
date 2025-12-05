@@ -7,6 +7,8 @@ import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/air
 import { ToastrService } from "ngx-toastr";
 import { ModeOfPaymentMasterService } from "./mode-of-payment-master.service";
 import { NewModeofpaymentComponent } from "./new-modeofpayment/new-modeofpayment.component";
+import { PagePermissionService } from "app/main/shared/services/page-permission.service";
+import { permissionCodes, permissionType } from "app/main/shared/model/permission.model";
 
 @Component({
     selector: "app-mode-of-payment-master",
@@ -16,20 +18,22 @@ import { NewModeofpaymentComponent } from "./new-modeofpayment/new-modeofpayment
     animations: fuseAnimations,
 })
 export class ModeOfPaymentMasterComponent implements OnInit {
-
+ IsAdd: boolean = this.permissionService.getPermission(permissionCodes.ModeOfPayment, permissionType.Add);
+    
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
    
     allcolumns = [
-        // { heading: "Code", key: "id", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "ModeOfPaymentName", key: "modeOfPayment", sort: true, align: 'left', emptySign: 'NA' },
-        // { heading: "UserName", key: "username", sort: true, align: 'left', emptySign: 'NA' },
+         { heading: "ModeOfPaymentName", key: "modeOfPayment", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
         {
             heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
                 {
-                    action: gridActions.edit, callback: (data: any) => {
-                        this.onSave(data);
-                    }
+                    // action: gridActions.edit, callback: (data: any) => {
+                    //     this.onSave(data);
+                    // }
+                      action: gridActions.edit, visible: this.permissionService.getPermission(permissionCodes.ModeOfPayment, permissionType.Edit), callback: (data: any) => {
+                            this.onSave(data);
+                        }
                 }, {
                     action: gridActions.delete, callback: (data: any) => {
                         this._ModeOfPaymentMasterService.deactivateTheStatus(data.id).subscribe((response: any) => {
@@ -45,6 +49,7 @@ export class ModeOfPaymentMasterComponent implements OnInit {
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
     ]
     gridConfig: gridModel = {
+           permissionCode: permissionCodes.ModeOfPayment,
         apiUrl: "ModeOfPayment/List",
         columnsList: this.allcolumns,
         sortField: "id",
@@ -54,7 +59,7 @@ export class ModeOfPaymentMasterComponent implements OnInit {
 
 
     constructor(public _ModeOfPaymentMasterService: ModeOfPaymentMasterService, public _matDialog: MatDialog,
-        public toastr: ToastrService,) { }
+        public toastr: ToastrService,public permissionService: PagePermissionService) { }
 
     ngOnInit(): void { }
    

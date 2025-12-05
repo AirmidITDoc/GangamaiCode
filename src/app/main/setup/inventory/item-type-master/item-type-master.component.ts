@@ -7,6 +7,8 @@ import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/air
 import { ToastrService } from "ngx-toastr";
 import { ItemTypeMasterService } from "./item-type-master.service";
 import { NewItemtypeComponent } from "./new-itemtype/new-itemtype.component";
+import { PagePermissionService } from "app/main/shared/services/page-permission.service";
+import { permissionCodes, permissionType } from "app/main/shared/model/permission.model";
 
 @Component({
     selector: "app-item-type-master",
@@ -16,19 +18,21 @@ import { NewItemtypeComponent } from "./new-itemtype/new-itemtype.component";
     animations: fuseAnimations,
 })
 export class ItemTypeMasterComponent implements OnInit {
-    
+     IsAdd: boolean = this.permissionService.getPermission(permissionCodes.ItemTypeMaster, permissionType.Add);
+        
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     itemTypeName: any = "";
 
          allcolumns = [
-            // { heading: "Code", key: "itemTypeId", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "ItemType Name", key: "itemTypeName", sort: true, align: 'left', emptySign: 'NA' },            
-            // { heading: "User Name", key: "username", sort: true, align: 'left', emptySign: 'NA' },
+           { heading: "ItemType Name", key: "itemTypeName", sort: true, align: 'left', emptySign: 'NA' },            
             { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
             {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
                     {
-                        action: gridActions.edit, callback: (data: any) => {
+                        // action: gridActions.edit, callback: (data: any) => {
+                        //     this.onSave(data);
+                        // }
+                         action: gridActions.edit, visible: this.permissionService.getPermission(permissionCodes.ItemTypeMaster, permissionType.Edit), callback: (data: any) => {
                             this.onSave(data);
                         }
                     }, {
@@ -46,6 +50,7 @@ export class ItemTypeMasterComponent implements OnInit {
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
         ]
      gridConfig: gridModel = {
+             permissionCode: permissionCodes.ItemTypeMaster,
         apiUrl: "ItemType/List",
         columnsList: this.allcolumns,
         sortField: "itemTypeId",
@@ -54,7 +59,7 @@ export class ItemTypeMasterComponent implements OnInit {
     }
     
     constructor(public _ItemTypeMasterService: ItemTypeMasterService, public _matDialog: MatDialog,
-        public toastr: ToastrService,) { }
+        public toastr: ToastrService, public permissionService: PagePermissionService) { }
 
     ngOnInit(): void { }
  

@@ -8,6 +8,8 @@ import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/air
 import { ToastrService } from "ngx-toastr";
 import { StoreFormMasterComponent } from "./store-form-master/store-form-master.component";
 import { StoreMasterService } from "./store-master.service";
+import { PagePermissionService } from "app/main/shared/services/page-permission.service";
+import { permissionCodes, permissionType } from "app/main/shared/model/permission.model";
 
 @Component({
     selector: "app-store-master",
@@ -17,6 +19,8 @@ import { StoreMasterService } from "./store-master.service";
     animations: fuseAnimations,
 })
 export class StoreMasterComponent implements OnInit {
+    IsAdd: boolean = this.permissionService.getPermission(permissionCodes.StoreMaster, permissionType.Add);
+       
     myformSearch: FormGroup;
     storeName: any = "";
     type: any = "2"
@@ -50,9 +54,12 @@ export class StoreMasterComponent implements OnInit {
         {
             heading: "Action", key: "action", width: 100, align: "right", type: gridColumnTypes.action, actions: [
                 {
-                    action: gridActions.edit, callback: (data: any) => {
-                        this.onSave(data);
-                    }
+                    // action: gridActions.edit, callback: (data: any) => {
+                    //     this.onSave(data);
+                    // }
+                    action: gridActions.edit, visible: this.permissionService.getPermission(permissionCodes.Prefix, permissionType.Edit), callback: (data: any) => {
+                            this.onSave(data);
+                        }
                 }, {
                     action: gridActions.delete, callback: (data: any) => {
                         this._StoreMasterService.deactivateTheStatus(data.storeId).subscribe((response: any) => {
@@ -69,7 +76,8 @@ export class StoreMasterComponent implements OnInit {
     ]
 
     gridConfig: gridModel = {
-        apiUrl: "StoreMaster/List", //StoreMasterList
+        permissionCode: permissionCodes.StoreMaster,
+        apiUrl: "StoreMaster/List",
         columnsList: this.allColumns,
         sortField: "storeId",
         sortOrder: 0,
@@ -79,7 +87,7 @@ export class StoreMasterComponent implements OnInit {
 
 
     constructor(public _StoreMasterService: StoreMasterService, public _matDialog: MatDialog,
-        public toastr: ToastrService,) { }
+        public toastr: ToastrService,public permissionService: PagePermissionService) { }
 
     ngOnInit(): void {
         this.myformSearch = this._StoreMasterService.createSearchForm();

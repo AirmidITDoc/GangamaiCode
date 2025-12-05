@@ -7,6 +7,8 @@ import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/air
 import { ToastrService } from "ngx-toastr";
 import { NewItemCompanyMasterComponent } from "./new-item-company-master/new-item-company-master.component";
 import { ItemCompanyMasterService } from "./item-company-master.service";
+import { PagePermissionService } from "app/main/shared/services/page-permission.service";
+import { permissionCodes, permissionType } from "app/main/shared/model/permission.model";
 
 @Component({
   selector: 'app-item-company-master',
@@ -16,6 +18,8 @@ import { ItemCompanyMasterService } from "./item-company-master.service";
   animations: fuseAnimations,
 })
 export class ItemCompanyMasterComponent {
+   IsAdd: boolean = this.permissionService.getPermission(permissionCodes.ItemCompanyMaster, permissionType.Add);
+      
   @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
   itemCompanyName: any = "";
 
@@ -26,9 +30,12 @@ export class ItemCompanyMasterComponent {
     {
       heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
         {
-          action: gridActions.edit, callback: (data: any) => {
-            this.onSave(data);
-          }
+          // action: gridActions.edit, callback: (data: any) => {
+          //   this.onSave(data);
+          // }
+           action: gridActions.edit, visible: this.permissionService.getPermission(permissionCodes.ItemCompanyMaster, permissionType.Edit), callback: (data: any) => {
+                                      this.onSave(data);
+                                  }
         }, {
           action: gridActions.delete, callback: (data: any) => {
             this._ItemCompanyMasterService.deactivateTheStatus(data.companyId).subscribe((response: any) => {
@@ -44,6 +51,7 @@ export class ItemCompanyMasterComponent {
     { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
   ]
   gridConfig: gridModel = {
+      permissionCode: permissionCodes.ItemCompanyMaster,
     apiUrl: "ItemCompanyMaster/List",
     columnsList: this.allcolumns,
     sortField: "companyId",
@@ -52,7 +60,7 @@ export class ItemCompanyMasterComponent {
   }
 
   constructor(public _ItemCompanyMasterService: ItemCompanyMasterService, public _matDialog: MatDialog,
-    public toastr: ToastrService,) { }
+    public toastr: ToastrService,public permissionService: PagePermissionService) { }
 
   ngOnInit(): void { }
 

@@ -7,6 +7,8 @@ import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/air
 import { ToastrService } from "ngx-toastr";
 import { NewTaxComponent } from "./new-tax/new-tax.component";
 import { TaxMasterService } from "./tax-master.service";
+import { PagePermissionService } from "app/main/shared/services/page-permission.service";
+import { permissionCodes, permissionType } from "app/main/shared/model/permission.model";
 
 @Component({
     selector: "app-tax-master",
@@ -16,7 +18,8 @@ import { TaxMasterService } from "./tax-master.service";
     animations: fuseAnimations,
 })
 export class TaxMasterComponent implements OnInit {
-   
+    IsAdd: boolean = this.permissionService.getPermission(permissionCodes.TaxMaster, permissionType.Add);
+       
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     taxNature: any = "";
          allcolumns = [
@@ -26,9 +29,12 @@ export class TaxMasterComponent implements OnInit {
             { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
             { heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
                 {
-                    action: gridActions.edit, callback: (data: any) => {
-                        this.onSave(data);
-                    }
+                    // action: gridActions.edit, callback: (data: any) => {
+                    //     this.onSave(data);
+                    // }
+                     action: gridActions.edit, visible: this.permissionService.getPermission(permissionCodes.TaxMaster, permissionType.Edit), callback: (data: any) => {
+                                                this.onSave(data);
+                                            }
                 }, {
                     action: gridActions.delete, callback: (data: any) => {
                         
@@ -47,6 +53,7 @@ export class TaxMasterComponent implements OnInit {
         ]
     
  gridConfig: gridModel = {
+      permissionCode: permissionCodes.TaxMaster,
         apiUrl: "TaxMaster/List",
         columnsList: this.allcolumns,
         sortField: "id",
@@ -56,7 +63,7 @@ export class TaxMasterComponent implements OnInit {
     constructor(
         public _TaxMasterService: TaxMasterService,
         public toastr: ToastrService,
-        public _matDialog: MatDialog
+        public _matDialog: MatDialog, public permissionService: PagePermissionService
     ) { }
     
     ngOnInit(): void { }

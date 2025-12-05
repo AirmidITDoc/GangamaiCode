@@ -7,6 +7,8 @@ import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/air
 import { ToastrService } from "ngx-toastr";
 import { NewUMOComponent } from "./new-umo/new-umo.component";
 import { UomMasterService } from "./uom-master.service";
+import { PagePermissionService } from "app/main/shared/services/page-permission.service";
+import { permissionCodes, permissionType } from "app/main/shared/model/permission.model";
 
 @Component({
     selector: "app-uom-master",
@@ -16,20 +18,22 @@ import { UomMasterService } from "./uom-master.service";
     animations: fuseAnimations,
 })
 export class UomMasterComponent implements OnInit {
-    
+     IsAdd: boolean = this.permissionService.getPermission(permissionCodes.UnitOfMeasurement, permissionType.Add);
+        
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     unitofMeasurementName: any = "";
         allcolumns = [
-            // { heading: "Code", key: "unitofMeasurementId", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "UnitOfMeasurement Name", key: "unitofMeasurementName", sort: true, align: 'left', emptySign: 'NA' },
-            // { heading: "User Name", key: "username", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
             {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
                     {
-                        action: gridActions.edit, callback: (data: any) => {
-                            this.onSave(data);
-                        }
+                        // action: gridActions.edit, callback: (data: any) => {
+                        //     this.onSave(data);
+                        // }
+                        action: gridActions.edit, visible: this.permissionService.getPermission(permissionCodes.UnitOfMeasurement, permissionType.Edit), callback: (data: any) => {
+                                                    this.onSave(data);
+                                                }
                     }, {
                         action: gridActions.delete, callback: (data: any) => {
                             this._UomMasterService.deactivateTheStatus(data.unitofMeasurementId).subscribe((response: any) => {
@@ -46,6 +50,7 @@ export class UomMasterComponent implements OnInit {
         ]
     
 gridConfig: gridModel = {
+      permissionCode: permissionCodes.UnitOfMeasurement,
         apiUrl: "UnitOfMeasurement/List",
         columnsList: this.allcolumns,
         sortField: "unitofMeasurementId",
@@ -53,7 +58,7 @@ gridConfig: gridModel = {
         filters: this.allfilters
     }
     constructor(public _UomMasterService: UomMasterService, public _matDialog: MatDialog,
-        public toastr: ToastrService,) { }
+        public toastr: ToastrService, public permissionService: PagePermissionService) { }
 
     ngOnInit(): void { }
  

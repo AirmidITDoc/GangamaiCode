@@ -7,6 +7,8 @@ import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/air
 import { ToastrService } from "ngx-toastr";
 import { ManufactureMasterService } from "./manufacture-master.service";
 import { NewManufactureComponent } from "./new-manufacture/new-manufacture.component";
+import { PagePermissionService } from "app/main/shared/services/page-permission.service";
+import { permissionCodes, permissionType } from "app/main/shared/model/permission.model";
 
 @Component({
     selector: "app-manufacture-master",
@@ -16,21 +18,23 @@ import { NewManufactureComponent } from "./new-manufacture/new-manufacture.compo
     animations: fuseAnimations,
 })
 export class ManufactureMasterComponent implements OnInit {
-
+ IsAdd: boolean = this.permissionService.getPermission(permissionCodes.ItemManufactureMaster, permissionType.Add);
+    
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     manufName: any = "";
         allcolumns = [
-            // { heading: "Code", key: "manufId", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "ManuFatcure Name", key: "manufName", sort: true, align: 'left', emptySign: 'NA' },
+           { heading: "ManuFatcure Name", key: "manufName", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "Manufacture ShortName", key: "manufShortName", sort: true, align: 'left', emptySign: 'NA' },
-            // { heading: "User Name", key: "AddedBy", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
             {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
                     {
-                        action: gridActions.edit, callback: (data: any) => {
-                            this.onSave(data);
-                        }
+                        // action: gridActions.edit, callback: (data: any) => {
+                        //     this.onSave(data);
+                        // }
+                         action: gridActions.edit, visible: this.permissionService.getPermission(permissionCodes.ItemManufactureMaster, permissionType.Edit), callback: (data: any) => {
+                                                    this.onSave(data);
+                                                }
                     }, {
                         action: gridActions.delete, callback: (data: any) => {
                             this._ManufactureMasterService.deactivateTheStatus(data.manufId).subscribe((response: any) => {
@@ -46,6 +50,7 @@ export class ManufactureMasterComponent implements OnInit {
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
         ]
      gridConfig: gridModel = {
+            permissionCode: permissionCodes.ItemManufactureMaster,
         apiUrl: "ManufactureMaster/List",
         columnsList: this.allcolumns,
         sortField: "ManufName",
@@ -54,7 +59,7 @@ export class ManufactureMasterComponent implements OnInit {
     }
 
     constructor(public _ManufactureMasterService: ManufactureMasterService, public _matDialog: MatDialog,
-        public toastr: ToastrService,) { }
+        public toastr: ToastrService, public permissionService: PagePermissionService) { }
         
     ngOnInit(): void { }
  

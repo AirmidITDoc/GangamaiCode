@@ -7,6 +7,8 @@ import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/air
 import { ToastrService } from "ngx-toastr";
 import { NewTermofpaymentComponent } from "./new-termofpayment/new-termofpayment.component";
 import { TermsOfPaymentMasterService } from "./terms-of-payment-master.service";
+import { PagePermissionService } from "app/main/shared/services/page-permission.service";
+import { permissionCodes, permissionType } from "app/main/shared/model/permission.model";
 
 @Component({
     selector: "app-terms-of-payment-master",
@@ -16,20 +18,22 @@ import { TermsOfPaymentMasterService } from "./terms-of-payment-master.service";
     animations: fuseAnimations,
 })
 export class TermsOfPaymentMasterComponent implements OnInit {
-    
+     IsAdd: boolean = this.permissionService.getPermission(permissionCodes.TermsofPayment, permissionType.Add);
+        
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     termsOfPayment: any = "";
         allcolumns =  [
-            // { heading: "Code", key: "id", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Terms Of Payment", key: "termsOfPayment", sort: true, align: 'left', emptySign: 'NA' },
-            // { heading: "User Name", key: "username", sort: true, align: 'left', emptySign: 'NA' },
+           { heading: "Terms Of Payment", key: "termsOfPayment", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
             {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
                     {
-                        action: gridActions.edit, callback: (data: any) => {
-                            this.onSave(data);
-                        }
+                        // action: gridActions.edit, callback: (data: any) => {
+                        //     this.onSave(data);
+                        // }
+                         action: gridActions.edit, visible: this.permissionService.getPermission(permissionCodes.TermsofPayment, permissionType.Edit), callback: (data: any) => {
+                                                    this.onSave(data);
+                                                }
                     }, {
                         action: gridActions.delete, callback: (data: any) => {
                             this._TermsOfPaymentMasterService.deactivateTheStatus(data.id).subscribe((response: any) => {
@@ -45,6 +49,7 @@ export class TermsOfPaymentMasterComponent implements OnInit {
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
         ]
      gridConfig: gridModel = {
+          permissionCode: permissionCodes.TermsofPayment,
         apiUrl: "TermsOfPayment/List",
         columnsList: this.allcolumns,
         sortField: "id",
@@ -54,7 +59,7 @@ export class TermsOfPaymentMasterComponent implements OnInit {
 
     constructor(public _TermsOfPaymentMasterService: TermsOfPaymentMasterService,
         public _matDialog: MatDialog,
-        public toastr: ToastrService,) { }
+        public toastr: ToastrService, public permissionService: PagePermissionService) { }
 
     ngOnInit(): void { }
  
