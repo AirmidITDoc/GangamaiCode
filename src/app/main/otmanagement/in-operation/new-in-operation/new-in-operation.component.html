@@ -556,7 +556,7 @@
                                 <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%" fxLayout="column">
                                     <app-airmid-chipautocomplete fxFlex
                                         [chips]="inOperFinalForm.get('diagnosis')?.value"
-                                        [apiUrl]="'OTReservation/GetReservationDiagnosisList?DescriptionType=Diagnosis'"
+                                        [apiUrl]="'OTInOperation/GetOtInOperationDiagnosisList?DescriptionType=Diagnosis'"
                                         [displayKey]="'descriptionName'" [allowCustom]="true"
                                         [placeholder]="'Select Diagnosis'"
                                         (chipsChange)="selectChangeDiagnosis($event)">
@@ -566,7 +566,7 @@
                                 <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <app-airmid-chipautocomplete fxFlex
                                         [chips]="inOperFinalForm.get('postDiagnosis')?.value"
-                                        [apiUrl]="'OTInOperation/GetOtInOperationPostOperDiagnosisList=postDiagnosis'"
+                                        [apiUrl]="'OTInOperation/GetOtInOperationPostOperDiagnosisList?DescriptionType=postDiagnosis'"
                                         [displayKey]="'descriptionName'" [allowCustom]="true"
                                         [placeholder]="'Select Post Operative Diagnosis'"
                                         (chipsChange)="selectChangeDiagnosis1($event)">
@@ -587,7 +587,8 @@
                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <airmid-dropdown label="Anesthesia Type" formControlName="anesthesiaType"
                                         [formGroup]="inOperFinalForm" [mode]="autocompleteModeAnesthesiatypes"
-                                        (selectionChange)="selectChangeanesthesiaType($event)"  [value]="registerObj3?.anesthesiaType">
+                                        (selectionChange)="selectChangeanesthesiaType($event)"
+                                        [value]="registerObj3?.anesthesiaType">
                                     </airmid-dropdown>
                                 </div>
 
@@ -723,40 +724,37 @@
                     </mat-tab>
 
                     <mat-tab label="Closure/Operative Findings & Post Operative Notes/Patient Condition">
-                        <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 10px; height: 60%;" fxLayout="column">
-                            <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="80%" fxLayout="row wrap"
-                                fxLayoutGap="4px grid">
-                                <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <label style="font-size: 16px; font-weight: bold;">Closure Notes</label>
-                                    <airmid-editor formControlName="closureNotes" [formGroup]="inOperFinalForm">
-                                    </airmid-editor>
-                                </div>
-
-                                <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <label style="font-size: 16px; font-weight: bold;">Operative Findings</label>
-                                    <airmid-editor formControlName="operativeFindingsNotes"
-                                        [formGroup]="inOperFinalForm">
-                                    </airmid-editor>
-                                </div>
+                        <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%" fxLayout="row wrap" fxLayoutGap="4px grid"
+                            style="height: 100%;">
+                            <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%" style="margin-top: 15px;">
+                                <label style="font-size: 16px; font-weight: bold;">Closure Notes</label>
+                                <airmid-editor formControlName="closureNotes" [formGroup]="inOperFinalForm"
+                                    (valueChange)="onEditorValueChange1($event)">
+                                </airmid-editor>
                             </div>
 
-                            <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="80%" fxLayout="row wrap"
-                                fxLayoutGap="4px grid">
-                                <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%" style="margin-top: 15px;">
-                                    <label style="font-size: 16px; font-weight: bold;">Post Operative Plan Of
-                                        Care</label>
-                                    <airmid-editor formControlName="postOperativeNotes" [formGroup]="inOperFinalForm">
-                                    </airmid-editor>
-                                </div>
-
-                                <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <label style="font-size: 16px; font-weight: bold;">Condition Of The Patient</label>
-                                    <airmid-editor formControlName="conditionOfPatientNotes"
-                                        [formGroup]="inOperFinalForm">
-                                    </airmid-editor>
-                                </div>
+                            <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%" style="margin-top: 15px;">
+                                <label style="font-size: 16px; font-weight: bold;">Operative Findings</label>
+                                <airmid-editor formControlName="operativeFindingsNotes"
+                                    (valueChange)="onEditorValueChange2($event)" [formGroup]="inOperFinalForm">
+                                </airmid-editor>
                             </div>
-                        </mat-card>
+
+                            <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%" style="margin-top: 15px;">
+                                <label style="font-size: 16px; font-weight: bold;">Post Operative Plan Of
+                                    Care</label>
+                                <airmid-editor formControlName="postOperativeNotes" [formGroup]="inOperFinalForm"
+                                    (valueChange)="onEditorValueChange3($event)">
+                                </airmid-editor>
+                            </div>
+
+                            <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%" style="margin-top: 15px;">
+                                <label style="font-size: 16px; font-weight: bold;">Condition Of The Patient</label>
+                                <airmid-editor formControlName="conditionOfPatientNotes"
+                                    (valueChange)="onEditorValueChange4($event)" [formGroup]="inOperFinalForm">
+                                </airmid-editor>
+                            </div>
+                        </div>
                     </mat-tab>
 
                     <mat-tab label="Sample Collection">

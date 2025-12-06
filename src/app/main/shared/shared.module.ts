@@ -75,6 +75,8 @@ import { AirmidImageviewComponent } from './componets/airmid-imageview/airmid-im
 import { AirmidImageIconComponent } from './componets/airmid-image-icon/airmid-image-icon.component';
 import { AirmidFileViewerComponent } from './componets/airmid-fileviewer/airmid-fileviewer.component';
 import { WhatsAppEmailService } from './services/whats-app-email.service';
+import { AirmidConsentformComponent } from './componets/airmid-consentform/airmid-consentform.component';
+import { AirmidConsentformIconComponent } from './componets/airmid-consentform-icon/airmid-consentform-icon.component';
 
 
 @NgModule({
@@ -82,7 +84,7 @@ import { WhatsAppEmailService } from './services/whats-app-email.service';
         TrimPipe, CommonDateComponent, AirmidTableComponent, AirmidTextboxComponent, AirmidDropDownComponent, AirmidAutoCompleteComponent, SmsEmailTemplateComponent, HeaderComponent, PaymentModeComponent, ImageCropComponent, EmailSendComponent, DyanmicTableHeightDirective,
         AirmidDateofbirthComponent, AirmidSliderComponent, AirmidDatepickerComponent, TableSearchBarComponent, PrintCallingComponent, ErrorPageComponent, Error401Component, Error403Component, Error404Component, Error500Component, FocusNextDirective, AirmidTimePickerComponent, PatientInfoComponent, AirmidDateTimePickerComponent, TableKeyboardNavigationDirective, AirmidChipautocompleteComponent, 
         AirmidFullDatepickerComponent, AirmidFileuploadComponent,AirmidFileViewerComponent, AirmidFileuploadIconComponent, AirmidSignatureComponent, AirmidSignatureIconComponent, AirmidPhotoComponent, AirmidPhotoIconComponent,
-        AirmidCardViewComponent, Error0Component, AirmidImageviewComponent, AirmidImageIconComponent, AirmidEditorComponent
+        AirmidCardViewComponent, Error0Component, AirmidImageviewComponent, AirmidImageIconComponent, AirmidEditorComponent, AirmidConsentformComponent, AirmidConsentformIconComponent
     ],
     imports: [
         CommonModule,
@@ -135,6 +137,8 @@ import { WhatsAppEmailService } from './services/whats-app-email.service';
         AirmidDropDownComponent,
         AirmidAutoCompleteComponent,
         AirmidFileuploadComponent,
+        AirmidConsentformComponent,
+        AirmidConsentformIconComponent,
         AirmidFileViewerComponent,
         AirmidFileuploadIconComponent,
         AirmidSignatureComponent,

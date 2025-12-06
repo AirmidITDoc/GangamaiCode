@@ -93,8 +93,8 @@ export class InOperationService {
     });
   }
 
-  public getotReservationById(Id) {
-    return this._httpClient.GetData("OTReservation/" + Id);
+  public getpreOPerById(Id) {
+    return this._httpClient.GetData("OTPreOperation/" + Id);
   }
   public getinOPerById(Id) {
     return this._httpClient.GetData("OTInOperation/" + Id);
@@ -103,13 +103,13 @@ export class InOperationService {
     return this._httpClient.GetData("OtTableMaster/" + Id);
   }
   public getRtrvdiagnosisList(employee) {
-    return this._httpClient.PostData("OTReservation/OtReservationDiagnosisList", employee);
+    return this._httpClient.PostData("OTPreOperation/OtPreOperationDiagnosisList", employee);
   }
-  public getRtrvReservationAttendentList(employee) {
-    return this._httpClient.PostData("OTReservation/OtReservationAttendingDetailList", employee);
+  public getRtrvpreOperAttendentList(employee) {
+    return this._httpClient.PostData("OTPreOperation/preOperationAttendentList", employee);
   }
-  public getRtrvReservationSurgeryList(employee) {
-    return this._httpClient.PostData("OTReservation/OtReservationSurgeryDetailList", employee);
+  public getRtrvPreOperSurgeryList(employee) {
+    return this._httpClient.PostData("OTPreOperation/perOperationsurgeryList", employee);
   }
   public getotsiteDiscById(Id) {
     return this._httpClient.GetData("SiteDescriptionMaster/" + Id);

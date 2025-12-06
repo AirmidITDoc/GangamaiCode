@@ -64,7 +64,7 @@
                     </button> -->
 
                     <button mat-icon-button matTooltip="In-Operation" (click)="onInOperation(element)"
-                    [disabled]="!(element.otPreOperationId > 0)">
+                        [disabled]="!(element.otPreOperationId > 0)">
                         <mat-icon>
                             <img width="30px" height="30px" src="assets/images/logos/inOper.png">
                         </mat-icon>
@@ -118,6 +118,9 @@
                     <button mat-icon-button matTooltip="Cancel" (click)="OnCancel(element)">
                         <mat-icon> cancel</mat-icon>
                     </button>
+
+                    <app-airmid-consentform-icon [refId]="element.otReservationId" [opipId]="element.opIpId"
+                        [opipType]="element.opIpType"></app-airmid-consentform-icon>
                 </div>
             </ng-template>
             <airmid-table [gridConfig]="gridConfig" class="content">

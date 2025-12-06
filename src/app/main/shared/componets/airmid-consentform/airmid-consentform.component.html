@@ -1,0 +1,64 @@
+<div class="modal-wrapper grid-container inOperMain">
+    <div class="modal-header accent inOperHeader">
+        <div class="modal-header-content">
+            <div class="modal-header-title">
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"> Consent Form
+                </span>
+            </div>
+            <div class="modal-header-right">
+                <div class="close-icon">
+                    <button mat-icon-button tabIndex="-1" aria-label="Close dialog" (click)="onClose()"
+                        matTooltip="Close">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-body inOperMiddle" fusePerfectScrollbar>
+        <div class="modal-body-container">
+            <form [formGroup]="myForm">
+                <input type="hidden" name="ConsentId" formControlName="ConsentId">
+                <div fxLayout="column" fxLayoutGap="12px grid">
+                    <!-- Department, Template, Language -->
+                    <mat-card class="mt-16" style="padding: 10px;" fxLayout="row wrap" fxLayoutGap="16px">
+                        <airmid-dropdown label="Department Name" formControlName="ConsentDepartment"
+                            [formGroup]="myForm" fxFlex="30" [value]="data?.ConsentDepartment"
+                            [mode]="autocompletedepartment" (selectionChange)="selectChangedepartment($event)">
+                        </airmid-dropdown>
+
+                        <airmid-dropdown label="Template" formControlName="ConsentTempId" [formGroup]="myForm"
+                            fxFlex="30" [value]="data?.ConsentTempId" #ddlTemplate
+                            (selectionChange)="onTemplateSelect($event)">
+                        </airmid-dropdown>
+
+                        <div fxFlex="auto">
+                            <button class="btn btn-primary" (click)="addTemplateDescription()"
+                                [disabled]="isButtonDisabled">Add</button>
+                        </div>
+                    </mat-card>
+
+                    <!-- Template Description Editor -->
+                    <mat-card class="mt-16" style="padding: 10px;">
+                        <form [formGroup]="myForm">
+                            <airmid-editor label="Consent Details" formControlName="ConsentDescription"
+                                [formGroup]="myForm" (valueChange)="onEditorValueChange($event)">
+                            </airmid-editor>
+                        </form>
+                    </mat-card>
+                </div>
+                
+                <div class="modal-footer inOperfooter" style="margin-top: 10px;">
+                    <div class="footer-navigation-container">
+                        <div class="modal-footer-buttons inOperbtn">
+                            <button class="btn btn-danger-outline" (click)="onClear(false)">Close</button>
+                            <button class="btn btn-primary " color="accent" (click)="onSubmit()">
+                                <span>Save</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
