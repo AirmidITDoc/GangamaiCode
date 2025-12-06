@@ -220,7 +220,7 @@ export class InterimBillComponent implements OnInit {
       isSelfOrcompany: [item?.isSelfOrcompany ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       tranMode: ['HOSP', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
       createdBy: [item?.createdBy ?? this.accountService.currentUserValue.userId],
-      transactionLabel: ['IP-Interim Bill', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+      transactionLabel: ['IP_INTERIM_BILL', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
     });
   }
     // Getters 
@@ -355,7 +355,7 @@ export class InterimBillComponent implements OnInit {
           bankName: "",
           validationDate: this.datePipe.transform(this.currentDate, 'yyyy-MM-dd'),
           comments: "",
-          payMode: "Cash",
+          payMode: "CASH",
           onlineTranNo: "0",
           onlineTranResponse: "0",
           companyId: this.selectedAdvanceObj?.CompanyId ?? 0,
@@ -435,7 +435,7 @@ export class InterimBillComponent implements OnInit {
         PatientHeaderObj['OPD_IPD_Id'] = this.selectedAdvanceObj?.admissionId;
         PatientHeaderObj['Age'] = this.selectedAdvanceObj?.ageYear;
         PatientHeaderObj['NetPayAmount'] = Math.round(this.InterimFooterForm.get('NetpayAmount')?.value) 
-        PatientHeaderObj['TransactionLabel'] = 'IP-Interim Bill', 
+        PatientHeaderObj['TransactionLabel'] = 'IP_INTERIM_BILL', 
         PatientHeaderObj['CashCounterId'] =this.InterimFooterForm.get('CashCounterID').value || 0
         const dialogRef = this._matDialog.open(OpPaymentComponent,
           {

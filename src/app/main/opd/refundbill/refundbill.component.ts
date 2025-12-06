@@ -330,9 +330,9 @@ debugger
         RegNo: this.RegNo, 
         Age: this.registerObj?.ageYear,
         NetPayAmount: Math.round(this.RefundOfBillFormFooter.get('TotalRefundAmount').value),
-        billNo: this.vRefundOfBillFormGroup.get("refund.billId")?.value,
+        //billNo: this.vRefundOfBillFormGroup.get("refund.billId")?.value,
         CashCounterId:this.searchFormGroup.get('CashCounterID')?.value,
-        TransactionLabel:'OP-Refund Of Bill'
+        TransactionLabel:'OP_REFUND_OF_BILL'
       };
       console.log(PatientHeaderObj)
       const dialogRef = this._matDialog.open(OpPaymentComponent, {

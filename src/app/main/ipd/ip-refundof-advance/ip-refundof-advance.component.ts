@@ -102,7 +102,8 @@ export class IPRefundofAdvanceComponent implements OnInit {
         isCancelledBy: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         isCancelledDate: ['1900-01-01', [this._FormvalidationserviceService.validDateValidator]],
         refundId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        UnitId: [1],
+        UnitId: [this.accountService.currentUserValue.user.unitId],
+        cashCounterId:[0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator(), Validators.min(1)]],
       }),
 
       //Advance update
@@ -156,6 +157,7 @@ export class IPRefundofAdvanceComponent implements OnInit {
     this.RefundOfAdvanceFormGroup.get('refundHeader.remark').setValue(this.RefundOfAdvanceFormGroup.get('remark')?.value)
     this.RefundOfAdvanceFormGroup.get('refundHeader.refundAmount').setValue(this.RefundOfAdvanceFormGroup.get('refundAmount')?.value)
     this.RefundOfAdvanceFormGroup.get('advanceHeaderupdate.balanceAmount').setValue(this.RefundOfAdvanceFormGroup.get('balanceAmount')?.value || 0)
+    this.RefundOfAdvanceFormGroup.get('refundHeader.cashCounterId').setValue(this.RefundOfAdvanceFormGroup.get('CashCounterID')?.value)
 
     //getting data from table to array
     if (this.RefundOfAdvanceFormGroup.valid) {
@@ -179,7 +181,7 @@ export class IPRefundofAdvanceComponent implements OnInit {
       PatientHeaderObj['NetPayAmount'] = Math.round(this.RefundOfAdvanceFormGroup.get('refundAmount').value) || 0; 
       PatientHeaderObj['CashCounterId'] = this.RefundOfAdvanceFormGroup.get('CashCounterID')?.value || 0; 
       PatientHeaderObj['CompanyId'] = this.registerObj?.companyId;
-      PatientHeaderObj['TransactionLabel'] = 'IP-Refund Of Advance'; 
+      PatientHeaderObj['TransactionLabel'] = 'IP_REFUND_OF_ADVANCE'; 
 
       const dialogRef = this._matDialog.open(OpPaymentComponent,
         {

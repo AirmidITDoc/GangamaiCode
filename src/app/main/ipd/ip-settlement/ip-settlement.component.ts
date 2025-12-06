@@ -274,18 +274,18 @@ export class IPSettlementComponent implements OnInit {
         let PatientHeaderObj = {};
         PatientHeaderObj['Date'] = formattedDate;
         PatientHeaderObj['PatientName'] = this.PatientName;
-        PatientHeaderObj['AdvanceAmount'] = contact.balanceAmt;
-        PatientHeaderObj['NetPayAmount'] = contact.balanceAmt;
-        PatientHeaderObj['BillNo'] = contact.billNo;
-        PatientHeaderObj['OPD_IPD_Id'] = contact.opdipdid;
-        PatientHeaderObj['IPDNo'] = contact.ipdNo;
-        PatientHeaderObj['RegNo'] = contact.regNo;
-        PatientHeaderObj['DoctorName'] = contact.doctorName;
-        PatientHeaderObj['CompanyName'] = contact.companyName;
-        PatientHeaderObj['CompanyId'] = contact.companyId;
-        PatientHeaderObj['DepartmentName'] = contact.departmentName;
+        PatientHeaderObj['AdvanceAmount'] = contact?.balanceAmt;
+        PatientHeaderObj['NetPayAmount'] = contact?.balanceAmt;
+        PatientHeaderObj['BillNo'] = contact?.billNo || 0; 
+        PatientHeaderObj['OPD_IPD_Id'] = contact?.opdipdid;
+        PatientHeaderObj['IPDNo'] = contact?.ipdNo || '';
+        PatientHeaderObj['RegNo'] = contact?.regNo;
+        PatientHeaderObj['DoctorName'] = contact?.doctorName || '';
+        PatientHeaderObj['CompanyName'] = contact?.companyName || '';
+        PatientHeaderObj['CompanyId'] = contact?.companyId || 0;
+        PatientHeaderObj['DepartmentName'] = contact?.departmentName || '';
         PatientHeaderObj['Age'] = this.registerObj.age; 
-        PatientHeaderObj['TransactionLabel'] = 'IP-Settlement'
+        PatientHeaderObj['TransactionLabel'] = 'IP_SETTLEMENT'
 
         const dialogRef = this._matDialog.open(OpPaymentVimalComponent,
             {

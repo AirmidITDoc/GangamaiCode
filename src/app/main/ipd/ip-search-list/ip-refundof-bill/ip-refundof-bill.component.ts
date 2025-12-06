@@ -143,6 +143,7 @@ export class IPRefundofBillComponent implements OnInit {
         isCancelledDate: ['1900-01-01', [this._FormvalidationserviceService.validDateValidator]],
         refundId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         unitId: [this.accountService.currentUserValue.user.unitId],
+        cashCounterId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       }),
 
       tRefundDetails: this.formBuilder.array([]), // FormArray for details
@@ -313,6 +314,7 @@ calculateTotalAmount(): void {
     this.vRefundOfBillFormGroup.get("refund.refundDate")?.setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd') || '1900-01-01')
     this.vRefundOfBillFormGroup.get("refund.refundTime")?.setValue(this.dateTimeObj.time)
     this.vRefundOfBillFormGroup.get("refund.billId")?.setValue(this.BillNo || 0)
+    this.vRefundOfBillFormGroup.get("refund.cashCounterId")?.setValue(this.RefundOfBillFormFooter.get('CashCounterID')?.value || 0)
 
     if (!this.RefundOfBillFormFooter.invalid && !this.vRefundOfBillFormGroup.invalid) {
 
@@ -334,8 +336,8 @@ calculateTotalAmount(): void {
       PatientHeaderObj['DepartmentName'] = this.selectedAdvanceObj?.departmentName;
       PatientHeaderObj['OPD_IPD_Id'] = this.selectedAdvanceObj?.admissionId;
       PatientHeaderObj['Age'] = this.selectedAdvanceObj?.ageYear;
-      PatientHeaderObj['TransactionLabel'] = 'IP-Refund Of Bill';
-      PatientHeaderObj['billNo']= this.BillNo || 0,
+      PatientHeaderObj['TransactionLabel'] = 'IP_REFUND_OF_BILL';
+     // PatientHeaderObj['billNo']= this.BillNo || 0,
       PatientHeaderObj['NetPayAmount'] =Math.round(this.RefundOfBillFormFooter.get('TotalRefundAmount').value) || 0
       PatientHeaderObj['CashCounterId'] =this.RefundOfBillFormFooter.get('CashCounterID').value || 0  
 

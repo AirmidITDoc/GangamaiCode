@@ -1172,17 +1172,16 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
             if (this.OPFooterForm.get('paymentType').value == 'PayOption') {
                 let PatientHeaderObj = {};
                 PatientHeaderObj['Date'] = this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd') || '01/01/1900',
-                PatientHeaderObj['PatientName'] = this.PatientName; // this.patientDetail.patientName;
-                PatientHeaderObj['RegNo'] = this.RegNo;
-                PatientHeaderObj['DoctorName'] = this.Doctorname;
-                PatientHeaderObj['CompanyName'] = this.CompanyName;
-                PatientHeaderObj['CompanyName'] = this.CompanyName;
-                PatientHeaderObj['DepartmentName'] = this.DepartmentName;
+                PatientHeaderObj['PatientName'] = this.PatientName; 
+                PatientHeaderObj['RegNo'] = this.patientDetail?.regNo || 0;
+                PatientHeaderObj['DoctorName'] = this.Doctorname || '';
+                PatientHeaderObj['CompanyName'] = this.patientDetail?.companyName || ''; 
+                PatientHeaderObj['DepartmentName'] = this.DepartmentName || '';
                 PatientHeaderObj['OPD_IPD_Id'] = this.vOPIPId;
                  PatientHeaderObj['CompanyId'] = this.patientDetail?.companyId || 0;
                 PatientHeaderObj['CashCounterId'] = this.searchForm.get('CashCounterID')?.value || 0;
-                PatientHeaderObj['Age'] = this.AgeYear;
-                PatientHeaderObj['TransactionLabel'] = 'OP Bill';
+                PatientHeaderObj['Age'] = this.AgeYear || 0;
+                PatientHeaderObj['TransactionLabel'] = 'OP_BILL';
                 PatientHeaderObj['NetPayAmount'] = Math.round(this.OPFooterForm.get('netPayableAmt').value);
                 const dialogRef = this._matDialog.open(OpPaymentComponent,
                     {
@@ -1237,7 +1236,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
                     validationDate: this.datePipe.transform(this.currentDate, 'yyyy-MM-dd'),
                     advanceUsedAmount: 0,
                     comments: "",
-                    payMode: "Cash",
+                    payMode: "CASH",
                     onlineTranNo: "0",
                     onlineTranResponse: "0",
                     companyId: this.patientDetail?.CompanyId ?? 0,
@@ -1248,7 +1247,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
                     isSelfOrcompany: this.patientDetail?.CompanyId ? 1 : 0,
                     tranMode: "HOSP",
                     createdBy: this.accountService.currentUserValue?.userId ?? 0,
-                    transactionLabel:'OP Bill'
+                    transactionLabel:'OP_BILL'
                 }); 
                 this.OpBillForm.get('balanceAmt').setValue(0)
                 this.OpBillForm.get('paidAmt')?.setValue(this.OPFooterForm.get('netPayableAmt')?.value)

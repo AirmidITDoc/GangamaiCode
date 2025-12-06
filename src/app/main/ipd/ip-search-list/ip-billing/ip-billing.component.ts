@@ -1264,7 +1264,7 @@ export class IPBillingComponent implements OnInit {
                 PatientHeaderObj['CompanyName'] = this.selectedAdvanceObj.companyName;
                 PatientHeaderObj['DepartmentName'] = this.selectedAdvanceObj.departmentName;
                 PatientHeaderObj['Age'] = this.selectedAdvanceObj.ageYear; 
-                PatientHeaderObj['TransactionLabel'] = 'IP-Final Bill', 
+                PatientHeaderObj['TransactionLabel'] = 'IP_FINAL_BILL', 
                 PatientHeaderObj['CashCounterId'] =this.IpbillFooterform.get('ConcessionId')?.value || 0
                 //==============-======--==============Payment====================== 
                 this.advanceDataStored.storage = new AdvanceDetailObj(PatientHeaderObj);

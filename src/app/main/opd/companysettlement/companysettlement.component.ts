@@ -381,7 +381,7 @@ export class CompanysettlementComponent implements OnInit {
             isSelfOrcompany: [item?.isSelfOrcompany ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             tranMode: ['HOSP', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
             createdBy: [this.accountService.currentUserValue.userId],
-            transactionLabel: ['OP Multiple Settlement', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+            transactionLabel: ['OP_SETTLEMENT', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
         });
     }
     get OPMulSetLoopArray(): FormArray {
@@ -425,7 +425,7 @@ export class CompanysettlementComponent implements OnInit {
         PatientHeaderObj['CompanyName'] = contact.companyName;
         PatientHeaderObj['NetPayAmount'] = contact.balanceAmt;
         PatientHeaderObj['CompanyId'] = contact.companyId;  
-        PatientHeaderObj['TransactionLabel'] = 'OP-Settlement';
+        PatientHeaderObj['TransactionLabel'] = 'OP_SETTLEMENT';
 
         const dialogRef = this._matDialog.open(OpPaymentComponent,
             {

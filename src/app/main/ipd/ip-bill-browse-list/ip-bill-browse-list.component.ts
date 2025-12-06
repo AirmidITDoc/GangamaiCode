@@ -1,6 +1,6 @@
 import { DatePipe } from '@angular/common';
 import { Component, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { fuseAnimations } from '@fuse/animations';
@@ -16,6 +16,7 @@ import { PrintserviceService } from 'app/main/shared/services/printservice.servi
 import { ToastrService } from 'ngx-toastr';
 import { IPAdvanceComponent, IpPaymentInsert } from '../ip-search-list/ip-advance/ip-advance.component';
 import { ReviewcompanyBillComponent } from 'app/main/opd/new-oplist/reviewcompany-bill/reviewcompany-bill.component';
+import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 
 @Component({
     selector: 'app-ip-bill-browse-list',
@@ -216,10 +217,13 @@ export class IPBillBrowseListComponent implements OnInit {
         private commonService: PrintserviceService,
         public _matDialog: MatDialog, private _ActRoute: Router,
         private accountService: AuthenticationService,
+        public formBuilder:FormBuilder,
+        public _FormvalidationserviceService:FormvalidationserviceService,
         public toastr: ToastrService, public datePipe: DatePipe) { }
 
     ngOnInit(): void {
         this.myFilterform = this._IPBrowseBillService.filterForm_IpdBrowse();
+        this.IPBillMyForm = this.CreateIPBillForm();
         this.myFilterFormIPBrowsePayment = this._IPBrowseBillService.filterForm_IpdpaymentBrowse()
         this.myFilterFormIPBrowseRefund = this._IPBrowseBillService.filterForm_IpdrefundBrowse()
 
@@ -610,8 +614,108 @@ export class IPBillBrowseListComponent implements OnInit {
     //     });
 
     // }
-    Billpayment(contact) {
 
+        IPBillMyForm: FormGroup;
+        //IP bill save form 
+        CreateIPBillForm(): FormGroup {
+            return this.formBuilder.group({
+                //Payment form
+                payment: this.formBuilder.group({
+                    paymentId: [0, [this._FormvalidationserviceService.onlyNumberValidator]],
+                    billNo: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+                    paymentDate: ['', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
+                    paymentTime: ['', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
+                    cashPayAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+                    chequePayAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+                    chequeNo: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+                    bankName: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+                    chequeDate: ['1999-01-01'],
+                    cardPayAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+                    cardNo: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+                    cardBankName: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+                    cardDate: ['1999-01-01'],
+                    advanceUsedAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+                    advanceId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+                    refundId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+                    transactionType: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+                    remark: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+                    addBy: [this.accountService.currentUserValue.userId],
+                    isCancelled: [false],
+                    isCancelledBy: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+                    isCancelledDate: ['1999-01-01'],
+                    opdipdType: [3, [this._FormvalidationserviceService.onlyNumberValidator()]],
+                    neftpayAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+                    neftno: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+                    neftbankMaster: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+                    neftdate: ['1999-01-01'],
+                    payTmamount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+                    payTmtranNo: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+                    payTmdate: ['1999-01-01'],
+                    tdsAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+                    unitId: [this.accountService.currentUserValue.user.unitId, [this._FormvalidationserviceService.onlyNumberValidator()]],
+                    wfamount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+                    companyId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+                }),
+                // BIll update
+                billupdate: this.formBuilder.group({
+                    billNo: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+                    balanceAmt: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+                }),
+                // Advance details update in array
+                advanceDetailupdate: this.formBuilder.array([]),
+                // Advacne header update
+                advanceHeaderupdate: this.formBuilder.group({
+                    advanceId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+                    advanceUsedAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+                    balanceAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+                }),
+                 // ✅ Fixed: should be FormArray
+                 tPayments: this.formBuilder.array([])
+            });
+        }
+        createAdvanceUpdate(item: any): FormGroup {
+            return this.formBuilder.group({
+                advanceDetailID: [item?.AdvanceDetailID ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+                usedAmount: [item?.UsedAmount ?? 0, [, this._FormvalidationserviceService.AllowDecimalNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+                balanceAmount: [item?.BalanceAmount ?? 0, [, this._FormvalidationserviceService.AllowDecimalNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            });
+        }
+        CreateModePaymentform(item: any): FormGroup {
+            return this.formBuilder.group({
+                paymentId: [item?.paymentId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+                unitId: [item?.unitId ?? this.accountService.currentUserValue.user.unitId],
+                billNo: [item?.billNo ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+                opdipdtype: [item?.opdipdtype ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+                paymentDate: [item?.paymentDate ?? ''],
+                paymentTime: [item?.paymentTime ?? ''],
+                payAmount: [item?.payAmount ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+                tranNo: [item?.tranNo ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+                bankName: [item?.bankName ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+                validationDate: [item?.validationDate ?? ''],
+                advanceUsedAmount: [item?.advanceUsedAmount ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+                comments: [item?.comments ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+                payMode: [item?.payMode ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+                onlineTranNo: [item?.onlineTranNo ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+                onlineTranResponse: [item?.onlineTranResponse ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+                companyId: [item?.companyId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+                advanceId: [item?.advanceId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+                refundId: [item?.refundId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+                cashCounterId: [item?.cashCounterId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+                transactionType: [item?.transactionType ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+                isSelfOrcompany: [item?.isSelfOrcompany ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+                tranMode: [item?.tranMode ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+                createdBy: [item?.createdBy ?? this.accountService.currentUserValue.userId],
+                transactionLabel: [item?.transactionLabel ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+            });
+        }
+        // Getters  
+        get AdvacnedetUpdateArray(): FormArray {
+            return this.IPBillMyForm.get('advanceDetailupdate') as FormArray;
+        }
+        get ModeOfPaymentsArray(): FormArray {
+            return this.IPBillMyForm.get('tPayments') as FormArray;
+        } 
+    Billpayment(contact) {
         console.log(contact)
         let PatientHeaderObj = {};
         PatientHeaderObj['Date'] = contact.billDate;
@@ -626,141 +730,55 @@ export class IPBillBrowseListComponent implements OnInit {
         PatientHeaderObj['CompanyName'] = contact.companyName;
         PatientHeaderObj['CompanyId'] = contact.companyId;
         PatientHeaderObj['DepartmentName'] = contact.departmentName;
-        console.log(PatientHeaderObj)
+        PatientHeaderObj['TransactionLabel'] = 'IP_SETTLEMENT';
 
         const dialogRef = this._matDialog.open(OpPaymentVimalComponent,
             {
-                maxWidth: "95vw",
+                maxWidth: "80vw",
                 height: '750px',
-                width: '85%',
-
+                width: '80%',
                 data: {
                     vPatientHeaderObj: PatientHeaderObj,
                     FromName: "IP-SETTLEMENT",
                     advanceObj: PatientHeaderObj,
                 }
             });
-
-
         dialogRef.afterClosed().subscribe(result => {
-            let NeftNo = "0"
-            console.log(result.submitDataPay.ipPaymentInsert)
-
-            if (result.submitDataPay.ipPaymentInsert.neftno == "undefined")
-                NeftNo = "0"
-            else
-                NeftNo = String(result.submitDataPay.ipPaymentInsert.neftno)
-            if (result.IsSubmitFlag) {
-                let Paymentobj = {};
-
-                Paymentobj['PaymentId'] = '0';
-                Paymentobj['billNo'] = contact.billNo;
-                Paymentobj['PaymentDate'] = result.submitDataPay.ipPaymentInsert.paymentDate;
-                Paymentobj['PaymentTime'] = result.submitDataPay.ipPaymentInsert.paymentTime; //this.datePipe.transform(this.currentDate, 'yyyy-MM-dd') || this.datePipe.transform(this.currentDate, 'yyyy-MM-dd')
-                Paymentobj['CashPayAmount'] = result.submitDataPay.ipPaymentInsert.cashPayAmount ?? 0;
-                Paymentobj['ChequePayAmount'] = result.submitDataPay.ipPaymentInsert.chequePayAmount ?? 0;
-                Paymentobj['ChequeNo'] = String(result.submitDataPay.ipPaymentInsert.chequeNo) ?? "0";
-                Paymentobj['BankName'] = result.submitDataPay.ipPaymentInsert.bankName ?? "";
-                Paymentobj['ChequeDate'] = result.submitDataPay.ipPaymentInsert.chequeDate;
-                Paymentobj['CardPayAmount'] = result.submitDataPay.ipPaymentInsert.cardPayAmount
-                Paymentobj['CardNo'] = String(result.submitDataPay.ipPaymentInsert.cardNo);
-                Paymentobj['CardBankName'] = result.submitDataPay.ipPaymentInsert.cardBankName
-                Paymentobj['CardDate'] = result.submitDataPay.ipPaymentInsert.cardDate
-                Paymentobj['AdvanceUsedAmount'] = result.submitDataPay.ipPaymentInsert.advanceUsedAmount
-                Paymentobj['AdvanceId'] = result.submitDataPay.ipPaymentInsert.advanceId
-                Paymentobj['RefundId'] = 0;
-                Paymentobj['TransactionType'] = 0;
-                Paymentobj['Remark'] = '';
-                Paymentobj['AddBy'] = this.accountService.currentUserValue.userId,
-                    Paymentobj['IsCancelled'] = false;
-                Paymentobj['IsCancelledBy'] = 0;
-                Paymentobj['IsCancelledDate'] = result.submitDataPay.ipPaymentInsert.isCancelledDate
-                Paymentobj['opdipdType'] = 1;
-                Paymentobj['neftpayAmount'] = result.submitDataPay.ipPaymentInsert.neftpayAmount
-                Paymentobj['neftno'] = NeftNo;
-                Paymentobj['neftbankMaster'] = result.submitDataPay.ipPaymentInsert.neftbankMaster
-
-                Paymentobj['neftdate'] = result.submitDataPay.ipPaymentInsert.neftdate
-                Paymentobj['payTmamount'] = result.submitDataPay.ipPaymentInsert.payTmamount
-                Paymentobj['payTmtranNo'] = "0",//result.submitDataPay.ipPaymentInsert.payTmtranNo || 0
-                    Paymentobj['payTmdate'] = result.submitDataPay.ipPaymentInsert.payTmdate
-                Paymentobj['tdsAmount'] = result.submitDataPay.ipPaymentInsert.tdsAmount
-                Paymentobj['unitId'] = 1
-                Paymentobj['wfamount'] = 0
-
-
-                let BillUpdateObj = {};
-
-                BillUpdateObj['billNo'] = contact.billNo;
-                BillUpdateObj['balanceAmt'] = result.BalAmt;
-
-                console.log("Procced with Payment Option");
+            if (result && result.IsSubmitFlag) {
                 let UpdateAdvanceDetailarr1: IpPaymentInsert[] = [];
+                UpdateAdvanceDetailarr1 = result.submitDataAdvancePay;
 
-                if (result.IsSubmitFlag) {
-                    console.log(result);
-                    result.submitDataPay.ipPaymentInsert.TransactionType = 0;
-                    UpdateAdvanceDetailarr1 = result.submitDataAdvancePay;
-                    console.log(UpdateAdvanceDetailarr1);
+                this.IPBillMyForm.get('billupdate.billNo').setValue(contact.billNo)
+                this.IPBillMyForm.get('billupdate.balanceAmt').setValue(result.BalAmt)
 
-                    let UpdateAdvanceDetailarr = [];
-                    let BalanceAmt = 0;
-                    let UsedAmt = 0;
-                    if (result.submitDataAdvancePay.length > 0) {
-                        result.submitDataAdvancePay.forEach((element) => {
-                            let UpdateAdvanceDetailObj = {};
-                            UpdateAdvanceDetailObj['advanceDetailID'] = element.AdvanceDetailID;
-                            UpdateAdvanceDetailObj['usedAmount'] = element.UsedAmount;
-                            UsedAmt += element.UsedAmount;
-                            UpdateAdvanceDetailObj['balanceAmount'] = element.BalanceAmount;
-                            BalanceAmt += element.BalanceAmount;
-                            UpdateAdvanceDetailarr.push(UpdateAdvanceDetailObj);
-                        });
-                    }
-                    // else {
-                    //     let UpdateAdvanceDetailObj = {};
-                    //     UpdateAdvanceDetailObj['advanceDetailID'] = 0,
-                    //         UpdateAdvanceDetailObj['usedAmount'] = 0,
-                    //         UpdateAdvanceDetailObj['balanceAmount'] = 0,
-                    //         UpdateAdvanceDetailarr.push(UpdateAdvanceDetailObj);
-                    // }
-
-
-                    let UpdateAdvanceHeaderObj = {};
-                    if (result.submitDataAdvancePay.length > 0) {
-                        UpdateAdvanceHeaderObj['AdvanceId'] = UpdateAdvanceDetailarr1[0]['AdvanceId'],
-                            UpdateAdvanceHeaderObj['AdvanceUsedAmount'] = UsedAmt,
-                            UpdateAdvanceHeaderObj['BalanceAmount'] = BalanceAmt
-                    }
-                    // else {
-                    //     UpdateAdvanceHeaderObj['advanceId'] = 0,
-                    //         UpdateAdvanceHeaderObj['advanceUsedAmount'] = 0,
-                    //         UpdateAdvanceHeaderObj['balanceAmount'] = 0
-                    // }
-
-
-
-                    let submitData = {
-                        "payment": Paymentobj,// result.submitDataPay.ipPaymentInsert,
-                        "billupdate": BillUpdateObj,
-                        "advanceDetailupdate": UpdateAdvanceDetailarr,
-                        "advanceHeaderupdate": UpdateAdvanceHeaderObj
-                    };
-                    let data = {
-                        submitDataPay: submitData
-                    }
-                    console.log(submitData);
-                    this._IPBrowseBillService.InsertIPSettlementPayment(submitData).subscribe(response => {
-                        this.viewgetIPPayemntPdf(response)
-                        this.onChangeIPBill()
-                    }, (error) => {
-                        this.toastr.error(error.message);
-                    });
+                this.AdvacnedetUpdateArray.clear();
+                UpdateAdvanceDetailarr1.forEach(item => {
+                    this.AdvacnedetUpdateArray.push(this.createAdvanceUpdate(item));
+                });
+                let AdvanceBalAmt = 0;
+                let AdvanceUsedAmt = 0;
+                if (UpdateAdvanceDetailarr1.length > 0) {
+                    UpdateAdvanceDetailarr1.forEach(element => {
+                        AdvanceUsedAmt = AdvanceUsedAmt + element.UsedAmount
+                        AdvanceBalAmt = AdvanceBalAmt + element.BalanceAmount
+                        this.IPBillMyForm.get('advanceHeaderupdate.advanceId')?.setValue(element.AdvanceId)
+                        this.IPBillMyForm.get('advanceHeaderupdate.advanceUsedAmount')?.setValue(AdvanceUsedAmt)
+                        this.IPBillMyForm.get('advanceHeaderupdate.balanceAmount')?.setValue(AdvanceBalAmt)
+                    })
                 }
 
+                this.IPBillMyForm.get('payment').setValue(result.submitDataPay.ipPaymentInsert)
+                this.ModeOfPaymentsArray.clear();
+                result.submitDataPay.ipModePaymentInsert.forEach(item => {
+                    this.ModeOfPaymentsArray.push(this.CreateModePaymentform(item));
+                });
+                console.log(this.IPBillMyForm.value);
+                this._IPBrowseBillService.InsertIPSettlementPayment(this.IPBillMyForm.value).subscribe(response => {
+                    this.viewgetIPPayemntPdf(response)
+                    this.onChangeIPBill()
+                });
             }
-        });
-
+        }); 
     }
     viewgetIPPayemntPdf(data) {
         this.commonService.Onprint("PaymentId", data, "IpPaymentReceipt");

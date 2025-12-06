@@ -100,7 +100,7 @@
                                         </div>
 
                                          <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%"
-                                        *ngIf="advanceData?.CompanyId != null && advanceData?.CompanyId !== ''">
+                                        *ngIf="advanceData?.CompanyId">
                                         <airmid-dropdown label="Company Name" formControlName="CompanyId" [formGroup]="patientDetailsFormGrp"
                                             [validations]="getValidationMessages().CompanyId" [mode]="autocompleteModecompany"></airmid-dropdown>
                                     </div>
@@ -121,7 +121,7 @@
 
                                         <div fxLayout.gt-sm="row" fxLayout="column" class="payment-container gap-8"
                                             fxLayoutALign="start start">
-                                            <mat-form-field appearance="outline" fxFlex>
+                                            <!-- <mat-form-field appearance="outline" fxFlex>
                                                 <mat-label>Payment Type</mat-label>
                                                 <mat-select formControlName="paymentType1" (selectionChange)="onChangePaymentType()"
                                                     [(ngModel)]="selectedPaymnet1" required>
@@ -132,13 +132,13 @@
                                                 <div *ngIf="submitted && f.paymentType1.errors" class="invalid-feedback">
                                                     <div *ngIf="f.paymentType1.errors.required">Payment type is required</div>
                                                 </div>
-                                            </mat-form-field>
+                                              </mat-form-field> -->
 
-                                             <!-- <airmid-dropdown label="Payment Type" formControlName="paymentType1" fxFlex
+                                             <airmid-dropdown label="Payment Type" formControlName="paymentType1" fxFlex
                                               [formGroup]="patientDetailsFormGrp" [mode]="autocompleteModePaymentMode"
                                               [validations]="getValidationMessages().paymentType1"  TextField="text"
                                                (selectionChange)="getselectObjPayMode($event)">
-                                              </airmid-dropdown> -->
+                                              </airmid-dropdown>
 
                                             <mat-form-field appearance="outline" fxFlex>
                                                 <mat-label>Amount</mat-label>
@@ -149,7 +149,7 @@
                                                 </div>
                                             </mat-form-field>
 
-                                            <ng-container *ngIf="selectedPaymnet1 != 'cash'  && selectedPaymnet1 != 'tds' && selectedPaymnet1 != 'wf'">
+                                            <ng-container *ngIf="selectedPaymnet1 != 'CASH'  && selectedPaymnet1 != 'TDS' && selectedPaymnet1 != 'WF'">
                                                 <mat-form-field appearance="outline" fxFlex>
                                                     <mat-label>Reference Number</mat-label>
                                                     <input matInput formControlName="referenceNo1"  placeholder="Card Number" required 

@@ -31,11 +31,36 @@ export class OpPaymentVimalComponent implements OnInit {
     ];
     autocompleteModebank: string = "Bank";
     autocompleteModecompany: string = "Company"; 
+      autocompleteModePaymentMode: string = "CommonpaymentMode";
     currentDate = new Date();
     patientDetailsFormGrp: FormGroup;
     selectedPaymnet1: string = '';
     paymentArr1: any[] = this.opService.getPaymentArr();
     IsAdv: boolean = false;
+        RegNo: any;
+    DoctorName: any;
+    CompanyName: any;
+    Date: any;
+    DepartmentName: any;
+    Age: any;
+    OPD_IPD_Id: any; 
+    netPayAmt: any = 0; 
+    nowDate: Date;
+    amount1: number;
+    screenFromString = 'payment-form';
+    paidAmt: number;
+    balanceAmt: number = 0;
+    advanceData: any = {};
+    PatientName: any;    
+    submitted: boolean = false;
+    displayedColumns = [
+        'Date',
+        'AdvanceNo',
+        'AdvanceAmount',
+        'UsedAmount',
+        'BalanceAmount',
+        'RefundAmount'
+    ];
     BindPaymentTypes() {
         let full = this.opService.getPaymentArr();
         let final = [];
@@ -46,8 +71,13 @@ export class OpPaymentVimalComponent implements OnInit {
         });
         this.paymentArr1 = final;
     }
+getselectObjPayMode(obj){
+  console.log(obj)
+   this.selectedPaymnet1 = obj.text
+   this.onChangePaymentType();
+} 
   onChangePaymentType() {
-    if (this.selectedPaymnet1 == 'cash') {
+    if (this.selectedPaymnet1 == 'CASH') {
       this.patientDetailsFormGrp.get('referenceNo1').clearValidators();
       this.patientDetailsFormGrp.get('referenceNo1').updateValueAndValidity();
       this.patientDetailsFormGrp.get('regDate1').clearValidators();
@@ -55,7 +85,7 @@ export class OpPaymentVimalComponent implements OnInit {
       this.patientDetailsFormGrp.get('bankName1').clearValidators();
       this.patientDetailsFormGrp.get('bankName1').updateValueAndValidity();
     }
-    else if (this.selectedPaymnet1 == 'tds' || this.selectedPaymnet1 == 'wf') {
+    else if (this.selectedPaymnet1 == 'TDS' || this.selectedPaymnet1 == 'WF') {
       this.patientDetailsFormGrp.get('referenceNo1').clearValidators();
       this.patientDetailsFormGrp.get('referenceNo1').updateValueAndValidity();
       this.patientDetailsFormGrp.get('regDate1').clearValidators();
@@ -66,16 +96,16 @@ export class OpPaymentVimalComponent implements OnInit {
     else {
       this.patientDetailsFormGrp.get('referenceNo1').setValidators([Validators.required]);
       this.patientDetailsFormGrp.get('regDate1').setValidators([Validators.required]);
-      if (this.selectedPaymnet1 == 'cheque') {
+      if (this.selectedPaymnet1 == 'CHEQUE') {
         this.patientDetailsFormGrp.get('bankName1').setValidators([Validators.required]);
       }
-      else if (this.selectedPaymnet1 == 'card') {
+      else if (this.selectedPaymnet1 == 'CARD') {
         this.patientDetailsFormGrp.get('bankName1').setValidators([Validators.required]);
       }
-      else if (this.selectedPaymnet1 == 'net banking') {
+      else if (this.selectedPaymnet1 == 'NET BANKING') {
         this.patientDetailsFormGrp.get('bankName1').setValidators([Validators.required]);
       }
-      else if (this.selectedPaymnet1 == 'upi') {
+      else if (this.selectedPaymnet1 == 'UPI') {
         this.patientDetailsFormGrp.get('referenceNo1').setValidators([Validators.required]);
         this.patientDetailsFormGrp.get('regDate1').setValidators([Validators.required]);
         this.patientDetailsFormGrp.get('referenceNo1').updateValueAndValidity();
@@ -93,15 +123,6 @@ export class OpPaymentVimalComponent implements OnInit {
     this.patientDetailsFormGrp.updateValueAndValidity();
   }
 
-    netPayAmt: any = 0;
-    nowDate: Date;
-    amount1: number;
-    screenFromString = 'payment-form';
-    paidAmt: number;
-    balanceAmt: number = 0;
-    advanceData: any = {};
-    PatientName: any;    
-    submitted: boolean = false;
     get f(): { [key: string]: AbstractControl } {
         return this.patientDetailsFormGrp.controls;
     }
@@ -140,6 +161,16 @@ export class OpPaymentVimalComponent implements OnInit {
         if (this.patientDetailsFormGrp.invalid) {
             return;
         }
+        const isDuplicate = this.Payments.data.some(item => item?.PaymentType === this.selectedPaymnet1 &&
+              item.RefNo?.trim().toLowerCase() === this.patientDetailsFormGrp.get("referenceNo1")?.value?.trim().toLowerCase() &&
+              item.BankName?.trim().toLowerCase() === this.BankNam?.trim().toLowerCase() &&
+              Number(item.Amount) === Number(this.amount1)
+            );  
+          if (isDuplicate) {
+          Swal.fire('Already record added with same details');
+          return;
+        } 
+
         let tmp = this.Payments.data;
         tmp.push({
             Id: this.getNewId(),
@@ -147,7 +178,10 @@ export class OpPaymentVimalComponent implements OnInit {
             RefNo: this.patientDetailsFormGrp.get("referenceNo1")?.value ?? "",
             BankId: this.BankId,
             BankName: this.BankNam,
-            RegDate: this.patientDetailsFormGrp.get("regDate1")?.value ?? ""
+            RegDate: this.patientDetailsFormGrp.get("regDate1")?.value ?? "",
+            AdvanceID:0,
+            AdvanceUsedAmt:0
+
         });
         this.Payments.data = tmp;
         this.setPaidAmount();
@@ -155,7 +189,9 @@ export class OpPaymentVimalComponent implements OnInit {
         this.patientDetailsFormGrp.get("referenceNo1").setValue('');
         this.patientDetailsFormGrp.get("bankName1").setValue(null);
         this.patientDetailsFormGrp.get("amount1").setValue(this.balanceAmt);
-        this.patientDetailsFormGrp.get("paymentType1").setValue(null);
+        this.patientDetailsFormGrp.get("paymentType1").setValue(null);  
+        this.BankNam = ''; 
+        this.BankId = 0;
         this.BindPaymentTypes();
         this.GetBalanceAmt();
 
@@ -190,7 +226,7 @@ export class OpPaymentVimalComponent implements OnInit {
     }
     getNewId() {
         return Math.max(...this.Payments.data.filter(x => x.Id > 0).map(o => o.Id), 0) + 1;
-    }
+    } 
     deletePayment(payment) {
         Swal.fire({
             title: "Are you sure to remove this payment?",
@@ -213,21 +249,7 @@ export class OpPaymentVimalComponent implements OnInit {
             }
         });
     }
-    RegNo: any;
-    DoctorName: any;
-    CompanyName: any;
-    Date: any;
-    DepartmentName: any;
-    Age: any;
-    OPD_IPD_Id: any; 
-    displayedColumns = [
-        'Date',
-        'AdvanceNo',
-        'AdvanceAmount',
-        'UsedAmount',
-        'BalanceAmount',
-        'RefundAmount'
-    ];
+
     dataSource = new MatTableDataSource<IpdAdvanceBrowseModel>();
     constructor(
         private formBuilder: FormBuilder,
@@ -239,9 +261,12 @@ export class OpPaymentVimalComponent implements OnInit {
         public toastr: ToastrService,
         public _IpSearchListService: IPSearchListService,
     ) {
+        this.patientDetailsFormGrp = this.createForm();
         this.nowDate = new Date();
         if (data) {
             this.advanceData = this.data.vPatientHeaderObj;
+            this.patientDetailsFormGrp.get('paymentType1')?.setValue('CASH')
+            this.selectedPaymnet1 = 'CASH'
             console.log(this.advanceData)
         }
         //IP bill
@@ -255,8 +280,7 @@ export class OpPaymentVimalComponent implements OnInit {
             this.Date = this.advanceData.Date;
             this.Age = this.advanceData.Age;
             this.OPD_IPD_Id = this.advanceData.OPD_IPD_Id;
-            this.DepartmentName = this.advanceData.DepartmentName;
-            this.selectedPaymnet1 = 'cash';
+            this.DepartmentName = this.advanceData.DepartmentName; 
         }
         //Ip-Settlemet
         if (this.data.FromName == "IP-SETTLEMENT") {
@@ -268,16 +292,14 @@ export class OpPaymentVimalComponent implements OnInit {
             this.Date = this.advanceData.Date;
             this.Age = this.advanceData.Age;
             this.OPD_IPD_Id = this.advanceData.OPD_IPD_Id;
-            this.DepartmentName = this.advanceData.DepartmentName;
-            this.selectedPaymnet1 = 'cash';
+            this.DepartmentName = this.advanceData.DepartmentName; 
         }
         //IP-Pharmacy-Settlemet 
         if (this.data.FromName == "IP-Pharma-SETTLEMENT") {
             this.netPayAmt = this.advanceData.NetPayAmount;
             this.amount1 = this.advanceData.NetPayAmount;
             this.paidAmt = this.advanceData.NetPayAmount;
-            this.PatientName = this.advanceData.PatientName;
-            this.selectedPaymnet1 = 'cash';
+            this.PatientName = this.advanceData.PatientName; 
             this.Date = this.advanceData.Date;
             this.RegNo = this.advanceData.RegNo;
             this.DoctorName = this.advanceData.DoctorName;
@@ -289,7 +311,7 @@ export class OpPaymentVimalComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.patientDetailsFormGrp = this.createForm();
+        // this.patientDetailsFormGrp = this.createForm();
         //Advance Calculation need balAmt
         var vdata = {
             "first": 0,
@@ -304,11 +326,9 @@ export class OpPaymentVimalComponent implements OnInit {
         this.opService.AdvancePharamcylist(vdata).subscribe((response) => {
             this.selectedRow = response.data;
         });
-        }else{
-            debugger
+        }else{ 
         this._IpSearchListService.AdvanceHeaderlist(vdata).subscribe((response) => {
-            console.log(response)
-            this.selectedRow = response.data;
+             this.selectedRow = response.data;
         });
         } 
     }
@@ -396,14 +416,14 @@ export class OpPaymentVimalComponent implements OnInit {
             this.Paymentobj['billNo'] = this.advanceData.BillNo;
             this.Paymentobj['paymentDate'] = this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd') || '1999-01-01';
             this.Paymentobj['paymentTime'] = this.dateTimeObj.time; // this.datePipe.transform(this.currentDate, 'yyyy-MM-dd') || this.datePipe.transform(this.currentDate, 'yyyy-MM-dd')
-            this.Paymentobj['cashPayAmount'] = this.Payments.data.find(x => x.PaymentType == "cash")?.Amount ?? 0;
-            this.Paymentobj['chequePayAmount'] = this.Payments.data.find(x => x.PaymentType == "cheque")?.Amount ?? 0;
-            this.Paymentobj['chequeNo'] = this.Payments.data.find(x => x.PaymentType == "cheque")?.RefNo ?? "0";
-            this.Paymentobj['bankName'] = this.Payments.data.find(x => x.PaymentType == "cheque")?.BankName ?? "";
+            this.Paymentobj['cashPayAmount'] = this.Payments.data.find(x => x.PaymentType == "CASH")?.Amount ?? 0;
+            this.Paymentobj['chequePayAmount'] = this.Payments.data.find(x => x.PaymentType == "CHEQUE")?.Amount ?? 0;
+            this.Paymentobj['chequeNo'] = this.Payments.data.find(x => x.PaymentType == "CHEQUE")?.RefNo ?? "0";
+            this.Paymentobj['bankName'] = this.Payments.data.find(x => x.PaymentType == "CHEQUE")?.BankName ?? "";
             this.Paymentobj['chequeDate'] = this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd') || '1999-01-01';
-            this.Paymentobj['cardPayAmount'] = this.Payments.data.find(x => x.PaymentType == "card")?.Amount ?? 0;
-            this.Paymentobj['cardNo'] = this.Payments.data.find(x => x.PaymentType == "card")?.RefNo ?? "0";
-            this.Paymentobj['cardBankName'] = this.Payments.data.find(x => x.PaymentType == "card")?.BankName ?? "";
+            this.Paymentobj['cardPayAmount'] = this.Payments.data.find(x => x.PaymentType == "CARD")?.Amount ?? 0;
+            this.Paymentobj['cardNo'] = this.Payments.data.find(x => x.PaymentType == "CARD")?.RefNo ?? "0";
+            this.Paymentobj['cardBankName'] = this.Payments.data.find(x => x.PaymentType == "CARD")?.BankName ?? "";
             this.Paymentobj['cardDate'] = this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd') || '1999-01-01';
             this.Paymentobj['advanceUsedAmount'] = this.advanceUsedAmt || 0;
             this.Paymentobj['advanceId'] = this.AdvanceId || 0;
@@ -415,16 +435,16 @@ export class OpPaymentVimalComponent implements OnInit {
             this.Paymentobj['isCancelledBy'] = 0;
             this.Paymentobj['isCancelledDate'] = this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd') || '1999-01-01';
             this.Paymentobj['opdipdType'] = 1;
-            this.Paymentobj['neftpayAmount'] = this.Payments.data.find(x => x.PaymentType == "net banking")?.Amount ?? 0;
-            this.Paymentobj['neftno'] = this.Payments.data.find(x => x.PaymentType == "net banking")?.RefNo ?? "0";
-            this.Paymentobj['neftbankMaster'] = this.Payments.data.find(x => x.PaymentType == "net banking")?.BankName ?? "";
+            this.Paymentobj['neftpayAmount'] = this.Payments.data.find(x => x.PaymentType == "NET BANKING")?.Amount ?? 0;
+            this.Paymentobj['neftno'] = this.Payments.data.find(x => x.PaymentType == "NET BANKING")?.RefNo ?? "0";
+            this.Paymentobj['neftbankMaster'] = this.Payments.data.find(x => x.PaymentType == "NET BANKING")?.BankName ?? "";
             this.Paymentobj['neftdate'] = this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd') || '1999-01-01';
-            this.Paymentobj['payTmamount'] = this.Payments.data.find(x => x.PaymentType == "upi")?.Amount ?? 0;
-            this.Paymentobj['payTmtranNo'] = this.Payments.data.find(x => x.PaymentType == "upi")?.RefNo ?? "0";
+            this.Paymentobj['payTmamount'] = this.Payments.data.find(x => x.PaymentType == "UPI")?.Amount ?? 0;
+            this.Paymentobj['payTmtranNo'] = this.Payments.data.find(x => x.PaymentType == "UPI")?.RefNo ?? "0";
             this.Paymentobj['payTmdate'] = this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd') || '1999-01-01';
-            this.Paymentobj['tdsAmount'] = this.Payments.data.find(x => x.PaymentType == "tds")?.Amount ?? 0; 
+            this.Paymentobj['tdsAmount'] = this.Payments.data.find(x => x.PaymentType == "TDS")?.Amount ?? 0; 
             this.Paymentobj['unitId'] = this._loggedService.currentUserValue.user.unitId
-            this.Paymentobj['wfamount'] = this.Payments.data.find(x => x.PaymentType == "wf")?.Amount ?? 0; 
+            this.Paymentobj['wfamount'] = this.Payments.data.find(x => x.PaymentType == "WF")?.Amount ?? 0; 
             this.Paymentobj['companyId'] = this.patientDetailsFormGrp.get('CompanyId')?.value || 0
         }
         else if (this.data.FromName == "IP-Pharma-SETTLEMENT") {
@@ -432,14 +452,14 @@ export class OpPaymentVimalComponent implements OnInit {
             this.Paymentobj['billNo'] = this.advanceData.BillNo;
             this.Paymentobj['paymentDate'] = this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd') || '1999-01-01';
             this.Paymentobj['paymentTime'] = this.dateTimeObj.time; // this.datePipe.transform(this.currentDate, 'yyyy-MM-dd') || this.datePipe.transform(this.currentDate, 'yyyy-MM-dd')
-            this.Paymentobj['cashPayAmount'] = this.Payments.data.find(x => x.PaymentType == "cash")?.Amount ?? 0;
-            this.Paymentobj['chequePayAmount'] = this.Payments.data.find(x => x.PaymentType == "cheque")?.Amount ?? 0;
-            this.Paymentobj['chequeNo'] = this.Payments.data.find(x => x.PaymentType == "cheque")?.RefNo ?? "0";
-            this.Paymentobj['bankName'] = this.Payments.data.find(x => x.PaymentType == "cheque")?.BankName ?? "";
+            this.Paymentobj['cashPayAmount'] = this.Payments.data.find(x => x.PaymentType == "CASH")?.Amount ?? 0;
+            this.Paymentobj['chequePayAmount'] = this.Payments.data.find(x => x.PaymentType == "CHEQUE")?.Amount ?? 0;
+            this.Paymentobj['chequeNo'] = this.Payments.data.find(x => x.PaymentType == "CHEQUE")?.RefNo ?? "0";
+            this.Paymentobj['bankName'] = this.Payments.data.find(x => x.PaymentType == "CHEQUE")?.BankName ?? "";
             this.Paymentobj['chequeDate'] = this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd') || '1999-01-01';
-            this.Paymentobj['cardPayAmount'] = this.Payments.data.find(x => x.PaymentType == "card")?.Amount ?? 0;
-            this.Paymentobj['cardNo'] = this.Payments.data.find(x => x.PaymentType == "card")?.RefNo ?? "0";
-            this.Paymentobj['cardBankName'] = this.Payments.data.find(x => x.PaymentType == "card")?.BankName ?? "";
+            this.Paymentobj['cardPayAmount'] = this.Payments.data.find(x => x.PaymentType == "CARD")?.Amount ?? 0;
+            this.Paymentobj['cardNo'] = this.Payments.data.find(x => x.PaymentType == "CARD")?.RefNo ?? "0";
+            this.Paymentobj['cardBankName'] = this.Payments.data.find(x => x.PaymentType == "CARD")?.BankName ?? "";
             this.Paymentobj['cardDate'] = this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd') || '1999-01-01';
             this.Paymentobj['advanceUsedAmount'] = this.advanceUsedAmt || 0;
             this.Paymentobj['advanceId'] = this.AdvanceId || 0;
@@ -451,16 +471,16 @@ export class OpPaymentVimalComponent implements OnInit {
             this.Paymentobj['isCancelledBy'] = 0;
             this.Paymentobj['isCancelledDate'] = this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd') || '1999-01-01';
             this.Paymentobj['opdipdType'] = 3;
-            this.Paymentobj['neftpayAmount'] = this.Payments.data.find(x => x.PaymentType == "net banking")?.Amount ?? 0;
-            this.Paymentobj['neftno'] = this.Payments.data.find(x => x.PaymentType == "net banking")?.RefNo ?? "0";
-            this.Paymentobj['neftbankMaster'] = this.Payments.data.find(x => x.PaymentType == "net banking")?.BankName ?? "";
+            this.Paymentobj['neftpayAmount'] = this.Payments.data.find(x => x.PaymentType == "NET BANKING")?.Amount ?? 0;
+            this.Paymentobj['neftno'] = this.Payments.data.find(x => x.PaymentType == "NET BANKING")?.RefNo ?? "0";
+            this.Paymentobj['neftbankMaster'] = this.Payments.data.find(x => x.PaymentType == "NET BANKING")?.BankName ?? "";
             this.Paymentobj['neftdate'] = this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd') || '1999-01-01';
-            this.Paymentobj['payTmamount'] = this.Payments.data.find(x => x.PaymentType == "upi")?.Amount ?? 0;
-            this.Paymentobj['payTmtranNo'] = this.Payments.data.find(x => x.PaymentType == "upi")?.RefNo ?? "0";
+            this.Paymentobj['payTmamount'] = this.Payments.data.find(x => x.PaymentType == "UPI")?.Amount ?? 0;
+            this.Paymentobj['payTmtranNo'] = this.Payments.data.find(x => x.PaymentType == "UPI")?.RefNo ?? "0";
             this.Paymentobj['payTmdate'] = this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd') || '1999-01-01';
-            this.Paymentobj['tdsamount'] = this.Payments.data.find(x => x.PaymentType == "tds")?.Amount ?? 0; 
+            this.Paymentobj['tdsamount'] = this.Payments.data.find(x => x.PaymentType == "TDS")?.Amount ?? 0; 
             this.Paymentobj['unitId'] = this._loggedService.currentUserValue.user.unitId
-            this.Paymentobj['wfamount'] = this.Payments.data.find(x => x.PaymentType == "wf")?.Amount ?? 0; 
+            this.Paymentobj['wfamount'] = this.Payments.data.find(x => x.PaymentType == "WF")?.Amount ?? 0; 
         }
         else if (this.data.FromName == "IP-Bill") {
             transactionType = 0
@@ -468,14 +488,14 @@ export class OpPaymentVimalComponent implements OnInit {
             this.Paymentobj['receiptNo'] = '0';
             this.Paymentobj['paymentDate'] = this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd') || '1999-01-01';
             this.Paymentobj['paymentTime'] = this.dateTimeObj.time; // this.datePipe.transform(this.currentDate, 'yyyy-MM-dd') || this.datePipe.transform(this.currentDate, 'yyyy-MM-dd')
-            this.Paymentobj['cashPayAmount'] = this.Payments.data.find(x => x.PaymentType == "cash")?.Amount ?? 0;
-            this.Paymentobj['chequePayAmount'] = this.Payments.data.find(x => x.PaymentType == "cheque")?.Amount ?? 0;
-            this.Paymentobj['chequeNo'] = this.Payments.data.find(x => x.PaymentType == "cheque")?.RefNo ?? "0";
-            this.Paymentobj['bankName'] = this.Payments.data.find(x => x.PaymentType == "cheque")?.BankName ?? "";
+            this.Paymentobj['cashPayAmount'] = this.Payments.data.find(x => x.PaymentType == "CASH")?.Amount ?? 0;
+            this.Paymentobj['chequePayAmount'] = this.Payments.data.find(x => x.PaymentType == "CHEQUE")?.Amount ?? 0;
+            this.Paymentobj['chequeNo'] = this.Payments.data.find(x => x.PaymentType == "CHEQUE")?.RefNo ?? "0";
+            this.Paymentobj['bankName'] = this.Payments.data.find(x => x.PaymentType == "CHEQUE")?.BankName ?? "";
             this.Paymentobj['chequeDate'] = this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd') || '1999-01-01';
-            this.Paymentobj['cardPayAmount'] = this.Payments.data.find(x => x.PaymentType == "card")?.Amount ?? 0;
-            this.Paymentobj['cardNo'] = this.Payments.data.find(x => x.PaymentType == "card")?.RefNo ?? "0";
-            this.Paymentobj['cardBankName'] = this.Payments.data.find(x => x.PaymentType == "card")?.BankName ?? "";
+            this.Paymentobj['cardPayAmount'] = this.Payments.data.find(x => x.PaymentType == "CARD")?.Amount ?? 0;
+            this.Paymentobj['cardNo'] = this.Payments.data.find(x => x.PaymentType == "CARD")?.RefNo ?? "0";
+            this.Paymentobj['cardBankName'] = this.Payments.data.find(x => x.PaymentType == "CARD")?.BankName ?? "";
             this.Paymentobj['cardDate'] = this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd') || '1999-01-01';
             this.Paymentobj['advanceUsedAmount'] = this.advanceUsedAmt || 0;
             this.Paymentobj['advanceId'] = this.AdvanceId || 0;
@@ -486,22 +506,22 @@ export class OpPaymentVimalComponent implements OnInit {
                 this.Paymentobj['isCancelled'] = false;
             this.Paymentobj['isCancelledBy'] = 0;
             this.Paymentobj['isCancelledDate'] = this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd') || '1999-01-01';
-            this.Paymentobj['neftpayAmount'] = this.Payments.data.find(x => x.PaymentType == "net banking")?.Amount ?? 0;
-            this.Paymentobj['neftno'] = this.Payments.data.find(x => x.PaymentType == "net banking")?.RefNo ?? "0";
-            this.Paymentobj['neftbankMaster'] = this.Payments.data.find(x => x.PaymentType == "net banking")?.BankName ?? "";
+            this.Paymentobj['neftpayAmount'] = this.Payments.data.find(x => x.PaymentType == "NET BANKING")?.Amount ?? 0;
+            this.Paymentobj['neftno'] = this.Payments.data.find(x => x.PaymentType == "NET BANKING")?.RefNo ?? "0";
+            this.Paymentobj['neftbankMaster'] = this.Payments.data.find(x => x.PaymentType == "NET BANKING")?.BankName ?? "";
             this.Paymentobj['neftdate'] = this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd') || '1999-01-01';
-            this.Paymentobj['payTmamount'] = this.Payments.data.find(x => x.PaymentType == "upi")?.Amount ?? 0;
-            this.Paymentobj['payTmtranNo'] = this.Payments.data.find(x => x.PaymentType == "upi")?.RefNo ?? "0";
+            this.Paymentobj['payTmamount'] = this.Payments.data.find(x => x.PaymentType == "UPI")?.Amount ?? 0;
+            this.Paymentobj['payTmtranNo'] = this.Payments.data.find(x => x.PaymentType == "UPI")?.RefNo ?? "0";
             this.Paymentobj['payTmdate'] = this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd') || '1999-01-01';
-            this.Paymentobj['tdsAmount'] = this.Payments.data.find(x => x.PaymentType == "tds")?.Amount ?? 0; 
+            this.Paymentobj['tdsAmount'] = this.Payments.data.find(x => x.PaymentType == "TDS")?.Amount ?? 0; 
             this.Paymentobj['unitId'] = this._loggedService.currentUserValue.user.unitId
-            this.Paymentobj['wfAmount'] = this.Payments.data.find(x => x.PaymentType == "wf")?.Amount ?? 0; 
+            this.Paymentobj['wfAmount'] = this.Payments.data.find(x => x.PaymentType == "WF")?.Amount ?? 0; 
         }
           this.Payments.data.forEach(element => {
         this.ModePaymentObj.push({
           paymentId: 0,
           unitId: this._loggedService.currentUserValue.user.unitId,
-          billNo: this.advanceData?.billNo || 0,
+          billNo: this.advanceData?.BillNo || 0,
           opdipdtype:  opdipdtype || 1,
           paymentDate: this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd') || '1999-01-01',
           paymentTime: this.dateTimeObj.time,
@@ -515,7 +535,7 @@ export class OpPaymentVimalComponent implements OnInit {
           onlineTranNo: '0',
           onlineTranResponse: '0',
           companyId: this.advanceData?.CompanyId ?? 0,
-          advanceId:  this.AdvanceId || 0,
+          advanceId:  element.AdvanceID || 0,
           refundId: 0,
           cashCounterId: this.advanceData?.CashCounterId || 0,
           transactionType: transactionType,
@@ -546,8 +566,7 @@ export class OpPaymentVimalComponent implements OnInit {
                 Advanceobj['RefundAmount'] = element?.refundAmount || 0;
                 Advancesarr.push(Advanceobj);
             });
-             let balamt = 0;
-             debugger
+             let balamt = 0; 
             if(this.data.FromName == "IP-Bill" || this.data.FromName == "IP-SETTLEMENT"){
                 if(this.patientDetailsFormGrp.get('balanceAmountController')?.value > 0){
                 balamt = this.patientDetailsFormGrp.get('balanceAmountController')?.value || 0;
@@ -618,22 +637,21 @@ export class OpPaymentVimalComponent implements OnInit {
              this.selectedAdvanceData = response.data;
                 this.dataSource.data = this.selectedAdvanceData
                 if (this.dataSource.data.length > 0) {
-                    this.IsAdv = true
-                    this.AdvanceId = this.dataSource.data[0].advanceId
+                    this.IsAdv = true 
+                    this.AdvanceId = this.dataSource.data[0].advanceId;
                     this.calculateBalance();
                     this.SetAdvanceRow();
                     this.setPaidAmount();
                     this.GetBalanceAmt();
                 }
         });
-        }else{
-            debugger
+        }else{ 
         this._IpSearchListService.AdvanceHeaderlist(vdata).subscribe((response) => {
             console.log(response)
              this.selectedAdvanceData = response.data;
                 this.dataSource.data = this.selectedAdvanceData
                 if (this.dataSource.data.length > 0) {
-                    this.IsAdv = true
+                    this.IsAdv = true 
                     this.AdvanceId = this.dataSource.data[0].advanceId
                     this.calculateBalance();
                     this.SetAdvanceRow();
@@ -687,8 +705,7 @@ export class OpPaymentVimalComponent implements OnInit {
         }
     }
     advanceUsedAmt: any = 0;
-    calculateBalance() {
-        debugger
+    calculateBalance() { 
         if (this.dataSource.data && this.dataSource.data.length > 0) {
             let totalAdvanceAmt = 0;
             let netAmtLocal = this.netPayAmt;
@@ -722,11 +739,13 @@ export class OpPaymentVimalComponent implements OnInit {
             let tmp1 = this.Payments.data;
             tmp1.push({
                 Id: -1,
-                PaymentType: "Advance Amount", Amount: adv,
+                PaymentType: "ADVANCE_AMOUNT", Amount: adv,
                 RefNo: "",
                 BankId: 0,
                 BankName: "",
-                RegDate: new Date()
+                RegDate: new Date(),
+                AdvanceID:this.AdvanceId,
+                AdvanceUsedAmt:this.advanceUsedAmt
             });
             this.Payments.data = tmp1;
         }
@@ -748,6 +767,9 @@ export class OpPaymentVimalComponent implements OnInit {
             ],
               CompanyId: [
                 { name: "required", Message: "Company is required" }
+            ],
+             paymentType1: [
+                { name: "required", Message: "Payment Mode is required" }
             ],
         };
     }
@@ -846,4 +868,6 @@ export class PaymentList {
     RegDate: Date;
     Id: number;
     BankId: number;
+    AdvanceID:any;
+    AdvanceUsedAmt:any;
 }

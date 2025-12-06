@@ -249,7 +249,7 @@ export class IPAdvanceComponent implements OnInit {
       PatientHeaderObj['CashCounterId'] = this.AdvFormGroup.get('CashCounterID')?.value || 0;
       PatientHeaderObj['OPD_IPD_Id'] = this.registerObj?.ipdno;
       PatientHeaderObj['CompanyId'] = this.registerObj?.companyId;
-      PatientHeaderObj['TransactionLabel'] = 'IP-Advance';
+      PatientHeaderObj['TransactionLabel'] = 'IP_ADVANCE';
       PatientHeaderObj['Age'] = this.registerObj?.ageYear;
       PatientHeaderObj['NetPayAmount'] = this.AdvFormGroup.get('advanceAmount').value || 0;
 

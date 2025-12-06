@@ -98,9 +98,10 @@
                                             (change)="OnAdvAmt($event)">Advance Amount?</mat-checkbox>
                                     </div>
 
-                                     <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%" *ngIf="advanceData?.CompanyName != null && advanceData?.CompanyName !== ''">
+                                     <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%" *ngIf="advanceData?.CompanyName">
                                                 <airmid-dropdown label="Company Name" formControlName="CompanyId" [formGroup]="patientDetailsFormGrp"
                                                    [validations]="getValidationMessages().CompanyId" [mode]="autocompleteModecompany"
+                                                    (selectionChange)="getselectObjPayMode($event)"
                                                 ></airmid-dropdown>
                                     </div>
 
@@ -109,43 +110,7 @@
                         </div>
                     </mat-card>
                 </div>
-                <!-- <div class="patient-info-container payment-bill-info">
-                    <mat-card>
-                        <div class="patient-info-box">
-                            <div class="patient-info-title border-bottom pb-2">
-                                <span class="h2">Patient Bill Information</span>
-                            </div>
-                            <div class="patient-info-box my-8">
-                                <div class="patient-info-row row-gap-4" fxLayout="row wrap">
-                                    <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
-                                        <span class="patient-col-key ">Bill Amount</span>
-                                        <span>:</span>
-                                        <span class="patient-col-value gap-4" fxLayout="row">
-                                            {{netPayAmt | currency:"INR":"symbol"}}
-                                        </span>
-                                    </div>
-                                      <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
-                                            <span class="patient-col-key ">BillNo </span>
-                                            <span>:</span>
-                                            <span class="patient-col-value">{{advanceData.BillNo}}</span>
-                                        </div>
-                                    <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="25%">
-                                        <span class="patient-col-key">Bill Date</span>
-                                        <span>:</span>
-                                        <span class="patient-col-value gap-4" fxLayout="row">
-                                            {{Date}}
-                                        </span>
-                                    </div>
-                                    <div class="patient-col gap-3" fxFlex="50%" fxFlex.gt-sm="35%">
-                                        <mat-checkbox fxFlex [checked]="IsAdv" [(ngModel)]="IsAdv"
-                                            (change)="OnAdvAmt($event)">Advance Amount?</mat-checkbox>
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-                    </mat-card>
-                </div> -->
+                
                 <div class="table-container" style="padding: 5px 5px 5px 5px;" *ngIf="IsAdv">
                     <mat-card style="padding: 6px;">
                         <div class="airmid-table-container">
@@ -233,8 +198,7 @@
                                 currency:'INR' }}</span>
                         </div>
                     </mat-card>
-                    <!-- <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="10" showFirstLastButtons></mat-paginator> -->
-                </div>
+                 </div>
                 <div class="patient-info-container payment-detail">
                     <mat-card>
                         <form [formGroup]="patientDetailsFormGrp" class="mat-form-field-auto mat-error-fix">
@@ -247,7 +211,7 @@
 
                                         <div fxLayout.gt-sm="row" fxLayout="column" class="payment-container gap-8"
                                             fxLayoutALign="start start">
-                                            <mat-form-field appearance="outline" fxFlex>
+                                            <!-- <mat-form-field appearance="outline" fxFlex>
                                                 <mat-label>Payment Type</mat-label>
                                                 <mat-select formControlName="paymentType1"
                                                     (selectionChange)="onChangePaymentType()"
@@ -261,7 +225,13 @@
                                                     <div *ngIf="f.paymentType1.errors.required">Payment type is required
                                                     </div>
                                                 </div>
-                                            </mat-form-field>
+                                            </mat-form-field> -->
+
+                                            <airmid-dropdown label="Payment Type" formControlName="paymentType1" fxFlex
+                                              [formGroup]="patientDetailsFormGrp" [mode]="autocompleteModePaymentMode"
+                                              [validations]="getValidationMessages().paymentType1"  TextField="text"
+                                               (selectionChange)="getselectObjPayMode($event)">
+                                              </airmid-dropdown>
 
                                             <mat-form-field appearance="outline" fxFlex>
                                                 <mat-label>Amount</mat-label>
@@ -277,7 +247,7 @@
                                             </mat-form-field>  
 
                                             <ng-container
-                                                *ngIf="selectedPaymnet1 != 'cash' && selectedPaymnet1 != 'tds' && selectedPaymnet1 != 'wf'">
+                                                *ngIf="selectedPaymnet1 != 'CASH' && selectedPaymnet1 != 'TDS' && selectedPaymnet1 != 'WF'">
                                                 <mat-form-field appearance="outline" fxFlex>
                                                     <mat-label>Reference Number</mat-label>
                                                     <input matInput formControlName="referenceNo1"
