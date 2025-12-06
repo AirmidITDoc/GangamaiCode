@@ -17,6 +17,7 @@ export class NewConsentMasterComponent {
     myForm: FormGroup;
     isActive: boolean = true;
     vTemplateDesc: any;
+    autocompleteModeConsent: string = "ConsentType"
 
     constructor(
         public _ConsentMasterService: ConsentMasterService,
@@ -50,7 +51,7 @@ export class NewConsentMasterComponent {
     onSubmit() {
         if (!this.myForm.invalid) {
             console.log(this.myForm.value)
-            this._ConsentMasterService.stateMasterSave(this.myForm.value).subscribe((response) => {
+            this._ConsentMasterService.Save(this.myForm.value).subscribe((response) => {
                 this.onClear(true);
             });
         } {

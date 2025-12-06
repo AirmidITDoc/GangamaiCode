@@ -34,7 +34,8 @@ export class ConsentMasterService {
             departmentId: ["",
                 [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]
             ],
-            //isActive:[true,[Validators.required,]]
+
+            consentType: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]]
         });
     }
 
@@ -49,7 +50,7 @@ export class ConsentMasterService {
         this.createConsentForm();
     }
 
-    public stateMasterSave(Param: any) {
+    public Save(Param: any) {
         if (Param.consentId) {
             return this._httpClient.PutData("ConsentMaster/" + Param.consentId, Param);
         } else return this._httpClient.PostData("ConsentMaster", Param);
