@@ -344,6 +344,8 @@ export class NewOPListComponent implements OnInit {
         dialogRef.afterClosed().subscribe(result => {
             if (result.IsSubmitFlag == true) {
                 let PaymentObj = result.submitDataPay.ipPaymentInsert
+
+                
                 this.vpaidamt = result.PaidAmt;
                 this.vbalanceamt = result.BalAmt
                 PaymentObj['BillNo'] = contact.billNo;
@@ -357,6 +359,7 @@ export class NewOPListComponent implements OnInit {
                         "billNo": contact.billNo,
                         "balanceAmt": result.BillBalanceAmount
                     },
+                    tPayments:PaymentObj
                 }
                 console.log(data)
                 this._OPListService.InsertOPBillingsettlement(data).subscribe(response => {

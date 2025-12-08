@@ -622,16 +622,16 @@
 
                     <mat-tab label="Parts">
 
-                        <div fxLayout="column" fxLayoutGap="16px" fxLayoutAlign="start start" fxLayoutWrap
+                        <!-- <div fxLayout="column" fxLayoutGap="16px" fxLayoutAlign="start start" fxLayoutWrap
                             style="height: auto;">
-                            <!-- Body Images -->
+                            
                             <div class="surgery-parts pt-8">
                                 <img src="assets/images/logos/bodyAnatomyFront.jpg"
                                     (click)="openEditor('assets/images/logos/bodyAnatomyFront.jpg')" />
                                 <img src="assets/images/logos/bodyAnatomyback.jpg"
                                     (click)="openEditor('assets/images/logos/bodyAnatomyback.jpg')" />
 
-                                <!-- Uploaded Image -->
+                                
                                 <img *ngIf="uploadedImage" [src]="uploadedImage" (click)="openEditor(uploadedImage)"
                                     style="cursor: pointer; border: 2px solid #ccc; border-radius: 8px; margin-top: 10px;" />
                             </div>
@@ -646,7 +646,7 @@
                                 </button>
                             </div>
 
-                            <!-- Drawing Editor -->
+                            
                             <div *ngIf="selectedImage" class="editor">
                                 <canvas #canvas width="500" height="600"></canvas>
 
@@ -654,6 +654,35 @@
                                     <button class="btn btn-primary" (click)="saveMarkedImage()">Save</button>
                                     <button mat-raised-button color="accent" (click)="clearCanvas()">Clear</button>
                                     <button class="btn btn-danger-outline" (click)="closeEditor()">Close</button>
+                                </div>
+                            </div>
+                        </div> -->
+                   
+                   
+                        <div fxLayout="column" fxLayoutGap="16px" fxLayoutAlign="start start" fxLayoutWrap
+                            style="height: auto;">
+                            <!-- Body Images -->
+                            <div class="surgery-parts pt-8">
+                                <img src="assets/images/logos/bodyAnatomyFront.jpg"
+                                    (click)="openEditor('assets/images/logos/bodyAnatomyFront.jpg')" />
+                                <img src="assets/images/logos/bodyAnatomyback.jpg"
+                                    (click)="openEditor('assets/images/logos/bodyAnatomyback.jpg')" />
+                            </div>
+
+                            <!-- Drawing Editor -->
+                            <div *ngIf="selectedImage" class="editor">
+                                <canvas #canvas width="500" height="600"></canvas>
+
+                                <div class="buttons" style="justify-content: space-around; display: flex;">
+                                    <button class="btn btn-primary" color="accent" (click)="saveMarkedImage()">
+                                        Save
+                                    </button>
+                                    <button mat-raised-button color="accent" (click)="clearCanvas()">
+                                        Clear
+                                    </button>
+                                    <button class="btn btn-danger-outline" (click)="closeEditor()">
+                                        Close
+                                    </button>
                                 </div>
                             </div>
                         </div>

@@ -1,3 +1,4 @@
+import { DatePipe } from "@angular/common";
 import { Injectable } from "@angular/core";
 import { FormGroup, UntypedFormBuilder, Validators } from "@angular/forms";
 import { ApiCaller } from "app/core/services/apiCaller";
@@ -26,26 +27,25 @@ export class AnesthesiaRecordService {
     });
   }
 
-  createAnesthRecordForm(): FormGroup {
-    return this._formBuilder.group({
-      AnethStartDt: [''],
-      AnethStartTime: [''],
-      AnethEndDt: [''],
-      AnethEndTime: [],
-      RecoveryStartDt: [''],
-      RecoveryStartTime: [''],
-      RecoveryEndDt: [''],
-      RecoveryEndTime: [],
-      anestypeId: [0],
-      Diagnosis: [[]],
-      notes: [],
-    });
-  }
+
 
   public getotRequestById(Id) {
     return this._httpClient.GetData("OTRequest/" + Id);
   }
-  public getotReservationById(Id) {
-    return this._httpClient.GetData("OTReservation/" + Id);
+  public getAnesthesiaById(Id) {
+    return this._httpClient.GetData("OTAnesthesia/" + Id);
+  }
+
+
+
+  public InsertOTAnesthesia(Param) {
+debugger
+    if (Param.anesthesiaId) {
+      return this._httpClient.PutData("OTAnesthesia/Edit/"+Param.anesthesiaId, Param);
+    } else return this._httpClient.PostData("OTAnesthesia/Insert", Param);
+  }
+
+  public UpdateOTAnesthesia(employee) {
+    return this._httpClient.PutData("OTAnesthesia/Edit/" + employee.anesthesiaId, employee);
   }
 }

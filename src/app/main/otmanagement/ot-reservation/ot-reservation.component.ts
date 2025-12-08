@@ -880,6 +880,8 @@ export class OtReserInsert {
     operativeFindingsNotes: any;
     postOperativeNotes: any;
     conditionOfPatientNotes: any;
+    opIpId:any
+
     /**
      * Constructor
      *
@@ -983,7 +985,7 @@ export class OtReserInsert {
             this.operativeFindingsNotes = OtReserInsert.operativeFindingsNotes || ''
             this.postOperativeNotes = OtReserInsert.postOperativeNotes || ''
             this.conditionOfPatientNotes = OtReserInsert.conditionOfPatientNotes || ''
-            // this.bloodLoss = OtReserInsert.bloodLoss || ''
+            this.opIpId= OtReserInsert.opIpId || ''
         }
     }
 }

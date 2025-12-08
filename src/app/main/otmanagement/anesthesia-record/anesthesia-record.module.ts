@@ -18,7 +18,7 @@ import { MatToolbarModule } from "@angular/material/toolbar";
 import { RouterModule, Routes } from "@angular/router";
 import { FuseConfirmDialogModule, FuseSidebarModule } from "@fuse/components";
 import { FuseSharedModule } from "@fuse/shared.module";
-import { SharedModule } from "app/main/shared/shared.module";
+
 import { NgxMatSelectSearchModule } from "ngx-mat-select-search";
 // import { CompanyMasterListComponent } from "./company-master-list/company-master-list.component";
 import { MatDatepickerModule } from "@angular/material/datepicker";
@@ -39,6 +39,7 @@ import { MatSidenavModule } from "@angular/material/sidenav";
 import { AnesthesiaRecordService } from "./anesthesia-record.service";
 import { AnesthesiaRecordComponent } from "./anesthesia-record.component";
 import { NewAnesthesiaRecordComponent } from "./new-anesthesia-record/new-anesthesia-record.component";
+import { SharedModule } from "app/main/shared/shared.module";
 
 const routes: Routes = [
   {

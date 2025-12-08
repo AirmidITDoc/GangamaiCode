@@ -345,6 +345,7 @@ public RegistredAppointmentBilling(Param: any) {
         return this._httpClient1.PutData("VisitDetail/CheckOutProcess/", Id);
     }
     public getSuggestions(apiUrl: string, inputValue: string): Observable<any[]> {
+        debugger
         return this._httpClient1.GetData(apiUrl + inputValue);
     }
     public converOPtoIP(param) {

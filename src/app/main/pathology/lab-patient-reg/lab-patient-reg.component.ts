@@ -68,23 +68,24 @@ export class LabPatientRegComponent {
   allcolumns = [
     { heading: "", key: "balanceAmt1", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
 
-    { heading: "Date-Time", key: "regTime", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 6 },
-    { heading: "PBillNo", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+    { heading: "Date-Time", key: "regTime", sort: true, align: 'left', emptySign: 'NA', width: 100, type: 6 },
+    { heading: "PBillNo", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA', width: 80 },
    
-    { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
-    { heading: "Age", key: "ageYear", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-    { heading: "MobileNo", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-    { heading: "Address", key: "address", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-    { heading: "City", key: "cityName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+    { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+    { heading: "Age", key: "ageYear", sort: true, align: 'left', emptySign: 'NA', width: 60 },
+    { heading: "MobileNo", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA', width: 80 },
+     { heading: "City", key: "cityName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+    { heading: "Address", key: "address", sort: true, align: 'left', emptySign: 'NA', width:150 },
+  
     { heading: "DepartmentName", key: "departmentName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-    { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-    { heading: "RefDoctorName", key: "refDoctorName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-    { heading: "Paid Amount", key: "paidAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+    { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+    { heading: "RefDoctorName", key: "refDoctorName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+    { heading: "Paid Amount", key: "paidAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount , width:100},
     { heading: "Balance Amount", key: "balanceAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, columnClass: (element) => element["balanceAmt"] > 0 ? Color.RED : "" },
-    { heading: "Cash Pay", key: "cashPay", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
-    { heading: "Cheque Pay", key: "chequePay", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
-    { heading: "Card Pay", key: "cardPay", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
-    { heading: "Online Pay", key: "onlinePay", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+    { heading: "Cash Pay", key: "cashPay", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, width:100 },
+    { heading: "Cheque Pay", key: "chequePay", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount , width:100},
+    { heading: "Card Pay", key: "cardPay", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, width:100 },
+    { heading: "Online Pay", key: "onlinePay", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount , width:100},
 
 
 
@@ -219,7 +220,11 @@ export class LabPatientRegComponent {
       });
     dialogRef.afterClosed().subscribe(result => {
       if (result.IsSubmitFlag == true) {
+         let PaymentObjarr = [];
         let PaymentObj = result.submitDataPay.ipPaymentInsert
+         PaymentObjarr.push(PaymentObj);
+
+
         this.vpaidamt = result.PaidAmt;
         this.vbalanceamt = result.BalAmt
         PaymentObj['BillNo'] = contact.billNo;
@@ -233,6 +238,7 @@ export class LabPatientRegComponent {
             "billNo": contact.billNo,
             "balanceAmt": result.BillBalanceAmount
           },
+            tPayments:PaymentObjarr
         }
         console.log(data)
         this._labPatientRegService.InsertLabBillingsettlement(data).subscribe(response => {
@@ -313,7 +319,7 @@ export class LabPatientRegComponent {
 
     const dialogRef = this._matDialog.open(LabRegBillDeatilsComponent,
       {
-        maxWidth: "80vw",
+        maxWidth: "60vw",
         height: '650px',
         width: '100%',
         data: element
@@ -334,7 +340,6 @@ export class LabPatientRegComponent {
   Onmessage(element){
  console.log(element)
     
-
     const dialogRef = this._matDialog.open(EstimateForPatientComponent,
       {
         maxWidth: "80vw",

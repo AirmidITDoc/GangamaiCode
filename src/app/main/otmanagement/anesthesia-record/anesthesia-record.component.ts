@@ -26,7 +26,7 @@ export class AnesthesiaRecordComponent {
   myFilterform: FormGroup
   msg: any;
   RequestName: any = "";
-
+  currentDate = new Date();
   fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
   toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
   FirstName: any = ""
@@ -147,4 +147,55 @@ export class AnesthesiaRecordComponent {
       this.grid.bindGridData();
     });
   }
+}
+
+
+export class Otanesthesia {
+   anesthesiaId:any;
+    otreservationId:any;
+    anesthesiaDate:any;
+    anesthesiaTime:any;
+    anesthesiaNo:any;
+    opipid:any;
+    opiptype:any;
+    anesthesiaStartDate:any;
+    anesthesiaStartTime:any;
+    anesthesiaEndDate:any;
+    anesthesiaEndTime:any;
+    recoveryStartDate:any;
+    recoveryStartTime:any;
+    recoveryEndDate:any;
+    recoveryEndTime:any;
+    anesthesiaType:any;
+    anesthesiaNotes:any;
+     currentDate = new Date();
+    /**
+     * Constructor
+     *
+     * @param Otanesthesia
+     */
+
+    constructor(Otanesthesia) {
+        {
+            this.anesthesiaId = Otanesthesia.anesthesiaId || 0;
+            this.otreservationId = Otanesthesia.otreservationId || 0;
+            this.anesthesiaDate = Otanesthesia.anesthesiaDate || this.currentDate;
+            this.anesthesiaTime = Otanesthesia.anesthesiaTime;
+            this.anesthesiaNo = Otanesthesia.anesthesiaNo;
+            this.opipid = Otanesthesia.opipid || '';
+            this.opiptype = Otanesthesia.opiptype || 1;
+            this.anesthesiaStartDate = Otanesthesia.anesthesiaStartDate || '';
+            this.anesthesiaStartTime = Otanesthesia.anesthesiaStartTime || this.currentDate;
+            this.anesthesiaEndDate = Otanesthesia.anesthesiaEndDate || this.currentDate;
+            this.anesthesiaEndTime = Otanesthesia.anesthesiaEndTime || 0;
+            this.recoveryStartDate = Otanesthesia.recoveryStartDate || '';
+            this.recoveryStartTime = Otanesthesia.recoveryStartTime || '';
+            this.recoveryEndDate = Otanesthesia.recoveryEndDate || this.currentDate;
+            this.recoveryEndTime = Otanesthesia.recoveryEndTime ;
+            this.anesthesiaType = Otanesthesia.anesthesiaType || '0';
+            this.anesthesiaNotes = Otanesthesia.anesthesiaNotes || 0;
+         
+          
+        }
+    }
 }

@@ -1,317 +1,304 @@
-<div class="dialog-content-wrapper modal-wrapper grid-container anethRcMain">
-    <div class="modal-header accent anethRcHeader">
-        <div class="modal-header-content">
+<div class="modal-wrapper grid-container">
+    <!-- Modal Header -->
+    <div class="modal-header accent">
+        <div class="modal-header-content" fxLayout="row" fxLayoutAlign="space-between center">
             <div class="modal-header-title">
                 <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">New Anesthesia Record</span>
             </div>
-            <div class="modal-header-right">
-                <div class="comman-date-container">
-                    <div class="comman-date">
-                        <app-common-date [screenFrom]="screenFromString" [isDisableFuture]="true"
-                            (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
-                    </div>
-                    <div class="close-icon">
-                        <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
-                            matTooltip="Close">
-                            <mat-icon>close</mat-icon>
-                        </button>
-                    </div>
-                </div>
+            <div class="comman-date-container" fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="10px">
+                <app-common-date [screenFrom]="screenFromString" (dateTimeEventEmitter)="getDateTime($event)">
+                </app-common-date>
+                <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
+                    matTooltip="Close">
+                    <mat-icon>close</mat-icon>
+                </button>
             </div>
         </div>
     </div>
 
-    <div class="modal-body anethRcMiddle" fusePerfectScrollbar>
+    <!-- Modal Body -->
+    <div class="modal-body" fusePerfectScrollbar>
         <div class="modal-body-container">
-            <form [formGroup]="anesthRecordForm">
-                <div class="modal-card-container" style="padding: 10px 2px 5px 0px ;">
-                    <div fxFlex.gt-sm="100%" fxFlex class="patient-info-container">
-                        <div class="patient-info-container">
-                            <div class="patient-info-box gap-4" fxFlexFill fxLayout="column">
-                                <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 10px ;">
-                                    <div class="patient-info-sales my-8">
-                                        <div class="patient-info-title border-bottom pb-2">
-                                            <span class="h1">Patient Information</span>
-                                        </div>
-                                        <div class="Ipd-patient-info" fxFlexFill fxLayout="row"
-                                            fxLayoutAlign="space-between center" class="patient-info">
-                                            <div class="patient-sub">
+            <div fxLayout="column" class="gap-12">
 
-                                                <div class="patient-info-row patient-info-1-111 pt-8" fxLayout="row"
-                                                    fxLayoutAlign="space-between">
-                                                    <div fxLayout="column" fxLayoutGap="6px">
-                                                        <div class="patient-col">
-                                                            <span class="patient-col-key">UHID No
-                                                            </span>
-                                                            <span>:</span>
-                                                            <span
-                                                                class="patient-col-value">{{registerObj1.regNo}}</span>
-                                                        </div>
-
-                                                        <div class="patient-col">
-                                                            <span class="patient-col-key">Doctor Name</span>
-                                                            <span>:</span>
-                                                            <span
-                                                                class="patient-col-value">{{registerObj1.doctorName}}</span>
-                                                        </div>
-
-                                                        <div class="patient-col">
-                                                            <span class="patient-col-key">Blood Group</span>
-                                                            <span>:</span>
-                                                            <span
-                                                                class="patient-col-value">{{registerObj1.doctorName}}</span>
-                                                        </div>
-                                                    </div>
-
-                                                    <div fxLayout="column" fxLayoutGap="6px">
-                                                        <div class="patient-col">
-                                                            <span class="patient-col-key">Patient Name
-                                                            </span>
-                                                            <span>:</span>
-                                                            <span class="patient-col-value">{{vPatientName}}</span>
-                                                        </div>
-
-                                                        <div class="patient-col">
-                                                            <span class="patient-col-key">Department</span>
-                                                            <span>:</span>
-                                                            <span
-                                                                class="patient-col-value">{{registerObj1.departmentName}}</span>
-                                                        </div>
-
-                                                        <div class="patient-col">
-                                                            <span class="patient-col-key">Surgery</span>
-                                                            <span>:</span>
-                                                            <span
-                                                                class="patient-col-value">{{registerObj1.doctorName}}</span>
-                                                        </div>
-                                                    </div>
-
-                                                    <div fxLayout="column" fxLayoutGap="6px">
-                                                        <div class="patient-col">
-                                                            <span class="patient-col-key">Pre_Operation Dt</span>
-                                                            <span>:</span>
-                                                            <span class="patient-col-value">{{registerObj1.admissionDate
-                                                                |date:'dd/MM/YYYY'}}</span>
-                                                        </div>
-                                                        <div class="patient-col">
-                                                            <span class="patient-col-key">Mobile No.
-                                                            </span>
-                                                            <span>:</span>
-                                                            <span
-                                                                class="patient-col-value">{{registerObj1.mobileNo}}</span>
-                                                        </div>
-                                                        <div class="patient-col">
-                                                            <span class="patient-col-key">Anesthetist</span>
-                                                            <span>:</span>
-                                                            <span
-                                                                class="patient-col-value">{{registerObj1.doctorName}}</span>
-                                                        </div>
-                                                    </div>
-
-                                                    <div fxLayout="column" fxLayoutGap="6px">
-                                                        <div class="patient-col">
-                                                            <span class="patient-col-key">
-                                                                {{vSelectedOption === 'OP' ? 'OPD No' : 'IPD No'}}
-                                                            </span>
-                                                            <span>:</span>
-                                                            <span>{{ vSelectedOption === 'OP' ? vOPDNo : vIPDNo}}</span>
-                                                        </div>
-                                                        <div class="patient-col">
-                                                            <span class="patient-col-key">Patient Type
-                                                            </span>
-                                                            <span>:</span>
-                                                            <span
-                                                                class="patient-col-value">{{registerObj1.patientType}}</span>
-                                                        </div>
-                                                        <div class="patient-col">
-                                                            <span class="patient-col-key">Surgeon</span>
-                                                            <span>:</span>
-                                                            <span
-                                                                class="patient-col-value">{{registerObj1.doctorName}}</span>
-                                                        </div>
-                                                    </div>
-
-                                                    <div fxLayout="column" fxLayoutGap="6px">
-                                                        <div class="patient-col">
-                                                            <span class="patient-col-key">Ward | Bed Name
-                                                            </span>
-                                                            <span>:</span>
-                                                            <span class="patient-col-value">{{registerObj1.roomName}} |
-                                                                {{registerObj1.bedName}}</span>
-                                                        </div>
-                                                        <div class="patient-col">
-                                                            <span class="patient-col-key">Company Name</span>
-                                                            <span>:</span>
-                                                            <span class="patient-col-value"
-                                                                style="color: orange;">{{registerObj1.companyName}}</span>
-                                                        </div>
-                                                        <div class="patient-col">
-                                                            <span class="patient-col-key">Ass.Surgeon</span>
-                                                            <span>:</span>
-                                                            <span
-                                                                class="patient-col-value">{{registerObj1.doctorName}}</span>
-                                                        </div>
-                                                    </div>
-
-                                                    <div fxLayout="column" fxLayoutGap="6px">
-
-                                                        <div class="patient-col">
-                                                            <span class="patient-col-key">Age | Sex
-                                                            </span>
-                                                            <span>:</span>
-                                                            <span
-                                                                class="patient-col-value">{{registerObj1.age}}Y|{{registerObj1.ageMonth}}M|{{registerObj1.ageDay}}D
-                                                                | {{registerObj1.genderName}}</span>
-                                                        </div>
-                                                        <div class="patient-col">
-                                                            <span class="patient-col-key">Tarrif Name
-                                                            </span>
-                                                            <span>:</span>
-                                                            <span
-                                                                class="patient-col-value">{{registerObj1.tariffName}}</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </mat-card>
-
-                                <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 10px ;">
-                                    <div fxFlex="85%" fxFlex.xs="100%" fxFlex.sm="80%" fxLayout="row wrap"
-                                        fxLayoutGap="4px grid">
-
-                                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%" class="gap-4">
-                                            <mat-form-field appearance="outline" fxFlex>
-                                                <mat-label>Anesthesia Start Dt</mat-label>
-                                                <input name="Surgerydate" matInput [matDatepicker]="picker1"
-                                                    formControllName="AnethStartDt" />
-                                                <mat-datepicker-toggle matSuffix
-                                                    [for]="picker1"></mat-datepicker-toggle>
-                                                <mat-datepicker #picker1></mat-datepicker>
-                                            </mat-form-field>
-                                        <!-- </div>
-
-                                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%"> -->
-                                            <mat-form-field appearance="outline" fxFlex>
-                                                <mat-label>Anesthesia Start Time</mat-label>
-                                                <input matInput type="time" formControlName="AnethStartTime"
-                                                    (change)="onChangeAnethStartTime($event)">
-                                            </mat-form-field>
-                                        </div>
-
-                                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%" class="gap-4">
-                                            <mat-form-field appearance="outline" fxFlex>
-                                                <mat-label>Anesthesia End Dt</mat-label>
-                                                <input name="Surgerydate" matInput [matDatepicker]="picker1"
-                                                    formControllName="AnethEndDt" />
-                                                <mat-datepicker-toggle matSuffix
-                                                    [for]="picker1"></mat-datepicker-toggle>
-                                                <mat-datepicker #picker1></mat-datepicker>
-                                            </mat-form-field>
-                                        <!-- </div>
-
-                                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%"> -->
-                                            <mat-form-field appearance="outline" fxFlex>
-                                                <mat-label>Anesthesia End Time</mat-label>
-                                                <input matInput type="time" formControlName="AnethEndTime"
-                                                    (change)="onChangeAnethEndTime($event)">
-                                            </mat-form-field>
-                                        </div>
-
-                                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%" class="gap-4">
-                                            <mat-form-field appearance="outline" fxFlex>
-                                                <mat-label>Recovery Start Dt</mat-label>
-                                                <input name="Surgerydate" matInput [matDatepicker]="picker1"
-                                                    formControllName="RecoveryStartDt" />
-                                                <mat-datepicker-toggle matSuffix
-                                                    [for]="picker1"></mat-datepicker-toggle>
-                                                <mat-datepicker #picker1></mat-datepicker>
-                                            </mat-form-field>
-                                        <!-- </div>
-
-                                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%"> -->
-                                            <mat-form-field appearance="outline" fxFlex>
-                                                <mat-label>Recovery Start Time</mat-label>
-                                                <input matInput type="time" formControlName="RecoveryStartTime"
-                                                    (change)="onChangeRecoveryStartTime($event)">
-                                            </mat-form-field>
-                                        </div>
-
-                                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%" class="gap-4">
-                                            <mat-form-field appearance="outline" fxFlex>
-                                                <mat-label>Recovery End Dt</mat-label>
-                                                <input name="Surgerydate" matInput [matDatepicker]="picker1"
-                                                    formControllName="RecoveryEndDt" />
-                                                <mat-datepicker-toggle matSuffix
-                                                    [for]="picker1"></mat-datepicker-toggle>
-                                                <mat-datepicker #picker1></mat-datepicker>
-                                            </mat-form-field>
-                                        <!-- </div>
-
-                                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%"> -->
-                                            <mat-form-field appearance="outline" fxFlex>
-                                                <mat-label>Recovery End Time</mat-label>
-                                                <input matInput type="time" formControlName="RecoveryEndTime"
-                                                    (change)="onChangeRecoveryEndTime($event)">
-                                            </mat-form-field>
-                                        </div>
-
-                                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                            <airmid-dropdown label="Anesthesia Type" formControlName="anestypeId"
-                                                [formGroup]="anesthRecordForm" [mode]="autocompleteModeAnesthesiatypes">
-                                            </airmid-dropdown>
-                                        </div>
-
-                                        <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%" fxLayout="column"
-                                            style="margin-bottom: 5px;">
-                                            <!-- <span style="font-weight: 700;">
-                                                Pre-OP Diagnosis
-                                            </span> -->
-                                            <app-airmid-chipautocomplete fxFlex
-                                                [placeholder]="'Select Pre-OP Diagnosis'"
-                                                [chips]="anesthRecordForm.get('Diagnosis')?.value"
-                                                [apiUrl]="'OPDPrescriptionMedical/GetDiagnosisList?descriptionType=Diagnosis'"
-                                                [displayKey]="'descriptionName'" [allowCustom]="true"
-                                                (chipsChange)="selectChangeDiagnosis($event)">
-                                            </app-airmid-chipautocomplete>
-                                        </div>
-
-                                    </div>
-                                </mat-card>
-
-                                <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 10px ;">
-                                    <div class="dialog-content-wrapper modal-wrapper grid-container">
-                                        <div class="modal-header accent">
-                                            <div class="modal-header-content">
-                                                <div class="modal-header-title">
-                                                    <span
-                                                        [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">Anesthesia
-                                                        Notes
-                                                    </span>
-                                                </div>
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <airmid-editor formControlName="notes" [formGroup]="anesthRecordForm">
-                                    </airmid-editor>
-                                </mat-card>
+                <!-- Patient Information -->
+                <div class="modal-card-container">
+                    <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 10px ;">
+                        <div class="patient-info-sales my-8">
+                            <div class="patient-info-title border-bottom pb-2">
+                                <span class="h1">Patient Information</span>
                             </div>
+                            <div class="Ipd-patient-info" fxFlexFill fxLayout="row" fxLayoutAlign="space-between center"
+                                class="patient-info">
+                                <div class="patient-sub">
+
+                                    <div class="patient-info-row patient-info-1-111 pt-8" fxLayout="row"
+                                        fxLayoutAlign="space-between">
+                                        <div fxLayout="column" fxLayoutGap="6px">
+                                            <div class="patient-col">
+                                                <span class="patient-col-key">UHID No
+                                                </span>
+                                                <span>:</span>
+                                                <span class="patient-col-value">{{registerObj1.regNo}}</span>
+                                            </div>
+
+                                            <div class="patient-col">
+                                                <span class="patient-col-key">Doctor Name</span>
+                                                <span>:</span>
+                                                <span class="patient-col-value">{{registerObj1.doctorName}}</span>
+                                            </div>
+
+                                            <div class="patient-col">
+                                                <span class="patient-col-key">Blood Group</span>
+                                                <span>:</span>
+                                                <span class="patient-col-value">{{registerObj1.doctorName}}</span>
+                                            </div>
+                                        </div>
+
+                                        <div fxLayout="column" fxLayoutGap="6px">
+                                            <div class="patient-col">
+                                                <span class="patient-col-key">Patient Name
+                                                </span>
+                                                <span>:</span>
+                                                <span class="patient-col-value">{{vPatientName}}</span>
+                                            </div>
+
+                                            <div class="patient-col">
+                                                <span class="patient-col-key">Department</span>
+                                                <span>:</span>
+                                                <span class="patient-col-value">{{registerObj1.departmentName}}</span>
+                                            </div>
+
+                                            <div class="patient-col">
+                                                <span class="patient-col-key">Surgery</span>
+                                                <span>:</span>
+                                                <span class="patient-col-value">{{registerObj1.doctorName}}</span>
+                                            </div>
+                                        </div>
+
+                                        <div fxLayout="column" fxLayoutGap="6px">
+                                            <div class="patient-col">
+                                                <span class="patient-col-key">Pre_Operation Dt</span>
+                                                <span>:</span>
+                                                <span class="patient-col-value">{{registerObj1.admissionDate
+                                                    |date:'dd/MM/YYYY'}}</span>
+                                            </div>
+                                            <div class="patient-col">
+                                                <span class="patient-col-key">Mobile No.
+                                                </span>
+                                                <span>:</span>
+                                                <span class="patient-col-value">{{registerObj1.mobileNo}}</span>
+                                            </div>
+                                            <div class="patient-col">
+                                                <span class="patient-col-key">Anesthetist</span>
+                                                <span>:</span>
+                                                <span class="patient-col-value">{{registerObj1.doctorName}}</span>
+                                            </div>
+                                        </div>
+
+                                        <div fxLayout="column" fxLayoutGap="6px">
+                                            <div class="patient-col">
+                                                <span class="patient-col-key">
+                                                    {{vSelectedOption === 'OP' ? 'OPD No' : 'IPD No'}}
+                                                </span>
+                                                <span>:</span>
+                                                <span>{{ vSelectedOption === 'OP' ? vOPDNo : vIPDNo}}</span>
+                                            </div>
+                                            <div class="patient-col">
+                                                <span class="patient-col-key">Patient Type
+                                                </span>
+                                                <span>:</span>
+                                                <span class="patient-col-value">{{registerObj1.patientType}}</span>
+                                            </div>
+                                            <div class="patient-col">
+                                                <span class="patient-col-key">Surgeon</span>
+                                                <span>:</span>
+                                                <span class="patient-col-value">{{registerObj1.doctorName}}</span>
+                                            </div>
+                                        </div>
+
+                                        <div fxLayout="column" fxLayoutGap="6px">
+                                            <div class="patient-col">
+                                                <span class="patient-col-key">Ward | Bed Name
+                                                </span>
+                                                <span>:</span>
+                                                <span class="patient-col-value">{{registerObj1.roomName}} |
+                                                    {{registerObj1.bedName}}</span>
+                                            </div>
+                                            <div class="patient-col">
+                                                <span class="patient-col-key">Company Name</span>
+                                                <span>:</span>
+                                                <span class="patient-col-value"
+                                                    style="color: orange;">{{registerObj1.companyName}}</span>
+                                            </div>
+                                            <div class="patient-col">
+                                                <span class="patient-col-key">Ass.Surgeon</span>
+                                                <span>:</span>
+                                                <span class="patient-col-value">{{registerObj1.doctorName}}</span>
+                                            </div>
+                                        </div>
+
+                                        <div fxLayout="column" fxLayoutGap="6px">
+
+                                            <div class="patient-col">
+                                                <span class="patient-col-key">Age | Sex
+                                                </span>
+                                                <span>:</span>
+                                                <span
+                                                    class="patient-col-value">{{registerObj1.age}}Y|{{registerObj1.ageMonth}}M|{{registerObj1.ageDay}}D
+                                                    | {{registerObj1.genderName}}</span>
+                                            </div>
+                                            <div class="patient-col">
+                                                <span class="patient-col-key">Tarrif Name
+                                                </span>
+                                                <span>:</span>
+                                                <span class="patient-col-value">{{registerObj1.tariffName}}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </mat-card>
+                </div>
+
+                <form [formGroup]="anesthRecordForm">
+                    <div class="modal-card-container">
+                        <div fxLayout="row wrap" fxLayoutGap="8px">
+                            <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 10px ;">
+                                <div fxFlex="85%" fxFlex.xs="100%" fxFlex.sm="80%" fxLayout="row wrap"
+                                    fxLayoutGap="4px grid">
+
+                                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%" class="gap-4">
+
+                                        <!-- <mat-form-field appearance="outline" fxFlex>
+                                            <mat-label>Anesthesia Start Dt</mat-label>
+                                            <input name="AnethStartDt" matInput [matDatepicker]="picker1"
+                                                formControllName="AnethStartDt" [value]="vAnethStartDt" (dateChange)="onChangeAnethStartDth($event.value)"/>
+                                            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                                            <mat-datepicker #picker1></mat-datepicker>
+                                        </mat-form-field> -->
+ <!-- [matDatepickerFilter]="myFilter" -->
+                                        <mat-form-field appearance="outline" class="dateField">
+                                            <mat-label>Anesthesia Start Dt</mat-label>
+                                            <input matInput [matDatepicker]="picker1"
+                                                formControlName="AnethStartDt" 
+                                                (dateChange)="onChangeAnethStartDth($event.value)">
+                                            <mat-datepicker-toggle matSuffix [for]="picker1"
+                                                [disabled]="isDatePckrDisabled"></mat-datepicker-toggle>
+                                            <mat-datepicker #picker1></mat-datepicker>
+                                        </mat-form-field>
+
+
+                                        <mat-form-field appearance="outline" fxFlex>
+                                            <mat-label>Anesthesia Start Time</mat-label>
+                                            <input matInput type="time" formControlName="AnethStartTime"
+                                                (change)="onChangeAnethStartTime($event)">
+                                        </mat-form-field>
+
+                                    </div>
+
+                                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%" class="gap-4">
+                                        <mat-form-field appearance="outline" fxFlex>
+                                            <mat-label>Anesthesia End Dt</mat-label>
+                                            <input name="AnethEndDt" matInput [matDatepicker]="picker2"
+                                                formControllName="AnethEndDt" [value]="vAnethEndDt"
+                                                (dateChange)="onChangeAnethEndDt($event.value)" />
+                                            <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                                            <mat-datepicker #picker2></mat-datepicker>
+                                        </mat-form-field>
+                                        <mat-form-field appearance="outline" fxFlex>
+                                            <mat-label>Anesthesia End Time</mat-label>
+                                            <input matInput type="time" formControlName="AnethEndTime"
+                                                (change)="onChangeAnethEndTime($event)">
+                                        </mat-form-field>
+                                    </div>
+
+                                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%" class="gap-4">
+                                        <mat-form-field appearance="outline" fxFlex>
+                                            <mat-label>Recovery Start Dt</mat-label>
+                                            <input name="RecoveryStartDt" matInput [matDatepicker]="picker3"
+                                                formControllName="RecoveryStartDt" [value]="vRecoveryStartDt"
+                                                (dateChange)="onChangeRecoveryStartDtt($event.value)" />
+                                            <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
+                                            <mat-datepicker #picker3></mat-datepicker>
+                                        </mat-form-field>
+                                        <mat-form-field appearance="outline" fxFlex>
+                                            <mat-label>Recovery Start Time</mat-label>
+                                            <input matInput type="time" formControlName="RecoveryStartTime"
+                                                (change)="onChangeRecoveryStartTime($event)">
+                                        </mat-form-field>
+                                    </div>
+
+                                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%" class="gap-4">
+                                        <mat-form-field appearance="outline" fxFlex>
+                                            <mat-label>Recovery End Dt</mat-label>
+                                            <input name="RecoveryEndDt" matInput [matDatepicker]="picker4"
+                                                formControllName="RecoveryEndDt" [value]="vRecoveryEndDt"
+                                                (dateChange)="onChangeRecoveryEndDt($event.value)" />
+                                            <mat-datepicker-toggle matSuffix [for]="picker4"></mat-datepicker-toggle>
+                                            <mat-datepicker #picker4></mat-datepicker>
+                                        </mat-form-field>
+                                        <mat-form-field appearance="outline" fxFlex>
+                                            <mat-label>Recovery End Time</mat-label>
+                                            <input matInput type="time" formControlName="RecoveryEndTime"
+                                                (change)="onChangeRecoveryEndTime($event)">
+                                        </mat-form-field>
+                                    </div>
+
+                                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                        <airmid-dropdown label="Anesthesia Type" formControlName="anestypeId"
+                                            [formGroup]="anesthRecordForm" [mode]="autocompleteModeAnesthesiatypes">
+                                        </airmid-dropdown>
+                                    </div>
+
+                                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%" fxLayout="column"
+                                        style="margin-bottom: 5px;">
+
+                                        <app-airmid-chipautocomplete fxFlex [placeholder]="'Select Pre-OP Diagnosis'"
+                                            [chips]="anesthRecordForm.get('Diagnosis')?.value"
+                                            [apiUrl]="'OTAnesthesia/GetOtAnesthesiaPreOpdiagnosisList?DescriptionType=Diagnosis'"
+                                            [displayKey]="'descriptionName'" [allowCustom]="true"
+                                            (chipsChange)="selectChangeDiagnosis($event)">
+                                        </app-airmid-chipautocomplete>
+                                    </div>
+
+                                </div>
+                            </mat-card>
+
+                            <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 10px ;">
+                                <div class="dialog-content-wrapper modal-wrapper grid-container">
+                                    <div class="modal-header accent">
+                                        <div class="modal-header-content">
+                                            <div class="modal-header-title">
+                                                <span
+                                                    [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">Anesthesia
+                                                    Notes
+                                                </span>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <airmid-editor label="Notes Details" formControlName="notes" [(value)]="vNotes"
+                                    [formGroup]="anesthRecordForm">
+                                </airmid-editor>
+                            </mat-card>
+                        </div>
+                    </div>
+                </form>
+
+                <div class="modal-footer anethRcFooter" style="margin-top: 10px;">
+                    <div class="footer-navigation-container">
+                        <div class="modal-footer-buttons anethRcbtn">
+                            <button class="btn btn-danger-outline" (click)="onClear(false)">Close</button>
+                            <button class="btn btn-primary " color="accent" (click)="onSubmit()">
+                                <span>Save</span>
+                            </button>
                         </div>
                     </div>
                 </div>
-            </form>
-        </div>
-    </div>
-
-    <div class="modal-footer anethRcFooter" style="margin-top: 10px;">
-        <div class="footer-navigation-container">
-            <div class="modal-footer-buttons anethRcbtn">
-                <button class="btn btn-danger-outline" (click)="onClear(false)">Close</button>
-                <button class="btn btn-primary " color="accent" (click)="onSubmit()">
-                    <span>Save</span>
-                </button>
             </div>
         </div>
     </div>
