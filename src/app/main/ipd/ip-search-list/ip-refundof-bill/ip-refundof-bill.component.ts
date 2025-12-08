@@ -143,7 +143,7 @@ export class IPRefundofBillComponent implements OnInit {
         isCancelledDate: ['1900-01-01', [this._FormvalidationserviceService.validDateValidator]],
         refundId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         unitId: [this.accountService.currentUserValue.user.unitId],
-        cashCounterId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        cashCounterId: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(),Validators.min(1)]],
       }),
 
       tRefundDetails: this.formBuilder.array([]), // FormArray for details
@@ -329,13 +329,13 @@ calculateTotalAmount(): void {
 
       let PatientHeaderObj = {};
       PatientHeaderObj['Date'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
-      PatientHeaderObj['PatientName'] = this.selectedAdvanceObj?.patientName;
-      PatientHeaderObj['RegNo'] = this.selectedAdvanceObj?.regNo,
-      PatientHeaderObj['DoctorName'] = this.selectedAdvanceObj?.doctorname;
-      PatientHeaderObj['CompanyName'] = this.selectedAdvanceObj?.companyName;
-      PatientHeaderObj['DepartmentName'] = this.selectedAdvanceObj?.departmentName;
-      PatientHeaderObj['OPD_IPD_Id'] = this.selectedAdvanceObj?.admissionId;
-      PatientHeaderObj['Age'] = this.selectedAdvanceObj?.ageYear;
+      PatientHeaderObj['PatientName'] = this.selectedAdvanceObj?.patientName || '';
+      PatientHeaderObj['RegNo'] = this.selectedAdvanceObj?.regNo || 0,
+      PatientHeaderObj['DoctorName'] = this.selectedAdvanceObj?.doctorname || '';
+      PatientHeaderObj['CompanyName'] = this.selectedAdvanceObj?.companyName || '';
+      PatientHeaderObj['DepartmentName'] = this.selectedAdvanceObj?.departmentName || '';
+      PatientHeaderObj['OPD_IPD_Id'] = this.selectedAdvanceObj?.admissionId || 0;
+      PatientHeaderObj['Age'] = this.selectedAdvanceObj?.ageYear || 0;
       PatientHeaderObj['TransactionLabel'] = 'IP_REFUND_OF_BILL';
      // PatientHeaderObj['billNo']= this.BillNo || 0,
       PatientHeaderObj['NetPayAmount'] =Math.round(this.RefundOfBillFormFooter.get('TotalRefundAmount').value) || 0

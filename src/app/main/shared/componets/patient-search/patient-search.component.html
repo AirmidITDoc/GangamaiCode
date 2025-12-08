@@ -1,0 +1,307 @@
+  
+        <div class="simple page-layout modal-wrapper grid-container"> 
+            <div class="modal-header accent">
+                <div class="modal-header-content">
+                    <div class="modal-header-title">
+                        <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
+                            <mat-icon>menu</mat-icon>
+                        </button>
+        
+                        <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"
+                            style="color: white;">
+                           Patient Search
+                        </span>
+                    </div>
+                    <div class="modal-header-right">
+                        <div class="close-icon">
+                            <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
+                                matTooltip="Close">
+                                <mat-icon>close</mat-icon>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div> 
+            <div class="modal-body">
+                <div class="h-100-p" fxLayout="column">
+                    <div class="modal-card-container">
+                          <form [formGroup]="SearchGroupForm">
+                        <div fxLayout="column" class="gap-8 h-100-p">  
+                                       <div fxFlexFill fxLayout="column">
+                                                <airmid-autocomplete label="OP-UHID / First Name / Last Name / Mobile No"
+                                                [formGroup]="SearchGroupForm" formControlName="RegId"
+                                                placeholderText="OP-UHID / First Name / Last Name / Mobile No" fxFlex
+                                                ApiUrl="VisitDetail/search-patient-1?Keyword="
+                                                (selectionChange)="getSelectedObj($event)" ValueField="regId"
+                                                TextField="formattedText"></airmid-autocomplete> 
+                                        </div>  
+                        </div>
+                        </form> 
+
+                    </div>
+                    <div class="modal-card-container">
+                        <div fxLayout="column" class="gap-8 h-100-p">
+                            <mat-card fxFlex.gt-sm="100%" fxFlex>
+                                <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="5px">
+                                    <div fxFlex.gt-sm="100%" fxFlex>
+                                        <div fxlayout="row" style="background-color: white">
+                                            <div class="patient-info-patient my-8">
+                                                <div class="patient-patient-info-title">
+                                                    <span style="font-weight: 700">Patient
+                                                        Information</span>
+                                                </div> 
+                                                  <hr>
+                                                <div class="sales-patient-info" fxFlexFill fxLayout="row"
+                                                    fxLayoutAlign="space-between center" class="patient-info">
+                                                    <div class="patient-sub">
+                                                        <div class="patient-info-row patient-info-1-111 pt-8" fxLayout="row"
+                                    fxLayoutAlign="space-between">
+                                    <div fxLayout="column" fxLayoutGap="6px">
+                                                                <div class="patient-col">
+                                                                    <span class="patient-col-key">Patient Name</span>
+                                                                    <span>:</span>
+                                                                    <span class="patient-col-value">{{
+                                                                        registerObj?.regNo }}-{{PatientName}}</span>
+                                                                </div>
+            
+                                                                <div class="patient-col">
+                                                                    <span class="patient-col-key">Doctor Name</span>
+                                                                    <span>:</span>
+                                                                    <span
+                                                                        class="patient-col-value">Dr.{{registerObj?.doctorName}}</span>
+                                                                </div>
+            
+                                                                <div class="patient-col">
+                                                                    <span class="patient-col-key">Department Name</span>
+                                                                    <span>:</span>
+                                                                    <span
+                                                                        class="patient-col-value">Dr.{{registerObj?.departmentName}}</span>
+                                                                </div>
+                                                            </div>
+            
+                                                            <div fxLayout="column" fxLayoutGap="6px">
+                                                                <div class="patient-col">
+                                                                    <span class="patient-col-key">OPD | IPD No</span>
+                                                                    <span>:</span>
+                                                                    <span class="patient-col-value">{{registerObj?.opdNo}}</span>
+                                                                </div>
+            
+                                                                <div class="patient-col">
+                                                                    <span class="patient-col-key">Mobile No</span>
+                                                                    <span>:</span>
+                                                                    <span class="patient-col-value">{{registerObj?.mobileNo
+                                                                        }}</span>
+                                                                </div>
+            
+                                                                <div class="patient-col">
+                                                                    <span class="patient-col-key">Age </span>
+                                                                    <span>:</span>
+                                                                    <span class="patient-col-value">{{registerObj?.ageYear}}Y |
+                                                                        {{registerObj?.ageMonth}}M | {{registerObj?.ageDay}}D
+                                                                    </span>
+                                                                </div>
+            
+                                                                <!-- <div class="patient-col" *ngIf="IPDNocheck">
+                                                                                                                        <span class="patient-col-key">IPDNo</span>
+                                                                                                                        <span>:</span>
+                                                                                                                        <span class="patient-col-value">{{
+                                                                                                                            mIPDNo }}</span>
+                                                                                                                    </div> -->
+                                                            </div>
+            
+                                                           <div fxLayout="column" fxLayoutGap="6px">
+                                                                <!-- <div class="patient-col">
+                                                                                                                        <span class="patient-col-key">Ward
+                                                                                                                            |
+                                                                                                                            Bed Name</span>
+                                                                                                                        <span>:</span>
+                                                                                                                        <span class="patient-col-value">{{
+                                                                                                                            mWardName }} |
+                                                                                                                            {{mBedName}}</span>
+                                                                                                                    </div> -->
+            
+                                                                <div class="patient-col">
+                                                                    <span class="patient-col-key">Tariff Name</span>
+                                                                    <span>:</span>
+                                                                    <span
+                                                                        class="patient-col-value">{{registerObj?.tariffName}}</span>
+                                                                </div>
+            
+                                                                <div class="patient-col">
+                                                                    <span class="patient-col-key">Company Name</span>
+                                                                    <span>:</span>
+                                                                    <span class="patient-col-value"
+                                                                        style="background-color: coral;">{{registerObj?.companyName}}</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div> 
+                            </mat-card>
+                        </div>
+                    </div>
+                </div>
+            
+                <!-- <div class="modal-card-container h-100-p">
+                                    <div class="airmid-table-container py-12 h-100-p" fxLayout="column">
+                                        <mat-table #table class="airmid-table h-100-p" matSort [dataSource]="dsItemList"
+                                            [@animateStagger]="{ value: '50' }" style="overflow: auto;"> 
+                                            
+                                                    <ng-container matColumnDef="button" sticky>
+                                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md class="w-80">
+                                                             
+                                                        </mat-header-cell>
+                                                        <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="w-80">
+                                                            <mat-checkbox aria-label="Checked" (change)="tableElementChecked($event, contact)">
+                                                            </mat-checkbox>
+                                                            <mat-icon *ngIf="contact.PatientType !='Company'" matTooltip="Patient Category Self">account_box
+                                                            </mat-icon>
+                                                            
+                                                            <mat-icon *ngIf="contact.PatientType =='Company'" matTooltip="Patient Category Company">business
+                                                            </mat-icon>
+                                                        </mat-cell>
+                                                    </ng-container> 
+                
+                                                    <ng-container matColumnDef="SalesDate">
+                                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-90">SalesDate
+                                                        </mat-header-cell>
+                                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-90"> 
+                                                            {{element.Date | date:'dd/MM/YYYY'}}
+                                                        </mat-cell>
+                                                    </ng-container>
+                                    
+                                                    <ng-container matColumnDef="PillNo">
+                                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-80">
+                                                            Sales No</mat-header-cell>
+                                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-80">
+                                                            <span> {{element.SalesNo}}</span>
+                                                        </mat-cell>
+                                                    </ng-container> 
+                
+                                                    <ng-container matColumnDef="CompanyName">
+                                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-130">
+                                                            Company Name </mat-header-cell>
+                                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-130">
+                                                            <span> {{element.CompanyName}}</span>
+                                                        </mat-cell>
+                                                    </ng-container>
+                                    
+                                                    <ng-container matColumnDef="BillAmt">
+                                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                            Total Amt </mat-header-cell>
+                                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                            <span> {{element.TotalAmount | currency:"INR":"symbol"}}</span>
+                                                        </mat-cell>
+                                                    </ng-container>
+                                    
+                                                    <ng-container matColumnDef="conAmount">
+                                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                          Total Disc Amt </mat-header-cell>
+                                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                            <span> {{element.DiscAmount | currency:"INR":"symbol"}}</span>
+                                                        </mat-cell>
+                                                    </ng-container>
+                                    
+                                                    <ng-container matColumnDef="NetPayAmount">
+                                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Net Amt
+                                                        </mat-header-cell>
+                                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                            <span> {{element.NetAmount | currency:"INR":"symbol"}}</span>
+                                                        </mat-cell>
+                                                    </ng-container>
+                                    
+                                                    <ng-container matColumnDef="PaidAmount">
+                                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                            Paid Amt
+                                                        </mat-header-cell>
+                                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                            <span> {{element.PaidAmount | currency:"INR":"symbol"}}</span>
+                                                        </mat-cell>
+                                                    </ng-container>
+                                    
+                                                    <ng-container matColumnDef="BalanceAmt">
+                                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-110">Balance Amt
+                                                        </mat-header-cell>
+                                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-110"
+                                                        [ngClass]="{'positive-balance': element.BalanceAmount > 0 }">
+                                                            <span> {{element.BalanceAmount | currency:"INR":"symbol"}}</span>
+                                                        </mat-cell>
+                                                    </ng-container>
+                                    
+                                                    <ng-container matColumnDef="RefundAmt">
+                                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                            Refund Amt
+                                                        </mat-header-cell>
+                                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                            <span> {{element.RefundAmt | currency:"INR":"symbol"}}</span>
+                                                        </mat-cell>
+                                                    </ng-container> 
+                
+                                                    <ng-container matColumnDef="discPer">
+                                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                           Disc%
+                                                        </mat-header-cell>
+                                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                            
+                                                            <mat-form-field appearance="legacy"> 
+                                                                <input matInput [(ngModel)]="element.discPer" type="text" OnlyNumber
+                                                                    (keyup)="getCellCalculation(element,element.discPer)"
+                                                                    (keypress)="keyPressAlphanumeric($event)">
+                                                            </mat-form-field> 
+                                                        </mat-cell>
+                                                    </ng-container> 
+                
+                                                    <ng-container matColumnDef="PreDiscAmt">
+                                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
+                                                            Pre DiscAmt
+                                                        </mat-header-cell>
+                                                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                                            <span> {{element.PreDiscAmt | currency:"INR":"symbol"}}</span>
+                                                        </mat-cell>
+                                                    </ng-container> 
+                
+                                                   
+                                    
+                                                    <ng-container matColumnDef="loading">
+                                                        <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
+                                                        </mat-header-cell>
+                                                    </ng-container>
+                                    
+                                                    <ng-container matColumnDef="noData">
+                                                        <mat-footer-cell *matFooterCellDef colspan="6">
+                                                            no data found...
+                                                        </mat-footer-cell>
+                                                    </ng-container>
+                                    
+                                    
+                                                    <mat-header-row class="accent" *matHeaderRowDef="displayedColumns ; sticky: true">
+                                                    </mat-header-row>
+                                                    <mat-row *matRowDef="let contact; columns: displayedColumns;" 
+                                                        [@animate]="{value:'*',params:{y:'100%'}}"
+                                                        [ngClass]="contact.PatientType !== 'Self' ? 'self-row' : ''"  ></mat-row>
+                                                    <mat-footer-row *matFooterRowDef="['loading']"
+                                                        [ngClass]="{'hide':dsIpSaleItemList!=null}"></mat-footer-row>
+                                                    <mat-footer-row *matFooterRowDef="['noData']"
+                                                        [ngClass]="{'hide':!(dsIpSaleItemList!=null && dsIpSaleItemList.data.length==0)}"></mat-footer-row>
+                                                </mat-table>
+                                        
+                                                <mat-paginator #paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="10" showFirstLastButtons>
+                                                </mat-paginator>
+                                    </div>
+                                </div>  -->
+            </div> 
+        
+            <!-- <div class="modal-footer"  fxLayoutAlign="end"  > 
+              
+                <div class="modal-footer-buttons" fxLayoutGap="6px" >
+                    <button class="btn btn-danger-outline" >Close</button>
+                    <button class="btn btn-primary"  >Save</button>
+                </div>
+        
+            </div> -->
+        </div> 
+ 

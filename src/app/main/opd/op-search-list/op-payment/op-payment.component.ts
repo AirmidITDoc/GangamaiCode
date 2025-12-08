@@ -427,7 +427,7 @@ getselectObjPayMode(obj){
     if (this.data.FromName == "OP-SETTLEMENT") {
       transactionType = 0; 
       this.Paymentobj['paymentId'] = 0;
-      this.Paymentobj['billNo'] = this.advanceData?.billNo;
+      this.Paymentobj['billNo'] = this.advanceData?.billNo || 0;
       this.Paymentobj['paymentDate'] = formattedDate
       this.Paymentobj['paymentTime'] = formattedTime
       this.Paymentobj['cashPayAmount'] = this.Payments.data.find(x => x.PaymentType == "CASH")?.Amount ?? 0;
@@ -463,7 +463,7 @@ getselectObjPayMode(obj){
     }
     else if (this.data.FromName == "OP-Pharma-SETTLEMENT") {
 
-      this.Paymentobj['BillNo'] = this.advanceData.billNo;
+      this.Paymentobj['BillNo'] = this.advanceData.billNo || 0;
       this.Paymentobj['PaymentDate'] = formattedDate
       this.Paymentobj['PaymentTime'] = formattedTime
       this.Paymentobj['CashPayAmount'] = this.Payments.data.find(x => x.PaymentType == "CASH")?.Amount ?? 0;
@@ -647,7 +647,7 @@ getselectObjPayMode(obj){
     }
     else if (this.data.FromName == "OP-RefundOfBill") {
       transactionType = 2
-      this.Paymentobj['BillNo'] = this.advanceData.billNo; //this.data?.billNo;
+      this.Paymentobj['BillNo'] = this.advanceData.billNo || 0; //this.data?.billNo;
       this.Paymentobj['ReceiptNo'] = '';
       this.Paymentobj['PaymentId'] = 0;
       this.Paymentobj['PaymentDate'] = formattedDate,
@@ -849,7 +849,7 @@ getselectObjPayMode(obj){
           payMode: element.PaymentType ?? "",
           onlineTranNo: '0',
           onlineTranResponse: '0',
-          companyId: this.advanceData?.CompanyId ?? 0,
+          companyId: this.patientDetailsFormGrp.get('CompanyId')?.value || 0,
           advanceId: 0,
           refundId: 0,
           cashCounterId: this.advanceData?.CashCounterId || 0,

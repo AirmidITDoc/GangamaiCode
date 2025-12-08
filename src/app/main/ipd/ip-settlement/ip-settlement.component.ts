@@ -273,18 +273,18 @@ export class IPSettlementComponent implements OnInit {
 
         let PatientHeaderObj = {};
         PatientHeaderObj['Date'] = formattedDate;
-        PatientHeaderObj['PatientName'] = this.PatientName;
-        PatientHeaderObj['AdvanceAmount'] = contact?.balanceAmt;
-        PatientHeaderObj['NetPayAmount'] = contact?.balanceAmt;
+        PatientHeaderObj['PatientName'] = this.PatientName || '';
+        PatientHeaderObj['AdvanceAmount'] = contact?.balanceAmt || 0;
+        PatientHeaderObj['NetPayAmount'] = contact?.balanceAmt || 0;
         PatientHeaderObj['BillNo'] = contact?.billNo || 0; 
         PatientHeaderObj['OPD_IPD_Id'] = contact?.opdipdid;
         PatientHeaderObj['IPDNo'] = contact?.ipdNo || '';
-        PatientHeaderObj['RegNo'] = contact?.regNo;
+        PatientHeaderObj['RegNo'] = contact?.regNo || 0;
         PatientHeaderObj['DoctorName'] = contact?.doctorName || '';
         PatientHeaderObj['CompanyName'] = contact?.companyName || '';
         PatientHeaderObj['CompanyId'] = contact?.companyId || 0;
         PatientHeaderObj['DepartmentName'] = contact?.departmentName || '';
-        PatientHeaderObj['Age'] = this.registerObj.age; 
+        PatientHeaderObj['Age'] = this.registerObj.age || 0; 
         PatientHeaderObj['TransactionLabel'] = 'IP_SETTLEMENT'
 
         const dialogRef = this._matDialog.open(OpPaymentVimalComponent,

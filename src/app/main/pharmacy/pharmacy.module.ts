@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { ExternalSalesReturnModule } from './external-sales-return/external-sales-return.module';
 
 const appRoutes: Routes = [
     {
@@ -51,8 +52,8 @@ const appRoutes: Routes = [
     loadChildren: () => import("./pharm-item-summary/pharmaitemsummary.module").then((m)=>m.PharmaitemsummaryModule),
   },
   {
-    path:"pharmacyclearence",
-    loadChildren:() => import("./pharmacy-clearence/pharmacy-clearence.module").then((m)=>m.PharmacyClearenceModule),
+    path:"externalsalesreturn",
+    loadChildren:() => import("./external-sales-return/external-sales-return.module").then((m)=>m.ExternalSalesReturnModule),
     
   },
   {
@@ -68,7 +69,7 @@ const appRoutes: Routes = [
 
 @NgModule({
   declarations: [  
-    
+     
   ],
   imports: [
     RouterModule.forChild(appRoutes)

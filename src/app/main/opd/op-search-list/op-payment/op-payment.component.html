@@ -100,7 +100,7 @@
                                         </div>
 
                                          <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%"
-                                        *ngIf="advanceData?.CompanyId">
+                                        *ngIf="(advanceData?.CompanyId || advanceData?.CompanyName) && data.FromName == 'OP-SETTLEMENT'">
                                         <airmid-dropdown label="Company Name" formControlName="CompanyId" [formGroup]="patientDetailsFormGrp"
                                             [validations]="getValidationMessages().CompanyId" [mode]="autocompleteModecompany"></airmid-dropdown>
                                     </div>

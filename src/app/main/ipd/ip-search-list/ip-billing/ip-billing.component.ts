@@ -1253,17 +1253,17 @@ export class IPBillingComponent implements OnInit {
             else {
                 let PatientHeaderObj = {};
                 PatientHeaderObj['Date'] = this.dateTimeObj.date;
-                PatientHeaderObj['PatientName'] = this.selectedAdvanceObj.patientName;
+                PatientHeaderObj['PatientName'] = this.selectedAdvanceObj.patientName || '';
                 PatientHeaderObj['AdvanceAmount'] = this.IpbillFooterform.get('FinalAmount')?.value;
                 PatientHeaderObj['NetPayAmount'] = this.IpbillFooterform.get('FinalAmount')?.value;
                 PatientHeaderObj['BillNo'] = 0;
-                PatientHeaderObj['OPD_IPD_Id'] = this.selectedAdvanceObj.admissionId;
-                PatientHeaderObj['IPDNo'] = this.selectedAdvanceObj.ipdno;
-                PatientHeaderObj['RegNo'] = this.selectedAdvanceObj.regNo;
-                PatientHeaderObj['DoctorName'] = this.selectedAdvanceObj.doctorname;
-                PatientHeaderObj['CompanyName'] = this.selectedAdvanceObj.companyName;
-                PatientHeaderObj['DepartmentName'] = this.selectedAdvanceObj.departmentName;
-                PatientHeaderObj['Age'] = this.selectedAdvanceObj.ageYear; 
+                PatientHeaderObj['OPD_IPD_Id'] = this.selectedAdvanceObj.admissionId || 0;
+                PatientHeaderObj['IPDNo'] = this.selectedAdvanceObj.ipdno || '';
+                PatientHeaderObj['RegNo'] = this.selectedAdvanceObj.regNo || 0;
+                PatientHeaderObj['DoctorName'] = this.selectedAdvanceObj.doctorname || '';
+                PatientHeaderObj['CompanyName'] = this.selectedAdvanceObj.companyName || '';
+                PatientHeaderObj['DepartmentName'] = this.selectedAdvanceObj.departmentName || '';
+                PatientHeaderObj['Age'] = this.selectedAdvanceObj.ageYear || ''; 
                 PatientHeaderObj['TransactionLabel'] = 'IP_FINAL_BILL', 
                 PatientHeaderObj['CashCounterId'] =this.IpbillFooterform.get('ConcessionId')?.value || 0
                 //==============-======--==============Payment====================== 

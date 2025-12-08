@@ -19,11 +19,8 @@ import { SalesHospitalService } from './sales-hospital-new.service';
 import { BalAvaListStore, DraftSale, PatientType, Printsal, SalesBatchItemModel, SalesItemModel } from './types';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 import { OpPaymentComponent } from 'app/main/opd/op-search-list/op-payment/op-payment.component';
-import { PrescriptionComponent } from './prescription/prescription.component';
-import { PrintserviceService } from 'app/main/shared/services/printservice.service';
-import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
-import { AppointmentlistService } from 'app/main/opd/appointment-list/appointmentlist.service';
-import { FakeDbService } from 'app/fake-db/fake-db.service';
+import { PrescriptionComponent } from './prescription/prescription.component'; 
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component'; 
 import { SubstitutesComponent } from './substitutes/substitutes.component';
 
 @Component({
@@ -1163,7 +1160,7 @@ if (QtyElement) {
     }
     BillSave(event) {
         debugger
-        const formattedTime = this.datePipe.transform(new Date(), 'hh:mm');
+        const formattedTime = this.datePipe.transform(new Date(), 'HH:mm');
         const formattedDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
         const FormattedDateTime = formattedDate + ' ' + formattedTime
         const formValue = this.ItemSubform.value

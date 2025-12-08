@@ -5,7 +5,7 @@ import { FormGroup, UntypedFormBuilder } from '@angular/forms';
 @Injectable({
   providedIn: 'root'
 })
-export class BrowsSalesReturnBillService {
+export class ExternalSalesReturnService {
 
   userFormGroup: FormGroup;
   MaterialReturnFrDept :FormGroup;

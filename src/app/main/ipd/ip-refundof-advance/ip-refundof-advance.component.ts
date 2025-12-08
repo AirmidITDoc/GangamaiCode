@@ -171,16 +171,16 @@ export class IPRefundofAdvanceComponent implements OnInit {
 
       let PatientHeaderObj = {};
       PatientHeaderObj['Date'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '1900-01-01',
-      PatientHeaderObj['PatientName'] = this.registerObj?.patientName;
-      PatientHeaderObj['RegNo'] = this.registerObj?.regNo,
-      PatientHeaderObj['DoctorName'] = this.registerObj?.doctorname;
-      PatientHeaderObj['CompanyName'] = this.registerObj?.companyName;
-      PatientHeaderObj['DepartmentName'] = this.registerObj?.departmentName;
-      PatientHeaderObj['OPD_IPD_Id'] = this.registerObj?.ipdno;
-      PatientHeaderObj['Age'] = this.registerObj?.ageYear;
+      PatientHeaderObj['PatientName'] = this.registerObj?.patientName || '';
+      PatientHeaderObj['RegNo'] = this.registerObj?.regNo || 0,
+      PatientHeaderObj['DoctorName'] = this.registerObj?.doctorname || '';
+      PatientHeaderObj['CompanyName'] = this.registerObj?.companyName || '';
+      PatientHeaderObj['DepartmentName'] = this.registerObj?.departmentName || '';
+      PatientHeaderObj['OPD_IPD_Id'] = this.registerObj?.ipdno || '';
+      PatientHeaderObj['Age'] = this.registerObj?.ageYear || 0;
       PatientHeaderObj['NetPayAmount'] = Math.round(this.RefundOfAdvanceFormGroup.get('refundAmount').value) || 0; 
       PatientHeaderObj['CashCounterId'] = this.RefundOfAdvanceFormGroup.get('CashCounterID')?.value || 0; 
-      PatientHeaderObj['CompanyId'] = this.registerObj?.companyId;
+      PatientHeaderObj['CompanyId'] = this.registerObj?.companyId || 0;
       PatientHeaderObj['TransactionLabel'] = 'IP_REFUND_OF_ADVANCE'; 
 
       const dialogRef = this._matDialog.open(OpPaymentComponent,
