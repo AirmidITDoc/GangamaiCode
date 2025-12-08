@@ -2,7 +2,7 @@
 
 import { Platform } from '@angular/cdk/platform';
 import { DOCUMENT } from '@angular/common';
-import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, HostListener, Inject, OnDestroy, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable, Subject, Subscription, fromEvent } from 'rxjs';
 import { delay, takeUntil } from 'rxjs/operators';
@@ -29,6 +29,7 @@ import { BandwidthService } from './core/services/bandwidth.service';
 import { SignalRService } from './core/services/signalr.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { HospitalConfigService } from './core/services/hospital-config.service';
+import { PatientSearchComponent } from './main/shared/componets/patient-search/patient-search.component';
 
 @Component({
     selector: 'app',
@@ -310,6 +311,24 @@ export class AppComponent implements OnInit, OnDestroy {
            this.HospitalConfigService.setCongiParam(this.UnitWiseSystemConfigu[0])
         });
     }
+      @HostListener('document:keydown', ['$event'])
+onKeydownHandler(event: KeyboardEvent) {
+  if (event.keyCode === 119) {
+    event.preventDefault();
+    this.onpatientsearch();
+  }
+}
+        onpatientsearch() {
+            const dialogRef = this.dialogRef.open(PatientSearchComponent,
+              {
+                     width:"45%",
+                    height:"60%",
+                    panelClass: 'responsive-dialog'
+               });
+            dialogRef.afterClosed().subscribe((result) => {
+                console.log('The dialog was closed - Insert Action', result);
+            });
+        }
 }
 
 

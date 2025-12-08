@@ -44,14 +44,14 @@
                                             <div class="patient-col gap-3"  >
                                                 <span class="patient-col-key ">OPD | IPD No </span>
                                                 <span>:</span>
-                                                <span class="patient-col-value" *ngIf="advanceData.IPDNo">
+                                                <span class="patient-col-value" *ngIf="advanceData?.IPDNo">
                                                     {{advanceData?.IPDNo}}</span>
-                                                <span class="patient-col-value" *ngIf="advanceData.OPDNo">
+                                                <span class="patient-col-value" *ngIf="advanceData?.OPDNo">
                                                     {{advanceData?.OPDNo}}</span>
                                             </div>
                                       
                                          <div class="patient-col gap-3"  
-                                            *ngIf="advanceData.DepartmentName">
+                                            *ngIf="advanceData?.DepartmentName">
                                             <span class="patient-col-key ">Department Name | Doctor Name</span>
                                             <span>:</span>
                                             <span class="patient-col-value">{{advanceData?.DepartmentName}} | {{advanceData?.DoctorName}}</span>
@@ -98,7 +98,7 @@
                                             (change)="OnAdvAmt($event)">Advance Amount?</mat-checkbox>
                                     </div>
 
-                                     <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%" *ngIf="advanceData?.CompanyName">
+                                     <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%" *ngIf="advanceData?.CompanyName && advanceData?.FromName != 'IP-Bill'">
                                                 <airmid-dropdown label="Company Name" formControlName="CompanyId" [formGroup]="patientDetailsFormGrp"
                                                    [validations]="getValidationMessages().CompanyId" [mode]="autocompleteModecompany"
                                                     (selectionChange)="getselectObjPayMode($event)"

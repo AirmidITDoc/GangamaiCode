@@ -180,7 +180,7 @@ getselectObjPayMode(obj){
             BankName: this.BankNam,
             RegDate: this.patientDetailsFormGrp.get("regDate1")?.value ?? "",
             AdvanceID:0,
-            AdvanceUsedAmt:0
+            AdvUsedAmt:0
 
         });
         this.Payments.data = tmp;
@@ -208,9 +208,10 @@ getselectObjPayMode(obj){
     }
     AdvanceId: any = 0;
     selectedRow: any = [];
+    filteredadvlist:any =[];
     getAdvanceAmt(element, index) {
-        this.selectedRow = this.selectedRow.filter(item => item.advanceDetailID == element.advanceDetailID)
-        const balAmt = this.selectedRow[0]?.balanceAmount
+        this.filteredadvlist = this.selectedRow.filter(item => item.advanceDetailID == element.advanceDetailID)
+        const balAmt = this.filteredadvlist[0]?.balanceAmount
         if (element.usedAmount > balAmt) {
             Swal.fire('Enter Amount less than Balance Amount:' + element.balanceAmount);
             element.usedAmount = '';
@@ -413,7 +414,7 @@ getselectObjPayMode(obj){
         }
         if (this.data.FromName == "IP-SETTLEMENT") {
             this.Paymentobj['paymentId'] = 0;
-            this.Paymentobj['billNo'] = this.advanceData.BillNo;
+            this.Paymentobj['billNo'] = this.advanceData.BillNo || 0;
             this.Paymentobj['paymentDate'] = this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd') || '1999-01-01';
             this.Paymentobj['paymentTime'] = this.dateTimeObj.time; // this.datePipe.transform(this.currentDate, 'yyyy-MM-dd') || this.datePipe.transform(this.currentDate, 'yyyy-MM-dd')
             this.Paymentobj['cashPayAmount'] = this.Payments.data.find(x => x.PaymentType == "CASH")?.Amount ?? 0;
@@ -449,7 +450,7 @@ getselectObjPayMode(obj){
         }
         else if (this.data.FromName == "IP-Pharma-SETTLEMENT") {
             this.Paymentobj['paymentId'] = 0;
-            this.Paymentobj['billNo'] = this.advanceData.BillNo;
+            this.Paymentobj['billNo'] = this.advanceData.BillNo || 0;
             this.Paymentobj['paymentDate'] = this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd') || '1999-01-01';
             this.Paymentobj['paymentTime'] = this.dateTimeObj.time; // this.datePipe.transform(this.currentDate, 'yyyy-MM-dd') || this.datePipe.transform(this.currentDate, 'yyyy-MM-dd')
             this.Paymentobj['cashPayAmount'] = this.Payments.data.find(x => x.PaymentType == "CASH")?.Amount ?? 0;
@@ -529,12 +530,12 @@ getselectObjPayMode(obj){
           tranNo: element.RefNo ?? "",
           bankName: element.BankName ?? "",
           validationDate: this.datePipe.transform(element.RegDate, 'yyyy-MM-dd') || this.datePipe.transform(this.currentDate, 'yyyy-MM-dd'),
-          advanceUsedAmount:this.advanceUsedAmt || 0,
+          advanceUsedAmount:element.AdvUsedAmt || 0,
           comments: "",
           payMode: element.PaymentType ?? "",
           onlineTranNo: '0',
           onlineTranResponse: '0',
-          companyId: this.advanceData?.CompanyId ?? 0,
+          companyId: this.patientDetailsFormGrp.get('CompanyId')?.value || 0,
           advanceId:  element.AdvanceID || 0,
           refundId: 0,
           cashCounterId: this.advanceData?.CashCounterId || 0,
@@ -639,7 +640,7 @@ getselectObjPayMode(obj){
                 if (this.dataSource.data.length > 0) {
                     this.IsAdv = true 
                     this.AdvanceId = this.dataSource.data[0].advanceId;
-                    this.calculateBalance();
+                    this.calculateBalance(); 
                     this.SetAdvanceRow();
                     this.setPaidAmount();
                     this.GetBalanceAmt();
@@ -653,7 +654,7 @@ getselectObjPayMode(obj){
                 if (this.dataSource.data.length > 0) {
                     this.IsAdv = true 
                     this.AdvanceId = this.dataSource.data[0].advanceId
-                    this.calculateBalance();
+                    this.calculateBalance(); 
                     this.SetAdvanceRow();
                     this.setPaidAmount();
                     this.GetBalanceAmt();
@@ -679,7 +680,7 @@ getselectObjPayMode(obj){
                     this.opService.AdvancePharamcylist(vdata).subscribe((response) => {
                         this.dataSource.data = response.data;
                         this.AdvanceId = this.dataSource.data[0].advanceId
-                        this.calculateBalance();
+                        this.calculateBalance(); 
                         this.SetAdvanceRow();
                         this.setPaidAmount();
                         this.GetBalanceAmt();
@@ -689,7 +690,7 @@ getselectObjPayMode(obj){
                         console.log(response)
                         this.dataSource.data = response.data;
                         this.AdvanceId = this.dataSource.data[0].advanceId
-                        this.calculateBalance();
+                        this.calculateBalance(); 
                         this.SetAdvanceRow();
                         this.setPaidAmount();
                         this.GetBalanceAmt();
@@ -734,6 +735,7 @@ getselectObjPayMode(obj){
         let tmp = this.Payments.data.find(x => x.Id == -1);
         if (tmp) {
             tmp.Amount = adv;
+            tmp.AdvUsedAmt = adv;
         }
         else {
             let tmp1 = this.Payments.data;
@@ -745,7 +747,7 @@ getselectObjPayMode(obj){
                 BankName: "",
                 RegDate: new Date(),
                 AdvanceID:this.AdvanceId,
-                AdvanceUsedAmt:this.advanceUsedAmt
+                AdvUsedAmt:adv
             });
             this.Payments.data = tmp1;
         }
@@ -869,5 +871,5 @@ export class PaymentList {
     Id: number;
     BankId: number;
     AdvanceID:any;
-    AdvanceUsedAmt:any;
+    AdvUsedAmt:any;
 }

@@ -427,14 +427,14 @@ export class InterimBillComponent implements OnInit {
       else if (this.InterimFooterForm.get('paymode').value == 'PayOption') {
         let PatientHeaderObj = {};
         PatientHeaderObj['Date'] = formattedDate
-        PatientHeaderObj['PatientName'] = this.selectedAdvanceObj?.patientName;
-        PatientHeaderObj['RegNo'] = this.selectedAdvanceObj?.regNo;
-        PatientHeaderObj['DoctorName'] = this.selectedAdvanceObj?.doctorname;
-        PatientHeaderObj['CompanyName'] = this.selectedAdvanceObj?.companyName;
-        PatientHeaderObj['DepartmentName'] = this.selectedAdvanceObj?.departmentName;
-        PatientHeaderObj['OPD_IPD_Id'] = this.selectedAdvanceObj?.admissionId;
-        PatientHeaderObj['Age'] = this.selectedAdvanceObj?.ageYear;
-        PatientHeaderObj['NetPayAmount'] = Math.round(this.InterimFooterForm.get('NetpayAmount')?.value) 
+        PatientHeaderObj['PatientName'] = this.selectedAdvanceObj?.patientName || '';
+        PatientHeaderObj['RegNo'] = this.selectedAdvanceObj?.regNo || 0;
+        PatientHeaderObj['DoctorName'] = this.selectedAdvanceObj?.doctorname || '';
+        PatientHeaderObj['CompanyName'] = this.selectedAdvanceObj?.companyName || '';
+        PatientHeaderObj['DepartmentName'] = this.selectedAdvanceObj?.departmentName || '';
+        PatientHeaderObj['OPD_IPD_Id'] = this.selectedAdvanceObj?.admissionId || '';
+        PatientHeaderObj['Age'] = this.selectedAdvanceObj?.ageYear || '';
+        PatientHeaderObj['NetPayAmount'] = Math.round(this.InterimFooterForm.get('NetpayAmount')?.value)  || 0,
         PatientHeaderObj['TransactionLabel'] = 'IP_INTERIM_BILL', 
         PatientHeaderObj['CashCounterId'] =this.InterimFooterForm.get('CashCounterID').value || 0
         const dialogRef = this._matDialog.open(OpPaymentComponent,

@@ -5,8 +5,8 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
 import { AuthenticationService } from 'app/core/services/authentication.service';
-import { ToastrService } from 'ngx-toastr';
-import { BrowsSalesReturnBillService } from '../brows-sales-return-bill.service';
+import { ToastrService } from 'ngx-toastr'; 
+import { ExternalSalesReturnService } from '../external-sales-return.service';
 
 @Component({
   selector: 'app-accept-material-list-popup',
@@ -43,7 +43,7 @@ export class AcceptMaterialListPopupComponent implements OnInit {
     public dialogRef: MatDialogRef<AcceptMaterialListPopupComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public toastr: ToastrService,
-    public _SalesReturn: BrowsSalesReturnBillService,
+    public _SalesReturn: ExternalSalesReturnService,
     public _loggedService : AuthenticationService
   ) { }
 

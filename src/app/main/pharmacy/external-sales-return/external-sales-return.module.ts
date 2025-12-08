@@ -34,21 +34,19 @@ import { FuseConfirmDialogModule, FuseSidebarModule } from '@fuse/components';
 import { FuseSharedModule } from '@fuse/shared.module';
 import { SharedModule } from 'app/main/shared/shared.module';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
-import { AcceptMaterialListPopupComponent } from './accept-material-list-popup/accept-material-list-popup.component';
-import { BrowsSalesReturnBillComponent } from './brows-sales-return-bill.component';
+import { ExternalSalesReturnComponent } from './external-sales-return.component';
+   
 
 const routes: Routes = [
   { 
       path: '**', 
-      component: BrowsSalesReturnBillComponent 
+      component:  ExternalSalesReturnComponent
   },
 ];
 
 @NgModule({
   declarations: [
-    BrowsSalesReturnBillComponent,
-    AcceptMaterialListPopupComponent,
-  
+    ExternalSalesReturnComponent 
   ],
   imports: [
     CommonModule,
@@ -93,12 +91,8 @@ const routes: Routes = [
     MatTooltipModule
         
   ],
-  providers: [
-    
+  providers: [ 
     DatePipe,
-],
-entryComponents: [
-  BrowsSalesReturnBillComponent,
-]
+] 
 })
-export class BrowsSalesReturnBillModule { }
+export class ExternalSalesReturnModule{ }

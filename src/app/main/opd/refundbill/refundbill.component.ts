@@ -138,7 +138,7 @@ export class RefundbillComponent implements OnInit {
         isCancelledBy: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         isCancelledDate: ['1900-01-01', [this._FormvalidationserviceService.validDateValidator]],
         refundId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        cashCounterId:[0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        cashCounterId:[0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
       }),
 
       tRefundDetails: this.formBuilder.array([]), // FormArray for details
@@ -326,12 +326,12 @@ debugger
       // Patient info
       const PatientHeaderObj = {
         Date: this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd') || '01/01/1900',
-        PatientName: this.PatientName,
-        RegNo: this.RegNo, 
-        Age: this.registerObj?.ageYear,
-        NetPayAmount: Math.round(this.RefundOfBillFormFooter.get('TotalRefundAmount').value),
+        PatientName: this.PatientName || '',
+        RegNo: this.RegNo || 0, 
+        Age: this.registerObj?.ageYear || 0,
+        NetPayAmount: Math.round(this.RefundOfBillFormFooter.get('TotalRefundAmount')?.value),
         //billNo: this.vRefundOfBillFormGroup.get("refund.billId")?.value,
-        CashCounterId:this.searchFormGroup.get('CashCounterID')?.value,
+        CashCounterId:this.searchFormGroup.get('CashCounterID')?.value || 0,
         TransactionLabel:'OP_REFUND_OF_BILL'
       };
       console.log(PatientHeaderObj)

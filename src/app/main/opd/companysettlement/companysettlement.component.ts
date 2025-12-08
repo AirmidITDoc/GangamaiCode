@@ -417,14 +417,14 @@ export class CompanysettlementComponent implements OnInit {
         let PatientHeaderObj = {};
         PatientHeaderObj['Date'] = this.datePipe.transform(contact.billDate, 'MM/dd/yyyy') || '01/01/1900',
         PatientHeaderObj['RegNo'] = this.registerObj?.regNo;
-        PatientHeaderObj['PatientName'] = this.registerObj?.patientName
-        PatientHeaderObj['OPD_IPD_Id'] = contact.opdNo;
-        PatientHeaderObj['Age'] = this.registerObj?.ageYear
-        PatientHeaderObj['DepartmentName'] = contact.departmentName;
-        PatientHeaderObj['billNo'] = contact.billNo;
-        PatientHeaderObj['CompanyName'] = contact.companyName;
-        PatientHeaderObj['NetPayAmount'] = contact.balanceAmt;
-        PatientHeaderObj['CompanyId'] = contact.companyId;  
+        PatientHeaderObj['PatientName'] = this.registerObj?.patientName || ''
+        PatientHeaderObj['OPD_IPD_Id'] = contact.opdNo || '';
+        PatientHeaderObj['Age'] = this.registerObj?.ageYear || 0
+        PatientHeaderObj['DepartmentName'] = contact.departmentName || '';
+        PatientHeaderObj['billNo'] = contact.billNo || 0;
+        PatientHeaderObj['CompanyName'] = contact.companyName || '';
+        PatientHeaderObj['NetPayAmount'] = contact.balanceAmt || 0;
+        PatientHeaderObj['CompanyId'] = contact.companyId || 0;  
         PatientHeaderObj['TransactionLabel'] = 'OP_SETTLEMENT';
 
         const dialogRef = this._matDialog.open(OpPaymentComponent,

@@ -241,16 +241,16 @@ export class IPAdvanceComponent implements OnInit {
       console.log(this.AdvFormGroup.value)
       let PatientHeaderObj = {};
       PatientHeaderObj['Date'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '1900-01-01',
-      PatientHeaderObj['PatientName'] = this.registerObj?.patientName;
-      PatientHeaderObj['RegNo'] = this.registerObj?.regNo,
-      PatientHeaderObj['DoctorName'] = this.registerObj?.doctorname;
-      PatientHeaderObj['CompanyName'] = this.registerObj?.companyName;
-      PatientHeaderObj['DepartmentName'] = this.registerObj?.departmentName;
+      PatientHeaderObj['PatientName'] = this.registerObj?.patientName || '';
+      PatientHeaderObj['RegNo'] = this.registerObj?.regNo || 0,
+      PatientHeaderObj['DoctorName'] = this.registerObj?.doctorname || '';
+      PatientHeaderObj['CompanyName'] = this.registerObj?.companyName || '';
+      PatientHeaderObj['DepartmentName'] = this.registerObj?.departmentName || '';
       PatientHeaderObj['CashCounterId'] = this.AdvFormGroup.get('CashCounterID')?.value || 0;
-      PatientHeaderObj['OPD_IPD_Id'] = this.registerObj?.ipdno;
-      PatientHeaderObj['CompanyId'] = this.registerObj?.companyId;
+      PatientHeaderObj['OPD_IPD_Id'] = this.registerObj?.ipdno || '';
+      PatientHeaderObj['CompanyId'] = this.registerObj?.companyId || 0;
       PatientHeaderObj['TransactionLabel'] = 'IP_ADVANCE';
-      PatientHeaderObj['Age'] = this.registerObj?.ageYear;
+      PatientHeaderObj['Age'] = this.registerObj?.ageYear || 0;
       PatientHeaderObj['NetPayAmount'] = this.AdvFormGroup.get('advanceAmount').value || 0;
 
       const dialogRef = this._matDialog.open(OpPaymentComponent,

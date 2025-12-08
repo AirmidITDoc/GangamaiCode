@@ -719,17 +719,17 @@ export class IPBillBrowseListComponent implements OnInit {
         console.log(contact)
         let PatientHeaderObj = {};
         PatientHeaderObj['Date'] = contact.billDate;
-        PatientHeaderObj['PatientName'] = contact.patientName;
-        PatientHeaderObj['AdvanceAmount'] = contact.advUsedPay;
-        PatientHeaderObj['NetPayAmount'] = contact.balanceAmt;
-        PatientHeaderObj['BillNo'] = contact.billNo;
-        PatientHeaderObj['OPD_IPD_Id'] = contact.opdipdid;
-        PatientHeaderObj['IPDNo'] = contact.ipdNo;
-        PatientHeaderObj['RegNo'] = contact.regNo;
-        PatientHeaderObj['DoctorName'] = contact.doctorName;
-        PatientHeaderObj['CompanyName'] = contact.companyName;
-        PatientHeaderObj['CompanyId'] = contact.companyId;
-        PatientHeaderObj['DepartmentName'] = contact.departmentName;
+        PatientHeaderObj['PatientName'] = contact.patientName || '';
+        PatientHeaderObj['AdvanceAmount'] = contact.advUsedPay || 0;
+        PatientHeaderObj['NetPayAmount'] = contact.balanceAmt || 0;
+        PatientHeaderObj['BillNo'] = contact.billNo || 0 ;
+        PatientHeaderObj['OPD_IPD_Id'] = contact.opdipdid || 0;
+        PatientHeaderObj['IPDNo'] = contact.ipdNo || '';
+        PatientHeaderObj['RegNo'] = contact.regNo || 0 ;
+        PatientHeaderObj['DoctorName'] = contact.doctorName || '';
+        PatientHeaderObj['CompanyName'] = contact.companyName || '';
+        PatientHeaderObj['CompanyId'] = contact.companyId || 0;
+        PatientHeaderObj['DepartmentName'] = contact.departmentName || '';
         PatientHeaderObj['TransactionLabel'] = 'IP_SETTLEMENT';
 
         const dialogRef = this._matDialog.open(OpPaymentVimalComponent,
