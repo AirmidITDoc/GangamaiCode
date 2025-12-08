@@ -16,6 +16,7 @@ export class AirmidAutoCompleteComponent extends BaseFormControlComponent implem
     @Input() filteredOptions: Observable<any[]>;
     @Output() selectionChange = new EventEmitter<any>();
     @Output() onClearSelection = new EventEmitter<any>();
+    @Output() valueChange = new EventEmitter<string>();
     private destroy: Subject<void> = new Subject();
     control = new FormControl();
     @Input() formGroup: FormGroup;
@@ -75,9 +76,17 @@ export class AirmidAutoCompleteComponent extends BaseFormControlComponent implem
     get value(): (string | []) {
         return this.control.value;
     }
-    set value(value: (string | [])) {
-        if (value != this.control.value) {
-            this.control.setValue(value);
+    // set value(value: (string | [])) {
+    //     if (value != this.control.value) {
+    //         this.control.setValue(value);
+    //         this.stateChanges.next();
+    //     }
+    // }
+    set value(value: any) {
+        if (this.formGroup && this.formControlName &&
+            this.formGroup.controls[this.formControlName]?.value !== value) {
+
+            this.formGroup.controls[this.formControlName].setValue(value, { emitEvent: false });
             this.stateChanges.next();
         }
     }
@@ -124,9 +133,16 @@ export class AirmidAutoCompleteComponent extends BaseFormControlComponent implem
     onSearchData(e: string) {
         this.value = e;
     }
-    displayFn(user: any): string {
-        return user?.[this["ariaLabel"]];
+    // displayFn(user: any): string {
+    //     return user?.[this["ariaLabel"]];
+    // }
+    displayFn(option: any): string {
+        if (typeof option === 'string') {
+            return option;
+        }
+        return option?.[this["ariaLabel"]];
     }
+
     selectedOption(e: any) {
         this.selectionChange.emit(e);
         // from here you need to bind form.
