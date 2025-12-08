@@ -72,9 +72,6 @@
                                         <button class="btn btn-danger-outline btn-xs" (click)="onClear()">clear</button>
                                         <button class="btn btn-primary btn-with-icon btn-xs" (click)="onChangeFirst()">
                                             <span>Search</span>
-                                            <span class="btn-icon">
-                                                <mat-icon>search</mat-icon>
-                                            </span>
                                         </button>
 
                                     </div>
@@ -148,8 +145,7 @@
                                     <mat-icon matTooltip="Test Completed" *ngIf="element.isCompleted==true"
                                         class="active-icon green-500 s-16">check_circle</mat-icon>
                                     <mat-icon matTooltip="Test Not Completed" *ngIf="element.isCompleted==false"
-                                        class="active-icon red-500 s-16">hourglass_empty</mat-icon>
-
+                                    class="s-20 mr-4" style="color: #f44336;">hourglass_empty</mat-icon>
                                 </div>
                             </ng-template>
 
@@ -170,7 +166,7 @@
 
                                     <mat-icon *ngIf="element.isVerified" matTooltip="Report Verified" class="w-50">verified</mat-icon>
 
-                                    <mat-icon *ngIf="!element.isVerified" matTooltip="Report Not Verified" class="w-25">cancel</mat-icon>
+                                    <mat-icon *ngIf="!element.isVerified" matTooltip="Report Not Verified" class="w-25">schedule</mat-icon>
                                 </div>
                             </ng-template>
                             <ng-template #actionsoutSourceStatus let-element>
@@ -179,7 +175,7 @@
                                     <mat-icon *ngIf="element.outSourceStatus" matTooltip="OutSource Completed"
                                         class="w-30" style="background-color: rgb(232, 127, 52);">business_center</mat-icon>
 
-                                    <mat-icon *ngIf="!element.outSourceStatus" matTooltip="No OutSource" class="w-40">invert_colors</mat-icon>
+                                    <mat-icon *ngIf="!element.outSourceStatus" style="color: #f44336;" matTooltip="No OutSource" class="w-40">invert_colors</mat-icon>
                                 </div>
                             </ng-template>
                             <airmid-table [gridConfig]="gridConfig" #grid :ShowFilter="false" :ShowButtons="false">
