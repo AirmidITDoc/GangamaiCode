@@ -101,4 +101,8 @@ export class RefundbillService {
     public getVisitById(Id) {
         return this._httpClient.GetData("VisitDetail/" + Id);
     }
+      
+    public globlePatientdetUpdates(employee, Id) { 
+    return this._httpClient.PutData("OutPatient/UpdateReg"+ Id, employee)
+  }
 }

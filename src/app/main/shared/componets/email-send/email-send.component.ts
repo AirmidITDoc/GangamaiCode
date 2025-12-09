@@ -48,6 +48,9 @@ EmailFrom:FormGroup
     if (this.data.Obj) {
       console.log(this.data)
       this.registerObj = this.data.Obj;
+      this.EmailFrom.patchValue({
+       ToMailId: this.registerObj?.emailId || ''
+      })
       // if (this.registerObj.PurchaseID) {
       //   this.vPurchaseId = this.registerObj.PurchaseNo;
       //   this.vPurchaseTime = this.registerObj.PurchaseTime;

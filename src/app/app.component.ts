@@ -322,7 +322,7 @@ onKeydownHandler(event: KeyboardEvent) {
             const dialogRef = this.dialogRef.open(PatientSearchComponent,
               {
                      width:"45%",
-                    height:"60%",
+                    height:"65%",
                     panelClass: 'responsive-dialog'
                });
             dialogRef.afterClosed().subscribe((result) => {
