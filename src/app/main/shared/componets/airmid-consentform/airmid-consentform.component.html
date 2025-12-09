@@ -2,7 +2,9 @@
     <div class="modal-header accent inOperHeader">
         <div class="modal-header-content">
             <div class="modal-header-title">
-                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"> Consent Form
+                <!-- <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"> Consent Form
+                </span> -->
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"> {{ data.title }}
                 </span>
             </div>
             <div class="modal-header-right">
@@ -20,16 +22,49 @@
             <form [formGroup]="myForm">
                 <input type="hidden" name="ConsentId" formControlName="ConsentId">
                 <div fxLayout="column" fxLayoutGap="12px grid">
+                    <!-- <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 10px ;">
+                        <div class="patient-info-sales my-8">
+                            <div class="patient-info-title border-bottom pb-2">
+                                <span class="h1">Patient Information</span>
+                            </div>
+                            <div class="Ipd-patient-info" fxFlexFill fxLayout="row" fxLayoutAlign="space-between center"
+                                class="patient-info">
+                                <div class="patient-sub">
+
+                                    <div class="patient-info-row patient-info-1-111 pt-8" fxLayout="row"
+                                        fxLayoutAlign="space-between">
+                                        <div fxLayout="column" fxLayoutGap="6px">
+                                            <div class="patient-col">
+                                                <span class="patient-col-key">UHID No
+                                                </span>
+                                                <span>:</span>
+                                                <span class="patient-col-value">{{data.title}}</span>
+                                            </div>
+                                        </div>
+
+                                        <div fxLayout="column" fxLayoutGap="6px">
+                                            <div class="patient-col">
+                                                <span class="patient-col-key">Patient Name
+                                                </span>
+                                                <span>:</span>
+                                                <span class="patient-col-value">{{1}}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </mat-card> -->
+
                     <!-- Department, Template, Language -->
                     <mat-card class="mt-16" style="padding: 10px;" fxLayout="row wrap" fxLayoutGap="16px">
                         <airmid-dropdown label="Department Name" formControlName="ConsentDepartment"
-                            [formGroup]="myForm" fxFlex="30" [value]="data?.ConsentDepartment"
-                            [mode]="autocompletedepartment" (selectionChange)="selectChangedepartment($event)">
+                            [formGroup]="myForm" fxFlex="30" [mode]="autocompletedepartment"
+                            (selectionChange)="selectChangedepartment($event)">
                         </airmid-dropdown>
 
                         <airmid-dropdown label="Template" formControlName="ConsentTempId" [formGroup]="myForm"
-                            fxFlex="30" [value]="data?.ConsentTempId" #ddlTemplate
-                            (selectionChange)="onTemplateSelect($event)">
+                            fxFlex="30" #ddlTemplate (selectionChange)="onTemplateSelect($event)">
                         </airmid-dropdown>
 
                         <div fxFlex="auto">
@@ -47,7 +82,7 @@
                         </form>
                     </mat-card>
                 </div>
-                
+
                 <div class="modal-footer inOperfooter" style="margin-top: 10px;">
                     <div class="footer-navigation-container">
                         <div class="modal-footer-buttons inOperbtn">

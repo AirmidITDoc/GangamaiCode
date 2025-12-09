@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, Inject, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormArray, FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { fuseAnimations } from '@fuse/animations';
@@ -14,6 +14,9 @@ import { OtReserInsert } from '../../ot-reservation/ot-reservation.component';
 import { CdkDragDrop, CdkDragMove, moveItemInArray } from '@angular/cdk/drag-drop';
 import { CdkScrollable } from '@angular/cdk/scrolling';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
+import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
+import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
+import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
 
 @Component({
   selector: 'app-new-ot-preoperation',
@@ -236,6 +239,8 @@ export class NewOtPreoperationComponent {
         this.getReservationSurgeryDetList(this.registerObj1);
         this.getReservationAttendentDetList(this.registerObj1);
       }
+
+      this.getfilterdata();
     }
   }
 
@@ -284,9 +289,6 @@ export class NewOtPreoperationComponent {
       TheaterLocation: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       diagnosis: [[], [Validators.required]],
       cathLabDiagnosis: [[], [Validators.required]],
-      consentName: [''],
-      departmentId: [0],
-      ConsentText: [''],
       bodyPartId: [],
 
       ////////surgery det parameters ////////////
@@ -1007,7 +1009,7 @@ export class NewOtPreoperationComponent {
 
   /////////////////////////////// attendent detail part end/////////////////////////////
 
-  selectedDate:any;
+  selectedDate: any;
   onSurgeryDateChange(event: any) {
     this.selectedDate = event.value;   // This is a Date object
     console.log("Selected:", this.selectedDate);
@@ -1048,7 +1050,7 @@ export class NewOtPreoperationComponent {
       this.preOperationFinalForm.get('otreservationId')?.setValue(this.vreservationId ?? 0);
       this.preOperationFinalForm.get('otpreOperationId')?.setValue(this.vPreOperationId ?? 0);
       this.preOperationFinalForm.get('opiptype').setValue(this.vSelectedOption === "OP" ? 0 : 1);
-    this.preOperationFinalForm.get('surgeryDate')?.setValue(this.selectedDate);
+      this.preOperationFinalForm.get('surgeryDate')?.setValue(this.selectedDate);
 
       if (this.dssurgeryDetailList.data.length === 0) {
         this.toastr.warning('Data is not available in list ,please add surgery details in the list.', 'Warning');
@@ -1099,7 +1101,7 @@ export class NewOtPreoperationComponent {
 
       const formValue = { ...this.preOperationFinalForm.value };
       const controlsToRemove = ['TheaterLocation', 'bodyPartId', 'surgeryCategoryId', 'surgeryId', 'surgeryPart', 'surgeryFromTime', 'surgeryEndTime', 'surgeryDuration', 'isPrimary',
-        'surgeonId', 'anesthetistId', 'recourceType', 'doctorTypeId', 'doctorId', 'diagnosis', 'cathLabDiagnosis', 'consentName', 'departmentId', 'ConsentText'];
+        'surgeonId', 'anesthetistId', 'recourceType', 'doctorTypeId', 'doctorId', 'diagnosis', 'cathLabDiagnosis'];
       controlsToRemove.forEach(key => delete formValue[key]);
 
       console.log(formValue)
@@ -1271,4 +1273,54 @@ export class NewOtPreoperationComponent {
     return num.toString().padStart(2, '0');
   }
 
+  // Consent list
+  @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+  @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
+  ngAfterViewInit() {
+    this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
+  }
+
+  allcolumns = [
+    { heading: "Consent Name", key: "consentName", sort: true, align: 'left', emptySign: 'NA', width: 500 },
+    { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
+    {
+      heading: "Action", key: "action", align: "right", width: 120, sticky: true, type: gridColumnTypes.template,
+      template: this.actionButtonTemplate  // Assign ng-template to the column
+    }
+  ]
+
+  allfilters = [
+    { fieldName: "RefId", fieldValue: String(this.data.otReservationId), opType: OperatorComparer.Equals },
+  ]
+
+  gridConfig: gridModel = {
+    apiUrl: "TransactionConsentMaster/List",
+    columnsList: this.allcolumns,
+    sortField: "RefId",
+    sortOrder: 0,
+    filters: this.allfilters
+  }
+
+  getfilterdata() {
+    this.gridConfig = {
+      apiUrl: "TransactionConsentMaster/List",
+      columnsList: this.allcolumns,
+      sortField: "RefId",
+      sortOrder: 0,
+      filters: [
+        { fieldName: "RefId", fieldValue: String(this.data.otReservationId), opType: OperatorComparer.Equals },
+      ]
+    }
+    console.log(this.gridConfig)
+    this.grid.gridConfig = this.gridConfig;
+    this.grid.bindGridData();
+  }
+
+  delete(element) {
+    if (element.consentId) {
+      this._OTPreOperationService.deactivateTheStatus(element.consentId).subscribe((response: any) => {
+        this.grid.bindGridData();
+      });
+    }
+  }
 }

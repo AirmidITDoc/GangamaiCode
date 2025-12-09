@@ -115,12 +115,12 @@
                         <mat-icon> print</mat-icon>
                     </button>
 
-                    <button mat-icon-button matTooltip="Cancel" (click)="OnCancel(element)">
+                    <button mat-icon-button matTooltip="Cancel" (click)="OnCancel(element)" [disabled]="element.otCheckInId">
                         <mat-icon> cancel</mat-icon>
                     </button>
 
                     <app-airmid-consentform-icon [refId]="element.otReservationId" [opipId]="element.opIpId"
-                        [opipType]="element.opIpType"></app-airmid-consentform-icon>
+                        [opipType]="element.opIpType" title="Name: {{ element.patientName }}  UHID: {{ element.regNo }}"></app-airmid-consentform-icon>
                 </div>
             </ng-template>
             <airmid-table [gridConfig]="gridConfig" class="content">

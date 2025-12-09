@@ -167,4 +167,8 @@ export class OtPreoperationService {
     return this._httpClient.PostData("OTPreOperation/OtPreOperationDiagnosisList", employee);
   }
 
+  public deactivateTheStatus(m_data) {
+    return this._httpClient.DeleteData("TransactionConsentMaster?Id=" + m_data.toString());
+  }
+
 }
