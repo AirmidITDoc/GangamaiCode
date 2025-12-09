@@ -129,7 +129,8 @@ getselectObjPayMode(obj){
     IsAllowAdd() {
         return this.netPayAmt > ((this.paidAmt || 0) + Number(this.amount1));
     }
-    GetBalanceAmt() {
+    GetBalanceAmt() { 
+        debugger
         this.IsMoreAmt = Number(this.netPayAmt || 0) - (Number(this.paidAmt || 0) + Number(this.amount1 || 0)) < 0;
         this.balanceAmt = Number(this.netPayAmt || 0) - ((Number(this.paidAmt || 0) + Number(this.amount1 || 0)));
            if (this.balanceAmt < 0) {
@@ -196,7 +197,8 @@ getselectObjPayMode(obj){
         this.GetBalanceAmt();
 
     }
-    setPaidAmount() {
+    setPaidAmount() { 
+        debugger
         this.paidAmt = this.Payments.data.reduce(function (a, b) { return a + Number(b['Amount']); }, 0);
     }
     onKeyAdv(a, b) {
@@ -633,31 +635,24 @@ getselectObjPayMode(obj){
         } 
         setTimeout(() => {
         if(this.data.FromName == "IP-Pharma-SETTLEMENT"){
-        this.opService.AdvancePharamcylist(vdata).subscribe((response) => {
-             this.selectedAdvanceData = response.data;
-                this.dataSource.data = this.selectedAdvanceData
-                if (this.dataSource.data.length > 0) {
+        this.opService.AdvancePharamcylist(vdata).subscribe((response) => { 
+                this.dataSource.data = response.data; 
                     this.IsAdv = true 
-                    this.AdvanceId = this.dataSource.data[0].advanceId;
+                    this.AdvanceId = this.dataSource?.data[0]?.advanceId || 0;
                     this.calculateBalance(); 
                     this.SetAdvanceRow();
                     this.setPaidAmount();
-                    this.GetBalanceAmt();
-                }
+                    this.GetBalanceAmt(); 
         });
         }else{ 
-        this._IpSearchListService.AdvanceHeaderlist(vdata).subscribe((response) => {
-            console.log(response)
-             this.selectedAdvanceData = response.data;
-                this.dataSource.data = this.selectedAdvanceData
-                if (this.dataSource.data.length > 0) {
+        this._IpSearchListService.AdvanceHeaderlist(vdata).subscribe((response) => { 
+                this.dataSource.data = response.data; 
                     this.IsAdv = true 
-                    this.AdvanceId = this.dataSource.data[0].advanceId
+                    this.AdvanceId = this.dataSource?.data[0]?.advanceId || 0
                     this.calculateBalance(); 
                     this.SetAdvanceRow();
                     this.setPaidAmount();
-                    this.GetBalanceAmt();
-                }
+                    this.GetBalanceAmt(); 
         });
         }  
         }, 500);
@@ -678,7 +673,7 @@ getselectObjPayMode(obj){
                 if (this.data.FromName == "IP-Pharma-SETTLEMENT") {
                     this.opService.AdvancePharamcylist(vdata).subscribe((response) => {
                         this.dataSource.data = response.data;
-                        this.AdvanceId = this.dataSource.data[0].advanceId
+                        this.AdvanceId = this.dataSource?.data[0]?.advanceId || 0;
                         this.calculateBalance(); 
                         this.SetAdvanceRow();
                         this.setPaidAmount();
@@ -688,7 +683,7 @@ getselectObjPayMode(obj){
                     this._IpSearchListService.AdvanceHeaderlist(vdata).subscribe((response) => {
                         console.log(response)
                         this.dataSource.data = response.data;
-                        this.AdvanceId = this.dataSource.data[0].advanceId
+                        this.AdvanceId = this.dataSource?.data[0]?.advanceId || 0
                         this.calculateBalance(); 
                         this.SetAdvanceRow();
                         this.setPaidAmount();
@@ -706,6 +701,7 @@ getselectObjPayMode(obj){
     }
     advanceUsedAmt: any = 0;
     calculateBalance() { 
+        debugger
         if (this.dataSource.data && this.dataSource.data.length > 0) {
             let totalAdvanceAmt = 0;
             let netAmtLocal = this.netPayAmt;
@@ -733,19 +729,19 @@ getselectObjPayMode(obj){
         let adv = this.dataSource.data.reduce(function (a, b) { return a + Number(b['usedAmount']); }, 0);
         let tmp = this.Payments.data.find(x => x.Id == -1);
         if (tmp) {
-           // tmp.Amount = adv;
+            tmp.Amount = adv;
             tmp.AdvUsedAmt = adv;
         }
         else {
             let tmp1 = this.Payments.data;
             tmp1.push({
                 Id: -1,
-                PaymentType: "ADVANCE_USED", Amount: 0,
+                PaymentType: "ADVANCE_USED", Amount: adv,
                 RefNo: "",
                 BankId: 0,
                 BankName: "",
                 RegDate: new Date(),
-                AdvanceID:0,//this.AdvanceId,
+                AdvanceID:this.AdvanceId || 0,
                 AdvUsedAmt:adv
             });
             this.Payments.data = tmp1;
