@@ -551,7 +551,6 @@ getselectObjPayMode(obj){
         let submitDataPay = {
             ipPaymentInsert: this.Paymentobj,
             ipModePaymentInsert:this.ModePaymentObj
-            
         };
         let IsSubmit
         if (this.data.FromName == "IP-SETTLEMENT" || this.data.FromName == "IP-Pharma-SETTLEMENT" || this.data.FromName == "IP-Bill") {
@@ -734,19 +733,19 @@ getselectObjPayMode(obj){
         let adv = this.dataSource.data.reduce(function (a, b) { return a + Number(b['usedAmount']); }, 0);
         let tmp = this.Payments.data.find(x => x.Id == -1);
         if (tmp) {
-            tmp.Amount = adv;
+           // tmp.Amount = adv;
             tmp.AdvUsedAmt = adv;
         }
         else {
             let tmp1 = this.Payments.data;
             tmp1.push({
                 Id: -1,
-                PaymentType: "ADVANCE_AMOUNT", Amount: adv,
+                PaymentType: "ADVANCE_USED", Amount: 0,
                 RefNo: "",
                 BankId: 0,
                 BankName: "",
                 RegDate: new Date(),
-                AdvanceID:this.AdvanceId,
+                AdvanceID:0,//this.AdvanceId,
                 AdvUsedAmt:adv
             });
             this.Payments.data = tmp1;
