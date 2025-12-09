@@ -558,7 +558,7 @@ export class SalesHospitalNewComponent implements OnInit {
         dialogRef.afterClosed().subscribe((result1) => {
             let isEscaped = result1.vEscflag;
             if (isEscaped && !isEditable) {
-                this._salesService.ItemSearchGroup.get('ItemId').setValue('a');
+                this._salesService.ItemSearchGroup.get('ItemId').setValue('');
                 return;
             }
             let result = result1.selectedData as SalesBatchItemModel;
@@ -962,7 +962,7 @@ if (QtyElement) {
             IGSTAmt: '0',
             PurTotAmt: '0',
         })
-        this._salesService.ItemSearchGroup.get('ItemId').reset('a');
+        this._salesService.ItemSearchGroup.get('ItemId').reset('');
         this.dsBalAvaListStore.data = [];
 
     }

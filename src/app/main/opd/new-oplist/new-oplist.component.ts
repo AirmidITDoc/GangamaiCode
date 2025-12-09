@@ -317,17 +317,17 @@ export class NewOPListComponent implements OnInit {
         console.log(contact)
         let PatientHeaderObj = {};
         PatientHeaderObj['Date'] = this.datePipe.transform(contact.billDate, 'MM/dd/yyyy') || '01/01/1900',
-        PatientHeaderObj['RegNo'] = contact.regNo;
-        PatientHeaderObj['PatientName'] = contact.patientName;
-        PatientHeaderObj['OPD_IPD_Id'] = contact.opD_IPD_ID;
-        PatientHeaderObj['Age'] = contact.patientAge;
-        PatientHeaderObj['DepartmentName'] = contact.departmentName;
-        PatientHeaderObj['DoctorName'] = contact.doctorName;
-        PatientHeaderObj['TariffName'] = contact.tariffName;
-        PatientHeaderObj['CompanyName'] = contact.companyName;
-        PatientHeaderObj['NetPayAmount'] = contact.balanceAmt;
-        PatientHeaderObj['CompanyId'] = contact.companyId; 
-        PatientHeaderObj['billNo'] = contact.billNo;  
+        PatientHeaderObj['RegNo'] = contact.regNo || 0;
+        PatientHeaderObj['PatientName'] = contact.patientName || '';
+        PatientHeaderObj['OPD_IPD_Id'] = contact.opD_IPD_ID || 0;
+        PatientHeaderObj['Age'] = contact.patientAge || 0;
+        PatientHeaderObj['DepartmentName'] = contact.departmentName || '';
+        PatientHeaderObj['DoctorName'] = contact.doctorName || '';
+        PatientHeaderObj['TariffName'] = contact.tariffName || '';
+        PatientHeaderObj['CompanyName'] = contact.companyName || '';
+        PatientHeaderObj['NetPayAmount'] = contact.balanceAmt || 0;
+        PatientHeaderObj['CompanyId'] = contact.companyId || 0; 
+        PatientHeaderObj['billNo'] = contact.billNo || 0;  
         PatientHeaderObj['TransactionLabel'] = 'OP-Settlement';
         this.vMobileNo = contact.mobileNo;
         const dialogRef = this._matDialog.open(OpPaymentComponent,
@@ -343,8 +343,7 @@ export class NewOPListComponent implements OnInit {
             });
         dialogRef.afterClosed().subscribe(result => {
             if (result.IsSubmitFlag == true) {
-                let PaymentObj = result.submitDataPay.ipPaymentInsert
-
+                let PaymentObj = result.submitDataPay.ipPaymentInsert 
                 
                 this.vpaidamt = result.PaidAmt;
                 this.vbalanceamt = result.BalAmt
@@ -352,18 +351,19 @@ export class NewOPListComponent implements OnInit {
                 let updateBillobj = {};
                 updateBillobj['BillNo'] = contact.billNo;
                 updateBillobj['balanceAmt'] = result.BillBalanceAmount;
-                console.log(result.submitDataPay.ipPaymentInsert)
+                console.log(result.submitDataPay.ipPaymentInsert) 
+
                 let data = {
                     opCreditPayment: PaymentObj,
                     "billUpdate": {
                         "billNo": contact.billNo,
                         "balanceAmt": result.BillBalanceAmount
                     },
-                    tPayments:PaymentObj
+                    tPayments: result.submitDataPay.ipModePaymentInsert, 
+
                 }
                 console.log(data)
                 this._OPListService.InsertOPBillingsettlement(data).subscribe(response => {
-                    this.toastr.success(response.message);
                     this.grid.gridConfig = this.gridConfig;
                     this.grid.bindGridData();
                     this.viewgetOPPayemntPdf(response, true);
