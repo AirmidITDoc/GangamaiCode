@@ -2,7 +2,7 @@
     <div class="modal-header accent preOperHeader">
         <div class="modal-header-content">
             <div class="modal-header-title">
-                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">New OT Pre-Operation</span>
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">New OT Pre-Operation Notes</span>
             </div>
             <div class="modal-header-right">
                 <div class="comman-date-container">
@@ -172,7 +172,8 @@
 
                                         <div fxFlex="10%" fxFlex.xs="100%" fxFlex.sm="33%">
                                             <airmid-dropdown label="Surgery Type" formControlName="surgeryCategoryId"
-                                                [formGroup]="preOperationFinalForm" [value]="registerObj1?.surgeryCategoryId"
+                                                [formGroup]="preOperationFinalForm"
+                                                [value]="registerObj1?.surgeryCategoryId"
                                                 [mode]="autocompleteModeSiteDescription" #ddlSurgerytype
                                                 [readonly]="true"
                                                 (selectionChange)="selectChangeSurgeryCategory($event)">
@@ -181,7 +182,8 @@
 
                                         <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                                             <airmid-dropdown label="Surgery Name" formControlName="surgeryId"
-                                                [formGroup]="preOperationFinalForm" [mode]="autocompleteModeSurgeryMaster"
+                                                [formGroup]="preOperationFinalForm"
+                                                [mode]="autocompleteModeSurgeryMaster"
                                                 (selectionChange)="selectChangeSurgery($event)" ValueField="surgeryId"
                                                 TextField="surgeryName"
                                                 ApiUrl="SurgeryMaster/GetSurgeryTypeByOTSurgery">
@@ -396,7 +398,8 @@
 
                                         <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                                             <airmid-dropdown label="Resource Type" formControlName="recourceType"
-                                                [formGroup]="preOperationFinalForm" [mode]="autocompleteModeResourseType">
+                                                [formGroup]="preOperationFinalForm"
+                                                [mode]="autocompleteModeResourseType">
                                             </airmid-dropdown>
                                         </div>
 
@@ -496,16 +499,16 @@
 
                                 <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <airmid-dropdown label="Theater" formControlName="ottable"
-                                        [formGroup]="preOperationFinalForm" ValueField="ottableId" TextField="ottableName"
-                                        (selectionChange)="onChangeOtTable($event)"
+                                        [formGroup]="preOperationFinalForm" ValueField="ottableId"
+                                        TextField="ottableName" (selectionChange)="onChangeOtTable($event)"
                                         ApiUrl="OTRequest/getlocationByOttable">
                                     </airmid-dropdown>
                                 </div>
 
                                 <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <airmid-dropdown label="Theater Location" formControlName="TheaterLocation"
-                                        [formGroup]="preOperationFinalForm" [mode]="autocompleteModeLocation" #ddlLocation
-                                        [readonly]="true"></airmid-dropdown>
+                                        [formGroup]="preOperationFinalForm" [mode]="autocompleteModeLocation"
+                                        #ddlLocation [readonly]="true"></airmid-dropdown>
                                 </div>
 
                                 <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
@@ -630,28 +633,23 @@
                         </div>
                     </mat-tab>
 
-                    <mat-tab label="Consent Form">
+                    <mat-tab label="Consent List">
 
-                        <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="33%" fxLayout="column">
-                            <div fxLayout="row" class="gap-8">
-                                <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="40%">
-                                    <airmid-textbox label="consent Name" formControlName="consentName"
-                                        [value]="data?.consentName" [formGroup]="preOperationFinalForm" [maxLength]="50">
-                                    </airmid-textbox>
-                                </div>
+                        <ng-template #actionButtonTemplate let-element>
+                            <div fxLayout="row" fxLayoutAlign="center center">
+                                <app-airmid-consentform-icon [Id]="element.consentId" [refId]="element.refId"
+                                    [opipId]="element.opipid" title="Name: {{ registerObj1.patientName }}  UHID: {{ registerObj1.regNo }}"
+                                    [opipType]="element.opiptype"></app-airmid-consentform-icon>
 
-                                <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="40%">
-                                    <airmid-dropdown label="Department" [value]="data?.departmentId"
-                                        formControlName="departmentId" [formGroup]="preOperationFinalForm"
-                                        [mode]="autocompleteModeDepartment">
-                                    </airmid-dropdown>
-                                </div>
+                                <button mat-icon-button (click)="delete(element)" matTooltip="Delete">
+                                    <mat-icon title="Delete">delete</mat-icon>
+                                </button>
                             </div>
+                        </ng-template>
 
-                            <airmid-editor label="Consent Details" formControlName="ConsentText"
-                                [formGroup]="preOperationFinalForm">
-                            </airmid-editor>
-                        </div>
+                        <airmid-table [gridConfig]="gridConfig" class="content" #grid [ShowFilter]="false"
+                            [ShowButtons]="false">
+                        </airmid-table>
 
                     </mat-tab>
                 </mat-tab-group>

@@ -1,5 +1,5 @@
-<div class="modal-wrapper grid-container">
-    <div class="modal-header accent">
+<div class="modal-wrapper grid-container inOperMain">
+    <div class="modal-header accent inOperHeader">
         <div class="modal-header-content">
             <div class="modal-header-title">
                 <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"> New Consent Master
@@ -15,7 +15,7 @@
             </div>
         </div>
     </div>
-    <div class="modal-body" fusePerfectScrollbar>
+    <div class="modal-body inOperMiddle" fusePerfectScrollbar>
         <div class="modal-body-container">
             <form [formGroup]="myForm">
                 <input type="hidden" name="ConsentId" formControlName="ConsentId">
@@ -58,12 +58,12 @@
                         <li>{{ '{{AgeYear}}' }}</li>
                     </ul>
                 </div>
-                <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" fxLayoutAlign="space-between">
+                <div class="new-appointment-actions gap-8 mt-12 inOperfooter" fxLayout="row" fxLayoutAlign="space-between">
                     <div>
                         <!-- <app-airmid-slider label="IsActive/Deactive"   formControlName="isActive" [formGroup]="myForm" [(ngModel)]="isActive" ></app-airmid-slider> -->
                     </div>
 
-                    <div class="new-appointment-actions gap-8" fxLayoutAlign="end center">
+                    <div class="new-appointment-actions gap-8 inOperbtn" fxLayoutAlign="end center">
                         <button class="btn btn-danger-outline" (click)="onClear(false)">Close</button>
                         <button class="btn btn-primary " color="accent" (click)="onSubmit()">
                             <span>Save</span>

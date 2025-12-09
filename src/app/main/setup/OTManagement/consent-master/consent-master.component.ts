@@ -29,7 +29,7 @@ export class ConsentMasterComponent implements OnInit {
         { heading: "OT Consent Name", key: "consentName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
         { heading: "Consent Desc ", key: "consentDesc", sort: true, align: 'left', emptySign: 'NA', width: 350 },
         { heading: "Department Name", key: "departmentName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-        // { heading: "isActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
+        { heading: "isActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
         {
             heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
                 {

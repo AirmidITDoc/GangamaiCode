@@ -28,6 +28,7 @@ export class AirmidConsentformComponent {
   templateId = "0"
   templateName = ''
   vRefType: any;
+  vconsentID: any;
 
   constructor(
     public dialogRef: MatDialogRef<AirmidConsentformComponent>,
@@ -44,11 +45,18 @@ export class AirmidConsentformComponent {
     this.myForm.markAllAsTouched();
 
     console.log(this.data)
-    if ((this.data?.consentId ?? 0) > 0) {
-      this.vTemplateDesc = this.data.ConsentDescription
-      this.myForm.patchValue(this.data);
-      console.log(this.myForm.value)
-      this.isButtonDisabled = true
+    if ((this.data?.Id ?? 0) > 0) {
+      this._service.GetData("TransactionConsentMaster/" + this.data.Id).subscribe((response) => {
+        console.log(response)
+        this.myForm.get('ConsentDescription')?.setValue(response.consentDescription);
+        this.myForm.get('ConsentDepartment')?.setValue(response.consentDepartment);
+        this.vRefType = response.refType
+        this.templateId = response.consentTempId
+        this.templateName = response.consentName
+        this.vconsentID=response.consentId
+        this.selectChangedepartment(response)
+        this.isButtonDisabled = true
+      });
     }
   }
 
@@ -93,7 +101,7 @@ export class AirmidConsentformComponent {
         this.ddlTemplate.bindGridAutoComplete();
       });
     } else {
-      this._service.GetData("NursingConsent/GetMConsentMasterList?DeptId=" + obj.consentDeptId).subscribe((data: any[]) => {
+      this._service.GetData("NursingConsent/GetMConsentMasterList?DeptId=" + obj.consentDepartment).subscribe((data: any[]) => {
         const mapped = data.map(item => ({
           ...item,
           value: item.consentId,
@@ -103,8 +111,6 @@ export class AirmidConsentformComponent {
 
         const incomingTempId = obj.consentTempId;
         setTimeout(() => {
-          debugger
-
           this.ddlTemplate.bindGridAutoComplete();
           if (incomingTempId) {
             const matchedTemp = mapped.find(temp => temp.value === incomingTempId);
@@ -151,19 +157,26 @@ export class AirmidConsentformComponent {
     this.myForm.get("opipid").setValue(this.data?.opipId)
     this.myForm.get("opiptype").setValue(Number(this.data?.opipType))
     this.myForm.get("refId").setValue(Number(this.data?.refId))
-    this.myForm.get("refType").setValue(Number(this.vRefType))
-    this.myForm.get("consentTempId").setValue(Number(this.templateId))
+    this.myForm.get("refType").setValue(this.vRefType)
+    this.myForm.get("ConsentTempId").setValue(this.templateId)
     this.myForm.get("ConsentName").setValue(this.templateName)
+    this.myForm.get("consentId").setValue(this.vconsentID ?? 0)
 
     if (!this.myForm.invalid) {
 
-      console.log(this.myForm.value)
-      this._service.PostData("", this.myForm.value).subscribe((response) => {
-        this.onClose();
-      });
+      if (this.vconsentID > 0) {
+        console.log(this.myForm.value)
+        this._service.PutData("TransactionConsentMaster/" + this.vconsentID, this.myForm.value).subscribe((response) => {
+          this.onClose();
+        });
+      } else {
+        console.log(this.myForm.value)
+        this._service.PostData("TransactionConsentMaster", this.myForm.value).subscribe((response) => {
+          this.onClose();
+        });
+      }
     } else {
       let invalidFields = [];
-
       if (this.myForm.invalid) {
         for (const controlName in this.myForm.controls) {
           if (this.myForm.controls[controlName].invalid) {
@@ -177,7 +190,6 @@ export class AirmidConsentformComponent {
           );
         });
       }
-
     }
   }
 

@@ -16,11 +16,19 @@ import { AirmidConsentformComponent } from '../airmid-consentform/airmid-consent
 })
 export class AirmidConsentformIconComponent {
   @Output() onCloseDialog = new EventEmitter<any>();
+  @Input() Id: number = 0;
   @Input() refId: number = 0;
   @Input() opipId: number = 0;
   @Input() opipType: number = 0;
+  @Input() title: string = '';
+  @Input() patientName: string = '';
 
   constructor(public _matDialog: MatDialog, el: ElementRef) { }
+
+  get computedTitle(): string {
+    return this.patientName ? `${this.patientName} ${this.title}` : this.title;
+  }
+
 
   onFiles() {
     const dialogRef = this._matDialog.open(
@@ -29,7 +37,7 @@ export class AirmidConsentformIconComponent {
         maxWidth: "90vw",
         maxHeight: '85%',
         width: '70%',
-        data: { refId: this.refId, opipId: this.opipId, opipType: this.opipType }
+        data: { refId: this.refId, opipId: this.opipId, opipType: this.opipType, Id: this.Id,title: this.computedTitle }
       }
     );
 
