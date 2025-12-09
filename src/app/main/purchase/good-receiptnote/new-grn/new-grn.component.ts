@@ -1392,7 +1392,7 @@ export class NewGrnComponent implements OnInit, OnDestroy {
     chkInvoiceNo(InvoiceNo) {
         if (!this.userFormGroup.get('SupplierId')?.value) {
             this.newGRNService.showToast('Please select Supplier Name', ToastType.WARNING);
-            this.userFormGroup.get('controlName')?.setValue('')
+            this.userFormGroup.get('InvoiceNo')?.setValue('')
             return
         }
         var vdata = {
