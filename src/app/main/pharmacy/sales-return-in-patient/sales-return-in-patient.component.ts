@@ -372,7 +372,7 @@ export class SalesReturnInPatientComponent implements OnInit {
     this.ItemName.nativeElement.focus();
   }
   ItemReset() {
-    this.ItemFormGroup.get('ItemName').setValue('%');
+    this.ItemFormGroup.get('ItemName').setValue('');
     this.ItemFormGroup.get('ReturnQty').setValue('');
     this.ItemFormGroup.get('TotalQty').setValue('');
     this.ItemFormGroup.markAllAsTouched();
@@ -561,7 +561,7 @@ export class SalesReturnInPatientComponent implements OnInit {
     this.vPatientName = '';
     this.registerObj = '';
     this.selcteditemObj = '';
-    this.ItemFormGroup.get('ItemName').setValue('%');
+    this.ItemFormGroup.get('ItemName').setValue('');
     this.ItemFormGroup.get('PaymentType').setValue('Credit');
     this.ItemFormGroup.get('Op_ip_id').setValue('1');
     this.ItemFormGroup.markAllAsTouched();

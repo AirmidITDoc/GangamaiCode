@@ -21,8 +21,8 @@ constructor(
  public _formbuilder:FormBuilder,
  public _RefundbillService:RefundbillService,
  public _matdailog:MatDialog,
-    public dialogRef: MatDialogRef<PatientSearchComponent>,
-     @Inject(MAT_DIALOG_DATA) public data: any,
+ public dialogRef: MatDialogRef<PatientSearchComponent>,
+ @Inject(MAT_DIALOG_DATA) public data: any,
  public _formvalidationservice:FormvalidationserviceService 
 ){}
 ngOnInit(): void {
@@ -33,8 +33,11 @@ ngOnInit(): void {
 createSearchform(){
   return this._formbuilder.group({
     regId:[0,[this._formvalidationservice.notEmptyOrZeroValidator()]],
-    mobileNo:[0,[this._formvalidationservice.notEmptyOrZeroValidator()]],
-    emailId:[''[this._formvalidationservice.notEmptyOrZeroValidator()]],
+    mobileNo:[0,[this._formvalidationservice.notEmptyOrZeroValidator(),this._formvalidationservice.onlyNumberValidator(),
+      Validators.max[10],Validators.min[10]
+    ]],
+    emailId:['',[this._formvalidationservice.notEmptyOrZeroValidator(),Validators.email,
+    Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/)]],
     aadharCardNo:[0,[this._formvalidationservice.notEmptyOrZeroValidator()]],
   })
 }

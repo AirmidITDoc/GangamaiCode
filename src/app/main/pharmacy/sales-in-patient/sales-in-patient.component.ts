@@ -482,7 +482,7 @@ export class SalesInPatientComponent implements OnInit {
          dialogRef.afterClosed().subscribe((result1) => {
              let isEscaped = result1.vEscflag;
              if (isEscaped && !isEditable) {
-                 this._salesService.ItemSearchGroup.get('ItemId').setValue('a');
+                 this._salesService.ItemSearchGroup.get('ItemId').setValue('');
                  return;
              }
              let result = result1.selectedData as SalesBatchItemModel;

@@ -375,7 +375,7 @@ export class IpSalesReturnComponent implements OnInit {
     this.ItemName.nativeElement.focus();
   }
   ItemReset() {
-    this.ItemFormGroup.get('ItemName').setValue('%');
+    this.ItemFormGroup.get('ItemName').setValue('');
     this.ItemFormGroup.get('ReturnQty').setValue('');
     this.ItemFormGroup.get('TotalQty').setValue('');
     this.ItemFormGroup.markAllAsTouched();
@@ -577,7 +577,7 @@ export class IpSalesReturnComponent implements OnInit {
     this.vPatientName = '';
     this.registerObj = '';
     this.selcteditemObj = '';
-    this.ItemFormGroup.get('ItemName').setValue('%');
+    this.ItemFormGroup.get('ItemName').setValue('');
     this.ItemFormGroup.get('PaymentType').setValue('CashPay');
     this.ItemFormGroup.get('Op_ip_id').setValue('1');
     this.ItemFormGroup.markAllAsTouched();

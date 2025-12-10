@@ -287,17 +287,17 @@ export class SalesReturnBillSettlementComponent implements OnInit {
       this.RegId = '';
       this.userFormGroup.get('MobileNo').clearValidators();
       this.userFormGroup.get('MobileNo').updateValueAndValidity();
-      this.userFormGroup.get('RegID').setValue('a');
+      this.userFormGroup.get('RegID').setValue('');
     } else if (event.value == 'IP') {
       this.RegId = '';
       this.userFormGroup.get('MobileNo').clearValidators();
       this.userFormGroup.get('MobileNo').updateValueAndValidity();
-      this.userFormGroup.get('RegID').setValue('a');
+      this.userFormGroup.get('RegID').setValue('');
     } else {
       this.userFormGroup.get('MobileNo').reset();
       this.userFormGroup.get('MobileNo').setValidators([Validators.required]);
       this.userFormGroup.get('MobileNo').enable();
-      this.userFormGroup.get('RegID').setValue('%');
+      this.userFormGroup.get('RegID').setValue('');
       this.userFormGroup.updateValueAndValidity();
     }
     this.PatientInformRest();
@@ -443,17 +443,17 @@ export class SalesReturnBillSettlementComponent implements OnInit {
       this.RegId = '';
       this.MutliSettlemForm.get('MobileNo').clearValidators();
       this.MutliSettlemForm.get('MobileNo').updateValueAndValidity();
-      this.MutliSettlemForm.get('RegID').setValue('a');
+      this.MutliSettlemForm.get('RegID').setValue('');
     } else if (event.value == 'IP') {
       this.RegId = '';
       this.MutliSettlemForm.get('MobileNo').clearValidators();
       this.MutliSettlemForm.get('MobileNo').updateValueAndValidity();
-      this.MutliSettlemForm.get('RegID').setValue('a');
+      this.MutliSettlemForm.get('RegID').setValue('');
     } else {
       this.MutliSettlemForm.get('MobileNo').reset();
       this.MutliSettlemForm.get('MobileNo').setValidators([Validators.required]);
       this.MutliSettlemForm.get('MobileNo').enable();
-      this.MutliSettlemForm.get('RegID').setValue('%');
+      this.MutliSettlemForm.get('RegID').setValue('');
       this.MutliSettlemForm.updateValueAndValidity();
     }
     this.PatientInformRest();
@@ -624,8 +624,8 @@ this._SelseSettelmentservice.SalesBillList(vdata).subscribe((response)=>{
     this.userFormGroup.reset();
     this.MutliSettlemForm.reset(); 
     this.PatientInformRest();
-    this.userFormGroup.get('RegID').setValue('a');
-    this.MutliSettlemForm.get('RegID').setValue('a');
+    this.userFormGroup.get('RegID').setValue('');
+    this.MutliSettlemForm.get('RegID').setValue('');
     this.userFormGroup.get('PatientType').setValue('1');
     this.MutliSettlemForm.get('PatientType').setValue('1');
      this.getdataMultiple()
