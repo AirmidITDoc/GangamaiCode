@@ -161,7 +161,7 @@
                                                     </div>
                                                 </mat-form-field>  
                                              
-                                                 <div  *ngIf="selectedPaymnet1 !='upi'">
+                                                 <div  *ngIf="selectedPaymnet1 !='UPI'">
                                                     <airmid-dropdown label="Bank Name" formControlName="bankName1"
                                                     [formGroup]="patientDetailsFormGrp"
                                                     [validations]="getValidationMessages().bankName1" (selectionChange)="selectChangebank($event)"

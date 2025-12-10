@@ -122,7 +122,8 @@ export class BrowsSalesBillComponent implements OnInit {
     }
 
     this.salesForm = this._BrowsSalesBillService.SearchFilter();
-    // this.onChangeFirst();
+    ///.getsaleslist();
+    this.onChangeFirst();
     // this.onChangeFirst_Retrun(); 
   }
 
@@ -248,16 +249,19 @@ export class BrowsSalesBillComponent implements OnInit {
   }
 
   onChangeFirst() {
+    debugger
     this.isShowDetailTable = false;
     this.firstName = this._BrowsSalesBillService.userForm.get('F_Name').value + "%" 
     this.LastName = this._BrowsSalesBillService.userForm.get('L_Name').value + "%" 
     this.StoreId1 = this._BrowsSalesBillService.userForm.get('StoreId').value || "0"
-    this.FromDate = this.datePipe.transform(this._BrowsSalesBillService.userForm.get('startdate').value, "yyyy-MM-dd")
-    this.ToDate = this.datePipe.transform(this._BrowsSalesBillService.userForm.get('enddate').value, "yyyy-MM-dd")
+    this.FromDate = this.datePipe.transform(this._BrowsSalesBillService.userForm.get('startdate').value, "yyyy-MM-dd") 
+    this.ToDate = this.datePipe.transform(this._BrowsSalesBillService.userForm.get('enddate').value, "yyyy-MM-dd") 
     this.regNo = this._BrowsSalesBillService.userForm.get('RegNo').value || "0"
     this.salesNo = this._BrowsSalesBillService.userForm.get('SalesNo').value || "0"
     this.OpIpType = this._BrowsSalesBillService.userForm.get('OP_IP_Type').value || "0"
+    if(this.FromDate && this.ToDate){
     this.getSaleslistdata(); 
+    } 
   }
   getSaleslistdata() {
     debugger
@@ -279,9 +283,52 @@ export class BrowsSalesBillComponent implements OnInit {
     }
         // this.grid.gridConfig = this.gridConfig;
         // this.grid.bindGridData();
+
+         this.getsaleslist();
   }
+  chargelist:any=[];
+getsaleslist(){ 
+    debugger 
+        var vdata = {
+          "first": 0, 
+          "rows": 10000,
+          "sortField": "SalesId",
+          "sortOrder": 0,
+          "filters": [ 
+        { "fieldName": "LName", "fieldValue": this.LastName, "opType": OperatorComparer.Equals },
+        { "fieldName": "FName", "fieldValue": this.firstName , "opType": OperatorComparer.Equals },
+        { "fieldName": "StoreId", "fieldValue": String(this.StoreId1), "opType": OperatorComparer.Equals },
+        { "fieldName": "FromDt", "fieldValue": this.FromDate, "opType": OperatorComparer.Equals },
+        { "fieldName": "ToDt", "fieldValue": this.ToDate, "opType": OperatorComparer.Equals },
+        { "fieldName": "RegNo", "fieldValue": this.regNo, "opType": OperatorComparer.Equals },
+        { "fieldName": "SalesNo", "fieldValue": this.salesNo, "opType": OperatorComparer.Equals },
+        { "fieldName": "OPIPType", "fieldValue": this.OpIpType, "opType": OperatorComparer.Equals }
+          ],
+          "Columns": [],
+          "exportType": "JSON"
+        } 
+    this._BrowsSalesBillService.getSalesBrowseList(vdata).subscribe(response=>{
+      this.chargelist = response.data
+      console.log(this.chargelist)
 
-
+      if(this.chargelist.length){
+        this.gettotalshowingonPage(this.chargelist);
+      }
+    })
+    
+}
+finalTotalAmt:any=0;
+finalDiscAmt:any=0;
+finalNetAmt:any=0;
+finalPaidAmt:any=0;
+finalBalanceAmt:any=0;
+    gettotalshowingonPage(element) { 
+        this.finalTotalAmt = (element.reduce((sum, { totalAmount }) => sum += +(totalAmount || 0), 0)).toFixed(2);
+        this.finalDiscAmt = (element.reduce((sum, { discAmount }) => sum += +(discAmount || 0), 0)).toFixed(2);
+        this.finalNetAmt = (element.reduce((sum, { netAmount }) => sum += +(netAmount || 0), 0)).toFixed(2);
+        this.finalPaidAmt = (element.reduce((sum, { paidAmount }) => sum += +(paidAmount || 0), 0)).toFixed(2);
+        this.finalBalanceAmt = (element.reduce((sum, { balanceAmount }) => sum += +(balanceAmount || 0), 0)).toFixed(2);
+     }
   getsalesdetaillist(event) {
     console.log(event)
 

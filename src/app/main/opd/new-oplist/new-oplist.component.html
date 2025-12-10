@@ -13,9 +13,12 @@
 
     <ng-template #actionsTemplate2 let-element>
         <div>
-            <mat-icon title="Bill Cancelled" *ngIf="element.isCancelled==1" [disabled]="element.disabled"
+            <!-- <mat-icon title="Bill Cancelled" *ngIf="element.isCancelled==1" [disabled]="element.disabled"
                 class="disabled-icon">
-                close</mat-icon>
+                close</mat-icon> -->
+
+                <mat-icon title="Cancelled Bill" *ngIf="element.isCancelled=='1'" [disabled]="element.disabled" class="pill red s-16"
+                    matTooltip="Cancelled Bill">circle</mat-icon>
         </div>
     </ng-template>
 
@@ -38,7 +41,7 @@
 
             <button mat-icon-button (click)="openPaymentpopup(element)" matTooltip="Settlement"
                 *ngIf="element.balanceAmt!='0'">
-                <mat-icon title="Settlement" *ngIf="element.balanceAmt!=0" class="disabled-icon">receipt</mat-icon>
+                <mat-icon title="Settlement" *ngIf="element.balanceAmt!=0 && element.isCancelled !=1" class="disabled-icon">receipt</mat-icon>
                 <mat-icon title="paid" *ngIf="element.balanceAmt==0" [disabled]="element.disabled"
                     class="disabled-icon">payment</mat-icon>
             </button>

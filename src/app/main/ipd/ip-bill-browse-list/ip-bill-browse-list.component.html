@@ -48,7 +48,7 @@
                     </ng-template>
                     <ng-template #balancestatus let-element>
                         <div fxLayout="row" fxLayoutAlign="center center">
-                            <button mat-icon-button class="material-icons" *ngIf="element.balanceAmt !=0 "
+                            <button mat-icon-button class="material-icons" *ngIf="element.balanceAmt !=0 && element.isCancelled !=1 "
                                 (click)="Billpayment(element)" matTooltip="Settlement">
                                 <mat-icon> payment </mat-icon>
                             </button>

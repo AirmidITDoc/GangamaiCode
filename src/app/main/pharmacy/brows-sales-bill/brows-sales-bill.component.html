@@ -6,10 +6,47 @@
         <mat-tab label="IP Browse Bill List">
             <div fusePerfectScrollbar class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
                 dynamicTableHeight>
+ 
+                <div class="info-badge-top overflow-auto mb-3" fxLayout="row" fxLayoutAlign="space-between" flex>
+                    <div fxLayout="row" fxLayoutAlign="start center" class="gap-8 mb-8" style="margin-left: 10px;">
 
-                <div class="info-badge-top border-bottom" fxLayout="row" fxLayoutAlign="left" flex>
+                        <div class="dashboard-card appointments-split">
+                            <div class="card-label">Total Amt</div>
+                            <div class="card-value">{{finalTotalAmt  | currency:'INR'}}</div>
+                            <mat-icon class="card-icon" matTooltip="Total Test Results">check_circle</mat-icon>
+                        </div>
 
-                    <div fxLayout="row" fxLayoutAlign="end" class="gap-8">
+                        <div class="dashboard-card DiscountAmt">
+                            <div class="card-label">Discount Amt</div>
+                            <div class="card-value">{{finalDiscAmt  | currency:'INR'}}</div>
+                            <mat-icon class="card-icon" matTooltip="Completed Tests">check_circle</mat-icon>
+                        </div>
+
+                        <div class="dashboard-card appointments-split">
+                            <div class="card-label">Net Amt</div>
+                            <div class="card-value">
+                                <div> {{finalNetAmt  | currency:'INR'}}</div> 
+                            </div>
+                            <mat-icon class="card-icon" matTooltip="Pending Tests">check_circle</mat-icon>
+                        </div> 
+
+                          <div class="dashboard-card PaidAmt">
+                            <div class="card-label">Paid Amt</div>
+                            <div class="card-value">
+                                <div> {{finalPaidAmt  | currency:'INR'}}</div> 
+                            </div>
+                            <mat-icon class="card-icon" matTooltip="Pending Tests">check_circle</mat-icon>
+                        </div> 
+
+                          <div class="dashboard-card BalanceAmt">
+                            <div class="card-label">Balance Amt</div>
+                            <div class="card-value">
+                                <div> {{finalBalanceAmt  | currency:'INR'}}</div> 
+                            </div>
+                            <mat-icon class="card-icon" matTooltip="Pending Tests">schedule</mat-icon>
+                        </div> 
+                    </div> 
+                      <div fxLayout="row" fxLayoutAlign="end" class="gap-8" style="margin-right: 20px;">
 
                         <div style="color: orange" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
                             <mat-icon class="pill orange-600 s-16">circle</mat-icon>
@@ -74,7 +111,7 @@
                         </div>
                     </ng-template>
 
-                      <ng-template #patientTypePaidType let-element>
+                    <ng-template #patientTypePaidType let-element>
                         <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="4px"> 
                             <mat-icon *ngIf="element.paidType == 'Paid'" matTooltip="Paid Bill">monetization_on</mat-icon>
                             <mat-icon *ngIf="element.paidType == 'Credit'" matTooltip="Credit Bill">account_balance_wallet</mat-icon> 
@@ -122,10 +159,25 @@
                         <ng-container filters>
                             <form [formGroup]="_BrowsSalesBillService.userForm" fxLayout="column">
 
-                                <airmid-datepicker [formGroup]="_BrowsSalesBillService.userForm" [isRangePicker]="true"
+                                <!-- <airmid-datepicker [formGroup]="_BrowsSalesBillService.userForm" [isRangePicker]="true"
+                                    formStartControlName="startdate" formEndControlName="enddate" 
+                                   (click)="onChangeFirst()"></airmid-datepicker> -->
+
+<mat-form-field appearance="outline">
+    <mat-label>Enter a date range</mat-label>
+    <mat-date-range-input [rangePicker]="picker">
+        <input matStartDate formControlName="startdate" placeholder="Start date">
+        <input matEndDate formControlName="enddate" placeholder="End date" (dateChange)="onChangeFirst()">
+    </mat-date-range-input>
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-date-range-picker #picker></mat-date-range-picker>
+</mat-form-field>
+
+
+                                      <!-- <airmid-datepicker [formGroup]="_BrowsSalesBillService.userForm" [isRangePicker]="true"
                                     formStartControlName="startdate" formEndControlName="enddate"
                                     [(fromValue)]="gridConfig.filters[2].fieldValue"
-                                    [(toValue)]="gridConfig.filters[3].fieldValue"></airmid-datepicker>
+                                    [(toValue)]="gridConfig.filters[3].fieldValue"  ></airmid-datepicker> -->
 
 
                                 <airmid-dropdown label="Store Name" formControlName="StoreId"
