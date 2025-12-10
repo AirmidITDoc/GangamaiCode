@@ -122,8 +122,8 @@ export class BrowsSalesBillComponent implements OnInit {
     }
 
     this.salesForm = this._BrowsSalesBillService.SearchFilter();
-    this.getsaleslist();
-    // this.onChangeFirst();
+    ///.getsaleslist();
+    this.onChangeFirst();
     // this.onChangeFirst_Retrun(); 
   }
 
