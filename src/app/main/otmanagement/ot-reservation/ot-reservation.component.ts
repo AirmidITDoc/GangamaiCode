@@ -881,6 +881,8 @@ export class OtReserInsert {
     postOperativeNotes: any;
     conditionOfPatientNotes: any;
     opIpId:any
+    opipType:any;
+    isPrimary:any;
 
     /**
      * Constructor
@@ -986,6 +988,8 @@ export class OtReserInsert {
             this.postOperativeNotes = OtReserInsert.postOperativeNotes || ''
             this.conditionOfPatientNotes = OtReserInsert.conditionOfPatientNotes || ''
             this.opIpId= OtReserInsert.opIpId || ''
+            this.opipType= OtReserInsert.opipType || ''
+            this.isPrimary= OtReserInsert.isPrimary || ''
         }
     }
 }

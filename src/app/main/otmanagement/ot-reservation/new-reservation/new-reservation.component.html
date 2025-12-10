@@ -57,7 +57,7 @@
                         </div>
                         <airmid-dropdown class="w-400" label="Get OT-Request" formControlName="otrequestId"
                             [formGroup]="reservationForm" (selectionChange)="onChangeOtRequest($event)"
-                             ValueField="otRequestId" TextField="patientName"
+                            ValueField="otRequestId" TextField="patientName"
                             ApiUrl="OTReservation/search-patient-OTRequest?Keyword=%"></airmid-dropdown>
                     </div>
                 </div>
@@ -195,7 +195,7 @@
                                 fxLayoutGap="4px grid">
 
                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                     <airmid-dropdown label="Blood Group" formControlName="bloodGroup"
+                                    <airmid-dropdown label="Blood Group" formControlName="bloodGroup"
                                         [formGroup]="reservationForm" [mode]="autocompleteModebloodGroup">
                                     </airmid-dropdown>
                                 </div>
@@ -355,27 +355,41 @@
                                 </div>
 
                                 <div fxFlex="8%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <mat-form-field appearance="outline" style="width: 100%;">
+                                    <!-- <mat-form-field appearance="outline" style="width: 100%;">
                                         <mat-label>Duration (hours)</mat-label>
                                         <input matInput type="number" formControlName="surgeryDuration"
                                             (change)="onChangeDuration($event)" min="0" step="0.5"
                                             (keydown.enter)="surgeryFromTimeInput.focus()">
+                                    </mat-form-field> -->
+                                    <mat-form-field appearance="outline" style="width: 100%;">
+                                        <mat-label>Duration (hrs or min)</mat-label>
+                                        <input matInput type="text" formControlName="surgeryDuration"
+                                            pattern="^[0-9]+(\.[0-9]{1,2})?$" (change)="calculateToTime()">
                                     </mat-form-field>
                                 </div>
 
                                 <div fxFlex="5%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <mat-form-field appearance="outline" style="width: 100%;">
+                                    <!-- <mat-form-field appearance="outline" style="width: 100%;">
                                         <mat-label>From Time</mat-label>
                                         <input matInput type="time" formControlName="surgeryFromTime"
                                             (change)="onChangeTimefrom($event)" #surgeryFromTimeInput>
+                                    </mat-form-field> -->
+                                    <mat-form-field appearance="outline" style="width: 100%;">
+                                        <mat-label>From Time</mat-label>
+                                        <input matInput type="time" formControlName="surgeryFromTime"
+                                            (change)="calculateToTime()">
                                     </mat-form-field>
                                 </div>
 
                                 <div fxFlex="5%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <mat-form-field appearance="outline" style="width: 100%;">
+                                    <!-- <mat-form-field appearance="outline" style="width: 100%;">
                                         <mat-label>To Time</mat-label>
                                         <input matInput type="time" formControlName="surgeryEndTime" readonly
                                             (change)="onChangeTimeto($event)">
+                                    </mat-form-field> -->
+                                    <mat-form-field appearance="outline" style="width: 100%;">
+                                        <mat-label>To Time</mat-label>
+                                        <input matInput type="time" formControlName="surgeryEndTime" readonly>
                                     </mat-form-field>
                                 </div>
 
@@ -446,7 +460,7 @@
 
                                     <ng-container matColumnDef="surgeryDuration">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Duration
-                                            (hrs)
+                                            (hrs or min)
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
                                             <span> {{element.surgeryDuration}} </span>
@@ -475,9 +489,13 @@
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
                                             <span>
-                                                <mat-icon color="primary"
+                                                <!-- <mat-icon color="primary"
                                                     *ngIf="element.isPrimary">check_circle</mat-icon>
-                                                <mat-icon color="warn" *ngIf="!element.isPrimary">cancel</mat-icon>
+                                                <mat-icon color="warn" *ngIf="!element.isPrimary">cancel</mat-icon> -->
+                                                <mat-icon color="primary"
+                                                    *ngIf="element.isPrimary == 'true'">check_circle</mat-icon>
+                                                <mat-icon color="warn"
+                                                    *ngIf="element.isPrimary == 'false'">cancel</mat-icon>
                                             </span>
                                         </mat-cell>
                                     </ng-container>
@@ -657,8 +675,8 @@
                                 </div>
                             </div>
                         </div> -->
-                   
-                   
+
+
                         <div fxLayout="column" fxLayoutGap="16px" fxLayoutAlign="start start" fxLayoutWrap
                             style="height: auto;">
                             <!-- Body Images -->

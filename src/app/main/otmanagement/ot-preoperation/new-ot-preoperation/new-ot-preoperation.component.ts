@@ -595,6 +595,13 @@ export class NewOtPreoperationComponent {
       return;
     }
 
+    const selectedPrimary = this.preOperationFinalForm.get('isPrimary').value;
+    const alreadyHasPrimary = this.dssurgeryDetailList.data.some(x => x.isPrimary);
+    if (selectedPrimary && alreadyHasPrimary) {
+      this.toastr.warning("Primary surgery already added. You can only select one primary.");
+      return;
+    }
+
     let newEntry = {
       surgeryCategoryName: this.surgCategoryName,
       surgeryCategoryId: this.preOperationFinalForm.get('surgeryCategoryId').value,
@@ -1143,6 +1150,32 @@ export class NewOtPreoperationComponent {
     this.preOperationFinalForm.get('opiptype').setValue('OP')
   }
 
+   calculateToTime() {
+    const duration = this.preOperationFinalForm.get('surgeryDuration')?.value;
+    const start = this.preOperationFinalForm.get('surgeryFromTime')?.value;
+
+    if (!start || duration === null) return;
+
+    // split duration 1.30 → ["1","30"]
+    const parts = duration.toString().split('.');
+    const hrs = Number(parts[0]);  // before decimal
+    const mins = parts[1] ? Number(parts[1].padEnd(2, '0')) : 0; // after decimal as minutes
+
+    const [h, m] = start.split(':').map(Number);
+
+    const startDate = new Date();
+    startDate.setHours(h, m, 0);
+
+    // Add hours + minutes
+    startDate.setHours(startDate.getHours() + hrs);
+    startDate.setMinutes(startDate.getMinutes() + mins);
+
+    const endH = startDate.getHours().toString().padStart(2, '0');
+    const endM = startDate.getMinutes().toString().padStart(2, '0');
+
+    this.preOperationFinalForm.get('surgeryEndTime')?.setValue(`${endH}:${endM}`);
+  }
+  
   onChangeDuration(event: any) {
     // debugger
     const durationHours = parseFloat(this.preOperationFinalForm.get('surgeryDuration')?.value); // e.g. 1.5

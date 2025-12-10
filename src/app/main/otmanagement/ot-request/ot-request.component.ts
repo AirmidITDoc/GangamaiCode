@@ -328,6 +328,7 @@ export class OtReqInsert {
   infective: any;
   locationId:any;
   otPreOperationId:any;
+  isPrimary:any;
   /**
    * Constructor
    *
@@ -401,6 +402,7 @@ export class OtReqInsert {
       this.infective = OtReqInsert.infective || ''
       this.locationId = OtReqInsert.locationId || ''
       this.otPreOperationId = OtReqInsert.otPreOperationId || ''
+      this.isPrimary = OtReqInsert.isPrimary || ''
     }
   }
 }

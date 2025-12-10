@@ -549,6 +549,12 @@ export class NewRequestComponent implements OnInit {
     }
     // debugger
 
+    const selectedPrimary = this.requestForm.get('isPrimary').value;
+    const alreadyHasPrimary = this.dssurgeryDetailList.data.some(x => x.isPrimary === "true" || x.isPrimary === true);
+    if (selectedPrimary && alreadyHasPrimary) {
+      this.toastr.warning("Primary surgery already added. You can only select one primary.");
+      return;
+    }
     let newEntry = {
       surgeryCategoryName: this.surgCategoryName,
       surgeryCategoryId: this.requestForm.get('surgeryCategoryId').value,
@@ -558,7 +564,7 @@ export class NewRequestComponent implements OnInit {
       surgeryDuration: this.requestForm.get('surgeryDuration').value,
       surgeryFromTime: this.requestForm.get('surgeryFromTime').value,
       surgeryEndTime: this.requestForm.get('surgeryEndTime').value,
-      isPrimary: this.requestForm.get('isPrimary').value,
+      isPrimary: String(this.requestForm.get('isPrimary').value),
       surgeonId: this.requestForm.get('surgeonId').value,//
       surgeonName: this.surgeonName,
       anestheticsId: this.requestForm.get('anesthetistId').value, //
@@ -638,7 +644,8 @@ export class NewRequestComponent implements OnInit {
       surgeryDuration: contact.surgeryDuration ?? '',
       surgeryFromTime: contact.surgeryFromTime ?? '',
       surgeryEndTime: contact.surgeryEndTime ?? '',
-      isPrimary: contact.isPrimary ?? false,
+      isPrimary: contact.isPrimary === "true",
+      // isPrimary: contact.isPrimary ?? false,
       surgeonId: contact.surgeonId ?? '',
       anesthetistId: contact.anestheticsId ?? ''
     });
@@ -1055,6 +1062,32 @@ export class NewRequestComponent implements OnInit {
     this.requestForm.get('pacrequired').setValue('1')
     this.requestForm.get('equipmentsRequired').setValue('1')
     this.requestForm.get('infective').setValue('1')
+  }
+
+   calculateToTime() {
+    const duration = this.requestForm.get('surgeryDuration')?.value;
+    const start = this.requestForm.get('surgeryFromTime')?.value;
+
+    if (!start || duration === null) return;
+
+    // split duration 1.30 → ["1","30"]
+    const parts = duration.toString().split('.');
+    const hrs = Number(parts[0]);  // before decimal
+    const mins = parts[1] ? Number(parts[1].padEnd(2, '0')) : 0; // after decimal as minutes
+
+    const [h, m] = start.split(':').map(Number);
+
+    const startDate = new Date();
+    startDate.setHours(h, m, 0);
+
+    // Add hours + minutes
+    startDate.setHours(startDate.getHours() + hrs);
+    startDate.setMinutes(startDate.getMinutes() + mins);
+
+    const endH = startDate.getHours().toString().padStart(2, '0');
+    const endM = startDate.getMinutes().toString().padStart(2, '0');
+
+    this.requestForm.get('surgeryEndTime')?.setValue(`${endH}:${endM}`);
   }
 
   onChangeDuration(event: any) {

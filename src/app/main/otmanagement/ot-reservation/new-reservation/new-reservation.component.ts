@@ -294,7 +294,7 @@ export class NewReservationComponent implements OnInit {
       surgeryPart: [element.surgeryPart],
       surgeryFromTime: [element.surgeryFromTime],
       surgeryEndTime: [element.surgeryEndTime],
-      surgeryDuration: [element.surgeryDuration],
+      surgeryDuration: [Number(element.surgeryDuration)],
       isPrimary: [String(element.isPrimary ?? false)],
       surgeonId: [element.surgeonId],
       anesthetistId: [element.anestheticsId],
@@ -342,7 +342,9 @@ export class NewReservationComponent implements OnInit {
 
   /////////////////////////////// ot request detail part /////////////////////////////
   onChangeOtRequest(obj: any) {
-    console.log("search data:", obj);
+    this.registerObj1 = obj
+    this.vPatientName = this.registerObj1.patientName;
+    console.log("search data:", this.registerObj1);
 
     if (obj.otReservationId > 0) {
       const name = obj.patientName?.split('|')[0]?.trim();
@@ -363,10 +365,16 @@ export class NewReservationComponent implements OnInit {
 
         this.vrequestId = this.registerObj2.otrequestId;
         this.opIpId = this.registerObj2.opipid;
+        const mappedOpIpType = this.registerObj2.opiptype == 0 ? 'OP' : 'IP';
+        this.registerObj2.opiptype = mappedOpIpType;
+
+        // Update selected option
+        this.vSelectedOption = mappedOpIpType;
+        this.reservationForm.get('opiptype').setValue(mappedOpIpType);
 
         this.reservationForm.patchValue(this.registerObj2);
 
-        this.vSelectedOption = this.registerObj2.opiptype == 0 ? 'OP' : 'IP';
+        // this.vSelectedOption = this.registerObj2.opiptype == 0 ? 'OP' : 'IP';
         this.reservationForm.get('pacrequired').setValue(this.registerObj2.pacrequired ? '1' : '0')
         this.reservationForm.get('infective').setValue(this.registerObj2.infective ? '1' : '0')
         this.reservationForm.get('equipmentsRequired').setValue(this.registerObj2.equipmentsRequired ? '1' : '0')
@@ -435,7 +443,7 @@ export class NewReservationComponent implements OnInit {
             surgeryDuration: element.surgeryDuration,
             surgeryFromTime: surgeryFromTime,
             surgeryEndTime: surgeryEndTime,
-            isPrimary: element.isPrimary,
+            isPrimary: String(element.isPrimary),
             surgeonId: element.surgeonId,//
             surgeonName: element.surgeonName,
             anestheticsId: element.anesthetistId, //
@@ -633,6 +641,32 @@ export class NewReservationComponent implements OnInit {
   opendTime: any;
   optime: any;
 
+  calculateToTime() {
+    const duration = this.reservationForm.get('surgeryDuration')?.value;
+    const start = this.reservationForm.get('surgeryFromTime')?.value;
+
+    if (!start || duration === null) return;
+
+    // split duration 1.30 → ["1","30"]
+    const parts = duration.toString().split('.');
+    const hrs = Number(parts[0]);  // before decimal
+    const mins = parts[1] ? Number(parts[1].padEnd(2, '0')) : 0; // after decimal as minutes
+
+    const [h, m] = start.split(':').map(Number);
+
+    const startDate = new Date();
+    startDate.setHours(h, m, 0);
+
+    // Add hours + minutes
+    startDate.setHours(startDate.getHours() + hrs);
+    startDate.setMinutes(startDate.getMinutes() + mins);
+
+    const endH = startDate.getHours().toString().padStart(2, '0');
+    const endM = startDate.getMinutes().toString().padStart(2, '0');
+
+    this.reservationForm.get('surgeryEndTime')?.setValue(`${endH}:${endM}`);
+  }
+
   onChangeTime(event: any) {
     let time = event.target.value;
     if (time && time.length >= 5) {
@@ -774,6 +808,13 @@ export class NewReservationComponent implements OnInit {
     //   combinedDateTime.setHours(+hours, +minutes, 0, 0);
     // }
 
+    const selectedPrimary = this.reservationForm.get('isPrimary').value;
+    const alreadyHasPrimary = this.dssurgeryDetailList.data.some(x => x.isPrimary === "true" || x.isPrimary === true);
+    if (selectedPrimary && alreadyHasPrimary) {
+      this.toastr.warning("Primary surgery already added. You can only select one primary.");
+      return;
+    }
+
     let newEntry = {
       surgeryCategoryName: this.surgCategoryName,
       surgeryCategoryId: this.reservationForm.get('surgeryCategoryId').value,
@@ -784,7 +825,7 @@ export class NewReservationComponent implements OnInit {
       // surgeryFromTime: combinedDateTime,
       surgeryFromTime: this.reservationForm.get('surgeryFromTime').value,
       surgeryEndTime: this.reservationForm.get('surgeryEndTime').value,
-      isPrimary: this.reservationForm.get('isPrimary').value,
+      isPrimary: String(this.reservationForm.get('isPrimary').value),
       surgeonId: this.reservationForm.get('surgeonId').value,//
       surgeonName: this.surgeonName,
       anestheticsId: this.reservationForm.get('anesthetistId').value, //
@@ -862,7 +903,7 @@ export class NewReservationComponent implements OnInit {
       surgeryDuration: contact.surgeryDuration ?? '',
       surgeryFromTime: contact.surgeryFromTime ?? '',
       surgeryEndTime: contact.surgeryEndTime ?? '',
-      isPrimary: contact.isPrimary ?? false,
+      isPrimary: contact.isPrimary === "true",
       surgeonId: contact.surgeonId ?? '',
       anesthetistId: contact.anestheticsId ?? ''
     });
@@ -903,7 +944,7 @@ export class NewReservationComponent implements OnInit {
   convertToISOFormat(dateStr: string): string {
     // convert in to "2025-11-15T02:01:00"
     const [datePart, timePart] = dateStr.split(" ");
-    const [DD, MM, YYYY] = datePart.split("-"); 
+    const [DD, MM, YYYY] = datePart.split("-");
     return `${YYYY}-${MM}-${DD}T${timePart}`;
   }
 
@@ -942,7 +983,8 @@ export class NewReservationComponent implements OnInit {
             surgeryDuration: element.surgeryDuration,
             surgeryFromTime: surgeryFromTime,
             surgeryEndTime: surgeryEndTime,
-            isPrimary: element.isPrimary,
+            // isPrimary: element.isPrimary,            
+            isPrimary: String(element.isPrimary).trim().toLowerCase(),
             surgeonId: element.surgeonId,//
             surgeonName: element.surgeonName,
             anestheticsId: element.anesthetistId, //

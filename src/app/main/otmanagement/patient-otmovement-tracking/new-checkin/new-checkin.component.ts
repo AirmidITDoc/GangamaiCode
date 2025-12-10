@@ -67,6 +67,9 @@ export class NewCheckinComponent {
       this.vPatientName = this.registerObj1.patientName
       this.vCheckinId = this.registerObj1.otCheckInId
 
+      const timeOnly = new Date();
+      this.CheckInFormGroup.get("otcheckInTime")?.setValue(timeOnly);
+      
       if (this.data.otReservationId) {
         setTimeout(() => {
           this._PatientOtMoveTrackingService.getotReservationById(this.data.otReservationId).subscribe((response) => {
@@ -173,7 +176,7 @@ export class NewCheckinComponent {
     this.CheckInFormGroup.get('opipid')?.setValue(this.opIpId);
     this.CheckInFormGroup.get('opiptype')?.setValue(this.vSelectedOption == 'IP' ? true : false);
     this.CheckInFormGroup.get('otcheckInId')?.setValue(this.vCheckinId || 0);
-      this.CheckInFormGroup.get('checkOutTime')?.setValue(currentTime);
+    this.CheckInFormGroup.get('checkOutTime')?.setValue(currentTime);
 
     if (this.vCheckinId > 0) {
       this.CheckInFormGroup.get('checkInOut')?.setValue(0);

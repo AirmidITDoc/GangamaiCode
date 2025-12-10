@@ -201,27 +201,41 @@
                                         </div>
 
                                         <div fxFlex="8%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                            <mat-form-field appearance="outline" style="width: 100%;">
+                                            <!-- <mat-form-field appearance="outline" style="width: 100%;">
                                                 <mat-label>Duration (hours)</mat-label>
                                                 <input matInput type="number" formControlName="surgeryDuration"
                                                     (change)="onChangeDuration($event)" min="0" step="0.5"
                                                     (keydown.enter)="surgeryFromTimeInput.focus()">
+                                            </mat-form-field> -->
+                                            <mat-form-field appearance="outline" style="width: 100%;">
+                                                <mat-label>Duration (hrs or min)</mat-label>
+                                                <input matInput type="text" formControlName="surgeryDuration"
+                                                    pattern="^[0-9]+(\.[0-9]{1,2})?$" (change)="calculateToTime()">
                                             </mat-form-field>
                                         </div>
 
                                         <div fxFlex="5%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                            <mat-form-field appearance="outline" style="width: 100%;">
+                                            <!-- <mat-form-field appearance="outline" style="width: 100%;">
                                                 <mat-label>From Time</mat-label>
                                                 <input matInput type="time" formControlName="surgeryFromTime"
                                                     (change)="onChangeTimefrom($event)" #surgeryFromTimeInput>
+                                            </mat-form-field> -->
+                                            <mat-form-field appearance="outline" style="width: 100%;">
+                                                <mat-label>From Time</mat-label>
+                                                <input matInput type="time" formControlName="surgeryFromTime"
+                                                    (change)="calculateToTime()">
                                             </mat-form-field>
                                         </div>
 
                                         <div fxFlex="5%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                            <mat-form-field appearance="outline" style="width: 100%;">
+                                            <!-- <mat-form-field appearance="outline" style="width: 100%;">
                                                 <mat-label>To Time</mat-label>
                                                 <input matInput type="time" formControlName="surgeryEndTime" readonly
                                                     (change)="onChangeTimeto($event)">
+                                            </mat-form-field> -->
+                                            <mat-form-field appearance="outline" style="width: 100%;">
+                                                <mat-label>To Time</mat-label>
+                                                <input matInput type="time" formControlName="surgeryEndTime" readonly>
                                             </mat-form-field>
                                         </div>
 
@@ -638,7 +652,8 @@
                         <ng-template #actionButtonTemplate let-element>
                             <div fxLayout="row" fxLayoutAlign="center center">
                                 <app-airmid-consentform-icon [Id]="element.consentId" [refId]="element.refId"
-                                    [opipId]="element.opipid" title="Name: {{ registerObj1.patientName }}  UHID: {{ registerObj1.regNo }}"
+                                    [opipId]="element.opipid"
+                                    title="Name: {{ registerObj1.patientName }}  UHID: {{ registerObj1.regNo }}"
                                     [opipType]="element.opiptype"></app-airmid-consentform-icon>
 
                                 <button mat-icon-button (click)="delete(element)" matTooltip="Delete">
