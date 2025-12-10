@@ -561,7 +561,7 @@ export class NewGrnComponent implements OnInit, OnDestroy {
     resetFormItem() {
         const form = this.userFormGroup;
         form.patchValue({
-            ItemName: "a",
+            ItemName: "",
             ConversionFactor: 1,
             Qty: "",
             UOMId: 0,

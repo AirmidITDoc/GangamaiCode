@@ -157,7 +157,7 @@ export class AirmidAutoCompleteComponent extends BaseFormControlComponent implem
         event.stopPropagation();
         const control = this.formGroup.controls[this.formControlName];
         if (control) {
-            control.setValue('%') //changes made by raksha
+            control.setValue('') //changes made by raksha
             // control.setValue('')
             // control.reset();
         }

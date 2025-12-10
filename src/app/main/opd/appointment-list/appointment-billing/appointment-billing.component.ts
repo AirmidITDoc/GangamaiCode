@@ -712,7 +712,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
     }
     resetForm(): void {
         this.chargeForm.reset({
-            serviceName: "a",
+            serviceName: '',
             price: 0,
             qty: 0,
             totalAmount: 0,

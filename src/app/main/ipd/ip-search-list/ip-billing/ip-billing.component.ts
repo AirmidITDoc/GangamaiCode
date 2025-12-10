@@ -806,7 +806,8 @@ export class IPBillingComponent implements OnInit {
         this.IpbillFooterform.markAllAsTouched();
     }
     onClearServiceAddList() {
-        this.Serviceform.get('serviceId').setValue("a");
+       // this.Serviceform.get('serviceId').setValue("a");
+        this.Serviceform.get('serviceName').reset('');
         this.Serviceform.get('price').reset();
         this.Serviceform.get('qty').reset('1');
         this.Serviceform.get('totalAmt').reset();
