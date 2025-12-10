@@ -363,9 +363,9 @@
 
                                         <ng-container matColumnDef="TestName" sticky>
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
-                                                class="w-200">Test Name
+                                                class="w-300">Test Name
                                             </mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-200">
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-300">
                                                 <span> {{contact.serviceName}}</span>
                                             </mat-cell>
                                         </ng-container>
@@ -382,51 +382,47 @@
                                         </ng-container>
 
                                         <ng-container matColumnDef="SampleNo">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md
-                                                class="w-160">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
                                                 Sample No|CollectedBy
                                             </mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="w-160">
+                                            <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md >
                                                 <span> {{contact.sampleNo}}</span>
                                             </mat-cell>
                                         </ng-container>
 
                                         <ng-container matColumnDef="outSourceLabName">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md
-                                                class="w-130">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
                                                 OutSource Name
                                             </mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="w-130">
+                                            <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
                                                 <span> {{contact.outSourceLabName || '--'}}</span>
                                             </mat-cell>
                                         </ng-container>
 
                                         <ng-container matColumnDef="outSourceSampleSentDateTime">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md
-                                                class="w-150">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
                                                 OutSource SentDate
                                             </mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="w-150">
+                                            <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md >
                                                 <span> {{contact.outSourceSampleSentDateTime | date:'yyyy-MM-dd' ||
                                                     "1900-01-01"}}</span>
                                             </mat-cell>
                                         </ng-container>
 
                                         <ng-container matColumnDef="outSourceReportCollectedDateTime">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md
-                                                class="w-150">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
                                                 Report CollectedDate
                                             </mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="w-150">
+                                            <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md >
                                                 <span> {{contact.outSourceReportCollectedDateTime |
                                                     date:'yyyy-MM-dd' || "1900-01-01"}}</span>
                                             </mat-cell>
                                         </ng-container>
 
                                         <ng-container matColumnDef="action" stickyEnd>
-                                            <mat-header-cell *matHeaderCellDef fxShow.gt-sm class="w-180">
+                                            <mat-header-cell *matHeaderCellDef fxShow.gt-sm class="w-250">
                                                 Action</mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" class="w-180">
+                                            <mat-cell *matCellDef="let contact" class="w-250">
 
                                                 <button mat-icon-button (click)="Printresultentry(contact)"
                                                     matTooltip="Print" *ngIf="contact.isCompleted">
@@ -475,10 +471,6 @@
                                                     (click)="getWhatsappshareResult(contact)">
                                                     <mat-icon style="color: #25d366;">chat</mat-icon>
                                                 </button>
-
-                                                <!-- <ng-template #noMLC>
-                                                    <span>------</span>
-                                                </ng-template> -->
                                             </mat-cell>
                                         </ng-container>
 
