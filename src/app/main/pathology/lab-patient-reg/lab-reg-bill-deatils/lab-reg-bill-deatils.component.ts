@@ -26,9 +26,11 @@ export class LabRegBillDeatilsComponent {
     // @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
     @ViewChild('iconisPathology') iconisPathology!: TemplateRef<any>;
     @ViewChild('iconisRadiology') iconisRadiology!: TemplateRef<any>;
+    @ViewChild('icons') icons!: TemplateRef<any>;
     // @ViewChild('isCompleted') iconisCompleted!: TemplateRef<any>;
     ngAfterViewInit() {
-        this.gridConfig.columnsList.find(col => col.key === 'isPathology')!.template = this.iconisPathology;
+        this.gridConfig.columnsList.find(col => col.key === 'icon')!.template = this.icons;
+        // this.gridConfig.columnsList.find(col => col.key === 'isPathology')!.template = this.iconisPathology;
         this.gridConfig.columnsList.find(col => col.key === 'isRadiology')!.template = this.iconisRadiology;
         // this.gridConfig.columnsList.find(col => col.key === 'isCompleted')!.template = this.iconisCompleted;
 //   this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
@@ -38,9 +40,9 @@ export class LabRegBillDeatilsComponent {
 
         // { heading: "--", key: "isCompleted", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width:10 },
 
-        { heading: "--", key: "isPathology",align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width:30 },
-
-        { heading: "--", key: "isRadiology", align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width:30 },
+        { heading: "--", key: "icon",align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width:80,template: this.icons  },
+        // { heading: "--", key: "isPathology",align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width:30 },
+        // { heading: "--", key: "isRadiology", align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width:30 },
         { heading: "BillNo", key: "billNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "Service Name", key: "serviceName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
         { heading: "Price", key: "price", sort: true, align: 'left', emptySign: 'NA', width: 80 },

@@ -48,35 +48,38 @@
                     </div>
                 </ng-template> -->
 
-                <ng-template #iconisPathology let-element>
+                 <ng-template #icons let-element>
                     <div fxLayout="row" fxLayoutAlign="center center">
 
-                        <!-- <mat-icon *ngIf="element.isPathology==1" title="Pathology Service">
-                            <img width="50px" height="50px" src="assets/images/logos/pathology.png">
-                        </mat-icon> -->
-
-                        <mat-icon *ngIf="contact.isPathology==1" matTooltip="Pathology Service" class="s-20 mr-4"
+                        <mat-icon *ngIf="element.isPathology==1" matTooltip="Pathology Service" class="s-20 mr-4"
                             style="color: #9c27b0;">
                             <img width="50px" height="50px" src="assets/images/logos/pathology.png">
                         </mat-icon>
 
-
-                    </div>
-                </ng-template>
-
-                <ng-template #iconisRadiology let-element>
-                    <div fxLayout="row" fxLayoutAlign="center center">
-
-                        <!-- <mat-icon *ngIf="element.isRadiology==1" title="Radiology Service">
-                            <img width="50px" height="50px" src="assets/images/logos/radiology.png">
-                        </mat-icon> -->
-
-                          <mat-icon *ngIf="contact.isRadiology==1" matTooltip="Radiology Service" class="s-20 mr-4"
+                        <mat-icon *ngIf="element.isRadiology==1" matTooltip="Radiology Service" class="s-20 mr-4"
                             style="color: #4a6be6;">
                             <img width="50px" height="50px" src="assets/images/logos/pathology.png">
                         </mat-icon>
                     </div>
                 </ng-template>
+
+                <!-- <ng-template #iconisPathology let-element>
+                    <div fxLayout="row" fxLayoutAlign="center center">
+                        <mat-icon *ngIf="element.isPathology==1" matTooltip="Pathology Service" class="s-20 mr-4"
+                            style="color: #9c27b0;">
+                            <img width="50px" height="50px" src="assets/images/logos/pathology.png">
+                        </mat-icon>
+                    </div>
+                </ng-template> -->
+
+                <!-- <ng-template #iconisRadiology let-element>
+                    <div fxLayout="row" fxLayoutAlign="center center">
+                          <mat-icon *ngIf="element.isRadiology==1" matTooltip="Radiology Service" class="s-20 mr-4"
+                            style="color: #4a6be6;">
+                            <img width="50px" height="50px" src="assets/images/logos/pathology.png">
+                        </mat-icon>
+                    </div>
+                </ng-template> -->
 
 
                 <airmid-table [gridConfig]="gridConfig" #grid :ShowFilter="false" :ShowButtons="false">

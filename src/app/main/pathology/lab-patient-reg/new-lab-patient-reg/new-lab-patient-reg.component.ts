@@ -404,7 +404,8 @@ export class NewLabPatientRegComponent {
   getSelectedObj(obj) {
     console.log(obj)
 
-    this.PatientName = obj.firstName + ' ' + obj.lastName;
+    this.PatientName = obj.patientName;
+    // this.PatientName = obj.firstName + ' ' + obj.lastName;
     this.RegId = obj.value;
     if (this.RegId) {
 
