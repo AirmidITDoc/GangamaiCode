@@ -158,7 +158,7 @@
                                                                 placeholder="Start date">
                                                             <input matEndDate formControlName="enddate"
                                                                 placeholder="End date"
-                                                                (dateChange)="getmultiplePaymentList()">
+                                                                (dateChange)="getmultiplePaymentListNew()">
                                                         </mat-date-range-input>
                                                         <mat-datepicker-toggle matSuffix
                                                             [for]="multiplePayment"></mat-datepicker-toggle>
@@ -172,6 +172,7 @@
                                                         placeholderText="UHID / First Name / Last Name / Mobile No(DC)"
                                                         ApiUrl="Admission/Dischargesearch-patient?Keyword="
                                                         (selectionChange)="getSelectedObj1($event)"
+                                                         (onClearSelection)="IpMulSettFormReset()"
                                                         TextField="formattedText" ValueField="regId">
                                                     </airmid-autocomplete>
 
@@ -181,12 +182,12 @@
                                                         [mode]="autocompleteModecompany"></airmid-dropdown>
 
                                                     <div class="action-buttons" style="padding: 10px;">
-                                                        <button mat-raised-button (click)="onClear()"
+                                                        <!-- <button mat-raised-button (click)="onClear()"
                                                             class="clear-button" matTooltip="close">
                                                             <mat-icon class="cleariconbutton">close</mat-icon>
-                                                        </button>&nbsp;
+                                                        </button>&nbsp; -->
                                                         <button mat-raised-button class="search-button"
-                                                            (click)="getmultiplePaymentList(true)" matTooltip="search">
+                                                            (click)="getmultiplePaymentListNew(true)" matTooltip="search">
                                                             <mat-icon class="searchiconbutton">search</mat-icon>
                                                         </button>
                                                     </div>
@@ -363,7 +364,7 @@
                         <mat-card>
                             <div class="patient-search p-12">
                                 <div fxLayout="row" fxLayoutAlign="start start" class="gap-8">
-                                    <div fxFlexFill fxLayout="column" fxLayout="row" fxLayoutGap="6px"
+                                    <!-- <div fxFlexFill fxLayout="column" fxLayout="row" fxLayoutGap="6px"
                                         fxLayoutAlign="space-between">
 
                                         <div fxLayout="row" fxLayoutGap="6px">
@@ -391,6 +392,69 @@
 
                                             <button class="btn btn-primary" style="margin-left: 5px;"
                                                 (click)="OnSave()">Payment</button>
+                                        </div>
+
+                                    </div> -->
+                                    <div fxFlexFill fxLayout="column" fxLayout="row" fxLayoutGap="6px"
+                                        fxLayoutAlign="space-between">
+
+                                        <div fxLayout="row" fxLayoutGap="6px">
+                                            <mat-form-field appearance="outline" fxFlex="35%">
+                                                <mat-label>NetAmount</mat-label>
+                                                <input name="NetAmount" formControlName="NetAmount" matInput readonly
+                                                    [(ngModel)]="vNetAmount">
+                                            </mat-form-field>
+
+                                            <mat-form-field appearance="outline" fxFlex="35%">
+                                                <mat-label>BalanceAmount</mat-label>
+                                                <input name="BalanceAmount" formControlName="BalanceAmount" matInput
+                                                    readonly [(ngModel)]="vBalanceAmount">
+                                            </mat-form-field>
+
+                                            <mat-form-field appearance="outline" fxFlex="35%">
+                                                <mat-label>PaidAmount</mat-label>
+                                                <input name="PaidAmount" formControlName="PaidAmount" matInput
+                                                    [(ngModel)]="vPaidAmount" readonly>
+                                            </mat-form-field>
+
+                                            <mat-form-field appearance="outline" fxFlex="35%">
+                                                <mat-label>TDSAmount</mat-label>
+                                                <input name="TDSAmount" formControlName="TDSAmount" matInput
+                                                    [(ngModel)]="vTDSAmount" readonly>
+                                            </mat-form-field>
+
+                                            <!-- <div *ngIf="selection.selected.length > 0" fxLayout="row" fxLayoutGap="6px"> -->
+                                            <!-- <mat-radio-group formControlName="paymode" name="paymode">
+                                                    <mat-radio-button value="NEFT">NEFT</mat-radio-button>
+                                                </mat-radio-group> -->
+
+                                            <mat-form-field appearance="outline" fxFlex="40%"
+                                                *ngIf="selection.selected.length > 0">
+                                                <mat-label>UPI NO</mat-label>
+                                                <input matInput placeholder="UPI Number" formControlName="UPINO"
+                                                    [(ngModel)]="vUPINO" maxlength="12" minlength="4" type="text"
+                                                    Onlynumber max="999999999999" min="100000000000" autocomplete="off"
+                                                    (keypress)="keyPressAlphanumeric($event)"
+                                                    oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 12);"
+                                                    required="required" value="987665868822">
+                                                <mat-error class="error"
+                                                    *ngIf="IPMultipleSettlForm.get('UPINO').invalid && IPMultipleSettlForm.get('UPINO').touched">12
+                                                    digits upi number is required</mat-error>
+                                            </mat-form-field>
+
+                                            <airmid-dropdown label="Bank Name" formControlName="bankName"
+                                                [formGroup]="IPMultipleSettlForm" *ngIf="selection.selected.length > 0"
+                                                (selectionChange)="selectChangebank($event)"
+                                                [mode]="autocompleteModebank">
+                                            </airmid-dropdown>
+                                            <!-- </div> -->
+                                        </div>
+
+                                        <div class="modal-footer-buttons" style="padding: 10px;">
+                                            <button class="btn btn-danger-outline" (click)="OnReset()">Reset</button>
+
+                                            <button class="btn btn-primary" style="margin-left: 5px;"
+                                                (click)="OnSave()">Save</button>
                                         </div>
 
                                     </div>

@@ -110,6 +110,18 @@ EmailFrom:FormGroup
       bccName: ['',[this._formvalidationService.allowEmptyStringValidatorOnly()]],
     })
   } 
+showCc = false;
+showBcc = false;
+
+toggleCc() {
+  this.showCc = !this.showCc;
+}
+
+toggleBcc() {
+  this.showBcc = !this.showBcc;
+}
+
+
   OnSend() {
     const formvalues = this.EmailFrom.value
     if (this.EmailFrom.valid) {

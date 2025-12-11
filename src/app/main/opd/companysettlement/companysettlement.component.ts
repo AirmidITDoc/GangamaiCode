@@ -732,7 +732,7 @@ export class CompanysettlementComponent implements OnInit {
         toDate = toDate ? this.datePipe.transform(toDate, "yyyy-MM-dd") : "";
         var vdata = {
             "first": 0,
-            "rows": 10,
+            "rows": 100,
             "sortField": "RegNo",
             "sortOrder": 0,
             "filters": [

@@ -19,11 +19,14 @@ export class IPSettlementService {
       enddate: [],
       RegNo: '',
       CompanyId: 0,
-      RegId: 0,
-
+      RegId: 0, 
       NetAmount: [''],
       PaidAmount: [''],
-      BalanceAmount: ['']
+      BalanceAmount: [''], 
+      TDSAmount: [''],
+      paymode: ['NEFT'],
+      UPINO: ['0', [Validators.required]],
+      bankName: ['', [Validators.required]]
     });
   }
   //Adv paymnet
@@ -90,5 +93,10 @@ export class IPSettlementService {
       },
     ];
   }
-
+    public getmultiplePayList(param) {
+        return this._httpClient1.PostData("OPBill/PatientWisePaymentList", param);
+    }
+      public InsertIPMultiplesettlement(param) {
+        return this._httpClient1.PostData("IPBill/PaymentMultipleSettelment", param);
+    }
 }

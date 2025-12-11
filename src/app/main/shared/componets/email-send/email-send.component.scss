@@ -1,0 +1,11 @@
+.cc-btn, .bcc-btn {
+    font-size: 13px;
+    color: #1a73e8;      /* Blue like Gmail */
+    min-width: 20px;
+    padding: 0 8px;
+    text-transform: none;
+}
+
+.cc-btn:hover, .bcc-btn:hover {
+    text-decoration: underline;
+}

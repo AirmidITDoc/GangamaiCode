@@ -30,7 +30,7 @@
                             <div fxLayout="column" class="gap-8 h-100-p">
                                 <div fxFlexFill fxLayout="column">
                                     <airmid-autocomplete fxFlex label="Search Reg No / Patient Name / Mobile No" [formGroup]="SearchGroupForm"
-                                        formControlName="regId" placeholderText="Search Reg No / Patient Name / Mobile No"
+                                        formControlName="RegId" placeholderText="Search Reg No / Patient Name / Mobile No"
                                         ApiUrl="OutPatient/auto-complete?Keyword="
                                         (selectionChange)="getSelectedObj($event)"></airmid-autocomplete>
                                 </div>
@@ -76,33 +76,25 @@
                                                                     <span class="patient-col-value">{{registerObj?.mobileNo
                                                                         }}</span>
                                                                 </div>
-            
                                                                 <div class="patient-col">
+                                                                    <span class="patient-col-key">Email</span>
+                                                                    <span>:</span>
+                                                                    <span
+                                                                        class="patient-col-value">{{registerObj?.emailId}}</span>
+                                                                </div>   
+                                                            </div>
+            
+                                                           <div fxLayout="column" fxLayoutGap="6px">
+
+                                                             <div class="patient-col">
                                                                     <span class="patient-col-key">Age </span>
                                                                     <span>:</span>
                                                                     <span class="patient-col-value">{{registerObj?.ageYear}}Y |
                                                                         {{registerObj?.ageMonth}}M | {{registerObj?.ageDay}}D
                                                                     </span>
                                                                 </div>
-             
-                                                            </div>
-            
-                                                           <div fxLayout="column" fxLayoutGap="6px">
 
-                                                               <div class="patient-col">
-                                                                    <span class="patient-col-key">Email</span>
-                                                                    <span>:</span>
-                                                                    <span
-                                                                        class="patient-col-value">{{registerObj?.email}}</span>
-                                                                </div> 
-
-                                                                <div class="patient-col">
-                                                                    <span class="patient-col-key">Tariff Name</span>
-                                                                    <span>:</span>
-                                                                    <span
-                                                                        class="patient-col-value">{{registerObj?.tariffName}}</span>
-                                                                </div> 
-                                                                
+                                                                   
                                                             </div>
                                                         </div>
                                                     </div>
@@ -116,17 +108,20 @@
                             <form [formGroup]="SearchGroupForm">
                             <div fxLayout="column" class="gap-8 h-100-p">
                                 <div fxFlexFill fxLayout="column">
-                                <airmid-textbox fxFlex label="Mobile No" formControlName="mobileNo" placeholder="Enter 10 digit Mobile No"
-                                [formGroup]="SearchGroupForm"   type="number" required [maxLength]="10"></airmid-textbox> 
+                                <airmid-textbox fxFlex label="Mobile No" formControlName="mobileNo" 
+                                placeholder="Enter 10 digit Mobile No" [formGroup]="SearchGroupForm"  
+                                   [maxLength]="10"  [validations]="getValidationMessages().mobileNo"
+                                (keypress)="keyPressAlphanumeric($event)"></airmid-textbox>   
 
                                 <airmid-textbox fxFlex label="Mail Id" formControlName="emailId" placeholder="Enter Mail Id"
-                                [formGroup]="SearchGroupForm"   type="email" ></airmid-textbox> 
+                                [formGroup]="SearchGroupForm"   type="email"  [validations]="getValidationMessages().emailId"></airmid-textbox> 
                             
                                 <airmid-textbox fxFlex  label="NationalId \ Aadhaar No" formControlName="aadharCardNo" placeholder="Enter NationalID \ Aadhaar No"
-                                [formGroup]="SearchGroupForm"   type="text" ></airmid-textbox>
+                                [formGroup]="SearchGroupForm"   type="text"  [validations]="getValidationMessages().aadharCardNo"
+                                [maxLength]="Is9_Digit_National_Id ? 9 : 12"  (keypress)="keyPressAlphanumeric($event)"></airmid-textbox>
                                 </div>
                             </div>
-                        </form> 
+                            </form> 
                         </div>
                     </div> 
                 </div>
@@ -135,8 +130,8 @@
         
             <div class="modal-footer"  fxLayoutAlign="end">  
                 <div class="modal-footer-buttons" fxLayoutGap="6px" >
-                    <button class="btn btn-danger-outline" click="OnClose()">Close</button>
-                    <button class="btn btn-primary"  Click="OnSave()">Save</button>
+                    <button class="btn btn-danger-outline" (click)="OnClose()">Close</button>
+                    <button class="btn btn-primary"  (click)="OnSave()">Save</button>
                 </div> 
             </div>
         </div> 

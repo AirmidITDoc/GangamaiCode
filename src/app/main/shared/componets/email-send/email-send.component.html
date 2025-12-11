@@ -112,25 +112,43 @@
                     <div class="modal-card-container">
                         <form [formGroup]="EmailFrom">
                             <div fxLayout="column" fxLayoutGap="6px">
-
-                               <airmid-textbox fxFlex label="To Mail Id" formControlName="ToMailId" placeholder="To Mail Id"
-                                [formGroup]="EmailFrom" id="ToMailId" type="email" required></airmid-textbox> 
-
-                                <airmid-textbox fxFlex label="To Mail Id CC" formControlName="CCName" placeholder="CC Mail Id"
-                                [formGroup]="EmailFrom" id="CCName" type="email" ></airmid-textbox> 
-                            
-                                <airmid-textbox fxFlex  label="To Mail Id bcc" formControlName="bccName" placeholder="To Mail Id bcc"
-                                [formGroup]="EmailFrom" id="bccName" type="email" ></airmid-textbox>
-
-                                 <airmid-textbox fxFlex  label="Subject" formControlName="Subject" placeholder="Subject"
-                                [formGroup]="EmailFrom" id="Subject" type="text" ></airmid-textbox> 
-
-
+                        
+                                <!-- <airmid-textbox fxFlex label="To Mail Id" formControlName="ToMailId" placeholder="To Mail Id"
+                                                        [formGroup]="EmailFrom" id="ToMailId" type="email" required></airmid-textbox>  -->
+                        
+                                <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>To</mat-label>
+                                    <input matInput label="To Mail Id" formControlName="ToMailId" placeholder="ENter Mail Id"
+                                        [formGroup]="EmailFrom" id="ToMailId" type="email" required>
+                                    <!-- RIGHT SIDE INSIDE INPUT -->
+                                    <button mat-button matSuffix class="suffix-btn" (click)="toggleCc()">Cc</button>
+                                    <button mat-button matSuffix class="suffix-btn" (click)="toggleBcc()">Bcc</button>
+                                </mat-form-field>
+                                <!-- CC FIELD -->
+                                <div *ngIf="showCc">
+                                    <airmid-textbox fxFlex label="To Mail Id CC" formControlName="CCName" placeholder="CC Mail Id"
+                                        [formGroup]="EmailFrom" id="CCName" type="email"></airmid-textbox>
+                                </div>
+                        
+                                <!-- BCC FIELD -->
+                                <div *ngIf="showBcc">
+                                    <airmid-textbox fxFlex label="To Mail Id bcc" formControlName="bccName" placeholder="To Mail Id bcc"
+                                        [formGroup]="EmailFrom" id="bccName" type="email"></airmid-textbox>
+                                </div>
+                        
+                        
+                        
+                        
+                        
+                                <airmid-textbox fxFlex label="Subject" formControlName="Subject" placeholder="Subject" [formGroup]="EmailFrom"
+                                    id="Subject" type="text"></airmid-textbox>
+                        
+                        
                                 <mat-form-field appearance="outline" fxFlex>
                                     <mat-label>Body</mat-label>
-                                    <textarea rows="6" matInput name="Body" formControlName="Body" placeholder="Write......"
-                                        id="Body" type="text"  required ></textarea>
-                                </mat-form-field>  
+                                    <textarea rows="6" matInput name="Body" formControlName="Body" placeholder="Write......" id="Body"
+                                        type="text" required></textarea>
+                                </mat-form-field>
                             </div>
                         </form>
                     </div> 

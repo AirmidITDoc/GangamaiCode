@@ -1,7 +1,7 @@
 import { Component, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
 
 import { DatePipe } from '@angular/common';
-import { FormArray, FormGroup, UntypedFormBuilder } from '@angular/forms';
+import { AbstractControl, FormArray, FormGroup, UntypedFormBuilder } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 // import { BrowseOpdPaymentReceipt } from 'app/main/opd/browse-payment-list/browse-payment-list.component';
@@ -32,28 +32,7 @@ import { OpPaymentComponent } from 'app/main/opd/op-search-list/op-payment/op-pa
     animations: fuseAnimations
 })
 export class IPSettlementComponent implements OnInit {
-    searchFormGroup: FormGroup
-    myFormGroup: FormGroup
-    IPMultipleSettlForm: FormGroup
-    RegId1 = "0";
-    RegId2 = "0";
-    CompanyId = "0"
-    BillNo: any;
-    vpaidamt: any = 0;
-    vbalanceamt: any = 0;
-    registerObj = new RegInsert({});
-    PatientName: any;
-    AdmissionId: any = 0;
-    dsMultiplepayList = new MatTableDataSource<MultiplePayList>();
-    @ViewChild(MatSort) sort: MatSort;
-    @ViewChild('paginator', { static: true }) public paginator: MatPaginator;
-    vNetAmount: any = 0;
-    vPaidAmount: any = 0;
-    vBalanceAmount: any = 0;
-    isSearchTriggered = false;
-    autocompleteModecompany: string = "Company";
-
-    displayedColumns = [
+        displayedColumns = [
         'CheckBox',
         'BillDate',
         'PBillNo',
@@ -68,6 +47,32 @@ export class IPSettlementComponent implements OnInit {
         'companyName',
         'action',
     ];
+    searchFormGroup: FormGroup;
+    myFormGroup: FormGroup;
+    IPMultipleSettlForm: FormGroup; 
+    ipMultiSaveForm: FormGroup;
+    IPBillMyForm: FormGroup;
+    RegId1 = "0";
+    RegId2 = "0";
+    CompanyId = "0"
+    BillNo: any;
+    vpaidamt: any = 0;
+    regNo2:any=0;
+    vbalanceamt: any = 0;
+    registerObj = new RegInsert({});
+    vNetAmount: any = 0;
+    vPaidAmount: any = 0;
+    vTDSAmount: any = 0;
+    vBalanceAmount: any = 0;
+    isSearchTriggered = false;
+    vUPINO: any;
+    autocompleteModebank: string = "Bank";
+    PatientName: any;
+    AdmissionId: any = 0;
+    dsMultiplepayList = new MatTableDataSource<MultiplePayList>();
+    @ViewChild(MatSort) sort: MatSort;
+    @ViewChild('paginator', { static: true }) public paginator: MatPaginator; 
+    autocompleteModecompany: string = "Company"; 
 
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     @ViewChild('actionsTemplate') actionsTemplate!: TemplateRef<any>;
@@ -121,6 +126,7 @@ export class IPSettlementComponent implements OnInit {
     ngOnInit(): void {
         this.searchFormGroup = this.createSearchForm();
         this.IPBillMyForm = this.CreateIPBillForm();
+        this.ipMultiSaveForm = this.CreateIPMultipleSettlInsertForm();
 
         this.IPMultipleSettlForm = this._IPSettlementService.CreateIPMultiplpeSettlForm();
         // 🔹 Auto refresh when Company is cleared
@@ -143,13 +149,53 @@ export class IPSettlementComponent implements OnInit {
         });
        // this.getmultiplePaymentList(true);
     }
+    BankId = 0
+    BankNam: any;
+    selectChangebank(event) {
+        console.log(event)
+        this.BankId = event.value
+        this.BankNam = event.text
+    }
+    GetDetails(RegId1) {
+        this.gridConfig = {
+            apiUrl: "IPBill/IPBillList",
+            columnsList: this.AllColumns,
+            sortField: "RegId",
+            sortOrder: 0,
+            filters: [
+                { fieldName: "RegId", fieldValue: String(RegId1), opType: OperatorComparer.Equals }
+            ]
+        }
+        this.grid.gridConfig = this.gridConfig;
+        this.grid.bindGridData();
+    }
+    getSelectedObjIP(obj) {
+        if ((obj.regID ?? 0) > 0) {
+            console.log("Admitted patient:", obj)
+        }
+    } 
+    getFinalDisc(contact) {
+        const dialogRef = this._matDialog.open(DiscountAfterFinalBillComponent,
+            {
+                maxWidth: "100%",
+                height: '65%',
+                width: '45%',
+                data: {
+                    Obj: contact,
+                    PatientObj: this.registerObj
+                }
+            });
+        dialogRef.afterClosed().subscribe(result => {
+            console.log('The dialog was closed - Insert Action', result);
+            this.grid.bindGridData();
+        });
+    }
     createSearchForm() {
         return this.formBuilder.group({
             RegId: 0,
             AppointmentDate: [(new Date()).toISOString()],
         });
-    }
-    IPBillMyForm: FormGroup;
+    } 
     //IP bill save form 
     CreateIPBillForm(): FormGroup {
         return this.formBuilder.group({
@@ -263,8 +309,7 @@ export class IPSettlementComponent implements OnInit {
         //     });  
         // }, 500);                   "
         this.GetDetails(this.RegId1)
-    }
-
+    } 
     openPaymentpopup(contact) {
         const currentDate = new Date();
         const datePipe = new DatePipe('en-US');
@@ -344,130 +389,16 @@ export class IPSettlementComponent implements OnInit {
         this.searchFormGroup.reset();
         this.PatientName = '';
         this.registerObj = new RegInsert({});
-    }
-    GetDetails(RegId1) {
-        this.gridConfig = {
-            apiUrl: "IPBill/IPBillList",
-            columnsList: this.AllColumns,
-            sortField: "RegId",
-            sortOrder: 0,
-            filters: [
-                { fieldName: "RegId", fieldValue: String(RegId1), opType: OperatorComparer.Equals }
-            ]
-        }
-        this.grid.gridConfig = this.gridConfig;
-        this.grid.bindGridData();
-    }
-    getSelectedObjIP(obj) {
-        if ((obj.regID ?? 0) > 0) {
-            console.log("Admitted patient:", obj)
-        }
-    }
-
-    getFinalDisc(contact) {
-        const dialogRef = this._matDialog.open(DiscountAfterFinalBillComponent,
-            {
-                maxWidth: "100%",
-                height: '65%',
-                width: '45%',
-                data: {
-                    Obj: contact,
-                    PatientObj: this.registerObj
-                }
-            });
-        dialogRef.afterClosed().subscribe(result => {
-            console.log('The dialog was closed - Insert Action', result);
-            this.grid.bindGridData();
-        });
-    }
-
-    // Multiple settlement part
-
+    } 
+    // Multiple settlement part------------------------------------------------------------------------------
     getSelectedObj1(obj) {
         console.log(obj)
         this.RegId1 = obj.regID;
+        this.regNo2 = obj.regNo
         this.registerObj = obj;
         this.PatientName = this.registerObj.firstName + ' ' + this.registerObj.middleName + ' ' + this.registerObj.lastName
-        this.getmultiplePaymentList();
-    }
-
-    getmultiplePaymentList(validate = true) {
-        this.CompanyId = String(this.IPMultipleSettlForm.get('CompanyId').value)
-        this.RegId2 = this.IPMultipleSettlForm.get('RegId')?.value.value
-
-        if (validate &&
-            (this.CompanyId === "0" || this.CompanyId === "" || this.CompanyId === null) &&
-            (this.RegId2 === "0" || this.RegId2 === "" || this.RegId2 === undefined)) {
-            this.toastr.warning('Please select either a Company or a Patient before searching.');
-            this.dsMultiplepayList.data = []; // keep list empty
-            return;
-        }
-
-        this.isSearchTriggered = true;
-
-        let fromDate = this.IPMultipleSettlForm.get("fromDate").value || "";
-        let toDate = this.IPMultipleSettlForm.get("enddate").value || "";
-        fromDate = fromDate ? this.datePipe.transform(fromDate, "yyyy-MM-dd") : "";
-        toDate = toDate ? this.datePipe.transform(toDate, "yyyy-MM-dd") : "";
-        // var vdata = {
-        //     "first": 0,
-        //     "rows": 10,
-        //     "sortField": "RegNo",
-        //     "sortOrder": 0,
-        //     "filters": [
-        //         {
-        //             "fieldName": "F_Name",
-        //             "fieldValue": "%",
-        //             "opType": "Equals"
-        //         },
-        //         {
-        //             "fieldName": "L_Name",
-        //             "fieldValue": "%",
-        //             "opType": "Equals"
-        //         },
-        //         {
-        //             "fieldName": "From_Dt",
-        //             "fieldValue": fromDate, //"2024-01-01",
-        //             "opType": "StartsWith"
-        //         },
-        //         {
-        //             "fieldName": "To_Dt",
-        //             "fieldValue": toDate, //"2025-01-01",
-        //             "opType": "StartsWith"
-        //         },
-        //         {
-        //             "fieldName": "Reg_No",
-        //             "fieldValue": this.regNo2, //"1",
-        //             "opType": "Contains"
-        //         },
-        //         {
-        //             "fieldName": "PBillNo",
-        //             "fieldValue": "0",
-        //             "opType": "Contains"
-        //         },
-        //         {
-        //             "fieldName": "ReceiptNo",
-        //             "fieldValue": "0",
-        //             "opType": "Contains"
-        //         },
-        //         {
-        //             "fieldName": "CompanyId",
-        //             "fieldValue": this.CompanyId,
-        //             "opType": "Contains"
-        //         }
-        //     ],
-        //     "exportType": "JSON",
-        //     "columns": []
-        // }
-        // console.log(vdata)
-        // this._IPSettlementService.getmultiplePayList(vdata).subscribe((data) => {
-        //     this.dsMultiplepayList.data = data.data as MultiplePayList[];
-        //     console.log(this.dsMultiplepayList.data)
-        //     this.dsMultiplepayList.sort = this.sort;
-        //     this.dsMultiplepayList.paginator = this.paginator;
-        // });
-    }
-
+        this.getmultiplePaymentListNew();
+    } 
     ListView(value) {
         console.log(value)
         if (value.value !== 0)
@@ -475,25 +406,87 @@ export class IPSettlementComponent implements OnInit {
         else
             this.CompanyId = "0"
 
-        this.getmultiplePaymentList();
+        this.getmultiplePaymentListNew();
     }
-
-    ipMulSettFormReset() {
-        this.RegId2 = "0"
-        this.getmultiplePaymentList();
-    }
-
-    onClear() {
-    }
-
-    OnReset() {
-        this.vNetAmount = 0;
-        this.vPaidAmount = 0;
-        this.vBalanceAmount = 0;
-        this.SelectedList = [];
-        this.selection.clear();
-    }
-
+    getmultiplePaymentListNew(validate = true) {
+            this.CompanyId = String(this.IPMultipleSettlForm.get('CompanyId').value)
+            this.RegId2 = this.IPMultipleSettlForm.get('RegId')?.value?.regID || 0
+    
+            if (validate &&
+                (this.CompanyId === "0" || this.CompanyId === "" || this.CompanyId === null) &&
+                (this.RegId2 === "0" || this.RegId2 === "" || this.RegId2 === undefined)) {
+                this.toastr.warning('Please select either a Company or a Patient before searching.');
+                this.dsMultiplepayList.data = []; // keep list empty
+                return;
+            } 
+            this.isSearchTriggered = true; 
+            let fromDate = this.IPMultipleSettlForm.get("fromDate").value || "";
+            let toDate = this.IPMultipleSettlForm.get("enddate").value || "";
+            fromDate = fromDate ? this.datePipe.transform(fromDate, "yyyy-MM-dd") : "";
+            toDate = toDate ? this.datePipe.transform(toDate, "yyyy-MM-dd") : "";
+            var vdata = {
+                "first": 0,
+                "rows": 100,
+                "sortField": "RegNo",
+                "sortOrder": 0,
+                "filters": [
+                    {
+                        "fieldName": "F_Name",
+                        "fieldValue": "%",
+                        "opType": "Equals"
+                    },
+                    {
+                        "fieldName": "L_Name",
+                        "fieldValue": "%",
+                        "opType": "Equals"
+                    },
+                    {
+                        "fieldName": "From_Dt",
+                        "fieldValue": fromDate, //"2024-01-01",
+                        "opType": "StartsWith"
+                    },
+                    {
+                        "fieldName": "To_Dt",
+                        "fieldValue": toDate, //"2025-01-01",
+                        "opType": "StartsWith"
+                    },
+                    {
+                        "fieldName": "Reg_No",
+                        "fieldValue": String(this.regNo2), //"1",
+                        "opType": "Contains"
+                    },
+                    {
+                        "fieldName": "PBillNo",
+                        "fieldValue": "0",
+                        "opType": "Contains"
+                    },
+                    {
+                        "fieldName": "ReceiptNo",
+                        "fieldValue": "0",
+                        "opType": "Contains"
+                    },
+                    {
+                        "fieldName": "CompanyId",
+                        "fieldValue": String(this.CompanyId),
+                        "opType": "Contains"
+                    },
+                    {
+                        "fieldName": "OPIPType",
+                        "fieldValue": "1",
+                        "opType": "Contains"
+                    }
+                ],
+                "exportType": "JSON",
+                "columns": []
+            }
+            console.log(vdata)
+            this._IPSettlementService.getmultiplePayList(vdata).subscribe((data) => {
+                this.dsMultiplepayList.data = data.data as MultiplePayList[];
+                console.log(this.dsMultiplepayList.data)
+                this.dsMultiplepayList.sort = this.sort;
+                this.dsMultiplepayList.paginator = this.paginator;
+            });
+    }   
     selection = new SelectionModel<MultiplePayList>(true, []);
     SelectedList: any = [];
     masterToggle() {
@@ -502,6 +495,7 @@ export class IPSettlementComponent implements OnInit {
             this.vNetAmount = 0;
             this.vPaidAmount = 0;
             this.vBalanceAmount = 0;
+             this.vTDSAmount = 0; 
             this.selection.clear();
             this.SelectedList = [];
         } else {
@@ -514,13 +508,14 @@ export class IPSettlementComponent implements OnInit {
                 this.vNetAmount += element.billAmount
                 this.vPaidAmount += element.PaidAmount
                 this.vBalanceAmount += element.balanceAmt
+                 this.vTDSAmount += element.tds ?? 0;
                 this.SelectedList.push(element)
             })
         }
         this.SelectedList.push(this.selection.selected);
         console.log(this.SelectedList)
-    }
-
+    } 
+    
     isAllSelected() {
         const numSelected = this.selection.selected.length;
         const numRows = this.dsMultiplepayList.data.length;
@@ -529,40 +524,26 @@ export class IPSettlementComponent implements OnInit {
     }
     isSomeSelected() {
         return this.selection.selected.length > 0;
-    }
-
-    OnSelectPayment(event, element) {
-        debugger
+    } 
+     OnSelectPayment(event, element) {
+        // debugger
         if (event.checked) {
 
-            if (element._origPaidAmount === undefined && element._origBalanceAmt === undefined) {
+            if (element._origPaidAmount === undefined && element._origBalanceAmt === undefined && element._origNetAmt === undefined) {
                 element._origPaidAmount = element.PaidAmount ?? 0;
                 element._origBalanceAmt = element.balanceAmt;
+                element._origNetAmt = element.netAmount ?? 0;
             }
 
             // ✅ Your swap logic
             element.PaidAmount = element.balanceAmt; //here for paid i pass balAmt & viceversa in html
             element.balanceAmt = 0;
-            // element.tds = 0;
+            element.tds = 0;
+            element.CompanyDisc = 0;
+
+            element.netAmount = this.roundAmount(element.billAmount - (element.discAmount ?? 0) - (element.CompanyDisc ?? 0));
 
             if (this.SelectedList.length > 0) {
-                // if (!this.SelectedList.some(item => item.supplierName == element.supplierName)) {
-                //   this.toastr.warning('Please select same supplier Name', 'Warning !', {
-                //     toastClass: 'tostr-tost custom-toast-warning',
-                //   });
-                //   this.SelectedList = [];
-                //   this.selection.clear()
-                //   this.getSupplierPayStatusList();
-                //   this._SupplierPaymentStatusService.SearchFormGroup.patchValue({
-                //     NetAmount: '',
-                //     PaidAmount: '',
-                //     BalanceAmount: ''
-                //   });
-                //   this.vNetAmount = 0;
-                //   this.vPaidAmount = 0;
-                //   this.vBalanceAmount = 0;
-                //   return;
-                // }
                 this.SelectedList.push(element)
             } else {
                 this.SelectedList.push(element)
@@ -571,13 +552,16 @@ export class IPSettlementComponent implements OnInit {
             this.vNetAmount = this.roundAmount(this.vNetAmount + element.billAmount);
             this.vPaidAmount = this.roundAmount(this.vPaidAmount + element.PaidAmount);
             this.vBalanceAmount = this.roundAmount(this.vBalanceAmount + element.balanceAmt);
+            this.vTDSAmount = this.roundAmount(this.vTDSAmount + element.tds);
         }
         else {
 
-            if (element._origPaidAmount !== undefined && element._origBalanceAmt !== undefined) {
+            if (element._origPaidAmount !== undefined && element._origBalanceAmt !== undefined && element._origNetAmt !== undefined) {
                 element.PaidAmount = 0;
                 element.balanceAmt = element._origBalanceAmt;
+                element.netAmount = element._origNetAmt;
             }
+            element.CompanyDisc = 0;
             element.tds = 0;
 
             let index = this.SelectedList.indexOf(element);
@@ -594,14 +578,16 @@ export class IPSettlementComponent implements OnInit {
             this.vBalanceAmount = this.roundAmount(
                 this.SelectedList.reduce((sum, x) => sum + x.balanceAmt, 0)
             );
+            this.vTDSAmount = this.roundAmount(
+                this.SelectedList.reduce((sum, x) => sum + (x.tds || 0), 0)
+            );
             this.dsMultiplepayList.data = [...this.dsMultiplepayList.data];
         }
         console.log(this.SelectedList)
     }
     roundAmount(value: number, decimals: number = 1): number {
         return Math.round(value * Math.pow(10, decimals)) / Math.pow(10, decimals);
-    }
-
+    } 
     onTDSChange(element: any) {
 
         if (!this.selection.isSelected(element)) {
@@ -625,6 +611,7 @@ export class IPSettlementComponent implements OnInit {
             });
             element.tds = 0;
             element.PaidAmount = this.roundAmount(origPaid);
+             this.recalculateTotals();
             return;
         }
 
@@ -634,6 +621,10 @@ export class IPSettlementComponent implements OnInit {
             this.SelectedList.reduce((sum, x) => sum + (x.netAmount || 0), 0)
         );
 
+        this.vTDSAmount = this.roundAmount(
+        this.SelectedList.reduce((sum, x) => sum + (x.tds || 0), 0)
+        );
+
         this.vPaidAmount = this.roundAmount(
             this.SelectedList.reduce((sum, x) => sum + (x.PaidAmount || 0), 0)
         );
@@ -641,8 +632,24 @@ export class IPSettlementComponent implements OnInit {
         this.vBalanceAmount = this.roundAmount(
             this.SelectedList.reduce((sum, x) => sum + (x.balanceAmt || 0), 0)
         );
-    }
+    }  
+        recalculateTotals() {
+        this.vNetAmount = this.roundAmount(
+            this.SelectedList.reduce((sum, x) => sum + (x.netAmount || 0), 0)
+        );
 
+        this.vPaidAmount = this.roundAmount(
+            this.SelectedList.reduce((sum, x) => sum + (x.PaidAmount || 0), 0)
+        );
+
+        this.vTDSAmount = this.roundAmount(
+            this.SelectedList.reduce((sum, x) => sum + (x.tds || 0), 0)
+        );
+
+        this.vBalanceAmount = this.roundAmount(
+            this.SelectedList.reduce((sum, x) => sum + (x.balanceAmt || 0), 0)
+        );
+    }
     deleteTableRow(element: MultiplePayList) {
         const currentData = this.dsMultiplepayList.data;
         const index = currentData.indexOf(element);
@@ -672,71 +679,268 @@ export class IPSettlementComponent implements OnInit {
             this.SelectedList.reduce((sum, x) => sum + x.balanceAmt, 0)
         );
 
+        this.vTDSAmount = this.roundAmount(
+        this.SelectedList.reduce((sum, x) => sum + (x.tds || 0), 0)
+        );
+
         this.toastr.success('Record Deleted Successfully.', 'Deleted !', {
             toastClass: 'tostr-tost custom-toast-success',
         });
+    } 
+
+        CreateIPMultipleSettlInsertForm() {
+        return this.formBuilder.group({
+            payment: this.formBuilder.array([]), 
+            // ✅ Fixed: should be FormArray 
+            billUpdate: this.formBuilder.array([]),
+            // ✅ Fixed: should be FormArray
+            tPayments: this.formBuilder.array([]),
+        })
+    } 
+        CreateIPMultipleSettlLoopInsertForm(element: any = {}): FormGroup {
+        const currentDate = new Date();
+        const datePipe = new DatePipe('en-US');
+        const formattedTime = datePipe.transform(currentDate, 'shortTime');
+        const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd'); 
+
+        return this.formBuilder.group({
+            // opCreditPayment: this.formBuilder.group({
+            paymentId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            billNo: [element.billNo, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            receiptNo: ['0'],
+            paymentDate: [formattedDate, [this._FormvalidationserviceService.allowEmptyStringValidator()]],
+            paymentTime: [formattedTime, [this._FormvalidationserviceService.allowEmptyStringValidator()]],
+            cashPayAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            chequePayAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            chequeNo: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+            bankName: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+            chequeDate: ['1999-01-01'],
+            cardPayAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            cardNo: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+            cardBankName: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+            cardDate: ['1999-01-01'],
+            advanceUsedAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            advanceId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            refundId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            transactionType: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            remark: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+            addBy: [this.accountService.currentUserValue.userId],
+            isCancelled: [false],
+            isCancelledBy: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            isCancelledDate: ['1999-01-01'], 
+            opdipdType: [1],
+            neftpayAmount: [element.PaidAmount, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            neftno: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+            neftbankMaster: [this.BankNam, [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+            neftdate: [formattedDate], //['1999-01-01'], 
+            payTmamount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            payTmtranNo: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+            payTmdate: ['1999-01-01'],
+            tdsamount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            unitId: [this.accountService.currentUserValue.user.unitId, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            wfamount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            companyId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            // })
+        })
+    }
+        CreateMultipleModePaymentform(item: any): FormGroup { 
+                    const currentDate = new Date();
+        const datePipe = new DatePipe('en-US');
+        const formattedTime = datePipe.transform(currentDate, 'shortTime');
+        const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd'); 
+
+        return this.formBuilder.group({
+            paymentId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            unitId: [this.accountService.currentUserValue.user.unitId],
+            billNo: [item?.billNo, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            opdipdtype: [1, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            paymentDate: [formattedDate],
+            paymentTime: [formattedTime],
+            payAmount: [item?.payAmount ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            tranNo: [item?.tranNo ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+            bankName: [item?.bankName ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+            validationDate: [formattedDate],
+            advanceUsedAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            comments: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+            payMode: [item?.payMode ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+            onlineTranNo: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+            onlineTranResponse: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+            companyId: [item?.companyId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            advanceId: [ 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            refundId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            cashCounterId: [ 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            transactionType: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            isSelfOrcompany: [item?.isSelfOrcompany ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            tranMode: ['HOSP', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+            createdBy: [this.accountService.currentUserValue.userId],
+            transactionLabel: ['IP_SETTLEMENT', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+        });
+    }
+        CreateIPMultipleSettlBillLoopInsertForm(element: any = {}): FormGroup {
+        return this.formBuilder.group({
+            // billUpdate: this.formBuilder.group({
+            billNo: [element.billNo, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            balanceAmt: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            // })
+        })
+    }
+    get IPMulSetLoopArray(): FormArray {
+        return this.ipMultiSaveForm.get('payment') as FormArray;
+    } 
+    get ModeOfPaymentsMultipleArray(): FormArray {
+    return this.ipMultiSaveForm.get('tPayments') as FormArray;
     }
 
+    get IPMulSetBillLoopArray(): FormArray {
+        return this.ipMultiSaveForm.get('billUpdate') as FormArray;
+    } 
     CurrentDate = new Date()
-    OnSave() {
+    // OnSave1() {
+    //     if ((this.vPaidAmount == 0 && this.vNetAmount == 0)) {
+    //         this.toastr.warning('Please select Check Box', 'Warning !', {
+    //             toastClass: 'tostr-tost custom-toast-warning',
+    //         });
+    //         return;
+    //     }
+    //     debugger 
+    //     let PatientHeaderObj = {};
+    //     PatientHeaderObj['Date'] = this.datePipe.transform(this.CurrentDate, 'dd/MM/YYYY') || '01/01/1900'
+    //     PatientHeaderObj['NetPayAmount'] = this.vNetAmount;
+    //     const dialogRef = this._matDialog.open(OpPaymentComponent,
+    //         {
+    //             maxWidth: "80vw",
+    //             height: '750px',
+    //             width: '80%',
+    //             data: {
+    //                 vPatientHeaderObj: PatientHeaderObj,
+    //                 FromName: "OP-SETTLEMENT"
+    //             }
+    //         });
+    //     dialogRef.afterClosed().subscribe(result => {
+    //         debugger
+    //         console.log("payment:", result)
+           
+    //     });
+    // }
+        OnSave() {
         if ((this.vPaidAmount == 0 && this.vNetAmount == 0)) {
             this.toastr.warning('Please select Check Box', 'Warning !', {
                 toastClass: 'tostr-tost custom-toast-warning',
             });
             return;
         }
-        debugger
-
-        let PatientHeaderObj = {};
-        PatientHeaderObj['Date'] = this.datePipe.transform(this.CurrentDate, 'dd/MM/YYYY') || '01/01/1900'
-        PatientHeaderObj['NetPayAmount'] = this.vNetAmount;
-        const dialogRef = this._matDialog.open(OpPaymentComponent,
-            {
-                maxWidth: "80vw",
-                height: '750px',
-                width: '80%',
-                data: {
-                    vPatientHeaderObj: PatientHeaderObj,
-                    FromName: "OP-SETTLEMENT"
-                }
+        if (this.IPMultipleSettlForm.get('UPINO').value == undefined) {
+            this.toastr.warning('Please Enter UPINO', 'Warning !', {
+                toastClass: 'tostr-tost custom-toast-warning',
             });
-        dialogRef.afterClosed().subscribe(result => {
-            debugger
-            console.log("payment:", result)
-            // if (this.OPMultipleSettlInsertForm.valid) {
-            //     console.log(this.OPMultipleSettlInsertForm.value)
-            //     console.log(result.submitDataPay.ipPaymentInsert)
+            return;
+        }
+        if (this.IPMultipleSettlForm.get('bankName').value == "") {
+            this.toastr.warning('Please select Bank Name', 'Warning !', {
+                toastClass: 'tostr-tost custom-toast-warning',
+            });
+            return;
+        }  
+        debugger
+ 
+        if (!this.IPMultipleSettlForm.invalid) {
+            const upiNoValue = this.IPMultipleSettlForm.get('UPINO').value;
 
-            //     // this._CompanysettlementService.InsertOPBillingsettlement(this.OpSettlementForm.value).subscribe(response => {
-            //     //     // this.GetDetails(this.RegId1)
-            //     //     // this.viewgetOPPayemntPdf(response, true);
-            //     // });
-            // } else {
-            //     let invalidFields = []
-            //     if (this.OPMultipleSettlInsertForm.invalid) {
-            //         for (const controlName in this.OPMultipleSettlInsertForm.controls) {
-            //             const control = this.OPMultipleSettlInsertForm.get(controlName);
-            //             if (control instanceof FormGroup || control instanceof FormArray) {
-            //                 for (const nestedKey in control.controls) {
-            //                     if (control.get(nestedKey)?.invalid) {
-            //                         invalidFields.push(`OP Settlement Data: ${controlName}.${nestedKey}`);
-            //                     }
-            //                 }
-            //             } else if (control?.invalid) {
-            //                 invalidFields.push(`OPSettlement From: ${controlName}`);
-            //             }
-            //         }
-            //     }
-            //     if (invalidFields.length > 0) {
-            //         invalidFields.forEach(field => {
-            //             this.toastr.warning(`Please Check this field "${field}" is invalid.`, 'Warning',
-            //             );
-            //         });
-            //         return
-            //     }
-            // }
-        });
+            this.IPMulSetLoopArray.clear();
+            this.SelectedList.forEach(item => {
+                const formGroup = this.CreateIPMultipleSettlLoopInsertForm(item);
+                formGroup.get('neftno').setValue(upiNoValue);
+                this.IPMulSetLoopArray.push(formGroup);
+            })
+
+            this.IPMulSetBillLoopArray.clear();
+            this.SelectedList.forEach(item => {
+                this.IPMulSetBillLoopArray.push(this.CreateIPMultipleSettlBillLoopInsertForm(item))
+            });
+
+                let ModePaymentObj = [];
+                this.SelectedList.forEach(item => {
+                 ModePaymentObj.push({  
+                    billNo:item?.billNo,
+                    payAmount: item?.PaidAmount,
+                    tranNo: this.IPMultipleSettlForm.get('UPINO').value || 0,
+                    bankName: this.BankNam, 
+                    payMode: "net banking",
+                    companyId: item?.companyId ?? 0,  
+                    isSelfOrcompany: item?.companyId ? 1 : 0, 
+                }); 
+                  })
+
+                this.ModeOfPaymentsMultipleArray.clear();
+                ModePaymentObj.forEach(item => {
+                    this.ModeOfPaymentsMultipleArray.push(this.CreateMultipleModePaymentform(item));
+                });   
+            console.log(this.ipMultiSaveForm.value)
+            this._IPSettlementService.InsertIPMultiplesettlement(this.ipMultiSaveForm.value).subscribe(response => {
+                this.getmultiplePaymentListNew();
+                this.OnReset();
+                // this.viewgetOPPayemntPdf(response, true);
+            });
+        } else {
+            const invalidFields = this.getInvalidFields(this.ipMultiSaveForm); 
+            if (invalidFields.length > 0) {
+                invalidFields.forEach(field => {
+                    this.toastr.warning(`Field "${field}" is invalid.`, 'Warning');
+                });
+            }
+        }
     }
+
+       OnReset() {
+        this.vNetAmount = 0;
+        this.vPaidAmount = 0;
+        this.vTDSAmount = 0;
+        this.vBalanceAmount = 0;
+        this.SelectedList = [];
+        this.selection.clear();
+        this.regNo2=0;
+    } 
+        IpMulSettFormReset() { 
+        this.RegId2 = "0"
+        this.regNo2 = "0"
+        this.getmultiplePaymentListNew();
+    }
+        keyPressAlphanumeric(event) {
+        var inp = String.fromCharCode(event.keyCode);
+        if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
+            return true;
+        } else {
+            event.preventDefault();
+            return false;
+        }
+    }
+
+        private getInvalidFields(form: AbstractControl, path: string = ''): string[] {
+            let invalidFields: string[] = [];
+    
+            if (form instanceof FormGroup) {
+                Object.keys(form.controls).forEach(key => {
+                    const control = form.get(key);
+                    if (control) {
+                        invalidFields = invalidFields.concat(
+                            this.getInvalidFields(control, path ? `${path} -> ${key}` : key)
+                        );
+                    }
+                });
+            }
+            else if (form instanceof FormArray) {
+                form.controls.forEach((control, index) => {
+                    invalidFields = invalidFields.concat(
+                        this.getInvalidFields(control, `${path}[${index + 1}]`)
+                    );
+                });
+            }
+            else if (form.invalid) {
+                invalidFields.push(path);
+            }
+    
+            return invalidFields;
+        }
 }
 
 export class MultiplePayList {
