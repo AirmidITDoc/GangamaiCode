@@ -67,16 +67,13 @@ export class LabPatientRegComponent {
 
   allcolumns = [
     { heading: "", key: "balanceAmt1", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
-
     { heading: "Date-Time", key: "regTime", sort: true, align: 'left', emptySign: 'NA', width: 100, type: 6 },
     { heading: "PBillNo", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA', width: 80 },
-   
     { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
     { heading: "Age", key: "ageYear", sort: true, align: 'left', emptySign: 'NA', width: 60 },
-    { heading: "MobileNo", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA', width: 80 },
-     { heading: "City", key: "cityName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+    { heading: "MobileNo", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "City", key: "cityName", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "Address", key: "address", sort: true, align: 'left', emptySign: 'NA', width:150 },
-  
     { heading: "DepartmentName", key: "departmentName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
     { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
     { heading: "RefDoctorName", key: "refDoctorName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
@@ -86,9 +83,6 @@ export class LabPatientRegComponent {
     { heading: "Cheque Pay", key: "chequePay", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount , width:100},
     { heading: "Card Pay", key: "cardPay", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, width:100 },
     { heading: "Online Pay", key: "onlinePay", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount , width:100},
-
-
-
     { heading: "HospitalName", key: "hospitalName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
     { heading: "AddedBy", key: "userName", sort: true, align: 'left', emptySign: 'NA' },
     {
