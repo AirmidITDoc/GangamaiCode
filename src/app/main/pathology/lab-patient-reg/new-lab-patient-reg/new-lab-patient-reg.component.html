@@ -37,8 +37,7 @@
                                         </mat-expansion-panel-header>
 
                                         <div>
-                                            <div
-                                                style="padding: 12px; overflow: hidden; width: 100%; box-sizing: border-box">
+                                            <div>
                                                 <form [formGroup]="myForm">
                                                     <mat-card>
                                                         <mat-card-content>
@@ -58,13 +57,6 @@
                                                                 </div>
 
                                                                 <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-
-                                                                    <!-- <airmid-autocomplete label="Patient Name / Mobile No" [formGroup]="myForm"
-                                            formControlName="patientName" placeholderText="Patient Name / Mobile No"
-                                            fxFlex ApiUrl="LabPatientRegistration/search-patient-1?Keyword="
-                                            (selectionChange)="getSelectedObj($event)"
-                                            ValueField="regId"></airmid-autocomplete> -->
-
                                                                     <airmid-textbox label="First Name"
                                                                         formControlName="firstName"
                                                                         [value]="registerObj.firstName"
@@ -101,10 +93,6 @@
                                                                 </div>
 
                                                                 <div fxFlex="60%" fxFlex.xs="100%" fxFlex.sm="67%">
-                                                                    <!-- <app-airmid-dateofbirth [formGroup]="myForm" formControlName="dateofBirth"
-                                            [(value)]="registerObj.dateofBirth" dateStyle="Year"
-                                            (dateChange)="chkChange()"></app-airmid-dateofbirth> -->
-                                                                    <!--  -->
                                                                     <app-airmid-dateofbirth [formGroup]="myForm"
                                                                         [(value)]="registerObj.dateofBirth"
                                                                         dateStyle="Year"
