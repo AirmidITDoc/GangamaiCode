@@ -4,12 +4,13 @@
         <div class="modal-header-content">
             <div class="modal-header-title">
                 <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                    Lab Bill Detail List <span style="margin-left: 20px;font-weight: bold;"> Doctor:- {{doctorName}} |
+                    Lab Bill Detail List <span style="margin-left: 20px;font-weight: bold;">Doctor:- {{doctorName}} |
                         {{BillNo}}</span>
                 </span>
             </div>
             <div class="modal-header-right">
                 <div class="comman-date-container">
+
                     <div class="close-icon">
                         <button mat-icon-button tabIndex="-1" (click)="onClose()" aria-label="Close dialog">
                             <mat-icon>close</mat-icon>
@@ -84,6 +85,24 @@
 
                     </div>
                 </ng-template>
+
+                <!-- <ng-template #iconisPathology let-element>
+                    <div fxLayout="row" fxLayoutAlign="center center">
+                        <mat-icon *ngIf="element.isPathology==1" matTooltip="Pathology Service" class="s-20 mr-4"
+                            style="color: #9c27b0;">
+                            <img width="50px" height="50px" src="assets/images/logos/pathology.png">
+                        </mat-icon>
+                    </div>
+                </ng-template> -->
+
+                <!-- <ng-template #iconisRadiology let-element>
+                    <div fxLayout="row" fxLayoutAlign="center center">
+                          <mat-icon *ngIf="element.isRadiology==1" matTooltip="Radiology Service" class="s-20 mr-4"
+                            style="color: #4a6be6;">
+                            <img width="50px" height="50px" src="assets/images/logos/pathology.png">
+                        </mat-icon>
+                    </div>
+                </ng-template> -->
 
 
                 <airmid-table [gridConfig]="gridConfig" #grid :ShowFilter="false" :ShowButtons="false">
