@@ -29,15 +29,16 @@
 
             <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
 
-
-                <!-- <ng-template #iconisCompleted let-element>
-                    <div fxLayout="row" fxLayoutAlign="center center">
-                        <mat-icon *ngIf="element.isCompleted==true" matTooltip="IsCompleted"
-                            class="active-icon green-500 s-16">check_circle</mat-icon>
-                        <mat-icon *ngIf="!element.isCompleted" matTooltip="Not Completed"
-                            class="active-icon red-500 s-16">hourglass_empty</mat-icon>
+                <ng-template #ColorCode let-element>
+                    <div fxLayout="row" fxLayoutAlign="center center" class="status-box">
+                        <span [ngClass]="{
+                'status-completed': element.isCompleted === true,
+                'status-pending': element.isCompleted === false
+                        }">
+                            {{ element.isCompleted ? 'Completed' : 'Pending' }}
+                        </span>
                     </div>
-                </ng-template> -->
+                </ng-template>
 
                 <!-- <ng-template #actionButtonTemplate let-element>
                     <div fxLayout="row" fxLayoutAlign="center center">
@@ -48,7 +49,7 @@
                     </div>
                 </ng-template> -->
 
-                 <ng-template #icons let-element>
+                <ng-template #icons let-element>
                     <div fxLayout="row" fxLayoutAlign="center center">
 
                         <mat-icon *ngIf="element.isPathology==1" matTooltip="Pathology Service" class="s-20 mr-4"

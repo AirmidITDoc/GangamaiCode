@@ -13,7 +13,9 @@
         <div class="gap-8" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
             <button mat-raised-button (click)="onnew()">+ Add New
             </button>
-           
+
+            <button mat-raised-button (click)="Onmessage()">+ Add Estimate
+            </button>
         </div>
     </div>
     <ng-template #actionsTemplate2 let-element>
@@ -24,6 +26,44 @@
         </div>
     </ng-template>
 
+    <!-- <ng-template #ColorCode let-element>
+        <div fxLayout="row" fxLayoutAlign="center center" class="status-box">
+            <span [ngClass]="{
+                'status-completed': element.paidAmt>0,
+                'status-pending': element.balanceAmt =0
+                        }">
+                {{ element.paidAmt ? 'Completed' : 'Pending' }}
+            </span>
+        </div>
+    </ng-template> -->
+    <ng-template #ColorCode let-element>
+        <div fxLayout="column" fxLayoutAlign="center center" class="status-box">
+            <span [ngClass]="{
+                    'status-completed': element.paidAmt > 0,
+                    'status-pending': element.paidAmt == 0
+                }">
+                {{ element.paidAmt > 0 ? 'Paid' : 'Pending' }}
+            </span>
+        </div>
+    </ng-template>
+
+    <ng-template #patientNameWithBadgeTemplate let-element>
+        <!-- Patient Name with Token Badge and Hover Popover -->
+        <span [matBadge]="element.tokenNo" matBadgeColor="warn" matBadgePosition="after" matBadgeOverlap="false"
+            matBadgeSize="small" [matBadgeHidden]="!element.tokenNo"
+            (mouseenter)="openPatientDetailsPopover($event, element)" (mouseleave)="closePatientDetailsPopover()"
+            style="font-size: 14px; line-height: 18px; position: relative; top: 4px; cursor: pointer; text-decoration: underline; color: #667eea;">
+            {{ element.patientName }}
+        </span>
+    </ng-template>
+
+    <ng-template #doctorNameWithPopoverTemplate let-element>
+        <!-- Doctor Name with Hover Popover -->
+        <span (mouseenter)="openDoctorDetailsPopover($event, element)" (mouseleave)="closeDoctorDetailsPopover()"
+            style="font-size: 14px; line-height: 18px; cursor: pointer; text-decoration: underline; color: #4CAF50;">
+            {{ element.doctorName }}
+        </span>
+    </ng-template>
 
     <ng-template #actionsTemplate4 let-element>
         <div>
@@ -39,67 +79,44 @@
 
     <ng-template #actionButtonTemplate let-element>
         <div fxLayout="row" fxLayoutAlign="center center">
+            <button mat-icon-button matTooltip="Edit Registration" (click)="OnEditRegistration(element)">
+                <mat-icon>edit</mat-icon>
+            </button>
 
             <mat-icon (click)="billdetail(element)" matTooltip="Bill Detail">
-             remove_red_eye
+                remove_red_eye
             </mat-icon>
+
+            <airmid-fileupload-icon [refId]="element.labPatientId" [refType]="page" [multiple]="true"
+                [title]="element.patientName + ' Document'"></airmid-fileupload-icon>
+
+            <mat-icon matTooltip="Refund">
+                replay
+            </mat-icon>
+
+            <mat-icon matTooltip="Discount">
+                local_offer
+            </mat-icon>
+
             <button mat-icon-button matTooltip="Print" (click)="viewgetOPBillReportPdf(element)">
                 <mat-icon>print</mat-icon>
             </button>
 
-            <button mat-icon-button matTooltip="EMail" (click)="Onemail(element)">
+            <!-- <button mat-icon-button matTooltip="EMail" (click)="Onemail(element)">
                 <mat-icon>email</mat-icon>
-            </button>
+            </button> -->
 
             <!-- <button *ngIf="true" mat-icon-button matTooltip="Message" (click)="Onmessage(element,m)">
                 <mat-icon>message</mat-icon>
             </button> -->
 
-            <button mat-icon-button matTooltip="Send message On WhatsApp" (click)="getWhatsappshareBill(element)">
+            <!-- <button mat-icon-button matTooltip="Send message On WhatsApp" (click)="getWhatsappshareBill(element)">
                 <img width="100" height="20px" src="assets/images/logos/WhatsApp.png">
-            </button>
-
-
+            </button> -->
         </div>
     </ng-template>
 
     <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
-        <ng-template #actionButtonTemplate let-element>
-            <div fxLayout="row" fxLayoutAlign="center center">
-
-
-                <button mat-icon-button matTooltip="Print" (click)="OnPrint(element)">
-                    <mat-icon>print</mat-icon>
-                </button>
-
-                <button mat-icon-button matTooltip="EMail" (click)="Onemail(element)">
-                    <mat-icon>email</mat-icon>
-                </button>
-
-                <button *ngIf="true" mat-icon-button matTooltip="Message" (click)="Onmessage(element,m)">
-                    <mat-icon>message</mat-icon>
-                </button>
-
-                <button mat-icon-button matTooltip="Send message On WhatsApp" (click)="getWhatsappshareBill(element)">
-                    <img width="100" height="20px" src="assets/images/logos/WhatsApp.png">
-                </button>
-
-            </div>
-        </ng-template>
-        <!-- 
-            <ng-template #actionsTemplate let-element>
-                <div class="pill-icon">
-                    <mat-icon style="border-radius:100% ;" *ngIf="element.isCancelled==true" matTooltip="Cancelled"
-                        class="red-600 s-16">circle
-                    </mat-icon>
-
-                    <mat-icon style="border-radius:100% ;" *ngIf="element.isCancelled==false" matTooltip="Not Cancelled"
-                        class="green-600 s-16">circle
-                    </mat-icon>
-                </div>
-            </ng-template> -->
-
-
 
         <ng-template #actionsTemplate4 let-element>
             <div>
@@ -174,6 +191,10 @@
                             [mode]="autocompleteModedoctor">
                         </airmid-dropdown>
 
+                        <airmid-dropdown label="Unit Name" formControlName="UnitId"
+                            [(ngModel)]="gridConfig.filters[6].fieldValue" (selectionChange)="ListView1($event)"
+                            [formGroup]="myFilterform" [mode]="autocompleteModeunit"></airmid-dropdown>
+
                     </div>
 
                 </form>
@@ -181,4 +202,3 @@
         </airmid-table>
     </div>
 </div>
-

@@ -18,6 +18,7 @@ export class LabPatientRegService {
   constructor(
     public _frombuilder: UntypedFormBuilder,
     public _httpClient: ApiCaller,
+    private accountService: AuthenticationService,
     private _FormvalidationserviceService: FormvalidationserviceService,
   ) { }
 
@@ -29,6 +30,7 @@ export class LabPatientRegService {
       LastName: [''],
       PBillNo: [''],
       DoctorID: [''],
+      UnitId: [this.accountService.currentUserValue.user.unitId]
     })
   }
 
@@ -45,47 +47,50 @@ export class LabPatientRegService {
     return this._httpClient.PostData("PathlogySampleCollection/PathRadServiceList", param);
   }
 
-  
-    public labPatientSave(Param: any) {
-        if (Param.labPatientId) {
-            return this._httpClient.PutData("LabPatientRegistration/Edit/" + Param.labPatientId, Param);
-        } else return this._httpClient.PostData("LabPatientRegistration/Insert", Param);
-    }
 
-      public LabRequestSave(employee) {
+  public labPatientSave(Param: any) {
+    if (Param.labPatientId) {
+      return this._httpClient.PutData("LabPatientRegistration/Edit/" + Param.labPatientId, Param);
+    } else return this._httpClient.PostData("LabPatientRegistration/Insert", Param);
+  }
+
+  public LabRequestSave(employee) {
     return this._httpClient.PostData("IPPrescription/LabRequestInsert", employee);
-    }
+  }
 
 
-    public InsertIPBillingCredit(employee, loader = true) {
-   
+  public InsertIPBillingCredit(employee, loader = true) {
+
     return this._httpClient.PostData("IPBill/IPBilllCreditInsert", employee)
   }
   public InsertIPDraftBilling(e, loader = true) {
-   
+
     return this._httpClient.PostData("IPBill/InsertIPDraftBill", e)
   }
   public InsertIPBilling(employee, loader = true) {
-  
+
     return this._httpClient.PostData("IPBill/IPBilllwithCashCounterInsert", employee)
   }
-  
+
   public InsertlabregCredit(param) {
     return this._httpClient.PostData("LabPatientRegistration/PatientRegistrationcreditbill", param)
   }
   public InsertLabRegBilling(param) {
-    debugger
+    // debugger
     return this._httpClient.PostData("LabPatientRegistration/PatientRegistrationPaidBill", param)
   }
   public InsertLabBillingsettlement(param) {
     return this._httpClient.PostData("OPSettlement/InsertSettlement", param)
   }
 
-     public getReportView(Param) {
-        return this._httpClient.PostData("Report/ViewReport", Param);
-    }
-      public getlabSuggestions(apiUrl: string, inputValue: string): Observable<any[]> {
-        debugger
-        return this._httpClient.GetData(apiUrl + inputValue);
-    }
+  public getReportView(Param) {
+    return this._httpClient.PostData("Report/ViewReport", Param);
+  }
+  public getlabSuggestions(apiUrl: string, inputValue: string): Observable<any[]> {
+    // debugger
+    return this._httpClient.GetData(apiUrl + inputValue);
+  }
+  public getMaster(mode, Id) {
+    return this._httpClient.GetData("Dropdown/GetBindDropDown?mode=" + mode + "&Id=" + Id);
+  }
 }
