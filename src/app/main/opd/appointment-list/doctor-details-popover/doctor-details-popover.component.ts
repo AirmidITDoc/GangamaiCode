@@ -75,12 +75,13 @@ export class DoctorDetailsPopoverComponent implements OnInit {
 
   getDoctorName(): string {
     if (this.doctorDetails) {
-      return (this.doctorDetails.firstName || '') + ' ' + 
-             (this.doctorDetails.middleName || '') + ' ' + 
-             (this.doctorDetails.lastName || '') || 
-             this.doctorData?.doctorname || 'N/A';
+      return this.doctorData?.doctorName ||
+        (this.doctorDetails.firstName || '') + ' ' +
+        (this.doctorDetails.middleName || '') + ' ' +
+        (this.doctorDetails.lastName || '') ||
+        this.doctorData?.doctorname || 'N/A';
     }
-    return this.doctorData?.doctorname || 'N/A';
+    return this.doctorData?.doctorname || this.doctorData?.doctorName || 'N/A';
   }
 
   onMouseEnter() {

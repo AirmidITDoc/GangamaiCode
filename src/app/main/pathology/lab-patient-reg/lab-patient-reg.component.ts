@@ -1,6 +1,6 @@
 import { fuseAnimations } from '@fuse/animations';
 import { DatePipe } from '@angular/common';
-import { Component, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, ComponentRef, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -22,6 +22,11 @@ import { OpPaymentComponent } from 'app/main/opd/op-search-list/op-payment/op-pa
 import { LabRegBillDeatilsComponent } from './lab-reg-bill-deatils/lab-reg-bill-deatils.component';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { EstimateForPatientComponent } from './estimate-for-patient/estimate-for-patient.component';
+import { PatientDetailsPopoverComponent } from 'app/main/opd/appointment-list/patient-details-popover/patient-details-popover.component';
+import { ComponentPortal } from '@angular/cdk/portal';
+import { Overlay, OverlayRef } from '@angular/cdk/overlay';
+import { DoctorDetailsPopoverComponent } from 'app/main/opd/appointment-list/doctor-details-popover/doctor-details-popover.component';
+import { PageNames } from 'app/main/shared/componets/airmid-fileupload/airmid-fileupload.component';
 // import { NewLabPatientregComponent } from './new-lab-patientreg/new-lab-patientreg.component';
 
 @Component({
@@ -37,15 +42,24 @@ export class LabPatientRegComponent {
   f_name: any = ""
   l_name: any = ""
   Status: any = "0";
-   PBillNo: any = "%";
+  PBillNo: any = "%";
   DoctorId: any = "0";
+  UnitId: any = this._loggedService.currentUserValue.user.unitId;
   vbalanceamt: any;
   vpaidamt: any;
   autocompleteModedoctor: string = "ConDoctor";
+  autocompleteModeunit: string = "Hospital";
+  page: PageNames = PageNames.PATIENT;
+
   fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
   toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+
   @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
   @ViewChild('actionsTemplate4') actionsTemplate4!: TemplateRef<any>;
+  @ViewChild('ColorCode') ColorCode!: TemplateRef<any>;
+  @ViewChild('patientNameWithBadgeTemplate') patientNameWithBadgeTemplate!: TemplateRef<any>;
+  @ViewChild('doctorNameWithPopoverTemplate') doctorNameWithPopoverTemplate!: TemplateRef<any>;
+
   constructor(
     public _labPatientRegService: LabPatientRegService,
     private _loggedService: AuthenticationService,
@@ -53,6 +67,7 @@ export class LabPatientRegComponent {
     public _matDialog: MatDialog,
     public toastr: ToastrService,
     private commonService: PrintserviceService,
+    private overlay: Overlay
   ) { }
 
   ngOnInit(): void {
@@ -63,11 +78,17 @@ export class LabPatientRegComponent {
   ngAfterViewInit() {
     this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
     this.gridConfig.columnsList.find(col => col.key === 'balanceAmt1')!.template = this.actionsTemplate4;
+    this.gridConfig.columnsList.find(col => col.key === 'colorPad')!.template = this.ColorCode;
+    this.gridConfig.columnsList.find(col => col.key === 'patientName')!.template = this.patientNameWithBadgeTemplate;
+    this.gridConfig.columnsList.find(col => col.key === 'doctorName')!.template = this.doctorNameWithPopoverTemplate;
   }
 
   allcolumns = [
+    {
+      heading: "", key: "colorPad", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 120,
+      template: this.ColorCode
+    },
     { heading: "", key: "balanceAmt1", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
-
     { heading: "Date-Time", key: "regTime", sort: true, align: 'left', emptySign: 'NA', width: 100, type: 6 },
     { heading: "PBillNo", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA', width: 80 },
    
@@ -80,7 +101,7 @@ export class LabPatientRegComponent {
     { heading: "DepartmentName", key: "departmentName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
     { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
     { heading: "RefDoctorName", key: "refDoctorName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-    { heading: "Paid Amount", key: "paidAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount , width:100},
+    { heading: "Paid Amount", key: "paidAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, width: 100 },
     { heading: "Balance Amount", key: "balanceAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, columnClass: (element) => element["balanceAmt"] > 0 ? Color.RED : "" },
     { heading: "Cash Pay", key: "cashPay", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, width:100 },
     { heading: "Cheque Pay", key: "chequePay", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount , width:100},
@@ -98,13 +119,13 @@ export class LabPatientRegComponent {
   ]
 
   allfilters = [
-      { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.StartsWith },
-        { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.StartsWith },
-        { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.GreaterThanOrEqual },
-        { fieldName: "ToDate", fieldValue: this.toDate, opType: OperatorComparer.GreaterThanOrEqual },
-        { fieldName: "PBillNo", fieldValue:"%", opType: OperatorComparer.Equals },
-        { fieldName: "DoctorId", fieldValue: "0", opType: OperatorComparer.Equals }
-
+    { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.StartsWith },
+    { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.StartsWith },
+    { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.GreaterThanOrEqual },
+    { fieldName: "ToDate", fieldValue: this.toDate, opType: OperatorComparer.GreaterThanOrEqual },
+    { fieldName: "PBillNo", fieldValue: "%", opType: OperatorComparer.Equals },
+    { fieldName: "DoctorId", fieldValue: "0", opType: OperatorComparer.Equals },
+    { fieldName: "UnitId", fieldValue: String(this.UnitId), opType: OperatorComparer.Equals },
   ]
 
   gridConfig: gridModel = {
@@ -136,7 +157,7 @@ export class LabPatientRegComponent {
     this.l_name = this.myFilterform.get('LastName').value + "%"
     this.getfilterdata();
   }
- 
+
   getfilterdata() {
     this.gridConfig = {
       apiUrl: "LabPatientRegistration/List",
@@ -150,8 +171,8 @@ export class LabPatientRegComponent {
         { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.StartsWith },
         { fieldName: "ToDate", fieldValue: this.toDate, opType: OperatorComparer.StartsWith },
         { fieldName: "PBillNo", fieldValue: this.PBillNo, opType: OperatorComparer.Equals },
-        { fieldName: "DoctorId", fieldValue: this.DoctorId, opType: OperatorComparer.Equals }
-
+        { fieldName: "DoctorId", fieldValue: this.DoctorId, opType: OperatorComparer.Equals },
+        { fieldName: "UnitId", fieldValue: String(this.UnitId), opType: OperatorComparer.Equals },
       ]
     }
     this.grid.gridConfig = this.gridConfig;
@@ -168,15 +189,25 @@ export class LabPatientRegComponent {
     this.onChangeFirst();
   }
 
+  ListView1(value) {
+    console.log(value)
+    if (value.value !== 0)
+      this.UnitId = value.value
+    else
+      this.UnitId = 0
+
+    this.onChangeFirst();
+  }
+
   keyPressAlphanumeric(event) {
-        var inp = String.fromCharCode(event.keyCode);
-        if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
-            return true;
-        } else {
-            event.preventDefault();
-            return false;
-        }
+    var inp = String.fromCharCode(event.keyCode);
+    if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
+      return true;
+    } else {
+      event.preventDefault();
+      return false;
     }
+  }
 
   onnew(row: any = null) {
     const dialogRef = this._matDialog.open(NewLabPatientRegComponent,
@@ -184,7 +215,7 @@ export class LabPatientRegComponent {
         maxWidth: "90vw",
         maxHeight: '90vh',
         width: '95%',
-        data: row
+        data: { mode: 'add', row: null }
       });
     dialogRef.afterClosed().subscribe(result => {
       this.fromDate = this.datePipe.transform(Date.now(), "yyyy-MM-dd")
@@ -193,6 +224,20 @@ export class LabPatientRegComponent {
       // this.GetAppointdetail();
     });
   }
+
+  OnEditRegistration(row: any = null) {
+    const dialogRef = this._matDialog.open(NewLabPatientRegComponent,
+      {
+        maxWidth: "90vw",
+        maxHeight: '90vh',
+        width: '95%',
+        data: { row, mode: 'edit' }
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      this.grid.bindGridData();
+    });
+  }
+
   openPaymentpopup(contact) {
     console.log(contact)
     let PatientHeaderObj = {};
@@ -220,9 +265,9 @@ export class LabPatientRegComponent {
       });
     dialogRef.afterClosed().subscribe(result => {
       if (result.IsSubmitFlag == true) {
-         let PaymentObjarr = [];
+        let PaymentObjarr = [];
         let PaymentObj = result.submitDataPay.ipPaymentInsert
-         PaymentObjarr.push(PaymentObj);
+        PaymentObjarr.push(PaymentObj);
 
 
         this.vpaidamt = result.PaidAmt;
@@ -238,7 +283,7 @@ export class LabPatientRegComponent {
             "billNo": contact.billNo,
             "balanceAmt": result.BillBalanceAmount
           },
-            tPayments:PaymentObjarr
+          tPayments: PaymentObjarr
         }
         console.log(data)
         this._labPatientRegService.InsertLabBillingsettlement(data).subscribe(response => {
@@ -256,12 +301,12 @@ export class LabPatientRegComponent {
 
   }
 
-   viewgetOPPayemntPdf(data, status) {
-        if (status == true)
-            this.commonService.Onprint("PaymentId", data, "LabPaymentReceipt");
-        else
-            this.commonService.Onprint("PaymentId", data.paymentId, "LabPaymentReceipt");
-    }
+  viewgetOPPayemntPdf(data, status) {
+    if (status == true)
+      this.commonService.Onprint("PaymentId", data, "LabPaymentReceipt");
+    else
+      this.commonService.Onprint("PaymentId", data.paymentId, "LabPaymentReceipt");
+  }
 
   OnallList() {
     setTimeout(() => {
@@ -315,7 +360,7 @@ export class LabPatientRegComponent {
 
   billdetail(element) {
     console.log(element)
-    
+
 
     const dialogRef = this._matDialog.open(LabRegBillDeatilsComponent,
       {
@@ -332,28 +377,27 @@ export class LabPatientRegComponent {
   }
 
 
-   viewgetOPBillReportPdf(element) {
-        this.commonService.Onprint("BillNo", element.billNo, "LabregisterBillReceipt");
-    }
+  viewgetOPBillReportPdf(element) {
+    this.commonService.Onprint("BillNo", element.billNo, "LabregisterBillReceipt");
+  }
 
 
-  Onmessage(element){
- console.log(element)
-    
+  Onmessage() {
+    // console.log(element)
+
     const dialogRef = this._matDialog.open(EstimateForPatientComponent,
       {
         maxWidth: "80vw",
         height: '650px',
         width: '100%',
-        data: element
-
+        // data: element
       });
     dialogRef.afterClosed().subscribe(result => {
       // this.onChangeFirst2()
     });
   }
-  Onemail(){}
-  getWhatsappshareBill(){}
+  Onemail() { }
+  getWhatsappshareBill() { }
   OnCancle() {
     Swal.fire({
       title: 'Confirm Save',
@@ -369,6 +413,218 @@ export class LabPatientRegComponent {
         //call 
       }
     })
+  }
+
+  // Patient & doctor popup
+
+  private overlayRef: OverlayRef | null = null;
+  private patientOverlayRef: OverlayRef | null = null;
+  private doctorOverlayRef: OverlayRef | null = null;
+  private hoverTimeout: any = null;
+  private patientCloseTimeout: any = null;
+  private doctorCloseTimeout: any = null;
+
+  openPatientDetailsPopover(event: MouseEvent, patientData: any) {
+    event.stopPropagation();
+
+    // Clear any existing timeout
+    if (this.hoverTimeout) {
+      clearTimeout(this.hoverTimeout);
+    }
+
+    // Add small delay to prevent flickering
+    this.hoverTimeout = setTimeout(() => {
+      // Close any existing patient popover
+      if (this.patientOverlayRef) {
+        this.patientOverlayRef.dispose();
+        this.patientOverlayRef = null;
+      }
+
+      const positionStrategy = this.overlay.position()
+        .flexibleConnectedTo(event.target as HTMLElement)
+        .withPositions([
+          {
+            originX: 'start',
+            originY: 'bottom',
+            overlayX: 'start',
+            overlayY: 'top',
+          },
+          {
+            originX: 'start',
+            originY: 'top',
+            overlayX: 'start',
+            overlayY: 'bottom',
+          },
+          {
+            originX: 'end',
+            originY: 'center',
+            overlayX: 'start',
+            overlayY: 'center',
+          },
+          {
+            originX: 'start',
+            originY: 'center',
+            overlayX: 'end',
+            overlayY: 'center',
+          }
+        ]);
+
+      this.patientOverlayRef = this.overlay.create({
+        positionStrategy,
+        scrollStrategy: this.overlay.scrollStrategies.close(),
+        hasBackdrop: false,
+      });
+
+      const portal = new ComponentPortal(PatientDetailsPopoverComponent);
+      const componentRef: ComponentRef<PatientDetailsPopoverComponent> = this.patientOverlayRef.attach(portal);
+      componentRef.instance.patientData = patientData;
+
+      // Handle mouse events on the overlay element
+      const overlayElement = this.patientOverlayRef.overlayElement;
+      overlayElement.addEventListener('mouseenter', () => this.keepPatientPopoverOpen());
+      overlayElement.addEventListener('mouseleave', () => this.closePatientDetailsPopover());
+    }, 300); // 300ms delay before showing popover
+  }
+
+  closePatientDetailsPopover() {
+    // Clear timeout if popover hasn't opened yet
+    if (this.hoverTimeout) {
+      clearTimeout(this.hoverTimeout);
+      this.hoverTimeout = null;
+    }
+
+    // Clear any existing close timeout
+    if (this.patientCloseTimeout) {
+      clearTimeout(this.patientCloseTimeout);
+    }
+
+    // Add delay before closing to allow moving mouse to popover
+    this.patientCloseTimeout = setTimeout(() => {
+      if (this.patientOverlayRef) {
+        this.patientOverlayRef.dispose();
+        this.patientOverlayRef = null;
+      }
+    }, 200);
+  }
+
+  keepPatientPopoverOpen() {
+    // Clear close timeout when hovering over popover
+    if (this.patientCloseTimeout) {
+      clearTimeout(this.patientCloseTimeout);
+      this.patientCloseTimeout = null;
+    }
+  }
+
+  openDoctorDetailsPopover(event: MouseEvent, doctorData: any) {
+    event.stopPropagation();
+
+    // Clear any existing timeout
+    if (this.hoverTimeout) {
+      clearTimeout(this.hoverTimeout);
+    }
+
+    // Add small delay to prevent flickering
+    this.hoverTimeout = setTimeout(() => {
+      // Close any existing doctor popover
+      if (this.doctorOverlayRef) {
+        this.doctorOverlayRef.dispose();
+        this.doctorOverlayRef = null;
+      }
+
+      const positionStrategy = this.overlay.position()
+        .flexibleConnectedTo(event.target as HTMLElement)
+        .withPositions([
+          {
+            originX: 'start',
+            originY: 'bottom',
+            overlayX: 'start',
+            overlayY: 'top',
+          },
+          {
+            originX: 'start',
+            originY: 'top',
+            overlayX: 'start',
+            overlayY: 'bottom',
+          },
+          {
+            originX: 'end',
+            originY: 'center',
+            overlayX: 'start',
+            overlayY: 'center',
+          },
+          {
+            originX: 'start',
+            originY: 'center',
+            overlayX: 'end',
+            overlayY: 'center',
+          }
+        ]);
+
+      this.doctorOverlayRef = this.overlay.create({
+        positionStrategy,
+        scrollStrategy: this.overlay.scrollStrategies.close(),
+        hasBackdrop: false,
+      });
+
+      const portal = new ComponentPortal(DoctorDetailsPopoverComponent);
+      const componentRef: ComponentRef<DoctorDetailsPopoverComponent> = this.doctorOverlayRef.attach(portal);
+      componentRef.instance.doctorData = doctorData;
+
+      // Handle mouse events on the overlay element
+      const overlayElement = this.doctorOverlayRef.overlayElement;
+      overlayElement.addEventListener('mouseenter', () => this.keepDoctorPopoverOpen());
+      overlayElement.addEventListener('mouseleave', () => this.closeDoctorDetailsPopover());
+    }, 300); // 300ms delay before showing popover
+  }
+
+  closeDoctorDetailsPopover() {
+    // Clear timeout if popover hasn't opened yet
+    if (this.hoverTimeout) {
+      clearTimeout(this.hoverTimeout);
+      this.hoverTimeout = null;
+    }
+
+    // Clear any existing close timeout
+    if (this.doctorCloseTimeout) {
+      clearTimeout(this.doctorCloseTimeout);
+    }
+
+    // Add delay before closing to allow moving mouse to popover
+    this.doctorCloseTimeout = setTimeout(() => {
+      if (this.doctorOverlayRef) {
+        this.doctorOverlayRef.dispose();
+        this.doctorOverlayRef = null;
+      }
+    }, 200);
+  }
+
+  keepDoctorPopoverOpen() {
+    // Clear close timeout when hovering over popover
+    if (this.doctorCloseTimeout) {
+      clearTimeout(this.doctorCloseTimeout);
+      this.doctorCloseTimeout = null;
+    }
+  }
+
+  ngOnDestroy() {
+    if (this.overlayRef) {
+      this.overlayRef.dispose();
+    }
+    if (this.patientOverlayRef) {
+      this.patientOverlayRef.dispose();
+    }
+    if (this.doctorOverlayRef) {
+      this.doctorOverlayRef.dispose();
+    }
+    if (this.hoverTimeout) {
+      clearTimeout(this.hoverTimeout);
+    }
+    if (this.patientCloseTimeout) {
+      clearTimeout(this.patientCloseTimeout);
+    }
+    if (this.doctorCloseTimeout) {
+      clearTimeout(this.doctorCloseTimeout);
+    }
   }
 }
 
@@ -509,7 +765,7 @@ export class LabRequest {
   constructor(LabRequest) {
     this.ServiceName = LabRequest.ServiceName || '';
     this.Price = LabRequest.Price || 0;
-      this.price = LabRequest.price || 0;
+    this.price = LabRequest.price || 0;
     this.ServiceId = LabRequest.ServiceId || 0;
     this.CreditedtoDoctor = LabRequest.CreditedtoDoctor || 0;
   }

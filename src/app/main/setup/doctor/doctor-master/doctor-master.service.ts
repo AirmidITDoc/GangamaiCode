@@ -2,7 +2,9 @@ import { Injectable } from "@angular/core";
 import { FormBuilder, FormGroup, UntypedFormBuilder, Validators } from "@angular/forms";
 import { ApiCaller } from "app/core/services/apiCaller";
 
-@Injectable()
+@Injectable({
+    providedIn: 'root'
+})
 export class DoctorMasterService {
     myform: FormGroup;
     myformSearch: FormGroup;

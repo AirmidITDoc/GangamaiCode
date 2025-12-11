@@ -1,6 +1,4 @@
-<div class="patient-details-popover-container" 
-     (mouseenter)="onMouseEnter()" 
-     (mouseleave)="onMouseLeave()">
+<div class="patient-details-popover-container" (mouseenter)="onMouseEnter()" (mouseleave)="onMouseLeave()">
   <div class="popover-header">
     <h3>
       <mat-icon class="header-icon">person</mat-icon>
@@ -21,20 +19,23 @@
         <div class="detail-grid">
           <div class="detail-item">
             <span class="detail-label">UHID:</span>
-            <span class="detail-value">{{ patientDetails.regNoWithPrefix || patientDetails.regNo || patientData?.regNoWithPrefix || 'N/A' }}</span>
+            <span class="detail-value">{{ patientDetails.regNoWithPrefix || patientDetails.regNo ||
+              patientData?.regNoWithPrefix || 'N/A' }}</span>
           </div>
           <div class="detail-item">
             <span class="detail-label">Name:</span>
             <span class="detail-value">
-              {{ (patientDetails.firstName || patientDetails.FirstName || '') + ' ' + 
-                  (patientDetails.middleName || patientDetails.MiddleName || '') + ' ' + 
-                  (patientDetails.lastName || patientDetails.LastName || '') || 
-                  patientData?.patientName || 'N/A' }}
+              {{ patientData?.patientName ||
+              (patientDetails.firstName || patientDetails.FirstName || '') + ' ' +
+              (patientDetails.middleName || patientDetails.MiddleName || '') + ' ' +
+              (patientDetails.lastName || patientDetails.LastName || '') ||
+              'N/A' }}
             </span>
           </div>
           <div class="detail-item">
             <span class="detail-label">Gender:</span>
-            <span class="detail-value">{{ patientDetails.genderName || patientDetails.GenderName || patientData?.genderName || 'N/A' }}</span>
+            <span class="detail-value">{{ patientDetails.genderName || patientDetails.GenderName ||
+              patientData?.genderName || 'N/A' }}</span>
           </div>
           <div class="detail-item">
             <span class="detail-label">Age:</span>
@@ -42,11 +43,13 @@
           </div>
           <div class="detail-item">
             <span class="detail-label">Date of Birth:</span>
-            <span class="detail-value">{{ formatDate(patientDetails.dateOfBirth || patientDetails.DateofBirth) }}</span>
+            <span class="detail-value">{{ formatDate(patientDetails.dateOfBirth || patientDetails.DateofBirth ||
+              patientDetails.dateofBirth) }}</span>
           </div>
           <div class="detail-item">
             <span class="detail-label">Mobile No:</span>
-            <span class="detail-value">{{ patientDetails.mobileNo || patientDetails.MobileNo || patientData?.mobileNo || 'N/A' }}</span>
+            <span class="detail-value">{{ patientDetails.mobileNo || patientDetails.MobileNo || patientData?.mobileNo ||
+              'N/A' }}</span>
           </div>
           <div class="detail-item">
             <span class="detail-label">Phone No:</span>
@@ -56,7 +59,8 @@
       </div>
 
       <!-- Address Information -->
-      <div class="detail-section" *ngIf="patientDetails.address || patientDetails.Address || patientDetails.city || patientDetails.City">
+      <div class="detail-section"
+        *ngIf="patientDetails.address || patientDetails.Address || patientDetails.city || patientDetails.City">
         <h4 class="section-title">Address</h4>
         <div class="detail-grid">
           <div class="detail-item full-width">
@@ -100,4 +104,3 @@
     </div>
   </div>
 </div>
-
