@@ -27,6 +27,7 @@ import { ComponentPortal } from '@angular/cdk/portal';
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { DoctorDetailsPopoverComponent } from 'app/main/opd/appointment-list/doctor-details-popover/doctor-details-popover.component';
 import { PageNames } from 'app/main/shared/componets/airmid-fileupload/airmid-fileupload.component';
+import { DiscountAfterFinalLabbillComponent } from './discount-after-final-labbill/discount-after-final-labbill.component';
 // import { NewLabPatientregComponent } from './new-lab-patientreg/new-lab-patientreg.component';
 
 @Component({
@@ -49,7 +50,7 @@ export class LabPatientRegComponent {
   vpaidamt: any;
   autocompleteModedoctor: string = "ConDoctor";
   autocompleteModeunit: string = "Hospital";
-  page: PageNames = PageNames.PATIENT;
+  page: PageNames = PageNames.LABPATIENT;
 
   fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
   toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
@@ -88,29 +89,21 @@ export class LabPatientRegComponent {
       heading: "", key: "colorPad", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 120,
       template: this.ColorCode
     },
+    { heading: "Status", key: "statua", sort: true, align: 'left', emptySign: 'NA', width: 50 },
     { heading: "", key: "balanceAmt1", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
     { heading: "Date-Time", key: "regTime", sort: true, align: 'left', emptySign: 'NA', width: 100, type: 6 },
     { heading: "PBillNo", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA', width: 80 },
-   
-    { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-    { heading: "Age", key: "ageYear", sort: true, align: 'left', emptySign: 'NA', width: 60 },
-    { heading: "MobileNo", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA', width: 80 },
-     { heading: "City", key: "cityName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-    { heading: "Address", key: "address", sort: true, align: 'left', emptySign: 'NA', width:150 },
-  
-    { heading: "DepartmentName", key: "departmentName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-    { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+    { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 200, type: gridColumnTypes.template },
+    { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA', width: 150, type: gridColumnTypes.template },
     { heading: "RefDoctorName", key: "refDoctorName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+    { heading: "CompanyName", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
     { heading: "Paid Amount", key: "paidAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, width: 100 },
     { heading: "Balance Amount", key: "balanceAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, columnClass: (element) => element["balanceAmt"] > 0 ? Color.RED : "" },
-    { heading: "Cash Pay", key: "cashPay", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, width:100 },
-    { heading: "Cheque Pay", key: "chequePay", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount , width:100},
-    { heading: "Card Pay", key: "cardPay", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, width:100 },
-    { heading: "Online Pay", key: "onlinePay", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount , width:100},
-
-
-
-    { heading: "HospitalName", key: "hospitalName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
+    { heading: "Cash Pay", key: "cashPay", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, width: 100 },
+    { heading: "Cheque Pay", key: "chequePay", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, width: 100 },
+    { heading: "Card Pay", key: "cardPay", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, width: 100 },
+    { heading: "Online Pay", key: "onlinePay", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, width: 100 },
+    { heading: "UnitName", key: "hospitalName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
     { heading: "AddedBy", key: "userName", sort: true, align: 'left', emptySign: 'NA' },
     {
       heading: "Action", key: "action", align: "right", width: 190, sticky: true, type: gridColumnTypes.template,
@@ -234,6 +227,23 @@ export class LabPatientRegComponent {
         data: { row, mode: 'edit' }
       });
     dialogRef.afterClosed().subscribe(result => {
+      this.grid.bindGridData();
+    });
+  }
+
+  getFinalDisc(contact) {
+    const dialogRef = this._matDialog.open(DiscountAfterFinalLabbillComponent,
+      {
+        maxWidth: "100%",
+        height: '55%',
+        width: '45%',
+        data: {
+          Obj: contact,
+          // PatientObj: this.registerObj
+        }
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed - Insert Action', result);
       this.grid.bindGridData();
     });
   }
@@ -690,6 +700,9 @@ export class LabPatientList {
   convertedIntoAdm: any;
   age: any;
   refDocId: any;
+  adharCardNo: any;
+  traiffId:any;
+  labPatRegId:any
 
   constructor(LabPatientList) {
     {
@@ -752,6 +765,9 @@ export class LabPatientList {
       this.isMlc = LabPatientList.isMlc || false
       this.convertedIntoAdm = LabPatientList.convertedIntoAdm || ''
       this.age = LabPatientList.age || 0
+      this.adharCardNo = LabPatientList.adharCardNo || 0
+      this.traiffId = LabPatientList.traiffId || 0
+      this.labPatRegId = LabPatientList.labPatRegId || 0
     }
   }
 }

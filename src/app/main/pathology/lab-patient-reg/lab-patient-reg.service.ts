@@ -43,15 +43,21 @@ export class LabPatientRegService {
   public getLabRegistraionById(Id) {
     return this._httpClient.GetData("LabPatientRegistration/" + Id);
   }
+  public getCompanyById(Id) {
+    return this._httpClient.GetData("CompanyMaster/" + Id);
+  }
+  public getLabRegistraionMasterById(Id) {
+    return this._httpClient.GetData("LabPatientRegistration/GetLabPatientRegisteredMaster?id=" + Id);
+  }
   public getserviceList(param) {
     return this._httpClient.PostData("PathlogySampleCollection/PathRadServiceList", param);
   }
 
-
   public labPatientSave(Param: any) {
     if (Param.labPatientId) {
-      return this._httpClient.PutData("LabPatientRegistration/Edit/" + Param.labPatientId, Param);
-    } else return this._httpClient.PostData("LabPatientRegistration/Insert", Param);
+      return this._httpClient.PutData("LabPatientRegistration/Edit/" + Param.LabPatRegId, Param);
+    }
+    // else return this._httpClient.PostData("LabPatientRegistration/Insert", Param);
   }
 
   public LabRequestSave(employee) {
@@ -92,5 +98,8 @@ export class LabPatientRegService {
   }
   public getMaster(mode, Id) {
     return this._httpClient.GetData("Dropdown/GetBindDropDown?mode=" + mode + "&Id=" + Id);
+  }
+  public LabBillDiscountAfter(employee) {
+    // return this._httpClient.PostData("IPBill/BillDiscountAfter", employee);
   }
 }

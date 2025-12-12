@@ -94,8 +94,8 @@
                 replay
             </mat-icon>
 
-            <mat-icon matTooltip="Discount">
-                local_offer
+            <mat-icon matTooltip="Final Discount" *ngIf="element.balanceAmt > 0" (click)="getFinalDisc(element)">
+                money
             </mat-icon>
 
             <button mat-icon-button matTooltip="Print" (click)="viewgetOPBillReportPdf(element)">
@@ -145,6 +145,10 @@
 
                     <div fxLayout="column" fxLayoutAlign="start none">
 
+                        <airmid-dropdown label="Unit Name" formControlName="UnitId"
+                            [(ngModel)]="gridConfig.filters[6].fieldValue" (selectionChange)="ListView1($event)"
+                            [formGroup]="myFilterform" [mode]="autocompleteModeunit"></airmid-dropdown>
+
                         <mat-form-field appearance="outline">
                             <mat-label>Enter a date range</mat-label>
                             <mat-date-range-input [rangePicker]="picker">
@@ -190,11 +194,6 @@
                             (selectionChange)="ListView($event)" (keyup)="ListView($event)"
                             [mode]="autocompleteModedoctor">
                         </airmid-dropdown>
-
-                        <airmid-dropdown label="Unit Name" formControlName="UnitId"
-                            [(ngModel)]="gridConfig.filters[6].fieldValue" (selectionChange)="ListView1($event)"
-                            [formGroup]="myFilterform" [mode]="autocompleteModeunit"></airmid-dropdown>
-
                     </div>
 
                 </form>
