@@ -1,0 +1,171 @@
+<div class="page-layout modal-wrapper grid-container" fusePerfectScrollbar>
+    <div class="modal-header">
+        <div class="modal-header-content">
+            <div class="modal-header-title">
+                <button mat-icon-button class="sidebar-toggle mr-12" style="color: white;">
+                    <mat-icon>menu</mat-icon>
+                </button>
+                <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
+                    style="color: white;">account_box
+                </mat-icon>
+                <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"
+                    style="color: white;">
+                    Discount After Final Bill
+                </span>
+            </div>
+
+            <button mat-icon-button (click)="onClose()" tabIndex="-1" aria-label="Close dialog">
+                <mat-icon>close</mat-icon>
+            </button>
+        </div>
+    </div>
+
+    <div class="modal-body content">
+        <div fxLayout="column" class="gap-15 h-100-p">
+            <div class="modal-card-container">
+                <mat-card style="padding: 5px;">
+                    <div class="patient-info-container">
+                        <div class="patient-info-box">
+                            <div class="patient-info-title border-bottom pb-2">
+                                <span class="h1">Patient Information</span>
+                            </div>
+                            <div class="patient-info-row patient-info-1-111 pt-8" fxLayout="row"
+                                fxLayoutAlign="space-between">
+                                <div fxLayout="column" fxLayoutGap="6px">
+                                    <div class="patient-col gap-1" fxFlex="30%">
+                                        <span class="patient-col-key ">UHID No</span>
+                                        <span>:</span>
+                                        <span class="patient-col-value">{{PatientObj?.labRequestNo}}</span>
+                                    </div>
+                                    <div class="patient-col gap-1" fxFlex="30%">
+                                        <span class="patient-col-key">Patient Name</span>
+                                        <span>:</span>
+                                        <span class="patient-col-value">{{PatientObj?.patientName}}</span>
+                                    </div> 
+                                  
+                                </div>
+                                <div fxLayout="column" fxLayoutGap="6px">
+                                     
+                                    <div class="patient-col gap-1" fxFlex="30%">
+                                        <span class="patient-col-key">IPDNo</span>
+                                        <span>:</span>
+                                        <span class="patient-col-value">{{PatientObj?.ipdNo}}</span>
+                                    </div>
+                                    <div class="patient-col gap-1" fxFlex="30%">
+                                        <span class="patient-col-key ">Age | Gender</span>
+                                        <span>:</span>
+                                        <span
+                                        class="patient-col-value">{{PatientObj?.ageYear}} | {{PatientObj?.genderName}}</span>
+                                    </div>
+                                   
+                                </div>
+                                <div fxLayout="column" fxLayoutGap="6px"> 
+                                      <div class="patient-col gap-1" fxFlex="30%">
+                                        <span class="patient-col-key"> Mobile No</span>
+                                        <span>:</span>
+                                        <span class="patient-col-value">{{PatientObj?.mobileNo}}</span>
+                                    </div>
+                                    <div class="patient-col gap-1" fxFlex="30%">
+                                        <span class="patient-col-key">Patient Type</span>
+                                        <span>:</span>
+                                        <span class="patient-col-value">{{PatientObj?.roomName}}</span>
+                                    </div> 
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </mat-card>
+            </div>
+            <div class="modal-card-container">
+                <form [formGroup]="MyFrom" fxLayoutGap="10px">
+                    <div fxLayout="row" fxLayoutGap="10px">
+                        <div fxLayout="column" fxLayoutGap="4px" fxFlex> 
+                            <div fxFlex="28%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                <airmid-textbox label="Total Amount" formControlName="TotalAmount" [formGroup]="MyFrom"
+                                    [validations]="getValidationMessages().TotalAmount" [readonly]="true" required
+                                    [(ngModel)]="vTotalAmount">
+                                </airmid-textbox>
+                            </div>
+
+                            <div fxFlex="28%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                <airmid-textbox label="Final Disc Amount" formControlName="FinalDiscAmt"
+                                    [formGroup]="MyFrom" [validations]="getValidationMessages().FinalDiscAmt"
+                                    [readonly]="true" required [(ngModel)]="vFinalDiscAmt">
+                                </airmid-textbox>
+                            </div>
+
+                            <div fxFlex="28%" fxFlex.xs="100%" fxFlex.sm="33%" *ngIf="CompanyName != ''">
+                                <airmid-textbox label="Company DiscAmt" formControlName="FinalCompanyDiscAmt"
+                                    [formGroup]="MyFrom" [validations]="getValidationMessages().FinalCompanyDiscAmt"
+                                    [readonly]="true" required [(ngModel)]="vFinalCompanyDiscAmt">
+                                </airmid-textbox>
+                            </div>
+
+                            <div fxFlex="28%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                <airmid-textbox label="Net Amount" formControlName="NetAmount" [formGroup]="MyFrom"
+                                    [validations]="getValidationMessages().NetAmount" [readonly]="true" required
+                                    [(ngModel)]="vNetamount">
+                                </airmid-textbox>
+                            </div>
+                        </div>
+                        <div fxLayout="column" fxLayoutGap="4px" fxFlex>
+
+                            <div fxFlex="28%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                <airmid-textbox label="Previous DiscAmt" formControlName="DiscAmount"
+                                    [formGroup]="MyFrom" [validations]="getValidationMessages().DiscAmount"
+                                    [readonly]="true" [(ngModel)]="vDiscAmount">
+                                </airmid-textbox>
+                            </div>
+
+                            <div fxLayout="row" fxLayoutGap="4px" fxFlex="28%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                <div>
+                                    <airmid-textbox label="Discount %" formControlName="DiscountPer2"
+                                        [formGroup]="MyFrom" [validations]="getValidationMessages().DiscountPer2"
+                                        required [(ngModel)]="vDiscountPer2" (keyup)="CalcDiscPer()">
+                                    </airmid-textbox>
+                                </div>
+
+                                <div>
+                                    <airmid-textbox label="Discount Amount" formControlName="DiscAmount2"
+                                        [formGroup]="MyFrom" [validations]="getValidationMessages().DiscAmount2"
+                                        required [(ngModel)]="vDiscAmount2" (keyup)="CalcDiscAmt()">
+                                    </airmid-textbox>
+                                </div>
+                            </div>
+
+                            <div fxLayout="row" fxLayoutGap="4px" *ngIf="CompanyName != ''"
+                            fxFlex="28%" fxFlex.xs="100%" fxFlex.sm="33%"> 
+                                <div>
+                                    <airmid-textbox label="Company Disc%" formControlName="CompanyDiscper"
+                                        [formGroup]="MyFrom" [validations]="getValidationMessages().CompanyDiscper"
+                                        required [(ngModel)]="vCompanyDiscper" (keyup)="CalcDiscPer()">
+                                    </airmid-textbox>
+                                </div> 
+                                <div>
+                                    <airmid-textbox label="Company DiscAmt" formControlName="CompanyDiscAmt"
+                                        [formGroup]="MyFrom" [validations]="getValidationMessages().CompanyDiscAmt"
+                                        required [(ngModel)]="vCompanyDiscAmt" (keyup)="CalcDiscAmt()">
+                                    </airmid-textbox>
+                                </div>
+                            </div>
+                            <div fxFlex="28%" fxFlex.xs="100%" fxFlex.sm="33%"> 
+                                <airmid-dropdown label="Concession Reason" formControlName="ConcessionId"  
+                                    [formGroup]="MyFrom" [validations]="getValidationMessages().ConcessionId"
+                                    [mode]="autocompleteModeConcession">
+                                </airmid-dropdown>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal-footer">
+        <div fxLayoutAlign="end">
+            <button class="btn btn-danger-outline" (click)="onClose()">Close</button>&nbsp;
+            <button class="btn btn-primary " (click)="OnSave()" #save>Save</button>
+        </div>
+    </div>
+</div>
