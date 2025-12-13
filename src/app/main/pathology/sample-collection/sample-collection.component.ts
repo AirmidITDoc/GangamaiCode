@@ -33,7 +33,7 @@ export class SampleCollectionComponent implements OnInit {
     regNo: any = "0"
     l_name: any = "%"
     status: any = "0"
-    Ptype: any = "1"
+    Ptype: any = "4"
     Vtotalcount = 0
     VCompletedcount = 0
     Vpendingcount = 0
