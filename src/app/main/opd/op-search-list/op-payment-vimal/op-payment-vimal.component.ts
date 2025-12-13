@@ -451,6 +451,8 @@ getselectObjPayMode(obj){
             this.Paymentobj['companyId'] = this.patientDetailsFormGrp.get('CompanyId')?.value || 0
         }
         else if (this.data.FromName == "IP-Pharma-SETTLEMENT") {
+            transactionType = 4;
+            opdipdtype=3
             this.Paymentobj['paymentId'] = 0;
             this.Paymentobj['billNo'] = this.advanceData.BillNo || 0;
             this.Paymentobj['paymentDate'] = this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd') || '1999-01-01';

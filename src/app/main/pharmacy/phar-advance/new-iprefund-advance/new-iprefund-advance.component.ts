@@ -93,7 +93,10 @@ advanceDetailId:any=0;
         }), 
        phAdvRefundDetail:this.formBuilder.array([]),
        phAdvanceDetailBalAmount:this.formBuilder.array([]),
-       pharPayment: '' 
+       pharPayment: '' ,
+      //New Payments
+      // ✅ Fixed: should be FormArray
+      tPayments: this.formBuilder.array([]),
       });
     }
   CreatePhAdvRefundDetail(item: any) {
@@ -111,6 +114,38 @@ advanceDetailId:any=0;
       refundAmount: [item?.refundAmount || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]]
     })
   }
+      CreateModePaymentform(item: any): FormGroup {
+    return this.formBuilder.group({
+      paymentId: [item?.paymentId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      unitId: [item?.unitId ?? this._loggedService.currentUserValue.user.unitId],
+      billNo: [item?.billNo ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      opdipdtype: [item?.opdipdtype ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      paymentDate: [item?.paymentDate ?? ''],
+      paymentTime: [item?.paymentTime ?? ''],
+      payAmount: [item?.payAmount ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      tranNo: [item?.tranNo ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+      bankName: [item?.bankName ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+      validationDate: [item?.validationDate ?? ''],
+      advanceUsedAmount: [item?.advanceUsedAmount ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      comments: [item?.comments ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+      payMode: [item?.payMode ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+      onlineTranNo: [item?.onlineTranNo ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+      onlineTranResponse: [item?.onlineTranResponse ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+      companyId: [item?.companyId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      advanceId: [item?.advanceId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      refundId: [item?.refundId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      cashCounterId: [item?.cashCounterId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      transactionType: [item?.transactionType ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      isSelfOrcompany: [item?.isSelfOrcompany ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      tranMode: [item?.tranMode ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+      createdBy: [item?.createdBy ?? this._loggedService.currentUserValue.userId],
+      transactionLabel: [item?.transactionLabel ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+    });
+  }
+  // Getters 
+  get ModeOfPaymentsArray(): FormArray {
+    return this.RefundSaveForm.get('tPayments') as FormArray;
+    }
  get AdvRefundDetailsArray(): FormArray{
   return this.RefundSaveForm.get('phAdvRefundDetail') as FormArray;
  }
@@ -206,14 +241,16 @@ advanceDetailId:any=0;
       })
       let PatientHeaderObj = {};
       PatientHeaderObj['Date'] = this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
-      PatientHeaderObj['PatientName'] = this.vPatienName
-      PatientHeaderObj['RegNo'] = this.regObj?.regNo;
-      PatientHeaderObj['DoctorName'] = this.regObj?.doctorName;
-      PatientHeaderObj['CompanyName'] = this.regObj?.companyName;
-      PatientHeaderObj['OPD_IPD_Id'] = this.regObj?.ipdNo;
-      PatientHeaderObj['Age'] = this.regObj?.age;
+      PatientHeaderObj['PatientName'] = this.vPatienName || ';'
+      PatientHeaderObj['RegNo'] = this.regObj?.regNo || 0;
+      PatientHeaderObj['DoctorName'] = this.regObj?.doctorName || '';
+      PatientHeaderObj['CompanyName'] = this.regObj?.companyName || '';
+      PatientHeaderObj['OPD_IPD_Id'] = this.regObj?.ipdNo || '';
+      PatientHeaderObj['Age'] = this.regObj?.age || 0;
       PatientHeaderObj['NetPayAmount'] = Math.round(this.RefundFooterForm.get('ToatalRefunfdAmt').value) || 0;
-      const dialogRef = this._matDialog.open(OpPaymentComponent,
+      PatientHeaderObj['CompanyId'] = this.regObj?.companyId || 0;
+      PatientHeaderObj['TransactionLabel'] = 'OP_BILL';
+       const dialogRef = this._matDialog.open(OpPaymentComponent,
         {
           maxWidth: "80vw",
           height: '650px',
@@ -227,7 +264,11 @@ advanceDetailId:any=0;
       dialogRef.afterClosed().subscribe(result => {
         console.log('==============================  Refung Amount ===========', result);
         this.RefundSaveForm.get('pharPayment').setValue(result.submitDataPay.ipPaymentInsert)
-        result.submitDataPay.ipPaymentInsert
+        this.ModeOfPaymentsArray.clear();
+        result.submitDataPay.ipModePaymentInsert.forEach(item => {
+        this.ModeOfPaymentsArray.push(this.CreateModePaymentform(item));
+        });
+ 
         console.log(this.RefundSaveForm.value);
         this._PharAdvanceService.InsertRefundOfAdv(this.RefundSaveForm.value).subscribe(response => {
           this.viewgetRefundofAdvanceReportPdf(response);

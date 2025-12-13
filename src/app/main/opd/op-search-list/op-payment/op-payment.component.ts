@@ -513,8 +513,12 @@ getselectObjPayMode(obj){
       this.Paymentobj['refundId'] = 0;
       if (this.data.FromName == "IP-Pharma-Advance") {
         this.Paymentobj['transactionType'] = 8;
+        transactionType = 8;
+        opdipdtype = 1
       } else if (this.data.FromName == "IP-Pharma-Refund") {
         this.Paymentobj['transactionType'] = 9;
+         transactionType = 9;
+         opdipdtype = 1
       }
       this.Paymentobj['remark'] = " ";
       this.Paymentobj['addBy'] = this._loggedService.currentUserValue.userId,
@@ -550,8 +554,8 @@ getselectObjPayMode(obj){
       this.Paymentobj['chequeNo'] = this.Payments.data.find(x => x.PaymentType == "CHEQUE")?.RefNo ?? "";
       this.Paymentobj['remarks'] = " ";
       this.Paymentobj['isAddedBy'] = this._loggedService.currentUserValue.user.storeId,
-        this.Paymentobj['isUpdatedBy'] = this._loggedService.currentUserValue.user.storeId,
-        this.Paymentobj['isCancelled'] = true;
+      this.Paymentobj['isUpdatedBy'] = this._loggedService.currentUserValue.user.storeId,
+      this.Paymentobj['isCancelled'] = true;
       this.Paymentobj['isCancelledBy'] = 0;
       this.Paymentobj['isCancelledDatetime'] = this.datePipe.transform(this.currentDate, 'yyyy-MM-dd') || this.datePipe.transform(this.currentDate, 'yyyy-MM-dd')
       this.Paymentobj['partyReceiptNo'] = "0";
@@ -724,6 +728,8 @@ getselectObjPayMode(obj){
     }
     //new changes done by Ambadas sales hospital pay 20/6/2025
     else if (this.data.FromName == "Phar-SalesPay") {
+        transactionType = 4;
+        opdipdtype = 3;
       this.Paymentobj['paymentId'] = 0;
       this.Paymentobj['billNo'] = 0;
       this.Paymentobj['paymentDate'] = formattedDate

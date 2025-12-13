@@ -326,7 +326,10 @@ export class SalesHospitalNewComponent implements OnInit {
             salesDraft: this.formBuilder.group({
                 dsalesId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
                 isClosed: [true]
-            })
+            }),
+                        //New Payments
+            // ✅ Fixed: should be FormArray
+            tPayments: this.formBuilder.array([]),
         })
     }
     CreateSalesDetailsform(item: IndentList) {
@@ -368,6 +371,34 @@ export class SalesHospitalNewComponent implements OnInit {
             storeId: [this._loggedService.currentUserValue.user.storeId, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]]
         })
     }
+        CreateModePaymentform(item: any): FormGroup {
+            return this.formBuilder.group({
+                paymentId: [item?.paymentId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+                unitId: [item?.unitId ?? this._loggedService.currentUserValue.user.unitId],
+                billNo: [item?.billNo ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+                opdipdtype: [item?.opdipdtype ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+                paymentDate: [item?.paymentDate ?? ''],
+                paymentTime: [item?.paymentTime ?? ''],
+                payAmount: [item?.payAmount ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+                tranNo: [item?.tranNo ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+                bankName: [item?.bankName ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+                validationDate: [item?.validationDate ?? ''],
+                advanceUsedAmount: [item?.advanceUsedAmount ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+                comments: [item?.comments ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+                payMode: [item?.payMode ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+                onlineTranNo: [item?.onlineTranNo ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+                onlineTranResponse: [item?.onlineTranResponse ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+                companyId: [item?.companyId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+                advanceId: [item?.advanceId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+                refundId: [item?.refundId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+                cashCounterId: [item?.cashCounterId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+                transactionType: [item?.transactionType ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+                isSelfOrcompany: [item?.isSelfOrcompany ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+                tranMode: [item?.tranMode ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+                createdBy: [item?.createdBy ?? this._loggedService.currentUserValue.userId],
+                transactionLabel: [item?.transactionLabel ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+            });
+        }
     // Getters 
     get SalesDetailsAarry(): FormArray {
         return this.PharmaSalesForm.get('sales.tSalesDetails') as FormArray;
@@ -375,10 +406,14 @@ export class SalesHospitalNewComponent implements OnInit {
     get CurrentStockArray(): FormArray {
         return this.PharmaSalesForm.get('tCurrentStock') as FormArray;
     }
+     get ModeOfPaymentsArray(): FormArray {
+        return this.PharmaSalesForm.get('tPayments') as FormArray;
+    }
     // Getters 
     get SalesDraftDetailsAarry(): FormArray {
         return this.PharmaSalesDraftForm.get('salesDraftDet') as FormArray;
     }
+       
     //sales draft save form
     CreatePharmasalesDraftform() {
         return this.formBuilder.group({
@@ -1227,6 +1262,37 @@ if (QtyElement) {
                 this.PharmaSalesForm.get('payment.paymentDate').setValue(formattedDate)
                 this.PharmaSalesForm.get('payment.paymentTime').setValue(FormattedDateTime)
                 this.PharmaSalesForm.get('payment.cashPayAmount').setValue((Math.round(formValue.netAmount)))
+                let ModePaymentObj = [];
+                ModePaymentObj.push({
+                    paymentId: 0,
+                    unitId: this._loggedService.currentUserValue.user.unitId,
+                    billNo: 0,
+                    opdipdtype: 3,
+                    paymentDate: formattedDate,
+                    paymentTime: formattedTime,
+                    payAmount: (Math.round(formValue?.netAmount || 0)),
+                    tranNo: "",
+                    bankName: "",
+                    validationDate: this.datePipe.transform(this.currentDate, 'yyyy-MM-dd'),
+                    advanceUsedAmount: 0,
+                    comments: "",
+                    payMode: "CASH",
+                    onlineTranNo: "0",
+                    onlineTranResponse: "0",
+                    companyId: this.Patientdetails?.CompanyId ?? 0,
+                    advanceId: 0,
+                    refundId: 0,
+                    cashCounterId: 0,
+                    transactionType: 4,
+                    isSelfOrcompany: this.Patientdetails?.CompanyId ? 1 : 0,
+                    tranMode: "HOSP",
+                    createdBy: this._loggedService.currentUserValue?.userId ?? 0,
+                    transactionLabel: 'SALES_BILL'
+                }); 
+                this.ModeOfPaymentsArray.clear();
+                ModePaymentObj.forEach(item => {
+                    this.ModeOfPaymentsArray.push(this.CreateModePaymentform(item));
+                });
                 console.log(this.PharmaSalesForm.value)
                 this._salesService.InsertCashSales(this.PharmaSalesForm.value).subscribe((response) => {
                     if (response > 0) {
@@ -1258,16 +1324,19 @@ if (QtyElement) {
             } else if (this.ItemSubform.get('CashPay').value == 'PayOption') {
                 let PatientHeaderObj = {};
                 PatientHeaderObj['Date'] = this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd') || '01/01/1900',
-                    PatientHeaderObj['PatientName'] = this.PatientName;
+                PatientHeaderObj['PatientName'] = this.PatientName || '';
                 PatientHeaderObj['RegNo'] = this.RegNo || 0;
-                PatientHeaderObj['DoctorName'] = this.Patientdetails?.doctorName;
+                PatientHeaderObj['DoctorName'] = this.Patientdetails?.doctorName || '';
                 if (formValue.opIpType == '1') {
                     PatientHeaderObj['OPD_IPD_Id'] = this.Patientdetails?.ipdNo || 0;
                 } else {
-                    PatientHeaderObj['OPD_IPD_Id'] = this.Patientdetails?.ipdNo || 0;
+                    PatientHeaderObj['OPD_IPD_Id'] = this.Patientdetails?.opdNo || 0;
                 }
                 PatientHeaderObj['Age'] = this.Patientdetails?.age || 0;
-                PatientHeaderObj['NetPayAmount'] = Math.round(this.ItemSubform.get('netAmount').value);
+                PatientHeaderObj['NetPayAmount'] = Math.round(this.ItemSubform.get('netAmount').value); 
+                PatientHeaderObj['CompanyName'] = this.Patientdetails?.companyName || '';  
+                 PatientHeaderObj['CompanyId'] = this.Patientdetails?.companyId || 0;  
+                PatientHeaderObj['TransactionLabel'] = 'SALES_BILL'; 
                 const dialogRef = this._matDialog.open(OpPaymentComponent,
                     {
                         maxWidth: "80vw",
@@ -1281,6 +1350,12 @@ if (QtyElement) {
                 dialogRef.afterClosed().subscribe(result => {
                     if (result && result.IsSubmitFlag == true) {
                         this.PharmaSalesForm.get('payment').setValue(result.submitDataPay.ipPaymentInsert)
+
+                        this.ModeOfPaymentsArray.clear();
+                        result.submitDataPay.ipModePaymentInsert.forEach(item => {
+                            this.ModeOfPaymentsArray.push(this.CreateModePaymentform(item));
+                        });
+
                         console.log(this.PharmaSalesForm.value)
                         this._salesService.InsertCashSales(this.PharmaSalesForm.value).subscribe(response => {
                             if (response > 0) {

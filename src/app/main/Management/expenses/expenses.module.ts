@@ -44,6 +44,8 @@ import { MatTreeModule } from '@angular/material/tree';
 import { NewExpensesComponent } from './new-expenses/new-expenses.component';
 import { ExpensesHeadMasterComponent } from './expenses-head-master/expenses-head-master.component';
 import { NewHeadMasterComponent } from './expenses-head-master/new-head-master/new-head-master.component';
+import { ExpensesCategoryMasterComponent } from './expenses-category-master/expenses-category-master.component';
+import { NewCategoryComponent } from './expenses-category-master/new-category/new-category.component';
 
 const routes: Routes = [
   {
@@ -57,7 +59,9 @@ const routes: Routes = [
     ExpensesComponent,
     NewExpensesComponent,
     ExpensesHeadMasterComponent,
-    NewHeadMasterComponent
+    NewHeadMasterComponent,
+    ExpensesCategoryMasterComponent,
+    NewCategoryComponent
   ],
   imports: [
     CommonModule,
