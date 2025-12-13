@@ -1,17 +1,95 @@
-.disabled-icon {
-    opacity: 0.5; /* Reduce opacity to indicate disabled state */
-    cursor: not-allowed; /* Change cursor to indicate disabled state */
+  .mat-column-PatientName {
+            width: 230px;
+            max-width: 230px;
+            min-width: 230px;
+            text-align: left;
+            text-align: left;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            overflow: hidden !important;
+            display: inline-block;
+            justify-content: left;
+        }
+
+        
+ 
+.net-amt-box {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid #1976d2;   /* Material primary color */
+  border-radius: 8px;
+  padding: 6px 10px;           /* reduced padding */
+  margin: 10px 0;
+  background-color: #f1f8ff;   /* light background */
+  font-weight: 500;
 }
-.circle {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
-  }
+
+.net-amt-label {
+  font-size: 14px;
+  color: #555;
+}
+
+.net-amt-value {
+  font-size: 16px;
+  font-weight: bold;
+  color: #1976d2;   /* highlight color */
+}
+
+.amount-positive {
+  border: 2px solid #4caf50;
+  background: #e8f5e9;
+  color: #2e7d32;
+  font-weight: bold;
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+.amount-zero {
+  border: 2px solid #ff9800;
+  background: #fff8e1;
+  color: #ef6c00;
+  font-weight: bold;
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+.amount-negative {
+  border: 2px solid #f44336;
+  background: #ffebee;
+  color: #c62828;
+  font-weight: bold;
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+/// 
+/// 
+.final-amt-box {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 2px solid #4caf50;   /* Material primary color */
+  border-radius: 8px;
+  padding: 6px 10px;           /* reduced padding */
+  margin: 10px 0;
+  background-color: #f1f8ff;   /* light background */
+  font-weight: 500;
+}
+
+.final-amt-label {
+  margin-right: 5px;
+  font-weight: 500;
   
-  .green {
-    background-color: green;
-    color: white;
-  }
+}
+
+.final-amt-value {
+  font-size: 18px;
+  font-weight: bold;
+  border: 2px solid #ff9800;
+  background: #fff8e1;
+  color: #ef6c00;
+  font-weight: bold;
+  padding: 4px 8px;
+  border-radius: 4px;
+}

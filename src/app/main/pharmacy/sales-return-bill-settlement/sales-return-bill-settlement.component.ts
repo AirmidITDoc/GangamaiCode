@@ -218,7 +218,10 @@ export class SalesReturnBillSettlementComponent implements OnInit {
         advanceId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         advanceUsedAmount: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
         balanceAmount: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-      })
+      }),
+       //New Payments
+      // ✅ Fixed: should be FormArray
+      tPayments: this._formBuilder.array([]),
     });
   } 
     createAdvanceDetails(element: any): FormGroup {
@@ -269,10 +272,41 @@ export class SalesReturnBillSettlementComponent implements OnInit {
       payTmdate: [element?.payTmdate ?? ''],
       tdsamount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
       wfamount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-      unitId: [this._loggedService.currentUserValue.user.unitId, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]], 
-    });  
+      unitId: [this._loggedService.currentUserValue.user.unitId, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+    });
+  }
+  CreateModePaymentform(item: any): FormGroup {
+    return this._formBuilder.group({
+      paymentId: [item?.paymentId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      unitId: [item?.unitId ?? this._loggedService.currentUserValue.user.unitId],
+      billNo: [item?.billNo ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      opdipdtype: [item?.opdipdtype ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      paymentDate: [item?.paymentDate ?? ''],
+      paymentTime: [item?.paymentTime ?? ''],
+      payAmount: [item?.payAmount ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      tranNo: [item?.tranNo ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+      bankName: [item?.bankName ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+      validationDate: [item?.validationDate ?? ''],
+      advanceUsedAmount: [item?.advanceUsedAmount ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      comments: [item?.comments ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+      payMode: [item?.payMode ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+      onlineTranNo: [item?.onlineTranNo ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+      onlineTranResponse: [item?.onlineTranResponse ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+      companyId: [item?.companyId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      advanceId: [item?.advanceId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      refundId: [item?.refundId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      cashCounterId: [item?.cashCounterId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      transactionType: [item?.transactionType ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      isSelfOrcompany: [item?.isSelfOrcompany ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      tranMode: [item?.tranMode ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+      createdBy: [item?.createdBy ?? this._loggedService.currentUserValue.userId],
+      transactionLabel: [item?.transactionLabel ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+    });
   }
   // Getters 
+  get ModeOfPaymentsArray(): FormArray {
+    return this.PharmaSettlementfrom.get('tPayments') as FormArray;
+    }
   get AdvanceDetailsArray(): FormArray {
     return this.PharmaSettlementfrom.get('advanceDetail') as FormArray;
   }
@@ -359,15 +393,18 @@ export class SalesReturnBillSettlementComponent implements OnInit {
 
     let PatientHeaderObj = {};
     PatientHeaderObj['Date'] = formattedDate;
-    PatientHeaderObj['PatientName'] = contact?.patientName;
+    PatientHeaderObj['PatientName'] = contact?.patientName || '';
     PatientHeaderObj['AdvanceAmount'] = Math.round(contact?.balanceAmount);
     PatientHeaderObj['NetPayAmount'] = Math.round(contact?.balanceAmount);
-    PatientHeaderObj['BillNo'] = contact?.salesId;
-    PatientHeaderObj['OPD_IPD_Id'] = this.OP_IP_Id;
-    PatientHeaderObj['RegNo'] = contact?.regNo;
-    PatientHeaderObj['DoctorName'] = this.DoctorName;
-    PatientHeaderObj['DepartmentName'] = contact?.departmentName;
-    PatientHeaderObj['Age'] = contact?.age;
+    PatientHeaderObj['BillNo'] = contact?.salesId || 0;
+    PatientHeaderObj['OPD_IPD_Id'] = this.OP_IP_Id || 0;
+    PatientHeaderObj['RegNo'] = contact?.regNo || 0;
+    PatientHeaderObj['DoctorName'] = this.DoctorName || '';
+    PatientHeaderObj['DepartmentName'] = contact?.departmentName || '';
+    PatientHeaderObj['Age'] = contact?.age || 0; 
+    PatientHeaderObj['CompanyName'] = contact?.companyName || '';  
+    PatientHeaderObj['CompanyId'] = contact?.companyId || 0;  
+    PatientHeaderObj['TransactionLabel'] = 'SALES_SETTLEMENT'; 
     if (this.userFormGroup.get('PatientType').value == '1')
       PatientHeaderObj['IPDNo'] = this.IPDNo;
     else
@@ -421,6 +458,10 @@ export class SalesReturnBillSettlementComponent implements OnInit {
           PaymentArray = result.submitDataPay.ipPaymentInsert;
           this.PaymentArray.clear(); 
           this.PaymentArray.push(this.createSettlmentPyament(PaymentArray));
+        this.ModeOfPaymentsArray.clear();
+        result.submitDataPay.ipModePaymentInsert.forEach(item => {
+          this.ModeOfPaymentsArray.push(this.CreateModePaymentform(item));
+        });
       
         console.log(this.PharmaSettlementfrom.value);
         this._SelseSettelmentservice.InsertSalessettlement(this.PharmaSettlementfrom.value).subscribe(response => { 

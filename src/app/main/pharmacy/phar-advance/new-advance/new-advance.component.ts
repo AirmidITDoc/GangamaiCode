@@ -141,9 +141,44 @@ export class NewAdvanceComponent implements OnInit {
         storeId: [this._loggedService.currentUserValue.user.storeId],
           unitId:[this._loggedService.currentUserValue.user.unitId]
       }), 
-      paymentPharmacy: '' 
+      paymentPharmacy: '' ,
+      //New Payments
+      // ✅ Fixed: should be FormArray
+      tPayments: this.formBuilder.array([]),
     });
   }
+    CreateModePaymentform(item: any): FormGroup {
+    return this.formBuilder.group({
+      paymentId: [item?.paymentId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      unitId: [item?.unitId ?? this._loggedService.currentUserValue.user.unitId],
+      billNo: [item?.billNo ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      opdipdtype: [item?.opdipdtype ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      paymentDate: [item?.paymentDate ?? ''],
+      paymentTime: [item?.paymentTime ?? ''],
+      payAmount: [item?.payAmount ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      tranNo: [item?.tranNo ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+      bankName: [item?.bankName ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+      validationDate: [item?.validationDate ?? ''],
+      advanceUsedAmount: [item?.advanceUsedAmount ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      comments: [item?.comments ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+      payMode: [item?.payMode ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+      onlineTranNo: [item?.onlineTranNo ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+      onlineTranResponse: [item?.onlineTranResponse ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+      companyId: [item?.companyId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      advanceId: [item?.advanceId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      refundId: [item?.refundId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      cashCounterId: [item?.cashCounterId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      transactionType: [item?.transactionType ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      isSelfOrcompany: [item?.isSelfOrcompany ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      tranMode: [item?.tranMode ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+      createdBy: [item?.createdBy ?? this._loggedService.currentUserValue.userId],
+      transactionLabel: [item?.transactionLabel ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+    });
+  }
+  // Getters 
+  get ModeOfPaymentsArray(): FormArray {
+    return this.insertForm.get('tPayments') as FormArray;
+    }
   getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;
   }
@@ -216,14 +251,14 @@ export class NewAdvanceComponent implements OnInit {
     if (!this.insertForm?.invalid) {
       const PatientHeaderObj = {
         Date: this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd') || '01/01/1900',
-        PatientName: this.vPatienName,
-        RegNo: this.regObj.regNo,
-        DoctorName: this.regObj.regNo,
-        CompanyName: this.regObj.companyName,
-        OPD_IPD_Id: this.regObj.ipdNo,
-        Age: this.regObj.age,
+        PatientName: this.vPatienName || '',
+        RegNo: this.regObj.regNo || '', 
+        CompanyName: this.regObj.companyName || '',
+        OPD_IPD_Id: this.regObj.ipdNo || '',
+        Age: this.regObj.age || '',
         NetPayAmount: this.MainForm.get('advanceAmt').value || 0,
         AdvanceDetailId: 0,
+        TransactionLabel:'PHARMACY_ADVANCE' 
       };
       const dialogRef = this._matDialog.open(OpPaymentComponent,
         {
@@ -240,6 +275,14 @@ export class NewAdvanceComponent implements OnInit {
         if (result && result.submitDataPay) {
           if (!this.vAdvanceId) {
             this.insertForm?.get('paymentPharmacy')?.setValue(result.submitDataPay.ipPaymentInsert);
+            this.ModeOfPaymentsArray.clear();
+            result.submitDataPay.ipModePaymentInsert.forEach(item => {
+              this.ModeOfPaymentsArray.push(this.CreateModePaymentform(item));
+            });
+            this.ModeOfPaymentsArray.clear();
+            result.submitDataPay.ipModePaymentInsert.forEach(item => {
+              this.ModeOfPaymentsArray.push(this.CreateModePaymentform(item));
+            });
             this.insertForm.removeControl('pharmacyHeader');
             console.log(this.insertForm?.value);
             this._PharAdvanceService.InsertIpPharmaAdvance(this.insertForm.value).subscribe(response => { 
@@ -253,6 +296,10 @@ export class NewAdvanceComponent implements OnInit {
             this.insertForm?.get("pharmacyHeader.advanceAmount")?.setValue(Number(this.MainForm?.get('advanceAmt')?.value ?? 0));
             this.insertForm?.get("pharmacyHeader.balanceAmount")?.setValue(Number(this.MainForm?.get('advanceAmt')?.value ?? 0));
             this.insertForm?.get('paymentPharmacy')?.setValue(result.submitDataPay.ipPaymentInsert);
+            this.ModeOfPaymentsArray.clear();
+            result.submitDataPay.ipModePaymentInsert.forEach(item => {
+              this.ModeOfPaymentsArray.push(this.CreateModePaymentform(item));
+            });
             console.log(this.insertForm?.value);
             this._PharAdvanceService.UpdateIpPharmaAdvance(this.insertForm.value).subscribe(response => { 
               this.viewgetIPAdvanceReportPdf(response);

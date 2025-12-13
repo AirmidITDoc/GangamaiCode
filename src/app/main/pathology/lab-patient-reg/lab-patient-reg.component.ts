@@ -28,6 +28,7 @@ import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { DoctorDetailsPopoverComponent } from 'app/main/opd/appointment-list/doctor-details-popover/doctor-details-popover.component';
 import { PageNames } from 'app/main/shared/componets/airmid-fileupload/airmid-fileupload.component';
 import { DiscountAfterFinalLabbillComponent } from './discount-after-final-labbill/discount-after-final-labbill.component';
+import { LabrefundBillComponent } from './labrefund-bill/labrefund-bill.component';
 // import { NewLabPatientregComponent } from './new-lab-patientreg/new-lab-patientreg.component';
 
 @Component({
@@ -248,6 +249,23 @@ export class LabPatientRegComponent {
     });
   }
 
+  // getRefund(contact) {
+  //   const dialogRef = this._matDialog.open(LabrefundBillComponent,
+  //     {
+  //       maxWidth: "99vw",
+  //       height: "98vh",
+  //       width: "95%",
+  //       data: {
+  //         Obj: contact,
+  //         // PatientObj: this.registerObj
+  //       }
+  //     });
+  //   dialogRef.afterClosed().subscribe(result => {
+  //     console.log('The dialog was closed - Insert Action', result);
+  //     this.grid.bindGridData();
+  //   });
+  // }
+
   openPaymentpopup(contact) {
     console.log(contact)
     let PatientHeaderObj = {};
@@ -370,8 +388,6 @@ export class LabPatientRegComponent {
 
   billdetail(element) {
     console.log(element)
-
-
     const dialogRef = this._matDialog.open(LabRegBillDeatilsComponent,
       {
         maxWidth: "60vw",
@@ -701,8 +717,11 @@ export class LabPatientList {
   age: any;
   refDocId: any;
   adharCardNo: any;
-  traiffId:any;
-  labPatRegId:any
+  traiffId: any;
+  labPatRegId: any;
+  regNo: any;
+  labRequestNo: any;
+  billNo: any;
 
   constructor(LabPatientList) {
     {
@@ -768,6 +787,13 @@ export class LabPatientList {
       this.adharCardNo = LabPatientList.adharCardNo || 0
       this.traiffId = LabPatientList.traiffId || 0
       this.labPatRegId = LabPatientList.labPatRegId || 0
+      this.labRequestNo = LabPatientList.labRequestNo || 0
+      this.billNo = LabPatientList.billNo || 0
+      // this.regNo = LabPatientList.regNo || 0
+      // this.regNo = LabPatientList.regNo || 0
+      // this.regNo = LabPatientList.regNo || 0
+      // this.regNo = LabPatientList.regNo || 0
+      // this.regNo = LabPatientList.regNo || 0
     }
   }
 }

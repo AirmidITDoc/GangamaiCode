@@ -63,7 +63,19 @@ export class ExpensesService {
       isActive: [true, [Validators.required]]
     });
   }
-
+    createCategoryMasterForm(): FormGroup {
+    return this._formBuilder.group({
+      expCatId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      CategoryName: ["",
+        [
+          Validators.required,
+          Validators.pattern('^[a-zA-Z0-9 ()]*$'),
+          this._FormvalidationserviceService.allowEmptyStringValidator()
+        ]
+      ],
+      isActive: [true, [Validators.required]]
+    });
+  } 
   public ExpensesSave(Param: any) {
     if (Param.expID) {
       return this._httpClient.PutData("TExpense/TExpenseUpdate" + Param.expID, Param);
@@ -82,5 +94,15 @@ export class ExpensesService {
 
    public deactivateTheStatus(m_data) {
         return this._httpClient.DeleteData("ExpensesHeadMaster?Id=" + m_data.toString());
+    }
+
+
+    public CategoryMasterSave(Param: any) {
+    if (Param.expHedId) {
+      return this._httpClient.PutData("ExpensesCategoryMaster/" + Param.expCatId, Param);
+    } else return this._httpClient.PostData("ExpensesCategoryMaster", Param);
+  }
+     public deactivateCategoryTheStatus(m_data) {
+        return this._httpClient.DeleteData("ExpensesCategoryMaster?Id=" + m_data.toString());
     }
 }

@@ -1,292 +1,353 @@
-<div class="modal-page page-layout inner-scroll">
-    <div class="modal-wrapper grid-container">
-        <!-- Modal header -->
-        <div class="modal-header accent">
-            <div class="modal-header-content">
-                <div class="modal-header-title">
-                    <span [@animate]="{ value: '*', params: { delay: '100ms', x: '-25px' } }">External Sales Return</span>
-                </div>
-                <div class="modal-header-right">
-                    <div class="comman-date-container">
-                        <app-common-date [screenFrom]="'Common-form'"
-                            (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
-                        <div class="close-icon">
-                            <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
-                                matTooltip="Close">
-                                <mat-icon>close</mat-icon>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+ <div class="modal-page page-layout inner-scroll">
+  <div class="modal-wrapper grid-container">
+    <!-- Modal header -->
+    <div class="modal-header accent">
+      <div class="modal-header-content">
+        <div class="modal-header-title">
+          <span [@animate]="{ value: '*', params: { delay: '100ms', x: '-25px' } }">
+            External Sales Return :
+            <b>{{ StoreName }}</b>
+          </span>
         </div>
 
-        <!-- Modal body -->
-        <div class="modal-body" fusePerfectScrollbar>
-            <div class="modal-body-container">
-                <div fxLayout="column" class="h-100-p">
-                    <mat-accordion>
-                        <mat-expansion-panel expanded>
-                            <mat-expansion-panel-header>
-                                <mat-panel-title>
-                                    <div class="panel-title" fxLayout="row" fxLayoutAlign="space-between center">
-                                        <span>External Sales Return </span>
-                                    </div>
-                                </mat-panel-title>
-                            </mat-expansion-panel-header>
-                            <form [formGroup]="StoreForm">
-                                <airmid-dropdown label="Store Name" formControlName="storeId" [readonly]="true"
-                                    (selectionChange)="StoreSelction($event)" [formGroup]="StoreForm" fxFlex="30%"
-                                    (openedChange)="true" [mode]="autocompletestore">
-                                </airmid-dropdown>
-
-                            </form>
-                            <!-- <div fxLayout="column" fxLayout="row" fxLayoutAlign="start none">
-                                <div fxFlexFill fxLayout="row" fxLayoutGap="8px">
-                                   
-                                </div>
-                            </div> -->
-                            <div fxFlexFill fxLayout="row" fxLayoutGap="8px">
-                                <form [formGroup]="OPeningtemForm">
-                                    <div fxFlexFill fxLayout="row wrap" fxLayoutGap="10px">
-                                        <airmid-autocomplete label="Item Name (enter 2 char)"
-                                            [formGroup]="OPeningtemForm" formControlName="ItemName"
-                                            placeholderText="Item Name (enter 2 char)" fxFlex="15%"
-                                            [ApiUrl]="'ItemMaster/GetItemListForGRNOrPO?StoreId=' + (StoreId || '2') + '&ItemName='"
-                                            (selectionChange)="getSelectedItem($event)" TextField="formattedText"
-                                            ValueField="itemId"
-                                            (onClearSelection)="ItemFromReset()"></airmid-autocomplete>
-
-                                        <!-- how many strips are in 1 pack. -->
-                                        <airmid-textbox fxFlex="7%" label="Packing" formControlName="pack" [min]="0"
-                                            [formGroup]="OPeningtemForm" type="number" (input)="calculateTotalQty()"
-                                            placeholder="Packing"
-                                            (keypress)="keyPressAlphanumeric($event)"></airmid-textbox>
-
-                                        <airmid-autocomplete label="BatchNo" [formGroup]="OPeningtemForm"
-                                            formControlName="BatchNo" fxFlex="7%" TextField="batchNo"
-                                            [ApiUrl]="'GRN/GetExisitingBatchList?StoreId=' + StoreId + '&ItemId=' + vItemId + '&BatchNo='"
-                                            (selectionChange)="onBatchChange($event)"></airmid-autocomplete>
-                                            <!-- ApiUrl="GRN/GetExisitingBatchList?StoreId={{StoreId}}&ItemId={{vItemId}}&BatchNo=" -->
-
-                                        <mat-form-field appearance="outline" fxFlex="7%">
-                                            <mat-label>ExpDate</mat-label>
-                                            <input matInput #inputField (keydown.enter)="calculateLastDay()"
-                                                (keypress)="keyPressAlphanumeric($event)" formControlName="ExpDate"
-                                                id="ExpDatess" [(ngModel)]="vlastDay" #expdate autocomplete="off"
-                                                placeholder="MMYYYY" (input)="onExpDateInput($event)" required>
-                                        </mat-form-field>
-
-                                        <!-- number of packs. (conversion factor)-->
-                                        <airmid-textbox fxFlex="7%" label="Qty" formControlName="stripQty"
-                                            [(ngModel)]="vstrQty" [formGroup]="OPeningtemForm" type="number"
-                                            placeholder="Qty" (input)="calculateTotalQty()" [min]="0"
-                                            (keypress)="keyPressAlphanumeric($event)"></airmid-textbox>
-
-                                        <airmid-textbox fxFlex="7%" label="Total Qty" formControlName="totalQty"
-                                            [formGroup]="OPeningtemForm" type="number" [readonly]="true"
-                                            placeholder="Total Qty"></airmid-textbox>
-
-                                        <airmid-dropdown label="CGST/SGST" formControlName="CGST" fxFlex="8%"
-                                            [formGroup]="OPeningtemForm" [mode]="autocompleteModeGSTTypesValues"
-                                            (selectionChange)="getchangegstper($event)" [readonly]="isBatchSelected"
-                                            (onClearSelection)="getchangegstper($event)">
-                                        </airmid-dropdown>
-
-                                        <airmid-dropdown label="IGST" formControlName="IGST" fxFlex="7%" [readonly]="isBatchSelected"
-                                            [formGroup]="OPeningtemForm" [mode]="autocompleteModeGSTTypesValues"
-                                            (selectionChange)="getchangeIgstper($event)"> </airmid-dropdown>
-
-                                        <airmid-textbox fxFlex="7%" label="MRP" formControlName="MRP" type="number"
-                                            [formGroup]="OPeningtemForm" placeholder="MRP" [min]="0" [readonly]="isBatchSelected"
-                                            (input)="onMRPInput($event)"></airmid-textbox>
-
-                                        <airmid-textbox fxFlex="7%" label="LandedRate" formControlName="LandedRate"
-                                            [formGroup]="OPeningtemForm" type="number" placeholder="Landed Rate"
-                                            (input)="onLandedRateInput($event)" [min]="0" [readonly]="isBatchSelected"
-                                            (keypress)="keyPressCharater($event)"></airmid-textbox>
-
-                                        <airmid-textbox fxFlex="7%" label="Rate PerUnit" formControlName="RatePerUnit"
-                                            [formGroup]="OPeningtemForm" type="number" placeholder="Rate PerUnit"
-                                            (input)="onRatePerUnitInput($event)" [min]="0" [readonly]="isBatchSelected"
-                                            (keypress)="keyPressCharater($event)"></airmid-textbox>
-
-                                        <div style="margin-left: 20px;"
-                                            [matTooltip]="!OPeningtemForm.valid ? 'Add All Value to enable this button!!' : ''">
-                                            <button type="button" class="btn btn-primary btn-with-icon py-8"
-                                                (click)="Onadd()" [disabled]="!OPeningtemForm.valid">
-                                                <mat-icon>add</mat-icon>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-
-                        </mat-expansion-panel>
-                    </mat-accordion>
-                    <div class="airmid-table-container py-12 h-100-p" fxFlex>
-                        <mat-table class="table2 h-100-p" matSort [dataSource]="dsItemNameList"
-                            [@animateStagger]="{value:'50'}" style="overflow: auto;">
-
-                            <ng-container matColumnDef="buttons" stickyEnd>
-                                <mat-header-cell *matHeaderCellDef style="color: white;" class="w-100"> Action
-                                </mat-header-cell>
-                                <mat-cell *matCellDef="let row" class="w-100">
-                                    <button mat-icon-button (click)="deleteTableRow(row)" color="warn">
-                                        <mat-icon>delete_outline</mat-icon>
-                                    </button>
-                                </mat-cell>
-                            </ng-container>
-
-                            <ng-container matColumnDef="ItemName">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-300">
-                                    ItemName
-                                </mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-300">
-                                    {{contact.ItemName}}
-                                </mat-cell>
-                            </ng-container>
-
-                            <ng-container matColumnDef="pack">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-100">
-                                    Packing </mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100">
-                                    {{contact.Pack}}
-                                </mat-cell>
-                            </ng-container>
-
-                            <ng-container matColumnDef="BatchNo">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-100">
-                                    BatchNo</mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100">
-                                    {{contact.BatchNo}}
-                                </mat-cell>
-                            </ng-container>
-
-                            <ng-container matColumnDef="ExpDate">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-100">
-                                    ExpDate</mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100">
-                                    {{contact.ExpDate}}
-                                </mat-cell>
-                            </ng-container>
-
-                            <ng-container matColumnDef="qty">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-100">
-                                    Qty </mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100">
-                                    {{contact.strQty}}
-                                </mat-cell>
-                            </ng-container>
-
-                            <ng-container matColumnDef="totalQty">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-100">
-                                    TotalQty </mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100">
-                                    {{contact.TotalQty}}
-                                </mat-cell>
-                            </ng-container>
-
-                            <ng-container matColumnDef="CGST">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-100">
-                                    CGST%</mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100">
-                                    {{contact.CGST}}
-                                </mat-cell>
-                            </ng-container>
-
-                            <ng-container matColumnDef="SGST">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-100">
-                                    SGST%</mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100">
-                                    {{contact.SGST}}
-                                </mat-cell>
-                            </ng-container>
-
-                            <ng-container matColumnDef="IGST">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-100">
-                                    IGST%</mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100">
-                                    {{contact.IGST}}
-                                </mat-cell>
-                            </ng-container>
-
-                            <ng-container matColumnDef="GST">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-100">
-                                    GST%</mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100">
-                                    {{contact.GST}}
-                                </mat-cell>
-                            </ng-container>
-
-                            <ng-container matColumnDef="PerRate">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-150">
-                                    UnitPerRate</mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-150">
-                                    {{contact.PerRate}}
-                                </mat-cell>
-                            </ng-container>
-
-                            <ng-container matColumnDef="UnitMRP">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-150">
-                                    UnitMRP</mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-150">
-                                    {{contact.UnitMRP}}
-                                </mat-cell>
-                            </ng-container>
-
-                            <ng-container matColumnDef="LandedRate">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-150">
-                                    LandedRate</mat-header-cell>
-                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-150">
-                                    {{contact.LandedRate}}
-                                </mat-cell>
-                            </ng-container>
-
-                            <ng-container matColumnDef="loading">
-                                <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
-                                </mat-header-cell>
-                            </ng-container>
-
-                            <ng-container matColumnDef="noData">
-                                <mat-footer-cell *matFooterCellDef colspan="6">
-                                    no data found...
-                                </mat-footer-cell>
-                            </ng-container>
-
-                            <mat-header-row class="accent" *matHeaderRowDef="displayedColumns; sticky: true">
-                            </mat-header-row>
-                            <mat-row *matRowDef="let row; columns: displayedColumns;" class="element"
-                                [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
-                            <mat-footer-row *matFooterRowDef="['noData']"
-                                [ngClass]="{'hide':!(dsItemNameList!=null && dsItemNameList.data.length==0)}">
-                            </mat-footer-row>
-                        </mat-table>
-                    </div>
-
-                </div>
-            </div>
+        <div class="modal-header-right" fxLayout="row" fxLayoutGap="10px">  
+          <!-- <div class="comman-date-container">
+            <app-common-date [screenFrom]="screenFromString"
+              (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
+          </div> -->
         </div>
-        <div>
-            <form [formGroup]="OPeningtemForm">
-                <div style="margin-left: 20px;">
-                    <airmid-textbox fxFlex="60%" label="Remark" formControlName="Remark" [(ngModel)]="vRemark"
-                        [maxLength]="500" [formGroup]="OPeningtemForm" placeholder="Remark"></airmid-textbox>
-
-
-                    <div class="modal-footer">
-                        <div class="footer-navigation-container">
-                            <div class="modal-footer-buttons" style="margin-left: 600px;">
-                                <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
-                                <button type="button" class="btn btn-primary" [disabled]="false"
-                                    (click)="OnSave()">Save</button>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-            </form>
-        </div>
+      </div>
     </div>
 
+    <!-- Modal body -->
+    <div class="modal-body" fusePerfectScrollbar>
+      <div fxLayout="column" fxLayout.gt-xs="row" class="gap-12 h-100-p">
+        <div fxFlex="100%" fxFlex.sm="100%" fxFlex.xs="100%" class="table-left">
+          <div class="modal-body-container">
+            <div fxLayout="column" class="gap-8 h-100-p">
+              <div class="modal-card-container search-container">
+                <div class="patient-search-container input-error-hidden">
+                  <mat-card fxFlex.gt-sm="100%" fxFlex>
+                    <mat-card-content>
+                      <form [formGroup]="ItemSubform" class="pt-0">
+                        <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="space-between"
+                          class="gap-8">
+                          <div class="radio-group-left gap-8" fxLayout="row" fxLayoutAlign="start center" fxFlex> 
+
+                            <div fxFlex="100%" fxFlex.sm="100%" >  
+                               <airmid-autocomplete label="Mobile No"
+                                [formGroup]="ItemSubform" formControlName="extMobileNo" maxlength="10"
+                                placeholder="Enter 10 digit Mobile No." fxFlex   TextField="text" 
+                                ApiUrl="Sales/External-auto-complete?Keyword="   (keypress)="allowOnlyDigits($event)"
+                                (selectionChange)="getSelectedObjextMobile($event)"   
+                               ></airmid-autocomplete>  
+                            </div> 
+                       
+                            <div fxFlex="100%" fxFlex.sm="100%"  >
+                              <airmid-autocomplete label="Patient Name"  
+                                [formGroup]="ItemSubform" formControlName="externalPatientName"
+                                placeholderText="Patient Name" fxFlex
+                               ApiUrl="Sales/External-auto-complete?Keyword="  TextField="text" 
+                                (selectionChange)="getSelectedObjextPatient($event)"  
+                                ></airmid-autocomplete> 
+                            </div>
+
+                            <div fxFlex="100%" fxFlex.sm="100%" >
+
+                            <airmid-autocomplete label="Doctor Name"
+                                [formGroup]="ItemSubform" formControlName="doctorName"  
+                                placeholderText="First Name / Last Name" fxFlex   TextField="doctorName" 
+                                ApiUrl="Sales/ExternalDoctor-auto-complete?Keyword=" 
+                                (selectionChange)="getSelectedObjExtDocName($event)" ></airmid-autocomplete> 
+                            </div> 
+
+                            <div fxFlex="100%" fxFlex.sm="100%">
+                              <airmid-textbox label="Address" [(ngModel)]="vextAddress" formControlName="extAddress"
+                                placeholder="extAddress" [formGroup]="ItemSubform"    
+                                [validations]="getValidationMessages().extAddress" [type]="'text'"
+                                (input)="onEnterAddress($event)"></airmid-textbox>
+                            </div>
+                          </div>
+                        </div> 
+                      </form>
+                    </mat-card-content>
+                  </mat-card>
+                </div>
+              </div>
+              <div class="modal-card-container input-error-hidden">
+                <mat-card>
+                  <mat-card-content>
+                    <form [formGroup]="_salesService.ItemSearchGroup">
+                      <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="8px" fusePerfectScrollbar>
+
+                        <div fxFlex="100%" fxFlex.gt-sm="8%">
+                          <airmid-textbox label="Barcode No" formControlName="Barcode" [(ngModel)]="vBarcode"
+                            [formGroup]="_salesService.ItemSearchGroup"></airmid-textbox>
+                        </div>
+
+                        <div fxFlex="100%">
+                          <airmid-autocomplete label="Item Name (enter 2 char)"
+                            [formGroup]="_salesService.ItemSearchGroup" formControlName="ItemId"
+                            placeholderText="Item Name (enter 2 char)" fxFlex id="ItemId"
+                            ApiUrl="ItemMaster/GetItemListforSalesPage?StoreId=2&ItemName=" TextField="itemName"
+                            ValueField="itemId" (selectionChange)="onItemChange($event)"  
+                            (keydown.enter)="handleEnterKey($event)"
+                            #ItemId></airmid-autocomplete>
+                          <!-- (selectionChange)="getSelectedObj($event)" -->
+                        </div>
+
+                        <div fxFlex="100%" fxFlex.gt-sm="7%">
+                          <airmid-textbox label="Batch No" formControlName="BatchNo" [readonly]="true"
+                            [formGroup]="_salesService.ItemSearchGroup"></airmid-textbox>
+                        </div>
+
+                        <div fxFlex="100%" fxFlex.gt-sm="7%">
+                          <airmid-textbox label="Qty" formControlName="Qty" #qtyInputRef [type]="'number'" min="0"
+                            (valueChange)="calculateTotalAmt()"
+                            (keydown.enter)="checkQtyBeforeNext($event)"
+                            [formGroup]="_salesService.ItemSearchGroup"></airmid-textbox>
+                        </div>
+
+                        <div fxFlex="100%" fxFlex.gt-sm="7%">
+                          <airmid-textbox label="MRP" formControlName="MRP" type="number" [readonly]="true"
+                            [formGroup]="_salesService.ItemSearchGroup"></airmid-textbox>
+                        </div>
+
+                        <div fxFlex="100%" fxFlex.gt-sm="7%">
+                          <airmid-textbox label="Total MRP" formControlName="TotalMrp" [readonly]="true"
+                            [formGroup]="_salesService.ItemSearchGroup"></airmid-textbox>
+                        </div>
+
+                        <div fxFlex="100%" fxFlex.gt-sm="7%">
+                          <airmid-textbox label="Disc %" formControlName="DiscPer" type="number"
+                            (valueChange)="discperCal()" [formGroup]="_salesService.ItemSearchGroup"></airmid-textbox>
+                        </div>
+
+                        <div fxFlex="100%" fxFlex.gt-sm="7%">
+                          <airmid-textbox label="Disc Amt" formControlName="DiscAmt" type="number"
+                            (valueChange)="CaldiscAmount()"
+                            [formGroup]="_salesService.ItemSearchGroup"></airmid-textbox>
+                        </div>
+
+                        <div fxFlex="100%" fxFlex.gt-sm="7%">
+                          <airmid-textbox label="Net Amount" formControlName="NetAmt" [readonly]="true"
+                            [formGroup]="_salesService.ItemSearchGroup"></airmid-textbox>
+                        </div>
+ 
+
+                        <div matTooltip="Select  name to enable this button!!"
+                          [matTooltipDisabled]="!_salesService.ItemSearchGroup.invalid" [matTooltipPosition]="'above'">
+                          <button (click)="OnAddItem()" class="btn btn-primary btn-with-icon py-8" #addbutton>
+                            <span class="btn-icon">
+                              <mat-icon>add</mat-icon>
+                            </span>
+                          </button> 
+                        </div>
+                      </div>
+                    </form>
+                  </mat-card-content>
+                </mat-card>
+              </div>
+              <div class="modal-card-container dynamic-table-wrapper" fxFlex>
+                <div class="airmid-table-container">
+                  <mat-table class="airmid-table sales-table" #table matSort [dataSource]="saleSelectedDatasource"
+                    [@animateStagger]="{ value: '50' }" style="overflow: auto">
+
+                    <ng-container matColumnDef="itemMolecule">
+                      <mat-header-cell *matHeaderCellDef mat-sort-header   class="w-70">  </mat-header-cell>
+                      <mat-cell *matCellDef="let contact"  class="w-70">
+                        <mat-icon style="cursor: pointer; color: #1976d2;" matTooltip="View molecule details"
+                          (click)="Oncheckitemmolecule(contact)">
+                          local_offer
+                        </mat-icon>  
+                      </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="ItemName">
+                      <mat-header-cell *matHeaderCellDef class="w-220" mat-sort-header>ItemName</mat-header-cell>
+                      <mat-cell *matCellDef="let contact" class="w-220">
+                            <span> {{ contact.ItemName }}</span>
+                        <!-- <mat-form-field appearance="fill">
+                          <input matInput [(ngModel)]="contact.ItemName" (keydown.enter)="onEnterItemName(contact)" />
+                        </mat-form-field> -->
+                      </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="BatchNo">
+                      <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Batch No</mat-header-cell>
+                      <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                        <span> {{ contact.BatchNo }}</span>
+                      </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="BatchExpDate">
+                      <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Exp.Date</mat-header-cell>
+                      <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                        <span> {{ contact.BatchExpDate }}</span>
+                      </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="Qty">
+                      <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
+                        class="w-100">Qty</mat-header-cell>
+                      <mat-cell class="w-100" *matCellDef="let contact" fxShow.gt-sm>
+                        <mat-form-field appearance="fill">
+                          <input matInput [(ngModel)]="contact.Qty" type="text " (keyup)="getCellCalculation(contact)"
+                            min="0" max="1000" name="tableQty" OnlyNumber  (keypress)="keyPressDigitsOnly($event)"/>
+                        </mat-form-field>
+                      </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="UnitMRP">
+                      <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Unit MRP</mat-header-cell>
+                      <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                        <span> {{ contact.UnitMRP | currency : 'INR'  }}</span>
+                      </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="TotalMRP">
+                      <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Total MRP</mat-header-cell>
+                      <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                        <span> {{ contact.TotalMRP | currency : 'INR' }}</span>
+                      </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="GSTPer">
+                      <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-90">GST
+                        %</mat-header-cell>
+                      <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-90">
+                        <span> {{ contact.GSTPer }}</span>
+                      </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="GSTAmount">
+                      <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>GST Amt</mat-header-cell>
+                      <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                        <span> {{ contact.GSTAmount | currency : 'INR' }}</span>
+                      </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="DiscPer">
+                      <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Disc %</mat-header-cell>
+                      <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                        <mat-form-field appearance="fill">
+                          <input matInput [(ngModel)]="contact.DiscPer" type="text" [disabled]="contact.IsPurRate > 0"
+                            (keyup)="updateCellDiscount(contact)" min="0" max="100" OnlyNumber (keypress)="keyPressDigitDecimalOnly($event)"/>
+                        </mat-form-field>
+                      </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="DiscAmt">
+                      <mat-header-cell class="" *matHeaderCellDef mat-sort-header fxShow.gt-sm>Disc
+                        Amount</mat-header-cell>
+                      <mat-cell class="" *matCellDef="let contact" fxShow.gt-sm>
+                        <span> {{ contact.DiscAmt | currency : 'INR' }}</span>
+                      </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="NetAmt">
+                      <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Net Amount</mat-header-cell>
+                      <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                        <span> {{ contact.NetAmt | currency : 'INR' }}</span>
+                      </mat-cell>
+                    </ng-container>
+
+                   
+                    <ng-container matColumnDef="buttons" stickyEnd>
+                      <mat-header-cell *matHeaderCellDef class="table-actions">Action</mat-header-cell>
+                      <mat-cell *matCellDef="let contact">
+                        <ng-container class="actions">
+                          <span class="material-icons" style="cursor: pointer; color: #5b5858"
+                            (click)="deleteTableRow($event, contact)">delete</span>
+                        </ng-container>
+                      </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="loading">
+                      <mat-header-cell *matFooterCellDef colspan="6" style="display: none"></mat-header-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="noData">
+                      <mat-footer-cell *matFooterCellDef colspan="6">
+                        <mat-spinner *ngIf="isLoadingStr == 'loading'" [diameter]="30"></mat-spinner>
+                        <span *ngIf="isLoadingStr == 'no-data'">No data found...</span>
+                      </mat-footer-cell>
+                    </ng-container>
+
+                    <mat-header-row class="accent min-width-1500"
+                      *matHeaderRowDef="selectedSaleDisplayedCol; sticky: true"></mat-header-row>
+                    <mat-row *matRowDef="let contact; columns: selectedSaleDisplayedCol" class="min-width-1500"
+                      [ngClass]="{ 'row-yellow': QtyBalchk == 0 }"
+                      [@animate]="{ value: '*', params: { y: '100%' } }"></mat-row>
+                    <!-- (click)="deleteTableRow($event,contact)"  -->
+                    <!-- <button class="btn btn-default btn-primary" style="float:right;" (click)="deleteRow(pto)" 
+                                                       (onDelete)="onDelete($event)"><i class="fa fa-trash" aria-hidden="true"></i></button> -->
+                    <mat-footer-row *matFooterRowDef="['loading']"
+                      [ngClass]="{ hide: saleSelectedDatasource != null }"></mat-footer-row>
+                    <mat-footer-row *matFooterRowDef="['noData']"
+                      [ngClass]="{ hide: !(saleSelectedDatasource != null && saleSelectedDatasource.data.length == 0) }"></mat-footer-row>
+                  </mat-table>
+                </div>
+              </div>
+              <div class="modal-card-container">
+                <mat-card fxFlex.gt-sm="100%" fxFlex>
+                  <mat-card-content class="py-4">
+                    <form class="example-form mt-12" [formGroup]="ItemSubform">
+                      <div class="footer-container" fxLayout="column" fxLayoutAlign="start">
+                        <div class="row row-container">
+                          <div class="amount-section">
+                            <div fxLayout="column" class="gap-8"> 
+
+                              <div fxLayout="row" fxLayoutAlign="start center" class="gap-8 input-error-hidden">
+                        
+                                <airmid-textbox fxFlex="8%" label="Total Amount" [formGroup]="ItemSubform"
+                                  formControlName="totalAmount" [readonly]="true"></airmid-textbox> 
+
+                                <airmid-textbox fxFlex="6%" label="Discount Amount" [formGroup]="ItemSubform"
+                                  formControlName="discAmount"     [readonly]="isdiscAmount" 
+                                  ></airmid-textbox> 
+
+                                <airmid-textbox fxFlex="8%" label="Net Amount" [formGroup]="ItemSubform"
+                                  formControlName="netAmount" [readonly]="true" [required]="true"></airmid-textbox> 
+
+                                <div class="net-amt-section">
+                                  <div class="net-amt">
+                                    <div class="net-amt-box">
+                                        <span class="net-amt-mat-label">No Of Item:</span>
+                                        <span class="net-amt-value">{{saleSelectedDatasource.data?.length}}</span>
+                                    </div>
+                                    <div class="net-amt-box">
+                                      <div class="net-amt-label">Total GST Amt :</div>
+                                      <div class="net-amt-value">{{ ItemSubform.get('vatAmount')?.value | currency :
+                                        'INR':'symbol':'1.2-2' }}</div>
+                                    </div>
+                                    <div class="final-amt-box">
+                                      <span class="final-amt-label">Net Amt :</span>
+                                      <span class="final-amt-value">{{ItemSubform.get('netAmount')?.value | currency :
+                                        'INR'
+                                        }}</span>
+                                    </div>
+                                  </div>
+                                </div>
+
+                                 <div class="sales-footer-buttons gap-8" fxLayout="row" fxLayoutAlign="end">  
+                                  <button class="btn btn-primary" (click)="onSave($event)">Save(F9)</button>
+                                  <button class="btn btn-danger-outline" (click)="onClose()"
+                                    (keydown.enter)="onF6Reset($event)">Reset</button>
+                                </div> 
+                              </div>  
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </form>
+                  </mat-card-content>
+                </mat-card>
+              </div>
+            </div>
+          </div>
+        </div> 
+      </div>
+    </div> 
+  </div>
 </div>

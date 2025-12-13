@@ -121,6 +121,7 @@ export class ResultEntryComponent implements OnInit {
         // 'outSourceStatus',
         // 'isVerifyid',
         'action1',
+        'action2',
         'CategoryName',
         'TestName',
         'SampleCollectionTime',
@@ -310,9 +311,9 @@ export class ResultEntryComponent implements OnInit {
         let OPIP = row.patientType === 'OP' ? "0" : "1";
         // debugger
 
-        console.log( this.opipType)
-        if(this.opipType=='4')
-            OPIP="4"
+        console.log(this.opipType)
+        if (this.opipType == '4')
+            OPIP = "4"
 
         var m_data = {
             "first": 0,
@@ -761,7 +762,7 @@ export class ResultEntryComponent implements OnInit {
 
         pathologyDelete.push({ pathReportId: this.selectedItem.pathReportId });
 
-      
+
 
         const submitData = {
             pathPrintResultEntry: pathologyDelete
@@ -952,7 +953,7 @@ export class ResultEntryComponent implements OnInit {
                 };
                 console.log(submitData);
                 this._SampleService.PathReportverifyMaster(submitData).subscribe(response => {
-
+                    this.getSampledetailList1(event);
                 });
             }
         });

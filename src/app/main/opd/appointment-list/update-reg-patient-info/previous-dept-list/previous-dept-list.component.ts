@@ -11,8 +11,8 @@ import { fuseAnimations } from '@fuse/animations';
   selector: 'app-previous-dept-list',
   templateUrl: './previous-dept-list.component.html',
   styleUrls: ['./previous-dept-list.component.scss'],
-    encapsulation: ViewEncapsulation.None,
-    animations: fuseAnimations
+  encapsulation: ViewEncapsulation.None,
+  animations: fuseAnimations
 })
 export class PreviousDeptListComponent {
   displayedColumns: string[] = [
@@ -40,7 +40,11 @@ export class PreviousDeptListComponent {
     if (this.data) {
       this.registerObj = this.data.Obj
       console.log(this.registerObj)
-      this.getLastVisitDoctorList(this.registerObj)
+      if (this.registerObj.labPatRegId) {
+        this.getLabDocVisitList(this.registerObj);
+      } else {
+        this.getLastVisitDoctorList(this.registerObj)
+      }
     }
   }
 
@@ -57,13 +61,35 @@ export class PreviousDeptListComponent {
           "opType": "Equals"
         }
       ],
-      "Columns":[],
+      "Columns": [],
       "exportType": "JSON"
     }
     this._opappointmentService.getLastVisitDoctorList(vdata).subscribe(data => {
-    this.dsLastDepartmentname.data = data.data as RegInsert[]
+      this.dsLastDepartmentname.data = data.data as RegInsert[]
     })
   }
+
+  getLabDocVisitList(Obj) {
+    var vdata = {
+      "first": 0,
+      "rows": 20,
+      "sortField": "RegId",
+      "sortOrder": 0,
+      "filters": [
+        {
+          "fieldName": "RegId",
+          "fieldValue": String(Obj.labPatRegId),//"140306",
+          "opType": "Equals"
+        }
+      ],
+      "Columns": [],
+      "exportType": "JSON"
+    }
+    this._opappointmentService.getLabVisitDoctorList(vdata).subscribe(data => {
+      this.dsLastDepartmentname.data = data.data as RegInsert[]
+    })
+  }
+
   getDoctor(contact) {
     console.log(contact)
     this.dialogRef.close(contact)

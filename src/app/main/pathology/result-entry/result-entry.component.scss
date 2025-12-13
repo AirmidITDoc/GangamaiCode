@@ -76,3 +76,31 @@ app-appointment-list {
   }
 
 }
+
+.status-completed {
+    padding: 2px 12px;
+    border-radius: 12px;
+    background-color: #d4edda;
+    color: #155724;
+    font-weight: 500;
+    font-size: 12px;
+}
+
+.status-pending {
+    padding: 2px 12px;
+    border-radius: 12px;
+    background-color: #fff3cd;
+    color: #856404;
+    font-weight: 500;
+    font-size: 12px;
+}
+
+.status-box {
+    padding: 4px 10px;   /* top & bottom */
+}
+.status-wrapper {
+  display: flex;
+  gap: 4px;     
+  align-items: center;
+}
+

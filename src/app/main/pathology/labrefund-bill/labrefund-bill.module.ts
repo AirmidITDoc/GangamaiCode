@@ -1,5 +1,5 @@
-import { CommonModule, DatePipe } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { CommonModule, DatePipe } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatBadgeModule } from '@angular/material/badge';
@@ -34,84 +34,71 @@ import { FuseConfirmDialogModule, FuseSidebarModule } from '@fuse/components';
 import { FuseSharedModule } from '@fuse/shared.module';
 import { SharedModule } from 'app/main/shared/shared.module';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
-import { ExpensesComponent } from './expenses.component';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTimepickerModule } from 'mat-timepicker';
 import { MatButtonToggleModule } from "@angular/material/button-toggle";
 import { MatSliderModule } from '@angular/material/slider';
 import { MatTreeModule } from '@angular/material/tree';
-import { NewExpensesComponent } from './new-expenses/new-expenses.component';
-import { ExpensesHeadMasterComponent } from './expenses-head-master/expenses-head-master.component';
-import { NewHeadMasterComponent } from './expenses-head-master/new-head-master/new-head-master.component';
-import { ExpensesCategoryMasterComponent } from './expenses-category-master/expenses-category-master.component';
-import { NewCategoryComponent } from './expenses-category-master/new-category/new-category.component';
+import { LabrefundBillComponent } from './labrefund-bill.component';
 
 const routes: Routes = [
   {
-    path: '',
-    component: ExpensesComponent
+    path: '**',
+    component: LabrefundBillComponent
   },
 ];
 
 @NgModule({
-  declarations: [
-    ExpensesComponent,
-    NewExpensesComponent,
-    ExpensesHeadMasterComponent,
-    NewHeadMasterComponent,
-    ExpensesCategoryMasterComponent,
-    NewCategoryComponent
-  ],
-  imports: [
-    CommonModule,
-    RouterModule.forChild(routes),
-    CommonModule,
-    MatExpansionModule,
-    MatSlideToggleModule,
-    MatListModule,
-    MatButtonModule,
-    MatCheckboxModule,
-    MatDatepickerModule,
-    MatFormFieldModule,
-    MatIconModule,
-    MatInputModule,
-    MatMenuModule,
-    MatRippleModule,
-    MatTableModule,
-    MatToolbarModule,
-    MatPaginatorModule,
-    MatSortModule,
-    MatSelectModule,
-    MatRadioModule,
-    MatTabsModule,
-    MatCardModule,
-    MatDividerModule,
-    MatDialogModule,
-    FuseSharedModule,
-    FuseConfirmDialogModule,
-    FuseSidebarModule,
-    ReactiveFormsModule,
-    MatSnackBarModule,
-    MatStepperModule,
-    MatAutocompleteModule,
-    MatProgressSpinnerModule,
-    SharedModule,
-    NgxMatSelectSearchModule,
-    MatBadgeModule,
-    MatSelectModule,
-    MatSelectModule,
-    MatChipsModule,
-    MatTooltipModule,
-    MatGridListModule,
-    MatSidenavModule,
-    MatTimepickerModule,
-    MatButtonToggleModule,
-    MatSliderModule,
-    MatTreeModule,
-  ],
-  providers: [
-    DatePipe,
-  ]
+  declarations: [LabrefundBillComponent],
+   imports: [
+      CommonModule,
+      RouterModule.forChild(routes),
+      MatExpansionModule,
+      MatSlideToggleModule,
+      MatListModule,
+      MatButtonModule,
+      MatCheckboxModule,
+      MatDatepickerModule,
+      MatFormFieldModule,
+      MatIconModule,
+      MatInputModule,
+      MatMenuModule,
+      MatRippleModule,
+      MatTableModule,
+      MatToolbarModule,
+      MatPaginatorModule,
+      MatSortModule,
+      MatSelectModule,
+      MatRadioModule,
+      MatTabsModule,
+      MatCardModule,
+      MatDividerModule,
+      MatDialogModule,
+      FuseSharedModule,
+      FuseConfirmDialogModule,
+      FuseSidebarModule,
+      ReactiveFormsModule,
+      MatSnackBarModule,
+      MatStepperModule,
+      MatAutocompleteModule,
+      MatProgressSpinnerModule,
+      SharedModule,
+      NgxMatSelectSearchModule,
+      MatBadgeModule,
+      MatSelectModule,
+      MatSelectModule,
+      MatChipsModule,
+      MatGridListModule,
+      MatSidenavModule,
+      MatTimepickerModule,
+      MatTooltipModule,
+      MatButtonToggleModule,
+      MatSliderModule,
+      MatTreeModule,
+    ],
+    providers: [
+      DatePipe,
+    ]
 })
-export class ExpensesModule { }
+export class LabrefundBillModule { }

@@ -17,6 +17,7 @@ import { format } from 'date-fns';
 import { ExpensesComponent } from '../expenses.component';
 import { ExpensesService } from '../expenses.service';
 import { ExpensesHeadMasterComponent } from '../expenses-head-master/expenses-head-master.component';
+import { ExpensesCategoryMasterComponent } from '../expenses-category-master/expenses-category-master.component';
 
 @Component({
   selector: 'app-new-expenses',
@@ -33,7 +34,7 @@ export class NewExpensesComponent {
   vExpType: any = "0";
   vReason: any;
   autocompleteExpensen: string = "ExpHeadMaster"
-  autocompleteExpensenCategory: string = "ExpensesCategory"
+  autocompleteExpensenCategory: string = "MExpensesCategory"
 
   constructor(public _ExpensesService: ExpensesService,
     public _matDialog: MatDialog,
@@ -125,6 +126,17 @@ export class NewExpensesComponent {
 
   addNewheadExpenses() {
     const dialogRef = this._matDialog.open(ExpensesHeadMasterComponent,
+      {
+        maxWidth: "95vw",
+        maxHeight: '90vh',
+        // height: '90%',
+        width: '60%',
+      });
+    dialogRef.afterClosed().subscribe(result => {
+    });
+  }
+    addNewCategoryExpenses() {
+    const dialogRef = this._matDialog.open(ExpensesCategoryMasterComponent,
       {
         maxWidth: "95vw",
         maxHeight: '90vh',
