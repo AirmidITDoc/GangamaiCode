@@ -332,6 +332,10 @@ public RegistredAppointmentBilling(Param: any) {
         return this._httpClient1.PostData("VisitDetail/OPprevDoctorVisitList", param)
     }
 
+     public getLabVisitDoctorList(param) {
+
+        return this._httpClient1.PostData("LabPatientRegistration/PrevLabDoctorVisitList", param)
+    }
 
     public getstateId(Id) {
         return this._httpClient1.GetData("StateMaster/" + Id);

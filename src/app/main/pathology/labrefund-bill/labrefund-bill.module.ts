@@ -40,70 +40,65 @@ import { MatTimepickerModule } from 'mat-timepicker';
 import { MatButtonToggleModule } from "@angular/material/button-toggle";
 import { MatSliderModule } from '@angular/material/slider';
 import { MatTreeModule } from '@angular/material/tree';
-import { LabPatientRegComponent } from './lab-patient-reg.component';
-import { NewLabPatientRegComponent } from './new-lab-patient-reg/new-lab-patient-reg.component';
-import { LabRegBillDeatilsComponent } from './lab-reg-bill-deatils/lab-reg-bill-deatils.component';
-import { EstimateForPatientComponent } from './estimate-for-patient/estimate-for-patient.component';
-import { DiscountAfterFinalLabbillComponent } from './discount-after-final-labbill/discount-after-final-labbill.component';
-import { LabrefundBillComponent } from './labrefund-bill/labrefund-bill.component';
+import { LabrefundBillComponent } from './labrefund-bill.component';
 
 const routes: Routes = [
   {
     path: '**',
-    component: LabPatientRegComponent
+    component: LabrefundBillComponent
   },
 ];
 
 @NgModule({
-  declarations: [LabPatientRegComponent, NewLabPatientRegComponent, LabRegBillDeatilsComponent, EstimateForPatientComponent, DiscountAfterFinalLabbillComponent, LabrefundBillComponent],
-  imports: [
-    CommonModule,
-    RouterModule.forChild(routes),
-    MatExpansionModule,
-    MatSlideToggleModule,
-    MatListModule,
-    MatButtonModule,
-    MatCheckboxModule,
-    MatDatepickerModule,
-    MatFormFieldModule,
-    MatIconModule,
-    MatInputModule,
-    MatMenuModule,
-    MatRippleModule,
-    MatTableModule,
-    MatToolbarModule,
-    MatPaginatorModule,
-    MatSortModule,
-    MatSelectModule,
-    MatRadioModule,
-    MatTabsModule,
-    MatCardModule,
-    MatDividerModule,
-    MatDialogModule,
-    FuseSharedModule,
-    FuseConfirmDialogModule,
-    FuseSidebarModule,
-    ReactiveFormsModule,
-    MatSnackBarModule,
-    MatStepperModule,
-    MatAutocompleteModule,
-    MatProgressSpinnerModule,
-    SharedModule,
-    NgxMatSelectSearchModule,
-    MatBadgeModule,
-    MatSelectModule,
-    MatSelectModule,
-    MatChipsModule,
-    MatGridListModule,
-    MatSidenavModule,
-    MatTimepickerModule,
-    MatTooltipModule,
-    MatButtonToggleModule,
-    MatSliderModule,
-    MatTreeModule,
-  ],
-  providers: [
-    DatePipe,
-  ]
+  declarations: [LabrefundBillComponent],
+   imports: [
+      CommonModule,
+      RouterModule.forChild(routes),
+      MatExpansionModule,
+      MatSlideToggleModule,
+      MatListModule,
+      MatButtonModule,
+      MatCheckboxModule,
+      MatDatepickerModule,
+      MatFormFieldModule,
+      MatIconModule,
+      MatInputModule,
+      MatMenuModule,
+      MatRippleModule,
+      MatTableModule,
+      MatToolbarModule,
+      MatPaginatorModule,
+      MatSortModule,
+      MatSelectModule,
+      MatRadioModule,
+      MatTabsModule,
+      MatCardModule,
+      MatDividerModule,
+      MatDialogModule,
+      FuseSharedModule,
+      FuseConfirmDialogModule,
+      FuseSidebarModule,
+      ReactiveFormsModule,
+      MatSnackBarModule,
+      MatStepperModule,
+      MatAutocompleteModule,
+      MatProgressSpinnerModule,
+      SharedModule,
+      NgxMatSelectSearchModule,
+      MatBadgeModule,
+      MatSelectModule,
+      MatSelectModule,
+      MatChipsModule,
+      MatGridListModule,
+      MatSidenavModule,
+      MatTimepickerModule,
+      MatTooltipModule,
+      MatButtonToggleModule,
+      MatSliderModule,
+      MatTreeModule,
+    ],
+    providers: [
+      DatePipe,
+    ]
 })
-export class LabPatientRegModule { }
+export class LabrefundBillModule { }

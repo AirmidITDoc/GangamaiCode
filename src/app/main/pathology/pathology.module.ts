@@ -18,7 +18,11 @@ const appRoutes: Routes = [
   {
     path: "lab-patientreg",
     loadChildren: () => import("./lab-patient-reg/lab-patient-reg.module").then((m) => m.LabPatientRegModule),
-  }
+  },
+  {
+    path: "labrefund",
+    loadChildren: () => import("./labrefund-bill/labrefund-bill.module").then((m) => m.LabrefundBillModule),
+  },
 ];
 
 @NgModule({

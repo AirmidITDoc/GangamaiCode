@@ -83,36 +83,25 @@
                 <mat-icon>edit</mat-icon>
             </button>
 
-            <mat-icon (click)="billdetail(element)" matTooltip="Bill Detail">
-                remove_red_eye
-            </mat-icon>
+            <button mat-icon-button matTooltip="Bill Detail" (click)="billdetail(element)">
+                <mat-icon> remove_red_eye </mat-icon>
+            </button>
 
             <airmid-fileupload-icon [refId]="element.labPatientId" [refType]="page" [multiple]="true"
                 [title]="element.patientName + ' Document'"></airmid-fileupload-icon>
 
-            <mat-icon matTooltip="Refund">
-                replay
-            </mat-icon>
+            <!-- <button mat-icon-button matTooltip="Refund" (click)="getRefund(element)">
+                <mat-icon> replay </mat-icon>
+            </button> -->
 
-            <mat-icon matTooltip="Final Discount" *ngIf="element.balanceAmt > 0" (click)="getFinalDisc(element)">
-                money
-            </mat-icon>
+            <button mat-icon-button matTooltip="Final Discount" *ngIf="element.balanceAmt > 0"
+                (click)="getFinalDisc(element)">
+                <mat-icon> money </mat-icon>
+            </button>
 
             <button mat-icon-button matTooltip="Print" (click)="viewgetOPBillReportPdf(element)">
                 <mat-icon>print</mat-icon>
             </button>
-
-            <!-- <button mat-icon-button matTooltip="EMail" (click)="Onemail(element)">
-                <mat-icon>email</mat-icon>
-            </button> -->
-
-            <!-- <button *ngIf="true" mat-icon-button matTooltip="Message" (click)="Onmessage(element,m)">
-                <mat-icon>message</mat-icon>
-            </button> -->
-
-            <!-- <button mat-icon-button matTooltip="Send message On WhatsApp" (click)="getWhatsappshareBill(element)">
-                <img width="100" height="20px" src="assets/images/logos/WhatsApp.png">
-            </button> -->
         </div>
     </ng-template>
 

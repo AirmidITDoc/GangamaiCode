@@ -1,0 +1,262 @@
+<div class="modal-page page-layout inner-scroll">
+    <div class="modal-wrapper grid-container">
+        <!-- Modal header -->
+        <div class="modal-header accent">
+            <div class="modal-header-content">
+                <div class="modal-header-title">
+                    <span [@animate]="{ value: '*', params: { delay: '100ms', x: '-25px' } }">LAB REFUND OF BILL</span>
+                </div>
+                <div class="modal-header-right">
+                    <div class="comman-date-container">
+                        <app-common-date [screenFrom]="screenFromString"
+                            (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
+                        <div class="close-icon" >
+                            <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
+                                matTooltip="Close">
+                                <mat-icon>close</mat-icon>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal body -->
+        <div class="modal-body modal-body-light" fusePerfectScrollbar>
+            <div class="modal-body-container">
+                <div fxLayout="column" class="gap-8 h-100-p">
+                    <div class="modal-card-container">
+                        <form [formGroup]="searchFormGroup">
+                            <div class="patient-search">
+                                <div fxLayout="row" fxLayoutAlign="start start" class="gap-8">
+                                    <div fxFlexFill fxLayout="row" fxLayoutGap="4px" fxLayoutAlign="space-between">
+
+                                        <airmid-autocomplete label="Lab-UHID / First Name / Last Name / Mobile No"
+                                            [formGroup]="searchFormGroup" formControlName="RegId"
+                                            placeholderText="Lab-UHID / First Name / Last Name / Mobile No" fxFlex="40%"
+                                            ApiUrl="LabPatientRegistration/search-patient-1?Keyword="
+                                            (selectionChange)="getSelectedObj($event)" ValueField="regId"
+                                            TextField="formattedText"></airmid-autocomplete>
+
+                                        <airmid-dropdown label="CashCounterID" formControlName="CashCounterID"
+                                            fxFlex="30%" [formGroup]="searchFormGroup"
+                                            [validations]="getValidationMessages().CashCounterID"
+                                            [mode]="autocompleteModeCashcounter">
+                                        </airmid-dropdown>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-card-container">
+                        <mat-card fxFlex.gt-sm="100%" fxFlex>
+                            <mat-card-content class="py-4">
+                                <div class="patient-search-container input-error-hidden">
+                                    <div class="patient-info-sales my-8">
+                                        <div class="sales-patient-info-title">
+                                            <span style="font-weight: 700">Patient Information</span>
+                                        </div>
+                                        <hr />
+                                        <div class="sales-patient-info" fxFlexFill fxLayout="row"
+                                            fxLayoutAlign="space-between center" class="patient-info">
+                                            <div class="patient-sub">
+                                                <div class="patient-info-row patient-info-1-111 pt-8" fxLayout="row"
+                                                    fxLayoutGap="200px">
+                                                    <div class="patient-col">
+                                                        <span class="patient-col-key">UHID No</span>
+                                                        <span>:</span>
+                                                        <span class="patient-col-value">{{ registerObj.regNo }}</span>
+                                                    </div>
+                                                    <div class="patient-col">
+                                                        <span class="patient-col-key">Patient Name</span>
+                                                        <span>:</span>
+                                                        <span class="patient-col-value">{{ registerObj.firstName }} {{
+                                                            registerObj.lastName
+                                                            }}</span>
+                                                    </div>
+                                                    <div class="patient-col">
+                                                        <span class="patient-col-key">Age | Gender</span>
+                                                        <span>:</span>
+                                                        <span class="patient-col-value">{{ registerObj.ageYear }}Y | {{
+                                                            registerObj.genderId
+                                                            }}</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </mat-card-content>
+                        </mat-card>
+                    </div>
+
+                    <div class="modal-card-container airmid-table-container overflow-auto" fxFlex>
+                        <airmid-table [gridConfig]="gridConfig" #grid class="content" :ShowButtons="false"
+                            [ShowFilter]="false" (onSelectRow)="onEdit($event)">
+                        </airmid-table>
+                    </div>
+                    <div class="modal-card-container airmid-table-container overflow-auto" fxFlex>
+
+                        <mat-table matSort [dataSource]="dataSource2" [@animateStagger]="{ value: '50' }"
+                            class="airmid-table">
+                            <ng-container matColumnDef="serviceName">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header>ServiceName</mat-header-cell>
+                                <mat-cell *matCellDef="let element">
+                                    <span>{{ element.serviceName }}</span>
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="price">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header>Price</mat-header-cell>
+                                <mat-cell *matCellDef="let element">
+                                    <span>{{ element.price }}</span>
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="qty">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header>Qty</mat-header-cell>
+                                <mat-cell *matCellDef="let element">
+                                    <span>{{ element.qty }}</span>
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="totalAmt">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header>TotalAmt</mat-header-cell>
+                                <mat-cell *matCellDef="let element">
+                                    <span>{{ element.totalAmt | currency : 'INR' }}</span>
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="ServiceWiseDisc">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Disc
+                                    Amt</mat-header-cell>
+                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                    <span>{{ element.serviceWiseDisc || '0' }}</span>
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="netAmount">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header>NetAmount</mat-header-cell>
+                                <mat-cell *matCellDef="let element">
+                                    <span>{{ element.netAmount | currency : 'INR' }}</span>
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="discnetAmount">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header>NetAmt(AfterDisc)</mat-header-cell>
+                                <mat-cell *matCellDef="let element">
+                                    <span>{{ element.netAmount - element.serviceWiseDisc | currency : 'INR' }}</span>
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="chargesDocName">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header>ChargesDocName</mat-header-cell>
+                                <mat-cell *matCellDef="let element">
+                                    <span>{{ element.chargesDocName || '-' }}</span>
+                                </mat-cell>
+                            </ng-container>
+
+                            <!-- (keyup)="gettablecalculation(element, element.RefundAmt)"  -->
+                            <ng-container matColumnDef="refAmount">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header
+                                    fxShow.gt-sm>RefundAmt</mat-header-cell>
+                                <mat-cell *matCellDef="let element" fxShow.gt-sm>
+                                    <mat-form-field appearance="fill">
+                                        <!-- <mat-form-field appearance="legacy"> -->
+                                        <input matInput [(ngModel)]="element.RefundAmt" type="text" OnlyNumber
+                                            (keyup)="onPriceOrQtyChange(element,element.RefundAmt)"
+                                            (keypress)="keyPressCharater($event)" />
+                                    </mat-form-field>
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="balanceAmount">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Bal
+                                    Amount</mat-header-cell>
+                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                    <span>{{ element.balanceAmount }}</span>
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="refundAmount">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Prev.Ref
+                                    Amt</mat-header-cell>
+                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                    <span>{{ element.refundAmount | currency : 'INR' }}</span>
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="loading">
+                                <mat-footer-cell *matFooterCellDef colspan="6">loading data...</mat-footer-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="noData">
+                                <mat-footer-cell *matFooterCellDef colspan="6">
+                                    <mat-spinner *ngIf="isLoadingStr == 'loading'" [diameter]="30"></mat-spinner>
+                                    <span *ngIf="isLoadingStr == 'no-data'">No data found...</span>
+                                </mat-footer-cell>
+                            </ng-container>
+
+                            <mat-header-row class="accent min-width-1100"
+                                *matHeaderRowDef="displayedColumns1; sticky: true"></mat-header-row>
+                            <mat-row *matRowDef="let row; columns: displayedColumns1" class="element min-width-1100"
+                                [@animate]="{ value: '*', params: { y: '100%' } }"></mat-row>
+                            <mat-footer-row *matFooterRowDef="['loading']"
+                                [ngClass]="{ hide: dataSource2 != null }"></mat-footer-row>
+                            <mat-footer-row *matFooterRowDef="['noData']"
+                                [ngClass]="{ hide: !(dataSource2 != null && dataSource2.data.length == 0) }"></mat-footer-row>
+                        </mat-table>
+
+                    </div>
+                    <!-- <div class="modal-card-container">
+            <div class="net-amt-section mt-8">
+              <div class="net-amt">
+                <div class="net-amt-box">
+                  <span class="net-amt-label">Total of Items :</span>
+                  <span class="net-amt-value">{{getServicetotSum(dataSource2.data) | currency : 'INR' }}</span>
+                </div>
+              </div>
+            </div>
+          </div> -->
+                </div>
+            </div>
+        </div>
+
+        <div class="modal-footer">
+            <form [formGroup]="RefundOfBillFormFooter">
+                <mat-card>
+                    <mat-card-content>
+                        <div class="net-amt-form input-error-hidden">
+                            <div fxLayout="row" class="gap-8" fxLayoutAlign="space-between center">
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Total Refund Amount</mat-label>
+                                    <input matInput readonly formControlName="TotalRefundAmount"
+                                        name="TotalRefundAmount" required />
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Refund Bal Amount</mat-label>
+                                    <input matInput formControlName="RefundBalAmount" name="RefundBalAmount" readonly />
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" fxFlex>
+                                    <mat-label>Remark</mat-label>
+                                    <input matInput formControlName="Remark" name="Remark" />
+                                </mat-form-field>
+                                <!-- [disabled]="!TotalRefundAmount || dataSource2.data.length==0" -->
+                                <div class="footer-navigation-container">
+                                    <div class="modal-footer-buttons">
+                                        <button type="button" class="btn btn-danger-outline"
+                                            (click)="cleardata()">Close</button>
+                                        <button type="button" class="btn btn-primary" (click)="onSave()">Save</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </mat-card-content>
+                </mat-card>
+            </form>
+        </div>
+    </div>
+</div>

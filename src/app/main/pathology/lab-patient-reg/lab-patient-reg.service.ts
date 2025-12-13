@@ -100,6 +100,12 @@ export class LabPatientRegService {
     return this._httpClient.GetData("Dropdown/GetBindDropDown?mode=" + mode + "&Id=" + Id);
   }
   public LabBillDiscountAfter(employee) {
-    // return this._httpClient.PostData("IPBill/BillDiscountAfter", employee);
+    return this._httpClient.PostData("IPBill/BillDiscountAfter", employee);
+  }
+  public InsertOPRefundBilling(Param) {
+    return this._httpClient.PostData("RefundOfBill/InsertOPRefundOfBill", Param);
+  }
+  public getRefundofBillServiceList(employee) {
+    return this._httpClient.PostData("RefundOfBill/OPBillservicedetailList", employee);
   }
 }

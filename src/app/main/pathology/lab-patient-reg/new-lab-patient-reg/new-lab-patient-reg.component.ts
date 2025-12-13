@@ -23,6 +23,7 @@ import { ConfigService } from 'app/core/services/config.service';
 import { ItemNameList } from 'app/main/purchase/purchase-order/purchase-order.component';
 import { HospitalConfigService } from 'app/core/services/hospital-config.service';
 import { debounce } from 'lodash';
+import { PreviousDeptListComponent } from 'app/main/opd/appointment-list/update-reg-patient-info/previous-dept-list/previous-dept-list.component';
 
 @Component({
   selector: 'app-new-lab-patient-reg',
@@ -38,15 +39,15 @@ export class NewLabPatientRegComponent {
   chargeForm: FormGroup
   OpBillForm: FormGroup
   OPFooterForm: FormGroup
+  TPaymentForm: FormGroup
 
   screenFromString = 'Common-Form';
   registerObj = new LabPatientList({});
-  RegId = 0;
+  companyDet = new LabPatientList({});
   CityName = ""
   vRegNo: any;
   vTariffId: any = 1;
   vClassId: any = 1;
-  vRegId: any;
 
   isServiceIdSelected: boolean = false;
   isDoctor: boolean = false;
@@ -56,6 +57,13 @@ export class NewLabPatientRegComponent {
   autocompleteModecountry: string = "Country";
   autocompleteModeDepartment: string = "Department";
   autocompleteModerefdoc: string = "RefDoctor";
+  autocompleteModeunit: string = "Hospital";
+  autocompleteModeClass: string = "Class";
+  autocompleteModetariff: string = "Tariff";
+  autocompleteModecompany: string = "Company";
+  autocompleteModesubcompany: string = "SubCompany";
+  autocompleteModecamp: string = "CampMaster";
+
   dsLabRequest2 = new MatTableDataSource<LabRequest>();
   // dstable1 = new MatTableDataSource<LabRequest>();
   filteredOptions: any[] = [];
@@ -91,6 +99,9 @@ export class NewLabPatientRegComponent {
   IsPathology: any;
   IsRadiology: any;
   vIsPackage: any;
+  isCompanySelected: boolean = false;
+  patienttype = 0
+  mode: any;
 
   public chargeList: ChargesList[] = [];
 
@@ -134,6 +145,22 @@ export class NewLabPatientRegComponent {
     //  this.chargeForm = this.createChargeForm();
     this.OpBillForm = this.createTotalChargeForm();
     this.OPFooterForm = this.CreateOPFooter();
+    this.TPaymentForm = this.CreateTPayment();
+
+    this.mode = this.data?.mode || 'add';
+
+    if (this.data?.row?.labPatientId) {
+      this._labPatientRegService.getLabRegistraionById(this.data?.row?.labPatientId).subscribe((response) => {
+        this.registerObj = response;
+        this.VlabPatRegId = this.registerObj.labPatRegId
+        console.log("retrive Data:", this.registerObj)
+        this._labPatientRegService.getLabRegistraionMasterById(this.VlabPatRegId).subscribe((response) => {
+          this.registerObj = response;
+          console.log("Master Data:", this.registerObj)
+          this.myForm.patchValue(this.registerObj)
+        });
+      });
+    }
     this.getServiceList();
     console.log(this.hospitalconfigservice.HospitalconfigParams)
     console.log(this._ConfigService.configParams)
@@ -143,12 +170,14 @@ export class NewLabPatientRegComponent {
     {
       return this._formbuilder.group({
         labPatientRegistration: '',
-        opBillIngModels: ''
+        opBillIngModels: '',
+        tPayments: ''
       })
     }
   }
 
   CreateMyForm() {
+    const maxLen = this.Is9_Digit_National_Id ? 9 : 12;
     return this._formbuilder.group({
       labPatientId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       regDate: [new Date()],
@@ -185,7 +214,46 @@ export class NewLabPatientRegComponent {
       paymentType: ['CashPay'],
       patientName: [''],
       createdBy: this.accountService.currentUserValue.userId,
-      LabPatRegId: 0
+      LabPatRegId: 0,
+      companyId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      subCompanyId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      campId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      adharCardNo: [0, [
+        Validators.minLength(12),  //     Validators.minLength(12),
+        Validators.maxLength(12), //     Validators.maxLength(12),
+        Validators.pattern("^[0-9]*$"),
+        this._FormvalidationserviceService.onlyNumberValidator()
+      ]],
+    })
+  }
+
+  // only passed for cash & credit pay demo
+  CreateTPayment() {
+    return this._formbuilder.group({
+      paymentId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      unitId: [this.accountService.currentUserValue.user.unitId],
+      billNo: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      opdipdtype: [4],
+      paymentDate: [new Date().toISOString().substring(0, 10)],   // yyyy-mm-dd
+      paymentTime: [new Date().toTimeString().substring(0, 5)],
+      payAmount: [0],
+      tranNo: ['0'],
+      bankName: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+      validationDate: ['1999-01-01'],
+      advanceUsedAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      comments: [''],
+      payMode: [''],
+      onlineTranNo: [''],
+      onlineTranResponse: [''],
+      companyId: 0,
+      advanceId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      refundId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      cashCounterId: [0],
+      transactionType: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      isSelfOrcompany: [0],
+      tranMode: [''],
+      createdBy: [this.accountService.currentUserValue.user.userId],
+      transactionLabel: [''],
     })
   }
 
@@ -358,66 +426,47 @@ export class NewLabPatientRegComponent {
     this.dateTimeObj = dateTimeObj;
   }
 
-  // getSelectedObjextPatient(event: any): void {
-  //   console.log("Patient Data:", event);
-  //   this.registerObj = event
-  //   if (event) {
-  //     const fullName = event.patientName?.trim() || '';
-  //     this.PatientName = event.patientName?.trim() || ''
+  onChangePatient(value) {
+    var mode = "Company"
+    if (value.text != "Self") {
+      this._labPatientRegService.getMaster(mode, 1);
+      this.myForm.get('companyId').setValidators([Validators.required]);
+      this.isCompanySelected = true;
+      this.patienttype = 2;
+    } else if (value.text == "Self") {
+      this.isCompanySelected = false;
+      this.myForm.get('companyId').clearValidators();
+      this.myForm.get('subCompanyId').clearValidators();
+      this.myForm.get('companyId').updateValueAndValidity();
+      this.myForm.get('subCompanyId').updateValueAndValidity();
+      this.patienttype = 1;
+    }
+  }
 
-  //     const nameParts = fullName.split(' ');
-  //     const firstName = nameParts[0] || '';
-  //     // this.myForm.get('patientName').setValue(firstName)
-  //     const middleName = nameParts[1] || '';
-  //     const lastName = nameParts[1] || '';
-  //     this.myForm.patchValue({
-  //       // firstName: firstName,
-  //       middleName: middleName,
-  //       lastName: lastName,
-  //       mobileNo: event.extMobileNo ?? '',
-  //     });
+  onChangeCompany(value) {
+    this.companyId = value.value
+    this._labPatientRegService.getCompanyById(value.value).subscribe((response) => {
+      this.companyDet = response;
+      this.myForm.get('tariffId').setValue(this.companyDet.traiffId);
+    });
+  }
 
-  //     this.selectedPatient = event;
-  //   }
-  //   const extAddressNameElement = document.querySelector(`[name='middleName']`) as HTMLElement;
-  //   if (extAddressNameElement) {
-  //     extAddressNameElement.focus();
-  //   }
-
-  //   this.data.labPatientId = 117
-  //   if ((this.data?.labPatientId ?? 0) > 0) {
-  //     setTimeout(() => {
-
-  //       this._labPatientRegService.getLabRegistraionById(this.data.labPatientId).subscribe((response) => {
-  //         this.registerObj = response;
-  //         console.log(this.registerObj)
-  //         // this.regNo = this.registerObj.regNo
-  //         // this.personalFormGroup.get("RegId").setValue(this.registerObj.regId)
-  //         // this.value=this.registerObj.dateofBirth
-  //         this.onChangeDateofBirth(this.registerObj.dateofBirth)
-  //       });
-  //     }, 500);
-  //   }
-
-  // }
   regflag = false
+  VlabPatRegId: any;
   getSelectedObj(obj) {
     console.log(obj)
-
-    this.PatientName = obj.patientName;
-    // this.PatientName = obj.firstName + ' ' + obj.lastName;
-    this.RegId = obj.value;
-    if (this.RegId) {
-
+    // this.PatientName = obj.patientName;
+    this.PatientName = obj.firstName + ' ' + obj.lastName;
+    this.VlabPatRegId = obj.visitId;
+    if (this.VlabPatRegId) {
       setTimeout(() => {
-
-        this._labPatientRegService.getLabRegistraionById(this.RegId).subscribe((response) => {
+        this._labPatientRegService.getLabRegistraionMasterById(this.VlabPatRegId).subscribe((response) => {
           console.log(response)
-
           this.registerObj = response;
           this.value = response.dateofBirth
           this.vRegNo = response.regno
           this.onChangeDateofBirth(response.dateofBirth)
+          this.getLastDepartmetnNameList(this.registerObj)
           this.regflag = true
           this.myForm.patchValue({
             firstName: this.registerObj.firstName.trim(),
@@ -426,17 +475,31 @@ export class NewLabPatientRegComponent {
             MobileNo: this.registerObj.mobileNo.trim(),
             address: this.registerObj.address.trim(),
             // DateOfBirth:this.registerObj.dateofBirth,
-
           });
-          this.selectChangedepartment(this.registerObj)
-          console.log(this.registerObj)
+          // this.selectChangedepartment(this.registerObj)
         });
-
-        console.log(this.registerObj)
-
       }, 100);
     }
+  }
 
+  PrevregisterObj: any;
+  getLastDepartmetnNameList(row) {
+    const dialogRef = this._matDialog.open(PreviousDeptListComponent,
+      {
+        maxWidth: "45vw",
+        height: '45%',
+        width: '100%',
+        data: {
+          Obj: row,
+        }
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed - Insert Action', result);
+      this.PrevregisterObj = result
+      this.myForm.get("departmentId").setValue(this.PrevregisterObj.departmentId)
+      this.selectChangedepartment(this.PrevregisterObj)
+      console.log(this.PrevregisterObj)
+    });
   }
 
   value = new Date()
@@ -535,7 +598,6 @@ export class NewLabPatientRegComponent {
       return;
     }
   }
-
 
   updateCalculation() {
 
@@ -662,13 +724,13 @@ export class NewLabPatientRegComponent {
   }
   departmentId = 0
   selectChangedepartment(obj: any) {
-    console.log(obj)
+    // console.log(obj)
     this.departmentId = obj.value
     this.departmentname = obj.text
 
     if (obj.value) {
       this._labPatientRegService.getDoctorsByDepartment(obj.value).subscribe((data: any) => {
-        console.log(data)
+        // console.log(data)
         this.ddlDoctor.options = data;
         this.ddlDoctor.bindGridAutoComplete();
       });
@@ -677,7 +739,7 @@ export class NewLabPatientRegComponent {
       this._labPatientRegService.getDoctorsByDepartment(obj.departmentId).subscribe((data: any) => {
         // 
         this.ddlDoctor.options = data;
-        const incomingDoctorId = obj.doctorId;
+        const incomingDoctorId = obj.doctorId ?? obj.consultantDocId;
         console.log("Id:", incomingDoctorId)
         setTimeout(() => {
           this.ddlDoctor.bindGridAutoComplete();
@@ -723,72 +785,96 @@ export class NewLabPatientRegComponent {
 
   BillSave() {
 
-    Swal.fire({
-      title: 'Confirm Save',
-      text: 'Are you sure you want to save this Lab Bill?',
-      icon: 'warning', // or 'question'
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6', // Blue
-      cancelButtonColor: '#d33',     // Red
-      confirmButtonText: 'Yes, save it!',
-      cancelButtonText: 'No, cancel'
-    }).then((result) => {
-      if (result.isConfirmed) {
-        console.log(this.myForm.value)
-
-debugger
-        let priceflag = this.dstable1.data.filter(row => row.Price == 0);
-
-        if (priceflag.length) {
-          this.toastr.warning('Please Enter Price For Service', 'Warning !', {
-            toastClass: 'tostr-tost custom-toast-warning',
+    if (this.mode === 'edit') {
+      Swal.fire({
+        title: 'Confirm Save',
+        text: 'Are you sure you want to update registration?',
+        icon: 'warning', // or 'question'
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6', // Blue
+        cancelButtonColor: '#d33',     // Red
+        confirmButtonText: 'Yes, save it!',
+        cancelButtonText: 'No, cancel'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          // update registration api call here
+          this.myForm.get('LabPatRegId').setValue(this.VlabPatRegId);
+          const formValue = { ...this.myForm.value };
+          const controlsToRemove = ['patientName', 'regId', 'IsPathRad', 'ServiceId', 'totalAmt', 'totalDiscountPer', 'discountAmt', 'netPayableAmt',
+            'paymentType'];
+          controlsToRemove.forEach(key => delete formValue[key]);
+          console.log(formValue)
+          this._labPatientRegService.labPatientSave(formValue).subscribe((response) => {
+            this._matDialog.closeAll();
           });
+          console.log("Api pending")
           return;
-
         }
-        debugger
-        this.myForm.get('firstName').setValue(this.myForm.get('firstName').value)
+      });
+    } else {
+      Swal.fire({
+        title: 'Confirm Save',
+        text: 'Are you sure you want to save this Lab Bill?',
+        icon: 'warning', // or 'question'
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6', // Blue
+        cancelButtonColor: '#d33',     // Red
+        confirmButtonText: 'Yes, save it!',
+        cancelButtonText: 'No, cancel'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          console.log(this.myForm.value)
+          let priceflag = this.dstable1.data.filter(row => row.Price == 0);
 
-        if (!this.myForm.invalid)
-          this.OnSave();
-        else {
-          let invalidFields = [];
-          if (this.myForm.invalid) {
-            for (const controlName in this.myForm.controls) {
-              const control = this.myForm.get(controlName);
+          if (priceflag.length) {
+            this.toastr.warning('Please Enter Price For Service', 'Warning !', {
+              toastClass: 'tostr-tost custom-toast-warning',
+            });
+            return;
+          }
+          // debugger
+          this.myForm.get('firstName').setValue(this.myForm.get('firstName').value)
+          if (!this.myForm.invalid)
+            this.OnSave();
+            
+          else {
+            let invalidFields = [];
+            if (this.myForm.invalid) {
+              for (const controlName in this.myForm.controls) {
+                const control = this.myForm.get(controlName);
 
-              if (control instanceof FormGroup || control instanceof FormArray) {
-                for (const nestedKey in control.controls) {
-                  if (control.get(nestedKey)?.invalid) {
-                    invalidFields.push(`Lab Register Bill Data : ${controlName}.${nestedKey}`);
+                if (control instanceof FormGroup || control instanceof FormArray) {
+                  for (const nestedKey in control.controls) {
+                    if (control.get(nestedKey)?.invalid) {
+                      invalidFields.push(`Lab Register Bill Data : ${controlName}.${nestedKey}`);
+                    }
                   }
+                } else if (control?.invalid) {
+                  invalidFields.push(`Lab Register Bill From: ${controlName}`);
                 }
-              } else if (control?.invalid) {
-                invalidFields.push(`Lab Register Bill From: ${controlName}`);
               }
             }
-          }
-          if (invalidFields.length > 0) {
-            invalidFields.forEach(field => {
-              this.toastr.warning(`Please Check this field "${field}" is invalid.`, 'Warning',
-              );
-            });
-            return
+            if (invalidFields.length > 0) {
+              invalidFields.forEach(field => {
+                this.toastr.warning(`Please Check this field "${field}" is invalid.`, 'Warning',
+                );
+              });
+              return
+            }
           }
         }
-
-      }
-    });
+      });
+    }
   }
+
   OnSave() {
-
-
     const formattedDate = this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd");
     const formattedTime = formattedDate + this.dateTimeObj.time;
 
     this.myForm.get('regDate').setValue(formattedDate);
     this.myForm.get('regTime').setValue(formattedTime);
-
+    this.myForm.get('LabPatRegId').setValue(this.VlabPatRegId ?? 0);
+    this.myForm.get('adharCardNo').setValue(Number(this.myForm.get('adharCardNo').value) ?? 0);
 
     console.log(this.myForm.getRawValue())
     let DateOfBirth1 = this.myForm.get('DateOfBirth')?.value;
@@ -831,7 +917,8 @@ debugger
     }
     debugger
     const formValue = { ...this.myForm.value };
-    const controlsToRemove = ['patientName', 'regId', 'IsPathRad', 'ServiceId', 'totalAmt', 'totalDiscountPer', 'discountAmt', 'netPayableAmt', 'paymentType'];
+    const controlsToRemove = ['patientName', 'regId', 'IsPathRad', 'ServiceId', 'totalAmt', 'totalDiscountPer', 'discountAmt', 'netPayableAmt',
+      'paymentType'];
     controlsToRemove.forEach(key => delete formValue[key]);
     console.log(formValue)
 
@@ -862,10 +949,9 @@ debugger
     this.OpBillForm.get('concessionReasonId')?.setValue(this.ConcessionId)
     this.OpBillForm.get('discComments')?.setValue(this.ConcessionReason)
 
-
     // this.OpBillForm.get('cashCounterId')?.setValue(this.searchForm.get('CashCounterID')?.value)
     console.log("form values", this.OpBillForm.value)
-    debugger
+    // debugger
     console.log("form values", this.LabBillfinalform.value)
     if (this.OpBillForm.invalid) {
 
@@ -890,7 +976,10 @@ debugger
         PatientHeaderObj['CompanyName'] = this.companyName;
         PatientHeaderObj['DepartmentName'] = this.departmentname;
         PatientHeaderObj['OPD_IPD_Id'] = this.vOPIPId;
+        PatientHeaderObj['CompanyId'] = this.companyId || 0;
+        PatientHeaderObj['CashCounterId'] = this.OpBillForm.get('cashCounterId')?.value || 0;
         PatientHeaderObj['Age'] = this.ageYear;
+        PatientHeaderObj['TransactionLabel'] = 'OP_BILL';
         PatientHeaderObj['NetPayAmount'] = Math.round(this.myForm.get('netPayableAmt').value);
         const dialogRef = this._matDialog.open(OpPaymentComponent,
           {
@@ -911,9 +1000,9 @@ debugger
             this.OpBillForm.get('balanceAmt').setValue(result.BillBalanceAmount || 0)
             this.OpBillForm.get('payments').setValue(result.submitDataPay.ipPaymentInsert)
 
-
             this.LabBillfinalform.get('labPatientRegistration').setValue(formValue)
             this.LabBillfinalform.get('opBillIngModels').setValue(this.OpBillForm.value)
+            this.LabBillfinalform.get('tPayments').setValue(result.submitDataPay.ipModePaymentInsert)
             console.log(this.LabBillfinalform.value)
             this._labPatientRegService.InsertLabRegBilling(this.LabBillfinalform.value).subscribe(response => {
               this.viewgetOPBillReportPdf(response)
@@ -933,13 +1022,13 @@ debugger
         console.log(this.OpBillForm.value)
         this.LabBillfinalform.get('labPatientRegistration').setValue(formValue)
         this.LabBillfinalform.get('opBillIngModels').setValue(this.OpBillForm.value)
+        this.LabBillfinalform.get('tPayments').setValue([this.TPaymentForm.value])
 
         console.log(this.LabBillfinalform.value)
 
-
         this._labPatientRegService.InsertLabRegBilling(this.LabBillfinalform.value).subscribe(response => {
           console.log(response)
-          debugger
+          // debugger
           this.viewgetOPBillReportPdf(response)
           this._matDialog.closeAll();
           this.savebtn = true
@@ -953,10 +1042,9 @@ debugger
 
         this.LabBillfinalform.get('labPatientRegistration').setValue(formValue)
         this.LabBillfinalform.get('opBillIngModels').setValue(this.OpBillForm.value)
-
+        this.LabBillfinalform.get('tPayments').setValue([this.TPaymentForm.value])
 
         console.log(this.LabBillfinalform.value)
-
 
         this._labPatientRegService.InsertlabregCredit(this.LabBillfinalform.value).subscribe(response => {
           // this.viewgetOPBillReportPdf(response)
@@ -1000,14 +1088,14 @@ debugger
   filterResults(results: any[], fields: { firstName: string, lastName: string, mobileNo: string }) {
     const { firstName, lastName, mobileNo } = fields;
     return results.filter(item => {
-      return (!firstName || item.patientName?.toLowerCase().includes(firstName.toLowerCase()))
-        && (!lastName || item.patientName?.toLowerCase().includes(lastName.toLowerCase()))
+      return (!firstName || item.firstName?.toLowerCase().includes(firstName.toLowerCase()))
+        && (!lastName || item.lastName?.toLowerCase().includes(lastName.toLowerCase()))
         && (!mobileNo || item.mobileNo?.startsWith(mobileNo));
     });
   }
   handleInputChange(changedField: string): void {
     // Get all current field values
-    debugger
+    // debugger
     const firstName = this.myForm.get('firstName').value?.trim() || '';
     const lastName = this.myForm.get('lastName').value?.trim() || '';
     const mobileNo = this.myForm.get('mobileNo').value?.trim() || '';
@@ -1024,9 +1112,9 @@ debugger
     // If only one field is filled, and it's FirstName or MobileNo, call API
     if (filledFields === 1 && (changedField === 'firstName' || changedField === 'mobileNo')) {
       const keyword = firstName || mobileNo;
-      this._labPatientRegService.getlabSuggestions("LabPatientRegistration/Labauto-complete?Keyword=", keyword).subscribe(results => {
+      this._labPatientRegService.getlabSuggestions("LabPatientRegistration/search-patient-1?Keyword=", keyword).subscribe(results => {
         this.prevResults = results || [];
-        console.log(results)
+        // console.log(results)
         this.filteredOptions = this.filterResults(this.prevResults, { firstName, lastName, mobileNo });
       });
       return;
@@ -1045,7 +1133,7 @@ debugger
       // Fallback: if prevResults is empty, call API with the changed field (if allowed)
       const keyword = this.myForm.get(changedField).value?.trim();
       if (keyword) {
-        this._labPatientRegService.getlabSuggestions("LabPatientRegistration/Labauto-complete?Keyword=", keyword).subscribe(results => {
+        this._labPatientRegService.getlabSuggestions("LabPatientRegistration/search-patient-1?Keyword=", keyword).subscribe(results => {
           this.prevResults = results || [];
           this.filteredOptions = this.filterResults(this.prevResults, { firstName, lastName, mobileNo });
         });
@@ -1136,13 +1224,7 @@ debugger
         { name: "maxLength", Message: "More than 10 digits not allowed." }
 
       ],
-      // aadharCardNo: [
-      //     { name: "pattern", Message: "Only numbers allowed" },
-      //     { name: "required", Message: "AadharCard No is required" },
-      //     { name: "minLength", Message: "12 digit required." },
-      //     { name: "maxLength", Message: "More than 12 digits not allowed." }
-      // ],
-      aadharCardNo: [
+      adharCardNo: [
         { name: "pattern", Message: "Only numbers allowed" },
         { name: "required", Message: "Aadhaar / National ID is required" },
         { name: "minLength", Message: `${maxLen} digits required.` },
@@ -1169,10 +1251,10 @@ debugger
       PurposeId: [
         { name: "required", Message: "Purpose Name is required" }
       ],
-      CompanyId: [
+      companyId: [
         { name: "required", Message: "Company Name is required" }
       ],
-      SubCompanyId: [
+      subCompanyId: [
         { name: "required", Message: "SubCompany Name is required" }
       ],
       emgDrivingLicenceNo: [

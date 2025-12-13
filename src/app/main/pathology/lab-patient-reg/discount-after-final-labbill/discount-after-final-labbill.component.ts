@@ -52,17 +52,17 @@ export class DiscountAfterFinalLabbillComponent {
       // this.selectedAdvanceObj = this.data.Obj
       this.PatientObj = this.data.Obj
       console.log(this.PatientObj)
-      this.vDiscAmount = Math.round(this.PatientObj.discAmount);
+      this.vDiscAmount = Math.round(this.PatientObj.concessionAmt);
       this.vTotalAmount = Math.round(this.PatientObj.totalAmt);
       this.vFinalNetAmt = Math.round(this.PatientObj.netPayableAmt)
       this.vNetamount = Math.round(this.PatientObj.netPayableAmt)
-      this.vFinalDiscAmt = Math.round(this.PatientObj.discAmount);
+      this.vFinalDiscAmt = Math.round(this.PatientObj.concessionAmt);
       this.CompanyName = this.PatientObj.companyName || '';
     }
     this.MyFrom = this.CreateMyForm();
     this.saveform = this.CreatesaveMyForm();
   }
-  
+
   CreateMyForm(): FormGroup {
     return this.formBuilder.group({
       NetAmount: [''],
@@ -219,12 +219,12 @@ export class DiscountAfterFinalLabbillComponent {
 
     if (this.saveform.valid) {
       console.log(this.saveform.value)
-      // this._labPatientRegService.LabBillDiscountAfter(this.saveform.value).subscribe(response => {
-      //   if (response) {
-      //     this._matDialog.closeAll();
-      //     this.onClose();
-      //   }
-      // },);
+      this._labPatientRegService.LabBillDiscountAfter(this.saveform.value).subscribe(response => {
+        if (response) {
+          this._matDialog.closeAll();
+          this.onClose();
+        }
+      },);
     } else {
       let invalidFields = [];
       if (this.saveform.invalid) {
