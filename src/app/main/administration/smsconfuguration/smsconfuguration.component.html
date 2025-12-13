@@ -3,7 +3,7 @@
 
     <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start">
 
-        <mat-tab label="Sms Status Detail List">
+        <!-- <mat-tab label="Sms Status Detail List">
 
             <div fusePerfectScrollbar
                 class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
@@ -48,7 +48,7 @@
                 </div>
             </div>
 
-        </mat-tab>
+        </mat-tab> -->
 
         <mat-tab label="WhatsApp Send List">
 
@@ -96,40 +96,24 @@
                 <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
 
 
-                    <ng-template #actionisSendMail let-element>
+                    <!-- <ng-template #actionisSendMail let-element>
                         <div fxLayout="row" fxLayoutAlign="center center">
 
                             <mat-icon *ngIf="element.isSendMail==1" (click)="openResend(element)"
                                 matTooltip="Resend EMail">
                                 <img width="30px" height="30px" src="assets/images/logos/resend.png">
                             </mat-icon>
-
-                            <!-- <mat-icon title="Email ReSend" *ngIf="element.isSendMail==0" (click)="openResend(element)" matTooltip="Resend EMail">redo</mat-icon> -->
-
                         </div>
-                    </ng-template>
+                    </ng-template> -->
 
                     <airmid-table [gridConfig]="gridConfig2" class="content" #grid2>
                         <ng-container filters>
                             <form [formGroup]="emailfilterForm">
                                 <airmid-datepicker [formGroup]="emailfilterForm" [isRangePicker]="true"
                                     formStartControlName="fromDate" formEndControlName="enddate"
-                                    [(fromValue)]="gridConfig2.filters[1].fieldValue"
-                                    [(toValue)]="gridConfig2.filters[2].fieldValue">
+                                    [(fromValue)]="gridConfig2.filters[0].fieldValue"
+                                    [(toValue)]="gridConfig2.filters[1].fieldValue">
                                 </airmid-datepicker>
-
-                                <mat-form-field appearance="outline">
-                                    <mat-label>NotificationType</mat-label>
-                                    <input matInput placeholder="Search NotificationType" autocomplete="off"
-                                        [formGroup]="emailfilterForm" formControlName="NotificationType"
-                                        (input)="onChangeemail()" />
-                                    <button matSuffix mat-icon-button aria-label="Clear"
-                                        (click)=" Clearfilteremail('NotificationType')">
-                                        <mat-icon>close</mat-icon>
-                                    </button>
-                                </mat-form-field>
-
-
                             </form>
                         </ng-container>
                     </airmid-table>

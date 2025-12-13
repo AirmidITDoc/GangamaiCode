@@ -37,7 +37,6 @@ export class SMSConfugurationService {
     return this._formbuilder.group({
       fromDate: [new Date().toISOString()],
       enddate: [new Date().toISOString()],
-      NotificationType:''
     });
    }
 

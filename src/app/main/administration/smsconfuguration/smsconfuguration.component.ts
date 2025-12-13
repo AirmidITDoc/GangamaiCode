@@ -48,7 +48,7 @@ export class SMSConfugurationComponent implements OnInit {
 
 
   ngAfterViewInit() {
-     this.gridConfig.columnsList.find(col => col.key === 'isSent')!.template = this.actionisSent;
+    //  this.gridConfig.columnsList.find(col => col.key === 'isSent')!.template = this.actionisSent;
     this.gridConfig2.columnsList.find(col => col.key === 'isSendMail')!.template = this.actionisSendMail;
   
     //  this.gridConfig2.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate2;
@@ -56,44 +56,42 @@ export class SMSConfugurationComponent implements OnInit {
 
 
 
-  gridConfig: gridModel = {
-    apiUrl: "smsConfig/SMSendoutList",
-    columnsList: [
-     
-       { heading: "IsSent", key: "isSent", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
-  
-      { heading: "Date", key: "smsDate", sort: true, align: 'left', emptySign: 'NA',type:6 },
-      { heading: "MobileNo", key: "mobileNumber", sort: true, align: 'left', emptySign: 'NA' },
-      { heading: "SMSString", key: "smsString", sort: true, align: 'left', emptySign: 'NA' },
-      // { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
-      {
-        heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
-          {
-            action: gridActions.edit, callback: (data: any) => {
-              this.onSave(data);
-            }
-          }, {
-            action: gridActions.delete, callback: (data: any) => {
-              this._SMSConfigService.deactivateTheStatus(data.talukaId).subscribe((response: any) => {
-                this.toastr.success(response.message);
-                this.grid.bindGridData();
-              });
-            }
-          }]
-      } //Action 1-view, 2-Edit,3-delete
-    ],
-    sortField: "SMSOutGoingID",
-    sortOrder: 0,
-    filters: [
-      { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.Contains },
-      { fieldName: "ToDate", fieldValue: this.toDate, opType: OperatorComparer.Equals }
-    ]
-  }
+  // gridConfig: gridModel = {
+  //   apiUrl: "smsConfig/SMSendoutList",
+  //   columnsList: [
+  //      { heading: "IsSent", key: "isSent", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
+  //     { heading: "Date", key: "smsDate", sort: true, align: 'left', emptySign: 'NA',type:6 },
+  //     { heading: "MobileNo", key: "mobileNumber", sort: true, align: 'left', emptySign: 'NA' },
+  //     { heading: "SMSString", key: "smsString", sort: true, align: 'left', emptySign: 'NA' },
+  //     // { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
+  //     {
+  //       heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+  //         {
+  //           action: gridActions.edit, callback: (data: any) => {
+  //             this.onSave(data);
+  //           }
+  //         }, {
+  //           action: gridActions.delete, callback: (data: any) => {
+  //             this._SMSConfigService.deactivateTheStatus(data.talukaId).subscribe((response: any) => {
+  //               this.toastr.success(response.message);
+  //               this.grid.bindGridData();
+  //             });
+  //           }
+  //         }]
+  //     } //Action 1-view, 2-Edit,3-delete
+  //   ],
+  //   sortField: "SMSOutGoingID",
+  //   sortOrder: 0,
+  //   filters: [
+  //     { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.Contains },
+  //     { fieldName: "ToDate", fieldValue: this.toDate, opType: OperatorComparer.Equals }
+  //   ]
+  // }
 
 
   allColumns2 = [
-     { heading: "Sms Date", key: "smsDate", sort: true, align: 'left', emptySign: 'NA', width: 100, type: 6 },
-   { heading: "Mobile Number", key: "mobileNumber", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+    { heading: "Sms Date", key: "smsDate", sort: true, align: 'left', emptySign: 'NA', width: 100, type: 6 },
+    { heading: "Mobile Number", key: "mobileNumber", sort: true, align: 'left', emptySign: 'NA', width: 100 },
     { heading: "Sms String", key: "smsString", sort: true, align: 'left', emptySign: 'NA', width: 100 },
     { heading: "Sms Type", key: "smsType", sort: true, align: 'left', emptySign: 'NA', width: 100 },
     { heading: "TranNo", key: "tranNo", sort: true, align: 'left', emptySign: 'NA', width: 80 },
@@ -126,36 +124,37 @@ export class SMSConfugurationComponent implements OnInit {
   //email
 
   allColumnsemail = [
-   
-    { heading: "Status", key: "isSendMail", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
-      
-    { heading: "NotificationType", key: "notificationType", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-    { heading: "SendDate", key: "sendDate", sort: true, align: 'left', emptySign: 'NA', width: 100, type: 6 },
-    { heading: "ToAddress", key: "toAddress", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-    { heading: "Subject", key: "subject", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-    { heading: "EmailBody", key: "emailBody", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-    // { heading: "smSurl", key: "smSurl", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, width: 120 },
-    { heading: "EmailCC", key: "emailCC", sort: true, align: 'left', emptySign: 'NA', width: 120 },
-    { heading: "AttachmentPath", key: "attachmentPath", sort: true, align: 'left', emptySign: 'NA', width: 120 },
+    { heading: "Status", key: "status", sort: true, align: 'left', emptySign: 'NA', width: 30 },
+    { heading: "emailDate", key: "emailDate", sort: true, align: 'left', emptySign: 'NA', width: 100 , type: 6  },
+    { heading: "emailType", key: "emailType", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+    { heading: "fromEmail", key: "fromEmail", sort: true, align: 'left', emptySign: 'NA', width: 250 },
+    { heading: "toEmail", key: "toEmail", sort: true, align: 'left', emptySign: 'NA', width: 250},
+    { heading: "mailSubject", key: "mailSubject", sort: true, align: 'left', emptySign: 'NA', width: 250 },
+    { heading: "Subject", key: "subject", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+    { heading: "mailBody", key: "mailBody", sort: true, align: 'left', emptySign: 'NA', width: 250 },
+    { heading: "attachmentLink", key: "attachmentLink", sort: true, align: 'left', emptySign: 'NA',width: 300 },
+    { heading: "Status", key: "lastResponse", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+    { heading: "createdBy", key: "createdBy", sort: true, align: 'left', emptySign: 'NA',width: 120 },
+    { heading: "createdOn", key: "createdOn", sort: true, align: 'left', emptySign: 'NA',width: 120 , type: 6 },
     // {
     //   heading: "Action", key: "action", align: "right", width: 180, sticky: true, type: gridColumnTypes.template,
     //   template: this.actionButtonTemplate2  // Assign ng-template to the column
     // }
   ]
   allFiltersemail = [
-    { fieldName: "NotificationType", fieldValue: this.NotificationType, opType: OperatorComparer.Equals },
     { fieldName: "FromDate", fieldValue: this.fromDate2, opType: OperatorComparer.Equals },
     { fieldName: "ToDate", fieldValue: this.toDate2, opType: OperatorComparer.Equals }
-
   ]
 
   gridConfig2: gridModel = {
-    apiUrl: "smsConfig/EmailsendoutList",
+    apiUrl: "smsConfig/EmailOutgoingList",
     columnsList: this.allColumnsemail,
     sortField: "Id",
     sortOrder: 0,
     filters: this.allFiltersemail
   }
+
+
 //audit
 
   allColumnsaudit = [
@@ -248,8 +247,6 @@ this.auditFilterForm = this._SMSConfigService.CreateauditForm();
   }
 
   getfilterdata1() {
-
-    debugger
     this.gridConfig1 = {
       apiUrl: "smsConfig/WhatsappSendoutList",
       columnsList: this.allColumns2,
@@ -275,7 +272,7 @@ this.auditFilterForm = this._SMSConfigService.CreateauditForm();
   //email
 
   onChangeemail() {
-    this.NotificationType = this.emailfilterForm.get('NotificationType').value
+    // this.NotificationType = this.emailfilterForm.get('NotificationType').value
     this.fromDate2 = this.datePipe.transform(this.emailfilterForm.get('fromDate').value, "yyyy-MM-dd")
     this.toDate = this.datePipe.transform(this.emailfilterForm.get('enddate').value, "yyyy-MM-dd")
 
@@ -283,15 +280,13 @@ this.auditFilterForm = this._SMSConfigService.CreateauditForm();
   }
 
   getfilterdataemail() {
-
-    debugger
     this.gridConfig2 = {
       apiUrl: "smsConfig/EmailsendoutList",
       columnsList: this.allColumnsemail,
       sortField: "Id",
       sortOrder: 0,
       filters: [
-        { fieldName: "NotificationType", fieldValue: this.NotificationType, opType: OperatorComparer.Equals },
+        // { fieldName: "NotificationType", fieldValue: this.NotificationType, opType: OperatorComparer.Equals },
         { fieldName: "FromDate", fieldValue: this.fromDate2, opType: OperatorComparer.Equals },
         { fieldName: "ToDate", fieldValue: this.toDate2, opType: OperatorComparer.Equals }
 
@@ -302,9 +297,9 @@ this.auditFilterForm = this._SMSConfigService.CreateauditForm();
   }
 
   Clearfilteremail(event) {
-    console.log(event)
-    if (event == 'NotificationType')
-      this.emailfilterForm.get('NotificationType').setValue("")
+    // console.log(event)
+    // if (event == 'NotificationType')
+    //   this.emailfilterForm.get('NotificationType').setValue("")
     this.onChangeemail()
   }
 
