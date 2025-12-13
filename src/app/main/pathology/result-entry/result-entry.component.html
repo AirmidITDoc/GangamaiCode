@@ -349,7 +349,7 @@
                                         <ng-container matColumnDef="action2">
                                             <mat-header-cell *matHeaderCellDef fxShow.gt-sm
                                                 class="w-200">Status</mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" class="w-500">
+                                            <mat-cell *matCellDef="let contact" class="w-200">
                                                 <div fxLayout="row" fxLayoutAlign="center center">
                                                     <ng-container *ngIf="contact">
                                                         <div class="status-wrapper">
@@ -360,16 +360,6 @@
                                                                 matTooltip="{{ contact.isCompleted ? 'Report Completed' : 'Report Not Completed' }}">
                                                                 {{ contact.isCompleted ? 'Completed' : 'Pending' }}
                                                             </span>
-
-                                                            <!-- <span class="status-box" [ngClass]="{
-                                                                    'status-completed': contact.isVerifyid,
-                                                                    'status-pending': !contact.isVerifyid
-                                                                }"
-                                                                matTooltip="{{ contact.isVerifyid ? 'Verified' : 'UnVerified' }}"
-                                                                (click)="!contact.isVerifyid && onVerify(contact)"
-                                                                style="cursor: pointer;">
-                                                                {{ contact.isVerifyid ? 'Verified' : 'UnVerified' }}
-                                                            </span> -->
                                                             <span class="status-box" [ngClass]="{
                                                                     'status-completed': contact.isVerifyid,
                                                                     'status-pending': !contact.isVerifyid
