@@ -1,0 +1,105 @@
+.p-sm-24 {
+  padding: 10px !important;
+}
+
+app-appointment-list {
+  .mat-icon-button {
+    padding: 0;
+    min-width: 0;
+    width: 28px !important;
+    height: 28px !important;
+    flex-shrink: 0;
+    line-height: 28px;
+    border-radius: 4px;
+    
+    mat-icon {
+      font-size: 16px !important;
+      width: 16px !important;
+      height: 16px !important;
+    }
+  }
+}
+
+.info-badge-top {
+  .dashboard-card {
+    min-width: 180px;
+    border-radius: 12px;
+    padding: 10px 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    color: black; //#fff;
+    position: relative;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    height: 100%;
+    .card-label {
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 2px;
+    }
+    .card-value {
+      font-size: 14px;
+      font-weight: bold;
+      margin-bottom: 2px;
+    }
+    .card-icon {
+      position: absolute;
+      right: 12px;
+      bottom: 10px;
+      font-size: 28px;
+      opacity: 0.7;
+    }
+    &.registrations {
+      background: #e1f0d1;
+    }
+    &.appointments {
+      background: #d9edf4;
+    }
+    &.appointments-split {
+      background: #f2d28a;
+    }
+    &.bills {
+      background: #c9c79c;
+    }
+    &.emr-ready {
+      background: #a5d1c7;
+    }
+    &.checkout {
+      background: #f7f1a3;
+    }
+    &.waiting {
+      background: #e9b8d8;
+    }
+    & .card-value div {
+      font-size: 13px;
+    }
+  }
+
+}
+
+.status-completed {
+    padding: 2px 12px;
+    border-radius: 12px;
+    background-color: #d4edda;
+    color: #155724;
+    font-weight: 500;
+    font-size: 12px;
+}
+
+.status-pending {
+    padding: 2px 12px;
+    border-radius: 12px;
+    background-color: #fff3cd;
+    color: #856404;
+    font-weight: 500;
+    font-size: 12px;
+}
+
+.status-box {
+    padding: 4px 10px;   /* top & bottom */
+}
+.status-wrapper {
+  display: flex;
+  gap: 4px;     
+  align-items: center;
+}

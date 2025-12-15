@@ -242,7 +242,7 @@
                                             </div>
 
                                             <div fxLayout="column" fxLayoutGap="10px">
-                                                <div fxLayout="row wrap" fxLayoutAlign="space-between center"
+                                                <!-- <div fxLayout="row wrap" fxLayoutAlign="space-between center"
                                                     fxLayoutGap="12px">
                                                     <form [formGroup]="myForm">
                                                         <mat-radio-group formControlName="IsPathRad"
@@ -251,11 +251,11 @@
                                                             <mat-radio-button value="2">Radiology</mat-radio-button>
                                                         </mat-radio-group>
                                                     </form>
-                                                </div>
+                                                </div> -->
 
                                                 <div fxLayout="row" fxLayoutGap="16px">
-                                                    <div fxLayout="column">
-                                                        <!-- <div fxFlex="45%"> -->
+                                                    <div fxLayout="column" fxFlex="30%">
+
                                                         <form [formGroup]="myForm">
                                                             <mat-form-field appearance="outline" fxFlex="400px">
                                                                 <input matInput type="text" formControlName="ServiceId"
@@ -273,49 +273,46 @@
                                                                 </mat-error>
                                                             </mat-form-field>
                                                         </form>
-                                                        <!-- </div> -->
 
-                                                        <div fxFlex.gt-sm="35%">
-                                                            <mat-card>
-                                                                <mat-table #table matSort [dataSource]="dsLabRequest2"
-                                                                    class="h-280 fix-first-col"
-                                                                    [@animateStagger]="{value:'50'}">
-                                                                    <ng-container matColumnDef="ServiceName">
-                                                                        <mat-header-cell *matHeaderCellDef
-                                                                            mat-sort-header>Service
-                                                                            Name</mat-header-cell>
-                                                                        <mat-cell *matCellDef="let contact"
-                                                                            class="ellipsis" [matTooltip]="contact.serviceName"
-                                                                            matTooltipPosition="above">{{contact.serviceName}}</mat-cell>
-                                                                    </ng-container>
+                                                        <mat-card>
+                                                            <mat-table #table matSort [dataSource]="dsLabRequest2"
+                                                                class="h-280 fix-first-col"
+                                                                [@animateStagger]="{value:'50'}">
+                                                                <ng-container matColumnDef="ServiceName">
+                                                                    <mat-header-cell *matHeaderCellDef
+                                                                        mat-sort-header>Service
+                                                                        Name</mat-header-cell>
+                                                                    <mat-cell *matCellDef="let contact" class="ellipsis"
+                                                                        [matTooltip]="contact.serviceName"
+                                                                        matTooltipPosition="above">{{contact.serviceName}}</mat-cell>
+                                                                </ng-container>
 
-                                                                    <ng-container matColumnDef="price">
-                                                                        <mat-header-cell *matHeaderCellDef
-                                                                            mat-sort-header>Price</mat-header-cell>
-                                                                        <mat-cell
-                                                                            *matCellDef="let contact">{{contact.price}}</mat-cell>
-                                                                    </ng-container>
+                                                                <ng-container matColumnDef="price">
+                                                                    <mat-header-cell *matHeaderCellDef
+                                                                        mat-sort-header>Price</mat-header-cell>
+                                                                    <mat-cell
+                                                                        *matCellDef="let contact">{{contact.price}}</mat-cell>
+                                                                </ng-container>
 
-                                                                    <ng-container matColumnDef="Action" stickyEnd>
-                                                                        <mat-header-cell *matHeaderCellDef
-                                                                            class="w-80">Action</mat-header-cell>
-                                                                        <mat-cell *matCellDef="let contact"
-                                                                            class="w-80">
-                                                                            <button mat-icon-button color="warn"
-                                                                                (click)="onSaveEntry(contact)"><mat-icon>add</mat-icon></button>
-                                                                        </mat-cell>
-                                                                    </ng-container>
-                                                                    <mat-header-row
-                                                                        *matHeaderRowDef="displayedServiceColumns"
-                                                                        class="accent" sticky></mat-header-row>
-                                                                    <mat-row
-                                                                        *matRowDef="let row; columns: displayedServiceColumns"></mat-row>
-                                                                </mat-table>
-                                                            </mat-card>
-                                                        </div>
+                                                                <ng-container matColumnDef="Action" stickyEnd>
+                                                                    <mat-header-cell *matHeaderCellDef
+                                                                        class="w-80">Action</mat-header-cell>
+                                                                    <mat-cell *matCellDef="let contact" class="w-80">
+                                                                        <button mat-icon-button color="warn"
+                                                                            (click)="onSaveEntry(contact)"><mat-icon>add</mat-icon></button>
+                                                                    </mat-cell>
+                                                                </ng-container>
+                                                                <mat-header-row
+                                                                    *matHeaderRowDef="displayedServiceColumns"
+                                                                    class="accent" sticky></mat-header-row>
+                                                                <mat-row
+                                                                    *matRowDef="let row; columns: displayedServiceColumns"></mat-row>
+                                                            </mat-table>
+                                                        </mat-card>
+
                                                     </div>
 
-                                                    <div fxFlex.gt-sm="75%">
+                                                    <div fxFlex="70%" class="airmid-table-container">
                                                         <mat-card>
                                                             <mat-table #table1 matSort [dataSource]="dstable1"
                                                                 [@animateStagger]="{ value: '50' }"
@@ -323,24 +320,38 @@
 
                                                                 <ng-container matColumnDef="ServiceName">
                                                                     <mat-header-cell *matHeaderCellDef mat-sort-header
-                                                                        class="w-650">Service
+                                                                        class="w-350">Service
                                                                         Name</mat-header-cell>
                                                                     <mat-cell *matCellDef="let contact"
-                                                                        class="w-650">{{contact.ServiceName}}</mat-cell>
+                                                                        class="w-350">{{contact.ServiceName}}</mat-cell>
                                                                 </ng-container>
-                                                                <!-- <ng-container matColumnDef="Price">
-                                                                        <mat-header-cell *matHeaderCellDef
-                                                                            mat-sort-header>Price</mat-header-cell>
-                                                                        <mat-cell *matCellDef="let contact">{{contact.Price |
-                                                                            currency:'INR'}}</mat-cell>
-                                                                    </ng-container> -->
+
+                                                                <ng-container matColumnDef="DoctorName">
+                                                                    <mat-header-cell *matHeaderCellDef mat-sort-header
+                                                                        class="w-350">Doctor Name</mat-header-cell>
+                                                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm
+                                                                        class="w-350">
+                                                                        <mat-form-field appearance="outline"
+                                                                            fxFlex="200px" floatLabel="never">
+                                                                            <mat-select placeholder="Select Doctor"
+                                                                                [value]="contact.DoctorId"
+                                                                                (selectionChange)="getdocdetail($event, contact)">
+                                                                                <mat-option
+                                                                                    *ngFor="let option of doctorOptions"
+                                                                                    [value]="option.value || option.Value">
+                                                                                    {{ option.text || option.Text }}
+                                                                                </mat-option>
+                                                                            </mat-select>
+                                                                        </mat-form-field>
+                                                                    </mat-cell>
+                                                                </ng-container>
 
                                                                 <ng-container matColumnDef="Price">
                                                                     <mat-header-cell *matHeaderCellDef mat-sort-header
                                                                         fxShow.gt-sm
-                                                                        class="w-150">Price</mat-header-cell>
+                                                                        class="w-250">Price</mat-header-cell>
                                                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm
-                                                                        class="w-150">
+                                                                        class="w-250">
                                                                         <mat-form-field appearance="fill">
                                                                             <input matInput [(ngModel)]="contact.Price"
                                                                                 type="text" OnlyNumber
@@ -351,14 +362,6 @@
                                                                     </mat-cell>
                                                                 </ng-container>
 
-                                                                <!-- <ng-container matColumnDef="buttons">
-                                                                        <mat-header-cell *matHeaderCellDef>Action</mat-header-cell>
-                                                                        <mat-cell *matCellDef="let row">
-                                                                            <button mat-icon-button (click)="deleteTableRow(row)" color="warn">
-                                                                                <mat-icon>delete_outline</mat-icon>
-                                                                            </button>
-                                                                        </mat-cell>
-                                                                    </ng-container> -->
                                                                 <ng-container matColumnDef="buttons" stickyEnd>
                                                                     <mat-header-cell *matHeaderCellDef
                                                                         class="w-80">Action</mat-header-cell>
@@ -367,7 +370,6 @@
                                                                             (click)="deleteTableRow(contact)"><mat-icon>delete_outline</mat-icon></button>
                                                                     </mat-cell>
                                                                 </ng-container>
-
 
                                                                 <mat-header-row class="accent h-35"
                                                                     *matHeaderRowDef="displayedServiceselected; sticky: true"></mat-header-row>
@@ -472,18 +474,38 @@
     <div class="modal-footer labpatientfooter">
         <div class="footer-navigation-container">
             <div class="modal-footer-container p-8" fxLayoutAlign="space-between">
-                <form [formGroup]="myForm">
-                    <mat-radio-group formControlName="paymentType" fxLayout="row" class="gap-4"
-                        *ngIf="data.mode !== 'edit'">
-                        <mat-radio-button value="CashPay">Cash Payment</mat-radio-button>
-                        <mat-radio-button value="CreditPay">Credit Payment</mat-radio-button>
-                        <mat-radio-button value="PayOption">Pay Option</mat-radio-button>
-                    </mat-radio-group>
+                <form [formGroup]="OPFooterForm">
+                    <div fxFlex="850px" fxLayout="row" fxLayoutAlign="space-between center">
+
+                        <mat-radio-group formControlName="paymentType" fxLayout="row" class="gap-4"
+                            *ngIf="data.mode !== 'edit'" (change)="onChangeReg($event)">
+                            <mat-radio-button value="CashPay">Cash Payment</mat-radio-button>
+                            <mat-radio-button value="CreditPay">Credit Payment</mat-radio-button>
+                            <mat-radio-button value="PayOption">Pay Option</mat-radio-button>
+                            <mat-radio-button value="onlinepay">Online Pay</mat-radio-button>
+                        </mat-radio-group>
+
+                        <mat-form-field appearance="outline" *ngIf="onlineflag" fxFlex="35%">
+                            <mat-label>UPI NO</mat-label>
+                            <input matInput placeholder="UPI Number" formControlName="UPINO" [(ngModel)]="vUPINO"
+                                maxlength="12" minlength="4" type="text" Onlynumber max="999999999999"
+                                min="100000000000" autocomplete="off" (keypress)="keyPressAlphanumeric($event)"
+                                oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 12);"
+                                required="required" value="987665868822">
+                            <mat-error class="error"
+                                *ngIf="OPFooterForm.get('UPINO').invalid && OPFooterForm.get('UPINO').touched">12
+                                digits upi number is required</mat-error>
+                        </mat-form-field>
+                    </div>
                 </form>
 
                 <div class="modal-footer-buttons labpatientbtn">
-                    <button class="btn btn-primary" (click)="BillSave()">Save </button>
-                    <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
+                    <div>
+                        <button class="btn btn-primary" (click)="BillSave()">Save </button>
+                    </div>
+                    <div>
+                        <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
+                    </div>
                 </div>
             </div>
         </div>

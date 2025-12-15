@@ -298,8 +298,8 @@
         <div class="footer-navigation-container">
             <div class="modal-footer-buttons">
                 <button class="btn btn-danger-outline " (click)="onClose1()">Close</button>
-                <button class="btn btn-primary"  *ngIf="data?.FromName !== 'OP-Bill' && data?.FromName !== 'OP-SETTLEMENT'"  [disabled]="balanceAmt>0" (click)="onSubmit()">Save</button>
-                <button class="btn btn-primary"   *ngIf="data?.FromName === 'OP-Bill' || data?.FromName === 'OP-SETTLEMENT'"  (click)="onSubmit()">Save</button>
+                <button class="btn btn-primary"  *ngIf="data?.FromName !== 'OP-Bill' && data?.FromName !== 'OP-SETTLEMENT' && data?.FromName !== 'LAB-Bill'"  [disabled]="balanceAmt>0" (click)="onSubmit()">Save</button>
+                <button class="btn btn-primary"   *ngIf="data?.FromName === 'OP-Bill' || data?.FromName === 'OP-SETTLEMENT' || data?.FromName === 'LAB-Bill'"  (click)="onSubmit()">Save</button>
             </div>
         </div>
     </div>

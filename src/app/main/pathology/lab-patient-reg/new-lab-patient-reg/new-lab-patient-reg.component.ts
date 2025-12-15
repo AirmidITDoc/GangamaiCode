@@ -11,7 +11,7 @@ import { AirmidDropDownComponent } from 'app/main/shared/componets/airmid-dropdo
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 import { ToastrService } from 'ngx-toastr';
-import { Observable } from 'rxjs';
+import { Observable, of, Subject, takeUntil } from 'rxjs';
 import Swal from 'sweetalert2';
 import { LabPatientList, LabRequest } from '../lab-patient-reg.component';
 import { LabPatientRegService } from '../lab-patient-reg.service';
@@ -24,6 +24,8 @@ import { ItemNameList } from 'app/main/purchase/purchase-order/purchase-order.co
 import { HospitalConfigService } from 'app/core/services/hospital-config.service';
 import { debounce } from 'lodash';
 import { PreviousDeptListComponent } from 'app/main/opd/appointment-list/update-reg-patient-info/previous-dept-list/previous-dept-list.component';
+import { MatSelectChange } from '@angular/material/select';
+import { ApiCaller } from 'app/core/services/apiCaller';
 
 @Component({
   selector: 'app-new-lab-patient-reg',
@@ -41,7 +43,7 @@ export class NewLabPatientRegComponent {
   OPFooterForm: FormGroup
   TPaymentForm: FormGroup
 
-  screenFromString = 'Common-Form';
+  screenFromString = 'Common-form';
   registerObj = new LabPatientList({});
   companyDet = new LabPatientList({});
   CityName = ""
@@ -63,6 +65,7 @@ export class NewLabPatientRegComponent {
   autocompleteModecompany: string = "Company";
   autocompleteModesubcompany: string = "SubCompany";
   autocompleteModecamp: string = "CampMaster";
+  autocompleteModedoctor: string = "ConDoctor";
 
   dsLabRequest2 = new MatTableDataSource<LabRequest>();
   // dstable1 = new MatTableDataSource<LabRequest>();
@@ -89,6 +92,8 @@ export class NewLabPatientRegComponent {
   ageDay = 0;
   doctorId = 0;
   doctorname = '';
+  servicedoctorname: any;
+  serivcedoctorId: any;
   companyId = 0;
   companyName = '';
   ExclusionAmt = '';
@@ -115,9 +120,13 @@ export class NewLabPatientRegComponent {
 
   displayedServiceselected: string[] = [
     'ServiceName',
+    'DoctorName',
     'Price',
     'buttons'
   ]
+
+  doctorOptions: any[] = [];
+  onlineflag: boolean = false;
 
   @ViewChild('ddlGender') ddlGender: AirmidDropDownComponent;
   @ViewChild('ddlCountry') ddlCountry: AirmidDropDownComponent;
@@ -134,12 +143,15 @@ export class NewLabPatientRegComponent {
     private accountService: AuthenticationService,
     private hospitalconfigservice: HospitalConfigService,
     public toastr: ToastrService, public _ConfigService: ConfigService,
-    @Inject(MAT_DIALOG_DATA) public data: any
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private apiCaller: ApiCaller
   ) { }
 
   ngOnInit(): void {
     this.myForm = this.CreateMyForm();
     this.myForm.markAllAsTouched();
+
+    this.loadDropdownOptions();
 
     this.LabBillfinalform = this.createFinalFormView()
     //  this.chargeForm = this.createChargeForm();
@@ -202,6 +214,16 @@ export class NewLabPatientRegComponent {
       departmentId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       doctorId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       refDocId: [0],
+      companyId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      subCompanyId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      campId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      adharCardNo: [0, [
+        Validators.minLength(12),  //     Validators.minLength(12),
+        Validators.maxLength(12), //     Validators.maxLength(12),
+        Validators.pattern("^[0-9]*$"),
+        this._FormvalidationserviceService.onlyNumberValidator()
+      ]],
+
       // extra fields
       mobileNo: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(15), Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")]],
       regId: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
@@ -215,15 +237,7 @@ export class NewLabPatientRegComponent {
       patientName: [''],
       createdBy: this.accountService.currentUserValue.userId,
       LabPatRegId: 0,
-      companyId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      subCompanyId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      campId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      adharCardNo: [0, [
-        Validators.minLength(12),  //     Validators.minLength(12),
-        Validators.maxLength(12), //     Validators.maxLength(12),
-        Validators.pattern("^[0-9]*$"),
-        this._FormvalidationserviceService.onlyNumberValidator()
-      ]],
+      servicedoctorId: [0],
     })
   }
 
@@ -266,6 +280,7 @@ export class NewLabPatientRegComponent {
       concessionReasonId: [0, this._FormvalidationserviceService.onlyNumberValidator()],
       netPayableAmt: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
       paymentType: ['CashPay'],
+      UPINO: [''],
     })
   }
   createTotalChargeForm(): FormGroup {
@@ -443,6 +458,47 @@ export class NewLabPatientRegComponent {
     }
   }
 
+  private destroy$ = new Subject<void>();
+
+  ////////////////////////// dd new method start ////////////////////
+  // getdocdetail(event: MatSelectChange): void {
+  //   const option = this.doctorOptions.find(opt => opt.value === event.value || opt.Value === event.value);
+  //   console.log(option)
+  //   this.servicedoctorname = option.text
+  //   this.serivcedoctorId = option.value
+  //   this.onAddCharges();
+  // }
+
+  getdocdetail(event: MatSelectChange, row: any): void {
+
+    const option = this.doctorOptions.find(
+      opt => (opt.value ?? opt.Value) === event.value
+    );
+
+    if (!option) return;
+
+    row.DoctorId = option.value ?? option.Value;
+    row.DoctorName = option.text ?? option.Text;
+
+    this.dstable1.data = [...this.dstable1.data];
+  }
+
+  private loadDropdownOptions(): void {
+    this.fetchDropdownOptions(this.autocompleteModedoctor)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(options => {
+        this.doctorOptions = options || [];
+      });
+  }
+
+  private fetchDropdownOptions(mode: string): Observable<any[]> {
+    if (!mode) {
+      return of([]);
+    }
+    return this.apiCaller.GetData(`Dropdown/GetBindDropDown?mode=${mode}`);
+  }
+
+  ////////////////////////// dd new method end ////////////////////
   onChangeCompany(value) {
     this.companyId = value.value
     this._labPatientRegService.getCompanyById(value.value).subscribe((response) => {
@@ -542,7 +598,8 @@ export class NewLabPatientRegComponent {
   }
   getServiceList() {
     let ServiceName = this.myForm.get("ServiceId").value + "%" || "%";
-    let IsPathRad = this.myForm.get("IsPathRad").value || "1"
+    let IsPathRad = 3
+    // this.myForm.get("IsPathRad").value || "1"
     var param = {
       "first": 0,
       "rows": 10,
@@ -582,6 +639,19 @@ export class NewLabPatientRegComponent {
 
     });
 
+  }
+
+  onChangeReg(event) {
+    if (event.value == 'onlinepay') {
+      this.onlineflag = true;
+      this.OPFooterForm.get('UPINO').setValidators([Validators.required]);
+      this.OPFooterForm.get('UPINO').enable();
+    } else {
+      this.onlineflag = false;
+      this.OPFooterForm.get('UPINO').reset();
+      this.OPFooterForm.get('UPINO').clearValidators();
+      this.OPFooterForm.get('UPINO').updateValueAndValidity();
+    }
   }
 
   onSaveEntry(row) {
@@ -657,9 +727,11 @@ export class NewLabPatientRegComponent {
       DiscPer: 0,
       DiscAmt: discountAmount || 0,
       NetAmount: netAmount || 0,
-      DoctorName: this.doctorname || '-',
+      // DoctorName: this.servicedoctorname || '-',
       ClassName: 1,//this.className || '-',
-      DoctorId: this.myForm.get('doctorId').value,
+      // DoctorId: this.serivcedoctorId,
+      DoctorId: row.DoctorId || 0,
+      DoctorName: row.DoctorName || '-',
       ChargesAddedName: this.accountService.currentUserValue.userName,
       IsPathology: this.IsPathology,
       IsRadiology: this.IsRadiology,
@@ -676,7 +748,6 @@ export class NewLabPatientRegComponent {
     this.updateCalculation();
 
   }
-
 
   deleteTableRow(element) {
     this.chargeslist = this.dstable1.data;
@@ -696,6 +767,8 @@ export class NewLabPatientRegComponent {
       } else {
         this.updateCalculation();
       }
+      this.servicedoctorname = ''
+      this.serivcedoctorId = 0
     }
     this.toastr.success('Record Deleted Successfully.', 'Deleted !', {
       toastClass: 'tostr-tost custom-toast-success',
@@ -801,7 +874,7 @@ export class NewLabPatientRegComponent {
           this.myForm.get('LabPatRegId').setValue(this.VlabPatRegId);
           const formValue = { ...this.myForm.value };
           const controlsToRemove = ['patientName', 'regId', 'IsPathRad', 'ServiceId', 'totalAmt', 'totalDiscountPer', 'discountAmt', 'netPayableAmt',
-            'paymentType'];
+            'paymentType', 'servicedoctorId'];
           controlsToRemove.forEach(key => delete formValue[key]);
           console.log(formValue)
           this._labPatientRegService.labPatientSave(formValue).subscribe((response) => {
@@ -836,7 +909,7 @@ export class NewLabPatientRegComponent {
           this.myForm.get('firstName').setValue(this.myForm.get('firstName').value)
           if (!this.myForm.invalid)
             this.OnSave();
-            
+
           else {
             let invalidFields = [];
             if (this.myForm.invalid) {
@@ -915,10 +988,10 @@ export class NewLabPatientRegComponent {
       this.myForm.get('ageDay')?.setValue(String(ageDay), { emitEvent: false });
 
     }
-    debugger
+
     const formValue = { ...this.myForm.value };
     const controlsToRemove = ['patientName', 'regId', 'IsPathRad', 'ServiceId', 'totalAmt', 'totalDiscountPer', 'discountAmt', 'netPayableAmt',
-      'paymentType'];
+      'paymentType', 'servicedoctorId'];
     controlsToRemove.forEach(key => delete formValue[key]);
     console.log(formValue)
 
@@ -966,8 +1039,8 @@ export class NewLabPatientRegComponent {
 
       console.log("form values", this.OpBillForm.value)
       // const [ThermalPrint, ThermalPrintValue] = this._ConfigService.configParams.ThermalPrint.split(":");
-
-      if (this.myForm.get('paymentType').value == 'PayOption') {
+      debugger
+      if (this.OPFooterForm.get('paymentType').value == 'PayOption') {
         let PatientHeaderObj = {};
         PatientHeaderObj['Date'] = this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd') || '01/01/1900',
           PatientHeaderObj['PatientName'] = this.PatientName; // this.patientDetail.patientName;
@@ -979,7 +1052,7 @@ export class NewLabPatientRegComponent {
         PatientHeaderObj['CompanyId'] = this.companyId || 0;
         PatientHeaderObj['CashCounterId'] = this.OpBillForm.get('cashCounterId')?.value || 0;
         PatientHeaderObj['Age'] = this.ageYear;
-        PatientHeaderObj['TransactionLabel'] = 'OP_BILL';
+        PatientHeaderObj['TransactionLabel'] = 'LAB_BILL';
         PatientHeaderObj['NetPayAmount'] = Math.round(this.myForm.get('netPayableAmt').value);
         const dialogRef = this._matDialog.open(OpPaymentComponent,
           {
@@ -988,7 +1061,7 @@ export class NewLabPatientRegComponent {
             width: '80%',
             data: {
               vPatientHeaderObj: PatientHeaderObj,
-              FromName: "OP-Bill",
+              FromName: "LAB-Bill",
               advanceObj: PatientHeaderObj,
             }
           });
@@ -1012,7 +1085,7 @@ export class NewLabPatientRegComponent {
           }
         });
       }
-      else if (this.myForm.get('paymentType').value == 'CashPay') {//Cash pay  
+      else if (this.OPFooterForm.get('paymentType').value == 'CashPay') {//Cash pay  
         this.OpBillForm.get('balanceAmt').setValue(0)
         this.OpBillForm.get('paidAmt')?.setValue(this.myForm.get('netPayableAmt')?.value)
         this.OpBillForm.get('payments.cashPayAmount')?.setValue(Number(this.myForm.get('netPayableAmt')?.value))
@@ -1035,7 +1108,7 @@ export class NewLabPatientRegComponent {
           // this.resetform();
         });
       }
-      else if (this.myForm.get('paymentType').value == 'CreditPay') {//Credit pay 
+      else if (this.OPFooterForm.get('paymentType').value == 'CreditPay') {//Credit pay 
         this.OpBillForm.get('paidAmt').setValue(0)
         this.OpBillForm.get('balanceAmt')?.setValue(this.myForm.get('netPayableAmt')?.value)
         this.OpBillForm.removeControl('payments')
@@ -1051,6 +1124,36 @@ export class NewLabPatientRegComponent {
           this._matDialog.closeAll();
           this.savebtn = true
           // if (response)
+          // this.resetform();
+        });
+      }
+      else if (this.OPFooterForm.get('paymentType').value == 'onlinepay') {
+        debugger
+        if (!(this.OPFooterForm.get('UPINO')?.value)) {
+          this.toastr.warning('Please enter upi no', 'Warning !', {
+            toastClass: 'tostr-tost custom-toast-warning',
+          });
+          return;
+        }
+        this.OpBillForm.get('payments.payTmamount')?.setValue(this.myForm.get('netPayableAmt')?.value)
+        this.OpBillForm.get('payments.payTmtranNo')?.setValue(this.OPFooterForm.get('UPINO')?.value)
+        this.OpBillForm.get('payments.payTmdate').setValue(formattedDate)
+        this.OpBillForm.get('payments.paymentDate')?.setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'))
+        this.OpBillForm.get('payments.paymentTime')?.setValue(this.dateTimeObj.time)
+
+        console.log(this.OpBillForm.value)
+        this.LabBillfinalform.get('labPatientRegistration').setValue(formValue)
+        this.LabBillfinalform.get('opBillIngModels').setValue(this.OpBillForm.value)
+        this.LabBillfinalform.get('tPayments').setValue([this.TPaymentForm.value])
+
+        console.log(this.LabBillfinalform.value)
+
+        this._labPatientRegService.InsertLabRegBilling(this.LabBillfinalform.value).subscribe(response => {
+          console.log(response)
+          // debugger
+          this.viewgetOPBillReportPdf(response)
+          this._matDialog.closeAll();
+          this.savebtn = true
           // this.resetform();
         });
       }

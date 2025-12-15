@@ -19,6 +19,7 @@ import { ToastrService } from 'ngx-toastr';
 import { DatePipe } from '@angular/common';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { fuseAnimations } from '@fuse/animations';
+import { AuthenticationService } from 'app/core/services/authentication.service';
 
 @Component({
     selector: 'app-new-result-entry',
@@ -96,6 +97,7 @@ export class NewResultEntryComponent {
     genderId = 0
     sampleNo = '0'
     suggestionNotes = ''
+    verifyCheck: boolean;
 
     @ViewChild(MatAccordion) accordion: MatAccordion;
     @ViewChild('drawer') public drawer: MatDrawer;
@@ -111,26 +113,26 @@ export class NewResultEntryComponent {
         private advanceDataStored: AdvanceDataStored,
         private configService: ConfigService,
         private commonService: PrintserviceService,
+        private accountService: AuthenticationService,
         public toastr: ToastrService,
         private _FormvalidationserviceService: FormvalidationserviceService,
         private _fuseSidebarService: FuseSidebarService) {
 
         if (this.data) {
             console.log(this.data)
+            this.verifyCheck = data.verifyCheck
+
             this.selectedAdvanceObj2 = data.patientdata;
-              console.log(this.data.patientdata)
+            console.log(this.data.patientdata)
 
-          
             this.opipnumber = this.data.patientdata.oP_IP_No
-            this.ageY = this. data.patientdata.ageYear.trim()
-            this.ageM = this. data.patientdata.ageMonth.trim()
-            this.ageD = this. data.patientdata.ageDay.trim()
-            this.genderId = this. data.patientdata.genderId
-            this.sampleNo = this. data.patientdata.sampleNo
-            this.suggestionNotes = this. data.patientdata.suggestionNotes
+            this.ageY = this.data.patientdata.ageYear.trim()
+            this.ageM = this.data.patientdata.ageMonth.trim()
+            this.ageD = this.data.patientdata.ageDay.trim()
+            this.genderId = this.data.patientdata.genderId
+            this.sampleNo = this.data.patientdata.sampleNo
+            this.suggestionNotes = this.data.patientdata.suggestionNotes
 
-
-            
             this.OPIPID = this.selectedAdvanceObj2.opdipdid // this.selectedAdvanceObj2.OPD_IPD_ID;
             this.OP_IPType = this.selectedAdvanceObj2.opdipdtype;
             this.SexId = this.selectedAdvanceObj2.genderId;
@@ -162,7 +164,7 @@ export class NewResultEntryComponent {
             else
                 this.getResultListOP(this.selectedAdvanceObj2, this.regObj);
             if (this.OP_IPType == 4)
-                 this.getResultListLab(this.selectedAdvanceObj2, this.regObj);
+                this.getResultListLab(this.selectedAdvanceObj2, this.regObj);
 
         } else {
             this.getResultList1(this.regObj);
@@ -216,10 +218,8 @@ export class NewResultEntryComponent {
         return Keys;
     }
 
-  
-
     onResultUp(data) {
-        
+
         let items = this.dataSource.data.filter(x => String(x?.Formula ?? "").indexOf('{{' + data.ParameterShortName + '}}') > 0);
         for (let i = 0; i < items.length; i++) {
             let formula = items[i].Formula;
@@ -302,7 +302,7 @@ export class NewResultEntryComponent {
     }
 
     getResultList1(rbj) {
-        debugger
+        // debugger
         if (this.OP_IPType == 0) {
             var param = {
                 "searchFields": [
@@ -327,7 +327,7 @@ export class NewResultEntryComponent {
                 "mode": "PathologyResultEntryIPCompleted"
             }
         }
-         else if (this.OP_IPType == 4) {
+        else if (this.OP_IPType == 4) {
             var param = {
                 "searchFields": [
                     {
@@ -342,7 +342,7 @@ export class NewResultEntryComponent {
 
         console.log(param)
         this._SampleService.getPathologyResultListforOP(param).subscribe(Visit => {
-            
+
             this.dataSource.data = Visit as Pthologyresult[];
             console.log(this.dataSource.data)
             // this.Pthologyresult = Visit as Pthologyresult[];
@@ -363,7 +363,7 @@ export class NewResultEntryComponent {
     }
 
     getResultListIP(obj, rbj) {
-        
+
         var SelectQuery =
         {
             "searchFields": [
@@ -423,7 +423,7 @@ export class NewResultEntryComponent {
         const serviceIds = rbj.map(r => String(r.ServiceId));
         const pathReportIds = rbj.map(r => String(r.PathReportId));
 
-        
+
         var SelectQuery =
         {
             "searchFields": [
@@ -483,12 +483,11 @@ export class NewResultEntryComponent {
 
     }
 
-
     getResultListLab(obj, rbj) {
         const serviceIds = rbj.map(r => String(r.ServiceId));
         const pathReportIds = rbj.map(r => String(r.PathReportId));
 
-        
+
         var SelectQuery =
         {
             "searchFields": [
@@ -538,14 +537,13 @@ export class NewResultEntryComponent {
             this.PathResultDr1 = this.dataSource.data[0]["PathResultDr1"];
             this.vsuggation = this.dataSource.data[0]["SuggestionNote"];
             console.log(this.PathResultDr1);
-            
+
         },
             error => {
                 this.sIsLoading = '';
             });
 
     }
-
 
     selectChangeDoctor(row) {
 
@@ -557,7 +555,7 @@ export class NewResultEntryComponent {
     }
 
     onUpload() {
-       
+
         if ((this.vPathResultDoctorId == '')) {
             this.toastr.warning('Please select valid Pathalogist', 'Warning !', {
                 toastClass: 'tostr-tost custom-toast-warning',
@@ -576,7 +574,7 @@ export class NewResultEntryComponent {
         // });
 
         this.dataSource.data.forEach((element) => {
-console.log(element)
+            console.log(element)
             let pathologyInsertReportObj = {};
             pathologyInsertReportObj['PathReportId'] = element.PathReportId //element1.PathReportId;
             pathologyInsertReportObj['CategoryID'] = element.CategoryId || 0;
@@ -600,8 +598,8 @@ console.log(element)
             pathologyInsertReportObj['SampleID'] = element.SampleID || '';
 
             pathologyInsertReportObj['ParaBoldFlag'] = element.ParaBoldFlag || '';
-  
-          
+
+
             // pathologyInsertReportObj['ageM'] = this.selectedAdvanceObj2.regNo;
             // pathologyInsertReportObj['ageD'] = parseFloat(element.MinValue) || 0;
             // pathologyInsertReportObj['genderId'] = parseFloat(element.MaxValue) || 0;
@@ -657,9 +655,37 @@ console.log(element)
 
     }
 
+    onVerify() {
+        Swal.fire({
+            title: 'Confirm Verify Report ',
+            text: 'Are you sure you want to Verify Report?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#41ea76ff',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, Verify!'
+
+        }).then((flag) => {
+            // debugger
+            if (flag.isConfirmed) {
+
+                let submitData = {
+                    "pathReportId": this.vPathReportId,
+                    "isVerifyid": this.accountService.currentUserValue.userId,
+                    "isVerifySign": true,
+                    "isVerifyedDate": new Date().toISOString()
+                };
+                console.log(submitData);
+                this._SampleService.PathReportverifyMaster(submitData).subscribe(response => {
+                    this._matDialog.closeAll();
+                });
+            }
+        });
+        // this.onEdit(row);
+    }
 
     Printresultentry() {
-        
+
         let pathologyDelete = [];
 
         this.data.RIdData.forEach((element) => {
@@ -680,7 +706,7 @@ console.log(element)
     }
 
     viewgetPathologyTestReportPdf() {
-      debugger
+        // debugger
         const param = {
             searchFields: [
                 {
@@ -716,19 +742,15 @@ console.log(element)
     printf: boolean = true;
 
     onSave() {
-        
+
         if ((this.vPathResultDoctorId == 0 || this.vPathResultDoctorId == undefined)) {
             this.toastr.warning('Please select valid Pathalogist', 'Warning !', {
                 toastClass: 'tostr-tost custom-toast-warning',
             });
             return;
         }
-
-
         this.PathResultForm.get("pathResultDr1").setValue(this.vPathResultDoctorId)
         this.PathResultForm.get("suggestionNotes").setValue(this.otherForm.get("suggestionNotes").value)
-
-      
         this.ResultForm.get("pathologyReport").setValue(this.PathResultForm.value)
 
         this.pathologyResultArray.clear();
@@ -741,9 +763,8 @@ console.log(element)
         console.log(this.ResultForm.value);
         this._SampleService.PathResultentryInsert(this.ResultForm.value).subscribe(response => {
             if (response) {
-              this._matDialog.closeAll();
+                this._matDialog.closeAll();
                 this.Printresultentry();
-              
             }
             this.isLoading = '';
         });
@@ -816,7 +837,7 @@ console.log(element)
     }
 
     createResultdetailForm(item: any = {}): FormGroup {
-        
+
         return this.formBuilder.group({
             pathReportDetId: [item.pathReportDetId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             pathReportId: [item.PathReportId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -844,9 +865,9 @@ console.log(element)
             maxValue: [parseFloat(item.MaxValue), [this._FormvalidationserviceService.onlyNumberValidator()]],
 
             opipnumber: this.opipnumber || "Lab87",
-            ageY:this.ageY,
-            ageM:this.ageM,
-            ageD:this.ageD,
+            ageY: this.ageY,
+            ageM: this.ageM,
+            ageD: this.ageD,
             genderId: this.genderId,
             sampleNo: " ",
             suggestionNotes: this.vsuggation,
@@ -859,7 +880,7 @@ console.log(element)
     }
 
 
-      // onResultUp(data) {
+    // onResultUp(data) {
     //     
     // let items = this.dataSource.data.filter(x => (x?.Formula ?? "").indexOf('{{' + data.ParameterShortName + '}}') > 0);
     //     let items = this.dataSource.data.filter(x => String(x?.Formula ?? "").indexOf('{{' + data.ParameterShortName + '}}') > 0);

@@ -31,6 +31,7 @@ import { ReportVerifyDetailsComponent } from './report-verify-details/report-ver
 import { SamplecollectionPageComponent } from '../sample-collection/samplecollection-page/samplecollection-page.component';
 import { ConsoleLogger } from '@microsoft/signalr/dist/esm/Utils';
 import { Console } from 'console';
+import { EmailSendComponent } from 'app/main/shared/componets/email-send/email-send.component';
 
 
 
@@ -164,7 +165,7 @@ export class ResultEntryComponent implements OnInit {
         { heading: "Doctor Name", key: "doctorName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
 
         {
-            heading: "Action", key: "action", align: "right", width: 80, sticky: true, type: gridColumnTypes.template,
+            heading: "Action", key: "action", align: "right", width: 100, sticky: true, type: gridColumnTypes.template,
             template: this.actionButtonTemplate  // Assign ng-template to the column
         }
     ];
@@ -228,7 +229,8 @@ export class ResultEntryComponent implements OnInit {
         public toastr: ToastrService,
         private commonService: PrintserviceService,
         public _WhatsAppEmailService: WhatsAppEmailService,
-        private _fuseSidebarService: FuseSidebarService,
+        private _fuseSidebarService: FuseSidebarService,        
+        public _whatsppService: WhatsAppEmailService
     ) { }
 
     ngOnInit(): void {
@@ -296,7 +298,7 @@ export class ResultEntryComponent implements OnInit {
     }
 
     getSampledetailList1(row) {
-        debugger
+        // debugger
         this.dataSource1.data = [];
         let rawDate = row.pathDate;
         let day = rawDate.split("T")[0];
@@ -509,52 +511,60 @@ export class ResultEntryComponent implements OnInit {
         // this.dataSource1.data = [];
     }
 
-    getWhatsappshareResult(contact) {
+    chkresultentryVerify(contact, flag) {
+        debugger
+        this.printdata = [];
+        this.reportIdData = [];
+        this.ServiceIdData = [];
 
-        if (!contact.isTemplateTest) {
-            if (this.selection.selected.length == 0) {
-                this.toastr.warning('CheckBox Select !', 'Warning !', {
-                    toastClass: 'tostr-tost custom-toast-warning',
+        if (flag)
+            this.IsTemplateTest = contact.isTemplateTest
+
+        console.log(contact)
+        if (this.IsTemplateTest == 0) {
+            setTimeout(() => {
+                let data = [];
+                const contactArray = Array.isArray(contact) ? contact : [contact];
+                contactArray.forEach(element => {
+                    console.log(element)
+                    data.push({
+                        PathReportId: element["pathReportId"].toString(),
+                        ServiceId: element["serviceId"].toString(),
+                        IsCompleted: element["isCompleted"].toString()
+                    });
+                    this.printdata.push({ PathReportId: element["pathReportId"].toString() });
                 });
-                return;
-            }
-        }
-        if (!contact.isTemplateTest) {
-            this.whatsappresultentry();
 
-        }
+                console.log(this.printdata)
+                data.forEach((element) => {
+                    console.log('aaaaaa:', element)
+                    this.reportIdData.push(element.PathReportId)
+                    this.ServiceIdData.push(element.ServiceId)
+                    if (element.IsCompleted == "true")
+                        this.Iscompleted = 1;
+                });
 
-        if (this.Mobileno != '' || this.Mobileno != '0') {
-            var m_data = {
-                "insertWhatsappsmsInfo": {
-                    "mobileNumber": this.Mobileno || 0,
-                    "smsString": '',
-                    "isSent": 0,
-                    "smsType": 'PathlogyTestResult',
-                    "smsFlag": 0,
-                    "smsDate": this.currentDate,
-                    "tranNo": contact.OPD_IPD_Type,
-                    "PatientType": 2,//el.PatientType,
-                    "templateId": 0,
-                    "smSurl": "info@gmail.com",
-                    "filePath": '',
-                    "smsOutGoingID": 0
-                }
-            }
-            console.log(m_data)
-            this._WhatsAppEmailService.InsertWhatsappSales(m_data).subscribe(response => {
-                if (response) {
-                    this.toastr.success('Result Sent on WhatsApp Successfully.', 'Save !', {
-                        toastClass: 'tostr-tost custom-toast-success',
+                const dialogRef = this._matDialog.open(NewResultEntryComponent,
+                    {
+                        maxWidth: "75vw",
+                        height: '800px',
+                        width: '95%',
+                        data: {
+                            RIdData: data,
+                            patientdata: this.reportPrintObj,
+                            verifyCheck: true
+                        }
                     });
-                } else {
-                    this.toastr.error('API Error!', 'Error WhatsApp!', {
-                        toastClass: 'tostr-tost custom-toast-error',
-                    });
-                }
-            });
-
+                dialogRef.afterClosed().subscribe(result => {
+                    this.grid.bindGridData();
+                    this.getSelectedRow(event);
+                });
+            }, 100);
+            return;
         }
+        this.searchRecords(contact)
+        // this.selection.clear(); // Clears all selected items
+        // this.dataSource1.data = [];
     }
 
     OPIPID: any = 0;
@@ -740,7 +750,7 @@ export class ResultEntryComponent implements OnInit {
 
     // changed by raksha 5/11/25
     Printresultentry(row?: any[]) {
-        debugger
+        // debugger
         console.log(row);
         // let pathologyDelete = [];
 
@@ -1029,7 +1039,7 @@ export class ResultEntryComponent implements OnInit {
             if (this.dataSource.data.length > 0) {
                 this.Vtotalcount = this.dataSource.data.length
                 this.dataSource.data.forEach(element => {
-                    debugger
+                    // debugger
                     if (element.isCompleted == true) {
                         this.VCompletedcount = this.VCompletedcount + 1;
                     } else if (element.isCompleted == false) {
@@ -1093,6 +1103,33 @@ export class ResultEntryComponent implements OnInit {
         this._SampleService.myformSearch.get('RegNoSearch').setValue("0");
         this._SampleService.myformSearch.get('StatusSearch').setValue("0");
         this._SampleService.myformSearch.get('PatientTypeSearch').setValue("2");
+    }
+
+    getWhatsappshareBill(el) {
+        console.log(el);
+        this._whatsppService.OnWhatsAppMsgSent({
+            mobileNo: el.mobileNo,
+            patientName: el.patientName,
+            billNo: el.billNo,
+            smsType: "OPBill",
+            patientId: el.regNo
+        })
+    }
+
+    Onemail(contact) {
+        const dialogRef = this._matDialog.open(EmailSendComponent,
+            {
+                maxWidth: "100%",
+                height: '75%',
+                width: '55%',
+                data: {
+                    Obj: contact,
+                    emailType: 'OP-Bill'
+                }
+            });
+        dialogRef.afterClosed().subscribe(result => {
+            this.grid.bindGridData();
+        });
     }
 }
 

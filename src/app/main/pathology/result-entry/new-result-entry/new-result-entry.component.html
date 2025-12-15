@@ -245,8 +245,8 @@
         </div>
         <div class="modal-footer-buttons">
             <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
-            <button class="btn btn-primary" (click)="onSave()">Save</button>
-            <button class="btn btn-success" (click)="Printresultentry()">Authorization</button>
+            <button class="btn btn-primary" (click)="onSave()" *ngIf="!verifyCheck">Save</button>
+            <button class="btn btn-success" (click)="onVerify()" *ngIf="verifyCheck">Authorization</button>
         </div>
     </div>
 </div>

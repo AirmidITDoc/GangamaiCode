@@ -90,10 +90,6 @@
             <airmid-fileupload-icon [refId]="element.labPatientId" [refType]="page" [multiple]="true"
                 [title]="element.patientName + ' Document'"></airmid-fileupload-icon>
 
-            <!-- <button mat-icon-button matTooltip="Refund" (click)="getRefund(element)">
-                <mat-icon> replay </mat-icon>
-            </button> -->
-
             <button mat-icon-button matTooltip="Final Discount" *ngIf="element.balanceAmt > 0"
                 (click)="getFinalDisc(element)">
                 <mat-icon> money </mat-icon>

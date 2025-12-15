@@ -404,6 +404,7 @@ export class LabrefundBillComponent {
     this.vRefundOfBillFormGroup.get("refund.billId")?.setValue(row.billNo)
     this.vRefundOfBillFormGroup.get("refund.opdipdid")?.setValue(row.visitId)
     //Testing
+    debugger
     if (row.refundAmount < row.netPayableAmt) {
       this.getservicedtailList(row);
 

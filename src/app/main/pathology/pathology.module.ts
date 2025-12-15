@@ -23,11 +23,14 @@ const appRoutes: Routes = [
     path: "labrefund",
     loadChildren: () => import("./labrefund-bill/labrefund-bill.module").then((m) => m.LabrefundBillModule),
   },
+  {
+    path: "report-dispatch",
+    loadChildren: () => import("./report-dispatch/report-dispatch.module").then((m) => m.ReportDispatchModule),
+  },
 ];
 
 @NgModule({
-  declarations: [
-  ],
+  declarations: [],
   imports: [
     RouterModule.forChild(appRoutes),
   ]

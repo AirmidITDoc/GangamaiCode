@@ -10,7 +10,7 @@ import { ToastrService } from 'ngx-toastr';
 import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
 import { Color, gridModel, OperatorComparer } from 'app/core/models/gridRequest';
 import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
-import { FormGroup } from '@angular/forms';
+import { FormArray, FormGroup, UntypedFormBuilder } from '@angular/forms';
 import Swal from 'sweetalert2';
 import { NewAppointmentComponent } from 'app/main/opd/appointment-list/new-appointment/new-appointment.component';
 import { NewAdmissionComponent } from 'app/main/ipd/Admission/admission/new-admission/new-admission.component';
@@ -28,8 +28,7 @@ import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { DoctorDetailsPopoverComponent } from 'app/main/opd/appointment-list/doctor-details-popover/doctor-details-popover.component';
 import { PageNames } from 'app/main/shared/componets/airmid-fileupload/airmid-fileupload.component';
 import { DiscountAfterFinalLabbillComponent } from './discount-after-final-labbill/discount-after-final-labbill.component';
-import { LabrefundBillComponent } from './labrefund-bill/labrefund-bill.component';
-// import { NewLabPatientregComponent } from './new-lab-patientreg/new-lab-patientreg.component';
+import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 
 @Component({
   selector: 'app-lab-patient-reg',
@@ -52,6 +51,7 @@ export class LabPatientRegComponent {
   autocompleteModedoctor: string = "ConDoctor";
   autocompleteModeunit: string = "Hospital";
   page: PageNames = PageNames.LABPATIENT;
+  OpSettlementForm: FormGroup
 
   fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
   toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
@@ -69,12 +69,99 @@ export class LabPatientRegComponent {
     public _matDialog: MatDialog,
     public toastr: ToastrService,
     private commonService: PrintserviceService,
-    private overlay: Overlay
+    private overlay: Overlay,
+    public formBuilder: UntypedFormBuilder,
+    public _FormvalidationserviceService: FormvalidationserviceService,
   ) { }
 
   ngOnInit(): void {
     this.myFilterform = this._labPatientRegService.CreateSearchGroup();
+    this.OpSettlementForm = this.CreateOPSettlementForm();
+
     // this.GetlabAppointdetail();
+  }
+
+  CreateOPSettlementForm() {
+    return this.formBuilder.group({
+      opCreditPayment: this.formBuilder.group({
+        paymentId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        billNo: [0, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+        // receiptNo:['0'],
+        paymentDate: ['', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
+        paymentTime: ['', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
+        cashPayAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+        chequePayAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+        chequeNo: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+        bankName: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+        chequeDate: ['1999-01-01'],
+        cardPayAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+        cardNo: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+        cardBankName: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+        cardDate: ['1999-01-01'],
+        advanceUsedAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+        advanceId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        refundId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        transactionType: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        remark: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+        addBy: [this._loggedService.currentUserValue.userId],
+        isCancelled: [false],
+        isCancelledBy: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        isCancelledDate: ['1999-01-01'],
+        opdipdType: [0],
+        neftpayAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        neftno: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+        neftbankMaster: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+        neftdate: ['1999-01-01'],
+        payTmamount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+        payTmtranNo: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+        payTmdate: ['1999-01-01'],
+        tdsamount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+        unitId: [this._loggedService.currentUserValue.user.unitId, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        wfamount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+        companyId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      }),
+      //bill update 
+      billUpdate: this.formBuilder.group({
+        billNo: [0, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+        balanceAmt: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      }),
+      //New Payments
+      // ✅ Fixed: should be FormArray
+      tPayments: this.formBuilder.array([]),
+    })
+  }
+
+  CreateModePaymentform(item: any): FormGroup {
+    return this.formBuilder.group({
+      paymentId: [item?.paymentId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      unitId: [item?.unitId ?? this._loggedService.currentUserValue.user.unitId],
+      billNo: [item?.billNo ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      opdipdtype: [item?.opdipdtype ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      paymentDate: [item?.paymentDate ?? ''],
+      paymentTime: [item?.paymentTime ?? ''],
+      payAmount: [item?.payAmount ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      tranNo: [item?.tranNo ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+      bankName: [item?.bankName ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+      validationDate: [item?.validationDate ?? ''],
+      advanceUsedAmount: [item?.advanceUsedAmount ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      comments: [item?.comments ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+      payMode: [item?.payMode ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+      onlineTranNo: [item?.onlineTranNo ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+      onlineTranResponse: [item?.onlineTranResponse ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+      companyId: [item?.companyId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      advanceId: [item?.advanceId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      refundId: [item?.refundId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      cashCounterId: [item?.cashCounterId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      transactionType: [item?.transactionType ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      isSelfOrcompany: [item?.isSelfOrcompany ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      tranMode: [item?.tranMode ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+      createdBy: [item?.createdBy ?? this._loggedService.currentUserValue.userId],
+      transactionLabel: [item?.transactionLabel ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+    });
+  }
+
+  get ModeOfPaymentsArray(): FormArray {
+    return this.OpSettlementForm.get('tPayments') as FormArray;
   }
 
   ngAfterViewInit() {
@@ -249,36 +336,21 @@ export class LabPatientRegComponent {
     });
   }
 
-  // getRefund(contact) {
-  //   const dialogRef = this._matDialog.open(LabrefundBillComponent,
-  //     {
-  //       maxWidth: "99vw",
-  //       height: "98vh",
-  //       width: "95%",
-  //       data: {
-  //         Obj: contact,
-  //         // PatientObj: this.registerObj
-  //       }
-  //     });
-  //   dialogRef.afterClosed().subscribe(result => {
-  //     console.log('The dialog was closed - Insert Action', result);
-  //     this.grid.bindGridData();
-  //   });
-  // }
-
   openPaymentpopup(contact) {
     console.log(contact)
     let PatientHeaderObj = {};
     PatientHeaderObj['Date'] = this.datePipe.transform(contact.billDate, 'MM/dd/yyyy') || '01/01/1900',
-      PatientHeaderObj['RegNo'] = contact.regNo;
+      PatientHeaderObj['RegNo'] = contact.labRequestNo;
     PatientHeaderObj['PatientName'] = contact.patientName;
-    PatientHeaderObj['OPD_IPD_Id'] = contact.opD_IPD_ID;
+    PatientHeaderObj['OPD_IPD_Id'] = contact.labPatientId;
     PatientHeaderObj['Age'] = contact.ageYear;
     PatientHeaderObj['DepartmentName'] = contact.departmentName;
+    PatientHeaderObj['billNo'] = contact.billNo || 0;
     PatientHeaderObj['DoctorName'] = contact.doctorName;
     PatientHeaderObj['TariffName'] = contact.tariffName;
     PatientHeaderObj['CompanyName'] = contact.companyName;
     PatientHeaderObj['NetPayAmount'] = contact.balanceAmt;
+    PatientHeaderObj['TransactionLabel'] = 'OP_SETTLEMENT';
     // this.vMobileNo = contact.mobileNo;
     const dialogRef = this._matDialog.open(OpPaymentComponent,
       {
@@ -288,43 +360,86 @@ export class LabPatientRegComponent {
         height: '90%',
         data: {
           vPatientHeaderObj: PatientHeaderObj,
-          FromName: "OP-Bill"
+          FromName: "OP-SETTLEMENT"
         }
       });
     dialogRef.afterClosed().subscribe(result => {
       if (result.IsSubmitFlag == true) {
-        let PaymentObjarr = [];
-        let PaymentObj = result.submitDataPay.ipPaymentInsert
-        PaymentObjarr.push(PaymentObj);
+        this.OpSettlementForm.get('billUpdate.billNo').setValue(contact.billNo)
+        this.OpSettlementForm.get('billUpdate.balanceAmt').setValue(result.BillBalanceAmount)
+        this.OpSettlementForm.get('opCreditPayment').setValue(result.submitDataPay.ipPaymentInsert)
 
-
-        this.vpaidamt = result.PaidAmt;
-        this.vbalanceamt = result.BalAmt
-        PaymentObj['BillNo'] = contact.billNo;
-        let updateBillobj = {};
-        updateBillobj['BillNo'] = contact.billNo;
-        updateBillobj['balanceAmt'] = result.BillBalanceAmount;
-        console.log(result.submitDataPay.ipPaymentInsert)
-        let data = {
-          opCreditPayment: PaymentObj,
-          "billUpdate": {
-            "billNo": contact.billNo,
-            "balanceAmt": result.BillBalanceAmount
-          },
-          tPayments: PaymentObjarr
-        }
-        console.log(data)
-        this._labPatientRegService.InsertLabBillingsettlement(data).subscribe(response => {
-          this.toastr.success(response.message);
-          this.grid.gridConfig = this.gridConfig;
-          this.grid.bindGridData();
-          this.viewgetOPPayemntPdf(response, true);
-
-        }, (error) => {
-          this.toastr.error(error.message);
+        this.ModeOfPaymentsArray.clear();
+        result.submitDataPay.ipModePaymentInsert.forEach(item => {
+          this.ModeOfPaymentsArray.push(this.CreateModePaymentform(item));
         });
 
+        debugger
+        if (this.OpSettlementForm.valid) {
+          console.log(this.OpSettlementForm.value)
+          console.log(result.submitDataPay.ipPaymentInsert)
+
+          this._labPatientRegService.InsertLabBillingsettlement(this.OpSettlementForm.value).subscribe(response => {
+            this.viewgetOPPayemntPdf(response, true);
+          });
+        } else {
+          let invalidFields = []
+          if (this.OpSettlementForm.invalid) {
+            for (const controlName in this.OpSettlementForm.controls) {
+              const control = this.OpSettlementForm.get(controlName);
+              if (control instanceof FormGroup || control instanceof FormArray) {
+                for (const nestedKey in control.controls) {
+                  if (control.get(nestedKey)?.invalid) {
+                    invalidFields.push(`OP Settlement Data: ${controlName}.${nestedKey}`);
+                  }
+                }
+              } else if (control?.invalid) {
+                invalidFields.push(`OPSettlement From: ${controlName}`);
+              }
+            }
+          }
+          if (invalidFields.length > 0) {
+            invalidFields.forEach(field => {
+              this.toastr.warning(`Please Check this field "${field}" is invalid.`, 'Warning',
+              );
+            });
+            return
+          }
+        }
       }
+      // {
+      //   let PaymentObjarr = [];
+      //   let PaymentObj = result.submitDataPay.ipPaymentInsert
+      //   PaymentObjarr.push(PaymentObj);
+
+
+      //   this.vpaidamt = result.PaidAmt;
+      //   this.vbalanceamt = result.BalAmt
+      //   PaymentObj['BillNo'] = contact.billNo;
+      //   let updateBillobj = {};
+      //   updateBillobj['BillNo'] = contact.billNo;
+      //   updateBillobj['balanceAmt'] = result.BillBalanceAmount;
+      //   console.log(result.submitDataPay.ipPaymentInsert)
+      //   let data = {
+      //     opCreditPayment: PaymentObj,
+      //     "billUpdate": {
+      //       "billNo": contact.billNo,
+      //       "balanceAmt": result.BillBalanceAmount
+      //     },
+      //     tPayments: PaymentObjarr
+      //   }
+      //   console.log(data)
+      //   this._labPatientRegService.InsertLabBillingsettlement(data).subscribe(response => {
+      //     this.toastr.success(response.message);
+      //     this.grid.gridConfig = this.gridConfig;
+      //     this.grid.bindGridData();
+      //     this.viewgetOPPayemntPdf(response, true);
+
+      //   }, (error) => {
+      //     this.toastr.error(error.message);
+      //   });
+
+      // }
     });
 
   }
