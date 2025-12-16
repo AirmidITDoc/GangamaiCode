@@ -117,7 +117,7 @@ export class IpSalesReturnComponent implements OnInit {
         netAmount: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
         paidAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
         balanceAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-        isSellted: false,
+        isSellted: false,  
         isPrint: true,
         isFree: false,
         unitId: [this.accountService.currentUserValue.user.unitId, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -125,6 +125,12 @@ export class IpSalesReturnComponent implements OnInit {
         storeId: [this.accountService.currentUserValue.user.storeId, [this._FormvalidationserviceService.onlyNumberValidator()]],
         narration: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],//need to set concession reason
         isPurBill: [false]
+        // mobileNo: [this.selcteditemObj?.mobileNo || 0],
+        // patientName: [''],
+        // address: [''],
+        // doctorId:[this.selcteditemObj?.docNameID || 0],
+        // doctorName:[this.selcteditemObj?.doctorName || ''],
+        // returnType: [0]
       }),
       // sales return details in array
       salesReturnDetails: this.formBuilder.array([]),
@@ -167,12 +173,15 @@ export class IpSalesReturnComponent implements OnInit {
         tdsamount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
         unitId: [this.accountService.currentUserValue.user.unitId],
         wfamount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]], 
-      })
+      }),
+       //New Payments
+      // ✅ Fixed: should be FormArray
+      tPayments: this.formBuilder.array([]),
     });
   }
   createSalesretDetails(element: any): FormGroup {
     return this.formBuilder.group({
-      salesReturnID: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      salesReturnId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       itemId: [element?.ItemId, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       batchNo: [element?.BatchNo, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       batchExpDate: [this.datePipe.transform(element.ExpDate, "yyyy-MM-dd"), [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -214,6 +223,38 @@ export class IpSalesReturnComponent implements OnInit {
       returnQty: [element?.ReturnQty, [, this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
     });
   }
+  CreateModePaymentform(item: any): FormGroup {
+      return this.formBuilder.group({
+        paymentId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        unitId: [this.accountService.currentUserValue.user.unitId],
+        billNo: [item?.billNo ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        opdipdtype: [3, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        paymentDate: [item?.paymentDate ?? ''],
+        paymentTime: [item?.paymentTime ?? ''],
+        payAmount: [item?.payAmount ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+        tranNo: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+        bankName: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+        validationDate: [item?.validationDate ?? ''],
+        advanceUsedAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+        comments: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+        payMode: [item?.payMode ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+        onlineTranNo: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+        onlineTranResponse: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+        companyId: [item?.companyId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        advanceId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        refundId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        cashCounterId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        transactionType: [5, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        isSelfOrcompany: [item?.isSelfOrcompany ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        tranMode: ['PHAR', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+        createdBy: [this.accountService.currentUserValue.userId],
+        transactionLabel: ['SALES_RETURN', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+      });
+  }
+    // Getters 
+    get ModeOfPaymentsArray(): FormArray {
+      return this.IpSalesReturnForm.get('tPayments') as FormArray;
+      }
   // Getters 
   get SaleRetDetailsArray(): FormArray {
     return this.IpSalesReturnForm.get('salesReturnDetails') as FormArray;
@@ -505,6 +546,7 @@ export class IpSalesReturnComponent implements OnInit {
 
     this.IpSalesReturnForm.get('salesReturn.date').setValue(formattedDate)
     this.IpSalesReturnForm.get('salesReturn.time').setValue(FormattedDateTime)
+    //this.IpSalesReturnForm.get('salesReturn.patientName').setValue(this.vPatientName || '')
     this.IpSalesReturnForm.get('salesReturn.totalAmount')?.setValue(this.IPSalesRetFooterform.get('FinalTotalAmt').value)
     this.IpSalesReturnForm.get('salesReturn.vatAmount')?.setValue(this.IPSalesRetFooterform.get('FinalGSTAmt').value)
     this.IpSalesReturnForm.get('salesReturn.discAmount')?.setValue(this.IPSalesRetFooterform.get('FinalDiscAmount').value)
@@ -525,6 +567,22 @@ export class IpSalesReturnComponent implements OnInit {
         this.IpSalesReturnForm.get('payment.paymentDate').setValue(formattedDate)
         this.IpSalesReturnForm.get('payment.paymentTime').setValue(FormattedDateTime)
         this.IpSalesReturnForm.get('payment.cashPayAmount').setValue((Math.round(this.IPSalesRetFooterform.get('FinalNetAmount').value)))
+
+                let ModePaymentObj = [];
+                ModePaymentObj.push({ 
+                     billNo: this.selcteditemObj?.SalesId,
+                     paymentDate: formattedDate,
+                     paymentTime: formattedTime,
+                     payAmount: (Math.round(this.IPSalesRetFooterform.get('FinalNetAmount')?.value || 0)),
+                     validationDate: formattedDate, 
+                     payMode: "CASH",
+                     companyId: this.registerObj?.companyId ?? 0,
+                     isSelfOrcompany: this.registerObj?.companyId ? 1 : 0, 
+                   }); 
+                this.ModeOfPaymentsArray.clear();
+                ModePaymentObj.forEach(item => {
+                    this.ModeOfPaymentsArray.push(this.CreateModePaymentform(item));
+                });
 
         console.log(this.IpSalesReturnForm.value);
         this._IpSalesRetService.InsertCashSalesReturn(this.IpSalesReturnForm.value).subscribe(response => { 

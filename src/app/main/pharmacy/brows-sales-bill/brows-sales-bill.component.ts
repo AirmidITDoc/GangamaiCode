@@ -538,20 +538,14 @@ cancelEdit(row: any) {
     debugger
     if (this._BrowsSalesBillService.SalesPatientForm.get('IsDischarge').value == false) {
       this.apiUrl = "Admission/AdmissionList"
-      this.status = "0"
-      this._BrowsSalesBillService.SalesPatientForm.get('startdate1').setValue('');
-      this._BrowsSalesBillService.SalesPatientForm.get('enddate1').setValue('');
-      this.Fr_Date = '' // this.datePipe.transform(this._BrowsSalesBillService.SalesPatientForm.get('startdate1').value, "yyyy-MM-dd")
-      this.T_Date = '' // this.datePipe.transform(this._BrowsSalesBillService.SalesPatientForm.get('enddate1').value, "yyyy-MM-dd")
-
-
+      this.status = "0" 
+      this.Fr_Date = "1900-01-01" 
+      this.T_Date = "1900-01-01"
     } else {
       this.apiUrl = "Admission/AdmissionDischargeList"
-      this.status = "1"
-      this._BrowsSalesBillService.SalesPatientForm.get('startdate1').setValue(new Date());
-      this._BrowsSalesBillService.SalesPatientForm.get('enddate1').setValue(new Date());
-      this.Fr_Date = this.datePipe.transform(this._BrowsSalesBillService.SalesPatientForm.get('startdate1').value, "yyyy-MM-dd")
-      this.T_Date = this.datePipe.transform(this._BrowsSalesBillService.SalesPatientForm.get('enddate1').value, "yyyy-MM-dd")
+      this.status = "1" 
+      this.Fr_Date = this.datePipe.transform(this._BrowsSalesBillService.SalesPatientForm.get('startdate1').value, "yyyy-MM-dd") || "1900-01-01"
+      this.T_Date = this.datePipe.transform(this._BrowsSalesBillService.SalesPatientForm.get('enddate1').value, "yyyy-MM-dd") || "1900-01-01"
 
     }
     this.first_N = this._BrowsSalesBillService.SalesPatientForm.get('F_Name').value + "%" 
@@ -561,6 +555,7 @@ cancelEdit(row: any) {
     this.ipdno = this._BrowsSalesBillService.SalesPatientForm.get('IPDNo').value || "0"
     this.getPatientlistdata();
   }
+ 
   getPatientlistdata() {
     debugger
     this.gridConfig4 = {
@@ -580,9 +575,45 @@ cancelEdit(row: any) {
         { fieldName: "IPNo", fieldValue: this.ipdno, opType: OperatorComparer.Equals }
       ],
     }
-    this.grid4.gridConfig = this.gridConfig4;
-    this.grid4.bindGridData();
+    // this.grid4.gridConfig = this.gridConfig4;
+    // this.grid4.bindGridData();
   }
+  getchangeDate() {
+    debugger
+      if (this._BrowsSalesBillService.SalesPatientForm.get('IsDischarge').value != false) {
+            this.apiUrl = "Admission/AdmissionDischargeList"
+            this.Fr_Date = this.datePipe.transform(this._BrowsSalesBillService.SalesPatientForm.get('startdate1').value, "yyyy-MM-dd") || "1900-01-01"
+            this.T_Date = this.datePipe.transform(this._BrowsSalesBillService.SalesPatientForm.get('enddate1').value, "yyyy-MM-dd") || "1900-01-01"
+            this.status = '1'
+        }
+    this.first_N = this._BrowsSalesBillService.SalesPatientForm.get('F_Name').value + "%" 
+    this.middle_N = this._BrowsSalesBillService.SalesPatientForm.get('M_Name').value + "%" 
+    this.Last_N = this._BrowsSalesBillService.SalesPatientForm.get('L_Name').value + "%" 
+    this.reg_No_Pt = this._BrowsSalesBillService.SalesPatientForm.get('RegNo').value || "0"
+    this.ipdno = this._BrowsSalesBillService.SalesPatientForm.get('IPDNo').value || "0"
+    this.getPatientlistdata();
+    } 
+ 
+    onChangeDiscahrge(event) {
+      debugger
+         if (this._BrowsSalesBillService.SalesPatientForm.get('IsDischarge').value == false) {
+            this._BrowsSalesBillService.SalesPatientForm.get('startdate1').setValue('')
+            this._BrowsSalesBillService.SalesPatientForm.get('enddate1').setValue('')
+            this.Fr_Date = "1900-01-01"
+            this.T_Date = "1900-01-01"
+            this.status = '0'
+            this.apiUrl = "Admission/AdmissionList"
+        } else {
+            this._BrowsSalesBillService.SalesPatientForm.get('startdate1').setValue(new Date())
+            this._BrowsSalesBillService.SalesPatientForm.get('enddate1').setValue(new Date())
+            this.Fr_Date = this.datePipe.transform(this._BrowsSalesBillService.SalesPatientForm.get('startdate1').value, "yyyy-MM-dd") || "1900-01-01"
+            this.T_Date = this.datePipe.transform(this._BrowsSalesBillService.SalesPatientForm.get('enddate1').value, "yyyy-MM-dd") || "1900-01-01"
+            this.status = '1'
+            this.apiUrl = "Admission/AdmissionDischargeList"
+        }
+        this.getPatientlistdata();
+    }
+
   getValidationMessages() {
     return {
       RegNo: [
@@ -718,7 +749,10 @@ cancelEdit(row: any) {
         advanceId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         advanceUsedAmount: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
         balanceAmount: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-      })
+      }),
+       //New Payments
+      // ✅ Fixed: should be FormArray
+      tPayments: this._formBuilder.array([]),
     });
   } 
     createAdvanceDetails(element: any): FormGroup {
@@ -772,6 +806,38 @@ cancelEdit(row: any) {
       unitId: [this._loggedService.currentUserValue.user.unitId, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]], 
     });  
   }
+    CreateModePaymentform(item: any): FormGroup {
+      return this._formBuilder.group({
+        paymentId: [item?.paymentId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        unitId: [item?.unitId ?? this._loggedService.currentUserValue.user.unitId],
+        billNo: [item?.billNo ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        opdipdtype: [item?.opdipdtype ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        paymentDate: [item?.paymentDate ?? ''],
+        paymentTime: [item?.paymentTime ?? ''],
+        payAmount: [item?.payAmount ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+        tranNo: [item?.tranNo ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+        bankName: [item?.bankName ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+        validationDate: [item?.validationDate ?? ''],
+        advanceUsedAmount: [item?.advanceUsedAmount ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+        comments: [item?.comments ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+        payMode: [item?.payMode ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+        onlineTranNo: [item?.onlineTranNo ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+        onlineTranResponse: [item?.onlineTranResponse ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+        companyId: [item?.companyId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        advanceId: [item?.advanceId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        refundId: [item?.refundId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        cashCounterId: [item?.cashCounterId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        transactionType: [item?.transactionType ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        isSelfOrcompany: [item?.isSelfOrcompany ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        tranMode: ['PHAR', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+        createdBy: [item?.createdBy ?? this._loggedService.currentUserValue.userId],
+        transactionLabel: [item?.transactionLabel ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+      });
+    }
+    // Getters 
+  get ModeOfPaymentsArray(): FormArray {
+   return this.PharmaSettlementfrom.get('tPayments') as FormArray;
+   }
   // Getters 
   get AdvanceDetailsArray(): FormArray {
     return this.PharmaSettlementfrom.get('advanceDetail') as FormArray;
@@ -791,15 +857,16 @@ cancelEdit(row: any) {
 
     let PatientHeaderObj = {};
     PatientHeaderObj['Date'] = formattedDate;
-    PatientHeaderObj['PatientName'] = contact?.patientName;
+    PatientHeaderObj['PatientName'] = contact?.patientName || '';
     PatientHeaderObj['AdvanceAmount'] = Math.round(contact?.balanceAmount);
     PatientHeaderObj['NetPayAmount'] = Math.round(contact?.balanceAmount);
-    PatientHeaderObj['BillNo'] = contact?.salesId;
-    PatientHeaderObj['OPD_IPD_Id'] =  contact?.opipid;
-    PatientHeaderObj['RegNo'] = contact?.regNo;
-    PatientHeaderObj['DoctorName'] = '';
-    PatientHeaderObj['DepartmentName'] = '';
-    PatientHeaderObj['Age'] ='';
+    PatientHeaderObj['BillNo'] = contact?.salesId || 0;
+    PatientHeaderObj['OPD_IPD_Id'] =  contact?.opipid || 0;
+    PatientHeaderObj['RegNo'] = contact?.regNo || 0;
+    PatientHeaderObj['CashcounterId'] = contact?.cashCounterID || 0;
+     PatientHeaderObj['CompanyName'] = contact?.companyName || '';  
+    PatientHeaderObj['CompanyId'] = contact?.companyId || 0;  
+    PatientHeaderObj['TransactionLabel'] = 'SALES_SETTLEMENT';
     if (contact?.oP_IP_Type == 1)
       PatientHeaderObj['IPDNo'] =  contact?.ipno;
     else
@@ -853,6 +920,11 @@ cancelEdit(row: any) {
         PaymentArray = result.submitDataPay.ipPaymentInsert;
         this.PaymentArray.clear();
         this.PaymentArray.push(this.createSettlmentPyament(PaymentArray));
+
+        this.ModeOfPaymentsArray.clear();
+        result.submitDataPay.ipModePaymentInsert.forEach(item => {
+          this.ModeOfPaymentsArray.push(this.CreateModePaymentform(item));
+        });
 
         console.log(this.PharmaSettlementfrom.value);
         this._BrowsSalesBillService.InsertSalessettlement(this.PharmaSettlementfrom.value).subscribe(response => {

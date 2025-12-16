@@ -157,7 +157,7 @@
                                         <div fxFlex="100" fxLayout="row wrap" fxLayoutGap="10px grid">
                                             <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                 <airmid-dropdown label="Unit Name" formControlName="unitId"
-                                                    [value]="data?.unitId"
+                                                    [value]="data?.unitId" [readonly]="true"
                                                     [validations]="getValidationMessages().UnitId" [formGroup]="myForm"
                                                     [mode]="autocompleteModeunit"></airmid-dropdown>
                                             </div>
@@ -242,17 +242,6 @@
                                             </div>
 
                                             <div fxLayout="column" fxLayoutGap="10px">
-                                                <!-- <div fxLayout="row wrap" fxLayoutAlign="space-between center"
-                                                    fxLayoutGap="12px">
-                                                    <form [formGroup]="myForm">
-                                                        <mat-radio-group formControlName="IsPathRad"
-                                                            (change)="getServiceList()">
-                                                            <mat-radio-button value="1">Pathology</mat-radio-button>
-                                                            <mat-radio-button value="2">Radiology</mat-radio-button>
-                                                        </mat-radio-group>
-                                                    </form>
-                                                </div> -->
-
                                                 <div fxLayout="row" fxLayoutGap="16px">
                                                     <div fxLayout="column" fxFlex="30%">
 
@@ -326,7 +315,7 @@
                                                                         class="w-350">{{contact.ServiceName}}</mat-cell>
                                                                 </ng-container>
 
-                                                                <ng-container matColumnDef="DoctorName">
+                                                                <!-- <ng-container matColumnDef="DoctorName">
                                                                     <mat-header-cell *matHeaderCellDef mat-sort-header
                                                                         class="w-350">Doctor Name</mat-header-cell>
                                                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm
@@ -343,6 +332,31 @@
                                                                                 </mat-option>
                                                                             </mat-select>
                                                                         </mat-form-field>
+                                                                    </mat-cell>
+                                                                </ng-container> -->
+                                                                <ng-container matColumnDef="DoctorName">
+                                                                    <mat-header-cell *matHeaderCellDef mat-sort-header
+                                                                        class="w-350">
+                                                                        Doctor Name
+                                                                    </mat-header-cell>
+
+                                                                    <mat-cell *matCellDef="let contact" class="w-350">
+                                                                        <ng-container *ngIf="showDoctorDropdown(contact)">
+                                                                            <mat-form-field appearance="outline" 
+                                                                                fxFlex="200px" floatLabel="never">
+                                                                                <mat-select placeholder="Select Doctor"
+                                                                                    [(ngModel)]="contact.DoctorId"
+                                                                                    [ngModelOptions]="{ standalone: true }"
+                                                                                    required
+                                                                                    (selectionChange)="getdocdetail($event, contact)">
+                                                                                    <mat-option
+                                                                                        *ngFor="let option of doctorOptions"
+                                                                                        [value]="option.value || option.Value">
+                                                                                        {{ option.text || option.Text }}
+                                                                                    </mat-option>
+                                                                                </mat-select>
+                                                                            </mat-form-field>
+                                                                        </ng-container>
                                                                     </mat-cell>
                                                                 </ng-container>
 

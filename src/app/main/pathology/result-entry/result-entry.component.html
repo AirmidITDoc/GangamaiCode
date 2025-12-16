@@ -117,7 +117,7 @@
                                             [(ngModel)]="gridConfig.filters[6].fieldValue">
                                             <mat-label><b>Patient Type:</b></mat-label>
                                             <div fxLayout="row">
-                                                <mat-radio-button value='2'>All</mat-radio-button>
+                                                <mat-radio-button value='3'>All</mat-radio-button>
                                                 <mat-radio-button value='1'>IP</mat-radio-button>
                                                 <mat-radio-button value='0'>OP</mat-radio-button>
                                                 <mat-radio-button value='4'>LAB</mat-radio-button>
@@ -362,7 +362,7 @@
                                                 class="w-200">Status</mat-header-cell>
                                             <mat-cell *matCellDef="let contact" class="w-200">
                                                 <div fxLayout="row" fxLayoutAlign="center center">
-                                                    <!-- <ng-container *ngIf="contact">
+                                                    <ng-container *ngIf="contact">
                                                         <div class="status-wrapper">
                                                             <span class="status-box" [ngClass]="{
                                                                     'status-completed': contact.isCompleted,
@@ -374,29 +374,17 @@
                                                             <span class="status-box" [ngClass]="{
                                                                     'status-completed': contact.isVerifyid,
                                                                     'status-pending': !contact.isVerifyid
-                                                                }" matTooltip="
-                                                                    {{
-                                                                    contact.isVerifyid
-                                                                        ? 'Verified'
-                                                                        : (contact.isCompleted ? 'Verify Report' : 'Test is Pending')
-                                                                    }}
-                                                                " (click)="contact.isCompleted && !contact.isVerifyid && onVerify(contact)"
-                                                                [style.cursor]="contact.isCompleted && !contact.isVerifyid ? 'pointer' : 'not-allowed'"
+                                                                }" [matTooltip]="getVerifyTooltip(contact)"
+                                                                matTooltipClass="verify-tooltip"
+                                                                (click)="contact.isCompleted && !contact.isVerifyid && chkresultentryVerify(contact,true)"
+                                                                [style.cursor]="contact.isCompleted && !contact.isVerifyid ? 'pointer' : 'default'"
                                                                 [style.pointer-events]="contact.isCompleted ? 'auto' : 'none'">
+
                                                                 {{ contact.isVerifyid ? 'Verified' : 'UnVerified' }}
+
                                                             </span>
-                                                        </div>
-                                                    </ng-container> -->
-                                                    <ng-container *ngIf="contact">
-                                                        <div class="status-wrapper">
-                                                            <span class="status-box" [ngClass]="{
-                                                                    'status-completed': contact.isCompleted,
-                                                                    'status-pending': !contact.isCompleted
-                                                                }"
-                                                                matTooltip="{{ contact.isCompleted ? 'Report Completed' : 'Report Not Completed' }}">
-                                                                {{ contact.isCompleted ? 'Completed' : 'Pending' }}
-                                                            </span>
-                                                            <span class="status-box" [ngClass]="{
+
+                                                            <!-- <span class="status-box" [ngClass]="{
                                                                     'status-completed': contact.isVerifyid,
                                                                     'status-pending': !contact.isVerifyid
                                                                 }" matTooltip="
@@ -410,7 +398,7 @@
                                                                 [style.cursor]="contact.isCompleted && !contact.isVerifyid ? 'pointer' : 'not-allowed'"
                                                                 [style.pointer-events]="contact.isCompleted ? 'auto' : 'none'">
                                                                 {{ contact.isVerifyid ? 'Verified' : 'UnVerified' }}
-                                                            </span>
+                                                            </span> -->
                                                         </div>
                                                     </ng-container>
                                                 </div>
@@ -419,10 +407,10 @@
 
                                         <ng-container matColumnDef="CategoryName">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md
-                                                class="w-130">
+                                                class="w-150">
                                                 Category
                                             </mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="w-130">
+                                            <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="w-150">
                                                 <span> {{contact.categoryName}}</span>
                                             </mat-cell>
                                         </ng-container>
@@ -432,7 +420,8 @@
                                                 class="w-300">Test Name
                                             </mat-header-cell>
                                             <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-300">
-                                                <span> {{contact.serviceName}}</span>
+                                                <span [matTooltip]="getOutSourceTooltip(contact)"
+                                                matTooltipClass="multiline-tooltip"> {{contact.serviceName}}</span>
                                             </mat-cell>
                                         </ng-container>
 

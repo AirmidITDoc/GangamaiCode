@@ -397,7 +397,8 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
             concessionReasonId: [0, this._FormvalidationserviceService.onlyNumberValidator()],
             netPayableAmt: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
             paymentType: ['CashPay'],
-            mpesaMobile: ['']
+            mpesaMobile: [''],
+            UpiNo:[0, [Validators.minLength(4), Validators.maxLength(12), this._FormvalidationserviceService.onlyNumberValidator()]]
         })
     }
     createTotalChargeForm(): FormGroup {
@@ -599,30 +600,30 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
     }
     CreateModePaymentform(item: any): FormGroup {
         return this.formBuilder.group({
-            paymentId: [item?.paymentId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            unitId: [item?.unitId ?? this.accountService.currentUserValue.user.unitId],
-            billNo: [item?.billNo ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            opdipdtype: [item?.opdipdtype ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            paymentId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            unitId: [this.accountService.currentUserValue.user.unitId],
+            billNo: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            opdipdtype: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             paymentDate: [item?.paymentDate ?? ''],
             paymentTime: [item?.paymentTime ?? ''],
             payAmount: [item?.payAmount ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
             tranNo: [item?.tranNo ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
             bankName: [item?.bankName ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
             validationDate: [item?.validationDate ?? ''],
-            advanceUsedAmount: [item?.advanceUsedAmount ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            advanceUsedAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
             comments: [item?.comments ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
             payMode: [item?.payMode ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
             onlineTranNo: [item?.onlineTranNo ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
             onlineTranResponse: [item?.onlineTranResponse ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
             companyId: [item?.companyId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            advanceId: [item?.advanceId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            refundId: [item?.refundId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            advanceId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            refundId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             cashCounterId: [item?.cashCounterId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             transactionType: [item?.transactionType ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             isSelfOrcompany: [item?.isSelfOrcompany ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            tranMode: [item?.tranMode ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
-            createdBy: [item?.createdBy ?? this.accountService.currentUserValue.userId],
-            transactionLabel: [item?.transactionLabel ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+            tranMode: ['HOSP', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+            createdBy: [this.accountService.currentUserValue.userId],
+            transactionLabel: ['OP_BILL', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
         });
     }
     // Getters
@@ -1098,6 +1099,15 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
         this.ApiURL = "VisitDetail/GetServiceListwithTraiff?TariffId=" + event.value + "&ClassId=" + this.patientDetail.classId + "&ServiceName="
     }
     BillSave() {
+        if (this.OPFooterForm.get('paymentType').value == 'OnlinePay') {
+                const upi = this.OPFooterForm.get('UpiNo')?.value;
+                if (!upi || upi.length < 4) {
+                this.toastr.warning('Enter UPI No (min 4 & max 12 characters)', 'Warning !', {
+                    toastClass: 'tostr-tost custom-toast-warning',
+                });
+                return;
+            }  
+        } 
         Swal.fire({
             title: 'Confirm Save',
             text: 'Are you sure you want to save this OPD bill?',
@@ -1115,6 +1125,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
     }
     mpesaResponse_1:any=[];
     OnSave() {
+        debugger
         if (this.OPFooterForm.get('concessionAmt').value > 0 && this.Consessionres) {
             if (!this.OPFooterForm.get('concessionReasonId').value) {
                 this.toastr.warning('Please select ConcessionReason.', 'Warning !', {
@@ -1154,14 +1165,12 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
             this.BillDetailsArray.clear();
             this.dsChargeList.data.forEach(item => {
                 this.ChargeddetailsArray.push(this.CreateAddchargeform(item as ChargesList));
-                this.BillDetailsArray.push(this.createBillDetails(item as ChargesList));
-
+                this.BillDetailsArray.push(this.createBillDetails(item as ChargesList)); 
 
                 if (item.IsPackage == 1) {
                     this.packcagechargesArray.clear();
                     this.dsPackageList.data.forEach(item => {
-                        this.packcagechargesArray.push(this.Createpacakgechargeform(item as ChargesList));
-
+                        this.packcagechargesArray.push(this.Createpacakgechargeform(item as ChargesList)); 
                     });
                 }
             });
@@ -1223,31 +1232,21 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
             }
             else if (this.OPFooterForm.get('paymentType').value == 'CashPay') {//Cash pay  
                 let ModePaymentObj = [];
-                 ModePaymentObj.push({
-                    paymentId: 0,
-                    unitId: this.accountService.currentUserValue.user.unitId,
-                    billNo: 0,
-                    opdipdtype: 0,
+                 ModePaymentObj.push({ 
                     paymentDate: formattedDate,
                     paymentTime: formattedTime,
                     payAmount: this.OPFooterForm.get('netPayableAmt')?.value ?? 0,
                     tranNo: "",
                     bankName: "",
-                    validationDate: this.datePipe.transform(this.currentDate, 'yyyy-MM-dd'),
-                    advanceUsedAmount: 0,
+                    validationDate: this.datePipe.transform(this.currentDate, 'yyyy-MM-dd'), 
                     comments: "",
-                    payMode: "CASH",
+                    payMode: "UPI",
                     onlineTranNo: "0",
                     onlineTranResponse: "0",
-                    companyId: this.patientDetail?.CompanyId ?? 0,
-                    advanceId: 0,
-                    refundId: 0,
+                    companyId: this.patientDetail?.CompanyId ?? 0, 
                     cashCounterId:this.searchForm.get('CashCounterID')?.value || 0,
                     transactionType: 0,
-                    isSelfOrcompany: this.patientDetail?.CompanyId ? 1 : 0,
-                    tranMode: "HOSP",
-                    createdBy: this.accountService.currentUserValue?.userId ?? 0,
-                    transactionLabel:'OP_BILL'
+                    isSelfOrcompany: this.patientDetail?.CompanyId ? 1 : 0, 
                 }); 
                 this.OpBillForm.get('balanceAmt').setValue(0)
                 this.OpBillForm.get('paidAmt')?.setValue(this.OPFooterForm.get('netPayableAmt')?.value)
@@ -1260,6 +1259,56 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
                         ModePaymentObj.forEach(item => {
                         this.ModeOfPaymentsArray.push(this.CreateModePaymentform(item as ChargesList));
                         });  
+
+                console.log(this.OpBillForm.value)
+                this._AppointmentlistService.InsertOPBilling(this.OpBillForm.value).subscribe(response => {
+                    debugger
+                    console.log(response)
+                    if (ThermalPrint != 1) {
+                        this.viewgetOPBillReportPdf(response)
+                    } else {
+                        this.viewgetOPBillThermalReportPdf(response)
+                    }
+
+                    this.mpesaResponse = response.data;
+                    // this.startPolling();
+                    this._matDialog.closeAll();
+                    this.savebtn = true
+                    this.resetform();
+                });
+            }
+            else if (this.OPFooterForm.get('paymentType').value == 'OnlinePay') {  
+                let ModePaymentObj = [];
+                 ModePaymentObj.push({ 
+                    paymentDate: formattedDate,
+                    paymentTime: formattedTime,
+                    payAmount: this.OPFooterForm.get('netPayableAmt')?.value ?? 0,
+                    tranNo: this.OPFooterForm.get('UpiNo')?.value || 0,
+                    bankName: "",
+                    validationDate: this.datePipe.transform(this.currentDate, 'yyyy-MM-dd'), 
+                    comments: "",
+                    payMode: "UPI",
+                    onlineTranNo: "0",
+                    onlineTranResponse: "0",
+                    companyId: this.patientDetail?.CompanyId ?? 0, 
+                    cashCounterId:this.searchForm.get('CashCounterID')?.value || 0,
+                    transactionType: 0,
+                    isSelfOrcompany: this.patientDetail?.CompanyId ? 1 : 0, 
+                }); 
+
+                this.OpBillForm.get('balanceAmt').setValue(0)
+                this.OpBillForm.get('paidAmt')?.setValue(this.OPFooterForm.get('netPayableAmt')?.value)
+                this.OpBillForm.get('payments.payTmamount')?.setValue(Number(this.OPFooterForm.get('netPayableAmt')?.value))
+                this.OpBillForm.get('payments.paymentDate')?.setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'))
+                this.OpBillForm.get('payments.paymentTime')?.setValue(this.dateTimeObj.time)
+                this.OpBillForm.get('payments.payTmtranNo')?.setValue(this.OPFooterForm.get('UpiNo')?.value || 0)
+                this.OpBillForm.get('payments.payTmdate')?.setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'))
+                this.OpBillForm.get('payments.companyId')?.setValue(this.patientDetail?.companyId || 0)
+
+                this.ModeOfPaymentsArray.clear(); 
+                ModePaymentObj.forEach(item => {
+                this.ModeOfPaymentsArray.push(this.CreateModePaymentform(item as ChargesList));
+                });  
 
                 console.log(this.OpBillForm.value)
                 this._AppointmentlistService.InsertOPBilling(this.OpBillForm.value).subscribe(response => {
@@ -1424,6 +1473,11 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
             netAmount: [{ name: "pattern", Message: "only Number allowed." }],
             tariffId: [
                 { name: "pattern", Message: "only Char allowed." }
+            ],
+              UpiNo: [
+                { name: "required", Message: "UPI required!", },
+                { name: "pattern", Message: "only Number allowed.", },
+                { name: "min", Message: "Enter valid UPI No.", }
             ],
         }
     }

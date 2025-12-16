@@ -694,10 +694,16 @@
                                 <mat-radio-group aria-label="Select an option" formControlName="CashPay" (change)="checkCreditreason()">
                                   <mat-radio-button value="Credit" *ngIf="paymethod" >Credit</mat-radio-button>
                                   <mat-radio-button value="CashPay">Cash</mat-radio-button>
-                                  <!-- <mat-radio-button value="Online">Online</mat-radio-button> -->
+                                  <mat-radio-button value="Online">Online</mat-radio-button>
                                   <mat-radio-button value="PayOption">PayOption</mat-radio-button>
                                   <!-- <mat-radio-button value="Other">Multiple Pay</mat-radio-button> -->
                                 </mat-radio-group>
+
+                                  <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="100%" *ngIf="ItemSubform.get('CashPay')?.value === 'Online'">
+                                            <airmid-textbox label="UPI NO" formControlName="UpiNo" [formGroup]="ItemSubform"
+                                                [validations]="getValidationMessages().UpiNo"  [minLength]="4" [maxLength]="12">
+                                            </airmid-textbox>
+                                        </div>
 
                                
                          

@@ -578,18 +578,7 @@ export class NewOPListComponent implements OnInit {
             event.preventDefault();
             return false;
         }
-    }
-    Onemailold(el) {
-        this._whatsppService.OnEmailMsgSent({
-            toEmail: el?.email ?? "ambadasgajul1999@gmail.com",   // patient email or fallback
-            cc: "",
-            mailSubject: `OPD Bill Print – Bill No: ${el.billNo}`,
-            mailBody: `Dear Patient,\n\nPlease find attached your OPD Bill (Bill No: ${el.billNo}).\n\nRegards,\nAirmidTech Innovations`,
-            billNo: el.billNo,
-            emailType: "OPBill",
-            patientId:el.regNo
-        });
-    }
+    } 
     Onmessage(data) { }
 
     getWhatsappshareBill(el) {
@@ -611,7 +600,7 @@ export class NewOPListComponent implements OnInit {
                 width: '55%',
                 data: {
                     Obj: contact,
-                    emailType:'OP-Bill'
+                    emailType:'OPBill'
                 }
             });
         dialogRef.afterClosed().subscribe(result => {

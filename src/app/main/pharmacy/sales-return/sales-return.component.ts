@@ -162,6 +162,12 @@ export class SalesReturnComponent implements OnInit {
           storeId: [this._loggedService.currentUserValue.user.storeId, [this._FormvalidationserviceService.onlyNumberValidator()]],
           narration: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],//need to set concession reason
           isPurBill: [false]
+          // mobileNo: [0],
+          // patientName: [''],
+          // address: [''],
+          // doctorId:[this.selcteditemObj?.docNameID || 0],
+          // doctorName:[this.selcteditemObj?.doctorName || ''],
+          // returnType: [0]
         }),
         // sales return details in array
         salesReturnDetails: this.formBuilder.array([]),
@@ -172,7 +178,7 @@ export class SalesReturnComponent implements OnInit {
         //Payment form
         payment: this.formBuilder.group({
           paymentId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]], 
-          billNo: [this.selcteditemObj.SalesId, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+          billNo: [this.selcteditemObj?.SalesId, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
           paymentDate: ['', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
           paymentTime: ['', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
           cashPayAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
@@ -204,12 +210,15 @@ export class SalesReturnComponent implements OnInit {
           tdsamount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
           unitId: [this._loggedService.currentUserValue.user.unitId],
           wfamount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]], 
-        })
+        }),
+               //New Payments
+      // ✅ Fixed: should be FormArray
+      tPayments: this.formBuilder.array([]),
       });
     }
     createSalesretDetails(element: any): FormGroup {
       return this.formBuilder.group({
-        salesReturnID: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        salesReturnId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         itemId: [element?.ItemId, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
         batchNo: [element?.BatchNo, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
         batchExpDate: [this.datePipe.transform(element.BatchExpDate, "yyyy-MM-dd")],
@@ -251,6 +260,38 @@ export class SalesReturnComponent implements OnInit {
         returnQty: [element?.ReturnQty, [, this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       });
     }
+    CreateModePaymentform(item: any): FormGroup {
+      return this.formBuilder.group({
+        paymentId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        unitId: [this._loggedService.currentUserValue.user.unitId],
+        billNo: [item?.billNo ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        opdipdtype: [3, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        paymentDate: [item?.paymentDate ?? ''],
+        paymentTime: [item?.paymentTime ?? ''],
+        payAmount: [item?.payAmount ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+        tranNo: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+        bankName: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+        validationDate: [item?.validationDate ?? ''],
+        advanceUsedAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+        comments: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+        payMode: [item?.payMode ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+        onlineTranNo: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+        onlineTranResponse: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+        companyId: [item?.companyId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        advanceId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        refundId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        cashCounterId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        transactionType: [5, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        isSelfOrcompany: [item?.isSelfOrcompany ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        tranMode: ['PHAR', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+        createdBy: [this._loggedService.currentUserValue.userId],
+        transactionLabel: ['SALES_RETURN', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+      });
+  }
+    // Getters 
+    get ModeOfPaymentsArray(): FormArray {
+      return this.IpSalesReturnForm.get('tPayments') as FormArray;
+      }
     // Getters 
     get SaleRetDetailsArray(): FormArray {
       return this.IpSalesReturnForm.get('salesReturnDetails') as FormArray;
@@ -578,6 +619,22 @@ getbillllist(){
         this.IpSalesReturnForm.get('payment.paymentDate').setValue(formattedDate)
         this.IpSalesReturnForm.get('payment.paymentTime').setValue(FormattedDateTime)
         this.IpSalesReturnForm.get('payment.cashPayAmount').setValue(Number(Math.round(this.IPSalesRetFooterform.get('NetAmt').value)))
+
+                        let ModePaymentObj = [];
+                ModePaymentObj.push({ 
+                     billNo: this.selcteditemObj?.SalesId,
+                     paymentDate: formattedDate,
+                     paymentTime: formattedTime,
+                     payAmount: (Math.round(this.IPSalesRetFooterform.get('NetAmt')?.value || 0)),
+                     validationDate: formattedDate, 
+                     payMode: "CASH",
+                     companyId: this.selcteditemObj?.companyId ?? 0,
+                     isSelfOrcompany: this.selcteditemObj?.companyId ? 1 : 0, 
+                   }); 
+                this.ModeOfPaymentsArray.clear();
+                ModePaymentObj.forEach(item => {
+                    this.ModeOfPaymentsArray.push(this.CreateModePaymentform(item));
+                });
 
         console.log(this.IpSalesReturnForm.value);
         this._SalesReturnService.InsertCashSalesReturn(this.IpSalesReturnForm.value).subscribe(response => { 

@@ -114,7 +114,7 @@ advanceDetailId:any=0;
       refundAmount: [item?.refundAmount || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]]
     })
   }
-      CreateModePaymentform(item: any): FormGroup {
+  CreateModePaymentform(item: any): FormGroup {
     return this.formBuilder.group({
       paymentId: [item?.paymentId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       unitId: [item?.unitId ?? this._loggedService.currentUserValue.user.unitId],
@@ -137,7 +137,7 @@ advanceDetailId:any=0;
       cashCounterId: [item?.cashCounterId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       transactionType: [item?.transactionType ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       isSelfOrcompany: [item?.isSelfOrcompany ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      tranMode: [item?.tranMode ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+      tranMode: ['PHAR', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
       createdBy: [item?.createdBy ?? this._loggedService.currentUserValue.userId],
       transactionLabel: [item?.transactionLabel ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
     });
@@ -249,7 +249,7 @@ advanceDetailId:any=0;
       PatientHeaderObj['Age'] = this.regObj?.age || 0;
       PatientHeaderObj['NetPayAmount'] = Math.round(this.RefundFooterForm.get('ToatalRefunfdAmt').value) || 0;
       PatientHeaderObj['CompanyId'] = this.regObj?.companyId || 0;
-      PatientHeaderObj['TransactionLabel'] = 'OP_BILL';
+      PatientHeaderObj['TransactionLabel'] = 'REFUND_OF_ADVANCE';
        const dialogRef = this._matDialog.open(OpPaymentComponent,
         {
           maxWidth: "80vw",

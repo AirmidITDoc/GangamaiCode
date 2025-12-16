@@ -401,16 +401,14 @@
 
                                 <mat-form-field appearance="outline">
                                     <mat-label>Enter a date range</mat-label>
-                                    <mat-date-range-input [rangePicker]="picker">
-                                        <input matStartDate formControlName="startdate1" placeholder="Start date"
-                                           >
-                                        <input matEndDate formControlName="startdate1" placeholder="End date"
-                                            >
+                                    <mat-date-range-input [rangePicker]="picker4">
+                                        <input matStartDate formControlName="startdate1" placeholder="Start date">
+                                        <input matEndDate formControlName="enddate1" placeholder="End date" (dateChange)="getchangeDate()">
                                     </mat-date-range-input>
-                                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                                    <mat-date-range-picker #picker></mat-date-range-picker>
-                                </mat-form-field>
-
+                                    <mat-datepicker-toggle matSuffix [for]="picker4" ></mat-datepicker-toggle>
+                                    <mat-date-range-picker #picker4></mat-date-range-picker>
+                                </mat-form-field> 
+ 
                                 <airmid-textbox fxFlex label="Search UHID No" formControlName="RegNo"
                                     [formGroup]="_BrowsSalesBillService.SalesPatientForm"
                                     (input)="onChangeFirstPatient()"
@@ -434,18 +432,14 @@
                                 <airmid-textbox fxFlex label="Search Last Name" formControlName="L_Name"
                                     [formGroup]="_BrowsSalesBillService.SalesPatientForm"
                                     (input)="onChangeFirstPatient()"
-                                    [validations]="getValidationMessages().L_Name"></airmid-textbox>
-
-
+                                    [validations]="getValidationMessages().L_Name"></airmid-textbox> 
 
                                 <div class="slide-toggle mb-2">
-                                    <mat-slide-toggle name="IsDischarge" (change)="onChangeFirstPatient()"
+                                    <mat-slide-toggle name="IsDischarge" (change)="onChangeDiscahrge($event)"
                                         formControlName="IsDischarge" [(ngModel)]="isChecked">
                                         IsDischarge
                                     </mat-slide-toggle>
-                                </div>
-
-
+                                </div>  
                             </form>
                         </ng-container>
                     </airmid-table>

@@ -33,7 +33,7 @@ export class SampleCollectionComponent implements OnInit {
     regNo: any = "0"
     l_name: any = "%"
     status: any = "0"
-    Ptype: any = "3"
+    Ptype: any = "5"
     Vtotalcount = 0
     VCompletedcount = 0
     Vpendingcount = 0
@@ -46,6 +46,7 @@ export class SampleCollectionComponent implements OnInit {
     @ViewChild('iconisSampleCollection') iconisSampleCollection!: TemplateRef<any>;
     @ViewChild('iconisCompeleted') iconisCompeleted!: TemplateRef<any>;
     @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
+    @ViewChild('actionButtonTemplate1') actionButtonTemplate1!: TemplateRef<any>;
 
     ngAfterViewInit() {
         this.gridConfig.columnsList.find(col => col.key === 'lbl')!.template = this.iconlbl;
@@ -53,6 +54,7 @@ export class SampleCollectionComponent implements OnInit {
         this.gridConfig.columnsList.find(col => col.key === 'isSampleCollection')!.template = this.iconisSampleCollection;
         // this.gridConfig.columnsList.find(col => col.key === 'isCompleted')!.template = this.iconisCompeleted;
         this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
+        // this.gridConfig1.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate1;
     }
 
     gridConfig1: gridModel = new gridModel();
@@ -107,7 +109,7 @@ export class SampleCollectionComponent implements OnInit {
     }
 
     getSelectedRow(row: any): void {
-        debugger
+        // debugger
         console.log("selectedRow:", row)
         let billNo = row.billNo;
 
@@ -122,19 +124,23 @@ export class SampleCollectionComponent implements OnInit {
         console.log(formattedDate);
 
         let opipType = row.lbl === 'OP' ? 0 : 1;
-        if(row.lbl=='Lab')
-            opipType=4
+        if (row.lbl == 'Lab')
+            opipType = 2
 
         this.gridConfig1 = {
             apiUrl: "PathlogySampleCollection/SampleCollectionTestList",
             columnsList: [
                 {
-                    heading: "Completed", key: "isCompleted", sort: true, align: 'left', type: gridColumnTypes.template,
+                    heading: "Status", key: "isCompleted", sort: true, align: 'left', type: gridColumnTypes.template,
                     template: this.iconisCompeleted, width: 50
                 },
                 { heading: "Test Name", key: "serviceName", sort: true, align: 'left', emptySign: 'NA', width: 400 },
                 { heading: "Sample No | Collected By", key: "sampleNo", sort: true, align: 'left', emptySign: 'NA', width: 300 },
                 { heading: "Collection Date/Time", key: "sampleCollectionTime", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+                {
+                    heading: "Action", key: "action", align: "right", width: 250, sticky: true, type: gridColumnTypes.template,
+                    template: this.actionButtonTemplate1
+                }
             ],
             sortField: "BillNo",
             sortOrder: 0,
@@ -150,14 +156,14 @@ export class SampleCollectionComponent implements OnInit {
         setTimeout(() => {
             this.grid1.gridConfig = this.gridConfig1;
             this.grid1.bindGridData();
-            
+
 
         });
         console.log(this.gridConfig1)
     }
 
     onChangeFirst() {
-        debugger
+        // debugger
         this.isShowDetailTable = false;
         this.fromDate = this.datePipe.transform(this.myformSearch.get('start').value, "yyyy-MM-dd")
         this.toDate = this.datePipe.transform(this.myformSearch.get('end').value, "yyyy-MM-dd")
@@ -170,7 +176,7 @@ export class SampleCollectionComponent implements OnInit {
     }
 
     getfilterdata() {
-        debugger
+        // debugger
         this.gridConfig = {
             apiUrl: "PathlogySampleCollection/SampleCollectionPatientList",
             columnsList: this.allcolumns,
@@ -202,7 +208,7 @@ export class SampleCollectionComponent implements OnInit {
         this.Vtotalcount = 0;
         this.VCompletedcount = 0;
         this.Vpendingcount = 0;
-        debugger
+        // debugger
         let filters: any[] = [];
 
         // Handle date range
@@ -263,14 +269,14 @@ export class SampleCollectionComponent implements OnInit {
             this.dataSource.data = response.data;
             console.log(this.dataSource.data)
             if (this.dataSource.data.length > 0) {
-                debugger
+                // debugger
                 this.Vtotalcount = this.dataSource.data.length
                 this.VCompletedcount = this.dataSource.data.filter(
-                    (element: any) => element.isSampleCollection=='True'
+                    (element: any) => element.isSampleCollection == 'True'
                 ).length;
 
                 this.Vpendingcount = this.dataSource.data.filter(
-                    (element: any) => element.isSampleCollection=='False'
+                    (element: any) => element.isSampleCollection == 'False'
                 ).length;
 
                 console.log(this.dataSource.data)
@@ -308,9 +314,9 @@ export class SampleCollectionComponent implements OnInit {
 
         });
     }
-  OnPrintPatientIcard(element) {
-    console.log('Third action clicked for:', element);
-    this.commonService.Onprint("AdmissionId", element.visit_Adm_ID, "IPStickerPrint");
-  }
+    OnPrintPatientIcard(element) {
+        console.log('Third action clicked for:', element);
+        this.commonService.Onprint("AdmissionId", element.visit_Adm_ID, "IPStickerPrint");
+    }
 
 }
