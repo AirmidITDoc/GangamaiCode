@@ -183,7 +183,7 @@ export class ResultEntryComponent implements OnInit {
             { fieldName: "From_Dt ", fieldValue: this.fromdate, opType: OperatorComparer.Equals },
             { fieldName: "To_Dt ", fieldValue: this.todate, opType: OperatorComparer.Equals },
             { fieldName: "IsCompleted", fieldValue: "0", opType: OperatorComparer.Equals },
-            { fieldName: "OP_IP_Type", fieldValue: "2", opType: OperatorComparer.Equals }
+            { fieldName: "OP_IP_Type", fieldValue: "3", opType: OperatorComparer.Equals }
         ]
     }
 
@@ -229,7 +229,7 @@ export class ResultEntryComponent implements OnInit {
         public toastr: ToastrService,
         private commonService: PrintserviceService,
         public _WhatsAppEmailService: WhatsAppEmailService,
-        private _fuseSidebarService: FuseSidebarService,        
+        private _fuseSidebarService: FuseSidebarService,
         public _whatsppService: WhatsAppEmailService
     ) { }
 
@@ -249,7 +249,7 @@ export class ResultEntryComponent implements OnInit {
         let toDate = this.myformSearch.get("end").value || "";
         fromDate = fromDate ? this.datePipe.transform(fromDate, "yyyy-MM-dd") : "";
         toDate = toDate ? this.datePipe.transform(toDate, "yyyy-MM-dd") : "";
-        let patientType = this.myformSearch.get("PatientTypeSearch").value || "2";
+        let patientType = this.myformSearch.get("PatientTypeSearch").value || "3";
         let status = this.myformSearch.get("StatusSearch").value || "0";
 
         this.GetResultdetail()
@@ -314,8 +314,8 @@ export class ResultEntryComponent implements OnInit {
         // debugger
 
         console.log(this.opipType)
-        if (this.opipType == '4')
-            OPIP = "4"
+        if (this.opipType == '2')
+            OPIP = "2"
 
         var m_data = {
             "first": 0,
@@ -358,7 +358,7 @@ export class ResultEntryComponent implements OnInit {
     }
 
     status: any = "0"
-    opipType: any = "2";
+    opipType: any = "3";
     onChangeFirst() {
         this.dataSource1.data = [];
 
@@ -368,7 +368,7 @@ export class ResultEntryComponent implements OnInit {
         this.l_name = this.myformSearch.get('LastNameSearch').value + "%"
         this.status = this.myformSearch.get('StatusSearch').value
         this.opipType = this.myformSearch.get('PatientTypeSearch').value
-        this.regNo = this.myformSearch.get('RegNoSearch').value || ""
+        this.regNo = this.myformSearch.get('RegNoSearch').value || "0"
 
         this.GetResultdetail();
         this.getfilterdata();
@@ -400,7 +400,7 @@ export class ResultEntryComponent implements OnInit {
     Clearfilter(event) {
         console.log(event)
         if (event == 'RegNoSearch')
-            this.myformSearch.get('RegNoSearch').setValue("")
+            this.myformSearch.get('RegNoSearch').setValue("0")
 
         if (event == 'FirstNameSearch')
             this.myformSearch.get('FirstNameSearch').setValue("")
@@ -1018,7 +1018,7 @@ export class ResultEntryComponent implements OnInit {
                 },
                 {
                     "fieldName": "OP_IP_Type",
-                    "fieldValue": String(this.myformSearch.get("PatientTypeSearch").value || "2"),
+                    "fieldValue": String(this.myformSearch.get("PatientTypeSearch").value || "3"),
                     "opType": "Equals"
                 }
             ],
@@ -1102,7 +1102,7 @@ export class ResultEntryComponent implements OnInit {
     onClear() {
         this._SampleService.myformSearch.get('RegNoSearch').setValue("0");
         this._SampleService.myformSearch.get('StatusSearch').setValue("0");
-        this._SampleService.myformSearch.get('PatientTypeSearch').setValue("2");
+        this._SampleService.myformSearch.get('PatientTypeSearch').setValue("3");
     }
 
     getWhatsappshareBill(el) {
@@ -1131,6 +1131,30 @@ export class ResultEntryComponent implements OnInit {
             this.grid.bindGridData();
         });
     }
+
+    getVerifyTooltip(contact: any): string {
+        if (contact.isVerifyid) {
+            return `Verified On : ${contact.isVerifyedDate}\nVerified By : ${contact.verifiedUserName}`;
+        }
+
+        return contact.isCompleted
+            ? 'Verify Report'
+            : 'Test is Pending';
+    }
+
+    getOutSourceTooltip(contact: any): string {
+        const date = this.datePipe.transform(contact.outSourceSampleSentDateTime, 'yyyy-MM-dd');
+        if (contact.outSourceId) {
+            return `OutSource
+            Date : ${date}
+            TestName : ${contact.serviceName}
+            LabName : ${contact.outSourceLabName}`;
+
+        }else{
+            return `${contact.serviceName}`;
+        }
+    }
+
 }
 
 

@@ -272,35 +272,90 @@ export class NewResultEntryComponent {
     helpItems: any[] = [];
     helpFullItems: any[] = [];
     selectedParam: any;
-    onKeydown(e, data) {
+    // onKeydown(event: KeyboardEvent, data: any) {
+    //     if (event.key === 'F2') {
+    //         event.preventDefault();
 
-        if (this.selectedParam != data.ParameterId)
-            this.currentval = ""
-        this.selectedParam = data.ParameterId;
-        let SelectQuery = "SELECT ParameterValues, IsDefaultValue, ParameterId FROM dbo.M_ParameterDescriptiveMaster WHERE ParameterId = " + data.ParameterId;
-        this._SampleService.getPathologyResultList(SelectQuery).subscribe(Visit => {
-            this.helpItems = Visit as any[];
-            this.helpFullItems = Visit as any[];
-            data["IsHelpShown"] = true;
+    //         if (this.selectedParam !== data.ParameterId) {
+    //             this.currentval = '';
+    //         }
+    //         debugger
+    //         this.selectedParam = data.ParameterId;
+
+    //         const param = {
+    //             "searchFields": [
+    //                 {
+    //                     "fieldName": "ParameterId",
+    //                     "fieldValue": String(data.ParameterId),//25
+    //                     "opType": "Equals"
+    //                 }
+    //             ],
+    //             "mode": "ParameterDescriptiveMaster"
+    //         }
+
+    //         this._SampleService.getPathologyResultList(param).subscribe(res => {
+    //             this.helpItems = res as any[];
+    //             data.IsHelpShown = true;
+    //         });
+    //     }
+    // }
+    activeHelpRow: any = null;
+
+    onKeydown(event: KeyboardEvent, contact: any) {
+        if (event.key !== 'F2') return;
+
+        event.preventDefault();
+        debugger
+        // Close previous popup
+        if (this.activeHelpRow && this.activeHelpRow !== contact) {
+            this.activeHelpRow.IsHelpShown = false;
+            this.activeHelpRow.helpItems = [];
+        }
+
+        const param = {
+            searchFields: [{
+                fieldName: 'ParameterId',
+                fieldValue: String(contact.ParameterId),
+                opType: 'Equals'
+            }],
+            mode: 'ParameterDescriptiveMaster'
+        };
+
+        this._SampleService.getPathologyResultList(param).subscribe(res => {
+            debugger
+            contact.fullHelpItems = res as any[];   // ✅ backup (never change)
+            contact.helpItems = [...contact.fullHelpItems]; // working copy
+
+            contact.IsHelpShown = contact.helpItems.length > 0;
+            this.activeHelpRow = contact;
+
             setTimeout(() => {
-                document.getElementById("helpText_" + data.ParameterId).focus();
-            }, 100);
-        },
-            error => {
-                this.sIsLoading = '';
+                document.getElementById('helpText_' + contact.ParameterId)?.focus();
             });
-
-    }
-    onSelectHelp(e, data) {
-        this.dataSource.data.find(x => x.ParameterId == this.selectedParam).ResultValue = e;
-        data["IsHelpShown"] = false;
-
-        this.AddData1(data, data.ResultValue)
-    }
-    filterHelp(e) {
-        this.helpItems = this.helpFullItems.filter(option => option.ParameterValues.toLowerCase().indexOf(e.target.value) >= 0);
+        });
     }
 
+    filterHelp(event: any, contact: any) {
+        const value = event.target.value?.toLowerCase() || '';
+
+        contact.helpItems = contact.fullHelpItems.filter((item: any) =>
+            item.ParameterValues.toLowerCase().includes(value)
+        );
+    }
+
+    onSelectHelp(value: string, data: any) {
+        const row = this.dataSource.data.find(x => x.ParameterId === this.selectedParam);
+        if (row) {
+            row.ResultValue = value;
+        }
+        data.IsHelpShown = false;
+        data.helpItems = [];
+        data.fullHelpItems = [];
+
+        this.AddData1(data, value);
+    }
+
+    ///////////////// end ///////////////////
     getResultList1(rbj) {
         // debugger
         if (this.OP_IPType == 0) {

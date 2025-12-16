@@ -350,7 +350,7 @@ export class LabPatientRegComponent {
     PatientHeaderObj['TariffName'] = contact.tariffName;
     PatientHeaderObj['CompanyName'] = contact.companyName;
     PatientHeaderObj['NetPayAmount'] = contact.balanceAmt;
-    PatientHeaderObj['TransactionLabel'] = 'OP_SETTLEMENT';
+    PatientHeaderObj['TransactionLabel'] = 'LAB_SETTLEMENT';
     // this.vMobileNo = contact.mobileNo;
     const dialogRef = this._matDialog.open(OpPaymentComponent,
       {
@@ -360,7 +360,7 @@ export class LabPatientRegComponent {
         height: '90%',
         data: {
           vPatientHeaderObj: PatientHeaderObj,
-          FromName: "OP-SETTLEMENT"
+          FromName: "LAB-SETTLEMENT"
         }
       });
     dialogRef.afterClosed().subscribe(result => {
@@ -381,6 +381,7 @@ export class LabPatientRegComponent {
 
           this._labPatientRegService.InsertLabBillingsettlement(this.OpSettlementForm.value).subscribe(response => {
             this.viewgetOPPayemntPdf(response, true);
+            this.grid.bindGridData();
           });
         } else {
           let invalidFields = []
@@ -919,11 +920,13 @@ export class LabRequest {
   price: number;
   ServiceId: any;
   CreditedtoDoctor: any;
+  creditedtoDoctor: boolean;
   constructor(LabRequest) {
     this.ServiceName = LabRequest.ServiceName || '';
     this.Price = LabRequest.Price || 0;
     this.price = LabRequest.price || 0;
     this.ServiceId = LabRequest.ServiceId || 0;
     this.CreditedtoDoctor = LabRequest.CreditedtoDoctor || 0;
+    this.creditedtoDoctor = LabRequest.creditedtoDoctor || 0;
   }
 }

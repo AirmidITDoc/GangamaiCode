@@ -130,7 +130,7 @@
 
                     <div fxLayout="column" fxLayoutAlign="start none">
 
-                        <airmid-dropdown label="Unit Name" formControlName="UnitId"
+                        <airmid-dropdown label="Unit Name" formControlName="UnitId" [readonly]="true"
                             [(ngModel)]="gridConfig.filters[6].fieldValue" (selectionChange)="ListView1($event)"
                             [formGroup]="myFilterform" [mode]="autocompleteModeunit"></airmid-dropdown>
 
