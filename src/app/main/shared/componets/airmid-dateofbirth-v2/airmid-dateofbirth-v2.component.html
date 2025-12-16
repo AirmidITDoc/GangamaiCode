@@ -1,0 +1,53 @@
+<div class="airmid-dob-v2-container" fxLayout="row" fxLayoutGap="8px" fxLayoutAlign="start center">
+    <!-- Dropdown for Date Style Selection -->
+    <mat-form-field appearance="outline" class="dob-dropdown" *ngIf="!hideButtons">
+        <mat-select [value]="dateStyle" (selectionChange)="OnChangeDobType($event.value)">
+            <mat-option *ngFor="let option of dateStyleOptions" [value]="option.value">
+                {{ option.label }}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <!-- Age Input Field (Y/M/D based on selection) -->
+    <mat-form-field appearance="outline" class="age-input" *ngIf="dateStyle === 'Year' && !hideButtons">
+        <mat-label>Age (Y)</mat-label>
+        <input matInput type="number" [(ngModel)]="ageYear" (keyup)="CalcDOB('Year', $event)" maxlength="2" min="0">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="age-input" *ngIf="dateStyle === 'Month' && !hideButtons">
+        <mat-label>Age (M)</mat-label>
+        <input matInput type="number" [(ngModel)]="ageMonth" (keyup)="CalcDOB('Month', $event)" maxlength="2" min="0">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="age-input" *ngIf="dateStyle === 'Day' && !hideButtons">
+        <mat-label>Age (D)</mat-label>
+        <input matInput type="number" [(ngModel)]="ageDay" (keyup)="CalcDOB('Day', $event)" maxlength="2" min="0">
+    </mat-form-field>
+
+    <!-- Date Picker -->
+    <mat-form-field appearance="outline" class="date-picker">
+        <input matInput [matDatepicker]="validFromPickerV2" #bdayV2 [value]="value" 
+               [disabled]="dateStyle !== 'Date'" 
+               (dateChange)="onChangeDateofBirth($event.value)" 
+               placeholder="mm/dd/yyyy">
+        <mat-datepicker-toggle matSuffix [for]="validFromPickerV2"></mat-datepicker-toggle>
+        <mat-datepicker #validFromPickerV2></mat-datepicker>
+    </mat-form-field>
+
+    <!-- Readonly Age Display (Y/M/D) -->
+    <div fxLayout="row" fxLayoutGap="4px" class="age-display">
+        <mat-form-field appearance="outline" class="age-readonly">
+            <mat-label>Y</mat-label>
+            <input matInput [value]="ageYear" readonly>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="age-readonly">
+            <mat-label>M</mat-label>
+            <input matInput [value]="ageMonth" readonly>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="age-readonly">
+            <mat-label>D</mat-label>
+            <input matInput [value]="ageDay" readonly>
+        </mat-form-field>
+    </div>
+</div>
+

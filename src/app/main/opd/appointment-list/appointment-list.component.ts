@@ -950,18 +950,21 @@ export class AppointmentListComponent implements OnInit {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button
 
-        let that = this;
-        const dialogRef = this._matDialog.open(NewAppointmentwithBillComponent,
-            {
-                maxWidth: "95vw",
-                height: '95%',
-                width: '90%',
-                data: row
+        // Navigate to the new bill page route
+        if (row && row.regId) {
+            this._ActRoute.navigate(['/opd/appointment/new-bill', row.regId], {
+                queryParams: {
+                    unitId: row.unitId,
+                    classId: row.classId,
+                    patientTypeId: row.patientTypeId,
+                    companyId: row.companyId,
+                    tariffId: row.tariffId,
+                    refDocId: row.refDocId
+                }
             });
-        dialogRef.afterClosed().subscribe(result => {
-            that.grid.bindGridData();
-            this.GetAppointdetail()
-        });
+        } else {
+            this._ActRoute.navigate(['/opd/appointment/new-bill']);
+        }
     }
 
     openPolicyInfoPopover(event: MouseEvent, patientData: any) {

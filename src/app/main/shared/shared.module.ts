@@ -35,6 +35,7 @@ import { ErrorPageComponent } from './APIerrorpages/error-page/error-page.compon
 import { AirmidAutoCompleteComponent } from './componets/airmid-autocomplete/airmid-autocomplete.component';
 import { AirmidDateTimePickerComponent } from './componets/airmid-date-time-picker/airmid-date-time-picker.component';
 import { AirmidDateofbirthComponent } from './componets/airmid-dateofbirth/airmid-dateofbirth.component';
+import { AirmidDateofbirthV2Component } from './componets/airmid-dateofbirth-v2/airmid-dateofbirth-v2.component';
 import { AirmidDatepickerComponent } from './componets/airmid-datepicker/airmid-datepicker.component';
 import { AirmidDropDownComponent } from './componets/airmid-dropdown/airmid-dropdown.component';
 import { AirmidEditorComponent } from './componets/airmid-editor/airmid-editor.component';
@@ -84,7 +85,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 @NgModule({
     declarations: [
         TrimPipe, CommonDateComponent, AirmidTableComponent, AirmidTextboxComponent, AirmidDropDownComponent, AirmidAutoCompleteComponent, SmsEmailTemplateComponent, HeaderComponent, PaymentModeComponent, ImageCropComponent, EmailSendComponent, DyanmicTableHeightDirective,
-        AirmidDateofbirthComponent, AirmidSliderComponent, AirmidDatepickerComponent, TableSearchBarComponent, PrintCallingComponent, ErrorPageComponent, Error401Component, Error403Component, Error404Component, Error500Component, FocusNextDirective, AirmidTimePickerComponent, PatientInfoComponent, AirmidDateTimePickerComponent, TableKeyboardNavigationDirective, AirmidChipautocompleteComponent, 
+        AirmidDateofbirthComponent, AirmidDateofbirthV2Component, AirmidSliderComponent, AirmidDatepickerComponent, TableSearchBarComponent, PrintCallingComponent, ErrorPageComponent, Error401Component, Error403Component, Error404Component, Error500Component, FocusNextDirective, AirmidTimePickerComponent, PatientInfoComponent, AirmidDateTimePickerComponent, TableKeyboardNavigationDirective, AirmidChipautocompleteComponent, 
         AirmidFullDatepickerComponent, AirmidFileuploadComponent,AirmidFileViewerComponent, AirmidFileuploadIconComponent, AirmidSignatureComponent, AirmidSignatureIconComponent, AirmidPhotoComponent, AirmidPhotoIconComponent,
         AirmidCardViewComponent, Error0Component, AirmidImageviewComponent, AirmidImageIconComponent, AirmidEditorComponent, AirmidConsentformComponent, AirmidConsentformIconComponent, PatientSearchComponent
     ],
@@ -147,6 +148,7 @@ import { MatDialogModule } from '@angular/material/dialog';
         AirmidSignatureComponent,
         AirmidSignatureIconComponent,
         AirmidDateofbirthComponent,
+        AirmidDateofbirthV2Component,
         AirmidEditorComponent,
         AirmidSliderComponent,
         AirmidDatepickerComponent,

@@ -1,5 +1,415 @@
+// Page Layout Styles
+.page-layout {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 
+  &.standalone-page {
+    .page-wrapper {
+      height: 100vh;
+    }
+  }
+}
 
+.page-wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: #f5f5f5;
+}
+
+// Top Header - Matching Appointment List Style
+.top-header {
+  min-height: 48px;
+  
+  .top-header-info {
+    .top-header-title {
+      font-size: 18px;
+      font-weight: 500;
+      color: white;
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 4px;
+
+      .patient-info-badge {
+        font-size: 14px;
+        font-weight: 400;
+        opacity: 0.9;
+      }
+    }
+  }
+
+  .back-btn,
+  .close-btn {
+    color: white !important;
+    
+    mat-icon {
+      color: white;
+    }
+  }
+}
+
+// Page Body
+.page-body {
+  flex: 1;
+  overflow: auto;
+  // padding: 16px 24px;
+}
+
+.page-content {
+  // max-width: 1600px;
+  margin: 0 auto;
+}
+
+// Section Card Styles
+.section-card {
+  background: white;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+
+  .section-header {
+    padding: 12px 16px;
+    background: #fafafa;
+    border-bottom: 1px solid #e0e0e0;
+    display: flex;
+    align-items: center;
+    font-weight: 500;
+    font-size: 14px;
+
+    mat-icon {
+      margin-right: 8px;
+      font-size: 20px;
+      width: 20px;
+      height: 20px;
+      opacity: 0.7;
+    }
+
+    .header-form {
+      airmid-dropdown,
+      airmid-textbox {
+        margin-bottom: 0;
+      }
+    }
+  }
+
+  .section-body {
+    padding: 16px;
+  }
+}
+
+// Patient Selection Section
+.radio-container {
+  mat-radio-button {
+    margin-right: 8px;
+  }
+}
+
+.emergency-badge {
+  background: #ffebee;
+  color: #c62828;
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-weight: 500;
+  font-size: 14px;
+
+  strong {
+    margin-left: 8px;
+  }
+}
+
+.uhid-display {
+  background: #e3f2fd;
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-weight: 500;
+
+  .uhid-label {
+    color: #1565c0;
+    margin-right: 8px;
+  }
+
+  .uhid-value {
+    color: #0d47a1;
+    font-size: 16px;
+  }
+}
+
+// Bill Section
+.bill-section {
+  .section-header {
+    flex-wrap: wrap;
+    gap: 12px;
+
+    .header-form {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+  }
+}
+
+// Add Service Panel
+.add-service-panel {
+  background: #fafafa;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+  overflow: hidden;
+
+  .panel-header {
+    padding: 10px 12px;
+    background: #f0f0f0;
+    border-bottom: 1px solid #e0e0e0;
+    display: flex;
+    align-items: center;
+    font-weight: 500;
+    font-size: 13px;
+
+    mat-icon {
+      font-size: 18px;
+      width: 18px;
+      height: 18px;
+      margin-right: 8px;
+      opacity: 0.7;
+    }
+  }
+
+  .panel-body {
+    padding: 12px;
+  }
+
+  .btn-block {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    mat-icon {
+      font-size: 18px;
+      width: 18px;
+      height: 18px;
+    }
+  }
+}
+
+// Services Table Panel
+.services-table-panel {
+  background: white;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+
+  .panel-header {
+    padding: 10px 12px;
+    background: #f0f0f0;
+    border-bottom: 1px solid #e0e0e0;
+    display: flex;
+    align-items: center;
+    font-weight: 500;
+    font-size: 13px;
+
+    mat-icon {
+      font-size: 18px;
+      width: 18px;
+      height: 18px;
+      margin-right: 8px;
+      opacity: 0.7;
+    }
+
+    .item-count {
+      margin-left: 8px;
+      font-weight: normal;
+      opacity: 0.7;
+    }
+  }
+
+  .panel-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .table-container {
+    flex: 1;
+    max-height: 280px;
+    overflow: auto;
+    width: 100%;
+
+    .airmid-table {
+      width: 100%;
+      min-width: 100%;
+    }
+  }
+}
+
+// Price Input in Table
+.price-input {
+  width: 80px;
+
+  .mat-form-field-wrapper {
+    padding-bottom: 0;
+  }
+
+  input {
+    text-align: right;
+  }
+}
+
+// Amount Summary
+.amount-summary {
+  padding: 12px;
+  background: #f5f5f5;
+  border-top: 1px solid #e0e0e0;
+
+  .summary-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    align-items: center;
+    justify-content: flex-end;
+  }
+
+  .summary-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 12px;
+    background: white;
+    border-radius: 4px;
+    border: 1px solid #e0e0e0;
+
+    .summary-label {
+      font-size: 12px;
+      color: #666;
+    }
+
+    .summary-value {
+      font-weight: 600;
+      font-size: 14px;
+      color: #333;
+    }
+
+    &.highlight {
+      background: #e8f5e9;
+      border-color: #4caf50;
+
+      .summary-label {
+        color: #2e7d32;
+      }
+
+      .summary-value {
+        color: #1b5e20;
+        font-size: 16px;
+      }
+    }
+  }
+}
+
+// Payment Section
+.payment-section {
+  .payment-type-section {
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid #e0e0e0;
+
+    .payment-label {
+      font-weight: 500;
+      color: #666;
+    }
+
+    mat-radio-button {
+      .payment-icon {
+        font-size: 16px;
+        width: 16px;
+        height: 16px;
+        margin-right: 4px;
+        vertical-align: middle;
+      }
+    }
+  }
+}
+
+// Page Footer
+.page-footer {
+  padding: 12px 24px;
+  background: white;
+  border-top: 1px solid #e0e0e0;
+  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.05);
+
+  .footer-content {
+    max-width: 1600px;
+    margin: 0 auto;
+  }
+
+  .btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 20px;
+
+    mat-icon {
+      font-size: 18px;
+      width: 18px;
+      height: 18px;
+    }
+  }
+}
+
+// Amount Value
+.amount-value {
+  font-weight: 600;
+  color: #1565c0;
+}
+
+// Cursor Pointer
+.cursor-pointer {
+  cursor: pointer;
+}
+
+// Width Classes
+.w-80 {
+  min-width: 80px;
+  max-width: 80px;
+}
+
+.w-120 {
+  min-width: 120px;
+  max-width: 120px;
+}
+
+.w-180 {
+  width: 180px;
+}
+
+.w-280 {
+  width: 280px;
+}
+
+.w-300 {
+  min-width: 300px;
+  max-width: 300px;
+}
+
+.w-400 {
+  width: 400px;
+}
+
+// Text Overflow
+.text-overflow {
+  display: inline-block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+  vertical-align: bottom;
+}
 
 .ellipsis-text {
   display: inline-block;
@@ -7,17 +417,19 @@
   overflow: hidden;
   text-overflow: ellipsis;
   max-width: 100%;
-  vertical-align: bottom; 
+  vertical-align: bottom;
 }
+
+// Legacy Net Amount Box Styles (kept for compatibility)
 .net-amt-box {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border: 1px solid #1976d2;   /* Material primary color */
+  border: 1px solid #1976d2;
   border-radius: 8px;
-  padding: 6px 10px;           /* reduced padding */
+  padding: 6px 10px;
   margin: 10px 0;
-  background-color: #f1f8ff;   /* light background */
+  background-color: #f1f8ff;
   font-weight: 500;
 }
 
@@ -29,7 +441,7 @@
 .net-amt-value {
   font-size: 16px;
   font-weight: bold;
-  color: #1976d2;   /* highlight color */
+  color: #1976d2;
 }
 
 .amount-positive {
@@ -58,24 +470,22 @@
   padding: 4px 8px;
   border-radius: 4px;
 }
-/// 
-/// 
+
 .final-amt-box {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border: 2px solid #4caf50;   /* Material primary color */
+  border: 2px solid #4caf50;
   border-radius: 8px;
-  padding: 6px 10px;           /* reduced padding */
+  padding: 6px 10px;
   margin: 10px 0;
-  background-color: #f1f8ff;   /* light background */
+  background-color: #f1f8ff;
   font-weight: 500;
 }
 
 .final-amt-label {
   margin-right: 5px;
   font-weight: 500;
-  
 }
 
 .final-amt-value {
@@ -89,13 +499,13 @@
   border-radius: 4px;
 }
 
-// message box  ---- mpesa
+// Waiting Overlay Styles
 .message-box {
   background: #1f1f33;
   padding: 18px 20px;
   border-radius: 12px;
   font-size: 12px;
-  font-family: 'Courier New', monospace; /* perfect alignment */
+  font-family: 'Courier New', monospace;
   white-space: pre-wrap;
   color: #fff;
   line-height: 1.6;
@@ -111,7 +521,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0,0,0,0.4);
+  background: rgba(0, 0, 0, 0.4);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -136,7 +546,6 @@
   animation: spin 1s linear infinite;
 }
 
-/* Timer */
 .timer-box {
   background: #4e83bd;
   color: white;
@@ -154,29 +563,114 @@
   opacity: 0.8;
 }
 
-/* Timer changes color when under 1 minute */
 .timer-box.warning {
   background: #ec7d5b;
 }
 
-/* Title */
 .waiting-title {
   font-size: 18px;
   margin-bottom: 15px;
   color: #333;
 }
 
-/* Color classes */
 .green {
   color: #4caf50;
 }
+
 .orange {
   color: #ff9800;
 }
+
 .red {
   color: #f44336;
 }
 
 @keyframes spin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+// Input Error Hidden
+.input-error-hidden {
+  ::ng-deep {
+    .mat-form-field-subscript-wrapper {
+      display: none;
+    }
+  }
+}
+
+// Table Styles
+.airmid-table {
+  width: 100%;
+
+  mat-header-cell {
+    font-weight: 600;
+    font-size: 12px;
+    color: rgba(0, 0, 0, 0.7);
+  }
+
+  mat-cell {
+    font-size: 13px;
+  }
+
+  &.full-width-table {
+    width: 100%;
+    
+    mat-header-row,
+    mat-row,
+    mat-footer-row {
+      display: flex;
+      width: 100%;
+    }
+  }
+}
+
+// Hide Class
+.hide {
+  display: none !important;
+}
+
+// Responsive Adjustments
+@media (max-width: 959px) {
+  .page-body {
+    padding: 12px;
+  }
+
+  .section-card {
+    .section-body {
+      padding: 12px;
+    }
+  }
+
+  .page-footer {
+    padding: 12px;
+  }
+
+  .add-service-panel {
+    margin-bottom: 16px;
+  }
+}
+
+@media (max-width: 599px) {
+  .page-header {
+    padding: 8px 12px;
+
+    .page-header-left {
+      h1 {
+        font-size: 16px;
+      }
+    }
+  }
+
+  .amount-summary {
+    .summary-row {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .summary-item {
+      justify-content: space-between;
+    }
+  }
 }

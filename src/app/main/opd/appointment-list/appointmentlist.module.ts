@@ -63,8 +63,16 @@ import { NewAppointmentwithBillComponent } from "./new-appointmentwith-bill/new-
 
 const routes: Routes = [
     {
-        path: "**",
+        path: "",
         component: AppointmentListComponent,
+    },
+    {
+        path: "new-bill",
+        component: NewAppointmentwithBillComponent,
+    },
+    {
+        path: "new-bill/:id",
+        component: NewAppointmentwithBillComponent,
     },
 ];
 

@@ -1,9 +1,9 @@
-import { DatePipe } from '@angular/common';
-import { Component, ElementRef, Inject, Input, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
+import { DatePipe, Location } from '@angular/common';
+import { Component, ElementRef, Inject, Input, OnInit, Optional, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormArray, FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatStepper } from '@angular/material/stepper';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { fuseAnimations } from '@fuse/animations';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { AdvanceDetailObj } from 'app/main/ipd/ip-search-list/ip-search-list.component';
@@ -127,6 +127,7 @@ export class NewAppointmentwithBillComponent {
   minDate = new Date();
   selectedPatient: any;
   selectedMobile: any;
+  statusMessage: string = 'Processing...';
 
   vOPIPId = 0
   regNo = 0;
@@ -190,7 +191,7 @@ export class NewAppointmentwithBillComponent {
 
   constructor(public _AppointmentlistService: AppointmentlistService,
     public _matDialog: MatDialog,
-    public dialogRef: MatDialogRef<NewAppointmentwithBillComponent>,
+    @Optional() public dialogRef: MatDialogRef<NewAppointmentwithBillComponent>,
     public datePipe: DatePipe,
     private commonService: PrintserviceService,
     public _formbuilder: UntypedFormBuilder,
@@ -198,16 +199,19 @@ export class NewAppointmentwithBillComponent {
     private accountService: AuthenticationService,
     private hospitalconfigservice: HospitalConfigService,
     public toastr: ToastrService, public _ConfigService: ConfigService,
-    @Inject(MAT_DIALOG_DATA) public data: any
+    @Optional() @Inject(MAT_DIALOG_DATA) public data: any,
+    private route: ActivatedRoute,
+    private router: Router,
+    private location: Location
   ) {
     this.ApiURL = "VisitDetail/GetServiceListwithTraiff?TariffId=" + this.tariffId + "&ClassId=" + this.classId + "&ServiceName="
-
+    // Check if opened as modal or as standalone page
+    this.isModal = !!this.dialogRef;
   }
 
   ngOnInit(): void {
     this.AppointmentBillfinalform = this.createFinalFormView()
-   this.RegiAppointmentBillfinalform = this. createRegistredFinalFormView()
-
+    this.RegiAppointmentBillfinalform = this.createRegistredFinalFormView()
 
     this.myForm = this.CreateAppointmentForm();
     this.myForm.markAllAsTouched();
@@ -229,6 +233,52 @@ export class NewAppointmentwithBillComponent {
 
     this.setupFormListener();
     this.startCountdown();
+
+    // Handle route params when opened as standalone page (not modal)
+    if (!this.isModal) {
+      this.route.paramMap.subscribe(params => {
+        const id = params.get('id');
+        if (id) {
+          // Load data based on route param if needed
+          this.loadDataById(id);
+        }
+      });
+      
+      // Also check query params for additional data
+      this.route.queryParams.subscribe(queryParams => {
+        if (queryParams) {
+          this.data = queryParams;
+        }
+      });
+    }
+  }
+
+  // Load data by ID when opened as standalone page
+  private loadDataById(id: string): void {
+    // You can add logic here to load data based on the ID
+    // For now, we'll just set the data object with the ID
+    if (!this.data) {
+      this.data = {};
+    }
+    this.data.id = id;
+  }
+
+  // Method to close modal or navigate back
+  closeOrNavigateBack(): void {
+    if (this.isModal && this.dialogRef) {
+      this.dialogRef.close();
+    } else {
+      this.router.navigate(['/opd/appointment']);
+    }
+  }
+
+  // Method to close all modals or navigate back
+  closeAllOrNavigateBack(): void {
+    if (this.isModal) {
+      this._matDialog.closeAll();
+    } else {
+      this.router.navigate(['/opd/appointment']);
+    }
   }
 
   createFinalFormView() {
@@ -1291,7 +1341,7 @@ debugger
 
                 this._AppointmentlistService.InsertAppointmentBilling(this.AppointmentBillfinalform.value).subscribe(response => {
                   this.viewgetOPBillReportPdf(response)
-                  this._matDialog.closeAll();
+                  this.closeAllOrNavigateBack();
                   this.savebtn = true
                 });
               }
@@ -1311,7 +1361,7 @@ debugger
             this._AppointmentlistService.InsertAppointmentBilling(this.AppointmentBillfinalform.value).subscribe(response => {
               console.log(response)
               this.viewgetOPBillReportPdf(response)
-              this._matDialog.closeAll();
+              this.closeAllOrNavigateBack();
               this.savebtn = true
 
             });
@@ -1326,7 +1376,7 @@ debugger
 
             this._AppointmentlistService.InsertAppointmentCreditBill(this.AppointmentBillfinalform.value).subscribe(response => {
               // this.viewgetOPBillReportPdf(response)
-              this._matDialog.closeAll();
+              this.closeAllOrNavigateBack();
               this.savebtn = true
             });
           }
@@ -1404,7 +1454,7 @@ debugger
 
                 this._AppointmentlistService.InsertAppointmentBilling(this.AppointmentBillfinalform.value).subscribe(response => {
                   this.viewgetOPBillReportPdf(response)
-                  this._matDialog.closeAll();
+                  this.closeAllOrNavigateBack();
                   this.savebtn = true
                 });
               }
@@ -1434,7 +1484,7 @@ debugger
             this._AppointmentlistService.RegistredAppointmentBilling(this.RegiAppointmentBillfinalform.value).subscribe(response => {
               console.log(response)
               this.viewgetOPBillReportPdf(response)
-              this._matDialog.closeAll();
+              this.closeAllOrNavigateBack();
               this.savebtn = true
 
             });
@@ -1449,7 +1499,7 @@ debugger
 
             this._AppointmentlistService.InsertAppointmentCreditBill(this.AppointmentBillfinalform.value).subscribe(response => {
               // this.viewgetOPBillReportPdf(response)
-              this._matDialog.closeAll();
+              this.closeAllOrNavigateBack();
               this.savebtn = true
             });
           }
@@ -2213,7 +2263,52 @@ this.PatientName = obj.patientName
   }
   onClose() {
     this.myForm.reset();
-    this.dialogRef.close();
+    this.closeOrNavigateBack();
+  }
+
+  // Delete charge from list
+  deleteCharge(index: number, contact: any): void {
+    if (index >= 0 && index < this.chargeList.length) {
+      this.chargeList.splice(index, 1);
+      this.dsChargeList.data = this.chargeList;
+      this.calculateTotalAmount();
+
+      if (this.chargeList.length === 0) {
+        this.isDiscountApplied = false;
+        this.Consessionres = false;
+      }
+
+      this.toastr.success('Service removed successfully.', 'Removed!', {
+        toastClass: 'tostr-tost custom-toast-success',
+      });
+    }
+  }
+
+  // Get service from service table popup
+  getService(contact: any): void {
+    if (contact) {
+      this.chargeForm.patchValue({
+        serviceName: contact,
+        price: contact.classRate || 0
+      });
+      this.serviceId = contact.serviceId;
+      this.SrvcName1 = contact.serviceName;
+      this.IsPathology = contact.isPathology;
+      this.IsRadiology = contact.isRadiology;
+      this.vIsPackage = contact.isPackage;
+      this.serviceSelct = true;
+      this.calculateTotalCharge();
+      this._matDialog.closeAll();
+    }
+  }
+
+  // Manual refresh for waiting state
+  manualRefresh(): void {
+    this.statusMessage = 'Refreshing...';
+    // Add any refresh logic here if needed
+    setTimeout(() => {
+      this.statusMessage = 'Processing...';
+    }, 1000);
   }
 }
 // Set NODE_OPTIONS="--max-old-space-size=8192"
