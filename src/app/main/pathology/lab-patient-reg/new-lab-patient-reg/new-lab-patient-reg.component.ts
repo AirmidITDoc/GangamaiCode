@@ -703,6 +703,10 @@ export class NewLabPatientRegComponent {
       });
   }
 
+  showDoctorDropdown(row: any): boolean {
+    return row && row.creditedtoDoctor === true;
+  }
+
   onAddCharges(row): void {
 
     if (this.myForm.get("IsPathRad").value == '1')
@@ -727,9 +731,8 @@ export class NewLabPatientRegComponent {
       DiscPer: 0,
       DiscAmt: discountAmount || 0,
       NetAmount: netAmount || 0,
-      // DoctorName: this.servicedoctorname || '-',
       ClassName: 1,//this.className || '-',
-      // DoctorId: this.serivcedoctorId,
+      creditedtoDoctor: row.creditedtoDoctor === true,
       DoctorId: row.DoctorId || 0,
       DoctorName: row.DoctorName || '-',
       ChargesAddedName: this.accountService.currentUserValue.userName,
@@ -995,7 +998,6 @@ export class NewLabPatientRegComponent {
     controlsToRemove.forEach(key => delete formValue[key]);
     console.log(formValue)
 
-
     // Bill data
     const formattedDate1 = this.datePipe.transform(this.OpBillForm.get('billDate').value, "yyyy-MM-dd");
     const formattedTime1 = this.datePipe.transform(new Date(), "HH:mm:ss");
@@ -1031,10 +1033,19 @@ export class NewLabPatientRegComponent {
       this.ChargeddetailsArray.clear();
       this.BillDetailsArray.clear();
 
+      const invalidRow = this.dstable1.data.find(item =>
+        item.creditedtoDoctor === true && (!item.DoctorId || item.DoctorId === 0)
+      );
+
+      if (invalidRow) {
+        this.toastr.warning(
+          'Please select Doctor for added service','Warning!');
+        return;
+      }
+
       this.dstable1.data.forEach(item => {
         this.ChargeddetailsArray.push(this.CreateAddchargeform(item as ChargesList));
         this.BillDetailsArray.push(this.createBillDetails(item as ChargesList));
-
       });
 
       console.log("form values", this.OpBillForm.value)

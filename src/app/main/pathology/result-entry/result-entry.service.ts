@@ -32,7 +32,7 @@ export class ResultEntryService {
         Validators.pattern('^[a-zA-Z () ]*$')
       ]],
      
-      PatientTypeSearch: ['2'],
+      PatientTypeSearch: ['3'],
       StatusSearch: ['0'],
       CategoryId: [''],
       start: [new Date().toISOString()],
@@ -58,8 +58,8 @@ export class ResultEntryService {
     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_PathPatientList_Ptnt_Dtls", employee)
   }
 
-  public getPathologyResultList(query) {
-    return this._httpClient.post("Generic/GetBySelectQuery?query=" + query, {})
+  public getPathologyResultList(employee) {
+    return this._httpClient1.PostData("Common", employee);
   }
   public getHelpresultData(query){
     return this._httpClient.post("Generic/GetBySelectQuery?query=" + query, {})

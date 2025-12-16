@@ -26,37 +26,36 @@
                 <span>: Lab </span>
             </div>
         </div>
-     
-    </mat-toolbar>
-   <div class="info-badge-top overflow-auto" fxLayout="row" fxLayoutAlign="space-between" flex>
 
-            <div fxLayout="row" fxLayoutAlign="start center" class="gap-8">
-                
-                <div class="dashboard-card registrations">
-                    <div class="card-label">Total Sample</div>
-                    <div class="card-value">{{Vtotalcount}}</div>
-                    <mat-icon class="card-icon">person_add</mat-icon>
-                </div>
-                
-                <div class="dashboard-card appointments">
-                    <div class="card-label">Completed</div>
-                    <div class="card-value">{{VCompletedcount}}</div>
-                    <mat-icon class="card-icon">event</mat-icon>
-                </div>
-                
-                <div class="dashboard-card appointments-split">
-                    <div class="card-label">Pending</div>
-                    <div class="card-value">
-                        <div> {{Vpendingcount}}</div>
-                       
-                    </div>
-                    <mat-icon class="card-icon">group</mat-icon>
-                </div>
-                
-                
+    </mat-toolbar>
+     <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="space-between center"
+        class="px-12 py-4 border-bottom gap-8">
+
+        <div class="info-badge-top overflow-auto" fxLayout="row" fxLayoutAlign="space-between" flex>
+
+            <div class="dashboard-card registrations">
+                <div class="card-label">Total Sample</div>
+                <div class="card-value">{{Vtotalcount}}</div>
+                <mat-icon class="card-icon">person_add</mat-icon>
             </div>
 
+            <div class="dashboard-card appointments">
+                <div class="card-label">Completed</div>
+                <div class="card-value">{{VCompletedcount}}</div>
+                <mat-icon class="card-icon">event</mat-icon>
+            </div>
+
+            <div class="dashboard-card appointments-split">
+                <div class="card-label">Pending</div>
+                <div class="card-value">
+                    <div> {{Vpendingcount}}</div>
+
+                </div>
+                <mat-icon class="card-icon">group</mat-icon>
+            </div>
         </div>
+
+    </div>
     <div fusePerfectScrollbar
         class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
         dynamicTableHeight>
@@ -68,7 +67,7 @@
                 <div fxLayout="row" fxLayoutAlign="center center">
                     <mat-icon *ngIf="element.lbl=='IP'" title="IP" class="pill green-600 s-16">circle</mat-icon>
                     <mat-icon *ngIf="element.lbl=='OP'" title="OP" class="pill orange s-16">circle</mat-icon>
-                     <mat-icon *ngIf="element.lbl=='Lab'" title="Lab" class="pill blue s-16">circle</mat-icon>
+                    <mat-icon *ngIf="element.lbl=='Lab'" title="Lab" class="pill blue s-16">circle</mat-icon>
                 </div>
             </ng-template>
 
@@ -99,15 +98,13 @@
             </ng-template>
 
             <ng-template #iconisCompeleted let-element>
-                <div fxLayout="row" fxLayoutAlign="center center">
-                    <mat-icon *ngIf="element.isSampleCollection == 'True'" matTooltip="IsCompleted"
-                        class="active-icon green-500 s-16">check_circle
-                    </mat-icon>
-
-                    <mat-icon *ngIf="element.isSampleCollection == 'False'" matTooltip="Not Completed"
-                        class="active-icon red-500 s-16">hourglass_empty
-                    </mat-icon>
-
+                <div fxLayout="column" fxLayoutAlign="center center" class="status-box">
+                    <span [ngClass]="{
+                            'status-completed': element.isSampleCollection == 'True',
+                            'status-pending': element.isSampleCollection == 'False'
+                        }">
+                        {{ element.isSampleCollection == 'True' ? 'Completed' : 'Pending' }}
+                    </span>
                 </div>
             </ng-template>
 
@@ -118,11 +115,19 @@
                         (click)="onSave(element)" matTooltip="Edit">
                         edit
                     </mat-icon>
-                     <button mat-icon-button matTooltip="Patient Details Sticker" (click)="OnPrintPatientIcard(element)">
-                <mat-icon>pages</mat-icon>
-            </button>
+                    <button mat-icon-button matTooltip="Patient Details Sticker" (click)="OnPrintPatientIcard(element)">
+                        <mat-icon>pages</mat-icon>
+                    </button>
                 </div>
+            </ng-template>
 
+            <ng-template #actionButtonTemplate1 let-element>
+
+                <div fxLayout="row" fxLayoutAlign="center center">
+                    <button mat-icon-button matTooltip="Patient Details Sticker" (click)="OnPrintPatientIcard(element)">
+                        <mat-icon>pages</mat-icon>
+                    </button>
+                </div>
             </ng-template>
 
 
@@ -170,10 +175,10 @@
                                     class="gap-4">
                                     <mat-label>Type:</mat-label>
                                     <div fxLayout="row">
-                                        <mat-radio-button value='4'>All</mat-radio-button>
+                                        <mat-radio-button value='5'>All</mat-radio-button>
                                         <mat-radio-button value='1'>IP</mat-radio-button>
                                         <mat-radio-button value='0'>OP</mat-radio-button>
-                                         <mat-radio-button value='2'>LAB</mat-radio-button>
+                                        <mat-radio-button value='2'>LAB</mat-radio-button>
                                     </div>
                                 </mat-radio-group>
                             </div>
