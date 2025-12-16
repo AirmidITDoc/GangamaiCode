@@ -7,6 +7,8 @@ import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/air
 import { ToastrService } from "ngx-toastr";
 import { DepartmentMasterService } from "./department-master.service";
 import { NewDepartmentComponent } from "./new-department/new-department.component";
+import { PagePermissionService } from "app/main/shared/services/page-permission.service";
+import { permissionCodes, permissionType } from "app/main/shared/model/permission.model";
 
 @Component({
     selector: "app-department-master",
@@ -16,21 +18,24 @@ import { NewDepartmentComponent } from "./new-department/new-department.componen
     animations: fuseAnimations,
 })
 export class DepartmentMasterComponent implements OnInit {
+     IsAdd: boolean = this.permissionService.getPermission(permissionCodes.DepartmentMaster, permissionType.Add);
+        
      @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     msg: any;
     departmentName: any = "";
 
         allcolumns =[
-            // { heading: "Code", key: "departmentId", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Department Name", key: "departmentName", sort: true, align: 'left', emptySign: 'NA' },
-            // { heading: "User Name", key: "username", sort: true, align: 'left', emptySign: 'NA' },
+           { heading: "Department Name", key: "departmentName", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
             {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
                     {
-                        action: gridActions.edit, callback: (data: any) => {
-                            this.onSave(data);
-                        }
+                        // action: gridActions.edit, callback: (data: any) => {
+                        //     this.onSave(data);
+                        // }
+                          action: gridActions.edit, visible: this.permissionService.getPermission(permissionCodes.DepartmentMaster, permissionType.Edit), callback: (data: any) => {
+                                                      this.onSave(data);
+                                                  }
                     }, {
                         action: gridActions.delete, callback: (data: any) => {
                             this._departmentService.deactivateTheStatus(data.departmentId).subscribe((response: any) => {
@@ -47,6 +52,7 @@ export class DepartmentMasterComponent implements OnInit {
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
         ]
     gridConfig: gridModel = {
+          permissionCode: permissionCodes.DepartmentMaster,
         apiUrl: "DepartmentMaster/List",
         columnsList: this.allcolumns,
         sortField: "departmentId",
@@ -56,7 +62,7 @@ export class DepartmentMasterComponent implements OnInit {
 
     constructor(
         public _departmentService: DepartmentMasterService,
-        public _matDialog: MatDialog,
+        public _matDialog: MatDialog, public permissionService: PagePermissionService,
         public toastr: ToastrService,) { }
 
     ngOnInit(): void { }

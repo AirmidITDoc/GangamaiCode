@@ -57,7 +57,7 @@ export class StoreMasterComponent implements OnInit {
                     // action: gridActions.edit, callback: (data: any) => {
                     //     this.onSave(data);
                     // }
-                    action: gridActions.edit, visible: this.permissionService.getPermission(permissionCodes.Prefix, permissionType.Edit), callback: (data: any) => {
+                    action: gridActions.edit, visible: this.permissionService.getPermission(permissionCodes.StoreMaster, permissionType.Edit), callback: (data: any) => {
                             this.onSave(data);
                         }
                 }, {

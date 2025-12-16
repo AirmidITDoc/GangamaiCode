@@ -7,6 +7,9 @@ import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/air
 import { ToastrService } from "ngx-toastr";
 import { NewWardComponent } from "./new-ward/new-ward.component";
 import { WardMasterService } from "./ward-master.service";
+import { permissionCodes, permissionType } from "app/main/shared/model/permission.model";
+import { PrefixMasterService } from "../../PersonalDetails/prefix-master/prefix-master.service";
+import { PagePermissionService } from "app/main/shared/services/page-permission.service";
 
 @Component({
     selector: "app-ward-master",
@@ -16,11 +19,12 @@ import { WardMasterService } from "./ward-master.service";
     animations: fuseAnimations,
 })
 export class WardMasterComponent implements OnInit {
+     IsAdd: boolean = this.permissionService.getPermission(permissionCodes.WardMaster, permissionType.Add);
+       
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     roomName: any = "";
 
         allcolumns =  [
-            // { heading: "Code", key: "roomId", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "RoomName", key: "roomName", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "Location", key: "locationId", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "Class", key: "classId", sort: true, align: 'left', emptySign: 'NA' },
@@ -29,9 +33,12 @@ export class WardMasterComponent implements OnInit {
             {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
                     {
-                        action: gridActions.edit, callback: (data: any) => {
-                            this.onSave(data);
-                        }
+                        // action: gridActions.edit, callback: (data: any) => {
+                        //     this.onSave(data);
+                        // }
+                          action: gridActions.edit, visible: this.permissionService.getPermission(permissionCodes.WardMaster, permissionType.Edit), callback: (data: any) => {
+                                                    this.onSave(data);
+                                                }
                     }, 
                     {
                         action: gridActions.delete, callback: (data: any) => {
@@ -48,6 +55,7 @@ export class WardMasterComponent implements OnInit {
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
         ]
      gridConfig: gridModel = {
+          permissionCode: permissionCodes.WardMaster,
         apiUrl: "WardMaster/List",
         columnsList: this.allcolumns,
         sortField: "roomId",
@@ -57,7 +65,7 @@ export class WardMasterComponent implements OnInit {
 
 
     constructor(public _wardService: WardMasterService, public _matDialog: MatDialog,
-        public toastr: ToastrService,) { }
+        public toastr: ToastrService,  public permissionService: PagePermissionService) { }
 
     ngOnInit(): void { }
 

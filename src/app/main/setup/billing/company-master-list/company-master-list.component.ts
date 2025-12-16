@@ -10,6 +10,8 @@ import { NewCompanyMasterComponent } from './new-company-master/new-company-mast
 import { fuseAnimations } from '@fuse/animations';
 import { UpdateServCodePrintComponent } from './update-serv-code-print/update-serv-code-print.component';
 import { FormGroup } from '@angular/forms';
+import { PagePermissionService } from 'app/main/shared/services/page-permission.service';
+import { permissionCodes, permissionType } from 'app/main/shared/model/permission.model';
 
 @Component({
     selector: 'app-company-master-list',
@@ -19,7 +21,8 @@ import { FormGroup } from '@angular/forms';
     animations: fuseAnimations,
 })
 export class CompanyMasterListComponent {
-
+IsAdd: boolean = this.permissionService.getPermission(permissionCodes.CompanyMaster, permissionType.Add);
+  
     searchform: FormGroup
     Companyname: any;
     type = 0
@@ -79,6 +82,7 @@ export class CompanyMasterListComponent {
 
 
     gridConfig: gridModel = {
+          permissionCode: permissionCodes.CompanyMaster,
         apiUrl: "CompanyMaster/CompanyMasterList",
         columnsList: this.allColumns,
         sortField: "CompanyId",
@@ -129,7 +133,7 @@ export class CompanyMasterListComponent {
 
     constructor(
         public _CompanyMasterService: CompanyMasterService,
-        public _matDialog: MatDialog,
+        public _matDialog: MatDialog, public permissionService: PagePermissionService,
         public toastr: ToastrService,
     ) { }
 

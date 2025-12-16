@@ -7,6 +7,8 @@ import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/air
 import { ToastrService } from "ngx-toastr";
 import { BedMasterService } from "./bed-master.service";
 import { NewBedComponent } from "./new-bed/new-bed.component";
+import { PagePermissionService } from "app/main/shared/services/page-permission.service";
+import { permissionCodes, permissionType } from "app/main/shared/model/permission.model";
 
 
 @Component({
@@ -17,6 +19,8 @@ import { NewBedComponent } from "./new-bed/new-bed.component";
     animations: fuseAnimations,
 })
 export class BedMasterComponent implements OnInit {
+     IsAdd: boolean = this.permissionService.getPermission(permissionCodes.BedMaster, permissionType.Add);
+       
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     bedName: any = "";
 
@@ -29,9 +33,12 @@ export class BedMasterComponent implements OnInit {
             {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
                     {
-                        action: gridActions.edit, callback: (data: any) => {
-                            this.onSave(data);
-                        }
+                        // action: gridActions.edit, callback: (data: any) => {
+                        //     this.onSave(data);
+                        // }
+                         action: gridActions.edit, visible: this.permissionService.getPermission(permissionCodes.BedMaster, permissionType.Edit), callback: (data: any) => {
+                                                    this.onSave(data);
+                                                }
                     }, {
                         action: gridActions.delete, callback: (data: any) => {
                             this._BedMasterService.deactivateTheStatus(data.bedId).subscribe((response: any) => {
@@ -47,6 +54,7 @@ export class BedMasterComponent implements OnInit {
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
         ]
     gridConfig: gridModel = {
+          permissionCode: permissionCodes.BedMaster,
         apiUrl: "BedMaster/List",
         columnsList: this.allcolumns,
         sortField: "bedId",
@@ -55,7 +63,7 @@ export class BedMasterComponent implements OnInit {
     }
 
     constructor(
-        public _BedMasterService: BedMasterService,
+        public _BedMasterService: BedMasterService,  public permissionService: PagePermissionService,
         public toastr: ToastrService, public _matDialog: MatDialog
     ) { }
 

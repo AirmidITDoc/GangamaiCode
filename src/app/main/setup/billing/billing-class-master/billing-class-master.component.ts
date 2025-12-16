@@ -18,7 +18,7 @@ import { permissionCodes, permissionType } from "app/main/shared/model/permissio
     animations: fuseAnimations,
 })
 export class BillingClassMasterComponent implements OnInit {
-      IsAdd: boolean = this.permissionService.getPermission(permissionCodes.Prefix, permissionType.Add);
+      IsAdd: boolean = this.permissionService.getPermission(permissionCodes.ClassMaster, permissionType.Add);
        
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
  className: any = "";

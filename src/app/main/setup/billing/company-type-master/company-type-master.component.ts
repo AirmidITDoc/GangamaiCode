@@ -7,6 +7,8 @@ import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/air
 import { ToastrService } from "ngx-toastr";
 import { CompanyTypeMasterService } from "./company-type-master.service";
 import { NewCompanyTypeComponent } from "./new-company-type/new-company-type.component";
+import { PagePermissionService } from "app/main/shared/services/page-permission.service";
+import { permissionCodes, permissionType } from "app/main/shared/model/permission.model";
 
 
 
@@ -18,22 +20,23 @@ import { NewCompanyTypeComponent } from "./new-company-type/new-company-type.com
     animations: fuseAnimations,
 })
 export class CompanyTypeMasterComponent implements OnInit {
+     IsAdd: boolean = this.permissionService.getPermission(permissionCodes.CompanyTypeMaster, permissionType.Add);
+        
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
   typeName: any = "";
 
-
-    
          allcolumns = [
-            // { heading: "Code", key: "companyTypeId", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "Company Name", key: "typeName", sort: true, align: 'left', emptySign: 'NA' },
-            // { heading: "User Name", key: "username", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
             {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
                     {
-                        action: gridActions.edit, callback: (data: any) => {
-                            this.onSave(data);
-                        }
+                        // action: gridActions.edit, callback: (data: any) => {
+                        //     this.onSave(data);
+                        // }
+                          action: gridActions.edit, visible: this.permissionService.getPermission(permissionCodes.CompanyTypeMaster, permissionType.Edit), callback: (data: any) => {
+                                                    this.onSave(data);
+                                                }
                     }, {
                         action: gridActions.delete, callback: (data: any) => {
                             this._CompanyMasterService.deactivateTheStatus(data.companyTypeId).subscribe((response: any) => {
@@ -49,6 +52,7 @@ export class CompanyTypeMasterComponent implements OnInit {
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
         ]
      gridConfig: gridModel = {
+          permissionCode: permissionCodes.CompanyTypeMaster,
         apiUrl: "CompanyTypeMaster/List",
         columnsList: this.allcolumns,
         sortField: "companyTypeId",
@@ -59,50 +63,13 @@ export class CompanyTypeMasterComponent implements OnInit {
     constructor(
         public _CompanyMasterService: CompanyTypeMasterService,
         public _matDialog: MatDialog,
-        public toastr: ToastrService,
+        public toastr: ToastrService,  public permissionService: PagePermissionService
     ) { }
 
     ngOnInit(): void {
 
     }
-//filters addedby avdhoot vedpathak date-27/05/2025
-    // Clearfilter(event) {
-    //     console.log(event)
-    //     if (event == 'TypeNameSearch')
-    //         this._CompanyMasterService.myformSearch.get('TypeNameSearch').setValue("")
 
-    //     this.onChangeFirst();
-    // }
-
-    // onChangeFirst() {
-    //     this.typeName = this._CompanyMasterService.myformSearch.get('TypeNameSearch').value
-    //     this.getfilterdata();
-    // }
-
-    // getfilterdata() {
-    //     debugger
-    //     let isActive = this._CompanyMasterService.myformSearch.get("IsDeletedSearch").value || "";
-    //     this.gridConfig = {
-    //         apiUrl: "CompanyTypeMaster/List",
-    //         columnsList: this.allcolumns,
-    //         sortField: "companyTypeId",
-    //         sortOrder: 0,
-    //         filters: [
-    //             { fieldName: "typeName", fieldValue: this.typeName, opType: OperatorComparer.Contains },
-    //             { fieldName: "isActive", fieldValue: isActive, opType: OperatorComparer.Equals }
-    //         ]
-    //     }
-    //     // this.grid.gridConfig = this.gridConfig;
-    //     // this.grid.bindGridData();
-    //     console.log("GridConfig:", this.gridConfig);
-
-    // if (this.grid) {
-    //     this.grid.gridConfig = this.gridConfig;
-    //     this.grid.bindGridData();
-    // } else {
-    //     console.error("Grid is undefined!");
-    // }
-    // }
     onSave(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button

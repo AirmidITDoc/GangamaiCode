@@ -201,7 +201,7 @@ export class ServiceMasterFormComponent implements OnInit {
     }
 
     getClassList() {
-
+debugger
         if (this.ServiceId) {
             var param = {
                 "first": 0,

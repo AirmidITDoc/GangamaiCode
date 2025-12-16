@@ -167,7 +167,7 @@ export class ExternalSalesReturnComponent implements OnInit {
      autocompletestore: string = 'Store';
      autocompleteModeConcession: string = "Concession";
      autocompleteModeCreditReason: string = "CreditReason";
- 
+ autocompleteModeReturntype: string = "Returntypes";
  
      constructor(
          public _BrowsSalesBillService: BrowsSalesBillService,
@@ -239,6 +239,8 @@ export class ExternalSalesReturnComponent implements OnInit {
              externalPatientName: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
              doctorName: [''],
              regId: [0, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+           
+            ReturnType:['22'],
              extMobileNo: ['', [Validators.required, Validators.min(0), Validators.max(10),
              Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$"), this._FormvalidationserviceService.onlyNumberValidator()]],
              extAddress: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
@@ -2049,6 +2051,9 @@ export class ExternalSalesReturnComponent implements OnInit {
              ],
                CredirReasonId: [
                  { name: "required", Message: "Patient Name No is required" }
+             ],
+             ReturnType: [
+                 { name: "required", Message: "ReturnType No is required" }
              ],
              
          };

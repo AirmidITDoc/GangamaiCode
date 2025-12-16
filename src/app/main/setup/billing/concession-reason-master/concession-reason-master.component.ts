@@ -7,6 +7,8 @@ import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/air
 import { ToastrService } from "ngx-toastr";
 import { ConcessionReasonMasterService } from "./concession-reason-master.service";
 import { NewConcessionreasonComponent } from "./new-concessionreason/new-concessionreason.component";
+import { PagePermissionService } from "app/main/shared/services/page-permission.service";
+import { permissionCodes, permissionType } from "app/main/shared/model/permission.model";
 
 @Component({
     selector: "app-concession-reason-master",
@@ -17,7 +19,8 @@ import { NewConcessionreasonComponent } from "./new-concessionreason/new-concess
 })
 
 export class ConcessionReasonMasterComponent implements OnInit {
-
+  IsAdd: boolean = this.permissionService.getPermission(permissionCodes.ConcessionReasonMaster, permissionType.Add);
+    
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
 
      concessionReason: any = "";
@@ -29,9 +32,12 @@ export class ConcessionReasonMasterComponent implements OnInit {
             {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
                     {
-                        action: gridActions.edit, callback: (data: any) => {
-                            this.onSave(data);
-                        }
+                        // action: gridActions.edit, callback: (data: any) => {
+                        //     this.onSave(data);
+                        // }
+                         action: gridActions.edit, visible: this.permissionService.getPermission(permissionCodes.ConcessionReasonMaster, permissionType.Edit), callback: (data: any) => {
+                                                    this.onSave(data);
+                                                }
                     }, {
                         action: gridActions.delete, callback: (data: any) => {
                             this._ConcessionReasonMasterService.deactivateTheStatus(data.concessionId).subscribe((response: any) => {
@@ -47,6 +53,7 @@ export class ConcessionReasonMasterComponent implements OnInit {
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
         ]
      gridConfig: gridModel = {
+         permissionCode: permissionCodes.ConcessionReasonMaster,
         apiUrl: "ConcessionReasonMaster/List",
         columnsList: this.allcolumns,
         sortField: "concessionId",
@@ -56,7 +63,7 @@ export class ConcessionReasonMasterComponent implements OnInit {
 
     constructor(
         public _ConcessionReasonMasterService: ConcessionReasonMasterService,
-        public _matDialog: MatDialog,
+        public _matDialog: MatDialog,  public permissionService: PagePermissionService,
         public toastr: ToastrService,) { }
 
     ngOnInit(): void { }

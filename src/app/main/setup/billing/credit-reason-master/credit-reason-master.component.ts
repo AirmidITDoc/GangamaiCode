@@ -7,6 +7,8 @@ import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/air
 import { ToastrService } from 'ngx-toastr';
 import { CreditreasonService } from './creditreason.service';
 import { NewCreditReasonComponent } from './new-credit-reason/new-credit-reason.component';
+import { PagePermissionService } from 'app/main/shared/services/page-permission.service';
+import { permissionCodes, permissionType } from 'app/main/shared/model/permission.model';
 
 
 @Component({
@@ -17,37 +19,40 @@ import { NewCreditReasonComponent } from './new-credit-reason/new-credit-reason.
     animations: fuseAnimations,
 })
 export class CreditReasonMasterComponent implements OnInit {
+    IsAdd: boolean = this.permissionService.getPermission(permissionCodes.CreditReasonMaster, permissionType.Add);
 
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
-creditReason: any = "";
-   
-         allcolumns = [
-            // { heading: "Code", key: "creditId", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Credit Reason ", key: "creditReason", sort: true, align: 'left', emptySign: 'NA' },
-            // { heading: "User Name", key: "username", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
-            {
-                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
-                    {
-                        action: gridActions.edit, callback: (data: any) => {
-                            this.onSave(data);
-                        }
-                    }, {
-                        action: gridActions.delete, callback: (data: any) => {
-                            this._CreditreasonService.deactivateTheStatus(data.creditId).subscribe((response: any) => {
-                                this.grid.bindGridData();
-                            });
-                        }
-                    }]
-            } //Action 1-view, 2-Edit,3-delete
-        ]
-       
-       allfilters = [
-            { fieldName: "creditReason", fieldValue: "", opType: OperatorComparer.StartsWith },
-            { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
-        ]
-    
- gridConfig: gridModel = {
+    creditReason: any = "";
+
+    allcolumns = [
+        { heading: "Credit Reason ", key: "creditReason", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
+        {
+            heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+                {
+                    // action: gridActions.edit, callback: (data: any) => {
+                    //     this.onSave(data);
+                    // }
+                    action: gridActions.edit, visible: this.permissionService.getPermission(permissionCodes.CreditReasonMaster, permissionType.Edit), callback: (data: any) => {
+                        this.onSave(data);
+                    }
+                }, {
+                    action: gridActions.delete, callback: (data: any) => {
+                        this._CreditreasonService.deactivateTheStatus(data.creditId).subscribe((response: any) => {
+                            this.grid.bindGridData();
+                        });
+                    }
+                }]
+        } //Action 1-view, 2-Edit,3-delete
+    ]
+
+    allfilters = [
+        { fieldName: "creditReason", fieldValue: "", opType: OperatorComparer.StartsWith },
+        { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+    ]
+
+    gridConfig: gridModel = {
+        permissionCode: permissionCodes.CreditReasonMaster,
         apiUrl: "CreditReasonMaster/List",
         columnsList: this.allcolumns,
         sortField: "creditId",
@@ -58,10 +63,10 @@ creditReason: any = "";
     constructor(
         public _CreditreasonService: CreditreasonService,
         public _matDialog: MatDialog,
-        public toastr: ToastrService,) { }
+        public toastr: ToastrService, public permissionService: PagePermissionService) { }
 
     ngOnInit(): void { }
- //filters addedby avdhoot vedpathak date-28/05/2025
+    //filters addedby avdhoot vedpathak date-28/05/2025
     // Clearfilter(event) {
     //     console.log(event)
     //     if (event == 'CreditReasonSearch')

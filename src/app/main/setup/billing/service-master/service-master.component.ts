@@ -10,6 +10,8 @@ import { ServiceMasterFormComponent } from "./service-master-form/service-master
 import { ServiceMasterService } from "./service-master.service";
 import { TariffComponent } from "./tariff/tariff.component";
 import { ServiceMasterFormNewComponent } from "./service-master-form-new/service-master-form-new.component";
+import { permissionCodes, permissionType } from "app/main/shared/model/permission.model";
+import { PagePermissionService } from "app/main/shared/services/page-permission.service";
 
 
 @Component({
@@ -20,7 +22,8 @@ import { ServiceMasterFormNewComponent } from "./service-master-form-new/service
     animations: fuseAnimations,
 })
 export class ServiceMasterComponent implements OnInit {
-
+IsAdd: boolean = this.permissionService.getPermission(permissionCodes.BillingServiceMaster, permissionType.Add);
+    
     autocompleteModetariff: string = "Tariff";
     autocompleteModegroupName: string = "GroupName";
     tariffId = "0";
@@ -66,9 +69,12 @@ export class ServiceMasterComponent implements OnInit {
         {
             heading: "Action", key: "action", align: "right", width: 100, type: gridColumnTypes.action, actions: [
                 {
-                    action: gridActions.edit, callback: (data: any) => {
-                        this.onNew(data);
-                    }
+                    // action: gridActions.edit, callback: (data: any) => {
+                    //     this.onNew(data);
+                    // }
+                     action: gridActions.edit, visible: this.permissionService.getPermission(permissionCodes.BillingServiceMaster, permissionType.Edit), callback: (data: any) => {
+                            this.onNew(data);
+                        }
                 }, {
                     action: gridActions.delete, callback: (data: any) => {
 
@@ -88,6 +94,7 @@ export class ServiceMasterComponent implements OnInit {
     ]
 
     gridConfig: gridModel = {
+          permissionCode: permissionCodes.BillingServiceMaster,
         apiUrl: "BillingService/BillingList",
         columnsList: this.allColumns,
         sortField: "ServiceId",
@@ -132,7 +139,7 @@ export class ServiceMasterComponent implements OnInit {
     constructor(
         public _serviceMasterService: ServiceMasterService,
         public toastr: ToastrService,
-
+ public permissionService: PagePermissionService,
         public _matDialog: MatDialog
     ) { }
 

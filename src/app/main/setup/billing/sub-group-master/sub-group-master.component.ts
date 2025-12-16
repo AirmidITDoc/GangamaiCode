@@ -7,6 +7,8 @@ import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/air
 import { ToastrService } from "ngx-toastr";
 import { NewSubgroupComponent } from "./new-subgroup/new-subgroup.component";
 import { SubGroupMasterService } from "./sub-group-master.service";
+import { permissionCodes, permissionType } from "app/main/shared/model/permission.model";
+import { PagePermissionService } from "app/main/shared/services/page-permission.service";
 
 @Component({
     selector: "app-sub-group-master",
@@ -16,19 +18,22 @@ import { SubGroupMasterService } from "./sub-group-master.service";
     animations: fuseAnimations,
 })
 export class SubGroupMasterComponent implements OnInit {
+     IsAdd: boolean = this.permissionService.getPermission(permissionCodes.SubGroupMaster, permissionType.Add);
+        
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
   subGroupName: any = "";
     
         allcolumns =  [
-            // { heading: "Code", key: "subGroupId", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "Sub Group Name", key: "subGroupName", sort: true, align: 'left', emptySign: 'NA' },
+           { heading: "Sub Group Name", key: "subGroupName", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "Group Name", key: "groupId", sort: true, align: 'left', emptySign: 'NA' },
-            // { heading: "User Name", key: "username", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
             {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
                     {
-                        action: gridActions.edit, callback: (data: any) => {
+                        // action: gridActions.edit, callback: (data: any) => {
+                        //     this.onSave(data);
+                        // }
+                         action: gridActions.edit, visible: this.permissionService.getPermission(permissionCodes.SubGroupMaster, permissionType.Edit), callback: (data: any) => {
                             this.onSave(data);
                         }
                     }, {
@@ -46,6 +51,8 @@ export class SubGroupMasterComponent implements OnInit {
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
         ]
      gridConfig: gridModel = {
+         permissionCode: permissionCodes.SubGroupMaster,
+               
         apiUrl: "SubGroupMaster/List",
         columnsList: this.allcolumns,
         sortField: "subGroupId",
@@ -54,49 +61,12 @@ export class SubGroupMasterComponent implements OnInit {
     }
 
     constructor(public _subgroupService: SubGroupMasterService, public _matDialog: MatDialog,
-        public toastr: ToastrService,) { }
+        public toastr: ToastrService, public permissionService: PagePermissionService) { }
 
     ngOnInit(): void {
 
     }
-    //filters addedby avdhoot vedpathak date-27/05/2025
-    // Clearfilter(event) {
-    //     console.log(event)
-    //     if (event == 'SubGroupNameSearch')
-    //         this._subgroupService.myformSearch.get('SubGroupNameSearch').setValue("")
-
-    //     this.onChangeFirst();
-    // }
-
-    // onChangeFirst() {
-    //     this.subGroupName = this._subgroupService.myformSearch.get('SubGroupNameSearch').value
-    //     this.getfilterdata();
-    // }
-
-    // getfilterdata() {
-    //     debugger
-    //     let isActive = this._subgroupService.myformSearch.get("IsDeletedSearch").value || "";
-    //     this.gridConfig = {
-    //         apiUrl: "SubGroupMaster/List",
-    //         columnsList: this.allcolumns,
-    //         sortField: "subGroupId",
-    //         sortOrder: 0,
-    //         filters: [
-    //             { fieldName: "subGroupName", fieldValue: this.subGroupName, opType: OperatorComparer.Contains },
-    //             { fieldName: "isActive", fieldValue: isActive, opType: OperatorComparer.Equals }
-    //         ]
-    //     }
-    //     // this.grid.gridConfig = this.gridConfig;
-    //     // this.grid.bindGridData();
-    //     console.log("GridConfig:", this.gridConfig);
-
-    // if (this.grid) {
-    //     this.grid.gridConfig = this.gridConfig;
-    //     this.grid.bindGridData();
-    // } else {
-    //     console.error("Grid is undefined!");
-    // }
-    // }
+  
     onSave(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button

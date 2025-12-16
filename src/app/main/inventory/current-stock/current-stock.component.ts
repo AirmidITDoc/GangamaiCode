@@ -152,7 +152,7 @@ export class CurrentStockComponent implements OnInit {
     ]
 
     gridConfig: gridModel = {
-        permissionCode: permissionCodes.Prefix,
+        // permissionCode: permissionCodes.Prefix,
         apiUrl: "CurrentStock/StorewiseCurrentStockList",
         columnsList: this.allcurrentColumn,
         sortField: "StoreId",
@@ -261,7 +261,7 @@ export class CurrentStockComponent implements OnInit {
     ]
 
     gridConfig1: gridModel = {
-        permissionCode: permissionCodes.Prefix,
+        // permissionCode: permissionCodes.Prefix,
         apiUrl: "CurrentStock/DayWiseCurrentStockList",
         columnsList: this.alldayWiseColumn,
         sortField: "SalesNo",
@@ -329,7 +329,7 @@ export class CurrentStockComponent implements OnInit {
     ]
 
     gridConfig2: gridModel = {
-        permissionCode: permissionCodes.Prefix,
+        // permissionCode: permissionCodes.Prefix,
         apiUrl: "CurrentStock/ItemWiseSalesSummaryList",
         columnsList: this.allSalesColumn,
         sortField: "ItemId",
@@ -396,7 +396,7 @@ export class CurrentStockComponent implements OnInit {
         { fieldName: "ItemId", fieldValue: String(this.lastitemName), opType: OperatorComparer.Equals }, //1
     ]
     gridConfig3: gridModel = {
-        permissionCode: permissionCodes.Prefix,
+        // permissionCode: permissionCodes.Prefix,
         apiUrl: "CurrentStock/IssueWiseItemSummaryList",
         columnsList: this.allItemColumn,
         sortField: "ItemId",

@@ -8,6 +8,8 @@ import { ToastrService } from "ngx-toastr";
 import { NewSubtapComponent } from "./new-subtap/new-subtap.component";
 import { SubtpaCompanyMasterService } from "./subtpa-company-master.service";
 import { FormGroup } from "@angular/forms";
+import { PagePermissionService } from "app/main/shared/services/page-permission.service";
+import { permissionCodes, permissionType } from "app/main/shared/model/permission.model";
 
 
 
@@ -21,13 +23,13 @@ import { FormGroup } from "@angular/forms";
 export class SubtpaCompanyMasterComponent implements OnInit {
     myformSearch:FormGroup
     companyName: any = "";
-   
+   IsAdd: boolean = this.permissionService.getPermission(permissionCodes.SubTpacompanyMaster, permissionType.Add);
+       
 
  @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
    
     allColumns =  [
-        // { heading: "Code", key: "subCompanyId", sort: true, align: 'left', emptySign: 'NA'},
-        { heading: "TPA Type", key: "typeName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+       { heading: "TPA Type", key: "typeName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "Main Company Name", key: "mainCompanyName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
         { heading: "Company Name", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
         { heading: "Address", key: "address", sort: true, align: 'left', emptySign: 'NA', width: 200 },
@@ -36,15 +38,17 @@ export class SubtpaCompanyMasterComponent implements OnInit {
         { heading: "Country", key: "countryName", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "Phone No", key: "phoneNo", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "Mobile No", key: "faxNo", sort: true, align: 'left', emptySign: 'NA'},
-        // { heading: "User Name", key: "CreatedBy", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
         {
             heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, width: 100, actions: [
 
                 {
-                    action: gridActions.edit, callback: (data: any) => {
-                        this.onNew(data)
-                    }
+                    // action: gridActions.edit, callback: (data: any) => {
+                    //     this.onNew(data)
+                    // }
+                     action: gridActions.edit, visible: this.permissionService.getPermission(permissionCodes.SubTpacompanyMaster, permissionType.Edit), callback: (data: any) => {
+                                                this.onNew(data);
+                                            }
                 }, {
                     action: gridActions.delete, callback: (data: any) => {
                         this._subtpacompanyService.deactivateTheStatus(data.subCompanyId).subscribe((response: any) => {
@@ -63,6 +67,7 @@ export class SubtpaCompanyMasterComponent implements OnInit {
     
 
     gridConfig: gridModel = {
+          permissionCode: permissionCodes.SubTpacompanyMaster,
         apiUrl: "SubTpaCompany/List",
         columnsList: this.allColumns,
         sortField: "subCompanyId",
@@ -100,7 +105,7 @@ export class SubtpaCompanyMasterComponent implements OnInit {
         this.grid.bindGridData();
     }
     constructor(
-        public _subtpacompanyService: SubtpaCompanyMasterService,
+        public _subtpacompanyService: SubtpaCompanyMasterService, public permissionService: PagePermissionService,
         public toastr: ToastrService, public _matDialog: MatDialog
     ) { }
 

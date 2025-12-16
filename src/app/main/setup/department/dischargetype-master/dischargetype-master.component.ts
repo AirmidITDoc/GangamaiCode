@@ -7,6 +7,8 @@ import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/air
 import { ToastrService } from "ngx-toastr";
 import { DischargetypeMasterService } from "./dischargetype-master.service";
 import { NewDischargetypeComponent } from "./new-dischargetype/new-dischargetype.component";
+import { PagePermissionService } from "app/main/shared/services/page-permission.service";
+import { permissionCodes, permissionType } from "app/main/shared/model/permission.model";
 
 @Component({
     selector: "app-dischargetype-master",
@@ -16,18 +18,21 @@ import { NewDischargetypeComponent } from "./new-dischargetype/new-dischargetype
     animations: fuseAnimations,
 })
 export class DischargetypeMasterComponent implements OnInit {
-         @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
+   IsAdd: boolean = this.permissionService.getPermission(permissionCodes.DischargeMaster, permissionType.Add);
+       
+    @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     dischargeTypeName: any = "";
 
         allcolumns =[
-            // { heading: "Code", key: "dischargeTypeId", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "DischargeTypeName", key: "dischargeTypeName", sort: true, align: 'left', emptySign: 'NA' },
-            // { heading: "UserName", key: "username", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
             {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
                     {
-                        action: gridActions.edit, callback: (data: any) => {
+                        // action: gridActions.edit, callback: (data: any) => {
+                        //     this.onSave(data);
+                        // }
+                         action: gridActions.edit, visible: this.permissionService.getPermission(permissionCodes.DischargeMaster, permissionType.Edit), callback: (data: any) => {
                             this.onSave(data);
                         }
                     }, {
@@ -46,6 +51,7 @@ export class DischargetypeMasterComponent implements OnInit {
         ]
     
  gridConfig: gridModel = {
+      permissionCode: permissionCodes.DischargeMaster,
         apiUrl: "DischargeType/List",
         columnsList: this.allcolumns,
         sortField: "dischargeTypeId",
@@ -54,7 +60,7 @@ export class DischargetypeMasterComponent implements OnInit {
     }
     constructor(
         public _dischargetypeService: DischargetypeMasterService,
-        public toastr: ToastrService,
+        public toastr: ToastrService, public permissionService: PagePermissionService,
         public _matDialog: MatDialog
     ) { }
 

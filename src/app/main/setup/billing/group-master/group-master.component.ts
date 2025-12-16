@@ -7,6 +7,8 @@ import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/air
 import { ToastrService } from "ngx-toastr";
 import { GroupMasterService } from "./group-master.service";
 import { NewGroupComponent } from "./new-group/new-group.component";
+import { PagePermissionService } from "app/main/shared/services/page-permission.service";
+import { permissionCodes, permissionType } from "app/main/shared/model/permission.model";
 
 
 @Component({
@@ -17,19 +19,22 @@ import { NewGroupComponent } from "./new-group/new-group.component";
     animations: fuseAnimations,
 })
 export class GroupMasterComponent implements OnInit {
+  IsAdd: boolean = this.permissionService.getPermission(permissionCodes.GroupMaster, permissionType.Add);
+      
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
 groupName: any = "";
-
-   
+  
         allcolumns =[
-            // { heading: "Code", key: "groupId", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "Group Name", key: "groupName", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "IsConsolidatedDR", key: "isconsolidated", sort: true, align: 'left', emptySign: 'NA' },
             { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
             {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
                     {
-                        action: gridActions.edit, callback: (data: any) => {
+                        // action: gridActions.edit, callback: (data: any) => {
+                        //     this.onSave(data);
+                        // }
+                         action: gridActions.edit, visible: this.permissionService.getPermission(permissionCodes.GroupMaster, permissionType.Edit), callback: (data: any) => {
                             this.onSave(data);
                         }
                     }, {
@@ -48,6 +53,7 @@ groupName: any = "";
         ]
     
  gridConfig: gridModel = {
+      permissionCode: permissionCodes.GroupMaster,
         apiUrl: "GroupMaster/List",
         columnsList: this.allcolumns,
         sortField: "groupId",
@@ -55,7 +61,7 @@ groupName: any = "";
         filters: this.allfilters
     }
     constructor(public _GroupMasterService: GroupMasterService, public _matDialog: MatDialog,
-        public toastr: ToastrService,) { }
+        public toastr: ToastrService, public permissionService: PagePermissionService) { }
 
     ngOnInit(): void {
 

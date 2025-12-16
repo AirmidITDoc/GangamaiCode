@@ -19,7 +19,7 @@ import { permissionCodes, permissionType } from "app/main/shared/model/permissio
     animations: fuseAnimations,
 })
 export class BankMasterComponent implements OnInit {
-     IsAdd: boolean = this.permissionService.getPermission(permissionCodes.Prefix, permissionType.Add);
+     IsAdd: boolean = this.permissionService.getPermission(permissionCodes.BankMaster, permissionType.Add);
        
      
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
@@ -34,7 +34,7 @@ export class BankMasterComponent implements OnInit {
                         // action: gridActions.edit, callback: (data: any) => {
                         //     this.onSave(data) // EDIT Records
                         // }
- action: gridActions.edit, visible: this.permissionService.getPermission(permissionCodes.Prefix, permissionType.Edit), callback: (data: any) => {
+ action: gridActions.edit, visible: this.permissionService.getPermission(permissionCodes.BankMaster, permissionType.Edit), callback: (data: any) => {
                             this.onSave(data);
                         }
                         

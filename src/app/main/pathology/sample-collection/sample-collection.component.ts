@@ -33,7 +33,7 @@ export class SampleCollectionComponent implements OnInit {
     regNo: any = "0"
     l_name: any = "%"
     status: any = "0"
-    Ptype: any = "4"
+    Ptype: any = "3"
     Vtotalcount = 0
     VCompletedcount = 0
     Vpendingcount = 0
@@ -92,7 +92,7 @@ export class SampleCollectionComponent implements OnInit {
             { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
             { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
             { fieldName: "IsCompleted", fieldValue: "0", opType: OperatorComparer.Equals },
-            { fieldName: "OP_IP_Type", fieldValue: "1", opType: OperatorComparer.Equals }
+            { fieldName: "OP_IP_Type", fieldValue: "5", opType: OperatorComparer.Equals }
         ]
     }
 
@@ -163,7 +163,7 @@ export class SampleCollectionComponent implements OnInit {
         this.toDate = this.datePipe.transform(this.myformSearch.get('end').value, "yyyy-MM-dd")
         this.f_name = this.myformSearch.get('FirstName').value + "%"
         this.l_name = this.myformSearch.get('LastName').value + "%"
-        this.regNo = this.myformSearch.get('RegNo').value || ""
+        this.regNo = this.myformSearch.get('RegNo').value || "0"
         this.status = this.myformSearch.get('StatusSearch').value
         this.Ptype = this.myformSearch.get('PatientTypeSearch').value
         this.getfilterdata();
@@ -287,7 +287,7 @@ export class SampleCollectionComponent implements OnInit {
             if (event == 'LastName')
                 this.myformSearch.get('LastName').setValue("")
         if (event == 'RegNo')
-            this.myformSearch.get('RegNo').setValue("")
+            this.myformSearch.get('RegNo').setValue("0")
 
         this.onChangeFirst();
     }

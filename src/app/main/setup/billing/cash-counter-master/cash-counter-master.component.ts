@@ -20,7 +20,7 @@ import { permissionCodes, permissionType } from "app/main/shared/model/permissio
     animations: fuseAnimations,
 })
 export class CashCounterMasterComponent implements OnInit {
-     IsAdd: boolean = this.permissionService.getPermission(permissionCodes.Prefix, permissionType.Add);
+     IsAdd: boolean = this.permissionService.getPermission(permissionCodes.CashCounter, permissionType.Add);
         
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
 cashCounterName: any = "";

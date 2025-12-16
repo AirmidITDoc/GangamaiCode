@@ -8,6 +8,8 @@ import { ToastrService } from "ngx-toastr";
 import { CompanyMasterService } from "./company-master.service";
 import { ComptoservComponent } from "./comptoserv/comptoserv.component";
 import { CompanyMasterListComponent } from "./newcompany-master/company-master-list.component";
+import { PagePermissionService } from "app/main/shared/services/page-permission.service";
+import { permissionCodes, permissionType } from "app/main/shared/model/permission.model";
 
 @Component({
     selector: "app-company-master",
@@ -17,7 +19,8 @@ import { CompanyMasterListComponent } from "./newcompany-master/company-master-l
     animations: fuseAnimations,
 })
 export class CompanyMasterComponent implements OnInit {
-
+ IsAdd: boolean = this.permissionService.getPermission(permissionCodes.CompanyMaster, permissionType.Add);
+    
     @ViewChild('actionsisTemplateTest') actionsisTemplateTest!: TemplateRef<any>;
 
     ngAfterViewInit() {
@@ -57,9 +60,12 @@ export class CompanyMasterComponent implements OnInit {
         {
             heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, width: 100, actions: [
                 {
-                    action: gridActions.edit, callback: (data: any) => {
-                        this.onSave(data);
-                    }
+                    // action: gridActions.edit, callback: (data: any) => {
+                    //     this.onSave(data);
+                    // }
+                     action: gridActions.edit, visible: this.permissionService.getPermission(permissionCodes.CompanyMaster, permissionType.Edit), callback: (data: any) => {
+                                                this.onSave(data);
+                                            }
                 }, {
                     action: gridActions.delete, callback: (data: any) => {
                         this._CompanyMasterService.deactivateTheStatus(data.companyId).subscribe((response: any) => {
@@ -75,6 +81,7 @@ export class CompanyMasterComponent implements OnInit {
         { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
     ]
     gridConfig: gridModel = {
+         permissionCode: permissionCodes.CompanyMaster,
         apiUrl: "CompanyMaster/List",
         columnsList: this.allcolumns,
         sortField: "companyId",
@@ -83,7 +90,7 @@ export class CompanyMasterComponent implements OnInit {
     }
     constructor(
         public _CompanyMasterService: CompanyMasterService,
-        public _matDialog: MatDialog,
+        public _matDialog: MatDialog, public permissionService: PagePermissionService,
         public toastr: ToastrService,
     ) { }
 
