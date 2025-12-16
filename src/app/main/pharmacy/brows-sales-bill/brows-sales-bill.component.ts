@@ -575,10 +575,11 @@ cancelEdit(row: any) {
         { fieldName: "IPNo", fieldValue: this.ipdno, opType: OperatorComparer.Equals }
       ],
     }
-    this.grid4.gridConfig = this.gridConfig4;
-    this.grid4.bindGridData();
+    // this.grid4.gridConfig = this.gridConfig4;
+    // this.grid4.bindGridData();
   }
   getchangeDate() {
+    debugger
       if (this._BrowsSalesBillService.SalesPatientForm.get('IsDischarge').value != false) {
             this.apiUrl = "Admission/AdmissionDischargeList"
             this.Fr_Date = this.datePipe.transform(this._BrowsSalesBillService.SalesPatientForm.get('startdate1').value, "yyyy-MM-dd") || "1900-01-01"
@@ -594,18 +595,19 @@ cancelEdit(row: any) {
     } 
  
     onChangeDiscahrge(event) {
+      debugger
          if (this._BrowsSalesBillService.SalesPatientForm.get('IsDischarge').value == false) {
-            this._BrowsSalesBillService.SalesPatientForm.get('fromDate').setValue('')
-            this._BrowsSalesBillService.SalesPatientForm.get('enddate').setValue('')
+            this._BrowsSalesBillService.SalesPatientForm.get('startdate1').setValue('')
+            this._BrowsSalesBillService.SalesPatientForm.get('enddate1').setValue('')
             this.Fr_Date = "1900-01-01"
             this.T_Date = "1900-01-01"
             this.status = '0'
             this.apiUrl = "Admission/AdmissionList"
         } else {
-            this._BrowsSalesBillService.SalesPatientForm.get('fromDate').setValue(new Date())
-            this._BrowsSalesBillService.SalesPatientForm.get('enddate').setValue(new Date())
-            this.Fr_Date = this.datePipe.transform(this._BrowsSalesBillService.SalesPatientForm.get('fromDate').value, "yyyy-MM-dd") || "1900-01-01"
-            this.T_Date = this.datePipe.transform(this._BrowsSalesBillService.SalesPatientForm.get('enddate').value, "yyyy-MM-dd") || "1900-01-01"
+            this._BrowsSalesBillService.SalesPatientForm.get('startdate1').setValue(new Date())
+            this._BrowsSalesBillService.SalesPatientForm.get('enddate1').setValue(new Date())
+            this.Fr_Date = this.datePipe.transform(this._BrowsSalesBillService.SalesPatientForm.get('startdate1').value, "yyyy-MM-dd") || "1900-01-01"
+            this.T_Date = this.datePipe.transform(this._BrowsSalesBillService.SalesPatientForm.get('enddate1').value, "yyyy-MM-dd") || "1900-01-01"
             this.status = '1'
             this.apiUrl = "Admission/AdmissionDischargeList"
         }
