@@ -864,11 +864,17 @@
                                             </button>
                                         
                                         </div>
+                                         <div fxFlex="10%" fxFlex.xs="100%" fxFlex.sm="100%" *ngIf="OPFooterForm.get('paymentType')?.value === 'OnlinePay'">
+                                            <airmid-textbox label="UPI NO" formControlName="UpiNo" [formGroup]="OPFooterForm"
+                                                [validations]="getValidationMessages().UpiNo"  [minLength]="4" [maxLength]="12">
+                                            </airmid-textbox>
+                                        </div>
                                     </div>
                                     <div class="radio-container">
                                         <mat-radio-group formControlName="paymentType" fxLayout="row" class="gap-4">
                                             <mat-radio-button value="CashPay">Cash Payment</mat-radio-button>
                                             <mat-radio-button value="CreditPay">Credit Payment</mat-radio-button>
+                                             <mat-radio-button value="OnlinePay">Online Payment</mat-radio-button>
                                             <mat-radio-button value="PayOption">Pay Option</mat-radio-button>
                                             <mat-radio-button value="Mpesa">MPesa</mat-radio-button>
                                         </mat-radio-group>

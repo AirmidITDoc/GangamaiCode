@@ -170,7 +170,7 @@ export class NewAdvanceComponent implements OnInit {
       cashCounterId: [item?.cashCounterId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       transactionType: [item?.transactionType ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       isSelfOrcompany: [item?.isSelfOrcompany ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      tranMode: [item?.tranMode ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+      tranMode: ['PHAR', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
       createdBy: [item?.createdBy ?? this._loggedService.currentUserValue.userId],
       transactionLabel: [item?.transactionLabel ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
     });
@@ -258,7 +258,7 @@ export class NewAdvanceComponent implements OnInit {
         Age: this.regObj.age || '',
         NetPayAmount: this.MainForm.get('advanceAmt').value || 0,
         AdvanceDetailId: 0,
-        TransactionLabel:'PHARMACY_ADVANCE' 
+        TransactionLabel:'ADVANCE' 
       };
       const dialogRef = this._matDialog.open(OpPaymentComponent,
         {

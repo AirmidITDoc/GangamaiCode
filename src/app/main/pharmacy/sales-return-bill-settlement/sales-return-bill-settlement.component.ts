@@ -298,7 +298,7 @@ export class SalesReturnBillSettlementComponent implements OnInit {
       cashCounterId: [item?.cashCounterId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       transactionType: [item?.transactionType ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       isSelfOrcompany: [item?.isSelfOrcompany ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      tranMode: [item?.tranMode ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+      tranMode: ['PHAR', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
       createdBy: [item?.createdBy ?? this._loggedService.currentUserValue.userId],
       transactionLabel: [item?.transactionLabel ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
     });
@@ -618,7 +618,12 @@ this._SelseSettelmentservice.SalesBillList(vdata).subscribe((response)=>{
     if (this.userFormGroup.get('PatientType').value == '1')
       PatientHeaderObj['OPD_IPD_Id'] = this.mIPDNo;
     else
-      PatientHeaderObj['OPD_IPD_Id'] = this.mOPDNo; 
+      PatientHeaderObj['OPD_IPD_Id'] = this.mOPDNo;   
+      PatientHeaderObj['TransactionLabel'] = 'SALES_SETTLEMENT'; 
+    if (this.userFormGroup.get('PatientType').value == '1')
+      PatientHeaderObj['IPDNo'] = this.IPDNo;
+    else
+      PatientHeaderObj['OPDNo'] = this.OPDNo;
     const dialogRef = this._matDialog.open(OpPaymentComponent,
       {
         maxWidth: "80vw",
@@ -633,8 +638,7 @@ this._SelseSettelmentservice.SalesBillList(vdata).subscribe((response)=>{
     dialogRef.afterClosed().subscribe(result => {
          console.log(result)
       debugger
-      if (result && result.IsSubmitFlag) { 
-
+      if (result && result.IsSubmitFlag) {  
         let SalesDataArray =[];  
         this.SelectedList.forEach(item => {
            SalesDataArray.push({salesID: item?.salesId, balanceAmount: result?.BalAmt ?? 0 ,refundAmt: 0 }) 
@@ -650,8 +654,47 @@ this._SelseSettelmentservice.SalesBillList(vdata).subscribe((response)=>{
           this.PaymentArray.clear(); 
           PaymentArray.forEach(element => {
           this.PaymentArray.push(this.createSettlmentPyament(element));  
+          });  
+
+        const newTemPaymentArray: any[] = result.submitDataPay.ipModePaymentInsert || [];
+        const NewPaymentArray: any[] = [];
+
+        this.SelectedList.forEach(contact => {
+          newTemPaymentArray.forEach(element => {
+            NewPaymentArray.push({
+              paymentId: 0,
+              unitId: this._loggedService.currentUserValue.user.unitId,
+              billNo: contact?.salesId || 0,
+              opdipdtype: 3,
+              paymentDate: formattedDate,
+              paymentTime: formattedTime,
+              payAmount: contact?.balanceAmount ?? 0,
+              tranNo: element.tranNo ?? "",
+              bankName: element.bankName ?? "",
+              validationDate: this.datePipe.transform(element.validationDate, 'yyyy-MM-dd') || this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
+              advanceUsedAmount: 0,
+              comments: "",
+              payMode: element.payMode ?? "",
+              onlineTranNo: '0',
+              onlineTranResponse: '0',
+              companyId: 0,
+              advanceId: 0,
+              refundId: 0,
+              cashCounterId: 0,
+              transactionType: 4,
+              isSelfOrcompany: 0,
+              tranMode: "PHAR",
+              createdBy: this._loggedService.currentUserValue?.userId ?? 0,
+              transactionLabel: 'SALES_SETTLEMENT',
+            });
           });
-      
+        });
+
+        this.ModeOfPaymentsArray.clear();
+        NewPaymentArray.forEach(item => {
+          this.ModeOfPaymentsArray.push(this.CreateModePaymentform(item));
+        });
+
          console.log(this.PharmaSettlementfrom.value);
         this._SelseSettelmentservice.InsertSalessettlement(this.PharmaSettlementfrom.value).subscribe(response => { 
            this.getdataMultiple()

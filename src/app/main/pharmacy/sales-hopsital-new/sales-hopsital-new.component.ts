@@ -235,7 +235,9 @@ export class SalesHospitalNewComponent implements OnInit {
             ExternalPatID: [''],
             IsPurchaseWsie:[false],
             CredirReasonId:[0],
-            CredirReasonName:[0]
+            CredirReasonName:[0],
+            UpiNo:[0, [Validators.minLength(4), Validators.maxLength(12), this._FormvalidationserviceService.onlyNumberValidator()]]
+            
         });
     }
     //sales save form
@@ -394,7 +396,7 @@ export class SalesHospitalNewComponent implements OnInit {
                 cashCounterId: [item?.cashCounterId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
                 transactionType: [item?.transactionType ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
                 isSelfOrcompany: [item?.isSelfOrcompany ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-                tranMode: [item?.tranMode ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+                tranMode: ['PHAR', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
                 createdBy: [item?.createdBy ?? this._loggedService.currentUserValue.userId],
                 transactionLabel: [item?.transactionLabel ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
             });
@@ -624,7 +626,7 @@ if (QtyElement) {
                 MRP = +result?.landedRate;
                 IsPurRate = 1;  
             } else {
-                MRP = result.unitMRP;
+                MRP = result?.unitMRP;
                  IsPurRate = 1; 
             }
             if (isEditable) {
@@ -1177,6 +1179,15 @@ if (QtyElement) {
                 });
                 return;
             }
+        }  
+        if (this.ItemSubform.get('CashPay').value == 'Online') {
+                const upi = this.ItemSubform.get('UpiNo')?.value;
+                if (!upi || upi.length < 4) {
+                this.toastr.warning('Enter UPI No (min 4 & max 12 characters)', 'Warning !', {
+                    toastClass: 'tostr-tost custom-toast-warning',
+                });
+                return;
+            }  
         } 
         Swal.fire({
             title: 'Confirm Save',
@@ -1285,7 +1296,7 @@ if (QtyElement) {
                     cashCounterId: 0,
                     transactionType: 4,
                     isSelfOrcompany: this.Patientdetails?.CompanyId ? 1 : 0,
-                    tranMode: "HOSP",
+                    tranMode: "PHAR",
                     createdBy: this._loggedService.currentUserValue?.userId ?? 0,
                     transactionLabel: 'SALES_BILL'
                 }); 
@@ -1300,7 +1311,57 @@ if (QtyElement) {
                         this.onClose();
                     }
                 });
-            } else if (this.ItemSubform.get('CashPay').value == 'Credit') {
+            } 
+            else if (this.ItemSubform.get('CashPay').value == 'Online') {
+                
+                this.PharmaSalesForm.get('sales.paidAmount').setValue((Math.round(formValue.netAmount)))
+                this.PharmaSalesForm.get('sales.balanceAmount').setValue(0)
+                this.PharmaSalesForm.get('payment.paymentDate').setValue(formattedDate)
+                this.PharmaSalesForm.get('payment.paymentTime').setValue(FormattedDateTime)
+                this.PharmaSalesForm.get('payment.payTmdate').setValue(formattedDate)
+                this.PharmaSalesForm.get('payment.payTmtranNo')?.setValue(formValue?.UpiNo || 0)
+                this.PharmaSalesForm.get('payment.payTmamount').setValue((Math.round(formValue.netAmount)))
+
+                let ModePaymentObj = [];
+                ModePaymentObj.push({
+                    paymentId: 0,
+                    unitId: this._loggedService.currentUserValue.user.unitId,
+                    billNo: 0,
+                    opdipdtype: 3,
+                    paymentDate: formattedDate,
+                    paymentTime: formattedTime,
+                    payAmount: (Math.round(formValue?.netAmount || 0)),
+                    tranNo: formValue?.UpiNo || '0',
+                    bankName: "",
+                    validationDate: this.datePipe.transform(this.currentDate, 'yyyy-MM-dd'),
+                    advanceUsedAmount: 0,
+                    comments: "",
+                    payMode: "UPI",
+                    onlineTranNo: "0",
+                    onlineTranResponse: "0",
+                    companyId: this.Patientdetails?.CompanyId ?? 0,
+                    advanceId: 0,
+                    refundId: 0,
+                    cashCounterId: 0,
+                    transactionType: 4,
+                    isSelfOrcompany: this.Patientdetails?.CompanyId ? 1 : 0,
+                    tranMode: "PHAR",
+                    createdBy: this._loggedService.currentUserValue?.userId ?? 0,
+                    transactionLabel: 'SALES_BILL'
+                }); 
+                this.ModeOfPaymentsArray.clear();
+                ModePaymentObj.forEach(item => {
+                    this.ModeOfPaymentsArray.push(this.CreateModePaymentform(item));
+                });
+                console.log(this.PharmaSalesForm.value)
+                this._salesService.InsertCashSales(this.PharmaSalesForm.value).subscribe((response) => {
+                    if (response > 0) {
+                        this.OnSalesprint(response, opIpType);
+                        this.onClose();
+                    }
+                });
+            } 
+            else if (this.ItemSubform.get('CashPay').value == 'Credit') {
                 this.CreditReasonShow = true;
                   if (!formValue.CredirReasonId) {
                 this.toastr.warning('Please select Credit Reason ', 'Warning !', {
@@ -2370,7 +2431,11 @@ draftextMobilenolist:any=[];
               CredirReasonId: [
                 { name: "required", Message: "Patient Name No is required" }
             ],
-            
+               UpiNo: [
+                { name: "required", Message: "UPI required!", },
+                { name: "pattern", Message: "only Number allowed.", },
+                { name: "min", Message: "Enter valid UPI No.", }
+            ],
         };
     }
     public onEnterpatientname(event): void {
