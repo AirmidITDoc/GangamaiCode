@@ -465,7 +465,7 @@ export class SalesReturnBillSettlementComponent implements OnInit {
       
         console.log(this.PharmaSettlementfrom.value);
         this._SelseSettelmentservice.InsertSalessettlement(this.PharmaSettlementfrom.value).subscribe(response => { 
-            this.MutliSettlemForm.reset();  
+            this.onclearmultipledata();
             // this.viewgetIPPayemntPdf(response) 
             // this.OnSalessettlemtnprint(this.OP_IP_Id,this._loggedService.currentUserValue.user.storeId) 
             this.grid.bindGridData(); 
@@ -697,8 +697,8 @@ this._SelseSettelmentservice.SalesBillList(vdata).subscribe((response)=>{
 
          console.log(this.PharmaSettlementfrom.value);
         this._SelseSettelmentservice.InsertSalessettlement(this.PharmaSettlementfrom.value).subscribe(response => { 
-           this.getdataMultiple()
-           this.userFormGroup.reset();  
+          this.onclearNormaldata();
+           this.getdataMultiple()  
         });
       }
     });
@@ -712,7 +712,16 @@ this._SelseSettelmentservice.SalesBillList(vdata).subscribe((response)=>{
     this.MutliSettlemForm.get('RegID').setValue('');
     this.userFormGroup.get('PatientType').setValue('1');
     this.MutliSettlemForm.get('PatientType').setValue('1');
+    
+  }
+  onclearmultipledata(){ 
+     this.MutliSettlemForm.reset(this.CreateMultipleFrom().value); 
+     this.PatientInformRest();
      this.getdataMultiple()
+  }
+    onclearNormaldata(){ 
+        this.userFormGroup.reset(this.CreateUseFrom().value);  
+     this.PatientInformRest(); 
   }
   PatientInformRest() {
     this.PatientName = '';

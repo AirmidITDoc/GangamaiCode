@@ -192,7 +192,7 @@ export class IpSalesReturnComponent implements OnInit {
       vatAmount: [element?.GSTAmt || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       discPer: [element?.Disc || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       discAmount: [element?.DiscAmt || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      grossAmount: [element?.NetAmount, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      grossAmount: [Math.round(element?.NetAmount), [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       landedPrice: [element?.LandedPrice || 0, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       totalLandedAmount: [element?.TotalLandedAmount || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       purRate: [element?.PurRateWf || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],

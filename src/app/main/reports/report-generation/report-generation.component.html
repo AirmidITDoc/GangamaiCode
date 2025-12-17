@@ -295,7 +295,8 @@
                                                 [formGroup]="_ReportService.userForm" formControlName="expHeadId"
                                                 placeholderText="Select Expenses Head "
                                                 ApiUrl="Report/Expensesheadmaster/auto-complete?Keyword="
-                                                 >
+                                                 (selectionChange)="SelectedExpheadObj($event)"
+                                                  (onClearSelection)="resetExpHead()" >
                                             </airmid-autocomplete>
                                         </div>
                                     </ng-container>
@@ -305,7 +306,9 @@
                                             <airmid-autocomplete label="Expenses Category"
                                                 [formGroup]="_ReportService.userForm" formControlName="expCategoryId"
                                                 placeholderText="Select Expenses category "
-                                                ApiUrl="Report/MExpensesCategoryMaster/auto-complete?Keyword=">
+                                                ApiUrl="Report/MExpensesCategoryMaster/auto-complete?Keyword="
+                                                 (selectionChange)="SelectedExpCatObj($event)"
+                                                  (onClearSelection)="resetExpCat()">
                                             </airmid-autocomplete>
                                         </div>
                                     </ng-container>

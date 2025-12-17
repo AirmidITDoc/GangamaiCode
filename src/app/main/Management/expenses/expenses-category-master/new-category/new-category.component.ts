@@ -29,9 +29,8 @@ export class NewCategoryComponent {
 
     this.CategoryForm = this._ExpensesService.createCategoryMasterForm();
     this.CategoryForm.markAllAsTouched();
-
-    if ((this.data?.expCatId ?? 0) > 0) {
-
+debugger
+    if ((this.data?.expCatId ?? 0) > 0) { 
       this.isActive = this.data.isActive
       this.data.categoryName = this.data.categoryName.trim()
       this.CategoryForm.patchValue(this.data);

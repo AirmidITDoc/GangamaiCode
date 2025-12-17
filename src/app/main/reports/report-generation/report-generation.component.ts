@@ -68,6 +68,8 @@ export class ReportGenerationComponent implements OnInit {
     StoreId: any;
     FromStoreId: any;
     ToStoreId: any;
+     ExpHeadId: any;
+      ExpCatId: any;
     SupplierId: any;
     PaymentId: any;
     DrugTypeId: any;
@@ -308,6 +310,12 @@ export class ReportGenerationComponent implements OnInit {
     SelectedToStoreObj(obj) {
         this.ToStoreId = obj.value;
     }
+    SelectedExpheadObj(obj) {
+        this.ExpHeadId = obj.value;
+    }
+    SelectedExpCatObj(obj) {
+        this.ExpCatId = obj.value;
+    }
     SelectedSupplierObj(obj) {
         this.SupplierId = obj.value;
     }
@@ -359,6 +367,8 @@ export class ReportGenerationComponent implements OnInit {
         this.StoreId = 0;
         this.FromStoreId = 0;
         this.ToStoreId = 0;
+        this.ExpHeadId = 0;
+        this.ExpCatId = 0;
         this.SupplierId = 0;
         this.PaymentId = 0
         this.CompanyId = 0;
@@ -390,6 +400,14 @@ export class ReportGenerationComponent implements OnInit {
         this.FlaExpCategorySelected = false;
         this.FlaExpHeadSelected = false;
     }
+      resetExpHead() { 
+        this._ReportService.userForm.get('expHeadId').setValue(''); 
+        this.ExpHeadId = 0; 
+  }
+        resetExpCat() {  
+        this._ReportService.userForm.get('expCategoryId').setValue(''); 
+        this.ExpCatId = 0; 
+  }
     CallReportData(type) {
         this.StoreId = this._ReportService.userForm.get("StoreId").value
         setTimeout(() => {
@@ -541,13 +559,13 @@ export class ReportGenerationComponent implements OnInit {
             if (this.FlaExpHeadSelected)
                 paramFilterList.push({
                     "fieldName": "ExpHeadId",
-                    "fieldValue": this._ReportService.userForm.get('expHeadId')?.value || "0",
+                    "fieldValue":  this.ExpHeadId.toString() || "0",
                     "opType": OperatorComparer.Equals
                 });
             if (this.FlaExpCategorySelected)
                 paramFilterList.push({
                     "fieldName": "ExpCategoryId",
-                    "fieldValue": this._ReportService.userForm.get('expCategoryId')?.value || "0",
+                    "fieldValue":  this.ExpCatId.toString() || "0",
                     "opType": OperatorComparer.Equals
                 });
             //   

@@ -66,7 +66,7 @@ export class ExpensesService {
     createCategoryMasterForm(): FormGroup {
     return this._formBuilder.group({
       expCatId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      CategoryName: ["",
+      categoryName: ["",
         [
           Validators.required,
           Validators.pattern('^[a-zA-Z0-9 ()]*$'),
