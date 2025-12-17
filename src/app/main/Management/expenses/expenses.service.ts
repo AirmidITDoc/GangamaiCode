@@ -98,7 +98,7 @@ export class ExpensesService {
 
 
     public CategoryMasterSave(Param: any) {
-    if (Param.expHedId) {
+    if (Param?.expCatId) {
       return this._httpClient.PutData("ExpensesCategoryMaster/" + Param.expCatId, Param);
     } else return this._httpClient.PostData("ExpensesCategoryMaster", Param);
   }
