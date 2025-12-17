@@ -270,7 +270,7 @@
                                         </div>
                                     </ng-container>
 
-                                     <ng-container *ngIf="flagFromStoreSelected">
+                                    <ng-container *ngIf="flagFromStoreSelected">
                                         <div style="max-width: 265px;">
                                             <airmid-dropdown label="FromStore Name" formControlName="FromStoreId"
                                                 [formGroup]="_ReportService.userForm" [mode]="autocompletestore"
@@ -279,7 +279,7 @@
                                         </div>
                                     </ng-container>
 
-                                     <ng-container *ngIf="flagToStoreSelected">
+                                    <ng-container *ngIf="flagToStoreSelected">
                                         <div style="max-width: 265px;">
                                             <airmid-dropdown label="ToStore Name" formControlName="ToStoreId"
                                                 [formGroup]="_ReportService.userForm" [mode]="autocompletestore"
@@ -288,63 +288,80 @@
 
                                         </div>
                                     </ng-container>
-                                    <!-- sales dd remaining -->
-                                </div>
+ 
+                                     <ng-container *ngIf="FlaExpHeadSelected">
+                                        <div style="max-width: 265px;">
+                                            <airmid-autocomplete label="Expenses Head"
+                                                [formGroup]="_ReportService.userForm" formControlName="expHeadId"
+                                                placeholderText="Select Expenses Head "
+                                                ApiUrl="Report/Expensesheadmaster/auto-complete?Keyword="
+                                                 >
+                                            </airmid-autocomplete>
+                                        </div>
+                                    </ng-container>
 
-                                <div fxLayout="row" fxLayoutAlign="start none">
-                                    <span *ngIf="flagOPIPTypeSelected"
-                                        style="font-weight: bold;margin-left: 2%;">Patient Type</span>
-                                    <mat-radio-group aria-label="Select an option" formControlName="OPIPType"
-                                        *ngIf="flagOPIPTypeSelected" style="margin-left:2%;" name="OPIPType">
-
-                                        <mat-radio-button value="0">OP</mat-radio-button>
-                                        <mat-radio-button value="1">IP</mat-radio-button>
-                                        <mat-radio-button value="2">All</mat-radio-button>
-                                    </mat-radio-group>
-                                </div>
-
-                                <div fxLayout="row" fxLayoutAlign="start none">
-                                    <span *ngIf="flagTypeSelected"
-                                        style="font-weight: bold;margin-left: 2%;">Type</span>
-                                    <mat-radio-group aria-label="Select an option" formControlName="type"
-                                        *ngIf="flagTypeSelected" style="margin-left:2%;" name="type">
-
-                                        <mat-radio-button value="0">Summary</mat-radio-button>
-                                        <mat-radio-button value="1">Detail</mat-radio-button>
-                                    </mat-radio-group>
-                                </div>
-
-                                <!-- Print Button -->
-                                <div fxLayout="row" fxLayoutAlign="start none">
-                                    <button mat-fab extended color="primary" [disabled]="!ReportName"
-                                        (click)="CallReportData(1)">
-                                        <mat-icon>print</mat-icon>
-                                        <span>Print</span>
-                                    </button>
-                                    <button mat-fab extended color="primary" [disabled]="!ReportName"
-                                        (click)="CallReportData(2)">
-                                        <mat-icon>insert_drive_file</mat-icon>
-                                        <span>Export Excel</span>
-                                    </button>
-                                </div>
-
-
-
-                            </form>
-                        </mat-card-content>
-
-                        <mat-card-footer>
-                            <div fxLayout="row" fxLayoutAlign="start Left" class="footer-section">
-                                <span class="text-sm text-gray-600" style="font-size: 18px;">
-                                    <strong>Report Summary:</strong>{{ ReportSummary }}
-                                </span>
-                            </div>
-                        </mat-card-footer>
-                    </mat-card>
-
-
+                                     <ng-container *ngIf="FlaExpCategorySelected">
+                                        <div style="max-width: 265px;">
+                                            <airmid-autocomplete label="Expenses Category"
+                                                [formGroup]="_ReportService.userForm" formControlName="expCategoryId"
+                                                placeholderText="Select Expenses category "
+                                                ApiUrl="Report/MExpensesCategoryMaster/auto-complete?Keyword=">
+                                            </airmid-autocomplete>
+                                        </div>
+                                    </ng-container>
+                                <!-- sales dd remaining -->
                 </div>
+
+                <div fxLayout="row" fxLayoutAlign="start none">
+                    <span *ngIf="flagOPIPTypeSelected" style="font-weight: bold;margin-left: 2%;">Patient Type</span>
+                    <mat-radio-group aria-label="Select an option" formControlName="OPIPType"
+                        *ngIf="flagOPIPTypeSelected" style="margin-left:2%;" name="OPIPType">
+
+                        <mat-radio-button value="0">OP</mat-radio-button>
+                        <mat-radio-button value="1">IP</mat-radio-button>
+                        <mat-radio-button value="2">All</mat-radio-button>
+                    </mat-radio-group>
+                </div>
+
+                <div fxLayout="row" fxLayoutAlign="start none">
+                    <span *ngIf="flagTypeSelected" style="font-weight: bold;margin-left: 2%;">Type</span>
+                    <mat-radio-group aria-label="Select an option" formControlName="type" *ngIf="flagTypeSelected"
+                        style="margin-left:2%;" name="type">
+
+                        <mat-radio-button value="0">Summary</mat-radio-button>
+                        <mat-radio-button value="1">Detail</mat-radio-button>
+                    </mat-radio-group>
+                </div>
+
+                <!-- Print Button -->
+                <div fxLayout="row" fxLayoutAlign="start none">
+                    <button mat-fab extended color="primary" [disabled]="!ReportName" (click)="CallReportData(1)">
+                        <mat-icon>print</mat-icon>
+                        <span>Print</span>
+                    </button>
+                    <button mat-fab extended color="primary" [disabled]="!ReportName" (click)="CallReportData(2)">
+                        <mat-icon>insert_drive_file</mat-icon>
+                        <span>Export Excel</span>
+                    </button>
+                </div>
+
+
+
+                </form>
+                </mat-card-content>
+
+                <mat-card-footer>
+                    <div fxLayout="row" fxLayoutAlign="start Left" class="footer-section">
+                        <span class="text-sm text-gray-600" style="font-size: 18px;">
+                            <strong>Report Summary:</strong>{{ ReportSummary }}
+                        </span>
+                    </div>
+                </mat-card-footer>
+                </mat-card>
+
+
             </div>
         </div>
     </div>
+</div>
 </div>

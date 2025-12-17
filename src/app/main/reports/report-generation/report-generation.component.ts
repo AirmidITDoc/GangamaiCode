@@ -105,7 +105,8 @@ export class ReportGenerationComponent implements OnInit {
 
     filteredOptionsCashCounter: Observable<string[]>;
     searchCashCounterList: any = [];
-
+    FlaExpCategorySelected:boolean = false;
+    FlaExpHeadSelected:boolean = false;
     flagDoctorSelected: boolean = false;
     flagRefDoctorSelected: boolean = false;
     flagUserSelected: boolean = false;
@@ -259,6 +260,10 @@ export class ReportGenerationComponent implements OnInit {
             this.flagOPIPTypeSelected = true;
         if (controllerPermission.filter(x => x == "type")?.length > 0)
             this.flagTypeSelected = true;
+         if (controllerPermission.filter(x => x == "ExpenseHead")?.length > 0)
+            this.FlaExpHeadSelected = true;
+         if (controllerPermission.filter(x => x == "ExpensesCategory")?.length > 0)
+            this.FlaExpCategorySelected = true;
         // 
     }
     SelectedUserObj(obj) {
@@ -340,6 +345,8 @@ export class ReportGenerationComponent implements OnInit {
         this._ReportService.userForm.get('ItemId').setValue('');
         this._ReportService.userForm.get('OPIPType').setValue('2');
         this._ReportService.userForm.get('type').setValue('0');
+        this._ReportService.userForm.get('expHeadId').setValue('');
+        this._ReportService.userForm.get('expCategoryId').setValue('');
         this.UserId = 0;
         this.DoctorId = 0;
         this.RefDoctorId = 0;
@@ -380,6 +387,8 @@ export class ReportGenerationComponent implements OnInit {
         this.flagOPIPTypeSelected = false;
         this.flagTypeSelected = false;
         this.flagPaymentModeSelected = false;
+        this.FlaExpCategorySelected = false;
+        this.FlaExpHeadSelected = false;
     }
     CallReportData(type) {
         this.StoreId = this._ReportService.userForm.get("StoreId").value
@@ -527,6 +536,18 @@ export class ReportGenerationComponent implements OnInit {
                 paramFilterList.push({
                     "fieldName": "Type",
                     "fieldValue": this._ReportService.userForm.get('type').value || "2",
+                    "opType": OperatorComparer.Equals
+                });
+            if (this.FlaExpHeadSelected)
+                paramFilterList.push({
+                    "fieldName": "ExpHeadId",
+                    "fieldValue": this._ReportService.userForm.get('expHeadId')?.value || "0",
+                    "opType": OperatorComparer.Equals
+                });
+            if (this.FlaExpCategorySelected)
+                paramFilterList.push({
+                    "fieldName": "ExpCategoryId",
+                    "fieldValue": this._ReportService.userForm.get('expCategoryId')?.value || "0",
                     "opType": OperatorComparer.Equals
                 });
             //   

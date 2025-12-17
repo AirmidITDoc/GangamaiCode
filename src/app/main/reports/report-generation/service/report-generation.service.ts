@@ -48,7 +48,9 @@ export class ReportService {
             CreditId:[""],
             paymentId:[""],
             OPIPType: ["2"],
-            type:["0"]
+            type:["0"],
+            expCategoryId:[""],
+            expHeadId:[""]
             // 
         });
     }

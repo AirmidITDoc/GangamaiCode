@@ -536,7 +536,9 @@ public getPurchaseorderview(FromDate,ToDate,SupplierID,ToStoreId){
       // return this._httpClient1.PostData("ReportConfig/List",param);
       return this._httpClient1.PostData("ReportConfig/NewList",param);
     }
-
+  public getExpensesDailyReport(FromDate,ToDate,ExpHeadId,ExpCategoryId){
+    return this._httpClient.get("CommanReport/view-DoctorWisePatientCountReport?FromDate=" + FromDate+"&ToDate="+ToDate+"&ExpHeadId"+ExpHeadId+"&ExpCategoryId="+ExpCategoryId);
+  }
     
 
 }

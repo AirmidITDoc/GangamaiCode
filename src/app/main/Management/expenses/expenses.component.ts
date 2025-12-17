@@ -24,7 +24,7 @@ export class ExpensesComponent {
 
   myFilterform: FormGroup;
   autocompleteExpensen: string = "ExpHeadMaster"
-  autocompleteExpensenCategory: string = "ExpensesCategory"
+  autocompleteExpensenCategory: string = "MExpensesCategory"
   type: any = "3";
   expId: any = "0"
   expCategoryId: any = "0"
