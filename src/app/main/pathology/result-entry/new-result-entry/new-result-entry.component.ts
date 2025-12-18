@@ -59,7 +59,7 @@ export class NewResultEntryComponent {
 
     selectedAdvanceObj1: SampleDetailObj;
     selectedAdvanceObj2: AdmissionPersonlModel;
-    screenFromString = 'opd-casepaper';
+    screenFromString = 'Common-form';
     hasSelectedContacts: boolean;
     advanceData: any;
     dataSource = new MatTableDataSource<Pthologyresult>();
@@ -272,40 +272,12 @@ export class NewResultEntryComponent {
     helpItems: any[] = [];
     helpFullItems: any[] = [];
     selectedParam: any;
-    // onKeydown(event: KeyboardEvent, data: any) {
-    //     if (event.key === 'F2') {
-    //         event.preventDefault();
-
-    //         if (this.selectedParam !== data.ParameterId) {
-    //             this.currentval = '';
-    //         }
-    //         debugger
-    //         this.selectedParam = data.ParameterId;
-
-    //         const param = {
-    //             "searchFields": [
-    //                 {
-    //                     "fieldName": "ParameterId",
-    //                     "fieldValue": String(data.ParameterId),//25
-    //                     "opType": "Equals"
-    //                 }
-    //             ],
-    //             "mode": "ParameterDescriptiveMaster"
-    //         }
-
-    //         this._SampleService.getPathologyResultList(param).subscribe(res => {
-    //             this.helpItems = res as any[];
-    //             data.IsHelpShown = true;
-    //         });
-    //     }
-    // }
     activeHelpRow: any = null;
 
     onKeydown(event: KeyboardEvent, contact: any) {
         if (event.key !== 'F2') return;
 
         event.preventDefault();
-        debugger
         // Close previous popup
         if (this.activeHelpRow && this.activeHelpRow !== contact) {
             this.activeHelpRow.IsHelpShown = false;
@@ -322,7 +294,7 @@ export class NewResultEntryComponent {
         };
 
         this._SampleService.getPathologyResultList(param).subscribe(res => {
-            debugger
+            // debugger
             contact.fullHelpItems = res as any[];   // ✅ backup (never change)
             contact.helpItems = [...contact.fullHelpItems]; // working copy
 
@@ -354,7 +326,6 @@ export class NewResultEntryComponent {
 
         this.AddData1(data, value);
     }
-
     ///////////////// end ///////////////////
     getResultList1(rbj) {
         // debugger
@@ -610,7 +581,7 @@ export class NewResultEntryComponent {
     }
 
     onUpload() {
-
+        debugger
         if ((this.vPathResultDoctorId == '')) {
             this.toastr.warning('Please select valid Pathalogist', 'Warning !', {
                 toastClass: 'tostr-tost custom-toast-warning',

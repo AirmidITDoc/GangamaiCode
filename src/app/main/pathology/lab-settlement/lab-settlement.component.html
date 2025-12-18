@@ -1,0 +1,106 @@
+<div class="page-layout simple inner-sidebar inner-scroll right-sidebar" fusePerfectScrollbar dynamicTableHeight>
+
+    <div fusePerfectScrollbar
+        class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
+        dynamicTableHeight>
+        <div class="top-header header accent p-16" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
+            fxLayoutAlign.gt-xs="space-between center ">
+            <div class="top-header-info">
+                <div class="top-header-title">
+                    <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                        LAB Patient Settlement
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+            <div class="modal-body-container">
+                <mat-card style="padding: 5px;">
+                    <form [formGroup]="searchFormGroup" fxLayoutAlign="space-between start">
+                        <div fxLayout="column" fxLayoutAlign="start none" style="width: 100%;">
+                            <div class="redio-container" style="padding: 10px;">
+                                <airmid-autocomplete label="Lab-UHID / First Name / Last Name / Mobile No"
+                                    [formGroup]="searchFormGroup" formControlName="RegId"
+                                    placeholderText="Lab-UHID / First Name / Last Name / Mobile No" fxFlex="40%"
+                                    ApiUrl="LabPatientRegistration/search-patient-1?Keyword="
+                                    (selectionChange)="getSelectedObj($event)" ValueField="regId"
+                                    TextField="formattedText"></airmid-autocomplete>
+                            </div>
+                        </div>
+                    </form>
+                </mat-card>
+
+                <div fxlayout="row" style="padding: 0px 5px 0px 5px">
+                    <div fxFlex.gt-sm="100%" fxFlex class="patient-info-container">
+                        <mat-card style="padding: 5px;">
+                            <div class="patient-info-container">
+                                <div class="patient-info-box">
+                                    <div class="patient-info-title border-bottom pb-2">
+                                        <span class="h1">Patient Information</span>
+                                    </div>
+                                    <div class="patient-info-box my-8">
+                                        <div class="patient-info-row ">
+                                            <div class="patient-col">
+                                                <span class="patient-col-key">UHID No</span>
+                                                <span>:</span>
+                                                <span class="patient-col-value">{{registerObj.labRequestNo}}</span>
+                                            </div>
+                                            <div class="patient-col">
+                                                <span class="patient-col-key ">Patient Name</span>
+                                                <span>:</span>
+                                                <span class="patient-col-value">{{ registerObj.firstName }} {{
+                                                    registerObj.lastName
+                                                    }}</span>
+                                            </div>
+                                            <div class="patient-col">
+                                                <span class="patient-col-key">Age | Gender</span>
+                                                <span>:</span>
+                                                <span class="patient-col-value">{{registerObj.ageYear}}Y
+                                                    <!-- {{registerObj.genderId}} -->
+                                                </span>
+                                            </div>
+                                            <div class="patient-col">
+                                                <span class="patient-col-key">Mobile No</span>
+                                                <span>:</span>
+                                                <span class="patient-col-value">{{registerObj.mobileNo}}</span>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </mat-card>
+                    </div>
+                </div>
+            </div>
+
+            <ng-template #actionsTemplate let-element>
+                <div>
+                    <mat-icon *ngIf="element.companyId=='0'" matTooltip="Patient Category Self">account_box
+                    </mat-icon>
+
+                    <mat-icon *ngIf="element.companyId!='0'" matTooltip="Patient Category Company">business
+                    </mat-icon>
+                </div>
+            </ng-template>
+
+            <ng-template #actionButtonTemplate let-element>
+                <div fxLayout="row" fxLayoutAlign="center center">
+
+                    <button mat-icon-button class="material-icons" *ngIf="element.balanceAmt !=0 "
+                        matTooltip="Final Discount" (click)="getFinalDisc(element)">
+                        <mat-icon> money </mat-icon>
+                    </button>
+
+                    <button mat-icon-button (click)="openPaymentpopup(element)" matTooltip="Settlement"
+                        *ngIf="element.balanceAmt!='0'">
+                        <mat-icon title="Settlement">receipt</mat-icon>
+                    </button>
+                </div>
+            </ng-template>
+
+            <airmid-table [gridConfig]="gridConfig" #grid :ShowFilter="false">
+            </airmid-table>
+        </div>
+    </div>
+</div>

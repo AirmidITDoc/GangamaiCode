@@ -125,7 +125,7 @@
                                         </mat-radio-group>
                                     </div>
 
-                                    <div fxFlex="15%" fxLayout="row">
+                                    <!-- <div fxFlex="15%" fxLayout="row">
                                         <mat-radio-group name="StatusSearch" formControlName="StatusSearch"
                                             (change)="onChangeFirst()" fxLayout="column" value="0" class="gap-4"
                                             [(ngModel)]="vStatusSearch">
@@ -135,7 +135,7 @@
                                                 <mat-radio-button value='1'>Completed</mat-radio-button>
                                             </div>
                                         </mat-radio-group>
-                                    </div>
+                                    </div> -->
                                     <!-- (click)="searchRecords($event)" -->
                                     <div class="action-button-container">
                                         <div class="button-row-group">
@@ -187,8 +187,8 @@
 
                                         <ng-container matColumnDef="action1">
                                             <mat-header-cell *matHeaderCellDef fxShow.gt-sm
-                                                class="w-200">Status</mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" class="w-200">
+                                                class="w-300">Status</mat-header-cell>
+                                            <mat-cell *matCellDef="let contact" class="w-300">
 
                                                 <div fxLayout="row" fxLayoutAlign="center center">
 
@@ -237,12 +237,11 @@
                                             </mat-cell>
                                         </ng-container>
 
-                                        <ng-container matColumnDef="action2">
+                                        <ng-container matColumnDef="status">
                                             <mat-header-cell *matHeaderCellDef fxShow.gt-sm
-                                                class="w-200">Status</mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" class="w-200">
+                                                class="w-300">Status</mat-header-cell>
+                                            <mat-cell *matCellDef="let contact" class="w-300">
                                                 <div fxLayout="row" fxLayoutAlign="center center">
-
                                                     <ng-container *ngIf="contact">
                                                         <div class="status-wrapper">
                                                             <span class="status-box" [ngClass]="{
@@ -252,18 +251,25 @@
                                                                 matTooltip="{{ contact.isCompleted ? 'Report Completed' : 'Report Not Completed' }}">
                                                                 {{ contact.isCompleted ? 'Completed' : 'Pending' }}
                                                             </span>
+                                                        </div>
+                                                    </ng-container>
+                                                </div>
+                                            </mat-cell>
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="verify">
+                                            <mat-header-cell *matHeaderCellDef fxShow.gt-sm
+                                                class="w-300">Verify</mat-header-cell>
+                                            <mat-cell *matCellDef="let contact" class="w-300">
+                                                <div fxLayout="row" fxLayoutAlign="center center">
+                                                    <ng-container *ngIf="contact">
+                                                        <div class="status-wrapper">
                                                             <span class="status-box" [ngClass]="{
                                                                     'status-completed': contact.isVerifyid,
                                                                     'status-pending': !contact.isVerifyid
-                                                                }" matTooltip="
-                                                                    {{
-                                                                    contact.isVerifyid
-                                                                        ? 'Verified'
-                                                                        : (contact.isCompleted ? 'Verify Report' : 'Test is Pending')
-                                                                    }}
-                                                                "
-                                                                (click)="contact.isCompleted && !contact.isVerifyid"
-                                                                [style.cursor]="contact.isCompleted && !contact.isVerifyid ? 'pointer' : 'not-allowed'"
+                                                                }" [matTooltip]="getVerifyTooltip(contact)"
+                                                                matTooltipClass="verify-tooltip"
+                                                                [style.cursor]="contact.isCompleted && !contact.isVerifyid ? 'pointer' : 'default'"
                                                                 [style.pointer-events]="contact.isCompleted ? 'auto' : 'none'">
                                                                 {{ contact.isVerifyid ? 'Verified' : 'UnVerified' }}
                                                             </span>
@@ -275,69 +281,31 @@
 
                                         <ng-container matColumnDef="CategoryName">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md
-                                                class="w-130">
+                                                class="w-300">
                                                 Category
                                             </mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="w-130">
+                                            <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="w-300">
                                                 <span> {{contact.categoryName}}</span>
                                             </mat-cell>
                                         </ng-container>
 
                                         <ng-container matColumnDef="TestName" sticky>
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
-                                                class="w-300">Test Name
+                                                class="w-450">Test Name
                                             </mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-300">
+                                            <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-450">
                                                 <span> {{contact.serviceName}}</span>
                                             </mat-cell>
                                         </ng-container>
 
-                                        <ng-container matColumnDef="SampleCollectionTime">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md
-                                                class="w-150">
-                                                SampleColl.Date
-                                            </mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="w-150">
-                                                <!-- <span> {{contact.sampleCollectionTime | date:'dd/MM/yyyy, h:mm a'}}</span> -->
-                                                <span> {{contact.sampleCollectionTime }}</span>
-                                            </mat-cell>
-                                        </ng-container>
-
-                                        <ng-container matColumnDef="SampleNo">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
-                                                Sample No|CollectedBy
-                                            </mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
-                                                <span> {{contact.sampleNo}}</span>
-                                            </mat-cell>
-                                        </ng-container>
-
-                                        <ng-container matColumnDef="outSourceLabName">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
-                                                OutSource Name
-                                            </mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
-                                                <span> {{contact.outSourceLabName || '--'}}</span>
-                                            </mat-cell>
-                                        </ng-container>
-
-                                        <ng-container matColumnDef="outSourceSampleSentDateTime">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
-                                                OutSource SentDate
-                                            </mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
-                                                <span> {{contact.outSourceSampleSentDateTime | date:'yyyy-MM-dd' ||
-                                                    "1900-01-01"}}</span>
-                                            </mat-cell>
-                                        </ng-container>
-
-                                        <ng-container matColumnDef="outSourceReportCollectedDateTime">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
-                                                Report CollectedDate
-                                            </mat-header-cell>
-                                            <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
-                                                <span> {{contact.outSourceReportCollectedDateTime |
-                                                    date:'yyyy-MM-dd' || "1900-01-01"}}</span>
+                                        <ng-container matColumnDef="action" stickyEnd>
+                                            <mat-header-cell *matHeaderCellDef fxShow.gt-sm class="w-250">
+                                                Action</mat-header-cell>
+                                            <mat-cell *matCellDef="let contact" class="w-250">
+                                                <button mat-icon-button matTooltip="Report Dispatch"
+                                                *ngIf="contact.isCompleted === true && contact.isVerifySign === true">
+                                                    <mat-icon>send</mat-icon>
+                                                </button>
                                             </mat-cell>
                                         </ng-container>
 

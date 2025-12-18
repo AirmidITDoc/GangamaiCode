@@ -28,7 +28,7 @@
         </div>
 
     </mat-toolbar>
-     <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="space-between center"
+    <div fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="space-between center"
         class="px-12 py-4 border-bottom gap-8">
 
         <div class="info-badge-top overflow-auto" fxLayout="row" fxLayoutAlign="space-between" flex>
@@ -62,41 +62,6 @@
 
         <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
 
-
-            <ng-template #iconlbl let-element>
-                <div fxLayout="row" fxLayoutAlign="center center">
-                    <mat-icon *ngIf="element.lbl=='IP'" title="IP" class="pill green-600 s-16">circle</mat-icon>
-                    <mat-icon *ngIf="element.lbl=='OP'" title="OP" class="pill orange s-16">circle</mat-icon>
-                    <mat-icon *ngIf="element.lbl=='Lab'" title="Lab" class="pill blue s-16">circle</mat-icon>
-                </div>
-            </ng-template>
-
-            <ng-template #iconcompanyName let-element>
-                <div fxLayout="row" fxLayoutAlign="center center">
-                    <mat-icon *ngIf="!element.companyName" matTooltip="Patient Category Self">account_box
-                    </mat-icon>
-
-                    <mat-icon *ngIf="element.companyName" matTooltip="Patient Category Company">business
-                    </mat-icon>
-                </div>
-            </ng-template>
-
-            <ng-template #iconisSampleCollection let-element>
-                <div fxLayout="row" fxLayoutAlign="center center">
-
-                    <mat-icon *ngIf="element.isSampleCollection == 'True'" title="Sample Collected"
-                        style="background-color: rgb(69, 181, 16);">
-                        <img width="50px" height="50px" src="assets/images/logos/samplecoll1.png">
-                    </mat-icon>
-
-                    <mat-icon *ngIf="element.isSampleCollection !== 'True'" title="Sample Not Collected"
-                        style="background-color: rgb(232, 127, 52);">
-                        <img width="50px" height="50px" src="assets/images/logos/samplenotcoll.jpg">
-                    </mat-icon>
-
-                </div>
-            </ng-template>
-
             <ng-template #iconisCompeleted let-element>
                 <div fxLayout="column" fxLayoutAlign="center center" class="status-box">
                     <span [ngClass]="{
@@ -118,6 +83,36 @@
                     <button mat-icon-button matTooltip="Patient Details Sticker" (click)="OnPrintPatientIcard(element)">
                         <mat-icon>pages</mat-icon>
                     </button>
+                </div>
+            </ng-template>
+
+            <ng-template #statusbtnTemplate let-element>
+                <div fxLayout="row" fxLayoutAlign="center center" class="gap-8">
+                    <div fxLayout="row" fxLayoutAlign="center center">
+                        <mat-icon *ngIf="element.lbl=='IP'" title="IP" class="pill green-600 s-16">circle</mat-icon>
+                        <mat-icon *ngIf="element.lbl=='OP'" title="OP" class="pill orange s-16">circle</mat-icon>
+                        <mat-icon *ngIf="element.lbl=='Lab'" title="Lab" class="pill blue s-16">circle</mat-icon>
+                    </div>
+
+                    <div fxLayout="row" fxLayoutAlign="center center">
+                        <mat-icon *ngIf="!element.companyName" matTooltip="Patient Category Self">account_box
+                        </mat-icon>
+
+                        <mat-icon *ngIf="element.companyName" matTooltip="Patient Category Company">business
+                        </mat-icon>
+                    </div>
+
+                    <div fxLayout="row" fxLayoutAlign="center center">
+                        <mat-icon *ngIf="element.isSampleCollection == 'True'" title="Sample Collected"
+                            style="background-color: rgb(69, 181, 16);">
+                            <img width="50px" height="50px" src="assets/images/logos/samplecoll1.png">
+                        </mat-icon>
+
+                        <mat-icon *ngIf="element.isSampleCollection !== 'True'" title="Sample Not Collected"
+                            style="background-color: rgb(232, 127, 52);">
+                            <img width="50px" height="50px" src="assets/images/logos/samplenotcoll.jpg">
+                        </mat-icon>
+                    </div>
                 </div>
             </ng-template>
 
