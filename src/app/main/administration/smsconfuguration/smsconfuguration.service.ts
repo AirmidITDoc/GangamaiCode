@@ -93,4 +93,9 @@ export class SMSConfugurationService {
   // public getMSGCategoryList(){
   //   return this._httpClient.PostData("Generic/GetByProc?procName=m_Retrieve_MsgTempMasterList", {});
   // }
+    public SMSPdfSave(Param){
+      if (Param?.smsid) {
+      return this._httpClient.PutData("smsConfig/SmspdfConfig",Param);
+    } else return this._httpClient.PostData("smsConfig/SmspdfConfig", Param);
+  }
 }
