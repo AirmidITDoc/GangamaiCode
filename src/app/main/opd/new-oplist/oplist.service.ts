@@ -96,4 +96,11 @@ public UpdateCompanyBilling(Param: any) {
      public InsertWhatsappEmail(emp) {
     return this._httpClient1.PostData("WhatsAppEmail/EmailInsert", emp);
   }
+    public getSMSDetailsById(Id) {
+        return this._httpClient1.GetData("smsConfig/TMailOutgoing/" + Id);
+    }
+
+        public getWhatsappDetailsById(Id) {
+        return this._httpClient1.GetData("smsConfig/TWhatsAppSmsOutgoing/" + Id);
+    }
 }

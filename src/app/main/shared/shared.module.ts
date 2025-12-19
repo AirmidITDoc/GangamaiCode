@@ -80,14 +80,16 @@ import { AirmidConsentformComponent } from './componets/airmid-consentform/airmi
 import { AirmidConsentformIconComponent } from './componets/airmid-consentform-icon/airmid-consentform-icon.component';
 import { PatientSearchComponent } from './componets/patient-search/patient-search.component';
 import { MatDialogModule } from '@angular/material/dialog';
-
+import { SMSDetailsPopupOverComponent } from './componets/email-send/smsdetails-popup-over/smsdetails-popup-over.component';
+import { WhatsappDetPopUpOverComponent } from './componets/email-send/whatsapp-det-pop-up-over/whatsapp-det-pop-up-over.component';
+ 
 
 @NgModule({
     declarations: [
         TrimPipe, CommonDateComponent, AirmidTableComponent, AirmidTextboxComponent, AirmidDropDownComponent, AirmidAutoCompleteComponent, SmsEmailTemplateComponent, HeaderComponent, PaymentModeComponent, ImageCropComponent, EmailSendComponent, DyanmicTableHeightDirective,
         AirmidDateofbirthComponent, AirmidDateofbirthV2Component, AirmidSliderComponent, AirmidDatepickerComponent, TableSearchBarComponent, PrintCallingComponent, ErrorPageComponent, Error401Component, Error403Component, Error404Component, Error500Component, FocusNextDirective, AirmidTimePickerComponent, PatientInfoComponent, AirmidDateTimePickerComponent, TableKeyboardNavigationDirective, AirmidChipautocompleteComponent, 
         AirmidFullDatepickerComponent, AirmidFileuploadComponent,AirmidFileViewerComponent, AirmidFileuploadIconComponent, AirmidSignatureComponent, AirmidSignatureIconComponent, AirmidPhotoComponent, AirmidPhotoIconComponent,
-        AirmidCardViewComponent, Error0Component, AirmidImageviewComponent, AirmidImageIconComponent, AirmidEditorComponent, AirmidConsentformComponent, AirmidConsentformIconComponent, PatientSearchComponent
+        AirmidCardViewComponent, Error0Component, AirmidImageviewComponent, AirmidImageIconComponent, AirmidEditorComponent, AirmidConsentformComponent, AirmidConsentformIconComponent, PatientSearchComponent, SMSDetailsPopupOverComponent, WhatsappDetPopUpOverComponent
     ],
     imports: [
         CommonModule,

@@ -1,0 +1,125 @@
+<div class="patient-details-popover-container"
+     (mouseenter)="onMouseEnter()"
+     (mouseleave)="onMouseLeave()">
+
+  <!-- Header -->
+  <div class="popover-header">
+    <mat-icon class="header-icon">chat</mat-icon>
+    <span>Communication Details</span>
+  </div>
+
+  <!-- Body -->
+  <div class="popover-body">
+
+    <!-- Loader -->
+    <div *ngIf="isLoading" class="loading-container">
+      <mat-spinner diameter="28"></mat-spinner>
+      <span>Loading details...</span>
+    </div>
+
+    <!-- Content -->
+    <div *ngIf="!isLoading && patientDetails" class="details-content">
+
+      <!-- BASIC INFORMATION -->
+      <div class="detail-section">
+        <div class="section-title">
+          <mat-icon>person</mat-icon>
+          <span>Basic Information</span>
+        </div>
+
+        <div class="detail-grid">
+          <div class="detail-item">
+            <div>
+              <label>UHID</label>
+              <p>
+                {{ patientDetails.regNoWithPrefix ||
+                   patientDetails.regNo ||
+                   patientData?.regNoWithPrefix ||
+                   'N/A' }}
+              </p>
+            </div>
+          </div>
+
+          <div class="detail-item">
+            <div>
+              <label>Name</label>
+              <p>
+                {{ patientData?.patientName ||
+                   ((patientDetails.firstName || '') + ' ' +
+                    (patientDetails.middleName || '') + ' ' +
+                    (patientDetails.lastName || '')) ||
+                   'N/A' }}
+              </p>
+            </div>
+          </div>
+
+          <div class="detail-item">
+            <div>
+              <label>Mobile</label>
+              <p>{{ patientDetails?.mobileNo || 'N/A' }}</p>
+            </div>
+          </div>
+
+          <div class="detail-item">
+            <div>
+              <label>Email ID</label>
+              <p>{{ patientDetails?.emailId || patientDetails?.mailId || 'N/A' }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- WHATSAPP INFORMATION -->
+      <div class="detail-section" *ngIf="whatsappDetails">
+        <div class="section-title whatsapp-title">
+          <mat-icon class="whatsapp-icon">chat</mat-icon>
+          <span>WhatsApp Information</span>
+        </div>
+
+        <div class="detail-grid">
+
+          <div class="detail-item">
+            <mat-icon>event</mat-icon>
+            <div>
+              <label>Sent Date</label>
+              <p>{{ formatDate(whatsappDetails?.smsdate) }}</p>
+            </div>
+          </div>
+
+          <div class="detail-item">
+            <mat-icon>phone_android</mat-icon>
+            <div>
+              <label>Registered Mobile No</label>
+              <p>{{ whatsappDetails?.mobileNumber || 'N/A' }}</p>
+            </div>
+          </div>
+
+          <div class="detail-item full-width response">
+            <mat-icon color="warn">error_outline</mat-icon>
+            <div>
+              <label>WhatsApp Response</label>
+              <p>{{ whatsappDetails?.lastResponse || 'N/A' }}</p>
+            </div>
+          </div>
+
+          <div class="detail-item">
+            <mat-icon>schedule</mat-icon>
+            <div>
+              <label>Last Sending Date</label>
+              <p>{{ formatDate(whatsappDetails?.lastTry) }}</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+    <!-- No Data -->
+    <div *ngIf="!isLoading && !patientDetails" class="no-data">
+      <mat-icon>info</mat-icon>
+      <span>WhatsApp details not available</span>
+    </div>
+
+  </div>
+</div>
