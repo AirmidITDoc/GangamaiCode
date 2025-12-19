@@ -49,7 +49,7 @@ export class SMSConfugurationComponent implements OnInit {
 
   ngAfterViewInit() {
     //  this.gridConfig.columnsList.find(col => col.key === 'isSent')!.template = this.actionisSent;
-    this.gridConfig2.columnsList.find(col => col.key === 'isSendMail')!.template = this.actionisSendMail;
+    // this.gridConfig2.columnsList.find(col => col.key === 'isSendMail')!.template = this.actionisSendMail;
   
     //  this.gridConfig2.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate2;
   }
@@ -90,15 +90,16 @@ export class SMSConfugurationComponent implements OnInit {
 
 
   allColumns2 = [
-    { heading: "Sms Date", key: "smsDate", sort: true, align: 'left', emptySign: 'NA', width: 100, type: 6 },
-    { heading: "Mobile Number", key: "mobileNumber", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-    { heading: "Sms String", key: "smsString", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-    { heading: "Sms Type", key: "smsType", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-    { heading: "TranNo", key: "tranNo", sort: true, align: 'left', emptySign: 'NA', width: 80 },
+    { heading: "Sms Date", key: "smsDate", sort: true, align: 'left', emptySign: 'NA', width: 80, type: 6 },
+    { heading: "Mobile Number", key: "mobileNumber", sort: true, align: 'left', emptySign: 'NA', width: 80 },
+    { heading: "Sms String", key: "smsString", sort: true, align: 'left', emptySign: 'NA', width: 150 },
     // { heading: "smSurl", key: "smSurl", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, width: 120 },
-    { heading: "File Path", key: "filePath", sort: true, align: 'left', emptySign: 'NA', width: 120 },
+    { heading: "File Path", key: "filePath", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+    { heading: "Sms Type", key: "smsType", sort: true, align: 'left', emptySign: 'NA', width:80 },
+    { heading: "TranNo", key: "tranNo", sort: true, align: 'left', emptySign: 'NA', width: 80 },
+   
     { heading: "Last Try", key: "lastTry", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-    { heading: "Last Response", key: "lastResponse", sort: true, align: 'left', emptySign: 'NA', width: 120 },
+    { heading: "Last Response", key: "lastResponse", sort: true, align: 'left', emptySign: 'NA', width:200 },
 
     // {
     //   heading: "Action", key: "action", align: "right", width: 180, sticky: true, type: gridColumnTypes.template,
@@ -124,14 +125,14 @@ export class SMSConfugurationComponent implements OnInit {
   //email
 
   allColumnsemail = [
-    { heading: "Status", key: "status", sort: true, align: 'left', emptySign: 'NA', width: 30 },
+    { heading: "Status", key: "status", sort: true, align: 'left', emptySign: 'NA', width: 80 },
     { heading: "emailDate", key: "emailDate", sort: true, align: 'left', emptySign: 'NA', width: 100 , type: 6  },
     { heading: "emailType", key: "emailType", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-    { heading: "fromEmail", key: "fromEmail", sort: true, align: 'left', emptySign: 'NA', width: 250 },
-    { heading: "toEmail", key: "toEmail", sort: true, align: 'left', emptySign: 'NA', width: 250},
-    { heading: "mailSubject", key: "mailSubject", sort: true, align: 'left', emptySign: 'NA', width: 250 },
+    { heading: "fromEmail", key: "fromEmail", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+    { heading: "toEmail", key: "toEmail", sort: true, align: 'left', emptySign: 'NA', width: 200},
+    { heading: "mailSubject", key: "mailSubject", sort: true, align: 'left', emptySign: 'NA', width: 200 },
     { heading: "Subject", key: "subject", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-    { heading: "mailBody", key: "mailBody", sort: true, align: 'left', emptySign: 'NA', width: 250 },
+    { heading: "mailBody", key: "mailBody", sort: true, align: 'left', emptySign: 'NA', width: 200 },
     { heading: "attachmentLink", key: "attachmentLink", sort: true, align: 'left', emptySign: 'NA',width: 300 },
     { heading: "Status", key: "lastResponse", sort: true, align: 'left', emptySign: 'NA', width: 100 },
     { heading: "createdBy", key: "createdBy", sort: true, align: 'left', emptySign: 'NA',width: 120 },
