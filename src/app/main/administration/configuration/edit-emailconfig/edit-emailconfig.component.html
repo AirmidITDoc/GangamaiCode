@@ -1,101 +1,115 @@
-<div id="content" class="simple page-layout inner-scroll inner-sidebar left-sidebar" dynamicTableHeight>
-    <mat-toolbar class="accent" style="width: 100%;justify-content: space-between;height: 40px;">
-        <div fxLayout="row" fxLayoutAlign="start center">
-            <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="color: white;">
-                Edit SMS Configuration
-            </span>
-        </div>
-        <div class="close-icon">
-            <button mat-icon-button tabIndex="-1" (click)="onClose()" aria-label="Close dialog">
-                <mat-icon>close</mat-icon>
-            </button>
-        </div>
-    </mat-toolbar>
-    <div class="content">
-        <div class="center p-12 pb-56" style="border-radius: 4px;">
-            <div fxLayout="column" fxLayoutGap="10px">
-                <div fxLayout="row" fxLayoutGap="10px">
+<div class="modal-wrapper grid-container">
 
-
-                    <div fxFlex.gt-sm="95%" fxFlex>
-                        <form [formGroup]="EmailForm">
-                            <div fxLayout="column" fxLayoutGap="10px">
-
-                                <div fxLayout="row" fxLayoutGap="100px">
-                                    <mat-form-field appearance="outline" fxFlex="25%">
-                                        <mat-label>Display Name </mat-label>
-                                        <input matInput name="displayName" formControlName="displayName"
-                                            type="text" [(ngModel)]="displayName" required>
-                                    </mat-form-field>
-
-                                  
-
-                                     <mat-form-field appearance="outline" fxFlex="25%">
-                                        <mat-label>Email Address</mat-label>
-                                        <input matInput name="emailAddress" formControlName="emailAddress"
-                                            type="text" [(ngModel)]="emailAddress" required>
-                                    </mat-form-field>
-
-                                   <mat-form-field appearance="outline" fxFlex="25%">
-                                        <mat-label>Smtp Port</mat-label>
-                                        <input matInput name="smtpPort" formControlName="smtpPort"
-                                            type="text" [(ngModel)]="smtpPort" required>
-                                    </mat-form-field>
-
-                                  
-
-                                     <mat-form-field appearance="outline" fxFlex="25%">
-                                        <mat-label>Mail Server Smtp</mat-label>
-                                        <input matInput name="mailServerSmtp" formControlName="mailServerSmtp"
-                                            type="text" [(ngModel)]="mailServerSmtp" required>
-                                    </mat-form-field>
-
-
-                                </div>
-
-                                 <div fxLayout="row" fxLayoutGap="100px">
-                                    <mat-form-field appearance="outline" fxFlex="25%">
-                                        <mat-label>Server Timeout</mat-label>
-                                        <input matInput name="serverTimeout" formControlName="serverTimeout"
-                                            type="text" [(ngModel)]="serverTimeout" required>
-                                    </mat-form-field>
-
-                                  
-
-                                     <mat-form-field appearance="outline" fxFlex="25%">
-                                        <mat-label>userName</mat-label>
-                                        <input matInput name="userName" formControlName="userName"
-                                            type="text" [(ngModel)]="userName" required>
-                                    </mat-form-field>
-
-                                   <mat-form-field appearance="outline" fxFlex="25%">
-                                        <mat-label>password</mat-label>
-                                        <input matInput name="password" formControlName="password"
-                                            type="text" [(ngModel)]="password" required>
-                                    </mat-form-field>
-
-                                  
-
-                                     <mat-form-field appearance="outline" fxFlex="25%">
-                                        <mat-label>smtpSsl</mat-label>
-                                        <input matInput name="smtpSsl" formControlName="smtpSsl"
-                                            type="text" [(ngModel)]="smtpSsl" required>
-                                    </mat-form-field>
-
-
-                                </div>
-
-                            </div>
-                        </form>
+    <!-- Modal header -->
+    <div class="modal-header accent">
+        <div class="modal-header-content">
+            <div class="modal-header-title">
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">Email Configuration Edit</span>
+            </div>
+            <div class="modal-header-right">
+                <div class="comman-date-container">
+                    <div class="comman-date">
+                        <app-common-date [screenFrom]="screenFromString"
+                            (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
+                    </div>
+                    <div class="close-icon">
+                        <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
+                            matTooltip="Close">
+                            <mat-icon>close</mat-icon>
+                        </button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <div>
-        <div class="modal-footer-buttons" fxLayoutAlign="end center" style="padding: 10px;">
-            <button class="btn btn-danger-outline" (click)="OnReset()">Close</button>&nbsp;
-            <button class="btn btn-primary" (click)="OnSave">Save</button>
+
+
+    <div class="modal-card-container">
+        <mat-card>
+            <div fxLayout="column" class="gap-8" style="padding: 10px;">
+
+                <form [formGroup]="EmailForm" style="border: blue">
+                    <div fxLayout="row wrap" fxLayoutGap="10px 10px grid">
+                        <!-- [maxLength]="50" -->
+                        <div fxFlex="50" fxFlex.xs="100" fxFlex.sm="33">
+                            <airmid-textbox label="Display Name" formControlName="displayName" [formGroup]="EmailForm"
+                                [value]="vdisplayName" [validations]="getValidationMessages().displayName">
+                            </airmid-textbox>
+                        </div>
+
+                        <div fxFlex="50" fxFlex.xs="100" fxFlex.sm="33">
+                            <airmid-textbox label="Email Address" formControlName="emailAddress" [formGroup]="EmailForm"
+                                [value]="vemailAddress" [validations]="getValidationMessages().emailAddress">
+                            </airmid-textbox>
+                        </div>
+
+                      
+
+                        <div fxFlex="50" fxFlex.xs="100" fxFlex.sm="33">
+                            <airmid-textbox label="MailServer Smtp" formControlName="mailServerSmtp"
+                                [formGroup]="EmailForm" [value]="vmailServerSmtp"
+                                [validations]="getValidationMessages().mailServerSmtp">
+                            </airmid-textbox>
+                        </div>
+
+                        <div fxFlex="50" fxFlex.xs="100" fxFlex.sm="33">
+                            <airmid-textbox label="Smtp Port" formControlName="smtpPort" [formGroup]="EmailForm"
+                                [value]="vsmtpPort" [validations]="getValidationMessages().smtpPort">
+                            </airmid-textbox>
+                        </div>
+
+                      
+                        <div fxFlex="50" fxFlex.xs="100" fxFlex.sm="33">
+                            <airmid-textbox label="Server Timeout" formControlName="serverTimeout" [formGroup]="EmailForm"
+                                [value]="vserverTimeout" [validations]="getValidationMessages().serverTimeout">
+                            </airmid-textbox>
+
+                        </div>
+                       
+                        <div fxFlex="50" fxFlex.xs="100" fxFlex.sm="33">
+                            <airmid-textbox label="User Name" formControlName="userName" [formGroup]="EmailForm"
+                                [value]="vuserName" [validations]="getValidationMessages().userName">
+                            </airmid-textbox>
+
+                        </div>
+                        <div fxFlex="50" fxFlex.xs="100" fxFlex.sm="33">
+                            <airmid-textbox label="Password" formControlName="password" [value]="vpassword"
+                                [formGroup]="EmailForm" [validations]="getValidationMessages().password">
+                            </airmid-textbox>
+
+                        </div>
+                        <div fxFlex="50" fxFlex.xs="100" fxFlex.sm="33">
+                            <airmid-textbox label="SmtpSsl" formControlName="smtpSsl" [value]="vsmtpSsl"
+                                [formGroup]="EmailForm" [validations]="getValidationMessages().smtpSsl">
+                            </airmid-textbox>
+                        </div>
+
+
+                    </div>
+
+                    <div>
+                         <div fxFlex="50" fxFlex.xs="100" fxFlex.sm="33">
+                            <app-airmid-slider label="SmtpAuthentication" formControlName="smtpRequiredAuthentication" [formGroup]="EmailForm" ></app-airmid-slider>
+                   </div>
+
+                        <div fxFlex="50" fxFlex.xs="100" fxFlex.sm="33">
+                         
+                             <app-airmid-slider label="PasswordAuthentication" formControlName="requiredSquiredPasswordAuthentication" [formGroup]="EmailForm" ></app-airmid-slider>
+                   
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </mat-card>
+    </div>
+
+    <div class="modal-footer">
+        <div class="footer-navigation-container">
+            <div class="modal-footer-buttons">
+                <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
+                <button type="button" class="btn btn-primary" (click)="OnSave()">Save</button>
+            </div>
         </div>
     </div>
 </div>
