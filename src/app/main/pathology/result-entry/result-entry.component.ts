@@ -1073,8 +1073,37 @@ export class ResultEntryComponent implements OnInit {
     }
     selection = new SelectionModel<SampleList>(true, []);
 
+    // masterToggle() {
+    //     // Toggle selection
+    //     if (this.isSomeSelected()) {
+    //         this.selection.clear();
+    //     } else {
+    //         this.isAllSelected()
+    //             ? this.selection.clear()
+    //             : this.dataSource1.data.forEach(row => this.selection.select(row));
+    //     }
+
+    //     console.log('Selected items count:', this.selection.selected.length);
+
+    //     this.resultSource = [...this.selection.selected];
+    //     console.log('Selected items:', this.resultSource);
+    // }
     masterToggle() {
-        // Toggle selection
+        // debugger
+        const totalTests = this.dataSource1.data.length;
+        const collectedTests = this.dataSource1.data.filter(
+            (row: any) => row.isSampleCollection === 'True'
+        );
+        const notCollectedCount = totalTests - collectedTests.length;
+        if (notCollectedCount > 0) {
+            Swal.fire(
+                'Sample Pending',
+                `Still ${notCollectedCount} test(s) remaining to collect sample`,
+                'warning'
+            );
+            return;
+        }
+
         if (this.isSomeSelected()) {
             this.selection.clear();
         } else {
@@ -1084,7 +1113,6 @@ export class ResultEntryComponent implements OnInit {
         }
 
         console.log('Selected items count:', this.selection.selected.length);
-
         this.resultSource = [...this.selection.selected];
         console.log('Selected items:', this.resultSource);
     }

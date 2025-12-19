@@ -25,7 +25,7 @@ export class RadioloyOrderlistService {
       RegNoSearch:[],
       FirstNameSearch:[''],
       LastNameSearch:[''],
-      PatientTypeSearch:['1'],
+      PatientTypeSearch:['3'],
       StatusSearch: ['0'],
       TestStatusSearch:['0'],
       CategoryId: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],

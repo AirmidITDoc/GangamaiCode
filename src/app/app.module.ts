@@ -90,10 +90,15 @@ const appRoutes: Routes = [
         loadChildren: () =>
             import("./main/pathology/pathology.module").then((m) => m.PathologyModule),
     },
+    // {
+    //     path: "radiology",
+    //     loadChildren: () =>
+    //         import("./main/radiology/radiology-order-list/radioloy-orderlist.module").then((m) => m.RadioloyOrderlistModule),
+    // },
     {
         path: "radiology",
         loadChildren: () =>
-            import("./main/radiology/radiology-order-list/radioloy-orderlist.module").then((m) => m.RadioloyOrderlistModule),
+            import("./main/radiology/radiology.module").then((m) => m.RadiologyModule),
     },
     {
         path: "administration",

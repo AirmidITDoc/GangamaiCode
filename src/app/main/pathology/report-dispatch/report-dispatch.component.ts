@@ -209,7 +209,7 @@ export class ReportDispatchComponent {
     fromDate = fromDate ? this.datePipe.transform(fromDate, "yyyy-MM-dd") : "";
     toDate = toDate ? this.datePipe.transform(toDate, "yyyy-MM-dd") : "";
     let patientType = this.myformSearch.get("PatientTypeSearch").value || "2";
-    let status = this.myformSearch.get("StatusSearch").value || "1";
+    let status = "1";
 
     this.GetResultdetail()
     // Update the filters dynamically

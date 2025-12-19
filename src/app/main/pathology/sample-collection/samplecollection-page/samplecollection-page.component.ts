@@ -19,15 +19,15 @@ import Swal from 'sweetalert2';
   selector: 'app-samplecollection-page',
   templateUrl: './samplecollection-page.component.html',
   styleUrls: ['./samplecollection-page.component.scss'],
-    encapsulation: ViewEncapsulation.None,
-    animations: fuseAnimations
+  encapsulation: ViewEncapsulation.None,
+  animations: fuseAnimations
 })
 export class SamplecollectionPageComponent {
 
   interimArray: any = [];
   samplelist: any = [];
   date: any;
-  
+
   Currentdate: any;
   displayedColumns: string[] = [
     'select',
@@ -38,12 +38,12 @@ export class SamplecollectionPageComponent {
   selectedAdvanceObj: AdvanceDetailObj;
   hasSelectedContacts: boolean;
   screenFromString = 'OP-billing';
- 
+
   dateTimeObj: any;
   selectedAdvanceObj1: any;
 
   regObj: any;
- 
+
   dataSource = new MatTableDataSource<SampleList>();
   sIsLoading: string = '';
   @ViewChild(MatSort) sort: MatSort;
@@ -57,28 +57,28 @@ export class SamplecollectionPageComponent {
     public dialog: MatDialog,
     private advanceDataStored: AdvanceDataStored,
     private _fuseSidebarService: FuseSidebarService,
-private _FormvalidationserviceService: FormvalidationserviceService,
-private accountService: AuthenticationService,
+    private _FormvalidationserviceService: FormvalidationserviceService,
+    private accountService: AuthenticationService,
 
   ) {
     dialogRef.disableClose = true;
-    
+
     let mydate = new Date()
     this.date = (this.datePipe.transform(new Date(), "MM-dd-YYYY hh:mm tt"));
-   
+
     var now = new Date();
     now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
     this.date = now.toISOString().slice(0, 16);
   }
-vSampleCollFormGroup:FormGroup
+  vSampleCollFormGroup: FormGroup
   ngOnInit(): void {
- this.vSampleCollFormGroup = this.vSamplecollFormInsert();
-    if (this.data) 
+    this.vSampleCollFormGroup = this.vSamplecollFormInsert();
+    if (this.data)
       this.regObj = this.data
-         this.getSampledetailList1(this.regObj);
+    this.getSampledetailList1(this.regObj);
   }
 
- 
+
 
   tableElementChecked(event, element) {
 
@@ -96,9 +96,9 @@ vSampleCollFormGroup:FormGroup
     }
 
   }
-  
+
   getSampledetailList1(row) {
-debugger
+    debugger
     let OPIP: string;
     if (row.lbl == "IP" || row.patientType == "IP") {
       OPIP = "1";
@@ -110,14 +110,14 @@ debugger
       OPIP = "4";
     }
 
-    let rawDate = row.pathDate; 
+    let rawDate = row.pathDate;
     let day = rawDate.split("T")[0];
-    let rest = rawDate.split("T")[1].split("-"); 
-    let month = rest[0]; 
-    let year = rest[1]; 
- 
-    let formattedDate=`${day}` 
-    
+    let rest = rawDate.split("T")[1].split("-");
+    let month = rest[0];
+    let year = rest[1];
+
+    let formattedDate = `${day}`
+
     console.log(formattedDate);
 
     var m_data = {
@@ -142,7 +142,7 @@ debugger
           "opType": "Equals"
         }
       ],
-      "Columns":[],
+      "Columns": [],
       "exportType": "JSON"
     }
 
@@ -161,46 +161,90 @@ debugger
 
 
 
-   vSamplecollFormInsert(): FormGroup {
+  vSamplecollFormInsert(): FormGroup {
     return this.formBuilder.group({
-    pathlogySampleCollection: this.formBuilder.array([])// FormArray for details
-      
+      pathlogySampleCollection: this.formBuilder.array([])// FormArray for details
+
     });
   }
 
   // 2. FormArray Group for Refund Detail
-    createSampleDetail(item: any = {}): FormGroup {
-      return this.formBuilder.group({
-        PathReportId: [item.pathReportID, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        sampleCollectionTime: [this._SampleService.sampldetailform.get('SampleDateTime').value || '01/01/1900' , [Validators.required]],
-        IsSampleCollection: [true],
-        SampleNo: [item.sampleNo || 0, [this._FormvalidationserviceService.notEmptyOrZeroValidator]],
-        sampleCollectedBy:this.accountService.currentUserValue.userId
-      });
-    }
-  
-    get refundDetailsArray(): FormArray {
-        return this.vSampleCollFormGroup.get('pathlogySampleCollection') as FormArray;
-      }
+  createSampleDetail(item: any = {}): FormGroup {
+    return this.formBuilder.group({
+      PathReportId: [item.pathReportID, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      sampleCollectionTime: [this._SampleService.sampldetailform.get('SampleDateTime').value || '01/01/1900', [Validators.required]],
+      IsSampleCollection: [true],
+      SampleNo: [item.sampleNo || 0, [this._FormvalidationserviceService.notEmptyOrZeroValidator]],
+      sampleCollectedBy: this.accountService.currentUserValue.userId
+    });
+  }
 
-      
+  get refundDetailsArray(): FormArray {
+    return this.vSampleCollFormGroup.get('pathlogySampleCollection') as FormArray;
+  }
+
+  // onSave() {
+
+  // if (this.selection.selected.length == 0) {
+  //     Swal.fire('Error !', 'Please select sample data', 'error');
+  //     return;
+  //   }
+  //     this.refundDetailsArray.clear();
+  //     this.selection.selected.forEach(item => {
+  //       this.refundDetailsArray.push(this.createSampleDetail(item));
+  //     });
+
+
+  //   console.log(this.vSampleCollFormGroup.value);
+  //   this._SampleService.UpdateSampleCollection(this.vSampleCollFormGroup.value).subscribe(data => {
+  //    this._matDialog.closeAll()
+  //   });
+
+  // }
+
   onSave() {
-    
-  if (this.selection.selected.length == 0) {
-      Swal.fire('Error !', 'Please select sample data', 'error');
+
+    if (this.selection.selected.length === 0) {
+      Swal.fire('Error!', 'Please select sample data', 'error');
       return;
     }
+
+    const isSampleCollected = this.selection.selected.some(
+      item => item.isSampleCollection === 'True'
+    );
+
+    const proceedUpdate = () => {
       this.refundDetailsArray.clear();
       this.selection.selected.forEach(item => {
         this.refundDetailsArray.push(this.createSampleDetail(item));
       });
 
+      console.log(this.vSampleCollFormGroup.value);
 
-    console.log(this.vSampleCollFormGroup.value);
-    this._SampleService.UpdateSampleCollection(this.vSampleCollFormGroup.value).subscribe(data => {
-     this._matDialog.closeAll()
-    });
-    
+      this._SampleService
+        .UpdateSampleCollection(this.vSampleCollFormGroup.value)
+        .subscribe(() => {
+          this._matDialog.closeAll();
+        });
+    };
+
+    if (isSampleCollected) {
+      Swal.fire({
+        title: 'Confirm Update',
+        text: 'Are you sure you want to update Sample Collection?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#41ea76ff',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes'
+      }).then(result => {
+        if (result.isConfirmed) {
+          proceedUpdate();
+        }
+      });
+    } else {
+      proceedUpdate();
+    }
   }
 
   selection = new SelectionModel<SampleList>(true, []);
@@ -218,7 +262,7 @@ debugger
   }
 
   isSomeSelected() {
-  return this.selection.selected.length > 0;
+    return this.selection.selected.length > 0;
   }
 
   isAllSelected() {
@@ -228,7 +272,7 @@ debugger
     return numSelected === numRows;
 
   }
- toggleSidebar(name): void {
+  toggleSidebar(name): void {
     this._fuseSidebarService.getSidebar(name).toggleOpen();
   }
   getDateTime(dateTimeObj) {
@@ -244,13 +288,13 @@ export class SampleList {
   PathTestID: Number;
   ServiceName: String;
   IsSampleCollection: boolean;
-  isSampleCollection:boolean;
+  isSampleCollection: any;
   SampleCollectionTime: Date;
   PathReportID: any;
   SampleNo: any;
   RegNo: any;
-  pathReportID:any;
-  sampleNo:any;
+  pathReportID: any;
+  sampleNo: any;
 
   constructor(SampleList) {
     this.VADate = SampleList.VADate || '';
