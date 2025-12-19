@@ -49,7 +49,7 @@ export class SMSConfugurationComponent implements OnInit {
 
   ngAfterViewInit() {
     //  this.gridConfig.columnsList.find(col => col.key === 'isSent')!.template = this.actionisSent;
-    // this.gridConfig2.columnsList.find(col => col.key === 'isSendMail')!.template = this.actionisSendMail;
+   // this.gridConfig2.columnsList.find(col => col.key === 'isSendMail')!.template = this.actionisSendMail;
   
     //  this.gridConfig2.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate2;
   }
@@ -68,7 +68,7 @@ export class SMSConfugurationComponent implements OnInit {
   //       heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
   //         {
   //           action: gridActions.edit, callback: (data: any) => {
-  //             this.onSave(data);
+  //             this.NewsmsPdfInsert(data);
   //           }
   //         }, {
   //           action: gridActions.delete, callback: (data: any) => {
@@ -204,39 +204,33 @@ this.auditFilterForm = this._SMSConfigService.CreateauditForm();
 
 
 
-  onSave(row: any = null) {
-    const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
-    buttonElement.blur(); // Remove focus from the button
+  NewsmsPdfInsert() {  
 
-    let that = this;
-    const dialogRef = this._matDialog.open(UpdateSMSComponent,
-      {
-        maxWidth: "85vw",
-        height: '90%',
-        width: '90%',
-        data: row
-      });
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        that.grid.bindGridData();
-      }
-    });
+        const dialogRef = this._matDialog.open(UpdateSMSComponent,
+          {
+            maxWidth: "50vw",
+            maxHeight: '50%',
+            width: '55%', 
+          });
+        dialogRef.afterClosed().subscribe(result => {
+            this.grid.bindGridData();
+        });
   }
 
 
 
-  NewSMS() {
-    const dialogRef = this._matDialog.open(UpdateSMSComponent,
-      {
-        maxWidth: "100%",
-        height: '90%',
-        width: '90%',
-      });
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed - Insert Action', result);
+  // NewsmsPdfInsert() {
+  //   const dialogRef = this._matDialog.open(UpdateSMSComponent,
+  //     {
+  //       maxWidth: "60%",
+  //       height: '00%',
+  //       width: '60%',
+  //     });
+  //   dialogRef.afterClosed().subscribe(result => {
+  //     console.log('The dialog was closed - Insert Action', result);
 
-    });
-  }
+  //   });
+  // }
   //Whats app
 
   onChangewhatsapp() {

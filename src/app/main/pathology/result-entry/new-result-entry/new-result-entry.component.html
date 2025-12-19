@@ -26,10 +26,15 @@
         <div fxLayout="column" class="gap-8 h-100-p">
             <div class="modal-card-container">
                 <div fxFlex.gt-sm="100%" fxFlex fxLayoutGap="4px">
-                    <mat-card fxFlex.gt-sm="100%" fxFlex>
+                    <!-- <mat-card fxFlex.gt-sm="100%" fxFlex>
                         <div class="patient-info-sales my-8">
-                            <div class="patient-info-title border-bottom pb-2">
+                            <div class="patient-info-title border-bottom pb-2" fxLayout="row"
+                                fxLayoutAlign="space-between">
                                 <span class="h1">Patient Information</span>
+
+                                <button mat-raised-button style="background-color: aliceblue;color: brown;">UpLoad
+                                    <mat-icon>cloud_upload</mat-icon>
+                                </button>
                             </div>
                             <div class="Ipd-patient-info" fxFlexFill fxLayout="row" fxLayoutAlign="space-between center"
                                 class="patient-info">
@@ -84,16 +89,85 @@
                                 </div>
                             </div>
                         </div>
+                    </mat-card> -->
+
+                    <mat-card fxFlex.gt-sm="100%" fxFlex>
+                        <div class="patient-info-sales my-8">
+                            <div class="patient-info-title border-bottom pb-2" fxLayout="row"
+                                fxLayoutAlign="space-between center">
+
+                                <span class="h1">Patient Information</span>
+
+                                <button mat-raised-button color="primary"
+                                    style="background-color: aliceblue; color: brown;">
+                                    Upload
+                                    <mat-icon class="ml-4">cloud_upload</mat-icon>
+                                </button>
+                            </div>
+
+                            <div class="Ipd-patient-info" fxFlexFill fxLayout="row" fxLayoutAlign="space-between center">
+                                <div class="patient-sub">
+                                    <div class="patient-info-row patient-info-1-111" style="padding: 10px; margin-bottom: 15px;"
+                                        fxLayout="row" fxLayoutAlign="space-between">
+                                        <div fxLayout="column" fxLayoutGap="6px">
+                                            <div class="patient-col">
+                                                <span class="patient-col-key">UHID No
+                                                </span>
+                                                <span>:</span>
+                                                <span class="patient-col-value">{{selectedAdvanceObj2.regNo}}</span>
+                                            </div>
+
+                                        </div>
+                                        <div fxLayout="column" fxLayoutGap="6px">
+                                            <div class="patient-col">
+                                                <span class="patient-col-key">Patient Name
+                                                </span>
+                                                <span>:</span>
+                                                <span
+                                                    class="patient-col-value">{{selectedAdvanceObj2.patientName}}</span>
+                                            </div>
+                                        </div>
+                                        <div fxLayout="column" fxLayoutGap="6px">
+                                            <div class="patient-col">
+                                                <span class="patient-col-key">No</span>
+                                                <span>:</span>
+                                                <span class="patient-col-value">{{selectedAdvanceObj2.oP_IP_No}}
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div fxLayout="column" fxLayoutGap="6px">
+                                            <div class="patient-col">
+                                                <span class="patient-col-key">Age | Sex
+                                                </span>
+                                                <span>:</span>
+                                                <span class="patient-col-value">{{selectedAdvanceObj2.ageYear}}Y|
+                                                    D |
+                                                    {{selectedAdvanceObj2.genderName}}</span>
+                                            </div>
+                                        </div>
+                                        <div fxLayout="column" fxLayoutGap="6px">
+                                            <div class="patient-col">
+                                                <span class="patient-col-key">Doctor Name</span>
+                                                <span>:</span>
+                                                <span
+                                                    class="patient-col-value">{{selectedAdvanceObj2.doctorName}}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
                     </mat-card>
 
                 </div>
-
             </div>
             <div class="modal-card-container h-100-p">
                 <div fxFlex.gt-sm="100%" fxFlex class="airmid-table-container">
                     <mat-card style="padding: 6px;">
+                        <!-- appTableKeyboardNavigation -->
                         <mat-table matSort [dataSource]="dataSource" class="airmid-table h-400"
-                            [@animateStagger]="{value:'50'}" appTableKeyboardNavigation>
+                            [@animateStagger]="{value:'50'}">
 
                             <ng-container matColumnDef="TestName" sticky>
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="border-right">
@@ -122,18 +196,13 @@
                                 <mat-cell *matCellDef="let contact" class="border-right">
 
                                     <mat-form-field appearance="fill" *ngIf="!contact.IsHelpShown" style="width: 100%;">
-                                        <!-- [ngClass]="{'Result-Formula': contact.Formula !=' '}" -->
-
                                         <input matInput autocomplete="off" (keyup)="onResultUp(contact)"
                                             (keydown.F2)="onKeydown($event,contact)" matTooltip="Use Help Value"
                                             [(ngModel)]="contact.ResultValue">
                                     </mat-form-field>
-
-                                    <!-- tried -->
                                     <mat-form-field appearance="fill" *ngIf="contact.IsHelpShown" style="width:100%">
                                         <input type="text" matInput id="helpText_{{contact.ParameterId}}"
                                             (keyup)="filterHelp($event, contact)" [matAutocomplete]="auto">
-
                                         <mat-autocomplete #auto="matAutocomplete"
                                             (optionSelected)="onSelectHelp($event.option.value, contact)">
                                             <mat-option *ngFor="let option of contact.helpItems"
@@ -143,15 +212,13 @@
                                         </mat-autocomplete>
                                     </mat-form-field>
 
-                                    <!-- end -->
-
-                                    <mat-icon class="Help-Value" *ngIf=" contact.PIsNumeric ==0"
+                                    <mat-icon class="Help-Value" *ngIf="contact.ParaIsNumeric ==0"
                                         matTooltip="Use Help Value" style="width: 10px;height: 10px;">
                                         circle
                                     </mat-icon>
-
                                 </mat-cell>
                             </ng-container>
+
 
                             <ng-container matColumnDef="Flag">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm

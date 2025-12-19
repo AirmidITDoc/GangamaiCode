@@ -41,33 +41,27 @@ export class SampleCollectionComponent implements OnInit {
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     @ViewChild('grid1') grid1: AirmidTableComponent;
 
-    @ViewChild('iconlbl') iconlbl!: TemplateRef<any>;
-    @ViewChild('iconcompanyName') iconcompanyName!: TemplateRef<any>;
-    @ViewChild('iconisSampleCollection') iconisSampleCollection!: TemplateRef<any>;
     @ViewChild('iconisCompeleted') iconisCompeleted!: TemplateRef<any>;
     @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
+    @ViewChild('statusbtnTemplate') statusbtnTemplate!: TemplateRef<any>;
     @ViewChild('actionButtonTemplate1') actionButtonTemplate1!: TemplateRef<any>;
 
     ngAfterViewInit() {
-        this.gridConfig.columnsList.find(col => col.key === 'lbl')!.template = this.iconlbl;
-        this.gridConfig.columnsList.find(col => col.key === 'companyName')!.template = this.iconcompanyName;
-        this.gridConfig.columnsList.find(col => col.key === 'isSampleCollection')!.template = this.iconisSampleCollection;
-        // this.gridConfig.columnsList.find(col => col.key === 'isCompleted')!.template = this.iconisCompeleted;
         this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
-        // this.gridConfig1.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate1;
+        this.gridConfig.columnsList.find(col => col.key === 'action1')!.template = this.statusbtnTemplate;
     }
 
     gridConfig1: gridModel = new gridModel();
 
 
     allcolumns = [
-        { heading: "-", key: "lbl", width: 30, sort: true, align: 'left', type: gridColumnTypes.template },
-        { heading: "-", key: "companyName", width: 30, sort: true, align: 'left', type: gridColumnTypes.template },
-        { heading: "-", key: "isSampleCollection", width: 50, sort: true, align: 'left', type: gridColumnTypes.template },
-        { heading: "DOA", key: "vaTime", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-        // { heading: "Collection Date", key: "pathDate", sort: true, align: 'left', emptySign: 'NA', width: 200,type:6},
+        {
+            heading: "-", key: "action1", align: "right", width: 150, sticky: true, type: gridColumnTypes.template,
+            template: this.statusbtnTemplate
+        },
+        { heading: "Date", key: "pathDate", sort: true, align: 'left', emptySign: 'NA', width: 200, type: 6 },
+        // { heading: "DOA", key: "vaTime", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-
         { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
         { heading: "Admission No", key: "oP_IP_No", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "PBill No", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
@@ -77,10 +71,9 @@ export class SampleCollectionComponent implements OnInit {
         { heading: "Company Name", key: "cm", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "Ward Name", key: "wardName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         {
-            heading: "Action", key: "action", align: "right", width: 250, sticky: true, type: gridColumnTypes.template,
+            heading: "Action", key: "action", align: "right", width: 150, sticky: true, type: gridColumnTypes.template,
             template: this.actionButtonTemplate  // Assign ng-template to the column
         }
-
     ];
     gridConfig: gridModel = {
         apiUrl: "PathlogySampleCollection/SampleCollectionPatientList",
@@ -94,7 +87,7 @@ export class SampleCollectionComponent implements OnInit {
             { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
             { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
             { fieldName: "IsCompleted", fieldValue: "0", opType: OperatorComparer.Equals },
-            { fieldName: "OP_IP_Type", fieldValue: "5", opType: OperatorComparer.Equals }
+            { fieldName: "OPIPType", fieldValue: "5", opType: OperatorComparer.Equals }
         ]
     }
 
@@ -189,7 +182,7 @@ export class SampleCollectionComponent implements OnInit {
                 { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
                 { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
                 { fieldName: "IsCompleted", fieldValue: this.status, opType: OperatorComparer.Equals },
-                { fieldName: "OP_IP_Type", fieldValue: this.Ptype, opType: OperatorComparer.Equals }
+                { fieldName: "OPIPType", fieldValue: this.Ptype, opType: OperatorComparer.Equals }
 
             ]
         }
@@ -249,7 +242,7 @@ export class SampleCollectionComponent implements OnInit {
                 "opType": "Equals"
             },
             {
-                "fieldName": "OP_IP_Type",
+                "fieldName": "OPIPType",
                 "fieldValue": String(this.Ptype),
                 "opType": "Equals"
             }

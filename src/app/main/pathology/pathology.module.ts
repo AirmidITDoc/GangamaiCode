@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { LabSettlementComponent } from './lab-settlement/lab-settlement.component';
 
 const appRoutes: Routes = [
 
@@ -26,6 +27,10 @@ const appRoutes: Routes = [
   {
     path: "report-dispatch",
     loadChildren: () => import("./report-dispatch/report-dispatch.module").then((m) => m.ReportDispatchModule),
+  },
+  {
+    path: "settlement",
+    loadChildren: () => import("./lab-settlement/lab-settlement.module").then((m) => m.LabSettlementModule),
   },
 ];
 

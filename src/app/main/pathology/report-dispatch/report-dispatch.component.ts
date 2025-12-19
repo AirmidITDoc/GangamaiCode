@@ -95,12 +95,12 @@ export class ReportDispatchComponent {
   age = ''
   gendername = ''
 
-  vStatusSearch: any = "0";
+  vStatusSearch: any = "1";
   patientName: 'RK'
   title: 'Reports'
   page: PageNames = PageNames.PATIENT;
   pathFiles: PageNames = PageNames.PATIENT_PATHFILES;
-  status: any = "0"
+  status: any = "1"
   opipType: any = "2";
 
   @ViewChild(MatSort) sort: MatSort;
@@ -114,15 +114,16 @@ export class ReportDispatchComponent {
 
   displayedColumns1: string[] = [
     'action1',
-    'action2',
+    'status',
+    'verify',
     'CategoryName',
     'TestName',
-    'SampleCollectionTime',
-    'SampleNo',
-    'outSourceLabName',
-    'outSourceSampleSentDateTime',
-    'outSourceReportCollectedDateTime',
-    // 'action'
+    // 'SampleCollectionTime',
+    // 'SampleNo',
+    // 'outSourceLabName',
+    // 'outSourceSampleSentDateTime',
+    // 'outSourceReportCollectedDateTime',
+    'action'
   ];
 
   hasSelectedContacts: boolean;
@@ -171,7 +172,7 @@ export class ReportDispatchComponent {
       { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
       { fieldName: "From_Dt ", fieldValue: this.fromdate, opType: OperatorComparer.Equals },
       { fieldName: "To_Dt ", fieldValue: this.todate, opType: OperatorComparer.Equals },
-      { fieldName: "IsCompleted", fieldValue: "0", opType: OperatorComparer.Equals },
+      { fieldName: "IsCompleted", fieldValue: "1", opType: OperatorComparer.Equals },
       { fieldName: "OP_IP_Type", fieldValue: "2", opType: OperatorComparer.Equals }
     ]
   }
@@ -208,7 +209,7 @@ export class ReportDispatchComponent {
     fromDate = fromDate ? this.datePipe.transform(fromDate, "yyyy-MM-dd") : "";
     toDate = toDate ? this.datePipe.transform(toDate, "yyyy-MM-dd") : "";
     let patientType = this.myformSearch.get("PatientTypeSearch").value || "2";
-    let status = this.myformSearch.get("StatusSearch").value || "0";
+    let status = this.myformSearch.get("StatusSearch").value || "1";
 
     this.GetResultdetail()
     // Update the filters dynamically
@@ -404,7 +405,7 @@ export class ReportDispatchComponent {
     this.toDate = this.datePipe.transform(this.myformSearch.get('end').value, "yyyy-MM-dd")
     this.f_name = this.myformSearch.get('FirstNameSearch').value + "%"
     this.l_name = this.myformSearch.get('LastNameSearch').value + "%"
-    this.status = this.myformSearch.get('StatusSearch').value
+    this.status = this.myformSearch.get('StatusSearch').value || '1'
     this.opipType = this.myformSearch.get('PatientTypeSearch').value
     this.regNo = this.myformSearch.get('RegNoSearch').value || ""
 
@@ -451,7 +452,17 @@ export class ReportDispatchComponent {
 
   onClear() {
     this._SampleService.myformSearch.get('RegNoSearch').setValue("0");
-    this._SampleService.myformSearch.get('StatusSearch').setValue("0");
+    this._SampleService.myformSearch.get('StatusSearch').setValue("1");
     this._SampleService.myformSearch.get('PatientTypeSearch').setValue("2");
+  }
+
+  getVerifyTooltip(contact: any): string {
+    if (contact.isVerifyid) {
+      return `Verified On : ${contact.isVerifyedDate}\nVerified By : ${contact.verifiedUserName}`;
+    }
+
+    return contact.isCompleted
+      ? 'Verify Report'
+      : 'Test is Pending';
   }
 }

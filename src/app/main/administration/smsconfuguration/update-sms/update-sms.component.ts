@@ -1,6 +1,6 @@
 import { DatePipe } from '@angular/common';
-import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { Component, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -8,6 +8,9 @@ import { fuseAnimations } from '@fuse/animations';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { ToastrService } from 'ngx-toastr';
 import { SMSConfugurationService } from '../smsconfuguration.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
+import { ConfigService } from 'app/core/services/config.service';
 
 @Component({
   selector: 'app-update-sms',
@@ -17,28 +20,16 @@ import { SMSConfugurationService } from '../smsconfuguration.service';
   animations: fuseAnimations,
 })
 export class UpdateSMSComponent implements OnInit {
-
-  displayedColumns = [
-    'Code',
-    'MgsCategory',
-    'IsBlock',
-    'TemplateId' 
-  ];
-  displayedColumns1 = [
-     'MappingValue' 
-  ];
-
+ 
   vTemplateCreation:any;
   vMessage:any;
   vTemplateId:any; 
   vIsBlock:any;
   MSGCategory:any=[];
-  
-  @ViewChild(MatSort) sort: MatSort;
-  @ViewChild('paginator', { static: true }) public paginator: MatPaginator; 
-  
-  dsTemplateList= new MatTableDataSource<TemplateList>();
-  dsmappingList= new MatTableDataSource<MappingList>();
+
+    SearchGroupForm: FormGroup;
+    SaveForm: FormGroup;
+ 
 
   constructor(
     public _SMSConfigService : SMSConfugurationService,
@@ -46,68 +37,80 @@ export class UpdateSMSComponent implements OnInit {
     public datePipe: DatePipe,
     public _matDialog: MatDialog,
     public toastr: ToastrService,
+       public _formbuilder: FormBuilder, 
+        public dialogRef: MatDialogRef<UpdateSMSComponent>,
+        @Inject(MAT_DIALOG_DATA) public data: any,
+        public _formvalidationservice: FormvalidationserviceService,
+        public _configue: ConfigService
   ) { }
 
   ngOnInit(): void {
-    // this.getMappingSMS();
-    // this.getMSGCategoryList();
-    // this.getMSGCategory();
-  }
-  // getMSGCategory(){
-  //   this._SMSConfigService.getMSGCategory().subscribe(data =>{
-  //     this.MSGCategory = data ;
-  //   });
-  // }
-  // getMappingSMS(){
-  //   this._SMSConfigService.getMappinfSMS().subscribe(data =>{
-  //     this.dsmappingList.data = data as MappingList[];
-  //   });
-  // }
-  // getMSGCategoryList(){
-  //   this._SMSConfigService.getMSGCategoryList().subscribe(data =>{
-  //     this.dsTemplateList.data = data as TemplateList[] ;
-  //     console.log(this.dsTemplateList.data)
-  //   });
-  // }
-  OnSelectTemplate(contact){
-    console.log(contact)
-    this.vTemplateId = contact.TemplateId;
-    this.vTemplateCreation = contact.MsgId;
-    this.vMessage = contact.msg; 
-    let isBlock = contact.IsBlock;
-    if(isBlock == 1){
-      this.vIsBlock = true;
-    }else{
-      this.vIsBlock = false;
-    }
-
-    if(this.vTemplateCreation > 0){
-      const selectCategory = this.MSGCategory.find(item => item.Msgid ==this.vTemplateCreation )
-      console.log(selectCategory)
-      this._SMSConfigService.MyNewSMSForm.get('Msgcategory').setValue(selectCategory)
-    }
-  }
+    this.SearchGroupForm = this.createSearchform();
+    this.SearchGroupForm.markAllAsTouched();
+   // this.SaveForm = this.CreateSaveForm();
+  } 
+   createSearchform() { 
+     return this._formbuilder.group({ 
+       smsid:0,
+       type: ['', [Validators.required,this._formvalidationservice.allowEmptyStringValidator()]],
+       pdfModeName: ['', [Validators.required,this._formvalidationservice.allowEmptyStringValidator()]],
+       fieldName: ['', [Validators.required,this._formvalidationservice.allowEmptyStringValidator()]],
+       passwordProtectedPdf:[false]
+     })
+   } 
   OnSave(){
-    if ((this.vMessage == '' || this.vMessage == null || this.vMessage == undefined)) {
-      this.toastr.warning('Please enter message', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-      console.log(this._SMSConfigService.MyNewSMSForm.value)
-      this._SMSConfigService.SMSSave(this._SMSConfigService.MyNewSMSForm.value).subscribe((response) => {
-        this.toastr.success(response.message);
-      
-      }, (error) => {
-        this.toastr.error(error.message);
+    if (this.SearchGroupForm.valid) { 
+      console.log(this.SearchGroupForm.value)
+      this._SMSConfigService.SMSPdfSave(this.SearchGroupForm.value).subscribe((response) => { 
+        this.OnClose();
       }); 
+    }else{
+        let invalidFields = [];
+      if (this.SearchGroupForm.invalid) {
+        for (const controlName in this.SearchGroupForm.controls) {
+          if (this.SearchGroupForm.controls[controlName].invalid) {
+            invalidFields.push(`${controlName}`);
+          }
+        }
+      }
+      if (invalidFields.length > 0) {
+        invalidFields.forEach(field => {
+          this.toastr.warning(`Please Check this field "${field}" is invalid.`, 'Warning',
+          );
+        });
+        return
+      }
     }
   }
   OnReset(){
-    this.onClose();
+    this.OnClose();
   }
-  onClose(){
+  OnClose(){
     this._matDialog.closeAll();
     this._SMSConfigService.MyNewSMSForm.reset();
+  }
+  getValidationMessages() { 
+    return { 
+      type: [
+        { name: "required", Message: "Sms type is required" }, 
+      ],
+      pdfModeName: [
+        { name: "required", Message: "Pdf Mode name is required" }, 
+      ],
+       fieldName: [
+        { name: "required", Message: "filedName is required" }, 
+      ],
+
+    };
+  }
+  keyPressAlphanumeric(event) {
+    var inp = String.fromCharCode(event.keyCode);
+    if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
+      return true;
+    } else {
+      event.preventDefault();
+      return false;
+    }
   }
 }
 export class TemplateList { 

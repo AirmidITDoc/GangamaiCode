@@ -157,7 +157,7 @@ export class NewLabPatientRegComponent {
     //  this.chargeForm = this.createChargeForm();
     this.OpBillForm = this.createTotalChargeForm();
     this.OPFooterForm = this.CreateOPFooter();
-    this.TPaymentForm = this.CreateTPayment();
+    // this.TPaymentForm = this.CreateModePaymentform();
 
     this.mode = this.data?.mode || 'add';
 
@@ -183,7 +183,7 @@ export class NewLabPatientRegComponent {
       return this._formbuilder.group({
         labPatientRegistration: '',
         opBillIngModels: '',
-        tPayments: ''
+        tPayments: this._formbuilder.array([]),
       })
     }
   }
@@ -242,32 +242,33 @@ export class NewLabPatientRegComponent {
   }
 
   // only passed for cash & credit pay demo
-  CreateTPayment() {
+  CreateModePaymentform(item: any): FormGroup {
+    debugger
     return this._formbuilder.group({
       paymentId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       unitId: [this.accountService.currentUserValue.user.unitId],
       billNo: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       opdipdtype: [4],
-      paymentDate: [new Date().toISOString().substring(0, 10)],   // yyyy-mm-dd
-      paymentTime: [new Date().toTimeString().substring(0, 5)],
-      payAmount: [0],
-      tranNo: ['0'],
-      bankName: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
-      validationDate: ['1999-01-01'],
+      paymentDate: [item?.paymentDate ?? ''],
+      paymentTime: [item?.paymentTime ?? ''],
+      payAmount: [item?.payAmount ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      tranNo: [item?.tranNo ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+      bankName: [item?.bankName ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+      validationDate: [item?.validationDate ?? ''],
       advanceUsedAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-      comments: [''],
-      payMode: [''],
-      onlineTranNo: [''],
-      onlineTranResponse: [''],
-      companyId: 0,
+      comments: [item?.comments ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+      payMode: [item?.payMode ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+      onlineTranNo: [item?.onlineTranNo ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+      onlineTranResponse: [item?.onlineTranResponse ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+      companyId: [item?.companyId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       advanceId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       refundId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      cashCounterId: [0],
-      transactionType: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      isSelfOrcompany: [0],
-      tranMode: [''],
+      cashCounterId: [item?.cashCounterId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      transactionType: [item?.transactionType ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      isSelfOrcompany: [item?.isSelfOrcompany ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      tranMode: ['HOSP', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
       createdBy: [this.accountService.currentUserValue.user.userId],
-      transactionLabel: [''],
+      transactionLabel: ['LAB_BILL'],
     })
   }
 
@@ -435,6 +436,9 @@ export class NewLabPatientRegComponent {
   }
   get BillDetailsArray(): FormArray {
     return this.OpBillForm.get('billDetails') as FormArray;
+  }
+  get ModeOfPaymentsArray(): FormArray {
+    return this.LabBillfinalform.get('tPayments') as FormArray;
   }
 
   getDateTime(dateTimeObj) {
@@ -1039,7 +1043,7 @@ export class NewLabPatientRegComponent {
 
       if (invalidRow) {
         this.toastr.warning(
-          'Please select Doctor for added service','Warning!');
+          'Please select Doctor for added service', 'Warning!');
         return;
       }
 
@@ -1086,7 +1090,11 @@ export class NewLabPatientRegComponent {
 
             this.LabBillfinalform.get('labPatientRegistration').setValue(formValue)
             this.LabBillfinalform.get('opBillIngModels').setValue(this.OpBillForm.value)
-            this.LabBillfinalform.get('tPayments').setValue(result.submitDataPay.ipModePaymentInsert)
+            this.ModeOfPaymentsArray.clear();
+            result.submitDataPay.ipModePaymentInsert.forEach(item => {
+              this.ModeOfPaymentsArray.push(this.CreateModePaymentform(item as ChargesList));
+            });
+            // this.LabBillfinalform.get('tPayments').setValue(result.submitDataPay.ipModePaymentInsert)
             console.log(this.LabBillfinalform.value)
             this._labPatientRegService.InsertLabRegBilling(this.LabBillfinalform.value).subscribe(response => {
               this.viewgetOPBillReportPdf(response)
@@ -1096,7 +1104,26 @@ export class NewLabPatientRegComponent {
           }
         });
       }
-      else if (this.OPFooterForm.get('paymentType').value == 'CashPay') {//Cash pay  
+      else if (this.OPFooterForm.get('paymentType').value == 'CashPay') {
+        debugger
+        let ModePaymentObj = [];
+        ModePaymentObj.push({
+          paymentDate: formattedDate,
+          paymentTime: formattedTime,
+          payAmount: Math.round(this.myForm.get('netPayableAmt').value),
+          tranNo: "",
+          bankName: "",
+          validationDate: formattedDate,
+          comments: "",
+          payMode: "CASH",
+          onlineTranNo: "0",
+          onlineTranResponse: "0",
+          companyId: this.companyId || 0,
+          cashCounterId: 0,
+          transactionType: 0,
+          isSelfOrcompany: this.companyId ? 1 : 0,
+        });
+
         this.OpBillForm.get('balanceAmt').setValue(0)
         this.OpBillForm.get('paidAmt')?.setValue(this.myForm.get('netPayableAmt')?.value)
         this.OpBillForm.get('payments.cashPayAmount')?.setValue(Number(this.myForm.get('netPayableAmt')?.value))
@@ -1106,9 +1133,15 @@ export class NewLabPatientRegComponent {
         console.log(this.OpBillForm.value)
         this.LabBillfinalform.get('labPatientRegistration').setValue(formValue)
         this.LabBillfinalform.get('opBillIngModels').setValue(this.OpBillForm.value)
-        this.LabBillfinalform.get('tPayments').setValue([this.TPaymentForm.value])
+        debugger
+        this.ModeOfPaymentsArray.clear();
+        ModePaymentObj.forEach(item => {
+          this.ModeOfPaymentsArray.push(this.CreateModePaymentform(item as ChargesList));
+        });
 
-        console.log(this.LabBillfinalform.value)
+        // this.LabBillfinalform.get('tPayments').setValue([this.TPaymentForm.value])
+
+        console.log("Final Payload:", this.LabBillfinalform.value)
 
         this._labPatientRegService.InsertLabRegBilling(this.LabBillfinalform.value).subscribe(response => {
           console.log(response)
@@ -1126,7 +1159,7 @@ export class NewLabPatientRegComponent {
 
         this.LabBillfinalform.get('labPatientRegistration').setValue(formValue)
         this.LabBillfinalform.get('opBillIngModels').setValue(this.OpBillForm.value)
-        this.LabBillfinalform.get('tPayments').setValue([this.TPaymentForm.value])
+        // this.LabBillfinalform.get('tPayments').setValue([this.TPaymentForm.value])
 
         console.log(this.LabBillfinalform.value)
 
@@ -1134,8 +1167,6 @@ export class NewLabPatientRegComponent {
           // this.viewgetOPBillReportPdf(response)
           this._matDialog.closeAll();
           this.savebtn = true
-          // if (response)
-          // this.resetform();
         });
       }
       else if (this.OPFooterForm.get('paymentType').value == 'onlinepay') {
@@ -1146,6 +1177,25 @@ export class NewLabPatientRegComponent {
           });
           return;
         }
+
+        let ModePaymentObj = [];
+        ModePaymentObj.push({
+          paymentDate: formattedDate,
+          paymentTime: formattedTime,
+          payAmount: Math.round(this.myForm.get('netPayableAmt').value),
+          tranNo: "",
+          bankName: "",
+          validationDate: formattedDate,
+          comments: "",
+          payMode: "UPI",
+          onlineTranNo: "0",
+          onlineTranResponse: "0",
+          companyId: this.companyId || 0,
+          cashCounterId: 0,
+          transactionType: 0,
+          isSelfOrcompany: this.companyId ? 1 : 0,
+        });
+
         this.OpBillForm.get('payments.payTmamount')?.setValue(this.myForm.get('netPayableAmt')?.value)
         this.OpBillForm.get('payments.payTmtranNo')?.setValue(this.OPFooterForm.get('UPINO')?.value)
         this.OpBillForm.get('payments.payTmdate').setValue(formattedDate)
@@ -1155,7 +1205,13 @@ export class NewLabPatientRegComponent {
         console.log(this.OpBillForm.value)
         this.LabBillfinalform.get('labPatientRegistration').setValue(formValue)
         this.LabBillfinalform.get('opBillIngModels').setValue(this.OpBillForm.value)
-        this.LabBillfinalform.get('tPayments').setValue([this.TPaymentForm.value])
+
+        this.ModeOfPaymentsArray.clear();
+        ModePaymentObj.forEach(item => {
+          this.ModeOfPaymentsArray.push(this.CreateModePaymentform(item as ChargesList));
+        });
+
+        // this.LabBillfinalform.get('tPayments').setValue([this.TPaymentForm.value])
 
         console.log(this.LabBillfinalform.value)
 

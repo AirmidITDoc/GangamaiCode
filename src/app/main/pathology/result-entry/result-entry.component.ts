@@ -1,6 +1,6 @@
 import { SelectionModel } from '@angular/cdk/collections';
 import { DatePipe } from '@angular/common';
-import { Component, EventEmitter, Input, OnInit, Output, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, ComponentRef, EventEmitter, Input, OnInit, Output, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormGroup, UntypedFormBuilder } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
@@ -32,8 +32,9 @@ import { SamplecollectionPageComponent } from '../sample-collection/samplecollec
 import { ConsoleLogger } from '@microsoft/signalr/dist/esm/Utils';
 import { Console } from 'console';
 import { EmailSendComponent } from 'app/main/shared/componets/email-send/email-send.component';
-
-
+import { OutsourceDetailsPopoverComponent } from './outsource-details-popover/outsource-details-popover.component';
+import { Overlay, OverlayRef } from '@angular/cdk/overlay';
+import { ComponentPortal } from '@angular/cdk/portal';
 
 @Component({
     selector: 'app-result-entry',
@@ -122,17 +123,13 @@ export class ResultEntryComponent implements OnInit {
         // 'outSourceStatus',
         // 'isVerifyid',
         'action1',
-        'action2',
+        'status',
+        'verify',
         'CategoryName',
         'TestName',
         'SampleCollectionTime',
         'SampleNo',
-
         'outSourceLabName',
-        'outSourceSampleSentDateTime',
-
-        'outSourceReportCollectedDateTime',
-
         'action'
     ];
 
@@ -152,18 +149,16 @@ export class ResultEntryComponent implements OnInit {
     allcolumns = [
         {
             heading: "-", key: "patientType", sort: true, align: 'left', type: gridColumnTypes.template,
-            template: this.actionsIPOP, width: 30
+            template: this.actionsIPOP
         },
-        { heading: "DOA", key: "vaTime", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "Test Date", key: "pathDate", sort: true, align: 'left', emptySign: 'NA', type: 6, width: 100 },
+        { heading: "DOA", key: "vaTime", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-
         { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
         { heading: "Age | Gender", key: "genderName", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "Admission No", key: "oP_IP_No", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "PBill No", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "Doctor Name", key: "doctorName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-
         {
             heading: "Action", key: "action", align: "right", width: 100, sticky: true, type: gridColumnTypes.template,
             template: this.actionButtonTemplate  // Assign ng-template to the column
@@ -187,37 +182,6 @@ export class ResultEntryComponent implements OnInit {
         ]
     }
 
-    // gridConfig1: gridModel = {
-    //     apiUrl: "Pathology/PathologyTestList",
-    //     columnsList: [
-    //         { heading: "Date", key: "date", sort: true, align: 'left', emptySign: 'NA' },
-    //         { heading: "UHID No", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
-
-    //         { heading: "Patient Name", key: "patientname", sort: true, align: 'left', emptySign: 'NA' },
-    //         { heading: "Doctor Name", key: "doctorName", sort: true, align: 'left', emptySign: 'NA' },
-    //         { heading: "Patient Type", key: "patientType", sort: true, align: 'left', emptySign: 'NA' },
-    //         { heading: "PBill No", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA' },
-    //         { heading: "Gender", key: "gender", sort: true, align: 'left', emptySign: 'NA' },
-    //         // { heading: "Age Year", key: "ageYear", sort: true, align: 'left', emptySign: 'NA' },
-    //         {
-    //             heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
-    //                 {
-    //                     action: gridActions.edit, callback: (data: any) => {
-    //                         this.onSave(data) // EDIT Records
-    //                     }
-    //                 }]
-    //         }
-    //     ],
-    //     sortField: "PresReId",
-    //     sortOrder: 0,
-    //     filters: [
-
-    //         { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
-    //         { fieldName: "ToDate", fieldValue: this.toDate, opType: OperatorComparer.Equals },
-    //         { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals }
-    //     ]
-    // }
-
     constructor(
         private formBuilder: UntypedFormBuilder,
         public _SampleService: ResultEntryService,
@@ -230,7 +194,8 @@ export class ResultEntryComponent implements OnInit {
         private commonService: PrintserviceService,
         public _WhatsAppEmailService: WhatsAppEmailService,
         private _fuseSidebarService: FuseSidebarService,
-        public _whatsppService: WhatsAppEmailService
+        public _whatsppService: WhatsAppEmailService,
+        private overlay: Overlay
     ) { }
 
     ngOnInit(): void {
@@ -411,9 +376,7 @@ export class ResultEntryComponent implements OnInit {
         this.onChangeFirst();
     }
 
-
     onSampleCollSave(row: any = null) {
-        let that = this;
         const dialogRef = this._matDialog.open(SamplecollectionPageComponent,
             {
                 // maxWidth: "75vw",
@@ -422,13 +385,10 @@ export class ResultEntryComponent implements OnInit {
                 data: row
             });
         dialogRef.afterClosed().subscribe(result => {
-            if (result) {
-                that.grid.bindGridData();
-            }
+            this.grid.bindGridData();
+            this.getSelectedRow(event);
         });
     }
-
-
 
     IsTemplateTest: any;
     chkresultentry(contact, flag) {
@@ -504,6 +464,61 @@ export class ResultEntryComponent implements OnInit {
             dialogRef.afterClosed().subscribe(result => {
                 console.log('Pathology Template  Saved ..', result);
             });
+            return;
+        }
+        this.searchRecords(contact)
+        // this.selection.clear(); // Clears all selected items
+        // this.dataSource1.data = [];
+    }
+
+    chkresultentryEdit(contact, flag) {
+        debugger
+        this.printdata = [];
+        this.reportIdData = [];
+        this.ServiceIdData = [];
+
+        if (flag)
+            this.IsTemplateTest = contact.isTemplateTest
+
+        console.log(contact)
+        if (this.IsTemplateTest == 0) {
+            setTimeout(() => {
+                let data = [];
+                const contactArray = Array.isArray(contact) ? contact : [contact];
+                contactArray.forEach(element => {
+                    console.log(element)
+                    data.push({
+                        PathReportId: element["pathReportId"].toString(),
+                        ServiceId: element["serviceId"].toString(),
+                        IsCompleted: element["isCompleted"].toString()
+                    });
+                    this.printdata.push({ PathReportId: element["pathReportId"].toString() });
+                });
+
+                console.log(this.printdata)
+                data.forEach((element) => {
+                    console.log('aaaaaa:', element)
+                    this.reportIdData.push(element.PathReportId)
+                    this.ServiceIdData.push(element.ServiceId)
+                    if (element.IsCompleted == "true")
+                        this.Iscompleted = 1;
+                });
+
+                const dialogRef = this._matDialog.open(NewResultEntryComponent,
+                    {
+                        maxWidth: "75vw",
+                        height: '800px',
+                        width: '95%',
+                        data: {
+                            RIdData: data,
+                            patientdata: this.reportPrintObj
+                        }
+                    });
+                dialogRef.afterClosed().subscribe(result => {
+                    this.grid.bindGridData();
+                    this.getSelectedRow(event);
+                });
+            }, 100);
             return;
         }
         this.searchRecords(contact)
@@ -927,15 +942,16 @@ export class ResultEntryComponent implements OnInit {
         const dialogRef1 = this._matDialog.open(OutsourceDetailsComponent,
             {
                 maxWidth: "80vw",
-                height: '60vh',
-                width: '100%',
+                // height: '60vh',
+                // width: '100%',
+                width: "45%",
+                height: "60%",
                 data: row
-
             });
 
         dialogRef1.afterClosed().subscribe(result => {
             this.grid.bindGridData();
-
+            this.getSelectedRow(event);
         });
     }
 
@@ -1073,7 +1089,6 @@ export class ResultEntryComponent implements OnInit {
         console.log('Selected items:', this.resultSource);
     }
 
-
     isSomeSelected() {
         // console.log(this.selection.selected);
         return this.selection.selected.length > 0;
@@ -1142,16 +1157,100 @@ export class ResultEntryComponent implements OnInit {
             : 'Test is Pending';
     }
 
-    getOutSourceTooltip(contact: any): string {
-        const date = this.datePipe.transform(contact.outSourceSampleSentDateTime, 'yyyy-MM-dd');
-        if (contact.outSourceId) {
-            return `OutSource
-            Date : ${date}
-            TestName : ${contact.serviceName}
-            LabName : ${contact.outSourceLabName}`;
+    // ////////////// outsource popup //////////////////////
+    private overlayRef: OverlayRef | null = null;
+    private patientOverlayRef: OverlayRef | null = null;
+    private hoverTimeout: any = null;
+    private outSourceCloseTimeout: any = null;
 
-        }else{
-            return `${contact.serviceName}`;
+    openPatientDetailsPopover(event: MouseEvent, outSourceData: any) {
+        event.stopPropagation();
+
+        // Clear any existing timeout
+        if (this.hoverTimeout) {
+            clearTimeout(this.hoverTimeout);
+        }
+
+        // Add small delay to prevent flickering
+        this.hoverTimeout = setTimeout(() => {
+            // Close any existing patient popover
+            if (this.patientOverlayRef) {
+                this.patientOverlayRef.dispose();
+                this.patientOverlayRef = null;
+            }
+
+            const positionStrategy = this.overlay.position()
+                .flexibleConnectedTo(event.target as HTMLElement)
+                .withPositions([
+                    {
+                        originX: 'start',
+                        originY: 'bottom',
+                        overlayX: 'start',
+                        overlayY: 'top',
+                    },
+                    {
+                        originX: 'start',
+                        originY: 'top',
+                        overlayX: 'start',
+                        overlayY: 'bottom',
+                    },
+                    {
+                        originX: 'end',
+                        originY: 'center',
+                        overlayX: 'start',
+                        overlayY: 'center',
+                    },
+                    {
+                        originX: 'start',
+                        originY: 'center',
+                        overlayX: 'end',
+                        overlayY: 'center',
+                    }
+                ]);
+
+            this.patientOverlayRef = this.overlay.create({
+                positionStrategy,
+                scrollStrategy: this.overlay.scrollStrategies.close(),
+                hasBackdrop: false,
+            });
+
+            const portal = new ComponentPortal(OutsourceDetailsPopoverComponent);
+            const componentRef: ComponentRef<OutsourceDetailsPopoverComponent> = this.patientOverlayRef.attach(portal);
+            componentRef.instance.outSourceData = outSourceData;
+
+            // Handle mouse events on the overlay element
+            const overlayElement = this.patientOverlayRef.overlayElement;
+            overlayElement.addEventListener('mouseenter', () => this.keepPatientPopoverOpen());
+            overlayElement.addEventListener('mouseleave', () => this.closePatientDetailsPopover());
+        }, 300); // 300ms delay before showing popover
+    }
+
+    closePatientDetailsPopover() {
+        // Clear timeout if popover hasn't opened yet
+        if (this.hoverTimeout) {
+            clearTimeout(this.hoverTimeout);
+            this.hoverTimeout = null;
+        }
+
+        // Clear any existing close timeout
+        if (this.outSourceCloseTimeout) {
+            clearTimeout(this.outSourceCloseTimeout);
+        }
+
+        // Add delay before closing to allow moving mouse to popover
+        this.outSourceCloseTimeout = setTimeout(() => {
+            if (this.patientOverlayRef) {
+                this.patientOverlayRef.dispose();
+                this.patientOverlayRef = null;
+            }
+        }, 200);
+    }
+
+    keepPatientPopoverOpen() {
+        // Clear close timeout when hovering over popover
+        if (this.outSourceCloseTimeout) {
+            clearTimeout(this.outSourceCloseTimeout);
+            this.outSourceCloseTimeout = null;
         }
     }
 

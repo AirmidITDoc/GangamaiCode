@@ -46,25 +46,27 @@ import { NewResultEntryComponent } from './new-result-entry/new-result-entry.com
 import { NewResultTemplateComponent } from './new-result-template/new-result-template.component';
 import { OutsourceDetailsComponent } from './outsource-details/outsource-details.component';
 import { ReportVerifyDetailsComponent } from './report-verify-details/report-verify-details.component';
-
+import { OutsourceDetailsPopoverComponent } from './outsource-details-popover/outsource-details-popover.component';
+import { MatTimepickerModule } from 'mat-timepicker';
 
 const routes: Routes = [
- 
-  {
-      path: '**',
-      component:ResultEntryComponent,
-  },
+
+    {
+        path: '**',
+        component: ResultEntryComponent,
+    },
 
 ];
 @NgModule({
     declarations: [
         ResultEntryComponent,
-       PathTemplateViewComponent,
+        PathTemplateViewComponent,
         NewResultEntryComponent,
         NewResultTemplateComponent,
         OutsourceDetailsComponent,
-        ReportVerifyDetailsComponent
-      
+        ReportVerifyDetailsComponent,
+        OutsourceDetailsPopoverComponent
+
     ],
     imports: [
         RouterModule.forChild(routes),
@@ -103,6 +105,7 @@ const routes: Routes = [
         MatTooltipModule,
         //  DateTimePickerModule ,
         MatAutocompleteModule,
+        MatTimepickerModule
     ],
     providers: [
         ResultEntryService,
