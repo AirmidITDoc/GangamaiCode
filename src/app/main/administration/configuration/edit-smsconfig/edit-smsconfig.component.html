@@ -1,63 +1,109 @@
-<div id="content" class="simple page-layout inner-scroll inner-sidebar left-sidebar" dynamicTableHeight>
-    <mat-toolbar class="accent" style="width: 100%;justify-content: space-between;height: 40px;">
-        <div fxLayout="row" fxLayoutAlign="start center">
-            <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" style="color: white;">
-               Edit SMS Configuration
-            </span>
-        </div>
-        <div class="close-icon">
-            <button mat-icon-button tabIndex="-1" (click)="onClose()" aria-label="Close dialog">
-                <mat-icon>close</mat-icon>
-            </button>
-        </div>
-    </mat-toolbar>
-    <div class="content">
-        <div class="center p-12 pb-56" style="border-radius: 4px;">
-            <div fxLayout="column" fxLayoutGap="10px">
-                <div fxLayout="row" fxLayoutGap="10px">
+<div class="modal-wrapper grid-container">
 
-
-                    <div fxFlex.gt-sm="95%" fxFlex>
-                        <form [formGroup]="SmsForm">
-                            <div fxLayout="column" fxLayoutGap="10px">
-
-                                <!-- <div fxLayout="row" fxLayoutGap="100px">
-                                    <mat-form-field appearance="outline" fxFlex="30%">
-                                        <mat-label>Template Creation</mat-label>
-                                        <input matInput name="TemplateCreation" formControlName="TemplateCreation"
-                                            type="text" [(ngModel)]="vTemplateCreation" required>
-                                    </mat-form-field>
-
-                                    <mat-form-field appearance="outline" fxFlex="60%">
-                                        <mat-label>MSG Category</mat-label>
-                                        <mat-select formControlName="Msgcategory" name="Msgcategory">
-                                            <mat-option></mat-option>
-                                            <mat-option *ngFor="let m of MSGCategory" [value]="m">
-                                                {{m.MsgCategory}}
-                                            </mat-option>
-                                        </mat-select>
-                                    </mat-form-field>
-                                </div>
-
-                                <mat-form-field appearance="outline" fxFlex>
-                                    <mat-label>Message</mat-label>
-                                    <textarea rows="5" matInput name="Message" formControlName="Message" type="text"
-                                        [(ngModel)]="vMessage" required></textarea>
-                                </mat-form-field> -->
-
-
-
-                            </div>
-                        </form>
+    <!-- Modal header -->
+    <div class="modal-header accent">
+        <div class="modal-header-content">
+            <div class="modal-header-title">
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">SMS Configuration Edit</span>
+            </div>
+            <div class="modal-header-right">
+                <div class="comman-date-container">
+                    <div class="comman-date">
+                        <app-common-date [screenFrom]="screenFromString"
+                            (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
+                    </div>
+                    <div class="close-icon">
+                        <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
+                            matTooltip="Close">
+                            <mat-icon>close</mat-icon>
+                        </button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <div>
-        <div class="modal-footer-buttons" fxLayoutAlign="end center" style="padding: 10px;">
-            <button class="btn btn-danger-outline" (click)="OnReset()">Close</button>&nbsp;
-            <button class="btn btn-primary" (click)="OnSave">Save</button>
+
+
+    <div class="modal-card-container">
+        <mat-card>
+            <div fxLayout="column" class="gap-8" style="padding: 10px;">
+
+                <form [formGroup]="SmsForm" style="border: blue">
+                    <div fxLayout="row wrap" fxLayoutGap="10px 10px grid">
+<!-- [maxLength]="50" -->
+                        <div fxFlex="50" fxFlex.xs="100" fxFlex.sm="33">
+                            <airmid-textbox label="URL" formControlName="url" [formGroup]="SmsForm"
+                                [value]="registerObj.url" [validations]="getValidationMessages().url" >
+                            </airmid-textbox>
+                        </div>
+
+                        <div fxFlex="50" fxFlex.xs="100" fxFlex.sm="33">
+                            <airmid-textbox label="Keys" formControlName="keys" [formGroup]="SmsForm"
+                                [value]="vkeys" [validations]="getValidationMessages().keys"
+                                >
+                            </airmid-textbox>
+                        </div>
+
+                        <div fxFlex="50" fxFlex.xs="100" fxFlex.sm="33">
+                            <airmid-textbox label="Campaign" formControlName="campaign" [formGroup]="SmsForm"
+                                [value]="vcampaign" [validations]="getValidationMessages().campaign"
+                                >
+                            </airmid-textbox>
+                        </div>
+
+                        <div fxFlex="50" fxFlex.xs="100" fxFlex.sm="33">
+                            <airmid-textbox label="Sender" formControlName="senderId" [formGroup]="SmsForm"
+                                [value]="vsenderId" [validations]="getValidationMessages().senderId"
+                                >
+                            </airmid-textbox>
+                        </div>
+
+                        <div fxFlex="50" fxFlex.xs="100" fxFlex.sm="33">
+                            <airmid-textbox label="Route Id" formControlName="routeid" [formGroup]="SmsForm"
+                                [value]="vrouteid" [validations]="getValidationMessages().routeid"
+                                >
+                            </airmid-textbox>
+                        </div>
+
+                        <div fxFlex="50" fxFlex.xs="100" fxFlex.sm="33">
+                            <airmid-textbox label="User Name" formControlName="userName" [formGroup]="SmsForm"
+                                [value]="vuserName" [validations]="getValidationMessages().userName"
+                                >
+                            </airmid-textbox>
+                        </div>
+                        <div fxFlex="50" fxFlex.xs="100" fxFlex.sm="33">
+                            <airmid-textbox label="Spassword" formControlName="spassword" [formGroup]="SmsForm"
+                                [value]="vspassword" [validations]="getValidationMessages().spassword"
+                                >
+                            </airmid-textbox>
+
+                        </div>
+                        <div fxFlex="50" fxFlex.xs="100" fxFlex.sm="33">
+                            <airmid-textbox label="Storage LocLink" formControlName="storageLocLink"
+                                [value]="vstorageLocLink" [formGroup]="SmsForm"
+                                [validations]="getValidationMessages().storageLocLink" >
+                            </airmid-textbox>
+
+                        </div>
+                        <div fxFlex="50" fxFlex.xs="100" fxFlex.sm="33">
+                            <!-- <airmid-dropdown label="Message Type" formControlName="conType" [formGroup]="SmsForm"
+                                 [mode]="autocompleteModeMessagetype">
+                            </airmid-dropdown> -->
+                        </div>
+                    </div>
+
+
+                </form>
+            </div>
+        </mat-card>
+    </div>
+
+    <div class="modal-footer">
+        <div class="footer-navigation-container">
+            <div class="modal-footer-buttons">
+                <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
+                <button type="button" class="btn btn-primary" (click)="OnSave()">Save</button>
+            </div>
         </div>
     </div>
 </div>
