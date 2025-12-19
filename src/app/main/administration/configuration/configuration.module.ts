@@ -32,7 +32,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterModule, Routes } from '@angular/router';
 import { FuseConfirmDialogModule, FuseSidebarModule } from '@fuse/components';
 import { FuseSharedModule } from '@fuse/shared.module';
-import { SharedModule } from 'app/main/shared/shared.module';
+
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { ConfigurationComponent } from './configuration.component';
 import { ConfigurationService } from './configuration.service';
@@ -45,6 +45,7 @@ import { AddAutoServiceComponent } from './add-auto-service/add-auto-service.com
 import { AllConfigDetailsComponent } from './all-config-details/all-config-details.component';
 import { EditSMSConfigComponent } from './edit-smsconfig/edit-smsconfig.component';
 import { EditEmailconfigComponent } from './edit-emailconfig/edit-emailconfig.component';
+import { SharedModule } from 'app/main/shared/shared.module';
 
 
 const routes: Routes = [

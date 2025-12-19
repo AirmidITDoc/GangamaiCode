@@ -15,6 +15,7 @@ import Swal from 'sweetalert2';
 import { DatePipe } from '@angular/common';
 import { AddAutoServiceComponent } from './add-auto-service/add-auto-service.component';
 import { EditSMSConfigComponent } from './edit-smsconfig/edit-smsconfig.component';
+import { EditEmailconfigComponent } from './edit-emailconfig/edit-emailconfig.component';
 
 
 @Component({
@@ -72,29 +73,29 @@ export class ConfigurationComponent implements OnInit {
   @ViewChild('actionAuthanticate') actionAuthanticate!: TemplateRef<any>;
   @ViewChild('actionAuthanticatepass') actionAuthanticatepass!: TemplateRef<any>;
 
-    @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
-    @ViewChild('actionButtonTemplate1') actionButtonTemplate1!: TemplateRef<any>;
-  
+  @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
+  @ViewChild('actionButtonTemplate1') actionButtonTemplate1!: TemplateRef<any>;
+
 
 
   ngAfterViewInit() {
     this.gridConfig1.columnsList.find(col => col.key === 'reqAuthenticate')!.template = this.actionAuthanticate;
     this.gridConfig1.columnsList.find(col => col.key === 'passauthenticate')!.template = this.actionAuthanticatepass;
-     this.gridConfig1.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate1;
-     this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
+    this.gridConfig1.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate1;
+    this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
   }
 
   //SMS
   allColumnssms = [
-    { heading: "SenderId", key: "senderId", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-    { heading: "URL", key: "url", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+    { heading: "Sender", key: "senderId", sort: true, align: 'left', emptySign: 'NA', width: 60 },
+    { heading: "URL", key: "url", sort: true, align: 'left', emptySign: 'NA', width: 250 },
+   { heading: "User Name", key: "userName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+    { heading: "SPassword", key: "sPassword", sort: true, align: 'left', emptySign: 'NA', width: 120 },
+    { heading: "Storage LocLink", key: "storageLocLink", sort: true, align: 'left', emptySign: 'NA', width: 250 },
+    { heading: "Message Type", key: "conType", sort: true, align: 'left', emptySign: 'NA', width: 120 },
     { heading: "Keys", key: "keys", sort: true, align: 'left', emptySign: 'NA', width: 100 },
     { heading: "Campaign", key: "campaign", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-    { heading: "User Name", key: "userName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-    { heading: "SPassword", key: "sPassword", sort: true, align: 'left', emptySign: 'NA', width: 120 },
-    { heading: "StorageLocLink", key: "storageLocLink", sort: true, align: 'left', emptySign: 'NA', width: 120 },
-    { heading: "ConType", key: "conType", sort: true, align: 'left', emptySign: 'NA', width: 120 },
-
+    
     {
       heading: "Action", key: "action", align: "right", width: 180, sticky: true, type: gridColumnTypes.template,
       template: this.actionButtonTemplate  // Assign ng-template to the column
@@ -116,14 +117,14 @@ export class ConfigurationComponent implements OnInit {
   }
   //Email
   allColumnsemail = [
-    { heading: "Status", key: "reqAuthenticate", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
-    { heading: "Status", key: "passauthenticate", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
-    { heading: "Display Name", key: "displayname", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-    { heading: "Email Address", key: "emailaddress", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-    { heading: "Mail Server", key: "mailserver", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-    { heading: "UserName", key: "userName", sort: true, align: 'left', emptySign: 'NA', width: 120 },
-    { heading: "Password", key: "password", sort: true, align: 'left', emptySign: 'NA', width: 120 },
-    { heading: "isActive", key: "isActive", sort: true, align: 'left', emptySign: 'NA', width: 120 },
+    { heading: "--", key: "reqAuthenticate", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30 },
+    { heading: "--", key: "passauthenticate", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30 },
+    { heading: "Display Name", key: "displayname", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+    { heading: "Email Address", key: "emailaddress", sort: true, align: 'left', emptySign: 'NA', width: 280 },
+    { heading: "Mail Server", key: "mailserver", sort: true, align: 'left', emptySign: 'NA', width: 280 },
+    { heading: "UserName", key: "userName", sort: true, align: 'left', emptySign: 'NA', width: 280 },
+    { heading: "Password", key: "password", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+    { heading: "isActive", key: "isActive", sort: true, align: 'left', emptySign: 'NA', width: 150 },
 
     {
       heading: "Action", key: "action", align: "right", width: 180, sticky: true, type: gridColumnTypes.template,
@@ -144,14 +145,14 @@ export class ConfigurationComponent implements OnInit {
     sortOrder: 0,
     filters: this.allFiltersemail
   }
-  
+
 
   constructor(
     public _ConfigurationService: ConfigurationService,
     private formBuilder: FormBuilder,
     private _FormvalidationserviceService: FormvalidationserviceService,
     public toastr: ToastrService, public datePipe: DatePipe,
-    private _matDialog:MatDialog
+    private _matDialog: MatDialog
   ) { }
 
   ngOnInit(): void {
@@ -377,7 +378,7 @@ export class ConfigurationComponent implements OnInit {
     const categories = this.DSServiceList.data
       .map(item => item.Name)
       .filter((value, index, self) => value && self.indexOf(value) === index);
-    
+
     return categories;
   }
 
@@ -398,53 +399,53 @@ export class ConfigurationComponent implements OnInit {
       element.IsInputField = event.checked;
     }
   }
-      getAutoservice(){ 
-            const dialogRef = this._matDialog.open(AddAutoServiceComponent,
-                    {
-                        maxWidth: "100%",
-                        height: '75%',
-                        width: '70%', 
-                    });
-                dialogRef.afterClosed().subscribe(result => {
-                    console.log('The dialog was closed - Insert Action', result); 
-                });
-    }
+  getAutoservice() {
+    const dialogRef = this._matDialog.open(AddAutoServiceComponent,
+      {
+        maxWidth: "100%",
+        height: '75%',
+        width: '70%',
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed - Insert Action', result);
+    });
+  }
 
-    
 
-      OnEditSms(row: any = null) {
-            const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
-            buttonElement.blur(); // Remove focus from the button 
-            let that = this;
-            const dialogRef = this._matDialog.open(EditSMSConfigComponent,
-                {
-                    maxWidth: "95vw",
-                    height: '95%',
-                    width: '90%',
-                    data: row
-    
-                });
-            dialogRef.afterClosed().subscribe(result => {
-                // that.grid.bindGridData();
-            });
-        }
 
-          OnEditEmail(row: any = null) {
-            const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
-            buttonElement.blur(); // Remove focus from the button 
-            let that = this;
-            const dialogRef = this._matDialog.open(EditSMSConfigComponent,
-                {
-                    maxWidth: "95vw",
-                    height: '95%',
-                    width: '90%',
-                    data: row
-    
-                });
-            dialogRef.afterClosed().subscribe(result => {
-                // that.grid.bindGridData();
-            });
-        }
+  OnEditSms(row: any = null) {
+    const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+    buttonElement.blur(); // Remove focus from the button 
+    let that = this;
+    const dialogRef = this._matDialog.open(EditSMSConfigComponent,
+      {
+        maxWidth: "60vw",
+        height: '75%',
+        width: '80%',
+        data: row
+
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      // that.grid.bindGridData();
+    });
+  }
+
+  OnEditEmail(row) {
+    const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+    buttonElement.blur(); // Remove focus from the button 
+    let that = this;
+    const dialogRef = this._matDialog.open(EditEmailconfigComponent,
+      {
+         maxWidth: "60vw",
+        height: '75%',
+        width: '80%',
+        data: row
+
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      // that.grid.bindGridData();
+    });
+  }
 
 }
 
@@ -487,6 +488,32 @@ export class logervicedetail {
       this.IsInputField = logervicedetail.IsInputField || 0;
       this.SystemInputValue = logervicedetail.SystemInputValue || 0;
       this.Name = logervicedetail.Name || '';
+
+    }
+  }
+}
+ 
+export class Smsdetail {
+  url: any;
+  keys: any;
+  campaign: any;
+  routeid: any;
+  senderId: any;
+  userName: any;
+ spassword: any;
+  storageLocLink: any;
+  conType: any;
+  constructor(Smsdetail) {
+    {
+      this.url = Smsdetail.url || 0;
+      this.keys = Smsdetail.keys || '';
+      this.campaign = Smsdetail.campaign || '';
+      this.routeid = Smsdetail.routeid || 0;
+      this.senderId = Smsdetail.senderId || 0;
+      this.userName = Smsdetail.userName || '';
+      this.spassword = Smsdetail.spassword || '';
+      this.storageLocLink = Smsdetail.storageLocLink || '';
+      this.conType = Smsdetail.conType || '';
 
     }
   }
