@@ -277,12 +277,12 @@ export class NewOPListComponent implements OnInit {
     getWhatsappshareRefundBill(Id) { }
 
     OnPrint(element) {
-        debugger
         const [ThermalPrint, ThermalPrintValue] = this._ConfigService.configParams.ThermalPrint.split(":");
         if (ThermalPrint != 1) {
             this.commonService.Onprint("BillNo", element.billNo, "OpBillReceipt");
         } else {
-            this.commonService.Onprint("BillNo", element.billNo, "OpBillReceiptT");
+            // Use thermal print with preview - shows preview first, then auto-prints
+            this.commonService.OnThermalPrint("BillNo", element.billNo, "OpBillReceiptT");
         }
     }
 
@@ -301,7 +301,7 @@ export class NewOPListComponent implements OnInit {
     }
 
     OngetRecord(element, m) {
-        debugger
+
         console.log('Third action clicked for:', element);
         const [ThermalPrint, ThermalPrintValue] = this._ConfigService.configParams.ThermalPrint.split(":");
         // if (m == "Bill Print"){

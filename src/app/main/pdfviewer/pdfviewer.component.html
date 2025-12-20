@@ -32,6 +32,9 @@
                 <span>{{title}}</span>
             </div>
             <div class="modal-header-right">
+                <button mat-icon-button matTooltip="Print (Thermal)" (click)="onPrintThermal()" style="color: white; margin-right: 8px;">
+                    <mat-icon>print</mat-icon>
+                </button>
                 <span tabIndex="-1" aria-label="Close dialog" matTooltip="Close" (click)="onClose()" class="close-icon">
                     <mat-icon >close</mat-icon>
                 </span>
