@@ -341,8 +341,9 @@
                                                                     </mat-header-cell>
 
                                                                     <mat-cell *matCellDef="let contact" class="w-350">
-                                                                        <ng-container *ngIf="showDoctorDropdown(contact)">
-                                                                            <mat-form-field appearance="outline" 
+                                                                        <ng-container
+                                                                            *ngIf="showDoctorDropdown(contact)">
+                                                                            <mat-form-field appearance="outline"
                                                                                 fxFlex="200px" floatLabel="never">
                                                                                 <mat-select placeholder="Select Doctor"
                                                                                     [(ngModel)]="contact.DoctorId"
@@ -426,6 +427,15 @@
                                                                         [formGroup]="myForm" [type]="'number'"
                                                                         [readonly]="true">
                                                                     </airmid-textbox>
+                                                                </div>
+                                                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="100%"
+                                                                    *ngIf="myForm.get('totalDiscountPer')?.value > 0">
+                                                                    <airmid-dropdown label="Concession Reason"
+                                                                        formControlName="concessionReasonId"
+                                                                        [formGroup]="myForm"
+                                                                        [mode]="autocompleteModeConcession"
+                                                                        (selectionChange)="selectChangeConcession($event)">
+                                                                    </airmid-dropdown>
                                                                 </div>
                                                             </div>
                                                         </form>

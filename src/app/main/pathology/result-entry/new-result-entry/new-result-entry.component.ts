@@ -859,6 +859,7 @@ export class NewResultEntryComponent {
             suggestionNotes: "",
             admVisitDoctorId: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             refDoctorId: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            addedBy:[this.accountService.currentUserValue.userId, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
         });
     }
 

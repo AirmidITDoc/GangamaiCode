@@ -269,8 +269,14 @@ export class ReportDispatchComponent {
 
     console.log(formattedDate);
 
-    let OPIP = row.patientType === 'OP' ? "0" : "1";
-    // debugger
+    let OPIP;
+    // = row.patientType === 'OP' ? "0" : "1";
+    if (row.patientType === 'LAB')
+      OPIP = "4"
+    else if (row.patientType === 'OP')
+      OPIP = "0"
+    else if (row.patientType === 'IP')
+      OPIP = "1"
 
     console.log(this.opipType)
     if (this.opipType == '4')

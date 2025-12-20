@@ -73,7 +73,7 @@ export class RadiologyOrderListComponent implements OnInit {
             template: this.actionsCompleted
         },
         {
-            heading: "Verify", key: "isVerified", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template,
+            heading: "Verify", key: "isVerified", sort: true, align: 'left', emptySign: 'NA',width: 150, type: gridColumnTypes.template,
             template: this.actionsverify
         },
         //  { heading: "DOA", key: "visitTime", sort: true, align: 'left', emptySign: 'NA', width: 200},

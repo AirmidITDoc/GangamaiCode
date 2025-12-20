@@ -10,15 +10,10 @@ import { PrintserviceService } from 'app/main/shared/services/printservice.servi
 import { ToastrService } from 'ngx-toastr';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 import { AuthenticationService } from 'app/core/services/authentication.service';
-import { DiscountAfterFinalBillComponent } from 'app/main/ipd/ip-search-list/discount-after-final-bill/discount-after-final-bill.component';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
-import { SelectionModel } from '@angular/cdk/collections';
-import { MatCheckboxChange } from '@angular/material/checkbox';
 import { LabPatientList } from '../lab-patient-reg/lab-patient-reg.component';
 import { LabPatientRegService } from '../lab-patient-reg/lab-patient-reg.service';
 import { OpPaymentComponent } from 'app/main/opd/op-search-list/op-payment/op-payment.component';
+import { DiscountAfterFinalLabbillComponent } from '../lab-patient-reg/discount-after-final-labbill/discount-after-final-labbill.component';
 
 @Component({
   selector: 'app-lab-settlement',
@@ -299,6 +294,23 @@ export class LabSettlementComponent {
           }
         }
       }
+    });
+  }
+
+  getFinalDisc(contact) {
+    const dialogRef = this._matDialog.open(DiscountAfterFinalLabbillComponent,
+      {
+        maxWidth: "100%",
+        height: '55%',
+        width: '45%',
+        data: {
+          Obj: contact,
+          // PatientObj: this.registerObj
+        }
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed - Insert Action', result);
+      this.grid.bindGridData();
     });
   }
 

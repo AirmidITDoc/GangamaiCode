@@ -53,6 +53,7 @@ export class NewLabPatientRegComponent {
 
   isServiceIdSelected: boolean = false;
   isDoctor: boolean = false;
+  // Consessionres: boolean = false;
 
   autocompleteModepatienttype: string = "PatientType";
   autocompleteModegender: string = "Gender";
@@ -66,6 +67,7 @@ export class NewLabPatientRegComponent {
   autocompleteModesubcompany: string = "SubCompany";
   autocompleteModecamp: string = "CampMaster";
   autocompleteModedoctor: string = "ConDoctor";
+  autocompleteModeConcession: string = "Concession";
 
   dsLabRequest2 = new MatTableDataSource<LabRequest>();
   // dstable1 = new MatTableDataSource<LabRequest>();
@@ -238,6 +240,7 @@ export class NewLabPatientRegComponent {
       createdBy: this.accountService.currentUserValue.userId,
       LabPatRegId: 0,
       servicedoctorId: [0],
+      concessionReasonId: [0, this._FormvalidationserviceService.onlyNumberValidator()],
     })
   }
 
@@ -465,14 +468,6 @@ export class NewLabPatientRegComponent {
   private destroy$ = new Subject<void>();
 
   ////////////////////////// dd new method start ////////////////////
-  // getdocdetail(event: MatSelectChange): void {
-  //   const option = this.doctorOptions.find(opt => opt.value === event.value || opt.Value === event.value);
-  //   console.log(option)
-  //   this.servicedoctorname = option.text
-  //   this.serivcedoctorId = option.value
-  //   this.onAddCharges();
-  // }
-
   getdocdetail(event: MatSelectChange, row: any): void {
 
     const option = this.doctorOptions.find(
@@ -658,6 +653,11 @@ export class NewLabPatientRegComponent {
     }
   }
 
+  selectChangeConcession(event) {
+    this.ConcessionId = event.value
+    this.ConcessionReason = event.text
+  }
+
   onSaveEntry(row) {
     let doctorid = 0;
     const formValue = this.myForm.value
@@ -723,8 +723,6 @@ export class NewLabPatientRegComponent {
     const totalAmount = row.price * 1;
     const discountAmount = formValue.discountAmt;//(totalAmount * formValue.discountPer) / 100;
     const netAmount = totalAmount - discountAmount;
-
-    // if (totalAmount > 0) {
 
     const newRow = {
       ServiceId: row.serviceId,
@@ -955,6 +953,15 @@ export class NewLabPatientRegComponent {
     this.myForm.get('regTime').setValue(formattedTime);
     this.myForm.get('LabPatRegId').setValue(this.VlabPatRegId ?? 0);
     this.myForm.get('adharCardNo').setValue(Number(this.myForm.get('adharCardNo').value) ?? 0);
+
+    if (this.myForm.get('discountAmt').value > 0) {
+      if (!this.myForm.get('concessionReasonId').value) {
+        this.toastr.warning('Please select ConcessionReason.', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+      }
+    }
 
     console.log(this.myForm.getRawValue())
     let DateOfBirth1 = this.myForm.get('DateOfBirth')?.value;

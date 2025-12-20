@@ -118,7 +118,7 @@ export class SampleCollectionComponent implements OnInit {
 
         let opipType = row.lbl === 'OP' ? 0 : 1;
         if (row.lbl == 'Lab')
-            opipType = 2
+            opipType = 4
 
         this.gridConfig1 = {
             apiUrl: "PathlogySampleCollection/SampleCollectionTestList",
