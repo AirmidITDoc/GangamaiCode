@@ -157,6 +157,15 @@
                                     </mat-cell>
                                 </ng-container>
 
+                                <ng-container matColumnDef="SampleNo">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
+                                        Sample No | Collected By
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
+                                        <span> {{contact.sampleNo }}</span>
+                                    </mat-cell>
+                                </ng-container>
+
                                 <ng-container matColumnDef="loading">
                                     <mat-footer-cell *matFooterCellDef colspan="6">
 
