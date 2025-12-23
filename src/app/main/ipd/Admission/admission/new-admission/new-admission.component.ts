@@ -894,6 +894,7 @@ this.Is9_Digit_National_Id = id === "1";
   }
   getValidationMessages() {
              const maxLen = this.Is9_Digit_National_Id ? 9 : 12;
+              const minLen = this.Is9_Digit_National_Id ? 7 : 12;
     return {
       RegId: [],
       firstName: [
@@ -959,7 +960,7 @@ this.Is9_Digit_National_Id = id === "1";
        aadharCardNo: [
       { name: "pattern", Message: "Only numbers allowed" },
       { name: "required", Message: "Aadhaar / National ID is required" },
-      { name: "minLength", Message: `${maxLen} digits required.` },
+      { name: "minLength", Message: `Minimum ${minLen} digits required.` },
       { name: "maxLength", Message: `More than ${maxLen} digits not allowed.` }
     ],
       MaritalStatusId: [

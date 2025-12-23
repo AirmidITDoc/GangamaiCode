@@ -49,6 +49,7 @@ export class RegistrationService {
         const [id, val] = rawValue.includes(":") ? rawValue.split(":") : [null, null];
         this.Is9_Digit_National_Id = id === "1";
         const maxLen = this.Is9_Digit_National_Id ? 9 : 12;
+        const minLen = this.Is9_Digit_National_Id ? 7 : 12;
         return this._formBuilder.group({
             RegId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             // RegNo: ['', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
@@ -81,7 +82,7 @@ export class RegistrationService {
             //     // this._FormvalidationserviceService.onlyNumberValidator()
             // ]], // Validators.pattern("^[0-9]*$"),Validators.pattern(/^[xX]{8}\d{4}$/),
             aadharCardNo: ['', [
-                Validators.minLength(maxLen),
+                Validators.minLength(minLen),
                 Validators.maxLength(maxLen),
                 Validators.pattern("^[0-9]*$")
             ]],

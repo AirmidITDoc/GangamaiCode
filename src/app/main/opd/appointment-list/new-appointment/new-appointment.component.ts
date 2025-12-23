@@ -911,6 +911,7 @@ this.Is9_Digit_National_Id = id === "1";
 
     getValidationMessages() {
          const maxLen = this.Is9_Digit_National_Id ? 9 : 12;
+          const minLen = this.Is9_Digit_National_Id ? 7 : 12;
         return {
             RegId: [],
             firstName: [
@@ -977,7 +978,7 @@ this.Is9_Digit_National_Id = id === "1";
             aadharCardNo: [
       { name: "pattern", Message: "Only numbers allowed" },
       { name: "required", Message: "Aadhaar / National ID is required" },
-      { name: "minLength", Message: `${maxLen} digits required.` },
+      { name: "minLength", Message: `Minimum ${minLen} digits required.` },
       { name: "maxLength", Message: `More than ${maxLen} digits not allowed.` }
     ],
             MaritalStatusId: [
@@ -1077,6 +1078,7 @@ this.Is9_Digit_National_Id = id === "1";
 
     createPesonalForm() {
         const maxLen = this.Is9_Digit_National_Id ? 9 : 12;
+         const minLen = this.Is9_Digit_National_Id ? 7 : 12;
         return this._formBuilder.group({
             RegId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             // RegNo: ['', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
@@ -1123,7 +1125,7 @@ this.Is9_Digit_National_Id = id === "1";
             this._FormvalidationserviceService.onlyNumberValidator()
             ]],
              aadharCardNo: ['', [
-           Validators.minLength(maxLen),  //     Validators.minLength(12),
+           Validators.minLength(minLen),  //     Validators.minLength(12),
             Validators.maxLength(maxLen), //     Validators.maxLength(12),
                 Validators.pattern("^[0-9]*$"),
                 this._FormvalidationserviceService.onlyNumberValidator()

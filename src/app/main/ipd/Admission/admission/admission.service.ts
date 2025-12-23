@@ -68,6 +68,7 @@ this.Is9_Digit_National_Id = id === "1";
 
     createPesonalForm() {
          const maxLen = this.Is9_Digit_National_Id ? 9 : 12;
+         const minLen = this.Is9_Digit_National_Id ? 7 : 12;
         return this._formBuilder.group({
             RegId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             RegNo: ['', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
@@ -106,7 +107,7 @@ this.Is9_Digit_National_Id = id === "1";
             Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
             ]],
             aadharCardNo: ['', [
-                Validators.minLength(maxLen),
+                Validators.minLength(minLen),
                 Validators.maxLength(maxLen),
                 Validators.pattern("^[0-9]*$")
             ]],

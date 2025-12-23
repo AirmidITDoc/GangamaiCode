@@ -136,6 +136,7 @@
                                                             (keypress)="keyPressAlphanumeric($event)"
                                                             [value]="registerObj.aadharCardNo" [formGroup]="myForm"
                                                             [maxLength]="Is9_Digit_National_Id ? 9 : 12"
+                                                            [minLength]="Is9_Digit_National_Id ? 7 : 12" 
                                                             [validations]="getValidationMessages().AadharCardNo"></airmid-textbox>
                                                     </div>
 

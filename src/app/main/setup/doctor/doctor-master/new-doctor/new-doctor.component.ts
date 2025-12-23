@@ -437,6 +437,7 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
 
     createdDoctormasterForm(): FormGroup {
         const maxLen = this.Is9_Digit_National_Id ? 9 : 12;
+         const minLen = this.Is9_Digit_National_Id ? 7 : 12;
         return this._formBuilder.group({
             DoctorId: [0],
             PrefixID: ["", Validators.required],
@@ -558,7 +559,7 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
             //     ]
             // ], 
             AadharCardNo: ['', [
-                Validators.minLength(maxLen),
+                Validators.minLength(minLen),
                 Validators.maxLength(maxLen),
                 Validators.pattern("^[0-9]*$")
             ]],
@@ -911,6 +912,7 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
     }
     getValidationMessages() {
         const maxLen = this.Is9_Digit_National_Id ? 9 : 12;
+           const minLen = this.Is9_Digit_National_Id ? 7 : 12;
         return {
             PrefixID: [
                 { name: "required", Message: "Prefix Name is required" }
@@ -976,7 +978,7 @@ export class NewDoctorComponent implements OnInit, AfterViewChecked {
             AadharCardNo: [
                 { name: "pattern", Message: "Only numbers allowed" },
                 { name: "required", Message: "Aadhaar / National ID is required" },
-                { name: "minLength", Message: `${maxLen} digits required.` },
+                { name: "minLength", Message: `Minimum ${minLen} digits required.` },
                 { name: "maxLength", Message: `More than ${maxLen} digits not allowed.` }
             ],
             City: [
