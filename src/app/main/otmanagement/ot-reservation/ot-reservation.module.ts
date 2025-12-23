@@ -46,6 +46,7 @@ import { MatTimepickerModule } from 'mat-timepicker';
 import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { DragDropModule } from "@angular/cdk/drag-drop";
+import { OtOperativeNoteComponent } from './ot-operative-note/ot-operative-note.component';
 
 const routes: Routes = [
     {
@@ -55,7 +56,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    declarations: [OTReservationComponent, NewReservationComponent, OtrequestlistComponent, OtPopupComponent],
+    declarations: [OTReservationComponent, NewReservationComponent, OtrequestlistComponent, OtPopupComponent, OtOperativeNoteComponent],
     imports: [
         RouterModule.forChild(routes),
         CalendarModule.forRoot({

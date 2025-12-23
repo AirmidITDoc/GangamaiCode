@@ -381,7 +381,7 @@ export class NewLabPatientRegComponent {
     });
   }
   CreateAddchargeform(item: any): FormGroup {
-
+debugger
     return this._formbuilder.group({
       chargesId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       chargesDate: this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
@@ -738,8 +738,8 @@ export class NewLabPatientRegComponent {
       DoctorId: row.DoctorId || 0,
       DoctorName: row.DoctorName || '-',
       ChargesAddedName: this.accountService.currentUserValue.userName,
-      IsPathology: this.IsPathology,
-      IsRadiology: this.IsRadiology,
+      IsPathology: row.isPathology,
+      IsRadiology: row.isRadiology,
       IsPackage: 0,
       serviceCode: 0,//formValue.serviceName.companyCode, 
       isInclusionExclusion: 1,//formValue.serviceName.isInclusionOrExclusion
@@ -1053,7 +1053,7 @@ export class NewLabPatientRegComponent {
           'Please select Doctor for added service', 'Warning!');
         return;
       }
-
+debugger
       this.dstable1.data.forEach(item => {
         this.ChargeddetailsArray.push(this.CreateAddchargeform(item as ChargesList));
         this.BillDetailsArray.push(this.createBillDetails(item as ChargesList));
@@ -1061,7 +1061,7 @@ export class NewLabPatientRegComponent {
 
       console.log("form values", this.OpBillForm.value)
       // const [ThermalPrint, ThermalPrintValue] = this._ConfigService.configParams.ThermalPrint.split(":");
-      debugger
+
       if (this.OPFooterForm.get('paymentType').value == 'PayOption') {
         let PatientHeaderObj = {};
         PatientHeaderObj['Date'] = this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd') || '01/01/1900',

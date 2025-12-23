@@ -277,11 +277,11 @@ export class ResultEntryComponent implements OnInit {
 
         let OPIP;
         // = row.patientType === 'OP' ? "0" : "1";
-         if (row.patientType === 'LAB')
+        if (row.patientType === 'LAB')
             OPIP = "4"
-        else if(row.patientType === 'OP')
+        else if (row.patientType === 'OP')
             OPIP = "0"
-        else if(row.patientType === 'IP')
+        else if (row.patientType === 'IP')
             OPIP = "1"
 
 
@@ -1189,6 +1189,16 @@ export class ResultEntryComponent implements OnInit {
 
         return contact.isCompleted
             ? 'Verify Report'
+            : 'Test is Pending';
+    }
+
+    getCompleteTooltip(contact: any): string {
+        if (contact.isCompleted) {
+            return `Completed On : ${contact.reportTime}\nCompleted By : ${contact.reportCompletedUser}`;
+        }
+        // ${contact.reportDate} 
+        return contact.isCompleted
+            ? 'Completed Report'
             : 'Test is Pending';
     }
 

@@ -44,7 +44,6 @@ export class NewResultEntryComponent {
         'TestName',
         // 'SubTestName',
         'ParameterName',
-        'PrintParameterName',
         'ResultValue',
         'Flag',
         'NormalRange',
@@ -861,7 +860,7 @@ export class NewResultEntryComponent {
             suggestionNotes: "",
             admVisitDoctorId: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             refDoctorId: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-            addedBy:[this.accountService.currentUserValue.userId, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            addedBy: [this.accountService.currentUserValue.userId, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
         });
     }
 
@@ -869,7 +868,7 @@ export class NewResultEntryComponent {
 
         return this.formBuilder.group({
             pathReportDetId: [item.pathReportDetId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            pathReportId: [item.PathReportId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            pathReportId: [item.PathReportId || item.PathReportID, [this._FormvalidationserviceService.onlyNumberValidator()]],
             categoryId: [item.CategoryId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             testId: [item.TestId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             subTestId: [item.SubTestId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -879,6 +878,8 @@ export class NewResultEntryComponent {
             normalRange: [item.NormalRange || '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
             printOrder: [this.pathologyResultArray.length + 1, [this._FormvalidationserviceService.onlyNumberValidator()]],
             pisNumeric: [item.ParaIsNumeric || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            opdipdid: [item.OPD_IPD_ID, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            opdipdtype: [item.OPD_IPD_Type, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             categoryName: [item.CategoryName || '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
             testName: [item.TestName || '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
             subTestName: [item.SubTestName || '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
@@ -887,11 +888,9 @@ export class NewResultEntryComponent {
             patientName: [this.selectedAdvanceObj2.patientName || '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
             regNo: [this.selectedAdvanceObj2.regNo || '321', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
             sampleId: [item.SampleID || "", [this._FormvalidationserviceService.onlyNumberValidator()]],
-
             paraBoldFlag: [item.ParaBoldFlag || '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
             minValue: [parseFloat(item.MinValue), [this._FormvalidationserviceService.onlyNumberValidator()]],
             maxValue: [parseFloat(item.MaxValue), [this._FormvalidationserviceService.onlyNumberValidator()]],
-
             opipnumber: this.opipnumber || "Lab87",
             ageY: this.ageY,
             ageM: this.ageM,
@@ -899,7 +898,6 @@ export class NewResultEntryComponent {
             genderId: this.genderId,
             sampleNo: " ",
             suggestionNotes: this.vsuggation,
-
         });
     }
 
