@@ -319,7 +319,7 @@
                                                             <span class="status-box" [ngClass]="{
                                                                     'status-completed': contact.isCompleted,
                                                                     'status-pending': !contact.isCompleted
-                                                                }"
+                                                                }" [matTooltip]="getCompleteTooltip(contact)"
                                                                 matTooltip="{{ contact.isCompleted ? 'Report Completed' : 'Report Not Completed' }}">
                                                                 {{ contact.isCompleted ? 'Completed' : 'Pending' }}
                                                             </span>

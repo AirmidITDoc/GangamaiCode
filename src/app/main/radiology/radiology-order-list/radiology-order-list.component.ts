@@ -65,11 +65,11 @@ export class RadiologyOrderListComponent implements OnInit {
 
     allColumns = [
         {
-            heading: "-", key: "actionOnFirst", type: gridColumnTypes.template, align: "center", width: 50,
+            heading: "-", key: "actionOnFirst", type: gridColumnTypes.template, align: "center", width: 150,
             template: this.actionOnFirstTemplate
         },
         {
-            heading: "Status", key: "isCompleted", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template,
+            heading: "Status", key: "isCompleted", sort: true, align: 'left', emptySign: 'NA',width: 150, type: gridColumnTypes.template,
             template: this.actionsCompleted
         },
         {

@@ -245,7 +245,7 @@ export class NewReservationComponent implements OnInit {
       ottable: ["", [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],  // means location theater
       surgeryDate: ['', [Validators.required]],
       estimateTime: ['', [Validators.required]],
-      diagnosis: [[], [Validators.required]],
+      diagnosis: [[]],
       comments: [''],
       reservationType: ['1'],
       pacrequired: ['1'],
@@ -1287,6 +1287,10 @@ export class NewReservationComponent implements OnInit {
 
     if (!this.reservationForm.invalid) {
       debugger
+      if (this.dssurgeryDetailList.data.length === 0) {
+        this.toastr.warning('Data is not available in list ,please add surgery details in the list.', 'Warning');
+        return;
+      }
 
       this.reservationForm.get('otrequestId')?.setValue(this.vrequestId ?? 0);
       this.reservationForm.get('otreservationId')?.setValue(this.vreservationId ?? 0);
@@ -1297,10 +1301,6 @@ export class NewReservationComponent implements OnInit {
       this.reservationForm.get('infective')?.setValue(this.reservationForm.get('infective')?.value === '1' ? true : false);
 
       this.reqSurgeryArray.clear();
-      if (this.dssurgeryDetailList.data.length === 0) {
-        this.toastr.warning('Data is not available in list ,please add surgery details in the list.', 'Warning');
-        return;
-      }
       this.dssurgeryDetailList.data.forEach(item => {
         this.reqSurgeryArray.push(this.createReservationSurgeryArrayForm(item));
       });
@@ -1418,14 +1418,15 @@ export class NewReservationComponent implements OnInit {
           fieldName: "OTReservationId",
           fieldValue: String(Param.OTReservationId),
           opType: "Equals"
-        },
-        {
-          fieldName: "OPIPType",
-          fieldValue: String(Param.opiptype),
-          opType: "Equals"
         }
+        // ,
+        // {
+        //   fieldName: "OPIPType",
+        //   fieldValue: String(Param.opiptype),
+        //   opType: "Equals"
+        // }
       ],
-      mode: "OTReservationReport"
+      mode: "OTReservation"
     };
 
     console.log(param);

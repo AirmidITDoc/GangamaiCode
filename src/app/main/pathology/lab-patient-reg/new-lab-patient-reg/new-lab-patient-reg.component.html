@@ -51,12 +51,6 @@
 
                                                 <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
 
-                                                    <!-- <airmid-autocomplete label="Patient Name / Mobile No" [formGroup]="myForm"
-                                            formControlName="patientName" placeholderText="Patient Name / Mobile No"
-                                            fxFlex ApiUrl="LabPatientRegistration/search-patient-1?Keyword="
-                                            (selectionChange)="getSelectedObj($event)"
-                                            ValueField="regId"></airmid-autocomplete> -->
-
                                                     <airmid-textbox label="First Name" formControlName="firstName"
                                                         [value]="registerObj.firstName" [formGroup]="myForm"
                                                         [validations]="getValidationMessages().firstName"
@@ -75,7 +69,8 @@
                                                     <airmid-textbox label="Last Name" formControlName="lastName"
                                                         [formGroup]="myForm" [maxLength]="50"
                                                         [validations]="getValidationMessages().lastName"
-                                                        [value]="registerObj?.lastName">
+                                                        [value]="registerObj?.lastName"
+                                                        (valueChange)="handleInputChangeDebounced('lastName')">
                                                     </airmid-textbox>
                                                 </div>
 
@@ -100,7 +95,8 @@
                                                     <airmid-textbox label="MobileNo" formControlName="mobileNo"
                                                         [validations]="getValidationMessages().mobileNo"
                                                         (keypress)="keyPressAlphanumeric($event)" [formGroup]="myForm"
-                                                        [maxLength]="10" [value]="registerObj?.mobileNo">
+                                                        [maxLength]="10" [value]="registerObj?.mobileNo"
+                                                        (valueChange)="handleInputChangeDebounced('mobileNo')">
                                                     </airmid-textbox>
                                                 </div>
 

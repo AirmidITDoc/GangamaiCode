@@ -178,16 +178,16 @@ export class OTRequestComponent implements OnInit {
       searchFields: [
         {
           fieldName: "OTRequestId",
-          fieldValue: String(Param.otBookingId),
+          fieldValue: String(Param.otrequestId),
           opType: "Equals"
         },
         {
-          fieldName: "OP_IP_Type",
-          fieldValue: String(Param.opIpType),
+          fieldName: "OPIPType",
+          fieldValue: String(Param.opiptype),
           opType: "Equals"
         }
       ],
-      mode: "OTRequest"
+      mode: "OTRequestReport"
     };
 
     console.log(param);
