@@ -105,10 +105,12 @@
                                 </button>
                             </div>
 
-                            <div class="Ipd-patient-info" fxFlexFill fxLayout="row" fxLayoutAlign="space-between center">
+                            <div class="Ipd-patient-info" fxFlexFill fxLayout="row"
+                                fxLayoutAlign="space-between center">
                                 <div class="patient-sub">
-                                    <div class="patient-info-row patient-info-1-111" style="padding: 10px; margin-bottom: 15px;"
-                                        fxLayout="row" fxLayoutAlign="space-between">
+                                    <div class="patient-info-row patient-info-1-111"
+                                        style="padding: 10px; margin-bottom: 15px;" fxLayout="row"
+                                        fxLayoutAlign="space-between">
                                         <div fxLayout="column" fxLayoutGap="6px">
                                             <div class="patient-col">
                                                 <span class="patient-col-key">UHID No
@@ -167,7 +169,15 @@
                     <mat-card style="padding: 6px;">
                         <!-- appTableKeyboardNavigation -->
                         <mat-table matSort [dataSource]="dataSource" class="airmid-table h-400"
-                            [@animateStagger]="{value:'50'}">
+                            [@animateStagger]="{value:'50'}" appTableKeyboardNavigation>
+
+                            <ng-container matColumnDef="sequence">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Sr.No
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let element; let i = index" fxShow.gt-sm>
+                                    {{ i + 1 }}
+                                </mat-cell>
+                            </ng-container>
 
                             <ng-container matColumnDef="TestName" sticky>
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="border-right">
@@ -185,6 +195,16 @@
                                 </mat-header-cell>
                                 <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
                                     {{contact.ParameterName}}
+                                </mat-cell>
+                            </ng-container>
+
+                             <ng-container matColumnDef="PrintParameterName">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md
+                                    class="border-right">
+                                    PrintParameterName
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
+                                    {{contact.PrintParameterName}}
                                 </mat-cell>
                             </ng-container>
 

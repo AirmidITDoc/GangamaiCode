@@ -33,6 +33,7 @@ export class SamplecollectionPageComponent {
     'select',
     'ServiceName',
     'SampleCollectionTime',
+    'SampleNo'
   ];
 
   selectedAdvanceObj: AdvanceDetailObj;
@@ -98,7 +99,7 @@ export class SamplecollectionPageComponent {
   }
 
   getSampledetailList1(row) {
-    debugger
+    // debugger
     let OPIP: string;
     if (row.lbl == "IP" || row.patientType == "IP") {
       OPIP = "1";

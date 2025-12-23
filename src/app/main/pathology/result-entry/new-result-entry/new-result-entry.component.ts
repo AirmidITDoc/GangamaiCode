@@ -40,9 +40,11 @@ export class NewResultEntryComponent {
 
 
     displayedColumns: string[] = [
+        'sequence',
         'TestName',
         // 'SubTestName',
         'ParameterName',
+        'PrintParameterName',
         'ResultValue',
         'Flag',
         'NormalRange',
@@ -863,7 +865,7 @@ export class NewResultEntryComponent {
         });
     }
 
-    createResultdetailForm(item: any = {}): FormGroup {
+    createResultdetailForm(item: any = {}, index: number = 0): FormGroup {
 
         return this.formBuilder.group({
             pathReportDetId: [item.pathReportDetId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -874,9 +876,8 @@ export class NewResultEntryComponent {
             parameterId: [item.ParameterId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             resultValue: [item.ResultValue || '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
             unitId: [item.UnitId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-
             normalRange: [item.NormalRange || '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
-            printOrder: [item.PrintOrder || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            printOrder: [this.pathologyResultArray.length + 1, [this._FormvalidationserviceService.onlyNumberValidator()]],
             pisNumeric: [item.ParaIsNumeric || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             categoryName: [item.CategoryName || '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
             testName: [item.TestName || '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
