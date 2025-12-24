@@ -229,7 +229,7 @@ export class OTRequestComponent implements OnInit {
     }).then((result) => {
       if (result.isConfirmed) {
         let submitData = {
-          otbookingId: data.otBookingId,
+          otrequestId: data.otrequestId,
           reason: result.value,
           isCancelledBy: this._loggedService.currentUserValue.userId
         };

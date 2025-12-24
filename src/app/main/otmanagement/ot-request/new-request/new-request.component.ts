@@ -138,6 +138,7 @@ export class NewRequestComponent implements OnInit {
       this.vOPDNo = this.registerObj1.opdNo
       this.vIPDNo = this.registerObj1.opdNo
       this.vPatientName = this.registerObj1.patientName
+      this.opIpType = this.registerObj1.opiptype
 
       setTimeout(() => {
         this._OtRequestService.getotTableById(this.data.ottable).subscribe((response) => {
@@ -193,12 +194,12 @@ export class NewRequestComponent implements OnInit {
       otRequestTime: ['', [Validators.required]],
       opipid: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       opiptype: ["OP"],
-      bloodGroup: ['', [Validators.required]],
+      bloodGroup: ['0'],
       categoryType: ["", [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       ottable: ["", [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],  // means location theater
-      surgeryDate: ['', [Validators.required]],
+      surgeryDate: [new Date(), [Validators.required]],
       estimateTime: ['', [Validators.required]],//"10:00:00AM",
-      diagnosis: [[], [Validators.required]],
+      diagnosis: [[]],
       comments: [''],
       requestType: ['1'],
       pacrequired: ['1'],
@@ -447,11 +448,19 @@ export class NewRequestComponent implements OnInit {
       this.FetchList = records.data as OtReqInsert[];
       this.FetchList.forEach(element => {
 
+        const parseBackendDate = (dateStr: string) => {
+          if (!dateStr) return null;
+          const [datePart, timePart] = dateStr.split(' ');
+          const [dd, mm, yyyy] = datePart.split('-');
+
+          return new Date(`${yyyy}-${mm}-${dd}T${timePart}`);
+        };
+
         const from = new Date(element.surgeryFromTime);
-        const end = new Date(element.surgeryEndTime);
+        const end = parseBackendDate(element.surgeryEndTime);
 
         const surgeryFromTime = from.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
-        const surgeryEndTime = end.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
+        const surgeryEndTime = end ? end.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' }) : '';
 
         this.Chargelist.push(
           {
@@ -460,7 +469,7 @@ export class NewRequestComponent implements OnInit {
             surgeryId: element.surgeryId,//
             surgeryName: element.surgeryName,
             surgeryPart: element.surgeryPart,
-            surgeryDuration: element.surgeryDuration,
+            surgeryDuration: Number(element.surgeryDuration).toFixed(2),
             surgeryFromTime: surgeryFromTime,
             surgeryEndTime: surgeryEndTime,
             isPrimary: element.isPrimary,
@@ -997,12 +1006,12 @@ export class NewRequestComponent implements OnInit {
       searchFields: [
         {
           fieldName: "OTRequestId",
-          fieldValue: String(Param.otrequestId),
+          fieldValue: String(Param),
           opType: "Equals"
         },
         {
           fieldName: "OPIPType",
-          fieldValue: String(Param.opiptype),
+          fieldValue: String(this.opIpType),
           opType: "Equals"
         }
       ],
@@ -1064,7 +1073,7 @@ export class NewRequestComponent implements OnInit {
     this.requestForm.get('infective').setValue('1')
   }
 
-   calculateToTime() {
+  calculateToTime() {
     const duration = this.requestForm.get('surgeryDuration')?.value;
     const start = this.requestForm.get('surgeryFromTime')?.value;
 

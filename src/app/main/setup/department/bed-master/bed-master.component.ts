@@ -22,7 +22,7 @@ import { FormGroup } from "@angular/forms";
 export class BedMasterComponent implements OnInit {
     IsAdd: boolean = this.permissionService.getPermission(permissionCodes.BedMaster, permissionType.Add);
     bedName: any = ""
-    isActive: any = "2"
+    isActive: any = ""
     myFilterform: FormGroup
 
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
@@ -54,7 +54,7 @@ export class BedMasterComponent implements OnInit {
 
     allfilters = [
         { fieldName: "BedName", fieldValue: "%", opType: OperatorComparer.StartsWith },
-        { fieldName: "IsActive", fieldValue: "0", opType: OperatorComparer.Equals }
+        { fieldName: "IsActive", fieldValue: "", opType: OperatorComparer.Equals }
     ]
     gridConfig: gridModel = {
         permissionCode: permissionCodes.BedMaster,

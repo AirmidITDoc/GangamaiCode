@@ -64,11 +64,10 @@
 
         <ng-template #actionButtonTemplate let-element>
             <div fxLayout="row" fxLayoutAlign="center center">
-                <button mat-icon-button matTooltip="Edit" (click)="OnEdit(element)">
+                <button mat-icon-button matTooltip="Edit" (click)="OnEdit(element)" *ngIf="!element.isCancelled">
                     <mat-icon>edit</mat-icon>
-                </button>
-                <!-- *ngIf="element.isCancelled==false" -->
-                <button mat-icon-button matTooltip="Cancel" (click)="OnCancel(element)">
+                </button>                
+                <button mat-icon-button matTooltip="Cancel" (click)="OnCancel(element)" *ngIf="!element.isCancelled">
                     <mat-icon>cancel</mat-icon>
                 </button>
                 <button mat-icon-button matTooltip="Print" (click)="OnPrint(element)">

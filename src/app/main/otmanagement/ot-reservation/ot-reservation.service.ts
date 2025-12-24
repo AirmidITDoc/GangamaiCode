@@ -32,8 +32,9 @@ export class OtReservationService {
 
     CreateForm() {
         return this._formBuilder.group({
-            isAnesthesiaChecked: [false],
-            isMaterialChecked: [false]
+            otreservationId:[0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            isAnaesthetistPaid: [false],
+            isMaterialReplacement: [false]
         })
     }
 
@@ -93,9 +94,15 @@ export class OtReservationService {
     public getRtrvotReqdiagnosisList(employee) {
         return this._httpClient.PostData("OTRequest/OtRequestDiagnosisList", employee);
     }
-      public operativeSave(Param: any) {
+    public operativeSave(Param: any) {
         if (Param.operativeNotesId) {
             return this._httpClient.PutData("OTOperativeNotes/" + Param.operativeNotesId, Param);
         } else return this._httpClient.PostData("OTOperativeNotes/Insert", Param);
+    }
+
+    public statusUpdate(Param: any) {
+        // if (Param.otreservationId) {
+            return this._httpClient.PostData("OTReservation/UpdateOTReservationHeader/", Param);
+        // }
     }
 }

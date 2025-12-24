@@ -97,10 +97,46 @@
                 </div>
             </ng-template>
 
-            <ng-template #actionsTemplate1 let-element>
-                <div fxLayout="row" fxLayoutAlign="center center">
-                    <mat-icon *ngIf="element.otRequestId > 0 ; else noRequest" matTooltip="Request Accepted"
-                        class="pill blue-600 s-16 ">circle</mat-icon>
+            <ng-template #RequestColorCode let-element>
+                <div fxLayout="row" fxLayoutAlign="center center" class="status-box">
+                    <span [ngClass]="{
+                        'status-completed':element.otRequestId > 0 ,
+                        'status-pending': element.otRequestId === 0
+                        }">
+                        {{ element.otRequestId ? 'AgainRequest' : 'Normal' }}
+                    </span>
+                </div>
+            </ng-template>
+
+            <ng-template #isPaidColorCode let-element>
+                <div fxLayout="row" fxLayoutAlign="center center" class="status-box">
+                    <span [ngClass]="{
+                        'status-completed':element.isAnaesthetistPaid === true ,
+                        'status-pending': element.isAnaesthetistPaid !== true
+                        }"
+                         [matTooltip]="
+                        element.isAnaesthetistPaid === true
+                            ? 'Anaesthetist payment completed'
+                            : 'Anaesthetist payment pending'
+                    " matTooltipPosition="above">
+                        {{ element.isAnaesthetistPaid ? 'Yes' : 'No' }}
+                    </span>
+                </div>
+            </ng-template>
+
+            <ng-template #isMaterialColorCode let-element>
+                <div fxLayout="row" fxLayoutAlign="center center" class="status-box">
+                    <span [ngClass]="{
+                        'status-completed':element.isMaterialReplacement === true ,
+                        'status-pending': element.isMaterialReplacement !== true
+                        }"
+                        [matTooltip]="
+                        element.isMaterialReplacement === true
+                            ? 'MaterialReplacement completed'
+                            : 'MaterialReplacement pending'
+                    " matTooltipPosition="above">
+                        {{ element.isMaterialReplacement ? 'Yes' : 'No' }}
+                    </span>
                 </div>
             </ng-template>
 
@@ -375,11 +411,11 @@
             <mat-card style="margin-top: 10px;">
                 <mat-card-content fxLayout="column" fxLayoutGap="12px">
 
-                    <mat-checkbox formControlName="anesthesiaPaid">
+                    <mat-checkbox formControlName="isAnaesthetistPaid">
                         Anesthesia Doctor Paid
                     </mat-checkbox>
 
-                    <mat-checkbox formControlName="materialReplacement">
+                    <mat-checkbox formControlName="isMaterialReplacement">
                         Material Replacement
                     </mat-checkbox>
 
