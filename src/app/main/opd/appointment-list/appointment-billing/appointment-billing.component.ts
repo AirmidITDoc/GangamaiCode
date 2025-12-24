@@ -72,7 +72,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
     autocompleteModedeptdoc: string = "ConDoctor";
     autocompleteModeService: string = "Service";
     autocompleteModeConcession: string = "Concession";
-    autocompleteModeGroup: string = "GroupName";
+    autocompleteModeGroup: string = "GroupName"; 
 
     public dataSource = new MatTableDataSource<any>();
     public subscription: Array<Subscription> = [];
@@ -397,7 +397,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
             concessionReasonId: [0, this._FormvalidationserviceService.onlyNumberValidator()],
             netPayableAmt: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
             paymentType: ['CashPay'],
-            mpesaMobile: [''],
+            mpesaMobile: ['',[Validators.minLength(10), Validators.maxLength(10)]],
             UpiNo:[0, [Validators.minLength(4), Validators.maxLength(12), this._FormvalidationserviceService.onlyNumberValidator()]]
         })
     }
@@ -1423,9 +1423,88 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
     viewgetOPBillReportPdf(element) {
         this.commonService.Onprint("BillNo", element, "OpBillReceipt");
     }
-    viewgetOPBillThermalReportPdf(element) {
+    viewgetOPBillThermalReportPdf1(element) {
         this.commonService.Onprint("BillNo", element, "OpBillReceiptT");
     }
+    TotalBillAmount:any=0;
+     ConcessionAmt:any=0;
+      NetPayableAmt:any=0;
+       PaidAmount:any=0;
+       BalanceAmt:any=0;
+        RefundInfo:any;
+       viewgetOPBillThermalReportPdf(BillNo) {
+        debugger 
+                let param = {
+                    "searchFields": [
+                        {
+                            "fieldName": 'BillNo',
+                            "fieldValue": String(BillNo),
+                            "opType": "13"
+                        }
+                    ],
+                    "mode": 'OPBillPrint'
+                } 
+                this._AppointmentlistService.getReportView(param).subscribe(res => { 
+                    console.log(res)
+                     this.reportPrintObjList = res as ChargesList[];
+                     console.log(this.reportPrintObjList[0])
+                     console.log(this.reportPrintObjList[0]?.TotalBillAmount)
+                     this.reportPrintObj = res[0] as ChargesList;
+                     if(this.reportPrintObjList.length){ 
+                     this.TotalBillAmount =  this.reportPrintObjList.reduce((sum, { TotalBillAmount }) => sum += +(TotalBillAmount || 0), 0);
+                     this.ConcessionAmt =  this.reportPrintObjList.reduce((sum, { ConcessionAmount }) => sum += +(ConcessionAmount || 0), 0);
+                      this.NetPayableAmt =  this.reportPrintObjList.reduce((sum, { NetPayableAmt }) => sum += +(NetPayableAmt || 0), 0);
+                     this.PaidAmount =  this.reportPrintObjList.reduce((sum, { PaidAmount }) => sum += +(PaidAmount || 0), 0);
+                    //   this.BalanceAmt =  this.reportPrintObjList.reduce((sum, { BalanceAmt }) => sum += +(BalanceAmt || 0), 0);
+                       this.RefundInfo =  this.reportPrintObjList.reduce((sum, { RefundAmt }) => sum += +(RefundAmt || 0), 0);
+                     }
+
+                       setTimeout(() => {
+                    this.print3();
+        }, 5000);
+                }); 
+        }
+  reportPrintObj: ChargesList;
+  subscriptionArr: Subscription[] = [];
+  printTemplate: any;
+  reportPrintObjList: ChargesList[] = [];
+ @ViewChild('billTemplate2') billTemplate2: ElementRef;
+    print3() {
+    let popupWin, printContents;
+
+    popupWin = window.open('', '_blank', 'top=0,left=0,height=800px !important,width=auto,width=2200px !important');
+
+    popupWin.document.write(` <html>
+  <head><style type="text/css">`);
+    popupWin.document.write(`
+    </style>
+    <style type="text/css" media="print">
+  @page { size: portrait; }
+</style>
+        <title></title>
+    </head>
+  `);
+    popupWin.document.write(`<body onload="window.print();window.close()" style="font-family: system-ui, sans-serif;margin:0;font-size: 16px;">${this.billTemplate2.nativeElement.innerHTML}</body>
+  <script>
+    var css = '@page { size: portrait; }',
+    head = document.head || document.getElementsByTagName('head')[0],
+    style = document.createElement('style');
+    style.type = 'text/css';
+    style.media = 'print';
+
+    if (style.styleSheet){
+        style.styleSheet.cssText = css;
+    } else {
+        style.appendChild(document.createTextNode(css));
+    }
+    head.appendChild(style);
+  </script>
+  </html>`);
+    // popupWin.document.write(`<body style="margin:0;font-size: 16px;">${this.printTemplate}</body>
+    // </html>`);
+
+    popupWin.document.close();
+  }
     selectChangeConcession(event) {
         this.ConcessionId = event.value
         this.ConcessionReason = event.text
@@ -1746,6 +1825,20 @@ export class ChargesList {
     OpdIpdId: any;
     serviceName: any;
 
+    RegNo: any;
+    PatientName: any;
+    BillNo: any;
+    TotalBillAmount: any;
+    ConcessionAmount: any; 
+    NetPayableAmt: any;
+    ConsultantDocName: any;
+    AddedByName: any;
+    BillTime: any;
+    DiscComments: any;
+    PaymentMode: any;
+    TokenNo: any;
+    RefundAmt: any;
+    PaidAmount: any;
     doctorName: any;
     doctorId: any;
     isPathology: any;
@@ -1794,6 +1887,20 @@ export class ChargesList {
         this.isPathology = ChargesList.isPathology || 0;
         this.isRadiology = ChargesList.isRadiology || 0;
         this.userName = ChargesList.userName || '';
+
+        this.RegNo = ChargesList.RegNo || 0;
+        this.BillNo = ChargesList.BillNo || 0;
+        this.PatientName = ChargesList.PatientName || '';
+        this.TotalBillAmount = ChargesList.TotalBillAmount || 0;
+        this.ConcessionAmount = ChargesList.ConcessionAmount || 0;
+        this.NetPayableAmt = ChargesList.NetPayableAmt || 0;
+        this.ConsultantDocName = ChargesList.ConsultantDocName || '';
+        this.AddedByName = ChargesList.AddedByName || '';
+        this.DiscComments = ChargesList.DiscComments || '';
+               this.PaymentMode = ChargesList.PaymentMode || 0;
+        this.TokenNo = ChargesList.TokenNo || 0;
+        this.RefundAmt = ChargesList.RefundAmt || 0;
+ 
     }
 }
 export class PaymentInsert {

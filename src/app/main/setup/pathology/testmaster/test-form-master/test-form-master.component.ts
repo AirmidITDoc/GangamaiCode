@@ -228,7 +228,7 @@ export class TestFormMasterComponent implements OnInit {
         var m_data =
         {
             "first": 0,
-            "rows": 10,
+            "rows": 9999,
             "sortField": "TestId",
             "sortOrder": 0,
             "filters": [
@@ -266,7 +266,7 @@ export class TestFormMasterComponent implements OnInit {
         var m_data =
         {
             "first": 0,
-            "rows": 10,
+            "rows": 999,
             "sortField": "TestId",
             "sortOrder": 0,
             "filters": [
@@ -298,7 +298,7 @@ export class TestFormMasterComponent implements OnInit {
     fetchTemplate(obj) {
         var m_data = {
             "first": 0,
-            "rows": 10,
+            "rows": 999,
             "sortField": "TemplateId",
             "sortOrder": 0,
             "filters": [
@@ -417,7 +417,7 @@ export class TestFormMasterComponent implements OnInit {
         let parameter = this.testForm.get("ParameterNameSearch").value + "%" || '%';
         var param = {
             "first": 0,
-            "rows": 10,
+            "rows": 999,
             "sortField": "ParameterId",
             "sortOrder": 0,
             "filters": [
@@ -428,7 +428,7 @@ export class TestFormMasterComponent implements OnInit {
                 },
                 {
                     "fieldName": "UnitId",
-                    "fieldValue": String(this.vUnitId),
+                    "fieldValue": String(0),//this.vUnitId),
                     "opType": "Equals"
                 },
                 {
@@ -453,7 +453,7 @@ export class TestFormMasterComponent implements OnInit {
         let parameter = this.testForm.get("ParameterNameSearch").value + "%" || '%';
         var param = {
             "first": 0,
-            "rows": 10,
+            "rows": 999,
             "sortField": "TestId",
             "sortOrder": 0,
             "filters": [
@@ -628,7 +628,7 @@ export class TestFormMasterComponent implements OnInit {
     addsubtestdata(row) {
         const param = {
             "first": 0,
-            "rows": 10,
+            "rows": 999,
             "sortField": "TestId",
             "sortOrder": 0,
             "filters": [

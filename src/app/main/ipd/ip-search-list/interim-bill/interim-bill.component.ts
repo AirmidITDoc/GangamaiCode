@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, Inject, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormArray, FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
@@ -11,10 +11,11 @@ import { FormvalidationserviceService } from 'app/main/shared/services/formvalid
 import { PrintPreviewService } from 'app/main/shared/services/print-preview.service';
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 import { WhatsAppEmailService } from 'app/main/shared/services/whats-app-email.service';
-import { ToastrService } from 'ngx-toastr'; 
+import { ToastrService } from 'ngx-toastr';
 import { ChargesList } from '../ip-search-list.component';
-import { IPSearchListService } from '../ip-search-list.service'; 
+import { IPSearchListService } from '../ip-search-list.service';
 import { HospitalConfigService } from 'app/core/services/hospital-config.service';
+import { interval, Subscription, switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-interim-bill',
@@ -24,7 +25,7 @@ import { HospitalConfigService } from 'app/core/services/hospital-config.service
   animations: fuseAnimations
 })
 export class InterimBillComponent implements OnInit {
-  displayedColumns = [ 
+  displayedColumns = [
     'ChargesDate',
     'ServiceName',
     'Price',
@@ -34,12 +35,12 @@ export class InterimBillComponent implements OnInit {
     'DiscAmt',
     'NetAmount',
     'ChargeDoctorName',
-    'ClassName', 
-  ]; 
- 
- 
+    'ClassName',
+  ];
+
+
   vUPINO: any;
-  FinalNetAmt:any=0;
+  FinalNetAmt: any = 0;
   selectedAdvanceObj: any;
   ConShow: boolean = false;
   DiscountFlag: boolean = false;
@@ -47,65 +48,71 @@ export class InterimBillComponent implements OnInit {
   interimArray: any = [];
   isLoading: String = '';
   InterimFooterForm: FormGroup;
-  IPInterimBillForm:FormGroup;
-  concessionId:any = 0; 
+  IPInterimBillForm: FormGroup;
+  concessionId: any = 0;
   currentDate = new Date();
   autocompleteModeConcession: string = "Concession";
   autocompleteModeCashCounter: string = "CashCounter";
 
-  dataSource = new MatTableDataSource<ChargesList>(); 
+  dataSource = new MatTableDataSource<ChargesList>();
+  public dsMpesaTransactionlist = new MatTableDataSource<ChargesList>();
+
+  private _AppointmentlistService: any;
 
   constructor(
-    public _IpSearchListService: IPSearchListService, 
+    public _IpSearchListService: IPSearchListService,
     public _matDialog: MatDialog,
     public datePipe: DatePipe,
-    public toastr: ToastrService, 
+    public toastr: ToastrService,
     private accountService: AuthenticationService,
     public dialogRef: MatDialogRef<InterimBillComponent>,
     private formBuilder: UntypedFormBuilder,
     private commonService: PrintserviceService,
-    public _WhatsAppEmailService:WhatsAppEmailService,
-    public _ConfigService : ConfigService,
-    private hospitalconfigservice:HospitalConfigService,
-    public _FormvalidationserviceService:FormvalidationserviceService,
-    @Inject(MAT_DIALOG_DATA) public data: any) {} 
+    public _WhatsAppEmailService: WhatsAppEmailService,
+    public _ConfigService: ConfigService,
+    private hospitalconfigservice: HospitalConfigService,
+    public _FormvalidationserviceService: FormvalidationserviceService,
+    public toastrService: ToastrService,
+
+    @Inject(MAT_DIALOG_DATA) public data: any) { }
 
   ngOnInit(): void {
-    this.dataSource.data = []; 
-     this.InterimFooterForm = this.CreateFooterForm();
-     this.IPInterimBillForm = this.createInterimbillForm();
-     this.InterimFooterForm.markAllAsTouched();  
-     this.IPInterimBillForm.markAllAsTouched();  
+    this.dataSource.data = [];
+    this.InterimFooterForm = this.CreateFooterForm();
+    this.IPInterimBillForm = this.createInterimbillForm();
+    this.InterimFooterForm.markAllAsTouched();
+    this.IPInterimBillForm.markAllAsTouched();
     if (this.data) {
       console.log(this.data);
-      this.dataSource.data  = this.data.Obj; 
-      this.interimArray = this.dataSource.data 
-      this.selectedAdvanceObj = this.data.PatientHeaderObj;  
-      this.getNetAmtSum(); 
+      this.dataSource.data = this.data.Obj;
+      this.interimArray = this.dataSource.data
+      this.selectedAdvanceObj = this.data.PatientHeaderObj;
+      this.getNetAmtSum();
       this.IPInterimBillForm = this.createInterimbillForm();
-    }  
-  } 
+    }
+  }
   CreateFooterForm(): FormGroup {
-    return this.formBuilder.group({  
-        CashCounterID:[this.hospitalconfigservice.HospitalconfigParams.IPD_Billing_CounterId,[this._FormvalidationserviceService.notEmptyOrZeroValidator(),Validators.min(1)]], 
-        TotalAmt: [0,[this._FormvalidationserviceService.notEmptyOrZeroValidator(),this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-        discPer: [0, [Validators.min(0), Validators.max(100),this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-        concessionAmt: [0, [Validators.min(0),this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-        ConcessionId: [0,this._FormvalidationserviceService.onlyNumberValidator()], 
-        NetpayAmount: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(),this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-        paymode: ['cashpay'], 
-        UPINO: [''], 
-        Remark: ['',[this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]], 
+    return this.formBuilder.group({
+      CashCounterID: [this.hospitalconfigservice.HospitalconfigParams.IPD_Billing_CounterId, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), Validators.min(1)]],
+      TotalAmt: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      discPer: [0, [Validators.min(0), Validators.max(100), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      concessionAmt: [0, [Validators.min(0), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      ConcessionId: [0, this._FormvalidationserviceService.onlyNumberValidator()],
+      NetpayAmount: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      paymode: ['cashpay'],
+      UPINO: [''],
+      Remark: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+      mpesaMobile: ['',[Validators.minLength(10), Validators.maxLength(10)]],
     });
-  }  
+  }
   createInterimbillForm(): FormGroup {
     return this.formBuilder.group({
-        //Addcharges
+      //Addcharges
       addChargeM: this.formBuilder.group({
-        chargesID:[0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        chargesID: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       }),
       //ipInterim bill header  
-      ipBillling: this.formBuilder.group({    
+      ipBillling: this.formBuilder.group({
         billNo: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         opdipdid: [this.selectedAdvanceObj?.admissionId, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
         regNo: [this.selectedAdvanceObj?.regNo, [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -121,7 +128,7 @@ export class InterimBillComponent implements OnInit {
         patientType: [this.selectedAdvanceObj?.companyId ? true : false],
         companyName: [this.selectedAdvanceObj?.companyName || '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
         companyAmt: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-        patientAmt: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],  
+        patientAmt: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
         totalAmt: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
         concessionAmt: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
         netPayableAmt: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
@@ -147,7 +154,7 @@ export class InterimBillComponent implements OnInit {
         compDiscAmt: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         discComments: [0, [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],//need to set concession reason
         cashCounterId: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],//need to set cashCounterId
-      }),  
+      }),
       // ✅ Fixed: should be FormArray
       billingDetails: this.formBuilder.array([]),
       //Payment form
@@ -180,24 +187,24 @@ export class InterimBillComponent implements OnInit {
         neftdate: ['1999-01-01'],
         payTmamount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
         payTmtranNo: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
-        payTmdate: ['1999-01-01'], 
+        payTmdate: ['1999-01-01'],
         tdsamount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-        unitId:[this.accountService.currentUserValue.user.unitId],
+        unitId: [this.accountService.currentUserValue.user.unitId],
         wfamount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
       }),
-            // ✅ Fixed: should be FormArray
-       tPayments: this.formBuilder.array([])
+      // ✅ Fixed: should be FormArray
+      tPayments: this.formBuilder.array([])
     });
-  }   
-    createBillDetails(item: any): FormGroup {
-      return this.formBuilder.group({
-        billNo: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        chargesId: [item?.chargesId, [, this._FormvalidationserviceService.onlyNumberValidator(),this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      });
-    }  
-      CreateModePaymentform(item: any): FormGroup {
+  }
+  createBillDetails(item: any): FormGroup {
     return this.formBuilder.group({
-      paymentId: [ 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      billNo: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      chargesId: [item?.chargesId, [, this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+    });
+  }
+  CreateModePaymentform(item: any): FormGroup {
+    return this.formBuilder.group({
+      paymentId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       unitId: [this.accountService.currentUserValue.user.unitId],
       billNo: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       opdipdtype: [1, [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -207,7 +214,7 @@ export class InterimBillComponent implements OnInit {
       tranNo: [item?.tranNo ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
       bankName: [item?.bankName ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
       validationDate: [item?.validationDate ?? ''],
-      advanceUsedAmount: [ 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      advanceUsedAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
       comments: [item?.comments ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
       payMode: [item?.payMode ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
       onlineTranNo: [item?.onlineTranNo ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
@@ -223,71 +230,71 @@ export class InterimBillComponent implements OnInit {
       transactionLabel: ['IP_INTERIM_BILL', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
     });
   }
-    // Getters 
-    get BillDetailsArray(): FormArray { 
-      return this.IPInterimBillForm.get('billingDetails') as FormArray;
-    } 
-        get ModeOfPaymentsArray(): FormArray {
-        return this.IPInterimBillForm.get('tPayments') as FormArray;
-    }  
-  getNetAmtSum() { 
-    this.FinalNetAmt =  this.interimArray.reduce((sum, { netAmount }) => sum += +(netAmount || 0), 0); 
-    let totalAmt =  this.interimArray.reduce((sum, { totalAmt }) => sum += +(totalAmt || 0), 0);
-    let discountAmount =  this.interimArray.reduce((sum, { concessionAmount }) => sum += +(concessionAmount || 0), 0);
-    if(discountAmount > 0){
+  // Getters 
+  get BillDetailsArray(): FormArray {
+    return this.IPInterimBillForm.get('billingDetails') as FormArray;
+  }
+  get ModeOfPaymentsArray(): FormArray {
+    return this.IPInterimBillForm.get('tPayments') as FormArray;
+  }
+  getNetAmtSum() {
+    this.FinalNetAmt = this.interimArray.reduce((sum, { netAmount }) => sum += +(netAmount || 0), 0);
+    let totalAmt = this.interimArray.reduce((sum, { totalAmt }) => sum += +(totalAmt || 0), 0);
+    let discountAmount = this.interimArray.reduce((sum, { concessionAmount }) => sum += +(concessionAmount || 0), 0);
+    if (discountAmount > 0) {
       this.ConShow = true;
       this.DiscountFlag = true;
-    } 
-    else{
+    }
+    else {
       this.ConShow = false;
       this.DiscountFlag = false;
-    } 
+    }
     this.InterimFooterForm.patchValue({
       TotalAmt: totalAmt,
-      NetpayAmount:   this.FinalNetAmt,
-      concessionAmt:discountAmount
+      NetpayAmount: this.FinalNetAmt,
+      concessionAmt: discountAmount
     });
-  }  
+  }
   //Calculate Disc Amt
-  calculateDiscPer() {  
+  calculateDiscPer() {
     const perControl = this.InterimFooterForm.get("discPer");
-    let  finalNetAmt = this.FinalNetAmt 
-    if (!perControl.valid || perControl.value == 0 || perControl.value == '') {  
-        this.ConShow = false 
-        this.InterimFooterForm.patchValue({ 
-          discPer:'',
-          concessionAmt:'',
-          NetpayAmount: Math.round(finalNetAmt),
-        }, { emitEvent: false }); 
-      this.toastr.error("Enter Discount % between 0-100");  
-      return; 
-    } 
+    let finalNetAmt = this.FinalNetAmt
+    if (!perControl.valid || perControl.value == 0 || perControl.value == '') {
+      this.ConShow = false
+      this.InterimFooterForm.patchValue({
+        discPer: '',
+        concessionAmt: '',
+        NetpayAmount: Math.round(finalNetAmt),
+      }, { emitEvent: false });
+      this.toastr.error("Enter Discount % between 0-100");
+      return;
+    }
     let percentage = perControl.value;
-    let totalAmount = this.InterimFooterForm.get("TotalAmt").value; 
+    let totalAmount = this.InterimFooterForm.get("TotalAmt").value;
     let discountAmount = parseFloat((totalAmount * percentage / 100).toFixed(2));
-   finalNetAmt = parseFloat((totalAmount - discountAmount).toFixed(2));
+    finalNetAmt = parseFloat((totalAmount - discountAmount).toFixed(2));
     this.ConShow = true;
 
-    this.InterimFooterForm.patchValue({ 
+    this.InterimFooterForm.patchValue({
       NetpayAmount: finalNetAmt,
-      concessionAmt:discountAmount
-    },{ emitEvent: false }); 
-  } 
+      concessionAmt: discountAmount
+    }, { emitEvent: false });
+  }
   //Calculate Disc Per
-  calculateDiscamt() {   
+  calculateDiscamt() {
     let discountAmount = this.InterimFooterForm.get("concessionAmt").value;
     let totalAmount = this.InterimFooterForm.get("TotalAmt").value;
-    let  finalNetAmt = this.FinalNetAmt 
-    if (discountAmount < 0 || discountAmount == 0 || discountAmount == '' || parseFloat(discountAmount) > parseFloat(totalAmount)) { 
+    let finalNetAmt = this.FinalNetAmt
+    if (discountAmount < 0 || discountAmount == 0 || discountAmount == '' || parseFloat(discountAmount) > parseFloat(totalAmount)) {
       this.ConShow = false;
-      this.InterimFooterForm.patchValue({ 
-        discPer:'',
-        concessionAmt:'',
+      this.InterimFooterForm.patchValue({
+        discPer: '',
+        concessionAmt: '',
         NetpayAmount: Math.round(finalNetAmt),
-      }, { emitEvent: false }); 
+      }, { emitEvent: false });
       this.toastr.warning("Discount must be between 0 and the total amount.");
       return;
-    }  
+    }
 
     let percent = Number(totalAmount ? ((discountAmount / totalAmount) * 100).toFixed(2) : "0.00");
     let netAmount = Number((totalAmount - discountAmount).toFixed(2));
@@ -296,24 +303,24 @@ export class InterimBillComponent implements OnInit {
       discPer: percent,
       NetpayAmount: netAmount
     }, { emitEvent: false }); // Prevent infinite loop 
-  } 
-  onChangeReg(event) { 
+  }
+  onChangeReg(event) {
     if (event.value == 'onlinepay') {
-      this.onlineflag = true; 
+      this.onlineflag = true;
       this.InterimFooterForm.get('UPINO').setValidators([Validators.required]);
-      this.InterimFooterForm.get('UPINO').enable(); 
+      this.InterimFooterForm.get('UPINO').enable();
     } else {
       this.onlineflag = false;
       this.InterimFooterForm.get('UPINO').reset();
       this.InterimFooterForm.get('UPINO').clearValidators();
       this.InterimFooterForm.get('UPINO').updateValueAndValidity();
     }
-  }  
+  }
   onSave() {
     const datePipe = new DatePipe('en-US');
     const formattedTime = datePipe.transform(new Date(), 'shortTime');
     const formattedDate = datePipe.transform(new Date(), 'yyyy-MM-dd');
-    const FormattedDateTime = formattedDate + ' ' + formattedTime 
+    const FormattedDateTime = formattedDate + ' ' + formattedTime
 
     debugger
     const formValue = this.InterimFooterForm.value
@@ -324,7 +331,7 @@ export class InterimBillComponent implements OnInit {
         });
         return;
       }
-    } 
+    }
     this.IPInterimBillForm.get('ipBillling.totalAmt')?.setValue(formValue?.TotalAmt ?? 0)
     this.IPInterimBillForm.get('ipBillling.concessionAmt')?.setValue(formValue?.concessionAmt || 0)
     this.IPInterimBillForm.get('ipBillling.netPayableAmt')?.setValue(formValue?.NetpayAmount ?? 0)
@@ -341,7 +348,7 @@ export class InterimBillComponent implements OnInit {
       this.dataSource.data.forEach(item => {
         this.BillDetailsArray.push(this.createBillDetails(item as ChargesList));
       });
-      const [InterimA5_Print, InterimA5_Value] = this._ConfigService.configParams.InterimBillA5Print.split(":");  
+      const [InterimA5_Print, InterimA5_Value] = this._ConfigService.configParams.InterimBillA5Print.split(":");
       if (this.InterimFooterForm.get('paymode').value == 'cashpay') {
         this.IPInterimBillForm.get('payments.cashPayAmount')?.setValue(this.InterimFooterForm.get('NetpayAmount')?.value)
         this.IPInterimBillForm.get('payments.paymentDate').setValue(formattedDate)
@@ -371,12 +378,12 @@ export class InterimBillComponent implements OnInit {
 
         console.log("form values", this.IPInterimBillForm.value)
         this._IpSearchListService.InsertInterim(this.IPInterimBillForm.value).subscribe(response => {
-            if (InterimA5_Print != 1) {
-                        this.viewgetInterimBillReportPdf(response);
-                    } else {
-                          this.viewgetInterim_A5ReportPdf(response)
-                    } 
-       
+          if (InterimA5_Print != 1) {
+            this.viewgetInterimBillReportPdf(response);
+          } else {
+            this.viewgetInterim_A5ReportPdf(response)
+          }
+
           this.getWhatsappshareIPInterimBill(response, this.selectedAdvanceObj.mobileNo);
           this.onClose()
         });
@@ -434,14 +441,14 @@ export class InterimBillComponent implements OnInit {
         PatientHeaderObj['DepartmentName'] = this.selectedAdvanceObj?.departmentName || '';
         PatientHeaderObj['OPD_IPD_Id'] = this.selectedAdvanceObj?.admissionId || '';
         PatientHeaderObj['Age'] = this.selectedAdvanceObj?.ageYear || '';
-        PatientHeaderObj['NetPayAmount'] = Math.round(this.InterimFooterForm.get('NetpayAmount')?.value)  || 0,
-        PatientHeaderObj['TransactionLabel'] = 'IP_INTERIM_BILL', 
-        PatientHeaderObj['CashCounterId'] =this.InterimFooterForm.get('CashCounterID').value || 0
+        PatientHeaderObj['NetPayAmount'] = Math.round(this.InterimFooterForm.get('NetpayAmount')?.value) || 0,
+          PatientHeaderObj['TransactionLabel'] = 'IP_INTERIM_BILL',
+          PatientHeaderObj['CashCounterId'] = this.InterimFooterForm.get('CashCounterID').value || 0
         const dialogRef = this._matDialog.open(OpPaymentComponent,
           {
-           maxWidth: "80vw",
-           height: '750px',
-           width: '80%',
+            maxWidth: "80vw",
+            height: '750px',
+            width: '80%',
             data: {
               vPatientHeaderObj: PatientHeaderObj,
               FromName: "IP-IntrimBIll",
@@ -453,8 +460,8 @@ export class InterimBillComponent implements OnInit {
           this.IPInterimBillForm.get('payments').setValue(result.submitDataPay.ipPaymentInsert)
           this.ModeOfPaymentsArray.clear();
           result.submitDataPay.ipModePaymentInsert.forEach(item => {
-          this.ModeOfPaymentsArray.push(this.CreateModePaymentform(item));
-          }); 
+            this.ModeOfPaymentsArray.push(this.CreateModePaymentform(item));
+          });
 
           console.log("form values", this.IPInterimBillForm.value)
           this._IpSearchListService.InsertInterim(this.IPInterimBillForm.value).subscribe(response => {
@@ -463,6 +470,9 @@ export class InterimBillComponent implements OnInit {
             this.onClose()
           });
         });
+      }
+      else if (this.InterimFooterForm.get('paymode')?.value === 'Mpesa') {
+        this.openWaitingScreen();
       }
     } else {
       let invalidFields = [];
@@ -488,8 +498,8 @@ export class InterimBillComponent implements OnInit {
         });
       }
     }
-  } 
- 
+  }
+
   onClose() {
     this.dataSource.data = [];
     this.interimArray = [];
@@ -497,54 +507,205 @@ export class InterimBillComponent implements OnInit {
       NetpayAmount: [0],
       ConcessionId: [0],
       Remark: [''],
-      TotalAmt: [0], 
-      CashCounterID:[''],
+      TotalAmt: [0],
+      CashCounterID: [''],
       discPer: [0],
       concessionAmt: [0],
       paymode: ['cashpay'],
       UPINO: ['']
     })
-    this.dialogRef.close(); 
-  } 
-    selectChangeConcession(event) {  
-    this.concessionId = event.value
-  } 
-  getWhatsappshareIPInterimBill(el, vmono) { 
-    if(vmono !='' && vmono !="0"){
-    var m_data = {
-      "insertWhatsappsmsInfo": {
-        "mobileNumber": vmono || 0,
-        "smsString": '',
-        "isSent": 0,
-        "smsType": 'IPInterim',
-        "smsFlag": 0,
-        "smsDate": this.currentDate,
-        "tranNo": el,
-        "PatientType": 2,//el.PatientType,
-        "templateId": 0,
-        "smSurl": "info@gmail.com",
-        "filePath": '',
-        "smsOutGoingID": 0
+    this.dialogRef.close();
+  }
+  isWaiting = false;
+  mpesaResponse: any;
+  statusMessage: any;
+  pollingSub?: Subscription;
+  mPesa_ReceiptNo: any = '0';
+  openWaitingScreen() {
+    debugger
+    this._IpSearchListService.postpayment(this.IPInterimBillForm.controls["NetpayAmount"]?.value, this.IPInterimBillForm.get('mpesaMobile')?.value,
+      this.selectedAdvanceObj?.admissionId).subscribe(response => {
+        this.mpesaResponse = response;
+        console.log(this.mpesaResponse)
+        // Build message AFTER response arrives
+        this.statusMessage = '' + response.responseDescription + '\n' +
+          'CheckoutRequestId  : ' + response.checkoutRequestID + '\n' +
+          'MerchantRequestId  : ' + response.merchantRequestID;
+        this.isWaiting = true;
+        this.startPolling();
+      });
+  }
+  startPolling() {
+    this.pollingSub = interval(10000)
+      .pipe(switchMap(() => this._AppointmentlistService.checkStatus(this.mpesaResponse)))
+      .subscribe((status: any) => this.handleStatus(status));
+  }
+  stopPolling() {
+    if (this.pollingSub) {
+      this.pollingSub.unsubscribe();
+      this.pollingSub = null;
+    }
+  }
+
+  checkStatus() {
+    if (this.mpesaResponse) {
+      this._AppointmentlistService.checkStatus(this.mpesaResponse)
+        .subscribe((status: any) => this.handleStatus(status));
+    }
+  }
+  handleStatus(status: any) {
+    console.log(status)
+    debugger
+    const isSuccess = status?.resultCode == 0 || status?.resultCode == "0" || status?.resultCode == "000000";
+    const receipt = status?.mpesaReceiptNumber;
+    if (isSuccess && receipt) {
+      this.statusMessage =
+        'Payment successful.' + this.mpesaResponse.responseDescription + '\n' +
+        'CheckoutRequestId  : ' + this.mpesaResponse.checkoutRequestID + '\n' +
+        'MerchantRequestId  : ' + this.mpesaResponse.merchantRequestID + '\n' +
+        'Receipt No=' + receipt;
+      this.mPesa_ReceiptNo = receipt;
+      this.stopPolling();
+      this.isWaiting = false;
+      this.SavemPesaBill();
+    }
+    else {
+      if (status?.resultDesc) {
+        this.statusMessage = status?.resultDesc;
+        this.stopPolling();
+        this.isWaiting = false;
       }
     }
-    // this._WhatsAppEmailService.InsertWhatsappSales(m_data).subscribe(response => {
-    //   if (response) {
-    //     this.toastr.success('IP Interim Bill Sent on WhatsApp Successfully.', 'Save !', {
-    //       toastClass: 'tostr-tost custom-toast-success',
-    //     });
-    //   } else {
-    //     this.toastr.error('API Error!', 'Error WhatsApp!', {
-    //       toastClass: 'tostr-tost custom-toast-error',
-    //     });
-    //   }
-    // });
+
   }
-  }  
+  // Mpesa Save  
+  SavemPesaBill() {
+    debugger
+    const datePipe = new DatePipe('en-US');
+    const formattedTime = datePipe.transform(new Date(), 'shortTime');
+    const formattedDate = datePipe.transform(new Date(), 'yyyy-MM-dd');
+    const FormattedDateTime = formattedDate + ' ' + formattedTime
+    const mPesaMerchant_CheckoutRequest_Id = this.mpesaResponse.checkoutRequestID + "|" + this.mpesaResponse.merchantRequestID;
+    const formValue = this.IPInterimBillForm.value
+
+    this.IPInterimBillForm.get('payments.payTmamount')?.setValue(this.InterimFooterForm.get('NetpayAmount')?.value)
+    this.IPInterimBillForm.get('payments.payTmtranNo').setValue(this.mPesa_ReceiptNo)
+    this.IPInterimBillForm.get('payments.payTmdate').setValue(formattedDate)
+    this.IPInterimBillForm.get('payments.paymentDate').setValue(formattedDate)
+    this.IPInterimBillForm.get('payments.paymentTime').setValue(FormattedDateTime)
+
+    let ModePaymentObj = [];
+    ModePaymentObj.push({
+      paymentDate: formattedDate,
+      paymentTime: formattedTime,
+      payAmount: formValue?.NetpayAmount ?? 0,
+      tranNo: this.mPesa_ReceiptNo || 0,
+      bankName: "",
+      validationDate: this.datePipe.transform(this.currentDate, 'yyyy-MM-dd'),
+      comments: "",
+      payMode: "UPI",
+      onlineTranNo: "0",
+      onlineTranResponse: "0",
+      companyId: this.selectedAdvanceObj?.CompanyId ?? 0,
+      cashCounterId: formValue?.CashCounterID || 0,
+      transactionType: 0,
+      isSelfOrcompany: this.selectedAdvanceObj?.CompanyId ? 1 : 0,
+      createdBy: this.accountService.currentUserValue?.userId ?? 0
+    });
+    this.ModeOfPaymentsArray.clear();
+    ModePaymentObj.forEach(item => {
+      this.ModeOfPaymentsArray.push(this.CreateModePaymentform(item as ChargesList));
+    });
+
+    console.log("form values", this.IPInterimBillForm.value)
+    this._IpSearchListService.InsertInterim(this.IPInterimBillForm.value).subscribe(response => {
+      this.viewgetInterimBillReportPdf(response);
+      this.getWhatsappshareIPInterimBill(response, this.selectedAdvanceObj.mobileNo);
+      this.onClose()
+    });
+  }
+  selectChangeConcession(event) {
+    this.concessionId = event.value
+  }
+  getWhatsappshareIPInterimBill(el, vmono) {
+    if (vmono != '' && vmono != "0") {
+      var m_data = {
+        "insertWhatsappsmsInfo": {
+          "mobileNumber": vmono || 0,
+          "smsString": '',
+          "isSent": 0,
+          "smsType": 'IPInterim',
+          "smsFlag": 0,
+          "smsDate": this.currentDate,
+          "tranNo": el,
+          "PatientType": 2,//el.PatientType,
+          "templateId": 0,
+          "smSurl": "info@gmail.com",
+          "filePath": '',
+          "smsOutGoingID": 0
+        }
+      }
+      // this._WhatsAppEmailService.InsertWhatsappSales(m_data).subscribe(response => {
+      //   if (response) {
+      //     this.toastr.success('IP Interim Bill Sent on WhatsApp Successfully.', 'Save !', {
+      //       toastClass: 'tostr-tost custom-toast-success',
+      //     });
+      //   } else {
+      //     this.toastr.error('API Error!', 'Error WhatsApp!', {
+      //       toastClass: 'tostr-tost custom-toast-error',
+      //     });
+      //   }
+      // });
+    }
+  }
   viewgetInterimBillReportPdf(billNo) {
     this.commonService.Onprint("BillNo", billNo, "IPDInterimBill");
-  }  
-    viewgetInterim_A5ReportPdf(billNo) {
+  }
+  viewgetInterim_A5ReportPdf(billNo) {
     this.commonService.Onprint("BillNo", billNo, "IPDInterimBillA5");
+  }
+  @ViewChild('MpesatranscationlistTable') MpesatranscationlistTable!: TemplateRef<any>;
+  getMpesaTransactionlist(): void {
+    if (!this.dataSource.data.length) {
+      this.toastrService.warning('Charges are not available in list, Please add Charges', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    const formValue = this.InterimFooterForm.value
+    if (formValue.discPer > 0 || formValue.concessionAmt > 0) {
+      if (formValue.ConcessionId == '' || formValue.ConcessionId == null || formValue.ConcessionId == '0') {
+        this.toastr.warning('Please select ConcessionReason.', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+      }
+    }
+    if (!formValue?.mpesaMobile) {
+      this.toastr.warning('Enter Mobile number', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    this._matDialog.open(this.MpesatranscationlistTable, {
+      width: '65vw',
+      maxHeight: '60vh'
+    })
+    //424929  this.vOPIPId
+    let Data = {
+      "first": 0,
+      "rows": 100,
+      "sortField": "Id",
+      "sortOrder": 0,
+      "filters": [{ "fieldName": "Opdipdid", "fieldValue": String(424929), "opType": "Equals" },
+      { "fieldName": "PhoneNumber", "fieldValue": String(this.IPInterimBillForm.get('mpesaMobile')?.value || 0), "opType": "Equals" }],
+      "exportType": "JSON",
+      "columns": [{ "data": "string", "name": "string" }]
+    }
+    this._AppointmentlistService.getmPesaTranscationlist(Data).subscribe((response) => {
+      this.dsMpesaTransactionlist.data = response.data;
+      console.log(this.dsMpesaTransactionlist.data)
+    });
   }
   keyPressAlphanumeric(event) {
     var inp = String.fromCharCode(event.keyCode);
@@ -554,8 +715,8 @@ export class InterimBillComponent implements OnInit {
       event.preventDefault();
       return false;
     }
-  } 
-  keyPressCharater(event){
+  }
+  keyPressCharater(event) {
     var inp = String.fromCharCode(event.keyCode);
     if (/^\d*\.?\d*$/.test(inp)) {
       return true;
@@ -563,12 +724,12 @@ export class InterimBillComponent implements OnInit {
       event.preventDefault();
       return false;
     }
-  } 
+  }
   public setFocus(nextElementId): void {
     document.querySelector<HTMLInputElement>(`#${nextElementId}`)?.focus();
-  } 
-    getValidationMessages() {
-    return { 
+  }
+  getValidationMessages() {
+    return {
       TotalAmt: [
         {
           name: "pattern", Message: "only Number allowed."
@@ -583,10 +744,15 @@ export class InterimBillComponent implements OnInit {
       concessionAmt: [{ name: "pattern", Message: "only Number allowed." }],
       Remark: [{ name: "pattern", Message: "only charactors allowed." }],
       concessionId: [],
-      cashCounterId: [], 
+      cashCounterId: [],
+      mpesaMobile: [
+        { name: "pattern", Message: "only Number allowed." },
+         { name: "minLength", Message: "10 digit Number allowed." },
+          { name: "maxLength", Message: "10 digit Number allowed." }
+      ],
     }
-  } 
-} 
+  }
+}
 export class Bill {
   AdmissionID: any;
   billNo: number;
@@ -617,9 +783,9 @@ export class Bill {
   CashCounterId: any;
   CompDiscAmt: any;
   PatientName: any;
-  RegNo:any;
-  DoctorName:any;
-  IPDNo:any;
+  RegNo: any;
+  DoctorName: any;
+  IPDNo: any;
   constructor(Bill) {
     {
       this.AdmissionID = Bill.AdmissionID || 0;
@@ -656,6 +822,6 @@ export class Bill {
       this.PatientName = Bill.PatientName || '';
     }
   }
-} 
- 
+}
+
 

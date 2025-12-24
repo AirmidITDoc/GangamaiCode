@@ -1093,6 +1093,9 @@ export class IPSearchListService {
   public getDoseMasterById(Id) {
   return this._httpClient1.GetData("DoseMaster/" + Id);
 }
+    public postpayment(amount, phone, opdipdid) {
+        return this._httpClient1.PostData("MPesa/pay", { amount: amount, phone: phone ,opdipdid:opdipdid})
+    }
 
 }
 
