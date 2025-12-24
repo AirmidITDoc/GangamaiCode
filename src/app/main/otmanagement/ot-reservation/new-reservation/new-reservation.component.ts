@@ -342,10 +342,6 @@ export class NewReservationComponent implements OnInit {
 
   /////////////////////////////// ot request detail part /////////////////////////////
   onChangeOtRequest(obj: any) {
-    this.registerObj1 = obj
-    this.vPatientName = this.registerObj1.patientName;
-    console.log("search data:", this.registerObj1);
-
     if (obj.otReservationId > 0) {
       const name = obj.patientName?.split('|')[0]?.trim();
       Swal.fire({
@@ -357,6 +353,12 @@ export class NewReservationComponent implements OnInit {
       });
       return;
     }
+
+     this.resetOtRequestData();
+
+    this.registerObj1 = obj
+    this.vPatientName = this.registerObj1.patientName;
+    console.log("search data:", this.registerObj1);
 
     if (obj.otRequestId) {
       this._OtReservationService.getotRequestById(obj.otRequestId).subscribe((response) => {
@@ -408,6 +410,16 @@ export class NewReservationComponent implements OnInit {
       });
     }
   }
+
+  resetOtRequestData() {
+  this.registerObj2 = null;
+  this.dssurgeryDetailList.data = [];
+  this.dsattendentDetailList.data = [];
+
+  // optional: reset form
+  this.reservationForm?.reset();
+}
+
 
   FetchotRequestList: any = [];
   getRequestSurgeryDetList(obj) {

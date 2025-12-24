@@ -75,30 +75,33 @@ export class OTReservationComponent implements OnInit {
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
     @ViewChild('firstActionButtonTemplate') firstActionButtonTemplate!: TemplateRef<any>;
-    @ViewChild('clearanceMedicalCode') clearanceMedicalCode!: TemplateRef<any>;
-    @ViewChild('clearanceFinancialCode') clearanceFinancialCode!: TemplateRef<any>;
+    @ViewChild('isPaidColorCode') isPaidColorCode!: TemplateRef<any>;
+    @ViewChild('isMaterialColorCode') isMaterialColorCode!: TemplateRef<any>;
 
     ngAfterViewInit() {
         this.gridConfig.columnsList.find(col => col.key === 'opiptype')!.template = this.actionsTemplate;
-        this.gridConfig.columnsList.find(col => col.key === 'otRequestId')!.template = this.actionsTemplate1;
+        this.gridConfig.columnsList.find(col => col.key === 'otRequestId')!.template = this.RequestColorCode;
         this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
-        // this.gridConfig.columnsList.find(col => col.key === 'clearanceMedical')!.template = this.clearanceMedicalCode;
-        // this.gridConfig.columnsList.find(col => col.key === 'clearanceFinancial')!.template = this.clearanceFinancialCode;
+        this.gridConfig.columnsList.find(col => col.key === 'isAnaesthetistPaid')!.template = this.isPaidColorCode;
+        this.gridConfig.columnsList.find(col => col.key === 'isMaterialReplacement')!.template = this.isMaterialColorCode;
         this.gridConfig.columnsList.find(col => col.key === 'firstAction')!.template = this.firstActionButtonTemplate;
     }
 
     @ViewChild('actionsTemplate') actionsTemplate!: TemplateRef<any>;
-    @ViewChild('actionsTemplate1') actionsTemplate1!: TemplateRef<any>;
+    @ViewChild('RequestColorCode') RequestColorCode!: TemplateRef<any>;
 
     allcolumns = [
         { heading: "-", key: "opiptype", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 40 },
-        { heading: "-", key: "otRequestId", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 40 },
+        {
+            heading: "-", key: "otRequestId", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 150,
+            template: this.RequestColorCode
+        },
+        { heading: "-", key: "isAnaesthetistPaid", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 100 },
+        { heading: "-", key: "isMaterialReplacement", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 100 },
         {
             heading: "", key: "firstAction", width: 300, align: 'left', type: gridColumnTypes.template,
             template: this.firstActionButtonTemplate
         },
-        // { heading: "-", key: "clearanceMedical", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 40 },
-        // { heading: "-", key: "clearanceFinancial", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 40 },
         // { heading: "", key: "isNewRecord", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 40 },
         { heading: "OTReser-Date&Time", key: "otReservationDateTime", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         { heading: "Surgery Date", key: "surgeryDate", sort: true, align: 'left', emptySign: 'NA', width: 150 },
