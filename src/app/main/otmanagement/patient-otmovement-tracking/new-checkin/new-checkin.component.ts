@@ -10,6 +10,7 @@ import { AuthenticationService } from 'app/core/services/authentication.service'
 import { PatientOtmovementTrackingComponent } from '../patient-otmovement-tracking.component';
 import { OtReserInsert } from '../../ot-reservation/ot-reservation.component';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
+import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 
 @Component({
   selector: 'app-new-checkin',
@@ -51,7 +52,8 @@ export class NewCheckinComponent {
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<PatientOtmovementTrackingComponent>,
     private _loggedService: AuthenticationService,
-    private _FormvalidationserviceService: FormvalidationserviceService
+    private _FormvalidationserviceService: FormvalidationserviceService,
+    private commonService: PrintserviceService,
   ) { }
 
   ngOnInit(): void {
@@ -69,7 +71,7 @@ export class NewCheckinComponent {
 
       const timeOnly = new Date();
       this.CheckInFormGroup.get("otcheckInTime")?.setValue(timeOnly);
-      
+
       if (this.data.otReservationId) {
         setTimeout(() => {
           this._PatientOtMoveTrackingService.getotReservationById(this.data.otReservationId).subscribe((response) => {
@@ -190,7 +192,7 @@ export class NewCheckinComponent {
     console.log(this.CheckInFormGroup.value)
     if (!this.CheckInFormGroup.invalid) {
       this._PatientOtMoveTrackingService.CheckINOutSave(this.CheckInFormGroup.value).subscribe((response) => {
-        // this.OnPrint(response)
+        this.OnPrint(response)
         this.onClear(true);
       });
     } else {
@@ -219,6 +221,10 @@ export class NewCheckinComponent {
         return;
       }
     }
+  }
+
+  OnPrint(element) {
+    this.commonService.Onprint("OPIPID", this.opIpId, "OTCheckInOutPatientWise");
   }
 
   onClear(val: boolean) {

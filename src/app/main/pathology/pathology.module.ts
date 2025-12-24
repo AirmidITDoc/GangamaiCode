@@ -32,6 +32,10 @@ const appRoutes: Routes = [
     path: "settlement",
     loadChildren: () => import("./lab-settlement/lab-settlement.module").then((m) => m.LabSettlementModule),
   },
+  {
+    path: "browse-lab-bills",
+    loadChildren: () => import("./browse-lab-bills/browse-lab-bills.module").then((m) => m.BrowseLabBillsModule),
+  },
 ];
 
 @NgModule({

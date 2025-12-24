@@ -128,6 +128,7 @@ export class OtOperativeNoteComponent {
       this.OperativeFormSave.removeControl('TemplateId')
       console.log(this.OperativeFormSave.value)
       this._OtReservationService.operativeSave(this.OperativeFormSave.value).subscribe((response) => {
+        this.OnPrint(response);
         this.onClear(true);
       });
     } {
@@ -147,6 +148,42 @@ export class OtOperativeNoteComponent {
       }
 
     }
+  }
+
+  OnPrint(Param) {
+    const param = {
+      searchFields: [
+        {
+          fieldName: "OperativeNotesId",
+          fieldValue: String(Param),
+          opType: "Equals"
+        },
+        {
+          fieldName: "OPIPType",
+          fieldValue: String(this.opiptype),
+          opType: "Equals"
+        }
+      ],
+      mode: "OTOperativeNotesReport"
+    };
+
+    console.log(param);
+
+    this._OtReservationService.getReportView(param).subscribe(res => {
+      const matDialog = this._matDialog.open(PdfviewerComponent, {
+        maxWidth: "85vw",
+        height: '750px',
+        width: '100%',
+        data: {
+          base64: res["base64"] as string,
+          title: "OtReservation Report Viewer"
+        }
+      });
+
+      matDialog.afterClosed().subscribe(result => {
+
+      });
+    });
   }
 
   onClose() {
