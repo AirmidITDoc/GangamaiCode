@@ -139,6 +139,12 @@
                       <mat-icon style="cursor: pointer">reorder</mat-icon>
                     </mat-cell>
                   </ng-container>
+                   <ng-container matColumnDef="SubtestName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>SubTest Name</mat-header-cell>
+                    <mat-cell *matCellDef="let element" fxShow.gt-sm>
+                      {{ element.testName }}
+                    </mat-cell>
+                  </ng-container>
                   <ng-container matColumnDef="ParameterName">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>Parameter</mat-header-cell>
                     <mat-cell *matCellDef="let element" fxShow.gt-sm>

@@ -653,12 +653,13 @@ export class TestFormMasterComponent implements OnInit {
                 parameterID: row.parameterId || 0,
                 parameterName: row.parameterName,
                 subTestID: row.subTestID || 0,
-                testId: row.testId
+                testId: row.testId || 0,
+                testName:row.testName
             }];
             this.ChargeList = [...this.ChargeList, ...newItems];
 
-            this.DSTestList.data = [...this.ChargeList];
-            this.dsTemparoryList.data = [...this.ChargeList];
+            this.DSTestList.data = [...this.DSTestList.data, ...this.ChargeList];
+            this.dsTemparoryList.data = [ ...this.DSTestList.data,...this.ChargeList];
 
             console.log('Merged final list:', this.ChargeList);
         });
