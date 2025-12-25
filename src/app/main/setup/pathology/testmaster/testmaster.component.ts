@@ -61,7 +61,7 @@ export class TestmasterComponent implements OnInit {
     { fieldName: "ServiceName", fieldValue: "%", opType: OperatorComparer.StartsWith },
     { fieldName: "CatId", fieldValue: "0", opType: OperatorComparer.Equals },
     { fieldName: "ServiceId", fieldValue: "0", opType: OperatorComparer.Equals },
-    { fieldName: "Istest", fieldValue: '0', opType: OperatorComparer.Equals }
+    { fieldName: "Istest", fieldValue: '2', opType: OperatorComparer.Equals }
   ]
 
   constructor(
@@ -116,7 +116,7 @@ export class TestmasterComponent implements OnInit {
         this.onChangeFirst();
     }
 
-IsTest:any=0;
+IsTest:any='2';
   onChangeFirst() {
     this.testName = this.searchFormGroup.get('TestNameSearch').value + "%"
     this.catId = this.searchFormGroup.get('CategoryId').value
@@ -242,6 +242,8 @@ export class TestList {
   IsDeleted: any;
   ParameterId: any;
   subTestID:any;
+  parameterID:any;
+parameterId:any;
   /**
    * Constructor
    *
@@ -257,6 +259,8 @@ export class TestList {
       this.Isdeleted = TestList.Isdeleted || "";
       this.IsDeleted = TestList.IsDeleted || "true";
       this.subTestID = TestList.subTestID || ""
+      this.parameterID = TestList.parameterID || ""
+      this.parameterId = TestList.parameterId || ""
     }
   }
 }

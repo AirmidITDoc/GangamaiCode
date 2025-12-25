@@ -82,7 +82,7 @@ import { PatientSearchComponent } from './componets/patient-search/patient-searc
 import { MatDialogModule } from '@angular/material/dialog';
 import { SMSDetailsPopupOverComponent } from './componets/email-send/smsdetails-popup-over/smsdetails-popup-over.component';
 import { WhatsappDetPopUpOverComponent } from './componets/email-send/whatsapp-det-pop-up-over/whatsapp-det-pop-up-over.component';
- 
+import { MatRadioModule } from '@angular/material/radio'; 
 
 @NgModule({
     declarations: [
@@ -123,7 +123,8 @@ import { WhatsappDetPopUpOverComponent } from './componets/email-send/whatsapp-d
         MatInputModule,
         WebcamModule,
         MatTooltipModule,
-        MatDialogModule
+        MatDialogModule,
+        MatRadioModule
     ],
     providers: [
         ExcelDownloadService,

@@ -323,8 +323,8 @@ export class NewReservationComponent implements OnInit {
     return this._formBuilder.group({
       otreservationDiagnosisDetId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       otreservationId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      descriptionType: [element.descriptionType ?? '', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
-      descriptionName: [element.descriptionName ?? '', [this._FormvalidationserviceService.allowEmptyStringValidator()]]
+      descriptionType: [element.descriptionType ?? ''],
+      descriptionName: [element.descriptionName ?? '']
     });
   }
   get reservationDignosisArray(): FormArray {
@@ -354,7 +354,7 @@ export class NewReservationComponent implements OnInit {
       return;
     }
 
-     this.resetOtRequestData();
+    this.resetOtRequestData();
 
     this.registerObj1 = obj
     this.vPatientName = this.registerObj1.patientName;
@@ -412,14 +412,17 @@ export class NewReservationComponent implements OnInit {
   }
 
   resetOtRequestData() {
-  this.registerObj2 = null;
-  this.dssurgeryDetailList.data = [];
-  this.dsattendentDetailList.data = [];
+    this.registerObj2 = null;
 
-  // optional: reset form
-  this.reservationForm?.reset();
-}
+    //reset arrays after select
+    this.Chargelist = [];
+    this.Chargelist1 = [];
 
+    this.dssurgeryDetailList.data = [];
+    this.dsattendentDetailList.data = [];
+
+    // this.reservationForm?.reset();
+  }
 
   FetchotRequestList: any = [];
   getRequestSurgeryDetList(obj) {
@@ -607,6 +610,7 @@ export class NewReservationComponent implements OnInit {
   selectChangeSurgeon(obj: any) {
     this.surgeonName = obj.text
   }
+
   selectChangeAnesth(obj: any) {
     this.AnthName = obj.text
   }
@@ -812,11 +816,14 @@ export class NewReservationComponent implements OnInit {
       return;
     }
     if (!this.reservationForm.get("anesthetistId")?.value || this.reservationForm.get("anesthetistId")?.value == "0") {
-      this.toastr.warning('Please select a AnestheticsDr', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
+      this.AnthName = ""
     }
+    // if (!this.reservationForm.get("anesthetistId")?.value || this.reservationForm.get("anesthetistId")?.value == "0") {
+    //   this.toastr.warning('Please select a AnestheticsDr', 'Warning !', {
+    //     toastClass: 'tostr-tost custom-toast-warning',
+    //   });
+    //   return;
+    // }
     // debugger
     // const surgeryDate = this.reservationForm.get('surgeryDate')?.value;
     // const surgeryFromTime = this.reservationForm.get('surgeryFromTime')?.value;

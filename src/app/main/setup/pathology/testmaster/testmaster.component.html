@@ -76,10 +76,11 @@
                         [formGroup]="searchFormGroup" [mode]="autocompleteModeServiceID"
                        ></airmid-dropdown>
 
-                        <mat-radio-group name="Istest" formControlName="Istest" fxLayout="row">
-                             <mat-radio-button value="2" class="mr-sm-12">All</mat-radio-button>
-                            <mat-radio-button value="0" class="mr-sm-12">IsTest</mat-radio-button>
-                            <mat-radio-button value="1" class="mr-sm-12">IsSubTest</mat-radio-button>
+                        <mat-radio-group name="Istest" formControlName="Istest" fxLayout="row"
+                        [(ngModel)]="gridConfig.filters[3].fieldValue">
+                             <mat-radio-button value="2">All</mat-radio-button>
+                            <mat-radio-button value="0">IsTest</mat-radio-button>
+                            <mat-radio-button value="1">IsSubTest</mat-radio-button>
                         </mat-radio-group>
                 </form>
             </ng-container>

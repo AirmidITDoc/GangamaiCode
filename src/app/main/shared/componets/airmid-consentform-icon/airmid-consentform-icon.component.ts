@@ -22,6 +22,7 @@ export class AirmidConsentformIconComponent {
   @Input() opipType: number = 0;
   @Input() title: string = '';
   @Input() patientName: string = '';
+  @Input() labelType: string = '';
 
   constructor(public _matDialog: MatDialog, el: ElementRef) { }
 
@@ -37,7 +38,7 @@ export class AirmidConsentformIconComponent {
         maxWidth: "90vw",
         maxHeight: '85%',
         width: '70%',
-        data: { refId: this.refId, opipId: this.opipId, opipType: this.opipType, Id: this.Id,title: this.computedTitle }
+        data: { refId: this.refId, opipId: this.opipId, opipType: this.opipType, Id: this.Id,title: this.computedTitle,labelType:this.labelType }
       }
     );
 

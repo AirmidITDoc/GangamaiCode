@@ -1,12 +1,14 @@
 import { Component, Inject, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { fuseAnimations } from '@fuse/animations';
 import { ToastrService } from 'ngx-toastr';
 import { FormvalidationserviceService } from '../../services/formvalidationservice.service';
 import { ApiCaller } from 'app/core/services/apiCaller';
 import { AirmidDropDownComponent } from '../airmid-dropdown/airmid-dropdown.component';
 import { DatePipe } from '@angular/common';
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
+import { ConsentService } from 'app/main/nursingstation/consent/consent.service';
 
 @Component({
   selector: 'app-airmid-consentform',
@@ -25,10 +27,16 @@ export class AirmidConsentformComponent {
   vTemplateDesc: any;
   selectedTemplateOption: any;
   isButtonDisabled: boolean = false;
+  hideFlag: boolean = true;
   templateId = "0"
   templateName = ''
   vRefType: any;
   vconsentID: any;
+  OP_IPType: any = 0;
+  vSelectedOption: any = 'OP';
+  registerObj: any;
+  OP_IP_Id: any;
+  vRegNo: any;
 
   constructor(
     public dialogRef: MatDialogRef<AirmidConsentformComponent>,
@@ -37,6 +45,8 @@ export class AirmidConsentformComponent {
     private _service: ApiCaller,
     private _formBuilder: UntypedFormBuilder,
     public datePipe: DatePipe,
+    public _ConsentService: ConsentService,
+    public _matDialog: MatDialog,
     private _FormvalidationserviceService: FormvalidationserviceService
   ) { }
 
@@ -53,10 +63,13 @@ export class AirmidConsentformComponent {
         this.vRefType = response.refType
         this.templateId = response.consentTempId
         this.templateName = response.consentName
-        this.vconsentID=response.consentId
+        this.vconsentID = response.consentId
         this.selectChangedepartment(response)
         this.isButtonDisabled = true
       });
+    }
+    if (this.data?.refId > 0) {
+      this.hideFlag = false
     }
   }
 
@@ -65,7 +78,8 @@ export class AirmidConsentformComponent {
       consentId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       consentDate: [(new Date()).toISOString()],
       consentTime: [(new Date()).toISOString()],
-      refId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      refId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      // refId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       refType: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       opipid: [0, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator()]],
       opiptype: [0],
@@ -73,6 +87,11 @@ export class AirmidConsentformComponent {
       ConsentName: ['', [Validators.required, this._FormvalidationserviceService.allowEmptyStringValidator()]],
       ConsentDepartment: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       ConsentDescription: ["", [Validators.required]],
+      transactionLabel: ["", [Validators.required]],
+
+      // extra fields
+      RegID: [''],
+      PatientType: ['OP'],
     });
   }
 
@@ -145,6 +164,37 @@ export class AirmidConsentformComponent {
     this.isButtonDisabled = true
   }
 
+  onChangePatientType(event) {
+    if (event.value == 'OP') {
+      this.OP_IPType = 0;
+    }
+    else if (event.value == 'IP') {
+      this.OP_IPType = 1;
+    }
+    this.patientInfoReset();
+  }
+
+  getSelectedObjOP(obj) {
+    console.log("Visite Patient:", obj)
+    this.registerObj = obj
+    this.vRegNo = obj.regNo
+    this.OP_IP_Id = obj.visitId
+  }
+
+  getSelectedObjIP(obj) {
+    console.log("Admitted patient:", obj)
+    this.registerObj = obj
+    this.vRegNo = obj.regNo
+    this.OP_IP_Id = obj.admissionID
+  }
+
+  patientInfoReset() {
+    this.myForm.get('RegID').setValue('');
+    this.myForm.get('RegID').reset();
+    this.vRegNo = '';
+    this.registerObj = '';
+  }
+
   onSubmit() {
     const now = new Date();
 
@@ -154,24 +204,29 @@ export class AirmidConsentformComponent {
     this.myForm.get('consentDate')?.setValue(formattedDate);
     this.myForm.get('consentTime')?.setValue(`${formattedDate} ${formattedTime}`);
 
-    this.myForm.get("opipid").setValue(this.data?.opipId)
-    this.myForm.get("opiptype").setValue(Number(this.data?.opipType))
-    this.myForm.get("refId").setValue(Number(this.data?.refId))
+    this.myForm.get("opipid").setValue(this.OP_IP_Id ?? this.data?.opipId)
+    this.myForm.get("opiptype").setValue(Number(this.OP_IPType ?? this.data?.opipType))
+    this.myForm.get("transactionLabel").setValue(this.data?.labelType)
+    this.myForm.get("refId").setValue(Number(this.data?.refId) ?? 0)
     this.myForm.get("refType").setValue(this.vRefType)
     this.myForm.get("ConsentTempId").setValue(this.templateId)
     this.myForm.get("ConsentName").setValue(this.templateName)
     this.myForm.get("consentId").setValue(this.vconsentID ?? 0)
 
     if (!this.myForm.invalid) {
+      this.myForm.removeControl('RegID')
+      this.myForm.removeControl('PatientType')
 
       if (this.vconsentID > 0) {
         console.log(this.myForm.value)
         this._service.PutData("TransactionConsentMaster/" + this.vconsentID, this.myForm.value).subscribe((response) => {
+           this.OnViewReportPdf(response)
           this.onClose();
         });
       } else {
         console.log(this.myForm.value)
         this._service.PostData("TransactionConsentMaster", this.myForm.value).subscribe((response) => {
+           this.OnViewReportPdf(response)
           this.onClose();
         });
       }
@@ -200,5 +255,42 @@ export class AirmidConsentformComponent {
 
   onClose() {
     this.dialogRef.close();
+  }
+
+  OnViewReportPdf(element: any) {
+
+    setTimeout(() => {
+      let param = {
+        "searchFields": [
+          {
+            "fieldName": "ConsentId",
+            "fieldValue": String(element),
+            "opType": "Equals"
+          },
+          {
+            "fieldName": "OPIPType",
+            "fieldValue": String(this.data?.opipType ?? this.OP_IPType),
+            "opType": "Equals"
+          }
+        ],
+        "mode": "ConsentInformation"
+      }
+
+      this._ConsentService.getReportView(param).subscribe(res => {
+
+        const matDialog = this._matDialog.open(PdfviewerComponent,
+          {
+            maxWidth: "85vw",
+            height: '750px',
+            width: '100%',
+            data: {
+              base64: res["base64"] as string,
+              title: "Consent Report" + " " + "Viewer"
+            }
+          });
+        matDialog.afterClosed().subscribe(result => {
+        });
+      });
+    }, 100);
   }
 }

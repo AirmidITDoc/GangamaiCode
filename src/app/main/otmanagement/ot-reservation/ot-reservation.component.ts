@@ -168,9 +168,12 @@ export class OTReservationComponent implements OnInit {
         this.vOTReservationId = row.otReservationId
         this.getReservationData(row);
 
-        this._matDialog.open(this.statusForm, {
+        const dialogRef = this._matDialog.open(this.statusForm, {
             width: '35%',
             height: '40%'
+        });
+        dialogRef.afterClosed().subscribe(result => {
+            this.grid.bindGridData();
         });
     }
 

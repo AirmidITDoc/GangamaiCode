@@ -551,11 +551,14 @@ export class NewRequestComponent implements OnInit {
       return;
     }
     if (!this.requestForm.get("anesthetistId")?.value || this.requestForm.get("anesthetistId")?.value == "0") {
-      this.toastr.warning('Please select a AnestheticsDr', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
+      this.AnthName = ""
     }
+    // if (!this.requestForm.get("anesthetistId")?.value || this.requestForm.get("anesthetistId")?.value == "0") {
+    //   this.toastr.warning('Please select a AnestheticsDr', 'Warning !', {
+    //     toastClass: 'tostr-tost custom-toast-warning',
+    //   });
+    //   return;
+    // }
     // debugger
 
     const selectedPrimary = this.requestForm.get('isPrimary').value;
