@@ -1082,10 +1082,12 @@ if (QtyElement) {
            }
         } 
     }
+    StoreId:any=0;
     getStoredet() {
         this._salesService.getstoreDetails(this.autocompletestore).subscribe((data) => {
             const storename = data;
             this.StoreName = storename[1].text;
+             this.StoreId = storename[1].value;
         });
     }
     getFinalDiscperAmt() { 

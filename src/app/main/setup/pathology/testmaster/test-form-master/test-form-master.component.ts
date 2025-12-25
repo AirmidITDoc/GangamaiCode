@@ -194,6 +194,7 @@ export class TestFormMasterComponent implements OnInit {
             this.serviceflag = false;
             this.Subtest = true
             this._TestmasterService.is_templatetest = false;
+             this.testForm.get('ServiceId')?.setValue(0)
             this.testForm.get('ServiceId')?.clearValidators();
             this.testForm.get('ServiceId')?.updateValueAndValidity();
             // get issubtest list
@@ -204,6 +205,7 @@ export class TestFormMasterComponent implements OnInit {
             this.Statusflag = true;
             this.serviceflag = true;
             this.Subtest = false
+            this.DSTestList.data = [];
             this.testForm.get('ServiceId')?.setValidators([Validators.required])
             this.testForm.get('ServiceId')?.updateValueAndValidity();
         }
@@ -358,15 +360,15 @@ export class TestFormMasterComponent implements OnInit {
                 (this.testFormInsert.get('pathTest') as FormGroup).removeControl('updatedBy');
             }
 
-            this.testFormInsert.get("pathTest.TestId")?.setValue(this.vTestId ?? 0)
+            this.testFormInsert.get("pathTest.TestId")?.setValue(this.vTestId || 0)
             this.testFormInsert.get("pathTest.testName")?.setValue(this.testForm.get("TestName").value)
             this.testFormInsert.get("pathTest.printTestName")?.setValue(this.testForm.get("PrintTestName").value)
             this.testFormInsert.get("pathTest.categoryId")?.setValue(Number(this.testForm.get("CategoryId").value))
-            this.testFormInsert.get("pathTest.techniqueName")?.setValue(this.testForm.get("TechniqueName").value ?? '')
-            this.testFormInsert.get("pathTest.machineName")?.setValue(this.testForm.get("MachineName").value ?? '')
-            this.testFormInsert.get("pathTest.suggestionNote")?.setValue(this.testForm.get("SuggestionNote").value ?? '')
-            this.testFormInsert.get("pathTest.footNote")?.setValue(this.testForm.get("FootNote").value ?? '')
-            this.testFormInsert.get("pathTest.serviceId")?.setValue(Number(this.testForm.get("ServiceId").value) ?? 0)
+            this.testFormInsert.get("pathTest.techniqueName")?.setValue(this.testForm.get("TechniqueName").value || '')
+            this.testFormInsert.get("pathTest.machineName")?.setValue(this.testForm.get("MachineName").value || '')
+            this.testFormInsert.get("pathTest.suggestionNote")?.setValue(this.testForm.get("SuggestionNote").value || '')
+            this.testFormInsert.get("pathTest.footNote")?.setValue(this.testForm.get("FootNote").value || '')
+            this.testFormInsert.get("pathTest.serviceId")?.setValue(Number(this.testForm.get("ServiceId").value) || 0)
             this.testFormInsert.get("pathTest.isSubTest")?.setValue(this.Subtest !== undefined ? this.Subtest : false)
             this.testFormInsert.get("pathTest.isTemplateTest")?.setValue(this._TestmasterService.is_templatetest ? 1 : 0)
             console.log("json of Test:", this.testFormInsert.value)

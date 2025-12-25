@@ -379,12 +379,14 @@
                         <div fxFlex="100%">
                           <airmid-autocomplete label="Item Name (enter 2 char)"
                             [formGroup]="_salesService.ItemSearchGroup" formControlName="ItemId"
-                            placeholderText="Item Name (enter 2 char)" fxFlex id="ItemId"
-                            ApiUrl="ItemMaster/GetItemListforSalesPage?StoreId=2&ItemName=" TextField="itemName"
+                            placeholderText="Item Name (enter 2 char)" fxFlex id="ItemId" 
+                             [ApiUrl]="'ItemMaster/GetItemListforSalesPage?StoreId=' + StoreId + '&ItemName='"
+                            TextField="itemName"
                             ValueField="itemId" (selectionChange)="onItemChange($event)"  
                             (keydown.enter)="handleEnterKey($event)"
                             #ItemId></airmid-autocomplete>
-                          <!-- (selectionChange)="getSelectedObj($event)" -->
+                          <!-- (selectionChange)="getSelectedObj($event)"
+                           ApiUrl="ItemMaster/GetItemListforSalesPage?StoreId=2&ItemName=" -->
                         </div>
 
                         <div fxFlex="100%" fxFlex.gt-sm="7%">

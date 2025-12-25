@@ -1,4 +1,4 @@
-import { Component, ElementRef, Inject, OnDestroy, OnInit, Optional, TemplateRef, ViewChild } from '@angular/core';
+import { Component,  ElementRef,  Inject, OnDestroy, OnInit, Optional, TemplateRef, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
@@ -128,7 +128,9 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
             // console.log(this.data)
             this.patientDetail = this.advanceDataStored.storage;
             console.log(this.patientDetail)
-            this.ApiURL = "VisitDetail/GetServiceListwithTraiff?TariffId=" + this.patientDetail.tariffId + "&ClassId=" + this.patientDetail.classId + "&ServiceName="
+            //this.ApiURL = "VisitDetail/GetServiceListwithTraiff?TariffId=" + this.patientDetail.tariffId + "&ClassId=" + this.patientDetail.classId + "&ServiceName="
+            this.ApiURL = "VisitDetail/search-GetServiceListwithTraiff?TariffId=" + this.patientDetail.tariffId + "&ClassId=" + this.patientDetail.classId + "&SrvcName="
+
             console.log("Data", this.patientDetail)
             this.PatientName = this.patientDetail.patientName
             this.patientDetail.doctorName = this.patientDetail.doctorname
@@ -1088,7 +1090,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
         this.vTariffId = this.patientDetail.tariffId;
         this.vhospitalId = this.patientDetail.hospitalId;
         this.searchForm.get('TariffId').setValue(this.patientDetail.tariffId)
-        this.ApiURL = "VisitDetail/GetServiceListwithTraiff?TariffId=" + this.patientDetail.tariffId + "&ClassId=" + this.patientDetail.classId + "&ServiceName="
+        this.ApiURL = "VisitDetail/search-GetServiceListwithTraiff?TariffId=" + this.patientDetail.tariffId + "&ClassId=" + this.patientDetail.classId + "&SrvcName="
         this.OPFooterForm.patchValue({mpesaMobile:this.patientDetail?.mobileNo || 0})
         if (this.vOPIPId > 0)
             this.savebtn = false
@@ -1096,7 +1098,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
         this.checkCompanypatient(this.patientDetail?.companyId ?? 0)
     }
     getSelectedTariffObj(event) {
-        this.ApiURL = "VisitDetail/GetServiceListwithTraiff?TariffId=" + event.value + "&ClassId=" + this.patientDetail.classId + "&ServiceName="
+        this.ApiURL = "VisitDetail/search-GetServiceListwithTraiff?TariffId=" + event.value + "&ClassId=" + this.patientDetail.classId + "&SrvcName="
     }
     BillSave() {
         if (this.OPFooterForm.get('paymentType').value == 'OnlinePay') {
@@ -1449,7 +1451,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
                      this.reportPrintObjList = res as ChargesList[];
                      console.log(this.reportPrintObjList[0])
                      console.log(this.reportPrintObjList[0]?.TotalBillAmount)
-                     this.reportPrintObj = res[0] as ChargesList;
+                    //  this.reportPrintObj = res[0] as ChargesList;
                      if(this.reportPrintObjList.length){ 
                      this.TotalBillAmount =  this.reportPrintObjList.reduce((sum, { TotalBillAmount }) => sum += +(TotalBillAmount || 0), 0);
                      this.ConcessionAmt =  this.reportPrintObjList.reduce((sum, { ConcessionAmount }) => sum += +(ConcessionAmount || 0), 0);
@@ -1461,7 +1463,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
 
                        setTimeout(() => {
                     this.print3();
-        }, 5000);
+        }, 1000);
                 }); 
         }
   reportPrintObj: ChargesList;
@@ -1469,7 +1471,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
   printTemplate: any;
   reportPrintObjList: ChargesList[] = [];
 
- @ViewChild('billTemplate2') billTemplate2: ElementRef;
+ @ViewChild('OPThermalbillTemplate2') OPThermalbillTemplate2: ElementRef;
     print3() {
     let popupWin, printContents;
 
@@ -1485,7 +1487,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
         <title></title>
     </head>
   `);
-    popupWin.document.write(`<body onload="window.print();window.close()" style="font-family: system-ui, sans-serif;margin:0;font-size: 16px;">${this.billTemplate2.nativeElement.innerHTML}</body>
+    popupWin.document.write(`<body onload="window.print();window.close()" style="font-family: system-ui, sans-serif;margin:0;font-size: 16px;">${this.OPThermalbillTemplate2.nativeElement.innerHTML}</body>
   <script>
     var css = '@page { size: portrait; }',
     head = document.head || document.getElementsByTagName('head')[0],
