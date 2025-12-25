@@ -420,7 +420,7 @@ export class ConfigurationComponent implements OnInit {
     const dialogRef = this._matDialog.open(EditSMSConfigComponent,
       {
         maxWidth: "60vw",
-        height: '75%',
+        height: '55%',
         width: '80%',
         data: row
 
@@ -437,7 +437,7 @@ export class ConfigurationComponent implements OnInit {
     const dialogRef = this._matDialog.open(EditEmailconfigComponent,
       {
          maxWidth: "60vw",
-        height: '75%',
+        height: '55%',
         width: '80%',
         data: row
 

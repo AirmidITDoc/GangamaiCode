@@ -26,69 +26,62 @@
 
     <div class="modal-card-container">
         <mat-card>
-            <div fxLayout="column" class="gap-8" style="padding: 10px;">
+            <div fxLayout="column" class="gap-8" style="padding: 15px;">
 
                 <form [formGroup]="SmsForm" style="border: blue">
                     <div fxLayout="row wrap" fxLayoutGap="10px 10px grid">
-<!-- [maxLength]="50" -->
-                        <div fxFlex="50" fxFlex.xs="100" fxFlex.sm="33">
+                        <!-- [maxLength]="32" -->
+                        <div fxFlex="32" fxFlex.xs="100" fxFlex.sm="33">
                             <airmid-textbox label="URL" formControlName="url" [formGroup]="SmsForm"
-                                [value]="registerObj.url" [validations]="getValidationMessages().url" >
+                                [validations]="getValidationMessages().url">
                             </airmid-textbox>
                         </div>
 
-                        <div fxFlex="50" fxFlex.xs="100" fxFlex.sm="33">
+                        <div fxFlex="32" fxFlex.xs="100" fxFlex.sm="33">
                             <airmid-textbox label="Keys" formControlName="keys" [formGroup]="SmsForm"
-                                [value]="vkeys" [validations]="getValidationMessages().keys"
-                                >
+                                [validations]="getValidationMessages().keys">
                             </airmid-textbox>
                         </div>
 
-                        <div fxFlex="50" fxFlex.xs="100" fxFlex.sm="33">
+                        <div fxFlex="32" fxFlex.xs="100" fxFlex.sm="33">
                             <airmid-textbox label="Campaign" formControlName="campaign" [formGroup]="SmsForm"
-                                [value]="vcampaign" [validations]="getValidationMessages().campaign"
-                                >
+                                [validations]="getValidationMessages().campaign">
                             </airmid-textbox>
                         </div>
 
-                        <div fxFlex="50" fxFlex.xs="100" fxFlex.sm="33">
+                        <div fxFlex="32" fxFlex.xs="100" fxFlex.sm="33">
                             <airmid-textbox label="Sender" formControlName="senderId" [formGroup]="SmsForm"
-                                [value]="vsenderId" [validations]="getValidationMessages().senderId"
-                                >
+                                [validations]="getValidationMessages().senderId">
                             </airmid-textbox>
                         </div>
 
-                        <div fxFlex="50" fxFlex.xs="100" fxFlex.sm="33">
+                        <div fxFlex="32" fxFlex.xs="100" fxFlex.sm="33">
                             <airmid-textbox label="Route Id" formControlName="routeid" [formGroup]="SmsForm"
-                                [value]="vrouteid" [validations]="getValidationMessages().routeid"
-                                >
+                                [validations]="getValidationMessages().routeid">
                             </airmid-textbox>
                         </div>
 
-                        <div fxFlex="50" fxFlex.xs="100" fxFlex.sm="33">
+                        <div fxFlex="32" fxFlex.xs="100" fxFlex.sm="33">
                             <airmid-textbox label="User Name" formControlName="userName" [formGroup]="SmsForm"
-                                [value]="vuserName" [validations]="getValidationMessages().userName"
-                                >
+                                [validations]="getValidationMessages().userName">
                             </airmid-textbox>
                         </div>
-                        <div fxFlex="50" fxFlex.xs="100" fxFlex.sm="33">
+                        <div fxFlex="32" fxFlex.xs="100" fxFlex.sm="33">
                             <airmid-textbox label="Spassword" formControlName="spassword" [formGroup]="SmsForm"
-                                [value]="vspassword" [validations]="getValidationMessages().spassword"
-                                >
+                                [validations]="getValidationMessages().spassword">
                             </airmid-textbox>
 
                         </div>
-                        <div fxFlex="50" fxFlex.xs="100" fxFlex.sm="33">
+                        <div fxFlex="32" fxFlex.xs="100" fxFlex.sm="33">
                             <airmid-textbox label="Storage LocLink" formControlName="storageLocLink"
-                                [value]="vstorageLocLink" [formGroup]="SmsForm"
-                                [validations]="getValidationMessages().storageLocLink" >
+                                [formGroup]="SmsForm" [validations]="getValidationMessages().storageLocLink">
                             </airmid-textbox>
 
                         </div>
-                        <div fxFlex="50" fxFlex.xs="100" fxFlex.sm="33">
-                            <!-- <airmid-dropdown label="Message Type" formControlName="conType" [formGroup]="SmsForm"
+                        <div fxFlex="32" fxFlex.xs="100" fxFlex.sm="33">
+                            <airmid-dropdown label="Message Type" formControlName="conType" [formGroup]="SmsForm"
                                  [mode]="autocompleteModeMessagetype">
-                            </airmid-dropdown> -->
+                            </airmid-dropdown>
                         </div>
                     </div>
 

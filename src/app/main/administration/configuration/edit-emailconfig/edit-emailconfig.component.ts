@@ -11,25 +11,25 @@ import { fuseAnimations } from '@fuse/animations';
   selector: 'app-edit-emailconfig',
   templateUrl: './edit-emailconfig.component.html',
   styleUrls: ['./edit-emailconfig.component.scss'],
-    encapsulation: ViewEncapsulation.None,
-    animations: fuseAnimations,
+  encapsulation: ViewEncapsulation.None,
+  animations: fuseAnimations,
 })
 export class EditEmailconfigComponent {
 
   EmailForm: FormGroup
 
-   vdisplayName:any;
-   vemailAddress:any;
-   vmailServerSmtp:any;
-   vsmtpPort:any;
-   vserverTimeout:any;
-   vsmtpRequiredAuthentication:any;
-   vrequiredSquiredPasswordAuthentication:any;
-   vuserName:any;
-   vpassword:any;
-   vsmtpSsl:any;
-   dateTimeObj:any
- screenFromString = 'Common-form';
+  vdisplayName: any;
+  vemailAddress: any;
+  vmailServerSmtp: any;
+  vsmtpPort: any;
+  vserverTimeout: any;
+  vsmtpRequiredAuthentication: any;
+  vrequiredSquiredPasswordAuthentication: any;
+  vuserName: any;
+  vpassword: any;
+  vsmtpSsl: any;
+  dateTimeObj: any
+  screenFromString = 'Common-form';
   constructor(
     public _ConfigurationService: ConfigurationService,
     private _loggedService: AuthenticationService,
@@ -38,51 +38,69 @@ export class EditEmailconfigComponent {
     public toastr: ToastrService,
   ) { }
 
- 
+
   ngOnInit(): void {
 
     this.EmailForm = this.CreateEmailForm()
     debugger
     console.log(this.data)
-    this.vdisplayName=this.data.displayname
-   this.vemailAddress=this.data.emailaddress
-   this.vmailServerSmtp=this.data.mailserver
-   this.vsmtpPort=this.data.smtpPort
-   this.vserverTimeout=this.data.serverTimeout
-   this.vsmtpRequiredAuthentication=this.data.reqAuthenticate
-   this.vrequiredSquiredPasswordAuthentication=this.data.passauthenticate
-   this.vuserName=this.data.userName
-   this.vpassword=this.data.password
-   this.vsmtpSsl=this.data.smtpSsl
+    this.vdisplayName = this.data.displayname
+    this.vemailAddress = this.data.emailaddress
+    this.vmailServerSmtp = this.data.mailserver
+    this.vsmtpPort = this.data.smtpPort
+    this.vserverTimeout = this.data.serverTimeout
+    this.vsmtpRequiredAuthentication = this.data.reqAuthenticate
+    this.vrequiredSquiredPasswordAuthentication = this.data.passauthenticate
+    this.vuserName = this.data.userName
+    this.vpassword = this.data.password
+    this.vsmtpSsl = this.data.smtpSsl
+
+    this.EmailForm.patchValue({
+      id: this.data.id,
+      displayName: this.data.displayname,
+      emailAddress: this.data.emailaddress,
+      mailServerSmtp: this.data.mailserver,
+      smtpPort: this.data.smtpport,
+      serverTimeout: this.data.servertimeout,
+      userName: this.data.userName,
+      password: this.data.password,
+      isActive: this.data.isActive,
+      smtpSsl:true,// this.data.smtpSsl,
+      smtpRequiredAuthentication: this.data.reqAuthenticate,
+      requiredSquiredPasswordAuthentication: this.data.passauthenticate,
+    })
+
+    //  this.EmailForm.get('displayName').setValue(this.data.displayname)
   }
 
 
   CreateEmailForm() {
     return this._formbuilder.group({
-      id:[''],
-      displayName:[''],
-      emailAddress:[''],
-      mailServerSmtp:[''],
-      smtpPort:[''],
-      serverTimeout:[''],
-      smtpRequiredAuthentication:['1'],
-      requiredSquiredPasswordAuthentication:['1'],
-      userName:[''],
-      password:[''],
-      isActive:['1'],
-      smtpSsl:[''],
+      id: [''],
+      displayName: [''],
+      emailAddress: [''],
+      mailServerSmtp: [''],
+      smtpPort: [''],
+      serverTimeout: [''],
+      smtpRequiredAuthentication: ['true'],
+      requiredSquiredPasswordAuthentication: ['true'],
+      userName: [''],
+      password: [''],
+      isActive: ['true'],
+      smtpSsl: ['true'],
     });
   }
 
   OnSave() {
-   
 
-      console.log(this.EmailForm.value)
-      if(this.EmailForm.valid){
+
+    console.log(this.EmailForm.value)
+    if (this.EmailForm.valid) {
       this._ConfigurationService.Emailconfigedit(this.EmailForm.value).subscribe((response) => {
-             }); 
-            }
-              else {
+        this._matDialog.closeAll()
+      });
+    }
+    else {
       let invalidFields = [];
 
       if (this.EmailForm.invalid) {
@@ -103,12 +121,12 @@ export class EditEmailconfigComponent {
   }
 
 
-  
+
   getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;
   }
 
-   
+
   getValidationMessages() {
     return {
       displayName: [
@@ -121,7 +139,7 @@ export class EditEmailconfigComponent {
       userName: [{ name: "required", Message: "userName is required" }],
       password: [{ name: "required", Message: "password is required" }],
       smtpSsl: [{ name: "required", Message: "smtpSsl is required" }],
-      
+
     };
   }
 

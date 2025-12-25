@@ -57,12 +57,25 @@ debugger
       this.vspassword=this.data.spassword
       this.vstorageLocLink=this.data.storageLocLink
       this.vconType=this.data.conType
+
+       this.SmsForm.patchValue({ 
+            // id:this.data.id,  
+            url:this.data.url,  
+            keys: this.data.keys,
+            campaign:this.data.campaign,
+            routeid: this.data.routeid,
+            senderId: this.data.senderId,
+            userName: this.data.userName,
+            spassword: this.data.sPassword,
+            conType: this.data.conType,
+            storageLocLink: this.data.storageLocLink
+        })
   }
 
 
   CreateSMSForm() {
     return this._formbuilder.group({
-
+      Id:0,
       url: [''],
       keys: [''],
       campaign: [''],
@@ -77,21 +90,16 @@ debugger
     });
   }
 
-  vMessage: any = ''
+  
 
   OnSave() {
-    // if ((this.vMessage == '' || this.vMessage == null || this.vMessage == undefined)) {
-    //   this.toastr.warning('Please enter message', 'Warning !', {
-    //     toastClass: 'tostr-tost custom-toast-warning',
-    //   });
-    //   return;
-    // }
-
+   
     console.log(this.SmsForm.value)
     
     if (this.SmsForm.valid) {
       console.log(this.SmsForm.value)
       this._ConfigurationService.SMSconfigedit(this.SmsForm.value).subscribe((response) => {
+        this._matDialog.closeAll()
       });
     }
     else {

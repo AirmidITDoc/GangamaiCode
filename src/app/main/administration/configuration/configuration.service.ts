@@ -132,7 +132,8 @@ export class ConfigurationService {
   }
 
   public Emailconfigedit(Param: any) { 
-    return this._httpClient.PostData("smsConfig/EmailConfiguration", Param);
+    // return this._httpClient.PostData("smsConfig/EmailConfiguration", Param);
+       return this._httpClient.PutData("smsConfig/EmailConfiguration/" + Param.id, Param);
   }
 
   public AutoServiceInsert(Param: any) { 

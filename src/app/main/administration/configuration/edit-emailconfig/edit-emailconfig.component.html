@@ -26,78 +26,94 @@
 
     <div class="modal-card-container">
         <mat-card>
-            <div fxLayout="column" class="gap-8" style="padding: 10px;">
+            <div fxLayout="column" class="gap-8" style="padding: 15px;">
 
                 <form [formGroup]="EmailForm" style="border: blue">
                     <div fxLayout="row wrap" fxLayoutGap="10px 10px grid">
                         <!-- [maxLength]="50" -->
-                        <div fxFlex="50" fxFlex.xs="100" fxFlex.sm="33">
+                        <div fxFlex="32" fxFlex.xs="100" fxFlex.sm="33">
                             <airmid-textbox label="Display Name" formControlName="displayName" [formGroup]="EmailForm"
-                                [value]="vdisplayName" [validations]="getValidationMessages().displayName">
+                                [validations]="getValidationMessages().displayName">
                             </airmid-textbox>
                         </div>
 
-                        <div fxFlex="50" fxFlex.xs="100" fxFlex.sm="33">
+                        <div fxFlex="32" fxFlex.xs="100" fxFlex.sm="33">
                             <airmid-textbox label="Email Address" formControlName="emailAddress" [formGroup]="EmailForm"
-                                [value]="vemailAddress" [validations]="getValidationMessages().emailAddress">
+                                [validations]="getValidationMessages().emailAddress">
                             </airmid-textbox>
                         </div>
 
-                      
 
-                        <div fxFlex="50" fxFlex.xs="100" fxFlex.sm="33">
+
+                        <div fxFlex="32" fxFlex.xs="100" fxFlex.sm="33">
                             <airmid-textbox label="MailServer Smtp" formControlName="mailServerSmtp"
-                                [formGroup]="EmailForm" [value]="vmailServerSmtp"
-                                [validations]="getValidationMessages().mailServerSmtp">
+                                [formGroup]="EmailForm" [validations]="getValidationMessages().mailServerSmtp">
                             </airmid-textbox>
                         </div>
 
-                        <div fxFlex="50" fxFlex.xs="100" fxFlex.sm="33">
+                        <div fxFlex="32" fxFlex.xs="100" fxFlex.sm="33">
                             <airmid-textbox label="Smtp Port" formControlName="smtpPort" [formGroup]="EmailForm"
-                                [value]="vsmtpPort" [validations]="getValidationMessages().smtpPort">
+                                [validations]="getValidationMessages().smtpPort">
                             </airmid-textbox>
                         </div>
 
-                      
-                        <div fxFlex="50" fxFlex.xs="100" fxFlex.sm="33">
-                            <airmid-textbox label="Server Timeout" formControlName="serverTimeout" [formGroup]="EmailForm"
-                                [value]="vserverTimeout" [validations]="getValidationMessages().serverTimeout">
+
+                        <div fxFlex="32" fxFlex.xs="100" fxFlex.sm="33">
+                            <airmid-textbox label="Server Timeout" formControlName="serverTimeout"
+                                [formGroup]="EmailForm" [validations]="getValidationMessages().serverTimeout">
                             </airmid-textbox>
 
                         </div>
-                       
-                        <div fxFlex="50" fxFlex.xs="100" fxFlex.sm="33">
+
+                        <div fxFlex="32" fxFlex.xs="100" fxFlex.sm="33">
                             <airmid-textbox label="User Name" formControlName="userName" [formGroup]="EmailForm"
-                                [value]="vuserName" [validations]="getValidationMessages().userName">
+                                [validations]="getValidationMessages().userName">
                             </airmid-textbox>
 
                         </div>
-                        <div fxFlex="50" fxFlex.xs="100" fxFlex.sm="33">
-                            <airmid-textbox label="Password" formControlName="password" [value]="vpassword"
-                                [formGroup]="EmailForm" [validations]="getValidationMessages().password">
+                        <div fxFlex="32" fxFlex.xs="100" fxFlex.sm="33">
+                            <airmid-textbox label="Password" formControlName="password" [formGroup]="EmailForm"
+                                [validations]="getValidationMessages().password">
                             </airmid-textbox>
 
                         </div>
-                        <div fxFlex="50" fxFlex.xs="100" fxFlex.sm="33">
-                            <airmid-textbox label="SmtpSsl" formControlName="smtpSsl" [value]="vsmtpSsl"
-                                [formGroup]="EmailForm" [validations]="getValidationMessages().smtpSsl">
-                            </airmid-textbox>
+                        <div fxFlex="20" fxFlex.xs="100" fxFlex.sm="33">
+                            <app-airmid-slider label="smtpSsl" formControlName="smtpSsl"
+                                [formGroup]="EmailForm"></app-airmid-slider>
+
+                            <!-- <mat-checkbox formControlName="smtpSsl">
+                                SmtpSsl
+                            </mat-checkbox> -->
+                        </div>
+                        <div fxFlex="20" fxFlex.xs="100" fxFlex.sm="33">
+                            <app-airmid-slider label="SmtpAuthentication" formControlName="smtpRequiredAuthentication"
+                                [formGroup]="EmailForm"></app-airmid-slider>
                         </div>
 
+                        <div fxFlex="20" fxFlex.xs="100" fxFlex.sm="33">
+
+                            <app-airmid-slider label="PasswordAuthentication"
+                                formControlName="requiredSquiredPasswordAuthentication"
+                                [formGroup]="EmailForm"></app-airmid-slider>
+
+                        </div>
 
                     </div>
 
-                    <div>
-                         <div fxFlex="50" fxFlex.xs="100" fxFlex.sm="33">
-                            <app-airmid-slider label="SmtpAuthentication" formControlName="smtpRequiredAuthentication" [formGroup]="EmailForm" ></app-airmid-slider>
-                   </div>
-
-                        <div fxFlex="50" fxFlex.xs="100" fxFlex.sm="33">
-                         
-                             <app-airmid-slider label="PasswordAuthentication" formControlName="requiredSquiredPasswordAuthentication" [formGroup]="EmailForm" ></app-airmid-slider>
-                   
+                    <!-- <div>
+                        <div fxFlex="20" fxFlex.xs="100" fxFlex.sm="33">
+                            <app-airmid-slider label="SmtpAuthentication" formControlName="smtpRequiredAuthentication"
+                                [formGroup]="EmailForm"></app-airmid-slider>
                         </div>
-                    </div>
+
+                        <div fxFlex="20" fxFlex.xs="100" fxFlex.sm="33">
+
+                            <app-airmid-slider label="PasswordAuthentication"
+                                formControlName="requiredSquiredPasswordAuthentication"
+                                [formGroup]="EmailForm"></app-airmid-slider>
+
+                        </div>
+                    </div> -->
 
                 </form>
             </div>
