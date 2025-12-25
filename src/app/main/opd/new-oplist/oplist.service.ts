@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
+import { LoaderService } from 'app/core/components/loader/loader.service';
 import { ApiCaller } from 'app/core/services/apiCaller';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 
@@ -7,7 +8,8 @@ import { FormvalidationserviceService } from 'app/main/shared/services/formvalid
   providedIn: 'root'
 })
 export class OPListService {
- constructor(public _httpClient: ApiCaller,private _formBuilder: UntypedFormBuilder, public _httpClient1:ApiCaller, private _FormvalidationserviceService: FormvalidationserviceService) {}
+ constructor(public _httpClient: ApiCaller,public _loaderService:LoaderService,
+  private _formBuilder: UntypedFormBuilder, public _httpClient1:ApiCaller, private _FormvalidationserviceService: FormvalidationserviceService) {}
 
   myFilterbillbrowseform(): FormGroup {
     return this._formBuilder.group({
@@ -72,7 +74,10 @@ public getBilllistReport(Param: any) {
   return this._httpClient.PostData("Report/ViewReport",Param);
 }
 
-public getReportView(Param) {
+public getReportView(Param,loader = true) {
+    if (loader) {
+      this._loaderService.show();
+    }
   //return this._httpClient1.PostData("Report/ViewReport", Param);
     return this._httpClient1.PostData("Common",Param)
 }

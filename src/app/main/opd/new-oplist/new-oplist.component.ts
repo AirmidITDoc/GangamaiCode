@@ -287,45 +287,29 @@ export class NewOPListComponent implements OnInit {
            // this.commonService.OnThermalPrint("BillNo", element.billNo, "OpBillReceiptT");
         }
     }
-    TotalBillAmount:any=0;
-     ConcessionAmt:any=0;
-      NetPayableAmt:any=0;
-       PaidAmount:any=0;
-       BalanceAmt:any=0;
-        RefundInfo:any;
+//All Good print is ok
         currentDate= new Date();
-       viewgetOPBillThermalReportPdf(BillNo) {
-        debugger 
-                let param = {
-                    "searchFields": [
-                        {
-                            "fieldName": 'BillNo',
-                            "fieldValue": String(BillNo),
-                            "opType": "13"
-                        }
-                    ],
-                    "mode": 'OPBillPrint'
-                } 
-                this._OPListService.getReportView(param).subscribe(res => { 
-                    console.log(res)
-                     this.reportPrintObjList = res as BrowseOPDBill[];
-                     console.log(this.reportPrintObjList[0])
-                     console.log(this.reportPrintObjList[0]?.TotalBillAmount)
-                     this.reportPrintObj = res[0] as BrowseOPDBill;
-                     if(this.reportPrintObjList.length){ 
-                     this.TotalBillAmount =  this.reportPrintObjList.reduce((sum, { TotalBillAmount }) => sum += +(TotalBillAmount || 0), 0);
-                     this.ConcessionAmt =  this.reportPrintObjList.reduce((sum, { ConcessionAmount }) => sum += +(ConcessionAmount || 0), 0);
-                      this.NetPayableAmt =  this.reportPrintObjList.reduce((sum, { NetPayableAmt }) => sum += +(NetPayableAmt || 0), 0);
-                     this.PaidAmount =  this.reportPrintObjList.reduce((sum, { PaidAmount }) => sum += +(PaidAmount || 0), 0);
-                    //   this.BalanceAmt =  this.reportPrintObjList.reduce((sum, { BalanceAmt }) => sum += +(BalanceAmt || 0), 0);
-                       this.RefundInfo =  this.reportPrintObjList.reduce((sum, { RefundAmt }) => sum += +(RefundAmt || 0), 0);
-                     }
-
-                       setTimeout(() => {
-                    this.print3();
-        }, 5000);
-                }); 
+    viewgetOPBillThermalReportPdf(BillNo) {
+ 
+        debugger
+        let param = {
+            "searchFields": [
+                {
+                    "fieldName": 'BillNo',
+                    "fieldValue": String(BillNo),
+                    "opType": "13"
+                }
+            ],
+            "mode": 'OPBillPrint'
         }
+        this._OPListService.getReportView(param).subscribe(res => {
+            console.log(res)
+            this.reportPrintObjList = res as BrowseOPDBill[]; 
+            setTimeout(() => {
+                this.print3();
+            }, 1000);
+        });
+    }
   reportPrintObj: BrowseOPDBill;
   subscriptionArr: Subscription[] = [];
   printTemplate: any;

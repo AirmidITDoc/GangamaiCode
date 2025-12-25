@@ -63,9 +63,13 @@ export class AppointmentBillService {
     }
         public getmPesaTranscationlist(param) {
         return this._httpClient1.PostData("MPesa/List", param)
-    }
+    } 
 
-    public getReportView(Param) {
-           return this._httpClient1.PostData("Common",Param)
+    public getReportView(Param,loader = true) {
+    if (loader) {
+      this._loaderService.show();
     }
+  //return this._httpClient1.PostData("Report/ViewReport", Param);
+    return this._httpClient1.PostData("Common",Param)
+}
 }

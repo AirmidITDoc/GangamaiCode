@@ -1426,88 +1426,72 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
         this.commonService.Onprint("BillNo", element, "OpBillReceipt");
     }
     viewgetOPBillThermalReportPdf1(element) {
-        this.commonService.Onprint("BillNo", element, "OpBillReceiptT");
+        this.commonService.Onprint("BillNo", element, "OpBillReceipt");
     }
-    TotalBillAmount:any=0;
-     ConcessionAmt:any=0;
-      NetPayableAmt:any=0;
-       PaidAmount:any=0;
-       BalanceAmt:any=0;
-        RefundInfo:any; 
-       viewgetOPBillThermalReportPdf(BillNo) {
-        debugger 
-                let param = {
-                    "searchFields": [
-                        {
-                            "fieldName": 'BillNo',
-                            "fieldValue": String(BillNo),
-                            "opType": "13"
-                        }
-                    ],
-                    "mode": 'OPBillPrint'
-                } 
-                this._AppointmentlistService.getReportView(param).subscribe(res => { 
-                    console.log(res)
-                     this.reportPrintObjList = res as ChargesList[];
-                     console.log(this.reportPrintObjList[0])
-                     console.log(this.reportPrintObjList[0]?.TotalBillAmount)
-                    //  this.reportPrintObj = res[0] as ChargesList;
-                     if(this.reportPrintObjList.length){ 
-                     this.TotalBillAmount =  this.reportPrintObjList.reduce((sum, { TotalBillAmount }) => sum += +(TotalBillAmount || 0), 0);
-                     this.ConcessionAmt =  this.reportPrintObjList.reduce((sum, { ConcessionAmount }) => sum += +(ConcessionAmount || 0), 0);
-                      this.NetPayableAmt =  this.reportPrintObjList.reduce((sum, { NetPayableAmt }) => sum += +(NetPayableAmt || 0), 0);
-                     this.PaidAmount =  this.reportPrintObjList.reduce((sum, { PaidAmount }) => sum += +(PaidAmount || 0), 0);
-                    //   this.BalanceAmt =  this.reportPrintObjList.reduce((sum, { BalanceAmt }) => sum += +(BalanceAmt || 0), 0);
-                       this.RefundInfo =  this.reportPrintObjList.reduce((sum, { RefundAmt }) => sum += +(RefundAmt || 0), 0);
-                     }
+   
+    reportPrintObj: ChargesList;
+    subscriptionArr: Subscription[] = [];
+    printTemplate: any;
+    reportPrintObjList: ChargesList[] = [];
+         viewgetOPBillThermalReportPdf(element) { 
+          debugger 
+                  let param = {
+                      "searchFields": [
+                          {
+                              "fieldName": 'BillNo',
+                              "fieldValue": String(element),
+                              "opType": "13"
+                          }
+                      ],
+                      "mode": 'OPBillPrint'
+                  } 
+                  this._AppointmentlistService.getReportView(param).subscribe(res => { 
+                      console.log(res)
+                       this.reportPrintObjList = res as ChargesList[];  
+                         setTimeout(() => {
+                      this.print3();
+          }, 1000);
+                  }); 
+          }
 
-                       setTimeout(() => {
-                    this.print3();
-        }, 1000);
-                }); 
-        }
-  reportPrintObj: ChargesList;
-  subscriptionArr: Subscription[] = [];
-  printTemplate: any;
-  reportPrintObjList: ChargesList[] = [];
-
- @ViewChild('OPThermalbillTemplate2') OPThermalbillTemplate2: ElementRef;
-    print3() {
-    let popupWin, printContents;
-
-    popupWin = window.open('', '_blank', 'top=0,left=0,height=800px !important,width=auto,width=2200px !important');
-
-    popupWin.document.write(` <html>
-  <head><style type="text/css">`);
-    popupWin.document.write(`
-    </style>
-    <style type="text/css" media="print">
-  @page { size: portrait; }
-</style>
-        <title></title>
-    </head>
-  `);
-    popupWin.document.write(`<body onload="window.print();window.close()" style="font-family: system-ui, sans-serif;margin:0;font-size: 16px;">${this.OPThermalbillTemplate2.nativeElement.innerHTML}</body>
-  <script>
-    var css = '@page { size: portrait; }',
-    head = document.head || document.getElementsByTagName('head')[0],
-    style = document.createElement('style');
-    style.type = 'text/css';
-    style.media = 'print';
-
-    if (style.styleSheet){
-        style.styleSheet.cssText = css;
-    } else {
-        style.appendChild(document.createTextNode(css));
+  
+   @ViewChild('billTemplate2') billTemplate2: ElementRef;
+      print3() {
+      let popupWin, printContents;
+  
+      popupWin = window.open('', '_blank', 'top=0,left=0,height=800px !important,width=auto,width=2200px !important');
+  
+      popupWin.document.write(` <html>
+    <head><style type="text/css">`);
+      popupWin.document.write(`
+      </style>
+      <style type="text/css" media="print">
+    @page { size: portrait; }
+  </style>
+          <title></title>
+      </head>
+    `);
+      popupWin.document.write(`<body onload="window.print();window.close()" style="font-family: system-ui, sans-serif;margin:0;font-size: 16px;">${this.billTemplate2.nativeElement.innerHTML}</body>
+    <script>
+      var css = '@page { size: portrait; }',
+      head = document.head || document.getElementsByTagName('head')[0],
+      style = document.createElement('style');
+      style.type = 'text/css';
+      style.media = 'print';
+  
+      if (style.styleSheet){
+          style.styleSheet.cssText = css;
+      } else {
+          style.appendChild(document.createTextNode(css));
+      }
+      head.appendChild(style);
+    </script>
+    </html>`);
+      // popupWin.document.write(`<body style="margin:0;font-size: 16px;">${this.printTemplate}</body>
+      // </html>`);
+  
+      popupWin.document.close();
     }
-    head.appendChild(style);
-  </script>
-  </html>`);
-    // popupWin.document.write(`<body style="margin:0;font-size: 16px;">${this.printTemplate}</body>
-    // </html>`);
-
-    popupWin.document.close();
-  }
     selectChangeConcession(event) {
         this.ConcessionId = event.value
         this.ConcessionReason = event.text
@@ -1800,6 +1784,7 @@ SavemPesaBill() {
 
 export class ChargesList {
     ChargesId: number;
+    ConcessionAmt:any;
     ServiceId: number;
     serviceId: number;
     ServiceName: String;
@@ -1852,6 +1837,7 @@ export class ChargesList {
     packageId: any;
     ConcessionPercentage: any = 0;
     userName: any;
+    BalanceAmt:any;
     constructor(ChargesList) {
         this.ChargesId = ChargesList.ChargesId || '';
         this.ServiceId = ChargesList.ServiceId || '';
@@ -1875,6 +1861,7 @@ export class ChargesList {
         this.PackageId = ChargesList.PackageId || 0;
         this.PackageServiceId = ChargesList.PackageServiceId || 0;
         this.IsPackage = ChargesList.IsPackage || 0;
+         this.ConcessionAmt = ChargesList.ConcessionAmt || 0;
         this.PacakgeServiceName = ChargesList.PacakgeServiceName || '';
         this.OpdIpdId = ChargesList.OpdIpdId || '';
         this.serviceName = ChargesList.serviceName || ''
@@ -1883,7 +1870,8 @@ export class ChargesList {
         this.packageServiceId = ChargesList.packageServiceId || 0;
         this.price = ChargesList.price || 0;
         this.packageId = ChargesList.packageId || '';
-        this.doctorName = ChargesList.doctorName || 0;
+        this.doctorName = ChargesList.doctorName || 0; 
+        this.BalanceAmt = ChargesList.BalanceAmt || 0;
         this.doctorId = ChargesList.doctorId || 0;
         this.serviceCode = ChargesList.serviceCode || 0;
         this.isInclusionExclusion = ChargesList.isInclusionExclusion || '';
