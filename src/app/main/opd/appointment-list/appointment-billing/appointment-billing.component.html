@@ -929,6 +929,7 @@
  
 
 
+
 <div hidden class="bill-template-wrapper2" style="font-size: 30.25%;" #billTemplate2>
    <head>
     <meta charset="UTF-8">
@@ -954,7 +955,7 @@
                         OPD BILL/RECEIPT
                     </td>
                     <td style="border-bottom:1px solid #d4c3c3; padding:4px; font-size:14px; text-align:right;">
-                        Print Date : <b>{{currentDate}}</b>
+                        Print Date : <b>{{currentDate | date:'dd/MM/yyyy'}}</b>
                     </td>
                 </tr>
             </table>
@@ -1017,8 +1018,7 @@
                     <td>Paid Amt :</td>
                     <td>{{reportPrintObjList[0]?.PaymentMode}}</td>
                     <td style="text-align:right;">{{PaidAmount}}</td>
-                </tr>
-
+                </tr> 
                 <tr >
                     <td>Bal Amt :</td>
                     <td></td>

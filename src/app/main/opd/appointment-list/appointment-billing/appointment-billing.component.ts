@@ -1431,7 +1431,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
       NetPayableAmt:any=0;
        PaidAmount:any=0;
        BalanceAmt:any=0;
-        RefundInfo:any;
+        RefundInfo:any; 
        viewgetOPBillThermalReportPdf(BillNo) {
         debugger 
                 let param = {
@@ -1468,6 +1468,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
   subscriptionArr: Subscription[] = [];
   printTemplate: any;
   reportPrintObjList: ChargesList[] = [];
+
  @ViewChild('billTemplate2') billTemplate2: ElementRef;
     print3() {
     let popupWin, printContents;

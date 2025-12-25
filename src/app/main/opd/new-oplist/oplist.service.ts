@@ -73,7 +73,8 @@ public getBilllistReport(Param: any) {
 }
 
 public getReportView(Param) {
-  return this._httpClient1.PostData("Report/ViewReport", Param);
+  //return this._httpClient1.PostData("Report/ViewReport", Param);
+    return this._httpClient1.PostData("Common",Param)
 }
 
 public InsertOPBillingsettlement(Param: any) {
@@ -103,4 +104,8 @@ public UpdateCompanyBilling(Param: any) {
         public getWhatsappDetailsById(Id) {
         return this._httpClient1.GetData("smsConfig/TWhatsAppSmsOutgoing/" + Id);
     }
+    
+    // public getReportViewdata(Param) {
+    //        return this._httpClient1.PostData("Common",Param)
+    // }
 }
