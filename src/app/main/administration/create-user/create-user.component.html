@@ -55,8 +55,13 @@
       <ng-template #docIcon let-element>
         <div>
           <mat-icon *ngIf="element.doctorID > 0" matTooltip="Doctor">
-            <img width="20" height="20" src="assets/images/logos/doctor.png" />
+            <img width="40" height="20" style="color: blue;" src="assets/images/logos/refdr.png" />
           </mat-icon>
+
+          <mat-icon *ngIf="element.doctorID==0" matTooltip="Common User">
+            <img width="30" height="20" style="color: blue;" src="assets/images/logos/Auth.png" />
+          </mat-icon>
+
         </div>
       </ng-template>
 

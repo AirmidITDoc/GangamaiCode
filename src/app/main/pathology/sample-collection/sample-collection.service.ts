@@ -47,6 +47,7 @@ export class SampleCollectionService {
     });
   }
 
+  
  public getSampleCollectionlist(employee) {
         return this._httpClient1.PostData("PathlogySampleCollection/SampleCollectionPatientList", employee)
     }
@@ -65,6 +66,11 @@ export class SampleCollectionService {
   public UpdateSampleCollection(employee) {
     return this._httpClient1.PutData("PathlogySampleCollection/Update", employee);
   }
+
+ public SampleEditdate(employee) {
+    return this._httpClient1.PostData("PathlogySampleCollection/UpdateSamplecollectionDatetime", employee);
+  }
+  
 
   public InsertLabDetail(employee){
 

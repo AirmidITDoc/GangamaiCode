@@ -25,6 +25,7 @@ import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
 import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 import { ConsoleLogger } from '@microsoft/signalr/dist/esm/Utils';
+import { ConfigService } from 'app/core/services/config.service';
 
 @Component({
   selector: 'app-indent',
@@ -133,14 +134,19 @@ export class IndentComponent implements OnInit {
   constructor(
     public _IndentService: IndentService, private commonService: PrintserviceService,
     public toastr: ToastrService, public _matDialog: MatDialog, private accountService: AuthenticationService,
-    public datePipe: DatePipe
+    public datePipe: DatePipe,  public _ConfigService: ConfigService,
   ) { }
 
   ngOnInit(): void {
     this.IndentSearchGroup = this._IndentService.IndentSearchFrom();
 
-    console.log(this.accountService)
-    this.IsIndentVerify = this.accountService.currentUserValue.user.isIndentVerify
+    // console.log(this.accountService)
+    // this.IsIndentVerify = this.accountService.currentUserValue.user.isIndentVerify
+debugger
+    console.log(this._ConfigService.configParams)
+      const [vIsIndentVerify, IsIndentVerify] = this._ConfigService.configParams.IsIndentVerify.split(":");
+    this.IsIndentVerify=parseInt(vIsIndentVerify)
+       console.log(this.IsIndentVerify)
   }
 
   ListView(value) {
@@ -273,7 +279,7 @@ export class IndentComponent implements OnInit {
     });
   }
   onVerify(row) {
-
+debugger
     let submitData = {
       "indentId": row.indentId,
       "isInchargeVerifyId": this.accountService.currentUserValue.userId

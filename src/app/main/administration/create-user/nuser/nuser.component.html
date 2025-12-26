@@ -333,6 +333,14 @@
                                                     (selectionChange)="selectChangeStoreName($event)">
                                                 </airmid-dropdown>
 
+                                                 <!-- <airmid-dropdown label="Department"
+                                                        formControlName="MDoctorDepartmentDets" [formGroup]="myForm"
+                                                        [IsMultiPle]="true" [value]="registerObj.mDoctorDepartmentDets"
+                                                        [validations]="getValidationMessages().Departmentid"
+                                                        #ddlDepartment ValueField="departmentId"
+                                                        TextField="departmentName"
+                                                        ApiUrl="DepartmentMaster/get-departments"
+                                                        [ReqFullObj]="true"></airmid-dropdown> -->
                                             </div>
 
                                             <mat-chip-listbox #chipList>
@@ -341,6 +349,12 @@
                                                     {{ item.text }} <mat-icon
                                                         (click)="removeStore(item)">close</mat-icon>
                                                 </mat-chip>
+
+
+                                                <!-- <mat-chip *ngFor="let item of myForm.value.MDoctorDepartmentDets">
+                                                        {{ item.departmentName }}
+                                                        <mat-icon (click)="removeDepartment(item)">close</mat-icon>
+                                                    </mat-chip> -->
                                             </mat-chip-listbox>
                                         </div>
                                     </form>

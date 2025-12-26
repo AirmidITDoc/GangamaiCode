@@ -35,6 +35,7 @@ import { SampleCollectionComponent } from './sample-collection.component';
 import { SampleCollectionService } from './sample-collection.service';
 import { SampledetailtwoComponent } from './sampledetailtwo/sampledetailtwo.component';
 import { SamplecollectionPageComponent } from './samplecollection-page/samplecollection-page.component';
+import { EditSampledateComponent } from './edit-sampledate/edit-sampledate.component';
 
 
 const routes: Routes = [
@@ -49,7 +50,8 @@ const routes: Routes = [
     declarations: [
         SampleCollectionComponent,
         SampledetailtwoComponent,
-        SamplecollectionPageComponent
+        SamplecollectionPageComponent,
+        EditSampledateComponent
     ],
     imports: [
         RouterModule.forChild(routes),

@@ -206,35 +206,36 @@ export class NUserComponent implements OnInit {
       "exportType": "JSON",
       "columns": []
     }
+    setTimeout(() => {
     this._CreateUserService.getUnitDetailList(SelectQuery).subscribe(response => {
       const rowData = response?.data || [];
+
+      console.log(rowData)
       this.RtrvUnitList = rowData.map(item => ({
         value: String(item.unitId),
         text: item.hospitalName
       }))
       debugger
-      console.log("Unit data:", this.RtrvUnitList)
-      // const assignedUnits = this.RtrvUnitList.filter(unit => {
-      //   const originalItem = rowData.find(r => r.unitId === unit.value);
-      //   return originalItem?.isAssigned === true;
-      // });
 
-      // this.myuserApprovalform.patchValue({
-      //   multipleUnitId: assignedUnits
-      // });
+      console.log("unit data:", this.RtrvUnitList)
+      const assignedunit = this.RtrvUnitList.filter(unit => {
+        const originalItem = rowData.find(r => r.unitId == unit.value);
+        return true;
+      });
 
-      //     this.zone.run(() => {
-      //   this.myuserApprovalform.patchValue({
-      //     multipleUnitId: this.RtrvUnitList
-      //   });
-      // });
+      this.myuserApprovalform1.patchValue({
+        multipleUnitId: assignedunit
+      });
 
-      setTimeout(() => {
-        this.myuserApprovalform1.get('multipleUnitId')?.setValue(this.RtrvUnitList);
-      }, 0);
-      console.log("setData:", this.myuserApprovalform1.get('multipleUnitId').value)
-    });
+       });
+       
+      // setTimeout(() => {
+      //   this.myuserApprovalform1.get('multipleUnitId')?.setValue(this.RtrvUnitList);
+      // }, 0);
+      // console.log("setData:", this.myuserApprovalform1.get('multipleUnitId').value)
+    },1000);
   }
+
 
   getStoreDetail(row) {
     var SelectQuery = {
@@ -252,27 +253,34 @@ export class NUserComponent implements OnInit {
       "exportType": "JSON",
       "columns": []
     }
+     setTimeout(() => {
     this._CreateUserService.getStoreDetailList(SelectQuery).subscribe(response => {
       const rowData = response?.data || [];
+
+      console.log(rowData)
       this.RtrvStoreList = rowData.map(item => ({
         value: String(item.storeId),
         text: item.storeName
       }))
-      debugger
+
+
       console.log("store data:", this.RtrvStoreList)
-      // const assignedStore = this.RtrvUnitList.filter(store => {
-      //   const originalItem = rowData.find(r => r.storeId === store.value);
-      //   return originalItem?.isAssigned === true;
-      // });
+      const assignedStore = this.RtrvStoreList.filter(store => {
+        const originalItem = rowData.find(r => r.storeId == store.value);
+        return true;
+      });
+      //  this.ddlStore.SetSelection(assignedStore);
 
-      // this.myuserApprovalform.patchValue({
-      //   multipleUnitId: assignedStore
-      // });
-      setTimeout(() => {
-        this.myuserApprovalform1.get('multipleStoreId')?.setValue(this.RtrvStoreList);
-      }, 0);
+      this.myuserApprovalform1.patchValue({
+        multipleStoreId: assignedStore
+      });
+ });
 
-    });
+      // setTimeout(() => {
+      //   this.myuserApprovalform1.get('multipleStoreId')?.setValue(this.RtrvStoreList);
+      // }, 0);
+
+     },1000);
   }
 
   createuserApprovalForm(): FormGroup {
@@ -349,8 +357,8 @@ export class NUserComponent implements OnInit {
 
   CreateMultidataform(): FormGroup {
     return this._formBuilder.group({
-      multipleUnitId: [[], [Validators.required]],
-      multipleStoreId: [[], [Validators.required]]
+      multipleUnitId: [[]],
+      multipleStoreId: [[]]
     });
   }
 
@@ -458,7 +466,7 @@ export class NUserComponent implements OnInit {
       }
     }
 
-    if (this.myuserApprovalform.valid && this.myuserApprovalform1.valid ) {
+    if (this.myuserApprovalform.valid && this.myuserApprovalform1.valid) {
       // debugger
       this.LoginAccessDetailsArray.clear();
       this.dsApprovalList.data.forEach((item) => {
@@ -518,7 +526,7 @@ export class NUserComponent implements OnInit {
         }
       }
 
-       if (this.myuserApprovalform1.invalid) {
+      if (this.myuserApprovalform1.invalid) {
         for (const controlName in this.myuserApprovalform1.controls) {
           if (this.myuserApprovalform1.controls[controlName].invalid) { invalidFields1.push(`User Form: ${controlName}`); }
         }

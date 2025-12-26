@@ -14,6 +14,7 @@ import { AdvanceDataStored } from 'app/main/ipd/advance';
 import { DatePipe } from '@angular/common';
 import { SelectionModel } from '@angular/cdk/collections';
 import Swal from 'sweetalert2';
+import { EditSampledateComponent } from '../edit-sampledate/edit-sampledate.component';
 
 @Component({
   selector: 'app-samplecollection-page',
@@ -33,6 +34,7 @@ export class SamplecollectionPageComponent {
     'select',
     'ServiceName',
     'SampleCollectionTime',
+    'editSampleCollectionTime',
   ];
 
   selectedAdvanceObj: AdvanceDetailObj;
@@ -190,7 +192,8 @@ debugger
       Swal.fire('Error !', 'Please select sample data', 'error');
       return;
     }
-      this.refundDetailsArray.clear();
+
+         this.refundDetailsArray.clear();
       this.selection.selected.forEach(item => {
         this.refundDetailsArray.push(this.createSampleDetail(item));
       });
@@ -228,6 +231,25 @@ debugger
     return numSelected === numRows;
 
   }
+
+   EditSampleDate(contact) {
+          console.log(contact)
+          const dialogRef = this._matDialog.open(EditSampledateComponent,
+              {
+                  maxWidth: "100%",
+                  height: '40%',
+                  width: '40%',
+                  data: {
+                      Obj: contact,
+                  }
+              });
+          dialogRef.afterClosed().subscribe(result => {
+              console.log('The dialog was closed - Insert Action', result);
+            this.getSampledetailList1(this.regObj);
+          });
+      }
+
+
  toggleSidebar(name): void {
     this._fuseSidebarService.getSidebar(name).toggleOpen();
   }

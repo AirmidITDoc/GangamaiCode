@@ -298,7 +298,7 @@ export class SampleCollectionComponent implements OnInit {
             {
 
                 maxHeight: '80vh',
-                width: '70%',
+                width: '60%',
                 data: row
             });
         dialogRef.afterClosed().subscribe(result => {

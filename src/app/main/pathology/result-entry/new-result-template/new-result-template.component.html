@@ -145,11 +145,12 @@
                     <form [formGroup]="otherForm" style="border: blue;">
                         <div fxFlexFill fxLayout="row">
 
-                            <airmid-dropdown label="Template Name" formControlName="TemplateName"
-                                [formGroup]="otherForm" fxFlex="50%" ValueField="templateId" TextField="templateName"
-                                (selectionChange)="selectChangeTemplateName($event)"
-                                ApiUrl="Pathology/get-PathologyTemplates">
-                            </airmid-dropdown>
+
+                            <airmid-dropdown fxFlex="40%" label="Get TemplateName" formControlName="TemplateName"
+                                [formGroup]="otherForm" (selectionChange)="selectChangeTemplateName($event)"
+                                ValueField="templateId" TextField="templateName"
+                                [ApiUrl]="'Pathology/search-GetServicewiseTemplate?ServiceId=' + serviceId"></airmid-dropdown>
+
 
                             <div>
                                 <button (click)="onAddTemplate()" class="btn btn-primary btn-with-icon py-8"

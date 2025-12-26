@@ -1345,7 +1345,7 @@ export class AdmissionPersonlModel {
   ischarity: any;
   converId: any;
   VisAdmTime: any;
-
+serviceId: any;
 
   /**
 * Constructor
@@ -1577,6 +1577,7 @@ export class AdmissionPersonlModel {
       this.isMlc = AdmissionPersonl.isMlc || 0
       this.ischarity = AdmissionPersonl.ischarity || 0
       this.converId = AdmissionPersonl.converId || 0
+      this.serviceId = AdmissionPersonl.serviceId || 0
 
 
 

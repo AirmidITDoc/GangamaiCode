@@ -1,4 +1,4 @@
-import { Component, ElementRef, Inject, ViewChild } from '@angular/core';
+import { Component, ElementRef, Inject, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { AdmissionPersonlModel } from 'app/main/ipd/Admission/admission/admission.component';
 import { Observable } from 'rxjs';
@@ -10,31 +10,31 @@ import { FormvalidationserviceService } from 'app/main/shared/services/formvalid
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { DatePipe } from '@angular/common';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
+import { fuseAnimations } from '@fuse/animations';
+import { AirmidDropDownComponent } from 'app/main/shared/componets/airmid-dropdown/airmid-dropdown.component';
 
 @Component({
   selector: 'app-new-result-template',
   templateUrl: './new-result-template.component.html',
-  styleUrls: ['./new-result-template.component.scss']
+  styleUrls: ['./new-result-template.component.scss'],
+  encapsulation: ViewEncapsulation.None,
+  animations: fuseAnimations
 })
 export class NewResultTemplateComponent {
 
   TemplateForm: FormGroup
   PathReportTemplateForm: FormGroup
   PathReportHeaderForm: FormGroup
+
   @ViewChild('PathResultDoctorId') PathResultDoctorId: ElementRef;
-
-  onBlur(e: any) {
-    this.vTemplateDesc = e.target.innerHTML;
-    throw new Error('Method not implemented.');
-  }
-
-  isresultdrSelected: boolean = false;
+  currentDate: Date = new Date();
+  dataSource: any = { data: [] };
+   VpathResultDr1 = 0
   vTemplateName: any = 0;
   vPathResultDoctorId: any = 0;
   isLoading: string = '';
   msg: any;
-  currentDate: Date = new Date();
-  selectedAdvanceObj1: AdmissionPersonlModel;
+ 
   screenFromString = 'opd-casepaper';
   printTemplate: any;
   PathReportID: any;
@@ -45,8 +45,9 @@ export class NewResultTemplateComponent {
   PathologyDoctorList: any = [];
   sIsLoading: string = '';
   isTemplateNameSelected: boolean = false;
-  filteredOptionsisTemplate: Observable<string[]>;
-  filteredresultdr: Observable<string[]>;
+  isresultdrSelected: boolean = false;
+  PathReportId = 0
+  templateObj: any;
   TemplateDesc: any;
   otherForm: FormGroup;
   reportIdData: any;
@@ -55,10 +56,14 @@ export class NewResultTemplateComponent {
   OP_IPType: any;
   PathResultDr1: any;
   vsuggestionNotes: any = '';
+  ApiURL: any = '';
+  filteredOptionsisTemplate: Observable<string[]>;
+  filteredresultdr: Observable<string[]>;
+  selectedAdvanceObj1: AdmissionPersonlModel;
 
   autocompleteModeDoctor: string = "ConDoctor";
   autocompleteModeTemplate: string = "RadioTemplate";
-
+  serviceId = 0
   constructor(
     public _SampleService: ResultEntryService,
     private accountService: AuthenticationService,
@@ -72,35 +77,59 @@ export class NewResultTemplateComponent {
     private _FormvalidationserviceService: FormvalidationserviceService,
   ) {
     dialogRef.disableClose = true;
-debugger
+    debugger
     if (this.data) {
       this.selectedAdvanceObj1 = this.data;
-
+      this.serviceId = this.selectedAdvanceObj1.serviceId
       console.log(this.selectedAdvanceObj1)
       this.OP_IPType = this.selectedAdvanceObj1.patientType === 'OP' ? '0' : '1';
       this.reportIdData = this.selectedAdvanceObj1.pathReportId
       this.PathResultDr1 = this.selectedAdvanceObj1.adm_Visit_docId //PathResultDr1 ask to sir
-//  this.TemplateId = row.templateId
-      if (this.OP_IPType == 1)
-        this.getTemplatedetailIP(this.selectedAdvanceObj1);
-      else
-        this.getTemplatedetailOP(this.selectedAdvanceObj1);
+      //  this.TemplateId = row.templateId
+      // if (this.OP_IPType == 1)
+      //   this.getTemplatedetailIP(this.selectedAdvanceObj1);
+      // else
+      // this.getTemplatedetailOP(this.selectedAdvanceObj1);
     }
     this.otherForm = this.formBuilder.group({
-      TemplateName: ['', Validators.required],
+      TemplateName: [0],
       ResultEntry: ['', Validators.required],
       TemplateId: [0],
       suggestionNotes: [''],
       PathResultDoctorId: ['', Validators.required]
 
     });
-  }
 
+    this.selectChangeService()
+    //  this.ApiURL = "Pathology/search-GetServicewiseTemplate?ServiceId=" + this.selectedAdvanceObj1.serviceId;
+
+  }
+  @ViewChild('itemAutocomplete', { read: ElementRef }) itemAutocomplete: ElementRef;
   ngOnInit(): void {
     this.TemplateForm = this.vResultTemplateFormInsert()
+    console.log(this.selectedAdvanceObj1)
 
     this.PathReportTemplateForm = this.createTemplateform();
     this.PathReportHeaderForm = this.createTemplateHeader();
+    debugger
+    // this.ApiURL = "Pathology/search-GetServicewiseTemplate?ServiceId=" +this.selectedAdvanceObj1.serviceId;
+    console.log(this.ApiURL)
+
+    //     setTimeout(() => {
+    //   const nativeElement = this.itemAutocomplete?.nativeElement;
+    //   if (nativeElement) {
+    //     const inputEl: HTMLInputElement = nativeElement.querySelector('input');
+    //     if (inputEl) {
+    //       inputEl.focus();
+    //     }
+    //   }
+    // }, 100);
+  }
+
+
+  onBlur(e: any) {
+    this.vTemplateDesc = e.target.innerHTML;
+    throw new Error('Method not implemented.');
   }
 
   vResultTemplateFormInsert(): FormGroup {
@@ -151,8 +180,7 @@ debugger
     }
   }
 
-  PathReportId = 0
-  templateObj: any;
+
   getTemplatedetailIP(row) {
     debugger
     console.log("data:", row)
@@ -187,17 +215,16 @@ debugger
     }
   }
 
-  VpathResultDr1 = 0
+
   selectChangeDoctorName(row) {
     console.log(row)
     this.VpathResultDr1 = row.doctorId
   }
 
 
-  dataSource: any = { data: [] };
 
   onSubmit() {
-    
+
     const currentDate = new Date();
     const datePipe = new DatePipe('en-US');
     const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
@@ -216,31 +243,31 @@ debugger
       return;
     }
 
-     this.PathReportTemplateForm.get("pathTemplateId").setValue(this.TemplateId)
-  debugger
+    this.PathReportTemplateForm.get("pathTemplateId").setValue(this.TemplateId)
+    debugger
     this.PathReportTemplateForm.get("pathTemplateDetailsResult").setValue(this.otherForm.get("ResultEntry").value)
     this.PathReportTemplateForm.get("templateResultInHTML").setValue(this.otherForm.get("ResultEntry").value)
     this.PathReportTemplateForm.get("testId").setValue(this.selectedAdvanceObj1.pathTestID)
     this.PathReportTemplateForm.get("suggestionNotes").setValue(this.otherForm.get("suggestionNotes").value)
     this.PathReportTemplateForm.get("pathResultDr1").setValue(this.VpathResultDr1)
-   
+
     this.PathReportHeaderForm.get("pathResultDr1").setValue(this.VpathResultDr1)
     this.PathReportHeaderForm.get("suggestionNotes").setValue(this.otherForm.get("suggestionNotes").value)
     this.PathReportHeaderForm.get("reportTime").setValue(datePipe.transform(currentDate, 'shortTime'))
-    
+
     this.TemplateForm.get("pathologyReportTemplate").setValue(this.PathReportTemplateForm.value)
     this.TemplateForm.get("pathologyReportHeader").setValue(this.PathReportHeaderForm.value)
-  
+
 
     console.log(this.TemplateForm.value);
-    
- if(!this.TemplateForm.invalid){
-    this._SampleService.PathTemplateResultentryInsert(this.TemplateForm.value).subscribe(response => {
-      this.dialogRef.close();
-      this.viewgetPathologyTemplateReportPdf(this.selectedAdvanceObj1);
 
-    });
-  }
+    if (!this.TemplateForm.invalid) {
+      this._SampleService.PathTemplateResultentryInsert(this.TemplateForm.value).subscribe(response => {
+        this.dialogRef.close();
+        // this.viewgetPathologyTemplateReportPdf(this.selectedAdvanceObj1);
+
+      });
+    }
   }
 
   viewgetPathologyTemplateReportPdf(contact) {
@@ -290,7 +317,30 @@ debugger
     }
     this._SampleService.populateForm(m_data);
   }
+  // @ViewChild('ddltemplate') ddltemplate: AirmidDropDownComponent;
 
+  selectChangeService() {
+    
+    if (this.selectedAdvanceObj1.serviceId) {
+      this._SampleService.gettemplatebyService(this.selectedAdvanceObj1.serviceId).subscribe((data: any) => {
+        console.log(data)
+        // this.ddltemplate.options = data;
+        // this.ddltemplate.bindGridAutoComplete();
+      });
+    }
+
+  }
+
+
+  getValidationMessages() {
+
+    return {
+      RegId: [],
+      TemplateName: [
+      ]
+
+    };
+  }
   dateTimeObj: any;
   getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;

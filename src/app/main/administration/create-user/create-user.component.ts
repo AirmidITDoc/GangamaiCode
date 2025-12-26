@@ -76,7 +76,7 @@ export class CreateUserComponent implements OnInit {
   @ViewChild('docIcon') docIcon!: TemplateRef<any>;
 
   allcolumns = [
-    { heading: "-", key: "doctorID", sort: true, align: 'left', type: gridColumnTypes.template },
+    { heading: "User", key: "doctorID", sort: true, align: 'left', type: gridColumnTypes.template },
     { heading: "First Name", key: "firstName", sort: true, align: 'left', emptySign: 'NA', width: 120 },
     { heading: "Last Name", key: "lastName", sort: true, align: 'left', emptySign: 'NA', width: 120 },
     { heading: "MobileNo", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA', width: 120 },

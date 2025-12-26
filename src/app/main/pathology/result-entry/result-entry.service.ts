@@ -184,4 +184,10 @@ export class ResultEntryService {
   public getresultenterylist(employee) {
     return this._httpClient1.PostData("Pathology/PathologyPatientTestList", employee)
   }
+
+  
+
+      public gettemplatebyService(ServiceId) {
+        return this._httpClient1.GetData("Pathology/search-GetServicewiseTemplate?ServiceId=" + ServiceId)
+    }
 }
