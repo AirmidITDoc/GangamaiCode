@@ -224,60 +224,82 @@ export class NewResultTemplateComponent {
 
 
 
-  onSubmit() {
-
-
+onSubmit() {
+ 
     const currentDate = new Date();
+
     const datePipe = new DatePipe('en-US');
+
     const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
+
     const formattedTime = datePipe.transform(currentDate, 'shortTime');
-
+ 
     if (this.otherForm.get("PathResultDoctorId")?.value == '') {
+
       this.toastr.warning('Please select valid Pathalogist', 'Warning !', {
+
         toastClass: 'tostr-tost custom-toast-warning',
+
       });
+
       return;
+
     }
+
     if (this.otherForm.get("ResultEntry")?.value == '' || this.otherForm.get("ResultEntry")?.value == undefined) {
+
       this.toastr.warning('Please Enter Result Entry ', 'Warning !', {
+
         toastClass: 'tostr-tost custom-toast-warning',
+
       });
+
       return;
-    }
 
+    }
+ 
     this.PathReportTemplateForm.get("pathTemplateId").setValue(this.TemplateId)
+
     debugger
-    this.PathReportTemplateForm.get("pathTemplateId").setValue(this.TemplateId)
-    debugger
+
     this.PathReportTemplateForm.get("pathTemplateDetailsResult").setValue(this.otherForm.get("ResultEntry").value)
+
     this.PathReportTemplateForm.get("templateResultInHTML").setValue(this.otherForm.get("ResultEntry").value)
+
     this.PathReportTemplateForm.get("testId").setValue(this.selectedAdvanceObj1.pathTestID)
+
     this.PathReportTemplateForm.get("suggestionNotes").setValue(this.otherForm.get("suggestionNotes").value)
+
     this.PathReportTemplateForm.get("pathResultDr1").setValue(this.VpathResultDr1)
-
-
+ 
     this.PathReportHeaderForm.get("pathResultDr1").setValue(this.VpathResultDr1)
+
     this.PathReportHeaderForm.get("suggestionNotes").setValue(this.otherForm.get("suggestionNotes").value)
+
     this.PathReportHeaderForm.get("reportTime").setValue(datePipe.transform(currentDate, 'shortTime'))
-
-
+ 
     this.TemplateForm.get("pathologyReportTemplate").setValue(this.PathReportTemplateForm.value)
+
     this.TemplateForm.get("pathologyReportHeader").setValue(this.PathReportHeaderForm.value)
-
-
-
+ 
+ 
     console.log(this.TemplateForm.value);
-
+ 
     if (!this.TemplateForm.invalid) {
-      this._SampleService.PathTemplateResultentryInsert(this.TemplateForm.value).subscribe(response => {
-        this.dialogRef.close();
-        // this.viewgetPathologyTemplateReportPdf(this.selectedAdvanceObj1);
 
+      this._SampleService.PathTemplateResultentryInsert(this.TemplateForm.value).subscribe(response => {
+
+        this.dialogRef.close();
+
+        this.viewgetPathologyTemplateReportPdf(this.selectedAdvanceObj1);
+ 
       });
+
     }
-      });
-    }
+
   }
+
+ 
 
   viewgetPathologyTemplateReportPdf(contact) {
     // debugger
