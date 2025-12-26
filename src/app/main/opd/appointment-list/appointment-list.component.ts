@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, OnInit, TemplateRef, ViewChild, ViewEncapsulation, ComponentRef } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild, ViewEncapsulation, ComponentRef, HostListener } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog, MatDialogRef } from "@angular/material/dialog";
 import { fuseAnimations } from '@fuse/animations';
@@ -202,7 +202,7 @@ export class AppointmentListComponent implements OnInit {
         { heading: "", key: "isConvertRequestForIp", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 30 },
         { heading: "UHID", key: "regNoWithPrefix", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "Date", key: "vistDateTime", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-        { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 350,type: gridColumnTypes.template },
+        { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 350, type: gridColumnTypes.template },
         { heading: "Doctor Name", key: "doctorname", sort: true, align: 'left', emptySign: 'NA', width: 230, type: gridColumnTypes.template },
         { heading: "Department", key: "departmentName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "OPNo", key: "opdNo", sort: true, align: 'left', emptySign: 'NA', },
@@ -688,9 +688,35 @@ export class AppointmentListComponent implements OnInit {
         this.updateRegisteredPatientInfo(obj);
     }
 
+    selectedRow: any = null;
     getSelectedRow(row: any): void {
+        this.selectedRow = row;
         console.log("Selected row : ", row);
     }
+    @HostListener('document:keydown', ['$event'])
+    onKeydownHandler(event: KeyboardEvent) {
+
+        if (event.key === 'F4') {
+            event.preventDefault(); // optional
+
+            if (!this.selectedRow) {
+                console.warn('No row selected');
+                return;
+            }
+
+            this.OnBillPayment(this.selectedRow);
+        }
+    }
+    clearSelection() {
+        this.selectedRow = null;
+    }
+
+    //  @HostListener('document:keydown', ['$event']) onKeydownHandler(event: KeyboardEvent) {
+    //         if (event.keyCode === 115) {
+    //             this.OnBillPayment(event);
+    //         }
+    //     }
+
     updateRegisteredPatientInfo(obj) {
         const dialogRef = this._matDialog.open(NewAppointmentComponent,
             {
@@ -1141,7 +1167,7 @@ export class AppointmentListComponent implements OnInit {
             const portal = new ComponentPortal(PatientDetailsPopoverComponent);
             const componentRef: ComponentRef<PatientDetailsPopoverComponent> = this.patientOverlayRef.attach(portal);
             componentRef.instance.patientData = patientData;
-            
+
             // Handle mouse events on the overlay element
             const overlayElement = this.patientOverlayRef.overlayElement;
             overlayElement.addEventListener('mouseenter', () => this.keepPatientPopoverOpen());
@@ -1232,7 +1258,7 @@ export class AppointmentListComponent implements OnInit {
             const portal = new ComponentPortal(DoctorDetailsPopoverComponent);
             const componentRef: ComponentRef<DoctorDetailsPopoverComponent> = this.doctorOverlayRef.attach(portal);
             componentRef.instance.doctorData = doctorData;
-            
+
             // Handle mouse events on the overlay element
             const overlayElement = this.doctorOverlayRef.overlayElement;
             overlayElement.addEventListener('mouseenter', () => this.keepDoctorPopoverOpen());

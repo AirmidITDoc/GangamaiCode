@@ -9,9 +9,15 @@
         [transform]="transform"
        
       ></image-cropper> -->
-      <image-cropper #abc [imageFile]="data.file" outputType="blob"
-        (imageCropped)="onImageCropped($event)"> <!-- Event binding -->
+      <!-- Event binding -->
+      <!-- <image-cropper #abc [imageFile]="data.file" outputType="blob"
+        (imageCropped)="onImageCropped($event)"> 
+      </image-cropper> -->
+
+      <image-cropper #abc [imageFile]="data.file" outputType="blob" [maintainAspectRatio]="false" [resizeToWidth]="0"
+        [resizeToHeight]="0" (imageCropped)="onImageCropped($event)">
       </image-cropper>
+
 
     </div>
   </div>

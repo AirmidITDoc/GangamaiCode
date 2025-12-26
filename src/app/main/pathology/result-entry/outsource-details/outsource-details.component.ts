@@ -54,7 +54,6 @@ export class OutsourceDetailsComponent {
     private router: Router
   ) { }
 
-  Reportdatestatus = false
   isDateReadonly = false;
   isDateReadonlyUpdate = false;
   ngOnInit(): void {
@@ -202,13 +201,7 @@ export class OutsourceDetailsComponent {
       this.LabFormGroup.get('outSourceStatus').setValue(0)
 
     debugger
-    // if (this.outSourceId == 0) {
-    //   this.LabFormGroup.get('outSourceReportCollectedDateTime').setValue("01/01/1900")
-    // }
-    // else {
     this.LabFormGroup.get('outSourceReportCollectedDateTime').setValue(this.isoDateTime1)
-    // this.LabFormGroup.get('outSourceReportCollectedDateTime')?.setValue('1900-01-01 00:00:00.000');
-    // }
 
     if (this.data.outSourceSampleSentDateTime != undefined) {
       this.LabFormGroup.get('outSourceSampleSentDateTime')?.setValue(this.date);

@@ -32,15 +32,9 @@ export class OtReservationService {
 
     CreateForm() {
         return this._formBuilder.group({
-            otreservationId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-            opipid: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-            surgeryDate: ['', [Validators.required]],
-            createdby: [this._loggedService.currentUserValue.userId, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-            reason: ["", [Validators.required]],
-            newOTReservationId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-
-            // extra field
-            PatientName: [''],
+            otreservationId:[0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            isAnaesthetistPaid: [false],
+            isMaterialReplacement: [false]
         })
     }
 
@@ -56,6 +50,9 @@ export class OtReservationService {
     }
     public getotReservationById(Id) {
         return this._httpClient.GetData("OTReservation/" + Id);
+    }
+    public getotOperativeById(Id) {
+        return this._httpClient.GetData("OTOperativeNotes/" + Id);
     }
     public getotsiteDiscById(Id) {
         return this._httpClient.GetData("SiteDescriptionMaster/" + Id);
@@ -96,5 +93,16 @@ export class OtReservationService {
     }
     public getRtrvotReqdiagnosisList(employee) {
         return this._httpClient.PostData("OTRequest/OtRequestDiagnosisList", employee);
+    }
+    public operativeSave(Param: any) {
+        if (Param.operativeNotesId) {
+            return this._httpClient.PutData("OTOperativeNotes/" + Param.operativeNotesId, Param);
+        } else return this._httpClient.PostData("OTOperativeNotes/Insert", Param);
+    }
+
+    public statusUpdate(Param: any) {
+        // if (Param.otreservationId) {
+            return this._httpClient.PostData("OTReservation/UpdateOTReservationHeader/", Param);
+        // }
     }
 }

@@ -40,7 +40,7 @@ export class ResultEntryComponent implements OnInit {
   reportPrintObj: RadiologyPrint;
   regobj: RadiologyPatienInsert;
   vTemplateDesc: any = "";
-  screenFromString = 'opd-casepaper';
+   screenFromString = 'Common-form';
   isresultdrSelected: boolean = false;
   templatelist: any = [];
   Doctorlist: any = [];

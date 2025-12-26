@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, ComponentRef, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { fuseAnimations } from '@fuse/animations';
@@ -18,6 +18,11 @@ import { PageNames } from 'app/main/shared/componets/airmid-fileupload/airmid-fi
 import Swal from 'sweetalert2';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { RadioLabOutsourceComponent } from './radio-lab-outsource/radio-lab-outsource.component';
+import { Overlay, OverlayRef } from '@angular/cdk/overlay';
+import { ComponentPortal } from '@angular/cdk/portal';
+import { OutsourceDetailsPopoverComponent } from 'app/main/pathology/result-entry/outsource-details-popover/outsource-details-popover.component';
+import { EmailSendComponent } from 'app/main/shared/componets/email-send/email-send.component';
+import { WhatsAppEmailService } from 'app/main/shared/services/whats-app-email.service';
 
 @Component({
     selector: 'app-radiology-order-list',
@@ -33,18 +38,17 @@ export class RadiologyOrderListComponent implements OnInit {
     regNo: any = "0"
     l_name: any = ""
     status: any = "0"
-    opipType: any = "2";
+    opipType: any = "3";
     page: PageNames = PageNames.PATIENT;
     pathFiles: PageNames = PageNames.PATIENT_PATHFILES;
     autocompleteModeCategoryId: string = "RadioCategory";
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
 
+    @ViewChild('actionOnFirstTemplate') actionOnFirstTemplate!: TemplateRef<any>;
     @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
-    @ViewChild('actionsIPOP') actionsIPOP!: TemplateRef<any>;
     @ViewChild('actionsCompleted') actionsCompleted!: TemplateRef<any>;
-    @ViewChild('actionsType') actionsType!: TemplateRef<any>;
- @ViewChild('actionsverify') actionsverify!: TemplateRef<any>;
-@ViewChild('actionsoutSourceStatus') actionsoutSourceStatus!: TemplateRef<any>;
+    @ViewChild('actionsverify') actionsverify!: TemplateRef<any>;
+    @ViewChild('outSourcePopOver') outSourcePopOver!: TemplateRef<any>;
 
     fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
     toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
@@ -52,36 +56,24 @@ export class RadiologyOrderListComponent implements OnInit {
     todate = this.toDate ? this.datePipe.transform(this.toDate, "yyyy-MM-dd") : "";
 
     ngAfterViewInit() {
+        this.gridConfig.columnsList.find(col => col.key === 'actionOnFirst')!.template = this.actionOnFirstTemplate;
         this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
-        this.gridConfig.columnsList.find(col => col.key === 'opdipdtype')!.template = this.actionsIPOP;
         this.gridConfig.columnsList.find(col => col.key === 'isCompleted')!.template = this.actionsCompleted;
-        this.gridConfig.columnsList.find(col => col.key === 'patientType')!.template = this.actionsType;
         this.gridConfig.columnsList.find(col => col.key === 'isVerified')!.template = this.actionsverify;
- this.gridConfig.columnsList.find(col => col.key === 'outSourceStatus')!.template = this.actionsoutSourceStatus;
-
-
+        this.gridConfig.columnsList.find(col => col.key === 'outSourceLabName')!.template = this.outSourcePopOver;
     }
 
     allColumns = [
-
         {
-            heading: "Status", key: "isCompleted", type: gridColumnTypes.template, align: "center", width: 30,
+            heading: "-", key: "actionOnFirst", type: gridColumnTypes.template, align: "center", width: 150,
+            template: this.actionOnFirstTemplate
+        },
+        {
+            heading: "Status", key: "isCompleted", sort: true, align: 'left', emptySign: 'NA',width: 150, type: gridColumnTypes.template,
             template: this.actionsCompleted
         },
         {
-            heading: "Type", key: "opdipdtype", type: gridColumnTypes.template, align: 'center', width: 30,
-            template: this.actionsIPOP
-        },
-        {
-            heading: "PType", key: "patientType", type: gridColumnTypes.template, align: "center", width: 30,
-            template: this.actionsType
-        },
-        {
-            heading: "Verify", key: "isVerified", type: gridColumnTypes.template, align: "center", width: 50,
-            template: this.actionsverify
-        },
-         {
-            heading: "-", key: "outSourceStatus", type: gridColumnTypes.template, align: "center", width: 50,
+            heading: "Verify", key: "isVerified", sort: true, align: 'left', emptySign: 'NA',width: 150, type: gridColumnTypes.template,
             template: this.actionsverify
         },
         //  { heading: "DOA", key: "visitTime", sort: true, align: 'left', emptySign: 'NA', width: 200},
@@ -91,18 +83,10 @@ export class RadiologyOrderListComponent implements OnInit {
         { heading: "Age | Gender", key: "genderName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "Test Name", key: "serviceName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         { heading: "Admission No", key: "oP_IP_Number", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-
         { heading: "Bill No", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-
         { heading: "DoctorName", key: "consultantDoctor", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-
-
-        // { heading: "Age Year", key: "ageYear", sort: true, align: 'left', emptySign: 'NA', width: 80 },
-
-        // { heading: "BillNo", key: "billNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-        // { heading: "MobileNo", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "Category Name", key: "categoryName", sort: true, align: 'left', emptySign: 'NA', width: 120 },
-        // { heading: "RefDoctorName", key: "refdoctorName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "OutSourceName", key: "outSourceLabName", sort: true, align: 'left', emptySign: 'NA', width: 150, type: gridColumnTypes.template },
         {
             heading: "Action", key: "action", align: "right", width: 200, sticky: true, type: gridColumnTypes.template,
             template: this.actionButtonTemplate
@@ -116,7 +100,7 @@ export class RadiologyOrderListComponent implements OnInit {
         { fieldName: "From_Dt", fieldValue: this.fromdate, opType: OperatorComparer.Equals },
         { fieldName: "To_Dt", fieldValue: this.todate, opType: OperatorComparer.Equals },
         { fieldName: "IsCompleted", fieldValue: "0", opType: OperatorComparer.Equals },
-        { fieldName: "OP_IP_Type", fieldValue: "2", opType: OperatorComparer.Equals },
+        { fieldName: "OP_IP_Type", fieldValue: "3", opType: OperatorComparer.Equals },
         { fieldName: "CategoryId", fieldValue: "0", opType: OperatorComparer.Equals },
     ]
 
@@ -135,12 +119,13 @@ export class RadiologyOrderListComponent implements OnInit {
         private accountService: AuthenticationService,
         private _fuseSidebarService: FuseSidebarService,
         public toastr: ToastrService,
+        private overlay: Overlay,
+        public _whatsppService: WhatsAppEmailService,
     ) { }
 
     ngOnInit(): void {
         this.myformSearch = this._RadioloyOrderlistService.filterForm()
     }
-
 
     CategoryId = "0"
     CategoryView(value) {
@@ -153,9 +138,8 @@ export class RadiologyOrderListComponent implements OnInit {
         this.onChangeFirst();
     }
 
-
     onChangeFirst() {
-        debugger
+        // debugger
         this.fromDate = this.datePipe.transform(this.myformSearch.get('start').value, "yyyy-MM-dd")
         this.toDate = this.datePipe.transform(this.myformSearch.get('end').value, "yyyy-MM-dd")
         this.f_name = this.myformSearch.get('FirstNameSearch').value + "%"
@@ -166,9 +150,8 @@ export class RadiologyOrderListComponent implements OnInit {
         this.getfilterdata();
     }
 
-
     getfilterdata() {
-        debugger
+        // debugger
         this.gridConfig = {
             apiUrl: "Radiology/RadiologyList",
             columnsList: this.allColumns,
@@ -253,7 +236,6 @@ export class RadiologyOrderListComponent implements OnInit {
         }, 100);
     }
 
-
     getSelectedObjIP(obj) {
 
         console.log(obj)
@@ -264,9 +246,8 @@ export class RadiologyOrderListComponent implements OnInit {
         }
     }
 
-    
     Editoutsoucedata(row) {
-        const buttonElement = document.activeElement as HTMLElement; 
+        const buttonElement = document.activeElement as HTMLElement;
         buttonElement.blur(); // Remove focus from the button
 
         const dialogRef1 = this._matDialog.open(RadioLabOutsourceComponent,
@@ -275,11 +256,11 @@ export class RadiologyOrderListComponent implements OnInit {
                 height: '50vh',
                 width: '100%',
                 data: row
-                
+
             });
 
         dialogRef1.afterClosed().subscribe(result => {
-               this.grid.bindGridData();
+            this.grid.bindGridData();
         });
     }
 
@@ -300,7 +281,7 @@ export class RadiologyOrderListComponent implements OnInit {
                 let submitData = {
 
                     "radReportId": row.radReportId,
-                    "isVerifyid": this.accountService.currentUserValue.userId,
+                    "isVerifyId": this.accountService.currentUserValue.userId,
                     "isVerifySign": true,
                     "isVerifyedDate": new Date().toISOString()
 
@@ -311,12 +292,145 @@ export class RadiologyOrderListComponent implements OnInit {
                 });
             }
         });
-           this.grid.bindGridData();
+        this.grid.bindGridData();
     }
     onClear() {
         this.myformSearch.get('RegNoSearch').setValue("0");
         this.myformSearch.get('StatusSearch').setValue("0");
-        this.myformSearch.get('PatientTypeSearch').setValue("1");
+        this.myformSearch.get('PatientTypeSearch').setValue("3");
+    }
+
+    getWhatsappshareBill(el) {
+        console.log(el);
+        this._whatsppService.OnWhatsAppMsgSent({
+            mobileNo: el.mobileNo,
+            patientName: el.patientName,
+            billNo: el.billNo,
+            smsType: "OPBill",
+            patientId: el.regNo
+        })
+    }
+
+    Onemail(contact) {
+        const dialogRef = this._matDialog.open(EmailSendComponent,
+            {
+                maxWidth: "100%",
+                height: '75%',
+                width: '55%',
+                data: {
+                    Obj: contact,
+                    emailType: 'OP-Bill'
+                }
+            });
+        dialogRef.afterClosed().subscribe(result => {
+            this.grid.bindGridData();
+        });
+    }
+
+    getVerifyTooltip(contact: any): string {
+        if (contact.isVerified) {
+            const formattedDate = this.datePipe.transform(
+                contact.isVerifyedDate,
+                'dd-MM-yyyy'
+            );
+            return `Verified On : ${formattedDate}\nVerified By : ${contact.verifiedUserName}`;
+        }
+        return contact.isCompleted
+            ? 'Verify Report'
+            : 'Test is Pending';
+    }
+
+    //////////////// outsource popup //////////////////////
+    private overlayRef: OverlayRef | null = null;
+    private patientOverlayRef: OverlayRef | null = null;
+    private hoverTimeout: any = null;
+    private outSourceCloseTimeout: any = null;
+
+    openPatientDetailsPopover(event: MouseEvent, outSourceData: any) {
+        event.stopPropagation();
+
+        // Clear any existing timeout
+        if (this.hoverTimeout) {
+            clearTimeout(this.hoverTimeout);
+        }
+
+        // Add small delay to prevent flickering
+        this.hoverTimeout = setTimeout(() => {
+            // Close any existing patient popover
+            if (this.patientOverlayRef) {
+                this.patientOverlayRef.dispose();
+                this.patientOverlayRef = null;
+            }
+
+            const positionStrategy = this.overlay.position()
+                .flexibleConnectedTo(event.target as HTMLElement)
+                .withPositions([
+                    {
+                        originX: 'start',
+                        originY: 'bottom',
+                        overlayX: 'start',
+                        overlayY: 'top',
+                    },
+                    {
+                        originX: 'start',
+                        originY: 'top',
+                        overlayX: 'start',
+                        overlayY: 'bottom',
+                    },
+                    {
+                        originX: 'end',
+                        originY: 'center',
+                        overlayX: 'start',
+                        overlayY: 'center',
+                    },
+                    {
+                        originX: 'start',
+                        originY: 'center',
+                        overlayX: 'end',
+                        overlayY: 'center',
+                    }
+                ]);
+
+            this.patientOverlayRef = this.overlay.create({
+                positionStrategy,
+                scrollStrategy: this.overlay.scrollStrategies.close(),
+                hasBackdrop: false,
+            });
+
+            const portal = new ComponentPortal(OutsourceDetailsPopoverComponent);
+            const componentRef: ComponentRef<OutsourceDetailsPopoverComponent> = this.patientOverlayRef.attach(portal);
+            componentRef.instance.outSourceData = outSourceData;
+
+            // Handle mouse events on the overlay element
+            const overlayElement = this.patientOverlayRef.overlayElement;
+            overlayElement.addEventListener('mouseenter', () => this.keepPatientPopoverOpen());
+            overlayElement.addEventListener('mouseleave', () => this.closePatientDetailsPopover());
+        }, 300); // 300ms delay before showing popover
+    }
+
+    closePatientDetailsPopover() {
+        if (this.hoverTimeout) {
+            clearTimeout(this.hoverTimeout);
+            this.hoverTimeout = null;
+        }
+
+        if (this.outSourceCloseTimeout) {
+            clearTimeout(this.outSourceCloseTimeout);
+        }
+
+        this.outSourceCloseTimeout = setTimeout(() => {
+            if (this.patientOverlayRef) {
+                this.patientOverlayRef.dispose();
+                this.patientOverlayRef = null;
+            }
+        }, 200);
+    }
+
+    keepPatientPopoverOpen() {
+        if (this.outSourceCloseTimeout) {
+            clearTimeout(this.outSourceCloseTimeout);
+            this.outSourceCloseTimeout = null;
+        }
     }
 }
 

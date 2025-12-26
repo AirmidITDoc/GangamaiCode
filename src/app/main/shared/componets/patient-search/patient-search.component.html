@@ -118,7 +118,8 @@
                             
                                 <airmid-textbox fxFlex  label="NationalId \ Aadhaar No" formControlName="aadharCardNo" placeholder="Enter NationalID \ Aadhaar No"
                                 [formGroup]="SearchGroupForm"   type="text"  [validations]="getValidationMessages().aadharCardNo"
-                                [maxLength]="Is9_Digit_National_Id ? 9 : 12"  (keypress)="keyPressAlphanumeric($event)"></airmid-textbox>
+                                [maxLength]="Is9_Digit_National_Id ? 9 : 12"  [minLength]="Is9_Digit_National_Id ? 7 : 12" 
+                                 (keypress)="keyPressAlphanumeric($event)"></airmid-textbox>
                                 </div>
                             </div>
                             </form> 

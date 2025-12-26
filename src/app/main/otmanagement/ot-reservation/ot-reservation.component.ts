@@ -26,6 +26,7 @@ import { NewOtPostOperationComponent } from "../ot-preoperation/new-ot-post-oper
 import { NewTheaterInComponent } from "../theater-in/new-theater-in/new-theater-in.component";
 import { NewInOperationComponent } from "../in-operation/new-in-operation/new-in-operation.component";
 import { NewAnesthesiaRecordComponent } from "../anesthesia-record/new-anesthesia-record/new-anesthesia-record.component";
+import { OtOperativeNoteComponent } from "./ot-operative-note/ot-operative-note.component";
 
 const colors: Record<string, EventColor> = {
     red: {
@@ -50,11 +51,14 @@ const colors: Record<string, EventColor> = {
     animations: fuseAnimations
 })
 export class OTReservationComponent implements OnInit {
+
+    statusFormFinal: FormGroup;
     myFilterform: FormGroup
     msg: any;
     RequestName: any = "";
     tOtbookingRequestsForm: FormGroup;
     autocompleteModeOTTable: String = "OttableMaster";
+    registerObj2 = new OtReserInsert({});
 
     fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
     toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
@@ -66,33 +70,38 @@ export class OTReservationComponent implements OnInit {
     votbookingId: any = ""
     registerobj: any;
 
+    @ViewChild('statusForm') statusForm!: TemplateRef<any>;
+
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
     @ViewChild('firstActionButtonTemplate') firstActionButtonTemplate!: TemplateRef<any>;
-    @ViewChild('clearanceMedicalCode') clearanceMedicalCode!: TemplateRef<any>;
-    @ViewChild('clearanceFinancialCode') clearanceFinancialCode!: TemplateRef<any>;
+    @ViewChild('isPaidColorCode') isPaidColorCode!: TemplateRef<any>;
+    @ViewChild('isMaterialColorCode') isMaterialColorCode!: TemplateRef<any>;
 
     ngAfterViewInit() {
         this.gridConfig.columnsList.find(col => col.key === 'opiptype')!.template = this.actionsTemplate;
-        this.gridConfig.columnsList.find(col => col.key === 'otRequestId')!.template = this.actionsTemplate1;
+        this.gridConfig.columnsList.find(col => col.key === 'otRequestId')!.template = this.RequestColorCode;
         this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
-        // this.gridConfig.columnsList.find(col => col.key === 'clearanceMedical')!.template = this.clearanceMedicalCode;
-        // this.gridConfig.columnsList.find(col => col.key === 'clearanceFinancial')!.template = this.clearanceFinancialCode;
+        this.gridConfig.columnsList.find(col => col.key === 'isAnaesthetistPaid')!.template = this.isPaidColorCode;
+        this.gridConfig.columnsList.find(col => col.key === 'isMaterialReplacement')!.template = this.isMaterialColorCode;
         this.gridConfig.columnsList.find(col => col.key === 'firstAction')!.template = this.firstActionButtonTemplate;
     }
 
     @ViewChild('actionsTemplate') actionsTemplate!: TemplateRef<any>;
-    @ViewChild('actionsTemplate1') actionsTemplate1!: TemplateRef<any>;
+    @ViewChild('RequestColorCode') RequestColorCode!: TemplateRef<any>;
 
     allcolumns = [
         { heading: "-", key: "opiptype", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 40 },
-        { heading: "-", key: "otRequestId", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 40 },
+        {
+            heading: "-", key: "otRequestId", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 150,
+            template: this.RequestColorCode
+        },
+        { heading: "-", key: "isAnaesthetistPaid", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 100 },
+        { heading: "-", key: "isMaterialReplacement", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 100 },
         {
             heading: "", key: "firstAction", width: 300, align: 'left', type: gridColumnTypes.template,
             template: this.firstActionButtonTemplate
         },
-        // { heading: "-", key: "clearanceMedical", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 40 },
-        // { heading: "-", key: "clearanceFinancial", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 40 },
         // { heading: "", key: "isNewRecord", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 40 },
         { heading: "OTReser-Date&Time", key: "otReservationDateTime", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         { heading: "Surgery Date", key: "surgeryDate", sort: true, align: 'left', emptySign: 'NA', width: 150 },
@@ -105,7 +114,7 @@ export class OTReservationComponent implements OnInit {
         { heading: "Theater Name", key: "otTableName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         { heading: "UserName", key: "userName", sort: true, align: 'left', emptySign: 'NA', width: 180 },
         {
-            heading: "Action", key: "action", align: "right", width: 120, sticky: true, type: gridColumnTypes.template,
+            heading: "Action", key: "action", align: "right", width: 150, sticky: true, type: gridColumnTypes.template,
             template: this.actionButtonTemplate
         }
     ];
@@ -140,6 +149,8 @@ export class OTReservationComponent implements OnInit {
 
     ngOnInit(): void {
         this.myFilterform = this._OtReservationService.createSearchForm();
+
+        this.statusFormFinal = this._OtReservationService.CreateForm();
     }
 
     onChangeStartDate(value) {
@@ -147,6 +158,67 @@ export class OTReservationComponent implements OnInit {
     }
     onChangeEndDate(value) {
         this.gridConfig.filters[2].fieldValue = this.datePipe.transform(value, "yyyy-MM-dd")
+    }
+
+    patientName: string = '';
+    vOTReservationId: any;
+    openStatus(row: any = null): void {
+        console.log(row)
+        this.patientName = row?.patientName || '';
+        this.vOTReservationId = row.otReservationId
+        this.getReservationData(row);
+
+        const dialogRef = this._matDialog.open(this.statusForm, {
+            width: '35%',
+            height: '40%'
+        });
+        dialogRef.afterClosed().subscribe(result => {
+            this.grid.bindGridData();
+        });
+    }
+
+    getReservationData(row: any) {
+        if (row.otReservationId) {
+            setTimeout(() => {
+                this._OtReservationService.getotReservationById(row.otReservationId).subscribe((response) => {
+                    this.registerObj2 = response;
+                    this.statusFormFinal.get('isAnaesthetistPaid').setValue(this.registerObj2.isAnaesthetistPaid ?? false)
+                    this.statusFormFinal.get('isMaterialReplacement').setValue(this.registerObj2.isMaterialReplacement ?? false)
+                });
+            }, 500);
+        }
+    }
+
+    saveStatus() {
+        this.statusFormFinal.get('otreservationId').setValue(this.vOTReservationId)
+        console.log(this.statusFormFinal.value)
+        if (!this.statusFormFinal.invalid) {
+            console.log(this.statusFormFinal.value)
+            this._OtReservationService.statusUpdate(this.statusFormFinal.value).subscribe((response) => {
+                this.onClear();
+            });
+        } {
+            let invalidFields = [];
+            if (this.statusFormFinal.invalid) {
+                for (const controlName in this.statusFormFinal.controls) {
+                    if (this.statusFormFinal.controls[controlName].invalid) {
+                        invalidFields.push(`Form: ${controlName}`);
+                    }
+                }
+            }
+            if (invalidFields.length > 0) {
+                invalidFields.forEach(field => {
+                    this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
+                    );
+                });
+            }
+
+        }
+    }
+
+    onClear() {
+        this.statusFormFinal.reset();
+        this._matDialog.closeAll();
     }
 
     onNewotReservation(row: any = null) {
@@ -294,12 +366,34 @@ export class OTReservationComponent implements OnInit {
             this.grid.bindGridData();
         });
     }
+
+    onOperativeNote(row: any = null) {
+        const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+        buttonElement.blur(); // Remove focus from the button
+
+        let that = this;
+        const dialogRef = this._matDialog.open(OtOperativeNoteComponent,
+            {
+                maxWidth: "90vw",
+                maxHeight: '90vh',
+                width: '90%',
+                data: row
+            });
+        dialogRef.afterClosed().subscribe(result => {
+            that.grid.bindGridData();
+        });
+    }
+
+    onStatus(row: any = null) {
+
+    }
+
     OnPrint(Param) {
         const param = {
             searchFields: [
                 {
                     fieldName: "OTReservationId",
-                    fieldValue: String(Param.OTReservationId),
+                    fieldValue: String(Param.otReservationId),
                     opType: "Equals"
                 },
                 {
@@ -308,7 +402,7 @@ export class OTReservationComponent implements OnInit {
                     opType: "Equals"
                 }
             ],
-            mode: "OTReservationReport"
+            mode: "OTReservation"
         };
 
         console.log(param);
@@ -880,9 +974,13 @@ export class OtReserInsert {
     operativeFindingsNotes: any;
     postOperativeNotes: any;
     conditionOfPatientNotes: any;
-    opIpId:any
-    opipType:any;
-    isPrimary:any;
+    opIpId: any
+    opipType: any;
+    isPrimary: any;
+    opIpType: any;
+    operativeNotesId: any;
+    isAnaesthetistPaid: any;
+    isMaterialReplacement: any;
 
     /**
      * Constructor
@@ -987,9 +1085,14 @@ export class OtReserInsert {
             this.operativeFindingsNotes = OtReserInsert.operativeFindingsNotes || ''
             this.postOperativeNotes = OtReserInsert.postOperativeNotes || ''
             this.conditionOfPatientNotes = OtReserInsert.conditionOfPatientNotes || ''
-            this.opIpId= OtReserInsert.opIpId || ''
-            this.opipType= OtReserInsert.opipType || ''
-            this.isPrimary= OtReserInsert.isPrimary || ''
+            this.opIpId = OtReserInsert.opIpId || ''
+            this.opipType = OtReserInsert.opipType || ''
+            this.isPrimary = OtReserInsert.isPrimary || ''
+            this.opIpType = OtReserInsert.opIpType || ''
+            this.operativeNotesId = OtReserInsert.operativeNotesId || ''
+            this.isAnaesthetistPaid = OtReserInsert.isAnaesthetistPaid || ''
+            this.isMaterialReplacement = OtReserInsert.isMaterialReplacement || ''
+            // this.isPrimary = OtReserInsert.isPrimary || ''
         }
     }
 }

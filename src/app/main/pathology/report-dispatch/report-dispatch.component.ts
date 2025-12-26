@@ -209,7 +209,7 @@ export class ReportDispatchComponent {
     fromDate = fromDate ? this.datePipe.transform(fromDate, "yyyy-MM-dd") : "";
     toDate = toDate ? this.datePipe.transform(toDate, "yyyy-MM-dd") : "";
     let patientType = this.myformSearch.get("PatientTypeSearch").value || "2";
-    let status = this.myformSearch.get("StatusSearch").value || "1";
+    let status = "1";
 
     this.GetResultdetail()
     // Update the filters dynamically
@@ -269,8 +269,14 @@ export class ReportDispatchComponent {
 
     console.log(formattedDate);
 
-    let OPIP = row.patientType === 'OP' ? "0" : "1";
-    // debugger
+    let OPIP;
+    // = row.patientType === 'OP' ? "0" : "1";
+    if (row.patientType === 'LAB')
+      OPIP = "4"
+    else if (row.patientType === 'OP')
+      OPIP = "0"
+    else if (row.patientType === 'IP')
+      OPIP = "1"
 
     console.log(this.opipType)
     if (this.opipType == '4')

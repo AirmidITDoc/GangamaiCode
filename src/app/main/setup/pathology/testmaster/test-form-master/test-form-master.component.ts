@@ -35,7 +35,7 @@ export class TestFormMasterComponent implements OnInit {
     @ViewChild(MatSort) sort: MatSort;
     @ViewChild(MatPaginator) paginator: MatPaginator;
     displayedColumns: string[] = ['parameterName'];
-    displayedColumns2: string[] = ['Reorder', 'ParameterName', 'PrintParameterName', 'MethodName', 'UnitName', 'ParaMultipleRange', 'Formula', 'IsNumeric', 'Action'];
+    displayedColumns2: string[] = ['Reorder', 'SubtestName', 'ParameterName', 'PrintParameterName', 'MethodName', 'UnitName', 'ParaMultipleRange', 'Formula', 'IsNumeric', 'Action'];
     autocompleteModeCategoryId: string = "PathCategory";
     autocompleteModeServiceID: string = "PathologyService";
     autocompleteModeTemplate: string = "Template";
@@ -165,7 +165,7 @@ export class TestFormMasterComponent implements OnInit {
     createpathTestDetail(item: any = {}): FormGroup {
         return this._formBuilder.group({
             TestId: [this.vTestId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            SubTestId: [item.subTestID ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            SubTestId: [item.subTestID ?? item.testId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             ParameterId: [item.parameterID ?? item.parameterId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         });
     }
@@ -194,6 +194,7 @@ export class TestFormMasterComponent implements OnInit {
             this.serviceflag = false;
             this.Subtest = true
             this._TestmasterService.is_templatetest = false;
+            this.testForm.get('ServiceId')?.setValue(0)
             this.testForm.get('ServiceId')?.clearValidators();
             this.testForm.get('ServiceId')?.updateValueAndValidity();
             // get issubtest list
@@ -204,6 +205,7 @@ export class TestFormMasterComponent implements OnInit {
             this.Statusflag = true;
             this.serviceflag = true;
             this.Subtest = false
+            this.DSTestList.data = [];
             this.testForm.get('ServiceId')?.setValidators([Validators.required])
             this.testForm.get('ServiceId')?.updateValueAndValidity();
         }
@@ -228,7 +230,7 @@ export class TestFormMasterComponent implements OnInit {
         var m_data =
         {
             "first": 0,
-            "rows": 10,
+            "rows": 9999,
             "sortField": "TestId",
             "sortOrder": 0,
             "filters": [
@@ -255,6 +257,13 @@ export class TestFormMasterComponent implements OnInit {
 
             console.log('Updated DSTestList:', this.DSTestList.data);
 
+             this.chargeslist = (Visit.data || []).map(x => ({
+                ...x,
+                parameterId: x.parameterId ?? x.parameterID
+            }));
+
+            // 🔄 single source → all tables
+            this.ChargeList = [...this.chargeslist];
             // this.DSTestList.data = Visit.data as TestList[];
             // this.dsTemparoryList.data = Visit as TestList[];
         });
@@ -262,33 +271,97 @@ export class TestFormMasterComponent implements OnInit {
     }
 
     // wroung api list used
+    // fetchSubTestlist(obj) {
+    //     var m_data =
+    //     {
+    //         "first": 0,
+    //         "rows": 999,
+    //         "sortField": "TestId",
+    //         "sortOrder": 0,
+    //         "filters": [
+    //             {
+    //                 "fieldName": "TestId",
+    //                 "fieldValue": String(obj.testId),
+    //                 "opType": "Equals"
+    //             }
+    //         ],
+    //         "Columns": [],
+    //         "exportType": "JSON"
+    //     }
+
+    //     this._TestmasterService.getSubTestList(m_data).subscribe(Visit => {
+    //         // this.DSTestList.data = Visit.data as TestList[];
+    //         // this.dsTemparoryList.data = Visit as TestList[];
+    //         const data = Visit.data as TestList[] || [];
+
+    //         // 🔥 VERY IMPORTANT
+    //         this.chargeslist = [...data];
+    //         this.ChargeList = [...data];
+
+    //         this.DSTestList.data = [...data];
+    //         this.dsTemparoryList.data = [...data];
+    //         this.DSTestListtemp.data = [...data];
+    //     });
+    // }
+
+    //  fetchSubTestlist(obj) {
+    //     var m_data =
+    //     {
+    //         "first": 0,
+    //         "rows": 10,
+    //         "sortField": "TestId",
+    //         "sortOrder": 0,
+    //         "filters": [
+    //             {
+    //                 "fieldName": "TestId",
+    //                 "fieldValue": String(obj.testId),
+    //                 "opType": "Equals"
+    //             }
+    //         ],
+    //         "Columns": [],
+    //         "exportType": "JSON"
+    //     }
+
+    //     this._TestmasterService.getSubTestList(m_data).subscribe(Visit => {
+    //         this.DSTestList.data = Visit.data as TestList[];
+    //         this.dsTemparoryList.data = Visit as TestList[];
+    //     });
+
+    // }
+    
     fetchSubTestlist(obj) {
-        var m_data =
-        {
-            "first": 0,
-            "rows": 10,
-            "sortField": "TestId",
-            "sortOrder": 0,
-            "filters": [
-                {
-                    "fieldName": "TestId",
-                    "fieldValue": String(obj.testId),
-                    "opType": "Equals"
-                }
-            ],
-            "Columns": [],
-            "exportType": "JSON"
-        }
 
-        this._TestmasterService.getSubTestList(m_data).subscribe(Visit => {
-            this.DSTestList.data = Visit.data as TestList[];
-            this.dsTemparoryList.data = Visit as TestList[];
+        const m_data = {
+            first: 0,
+            rows: 999,
+            sortField: 'TestId',
+            sortOrder: 0,
+            filters: [{
+                fieldName: 'TestId',
+                fieldValue: String(obj.testId),
+                opType: 'Equals'
+            }],
+            Columns: [],
+            exportType: 'JSON'
+        };
+
+        this._TestmasterService.getSubTestList(m_data).subscribe(res => {
+
+            this.chargeslist = (res.data || []).map(x => ({
+                ...x,
+                parameterId: x.parameterId ?? x.parameterID
+            }));
+
+            // 🔄 single source → all tables
+            this.ChargeList = [...this.chargeslist];
+            this.DSTestList.data = [...this.chargeslist];
+            this.dsTemparoryList.data = [...this.chargeslist];
+            this.DSTestListtemp.data = [...this.chargeslist];
         });
-
     }
 
-    drop(event: CdkDragDrop<string[]>) {
 
+    drop(event: CdkDragDrop<string[]>) {
         this.DSTestList.data = [];
         this.ChargeList = this.dsTemparoryList.data;
         moveItemInArray(this.ChargeList, event.previousIndex, event.currentIndex);
@@ -298,7 +371,7 @@ export class TestFormMasterComponent implements OnInit {
     fetchTemplate(obj) {
         var m_data = {
             "first": 0,
-            "rows": 10,
+            "rows": 999,
             "sortField": "TemplateId",
             "sortOrder": 0,
             "filters": [
@@ -358,15 +431,15 @@ export class TestFormMasterComponent implements OnInit {
                 (this.testFormInsert.get('pathTest') as FormGroup).removeControl('updatedBy');
             }
 
-            this.testFormInsert.get("pathTest.TestId")?.setValue(this.vTestId ?? 0)
+            this.testFormInsert.get("pathTest.TestId")?.setValue(this.vTestId || 0)
             this.testFormInsert.get("pathTest.testName")?.setValue(this.testForm.get("TestName").value)
             this.testFormInsert.get("pathTest.printTestName")?.setValue(this.testForm.get("PrintTestName").value)
             this.testFormInsert.get("pathTest.categoryId")?.setValue(Number(this.testForm.get("CategoryId").value))
-            this.testFormInsert.get("pathTest.techniqueName")?.setValue(this.testForm.get("TechniqueName").value ?? '')
-            this.testFormInsert.get("pathTest.machineName")?.setValue(this.testForm.get("MachineName").value ?? '')
-            this.testFormInsert.get("pathTest.suggestionNote")?.setValue(this.testForm.get("SuggestionNote").value ?? '')
-            this.testFormInsert.get("pathTest.footNote")?.setValue(this.testForm.get("FootNote").value ?? '')
-            this.testFormInsert.get("pathTest.serviceId")?.setValue(Number(this.testForm.get("ServiceId").value) ?? 0)
+            this.testFormInsert.get("pathTest.techniqueName")?.setValue(this.testForm.get("TechniqueName").value || '')
+            this.testFormInsert.get("pathTest.machineName")?.setValue(this.testForm.get("MachineName").value || '')
+            this.testFormInsert.get("pathTest.suggestionNote")?.setValue(this.testForm.get("SuggestionNote").value || '')
+            this.testFormInsert.get("pathTest.footNote")?.setValue(this.testForm.get("FootNote").value || '')
+            this.testFormInsert.get("pathTest.serviceId")?.setValue(Number(this.testForm.get("ServiceId").value) || 0)
             this.testFormInsert.get("pathTest.isSubTest")?.setValue(this.Subtest !== undefined ? this.Subtest : false)
             this.testFormInsert.get("pathTest.isTemplateTest")?.setValue(this._TestmasterService.is_templatetest ? 1 : 0)
             console.log("json of Test:", this.testFormInsert.value)
@@ -417,7 +490,7 @@ export class TestFormMasterComponent implements OnInit {
         let parameter = this.testForm.get("ParameterNameSearch").value + "%" || '%';
         var param = {
             "first": 0,
-            "rows": 10,
+            "rows": 999,
             "sortField": "ParameterId",
             "sortOrder": 0,
             "filters": [
@@ -428,7 +501,7 @@ export class TestFormMasterComponent implements OnInit {
                 },
                 {
                     "fieldName": "UnitId",
-                    "fieldValue": String(this.vUnitId),
+                    "fieldValue": String(0),//this.vUnitId),
                     "opType": "Equals"
                 },
                 {
@@ -453,7 +526,7 @@ export class TestFormMasterComponent implements OnInit {
         let parameter = this.testForm.get("ParameterNameSearch").value + "%" || '%';
         var param = {
             "first": 0,
-            "rows": 10,
+            "rows": 999,
             "sortField": "TestId",
             "sortOrder": 0,
             "filters": [
@@ -488,25 +561,54 @@ export class TestFormMasterComponent implements OnInit {
         }
 
     }
+    // onDeleteRow(event) {
+
+    //     const paraid = event.parameterID ?? event.parameterId;
+    //     if (!paraid) {
+    //         console.warn('Cannot delete: parameterId missing', event);
+    //         return;
+    //     }
+
+    //     // 🔥 MASTER DELETE (single source of truth)
+    //     this.chargeslist = this.chargeslist.filter(
+    //         item => (item.parameterID ?? item.parameterId) !== paraid
+    //     );
+
+    //     // 🔄 REFLECT IN UI
+    //     this.DSTestList.data = [...this.chargeslist];
+    //     this.dsTemparoryList.data = [...this.chargeslist];
+    //     this.DSTestListtemp.data = [...this.chargeslist];
+    // }
 
     onDeleteRow(event) {
-        let temp = [...this.paramterList.data];
-        temp.push({
-            parameterName: event.parameterName || "",
-        });
-        this.paramterList.data = temp;
+        let paraid = event.parameterID ?? event.parameterId
+        // PARAMETER delete
+        if (paraid && !event.testId) {
 
-        temp = [...this.DSTestList.data];
-        let index = temp.findIndex(item => item.parameterName === event.parameterName);
-        if (index !== -1) {
-            temp.splice(index, 1);
-        }
-        this.DSTestList.data = temp;
+            this.chargeslist = this.chargeslist.filter(
+                item => item.parameterId !== paraid
+            );
 
-        let chargesIndex = this.chargeslist.findIndex(item => item.parameterName === event.parameterName);
-        if (chargesIndex !== -1) {
-            this.chargeslist.splice(chargesIndex, 1);
+            this.ChargeList = this.ChargeList.filter(
+                item => item.parameterId !== paraid
+            );
         }
+
+        // SUBTEST delete
+        else if (event.testId) {
+
+            this.chargeslist = this.chargeslist.filter(
+                item => item.parameterId !== paraid
+            );
+
+            this.ChargeList = this.ChargeList.filter(
+                item => item.parameterId !== paraid
+            );
+        }
+
+        this.DSTestList.data = [...this.ChargeList];
+        this.dsTemparoryList.data = [...this.ChargeList];
+        this.DSTestListtemp.data = [...this.chargeslist];
     }
 
     onDeleteTemplateRow(event) {
@@ -609,7 +711,7 @@ export class TestFormMasterComponent implements OnInit {
             let isDuplicate = this.chargeslist.some(ele => ele.testId === row.testId);
 
             if (isDuplicate) {
-                this.toastr.warning('Selected Parameter already added in the list', 'Warning!', {
+                this.toastr.warning('Selected SubTest already added in the list', 'Warning!', {
                     toastClass: 'tostr-tost custom-toast-warning',
                 });
                 return;
@@ -628,7 +730,7 @@ export class TestFormMasterComponent implements OnInit {
     addsubtestdata(row) {
         const param = {
             "first": 0,
-            "rows": 10,
+            "rows": 999,
             "sortField": "TestId",
             "sortOrder": 0,
             "filters": [
@@ -651,7 +753,8 @@ export class TestFormMasterComponent implements OnInit {
                 parameterID: row.parameterId || 0,
                 parameterName: row.parameterName,
                 subTestID: row.subTestID || 0,
-                testId: row.testId
+                testId: row.testId || 0
+                // testName:row.testName
             }];
             this.ChargeList = [...this.ChargeList, ...newItems];
 

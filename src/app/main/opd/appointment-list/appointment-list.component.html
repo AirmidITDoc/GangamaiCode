@@ -320,7 +320,7 @@
             </div>
         </ng-template>
 
-        <airmid-table [gridConfig]="gridConfig" class="content" (onSelectRow)="getSelectedRow($event)">
+        <airmid-table [gridConfig]="gridConfig" class="content" (onSelectRow)="getSelectedRow($event)" (mouseleave)="clearSelection()">
             <ng-container filters>
                 <form [formGroup]="myformSearch">
                     <!-- 

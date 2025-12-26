@@ -1,4 +1,4 @@
-import { Component, ElementRef, Inject, OnDestroy, OnInit, Optional, TemplateRef, ViewChild } from '@angular/core';
+import { Component,  ElementRef,  Inject, OnDestroy, OnInit, Optional, TemplateRef, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
@@ -72,7 +72,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
     autocompleteModedeptdoc: string = "ConDoctor";
     autocompleteModeService: string = "Service";
     autocompleteModeConcession: string = "Concession";
-    autocompleteModeGroup: string = "GroupName";
+    autocompleteModeGroup: string = "GroupName"; 
 
     public dataSource = new MatTableDataSource<any>();
     public subscription: Array<Subscription> = [];
@@ -128,7 +128,9 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
             // console.log(this.data)
             this.patientDetail = this.advanceDataStored.storage;
             console.log(this.patientDetail)
-            this.ApiURL = "VisitDetail/GetServiceListwithTraiff?TariffId=" + this.patientDetail.tariffId + "&ClassId=" + this.patientDetail.classId + "&ServiceName="
+            //this.ApiURL = "VisitDetail/GetServiceListwithTraiff?TariffId=" + this.patientDetail.tariffId + "&ClassId=" + this.patientDetail.classId + "&ServiceName="
+            this.ApiURL = "VisitDetail/search-GetServiceListwithTraiff?TariffId=" + this.patientDetail.tariffId + "&ClassId=" + this.patientDetail.classId + "&SrvcName="
+
             console.log("Data", this.patientDetail)
             this.PatientName = this.patientDetail.patientName
             this.patientDetail.doctorName = this.patientDetail.doctorname
@@ -397,7 +399,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
             concessionReasonId: [0, this._FormvalidationserviceService.onlyNumberValidator()],
             netPayableAmt: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
             paymentType: ['CashPay'],
-            mpesaMobile: [''],
+            mpesaMobile: ['',[Validators.minLength(10), Validators.maxLength(10)]],
             UpiNo:[0, [Validators.minLength(4), Validators.maxLength(12), this._FormvalidationserviceService.onlyNumberValidator()]]
         })
     }
@@ -1088,7 +1090,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
         this.vTariffId = this.patientDetail.tariffId;
         this.vhospitalId = this.patientDetail.hospitalId;
         this.searchForm.get('TariffId').setValue(this.patientDetail.tariffId)
-        this.ApiURL = "VisitDetail/GetServiceListwithTraiff?TariffId=" + this.patientDetail.tariffId + "&ClassId=" + this.patientDetail.classId + "&ServiceName="
+        this.ApiURL = "VisitDetail/search-GetServiceListwithTraiff?TariffId=" + this.patientDetail.tariffId + "&ClassId=" + this.patientDetail.classId + "&SrvcName="
         this.OPFooterForm.patchValue({mpesaMobile:this.patientDetail?.mobileNo || 0})
         if (this.vOPIPId > 0)
             this.savebtn = false
@@ -1096,7 +1098,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
         this.checkCompanypatient(this.patientDetail?.companyId ?? 0)
     }
     getSelectedTariffObj(event) {
-        this.ApiURL = "VisitDetail/GetServiceListwithTraiff?TariffId=" + event.value + "&ClassId=" + this.patientDetail.classId + "&ServiceName="
+        this.ApiURL = "VisitDetail/search-GetServiceListwithTraiff?TariffId=" + event.value + "&ClassId=" + this.patientDetail.classId + "&SrvcName="
     }
     BillSave() {
         if (this.OPFooterForm.get('paymentType').value == 'OnlinePay') {
@@ -1423,8 +1425,72 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
     viewgetOPBillReportPdf(element) {
         this.commonService.Onprint("BillNo", element, "OpBillReceipt");
     }
-    viewgetOPBillThermalReportPdf(element) {
-        this.commonService.Onprint("BillNo", element, "OpBillReceiptT");
+    viewgetOPBillThermalReportPdf1(element) {
+        this.commonService.Onprint("BillNo", element, "OpBillReceipt");
+    }
+   
+    reportPrintObj: ChargesList;
+    subscriptionArr: Subscription[] = [];
+    printTemplate: any;
+    reportPrintObjList: ChargesList[] = [];
+         viewgetOPBillThermalReportPdf(element) { 
+          debugger 
+                  let param = {
+                      "searchFields": [
+                          {
+                              "fieldName": 'BillNo',
+                              "fieldValue": String(element),
+                              "opType": "13"
+                          }
+                      ],
+                      "mode": 'OPBillPrint'
+                  } 
+                  this._AppointmentlistService.getReportView(param).subscribe(res => { 
+                      console.log(res)
+                       this.reportPrintObjList = res as ChargesList[];  
+                         setTimeout(() => {
+                      this.print3();
+          }, 1000);
+                  }); 
+          }
+
+  
+   @ViewChild('billTemplate2') billTemplate2: ElementRef;
+      print3() {
+      let popupWin, printContents;
+  
+      popupWin = window.open('', '_blank', 'top=0,left=0,height=800px !important,width=auto,width=2200px !important');
+  
+      popupWin.document.write(` <html>
+    <head><style type="text/css">`);
+      popupWin.document.write(`
+      </style>
+      <style type="text/css" media="print">
+    @page { size: portrait; }
+  </style>
+          <title></title>
+      </head>
+    `);
+      popupWin.document.write(`<body onload="window.print();window.close()" style="font-family: system-ui, sans-serif;margin:0;font-size: 16px;">${this.billTemplate2.nativeElement.innerHTML}</body>
+    <script>
+      var css = '@page { size: portrait; }',
+      head = document.head || document.getElementsByTagName('head')[0],
+      style = document.createElement('style');
+      style.type = 'text/css';
+      style.media = 'print';
+  
+      if (style.styleSheet){
+          style.styleSheet.cssText = css;
+      } else {
+          style.appendChild(document.createTextNode(css));
+      }
+      head.appendChild(style);
+    </script>
+    </html>`);
+      // popupWin.document.write(`<body style="margin:0;font-size: 16px;">${this.printTemplate}</body>
+      // </html>`);
+  
+      popupWin.document.close();
     }
     selectChangeConcession(event) {
         this.ConcessionId = event.value
@@ -1718,6 +1784,7 @@ SavemPesaBill() {
 
 export class ChargesList {
     ChargesId: number;
+    ConcessionAmt:any;
     ServiceId: number;
     serviceId: number;
     ServiceName: String;
@@ -1746,6 +1813,20 @@ export class ChargesList {
     OpdIpdId: any;
     serviceName: any;
 
+    RegNo: any;
+    PatientName: any;
+    BillNo: any;
+    TotalBillAmount: any;
+    ConcessionAmount: any; 
+    NetPayableAmt: any;
+    ConsultantDocName: any;
+    AddedByName: any;
+    BillTime: any;
+    DiscComments: any;
+    PaymentMode: any;
+    TokenNo: any;
+    RefundAmt: any;
+    PaidAmount: any;
     doctorName: any;
     doctorId: any;
     isPathology: any;
@@ -1756,6 +1837,7 @@ export class ChargesList {
     packageId: any;
     ConcessionPercentage: any = 0;
     userName: any;
+    BalanceAmt:any;
     constructor(ChargesList) {
         this.ChargesId = ChargesList.ChargesId || '';
         this.ServiceId = ChargesList.ServiceId || '';
@@ -1779,6 +1861,7 @@ export class ChargesList {
         this.PackageId = ChargesList.PackageId || 0;
         this.PackageServiceId = ChargesList.PackageServiceId || 0;
         this.IsPackage = ChargesList.IsPackage || 0;
+         this.ConcessionAmt = ChargesList.ConcessionAmt || 0;
         this.PacakgeServiceName = ChargesList.PacakgeServiceName || '';
         this.OpdIpdId = ChargesList.OpdIpdId || '';
         this.serviceName = ChargesList.serviceName || ''
@@ -1787,13 +1870,28 @@ export class ChargesList {
         this.packageServiceId = ChargesList.packageServiceId || 0;
         this.price = ChargesList.price || 0;
         this.packageId = ChargesList.packageId || '';
-        this.doctorName = ChargesList.doctorName || 0;
+        this.doctorName = ChargesList.doctorName || 0; 
+        this.BalanceAmt = ChargesList.BalanceAmt || 0;
         this.doctorId = ChargesList.doctorId || 0;
         this.serviceCode = ChargesList.serviceCode || 0;
         this.isInclusionExclusion = ChargesList.isInclusionExclusion || '';
         this.isPathology = ChargesList.isPathology || 0;
         this.isRadiology = ChargesList.isRadiology || 0;
         this.userName = ChargesList.userName || '';
+
+        this.RegNo = ChargesList.RegNo || 0;
+        this.BillNo = ChargesList.BillNo || 0;
+        this.PatientName = ChargesList.PatientName || '';
+        this.TotalBillAmount = ChargesList.TotalBillAmount || 0;
+        this.ConcessionAmount = ChargesList.ConcessionAmount || 0;
+        this.NetPayableAmt = ChargesList.NetPayableAmt || 0;
+        this.ConsultantDocName = ChargesList.ConsultantDocName || '';
+        this.AddedByName = ChargesList.AddedByName || '';
+        this.DiscComments = ChargesList.DiscComments || '';
+               this.PaymentMode = ChargesList.PaymentMode || 0;
+        this.TokenNo = ChargesList.TokenNo || 0;
+        this.RefundAmt = ChargesList.RefundAmt || 0;
+ 
     }
 }
 export class PaymentInsert {

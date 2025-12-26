@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, ComponentRef, ElementRef, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { MatDialog } from "@angular/material/dialog";
 import { MatTabChangeEvent } from '@angular/material/tabs';
@@ -16,7 +16,13 @@ import { ReviewcompanyBillComponent } from './reviewcompany-bill/reviewcompany-b
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { WhatsAppEmailService } from 'app/main/shared/services/whats-app-email.service';
 import { EmailSendComponent } from 'app/main/shared/componets/email-send/email-send.component';
-
+import { Overlay, OverlayRef } from '@angular/cdk/overlay';
+import { PatientDetailsPopoverComponent } from '../appointment-list/patient-details-popover/patient-details-popover.component';
+import { ComponentPortal } from '@angular/cdk/portal';
+import { SMSDetailsPopupOverComponent } from 'app/main/shared/componets/email-send/smsdetails-popup-over/smsdetails-popup-over.component';
+import { WhatsappDetPopUpOverComponent } from 'app/main/shared/componets/email-send/whatsapp-det-pop-up-over/whatsapp-det-pop-up-over.component';
+import { Subscription } from 'rxjs';
+ 
 
 @Component({
     selector: 'app-new-oplist',
@@ -239,7 +245,8 @@ export class NewOPListComponent implements OnInit {
         private commonService: PrintserviceService,
         public _ConfigService: ConfigService,
         public _accountService: AuthenticationService,
-        public _whatsppService: WhatsAppEmailService
+        public _whatsppService: WhatsAppEmailService,
+        private overlay: Overlay
     ) { }
 
 
@@ -271,15 +278,80 @@ export class NewOPListComponent implements OnInit {
     getWhatsappshareRefundBill(Id) { }
 
     OnPrint(element) {
-        debugger
         const [ThermalPrint, ThermalPrintValue] = this._ConfigService.configParams.ThermalPrint.split(":");
         if (ThermalPrint != 1) {
             this.commonService.Onprint("BillNo", element.billNo, "OpBillReceipt");
         } else {
-            this.commonService.Onprint("BillNo", element.billNo, "OpBillReceiptT");
+            // Use thermal print with preview - shows preview first, then auto-prints
+            this.viewgetOPBillThermalReportPdf(element.billNo)
+           // this.commonService.OnThermalPrint("BillNo", element.billNo, "OpBillReceiptT");
         }
     }
+//All Good print is ok
+        currentDate= new Date();
+    viewgetOPBillThermalReportPdf(BillNo) {
+ 
+        debugger
+        let param = {
+            "searchFields": [
+                {
+                    "fieldName": 'BillNo',
+                    "fieldValue": String(BillNo),
+                    "opType": "13"
+                }
+            ],
+            "mode": 'OPBillPrint'
+        }
+        this._OPListService.getReportView(param).subscribe(res => {
+            console.log(res)
+            this.reportPrintObjList = res as BrowseOPDBill[]; 
+            setTimeout(() => {
+                this.print3();
+            }, 1000);
+        });
+    }
+  reportPrintObj: BrowseOPDBill;
+  subscriptionArr: Subscription[] = [];
+  printTemplate: any;
+  reportPrintObjList: BrowseOPDBill[] = [];
 
+ @ViewChild('billTemplate2') billTemplate2: ElementRef;
+    print3() {
+    let popupWin, printContents;
+
+    popupWin = window.open('', '_blank', 'top=0,left=0,height=800px !important,width=auto,width=2200px !important');
+
+    popupWin.document.write(` <html>
+  <head><style type="text/css">`);
+    popupWin.document.write(`
+    </style>
+    <style type="text/css" media="print">
+  @page { size: portrait; }
+</style>
+        <title></title>
+    </head>
+  `);
+    popupWin.document.write(`<body onload="window.print();window.close()" style="font-family: system-ui, sans-serif;margin:0;font-size: 16px;">${this.billTemplate2.nativeElement.innerHTML}</body>
+  <script>
+    var css = '@page { size: portrait; }',
+    head = document.head || document.getElementsByTagName('head')[0],
+    style = document.createElement('style');
+    style.type = 'text/css';
+    style.media = 'print';
+
+    if (style.styleSheet){
+        style.styleSheet.cssText = css;
+    } else {
+        style.appendChild(document.createTextNode(css));
+    }
+    head.appendChild(style);
+  </script>
+  </html>`);
+    // popupWin.document.write(`<body style="margin:0;font-size: 16px;">${this.printTemplate}</body>
+    // </html>`);
+
+    popupWin.document.close();
+  }
     OnCompanyBill(element) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur();
@@ -295,7 +367,7 @@ export class NewOPListComponent implements OnInit {
     }
 
     OngetRecord(element, m) {
-        debugger
+
         console.log('Third action clicked for:', element);
         const [ThermalPrint, ThermalPrintValue] = this._ConfigService.configParams.ThermalPrint.split(":");
         // if (m == "Bill Print"){
@@ -568,8 +640,202 @@ export class NewOPListComponent implements OnInit {
 
         this.onChangeOPRefund();
     }
+    private overlayRef: OverlayRef | null = null;
+    private EmailOverlayRef: OverlayRef | null = null;
+    private whatsappOverlayRef: OverlayRef | null = null;
+    private hoverTimeout: any = null;
+    private patientCloseTimeout: any = null;
+    private doctorCloseTimeout: any = null;
+    
+    openEmailDetailsPopover(event: MouseEvent, patientData: any) {
+        event.stopPropagation();
 
+        // Clear any existing timeout
+        if (this.hoverTimeout) {
+            clearTimeout(this.hoverTimeout);
+        }
 
+        // Add small delay to prevent flickering
+        this.hoverTimeout = setTimeout(() => {
+            // Close any existing patient popover
+            if (this.EmailOverlayRef) {
+                this.EmailOverlayRef.dispose();
+                this.EmailOverlayRef = null;
+            }
+
+            const positionStrategy = this.overlay.position()
+                .flexibleConnectedTo(event.target as HTMLElement)
+                .withPositions([
+                    {
+                        originX: 'start',
+                        originY: 'bottom',
+                        overlayX: 'start',
+                        overlayY: 'top',
+                    },
+                    {
+                        originX: 'start',
+                        originY: 'top',
+                        overlayX: 'start',
+                        overlayY: 'bottom',
+                    },
+                    {
+                        originX: 'end',
+                        originY: 'center',
+                        overlayX: 'start',
+                        overlayY: 'center',
+                    },
+                    {
+                        originX: 'start',
+                        originY: 'center',
+                        overlayX: 'end',
+                        overlayY: 'center',
+                    }
+                ]);
+
+            this.EmailOverlayRef = this.overlay.create({
+                positionStrategy,
+                scrollStrategy: this.overlay.scrollStrategies.close(),
+                hasBackdrop: false,
+            });
+
+            const portal = new ComponentPortal(SMSDetailsPopupOverComponent);
+            const componentRef: ComponentRef<SMSDetailsPopupOverComponent> = this.EmailOverlayRef.attach(portal);
+            componentRef.instance.patientData = patientData;
+            
+            // Handle mouse events on the overlay element
+            const overlayElement = this.EmailOverlayRef.overlayElement;
+            overlayElement.addEventListener('mouseenter', () => this.keepPatientPopoverOpen());
+            overlayElement.addEventListener('mouseleave', () => this.closeEmailDetailsPopover());
+        }, 300); // 300ms delay before showing popover
+    }
+    closeEmailDetailsPopover() {
+        // Clear timeout if popover hasn't opened yet
+        if (this.hoverTimeout) {
+            clearTimeout(this.hoverTimeout);
+            this.hoverTimeout = null;
+        }
+
+        // Clear any existing close timeout
+        if (this.patientCloseTimeout) {
+            clearTimeout(this.patientCloseTimeout);
+        }
+
+        // Add delay before closing to allow moving mouse to popover
+        this.patientCloseTimeout = setTimeout(() => {
+            if (this.EmailOverlayRef) {
+                this.EmailOverlayRef.dispose();
+                this.EmailOverlayRef = null;
+            }
+        }, 200);
+    }
+        openWhatsappDetailsPopover(event: MouseEvent, patientData: any) {
+        event.stopPropagation();
+
+        // Clear any existing timeout
+        if (this.hoverTimeout) {
+            clearTimeout(this.hoverTimeout);
+        }
+
+        // Add small delay to prevent flickering
+        this.hoverTimeout = setTimeout(() => {
+            // Close any existing patient popover
+            if (this.whatsappOverlayRef) {
+                this.whatsappOverlayRef.dispose();
+                this.whatsappOverlayRef = null;
+            }
+
+            const positionStrategy = this.overlay.position()
+                .flexibleConnectedTo(event.target as HTMLElement)
+                .withPositions([
+                    {
+                        originX: 'start',
+                        originY: 'bottom',
+                        overlayX: 'start',
+                        overlayY: 'top',
+                    },
+                    {
+                        originX: 'start',
+                        originY: 'top',
+                        overlayX: 'start',
+                        overlayY: 'bottom',
+                    },
+                    {
+                        originX: 'end',
+                        originY: 'center',
+                        overlayX: 'start',
+                        overlayY: 'center',
+                    },
+                    {
+                        originX: 'start',
+                        originY: 'center',
+                        overlayX: 'end',
+                        overlayY: 'center',
+                    }
+                ]);
+
+            this.whatsappOverlayRef = this.overlay.create({
+                positionStrategy,
+                scrollStrategy: this.overlay.scrollStrategies.close(),
+                hasBackdrop: false,
+            });
+
+            const portal = new ComponentPortal(WhatsappDetPopUpOverComponent);
+            const componentRef: ComponentRef<WhatsappDetPopUpOverComponent> = this.whatsappOverlayRef.attach(portal);
+            componentRef.instance.patientData = patientData;
+            
+            // Handle mouse events on the overlay element
+            const overlayElement = this.whatsappOverlayRef.overlayElement;
+            overlayElement.addEventListener('mouseenter', () => this.keepPatientPopoverOpen());
+            overlayElement.addEventListener('mouseleave', () => this.closeWhatsappDetailsPopover());
+        }, 300); // 300ms delay before showing popover
+    }
+    closeWhatsappDetailsPopover() {
+        // Clear timeout if popover hasn't opened yet
+        if (this.hoverTimeout) {
+            clearTimeout(this.hoverTimeout);
+            this.hoverTimeout = null;
+        }
+
+        // Clear any existing close timeout
+        if (this.patientCloseTimeout) {
+            clearTimeout(this.patientCloseTimeout);
+        }
+
+        // Add delay before closing to allow moving mouse to popover
+        this.patientCloseTimeout = setTimeout(() => {
+            if (this.whatsappOverlayRef) {
+                this.whatsappOverlayRef.dispose();
+                this.whatsappOverlayRef = null;
+            }
+        }, 200);
+    }
+    keepPatientPopoverOpen() {
+        // Clear close timeout when hovering over popover
+        if (this.patientCloseTimeout) {
+            clearTimeout(this.patientCloseTimeout);
+            this.patientCloseTimeout = null;
+        }
+    }
+       ngOnDestroy() {
+        if (this.overlayRef) {
+            this.overlayRef.dispose();
+        }
+        if (this.EmailOverlayRef) {
+            this.EmailOverlayRef.dispose();
+        }
+        if (this.whatsappOverlayRef) {
+            this.whatsappOverlayRef.dispose();
+        }
+        if (this.hoverTimeout) {
+            clearTimeout(this.hoverTimeout);
+        }
+        if (this.patientCloseTimeout) {
+            clearTimeout(this.patientCloseTimeout);
+        }
+        if (this.doctorCloseTimeout) {
+            clearTimeout(this.doctorCloseTimeout);
+        }
+    }
     keyPressAlphanumeric(event) {
         var inp = String.fromCharCode(event.keyCode);
         if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
@@ -611,17 +877,22 @@ export class NewOPListComponent implements OnInit {
 
 export class BrowseOPDBill {
     BillNo: Number;
-
-    RegId: number;
-    RegNo: number;
-    PatientName: string;
+    RegNo: any;
+    PatientName: any;  
+    ConcessionAmount: any; 
+    NetPayableAmt: any; 
+    AddedByName: any;
+    BillTime: any;
+    DiscComments: any;
+    PaymentMode: any;
+    TokenNo: any;
+    RegId: number; 
     FirstName: string;
     Middlename: string;
     LastName: string;
 
     TotalAmt: number;
-    ConcessionAmt: number;
-    NetPayableAmt: number;
+    ConcessionAmt: number; 
     BillDate: any;
     IPDNo: number;
     ServiceName: String;
@@ -644,12 +915,12 @@ export class BrowseOPDBill {
     PBillNo: string;
     BDate: Date;
     VisitDate: Date;
-    BalanceAmt: number;
-    AddedByName: string;
+    BalanceAmt: number; 
     Department: any;
     Address: any;
     MobileNo: any;
-    CashCounterID: number;
+    CashCounterID: number; 
+    RefundAmt:any;
     //NEFTPayAmount:number;
     /**
      * Constructor
@@ -659,6 +930,8 @@ export class BrowseOPDBill {
     constructor(BrowseOPDBill) {
         {
             this.BillNo = BrowseOPDBill.BillNo || '';
+             this.RefundAmt = BrowseOPDBill.RefundAmt || '';
+              this.ConcessionAmount = BrowseOPDBill.ConcessionAmount || '';
             this.RegId = BrowseOPDBill.RegId || '';
             this.RegNo = BrowseOPDBill.RegNo || '';
             this.PatientName = BrowseOPDBill.PatientName || '';

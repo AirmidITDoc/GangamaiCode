@@ -275,8 +275,15 @@ export class ResultEntryComponent implements OnInit {
 
         console.log(formattedDate);
 
-        let OPIP = row.patientType === 'OP' ? "0" : "1";
-        // debugger
+        let OPIP;
+        // = row.patientType === 'OP' ? "0" : "1";
+        if (row.patientType === 'LAB')
+            OPIP = "4"
+        else if (row.patientType === 'OP')
+            OPIP = "0"
+        else if (row.patientType === 'IP')
+            OPIP = "1"
+
 
         console.log(this.opipType)
         if (this.opipType == '2')
@@ -1073,8 +1080,37 @@ export class ResultEntryComponent implements OnInit {
     }
     selection = new SelectionModel<SampleList>(true, []);
 
+    // masterToggle() {
+    //     // Toggle selection
+    //     if (this.isSomeSelected()) {
+    //         this.selection.clear();
+    //     } else {
+    //         this.isAllSelected()
+    //             ? this.selection.clear()
+    //             : this.dataSource1.data.forEach(row => this.selection.select(row));
+    //     }
+
+    //     console.log('Selected items count:', this.selection.selected.length);
+
+    //     this.resultSource = [...this.selection.selected];
+    //     console.log('Selected items:', this.resultSource);
+    // }
     masterToggle() {
-        // Toggle selection
+        // debugger
+        const totalTests = this.dataSource1.data.length;
+        const collectedTests = this.dataSource1.data.filter(
+            (row: any) => row.isSampleCollection === 'True'
+        );
+        const notCollectedCount = totalTests - collectedTests.length;
+        if (notCollectedCount > 0) {
+            Swal.fire(
+                'Sample Pending',
+                `Still ${notCollectedCount} test(s) remaining to collect sample`,
+                'warning'
+            );
+            return;
+        }
+
         if (this.isSomeSelected()) {
             this.selection.clear();
         } else {
@@ -1084,7 +1120,6 @@ export class ResultEntryComponent implements OnInit {
         }
 
         console.log('Selected items count:', this.selection.selected.length);
-
         this.resultSource = [...this.selection.selected];
         console.log('Selected items:', this.resultSource);
     }
@@ -1154,6 +1189,16 @@ export class ResultEntryComponent implements OnInit {
 
         return contact.isCompleted
             ? 'Verify Report'
+            : 'Test is Pending';
+    }
+
+    getCompleteTooltip(contact: any): string {
+        if (contact.isCompleted) {
+            return `Completed On : ${contact.reportTime}\nCompleted By : ${contact.reportCompletedUser}`;
+        }
+        // ${contact.reportDate} 
+        return contact.isCompleted
+            ? 'Completed Report'
             : 'Test is Pending';
     }
 

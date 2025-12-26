@@ -109,7 +109,6 @@ export class LabrefundBillComponent {
     this.vRefundOfBillFormGroup.get("refund.refundTime")?.setValue(this.dateTimeObj.time)
   }
 
-
   createSearchForm() {
     return this.formBuilder.group({
       RegId: [''],
@@ -127,7 +126,7 @@ export class LabrefundBillComponent {
         UnitId: [this.accountService.currentUserValue.user.unitId],
         billId: [0, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
         advanceId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        opdipdtype: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        opdipdtype: [4, [this._FormvalidationserviceService.onlyNumberValidator()]],
         opdipdid: [0, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
         refundAmount: [0, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator(), Validators.minLength(1),
         this._FormvalidationserviceService.notEmptyOrZeroValidator()
@@ -234,7 +233,7 @@ export class LabrefundBillComponent {
           this.VlabPatRegId = this.registerObj?.labPatRegId
           this.RegNo = this.registerObj?.labRequestNo
           this.PatientName = this.registerObj?.patientName
-          this.billNo = this.registerObj.billNo;
+          // this.billNo = this.registerObj.billNo;
           this.vRefundOfBillFormGroup.get("refund.billId")?.setValue(this.registerObj.billNo);
           console.log(response)
           this.getfilterdata(this.VlabPatRegId)
@@ -244,7 +243,7 @@ export class LabrefundBillComponent {
   }
 
   getfilterdata(RegId) {
-    debugger
+    // debugger
     this.gridConfig = {
       apiUrl: "RefundOfBill/OPBilllistforrefundList",
       columnsList: this.allColumns1,
@@ -319,9 +318,9 @@ export class LabrefundBillComponent {
         RegNo: this.RegNo || 0,
         Age: this.registerObj?.ageYear || 0,
         NetPayAmount: Math.round(this.RefundOfBillFormFooter.get('TotalRefundAmount')?.value),
-        //billNo: this.vRefundOfBillFormGroup.get("refund.billId")?.value,
+        billNo: this.billNo,
         CashCounterId: this.searchFormGroup.get('CashCounterID')?.value || 0,
-        TransactionLabel: 'OP_REFUND_OF_BILL'
+        TransactionLabel: 'LAB_REFUND_OF_BILL'
       };
       console.log(PatientHeaderObj)
       const dialogRef = this._matDialog.open(OpPaymentComponent, {
@@ -330,7 +329,7 @@ export class LabrefundBillComponent {
         width: '80%',
         data: {
           vPatientHeaderObj: PatientHeaderObj,
-          FromName: "OP-RefundOfBill",
+          FromName: "LAB-RefundOfBill",
           advanceObj: PatientHeaderObj
         }
       });
@@ -338,10 +337,12 @@ export class LabrefundBillComponent {
       dialogRef.afterClosed().subscribe(result => {
         if (result && result.submitDataPay) {
           this.vRefundOfBillFormGroup.get('payment')?.setValue(result.submitDataPay.ipPaymentInsert);
+
           this.ModeOfPaymentsArray.clear();
           result.submitDataPay.ipModePaymentInsert.forEach(item => {
             this.ModeOfPaymentsArray.push(this.CreateModePaymentform(item));
           });
+
           console.log("OP Refund Value --> ", this.vRefundOfBillFormGroup.value)
           this._labPatientRegService.InsertOPRefundBilling(this.vRefundOfBillFormGroup.value).subscribe(response => {
             this.viewgetOPRefundBillReportPdf(response);
@@ -401,10 +402,11 @@ export class LabrefundBillComponent {
   onEdit(row) {
     console.log(row);
     var datePipe = new DatePipe("en-US");
+    this.billNo = row.billNo;
     this.vRefundOfBillFormGroup.get("refund.billId")?.setValue(row.billNo)
     this.vRefundOfBillFormGroup.get("refund.opdipdid")?.setValue(row.visitId)
     //Testing
-    debugger
+    // debugger
     if (row.refundAmount < row.netPayableAmt) {
       this.getservicedtailList(row);
 

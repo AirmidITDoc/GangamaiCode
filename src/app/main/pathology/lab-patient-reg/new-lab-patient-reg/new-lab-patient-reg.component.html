@@ -51,12 +51,6 @@
 
                                                 <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
 
-                                                    <!-- <airmid-autocomplete label="Patient Name / Mobile No" [formGroup]="myForm"
-                                            formControlName="patientName" placeholderText="Patient Name / Mobile No"
-                                            fxFlex ApiUrl="LabPatientRegistration/search-patient-1?Keyword="
-                                            (selectionChange)="getSelectedObj($event)"
-                                            ValueField="regId"></airmid-autocomplete> -->
-
                                                     <airmid-textbox label="First Name" formControlName="firstName"
                                                         [value]="registerObj.firstName" [formGroup]="myForm"
                                                         [validations]="getValidationMessages().firstName"
@@ -75,7 +69,8 @@
                                                     <airmid-textbox label="Last Name" formControlName="lastName"
                                                         [formGroup]="myForm" [maxLength]="50"
                                                         [validations]="getValidationMessages().lastName"
-                                                        [value]="registerObj?.lastName">
+                                                        [value]="registerObj?.lastName"
+                                                        (valueChange)="handleInputChangeDebounced('lastName')">
                                                     </airmid-textbox>
                                                 </div>
 
@@ -100,7 +95,8 @@
                                                     <airmid-textbox label="MobileNo" formControlName="mobileNo"
                                                         [validations]="getValidationMessages().mobileNo"
                                                         (keypress)="keyPressAlphanumeric($event)" [formGroup]="myForm"
-                                                        [maxLength]="10" [value]="registerObj?.mobileNo">
+                                                        [maxLength]="10" [value]="registerObj?.mobileNo"
+                                                        (valueChange)="handleInputChangeDebounced('mobileNo')">
                                                     </airmid-textbox>
                                                 </div>
 
@@ -341,8 +337,9 @@
                                                                     </mat-header-cell>
 
                                                                     <mat-cell *matCellDef="let contact" class="w-350">
-                                                                        <ng-container *ngIf="showDoctorDropdown(contact)">
-                                                                            <mat-form-field appearance="outline" 
+                                                                        <ng-container
+                                                                            *ngIf="showDoctorDropdown(contact)">
+                                                                            <mat-form-field appearance="outline"
                                                                                 fxFlex="200px" floatLabel="never">
                                                                                 <mat-select placeholder="Select Doctor"
                                                                                     [(ngModel)]="contact.DoctorId"
@@ -426,6 +423,15 @@
                                                                         [formGroup]="myForm" [type]="'number'"
                                                                         [readonly]="true">
                                                                     </airmid-textbox>
+                                                                </div>
+                                                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="100%"
+                                                                    *ngIf="myForm.get('totalDiscountPer')?.value > 0">
+                                                                    <airmid-dropdown label="Concession Reason"
+                                                                        formControlName="concessionReasonId"
+                                                                        [formGroup]="myForm"
+                                                                        [mode]="autocompleteModeConcession"
+                                                                        (selectionChange)="selectChangeConcession($event)">
+                                                                    </airmid-dropdown>
                                                                 </div>
                                                             </div>
                                                         </form>

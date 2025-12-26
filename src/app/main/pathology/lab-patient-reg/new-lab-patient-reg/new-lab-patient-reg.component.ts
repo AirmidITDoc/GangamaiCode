@@ -53,6 +53,7 @@ export class NewLabPatientRegComponent {
 
   isServiceIdSelected: boolean = false;
   isDoctor: boolean = false;
+  // Consessionres: boolean = false;
 
   autocompleteModepatienttype: string = "PatientType";
   autocompleteModegender: string = "Gender";
@@ -66,6 +67,7 @@ export class NewLabPatientRegComponent {
   autocompleteModesubcompany: string = "SubCompany";
   autocompleteModecamp: string = "CampMaster";
   autocompleteModedoctor: string = "ConDoctor";
+  autocompleteModeConcession: string = "Concession";
 
   dsLabRequest2 = new MatTableDataSource<LabRequest>();
   // dstable1 = new MatTableDataSource<LabRequest>();
@@ -238,6 +240,7 @@ export class NewLabPatientRegComponent {
       createdBy: this.accountService.currentUserValue.userId,
       LabPatRegId: 0,
       servicedoctorId: [0],
+      concessionReasonId: [0, this._FormvalidationserviceService.onlyNumberValidator()],
     })
   }
 
@@ -378,7 +381,7 @@ export class NewLabPatientRegComponent {
     });
   }
   CreateAddchargeform(item: any): FormGroup {
-
+debugger
     return this._formbuilder.group({
       chargesId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       chargesDate: this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
@@ -465,14 +468,6 @@ export class NewLabPatientRegComponent {
   private destroy$ = new Subject<void>();
 
   ////////////////////////// dd new method start ////////////////////
-  // getdocdetail(event: MatSelectChange): void {
-  //   const option = this.doctorOptions.find(opt => opt.value === event.value || opt.Value === event.value);
-  //   console.log(option)
-  //   this.servicedoctorname = option.text
-  //   this.serivcedoctorId = option.value
-  //   this.onAddCharges();
-  // }
-
   getdocdetail(event: MatSelectChange, row: any): void {
 
     const option = this.doctorOptions.find(
@@ -658,6 +653,11 @@ export class NewLabPatientRegComponent {
     }
   }
 
+  selectChangeConcession(event) {
+    this.ConcessionId = event.value
+    this.ConcessionReason = event.text
+  }
+
   onSaveEntry(row) {
     let doctorid = 0;
     const formValue = this.myForm.value
@@ -724,8 +724,6 @@ export class NewLabPatientRegComponent {
     const discountAmount = formValue.discountAmt;//(totalAmount * formValue.discountPer) / 100;
     const netAmount = totalAmount - discountAmount;
 
-    // if (totalAmount > 0) {
-
     const newRow = {
       ServiceId: row.serviceId,
       ServiceName: row.serviceName,
@@ -740,8 +738,8 @@ export class NewLabPatientRegComponent {
       DoctorId: row.DoctorId || 0,
       DoctorName: row.DoctorName || '-',
       ChargesAddedName: this.accountService.currentUserValue.userName,
-      IsPathology: this.IsPathology,
-      IsRadiology: this.IsRadiology,
+      IsPathology: row.isPathology,
+      IsRadiology: row.isRadiology,
       IsPackage: 0,
       serviceCode: 0,//formValue.serviceName.companyCode, 
       isInclusionExclusion: 1,//formValue.serviceName.isInclusionOrExclusion
@@ -956,6 +954,15 @@ export class NewLabPatientRegComponent {
     this.myForm.get('LabPatRegId').setValue(this.VlabPatRegId ?? 0);
     this.myForm.get('adharCardNo').setValue(Number(this.myForm.get('adharCardNo').value) ?? 0);
 
+    if (this.myForm.get('discountAmt').value > 0) {
+      if (!this.myForm.get('concessionReasonId').value) {
+        this.toastr.warning('Please select ConcessionReason.', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+      }
+    }
+
     console.log(this.myForm.getRawValue())
     let DateOfBirth1 = this.myForm.get('DateOfBirth')?.value;
     if (DateOfBirth1) {
@@ -1046,7 +1053,7 @@ export class NewLabPatientRegComponent {
           'Please select Doctor for added service', 'Warning!');
         return;
       }
-
+debugger
       this.dstable1.data.forEach(item => {
         this.ChargeddetailsArray.push(this.CreateAddchargeform(item as ChargesList));
         this.BillDetailsArray.push(this.createBillDetails(item as ChargesList));
@@ -1054,7 +1061,7 @@ export class NewLabPatientRegComponent {
 
       console.log("form values", this.OpBillForm.value)
       // const [ThermalPrint, ThermalPrintValue] = this._ConfigService.configParams.ThermalPrint.split(":");
-      debugger
+
       if (this.OPFooterForm.get('paymentType').value == 'PayOption') {
         let PatientHeaderObj = {};
         PatientHeaderObj['Date'] = this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd') || '01/01/1900',
@@ -1337,6 +1344,7 @@ export class NewLabPatientRegComponent {
 
   getValidationMessages() {
     const maxLen = this.Is9_Digit_National_Id ? 9 : 12;
+    const minLen = this.Is9_Digit_National_Id ? 7 : 12;
     return {
       RegId: [],
       firstName: [
@@ -1397,7 +1405,7 @@ export class NewLabPatientRegComponent {
       adharCardNo: [
         { name: "pattern", Message: "Only numbers allowed" },
         { name: "required", Message: "Aadhaar / National ID is required" },
-        { name: "minLength", Message: `${maxLen} digits required.` },
+        { name: "minLength", Message: `Minimum ${minLen} digits required.` },
         { name: "maxLength", Message: `More than ${maxLen} digits not allowed.` }
       ],
       MaritalStatusId: [

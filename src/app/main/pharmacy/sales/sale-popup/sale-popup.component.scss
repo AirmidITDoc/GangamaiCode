@@ -102,3 +102,9 @@ app-sale-popup{
 // }
 
 }
+
+::ng-deep .sale-table .mat-mdc-row:hover {
+  background-color: rgb(171, 171, 171);
+}
+
+

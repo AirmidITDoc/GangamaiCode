@@ -42,6 +42,7 @@ export class PatientSearchComponent implements OnInit {
   }
   createSearchform() {
     const maxLen = this.Is9_Digit_National_Id ? 9 : 12;
+     const minLen = this.Is9_Digit_National_Id ? 7 : 12;
     return this._formbuilder.group({
       RegId: [0, [this._formvalidationservice.notEmptyOrZeroValidator()]],
       mobileNo: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(10),
@@ -49,7 +50,7 @@ export class PatientSearchComponent implements OnInit {
       this._formvalidationservice.onlyNumberValidator()
       ]],
       emailId: ['', [Validators.required, Validators.email]],
-      aadharCardNo: ['', [Validators.required, Validators.minLength(maxLen), Validators.maxLength(maxLen),
+      aadharCardNo: ['', [Validators.required, Validators.minLength(minLen), Validators.maxLength(maxLen),
       this._formvalidationservice.onlyNumberValidator()
       ]],
     })
@@ -126,6 +127,7 @@ export class PatientSearchComponent implements OnInit {
 
   getValidationMessages() {
     const maxLen = this.Is9_Digit_National_Id ? 9 : 12;
+      const minLen = this.Is9_Digit_National_Id ? 7 : 12;
     return {
       mobileNo: [
         { name: "pattern", Message: "Only numbers allowed" },
@@ -141,7 +143,7 @@ export class PatientSearchComponent implements OnInit {
       aadharCardNo: [
         { name: "pattern", Message: "Only numbers allowed" },
         { name: "required", Message: "Aadhaar / National ID is required" },
-        { name: "minLength", Message: `${maxLen} digits required.` },
+        { name: "minLength", Message: `Minimum ${minLen} digits required.` },
         { name: "maxLength", Message: `More than ${maxLen} digits not allowed.` }
       ],
 

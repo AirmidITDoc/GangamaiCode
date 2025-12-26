@@ -97,10 +97,46 @@
                 </div>
             </ng-template>
 
-            <ng-template #actionsTemplate1 let-element>
-                <div fxLayout="row" fxLayoutAlign="center center">
-                    <mat-icon *ngIf="element.otRequestId > 0 ; else noRequest" matTooltip="Request Accepted"
-                        class="pill blue-600 s-16 ">circle</mat-icon>
+            <ng-template #RequestColorCode let-element>
+                <div fxLayout="row" fxLayoutAlign="center center" class="status-box">
+                    <span [ngClass]="{
+                        'status-completed':element.otRequestId > 0 ,
+                        'status-pending': element.otRequestId === 0
+                        }">
+                        {{ element.otRequestId ? 'AgainRequest' : 'Normal' }}
+                    </span>
+                </div>
+            </ng-template>
+
+            <ng-template #isPaidColorCode let-element>
+                <div fxLayout="row" fxLayoutAlign="center center" class="status-box">
+                    <span [ngClass]="{
+                        'status-completed':element.isAnaesthetistPaid === true ,
+                        'status-pending': element.isAnaesthetistPaid !== true
+                        }"
+                         [matTooltip]="
+                        element.isAnaesthetistPaid === true
+                            ? 'Anaesthetist payment completed'
+                            : 'Anaesthetist payment pending'
+                    " matTooltipPosition="above">
+                        {{ element.isAnaesthetistPaid ? 'Yes' : 'No' }}
+                    </span>
+                </div>
+            </ng-template>
+
+            <ng-template #isMaterialColorCode let-element>
+                <div fxLayout="row" fxLayoutAlign="center center" class="status-box">
+                    <span [ngClass]="{
+                        'status-completed':element.isMaterialReplacement === true ,
+                        'status-pending': element.isMaterialReplacement !== true
+                        }"
+                        [matTooltip]="
+                        element.isMaterialReplacement === true
+                            ? 'MaterialReplacement completed'
+                            : 'MaterialReplacement pending'
+                    " matTooltipPosition="above">
+                        {{ element.isMaterialReplacement ? 'Yes' : 'No' }}
+                    </span>
                 </div>
             </ng-template>
 
@@ -115,12 +151,37 @@
                         <mat-icon> print</mat-icon>
                     </button>
 
-                    <button mat-icon-button matTooltip="Cancel" (click)="OnCancel(element)" [disabled]="element.otCheckInId">
+                    <button mat-icon-button matTooltip="Cancel" (click)="OnCancel(element)"
+                        [disabled]="element.otCheckInId">
                         <mat-icon> cancel</mat-icon>
                     </button>
 
                     <app-airmid-consentform-icon [refId]="element.otReservationId" [opipId]="element.opIpId"
-                        [opipType]="element.opIpType" title="Name: {{ element.patientName }}  UHID: {{ element.regNo }}"></app-airmid-consentform-icon>
+                        [opipType]="element.opIpType" labelType="OT"
+                        title="Name: {{ element.patientName }}  UHID: {{ element.regNo }}"></app-airmid-consentform-icon>
+
+                    <button mat-icon-button [matMenuTriggerFor]="actionsMenu" matTooltipPosition="above"
+                        (click)="$event.stopPropagation();">
+                        <mat-icon>more_vert</mat-icon>
+                    </button>
+
+                    <mat-menu #actionsMenu="matMenu" xPosition="before" yPosition="below" [overlapTrigger]="false">
+
+                        <button mat-menu-item (click)="onOperativeNote(element)"
+                            style="height: 32px; min-height: 32px;">
+                            <mat-icon
+                                style="margin-right: 8px; font-size: 16px; width: 16px; height: 16px;">note_add</mat-icon>
+                            <span style="font-size: 13px;">OT Operative Note</span>
+                        </button>
+
+                        <button mat-menu-item (click)="openStatus(element)" style="height: 32px; min-height: 32px;">
+                            <mat-icon
+                                style="margin-right: 8px; font-size: 16px; width: 16px; height: 16px;">check_box</mat-icon>
+                            <span style="font-size: 13px;">Status</span>
+                        </button>
+
+                    </mat-menu>
+
                 </div>
             </ng-template>
             <airmid-table [gridConfig]="gridConfig" class="content">
@@ -318,7 +379,60 @@
             </mat-tab> -->
         <!-- </mat-tab-group> -->
     </div>
-
-
-
 </div>
+
+<!-- Demo check -->
+
+<ng-template #statusForm>
+    <mat-toolbar class="accent" style="width: 100%; height: 45px; justify-content: space-between;">
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <mat-icon class="logo-icon mr-16" style="color: white;">account_box</mat-icon>
+            <span style="font-size: 16px;">Anesthesia & Material Status</span>
+        </div>
+
+        <div class="close-icon">
+            <button mat-icon-button [mat-dialog-close]="true" aria-label="Close dialog" matTooltip="Close">
+                <mat-icon>close</mat-icon>
+            </button>
+        </div>
+    </mat-toolbar>
+
+    <div class="service-table1 p-12" fxLayout="column" fxLayoutGap="16px">
+
+        <form [formGroup]="statusFormFinal">
+
+            <mat-card>
+                <mat-card-content fxLayout="row" fxLayoutAlign="start center">
+                    <span class="ml-12" style="font-size: 20px;"><b>Patient Name:</b></span>
+                    <span class="ml-8" style="font-size: 20px;">{{ patientName }}</span>
+                </mat-card-content>
+            </mat-card>
+
+            <mat-card style="margin-top: 10px;">
+                <mat-card-content fxLayout="column" fxLayoutGap="12px">
+
+                    <mat-checkbox formControlName="isAnaesthetistPaid">
+                        Anesthesia Doctor Paid
+                    </mat-checkbox>
+
+                    <mat-checkbox formControlName="isMaterialReplacement">
+                        Material Replacement
+                    </mat-checkbox>
+
+                </mat-card-content>
+            </mat-card>
+
+        </form>
+
+    </div>
+
+
+    <div fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="12px" class="p-12 border-top">
+        <button class="btn btn-danger-outline" [mat-dialog-close]="true">
+            Close
+        </button>
+        <button class="btn btn-primary" color="accent" (click)="saveStatus()">
+            Save
+        </button>
+    </div>
+</ng-template>

@@ -23,7 +23,9 @@ export class ApiCaller {
                 else {
                    
                     if (data.message == 'No data found.') {
-                        Swal.fire("Data Not Find .....")
+                        // Swal.fire("Data Not Find .....")
+                    } else if(data.message == 'Not Found'){
+                        // Swal.fire("Data Not Find .....")
                     }
                     else {
                         this.toastr.error(data.message, 'Error !', {

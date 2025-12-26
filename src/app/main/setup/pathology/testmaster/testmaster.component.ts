@@ -60,7 +60,8 @@ export class TestmasterComponent implements OnInit {
   filters = [
     { fieldName: "ServiceName", fieldValue: "%", opType: OperatorComparer.StartsWith },
     { fieldName: "CatId", fieldValue: "0", opType: OperatorComparer.Equals },
-    { fieldName: "ServiceId", fieldValue: "0", opType: OperatorComparer.Equals }
+    { fieldName: "ServiceId", fieldValue: "0", opType: OperatorComparer.Equals },
+    { fieldName: "Istest", fieldValue: '2', opType: OperatorComparer.Equals }
   ]
 
   constructor(
@@ -115,11 +116,12 @@ export class TestmasterComponent implements OnInit {
         this.onChangeFirst();
     }
 
-
+IsTest:any='2';
   onChangeFirst() {
     this.testName = this.searchFormGroup.get('TestNameSearch').value + "%"
     this.catId = this.searchFormGroup.get('CategoryId').value
     this.serviceId = this.searchFormGroup.get('ServiceId').value
+        this.IsTest = this.searchFormGroup.get('Istest').value
     this.getfilterdata();
   }
 
@@ -133,7 +135,8 @@ export class TestmasterComponent implements OnInit {
       filters: [
         { fieldName: "ServiceName", fieldValue: this.testName, opType: OperatorComparer.Contains },
         { fieldName: "CatId", fieldValue: String(this.catId), opType: OperatorComparer.Equals },
-        { fieldName: "ServiceId", fieldValue: String(this.serviceId), opType: OperatorComparer.Equals }
+        { fieldName: "ServiceId", fieldValue: String(this.serviceId), opType: OperatorComparer.Equals },
+         { fieldName: "Istest", fieldValue: String(this.IsTest), opType: OperatorComparer.Equals }
       ]
     }
     this.grid.gridConfig = this.gridConfig;
@@ -239,6 +242,8 @@ export class TestList {
   IsDeleted: any;
   ParameterId: any;
   subTestID:any;
+  parameterID:any;
+parameterId:any;
   /**
    * Constructor
    *
@@ -254,6 +259,8 @@ export class TestList {
       this.Isdeleted = TestList.Isdeleted || "";
       this.IsDeleted = TestList.IsDeleted || "true";
       this.subTestID = TestList.subTestID || ""
+      this.parameterID = TestList.parameterID || ""
+      this.parameterId = TestList.parameterId || ""
     }
   }
 }

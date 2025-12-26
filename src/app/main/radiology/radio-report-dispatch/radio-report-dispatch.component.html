@@ -1,0 +1,172 @@
+<div class="page-layout simple inner-sidebar inner-scroll right-sidebar" style="height: 100%;" fusePerfectScrollbar
+    dynamicTableHeight>
+    <mat-toolbar class="top-header accent">
+        <div fxLayout="row" fxLayoutAlign="start center" class="top-header-info">
+            <button mat-icon-button class="sidebar-toggle ">
+                <mat-icon>menu</mat-icon>
+            </button>
+            <mat-icon class="logo-icon" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">account_box
+            </mat-icon>
+            <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                Radiology Report Entry
+            </span>
+        </div>
+    </mat-toolbar>
+    <div class="layout-body p-2">
+        <div class="layout-body-container center">
+            <div fxLayout="column">
+                <mat-card>
+                    <div class="layout-card-container" style="height: 80px;">
+                        <form [formGroup]="myformSearch" class="mat-error-fix">
+
+                            <div fxLayout.gt-xs="row" fxLayout="column" fxLayoutAlign="start" class="gap-5">
+
+                                <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="35%">
+                                    <airmid-datepicker [formGroup]="myformSearch" [isRangePicker]="true"
+                                        formStartControlName="start" formEndControlName="end"
+                                        [(fromValue)]="gridConfig.filters[3].fieldValue"
+                                        [(toValue)]="gridConfig.filters[4].fieldValue">
+                                    </airmid-datepicker>
+                                </div>
+
+                                <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="35%">
+                                    <airmid-dropdown label="CategoryName" formControlName="CategoryId"
+                                        [formGroup]="myformSearch" (selectionChange)="CategoryView($event)"
+                                        [(ngModel)]="gridConfig.filters[7].fieldValue"
+                                        [mode]="autocompleteModeCategoryId"></airmid-dropdown>
+                                </div>
+                                <div fxFlex="35%" fxFlex.xs="100%" fxFlex.sm="35%">
+                                    <airmid-autocomplete lbl="UHID" [formGroup]="myformSearch"
+                                        formControlName="RegNoSearch" placeholderText="IP-UHID/FirstName/LastName"
+                                        label="Search UNID / Patient Name / Mobile No"
+                                        ApiUrl="Admission/search-patient?Keyword="
+                                        (selectionChange)="getSelectedObjIP($event)" ValueField="admissionID"
+                                        TextField="formattedText">
+                                    </airmid-autocomplete>
+                                </div>
+
+                                <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="35%">
+                                    <mat-radio-group name="PatientTypeSearch" formControlName="PatientTypeSearch"
+                                        fxLayout="column" class="gap-1" (change)="onChangeFirst()">
+                                        <mat-label><b>Patient Type:</b></mat-label>
+                                        <div fxLayout="row">
+                                            <mat-radio-button value='3'>All</mat-radio-button>
+                                            <mat-radio-button value='1'>IP</mat-radio-button>
+                                            <mat-radio-button value='0'>OP</mat-radio-button>
+                                            <mat-radio-button value='4'>LAB</mat-radio-button>
+                                        </div>
+                                    </mat-radio-group>
+                                </div>
+                                <div class="action-button-container" style="padding-top: 10px;">
+                                    <div class="button-row-group">
+                                        <button class="btn btn-danger-outline btn-xs" (click)="onClear()">clear</button>
+                                        <button class="btn btn-primary btn-with-icon btn-xs" (click)="onChangeFirst()">
+                                            <span>Search</span>
+                                        </button>
+
+                                    </div>
+                                </div>
+
+                                <!-- </div> -->
+                            </div>
+                        </form>
+
+                    </div>
+
+                    <div class="layout-card-containr">
+
+                        <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+
+                            <ng-template #actionOnFirstTemplate let-element>
+                                <div fxLayout="row" fxLayoutAlign="center center">
+
+                                    <div fxLayout="row" fxLayoutAlign="center center">
+                                        <mat-icon *ngIf="element.patientType=='LAB'" title="LAB"
+                                            class="pill blue s-16">circle</mat-icon>
+                                        <mat-icon *ngIf="element.patientType=='IP'" matTooltip="IP"
+                                            class="pill green-600 s-16">circle</mat-icon>
+                                        <mat-icon *ngIf="element.patientType=='OP'" matTooltip="OP"
+                                            class="pill orange s-16">circle</mat-icon>
+                                    </div>
+
+                                    <div fxLayout="row" fxLayoutAlign="center center">
+                                        <mat-icon *ngIf="element.patientType =='Self'"
+                                            matTooltip="Patient Category Self">account_box
+                                        </mat-icon>
+                                        <mat-icon *ngIf="element.patientType !== 'Self'"
+                                            matTooltip="Patient Category Company">business
+                                        </mat-icon>
+                                    </div>
+
+                                    <div fxLayout="row" fxLayoutAlign="center center">
+                                        <mat-icon *ngIf="element.isVerifyid" matTooltip="Report Verified"
+                                            class="s-20 mr-4" style="color: #4caf50;">
+                                            verified_user
+                                        </mat-icon>
+                                        <mat-icon *ngIf="!element.isVerifyid" matTooltip="Report Not Verified"
+                                            class="s-20 mr-4" style="color: #9e9e9e;">
+                                            schedule
+                                        </mat-icon>
+                                    </div>
+
+                                    <div fxLayout="row" fxLayoutAlign="center center">
+
+                                        <mat-icon *ngIf="element.outSourceStatus" matTooltip="OutSource Completed"
+                                            class="s-20 mr-4" color="warn">
+                                            send
+                                        </mat-icon>
+                                        <mat-icon *ngIf="!element.outSourceStatus" matTooltip="Lab Test"
+                                            class="s-20 mr-4" color="accent">
+                                            local_hospital
+                                        </mat-icon>
+                                    </div>
+
+                                </div>
+                            </ng-template>
+
+                            <ng-template #actionButtonTemplate let-contact>
+                                <div fxLayout="row" fxLayoutAlign="center center">
+                                    <button mat-icon-button matTooltip="Report Dispatch"
+                                        *ngIf="contact.isCompleted === true && contact.isVerifySign === true">
+                                        <mat-icon>send</mat-icon>
+                                    </button>
+                                </div>
+                            </ng-template>
+
+                            <ng-template #actionsCompleted let-element>
+                                <div fxLayout="row" fxLayoutAlign="center center" class="status-box">
+                                    <span [ngClass]="{
+                                            'status-completed': element.isCompleted === true,
+                                            'status-pending': element.isCompleted === false
+                                                    }">
+                                        {{ element.isCompleted ? 'Completed' : 'Pending' }}
+                                    </span>
+                                </div>
+                            </ng-template>
+
+                            <ng-template #actionsverify let-element>
+                                <div fxLayout="row" fxLayoutAlign="center center" class="status-box">
+
+                                    <span [ngClass]="{
+                                            'status-completed': element.isVerifySign,
+                                            'status-pending': !element.isVerifySign
+                                            }" [matTooltip]="getVerifyTooltip(element)"
+                                        matTooltipClass="verify-tooltip"
+                                        (click)="element.isCompleted && !element.isVerifySign"
+                                        [style.cursor]="element.isCompleted && !element.isVerifySign ? 'pointer' : 'default'">
+                                        {{ element.isVerifySign ? 'Verified' : 'UnVerified' }}
+                                    </span>
+                                </div>
+                            </ng-template>
+
+                            <airmid-table [gridConfig]="gridConfig" #grid :ShowFilter="false" :ShowButtons="false">
+                            </airmid-table>
+
+                        </div>
+
+                    </div>
+                </mat-card>
+            </div>
+        </div>
+    </div>
+</div>

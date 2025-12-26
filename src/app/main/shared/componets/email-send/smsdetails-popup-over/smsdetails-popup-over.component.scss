@@ -1,0 +1,254 @@
+.patient-details-popover-container {
+  width: 450px;
+  max-height: 600px;
+  padding: 0;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+
+  .popover-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 16px 20px;
+    margin-bottom: 0;
+
+    h3 {
+      margin: 0;
+      font-size: 18px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+
+      .header-icon {
+        font-size: 24px;
+        width: 24px;
+        height: 24px;
+      }
+    }
+  }
+
+  .popover-body {
+    padding: 20px;
+    max-height: 500px;
+    overflow-y: auto;
+
+    .loading-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+      gap: 16px;
+
+      p {
+        margin: 0;
+        color: #666;
+        font-size: 14px;
+      }
+    }
+
+    .no-data {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+      gap: 12px;
+      color: #999;
+
+      mat-icon {
+        font-size: 48px;
+        width: 48px;
+        height: 48px;
+        color: #ccc;
+      }
+
+      p {
+        margin: 0;
+        font-size: 14px;
+      }
+    }
+
+    .details-content {
+      .detail-section {
+        margin-bottom: 24px;
+
+        &:last-child {
+          margin-bottom: 0;
+        }
+
+        .section-title {
+          margin: 0 0 12px 0;
+          font-size: 15px;
+          font-weight: 600;
+          color: #667eea;
+          padding-bottom: 8px;
+          border-bottom: 2px solid #e0e0e0;
+        }
+
+        .detail-grid {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 12px;
+
+          .detail-item {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+
+            &.full-width {
+              grid-column: 1 / -1;
+            }
+
+            .detail-label {
+              font-size: 12px;
+              font-weight: 600;
+              color: #666;
+              text-transform: uppercase;
+              letter-spacing: 0.5px;
+            }
+
+            .detail-value {
+              font-size: 14px;
+              color: #333;
+              font-weight: 500;
+              word-break: break-word;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+// Scrollbar styling
+.patient-details-popover-container .popover-body::-webkit-scrollbar {
+  width: 6px;
+}
+
+.patient-details-popover-container .popover-body::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 3px;
+}
+
+.patient-details-popover-container .popover-body::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 3px;
+
+  &:hover {
+    background: #555;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+.patient-details-popover-container {
+  width: 420px;
+  background: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  font-family: Roboto, Arial, sans-serif;
+}
+
+/* Header */
+.popover-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 16px;
+  background: linear-gradient(135deg, #6a5acd, #7b68ee);
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.header-icon {
+  font-size: 22px;
+}
+
+/* Body */
+.popover-body {
+  padding: 14px;
+  max-height: 420px;
+  overflow-y: auto;
+}
+
+/* Sections */
+.detail-section {
+  margin-bottom: 12px;
+}
+
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #3f51b5;
+  margin-bottom: 8px;
+}
+
+/* Grid */
+.detail-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.detail-item {
+  display: flex;
+  gap: 6px;
+  align-items: flex-start;
+}
+
+.detail-item mat-icon {
+  font-size: 18px;
+  color: #607d8b;
+  margin-top: 2px;
+}
+
+.detail-item label {
+  font-size: 11px;
+  color: #777;
+  text-transform: uppercase;
+}
+
+.detail-item p {
+  font-size: 13px;
+  margin: 1px 0 0;
+  color: #333;
+  line-height: 1.3;
+  word-break: break-word;
+}
+
+.full-width {
+  grid-column: span 2;
+}
+
+/* Response Highlight */
+.response {
+  background: #fff3f3;
+  border-left: 3px solid #f44336;
+  padding: 6px;
+  border-radius: 4px;
+}
+
+/* Loader & No Data */
+.loading-container,
+.no-data {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: #666;
+  padding: 18px 0;
+}

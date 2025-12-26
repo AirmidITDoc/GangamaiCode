@@ -9,7 +9,7 @@
             </mat-icon>
             <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
                 Radiology Report Entry
-            </span> 
+            </span>
         </div>
     </mat-toolbar>
     <div class="layout-body p-2">
@@ -50,9 +50,10 @@
                                         fxLayout="column" class="gap-1" (change)="onChangeFirst()">
                                         <mat-label><b>Patient Type:</b></mat-label>
                                         <div fxLayout="row">
-                                            <mat-radio-button value='2'>All</mat-radio-button>
+                                            <mat-radio-button value='3'>All</mat-radio-button>
                                             <mat-radio-button value='1'>IP</mat-radio-button>
                                             <mat-radio-button value='0'>OP</mat-radio-button>
+                                            <mat-radio-button value='4'>LAB</mat-radio-button>
                                         </div>
                                     </mat-radio-group>
                                 </div>
@@ -87,6 +88,58 @@
 
                         <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
 
+                            <ng-template #actionOnFirstTemplate let-element>
+                                <div fxLayout="row" fxLayoutAlign="center center">
+
+                                    <div fxLayout="row" fxLayoutAlign="center center">
+                                        <mat-icon *ngIf="element.patientType=='LAB'" title="LAB"
+                                            class="pill blue s-16">circle</mat-icon>
+                                        <mat-icon *ngIf="element.patientType=='IP'" matTooltip="IP"
+                                            class="pill green-600 s-16">circle</mat-icon>
+                                        <mat-icon *ngIf="element.patientType=='OP'" matTooltip="OP"
+                                            class="pill orange s-16">circle</mat-icon>
+                                    </div>
+
+                                    <div fxLayout="row" fxLayoutAlign="center center">
+                                        <mat-icon *ngIf="element.patientType =='Self'"
+                                            matTooltip="Patient Category Self">account_box
+                                        </mat-icon>
+                                        <mat-icon *ngIf="element.patientType !== 'Self'"
+                                            matTooltip="Patient Category Company">business
+                                        </mat-icon>
+                                    </div>
+
+                                    <div fxLayout="row" fxLayoutAlign="center center">
+                                        <mat-icon *ngIf="element.isVerifyid" matTooltip="Report Verified"
+                                            class="s-20 mr-4" style="color: #4caf50;">
+                                            verified_user
+                                        </mat-icon>
+                                        <mat-icon *ngIf="!element.isVerifyid" matTooltip="Report Not Verified"
+                                            class="s-20 mr-4" style="color: #9e9e9e;">
+                                            schedule
+                                        </mat-icon>
+                                    </div>
+
+                                    <div fxLayout="row" fxLayoutAlign="center center">
+                                        <!-- <mat-icon *ngIf="element.outSourceStatus" matTooltip="OutSource Completed"
+                                            class="w-30"
+                                            style="background-color: rgb(232, 127, 52);">business_center</mat-icon>
+                                        <mat-icon *ngIf="!element.outSourceStatus" style="color: #f44336;"
+                                            matTooltip="No OutSource" class="w-40">invert_colors</mat-icon> -->
+
+                                        <mat-icon *ngIf="element.outSourceStatus" matTooltip="OutSource Completed"
+                                            class="s-20 mr-4" color="warn">
+                                            send
+                                        </mat-icon>
+                                        <mat-icon *ngIf="!element.outSourceStatus" matTooltip="Lab Test"
+                                            class="s-20 mr-4" color="accent">
+                                            local_hospital
+                                        </mat-icon>
+                                    </div>
+
+                                </div>
+                            </ng-template>
+
                             <ng-template #actionButtonTemplate let-element>
                                 <div fxLayout="row" fxLayoutAlign="center center">
 
@@ -99,88 +152,88 @@
                                         <mat-icon title="Print">print</mat-icon>
                                     </button>
 
-                                    <button mat-icon-button matTooltip="Mail">
-                                        <mat-icon title="Mail">mail</mat-icon>
+                                    <button mat-icon-button
+                                        [matTooltip]="'We send the mail on your registered MailID : ' + element?.emailId"
+                                        matTooltipPosition="right" (click)="Onemail(element)">
+                                        <mat-icon>email</mat-icon>
                                     </button>
 
-                                    <button mat-icon-button matTooltip="Send message On WhatsApp">
-                                        <mat-icon title="WhatsApp">chat</mat-icon>
-                                    </button>
-
-
-                                    <button mat-icon-button (click)="onVerify(element)"
-                                        *ngIf="!element.isVerified=='True'">
-                                        <mat-icon class="disabled-icon" style="color: chartreuse;"
-                                            matTooltip="verify Menu">verified_user</mat-icon>
-                                    </button>
-
-                                    <!-- *ngIf="element.isRadOutSource== 1" -->
-
-                                    <button title="IsRadOutSource" (click)="Editoutsoucedata(element)"
-                                        style="background: none; border: none; padding: 0; cursor: pointer;">
-                                        <mat-icon title="Add OutSouce">edit</mat-icon>
+                                    <button mat-icon-button
+                                        [matTooltip]="'We send the message on your registered WhatsApp number: ' + element?.mobileNo"
+                                        matTooltipPosition="right" (click)="getWhatsappshareBill(element)">
+                                        <img width="20" height="20" src="assets/images/logos/WhatsApp.png">
                                     </button>
 
                                     <airmid-fileupload-icon [refId]="element.radReportId" [refType]="pathFiles"
                                         [multiple]="true"
                                         [title]="element.patientName + ' Report'"></airmid-fileupload-icon>
-
-
-                                </div>
-                            </ng-template>
-
-                            <ng-template #actionsIPOP let-element>
-                                <div fxLayout="row" fxLayoutAlign="center center">
-
-                                    <mat-icon *ngIf="element.patientType=='IP'" matTooltip="IP"
-                                        class="pill green-600 s-16">circle</mat-icon>
-                                    <mat-icon *ngIf="element.patientType=='OP'" matTooltip="OP"
-                                        class="pill orange s-16">circle</mat-icon>
                                 </div>
                             </ng-template>
 
                             <ng-template #actionsCompleted let-element>
-                                <div fxLayout="row" fxLayoutAlign="center center">
-
-                                    <mat-icon matTooltip="Test Completed" *ngIf="element.isCompleted==true"
-                                        class="active-icon green-500 s-16">check_circle</mat-icon>
-                                    <mat-icon matTooltip="Test Not Completed" *ngIf="element.isCompleted==false"
-                                    class="s-20 mr-4" style="color: #f44336;">hourglass_empty</mat-icon>
-                                </div>
-                            </ng-template>
-
-                            <ng-template #actionsType let-element>
-                                <div fxLayout="row" fxLayoutAlign="center center">
-
-                                    <mat-icon *ngIf="element.patientType =='Self'"
-                                        matTooltip="Patient Category Self">account_box
-                                    </mat-icon>
-                                    <mat-icon *ngIf="element.patientType !== 'Self'"
-                                        matTooltip="Patient Category Company">business
-                                    </mat-icon>
+                                <div fxLayout="row" fxLayoutAlign="center center" class="status-box">
+                                    <span [ngClass]="{
+                                            'status-completed': element.isCompleted === true,
+                                            'status-pending': element.isCompleted === false
+                                                    }">
+                                        {{ element.isCompleted ? 'Completed' : 'Pending' }}
+                                    </span>
                                 </div>
                             </ng-template>
 
                             <ng-template #actionsverify let-element>
-                                <div fxLayout="row" fxLayoutAlign="center center">
-
-                                    <mat-icon *ngIf="element.isVerified" matTooltip="Report Verified" class="w-50">verified</mat-icon>
-
-                                    <mat-icon *ngIf="!element.isVerified" matTooltip="Report Not Verified" class="w-25">schedule</mat-icon>
+                                <div fxLayout="row" fxLayoutAlign="center center" class="status-box">
+                                    <!-- <span [ngClass]="{
+                                            'status-completed': element.isVerified,
+                                            'status-pending': !element.isVerified
+                                            }" [matTooltip]="getVerifyTooltip(element)"
+                                        matTooltipClass="verify-tooltip"
+                                        (click)="element.isCompleted && !element.isVerified && onVerify(element)"
+                                        [style.cursor]="element.isCompleted && !element.isVerified ? 'pointer' : 'default'">
+                                        {{ element.isVerified ? 'Verified' : 'UnVerified' }}
+                                    </span> -->
+                                    <span [ngClass]="{
+                                            'status-completed': element.isVerifySign,
+                                            'status-pending': !element.isVerifySign
+                                            }" [matTooltip]="getVerifyTooltip(element)"
+                                        matTooltipClass="verify-tooltip"
+                                        (click)="element.isCompleted && !element.isVerifySign && onVerify(element)"
+                                        [style.cursor]="element.isCompleted && !element.isVerifySign ? 'pointer' : 'default'">
+                                        {{ element.isVerifySign ? 'Verified' : 'UnVerified' }}
+                                    </span>
                                 </div>
                             </ng-template>
-                            <ng-template #actionsoutSourceStatus let-element>
-                                <div fxLayout="row" fxLayoutAlign="center center">
 
-                                    <mat-icon *ngIf="element.outSourceStatus" matTooltip="OutSource Completed"
-                                        class="w-30" style="background-color: rgb(232, 127, 52);">business_center</mat-icon>
+                            <ng-template #outSourcePopOver let-element>
 
-                                    <mat-icon *ngIf="!element.outSourceStatus" style="color: #f44336;" matTooltip="No OutSource" class="w-40">invert_colors</mat-icon>
-                                </div>
+                                <!-- OutSource Lab Name -->
+                                <span *ngIf="element.outSourceLabName; else noOutSourceTpl" [matBadge]="element.tokenNo"
+                                    matBadgeColor="warn" matBadgePosition="after" matBadgeOverlap="false"
+                                    matBadgeSize="small" [matBadgeHidden]="!element.tokenNo"
+                                    (mouseenter)="openPatientDetailsPopover($event, element)"
+                                    (mouseleave)="closePatientDetailsPopover()" style="font-size:14px; line-height:18px; position:relative; top:4px;
+                                        cursor:pointer; text-decoration:underline; color:#667eea;">
+                                    {{ element.outSourceLabName }}
+                                </span>
+
+                                <!-- Edit icon (already outsourced) -->
+                                <button mat-icon-button
+                                    *ngIf="element.outSourceLabName && element.isRadOutSource === true"
+                                    (click)="Editoutsoucedata(element)" matTooltip="Edit OutSource Data">
+                                    <mat-icon style="color:#ff5722;">edit</mat-icon>
+                                </button>
+
+                                <!-- Add OutSource (not outsourced yet) -->
+                                <ng-template #noOutSourceTpl>
+                                    <button mat-icon-button *ngIf="element.isRadOutSource === true"
+                                        (click)="Editoutsoucedata(element)" matTooltip="Add OutSource Data">
+                                        <mat-icon style="color:#ff5722;">local_shipping</mat-icon>
+                                    </button>
+                                </ng-template>
+
                             </ng-template>
+
                             <airmid-table [gridConfig]="gridConfig" #grid :ShowFilter="false" :ShowButtons="false">
-
-
                             </airmid-table>
 
                         </div>

@@ -25,15 +25,9 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterModule, Routes } from '@angular/router';
 import { FuseConfirmDialogModule, FuseSidebarModule } from '@fuse/components';
 import { FuseSharedModule } from '@fuse/shared.module';
-
 import { MatBadgeModule } from '@angular/material/badge';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
-
-// import { NgxEditorModule } from 'ngx-editor';
-// import { HtmlEditorService, ImageService, LinkService, RichTextEditorModule, TableService, ToolbarService } from '@syncfusion/ej2-angular-richtexteditor';
-
 import { MatSelectModule } from '@angular/material/select';
-
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { NotificationService } from 'app/core/notification.service';
 import { SharedModule } from 'app/main/shared/shared.module';
@@ -42,7 +36,8 @@ import { RadiologyOrderListComponent } from './radiology-order-list.component';
 import { RadioloyOrderlistService } from './radioloy-orderlist.service';
 import { ResultEntryComponent } from './result-entry/result-entry.component';
 import { RadioLabOutsourceComponent } from './radio-lab-outsource/radio-lab-outsource.component';
-
+import { MatTimepickerModule } from 'mat-timepicker';
+import { RadioReportDispatchComponent } from '../radio-report-dispatch/radio-report-dispatch.component';
 
 const routes: Routes = [
  
@@ -57,6 +52,7 @@ const routes: Routes = [
         RadiologyOrderListComponent,
         ResultEntryComponent,
         RadioLabOutsourceComponent,
+        // RadioReportDispatchComponent,
         // RadiologyTemplateReportComponent,
     ],
     imports: [
@@ -95,6 +91,7 @@ const routes: Routes = [
         MatSelectModule,
         MatAutocompleteModule,
         MatTooltipModule,
+        MatTimepickerModule
     ],
     providers: [
         RadioloyOrderlistService,

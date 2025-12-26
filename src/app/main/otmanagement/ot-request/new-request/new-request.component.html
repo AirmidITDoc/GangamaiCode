@@ -191,13 +191,7 @@
                     <mat-tab label="Details" class="gap-4">
                         <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 10px ;">
                             <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="80%" fxLayout="row wrap"
-                                fxLayoutGap="4px grid">
-
-                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <airmid-dropdown label="Blood Group" formControlName="bloodGroup"
-                                        [formGroup]="requestForm" [mode]="autocompleteModebloodGroup">
-                                    </airmid-dropdown>
-                                </div>
+                                fxLayoutGap="4px grid">                                
 
                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <airmid-dropdown label="Category Type" formControlName="categoryType"
@@ -237,12 +231,11 @@
                                     </mat-form-field>
                                 </div>
 
-                                <!-- <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                            <airmid-textbox label="Surgeon MobileNo" formControlName="MobileNo"
-                                                [formGroup]="requestForm" (keypress)="keyPressAlphanumeric($event)"
-                                                [maxLength]="10">
-                                            </airmid-textbox>
-                                        </div> -->
+                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <airmid-dropdown label="Blood Group" formControlName="bloodGroup"
+                                        [formGroup]="requestForm" [mode]="autocompleteModebloodGroup">
+                                    </airmid-dropdown>
+                                </div>
 
                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <airmid-textbox label="Remark" formControlName="comments" [formGroup]="requestForm"

@@ -78,6 +78,7 @@ export class NewResultTemplateComponent {
   ) {
     dialogRef.disableClose = true;
     debugger
+    debugger
     if (this.data) {
       this.selectedAdvanceObj1 = this.data;
       this.serviceId = this.selectedAdvanceObj1.serviceId
@@ -151,7 +152,6 @@ export class NewResultTemplateComponent {
       testId: [this.selectedAdvanceObj1.pathTestID || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       suggestionNotes: ["", [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
       pathResultDr1: [this.VpathResultDr1 || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-
     });
   }
 
@@ -167,9 +167,10 @@ export class NewResultTemplateComponent {
       pathResultDr2: 0,
       pathResultDr3: 0,
       isTemplateTest: 1,
-      suggestionNotes: "",
+      suggestionNotes: ["", [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
       admVisitDoctorID: [this.selectedAdvanceObj1.adm_Visit_docId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      refDoctorID: 0
+      refDoctorID: 0,
+      addedBy: [this.accountService.currentUserValue.userId, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
     });
   }
 
@@ -225,6 +226,7 @@ export class NewResultTemplateComponent {
 
   onSubmit() {
 
+
     const currentDate = new Date();
     const datePipe = new DatePipe('en-US');
     const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
@@ -245,18 +247,23 @@ export class NewResultTemplateComponent {
 
     this.PathReportTemplateForm.get("pathTemplateId").setValue(this.TemplateId)
     debugger
+    this.PathReportTemplateForm.get("pathTemplateId").setValue(this.TemplateId)
+    debugger
     this.PathReportTemplateForm.get("pathTemplateDetailsResult").setValue(this.otherForm.get("ResultEntry").value)
     this.PathReportTemplateForm.get("templateResultInHTML").setValue(this.otherForm.get("ResultEntry").value)
     this.PathReportTemplateForm.get("testId").setValue(this.selectedAdvanceObj1.pathTestID)
     this.PathReportTemplateForm.get("suggestionNotes").setValue(this.otherForm.get("suggestionNotes").value)
     this.PathReportTemplateForm.get("pathResultDr1").setValue(this.VpathResultDr1)
 
+
     this.PathReportHeaderForm.get("pathResultDr1").setValue(this.VpathResultDr1)
     this.PathReportHeaderForm.get("suggestionNotes").setValue(this.otherForm.get("suggestionNotes").value)
     this.PathReportHeaderForm.get("reportTime").setValue(datePipe.transform(currentDate, 'shortTime'))
 
+
     this.TemplateForm.get("pathologyReportTemplate").setValue(this.PathReportTemplateForm.value)
     this.TemplateForm.get("pathologyReportHeader").setValue(this.PathReportHeaderForm.value)
+
 
 
     console.log(this.TemplateForm.value);
@@ -266,6 +273,8 @@ export class NewResultTemplateComponent {
         this.dialogRef.close();
         // this.viewgetPathologyTemplateReportPdf(this.selectedAdvanceObj1);
 
+      });
+    }
       });
     }
   }

@@ -17,6 +17,7 @@ import { FormvalidationserviceService } from 'app/main/shared/services/formvalid
 import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
 import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
 import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
+import { ConsentService } from 'app/main/nursingstation/consent/consent.service';
 
 @Component({
   selector: 'app-new-ot-preoperation',
@@ -129,6 +130,7 @@ export class NewOtPreoperationComponent {
     private ref: MatDialogRef<NewOtPreoperationComponent>,
     public _AdmissionService: AdmissionService,
     public datePipe: DatePipe, private _FormvalidationserviceService: FormvalidationserviceService,
+    public _ConsentService: ConsentService,
     public toastr: ToastrService) { }
 
 
@@ -1150,7 +1152,7 @@ export class NewOtPreoperationComponent {
     this.preOperationFinalForm.get('opiptype').setValue('OP')
   }
 
-   calculateToTime() {
+  calculateToTime() {
     const duration = this.preOperationFinalForm.get('surgeryDuration')?.value;
     const start = this.preOperationFinalForm.get('surgeryFromTime')?.value;
 
@@ -1175,7 +1177,7 @@ export class NewOtPreoperationComponent {
 
     this.preOperationFinalForm.get('surgeryEndTime')?.setValue(`${endH}:${endM}`);
   }
-  
+
   onChangeDuration(event: any) {
     // debugger
     const durationHours = parseFloat(this.preOperationFinalForm.get('surgeryDuration')?.value); // e.g. 1.5
@@ -1355,5 +1357,42 @@ export class NewOtPreoperationComponent {
         this.grid.bindGridData();
       });
     }
+  }
+
+  OnViewReportPdf(element: any) {
+
+    setTimeout(() => {
+      let param = {
+        "searchFields": [
+          {
+            "fieldName": "ConsentId",
+            "fieldValue": String(element.consentId),
+            "opType": "Equals"
+          },
+          {
+            "fieldName": "OPIPType",
+            "fieldValue": String(element.opiptype),
+            "opType": "Equals"
+          }
+        ],
+        "mode": "ConsentInformation"
+      }
+
+      this._ConsentService.getReportView(param).subscribe(res => {
+
+        const matDialog = this._matDialog.open(PdfviewerComponent,
+          {
+            maxWidth: "85vw",
+            height: '750px',
+            width: '100%',
+            data: {
+              base64: res["base64"] as string,
+              title: "Consent Report" + " " + "Viewer"
+            }
+          });
+        matDialog.afterClosed().subscribe(result => {
+        });
+      });
+    }, 100);
   }
 }
