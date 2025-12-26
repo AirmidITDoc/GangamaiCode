@@ -102,7 +102,8 @@
                                 </ng>
                                 <ng *ngSwitchCase="GridColumnType.amount">
                                     <span class="text-overflow" [matTooltip]="element[row.key] || '0'">
-                                        {{ element[row.key] || 0 | currency : 'INR' : 'symbol' }}
+                                        <!-- {{ element[row.key] || 0 | currency : 'INR' : 'symbol' }} -->
+                                        {{ element[row.key] || 0 | currency: currencyValue : 'symbol' }}
                                     </span>
                                 </ng>
                                 <ng *ngSwitchCase="GridColumnType.action">
