@@ -264,7 +264,7 @@ export class AirmidConsentformComponent {
         "searchFields": [
           {
             "fieldName": "ConsentId",
-            "fieldValue": String(element),
+            "fieldValue": String(element.consentId),
             "opType": "Equals"
           },
           {

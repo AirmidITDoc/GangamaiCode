@@ -1,0 +1,80 @@
+<div fusePerfectScrollbar
+    class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
+    dynamicTableHeight>
+    <div class="top-header header accent p-16" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
+        fxLayoutAlign.gt-xs="space-between center ">
+        <div class="top-header-info">
+            <div class="top-header-title">
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    Certificate
+                </span>
+            </div>
+        </div>
+        <div class="gap-8" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
+            <button mat-raised-button (click)="onFiles()">New Certificate
+            </button>
+        </div>
+    </div>
+    <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+
+        <div class="info-badge-top p-12 border-bottom">
+            <div fxLayout="row wrap" fxLayoutAlign="start center" class="gap-8">
+
+                <div style="color: green" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                    <mat-icon class="pill green-600 s-16">circle</mat-icon>
+                    <span class="green-600-fg"> IP </span>
+                </div>
+
+                <div style="color: orange" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                    <mat-icon class="pill orange-600 s-16">circle</mat-icon>
+                    <span class="orange-600-fg">OP
+                    </span>
+                </div>
+            </div>
+        </div>
+        <ng-template #actionsTemplate let-element>
+            <div fxLayout="row" fxLayoutAlign="center center">
+                <mat-icon *ngIf="element.opipType=='1'" matTooltip="IP" class="pill green-600 s-16">circle</mat-icon>
+
+                <mat-icon *ngIf="element.opipType=='0'" matTooltip="OP" class="pill orange-600 s-16">circle</mat-icon>
+            </div>
+        </ng-template>
+        <ng-template #actionButtonTemplate let-element>
+            <div fxLayout="row" fxLayoutAlign="center center">
+
+                <app-airmid-consentform-icon [Id]="element.consentId" [refId]="element.refId" [opipId]="element.opipid"
+                    title="Name: {{ registerObj1.patientName }}  UHID: {{ registerObj1.regNo }}"
+                    [opipType]="element.opiptype"></app-airmid-consentform-icon>
+
+                <button mat-icon-button (click)="delete(element)" matTooltip="Delete">
+                    <mat-icon title="Delete">delete</mat-icon>
+                </button>
+
+                <button mat-icon-button (click)="OnViewReportPdf(element)" matTooltip="Print">
+                    <mat-icon title="Print">print</mat-icon>
+                </button>
+
+            </div>
+        </ng-template>
+        <airmid-table [gridConfig]="gridConfig" class="content">
+            <ng-container filters>
+                <form [formGroup]="myFilterform">
+
+                    <airmid-datepicker [formGroup]="myFilterform" [isRangePicker]="true" formStartControlName="start"
+                        formEndControlName="end" [(fromValue)]="gridConfig.filters[0].fieldValue"
+                        [(toValue)]="gridConfig.filters[1].fieldValue"></airmid-datepicker>
+
+                    <!-- <mat-form-field appearance="outline">
+                        <mat-label>Consent Name</mat-label>
+                        <input matInput placeholder="Search Consent Name" autocomplete="off" [formGroup]="myFilterform"
+                            formControlName="consentName" (input)="onChangeFirst()" />
+                        <button matSuffix mat-icon-button aria-label="Clear" (click)="Clearfilter('FirstName')">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </mat-form-field> -->
+
+                </form>
+            </ng-container>
+        </airmid-table>
+    </div>
+</div>

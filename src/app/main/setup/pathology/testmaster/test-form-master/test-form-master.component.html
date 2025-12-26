@@ -82,14 +82,14 @@
         <ng-template [ngIf]="_TestmasterService.is_subtest || _TestmasterService.is_Test">
           <!-- *ngIf="!isChecked" -->
           <div fxLayout="row" fxFlex="100%" fxLayoutGap="8px grid" class="overflow-auto">
-            <div fxLayout="column" fxFlex="30">
+            <div fxLayout="column" fxFlex="25">
               <mat-card class="airmid-table-container h-100-p">
                 <mat-table class="airmid-table one-column-table" matSort [dataSource]="paramterList"
                   [@animateStagger]="{ value: '50' }">
                   <ng-container matColumnDef="parameterName">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>Parameter Values</mat-header-cell>
                     <mat-cell *matCellDef="let element" fxShow.gt-sm>
-                      <mat-icon (click)="onAdd(element)" style="cursor: pointer; margin-right: 10px">add</mat-icon>
+                      <mat-icon (click)="onAdd(element)" style="cursor: pointer; margin-right: 30px">add</mat-icon>
                       {{ element.parameterName }}
                     </mat-cell>
                   </ng-container>
@@ -129,7 +129,7 @@
               </mat-card>
             </div>
 
-            <div fxLayout="column" fxFlex="70">
+            <div fxLayout="column" fxFlex="75">
               <mat-card class="airmid-table-container h-100-p">
                 <mat-table #table class="airmid-table" matSort [dataSource]="DSTestList" cdkDropList
                   (cdkDropListDropped)="drop($event)">

@@ -5,21 +5,20 @@ import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
 import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
 import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
 import { ToastrService } from 'ngx-toastr';
-import { NewOtconsentsComponent } from './new-otconsents/new-otconsents.component';
-import { OtConsentsService } from './ot-consents.service';
 import { DatePipe } from '@angular/common';
 import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { AirmidConsentformComponent } from 'app/main/shared/componets/airmid-consentform/airmid-consentform.component';
+import { NewCertificateVersionService } from './new-certificate-version.service';
 
 @Component({
-  selector: 'app-ot-consents',
-  templateUrl: './ot-consents.component.html',
-  styleUrls: ['./ot-consents.component.scss'],
+  selector: 'app-new-certificate-version',
+  templateUrl: './new-certificate-version.component.html',
+  styleUrls: ['./new-certificate-version.component.scss'],
   encapsulation: ViewEncapsulation.None,
   animations: fuseAnimations,
 })
-export class OtConsentsComponent {
-  msg: any;
+export class NewCertificateVersionComponent {
+ msg: any;
   consentName: any = "";
   fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
   toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
@@ -32,8 +31,7 @@ export class OtConsentsComponent {
 
   ngAfterViewInit() {
     // Assign the template to the column dynamically
-    this.gridConfig.columnsList.find(col => col.key === 'opIpId')!.template = this.actionsTemplate;
-    this.gridConfig.columnsList.find(col => col.key === 'surgeryTypeId')!.template = this.actionsTemplate1;
+    this.gridConfig.columnsList.find(col => col.key === 'opipType')!.template = this.actionsTemplate;
     this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
   }
 
@@ -64,12 +62,13 @@ export class OtConsentsComponent {
   }
 
   constructor(
-    public _OtConsentService: OtConsentsService,
+      public _certificateService: NewCertificateVersionService,
     public toastr: ToastrService, public _matDialog: MatDialog,
     public datePipe: DatePipe,
     private _formBuilder: UntypedFormBuilder,
   ) { }
 
+  
   ngOnInit(): void { 
     this.myFilterform = this.createSearchForm();}
 
@@ -118,7 +117,7 @@ export class OtConsentsComponent {
           maxWidth: "90vw",
           maxHeight: '85%',
           width: '70%',
-          data: { refId: 0, opipId: 0, opipType: 0, Id: 0,title: 'Consent',labelType:'OT' }
+          data: { refId: 0, opipId: 0, opipType: 0, Id: 0,title: 'Certificate',labelType:'MRD' }
         }
       );
   
