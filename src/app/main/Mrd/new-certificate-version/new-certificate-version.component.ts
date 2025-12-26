@@ -39,10 +39,15 @@ export class NewCertificateVersionComponent {
   @ViewChild('actionsTemplate1') actionsTemplate1!: TemplateRef<any>;
 
    allcolumns = [
-    { heading: "Date", key: "admissionTime", sort: true, align: 'left', emptySign: 'NA', width: 200},
-    { heading: "Consent Name", key: "consentName", sort: true, align: 'left', emptySign: 'NA', width: 500 },
-    { heading: "User Name", key: "userName", sort: true, align: 'left', emptySign: 'NA', width: 500 },
-    // { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
+    { heading: "Date", key: "consentDate", sort: true, align: 'left', emptySign: 'NA', width: 200 , type:6},
+    { heading: "UHID", key: "regNo", align: 'left', emptySign: 'NA' },
+    { heading: "Patient Name", key: "patientName", align: 'left', emptySign: 'NA' , width: 300},
+    { heading: "Department Name", key: "departmentName", align: 'left', emptySign: 'NA' , width: 300},
+    { heading: "Doctor Name", key: "doctorName", align: 'left', emptySign: 'NA' , width: 300},
+    { heading: "DOA", key: "admissionDate", align: 'left', emptySign: 'NA' , type:6},
+    { heading: "AgeYear", key: "ageYear",align: 'left', emptySign: 'NA',  },
+    { heading: "Consent Name", key: "consentName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
+    { heading: "User Name", key: "userName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
     {
       heading: "Action", key: "action", align: "right", width: 120, sticky: true, type: gridColumnTypes.template,
       template: this.actionButtonTemplate  // Assign ng-template to the column
