@@ -160,8 +160,7 @@
 
                         </div>
 
-                        <div 
-                            class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
+                        <div class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
                             dynamicTableHeight>
 
                             <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
@@ -330,7 +329,7 @@
                                                                 <span class="status-box" [ngClass]="{
                                                                     'status-completed': contact.isCompleted,
                                                                     'status-pending': !contact.isCompleted
-                                                                }"
+                                                                }" [matTooltip]="getCompleteTooltip(contact)"
                                                                     matTooltip="{{ contact.isCompleted ? 'Report Completed' : 'Report Not Completed' }}">
                                                                     {{ contact.isCompleted ? 'Completed' : 'Pending' }}
                                                                 </span>
@@ -518,7 +517,7 @@
                                                 [ngClass]="{'hide':!(dataSource1!=null && dataSource1.data.length==0)}">
                                             </mat-footer-row>
                                         </mat-table>
-<mat-paginator [pageSizeOptions]="[10, 15, 25, 100]" [pageSize]="10"
+                                        <mat-paginator [pageSizeOptions]="[10, 15, 25, 100]" [pageSize]="10"
                                             showFirstLastButtons></mat-paginator>
                                     </div>
                                 </mat-card>

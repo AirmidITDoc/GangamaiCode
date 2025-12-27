@@ -147,7 +147,10 @@ export class NewReservationComponent implements OnInit {
       this.vIPDNo = this.registerObj1.opdNo
       this.vPatientName = this.registerObj1.patientName
       this.vrequestId = this.registerObj1.otRequestId;
+      this.opIpType=this.registerObj1.opIpType
       this.reservationForm.get('estimateTime')?.setValue(this.registerObj1.estimateTime.trim())
+      this.reservationForm.get('isAnaesthetistPaid')?.setValue(this.registerObj1.isAnaesthetistPaid)
+      this.reservationForm.get('isMaterialReplacement')?.setValue(this.registerObj1.isMaterialReplacement)
 
       setTimeout(() => {
         this._OtReservationService.getotTableById(this.data.ottable).subscribe((response) => {
@@ -256,6 +259,8 @@ export class NewReservationComponent implements OnInit {
       isCancelled: [false],
       isCancelledBy: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       isCancelledDateTime: ['1900-01-01', [this._FormvalidationserviceService.validDateValidator()]],
+      isAnaesthetistPaid: false,
+      isMaterialReplacement: false,
 
       tOtReservationSurgeryDetails: this._formBuilder.array([]),
       tOtReservationAttendingDetails: this._formBuilder.array([]),

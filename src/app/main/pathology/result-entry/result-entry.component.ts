@@ -1194,7 +1194,7 @@ export class ResultEntryComponent implements OnInit {
 
     getCompleteTooltip(contact: any): string {
         if (contact.isCompleted) {
-            return `Completed On : ${contact.reportTime}\nCompleted By : ${contact.reportCompletedUser}`;
+            return `Completed On : ${contact.reportDate}\nCompleted By : ${contact.reportCompletedUser}`;
         }
         // ${contact.reportDate} 
         return contact.isCompleted
