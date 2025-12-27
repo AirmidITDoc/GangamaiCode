@@ -23,16 +23,17 @@
 
         <ng-template #actionButtonTemplate let-element>
             <div fxLayout="row" fxLayoutAlign="center center">
-
-                <button mat-icon-button matTooltip="Edit" (click)="onNew(element)" [disabled]="element.isCancelled">
+                <!-- [disabled]="element.isCancelled" -->
+                <button mat-icon-button matTooltip="Edit" (click)="onAnesthesiaRecord(element)">
                     <mat-icon>edit</mat-icon>
                 </button>
 
-                <button mat-icon-button matTooltip="Print">
+                <button mat-icon-button matTooltip="Anesthesia Report Print"
+                    (click)="viewgetAnethesiaReportPdf(element)">
                     <mat-icon> print</mat-icon>
                 </button>
 
-                <button mat-icon-button matTooltip="Cancel">
+                <button mat-icon-button matTooltip="Cancel" (click)="onAnesthesiaCancle(element)">
                     <mat-icon> cancel</mat-icon>
                 </button>
 
@@ -75,21 +76,23 @@
                     </mat-form-field>
 
                     <mat-radio-group formControlName="opipType" name="opipType" fxLayout="column"
-                        (change)="onChangeFirst()" style="padding: 8px;">
+                        (change)="onChangeFirst()" style="padding: 5px;">
 
                         <div fxLayout="row" fxLayoutAlign="start center" style="gap: 8px;">
                             <mat-icon class="pill">circle</mat-icon>
                             <mat-radio-button value="2">ALL</mat-radio-button>
-                        </div>
-
-                        <div fxLayout="row" fxLayoutAlign="start center" style="gap: 8px;">
                             <mat-icon class="pill orange-600 s-16">circle</mat-icon>
                             <mat-radio-button value="0">OP</mat-radio-button>
+                            <mat-icon class="pill green-600 s-16">circle</mat-icon>
+                            <mat-radio-button value="1">IP</mat-radio-button>
                         </div>
 
                         <div fxLayout="row" fxLayoutAlign="start center" style="gap: 8px;">
-                            <mat-icon class="pill green-600 s-16">circle</mat-icon>
-                            <mat-radio-button value="1">IP</mat-radio-button>
+
+                        </div>
+
+                        <div fxLayout="row" fxLayoutAlign="start center" style="gap: 8px;">
+
                         </div>
                     </mat-radio-group>
                 </form>

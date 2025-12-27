@@ -13,6 +13,7 @@ import { AnesthesiaRecordService } from '../anesthesia-record.service';
 import { OtReserInsert } from '../../ot-reservation/ot-reservation.component';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 import { Otanesthesia } from '../anesthesia-record.component';
+import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 
 
 @Component({
@@ -38,25 +39,33 @@ export class NewAnesthesiaRecordComponent {
   registerObj2 = new Otanesthesia({});
   vanesthesiaId: any = 0;
   otreservationId = 0
-
+  anethstartTime: any;
+  anethendTime: any;
+  revocerystartTime: any;
+  revoceryendTime: any;
   vAnethStartDt: any = new Date()
   vAnethEndDt: any = new Date()
   vRecoveryStartDt: any = new Date()
   vRecoveryEndDt: any = new Date()
   isDatePckrDisabled: boolean = false;
+  vanestypeId = 0
+  addDiagnolist: any = [];
+  RtrvDescriptionList: any = [];
+  AllTypeDescription: any = []
+
+  @ViewChild('ddlDiagnosis') ddlDiagnosis: AirmidDropDownComponent;
+
   constructor(public _anesthesiaRecordService: AnesthesiaRecordService,
     public dialogRef: MatDialogRef<NewAnesthesiaRecordComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public _matDialog: MatDialog, private _formBuilder: UntypedFormBuilder,
-    public datePipe: DatePipe, private _FormvalidationserviceService: FormvalidationserviceService,
+    public datePipe: DatePipe, private _FormvalidationserviceService: FormvalidationserviceService, private commonService: PrintserviceService,
     public toastr: ToastrService) { }
 
 
   ngOnInit(): void {
     this.anesthRecordForm = this.createAnesthRecordForm();
     this.anesthRecordForm.markAllAsTouched();
-
-
     this.anesthRecordFinalForm = this.createanesthRecordFinalForm();
     this.tOtAnesthesiaPreOpdiagnosesArray.push(this.createtOtAnesthesiaPreOpdiagnosesInsert())
 
@@ -69,47 +78,62 @@ export class NewAnesthesiaRecordComponent {
       this.vOPDNo = this.registerObj1.opdNo
       this.vIPDNo = this.registerObj1.opdNo
       this.otreservationId = this.registerObj1.otReservationId
-
+      this.vanesthesiaId = this.registerObj1.anesthesiaId
       this.opIpId = this.registerObj1.opIpId
-
-
-
       this.vPatientName = this.registerObj1.patientName
 
-      if (this.otreservationId) {
+      if (this.vanesthesiaId) {
         setTimeout(() => {
-          this._anesthesiaRecordService.getAnesthesiaById(this.otreservationId).subscribe((response) => {
+          this._anesthesiaRecordService.getAnesthesiaById(this.vanesthesiaId).subscribe((response) => {
             this.registerObj2 = response;
             console.log(response)
+            if (response) {
+              this.vNotes = this.registerObj2.anesthesiaNotes
 
-            if (this.registerObj2.anesthesiaId) {
-              this.vAnethStartDt = this.registerObj2.anesthesiaStartDate
-              this.vAnethEndDt = this.registerObj2.anesthesiaEndDate
-              this.vRecoveryStartDt = this.registerObj2.recoveryStartDate
-              this.vRecoveryEndDt = this.registerObj2.recoveryEndDate
-
-              debugger
+debugger
               this.anesthRecordForm.get('AnethStartDt').setValue(this.datePipe.transform(this.registerObj2.anesthesiaStartDate, 'yyyy-MM-dd'));
-              this.anesthRecordForm.get('AnethStartTime').setValue(this.datePipe.transform(this.registerObj2.anesthesiaStartTime, "HH:mm:ss"));
-
               this.anesthRecordForm.get('AnethEndDt').setValue(this.datePipe.transform(this.registerObj2.anesthesiaEndDate, 'yyyy-MM-dd'));
-              this.anesthRecordForm.get('AnethEndTime').setValue(this.datePipe.transform(this.registerObj2.anesthesiaEndTime, "HH:mm:ss"));
-
               this.anesthRecordForm.get('RecoveryStartDt').setValue(this.datePipe.transform(this.registerObj2.recoveryStartDate, 'yyyy-MM-dd'));
-              this.anesthRecordForm.get('AnethEndTime').setValue(this.datePipe.transform(this.registerObj2.recoveryStartTime, "HH:mm:ss"));
-
               this.anesthRecordForm.get('RecoveryEndDt').setValue(this.datePipe.transform(this.registerObj2.recoveryEndDate, 'yyyy-MM-dd'));
-              this.anesthRecordForm.get('AnethEndTime').setValue(this.datePipe.transform(this.registerObj2.recoveryEndTime, "HH:mm:ss"));
 
-              console.log("Get Data:", this.registerObj2)
-              this.vanesthesiaId = this.registerObj2.anesthesiaId
+            
+              
+              const datetimeString = this.registerObj2.anesthesiaStartTime;
+              const [datePart, timePart] = datetimeString.split(' ');
+              const [hours, minutes /*, seconds */] = timePart.split(':');
+              const timeValue = `${hours.padStart(2, '0')}:${minutes.padStart(2, '0')}`;  // '11:11'
+              this.anesthRecordForm.get('AnethStartTime')?.setValue(timeValue);
+ const datetimeString1 =this.registerObj2.anesthesiaEndTime
+              const [datePart1, timePart1] = datetimeString1.split(' ');
+              const [hours1, minutes1 /*, seconds */] = timePart1.split(':');
+              const timeValue1 = `${hours1.padStart(2, '0')}:${minutes1.padStart(2, '0')}`;  // '11:11'
+              this.anesthRecordForm.get('AnethEndTime')?.setValue(timeValue1);
+ const datetimeString2 = this.registerObj2.recoveryStartTime;
+              const [datePart2, timePart2] = datetimeString2.split(' ');
+              const [hours2, minutes2 /*, seconds */] = timePart2.split(':');
+              const timeValue2 = `${hours2.padStart(2, '0')}:${minutes2.padStart(2, '0')}`;  // '11:11'
+              this.anesthRecordForm.get('RecoveryStartTime')?.setValue(timeValue2);
+ const datetimeString3 = this.registerObj2.recoveryEndTime;
+              const [datePart3, timePart3] = datetimeString3.split(' ');
+              const [hours3, minutes3 /*, seconds */] = timePart3.split(':');
+              const timeValue3 = `${hours3.padStart(2, '0')}:${minutes3.padStart(2, '0')}`;  // '11:11'
+              this.anesthRecordForm.get('RecoveryEndTime')?.setValue(timeValue3);
+
+              
+           
+              this.anesthRecordForm.get('anestypeId').setValue(this.registerObj2.anesthesiaType);
+              this.vanestypeId = this.registerObj2.anesthesiaType
+
+              console.log("Get Data:", this.anesthRecordForm.value)
+
 
             }
           });
         }, 500);
       }
 
-      this.anesthRecordForm.patchValue(this.registerObj1);
+
+      this.getdiagnosisList(this.registerObj2);
     }
   }
 
@@ -118,16 +142,16 @@ export class NewAnesthesiaRecordComponent {
     const defaultTime = now.toTimeString().slice(0, 5);
     return this._formBuilder.group({
       AnethStartDt: [(new Date()).toISOString(), Validators.required],
-      AnethStartTime: [defaultTime],
+      AnethStartTime: ['', [Validators.required]],
       AnethEndDt: [(new Date()).toISOString(), Validators.required],
-      AnethEndTime: [defaultTime],
+      AnethEndTime: ['', [Validators.required]],
       RecoveryStartDt: [(new Date()).toISOString(), Validators.required],
-      RecoveryStartTime: [defaultTime],
+      RecoveryStartTime: ['', [Validators.required]],
       RecoveryEndDt: [(new Date()).toISOString(), Validators.required],
-      RecoveryEndTime: [defaultTime],
+      RecoveryEndTime: ['', [Validators.required]],
       anestypeId: [0],
       Diagnosis: [[]],
-      notes: [],
+      notes: '',
     });
   }
 
@@ -135,7 +159,7 @@ export class NewAnesthesiaRecordComponent {
     const now = new Date();
     const defaultTime = now.toTimeString().slice(0, 5);
     return this._formBuilder.group({
-      anesthesiaId: [this.vanesthesiaId, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      anesthesiaId: [this.vanesthesiaId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       otreservationId: [this.otreservationId, [this._FormvalidationserviceService.onlyNumberValidator()]],
       anesthesiaDate: [this.datePipe.transform(new Date(), 'yyyy-MM-dd'), [this._FormvalidationserviceService.allowEmptyStringValidator(), this._FormvalidationserviceService.validDateValidator()]],
       anesthesiaTime: [defaultTime, [Validators.required]], // [this.datePipe.transform(new Date(), 'shortTime'), [this._FormvalidationserviceService.allowEmptyStringValidator()]],
@@ -183,19 +207,14 @@ export class NewAnesthesiaRecordComponent {
     this.dateTimeObj = dateTimeObj;
     console.log(this.dateTimeObj)
   }
-  // myFilter = (d: Date | null): boolean => {
-  //   return this.isDisableFuture ? d <= new Date() : true;
-  // };
-  addDiagnolist: any = [];
+
+
   selectChangeDiagnosis(selectedChips: string[]) {
     this.addDiagnolist = selectedChips;
     this.anesthRecordForm.get('Diagnosis')?.setValue(this.addDiagnolist);
   }
 
-  anethstartTime: any;
-  anethendTime: any;
-  revocerystartTime: any;
-  revoceryendTime: any;
+
   onChangeAnethStartTime(event: any) {
     let time = event.target.value;
     if (time && time.length >= 5) {
@@ -236,68 +255,52 @@ export class NewAnesthesiaRecordComponent {
     this.anesthRecordForm.get('RecoveryEndTime')?.setValue(time, { emitEvent: false });
   }
   vNotes = 'RS'
-  onChangeAnethStartDth(Date1) {
+  // onChangeAnethStartDth(Date1) {
 
-    this.vAnethStartDt = this.datePipe.transform(Date1, "yyyy-MM-dd")
-    console.log(Date1)
-  }
+  //   this.vAnethStartDt = this.datePipe.transform(Date1, "yyyy-MM-dd")
+  //   console.log(Date1)
+  // }
 
-  onChangeAnethEndDt(Date1: Date) {
+  // onChangeAnethEndDt(Date1: Date) {
 
-    this.vAnethEndDt = this.datePipe.transform(Date1, "yyyy-MM-dd")
-    console.log(Date1)
-  }
+  //   this.vAnethEndDt = this.datePipe.transform(Date1, "yyyy-MM-dd")
+  //   console.log(Date1)
+  // }
 
-  onChangeRecoveryStartDtt(Date1: Date) {
+  // onChangeRecoveryStartDtt(Date1: Date) {
 
-    this.vRecoveryStartDt = this.datePipe.transform(Date1, "yyyy-MM-dd")
-    console.log(Date1)
-  }
+  //   this.vRecoveryStartDt = this.datePipe.transform(Date1, "yyyy-MM-dd")
+  //   console.log(Date1)
+  // }
 
-  onChangeRecoveryEndDt(Date1: Date) {
+  // onChangeRecoveryEndDt(Date1: Date) {
 
-    this.vRecoveryEndDt = this.datePipe.transform(Date1, "yyyy-MM-dd")
-    console.log(Date1)
-  }
+  //   this.vRecoveryEndDt = this.datePipe.transform(Date1, "yyyy-MM-dd")
+  //   console.log(Date1)
+  // }
   onSubmit() {
-    // const formattedDate = this.datePipe.transform(this.AdmissionTaskForm.get('AdmissionDate').value, "yyyy-MM-dd");
-    //   const formattedTime = this.datePipe.transform(this.AdmissionTaskForm.get('AdmissionTime').value, "HH:mm:ss");
 
-
-    // console.log(this.vAnethStartDt)
-    // console.log(this.anesthRecordForm.get('AnethStartDt').value)
-
-    // const formattedDate1 = this.datePipe.transform(this.vAnethStartDt, "yyyy-MM-dd");
-    // const formattedDate2 = this.datePipe.transform(this.vAnethEndDt, "yyyy-MM-dd");
-
-    // const formattedDate3 = this.datePipe.transform(this.vRecoveryStartDt, "yyyy-MM-dd");
-
-    // const formattedDate4 = this.datePipe.transform(this.vRecoveryEndDt, "yyyy-MM-dd");
-
-    // const formattedTime1 = this.anesthRecordForm.get('AnethStartTime').value;
-
-    debugger
     this.anesthRecordFinalForm.get('otreservationId').setValue(this.otreservationId);
     this.anesthRecordFinalForm.get('opipid').setValue(this.opIpId);
     this.anesthRecordFinalForm.get('anesthesiaType')?.setValue(this.anesthRecordForm.get('anestypeId').value || 0);
     this.anesthRecordFinalForm.get('anesthesiaNotes').setValue(this.vNotes);
+
+
     this.anesthRecordFinalForm.get('anesthesiaId').setValue(this.vanesthesiaId);
-
-
 
     // this.anesthRecordFinalForm.get('otpreOperationTime').setValue(formattedTime);
     console.log(this.anesthRecordFinalForm.value)
-    this.anesthRecordFinalForm.get('anesthesiaStartDate').setValue(this.vAnethStartDt);
+    this.anesthRecordFinalForm.get('anesthesiaStartDate').setValue(this.datePipe.transform(this.anesthRecordForm.get('AnethStartDt').value,"yyyy-MM-dd"));
     this.anesthRecordFinalForm.get('anesthesiaStartTime').setValue(this.anesthRecordForm.get('AnethStartTime').value);
 
-    this.anesthRecordFinalForm.get('anesthesiaEndDate').setValue(this.vAnethEndDt);
+    this.anesthRecordFinalForm.get('anesthesiaEndDate').setValue(this.datePipe.transform(this.anesthRecordForm.get('AnethEndDt').value,"yyyy-MM-dd"));
     this.anesthRecordFinalForm.get('anesthesiaEndTime').setValue(this.anesthRecordForm.get('AnethEndTime').value);
 
 
-    this.anesthRecordFinalForm.get('recoveryStartDate').setValue(this.vRecoveryStartDt);
+    this.anesthRecordFinalForm.get('recoveryStartDate').setValue(this.datePipe.transform(this.anesthRecordForm.get('RecoveryStartDt').value,"yyyy-MM-dd"));
     this.anesthRecordFinalForm.get('recoveryStartTime').setValue(this.anesthRecordForm.get('RecoveryStartTime').value);
 
-    this.anesthRecordFinalForm.get('recoveryEndDate').setValue(this.vRecoveryEndDt);
+    this.anesthRecordFinalForm.get('recoveryEndDate').setValue(this.datePipe.transform(this.anesthRecordForm.get('RecoveryEndDt').value,"yyyy-MM-dd"));
     this.anesthRecordFinalForm.get('recoveryEndTime').setValue(this.anesthRecordForm.get('RecoveryEndTime').value);
 
 
@@ -311,9 +314,10 @@ export class NewAnesthesiaRecordComponent {
       });
 
       console.log(this.anesthRecordFinalForm.value)
-      debugger
+
       this._anesthesiaRecordService.InsertOTAnesthesia(this.anesthRecordFinalForm.value).subscribe(response => {
-        // this.viewgetIndentReportPdf(response)
+        console.log(response)
+        this.viewgetAnethesiaReportPdf(response)
         this._matDialog.closeAll();
       });
     } else {
@@ -346,6 +350,38 @@ export class NewAnesthesiaRecordComponent {
 
 
 
+  viewgetAnethesiaReportPdf(AnesthesiaId) {
+    this.commonService.Onprint("AnesthesiaId", AnesthesiaId, "OTAnaesthesiaRecord");
+
+  }
+  getdiagnosisList(obj) {
+    this.addDiagnolist = [];
+
+    this._anesthesiaRecordService.getAnesthesiaById(this.vanesthesiaId).subscribe((response) => {
+
+      console.log(response.tOtAnesthesiaPreOpdiagnoses)
+
+      if (response && Array.isArray(response.tOtAnesthesiaPreOpdiagnoses)) {
+        this.RtrvDescriptionList = response.tOtAnesthesiaPreOpdiagnoses;
+
+        // let Diagnosis = this.RtrvDescriptionList.filter(item => item.descriptionType === 'Diagnosis');
+        // if (Diagnosis.length > 0) {
+        this.RtrvDescriptionList.forEach(element => {
+          this.addDiagnolist.push(
+            {
+              otanesthesiaPreOpdiagnosisId: element.otanesthesiaPreOpdiagnosisId,
+              descriptionName: element.descriptionName,
+              descriptionType: 'Diagnosis'
+            }
+          )
+        })
+        console.log(this.addDiagnolist)
+        this.anesthRecordForm.get('Diagnosis').setValue(this.addDiagnolist);
+        console.log("DIAGNOSIS DATA:", this.anesthRecordForm.get('Diagnosis').value)
+        // }
+      }
+    });
+  }
   onClear(val: boolean) {
     this.dialogRef.close(val);
     this.anesthRecordForm.get('opIpType').setValue('OP')

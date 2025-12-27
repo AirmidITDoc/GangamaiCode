@@ -40,23 +40,23 @@ export class AnesthesiaRecordComponent {
     this.gridConfig.columnsList.find(col => col.key === 'opiptype')!.template = this.actionsTemplate;
     this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
   }
-  
+
   @ViewChild('actionsTemplate') actionsTemplate!: TemplateRef<any>;
   @ViewChild('actionsTemplate1') actionsTemplate1!: TemplateRef<any>;
 
   allcolumns = [
     { heading: "-", key: "opiptype", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 40 },
     // { heading: "", key: "isNewRecord", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 40 },
-    { heading: "OTReser-Date&Time", key: "otReservationDateTime", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-    { heading: "Surgery Date", key: "surgeryDate", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-    { heading: "Estimate Time", key: "estimateTime", sort: true, align: 'left', emptySign: 'NA', type: 7, width: 150 },
+    { heading: "OTReser-Date&Time", key: "otReservationDateTime", sort: true, align: 'left', emptySign: 'NA', width: 160 },
+    { heading: "Surgery Date", key: "surgeryDate", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+    // { heading: "Estimate Time", key: "estimateTime", sort: true, align: 'left', emptySign: 'NA', type: 7, width: 150 },
     // { heading: "Operation Date-Time", key: "opstartTime", sort: true, align: 'left', emptySign: 'NA', type: 8, width: 180 },
-    { heading: "UHID NO", key: "regNo", sort: true, align: 'left', emptySign: 'NA', },
-    { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
-    { heading: "Blood Group", key: "bloodGroup", sort: true, align: 'left', emptySign: 'NA', width: 120 },
-    { heading: "Category Type", key: "typeName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-    { heading: "Theater Name", key: "otTableName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-    { heading: "UserName", key: "userName", sort: true, align: 'left', emptySign: 'NA', width: 180 },
+    { heading: "UHID No", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+    { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 220 },
+    { heading: "Blood Group", key: "bloodGroup", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+    { heading: "Category Type", key: "typeName", sort: true, align: 'left', emptySign: 'NA', width: 170 },
+    { heading: "Theater Name", key: "otTableName", sort: true, align: 'left', emptySign: 'NA', width: 170 },
+    { heading: "UserName", key: "userName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
     {
       heading: "Action", key: "action", align: "right", width: 120, sticky: true, type: gridColumnTypes.template,
       template: this.actionButtonTemplate
@@ -93,6 +93,8 @@ export class AnesthesiaRecordComponent {
   }
 
   onChangeFirst() {
+    debugger
+
     this.fromDate = this.datePipe.transform(this.myFilterform.get('start').value, "yyyy-MM-dd")
     this.toDate = this.datePipe.transform(this.myFilterform.get('end').value, "yyyy-MM-dd")
     this.FirstName = this.myFilterform.get('FirstName').value + "%"
@@ -102,6 +104,7 @@ export class AnesthesiaRecordComponent {
     this.getfilterdata();
   }
   getfilterdata() {
+
     this.gridConfig = {
       apiUrl: "OTReservation/OTReservationlist",
       columnsList: this.allcolumns,
@@ -110,8 +113,8 @@ export class AnesthesiaRecordComponent {
       filters: [
         { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.StartsWith },
         { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.StartsWith },
-        { fieldName: "FirstName", fieldValue: "%", opType: OperatorComparer.StartsWith },
-        { fieldName: "LastName", fieldValue: "%", opType: OperatorComparer.StartsWith },
+        { fieldName: "FirstName", fieldValue: this.FirstName, opType: OperatorComparer.StartsWith },
+        { fieldName: "LastName", fieldValue: this.LastName, opType: OperatorComparer.StartsWith },
         { fieldName: "RegNo", fieldValue: this.regNo, opType: OperatorComparer.Equals },
         { fieldName: "OPIPType", fieldValue: this.opipType, opType: OperatorComparer.Equals },
       ],
@@ -135,6 +138,22 @@ export class AnesthesiaRecordComponent {
   onNew(row: any = null) {
     const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
     buttonElement.blur();
+    console.log(row)
+    const dialogRef = this._matDialog.open(NewAnesthesiaRecordComponent,
+      {
+        maxWidth: "90vw",
+        maxHeight: '90vh',
+        width: '90%',
+        data: row
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      this.grid.bindGridData();
+    });
+  }
+
+  onAnesthesiaRecord(row: any = null) {
+    const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+    buttonElement.blur();
 
     const dialogRef = this._matDialog.open(NewAnesthesiaRecordComponent,
       {
@@ -147,55 +166,111 @@ export class AnesthesiaRecordComponent {
       this.grid.bindGridData();
     });
   }
+  OnCancel(data: any) {
+    Swal.fire({
+      title: 'Do you want to cancel Anethesia?',
+      text: "Please provide a reason for cancellation",
+      icon: "warning",
+      input: 'text',
+      inputPlaceholder: 'Enter cancellation reason...',
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, Cancel it!",
+      preConfirm: (reason) => {
+        if (!reason || reason.trim() === '') {
+          Swal.showValidationMessage('Reason is required');
+        }
+        return reason;
+      }
+    }).then((result) => {
+      if (result.isConfirmed) {
+        let submitData = {
+          anesthesiaId: data.anesthesiaId,
+          reason: result.value,
+          isCancelledBy: this._loggedService.currentUserValue.userId
+        };
+        console.log(submitData);
+        this._anesthesiaRecordService.OnCancel(submitData).subscribe((res) => {
+          this.toastr.success(res.message);
+          this.grid.bindGridData();
+        });
+      }
+    });
+  }
+
+  viewgetAnethesiaReportPdf(element) {
+    this.commonService.Onprint("AnesthesiaId", element.AnesthesiaId, "OTAnaesthesiaRecord");
+
+  }
+
+
 }
 
 
 export class Otanesthesia {
-   anesthesiaId:any;
-    otreservationId:any;
-    anesthesiaDate:any;
-    anesthesiaTime:any;
-    anesthesiaNo:any;
-    opipid:any;
-    opiptype:any;
-    anesthesiaStartDate:any;
-    anesthesiaStartTime:any;
-    anesthesiaEndDate:any;
-    anesthesiaEndTime:any;
-    recoveryStartDate:any;
-    recoveryStartTime:any;
-    recoveryEndDate:any;
-    recoveryEndTime:any;
-    anesthesiaType:any;
-    anesthesiaNotes:any;
-     currentDate = new Date();
-    /**
-     * Constructor
-     *
-     * @param Otanesthesia
-     */
+  anesthesiaId: any;
+  otreservationId: any;
+  anesthesiaDate: any;
+  anesthesiaTime: any;
+  anesthesiaNo: any;
+  opipid: any;
+  opiptype: any;
+  anesthesiaStartDate: any;
+  anesthesiaStartTime: any;
+  anesthesiaEndDate: any;
+  anesthesiaEndTime: any;
+  recoveryStartDate: any;
+  recoveryStartTime: any;
+  recoveryEndDate: any;
+  recoveryEndTime: any;
+  anesthesiaType: any;
+  anesthesiaNotes: any;
+  currentDate = new Date();
+  tOtAnesthesiaPreOpdiagnoses: AnesthesiaPreOpdiagnoses[];
+  /**
+   * Constructor
+   *
+   * @param Otanesthesia
+   */
 
-    constructor(Otanesthesia) {
-        {
-            this.anesthesiaId = Otanesthesia.anesthesiaId || 0;
-            this.otreservationId = Otanesthesia.otreservationId || 0;
-            this.anesthesiaDate = Otanesthesia.anesthesiaDate || this.currentDate;
-            this.anesthesiaTime = Otanesthesia.anesthesiaTime;
-            this.anesthesiaNo = Otanesthesia.anesthesiaNo;
-            this.opipid = Otanesthesia.opipid || '';
-            this.opiptype = Otanesthesia.opiptype || 1;
-            this.anesthesiaStartDate = Otanesthesia.anesthesiaStartDate || '';
-            this.anesthesiaStartTime = Otanesthesia.anesthesiaStartTime || this.currentDate;
-            this.anesthesiaEndDate = Otanesthesia.anesthesiaEndDate || this.currentDate;
-            this.anesthesiaEndTime = Otanesthesia.anesthesiaEndTime || 0;
-            this.recoveryStartDate = Otanesthesia.recoveryStartDate || '';
-            this.recoveryStartTime = Otanesthesia.recoveryStartTime || '';
-            this.recoveryEndDate = Otanesthesia.recoveryEndDate || this.currentDate;
-            this.recoveryEndTime = Otanesthesia.recoveryEndTime ;
-            this.anesthesiaType = Otanesthesia.anesthesiaType || '0';
-            this.anesthesiaNotes = Otanesthesia.anesthesiaNotes || 0;
-         
-          
-        }
+  constructor(Otanesthesia) {
+    {
+      this.anesthesiaId = Otanesthesia.anesthesiaId || 0;
+      this.otreservationId = Otanesthesia.otreservationId || 0;
+      this.anesthesiaDate = Otanesthesia.anesthesiaDate || this.currentDate;
+      this.anesthesiaTime = Otanesthesia.anesthesiaTime;
+      this.anesthesiaNo = Otanesthesia.anesthesiaNo;
+      this.opipid = Otanesthesia.opipid || '';
+      this.opiptype = Otanesthesia.opiptype || 1;
+      this.anesthesiaStartDate = Otanesthesia.anesthesiaStartDate || '';
+      this.anesthesiaStartTime = Otanesthesia.anesthesiaStartTime || this.currentDate;
+      this.anesthesiaEndDate = Otanesthesia.anesthesiaEndDate || this.currentDate;
+      this.anesthesiaEndTime = Otanesthesia.anesthesiaEndTime || 0;
+      this.recoveryStartDate = Otanesthesia.recoveryStartDate || '';
+      this.recoveryStartTime = Otanesthesia.recoveryStartTime || '';
+      this.recoveryEndDate = Otanesthesia.recoveryEndDate || this.currentDate;
+      this.recoveryEndTime = Otanesthesia.recoveryEndTime;
+      this.anesthesiaType = Otanesthesia.anesthesiaType || '0';
+      this.anesthesiaNotes = Otanesthesia.anesthesiaNotes || 0;
+
+
     }
+  }
+}
+
+export class AnesthesiaPreOpdiagnoses {
+  otanesthesiaPreOpdiagnosisId: any;
+  anesthesiaId: any;
+  descriptionName: any;
+  descriptionType: any;
+
+  constructor(AnesthesiaPreOpdiagnoses) {
+    {
+      this.otanesthesiaPreOpdiagnosisId = AnesthesiaPreOpdiagnoses.otanesthesiaPreOpdiagnosisId || 0;
+      this.anesthesiaId = AnesthesiaPreOpdiagnoses.anesthesiaId || 0;
+      this.descriptionName = AnesthesiaPreOpdiagnoses.descriptionName || '';
+      this.descriptionType = AnesthesiaPreOpdiagnoses.descriptionType || '';
+    }
+  }
 }

@@ -39,7 +39,7 @@ export class AnesthesiaRecordService {
 
 
   public InsertOTAnesthesia(Param) {
-debugger
+
     if (Param.anesthesiaId) {
       return this._httpClient.PutData("OTAnesthesia/Edit/"+Param.anesthesiaId, Param);
     } else return this._httpClient.PostData("OTAnesthesia/Insert", Param);
@@ -48,4 +48,12 @@ debugger
   public UpdateOTAnesthesia(employee) {
     return this._httpClient.PutData("OTAnesthesia/Edit/" + employee.anesthesiaId, employee);
   }
+  public getRtrvdiagnosisList(employee) {
+        return this._httpClient.PostData("OTReservation/OtReservationDiagnosisList", employee);
+    }
+
+    
+    public OnCancel(param) {
+        return this._httpClient.PostData('OTReservation/Cancel', param)
+    }
 }
