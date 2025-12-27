@@ -1336,7 +1336,7 @@ chekgstper(obj){
             return;
         }
         let nowDate = new Date();
-        let nowDate1 = nowDate.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }).split(',');
+        let nowDate1 = nowDate.toLocaleString().split(',');
         this.newDateTimeObj = { date: nowDate1[0], time: nowDate1[1] };
         //
         this.Savebtn = true;
@@ -1503,7 +1503,7 @@ chekgstper(obj){
             return;
         }
         let nowDate = new Date();
-        let nowDate1 = nowDate.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }).split(',');
+        let nowDate1 = nowDate.toLocaleString().split(',');
         this.newDateTimeObj = { date: nowDate1[0], time: nowDate1[1] };
         //
         this.Savebtn = true;
@@ -1684,7 +1684,7 @@ chekgstper(obj){
             return;
         }
         let nowDate = new Date();
-        let nowDate1 = nowDate.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }).split(',');
+        let nowDate1 = nowDate.toLocaleString().split(',');
         this.newDateTimeObj = { date: nowDate1[0], time: nowDate1[1] };
         this.Savebtn = true;
         let grnSaveObj = {};

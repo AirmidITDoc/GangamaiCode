@@ -139,7 +139,7 @@ export class MLCInformationComponent implements OnInit {
     }
     setInterval(() => {
       this.now = new Date();
-      this.dateTimeString = this.now.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }).split(',');
+      this.dateTimeString = this.now.toLocaleString().split(',');
       // if (!this.isTimeChanged) {
       //   this.MlcInfoFormGroup.get('reportingTime').setValue(this.now);
       //   if (this.MlcInfoFormGroup.get('reportingTime'))
@@ -242,8 +242,8 @@ export class MLCInformationComponent implements OnInit {
   onChangeDate(value) {
     if (value) {
       const dateOfReg = new Date(value);
-      let splitDate = dateOfReg.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }).split(',');
-      let splitTime = this.MlcInfoFormGroup.get('reportingDate').value.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }).split(',');
+      let splitDate = dateOfReg.toLocaleString().split(',');
+      let splitTime = this.MlcInfoFormGroup.get('reportingDate').value.toLocaleString().split(',');
       this.eventEmitForParent(splitDate[0], splitTime[1]);
     }
   }
@@ -253,8 +253,8 @@ export class MLCInformationComponent implements OnInit {
     if (event) {
 
       let selectedDate = new Date(this.MlcInfoFormGroup.get('reportingTime').value);
-      let splitDate = selectedDate.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }).split(',');
-      let splitTime = this.MlcInfoFormGroup.get('reportingTime').value.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }).split(',');
+      let splitDate = selectedDate.toLocaleString().split(',');
+      let splitTime = this.MlcInfoFormGroup.get('reportingTime').value.toLocaleString().split(',');
       this.isTimeChanged = true;
       this.phdatetime = splitTime[1]
       console.log(this.phdatetime)
