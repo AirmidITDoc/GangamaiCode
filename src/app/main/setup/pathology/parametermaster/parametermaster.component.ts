@@ -42,9 +42,9 @@ export class ParametermasterComponent implements OnInit {
     }
 
     allcolumns = [
-        { heading: "IsNumeric", key: "isNumericParameter", sort: true, align: 'left', type: gridColumnTypes.template, width: 90  },
+        { heading: "IsNumeric", key: "isNumericParameter", sort: true, align: 'left', type: gridColumnTypes.template, width: 50  },
 
-        { heading: "PrintDisSummary", key: "isPrintDisSummary", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template , width: 120 },
+        { heading: "PrintDisSummary", key: "isPrintDisSummary", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template , width: 50 },
 
         // { heading: "Code", key: "parameterId", width: 100, sort: true, align: 'left', emptySign: 'NA' },
 
@@ -117,7 +117,7 @@ export class ParametermasterComponent implements OnInit {
     onChangeFirst() {
         this.paraName = this.searchFormGroup.get('ParameterNameSearch').value + "%"
         this.UnitName = this.searchFormGroup.get('UnitId').value || "0"
-        debugger
+        // debugger
         if (this.searchFormGroup.get('IsNumeric').value==1)
             this.IsNumneric = "1"
         else if(this.searchFormGroup.get('IsNumeric').value==2)
@@ -128,7 +128,7 @@ export class ParametermasterComponent implements OnInit {
     }
 
     getfilterdata() {
-        debugger
+        // debugger
         this.gridConfig = {
             apiUrl: "ParameterMaster/MPathParameterList",
             columnsList: this.allcolumns,
@@ -290,7 +290,7 @@ export class ParametermasterComponent implements OnInit {
             cancelButtonColor: '#d33',
             confirmButtonText: 'Yes, Change Status!'
         }).then((result) => {
-            debugger
+            // debugger
             if (result.isConfirmed) {
                 this._ParameterService.deactivateTheStatus(row.parameterId).subscribe(
                     (data) => {

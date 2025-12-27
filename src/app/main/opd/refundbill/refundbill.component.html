@@ -111,7 +111,7 @@
               <ng-container matColumnDef="price">
                 <mat-header-cell *matHeaderCellDef mat-sort-header>Price</mat-header-cell>
                 <mat-cell *matCellDef="let element">
-                  <span>{{ element.price }}</span>
+                  <span>{{ element.price | currency: currency:'symbol'}}</span>
                 </mat-cell>
               </ng-container>
 
@@ -125,7 +125,7 @@
               <ng-container matColumnDef="totalAmt">
                 <mat-header-cell *matHeaderCellDef mat-sort-header>TotalAmt</mat-header-cell>
                 <mat-cell *matCellDef="let element">
-                  <span>{{ element.totalAmt | currency : 'INR' }}</span>
+                  <span>{{ element.totalAmt | currency: currency:'symbol' }}</span>
                 </mat-cell>
               </ng-container>
 
@@ -139,14 +139,14 @@
               <ng-container matColumnDef="netAmount">
                 <mat-header-cell *matHeaderCellDef mat-sort-header>NetAmount</mat-header-cell>
                 <mat-cell *matCellDef="let element">
-                  <span>{{ element.netAmount | currency : 'INR' }}</span>
+                  <span>{{ element.netAmount | currency: currency:'symbol' }}</span>
                 </mat-cell>
               </ng-container>
 
                  <ng-container matColumnDef="discnetAmount">
                 <mat-header-cell *matHeaderCellDef mat-sort-header>NetAmt(AfterDisc)</mat-header-cell>
                 <mat-cell *matCellDef="let element">
-                  <span>{{ element.netAmount -  element.serviceWiseDisc | currency : 'INR' }}</span>
+                  <span>{{ element.netAmount -  element.serviceWiseDisc | currency: currency:'symbol' }}</span>
                 </mat-cell>
               </ng-container>
 
@@ -173,14 +173,14 @@
               <ng-container matColumnDef="balanceAmount">
                 <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Bal Amount</mat-header-cell>
                 <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                  <span>{{ element.balanceAmount }}</span>
+                  <span>{{ element.balanceAmount | currency: currency:'symbol'}}</span>
                 </mat-cell>
               </ng-container>
 
               <ng-container matColumnDef="refundAmount">
                 <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Prev.Ref Amt</mat-header-cell>
                 <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                  <span>{{ element.refundAmount | currency : 'INR' }}</span>
+                  <span>{{ element.refundAmount | currency: currency:'symbol' }}</span>
                 </mat-cell>
               </ng-container>
 
@@ -210,7 +210,7 @@
               <div class="net-amt">
                 <div class="net-amt-box">
                   <span class="net-amt-label">Total of Items :</span>
-                  <span class="net-amt-value">{{getServicetotSum(dataSource2.data) | currency : 'INR' }}</span>
+                  <span class="net-amt-value">{{getServicetotSum(dataSource2.data) | currency: currency:'symbol' }}</span>
                 </div>
               </div>
             </div>

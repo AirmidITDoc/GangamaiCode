@@ -27,6 +27,7 @@ export class ParameterFormMasterComponent implements OnInit {
     parameterForm: FormGroup;
     numericForm: FormGroup;
     descForm: FormGroup;
+    TableForm: FormGroup;
 
     isPrintDisSummaryChecked: boolean = false;
     autocompleteModeUnitId: string = "Unit";
@@ -92,7 +93,7 @@ export class ParameterFormMasterComponent implements OnInit {
     constructor(
         public _ParameterService: ParametermasterService,
         public dialogRef: MatDialogRef<ParametermasterComponent>,
-         private accountService: AuthenticationService,
+        private accountService: AuthenticationService,
         public _matDialog: MatDialog,
         @Inject(MAT_DIALOG_DATA) public data: any,
         private _FormvalidationserviceService: FormvalidationserviceService,
@@ -106,6 +107,8 @@ export class ParameterFormMasterComponent implements OnInit {
         this.parameterForm.markAllAsTouched();
         this.numericForm = this._ParameterService.numericForm();
         this.descForm = this._ParameterService.descForm();
+
+        this.TableForm = this.tableForm();
 
         this.DescArray.push(this.createdescDetails());
         this.NumericArray.push(this.createnumDetails());
@@ -136,7 +139,7 @@ export class ParameterFormMasterComponent implements OnInit {
 
         this.selectedItems = [...this.tableData];
         this.selectedItems = [...this.selectedItems];
-debugger
+        // debugger
         var mdata = {
             parameterId: this.rowData?.parameterId,
             parameterShortName: this.rowData?.parameterShortName,
@@ -151,17 +154,23 @@ debugger
         this.parameterForm.patchValue(mdata);
     }
 
-
+    tableForm(): FormGroup {
+        return this._formBuilder.group({
+            genderId: 0,
+            ageType: [""]
+        });
+    }
 
     createdescDetails(item: any = {}): FormGroup {
         console.log(item)
         return this._formBuilder.group({
-
             descriptiveId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             parameterId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            parameterValues: [item.parameterValues, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            parameterValues: [item.parameterValues ?? ''],
             isDefaultValue: true,
-            defaultValue: [item.DefaultValue],
+            defaultValue: [item.DefaultValue ?? ''],
+            addedby: [this.accountService.currentUserValue.userId, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            updatedby: [this.accountService.currentUserValue.userId, [this._FormvalidationserviceService.onlyNumberValidator()]],
         });
     }
 
@@ -169,17 +178,17 @@ debugger
     createnumDetails(item: any = {}): FormGroup {
         console.log(item)
         return this._formBuilder.group({
-        pathparaRangeId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      paraId: [item.paraId, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      sexId: [item.sexId, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      minAge: [item.minAge, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      maxAge: [item.maxAge, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      ageType: [item.ageType, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      minValue: [item.minValue, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      maxValue: [item.maxValue, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      isDeleted: true,
-      addedby: [this.accountService.currentUserValue.userId, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      updatedby: [this.accountService.currentUserValue.userId, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            pathparaRangeId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            paraId: [item.paraId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            sexId: [item.sexId, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            minAge: [item.minAge, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            maxAge: [item.maxAge, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            ageType: [(item.ageType ?? '').trim()],
+            minValue: [String(item.minValue)],
+            maxValue: [String(item.maxValue)],
+            isDeleted: true,
+            addedby: [this.accountService.currentUserValue.userId, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            updatedby: [this.accountService.currentUserValue.userId, [this._FormvalidationserviceService.onlyNumberValidator()]],
         });
     }
     get DescArray(): FormArray {
@@ -190,100 +199,26 @@ debugger
         return this.parameterForm.get('mPathParaRangeWithAgeMasters') as FormArray;
     }
 
-
-
-    // OnSave() {
-    //     const isBoldChecked = this._ParameterService.myform.get("isBoldFlag").value;
-    //     const BoldValue = isBoldChecked ? "B" : "";
-
-    //     if (!this.parameterForm.invalid) {
-
-    //         if (this._ParameterService.is_numeric)
-    //             var is_numeric = "1"
-    //         else
-    //             var is_numeric = "0"
-
-    //         var numeric_info = [];
-    //         var mPathParaRangeMasters = [];
-    //         var data2 = [];
-    //         if (!this._ParameterService.is_numeric) {
-
-    //             console.log('selected:', this.selectedItems)
-    //             for (var val of this.selectedItems) {
-
-    //                 var data = {
-    //                     descriptiveId: 0,
-    //                     parameterId: 0, //this.descForm.get("paraId").value, 
-    //                     parameterValues: val.parameterValues,
-    //                     isDefaultValue: val.DefaultValue ? true : false,
-    //                     defaultValue: val.DefaultValue
-    //                 };
-    //                 data2.push(data);
-    //             }
-    //         }
-    //         else {
-    //             mPathParaRangeMasters = this.dsParameterAgeList.data.map((row: any) => ({
-    //                 "pathparaRangeId": 0,
-    //                 "paraId": 0,
-    //                 "sexId": row.sexId,//this.numericForm.get("sexId").value || 1,
-    //                 "minAge": row.minAge,
-    //                 "maxAge": row.maxAge,
-    //                 "ageType": row.ageType, //"string",
-    //                 "minValue": row.minValue, //this.numericForm.get("minValue").value,
-    //                 "maxValue": row.maxValue, //this.numericForm.get("maxvalue").value
-    //                 "isDeleted": row.IsDeleted,
-    //                 "addedby": this._loggedService.currentUserValue.userId || 1,
-    //                 "updatedby": 0
-    //             }));
-    //         }
-
-    //         this.parameterForm.get("isNumeric").setValue(is_numeric)
-    //         this.parameterForm.get("isPrintDisSummary").setValue(true)
-    //         this.parameterForm.get("isBoldFlag").setValue(BoldValue)
-    //         this.parameterForm.get("mParameterDescriptiveMasters").setValue(data2)
-    //         this.parameterForm.get("mPathParaRangeWithAgeMasters").setValue(mPathParaRangeMasters)
-
-    //         console.log(this.parameterForm.value)
-    //         this._ParameterService.insertParameterMaster(this.parameterForm.value).subscribe(data => {
-    //             if (data) {
-    //                 this.parameterForm.reset({
-    //                     isNumeric: ["1"],
-    //                     isPrintDisSummary: true,
-    //                     IsBold: ['0'],
-    //                     IsDeleted: [true],
-    //                 });
-    //                 this.selectedItems = [];
-    //                 this.dsParameterAgeList.data = [];
-    //                 this.onClose();
-    //                 this.toastr.success(data.message);
-    //             }
-
-    //         });
-    //     } else {
-    //         let invalidFields = [];
-
-    //         if (this.parameterForm.invalid) {
-    //             for (const controlName in this.parameterForm.controls) {
-    //                 if (this.parameterForm.controls[controlName].invalid) {
-    //                     invalidFields.push(`My Form: ${controlName}`);
-    //                 }
-    //             }
-    //         }
-
-    //         if (invalidFields.length > 0) {
-    //             invalidFields.forEach(field => {
-    //                 this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
-    //                 );
-    //             });
-    //         }
-    //     }
-
-    // }
-
     OnSave() {
-        debugger
+        // debugger
         const isBoldChecked = this.parameterForm.get("isBoldFlag").value;
         const BoldValue = isBoldChecked ? "B" : "";
+
+        // if (!this._ParameterService.is_numeric) {
+
+        //     console.log('selected:', this.selectedItems)
+        //     this.DescArray.clear();
+        //     this.selectedItems.forEach(item => {
+        //         this.DescArray.push(this.createdescDetails(item));
+        //     });
+        // }
+        // else {
+
+        //     this.NumericArray.clear();
+        //     this.dsParameterAgeList.data.forEach(item => {
+        //         this.NumericArray.push(this.createnumDetails(item));
+        //     });
+        // }
 
         if (!this.parameterForm.invalid) {
 
@@ -304,7 +239,7 @@ debugger
                 });
             }
             else {
-              
+
                 this.NumericArray.clear();
                 this.dsParameterAgeList.data.forEach(item => {
                     this.NumericArray.push(this.createnumDetails(item));
@@ -334,25 +269,33 @@ debugger
                 }
 
             });
-        } else {
-            let invalidFields = [];
-
-            if (this.parameterForm.invalid) {
-                for (const controlName in this.parameterForm.controls) {
-                    if (this.parameterForm.controls[controlName].invalid) {
-                        invalidFields.push(`My Form: ${controlName}`);
-                    }
-                }
-            }
-
+        }
+        else {
+            const invalidFields = this.collectErrors(this.parameterForm);
             if (invalidFields.length > 0) {
                 invalidFields.forEach(field => {
-                    this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
-                    );
+                    this.toastr.warning(`Field "${field}" is invalid.`, 'Warning');
                 });
+                return;
             }
         }
+    }
 
+    collectErrors(formGroup: FormGroup | FormArray, parentKey: string = ''): string[] {
+        let errors: string[] = [];
+        Object.keys(formGroup.controls).forEach(key => {
+            const control = formGroup.get(key);
+            const newKey = parentKey ? `${parentKey}.${key}` : key;
+            if (control instanceof FormGroup || control instanceof FormArray) {
+                // go deeper
+                errors = errors.concat(this.collectErrors(control, newKey));
+            } else {
+                if (control?.invalid) {
+                    errors.push(newKey);
+                }
+            }
+        });
+        return errors;
     }
 
     toggle(val: any) {
@@ -365,16 +308,50 @@ debugger
         }
     }
 
+    checkFields(event) {
+
+        const {
+            sexId,
+            ageType,
+            minAge,
+            maxAge,
+            minValue,
+            maxvalue
+        } = this.numericForm.value;
+
+        // Mandatory checks
+        if (!sexId) {
+            this.toastr.warning('Please select Gender', 'Warning');
+            return;
+        }
+
+        if (!ageType) {
+            this.toastr.warning('Please select Age Type', 'Warning');
+            return;
+        }
+
+        // Optional fields → default to 0
+        this.numericForm.patchValue({
+            minAge: minAge ?? 0,
+            maxAge: maxAge ?? 0,
+            minValue: minValue ?? 0,
+            maxvalue: maxvalue ?? 0
+        });
+
+        this.onAdd(event);
+    }
+
     onAdd(event) {
 
         let isNewRowUnique = true;
 
         const newRow: any = {
-            sexId: this.numericForm.get('sexId').value || "",
-            minAge: this.numericForm.get('minAge').value,
-            maxAge: this.numericForm.get('maxAge').value,
-            minValue: this.numericForm.get('minValue').value,
-            maxValue: this.numericForm.get('maxvalue').value,
+            sexId: this.numericForm.get('sexId').value,
+            genderName: this.selectedGenderName,
+            minAge: this.numericForm.get('minAge').value || 0,
+            maxAge: this.numericForm.get('maxAge').value || 0,
+            minValue: this.numericForm.get('minValue').value || 0,
+            maxValue: this.numericForm.get('maxvalue').value || 0,
             IsDeleted: Boolean(this._ParameterService.myform.get("IsDeleted").value) || true,
             ageType: this.numericForm.get('ageType').value,
         };
@@ -528,7 +505,7 @@ debugger
 
     chkage() {
         const age = this.numericForm.get("minAge").value// this.myForm.get("ageYear")?.value;
-        debugger
+        // debugger
         if (age < 0 || age > 120) {
             Swal.fire("Please Enter Valid Age..")
         }
@@ -558,26 +535,30 @@ debugger
         this.dialogRef.close();
     }
 
-    checkFields(event) {
-        const formValues = this.numericForm.value
-        const fieldsTobeChecked =
-            formValues.sexId
-            && formValues.minAge
-            && formValues.maxAge
-            && formValues.ageType
-            && formValues.minValue
-            && formValues.maxvalue;
-        if (!fieldsTobeChecked) {
-            event.preventDefault;
-            this.toastr.warning('Please fill in all the fields in this row to add', 'Warning');
-        }
-        else {
-            this.onAdd(event);
-        }
-    }
+    // checkFields(event) {
+    //     // debugger
+    //     const formValues = this.numericForm.value
+    //     const fieldsTobeChecked =
+    //         formValues.sexId
+    //         // && formValues.genderName
+    //         && formValues.minAge
+    //         && formValues.maxAge
+    //         && formValues.ageType
+    //         && formValues.minValue
+    //         && formValues.maxvalue;
+    //     if (!fieldsTobeChecked) {
+    //         event.preventDefault;
+    //         this.toastr.warning('Please fill in all the fields in this row to add', 'Warning');
+    //     }
+    //     else {
+    //         this.onAdd(event);
+    //     }
+    // }
 
+    selectedGenderName: any;
     selectChangeGender(obj: any) {
         console.log(obj);
+        this.selectedGenderName = obj.text
         // this.refdocId = obj.value
     }
 
@@ -636,14 +617,20 @@ debugger
 
     onEdit() {
     }
-    onDeleteRow(row: PathParaRangeAgeMaster) {
-        const index = this.dsParameterAgeList.data.indexOf(row);
-        if (index > -1) {
-            this.dsParameterAgeList.data.splice(index, 1);
-            this.dsParameterAgeList.data = [...this.dsParameterAgeList.data];
+    // onDeleteRow(row: PathParaRangeAgeMaster) {
+    //     const index = this.dsParameterAgeList.data.indexOf(row);
+    //     if (index > -1) {
+    //         this.dsParameterAgeList.data.splice(index, 1);
+    //         this.dsParameterAgeList.data = [...this.dsParameterAgeList.data];
 
-        }
+    //     }
+    // }
+    onDeleteRow(row: PathParaRangeAgeMaster) {
+        debugger
+        this.dsParameterAgeList.data =
+            this.dsParameterAgeList.data.filter(item => item !== row);
     }
+
     removeItem(index: number) {
         this.selectedItems.splice(index, 1);
     }

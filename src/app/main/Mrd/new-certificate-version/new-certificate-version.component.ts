@@ -5,21 +5,20 @@ import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
 import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
 import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
 import { ToastrService } from 'ngx-toastr';
-import { NewOtconsentsComponent } from './new-otconsents/new-otconsents.component';
-import { OtConsentsService } from './ot-consents.service';
 import { DatePipe } from '@angular/common';
 import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { AirmidConsentformComponent } from 'app/main/shared/componets/airmid-consentform/airmid-consentform.component';
+import { NewCertificateVersionService } from './new-certificate-version.service';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 
 @Component({
-  selector: 'app-ot-consents',
-  templateUrl: './ot-consents.component.html',
-  styleUrls: ['./ot-consents.component.scss'],
+  selector: 'app-new-certificate-version',
+  templateUrl: './new-certificate-version.component.html',
+  styleUrls: ['./new-certificate-version.component.scss'],
   encapsulation: ViewEncapsulation.None,
   animations: fuseAnimations,
 })
-export class OtConsentsComponent {
+export class NewCertificateVersionComponent {
   msg: any;
   consentName: any = "";
   fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
@@ -38,6 +37,7 @@ export class OtConsentsComponent {
   }
 
   @ViewChild('actionsTemplate') actionsTemplate!: TemplateRef<any>;
+  @ViewChild('actionsTemplate1') actionsTemplate1!: TemplateRef<any>;
 
   allcolumns = [
     { heading: "-", key: "opipType", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 40 },
@@ -59,7 +59,7 @@ export class OtConsentsComponent {
   allfilters = [
     { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
     { fieldName: "ToDate", fieldValue: this.toDate, opType: OperatorComparer.Equals },
-    { fieldName: "TranLabel", fieldValue: 'OT', opType: OperatorComparer.Equals }
+    { fieldName: "TranLabel", fieldValue: 'MRD', opType: OperatorComparer.Equals }
   ]
   gridConfig: gridModel = {
     apiUrl: "TransactionConsentMaster/TransactionConsentMasterList",
@@ -70,11 +70,12 @@ export class OtConsentsComponent {
   }
 
   constructor(
-    public _OtConsentService: OtConsentsService,
+    public _certificateService: NewCertificateVersionService,
     public toastr: ToastrService, public _matDialog: MatDialog,
     public datePipe: DatePipe,
     private _formBuilder: UntypedFormBuilder,
   ) { }
+
 
   ngOnInit(): void {
     this.myFilterform = this.createSearchForm();
@@ -102,7 +103,7 @@ export class OtConsentsComponent {
       filters: [
         { fieldName: "FromDate", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
         { fieldName: "ToDate", fieldValue: this.toDate, opType: OperatorComparer.Equals },
-        { fieldName: "TranLabel", fieldValue: 'OT', opType: OperatorComparer.Equals }
+        { fieldName: "TranLabel", fieldValue: 'MRD', opType: OperatorComparer.Equals }
       ],
       row: 25
     }
@@ -126,7 +127,7 @@ export class OtConsentsComponent {
         maxWidth: "90vw",
         maxHeight: '85%',
         width: '70%',
-        data: { refId: 0, opipId: 0, opipType: 0, Id: 0, title: 'Consent', labelType: 'OT' }
+        data: { refId: 0, opipId: 0, opipType: 0, Id: 0, title: 'Certificate', labelType: 'MRD' }
       }
     );
 
@@ -147,14 +148,14 @@ export class OtConsentsComponent {
           },
           {
             "fieldName": "OPIPType",
-            "fieldValue": String(element.opipType),
+            "fieldValue": String(element?.opipType),
             "opType": "Equals"
           }
         ],
         "mode": "ConsentInformation"
       }
 
-      this._OtConsentService.getReportView(param).subscribe(res => {
+      this._certificateService.getReportView(param).subscribe(res => {
 
         const matDialog = this._matDialog.open(PdfviewerComponent,
           {

@@ -3,10 +3,11 @@ import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { ApiCaller } from 'app/core/services/apiCaller';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 
+
 @Injectable({
   providedIn: 'root'
 })
-export class OtConsentsService {
+export class NewCertificateVersionService {
 
   myForm: FormGroup;
   myformSearch: FormGroup;
@@ -44,7 +45,7 @@ export class OtConsentsService {
     });
   }
 
-   public getReportView(Param) {
-        return this._httpClient.PostData("Report/ViewReport", Param);
-    }
+  public getReportView(Param) {
+    return this._httpClient.PostData("Report/ViewReport", Param);
+  }
 }

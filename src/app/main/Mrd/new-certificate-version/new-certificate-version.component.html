@@ -6,12 +6,12 @@
         <div class="top-header-info">
             <div class="top-header-title">
                 <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                    OT Consents
+                    Certificate
                 </span>
             </div>
         </div>
         <div class="gap-8" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
-            <button mat-raised-button (click)="onFiles()">New Consent
+            <button mat-raised-button (click)="onFiles()">New Certificate
             </button>
         </div>
     </div>
@@ -42,8 +42,8 @@
         <ng-template #actionButtonTemplate let-element>
             <div fxLayout="row" fxLayoutAlign="center center">
 
-                <app-airmid-consentform-icon [Id]="element.consentId" [refId]="element.refId" [opipId]="element.opipid"
-                    title="Edit Consent Of Name: {{ element.patientName }}  UHID: {{ element.regNo }}" labelType="OT"
+                 <app-airmid-consentform-icon [Id]="element.consentId" [refId]="element.refId" [opipId]="element.opipid"
+                    title="Edit Certificate Of Name: {{ element.patientName }}  UHID: {{ element.regNo }}" labelType="MRD"
                     [opipType]="element.opiptype"></app-airmid-consentform-icon>
 
                 <!-- <button mat-icon-button (click)="delete(element)" matTooltip="Delete">

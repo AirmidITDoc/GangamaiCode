@@ -750,7 +750,7 @@
                                                         [validations]="getValidationMessages().SubTpaComId"
                                                         [mode]="autocompleteModeSubCompany">
                                                     </airmid-dropdown>
-                                                </div>
+                                                </div> 
                                             </ng-container>
 
                                             <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
@@ -808,6 +808,32 @@
                                                     [mode]="autocompleteModeRefDoctor">
                                                 </airmid-dropdown>
                                             </div>
+
+                                            <ng-container *ngIf="isCompanySelected">
+                                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="25%">
+                                                    <airmid-textbox label="Policy Number" formControlName="policyNumber" (keypress)="keyPressAlphanumeric($event)"
+                                                        [validations]="getValidationMessages().policyNumber" 
+                                                        [formGroup]="admissionFormGroup" [maxLength]="15">
+                                                    </airmid-textbox>
+                                                </div>
+                                            
+                                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="25%">
+                                                    <airmid-textbox label="Policy limit" formControlName="policyLimit" (keypress)="keyPressAlphanumeric($event)"
+                                                        [validations]="getValidationMessages().policyLimit"  
+                                                        [formGroup]="admissionFormGroup" [maxLength]="15">
+                                                    </airmid-textbox>
+                                                </div>
+
+                                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="25%">
+                                                    <mat-form-field appearance="outline" fxFlex>
+                                                        <mat-label>Valid Date</mat-label>
+                                                        <input matInput [matDatepicker]="picker4" formControlName="policyValidateDate"
+                                                            (dateChange)="onValidDateChange($event)">
+                                                        <mat-datepicker-toggle matSuffix [for]="picker4"></mat-datepicker-toggle>
+                                                        <mat-datepicker #picker4></mat-datepicker>
+                                                    </mat-form-field>
+                                                </div>
+                                            </ng-container>
 
                                         </div>
                                     </mat-card-content>

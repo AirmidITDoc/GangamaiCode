@@ -194,6 +194,7 @@ this.Is9_Digit_National_Id = id === "1";
         // this.abhaForm = this._AppointmentlistService.createAbhadetailForm();
 
         this.searchFormGroup = this.createSearchForm();
+         this.policyFormGroup = this.createPolicyFormGrp();
         console.log(this.data)
         if (this.data) {
             this.FromRegistration = this.data?.Obj
@@ -662,6 +663,20 @@ this.Is9_Digit_National_Id = id === "1";
         });
     }
 
+  policyFormGroup:FormGroup; 
+  createPolicyFormGrp(){ 
+    return this.formBuilder.group({
+    patientPolicyId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+    opipid:[0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+    opiptype: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+    policyNo: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+    policyValidateDate: ['1999-01-01'],
+    approvedAmount: [0,[this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+    createdBy:[this.accountService.currentUserValue.userId],
+    isActive: true
+    }) 
+  }
+ 
     onSave() {
         Swal.fire({
             title: 'Confirm Save',
@@ -780,11 +795,16 @@ this.Is9_Digit_National_Id = id === "1";
         this.personalFormGroup.get('medTourismDateOfEntry').setValue(this.datePipe.transform(this.personalFormGroup.get("medTourismDateOfEntry").value, "yyyy-MM-dd") || '1900-01-01');
         this.personalFormGroup.removeControl('updatedBy')
         this.personalFormGroup.removeControl('IsNRI')
+        this.policyFormGroup.get("policyValidateDate").setValue(this.datePipe.transform(this.VisitFormGroup.get('policyValidateDate').value , "yyyy-MM-dd") || '1900-01-01');
+        this.policyFormGroup.get("policyNo").setValue(String(this.VisitFormGroup.get('policyNumber')?.value || 0))
+        this.policyFormGroup.get("approvedAmount").setValue(Number(this.VisitFormGroup.get('policyLimit')?.value || 0))
 
         let submitData = {
             "registration": this.personalFormGroup.value,
-            "visit": this.VisitFormGroup.value
+            "visit": this.VisitFormGroup.value,
+            "patientPolicy":this.policyFormGroup.value
         }
+         
         console.log(submitData);
         this._AppointmentlistService.NewappointmentSave(submitData).subscribe((response) => {
             this.OnViewReportPdf(response)
@@ -845,9 +865,14 @@ this.Is9_Digit_National_Id = id === "1";
             this.personalFormGroup.removeControl(control)
         })
 
+        this.policyFormGroup.get("policyValidateDate").setValue(this.datePipe.transform(this.VisitFormGroup.get('policyValidateDate').value , "yyyy-MM-dd") || '1900-01-01');
+        this.policyFormGroup.get("policyNo").setValue(String(this.VisitFormGroup.get('policyNumber')?.value || 0))
+        this.policyFormGroup.get("approvedAmount").setValue(Number(this.VisitFormGroup.get('policyLimit')?.value || 0))
+
         let submitData = {
             // "appReistrationUpdate": this.personalFormGroup.value,
-            "visit": this.VisitFormGroup.value
+            "visit": this.VisitFormGroup.value,
+            "patientPolicy":this.policyFormGroup.value 
         };
         console.log(submitData)
         this._AppointmentlistService.RregisteredappointmentSave(submitData).subscribe((response) => {
@@ -857,7 +882,18 @@ this.Is9_Digit_National_Id = id === "1";
             this._matDialog.closeAll();
         });
     }
+  onValidDateChange(event: any) {
+    const selectedDate = new Date(event.value);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
 
+    if (selectedDate < today) {
+      this.toastr.warning('Valid Date cannot be earlier than today.', 'Warning!',
+        { toastClass: 'tostr-tost custom-toast-warning' }
+      );
+      this.VisitFormGroup.get('policyValidateDate')?.setValue(today);
+    }
+  }
     onChangeDate(value) {
         // console.log(value)
     }
@@ -1029,6 +1065,12 @@ this.Is9_Digit_National_Id = id === "1";
             ClassId: [
                 { name: "required", Message: "Class Name is required" }
             ],
+             policyNumber: [
+                { name: "required", Message: "Policy name is required" }
+            ],
+             policyLimit: [
+                { name: "required", Message: "Policy limit is required" }
+            ] 
         };
     }
 

@@ -9,6 +9,7 @@ import { ToastrService } from 'ngx-toastr';
 import { Observable } from 'rxjs';
 import Swal from 'sweetalert2';
 import { OPSearhlistService } from '../op-searhlist.service';
+import { ConfigService } from 'app/core/services/config.service';
 
 @Component({
   selector: 'app-op-payment',
@@ -105,6 +106,7 @@ export class OpPaymentComponent implements OnInit {
     this.patientDetailsFormGrp.markAllAsTouched();
     this.patientDetailsFormGrp.updateValueAndValidity();
   }
+  currency:any='';
   Payments = new MatTableDataSource<PaymentList>();
   selectedSaleDisplayedCol = [
     'PaymentType',
@@ -240,6 +242,7 @@ export class OpPaymentComponent implements OnInit {
     private _loggedService: AuthenticationService,
     public datePipe: DatePipe,
     public toastr: ToastrService,
+    public _ConfigService:ConfigService
     // private snackBarService: SnackBarService
   ) {
     this.patientDetailsFormGrp = this.createForm();
@@ -384,6 +387,10 @@ export class OpPaymentComponent implements OnInit {
       this.DepartmentName = this.advanceData.DepartmentName;
       this.Paymentobj['TransactionType'] = 2;
     }
+
+         //this is for curreny symbol
+    const [CurrencyId, CurrencyValue] = this._ConfigService.configParams.CurrencyValue.split(":");
+    this.currency = CurrencyValue
   }
 
   ngOnInit(): void {

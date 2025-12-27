@@ -144,7 +144,7 @@
                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-130">Paid
                                 Amt</mat-header-cell>
                             <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-130">
-                                <span>{{ contact.amount | currency:"INR" }}</span>
+                                <span>{{ contact.amount | currency: currency:'symbol' }}</span>
                             </mat-cell>
                         </ng-container>
 
@@ -530,7 +530,7 @@
                                                                     Amt</mat-header-cell>
                                                                 <mat-cell *matCellDef="let contact"><span
                                                                         class="text-overflow">
-                                                                        {{(contact.TotalAmt || 0 )| currency:"INR"}}
+                                                                        {{(contact.TotalAmt || 0 )| currency: currency:'symbol'}}
                                                                     </span></mat-cell>
                                                             </ng-container>
 
@@ -569,7 +569,7 @@
                                                                     Amt</mat-header-cell>
                                                                 <mat-cell *matCellDef="let contact"><span
                                                                         class="text-overflow">
-                                                                        {{(contact.NetAmount || 0) | currency:"INR"}}
+                                                                        {{(contact.NetAmount || 0) | currency: currency:'symbol'}}
                                                                     </span></mat-cell>
                                                             </ng-container>
 
@@ -639,12 +639,12 @@
                                                                 <div class="net-amt-box">
                                                                     <div class="net-amt-label">Company Amt :</div>
                                                                     <div class="net-amt-value">{{ ExclusionAmt |
-                                                                        currency : 'INR':'symbol':'1.2-2' }}</div>
+                                                                        currency: currency:'symbol'}}</div>
                                                                 </div>
                                                                 <div class="net-amt-box">
                                                                     <span class="net-amt-label">Patient Amt :</span>
                                                                     <span class="net-amt-value">{{ InclusionAmt |
-                                                                        currency : 'INR' }}</span>
+                                                                        currency: currency:'symbol' }}</span>
                                                                 </div>
 
                                                                 <div class="net-amt-box">
@@ -656,21 +656,20 @@
                                                                     <span class="net-amt-label">Discount Amount :</span>
                                                                     <span class="net-amt-value">
                                                                         {{OPFooterForm?.get("concessionAmt")?.value
-                                                                        |
-                                                                        currency:'INR' }}</span>
+                                                                        | currency: currency:'symbol'}}</span>
                                                                 </div>
                                                                 <!-- <div class="net-amt-box">
                                                                                                                                 <span class="net-amt-label">Net Amount :</span>
                                                                                                                                 <span class="net-amt-value">
                                                                                                                                     {{OPFooterForm?.get("netPayableAmt")?.value |
-                                                                                                                                    currency:'INR' }}</span>
+                                                                                                                                    currency: currency:'symbol':'INR' }}</span>
                                                                                                                             </div> -->
 
                                                                 <div class="final-amt-box">
                                                                     <span class="final-amt-label">Net Amt :</span>
                                                                     <span
                                                                         class="final-amt-value">{{OPFooterForm?.get("netPayableAmt")?.value
-                                                                        | currency : 'INR'
+                                                                        | currency: currency:'symbol'
                                                                         }}</span>
                                                                 </div>
                                                             </div>
@@ -862,6 +861,10 @@
                                                 [readonly]="true">
                                             </airmid-textbox>
                                         </div>
+                                        <div fxFlex="10%">
+                                            <airmid-textbox label="Government Approval Amt" formControlName="GovrnApprovAmt" [formGroup]="OPFooterForm"
+                                                [type]="'text'" [min]="0" (keypress)="keyPressCharater($event)"></airmid-textbox>
+                                        </div>
                                         <div fxFlex="10%" fxFlex.xs="100%" fxFlex.sm="100%"
                                             *ngIf="OPFooterForm.get('paymentType')?.value === 'Mpesa'">
                                             <airmid-textbox label="PMesa Mobile" formControlName="mpesaMobile"
@@ -1016,7 +1019,7 @@
                         </td>
                         <td
                             style="border:1px solid #000; text-align:right; padding:4px;font-size:10px;font-weight: bold;">
-                            {{ item.Price | currency:"INR"}}
+                            {{ item.Price | currency: currency:'symbol'}}
                         </td>
                     </tr>
 
@@ -1027,36 +1030,36 @@
                     <tr>
                         <td>Bill Amt :</td>
                         <td></td>
-                        <td style="text-align:right;">{{reportPrintObjList[0]?.TotalBillAmount | currency:"INR"}}</td>
+                        <td style="text-align:right;">{{reportPrintObjList[0]?.TotalBillAmount | currency: currency:'symbol'}}</td>
                     </tr>
 
                     <tr>
                         <td>Disc Amt :</td>
                         <td>({{reportPrintObjList[0]?.DiscComments}})</td>
-                        <td style="text-align:right;">{{reportPrintObjList[0]?.ConcessionAmt | currency:"INR"}}</td>
+                        <td style="text-align:right;">{{reportPrintObjList[0]?.ConcessionAmt | currency: currency:'symbol'}}</td>
                     </tr>
 
                     <tr>
                         <td>Net Amt :</td>
                         <td></td>
-                        <td style="text-align:right;">{{reportPrintObjList[0]?.NetPayableAmt | currency:"INR"}}</td>
+                        <td style="text-align:right;">{{reportPrintObjList[0]?.NetPayableAmt | currency: currency:'symbol'}}</td>
                     </tr>
 
                     <tr>
                         <td>Paid Amt :</td>
                         <td>{{reportPrintObjList[0]?.PaymentMode || '-'}}</td>
-                        <td style="text-align:right;">{{reportPrintObjList[0]?.PaidAmount | currency:"INR"}}</td>
+                        <td style="text-align:right;">{{reportPrintObjList[0]?.PaidAmount | currency: currency:'symbol'}}</td>
                     </tr>
                     <tr>
                         <td>Bal Amt :</td>
                         <td></td>
-                        <td style="text-align:right;">{{reportPrintObjList[0]?.BalanceAmt | currency:"INR"}}</td>
+                        <td style="text-align:right;">{{reportPrintObjList[0]?.BalanceAmt | currency: currency:'symbol'}}</td>
                     </tr>
 
                     <tr>
                         <td>Refund Amt :</td>
                         <td></td>
-                        <td style="text-align:right;">{{reportPrintObjList[0]?.RefundAmt | currency:"INR"}}</td>
+                        <td style="text-align:right;">{{reportPrintObjList[0]?.RefundAmt | currency: currency:'symbol'}}</td>
                     </tr>
                 </table>
 

@@ -88,7 +88,7 @@ export class TestmasterService {
             TestNameSearch: [""],
             CategoryId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             ServiceId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            Istest:['2']
+            Istest:['0']
         });
     }
       

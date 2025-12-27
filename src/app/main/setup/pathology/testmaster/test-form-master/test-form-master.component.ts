@@ -133,6 +133,7 @@ export class TestFormMasterComponent implements OnInit {
     }
 
     createPathtestInsertForm(): FormGroup {
+        const now = new Date();
         return this._formBuilder.group({
             pathTest: this._formBuilder.group({
                 testName: ["", [this._FormvalidationserviceService.allowEmptyStringValidator()]],
@@ -148,6 +149,12 @@ export class TestFormMasterComponent implements OnInit {
                 updatedBy: [this._loggedService.currentUserValue.userId, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator()]],
                 serviceId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
                 isTemplateTest: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+                isCategoryPrint: false,
+                isPrintTestName: false,
+                testDate: [now.toISOString().split('T')[0]],
+                testTime: [now.toTimeString().slice(0, 5)],
+                createdBy: this._loggedService.currentUserValue.userId,
+                modifiedBy: this._loggedService.currentUserValue.userId,
                 TestId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]]
             }),
             pathTemplateDetail: this._formBuilder.array([]),
@@ -178,8 +185,13 @@ export class TestFormMasterComponent implements OnInit {
         return this.testFormInsert.get('pathTestDetail') as FormArray;
     }
 
+    previousStatus: number | null = null;
     toggle(val) {
-
+        // this.resetAddData();
+        if (this.previousStatus === 3 || val === 3) {
+            this.resetAddData();
+        }
+        this.previousStatus = val;
         if (val == "1") {
             this._TestmasterService.is_Test = true;
             this.Subtest = false
@@ -210,6 +222,15 @@ export class TestFormMasterComponent implements OnInit {
             this.testForm.get('ServiceId')?.updateValueAndValidity();
         }
     }
+
+    resetAddData() {
+        this.chargeslist = [];
+        this.ChargeList = [];
+        this.DSTestList.data = [];
+        this.DSTestListtemp.data = [];
+        this.dsTemparoryList.data = [];
+    }
+
 
     onSearchClear() {
         this.testForm.get("ParameterNameSearch").setValue("");
@@ -257,7 +278,7 @@ export class TestFormMasterComponent implements OnInit {
 
             console.log('Updated DSTestList:', this.DSTestList.data);
 
-             this.chargeslist = (Visit.data || []).map(x => ({
+            this.chargeslist = (Visit.data || []).map(x => ({
                 ...x,
                 parameterId: x.parameterId ?? x.parameterID
             }));
@@ -328,7 +349,7 @@ export class TestFormMasterComponent implements OnInit {
     //     });
 
     // }
-    
+
     fetchSubTestlist(obj) {
 
         const m_data = {
@@ -426,9 +447,11 @@ export class TestFormMasterComponent implements OnInit {
             if (isUpdate) {
                 this.testFormInsert.get("pathTest.updatedBy")?.setValue(this._loggedService.currentUserValue.userId);
                 (this.testFormInsert.get('pathTest') as FormGroup).removeControl('addedBy');
+                (this.testFormInsert.get('pathTest') as FormGroup).removeControl('createdBy');
             } else {
                 this.testFormInsert.get("pathTest.addedBy")?.setValue(this._loggedService.currentUserValue.userId);
                 (this.testFormInsert.get('pathTest') as FormGroup).removeControl('updatedBy');
+                (this.testFormInsert.get('pathTest') as FormGroup).removeControl('modifiedBy');
             }
 
             this.testFormInsert.get("pathTest.TestId")?.setValue(this.vTestId || 0)

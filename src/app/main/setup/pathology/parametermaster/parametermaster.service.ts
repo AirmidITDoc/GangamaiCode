@@ -15,7 +15,7 @@ export class ParametermasterService {
     formulaform: FormGroup;
     numericform: FormGroup;
 
-    is_numeric : Boolean = true;
+    is_numeric: Boolean = true;
     descriptiveList = [];
     numericList = [];
 
@@ -28,8 +28,8 @@ export class ParametermasterService {
     ) {
         this.myformSearch = this.createSearchForm();
         this.myform = this.createParameterForm();
-        this.descform=this.descForm();
-        this.formulaform=this.createformulaForm();
+        this.descform = this.descForm();
+        this.formulaform = this.createformulaForm();
         this.numericform = this.numericForm();
     }
 
@@ -37,76 +37,76 @@ export class ParametermasterService {
     createParameterForm(): FormGroup {
         return this._formBuilder.group({
             parameterId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            parameterShortName: ["",[
-                    Validators.required,
-                    // Validators.pattern("^[A-Za-z ]*$")
-                ],
+            parameterShortName: ["", [
+                Validators.required,
+                // Validators.pattern("^[A-Za-z ]*$")
+            ],
             ],
             parameterName: [
                 "",
                 [
                     Validators.required,
                     // Validators.pattern("^[A-Za-z ]*$"),
-                      this._FormvalidationserviceService.allowEmptyStringValidator()
+                    this._FormvalidationserviceService.allowEmptyStringValidator()
                 ],
             ],
-            
+
             printParameterName: [
                 "",
                 [
                     Validators.required,
                     // Validators.pattern("^[A-Za-z ]*$"),
-                      this._FormvalidationserviceService.allowEmptyStringValidator()
+                    this._FormvalidationserviceService.allowEmptyStringValidator()
                 ],
             ],
-              methodName: ["",
-                // [Validators.pattern("^[A-Za-z ]*$")],
-            ],
-            formula:[""],
+            methodName: [""],
+            paraMultipleRange:[''],
+            formula: [""],
             unitId: ["",
-                [Validators.required,this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+                [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             isNumeric: ["1"],
             isPrintDisSummary: [false],
-          
             isBoldFlag: [false],
+            paraBoldFlag: '',
+            isBold: [false],
             IsDeleted: ["true"],
-            mParameterDescriptiveMasters:this._formBuilder.array([]),
-            mPathParaRangeWithAgeMasters:this._formBuilder.array([])
+            mParameterDescriptiveMasters: this._formBuilder.array([]),
+            mPathParaRangeWithAgeMasters: this._formBuilder.array([])
         });
     }
 
-    numericForm():FormGroup{
+    numericForm(): FormGroup {
         return this._formBuilder.group({
             pathparaRangeId: 0,
             paraId: 0,
             sexId: "",
             minValue: [""],
             maxvalue: [""],
-            minAge:[""],
-            maxAge:[""],
-            ageType:[""]
+            minAge: [""],
+            maxAge: [""],
+            ageType: [""]
         });
     }
 
-    descForm():FormGroup{
+    descForm(): FormGroup {
         return this._formBuilder.group({
             descriptiveId: 0,
             paraId: 0,
-            parameterValues: ["", 
+            parameterValues: ["",
                 // Validators.required
             ],
             isDefaultValue: true,
-            defaultValue: ["", 
+            defaultValue: ["",
                 // Validators.required
             ]
         });
     }
 
-    createSearchForm():FormGroup{
+    createSearchForm(): FormGroup {
         return this._formBuilder.group({
             ParameterNameSearch: [""],
-            IsNumeric:['2'],
-            UnitId:[0]
+            IsNumeric: ['2'],
+            UnitId: [0]
         });
     }
 
@@ -116,21 +116,21 @@ export class ParametermasterService {
             ParameterId: [0, Validators.required], // Change to null instead of []
             parameterName: [""],
             Formula: ["", Validators.required],
-            Parameter:""
+            Parameter: ""
             // isActive: [true],
             // createdBy: [1],
         });
     }
-    
+
     public formulaUpdate(Param: any) {
-        
+
         if (Param.parameterId) {
             return this._httpClient.PutData("ParameterMaster/EditFormula/" + Param.parameterId, Param);
-        } 
+        }
     }
 
     // public getStateList(CityId,loader = true) {
-      
+
     //     return this._httpClient.PostData("Generic/GetByProc?procName=Retrieve_StateMasterForCombo_Conditional", { "Id": CityId })
     //   }
 
@@ -139,17 +139,17 @@ export class ParametermasterService {
     }
 
     //parameter detail
-    public getParameterMasterList(m_data) { 
-      
-        return this._httpClient.PostData("Generic/GetByProc?procName=m_Rtrv_PathParameterMaster_by_Name",m_data);
+    public getParameterMasterList(m_data) {
+
+        return this._httpClient.PostData("Generic/GetByProc?procName=m_Rtrv_PathParameterMaster_by_Name", m_data);
     }
-     // Unit Master Combobox List
-     public getUnitMasterCombo() {
+    // Unit Master Combobox List
+    public getUnitMasterCombo() {
         return this._httpClient.PostData(
-            "Generic/GetByProc?procName=m_Rtrv_UnitMasterForCombo",{});
+            "Generic/GetByProc?procName=m_Rtrv_UnitMasterForCombo", {});
     }
-   
-        
+
+
     public deactivateTheStatus(Id: number) {
         return this._httpClient.DeleteData(`ParameterMaster/ParameterCancel?Id=${Id}`);
     }
@@ -161,15 +161,15 @@ export class ParametermasterService {
     }
 
     public getParameteformulaedit(Param: any) {
-      return this._httpClient.PutData("ParameterMaster/EditFormula/" + Param.ParameterId, Param);
-           
+        return this._httpClient.PutData("ParameterMaster/EditFormula/" + Param.ParameterId, Param);
+
     }
 
     public updateParameterMaster(param) {
         return this._httpClient.PostData("PathologyMaster/ParameterAgeWiseMasterUpdate", param);
     }
 
-       public insertlaboursouceMaster(Param: any) {
+    public insertlaboursouceMaster(Param: any) {
         if (Param.outSourceId) {
             return this._httpClient.PutData("OutSourcelabMaster/" + Param.outSourceId, Param);
         } else return this._httpClient.PostData("OutSourcelabMaster", Param);
@@ -180,22 +180,22 @@ export class ParametermasterService {
         return this._httpClient.PostData("Pathology/ParameterUpdate", param);
     }
 
-    public getTableData(param,isNumericParameter){
-        
+    public getTableData(param, isNumericParameter) {
+
         this.is_numeric = isNumericParameter === 1;
 
-        if(this.is_numeric) {
+        if (this.is_numeric) {
             return this._httpClient.PostData(
-                "ParameterMaster/MPathParaRangeWithAgeMasterList",param
+                "ParameterMaster/MPathParaRangeWithAgeMasterList", param
                 // { parameterId: param }
-            ); 
+            );
         }
-        else{
-        return this._httpClient.PostData(
-            "ParameterMaster/MParameterDescriptiveMasterList",param
-            // { parameterId: param }
-        ); 
-    }
+        else {
+            return this._httpClient.PostData(
+                "ParameterMaster/MParameterDescriptiveMasterList", param
+                // { parameterId: param }
+            );
+        }
     }
 
     //Descriptive
@@ -212,15 +212,15 @@ export class ParametermasterService {
     }
 
     public getParameterMasterCombo(param) {
-        return this._httpClient.PostData("Generic/GetByProc?procName=m_Rtrv_PathParameterList_by_Name",param );
+        return this._httpClient.PostData("Generic/GetByProc?procName=m_Rtrv_PathParameterList_by_Name", param);
     }
-    public getParameterMasterforformulaList(param,loader = true) {
+    public getParameterMasterforformulaList(param, loader = true) {
         if (loader) {
             this._loaderService.show();
         }
-        return this._httpClient.PostData("Generic/GetByProc?procName=m_rtrv_PathParaformulaList_by_Name",param );
+        return this._httpClient.PostData("Generic/GetByProc?procName=m_rtrv_PathParaformulaList_by_Name", param);
     }
-    
+
 
     public deleteAssignParameterToDescriptive(param) {
         return this._httpClient.PostData("Pathology/ParameterUpdate", param);
@@ -232,11 +232,11 @@ export class ParametermasterService {
 
     populateForm(param) {
         console.log(param)
-        console.log("sfjhgfskjsfg",param)
+        console.log("sfjhgfskjsfg", param)
         this.myform.patchValue(param);
         this.myform.get("isPrintDisSummary").setValue(param.IsPrintDisSummary == "false" ? false : true);
-        this.myform.get("isNumeric").setValue(param.IsNumeric == 1? 1: 2);
-        this.is_numeric = param.IsNumeric == 1? true : false;
+        this.myform.get("isNumeric").setValue(param.IsNumeric == 1 ? 1 : 2);
+        this.is_numeric = param.IsNumeric == 1 ? true : false;
         this.numericList = param.numericList;
         this.descriptiveList = param.descriptiveList;
     }

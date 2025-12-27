@@ -42,13 +42,14 @@ import { MrdService } from './mrd.service';
 import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatTabsModule } from '@angular/material/tabs';
+import { NewCertificateVersionComponent } from './new-certificate-version/new-certificate-version.component';
 
 
 
 const approutes : Routes =[
   {
     path: 'certificates',
-    component: CertificateComponent
+    component: NewCertificateVersionComponent
   },
   // {
   //   path: 'prescription',
@@ -57,7 +58,8 @@ const approutes : Routes =[
 ];
 
 @NgModule({
-  declarations: [CertificateComponent, NewCertificateComponent],
+  declarations: [NewCertificateVersionComponent, NewCertificateComponent,CertificateComponent, NewCertificateComponent],
+  // declarations: [CertificateComponent, NewCertificateComponent],
   imports: [
    RouterModule.forChild(approutes),
           //  MatTableExporterModule,

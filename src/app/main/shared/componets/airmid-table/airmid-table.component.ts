@@ -11,6 +11,7 @@ import { DATE_TYPES, gridActions, gridColumnTypes } from 'app/core/models/tableA
 import { ApiCaller } from 'app/core/services/apiCaller';
 import { permissionType } from '../../model/permission.model';
 import { PagePermissionService } from '../../services/page-permission.service';
+import { ConfigService } from 'app/core/services/config.service';
 
 @Component({
     selector: 'airmid-table',
@@ -20,7 +21,8 @@ import { PagePermissionService } from '../../services/page-permission.service';
 export class AirmidTableComponent implements OnInit {
 
     constructor(private _httpClient: ApiCaller, public datePipe: DatePipe, public _matDialog: MatDialog, private fuseSidebarService: FuseSidebarService,
-        public permissionService: PagePermissionService
+        public permissionService: PagePermissionService,
+        public ConfigSettingParams:ConfigService
     ) {
     }
     dateType = DATE_TYPES;
@@ -49,12 +51,18 @@ export class AirmidTableComponent implements OnInit {
     public selectedRow: any = null;
     public defaultColumnWidth = 120;
     private hasEmitted = false;
-
+    currencyValue = 'INR';
     ngOnInit(): void {
         if (this.gridConfig.row > 0)
             this.pageSize = this.gridConfig.row;
         this.bindGridData();
         this.ShowButtons = this.permissionService.getPermission(this.gridConfig.permissionCode, permissionType.Export);
+        
+        // Set Current from DB
+        const rawValue = this.ConfigSettingParams.configParams.CurrencyValue;
+          // Get value after colon
+        this.currencyValue = rawValue?.split(':')[1];
+        console.log(this.currencyValue); // USD / INR / KES
     }
     public get GridAction() {
         return gridActions;

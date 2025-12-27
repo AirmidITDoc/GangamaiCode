@@ -78,7 +78,7 @@
                                         <span>:</span>
                                         <span class="patient-col-value gap-4"  
                                            style="background-color: orange;font-weight: bold;">
-                                            {{netPayAmt | currency:"INR":"symbol"}}
+                                            {{netPayAmt | currency: currency:'symbol'}}
                                         </span>
                                     </div>
                                       <div class="patient-col gap-3" fxFlex="20%" fxFlex.gt-sm="25%">
@@ -135,14 +135,14 @@
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
                                         Advance Amount </mat-header-cell>
                                     <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                        {{element.advanceAmount | currency:'INR'}} </mat-cell>
+                                        {{element.advanceAmount | currency: currency:'symbol'}} </mat-cell>
                                 </ng-container>
 
                                 <ng-container matColumnDef="UsedAmount">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
                                         Used Amount </mat-header-cell>
                                     <mat-cell *matCellDef="let element; let i = index" fxHide fxShow.gt-sm>
-                                        <!-- {{element.UsedAmount | currency:'INR'}} -->
+                                        <!-- {{element.UsedAmount | currency: currency:'symbol'}} -->
                                         <!-- [readonly]="element.BalanceAmount == 0" -->
                                         <mat-form-field appearance="fill">
                                             <input matInput type="text" OnlyNumber [(ngModel)]="element.usedAmount"
@@ -157,14 +157,14 @@
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
                                         Balance Amount </mat-header-cell>
                                     <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                        {{element.balanceAmount | currency:'INR'}} </mat-cell>
+                                        {{element.balanceAmount | currency: currency:'symbol'}} </mat-cell>
                                 </ng-container>
 
                                 <ng-container matColumnDef="RefundAmount">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
                                         Refund Amount </mat-header-cell>
                                     <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                        {{element.refundAmount | currency:'INR'}} </mat-cell>
+                                        {{element.refundAmount | currency: currency:'symbol'}} </mat-cell>
                                 </ng-container>
 
                                 <ng-container matColumnDef="loading">
@@ -195,7 +195,7 @@
                             <span class="net-amt-label">Total UsedAmt:</span>&nbsp;
                             <span class="net-amt-value"
                                 style="font-weight:bold;color: blue;">{{getAdvanceSum(dataSource.data) |
-                                currency:'INR' }}</span>
+                                currency: currency:'symbol' }}</span>
                         </div>
                     </mat-card>
                  </div>

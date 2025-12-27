@@ -15,7 +15,7 @@ import { AuthenticationService } from 'app/core/services/authentication.service'
 import { OPListService } from '../oplist.service';
 import { MatTableDataSource } from '@angular/material/table';
 import Swal from 'sweetalert2';
-import { ConfigService } from 'app/core/services/config.service'; 
+import { ConfigService } from 'app/core/services/config.service';
 import { Subscription } from 'rxjs';
 
 
@@ -26,14 +26,14 @@ import { Subscription } from 'rxjs';
   encapsulation: ViewEncapsulation.None,
   animations: fuseAnimations,
 })
-export class ReviewcompanyBillComponent { 
-  OpBillEditSaveForm:FormGroup;
+export class ReviewcompanyBillComponent {
+  OpBillEditSaveForm: FormGroup;
   OPFooterForm: FormGroup;
   patientDetail: any = new RegInsert({});
   public chargeList: ChargesList[] = [];
   public packageList: ChargesList[] = [];
   public dsChargeList = new MatTableDataSource<ChargesList>();
-  public dsPackageList = new MatTableDataSource<ChargesList>(); 
+  public dsPackageList = new MatTableDataSource<ChargesList>();
   dateTimeObj: any
   PacakgeList: any = [];
   TotalPrice: any = 0;
@@ -52,21 +52,21 @@ export class ReviewcompanyBillComponent {
   RegNo: any;
   Doctorname: any;
   CompanyName: any;
-  DepartmentName: any; 
-    autocompleteModeConcession: string = "Concession"; 
+  DepartmentName: any;
+  autocompleteModeConcession: string = "Concession";
   vPrice = '0';
   vQty: any;
- 
+
   public isDiscountApplied = false;
   Consessionres: boolean = false;
   // 'Status', 'ServiceCode',
   public displayedChargeColumns: string[] =
-    ['Status','ServiceCode','ServiceName', 'Price', 'Qty', 'TotalAmount', 'DiscountPer', 'DiscountAmount', 'NetAmount', 'DoctorName',
+    ['Status', 'ServiceCode', 'ServiceName', 'Price', 'Qty', 'TotalAmount', 'DiscountPer', 'DiscountAmount', 'NetAmount', 'DoctorName',
       //  'ClassName', 'ChargesAddedName',  
-    'Exclucion'];
+      'Exclucion', 'Approved'];
   public displayedColumnspackage: string[] =
     ['IsCheck', 'ServiceNamePackage', 'ServiceName', 'Price', 'Qty', 'TotalAmt', 'DoctorName', 'DiscAmt', 'NetAmount'];
- 
+
 
 
 
@@ -82,7 +82,7 @@ export class ReviewcompanyBillComponent {
     private toastrService: ToastrService,
     public _ConfigService: ConfigService,
     public dialogRef: MatDialogRef<ReviewcompanyBillComponent>
-  ) {this.OpBillEditSaveForm = this.createTotalChargeForm();};
+  ) { this.OpBillEditSaveForm = this.createTotalChargeForm(); };
 
   ngOnInit() {
     this.OPFooterForm = this.CreateOPFooter();
@@ -93,44 +93,45 @@ export class ReviewcompanyBillComponent {
       this.patientDetail = this.data;
       this.getPrevCompanyBillList(this.patientDetail)
     }
- 
+
   }
-   
+
   CreateOPFooter() {
     return this.formBuilder.group({
-      remark:[''],
+      remark: [''],
       totalAmt: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
       totalDiscountPer: [0, [Validators.min(0), Validators.max(100), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
       concessionAmt: [0, [Validators.min(0), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
       concessionReasonId: [0, this._FormvalidationserviceService.onlyNumberValidator()],
       netPayableAmt: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
     })
-  } 
+  }
   getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;
-  } 
+  }
   createTotalChargeForm(): FormGroup {
     return this.formBuilder.group({
-      //bill header  
-      billUpdates:this.formBuilder.group({
-      billNo: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      totalAmt: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-      concessionAmt: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-      netPayableAmt: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      paidAmt: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-      balanceAmt: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-      companyAmt: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-      patientAmt: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-      speTaxPer: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-      speTaxAmt: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]], 
-      concessionReasonId:[0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      discComments:['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
-      modifiedBy:[this.accountService.currentUserValue.userId],
-      }),
       // ✅ Fixed: should be FormArray
-      ipAddChargesBill: this.formBuilder.array([]), 
+      ipAddChargesBill: this.formBuilder.array([]),
+
+      //bill header  
+      billUpdates: this.formBuilder.group({
+        billNo: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        totalAmt: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+        concessionAmt: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+        netPayableAmt: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+        paidAmt: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+        balanceAmt: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+        companyAmt: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+        patientAmt: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+        speTaxPer: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+        speTaxAmt: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+        concessionReasonId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        discComments: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+        modifiedBy: [this.accountService.currentUserValue.userId],
+      })
     });
-  } 
+  }
   CreateAddchargeform(item: any): FormGroup {
     return this.formBuilder.group({
       chargesDate: this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
@@ -141,36 +142,37 @@ export class ReviewcompanyBillComponent {
       concessionPercentage: [item?.concessionPercentage || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
       concessionAmount: [item?.concessionAmount ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
       netAmount: [item?.netAmount, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-      addedBy: [this.accountService.currentUserValue.userId],  
-      chargesTime: this.datePipe.transform(new Date(), 'shortTime'), 
+      addedBy: [this.accountService.currentUserValue.userId],
+      chargesTime: this.datePipe.transform(new Date(), 'shortTime'),
       isInclusionExclusion: [item?.isInclusionExclusion || false,],
       chargesId: [item?.chargesId, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      isApprovedByCamp: [item?.isApprovedByCamp || false,]
     });
-  } 
+  }
   // Getters 
   get IPaddchargeArray(): FormArray {
     return this.OpBillEditSaveForm.get('ipAddChargesBill') as FormArray;
   }
- 
-  getPrevCompanyBillList(Obj) { 
-    var param = { 
-  "first": 0,
-  "rows": 100,
-  "sortField": "ServiceId",
-  "sortOrder": 0,
-  "filters": [
-    {"fieldName": "BillNo","fieldValue":  String(Obj.billNo),"opType": "Equals"}],
-  "exportType": "JSON",
-  "columns": [{ "data": "string","name": "string"}] 
-    } 
+
+  getPrevCompanyBillList(Obj) {
+    var param = {
+      "first": 0,
+      "rows": 100,
+      "sortField": "ServiceId",
+      "sortOrder": 0,
+      "filters": [
+        { "fieldName": "BillNo", "fieldValue": String(Obj.billNo), "opType": "Equals" }],
+      "exportType": "JSON",
+      "columns": [{ "data": "string", "name": "string" }]
+    }
     console.log(param)
     this._OPListService.getCompanyBillList(param).subscribe(response => {
-     console.log(response)
+      console.log(response)
       this.dsChargeList.data = response.data as ChargesList[]
       console.log(this.dsChargeList.data)
-      if(this.dsChargeList.data.length){ 
-         this.chargeList= this.dsChargeList.data
-            this.calculateTotalAmount();
+      if (this.dsChargeList.data.length) {
+        this.chargeList = this.dsChargeList.data
+        this.calculateTotalAmount();
       }
     })
   }
@@ -194,8 +196,8 @@ export class ReviewcompanyBillComponent {
         }
       }
     });
-  } 
-  calculateTotalAmount(): void { 
+  }
+  calculateTotalAmount(): void {
     let totalSum = this.chargeList.reduce((sum, charge) => sum + (+charge.totalAmt), 0);
     let DiscPerSum = this.chargeList.reduce((sum, charge) => sum + (+charge.concessionPercentage), 0);
     let totalDiscount = this.chargeList.reduce((sum, charge) => sum + (+charge.concessionAmount), 0);
@@ -212,7 +214,7 @@ export class ReviewcompanyBillComponent {
     const Inclusionlist = this.chargeList.filter(i => i.isInclusionExclusion !== true)
     this.ExclusionAmt = Exclusionlist.reduce((sum, { netAmount }) => sum += +(netAmount || 0), 0);
     this.InclusionAmt = Inclusionlist.reduce((sum, { netAmount }) => sum += +(netAmount || 0), 0);
-  } 
+  }
   BillSave() {
     if (this.OPFooterForm.get('concessionAmt').value > 0 && this.Consessionres) {
       if (!this.OPFooterForm.get('concessionReasonId').value) {
@@ -221,7 +223,7 @@ export class ReviewcompanyBillComponent {
         });
         return;
       }
-    } 
+    }
     Swal.fire({
       title: 'Confirm Save',
       text: 'Are you sure you want to save this Company Bill?',
@@ -238,11 +240,11 @@ export class ReviewcompanyBillComponent {
     });
   }
   OnSave() {
-    debugger 
+    debugger
     const [ThermalPrint, ThermalPrintValue] = this._ConfigService.configParams.ThermalPrint.split(":");
     const formValue = this.OPFooterForm.value
     this.OpBillEditSaveForm.get('billUpdates').patchValue({
-      billNo:this.patientDetail?.billNo || 0,
+      billNo: this.patientDetail?.billNo || 0,
       totalAmt: formValue?.totalAmt || 0,
       concessionAmt: formValue?.concessionAmt || 0,
       netPayableAmt: formValue?.netPayableAmt || 0,
@@ -254,12 +256,12 @@ export class ReviewcompanyBillComponent {
     })
     console.log("form values", this.OpBillEditSaveForm.value)
     if (this.OpBillEditSaveForm.valid) {
-      this.IPaddchargeArray.clear(); 
+      this.IPaddchargeArray.clear();
       this.dsChargeList.data.forEach(item => {
-      const formObj = this.CreateAddchargeform(item as ChargesList);  
-       formObj.patchValue({ opdIpdId: formValue?.IsPurchaseWsie || false});  
-        this.IPaddchargeArray.push(formObj);   
-      }); 
+        const formObj = this.CreateAddchargeform(item as ChargesList);
+        formObj.patchValue({ opdIpdId: formValue?.IsPurchaseWsie || false });
+        this.IPaddchargeArray.push(formObj);
+      });
       console.log("form values", this.OpBillEditSaveForm.value)
       this._OPListService.UpdateCompanyBilling(this.OpBillEditSaveForm.value).subscribe(response => {
         this._matDialog.closeAll();
@@ -272,7 +274,7 @@ export class ReviewcompanyBillComponent {
         //   this.viewgetOPBillThermalReportPdf(response)
         // }
       });
-    } 
+    }
     else {
       let invalidFields = [];
       if (this.OpBillEditSaveForm.invalid) {
@@ -299,25 +301,25 @@ export class ReviewcompanyBillComponent {
       }
     }
   }
- 
+
   resetform() {
     this.chargeList = [];
     this.dsChargeList.data = []
-    this.patientDetail = [];  
+    this.patientDetail = [];
     this.OPFooterForm.reset({
       totalAmt: 0,
       totalDiscountPer: 0,
       concessionAmt: 0,
       netPayableAmt: 0,
       concessionReasonId: 0,
-    }); 
-  } 
-      viewgetOPBillReportPdf(element) {
-        this.commonService.Onprint("BillNo", element, "OpBillReceipt");
-    }
-    viewgetOPBillThermalReportPdf(element) {
-        this.commonService.Onprint("BillNo", element, "OpBillReceiptT");
-    }
+    });
+  }
+  viewgetOPBillReportPdf(element) {
+    this.commonService.Onprint("BillNo", element, "OpBillReceipt");
+  }
+  viewgetOPBillThermalReportPdf(element) {
+    this.commonService.Onprint("BillNo", element, "OpBillReceiptT");
+  }
   onPriceOrQtyChange(row: ChargesList = null): void {
     if (!row) return;
 
@@ -409,7 +411,7 @@ export class ReviewcompanyBillComponent {
     }
 
   }
-  updateTotalDiscountPer(): void { 
+  updateTotalDiscountPer(): void {
 
     const totalDiscountAmount = +this.OPFooterForm.get("concessionAmt").value;
     const totalChargeAmount = +(this.OPFooterForm.get("totalAmt").value);
@@ -483,7 +485,7 @@ export class ChargesList {
   ChargesId: number;
   ServiceId: number;
   serviceId: number;
-  ServiceName: String; 
+  ServiceName: String;
   qty: any;
   isInclusionExclusion: any;
   serviceCode: any;
@@ -517,7 +519,7 @@ export class ChargesList {
   price: any;
   packageId: any;
   concessionPercentage: any = 0;
-  concessionAmount:any;
+  concessionAmount: any;
   userName: any;
   constructor(ChargesList) {
     this.ChargesId = ChargesList.ChargesId || '';
@@ -539,7 +541,7 @@ export class ChargesList {
     this.ClassId = ChargesList.ClassId || 0;
     this.ClassName = ChargesList.ClassName || '';
     this.ChargesAddedName = ChargesList.ChargesAddedName || '';
-    this.PackageId = ChargesList.PackageId || 0; 
+    this.PackageId = ChargesList.PackageId || 0;
     this.concessionAmount = ChargesList.concessionAmount || 0;
     this.PackageServiceId = ChargesList.PackageServiceId || 0;
     this.IsPackage = ChargesList.IsPackage || 0;

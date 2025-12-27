@@ -74,6 +74,7 @@ export class ConfigSettingParams {
      IPDraftPrintA4toA5:any;
      IsDischargeSummaryTemplate:any;
      Is9_Digit_NationalId:any;
+     CurrencyValue:any;
 OPDNo:any;
 IsOPBillPrint:any;
 PrintAfterRegistration:any;
@@ -110,6 +111,7 @@ ThermalPrint:any;
 InterimBillA5Print:any;
 OPEmrPrescriptionA5:any;
 IsIndentVerify:any
+
  /**
      * Constructor
      *
@@ -193,6 +195,8 @@ IsIndentVerify:any
         this.ThermalPrint=ConfigSettingParams.ThermalPrint; 
         this.InterimBillA5Print=ConfigSettingParams.InterimBillA5Print; 
         this.Is9_Digit_NationalId=ConfigSettingParams.Is9_Digit_NationalId;
+        this.CurrencyValue=ConfigSettingParams.CurrencyValue;
+
 this.OPDNo=ConfigSettingParams.OPDNo;
 this.IsOPBillPrint=ConfigSettingParams.IsOPBillPrint;
 this.PrintAfterRegistration=ConfigSettingParams.PrintAfterRegistration;

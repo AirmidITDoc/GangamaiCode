@@ -351,7 +351,7 @@
                             <div class="list-item">
                               <span class="list-item-key">Bill Amount :</span>
                               <span class="list-item-value">
-                                {{ IpbillFooterform.get('FinalAmount').value | currency : 'INR' }}
+                                {{ IpbillFooterform.get('FinalAmount').value | currency: currency:'symbol' }}
                               </span>
                             </div>
                           </li>
@@ -359,20 +359,20 @@
                             <div class="list-item">
                               <span class="list-item-key">Advance Amount :</span>
                               <span class="list-item-value">
-                                {{ TotalAdvanceAmt | currency : 'INR' }}
+                                {{ TotalAdvanceAmt | currency: currency:'symbol' }}
                               </span>
                             </div>
                           </li>
                           <li>
                             <div class="list-item">
                               <span class="list-item-key">Bill Balance Amount :</span>
-                              <span class="list-item-value">{{ BillBalAmount | currency : 'INR' }}</span>
+                              <span class="list-item-value">{{ BillBalAmount | currency: currency:'symbol' }}</span>
                             </div>
                           </li>
                           <li>
                             <div class="list-item">
                               <span class="list-item-key">Pharmacy Amount :</span>
-                              <span class="list-item-value">{{ PharmacyAmont | currency : 'INR' }}</span>
+                              <span class="list-item-value">{{ PharmacyAmont | currency: currency:'symbol' }}</span>
                             </div>
                           </li>
                         </ul>
@@ -413,16 +413,16 @@
                   <!-- <div class="net-amt gap-12"> -->
                   <div class="net-amt-box">
                     <span class="net-amt-label">Bill Amount : </span>
-                    <span class="net-amt-value">{{ IpbillFooterform.get('FinalAmount').value | currency : 'INR'
+                    <span class="net-amt-value">{{ IpbillFooterform.get('FinalAmount').value | currency: currency:'symbol'
                       }}</span>
                   </div>
                   <div class="net-amt-box">
                     <span class="net-amt-label">Advance Amt : </span>
-                    <span class="net-amt-value">{{ checkAdvBalAmt | currency : 'INR' }}</span>
+                    <span class="net-amt-value">{{ checkAdvBalAmt | currency: currency:'symbol' }}</span>
                   </div>
                   <div class="net-amt-box">
                     <span class="net-amt-label">Advance Bal Amt : </span>
-                    <span class="net-amt-value">{{ AdvanceBalAmt | currency : 'INR' }}</span>
+                    <span class="net-amt-value">{{ AdvanceBalAmt | currency: currency:'symbol' }}</span>
                   </div>
                   <div class="net-amt-box">
                     <span class="net-amt-label">Bill Bal Amt : </span>
@@ -430,11 +430,11 @@
                               'amount-positive': BillBalAmount > 0,
                               'amount-zero': BillBalAmount == 0,
                               'amount-negative': BillBalAmount < 0
-                            }">{{ BillBalAmount | currency : 'INR' }}</span>
+                            }">{{ BillBalAmount | currency: currency:'symbol' }}</span>
                   </div>
                   <div class="net-amt-box">
                     <span class="net-amt-label">Pharmacy Amt : </span>
-                    <span class="net-amt-value">{{ PharmacyAmont | currency : 'INR' }}</span>
+                    <span class="net-amt-value">{{ PharmacyAmont | currency: currency:'symbol' }}</span>
                   </div>
 
                   <div fxLayout="row" fxLayoutGap="4px">
@@ -568,7 +568,7 @@
                         <ng-container matColumnDef="TotalAmt">
                           <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Total Amt</mat-header-cell>
                           <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                            <span>{{ contact.totalAmt | currency : 'INR' }}</span>
+                            <span>{{ contact.totalAmt | currency: currency:'symbol' }}</span>
                           </mat-cell>
                         </ng-container>
 
@@ -599,7 +599,7 @@
                               </mat-form-field>
                             </ng-container>
                             <ng-template #showDiscAmt>
-                              <span>{{ contact.concessionAmount | currency : 'INR' }}</span>
+                              <span>{{ contact.concessionAmount | currency: currency:'symbol' }}</span>
                             </ng-template>
                           </mat-cell>
                         </ng-container>
@@ -607,7 +607,7 @@
                         <ng-container matColumnDef="NetAmount">
                           <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Net Amt</mat-header-cell>
                           <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                            <span>{{ contact.netAmount | currency : 'INR' }}</span>
+                            <span>{{ contact.netAmount | currency: currency:'symbol' }}</span>
                           </mat-cell>
                         </ng-container>
 
@@ -893,11 +893,11 @@
 
                     <div class="net-amt-box">
                       <div class="net-amt-label">Company Amt :</div>
-                      <div class="net-amt-value">{{ ExclusionAmt | currency : 'INR':'symbol':'1.2-2' }}</div>
+                      <div class="net-amt-value">{{ ExclusionAmt | currency: currency:'symbol' }}</div>
                     </div>
                     <div class="net-amt-box">
                       <span class="net-amt-label">Patient Amt :</span>
-                      <span class="net-amt-value">{{ InclusionAmt | currency : 'INR' }}</span>
+                      <span class="net-amt-value">{{ InclusionAmt | currency: currency:'symbol' }}</span>
                     </div>
 
 
@@ -908,17 +908,16 @@
 
                     <div class="net-amt-box">
                       <span class="net-amt-label">Total Amt :</span>
-                      <span class="net-amt-value">{{ TotalShowAmt | currency : 'INR' }}</span>
+                      <span class="net-amt-value">{{ TotalShowAmt | currency: currency:'symbol' }}</span>
                     </div>
                     <div class="net-amt-box">
                       <span class="net-amt-label">Disc Amt :</span>
-                      <span class="net-amt-value">{{ IpbillFooterform.get('totalconcessionAmt').value || 0 | currency :
-                        'INR' }}</span>
+                      <span class="net-amt-value">{{ IpbillFooterform.get('totalconcessionAmt').value || 0 | currency: currency:'symbol' }}</span>
                     </div>
 
                     <div class="final-amt-box">
                       <span class="final-amt-label">Net Amt :</span>
-                      <span class="final-amt-value">{{ IpbillFooterform.get('FinalAmount').value | currency : 'INR'
+                      <span class="final-amt-value">{{ IpbillFooterform.get('FinalAmount').value | currency: currency:'symbol'
                         }}</span>
                     </div>
                   </div>
@@ -926,7 +925,7 @@
                 </div>
                 <div fxLayout="column" class="gap-6" style="width: 100%">
                   <div fxLayout="row" class="gap-6">
-                    <div fxFlex="8%">
+                    <div fxFlex="9%">
                       <airmid-textbox label="Bill Amount" formControlName="TotalAmt" [formGroup]="IpbillFooterform"
                         [type]="'text'" [readonly]="true"></airmid-textbox>
                     </div>
@@ -961,7 +960,7 @@
                         [mode]="autocompleteModeConcession"></airmid-dropdown>
                     </div>
 
-                    <div fxFlex="6%">
+                    <div fxFlex="9%">
                       <airmid-textbox label="Net Amount" formControlName="FinalAmount" [formGroup]="IpbillFooterform"
                         [type]="'text'" [readonly]="true"></airmid-textbox>
                     </div>
@@ -970,6 +969,11 @@
                       <airmid-dropdown label="Select Cash Counter " formControlName="CashCounterID"
                         [formGroup]="IpbillFooterform" [validations]="getValidationMessages().cashCounterId"
                         [mode]="autocompleteModeCashcounter"></airmid-dropdown>
+                    </div>
+
+                    <div fxFlex="10%">
+                      <airmid-textbox label="Government Approval Amt" formControlName="GovrnApprovAmt" [formGroup]="IpbillFooterform"
+                        [type]="'text'" [min]="0" (keypress)="keyPressCharater($event)"></airmid-textbox>
                     </div>
 
                     <div fxFlex>
