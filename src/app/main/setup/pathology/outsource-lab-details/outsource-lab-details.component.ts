@@ -70,7 +70,7 @@ export class OutsourceLabDetailsComponent {
         { fieldName: "OutSourceLabName", fieldValue: "", opType: OperatorComparer.StartsWith },
         { fieldName: "IsActive", fieldValue: "", opType: OperatorComparer.Equals }
     ]
-
+// MOutSourcelabMaster
     gridConfig: gridModel = {
         apiUrl: "OutSourcelabMaster/List",
         columnsList: this.allColumns,
