@@ -261,6 +261,15 @@
                                                                 </mat-cell>
                                                             </ng-container> 
 
+                                                            <ng-container matColumnDef="Approved" stickyEnd>
+                                                                <mat-header-cell *matHeaderCellDef mat-sort-header
+                                                                    class="w-90">Approved</mat-header-cell>
+                                                                <mat-cell *matCellDef="let contact" class="w-90">
+                                                                    <mat-checkbox aria-label="Checked"
+                                                                        [(ngModel)]="contact.isApprovedByCamp"></mat-checkbox>
+                                                                </mat-cell>
+                                                            </ng-container> 
+
                                                             <ng-container matColumnDef="NoData">
                                                                 <mat-footer-cell *matFooterCellDef>
                                                                     <span>No Data Found</span>

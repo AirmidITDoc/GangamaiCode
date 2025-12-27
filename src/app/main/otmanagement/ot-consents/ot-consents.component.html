@@ -34,30 +34,21 @@
         </div>
         <ng-template #actionsTemplate let-element>
             <div fxLayout="row" fxLayoutAlign="center center">
-                <mat-icon *ngIf="element.opIpType=='1'" matTooltip="IP" class="pill green-600 s-16">circle</mat-icon>
+                <mat-icon *ngIf="element.opipType=='1'" matTooltip="IP" class="pill green-600 s-16">circle</mat-icon>
 
-                <mat-icon *ngIf="element.opIpType=='0'" matTooltip="OP" class="pill orange-600 s-16">circle</mat-icon>
-            </div>
-        </ng-template>
-        <ng-template #actionsTemplate1 let-element>
-            <div fxLayout="row" fxLayoutAlign="center center">
-                <mat-icon *ngIf="element.surgeryTypeId=='2'" matTooltip="Emergency"
-                    class="pill red-600 s-16">circle</mat-icon>
-
-                <mat-icon *ngIf="element.surgeryTypeId=='1'" matTooltip="Normal"
-                    class="pill blue-600 s-16">circle</mat-icon>
+                <mat-icon *ngIf="element.opipType=='0'" matTooltip="OP" class="pill orange-600 s-16">circle</mat-icon>
             </div>
         </ng-template>
         <ng-template #actionButtonTemplate let-element>
             <div fxLayout="row" fxLayoutAlign="center center">
 
                 <app-airmid-consentform-icon [Id]="element.consentId" [refId]="element.refId" [opipId]="element.opipid"
-                    title="Name: {{ registerObj1.patientName }}  UHID: {{ registerObj1.regNo }}"
+                    title="Edit Consent Of Name: {{ element.patientName }}  UHID: {{ element.regNo }}" labelType="OT"
                     [opipType]="element.opiptype"></app-airmid-consentform-icon>
 
-                <button mat-icon-button (click)="delete(element)" matTooltip="Delete">
+                <!-- <button mat-icon-button (click)="delete(element)" matTooltip="Delete">
                     <mat-icon title="Delete">delete</mat-icon>
-                </button>
+                </button> -->
 
                 <button mat-icon-button (click)="OnViewReportPdf(element)" matTooltip="Print">
                     <mat-icon title="Print">print</mat-icon>

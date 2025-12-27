@@ -1,6 +1,6 @@
 import { DatePipe } from '@angular/common';
 import { Component, ComponentRef, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormArray, FormGroup, UntypedFormBuilder } from '@angular/forms';
 import { MatDialog } from "@angular/material/dialog";
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { fuseAnimations } from '@fuse/animations';
@@ -19,6 +19,8 @@ import { SMSDetailsPopupOverComponent } from 'app/main/shared/componets/email-se
 import { WhatsappDetPopUpOverComponent } from 'app/main/shared/componets/email-send/whatsapp-det-pop-up-over/whatsapp-det-pop-up-over.component';
 import { OpPaymentComponent } from 'app/main/opd/op-search-list/op-payment/op-payment.component';
 import { BrowseLabBillsService } from './browse-lab-bills.service';
+import { ReviewcompanyBillComponent } from 'app/main/opd/new-oplist/reviewcompany-bill/reviewcompany-bill.component';
+import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 
 
 @Component({
@@ -64,6 +66,7 @@ export class BrowseLabBillsComponent {
   rPBillNo: any = "%"
   rfromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
   rtoDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+  OpSettlementForm: FormGroup
 
   pfromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
   ptoDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
@@ -212,26 +215,26 @@ export class BrowseLabBillsComponent {
 
   gridConfig: gridModel = {
 
-    apiUrl: "OPBill/BrowseOPDBillPagiList",
+    apiUrl: "LabBrowseList/LabBillList",
     columnsList: this.allOPbillcolumns,
-    sortField: "PbillNo",
+    sortField: "BillDate",
     sortOrder: 0,
     filters: this.allOBillfilters
   }
 
   gridConfig1: gridModel = {
-    apiUrl: "OPBill/BrowseOPPaymentList",
+    apiUrl: "LabBrowseList/LabPaymentList",
     columnsList: this.allOPpaymentcolumns,
-    sortField: "RegNo",
+    sortField: "BillDate",
     sortOrder: 0,
     filters: this.allOPpaymentfilters
   }
 
 
   gridConfig2: gridModel = {
-    apiUrl: "OPBill/BrowseOPRefundList",
+    apiUrl: "LabBrowseList/LabRefundList",
     columnsList: this.allOPRefundColumns,
-    sortField: "RefundId",
+    sortField: "BillDate",
     sortOrder: 0,
     filters: this.allOPRefundFilters
   }
@@ -242,7 +245,10 @@ export class BrowseLabBillsComponent {
     public _ConfigService: ConfigService,
     public _accountService: AuthenticationService,
     public _whatsppService: WhatsAppEmailService,
-    private overlay: Overlay
+    public _FormvalidationserviceService: FormvalidationserviceService,
+    private overlay: Overlay,
+    public formBuilder: UntypedFormBuilder,
+    public accountService: AuthenticationService,
   ) { }
 
 
@@ -250,13 +256,95 @@ export class BrowseLabBillsComponent {
     this.myFilterbillform = this._OPListService.myFilterbillbrowseform();
     this.myFilterpayform = this._OPListService.myFilterpaymentbrowseform();
     this.myFilterrefundform = this._OPListService.myFilterrefundbrowseform();
+    this.OpSettlementForm = this.CreateOPSettlementForm();
 
 
     this.menuActions.push("Bill Print-Package Info");
     this.menuActions.push("Bill Print");
   }
 
+  CreateOPSettlementForm() {
+    return this.formBuilder.group({
+      opCreditPayment: this.formBuilder.group({
+        paymentId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        billNo: [0, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+        // receiptNo:['0'],
+        paymentDate: ['', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
+        paymentTime: ['', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
+        cashPayAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+        chequePayAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+        chequeNo: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+        bankName: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+        chequeDate: ['1999-01-01'],
+        cardPayAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+        cardNo: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+        cardBankName: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+        cardDate: ['1999-01-01'],
+        advanceUsedAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+        advanceId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        refundId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        transactionType: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        remark: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+        addBy: [this.accountService.currentUserValue.userId],
+        isCancelled: [false],
+        isCancelledBy: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        isCancelledDate: ['1999-01-01'],
+        opdipdType: [0],
+        neftpayAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        neftno: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+        neftbankMaster: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+        neftdate: ['1999-01-01'],
+        payTmamount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+        payTmtranNo: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+        payTmdate: ['1999-01-01'],
+        tdsamount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+        unitId: [this.accountService.currentUserValue.user.unitId, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        wfamount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+        companyId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      }),
+      //bill update 
+      billUpdate: this.formBuilder.group({
+        billNo: [0, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+        balanceAmt: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      }),
+      //New Payments
+      // ✅ Fixed: should be FormArray
+      tPayments: this.formBuilder.array([]),
+    })
+  }
 
+  CreateModePaymentform(item: any): FormGroup {
+    return this.formBuilder.group({
+      paymentId: [item?.paymentId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      unitId: [item?.unitId ?? this.accountService.currentUserValue.user.unitId],
+      billNo: [item?.billNo ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      opdipdtype: [item?.opdipdtype ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      paymentDate: [item?.paymentDate ?? ''],
+      paymentTime: [item?.paymentTime ?? ''],
+      payAmount: [item?.payAmount ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      tranNo: [item?.tranNo ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+      bankName: [item?.bankName ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+      validationDate: [item?.validationDate ?? ''],
+      advanceUsedAmount: [item?.advanceUsedAmount ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      comments: [item?.comments ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+      payMode: [item?.payMode ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+      onlineTranNo: [item?.onlineTranNo ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+      onlineTranResponse: [item?.onlineTranResponse ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+      companyId: [item?.companyId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      advanceId: [item?.advanceId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      refundId: [item?.refundId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      cashCounterId: [item?.cashCounterId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      transactionType: [item?.transactionType ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      isSelfOrcompany: [item?.isSelfOrcompany ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      tranMode: [item?.tranMode ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+      createdBy: [item?.createdBy ?? this.accountService.currentUserValue.userId],
+      transactionLabel: [item?.transactionLabel ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+    });
+  }
+
+  get ModeOfPaymentsArray(): FormArray {
+    return this.OpSettlementForm.get('tPayments') as FormArray;
+  }
 
   viewgetOPPayemntPdf(data, status) {
     if (status == true)
@@ -283,19 +371,19 @@ export class BrowseLabBillsComponent {
     }
   }
 
-  // OnCompanyBill(element) {
-  //   const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
-  //   buttonElement.blur();
-  //   const dialogRef = this._matDialog.open(ReviewcompanyBillComponent, {
-  //     maxWidth: "95vw",
-  //     height: "95vh",
-  //     width: "100%",
-  //     data: element
-  //   });
-  //   dialogRef.afterClosed().subscribe(result => {
-  //     this.grid.bindGridData();
-  //   });
-  // }
+  OnCompanyBill(element) {
+    const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+    buttonElement.blur();
+    const dialogRef = this._matDialog.open(ReviewcompanyBillComponent, {
+      maxWidth: "95vw",
+      height: "95vh",
+      width: "100%",
+      data: element
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      this.grid.bindGridData();
+    });
+  }
 
   OngetRecord(element, m) {
 
@@ -316,80 +404,80 @@ export class BrowseLabBillsComponent {
   }
 
 
-  // openPaymentpopup(contact) {
-  //   console.log(contact)
-  //   let PatientHeaderObj = {};
-  //   PatientHeaderObj['Date'] = this.datePipe.transform(contact.billDate, 'MM/dd/yyyy') || '01/01/1900',
-  //     PatientHeaderObj['RegNo'] = contact.labRequestNo;
-  //   PatientHeaderObj['PatientName'] = contact.patientName;
-  //   PatientHeaderObj['OPD_IPD_Id'] = contact.labPatientId;
-  //   PatientHeaderObj['Age'] = contact.ageYear;
-  //   PatientHeaderObj['DepartmentName'] = contact.departmentName;
-  //   PatientHeaderObj['billNo'] = contact.billNo || 0;
-  //   PatientHeaderObj['DoctorName'] = contact.doctorName;
-  //   PatientHeaderObj['TariffName'] = contact.tariffName;
-  //   PatientHeaderObj['CompanyName'] = contact.companyName;
-  //   PatientHeaderObj['NetPayAmount'] = contact.balanceAmt;
-  //   PatientHeaderObj['TransactionLabel'] = 'LAB_SETTLEMENT';
-  //   // this.vMobileNo = contact.mobileNo;
-  //   const dialogRef = this._matDialog.open(OpPaymentComponent,
-  //     {
-  //       maxWidth: "80vw",
-  //       width: '70%',
-  //       maxHeight: "90vw",
-  //       height: '90%',
-  //       data: {
-  //         vPatientHeaderObj: PatientHeaderObj,
-  //         FromName: "LAB-SETTLEMENT"
-  //       }
-  //     });
-  //   dialogRef.afterClosed().subscribe(result => {
-  //     if (result.IsSubmitFlag == true) {
-  //       this.OpSettlementForm.get('billUpdate.billNo').setValue(contact.billNo)
-  //       this.OpSettlementForm.get('billUpdate.balanceAmt').setValue(result.BillBalanceAmount)
-  //       this.OpSettlementForm.get('opCreditPayment').setValue(result.submitDataPay.ipPaymentInsert)
+  openPaymentpopup(contact) {
+    console.log(contact)
+    let PatientHeaderObj = {};
+    PatientHeaderObj['Date'] = this.datePipe.transform(contact.billDate, 'MM/dd/yyyy') || '01/01/1900',
+      PatientHeaderObj['RegNo'] = contact.labRequestNo;
+    PatientHeaderObj['PatientName'] = contact.patientName;
+    PatientHeaderObj['OPD_IPD_Id'] = contact.labPatientId;
+    PatientHeaderObj['Age'] = contact.ageYear;
+    PatientHeaderObj['DepartmentName'] = contact.departmentName;
+    PatientHeaderObj['billNo'] = contact.billNo || 0;
+    PatientHeaderObj['DoctorName'] = contact.doctorName;
+    PatientHeaderObj['TariffName'] = contact.tariffName;
+    PatientHeaderObj['CompanyName'] = contact.companyName;
+    PatientHeaderObj['NetPayAmount'] = contact.balanceAmt;
+    PatientHeaderObj['TransactionLabel'] = 'LAB_SETTLEMENT';
+    // this.vMobileNo = contact.mobileNo;
+    const dialogRef = this._matDialog.open(OpPaymentComponent,
+      {
+        maxWidth: "80vw",
+        width: '70%',
+        maxHeight: "90vw",
+        height: '90%',
+        data: {
+          vPatientHeaderObj: PatientHeaderObj,
+          FromName: "LAB-SETTLEMENT"
+        }
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result.IsSubmitFlag == true) {
+        this.OpSettlementForm.get('billUpdate.billNo').setValue(contact.billNo)
+        this.OpSettlementForm.get('billUpdate.balanceAmt').setValue(result.BillBalanceAmount)
+        this.OpSettlementForm.get('opCreditPayment').setValue(result.submitDataPay.ipPaymentInsert)
 
-  //       this.ModeOfPaymentsArray.clear();
-  //       result.submitDataPay.ipModePaymentInsert.forEach(item => {
-  //         this.ModeOfPaymentsArray.push(this.CreateModePaymentform(item));
-  //       });
+        this.ModeOfPaymentsArray.clear();
+        result.submitDataPay.ipModePaymentInsert.forEach(item => {
+          this.ModeOfPaymentsArray.push(this.CreateModePaymentform(item));
+        });
 
-  //       debugger
-  //       if (this.OpSettlementForm.valid) {
-  //         console.log(this.OpSettlementForm.value)
-  //         console.log(result.submitDataPay.ipPaymentInsert)
+        debugger
+        if (this.OpSettlementForm.valid) {
+          console.log(this.OpSettlementForm.value)
+          console.log(result.submitDataPay.ipPaymentInsert)
 
-  //         this._labPatientRegService.InsertLabBillingsettlement(this.OpSettlementForm.value).subscribe(response => {
-  //           this.viewgetOPPayemntPdf(response, true);
-  //           this.grid.bindGridData();
-  //         });
-  //       } else {
-  //         let invalidFields = []
-  //         if (this.OpSettlementForm.invalid) {
-  //           for (const controlName in this.OpSettlementForm.controls) {
-  //             const control = this.OpSettlementForm.get(controlName);
-  //             if (control instanceof FormGroup || control instanceof FormArray) {
-  //               for (const nestedKey in control.controls) {
-  //                 if (control.get(nestedKey)?.invalid) {
-  //                   invalidFields.push(`OP Settlement Data: ${controlName}.${nestedKey}`);
-  //                 }
-  //               }
-  //             } else if (control?.invalid) {
-  //               invalidFields.push(`OPSettlement From: ${controlName}`);
-  //             }
-  //           }
-  //         }
-  //         if (invalidFields.length > 0) {
-  //           invalidFields.forEach(field => {
-  //             this.toastr.warning(`Please Check this field "${field}" is invalid.`, 'Warning',
-  //             );
-  //           });
-  //           return
-  //         }
-  //       }
-  //     }
-  //   });
-  // }
+          this._OPListService.InsertLabBillingsettlement(this.OpSettlementForm.value).subscribe(response => {
+            this.viewgetOPPayemntPdf(response, true);
+            this.grid.bindGridData();
+          });
+        } else {
+          let invalidFields = []
+          if (this.OpSettlementForm.invalid) {
+            for (const controlName in this.OpSettlementForm.controls) {
+              const control = this.OpSettlementForm.get(controlName);
+              if (control instanceof FormGroup || control instanceof FormArray) {
+                for (const nestedKey in control.controls) {
+                  if (control.get(nestedKey)?.invalid) {
+                    invalidFields.push(`OP Settlement Data: ${controlName}.${nestedKey}`);
+                  }
+                }
+              } else if (control?.invalid) {
+                invalidFields.push(`OPSettlement From: ${controlName}`);
+              }
+            }
+          }
+          if (invalidFields.length > 0) {
+            invalidFields.forEach(field => {
+              this.toastr.warning(`Please Check this field "${field}" is invalid.`, 'Warning',
+              );
+            });
+            return
+          }
+        }
+      }
+    });
+  }
 
   onTabChange(event: MatTabChangeEvent) {
     console.log('Selected Tab Index:', event.index);
@@ -433,9 +521,9 @@ export class BrowseLabBillsComponent {
   getfilterdataOpBill() {
 
     this.gridConfig = {
-      apiUrl: "OPBill/BrowseOPDBillPagiList",
+      apiUrl: "LabBrowseList/LabBillList",
       columnsList: this.allOPbillcolumns,
-      sortField: "PbillNo",
+      sortField: "BillDate",
       sortOrder: 0,
       filters: [{ fieldName: "F_Name", fieldValue: this.f_name, opType: OperatorComparer.Contains },
       { fieldName: "L_Name", fieldValue: this.l_name, opType: OperatorComparer.Contains },
@@ -502,9 +590,9 @@ export class BrowseLabBillsComponent {
 
   getfilterdataOpPayment() {
     this.gridConfig1 = {
-      apiUrl: "OPBill/BrowseOPPaymentList",
+      apiUrl: "LabBrowseList/LabPaymentList",
       columnsList: this.allOPpaymentcolumns,
-      sortField: "RegNo",
+      sortField: "BillDate",
       sortOrder: 0,
       filters: [{ fieldName: "F_Name", fieldValue: this.pf_name, opType: OperatorComparer.Contains },
       { fieldName: "L_Name", fieldValue: this.pl_name, opType: OperatorComparer.Contains },
@@ -553,9 +641,9 @@ export class BrowseLabBillsComponent {
 
   getfilterdataOPRefund() {
     this.gridConfig2 = {
-      apiUrl: "OPBill/BrowseOPRefundList",
+      apiUrl: "LabBrowseList/LabRefundList",
       columnsList: this.allOPRefundColumns,
-      sortField: "RefundId",
+      sortField: "BillDate",
       sortOrder: 0,
       filters: [
         { fieldName: "F_Name", fieldValue: this.rf_name, opType: OperatorComparer.Contains },

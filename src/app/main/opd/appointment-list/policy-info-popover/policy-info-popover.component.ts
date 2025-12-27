@@ -52,11 +52,11 @@ export class PolicyInfoPopoverComponent implements OnInit {
       });
       this.loadPolicyHistory();
     }
-    // this.getfilterdata();
-  }
-  ngAfterViewInit() {
     this.getfilterdata();
   }
+  // ngAfterViewInit() {
+  //   this.getfilterdata();
+  // }
 
   createCompanyInfoForm() {
     return this.formBuilder.group({

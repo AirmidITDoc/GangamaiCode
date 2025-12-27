@@ -139,30 +139,50 @@
                       <mat-icon style="cursor: pointer">reorder</mat-icon>
                     </mat-cell>
                   </ng-container>
-                   <ng-container matColumnDef="SubtestName">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>SubTest Name</mat-header-cell>
-                    <mat-cell *matCellDef="let element" fxShow.gt-sm>
+
+                  <ng-container matColumnDef="SubtestName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header class="w-150">SubTest Name</mat-header-cell>
+
+                    <mat-cell *matCellDef="let element" fxShow.gt-sm class="w-150 text-ellipsis"
+                      [matTooltip]="element.testName" matTooltipPosition="above"
+                      [matTooltipDisabled]="element.testName?.length <= 15">
                       {{ element.testName }}
                     </mat-cell>
                   </ng-container>
+
                   <ng-container matColumnDef="ParameterName">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>Parameter</mat-header-cell>
-                    <mat-cell *matCellDef="let element" fxShow.gt-sm>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header class="w-200">
+                      Parameter
+                    </mat-header-cell>
+
+                    <mat-cell *matCellDef="let element" fxShow.gt-sm class="w-200 text-ellipsis"
+                      [matTooltip]="element.parameterName" matTooltipPosition="above"
+                      [matTooltipDisabled]="element.parameterName?.length <= 15">
                       {{ element.parameterName }}
                     </mat-cell>
                   </ng-container>
+
                   <ng-container matColumnDef="PrintParameterName">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>PrintParameterName</mat-header-cell>
-                    <mat-cell *matCellDef="let element" fxShow.gt-sm>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header
+                      class="w-200">PrintParameterName</mat-header-cell>
+
+                    <mat-cell *matCellDef="let element" fxShow.gt-sm class="w-200 text-ellipsis"
+                      [matTooltip]="element.printParameterName" matTooltipPosition="above"
+                      [matTooltipDisabled]="element.printParameterName?.length <= 20">
                       {{ element.printParameterName }}
                     </mat-cell>
                   </ng-container>
+
                   <ng-container matColumnDef="MethodName">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>MethodName</mat-header-cell>
-                    <mat-cell *matCellDef="let element" fxShow.gt-sm>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header class="w-200">MethodName</mat-header-cell>
+
+                    <mat-cell *matCellDef="let element" fxShow.gt-sm class="w-200 text-ellipsis"
+                      [matTooltip]="element.methodName" matTooltipPosition="above"
+                      [matTooltipDisabled]="element.methodName?.length <= 20">
                       {{ element.methodName }}
                     </mat-cell>
                   </ng-container>
+
                   <ng-container matColumnDef="UnitName">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>Unit</mat-header-cell>
                     <mat-cell *matCellDef="let element">
@@ -206,10 +226,10 @@
                     <mat-footer-cell *matFooterCellDef colspan="6">Select Parameters...</mat-footer-cell>
                   </ng-container>
 
-                  <mat-header-row class="accent" class="accent min-width-1500 airmid-row"
+                  <mat-header-row class="accent" class="accent min-width-2500 airmid-row"
                     *matHeaderRowDef="displayedColumns2; sticky: true"></mat-header-row>
                   <mat-row *matRowDef="let row; columns: displayedColumns2" class="element"
-                    class="element min-width-1500 airmid-row" [@animate]="{ value: '*', params: { y: '100%' } }"
+                    class="element min-width-2500 airmid-row" [@animate]="{ value: '*', params: { y: '100%' } }"
                     cdkDrag></mat-row>
                   <mat-footer-row *matFooterRowDef="['loading']"
                     [ngClass]="{ hide: DSTestList != null }"></mat-footer-row>

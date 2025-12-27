@@ -61,7 +61,7 @@ export class TestmasterComponent implements OnInit {
     { fieldName: "ServiceName", fieldValue: "%", opType: OperatorComparer.StartsWith },
     { fieldName: "CatId", fieldValue: "0", opType: OperatorComparer.Equals },
     { fieldName: "ServiceId", fieldValue: "0", opType: OperatorComparer.Equals },
-    { fieldName: "Istest", fieldValue: '2', opType: OperatorComparer.Equals }
+    { fieldName: "Istest", fieldValue: '0', opType: OperatorComparer.Equals }
   ]
 
   constructor(
@@ -96,32 +96,32 @@ export class TestmasterComponent implements OnInit {
   catId = "0"
   serviceId = "0"
 
-   ServiceView(value) {
+  ServiceView(value) {
 
-        if (value.value !== 0)
-            this.serviceId = value.value
-        else
-            this.serviceId = "0"
+    if (value.value !== 0)
+      this.serviceId = value.value
+    else
+      this.serviceId = "0"
 
-        this.onChangeFirst();
-    }
+    this.onChangeFirst();
+  }
 
-    CatView(value) {
+  CatView(value) {
 
-        if (value.value !== 0)
-            this.catId = value.value
-        else
-            this.catId = "0"
+    if (value.value !== 0)
+      this.catId = value.value
+    else
+      this.catId = "0"
 
-        this.onChangeFirst();
-    }
+    this.onChangeFirst();
+  }
 
-IsTest:any='2';
+  IsTest: any = '0';
   onChangeFirst() {
     this.testName = this.searchFormGroup.get('TestNameSearch').value + "%"
     this.catId = this.searchFormGroup.get('CategoryId').value
     this.serviceId = this.searchFormGroup.get('ServiceId').value
-        this.IsTest = this.searchFormGroup.get('Istest').value
+    this.IsTest = this.searchFormGroup.get('Istest').value ?? '0'
     this.getfilterdata();
   }
 
@@ -136,7 +136,7 @@ IsTest:any='2';
         { fieldName: "ServiceName", fieldValue: this.testName, opType: OperatorComparer.Contains },
         { fieldName: "CatId", fieldValue: String(this.catId), opType: OperatorComparer.Equals },
         { fieldName: "ServiceId", fieldValue: String(this.serviceId), opType: OperatorComparer.Equals },
-         { fieldName: "Istest", fieldValue: String(this.IsTest), opType: OperatorComparer.Equals }
+        { fieldName: "Istest", fieldValue: String(this.IsTest), opType: OperatorComparer.Equals }
       ]
     }
     this.grid.gridConfig = this.gridConfig;
@@ -146,9 +146,9 @@ IsTest:any='2';
   onSave(row: any = null) {
     const dialogRef = this._matDialog.open(TestFormMasterComponent,
       {
-        maxWidth: "100vw",
-        height: '95%',
-        width: '90%',
+        maxWidth: "99vw",
+        height: "98vh",
+        width: "100%",
         data: row
       });
     dialogRef.afterClosed().subscribe(result => {
@@ -157,31 +157,31 @@ IsTest:any='2';
     });
   }
 
- 
-    deactivateTestMaster(row) {
-          Swal.fire({
-              title: 'Confirm Status',
-              text: 'Are you sure you want to Change Active Status?',
-              icon: 'warning',
-              showCancelButton: true,
-              confirmButtonColor: '#3085d6',
-              cancelButtonColor: '#d33',
-              confirmButtonText: 'Yes, Change Status!'
-          }).then((result) => {
-              debugger
-              if (result.isConfirmed) {
-                  this._TestService.deactivateTheStatus(row.testId).subscribe(
-                      (data) => {
-                          Swal.fire('Changed!', 'Parameter Status has been Changed.', 'success');
-                          this.grid.bindGridData(); // Refresh grid data
-                      },
-                      (error) => {
-                          Swal.fire('Error!', 'Failed to Change Parameter Status.', 'error');
-                      }
-                  );
-              }
-          });
+
+  deactivateTestMaster(row) {
+    Swal.fire({
+      title: 'Confirm Status',
+      text: 'Are you sure you want to Change Active Status?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, Change Status!'
+    }).then((result) => {
+      debugger
+      if (result.isConfirmed) {
+        this._TestService.deactivateTheStatus(row.testId).subscribe(
+          (data) => {
+            Swal.fire('Changed!', 'Parameter Status has been Changed.', 'success');
+            this.grid.bindGridData(); // Refresh grid data
+          },
+          (error) => {
+            Swal.fire('Error!', 'Failed to Change Parameter Status.', 'error');
+          }
+        );
       }
+    });
+  }
 }
 
 export class TestMaster {
@@ -241,9 +241,9 @@ export class TestList {
   Isdeleted: any;
   IsDeleted: any;
   ParameterId: any;
-  subTestID:any;
-  parameterID:any;
-parameterId:any;
+  subTestID: any;
+  parameterID: any;
+  parameterId: any;
   /**
    * Constructor
    *

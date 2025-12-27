@@ -61,4 +61,8 @@ export class BrowseLabBillsService {
       ReceiptNo: '',
     });
   }
+
+   public InsertLabBillingsettlement(param) {
+    return this._httpClient.PostData("OPSettlement/InsertSettlement", param)
+  }
 }

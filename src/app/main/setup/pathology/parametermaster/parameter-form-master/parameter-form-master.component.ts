@@ -308,17 +308,50 @@ export class ParameterFormMasterComponent implements OnInit {
         }
     }
 
+    checkFields(event) {
+
+        const {
+            sexId,
+            ageType,
+            minAge,
+            maxAge,
+            minValue,
+            maxvalue
+        } = this.numericForm.value;
+
+        // Mandatory checks
+        if (!sexId) {
+            this.toastr.warning('Please select Gender', 'Warning');
+            return;
+        }
+
+        if (!ageType) {
+            this.toastr.warning('Please select Age Type', 'Warning');
+            return;
+        }
+
+        // Optional fields → default to 0
+        this.numericForm.patchValue({
+            minAge: minAge ?? 0,
+            maxAge: maxAge ?? 0,
+            minValue: minValue ?? 0,
+            maxvalue: maxvalue ?? 0
+        });
+
+        this.onAdd(event);
+    }
+
     onAdd(event) {
 
         let isNewRowUnique = true;
 
         const newRow: any = {
-            sexId: this.numericForm.get('sexId').value || "",
-            genderName: this.selectedGenderName || "",
-            minAge: this.numericForm.get('minAge').value,
-            maxAge: this.numericForm.get('maxAge').value,
-            minValue: this.numericForm.get('minValue').value,
-            maxValue: this.numericForm.get('maxvalue').value,
+            sexId: this.numericForm.get('sexId').value,
+            genderName: this.selectedGenderName,
+            minAge: this.numericForm.get('minAge').value || 0,
+            maxAge: this.numericForm.get('maxAge').value || 0,
+            minValue: this.numericForm.get('minValue').value || 0,
+            maxValue: this.numericForm.get('maxvalue').value || 0,
             IsDeleted: Boolean(this._ParameterService.myform.get("IsDeleted").value) || true,
             ageType: this.numericForm.get('ageType').value,
         };
@@ -502,25 +535,25 @@ export class ParameterFormMasterComponent implements OnInit {
         this.dialogRef.close();
     }
 
-    checkFields(event) {
-        // debugger
-        const formValues = this.numericForm.value
-        const fieldsTobeChecked =
-            formValues.sexId
-            // && formValues.genderName
-            && formValues.minAge
-            && formValues.maxAge
-            && formValues.ageType
-            && formValues.minValue
-            && formValues.maxvalue;
-        if (!fieldsTobeChecked) {
-            event.preventDefault;
-            this.toastr.warning('Please fill in all the fields in this row to add', 'Warning');
-        }
-        else {
-            this.onAdd(event);
-        }
-    }
+    // checkFields(event) {
+    //     // debugger
+    //     const formValues = this.numericForm.value
+    //     const fieldsTobeChecked =
+    //         formValues.sexId
+    //         // && formValues.genderName
+    //         && formValues.minAge
+    //         && formValues.maxAge
+    //         && formValues.ageType
+    //         && formValues.minValue
+    //         && formValues.maxvalue;
+    //     if (!fieldsTobeChecked) {
+    //         event.preventDefault;
+    //         this.toastr.warning('Please fill in all the fields in this row to add', 'Warning');
+    //     }
+    //     else {
+    //         this.onAdd(event);
+    //     }
+    // }
 
     selectedGenderName: any;
     selectChangeGender(obj: any) {

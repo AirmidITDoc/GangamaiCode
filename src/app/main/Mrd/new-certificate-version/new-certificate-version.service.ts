@@ -44,4 +44,8 @@ export class NewCertificateVersionService {
       ],
     });
   }
+
+  public getReportView(Param) {
+    return this._httpClient.PostData("Report/ViewReport", Param);
+  }
 }

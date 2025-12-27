@@ -32,7 +32,7 @@ export class AirmidConsentformComponent {
   templateName = ''
   vRefType: any;
   vconsentID: any;
-  OP_IPType: any = 0;
+  OP_IPType: any;
   vSelectedOption: any = 'OP';
   registerObj: any;
   OP_IP_Id: any;
@@ -55,6 +55,7 @@ export class AirmidConsentformComponent {
     this.myForm.markAllAsTouched();
 
     console.log(this.data)
+    this.OP_IPType = this.data?.opipType
     if ((this.data?.Id ?? 0) > 0) {
       this._service.GetData("TransactionConsentMaster/" + this.data.Id).subscribe((response) => {
         console.log(response)
@@ -69,6 +70,9 @@ export class AirmidConsentformComponent {
       });
     }
     if (this.data?.refId > 0) {
+      this.hideFlag = false
+    }
+    if (this.data?.Id > 0) {
       this.hideFlag = false
     }
   }
@@ -205,7 +209,7 @@ export class AirmidConsentformComponent {
     this.myForm.get('consentTime')?.setValue(`${formattedDate} ${formattedTime}`);
 
     this.myForm.get("opipid").setValue(this.OP_IP_Id ?? this.data?.opipId)
-    this.myForm.get("opiptype").setValue(Number(this.OP_IPType ?? this.data?.opipType))
+    this.myForm.get("opiptype").setValue(Number(this.OP_IPType))
     this.myForm.get("transactionLabel").setValue(this.data?.labelType)
     this.myForm.get("refId").setValue(Number(this.data?.refId) ?? 0)
     this.myForm.get("refType").setValue(this.vRefType)
@@ -220,13 +224,13 @@ export class AirmidConsentformComponent {
       if (this.vconsentID > 0) {
         console.log(this.myForm.value)
         this._service.PutData("TransactionConsentMaster/" + this.vconsentID, this.myForm.value).subscribe((response) => {
-           this.OnViewReportPdf(response)
+          this.OnViewReportPdf(response)
           this.onClose();
         });
       } else {
         console.log(this.myForm.value)
         this._service.PostData("TransactionConsentMaster", this.myForm.value).subscribe((response) => {
-           this.OnViewReportPdf(response)
+          this.OnViewReportPdf(response)
           this.onClose();
         });
       }
@@ -269,7 +273,7 @@ export class AirmidConsentformComponent {
           },
           {
             "fieldName": "OPIPType",
-            "fieldValue": String(this.data?.opipType ?? this.OP_IPType),
+            "fieldValue": String(this.OP_IPType),
             "opType": "Equals"
           }
         ],
