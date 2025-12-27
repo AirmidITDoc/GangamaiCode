@@ -24,6 +24,7 @@ import { FormvalidationserviceService } from 'app/main/shared/services/formvalid
 import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
 import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
 import { HospitalConfigService } from 'app/core/services/hospital-config.service';
+import { ConfigService } from 'app/core/services/config.service';
 
 @Component({
   selector: 'app-refundbill',
@@ -69,7 +70,8 @@ export class RefundbillComponent implements OnInit {
   searchFormGroup: FormGroup; 
   RefundOfBillFormFooter:FormGroup
   vRefundOfBillFormGroup:FormGroup
-  dateTimeObj: any; 
+  dateTimeObj: any;
+  currency:any=''; 
   currentDate = new Date();
   isLoadingStr: string = ''; 
   registerObj = new RegInsert({});
@@ -90,6 +92,7 @@ export class RefundbillComponent implements OnInit {
     private accountService: AuthenticationService,
     private hospitalconfigservice:HospitalConfigService,
     private _FormvalidationserviceService: FormvalidationserviceService,
+    public _ConfigService:ConfigService
   ) { }
 
   ngOnInit(): void {
@@ -108,6 +111,10 @@ export class RefundbillComponent implements OnInit {
     this.vRefundOfBillFormGroup.get("refund.isCancelledDate")?.setValue('1900-01-01')
     this.vRefundOfBillFormGroup.get("refund.refundDate")?.setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd') || '1900-01-01')
     this.vRefundOfBillFormGroup.get("refund.refundTime")?.setValue(this.dateTimeObj.time)
+
+    //this is for curreny symbol
+    const [CurrencyId, CurrencyValue] = this._ConfigService.configParams.CurrencyValue.split(":");
+    this.currency = CurrencyValue 
   }
 
   createSearchForm() {

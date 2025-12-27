@@ -86,6 +86,8 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
     public isDoctor = false;
     public isUpdating = false;
     serviceSelct = false
+    @ViewChild('regIdfocus') regIdfocus: ElementRef;
+    currency:any='';
 
     @ViewChild('serviceTable') serviceTable!: TemplateRef<any>;
     @ViewChild('MpesatranscationlistTable') MpesatranscationlistTable!: TemplateRef<any>;
@@ -111,12 +113,9 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
         private hospitalconfigservice: HospitalConfigService,
         public _ConfigService: ConfigService,
         @Optional() public dialogRef: MatDialogRef<AppointmentBillingComponent>
-    ) { };
+    ) { }; 
 
-    @ViewChild('regIdfocus') regIdfocus: ElementRef;
-    ngOnInit() {
-
-
+    ngOnInit() { 
         this.isModal = !!this.dialogRef;
         this.searchForm = this.createSearchForm();
         this.chargeForm = this.createChargeForm();
@@ -146,16 +145,16 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
             this.checkCompanypatient(this.patientDetail?.companyId ?? 0)
             this.patientDetail.mobileNo
             this.OPFooterForm.patchValue({mpesaMobile:this.patientDetail?.mobileNo || 0})
-        }
-
-
+        } 
         this.dsChargeList = new MatTableDataSource(this.chargeList);
         this.dsPackageList = new MatTableDataSource(this.packageList);
         this.dsServiceList = new MatTableDataSource(this.serviceList);
 
-        this.setupFormListener();
-
+        this.setupFormListener(); 
         this.startCountdown();
+        //this is for curreny symbol
+        const [CurrencyId, CurrencyValue] = this._ConfigService.configParams.CurrencyValue.split(":");
+        this.currency = CurrencyValue 
     }
     private setupFormListener(): void {
         this.handleChange('price', () => this.calculateTotalCharge());
@@ -399,6 +398,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
             concessionReasonId: [0, this._FormvalidationserviceService.onlyNumberValidator()],
             netPayableAmt: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
             paymentType: ['CashPay'],
+            GovrnApprovAmt:[0],
             mpesaMobile: ['',[Validators.minLength(10), Validators.maxLength(10)]],
             UpiNo:[0, [Validators.minLength(4), Validators.maxLength(12), this._FormvalidationserviceService.onlyNumberValidator()]]
         })
@@ -437,6 +437,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
             isSettled: true,
             isPrinted: true,
             isFree: true,
+            govtApprovedAmt:[0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
             companyId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             tariffId: [this.vTariffId, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
             unitId: [this.accountService.currentUserValue.user.unitId, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -645,14 +646,23 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
     getdocdetail(event) {
         this.doctorName = event.text
     }
-    onAddCharges(): void {
+        keyPressCharater(event) {
+        var inp = String.fromCharCode(event.keyCode);
+        if (/^\d*\.?\d*$/.test(inp)) {
+            return true;
+        } else {
+            event.preventDefault();
+            return false;
+        }
+    }
+    onAddCharges(): void { 
         const serviceNameValue = this.chargeForm.get('serviceName')?.value;
-        if (!serviceNameValue || serviceNameValue === '%' || this.serviceSelct == false) {
+        if (serviceNameValue?.serviceId == 0 || this.serviceSelct == false || serviceNameValue?.serviceId == '' || serviceNameValue?.serviceId == null || serviceNameValue?.serviceId == undefined) {
             this.toastrService.warning('Please select a valid service name.', 'Warning !', {
                 toastClass: 'tostr-tost custom-toast-warning',
             });
             return;
-        }
+        } 
         if (this.chargeForm.get('DoctorID').value == "0") {
             this.toastrService.warning('Please select a valid doctor name.', 'Warning !', {
                 toastClass: 'tostr-tost custom-toast-warning',
@@ -1161,7 +1171,9 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
         this.OpBillForm.get('concessionReasonId')?.setValue(this.ConcessionId)
         this.OpBillForm.get('discComments')?.setValue(this.ConcessionReason)
         this.OpBillForm.get('cashCounterId')?.setValue(this.searchForm.get('CashCounterID')?.value)
-
+        this.OpBillForm.get('govtApprovedAmt')?.setValue(this.OPFooterForm.get('GovrnApprovAmt').value || 0)
+            this.ChargeddetailsArray.clear();
+            this.BillDetailsArray.clear();
         if (!this.OpBillForm.invalid) {
             this.ChargeddetailsArray.clear();
             this.BillDetailsArray.clear();

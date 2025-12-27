@@ -11,6 +11,7 @@ import { ToastrService } from 'ngx-toastr';
 import { Observable } from 'rxjs';
 import Swal from 'sweetalert2';
 import { OPSearhlistService } from '../op-searhlist.service';
+import { ConfigService } from 'app/core/services/config.service';
 
 @Component({
     selector: 'app-op-payment',
@@ -41,6 +42,7 @@ export class OpPaymentVimalComponent implements OnInit {
     DoctorName: any;
     CompanyName: any;
     Date: any;
+    currency:any='';
     DepartmentName: any;
     Age: any;
     OPD_IPD_Id: any; 
@@ -262,6 +264,7 @@ getselectObjPayMode(obj){
         private _loggedService: AuthenticationService,
         public datePipe: DatePipe,
         public toastr: ToastrService,
+        public _ConfigService:ConfigService,
         public _IpSearchListService: IPSearchListService,
     ) {
         this.patientDetailsFormGrp = this.createForm();
@@ -334,6 +337,10 @@ getselectObjPayMode(obj){
              this.selectedRow = response.data;
         });
         } 
+
+    //this is for curreny symbol
+    const [CurrencyId, CurrencyValue] = this._ConfigService.configParams.CurrencyValue.split(":");
+    this.currency = CurrencyValue  
     }
     dateTimeObj: any;
     getDateTime(dateTimeObj) {

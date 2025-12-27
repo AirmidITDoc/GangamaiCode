@@ -217,6 +217,9 @@ this.Is9_Digit_National_Id = id === "1";
             // Citizen: [false],
             // Emergancy: [false],
             // template: [false]
+            policyNumber:[0],
+            policyLimit:[0],
+            policyValidateDate: [(new Date()).toISOString()],
         });
     }
 

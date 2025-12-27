@@ -223,6 +223,7 @@ export class IPBillingComponent implements OnInit {
         private _FormvalidationserviceService: FormvalidationserviceService,
         private formBuilder: UntypedFormBuilder) {
     }
+    currency:any=''
     ngOnInit(): void {
         this.createserviceForm();
         this.createBillForm();
@@ -234,8 +235,8 @@ export class IPBillingComponent implements OnInit {
             this.selectedAdvanceObj = this.data.Obj;
             //console.log(this.selectedAdvanceObj)
             this.opD_IPD_Id = this.selectedAdvanceObj.admissionId || "0"
-            this.ApiURL = "VisitDetail/GetServiceListwithTraiff?TariffId=" + this.selectedAdvanceObj.tariffId + "&ClassId=" + this.selectedAdvanceObj.classId + "&ServiceName="
-
+           // this.ApiURL = "VisitDetail/GetServiceListwithTraiff?TariffId=" + this.selectedAdvanceObj.tariffId + "&ClassId=" + this.selectedAdvanceObj.classId + "&ServiceName="
+           this.ApiURL = "VisitDetail/search-GetServiceListwithTraiff?TariffId=" + this.selectedAdvanceObj.tariffId + "&ClassId=" + this.selectedAdvanceObj.classId + "&SrvcName="
             this.getdata(this.selectedAdvanceObj.admissionId)
             this.getadvancelist(this.selectedAdvanceObj.admissionId)
             this.Serviceform.get("classId").setValue(this.selectedAdvanceObj.classId)
@@ -287,6 +288,9 @@ export class IPBillingComponent implements OnInit {
             this.isAdminDisabled = false;
             this.IpbillFooterform.get('Admincheck').setValue(false)
         }
+//this is for curreny symbol
+    const [CurrencyId, CurrencyValue] = this._ConfigService.configParams.CurrencyValue.split(":");
+    this.currency = CurrencyValue 
     }
     private setupFormListener(): void {
         this.handleChange('price', () => this.calculateTotalCharge());
@@ -484,7 +488,7 @@ export class IPBillingComponent implements OnInit {
             BillType: ['1', this._FormvalidationserviceService.onlyNumberValidator()],
             EditDoctor: [''],
             TotalAmt: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-
+            GovrnApprovAmt: [0, this._FormvalidationserviceService.onlyNumberValidator()]
         });
     }
     //IP Draft Bill form
@@ -564,6 +568,7 @@ export class IPBillingComponent implements OnInit {
                 isSettled: false,
                 isPrinted: true,
                 isFree: true,
+                govtApprovedAmt:[0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]], 
                 companyId: [this.selectedAdvanceObj?.companyId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
                 tariffId: [this.selectedAdvanceObj?.tariffId, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
                 unitId: [this.accountService.currentUserValue.user.unitId, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -573,7 +578,7 @@ export class IPBillingComponent implements OnInit {
                 speTaxPer: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
                 speTaxAmt: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
                 compDiscAmt: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-                discComments: [0, [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],//need to set concession reason
+                discComments: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],//need to set concession reason
                 cashCounterId: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],//need to set cashCounterId
             }),
             // IP bill details in array
@@ -727,7 +732,7 @@ export class IPBillingComponent implements OnInit {
     }
     //Class selected 
     getSelectedClassObj(event) {
-        this.ApiURL = "VisitDetail/GetServiceListwithTraiff?TariffId=" + this.selectedAdvanceObj.tariffId + "&ClassId=" + event.value + "&ServiceName="
+        this.ApiURL = "VisitDetail/search-GetServiceListwithTraiff?TariffId=" + this.selectedAdvanceObj.tariffId + "&ClassId=" + event.value + "&SrvcName="
     }
     // Service Add 
     onSaveAddCharges() {
@@ -1219,24 +1224,25 @@ export class IPBillingComponent implements OnInit {
     }
     //Save with normal
     SaveBill1() {
-        this.IPBillMyForm.get('bill.totalAmt')?.setValue(this.IpbillFooterform.get('TotalAmt')?.value)
-        this.IPBillMyForm.get('bill.concessionAmt')?.setValue(this.IpbillFooterform.get('totalconcessionAmt')?.value)
+        this.IPBillMyForm.get('bill.totalAmt')?.setValue(this.IpbillFooterform.get('TotalAmt')?.value || 0)
+        this.IPBillMyForm.get('bill.concessionAmt')?.setValue(this.IpbillFooterform.get('totalconcessionAmt')?.value || 0)
         this.IPBillMyForm.get('bill.netPayableAmt')?.setValue(this.IpbillFooterform.get('FinalAmount')?.value)
         this.IPBillMyForm.get('bill.billDate').setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'))
         this.IPBillMyForm.get('bill.billTime').setValue(this.dateTimeObj.time)
-        this.IPBillMyForm.get('bill.concessionReasonId')?.setValue(this.IpbillFooterform.get('ConcessionId')?.value)
-        this.IPBillMyForm.get('bill.discComments')?.setValue(this.IpbillFooterform.get('Remark')?.value)
-        this.IPBillMyForm.get('bill.cashCounterId')?.setValue(this.IpbillFooterform.get('CashCounterID')?.value)
+        this.IPBillMyForm.get('bill.concessionReasonId')?.setValue(this.IpbillFooterform.get('ConcessionId')?.value || 0)
+        this.IPBillMyForm.get('bill.discComments')?.setValue(this.IpbillFooterform.get('Remark')?.value || '')
+        this.IPBillMyForm.get('bill.cashCounterId')?.setValue(this.IpbillFooterform.get('CashCounterID')?.value || 0)
         this.IPBillMyForm.get('bill.totalAdvanceAmount')?.setValue(this.TotalAdvanceAmt)
         this.IPBillMyForm.get('bill.speTaxPer')?.setValue(this.IpbillFooterform.get('AdminPer').value || 0)
-        this.IPBillMyForm.get('bill.speTaxAmt')?.setValue(this.IpbillFooterform.get('AdminAmt').value)
+        this.IPBillMyForm.get('bill.speTaxAmt')?.setValue(this.IpbillFooterform.get('AdminAmt').value || 0)
+        this.IPBillMyForm.get('bill.govtApprovedAmt')?.setValue(this.IpbillFooterform.get('GovrnApprovAmt')?.value || 0)
 
 
         if (this.IPBillMyForm.valid && this.dataSource.data.length > 0) {
             if (this.IpbillFooterform.get('CreditBill').value || this.selectedAdvanceObj.companyId) {
                 this.IPBillMyForm.get('bill.paidAmt')?.setValue(0)
-                this.IPBillMyForm.get('bill.balanceAmt')?.setValue(this.IpbillFooterform.get('FinalAmount')?.value)
-                this.IPBillMyForm.get('bills.balanceAmt')?.setValue(this.IpbillFooterform.get('FinalAmount')?.value)
+                this.IPBillMyForm.get('bill.balanceAmt')?.setValue(this.IpbillFooterform.get('FinalAmount')?.value || 0)
+                this.IPBillMyForm.get('bills.balanceAmt')?.setValue(this.IpbillFooterform.get('FinalAmount')?.value || 0)
                 this.IPBillMyForm.get('payment.paymentDate').setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'))
                 this.IPBillMyForm.get('payment.paymentTime').setValue(this.dateTimeObj.time)
 

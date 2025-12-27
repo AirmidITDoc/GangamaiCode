@@ -145,7 +145,7 @@
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
                                                 Advance Amt </mat-header-cell>
                                             <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm >
-                                                <span> {{element.advanceAmount}}</span>
+                                                <span> {{element.advanceAmount | currency: currency:'symbol'}}</span>
                                             </mat-cell>
                                         </ng-container>
                     
@@ -153,7 +153,7 @@
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
                                                 Used Amt </mat-header-cell>
                                             <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm >
-                                                <span> {{element.usedAmount | currency:'INR'}}</span>
+                                                <span> {{element.usedAmount | currency: currency:'symbol'}}</span>
                                             </mat-cell>
                                         </ng-container>
                     
@@ -162,10 +162,10 @@
                                                 Balance Amt </mat-header-cell>
                                             <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm  > 
                                                 <span *ngIf="!element.isCancelled">
-                                                    {{element.balanceAmount | currency:'INR'}}
+                                                    {{element.balanceAmount | currency: currency:'symbol'}}
                                                 </span>
                                                 <span *ngIf="element.isCancelled">
-                                                    {{0 | currency:'INR'}}</span>
+                                                    {{0 | currency: currency:'symbol'}}</span>
                                             </mat-cell>
                                         </ng-container>
                     
@@ -188,7 +188,7 @@
                                             <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Prev.Refund Amt
                                             </mat-header-cell>
                                             <mat-cell  *matCellDef="let element" fxShow.gt-sm > 
-                                                <span> {{element.refundAmount | currency:'INR'}}</span>
+                                                <span> {{element.refundAmount | currency: currency:'symbol'}}</span>
                                             </mat-cell>
                                         </ng-container>
                     

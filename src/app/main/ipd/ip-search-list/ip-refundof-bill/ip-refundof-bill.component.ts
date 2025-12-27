@@ -16,6 +16,7 @@ import { WhatsAppEmailService } from 'app/main/shared/services/whats-app-email.s
 import { ToastrService } from 'ngx-toastr';
 import { IPSearchListService } from '../ip-search-list.service';
 import { HospitalConfigService } from 'app/core/services/hospital-config.service';
+import { ConfigService } from 'app/core/services/config.service';
 
 @Component({
   selector: 'app-ip-refundof-bill',
@@ -76,7 +77,7 @@ export class IPRefundofBillComponent implements OnInit {
   RegId: any = 0;
   registerObj: any
   Chargelist: any = [];
-
+currency:any='';
   autocompleteModeCashCounter: string = "CashCounter";
 
   dataSource2 = new MatTableDataSource<InsertRefundDetail>();
@@ -95,6 +96,7 @@ export class IPRefundofBillComponent implements OnInit {
     private dialogRef: MatDialogRef<IPRefundofBillComponent>,
     private _formBuilder: UntypedFormBuilder,
     private hospitalconfigservice:HospitalConfigService,
+    public _ConfigService:ConfigService,
     private _FormvalidationserviceService: FormvalidationserviceService,
     @Inject(MAT_DIALOG_DATA) public data: any,
   ) { }
@@ -113,6 +115,9 @@ export class IPRefundofBillComponent implements OnInit {
       this.getData(this.selectedAdvanceObj.admissionId)
       this.vRefundOfBillFormGroup.get("refund.opdipdid")?.setValue(this.selectedAdvanceObj.admissionId)
     }
+    //this is for curreny symbol
+    const [CurrencyId, CurrencyValue] = this._ConfigService.configParams.CurrencyValue.split(":");
+    this.currency = CurrencyValue 
   }
 
   createSearchForm() {

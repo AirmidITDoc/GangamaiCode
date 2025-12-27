@@ -18,6 +18,7 @@ import { ToastrService } from 'ngx-toastr';
 import { IPSearchListService } from '../ip-search-list.service';
 import Swal from 'sweetalert2';
 import { HospitalConfigService } from 'app/core/services/hospital-config.service';
+import { ConfigService } from 'app/core/services/config.service';
 
 
 @Component({
@@ -43,7 +44,7 @@ export class IPAdvanceComponent implements OnInit {
   currentDate = new Date();
   AdmissionId: any = 0;
   autocompleteModeCashCounter: string = "CashCounter";
-
+currency:any='';
   @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
   @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
   ngAfterViewInit() {
@@ -94,8 +95,8 @@ export class IPAdvanceComponent implements OnInit {
     public toastr: ToastrService,
     public _FormvalidationserviceService: FormvalidationserviceService,
     private formBuilder: FormBuilder,
-    private hospitalconfigservice:HospitalConfigService
-  
+    private hospitalconfigservice:HospitalConfigService,
+    public _configService:ConfigService
   ) { }
 
   ngOnInit(): void {
@@ -140,6 +141,9 @@ export class IPAdvanceComponent implements OnInit {
       }
       this.getdata(this.AdmissionId);
     }
+        //this is for curreny symbol
+    const [CurrencyId, CurrencyValue] = this._configService.configParams.CurrencyValue.split(":");
+    this.currency = CurrencyValue 
   }
   createAdvform() {
     this.AdvFormGroup = this.formBuilder.group({

@@ -146,6 +146,9 @@ export class AppointmentlistService {
             phoneAppId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             crossConsultantDrId: 0,
             visitId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            policyNumber:[0],
+            policyLimit:[0],
+            policyValidateDate: [(new Date()).toISOString()],
         });
     }
 

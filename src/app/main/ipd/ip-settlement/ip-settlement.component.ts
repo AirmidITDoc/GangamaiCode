@@ -22,6 +22,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { SelectionModel } from '@angular/cdk/collections';
 import { OpPaymentComponent } from 'app/main/opd/op-search-list/op-payment/op-payment.component';
+import { ConfigService } from 'app/core/services/config.service';
 
 
 @Component({
@@ -58,6 +59,7 @@ export class IPSettlementComponent implements OnInit {
     BillNo: any;
     vpaidamt: any = 0;
     regNo2:any=0;
+    currency:any = '';
     vbalanceamt: any = 0;
     registerObj = new RegInsert({});
     vNetAmount: any = 0;
@@ -118,6 +120,7 @@ export class IPSettlementComponent implements OnInit {
         private commonService: PrintserviceService,
         private accountService: AuthenticationService,
         public _matDialog: MatDialog,
+        public _configService:ConfigService,
         public datePipe: DatePipe,
         public toastr: ToastrService,
         public _FormvalidationserviceService: FormvalidationserviceService,
@@ -147,7 +150,10 @@ export class IPSettlementComponent implements OnInit {
                 }
             }
         });
-       // this.getmultiplePaymentList(true);
+    // this.getmultiplePaymentList(true);
+    //this is for curreny symbol
+    const [CurrencyId, CurrencyValue] = this._configService.configParams.CurrencyValue.split(":");
+    this.currency = CurrencyValue
     }
     BankId = 0
     BankNam: any;

@@ -247,6 +247,8 @@ export class NewGrnComponent implements OnInit, OnDestroy {
             this.userFormGroup.get('IGST').updateValueAndValidity();
             this.userFormGroup.get('IGST').disable();
         } else {
+            this.userFormGroup.get('CGST').reset(0);
+            this.userFormGroup.get('SGST').reset(0);
             this.userFormGroup.get('IGST').enable();
             this.userFormGroup.get('IGST').reset();
         }
@@ -266,6 +268,7 @@ export class NewGrnComponent implements OnInit, OnDestroy {
             this.userFormGroup.get('CGST').updateValueAndValidity();
             this.userFormGroup.get('CGST').disable();
         } else {
+            this.userFormGroup.get('IGST').reset(0);
             this.userFormGroup.get('CGST').enable();
             this.userFormGroup.get('CGST').reset();
         }

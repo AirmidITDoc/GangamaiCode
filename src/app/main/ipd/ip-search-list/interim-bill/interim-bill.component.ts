@@ -46,6 +46,7 @@ export class InterimBillComponent implements OnInit {
   DiscountFlag: boolean = false;
   onlineflag: boolean = false;
   interimArray: any = [];
+  currency:any='';
   isLoading: String = '';
   InterimFooterForm: FormGroup;
   IPInterimBillForm: FormGroup;
@@ -90,6 +91,9 @@ export class InterimBillComponent implements OnInit {
       this.getNetAmtSum();
       this.IPInterimBillForm = this.createInterimbillForm();
     }
+    //this is for curreny symbol
+    const [CurrencyId, CurrencyValue] = this._ConfigService.configParams.CurrencyValue.split(":");
+    this.currency = CurrencyValue 
   }
   CreateFooterForm(): FormGroup {
     return this.formBuilder.group({

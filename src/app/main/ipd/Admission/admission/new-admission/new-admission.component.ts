@@ -133,6 +133,7 @@ this.Is9_Digit_National_Id = id === "1";
 
 
     this.searchFormGroup = this.createSearchForm();
+    this.policyFormGroup = this.createPolicyFormGrp();
     this.personalFormGroup.markAllAsTouched();
     this.admissionFormGroup.markAllAsTouched();
     this.searchFormGroup.markAllAsTouched();
@@ -680,7 +681,19 @@ this.Is9_Digit_National_Id = id === "1";
   onIsSeniorChange(event: any) {
     // this.admissionFormGroup.patchValue({ IsSenior: event.checked });
   }
-
+  policyFormGroup:FormGroup; 
+  createPolicyFormGrp(){ 
+    return this.formBuilder.group({
+    patientPolicyId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+    opipid:[0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+    opiptype: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+    policyNo: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+    policyValidateDate: ['1999-01-01'],
+    approvedAmount: [0,[this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+    createdBy:[this.accountService.currentUserValue.userId],
+    isActive: true
+    }) 
+  }
   OnSaveAdmission() {
     debugger
     if (this.EmgId > 0) {
@@ -704,6 +717,9 @@ this.Is9_Digit_National_Id = id === "1";
     this.personalFormGroup.get('medTourismVisaIssueDate').setValue(this.datePipe.transform(this.rawDate1, "yyyy-MM-dd") || this.rawDate1);
     this.personalFormGroup.get('medTourismVisaValidityDate').setValue(this.datePipe.transform(this.rawDate2, "yyyy-MM-dd") || this.rawDate2);
     this.personalFormGroup.get('medTourismDateOfEntry').setValue(this.datePipe.transform(this.rawDate3, "yyyy-MM-dd") || this.rawDate3);
+    this.policyFormGroup.get("policyValidateDate").setValue(this.datePipe.transform(this.admissionFormGroup.get('policyValidateDate').value , "yyyy-MM-dd") || '1900-01-01');
+    this.policyFormGroup.get("policyNo").setValue(String(this.admissionFormGroup.get('policyNumber')?.value || 0))
+    this.policyFormGroup.get("approvedAmount").setValue(Number(this.admissionFormGroup.get('policyLimit')?.value || 0))
 
     if (this.isCompanySelected && this.admissionFormGroup.get('CompanyId').value == 0) {
       this.toastr.warning('Please select valid Company ', 'Warning !', {
@@ -725,7 +741,8 @@ this.Is9_Digit_National_Id = id === "1";
       if (this.searchFormGroup.get('regRadio').value == "registration" && this.AdmissionId == 0) {
         let submitData = {
           "admissionReg": this.personalFormGroup.value,
-          "admission": this.admissionFormGroup.value
+          "admission": this.admissionFormGroup.value,
+          "patientPolicy":this.policyFormGroup.value
         };
 
         debugger
@@ -741,11 +758,12 @@ this.Is9_Digit_National_Id = id === "1";
           this._matDialog.closeAll();
         });
       }
-      else {
+      else { 
         // console.log(submitData);
         let submitData = {
           // "AdmissionReg": this.personalFormGroup.value,
-          "admission": this.admissionFormGroup.value
+          "admission": this.admissionFormGroup.value,
+          "patientPolicy":this.policyFormGroup.value
         };
         console.log(submitData);
         this._AdmissionService.AdmissionRegisteredInsert(submitData).subscribe(response => {
@@ -886,7 +904,18 @@ this.Is9_Digit_National_Id = id === "1";
     });
 
   }
+  onValidDateChange(event: any) {
+    const selectedDate = new Date(event.value);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
 
+    if (selectedDate < today) {
+      this.toastr.warning('Valid Date cannot be earlier than today.', 'Warning!',
+        { toastClass: 'tostr-tost custom-toast-warning' }
+      );
+      this.admissionFormGroup.get('policyValidateDate')?.setValue(today);
+    }
+  }
   dateTimeObj: any;
   getDateTime(dateTimeObj) {
     console.log('dateTimeObj==', dateTimeObj);
@@ -976,6 +1005,12 @@ this.Is9_Digit_National_Id = id === "1";
         { name: "pattern", Message: "Ref.DoctorName allowed" },
 
       ],
+         policyNumber: [
+                { name: "required", Message: "Policy name is required" }
+            ],
+             policyLimit: [
+                { name: "required", Message: "Policy limit is required" }
+            ],
       CompanyId: [
         { name: "pattern", Message: "Company Only numbers allowed" },
 

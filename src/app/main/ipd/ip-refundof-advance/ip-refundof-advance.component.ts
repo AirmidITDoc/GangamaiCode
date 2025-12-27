@@ -15,6 +15,7 @@ import { ToastrService } from 'ngx-toastr';
 import { AdvanceDataStored } from '../advance';
 import { IPSearchListService } from '../ip-search-list/ip-search-list.service';
 import { HospitalConfigService } from 'app/core/services/hospital-config.service';
+import { ConfigService } from 'app/core/services/config.service';
 
 @Component({
   selector: 'app-ip-refundof-advance',
@@ -43,7 +44,7 @@ export class IPRefundofAdvanceComponent implements OnInit {
   AdvanceId: any;
   UsedAmount: number = 0;
   chargeList: any = [];
-
+currency:any='';
   autocompleteModeCashcounter: string = "CashCounter";
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -63,7 +64,8 @@ export class IPRefundofAdvanceComponent implements OnInit {
     public _WhatsAppEmailService: WhatsAppEmailService,
     public _FormvalidationserviceService: FormvalidationserviceService,
     private formBuilder: UntypedFormBuilder,
-    private hospitalConfigservice:HospitalConfigService
+    private hospitalConfigservice:HospitalConfigService,
+    public _ConfigService:ConfigService
   ) { }
 
   ngOnInit(): void {
@@ -73,7 +75,10 @@ export class IPRefundofAdvanceComponent implements OnInit {
       this.registerObj = this.data
       console.log(this.registerObj)
       this.getRefundofAdvanceListRegIdwise();
-    } 
+    }
+     //this is for curreny symbol
+    const [CurrencyId, CurrencyValue] = this._ConfigService.configParams.CurrencyValue.split(":");
+    this.currency = CurrencyValue 
   } 
   createRefAdvForm() {
     return this.formBuilder.group({

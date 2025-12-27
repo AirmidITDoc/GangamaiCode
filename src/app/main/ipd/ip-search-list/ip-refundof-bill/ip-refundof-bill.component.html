@@ -159,7 +159,7 @@
                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-140">Price
                             </mat-header-cell>
                             <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-140">
-                                <span> {{element.price}}</span>
+                                <span> {{element.price | currency: currency:'symbol'}}</span>
                             </mat-cell>
                         </ng-container>
     
@@ -167,7 +167,7 @@
                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-150">
                                 TotalAmt </mat-header-cell>
                             <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-150">
-                                <span> {{element.totalAmt | currency:'INR'}}</span>
+                                <span> {{element.totalAmt | currency: currency:'symbol'}}</span>
                             </mat-cell>
                         </ng-container>
     
@@ -175,7 +175,7 @@
                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-150">
                                 NetAmount </mat-header-cell>
                             <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-150">
-                                <span> {{element.netAmount | currency:'INR'}}</span>
+                                <span> {{element.netAmount | currency: currency:'symbol'}}</span>
                             </mat-cell>
                         </ng-container>
     
@@ -203,7 +203,7 @@
                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
                                 BalanceAmount </mat-header-cell>
                             <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                <span> {{element.balanceAmount | currency:'INR'}} </span>
+                                <span> {{element.balanceAmount | currency: currency:'symbol'}} </span>
                             </mat-cell>
                         </ng-container>
     
@@ -211,7 +211,7 @@
                             <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
                                 PreviousRefundAmt </mat-header-cell>
                             <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                <span> {{element.previousRefundAmt | currency:'INR'}} </span>
+                                <span> {{element.previousRefundAmt | currency: currency:'symbol'}} </span>
                             </mat-cell>
                         </ng-container>
     
