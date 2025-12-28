@@ -419,7 +419,7 @@ export class ParameterFormMasterComponent implements OnInit {
 
         // Reset form fields
         this.descForm.get("paraId").reset();
-        this.descForm.get("defaultValue").reset();
+        //this.descForm.get("defaultValue").reset();
     }
 
 

@@ -990,7 +990,22 @@
                       <mat-checkbox formControlName="GenerateBill" (checked)="(true)">Generate Bill</mat-checkbox>
                       <mat-checkbox *ngIf="IpbillFooterform.get('GenerateBill')?.value == true"
                         formControlName="CreditBill" (checked)="(true)">Credit Bill</mat-checkbox>
+                        <mat-checkbox formControlName="MPesa" (checked)="(true)">MPesa</mat-checkbox>
                     </div>
+
+                      <div fxFlex="10%" fxFlex.xs="100%" fxFlex.sm="100%"
+                        *ngIf="IpbillFooterform.get('GenerateBill')?.value == true && IpbillFooterform.get('MPesa')?.value === true">
+                        <airmid-textbox label="PMesa Mobile" formControlName="mpesaMobile" [formGroup]="IpbillFooterform" maxlength="10"
+                          min="10">
+                        </airmid-textbox>
+                      </div>
+                      
+                      <div fxFlex="10%" fxFlex.xs="100%" fxFlex.sm="100%"
+                        *ngIf="IpbillFooterform.get('GenerateBill')?.value == true && IpbillFooterform.get('MPesa')?.value === true">
+                        <button mat-icon-button (click)="getMpesaTransactionlist()" matTooltip="Mpesa Transaction History">
+                          <mat-icon>remove_red_eye</mat-icon>
+                        </button> 
+                      </div>
 
                     <div class="action-content-right modal-footer" fxLayout="row" fxLayoutAlign="end center"
                       class="gap-24">
@@ -1017,3 +1032,150 @@
     </div>
   </div>
 </div>
+
+
+
+<!-- Waiting Screen -->
+<div class="waiting-overlay" *ngIf="isWaiting">
+    <div class="waiting-box">
+        <div class="spinner"></div>
+
+        <!-- Timer -->
+        <div class="timer-box" [ngClass]="{ 'warning': countdown <= 60 }">
+            <span class="timer-text">
+                ⏳ {{ countdown * 1000 | date:'mm:ss':'UTC' }}
+            </span>
+            <span class="timer-label">Remaining</span>
+        </div>
+
+        <!-- Title -->
+        <h3 class="waiting-title">Waiting for customer approval...</h3>
+
+        <!-- Message -->
+        <pre class="message-box">{{ statusMessage }}</pre>
+
+        <!-- <button class="btn btn-outline-secondary" (click)="manualRefresh()">
+            Refresh Status
+        </button> -->
+    </div>
+</div>
+
+
+
+<!-- Mpesa Transaction list -->
+<ng-template #MpesatranscationlistTable>
+    <div fxLayout="column" style="height: 60vh; width: 100%;">
+        <mat-toolbar class="accent" style="width: 100%;height: 40px;justify-content: space-between;">
+            <div fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="logo-icon mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
+                    style="color: white;">account_box
+                </mat-icon>
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"> Mpesa Transaction list</span>
+            </div>
+            <div class="close-icon">
+                <button mat-icon-button [mat-dialog-close]="true" aria-label="Close dialog" matTooltip="Close">
+                    <mat-icon>close</mat-icon>
+                </button>
+            </div>
+        </mat-toolbar>
+
+        <div class="mpesa-table1 p-12" fxFlex style="display: flex; flex-direction: column;">
+            <div class="table-body" fxFlex style="overflow: auto;">
+                <div class="airmid-table" fxFlex style="min-width: 600px;">
+                    <mat-table #table matSort [dataSource]="dsMpesaTransactionlist" [@animateStagger]="{ value: '50' }"
+                        style="width: 100%;">
+                        <ng-container matColumnDef="PayStatus">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-100">Pay
+                                Status</mat-header-cell>
+                            <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100">
+                                <mat-icon *ngIf="contact.resultCode == 0" matTooltip="Verified"
+                                    style="color: green;">check_circle</mat-icon>
+                                <mat-icon *ngIf="contact.resultCode != 0" matTooltip="Pending"
+                                    style="color: rgb(128, 0, 30);">hourglass_empty</mat-icon>
+                            </mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="transactionDate">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-170">Transaction
+                                Date</mat-header-cell>
+                            <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-170">
+                                <span>{{ contact.transactionDate | date:'dd/MM/yyyy'}} - {{ contact.transactionDate |
+                                    date:'hh:mm a'}}</span>
+                            </mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="phoneNumber">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-120">Mobile
+                                No.</mat-header-cell>
+                            <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-120">
+                                <span>{{ contact.phoneNumber }}</span>
+                            </mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="mpesaReceiptNumber">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-160">Receipt
+                                no.</mat-header-cell>
+                            <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-160">
+                                <span class="ellipsis-text" [matTooltip]="contact.mpesaReceiptNumber">{{
+                                    contact.mpesaReceiptNumber }}</span>
+                            </mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="amount">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-130">Paid
+                                Amt</mat-header-cell>
+                            <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-130">
+                                <span>{{ contact.amount | currency: currency:'symbol' }}</span>
+                            </mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="ResponseDate">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-170">Response
+                                Date</mat-header-cell>
+                            <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-170">
+                                <span>{{ contact.responseOn | date:'dd/MM/yyyy'}} - {{ contact.responseOn | date:'hh:mm
+                                    a'}}</span>
+                            </mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="Description">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
+                                class="w-250">Description</mat-header-cell>
+                            <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-250">
+                                <span class="ellipsis-text" [matTooltip]="contact.resultDesc">{{ contact.resultDesc
+                                    }}</span>
+                            </mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="Action" stickyEnd>
+                            <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
+                                class="w-90">Action</mat-header-cell>
+                            <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-90">
+                                <button mat-icon-button matTooltip="Make Payment" (click)="OnmPesaSave(contact)">
+                                    <mat-icon color="warn">add</mat-icon>
+                                </button>
+                            </mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="loading">
+                            <mat-footer-cell *matFooterCellDef colspan="6">loading data...</mat-footer-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="noData">
+                            <mat-footer-cell *matFooterCellDef colspan="6">no data found...</mat-footer-cell>
+                        </ng-container>
+
+                        <mat-header-row class="accent" *matHeaderRowDef="mPesaColumns; sticky: true"></mat-header-row>
+                        <mat-row *matRowDef="let contact; columns: mPesaColumns"
+                            [@animate]="{ value: '*', params: { y: '100%' } }"></mat-row>
+                        <mat-footer-row *matFooterRowDef="['loading']"
+                            [ngClass]="{ hide: dsMpesaTransactionlist != null }"></mat-footer-row>
+                        <mat-footer-row *matFooterRowDef="['noData']"
+                            [ngClass]="{ hide: !(dsMpesaTransactionlist != null && dsMpesaTransactionlist.data.length == 0) }"></mat-footer-row>
+                    </mat-table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</ng-template>

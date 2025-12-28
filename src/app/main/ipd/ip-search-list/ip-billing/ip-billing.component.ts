@@ -18,7 +18,7 @@ import { PrintPreviewService } from 'app/main/shared/services/print-preview.serv
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 import { WhatsAppEmailService } from 'app/main/shared/services/whats-app-email.service';
 import { ToastrService } from 'ngx-toastr';
-import { Subject, Subscription } from 'rxjs';
+import { interval, Subject, Subscription, switchMap } from 'rxjs';
 import Swal from 'sweetalert2';
 import { AdvanceDataStored } from '../../advance';
 import { InterimBillComponent } from '../interim-bill/interim-bill.component';
@@ -79,7 +79,7 @@ export class IPBillingComponent implements OnInit {
         this.gridConfig2.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate5;
     }
     allColumns = [
-        { heading: "Date", key: "bDate", sort: true, align: 'left', emptySign: 'NA', width: 110},
+        { heading: "Date", key: "bDate", sort: true, align: 'left', emptySign: 'NA', width: 110 },
         { heading: "billNo", key: "billNo", sort: true, align: 'left', emptySign: 'NA', width: 110 },
         { heading: "Total Amt", key: "totalAmt", sort: true, align: 'left', emptySign: 'NA', width: 130, type: gridColumnTypes.amount },
         { heading: "Disc Amt", key: "concessionAmt", sort: true, align: 'left', emptySign: 'NA', width: 130, type: gridColumnTypes.amount },
@@ -95,15 +95,15 @@ export class IPBillingComponent implements OnInit {
         }
     ]
     AdvanceColumns = [
-         { heading: "Date", key: "date", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-         { heading: "Advance No", key: "advanceNo", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Date", key: "date", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+        { heading: "Advance No", key: "advanceNo", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "Advance Amt", key: "advanceAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
         { heading: "UsedAmt", key: "usedAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
         { heading: "Balance Amt", key: "balanceAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
         { heading: "Refund Amt", key: "refundAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
         { heading: "User Name", key: "userName", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "Payment Date", key: "paymentDate", sort: true, align: 'left', emptySign: 'NA', width:160 },
-         { heading: "Cash Pay", key: "cashPayAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+        { heading: "Payment Date", key: "paymentDate", sort: true, align: 'left', emptySign: 'NA', width: 160 },
+        { heading: "Cash Pay", key: "cashPayAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
         { heading: "Cheque Pay", key: "chequePayAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
         { heading: "Card Pay", key: "cardPayAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
         // { heading: "NEFT Pay", key: "neftPayAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
@@ -219,11 +219,11 @@ export class IPBillingComponent implements OnInit {
         private commonService: PrintserviceService,
         @Inject(MAT_DIALOG_DATA) public data: any,
         private route: ActivatedRoute,
-        private hospitalconfigservice:HospitalConfigService,
+        private hospitalconfigservice: HospitalConfigService,
         private _FormvalidationserviceService: FormvalidationserviceService,
         private formBuilder: UntypedFormBuilder) {
     }
-    currency:any=''
+    currency: any = ''
     ngOnInit(): void {
         this.createserviceForm();
         this.createBillForm();
@@ -235,8 +235,8 @@ export class IPBillingComponent implements OnInit {
             this.selectedAdvanceObj = this.data.Obj;
             //console.log(this.selectedAdvanceObj)
             this.opD_IPD_Id = this.selectedAdvanceObj.admissionId || "0"
-           // this.ApiURL = "VisitDetail/GetServiceListwithTraiff?TariffId=" + this.selectedAdvanceObj.tariffId + "&ClassId=" + this.selectedAdvanceObj.classId + "&ServiceName="
-           this.ApiURL = "VisitDetail/search-GetServiceListwithTraiff?TariffId=" + this.selectedAdvanceObj.tariffId + "&ClassId=" + this.selectedAdvanceObj.classId + "&SrvcName="
+            // this.ApiURL = "VisitDetail/GetServiceListwithTraiff?TariffId=" + this.selectedAdvanceObj.tariffId + "&ClassId=" + this.selectedAdvanceObj.classId + "&ServiceName="
+            this.ApiURL = "VisitDetail/search-GetServiceListwithTraiff?TariffId=" + this.selectedAdvanceObj.tariffId + "&ClassId=" + this.selectedAdvanceObj.classId + "&SrvcName="
             this.getdata(this.selectedAdvanceObj.admissionId)
             this.getadvancelist(this.selectedAdvanceObj.admissionId)
             this.Serviceform.get("classId").setValue(this.selectedAdvanceObj.classId)
@@ -288,9 +288,9 @@ export class IPBillingComponent implements OnInit {
             this.isAdminDisabled = false;
             this.IpbillFooterform.get('Admincheck').setValue(false)
         }
-//this is for curreny symbol
-    const [CurrencyId, CurrencyValue] = this._ConfigService.configParams.CurrencyValue.split(":");
-    this.currency = CurrencyValue 
+        //this is for curreny symbol
+        const [CurrencyId, CurrencyValue] = this._ConfigService.configParams.CurrencyValue.split(":");
+        this.currency = CurrencyValue
     }
     private setupFormListener(): void {
         this.handleChange('price', () => this.calculateTotalCharge());
@@ -483,12 +483,14 @@ export class IPBillingComponent implements OnInit {
             Remark: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
             Admincheck: [''],
             GenerateBill: [false],
-            CreditBill: [false,],
+            CreditBill: [false],
+            MPesa: [false],
             ChargeDate: [new Date()],
             BillType: ['1', this._FormvalidationserviceService.onlyNumberValidator()],
             EditDoctor: [''],
             TotalAmt: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-            GovrnApprovAmt: [0, this._FormvalidationserviceService.onlyNumberValidator()]
+            GovrnApprovAmt: [0, this._FormvalidationserviceService.onlyNumberValidator()],
+            mpesaMobile: ['', [Validators.minLength(10), Validators.maxLength(10)]],
         });
     }
     //IP Draft Bill form
@@ -568,7 +570,7 @@ export class IPBillingComponent implements OnInit {
                 isSettled: false,
                 isPrinted: true,
                 isFree: true,
-                govtApprovedAmt:[0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]], 
+                govtApprovedAmt: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
                 companyId: [this.selectedAdvanceObj?.companyId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
                 tariffId: [this.selectedAdvanceObj?.tariffId, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
                 unitId: [this.accountService.currentUserValue.user.unitId, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -643,8 +645,8 @@ export class IPBillingComponent implements OnInit {
             addChargessupdate: this.formBuilder.group({
                 chargesID: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             }),
-             // ✅ Fixed: should be FormArray
-             tPayments: this.formBuilder.array([])
+            // ✅ Fixed: should be FormArray
+            tPayments: this.formBuilder.array([])
         });
     }
     //IP BIll Det
@@ -664,10 +666,10 @@ export class IPBillingComponent implements OnInit {
     }
     CreateModePaymentform(item: any): FormGroup {
         return this.formBuilder.group({
-            paymentId: [item?.paymentId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            unitId: [item?.unitId ?? this.accountService.currentUserValue.user.unitId],
-            billNo: [item?.billNo ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            opdipdtype: [item?.opdipdtype ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            paymentId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            unitId: [this.accountService.currentUserValue.user.unitId],
+            billNo: [ 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            opdipdtype: [ 1, [this._FormvalidationserviceService.onlyNumberValidator()]],
             paymentDate: [item?.paymentDate ?? ''],
             paymentTime: [item?.paymentTime ?? ''],
             payAmount: [item?.payAmount ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
@@ -685,10 +687,10 @@ export class IPBillingComponent implements OnInit {
             cashCounterId: [item?.cashCounterId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             transactionType: [item?.transactionType ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             isSelfOrcompany: [item?.isSelfOrcompany ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            tranMode: [item?.tranMode ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
-            createdBy: [item?.createdBy ?? this.accountService.currentUserValue.userId],
-            transactionLabel: [item?.transactionLabel ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
-        });
+            tranMode: ['HOSP', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+            createdBy: [this.accountService.currentUserValue.userId],
+            transactionLabel: ['IP_FINAL_BILL', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+        }); 
     }
     // Getters 
     get BillDetailsArray(): FormArray {
@@ -702,7 +704,7 @@ export class IPBillingComponent implements OnInit {
     }
     get ModeOfPaymentsArray(): FormArray {
         return this.IPBillMyForm.get('tPayments') as FormArray;
-    } 
+    }
     //service selected data
     getselectObj(obj) {
         this.Serviceform.patchValue({
@@ -811,7 +813,7 @@ export class IPBillingComponent implements OnInit {
         this.IpbillFooterform.markAllAsTouched();
     }
     onClearServiceAddList() {
-       // this.Serviceform.get('serviceId').setValue("a");
+        // this.Serviceform.get('serviceId').setValue("a");
         this.Serviceform.get('serviceName').reset('');
         this.Serviceform.get('price').reset();
         this.Serviceform.get('qty').reset('1');
@@ -1257,6 +1259,9 @@ export class IPBillingComponent implements OnInit {
                     this._matDialog.closeAll();
                 });
             }
+            else if (this.IpbillFooterform.get('MPesa')?.value) {
+                this.openWaitingScreen();
+            }
             else {
                 let PatientHeaderObj = {};
                 PatientHeaderObj['Date'] = this.dateTimeObj.date;
@@ -1270,9 +1275,9 @@ export class IPBillingComponent implements OnInit {
                 PatientHeaderObj['DoctorName'] = this.selectedAdvanceObj.doctorname || '';
                 PatientHeaderObj['CompanyName'] = this.selectedAdvanceObj.companyName || '';
                 PatientHeaderObj['DepartmentName'] = this.selectedAdvanceObj.departmentName || '';
-                PatientHeaderObj['Age'] = this.selectedAdvanceObj.ageYear || ''; 
-                PatientHeaderObj['TransactionLabel'] = 'IP_FINAL_BILL', 
-                PatientHeaderObj['CashCounterId'] =this.IpbillFooterform.get('ConcessionId')?.value || 0
+                PatientHeaderObj['Age'] = this.selectedAdvanceObj.ageYear || '';
+                PatientHeaderObj['TransactionLabel'] = 'IP_FINAL_BILL',
+                    PatientHeaderObj['CashCounterId'] = this.IpbillFooterform.get('ConcessionId')?.value || 0
                 //==============-======--==============Payment====================== 
                 this.advanceDataStored.storage = new AdvanceDetailObj(PatientHeaderObj);
                 const dialogRef = this._matDialog.open(OpPaymentVimalComponent,
@@ -1320,8 +1325,8 @@ export class IPBillingComponent implements OnInit {
                         this.IPBillMyForm.get('payment')?.setValue(result.submitDataPay.ipPaymentInsert)
                         this.ModeOfPaymentsArray.clear();
                         result.submitDataPay.ipModePaymentInsert.forEach(item => {
-                         this.ModeOfPaymentsArray.push(this.CreateModePaymentform(item));
-                         }); 
+                            this.ModeOfPaymentsArray.push(this.CreateModePaymentform(item));
+                        });
 
                         //this.IPBillMyForm.get('payment').setValue()
                         console.log("form values", this.IPBillMyForm.value)
@@ -1358,6 +1363,168 @@ export class IPBillingComponent implements OnInit {
             }
         }
     }
+
+    ///----------------------------------------Mpesa save code 
+    isWaiting = false;
+    mpesaResponse: any;
+    statusMessage: any;
+    pollingSub?: Subscription;
+    mPesa_ReceiptNo: any = '0';
+     public dsMpesaTransactionlist = new MatTableDataSource<ChargesList>();
+    openWaitingScreen() {
+        debugger
+        this._IpSearchListService.postpayment(this.IpbillFooterform.controls["FinalAmount"]?.value, this.IpbillFooterform.get('mpesaMobile')?.value,
+            this.selectedAdvanceObj?.admissionId || 0).subscribe(response => {
+                this.mpesaResponse = response;
+                console.log(this.mpesaResponse)
+                // Build message AFTER response arrives
+                this.statusMessage = '' + response.responseDescription + '\n' +
+                    'CheckoutRequestId  : ' + response.checkoutRequestID + '\n' +
+                    'MerchantRequestId  : ' + response.merchantRequestID;
+                this.isWaiting = true;
+                this.startPolling();
+            });
+    }
+
+    manualRefresh() {
+        this.checkStatus();
+    }
+    startPolling() {
+        this.pollingSub = interval(10000)
+            .pipe(switchMap(() => this._IpSearchListService.checkStatus(this.mpesaResponse)))
+            .subscribe((status: any) => this.handleStatus(status));
+    }
+    stopPolling() {
+        if (this.pollingSub) {
+            this.pollingSub.unsubscribe();
+            this.pollingSub = null;
+        }
+    }
+    checkStatus() {
+        if (this.mpesaResponse) {
+            this._IpSearchListService.checkStatus(this.mpesaResponse)
+                .subscribe((status: any) => this.handleStatus(status));
+        }
+    }
+    handleStatus(status: any) {
+        console.log(status)
+        debugger
+        const isSuccess = status?.resultCode == 0 || status?.resultCode == "0" || status?.resultCode == "000000";
+        const receipt = status?.mpesaReceiptNumber;
+        if (isSuccess && receipt) {
+            this.statusMessage =
+                'Payment successful.' + this.mpesaResponse.responseDescription + '\n' +
+                'CheckoutRequestId  : ' + this.mpesaResponse.checkoutRequestID + '\n' +
+                'MerchantRequestId  : ' + this.mpesaResponse.merchantRequestID + '\n' +
+                'Receipt No=' + receipt;
+            this.mPesa_ReceiptNo = receipt;
+            this.stopPolling();
+            this.isWaiting = false;
+            this.SavemPesaBill();
+        }
+        else {
+            if (status?.resultDesc) {
+                this.statusMessage = status?.resultDesc;
+                this.stopPolling();
+                this.isWaiting = false;
+            }
+        }
+
+    }
+    // Mpesa Save  
+    SavemPesaBill() {
+        debugger
+        const [ThermalPrint, ThermalPrintValue] = this._ConfigService.configParams.ThermalPrint.split(":");
+        const mPesaMerchant_CheckoutRequest_Id = this.mpesaResponse.checkoutRequestID + "|" + this.mpesaResponse.merchantRequestID;
+
+        this.IPBillMyForm.get('bill.paidAmt')?.setValue(this.IpbillFooterform.get('FinalAmount')?.value)
+        this.IPBillMyForm.get('payment.paymentDate')?.setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'))
+        this.IPBillMyForm.get('payment.paymentTime')?.setValue(this.dateTimeObj.time)
+        this.IPBillMyForm.get('payment.payTmamount').setValue(Number(this.IpbillFooterform.get('FinalAmount')?.value));
+        this.IPBillMyForm.get('payment.payTmdate').setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'));
+        this.IPBillMyForm.get('payment.payTmtranNo').setValue(this.mPesa_ReceiptNo || 0);
+        this.IPBillMyForm.get('payment.remark').setValue(mPesaMerchant_CheckoutRequest_Id || 0);
+        this.IPBillMyForm.get('payment.companyId')?.setValue(this.selectedAdvanceObj?.companyId || 0)
+
+        this.BillDetailsArray.clear();
+        this.dataSource.data.forEach(item => {
+            this.BillDetailsArray.push(this.createBillDetails(item as ChargesList));
+        });
+
+        let ModePaymentObj = [];
+        ModePaymentObj.push({
+            paymentDate: this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'),
+            paymentTime: this.dateTimeObj.time,
+            payAmount: this.IpbillFooterform.get('FinalAmount')?.value || 0,
+            tranNo: this.mPesa_ReceiptNo || 0,
+            bankName: "",
+            validationDate: this.datePipe.transform(this.currentDate, 'yyyy-MM-dd'),
+            advanceUsedAmount: 0,
+            comments: "",
+            payMode: "MPESA",
+            onlineTranNo: this.mPesa_ReceiptNo || 0,
+            onlineTranResponse: mPesaMerchant_CheckoutRequest_Id || 0,
+            companyId: this.selectedAdvanceObj?.CompanyId ?? 0,
+            advanceId: 0,
+            refundId: 0,
+            cashCounterId: this.IpbillFooterform.get('CashCounterID')?.value || 0,
+            transactionType: 0,
+            isSelfOrcompany: this.selectedAdvanceObj?.CompanyId ? 1 : 0,
+        });
+        this.ModeOfPaymentsArray.clear();
+        ModePaymentObj.forEach(item => {
+            this.ModeOfPaymentsArray.push(this.CreateModePaymentform(item as ChargesList));
+        });
+        console.log("form values", this.IPBillMyForm.value)
+        this._IpSearchListService.InsertIPBilling(this.IPBillMyForm.value).subscribe(response => {
+            this._matDialog.closeAll();
+            this.viewgetBillReportPdf(response);
+            // this.getWhatsappshareIPFinalBill(response, this.vMobileNo)
+        });
+    }
+      @ViewChild('MpesatranscationlistTable') MpesatranscationlistTable!: TemplateRef<any>;
+      getMpesaTransactionlist(): void {
+        if (!this.dataSource.data.length) {
+          this.toastr.warning('Charges are not available in list, Please add Charges', 'Warning !', {
+            toastClass: 'tostr-tost custom-toast-warning',
+          });
+          return;
+        }
+         const formValue = this.IpbillFooterform.value
+        if (formValue.totalconcessionAmt > 0 || formValue.totaldiscPer > 0) {
+            if (formValue.ConcessionId == '' || formValue.ConcessionId == null || formValue.ConcessionId == '0') {
+                this.toastr.warning('Please select ConcessionReason.', 'Warning !', {
+                    toastClass: 'tostr-tost custom-toast-warning',
+                });
+                return;
+            }
+        }
+        if (!formValue?.mpesaMobile) {
+          this.toastr.warning('Enter Mobile number', 'Warning !', {
+            toastClass: 'tostr-tost custom-toast-warning',
+          });
+          return;
+        }
+        this._matDialog.open(this.MpesatranscationlistTable, {
+          width: '65vw',
+          maxHeight: '60vh'
+        })
+        //424929  this.vOPIPId
+        let Data = {
+          "first": 0,
+          "rows": 100,
+          "sortField": "Id",
+          "sortOrder": 0,
+          "filters": [{ "fieldName": "Opdipdid", "fieldValue": String(424929), "opType": "Equals" },
+          { "fieldName": "PhoneNumber", "fieldValue": String(formValue?.mpesaMobile || 0), "opType": "Equals" }],
+          "exportType": "JSON",
+          "columns": [{ "data": "string", "name": "string" }]
+        }
+        this._IpSearchListService.getmPesaTranscationlist(Data).subscribe((response) => {
+          this.dsMpesaTransactionlist.data = response.data;
+          console.log(this.dsMpesaTransactionlist.data)
+        });
+      }
     //Save with credit
     onSaveDraft() {
         this.draftSaveform.get('tDrbill.totalAmt')?.setValue(this.IpbillFooterform.get('TotalAmt')?.value)
@@ -1381,7 +1548,7 @@ export class IPBillingComponent implements OnInit {
                 debugger
                 const [IpDraftPrint_A4, IpDraftPrintValue] = this._ConfigService.configParams.IPDraftPrintA4toA5.split(":");
                 if (this.IpbillFooterform.get("BillType").value == 1) {
-                  debugger
+                    debugger
                     if (IpDraftPrint_A4 != 1) {
                         this.viewgetDraftBillReportPdf(response.drbno);
                     } else {
@@ -1440,7 +1607,7 @@ export class IPBillingComponent implements OnInit {
     }
     PacakgeList: any = [];
     ////Pacakge Section
-    getRtrvpackagedetList() { 
+    getRtrvpackagedetList() {
         var vdata = {
             "first": 0,
             "rows": 10,
@@ -1453,12 +1620,12 @@ export class IPBillingComponent implements OnInit {
         this._IpSearchListService.getRtevIPPackageDetList(vdata).subscribe((response) => {
             debugger
             this.PackageDatasource.data = response.data as ChargesList[];
-            console.log(this.PackageDatasource.data) 
-           this.PackageDatasource.data.forEach(element => {
-            const fitleredList = this.PacakgeList.filter(item=> item.serviceId != element.packageServiceId)
-            this.PacakgeList = fitleredList
-           }) 
-            this.PackageDatasource.data.forEach(element => { 
+            console.log(this.PackageDatasource.data)
+            this.PackageDatasource.data.forEach(element => {
+                const fitleredList = this.PacakgeList.filter(item => item.serviceId != element.packageServiceId)
+                this.PacakgeList = fitleredList
+            })
+            this.PackageDatasource.data.forEach(element => {
                 this.PacakgeList.push(
                     {
                         serviceId: element.packageServiceId,
@@ -1654,9 +1821,9 @@ export class IPBillingComponent implements OnInit {
             this.commonService.Onprint("BillNo", element?.billNo, "IPDInterimBill");
         } else {
             this.commonService.Onprint("BillNo", element?.billNo, "IPDInterimBillA5");
-        } 
+        }
     }
-    
+
     //For draft print   
     viewgetDraftBillReportPdf(Id) {
         this.commonService.Onprint("AdmissionID", Id, "IpDraftBillClassWise");
@@ -1815,12 +1982,12 @@ export class IPBillingComponent implements OnInit {
         if (element.price > 0 && element.qty > 0) {
             element.totalAmt = element.qty * element.price || 0;
             element.TotalAmt = element.totalAmt; // Sync uppercase property
-            
+
             // Use concessionPercentage or ConcessionPercentage
             const discountPercent = element.concessionPercentage || element.ConcessionPercentage || 0;
             element.DiscAmt = (discountPercent * element.totalAmt) / 100 || 0;
             element.concessionAmount = element.DiscAmt; // Sync lowercase property
-            
+
             element.netAmount = element.totalAmt - element.DiscAmt;
             element.NetAmount = element.netAmount; // Sync uppercase property
         }
@@ -1976,13 +2143,13 @@ export class IPBillingComponent implements OnInit {
 
     // New methods for inline table editing
     classList: any[] = [];
-    
+
     // Compare function for mat-select to handle string/number comparison
     compareClassValues(val1: any, val2: any): boolean {
         // Convert both to string for comparison to handle type mismatches
         return String(val1) === String(val2);
     }
-    
+
     addNewTableRow() {
         // Create a new empty row matching ChargesList structure
         const newRow: any = {
@@ -2029,7 +2196,7 @@ export class IPBillingComponent implements OnInit {
             CreditedtoDoctor: false,
             EditDoctor: null
         };
-        
+
         // Add to beginning of array
         const data = this.dataSource.data;
         data.unshift(newRow);
@@ -2169,12 +2336,12 @@ export class IPBillingComponent implements OnInit {
     enableTableRowEdit(contact: any) {
         // Store original data BEFORE enabling edit mode
         contact.originalData = JSON.parse(JSON.stringify(contact)); // Deep copy
-        
+
         // Ensure classId is set from ClassId - handle undefined/null vs 0
         if ((contact.classId === undefined || contact.classId === null) && contact.ClassId !== undefined) {
             contact.classId = contact.ClassId;
         }
-        
+
         // Ensure all lowercase properties are populated from uppercase
         if ((contact.price === undefined || contact.price === null) && contact.Price !== undefined) {
             contact.price = contact.Price;
@@ -2200,7 +2367,7 @@ export class IPBillingComponent implements OnInit {
         if ((contact.className === undefined || contact.className === null || contact.className === '') && contact.ClassName) {
             contact.className = contact.ClassName;
         }
-        
+
         // Convert date if needed for datepicker
         if (contact.chargesDate && typeof contact.chargesDate === 'string') {
             // Parse the date string if it's in DD/MM/YYYY format
@@ -2213,10 +2380,10 @@ export class IPBillingComponent implements OnInit {
             // If ChargesDate exists but chargesDate doesn't
             contact.chargesDate = contact.ChargesDate;
         }
-        
+
         // Enable edit mode
         contact.isEditMode = true;
-        
+
         console.log('Edit mode enabled. classId:', contact.classId, 'ClassId:', contact.ClassId);
         console.log('classList:', this.classList);
         console.log('Full contact:', contact);
@@ -2233,16 +2400,16 @@ export class IPBillingComponent implements OnInit {
         if (contact.classId) contact.ClassId = contact.classId;
         if (contact.className) contact.ClassName = contact.className;
         if (contact.serviceName) contact.ServiceName = contact.serviceName;
-        
+
         // Mark as updated and exit edit mode
         contact.isEditMode = false;
         contact.isUpdated = true;
-        
+
         // Remove original data
         delete contact.originalData;
-        
+
         console.log('Saving edited row:', contact);
-        
+
         // Call existing save method
         this.OnSaveEditedValue(contact);
     }
@@ -2262,7 +2429,7 @@ export class IPBillingComponent implements OnInit {
             // If no original data, just exit edit mode
             contact.isEditMode = false;
         }
-        
+
         console.log('Edit cancelled');
     }
 }
@@ -2302,7 +2469,7 @@ export class Bill {
     CardPayAmount: any;
     AdvanceUsedAmount: any;
     PatientName: any;
-BillDateTime: any;
+    BillDateTime: any;
 
     billTime: any;
     pbillNo: any;
@@ -2361,7 +2528,7 @@ BillDateTime: any;
         this.netPayableAmt = InsertBillUpdateBillNoObj.netPayableAmt || '';
         this.balanceAmt = InsertBillUpdateBillNoObj.balanceAmt || ''
 
-        this.BillDateTime= InsertBillUpdateBillNoObj.BillDateTime || ''
+        this.BillDateTime = InsertBillUpdateBillNoObj.BillDateTime || ''
     }
 
 }

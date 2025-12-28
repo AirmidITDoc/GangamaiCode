@@ -152,8 +152,8 @@ export class OpeningBalanceComponent {
     const dialogRef = this._matDialog.open(NewOpeningBalanceComponent,
       {
         maxWidth: "100%",
-        height: '85%',
-        width: '95%',
+        height: '95%',
+        width: '96%',
         data: row
       });
     dialogRef.afterClosed().subscribe(result => {
@@ -216,7 +216,7 @@ export class OpeningBalanceComponent {
       {
         maxWidth: "100%",
         height: '95%',
-        width: '95%',
+        width: '96%',
         data: {
           Obj: contact,
           chkNewGRN: this.chkNewGRN
