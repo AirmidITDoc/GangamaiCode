@@ -32,7 +32,7 @@ export class ParameterFormMasterComponent implements OnInit {
     isPrintDisSummaryChecked: boolean = false;
     autocompleteModeUnitId: string = "Unit";
 
-    ageType: string[] = ["Days", "Months", "Years"];
+    ageType: string[] = ["DAY", "MONTH", "YEAR"];
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     displayedColumns: string[] = [
         "GenderName",

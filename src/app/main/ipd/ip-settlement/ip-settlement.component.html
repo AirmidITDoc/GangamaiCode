@@ -222,7 +222,7 @@
 
                                             <ng-container matColumnDef="BillDate">
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                                    BillDate</mat-header-cell>
+                                                    Bill Date</mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                                     {{contact.billDate}}
                                                 </mat-cell>
@@ -230,7 +230,7 @@
 
                                             <ng-container matColumnDef="PBillNo">
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                                    PBillNo</mat-header-cell>
+                                                    PBill No</mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                                     {{contact.pBillNo}}
                                                 </mat-cell>
@@ -247,7 +247,7 @@
                                             <ng-container matColumnDef="patientName">
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
                                                     class="w-250">
-                                                    PatientName</mat-header-cell>
+                                                    Patient Name</mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-250">
                                                     {{contact.patientName}}
                                                 </mat-cell>
@@ -255,7 +255,7 @@
 
                                             <ng-container matColumnDef="BillAmount">
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                                    Bill Amount </mat-header-cell>
+                                                    Bill Amt </mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                                     {{contact.billAmount | currency: currency:'symbol'}}
                                                 </mat-cell>
@@ -269,9 +269,17 @@
                                                 </mat-cell>
                                             </ng-container>
 
+                                             <ng-container matColumnDef="CompanyDiscAmt">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
+                                                    Company DiscAmt</mat-header-cell>
+                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm>
+                                                    {{contact.compDiscAmt | currency: currency:'symbol'}}
+                                                </mat-cell>
+                                            </ng-container>
+
                                             <ng-container matColumnDef="NetAmount">
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                                                    Net Amount</mat-header-cell>
+                                                    Net Amt</mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                                                     {{contact.netAmount | currency: currency:'symbol'}}
                                                 </mat-cell>

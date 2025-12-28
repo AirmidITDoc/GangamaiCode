@@ -71,7 +71,7 @@ export class IPSearchListComponent implements OnInit {
         { heading: "Bill", key: "isBillGenerated", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
         { heading: "IsMLC", key: "isMLC", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 70 },
         { heading: "RegNo", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "PatientName", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 350 },
+        { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 350 },
         { heading: "DOA", key: "admissionTime", sort: true, align: 'left', emptySign: 'NA', type: 8, width: 200 },
         { heading: "IPD No", key: "ipdno", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "Doctor Name", key: "doctorname", sort: true, align: 'left', emptySign: 'NA', width: 250 },

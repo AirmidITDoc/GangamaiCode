@@ -502,7 +502,7 @@
                         </ng-container>
 
                         <ng-container matColumnDef="ChargesDate">
-                          <mat-header-cell *matHeaderCellDef mat-sort-header>ChargesDate</mat-header-cell>
+                          <mat-header-cell *matHeaderCellDef mat-sort-header>Charges Date</mat-header-cell>
                           <mat-cell *matCellDef="let contact">
                             <ng-container *ngIf="contact.isNewRow || contact.isEditMode; else showDate">
                               <mat-form-field appearance="outline" class="compact-field">
@@ -636,7 +636,7 @@
 
                         <ng-container matColumnDef="ClassName">
                           <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="accent"
-                            class="w-200">ClassName</mat-header-cell>
+                            class="w-200">Class Name</mat-header-cell>
                           <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-200">
                             <ng-container *ngIf="contact.isNewRow || contact.isEditMode; else showClass">
                               <mat-form-field appearance="outline" floatLabel="never" class="compact-field w-100-p">
@@ -657,7 +657,7 @@
 
                         <ng-container matColumnDef="ChargesAddedName">
                           <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
-                            class="w-200">ChargesAddedName</mat-header-cell>
+                            class="w-200">ChargesAdded Name</mat-header-cell>
                           <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-200">
                             <span>{{ contact.chargesAddedName }}</span>
                           </mat-cell>
@@ -816,7 +816,7 @@
                         </ng-container>
 
                         <ng-container matColumnDef="DoctorName">
-                          <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>DoctorName
+                          <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Doctor Name
                           </mat-header-cell>
                           <mat-cell *matCellDef="let contact" fxShow.gt-sm mat-Tooltip="{{contact.doctorName}}">
                             <span> {{contact.doctorName || '0'}}</span>
@@ -835,7 +835,7 @@
 
                         <ng-container matColumnDef="NetAmount">
                           <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>
-                            NetAmt
+                            Net Amt
                           </mat-header-cell>
                           <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                             <span> {{contact.NetAmount || '0'}}</span>
