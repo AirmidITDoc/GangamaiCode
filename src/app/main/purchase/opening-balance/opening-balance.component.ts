@@ -118,23 +118,11 @@ export class OpeningBalanceComponent {
 
 
   viewgetReportPdf(element) {
-    let fromDate = this.datePipe.transform(this.mysearchform.get('startdate').value, "yyyy-MM-dd")
-    let toDate = this.datePipe.transform(this.mysearchform.get('enddate').value, "yyyy-MM-dd")
     var Param = {
       "searchFields": [
         {
-          "fieldName": "Storeid",
-          "fieldValue": String(this.accountService.currentUserValue.user.storeId),
-          "opType": "Equals"
-        },
-        {
-          "fieldName": "From_Dt",
-          "fieldValue": fromDate,
-          "opType": "Equals"
-        },
-        {
-          "fieldName": "To_Dt",
-          "fieldValue": toDate,
+          "fieldName": "OpeningHId",
+          "fieldValue": String(element.openingHId),
           "opType": "Equals"
         }
       ],
