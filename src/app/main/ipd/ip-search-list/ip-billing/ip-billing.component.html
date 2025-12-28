@@ -175,9 +175,9 @@
                     [readonly]="true"></airmid-textbox>
                 </div>
 
-                <div fxFlex="100%" fxLayout="row">
+                <!-- [disabled]="!Serviceform.valid" -->
+                <!-- <div fxFlex="100%" fxLayout="row">
                   <div class="mt-2">
-                    <!-- [disabled]="!Serviceform.valid" -->
                     <button type="button" (click)="onSaveAddCharges()" class="btn btn-primary btn-with-icon py-8"
                       [matTooltip]="!Serviceform.valid ? 'Enter all data to enable this button!!' : ''"
                       [matTooltipPosition]="'above'" fxFlex>
@@ -186,7 +186,7 @@
                       </span>
                     </button>
                   </div>
-                </div>
+                </div> -->
 
                 <!-- <div  fxLayout="row" style="padding-top: 15px;">
                 <button class="btn" matTooltip="Add Auto Service" (click)="getChargesList()">
@@ -461,14 +461,14 @@
                 <mat-tab label="Charges List">
                   <div class="airmid-table-container">
                     <!-- Add New Record Button -->
-                    <div class="px-12 py-8" fxLayout="row" fxLayoutAlign="start center">
+                    <!-- <div class="px-12 py-8" fxLayout="row" fxLayoutAlign="start center">
                       <button class="btn btn-primary btn-with-icon" (click)="addNewTableRow()">
                         <span class="btn-icon">
                           <mat-icon>add</mat-icon>
                         </span>
                         <span>Add New Charge</span>
                       </button>
-                    </div>
+                    </div> -->
                     
                     <div class="content-card">
                       <mat-table #table matSort [dataSource]="dataSource" [@animateStagger]="{ value: '50' }"
