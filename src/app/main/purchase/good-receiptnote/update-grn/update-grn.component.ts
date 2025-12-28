@@ -338,7 +338,8 @@ export class UpdateGRNComponent implements OnInit {
                            Swal.fire({
                                icon: 'warning',
                                title: '⚠️ Upcoming Expiry Alert',
-                               html: `<strong>This item will expire within the next <span style="color:#e74c3c;">3 months</span>.</strong>`,
+                               html: `<strong>This item will expire within the next 
+                                                <span style="color:#e74c3c;">3 months</span>.</strong>`,
                                showConfirmButton: true,
                                confirmButtonText: 'OK',
                                confirmButtonColor: '#f39c12',
@@ -347,12 +348,27 @@ export class UpdateGRNComponent implements OnInit {
                                background: '#fff',
                                timer: 4000,
                                timerProgressBar: true,
+
+                               didClose: () => {
+                                   this.userFormGroup.get('ExpDate')?.setValue(this.vlastDay);
+
+                                   setTimeout(() => {
+                                       const qtyElement = document.querySelector(
+                                           `[name='Qty']`
+                                       ) as HTMLElement;
+
+                                       if (qtyElement) {
+                                           qtyElement.focus();
+                                       }
+                                   }, 0);
+                               }
                            });
-                           this.userFormGroup.get('ExpDate').setValue(this.vlastDay)
-                           const QtyElement = document.querySelector(`[name='Qty']`) as HTMLElement;
-                           if (QtyElement) {
-                               QtyElement.focus();
-                           }
+
+                        //    this.userFormGroup.get('ExpDate').setValue(this.vlastDay)
+                        //    const QtyElement = document.querySelector(`[name='Qty']`) as HTMLElement;
+                        //    if (QtyElement) {
+                        //        QtyElement.focus();
+                        //    }
                        }
                    }
                } else {

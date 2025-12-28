@@ -99,7 +99,7 @@ export class IPSettlementComponent implements OnInit {
         { heading: "PBill No", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "Company DiscAmt", key: "compDiscAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
         { heading: "Bill Amt", key: "totalAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
-        { heading: "Consession Amt", key: "concessionAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+        { heading: "Disc Amt", key: "concessionAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
         { heading: "Net Amt", key: "netPayableAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
         { heading: "Paid Amt", key: "paidAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
         { heading: "Balance Amt", key: "balanceAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },

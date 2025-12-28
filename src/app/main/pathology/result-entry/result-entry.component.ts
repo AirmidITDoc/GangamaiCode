@@ -442,10 +442,10 @@ export class ResultEntryComponent implements OnInit {
                     });
 
                     const dialogRef = this._matDialog.open(NewResultEntryComponent,
-                        {
-                            maxWidth: "75vw",
-                            height: '800px',
-                            width: '95%',
+                        {  
+                        maxWidth: "96vw",
+                       height: "96vh",
+                       width: "96%",
                             data: {
                                 RIdData: data,
                                 patientdata: this.reportPrintObj,
@@ -463,8 +463,9 @@ export class ResultEntryComponent implements OnInit {
             this.advanceDataStored.storage = new SampleDetailObj(contact);
             const dialogRef = this._matDialog.open(NewResultTemplateComponent,
                 {
-                    maxHeight: '95vh',
-                    width: '80%',
+                     maxWidth: "75vw",
+                            height: '95%',
+                            width: '96%',
                     data: contact,
                 });
 
@@ -512,10 +513,10 @@ export class ResultEntryComponent implements OnInit {
                 });
 
                 const dialogRef = this._matDialog.open(NewResultEntryComponent,
-                    {
-                        maxWidth: "75vw",
-                        height: '800px',
-                        width: '95%',
+                    {   
+                        maxWidth: "96vw",
+                       height: "96vh",
+                       width: "96%",
                         data: {
                             RIdData: data,
                             patientdata: this.reportPrintObj
@@ -567,10 +568,10 @@ export class ResultEntryComponent implements OnInit {
                 });
 
                 const dialogRef = this._matDialog.open(NewResultEntryComponent,
-                    {
-                        maxWidth: "75vw",
-                        height: '800px',
-                        width: '95%',
+                    {  
+                        maxWidth: "96vw",
+                       height: "96vh",
+                       width: "96%",
                         data: {
                             RIdData: data,
                             patientdata: this.reportPrintObj,
@@ -929,9 +930,9 @@ export class ResultEntryComponent implements OnInit {
 
         const dialogRef1 = this._matDialog.open(NewResultTemplateComponent,
             {
-                maxWidth: "70vw",
-                height: '90vh',
-                width: '100%',
+                maxWidth: "75vw",
+                            height: '95%',
+                            width: '96%',
                 data: {
 
                     regobj: contact
