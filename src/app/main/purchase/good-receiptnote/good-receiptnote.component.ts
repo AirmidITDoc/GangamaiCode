@@ -19,6 +19,8 @@ import { NewGrnComponent } from './new-grn/new-grn.component';
 import { GSTType } from './new-grn/types';
 import { CreateBarcodeComponent } from './create-barcode/create-barcode.component';
 import { EditGRNDetailsComponent } from './edit-grndetails/edit-grndetails.component';
+import { ConfigService } from 'app/core/services/config.service';
+import { UpdateGRNComponent } from './update-grn/update-grn.component';
 
 @Component({
     selector: 'app-good-receiptnote',
@@ -148,6 +150,7 @@ export class GoodReceiptnoteComponent implements OnInit {
         public toastr: ToastrService,
         private accountService: AuthenticationService,
         private commonService: PrintserviceService,
+        public _ConfigService:ConfigService
     ) { }
     ngOnInit(): void {
         this._GRNService.GRNSearchGroup.get('ToStoreId').setValue(this.accountService.currentUserValue.user.storeId)
@@ -342,20 +345,42 @@ export class GoodReceiptnoteComponent implements OnInit {
 
         reader.readAsBinaryString(target.files[0]);
     }
+Is9_Digit_National_Id: boolean = false;
     newGRNEntry(chkNewGRN) {
-        const dialogRef = this._matDialog.open(NewGrnComponent,
-            {
-                maxWidth: "100%",
-                height: '98%',
-                width: '98%',
-                data: {
-                    chkNewGRN: chkNewGRN,
-                    FullData: this.FullData
-                }
+        //this code for Mediforte 9 digit national id
+        const rawValue = this?._ConfigService?.configParams?.Is9_Digit_NationalId || "";
+        const [id, val] = rawValue.includes(":") ? rawValue.split(":") : [null, null];
+        this.Is9_Digit_National_Id = id === "1";
+
+        if (this.Is9_Digit_National_Id) {
+            const dialogRef = this._matDialog.open(UpdateGRNComponent,
+                {
+                    maxWidth: "100%",
+                    height: '98%',
+                    width: '98%',
+                    data: {
+                        chkNewGRN: chkNewGRN,
+                        FullData: this.FullData
+                    }
+                });
+            dialogRef.afterClosed().subscribe(result => {
+                this.grid.bindGridData();
             });
-        dialogRef.afterClosed().subscribe(result => {
-            this.grid.bindGridData();
-        });
+        } else {
+            const dialogRef = this._matDialog.open(NewGrnComponent,
+                {
+                    maxWidth: "100%",
+                    height: '98%',
+                    width: '98%',
+                    data: {
+                        chkNewGRN: chkNewGRN,
+                        FullData: this.FullData
+                    }
+                });
+            dialogRef.afterClosed().subscribe(result => {
+                this.grid.bindGridData();
+            });
+        }
 
     }
     GRNEmail(contact) {
@@ -376,19 +401,39 @@ export class GoodReceiptnoteComponent implements OnInit {
     onEdit(contact) {
         this.chkNewGRN = 2;
         console.log(contact)
-        const dialogRef = this._matDialog.open(NewGrnComponent,
-            {
-                maxWidth: "100%",
-                height: '95%',
-                width: '95%',
-                data: {
-                    Obj: contact,
-                    chkNewGRN: this.chkNewGRN
-                }
+        const rawValue = this?._ConfigService?.configParams?.Is9_Digit_NationalId || "";
+        const [id, val] = rawValue.includes(":") ? rawValue.split(":") : [null, null];
+        this.Is9_Digit_National_Id = id === "1";
+
+        if (this.Is9_Digit_National_Id) {
+            const dialogRef = this._matDialog.open(UpdateGRNComponent,
+                {
+                    maxWidth: "100%",
+                    height: '95%',
+                    width: '95%',
+                    data: {
+                        Obj: contact,
+                        chkNewGRN: this.chkNewGRN
+                    }
+                });
+            dialogRef.afterClosed().subscribe(result => {
+                this.grid.bindGridData();
             });
-        dialogRef.afterClosed().subscribe(result => {
-            this.grid.bindGridData();
-        });
+        } else {
+            const dialogRef = this._matDialog.open(NewGrnComponent,
+                {
+                    maxWidth: "100%",
+                    height: '95%',
+                    width: '95%',
+                    data: {
+                        Obj: contact,
+                        chkNewGRN: this.chkNewGRN
+                    }
+                });
+            dialogRef.afterClosed().subscribe(result => {
+                this.grid.bindGridData();
+            });
+        }
 
     }
     onVerify(row) {

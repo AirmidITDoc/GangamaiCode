@@ -1096,7 +1096,12 @@ export class IPSearchListService {
     public postpayment(amount, phone, opdipdid) {
         return this._httpClient1.PostData("MPesa/pay", { amount: amount, phone: phone ,opdipdid:opdipdid})
     }
-
+    public checkStatus(mpesaResponse: any) {
+        return this._httpClient1.GetData("MPesa/check-payment?MerchantRequestID=" + mpesaResponse?.merchantRequestID + "&CheckoutRequestID=" + mpesaResponse?.checkoutRequestID);
+    }
+        public getmPesaTranscationlist(param) {
+        return this._httpClient1.PostData("MPesa/List", param)
+    } 
 }
 
 // Set NODE_OPTIONS="--max-old-space-size=8192"

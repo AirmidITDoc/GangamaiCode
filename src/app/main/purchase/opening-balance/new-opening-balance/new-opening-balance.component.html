@@ -81,7 +81,7 @@
                                         <airmid-textbox fxFlex="7%" label="Qty" formControlName="stripQty"
                                             [(ngModel)]="vstrQty" [formGroup]="OPeningtemForm" type="number"
                                             placeholder="Qty" (input)="calculateTotalQty()" [min]="0"
-                                            (keypress)="keyPressAlphanumeric($event)"></airmid-textbox>
+                                            (keypress)="keyPressDigitDecimalOnly($event)"></airmid-textbox>
 
                                         <airmid-textbox fxFlex="7%" label="Total Qty" formControlName="totalQty"
                                             [formGroup]="OPeningtemForm" type="number" [readonly]="true"
