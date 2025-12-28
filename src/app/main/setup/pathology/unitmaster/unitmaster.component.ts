@@ -7,6 +7,8 @@ import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/air
 import { ToastrService } from "ngx-toastr";
 import { NewUnitComponent } from "./new-unit/new-unit.component";
 import { UnitmasterService } from "./unitmaster.service";
+import { PagePermissionService } from "app/main/shared/services/page-permission.service";
+import { permissionCodes, permissionType } from "app/main/shared/model/permission.model";
 
 @Component({
     selector: "app-unitmaster",
@@ -18,7 +20,8 @@ import { UnitmasterService } from "./unitmaster.service";
 export class UnitmasterComponent implements OnInit {
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
  unitName: any = "";
-
+ IsAdd: boolean = this.permissionService.getPermission(permissionCodes.PathUnitMaster, permissionType.Add);
+   
    
        allcolumns = [
            
@@ -26,10 +29,10 @@ export class UnitmasterComponent implements OnInit {
             { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
             {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
-                    {
-                        action: gridActions.edit, callback: (data: any) => {
-                            this.onSave(data);
-                        }
+                  {
+                      action: gridActions.edit, visible: this.permissionService.getPermission(permissionCodes.PathUnitMaster, permissionType.Edit), callback: (data: any) => {
+                                             this.onSave(data);
+                                         }
                     }, {
                         action: gridActions.delete, callback: (data: any) => {
                             this._unitmasterService.deactivateTheStatus(data.unitId).subscribe((response: any) => {
@@ -45,6 +48,7 @@ export class UnitmasterComponent implements OnInit {
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
         ]
      gridConfig: gridModel = {
+           permissionCode: permissionCodes.PathUnitMaster,
         apiUrl: "PathUnitMaster/List",
         columnsList: this.allcolumns,
         sortField: "unitId",
@@ -53,7 +57,7 @@ export class UnitmasterComponent implements OnInit {
     }
 
     constructor(
-        public _unitmasterService: UnitmasterService,
+        public _unitmasterService: UnitmasterService, public permissionService: PagePermissionService,
         public toastr: ToastrService,
         public _matDialog: MatDialog,
     ) { }

@@ -442,8 +442,8 @@ export class OTReservationComponent implements OnInit {
             filters: [
                 { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.StartsWith },
                 { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.StartsWith },
-                { fieldName: "FirstName", fieldValue: "%", opType: OperatorComparer.StartsWith },
-                { fieldName: "LastName", fieldValue: "%", opType: OperatorComparer.StartsWith },
+                { fieldName: "FirstName", fieldValue: this.FirstName, opType: OperatorComparer.StartsWith },
+                { fieldName: "LastName", fieldValue: this.LastName, opType: OperatorComparer.StartsWith },
                 { fieldName: "RegNo", fieldValue: this.regNo, opType: OperatorComparer.Equals },
                 { fieldName: "OPIPType", fieldValue: this.opipType, opType: OperatorComparer.Equals },
             ],
@@ -981,7 +981,8 @@ export class OtReserInsert {
     operativeNotesId: any;
     isAnaesthetistPaid: any;
     isMaterialReplacement: any;
-
+AnesthesiaId: any;
+anesthesiaId: any;
     /**
      * Constructor
      *
@@ -1092,7 +1093,9 @@ export class OtReserInsert {
             this.operativeNotesId = OtReserInsert.operativeNotesId || ''
             this.isAnaesthetistPaid = OtReserInsert.isAnaesthetistPaid || ''
             this.isMaterialReplacement = OtReserInsert.isMaterialReplacement || ''
-            // this.isPrimary = OtReserInsert.isPrimary || ''
+            this.AnesthesiaId = OtReserInsert.AnesthesiaId || 0
+this.anesthesiaId = OtReserInsert.anesthesiaId || 0
+            
         }
     }
 }

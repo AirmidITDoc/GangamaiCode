@@ -13,6 +13,8 @@ import { gridColumnTypes } from "app/core/models/tableActions";
 import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
 import { ToastrService } from "ngx-toastr";
 import Swal from "sweetalert2";
+import { PagePermissionService } from "app/main/shared/services/page-permission.service";
+import { permissionCodes } from "app/main/shared/model/permission.model";
 
 
 @Component({
@@ -74,6 +76,7 @@ export class ParametermasterComponent implements OnInit {
     ]
 
     gridConfig: gridModel = {
+        //  permissionCode: permissionCodes.PathCategoryMaster,
         apiUrl: "ParameterMaster/MPathParameterList",
         columnsList: this.allcolumns,
         sortField: "parameterId",
@@ -82,7 +85,7 @@ export class ParametermasterComponent implements OnInit {
     }
     constructor(
         public _ParameterService: ParametermasterService,
-        public _matDialog: MatDialog,
+        public _matDialog: MatDialog,public permissionService: PagePermissionService,
         private reportDownloadService: ExcelDownloadService,
         private _fuseSidebarService: FuseSidebarService,
         public toastr: ToastrService,

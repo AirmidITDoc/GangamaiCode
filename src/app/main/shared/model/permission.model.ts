@@ -82,8 +82,16 @@ export enum permissionCodes {
     VehicleMaster = 'VehicleMaster',
 
     // Nursing master
-    Nursing='Nursing',
+    Nursing = 'Nursing',
 
     // Ot Master
-    SetupOtManagment='SetupOtManagment',
+    SetupOtManagment = 'SetupOtManagment',
+
+    //Pathology
+
+    PathCategoryMaster = 'SetupOtManagment',
+    TemplateMaster = 'TemplateMaster',
+    TestMaster = 'TestMaster',
+    PathUnitMaster = 'PathUnitMaster',
+    // PathCategoryMaster = 'SetupOtManagment',
 }

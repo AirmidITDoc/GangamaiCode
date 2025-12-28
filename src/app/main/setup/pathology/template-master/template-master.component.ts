@@ -8,6 +8,8 @@ import { TemplateServieService } from './template-servie.service';
 import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
 import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
 import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
+import { PagePermissionService } from 'app/main/shared/services/page-permission.service';
+import { permissionCodes, permissionType } from 'app/main/shared/model/permission.model';
 
 
 @Component({
@@ -20,7 +22,7 @@ import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/air
 export class TemplateMasterComponent implements OnInit {
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
  templateName: any = "";
-
+     IsAdd: boolean = this.permissionService.getPermission(permissionCodes.TemplateMaster, permissionType.Add);
   
        allcolumns =  [
             { heading: "Template Name", key: "templateName", width: 300, sort: true, align: 'left', emptySign: 'NA' },
@@ -31,9 +33,9 @@ export class TemplateMasterComponent implements OnInit {
             {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
                     {
-                        action: gridActions.edit, callback: (data: any) => {
-                            this.onSave(data);
-                        }
+                      action: gridActions.edit, visible: this.permissionService.getPermission(permissionCodes.TemplateMaster, permissionType.Edit), callback: (data: any) => {
+                                             this.onSave(data);
+                                         }
                     }, {
                         action: gridActions.delete, callback: (data: any) => {
                             this._TemplateServieService.deactivateTheStatus(data.templateId).subscribe((response: any) => {
@@ -49,6 +51,7 @@ export class TemplateMasterComponent implements OnInit {
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
         ]
      gridConfig: gridModel = {
+          permissionCode: permissionCodes.TemplateMaster,
         apiUrl: "PathologyTemplate/List",
         columnsList: this.allcolumns,
         sortField: "templateId",
@@ -57,7 +60,7 @@ export class TemplateMasterComponent implements OnInit {
     }
     constructor(
         public _TemplateServieService: TemplateServieService,
-        public _matDialog: MatDialog,
+        public _matDialog: MatDialog, public permissionService: PagePermissionService,
         public toastr: ToastrService,
     ) { }
 

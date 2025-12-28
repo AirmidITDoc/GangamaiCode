@@ -170,20 +170,10 @@
                                     fxLayoutGap="4px grid">
 
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%" class="gap-4">
-
-                                        <!-- <mat-form-field appearance="outline" fxFlex>
-                                            <mat-label>Anesthesia Start Dt</mat-label>
-                                            <input name="AnethStartDt" matInput [matDatepicker]="picker1"
-                                                formControllName="AnethStartDt" [value]="vAnethStartDt" (dateChange)="onChangeAnethStartDth($event.value)"/>
-                                            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-                                            <mat-datepicker #picker1></mat-datepicker>
-                                        </mat-form-field> -->
- <!-- [matDatepickerFilter]="myFilter" -->
                                         <mat-form-field appearance="outline" class="dateField">
                                             <mat-label>Anesthesia Start Dt</mat-label>
                                             <input matInput [matDatepicker]="picker1"
-                                                formControlName="AnethStartDt" 
-                                                (dateChange)="onChangeAnethStartDth($event.value)">
+                                                formControlName="AnethStartDt">
                                             <mat-datepicker-toggle matSuffix [for]="picker1"
                                                 [disabled]="isDatePckrDisabled"></mat-datepicker-toggle>
                                             <mat-datepicker #picker1></mat-datepicker>
@@ -196,17 +186,30 @@
                                                 (change)="onChangeAnethStartTime($event)">
                                         </mat-form-field>
 
+                                          
+
                                     </div>
 
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%" class="gap-4">
-                                        <mat-form-field appearance="outline" fxFlex>
+                                        <!-- <mat-form-field appearance="outline" fxFlex>
                                             <mat-label>Anesthesia End Dt</mat-label>
                                             <input name="AnethEndDt" matInput [matDatepicker]="picker2"
-                                                formControllName="AnethEndDt" [value]="vAnethEndDt"
+                                                formControllName="AnethEndDt" 
                                                 (dateChange)="onChangeAnethEndDt($event.value)" />
                                             <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
                                             <mat-datepicker #picker2></mat-datepicker>
+                                        </mat-form-field> -->
+
+                                          <mat-form-field appearance="outline" class="dateField">
+                                            <mat-label>Anesthesia End Dt</mat-label>
+                                            <input matInput [matDatepicker]="picker2"
+                                                formControlName="AnethEndDt" >
+                                            <mat-datepicker-toggle matSuffix [for]="picker2"
+                                                [disabled]="isDatePckrDisabled"></mat-datepicker-toggle>
+                                            <mat-datepicker #picker2></mat-datepicker>
                                         </mat-form-field>
+
+
                                         <mat-form-field appearance="outline" fxFlex>
                                             <mat-label>Anesthesia End Time</mat-label>
                                             <input matInput type="time" formControlName="AnethEndTime"
@@ -215,14 +218,26 @@
                                     </div>
 
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%" class="gap-4">
-                                        <mat-form-field appearance="outline" fxFlex>
+                                        <!-- <mat-form-field appearance="outline" fxFlex>
                                             <mat-label>Recovery Start Dt</mat-label>
                                             <input name="RecoveryStartDt" matInput [matDatepicker]="picker3"
-                                                formControllName="RecoveryStartDt" [value]="vRecoveryStartDt"
+                                                formControllName="RecoveryStartDt" 
                                                 (dateChange)="onChangeRecoveryStartDtt($event.value)" />
                                             <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
                                             <mat-datepicker #picker3></mat-datepicker>
+                                        </mat-form-field> -->
+
+                                         <mat-form-field appearance="outline" class="dateField">
+                                            <mat-label>Recovery Start Dt</mat-label>
+                                            <input matInput [matDatepicker]="picker3"
+                                                formControlName="RecoveryStartDt" 
+                                                >
+                                            <mat-datepicker-toggle matSuffix [for]="picker3"
+                                                [disabled]="isDatePckrDisabled"></mat-datepicker-toggle>
+                                            <mat-datepicker #picker3></mat-datepicker>
                                         </mat-form-field>
+
+
                                         <mat-form-field appearance="outline" fxFlex>
                                             <mat-label>Recovery Start Time</mat-label>
                                             <input matInput type="time" formControlName="RecoveryStartTime"
@@ -231,14 +246,25 @@
                                     </div>
 
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%" class="gap-4">
-                                        <mat-form-field appearance="outline" fxFlex>
+                                        <!-- <mat-form-field appearance="outline" fxFlex>
                                             <mat-label>Recovery End Dt</mat-label>
                                             <input name="RecoveryEndDt" matInput [matDatepicker]="picker4"
-                                                formControllName="RecoveryEndDt" [value]="vRecoveryEndDt"
+                                                formControllName="RecoveryEndDt"
                                                 (dateChange)="onChangeRecoveryEndDt($event.value)" />
                                             <mat-datepicker-toggle matSuffix [for]="picker4"></mat-datepicker-toggle>
                                             <mat-datepicker #picker4></mat-datepicker>
+                                        </mat-form-field> -->
+
+                                           <mat-form-field appearance="outline" class="dateField">
+                                            <mat-label>Recovery End Dt</mat-label>
+                                            <input matInput [matDatepicker]="picker4"
+                                                formControlName="RecoveryEndDt" >
+                                            <mat-datepicker-toggle matSuffix [for]="picker4"
+                                                [disabled]="isDatePckrDisabled"></mat-datepicker-toggle>
+                                            <mat-datepicker #picker4></mat-datepicker>
                                         </mat-form-field>
+
+
                                         <mat-form-field appearance="outline" fxFlex>
                                             <mat-label>Recovery End Time</mat-label>
                                             <input matInput type="time" formControlName="RecoveryEndTime"
@@ -247,20 +273,29 @@
                                     </div>
 
                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <airmid-dropdown label="Anesthesia Type" formControlName="anestypeId"
+                                        <airmid-dropdown label="Anesthesia Type" formControlName="anestypeId" [value]="vanestypeId"
                                             [formGroup]="anesthRecordForm" [mode]="autocompleteModeAnesthesiatypes">
                                         </airmid-dropdown>
                                     </div>
-
+ <!-- #ddlDiagnosis -->
                                     <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%" fxLayout="column"
                                         style="margin-bottom: 5px;">
 
-                                        <app-airmid-chipautocomplete fxFlex [placeholder]="'Select Pre-OP Diagnosis'"
-                                            [chips]="anesthRecordForm.get('Diagnosis')?.value"
+                                        <!-- <app-airmid-chipautocomplete fxFlex [placeholder]="'Select Pre-OP Diagnosis'"
+                                            [chips]="anesthRecordForm.get('Diagnosis')?.value" 
                                             [apiUrl]="'OTAnesthesia/GetOtAnesthesiaPreOpdiagnosisList?DescriptionType=Diagnosis'"
                                             [displayKey]="'descriptionName'" [allowCustom]="true"
                                             (chipsChange)="selectChangeDiagnosis($event)">
-                                        </app-airmid-chipautocomplete>
+                                        </app-airmid-chipautocomplete> -->
+
+
+                                         <app-airmid-chipautocomplete fxFlex
+                                        [chips]="anesthRecordForm.get('Diagnosis')?.value"
+                                        [apiUrl]="'OTAnesthesia/GetOtAnesthesiaPreOpdiagnosisList?DescriptionType=Diagnosis'"
+                                        [displayKey]="'descriptionName'" [allowCustom]="true"
+                                        [placeholder]="'Select Diagnosis'"
+                                        (chipsChange)="selectChangeDiagnosis($event)">
+                                    </app-airmid-chipautocomplete>
                                     </div>
 
                                 </div>

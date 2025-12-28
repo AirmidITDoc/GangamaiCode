@@ -1,4 +1,4 @@
-<div class="page-layout simple inner-sidebar inner-scroll" style="width:100% ;" >
+<div class="page-layout simple inner-sidebar inner-scroll" style="width:100% ;" fusePerfectScrollbar>
     <!-- HEADER -->
     <div class="top-header">
         <div class="top-header-info" fxLayout="row" fxLayoutAlign="start center">
@@ -27,32 +27,36 @@
         </div>
     </div>
 
-    <div class="layout-body p-12" fusePerfectScrollbar>
+    <div class="layout-body p-12">
         <mat-card>
+            <!-- class="info-badge-top overflow-auto mb-3" -->
             <div class="layout-body-container center">
-                <div class="info-badge-top overflow-auto mb-3" fxLayout="row" fxLayoutAlign="space-between" flex>
+                <div class="info-badge-top" fxLayout="row" fxLayoutAlign="space-between" flex>
 
                     <div fxLayout="row" fxLayoutAlign="start center" class="gap-8 mb-8">
 
                         <div class="dashboard-card registrations">
-                            <div class="card-label">TotalTest Result</div>
-                            <div class="card-value">{{Vtotalcount}}</div>
-                            <mat-icon class="card-icon" matTooltip="Total Test Results">assignment</mat-icon>
+                            <div class="card-label">TotalTest Result :{{Vtotalcount}} <mat-icon class="card-icon"
+                                    matTooltip="Total Test Results">assignment</mat-icon></div>
+                            <!-- <div class="card-value">{{Vtotalcount}}</div>
+                            <mat-icon class="card-icon" matTooltip="Total Test Results">assignment</mat-icon> -->
                         </div>
 
                         <div class="dashboard-card appointments">
-                            <div class="card-label">Completed</div>
-                            <div class="card-value">{{VCompletedcount}}</div>
-                            <mat-icon class="card-icon" matTooltip="Completed Tests">check_circle</mat-icon>
+                            <div class="card-label">Completed :{{VCompletedcount}} <mat-icon class="card-icon"
+                                    matTooltip="Completed Tests">check_circle</mat-icon></div>
+                            <!-- <div class="card-value">{{VCompletedcount}}</div>
+                            <mat-icon class="card-icon" matTooltip="Completed Tests">check_circle</mat-icon> -->
                         </div>
 
                         <div class="dashboard-card appointments-split">
-                            <div class="card-label">Pending</div>
-                            <div class="card-value">
+                            <div class="card-label">Pending:{{Vpendingcount}} <mat-icon class="card-icon"
+                                    matTooltip="Pending Tests">schedule</mat-icon></div>
+                            <!-- <div class="card-value">
                                 <div> {{Vpendingcount}}</div>
 
                             </div>
-                            <mat-icon class="card-icon" matTooltip="Pending Tests">schedule</mat-icon>
+                            <mat-icon class="card-icon" matTooltip="Pending Tests">schedule</mat-icon> -->
                         </div>
 
 
@@ -60,8 +64,8 @@
 
                 </div>
                 <form [formGroup]="myformSearch" class="mat-error-fix">
-                    <div fxLayout="column">
-                        <div class="layout-card-container" style="height: 80px;">
+                    <div fxLayout="column" style="padding-top:5px ;">
+                        <div class="layout-card-container" style="height: 60px;">
 
                             <div fxLayout.gt-xs="row" fxLayout="column" fxLayoutAlign="start" class="gap-4">
                                 <div fxLayout="row wrap" fxFlex fxLayoutGap="14px 0px grid">
@@ -156,8 +160,7 @@
 
                         </div>
 
-                        <div fusePerfectScrollbar
-                            class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
+                        <div class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
                             dynamicTableHeight>
 
                             <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
@@ -211,11 +214,11 @@
                                     </div>
                                 </mat-card>
 
-                                <mat-card style="margin-top: 10px; padding:12px;">
+                                <mat-card style="margin-top:5px; padding:5px;">
                                     <div id="contacts"
                                         class="page-layout simple left-sidebar inner-sidebar inner-scroll">
 
-                                        <div style="height: 50px;">
+                                        <div style="height: 30px;">
                                             <button mat-raised-button (click)="chkresultentry(selection.selected,true)">
                                                 Result Entry
                                             </button>
@@ -234,8 +237,10 @@
 
                                         <!-- <mat-table class="mat-table-2 h-210" #table matSort [dataSource]="dataSource1"
                                         [@animateStagger]="{value:'50'}" style="overflow: auto;"> -->
+                                        <!-- <mat-paginator [pageSizeOptions]="[10, 15, 25, 100]" [pageSize]="10"
+                                            showFirstLastButtons></mat-paginator> -->
                                         <mat-table class="airmid-table patient-table" matSort [dataSource]="dataSource1"
-                                            [@animateStagger]="{ value: '50' }" style="height: 210px;">
+                                            [@animateStagger]="{ value: '50' }">
 
                                             <ng-container matColumnDef="select">
                                                 <th mat-header-cell *matHeaderCellDef>
@@ -324,7 +329,7 @@
                                                                 <span class="status-box" [ngClass]="{
                                                                     'status-completed': contact.isCompleted,
                                                                     'status-pending': !contact.isCompleted
-                                                                }"
+                                                                }" [matTooltip]="getCompleteTooltip(contact)"
                                                                     matTooltip="{{ contact.isCompleted ? 'Report Completed' : 'Report Not Completed' }}">
                                                                     {{ contact.isCompleted ? 'Completed' : 'Pending' }}
                                                                 </span>

@@ -7,6 +7,8 @@ import { NewCategoryComponent } from "./new-category/new-category.component";
 import { gridActions, gridColumnTypes } from "app/core/models/tableActions";
 import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
 import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
+import { PagePermissionService } from "app/main/shared/services/page-permission.service";
+import { permissionCodes, permissionType } from "app/main/shared/model/permission.model";
 
 @Component({
     selector: "app-categorymaster",
@@ -18,6 +20,7 @@ import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/air
 export class CategorymasterComponent implements OnInit {
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
  categoryName: any = "";
+     IsAdd: boolean = this.permissionService.getPermission(permissionCodes.PathCategoryMaster, permissionType.Add);
    
        allcolumns = [
           
@@ -27,9 +30,9 @@ export class CategorymasterComponent implements OnInit {
             {
                 heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
                     {
-                        action: gridActions.edit, callback: (data: any) => {
-                            this.onSave(data);
-                        }
+                      action: gridActions.edit, visible: this.permissionService.getPermission(permissionCodes.PathCategoryMaster, permissionType.Edit), callback: (data: any) => {
+                                             this.onSave(data);
+                                         }
                     }, {
                         action: gridActions.delete, callback: (data: any) => {
                             this._categorymasterService.deactivateTheStatus(data.categoryId).subscribe((response: any) => {
@@ -45,6 +48,7 @@ export class CategorymasterComponent implements OnInit {
             { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
         ]
      gridConfig: gridModel = {
+          permissionCode: permissionCodes.PathCategoryMaster,
         apiUrl: "PathCategoryMaster/List",
         columnsList: this.allcolumns,
         sortField: "categoryId",
@@ -53,7 +57,7 @@ export class CategorymasterComponent implements OnInit {
     }
     constructor(
         public _categorymasterService: CategorymasterService,
-        public _matDialog: MatDialog,
+        public _matDialog: MatDialog,    public permissionService: PagePermissionService,
         public toastr: ToastrService,
     ) { }
 

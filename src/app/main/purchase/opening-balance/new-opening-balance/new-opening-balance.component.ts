@@ -489,18 +489,8 @@ export class NewOpeningBalanceComponent implements OnInit {
     var Param = {
       "searchFields": [
         {
-          "fieldName": "Storeid",
-          "fieldValue": String(this.StoreId),
-          "opType": "Equals"
-        },
-        {
-          "fieldName": "From_Dt",
-          "fieldValue": this.fromDate,
-          "opType": "Equals"
-        },
-        {
-          "fieldName": "To_Dt",
-          "fieldValue": this.toDate,
+          "fieldName": "OpeningHId",
+          "fieldValue": String(element),
           "opType": "Equals"
         }
       ],

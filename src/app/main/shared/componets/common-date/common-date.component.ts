@@ -29,7 +29,7 @@ export class CommonDateComponent implements OnInit {
         // this.currentDate = this.now.getMonth() + '/' + this.now.getDate() + '/' + this.now.getFullYear();
         setInterval(() => {
             this.now = new Date();
-            this.dateTimeString = this.now.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }).split(',');
+            this.dateTimeString = this.now.toLocaleString().split(',');
             // this.currentTime = this.now.getHours() + ':' + this.now.getMinutes() + ':' + this.now.getSeconds();
             // console.log(dateTimeString[1]);
             // this.currentDate = dateTimeString[0];
@@ -136,16 +136,16 @@ export class CommonDateComponent implements OnInit {
     onChangeDate(value) {
         if (value) {
             const dateOfReg = new Date(value);
-            let splitDate = dateOfReg.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }).split(',');
-            let splitTime = this.dateForm.get('timeController').value.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }).split(',');
+            let splitDate = dateOfReg.toLocaleString().split(',');
+            let splitTime = this.dateForm.get('timeController').value.toLocaleString().split(',');
             this.eventEmitForParent(splitDate[0], splitTime[1]);
         }
     }
     onChangeTime(event) {
         if (event) {
             let selectedDate = new Date(this.dateForm.get('dateController').value);
-            let splitDate = selectedDate.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }).split(',');
-            let splitTime = this.dateForm.get('timeController').value.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }).split(',');
+            let splitDate = selectedDate.toLocaleString().split(',');
+            let splitTime = this.dateForm.get('timeController').value.toLocaleString().split(',');
             this.isTimeChanged = true;
             this.eventEmitForParent(splitDate[0], splitTime[1]);
         }
@@ -153,8 +153,8 @@ export class CommonDateComponent implements OnInit {
     onChangeTime2(event) {
         if (event) {
             let selectedDate = new Date(this.dateForm.get('dateController').value);
-            let splitDate = selectedDate.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }).split(',');
-            let splitTime = this.dateForm.get('timeController2').value.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }).split(',');
+            let splitDate = selectedDate.toLocaleString().split(',');
+            let splitTime = this.dateForm.get('timeController2').value.toLocaleString().split(',');
             this.isTimeChanged = true;
             this.eventEmitForParent(splitDate[0], splitTime[1]);
         }

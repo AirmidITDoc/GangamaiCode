@@ -63,7 +63,7 @@ export class NewAmbulanceDetailComponent {
 
       setInterval(() => {
       this.now = new Date();
-      this.dateTimeString = this.now.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }).split(',');
+      this.dateTimeString = this.now.toLocaleString().split(',');
      
     }, 1);
   }
@@ -183,8 +183,8 @@ export class NewAmbulanceDetailComponent {
    onChangeDate(value) {
     if (value) {
       const dateOfReg = new Date(value);
-      let splitDate = dateOfReg.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }).split(',');
-      let splitTime = this.AmbulanceFormGroup.get('reportingDate').value.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }).split(',');
+      let splitDate = dateOfReg.toLocaleString().split(',');
+      let splitTime = this.AmbulanceFormGroup.get('reportingDate').value.toLocaleString().split(',');
       this.eventEmitForParent(splitDate[0], splitTime[1]);
     }
   }
@@ -201,8 +201,8 @@ export class NewAmbulanceDetailComponent {
     if (event) {
 
       let selectedDate = new Date(this.AmbulanceFormGroup.get('reportingTime').value);
-      let splitDate = selectedDate.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }).split(',');
-      let splitTime = this.AmbulanceFormGroup.get('reportingTime').value.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }).split(',');
+      let splitDate = selectedDate.toLocaleString().split(',');
+      let splitTime = this.AmbulanceFormGroup.get('reportingTime').value.toLocaleString().split(',');
       
       this.eventEmitForParent(splitDate[0], splitTime[1]);
     }
