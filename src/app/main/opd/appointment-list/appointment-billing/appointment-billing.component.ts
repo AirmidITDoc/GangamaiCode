@@ -1063,7 +1063,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
         this.IsRadiology = obj.isRadiology;
         this.vIsPackage = obj.isPackage;
         this.chargeForm.patchValue({
-            price: obj.classRate
+            price: obj.price
         })
         if (obj?.creditedtoDoctor == true) {
             this.isDoctor = true;
