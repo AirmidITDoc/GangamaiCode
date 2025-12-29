@@ -58,7 +58,7 @@ export class DischargeComponent implements OnInit {
     }
     setInterval(() => {
       this.now = new Date();
-      this.dateTimeString = this.now.toLocaleString().split(',');
+      this.dateTimeString = this.now.toLocaleString("en-US").split(',');
       if (!this.isTimeChanged) {
         this.DischargeInsertForm.get('discharge.dischargeTime')?.setValue(this.now);
         if (this.DischargeInsertForm.get('discharge.dischargeTime'))

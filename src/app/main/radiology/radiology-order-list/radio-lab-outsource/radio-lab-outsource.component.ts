@@ -253,7 +253,7 @@ export class RadioLabOutsourceComponent {
     if (event) {
       this.selectedTime = new Date(event);
 
-      const localeString = this.selectedTime.toLocaleString();
+      const localeString = this.selectedTime.toLocaleString("en-US");
       const [datePart, timePart] = localeString.split(',').map(part => part.trim());
 
       this.isTimeChanged = true;
@@ -275,7 +275,7 @@ export class RadioLabOutsourceComponent {
     if (event) {
       this.selectedTime = new Date(event);
 
-      const localeString = this.selectedTime.toLocaleString();
+      const localeString = this.selectedTime.toLocaleString("en-US");
       const [datePart, timePart] = localeString.split(',').map(part => part.trim());
 
       this.isTimeChanged1 = true;
