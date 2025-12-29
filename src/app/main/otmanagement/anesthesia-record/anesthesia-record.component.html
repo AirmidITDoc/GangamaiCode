@@ -24,16 +24,16 @@
         <ng-template #actionButtonTemplate let-element>
             <div fxLayout="row" fxLayoutAlign="center center">
                 <!-- [disabled]="element.isCancelled" -->
-                <button mat-icon-button matTooltip="Edit" (click)="onAnesthesiaRecord(element)">
+                <button mat-icon-button matTooltip="Edit" *ngIf="element.anesthesiaId!==0" (click)="onAnesthesiaRecord(element)">
                     <mat-icon>edit</mat-icon>
                 </button>
 
-                <button mat-icon-button matTooltip="Anesthesia Report Print"
+                <button mat-icon-button matTooltip="Anesthesia Report Print" *ngIf="element.anesthesiaId!==0"
                     (click)="viewgetAnethesiaReportPdf(element)">
                     <mat-icon> print</mat-icon>
                 </button>
 
-                <button mat-icon-button matTooltip="Cancel" (click)="onAnesthesiaCancle(element)">
+                <button mat-icon-button matTooltip="Cancel" (click)="onAnesthesiaCancle(element)" *ngIf="element.anesthesiaId!==0">
                     <mat-icon> cancel</mat-icon>
                 </button>
 

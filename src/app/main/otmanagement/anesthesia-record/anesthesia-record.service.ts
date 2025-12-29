@@ -37,6 +37,9 @@ export class AnesthesiaRecordService {
   }
 
 
+    public getReportView(Param) {
+        return this._httpClient.PostData("Report/ViewReport", Param);
+    }
 
   public InsertOTAnesthesia(Param) {
 
