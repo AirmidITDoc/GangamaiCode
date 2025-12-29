@@ -132,7 +132,7 @@ export class NewPhoneAppointmentComponent implements OnInit {
 
             // Optional: Emit localized date and time
             const [datePart, timePart] = dateOfReg
-                .toLocaleString()
+                .toLocaleString("en-US")
                 .split(',')
                 .map(part => part.trim());
 
@@ -149,7 +149,7 @@ export class NewPhoneAppointmentComponent implements OnInit {
         if (event) {
             const selectedTime = new Date(event);
 
-            const localeString = selectedTime.toLocaleString();
+            const localeString = selectedTime.toLocaleString("en-US");
             const [datePart, timePart] = localeString.split(',').map(part => part.trim());
 
             this.isTimeChanged = true;
@@ -169,7 +169,7 @@ export class NewPhoneAppointmentComponent implements OnInit {
         if (event) {
             const selectedTime = new Date(event);
 
-            const localeString = selectedTime.toLocaleString();
+            const localeString = selectedTime.toLocaleString("en-US");
             const [datePart, timePart] = localeString.split(',').map(part => part.trim());
 
             this.isTimeChanged = true;

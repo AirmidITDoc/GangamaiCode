@@ -993,7 +993,7 @@ export class InPatientIssueComponent implements OnInit {
   onCashOnlinePaySave() {
     this.isLoading123 = true; 
     let nowDate = new Date();
-    let nowDate1 = nowDate.toLocaleString().split(',');
+    let nowDate1 = nowDate.toLocaleString("en-US").split(',');
     this.newDateTimeObj = { date: nowDate1[0], time: nowDate1[1] };
     // console.log(this.newDateTimeObj);
 
@@ -1229,7 +1229,7 @@ export class InPatientIssueComponent implements OnInit {
             ConcessionId = this.ItemSubform.get('ConcessionId').value.ConcessionId;
 
           let nowDate = new Date();
-          let nowDate1 = nowDate.toLocaleString().split(',');
+          let nowDate1 = nowDate.toLocaleString("en-US").split(',');
           this.newDateTimeObj = { date: nowDate1[0], time: nowDate1[1] };
 
           let SalesInsert = {};

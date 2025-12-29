@@ -66,7 +66,7 @@ export class DischargeCancelComponent implements OnInit {
   ) {
     setInterval(() => {
       this.now = new Date();
-      this.dateTimeString = this.now.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }).split(',');
+      this.dateTimeString = this.now.toLocaleString("en-US").split(',');
       if (!this.isTimeChanged) {
         this._DischargeCancelService.DischargeForm.get('AdmissionTime').setValue(this.now);
         if (this._DischargeCancelService.DischargeForm.get('AdmissionTime'))
@@ -287,16 +287,16 @@ export class DischargeCancelComponent implements OnInit {
   onChangeDate(value) {
     if (value) {
       const dateOfReg = new Date(value);
-      let splitDate = dateOfReg.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }).split(',');
-      let splitTime = this._DischargeCancelService.DischargeForm.get('AdmissionTime').value.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }).split(',');
+      let splitDate = dateOfReg.toLocaleString("en-US").split(',');
+      let splitTime = this._DischargeCancelService.DischargeForm.get('AdmissionTime').value.toLocaleString("en-US").split(',');
       this.eventEmitForParent(splitDate[0], splitTime[1]);
     }
   }
   onChangeTime(event) {
     if (event) {
       let selectedDate = new Date(this._DischargeCancelService.DischargeForm.get('AdmissionDate').value);
-      let splitDate = selectedDate.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }).split(',');
-      let splitTime = this._DischargeCancelService.DischargeForm.get('AdmissionTime').value.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }).split(',');
+      let splitDate = selectedDate.toLocaleString("en-US").split(',');
+      let splitTime = this._DischargeCancelService.DischargeForm.get('AdmissionTime').value.toLocaleString("en-US").split(',');
       this.isTimeChanged = true;
       this.eventEmitForParent(splitDate[0], splitTime[1]);
     }

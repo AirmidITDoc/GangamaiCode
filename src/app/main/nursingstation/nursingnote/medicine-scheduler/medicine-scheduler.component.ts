@@ -67,8 +67,8 @@ export class MedicineSchedulerComponent {
 
     if (value) {
       const dateOfReg = new Date(value);
-      let splitDate = dateOfReg.toLocaleString().split(',');
-      let splitTime = this.MedicineItemForm.get('DoseDate').value.toLocaleString().split(',');
+      let splitDate = dateOfReg.toLocaleString("en-US").split(',');
+      let splitTime = this.MedicineItemForm.get('DoseDate').value.toLocaleString("en-US").split(',');
       this.eventEmitForParent(splitDate[0], splitTime[1]);
 
       const time = this.MedicineItemForm.get('DoseTime')?.value;
@@ -80,8 +80,8 @@ export class MedicineSchedulerComponent {
     this.timeflag = 1
     if (event) {
       let selectedDate = new Date(this.MedicineItemForm.get('DoseTime').value);
-      let splitDate = selectedDate.toLocaleString().split(',');
-      let splitTime = this.MedicineItemForm.get('DoseTime').value.toLocaleString().split(',');
+      let splitDate = selectedDate.toLocaleString("en-US").split(',');
+      let splitTime = this.MedicineItemForm.get('DoseTime').value.toLocaleString("en-US").split(',');
       this.isTimeChanged = true;
       this.phdatetime = splitTime[1]
       console.log(this.phdatetime)

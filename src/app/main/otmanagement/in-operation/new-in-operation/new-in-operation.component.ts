@@ -1362,7 +1362,7 @@ export class NewInOperationComponent {
         inputDate.getDate()
       ));
       const [datePart, timePart] = dateOfReg
-        .toLocaleString()
+        .toLocaleString("en-US")
         .split(',')
         .map(part => part.trim());
 
@@ -1378,7 +1378,7 @@ export class NewInOperationComponent {
     if (event) {
       const selectedTime = new Date(event);
 
-      const localeString = selectedTime.toLocaleString();
+      const localeString = selectedTime.toLocaleString("en-US");
       const [datePart, timePart] = localeString.split(',').map(part => part.trim());
 
       this.isTimeChanged = true;
@@ -1402,7 +1402,7 @@ export class NewInOperationComponent {
         inputDate.getDate()
       ));
       const [datePart, timePart] = dateOfReg
-        .toLocaleString()
+        .toLocaleString("en-US")
         .split(',')
         .map(part => part.trim());
 

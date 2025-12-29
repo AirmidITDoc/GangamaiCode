@@ -181,7 +181,7 @@ FBillNo=0
   ) {
     setInterval(() => {
       this.now = new Date();
-      this.dateTimeString = this.now.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }).split(',');
+      this.dateTimeString = this.now.toLocaleString("en-US").split(',');
       if (!this.isTimeChanged) {
         this.AdmissionTaskForm.get('AdmissionTime').setValue(this.now);
       
@@ -190,7 +190,7 @@ FBillNo=0
 
     setInterval(() => {
       this.now = new Date();
-      this.dateTimeString = this.now.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }).split(',');
+      this.dateTimeString = this.now.toLocaleString("en-US").split(',');
       if (!this.isTimeChanged) {
         this.VisitForm.get('VisitTime').setValue(this.now);
       
@@ -715,16 +715,16 @@ debugger
   onChangeDate(value) {
     if (value) {
       const dateOfReg = new Date(value);
-      let splitDate = dateOfReg.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }).split(',');
-      let splitTime = this.AdmissionTaskForm.get('AdmissionTime').value.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }).split(',');
+      let splitDate = dateOfReg.toLocaleString("en-US").split(',');
+      let splitTime = this.AdmissionTaskForm.get('AdmissionTime').value.toLocaleString("en-US").split(',');
       this.eventEmitForParent(splitDate[0], splitTime[1]);
     }
   }
   onChangeTime(event) {
     if (event) {
       let selectedDate = new Date(this.AdmissionTaskForm.get('AdmissionDate').value);
-      let splitDate = selectedDate.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }).split(',');
-      let splitTime = this.AdmissionTaskForm.get('AdmissionTime').value.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }).split(',');
+      let splitDate = selectedDate.toLocaleString("en-US").split(',');
+      let splitTime = this.AdmissionTaskForm.get('AdmissionTime').value.toLocaleString("en-US").split(',');
       this.isTimeChanged = true;
       this.eventEmitForParent(splitDate[0], splitTime[1]);
     }
@@ -761,16 +761,16 @@ debugger
   onChangeDate1(value) {
     if (value) {
       const dateOfReg = new Date(value);
-      let splitDate = dateOfReg.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }).split(',');
-      let splitTime = this.VisitForm.get('VisitTime').value.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }).split(',');
+      let splitDate = dateOfReg.toLocaleString("en-US").split(',');
+      let splitTime = this.VisitForm.get('VisitTime').value.toLocaleString("en-US").split(',');
       this.eventEmitForParent(splitDate[0], splitTime[1]);
     }
   }
   onChangeTime1(event) {
     if (event) {
       let selectedDate = new Date(this.VisitForm.get('VisitDate').value);
-      let splitDate = selectedDate.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }).split(',');
-      let splitTime = this.VisitForm.get('VisitTime').value.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }).split(',');
+      let splitDate = selectedDate.toLocaleString("en-US").split(',');
+      let splitTime = this.VisitForm.get('VisitTime').value.toLocaleString("en-US").split(',');
       this.isTimeChanged = true;
       this.eventEmitForParent(splitDate[0], splitTime[1]);
     }
