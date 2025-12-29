@@ -200,7 +200,39 @@ export class AnesthesiaRecordComponent {
   }
 
   viewgetAnethesiaReportPdf(element) {
-    this.commonService.Onprint("AnesthesiaId", element.AnesthesiaId, "OTAnaesthesiaRecord");
+    console.log(element)
+    debugger
+     const param = {
+            searchFields: [
+                {
+                    fieldName: "OPIPID",
+                    fieldValue: String(element.opIpId),
+                    opType: "Equals"
+                },
+                {
+                    fieldName: "OPIPType",
+                    fieldValue: String(element.opIpType),
+                    opType: "Equals"
+                }
+            ],
+            mode: "OTAnaesthesiaRecord"
+        };
+    this._anesthesiaRecordService.getReportView(param).subscribe(res => {
+            const matDialog = this._matDialog.open(PdfviewerComponent, {
+                maxWidth: "85vw",
+                height: '750px',
+                width: '100%',
+                data: {
+                    base64: res["base64"] as string,
+                    title: "OTAnaesthesia Report Viewer"
+                }
+            });
+
+            matDialog.afterClosed().subscribe(result => {
+
+            });
+        });
+    // this.commonService.Onprint("AnesthesiaId", element.AnesthesiaId, "OTAnaesthesiaRecord");
 
   }
 

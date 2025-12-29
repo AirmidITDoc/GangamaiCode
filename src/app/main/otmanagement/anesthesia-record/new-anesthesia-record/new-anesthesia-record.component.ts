@@ -52,6 +52,7 @@ export class NewAnesthesiaRecordComponent {
   addDiagnolist: any = [];
   RtrvDescriptionList: any = [];
   AllTypeDescription: any = []
+  OPIPType=0
 
   @ViewChild('ddlDiagnosis') ddlDiagnosis: AirmidDropDownComponent;
 
@@ -81,6 +82,7 @@ export class NewAnesthesiaRecordComponent {
       this.vanesthesiaId = this.registerObj1.anesthesiaId
       this.opIpId = this.registerObj1.opIpId
       this.vPatientName = this.registerObj1.patientName
+      this.OPIPType=this.registerObj1.opIpType
 
       if (this.vanesthesiaId) {
         setTimeout(() => {
@@ -255,29 +257,7 @@ debugger
     this.anesthRecordForm.get('RecoveryEndTime')?.setValue(time, { emitEvent: false });
   }
   vNotes = 'RS'
-  // onChangeAnethStartDth(Date1) {
-
-  //   this.vAnethStartDt = this.datePipe.transform(Date1, "yyyy-MM-dd")
-  //   console.log(Date1)
-  // }
-
-  // onChangeAnethEndDt(Date1: Date) {
-
-  //   this.vAnethEndDt = this.datePipe.transform(Date1, "yyyy-MM-dd")
-  //   console.log(Date1)
-  // }
-
-  // onChangeRecoveryStartDtt(Date1: Date) {
-
-  //   this.vRecoveryStartDt = this.datePipe.transform(Date1, "yyyy-MM-dd")
-  //   console.log(Date1)
-  // }
-
-  // onChangeRecoveryEndDt(Date1: Date) {
-
-  //   this.vRecoveryEndDt = this.datePipe.transform(Date1, "yyyy-MM-dd")
-  //   console.log(Date1)
-  // }
+  
   onSubmit() {
 
     this.anesthRecordFinalForm.get('otreservationId').setValue(this.otreservationId);
@@ -348,12 +328,47 @@ debugger
     return errors;
   }
 
+ viewgetAnethesiaReportPdf(element) {
+    console.log(element)
+    debugger
+     const param = {
+            searchFields: [
+                {
+                    fieldName: "OPIPID",
+                    fieldValue: String(this.opIpId),
+                    opType: "Equals"
+                },
+                {
+                    fieldName: "OPIPType",
+                    fieldValue: String(this.OPIPType),
+                    opType: "Equals"
+                }
+            ],
+            mode: "OTAnaesthesiaRecord"
+        };
+    this._anesthesiaRecordService.getReportView(param).subscribe(res => {
+            const matDialog = this._matDialog.open(PdfviewerComponent, {
+                maxWidth: "85vw",
+                height: '750px',
+                width: '100%',
+                data: {
+                    base64: res["base64"] as string,
+                    title: "OTAnaesthesia Report Viewer"
+                }
+            });
 
+            matDialog.afterClosed().subscribe(result => {
 
-  viewgetAnethesiaReportPdf(AnesthesiaId) {
-    this.commonService.Onprint("AnesthesiaId", AnesthesiaId, "OTAnaesthesiaRecord");
+            });
+        });
+    // this.commonService.Onprint("AnesthesiaId", element.AnesthesiaId, "OTAnaesthesiaRecord");
 
   }
+
+  // viewgetAnethesiaReportPdf(AnesthesiaId) {
+  //   this.commonService.Onprint("AnesthesiaId", AnesthesiaId, "OTAnaesthesiaRecord");
+
+  // }
   getdiagnosisList(obj) {
     this.addDiagnolist = [];
 
