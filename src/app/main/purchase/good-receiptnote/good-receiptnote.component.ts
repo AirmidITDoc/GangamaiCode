@@ -21,6 +21,14 @@ import { EditGRNDetailsComponent } from './edit-grndetails/edit-grndetails.compo
 import { ConfigService } from 'app/core/services/config.service';
 import { UpdateGRNComponent } from './update-grn/update-grn.component';
 
+import { Overlay, OverlayRef } from '@angular/cdk/overlay';
+import { ComponentPortal } from '@angular/cdk/portal';
+import { SMSDetailsPopupOverComponent } from 'app/main/shared/componets/email-send/smsdetails-popup-over/smsdetails-popup-over.component';
+import { WhatsappDetPopUpOverComponent } from 'app/main/shared/componets/email-send/whatsapp-det-pop-up-over/whatsapp-det-pop-up-over.component';
+import { Subscription } from 'rxjs'
+import { EmailSendComponent } from 'app/main/shared/componets/email-send/email-send.component';
+import { WhatsAppEmailService } from 'app/main/shared/services/whats-app-email.service';
+
 @Component({
     selector: 'app-good-receiptnote',
     templateUrl: './good-receiptnote.component.html',
@@ -149,7 +157,8 @@ export class GoodReceiptnoteComponent implements OnInit {
         public toastr: ToastrService,
         private accountService: AuthenticationService,
         private commonService: PrintserviceService,
-        public _ConfigService:ConfigService
+        public _ConfigService:ConfigService, public _whatsppService: WhatsAppEmailService,
+                private overlay: Overlay
     ) { }
     ngOnInit(): void {
         this._GRNService.GRNSearchGroup.get('ToStoreId').setValue(this.accountService.currentUserValue.user.storeId)
