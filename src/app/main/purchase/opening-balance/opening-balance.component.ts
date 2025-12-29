@@ -118,23 +118,11 @@ export class OpeningBalanceComponent {
 
 
   viewgetReportPdf(element) {
-    let fromDate = this.datePipe.transform(this.mysearchform.get('startdate').value, "yyyy-MM-dd")
-    let toDate = this.datePipe.transform(this.mysearchform.get('enddate').value, "yyyy-MM-dd")
     var Param = {
       "searchFields": [
         {
-          "fieldName": "Storeid",
-          "fieldValue": String(this.accountService.currentUserValue.user.storeId),
-          "opType": "Equals"
-        },
-        {
-          "fieldName": "From_Dt",
-          "fieldValue": fromDate,
-          "opType": "Equals"
-        },
-        {
-          "fieldName": "To_Dt",
-          "fieldValue": toDate,
+          "fieldName": "OpeningHId",
+          "fieldValue": String(element.openingHId),
           "opType": "Equals"
         }
       ],
@@ -164,8 +152,8 @@ export class OpeningBalanceComponent {
     const dialogRef = this._matDialog.open(NewOpeningBalanceComponent,
       {
         maxWidth: "100%",
-        height: '85%',
-        width: '95%',
+        height: '95%',
+        width: '96%',
         data: row
       });
     dialogRef.afterClosed().subscribe(result => {
@@ -228,7 +216,7 @@ export class OpeningBalanceComponent {
       {
         maxWidth: "100%",
         height: '95%',
-        width: '95%',
+        width: '96%',
         data: {
           Obj: contact,
           chkNewGRN: this.chkNewGRN

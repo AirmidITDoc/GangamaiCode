@@ -264,9 +264,11 @@ export class NewOpeningBalanceComponent implements OnInit {
       this.OPeningtemForm.get('IGST').clearValidators();
       this.OPeningtemForm.get('IGST').updateValueAndValidity();
       this.OPeningtemForm.get('IGST').disable();
-    } else {
-      this.OPeningtemForm.get('IGST').enable();
-      this.OPeningtemForm.get('IGST').reset();
+    } else {  
+             this.OPeningtemForm.get('CGST').reset(0);
+            this.OPeningtemForm.get('SGST').reset(0);
+            this.OPeningtemForm.get('IGST').enable();
+            this.OPeningtemForm.get('IGST').reset();
     }
     // this.calculateTotalamt();
   }
@@ -284,6 +286,7 @@ export class NewOpeningBalanceComponent implements OnInit {
       this.OPeningtemForm.get('CGST').updateValueAndValidity();
       this.OPeningtemForm.get('CGST').disable();
     } else {
+      this.OPeningtemForm.get('IGST').reset(0);
       this.OPeningtemForm.get('CGST').enable();
       this.OPeningtemForm.get('CGST').reset();
     }
@@ -300,6 +303,7 @@ export class NewOpeningBalanceComponent implements OnInit {
     this.OPeningtemForm.patchValue({
       totalQty: totalQty
     });
+       this.CalculatePerUnit();
   }
 
   isBatchSelected: boolean = false;
@@ -485,18 +489,8 @@ export class NewOpeningBalanceComponent implements OnInit {
     var Param = {
       "searchFields": [
         {
-          "fieldName": "Storeid",
-          "fieldValue": String(this.StoreId),
-          "opType": "Equals"
-        },
-        {
-          "fieldName": "From_Dt",
-          "fieldValue": this.fromDate,
-          "opType": "Equals"
-        },
-        {
-          "fieldName": "To_Dt",
-          "fieldValue": this.toDate,
+          "fieldName": "OpeningHId",
+          "fieldValue": String(element),
           "opType": "Equals"
         }
       ],
@@ -537,10 +531,19 @@ export class NewOpeningBalanceComponent implements OnInit {
     this.validateFormValues()
   }
 
-  onLandedRateInput(event: any) {
+  onLandedRateInput(event: any) { 
     this.validateFormValues()
+      this.CalculatePerUnit();
   }
-
+CalculatePerUnit(){
+ const formvalues= this.OPeningtemForm.value
+    if((formvalues?.LandedRate || 0)> 0){
+    const perunit = (formvalues?.LandedRate || 0) / (formvalues?.totalQty || 0).toFixed(2)
+    this.OPeningtemForm.patchValue({
+      RatePerUnit : perunit || 0
+    })
+    } 
+}
   validateFormValues() {
     const form = this.OPeningtemForm;
     const values = form.getRawValue() as GRNFormModel;
@@ -574,7 +577,7 @@ export class NewOpeningBalanceComponent implements OnInit {
         RatePerUnit: 0,
       });
     }
-    if (+values.LandedRate >= +values.MRP) {
+    if (+values.LandedRate > +values.MRP ) {
       this._OpeningBalanceService.showToast('LandedRate should be less than MRP', ToastType.WARNING);
       form.patchValue({
         LandedRate: 0,
@@ -600,6 +603,16 @@ export class NewOpeningBalanceComponent implements OnInit {
       return false;
     }
   }
+         // it allowed only Digit & decimal
+       keyPressDigitDecimalOnly(event) {
+           var inp = String.fromCharCode(event.keyCode);
+           if (/^\d*\.?\d*$/.test(inp)) {
+               return true;
+           } else {
+               event.preventDefault();
+               return false;
+           }
+       }
 }
 export class dsItemNameList {
   ItemID: any;

@@ -33,6 +33,7 @@ export class DiscountAfterFinalBillComponent implements OnInit {
   vFinalCompanyDiscAmt:any;
   CompanyName:any = '';
   PatientObj:any;
+  vCompanyDiscAmt2:any=0;
   
   autocompleteModeConcession: string = "Concession";
 
@@ -54,10 +55,13 @@ export class DiscountAfterFinalBillComponent implements OnInit {
       this.PatientObj = this.data.PatientObj
       console.log(this.selectedAdvanceObj)
       this.vDiscAmount = Math.round(this.selectedAdvanceObj.concessionAmt);
+      this.vCompanyDiscAmt2 =Math.round(this.selectedAdvanceObj.compDiscAmt);
+      this.CompanyName = this.selectedAdvanceObj.companyName || ''; 
       this.vTotalAmount =  Math.round(this.selectedAdvanceObj.totalAmt);
       this.vFinalNetAmt =  Math.round(this.selectedAdvanceObj.netPayableAmt)
       this.vNetamount =  Math.round(this.selectedAdvanceObj.netPayableAmt)
       this.vFinalDiscAmt =  Math.round(this.selectedAdvanceObj.concessionAmt);
+      this.vFinalCompanyDiscAmt =  Math.round(this.selectedAdvanceObj.compDiscAmt);
       this.CompanyName = this.selectedAdvanceObj.companyName || ''; 
     } 
      this.MyFrom = this.CreateMyForm();
@@ -80,12 +84,13 @@ export class DiscountAfterFinalBillComponent implements OnInit {
   }  
     CreatesaveMyForm(): FormGroup { 
       return this.formBuilder.group({  
-       billNo:[0,[this._formvalidationservice.notEmptyOrZeroValidator()]],
+      billNo:[0,[this._formvalidationservice.notEmptyOrZeroValidator()]],
       netPayableAmt:[0,[this._formvalidationservice.AllowDecimalNumberValidator(),this._formvalidationservice.notEmptyOrZeroValidator()]],
       concessionAmt:[0,[this._formvalidationservice.AllowDecimalNumberValidator()]],
       compDiscAmt:[0,[this._formvalidationservice.AllowDecimalNumberValidator()]],
       balanceAmt:[ 0,[this._formvalidationservice.AllowDecimalNumberValidator()]],
-      concessionReasonId:[0,[this._formvalidationservice.notEmptyOrZeroValidator()]] 
+      concessionReasonId:[0,[this._formvalidationservice.notEmptyOrZeroValidator()]],
+      createdBy:[this.accountService.currentUserValue.userId]
       });
     }   
  
@@ -123,19 +128,19 @@ export class DiscountAfterFinalBillComponent implements OnInit {
       }
       else{
         this.vCompanyDiscAmt = ((parseFloat(this.vFinalNetAmt) * parseFloat(CompanyDiscPer)) / 100).toFixed(2) || 0;
-        CompanyDiscAmt =   this.vCompanyDiscAmt;
-        this.vFinalCompanyDiscAmt = this.vCompanyDiscAmt
+        CompanyDiscAmt =   this.vCompanyDiscAmt; 
       } 
     }
     else{
        if(CompanyDiscPer == 0 || CompanyDiscPer == '' || CompanyDiscPer == null || CompanyDiscPer == undefined){ 
         this.vCompanyDiscAmt = '';
-        CompanyDiscAmt = 0;
-        this.vFinalCompanyDiscAmt = 0;
+        CompanyDiscAmt = 0; 
       }
     }
+
+    this.vFinalCompanyDiscAmt = Math.round(parseFloat(CompanyDiscAmt)  + parseFloat(this.vCompanyDiscAmt2));
     this.vFinalDiscAmt = Math.round(parseFloat(DiscAmt2)  + parseFloat(this.vDiscAmount));
-    this.vNetamount = Math.round((parseFloat(this.vTotalAmount) - parseFloat( this.vFinalDiscAmt)) -  parseFloat(CompanyDiscAmt)).toFixed(2);
+    this.vNetamount = Math.round((parseFloat(this.vTotalAmount) - parseFloat( this.vFinalDiscAmt)) -  parseFloat(this.vFinalCompanyDiscAmt)).toFixed(2);
   }
   CalcDiscAmt() {
     debugger
@@ -171,19 +176,18 @@ export class DiscountAfterFinalBillComponent implements OnInit {
       }
       else {
         this.vCompanyDiscper = ((parseFloat(CompanyDiscAmt) / parseFloat(this.vFinalNetAmt)) * 100).toFixed(2) || 0;
-        CompanyDiscPer = this.vCompanyDiscper;
-        this.vFinalCompanyDiscAmt = CompanyDiscAmt
+        CompanyDiscPer = this.vCompanyDiscper; 
       }
     }
     else {
       if (CompanyDiscAmt == 0 || CompanyDiscAmt == '' || CompanyDiscAmt == null || CompanyDiscAmt == undefined) {
         this.vCompanyDiscper = '';
-        CompanyDiscPer = 0;
-        this.vFinalCompanyDiscAmt = 0;
+        CompanyDiscPer = 0; 
       }
     }
+    this.vFinalCompanyDiscAmt = Math.round(parseFloat(CompanyDiscAmt)  + parseFloat(this.vCompanyDiscAmt2));
     this.vFinalDiscAmt = Math.round(parseFloat(DiscAmt2) + parseFloat(this.vDiscAmount));
-    this.vNetamount = Math.round((parseFloat(this.vTotalAmount) - parseFloat(this.vFinalDiscAmt)) - parseFloat(CompanyDiscAmt)).toFixed(2);
+    this.vNetamount = Math.round((parseFloat(this.vTotalAmount) - parseFloat(this.vFinalDiscAmt)) - parseFloat(this.vFinalCompanyDiscAmt)).toFixed(2);
   } 
   OnSave() {
     const formvalues = this.MyFrom.value
@@ -203,14 +207,14 @@ export class DiscountAfterFinalBillComponent implements OnInit {
     } 
 
     let BalAmt = this.selectedAdvanceObj?.balanceAmt
-    if(formvalues?.DiscAmount2 > 0){
+    if(formvalues?.DiscAmount2 > 0 || formvalues?.CompanyDiscAmt > 0){
       BalAmt = formvalues?.NetAmount   
     } 
 
     this.saveform.get('billNo').setValue( this.selectedAdvanceObj?.billNo)
     this.saveform.get('balanceAmt').setValue(BalAmt)
     this.saveform.get('netPayableAmt').setValue(formvalues?.NetAmount)
-    this.saveform.get('concessionAmt').setValue(formvalues?.DiscAmount2)
+    this.saveform.get('concessionAmt').setValue(formvalues?.DiscAmount2 || 0)
     this.saveform.get('compDiscAmt').setValue(formvalues?.CompanyDiscAmt || 0)
     this.saveform.get('concessionReasonId').setValue(formvalues?.ConcessionId)
 

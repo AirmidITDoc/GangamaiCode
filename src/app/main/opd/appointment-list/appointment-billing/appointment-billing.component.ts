@@ -1430,6 +1430,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
             concessionReasonId: 0,
         });
         this.OPFooterForm.get('paymentType').setValue('CashPay')
+        this.PatientName = ''
     }
     viewgetCreditOPBillReportPdf(element) {
         this.commonService.Onprint("BillNo", element, "OpBillReceipt");
@@ -1660,6 +1661,8 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
   // Mpesa Save  
 SavemPesaBill() {
     debugger
+    const formattedDate = this.datePipe.transform(this.OpBillForm.get('billDate').value, "yyyy-MM-dd");
+    const formattedTime = this.datePipe.transform(new Date(), "HH:mm:ss");
     const [ThermalPrint, ThermalPrintValue] = this._ConfigService.configParams.ThermalPrint.split(":");
     const mPesaMerchant_CheckoutRequest_Id = this.mpesaResponse.checkoutRequestID + "|" + this.mpesaResponse.merchantRequestID;
 
@@ -1669,9 +1672,32 @@ SavemPesaBill() {
     this.OpBillForm.get('payments.paymentTime')?.setValue(this.dateTimeObj.time)
     this.OpBillForm.get('payments.payTmamount').setValue(Number(this.OPFooterForm.get('netPayableAmt').value));
     this.OpBillForm.get('payments.payTmdate').setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'));
-    this.OpBillForm.get('payments.payTmtranNo').setValue(this.mPesa_ReceiptNo);
-    this.OpBillForm.get('payments.remark').setValue(mPesaMerchant_CheckoutRequest_Id);
+    this.OpBillForm.get('payments.payTmtranNo').setValue(this.mPesa_ReceiptNo || 0);
+    this.OpBillForm.get('payments.remark').setValue(mPesaMerchant_CheckoutRequest_Id || 0);
     this.OpBillForm.get('payments.companyId')?.setValue(this.patientDetail?.companyId || 0)
+
+                let ModePaymentObj = [];
+                 ModePaymentObj.push({ 
+                    paymentDate: formattedDate,
+                    paymentTime: formattedTime,
+                    payAmount: this.OPFooterForm.get('netPayableAmt')?.value || 0,
+                    tranNo: this.mPesa_ReceiptNo || 0,
+                    bankName: "",
+                    validationDate: this.datePipe.transform(this.currentDate, 'yyyy-MM-dd'), 
+                    comments: "",
+                    payMode: "MPESA",
+                    onlineTranNo: this.mPesa_ReceiptNo || 0,
+                    onlineTranResponse: mPesaMerchant_CheckoutRequest_Id || 0,
+                    companyId: this.patientDetail?.CompanyId ?? 0, 
+                    cashCounterId:this.searchForm.get('CashCounterID')?.value || 0,
+                    transactionType: 0,
+                    isSelfOrcompany: this.patientDetail?.CompanyId ? 1 : 0, 
+                });
+
+                 this.ModeOfPaymentsArray.clear(); 
+                ModePaymentObj.forEach(item => {
+                this.ModeOfPaymentsArray.push(this.CreateModePaymentform(item as ChargesList));
+                }); 
 
     this._AppointmentlistService.InsertOPBilling(this.OpBillForm.value)
         .subscribe(response => {  
@@ -1751,6 +1777,29 @@ SavemPesaBill() {
                         this.OpBillForm.get('payments.payTmtranNo').setValue(this.mPesa_ReceiptNo);
                         this.OpBillForm.get('payments.remark').setValue(mPesaMerchant_CheckoutRequest_Id);
                         this.OpBillForm.get('payments.companyId')?.setValue(this.patientDetail?.companyId || 0)
+
+                let ModePaymentObj = [];
+                 ModePaymentObj.push({ 
+                    paymentDate: formattedDate,
+                    paymentTime: formattedTime,
+                    payAmount: this.OPFooterForm.get('netPayableAmt')?.value || 0,
+                    tranNo: this.mPesa_ReceiptNo || 0,
+                    bankName: "",
+                    validationDate: this.datePipe.transform(this.currentDate, 'yyyy-MM-dd'), 
+                    comments: "",
+                    payMode: "MPESA",
+                    onlineTranNo: this.mPesa_ReceiptNo || 0,
+                    onlineTranResponse: mPesaMerchant_CheckoutRequest_Id || 0,
+                    companyId: this.patientDetail?.CompanyId ?? 0, 
+                    cashCounterId:this.searchForm.get('CashCounterID')?.value || 0,
+                    transactionType: 0,
+                    isSelfOrcompany: this.patientDetail?.CompanyId ? 1 : 0, 
+                });
+
+                 this.ModeOfPaymentsArray.clear(); 
+                ModePaymentObj.forEach(item => {
+                this.ModeOfPaymentsArray.push(this.CreateModePaymentform(item as ChargesList));
+                }); 
 
                         this._AppointmentlistService.InsertOPBilling(this.OpBillForm.value)
                             .subscribe(response => {

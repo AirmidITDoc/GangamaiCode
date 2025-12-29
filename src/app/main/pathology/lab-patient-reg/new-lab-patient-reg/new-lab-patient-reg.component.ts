@@ -333,6 +333,8 @@ export class NewLabPatientRegComponent {
       discComments: [0, [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],//need to set concession reason
       cashCounterId: ["1", [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],//need to set cashCounterId
       createdBy: [this.accountService.currentUserValue.userId, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      govtApprovedAmt : [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+
       addCharges: this._formbuilder.array([]),
 
       // ✅ Fixed: should be FormArray

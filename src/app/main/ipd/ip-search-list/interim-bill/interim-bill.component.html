@@ -429,3 +429,29 @@
     </div>
 
 </ng-template>
+
+
+<!-- Waiting Screen -->
+<div class="waiting-overlay" *ngIf="isWaiting">
+    <div class="waiting-box">
+        <div class="spinner"></div>
+
+        <!-- Timer -->
+        <div class="timer-box" [ngClass]="{ 'warning': countdown <= 60 }">
+            <span class="timer-text">
+                ⏳ {{ countdown * 1000 | date:'mm:ss':'UTC' }}
+            </span>
+            <span class="timer-label">Remaining</span>
+        </div>
+
+        <!-- Title -->
+        <h3 class="waiting-title">Waiting for customer approval...</h3>
+
+        <!-- Message -->
+        <pre class="message-box">{{ statusMessage }}</pre>
+
+        <!-- <button class="btn btn-outline-secondary" (click)="manualRefresh()">
+            Refresh Status
+        </button> -->
+    </div>
+</div>

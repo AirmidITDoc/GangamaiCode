@@ -158,6 +158,7 @@ export class InterimBillComponent implements OnInit {
         compDiscAmt: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         discComments: [0, [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],//need to set concession reason
         cashCounterId: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],//need to set cashCounterId
+        govtApprovedAmt : [0, [this._FormvalidationserviceService.onlyNumberValidator()]]
       }),
       // ✅ Fixed: should be FormArray
       billingDetails: this.formBuilder.array([]),

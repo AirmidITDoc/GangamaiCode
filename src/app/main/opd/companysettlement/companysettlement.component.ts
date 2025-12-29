@@ -91,14 +91,15 @@ export class CompanysettlementComponent implements OnInit {
             heading: "-", key: "companyId", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template,
             template: this.actionsTemplate, width: 40
         },
-        { heading: "BillDate", key: "billDate", sort: true, align: 'left', emptySign: 'NA', type: 9 },
-        { heading: "PBillNo", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA' },
-        { heading: "BillAmount", key: "totalAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
-        { heading: "ConsessionAmt", key: "concessionAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
-        { heading: "NetAmount", key: "netPayableAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
-        { heading: "PaidAmount", key: "paidAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
-        { heading: "BalanceAmount", key: "balanceAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, columnClass: (element) => element["balanceAmt"] > 0 ? Color.RED : "" },
-        { heading: "CompanyName", key: "companyName", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Bill Date", key: "billDate", sort: true, align: 'left', emptySign: 'NA', type: 9 },
+        { heading: "PBill No", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "Bill Amt", key: "totalAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+        { heading: "Disc Amt", key: "concessionAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+        { heading: "Company DiscAmt", key: "compDiscAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+        { heading: "Net Amt", key: "netPayableAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+        { heading: "Paid Amt", key: "paidAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+        { heading: "Balance Amt", key: "balanceAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, columnClass: (element) => element["balanceAmt"] > 0 ? Color.RED : "" },
+        { heading: "Company Name", key: "companyName", sort: true, align: 'left', emptySign: 'NA' },
         {
             heading: "Action", key: "action", align: "right", sticky: true, type: gridColumnTypes.template,
             template: this.actionButtonTemplate  // Assign ng-template to the column

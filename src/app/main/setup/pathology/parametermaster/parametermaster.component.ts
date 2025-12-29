@@ -321,7 +321,7 @@ export class PathparameterMaster {
     IsPrintDisSummary: boolean;
     MethodName: string;
     Formula: string;
-    ParaMultipleRange: string;
+    paraMultipleRange: string;
     IsDeletedSearch: number;
 
     /**
@@ -344,8 +344,9 @@ export class PathparameterMaster {
             this.AddedBy = PathparameterMaster.AddedBy || "";
             this.UpdatedBy = PathparameterMaster.UpdatedBy || "";
             this.IsPrintDisSummary = PathparameterMaster.IsPrintDisSummary || "false";
-            this.ParaMultipleRange = PathparameterMaster.ParaMultipleRange || "";
+            this.paraMultipleRange = PathparameterMaster.paraMultipleRange || "";
             this.IsDeletedSearch = PathparameterMaster.IsDeletedSearch || "";
+            
         }
     }
 }

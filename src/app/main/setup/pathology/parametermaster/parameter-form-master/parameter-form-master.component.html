@@ -67,7 +67,14 @@
                                     [mode]="autocompleteModeUnitId" (selectDdlObject)="selectChangeUnitId($event)">
                                 </airmid-dropdown>
                             </div>
+                            <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                             <textarea cols="90%" rows="6" matInput label="Para Multiple Range" formControlName="paraMultipleRange"  
+                                  [(ngModel)]="vparaMultipleRange" placeholder="Enter here" >
+                            </textarea>
+                           
+                            </div>
                         </div>
+                       
                         <div fxLayout="row" fxLayoutAlign="space-between" class="mt-3">
                             <mat-radio-group name="IsNumeric" formControlName="isNumeric" aria-label="Select an option">
                                 <mat-radio-button fxFlex (click)="toggle(1)" value="1"
@@ -383,7 +390,7 @@
                                                             formControlName="defaultValue" [value]="defaultValue"
                                                             [formGroup]="descForm"
                                                             [validations]="getValidationMessages().defaultValue"
-                                                            [maxLength]="10">
+                                                            >
                                                         </airmid-textbox>
                                                     </div>
                                                 </div>

@@ -32,7 +32,7 @@ export class ParameterFormMasterComponent implements OnInit {
     isPrintDisSummaryChecked: boolean = false;
     autocompleteModeUnitId: string = "Unit";
 
-    ageType: string[] = ["Days", "Months", "Years"];
+    ageType: string[] = ["DAY", "MONTH", "YEAR"];
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     displayedColumns: string[] = [
         "GenderName",
@@ -81,7 +81,7 @@ export class ParameterFormMasterComponent implements OnInit {
     defaultValue: any;
     vParameterId: any;
     parameterValue: any;
-
+vparaMultipleRange:any;
     ChargeList: any = [];
     dsTemparoryList = new MatTableDataSource<PathDescriptiveMaster>();
     dataSource = new MatTableDataSource<PathDescriptiveMaster>();
@@ -110,8 +110,8 @@ export class ParameterFormMasterComponent implements OnInit {
 
         this.TableForm = this.tableForm();
 
-        this.DescArray.push(this.createdescDetails());
-        this.NumericArray.push(this.createnumDetails());
+        // this.DescArray.push(this.createdescDetails());
+        // this.NumericArray.push(this.createnumDetails());
 
 
         this.selectedItems = [];
@@ -120,6 +120,7 @@ export class ParameterFormMasterComponent implements OnInit {
         if (this.data) {
             this.registerObj = this.data;
             this.vParameterId = this.registerObj.parameterId;
+            this.vparaMultipleRange = this.data?.rowData?.paraMultipleRange
         }
 
         this.tableData = this.data.tableData;
@@ -133,13 +134,14 @@ export class ParameterFormMasterComponent implements OnInit {
             this.dsParameterAgeList.data = this._ParameterService.numericList;
             this.selectedItems = this._ParameterService.descriptiveList;
         }
-
+ debugger
         this.dsParameterAgeList.data = this.tableData;  // Assign received data
         this.dsParameterAgeList.data = [...this.dsParameterAgeList.data];
 
         this.selectedItems = [...this.tableData];
         this.selectedItems = [...this.selectedItems];
-        // debugger
+        console.log()
+       
         var mdata = {
             parameterId: this.rowData?.parameterId,
             parameterShortName: this.rowData?.parameterShortName,
@@ -151,7 +153,10 @@ export class ParameterFormMasterComponent implements OnInit {
             isNumeric: this.rowData?.isNumericParameter,
             isActive: JSON.stringify(this.rowData?.isActive),
         };
-        this.parameterForm.patchValue(mdata);
+        this.parameterForm.patchValue(mdata); 
+        const defaultvalue = this.data?.tableData.find(item => item.defaultValue)?.defaultValue || '';
+        this.descForm.patchValue({defaultValue:defaultvalue || ''})
+
     }
 
     tableForm(): FormGroup {
@@ -168,7 +173,7 @@ export class ParameterFormMasterComponent implements OnInit {
             parameterId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             parameterValues: [item.parameterValues ?? ''],
             isDefaultValue: true,
-            defaultValue: [item.DefaultValue ?? ''],
+            defaultValue: [''],
             addedby: [this.accountService.currentUserValue.userId, [this._FormvalidationserviceService.onlyNumberValidator()]],
             updatedby: [this.accountService.currentUserValue.userId, [this._FormvalidationserviceService.onlyNumberValidator()]],
         });
@@ -234,9 +239,11 @@ export class ParameterFormMasterComponent implements OnInit {
 
                 console.log('selected:', this.selectedItems)
                 this.DescArray.clear();
-                this.selectedItems.forEach(item => {
-                    this.DescArray.push(this.createdescDetails(item));
-                });
+                this.selectedItems.forEach(item => { 
+                const formObj = this.createdescDetails(item);  
+                formObj.patchValue({ defaultValue: this.descForm.get("defaultValue")?.value || ''});  
+                this.DescArray.push(formObj);
+                }); 
             }
             else {
 
@@ -419,7 +426,7 @@ export class ParameterFormMasterComponent implements OnInit {
 
         // Reset form fields
         this.descForm.get("paraId").reset();
-        this.descForm.get("defaultValue").reset();
+        //this.descForm.get("defaultValue").reset();
     }
 
 
@@ -469,6 +476,8 @@ export class ParameterFormMasterComponent implements OnInit {
             ],
             paraId: [],
             defaultValue: [],
+            paraMultipleRange:[]
+            
         };
     }
 
@@ -679,6 +688,7 @@ export class PathParaRangeAgeMaster {
     MinAge: any;
     MaxAge: any;
     IsDeleted: any;
+    paraMultipleRange:any;
     /**
      * Constructor
      *
@@ -695,6 +705,7 @@ export class PathParaRangeAgeMaster {
             this.MinAge = PathParaRangeAgeMaster.MinAge || 0;
             this.MaxAge = PathParaRangeAgeMaster.MaxAge || 0;
             this.IsDeleted = PathParaRangeAgeMaster.IsDeleted || 1;
+             this.paraMultipleRange = PathParaRangeAgeMaster.paraMultipleRange || '';
         }
     }
 }
