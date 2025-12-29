@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, ElementRef, HostListener, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, ComponentRef, ElementRef, HostListener, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -9,7 +9,6 @@ import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import * as converter from 'number-to-words';
-import { Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
 import * as XLSX from 'xlsx';
 import { Printsal } from '../sales/sales.component';
@@ -28,6 +27,17 @@ import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { OpPaymentVimalComponent } from 'app/main/opd/op-search-list/op-payment-vimal/op-payment-vimal.component';
 import { IpPaymentInsert } from 'app/main/ipd/ip-search-list/ip-advance/ip-advance.component';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
+
+
+import { WhatsAppEmailService } from 'app/main/shared/services/whats-app-email.service';
+import { EmailSendComponent } from 'app/main/shared/componets/email-send/email-send.component';
+import { Overlay, OverlayRef } from '@angular/cdk/overlay';
+
+import { ComponentPortal } from '@angular/cdk/portal';
+import { SMSDetailsPopupOverComponent } from 'app/main/shared/componets/email-send/smsdetails-popup-over/smsdetails-popup-over.component';
+import { WhatsappDetPopUpOverComponent } from 'app/main/shared/componets/email-send/whatsapp-det-pop-up-over/whatsapp-det-pop-up-over.component';
+import { Subscription } from 'rxjs';
+
 
 @Component({
   selector: 'app-brows-sales-bill',
@@ -107,12 +117,13 @@ export class BrowsSalesBillComponent implements OnInit {
     private _fuseSidebarService: FuseSidebarService,
     public datePipe: DatePipe,
     public toastr: ToastrService,
-    private _ActRoute: Router, 
-         public _formBuilder: FormBuilder, 
-        public _FormvalidationserviceService: FormvalidationserviceService
+    private _ActRoute: Router,
+    public _formBuilder: FormBuilder,
+    public _FormvalidationserviceService: FormvalidationserviceService, public _whatsppService: WhatsAppEmailService,
+    private overlay: Overlay,
   ) { }
 
-  ngOnInit(): void { 
+  ngOnInit(): void {
     this.PharmaSettlementfrom = this.createSettlementform();
     if (this._ActRoute.url == '/pharmacy/browsesalesbill') {
       this.menuActions.push('Patient Ledger');
@@ -140,9 +151,9 @@ export class BrowsSalesBillComponent implements OnInit {
   //Sales 
   @ViewChild('patientTypetemp') patientTypetemp!: TemplateRef<any>;
   @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
-  @ViewChild('isPrintTemplate') isPrintTemplate!: TemplateRef<any>; 
+  @ViewChild('isPrintTemplate') isPrintTemplate!: TemplateRef<any>;
   @ViewChild('patientTypePaidType') patientTypePaidType!: TemplateRef<any>;
-  @ViewChild('patientPurBill') patientPurBill!: TemplateRef<any>; 
+  @ViewChild('patientPurBill') patientPurBill!: TemplateRef<any>;
   @ViewChild('editablePatientName') editablePatientName!: TemplateRef<any>;
 
   //Sales Return
@@ -178,19 +189,23 @@ export class BrowsSalesBillComponent implements OnInit {
       heading: "--", key: "isPrint", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 40,
       template: this.isPrintTemplate
     },
-    { heading: "Type", key: "paidType",align: 'right', width:45,sticky: true,type: gridColumnTypes.template,
-       template: this.patientTypePaidType
+    {
+      heading: "Type", key: "paidType", align: 'right', width: 45, sticky: true, type: gridColumnTypes.template,
+      template: this.patientTypePaidType
     },
-    { heading: "IsPurBill", key: "isPurBill",align: 'right', width: 60,sticky: true,type: gridColumnTypes.template,
-       template: this.patientPurBill
+    {
+      heading: "IsPurBill", key: "isPurBill", align: 'right', width: 60, sticky: true, type: gridColumnTypes.template,
+      template: this.patientPurBill
     },
     { heading: "Date", key: "date", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-     { heading: "Time", key: "time", sort: true, align: 'left', emptySign: 'NA', width: 90 },
+    { heading: "Time", key: "time", sort: true, align: 'left', emptySign: 'NA', width: 90 },
     { heading: "Sales No", key: "salesNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
     { heading: "UHID No", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
 
-    { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 300, type: gridColumnTypes.template,
-       template: this.editablePatientName},
+    {
+      heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 300, type: gridColumnTypes.template,
+      template: this.editablePatientName
+    },
     { heading: "IPD No", key: "ipno", sort: true, align: 'left', emptySign: 'NA', width: 130 },
 
     { heading: "Total Amt", key: "totalAmount", sort: true, align: 'left', emptySign: 'NA', width: 150, type: gridColumnTypes.amount },
@@ -230,7 +245,7 @@ export class BrowsSalesBillComponent implements OnInit {
     { heading: "IGST%", key: "igstPer", sort: true, align: 'left', emptySign: 'NA', width: 100, type: gridColumnTypes.amount },
 
   ]
- 
+
   gridConfig: gridModel = {
     apiUrl: "Sales/salesbrowselist",
     columnsList: this.BrowseHColumns,
@@ -251,17 +266,17 @@ export class BrowsSalesBillComponent implements OnInit {
   onChangeFirst() {
     debugger
     this.isShowDetailTable = false;
-    this.firstName = this._BrowsSalesBillService.userForm.get('F_Name').value + "%" 
-    this.LastName = this._BrowsSalesBillService.userForm.get('L_Name').value + "%" 
+    this.firstName = this._BrowsSalesBillService.userForm.get('F_Name').value + "%"
+    this.LastName = this._BrowsSalesBillService.userForm.get('L_Name').value + "%"
     this.StoreId1 = this._BrowsSalesBillService.userForm.get('StoreId').value || "0"
-    this.FromDate = this.datePipe.transform(this._BrowsSalesBillService.userForm.get('startdate').value, "yyyy-MM-dd") 
-    this.ToDate = this.datePipe.transform(this._BrowsSalesBillService.userForm.get('enddate').value, "yyyy-MM-dd") 
+    this.FromDate = this.datePipe.transform(this._BrowsSalesBillService.userForm.get('startdate').value, "yyyy-MM-dd")
+    this.ToDate = this.datePipe.transform(this._BrowsSalesBillService.userForm.get('enddate').value, "yyyy-MM-dd")
     this.regNo = this._BrowsSalesBillService.userForm.get('RegNo').value || "0"
     this.salesNo = this._BrowsSalesBillService.userForm.get('SalesNo').value || "0"
     this.OpIpType = this._BrowsSalesBillService.userForm.get('OP_IP_Type').value || "0"
-    if(this.FromDate && this.ToDate){
-    this.getSaleslistdata(); 
-    } 
+    if (this.FromDate && this.ToDate) {
+      this.getSaleslistdata();
+    }
   }
   getSaleslistdata() {
     debugger
@@ -272,7 +287,7 @@ export class BrowsSalesBillComponent implements OnInit {
       sortOrder: 0,
       filters: [
         { fieldName: "LName", fieldValue: this.LastName, opType: OperatorComparer.Equals },
-        { fieldName: "FName", fieldValue: this.firstName , opType: OperatorComparer.Equals },
+        { fieldName: "FName", fieldValue: this.firstName, opType: OperatorComparer.Equals },
         { fieldName: "StoreId", fieldValue: String(this.StoreId1), opType: OperatorComparer.Equals },
         { fieldName: "FromDt", fieldValue: this.FromDate, opType: OperatorComparer.Equals },
         { fieldName: "ToDt", fieldValue: this.ToDate, opType: OperatorComparer.Equals },
@@ -281,54 +296,54 @@ export class BrowsSalesBillComponent implements OnInit {
         { fieldName: "OPIPType", fieldValue: this.OpIpType, opType: OperatorComparer.Equals }
       ],
     }
-        // this.grid.gridConfig = this.gridConfig;
-        // this.grid.bindGridData();
+    // this.grid.gridConfig = this.gridConfig;
+    // this.grid.bindGridData();
 
-         this.getsaleslist();
+    this.getsaleslist();
   }
-  chargelist:any=[];
-getsaleslist(){ 
-    debugger 
-        var vdata = {
-          "first": 0, 
-          "rows": 10000,
-          "sortField": "SalesId",
-          "sortOrder": 0,
-          "filters": [ 
+  chargelist: any = [];
+  getsaleslist() {
+    debugger
+    var vdata = {
+      "first": 0,
+      "rows": 10000,
+      "sortField": "SalesId",
+      "sortOrder": 0,
+      "filters": [
         { "fieldName": "LName", "fieldValue": this.LastName, "opType": OperatorComparer.Equals },
-        { "fieldName": "FName", "fieldValue": this.firstName , "opType": OperatorComparer.Equals },
+        { "fieldName": "FName", "fieldValue": this.firstName, "opType": OperatorComparer.Equals },
         { "fieldName": "StoreId", "fieldValue": String(this.StoreId1), "opType": OperatorComparer.Equals },
         { "fieldName": "FromDt", "fieldValue": this.FromDate, "opType": OperatorComparer.Equals },
         { "fieldName": "ToDt", "fieldValue": this.ToDate, "opType": OperatorComparer.Equals },
         { "fieldName": "RegNo", "fieldValue": this.regNo, "opType": OperatorComparer.Equals },
         { "fieldName": "SalesNo", "fieldValue": this.salesNo, "opType": OperatorComparer.Equals },
         { "fieldName": "OPIPType", "fieldValue": this.OpIpType, "opType": OperatorComparer.Equals }
-          ],
-          "Columns": [],
-          "exportType": "JSON"
-        } 
-    this._BrowsSalesBillService.getSalesBrowseList(vdata).subscribe(response=>{
+      ],
+      "Columns": [],
+      "exportType": "JSON"
+    }
+    this._BrowsSalesBillService.getSalesBrowseList(vdata).subscribe(response => {
       this.chargelist = response.data
       console.log(this.chargelist)
 
-      if(this.chargelist.length){
+      if (this.chargelist.length) {
         this.gettotalshowingonPage(this.chargelist);
       }
     })
-    
-}
-finalTotalAmt:any=0;
-finalDiscAmt:any=0;
-finalNetAmt:any=0;
-finalPaidAmt:any=0;
-finalBalanceAmt:any=0;
-    gettotalshowingonPage(element) { 
-        this.finalTotalAmt = (element.reduce((sum, { totalAmount }) => sum += +(totalAmount || 0), 0)).toFixed(2);
-        this.finalDiscAmt = (element.reduce((sum, { discAmount }) => sum += +(discAmount || 0), 0)).toFixed(2);
-        this.finalNetAmt = (element.reduce((sum, { netAmount }) => sum += +(netAmount || 0), 0)).toFixed(2);
-        this.finalPaidAmt = (element.reduce((sum, { paidAmount }) => sum += +(paidAmount || 0), 0)).toFixed(2);
-        this.finalBalanceAmt = (element.reduce((sum, { balanceAmount }) => sum += +(balanceAmount || 0), 0)).toFixed(2);
-     }
+
+  }
+  finalTotalAmt: any = 0;
+  finalDiscAmt: any = 0;
+  finalNetAmt: any = 0;
+  finalPaidAmt: any = 0;
+  finalBalanceAmt: any = 0;
+  gettotalshowingonPage(element) {
+    this.finalTotalAmt = (element.reduce((sum, { totalAmount }) => sum += +(totalAmount || 0), 0)).toFixed(2);
+    this.finalDiscAmt = (element.reduce((sum, { discAmount }) => sum += +(discAmount || 0), 0)).toFixed(2);
+    this.finalNetAmt = (element.reduce((sum, { netAmount }) => sum += +(netAmount || 0), 0)).toFixed(2);
+    this.finalPaidAmt = (element.reduce((sum, { paidAmount }) => sum += +(paidAmount || 0), 0)).toFixed(2);
+    this.finalBalanceAmt = (element.reduce((sum, { balanceAmount }) => sum += +(balanceAmount || 0), 0)).toFixed(2);
+  }
   getsalesdetaillist(event) {
     console.log(event)
 
@@ -358,29 +373,29 @@ finalBalanceAmt:any=0;
 
     this.onChangeFirst();
   }
-editPatientName(row: any) {
-  row.originalPatientName = row.patientName;  // backup original in case of cancel
-  row.isEditing = true;
-} 
-savePatientName(row: any) {
-  debugger
-  row.isEditing = false;
-  var vadat = { 
-  "extMobileNo": row?.extMobileNo || 0,
-  "externalPatientName": row?.patientName || '',
-  "extAddress":row?.extAddress || '',
-  "doctorName": row?.doctorName || '',
-  "salesId":row?.salesId,
+  editPatientName(row: any) {
+    row.originalPatientName = row.patientName;  // backup original in case of cancel
+    row.isEditing = true;
   }
-  console.log(vadat)
-  this._BrowsSalesBillService.UpdateExtpatientName(vadat).subscribe(Response=>{
-  this.grid1.bindGridData();
-  })
-} 
-cancelEdit(row: any) {
-  row.patientName = row.originalPatientName;
-  row.isEditing = false;
-}
+  savePatientName(row: any) {
+    debugger
+    row.isEditing = false;
+    var vadat = {
+      "extMobileNo": row?.extMobileNo || 0,
+      "externalPatientName": row?.patientName || '',
+      "extAddress": row?.extAddress || '',
+      "doctorName": row?.doctorName || '',
+      "salesId": row?.salesId,
+    }
+    console.log(vadat)
+    this._BrowsSalesBillService.UpdateExtpatientName(vadat).subscribe(Response => {
+      this.grid1.bindGridData();
+    })
+  }
+  cancelEdit(row: any) {
+    row.patientName = row.originalPatientName;
+    row.isEditing = false;
+  }
 
   ///tab 2 return
   //Sales return header list columns
@@ -401,9 +416,9 @@ cancelEdit(row: any) {
     { heading: "Net Amt", key: "netAmount", sort: true, align: 'left', emptySign: 'NA', width: 150, type: gridColumnTypes.amount },
     { heading: "Paid Amt", key: "paidAmount", sort: true, align: 'left', emptySign: 'NA', width: 150, type: gridColumnTypes.amount },
     // { heading: "Balance Amt", key: "balanceAmount", sort: true, align: 'left', emptySign: 'NA', width: 150, type: gridColumnTypes.amount },
-  
-   { heading: "Balance Amount", key: "balanceAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, columnClass: (element) => element["balanceAmount"] > 0 ? Color.RED : "" },
-   
+
+    { heading: "Balance Amount", key: "balanceAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, columnClass: (element) => element["balanceAmount"] > 0 ? Color.RED : "" },
+
     { heading: "GST Amt", key: "vatAmount", sort: true, align: 'left', emptySign: 'NA', width: 150, type: gridColumnTypes.amount },
 
     { heading: "Type", key: "label", sort: true, align: 'left', emptySign: 'NA', width: 150 },
@@ -430,7 +445,7 @@ cancelEdit(row: any) {
       { fieldName: "OP_IP_Type", fieldValue: "0", opType: OperatorComparer.Equals }
     ],
     row: 25
-  } 
+  }
 
   ///tab 3 return
   //patient  list columns 
@@ -471,10 +486,10 @@ cancelEdit(row: any) {
       { fieldName: "IPNo", fieldValue: "0", opType: OperatorComparer.Equals },
     ],
     row: 25
-  } 
-  isChecked: boolean = false; 
+  }
+  isChecked: boolean = false;
   @ViewChild(MatSort) sort: MatSort;
-  @ViewChild(MatPaginator) paginator: MatPaginator; 
+  @ViewChild(MatPaginator) paginator: MatPaginator;
 
   //Sales Retrun list 
   onChangeFirst_Retrun() {
@@ -538,24 +553,24 @@ cancelEdit(row: any) {
     debugger
     if (this._BrowsSalesBillService.SalesPatientForm.get('IsDischarge').value == false) {
       this.apiUrl = "Admission/AdmissionList"
-      this.status = "0" 
-      this.Fr_Date = "1900-01-01" 
+      this.status = "0"
+      this.Fr_Date = "1900-01-01"
       this.T_Date = "1900-01-01"
     } else {
       this.apiUrl = "Admission/AdmissionDischargeList"
-      this.status = "1" 
+      this.status = "1"
       this.Fr_Date = this.datePipe.transform(this._BrowsSalesBillService.SalesPatientForm.get('startdate1').value, "yyyy-MM-dd") || "1900-01-01"
       this.T_Date = this.datePipe.transform(this._BrowsSalesBillService.SalesPatientForm.get('enddate1').value, "yyyy-MM-dd") || "1900-01-01"
 
     }
-    this.first_N = this._BrowsSalesBillService.SalesPatientForm.get('F_Name').value + "%" 
-    this.middle_N = this._BrowsSalesBillService.SalesPatientForm.get('M_Name').value + "%" 
-    this.Last_N = this._BrowsSalesBillService.SalesPatientForm.get('L_Name').value + "%" 
+    this.first_N = this._BrowsSalesBillService.SalesPatientForm.get('F_Name').value + "%"
+    this.middle_N = this._BrowsSalesBillService.SalesPatientForm.get('M_Name').value + "%"
+    this.Last_N = this._BrowsSalesBillService.SalesPatientForm.get('L_Name').value + "%"
     this.reg_No_Pt = this._BrowsSalesBillService.SalesPatientForm.get('RegNo').value || "0"
     this.ipdno = this._BrowsSalesBillService.SalesPatientForm.get('IPDNo').value || "0"
     this.getPatientlistdata();
   }
- 
+
   getPatientlistdata() {
     debugger
     this.gridConfig4 = {
@@ -580,39 +595,39 @@ cancelEdit(row: any) {
   }
   getchangeDate() {
     debugger
-      if (this._BrowsSalesBillService.SalesPatientForm.get('IsDischarge').value != false) {
-            this.apiUrl = "Admission/AdmissionDischargeList"
-            this.Fr_Date = this.datePipe.transform(this._BrowsSalesBillService.SalesPatientForm.get('startdate1').value, "yyyy-MM-dd") || "1900-01-01"
-            this.T_Date = this.datePipe.transform(this._BrowsSalesBillService.SalesPatientForm.get('enddate1').value, "yyyy-MM-dd") || "1900-01-01"
-            this.status = '1'
-        }
-    this.first_N = this._BrowsSalesBillService.SalesPatientForm.get('F_Name').value + "%" 
-    this.middle_N = this._BrowsSalesBillService.SalesPatientForm.get('M_Name').value + "%" 
-    this.Last_N = this._BrowsSalesBillService.SalesPatientForm.get('L_Name').value + "%" 
+    if (this._BrowsSalesBillService.SalesPatientForm.get('IsDischarge').value != false) {
+      this.apiUrl = "Admission/AdmissionDischargeList"
+      this.Fr_Date = this.datePipe.transform(this._BrowsSalesBillService.SalesPatientForm.get('startdate1').value, "yyyy-MM-dd") || "1900-01-01"
+      this.T_Date = this.datePipe.transform(this._BrowsSalesBillService.SalesPatientForm.get('enddate1').value, "yyyy-MM-dd") || "1900-01-01"
+      this.status = '1'
+    }
+    this.first_N = this._BrowsSalesBillService.SalesPatientForm.get('F_Name').value + "%"
+    this.middle_N = this._BrowsSalesBillService.SalesPatientForm.get('M_Name').value + "%"
+    this.Last_N = this._BrowsSalesBillService.SalesPatientForm.get('L_Name').value + "%"
     this.reg_No_Pt = this._BrowsSalesBillService.SalesPatientForm.get('RegNo').value || "0"
     this.ipdno = this._BrowsSalesBillService.SalesPatientForm.get('IPDNo').value || "0"
     this.getPatientlistdata();
-    } 
- 
-    onChangeDiscahrge(event) {
-      debugger
-         if (this._BrowsSalesBillService.SalesPatientForm.get('IsDischarge').value == false) {
-            this._BrowsSalesBillService.SalesPatientForm.get('startdate1').setValue('')
-            this._BrowsSalesBillService.SalesPatientForm.get('enddate1').setValue('')
-            this.Fr_Date = "1900-01-01"
-            this.T_Date = "1900-01-01"
-            this.status = '0'
-            this.apiUrl = "Admission/AdmissionList"
-        } else {
-            this._BrowsSalesBillService.SalesPatientForm.get('startdate1').setValue(new Date())
-            this._BrowsSalesBillService.SalesPatientForm.get('enddate1').setValue(new Date())
-            this.Fr_Date = this.datePipe.transform(this._BrowsSalesBillService.SalesPatientForm.get('startdate1').value, "yyyy-MM-dd") || "1900-01-01"
-            this.T_Date = this.datePipe.transform(this._BrowsSalesBillService.SalesPatientForm.get('enddate1').value, "yyyy-MM-dd") || "1900-01-01"
-            this.status = '1'
-            this.apiUrl = "Admission/AdmissionDischargeList"
-        }
-        this.getPatientlistdata();
+  }
+
+  onChangeDiscahrge(event) {
+    debugger
+    if (this._BrowsSalesBillService.SalesPatientForm.get('IsDischarge').value == false) {
+      this._BrowsSalesBillService.SalesPatientForm.get('startdate1').setValue('')
+      this._BrowsSalesBillService.SalesPatientForm.get('enddate1').setValue('')
+      this.Fr_Date = "1900-01-01"
+      this.T_Date = "1900-01-01"
+      this.status = '0'
+      this.apiUrl = "Admission/AdmissionList"
+    } else {
+      this._BrowsSalesBillService.SalesPatientForm.get('startdate1').setValue(new Date())
+      this._BrowsSalesBillService.SalesPatientForm.get('enddate1').setValue(new Date())
+      this.Fr_Date = this.datePipe.transform(this._BrowsSalesBillService.SalesPatientForm.get('startdate1').value, "yyyy-MM-dd") || "1900-01-01"
+      this.T_Date = this.datePipe.transform(this._BrowsSalesBillService.SalesPatientForm.get('enddate1').value, "yyyy-MM-dd") || "1900-01-01"
+      this.status = '1'
+      this.apiUrl = "Admission/AdmissionDischargeList"
     }
+    this.getPatientlistdata();
+  }
 
   getValidationMessages() {
     return {
@@ -639,7 +654,7 @@ cancelEdit(row: any) {
       ]
 
     };
-  } 
+  }
 
   IsDischarge: any;
   onChangeIsactive(SiderOption) {
@@ -656,12 +671,12 @@ cancelEdit(row: any) {
         this._AdmissionService.myFilterform.get('end').setValue('')
       //this.getAdmittedPatientList();
     }
-  } 
+  }
   dateTimeObj: any;
   getDateTime(dateTimeObj) {
     // console.log('dateTimeObj==', dateTimeObj);
     this.dateTimeObj = dateTimeObj;
-  } 
+  }
   // OnPayment(contact) {
   //   const currentDate = new Date();
   //   const datePipe = new DatePipe('en-US');
@@ -737,31 +752,31 @@ cancelEdit(row: any) {
   // }
   PharmaSettlementfrom: FormGroup;
   createSettlementform() {
-    return this._formBuilder.group({ 
+    return this._formBuilder.group({
       // payment in array
       payment: this._formBuilder.array([]),
-          // Current stock in array
+      // Current stock in array
       saless: this._formBuilder.array([]),
-        // sales return details in array
+      // sales return details in array
       advanceDetail: this._formBuilder.array([]),
-        //Advacne header  
+      //Advacne header  
       advanceHeader: this._formBuilder.group({
         advanceId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         advanceUsedAmount: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
         balanceAmount: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
       }),
-       //New Payments
+      //New Payments
       // ✅ Fixed: should be FormArray
       tPayments: this._formBuilder.array([]),
     });
-  } 
-    createAdvanceDetails(element: any): FormGroup {
+  }
+  createAdvanceDetails(element: any): FormGroup {
     return this._formBuilder.group({
       advanceDetailID: [element?.AdvanceDetailID ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       usedAmount: [element?.UsedAmount ?? 0, [, this._FormvalidationserviceService.AllowDecimalNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       balanceAmount: [element?.BalanceAmount ?? 0, [, this._FormvalidationserviceService.AllowDecimalNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
     });
-  } 
+  }
   createsaless(element: any): FormGroup {
     return this._formBuilder.group({
       salesID: [element?.salesID ?? 0, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
@@ -803,41 +818,41 @@ cancelEdit(row: any) {
       payTmdate: [element?.payTmdate ?? ''],
       tdsamount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
       wfamount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-      unitId: [this._loggedService.currentUserValue.user.unitId, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]], 
-    });  
+      unitId: [this._loggedService.currentUserValue.user.unitId, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+    });
   }
-    CreateModePaymentform(item: any): FormGroup {
-      return this._formBuilder.group({
-        paymentId: [item?.paymentId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        unitId: [item?.unitId ?? this._loggedService.currentUserValue.user.unitId],
-        billNo: [item?.billNo ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        opdipdtype: [item?.opdipdtype ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        paymentDate: [item?.paymentDate ?? ''],
-        paymentTime: [item?.paymentTime ?? ''],
-        payAmount: [item?.payAmount ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-        tranNo: [item?.tranNo ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
-        bankName: [item?.bankName ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
-        validationDate: [item?.validationDate ?? ''],
-        advanceUsedAmount: [item?.advanceUsedAmount ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-        comments: [item?.comments ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
-        payMode: [item?.payMode ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
-        onlineTranNo: [item?.onlineTranNo ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
-        onlineTranResponse: [item?.onlineTranResponse ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
-        companyId: [item?.companyId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        advanceId: [item?.advanceId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        refundId: [item?.refundId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        cashCounterId: [item?.cashCounterId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        transactionType: [item?.transactionType ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        isSelfOrcompany: [item?.isSelfOrcompany ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        tranMode: ['PHAR', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
-        createdBy: [item?.createdBy ?? this._loggedService.currentUserValue.userId],
-        transactionLabel: [item?.transactionLabel ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
-      });
-    }
-    // Getters 
+  CreateModePaymentform(item: any): FormGroup {
+    return this._formBuilder.group({
+      paymentId: [item?.paymentId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      unitId: [item?.unitId ?? this._loggedService.currentUserValue.user.unitId],
+      billNo: [item?.billNo ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      opdipdtype: [item?.opdipdtype ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      paymentDate: [item?.paymentDate ?? ''],
+      paymentTime: [item?.paymentTime ?? ''],
+      payAmount: [item?.payAmount ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      tranNo: [item?.tranNo ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+      bankName: [item?.bankName ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+      validationDate: [item?.validationDate ?? ''],
+      advanceUsedAmount: [item?.advanceUsedAmount ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      comments: [item?.comments ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+      payMode: [item?.payMode ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+      onlineTranNo: [item?.onlineTranNo ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+      onlineTranResponse: [item?.onlineTranResponse ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+      companyId: [item?.companyId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      advanceId: [item?.advanceId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      refundId: [item?.refundId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      cashCounterId: [item?.cashCounterId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      transactionType: [item?.transactionType ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      isSelfOrcompany: [item?.isSelfOrcompany ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      tranMode: ['PHAR', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+      createdBy: [item?.createdBy ?? this._loggedService.currentUserValue.userId],
+      transactionLabel: [item?.transactionLabel ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+    });
+  }
+  // Getters 
   get ModeOfPaymentsArray(): FormArray {
-   return this.PharmaSettlementfrom.get('tPayments') as FormArray;
-   }
+    return this.PharmaSettlementfrom.get('tPayments') as FormArray;
+  }
   // Getters 
   get AdvanceDetailsArray(): FormArray {
     return this.PharmaSettlementfrom.get('advanceDetail') as FormArray;
@@ -861,14 +876,14 @@ cancelEdit(row: any) {
     PatientHeaderObj['AdvanceAmount'] = Math.round(contact?.balanceAmount);
     PatientHeaderObj['NetPayAmount'] = Math.round(contact?.balanceAmount);
     PatientHeaderObj['BillNo'] = contact?.salesId || 0;
-    PatientHeaderObj['OPD_IPD_Id'] =  contact?.opipid || 0;
+    PatientHeaderObj['OPD_IPD_Id'] = contact?.opipid || 0;
     PatientHeaderObj['RegNo'] = contact?.regNo || 0;
     PatientHeaderObj['CashcounterId'] = contact?.cashCounterID || 0;
-     PatientHeaderObj['CompanyName'] = contact?.companyName || '';  
-    PatientHeaderObj['CompanyId'] = contact?.companyId || 0;  
+    PatientHeaderObj['CompanyName'] = contact?.companyName || '';
+    PatientHeaderObj['CompanyId'] = contact?.companyId || 0;
     PatientHeaderObj['TransactionLabel'] = 'SALES_SETTLEMENT';
     if (contact?.oP_IP_Type == 1)
-      PatientHeaderObj['IPDNo'] =  contact?.ipno;
+      PatientHeaderObj['IPDNo'] = contact?.ipno;
     else
       PatientHeaderObj['OPDNo'] = contact?.patientName;
 
@@ -934,11 +949,11 @@ cancelEdit(row: any) {
     });
   }
 
-  getPrint(el) { 
+  getPrint(el) {
     var D_data = {
       "SalesID": el.SalesId,// 
       "OP_IP_Type": el.OP_IP_Type
-    } 
+    }
     let printContents;
     this.subscriptionArr.push(
       this._BrowsSalesService.getSalesPrint(D_data).subscribe(res => {
@@ -948,14 +963,14 @@ cancelEdit(row: any) {
         this.getTemplate();
       })
     );
-  } 
+  }
   @HostListener('document:keydown', ['$event']) onKeydownHandler(event: KeyboardEvent) {
 
     if (event.keyCode === 114) {
       // this. selectRow(event,this.dssaleList1.data);
       this.getWhatsappshareSales(this.rowid);
     }
-  } 
+  }
   // getPrint2(el) {
   //   //
   //   if (el.PaidType == 'Credit' && el.IsRefundFlag == false) {
@@ -975,7 +990,7 @@ cancelEdit(row: any) {
   // }
 
   viewgetSalesBillReportPdf(response) {
-    console.log(response) 
+    console.log(response)
     setTimeout(() => {
       let param = {
         "searchFields": [
@@ -991,7 +1006,7 @@ cancelEdit(row: any) {
             "opType": "Equals"
           }
         ],
-        "mode": "PharamcySalesBill" 
+        "mode": "PharamcySalesBill"
       }
 
       this._BrowsSalesBillService.getReportView(param).subscribe(res => {
@@ -1008,77 +1023,77 @@ cancelEdit(row: any) {
           });
         matDialog.afterClosed().subscribe(result => {
         });
-      }); 
+      });
     }, 100);
   }
-// dialogData :any
-// viewgetSalesBillReportPdf(response) {
-//   console.log(response);
+  // dialogData :any
+  // viewgetSalesBillReportPdf(response) {
+  //   console.log(response);
 
-//   setTimeout(() => {
-//     let param = {
-//       "searchFields": [
-//         {
-//           "fieldName": "SalesID",
-//           "fieldValue": String(response.salesId),
-//           "opType": "Equals"
-//         },
-//         {
-//           "fieldName": "OP_IP_Type",
-//           "fieldValue": String(response.oP_IP_Type),
-//           "opType": "Equals"
-//         }
-//       ],
-//       "mode": "PharamcySalesBill"
-//     };
+  //   setTimeout(() => {
+  //     let param = {
+  //       "searchFields": [
+  //         {
+  //           "fieldName": "SalesID",
+  //           "fieldValue": String(response.salesId),
+  //           "opType": "Equals"
+  //         },
+  //         {
+  //           "fieldName": "OP_IP_Type",
+  //           "fieldValue": String(response.oP_IP_Type),
+  //           "opType": "Equals"
+  //         }
+  //       ],
+  //       "mode": "PharamcySalesBill"
+  //     };
 
-//     this._BrowsSalesBillService.getReportView(param).subscribe(res => {
+  //     this._BrowsSalesBillService.getReportView(param).subscribe(res => {
 
-//       const matDialog = this._matDialog.open(PdfviewerComponent, {
-//         maxWidth: "85vw",
-//         height: '750px',
-//         width: '100%',
-//         data: {
-//           base64: res["base64"] as string,
-//           title: "Sales Bill" + " " + "Viewer"
-//         }
-//       });
+  //       const matDialog = this._matDialog.open(PdfviewerComponent, {
+  //         maxWidth: "85vw",
+  //         height: '750px',
+  //         width: '100%',
+  //         data: {
+  //           base64: res["base64"] as string,
+  //           title: "Sales Bill" + " " + "Viewer"
+  //         }
+  //       });
 
-//       matDialog.afterOpened().subscribe(() => {
-//         // Trigger the print dialog after the PDF is rendered inside the dialog
-//         this.printPDF();
-//       });
+  //       matDialog.afterOpened().subscribe(() => {
+  //         // Trigger the print dialog after the PDF is rendered inside the dialog
+  //         this.printPDF();
+  //       });
 
-//       matDialog.afterClosed().subscribe(result => {
-//         // Handle dialog closure if needed
-//       });
-//     });
-//   }, 100);
-// }
+  //       matDialog.afterClosed().subscribe(result => {
+  //         // Handle dialog closure if needed
+  //       });
+  //     });
+  //   }, 100);
+  // }
 
-// printPDF() {
-//   // Assuming you are using a method to display PDF within the dialog, 
-//   // you may have an instance of the PDF viewer. Here's one approach using window.print().
+  // printPDF() {
+  //   // Assuming you are using a method to display PDF within the dialog, 
+  //   // you may have an instance of the PDF viewer. Here's one approach using window.print().
 
-//   const printWindow = window.open('', '_blank');
-//   if (printWindow) {
-//     const base64PDF = this.dialogData.base64;
-//     printWindow.document.write(`
-//       <html>
-//         <head><title>Print PDF</title></head>
-//         <body>
-//           <embed src="data:application/pdf;base64,${base64PDF}" type="application/pdf" width="100%" height="100%"></embed>
-//         </body>
-//       </html>
-//     `);
-//     printWindow.document.close(); // Necessary to finish the HTML document
-//     printWindow.onload = () => {
-//       printWindow.print(); // Trigger the print dialog when the PDF is loaded
-//     };
-//   }
-// }
+  //   const printWindow = window.open('', '_blank');
+  //   if (printWindow) {
+  //     const base64PDF = this.dialogData.base64;
+  //     printWindow.document.write(`
+  //       <html>
+  //         <head><title>Print PDF</title></head>
+  //         <body>
+  //           <embed src="data:application/pdf;base64,${base64PDF}" type="application/pdf" width="100%" height="100%"></embed>
+  //         </body>
+  //       </html>
+  //     `);
+  //     printWindow.document.close(); // Necessary to finish the HTML document
+  //     printWindow.onload = () => {
+  //       printWindow.print(); // Trigger the print dialog when the PDF is loaded
+  //     };
+  //   }
+  // }
 
- 
+
   viewgetSalesreturnBillReportPdf(response) {
     console.log(response)
     debugger
@@ -1115,7 +1130,7 @@ cancelEdit(row: any) {
         });
       });
     }, 100);
-  } 
+  }
   // viewSalesPdf(el) {
   //   // 
   //   this.sIsLoading = 'loading-data';
@@ -1936,24 +1951,24 @@ cancelEdit(row: any) {
     } else if (m == 'Patient Sales Detail') {
 
     }
-  } 
+  }
   WhatsSalesRetPdf(el) {
 
   }
 
-  printpatient(){
-    
-  } 
-  printsalesDetails(contact){
+  printpatient() {
+
+  }
+  printsalesDetails(contact) {
     debugger
-        setTimeout(() => { 
-        let param = {
-            "searchFields": [
-              { "fieldName": "OP_IP_ID", "fieldValue": String(contact?.admissionId || 0), "opType": "13" },
-              { "fieldName": "StoreId", "fieldValue": String(this._loggedService.currentUserValue?.user?.storeId), "opType": "13" }
-            ],
-            "mode": "PharmacySalesDetails"
-          }
+    setTimeout(() => {
+      let param = {
+        "searchFields": [
+          { "fieldName": "OP_IP_ID", "fieldValue": String(contact?.admissionId || 0), "opType": "13" },
+          { "fieldName": "StoreId", "fieldValue": String(this._loggedService.currentUserValue?.user?.storeId), "opType": "13" }
+        ],
+        "mode": "PharmacySalesDetails"
+      }
       this._BrowsSalesBillService.getReportView(param).subscribe(res => {
         const dialogRef = this._matDialog.open(PdfviewerComponent,
           {
@@ -1965,22 +1980,22 @@ cancelEdit(row: any) {
               title: "Pharmacy Sales Details viewer"
             }
           });
-        dialogRef.afterClosed().subscribe(result => { 
+        dialogRef.afterClosed().subscribe(result => {
         });
       });
 
     }, 100);
   }
- 
-  printsalesPatientstatement(contact){ 
-    setTimeout(() => { 
-        let param = {
-            "searchFields": [
-              { "fieldName": "OP_IP_ID", "fieldValue": String(contact?.admissionId || 0), "opType": "13" },
-              { "fieldName": "StoreId", "fieldValue": String(this._loggedService.currentUserValue?.user?.storeId), "opType": "13" }
-            ],
-            "mode": "PharmacyPatientStatement"
-          }
+
+  printsalesPatientstatement(contact) {
+    setTimeout(() => {
+      let param = {
+        "searchFields": [
+          { "fieldName": "OP_IP_ID", "fieldValue": String(contact?.admissionId || 0), "opType": "13" },
+          { "fieldName": "StoreId", "fieldValue": String(this._loggedService.currentUserValue?.user?.storeId), "opType": "13" }
+        ],
+        "mode": "PharmacyPatientStatement"
+      }
       this._BrowsSalesBillService.getReportView(param).subscribe(res => {
         const dialogRef = this._matDialog.open(PdfviewerComponent,
           {
@@ -1992,12 +2007,219 @@ cancelEdit(row: any) {
               title: "Patient Statement viewer"
             }
           });
-        dialogRef.afterClosed().subscribe(result => { 
+        dialogRef.afterClosed().subscribe(result => {
         });
       });
 
     }, 100);
-  } 
+  }
+
+
+  //whatsapp
+    private overlayRef: OverlayRef | null = null;
+          private EmailOverlayRef: OverlayRef | null = null;
+          private whatsappOverlayRef: OverlayRef | null = null;
+          private hoverTimeout: any = null;
+          private patientCloseTimeout: any = null;
+          private doctorCloseTimeout: any = null;
+          
+          openEmailDetailsPopover(event: MouseEvent, patientData: any) {
+              event.stopPropagation();
+      
+              // Clear any existing timeout
+              if (this.hoverTimeout) {
+                  clearTimeout(this.hoverTimeout);
+              }
+      
+              // Add small delay to prevent flickering
+              this.hoverTimeout = setTimeout(() => {
+                  // Close any existing patient popover
+                  if (this.EmailOverlayRef) {
+                      this.EmailOverlayRef.dispose();
+                      this.EmailOverlayRef = null;
+                  }
+      
+                  const positionStrategy = this.overlay.position()
+                      .flexibleConnectedTo(event.target as HTMLElement)
+                      .withPositions([
+                          {
+                              originX: 'start',
+                              originY: 'bottom',
+                              overlayX: 'start',
+                              overlayY: 'top',
+                          },
+                          {
+                              originX: 'start',
+                              originY: 'top',
+                              overlayX: 'start',
+                              overlayY: 'bottom',
+                          },
+                          {
+                              originX: 'end',
+                              originY: 'center',
+                              overlayX: 'start',
+                              overlayY: 'center',
+                          },
+                          {
+                              originX: 'start',
+                              originY: 'center',
+                              overlayX: 'end',
+                              overlayY: 'center',
+                          }
+                      ]);
+      
+                  this.EmailOverlayRef = this.overlay.create({
+                      positionStrategy,
+                      scrollStrategy: this.overlay.scrollStrategies.close(),
+                      hasBackdrop: false,
+                  });
+      
+                  const portal = new ComponentPortal(SMSDetailsPopupOverComponent);
+                  const componentRef: ComponentRef<SMSDetailsPopupOverComponent> = this.EmailOverlayRef.attach(portal);
+                  componentRef.instance.patientData = patientData;
+                  
+                  // Handle mouse events on the overlay element
+                  const overlayElement = this.EmailOverlayRef.overlayElement;
+                  overlayElement.addEventListener('mouseenter', () => this.keepPatientPopoverOpen());
+                  overlayElement.addEventListener('mouseleave', () => this.closeEmailDetailsPopover());
+              }, 300); // 300ms delay before showing popover
+          }
+          closeEmailDetailsPopover() {
+              // Clear timeout if popover hasn't opened yet
+              if (this.hoverTimeout) {
+                  clearTimeout(this.hoverTimeout);
+                  this.hoverTimeout = null;
+              }
+      
+              // Clear any existing close timeout
+              if (this.patientCloseTimeout) {
+                  clearTimeout(this.patientCloseTimeout);
+              }
+      
+              // Add delay before closing to allow moving mouse to popover
+              this.patientCloseTimeout = setTimeout(() => {
+                  if (this.EmailOverlayRef) {
+                      this.EmailOverlayRef.dispose();
+                      this.EmailOverlayRef = null;
+                  }
+              }, 200);
+          }
+              openWhatsappDetailsPopover(event: MouseEvent, patientData: any) {
+              event.stopPropagation();
+      
+              // Clear any existing timeout
+              if (this.hoverTimeout) {
+                  clearTimeout(this.hoverTimeout);
+              }
+      
+              // Add small delay to prevent flickering
+              this.hoverTimeout = setTimeout(() => {
+                  // Close any existing patient popover
+                  if (this.whatsappOverlayRef) {
+                      this.whatsappOverlayRef.dispose();
+                      this.whatsappOverlayRef = null;
+                  }
+      
+                  const positionStrategy = this.overlay.position()
+                      .flexibleConnectedTo(event.target as HTMLElement)
+                      .withPositions([
+                          {
+                              originX: 'start',
+                              originY: 'bottom',
+                              overlayX: 'start',
+                              overlayY: 'top',
+                          },
+                          {
+                              originX: 'start',
+                              originY: 'top',
+                              overlayX: 'start',
+                              overlayY: 'bottom',
+                          },
+                          {
+                              originX: 'end',
+                              originY: 'center',
+                              overlayX: 'start',
+                              overlayY: 'center',
+                          },
+                          {
+                              originX: 'start',
+                              originY: 'center',
+                              overlayX: 'end',
+                              overlayY: 'center',
+                          }
+                      ]);
+      
+                  this.whatsappOverlayRef = this.overlay.create({
+                      positionStrategy,
+                      scrollStrategy: this.overlay.scrollStrategies.close(),
+                      hasBackdrop: false,
+                  });
+      
+                  const portal = new ComponentPortal(WhatsappDetPopUpOverComponent);
+                  const componentRef: ComponentRef<WhatsappDetPopUpOverComponent> = this.whatsappOverlayRef.attach(portal);
+                  componentRef.instance.patientData = patientData;
+                  
+                  // Handle mouse events on the overlay element
+                  const overlayElement = this.whatsappOverlayRef.overlayElement;
+                  overlayElement.addEventListener('mouseenter', () => this.keepPatientPopoverOpen());
+                  overlayElement.addEventListener('mouseleave', () => this.closeWhatsappDetailsPopover());
+              }, 300); // 300ms delay before showing popover
+          }
+          closeWhatsappDetailsPopover() {
+              // Clear timeout if popover hasn't opened yet
+              if (this.hoverTimeout) {
+                  clearTimeout(this.hoverTimeout);
+                  this.hoverTimeout = null;
+              }
+      
+              // Clear any existing close timeout
+              if (this.patientCloseTimeout) {
+                  clearTimeout(this.patientCloseTimeout);
+              }
+      
+              // Add delay before closing to allow moving mouse to popover
+              this.patientCloseTimeout = setTimeout(() => {
+                  if (this.whatsappOverlayRef) {
+                      this.whatsappOverlayRef.dispose();
+                      this.whatsappOverlayRef = null;
+                  }
+              }, 200);
+          }
+          keepPatientPopoverOpen() {
+              // Clear close timeout when hovering over popover
+              if (this.patientCloseTimeout) {
+                  clearTimeout(this.patientCloseTimeout);
+                  this.patientCloseTimeout = null;
+              }
+          }
+             Onmessage(data) { }
+          
+              getWhatsappshareBill(el) {
+                  console.log(el);
+                  this._whatsppService.OnWhatsAppMsgSent({
+                      mobileNo: el.mobileNo,
+                      patientName: el.patientName,
+                      billNo: el.salesNo,
+                      smsType: "SalesBill",
+                      patientId:el.regNo
+                  })
+              }
+              
+              Onemail(contact) {
+                  const dialogRef = this._matDialog.open(EmailSendComponent,
+                      {
+                          maxWidth: "100%",
+                          height: '75%',
+                          width: '55%',
+                          data: {
+                              Obj: contact,
+                              emailType:'SalesBill'
+                          }
+                      });
+                  dialogRef.afterClosed().subscribe(result => {
+                      this.grid.bindGridData();
+                  });
+              }
 }
 
 export class SaleList {

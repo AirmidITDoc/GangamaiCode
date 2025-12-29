@@ -79,18 +79,32 @@
                 <button *ngIf="element.isVerified" mat-icon-button>
                     <mat-icon class="disabled-icon" matTooltip="verified" style="color: green;" title="verified">check_circle</mat-icon>
                 </button>
-                <button mat-icon-button (click)="GRNEmail(element)">
+                <!-- <button mat-icon-button (click)="GRNEmail(element)">
                     <mat-icon *ngIf="!element.isVerified" [disabled]="element.disabled" class="disabled-icon"
                         title="Email Menu">mail</mat-icon>
                     <mat-icon *ngIf="element.isVerified" title="Email Menu">mail</mat-icon>
-                </button>
-                 <!-- <button mat-icon-button (click)="onEdit(element)" matTooltip="Edit Supplier Name"  *ngIf="!element.isVerified">
-                    <mat-icon title="Edit  Supplier Name">launch</mat-icon>
                 </button> -->
-                <button mat-icon-button matTooltip="Send Bill On WhatsApp" class="p-4"
-                    (click)="getWhatsappshareSales(element)">
-                    <img width="100" height="20px" src="assets/images/logos/WhatsApp.png">
-                </button>
+               
+                 <button mat-icon-button *ngIf="element.isVerified"
+                        [matTooltip]="'We send the mail on your registered MailID : ' + element?.emailId"
+                        matTooltipPosition="right" (click)="Onemail(element)"
+                        (mouseenter)="openEmailDetailsPopover($event, element)"
+                        (mouseleave)="closeEmailDetailsPopover()"
+                        style="position: relative; cursor: pointer; text-decoration: underline; color: #667eea;">
+                        <mat-icon>email</mat-icon>
+                    </button>
+
+
+                    <button mat-icon-button *ngIf="element.isVerified"
+                        [matTooltip]="'We send the message on your registered WhatsApp number: ' + element?.mobileNo"
+                        matTooltipPosition="right" (click)="getWhatsappshareBill(element)"
+                        (mouseenter)="openWhatsappDetailsPopover($event, element)"
+                        (mouseleave)="closeWhatsappDetailsPopover()"
+                        style="position: relative; cursor: pointer; text-decoration: underline; color: #667eea;">
+                        <img width="20" height="20" src="assets/images/logos/WhatsApp.png">
+                    </button>
+
+             
 
                 <button mat-icon-button (click)="deleteRow(element)">
                     <mat-icon *ngIf="!element.isVerified" title="Cancle">highlight_off</mat-icon>

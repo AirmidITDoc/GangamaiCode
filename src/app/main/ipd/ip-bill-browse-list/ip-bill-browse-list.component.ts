@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, ComponentRef, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
@@ -13,10 +13,21 @@ import { gridColumnTypes } from "app/core/models/tableActions";
 import { OpPaymentVimalComponent } from 'app/main/opd/op-search-list/op-payment-vimal/op-payment-vimal.component';
 import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
-import { ToastrService } from 'ngx-toastr';
 import { IPAdvanceComponent, IpPaymentInsert } from '../ip-search-list/ip-advance/ip-advance.component';
 import { ReviewcompanyBillComponent } from 'app/main/opd/new-oplist/reviewcompany-bill/reviewcompany-bill.component';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
+
+
+import { WhatsAppEmailService } from 'app/main/shared/services/whats-app-email.service';
+import { EmailSendComponent } from 'app/main/shared/componets/email-send/email-send.component';
+import { Overlay, OverlayRef } from '@angular/cdk/overlay';
+
+import { ComponentPortal } from '@angular/cdk/portal';
+import { SMSDetailsPopupOverComponent } from 'app/main/shared/componets/email-send/smsdetails-popup-over/smsdetails-popup-over.component';
+import { WhatsappDetPopUpOverComponent } from 'app/main/shared/componets/email-send/whatsapp-det-pop-up-over/whatsapp-det-pop-up-over.component';
+import { Subscription } from 'rxjs';
+import { ToastrService } from 'ngx-toastr';
+
 
 @Component({
     selector: 'app-ip-bill-browse-list',
@@ -217,8 +228,9 @@ export class IPBillBrowseListComponent implements OnInit {
         private commonService: PrintserviceService,
         public _matDialog: MatDialog, private _ActRoute: Router,
         private accountService: AuthenticationService,
-        public formBuilder:FormBuilder,
-        public _FormvalidationserviceService:FormvalidationserviceService,
+        public formBuilder: FormBuilder, public _whatsppService: WhatsAppEmailService,
+        private overlay: Overlay,
+        public _FormvalidationserviceService: FormvalidationserviceService,
         public toastr: ToastrService, public datePipe: DatePipe) { }
 
     ngOnInit(): void {
@@ -403,7 +415,7 @@ export class IPBillBrowseListComponent implements OnInit {
         this.commonService.Onprint("BillNo", billNo, "IPFinalBillGroupwise");
     }
 
- OnCompanyBill(element) {
+    OnCompanyBill(element) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur();
         const dialogRef = this._matDialog.open(ReviewcompanyBillComponent, {
@@ -615,106 +627,106 @@ export class IPBillBrowseListComponent implements OnInit {
 
     // }
 
-        IPBillMyForm: FormGroup;
-        //IP bill save form 
-        CreateIPBillForm(): FormGroup {
-            return this.formBuilder.group({
-                //Payment form
-                payment: this.formBuilder.group({
-                    paymentId: [0, [this._FormvalidationserviceService.onlyNumberValidator]],
-                    billNo: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-                    paymentDate: ['', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
-                    paymentTime: ['', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
-                    cashPayAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-                    chequePayAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-                    chequeNo: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
-                    bankName: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
-                    chequeDate: ['1999-01-01'],
-                    cardPayAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-                    cardNo: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
-                    cardBankName: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
-                    cardDate: ['1999-01-01'],
-                    advanceUsedAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-                    advanceId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-                    refundId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-                    transactionType: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-                    remark: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
-                    addBy: [this.accountService.currentUserValue.userId],
-                    isCancelled: [false],
-                    isCancelledBy: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-                    isCancelledDate: ['1999-01-01'],
-                    opdipdType: [3, [this._FormvalidationserviceService.onlyNumberValidator()]],
-                    neftpayAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-                    neftno: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
-                    neftbankMaster: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
-                    neftdate: ['1999-01-01'],
-                    payTmamount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-                    payTmtranNo: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
-                    payTmdate: ['1999-01-01'],
-                    tdsAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-                    unitId: [this.accountService.currentUserValue.user.unitId, [this._FormvalidationserviceService.onlyNumberValidator()]],
-                    wfamount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-                    companyId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-                }),
-                // BIll update
-                billupdate: this.formBuilder.group({
-                    billNo: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-                    balanceAmt: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-                }),
-                // Advance details update in array
-                advanceDetailupdate: this.formBuilder.array([]),
-                // Advacne header update
-                advanceHeaderupdate: this.formBuilder.group({
-                    advanceId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-                    advanceUsedAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-                    balanceAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-                }),
-                 // ✅ Fixed: should be FormArray
-                 tPayments: this.formBuilder.array([])
-            });
-        }
-        createAdvanceUpdate(item: any): FormGroup {
-            return this.formBuilder.group({
-                advanceDetailID: [item?.AdvanceDetailID ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-                usedAmount: [item?.UsedAmount ?? 0, [, this._FormvalidationserviceService.AllowDecimalNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-                balanceAmount: [item?.BalanceAmount ?? 0, [, this._FormvalidationserviceService.AllowDecimalNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-            });
-        }
-        CreateModePaymentform(item: any): FormGroup {
-            return this.formBuilder.group({
-                paymentId: [item?.paymentId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-                unitId: [item?.unitId ?? this.accountService.currentUserValue.user.unitId],
-                billNo: [item?.billNo ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-                opdipdtype: [item?.opdipdtype ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-                paymentDate: [item?.paymentDate ?? ''],
-                paymentTime: [item?.paymentTime ?? ''],
-                payAmount: [item?.payAmount ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-                tranNo: [item?.tranNo ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
-                bankName: [item?.bankName ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
-                validationDate: [item?.validationDate ?? ''],
-                advanceUsedAmount: [item?.advanceUsedAmount ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-                comments: [item?.comments ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
-                payMode: [item?.payMode ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
-                onlineTranNo: [item?.onlineTranNo ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
-                onlineTranResponse: [item?.onlineTranResponse ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
-                companyId: [item?.companyId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-                advanceId: [item?.advanceId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-                refundId: [item?.refundId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-                cashCounterId: [item?.cashCounterId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-                transactionType: [item?.transactionType ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-                isSelfOrcompany: [item?.isSelfOrcompany ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-                tranMode: [item?.tranMode ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
-                createdBy: [item?.createdBy ?? this.accountService.currentUserValue.userId],
-                transactionLabel: [item?.transactionLabel ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
-            });
-        }
-        // Getters  
-        get AdvacnedetUpdateArray(): FormArray {
-            return this.IPBillMyForm.get('advanceDetailupdate') as FormArray;
-        }
-        get ModeOfPaymentsArray(): FormArray {
-            return this.IPBillMyForm.get('tPayments') as FormArray;
-        } 
+    IPBillMyForm: FormGroup;
+    //IP bill save form 
+    CreateIPBillForm(): FormGroup {
+        return this.formBuilder.group({
+            //Payment form
+            payment: this.formBuilder.group({
+                paymentId: [0, [this._FormvalidationserviceService.onlyNumberValidator]],
+                billNo: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+                paymentDate: ['', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
+                paymentTime: ['', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
+                cashPayAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+                chequePayAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+                chequeNo: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+                bankName: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+                chequeDate: ['1999-01-01'],
+                cardPayAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+                cardNo: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+                cardBankName: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+                cardDate: ['1999-01-01'],
+                advanceUsedAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+                advanceId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+                refundId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+                transactionType: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+                remark: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+                addBy: [this.accountService.currentUserValue.userId],
+                isCancelled: [false],
+                isCancelledBy: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+                isCancelledDate: ['1999-01-01'],
+                opdipdType: [3, [this._FormvalidationserviceService.onlyNumberValidator()]],
+                neftpayAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+                neftno: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+                neftbankMaster: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+                neftdate: ['1999-01-01'],
+                payTmamount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+                payTmtranNo: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+                payTmdate: ['1999-01-01'],
+                tdsAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+                unitId: [this.accountService.currentUserValue.user.unitId, [this._FormvalidationserviceService.onlyNumberValidator()]],
+                wfamount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+                companyId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            }),
+            // BIll update
+            billupdate: this.formBuilder.group({
+                billNo: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+                balanceAmt: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            }),
+            // Advance details update in array
+            advanceDetailupdate: this.formBuilder.array([]),
+            // Advacne header update
+            advanceHeaderupdate: this.formBuilder.group({
+                advanceId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+                advanceUsedAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+                balanceAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            }),
+            // ✅ Fixed: should be FormArray
+            tPayments: this.formBuilder.array([])
+        });
+    }
+    createAdvanceUpdate(item: any): FormGroup {
+        return this.formBuilder.group({
+            advanceDetailID: [item?.AdvanceDetailID ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            usedAmount: [item?.UsedAmount ?? 0, [, this._FormvalidationserviceService.AllowDecimalNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            balanceAmount: [item?.BalanceAmount ?? 0, [, this._FormvalidationserviceService.AllowDecimalNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+        });
+    }
+    CreateModePaymentform(item: any): FormGroup {
+        return this.formBuilder.group({
+            paymentId: [item?.paymentId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            unitId: [item?.unitId ?? this.accountService.currentUserValue.user.unitId],
+            billNo: [item?.billNo ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            opdipdtype: [item?.opdipdtype ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            paymentDate: [item?.paymentDate ?? ''],
+            paymentTime: [item?.paymentTime ?? ''],
+            payAmount: [item?.payAmount ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            tranNo: [item?.tranNo ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+            bankName: [item?.bankName ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+            validationDate: [item?.validationDate ?? ''],
+            advanceUsedAmount: [item?.advanceUsedAmount ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            comments: [item?.comments ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+            payMode: [item?.payMode ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+            onlineTranNo: [item?.onlineTranNo ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+            onlineTranResponse: [item?.onlineTranResponse ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+            companyId: [item?.companyId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            advanceId: [item?.advanceId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            refundId: [item?.refundId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            cashCounterId: [item?.cashCounterId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            transactionType: [item?.transactionType ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            isSelfOrcompany: [item?.isSelfOrcompany ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            tranMode: [item?.tranMode ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+            createdBy: [item?.createdBy ?? this.accountService.currentUserValue.userId],
+            transactionLabel: [item?.transactionLabel ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+        });
+    }
+    // Getters  
+    get AdvacnedetUpdateArray(): FormArray {
+        return this.IPBillMyForm.get('advanceDetailupdate') as FormArray;
+    }
+    get ModeOfPaymentsArray(): FormArray {
+        return this.IPBillMyForm.get('tPayments') as FormArray;
+    }
     Billpayment(contact) {
         console.log(contact)
         let PatientHeaderObj = {};
@@ -722,10 +734,10 @@ export class IPBillBrowseListComponent implements OnInit {
         PatientHeaderObj['PatientName'] = contact.patientName || '';
         PatientHeaderObj['AdvanceAmount'] = contact.advUsedPay || 0;
         PatientHeaderObj['NetPayAmount'] = contact.balanceAmt || 0;
-        PatientHeaderObj['BillNo'] = contact.billNo || 0 ;
+        PatientHeaderObj['BillNo'] = contact.billNo || 0;
         PatientHeaderObj['OPD_IPD_Id'] = contact.opdipdid || 0;
         PatientHeaderObj['IPDNo'] = contact.ipdNo || '';
-        PatientHeaderObj['RegNo'] = contact.regNo || 0 ;
+        PatientHeaderObj['RegNo'] = contact.regNo || 0;
         PatientHeaderObj['DoctorName'] = contact.doctorName || '';
         PatientHeaderObj['CompanyName'] = contact.companyName || '';
         PatientHeaderObj['CompanyId'] = contact.companyId || 0;
@@ -778,7 +790,7 @@ export class IPBillBrowseListComponent implements OnInit {
                     this.onChangeIPBill()
                 });
             }
-        }); 
+        });
     }
     viewgetIPPayemntPdf(data) {
         this.commonService.Onprint("PaymentId", data, "IpPaymentReceipt");
@@ -826,4 +838,313 @@ export class IPBillBrowseListComponent implements OnInit {
         });
     }
 
+
+    private overlayRef: OverlayRef | null = null;
+    private EmailOverlayRef: OverlayRef | null = null;
+    private whatsappOverlayRef: OverlayRef | null = null;
+    private hoverTimeout: any = null;
+    private patientCloseTimeout: any = null;
+    private doctorCloseTimeout: any = null;
+
+    openEmailDetailsPopover(event: MouseEvent, patientData: any) {
+        event.stopPropagation();
+
+        // Clear any existing timeout
+        if (this.hoverTimeout) {
+            clearTimeout(this.hoverTimeout);
+        }
+
+        // Add small delay to prevent flickering
+        this.hoverTimeout = setTimeout(() => {
+            // Close any existing patient popover
+            if (this.EmailOverlayRef) {
+                this.EmailOverlayRef.dispose();
+                this.EmailOverlayRef = null;
+            }
+
+            const positionStrategy = this.overlay.position()
+                .flexibleConnectedTo(event.target as HTMLElement)
+                .withPositions([
+                    {
+                        originX: 'start',
+                        originY: 'bottom',
+                        overlayX: 'start',
+                        overlayY: 'top',
+                    },
+                    {
+                        originX: 'start',
+                        originY: 'top',
+                        overlayX: 'start',
+                        overlayY: 'bottom',
+                    },
+                    {
+                        originX: 'end',
+                        originY: 'center',
+                        overlayX: 'start',
+                        overlayY: 'center',
+                    },
+                    {
+                        originX: 'start',
+                        originY: 'center',
+                        overlayX: 'end',
+                        overlayY: 'center',
+                    }
+                ]);
+
+            this.EmailOverlayRef = this.overlay.create({
+                positionStrategy,
+                scrollStrategy: this.overlay.scrollStrategies.close(),
+                hasBackdrop: false,
+            });
+
+            const portal = new ComponentPortal(SMSDetailsPopupOverComponent);
+            const componentRef: ComponentRef<SMSDetailsPopupOverComponent> = this.EmailOverlayRef.attach(portal);
+            componentRef.instance.patientData = patientData;
+
+            // Handle mouse events on the overlay element
+            const overlayElement = this.EmailOverlayRef.overlayElement;
+            overlayElement.addEventListener('mouseenter', () => this.keepPatientPopoverOpen());
+            overlayElement.addEventListener('mouseleave', () => this.closeEmailDetailsPopover());
+        }, 300); // 300ms delay before showing popover
+    }
+    closeEmailDetailsPopover() {
+        // Clear timeout if popover hasn't opened yet
+        if (this.hoverTimeout) {
+            clearTimeout(this.hoverTimeout);
+            this.hoverTimeout = null;
+        }
+
+        // Clear any existing close timeout
+        if (this.patientCloseTimeout) {
+            clearTimeout(this.patientCloseTimeout);
+        }
+
+        // Add delay before closing to allow moving mouse to popover
+        this.patientCloseTimeout = setTimeout(() => {
+            if (this.EmailOverlayRef) {
+                this.EmailOverlayRef.dispose();
+                this.EmailOverlayRef = null;
+            }
+        }, 200);
+    }
+    openWhatsappDetailsPopover(event: MouseEvent, patientData: any) {
+        event.stopPropagation();
+
+        // Clear any existing timeout
+        if (this.hoverTimeout) {
+            clearTimeout(this.hoverTimeout);
+        }
+
+        // Add small delay to prevent flickering
+        this.hoverTimeout = setTimeout(() => {
+            // Close any existing patient popover
+            if (this.whatsappOverlayRef) {
+                this.whatsappOverlayRef.dispose();
+                this.whatsappOverlayRef = null;
+            }
+
+            const positionStrategy = this.overlay.position()
+                .flexibleConnectedTo(event.target as HTMLElement)
+                .withPositions([
+                    {
+                        originX: 'start',
+                        originY: 'bottom',
+                        overlayX: 'start',
+                        overlayY: 'top',
+                    },
+                    {
+                        originX: 'start',
+                        originY: 'top',
+                        overlayX: 'start',
+                        overlayY: 'bottom',
+                    },
+                    {
+                        originX: 'end',
+                        originY: 'center',
+                        overlayX: 'start',
+                        overlayY: 'center',
+                    },
+                    {
+                        originX: 'start',
+                        originY: 'center',
+                        overlayX: 'end',
+                        overlayY: 'center',
+                    }
+                ]);
+
+            this.whatsappOverlayRef = this.overlay.create({
+                positionStrategy,
+                scrollStrategy: this.overlay.scrollStrategies.close(),
+                hasBackdrop: false,
+            });
+
+            const portal = new ComponentPortal(WhatsappDetPopUpOverComponent);
+            const componentRef: ComponentRef<WhatsappDetPopUpOverComponent> = this.whatsappOverlayRef.attach(portal);
+            componentRef.instance.patientData = patientData;
+
+            // Handle mouse events on the overlay element
+            const overlayElement = this.whatsappOverlayRef.overlayElement;
+            overlayElement.addEventListener('mouseenter', () => this.keepPatientPopoverOpen());
+            overlayElement.addEventListener('mouseleave', () => this.closeWhatsappDetailsPopover());
+        }, 300); // 300ms delay before showing popover
+    }
+    closeWhatsappDetailsPopover() {
+        // Clear timeout if popover hasn't opened yet
+        if (this.hoverTimeout) {
+            clearTimeout(this.hoverTimeout);
+            this.hoverTimeout = null;
+        }
+
+        // Clear any existing close timeout
+        if (this.patientCloseTimeout) {
+            clearTimeout(this.patientCloseTimeout);
+        }
+
+        // Add delay before closing to allow moving mouse to popover
+        this.patientCloseTimeout = setTimeout(() => {
+            if (this.whatsappOverlayRef) {
+                this.whatsappOverlayRef.dispose();
+                this.whatsappOverlayRef = null;
+            }
+        }, 200);
+    }
+    keepPatientPopoverOpen() {
+        // Clear close timeout when hovering over popover
+        if (this.patientCloseTimeout) {
+            clearTimeout(this.patientCloseTimeout);
+            this.patientCloseTimeout = null;
+        }
+    }
+
+    Onmessage(data) { }
+
+    getWhatsappshareBill(el) {
+        console.log(el);
+        this._whatsppService.OnWhatsAppMsgSent({
+            mobileNo: el.mobileNo,
+            patientName: el.patientName,
+            billNo: el.billNo,
+            smsType: "OPBill",
+            patientId: el.regNo
+        })
+    }
+
+    getWhatsappsharePayment(el) {
+        console.log(el);
+        debugger
+        this._whatsppService.OnWhatsAppMsgSent({
+            mobileNo: el.mobileNo,
+            patientName: el.patientName,
+            billNo: el.billNo,
+            smsType: "OPBill",
+            patientId: el.regNo
+        })
+    }
+    openWhatsappDetailsPopover1(event: MouseEvent, patientData: any) {
+        console.log(patientData)
+        debugger
+        event.stopPropagation();
+
+        // Clear any existing timeout
+        if (this.hoverTimeout) {
+            clearTimeout(this.hoverTimeout);
+        }
+
+        // Add small delay to prevent flickering
+        this.hoverTimeout = setTimeout(() => {
+            // Close any existing patient popover
+            if (this.whatsappOverlayRef) {
+                this.whatsappOverlayRef.dispose();
+                this.whatsappOverlayRef = null;
+            }
+
+            const positionStrategy = this.overlay.position()
+                .flexibleConnectedTo(event.target as HTMLElement)
+                .withPositions([
+                    {
+                        originX: 'start',
+                        originY: 'bottom',
+                        overlayX: 'start',
+                        overlayY: 'top',
+                    },
+                    {
+                        originX: 'start',
+                        originY: 'top',
+                        overlayX: 'start',
+                        overlayY: 'bottom',
+                    },
+                    {
+                        originX: 'end',
+                        originY: 'center',
+                        overlayX: 'start',
+                        overlayY: 'center',
+                    },
+                    {
+                        originX: 'start',
+                        originY: 'center',
+                        overlayX: 'end',
+                        overlayY: 'center',
+                    }
+                ]);
+
+            this.whatsappOverlayRef = this.overlay.create({
+                positionStrategy,
+                scrollStrategy: this.overlay.scrollStrategies.close(),
+                hasBackdrop: false,
+            });
+
+            const portal = new ComponentPortal(WhatsappDetPopUpOverComponent);
+            const componentRef: ComponentRef<WhatsappDetPopUpOverComponent> = this.whatsappOverlayRef.attach(portal);
+            componentRef.instance.patientData = patientData;
+
+            // Handle mouse events on the overlay element
+            const overlayElement = this.whatsappOverlayRef.overlayElement;
+            overlayElement.addEventListener('mouseenter', () => this.keepPatientPopoverOpen1());
+            overlayElement.addEventListener('mouseleave', () => this.closeWhatsappDetailsPopover1());
+        }, 300); // 300ms delay before showing popover
+    }
+    closeWhatsappDetailsPopover1() {
+        // Clear timeout if popover hasn't opened yet
+        if (this.hoverTimeout) {
+            clearTimeout(this.hoverTimeout);
+            this.hoverTimeout = null;
+        }
+
+        // Clear any existing close timeout
+        if (this.patientCloseTimeout) {
+            clearTimeout(this.patientCloseTimeout);
+        }
+
+        // Add delay before closing to allow moving mouse to popover
+        this.patientCloseTimeout = setTimeout(() => {
+            if (this.whatsappOverlayRef) {
+                this.whatsappOverlayRef.dispose();
+                this.whatsappOverlayRef = null;
+            }
+        }, 200);
+    }
+
+    keepPatientPopoverOpen1() {
+        // Clear close timeout when hovering over popover
+        if (this.patientCloseTimeout) {
+            clearTimeout(this.patientCloseTimeout);
+            this.patientCloseTimeout = null;
+        }
+    }
+
+    Onemail(contact) {
+        const dialogRef = this._matDialog.open(EmailSendComponent,
+            {
+                maxWidth: "100%",
+                height: '75%',
+                width: '55%',
+                data: {
+                    Obj: contact,
+                    emailType: 'OPBill'
+                }
+            });
+        dialogRef.afterClosed().subscribe(result => {
+            this.grid.bindGridData();
+        });
+    }
 }

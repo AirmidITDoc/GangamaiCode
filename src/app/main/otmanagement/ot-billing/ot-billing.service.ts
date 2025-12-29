@@ -43,7 +43,7 @@ export class OtBillingService {
       InfectivePer: [],
       InfectiveAmt: [],
       netAmt: [],
-      surgeryDate: [],
+      surgeryDate: [(new Date()).toISOString(), Validators.required],
       totalGrossAmt: [0],
       totalDiscAmt: [0],
       totalNetAmt: [0],

@@ -104,7 +104,7 @@
                                     </button>
                                 </mat-form-field>
 
-                             
+
                             </form>
                         </ng-container>
                     </airmid-table>
@@ -119,13 +119,33 @@
                 dynamicTableHeight>
                 <ng-template #actionButtonTemplateone let-element>
                     <div fxLayout="row" fxLayoutAlign="center center">
-                        <button mat-icon-button matTooltip="IPD Refund Of Advance" (click)="getAdvreturnview(element,true)">
+                        <button mat-icon-button matTooltip="IPD Refund Of Advance"
+                            (click)="getAdvreturnview(element,true)">
                             <mat-icon> print</mat-icon>
                         </button>
-                        <button mat-icon-button matTooltip="Send message On WhatsApp"
+                        <!-- <button mat-icon-button matTooltip="Send message On WhatsApp"
                             (click)="whatsappAppoitment(element)">
                             <img width="100" height="20px" src="assets/images/logos/WhatsApp.png">
+                        </button> -->
+
+                        <button mat-icon-button
+                            [matTooltip]="'We send the mail on your registered MailID : ' + element?.emailId"
+                            matTooltipPosition="right" (click)="Onemail(element)"
+                            (mouseenter)="openEmailDetailsPopover($event, element)"
+                            (mouseleave)="closeEmailDetailsPopover()"
+                            style="position: relative; cursor: pointer; text-decoration: underline; color: #667eea;">
+                            <mat-icon>email</mat-icon>
                         </button>
+
+                        <button mat-icon-button
+                            [matTooltip]="'We send the message on your registered WhatsApp number: ' + element?.mobileNo"
+                            matTooltipPosition="right" (click)="getWhatsappshareBill(element)"
+                            (mouseenter)="openWhatsappDetailsPopover($event, element)"
+                            (mouseleave)="closeWhatsappDetailsPopover()"
+                            style="position: relative; cursor: pointer; text-decoration: underline; color: #667eea;">
+                            <img width="20" height="20" src="assets/images/logos/WhatsApp.png">
+                        </button>
+
                     </div>
                 </ng-template>
                 <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">

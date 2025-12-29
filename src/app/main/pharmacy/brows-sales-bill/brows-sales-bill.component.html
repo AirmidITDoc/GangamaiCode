@@ -3,50 +3,51 @@
     dynamicTableHeight>
     <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" style="width: 100%;">
 
-        <mat-tab label="IP Browse Bill List">
-            <div fusePerfectScrollbar class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
+        <mat-tab label="Sales Browse Bill List">
+            <div fusePerfectScrollbar
+                class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
                 dynamicTableHeight>
- 
+
                 <div class="info-badge-top overflow-auto mb-3" fxLayout="row" fxLayoutAlign="space-between" flex>
                     <div fxLayout="row" fxLayoutAlign="start center" class="gap-8 mb-8" style="margin-left: 10px;">
 
                         <div class="dashboard-card appointments-split">
                             <div class="card-label">Total Amt</div>
-                            <div class="card-value">{{finalTotalAmt  | currency:'INR'}}</div>
+                            <div class="card-value">{{finalTotalAmt | currency:'INR'}}</div>
                             <mat-icon class="card-icon" matTooltip="Total Test Results">check_circle</mat-icon>
                         </div>
 
                         <div class="dashboard-card DiscountAmt">
                             <div class="card-label">Discount Amt</div>
-                            <div class="card-value">{{finalDiscAmt  | currency:'INR'}}</div>
+                            <div class="card-value">{{finalDiscAmt | currency:'INR'}}</div>
                             <mat-icon class="card-icon" matTooltip="Completed Tests">check_circle</mat-icon>
                         </div>
 
                         <div class="dashboard-card appointments-split">
                             <div class="card-label">Net Amt</div>
                             <div class="card-value">
-                                <div> {{finalNetAmt  | currency:'INR'}}</div> 
+                                <div> {{finalNetAmt | currency:'INR'}}</div>
                             </div>
                             <mat-icon class="card-icon" matTooltip="Pending Tests">check_circle</mat-icon>
-                        </div> 
+                        </div>
 
-                          <div class="dashboard-card PaidAmt">
+                        <div class="dashboard-card PaidAmt">
                             <div class="card-label">Paid Amt</div>
                             <div class="card-value">
-                                <div> {{finalPaidAmt  | currency:'INR'}}</div> 
+                                <div> {{finalPaidAmt | currency:'INR'}}</div>
                             </div>
                             <mat-icon class="card-icon" matTooltip="Pending Tests">check_circle</mat-icon>
-                        </div> 
+                        </div>
 
-                          <div class="dashboard-card BalanceAmt">
+                        <div class="dashboard-card BalanceAmt">
                             <div class="card-label">Balance Amt</div>
                             <div class="card-value">
-                                <div> {{finalBalanceAmt  | currency:'INR'}}</div> 
+                                <div> {{finalBalanceAmt | currency:'INR'}}</div>
                             </div>
                             <mat-icon class="card-icon" matTooltip="Pending Tests">schedule</mat-icon>
-                        </div> 
-                    </div> 
-                      <div fxLayout="row" fxLayoutAlign="end" class="gap-8" style="margin-right: 20px;">
+                        </div>
+                    </div>
+                    <div fxLayout="row" fxLayoutAlign="end" class="gap-8" style="margin-right: 20px;">
 
                         <div style="color: orange" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
                             <mat-icon class="pill orange-600 s-16">circle</mat-icon>
@@ -77,7 +78,7 @@
 
                             <button mat-icon-button matTooltip="Bill Return" *ngIf="element.isRefundFlag==true ">
                                 <mat-icon>replay</mat-icon>
-                            </button> 
+                            </button>
                             <button mat-icon-button matTooltip="Credit Bill"
                                 *ngIf="element.paidType=='Credit' && element.balanceAmount > '0'"
                                 (click)="OnPayment(element)">
@@ -104,7 +105,7 @@
                                     <img width="10px" height="4px" src="assets/images/logos/Purchaseratewise.png"
                                         style="background-color: transparent;">
                                 </mat-icon>
-                            </button> 
+                            </button>
                             <ng-template #Show>
                                 <span>-</span>
                             </ng-template>
@@ -112,50 +113,69 @@
                     </ng-template>
 
                     <ng-template #patientTypePaidType let-element>
-                        <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="4px"> 
-                            <mat-icon *ngIf="element.paidType == 'Paid'" matTooltip="Paid Bill">monetization_on</mat-icon>
-                            <mat-icon *ngIf="element.paidType == 'Credit'" matTooltip="Credit Bill">account_balance_wallet</mat-icon> 
+                        <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="4px">
+                            <mat-icon *ngIf="element.paidType == 'Paid'"
+                                matTooltip="Paid Bill">monetization_on</mat-icon>
+                            <mat-icon *ngIf="element.paidType == 'Credit'"
+                                matTooltip="Credit Bill">account_balance_wallet</mat-icon>
                         </div>
                     </ng-template>
 
                     <ng-template #actionButtonTemplate let-element>
-                        <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="4px"> 
-                            <button mat-icon-button matTooltip="Edit" (click)="editPatientName(element)" *ngIf="!element.isEditing && element.oP_IP_Type == 2">
+                        <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="4px">
+                            <button mat-icon-button matTooltip="Edit" (click)="editPatientName(element)"
+                                *ngIf="!element.isEditing && element.oP_IP_Type == 2">
                                 <mat-icon>edit</mat-icon>
-                            </button> 
-                           <button mat-icon-button matTooltip="Save" (click)="savePatientName(element)" *ngIf="element.isEditing">
-                                <mat-icon  class="active-icon green-600 s-16" matTooltip="Save">check</mat-icon>
+                            </button>
+                            <button mat-icon-button matTooltip="Save" (click)="savePatientName(element)"
+                                *ngIf="element.isEditing">
+                                <mat-icon class="active-icon green-600 s-16" matTooltip="Save">check</mat-icon>
                             </button>
                             <button mat-icon-button matTooltip="Print2" (click)="viewgetSalesBillReportPdf(element)">
-                                <mat-icon >print</mat-icon>
+                                <mat-icon>print</mat-icon>
                             </button>
                             <button mat-icon-button matTooltip="View As Pdf" (click)="viewSalesPdf(element)">
                                 <mat-icon>visibility</mat-icon>
                             </button>
-                            <button mat-icon-button matTooltip="Send Bill On WhatsApp"
-                                (click)="getWhatsappshareSales(element)">
-                                <img width="100" height="20px" src="assets/images/logos/WhatsApp.png">
+
+                            <button mat-icon-button
+                                [matTooltip]="'We send the mail on your registered MailID : ' + element?.emailId"
+                                matTooltipPosition="right" (click)="Onemail(element)"
+                                (mouseenter)="openEmailDetailsPopover($event, element)"
+                                (mouseleave)="closeEmailDetailsPopover()"
+                                style="position: relative; cursor: pointer; text-decoration: underline; color: #667eea;">
+                                <mat-icon>email</mat-icon>
                             </button>
+
+                            <button mat-icon-button
+                                [matTooltip]="'We send the message on your registered WhatsApp number: ' + element?.mobileNo"
+                                matTooltipPosition="right" (click)="getWhatsappshareBill(element)"
+                                (mouseenter)="openWhatsappDetailsPopover($event, element)"
+                                (mouseleave)="closeWhatsappDetailsPopover()"
+                                style="position: relative; cursor: pointer; text-decoration: underline; color: #667eea;">
+                                <img width="20" height="20" src="assets/images/logos/WhatsApp.png">
+                            </button>
+
                         </div>
                     </ng-template>
 
                     <ng-template #editablePatientName let-row let-rowIndex="rowIndex">
                         <div *ngIf="!row.isEditing">
-                            {{ row.patientName || 'NA' }} 
-                                <!-- <mat-icon (click)="editPatientName(row)" matTooltip="Edit" >edit</mat-icon>  -->
+                            {{ row.patientName || 'NA' }}
+                            <!-- <mat-icon (click)="editPatientName(row)" matTooltip="Edit" >edit</mat-icon>  -->
                         </div>
                         <div *ngIf="row.isEditing">
-                              <mat-form-field floatLabel="never">
-                              <input matInput [(ngModel)]="row.patientName" type="text"  placeholder="Patient Name">
-                            </mat-form-field> 
-                              <!-- <mat-icon  (click)="savePatientName(row)" class="active-icon green-600 s-16" matTooltip="Save" >check</mat-icon> -->
-                           <!-- <mat-icon (click)="cancelEdit(row)" matTooltip="Close" >cancel</mat-icon>  -->
-                        </div>  
+                            <mat-form-field floatLabel="never">
+                                <input matInput [(ngModel)]="row.patientName" type="text" placeholder="Patient Name">
+                            </mat-form-field>
+                            <!-- <mat-icon  (click)="savePatientName(row)" class="active-icon green-600 s-16" matTooltip="Save" >check</mat-icon> -->
+                            <!-- <mat-icon (click)="cancelEdit(row)" matTooltip="Close" >cancel</mat-icon>  -->
+                        </div>
                     </ng-template>
 
-              
+
                     <airmid-table [gridConfig]="gridConfig" class="content" (onSelectRow)="getsalesdetaillist($event)"
-                        #grid >
+                        #grid>
                         <ng-container filters>
                             <form [formGroup]="_BrowsSalesBillService.userForm" fxLayout="column">
 
@@ -163,18 +183,19 @@
                                     formStartControlName="startdate" formEndControlName="enddate" 
                                    (click)="onChangeFirst()"></airmid-datepicker> -->
 
-<mat-form-field appearance="outline">
-    <mat-label>Enter a date range</mat-label>
-    <mat-date-range-input [rangePicker]="picker">
-        <input matStartDate formControlName="startdate" placeholder="Start date">
-        <input matEndDate formControlName="enddate" placeholder="End date" (dateChange)="onChangeFirst()">
-    </mat-date-range-input>
-    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-    <mat-date-range-picker #picker></mat-date-range-picker>
-</mat-form-field>
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Enter a date range</mat-label>
+                                    <mat-date-range-input [rangePicker]="picker">
+                                        <input matStartDate formControlName="startdate" placeholder="Start date">
+                                        <input matEndDate formControlName="enddate" placeholder="End date"
+                                            (dateChange)="onChangeFirst()">
+                                    </mat-date-range-input>
+                                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                    <mat-date-range-picker #picker></mat-date-range-picker>
+                                </mat-form-field>
 
 
-                                      <!-- <airmid-datepicker [formGroup]="_BrowsSalesBillService.userForm" [isRangePicker]="true"
+                                <!-- <airmid-datepicker [formGroup]="_BrowsSalesBillService.userForm" [isRangePicker]="true"
                                     formStartControlName="startdate" formEndControlName="enddate"
                                     [(fromValue)]="gridConfig.filters[2].fieldValue"
                                     [(toValue)]="gridConfig.filters[3].fieldValue"  ></airmid-datepicker> -->
@@ -215,15 +236,15 @@
 
                             </form>
                         </ng-container>
-                    </airmid-table> 
- 
-                     <!-- <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll"
+                    </airmid-table>
+
+                    <!-- <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll"
                     *ngIf="isShowDetailTable">
                     <airmid-table [gridConfig]="gridConfig1" class="content" #grid1 [ShowFilter]="false"
                         [ShowButtons]="false">
                     </airmid-table>
                       </div>  -->
-                      
+
                 </div>
 
                 <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll"
@@ -278,7 +299,8 @@
                     <ng-template #actionButtonTemplateRetrun let-element>
                         <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="4px">
 
-                            <button mat-icon-button matTooltip="Print2" (click)="viewgetSalesreturnBillReportPdf(element)">
+                            <button mat-icon-button matTooltip="Print2"
+                                (click)="viewgetSalesreturnBillReportPdf(element)">
                                 <mat-icon>print</mat-icon>
                             </button>
                             <button mat-icon-button matTooltip="View As Pdf" (click)="viewSalesPdf(element)">
@@ -376,14 +398,17 @@
                                 <mat-icon>print</mat-icon>
                             </button> -->
 
-                            <button mat-icon-button matTooltip="Sales Details Print"  (click)="printsalesDetails(element)">  
-                               <img width="10px" height="6px" src="assets/images/logos/Salesdetails.png" style="background-color: transparent;">
-                            </button> 
-                              
+                            <button mat-icon-button matTooltip="Sales Details Print"
+                                (click)="printsalesDetails(element)">
+                                <img width="10px" height="6px" src="assets/images/logos/Salesdetails.png"
+                                    style="background-color: transparent;">
+                            </button>
+
                             <button mat-icon-button (click)="printsalesPatientstatement(element)"
                                 matTooltip="Patient Statement">
                                 <mat-icon>
-                                    <img width="10px" height="6px" src="assets/images/logos/PatientStatement.png" style="background-color: transparent;">
+                                    <img width="10px" height="6px" src="assets/images/logos/PatientStatement.png"
+                                        style="background-color: transparent;">
                                 </mat-icon>
                             </button>
                         </div>
@@ -403,12 +428,13 @@
                                     <mat-label>Enter a date range</mat-label>
                                     <mat-date-range-input [rangePicker]="picker4">
                                         <input matStartDate formControlName="startdate1" placeholder="Start date">
-                                        <input matEndDate formControlName="enddate1" placeholder="End date" (dateChange)="getchangeDate()">
+                                        <input matEndDate formControlName="enddate1" placeholder="End date"
+                                            (dateChange)="getchangeDate()">
                                     </mat-date-range-input>
-                                    <mat-datepicker-toggle matSuffix [for]="picker4" ></mat-datepicker-toggle>
+                                    <mat-datepicker-toggle matSuffix [for]="picker4"></mat-datepicker-toggle>
                                     <mat-date-range-picker #picker4></mat-date-range-picker>
-                                </mat-form-field> 
- 
+                                </mat-form-field>
+
                                 <airmid-textbox fxFlex label="Search UHID No" formControlName="RegNo"
                                     [formGroup]="_BrowsSalesBillService.SalesPatientForm"
                                     (input)="onChangeFirstPatient()"
@@ -432,14 +458,14 @@
                                 <airmid-textbox fxFlex label="Search Last Name" formControlName="L_Name"
                                     [formGroup]="_BrowsSalesBillService.SalesPatientForm"
                                     (input)="onChangeFirstPatient()"
-                                    [validations]="getValidationMessages().L_Name"></airmid-textbox> 
+                                    [validations]="getValidationMessages().L_Name"></airmid-textbox>
 
                                 <div class="slide-toggle mb-2">
                                     <mat-slide-toggle name="IsDischarge" (change)="onChangeDiscahrge($event)"
                                         formControlName="IsDischarge" [(ngModel)]="isChecked">
                                         IsDischarge
                                     </mat-slide-toggle>
-                                </div>  
+                                </div>
                             </form>
                         </ng-container>
                     </airmid-table>
@@ -449,4 +475,3 @@
 
     </mat-tab-group>
 </div>
-

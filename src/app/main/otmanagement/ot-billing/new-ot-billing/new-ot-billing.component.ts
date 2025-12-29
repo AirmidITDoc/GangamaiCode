@@ -12,6 +12,9 @@ import { OtReserInsert } from '../../ot-reservation/ot-reservation.component';
 import { CdkScrollable } from '@angular/cdk/scrolling';
 import { CdkDragDrop, CdkDragMove, moveItemInArray } from '@angular/cdk/drag-drop';
 import { OtBillingService } from '../ot-billing.service';
+import { IndentList } from 'app/main/pharmacy/sales/sales.component';
+import Swal from 'sweetalert2';
+import { OtAnethesia } from '../ot-billing.component';
 
 @Component({
   selector: 'app-new-ot-billing',
@@ -57,7 +60,7 @@ export class NewOtBillingComponent {
   RtrvDescriptionList: any = [];
   vreservationId: any;
   dsDetailList = new MatTableDataSource<OtReserInsert>();
-  dsattendentDetailList = new MatTableDataSource<OtReserInsert>();
+  dsattendentDetailList = new MatTableDataSource<OtAnethesia>();
   Chargelist: any[] = [];
   Chargelist1: any[] = [];
   surgeryTypeNames: string[] = ["Normal", "Emergency"];
@@ -67,7 +70,7 @@ export class NewOtBillingComponent {
   addDiagnolist: any = [];
   surgCategoryName: any;
   dateTimeObj: any;
-
+ isDatePckrDisabled: boolean = false;
   autocompleteModeSiteDescription: String = "SiteDescription";
   autocompleteModeSurgeryCategory: String = "SurgeryCategory";
   autocompleteModeDoctorSurgeon: String = "DoctorSurgion";
@@ -100,8 +103,8 @@ export class NewOtBillingComponent {
     'resourceType',
     'attendentType',
     'attendent',
-    'fromTime',
-    'toTime',
+    // 'fromTime',
+    // 'toTime',
     'priceType',
     'baseRs',
     'basePer',
@@ -248,6 +251,8 @@ export class NewOtBillingComponent {
     } else {
       this.Chargelist.push(newEntry);
     }
+    debugger
+   
     this.dsDetailList.data = [...this.Chargelist];
     this.dsattendentDetailList.data = [...this.Chargelist1];
 
@@ -274,6 +279,97 @@ export class NewOtBillingComponent {
     this.surgeonName = '';
     this.AnthName = '';
   }
+
+
+  //   ///, index: number
+  // onDiscountbaseChange(row: OtAnethesia) {
+  //     debugger
+  //     // if (index === 0) {  // Only trigger if changed in first row (Surgeon)
+  //       const surgeonDiscountPerc = row.basePer || 0;
+
+  //       let baseAmt=this.dsattendentDetailList.data[0].baseRs
+
+  //       // Apply same discount % to ALL other rows
+  //       // this.dsattendentDetailList.data.forEach((r, i) => {
+  //       //   if (i !== 0) {
+  //       //     row.basePer = surgeonDiscountPerc;
+  //       //   }
+  //         // Recalculate concession amount and net amount
+  //        let baseperAmt = (baseAmt * row.basePer) / 100;
+  //         row.grossAmt = baseAmt - baseperAmt;
+  //         row.netAmt = baseAmt - baseperAmt;
+  //       // });
+
+  //       // Optional: refresh table
+  //       this.dsattendentDetailList.data = [...this.dsattendentDetailList.data];
+  //     // }
+  //   }
+
+
+  ///, index: number
+  onDiscountbaseChange(row: OtAnethesia, i) {
+    debugger
+
+    console.log(row, i)
+    const surgeonDiscountPerc = row.basePer || 0;
+
+    let baseAmt = this.dsattendentDetailList.data[0].baseRs
+
+    // if(row.s)
+    let baseperAmt = (baseAmt * row.basePer) / 100;
+    // row.grossAmt = baseAmt - baseperAmt;
+    // row.netAmt = baseAmt - baseperAmt;
+
+    row.grossAmt = baseperAmt;
+    row.netAmt = baseperAmt;
+
+    this.dsattendentDetailList.data = [...this.dsattendentDetailList.data];
+
+  }
+
+
+  // Main function: When discount % changes in first row , index: number
+  onDiscountChange(row: OtAnethesia) {
+    debugger
+    const surgeonDiscountPerc = row.concPer || 0;
+      row.concAmt = (row.grossAmt * row.concPer) / 100;
+      row.netAmt = row.grossAmt - row.concAmt;
+    this.dsattendentDetailList.data = [...this.dsattendentDetailList.data];
+    // }
+  }
+
+
+  // // Main function: When discount % changes in first row , index: number
+  // onDiscountChange(row: OtAnethesia) {
+  //   debugger
+  //   // if (index === 0) {  // Only trigger if changed in first row (Surgeon)
+  //   const surgeonDiscountPerc = row.concPer || 0;
+
+  //   // Apply same discount % to ALL other rows
+  //   this.dsattendentDetailList.data.forEach((r, i) => {
+  //     if (i !== 0) {
+  //       r.concPer = surgeonDiscountPerc;
+  //     }
+  //     // Recalculate concession amount and net amount
+  //     r.concAmt = (r.grossAmt * r.concPer) / 100;
+  //     r.netAmt = r.grossAmt - r.concAmt;
+  //   });
+
+  //   // Optional: refresh table
+  //   this.dsattendentDetailList.data = [...this.dsattendentDetailList.data];
+  //   // }
+  // }
+
+  // Initial calculation of base amounts
+  calculateAllAmounts() {
+    this.dsattendentDetailList.data.forEach(row => {
+      row.baseRs = (row.concPer / 100) * this.vtotalNetAmt;
+      row.concAmt = (row.baseRs * (row.concPer || 0)) / 100;
+      row.netAmt = row.baseRs - row.concAmt;
+    });
+  }
+
+
 
   deleteTableRow(event, element) {
     let index = this.Chargelist.indexOf(element);
@@ -367,7 +463,7 @@ export class NewOtBillingComponent {
 
     this.calculateTotals();
   }
-
+  vtotalNetAmt: any
   calculateTotals() {
     debugger
     let totalGross = 0;
@@ -383,12 +479,17 @@ export class NewOtBillingComponent {
       totalDisc += disc;
       totalNet += net;
     });
+    this.vtotalNetAmt = totalNet.toFixed(2)
 
     this.billForm.patchValue({
       totalGrossAmt: totalGross.toFixed(2),
       totalDiscAmt: totalDisc.toFixed(2),
       totalNetAmt: totalNet.toFixed(2)
     });
+
+    if(this.vtotalNetAmt > 0)
+    this.dsattendentDetailList.data[0].baseRs=this.vtotalNetAmt
+     console.log(  this.dsattendentDetailList.data[0].baseRs)
   }
 
   FetchList: any = [];
@@ -503,7 +604,8 @@ export class NewOtBillingComponent {
       scrollContainer.scrollTop += scrollSpeed;
     }
   }
-  //////////////////////// details part end ////////////////////////////
+  
+
   onSubmit() {
 
   }

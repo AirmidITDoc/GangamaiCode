@@ -25,7 +25,8 @@ export class WhatsappDetPopUpOverComponent {
   ) { }
 
   ngOnInit(): void {
-    if (this.patientData && this.patientData.billNo) {
+    debugger
+    if (this.patientData && this.patientData.billNo || this.patientData.pBillNo) {
        this.patientDetails = this.patientData;
        console.log(this.patientDetails)
       this.loadPatientDetails();
@@ -34,6 +35,7 @@ export class WhatsappDetPopUpOverComponent {
 
   loadPatientDetails() {
     this.isLoading = true;
+    debugger
     this._OPListService.getWhatsappDetailsById(this.patientData.billNo).subscribe(
       (response: any) => { 
         this.whatsappDetails = response;

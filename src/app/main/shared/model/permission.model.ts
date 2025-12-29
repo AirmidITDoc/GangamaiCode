@@ -93,5 +93,5 @@ export enum permissionCodes {
     TemplateMaster = 'TemplateMaster',
     TestMaster = 'TestMaster',
     PathUnitMaster = 'PathUnitMaster',
-    // PathCategoryMaster = 'SetupOtManagment',
+    MOutSourcelabMaster = 'MOutSourcelabMaster',
 }

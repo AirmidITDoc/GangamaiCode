@@ -31,7 +31,7 @@ export class OtBillingComponent {
   regNo: any = "0"
   LastName: any = ""
   opipType: any = "2"
-
+ 
   @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
   @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
   ngAfterViewInit() {
@@ -47,7 +47,7 @@ export class OtBillingComponent {
     // { heading: "", key: "isNewRecord", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 40 },
     { heading: "OTReser-Date&Time", key: "otReservationDateTime", sort: true, align: 'left', emptySign: 'NA', width: 200 },
     { heading: "Surgery Date", key: "surgeryDate", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-    { heading: "Estimate Time", key: "estimateTime", sort: true, align: 'left', emptySign: 'NA', type: 7, width: 150 },
+    // { heading: "Estimate Time", key: "estimateTime", sort: true, align: 'left', emptySign: 'NA', type: 7, width: 150 },
     // { heading: "Operation Date-Time", key: "opstartTime", sort: true, align: 'left', emptySign: 'NA', type: 8, width: 180 },
     { heading: "UHID NO", key: "regNo", sort: true, align: 'left', emptySign: 'NA', },
     { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
@@ -149,3 +149,43 @@ export class OtBillingComponent {
   }
 
 }
+
+
+export class OtAnethesia {
+    resourceType: any;
+    attendentType: any;
+    attendent: any;
+    fromTime: any;
+    toTime: any;
+    priceType: any;
+    baseRs: any;
+    basePer: any;
+    grossAmt: any;
+    concPer: any;
+    concAmt: any;
+    netAmt: any;
+    currentDate = new Date();
+   /**
+     * Constructor
+     *
+     * @param OtAnethesia
+     */
+
+    constructor(OtAnethesia) {
+        {
+            this.resourceType = OtAnethesia.resourceType || 0;
+            this.attendentType = OtAnethesia.attendentType || 0;
+            this.attendent = OtAnethesia.attendent;
+            this.fromTime = OtAnethesia.fromTime || this.currentDate;
+            this.toTime = OtAnethesia.toTime || this.currentDate;
+            this.priceType = OtAnethesia.priceType || '%';
+            this.baseRs = OtAnethesia.baseRs || 0;
+            this.basePer = OtAnethesia.basePer || 0;
+            this.grossAmt = OtAnethesia.grossAmt 
+            this.concPer = OtAnethesia.concPer || this.currentDate;
+            this.concAmt = OtAnethesia.concAmt || 0;
+            this.netAmt = OtAnethesia.netAmt || '';
+          
+        }
+      }
+    }

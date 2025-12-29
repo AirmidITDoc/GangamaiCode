@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ExternalSalesReturnModule } from './external-sales-return/external-sales-return.module';
-import { ExternalreturnComponent } from './externalreturn/externalreturn.component';
+
 
 const appRoutes: Routes = [
     {
@@ -70,9 +70,7 @@ const appRoutes: Routes = [
 
 @NgModule({
   declarations: [  
-     
-  
-    ExternalreturnComponent
+    
   ],
   imports: [
     RouterModule.forChild(appRoutes)

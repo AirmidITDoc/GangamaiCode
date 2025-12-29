@@ -164,10 +164,9 @@
                             </div>
 
                             <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                <airmid-dropdown label="Surgery Name" formControlName="surgeryId"
-                                    [formGroup]="billForm" (selectionChange)="selectChangeSurgery($event)"
-                                    ValueField="surgeryId" TextField="surgeryName"
-                                    ApiUrl="SurgeryMaster/GetSurgeryTypeByOTSurgery">
+                                <airmid-dropdown label="Surgery Name" formControlName="surgeryId" [formGroup]="billForm"
+                                    (selectionChange)="selectChangeSurgery($event)" ValueField="surgeryId"
+                                    TextField="surgeryName" ApiUrl="SurgeryMaster/GetSurgeryTypeByOTSurgery">
                                 </airmid-dropdown>
                             </div>
 
@@ -206,19 +205,27 @@
                             </div>
 
                             <div fxFlex="7%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                <mat-form-field appearance="outline" style="width: 100%;">
+                                <!-- <mat-form-field appearance="outline" style="width: 100%;">
                                     <mat-label>Surgery Dt</mat-label>
                                     <input name="surgeryDate" matInput [matDatepicker]="picker1"
                                         formControlName="surgeryDate" />
                                     <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
                                     <mat-datepicker #picker1></mat-datepicker>
+                                </mat-form-field> -->
+
+
+                                <mat-form-field appearance="outline" style="width: 100%;">
+                                    <mat-label>Surgery Dt</mat-label>
+                                    <input matInput [matDatepicker]="picker1" formControlName="surgeryDate">
+                                    <mat-datepicker-toggle matSuffix [for]="picker1"
+                                        [disabled]="isDatePckrDisabled"></mat-datepicker-toggle>
+                                    <mat-datepicker #picker1></mat-datepicker>
                                 </mat-form-field>
                             </div>
 
                             <div fxFlex="6%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                <airmid-textbox label="Surgery Amt" formControlName="surgeryAmt"
-                                    [formGroup]="billForm" (keypress)="keyPressAlphanumeric($event)"
-                                    (valueChange)="calculateAmt()">
+                                <airmid-textbox label="Surgery Amt" formControlName="surgeryAmt" [formGroup]="billForm"
+                                    (keypress)="keyPressAlphanumeric($event)" (valueChange)="calculateAmt()">
                                 </airmid-textbox>
                             </div>
 
@@ -229,9 +236,8 @@
                             </div>
 
                             <div fxFlex="5%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                <airmid-textbox label="Conc Amt" formControlName="concAmt"
-                                    [formGroup]="billForm" (keypress)="keyPressAlphanumeric($event)"
-                                    [maxLength]="10" readonly>
+                                <airmid-textbox label="Conc Amt" formControlName="concAmt" [formGroup]="billForm"
+                                    (keypress)="keyPressAlphanumeric($event)" [maxLength]="10" readonly>
                                 </airmid-textbox>
                             </div>
 
@@ -244,8 +250,8 @@
 
                             <div fxFlex="5%" fxFlex.xs="100%" fxFlex.sm="33%">
                                 <airmid-textbox label="Infective Amt" formControlName="InfectiveAmt"
-                                    [formGroup]="billForm" (keypress)="keyPressAlphanumeric($event)"
-                                    [maxLength]="10" readonly>
+                                    [formGroup]="billForm" (keypress)="keyPressAlphanumeric($event)" [maxLength]="10"
+                                    readonly>
                                 </airmid-textbox>
                             </div>
 
@@ -318,13 +324,13 @@
                                     <span> {{element.surgeryEndTime}} </span>
                                 </mat-cell>
                             </ng-container>
-
+                            <!-- | date:'dd-MM-yyyy'  -->
                             <ng-container matColumnDef="surgeryDate">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>
                                     Surgery Date
                                 </mat-header-cell>
                                 <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                    <span>{{ element.surgeryDate | date:'dd-MM-yyyy' }}</span>
+                                    <span>{{ element.surgeryDate }}</span>
                                 </mat-cell>
                             </ng-container>
 
@@ -335,7 +341,7 @@
                                 <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
                                     <mat-form-field appearance="fill" floatLabel="never">
                                         <input matInput type="number" [(ngModel)]="element.surgeryAmt"
-                                            (ngModelChange)="onTableValueChange(element)" min="0"/>
+                                            (ngModelChange)="onTableValueChange(element)" min="0" />
                                     </mat-form-field>
                                 </mat-cell>
                             </ng-container>
@@ -346,7 +352,7 @@
                                 <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
                                     <mat-form-field appearance="fill" floatLabel="never">
                                         <input matInput type="number" [(ngModel)]="element.discPer"
-                                            (ngModelChange)="onTableValueChange(element)" min="0"/>
+                                            (ngModelChange)="onTableValueChange(element)" min="0" />
                                     </mat-form-field>
                                 </mat-cell>
                             </ng-container>
@@ -367,7 +373,7 @@
                                 <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
                                     <mat-form-field appearance="fill" floatLabel="never">
                                         <input matInput type="number" [(ngModel)]="element.InfectivePer"
-                                            (ngModelChange)="onTableValueChange(element)" min="0"/>
+                                            (ngModelChange)="onTableValueChange(element)" min="0" />
                                     </mat-form-field>
                                 </mat-cell>
                             </ng-container>
@@ -377,7 +383,8 @@
                                 </mat-header-cell>
                                 <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
                                     <mat-form-field appearance="fill" floatLabel="never">
-                                        <input matInput type="number" [(ngModel)]="element.infectiveAmt" readonly min="0"/>
+                                        <input matInput type="number" [(ngModel)]="element.infectiveAmt" readonly
+                                            min="0" />
                                     </mat-form-field>
                                 </mat-cell>
                             </ng-container>
@@ -437,9 +444,9 @@
                                 </airmid-textbox>
                             </div>
 
-                            <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%" style="margin-left: 5%;">
+                            <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%" style="margin-left:2%;">
                                 <mat-radio-group formControlName="billProcess">
-                                    <label style="font-weight: bold;">Bill Process On:</label>
+                                    <label style="font-weight: bold;font-size: large;">Bill Process On:</label>
                                     <mat-radio-button value="1">Surgeon</mat-radio-button>
                                     <mat-radio-button value="0">Surgery</mat-radio-button>
                                 </mat-radio-group>
@@ -461,43 +468,46 @@
                             class="airmid-table" cdkDropList (cdkDropListDropped)="drop2($event)">
 
                             <ng-container matColumnDef="sequence">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Sr.No
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-70"> Sr.No
                                 </mat-header-cell>
-                                <mat-cell *matCellDef="let element; let i = index" fxShow.gt-sm>
+                                <mat-cell *matCellDef="let element; let i = index" fxShow.gt-sm class="w-70">
                                     {{ i + 1 }}
                                 </mat-cell>
                             </ng-container>
 
                             <ng-container matColumnDef="resourceType">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Resource
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm
+                                    class="w-120">Resource
                                     Type
                                 </mat-header-cell>
-                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-120">
                                     <span> {{element.resourceType}} </span>
                                 </mat-cell>
                             </ng-container>
 
                             <ng-container matColumnDef="attendentType">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Attendent
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm
+                                    class="w-180">Attendent
                                     Type
                                 </mat-header-cell>
-                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-180">
                                     <span> {{element.doctorType}} </span>
                                 </mat-cell>
                             </ng-container>
 
                             <ng-container matColumnDef="attendent">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Attendent(Service)
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide class="w-150"
+                                    fxShow.gt-sm>Attendent(Service)
                                 </mat-header-cell>
-                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-150">
                                     <span> {{element.doctorName}} </span>
                                 </mat-cell>
                             </ng-container>
 
-                            <ng-container matColumnDef="fromTime">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>From Time
+                            <!-- <ng-container matColumnDef="fromTime">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-100">From Time
                                 </mat-header-cell>
-                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-100">
                                     <mat-form-field appearance="fill" floatLabel="never">
                                         <input matInput type="time" [(ngModel)]="element.fromTime" />
                                     </mat-form-field>
@@ -505,28 +515,30 @@
                             </ng-container>
 
                             <ng-container matColumnDef="toTime">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>To Time
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-100"> To Time
                                 </mat-header-cell>
-                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-100">
                                     <mat-form-field appearance="fill" floatLabel="never">
                                         <input matInput type="time" [(ngModel)]="element.toTime" />
                                     </mat-form-field>
                                 </mat-cell>
-                            </ng-container>
+                            </ng-container> -->
 
                             <ng-container matColumnDef="priceType">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Price
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm
+                                    class="w-100">Price
                                     Type
                                 </mat-header-cell>
-                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-100">
                                     <span> {{element.priceType}} </span>
                                 </mat-cell>
                             </ng-container>
 
                             <ng-container matColumnDef="baseRs">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Base(Rs)
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm
+                                    class="w-150">Base(Rs)
                                 </mat-header-cell>
-                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-150">
                                     <mat-form-field appearance="fill" floatLabel="never">
                                         <input matInput type="number" [(ngModel)]="element.baseRs" min="0" />
                                     </mat-form-field>
@@ -534,19 +546,35 @@
                             </ng-container>
 
                             <ng-container matColumnDef="basePer">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Base(%)
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm
+                                    class="w-100">Base(%)
                                 </mat-header-cell>
-                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                <mat-cell *matCellDef="let element;" fxHide fxShow.gt-sm class="w-100">
                                     <mat-form-field appearance="fill" floatLabel="never">
-                                        <input matInput type="number" [(ngModel)]="element.basePer" min="0" />
+                                        <input matInput type="number" [(ngModel)]="element.basePer" min="0"
+                                            (keyup)="onDiscountbaseChange(element,element.sequence)" />
                                     </mat-form-field>
                                 </mat-cell>
                             </ng-container>
 
-                            <ng-container matColumnDef="grossAmt">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Gross Amt
+                            <!-- <ng-container matColumnDef="basePer">
+                                <th mat-header-cell *matHeaderCellDef> BasePer(%) </th>
+                                  <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm class="w-100">Base Amt
                                 </mat-header-cell>
-                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                             
+                                <td mat-cell *matCellDef="let element; let i = index">
+                                    <input [(ngModel)]="element.basePer"  *ngIf="i === 0" type="number" 
+                                        (change)="onDiscountbaseChange(element, i)" style="width: 60px;">
+                                    <span *ngIf="i !== 0">{{element.basePer}}</span>
+                                </td>
+                            </ng-container> -->
+
+
+                            <ng-container matColumnDef="grossAmt">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm
+                                    class="w-120">Gross Amt
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-120">
                                     <mat-form-field appearance="fill" floatLabel="never">
                                         <input matInput type="number" [(ngModel)]="element.grossAmt" min="0" />
                                     </mat-form-field>
@@ -554,19 +582,31 @@
                             </ng-container>
 
                             <ng-container matColumnDef="concPer">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Gross Amt
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm
+                                    class="w-100">Conc(%)
                                 </mat-header-cell>
-                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                <mat-cell *matCellDef="let element;" fxHide fxShow.gt-sm class="w-100">
                                     <mat-form-field appearance="fill" floatLabel="never">
-                                        <input matInput type="number" [(ngModel)]="element.concPer" min="0" />
+                                        <input matInput type="number" [(ngModel)]="element.concPer" min="0"
+                                            (change)="onDiscountChange(element)" />
                                     </mat-form-field>
                                 </mat-cell>
                             </ng-container>
 
+                            <!-- <ng-container matColumnDef="concPer">
+                                <th mat-header-cell *matHeaderCellDef> Conc(%) </th>
+                                <td mat-cell *matCellDef="let element; let i = index">
+                                    <input *ngIf="i === 0" type="number" [(ngModel)]="element.concPer"
+                                        (change)="onDiscountChange(element, i)" style="width: 60px;">
+                                    <span *ngIf="i !== 0">{{element.concPer}}</span>
+                                </td>
+                            </ng-container> -->
+
                             <ng-container matColumnDef="concAmt">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Gross Amt
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm
+                                    class="w-120">Cons Amt
                                 </mat-header-cell>
-                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
+                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm class="w-120">
                                     <mat-form-field appearance="fill" floatLabel="never">
                                         <input matInput type="number" [(ngModel)]="element.concAmt" min="0" />
                                     </mat-form-field>
@@ -574,7 +614,7 @@
                             </ng-container>
 
                             <ng-container matColumnDef="netAmt">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Gross Amt
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Net Amt
                                 </mat-header-cell>
                                 <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
                                     <mat-form-field appearance="fill" floatLabel="never">

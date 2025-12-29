@@ -836,18 +836,8 @@ export class NewOPListComponent implements OnInit {
             clearTimeout(this.doctorCloseTimeout);
         }
     }
-    keyPressAlphanumeric(event) {
-        var inp = String.fromCharCode(event.keyCode);
-        if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
-            return true;
-        } else {
-            event.preventDefault();
-            return false;
-        }
-    } 
-    Onmessage(data) { }
 
-    getWhatsappshareBill(el) {
+        getWhatsappshareBill(el) {
         console.log(el);
         this._whatsppService.OnWhatsAppMsgSent({
             mobileNo: el.mobileNo,
@@ -873,6 +863,18 @@ export class NewOPListComponent implements OnInit {
             this.grid.bindGridData();
         });
     }
+    keyPressAlphanumeric(event) {
+        var inp = String.fromCharCode(event.keyCode);
+        if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
+            return true;
+        } else {
+            event.preventDefault();
+            return false;
+        }
+    } 
+    Onmessage(data) { }
+
+
 }
 
 export class BrowseOPDBill {
