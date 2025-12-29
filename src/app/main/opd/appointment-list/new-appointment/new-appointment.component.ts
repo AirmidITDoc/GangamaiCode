@@ -166,8 +166,8 @@ export class NewAppointmentComponent implements OnInit {
     Is9_Digit_National_Id: boolean = false;
     ngOnInit(): void {
         debugger
-        console.log(this._configue.configParams.OPDDefaultDepartment)
-        console.log(this._configue.configParams.OPDDefaultDoctor)
+        // console.log(this._configue.configParams.OPDDefaultDepartment)
+        // console.log(this._configue.configParams.OPDDefaultDoctor)
    
         //this code for Mediforte 9 digit national id
 const rawValue = this?._configue?.configParams?.Is9_Digit_NationalId || "";
@@ -727,7 +727,7 @@ this.Is9_Digit_National_Id = id === "1";
                     });
                     return;
                 }
-
+debugger
                 this.VisitFormGroup.get('visitDate').setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'))
                 this.VisitFormGroup.get('visitTime').setValue(this.dateTimeObj.time)
                 this.personalFormGroup.get('City').setValue(this.CityName)
@@ -736,7 +736,7 @@ this.Is9_Digit_National_Id = id === "1";
                 this.personalFormGroup.get('AgeMonth').setValue(String(this.ageMonth))
                 this.personalFormGroup.get('AgeDay').setValue(String(this.ageDay))
                 this.personalFormGroup.get("DateOfBirth").setValue(this.datePipe.transform(this.personalFormGroup.get("DateOfBirth").value, "yyyy-MM-dd"))
-                this.personalFormGroup.get('RegDate').setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'))
+                 this.personalFormGroup.get('RegDate').setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'));
                 this.personalFormGroup.get('RegTime').setValue(this.dateTimeObj.time)
 
                 console.log('Personal Form : ', this.personalFormGroup.value)
