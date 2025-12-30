@@ -303,25 +303,46 @@
 
         <hr />
 
-        <div fxLayout="row wrap" fxLayoutGap="12px 0px grid" *ngIf="!_TestmasterService.is_templatetest">
-          <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
-            <airmid-textbox label="TechniqueName" formControlName="TechniqueName" [value]="registerObj?.techniqueName"
-              [formGroup]="testForm" [maxLength]="400"></airmid-textbox>
-          </div>
-          <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
-            <airmid-textbox label="MachineName" formControlName="MachineName" [value]="registerObj?.machineName"
-              [formGroup]="testForm" [maxLength]="400"></airmid-textbox>
-          </div>
-          <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
-            <airmid-textbox label="Foot Note" formControlName="FootNote" [value]="registerObj?.footNote"
-              [formGroup]="testForm" [maxLength]="400"></airmid-textbox>
+        <div fxLayout="row" fxLayoutGap="12px" fxLayoutAlign="start stretch"
+          *ngIf="!_TestmasterService.is_templatetest">
+
+          <!-- Left column -->
+          <div fxLayout="column" fxFlex="50">
+
+            <div fxLayout="row" fxLayoutGap="12px">
+              <div fxFlex="50">
+                <airmid-textbox label="TechniqueName" formControlName="TechniqueName"
+                  [value]="registerObj?.techniqueName" [formGroup]="testForm" [maxLength]="400"></airmid-textbox>
+              </div>
+              <div fxFlex="50">
+                <airmid-textbox label="Foot Note" formControlName="FootNote" [value]="registerObj?.footNote"
+                  [formGroup]="testForm" [maxLength]="400"></airmid-textbox>
+              </div>
+            </div>
+
+            <div fxLayout="row" style="margin-top: 16px;">
+              <div fxFlex="100">
+                <airmid-textbox label="Foot Note" ...></airmid-textbox>
+              </div>
+            </div>
+
           </div>
 
-          <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
-            <airmid-textbox label="Suggestion Note" formControlName="SuggestionNote"
-              [value]="registerObj?.suggestionNote" [formGroup]="testForm" ></airmid-textbox>
+          <!-- Right column - will stretch to match left height -->
+          <div fxFlex="50">
+            <mat-form-field appearance="outline" fxFlex>
+              <mat-label>Suggestion Note</mat-label>
+              <textarea matInput rows="5" name="SuggestionNote" formControlName="SuggestionNote"
+                [(ngModel)]="vsuggestionNote">
+                                                  </textarea>
+              <!-- <mat-hint align="end">{{ vsuggation?.length || 0 }}/500</mat-hint> -->
+            </mat-form-field>
           </div>
+
         </div>
+
+
+
       </form>
     </div>
   </div>

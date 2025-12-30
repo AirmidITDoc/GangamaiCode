@@ -59,7 +59,7 @@ export class TestFormMasterComponent implements OnInit {
     showTemplateTable: boolean = false;
     displayedColumns5: string[] = ['TemplateName', 'Action'];
     vUnitId = this._loggedService.currentUserValue.user.unitId;
-
+vsuggestionNote:any
     constructor(
         public _TestmasterService: TestmasterService,
         public dialogRef: MatDialogRef<TestFormMasterComponent>,
@@ -89,6 +89,8 @@ export class TestFormMasterComponent implements OnInit {
             this.vTestName = this.registerObj.testName
             this.TemplateId = this.registerObj.TemplateId;
             this.isActive = this.registerObj.isActive;
+             this.vsuggestionNote = this.registerObj?.suggestionNote || '';  
+ 
 
             if (this.registerObj.isTemplateTest === "0" && !this.registerObj.isSubTest) {
                 this._TestmasterService.is_subtest = false;
