@@ -56,7 +56,8 @@ export class AnesthesiaRecordService {
     }
 
     
-    public OnCancel(param) {
-        return this._httpClient.PostData('OTReservation/Cancel', param)
+  
+     public OnCancel(m_data) {
+        return this._httpClient.DeleteData("OTAnesthesia?Id=" + m_data.toString());
     }
 }

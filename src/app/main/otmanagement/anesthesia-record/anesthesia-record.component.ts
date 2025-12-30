@@ -171,8 +171,8 @@ export class AnesthesiaRecordComponent {
       title: 'Do you want to cancel Anethesia?',
       text: "Please provide a reason for cancellation",
       icon: "warning",
-      input: 'text',
-      inputPlaceholder: 'Enter cancellation reason...',
+      // input: 'text',
+      // inputPlaceholder: 'Enter cancellation reason...',
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
@@ -185,13 +185,13 @@ export class AnesthesiaRecordComponent {
       }
     }).then((result) => {
       if (result.isConfirmed) {
-        let submitData = {
-          anesthesiaId: data.anesthesiaId,
-          reason: result.value,
-          isCancelledBy: this._loggedService.currentUserValue.userId
-        };
-        console.log(submitData);
-        this._anesthesiaRecordService.OnCancel(submitData).subscribe((res) => {
+        // let submitData = {
+        //   anesthesiaId: data.anesthesiaId,
+        //   reason: result.value,
+        //   isCancelledBy: this._loggedService.currentUserValue.userId
+        // };
+        console.log( data.anesthesiaId);
+        this._anesthesiaRecordService.OnCancel( data.anesthesiaId).subscribe((res) => {
           this.toastr.success(res.message);
           this.grid.bindGridData();
         });

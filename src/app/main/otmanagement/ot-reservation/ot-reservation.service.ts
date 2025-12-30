@@ -30,11 +30,24 @@ export class OtReservationService {
         });
     }
 
+//      "otreservationId": 0,
+//   "opipid": 0,
+//   "surgeryDate": "Unknown Type: DateTime",
+//   "createdby": 0,
+//   "reason": "string",
+//   "newOTReservationId": 0
+
     CreateForm() {
         return this._formBuilder.group({
             otreservationId:[0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             isAnaesthetistPaid: [false],
-            isMaterialReplacement: [false]
+            isMaterialReplacement: [false],
+            PatientName:'',
+            surgeryDate:[new Date().toISOString()],
+            reason:'',
+            opipid:'',
+            createdby:0,
+            newOTReservationId:0
         })
     }
 

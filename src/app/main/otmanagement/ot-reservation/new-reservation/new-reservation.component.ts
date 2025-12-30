@@ -246,7 +246,7 @@ export class NewReservationComponent implements OnInit {
       bloodGroup: ['0'],
       categoryType: ["", [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       ottable: ["", [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],  // means location theater
-      surgeryDate: [new Date(), [Validators.required]],
+      surgeryDate: [new Date().toISOString(), [Validators.required]],
       estimateTime: ['', [Validators.required]],
       diagnosis: [[]],
       comments: [''],
@@ -1303,7 +1303,7 @@ export class NewReservationComponent implements OnInit {
     //   const combinedDateTime = `${surgeryDate} ${time}`;
     //   this.reservationForm.get('estimateTime')?.setValue(combinedDateTime, { emitEvent: false });
     // }
-
+debugger
     this.reservationForm.get('opipid').setValue(this.opIpId);
     this.reservationForm.get('otrequestId')?.setValue(this.vrequestId || 0);
     this.reservationForm.get('otreservationDate').setValue(formattedDate);

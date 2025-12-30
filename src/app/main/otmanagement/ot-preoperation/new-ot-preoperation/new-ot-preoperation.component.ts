@@ -1025,6 +1025,7 @@ export class NewOtPreoperationComponent {
   }
 
   onSubmit() {
+    debugger
     const formattedDate = this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd");
     const formattedTime = formattedDate + this.dateTimeObj.time;
 

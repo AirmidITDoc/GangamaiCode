@@ -1223,6 +1223,7 @@ export class NewInOperationComponent {
   /////////////////////////////// attendent detail part end/////////////////////////////
 
   onSubmit() {
+    debugger
     const formattedDate = this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd");
     const formattedtheaterInDate = this.datePipe.transform(this.inOperFinalForm.get('theaterInDate').value, "yyyy-MM-dd");
     const formattedtheaterOutDate = this.datePipe.transform(this.inOperFinalForm.get('theaterOutData').value, "yyyy-MM-dd");

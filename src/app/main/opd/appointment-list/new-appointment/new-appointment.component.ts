@@ -728,16 +728,16 @@ this.Is9_Digit_National_Id = id === "1";
                     return;
                 }
 debugger
-                this.VisitFormGroup.get('visitDate').setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'))
-                this.VisitFormGroup.get('visitTime').setValue(this.dateTimeObj.time)
+                // this.VisitFormGroup.get('visitDate').setValue(this.personalFormGroup.get('visitDate').value, 'yyyy-MM-dd')
+                // this.VisitFormGroup.get('visitTime').setValue(this.personalFormGroup.get('visitDate').value)
                 this.personalFormGroup.get('City').setValue(this.CityName)
                 this.personalFormGroup.get('Age').setValue(String(this.ageYear))
                 this.personalFormGroup.get('AgeYear').setValue(String(this.ageYear))
                 this.personalFormGroup.get('AgeMonth').setValue(String(this.ageMonth))
                 this.personalFormGroup.get('AgeDay').setValue(String(this.ageDay))
                 this.personalFormGroup.get("DateOfBirth").setValue(this.datePipe.transform(this.personalFormGroup.get("DateOfBirth").value, "yyyy-MM-dd"))
-                 this.personalFormGroup.get('RegDate').setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'));
-                this.personalFormGroup.get('RegTime').setValue(this.dateTimeObj.time)
+                //  this.personalFormGroup.get('RegDate').setValue(this.personalFormGroup.get('RegDate').value, 'yyyy-MM-dd');
+                // this.personalFormGroup.get('RegTime').setValue(this.personalFormGroup.get('RegDate').value)
 
                 console.log('Personal Form : ', this.personalFormGroup.value)
                 console.log('Visit Form : ', this.VisitFormGroup.value)
