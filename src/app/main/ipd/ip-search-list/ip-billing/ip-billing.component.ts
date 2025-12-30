@@ -708,7 +708,7 @@ export class IPBillingComponent implements OnInit {
     //service selected data
     getselectObj(obj) {
         this.Serviceform.patchValue({
-            price: obj.classRate
+            price: obj.price
         })
         if (obj.creditedtoDoctor == true) {
             this.Serviceform.get('doctorId').reset();
