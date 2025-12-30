@@ -886,8 +886,9 @@ debugger
                     opType: "Equals"
                 }
             ],
-            mode: "PathologyReportWithHeader"
+            mode: "PathologyReporKenyatWithHeader"  //"PathologyReportWithHeader"
         };
+
 
         console.log(param);
 
