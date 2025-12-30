@@ -1395,4 +1395,43 @@ export class NewOtPreoperationComponent {
       });
     }, 100);
   }
+opipType=0
+   OnPrint(element) {
+    console.log(element)
+    debugger
+    const param = {
+
+      "searchFields": [
+        {
+          "fieldName": "OPIPID",
+          "fieldValue": String(this.opIpId),
+          "opType": "Equals"
+        },
+        {
+          "fieldName": "OPIPType",
+          "fieldValue": String(this.opipType),
+          "opType": "Equals"
+        }
+      ],
+      mode: "OTPreOperationReport"
+    };
+    console.log(param)
+    this._OTPreOperationService.getReportView(param).subscribe(res => {
+      const matDialog = this._matDialog.open(PdfviewerComponent, {
+        maxWidth: "85vw",
+        height: '750px',
+        width: '100%',
+        data: {
+          base64: res["base64"] as string,
+          title: "OTPreOperation Report Viewer"
+        }
+      });
+
+      matDialog.afterClosed().subscribe(result => {
+
+      });
+    });
+    // this.commonService.Onprint("AnesthesiaId", element.AnesthesiaId, "OTAnaesthesiaRecord");
+
+  }
 }

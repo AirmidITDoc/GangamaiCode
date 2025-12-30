@@ -11,6 +11,7 @@ import { PatientOtmovementTrackingComponent } from '../patient-otmovement-tracki
 import { OtReserInsert } from '../../ot-reservation/ot-reservation.component';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 
 @Component({
   selector: 'app-new-checkin',
@@ -44,7 +45,7 @@ export class NewCheckinComponent {
   opIpId: any;
   vSelectedOption: any = 'OP';
   vCheckinId: any;
-
+  opipType = 0
   constructor(
     public _PatientOtMoveTrackingService: PatientOtmovementTrackingService,
     public toastr: ToastrService, public _matDialog: MatDialog,
@@ -68,6 +69,9 @@ export class NewCheckinComponent {
       this.vIPDNo = this.registerObj1.opdNo
       this.vPatientName = this.registerObj1.patientName
       this.vCheckinId = this.registerObj1.otCheckInId
+
+    
+
 
       const timeOnly = new Date();
       this.CheckInFormGroup.get("otcheckInTime")?.setValue(timeOnly);
@@ -223,8 +227,53 @@ export class NewCheckinComponent {
     }
   }
 
+
+
   OnPrint(element) {
-    this.commonService.Onprint("OPIPID", this.opIpId, "OTCheckInOutPatientWise");
+    debugger
+     if(this.registerObj1.opIpType)
+      this.opipType = 1
+    else
+       this.opipType = 0
+    const param = {
+
+      "searchFields": [
+        {
+          "fieldName": "OPIPID",
+          "fieldValue": String(this.opIpId),
+          "opType": "Equals"
+        },
+        {
+          "fieldName": "OPIPType",
+          "fieldValue": String(this.opipType),
+          "opType": "Equals"
+        },
+        {
+          "fieldName": "CheckInOut",
+          "fieldValue": "1",
+          "opType": "Equals"
+        }
+      ],
+      mode: "OTCheckInOutPatientWise"
+    };
+    console.log(param)
+    this._PatientOtMoveTrackingService.getReportView(param).subscribe(res => {
+      const matDialog = this._matDialog.open(PdfviewerComponent, {
+        maxWidth: "85vw",
+        height: '750px',
+        width: '100%',
+        data: {
+          base64: res["base64"] as string,
+          title: "OTCheckInOutPatientWise Report Viewer"
+        }
+      });
+
+      matDialog.afterClosed().subscribe(result => {
+
+      });
+    });
+    // this.commonService.Onprint("AnesthesiaId", element.AnesthesiaId, "OTAnaesthesiaRecord");
+
   }
 
   onClear(val: boolean) {

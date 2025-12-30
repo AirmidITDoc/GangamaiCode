@@ -32,7 +32,8 @@ export class OtPreoperationComponent {
   FirstName: any = ""
   RegNo: any = "0"
   LastName: any = ""
-
+  opIpId = 0
+  opipType = 0
   @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
   @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
   ngAfterViewInit() {
@@ -164,4 +165,6 @@ export class OtPreoperationComponent {
       this.grid.bindGridData();
     });
   }
+
+ 
 }

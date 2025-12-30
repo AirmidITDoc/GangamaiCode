@@ -170,5 +170,8 @@ export class OtPreoperationService {
   public deactivateTheStatus(m_data) {
     return this._httpClient.DeleteData("TransactionConsentMaster?Id=" + m_data.toString());
   }
+ public getReportView(Param) {
+        return this._httpClient.PostData("Report/ViewReport", Param);
+    }
 
 }
