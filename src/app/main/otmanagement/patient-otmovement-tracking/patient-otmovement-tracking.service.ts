@@ -62,4 +62,8 @@ export class PatientOtmovementTrackingService {
       return this._httpClient.PutData("OTReservation/OtReservationCheckInOut", Param);
     } else return this._httpClient.PostData("OTReservation/OtReservationCheckInOut", Param);
   }
+
+    public getReportView(Param) {
+        return this._httpClient.PostData("Report/ViewReport", Param);
+    }
 }
