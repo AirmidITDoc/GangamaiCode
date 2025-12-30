@@ -480,153 +480,6 @@ export class IPBillBrowseListComponent implements OnInit {
         }
     }
 
-
-    // Billpayment(contact) {
-
-    //     console.log(contact)
-    //     let PatientHeaderObj = {};
-    //     PatientHeaderObj['Date'] = contact.billDate;
-    //     PatientHeaderObj['PatientName'] = contact.patientName;
-    //     PatientHeaderObj['AdvanceAmount'] = contact.advUsedPay;
-    //     PatientHeaderObj['NetPayAmount'] = contact.netPayableAmt;
-    //     PatientHeaderObj['BillNo'] = contact.billNo;
-    //     PatientHeaderObj['OPD_IPD_Id'] = contact.OPD_IPD_ID;
-    //     PatientHeaderObj['IPDNo'] = contact.opD_IPD_ID;
-    //     PatientHeaderObj['RegNo'] = contact.regNo;
-    //     console.log(PatientHeaderObj)
-
-    //     const dialogRef = this._matDialog.open(OpPaymentVimalComponent,
-    //         {
-    //             maxWidth: "95vw",
-    //             height: '750px',
-    //             width: '85%',
-
-    //             data: {
-    //                 vPatientHeaderObj: PatientHeaderObj,
-    //                 FromName: "IP-SETTLEMENT",
-    //                 advanceObj: PatientHeaderObj,
-    //             }
-    //         });
-
-
-    //     dialogRef.afterClosed().subscribe(result => {
-    //         let NeftNo = "0"
-    //           console.log(result.submitDataPay.ipPaymentInsert)
-
-    //         if (result.submitDataPay.ipPaymentInsert.neftno == "undefined")
-    //             NeftNo = "0"
-    //         else
-    //             NeftNo = String(result.submitDataPay.ipPaymentInsert.neftno)
-    //         if (result.IsSubmitFlag) {
-    //             let Paymentobj = {};
-
-    //             Paymentobj['PaymentId'] = '0';
-    //             Paymentobj['billNo'] = contact.billNo;
-    //             Paymentobj['PaymentDate'] = result.submitDataPay.ipPaymentInsert.paymentDate;
-    //             Paymentobj['PaymentTime'] = result.submitDataPay.ipPaymentInsert.paymentTime; //this.datePipe.transform(this.currentDate, 'yyyy-MM-dd') || this.datePipe.transform(this.currentDate, 'yyyy-MM-dd')
-    //             Paymentobj['CashPayAmount'] = result.submitDataPay.ipPaymentInsert.cashPayAmount ?? 0;
-    //             Paymentobj['ChequePayAmount'] = result.submitDataPay.ipPaymentInsert.chequePayAmount ?? 0;
-    //             Paymentobj['ChequeNo'] = String(result.submitDataPay.ipPaymentInsert.chequeNo) ?? "0";
-    //             Paymentobj['BankName'] = result.submitDataPay.ipPaymentInsert.bankName ?? "";
-    //             Paymentobj['ChequeDate'] = result.submitDataPay.ipPaymentInsert.chequeDate;
-    //             Paymentobj['CardPayAmount'] = result.submitDataPay.ipPaymentInsert.cardPayAmount
-    //             Paymentobj['CardNo'] = String(result.submitDataPay.ipPaymentInsert.cardNo);
-    //             Paymentobj['CardBankName'] = result.submitDataPay.ipPaymentInsert.cardBankName
-    //             Paymentobj['CardDate'] = result.submitDataPay.ipPaymentInsert.cardDate
-    //             Paymentobj['AdvanceUsedAmount'] = result.submitDataPay.ipPaymentInsert.advanceUsedAmount
-    //             Paymentobj['AdvanceId'] = result.submitDataPay.ipPaymentInsert.advanceId
-    //             Paymentobj['RefundId'] = 0;
-    //             Paymentobj['TransactionType'] = 0;
-    //             Paymentobj['Remark'] = '';
-    //             Paymentobj['AddBy'] = this.accountService.currentUserValue.userId,
-    //             Paymentobj['IsCancelled'] = false;
-    //             Paymentobj['IsCancelledBy'] = '0';
-    //             Paymentobj['IsCancelledDate'] = result.submitDataPay.ipPaymentInsert.isCancelledDate
-    //             Paymentobj['opdipdType'] = 1;
-    //             Paymentobj['neftpayAmount'] = result.submitDataPay.ipPaymentInsert.neftpayAmount
-    //             Paymentobj['neftno'] = NeftNo;
-    //             Paymentobj['neftbankMaster'] = result.submitDataPay.ipPaymentInsert.NEFTBankMaster
-    //             Paymentobj['neftdate'] = result.submitDataPay.ipPaymentInsert.NEFTDate
-    //             Paymentobj['payTmamount'] = result.submitDataPay.ipPaymentInsert.payTmamount
-    //             Paymentobj['payTmtranNo'] = "0",//result.submitDataPay.ipPaymentInsert.payTmtranNo || 0
-    //             Paymentobj['payTmdate'] = result.submitDataPay.ipPaymentInsert.payTmdate
-    //             Paymentobj['tdsAmount'] = result.submitDataPay.ipPaymentInsert.tdsAmount
-    //             Paymentobj['unitId'] = 1
-    //             Paymentobj['wfamount'] = 0
-
-
-    //             let BillUpdateObj = {};
-
-    //             BillUpdateObj['billNo'] = contact.billNo;
-    //             BillUpdateObj['balanceAmt'] = result.BalAmt;
-
-    //             console.log("Procced with Payment Option");
-    //             let UpdateAdvanceDetailarr1: IpPaymentInsert[] = [];
-
-    //             if (result.IsSubmitFlag) {
-    //                 console.log(result);
-    //                 result.submitDataPay.ipPaymentInsert.TransactionType = 0;
-    //                 UpdateAdvanceDetailarr1 = result.submitDataAdvancePay;
-    //                 console.log(UpdateAdvanceDetailarr1);
-
-    //                 let UpdateAdvanceDetailarr = [];
-    //                 let BalanceAmt = 0;
-    //                 let UsedAmt = 0;
-    //                 if (result.submitDataAdvancePay.length > 0) {
-    //                     result.submitDataAdvancePay.forEach((element) => {
-    //                         let UpdateAdvanceDetailObj = {};
-    //                         UpdateAdvanceDetailObj['advanceDetailID'] = element.AdvanceDetailID;
-    //                         UpdateAdvanceDetailObj['usedAmount'] = element.UsedAmount;
-    //                         UsedAmt += element.UsedAmount;
-    //                         UpdateAdvanceDetailObj['balanceAmount'] = element.BalanceAmount;
-    //                         BalanceAmt += element.BalanceAmount;
-    //                         UpdateAdvanceDetailarr.push(UpdateAdvanceDetailObj);
-    //                     });
-    //                 }
-    //                 else {
-    //                     let UpdateAdvanceDetailObj = {};
-    //                     UpdateAdvanceDetailObj['advanceDetailID'] = 0,
-    //                         UpdateAdvanceDetailObj['usedAmount'] = 0,
-    //                         UpdateAdvanceDetailObj['balanceAmount'] = 0,
-    //                         UpdateAdvanceDetailarr.push(UpdateAdvanceDetailObj);
-    //                 }
-
-
-    //                 let UpdateAdvanceHeaderObj = {};
-    //                 if (result.submitDataAdvancePay.length > 0) {
-    //                     UpdateAdvanceHeaderObj['AdvanceId'] = UpdateAdvanceDetailarr1[0]['AdvanceId'],
-    //                         UpdateAdvanceHeaderObj['AdvanceUsedAmount'] = UsedAmt,
-    //                         UpdateAdvanceHeaderObj['BalanceAmount'] = BalanceAmt
-    //                 }
-    //                 else {
-    //                     UpdateAdvanceHeaderObj['advanceId'] = 0,
-    //                         UpdateAdvanceHeaderObj['advanceUsedAmount'] = 0,
-    //                         UpdateAdvanceHeaderObj['balanceAmount'] = 0
-    //                 }
-
-    //                 let submitData = {
-    //                     "payment": Paymentobj,// result.submitDataPay.ipPaymentInsert,
-    //                     "billupdate": BillUpdateObj,
-    //                     "advanceDetailupdate": UpdateAdvanceDetailarr,
-    //                     "advanceHeaderupdate": UpdateAdvanceHeaderObj
-    //                 };
-    //                 let data = {
-    //                     submitDataPay: submitData
-    //                 }
-    //                 console.log(submitData);
-    //                 this._IPBrowseBillService.InsertIPSettlementPayment(submitData).subscribe(response => {
-    //                     this.viewgetIPPayemntPdf(response)
-    //                     this.onChangeIPBill()
-    //                 }, (error) => {
-    //                     this.toastr.error(error.message);
-    //                 });
-    //             }
-
-    //         }
-    //     });
-
-    // }
-
     IPBillMyForm: FormGroup;
     //IP bill save form 
     CreateIPBillForm(): FormGroup {
@@ -1024,7 +877,7 @@ export class IPBillBrowseListComponent implements OnInit {
             mobileNo: el.mobileNo,
             patientName: el.patientName,
             billNo: el.billNo,
-            smsType: "OPBill",
+            smsType: "IPBill",
             patientId: el.regNo
         })
     }
@@ -1036,11 +889,11 @@ export class IPBillBrowseListComponent implements OnInit {
             mobileNo: el.mobileNo,
             patientName: el.patientName,
             billNo: el.billNo,
-            smsType: "OPBill",
+            smsType: "IPReceipt",
             patientId: el.regNo
         })
     }
-    openWhatsappDetailsPopover1(event: MouseEvent, patientData: any) {
+    openWhatsappDetailsPopoverpay(event: MouseEvent, patientData: any) {
         console.log(patientData)
         debugger
         event.stopPropagation();
@@ -1099,11 +952,11 @@ export class IPBillBrowseListComponent implements OnInit {
 
             // Handle mouse events on the overlay element
             const overlayElement = this.whatsappOverlayRef.overlayElement;
-            overlayElement.addEventListener('mouseenter', () => this.keepPatientPopoverOpen1());
-            overlayElement.addEventListener('mouseleave', () => this.closeWhatsappDetailsPopover1());
+            overlayElement.addEventListener('mouseenter', () => this.keepPatientPopoverOpenpay());
+            overlayElement.addEventListener('mouseleave', () => this.closeWhatsappDetailsPopoverpay());
         }, 300); // 300ms delay before showing popover
     }
-    closeWhatsappDetailsPopover1() {
+    closeWhatsappDetailsPopoverpay() {
         // Clear timeout if popover hasn't opened yet
         if (this.hoverTimeout) {
             clearTimeout(this.hoverTimeout);
@@ -1124,13 +977,138 @@ export class IPBillBrowseListComponent implements OnInit {
         }, 200);
     }
 
-    keepPatientPopoverOpen1() {
+    keepPatientPopoverOpenpay() {
         // Clear close timeout when hovering over popover
         if (this.patientCloseTimeout) {
             clearTimeout(this.patientCloseTimeout);
             this.patientCloseTimeout = null;
         }
     }
+    //refund
+
+    getWhatsappshareRefund(el) {
+        console.log(el);
+        debugger
+        this._whatsppService.OnWhatsAppMsgSent({
+            mobileNo: el.mobileNo,
+            patientName: el.patientName,
+            billNo: el.refundId,
+            smsType: "IPRefundReceipt",
+            patientId: el.regNo
+        })
+    }
+    openWhatsappDetailsPopoverrefund(event: MouseEvent, patientData: any) {
+        console.log(patientData)
+        debugger
+        event.stopPropagation();
+
+        // Clear any existing timeout
+        if (this.hoverTimeout) {
+            clearTimeout(this.hoverTimeout);
+        }
+
+        // Add small delay to prevent flickering
+        this.hoverTimeout = setTimeout(() => {
+            // Close any existing patient popover
+            if (this.whatsappOverlayRef) {
+                this.whatsappOverlayRef.dispose();
+                this.whatsappOverlayRef = null;
+            }
+
+            const positionStrategy = this.overlay.position()
+                .flexibleConnectedTo(event.target as HTMLElement)
+                .withPositions([
+                    {
+                        originX: 'start',
+                        originY: 'bottom',
+                        overlayX: 'start',
+                        overlayY: 'top',
+                    },
+                    {
+                        originX: 'start',
+                        originY: 'top',
+                        overlayX: 'start',
+                        overlayY: 'bottom',
+                    },
+                    {
+                        originX: 'end',
+                        originY: 'center',
+                        overlayX: 'start',
+                        overlayY: 'center',
+                    },
+                    {
+                        originX: 'start',
+                        originY: 'center',
+                        overlayX: 'end',
+                        overlayY: 'center',
+                    }
+                ]);
+
+            this.whatsappOverlayRef = this.overlay.create({
+                positionStrategy,
+                scrollStrategy: this.overlay.scrollStrategies.close(),
+                hasBackdrop: false,
+            });
+
+            const portal = new ComponentPortal(WhatsappDetPopUpOverComponent);
+            const componentRef: ComponentRef<WhatsappDetPopUpOverComponent> = this.whatsappOverlayRef.attach(portal);
+            componentRef.instance.patientData = patientData;
+
+            // Handle mouse events on the overlay element
+            const overlayElement = this.whatsappOverlayRef.overlayElement;
+            overlayElement.addEventListener('mouseenter', () => this.keepPatientPopoverOpenrefund());
+            overlayElement.addEventListener('mouseleave', () => this.closeWhatsappDetailsPopoverrefund());
+        }, 300); // 300ms delay before showing popover
+    }
+    keepPatientPopoverOpenrefund() {
+        // Clear timeout if popover hasn't opened yet
+        if (this.hoverTimeout) {
+            clearTimeout(this.hoverTimeout);
+            this.hoverTimeout = null;
+        }
+
+        // Clear any existing close timeout
+        if (this.patientCloseTimeout) {
+            clearTimeout(this.patientCloseTimeout);
+        }
+
+        // Add delay before closing to allow moving mouse to popover
+        this.patientCloseTimeout = setTimeout(() => {
+            if (this.whatsappOverlayRef) {
+                this.whatsappOverlayRef.dispose();
+                this.whatsappOverlayRef = null;
+            }
+        }, 200);
+    }
+
+    closeWhatsappDetailsPopoverrefund() {
+        // Clear timeout if popover hasn't opened yet
+        if (this.hoverTimeout) {
+            clearTimeout(this.hoverTimeout);
+            this.hoverTimeout = null;
+        }
+
+        // Clear any existing close timeout
+        if (this.patientCloseTimeout) {
+            clearTimeout(this.patientCloseTimeout);
+        }
+
+        // Add delay before closing to allow moving mouse to popover
+        this.patientCloseTimeout = setTimeout(() => {
+            if (this.whatsappOverlayRef) {
+                this.whatsappOverlayRef.dispose();
+                this.whatsappOverlayRef = null;
+            }
+        }, 200);
+    }
+
+    // keepPatientPopoverOpen() {
+    //     // Clear close timeout when hovering over popover
+    //     if (this.patientCloseTimeout) {
+    //         clearTimeout(this.patientCloseTimeout);
+    //         this.patientCloseTimeout = null;
+    //     }
+    // }
 
     Onemail(contact) {
         const dialogRef = this._matDialog.open(EmailSendComponent,

@@ -205,7 +205,7 @@
                             <button mat-icon-button
                                 [matTooltip]="'We send the message on your registered WhatsApp number: ' + element?.mobileNo"
                                 matTooltipPosition="right" (click)="getWhatsappsharePayment(element)"
-                                (mouseenter)="openWhatsappDetailsPopover1($event, element)"
+                                (mouseenter)="openWhatsappDetailsPopoverpay($event, element)"
                                 (mouseleave)="closeWhatsappDetailsPopover1()"
                                 style="position: relative; cursor: pointer; text-decoration: underline; color: #667eea;">
                                 <img width="20" height="20" src="assets/images/logos/WhatsApp.png">
@@ -296,8 +296,14 @@
                                 matTooltip="IP Refund Of Bill List">
                                 <mat-icon>print</mat-icon>
                             </button>
-                            <button mat-icon-button matTooltip="Send message On WhatsApp">
-                                <img width="500" height="20px" src="assets/images/logos/WhatsApp.png">
+                            
+                            <button mat-icon-button
+                                [matTooltip]="'We send the message on your registered WhatsApp number: ' + element?.mobileNo"
+                                matTooltipPosition="right" (click)="getWhatsappshareRefund(element)"
+                                (mouseenter)="openWhatsappDetailsPopoverrefund($event, element)"
+                                (mouseleave)="closeWhatsappDetailsPopoverrefund()"
+                                style="position: relative; cursor: pointer; text-decoration: underline; color: #667eea;">
+                                <img width="20" height="20" src="assets/images/logos/WhatsApp.png">
                             </button>
                         </div>
                     </ng-template>
