@@ -729,7 +729,11 @@ this.Is9_Digit_National_Id = id === "1";
                 }
 debugger
                 // this.VisitFormGroup.get('visitDate').setValue(this.personalFormGroup.get('visitDate').value, 'yyyy-MM-dd')
-                // this.VisitFormGroup.get('visitTime').setValue(this.personalFormGroup.get('visitDate').value)
+               this.VisitFormGroup.get('visitDate').setValue(this.datePipe.transform(this.VisitFormGroup.get('visitDate').value, 'yyyy-MM-dd'))
+   
+              
+              
+                this.VisitFormGroup.get('visitTime').setValue(this.VisitFormGroup.get('visitDate').value)
                 this.personalFormGroup.get('City').setValue(this.CityName)
                 this.personalFormGroup.get('Age').setValue(String(this.ageYear))
                 this.personalFormGroup.get('AgeYear').setValue(String(this.ageYear))

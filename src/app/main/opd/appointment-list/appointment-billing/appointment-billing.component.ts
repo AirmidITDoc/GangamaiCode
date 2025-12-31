@@ -247,6 +247,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
     }
     getService(contact) {
         console.log(contact)
+        debugger
         const isItemAlreadyAdded = this.dsChargeList.data.some((element) => element.ServiceId === contact.serviceId);
         if (isItemAlreadyAdded) {
             Swal.fire({
@@ -657,6 +658,16 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
         }
     }
     onAddCharges(): void { 
+debugger
+         const isItemAlreadyAdded = this.dsChargeList.data.some((element) => element.ServiceId ===  this.chargeForm.get('serviceName')?.value.serviceId);
+        if (isItemAlreadyAdded) {
+            Swal.fire({
+                title: 'Message',
+                text: "Selected Service already available in the list",
+                icon: "warning"
+            });
+            return;
+        }
         const serviceNameValue = this.chargeForm.get('serviceName')?.value;
         if (serviceNameValue?.serviceId == 0 || this.serviceSelct == false || serviceNameValue?.serviceId == '' || serviceNameValue?.serviceId == null || serviceNameValue?.serviceId == undefined) {
             this.toastrService.warning('Please select a valid service name.', 'Warning !', {
@@ -1138,7 +1149,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
     }
     mpesaResponse_1:any=[];
     OnSave() {
-        debugger
+        
         if (this.OPFooterForm.get('concessionAmt').value > 0 && this.Consessionres) {
             if (!this.OPFooterForm.get('concessionReasonId').value) {
                 this.toastr.warning('Please select ConcessionReason.', 'Warning !', {
@@ -1281,7 +1292,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
 
                 console.log(this.OpBillForm.value)
                 this._AppointmentlistService.InsertOPBilling(this.OpBillForm.value).subscribe(response => {
-                    debugger
+                    
                     console.log(response)
                     this.mpesaResponse = response.data;
                     // this.startPolling();
@@ -1334,7 +1345,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
 
                 console.log(this.OpBillForm.value)
                 this._AppointmentlistService.InsertOPBilling(this.OpBillForm.value).subscribe(response => {
-                    debugger
+                    
                     console.log(response)
                     this.mpesaResponse = response.data;
                     // this.startPolling();
@@ -1373,7 +1384,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
                 });
             }
             else if (this.OPFooterForm.get('paymentType')?.value === 'Mpesa') {
-                debugger
+                
                 this.openWaitingScreen();
                 // this.startPolling();  
                 // if(this.mPesa_ReceiptNo && this.mpesaResponse){
@@ -1389,7 +1400,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
 
                 // console.log(this.OpBillForm.value)
                 // this._AppointmentlistService.InsertOPBilling(this.OpBillForm.value).subscribe(response => {
-                //     debugger
+                //     
                 //     console.log(response)
                 //     if (ThermalPrint != 1) {
                 //         this.viewgetOPBillReportPdf(response)
@@ -1516,6 +1527,69 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
         // </html>`);
 
         popupWin.document.close();
+    reportPrintObjList: ChargesList[] = [];
+         viewgetOPBillThermalReportPdf(element) { 
+           
+                  let param = {
+                      "searchFields": [
+                          {
+                              "fieldName": 'BillNo',
+                              "fieldValue": String(element),
+                              "opType": "13"
+                          }
+                      ],
+                      "mode": 'OPBillPrint'
+                  } 
+                  this._AppointmentlistService.getReportView(param).subscribe(res => { 
+                      console.log(res)
+                      
+                       this.reportPrintObjList = res as ChargesList[];  
+                         setTimeout(() => {
+                      this.print3();
+          }, 5000);
+                  }); 
+          }
+
+  
+   @ViewChild('billTemplate2') billTemplate2: ElementRef;
+      print3() {
+        
+      let popupWin, printContents;
+  
+      popupWin = window.open('', '_blank', 'top=0,left=0,height=800px !important,width=auto,width=2200px !important');
+  
+      popupWin.document.write(` <html>
+    <head><style type="text/css">`);
+      popupWin.document.write(`
+      </style>
+      <style type="text/css" media="print">
+    @page { size: portrait; }
+  </style>
+          <title></title>
+      </head>
+    `);
+    // console.log(this.billTemplate2.nativeElement.innerHTML)
+    debugger
+      popupWin.document.write(`<body onload="window.print();window.close()" style="font-family: system-ui, sans-serif;margin:0;font-size: 16px;">${this.billTemplate2.nativeElement.innerHTML}</body>
+    <script>
+      var css = '@page { size: portrait; }',
+      head = document.head || document.getElementsByTagName('head')[0],
+      style = document.createElement('style');
+      style.type = 'text/css';
+      style.media = 'print';
+  
+      if (style.styleSheet){
+          style.styleSheet.cssText = css;
+      } else {
+          style.appendChild(document.createTextNode(css));
+      }
+      head.appendChild(style);
+    </script>
+    </html>`);
+      // popupWin.document.write(`<body style="margin:0;font-size: 16px;">${this.printTemplate}</body>
+      // </html>`);
+  
+      popupWin.document.close();
     }
     selectChangeConcession(event) {
         this.ConcessionId = event.value
@@ -1585,7 +1659,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
     pollingSub?: Subscription;
     mPesa_ReceiptNo:any='0';
     openWaitingScreen() {
-        debugger
+        
         this._AppointmentlistService.postpayment(this.OpBillForm.controls["netPayableAmt"]?.value, this.OPFooterForm.get('mpesaMobile')?.value,
     this.OpBillForm.get('opdipdid')?.value ).subscribe(response => {
             this.mpesaResponse = response;
@@ -1627,7 +1701,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
     }
     handleStatus(status: any) {
         console.log(status)
-        debugger
+        
         // if (status?.resultCode == 0 && (status?.mpesaReceiptNumber ?? '') != '') {
         //     // here you can get json response.
         //     this.statusMessage = 'Payment successful.' + this.mpesaResponse.responseDescription + '\n' +
@@ -1672,7 +1746,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
     }
   // Mpesa Save  
 SavemPesaBill() {
-    debugger
+    
     const formattedDate = this.datePipe.transform(this.OpBillForm.get('billDate').value, "yyyy-MM-dd");
     const formattedTime = this.datePipe.transform(new Date(), "HH:mm:ss");
     const [ThermalPrint, ThermalPrintValue] = this._ConfigService.configParams.ThermalPrint.split(":");
