@@ -1,4 +1,4 @@
-import { Component,  ElementRef,  Inject, OnDestroy, OnInit, Optional, TemplateRef, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component,  ElementRef,  Inject, OnDestroy, OnInit, Optional, TemplateRef, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
@@ -112,6 +112,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
         private toastrService: ToastrService,
         private hospitalconfigservice: HospitalConfigService,
         public _ConfigService: ConfigService,
+        private cdr: ChangeDetectorRef,
         @Optional() public dialogRef: MatDialogRef<AppointmentBillingComponent>
     ) { }; 
 
@@ -1172,19 +1173,19 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
         this.OpBillForm.get('discComments')?.setValue(this.ConcessionReason)
         this.OpBillForm.get('cashCounterId')?.setValue(this.searchForm.get('CashCounterID')?.value)
         this.OpBillForm.get('govtApprovedAmt')?.setValue(this.OPFooterForm.get('GovrnApprovAmt').value || 0)
-            this.ChargeddetailsArray.clear();
-            this.BillDetailsArray.clear();
+        this.ChargeddetailsArray.clear();
+        this.BillDetailsArray.clear();
         if (!this.OpBillForm.invalid) {
             this.ChargeddetailsArray.clear();
             this.BillDetailsArray.clear();
             this.dsChargeList.data.forEach(item => {
                 this.ChargeddetailsArray.push(this.CreateAddchargeform(item as ChargesList));
-                this.BillDetailsArray.push(this.createBillDetails(item as ChargesList)); 
+                this.BillDetailsArray.push(this.createBillDetails(item as ChargesList));
 
                 if (item.IsPackage == 1) {
                     this.packcagechargesArray.clear();
                     this.dsPackageList.data.forEach(item => {
-                        this.packcagechargesArray.push(this.Createpacakgechargeform(item as ChargesList)); 
+                        this.packcagechargesArray.push(this.Createpacakgechargeform(item as ChargesList));
                     });
                 }
             });
@@ -1195,13 +1196,13 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
             if (this.OPFooterForm.get('paymentType').value == 'PayOption') {
                 let PatientHeaderObj = {};
                 PatientHeaderObj['Date'] = this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd') || '01/01/1900',
-                PatientHeaderObj['PatientName'] = this.PatientName; 
+                    PatientHeaderObj['PatientName'] = this.PatientName;
                 PatientHeaderObj['RegNo'] = this.patientDetail?.regNo || 0;
                 PatientHeaderObj['DoctorName'] = this.Doctorname || '';
-                PatientHeaderObj['CompanyName'] = this.patientDetail?.companyName || ''; 
+                PatientHeaderObj['CompanyName'] = this.patientDetail?.companyName || '';
                 PatientHeaderObj['DepartmentName'] = this.DepartmentName || '';
                 PatientHeaderObj['OPD_IPD_Id'] = this.vOPIPId;
-                 PatientHeaderObj['CompanyId'] = this.patientDetail?.companyId || 0;
+                PatientHeaderObj['CompanyId'] = this.patientDetail?.companyId || 0;
                 PatientHeaderObj['CashCounterId'] = this.searchForm.get('CashCounterID')?.value || 0;
                 PatientHeaderObj['Age'] = this.AgeYear || 0;
                 PatientHeaderObj['TransactionLabel'] = 'OP_BILL';
@@ -1223,45 +1224,49 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
                         console.log(result.submitDataPay.ipPaymentInsert)
                         console.log(result.BillBalanceAmount)
                         this.OpBillForm.get('balanceAmt').setValue(result.BillBalanceAmount || 0)
-                        this.OpBillForm.get('payments').setValue(result.submitDataPay.ipPaymentInsert) 
+                        this.OpBillForm.get('payments').setValue(result.submitDataPay.ipPaymentInsert)
 
-                        this.ModeOfPaymentsArray.clear(); 
+                        this.ModeOfPaymentsArray.clear();
                         result.submitDataPay.ipModePaymentInsert.forEach(item => {
-                        this.ModeOfPaymentsArray.push(this.CreateModePaymentform(item as ChargesList));
-                        });  
+                            this.ModeOfPaymentsArray.push(this.CreateModePaymentform(item as ChargesList));
+                        });
 
                         console.log(this.OpBillForm.value)
                         this._AppointmentlistService.InsertOPBilling(this.OpBillForm.value).subscribe(response => {
-                            if (ThermalPrint != 1) {
-                                this.viewgetOPBillReportPdf(response)
-                            } else {
-                                this.viewgetOPBillThermalReportPdf(response)
-                            }
                             this.resetform();
                             this._matDialog.closeAll();
                             this.savebtn = true
+                            if (ThermalPrint != 0) {
+                                this.viewgetOPBillReportPdf(response)
+                            } else {
+                                if (this.data?.FormName != 'Appointment-OPBill') {
+                                    this.viewgetOPBillThermalReportPdf(response)
+                                } else {
+                                    this.dialogRef.close(response)
+                                }
+                            }
                         });
                     }
                 });
             }
             else if (this.OPFooterForm.get('paymentType').value == 'CashPay') {//Cash pay  
                 let ModePaymentObj = [];
-                 ModePaymentObj.push({ 
+                ModePaymentObj.push({
                     paymentDate: formattedDate,
                     paymentTime: formattedTime,
                     payAmount: this.OPFooterForm.get('netPayableAmt')?.value ?? 0,
                     tranNo: "",
                     bankName: "",
-                    validationDate: this.datePipe.transform(this.currentDate, 'yyyy-MM-dd'), 
+                    validationDate: this.datePipe.transform(this.currentDate, 'yyyy-MM-dd'),
                     comments: "",
                     payMode: "UPI",
                     onlineTranNo: "0",
                     onlineTranResponse: "0",
-                    companyId: this.patientDetail?.CompanyId ?? 0, 
-                    cashCounterId:this.searchForm.get('CashCounterID')?.value || 0,
+                    companyId: this.patientDetail?.CompanyId ?? 0,
+                    cashCounterId: this.searchForm.get('CashCounterID')?.value || 0,
                     transactionType: 0,
-                    isSelfOrcompany: this.patientDetail?.CompanyId ? 1 : 0, 
-                }); 
+                    isSelfOrcompany: this.patientDetail?.CompanyId ? 1 : 0,
+                });
                 this.OpBillForm.get('balanceAmt').setValue(0)
                 this.OpBillForm.get('paidAmt')?.setValue(this.OPFooterForm.get('netPayableAmt')?.value)
                 this.OpBillForm.get('payments.cashPayAmount')?.setValue(Number(this.OPFooterForm.get('netPayableAmt')?.value))
@@ -1269,46 +1274,49 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
                 this.OpBillForm.get('payments.paymentTime')?.setValue(this.dateTimeObj.time)
                 this.OpBillForm.get('payments.companyId')?.setValue(this.patientDetail?.companyId || 0)
 
-                       this.ModeOfPaymentsArray.clear(); 
-                        ModePaymentObj.forEach(item => {
-                        this.ModeOfPaymentsArray.push(this.CreateModePaymentform(item as ChargesList));
-                        });  
+                this.ModeOfPaymentsArray.clear();
+                ModePaymentObj.forEach(item => {
+                    this.ModeOfPaymentsArray.push(this.CreateModePaymentform(item as ChargesList));
+                });
 
                 console.log(this.OpBillForm.value)
                 this._AppointmentlistService.InsertOPBilling(this.OpBillForm.value).subscribe(response => {
                     debugger
                     console.log(response)
-                    if (ThermalPrint != 1) {
-                        this.viewgetOPBillReportPdf(response)
-                    } else {
-                        this.viewgetOPBillThermalReportPdf(response)
-                    }
-
                     this.mpesaResponse = response.data;
                     // this.startPolling();
                     this._matDialog.closeAll();
                     this.savebtn = true
                     this.resetform();
+                    if (ThermalPrint != 0) {
+                        this.viewgetOPBillReportPdf(response)
+                    } else {
+                        if (this.data?.FormName != 'Appointment-OPBill') {
+                            this.viewgetOPBillThermalReportPdf(response)
+                        } else {
+                            this.dialogRef.close(response)
+                        }
+                    }
                 });
             }
-            else if (this.OPFooterForm.get('paymentType').value == 'OnlinePay') {  
+            else if (this.OPFooterForm.get('paymentType').value == 'OnlinePay') {
                 let ModePaymentObj = [];
-                 ModePaymentObj.push({ 
+                ModePaymentObj.push({
                     paymentDate: formattedDate,
                     paymentTime: formattedTime,
                     payAmount: this.OPFooterForm.get('netPayableAmt')?.value ?? 0,
                     tranNo: this.OPFooterForm.get('UpiNo')?.value || 0,
                     bankName: "",
-                    validationDate: this.datePipe.transform(this.currentDate, 'yyyy-MM-dd'), 
+                    validationDate: this.datePipe.transform(this.currentDate, 'yyyy-MM-dd'),
                     comments: "",
                     payMode: "UPI",
                     onlineTranNo: "0",
                     onlineTranResponse: "0",
-                    companyId: this.patientDetail?.CompanyId ?? 0, 
-                    cashCounterId:this.searchForm.get('CashCounterID')?.value || 0,
+                    companyId: this.patientDetail?.CompanyId ?? 0,
+                    cashCounterId: this.searchForm.get('CashCounterID')?.value || 0,
                     transactionType: 0,
-                    isSelfOrcompany: this.patientDetail?.CompanyId ? 1 : 0, 
-                }); 
+                    isSelfOrcompany: this.patientDetail?.CompanyId ? 1 : 0,
+                });
 
                 this.OpBillForm.get('balanceAmt').setValue(0)
                 this.OpBillForm.get('paidAmt')?.setValue(this.OPFooterForm.get('netPayableAmt')?.value)
@@ -1319,26 +1327,29 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
                 this.OpBillForm.get('payments.payTmdate')?.setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'))
                 this.OpBillForm.get('payments.companyId')?.setValue(this.patientDetail?.companyId || 0)
 
-                this.ModeOfPaymentsArray.clear(); 
+                this.ModeOfPaymentsArray.clear();
                 ModePaymentObj.forEach(item => {
-                this.ModeOfPaymentsArray.push(this.CreateModePaymentform(item as ChargesList));
-                });  
+                    this.ModeOfPaymentsArray.push(this.CreateModePaymentform(item as ChargesList));
+                });
 
                 console.log(this.OpBillForm.value)
                 this._AppointmentlistService.InsertOPBilling(this.OpBillForm.value).subscribe(response => {
                     debugger
                     console.log(response)
-                    if (ThermalPrint != 1) {
-                        this.viewgetOPBillReportPdf(response)
-                    } else {
-                        this.viewgetOPBillThermalReportPdf(response)
-                    }
-
                     this.mpesaResponse = response.data;
                     // this.startPolling();
                     this._matDialog.closeAll();
                     this.savebtn = true
                     this.resetform();
+                    if (ThermalPrint != 0) {
+                        this.viewgetOPBillReportPdf(response)
+                    } else {
+                        if (this.data?.FormName != 'Appointment-OPBill') {
+                            this.viewgetOPBillThermalReportPdf(response)
+                        } else {
+                            this.dialogRef.close(response)
+                        }
+                    }
                 });
             }
             else if (this.OPFooterForm.get('paymentType').value == 'CreditPay') {//Credit pay 
@@ -1347,21 +1358,24 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
                 this.OpBillForm.removeControl('payments')
                 console.log(this.OpBillForm.value)
                 this._AppointmentlistService.InsertOPBillingCredit(this.OpBillForm.value).subscribe(response => {
-                    if (ThermalPrint != 1) {
-                        this.viewgetOPBillReportPdf(response)
-                    } else {
-                        this.viewgetOPBillThermalReportPdf(response)
-                    }
                     this._matDialog.closeAll();
                     this.savebtn = true
-                    if (response)
-                        this.resetform();
+                    this.resetform();
+                    if (ThermalPrint != 0) {
+                        this.viewgetOPBillReportPdf(response)
+                    } else {
+                        if (this.data?.FormName != 'Appointment-OPBill') {
+                            this.viewgetOPBillThermalReportPdf(response)
+                        } else {
+                            this.dialogRef.close(response)
+                        }
+                    }
                 });
             }
             else if (this.OPFooterForm.get('paymentType')?.value === 'Mpesa') {
                 debugger
                 this.openWaitingScreen();
-               // this.startPolling();  
+                // this.startPolling();  
                 // if(this.mPesa_ReceiptNo && this.mpesaResponse){
                 //     console.log(this.mPesa_ReceiptNo)
                 //      console.log(this.mpesaResponse)
@@ -1445,65 +1459,63 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
     reportPrintObj: ChargesList;
     subscriptionArr: Subscription[] = [];
     printTemplate: any;
-    reportPrintObjList: ChargesList[] = [];
-         viewgetOPBillThermalReportPdf(element) { 
-          debugger 
-                  let param = {
-                      "searchFields": [
-                          {
-                              "fieldName": 'BillNo',
-                              "fieldValue": String(element),
-                              "opType": "13"
-                          }
-                      ],
-                      "mode": 'OPBillPrint'
-                  } 
-                  this._AppointmentlistService.getReportView(param).subscribe(res => { 
-                      console.log(res)
-                       this.reportPrintObjList = res as ChargesList[];  
-                         setTimeout(() => {
-                      this.print3();
-          }, 1000);
-                  }); 
-          }
+    reportPrintObjList: ChargesList[] = []; 
+    viewgetOPBillThermalReportPdf(BillNo) {
+        debugger 
+        let param = {
+            "searchFields": [
+                {
+                    "fieldName": 'BillNo',
+                    "fieldValue": String(BillNo),
+                    "opType": "13"
+                }
+            ],
+            "mode": 'OPBillPrint'
+        }
+        this._AppointmentlistService.getReportView(param).subscribe(res => {
+            console.log(res)
+            this.reportPrintObjList = res as ChargesList[];
+            setTimeout(() => {
+                this.print3();
+            }, 1000);
+        }); 
+    }
+    @ViewChild('billTemplate2') billTemplate2: ElementRef;
+    print3() {
+        let popupWin, printContents;
 
-  
-   @ViewChild('billTemplate2') billTemplate2: ElementRef;
-      print3() {
-      let popupWin, printContents;
-  
-      popupWin = window.open('', '_blank', 'top=0,left=0,height=800px !important,width=auto,width=2200px !important');
-  
-      popupWin.document.write(` <html>
-    <head><style type="text/css">`);
-      popupWin.document.write(`
-      </style>
-      <style type="text/css" media="print">
-    @page { size: portrait; }
-  </style>
-          <title></title>
-      </head>
-    `);
-      popupWin.document.write(`<body onload="window.print();window.close()" style="font-family: system-ui, sans-serif;margin:0;font-size: 16px;">${this.billTemplate2.nativeElement.innerHTML}</body>
-    <script>
-      var css = '@page { size: portrait; }',
-      head = document.head || document.getElementsByTagName('head')[0],
-      style = document.createElement('style');
-      style.type = 'text/css';
-      style.media = 'print';
-  
-      if (style.styleSheet){
-          style.styleSheet.cssText = css;
-      } else {
-          style.appendChild(document.createTextNode(css));
-      }
-      head.appendChild(style);
-    </script>
-    </html>`);
-      // popupWin.document.write(`<body style="margin:0;font-size: 16px;">${this.printTemplate}</body>
-      // </html>`);
-  
-      popupWin.document.close();
+        popupWin = window.open('', '_blank', 'top=0,left=0,height=800px !important,width=auto,width=2200px !important');
+
+        popupWin.document.write(` <html>
+      <head><style type="text/css">`);
+        popupWin.document.write(`
+        </style>
+        <style type="text/css" media="print">
+      @page { size: portrait; }
+    </style>
+            <title></title>
+        </head>
+      `);
+        popupWin.document.write(`<body onload="window.print();window.close()" style="font-family: system-ui, sans-serif;margin:0;font-size: 16px;">${this.billTemplate2.nativeElement.innerHTML}</body>
+      <script>
+        var css = '@page { size: portrait; }',
+        head = document.head || document.getElementsByTagName('head')[0],
+        style = document.createElement('style');
+        style.type = 'text/css';
+        style.media = 'print';
+    
+        if (style.styleSheet){
+            style.styleSheet.cssText = css;
+        } else {
+            style.appendChild(document.createTextNode(css));
+        }
+        head.appendChild(style);
+      </script>
+      </html>`);
+        // popupWin.document.write(`<body style="margin:0;font-size: 16px;">${this.printTemplate}</body>
+        // </html>`);
+
+        popupWin.document.close();
     }
     selectChangeConcession(event) {
         this.ConcessionId = event.value
@@ -1700,15 +1712,19 @@ SavemPesaBill() {
                 }); 
 
     this._AppointmentlistService.InsertOPBilling(this.OpBillForm.value)
-        .subscribe(response => {  
-            if (ThermalPrint != 1) {
-                this.viewgetOPBillReportPdf(response);
-            } else {
-                this.viewgetOPBillThermalReportPdf(response);
-            } 
-            this._matDialog.closeAll();
+        .subscribe(response => {   
             this.savebtn = true;
-            this.resetform();
+            this.resetform(); 
+            this._matDialog.closeAll(); 
+              if (ThermalPrint != 1) {
+                        this.viewgetOPBillReportPdf(response)
+                    } else {
+                        if (this.data?.FormName != 'Appointment-OPBill') {
+                            this.viewgetOPBillThermalReportPdf(response)
+                        } else {
+                            this.dialogRef.close(response)
+                        }
+                    }
         });
 }
 // mpesa Save through history
@@ -1802,15 +1818,19 @@ SavemPesaBill() {
                 }); 
 
                         this._AppointmentlistService.InsertOPBilling(this.OpBillForm.value)
-                            .subscribe(response => {
-                                if (ThermalPrint != 1) {
-                                    this.viewgetOPBillReportPdf(response);
-                                } else {
-                                    this.viewgetOPBillThermalReportPdf(response);
-                                }
-                                this._matDialog.closeAll();
+                            .subscribe(response => { 
                                 this.savebtn = true;
-                                this.resetform();
+                                this.resetform(); 
+                                this._matDialog.closeAll(); 
+                                  if (ThermalPrint != 1) {
+                        this.viewgetOPBillReportPdf(response)
+                    } else {
+                        if (this.data?.FormName != 'Appointment-OPBill') {
+                            this.viewgetOPBillThermalReportPdf(response)
+                        } else {
+                            this.dialogRef.close(response)
+                        }
+                    }
                             });
                     }
                 }

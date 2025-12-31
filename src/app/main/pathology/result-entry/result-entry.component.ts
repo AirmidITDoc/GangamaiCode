@@ -886,7 +886,7 @@ debugger
                     opType: "Equals"
                 }
             ],
-            mode: "PathologyReporKenyatWithHeader"  //"PathologyReportWithHeader"
+            mode: "PathologyReportWithHeader"
         };
 
 

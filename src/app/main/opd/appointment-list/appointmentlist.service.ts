@@ -389,4 +389,12 @@ public RegistredAppointmentBilling(Param: any) {
     public getOPDEmrId(param) {
         return this._httpClient1.PostData("OPDPrescriptionMedical/OPRequestListFromEMR", param)
     }
+        public getOpBillthermalReportView(Param,loader = true) {
+    if (loader) {
+      this._loaderService.show();
+    }
+  //return this._httpClient1.PostData("Report/ViewReport", Param);
+    return this._httpClient1.PostData("Common",Param)
+}
+
 }
