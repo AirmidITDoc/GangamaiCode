@@ -1236,7 +1236,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
                             this.resetform();
                             this._matDialog.closeAll();
                             this.savebtn = true
-                            if (ThermalPrint != 0) {
+                            if (ThermalPrint != 1) {
                                 this.viewgetOPBillReportPdf(response)
                             } else {
                                 if (this.data?.FormName != 'Appointment-OPBill') {
@@ -1288,7 +1288,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
                     this._matDialog.closeAll();
                     this.savebtn = true
                     this.resetform();
-                    if (ThermalPrint != 0) {
+                    if (ThermalPrint != 1) {
                         this.viewgetOPBillReportPdf(response)
                     } else {
                         if (this.data?.FormName != 'Appointment-OPBill') {
@@ -1341,7 +1341,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
                     this._matDialog.closeAll();
                     this.savebtn = true
                     this.resetform();
-                    if (ThermalPrint != 0) {
+                    if (ThermalPrint != 1) {
                         this.viewgetOPBillReportPdf(response)
                     } else {
                         if (this.data?.FormName != 'Appointment-OPBill') {
@@ -1361,7 +1361,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
                     this._matDialog.closeAll();
                     this.savebtn = true
                     this.resetform();
-                    if (ThermalPrint != 0) {
+                    if (ThermalPrint != 1) {
                         this.viewgetOPBillReportPdf(response)
                     } else {
                         if (this.data?.FormName != 'Appointment-OPBill') {

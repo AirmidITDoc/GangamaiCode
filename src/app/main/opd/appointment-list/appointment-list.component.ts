@@ -581,10 +581,9 @@ export class AppointmentListComponent implements OnInit {
             const [ThermalPrint, ThermalPrintValue] = this._ConfigService.configParams.ThermalPrint.split(":");
             console.log(result)
             if ((result || 0) > 0) {
-                //  if (ThermalPrint == 1) {
-                //     this.viewgetOPBillThermalReportPdf(result)
-                // }
-                this.viewgetOPBillThermalReportPdf(result)
+                 if (ThermalPrint == 1) {
+                    this.viewgetOPBillThermalReportPdf(result)
+                } 
             }
         });
     }
