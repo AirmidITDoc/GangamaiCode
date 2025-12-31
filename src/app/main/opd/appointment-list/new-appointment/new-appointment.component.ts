@@ -728,13 +728,13 @@ this.Is9_Digit_National_Id = id === "1";
                     return;
                 }
 debugger
-                // this.VisitFormGroup.get('visitDate').setValue(this.personalFormGroup.get('visitDate').value, 'yyyy-MM-dd')
-               this.VisitFormGroup.get('visitDate').setValue(this.datePipe.transform(this.VisitFormGroup.get('visitDate').value, 'yyyy-MM-dd'))
-   
+
+        const formattedDate = this.datePipe.transform(this.VisitFormGroup.get('visitDate').value, "yyyy-MM-dd");
+        const formattedTime = this.datePipe.transform(new Date(), "HH:mm:ss");
+        this.VisitFormGroup.get('visitDate').setValue(formattedDate);
+        this.VisitFormGroup.get('visitTime').setValue(formattedDate + ' ' + formattedTime); 
               
-              
-                this.VisitFormGroup.get('visitTime').setValue(this.VisitFormGroup.get('visitDate').value)
-                this.personalFormGroup.get('City').setValue(this.CityName)
+                 this.personalFormGroup.get('City').setValue(this.CityName)
                 this.personalFormGroup.get('Age').setValue(String(this.ageYear))
                 this.personalFormGroup.get('AgeYear').setValue(String(this.ageYear))
                 this.personalFormGroup.get('AgeMonth').setValue(String(this.ageMonth))
