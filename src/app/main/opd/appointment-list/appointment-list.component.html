@@ -388,90 +388,84 @@
 
 
 
-<div hidden class="bill-template-wrapper2" style="font-size:14px; font-weight:bold;" #billTemplate2>
-
+<div hidden class="bill-template-wrapper2" style="font-size:12px; font-weight:bold;" #billTemplate2>
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Thermal Receipt</title>
     </head>
 
-    <body style="margin:0; padding:6px; font-family:monospace; color:#101828; font-size:14px; font-weight:bold;">
-
-        <div class="main-content-wrapper" style="width:100%; font-size:14px; font-weight:bold;">
-
-            <div class="invoice-box" style="width:100%; line-height:18px; font-size:14px; font-weight:bold;">
-
-
-                <table style="width:100%; border-collapse:collapse; font-size:14px; font-weight:bold;">
+    <body style="margin:0; padding:4px; font-family:monospace; color:#101828; font-size:12px; font-weight:bold;">
+        <div class="main-content-wrapper" style="width:100%; font-size:12px; font-weight:bold;">
+            <div class="invoice-box" style="width:100%; line-height:18px; font-size:12px; font-weight:bold;">
+                <table style="width:100%; border-collapse:collapse; font-size:12px; font-weight:bold;">
                     <!-- {{reportPrintObjList[0]?.NewHeaderThermal}} -->
                 </table>
 
-
-                <table style="width:100%; border-collapse:collapse; font-size:14px; font-weight:bold;">
-                    <tr style="font-size:14px; font-weight:bold;">
-                        <td style="border-bottom:1px solid #d4c3c3; padding:4px; font-size:14px; font-weight:bold;">
+                <table style="width:100%; border-collapse:collapse; font-size:12px; font-weight:bold;">
+                    <tr style="font-size:12px; font-weight:bold;">
+                        <td style="border-bottom:1px solid #d4c3c3; padding:4px; font-size:12px; font-weight:bold;">
                             OPD BILL/RECEIPT
                         </td>
                         <td
-                            style="border-bottom:1px solid #d4c3c3; padding:4px; text-align:right; font-size:14px; font-weight:bold;">
+                            style="border-bottom:1px solid #d4c3c3; padding:4px; text-align:right; font-size:12px; font-weight:bold;">
                             Print Date : <b>{{currentDate | date:'dd/MM/yyyy'}}</b>
                         </td>
                     </tr>
                 </table>
 
 
-                <table style="width:100%; border-collapse:collapse; font-size:14px; font-weight:bold;">
-                    <tr style="font-size:14px; font-weight:bold;">
-                        <td style="padding:2px; font-size:14px; font-weight:bold;">UHID :
+                <table style="width:100%; border-collapse:collapse; font-size:12px; font-weight:bold;">
+                    <tr style="font-size:12px; font-weight:bold;">
+                        <td style="padding:2px; font-size:12px; font-weight:bold;">UHID :
                             {{reportPrintObjList[0]?.RegNo}}</td>
-                        <td style="padding:2px; font-size:14px; font-weight:bold;">Bill No :
+                        <td style="padding:2px; font-size:12px; font-weight:bold;">Bill No :
                             {{reportPrintObjList[0]?.BillNo}}</td>
-                        <td style="padding:2px; font-size:14px; font-weight:bold;">Token No :
+                        <td style="padding:2px; font-size:12px; font-weight:bold;">Token No :
                             {{reportPrintObjList[0]?.TokenNo}}</td>
                     </tr>
-                    <tr style="font-size:14px; font-weight:bold;">
-                        <td colspan="3" style="padding:2px; font-size:14px; font-weight:bold;">
+                    <tr style="font-size:12px; font-weight:bold;">
+                        <td colspan="3" style="padding:2px; font-size:12px; font-weight:bold;">
                             Patient Name : {{reportPrintObjList[0]?.PatientName}}
                         </td>
                     </tr>
-                    <tr style="font-size:14px; font-weight:bold;">
-                        <td colspan="3" style="padding:2px; font-size:14px; font-weight:bold;">
+                    <tr style="font-size:12px; font-weight:bold;">
+                        <td colspan="3" style="padding:2px; font-size:12px; font-weight:bold;">
                             Doctor Name : {{reportPrintObjList[0]?.ConsultantDocName}}
                         </td>
                     </tr>
                 </table>
 
                 <table
-                    style="width:100%; border-collapse:collapse; border:1px solid #000; font-size:14px; font-weight:bold;">
+                    style="width:100%; border-collapse:collapse; border:1px solid #000; font-size:12px; font-weight:bold;">
 
-                    <tr style="font-size:14px; font-weight:bold;">
+                    <tr style="font-size:12px; font-weight:bold;">
                         <th
-                            style="border:1px solid #000; text-align:center; padding:4px; width:10%; font-size:14px; font-weight:bold;">
+                            style="border:1px solid #000; text-align:center; padding:4px; width:10%; font-size:12px; font-weight:bold;">
                             Sr. No
                         </th>
                         <th
-                            style="border:1px solid #000; text-align:left; padding:4px; width:60%; font-size:14px; font-weight:bold;">
+                            style="border:1px solid #000; text-align:left; padding:4px; width:60%; font-size:12px; font-weight:bold;">
                             Service Name
                         </th>
                         <th
-                            style="border:1px solid #000; text-align:right; padding:4px; width:30%; font-size:14px; font-weight:bold;">
+                            style="border:1px solid #000; text-align:right; padding:4px; width:30%; font-size:12px; font-weight:bold;">
                             Rate
                         </th>
                     </tr>
 
                     <tr *ngFor="let item of reportPrintObjList; let indx = index;"
-                        style="font-size:14px; font-weight:bold;">
+                        style="font-size:12px; font-weight:bold;">
                         <td
-                            style="border:1px solid #000; text-align:center; padding:4px; font-size:14px; font-weight:bold;">
+                            style="border:1px solid #000; text-align:center; padding:4px; font-size:12px; font-weight:bold;">
                             {{ indx + 1 }}
                         </td>
                         <td
-                            style="border:1px solid #000; text-align:left; padding:4px; font-size:14px; font-weight:bold;">
+                            style="border:1px solid #000; text-align:left; padding:4px; font-size:12px; font-weight:bold;">
                             {{ item?.ServiceName }}
                         </td>
                         <td
-                            style="border:1px solid #000; text-align:right; padding:4px; font-size:14px; font-weight:bold;">
+                            style="border:1px solid #000; text-align:right; padding:4px; font-size:12px; font-weight:bold;">
                             {{ item.Price | currency:'INR' }}
                         </td>
                     </tr>
@@ -479,58 +473,58 @@
                 </table>
 
 
-                <table style="width:100%; border-collapse:collapse; font-size:14px; font-weight:bold;">
-                    <tr style="font-size:14px; font-weight:bold;">
-                        <td style="font-size:14px; font-weight:bold;">Bill Amt :</td>
+                <table style="width:100%; border-collapse:collapse; font-size:12px; font-weight:bold;">
+                    <tr style="font-size:12px; font-weight:bold;">
+                        <td style="font-size:12px; font-weight:bold;">Bill Amt :</td>
                         <td></td>
-                        <td style="text-align:right; font-size:14px; font-weight:bold;">
+                        <td style="text-align:right; font-size:12px; font-weight:bold;">
                             {{reportPrintObjList[0]?.TotalBillAmount | currency:'INR'}}
                         </td>
                     </tr>
 
-                    <tr style="font-size:14px; font-weight:bold;">
-                        <td style="font-size:14px; font-weight:bold;">Disc Amt :</td>
-                        <td style="font-size:14px; font-weight:bold;">
+                    <tr style="font-size:12px; font-weight:bold;">
+                        <td style="font-size:12px; font-weight:bold;">Disc Amt :</td>
+                        <td style="font-size:12px; font-weight:bold;">
                             ({{reportPrintObjList[0]?.DiscComments}})
                         </td>
-                        <td style="text-align:right; font-size:14px; font-weight:bold;">
+                        <td style="text-align:right; font-size:12px; font-weight:bold;">
                             {{reportPrintObjList[0]?.ConcessionAmt | currency:'INR'}}
                         </td>
                     </tr>
 
-                    <tr style="font-size:14px; font-weight:bold;">
-                        <td style="font-size:14px; font-weight:bold;">Net Amt :</td>
+                    <tr style="font-size:12px; font-weight:bold;">
+                        <td style="font-size:12px; font-weight:bold;">Net Amt :</td>
                         <td></td>
-                        <td style="text-align:right; font-size:14px; font-weight:bold;">
+                        <td style="text-align:right; font-size:12px; font-weight:bold;">
                             {{reportPrintObjList[0]?.NetPayableAmt | currency:'INR'}}
                         </td>
                     </tr>
 
-                    <tr style="font-size:14px; font-weight:bold;">
-                        <td style="font-size:14px; font-weight:bold;">Paid Amt :</td>
-                        <td style="font-size:14px; font-weight:bold;">
+                    <tr style="font-size:12px; font-weight:bold;">
+                        <td style="font-size:12px; font-weight:bold;">Paid Amt :</td>
+                        <td style="font-size:12px; font-weight:bold;">
                             {{reportPrintObjList[0]?.PaymentMode || '-'}}
                         </td>
-                        <td style="text-align:right; font-size:14px; font-weight:bold;">
+                        <td style="text-align:right; font-size:12px; font-weight:bold;">
                             {{reportPrintObjList[0]?.PaidAmount | currency:'INR'}}
                         </td>
                     </tr>
 
-                    <tr style="font-size:14px; font-weight:bold;">
-                        <td style="font-size:14px; font-weight:bold;">Bal Amt :</td>
+                    <tr style="font-size:12px; font-weight:bold;">
+                        <td style="font-size:12px; font-weight:bold;">Bal Amt :</td>
                         <td></td>
-                        <td style="text-align:right; font-size:14px; font-weight:bold;">
+                        <td style="text-align:right; font-size:12px; font-weight:bold;">
                             {{reportPrintObjList[0]?.BalanceAmt | currency:'INR'}}
                         </td>
                     </tr>
 
-                    <tr style="font-size:14px; font-weight:bold;">
-                        <td style="font-size:14px; font-weight:bold;">Refund Amt :</td>
+                    <!-- <tr style="font-size:12px; font-weight:bold;">
+                        <td style="font-size:12px; font-weight:bold;">Refund Amt :</td>
                         <td></td>
-                        <td style="text-align:right; font-size:14px; font-weight:bold;">
+                        <td style="text-align:right; font-size:12px; font-weight:bold;">
                             {{reportPrintObjList[0]?.RefundAmt | currency:'INR'}}
                         </td>
-                    </tr>
+                    </tr> -->
                 </table>
 
                 <hr>
