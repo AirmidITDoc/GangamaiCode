@@ -115,7 +115,7 @@ export class NewInOperationComponent {
   AllTypeDescription1: any = []
   RtrvDescriptionList: any = [];
   RtrvDescriptionList1: any = [];
-
+OPIPType=0
   constructor(public _inOpearionService: InOperationService,
     public dialogRef: MatDialogRef<NewInOperationComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -152,6 +152,7 @@ export class NewInOperationComponent {
       this.vPatientName = this.registerObj1.patientName
       this.vInOperationId = this.registerObj1.otInOperationId
       this.vreservationId = this.registerObj1.otReservationId
+         this.OPIPType=this.registerObj1.opIpType
 
       setTimeout(() => {
         this._inOpearionService.getotTableById(this.data.ottable).subscribe((response) => {
@@ -208,24 +209,49 @@ export class NewInOperationComponent {
                 });
               }
             }
-            
-            if (this.registerObj3.theaterInTime) {
-              const timePart = this.registerObj3.theaterInTime.split(" ")[1];
-              const [hours, minutes, seconds] = timePart.split(":").map(Number);
-              const timeOnly = new Date();
-              timeOnly.setHours(hours, minutes, seconds || 0, 0);
-              this.inOperFinalForm.get("theaterInTime")?.setValue(timeOnly);
+
+
+            if (this.registerObj3?.theaterInTime) {
+              const date = new Date(this.registerObj3.theaterInTime);
+              if (!isNaN(date.getTime())) {
+                const hours = date.getHours().toString().padStart(2, '0');
+                const minutes = date.getMinutes().toString().padStart(2, '0');
+                const formattedTime = `${hours}:${minutes}`; // e.g. "13:01"
+                setTimeout(() => {
+                  this.inOperFinalForm.get('theaterInTime')?.setValue(formattedTime);
+                });
+              }
             }
 
-            if (this.registerObj3.theaterOutTime) {
-              const timePart = this.registerObj3.theaterOutTime.split(' ')[1]; // "13:00:00"
-              const [hours, minutes, seconds] = timePart.split(':').map(Number);
-
-              const timeOnly = new Date();
-              timeOnly.setHours(hours, minutes, seconds || 0, 0);
-
-              this.inOperFinalForm.get('theaterOutTime')?.setValue(timeOnly);
+            if (this.registerObj3?.theaterOutTime) {
+              const date = new Date(this.registerObj3.theaterOutTime);
+              if (!isNaN(date.getTime())) {
+                const hours = date.getHours().toString().padStart(2, '0');
+                const minutes = date.getMinutes().toString().padStart(2, '0');
+                const formattedTime = `${hours}:${minutes}`; // e.g. "13:01"
+                setTimeout(() => {
+                  this.inOperFinalForm.get('theaterOutTime')?.setValue(formattedTime);
+                });
+              }
             }
+
+            // if (this.registerObj3.theaterInTime) {
+            //   const timePart = this.registerObj3.theaterInTime.split(" ")[1];
+            //   const [hours, minutes, seconds] = timePart.split(":").map(Number);
+            //   const timeOnly = new Date();
+            //   timeOnly.setHours(hours, minutes, seconds || 0, 0);
+            //   this.inOperFinalForm.get("theaterInTime")?.setValue(timeOnly);
+            // }
+
+            // if (this.registerObj3.theaterOutTime) {
+            //   const timePart = this.registerObj3.theaterOutTime.split(' ')[1]; // "13:00:00"
+            //   const [hours, minutes, seconds] = timePart.split(':').map(Number);
+
+            //   const timeOnly = new Date();
+            //   timeOnly.setHours(hours, minutes, seconds || 0, 0);
+
+            //   this.inOperFinalForm.get('theaterOutTime')?.setValue(timeOnly);
+            // }
 
           });
         }, 500);
@@ -300,7 +326,7 @@ export class NewInOperationComponent {
       opiptype: 1,
       categoryType: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       ottable: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      surgeryDate: [this.datePipe.transform(new Date(), 'yyyy-MM-dd'), [this._FormvalidationserviceService.allowEmptyStringValidator(), this._FormvalidationserviceService.validDateValidator()]],
+      surgeryDate: [new Date().toISOString(), [this._FormvalidationserviceService.allowEmptyStringValidator(), this._FormvalidationserviceService.validDateValidator()]],
       duration: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       fromTime: [this.datePipe.transform(new Date(), 'shortTime'), [this._FormvalidationserviceService.allowEmptyStringValidator()]],
       toTime: [this.datePipe.transform(new Date(), 'shortTime'), [this._FormvalidationserviceService.allowEmptyStringValidator()]],
@@ -308,9 +334,9 @@ export class NewInOperationComponent {
       stepsOfProc: [''],
       anesthesiaType: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       theaterInDate: [this.datePipe.transform(new Date(), 'yyyy-MM-dd'), [this._FormvalidationserviceService.allowEmptyStringValidator(), this._FormvalidationserviceService.validDateValidator()]],
-      theaterInTime: ['', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
+      theaterInTime: [this.datePipe.transform(new Date(), 'shortTime'), [this._FormvalidationserviceService.allowEmptyStringValidator()]],
       theaterOutData: [this.datePipe.transform(new Date(), 'yyyy-MM-dd'), [this._FormvalidationserviceService.allowEmptyStringValidator(), this._FormvalidationserviceService.validDateValidator()]],
-      theaterOutTime: ['', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
+      theaterOutTime: [this.datePipe.transform(new Date(), 'shortTime'), [this._FormvalidationserviceService.allowEmptyStringValidator()]],
       bloodArranged: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       pacrequired: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       equipmentsRequired: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -333,15 +359,15 @@ export class NewInOperationComponent {
       TheaterLocation: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       diagnosis: [[], [Validators.required]],
       postDiagnosis: [[], [Validators.required]],
-      bodyPartId: [],
+      bodyPartId: [0],
 
       ////////surgery det parameters ////////////
-      surgeryCategoryId: [''],
+      surgeryCategoryId: [0],
       surgeryId: [0],
       surgeryPart: [''],
-      surgeryFromTime: [''],
-      surgeryEndTime: [''],
-      surgeryDuration: [''],
+      surgeryFromTime: [new Date().toISOString()],
+      surgeryEndTime: [new Date().toISOString()],
+      surgeryDuration: [new Date().toISOString()],
       isPrimary: [false],
       surgeonId: [0],
       anesthetistId: [0],
@@ -357,8 +383,8 @@ export class NewInOperationComponent {
     return this._formBuilder.group({
       otinOperationAttendingDetId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       otinOperationId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      doctorTypeId: [element.doctorTypeId, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      doctorId: [element.doctorId, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      doctorTypeId: [element.doctorTypeId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      doctorId: [element.doctorId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       seqNo: [index + 1]
     });
   }
@@ -370,15 +396,15 @@ export class NewInOperationComponent {
     return this._formBuilder.group({
       otinOperationSurgeryDetId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       otinOperationId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      surgeryCategoryId: [element.surgeryCategoryId],
-      surgeryId: [element.surgeryId],
-      surgeryPart: [element.surgeryPart],
-      surgeryFromTime: [element.surgeryFromTime],
-      surgeryEndTime: [element.surgeryEndTime],
-      surgeryDuration: [element.surgeryDuration],
+      surgeryCategoryId: [element.surgeryCategoryId || 0],
+      surgeryId: [element.surgeryId || 0],
+      surgeryPart: [element.surgeryPart || ''],
+      surgeryFromTime: [element.surgeryFromTime || new Date().toISOString()],
+      surgeryEndTime: [element.surgeryEndTime || new Date().toISOString()],
+      surgeryDuration: [element.surgeryDuration || 0],
       isPrimary: [String(element.isPrimary ?? false)],
-      surgeonId: [element.surgeonId],
-      anesthetistId: [element.anestheticsId],
+      surgeonId: [element.surgeonId || 0],
+      anesthetistId: [element.anestheticsId || 0],
       seqNo: [index + 1]
     });
   }
@@ -628,6 +654,29 @@ export class NewInOperationComponent {
 
     const duration = `${this.pad1(dh)}:${this.pad1(dm)}`;
     this.inOperFinalForm.get('duration')?.setValue(duration);
+  }
+
+  onChangeTimeTheatertime(event: any) {
+    // const duration = this.inOperFinalForm.get('duration')?.value;
+    // const startTime = this.inOperFinalForm.get('fromTime')?.value;
+
+    // if (duration) {
+    //   this.onChangeDuration1(null); // reuse logic for calculating end time
+    // } else {
+    //   const endTime = this.inOperFinalForm.get('toTime')?.value;
+    //   if (endTime) {
+    //     this.calculateDuration1(startTime, endTime);
+    //   }
+    // }
+  }
+
+  onChangeTheateroutTime(event: any) {
+    // const startTime = this.inOperFinalForm.get('fromTime')?.value;
+    // const endTime = this.inOperFinalForm.get('toTime')?.value;
+
+    // if (startTime && endTime) {
+    //   this.calculateDuration1(startTime, endTime);
+    // }
   }
 
   pad1(num: number): string {
@@ -1223,7 +1272,7 @@ export class NewInOperationComponent {
   /////////////////////////////// attendent detail part end/////////////////////////////
 
   onSubmit() {
-    debugger
+
     const formattedDate = this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd");
     const formattedtheaterInDate = this.datePipe.transform(this.inOperFinalForm.get('theaterInDate').value, "yyyy-MM-dd");
     const formattedtheaterOutDate = this.datePipe.transform(this.inOperFinalForm.get('theaterOutData').value, "yyyy-MM-dd");
@@ -1236,8 +1285,8 @@ export class NewInOperationComponent {
     this.inOperFinalForm.get('otinOperationTime').setValue(formattedTime);
     this.inOperFinalForm.get('theaterInDate').setValue(formattedtheaterInDate);
     this.inOperFinalForm.get('theaterOutData').setValue(formattedtheaterOutDate);
-    this.inOperFinalForm.get('theaterInTime').setValue(this.inOperFinalForm.get('theaterInTime').value, "shortTime");
-    this.inOperFinalForm.get('theaterOutTime').setValue(this.inOperFinalForm.get('theaterOutTime').value, "shortTime");
+    this.inOperFinalForm.get('theaterInTime').setValue(this.inOperFinalForm.get('theaterInTime').value);
+    this.inOperFinalForm.get('theaterOutTime').setValue(this.inOperFinalForm.get('theaterOutTime').value);
 
     if (this.addDiagnolist.length > 0) {
       this.addDiagnolist.forEach(element => {
@@ -1321,7 +1370,7 @@ export class NewInOperationComponent {
       console.log(formValue)
 
       this._inOpearionService.InsertOTInOperation(formValue).subscribe(response => {
-        // this.viewgetIndentReportPdf(response)
+        this.viewgetOTIntReportPdf(response)
         this._matDialog.closeAll();
       });
     } else {
@@ -1384,7 +1433,7 @@ export class NewInOperationComponent {
 
       this.isTimeChanged = true;
       this.movedatetime = timePart;
-
+      debugger
       this.inOperFinalForm.get('theaterInTime').setValue(selectedTime);
 
       this.eventEmitForParent(datePart, timePart);
@@ -1393,7 +1442,7 @@ export class NewInOperationComponent {
 
 
   onChangeOutDate(value: any) {
-    // debugger;
+    debugger;
     if (value) {
       const inputDate = new Date(value);
 
@@ -1429,6 +1478,43 @@ export class NewInOperationComponent {
 
       this.eventEmitForParent(datePart, timePart);
     }
+  }
+
+  viewgetOTIntReportPdf(el) {
+  let opip = this.opIpType == true ? 1 : 0
+    const param = {
+      searchFields: [
+          {
+                    fieldName: "OPIPID",
+                    fieldValue: String(this.opIpId),
+                    opType: "Equals"
+                },
+                {
+                    fieldName: "OPIPType",
+                    fieldValue: String(this.OPIPType),
+                    opType: "Equals"
+                }
+      ],
+      mode: "OTInOperation"
+    };
+
+    console.log(param);
+
+    this._inOpearionService.getReportView(param).subscribe(res => {
+      const matDialog = this._matDialog.open(PdfviewerComponent, {
+        maxWidth: "85vw",
+        height: '750px',
+        width: '100%',
+        data: {
+          base64: res["base64"] as string,
+          title: "OtReservation Report Viewer"
+        }
+      });
+
+      matDialog.afterClosed().subscribe(result => {
+
+      });
+    });
   }
 
   eventEmitForParent(actualDate, actualTime) {

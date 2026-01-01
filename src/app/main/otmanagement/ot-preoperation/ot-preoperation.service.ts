@@ -86,7 +86,7 @@ export class OtPreoperationService {
       InfectivePer: [],
       InfectiveAmt: [],
       netAmt: [],
-      surgeryDate: [],
+      surgeryDate: [new Date()],
       totalGrossAmt: [0],
       totalDiscAmt: [0],
       totalNetAmt: [0],

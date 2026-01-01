@@ -600,7 +600,7 @@
                                         <mat-datepicker #picker3></mat-datepicker>
                                     </mat-form-field>
 
-                                    <mat-form-field appearance="outline" fxFlex>
+                                    <!-- <mat-form-field appearance="outline" fxFlex>
                                         <mat-label>Theater-In Time</mat-label>
                                         <input matTimepicker #t="matTimepicker" mode="12h"
                                             formControlName="theaterInTime" (timeChange)="onChangeTime($event)"
@@ -608,6 +608,12 @@
                                         <mat-icon matSuffix (click)="!isDatePckrDisabled ? t.showDialog() : ''">
                                             access_time
                                         </mat-icon>
+                                    </mat-form-field> -->
+
+                                    <mat-form-field appearance="outline" fxFlex>
+                                        <mat-label>Theater-In Time</mat-label>
+                                        <input matInput type="time" formControlName="theaterInTime"
+                                            (change)="onChangeTimeTheatertime($event)" #theaterInTimeInput>
                                     </mat-form-field>
                                 </div>
 
@@ -619,7 +625,7 @@
                                         <mat-datepicker #picker2></mat-datepicker>
                                     </mat-form-field>
 
-                                    <mat-form-field appearance="outline" fxFlex>
+                                    <!-- <mat-form-field appearance="outline" fxFlex>
                                         <mat-label>Theater-Out Time</mat-label>
                                         <input matTimepicker #t="matTimepicker" mode="12h"
                                             formControlName="theaterOutTime" (timeChange)="onChangeOutTime($event)"
@@ -627,7 +633,19 @@
                                         <mat-icon matSuffix (click)="!isDatePckrDisabled ? t.showDialog() : ''">
                                             access_time
                                         </mat-icon>
+                                    </mat-form-field> -->
+
+                                     <mat-form-field appearance="outline" fxFlex>
+                                        <mat-label>Theater-In Time</mat-label>
+                                        <input matInput type="time" formControlName="theaterOutTime"
+                                            (change)="onChangeTheateroutTime($event)" #theaterOutTime>
                                     </mat-form-field>
+
+                                    <!-- <mat-form-field appearance="outline" style="width: 100%;">
+                                            <mat-label>Theater-Out Time</mat-label>
+                                            <input matInput type="time" formControlName="theaterInTime"
+                                                (change)="onChangeTime($event)">
+                                        </mat-form-field> -->
                                 </div>
 
                                 <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">

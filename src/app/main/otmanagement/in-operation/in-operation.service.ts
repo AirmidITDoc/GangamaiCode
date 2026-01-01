@@ -134,4 +134,7 @@ export class InOperationService {
   public getRtrvInoprPostdiagnosisList(employee) {
     return this._httpClient.PostData("OTInOperation/OTInOperationPostOperDiagnosisList", employee);
   }
+    public getReportView(Param) {
+        return this._httpClient.PostData("Report/ViewReport", Param);
+    }
 }

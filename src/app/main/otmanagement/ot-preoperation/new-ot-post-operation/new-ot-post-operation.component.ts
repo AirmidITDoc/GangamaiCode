@@ -593,7 +593,7 @@ export class NewOtPostOperationComponent {
   }
 
   onChangeDuration(event: any) {
-    // debugger
+    debugger
     const durationHours = parseFloat(this.postOperationForm.get('surgeryDuration')?.value); // e.g. 1.5
     const startTime = this.postOperationForm.get('surgeryFromTime')?.value; // "HH:mm"
 
@@ -651,6 +651,68 @@ export class NewOtPostOperationComponent {
 
     const duration = `${this.pad(dh)}:${this.pad(dm)}`;
     this.postOperationForm.get('surgeryDuration')?.setValue(duration);
+  }
+
+  
+  onChangeTimefrom1(event: any) {
+    const duration = this.postOperationForm.get('duration1')?.value;
+    const startTime = this.postOperationForm.get('fromTime1')?.value;
+
+    if (duration) {
+      this.onChangeDuration1(null); // reuse logic for calculating end time
+    } else {
+      const endTime = this.postOperationForm.get('toTime1')?.value;
+      if (endTime) {
+        this.calculateDuration1(startTime, endTime);
+      }
+    }
+  }
+
+  onChangeTimeto1(event: any) {
+    const startTime = this.postOperationForm.get('fromTime1')?.value;
+    const endTime = this.postOperationForm.get('toTime1')?.value;
+
+    if (startTime && endTime) {
+      this.calculateDuration1(startTime, endTime);
+    }
+  }
+
+    onChangeDuration1(event: any) {
+    debugger
+    const durationHours = parseFloat(this.postOperationForm.get('duration1')?.value); // e.g. 1.5
+    const startTime = this.postOperationForm.get('fromTime1')?.value; // "HH:mm"
+
+    if (durationHours && startTime) {
+      const [sh, sm] = startTime.split(':').map(Number);
+
+      const startMinutes = sh * 60 + sm;
+      const durationMinutes = Math.round(durationHours * 60);
+
+      const endMinutes = startMinutes + durationMinutes;
+      const eh = Math.floor(endMinutes / 60) % 24;
+      const em = endMinutes % 60;
+
+      const endTime = `${this.pad(eh)}:${this.pad(em)}`;
+      this.postOperationForm.get('toTime1')?.setValue(endTime);
+    }
+  }
+
+   calculateDuration1(startTime: string, endTime: string) {
+    // debugger
+    const [sh, sm] = startTime.split(':').map(Number);
+    const [eh, em] = endTime.split(':').map(Number);
+
+    const startMinutes = sh * 60 + sm;
+    const endMinutes = eh * 60 + em;
+
+    let durationMinutes = endMinutes - startMinutes;
+    if (durationMinutes < 0) durationMinutes += 24 * 60; // handle next-day wrap
+
+    const dh = Math.floor(durationMinutes / 60);
+    const dm = durationMinutes % 60;
+
+    const duration = `${this.pad(dh)}:${this.pad(dm)}`;
+    this.postOperationForm.get('duration1')?.setValue(duration);
   }
 
   pad(num: number): string {
