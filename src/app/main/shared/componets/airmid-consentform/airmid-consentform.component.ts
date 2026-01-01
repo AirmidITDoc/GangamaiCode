@@ -207,10 +207,10 @@ export class AirmidConsentformComponent {
 
     this.myForm.get('consentDate')?.setValue(formattedDate);
     this.myForm.get('consentTime')?.setValue(`${formattedDate} ${formattedTime}`);
-
+debugger
     this.myForm.get("opipid").setValue(this.OP_IP_Id ?? this.data?.opipId)
     this.myForm.get("opiptype").setValue(Number(this.OP_IPType))
-    this.myForm.get("transactionLabel").setValue(this.data?.labelType)
+    this.myForm.get("transactionLabel").setValue(this.data?.labelType || 'OT')
     this.myForm.get("refId").setValue(Number(this.data?.refId) ?? 0)
     this.myForm.get("refType").setValue(this.vRefType)
     this.myForm.get("ConsentTempId").setValue(this.templateId)

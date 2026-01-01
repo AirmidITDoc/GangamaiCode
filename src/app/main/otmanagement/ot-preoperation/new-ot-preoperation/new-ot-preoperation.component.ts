@@ -60,6 +60,7 @@ export class NewOtPreoperationComponent {
   AnthName1: any;
   editIndex: number | null = null;
   editIndex1: number | null = null;
+  OPIPType = 0
 
   displayedColumns: string[] = [
     'sequence',
@@ -160,6 +161,8 @@ export class NewOtPreoperationComponent {
       this.vIPDNo = this.registerObj1.opdNo
       this.vPatientName = this.registerObj1.patientName
       this.vPreOperationId = this.registerObj1.otPreOperationId
+      //  this.OPIPType=this.registerObj1.opIpType
+
 
       setTimeout(() => {
         this._OTPreOperationService.getotTableById(this.data.ottable).subscribe((response) => {
@@ -271,7 +274,7 @@ export class NewOtPreoperationComponent {
       opiptype: 0,
       categoryType: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       ottable: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      surgeryDate: [this.datePipe.transform(new Date(), 'yyyy-MM-dd'), [this._FormvalidationserviceService.allowEmptyStringValidator(), this._FormvalidationserviceService.validDateValidator()]],
+      surgeryDate: [new Date().toISOString(), [this._FormvalidationserviceService.allowEmptyStringValidator(), this._FormvalidationserviceService.validDateValidator()]],
       duration: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       fromTime: [this.datePipe.transform(new Date(), 'shortTime'), [this._FormvalidationserviceService.allowEmptyStringValidator()]],
       toTime: [this.datePipe.transform(new Date(), 'shortTime'), [this._FormvalidationserviceService.allowEmptyStringValidator()]],
@@ -1117,7 +1120,7 @@ export class NewOtPreoperationComponent {
       console.log(formValue)
 
       this._OTPreOperationService.InsertOTPreOperation(formValue).subscribe(response => {
-        // this.viewgetIndentReportPdf(response)
+        this.OnViewPreOprationReportPdf(response)
         this._matDialog.closeAll();
       });
     } else {
@@ -1360,6 +1363,44 @@ export class NewOtPreoperationComponent {
     }
   }
 
+
+  OnViewPreOprationReportPdf(element: any) {
+
+    setTimeout(() => {
+      let param = {
+        "searchFields": [
+          {
+            fieldName: "OPIPID",
+            fieldValue: String(this.opIpId),
+            opType: "Equals"
+          },
+          {
+            fieldName: "OPIPType",
+            fieldValue: String(this.OPIPType),
+            opType: "Equals"
+          }
+        ],
+        "mode": "OTPreOperation"
+      }
+
+      this._ConsentService.getReportView(param).subscribe(res => {
+
+        const matDialog = this._matDialog.open(PdfviewerComponent,
+          {
+            maxWidth: "85vw",
+            height: '750px',
+            width: '100%',
+            data: {
+              base64: res["base64"] as string,
+              title: "Consent Report" + " " + "Viewer"
+            }
+          });
+        matDialog.afterClosed().subscribe(result => {
+        });
+      });
+    }, 100);
+  }
+
   OnViewReportPdf(element: any) {
 
     setTimeout(() => {
@@ -1396,43 +1437,43 @@ export class NewOtPreoperationComponent {
       });
     }, 100);
   }
-opipType=0
-   OnPrint(element) {
-    console.log(element)
-    debugger
-    const param = {
+  opipType = 0
+  // OnPrint(element) {
+  //   console.log(element)
+  //   debugger
+  //   const param = {
 
-      "searchFields": [
-        {
-          "fieldName": "OPIPID",
-          "fieldValue": String(this.opIpId),
-          "opType": "Equals"
-        },
-        {
-          "fieldName": "OPIPType",
-          "fieldValue": String(this.opipType),
-          "opType": "Equals"
-        }
-      ],
-      mode: "OTPreOperationReport"
-    };
-    console.log(param)
-    this._OTPreOperationService.getReportView(param).subscribe(res => {
-      const matDialog = this._matDialog.open(PdfviewerComponent, {
-        maxWidth: "85vw",
-        height: '750px',
-        width: '100%',
-        data: {
-          base64: res["base64"] as string,
-          title: "OTPreOperation Report Viewer"
-        }
-      });
+  //     "searchFields": [
+  //       {
+  //         "fieldName": "OPIPID",
+  //         "fieldValue": String(this.opIpId),
+  //         "opType": "Equals"
+  //       },
+  //       {
+  //         "fieldName": "OPIPType",
+  //         "fieldValue": String(this.opipType),
+  //         "opType": "Equals"
+  //       }
+  //     ],
+  //     mode: "OTPreOperationReport"
+  //   };
+  //   console.log(param)
+  //   this._OTPreOperationService.getReportView(param).subscribe(res => {
+  //     const matDialog = this._matDialog.open(PdfviewerComponent, {
+  //       maxWidth: "85vw",
+  //       height: '750px',
+  //       width: '100%',
+  //       data: {
+  //         base64: res["base64"] as string,
+  //         title: "OTPreOperation Report Viewer"
+  //       }
+  //     });
 
-      matDialog.afterClosed().subscribe(result => {
+  //     matDialog.afterClosed().subscribe(result => {
 
-      });
-    });
-    // this.commonService.Onprint("AnesthesiaId", element.AnesthesiaId, "OTAnaesthesiaRecord");
+  //     });
+  //   });
+  //   // this.commonService.Onprint("AnesthesiaId", element.AnesthesiaId, "OTAnaesthesiaRecord");
 
-  }
+  // }
 }

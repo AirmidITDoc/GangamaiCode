@@ -656,6 +656,11 @@
                                     title="Name: {{ registerObj1.patientName }}  UHID: {{ registerObj1.regNo }}"
                                     [opipType]="element.opiptype"></app-airmid-consentform-icon>
 
+                                      <!-- <app-airmid-consentform-icon [refId]="element.otReservationId" [opipId]="element.opIpId"
+                        [opipType]="element.opIpType" labelType="OT"
+                        title="Name: {{ element.patientName }}  UHID: {{ element.regNo }}"></app-airmid-consentform-icon> -->
+
+
                                 <button mat-icon-button (click)="delete(element)" matTooltip="Delete">
                                     <mat-icon title="Delete">delete</mat-icon>
                                 </button>
