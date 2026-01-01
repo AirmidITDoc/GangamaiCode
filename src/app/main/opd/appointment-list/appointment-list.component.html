@@ -395,7 +395,7 @@
         <title>Thermal Receipt</title>
     </head>
 
-    <body style="margin:0; padding:4px; font-family:monospace; color:#101828; font-size:12px; font-weight:bold;">
+    <body style="margin:0; padding:6px; font-family:monospace; color:#101828; font-size:12px; font-weight:bold;">
         <div class="main-content-wrapper" style="width:100%; font-size:12px; font-weight:bold;">
             <div class="invoice-box" style="width:100%; line-height:18px; font-size:12px; font-weight:bold;">
                 <table style="width:100%; border-collapse:collapse; font-size:12px; font-weight:bold;">
@@ -437,19 +437,19 @@
                 </table>
 
                 <table
-                    style="width:100%; border-collapse:collapse; border:1px solid #000; font-size:12px; font-weight:bold;">
+                    style="width:100%; border-collapse:collapse; border:1px solid #000; font-size:12px;">
 
                     <tr style="font-size:12px; font-weight:bold;">
                         <th
-                            style="border:1px solid #000; text-align:center; padding:4px; width:10%; font-size:12px; font-weight:bold;">
+                            style="border:1px solid #000; text-align:center; padding:4px; width:10%; font-size:12px; ">
                             Sr. No
                         </th>
                         <th
-                            style="border:1px solid #000; text-align:left; padding:4px; width:60%; font-size:12px; font-weight:bold;">
+                            style="border:1px solid #000; text-align:left; padding:4px; width:60%; font-size:12px; ">
                             Service Name
                         </th>
                         <th
-                            style="border:1px solid #000; text-align:right; padding:4px; width:30%; font-size:12px; font-weight:bold;">
+                            style="border:1px solid #000; text-align:right; padding:4px; width:30%; font-size:12px; ">
                             Rate
                         </th>
                     </tr>
@@ -457,15 +457,15 @@
                     <tr *ngFor="let item of reportPrintObjList; let indx = index;"
                         style="font-size:12px; font-weight:bold;">
                         <td
-                            style="border:1px solid #000; text-align:center; padding:4px; font-size:12px; font-weight:bold;">
+                            style="border:1px solid #000; text-align:center; padding:4px; font-size:12px;">
                             {{ indx + 1 }}
                         </td>
                         <td
-                            style="border:1px solid #000; text-align:left; padding:4px; font-size:12px; font-weight:bold;">
+                            style="border:1px solid #000; text-align:left; padding:4px; font-size:12px; ">
                             {{ item?.ServiceName }}
                         </td>
                         <td
-                            style="border:1px solid #000; text-align:right; padding:4px; font-size:12px; font-weight:bold;">
+                            style="border:1px solid #000; text-align:right; padding:4px; font-size:12px; ">
                             {{ item.Price | currency:'INR' }}
                         </td>
                     </tr>
