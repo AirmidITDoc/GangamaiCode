@@ -1,40 +1,43 @@
-import { DatePipe } from '@angular/common';
- import { MatDialog } from '@angular/material/dialog';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
-import { fuseAnimations } from '@fuse/animations'; 
-import { AuthenticationService } from 'app/core/services/authentication.service';
-import { ToastrService } from 'ngx-toastr'; 
-import { SalesInPatientService } from './sales-in-patient.service';
+ import { DatePipe } from '@angular/common';
  import { Component, ElementRef, HostListener, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { FormArray, FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
- import { parseInt } from 'lodash'; 
-import Swal from 'sweetalert2';
-import { RequestforlabtestService } from 'app/main/nursingstation/requestforlabtest/requestforlabtest.service';
-import { MatDrawer } from '@angular/material/sidenav';
- import { BrowsSalesBillService } from '../brows-sales-bill/brows-sales-bill.service';
-import { SalePopupComponent } from '../sales/sale-popup/sale-popup.component';
-import { SubstitutesComponent } from '../sales/substitutes/substitutes.component';
- import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service'; 
-import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component'; 
+ import { FormArray, FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
+ import { MatDialog } from '@angular/material/dialog';
+ import { MatPaginator } from '@angular/material/paginator';
+ import { MatSort } from '@angular/material/sort';
+ import { MatTableDataSource } from '@angular/material/table';
+ import { fuseAnimations } from '@fuse/animations';
+ import { AuthenticationService } from 'app/core/services/authentication.service';
+ import { parseInt } from 'lodash';
+ import { Subscription } from 'rxjs';
+ import Swal from 'sweetalert2';
+ import { RequestforlabtestService } from 'app/main/nursingstation/requestforlabtest/requestforlabtest.service';
+ import { MatDrawer } from '@angular/material/sidenav';
+ import { ToastrService } from 'ngx-toastr';
+ import { BrowsSalesBillService } from '../brows-sales-bill/brows-sales-bill.service'; 
+ import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
+ import { OpPaymentComponent } from 'app/main/opd/op-search-list/op-payment/op-payment.component'; 
+ import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';  
 import { BalAvaListStore, DraftSale, Printsal, SalesBatchItemModel, SalesItemModel } from '../sales-hopsital-new/types';
-import { SalesHospitalService } from '../sales-hopsital-new/sales-hospital-new.service';
+import { SubstitutesComponent } from '../sales-hopsital-new/substitutes/substitutes.component';
 import { PrescriptionComponent } from '../sales-hopsital-new/prescription/prescription.component';
-import { Subscription } from 'rxjs';
+import { SalesHospitalService } from '../sales-hopsital-new/sales-hospital-new.service';
+import { SalesbatchpopupComponent } from './salesbatchpopup/salesbatchpopup.component';
+import { SalePopupComponent } from '../sales/sale-popup/sale-popup.component';
+import { ConfigList } from 'app/app.component';
+import { ConfigSettingParams } from 'app/core/models/config';
 import { ConfigService } from 'app/core/services/config.service';
 
 @Component({
-  selector: 'app-sales-in-patient',
-  templateUrl: './sales-in-patient.component.html',
-  styleUrls: ['./sales-in-patient.component.scss'],
+  selector: 'app-sales-bill-kenya',
+  templateUrl: './sales-hospital-kenya.component.html',
+  styleUrls: ['./sales-hospital-kenya.component.scss'],
   encapsulation: ViewEncapsulation.None,
   animations: fuseAnimations,
 })
-export class SalesInPatientComponent implements OnInit {
-  // Display Columns
+export class SalesHospitalKenyaComponent {  
+     // Display Columns
      DraftSaleDisplayedCol: string[] = ['Action', 'UHID', 'PatientName', 'NetAmt', 'MobileNo', 'UserName', 'DraftClose'];
-      selectedSaleDisplayedCol = ['ItemName', 'BatchNo', 'BatchExpDate', 'Qty', 'UnitMRP', 'GSTPer', 'GSTAmount', 'TotalMRP', 'DiscPer', 'DiscAmt', 'NetAmt', 'buttons'];
+      selectedSaleDisplayedCol = ['itemMolecule','ItemName', 'BatchNo', 'BatchExpDate', 'Qty', 'UnitMRP', 'GSTPer', 'GSTAmount', 'TotalMRP', 'DiscPer', 'DiscAmt', 'NetAmt', 'buttons'];
      DraftAvbStkListDisplayedCol = ['StoreName', 'BalQty'];
      // View Children
      @ViewChild('qtyInputRef') qtyInputRef: ElementRef;
@@ -63,12 +66,11 @@ export class SalesInPatientComponent implements OnInit {
      chargeslist = new MatTableDataSource<IndentList>();
      dsDraftList = new MatTableDataSource<DraftSale>();
      dsBalAvaListStore = new MatTableDataSource<BalAvaListStore>();
-     dsItemNameList1 = new MatTableDataSource<IndentList>();
- 
- 
+     dsItemNameList1 = new MatTableDataSource<IndentList>(); 
  
      // Patient Related 
-     Focusstatus:boolean=true 
+     Focusstatus:boolean=true
+     CreditReasonShow:boolean=false
      type: any;
      PatientName: any;
      MobileNo: any;
@@ -89,7 +91,8 @@ export class SalesInPatientComponent implements OnInit {
      TotalAdvanceAmt: any = 0;
      TotalBalanceAmt: any = 0;
      PatientHeaderObj: any;
-     StockId: any; 
+     StockId: any;
+     paymethod: boolean = true;
      Draftchk: boolean = true;
      ConShow: Boolean = false; 
      Creditflag: boolean = false;
@@ -123,13 +126,13 @@ export class SalesInPatientComponent implements OnInit {
      screenFromString = 'Pharmacy-form';
      vextAddress: any = '';
      ConcessionReasonList: any = [];
- 
-     // Print Related   
-          reportPrintObj: Printsal;
+ PatientTypeId:any=0;
+     // Print Related
+     reportPrintObj: Printsal;
      subscriptionArr: Subscription[] = [];
      printTemplate: any;
      reportPrintObjList: Printsal[] = [];
-     SalesIDObjList: Printsal[] = [];  
+     SalesIDObjList: Printsal[] = [];
      Filepath: any;
      reportItemPrintObj: Printsal;
      reportPrintObjItemList: Printsal[] = [];
@@ -137,11 +140,19 @@ export class SalesInPatientComponent implements OnInit {
      HospitalId: any = 0;
      wardId: any = 0;
      bedId: any = 0;
-     PatientTypeId:any=0;
+     currency:any='';
      // Pharmacy Options
-     Patientdetails: any; 
+     Patientdetails: any;
+     vPharExtOpt: any;
+     vPharOPOpt: any;
+     vPharIPOpt: any;
      vSelectedOption: any = '1';
-   currency:any='';
+     vCondition: boolean = false;
+     vConditionExt: boolean = false;
+     vConditionIP: boolean = false;
+     DoctorNamecheck: boolean = false;
+     IPDNocheck: boolean = false;
+     OPDNoCheck: boolean = false;
      PharmaSalesForm: FormGroup;
      PharmaSalesDraftForm: FormGroup
      selectedItem: SalesBatchItemModel;
@@ -174,7 +185,30 @@ export class SalesInPatientComponent implements OnInit {
          this.ItemSubform.markAllAsTouched();
          this._salesService.ItemSearchGroup.markAllAsTouched();
          this.ItemAddForm = this.createItemAddTable()
-          //this is for curreny symbol
+ 
+         if (this.vPharExtOpt == true) {
+             this.paymethod = false;
+             this.vSelectedOption = '2';
+         } else {
+             this.vPharOPOpt = true;
+         }
+         if (this.vPharIPOpt == true) {
+             if (this.vPharOPOpt == false) {
+                 this.paymethod = true;
+                 this.vSelectedOption = '1';
+             }
+         } else {
+             this.vConditionIP = true;
+         }
+         if (this.vPharOPOpt == true) {
+             if (this.vPharExtOpt == false) {
+                 this.paymethod = true;
+                 this.vSelectedOption = '0';
+             }
+         } else {
+             this.vCondition = true;
+         }
+        //this is for curreny symbol
         const [CurrencyId, CurrencyValue] = this._ConfigService.configParams.CurrencyValue.split(":");
         this.currency = CurrencyValue 
      }
@@ -186,7 +220,7 @@ export class SalesInPatientComponent implements OnInit {
      getSalesFooterform() {
          this.ItemSubform = this.formBuilder.group({
              FinalDiscPer: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-             CashPay: ['Credit'],
+             CashPay: ['CashPay'],
              referanceNo: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
              PaidbyPatient: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
              PaidbacktoPatient: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -208,7 +242,9 @@ export class SalesInPatientComponent implements OnInit {
              ExternalPatID: [''],
              IsPurchaseWsie:[false],
              CredirReasonId:[0],
-             CredirReasonName:[0]
+             CredirReasonName:[0],
+             UpiNo:[0, [Validators.minLength(4), Validators.maxLength(12), this._FormvalidationserviceService.onlyNumberValidator()]]
+             
          });
      }
      //sales save form
@@ -251,10 +287,47 @@ export class SalesInPatientComponent implements OnInit {
                  extMobileNo: ['', [Validators.minLength(10), Validators.maxLength(10), this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
                  roundOff: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
                  extAddress: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
-                 tSalesInpatientDetails: this.formBuilder.array([]), 
-    
-             }), 
-               prescription: this.formBuilder.group({
+                 tSalesDetails: this.formBuilder.array([]),
+             }),
+             //sales payment
+             payment: this.formBuilder.group({
+                 paymentId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+                 billNo: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+                 paymentDate: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+                 paymentTime: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+                 cashPayAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+                 chequePayAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+                 chequeNo: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+                 bankName: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+                 chequeDate: "1999-01-01",
+                 cardPayAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+                 cardNo: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+                 cardBankName: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+                 cardDate: "1999-01-01",
+                 advanceUsedAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+                 advanceId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+                 refundId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+                 transactionType: [4, [this._FormvalidationserviceService.onlyNumberValidator()]],
+                 remark: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+                 addBy: [this._loggedService.currentUserValue.userId, [this._FormvalidationserviceService.onlyNumberValidator()]],
+                 isCancelled: false,
+                 isCancelledBy: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+                 isCancelledDate: "1999-01-01",
+                 opdipdType: [3, [this._FormvalidationserviceService.onlyNumberValidator()]],
+                 neftpayAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+                 neftno: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+                 neftbankMaster: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+                 neftdate: "1999-01-01",
+                 payTmamount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+                 payTmtranNo: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+                 payTmdate: "1999-01-01",
+                 tdsamount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+                 unitId: [this._loggedService.currentUserValue.user.unitId],
+                 wfamount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]], 
+             }),
+             //Sales current stock
+             tCurrentStock: this.formBuilder.array([]),
+             prescription: this.formBuilder.group({
                  opIpId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
                  isClosed: [true]
              }),
@@ -262,9 +335,10 @@ export class SalesInPatientComponent implements OnInit {
              salesDraft: this.formBuilder.group({
                  dsalesId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
                  isClosed: [true]
-             }), 
-             //Sales current stock
-             tCurrentStock: this.formBuilder.array([]), 
+             }),
+                         //New Payments
+             // ✅ Fixed: should be FormArray
+             tPayments: this.formBuilder.array([]),
          })
      }
      CreateSalesDetailsform(item: IndentList) {
@@ -292,7 +366,7 @@ export class SalesInPatientComponent implements OnInit {
              sgstamt: [item?.SGSTAmt || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
              igstper: [item?.IgstPer || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
              igstamt: [item?.IGSTAmt || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-             isPurRate: [true], 
+             isPurRate: [true],
              stkId: [item?.StockId, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
              mrp: [item?.MRPRate, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
              mrpTotal: [item?.MRPRateTotal, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
@@ -305,19 +379,50 @@ export class SalesInPatientComponent implements OnInit {
              iStkId: [item?.StockId, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
              storeId: [this._loggedService.currentUserValue.user.storeId, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]]
          })
-         
      }
+         CreateModePaymentform(item: any): FormGroup {
+             return this.formBuilder.group({
+                 paymentId: [item?.paymentId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+                 unitId: [item?.unitId ?? this._loggedService.currentUserValue.user.unitId],
+                 billNo: [item?.billNo ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+                 opdipdtype: [item?.opdipdtype ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+                 paymentDate: [item?.paymentDate ?? ''],
+                 paymentTime: [item?.paymentTime ?? ''],
+                 payAmount: [item?.payAmount ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+                 tranNo: [item?.tranNo ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+                 bankName: [item?.bankName ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+                 validationDate: [item?.validationDate ?? ''],
+                 advanceUsedAmount: [item?.advanceUsedAmount ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+                 comments: [item?.comments ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+                 payMode: [item?.payMode ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+                 onlineTranNo: [item?.onlineTranNo ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+                 onlineTranResponse: [item?.onlineTranResponse ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+                 companyId: [item?.companyId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+                 advanceId: [item?.advanceId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+                 refundId: [item?.refundId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+                 cashCounterId: [item?.cashCounterId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+                 transactionType: [item?.transactionType ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+                 isSelfOrcompany: [item?.isSelfOrcompany ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+                 tranMode: ['PHAR', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+                 createdBy: [item?.createdBy ?? this._loggedService.currentUserValue.userId],
+                 transactionLabel: [item?.transactionLabel ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+             });
+         }
      // Getters 
      get SalesDetailsAarry(): FormArray {
-         return this.PharmaSalesForm.get('sales.tSalesInpatientDetails') as FormArray;
+         return this.PharmaSalesForm.get('sales.tSalesDetails') as FormArray;
      }
      get CurrentStockArray(): FormArray {
          return this.PharmaSalesForm.get('tCurrentStock') as FormArray;
+     }
+      get ModeOfPaymentsArray(): FormArray {
+         return this.PharmaSalesForm.get('tPayments') as FormArray;
      }
      // Getters 
      get SalesDraftDetailsAarry(): FormArray {
          return this.PharmaSalesDraftForm.get('salesDraftDet') as FormArray;
      }
+        
      //sales draft save form
      CreatePharmasalesDraftform() {
          return this.formBuilder.group({
@@ -376,7 +481,56 @@ export class SalesInPatientComponent implements OnInit {
              purTotAmt: [item?.PurTotAmt ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]]
          })
      }
- 
+     onChangePatientType(event) {
+         if (event.value == '0') {
+             this.RegId = '';
+             this.paymethod = true;
+             this.Draftchk = true;
+             this.ItemSubform.get('extMobileNo').clearValidators();
+             this.ItemSubform.get('externalPatientName').clearValidators();
+             this.ItemSubform.get('extMobileNo').updateValueAndValidity();
+             this.ItemSubform.get('externalPatientName').updateValueAndValidity();
+             this.ItemSubform.get('extMobileNo').reset('');
+             this.ItemSubform.get('externalPatientName').reset('');
+             this.ItemSubform.get('doctorName').reset('');
+             this.ItemSubform.get('regId').setValue('');
+             this.saleSelectedDatasource.data = [];
+             this.Itemchargeslist = []; 
+             this.IPMedID = 0;
+             this.DraftID = 0;
+         } else if (event.value == '1') {
+             this.RegId = '';
+             this.paymethod = true;
+             this.Draftchk = true;
+             this.ItemSubform.get('extMobileNo').clearValidators();
+             this.ItemSubform.get('externalPatientName').clearValidators();
+             this.ItemSubform.get('extMobileNo').updateValueAndValidity();
+             this.ItemSubform.get('externalPatientName').updateValueAndValidity();
+             this.ItemSubform.get('extMobileNo').reset('');
+             this.ItemSubform.get('externalPatientName').reset('');
+             this.ItemSubform.get('doctorName').reset('');
+             this.ItemSubform.get('regId').setValue('');
+             this.saleSelectedDatasource.data = [];
+             this.Itemchargeslist = []; 
+             this.IPMedID = 0;
+             this.DraftID = 0;
+         } else {
+             this.ItemSubform.get('extMobileNo').reset();
+             this.ItemSubform.get('extMobileNo').setValidators([Validators.required]);
+             this.ItemSubform.get('extMobileNo').enable();
+             this.ItemSubform.get('externalPatientName').reset();
+             this.ItemSubform.get('externalPatientName').setValidators([Validators.required]);
+             this.ItemSubform.get('externalPatientName').enable();
+             this.ItemSubform.get('regId').setValue('');
+             this.ItemSubform.updateValueAndValidity();
+             this.saleSelectedDatasource.data = [];
+             this.Itemchargeslist = [];
+             this.paymethod = false;
+              this.Draftchk = true;
+             this.IPMedID = 0;
+             this.DraftID = 0;
+         }
+     }
       getSelectedObjRegIP(obj) {
          console.log(obj);
          let IsDischarged = 0;
@@ -385,7 +539,10 @@ export class SalesInPatientComponent implements OnInit {
              Swal.fire('Selected Patient is already discharged');
              this.RegId = '';
          } else {
-              this.Patientdetails = obj; 
+              this.Patientdetails = obj;
+             this.DoctorNamecheck = true;
+             this.IPDNocheck = true;
+             this.OPDNoCheck = false;
              this.PatientName = obj.firstName + ' ' + obj.lastName;
              this.RegId = obj.regID;
              this.OP_IP_Id = obj.admissionID;
@@ -394,12 +551,29 @@ export class SalesInPatientComponent implements OnInit {
              this.HospitalId = obj.hospitalID;
              this.wardId = obj.wardId;
              this.bedId = obj.bedId;
-            this.RegNo =  obj?.regNo;
-            this.PatientTypeId = obj?.patientTypeID
+              this.RegNo =  obj?.regNo;
+               this.PatientTypeId = obj?.patientTypeID
          }
          this.getBillSummary(obj?.admissionID);  
          this.ItemFormreset();  
-     } 
+     }
+     getSelectedObjOP(obj) {
+         console.log(obj);
+         this.Patientdetails = obj;
+         this.OPDNoCheck = true;
+         this.DoctorNamecheck = true;
+         this.IPDNocheck = false;
+         this.PatientName = obj.firstName + ' ' + obj.lastName;
+         this.RegId = obj.regId;
+         this.OP_IP_Id = obj.visitId;
+         this.OPDNo = obj.opdNo;
+         this.HospitalId = obj.hospitalId;
+         this.DoctorName = obj.doctorName; 
+         this.RegNo =  obj?.regNo;
+         this.PatientTypeId = obj?.patientTypeId
+         this.ItemFormreset(); 
+     }
+    
      onItemChange(event: SalesItemModel): void { 
              this._salesService.ItemSearchGroup.patchValue({ 
              BatchNo: '',  
@@ -417,9 +591,9 @@ export class SalesInPatientComponent implements OnInit {
      // NOTE: If `isEditable` true then it means this popup will open for table row data 
      getBatch(itemId: number, storeId: number, isEditable = false) {
          const dialogRef = this._matDialog.open(SalePopupComponent, {
-             maxWidth: '800px',
-             minWidth: '800px',
-             width: '800px',
+             maxWidth: '950px',
+             minWidth: '900px',
+             width: '900px',
              height: '380px',
              disableClose: true,
              data: {
@@ -451,9 +625,10 @@ export class SalesInPatientComponent implements OnInit {
              }
              // const QtyElement = this.getElementByName(isEditable ? 'tableQty' : 'Qty') as HTMLInputElement;
              const QtyElement = this.getElementByName(isEditable ? 'tableQty' : 'Qty') as HTMLElement;
-             if (QtyElement) {
-                   QtyElement.focus();
-             }
+ if (QtyElement) {
+   setTimeout(() => QtyElement.focus(), 500);
+ }
+ 
              this.selectedItem = result;
              let MRP = 0;
              let IsPurRate= 0;
@@ -461,7 +636,7 @@ export class SalesInPatientComponent implements OnInit {
                  MRP = +result?.landedRate;
                  IsPurRate = 1;  
              } else {
-                 MRP = result.unitMRP;
+                 MRP = result?.unitMRP;
                   IsPurRate = 1; 
              }
              if (isEditable) {
@@ -814,7 +989,7 @@ export class SalesInPatientComponent implements OnInit {
      }
      ItemFormreset() {
          this._salesService.ItemSearchGroup.patchValue({
-             ItemId: [''],
+             ItemId: ['a'],
              ItemName: '',
              BatchNo: '',
              BatchExpDate: '01/01/1900',
@@ -844,9 +1019,14 @@ export class SalesInPatientComponent implements OnInit {
          this.PatientName = '';
          this.DoctorName = '';
          this.ItemSubform.get('opIpType').setValue('1');
-         this.Draftchk = true;   
-         this.ConShow = false; 
-         this.ItemSubform.get('CashPay').setValue('Credit');
+         this.Draftchk = true;
+         this.ItemSubform.get('CashPay').setValue('CashPay');
+         this.ItemSubform.get('referanceNo').reset('');
+         this.ItemSubform.get('extMobileNo').reset('');
+         this.ItemSubform.get('externalPatientName').reset('');
+         this.ItemSubform.get('doctorName').reset('');
+         this.ConShow = false;
+          this.CreditReasonShow = false;
          this.ItemSubform.get('concessionReasonId').clearValidators();
          this.ItemSubform.get('concessionReasonId').updateValueAndValidity();
          this.ItemSubform.get('concessionReasonId').disable();
@@ -912,10 +1092,15 @@ export class SalesInPatientComponent implements OnInit {
             }
          } 
      }
+     StoreId:any=0;
      getStoredet() {
+         debugger
          this._salesService.getstoreDetails(this.autocompletestore).subscribe((data) => {
              const storename = data;
-             this.StoreName = storename[1].text;
+             const filterStore = storename.filter(item=> item.value == this._loggedService.currentUserValue.user.storeId)
+            
+             this.StoreName = filterStore[0]?.text;
+              this.StoreId = filterStore[0]?.value;
          });
      }
      getFinalDiscperAmt() { 
@@ -991,13 +1176,34 @@ export class SalesInPatientComponent implements OnInit {
  
      }
      onSave(event) {
-          const formValue = this.ItemSubform.value 
+          const formValue = this.ItemSubform.value
+           if (this.ItemSubform.get('opIpType').value == '2') {
+             if ((formValue.externalPatientName?.patientName ?? formValue.externalPatientName) == '' ||
+                 ((formValue?.doctorName.doctorName ?? formValue?.doctorName)) == '' ||
+                 ((formValue.extMobileNo.extMobileNo ?? formValue.extMobileNo) == '')) {
+                 this.toastr.warning('Please select Customer Detail', 'Warning !', {
+                     toastClass: 'tostr-tost custom-toast-warning',
+                 });
+                 return;
+             }
+         }
+            if (this.ItemSubform.get('opIpType').value != '2') {
              if ((this.RegNo || 0) == 0) {
                  this.toastr.warning('Please select Patient', 'Warning !', {
                      toastClass: 'tostr-tost custom-toast-warning',
                  });
                  return;
-             } 
+             }
+         }  
+         if (this.ItemSubform.get('CashPay').value == 'Online') {
+                 const upi = this.ItemSubform.get('UpiNo')?.value;
+                 if (!upi || upi.length < 4) {
+                 this.toastr.warning('Enter UPI No (min 4 & max 12 characters)', 'Warning !', {
+                     toastClass: 'tostr-tost custom-toast-warning',
+                 });
+                 return;
+             }  
+         } 
          Swal.fire({
              title: 'Confirm Save',
              text: 'Are you sure you want to save this Sales bill?',
@@ -1015,7 +1221,7 @@ export class SalesInPatientComponent implements OnInit {
      }
      BillSave(event) {
          debugger
-         const formattedTime = this.datePipe.transform(new Date(), 'hh:mm');
+         const formattedTime = this.datePipe.transform(new Date(), 'HH:mm');
          const formattedDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
          const FormattedDateTime = formattedDate + ' ' + formattedTime
          const formValue = this.ItemSubform.value
@@ -1051,19 +1257,127 @@ export class SalesInPatientComponent implements OnInit {
          this.PharmaSalesForm.get('prescription.opIpId').setValue(this.IPMedID || 0)
          this.PharmaSalesForm.get('salesDraft.dsalesId').setValue(this.DraftID || 0)
          this.PharmaSalesForm.get('sales.externalPatientName').setValue(this.PatientName || '')
-         this.PharmaSalesForm.get('sales.doctorName').setValue(this.DoctorName || '')  
+         this.PharmaSalesForm.get('sales.doctorName').setValue(this.DoctorName || '') 
+ 
+         if (formValue.opIpType == 2) {
+             this.PharmaSalesForm.get('sales.externalPatientName').setValue((formValue.externalPatientName?.patientName ?? formValue.externalPatientName) || '')
+             this.PharmaSalesForm.get('sales.doctorName').setValue((formValue?.doctorName.doctorName ?? formValue?.doctorName) || '')
+             this.PharmaSalesForm.get('sales.extAddress').setValue(formValue?.extAddress || '')
+             this.PharmaSalesForm.get('sales.extMobileNo').setValue((formValue.extMobileNo.extMobileNo ?? formValue.extMobileNo) || '')
+             this.PharmaSalesForm.get('sales.regId').clearValidators();
+             this.PharmaSalesForm.get('sales.regId').updateValueAndValidity();
+             this.PharmaSalesForm.get('sales.regId').setValue(0);
+             this.PharmaSalesForm.get('sales.opIpId').clearValidators();
+             this.PharmaSalesForm.get('sales.opIpId').updateValueAndValidity();
+         }
  
          if (this.PharmaSalesForm.valid) {
              this.SalesDetailsAarry.clear();
              this.CurrentStockArray.clear()
-             this.saleSelectedDatasource.data.forEach((element) => { 
+             this.saleSelectedDatasource.data.forEach((element) => {
+                 //this.SalesDetailsAarry.push(this.CreateSalesDetailsform(element))
                  this.CurrentStockArray.push(this.CreateCurrentStockForm(element))
                  const formObj = this.CreateSalesDetailsform(element);  
                  formObj.patchValue({ isPurRate: formValue?.IsPurchaseWsie || false});  
                  this.SalesDetailsAarry.push(formObj);  
              });
   
-             if (this.ItemSubform.get('CashPay').value == 'Credit') { 
+             if (this.ItemSubform.get('CashPay').value == 'CashPay') {
+                 this.PharmaSalesForm.get('sales.paidAmount').setValue((Math.round(formValue.netAmount)))
+                 this.PharmaSalesForm.get('sales.balanceAmount').setValue(0)
+                 this.PharmaSalesForm.get('payment.paymentDate').setValue(formattedDate)
+                 this.PharmaSalesForm.get('payment.paymentTime').setValue(FormattedDateTime)
+                 this.PharmaSalesForm.get('payment.cashPayAmount').setValue((Math.round(formValue.netAmount)))
+                 let ModePaymentObj = [];
+                 ModePaymentObj.push({
+                     paymentId: 0,
+                     unitId: this._loggedService.currentUserValue.user.unitId,
+                     billNo: 0,
+                     opdipdtype: 3,
+                     paymentDate: formattedDate,
+                     paymentTime: formattedTime,
+                     payAmount: (Math.round(formValue?.netAmount || 0)),
+                     tranNo: "",
+                     bankName: "",
+                     validationDate: this.datePipe.transform(this.currentDate, 'yyyy-MM-dd'),
+                     advanceUsedAmount: 0,
+                     comments: "",
+                     payMode: "CASH",
+                     onlineTranNo: "0",
+                     onlineTranResponse: "0",
+                     companyId: this.Patientdetails?.CompanyId ?? 0,
+                     advanceId: 0,
+                     refundId: 0,
+                     cashCounterId: 0,
+                     transactionType: 4,
+                     isSelfOrcompany: this.Patientdetails?.CompanyId ? 1 : 0,
+                     tranMode: "PHAR",
+                     createdBy: this._loggedService.currentUserValue?.userId ?? 0,
+                     transactionLabel: 'SALES_BILL'
+                 }); 
+                 this.ModeOfPaymentsArray.clear();
+                 ModePaymentObj.forEach(item => {
+                     this.ModeOfPaymentsArray.push(this.CreateModePaymentform(item));
+                 });
+                 console.log(this.PharmaSalesForm.value)
+                 this._salesService.InsertCashSales(this.PharmaSalesForm.value).subscribe((response) => {
+                     if (response > 0) {
+                         this.OnSalesprint(response, opIpType);
+                         this.onClose();
+                     }
+                 });
+             } 
+             else if (this.ItemSubform.get('CashPay').value == 'Online') {
+                 
+                 this.PharmaSalesForm.get('sales.paidAmount').setValue((Math.round(formValue.netAmount)))
+                 this.PharmaSalesForm.get('sales.balanceAmount').setValue(0)
+                 this.PharmaSalesForm.get('payment.paymentDate').setValue(formattedDate)
+                 this.PharmaSalesForm.get('payment.paymentTime').setValue(FormattedDateTime)
+                 this.PharmaSalesForm.get('payment.payTmdate').setValue(formattedDate)
+                 this.PharmaSalesForm.get('payment.payTmtranNo')?.setValue(formValue?.UpiNo || 0)
+                 this.PharmaSalesForm.get('payment.payTmamount').setValue((Math.round(formValue.netAmount)))
+ 
+                 let ModePaymentObj = [];
+                 ModePaymentObj.push({
+                     paymentId: 0,
+                     unitId: this._loggedService.currentUserValue.user.unitId,
+                     billNo: 0,
+                     opdipdtype: 3,
+                     paymentDate: formattedDate,
+                     paymentTime: formattedTime,
+                     payAmount: (Math.round(formValue?.netAmount || 0)),
+                     tranNo: formValue?.UpiNo || '0',
+                     bankName: "",
+                     validationDate: this.datePipe.transform(this.currentDate, 'yyyy-MM-dd'),
+                     advanceUsedAmount: 0,
+                     comments: "",
+                     payMode: "UPI",
+                     onlineTranNo: "0",
+                     onlineTranResponse: "0",
+                     companyId: this.Patientdetails?.CompanyId ?? 0,
+                     advanceId: 0,
+                     refundId: 0,
+                     cashCounterId: 0,
+                     transactionType: 4,
+                     isSelfOrcompany: this.Patientdetails?.CompanyId ? 1 : 0,
+                     tranMode: "PHAR",
+                     createdBy: this._loggedService.currentUserValue?.userId ?? 0,
+                     transactionLabel: 'SALES_BILL'
+                 }); 
+                 this.ModeOfPaymentsArray.clear();
+                 ModePaymentObj.forEach(item => {
+                     this.ModeOfPaymentsArray.push(this.CreateModePaymentform(item));
+                 });
+                 console.log(this.PharmaSalesForm.value)
+                 this._salesService.InsertCashSales(this.PharmaSalesForm.value).subscribe((response) => {
+                     if (response > 0) {
+                         this.OnSalesprint(response, opIpType);
+                         this.onClose();
+                     }
+                 });
+             } 
+             else if (this.ItemSubform.get('CashPay').value == 'Credit') {
+                 this.CreditReasonShow = true;
                    if (!formValue.CredirReasonId) {
                  this.toastr.warning('Please select Credit Reason ', 'Warning !', {
                      toastClass: 'tostr-tost custom-toast-warning',
@@ -1071,7 +1385,9 @@ export class SalesInPatientComponent implements OnInit {
                  return;
              }  
                  this.PharmaSalesForm.get('sales.creditReason').setValue(formValue.CredirReasonName)
-                 this.PharmaSalesForm.get('sales.creditReasonId').setValue(formValue.CredirReasonId) 
+                 this.PharmaSalesForm.get('sales.creditReasonId').setValue(formValue.CredirReasonId)
+                 this.PharmaSalesForm.get('payment.paymentDate').setValue(formattedDate)
+                 this.PharmaSalesForm.get('payment.paymentTime').setValue(FormattedDateTime)
                  this.PharmaSalesForm.get('sales.paidAmount').setValue(0)
                  this.PharmaSalesForm.get('sales.balanceAmount').setValue((Math.round(formValue.netAmount)))
                  console.log(this.PharmaSalesForm.value)
@@ -1081,7 +1397,51 @@ export class SalesInPatientComponent implements OnInit {
                          this.onClose()
                      }
                  });
-             } 
+             } else if (this.ItemSubform.get('CashPay').value == 'PayOption') {
+                 let PatientHeaderObj = {};
+                 PatientHeaderObj['Date'] = this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd') || '01/01/1900',
+                 PatientHeaderObj['PatientName'] = this.PatientName || '';
+                 PatientHeaderObj['RegNo'] = this.RegNo || 0;
+                 PatientHeaderObj['DoctorName'] = this.Patientdetails?.doctorName || '';
+                 if (formValue.opIpType == '1') {
+                     PatientHeaderObj['OPD_IPD_Id'] = this.Patientdetails?.ipdNo || 0;
+                 } else {
+                     PatientHeaderObj['OPD_IPD_Id'] = this.Patientdetails?.opdNo || 0;
+                 }
+                 PatientHeaderObj['Age'] = this.Patientdetails?.age || 0;
+                 PatientHeaderObj['NetPayAmount'] = Math.round(this.ItemSubform.get('netAmount').value); 
+                 PatientHeaderObj['CompanyName'] = this.Patientdetails?.companyName || '';  
+                  PatientHeaderObj['CompanyId'] = this.Patientdetails?.companyId || 0;  
+                 PatientHeaderObj['TransactionLabel'] = 'SALES_BILL'; 
+                 const dialogRef = this._matDialog.open(OpPaymentComponent,
+                     {
+                         maxWidth: "80vw",
+                         height: '800px',
+                         width: '75%',
+                         data: {
+                             vPatientHeaderObj: PatientHeaderObj,
+                             FromName: "Phar-SalesPay",
+                         }
+                     });
+                 dialogRef.afterClosed().subscribe(result => {
+                     if (result && result.IsSubmitFlag == true) {
+                         this.PharmaSalesForm.get('payment').setValue(result.submitDataPay.ipPaymentInsert)
+ 
+                         this.ModeOfPaymentsArray.clear();
+                         result.submitDataPay.ipModePaymentInsert.forEach(item => {
+                             this.ModeOfPaymentsArray.push(this.CreateModePaymentform(item));
+                         });
+ 
+                         console.log(this.PharmaSalesForm.value)
+                         this._salesService.InsertCashSales(this.PharmaSalesForm.value).subscribe(response => {
+                             if (response > 0) {
+                                 this.OnSalesprint(response, opIpType)
+                                 this.onClose()
+                             }
+                         });
+                     }
+                 });
+             }
          } else {
              let invalidFields = [];
              if (this.PharmaSalesForm.invalid) {
@@ -1144,6 +1504,7 @@ export class SalesInPatientComponent implements OnInit {
          this.calculateCellNetAmount(item);
      }
      getCellCalculation(item: IndentList) { 
+         debugger
          let qty = +item?.Qty;
          if (!qty) {
              qty = 0;
@@ -1160,17 +1521,17 @@ export class SalesInPatientComponent implements OnInit {
          let MRP;
          let IsPurRate
          if (this.ItemSubform.get('IsPurchaseWsie')?.value == true) {
-             MRP = +item?.LandedRate;
+             MRP = +item?.LandedRate || 0;
              IsPurRate=1  
          } else {
-             MRP = +item?.MRP;
+             MRP = +item?.MRP || 0;
              IsPurRate=0; 
          }
          const unitMrp = MRP
          const totalMrp = qty * unitMrp;
          const gstAmount = (totalMrp * gstPer) / 100;
-         const landedRateandedTotal = qty * item.LandedRate;
-         const mrpRateTotal = qty * item.MRPRate;
+         const landedRateandedTotal = qty * item?.LandedRate || 0;
+         const mrpRateTotal = qty * item?.MRPRate || 0;
          const marginAmt = totalMrp - landedRateandedTotal;
  
          const updatedItem = {
@@ -1315,14 +1676,23 @@ export class SalesInPatientComponent implements OnInit {
          if (!this.isValidForm()) {
              Swal.fire('Please enter valid table data.');
              return;
-         } 
-        
+         }
+         // if (this.ItemSubform.get('opIpType').value == '2') {
+         //   if (this.PatientName == '' || this.MobileNo == '' || this.DoctorName == '') {
+         //     this.toastr.warning('Please select Patient Detail', 'Warning !', {
+         //       toastClass: 'tostr-tost custom-toast-warning',
+         //     });
+         //     return;
+         //   }
+         // } 
+         if (this.ItemSubform.get('opIpType').value != '2') {
              if ((this.RegNo || 0) == 0) {
                  this.toastr.warning('Please select Patient', 'Warning !', {
                      toastClass: 'tostr-tost custom-toast-warning',
                  });
                  return;
-             } 
+             }
+         }  
          debugger
          this.PharmaSalesDraftForm.get('salesDraft.date').setValue(formattedDate)
          this.PharmaSalesDraftForm.get('salesDraft.time').setValue(FormattedDateTime)
@@ -1334,9 +1704,18 @@ export class SalesInPatientComponent implements OnInit {
          this.PharmaSalesDraftForm.get('salesDraft.netAmount').setValue(Number(Math.round(formValue?.netAmount)))
          this.PharmaSalesDraftForm.get('salesDraft.concessionReasonId').setValue(formValue?.concessionReasonId ?? 0)
          this.PharmaSalesDraftForm.get('salesDraft.paidAmount').setValue(Number(Math.round(formValue?.netAmount)))
+  
+         if (formValue.opIpType == 2) {
+             this.PharmaSalesDraftForm.get('salesDraft.externalPatientName').setValue((formValue.externalPatientName?.patientName ?? formValue.externalPatientName) || '')
+             this.PharmaSalesDraftForm.get('salesDraft.doctorName').setValue((formValue?.doctorName.doctorName ?? formValue?.doctorName) || '')
+             this.PharmaSalesDraftForm.get('salesDraft.extAddress').setValue(formValue?.extAddress || '')
+             this.PharmaSalesDraftForm.get('salesDraft.extMobileNo').setValue((formValue.extMobileNo.extMobileNo ?? formValue.extMobileNo) || '')
+             this.PharmaSalesDraftForm.get('salesDraft.opIpId').clearValidators();
+            this.PharmaSalesDraftForm.get('salesDraft.opIpId').updateValueAndValidity();
+         } else {
              this.PharmaSalesDraftForm.get('salesDraft.externalPatientName').setValue(this.PatientName)
              this.PharmaSalesDraftForm.get('salesDraft.doctorName').setValue(this.Patientdetails?.doctorName)
-      
+         }
           this.SalesDraftDetailsAarry.clear();
          if (this.PharmaSalesDraftForm.valid) {
              this.SalesDraftDetailsAarry.clear();
@@ -1374,28 +1753,85 @@ export class SalesInPatientComponent implements OnInit {
              }
          }
      }
- 
+ draftpatientlist:any=[];
+ draftextMobilenolist:any=[];
      onAddDraftList(contact) { 
          debugger
          console.log(contact)
          this.DraftID = contact.dsalesId;
          this.saleSelectedDatasource.data = []; 
          this.Itemchargeslist = [];
+         this.draftpatientlist=[];
  
-        if (contact.opipType == 1) { 
+         if (contact.opipType == 2) {
+          
+             this.draftpatientlist.push(
+             {
+                 text:contact?.patientName, 
+                 extMobileNo:contact?.extMobileNo,
+                 doctorName:contact?.admDoctorName,
+                 patientName:contact?.patientName
+             } 
+         )
+           this.draftextMobilenolist.push(
+             {
+                 text:contact?.extMobileNo, 
+                 extMobileNo:contact?.extMobileNo,
+                 doctorName:contact?.admDoctorName,
+                 patientName:contact?.patientName
+             } 
+         )
+             this.vSelectedOption = '2';
+             this.ItemSubform.get('extMobileNo').reset();
+             this.ItemSubform.get('extMobileNo').setValidators([Validators.required]);
+             this.ItemSubform.get('extMobileNo').enable();
+             this.ItemSubform.get('externalPatientName').reset();
+             this.ItemSubform.get('externalPatientName').setValidators([Validators.required]);
+             this.ItemSubform.get('externalPatientName').enable();
+             this.ItemSubform.get('extAddress').setValue(contact?.extAddress);
+             this.ItemSubform.get('extMobileNo').setValue(this.draftextMobilenolist[0]);
+             this.ItemSubform.get('externalPatientName').setValue(this.draftpatientlist[0]);
+             this.ItemSubform.get('doctorName').setValue(this.draftpatientlist[0]);
+             this.ItemSubform.updateValueAndValidity(); 
+             this.paymethod = false;
              this.Draftchk = true;
-             this.vSelectedOption = '1';  
+             this.RegId = '';
+            // console.log(this.ItemAddForm.value) 
+         } else if (contact.opipType == 0) {
+             this.paymethod = true;
+             this.Draftchk = true;
+             this.vSelectedOption = '0';
+             this.DoctorNamecheck = true;
+             this.OPDNoCheck = true;
+             this.IPDNocheck = false;
+             this.OPDNo = contact.oP_IP_No;
+             this.DoctorName = contact.admDoctorName;
+             this.PatientName = contact.patientName;
+             this.RegId = contact.regID;
+             this.RegNo =  contact?.regNo;
+             this.OP_IP_Id = contact?.opipid
+             this.ItemSubform.get('extMobileNo').clearValidators();
+             this.ItemSubform.get('externalPatientName').clearValidators();
+             this.ItemSubform.get('extMobileNo').updateValueAndValidity();
+             this.ItemSubform.get('externalPatientName').updateValueAndValidity();
+         }
+         else if (contact.opipType == 1) {
+             this.paymethod = true;
+             this.Draftchk = true;
+             this.vSelectedOption = '1';
+             this.DoctorNamecheck = true;
+             this.OPDNoCheck = false;
+             this.IPDNocheck = true;
              this.IPDNo = contact.oP_IP_No;
              this.DoctorName = contact.admDoctorName;
              this.PatientName = contact.patientName;
              this.RegId = contact.regID;
              this.RegNo =  contact?.regNo;
-             this.OP_IP_Id = contact?.opipid 
-         }else{
-              this.toastr.warning('Select Only IP Patient', 'Warning !', {
-                 toastClass: 'tostr-tost custom-toast-success',
-             });
-             return
+             this.OP_IP_Id = contact?.opipid
+             this.ItemSubform.get('extMobileNo').clearValidators();
+             this.ItemSubform.get('externalPatientName').clearValidators();
+             this.ItemSubform.get('extMobileNo').updateValueAndValidity();
+             this.ItemSubform.get('externalPatientName').updateValueAndValidity();
          }
          var vdata = {
              "first": 0,
@@ -1407,7 +1843,13 @@ export class SalesInPatientComponent implements OnInit {
              "columns": [{ "data": "string", "name": "string" }]
          }
          this._salesService.getDraftItemDetailsList(vdata).subscribe((response) => {
-             this.tempDatasource.data = response.data as any; 
+             this.tempDatasource.data = response.data as any;
+             //  if (this.tempDatasource.data.length >= 1) {
+             //     this.tempDatasource.data.forEach((element) => {
+             //         this.DraftQty = element.qtyPerDay;
+             //         this.onAddDraftListTosale(element, this.DraftQty);
+             //     });
+             // }
              if (this.tempDatasource.data.length >= 1) {
                  this.tempDatasource.data.forEach((element) => {
                      const draftQty = element.qtyPerDay; // use local variable
@@ -1433,10 +1875,11 @@ export class SalesInPatientComponent implements OnInit {
              "columns": [{ "data": "string", "name": "string" }]
          };
          this._salesService.getDraftBillItemBalQty(m_data).subscribe((response) => {
+             console.log(response)
                const tempChargesList = response?.data || []; 
                  let qtyBalChk = 0;  
              if (tempChargesList.length == 0) {
-                 Swal.fire(contact.ItemId + ' : ' + 'Item Stock is Not Avilable:');
+                 Swal.fire(contact.itemId + ' : ' + 'Item Stock is Not Avilable:');
              } else if (tempChargesList.length > 0) {
                  tempChargesList.forEach((element) => {
                      if (contact.itemId != element.itemId) {
@@ -1465,7 +1908,7 @@ export class SalesInPatientComponent implements OnInit {
          if (DraftQty && contact.unitMrp) {
              this.saleSelectedDatasource.data = [];
              let LandedRateandedTotal = '0', TotalMRP = '0', PurTotAmt = '0',
-                 v_marginamt = '0', GSTAmount = '0', CGSTAmt = '0', SGSTAmt = '0', IGSTAmt = '0', NetAmt = '0';
+                 v_marginamt = '0', GSTAmount = '0', CGSTAmt = '0', SGSTAmt = '0', IGSTAmt = '0', NetAmt = '0',MRPRateTotal = '0';
  
              TotalMRP = (parseInt(DraftQty) * contact.unitMrp).toFixed(2);
              LandedRateandedTotal = (parseInt(DraftQty) * contact.landedRate).toFixed(2);
@@ -1475,8 +1918,9 @@ export class SalesInPatientComponent implements OnInit {
              CGSTAmt = (((contact.unitMrp * contact.cgstper) / 100) * parseInt(DraftQty)).toFixed(2);
              SGSTAmt = (((contact.unitMrp * contact.sgstper) / 100) * parseInt(DraftQty)).toFixed(2);
              IGSTAmt = (((contact.unitMrp * contact.igstper) / 100) * parseInt(DraftQty)).toFixed(2);
+             MRPRateTotal =  (parseInt(DraftQty) * contact.unitMrp).toFixed(2);
              NetAmt = (parseFloat(TotalMRP) - 0).toFixed(2);
- 
+             
              // if (contact.DiscPer > 0) {
              // this.DiscAmt = ((TotalMRP * contact.DiscPer) / 100).toFixed(2);
              // NetAmt = (tTotalMRP - this.DiscAmt).toFixed(2);
@@ -1525,7 +1969,10 @@ export class SalesInPatientComponent implements OnInit {
                      MarginAmt: v_marginamt,
                      BalanceQty: contact?.balanceQty,
                      SalesDraftId: 0,
-                     StoreId: contact?.storeId
+                     StoreId: contact?.storeId, 
+                     MRP: contact?.unitMrp,
+                     MRPRate:contact?.unitMrp,
+                     MRPRateTotal:MRPRateTotal
                  }
              )
              this.saleSelectedDatasource.data = this.Itemchargeslist;
@@ -1556,13 +2003,15 @@ export class SalesInPatientComponent implements OnInit {
      }
  
      getPRESCRIPTION() {
-              const dialogRef = this._matDialog.open(PrescriptionComponent, {
+         if (this.ItemSubform.get('opIpType').value != '2') {
+             const dialogRef = this._matDialog.open(PrescriptionComponent, {
                  maxWidth: '100%',
                  height: '100%',
                  width: '95%',
              });
              dialogRef.afterClosed().subscribe((result) => {
-                 console.log('The dialog was closed - Insert Action', result); 
+                 console.log('The dialog was closed - Insert Action', result);
+                  this.DoctorNamecheck = true;
                  this.PatientName = result[0]?.PatientName;
                  this.RegId = result[0]?.RegId;
                  this.RegNo =  result[0]?.RegNo;
@@ -1570,11 +2019,22 @@ export class SalesInPatientComponent implements OnInit {
                  this.DoctorName = result[0]?.DoctorName;
                  this.ItemSubform.get('regId').setValue(result[0]?.RegId);
  
-                 if (result[0]?.IPMedID > 0) { 
+                 if (result[0]?.IPMedID > 0) {
+                     this.IPDNocheck = true;
+                     this.OPDNoCheck = false;
                      this.IPDNo = result[0]?.IPDNo;
-                     this.IPMedID = result[0]?.IPMedID; 
+                     this.IPMedID = result[0]?.IPMedID;
+                     this.paymethod = true;
                      this.vSelectedOption = '1';
-                 } 
+                 } else {
+                     this.IPDNocheck = false;
+                     this.OPDNoCheck = true;
+                     this.OPDNo = result[0].IPDNo;
+                     this.IPMedID = result[0].AdmissionID;
+                     this.paymethod = true;
+                     this.vSelectedOption = '0';
+                     this.OP_IPType = 0;
+                 }
                  this.getBillSummary(result[0]?.AdmissionID || 0)
                  this.dsItemNameList1.data = result; 
                  this.dsItemNameList1.data.forEach((contact) => { 
@@ -1628,7 +2088,11 @@ export class SalesInPatientComponent implements OnInit {
                      });
                  });
              });
-          
+         } else {
+             this.toastr.warning('Please Select opIpType IP or OP.', 'Warning !', {
+                 toastClass: 'tostr-tost custom-toast-success',
+             });
+         }
      }
      getBillSummary(admissionID) {
          //Total Credit Amount
@@ -1982,10 +2446,29 @@ export class SalesInPatientComponent implements OnInit {
                CredirReasonId: [
                  { name: "required", Message: "Patient Name No is required" }
              ],
-             
+                UpiNo: [
+                 { name: "required", Message: "UPI required!", },
+                 { name: "pattern", Message: "only Number allowed.", },
+                 { name: "min", Message: "Enter valid UPI No.", }
+             ],
          };
      }
- 
+     public onEnterpatientname(event): void {
+         if (event.which === 13) {
+             this.doctorname.nativeElement.focus();
+         }
+     }
+     public onEntermobileno(event): void {
+         // if (this.ItemSubform.get('MobileNo').value && this.ItemSubform.get('extMobileNo').value.length == 10) {
+         // this.getTopSalesDetailsList(this.MobileNo);
+         this.patientname.nativeElement.focus();
+         // }
+     }
+     public onEnterDoctorname(event): void {
+         if (event.which === 13) {
+             this.address.nativeElement.focus();
+         }
+     }
      public onEnterAddress(event): void {
          if (event.which === 13) {
              this.itemid.nativeElement.focus();
@@ -2003,12 +2486,31 @@ export class SalesInPatientComponent implements OnInit {
          if (event.keyCode === 120) {
              this.BillSave(event);
          }
+         if (event.altKey && event.key.toLowerCase() === 'a') {
+             event.preventDefault();
+             event.stopPropagation();
+             this.OnAddItem();
+         }
      }
      onsubstitutes() {
          const dialogRef = this._matDialog.open(SubstitutesComponent,
            {
                   width:"45%",
                  height:"60%",
+                 panelClass: 'responsive-dialog'
+            });
+         dialogRef.afterClosed().subscribe((result) => {
+             console.log('The dialog was closed - Insert Action', result);
+         });
+     }
+      Oncheckitemmolecule(contact) {
+         const dialogRef = this._matDialog.open(SubstitutesComponent,
+           {
+                  width:"45%",
+                 height:"60%",
+                 data:{
+                     obj:contact
+                 }
             });
          dialogRef.afterClosed().subscribe((result) => {
              console.log('The dialog was closed - Insert Action', result);
@@ -2075,7 +2577,36 @@ export class SalesInPatientComponent implements OnInit {
                  });
              });
          }, 100);
-     } 
+     }
+     getSelectedObjextMobile(event) { 
+         if (event) {
+             this.ItemSubform.get('externalPatientName').setValue(event)
+             this.ItemSubform.get('doctorName').setValue(event)
+         }
+         this.PatientName = event.patientName
+         const extAddressNameElement = document.querySelector(`[name='extAddress']`) as HTMLElement;
+         if (extAddressNameElement) {
+             extAddressNameElement.focus();
+         }
+     }
+     getSelectedObjextPatient(event: any): void { 
+         if (event) {
+             this.ItemSubform.get('extMobileNo').setValue(event)
+             this.ItemSubform.get('doctorName').setValue(event)
+         }
+         this.PatientName = event.patientName
+         const extAddressNameElement = document.querySelector(`[name='extAddress']`) as HTMLElement;
+         if (extAddressNameElement) {
+             extAddressNameElement.focus();
+         }
+     }
+     getSelectedObjExtDocName(event) { 
+         const extAddressNameElement = document.querySelector(`[name='extAddress']`) as HTMLElement;
+         if (extAddressNameElement) {
+             extAddressNameElement.focus();
+         }
+     }
+   
      getPurchaseRateWise(event) {
          // Update gst type of table data  
          if (this.ItemSubform.get('IsPurchaseWsie')?.value == true) { 
@@ -2106,7 +2637,15 @@ export class SalesInPatientComponent implements OnInit {
          this.saleSelectedDatasource.data.forEach((item) => {
              this.getCellCalculation(item);
          }) 
-     } 
+     }
+     checkCreditreason(){
+         const formvalue = this.ItemSubform.getRawValue();
+         if(formvalue?.CashPay == 'Credit'){
+             this.CreditReasonShow = true
+         }else{
+             this.CreditReasonShow = false
+         }
+     }
      OnCreditReasonchange(event){
         this.ItemSubform.patchValue({
          CredirReasonName:event.text
@@ -2235,11 +2774,4 @@ export class SalesInPatientComponent implements OnInit {
          }
      }
  }
- 
-  
- 
- 
- 
- 
-    
  

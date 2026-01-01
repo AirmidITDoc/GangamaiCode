@@ -34,6 +34,7 @@ export class ReviewcompanyBillComponent {
   public packageList: ChargesList[] = [];
   public dsChargeList = new MatTableDataSource<ChargesList>();
   public dsPackageList = new MatTableDataSource<ChargesList>();
+   public dsbillList = new MatTableDataSource<ChargesList>();
   dateTimeObj: any
   PacakgeList: any = [];
   TotalPrice: any = 0;
@@ -56,6 +57,7 @@ export class ReviewcompanyBillComponent {
   autocompleteModeConcession: string = "Concession";
   vPrice = '0';
   vQty: any;
+  currency:any='';
 
   public isDiscountApplied = false;
   Consessionres: boolean = false;
@@ -66,7 +68,7 @@ export class ReviewcompanyBillComponent {
       'Exclucion', 'Approved'];
   public displayedColumnspackage: string[] =
     ['IsCheck', 'ServiceNamePackage', 'ServiceName', 'Price', 'Qty', 'TotalAmt', 'DoctorName', 'DiscAmt', 'NetAmount'];
-
+  public displayedbillColumns: string[] =['BillNo','TotalAmount', 'DiscountAmount', 'NetAmount' ];
 
 
 
@@ -93,7 +95,9 @@ export class ReviewcompanyBillComponent {
       this.patientDetail = this.data;
       this.getPrevCompanyBillList(this.patientDetail)
     }
-
+        //this is for curreny symbol
+        const [CurrencyId, CurrencyValue] = this._ConfigService.configParams.CurrencyValue.split(":");
+        this.currency = CurrencyValue 
   }
 
   CreateOPFooter() {

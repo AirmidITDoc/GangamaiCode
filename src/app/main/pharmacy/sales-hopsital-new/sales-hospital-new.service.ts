@@ -182,5 +182,9 @@ import { FormvalidationserviceService } from 'app/main/shared/services/formvalid
     public getReportView(Param) {
     return this._httpClient1.PostData("Report/ViewReport", Param);
   }
+    // ItemMaster/GetItemListForSalesBatchPop?StoreId=2&ItemId=0
+  public getKenyaSalesBatchList(Param){ 
+    return this._httpClient1.GetData("ItemMaster/search-GetItemListForSalesBatchPop?StoreId="+Param.StoreId+"&ItemId="+Param.ItemId+"&PatientTypeId="+Param.PatientTypeId); 
+  }
   }
   

@@ -16,6 +16,7 @@ import { map, startWith } from 'rxjs';
 import { FormArray, FormBuilder } from '@angular/forms';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 import { SalesReturnInPatientService } from './sales-return-in-patient.service';
+import { ConfigService } from 'app/core/services/config.service';
 
 @Component({
   selector: 'app-sales-return-in-patient',
@@ -60,7 +61,8 @@ export class SalesReturnInPatientComponent implements OnInit {
   vOP_IP_Type: any;
   registerObj: any;
   selcteditemObj: any;
-
+  currency:any='';
+PatientTypeId:any=0;
   dsIpSaleItemList = new MatTableDataSource<IPSalesItemList>();
 
   @ViewChild('ItemName') ItemName!: ElementRef;
@@ -74,7 +76,8 @@ export class SalesReturnInPatientComponent implements OnInit {
     private accountService: AuthenticationService,
     public toastr: ToastrService,
     public formBuilder: FormBuilder,
-    public _FormvalidationserviceService: FormvalidationserviceService
+    public _FormvalidationserviceService: FormvalidationserviceService,
+    public _ConfigService:ConfigService
   ) { }
 
 
@@ -85,6 +88,9 @@ export class SalesReturnInPatientComponent implements OnInit {
     this.IPSalesRetFooterform.markAllAsTouched();
 
     this.IpSalesReturnForm = this.CreateSalesReturnForm();
+              //this is for curreny symbol
+        const [CurrencyId, CurrencyValue] = this._ConfigService.configParams.CurrencyValue.split(":");
+        this.currency = CurrencyValue
   }
   CreateSalesFooterform() {
     return this.formBuilder.group({
@@ -135,42 +141,7 @@ export class SalesReturnInPatientComponent implements OnInit {
       currentStock: this.formBuilder.array([]),
       // sales details update in array
       salesDetail: this.formBuilder.array([]),
-      //Payment form
-      payment: this.formBuilder.group({
-        paymentId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        billNo: [this.selcteditemObj?.SalesId, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-        paymentDate: ['', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
-        paymentTime: ['', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
-        cashPayAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-        chequePayAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-        chequeNo: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
-        bankName: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
-        chequeDate: ['1999-01-01'],
-        cardPayAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-        cardNo: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
-        cardBankName: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
-        cardDate: ['1999-01-01'],
-        advanceUsedAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-        advanceId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        refundId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        transactionType: [5, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        remark: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
-        addBy: [this.accountService.currentUserValue.userId],
-        isCancelled: [false],
-        isCancelledBy: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        isCancelledDate: ['1999-01-01'],
-        opdipdType: [3, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        neftpayAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-        neftno: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
-        neftbankMaster: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
-        neftdate: ['1999-01-01'],
-        payTmamount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-        payTmtranNo: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
-        payTmdate: ['1999-01-01'],
-        tdsamount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-        unitId: [this.accountService.currentUserValue.user.unitId],
-        wfamount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-      })
+ 
     });
   }
   createSalesretDetails(element: any): FormGroup {
@@ -234,6 +205,7 @@ export class SalesReturnInPatientComponent implements OnInit {
     this.registerObj = obj;
     this.vPatientName = obj?.firstName + ' ' + obj?.middleName + ' ' + obj?.lastName;
     this.vRegno = this.registerObj?.regNo;
+   this.PatientTypeId = obj?.patientTypeID
     this.getItemNameList();
     this.OnRadioChange();
   }
@@ -519,8 +491,6 @@ export class SalesReturnInPatientComponent implements OnInit {
       if (this.ItemFormGroup.get('PaymentType').value == 'Credit') {
         this.IpSalesReturnForm.get('salesReturn.paidAmount').setValue(0)
         this.IpSalesReturnForm.get('salesReturn.balanceAmount').setValue((Math.round(this.IPSalesRetFooterform.get('FinalNetAmount').value)))
-        this.IpSalesReturnForm.get('payment.paymentDate').setValue(formattedDate)
-        this.IpSalesReturnForm.get('payment.paymentTime').setValue(FormattedDateTime)
 
         console.log(this.IpSalesReturnForm.value);
         this._IpSalesRetInpatService.InsertCreditSalesReturn(this.IpSalesReturnForm.value).subscribe(response => {

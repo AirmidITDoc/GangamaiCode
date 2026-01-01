@@ -33,24 +33,26 @@ import { RouterModule, Routes } from '@angular/router';
 import { FuseConfirmDialogModule, FuseSidebarModule } from '@fuse/components';
 import { FuseSharedModule } from '@fuse/shared.module';
 import { SharedModule } from 'app/main/shared/shared.module';
-import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
-import { SalesHospitalNewComponent } from './sales-hopsital-new.component';
-import { PrescriptionComponent } from './prescription/prescription.component';
-import { SubstitutesComponent } from './substitutes/substitutes.component'; 
+import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';  
+import { PrescriptionComponent } from '../sales-hopsital-new/prescription/prescription.component';
+import { SubstitutesComponent } from '../sales-hopsital-new/substitutes/substitutes.component';
+import { SalespageRedirectComponent } from './salespage-redirect.component';
+import { SalesHospitalKenyaComponent } from '../sales-hospital-kenya/sales-hospital-kenya.component';
+import { SalesHospitalNewComponent } from '../sales-hopsital-new/sales-hopsital-new.component';
 
 const routes: Routes = [
   { 
       path: '**', 
-      component: SalesHospitalNewComponent 
+      component: SalespageRedirectComponent 
   },
 ];
 
 @NgModule({
     declarations: [
-        SalesHospitalNewComponent,
+        SalesHospitalKenyaComponent,
         PrescriptionComponent,
-        SubstitutesComponent
-         
+        SubstitutesComponent ,
+        SalesHospitalNewComponent
     ],
     imports: [
         CommonModule,
@@ -96,5 +98,7 @@ const routes: Routes = [
     providers: [
         DatePipe
     ]
-})
-export class SalesHospitalNewModule { }
+}) 
+export class SalesPageRedirectModule { }
+
+ 

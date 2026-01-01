@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FormGroup, UntypedFormBuilder } from '@angular/forms';
+import { ApiCaller } from 'app/core/services/apiCaller';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +11,8 @@ export class SalesInPatientService {
   IPFinalform :FormGroup;
   constructor(
     public _formbuilder: UntypedFormBuilder,
-    public _httpClient: HttpClient
+    public _httpClient: HttpClient,
+    public _httpClient1:ApiCaller
   ) {
     this.SearchGroupForm = this.CreaterSearchForm();
     this.IPFinalform= this.CreateaIpFinalform();
@@ -42,4 +44,7 @@ export class SalesInPatientService {
   public getSalesList(Param){ 
     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_Phar_Bill_List_Settlement",Param);
   }
+     public InsertCreditSales  (employee){
+      return this._httpClient1.PostData("Sales/SaveSalesInpatient ", employee)
+    }
 }

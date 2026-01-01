@@ -1,7 +1,6 @@
 <div hidden class="bill-template-wrapper2" style="font-size: 30.25%" #billTemplate2>
   <div style="display: flex; align-items: center; margin-bottom: 10px">
-    <!-- <span style="font-size: 8px;font-weight: 700;width: 33.33%;">(A Unit of Shri Siddeshwar Loka Kalyana Charitable
-            Trust)</span> -->
+ 
     <h4
       style="text-transform: uppercase; font-weight: 500; margin: 0; width: 66.33%; text-align: center; margin-left: 100px">
       {{ type }} &nbsp; Tax Invoice</h4>
@@ -17,11 +16,7 @@
           </h3>
 
           <div>{{ reportPrintObjList[0]?.StoreAddress }}</div>
-          <!-- <div>GST No. 29ABCTS6874R1Z8</div>
-                    <div>
-                        <span style="margin-right: 20px;">D.L.No. 123456789456123</span>
-                        <span>D.L.No. 123456789456123</span>
-                    </div> -->
+       
           <div>
             <a href="tel:08352259399" style="margin-right: 20px">{{ reportPrintObjList[0]?.HospitalMobileNo }}</a>
             <a href="mailto:info@jsshospitals.com">{{ reportPrintObjList[0]?.HospitalEmailId }}</a>
@@ -29,7 +24,7 @@
         </td>
         <td colspan="6" style="border: 1px solid black; width: 33.33%; vertical-align: top; padding: 0">
           <table style="width: 100%; border-collapse: collapse; font-size: 10px">
-            <!-- <tr> -->
+         
             <td style="vertical-align: top; padding: 0 10px 10px">
               Customer Id : {{ reportPrintObjList[0]?.RegNo }}
               <br />
@@ -39,12 +34,9 @@
               <span style="margin-left: 10px">Mob: {{ reportPrintObjList[0]?.ExtMobileNo }}</span>
               <br />
               Doctor Name: {{ reportPrintObjList[0]?.DoctorName }}
-            </td>
-            <!-- </tr> -->
+            </td> 
           </table>
-        </td>
-        <!-- <td>
-                </td> -->
+        </td> 
       </tr>
       <tr>
         <td colspan="4"
@@ -52,12 +44,11 @@
           <div>GST No. {{ reportPrintObjList[0]?.GSTIN }}</div>
           <div>
             <span style="margin-right: 20px">D.L.No. {{ reportPrintObjList[0]?.DL_NO }}</span>
-            <!-- <span>D.L.No. {{reportPrintObjList[0]?.DL_NO}}</span> -->
-          </div>
+           </div>
         </td>
         <td colspan="6" style="border: 1px solid black; width: 33.33%; vertical-align: top; padding: 0">
           <table style="width: 100%; font-size: 10px">
-            <!-- <tr> -->
+          
             <td style="vertical-align: top; padding: 0 10px 10px">
               Bill No: {{ reportPrintObjList[0]?.SalesNo }}
               <span style="margin-left: 10px">Bill Date:{{ reportPrintObjList[0]?.Time | date : 'dd/MM/yyyy h:mm' }} |
@@ -65,8 +56,7 @@
               <br />
               Mode of Payment : {{ reportPrintObjList[0]?.PayMode }}
               <br />
-            </td>
-            <!-- </tr> -->
+            </td> 
           </table>
         </td>
       </tr>
@@ -130,9 +120,7 @@
             <li>Please consult your doctor before consuming the medicine</li>
             <li>All disputes are subject to Solapur jurisdiction only</li>
           </ul>
-        </td>
-        <!-- <td colspan="5" style="border: 1px solid black;vertical-align: top;padding: 0;"> 
-                </td> -->
+        </td> 
         <td colspan="9"
           style="border: 1px solid black; vertical-align: top; padding: 0 10px 10px; width: 300px; font-size: 10px">
           <div style="display: flex; align-items: center">
@@ -182,21 +170,18 @@
     </tbody>
   </table>
 
-  <!-- <div style="font-style: italic; opacity:.6;text-align: center;font-size: 10px; margin-top: 15px;">
-        This is Computer generated invoice hence doesn’t require signature
-    </div> -->
+ 
 </div>
 
-<!-- NEW -->
+ 
 
 <div class="modal-page page-layout inner-scroll">
-  <div class="modal-wrapper grid-container">
-    <!-- Modal header -->
+  <div class="modal-wrapper grid-container"> 
     <div class="modal-header accent">
       <div class="modal-header-content">
         <div class="modal-header-title">
           <span [@animate]="{ value: '*', params: { delay: '100ms', x: '-25px' } }">
-            Sales In Patient:
+            Sales:
             <b>{{ StoreName }}</b>
           </span>
         </div>
@@ -211,7 +196,7 @@
       </div>
     </div>
 
-    <!-- Modal body -->
+    
     <div class="modal-body" fusePerfectScrollbar>
       <div fxLayout="column" fxLayout.gt-xs="row" class="gap-12 h-100-p">
         <div fxFlex="80%" fxFlex.sm="70%" fxFlex.xs="100%" class="table-left">
@@ -226,13 +211,25 @@
                           class="gap-8">
                           <div class="radio-group-left gap-8" fxLayout="row" fxLayoutAlign="start center" fxFlex>
                             <mat-radio-group aria-label="Select an option" formControlName="opIpType"
-                              [(ngModel)]="vSelectedOption" name="paymode" fxLayout="row"> 
-                              <mat-radio-button value="1">IP</mat-radio-button> 
+                              [(ngModel)]="vSelectedOption" name="paymode" (change)="onChangePatientType($event)"
+                              (blur)="onChangePatientType($event)" fxLayout="row">
+                              <mat-radio-button value="0">OP</mat-radio-button>
+                              <mat-radio-button value="1">IP</mat-radio-button>
+                              <mat-radio-button value="2">External</mat-radio-button>
                             </mat-radio-group>
 
-                            
+                            <div fxFlex="30%" fxFlex.sm="100%"
+                              *ngIf="ItemSubform.get('opIpType').value != '1' && ItemSubform.get('opIpType').value != '2'">
+                              <airmid-autocomplete label="OP-RegNo / First Name / Last Name / Mobile No"
+                                [formGroup]="ItemSubform" formControlName="regId"
+                                placeholderText="OP-RegNo / First Name / Last Name / Mobile No" fxFlex
+                                ApiUrl="VisitDetail/search-patient-1?Keyword="
+                                (selectionChange)="getSelectedObjOP($event)" ValueField="regId"  
+                                TextField="formattedText"></airmid-autocomplete>
+                            </div>
 
-                            <div fxFlex="40%" fxFlex.sm="100%">
+                            <div fxFlex="30%" fxFlex.sm="100%"
+                              *ngIf="ItemSubform.get('opIpType').value != '0' && ItemSubform.get('opIpType').value != '2'">
                               <airmid-autocomplete label="IP RegNo / First Name / Last Name / Mobile No"
                                 [formGroup]="ItemSubform" formControlName="regId" 
                                 placeholderText="IP RegNo / First Name / Last Name / Mobile No" fxFlex
@@ -240,17 +237,50 @@
                                 (selectionChange)="getSelectedObjRegIP($event)" TextField="formattedText"
                                 ValueField="itemId"></airmid-autocomplete>
                             </div>
- 
+
+                            <div fxFlex="100%" fxFlex.sm="100%" *ngIf="ItemSubform.get('opIpType').value == '2'"> 
+                             
+
+                               <airmid-autocomplete label="Mobile No"
+                                [formGroup]="ItemSubform" formControlName="extMobileNo" maxlength="10"
+                                placeholder="Enter 10 digit Mobile No." fxFlex   TextField="text" 
+                                ApiUrl="Sales/External-auto-complete?Keyword="   (keypress)="allowOnlyDigits($event)"
+                                (selectionChange)="getSelectedObjextMobile($event)"   
+                               ></airmid-autocomplete>  
+                            </div> 
+                       
+                            <div fxFlex="100%" fxFlex.sm="100%" *ngIf="ItemSubform.get('opIpType').value == '2'">
+                              <airmid-autocomplete label="Patient Name"  
+                                [formGroup]="ItemSubform" formControlName="externalPatientName"
+                                placeholderText="Patient Name" fxFlex
+                               ApiUrl="Sales/External-auto-complete?Keyword="  TextField="text" 
+                                (selectionChange)="getSelectedObjextPatient($event)"  
+                                ></airmid-autocomplete> 
+                            </div>
+
+                            <div fxFlex="100%" fxFlex.sm="100%" *ngIf="ItemSubform.get('opIpType').value == '2'">
+
+                            <airmid-autocomplete label="Doctor Name"
+                                [formGroup]="ItemSubform" formControlName="doctorName"  
+                                placeholderText="First Name / Last Name" fxFlex   TextField="doctorName" 
+                                ApiUrl="Sales/ExternalDoctor-auto-complete?Keyword=" 
+                                (selectionChange)="getSelectedObjExtDocName($event)" ></airmid-autocomplete> 
+                            </div> 
+
+                            <div fxFlex="100%" fxFlex.sm="100%" *ngIf="ItemSubform.get('opIpType').value == '2' ">
+                              <airmid-textbox label="Address" [(ngModel)]="vextAddress" formControlName="extAddress"
+                                placeholder="extAddress" [formGroup]="ItemSubform"    
+                                [validations]="getValidationMessages().extAddress" [type]="'text'"
+                                (input)="onEnterAddress($event)"></airmid-textbox>
+                            </div>
                           </div>
                         </div>
-                        <div *ngIf="RegId != ''">
+                        <div *ngIf="ItemSubform.get('opIpType').value != '2' && RegId != ''">
                           <div class="content-card">
                             <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row" fxLayoutGap="5px">
                               <div fxFlex.gt-sm="100%" fxFlex>
-                                <div fxlayout="row" style="background-color: white">
-                                  <!-- ================================ LABEL HEADER  -->
-                                  <div class="patient-info-sales my-8">
-                                    <!-- <fieldset class="fieldset-div" style="font-size: medium !important;"> -->
+                                <div fxlayout="row" style="background-color: white"> 
+                                  <div class="patient-info-sales my-8"> 
                                     <div class="sales-patient-info-title">
                                       <span style="font-weight: 700" class="patient-info-title border-bottom">Patient
                                         Information</span>
@@ -266,13 +296,17 @@
                                             <span class="patient-col-value">{{RegNo }}-{{ PatientName
                                               }}</span>
                                           </div>
-                                          <div class="patient-col"  >
+                                          <div class="patient-col" *ngIf="IPDNocheck">
                                             <span class="patient-col-key">IPDNo</span>
                                             <span>:</span>
                                             <span class="patient-col-value">{{ IPDNo }}</span>
                                           </div>
-                                          
-                                          <div class="patient-col"  >
+                                          <div class="patient-col" *ngIf="OPDNoCheck">
+                                            <span class="patient-col-key">OPDNo</span>
+                                            <span>:</span>
+                                            <span class="patient-col-value">{{ OPDNo }}</span>
+                                          </div>
+                                          <div class="patient-col" *ngIf="DoctorNamecheck">
                                             <span class="patient-col-key">Doctor Name</span>
                                             <span>:</span>
                                             <span class="patient-col-value">{{DoctorName}}</span>
@@ -289,8 +323,7 @@
                                             <span class="patient-col-key">Tariff Name</span>
                                             <span>:</span>
                                             <span class="patient-col-value">{{ Patientdetails?.tariffName }}</span>
-                                          </div>
-                                          
+                                          </div> 
                                         </div>
                                       </div>
                                     </div>
@@ -319,12 +352,12 @@
                         <div fxFlex="100%">
                           <airmid-autocomplete label="Item Name (enter 2 char)"
                             [formGroup]="_salesService.ItemSearchGroup" formControlName="ItemId"
-                            placeholderText="Item Name (enter 2 char)" fxFlex id="ItemId"
-                            ApiUrl="ItemMaster/GetItemListforSalesPage?StoreId=2&ItemName=" TextField="itemName"
+                            placeholderText="Item Name (enter 2 char)" fxFlex id="ItemId" 
+                             [ApiUrl]="'ItemMaster/GetItemListforSalesPage?StoreId=' + StoreId + '&ItemName='"
+                            TextField="itemName"
                             ValueField="itemId" (selectionChange)="onItemChange($event)"  
                             (keydown.enter)="handleEnterKey($event)"
-                            #ItemId></airmid-autocomplete>
-                          <!-- (selectionChange)="getSelectedObj($event)" -->
+                            #ItemId></airmid-autocomplete> 
                         </div>
 
                         <div fxFlex="100%" fxFlex.gt-sm="7%">
@@ -376,8 +409,7 @@
                             <span class="btn-icon">
                               <mat-icon>add</mat-icon>
                             </span>
-                          </button>
-                          <!--  [disabled]="!this._salesService.ItemSearchGroup.valid" -->
+                          </button> 
                         </div>
                       </div>
                     </form>
@@ -388,13 +420,21 @@
                 <div class="airmid-table-container">
                   <mat-table class="airmid-table sales-table" #table matSort [dataSource]="saleSelectedDatasource"
                     [@animateStagger]="{ value: '50' }" style="overflow: auto">
+
+                    <ng-container matColumnDef="itemMolecule">
+                      <mat-header-cell *matHeaderCellDef mat-sort-header   class="w-70">  </mat-header-cell>
+                      <mat-cell *matCellDef="let contact"  class="w-70">
+                        <mat-icon style="cursor: pointer; color: #1976d2;" matTooltip="View molecule details"
+                          (click)="Oncheckitemmolecule(contact)">
+                          local_offer
+                        </mat-icon>  
+                      </mat-cell>
+                    </ng-container>
+
                     <ng-container matColumnDef="ItemName">
                       <mat-header-cell *matHeaderCellDef class="w-220" mat-sort-header>ItemName</mat-header-cell>
                       <mat-cell *matCellDef="let contact" class="w-220">
-                            <span> {{ contact.ItemName }}</span>
-                        <!-- <mat-form-field appearance="fill">
-                          <input matInput [(ngModel)]="contact.ItemName" (keydown.enter)="onEnterItemName(contact)" />
-                        </mat-form-field> -->
+                            <span> {{ contact.ItemName }}</span> 
                       </mat-cell>
                     </ng-container>
 
@@ -426,14 +466,14 @@
                     <ng-container matColumnDef="UnitMRP">
                       <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Unit MRP</mat-header-cell>
                       <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                        <span> {{ contact.UnitMRP}}</span>
+                        <span> {{ contact.UnitMRP | currency: currency:'symbol'  }}</span>
                       </mat-cell>
                     </ng-container>
 
                     <ng-container matColumnDef="TotalMRP">
                       <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Total MRP</mat-header-cell>
                       <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                        <span> {{ contact.TotalMRP}}</span>
+                        <span> {{ contact.TotalMRP | currency: currency:'symbol' }}</span>
                       </mat-cell>
                     </ng-container>
 
@@ -448,7 +488,7 @@
                     <ng-container matColumnDef="GSTAmount">
                       <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>GST Amt</mat-header-cell>
                       <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                        <span> {{ contact.GSTAmount}}</span>
+                        <span> {{ contact.GSTAmount | currency: currency:'symbol' }}</span>
                       </mat-cell>
                     </ng-container>
 
@@ -466,14 +506,14 @@
                       <mat-header-cell class="" *matHeaderCellDef mat-sort-header fxShow.gt-sm>Disc
                         Amount</mat-header-cell>
                       <mat-cell class="" *matCellDef="let contact" fxShow.gt-sm>
-                        <span> {{ contact.DiscAmt}}</span>
+                        <span> {{ contact.DiscAmt | currency: currency:'symbol' }}</span>
                       </mat-cell>
                     </ng-container>
 
                     <ng-container matColumnDef="NetAmt">
                       <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Net Amount</mat-header-cell>
                       <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                        <span> {{ contact.NetAmt}}</span>
+                        <span> {{ contact.NetAmt | currency: currency:'symbol' }}</span>
                       </mat-cell>
                     </ng-container> 
 
@@ -502,10 +542,7 @@
                       *matHeaderRowDef="selectedSaleDisplayedCol; sticky: true"></mat-header-row>
                     <mat-row *matRowDef="let contact; columns: selectedSaleDisplayedCol" class="min-width-1500"
                       [ngClass]="{ 'row-yellow': QtyBalchk == 0 }"
-                      [@animate]="{ value: '*', params: { y: '100%' } }"></mat-row>
-                    <!-- (click)="deleteTableRow($event,contact)"  -->
-                    <!-- <button class="btn btn-default btn-primary" style="float:right;" (click)="deleteRow(pto)" 
-                                                       (onDelete)="onDelete($event)"><i class="fa fa-trash" aria-hidden="true"></i></button> -->
+                      [@animate]="{ value: '*', params: { y: '100%' } }"></mat-row> 
                     <mat-footer-row *matFooterRowDef="['loading']"
                       [ngClass]="{ hide: saleSelectedDatasource != null }"></mat-footer-row>
                     <mat-footer-row *matFooterRowDef="['noData']"
@@ -523,9 +560,7 @@
                             <div fxLayout="column" class="gap-8"> 
 
                               <div fxLayout="row" fxLayoutAlign="start center" class="gap-8 input-error-hidden">
-                                <!-- <div class="draft-btn">
-                                                                                          <button class="btn btn-primary" (click)="onSaveDraftBill()">DraftBill</button>
-                                                                                        </div> -->
+                              
                                 <airmid-textbox fxFlex="8%" label="Total Amount" [formGroup]="ItemSubform"
                                   formControlName="totalAmount" [readonly]="true"></airmid-textbox>
 
@@ -544,7 +579,7 @@
                                   </airmid-dropdown>
                                 </div>
 
-                                  <div style="width: 160px" >
+                                  <div style="width: 160px" *ngIf="CreditReasonShow">
                                   <airmid-dropdown label="Credit Reason" formControlName="CredirReasonId"
                                     [formGroup]="ItemSubform" [validations]="getValidationMessages().CredirReasonId"
                                     [mode]="autocompleteModeCreditReason"  (selectionChange)="OnCreditReasonchange($event)" >
@@ -574,7 +609,7 @@
                                     </div>
                                     <div class="net-amt-box">
                                       <div class="net-amt-label">Total GST Amt :</div>
-                                      <div class="net-amt-value">{{ ItemSubform.get('vatAmount')?.value | currency: currency:'symbol' }}</div>
+                                      <div class="net-amt-value">{{ ItemSubform.get('vatAmount')?.value | currency: currency:'symbol'}}</div>
                                     </div>
                                     <div class="final-amt-box">
                                       <span class="final-amt-label">Net Amt :</span>
@@ -586,9 +621,18 @@
                               </div>
                               <div class="sales-radio-buttons gap-8" fxLayout="row"
                                 fxLayoutAlign="space-between center">
-                                <mat-radio-group aria-label="Select an option" formControlName="CashPay" >
-                                  <mat-radio-button value="Credit" >Credit</mat-radio-button> 
-                                </mat-radio-group>
+                                <mat-radio-group aria-label="Select an option" formControlName="CashPay" (change)="checkCreditreason()">
+                                  <mat-radio-button value="Credit" *ngIf="paymethod" >Credit</mat-radio-button>
+                                  <mat-radio-button value="CashPay">Cash</mat-radio-button>
+                                  <mat-radio-button value="Online">Online</mat-radio-button>
+                                  <mat-radio-button value="PayOption">PayOption</mat-radio-button>
+                                 </mat-radio-group>
+
+                                  <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="100%" *ngIf="ItemSubform.get('CashPay')?.value === 'Online'">
+                                            <airmid-textbox label="UPI NO" formControlName="UpiNo" [formGroup]="ItemSubform"
+                                                [validations]="getValidationMessages().UpiNo"  [minLength]="4" [maxLength]="12">
+                                            </airmid-textbox>
+                                        </div>
 
                                
                          
@@ -660,8 +704,7 @@
                     </div>
                   </mat-card-content>
                 </mat-card>
-                <!-- Darft bill list Table -->
-                <mat-table class="airmid-table patient-table" matSort [dataSource]="dsDraftList"
+                 <mat-table class="airmid-table patient-table" matSort [dataSource]="dsDraftList"
                   [@animateStagger]="{ value: '50' }" style="height: 300px;">
 
                   <ng-container matColumnDef="Action" stickyEnd>
@@ -695,7 +738,7 @@
 
                   <ng-container matColumnDef="NetAmt">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>Net Amount</mat-header-cell>
-                    <mat-cell *matCellDef="let row">{{ row.netAmount }}</mat-cell>
+                    <mat-cell *matCellDef="let row">{{ row.netAmount}}</mat-cell>
                   </ng-container>
 
                   <ng-container matColumnDef="MobileNo">
@@ -722,8 +765,7 @@
                     class="min-width-600"></mat-footer-row>
                 </mat-table>
 
-                <!-- Available Stock in Other Store -->
-                <mat-table class="sales-table-right airmid-table" #table matSort [dataSource]="dsBalAvaListStore"
+                 <mat-table class="sales-table-right airmid-table" #table matSort [dataSource]="dsBalAvaListStore"
                   [@animateStagger]="{ value: '50' }">
                   <ng-container matColumnDef="StoreName">
                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-190">Store
@@ -782,6 +824,7 @@
           </mat-card>
         </div>
       </div>
-    </div> 
+    </div>
+ 
   </div>
 </div>
