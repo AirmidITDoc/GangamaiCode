@@ -155,6 +155,7 @@ export class SalesInPatientComponent implements OnInit {
      constructor(
          public _BrowsSalesBillService: BrowsSalesBillService,
          public _salesService: SalesHospitalService,
+         public _salesInPatientService: SalesInPatientService,
          public _matDialog: MatDialog,
          public datePipe: DatePipe,
          private formBuilder: UntypedFormBuilder,
@@ -1076,7 +1077,7 @@ export class SalesInPatientComponent implements OnInit {
                  this.PharmaSalesForm.get('sales.paidAmount').setValue(0)
                  this.PharmaSalesForm.get('sales.balanceAmount').setValue((Math.round(formValue.netAmount)))
                  console.log(this.PharmaSalesForm.value)
-                 this._salesService.InsertCreditSales(this.PharmaSalesForm.value).subscribe((response) => {
+                 this._salesInPatientService.InsertSalesInPatientCreditSales(this.PharmaSalesForm.value).subscribe((response) => {
                      if (response > 0) {
                          this.OnSalesprint(response, opIpType)
                          this.onClose()

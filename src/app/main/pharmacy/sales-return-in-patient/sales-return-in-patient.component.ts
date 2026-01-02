@@ -61,8 +61,8 @@ export class SalesReturnInPatientComponent implements OnInit {
   vOP_IP_Type: any;
   registerObj: any;
   selcteditemObj: any;
-  currency:any='';
-PatientTypeId:any=0;
+  currency: any = '';
+  PatientTypeId: any = 0;
   dsIpSaleItemList = new MatTableDataSource<IPSalesItemList>();
 
   @ViewChild('ItemName') ItemName!: ElementRef;
@@ -77,7 +77,7 @@ PatientTypeId:any=0;
     public toastr: ToastrService,
     public formBuilder: FormBuilder,
     public _FormvalidationserviceService: FormvalidationserviceService,
-    public _ConfigService:ConfigService
+    public _ConfigService: ConfigService
   ) { }
 
 
@@ -88,9 +88,9 @@ PatientTypeId:any=0;
     this.IPSalesRetFooterform.markAllAsTouched();
 
     this.IpSalesReturnForm = this.CreateSalesReturnForm();
-              //this is for curreny symbol
-        const [CurrencyId, CurrencyValue] = this._ConfigService.configParams.CurrencyValue.split(":");
-        this.currency = CurrencyValue
+    //this is for curreny symbol
+    const [CurrencyId, CurrencyValue] = this._ConfigService.configParams.CurrencyValue.split(":");
+    this.currency = CurrencyValue
   }
   CreateSalesFooterform() {
     return this.formBuilder.group({
@@ -141,7 +141,7 @@ PatientTypeId:any=0;
       currentStock: this.formBuilder.array([]),
       // sales details update in array
       salesDetail: this.formBuilder.array([]),
- 
+
     });
   }
   createSalesretDetails(element: any): FormGroup {
@@ -205,7 +205,7 @@ PatientTypeId:any=0;
     this.registerObj = obj;
     this.vPatientName = obj?.firstName + ' ' + obj?.middleName + ' ' + obj?.lastName;
     this.vRegno = this.registerObj?.regNo;
-   this.PatientTypeId = obj?.patientTypeID
+    this.PatientTypeId = obj?.patientTypeID
     this.getItemNameList();
     this.OnRadioChange();
   }
@@ -231,7 +231,7 @@ PatientTypeId:any=0;
       { "fieldName": "BatchNo", "fieldValue": String(0), "opType": "Equals" }
     ]
 
-    if (this.ItemFormGroup.get('PaymentType').value == 'Credit') { 
+    if (this.ItemFormGroup.get('PaymentType').value == 'Credit') {
       var param = {
         "searchFields": Filters,
         "mode": "IPSalesReturnCredit"

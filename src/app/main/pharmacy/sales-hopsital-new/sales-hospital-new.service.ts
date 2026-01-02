@@ -109,6 +109,8 @@ import { FormvalidationserviceService } from 'app/main/shared/services/formvalid
     public InsertCreditSales  (employee){
       return this._httpClient1.PostData("Sales/SalesSaveWithCredit", employee)
     }
+    
+   
   
     public InsertSalesDraftBill(employee){
       return this._httpClient1.PostData("Sales/SalesDraftBillSave", employee)
