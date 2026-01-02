@@ -109,7 +109,12 @@ public UpdateCompanyBilling(Param: any) {
         public getWhatsappDetailsById(Id) {
         return this._httpClient1.GetData("smsConfig/TWhatsAppSmsOutgoing/" + Id);
     }
-    
+    public getAllBillList(Param,loader = true) {
+    if (loader) {
+      this._loaderService.show();
+    }
+     return this._httpClient1.PostData("Common",Param)
+}
     // public getReportViewdata(Param) {
     //        return this._httpClient1.PostData("Common",Param)
     // }

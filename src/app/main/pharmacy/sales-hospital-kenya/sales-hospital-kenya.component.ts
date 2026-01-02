@@ -19,13 +19,11 @@
  import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';  
 import { BalAvaListStore, DraftSale, Printsal, SalesBatchItemModel, SalesItemModel } from '../sales-hopsital-new/types';
 import { SubstitutesComponent } from '../sales-hopsital-new/substitutes/substitutes.component';
-import { PrescriptionComponent } from '../sales-hopsital-new/prescription/prescription.component';
-import { SalesHospitalService } from '../sales-hopsital-new/sales-hospital-new.service';
+import { PrescriptionComponent } from '../sales-hopsital-new/prescription/prescription.component'; 
 import { SalesbatchpopupComponent } from './salesbatchpopup/salesbatchpopup.component';
-import { SalePopupComponent } from '../sales/sale-popup/sale-popup.component';
-import { ConfigList } from 'app/app.component';
-import { ConfigSettingParams } from 'app/core/models/config';
+import { SalePopupComponent } from '../sales/sale-popup/sale-popup.component';  
 import { ConfigService } from 'app/core/services/config.service';
+import { SalesHospitalKenyaService } from './sales-hospital-kenya.service';
 
 @Component({
   selector: 'app-sales-bill-kenya',
@@ -164,7 +162,7 @@ export class SalesHospitalKenyaComponent {
  
      constructor(
          public _BrowsSalesBillService: BrowsSalesBillService,
-         public _salesService: SalesHospitalService,
+         public _salesService: SalesHospitalKenyaService,
          public _matDialog: MatDialog,
          public datePipe: DatePipe,
          private formBuilder: UntypedFormBuilder,
@@ -590,7 +588,7 @@ export class SalesHospitalKenyaComponent {
      }
      // NOTE: If `isEditable` true then it means this popup will open for table row data 
      getBatch(itemId: number, storeId: number, isEditable = false) {
-         const dialogRef = this._matDialog.open(SalePopupComponent, {
+         const dialogRef = this._matDialog.open(SalesbatchpopupComponent, {
              maxWidth: '950px',
              minWidth: '900px',
              width: '900px',
@@ -664,15 +662,15 @@ export class SalesHospitalKenyaComponent {
              console.log(this.selectedItem)
              this.ItemAddForm = this.createItemAddTable()
              this._salesService.ItemSearchGroup.patchValue({
-                 BatchNo: result.batchNo,
+                 BatchNo: result?.batchNo || '',
                  BatchExpDate: this.datePipe.transform(result.batchExpDate, 'yyyy-MM-dd'),
-                 BalanceQty: result.balanceQty,
+                 BalanceQty: result?.balanceQty || 0,
                  Qty: '',
                  DiscAmt: 0,
-                 GSTPer: result.vatPercentage,
-                 MRP: MRP,
-                 MRPRate:result.unitMRP,
-                 IsPurRate: IsPurRate
+                 GSTPer: result?.vatPercentage || 0,
+                 MRP: MRP || 0,
+                 MRPRate:result?.unitMRP || 0,
+                 IsPurRate: IsPurRate || 0
              })
          });
      }
@@ -719,16 +717,16 @@ export class SalesHospitalKenyaComponent {
              IGSTAmt = '0';
          }
          this._salesService.ItemSearchGroup.patchValue({
-             TotalMrp: TotalMRP,
-             NetAmt: TotalMRP,
-             MarginAmt: marginamt,
-             GSTAmount: GSTAmount,
+             TotalMrp: TotalMRP || 0,
+             NetAmt: TotalMRP || 0,
+             MarginAmt: marginamt || 0,
+             GSTAmount: GSTAmount || 0,
              LandedRateandedTotal: LandedRateandedTotal,
-             CGSTAmt: CGSTAmt,
-             SGSTAmt: SGSTAmt,
-             IGSTAmt: IGSTAmt,
-             PurTotAmt: PurTotAmt,
-             MRPRateTotal:MRPRateTotal
+             CGSTAmt: CGSTAmt || 0,
+             SGSTAmt: SGSTAmt || 0,
+             IGSTAmt: IGSTAmt || 0,
+             PurTotAmt: PurTotAmt || 0,
+             MRPRateTotal:MRPRateTotal || 0
          })
      }
      checkQtyBeforeNext(event: KeyboardEvent) {
@@ -765,7 +763,7 @@ export class SalesHospitalKenyaComponent {
              this._salesService.ItemSearchGroup.patchValue({
                  DiscAmt: 0,
                  DiscPer: '',
-                 NetAmt:formValue.TotalMrp
+                 NetAmt:formValue.TotalMrp || 0
              });
              this.ConShow = false;
              return;
@@ -786,7 +784,7 @@ export class SalesHospitalKenyaComponent {
              return
              } 
              this._salesService.ItemSearchGroup.patchValue({
-                 DiscAmt: DiscAmt,
+                 DiscAmt: DiscAmt || 0,
              });
                this.ConShow = true;
              this.calculateNetAmount();
@@ -797,7 +795,7 @@ export class SalesHospitalKenyaComponent {
          if (formValue.TotalMrp) {
              let NetAmt = (formValue.TotalMrp - (formValue.DiscAmt || 0)).toFixed(2);
              this._salesService.ItemSearchGroup.patchValue({
-                 NetAmt: NetAmt,
+                 NetAmt: NetAmt || 0,
              });
          }
      }
@@ -840,7 +838,7 @@ export class SalesHospitalKenyaComponent {
              // Calculate discount percentage from amount
              let DiscPer = ((formValue.DiscAmt / formValue.TotalMrp) * 100).toFixed(2);
              this._salesService.ItemSearchGroup.patchValue({
-                 DiscPer: DiscPer,
+                 DiscPer: DiscPer || 0,
              });
              this.calculateNetAmount();
          }
@@ -989,7 +987,7 @@ export class SalesHospitalKenyaComponent {
      }
      ItemFormreset() {
          this._salesService.ItemSearchGroup.patchValue({
-             ItemId: ['a'],
+             ItemId: [''],
              ItemName: '',
              BatchNo: '',
              BatchExpDate: '01/01/1900',
@@ -1004,7 +1002,6 @@ export class SalesHospitalKenyaComponent {
              MarginAmt: '0',
              GSTAmount: '0',
              LandedRateandedTotal: '0',
-             CGSTAmt: '0',
              SGSTAmt: '0',
              IGSTAmt: '0',
              PurTotAmt: '0',

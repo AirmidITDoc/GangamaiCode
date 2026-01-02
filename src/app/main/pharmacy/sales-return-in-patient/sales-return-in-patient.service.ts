@@ -17,14 +17,9 @@ export class SalesReturnInPatientService {
   public getSalesReturnitemlist(param) {
     return this._httpClient1.PostData("Common", param)
   }
-  public InsertCreditSalesReturn(employee) {
-    return this._httpClient1.PostData("SalesReturn/SalesReturnWithCredit", employee)
-  }
-
-  public InsertCashSalesReturn(employee) {
-    return this._httpClient1.PostData("SalesReturn/SalesReturnWithCash", employee)
-  }
-
+  public InsertSalesReturnInPatient(employee) {
+    return this._httpClient1.PostData("SalesReturn/SalesReturnInPatient", employee)
+  } 
   public getReportView(Param) {
     return this._httpClient1.PostData("Report/ViewReport", Param);
   }

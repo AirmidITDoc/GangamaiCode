@@ -42,6 +42,7 @@ import { DoctorDetailsPopoverComponent } from './doctor-details-popover/doctor-d
 import { NewAppointmentwithBillComponent } from './new-appointmentwith-bill/new-appointmentwith-bill.component';
 import { BrowseOPDBill } from '../new-oplist/new-oplist.component';
 import { Subscription } from 'rxjs';
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 // import { NewAppointmentwithBillComponent } from './new-appointmentwith-bill/new-appointmentwith-bill.component';
 // const moment = _rollupMoment || _moment;
 
@@ -119,6 +120,7 @@ export class AppointmentListComponent implements OnInit {
         this.menuActions.push({ icon: "language", text: "Request For IP" });
         this.menuActions.push({ icon: "language", text: "Update Followup Date" });
         this.menuActions.push({ icon: "print", text: "CasePaper Print" });
+        this.menuActions.push({ icon: "print", text: "Patient Final Bill" });
 
         const savedTimers = localStorage.getItem('consultTimers');
         if (savedTimers) {
@@ -519,8 +521,36 @@ export class AppointmentListComponent implements OnInit {
                 }
             });
         }
+          else if (m == "Patient Final Bill") {  
+             this.OnPaitentFinalPrint(element)
+          } 
+            
     }
-
+    OnPaitentFinalPrint(element) {
+        setTimeout(() => {
+            let param = {
+                "searchFields": [
+                    { "fieldName": "OPIPId", "fieldValue": String(element.visitId), "opType": "13" },
+                    { "fieldName": "OPIPType", "fieldValue": String(0), "opType": "13" }
+                ],
+                "mode": "PatientBillStatement"
+            }
+            this._AppointmentlistService.getReportView(param).subscribe(res => {
+                const matDialog = this._matDialog.open(PdfviewerComponent,
+                    {
+                        maxWidth: "85vw",
+                        height: '750px',
+                        width: '100%',
+                        data: {
+                            base64: res["base64"] as string,
+                            title: "Patient Final Bill" + " " + "Viewer"
+                        }
+                    });
+                matDialog.afterClosed().subscribe(result => {
+                });
+            });
+        }, 100);
+    }
     OnViewCasepaperReportPdf(element: any, withHeader: boolean) {
         debugger
         const [PrescriptionA5_Print, Prescription_Print] = this._ConfigService.configParams.OPEmrPrescriptionA5.split(":");
@@ -537,6 +567,7 @@ export class AppointmentListComponent implements OnInit {
     OnViewReportPdf(element) {
         this.commonService.Onprint("VisitId", element.visitId, "AppointmentReceipt");
     }
+      
 
     getOpCasePaper(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element

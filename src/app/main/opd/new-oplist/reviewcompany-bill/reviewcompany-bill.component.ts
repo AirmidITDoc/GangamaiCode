@@ -58,6 +58,7 @@ export class ReviewcompanyBillComponent {
   vPrice = '0';
   vQty: any;
   currency:any='';
+  OPDIPDID:any=0;
 
   public isDiscountApplied = false;
   Consessionres: boolean = false;
@@ -68,7 +69,7 @@ export class ReviewcompanyBillComponent {
       'Exclucion', 'Approved'];
   public displayedColumnspackage: string[] =
     ['IsCheck', 'ServiceNamePackage', 'ServiceName', 'Price', 'Qty', 'TotalAmt', 'DoctorName', 'DiscAmt', 'NetAmount'];
-  public displayedbillColumns: string[] =['BillNo','TotalAmount', 'DiscountAmount', 'NetAmount' ];
+  public displayedbillColumns: string[] =['Label','BillNo', 'NetAmount','BalanceAmt'];
 
 
 
@@ -93,7 +94,9 @@ export class ReviewcompanyBillComponent {
     if (this.data) {
       console.log(this.data)
       this.patientDetail = this.data;
+      this.OPDIPDID = this.data?.opdipdid || 0
       this.getPrevCompanyBillList(this.patientDetail)
+      this.getBilllist();
     }
         //this is for curreny symbol
         const [CurrencyId, CurrencyValue] = this._ConfigService.configParams.CurrencyValue.split(":");
@@ -180,6 +183,31 @@ export class ReviewcompanyBillComponent {
       }
     })
   }
+  FinalBillBalAmt:any=0;
+   getBilllist() {
+    //ps_rtrv_BillList
+    if (this.OPDIPDID == '' || this.OPDIPDID == null || this.OPDIPDID == undefined || this.OPDIPDID == 0) {
+      this.toastr.warning('Please select patient', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return
+    }
+    const Filters = [
+      { "fieldName": "OPIPId", "fieldValue": String(this.OPDIPDID), "opType": "Equals" },
+       ]
+    var param = {
+      "searchFields": Filters,
+      "mode": "BillList"
+    }
+    this._OPListService.getAllBillList(param).subscribe(response => {
+      console.log('response', response)
+      this.dsbillList.data = response.data
+      if(this.dsbillList.data.length){
+      this.FinalBillBalAmt = ( this.dsbillList.data.reduce((sum, { BalanceAmt }) => sum += +(BalanceAmt || 0), 0)).toFixed(2);
+      }
+    })
+  }
+
   deleteCharge(index: number, element) {
     this.chargeList.splice(index, 1);
     this.dsChargeList.data = this.chargeList;
@@ -513,7 +541,7 @@ export class ChargesList {
   DoctorName: any;
   OpdIpdId: any;
   serviceName: any;
-
+BalanceAmt:any;
   doctorName: any;
   doctorId: any;
   isPathology: any;
@@ -562,6 +590,7 @@ export class ChargesList {
     this.serviceCode = ChargesList.serviceCode || 0;
     this.isInclusionExclusion = ChargesList.isInclusionExclusion || '';
     this.isPathology = ChargesList.isPathology || 0;
+    this.BalanceAmt = ChargesList.BalanceAmt || 0;
     this.isRadiology = ChargesList.isRadiology || 0;
     this.userName = ChargesList.userName || '';
   }

@@ -22,7 +22,136 @@
         </div>
 
         <div class="modal-body" fusePerfectScrollbar>
-            <div class="modal-body-container">
+            <div class="modal-body-container" fxLayoutGap="6px">
+                <div fxFlex="25%" fxFlex.sm="35%" fxFlex.xs="100%" class="table-right">
+                    <div fxLayout="column" class="gap-8 h-100-p">
+                
+                        <div class="modal-card-container">
+                            <mat-card>
+                                <mat-card-content>
+                                    <div class="company-bill-summary px-12">
+                                        <div class="company-bill-summary-title pb-2 border-bottom">
+                                            <span class="h3 font-weight-600">Company Info</span>
+                                        </div>
+                                        <div class="bil-summary-list mt-8">
+                                            <ul class="gap-4 list-basic" fxLayout="column">
+                                                <li>
+                                                    <div class="list-item">
+                                                        <span class="list-item-key">Policy Number :</span>
+                                                        <!-- <span class="list-item-value">{{ ItemSubform.get('roundoffAmt')?.value | currency: currency:'symbol'
+                                                }}</span> -->
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="list-item">
+                                                        <span class="list-item-key">Bill Amount :</span>
+                                                        <!-- <span class="list-item-value">{{ TotalCreditAmt | currency: currency:'symbol' }}</span> -->
+                                                    </div>
+                                                </li>
+                                                <li>
+                                            <div class="list-item">
+                                              <span class="list-item-key">Approved Amount :</span>
+                                              <span class="list-item-value">
+                                                <!-- {{ TotalAdvanceAmt | currency: currency:'symbol' }} -->
+                                              </span>
+                                            </div>
+                                          </li>
+                
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </mat-card-content>
+                            </mat-card>
+                
+                        </div>
+                
+                        <div class="modal-card-container" fxFlex>
+                            <mat-card fxFlex.gt-sm="100%" fxFlex>
+                                <mat-card-content class="py-4 h-100-p">
+                                    <div fxLayout="row" fxLayoutGap="6px" class="h-100-p">
+                                        <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%" mat-stretch-tabs="false"
+                                            mat-align-tabs="start" class="dynamic-table-wrapper">
+                                            <div fxLayout="column" class="h-100-p">
+                                                <div class="airmid-table-container overflow-auto" fxFlex>
+                                                    <mat-table matSort [dataSource]="dsbillList" [@animateStagger]="{value:'50'}"
+                                                        class="airmid-table"> 
+
+                                                         <ng-container matColumnDef="Label">
+                                                            <mat-header-cell *matHeaderCellDef>Label
+                                                            </mat-header-cell>
+                                                            <mat-cell *matCellDef="let contact"><span class="text-overflow">
+                                                                    {{(contact.Lbl || 0 )}}
+                                                                </span></mat-cell>
+                                                        </ng-container>
+                
+                                                        <ng-container matColumnDef="BillNo">
+                                                            <mat-header-cell *matHeaderCellDef>Bill No
+                                                            </mat-header-cell>
+                                                            <mat-cell *matCellDef="let contact"><span class="text-overflow">
+                                                                    {{(contact.PBillNo || 0 )}}
+                                                                </span></mat-cell>
+                                                        </ng-container>
+                 
+                                                        <ng-container matColumnDef="NetAmount">
+                                                            <mat-header-cell *matHeaderCellDef>Net
+                                                                Amt</mat-header-cell>
+                                                            <mat-cell *matCellDef="let contact"><span class="text-overflow">
+                                                                    {{(contact.NetPayableAmt || 0)}}
+                                                                </span></mat-cell>
+                                                        </ng-container>
+
+                                                          <ng-container matColumnDef="BalanceAmt">
+                                                            <mat-header-cell *matHeaderCellDef>Balace
+                                                                Amt</mat-header-cell>
+                                                            <mat-cell *matCellDef="let contact"><span class="text-overflow">
+                                                                    {{(contact.BalanceAmt || 0)}}
+                                                                </span></mat-cell>
+                                                        </ng-container>
+                
+                                                        <ng-container matColumnDef="NoData">
+                                                            <mat-footer-cell *matFooterCellDef>
+                                                                <span>No Data Found</span>
+                                                            </mat-footer-cell>
+                                                        </ng-container>
+                
+                                                        <mat-header-row class="accent"
+                                                            *matHeaderRowDef="displayedbillColumns; sticky: true">
+                                                        </mat-header-row>
+                                                        <mat-row *matRowDef="let contact; columns: displayedbillColumns;"
+                                                            [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                                                        <mat-footer-row *matFooterRowDef="['NoData']"
+                                                            [ngClass]="{'hide':dsChargeList.data.length > 0}"></mat-footer-row>
+                                                    </mat-table>
+                                                </div>
+                                                <div class="amt-container py-4">
+                                                    <div class="net-amt-section">
+                                                        <div class="net-amt">
+                
+                                                            <div class="net-amt-box">
+                                                                <span class="net-amt-label">No Of Item:</span>
+                                                                <span class="net-amt-value">
+                                                                    {{dsbillList.data.length}}</span>
+                                                            </div> 
+                
+                                                            <div class="final-amt-box">
+                                                                <span class="final-amt-label">Bill Amt :</span>
+                                                                <span
+                                                                    class="final-amt-value">{{FinalBillBalAmt ?? 0 | currency: currency:'symbol' }}</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                
+                                        </div>
+                                    </div>
+                                </mat-card-content>
+                            </mat-card>
+                        </div>
+                    </div>
+                </div>
+              
+                <div fxFlex="75%" fxFlex.sm="65%" fxFlex.xs="100%" class="table-left">
                 <div fxLayout="column" class="gap-8 h-100-p">
 
                     <div class="modal-card-container">
@@ -530,6 +659,7 @@
                         </mat-card>
                     </div>
                 </div>
+               </div>
             </div>
         </div>
         <div class="modal-footer">

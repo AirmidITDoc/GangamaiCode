@@ -23,6 +23,7 @@ import { SalesHospitalService } from '../sales-hopsital-new/sales-hospital-new.s
 import { PrescriptionComponent } from '../sales-hopsital-new/prescription/prescription.component';
 import { Subscription } from 'rxjs';
 import { ConfigService } from 'app/core/services/config.service';
+import { SalesbatchpopupComponent } from '../sales-hospital-kenya/salesbatchpopup/salesbatchpopup.component';
 
 @Component({
   selector: 'app-sales-in-patient',
@@ -416,7 +417,7 @@ export class SalesInPatientComponent implements OnInit {
      }
      // NOTE: If `isEditable` true then it means this popup will open for table row data 
      getBatch(itemId: number, storeId: number, isEditable = false) {
-         const dialogRef = this._matDialog.open(SalePopupComponent, {
+         const dialogRef = this._matDialog.open(SalesbatchpopupComponent, {
              maxWidth: '800px',
              minWidth: '800px',
              width: '800px',

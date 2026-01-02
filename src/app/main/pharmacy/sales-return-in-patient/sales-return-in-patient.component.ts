@@ -493,7 +493,7 @@ PatientTypeId:any=0;
         this.IpSalesReturnForm.get('salesReturn.balanceAmount').setValue((Math.round(this.IPSalesRetFooterform.get('FinalNetAmount').value)))
 
         console.log(this.IpSalesReturnForm.value);
-        this._IpSalesRetInpatService.InsertCreditSalesReturn(this.IpSalesReturnForm.value).subscribe(response => {
+        this._IpSalesRetInpatService.InsertSalesReturnInPatient(this.IpSalesReturnForm.value).subscribe(response => {
           this.OnSalesReturnprint(response, this.selcteditemObj.OP_IP_Type)
           this.ngOnDestroy();
         });

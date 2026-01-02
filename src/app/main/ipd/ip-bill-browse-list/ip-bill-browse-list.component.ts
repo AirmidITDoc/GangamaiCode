@@ -27,6 +27,7 @@ import { SMSDetailsPopupOverComponent } from 'app/main/shared/componets/email-se
 import { WhatsappDetPopUpOverComponent } from 'app/main/shared/componets/email-send/whatsapp-det-pop-up-over/whatsapp-det-pop-up-over.component';
 import { Subscription } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 
 
 @Component({
@@ -243,7 +244,9 @@ export class IPBillBrowseListComponent implements OnInit {
             this.menuActions.push('Print Final Bill - Group wise');
             this.menuActions.push('Print Final Bill - Class wise');
             this.menuActions.push('Print Final Bill - Class Service');
-            this.menuActions.push('Print Final Bill');
+            this.menuActions.push('Print Final Bill'); 
+            this.menuActions.push('Print Final Bill - Charge Date Wise'); 
+            this.menuActions.push('Patient Final Bill');
             // this.menuActions.push('Print FinalBill WardWise');
         }
     }
@@ -394,8 +397,39 @@ export class IPBillBrowseListComponent implements OnInit {
 
         if (m == "Print Final Bill")
             this.viewgetFinalBillReportNewPdf(contact.billNo)
-    }
 
+         else if(m == "Print Final Bill - Charge Date Wise"){
+            this.viewgetFinalBillReportChargeDatewisePdf(contact.billNo)
+          }
+          else if (m == "Patient Final Bill") {  
+            this.OnPaitentFinalPrint(contact)
+          } 
+    }
+    OnPaitentFinalPrint(element) {
+        setTimeout(() => {
+            let param = {
+                "searchFields": [
+                    { "fieldName": "OPIPId", "fieldValue": String(element.opdipdid), "opType": "13" },
+                    { "fieldName": "OPIPType", "fieldValue": String(element.opD_IPD_Type), "opType": "13" }
+                ],
+                "mode": "PatientBillStatement"
+            }
+            this._IPBrowseBillService.getReportView(param).subscribe(res => {
+                const matDialog = this._matDialog.open(PdfviewerComponent,
+                    {
+                        maxWidth: "85vw",
+                        height: '750px',
+                        width: '100%',
+                        data: {
+                            base64: res["base64"] as string,
+                            title: "Patient Final Bill" + " " + "Viewer"
+                        }
+                    });
+                matDialog.afterClosed().subscribe(result => {
+                });
+            });
+        }, 100);
+    }
     // viewgetBillReportPdf(billNo) {
     //     this.commonService.Onprint("BillNo", billNo, "IpFinalBill");
     // }
@@ -413,6 +447,9 @@ export class IPBillBrowseListComponent implements OnInit {
     }
     viewgetFinalBillReportGroupwisePdf(billNo) {
         this.commonService.Onprint("BillNo", billNo, "IPFinalBillGroupwise");
+    }
+        viewgetFinalBillReportChargeDatewisePdf(billNo) {
+        this.commonService.Onprint("BillNo", billNo, "IPFinalBillChargesDateWise");
     }
 
     OnCompanyBill(element) {

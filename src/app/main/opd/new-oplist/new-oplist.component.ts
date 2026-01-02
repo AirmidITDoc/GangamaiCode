@@ -22,6 +22,7 @@ import { ComponentPortal } from '@angular/cdk/portal';
 import { SMSDetailsPopupOverComponent } from 'app/main/shared/componets/email-send/smsdetails-popup-over/smsdetails-popup-over.component';
 import { WhatsappDetPopUpOverComponent } from 'app/main/shared/componets/email-send/whatsapp-det-pop-up-over/whatsapp-det-pop-up-over.component';
 import { Subscription } from 'rxjs';
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
  
 
 @Component({
@@ -258,6 +259,7 @@ export class NewOPListComponent implements OnInit {
 
         this.menuActions.push("Bill Print-Package Info");
         this.menuActions.push("Bill Print");
+        this.menuActions.push("Patient Final Bill");
     }
 
 
@@ -375,8 +377,35 @@ export class NewOPListComponent implements OnInit {
             this.commonService.Onprint("BillNo", element.billNo, "OPBillWithPackagePrint");
         else if (m == "Bill Print")
             this.commonService.Onprint("BillNo", element.billNo, "OpBillReceipt");
+        else if (m == "Patient Final Bill") {   
+             this.OnPaitentFinalPrint(element)
+          } 
     }
-
+    OnPaitentFinalPrint(element) {
+        setTimeout(() => {
+            let param = {
+                "searchFields": [
+                    { "fieldName": "OPIPId", "fieldValue": String(element.opdipdid), "opType": "13" },
+                    { "fieldName": "OPIPType", "fieldValue": String(element.opD_IPD_Type), "opType": "13" }
+                ],
+                "mode": "PatientBillStatement"
+            }
+            this._OPListService.getBilllistReport(param).subscribe(res => {
+                const matDialog = this._matDialog.open(PdfviewerComponent,
+                    {
+                        maxWidth: "85vw",
+                        height: '750px',
+                        width: '100%',
+                        data: {
+                            base64: res["base64"] as string,
+                            title: "Patient Final Bill" + " " + "Viewer"
+                        }
+                    });
+                matDialog.afterClosed().subscribe(result => {
+                });
+            });
+        }, 100);
+    }
 
     openPaymentpopup(contact) {
         console.log(contact)
