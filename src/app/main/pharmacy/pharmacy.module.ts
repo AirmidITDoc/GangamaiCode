@@ -1,14 +1,17 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { ExternalSalesReturnModule } from './external-sales-return/external-sales-return.module';
+import { SalespageRedirectComponent } from './salespage-redirect/salespage-redirect.component';
 
 
 const appRoutes: Routes = [
-    {
-    path: "sales",
+  {
+    path: "sales", 
     loadChildren :() =>import("./sales-hopsital-new/sales-hopsital-new.module").then ((m)=>m.SalesHospitalNewModule),
-
-  },
+  }, 
+  {
+    path: "kenyasales", 
+    loadChildren :() =>import("./sales-hospital-kenya/sales-hospitalkenya.module").then ((m)=>m.SalesHospitalkenyaModule),
+  }, 
   {
     path: "browsesalesbill",
     loadChildren : () =>import("./brows-sales-bill/brows-sales-bill.module").then((m)=>m.BrowsSalesBillModule),
@@ -69,8 +72,9 @@ const appRoutes: Routes = [
 
 
 @NgModule({
-  declarations: [  
-    
+  declarations: [   
+  
+    SalespageRedirectComponent
   ],
   imports: [
     RouterModule.forChild(appRoutes)
