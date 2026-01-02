@@ -150,10 +150,10 @@ export class ItemMasterService {
             isLasa: true,
             isEmgerency: true,
             drugType: ["0",
-                [
-                    Validators.required,
-                    this._FormvalidationserviceService.notEmptyOrZeroValidator()
-                ]
+                // [
+                //     Validators.required,
+                //     this._FormvalidationserviceService.notEmptyOrZeroValidator()
+                // ]
             ],
             drugTypeName: ["",
                 [
@@ -183,9 +183,8 @@ export class ItemMasterService {
             doseDay: 0,
             instruction: "",
             mAssignItemToStores: [[], Validators.required], // empty array, not an object
-
             content: ['', [Validators.required]],
-            isValidContent: [false, Validators.requiredTrue],
+            isValidContent: [false],
         });
     }
 
