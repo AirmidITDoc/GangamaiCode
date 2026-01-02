@@ -61,7 +61,7 @@ export class ItemFormMasterComponent implements OnInit {
     vCGST: any;
     vIGST: any;
     vSGST: any;
-    VisValidContent:any;
+    VisValidContent:any = false;
 
     constructor(
         public _itemService: ItemMasterService,
@@ -207,7 +207,6 @@ export class ItemFormMasterComponent implements OnInit {
 
 
     onSubmit() {
-        debugger
         if (this.itemForm.valid) {
             // const formData = this.itemForm.getRawValue() as ItemMaster;
             //  console.log(formData)
@@ -313,9 +312,9 @@ export class ItemFormMasterComponent implements OnInit {
                 { name: "required", Message: "Stock Unit Of Measurement ID is required" }
             ],
             conversionFactor: [
-                { name: "required", Message: "Conversion Factor is required" },
-                { name: "maxlength", Message: "Conversion Factor should not be greater than 50 char." },
-                { name: "pattern", Message: "Special char not allowed." }
+                { name: "required", Message: "Conversion Factor or packing is required" },
+                { name: "maxlength", Message: "Conversion Factor should not be greater than 5 char." },
+                { name: "pattern", Message: "Only NUMBER allowed."  }
             ],
             reOrder: [
                 { name: "required", Message: "ReOrder is required" },
@@ -353,7 +352,7 @@ export class ItemFormMasterComponent implements OnInit {
                 { name: "pattern", Message: "Special char not allowed." }
             ],
             drugType: [
-                { name: "required", Message: "Drig Type is required" }
+                //{ name: "required", Message: "Drig Type is required" }
             ],
             manufId: [
                 { name: "required", Message: "Manufactured ID is required" }
