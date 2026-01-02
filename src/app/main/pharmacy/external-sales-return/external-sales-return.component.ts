@@ -228,7 +228,7 @@ export class ExternalSalesReturnComponent implements OnInit {
              PaidbyPatient: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
              PaidbacktoPatient: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
              roundoffAmt: [0],
-             opIpType: ['1', [this._FormvalidationserviceService.onlyNumberValidator()]],
+             opIpType: ['2', [this._FormvalidationserviceService.onlyNumberValidator()]],
              totalAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
              vatAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
              discAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
@@ -259,7 +259,7 @@ export class ExternalSalesReturnComponent implements OnInit {
                  date: ['', [this._FormvalidationserviceService.allowEmptyStringValidator(), this._FormvalidationserviceService.validDateValidator()]],
                  time: ['', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
                  opIpId: [0, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-                 opIpType: [1, [this._FormvalidationserviceService.onlyNumberValidator()]],
+                 opIpType: [2, [this._FormvalidationserviceService.onlyNumberValidator()]],
                  totalAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
                  vatAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
                  discAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
@@ -338,9 +338,43 @@ export class ExternalSalesReturnComponent implements OnInit {
              salesDraft: this.formBuilder.group({
                  dsalesId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
                  isClosed: [true]
-             })
+             }),
+             tPayments: this.formBuilder.array([]),
          })
      }
+
+
+       CreateModePaymentform(item: any): FormGroup {
+                 return this.formBuilder.group({
+                     paymentId: [item?.paymentId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+                     unitId: [item?.unitId ?? this._loggedService.currentUserValue.user.unitId],
+                     billNo: [item?.billNo ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+                     opdipdtype: [item?.opdipdtype ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+                     paymentDate: [item?.paymentDate ?? ''],
+                     paymentTime: [item?.paymentTime ?? ''],
+                     payAmount: [item?.payAmount ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+                     tranNo: [item?.tranNo ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+                     bankName: [item?.bankName ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+                     validationDate: [item?.validationDate ?? ''],
+                     advanceUsedAmount: [item?.advanceUsedAmount ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+                     comments: [item?.comments ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+                     payMode: [item?.payMode ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+                     onlineTranNo: [item?.onlineTranNo ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+                     onlineTranResponse: [item?.onlineTranResponse ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+                     companyId: [item?.companyId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+                     advanceId: [item?.advanceId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+                     refundId: [item?.refundId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+                     cashCounterId: [item?.cashCounterId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+                     transactionType: [item?.transactionType ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+                     isSelfOrcompany: [item?.isSelfOrcompany ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+                     tranMode: ['PHAR', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+                     createdBy: [item?.createdBy ?? this._loggedService.currentUserValue.userId],
+                     transactionLabel: [item?.transactionLabel ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+                 });
+             }
+               get ModeOfPaymentsArray(): FormArray {
+                     return this.PharmaSalesForm.get('tPayments') as FormArray;
+                 }
      CreateSalesDetailsform(item: IndentList) {
          return this.formBuilder.group({
              salesId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -399,7 +433,7 @@ export class ExternalSalesReturnComponent implements OnInit {
                  dsalesId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
                  date: ['', [this._FormvalidationserviceService.allowEmptyStringValidator(), this._FormvalidationserviceService.validDateValidator()]],
                  time: ['', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
-                 opIpId: [2, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+                 opIpId: [0, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
                  opIpType: [2, [this._FormvalidationserviceService.onlyNumberValidator]],
                  totalAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
                  vatAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -894,7 +928,7 @@ export class ExternalSalesReturnComponent implements OnInit {
          this.RegId = '';
          this.PatientName = '';
          this.DoctorName = '';
-         this.ItemSubform.get('opIpType').setValue('1');
+         this.ItemSubform.get('opIpType').setValue('2');
          this.Draftchk = true;
          this.ItemSubform.get('CashPay').setValue('CashPay');
          this.ItemSubform.get('referanceNo').reset('');
@@ -973,7 +1007,9 @@ export class ExternalSalesReturnComponent implements OnInit {
  
      onSave(event) {
           const formValue = this.ItemSubform.value
-           if (this.ItemSubform.get('opIpType').value == '2') {
+
+          debugger
+        //    if (this.ItemSubform.get('opIpType').value == '2') {
              if ((formValue.externalPatientName?.patientName ?? formValue.externalPatientName) == '' ||
                  ((formValue?.doctorName.doctorName ?? formValue?.doctorName)) == '' ||
                  ((formValue.extMobileNo.extMobileNo ?? formValue.extMobileNo) == '')) {
@@ -982,15 +1018,15 @@ export class ExternalSalesReturnComponent implements OnInit {
                  });
                  return;
              }
-         }
-            if (this.ItemSubform.get('opIpType').value != '2') {
-             if ((this.RegNo || 0) == 0) {
-                 this.toastr.warning('Please select Patient', 'Warning !', {
-                     toastClass: 'tostr-tost custom-toast-warning',
-                 });
-                 return;
-             }
-         } 
+        //  }
+        //     if (this.ItemSubform.get('opIpType').value != '2') {
+        //      if ((this.RegNo || 0) == 0) {
+        //          this.toastr.warning('Please select Patient', 'Warning !', {
+        //              toastClass: 'tostr-tost custom-toast-warning',
+        //          });
+        //          return;
+        //      }
+        //  } 
          Swal.fire({
              title: 'Confirm Save',
              text: 'Are you sure you want to save this Sales bill?',
