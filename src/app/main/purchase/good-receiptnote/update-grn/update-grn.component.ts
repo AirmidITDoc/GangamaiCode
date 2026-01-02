@@ -220,7 +220,7 @@ export class UpdateGRNComponent implements OnInit {
    
            if (Number(rate?.text) > 0) {
                this.userFormGroup.patchValue({ 
-                   IGST: rate?.taxPer,
+                   //IGST: rate?.taxPer,
                    GST: Number(rate.text),
                }) 
            } else {

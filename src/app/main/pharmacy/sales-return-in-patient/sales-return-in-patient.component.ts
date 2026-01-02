@@ -141,7 +141,8 @@ export class SalesReturnInPatientComponent implements OnInit {
       currentStock: this.formBuilder.array([]),
       // sales details update in array
       salesDetail: this.formBuilder.array([]),
-
+      payment:'',
+      tPayments:this.formBuilder.array([])
     });
   }
   createSalesretDetails(element: any): FormGroup {
@@ -165,12 +166,12 @@ export class SalesReturnInPatientComponent implements OnInit {
       salesId: [this.selcteditemObj?.SalesId, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       salesDetId: [element?.SalesDetId, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       isCashOrCredit: [element?.isCashOrCredit, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      cgstper: [((element?.GST) / 2) || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      cgstamt: [((element?.GSTAmt) / 2) || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      sgstper: [((element?.GST) / 2) || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      sgstamt: [((element?.GSTAmt) / 2) || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      igstper: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      igstamt: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      cgstper: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      cgstamt: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      sgstper: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      sgstamt: [ 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      igstper: [element?.GST, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      igstamt: [element?.GSTAmt, [this._FormvalidationserviceService.onlyNumberValidator()]],
       stkId: [element?.StkID, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
     })
   }

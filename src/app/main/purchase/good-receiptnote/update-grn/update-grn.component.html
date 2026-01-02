@@ -186,6 +186,7 @@
                         <airmid-dropdown label="Vat" formControlName="IGST" fxFlex="6%"  
                       [formGroup]="userFormGroup" [validations]="getValidationMessages().IGST"
                       [mode]="autocompleteModeGSTTypesValues" (selectionChange)="getchangeIgstper($event)"
+                       (onClearSelection)="getchangeIgstper($event)"
                      > </airmid-dropdown>
 
                     <!-- <airmid-textbox fxFlex="5%" label="GST" formControlName="GST" [formGroup]="userFormGroup"

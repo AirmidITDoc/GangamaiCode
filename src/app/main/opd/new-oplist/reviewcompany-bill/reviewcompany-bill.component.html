@@ -37,25 +37,24 @@
                                             <ul class="gap-4 list-basic" fxLayout="column">
                                                 <li>
                                                     <div class="list-item">
-                                                        <span class="list-item-key">Policy Number :</span>
-                                                        <!-- <span class="list-item-value">{{ ItemSubform.get('roundoffAmt')?.value | currency: currency:'symbol'
-                                                }}</span> -->
+                                                        <span class="list-item-key">Approved Date :</span>
+                                                        <span class="list-item-value">{{ CompanyApprovedDate | date:'dd/MM/yyyy' }}</span>
                                                     </div>
-                                                </li>
-                                                <li>
-                                                    <div class="list-item">
-                                                        <span class="list-item-key">Bill Amount :</span>
-                                                        <!-- <span class="list-item-value">{{ TotalCreditAmt | currency: currency:'symbol' }}</span> -->
-                                                    </div>
-                                                </li>
+                                                </li> 
                                                 <li>
                                             <div class="list-item">
                                               <span class="list-item-key">Approved Amount :</span>
                                               <span class="list-item-value">
-                                                <!-- {{ TotalAdvanceAmt | currency: currency:'symbol' }} -->
+                                                {{ CompanyApprovedAmt | currency: currency:'symbol' }}
                                               </span>
                                             </div>
                                           </li>
+                                            <li>
+                                                 <div class="list-item">
+                                                        <span class="list-item-key">Bill Amount :</span>
+                                                        <span class="list-item-value">{{ FinalBillBalAmt | currency: currency:'symbol' }}</span> 
+                                                    </div>
+                                                </li>
                 
                                             </ul>
                                         </div>
@@ -118,7 +117,7 @@
                                                             *matHeaderRowDef="displayedbillColumns; sticky: true">
                                                         </mat-header-row>
                                                         <mat-row *matRowDef="let contact; columns: displayedbillColumns;"
-                                                            [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
+                                                            [@animate]="{value:'*',params:{y:'100%'}}" (click)="getPrevCompanyBillList(contact.BillNo)"></mat-row>
                                                         <mat-footer-row *matFooterRowDef="['NoData']"
                                                             [ngClass]="{'hide':dsChargeList.data.length > 0}"></mat-footer-row>
                                                     </mat-table>

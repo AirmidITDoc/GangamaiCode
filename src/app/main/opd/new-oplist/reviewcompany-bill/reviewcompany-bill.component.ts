@@ -90,12 +90,13 @@ export class ReviewcompanyBillComponent {
   ngOnInit() {
     this.OPFooterForm = this.CreateOPFooter();
     this.OPFooterForm.markAllAsTouched();
+    this.salesUpdateForm = this.CreateSalesUpdateForm();
 
     if (this.data) {
       console.log(this.data)
       this.patientDetail = this.data;
       this.OPDIPDID = this.data?.opdipdid || 0
-      this.getPrevCompanyBillList(this.patientDetail)
+      this.getPrevCompanyBillList(this.patientDetail?.billNo)
       this.getBilllist();
     }
         //this is for curreny symbol
@@ -161,14 +162,37 @@ export class ReviewcompanyBillComponent {
     return this.OpBillEditSaveForm.get('ipAddChargesBill') as FormArray;
   }
 
-  getPrevCompanyBillList(Obj) {
+  salesUpdateForm:FormGroup
+  CreateSalesUpdateForm(){
+  return this.formBuilder.group({
+  salesHeader:  this.formBuilder.group({
+    salesId: 5,
+    totalAmount: 600,
+    vatAmount: 500,
+    discAmount: 100,
+    netAmount: 600,
+    balanceAmount: 1001
+  }),  
+   salesDetails: this.formBuilder.array([]),
+    })
+    }
+  CreateSalesdetform(item: any): FormGroup {
+    return this.formBuilder.group({
+      salesId: [item?.billNo, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
+      salesDetId: [item?.price, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
+      qty: [item?.qty, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      unitMrp: [item?.totalAmt, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      totalAmount: [item?.concessionPercentage || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+    });
+  }
+  getPrevCompanyBillList(billNo) {
     var param = {
       "first": 0,
       "rows": 100,
       "sortField": "ServiceId",
       "sortOrder": 0,
       "filters": [
-        { "fieldName": "BillNo", "fieldValue": String(Obj.billNo), "opType": "Equals" }],
+        { "fieldName": "BillNo", "fieldValue": String(billNo), "opType": "Equals" }],
       "exportType": "JSON",
       "columns": [{ "data": "string", "name": "string" }]
     }
@@ -184,6 +208,8 @@ export class ReviewcompanyBillComponent {
     })
   }
   FinalBillBalAmt:any=0;
+    CompanyApprovedAmt:any=0;
+    CompanyApprovedDate='-';
    getBilllist() {
     //ps_rtrv_BillList
     if (this.OPDIPDID == '' || this.OPDIPDID == null || this.OPDIPDID == undefined || this.OPDIPDID == 0) {
@@ -201,9 +227,11 @@ export class ReviewcompanyBillComponent {
     }
     this._OPListService.getAllBillList(param).subscribe(response => {
       console.log('response', response)
-      this.dsbillList.data = response.data
+      this.dsbillList.data = response
       if(this.dsbillList.data.length){
       this.FinalBillBalAmt = ( this.dsbillList.data.reduce((sum, { BalanceAmt }) => sum += +(BalanceAmt || 0), 0)).toFixed(2);
+      this.CompanyApprovedAmt = this.dsbillList.data[0]?.ApprovedAmount || 0 
+      this.CompanyApprovedDate = this.dsbillList.data[0]?.DateApproved || 0 
       }
     })
   }
@@ -553,6 +581,8 @@ BalanceAmt:any;
   concessionPercentage: any = 0;
   concessionAmount: any;
   userName: any;
+  DateApproved:any;
+  ApprovedAmount:any;;
   constructor(ChargesList) {
     this.ChargesId = ChargesList.ChargesId || '';
     this.ServiceId = ChargesList.ServiceId || '';
@@ -565,6 +595,8 @@ BalanceAmt:any;
     this.DiscAmt = ChargesList.DiscAmt || '';
     this.netAmount = ChargesList.netAmount || '';
     this.DoctorId = ChargesList.DoctorId || 0;
+     this.DateApproved = ChargesList.DateApproved || '';
+      this.ApprovedAmount = ChargesList.ApprovedAmount || 0;
     this.DoctorName = ChargesList.DoctorName || '';
     this.ChargeDoctorName = ChargesList.ChargeDoctorName || '';
     this.ChargesDate = ChargesList.ChargesDate || '';

@@ -478,7 +478,7 @@
                     </ng-container>
 
                     <ng-container matColumnDef="GSTPer">
-                      <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-90">GST
+                      <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-90">Vat
                         %</mat-header-cell>
                       <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-90">
                         <span> {{ contact.GSTPer }}</span>
@@ -486,7 +486,7 @@
                     </ng-container>
 
                     <ng-container matColumnDef="GSTAmount">
-                      <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>GST Amt</mat-header-cell>
+                      <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Vat Amt</mat-header-cell>
                       <mat-cell *matCellDef="let contact" fxShow.gt-sm>
                         <span> {{ contact.GSTAmount | currency: currency:'symbol' }}</span>
                       </mat-cell>

@@ -262,7 +262,7 @@
 
                                 <ng-container matColumnDef="GST">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-90">
-                                        GST%</mat-header-cell>
+                                        Vat %</mat-header-cell>
                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-90">
                                         {{contact.GST}}
                                     </mat-cell>
@@ -270,7 +270,7 @@
 
                                 <ng-container matColumnDef="GSTAmt">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-120">
-                                        GST Amt</mat-header-cell>
+                                        Vat Amt</mat-header-cell>
                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-120">
                                         {{contact.GSTAmt | currency: currency:'symbol'}}
                                     </mat-cell>
