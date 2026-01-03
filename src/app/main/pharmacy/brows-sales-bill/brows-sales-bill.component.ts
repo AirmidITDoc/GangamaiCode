@@ -135,7 +135,7 @@ export class BrowsSalesBillComponent implements OnInit {
     this.salesForm = this._BrowsSalesBillService.SearchFilter();
     ///.getsaleslist();
     this.onChangeFirst();
-    // this.onChangeFirst_Retrun(); 
+    this.onChangeFirst_Retrun(); 
   }
 
   autocompletestore: string = "Store";
@@ -344,6 +344,8 @@ export class BrowsSalesBillComponent implements OnInit {
     this.finalPaidAmt = (element.reduce((sum, { paidAmount }) => sum += +(paidAmount || 0), 0)).toFixed(2);
     this.finalBalanceAmt = (element.reduce((sum, { balanceAmount }) => sum += +(balanceAmount || 0), 0)).toFixed(2);
   }
+
+  
   getsalesdetaillist(event) {
     console.log(event)
 
@@ -469,6 +471,8 @@ export class BrowsSalesBillComponent implements OnInit {
       template: this.isPatientPrintTemplate  // Assign ng-template to the column
     }
   ]
+
+  
   gridConfig4: gridModel = {
     apiUrl: "Admission/AdmissionList",
     columnsList: this.PatientlistColumns,
@@ -493,18 +497,20 @@ export class BrowsSalesBillComponent implements OnInit {
 
   //Sales Retrun list 
   onChangeFirst_Retrun() {
+    
     this.isShowDetailTableRetrun = false;
     this.first_Name = this._BrowsSalesBillService.formReturn.get('F_Name').value + "%"
     this.Last_Name = this._BrowsSalesBillService.formReturn.get('L_Name').value + "%"
     this.Store_Id = this._BrowsSalesBillService.formReturn.get('StoreId').value
-    this.From_Date = this.datePipe.transform(this._BrowsSalesBillService.formReturn.get('startdate1').value, "yyyy-MM-dd")
-    this.To_Date = this.datePipe.transform(this._BrowsSalesBillService.formReturn.get('enddate1').value, "yyyy-MM-dd")
+    this.From_Date = this.datePipe.transform(this._BrowsSalesBillService.formReturn.get('startdate1').value, "yyyy-MM-dd") 
+    this.To_Date = this.datePipe.transform(this._BrowsSalesBillService.formReturn.get('enddate1').value, "yyyy-MM-dd") || this.datePipe.transform(new Date(), "yyyy-MM-dd") 
     this.reg_No = this._BrowsSalesBillService.formReturn.get('RegNo').value || "0"
     this.sales_No = this._BrowsSalesBillService.formReturn.get('SalesNo').value || "0"
     this.OpIp_Type = this._BrowsSalesBillService.formReturn.get('OP_IP_Type_Return').value || "0"
     this.getSalesRetrunlistdata();
   }
   getSalesRetrunlistdata() {
+    debugger
     this.gridConfig2 = {
       apiUrl: "SalesReturn/SalesReturnBrowseList",
       columnsList: this.SalesReturnHColumns,
@@ -521,7 +527,56 @@ export class BrowsSalesBillComponent implements OnInit {
         { fieldName: "OP_IP_Type", fieldValue: this.OpIp_Type, opType: OperatorComparer.Equals }
       ],
     }
-    // this.grid.bindGridData();
+   
+    this.getsalesreturnlist()
+  }
+
+
+  //Sales return
+    retchargelist: any = [];
+  getsalesreturnlist() {
+    debugger
+    var vdata = {
+      "first": 0,
+      "rows": 10000,
+      "sortField": "SalesReturnId",
+      "sortOrder": 0,
+      "filters": [
+        { fieldName: "F_Name", fieldValue: this.first_Name, opType: OperatorComparer.Equals },
+        { fieldName: "L_Name", fieldValue: this.Last_Name, opType: OperatorComparer.Equals },
+        { fieldName: "StoreId", fieldValue: String(this.Store_Id), opType: OperatorComparer.Equals },
+        { fieldName: "From_Dt", fieldValue: this.From_Date, opType: OperatorComparer.Equals },
+        { fieldName: "To_Dt", fieldValue: this.To_Date, opType: OperatorComparer.Equals },
+        { fieldName: "Reg_No", fieldValue: this.reg_No, opType: OperatorComparer.Equals },
+        { fieldName: "SalesNo", fieldValue: this.sales_No, opType: OperatorComparer.Equals },
+        { fieldName: "OP_IP_Type", fieldValue: this.OpIp_Type, opType: OperatorComparer.Equals }
+      ],
+      "Columns": [],
+      "exportType": "JSON"
+    }
+    this._BrowsSalesBillService.getSalesReturnBrowseList(vdata).subscribe(response => {
+      this.retchargelist = response.data
+      console.log(this.retchargelist)
+
+      if (this.retchargelist.length) {
+        this.getReturntotalshowingonPage(this.retchargelist);
+      }
+    })
+
+  }
+
+    RetfinalTotalAmt: any = 0;
+  RetfinalDiscAmt: any = 0;
+  RetfinalNetAmt: any = 0;
+  RetfinalPaidAmt: any = 0;
+  RetfinalBalanceAmt: any = 0;
+  getReturntotalshowingonPage(element) {
+    console.log(element)
+    this.RetfinalTotalAmt = (element.reduce((sum, { totalAmount }) => sum += +(totalAmount || 0), 0)).toFixed(2);
+    this.RetfinalDiscAmt = (element.reduce((sum, { discAmount }) => sum += +(discAmount || 0), 0)).toFixed(2);
+    this.RetfinalNetAmt = (element.reduce((sum, { netAmount }) => sum += +(netAmount || 0), 0)).toFixed(2);
+    this.RetfinalPaidAmt = (element.reduce((sum, { paidAmount }) => sum += +(paidAmount || 0), 0)).toFixed(2);
+    this.RetfinalBalanceAmt = (element.reduce((sum, { balanceAmount }) => sum += +(balanceAmount || 0), 0)).toFixed(2);
   }
   selectChangeStoreRetrun(value) {
     if (value.value !== 0)
@@ -2196,11 +2251,12 @@ export class BrowsSalesBillComponent implements OnInit {
           
               getWhatsappshareBill(el) {
                   console.log(el);
+                  debugger
                   this._whatsppService.OnWhatsAppMsgSent({
                       mobileNo: el.mobileNo,
                       patientName: el.patientName,
-                      billNo: el.salesNo,
-                      smsType: "SalesBill",
+                      billNo: el.salesId,
+                      smsType: "SalesReceipt",
                       patientId:el.regNo
                   })
               }
@@ -2213,7 +2269,7 @@ export class BrowsSalesBillComponent implements OnInit {
                           width: '55%',
                           data: {
                               Obj: contact,
-                              emailType:'SalesBill'
+                              emailType:'SalesReceipt'
                           }
                       });
                   dialogRef.afterClosed().subscribe(result => {

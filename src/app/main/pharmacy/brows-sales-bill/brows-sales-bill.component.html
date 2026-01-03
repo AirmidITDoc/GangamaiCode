@@ -262,7 +262,62 @@
             <div fusePerfectScrollbar
                 class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
                 dynamicTableHeight>
+                <div class="info-badge-top overflow-auto mb-3" fxLayout="row" fxLayoutAlign="space-between" flex>
+                    <div fxLayout="row" fxLayoutAlign="start center" class="gap-8 mb-8" style="margin-left: 10px;">
 
+                        <div class="dashboard-card appointments-split">
+                            <div class="card-label">Total Amt</div>
+                            <div class="card-value">{{RetfinalTotalAmt | currency:'INR'}}</div>
+                            <mat-icon class="card-icon" matTooltip="Total Test Results">check_circle</mat-icon>
+                        </div>
+
+                        <div class="dashboard-card DiscountAmt">
+                            <div class="card-label">Discount Amt</div>
+                            <div class="card-value">{{RetfinalDiscAmt | currency:'INR'}}</div>
+                            <mat-icon class="card-icon" matTooltip="Completed Tests">check_circle</mat-icon>
+                        </div>
+
+                        <div class="dashboard-card appointments-split">
+                            <div class="card-label">Net Amt</div>
+                            <div class="card-value">
+                                <div> {{RetfinalNetAmt | currency:'INR'}}</div>
+                            </div>
+                            <mat-icon class="card-icon" matTooltip="Pending Tests">check_circle</mat-icon>
+                        </div>
+
+                        <div class="dashboard-card PaidAmt">
+                            <div class="card-label">Paid Amt</div>
+                            <div class="card-value">
+                                <div> {{RetfinalPaidAmt | currency:'INR'}}</div>
+                            </div>
+                            <mat-icon class="card-icon" matTooltip="Pending Tests">check_circle</mat-icon>
+                        </div>
+
+                        <div class="dashboard-card BalanceAmt">
+                            <div class="card-label">Balance Amt</div>
+                            <div class="card-value">
+                                <div> {{RetfinalBalanceAmt | currency:'INR'}}</div>
+                            </div>
+                            <mat-icon class="card-icon" matTooltip="Pending Tests">schedule</mat-icon>
+                        </div>
+                    </div>
+                    <div fxLayout="row" fxLayoutAlign="end" class="gap-8" style="margin-right: 20px;">
+
+                        <div style="color: orange" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                            <mat-icon class="pill orange-600 s-16">circle</mat-icon>
+                            <span class="orange-600-fg">OP</span>
+                        </div>
+                        <div style="color: green" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                            <mat-icon class="pill green-600 s-16">circle</mat-icon>
+                            <span class="green-600-fg">IP</span>
+                        </div>
+                        <div style="color: blue" fxLayout="row" fxLayoutAlign="start center" class="gap-4">
+                            <mat-icon class="pill blue-600 s-16">circle</mat-icon>
+                            <span class="blue-600-fg">External</span>
+                        </div>
+
+                    </div>
+                </div>
                 <div class="info-badge-top border-bottom" fxLayout="row" fxLayoutAlign="left" flex>
 
                     <div fxLayout="row" fxLayoutAlign="end" class="gap-8">
@@ -318,11 +373,32 @@
                         <ng-container filters>
                             <form [formGroup]="_BrowsSalesBillService.formReturn" fxLayout="column">
 
-                                <airmid-datepicker [formGroup]="_BrowsSalesBillService.formReturn"
+                                <!-- <airmid-datepicker [formGroup]="_BrowsSalesBillService.formReturn"
                                     [isRangePicker]="true" formStartControlName="startdate1"
                                     formEndControlName="enddate1" [(fromValue)]="gridConfig.filters[2].fieldValue"
                                     [(toValue)]="gridConfig.filters[3].fieldValue"
-                                    (dateChange)="onChangeFirst_Retrun()"></airmid-datepicker>
+                                    (dateChange)="onChangeFirst_Retrun()"></airmid-datepicker> -->
+
+
+                                <!-- <airmid-datepicker [formGroup]="_BrowsSalesBillService.formReturn"
+                                    [isRangePicker]="true" formStartControlName="startdate1"
+                                    formEndControlName="enddate1" [(fromValue)]="gridConfig.filters[2].fieldValue"
+                                    [(toValue)]="gridConfig.filters[3].fieldValue"
+                                    (dateChange)="onChangeFirst_Retrun()">
+                                </airmid-datepicker> -->
+
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Enter a date range</mat-label>
+                                    <mat-date-range-input [rangePicker]="picker1">
+                                        <input matStartDate formControlName="startdate1" placeholder="Start date"
+                                            (dateChange)="onChangeFirst()">
+                                        <input matEndDate formControlName="enddate1" placeholder="End date"
+                                            (dateChange)="onChangeFirst_Retrun()">
+                                    </mat-date-range-input>
+                                    <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                                    <mat-date-range-picker #picker1></mat-date-range-picker>
+                                </mat-form-field>
+
 
 
                                 <airmid-dropdown label="Store Name" formControlName="StoreId"
