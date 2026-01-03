@@ -117,7 +117,7 @@
                                                             *matHeaderRowDef="displayedbillColumns; sticky: true">
                                                         </mat-header-row>
                                                         <mat-row *matRowDef="let contact; columns: displayedbillColumns;"
-                                                            [@animate]="{value:'*',params:{y:'100%'}}" (click)="getPrevCompanyBillList(contact.BillNo)"></mat-row>
+                                                            [@animate]="{value:'*',params:{y:'100%'}}" (click)="getBillDetlist(contact.BillNo)"></mat-row>
                                                         <mat-footer-row *matFooterRowDef="['NoData']"
                                                             [ngClass]="{'hide':dsChargeList.data.length > 0}"></mat-footer-row>
                                                     </mat-table>

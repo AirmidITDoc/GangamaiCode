@@ -2060,7 +2060,7 @@ export class SalesInPatientComponent implements OnInit {
                      { "fieldName": "SalesID", "fieldValue": String(SalesID), "opType": "13" },
                      { "fieldName": "OP_IP_Type", "fieldValue": String(OP_IP_Type), "opType": "13" }
                  ],
-                 "mode": "PharamcySalesBillKenya"
+                 "mode": "PharamcyInPatientSalesBillKenya"
              }
              this._salesService.getReportView(param).subscribe(res => {
                  const matDialog = this._matDialog.open(PdfviewerComponent,
@@ -2070,7 +2070,7 @@ export class SalesInPatientComponent implements OnInit {
                          width: '100%',
                          data: {
                              base64: res["base64"] as string,
-                             title: "Sales Bill" + " " + "Viewer"
+                             title: "Sales In Patient Bill" + " " + "Viewer"
                          }
                      });
                  matDialog.afterClosed().subscribe(result => {

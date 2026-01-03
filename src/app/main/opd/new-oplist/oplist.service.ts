@@ -115,6 +115,12 @@ public UpdateCompanyBilling(Param: any) {
     }
      return this._httpClient1.PostData("Common",Param)
 }
+    public UpdateSalesBilling(Param,loader = true) {
+    if (loader) {
+      this._loaderService.show();
+    }
+     return this._httpClient1.PostData("Sales/SalesUpdate", Param);
+}
     // public getReportViewdata(Param) {
     //        return this._httpClient1.PostData("Common",Param)
     // }

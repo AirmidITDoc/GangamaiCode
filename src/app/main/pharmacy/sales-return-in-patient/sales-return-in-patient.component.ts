@@ -567,7 +567,7 @@ export class SalesReturnInPatientComponent implements OnInit {
           { "fieldName": "SalesID", "fieldValue": String(SalesID || 0), "opType": "13" },
           { "fieldName": "OP_IP_Type", "fieldValue": String(OP_IP_Type), "opType": "13" }
         ],
-        "mode": "PharamcySalesReturn"
+        "mode": "PharamcyInPatientSalesReturnKenya"
       }
       this._IpSalesRetInpatService.getReportView(param).subscribe(res => {
         const matDialog = this._matDialog.open(PdfviewerComponent,

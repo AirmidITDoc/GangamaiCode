@@ -537,8 +537,8 @@ export class NewOpeningBalanceComponent implements OnInit {
   }
 CalculatePerUnit(){
  const formvalues= this.OPeningtemForm.value
-    if((formvalues?.LandedRate || 0)> 0){
-    const perunit = (formvalues?.LandedRate || 0) / (formvalues?.totalQty || 0).toFixed(2)
+    if((formvalues?.MRP || 0)> 0){
+    const perunit = (formvalues?.MRP || 0) / (formvalues?.pack || 0).toFixed(2)
     this.OPeningtemForm.patchValue({
       RatePerUnit : perunit || 0
     })

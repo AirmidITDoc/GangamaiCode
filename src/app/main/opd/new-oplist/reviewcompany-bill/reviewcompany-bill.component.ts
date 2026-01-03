@@ -17,6 +17,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import Swal from 'sweetalert2';
 import { ConfigService } from 'app/core/services/config.service';
 import { Subscription } from 'rxjs';
+import { element } from 'protractor';
 
 
 @Component({
@@ -51,6 +52,7 @@ export class ReviewcompanyBillComponent {
   PatientName: any;
   className = "OPD";
   RegNo: any;
+  Lable:any='';
   Doctorname: any;
   CompanyName: any;
   DepartmentName: any;
@@ -166,16 +168,20 @@ export class ReviewcompanyBillComponent {
   CreateSalesUpdateForm(){
   return this.formBuilder.group({
   salesHeader:  this.formBuilder.group({
-    salesId: 5,
-    totalAmount: 600,
-    vatAmount: 500,
-    discAmount: 100,
-    netAmount: 600,
-    balanceAmount: 1001
+    salesId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+    totalAmount:  [0,[this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+    vatAmount: [0,[this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+    discAmount: [0,[this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+    netAmount: [0,[this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+    balanceAmount:  [0,[this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
   }),  
    salesDetails: this.formBuilder.array([]),
     })
     }
+      // Getters 
+  get SalesUpDetArray(): FormArray {
+    return this.salesUpdateForm.get('salesDetails') as FormArray;
+  }
   CreateSalesdetform(item: any): FormGroup {
     return this.formBuilder.group({
       salesId: [item?.billNo, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -184,6 +190,10 @@ export class ReviewcompanyBillComponent {
       unitMrp: [item?.totalAmt, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
       totalAmount: [item?.concessionPercentage || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
     });
+  }
+  getBillDetlist(element){
+    this.Lable = element.Lbl || '';
+    this.getPrevCompanyBillList(element.BillNo)
   }
   getPrevCompanyBillList(billNo) {
     var param = {
@@ -295,7 +305,11 @@ export class ReviewcompanyBillComponent {
       cancelButtonText: 'No, cancel'
     }).then((result) => {
       if (result.isConfirmed) {
+        if(this.Lable == ''){
+          this.OnSaveSalesupdate();
+        }else{
         this.OnSave(); // Call your save function
+        }
       }
     });
   }
@@ -349,6 +363,63 @@ export class ReviewcompanyBillComponent {
             }
           } else if (control?.invalid) {
             invalidFields.push(`OpBill From: ${controlName}`);
+          }
+        }
+      }
+      if (invalidFields.length > 0) {
+        invalidFields.forEach(field => {
+          this.toastr.warning(`Please Check this field "${field}" is invalid.`, 'Warning',
+          );
+        });
+        return
+      }
+    }
+  }
+    OnSaveSalesupdate() {
+    debugger
+     const formValue = this.OPFooterForm.value
+    this.salesUpdateForm.get('salesHeader').patchValue({
+      salesId: this.patientDetail?.billNo || 0,
+      totalAmount: formValue?.totalAmt || 0,
+      vatAmount: 0,
+      discAmount: formValue?.netPayableAmt || 0, 
+      netAmount: formValue?.netPayableAmt || 0,
+      balanceAmount: formValue?.netPayableAmt || 0 
+    })
+    this.SalesUpDetArray.clear();
+    console.log("form values", this.salesUpdateForm.value)
+    if (this.salesUpdateForm.valid) {
+      this.SalesUpDetArray.clear();
+      this.dsChargeList.data.forEach(item => {
+      this.SalesUpDetArray.push( this.CreateAddchargeform(item as ChargesList));
+      });
+      console.log("form values", this.salesUpdateForm.value)
+      this._OPListService.UpdateSalesBilling(this.salesUpdateForm.value).subscribe(response => {
+        this._matDialog.closeAll();
+        this.savebtn = true
+        if (response)
+          this.resetform();
+        // if (ThermalPrint != 1) {
+        //   this.viewgetOPBillReportPdf(response)
+        // } else {
+        //   this.viewgetOPBillThermalReportPdf(response)
+        // }
+      });
+    }
+    else {
+      let invalidFields = [];
+      if (this.salesUpdateForm.invalid) {
+        for (const controlName in this.salesUpdateForm.controls) {
+          const control = this.salesUpdateForm.get(controlName);
+
+          if (control instanceof FormGroup || control instanceof FormArray) {
+            for (const nestedKey in control.controls) {
+              if (control.get(nestedKey)?.invalid) {
+                invalidFields.push(`Sales Bill Data : ${controlName}.${nestedKey}`);
+              }
+            }
+          } else if (control?.invalid) {
+            invalidFields.push(`Sales Bill From: ${controlName}`);
           }
         }
       }
