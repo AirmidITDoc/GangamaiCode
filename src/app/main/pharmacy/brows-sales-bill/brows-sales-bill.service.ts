@@ -115,7 +115,6 @@ export class BrowsSalesBillService {
     return this._httpClient.post("WhatsappEmail/WhatsappSalesReturnSave", emp);
   }
 
-  
 
 
   public getSalesReturnPrint(emp) {
@@ -198,5 +197,10 @@ public getSalesDetail_Patientwise(FromDate,ToDate,SalesFromNumber,SalesToNumber,
   }
       public getSalesBrowseList(Param) {
     return this._httpClient1.PostData("Sales/salesbrowselist", Param);
+  }
+
+  
+       public getSalesReturnBrowseList(Param) {
+    return this._httpClient1.PostData("SalesReturn/SalesReturnBrowseList", Param);
   }
 }

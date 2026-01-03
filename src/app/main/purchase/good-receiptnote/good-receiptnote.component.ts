@@ -805,9 +805,9 @@ Is9_Digit_National_Id: boolean = false;
               console.log(el);
               this._whatsppService.OnWhatsAppMsgSent({
                   mobileNo: el.mobileNo,
-                  patientName: el.patientName,
+                  patientName: el.grnid,
                   billNo: el.billNo,
-                  smsType: "OPBill",
+                  smsType: "GRNReceipt",
                   patientId:el.regNo
               })
           }

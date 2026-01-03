@@ -141,8 +141,8 @@ export class SalesReturnInPatientComponent implements OnInit {
       currentStock: this.formBuilder.array([]),
       // sales details update in array
       salesDetail: this.formBuilder.array([]),
-      payment:'',
-      tPayments:this.formBuilder.array([])
+      // payment:'',
+      // tPayments:this.formBuilder.array([])
     });
   }
   createSalesretDetails(element: any): FormGroup {

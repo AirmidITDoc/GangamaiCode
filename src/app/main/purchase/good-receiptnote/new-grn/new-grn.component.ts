@@ -978,7 +978,12 @@ export class NewGrnComponent implements OnInit, OnDestroy {
         return this.GrnHeaderForm.get('grnItems') as FormArray;
     }
     onSave() {
+
+        debugger
         const formValues = this.userFormGroup.getRawValue() as GRNFormModel;
+
+        console.log(this.userFormGroup.value)
+        
         if ((formValues.StoreId == '' || formValues.StoreId == null || formValues.StoreId == '0')) {
             this.toastr.warning('Please select a supplier name', 'Warning !', {
                 toastClass: 'tostr-tost custom-toast-warning',
@@ -1003,6 +1008,10 @@ export class NewGrnComponent implements OnInit, OnDestroy {
             });
             return;
         }
+
+        console.log(this.isValidForm())
+
+        debugger
         if (!this.isValidForm()) {
             Swal.fire('Please enter valid table data.');
             return;
@@ -1033,6 +1042,7 @@ export class NewGrnComponent implements OnInit, OnDestroy {
         })
     }
     OnSavenew() {
+        debugger
         const grnPatchData = {
             grndate: this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd"),
             grntime: this.dateTimeObj.time,
@@ -1097,6 +1107,7 @@ export class NewGrnComponent implements OnInit, OnDestroy {
                 this.GrnHeaderForm.get("grn.grntime")?.setValue(this.registerObj?.grntime || "12:00")
                 this.GrnHeaderForm.get("grn.updatedBy")?.setValue(this.accountService.currentUserValue.userId)
                 console.log(this.GrnHeaderForm.value)
+                debugger
                 this._GRNList.GRNEdit(this.GrnHeaderForm.value, this.registerObj?.grnid).subscribe(response => {
                     this.viewgetGRNReportPdf(this.registerObj?.grnid)
                     this.OnReset();
@@ -1140,7 +1151,7 @@ export class NewGrnComponent implements OnInit, OnDestroy {
     getGRNrtrvItemlist() {
         var vdata = {
             "first": 0,
-            "rows": 10,
+            "rows": 100,
             "sortField": "GRNDetID",
             "sortOrder": 0,
             "filters": [{ "fieldName": "GRNID", "fieldValue": String(this.registerObj.grnid), "opType": "Equals" }],
