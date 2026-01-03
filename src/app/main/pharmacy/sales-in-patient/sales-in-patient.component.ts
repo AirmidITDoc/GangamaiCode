@@ -401,6 +401,8 @@ export class SalesInPatientComponent implements OnInit {
          }
          this.getBillSummary(obj?.admissionID);  
          this.ItemFormreset();  
+         this.saleSelectedDatasource.data = [];
+         this.Itemchargeslist = [];
      } 
      onItemChange(event: SalesItemModel): void { 
              this._salesService.ItemSearchGroup.patchValue({ 
@@ -854,6 +856,7 @@ export class SalesInPatientComponent implements OnInit {
          this.ItemSubform.get('concessionReasonId').disable();
          this.ItemSubform.get('roundoffAmt').setValue(0);
          this.saleSelectedDatasource.data = [];
+         this.Itemchargeslist = [];
          this.getDraftorderList();
          this.TotalAdvanceAmt = 0;
          this.TotalBalanceAmt = 0;

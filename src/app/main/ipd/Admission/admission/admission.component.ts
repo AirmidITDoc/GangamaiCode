@@ -132,7 +132,7 @@ export class AdmissionComponent implements OnInit {
     this.menuActions.push("Discharge SummarY");
     this.menuActions.push("Refund Of Bill");
     this.menuActions.push("Refund Of Advance");
-    this.menuActions.push("Patient Final Bill");
+    this.menuActions.push("Patient Statement Print");
   }
 
 
@@ -410,7 +410,7 @@ export class AdmissionComponent implements OnInit {
         }
       });
     }
-    else if (m == "Patient Final Bill") {  
+    else if (m == "Patient Statement Print") {  
       this.OnPaitentFinalPrint(element)
     } 
   }
@@ -431,7 +431,7 @@ export class AdmissionComponent implements OnInit {
                         width: '100%',
                         data: {
                             base64: res["base64"] as string,
-                            title: "Patient Final Bill" + " " + "Viewer"
+                            title: "Patient Statement" + " " + "Viewer"
                         }
                     });
                 matDialog.afterClosed().subscribe(result => {

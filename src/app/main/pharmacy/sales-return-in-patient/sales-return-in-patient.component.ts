@@ -209,6 +209,8 @@ export class SalesReturnInPatientComponent implements OnInit {
     this.PatientTypeId = obj?.patientTypeID
     this.getItemNameList();
     this.OnRadioChange();
+    this.dsIpSaleItemList.data =[];
+    this.chargeslist = [];
   }
   OnRadioChange() {
     this.dsIpSaleItemList.data = [];

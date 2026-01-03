@@ -246,7 +246,7 @@ export class IPBillBrowseListComponent implements OnInit {
             this.menuActions.push('Print Final Bill - Class Service');
             this.menuActions.push('Print Final Bill'); 
             this.menuActions.push('Print Final Bill - Charge Date Wise'); 
-            this.menuActions.push('Patient Final Bill');
+            this.menuActions.push('Patient Statement Print');
             // this.menuActions.push('Print FinalBill WardWise');
         }
     }
@@ -401,7 +401,7 @@ export class IPBillBrowseListComponent implements OnInit {
          else if(m == "Print Final Bill - Charge Date Wise"){
             this.viewgetFinalBillReportChargeDatewisePdf(contact.billNo)
           }
-          else if (m == "Patient Final Bill") {  
+          else if (m == "Patient Statement Print") {  
             this.OnPaitentFinalPrint(contact)
           } 
     }
@@ -422,7 +422,7 @@ export class IPBillBrowseListComponent implements OnInit {
                         width: '100%',
                         data: {
                             base64: res["base64"] as string,
-                            title: "Patient Final Bill" + " " + "Viewer"
+                            title: "Patient Statement" + " " + "Viewer"
                         }
                     });
                 matDialog.afterClosed().subscribe(result => {

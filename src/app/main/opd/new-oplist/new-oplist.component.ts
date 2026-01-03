@@ -259,7 +259,7 @@ export class NewOPListComponent implements OnInit {
 
         this.menuActions.push("Bill Print-Package Info");
         this.menuActions.push("Bill Print");
-        this.menuActions.push("Patient Final Bill");
+        this.menuActions.push("Patient Statement Print");
     }
 
 
@@ -377,7 +377,7 @@ export class NewOPListComponent implements OnInit {
             this.commonService.Onprint("BillNo", element.billNo, "OPBillWithPackagePrint");
         else if (m == "Bill Print")
             this.commonService.Onprint("BillNo", element.billNo, "OpBillReceipt");
-        else if (m == "Patient Final Bill") {   
+        else if (m == "Patient Statement Print") {   
              this.OnPaitentFinalPrint(element)
           } 
     }
@@ -398,7 +398,7 @@ export class NewOPListComponent implements OnInit {
                         width: '100%',
                         data: {
                             base64: res["base64"] as string,
-                            title: "Patient Final Bill" + " " + "Viewer"
+                            title: "Patient Statement" + " " + "Viewer"
                         }
                     });
                 matDialog.afterClosed().subscribe(result => {

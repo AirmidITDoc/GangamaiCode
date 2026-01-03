@@ -120,7 +120,7 @@ export class AppointmentListComponent implements OnInit {
         this.menuActions.push({ icon: "language", text: "Request For IP" });
         this.menuActions.push({ icon: "language", text: "Update Followup Date" });
         this.menuActions.push({ icon: "print", text: "CasePaper Print" });
-        this.menuActions.push({ icon: "print", text: "Patient Final Bill" });
+        this.menuActions.push({ icon: "print", text: "Patient Statement Print" });
 
         const savedTimers = localStorage.getItem('consultTimers');
         if (savedTimers) {
@@ -521,7 +521,7 @@ export class AppointmentListComponent implements OnInit {
                 }
             });
         }
-        else if (m == "Patient Final Bill") {
+        else if (m == "Patient Statement Print") {
             this.OnPaitentFinalPrint(element)
         }
 
@@ -543,7 +543,7 @@ export class AppointmentListComponent implements OnInit {
                         width: '100%',
                         data: {
                             base64: res["base64"] as string,
-                            title: "Patient Final Bill" + " " + "Viewer"
+                            title: "Patient Statement" + " " + "Viewer"
                         }
                     });
                 matDialog.afterClosed().subscribe(result => {

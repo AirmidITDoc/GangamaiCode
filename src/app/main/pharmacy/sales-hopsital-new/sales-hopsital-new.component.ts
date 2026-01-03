@@ -547,7 +547,9 @@ export class SalesHospitalNewComponent implements OnInit {
              this.RegNo =  obj?.regNo;
         }
         this.getBillSummary(obj?.admissionID);  
-        this.ItemFormreset();  
+        this.ItemFormreset(); 
+        this.saleSelectedDatasource.data = [];
+         this.Itemchargeslist = []; 
     }
     getSelectedObjOP(obj) {
         console.log(obj);
@@ -563,6 +565,8 @@ export class SalesHospitalNewComponent implements OnInit {
         this.DoctorName = obj.doctorName; 
         this.RegNo =  obj?.regNo;
         this.ItemFormreset(); 
+        this.saleSelectedDatasource.data = [];
+         this.Itemchargeslist = [];
     }
    
     onItemChange(event: SalesItemModel): void { 
@@ -1022,6 +1026,7 @@ if (QtyElement) {
         this.ItemSubform.get('concessionReasonId').disable();
         this.ItemSubform.get('roundoffAmt').setValue(0);
         this.saleSelectedDatasource.data = [];
+         this.Itemchargeslist = [];
         this.getDraftorderList();
         this.TotalAdvanceAmt = 0;
         this.TotalBalanceAmt = 0;

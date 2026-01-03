@@ -1002,8 +1002,7 @@ export class SalesHospitalKenyaComponent {
          })
          this._salesService.ItemSearchGroup.get('ItemId').reset('');
          this.dsBalAvaListStore.data = [];
-         this.saleSelectedDatasource.data = [];
-         this.Itemchargeslist = [];
+
  
      }
      Formreset() {
@@ -1023,13 +1022,14 @@ export class SalesHospitalKenyaComponent {
          this.ItemSubform.get('concessionReasonId').clearValidators();
          this.ItemSubform.get('concessionReasonId').updateValueAndValidity();
          this.ItemSubform.get('concessionReasonId').disable();
-         this.ItemSubform.get('roundoffAmt').setValue(0);
-         this.saleSelectedDatasource.data = [];
+         this.ItemSubform.get('roundoffAmt').setValue(0); 
          this.Itemchargeslist = [];
          this.getDraftorderList();
          this.TotalAdvanceAmt = 0;
          this.TotalBalanceAmt = 0;
          this.TotalCreditAmt = 0;
+         this.saleSelectedDatasource.data = [];
+         this.Itemchargeslist = [];
      }
      deleteTableRow(event, element) {
          let index = this.Itemchargeslist.indexOf(element);
