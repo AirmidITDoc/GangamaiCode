@@ -695,7 +695,8 @@ export class AppointmentListComponent implements OnInit {
                     margin: 0.5;
                 }
                 html, body {
-                    margin: 0.5;
+                    margin-top: -4mm;
+                    margin: 0;
                     padding: 0;
                     font-family: system-ui, sans-serif;
                     font-size: 12px;
