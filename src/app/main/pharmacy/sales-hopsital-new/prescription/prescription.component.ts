@@ -202,7 +202,9 @@ PrescriptionFrom:FormGroup;
             RegId :this.SelectedObj.regId,
             IPMedID:this.SelectedObj.ipMedID,
             DoctorName: this.SelectedObj.doctorName,
-            IPDNo : this.SelectedObj.ipdNo
+            IPDNo : this.SelectedObj.ipdNo,
+            companyId: this.SelectedObj?.companyId || 0,
+            companyName: this.SelectedObj?.companyName || '',
           });
       console.log(this.Patientlist);
       this._dialogRef.close(this.Patientlist);

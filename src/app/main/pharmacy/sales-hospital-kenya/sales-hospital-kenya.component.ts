@@ -551,6 +551,9 @@ export class SalesHospitalKenyaComponent {
              this.bedId = obj.bedId;
               this.RegNo =  obj?.regNo;
                this.PatientTypeId = obj?.patientTypeID
+                if(this.PatientTypeId == 1){
+                this.ItemSubform.get('CashPay').setValue('Credit');
+                }
          }
          this.getBillSummary(obj?.admissionID);  
          this.ItemFormreset();  
@@ -574,6 +577,9 @@ export class SalesHospitalKenyaComponent {
          this.ItemFormreset(); 
          this.saleSelectedDatasource.data = [];
          this.Itemchargeslist = [];
+          if(this.PatientTypeId == 1){
+            this.ItemSubform.get('CashPay').setValue('Credit');
+         }
      }
     
      onItemChange(event: SalesItemModel): void { 
@@ -2010,7 +2016,9 @@ export class SalesHospitalKenyaComponent {
                  this.OP_IP_Id = result[0]?.AdmissionID;
                  this.DoctorName = result[0]?.DoctorName;
                  this.ItemSubform.get('regId').setValue(result[0]?.RegId);
- 
+                 if((result[0]?.companyId || 0)>0){
+                   this.ItemSubform.get('CashPay').setValue('Credit');
+                 } 
                  if (result[0]?.IPMedID > 0) {
                      this.IPDNocheck = true;
                      this.OPDNoCheck = false;

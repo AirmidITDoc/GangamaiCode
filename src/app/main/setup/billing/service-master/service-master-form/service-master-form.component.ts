@@ -168,7 +168,7 @@ export class ServiceMasterFormComponent implements OnInit {
             emgPer: [0, [Validators.required, Validators.pattern("[0-9]+")]],
             emgStartTime: [defaultTime, [Validators.required]],
             emgEndTime: [defaultTime, [Validators.required]],
-            printOrder: [0, [Validators.required, Validators.pattern("[0-9]+"), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            printOrder: [0],
             isActive: true,
             isDocEditable: false,
             isServiceTaxApplicable: false,

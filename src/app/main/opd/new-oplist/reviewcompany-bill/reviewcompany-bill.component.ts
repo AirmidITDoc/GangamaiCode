@@ -73,8 +73,6 @@ export class ReviewcompanyBillComponent {
     ['IsCheck', 'ServiceNamePackage', 'ServiceName', 'Price', 'Qty', 'TotalAmt', 'DoctorName', 'DiscAmt', 'NetAmount'];
   public displayedbillColumns: string[] =['Label','BillNo', 'NetAmount','BalanceAmt'];
 
-
-
   constructor(private _matDialog: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public datePipe: DatePipe,
@@ -162,8 +160,7 @@ export class ReviewcompanyBillComponent {
   // Getters 
   get IPaddchargeArray(): FormArray {
     return this.OpBillEditSaveForm.get('ipAddChargesBill') as FormArray;
-  }
-
+  } 
   salesUpdateForm:FormGroup
   CreateSalesUpdateForm(){
   return this.formBuilder.group({
@@ -542,8 +539,7 @@ export class ReviewcompanyBillComponent {
     }
 
   }
-  updateTotalDiscountPer(): void {
-
+  updateTotalDiscountPer(): void { 
     const totalDiscountAmount = +this.OPFooterForm.get("concessionAmt").value;
     const totalChargeAmount = +(this.OPFooterForm.get("totalAmt").value);
 
@@ -567,8 +563,7 @@ export class ReviewcompanyBillComponent {
         totalDiscountPer: disountPer,
         netPayableAmt: netAmount.toFixed(2)
       }, { emitEvent: false });
-    }
-
+    } 
   }
   getValidationMessages() {
     return {

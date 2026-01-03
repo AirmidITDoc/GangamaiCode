@@ -1074,7 +1074,10 @@ debugger
             ],
              policyLimit: [
                 { name: "required", Message: "Policy limit is required" }
-            ] 
+            ],
+              EmailId: [
+                { name: "pattern", Message: "Enter valid Email Address" }
+            ], 
         };
     }
 
@@ -1222,6 +1225,8 @@ debugger
 
             // extra field
             IsNRI: [false],
+            EmailId:['',[Validators.email]]
+            
         });
     }
 
