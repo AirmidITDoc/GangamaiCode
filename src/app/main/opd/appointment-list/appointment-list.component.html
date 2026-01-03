@@ -399,9 +399,20 @@
         <div class="main-content-wrapper" style="width:100%; font-size:12px; font-weight:bold;">
             <div class="invoice-box" style="width:100%; line-height:18px; font-size:12px; font-weight:bold;">
                 <div style="width:100%;text-align:center;font-size:12px;font-weight:bold;padding:2px 0;">
-                    {{ reportPrintObjList[0]?.HospitalName }}
+                    <div style="padding:1px 0;">
+                        {{ reportPrintObjList[0]?.HospitalHeaderLine }}
+                    </div>
+                
+                    <div style="padding:1px 0;">
+                        {{ reportPrintObjList[0]?.HospitalName }}
+                    </div>
+                
+                    <div style="padding:1px 0;">
+                        {{ reportPrintObjList[0]?.HospitalAddress }}
+                    </div>
+                       <!-- Separator line -->
+                    <div style="border-top:1px dashed #000; margin:2px 0;"></div>
                 </div>
-
                 <table style="width:100%; border-collapse:collapse; font-size:10px; font-weight:bold;">
                     <tr style="font-size:10px; font-weight:bold;">
                         <td style="border-bottom:1px solid #d4c3c3; padding:4px; font-size:10px; font-weight:bold;">
