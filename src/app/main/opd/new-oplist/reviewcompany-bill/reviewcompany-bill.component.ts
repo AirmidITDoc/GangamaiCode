@@ -305,7 +305,7 @@ export class ReviewcompanyBillComponent {
       cancelButtonText: 'No, cancel'
     }).then((result) => {
       if (result.isConfirmed) {
-        if(this.Lable == ''){
+        if(this.Lable == 'Pharma'){
           this.OnSaveSalesupdate();
         }else{
         this.OnSave(); // Call your save function
