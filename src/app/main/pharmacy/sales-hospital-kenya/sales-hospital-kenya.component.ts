@@ -19,13 +19,11 @@
  import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';  
 import { BalAvaListStore, DraftSale, Printsal, SalesBatchItemModel, SalesItemModel } from '../sales-hopsital-new/types';
 import { SubstitutesComponent } from '../sales-hopsital-new/substitutes/substitutes.component';
-import { PrescriptionComponent } from '../sales-hopsital-new/prescription/prescription.component';
-import { SalesHospitalService } from '../sales-hopsital-new/sales-hospital-new.service';
+import { PrescriptionComponent } from '../sales-hopsital-new/prescription/prescription.component'; 
 import { SalesbatchpopupComponent } from './salesbatchpopup/salesbatchpopup.component';
-import { SalePopupComponent } from '../sales/sale-popup/sale-popup.component';
-import { ConfigList } from 'app/app.component';
-import { ConfigSettingParams } from 'app/core/models/config';
+import { SalePopupComponent } from '../sales/sale-popup/sale-popup.component';  
 import { ConfigService } from 'app/core/services/config.service';
+import { SalesHospitalKenyaService } from './sales-hospital-kenya.service';
 
 @Component({
   selector: 'app-sales-bill-kenya',
@@ -164,7 +162,7 @@ export class SalesHospitalKenyaComponent {
  
      constructor(
          public _BrowsSalesBillService: BrowsSalesBillService,
-         public _salesService: SalesHospitalService,
+         public _salesService: SalesHospitalKenyaService,
          public _matDialog: MatDialog,
          public datePipe: DatePipe,
          private formBuilder: UntypedFormBuilder,
@@ -360,10 +358,10 @@ export class SalesHospitalKenyaComponent {
              returnQty: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
              purRateWf: [item?.PurchaseRate || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
              purTotAmt: [item?.PurTotAmt || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-             cgstper: [item?.CgstPer || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-             cgstamt: [item?.CGSTAmt || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-             sgstper: [item?.SgstPer || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-             sgstamt: [item?.SGSTAmt || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+             cgstper: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+             cgstamt: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+             sgstper: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+             sgstamt: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
              igstper: [item?.IgstPer || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
              igstamt: [item?.IGSTAmt || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
              isPurRate: [true],
@@ -556,6 +554,8 @@ export class SalesHospitalKenyaComponent {
          }
          this.getBillSummary(obj?.admissionID);  
          this.ItemFormreset();  
+        this.saleSelectedDatasource.data = [];
+         this.Itemchargeslist = [];
      }
      getSelectedObjOP(obj) {
          console.log(obj);
@@ -572,6 +572,8 @@ export class SalesHospitalKenyaComponent {
          this.RegNo =  obj?.regNo;
          this.PatientTypeId = obj?.patientTypeId
          this.ItemFormreset(); 
+         this.saleSelectedDatasource.data = [];
+         this.Itemchargeslist = [];
      }
     
      onItemChange(event: SalesItemModel): void { 
@@ -590,7 +592,7 @@ export class SalesHospitalKenyaComponent {
      }
      // NOTE: If `isEditable` true then it means this popup will open for table row data 
      getBatch(itemId: number, storeId: number, isEditable = false) {
-         const dialogRef = this._matDialog.open(SalePopupComponent, {
+         const dialogRef = this._matDialog.open(SalesbatchpopupComponent, {
              maxWidth: '950px',
              minWidth: '900px',
              width: '900px',
@@ -645,10 +647,8 @@ export class SalesHospitalKenyaComponent {
                      ItemName: result.itemName,
                      BatchNo: result.batchNo,
                      BatchExpDate: this.datePipe.transform(result.batchExpDate, 'MM-dd-yyyy'),
-                     GSTPer: result.cgstPer + result.sgstPer + result.igstPer,
-                     UnitMRP: result.unitMRP,
-                     CgstPer: result.cgstPer,
-                     SgstPer: result.sgstPer,
+                     GSTPer: result.igstPer,
+                     UnitMRP: result.unitMRP, 
                      IgstPer: result.igstPer,
                      StockId: result.stockId,
                      LandedRate: result.landedRate,
@@ -664,15 +664,15 @@ export class SalesHospitalKenyaComponent {
              console.log(this.selectedItem)
              this.ItemAddForm = this.createItemAddTable()
              this._salesService.ItemSearchGroup.patchValue({
-                 BatchNo: result.batchNo,
+                 BatchNo: result?.batchNo || '',
                  BatchExpDate: this.datePipe.transform(result.batchExpDate, 'yyyy-MM-dd'),
-                 BalanceQty: result.balanceQty,
+                 BalanceQty: result?.balanceQty || 0,
                  Qty: '',
                  DiscAmt: 0,
-                 GSTPer: result.vatPercentage,
-                 MRP: MRP,
-                 MRPRate:result.unitMRP,
-                 IsPurRate: IsPurRate
+                 GSTPer: result?.vatPercentage || 0,
+                 MRP: MRP || 0,
+                 MRPRate:result?.unitMRP || 0,
+                 IsPurRate: IsPurRate || 0
              })
          });
      }
@@ -694,9 +694,7 @@ export class SalesHospitalKenyaComponent {
           let MRPRateTotal = '0';
          let marginamt = '0';
          let PurTotAmt = '0';
-         let GSTAmount = '0';
-         let CGSTAmt = '0';
-         let SGSTAmt = '0';
+         let GSTAmount = '0'; 
          let IGSTAmt = '0';
          if (qty && formvalues?.MRP) {
              TotalMRP = (qty * formvalues?.MRP).toFixed(2);
@@ -705,30 +703,24 @@ export class SalesHospitalKenyaComponent {
              marginamt = (parseFloat(TotalMRP) - parseFloat(LandedRateandedTotal)).toFixed(2);
              PurTotAmt = (qty * this.selectedItem?.purchaseRate).toFixed(2);
              GSTAmount = (((parseFloat(TotalMRP) * formvalues?.GSTPer) / 100) * qty).toFixed(2);
-             CGSTAmt = (((parseFloat(TotalMRP) * this.selectedItem?.cgstPer) / 100) * qty).toFixed(2);
-             SGSTAmt = (((parseFloat(TotalMRP) * this.selectedItem?.sgstPer) / 100) * qty).toFixed(2);
              IGSTAmt = (((parseFloat(TotalMRP) * this.selectedItem?.igstPer) / 100) * qty).toFixed(2);
          } else if (!qty || qty == 0) {
              TotalMRP = '0';
              LandedRateandedTotal = '0';
              marginamt = '0';
              PurTotAmt = '0';
-             GSTAmount = '0';
-             CGSTAmt = '0';
-             SGSTAmt = '0';
+             GSTAmount = '0'; 
              IGSTAmt = '0';
          }
          this._salesService.ItemSearchGroup.patchValue({
-             TotalMrp: TotalMRP,
-             NetAmt: TotalMRP,
-             MarginAmt: marginamt,
-             GSTAmount: GSTAmount,
-             LandedRateandedTotal: LandedRateandedTotal,
-             CGSTAmt: CGSTAmt,
-             SGSTAmt: SGSTAmt,
-             IGSTAmt: IGSTAmt,
-             PurTotAmt: PurTotAmt,
-             MRPRateTotal:MRPRateTotal
+             TotalMrp: TotalMRP || 0,
+             NetAmt: TotalMRP || 0,
+             MarginAmt: marginamt || 0,
+             GSTAmount: GSTAmount || 0,
+             LandedRateandedTotal: LandedRateandedTotal, 
+             IGSTAmt: IGSTAmt || 0,
+             PurTotAmt: PurTotAmt || 0,
+             MRPRateTotal:MRPRateTotal || 0
          })
      }
      checkQtyBeforeNext(event: KeyboardEvent) {
@@ -765,7 +757,7 @@ export class SalesHospitalKenyaComponent {
              this._salesService.ItemSearchGroup.patchValue({
                  DiscAmt: 0,
                  DiscPer: '',
-                 NetAmt:formValue.TotalMrp
+                 NetAmt:formValue.TotalMrp || 0
              });
              this.ConShow = false;
              return;
@@ -786,7 +778,7 @@ export class SalesHospitalKenyaComponent {
              return
              } 
              this._salesService.ItemSearchGroup.patchValue({
-                 DiscAmt: DiscAmt,
+                 DiscAmt: DiscAmt || 0,
              });
                this.ConShow = true;
              this.calculateNetAmount();
@@ -797,7 +789,7 @@ export class SalesHospitalKenyaComponent {
          if (formValue.TotalMrp) {
              let NetAmt = (formValue.TotalMrp - (formValue.DiscAmt || 0)).toFixed(2);
              this._salesService.ItemSearchGroup.patchValue({
-                 NetAmt: NetAmt,
+                 NetAmt: NetAmt || 0,
              });
          }
      }
@@ -840,7 +832,7 @@ export class SalesHospitalKenyaComponent {
              // Calculate discount percentage from amount
              let DiscPer = ((formValue.DiscAmt / formValue.TotalMrp) * 100).toFixed(2);
              this._salesService.ItemSearchGroup.patchValue({
-                 DiscPer: DiscPer,
+                 DiscPer: DiscPer || 0,
              });
              this.calculateNetAmount();
          }
@@ -855,7 +847,7 @@ export class SalesHospitalKenyaComponent {
              BatchExpDate: [this.datePipe.transform(this.selectedItem?.batchExpDate, 'yyyy-MM-dd'), [this._FormvalidationserviceService.validDateValidator()]],
              Qty: [0, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
              UnitMRP: [this.selectedItem?.unitMRP, [this._FormvalidationserviceService.AllowDecimalNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-             GSTPer: [(this.selectedItem?.cgstPer + this.selectedItem?.sgstPer), [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+             GSTPer: [(this.selectedItem?.igstPer), [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
              GSTAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
              TotalMRP: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
              DiscPer: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
@@ -867,9 +859,9 @@ export class SalesHospitalKenyaComponent {
              VatAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
              LandedRate: [this.selectedItem?.landedRate, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
              LandedRateandedTotal: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-             CgstPer: [this.selectedItem?.cgstPer, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+             CgstPer: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
              CGSTAmt: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-             SgstPer: [this.selectedItem?.sgstPer, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+             SgstPer: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
              SGSTAmt: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
              IgstPer: [this.selectedItem?.igstPer, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
              IGSTAmt: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
@@ -945,8 +937,8 @@ export class SalesHospitalKenyaComponent {
              RoundNetAmt: Math.round(formValue.NetAmt),
              VatAmount: formValue.GSTAmount || 0,
              LandedRateandedTotal: formValue.LandedRateandedTotal,
-             CGSTAmt: formValue.CGSTAmt || 0,
-             SGSTAmt: formValue.SGSTAmt || 0,
+             CGSTAmt: 0,
+             SGSTAmt: 0,
              IGSTAmt: formValue.IGSTAmt || 0,
              PurTotAmt: formValue.PurTotAmt,
              MarginAmt: formValue.MarginAmt, 
@@ -989,7 +981,7 @@ export class SalesHospitalKenyaComponent {
      }
      ItemFormreset() {
          this._salesService.ItemSearchGroup.patchValue({
-             ItemId: ['a'],
+             ItemId: [''],
              ItemName: '',
              BatchNo: '',
              BatchExpDate: '01/01/1900',
@@ -1004,13 +996,14 @@ export class SalesHospitalKenyaComponent {
              MarginAmt: '0',
              GSTAmount: '0',
              LandedRateandedTotal: '0',
-             CGSTAmt: '0',
              SGSTAmt: '0',
              IGSTAmt: '0',
              PurTotAmt: '0',
          })
          this._salesService.ItemSearchGroup.get('ItemId').reset('');
          this.dsBalAvaListStore.data = [];
+         this.saleSelectedDatasource.data = [];
+         this.Itemchargeslist = [];
  
      }
      Formreset() {
@@ -1032,6 +1025,7 @@ export class SalesHospitalKenyaComponent {
          this.ItemSubform.get('concessionReasonId').disable();
          this.ItemSubform.get('roundoffAmt').setValue(0);
          this.saleSelectedDatasource.data = [];
+         this.Itemchargeslist = [];
          this.getDraftorderList();
          this.TotalAdvanceAmt = 0;
          this.TotalBalanceAmt = 0;
@@ -1908,15 +1902,13 @@ export class SalesHospitalKenyaComponent {
          if (DraftQty && contact.unitMrp) {
              this.saleSelectedDatasource.data = [];
              let LandedRateandedTotal = '0', TotalMRP = '0', PurTotAmt = '0',
-                 v_marginamt = '0', GSTAmount = '0', CGSTAmt = '0', SGSTAmt = '0', IGSTAmt = '0', NetAmt = '0',MRPRateTotal = '0';
+                 v_marginamt = '0', GSTAmount = '0',  IGSTAmt = '0', NetAmt = '0',MRPRateTotal = '0';
  
              TotalMRP = (parseInt(DraftQty) * contact.unitMrp).toFixed(2);
              LandedRateandedTotal = (parseInt(DraftQty) * contact.landedRate).toFixed(2);
              PurTotAmt = (parseInt(DraftQty) * contact.purchaseRate).toFixed(2);
              v_marginamt = (parseFloat(TotalMRP) - parseFloat(LandedRateandedTotal)).toFixed(2);
              GSTAmount = (((contact.unitMrp * contact.vatPercentage) / 100) * parseInt(DraftQty)).toFixed(2);
-             CGSTAmt = (((contact.unitMrp * contact.cgstper) / 100) * parseInt(DraftQty)).toFixed(2);
-             SGSTAmt = (((contact.unitMrp * contact.sgstper) / 100) * parseInt(DraftQty)).toFixed(2);
              IGSTAmt = (((contact.unitMrp * contact.igstper) / 100) * parseInt(DraftQty)).toFixed(2);
              MRPRateTotal =  (parseInt(DraftQty) * contact.unitMrp).toFixed(2);
              NetAmt = (parseFloat(TotalMRP) - 0).toFixed(2);
@@ -1958,10 +1950,10 @@ export class SalesHospitalKenyaComponent {
                      VatAmount: GSTAmount,
                      LandedRate: contact?.landedRate,
                      LandedRateandedTotal: LandedRateandedTotal,
-                     CgstPer: contact?.cgstper,
-                     CGSTAmt: CGSTAmt,
-                     SgstPer: contact?.sgstper,
-                     SGSTAmt: SGSTAmt,
+                     CgstPer: 0,
+                     CGSTAmt: 0,
+                     SgstPer: 0,
+                     SGSTAmt: 0,
                      IgstPer: contact?.igstper,
                      IGSTAmt: IGSTAmt,
                      PurchaseRate: contact?.purchaseRate,
@@ -2292,8 +2284,7 @@ export class SalesHospitalKenyaComponent {
                      let v_marginamt = (parseFloat(TotalMRP) - parseFloat(LandedRateandedTotal)).toFixed(2);
                      let PurTotAmt = (parseInt(this.DraftQty) * contact.PurUnitRateWF).toFixed(2);
  
-                     let CGSTAmt = (((contact.UnitMRP * contact.CgstPer) / 100) * this.DraftQty).toFixed(2);
-                     let SGSTAmt = (((contact.UnitMRP * contact.SgstPer) / 100) * this.DraftQty).toFixed(2);
+            
                      let IGSTAmt = (((contact.UnitMRP * contact.IgstPer) / 100) * this.DraftQty).toFixed(2);
  
                      // let DiscAmt= ((parseFloat(TotalMRP) * (contact.DiscPer)) / 100).toFixed(2)
@@ -2315,12 +2306,12 @@ export class SalesHospitalKenyaComponent {
                      this.saleSelectedDatasource.data[i].DiscPer = contact.DiscPer;
                      this.saleSelectedDatasource.data[i].DiscAmt = DiscAmt;
  
-                     this.saleSelectedDatasource.data[i].CGSTAmt = CGSTAmt;
-                     this.saleSelectedDatasource.data[i].SGSTAmt = SGSTAmt;
+                     this.saleSelectedDatasource.data[i].CGSTAmt = 0;
+                     this.saleSelectedDatasource.data[i].SGSTAmt = 0;
                      this.saleSelectedDatasource.data[i].IGSTAmt = IGSTAmt;
  
-                     this.saleSelectedDatasource.data[i].CgstPer = contact.CGSTPer;
-                     this.saleSelectedDatasource.data[i].SgstPer = contact.SGSTPer;
+                     this.saleSelectedDatasource.data[i].CgstPer = 0
+                     this.saleSelectedDatasource.data[i].SgstPer = 0
                      this.saleSelectedDatasource.data[i].IgstPer = contact.IGSTPer;
  
                      this.saleSelectedDatasource.data[i].LandedRate = contact.LandedRate;
@@ -2359,8 +2350,6 @@ export class SalesHospitalKenyaComponent {
              let v_marginamt = (parseFloat(TotalMRP) - parseFloat(LandedRateandedTotal)).toFixed(2);
              let PurTotAmt = (parseInt(this.DraftQty) * contact.PurUnitRateWF).toFixed(2);
  
-             let CGSTAmt = (((contact.UnitMRP * contact.CGSTPer) / 100) * this.DraftQty).toFixed(2);
-             let SGSTAmt = (((contact.UnitMRP * contact.SGSTPer) / 100) * this.DraftQty).toFixed(2);
              let IGSTAmt = (((contact.UnitMRP * contact.IGSTPer) / 100) * this.DraftQty).toFixed(2);
  
              let DiscAmt = ((parseFloat(TotalMRP) * parseFloat(contact.DiscPer)) / 100).toFixed(2);
@@ -2384,10 +2373,10 @@ export class SalesHospitalKenyaComponent {
                  StockId: contact.StockId,
                  LandedRate: contact.LandedRate,
                  LandedRateandedTotal: LandedRateandedTotal,
-                 CgstPer: contact.CGSTPer,
-                 CGSTAmt: CGSTAmt,
-                 SgstPer: contact.SGSTPer,
-                 SGSTAmt: SGSTAmt,
+                 CgstPer: 0,
+                 CGSTAmt: 0,
+                 SgstPer:0,
+                 SGSTAmt: 0,
                  IgstPer: contact.IGSTPer,
                  IGSTAmt: IGSTAmt,
                  PurchaseRate: contact.PurUnitRateWF,

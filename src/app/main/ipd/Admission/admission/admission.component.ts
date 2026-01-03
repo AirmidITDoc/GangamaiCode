@@ -132,7 +132,7 @@ export class AdmissionComponent implements OnInit {
     this.menuActions.push("Discharge SummarY");
     this.menuActions.push("Refund Of Bill");
     this.menuActions.push("Refund Of Advance");
-
+    this.menuActions.push("Patient Final Bill");
   }
 
 
@@ -410,8 +410,35 @@ export class AdmissionComponent implements OnInit {
         }
       });
     }
+    else if (m == "Patient Final Bill") {  
+      this.OnPaitentFinalPrint(element)
+    } 
   }
-
+    OnPaitentFinalPrint(element) {
+        setTimeout(() => {
+            let param = {
+                "searchFields": [
+                    { "fieldName": "OPIPId", "fieldValue": String(element.admissionId), "opType": "13" },
+                    { "fieldName": "OPIPType", "fieldValue": String(1), "opType": "13" }
+                ],
+                "mode": "PatientBillStatement"
+            }
+            this._AdmissionService.getReportView(param).subscribe(res => {
+                const matDialog = this._matDialog.open(PdfviewerComponent,
+                    {
+                        maxWidth: "85vw",
+                        height: '750px',
+                        width: '100%',
+                        data: {
+                            base64: res["base64"] as string,
+                            title: "Patient Final Bill" + " " + "Viewer"
+                        }
+                    });
+                matDialog.afterClosed().subscribe(result => {
+                });
+            });
+        }, 100);
+    }
   onClose() {
     this.searchFormGroup.get('RegId').reset();
     this.searchFormGroup.get('RegId').disable();

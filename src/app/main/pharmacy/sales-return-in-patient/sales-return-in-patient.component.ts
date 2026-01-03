@@ -61,8 +61,8 @@ export class SalesReturnInPatientComponent implements OnInit {
   vOP_IP_Type: any;
   registerObj: any;
   selcteditemObj: any;
-  currency:any='';
-PatientTypeId:any=0;
+  currency: any = '';
+  PatientTypeId: any = 0;
   dsIpSaleItemList = new MatTableDataSource<IPSalesItemList>();
 
   @ViewChild('ItemName') ItemName!: ElementRef;
@@ -77,7 +77,7 @@ PatientTypeId:any=0;
     public toastr: ToastrService,
     public formBuilder: FormBuilder,
     public _FormvalidationserviceService: FormvalidationserviceService,
-    public _ConfigService:ConfigService
+    public _ConfigService: ConfigService
   ) { }
 
 
@@ -88,9 +88,9 @@ PatientTypeId:any=0;
     this.IPSalesRetFooterform.markAllAsTouched();
 
     this.IpSalesReturnForm = this.CreateSalesReturnForm();
-              //this is for curreny symbol
-        const [CurrencyId, CurrencyValue] = this._ConfigService.configParams.CurrencyValue.split(":");
-        this.currency = CurrencyValue
+    //this is for curreny symbol
+    const [CurrencyId, CurrencyValue] = this._ConfigService.configParams.CurrencyValue.split(":");
+    this.currency = CurrencyValue
   }
   CreateSalesFooterform() {
     return this.formBuilder.group({
@@ -141,7 +141,8 @@ PatientTypeId:any=0;
       currentStock: this.formBuilder.array([]),
       // sales details update in array
       salesDetail: this.formBuilder.array([]),
- 
+      payment:'',
+      tPayments:this.formBuilder.array([])
     });
   }
   createSalesretDetails(element: any): FormGroup {
@@ -165,12 +166,12 @@ PatientTypeId:any=0;
       salesId: [this.selcteditemObj?.SalesId, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       salesDetId: [element?.SalesDetId, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       isCashOrCredit: [element?.isCashOrCredit, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      cgstper: [((element?.GST) / 2) || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      cgstamt: [((element?.GSTAmt) / 2) || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      sgstper: [((element?.GST) / 2) || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      sgstamt: [((element?.GSTAmt) / 2) || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      igstper: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      igstamt: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      cgstper: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      cgstamt: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      sgstper: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      sgstamt: [ 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      igstper: [element?.GST, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      igstamt: [element?.GSTAmt, [this._FormvalidationserviceService.onlyNumberValidator()]],
       stkId: [element?.StkID, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
     })
   }
@@ -205,7 +206,7 @@ PatientTypeId:any=0;
     this.registerObj = obj;
     this.vPatientName = obj?.firstName + ' ' + obj?.middleName + ' ' + obj?.lastName;
     this.vRegno = this.registerObj?.regNo;
-   this.PatientTypeId = obj?.patientTypeID
+    this.PatientTypeId = obj?.patientTypeID
     this.getItemNameList();
     this.OnRadioChange();
   }
@@ -231,7 +232,7 @@ PatientTypeId:any=0;
       { "fieldName": "BatchNo", "fieldValue": String(0), "opType": "Equals" }
     ]
 
-    if (this.ItemFormGroup.get('PaymentType').value == 'Credit') { 
+    if (this.ItemFormGroup.get('PaymentType').value == 'Credit') {
       var param = {
         "searchFields": Filters,
         "mode": "IPSalesReturnCredit"
@@ -493,7 +494,7 @@ PatientTypeId:any=0;
         this.IpSalesReturnForm.get('salesReturn.balanceAmount').setValue((Math.round(this.IPSalesRetFooterform.get('FinalNetAmount').value)))
 
         console.log(this.IpSalesReturnForm.value);
-        this._IpSalesRetInpatService.InsertCreditSalesReturn(this.IpSalesReturnForm.value).subscribe(response => {
+        this._IpSalesRetInpatService.InsertSalesReturnInPatient(this.IpSalesReturnForm.value).subscribe(response => {
           this.OnSalesReturnprint(response, this.selcteditemObj.OP_IP_Type)
           this.ngOnDestroy();
         });

@@ -23,6 +23,7 @@ import { SalesHospitalService } from '../sales-hopsital-new/sales-hospital-new.s
 import { PrescriptionComponent } from '../sales-hopsital-new/prescription/prescription.component';
 import { Subscription } from 'rxjs';
 import { ConfigService } from 'app/core/services/config.service';
+import { SalesbatchpopupComponent } from '../sales-hospital-kenya/salesbatchpopup/salesbatchpopup.component';
 
 @Component({
   selector: 'app-sales-in-patient',
@@ -154,6 +155,7 @@ export class SalesInPatientComponent implements OnInit {
      constructor(
          public _BrowsSalesBillService: BrowsSalesBillService,
          public _salesService: SalesHospitalService,
+         public _salesInPatientService: SalesInPatientService,
          public _matDialog: MatDialog,
          public datePipe: DatePipe,
          private formBuilder: UntypedFormBuilder,
@@ -416,10 +418,10 @@ export class SalesInPatientComponent implements OnInit {
      }
      // NOTE: If `isEditable` true then it means this popup will open for table row data 
      getBatch(itemId: number, storeId: number, isEditable = false) {
-         const dialogRef = this._matDialog.open(SalePopupComponent, {
-             maxWidth: '800px',
-             minWidth: '800px',
-             width: '800px',
+         const dialogRef = this._matDialog.open(SalesbatchpopupComponent, {
+            maxWidth: '950px',
+             minWidth: '900px',
+             width: '900px',
              height: '380px',
              disableClose: true,
              data: {
@@ -1075,7 +1077,7 @@ export class SalesInPatientComponent implements OnInit {
                  this.PharmaSalesForm.get('sales.paidAmount').setValue(0)
                  this.PharmaSalesForm.get('sales.balanceAmount').setValue((Math.round(formValue.netAmount)))
                  console.log(this.PharmaSalesForm.value)
-                 this._salesService.InsertCreditSales(this.PharmaSalesForm.value).subscribe((response) => {
+                 this._salesInPatientService.InsertSalesInPatientCreditSales(this.PharmaSalesForm.value).subscribe((response) => {
                      if (response > 0) {
                          this.OnSalesprint(response, opIpType)
                          this.onClose()

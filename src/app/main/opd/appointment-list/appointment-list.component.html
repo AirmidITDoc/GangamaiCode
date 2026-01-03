@@ -136,8 +136,7 @@
             <!-- Patient Name with Token Badge and Hover Popover -->
             <span [matBadge]="element.tokenNo" matBadgeColor="warn" matBadgePosition="after" matBadgeOverlap="false"
                 matBadgeSize="small" [matBadgeHidden]="!element.tokenNo"
-                (mouseenter)="openPatientDetailsPopover($event, element)"
-                (mouseleave)="closePatientDetailsPopover()"
+                (mouseenter)="openPatientDetailsPopover($event, element)" (mouseleave)="closePatientDetailsPopover()"
                 style="font-size: 14px; line-height: 18px; position: relative; top: 4px; cursor: pointer; text-decoration: underline; color: #667eea;">
                 {{ element.patientName }}
             </span>
@@ -145,8 +144,7 @@
 
         <ng-template #doctorNameWithPopoverTemplate let-element>
             <!-- Doctor Name with Hover Popover -->
-            <span (mouseenter)="openDoctorDetailsPopover($event, element)"
-                (mouseleave)="closeDoctorDetailsPopover()"
+            <span (mouseenter)="openDoctorDetailsPopover($event, element)" (mouseleave)="closeDoctorDetailsPopover()"
                 style="font-size: 14px; line-height: 18px; cursor: pointer; text-decoration: underline; color: #4CAF50;">
                 {{ element.doctorname }}
             </span>
@@ -320,7 +318,8 @@
             </div>
         </ng-template>
 
-        <airmid-table [gridConfig]="gridConfig" class="content" (onSelectRow)="getSelectedRow($event)" (mouseleave)="clearSelection()">
+        <airmid-table [gridConfig]="gridConfig" class="content" (onSelectRow)="getSelectedRow($event)"
+            (mouseleave)="clearSelection()">
             <ng-container filters>
                 <form [formGroup]="myformSearch">
                     <!-- 
@@ -389,18 +388,19 @@
 
 
 <div hidden class="bill-template-wrapper2" style="font-size:12px; font-weight:bold;" #billTemplate2>
+
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Thermal Receipt</title>
     </head>
 
-    <body style="margin:0; padding:6px; font-family:monospace; color:#101828; font-size:12px; font-weight:bold;">
+    <body style="margin:0; padding:2px; font-family:monospace; color:#101828; font-size:12px; font-weight:bold;">
         <div class="main-content-wrapper" style="width:100%; font-size:12px; font-weight:bold;">
             <div class="invoice-box" style="width:100%; line-height:18px; font-size:12px; font-weight:bold;">
-                <table style="width:100%; border-collapse:collapse; font-size:12px; font-weight:bold;">
-                    <!-- {{reportPrintObjList[0]?.NewHeaderThermal}} -->
-                </table>
+                <div style="width:100%;text-align:center;font-size:12px;font-weight:bold;padding:2px 0;">
+                    {{ reportPrintObjList[0]?.HospitalName }}
+                </div>
 
                 <table style="width:100%; border-collapse:collapse; font-size:10px; font-weight:bold;">
                     <tr style="font-size:10px; font-weight:bold;">
@@ -436,36 +436,29 @@
                     </tr>
                 </table>
 
-                <table
-                    style="width:100%; border-collapse:collapse; border:1px solid #000; font-size:10px;">
+                <table style="width:100%; border-collapse:collapse; border:1px solid #000; font-size:10px;">
 
                     <tr style="font-size:10px; font-weight:bold;">
-                        <th
-                            style="border:1px solid #000; text-align:center; padding:4px; width:10%; font-size:10px; ">
-                            Sr. No
+                        <th style="border:1px solid #000; text-align:center; padding:4px; width:10%; font-size:10px; ">
+                            No
                         </th>
-                        <th
-                            style="border:1px solid #000; text-align:left; padding:4px; width:60%; font-size:10px; ">
+                        <th style="border:1px solid #000; text-align:left; padding:4px; width:60%; font-size:10px; ">
                             Service Name
                         </th>
-                        <th
-                            style="border:1px solid #000; text-align:right; padding:4px; width:30%; font-size:10px; ">
+                        <th style="border:1px solid #000; text-align:right; padding:4px; width:30%; font-size:10px; ">
                             Rate
                         </th>
                     </tr>
 
                     <tr *ngFor="let item of reportPrintObjList; let indx = index;"
                         style="font-size:10px; font-weight:bold;">
-                        <td
-                            style="border:1px solid #000; text-align:center; padding:4px; font-size:10px;">
+                        <td style="border:1px solid #000; text-align:center; padding:4px; font-size:10px;">
                             {{ indx + 1 }}
                         </td>
-                        <td
-                            style="border:1px solid #000; text-align:left; padding:4px; font-size:10px; ">
+                        <td style="border:1px solid #000; text-align:left; padding:4px; font-size:10px; ">
                             {{ item?.ServiceName }}
                         </td>
-                        <td
-                            style="border:1px solid #000; text-align:right; padding:4px; font-size:10px; ">
+                        <td style="border:1px solid #000; text-align:right; padding:4px; font-size:10px; ">
                             {{ item.Price | currency:'INR' }}
                         </td>
                     </tr>

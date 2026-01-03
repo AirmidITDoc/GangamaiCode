@@ -1,4 +1,4 @@
-  import { HttpClient } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { ApiCaller } from 'app/core/services/apiCaller';
@@ -7,7 +7,7 @@ import { FormvalidationserviceService } from 'app/main/shared/services/formvalid
   @Injectable({
     providedIn: 'root'
   })
-  export class SalesHospitalService {
+  export class SalesHospitalKenyaService {
   
     userFormGroup: FormGroup;
     ItemSearchGroup :FormGroup;
@@ -109,8 +109,6 @@ import { FormvalidationserviceService } from 'app/main/shared/services/formvalid
     public InsertCreditSales  (employee){
       return this._httpClient1.PostData("Sales/SalesSaveWithCredit", employee)
     }
-    
-   
   
     public InsertSalesDraftBill(employee){
       return this._httpClient1.PostData("Sales/SalesDraftBillSave", employee)
@@ -190,3 +188,4 @@ import { FormvalidationserviceService } from 'app/main/shared/services/formvalid
   }
   }
   
+

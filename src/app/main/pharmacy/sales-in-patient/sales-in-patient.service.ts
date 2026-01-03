@@ -44,7 +44,9 @@ export class SalesInPatientService {
   public getSalesList(Param){ 
     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_Phar_Bill_List_Settlement",Param);
   }
-     public InsertCreditSales  (employee){
+     public InsertSalesInPatientCreditSales(employee){
       return this._httpClient1.PostData("Sales/SaveSalesInpatient ", employee)
     }
+
+    
 }

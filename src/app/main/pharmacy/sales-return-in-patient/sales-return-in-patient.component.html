@@ -182,8 +182,7 @@
                 </form>
             </div>
 
-            <div class="modal-card-container h-100-p">
-                <mat-card>
+            <div class="modal-card-container h-100-p"> 
                     <div style="width: 100%;" class="h-100-p" fxLayoutGap="10px">
                         <div class="airmid-table-container py-12 h-100-p" fxLayout="column">
                             <mat-table #table class="airmid-table table3 h-100-p" matSort
@@ -263,7 +262,7 @@
 
                                 <ng-container matColumnDef="GST">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-90">
-                                        GST%</mat-header-cell>
+                                        Vat %</mat-header-cell>
                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-90">
                                         {{contact.GST}}
                                     </mat-cell>
@@ -271,7 +270,7 @@
 
                                 <ng-container matColumnDef="GSTAmt">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-120">
-                                        GST Amt</mat-header-cell>
+                                        Vat Amt</mat-header-cell>
                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-120">
                                         {{contact.GSTAmt | currency: currency:'symbol'}}
                                     </mat-cell>
@@ -357,8 +356,7 @@
                                 showFirstLastButtons>
                             </mat-paginator>
                         </div>
-                    </div>
-                </mat-card>
+                    </div> 
             </div>
         </div>
     </div>

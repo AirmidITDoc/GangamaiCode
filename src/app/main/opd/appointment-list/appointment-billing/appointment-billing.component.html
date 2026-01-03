@@ -349,26 +349,26 @@
                                     <div fxLayout="row" fxLayoutGap="5px">
                                         <!-- [disabled]="Regstatus"
                                  [ApiUrl]="'VisitDetail/GetServiceListwithTraiff?TariffId='+patientDetail.tariffId+'&ClassId='+patientDetail.classId+'&ServiceName='" -->
-                                        <div fxFlex="15%" fxFlex.xs="15%" fxFlex.sm="15%">
+                                        <div fxFlex="13%" fxFlex.xs="13%" fxFlex.sm="13%">
                                             <airmid-dropdown label="Group Name" formControlName="GroupId"
                                                 [formGroup]="chargeForm"
                                                 [mode]="autocompleteModeGroup"></airmid-dropdown>
                                         </div>
 
-                                        <div fxFlex="20%" fxFlex.xs="20%" fxFlex.sm="30%">
+                                        <div fxFlex="30%" fxFlex.xs="30%" fxFlex.sm="40%">
                                             <airmid-autocomplete label="Enter Service Name" [formGroup]="chargeForm"
                                                 formControlName="serviceName" placeholderText="Enter Service Name"
                                                 fxFlex ApiUrl="{{ApiURL}}"
                                                 (selectionChange)="getSelectedserviceObj($event)"
                                                 TextField="formattedText" ValueField="serviceId"></airmid-autocomplete>
                                         </div>
-                                        <div fxFlex="10%" fxFlex.xs="10%" fxFlex.sm="8%">
+                                        <div fxFlex="8%" fxFlex.xs="8%" fxFlex.sm="8%">
                                             <airmid-textbox label="Price" formControlName="price"
                                                 [formGroup]="chargeForm" [validations]="getValidationMessages().price"
                                                 [type]="'number'" [value]="vPrice" [readonly]="chkIsEditable" [min]="0">
                                             </airmid-textbox>
                                         </div>
-                                        <div fxFlex="10%" fxFlex.xs="10%" fxFlex.sm="10%">
+                                        <div fxFlex="5%" fxFlex.xs="5%" fxFlex.sm="5%">
                                             <airmid-textbox label="Qty" formControlName="qty" [formGroup]="chargeForm"
                                                 [validations]="getValidationMessages().qty" [type]="'number'">
                                             </airmid-textbox>
@@ -381,7 +381,7 @@
                                             </airmid-textbox>
 
                                         </div> -->
-                                        <div fxFlex="20%" fxFlex.xs="20%" fxFlex.sm="20%" *ngIf="isDoctor">
+                                        <div fxFlex="16%" fxFlex.xs="16%" fxFlex.sm="16%" *ngIf="isDoctor">
                                             <airmid-dropdown label="Doctor Name" formControlName="DoctorID"
                                                 [formGroup]="chargeForm"
                                                 [validations]="getValidationMessages().DoctorID"
@@ -389,7 +389,7 @@
                                                 (selectionChange)="getdocdetail($event)">
                                             </airmid-dropdown>
                                         </div>
-                                        <div fxFlex="10%" fxFlex.xs="10%" fxFlex.sm="6%">
+                                        <div fxFlex="5%" fxFlex.xs="5%" fxFlex.sm="5%">
                                             <airmid-textbox label="Discount per" formControlName="discountPer"
                                                 [formGroup]="chargeForm"
                                                 [validations]="getValidationMessages().discountPer" [min]="0"
@@ -397,7 +397,7 @@
                                             </airmid-textbox>
 
                                         </div>
-                                        <div fxFlex="10%" fxFlex.xs="10%" fxFlex.sm="6%">
+                                        <div fxFlex="7%" fxFlex.xs="7%" fxFlex.sm="7%">
                                             <airmid-textbox label="Discount amount" [formGroup]="chargeForm"
                                                 formControlName="discountAmount"
                                                 [validations]="getValidationMessages().discountAmount" [type]="'number'"

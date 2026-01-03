@@ -654,14 +654,14 @@ if (QtyElement) {
             console.log(this.selectedItem)
             this.ItemAddForm = this.createItemAddTable()
             this._salesService.ItemSearchGroup.patchValue({
-                BatchNo: result.batchNo,
+                BatchNo: result?.batchNo || '',
                 BatchExpDate: this.datePipe.transform(result.batchExpDate, 'yyyy-MM-dd'),
-                BalanceQty: result.balanceQty,
+                BalanceQty: result?.balanceQty ||0,
                 Qty: '',
                 DiscAmt: 0,
-                GSTPer: result.vatPercentage,
+                GSTPer: result?.vatPercentage || 0,
                 MRP: MRP,
-                MRPRate:result.unitMRP,
+                MRPRate:result?.unitMRP || 0,
                 IsPurRate: IsPurRate
             })
         });
