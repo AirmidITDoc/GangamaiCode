@@ -646,41 +646,79 @@ export class AppointmentListComponent implements OnInit {
     reportPrintObjList: BrowseOPDBill[] = [];
 
     @ViewChild('billTemplate2') billTemplate2: ElementRef;
-    print3() {
-        let popupWin, printContents;
-        //popupWin = window.open('', '_blank', 'top=0,left=0,height=800px !important,width=auto,width=2200px !important');
-        popupWin = window.open('', '_blank', 'top=0,left=0,width=300');
-        popupWin.document.write(` <html>
-            <head><style type="text/css">`);
-        popupWin.document.write(`
-        </style>
-        <style type="text/css" media="print">
-        @page { size: 80mm auto; }
-             </style>
-            <title></title>
-        </head>
-        `);
-        popupWin.document.write(`<body onload="window.print();window.close()" style="font-family: system-ui, sans-serif;margin:0;font-size: 16px;">${this.billTemplate2.nativeElement.innerHTML}</body>
-      <script>
-        var css = '@page { size: 80mm auto; }',
-        head = document.head || document.getElementsByTagName('head')[0],
-        style = document.createElement('style');
-        style.type = 'text/css';
-        style.media = 'print';
+    // print3() {
+    //     let popupWin, printContents;
+    //     popupWin = window.open('', '_blank', 'top=0,left=0,height=800px !important,width=auto,width=2200px !important');
+    //     // popupWin = window.open('', '_blank', 'top=0,left=0,height=500px !important,width=300');
+    //     popupWin.document.write(` <html>
+    //         <head><style type="text/css">`);
+    //     popupWin.document.write(`
+    //     </style>
+    //     <style type="text/css" media="print">
+    //     @page { size: 80mm auto; }
+    //          </style>
+    //         <title></title>
+    //     </head>
+    //     `);
+    //     popupWin.document.write(`<body onload="window.print();window.close()" style="font-family: system-ui, sans-serif;margin:0;font-size: 16px;">${this.billTemplate2.nativeElement.innerHTML}</body>
+    //   <script>
+    //     var css = '@page { size: 80mm auto; }',
+    //     head = document.head || document.getElementsByTagName('head')[0],
+    //     style = document.createElement('style');
+    //     style.type = 'text/css';
+    //     style.media = 'print';
     
-        if (style.styleSheet){
-            style.styleSheet.cssText = css;
-        } else {
-            style.appendChild(document.createTextNode(css));
-        }
-        head.appendChild(style);
-      </script>
-      </html>`);
-        // popupWin.document.write(`<body style="margin:0;font-size: 16px;">${this.printTemplate}</body>
-        // </html>`);
+    //     if (style.styleSheet){
+    //         style.styleSheet.cssText = css;
+    //     } else {
+    //         style.appendChild(document.createTextNode(css));
+    //     }
+    //     head.appendChild(style);
+    //   </script>
+    //   </html>`);
+    //     // popupWin.document.write(`<body style="margin:0;font-size: 16px;">${this.printTemplate}</body>
+    //     // </html>`);
+
+    //     popupWin.document.close();
+    // }
+
+        print3() {
+        const popupWin = window.open('', '_blank', 'top=0,left=0,width=300');
+
+        popupWin.document.write(`
+            <html>
+            <head>
+                <title>Print</title>
+                <style>
+                @page {
+                    size: 80mm auto;
+                    margin: 0.5;
+                }
+                html, body {
+                    margin: 0.5;
+                    padding: 0;
+                    font-family: system-ui, sans-serif;
+                    font-size: 12px;
+                }
+                table {
+                    width: 100%;
+                    border-collapse: collapse;
+                }
+                * {
+                    box-sizing: border-box;
+                }
+                </style>
+            </head>
+            <body onload="window.print(); window.close();">
+                ${this.billTemplate2.nativeElement.innerHTML}
+            </body>
+            </html>
+        `);
 
         popupWin.document.close();
-    }
+        }
+
+
     //  OnBill(row,m) {
     //     const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
     //     buttonElement.blur(); // Remove focus from the button
