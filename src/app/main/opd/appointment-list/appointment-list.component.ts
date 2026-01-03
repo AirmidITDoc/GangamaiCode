@@ -692,7 +692,7 @@ export class AppointmentListComponent implements OnInit {
                 <style>
                 @page {
                     size: 80mm auto;
-                    margin: 0.2;
+                    margin: 0;
                 }
                 html, body {
                     margin-top: -4mm;
