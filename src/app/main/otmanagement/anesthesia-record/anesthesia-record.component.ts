@@ -13,6 +13,7 @@ import { AuthenticationService } from "app/core/services/authentication.service"
 import { PdfviewerComponent } from "app/main/pdfviewer/pdfviewer.component";
 import { AnesthesiaRecordService } from "./anesthesia-record.service";
 import { NewAnesthesiaRecordComponent } from "./new-anesthesia-record/new-anesthesia-record.component";
+import { permissionCodes } from "app/main/shared/model/permission.model";
 
 @Component({
   selector: 'app-anesthesia-record',
@@ -73,6 +74,7 @@ export class AnesthesiaRecordComponent {
   ]
 
   gridConfig: gridModel = {
+    permissionCode: permissionCodes.OTReservation,
     apiUrl: "OTReservation/OTReservationlist",
     columnsList: this.allcolumns,
     sortField: "OtreservationId",
@@ -190,8 +192,8 @@ export class AnesthesiaRecordComponent {
         //   reason: result.value,
         //   isCancelledBy: this._loggedService.currentUserValue.userId
         // };
-        console.log( data.anesthesiaId);
-        this._anesthesiaRecordService.OnCancel( data.anesthesiaId).subscribe((res) => {
+        console.log(data.anesthesiaId);
+        this._anesthesiaRecordService.OnCancel(data.anesthesiaId).subscribe((res) => {
           this.toastr.success(res.message);
           this.grid.bindGridData();
         });
@@ -202,36 +204,36 @@ export class AnesthesiaRecordComponent {
   viewgetAnethesiaReportPdf(element) {
     console.log(element)
     debugger
-     const param = {
-            searchFields: [
-                {
-                    fieldName: "OPIPID",
-                    fieldValue: String(element.opIpId),
-                    opType: "Equals"
-                },
-                {
-                    fieldName: "OPIPType",
-                    fieldValue: String(element.opIpType),
-                    opType: "Equals"
-                }
-            ],
-            mode: "OTAnaesthesiaRecord"
-        };
+    const param = {
+      searchFields: [
+        {
+          fieldName: "OPIPID",
+          fieldValue: String(element.opIpId),
+          opType: "Equals"
+        },
+        {
+          fieldName: "OPIPType",
+          fieldValue: String(element.opIpType),
+          opType: "Equals"
+        }
+      ],
+      mode: "OTAnaesthesiaRecord"
+    };
     this._anesthesiaRecordService.getReportView(param).subscribe(res => {
-            const matDialog = this._matDialog.open(PdfviewerComponent, {
-                maxWidth: "85vw",
-                height: '750px',
-                width: '100%',
-                data: {
-                    base64: res["base64"] as string,
-                    title: "OTAnaesthesia Report Viewer"
-                }
-            });
+      const matDialog = this._matDialog.open(PdfviewerComponent, {
+        maxWidth: "85vw",
+        height: '750px',
+        width: '100%',
+        data: {
+          base64: res["base64"] as string,
+          title: "OTAnaesthesia Report Viewer"
+        }
+      });
 
-            matDialog.afterClosed().subscribe(result => {
+      matDialog.afterClosed().subscribe(result => {
 
-            });
-        });
+      });
+    });
     // this.commonService.Onprint("AnesthesiaId", element.AnesthesiaId, "OTAnaesthesiaRecord");
 
   }

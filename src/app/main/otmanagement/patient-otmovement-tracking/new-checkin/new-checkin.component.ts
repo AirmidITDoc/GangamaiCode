@@ -170,20 +170,27 @@ export class NewCheckinComponent {
   }
 
   onSubmit() {
+
+    debugger
     const currentTime = this.getCurrentTime();
     const inDate = this.datePipe.transform(this.CheckInFormGroup.get('otcheckInDate')?.value, 'yyyy-MM-dd');
     const inTime = this.datePipe.transform(this.CheckInFormGroup.get('otcheckInTime')?.value, 'HH:mm:ss');
+
+
+
     if (inDate && inTime) {
       const combinedDateTime = new Date(`${inDate}T${inTime}`); //`${inDate} ${inTime}`;
       this.CheckInFormGroup.get('otcheckInTime')?.setValue(combinedDateTime);
     }
+
+
     this.CheckInFormGroup.get('otcheckInDate')?.setValue(inDate);
     this.CheckInFormGroup.get('otreservationId')?.setValue(this.vreservationId);
     this.CheckInFormGroup.get('opipid')?.setValue(this.opIpId);
     this.CheckInFormGroup.get('opiptype')?.setValue(this.vSelectedOption == 'IP' ? true : false);
     this.CheckInFormGroup.get('otcheckInId')?.setValue(this.vCheckinId || 0);
     this.CheckInFormGroup.get('checkOutTime')?.setValue(currentTime);
-
+  // this.CheckInFormGroup.get('checkOutTime')?.setValue(new Date().toISOString());
     if (this.vCheckinId > 0) {
       this.CheckInFormGroup.get('checkInOut')?.setValue(0);
       // this.CheckInFormGroup.get('checkOutTime')?.setValue(currentTime);

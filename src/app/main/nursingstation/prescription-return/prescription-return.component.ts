@@ -11,6 +11,8 @@ import { NewPrescriptionreturnComponent } from './new-prescriptionreturn/new-pre
 import { PrescriptionReturnService } from './prescription-return.service';
 import Swal from 'sweetalert2';
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
+import { permissionCodes, permissionType } from 'app/main/shared/model/permission.model';
+import { PagePermissionService } from 'app/main/shared/services/page-permission.service';
 @Component({
     selector: 'app-prescription-return',
     templateUrl: './prescription-return.component.html',
@@ -19,6 +21,8 @@ import { PrintserviceService } from 'app/main/shared/services/printservice.servi
     animations: fuseAnimations
 })
 export class PrescriptionReturnComponent implements OnInit {
+     IsAdd: boolean = this.permissionService.getPermission(permissionCodes.Prescription, permissionType.Add);
+         
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     hasSelectedContacts: boolean;
     regNo: any = ""
@@ -68,28 +72,10 @@ export class PrescriptionReturnComponent implements OnInit {
         { fieldName: "L_Name", fieldValue: this.lname, opType: OperatorComparer.Equals }
     ]
     gridConfig: gridModel = {
+        permissionCode: permissionCodes.Prescription,
         apiUrl: "IPPrescription/IPPrescriptionReturnList",
         columnsList: this.allColumns2,
-        //  [
-        //     { heading: "Date", key: "presTime", sort: true, align: 'left', emptySign: 'NA', width: 170},
-        //     { heading: "DOA", key: "admissionDate", sort: true, align: 'left', emptySign: 'NA', width: 170},
-        //     { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-        //     { heading: "IPD No", key: "ipdNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-        //     { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
-        //     { heading: "Doctor Name", key: "doctorName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
-
-        //     { heading: "Ward Name | Bed No", key: "roomName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
-        //     { heading: "Payer Type", key: "patientType", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-
-        //     { heading: "Company Name", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-        //      { heading: "Store Name", key: "storeName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-
-        //       {
-        //     heading: "Action", key: "action", align: "right", width: 250, sticky: true, type: gridColumnTypes.template,
-        //     template: this.actionButtonTemplate  // Assign ng-template to the column
-        // }
-
-        // ],
+       
         sortField: "RegNo",
         sortOrder: 0,
         filters: [
@@ -103,7 +89,7 @@ export class PrescriptionReturnComponent implements OnInit {
 
     constructor(public _PrescriptionReturnService: PrescriptionReturnService, public _matDialog: MatDialog,
         public toastr: ToastrService,
-        private commonService: PrintserviceService,
+        private commonService: PrintserviceService,public permissionService: PagePermissionService,
         public datePipe: DatePipe) { }
     ngOnInit(): void {
     }

@@ -23,6 +23,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { SelectionModel } from '@angular/cdk/collections';
 import { OpPaymentComponent } from 'app/main/opd/op-search-list/op-payment/op-payment.component';
 import { ConfigService } from 'app/core/services/config.service';
+import { permissionCodes } from 'app/main/shared/model/permission.model';
 
 
 @Component({
@@ -109,6 +110,7 @@ export class IPSettlementComponent implements OnInit {
         }
     ]
     gridConfig: gridModel = {
+         permissionCode: permissionCodes.Bill,
         apiUrl: "IPBill/IPBillList",
         columnsList: this.AllColumns,
         sortField: "BillNo",

@@ -21,6 +21,7 @@ import Swal from 'sweetalert2';
 import { PageNames } from 'app/main/shared/componets/airmid-fileupload/airmid-fileupload.component';
 import { MatTableDataSource } from '@angular/material/table';
 import { ConfigService } from 'app/core/services/config.service';
+import { permissionCodes } from 'app/main/shared/model/permission.model';
 // const moment = _rollupMoment || _moment;
 
 @Component({
@@ -133,6 +134,7 @@ export class MedicalrecordComponent implements OnInit {
   ]
 
   gridConfig: gridModel = {
+      permissionCode: permissionCodes.Appointment,
     apiUrl: "VisitDetail/AppVisitList",
     columnsList: this.allcolumns,
     sortField: "VisitId",

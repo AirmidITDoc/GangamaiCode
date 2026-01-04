@@ -3297,6 +3297,7 @@ export class SalesComponent implements OnInit {
     // }
 
     getSearchListIP() {
+        debugger
         var m_data = {
             "Keyword": `${this.ItemSubform.get('RegID').value}%`
         }

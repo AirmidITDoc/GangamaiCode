@@ -33,6 +33,8 @@ import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
 import { PolicyInfoPopoverComponent } from 'app/main/opd/appointment-list/policy-info-popover/policy-info-popover.component';
 import { CompanyApprovalPopoverComponent } from 'app/main/opd/appointment-list/company-approval-popover/company-approval-popover.component';
+import { PagePermissionService } from 'app/main/shared/services/page-permission.service';
+import { permissionCodes, permissionType } from 'app/main/shared/model/permission.model';
 
 @Component({
   selector: 'app-admission',
@@ -43,6 +45,7 @@ import { CompanyApprovalPopoverComponent } from 'app/main/opd/appointment-list/c
 })
 export class AdmissionComponent implements OnInit {
 
+  IsAdd: boolean = this.permissionService.getPermission(permissionCodes.Admission, permissionType.Add);
 
   currentDate = new Date();
   searchFormGroup: FormGroup;
@@ -190,6 +193,7 @@ export class AdmissionComponent implements OnInit {
   ]
 
   gridConfig: gridModel = {
+     permissionCode: permissionCodes.Admission,
     apiUrl: "Admission/AdmissionList",
     columnsList: this.allcolumns,
     sortField: "AdmissionId",
@@ -200,7 +204,7 @@ export class AdmissionComponent implements OnInit {
 
   constructor(public _AdmissionService: AdmissionService,
     public _registrationService: RegistrationService,
-    public _matDialog: MatDialog,
+    public _matDialog: MatDialog, public permissionService: PagePermissionService,
     private _ActRoute: Router,
     private _fuseSidebarService: FuseSidebarService,
     private accountService: AuthenticationService,

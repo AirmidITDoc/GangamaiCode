@@ -1481,7 +1481,9 @@ OPIPType=0
   }
 
   viewgetOTIntReportPdf(el) {
-  let opip = this.opIpType == true ? 1 : 0
+  // let opip = this.opIpType == true ? 1 : 0
+
+  debugger
     const param = {
       searchFields: [
           {
@@ -1495,7 +1497,7 @@ OPIPType=0
                     opType: "Equals"
                 }
       ],
-      mode: "OTInOperation"
+      mode: "OTInOperationReport"
     };
 
     console.log(param);
@@ -1507,7 +1509,7 @@ OPIPType=0
         width: '100%',
         data: {
           base64: res["base64"] as string,
-          title: "OtReservation Report Viewer"
+          title: "OtInReservation Report Viewer"
         }
       });
 

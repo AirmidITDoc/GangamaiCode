@@ -28,6 +28,7 @@ import { DischargeSummaryTemplateComponent } from './discharge-summary-template/
 import { DischargeSummaryComponent } from './discharge-summary/discharge-summary.component';
 import { IPBillingComponent } from './ip-billing/ip-billing.component';
 import { IPRefundofBillComponent } from './ip-refundof-bill/ip-refundof-bill.component';
+import { permissionCodes } from 'app/main/shared/model/permission.model';
 
 
 @Component({
@@ -91,6 +92,7 @@ export class IPSearchListComponent implements OnInit {
 
 
     gridConfig: gridModel = {
+         permissionCode: permissionCodes.Admission,
         apiUrl: "Admission/AdmissionList",
         columnsList: this.allcolumns,
         sortField: "AdmissionId",

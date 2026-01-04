@@ -13,6 +13,7 @@ import { AuthenticationService } from "app/core/services/authentication.service"
 import { PdfviewerComponent } from "app/main/pdfviewer/pdfviewer.component";
 import { OtBillingService } from "./ot-billing.service";
 import { NewOtBillingComponent } from "./new-ot-billing/new-ot-billing.component";
+import { permissionCodes } from "app/main/shared/model/permission.model";
 
 @Component({
   selector: 'app-ot-billing',
@@ -71,6 +72,7 @@ export class OtBillingComponent {
   ]
 
   gridConfig: gridModel = {
+      permissionCode: permissionCodes.OTReservation,
     apiUrl: "OTReservation/OTReservationlist",
     columnsList: this.allcolumns,
     sortField: "OtreservationId",

@@ -27,6 +27,8 @@ import { NewTheaterInComponent } from "../theater-in/new-theater-in/new-theater-
 import { NewInOperationComponent } from "../in-operation/new-in-operation/new-in-operation.component";
 import { NewAnesthesiaRecordComponent } from "../anesthesia-record/new-anesthesia-record/new-anesthesia-record.component";
 import { OtOperativeNoteComponent } from "./ot-operative-note/ot-operative-note.component";
+import { PagePermissionService } from "app/main/shared/services/page-permission.service";
+import { permissionCodes, permissionType } from "app/main/shared/model/permission.model";
 
 const colors: Record<string, EventColor> = {
     red: {
@@ -51,6 +53,8 @@ const colors: Record<string, EventColor> = {
     animations: fuseAnimations
 })
 export class OTReservationComponent implements OnInit {
+ IsAdd: boolean = this.permissionService.getPermission(permissionCodes.OTReservation, permissionType.Add);
+    
 
     statusFormFinal: FormGroup;
     myFilterform: FormGroup
@@ -129,6 +133,7 @@ export class OTReservationComponent implements OnInit {
     ]
 
     gridConfig: gridModel = {
+          permissionCode: permissionCodes.OTReservation,
         apiUrl: "OTReservation/OTReservationlist",
         columnsList: this.allcolumns,
         sortField: "OtreservationId",
@@ -143,7 +148,7 @@ export class OTReservationComponent implements OnInit {
         private _FormvalidationserviceService: FormvalidationserviceService,
         private _formBuilder: FormBuilder,
         private _loggedService: AuthenticationService,
-        private cdr: ChangeDetectorRef,
+        private cdr: ChangeDetectorRef,public permissionService: PagePermissionService,
         public datePipe: DatePipe
     ) { }
 

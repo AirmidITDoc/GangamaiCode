@@ -14,6 +14,8 @@ import { DatePipe } from '@angular/common';
 import { gridColumnTypes } from 'app/core/models/tableActions';
 
 import Swal from 'sweetalert2';
+import { PagePermissionService } from 'app/main/shared/services/page-permission.service';
+import { permissionCodes } from 'app/main/shared/model/permission.model';
 
 @Component({
   selector: 'app-disc-approval',
@@ -100,7 +102,7 @@ export class DiscApprovalComponent {
 
 
   gridConfig: gridModel = {
-
+  permissionCode: permissionCodes.Bill,
     apiUrl: "OPBill/BrowseOPDBillPagiList",
     columnsList: this.allOPbillcolumns,
     sortField: "PbillNo",
@@ -110,7 +112,7 @@ export class DiscApprovalComponent {
 
 
   constructor(public _DoscApprovalService: DoscApprovalService,
-    public _matDialog: MatDialog,
+    public _matDialog: MatDialog,public permissionService: PagePermissionService,
     // private dialog: MatDialog,
     public datePipe: DatePipe,
     private formBuilder: FormBuilder,

@@ -11,6 +11,8 @@ import { NewRequestforlabComponent } from './new-requestforlab/new-requestforlab
 import { RequestforlabtestService } from './requestforlabtest.service';
 import Swal from 'sweetalert2';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
+import { PagePermissionService } from 'app/main/shared/services/page-permission.service';
+import { permissionCodes, permissionType } from 'app/main/shared/model/permission.model';
 
 @Component({
     selector: 'app-requestforlabtest',
@@ -20,7 +22,8 @@ import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
     animations: fuseAnimations
 })
 export class RequestforlabtestComponent implements OnInit {
-
+ IsAdd: boolean = this.permissionService.getPermission(permissionCodes.Prescription, permissionType.Add);
+    
     hasSelectedContacts: boolean;
     fname = "%"
     lname = "%"
@@ -72,6 +75,7 @@ export class RequestforlabtestComponent implements OnInit {
     ]
 
     gridConfig: gridModel = {
+          permissionCode: permissionCodes.Prescription,
         apiUrl: "IPPrescription/LabRadRequestList",
         columnsList: this.allColumns,
         sortField: "RegNo",
@@ -129,7 +133,7 @@ export class RequestforlabtestComponent implements OnInit {
     }
 
     constructor(public _RequestforlabtestService: RequestforlabtestService, public _matDialog: MatDialog,
-        public toastr: ToastrService, private commonService: PrintserviceService,
+        public toastr: ToastrService, private commonService: PrintserviceService,public permissionService: PagePermissionService,
         public datePipe: DatePipe,) { }
     ngOnInit(): void {
     }

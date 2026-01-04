@@ -43,6 +43,8 @@ import { NewAppointmentwithBillComponent } from './new-appointmentwith-bill/new-
 import { BrowseOPDBill } from '../new-oplist/new-oplist.component';
 import { Subscription } from 'rxjs';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
+import { PagePermissionService } from 'app/main/shared/services/page-permission.service';
+import { permissionCodes, permissionType } from 'app/main/shared/model/permission.model';
 // import { NewAppointmentwithBillComponent } from './new-appointmentwith-bill/new-appointmentwith-bill.component';
 // const moment = _rollupMoment || _moment;
 
@@ -55,6 +57,9 @@ import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 
 })
 export class AppointmentListComponent implements OnInit {
+     IsAdd: boolean = this.permissionService.getPermission(permissionCodes.Appointment, permissionType.Add);
+    
+
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
     myformSearch: FormGroup;
     searchFormGroup: FormGroup;
@@ -107,7 +112,7 @@ export class AppointmentListComponent implements OnInit {
         public _ConfigService: ConfigService,
         public toastr: ToastrService, public datePipe: DatePipe,
         private _ActRoute: Router, private route: ActivatedRoute,
-        private overlay: Overlay
+        private overlay: Overlay, public permissionService: PagePermissionService,
     ) { }
 
     ngOnInit(): void {
@@ -225,6 +230,7 @@ export class AppointmentListComponent implements OnInit {
         }
     ]
     gridConfig: gridModel = {
+        permissionCode: permissionCodes.Appointment,
         apiUrl: "VisitDetail/AppVisitList",
         columnsList: this.allcolumns,
         sortField: "VisitId",
