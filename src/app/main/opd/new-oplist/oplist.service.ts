@@ -115,11 +115,17 @@ public UpdateCompanyBilling(Param: any) {
     }
      return this._httpClient1.PostData("Common",Param)
 }
-    public UpdateSalesBilling(Param,loader = true) {
+    public UpdateSalesBilling(BillNo,Param,loader = true) {
     if (loader) {
       this._loaderService.show();
     }
-     return this._httpClient1.PostData("Sales/SalesUpdate", Param);
+     return this._httpClient1.PutData("Sales/SalesUpdate/" + BillNo,Param);
+}
+    public UpdateSalesInPatient(SalesId,Param,loader = true) {
+    if (loader) {
+      this._loaderService.show();
+    }
+   return this._httpClient1.PutData("Sales/SalesInpatientUpdate/" + SalesId,Param);
 }
     // public getReportViewdata(Param) {
     //        return this._httpClient1.PostData("Common",Param)
