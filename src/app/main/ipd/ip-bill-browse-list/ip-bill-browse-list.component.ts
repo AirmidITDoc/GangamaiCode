@@ -450,8 +450,7 @@ export class IPBillBrowseListComponent implements OnInit {
     }
         viewgetFinalBillReportChargeDatewisePdf(billNo) {
         this.commonService.Onprint("BillNo", billNo, "IPFinalBillChargesDateWise");
-    }
-
+    } 
     OnCompanyBill(element) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur();

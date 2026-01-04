@@ -95,7 +95,7 @@
                                                             <mat-header-cell *matHeaderCellDef>Net
                                                                 Amt</mat-header-cell>
                                                             <mat-cell *matCellDef="let contact"><span class="text-overflow">
-                                                                    {{(contact.NetPayableAmt || 0)}}
+                                                                    {{(contact.NetPayableAmt | number:'1.2-2')}}
                                                                 </span></mat-cell>
                                                         </ng-container>
 
@@ -103,7 +103,7 @@
                                                             <mat-header-cell *matHeaderCellDef>Balace
                                                                 Amt</mat-header-cell>
                                                             <mat-cell *matCellDef="let contact"><span class="text-overflow">
-                                                                    {{(contact.BalanceAmt || 0)}}
+                                                                    {{(contact.BalanceAmt | number:'1.2-2')}}
                                                                 </span></mat-cell>
                                                         </ng-container>
                 
@@ -247,10 +247,10 @@
                                         <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start"
                                             class="dynamic-table-wrapper">
                                             <mat-tab label="Charges List">
-                                                <div fxLayout="column" class="h-100-p">
-                                                    <div class="airmid-table-container overflow-auto" fxFlex>  
+                                                <div fxLayout="column" class="h-100-p"> 
+                                                    <div class="airmid-table-container" fxFlex>  
                                                         <mat-table matSort [dataSource]="dsChargeList"
-                                                            [@animateStagger]="{value:'50'}" class="airmid-table">
+                                                            [@animateStagger]="{value:'50'}"  class="airmid-table table">
 
                                                             <ng-container matColumnDef="Status" sticky>
                                                                 <mat-header-cell *matHeaderCellDef mat-sort-header
@@ -277,9 +277,9 @@
 
                                                             <ng-container matColumnDef="ServiceCode">
                                                                 <mat-header-cell *matHeaderCellDef mat-sort-header
-                                                                    class="w-150">Service
+                                                                    class="w-110">Service
                                                                     Code</mat-header-cell>
-                                                                <mat-cell *matCellDef="let contact" class="w-150">
+                                                                <mat-cell *matCellDef="let contact" class="w-110">
                                                                     <span>{{ contact.serviceId || '-' }}</span>
                                                                 </mat-cell>
                                                             </ng-container>
@@ -296,12 +296,14 @@
                                                                 <mat-header-cell
                                                                     *matHeaderCellDef>Price</mat-header-cell>
                                                                 <mat-cell *matCellDef="let contact">
-                                                                    <mat-form-field appearance="fill">
-                                                                        <input matInput placeholder="Price"
+                                                                    <mat-form-field floatLabel="never" class="compact-field" *ngIf="Lable != 'Pharmacy'">
+                                                                        <input matInput placeholder="Price" 
                                                                             type="number" [(ngModel)]="contact.price"
                                                                             required
-                                                                            (ngModelChange)="onPriceOrQtyChange(contact)">
+                                                                            (ngModelChange)="onPriceOrQtyChange($event,contact)">
+                                                                             
                                                                     </mat-form-field>
+                                                                     <span *ngIf="Lable == 'Pharmacy'">{{ contact.price | number:'1.2-2'}}</span>
                                                                 </mat-cell>
                                                             </ng-container>
 
@@ -316,11 +318,11 @@
                                                                 <mat-header-cell
                                                                     *matHeaderCellDef>Qty</mat-header-cell>
                                                                 <mat-cell *matCellDef="let contact">
-                                                                    <mat-form-field appearance="fill">
+                                                                    <mat-form-field floatLabel="never" class="compact-field">
                                                                         <input matInput placeholder="Qty"
                                                                             type="number" [(ngModel)]="contact.qty"
                                                                             required
-                                                                            (ngModelChange)="onPriceOrQtyChange(contact)">
+                                                                            (ngModelChange)="onPriceOrQtyChange($event,contact)">
                                                                     </mat-form-field>
                                                                 </mat-cell>
                                                             </ng-container>
@@ -331,7 +333,7 @@
                                                                     Amt</mat-header-cell>
                                                                 <mat-cell *matCellDef="let contact"><span
                                                                         class="text-overflow">
-                                                                        {{(contact.totalAmt || 0 )}}
+                                                                        {{(contact.totalAmt | number:'1.2-2')}}
                                                                     </span></mat-cell>
                                                             </ng-container>
 
@@ -339,13 +341,13 @@
                                                                 <mat-header-cell *matHeaderCellDef>Disc
                                                                     %</mat-header-cell>
                                                                 <mat-cell *matCellDef="let contact">
-                                                                    <mat-form-field 
-                                                                        appearance="fill">
+                                                                    <mat-form-field  floatLabel="never" class="compact-field" *ngIf="Lable != 'Pharmacy'">
                                                                         <input matInput placeholder="Disc %"
                                                                             [(ngModel)]="contact.concessionPercentage" type="number"
                                                                             [min]="0" [max]="100"
                                                                             (ngModelChange)="onDiscountPerChange(contact)">
                                                                     </mat-form-field>
+                                                                     <span *ngIf="Lable == 'Pharmacy'">{{ contact.concessionPercentage}}</span>
                                                                 </mat-cell>
                                                             </ng-container>
 
@@ -353,13 +355,13 @@
                                                                 <mat-header-cell *matHeaderCellDef>Disc
                                                                     Amt</mat-header-cell>
                                                                 <mat-cell *matCellDef="let contact">
-                                                                    <mat-form-field 
-                                                                        appearance="fill">
+                                                                    <mat-form-field floatLabel="never" class="compact-field" *ngIf="Lable != 'Pharmacy'">
                                                                         <input matInput placeholder="Disc Amt"
                                                                             [(ngModel)]="contact.concessionAmount" type="number"
                                                                             [min]="0" [max]="contact.totalAmt"
                                                                             (ngModelChange)="onDiscountAmtChange(contact)">
                                                                     </mat-form-field>
+                                                                     <span *ngIf="Lable == 'Pharmacy'">{{ contact.concessionAmount | number:'1.2-2'}}</span>
                                                                 </mat-cell>
                                                             </ng-container>
 
@@ -368,7 +370,7 @@
                                                                     Amt</mat-header-cell>
                                                                 <mat-cell *matCellDef="let contact"><span
                                                                         class="text-overflow">
-                                                                        {{(contact.netAmount || 0)}}
+                                                                        {{(contact.netAmount | number:'1.2-2')}}
                                                                     </span></mat-cell>
                                                             </ng-container>
 
@@ -404,12 +406,12 @@
                                                                 </mat-footer-cell>
                                                             </ng-container>
 
-                                                            <mat-header-row class="accent min-width-1350"
+                                                            <mat-header-row class="accent min-width-1550"
                                                                 *matHeaderRowDef="displayedChargeColumns; sticky: true">
                                                             </mat-header-row>
                                                             <mat-row
                                                                 *matRowDef="let contact; columns: displayedChargeColumns;"
-                                                                class="min-width-1350"
+                                                                class="min-width-1550"
                                                                 [@animate]="{value:'*',params:{y:'100%'}}"></mat-row>
                                                             <mat-footer-row *matFooterRowDef="['NoData']"
                                                                 [ngClass]="{'hide':dsChargeList.data.length > 0}"></mat-footer-row>

@@ -227,9 +227,14 @@ AdmissionFormSet(){
 
   OnSaveAdmission() {
     // this.admissionFormGroup.get('AdmissionDate').setValue(this.datePipe.transform(this.admissionFormGroup.get('AdmissionDate').value, 'yyyy-MM-dd'))
-    
+    debugger
+    const inputDate = this.registerObj1.admissionTime;  
+    const [datePart, timePart] = inputDate.split(' ');
+    const [day, month, year] = datePart.split('-');
+    const formattedDate = `${year}-${month}-${day} ${timePart}`;
+
     this.admissionFormGroup.get('AdmissionDate').setValue(this.datePipe.transform(this.registerObj1.admissionDate, 'yyyy-MM-dd'))
-    this.admissionFormGroup.get('AdmissionTime').setValue(this.registerObj1.admissionTime)
+    this.admissionFormGroup.get('AdmissionTime').setValue(formattedDate)
     
     console.log(this.admissionFormGroup.value)
 

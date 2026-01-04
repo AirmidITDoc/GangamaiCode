@@ -18,6 +18,7 @@ import Swal from 'sweetalert2';
 import { ConfigService } from 'app/core/services/config.service';
 import { Subscription } from 'rxjs';
 import { element } from 'protractor';
+import { forEach } from 'lodash';
 
 
 @Component({
@@ -61,6 +62,8 @@ export class ReviewcompanyBillComponent {
   vQty: any;
   currency:any='';
   OPDIPDID:any=0;
+  opD_IPD_Type:any=0;
+  ReturnList:any=[];
 
   public isDiscountApplied = false;
   Consessionres: boolean = false;
@@ -96,7 +99,8 @@ export class ReviewcompanyBillComponent {
       console.log(this.data)
       this.patientDetail = this.data;
       this.OPDIPDID = this.data?.opdipdid || 0
-      this.getPrevCompanyBillList(this.patientDetail?.billNo,'OP Bill')
+      this.opD_IPD_Type = this.patientDetail.opD_IPD_Type 
+      this.getPrevCompanyBillList(this.patientDetail?.billNo,'Bill')
       this.getBilllist();
       //opdno
     }
@@ -163,33 +167,47 @@ export class ReviewcompanyBillComponent {
     return this.OpBillEditSaveForm.get('ipAddChargesBill') as FormArray;
   } 
   salesUpdateForm:FormGroup
-  CreateSalesUpdateForm(){
-  return this.formBuilder.group({
-  salesHeader:  this.formBuilder.group({
-    salesId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
-    totalAmount:  [0,[this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-    vatAmount: [0,[this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-    discAmount: [0,[this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-    netAmount: [0,[this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-    balanceAmount:  [0,[this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-  }),  
-   salesDetails: this.formBuilder.array([]),
+  CreateSalesUpdateForm() {
+    return this.formBuilder.group({
+      salesHeader: this.formBuilder.group({
+        salesId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        totalAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+        vatAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+        discAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+        netAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+        balanceAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      }),
+      salesDetails: this.formBuilder.array([]),
+      currentStockUpdate: this.formBuilder.array([]),
     })
-    }
+    } 
       // Getters 
   get SalesUpDetArray(): FormArray {
     return this.salesUpdateForm.get('salesDetails') as FormArray;
   }
+   get SalesCurrentstkArray(): FormArray {
+    return this.salesUpdateForm.get('currentStockUpdate') as FormArray;
+  } 
   CreateSalesdetform(item: any): FormGroup {
     return this.formBuilder.group({
-      salesId: [item?.billNo, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
-      salesDetId: [item?.price, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
+      salesId: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
+      salesDetId: [item?.chargesId, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
       qty: [item?.qty, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       unitMrp: [item?.price, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
       totalAmount: [item?.totalAmt || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
     });
   }
+    CreateSalesCurrentstkform(item: any): FormGroup {
+    return this.formBuilder.group({
+      itemId: [item?.serviceId, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
+      issueQty: [item?.reutrnQty || 0, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      storeId: [item?.storeId, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      istkId: [item?.stockId || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+    });
+  }
+  BillDetailsObj:any;
   getBillDetlist(element){
+    this.BillDetailsObj = element
     this.Lable = element.Lbl || '';
     this.getPrevCompanyBillList(element.BillNo,element.Lbl)
   }
@@ -207,15 +225,24 @@ export class ReviewcompanyBillComponent {
       "columns": [{ "data": "string", "name": "string" }]
     }
     console.log(param)
-    this._OPListService.getCompanyBillList(param).subscribe(response => {
-      console.log(response)
-      this.dsChargeList.data = response.data as ChargesList[]
-      console.log(this.dsChargeList.data)
-      if (this.dsChargeList.data.length) {
+    if(Label == 'Bill'){
+    this._OPListService.getCompanyBillList(param).subscribe(response => { 
+      this.dsChargeList.data = response.data as ChargesList[]  
+       this.chargeList = this.dsChargeList.data
+        this.calculateTotalAmount();
+    })
+  }else{
+      this._OPListService.getSalesBillDetList(param).subscribe(response => {
+        this.dsChargeList.data = response.data as ChargesList[]
         this.chargeList = this.dsChargeList.data
         this.calculateTotalAmount();
-      }
-    })
+        this.dsChargeList.data.forEach(row => {
+          row.originalQty = row.qty;     // max allowed
+          row.previousQty = row.qty;  
+          row.reutrnQty = row.qty;
+        });
+      })
+  } 
   }
   FinalBillBalAmt:any=0;
     CompanyApprovedAmt:any=0;
@@ -241,7 +268,11 @@ export class ReviewcompanyBillComponent {
       if(this.dsbillList.data.length){
       this.FinalBillBalAmt = ( this.dsbillList.data.reduce((sum, { BalanceAmt }) => sum += +(BalanceAmt || 0), 0)).toFixed(2);
       this.CompanyApprovedAmt = this.dsbillList.data[0]?.ApprovedAmount || 0 
+       if(this.FinalBillBalAmt > this.CompanyApprovedAmt){
       this.AdjustmentAmt = ((this.FinalBillBalAmt || 0) - (this.CompanyApprovedAmt || 0)).toFixed(2);
+      }else{
+       this.AdjustmentAmt = 0;
+       }
       }
     })
   }
@@ -267,25 +298,32 @@ export class ReviewcompanyBillComponent {
       }
     });
   }
-  calculateTotalAmount(): void {
+  calculateTotalAmount(): void { 
     let totalSum = this.chargeList.reduce((sum, charge) => sum + (+charge.totalAmt), 0);
     let DiscPerSum = this.chargeList.reduce((sum, charge) => sum + (+charge.concessionPercentage), 0);
     let totalDiscount = this.chargeList.reduce((sum, charge) => sum + (+charge.concessionAmount), 0);
     let totalNet = totalSum - totalDiscount;
 
     this.OPFooterForm.patchValue({
-      totalAmt: totalSum,
-      concessionAmt: Math.round(totalDiscount),
-      totalDiscountPer: DiscPerSum,
-      netPayableAmt: Math.round(totalNet),
+    totalAmt: totalSum.toFixed(2),
+    concessionAmt: Number(totalDiscount.toFixed(2)),
+    totalDiscountPer: DiscPerSum.toFixed(2),
+    netPayableAmt: Number(totalNet.toFixed(2)),
     }, { emitEvent: false });
 
     const Exclusionlist = this.chargeList.filter(i => i.isInclusionExclusion === true)
     const Inclusionlist = this.chargeList.filter(i => i.isInclusionExclusion !== true)
-    this.ExclusionAmt = Exclusionlist.reduce((sum, { netAmount }) => sum += +(netAmount || 0), 0);
-    this.InclusionAmt = Inclusionlist.reduce((sum, { netAmount }) => sum += +(netAmount || 0), 0);
+    this.ExclusionAmt = Exclusionlist.reduce((sum, { netAmount }) => sum += +(netAmount || 0), 0).toFixed(2);
+    this.InclusionAmt = Inclusionlist.reduce((sum, { netAmount }) => sum += +(netAmount || 0), 0).toFixed(2);
   }
   BillSave() {
+     
+      if (!this.dsChargeList.data.length) {
+        this.toastr.warning('Please check list is empty', 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        return;
+      } 
     if (this.OPFooterForm.get('concessionAmt').value > 0 && this.Consessionres) {
       if (!this.OPFooterForm.get('concessionReasonId').value) {
         this.toastr.warning('Please select ConcessionReason.', 'Warning !', {
@@ -305,7 +343,7 @@ export class ReviewcompanyBillComponent {
       cancelButtonText: 'No, cancel'
     }).then((result) => {
       if (result.isConfirmed) {
-        if(this.Lable == 'OP Phar'){
+        if(this.Lable == 'Pharmacy'){
           this.OnSaveSalesupdate();
         }else{
         this.OnSave(); // Call your save function
@@ -340,13 +378,7 @@ export class ReviewcompanyBillComponent {
       this._OPListService.UpdateCompanyBilling(this.OpBillEditSaveForm.value).subscribe(response => {
         this._matDialog.closeAll();
         this.savebtn = true
-        if (response)
           this.resetform();
-        // if (ThermalPrint != 1) {
-        //   this.viewgetOPBillReportPdf(response)
-        // } else {
-        //   this.viewgetOPBillThermalReportPdf(response)
-        // }
       });
     }
     else {
@@ -358,7 +390,7 @@ export class ReviewcompanyBillComponent {
           if (control instanceof FormGroup || control instanceof FormArray) {
             for (const nestedKey in control.controls) {
               if (control.get(nestedKey)?.invalid) {
-                invalidFields.push(`OP Bill Data : ${controlName}.${nestedKey}`);
+                invalidFields.push(`Bill Data : ${controlName}.${nestedKey}`);
               }
             }
           } else if (control?.invalid) {
@@ -379,22 +411,30 @@ export class ReviewcompanyBillComponent {
     debugger
     const formValue = this.OPFooterForm.value
     this.salesUpdateForm.get('salesHeader').patchValue({
-      salesId: this.patientDetail?.billNo || 0,
+      salesId: this.BillDetailsObj?.BillNo || 0,
       totalAmount: formValue?.totalAmt || 0,
       vatAmount: 0,
-      discAmount: formValue?.netPayableAmt || 0,
+      discAmount: formValue?.concessionAmt || 0,
       netAmount: formValue?.netPayableAmt || 0,
       balanceAmount: formValue?.netPayableAmt || 0
     })
     this.SalesUpDetArray.clear();
+    this.SalesCurrentstkArray.clear();
     console.log("form values", this.salesUpdateForm.value)
     if (this.salesUpdateForm.valid) {
       this.SalesUpDetArray.clear();
       this.dsChargeList.data.forEach(item => {
-        this.SalesUpDetArray.push(this.CreateAddchargeform(item as ChargesList));
+         const formObj = this.CreateSalesdetform(item as ChargesList);
+        formObj.patchValue({ salesId: this.BillDetailsObj?.BillNo || 0}); 
+        this.SalesUpDetArray.push(formObj); 
       });
+
+      this.SalesCurrentstkArray.clear();
+      this.dsChargeList.data.forEach(item=>{
+      this.SalesCurrentstkArray.push(this.CreateSalesCurrentstkform(item as ChargesList))
+      })
       console.log("form values", this.salesUpdateForm.value)
-      if(this.Lable == 'OP Phar'){
+      if(this.opD_IPD_Type == 0){
         this._OPListService.UpdateSalesBilling(this.salesUpdateForm.get('salesHeader.salesId')?.value,this.salesUpdateForm.value).subscribe(response => { 
       });
       }else{
@@ -450,8 +490,27 @@ export class ReviewcompanyBillComponent {
   viewgetOPBillThermalReportPdf(element) {
     this.commonService.Onprint("BillNo", element, "OpBillReceiptT");
   }
-  onPriceOrQtyChange(row: ChargesList = null): void {
+  onPriceOrQtyChange(event: any,row: ChargesList = null): void {
+    debugger
     if (!row) return;
+
+    if (row.qty && this.Lable == ' Pharmacy') {
+      if (row.qty > row.originalQty) {
+        this.toastr.warning(`Qty should not be greater than current ${row.originalQty} Qty`, 'Warning !', {
+          toastClass: 'tostr-tost custom-toast-warning',
+        });
+        // reset to previous/original qty
+        setTimeout(() => {
+          row.qty = row.previousQty;
+        });
+        return;
+      }
+    }
+    if (row.qty < row.originalQty) {
+      row.reutrnQty = row.previousQty - row.qty;
+    } else {
+      row.reutrnQty = 0;
+    }
 
     row.price = Math.abs(row.price);
     row.qty = Math.abs(row.qty);
@@ -464,6 +523,7 @@ export class ReviewcompanyBillComponent {
     }
     row.totalAmt = totalAmount;
     row.netAmount = totalAmount - row.concessionAmount;
+  
 
     this.calculateTotalAmount();
   }
@@ -650,7 +710,10 @@ BalanceAmt:any;
   concessionAmount: any;
   userName: any;
   DateApproved:any;
-  ApprovedAmount:any;;
+  ApprovedAmount:any;
+  originalQty:any;
+  previousQty:any;
+  reutrnQty:any;
   constructor(ChargesList) {
     this.ChargesId = ChargesList.ChargesId || '';
     this.ServiceId = ChargesList.ServiceId || '';
@@ -684,6 +747,7 @@ BalanceAmt:any;
     this.pacakgeServiceName = ChargesList.pacakgeServiceName || '';
     this.packageServiceId = ChargesList.packageServiceId || 0;
     this.price = ChargesList.price || 0;
+     this.originalQty = ChargesList.originalQty || 0;
     this.packageId = ChargesList.packageId || '';
     this.doctorName = ChargesList.doctorName || 0;
     this.doctorId = ChargesList.doctorId || 0;
@@ -693,5 +757,7 @@ BalanceAmt:any;
     this.BalanceAmt = ChargesList.BalanceAmt || 0;
     this.isRadiology = ChargesList.isRadiology || 0;
     this.userName = ChargesList.userName || '';
+     this.previousQty = ChargesList.previousQty || 0;
+      this.reutrnQty = ChargesList.reutrnQty || 0;
   }
 }

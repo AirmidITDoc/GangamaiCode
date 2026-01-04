@@ -96,6 +96,9 @@ public UpdateCompanyBilling(Param: any) {
     public getCompanyBillList(param) {
   return this._httpClient1.PostData("IPBill/BillChargeDetailsList", param);
     }
+        public getSalesBillDetList(param) {
+  return this._httpClient1.PostData("IPBill/GetPharmacyDetailsList", param);
+    }
       public InsertWhatsapp(emp) {
     return this._httpClient1.PostData("WhatsAppEmail/Insert", emp);
   }
