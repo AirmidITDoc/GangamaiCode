@@ -94,4 +94,21 @@ export enum permissionCodes {
     TestMaster = 'TestMaster',
     PathUnitMaster = 'PathUnitMaster',
     MOutSourcelabMaster = 'MOutSourcelabMaster',
+
+    // OPD
+    Appointment='Appointment',
+     Registration = 'Registration',
+    Refund = 'Refund',
+    Advance = 'Advance',
+    Bill = 'Bill',
+
+    // IPD?
+    Admission = 'Admission',
+
+    // OT?
+    OTReservation='OTReservation',
+    ConsentMaster='ConsentMaster',
+
+    //Nursing Station
+    NursingConsent='NursingConsent',
 }

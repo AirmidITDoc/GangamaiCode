@@ -13,6 +13,8 @@ import { RegistrationService } from './registration.service';
 import { NewAppointmentComponent } from '../appointment-list/new-appointment/new-appointment.component';
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 import { PageNames } from 'app/main/shared/componets/airmid-fileupload/airmid-fileupload.component';
+import { PagePermissionService } from 'app/main/shared/services/page-permission.service';
+import { permissionCodes, permissionType } from 'app/main/shared/model/permission.model';
 
 @Component({
     selector: 'app-registration',
@@ -36,7 +38,7 @@ export class RegistrationComponent implements OnInit {
     signature: PageNames=PageNames.PATIENT_SIGNATURE;
     
     constructor(
-        public _RegistrationService: RegistrationService,
+        public _RegistrationService: RegistrationService,public permissionService: PagePermissionService,
         public _matDialog: MatDialog,
         private commonService: PrintserviceService,
         public toastr: ToastrService, public datePipe: DatePipe) { }
@@ -89,8 +91,10 @@ export class RegistrationComponent implements OnInit {
         //             }},]
         // }
     ];
-
+ IsAdd: boolean = this.permissionService.getPermission(permissionCodes.Registration, permissionType.Add);
+    
     gridConfig: gridModel = {
+          permissionCode: permissionCodes.Registration,
         apiUrl: "OutPatient/RegistrationList",
         columnsList: this.allcolumns,
         sortField: "RegId",

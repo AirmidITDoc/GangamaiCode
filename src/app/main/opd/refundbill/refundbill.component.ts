@@ -25,6 +25,8 @@ import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
 import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
 import { HospitalConfigService } from 'app/core/services/hospital-config.service';
 import { ConfigService } from 'app/core/services/config.service';
+import { PagePermissionService } from 'app/main/shared/services/page-permission.service';
+import { permissionCodes } from 'app/main/shared/model/permission.model';
 
 @Component({
   selector: 'app-refundbill',
@@ -57,6 +59,7 @@ export class RefundbillComponent implements OnInit {
     { heading: "Refund Amount", key: "refundAmount", sort: true, align: 'left', emptySign: 'NA', type: 22}
   ]  
   gridConfig: gridModel = {
+     permissionCode: permissionCodes.Refund,
     apiUrl: "RefundOfBill/OPBilllistforrefundList",
     columnsList: this.allColumns1,
     sortField: "BillNo",
@@ -90,7 +93,7 @@ export class RefundbillComponent implements OnInit {
     public _WhatsAppEmailService: WhatsAppEmailService, 
     private commonService: PrintserviceService,
     private accountService: AuthenticationService,
-    private hospitalconfigservice:HospitalConfigService,
+    private hospitalconfigservice:HospitalConfigService, public permissionService: PagePermissionService,
     private _FormvalidationserviceService: FormvalidationserviceService,
     public _ConfigService:ConfigService
   ) { }

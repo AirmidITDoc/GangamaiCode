@@ -10,9 +10,9 @@
             </div>
         </div>
         <div class="gap-8" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
-            <button mat-raised-button (click)="onSave($event)">New Appointment
+            <button mat-raised-button (click)="onSave($event)" *ngIf="IsAdd">New Appointment
             </button>
-            <button mat-raised-button (click)="onAppointmentwithBill($event)">+ Add Bill
+            <button mat-raised-button (click)="onAppointmentwithBill($event)" *ngIf="IsAdd">+ Add Bill
             </button>
 
         </div>

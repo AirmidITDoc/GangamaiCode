@@ -19,6 +19,8 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { SelectionModel } from '@angular/cdk/collections';
 import { MatCheckboxChange } from '@angular/material/checkbox';
+import { PagePermissionService } from 'app/main/shared/services/page-permission.service';
+import { permissionCodes } from 'app/main/shared/model/permission.model';
 
 @Component({
     selector: 'app-companysettlement',
@@ -126,6 +128,7 @@ export class CompanysettlementComponent implements OnInit {
 
     ];
     gridConfig1: gridModel = {
+          permissionCode: permissionCodes.Bill,
         apiUrl: "OPBill/BrowseOPPaymentList",
         columnsList: this.AllColumns,
         sortField: "RegNo",
@@ -137,7 +140,7 @@ export class CompanysettlementComponent implements OnInit {
         public _CompanysettlementService: CompanysettlementService,
         private commonService: PrintserviceService,
         public _matDialog: MatDialog,
-        public datePipe: DatePipe,
+        public datePipe: DatePipe, public permissionService: PagePermissionService,
         public accountService: AuthenticationService,
         public _FormvalidationserviceService: FormvalidationserviceService,
         public toastr: ToastrService, public formBuilder: UntypedFormBuilder

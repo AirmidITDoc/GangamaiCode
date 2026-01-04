@@ -12,6 +12,8 @@ import { NewPrescriptionComponent } from './new-prescription/new-prescription.co
 import { PrescriptionService } from './prescription.service';
 import { NewPrescriptionreturnComponent } from '../prescription-return/new-prescriptionreturn/new-prescriptionreturn.component';
 import Swal from 'sweetalert2';
+import { PagePermissionService } from 'app/main/shared/services/page-permission.service';
+import { permissionCodes, permissionType } from 'app/main/shared/model/permission.model';
 
 
 
@@ -23,6 +25,9 @@ import Swal from 'sweetalert2';
     animations: fuseAnimations
 })
 export class PrescriptionComponent implements OnInit {
+     IsAdd: boolean = this.permissionService.getPermission(permissionCodes.Prescription, permissionType.Add);
+     
+
     @ViewChild('grid') grid: AirmidTableComponent;
     @ViewChild('grid1') grid1: AirmidTableComponent;
     @ViewChild('grid2') grid2: AirmidTableComponent;
@@ -43,7 +48,7 @@ export class PrescriptionComponent implements OnInit {
     isShowDetailTable1: boolean = false;
 
     constructor(public _PrescriptionService: PrescriptionService, public _matDialog: MatDialog,
-        public toastr: ToastrService, private commonService: PrintserviceService,
+        public toastr: ToastrService, private commonService: PrintserviceService,public permissionService: PagePermissionService,
         public datePipe: DatePipe,) { }
 
     ngOnInit(): void {
@@ -87,6 +92,7 @@ export class PrescriptionComponent implements OnInit {
         { fieldName: "L_Name", fieldValue: this.lname, opType: OperatorComparer.Equals }
     ]
     gridConfig: gridModel = {
+          permissionCode: permissionCodes.Prescription,
         apiUrl: "IPPrescription/PrescriptionPatientList",
         columnsList: this.allColumns1,
         sortField: "RegNo",

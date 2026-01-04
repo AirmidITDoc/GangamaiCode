@@ -16,6 +16,8 @@ import { ToastrService } from 'ngx-toastr';
 import { OpAdvanceService } from './op-advance.service';
 import { NewOpAdvanceComponent } from './new-op-advance/new-op-advance.component';
 import { NewRefundOfAdvanceComponent } from './new-refund-of-advance/new-refund-of-advance.component';
+import { PagePermissionService } from 'app/main/shared/services/page-permission.service';
+import { permissionCodes } from 'app/main/shared/model/permission.model';
 
 @Component({
   selector: 'app-op-advance',
@@ -29,7 +31,7 @@ export class OpAdvanceComponent {
          public _BrowseIpAdvanceService: OpAdvanceService,
          public datePipe: DatePipe,
          public _matDialog: MatDialog,
-         public toastr: ToastrService,
+         public toastr: ToastrService,public permissionService: PagePermissionService,
          private commonService: PrintserviceService,
      ) { }
  
@@ -126,6 +128,7 @@ export class OpAdvanceComponent {
      ]
  
      gridConfig: gridModel = {
+           permissionCode: permissionCodes.Advance,
          apiUrl: "Advance/BrowseAdvanceList",
          columnsList: this.allAdvanceColumns,
          sortField: "RegID",
@@ -134,6 +137,7 @@ export class OpAdvanceComponent {
      }
  
      gridConfig1: gridModel = {
+           permissionCode: permissionCodes.Advance,
          apiUrl: "Advance/BrowseRefundOfAdvanceList",
          columnsList: this.allRefundOfAdvanceColumns,
          sortField: "RegId",

@@ -329,6 +329,9 @@ export class OtReqInsert {
   locationId:any;
   otPreOperationId:any;
   isPrimary:any;
+  
+opIpType:any;
+
   /**
    * Constructor
    *
@@ -403,6 +406,7 @@ export class OtReqInsert {
       this.locationId = OtReqInsert.locationId || ''
       this.otPreOperationId = OtReqInsert.otPreOperationId || ''
       this.isPrimary = OtReqInsert.isPrimary || ''
+   this.opIpType = OtReqInsert.opIpType || 1
     }
   }
 }

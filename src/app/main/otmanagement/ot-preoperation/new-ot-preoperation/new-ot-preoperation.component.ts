@@ -161,7 +161,9 @@ export class NewOtPreoperationComponent {
       this.vIPDNo = this.registerObj1.opdNo
       this.vPatientName = this.registerObj1.patientName
       this.vPreOperationId = this.registerObj1.otPreOperationId
-      //  this.OPIPType=this.registerObj1.opIpType
+       this.OPIPType=this.registerObj1.opIpType
+
+
 
 
       setTimeout(() => {
@@ -1120,7 +1122,7 @@ export class NewOtPreoperationComponent {
       console.log(formValue)
 
       this._OTPreOperationService.InsertOTPreOperation(formValue).subscribe(response => {
-        this.OnViewPreOprationReportPdf(response)
+        this.OnViewPreOprationReportPdf()
         this._matDialog.closeAll();
       });
     } else {
@@ -1364,8 +1366,8 @@ export class NewOtPreoperationComponent {
   }
 
 
-  OnViewPreOprationReportPdf(element: any) {
-
+  OnViewPreOprationReportPdf() {
+debugger
     setTimeout(() => {
       let param = {
         "searchFields": [
@@ -1380,9 +1382,9 @@ export class NewOtPreoperationComponent {
             opType: "Equals"
           }
         ],
-        "mode": "OTPreOperation"
+        "mode": "OTPreOperationReport"
       }
-
+      console.log(param)
       this._ConsentService.getReportView(param).subscribe(res => {
 
         const matDialog = this._matDialog.open(PdfviewerComponent,
@@ -1392,7 +1394,7 @@ export class NewOtPreoperationComponent {
             width: '100%',
             data: {
               base64: res["base64"] as string,
-              title: "Consent Report" + " " + "Viewer"
+              title: "OT PreOPration Report" + " " + "Viewer"
             }
           });
         matDialog.afterClosed().subscribe(result => {

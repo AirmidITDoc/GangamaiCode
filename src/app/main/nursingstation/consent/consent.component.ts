@@ -15,6 +15,8 @@ import { NewConsentComponent } from './new-consent/new-consent.component';
 import { FormGroup } from '@angular/forms';
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
+import { PagePermissionService } from 'app/main/shared/services/page-permission.service';
+import { permissionCodes, permissionType } from 'app/main/shared/model/permission.model';
 
 @Component({
   selector: 'app-consent',
@@ -24,6 +26,8 @@ import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
   animations: fuseAnimations
 })
 export class ConsentComponent implements OnInit {
+  IsAdd: boolean = this.permissionService.getPermission(permissionCodes.NursingConsent, permissionType.Add);
+   
   onBlur(e: any) {
     this.vTemplateDesc = e.target.innerHTML;
   }
@@ -102,6 +106,7 @@ export class ConsentComponent implements OnInit {
   ]
 
   gridConfig: gridModel = {
+     permissionCode: permissionCodes.NursingConsent,
     apiUrl: "NursingConsent/ConsentpatientInfoList",
     columnsList: this.allcolumns,
     sortField: "ConsentId",
@@ -115,7 +120,7 @@ export class ConsentComponent implements OnInit {
     public datePipe: DatePipe,
     public _matDialog: MatDialog,
     private commonService: PrintserviceService,
-    public toastr: ToastrService,
+    public toastr: ToastrService,public permissionService: PagePermissionService,
   ) { }
 
   ngOnInit(): void {

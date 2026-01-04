@@ -11,7 +11,7 @@
             </div>
         </div>
         <div class="gap-8" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
-            <button mat-raised-button (click)="NewConsent()">
+            <button mat-raised-button (click)="NewConsent()" *ngIf="IsAdd">
                 <mat-icon>how_to_reg</mat-icon>New Consent
             </button>
         </div>

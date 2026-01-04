@@ -11,6 +11,8 @@ import { DatePipe } from '@angular/common';
 import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { AirmidConsentformComponent } from 'app/main/shared/componets/airmid-consentform/airmid-consentform.component';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
+import { permissionCodes, permissionType } from 'app/main/shared/model/permission.model';
+import { PagePermissionService } from 'app/main/shared/services/page-permission.service';
 
 @Component({
   selector: 'app-ot-consents',
@@ -20,6 +22,8 @@ import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
   animations: fuseAnimations,
 })
 export class OtConsentsComponent {
+  IsAdd: boolean = this.permissionService.getPermission(permissionCodes.ConsentMaster, permissionType.Add);
+
   msg: any;
   consentName: any = "";
   fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
@@ -62,6 +66,7 @@ export class OtConsentsComponent {
     { fieldName: "TranLabel", fieldValue: 'OT', opType: OperatorComparer.Equals }
   ]
   gridConfig: gridModel = {
+    permissionCode: permissionCodes.ConsentMaster,
     apiUrl: "TransactionConsentMaster/TransactionConsentMasterList",
     columnsList: this.allcolumns,
     sortField: "ConsentId",
@@ -73,7 +78,7 @@ export class OtConsentsComponent {
     public _OtConsentService: OtConsentsService,
     public toastr: ToastrService, public _matDialog: MatDialog,
     public datePipe: DatePipe,
-    private _formBuilder: UntypedFormBuilder,
+    private _formBuilder: UntypedFormBuilder, public permissionService: PagePermissionService,
   ) { }
 
   ngOnInit(): void {
