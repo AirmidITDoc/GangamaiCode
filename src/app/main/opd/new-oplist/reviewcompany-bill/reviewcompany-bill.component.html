@@ -8,7 +8,7 @@
                 </div>
                 <div class="modal-header-right">
                     <div class="comman-date-container">
-                        <app-common-date [screenFrom]="'OP-billing'"
+                        <app-common-date [screenFrom]="'Common-form'"
                             (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
                         <div class="close-icon">
                             <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
@@ -35,12 +35,12 @@
                                         </div>
                                         <div class="bil-summary-list mt-8">
                                             <ul class="gap-4 list-basic" fxLayout="column">
-                                                <li>
-                                                    <div class="list-item">
-                                                        <span class="list-item-key">Approved Date :</span>
-                                                        <span class="list-item-value">{{ CompanyApprovedDate | date:'dd/MM/yyyy' }}</span>
+                                            <li>
+                                                 <div class="list-item">
+                                                        <span class="list-item-key">Bill Amount :</span>
+                                                        <span class="list-item-value">{{ FinalBillBalAmt | currency: currency:'symbol' }}</span> 
                                                     </div>
-                                                </li> 
+                                                </li>
                                                 <li>
                                             <div class="list-item">
                                               <span class="list-item-key">Approved Amount :</span>
@@ -50,11 +50,11 @@
                                             </div>
                                           </li>
                                             <li>
-                                                 <div class="list-item">
-                                                        <span class="list-item-key">Bill Amount :</span>
-                                                        <span class="list-item-value">{{ FinalBillBalAmt | currency: currency:'symbol' }}</span> 
+                                                    <div class="list-item">
+                                                        <span class="list-item-key">Adjustment Amt :</span>
+                                                        <span class="list-item-value">{{ AdjustmentAmt | currency: currency:'symbol' }}</span>
                                                     </div>
-                                                </li>
+                                                </li> 
                 
                                             </ul>
                                         </div>
@@ -117,7 +117,7 @@
                                                             *matHeaderRowDef="displayedbillColumns; sticky: true">
                                                         </mat-header-row>
                                                         <mat-row *matRowDef="let contact; columns: displayedbillColumns;"
-                                                            [@animate]="{value:'*',params:{y:'100%'}}" (click)="getBillDetlist(contact.BillNo)"></mat-row>
+                                                            [@animate]="{value:'*',params:{y:'100%'}}" (click)="getBillDetlist(contact)"></mat-row>
                                                         <mat-footer-row *matFooterRowDef="['NoData']"
                                                             [ngClass]="{'hide':dsChargeList.data.length > 0}"></mat-footer-row>
                                                     </mat-table>

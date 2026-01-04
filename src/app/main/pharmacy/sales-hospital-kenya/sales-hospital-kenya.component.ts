@@ -577,7 +577,7 @@ export class SalesHospitalKenyaComponent {
          this.ItemFormreset(); 
          this.saleSelectedDatasource.data = [];
          this.Itemchargeslist = [];
-          if(this.PatientTypeId == 1){
+          if((obj?.companyId || 0) == 1){
             this.ItemSubform.get('CashPay').setValue('Credit');
          }
      }

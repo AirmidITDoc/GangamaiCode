@@ -66,7 +66,7 @@ export class ReviewcompanyBillComponent {
   Consessionres: boolean = false;
   // 'Status', 'ServiceCode',
   public displayedChargeColumns: string[] =
-    ['Status', 'ServiceCode', 'ServiceName', 'Price', 'Qty', 'TotalAmount', 'DiscountPer', 'DiscountAmount', 'NetAmount', 'DoctorName',
+    ['Status','ServiceCode', 'ServiceName', 'Price', 'Qty', 'TotalAmount', 'DiscountPer', 'DiscountAmount', 'NetAmount', 'DoctorName',
       //  'ClassName', 'ChargesAddedName',  
       'Exclucion', 'Approved'];
   public displayedColumnspackage: string[] =
@@ -96,8 +96,9 @@ export class ReviewcompanyBillComponent {
       console.log(this.data)
       this.patientDetail = this.data;
       this.OPDIPDID = this.data?.opdipdid || 0
-      this.getPrevCompanyBillList(this.patientDetail?.billNo)
+      this.getPrevCompanyBillList(this.patientDetail?.billNo,'OP Bill')
       this.getBilllist();
+      //opdno
     }
         //this is for curreny symbol
         const [CurrencyId, CurrencyValue] = this._ConfigService.configParams.CurrencyValue.split(":");
@@ -184,22 +185,24 @@ export class ReviewcompanyBillComponent {
       salesId: [item?.billNo, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
       salesDetId: [item?.price, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
       qty: [item?.qty, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      unitMrp: [item?.totalAmt, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-      totalAmount: [item?.concessionPercentage || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      unitMrp: [item?.price, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      totalAmount: [item?.totalAmt || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
     });
   }
   getBillDetlist(element){
     this.Lable = element.Lbl || '';
-    this.getPrevCompanyBillList(element.BillNo)
+    this.getPrevCompanyBillList(element.BillNo,element.Lbl)
   }
-  getPrevCompanyBillList(billNo) {
+  getPrevCompanyBillList(billNo,Label) {
     var param = {
       "first": 0,
       "rows": 100,
       "sortField": "ServiceId",
       "sortOrder": 0,
       "filters": [
-        { "fieldName": "BillNo", "fieldValue": String(billNo), "opType": "Equals" }],
+        { "fieldName": "BillNo", "fieldValue": String(billNo), "opType": "Equals" },
+        { "fieldName": "Label", "fieldValue": String(Label), "opType": "Equals" }
+      ],
       "exportType": "JSON",
       "columns": [{ "data": "string", "name": "string" }]
     }
@@ -216,7 +219,7 @@ export class ReviewcompanyBillComponent {
   }
   FinalBillBalAmt:any=0;
     CompanyApprovedAmt:any=0;
-    CompanyApprovedDate='-';
+    AdjustmentAmt:any=0;
    getBilllist() {
     //ps_rtrv_BillList
     if (this.OPDIPDID == '' || this.OPDIPDID == null || this.OPDIPDID == undefined || this.OPDIPDID == 0) {
@@ -238,7 +241,7 @@ export class ReviewcompanyBillComponent {
       if(this.dsbillList.data.length){
       this.FinalBillBalAmt = ( this.dsbillList.data.reduce((sum, { BalanceAmt }) => sum += +(BalanceAmt || 0), 0)).toFixed(2);
       this.CompanyApprovedAmt = this.dsbillList.data[0]?.ApprovedAmount || 0 
-      this.CompanyApprovedDate = this.dsbillList.data[0]?.DateApproved || 0 
+      this.AdjustmentAmt = ((this.FinalBillBalAmt || 0) - (this.CompanyApprovedAmt || 0)).toFixed(2);
       }
     })
   }
@@ -302,7 +305,7 @@ export class ReviewcompanyBillComponent {
       cancelButtonText: 'No, cancel'
     }).then((result) => {
       if (result.isConfirmed) {
-        if(this.Lable == 'Pharma'){
+        if(this.Lable == 'OP Phar'){
           this.OnSaveSalesupdate();
         }else{
         this.OnSave(); // Call your save function
@@ -372,36 +375,35 @@ export class ReviewcompanyBillComponent {
       }
     }
   }
-    OnSaveSalesupdate() {
+  OnSaveSalesupdate() {
     debugger
-     const formValue = this.OPFooterForm.value
+    const formValue = this.OPFooterForm.value
     this.salesUpdateForm.get('salesHeader').patchValue({
       salesId: this.patientDetail?.billNo || 0,
       totalAmount: formValue?.totalAmt || 0,
       vatAmount: 0,
-      discAmount: formValue?.netPayableAmt || 0, 
+      discAmount: formValue?.netPayableAmt || 0,
       netAmount: formValue?.netPayableAmt || 0,
-      balanceAmount: formValue?.netPayableAmt || 0 
+      balanceAmount: formValue?.netPayableAmt || 0
     })
     this.SalesUpDetArray.clear();
     console.log("form values", this.salesUpdateForm.value)
     if (this.salesUpdateForm.valid) {
       this.SalesUpDetArray.clear();
       this.dsChargeList.data.forEach(item => {
-      this.SalesUpDetArray.push( this.CreateAddchargeform(item as ChargesList));
+        this.SalesUpDetArray.push(this.CreateAddchargeform(item as ChargesList));
       });
       console.log("form values", this.salesUpdateForm.value)
-      this._OPListService.UpdateSalesBilling(this.salesUpdateForm.value).subscribe(response => {
-        this._matDialog.closeAll();
-        this.savebtn = true
-        if (response)
-          this.resetform();
-        // if (ThermalPrint != 1) {
-        //   this.viewgetOPBillReportPdf(response)
-        // } else {
-        //   this.viewgetOPBillThermalReportPdf(response)
-        // }
+      if(this.Lable == 'OP Phar'){
+        this._OPListService.UpdateSalesBilling(this.salesUpdateForm.get('salesHeader.salesId')?.value,this.salesUpdateForm.value).subscribe(response => { 
       });
+      }else{
+        this._OPListService.UpdateSalesInPatient(this.salesUpdateForm.get('salesHeader.salesId')?.value,this.salesUpdateForm.value).subscribe(response => { 
+      });
+      }
+      this._matDialog.closeAll();
+      this.savebtn = true 
+       this.resetform(); 
     }
     else {
       let invalidFields = [];
