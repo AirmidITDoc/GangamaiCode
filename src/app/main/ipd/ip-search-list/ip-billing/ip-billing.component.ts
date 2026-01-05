@@ -1547,21 +1547,28 @@ export class IPBillingComponent implements OnInit {
             this._IpSearchListService.InsertIPDraftBilling(this.draftSaveform.value).subscribe(response => {
                 debugger
                 const [IpDraftPrint_A4, IpDraftPrintValue] = this._ConfigService.configParams.IPDraftPrintA4toA5.split(":");
-                if (this.IpbillFooterform.get("BillType").value == 1) {
-                    debugger
-                    if (IpDraftPrint_A4 != 1) {
-                        this.viewgetDraftBillReportPdf(response.drbno);
-                    } else {
-                        this.viewgetDraftBillclasswiseA5PageReportPdf(response.drbno);
+                const [Is9_Digit_NationalId, value] = this._ConfigService.configParams.Is9_Digit_NationalId.split(":");
+
+                if (Is9_Digit_NationalId == 1) {
+                    //kenya draft bill print
+                    this.viewgetDraftBillDateewiseReportPdf(response.drbno);
+                } else {
+                    if (this.IpbillFooterform.get("BillType").value == 1) {
+                        debugger
+                        if (IpDraftPrint_A4 != 1) {
+                            this.viewgetDraftBillReportPdf(response.drbno);
+                        } else {
+                            this.viewgetDraftBillclasswiseA5PageReportPdf(response.drbno);
+                        }
                     }
-                }
-                else {
-                    if (IpDraftPrint_A4 != 1) {
-                        this.viewgetDraftBillservicewiseReportPdf(response.drbno);
-                    } else {
-                        this.viewgetDraftBillservicewiseA5PageReportPdf(response.drbno);
+                    else {
+                        if (IpDraftPrint_A4 != 1) {
+                            this.viewgetDraftBillservicewiseReportPdf(response.drbno);
+                        } else {
+                            this.viewgetDraftBillservicewiseA5PageReportPdf(response.drbno);
+                        }
                     }
-                }
+                } 
                 this._matDialog.closeAll();
             });
         }
@@ -1841,9 +1848,13 @@ export class IPBillingComponent implements OnInit {
     viewgetDraftBillservicewiseA5PageReportPdf(Id) {
         this.commonService.Onprint("AdmissionID", Id, "IpDraftBillGroupWiseA5");
     }
+    //draft print charge date wise
+     viewgetDraftBillDateewiseReportPdf(Id) {
+        this.commonService.Onprint("AdmissionID", Id, "IpDraftBillDateWise");
+    }
 
     viewgetBillReportPdf(billNo) {
-        this.commonService.Onprint("BillNo", billNo, "IPFinalBillGroupwise");
+        this.commonService.Onprint("BillNo", billNo, "IPFinalBillChargesDateWise");
     }
 
     viewgetAdvanceReceiptReportPdf(data) {

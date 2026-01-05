@@ -551,7 +551,7 @@ export class SalesHospitalKenyaComponent {
              this.bedId = obj.bedId;
               this.RegNo =  obj?.regNo;
                this.PatientTypeId = obj?.patientTypeID
-                if(this.PatientTypeId == 1){
+                if((obj?.companyName || '') != ''){
                 this.ItemSubform.get('CashPay').setValue('Credit');
                 }
          }

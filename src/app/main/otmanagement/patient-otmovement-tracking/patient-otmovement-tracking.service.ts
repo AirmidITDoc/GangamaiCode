@@ -37,10 +37,10 @@ export class PatientOtmovementTrackingService {
       movingType: ['OTRequest'],
       modeOfTransfer: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       authorisedBy: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      accompanied: [],
+      accompanied: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       equipmentCarried: [''],
       remark: [''],
-      purPoseOfMovement: ['',[Validators.required]],
+      purPoseOfMovement: [''],
       checkInOut: [1], //if checkinid then pass 0
       checkOutTime: [''], //if checkinid then pass time or else no
       checkOutFromDepartment: [0], //if checkinid then pass id or else no

@@ -455,10 +455,13 @@ export class IPBillBrowseListComponent implements OnInit {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur();
         const dialogRef = this._matDialog.open(ReviewcompanyBillComponent, {
-            maxWidth: "95vw",
-            height: "95vh",
-            width: "100%",
-            data: element
+            maxWidth: "98vw",
+            height: "96vh",
+            width: "100%", 
+             data:{
+                Obj:element,
+                OPIPType:1
+            } 
         });
         dialogRef.afterClosed().subscribe(result => {
             this.grid.bindGridData();

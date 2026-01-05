@@ -139,3 +139,15 @@ mat-cell {
     }
   }
 }
+.page-container {
+  height: 100vh;              /* full screen */
+  display: flex;
+  flex-direction: column;
+}
+
+.table-scroll {
+  flex: 1 1 auto;             /* take remaining height */
+  overflow-y: auto;
+  overflow-x: auto;
+}
+

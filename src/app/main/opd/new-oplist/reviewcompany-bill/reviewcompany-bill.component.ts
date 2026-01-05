@@ -62,7 +62,7 @@ export class ReviewcompanyBillComponent {
   vQty: any;
   currency:any='';
   OPDIPDID:any=0;
-  opD_IPD_Type:any=0;
+  opD_IPD_Type:any=1;
   ReturnList:any=[];
 
   public isDiscountApplied = false;
@@ -97,9 +97,9 @@ export class ReviewcompanyBillComponent {
 
     if (this.data) {
       console.log(this.data)
-      this.patientDetail = this.data;
-      this.OPDIPDID = this.data?.opdipdid || 0
-      this.opD_IPD_Type = this.patientDetail.opD_IPD_Type 
+      this.patientDetail = this.data?.Obj;
+      this.OPDIPDID = this.data?.Obj?.opdipdid || 0 
+      this.opD_IPD_Type = this.data?.OPIPType || 0
       this.getPrevCompanyBillList(this.patientDetail?.billNo,'Bill')
       this.getBilllist();
       //opdno
@@ -176,6 +176,7 @@ export class ReviewcompanyBillComponent {
         discAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
         netAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
         balanceAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+        storeId:[0, [this._FormvalidationserviceService.onlyNumberValidator()]]
       }),
       salesDetails: this.formBuilder.array([]),
       currentStockUpdate: this.formBuilder.array([]),
@@ -192,6 +193,7 @@ export class ReviewcompanyBillComponent {
     return this.formBuilder.group({
       salesId: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
       salesDetId: [item?.chargesId, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
+      itemId:[item?.serviceId,  [this._FormvalidationserviceService.onlyNumberValidator()]],
       qty: [item?.qty, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       unitMrp: [item?.price, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
       totalAmount: [item?.totalAmt || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
@@ -199,10 +201,10 @@ export class ReviewcompanyBillComponent {
   }
     CreateSalesCurrentstkform(item: any): FormGroup {
     return this.formBuilder.group({
-      itemId: [item?.serviceId, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
-      issueQty: [item?.reutrnQty || 0, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      storeId: [item?.storeId, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-      istkId: [item?.stockId || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      itemId: [item?.serviceId, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      issueQty: [item?.reutrnQty || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      storeId: [item?.storeId, [this._FormvalidationserviceService.notEmptyOrZeroValidator(),]],
+      istkId: [item?.stockId || 0, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
     });
   }
   BillDetailsObj:any;
@@ -219,7 +221,9 @@ export class ReviewcompanyBillComponent {
       "sortOrder": 0,
       "filters": [
         { "fieldName": "BillNo", "fieldValue": String(billNo), "opType": "Equals" },
-        { "fieldName": "Label", "fieldValue": String(Label), "opType": "Equals" }
+        { "fieldName": "Label", "fieldValue": String(Label), "opType": "Equals" },
+        { "fieldName": "OPIPType", "fieldValue": String(this.opD_IPD_Type), "opType": "Equals" },
+
       ],
       "exportType": "JSON",
       "columns": [{ "data": "string", "name": "string" }]
@@ -257,6 +261,7 @@ export class ReviewcompanyBillComponent {
     }
     const Filters = [
       { "fieldName": "OPIPId", "fieldValue": String(this.OPDIPDID), "opType": "Equals" },
+      { "fieldName": "OPIPType", "fieldValue": String(this.opD_IPD_Type), "opType": "Equals" },
        ]
     var param = {
       "searchFields": Filters,
@@ -308,7 +313,7 @@ export class ReviewcompanyBillComponent {
     totalAmt: totalSum.toFixed(2),
     concessionAmt: Number(totalDiscount.toFixed(2)),
     totalDiscountPer: DiscPerSum.toFixed(2),
-    netPayableAmt: Number(totalNet.toFixed(2)),
+    netPayableAmt: Number(Math.round(totalNet).toFixed(2)),
     }, { emitEvent: false });
 
     const Exclusionlist = this.chargeList.filter(i => i.isInclusionExclusion === true)
@@ -416,16 +421,17 @@ export class ReviewcompanyBillComponent {
       vatAmount: 0,
       discAmount: formValue?.concessionAmt || 0,
       netAmount: formValue?.netPayableAmt || 0,
-      balanceAmount: formValue?.netPayableAmt || 0
+      balanceAmount: formValue?.netPayableAmt || 0 
     })
+    let storeId=0;
     this.SalesUpDetArray.clear();
-    this.SalesCurrentstkArray.clear();
-    console.log("form values", this.salesUpdateForm.value)
+    this.SalesCurrentstkArray.clear(); 
     if (this.salesUpdateForm.valid) {
       this.SalesUpDetArray.clear();
       this.dsChargeList.data.forEach(item => {
          const formObj = this.CreateSalesdetform(item as ChargesList);
         formObj.patchValue({ salesId: this.BillDetailsObj?.BillNo || 0}); 
+        storeId =item?.storeId || 0
         this.SalesUpDetArray.push(formObj); 
       });
 
@@ -433,6 +439,8 @@ export class ReviewcompanyBillComponent {
       this.dsChargeList.data.forEach(item=>{
       this.SalesCurrentstkArray.push(this.CreateSalesCurrentstkform(item as ChargesList))
       })
+
+      this.salesUpdateForm.get('salesHeader.storeId').setValue(storeId)
       console.log("form values", this.salesUpdateForm.value)
       if(this.opD_IPD_Type == 0){
         this._OPListService.UpdateSalesBilling(this.salesUpdateForm.get('salesHeader.salesId')?.value,this.salesUpdateForm.value).subscribe(response => { 
@@ -494,7 +502,7 @@ export class ReviewcompanyBillComponent {
     debugger
     if (!row) return;
 
-    if (row.qty && this.Lable == ' Pharmacy') {
+    if (row.qty && this.Lable == 'Pharmacy') {
       if (row.qty > row.originalQty) {
         this.toastr.warning(`Qty should not be greater than current ${row.originalQty} Qty`, 'Warning !', {
           toastClass: 'tostr-tost custom-toast-warning',
@@ -675,6 +683,7 @@ export class ChargesList {
   serviceId: number;
   ServiceName: String;
   qty: any;
+  storeId:any=0;
   isInclusionExclusion: any;
   serviceCode: any;
   totalAmt: number;
@@ -726,6 +735,7 @@ BalanceAmt:any;
     this.DiscAmt = ChargesList.DiscAmt || '';
     this.netAmount = ChargesList.netAmount || '';
     this.DoctorId = ChargesList.DoctorId || 0;
+        this.storeId = ChargesList.storeId || 0;
      this.DateApproved = ChargesList.DateApproved || '';
       this.ApprovedAmount = ChargesList.ApprovedAmount || 0;
     this.DoctorName = ChargesList.DoctorName || '';

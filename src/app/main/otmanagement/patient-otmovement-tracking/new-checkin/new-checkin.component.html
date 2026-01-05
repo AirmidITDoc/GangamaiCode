@@ -144,6 +144,9 @@
                 <form [formGroup]="CheckInFormGroup">
                     <div class="patient-info-box gap-4" fxFlexFill fxLayout="column">
                         <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 10px ;">
+                            <div class="patient-info-title border-bottom pb-2" style="margin-bottom: 10px;">
+                                <span class="h1">CheckIn</span>
+                            </div>
                             <div fxFlex="85%" fxFlex.xs="100%" fxFlex.sm="80%" fxLayout="row wrap"
                                 fxLayoutGap="4px grid">
 
@@ -152,44 +155,39 @@
                                         <mat-label>Movement Date</mat-label>
                                         <input matInput [matDatepicker]="picker1" [min]="minDate"
                                             formControlName="otcheckInDate" (dateChange)="onChangeDate($event.value)"
-                                            [disabled]="true">
+                                            [disabled]="isReadOnly">
                                         <mat-datepicker-toggle matSuffix [for]="picker1"
-                                            [disabled]="isDatePckrDisabled"></mat-datepicker-toggle>
+                                            [disabled]="isReadOnly"></mat-datepicker-toggle>
                                         <mat-datepicker #picker1></mat-datepicker>
                                     </mat-form-field>
                                 </div>
 
                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <mat-form-field appearance="outline" fxFlex>
+                                    <!-- <mat-form-field appearance="outline" fxFlex>
                                         <mat-label>Movement Time</mat-label>
                                         <input matTimepicker #t="matTimepicker" mode="12h"
                                             formControlName="otcheckInTime" (timeChange)="onChangeTime($event)"
-                                            [disableDialogOpenOnClick]="isDatePckrDisabled">
-                                        <mat-icon matSuffix (click)="!isDatePckrDisabled ? t.showDialog() : ''">
+                                            [disableDialogOpenOnClick]="isReadOnly" [disabled]="isReadOnly">
+                                        <mat-icon matSuffix (click)="!isReadOnly ? t.showDialog() : ''">
                                             access_time
                                         </mat-icon>
+                                    </mat-form-field> -->
+                                    <mat-form-field appearance="outline" fxFlex>
+                                        <mat-label>Movement Time</mat-label>
+                                        <input matInput type="time" formControlName="otcheckInTime"
+                                            (change)="onChangeTime($event)" [disabled]="vCheckinId > 0">
                                     </mat-form-field>
                                 </div>
 
                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%" class="gap-4">
                                     <airmid-dropdown label="From Department" formControlName="fromDepartment" fxFlex
-                                        [formGroup]="CheckInFormGroup" [mode]="autocompleteModeFromDepartment">
-                                    </airmid-dropdown>
-
-                                    <airmid-dropdown label="CheckOutFrom Department" fxFlex
-                                        formControlName="checkOutFromDepartment" *ngIf="vCheckinId > 0"
-                                        [formGroup]="CheckInFormGroup" [mode]="autocompleteModeToDepartment">
+                                        [formGroup]="CheckInFormGroup" [mode]="autocompleteModeFromDepartment" [readonly]="vCheckinId > 0">
                                     </airmid-dropdown>
                                 </div>
 
                                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%" class="gap-4">
                                     <airmid-dropdown label="To Department" formControlName="toDepartment" fxFlex
-                                        [formGroup]="CheckInFormGroup" [mode]="autocompleteModeToDepartment">
-                                    </airmid-dropdown>
-
-                                    <airmid-dropdown label="CheckOutTo Department" fxFlex
-                                        formControlName="checkOutToDepartment" *ngIf="vCheckinId > 0"
-                                        [formGroup]="CheckInFormGroup" [mode]="autocompleteModeFromDepartment">
+                                        [formGroup]="CheckInFormGroup" [mode]="autocompleteModeToDepartment" [readonly]="vCheckinId > 0">
                                     </airmid-dropdown>
                                 </div>
 
@@ -234,6 +232,49 @@
                                             matInput placeholder="Enter Equipment Description here.."
                                             type="text"></textarea>
                                     </mat-form-field>
+                                </div>
+
+                            </div>
+                        </mat-card>
+
+                        <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 10px ;" *ngIf="vCheckinId > 0">
+
+                            <div class="patient-info-title border-bottom pb-2" style="margin-bottom: 10px;">
+                                <span class="h1">CheckOut</span>
+                            </div>
+
+                            <div fxFlex="85%" fxFlex.xs="100%" fxFlex.sm="80%" fxLayout="row wrap"
+                                fxLayoutGap="4px grid">
+
+                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                    <!-- <mat-form-field appearance="outline" fxFlex>
+                                        <mat-label>Movement Time</mat-label>
+                                        <input matTimepicker #t="matTimepicker" mode="12h"
+                                            formControlName="checkOutTime" (timeChange)="onChangeTime1($event)"
+                                            [disableDialogOpenOnClick]="isDatePckrDisabled">
+                                        <mat-icon matSuffix (click)="!isDatePckrDisabled ? t.showDialog() : ''">
+                                            access_time
+                                        </mat-icon>
+                                    </mat-form-field> -->
+                                    <mat-form-field appearance="outline" fxFlex>
+                                        <mat-label>Movement Time</mat-label>
+                                        <input matInput type="time" formControlName="checkOutTime"
+                                            (change)="onChangeTime1($event)">
+                                    </mat-form-field>
+                                </div>
+
+                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%" class="gap-4">
+                                    <airmid-dropdown label="CheckOutFrom Department" fxFlex
+                                        formControlName="checkOutFromDepartment" [formGroup]="CheckInFormGroup"
+                                        [mode]="autocompleteModeToDepartment">
+                                    </airmid-dropdown>
+                                </div>
+
+                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%" class="gap-4">
+                                    <airmid-dropdown label="CheckOutTo Department" fxFlex
+                                        formControlName="checkOutToDepartment" [formGroup]="CheckInFormGroup"
+                                        [mode]="autocompleteModeFromDepartment">
+                                    </airmid-dropdown>
                                 </div>
 
                             </div>

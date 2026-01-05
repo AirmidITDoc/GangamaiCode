@@ -22,6 +22,7 @@ import { PageNames } from 'app/main/shared/componets/airmid-fileupload/airmid-fi
 import { MatTableDataSource } from '@angular/material/table';
 import { ConfigService } from 'app/core/services/config.service';
 import { permissionCodes } from 'app/main/shared/model/permission.model';
+import { GastrologyEmrComponent } from '../gastrology-emr/gastrology-emr.component';
 // const moment = _rollupMoment || _moment;
 
 @Component({
@@ -134,7 +135,7 @@ export class MedicalrecordComponent implements OnInit {
   ]
 
   gridConfig: gridModel = {
-      permissionCode: permissionCodes.Appointment,
+    permissionCode: permissionCodes.Appointment,
     apiUrl: "VisitDetail/AppVisitList",
     columnsList: this.allcolumns,
     sortField: "VisitId",
@@ -226,6 +227,27 @@ export class MedicalrecordComponent implements OnInit {
 
     let that = this;
     const dialogRef = this._matDialog.open(NewCasepaperComponent,
+      {
+        maxWidth: "95vw",
+        maxHeight: '95vh',
+        height: '95%',
+        width: '90%',
+        data: row
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        that.grid.bindGridData();
+        this.GetAppointdetail();
+      }
+    });
+  }
+
+  getgastrologyCasePaper(row: any = null) {
+    const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+    buttonElement.blur(); // Remove focus from the button
+
+    let that = this;
+    const dialogRef = this._matDialog.open(GastrologyEmrComponent,
       {
         maxWidth: "95vw",
         maxHeight: '95vh',
