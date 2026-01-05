@@ -359,10 +359,13 @@ export class NewOPListComponent implements OnInit {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur();
         const dialogRef = this._matDialog.open(ReviewcompanyBillComponent, {
-            maxWidth: "95vw",
-            height: "95vh",
+            maxWidth: "98vw",
+            height: "96vh",
             width: "100%",
-            data: element
+            data:{
+                Obj:element,
+                OPIPType:0
+            } 
         });
         dialogRef.afterClosed().subscribe(result => {
             this.grid.bindGridData();
