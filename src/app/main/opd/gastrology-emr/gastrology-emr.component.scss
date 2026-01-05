@@ -1,0 +1,64 @@
+.unit {
+    font-size: 14px;
+    font-weight: bold;
+    color: #555;
+    margin-left: 5px;
+}
+
+.square-box {
+    display: inline-block;
+    width: 25px;
+    height: 25px;
+    line-height: 24px;
+    text-align: center;
+    border: 2px solid #000;
+    border-radius: 4px;
+    margin-right: 6px;
+    font-weight: bold;
+    font-size: 14px;
+    color: rgb(57, 73, 171);
+}
+
+// Prescription title button alignment styles
+.prescription-title {
+    margin-bottom: 4px !important;
+
+    // Ensure all buttons and dropdowns are vertically aligned
+    button[mat-raised-button] {
+        height: 36px !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        vertical-align: middle !important;
+
+        mat-icon {
+            font-size: 18px !important;
+            width: 18px !important;
+            height: 18px !important;
+            line-height: 18px !important;
+            margin-right: 4px;
+        }
+    }
+
+    // Align dropdown with buttons
+    airmid-dropdown {
+        display: inline-flex !important;
+        align-items: center !important;
+        vertical-align: middle !important;
+        height: 36px !important;
+
+        ::ng-deep .mat-form-field {
+            margin: 0 !important;
+            margin-bottom: 0 !important;
+
+            .mat-form-field-wrapper {
+                padding-bottom: 0 !important;
+                margin-bottom: 0 !important;
+            }
+        }
+    }
+
+    // Ensure flex containers align items center
+    [fxLayout="row"] {
+        align-items: center !important;
+    }
+}

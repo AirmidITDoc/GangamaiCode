@@ -147,7 +147,7 @@ export class NewReservationComponent implements OnInit {
       this.vIPDNo = this.registerObj1.opdNo
       this.vPatientName = this.registerObj1.patientName
       this.vrequestId = this.registerObj1.otRequestId;
-      this.opIpType=this.registerObj1.opIpType
+      this.opIpType = this.registerObj1.opIpType
       this.reservationForm.get('estimateTime')?.setValue(this.registerObj1.estimateTime.trim())
       this.reservationForm.get('isAnaesthetistPaid')?.setValue(this.registerObj1.isAnaesthetistPaid)
       this.reservationForm.get('isMaterialReplacement')?.setValue(this.registerObj1.isMaterialReplacement)
@@ -285,7 +285,8 @@ export class NewReservationComponent implements OnInit {
       // new fields
       TheaterLocation: [],
       // MobileNo: [],
-      bodyPartId: [0]
+      bodyPartId: [0],
+      anesthesiaType: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
     });
   }
 
@@ -1303,7 +1304,7 @@ export class NewReservationComponent implements OnInit {
     //   const combinedDateTime = `${surgeryDate} ${time}`;
     //   this.reservationForm.get('estimateTime')?.setValue(combinedDateTime, { emitEvent: false });
     // }
-debugger
+    debugger
     this.reservationForm.get('opipid').setValue(this.opIpId);
     this.reservationForm.get('otrequestId')?.setValue(this.vrequestId || 0);
     this.reservationForm.get('otreservationDate').setValue(formattedDate);

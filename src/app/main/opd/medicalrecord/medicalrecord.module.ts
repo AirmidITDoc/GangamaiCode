@@ -38,6 +38,7 @@ import { PrePresciptionListComponent } from "../new-casepaper/pre-presciption-li
 import { PrescriptionTemplateComponent } from "../new-casepaper/prescription-template/prescription-template.component";
 import { MedicalrecordComponent } from "./medicalrecord.component";
 import { PatientcertificateComponent } from './patientcertificate/patientcertificate.component';
+import { GastrologyEmrComponent } from "../gastrology-emr/gastrology-emr.component";
 const routes: Routes = [
     {
         path: "**",
@@ -53,7 +54,8 @@ const routes: Routes = [
     NewCasepaperComponent,
     AddItemComponent,
     PatientcertificateComponent,
-    MedicineTableNewComponent
+    MedicineTableNewComponent,
+    GastrologyEmrComponent
   ],
   imports: [
     RouterModule.forChild(routes),
