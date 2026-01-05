@@ -1562,6 +1562,8 @@ export class IPBillingComponent implements OnInit {
                 //         this.viewgetDraftBillservicewiseA5PageReportPdf(response.drbno);
                 //     }
                 // }
+
+                //kenya draft bill print
                 this.viewgetDraftBillDateewiseReportPdf(response.drbno);
                 this._matDialog.closeAll();
             });

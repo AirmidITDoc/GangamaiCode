@@ -270,6 +270,7 @@ AdmissionFormSet(){
    this.admissionFormGroup.get('AdmissionType').setValue(this.registerObj1.admissionType)
     this.admissionFormGroup.get('ischarity').setValue(this.admissionFormGroup.get('ischarity').value)
     this.admissionFormGroup.get('convertId').setValue(this.registerObj1.converId || 0)
+    this.admissionFormGroup.get('RefDocNameId').setValue(this.registerObj1.refDocNameId || 0)
   
   delete this.registerObj.regNo
 
