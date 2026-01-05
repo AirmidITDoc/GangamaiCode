@@ -209,6 +209,12 @@
                     </mat-icon>
                 </button>
 
+                <button mat-icon-button matTooltip="Gastrology EMR" (click)="getgastrologyCasePaper(element)">
+                    <mat-icon>
+                        list_alt
+                    </mat-icon>
+                </button>
+
                 <button mat-icon-button matTooltip="Bill"
                     style="margin-right: 8px; font-size: 16px; width: 16px; height: 16px;"
                     (click)="OnBillPayment(element)">
@@ -402,15 +408,15 @@
                     <div style="padding:1px 0;">
                         {{ reportPrintObjList[0]?.HospitalHeaderLine }}
                     </div>
-                
+
                     <div style="padding:1px 0;">
                         {{ reportPrintObjList[0]?.HospitalName }}
                     </div>
-                
+
                     <div style="padding:1px 0;">
                         {{ reportPrintObjList[0]?.HospitalAddress }}
                     </div>
-                       <!-- Separator line -->
+                    <!-- Separator line -->
                     <div style="border-top:1px dashed #000; margin:2px 0;"></div>
                 </div>
                 <table style="width:100%; border-collapse:collapse; font-size:10px; font-weight:bold;">

@@ -23,7 +23,7 @@
 
             <ng-template #firstActionButtonTemplate let-element>
                 <div fxLayout="row" fxLayoutAlign="center center" class="gap-12">
-                    <button mat-icon-button matTooltip="Medical Clearance">
+                    <!-- <button mat-icon-button matTooltip="Medical Clearance">
                         <mat-icon>
                             <img width="30px" height="30px" src="assets/images/logos/insurance.png">
                         </mat-icon>
@@ -33,16 +33,15 @@
                         <mat-icon>
                             <img width="30px" height="30px" src="assets/images/logos/finance.png">
                         </mat-icon>
-                    </button>
+                    </button> -->
 
                     <button mat-icon-button matTooltip="Reservation PostPond" (click)="tOTBookingDateChange(element)"
                         [disabled]="element.otCheckInId">
                         <mat-icon>date_range</mat-icon>
                     </button>
 
-                    <button mat-icon-button matTooltip="Check In" (click)="checkInForm(element)">
-                        <!-- matTooltip]="element.isCheckedIn ? 'Check Out' : 'Check In'" 
-                         need to change in list proc-->
+                    <button mat-icon-button [matTooltip]="element.otCheckInId > 0 ? 'Check Out' : 'Check In'"
+                        (click)="checkInForm(element)">
                         <mat-icon>
                             <img width="30px" height="30px" src="assets/images/logos/check-in.png">
                         </mat-icon>
@@ -70,14 +69,13 @@
                         </mat-icon>
                     </button>
 
-                    <button mat-icon-button matTooltip="Anesthesia Record" (click)="onAnesthesiaRecord(element)" >
+                    <button mat-icon-button matTooltip="Anesthesia Record" (click)="onAnesthesiaRecord(element)">
                         <!-- this icon should disable when i do inOper then only 
                          (To record complete drugs ) -->
                         <mat-icon>
-                            <img width="30px" height="30px" src="assets/images/logos/anesthesia.png" *ngIf="element.anesthesiaId==0">
+                            <img width="30px" height="30px" src="assets/images/logos/anesthesia.png"
+                                *ngIf="element.anesthesiaId==0">
                         </mat-icon>
-
-
                     </button>
 
                     <button mat-icon-button matTooltip="Post-Operation" (click)="postOperationForm(element)">
@@ -115,8 +113,7 @@
                     <span [ngClass]="{
                         'status-completed':element.isAnaesthetistPaid === true ,
                         'status-pending': element.isAnaesthetistPaid !== true
-                        }"
-                         [matTooltip]="
+                        }" [matTooltip]="
                         element.isAnaesthetistPaid === true
                             ? 'Anaesthetist payment completed'
                             : 'Anaesthetist payment pending'
@@ -131,8 +128,7 @@
                     <span [ngClass]="{
                         'status-completed':element.isMaterialReplacement === true ,
                         'status-pending': element.isMaterialReplacement !== true
-                        }"
-                        [matTooltip]="
+                        }" [matTooltip]="
                         element.isMaterialReplacement === true
                             ? 'MaterialReplacement completed'
                             : 'MaterialReplacement pending'
@@ -223,24 +219,22 @@
                             </button>
                         </mat-form-field>
 
-                        <mat-radio-group formControlName="opipType" name="opipType" fxLayout="column"
-                            (change)="onChangeFirst()" style="padding: 5px;">
+                        <mat-radio-group formControlName="opipType" name="opipType" fxLayout="row"
+                            (change)="onChangeFirst()">
 
                             <div fxLayout="row" fxLayoutAlign="start center" style="gap: 8px;">
                                 <mat-icon class="pill">circle</mat-icon>
                                 <mat-radio-button value="2">ALL</mat-radio-button>
-                                 <mat-icon class="pill orange-600 s-16">circle</mat-icon>
+                            </div>
+
+                            <div fxLayout="row" fxLayoutAlign="start center" style="gap: 8px;">
+                                <mat-icon class="pill orange-600 s-16">circle</mat-icon>
                                 <mat-radio-button value="0">OP</mat-radio-button>
-                                 <mat-icon class="pill green-600 s-16">circle</mat-icon>
+                            </div>
+
+                            <div fxLayout="row" fxLayoutAlign="start center" style="gap: 8px;">
+                                <mat-icon class="pill green-600 s-16">circle</mat-icon>
                                 <mat-radio-button value="1">IP</mat-radio-button>
-                            </div>
-
-                            <div fxLayout="row" fxLayoutAlign="start center" style="gap: 8px;">
-                               
-                            </div>
-
-                            <div fxLayout="row" fxLayoutAlign="start center" style="gap: 8px;">
-                               
                             </div>
                         </mat-radio-group>
                     </form>

@@ -105,12 +105,22 @@
         <ng-template #actionButtonTemplate let-element>
             <div fxLayout="row" fxLayoutAlign="center center">
 
-                <!-- <button mat-icon-button matTooltip="OPD CasePaper" (click)="getOpCasePaper(element)">
-                    <mat-icon> list_alt</mat-icon>
-                </button> -->
-                <button mat-icon-button [matTooltip]="element.emrReady ? 'OPD CasePaper Ready' : 'OPD CasePaper'"
+                <!-- <button mat-icon-button [matTooltip]="element.emrReady ? 'OPD CasePaper Ready' : 'OPD CasePaper'"
                     (click)="getOpCasePaper(element)">
                     <mat-icon [ngClass]="element.emrReady === 1 ? 'circle-icon' : ''">
+                        list_alt
+                    </mat-icon>
+                </button> -->
+                <button mat-icon-button
+                    [matTooltip]="element.emrReady ? 'General CasePaper Ready' : 'General CasePaper'"
+                    (click)="getOpCasePaper(element)">
+                    <mat-icon [ngClass]="element.emrReady === 1 ? 'circle-icon' : ''">
+                        list_alt
+                    </mat-icon>
+                </button>
+
+                <button mat-icon-button matTooltip="Gastrology EMR" (click)="getgastrologyCasePaper(element)">
+                    <mat-icon>
                         list_alt
                     </mat-icon>
                 </button>

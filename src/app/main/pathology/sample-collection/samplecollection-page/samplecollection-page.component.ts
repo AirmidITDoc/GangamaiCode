@@ -45,6 +45,7 @@ export class SamplecollectionPageComponent {
   selectedAdvanceObj1: any;
 
   regObj: any;
+  type: string = '';
 
   dataSource = new MatTableDataSource<SampleList>();
   sIsLoading: string = '';
@@ -64,6 +65,7 @@ export class SamplecollectionPageComponent {
 
   ) {
     dialogRef.disableClose = true;
+    this.type = data?.type;
 
     let mydate = new Date()
     this.date = (this.datePipe.transform(new Date(), "MM-dd-YYYY hh:mm tt"));
@@ -72,15 +74,21 @@ export class SamplecollectionPageComponent {
     now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
     this.date = now.toISOString().slice(0, 16);
   }
+
   vSampleCollFormGroup: FormGroup
   ngOnInit(): void {
     this.vSampleCollFormGroup = this.vSamplecollFormInsert();
-    if (this.data)
+
+    if (this.data?.type) {
+      this.regObj = this.data.row
+    }
+    else {
       this.regObj = this.data
+    }
+    // if (this.data)
+    //   this.regObj = this.data || this.data.row
     this.getSampledetailList1(this.regObj);
   }
-
-
 
   tableElementChecked(event, element) {
 
@@ -161,8 +169,6 @@ export class SamplecollectionPageComponent {
       });
   }
 
-
-
   vSamplecollFormInsert(): FormGroup {
     return this.formBuilder.group({
       pathlogySampleCollection: this.formBuilder.array([])// FormArray for details
@@ -204,34 +210,34 @@ export class SamplecollectionPageComponent {
 
   // }
 
- 
 
-   onSave() {
- 
+
+  onSave() {
+
     if (this.selection.selected.length === 0) {
       Swal.fire('Error!', 'Please select sample data', 'error');
       return;
     }
- 
+
     const isSampleCollected = this.selection.selected.some(
       item => item.isSampleCollection === 'True'
     );
- 
+
     const proceedUpdate = () => {
       this.refundDetailsArray.clear();
       this.selection.selected.forEach(item => {
         this.refundDetailsArray.push(this.createSampleDetail(item));
       });
- 
+
       console.log(this.vSampleCollFormGroup.value);
- 
+
       this._SampleService
         .UpdateSampleCollection(this.vSampleCollFormGroup.value)
         .subscribe(() => {
           this._matDialog.closeAll();
         });
     };
- 
+
     if (isSampleCollected) {
       Swal.fire({
         title: 'Confirm Update',
@@ -250,7 +256,7 @@ export class SamplecollectionPageComponent {
       proceedUpdate();
     }
   }
- 
+
   selection = new SelectionModel<SampleList>(true, []);
   masterToggle() {
     // if there is a selection then clear that selection

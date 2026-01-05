@@ -45,6 +45,7 @@ import { Subscription } from 'rxjs';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { PagePermissionService } from 'app/main/shared/services/page-permission.service';
 import { permissionCodes, permissionType } from 'app/main/shared/model/permission.model';
+import { GastrologyEmrComponent } from '../gastrology-emr/gastrology-emr.component';
 // import { NewAppointmentwithBillComponent } from './new-appointmentwith-bill/new-appointmentwith-bill.component';
 // const moment = _rollupMoment || _moment;
 
@@ -57,8 +58,8 @@ import { permissionCodes, permissionType } from 'app/main/shared/model/permissio
 
 })
 export class AppointmentListComponent implements OnInit {
-     IsAdd: boolean = this.permissionService.getPermission(permissionCodes.Appointment, permissionType.Add);
-    
+    IsAdd: boolean = this.permissionService.getPermission(permissionCodes.Appointment, permissionType.Add);
+
 
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
     myformSearch: FormGroup;
@@ -596,6 +597,27 @@ export class AppointmentListComponent implements OnInit {
         });
     }
 
+    getgastrologyCasePaper(row: any = null) {
+        const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+        buttonElement.blur(); // Remove focus from the button
+
+        let that = this;
+        const dialogRef = this._matDialog.open(GastrologyEmrComponent,
+            {
+                maxWidth: "95vw",
+                maxHeight: '95vh',
+                height: '95%',
+                width: '90%',
+                data: row
+            });
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                that.grid.bindGridData();
+                this.GetAppointdetail();
+            }
+        });
+    }
+
     OnBillPayment(row) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button
@@ -673,7 +695,7 @@ export class AppointmentListComponent implements OnInit {
     //     style = document.createElement('style');
     //     style.type = 'text/css';
     //     style.media = 'print';
-    
+
     //     if (style.styleSheet){
     //         style.styleSheet.cssText = css;
     //     } else {
@@ -688,7 +710,7 @@ export class AppointmentListComponent implements OnInit {
     //     popupWin.document.close();
     // }
 
-        print3() {
+    print3() {
         const popupWin = window.open('', '_blank', 'top=0,left=0,width=300');
 
         popupWin.document.write(`
@@ -723,7 +745,7 @@ export class AppointmentListComponent implements OnInit {
         `);
 
         popupWin.document.close();
-        }
+    }
 
 
     //  OnBill(row,m) {

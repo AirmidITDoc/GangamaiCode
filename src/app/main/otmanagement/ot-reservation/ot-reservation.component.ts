@@ -53,8 +53,8 @@ const colors: Record<string, EventColor> = {
     animations: fuseAnimations
 })
 export class OTReservationComponent implements OnInit {
- IsAdd: boolean = this.permissionService.getPermission(permissionCodes.OTReservation, permissionType.Add);
-    
+    IsAdd: boolean = this.permissionService.getPermission(permissionCodes.OTReservation, permissionType.Add);
+
 
     statusFormFinal: FormGroup;
     myFilterform: FormGroup
@@ -118,7 +118,7 @@ export class OTReservationComponent implements OnInit {
         { heading: "Theater Name", key: "otTableName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         { heading: "UserName", key: "userName", sort: true, align: 'left', emptySign: 'NA', width: 180 },
         {
-            heading: "Action", key: "action", align: "right", width: 150, sticky: true, type: gridColumnTypes.template,
+            heading: "Action", key: "action", align: "right", width: 120, sticky: true, type: gridColumnTypes.template,
             template: this.actionButtonTemplate
         }
     ];
@@ -133,7 +133,7 @@ export class OTReservationComponent implements OnInit {
     ]
 
     gridConfig: gridModel = {
-          permissionCode: permissionCodes.OTReservation,
+        permissionCode: permissionCodes.OTReservation,
         apiUrl: "OTReservation/OTReservationlist",
         columnsList: this.allcolumns,
         sortField: "OtreservationId",
@@ -148,7 +148,7 @@ export class OTReservationComponent implements OnInit {
         private _FormvalidationserviceService: FormvalidationserviceService,
         private _formBuilder: FormBuilder,
         private _loggedService: AuthenticationService,
-        private cdr: ChangeDetectorRef,public permissionService: PagePermissionService,
+        private cdr: ChangeDetectorRef, public permissionService: PagePermissionService,
         public datePipe: DatePipe
     ) { }
 
@@ -986,8 +986,10 @@ export class OtReserInsert {
     operativeNotesId: any;
     isAnaesthetistPaid: any;
     isMaterialReplacement: any;
-AnesthesiaId: any;
-anesthesiaId: any;
+    AnesthesiaId: any;
+    anesthesiaId: any;
+    checkOutTime: any;
+    toDepartment:any;
     /**
      * Constructor
      *
@@ -1074,6 +1076,7 @@ anesthesiaId: any;
             this.otCheckInId = OtReserInsert.otCheckInId || ''
             this.otRequestId = OtReserInsert.otRequestId || ''
             this.otcheckInTime = OtReserInsert.otcheckInTime || ''
+            this.checkOutTime = OtReserInsert.checkOutTime || ''
             this.bloodArg = OtReserInsert.bloodArg || ''
             this.otInOperationId = OtReserInsert.otInOperationId || ''
             this.bloodArranged = OtReserInsert.bloodArranged || ''
@@ -1099,8 +1102,8 @@ anesthesiaId: any;
             this.isAnaesthetistPaid = OtReserInsert.isAnaesthetistPaid || ''
             this.isMaterialReplacement = OtReserInsert.isMaterialReplacement || ''
             this.AnesthesiaId = OtReserInsert.AnesthesiaId || 0
-this.anesthesiaId = OtReserInsert.anesthesiaId || 0
-            
+            this.anesthesiaId = OtReserInsert.anesthesiaId || 0
+            this.toDepartment = OtReserInsert.toDepartment || 0
         }
     }
 }
