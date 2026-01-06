@@ -17,6 +17,8 @@ export enum permissionCodes {
     VillageMaster = 'VillageMaster',
     HospitalMaster = 'HospitalMaster',
     CampMaster = 'CampMaster',
+QuestionMaster='QuestionMaster',
+
 
 
     //  BillingMaster
