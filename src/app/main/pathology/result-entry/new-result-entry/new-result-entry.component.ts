@@ -99,6 +99,7 @@ export class NewResultEntryComponent {
     sampleNo = '0'
     suggestionNotes = ''
     verifyCheck: boolean;
+    type: string = '';
 
     @ViewChild(MatAccordion) accordion: MatAccordion;
     @ViewChild('drawer') public drawer: MatDrawer;
@@ -118,6 +119,8 @@ export class NewResultEntryComponent {
         public toastr: ToastrService,
         private _FormvalidationserviceService: FormvalidationserviceService,
         private _fuseSidebarService: FuseSidebarService) {
+
+        this.type = data?.type;
 
         if (this.data) {
             console.log(this.data)

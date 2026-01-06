@@ -161,7 +161,7 @@ export class NewOtPreoperationComponent {
       this.vIPDNo = this.registerObj1.opdNo
       this.vPatientName = this.registerObj1.patientName
       this.vPreOperationId = this.registerObj1.otPreOperationId
-       this.OPIPType=this.registerObj1.opIpType
+      this.OPIPType = this.registerObj1.opIpType
 
 
 
@@ -294,8 +294,8 @@ export class NewOtPreoperationComponent {
 
       // extra fields
       TheaterLocation: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      diagnosis: [[], [Validators.required]],
-      cathLabDiagnosis: [[], [Validators.required]],
+      diagnosis: [[]],
+      cathLabDiagnosis: [[]],
       bodyPartId: [],
 
       ////////surgery det parameters ////////////
@@ -799,7 +799,7 @@ export class NewOtPreoperationComponent {
             surgeryId: element.surgeryId,//
             surgeryName: element.surgeryName,
             surgeryPart: element.surgeryPart,
-            surgeryDuration: element.surgeryDuration,
+            surgeryDuration: Number(element.surgeryDuration).toFixed(2),
             surgeryFromTime: surgeryFromTime,
             surgeryEndTime: surgeryEndTime,
             isPrimary: element.isPrimary,
@@ -1026,6 +1026,7 @@ export class NewOtPreoperationComponent {
   selectedDate: any;
   onSurgeryDateChange(event: any) {
     this.selectedDate = event.value;   // This is a Date object
+    this.preOperationFinalForm.get('surgeryDate')?.setValue(this.selectedDate);
     console.log("Selected:", this.selectedDate);
   }
 
@@ -1065,7 +1066,7 @@ export class NewOtPreoperationComponent {
       this.preOperationFinalForm.get('otreservationId')?.setValue(this.vreservationId ?? 0);
       this.preOperationFinalForm.get('otpreOperationId')?.setValue(this.vPreOperationId ?? 0);
       this.preOperationFinalForm.get('opiptype').setValue(this.vSelectedOption === "OP" ? 0 : 1);
-      this.preOperationFinalForm.get('surgeryDate')?.setValue(this.selectedDate);
+      // this.preOperationFinalForm.get('surgeryDate')?.setValue(this.registerObj2.surgeryDate ?? this.selectedDate);
 
       if (this.dssurgeryDetailList.data.length === 0) {
         this.toastr.warning('Data is not available in list ,please add surgery details in the list.', 'Warning');
@@ -1367,7 +1368,7 @@ export class NewOtPreoperationComponent {
 
 
   OnViewPreOprationReportPdf() {
-debugger
+    debugger
     setTimeout(() => {
       let param = {
         "searchFields": [

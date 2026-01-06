@@ -1,0 +1,123 @@
+<div class="page-layout modal-wrapper grid-container" fusePerfectScrollbar>
+
+    <div class="modal-header accent">
+        <div class="modal-header-content">
+            <div class="modal-header-title">
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    QA Entry
+                </span>
+            </div>
+            <div class="modal-header-right">
+                <div class="comman-date-container">
+                    <div class="close-icon">
+                        <button mat-icon-button tabIndex="-1" (click)="onClose()" aria-label="Close dialog">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal-body content">
+        <div fxLayout="column" class="gap-8 h-100-p">
+
+            <div class="modal-card-container h-100-p">
+                <div fxFlex.gt-sm="100%" fxFlex class="airmid-table-container">
+                    <mat-card style="padding: 6px;">
+                        <div class="patient-info-sales my-8">
+                            <div class="patient-info-title" fxLayout="row" fxLayoutAlign="space-between center">
+                                <span class="h1">{{data.questionName}}</span>
+                            </div>
+                        </div>
+
+                        <mat-table matSort [dataSource]="dataSource" class="airmid-table h-450"
+                            [@animateStagger]="{value:'50'}" appTableKeyboardNavigation>
+
+                            <ng-container matColumnDef="sequence">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-90">Sr.No
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let element; let i = index" fxShow.gt-sm class="w-90">
+                                    {{ i + 1 }}
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="question">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md
+                                    class="border-right">
+                                    Question
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
+                                    {{contact.SubQuestionName}}
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="value">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header>
+                                    Values
+                                </mat-header-cell>
+
+                                <mat-cell *matCellDef="let contact">
+
+                                    <mat-form-field appearance="fill" style="width: 100%;">
+                                        <input matInput autocomplete="off" matTooltip="Use Help Value"
+                                            [(ngModel)]="contact.ResultValue" [matAutocomplete]="auto"
+                                            (focus)="openList(contact)" (ngModelChange)="filterList($event)">
+
+                                        <mat-autocomplete #auto="matAutocomplete"
+                                            (optionSelected)="onOptionSelected($event)">
+
+                                            <mat-option *ngFor="let item of filteredHelpList"
+                                                [value]="item.SubQuestionValName">
+
+                                                <b>{{ item.ShortcutValues }}</b>
+                                                &nbsp;–&nbsp;
+                                                {{ item.SubQuestionValName }}
+
+                                            </mat-option>
+
+                                        </mat-autocomplete>
+                                    </mat-form-field>
+
+                                </mat-cell>
+                            </ng-container>
+
+
+                            <ng-container matColumnDef="loading">
+                                <mat-header-cell *matFooterCellDef colspan="6" style="display: none;">
+                                </mat-header-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="noData">
+                                <mat-footer-cell *matFooterCellDef colspan="6">
+                                    no data found...
+                                </mat-footer-cell>
+                            </ng-container>
+
+                            <mat-header-row class="accent"
+                                *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+                            <mat-row *matRowDef="let contact; columns: displayedColumns;" class="contact"
+                                [@animate]="{value:'*',params:{y:'100%'}}">
+                            </mat-row>
+                            <mat-footer-row *matFooterRowDef="['loading']"
+                                [ngClass]="{'hide': !(sIsLoading == 'loading-data')}">
+                            </mat-footer-row>
+                            <mat-footer-row *matFooterRowDef="['noData']"
+                                [ngClass]="{'hide':!(dataSource!=null && dataSource.data.length==0)}">
+                            </mat-footer-row>
+                        </mat-table>
+
+                    </mat-card>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer" fxLayout="column">
+
+        <div class="modal-footer-buttons">
+            <button class="btn btn-danger-outline" (click)="onClose()">Close</button>
+            <button class="btn btn-primary" (click)="onSave()">Save</button>
+        </div>
+    </div>
+</div>

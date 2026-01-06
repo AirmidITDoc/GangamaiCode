@@ -131,4 +131,16 @@ export class CasepaperService {
   public getquList(param) {
     return this._httpClient1.PostData("QuestionMaster/List", param);
   }
+
+   public getSubquesById(Id) {
+    return this._httpClient1.GetData("SubQuestionMaster/" + Id);
+  }
+
+  public getSubquesByIdList(param) {
+    return this._httpClient1.PostData("Common", param)
+  }
+
+  public getSubQuesValueByIdList(param) {
+    return this._httpClient1.PostData("Common", param)
+  }
 }
