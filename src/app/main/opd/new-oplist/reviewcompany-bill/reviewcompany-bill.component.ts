@@ -663,33 +663,34 @@ export class ReviewcompanyBillComponent {
       ],
     }
   }
-      deletecharges(contact) {
-          Swal.fire({
-              title: 'Do you want to cancel the Service ',
-              text: "You won't be able to revert this!",
-              icon: "warning",
-              showCancelButton: true,
-              confirmButtonColor: "#3085d6",
-              cancelButtonColor: "#d33",
-              confirmButtonText: "Yes, Delete it!"
-  
-          }).then((flag) => {
-              if (flag.isConfirmed) {
-                  let Chargescancle = {};
-                  Chargescancle['chargesId'] = contact.chargesId;
-                  Chargescancle['isCancelledBy'] = this.accountService.currentUserValue.userId;
-  
-                  let submitData = {
-                      "deleteCharges": Chargescancle
-                  };
-                  console.log(submitData);
-                  this._OPListService.AddchargesDelete(submitData).subscribe(response => {
-                      this.getPrevCompanyBillList(this.BillNo,this.Lable);
-                  });
-              }
-          });
-  
+  deletecharges(contact) {
+    debugger
+    Swal.fire({
+      title: 'Do you want to cancel the Service ',
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, Delete it!"
+
+    }).then((flag) => {
+      if (flag.isConfirmed) {
+        let Chargescancle = {};
+        Chargescancle['chargesId'] = contact.chargesId;
+        Chargescancle['isCancelledBy'] = this.accountService.currentUserValue.userId;
+
+        let submitData = {
+          "deleteCharges": Chargescancle
+        };
+        console.log(submitData);
+        this._OPListService.AddchargesDelete(submitData).subscribe(response => {
+          this.getPrevCompanyBillList(this.BillNo, this.Lable);
+        });
       }
+    });
+
+  }
 }
 
 export class ChargesList {

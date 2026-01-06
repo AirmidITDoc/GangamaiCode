@@ -101,7 +101,7 @@
                                      <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%" *ngIf="advanceData?.CompanyName && advanceData?.FromName != 'IP-Bill'">
                                                 <airmid-dropdown label="Company Name" formControlName="CompanyId" [formGroup]="patientDetailsFormGrp"
                                                    [validations]="getValidationMessages().CompanyId" [mode]="autocompleteModecompany"
-                                                    (selectionChange)="getselectObjPayMode($event)"
+                                                  
                                                 ></airmid-dropdown>
                                     </div>
 

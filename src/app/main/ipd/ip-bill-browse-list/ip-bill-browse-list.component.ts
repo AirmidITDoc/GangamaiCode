@@ -691,8 +691,8 @@ export class IPBillBrowseListComponent implements OnInit {
     getFinalBillview(data) {
         console.log(data);
         console.log("BillNo Click : ", data.billNo);
-        if (!data.interimOrFinal)
-            this.viewgetFinalBillReportGroupwisePdf(data.billNo)
+        if (!data.interimOrFinal) 
+            this.viewgetFinalBillReportChargeDatewisePdf(data.billNo)    // this.viewgetFinalBillReportGroupwisePdf(data.billNo)
         else
             this.viewgetInterimBillReportPdf(data.billNo)
     }
