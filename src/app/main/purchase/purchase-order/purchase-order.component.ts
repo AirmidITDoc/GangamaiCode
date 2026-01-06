@@ -455,12 +455,13 @@ IsPoverify=0;
       }
   
           getWhatsappshareBill(el) {
+            debugger
           console.log(el);
           this._whatsppService.OnWhatsAppMsgSent({
               mobileNo: el.mobileNo,
               patientName: el.patientName,
-              billNo: el.billNo,
-              smsType: "OPBill",
+              billNo: el.purchaseId,
+              smsType: "PurchaseReport",
               patientId:el.regNo
           })
       }

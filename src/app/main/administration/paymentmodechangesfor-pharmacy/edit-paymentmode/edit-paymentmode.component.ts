@@ -249,8 +249,14 @@ export class EditPaymentmodeComponent implements OnInit {
       this._Paymentmodesevice.paymentInsertform.get('CardNo').setValue( this._Paymentmodesevice.paymentInsertform.get('CardNo').value || "")
       this._Paymentmodesevice.paymentInsertform.get('Neftno').setValue( this._Paymentmodesevice.paymentInsertform.get('Neftno').value || "")
       this._Paymentmodesevice.paymentInsertform.get('PayTmtranNo').setValue( this._Paymentmodesevice.paymentInsertform.get('PayTmtranNo').value || "")
-this._Paymentmodesevice.paymentInsertform.get('PayTmtranNo').setValue(this.registerObj.oP_IP_Type || 1 )
+      this._Paymentmodesevice.paymentInsertform.get('PayTmtranNo').setValue(this.registerObj.oP_IP_Type || 1 )
 
+
+
+       this._Paymentmodesevice.paymentInsertform.get('ChequeDate').setValue(datePipe.transform(new Date(), 'yyyy-MM-dd'))
+        this._Paymentmodesevice.paymentInsertform.get('CardDate').setValue(datePipe.transform(new Date(), 'yyyy-MM-dd'))
+        this._Paymentmodesevice.paymentInsertform.get('Neftdate').setValue(datePipe.transform(new Date(), 'yyyy-MM-dd'))
+        this._Paymentmodesevice.paymentInsertform.get('PayTmdate').setValue(datePipe.transform(new Date(), 'yyyy-MM-dd'))
 
 
       const controlsToRemove = ['PaidAmount', 'BalAmount', 'IsPayTMpay', 'RefundBalAmount','NEFTBankName','IsNEFTpay','IsCardpay','IsChequepay','ChequeBankName','IsCashpay'];
@@ -354,6 +360,13 @@ this._Paymentmodesevice.paymentInsertform.get('PayTmtranNo').setValue(this.regis
       this._Paymentmodesevice.paymentInsertform.get('CardNo').setValue( this._Paymentmodesevice.paymentInsertform.get('CardNo').value || "")
       this._Paymentmodesevice.paymentInsertform.get('Neftno').setValue( this._Paymentmodesevice.paymentInsertform.get('Neftno').value || "")
       this._Paymentmodesevice.paymentInsertform.get('PayTmtranNo').setValue( this._Paymentmodesevice.paymentInsertform.get('PayTmtranNo').value || "")
+    
+        this._Paymentmodesevice.paymentInsertform.get('ChequeDate').setValue(datePipe.transform(new Date(), 'yyyy-MM-dd'))
+        this._Paymentmodesevice.paymentInsertform.get('CardDate').setValue(datePipe.transform(new Date(), 'yyyy-MM-dd'))
+        this._Paymentmodesevice.paymentInsertform.get('Neftdate').setValue(datePipe.transform(new Date(), 'yyyy-MM-dd'))
+        this._Paymentmodesevice.paymentInsertform.get('PayTmdate').setValue(datePipe.transform(new Date(), 'yyyy-MM-dd'))
+
+    
       const controlsToRemove = ['PaidAmount', 'BalAmount', 'IsPayTMpay', 'RefundBalAmount','NEFTBankName','IsNEFTpay','IsCardpay','IsChequepay','ChequeBankName','IsCashpay'];
       controlsToRemove.forEach(controlName => {
         const ctrl = this._Paymentmodesevice.paymentInsertform.get(controlName);

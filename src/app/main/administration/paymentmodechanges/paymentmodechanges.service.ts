@@ -8,11 +8,15 @@ import { ApiCaller } from 'app/core/services/apiCaller';
 export class PaymentmodechangesService {
 
   UseFormGroup:FormGroup
+   tpayFormGroup:FormGroup
   constructor(
     public _formBuilder:UntypedFormBuilder,
     public _httpClient:ApiCaller
   ) 
-  { this.UseFormGroup=this.createUserFormGroup() }
+  { this.UseFormGroup=this.createUserFormGroup()
+    this.tpayFormGroup=this.createUserFormGroup()
+
+   }
 
   createUserFormGroup(){
     return this._formBuilder.group({
@@ -41,7 +45,10 @@ export class PaymentmodechangesService {
     return this._httpClient.PostData("Generic/GetByProc?procName=Retrieve_BrowseIPAdvPaymentReceipt",Param)
   }
   public getDateTimeChange(m_data) {
-    debugger
     return this._httpClient.PutData("Administration/UpdatePaymentdatetime"+ m_data.paymentId,m_data);
+}
+
+public getpaybBillBrowseList(m_data) {
+    return this._httpClient.PostData("PaymentMode/OPBillListForPaymentModeChangeList",m_data);
 }
 }
