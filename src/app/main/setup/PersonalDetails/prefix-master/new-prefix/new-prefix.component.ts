@@ -4,6 +4,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { fuseAnimations } from '@fuse/animations';
 import { ToastrService } from 'ngx-toastr';
 import { PrefixMasterService } from '../prefix-master.service';
+import { SpeechService } from 'app/main/shared/services/speech.service';
 
 
 @Component({
@@ -17,22 +18,27 @@ export class NewPrefixComponent implements OnInit {
     prefixForm: FormGroup;
     isActive: boolean = true;
     autocompleteModegender: string = "Gender";
-    isSaving : boolean = false;
-
+    isSaving: boolean = false;
+    text = '';
     constructor(
         public _PrefixMasterService: PrefixMasterService,
         public dialogRef: MatDialogRef<NewPrefixComponent>,
         @Inject(MAT_DIALOG_DATA) public data: any,
-        public toastr: ToastrService
+        public toastr: ToastrService,
+        private speech: SpeechService
     ) { }
 
-
+    speak() {
+        this.speech.start(result => {
+            this.text += result;
+        });
+    }
     ngOnInit(): void {
 
         this.prefixForm = this._PrefixMasterService.createPrefixForm();
         this.prefixForm.markAllAsTouched();
-        if ((this.data?.prefixId??0) > 0){
-            this.isActive=this.data.isActive
+        if ((this.data?.prefixId ?? 0) > 0) {
+            this.isActive = this.data.isActive
             this.prefixForm.patchValue(this.data);
         }
     }
@@ -40,14 +46,14 @@ export class NewPrefixComponent implements OnInit {
 
     onSubmit() {
         if (!this.prefixForm.invalid) {
-            this.isSaving  = true;
+            this.isSaving = true;
             this._PrefixMasterService.prefixMasterSave(this.prefixForm.value).subscribe((response) => {
                 this.toastr.success(response.message);
                 this.onClear(true);
-                this.isSaving  = false;
+                this.isSaving = false;
             }, (error) => {
                 this.toastr.error(error.message);
-                this.isSaving  = false;
+                this.isSaving = false;
             });
         }
         else {
