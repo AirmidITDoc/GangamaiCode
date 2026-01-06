@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { SalespageRedirectComponent } from './salespage-redirect/salespage-redirect.component';
+import { InpatientbrowseListComponent } from './inpatientbrowse-list/inpatientbrowse-list.component';
 
 
 const appRoutes: Routes = [
@@ -74,7 +75,7 @@ const appRoutes: Routes = [
 @NgModule({
   declarations: [   
   
-    SalespageRedirectComponent
+    SalespageRedirectComponent, InpatientbrowseListComponent
   ],
   imports: [
     RouterModule.forChild(appRoutes)
