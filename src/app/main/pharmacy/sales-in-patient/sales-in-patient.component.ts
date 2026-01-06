@@ -1069,14 +1069,14 @@ export class SalesInPatientComponent implements OnInit {
              });
   
              if (this.ItemSubform.get('CashPay').value == 'Credit') { 
-                   if (!formValue.CredirReasonId) {
-                 this.toastr.warning('Please select Credit Reason ', 'Warning !', {
-                     toastClass: 'tostr-tost custom-toast-warning',
-                 });
-                 return;
-             }  
-                 this.PharmaSalesForm.get('sales.creditReason').setValue(formValue.CredirReasonName)
-                 this.PharmaSalesForm.get('sales.creditReasonId').setValue(formValue.CredirReasonId) 
+            //        if (!formValue.CredirReasonId) {
+            //      this.toastr.warning('Please select Credit Reason ', 'Warning !', {
+            //          toastClass: 'tostr-tost custom-toast-warning',
+            //      });
+            //      return;
+            //  }  
+                 this.PharmaSalesForm.get('sales.creditReason').setValue('')
+                 this.PharmaSalesForm.get('sales.creditReasonId').setValue(0) 
                  this.PharmaSalesForm.get('sales.paidAmount').setValue(0)
                  this.PharmaSalesForm.get('sales.balanceAmount').setValue((Math.round(formValue.netAmount)))
                  console.log(this.PharmaSalesForm.value)

@@ -73,7 +73,12 @@ public deactivateTheStatuspayment(m_data) {
 public getBilllistReport(Param: any) {
   return this._httpClient.PostData("Report/ViewReport",Param);
 }
-
+  public AddchargesDelete(m_data, loader = true) {
+    if (loader) {
+      this._loaderService.show();
+    }
+    return this._httpClient1.PostData("IPBill/IPAddchargesdelete", m_data);
+  }
 public getReportView(Param,loader = true) {
     if (loader) {
       this._loaderService.show();

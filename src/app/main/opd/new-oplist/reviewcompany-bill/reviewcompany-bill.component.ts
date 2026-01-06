@@ -63,6 +63,7 @@ export class ReviewcompanyBillComponent {
   currency:any='';
   OPDIPDID:any=0;
   opD_IPD_Type:any=1;
+  BillNo:any;
   ReturnList:any=[];
 
   public isDiscountApplied = false;
@@ -71,7 +72,9 @@ export class ReviewcompanyBillComponent {
   public displayedChargeColumns: string[] =
     ['Status','ServiceCode', 'ServiceName', 'Price', 'Qty', 'TotalAmount', 'DiscountPer', 'DiscountAmount', 'NetAmount', 'DoctorName',
       //  'ClassName', 'ChargesAddedName',  
-      'Exclucion', 'Approved'];
+      'Exclucion', 'Approved',
+      //'buttons'
+      ];
   public displayedColumnspackage: string[] =
     ['IsCheck', 'ServiceNamePackage', 'ServiceName', 'Price', 'Qty', 'TotalAmt', 'DoctorName', 'DiscAmt', 'NetAmount'];
   public displayedbillColumns: string[] =['Label','BillNo', 'NetAmount','BalanceAmt'];
@@ -100,6 +103,8 @@ export class ReviewcompanyBillComponent {
       this.patientDetail = this.data?.Obj;
       this.OPDIPDID = this.data?.Obj?.opdipdid || 0 
       this.opD_IPD_Type = this.data?.OPIPType || 0
+      this.Lable = 'Bill'
+      this.BillNo = this.patientDetail?.billNo
       this.getPrevCompanyBillList(this.patientDetail?.billNo,'Bill')
       this.getBilllist();
       //opdno
@@ -211,6 +216,7 @@ export class ReviewcompanyBillComponent {
   getBillDetlist(element){
     this.BillDetailsObj = element
     this.Lable = element.Lbl || '';
+    this.BillNo=element.BillNo
     this.getPrevCompanyBillList(element.BillNo,element.Lbl)
   }
   getPrevCompanyBillList(billNo,Label) {
@@ -282,27 +288,7 @@ export class ReviewcompanyBillComponent {
     })
   }
 
-  deleteCharge(index: number, element) {
-    this.chargeList.splice(index, 1);
-    this.dsChargeList.data = this.chargeList;
-    this.calculateTotalAmount();
-    if (!this.chargeList.length) {
-      this.isDiscountApplied = false;
-    }
-    Swal.fire({
-      title: 'ChargeList Row Deleted Successfully',
-      confirmButtonColor: "#3085d6",
-      confirmButtonText: "Ok!"
-    }).then((result) => {
-      /* Read more about isConfirmed, isDenied below */
-      if (result.isConfirmed) {
-        if (element.IsPackage == '1' && element.ServiceId) {
-          this.PacakgeList = this.PacakgeList.filter(item => item.PackageServiceId != element.ServiceId)
-          this.dsPackageList.data = this.PacakgeList;
-        }
-      }
-    });
-  }
+
   calculateTotalAmount(): void { 
     let totalSum = this.chargeList.reduce((sum, charge) => sum + (+charge.totalAmt), 0);
     let DiscPerSum = this.chargeList.reduce((sum, charge) => sum + (+charge.concessionPercentage), 0);
@@ -484,6 +470,8 @@ export class ReviewcompanyBillComponent {
     this.chargeList = [];
     this.dsChargeList.data = []
     this.patientDetail = [];
+    this.BillNo=0;
+    this.Lable = '';
     this.OPFooterForm.reset({
       totalAmt: 0,
       totalDiscountPer: 0,
@@ -675,6 +663,33 @@ export class ReviewcompanyBillComponent {
       ],
     }
   }
+      deletecharges(contact) {
+          Swal.fire({
+              title: 'Do you want to cancel the Service ',
+              text: "You won't be able to revert this!",
+              icon: "warning",
+              showCancelButton: true,
+              confirmButtonColor: "#3085d6",
+              cancelButtonColor: "#d33",
+              confirmButtonText: "Yes, Delete it!"
+  
+          }).then((flag) => {
+              if (flag.isConfirmed) {
+                  let Chargescancle = {};
+                  Chargescancle['chargesId'] = contact.chargesId;
+                  Chargescancle['isCancelledBy'] = this.accountService.currentUserValue.userId;
+  
+                  let submitData = {
+                      "deleteCharges": Chargescancle
+                  };
+                  console.log(submitData);
+                  this._OPListService.AddchargesDelete(submitData).subscribe(response => {
+                      this.getPrevCompanyBillList(this.BillNo,this.Lable);
+                  });
+              }
+          });
+  
+      }
 }
 
 export class ChargesList {
