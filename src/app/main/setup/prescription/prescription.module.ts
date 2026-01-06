@@ -1,6 +1,9 @@
 import { NgModule } from "@angular/core";
 
 import { RouterModule, Routes } from "@angular/router";
+import { GastologyQuestionMasterComponent } from './gastology-question-master/gastology-question-master.component';
+import { SubQuestionMasterComponent } from './sub-question-master/sub-question-master.component';
+import { SubResultValueMasterComponent } from './sub-result-value-master/sub-result-value-master.component';
 
 const appRoutes: Routes = [
     {
@@ -52,10 +55,34 @@ const appRoutes: Routes = [
                 (m) => m.PrescriptionTemplateModule
             ),
     },
+
+    {
+        path: "QuestionMaser",
+        loadChildren: () =>
+            import("./gastology-question-master/question-master.module").then(
+                (m) => m.QuestionMasterModule
+            ),
+    },
+    {
+        path: "SubQuestionMaser",
+        loadChildren: () =>
+            import("./sub-question-master/subquestion-master.module").then(
+                (m) => m.SubquestionMasterModule
+            ),
+    },
+    {
+        path: "SubQuestionvaluesMaser",
+        loadChildren: () =>
+            import("./sub-result-value-master/subresult-value.module").then(
+                (m) => m.SubresultValueModule
+            ),
+    },
 ];
 
 @NgModule({
-    declarations: [],
+    declarations: [
+  
+  ],
     imports: [RouterModule.forChild(appRoutes)],
 })
 export class PrescriptionModule {}
