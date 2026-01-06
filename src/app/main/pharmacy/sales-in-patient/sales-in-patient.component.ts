@@ -1470,7 +1470,7 @@ export class SalesInPatientComponent implements OnInit {
          if (DraftQty && contact.unitMrp) {
              this.saleSelectedDatasource.data = [];
              let LandedRateandedTotal = '0', TotalMRP = '0', PurTotAmt = '0',
-                 v_marginamt = '0', GSTAmount = '0', CGSTAmt = '0', SGSTAmt = '0', IGSTAmt = '0', NetAmt = '0';
+                 v_marginamt = '0', GSTAmount = '0', CGSTAmt = '0', SGSTAmt = '0', IGSTAmt = '0', NetAmt = '0',MRPRateTotal = '0';
  
              TotalMRP = (parseInt(DraftQty) * contact.unitMrp).toFixed(2);
              LandedRateandedTotal = (parseInt(DraftQty) * contact.landedRate).toFixed(2);
@@ -1480,6 +1480,7 @@ export class SalesInPatientComponent implements OnInit {
              CGSTAmt = (((contact.unitMrp * contact.cgstper) / 100) * parseInt(DraftQty)).toFixed(2);
              SGSTAmt = (((contact.unitMrp * contact.sgstper) / 100) * parseInt(DraftQty)).toFixed(2);
              IGSTAmt = (((contact.unitMrp * contact.igstper) / 100) * parseInt(DraftQty)).toFixed(2);
+             MRPRateTotal =  (parseInt(DraftQty) * contact.unitMrp).toFixed(2);
              NetAmt = (parseFloat(TotalMRP) - 0).toFixed(2);
  
              // if (contact.DiscPer > 0) {
@@ -1530,7 +1531,10 @@ export class SalesInPatientComponent implements OnInit {
                      MarginAmt: v_marginamt,
                      BalanceQty: contact?.balanceQty,
                      SalesDraftId: 0,
-                     StoreId: contact?.storeId
+                     StoreId: contact?.storeId,
+                     MRP: contact?.unitMrp,
+                     MRPRate:contact?.unitMrp,
+                     MRPRateTotal:MRPRateTotal
                  }
              )
              this.saleSelectedDatasource.data = this.Itemchargeslist;

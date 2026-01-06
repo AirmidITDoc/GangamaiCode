@@ -138,4 +138,7 @@ public UpdateCompanyBilling(Param: any) {
     // public getReportViewdata(Param) {
     //        return this._httpClient1.PostData("Common",Param)
     // }
+  public UpdateGovernAmt(m_data) {
+  return this._httpClient.PostData("IPBill/BillGovtUpdate", m_data);
+}
 }

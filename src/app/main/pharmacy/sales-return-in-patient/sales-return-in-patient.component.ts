@@ -228,7 +228,7 @@ export class SalesReturnInPatientComponent implements OnInit {
     let storeID = this.accountService.currentUserValue.user.storeId
     let ItemName = this.ItemFormGroup.get('ItemName')?.value + '%' || '%'
     const Filters = [
-      { "fieldName": "RegNo", "fieldValue": String(this.vRegno), "opType": "Equals" },
+      { "fieldName": "AdmissionId", "fieldValue": String(this.registerObj?.admissionID), "opType": "Equals" },
       { "fieldName": "StoreId", "fieldValue": String(storeID), "opType": "Equals" },
       { "fieldName": "ItemName", "fieldValue": String(ItemName), "opType": "Equals" },
       { "fieldName": "BatchNo", "fieldValue": String(0), "opType": "Equals" }

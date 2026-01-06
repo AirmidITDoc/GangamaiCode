@@ -1,6 +1,6 @@
 import { DatePipe } from '@angular/common';
 import { Component, Inject, OnInit, Optional, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, FormGroupName, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from "@angular/material/dialog";
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { fuseAnimations } from '@fuse/animations';
@@ -31,6 +31,7 @@ import { forEach } from 'lodash';
 export class ReviewcompanyBillComponent {
   OpBillEditSaveForm: FormGroup;
   OPFooterForm: FormGroup;
+  CompanyUpdateForm:FormGroup;
   patientDetail: any = new RegInsert({});
   public chargeList: ChargesList[] = [];
   public packageList: ChargesList[] = [];
@@ -58,6 +59,7 @@ export class ReviewcompanyBillComponent {
   CompanyName: any;
   DepartmentName: any;
   autocompleteModeConcession: string = "Concession";
+   autocompleteModecompany: string = "Company"; 
   vPrice = '0';
   vQty: any;
   currency:any='';
@@ -97,6 +99,8 @@ export class ReviewcompanyBillComponent {
     this.OPFooterForm = this.CreateOPFooter();
     this.OPFooterForm.markAllAsTouched();
     this.salesUpdateForm = this.CreateSalesUpdateForm();
+    this.CompanyForm = this.CreateCompanyForm()
+    this.CompanyUpdateForm = this.CreateCompanyUpdateForm();
 
     if (this.data) {
       console.log(this.data)
@@ -211,6 +215,54 @@ export class ReviewcompanyBillComponent {
       storeId: [item?.storeId, [this._FormvalidationserviceService.notEmptyOrZeroValidator(),]],
       istkId: [item?.stockId || 0, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
     });
+  }
+  CompanyForm:FormGroup;
+   CreateCompanyForm() {
+    return this.formBuilder.group({ 
+        govtCompanyId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        govtApprovedAmt: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+        companyApprovedId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        companyApprovedAmt: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]], 
+      })
+  } 
+  CreateCompanyUpdateForm() {
+    return this.formBuilder.group({
+      billGovtUpdates: this.formBuilder.group({
+        govtCompanyId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        govtApprovedAmt: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+        companyApprovedId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        companyApprovedAmt: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+        billNo: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]]
+      }),
+    })
+  } 
+  CompanyAmtSave(){
+    debugger
+    const formValue = this.CompanyForm.value
+    if (!((formValue?.govtCompanyId && formValue?.govtApprovedAmt) || (formValue?.companyApprovedId && formValue?.companyApprovedAmt))) {
+      this.toastr.warning('Select Company & Enter Amount', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return
+    }
+     if (!(this.BillNo || 0)) {
+      this.toastr.warning('Please check Bill No is Invalid', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return
+    }
+      this.CompanyUpdateForm.get('billGovtUpdates').patchValue({
+        billNo:this.BillNo || 0,
+        govtCompanyId:formValue?.govtCompanyId || 0,
+        govtApprovedAmt:formValue?.govtApprovedAmt || 0,
+        companyApprovedId:formValue?.companyApprovedId || 0,
+        companyApprovedAmt:formValue?.companyApprovedAmt || 0
+        })
+
+
+    this._OPListService.UpdateGovernAmt(this.CompanyUpdateForm.value).subscribe(response=>{
+    })
+
   }
   BillDetailsObj:any;
   getBillDetlist(element){
@@ -660,6 +712,26 @@ export class ReviewcompanyBillComponent {
       ],
       remark: [
         { name: "pattern", Message: "only Char allowed." }
+      ],
+       govtCompanyId: [
+        {
+          name: "pattern", Message: "only Number allowed."
+        }
+      ],
+        govtApprovedAmt: [
+        {
+          name: "pattern", Message: "only Number allowed."
+        }
+      ],
+        companyApprovedId: [
+        {
+          name: "pattern", Message: "only Number allowed."
+        }
+      ],
+        companyApprovedAmt: [
+        {
+          name: "pattern", Message: "only Number allowed."
+        }
       ],
     }
   }
