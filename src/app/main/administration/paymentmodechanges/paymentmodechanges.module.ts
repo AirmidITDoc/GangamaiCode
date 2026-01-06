@@ -38,6 +38,7 @@ import { DateUpdateComponent } from './date-update/date-update.component';
 import { EditPaymentComponent } from './edit-payment/edit-payment.component';
 import { PaymentmodechangesComponent } from './paymentmodechanges.component';
 import { PaymentmodechangesService } from './paymentmodechanges.service';
+import { NewedipamodeComponent } from './newedipamode/newedipamode.component';
 
 
 const routes: Routes = [
@@ -48,7 +49,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    declarations: [PaymentmodechangesComponent, DateUpdateComponent, EditPaymentComponent],
+    declarations: [PaymentmodechangesComponent, DateUpdateComponent, EditPaymentComponent, NewedipamodeComponent],
     imports: [
         RouterModule.forChild(routes),
         CommonModule,

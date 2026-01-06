@@ -489,6 +489,7 @@ export class RadiologyOrderListComponent implements OnInit {
 
             const portal = new ComponentPortal(WhatsappDetPopUpOverComponent);
             const componentRef: ComponentRef<WhatsappDetPopUpOverComponent> = this.whatsappOverlayRef.attach(portal);
+            console.log(patientData)
             componentRef.instance.patientData = patientData;
 
             // Handle mouse events on the overlay element
@@ -529,11 +530,12 @@ export class RadiologyOrderListComponent implements OnInit {
 
     getWhatsappshareRadioReport(el) {
         console.log(el);
+        debugger
         this._whatsppService.OnWhatsAppMsgSent({
             mobileNo: el.mobileNo,
             patientName: el.patientName,
-            billNo: el.billNo,
-            smsType: "OPBill",
+            billNo: el.radReportId,
+            smsType: "RadiologyReport",
             patientId: el.regNo
         })
     }
@@ -546,7 +548,7 @@ export class RadiologyOrderListComponent implements OnInit {
                 width: '55%',
                 data: {
                     Obj: contact,
-                    emailType: 'OPBill'
+                    emailType: 'RadiologyReport'
                 }
             });
         dialogRef.afterClosed().subscribe(result => {

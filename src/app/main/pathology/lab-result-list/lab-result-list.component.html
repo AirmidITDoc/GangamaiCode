@@ -1,1 +1,500 @@
-<p>lab-result-list works!</p>
+<div class="page-layout simple inner-sidebar inner-scroll" style="width:100% ;" fusePerfectScrollbar>
+    <!-- HEADER -->
+    <div class="top-header">
+        <div class="top-header-info" fxLayout="row" fxLayoutAlign="start center">
+
+            <mat-icon class="logo-icon" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">account_box
+            </mat-icon>
+            <div class="top-header-title" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                <span>Lab Result Entry List </span>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="layout-body p-12">
+        <mat-card>
+            <!-- class="info-badge-top overflow-auto mb-3" -->
+            <div class="layout-body-container center">
+                <div class="info-badge-top" fxLayout="row" fxLayoutAlign="space-between" flex>
+
+                    <div fxLayout="row" fxLayoutAlign="start center" class="gap-8 mb-8">
+
+                        <div class="dashboard-card registrations">
+                            <div class="card-label">TotalTest Result :{{Vtotalcount}} <mat-icon class="card-icon"
+                                    matTooltip="Total Test Results">assignment</mat-icon></div>
+                        </div>
+
+                        <div class="dashboard-card appointments">
+                            <div class="card-label">Completed :{{VCompletedcount}} <mat-icon class="card-icon"
+                                    matTooltip="Completed Tests">check_circle</mat-icon></div>
+                        </div>
+
+                        <div class="dashboard-card appointments-split">
+                            <div class="card-label">Pending:{{Vpendingcount}} <mat-icon class="card-icon"
+                                    matTooltip="Pending Tests">schedule</mat-icon></div>
+                        </div>
+
+                    </div>
+
+                </div>
+                <form [formGroup]="myformSearch" class="mat-error-fix">
+                    <div fxLayout="column" style="padding-top:5px ;">
+                        <div class="layout-card-container" style="height: 60px;">
+
+                            <div fxLayout.gt-xs="row" fxLayout="column" fxLayoutAlign="start" class="gap-4">
+                                <div fxLayout="row wrap" fxFlex fxLayoutGap="14px 0px grid">
+
+                                    <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="35%">
+                                        <airmid-datepicker [formGroup]="myformSearch" [isRangePicker]="true"
+                                            formStartControlName="start" formEndControlName="end"
+                                            [(fromValue)]="gridConfig.filters[3].fieldValue"
+                                            [(toValue)]="gridConfig.filters[4].fieldValue">
+                                        </airmid-datepicker>
+                                    </div>
+
+                                    <div fxFlex="10%" fxFlex.xs="100%" fxFlex.sm="35%">
+                                        <mat-form-field appearance="outline" fxFlex>
+                                            <mat-label>UHID</mat-label>
+                                            <input matInput placeholder="Search UHID" autocomplete="off"
+                                                [formGroup]="myformSearch" formControlName="RegNoSearch"
+                                                (input)="onChangeFirst()" />
+                                            <button matSuffix mat-icon-button aria-label="Clear"
+                                                (click)="Clearfilter('RegNoSearch')">
+                                                <mat-icon>close</mat-icon>
+                                            </button>
+                                        </mat-form-field>
+                                    </div>
+                                    <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="35%">
+                                        <mat-form-field appearance="outline" fxFlex>
+                                            <mat-label>FirstName</mat-label>
+                                            <input matInput placeholder="Search FirstName" autocomplete="off"
+                                                [formGroup]="myformSearch" formControlName="FirstNameSearch"
+                                                (input)="onChangeFirst()" />
+                                            <button matSuffix mat-icon-button aria-label="Clear"
+                                                (click)="Clearfilter('FirstNameSearch')">
+                                                <mat-icon>close</mat-icon>
+                                            </button>
+                                        </mat-form-field>
+                                    </div>
+                                    <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="35%">
+
+                                        <mat-form-field appearance="outline" fxFlex>
+                                            <mat-label>LastName</mat-label>
+                                            <input matInput placeholder="Search LastName" autocomplete="off"
+                                                [formGroup]="myformSearch" formControlName="LastNameSearch"
+                                                (input)="onChangeFirst()" />
+                                            <button matSuffix mat-icon-button aria-label="Clear"
+                                                (click)="Clearfilter('LastNameSearch')">
+                                                <mat-icon>close</mat-icon>
+                                            </button>
+                                        </mat-form-field>
+                                    </div>
+                                    <!-- <div fxFlex="16%" fxLayout="row">
+                                        <mat-radio-group name="PatientTypeSearch" formControlName="PatientTypeSearch"
+                                            (change)="onChangeFirst()" fxLayout="column" value="2" class="gap-4"
+                                            [(ngModel)]="gridConfig.filters[6].fieldValue">
+                                            <mat-label><b>Patient Type:</b></mat-label>
+                                            <div fxLayout="row">
+                                                <mat-radio-button value='3'>All</mat-radio-button>
+                                                <mat-radio-button value='1'>IP</mat-radio-button>
+                                                <mat-radio-button value='0'>OP</mat-radio-button>
+                                                <mat-radio-button value='4'>LAB</mat-radio-button>
+                                            </div>
+                                        </mat-radio-group>
+                                    </div> -->
+
+                                    <div fxFlex="15%" fxLayout="row">
+                                        <mat-radio-group name="StatusSearch" formControlName="StatusSearch"
+                                            (change)="onChangeFirst()" fxLayout="column" value="0" class="gap-4"
+                                            [(ngModel)]="vStatusSearch">
+                                            <mat-label><b>Status:</b></mat-label>
+                                            <div fxLayout="row">
+                                                <mat-radio-button value='0'>Pending</mat-radio-button>
+                                                <mat-radio-button value='1'>Completed</mat-radio-button>
+                                            </div>
+                                        </mat-radio-group>
+                                    </div>
+                                    <!-- (click)="searchRecords($event)" -->
+                                    <div class="action-button-container">
+                                        <div class="button-row-group">
+                                            <button class="btn btn-danger-outline btn-xs"
+                                                (click)="onClear()">clear</button>
+                                            <button class="btn btn-primary btn-with-icon btn-xs"
+                                                (click)="searchRecords($event)">
+                                                <span>Search</span>
+                                                <span class="btn-icon">
+                                                    <mat-icon>search</mat-icon>
+                                                </span>
+                                            </button>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
+                            dynamicTableHeight>
+
+                            <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+
+                                <mat-card>
+                                    <div id="contacts"
+                                        class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+
+                                        <ng-template #actionButtonTemplate let-element>
+                                            <div fxLayout="row" fxLayoutAlign="center center">
+                                                <button mat-icon-button matTooltip="Sample Collection"
+                                                    (click)="onSampleCollSave(element)">
+                                                    <mat-icon>description</mat-icon>
+                                                </button>
+
+                                                <button mat-icon-button matTooltip="Patient Details Sticker"
+                                                    (click)="OnPrintPatientIcard(element)">
+                                                    <mat-icon>pages</mat-icon>
+                                                </button>
+
+                                            </div>
+                                        </ng-template>
+
+                                        <airmid-table [gridConfig]="gridConfig" #grid :ShowFilter="false"
+                                            :ShowButtons="false" (onSelectRow)="getSelectedRow($event)">
+                                        </airmid-table>
+
+                                    </div>
+                                </mat-card>
+
+                                <mat-card style="margin-top:5px; padding:5px;">
+                                    <div id="contacts"
+                                        class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+
+                                        <div style="height: 30px;">
+                                            <button mat-raised-button (click)="chkresultentry(selection.selected,true)">
+                                                Result Entry
+                                            </button>
+
+                                            <button mat-raised-button (click)="Printresultentry()"
+                                                style="margin-left: 5px;" *ngIf="selection.selected.length>0">
+                                                Print Result
+                                            </button>
+
+                                            <button mat-raised-button (click)="Printresultentrywithheader(contact)"
+                                                *ngIf="selection.selected.length>0" style="margin-left: 5px;">
+                                                Print With Header
+                                            </button>
+
+                                        </div>
+                                        
+                                        <mat-table class="airmid-table patient-table" matSort [dataSource]="dataSource1"
+                                            [@animateStagger]="{ value: '50' }">
+
+                                            <ng-container matColumnDef="select">
+                                                <th mat-header-cell *matHeaderCellDef>
+                                                    <mat-checkbox (change)="$event ? masterToggle() : null"
+                                                        [checked]="selection.hasValue()"
+                                                        [indeterminate]="selection.hasValue() && !isAllSelected()">
+                                                    </mat-checkbox>
+                                                </th>
+                                                <td mat-cell *matCellDef="let contact">
+                                                    <mat-checkbox (click)="$event.stopPropagation()"
+                                                        (change)="onresultentryshow($event,contact)"
+                                                        (change)="$event ? selection.toggle(contact) : null"
+                                                        *ngIf="contact.isTemplateTest !='1' else noMLC"
+                                                        [checked]="selection.isSelected(contact)">
+                                                    </mat-checkbox>
+                                                    <ng-template #noMLC>
+                                                        <div
+                                                            style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;">
+                                                            <span>----</span>
+                                                        </div>
+                                                    </ng-template>
+                                                </td>
+                                            </ng-container>
+
+                                            <ng-container matColumnDef="action1">
+                                                <mat-header-cell *matHeaderCellDef fxShow.gt-sm
+                                                    class="w-200">Status</mat-header-cell>
+                                                <mat-cell *matCellDef="let contact" class="w-200">
+
+                                                    <div fxLayout="row" fxLayoutAlign="center center">
+
+                                                        <mat-icon *ngIf="contact.isTemplateTest=='1'"
+                                                            matTooltip="Template Test" class="s-20 mr-4"
+                                                            color="primary">
+                                                            assignment
+                                                        </mat-icon>
+                                                        <mat-icon *ngIf="contact.isTemplateTest !='1'"
+                                                            matTooltip="Result Test" class="s-20 mr-4"
+                                                            style="color: #9c27b0;">
+                                                            description
+                                                        </mat-icon>
+
+                                                        <mat-icon *ngIf="contact.isCompleted"
+                                                            matTooltip="Report Completed" class="s-20 mr-4"
+                                                            style="color: #4caf50;">
+                                                            check_circle
+                                                        </mat-icon>
+                                                        <mat-icon *ngIf="!contact.isCompleted"
+                                                            matTooltip="Report Not Completed" class="s-20 mr-4"
+                                                            style="color: #f44336;">
+                                                            hourglass_empty
+                                                        </mat-icon>
+
+                                                        <mat-icon *ngIf="contact.outSourceStatus"
+                                                            matTooltip="OutSource Completed" class="s-20 mr-4"
+                                                            color="warn">
+                                                            send
+                                                        </mat-icon>
+                                                        <mat-icon *ngIf="!contact.outSourceStatus" matTooltip="Lab Test"
+                                                            class="s-20 mr-4" color="accent">
+                                                            local_hospital
+                                                        </mat-icon>
+
+                                                        <mat-icon *ngIf="contact.isVerifyid"
+                                                            matTooltip="Report Verified" class="s-20 mr-4"
+                                                            style="color: #4caf50;">
+                                                            verified_user
+                                                        </mat-icon>
+                                                        <mat-icon *ngIf="!contact.isVerifyid"
+                                                            matTooltip="Report Not Verified" class="s-20 mr-4"
+                                                            style="color: #9e9e9e;">
+                                                            schedule
+                                                        </mat-icon>
+                                                    </div>
+
+                                                </mat-cell>
+                                            </ng-container>
+
+                                            <ng-container matColumnDef="status">
+                                                <mat-header-cell *matHeaderCellDef fxShow.gt-sm
+                                                    class="w-180">Status</mat-header-cell>
+                                                <mat-cell *matCellDef="let contact" class="w-180">
+                                                    <div fxLayout="row" fxLayoutAlign="center center">
+                                                        <ng-container *ngIf="contact">
+                                                            <div class="status-wrapper">
+                                                                <span class="status-box" [ngClass]="{
+                                                                    'status-completed': contact.isCompleted,
+                                                                    'status-pending': !contact.isCompleted
+                                                                }" [matTooltip]="getCompleteTooltip(contact)"
+                                                                    matTooltip="{{ contact.isCompleted ? 'Report Completed' : 'Report Not Completed' }}">
+                                                                    {{ contact.isCompleted ? 'Completed' : 'Pending' }}
+                                                                </span>
+                                                            </div>
+                                                        </ng-container>
+                                                    </div>
+                                                </mat-cell>
+                                            </ng-container>
+
+                                            <ng-container matColumnDef="verify">
+                                                <mat-header-cell *matHeaderCellDef fxShow.gt-sm
+                                                    class="w-180">Verify</mat-header-cell>
+                                                <mat-cell *matCellDef="let contact" class="w-180">
+                                                    <div fxLayout="row" fxLayoutAlign="center center">
+                                                        <ng-container *ngIf="contact">
+                                                            <div class="status-wrapper">
+                                                                <span class="status-box" [ngClass]="{
+                                                                    'status-completed': contact.isVerifyid,
+                                                                    'status-pending': !contact.isVerifyid
+                                                                }" [matTooltip]="getVerifyTooltip(contact)"
+                                                                    matTooltipClass="verify-tooltip"
+                                                                    (click)="contact.isCompleted && !contact.isVerifyid && chkresultentryVerify(contact,true)"
+                                                                    [style.cursor]="contact.isCompleted && !contact.isVerifyid ? 'pointer' : 'default'"
+                                                                    [style.pointer-events]="contact.isCompleted ? 'auto' : 'none'">
+                                                                    {{ contact.isVerifyid ? 'Verified' : 'UnVerified' }}
+                                                                </span>
+                                                            </div>
+                                                        </ng-container>
+                                                    </div>
+                                                </mat-cell>
+                                            </ng-container>
+
+                                            <ng-container matColumnDef="CategoryName">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md
+                                                    class="w-150">
+                                                    Category
+                                                </mat-header-cell>
+                                                <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="w-150">
+                                                    <span> {{contact.categoryName}}</span>
+                                                </mat-cell>
+                                            </ng-container>
+
+                                            <ng-container matColumnDef="TestName" sticky>
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm
+                                                    class="w-300">Test Name
+                                                </mat-header-cell>
+                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-300">
+                                                    <span> {{contact.serviceName}}</span>
+                                                </mat-cell>
+                                            </ng-container>
+
+                                            <ng-container matColumnDef="SampleCollectionTime">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md
+                                                    class="w-150">
+                                                    SampleColl.Date
+                                                </mat-header-cell>
+                                                <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md class="w-150">
+                                                    <!-- <span> {{contact.sampleCollectionTime | date:'dd/MM/yyyy, h:mm a'}}</span> -->
+                                                    <span> {{contact.sampleCollectionTime }}</span>
+                                                </mat-cell>
+                                            </ng-container>
+
+                                            <ng-container matColumnDef="SampleNo">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
+                                                    Sample No|CollectedBy
+                                                </mat-header-cell>
+                                                <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
+                                                    <span> {{contact.sampleNo}}</span>
+                                                </mat-cell>
+                                            </ng-container>
+
+                                            <ng-container matColumnDef="outSourceLabName">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
+                                                    OutSource Name
+                                                </mat-header-cell>
+
+                                                <mat-cell *matCellDef="let element" fxHide fxShow.gt-md>
+
+                                                    <!-- If OutSource Lab Name exists -->
+                                                    <ng-container *ngIf="element.outSourceLabName; else noOutSource">
+                                                        <span [matBadge]="element.tokenNo" matBadgeColor="warn"
+                                                            matBadgePosition="after" matBadgeOverlap="false"
+                                                            matBadgeSize="small" [matBadgeHidden]="!element.tokenNo"
+                                                            (mouseenter)="openPatientDetailsPopover($event, element)"
+                                                            (mouseleave)="closePatientDetailsPopover()" style="font-size:14px; line-height:18px; cursor:pointer;
+                                                            text-decoration:underline; color:#667eea;">
+                                                            {{ element.outSourceLabName }}
+                                                        </span>
+
+                                                        <!-- Edit icon -->
+                                                        <button mat-icon-button *ngIf="element.isPathOutSource == 1"
+                                                            (click)="Editoutsoucedata(element)"
+                                                            matTooltip="Edit OutSource Data">
+                                                            <mat-icon style="color:#ff5722;">edit</mat-icon>
+                                                        </button>
+                                                    </ng-container>
+
+                                                    <!-- If OutSource Lab Name NOT exists -->
+                                                    <!-- <ng-template #noOutSource>
+                                                    <button mat-icon-button *ngIf="element.isPathOutSource == 1"
+                                                        (click)="Editoutsoucedata(element)"
+                                                        matTooltip="Add OutSource Data">
+                                                        <mat-icon style="color:#ff5722;">local_shipping</mat-icon>
+                                                    </button>
+                                                </ng-template> -->
+                                                    <ng-template #noOutSource>
+                                                        <span [matTooltip]="element.isSampleCollection === 'False'
+                                                        ? 'Please complete sample collection first'
+                                                        : ''">
+
+                                                            <button mat-icon-button *ngIf="element.isPathOutSource == 1"
+                                                                [disabled]="element.isSampleCollection === 'False'"
+                                                                (click)="element.isSampleCollection !== 'False' && Editoutsoucedata(element)">
+
+                                                                <mat-icon
+                                                                    style="color:#ff5722;">local_shipping</mat-icon>
+                                                            </button>
+
+                                                        </span>
+                                                    </ng-template>
+                                                </mat-cell>
+                                            </ng-container>
+
+                                            <ng-container matColumnDef="action" stickyEnd>
+                                                <mat-header-cell *matHeaderCellDef fxShow.gt-sm class="w-250">
+                                                    Action</mat-header-cell>
+                                                <mat-cell *matCellDef="let contact" class="w-250">
+                                                    <button mat-icon-button *ngIf="contact.isTemplateTest == 0"
+                                                        matTooltip="Edit Result Entry"
+                                                        (click)="chkresultentryEdit(contact,true)">
+                                                        <mat-icon style="color: #ff9800;">edit</mat-icon>
+                                                    </button>
+
+                                                    <button mat-icon-button *ngIf="contact.isTemplateTest == 1"
+                                                        matTooltip="Edit Template Test"
+                                                        (click)="chkresultentry(contact, false)">
+                                                        <mat-icon style="color: #ff9800;">edit</mat-icon>
+                                                    </button>
+
+                                                    <airmid-fileupload-icon [refId]="contact.pathReportId"
+                                                        [refType]="pathFiles" [multiple]="true"
+                                                        [title]="contact.patientName + ' Report'"></airmid-fileupload-icon>
+
+                                                    <button mat-icon-button (click)="Cancleresult(contact)"
+                                                        matTooltip="Cancel Result">
+                                                        <mat-icon color="warn">cancel</mat-icon>
+                                                    </button>
+
+                                                    <button mat-icon-button (click)="Printresultentry(contact)"
+                                                        matTooltip="Print" *ngIf="contact.isCompleted">
+                                                        <mat-icon>print</mat-icon>
+                                                    </button>
+
+                                                    <button mat-icon-button
+                                                        [matTooltip]="'We send the mail on your registered MailID : ' + element?.emailId"
+                                                        matTooltipPosition="right" (click)="Onemail(element)"
+                                                        (mouseenter)="openEmailDetailsPopover($event, element)"
+                                                        (mouseleave)="closeEmailDetailsPopover()"
+                                                        style="position: relative; cursor: pointer; text-decoration: underline; color: #667eea;">
+                                                        <mat-icon>email</mat-icon>
+                                                    </button>
+
+                                                    <button mat-icon-button
+                                                        [matTooltip]="'We send the message on your registered WhatsApp number: ' + element?.mobileNo"
+                                                        matTooltipPosition="right"
+                                                        (click)="getWhatsappshareReport(element)"
+                                                        (mouseenter)="openWhatsappDetailsPopover($event, element)"
+                                                        (mouseleave)="closeWhatsappDetailsPopover()"
+                                                        style="position: relative; cursor: pointer; text-decoration: underline; color: #667eea;">
+                                                        <img width="20" height="20"
+                                                            src="assets/images/logos/WhatsApp.png">
+                                                    </button>
+                                                </mat-cell>
+                                            </ng-container>
+
+                                            <ng-container matColumnDef="loading">
+                                                <mat-footer-cell *matFooterCellDef colspan="6">
+                                                    loading data...
+                                                </mat-footer-cell>
+                                            </ng-container>
+
+                                            <ng-container matColumnDef="noData">
+                                                <mat-footer-cell *matFooterCellDef colspan="6">
+
+                                                    <div class="spinner-border text-danger"
+                                                        *ngIf="isLoading == 'list-loading'" class="backgroundBlur">
+                                                    </div>
+                                                    <span *ngIf="isLoading == 'list-loaded'">No Data Found</span>
+                                                </mat-footer-cell>
+                                            </ng-container>
+
+                                            <mat-header-row class="accent min-width-1500"
+                                                *matHeaderRowDef="displayedColumns1; sticky: true">
+                                            </mat-header-row>
+
+                                            <mat-row class="table1-row" #table1Row
+                                                *matRowDef="let contact; columns: displayedColumns1;"
+                                                [ngClass]="contact.isCompleted == '1' ? 'Pathtest-Completed-Status' : ''"
+                                                [@animate]="{value:'*',params:{y:'100%'}}">
+                                            </mat-row>
+                                            <mat-footer-row *matFooterRowDef="['loading']"
+                                                [ngClass]="{'hide':dataSource1!=null}">
+                                            </mat-footer-row>
+                                            <mat-footer-row *matFooterRowDef="['noData']"
+                                                [ngClass]="{'hide':!(dataSource1!=null && dataSource1.data.length==0)}">
+                                            </mat-footer-row>
+                                        </mat-table>
+                                        <mat-paginator [pageSizeOptions]="[10, 15, 25, 100]" [pageSize]="10"
+                                            showFirstLastButtons></mat-paginator>
+                                    </div>
+                                </mat-card>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </mat-card>
+    </div>
+
+</div>

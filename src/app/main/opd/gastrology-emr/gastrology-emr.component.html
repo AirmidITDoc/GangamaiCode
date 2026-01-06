@@ -303,29 +303,32 @@
 
                                         <div fxFlex="35%">
                                             <mat-card>
-                                                <div fxLayout="row" fxLayoutGap="16px">
-                                                    <mat-form-field appearance="outline" fxFlex="40%">
-                                                        <input matInput type="text" formControlName="quesId"
-                                                            placeholder="Question Name" (keyup)="getQuesList()">
-                                                        <span matSuffix style="display: flex;">
-                                                            <mat-icon
-                                                                (click)="myFormGroup.get('quesId').setValue('');">close</mat-icon>
-                                                            <mat-icon (click)="getQuesList()">search</mat-icon>
-                                                        </span>
-                                                        <mat-error
-                                                            *ngIf="myFormGroup.get('quesId').invalid && myFormGroup.get('quesId').touched">
-                                                            Question Name is required
-                                                        </mat-error>
-                                                    </mat-form-field>
+                                                <div fxLayout="row" fxLayoutGap="16px" style="height: 65px;">
+                                                    <form [formGroup]="myFormGroup">
+                                                        <mat-form-field appearance="outline" fxFlex="450px">
+                                                            <input matInput type="text" formControlName="quesId"
+                                                                placeholder="Question Name" (keyup)="getQuesList()">
+                                                            <span matSuffix style="display: flex;">
+                                                                <mat-icon style="cursor: pointer;"
+                                                                    (click)="myFormGroup.get('quesId').setValue('');">close</mat-icon>
+                                                                <mat-icon (click)="getQuesList()"
+                                                                    style="margin-right: 10px; cursor: pointer;">search</mat-icon>
+                                                            </span>
+                                                            <mat-error
+                                                                *ngIf="myFormGroup.get('quesId').invalid && myFormGroup.get('quesId').touched">
+                                                                Question Name is required
+                                                            </mat-error>
+                                                        </mat-form-field>
+                                                    </form>
                                                 </div>
-                                                
+
                                                 <mat-table #table matSort [dataSource]="dsQuesList"
-                                                    class="h-280 fix-first-col" [@animateStagger]="{value:'50'}">
+                                                    class="h-275 fix-first-col" [@animateStagger]="{value:'50'}">
                                                     <ng-container matColumnDef="QA">
                                                         <mat-header-cell *matHeaderCellDef mat-sort-header>Select
                                                             QA</mat-header-cell>
                                                         <mat-cell
-                                                            *matCellDef="let contact">{{contact.question}}</mat-cell>
+                                                            *matCellDef="let contact">{{contact.questionName}}</mat-cell>
                                                     </ng-container>
                                                     <ng-container matColumnDef="Action" stickyEnd>
                                                         <mat-header-cell *matHeaderCellDef
@@ -377,6 +380,8 @@
                                                     <mat-row
                                                         *matRowDef="let row; columns: displayedQuesselected"></mat-row>
                                                 </mat-table>
+                                                <mat-paginator [pageSizeOptions]="[10, 15, 25, 100]" [pageSize]="10"
+                                                    showFirstLastButtons></mat-paginator>
                                             </mat-card>
                                         </div>
                                     </div>

@@ -34,7 +34,7 @@ export class DateUpdateComponent implements OnInit {
     if (this.data) {
       
       console.log(this.data)
-      this.PaymentId = this.data.PaymentId;
+      this.PaymentId = this.data.paymentId;
       this.BillDate = this.data.BillDate
       console.log(this.PaymentId)
     }

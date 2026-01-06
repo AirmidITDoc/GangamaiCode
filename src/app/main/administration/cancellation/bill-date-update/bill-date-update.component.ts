@@ -43,7 +43,7 @@ export class BillDateUpdateComponent implements OnInit {
       this.AdvanceDetailId = this.data.data.advanceDetailID
       this.RefundId = this.data.data.RefundId
       this.SalesId = this.data.data.salesId
-      this.PaymentId = this.data.data.PaymentId
+      this.PaymentId = this.data.data.paymentId
       this.SalesDate = this.data.data.date
       this.refundDate = this.data.data.refundDate
       console.log(this.BillNo)

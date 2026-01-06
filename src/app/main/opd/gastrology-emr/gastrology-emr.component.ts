@@ -35,6 +35,7 @@ import { CasepaperVisitDetails, gridModel, labRadList, MedicineItemList } from '
 import { AddItemComponent } from '../new-casepaper/add-item/add-item.component';
 import { PrePresciptionListComponent } from '../new-casepaper/pre-presciption-list/pre-presciption-list.component';
 import { PrescriptionTemplateComponent } from '../new-casepaper/prescription-template/prescription-template.component';
+import { QAEntryPopupComponent } from './qa-entry-popup/qa-entry-popup.component';
 
 @Component({
   selector: 'app-gastrology-emr',
@@ -2318,7 +2319,7 @@ export class GastrologyEmrComponent {
   }
 
   getQuesList() {
-    let name = this.myFormGroup.get("quesId").value + "%" || "%";
+    let name = this.myFormGroup.get("quesId").value || "";
     // if (this.vRegNo) {
     var param = {
       "first": 0,
@@ -2328,7 +2329,7 @@ export class GastrologyEmrComponent {
       "filters": [
         {
           "fieldName": "QuestionName",
-          "fieldValue": "%",
+          "fieldValue": String(name),
           "opType": "StartsWith"
         }
       ],
@@ -2348,7 +2349,17 @@ export class GastrologyEmrComponent {
   }
 
   onOpen(row: any = null) {
-
+    const dialogRef = this._matDialog.open(QAEntryPopupComponent,
+      {
+        maxWidth: "96vw",
+        height: "70vh",
+        width: "60%",
+        data: row
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      this.grid.bindGridData();
+      // this.getSelectedRow(event);
+    });
   }
 }
 

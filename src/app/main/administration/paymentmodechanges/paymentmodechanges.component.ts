@@ -14,6 +14,7 @@ import { ToastrService } from 'ngx-toastr';
 import { DateUpdateComponent } from './date-update/date-update.component';
 import { EditPaymentComponent } from './edit-payment/edit-payment.component';
 import { PaymentmodechangesService } from './paymentmodechanges.service';
+import { NewedipamodeComponent } from './newedipamode/newedipamode.component';
 
 @Component({
   selector: 'app-paymentmodechanges',
@@ -59,7 +60,7 @@ export class PaymentmodechangesComponent implements OnInit {
 
   allopdColumns = [
     { heading: "-", key: "label", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
-    { heading: "Pay Date", key: "paymentTime", sort: true, align: 'left', emptySign: 'NA', width: 200, type: 9 },
+    { heading: "Pay Date", key: "paymentTime", sort: true, align: 'left', emptySign: 'NA', width: 200 },
     { heading: "Bill Date", key: "billDate", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 6 },
 
     { heading: "Receipt No", key: "receiptNo", sort: true, align: 'left', emptySign: 'NA' },
@@ -352,7 +353,7 @@ export class PaymentmodechangesComponent implements OnInit {
 
     const selectedValue = event.value;
     if (selectedValue === '0' || selectedValue === 0) {
-       this.onChangeopd();
+      this.onChangeopd();
     } else if (selectedValue === '1' || selectedValue === 1) {
       this.onChangeipd();
     } else if (selectedValue === '2' || selectedValue === 2) {
@@ -386,6 +387,26 @@ export class PaymentmodechangesComponent implements OnInit {
 
     });
   }
+
+
+    onEdit1(row) {
+    console.log(row)
+    const dialogRef = this._matDialog.open(NewedipamodeComponent,
+      {
+        height: "99%",
+        width: '80%',
+        data: {
+          registerObj: row,
+          FromName: "IP-PaymentModeChange"
+        },
+
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed - Insert Action', result);
+      this.grid.bindGridData();
+
+    });
+  }
   PaymentDate(contact) {
     console.log(contact)
     const dialogRef = this._matDialog.open(DateUpdateComponent,
@@ -400,6 +421,97 @@ export class PaymentmodechangesComponent implements OnInit {
       console.log('The dialog was closed - Insert Action', result);
 
     });
+  }
+//tPay
+alltPayColumns = [
+    { heading: "-", key: "label", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
+    { heading: "Pay Date", key: "paymentTime", sort: true, align: 'left', emptySign: 'NA', width: 200, type: 9 },
+    { heading: "Bill Date", key: "billDate", sort: true, align: 'left', emptySign: 'NA', width: 150, type: 6 },
+
+    { heading: "Receipt No", key: "receiptNo", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "Bill No", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "UHID No ", key: "regNo", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+    { heading: "Bill Amount", key: "totalAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+    { heading: "Paid Amount", key: "paidAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+    { heading: "Cash Amount", key: "cashPayAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+    { heading: "Cheque Amount", key: "chequePayAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+    { heading: "Card Amount", key: "cardPayAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+    { heading: "NEFT Pay", key: "neftPayAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+    { heading: "Pay ATM", key: "payTMAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
+    { heading: "User Name", key: "userName", sort: true, align: 'left', emptySign: 'NA' },
+    {
+      heading: "Action", key: "action", align: "right", width: 200, sticky: true, type: gridColumnTypes.template,
+      template: this.actionButtonTemplateOP
+    }
+  ]
+
+  alltPayFilters = [
+    { fieldName: "F_Name", fieldValue: "%", opType: OperatorComparer.StartsWith },
+    { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.StartsWith },
+    { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
+    { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
+    { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
+    { fieldName: "PBillNo", fieldValue: "0", opType: OperatorComparer.Equals },
+    { fieldName: "ReceiptNo", fieldValue: "0", opType: OperatorComparer.Equals }
+  ]
+
+  gridConfigtPay: gridModel = {
+    apiUrl: "PaymentMode/OPBillListForPaymentModeChangeList",
+    columnsList: this.allopdColumns,
+    sortField: "RegNo",
+    sortOrder: 0,
+    filters: this.allopdFilters
+  }
+tpayFormGroup
+  onChangetPay() {
+    this.fromDate = this.datePipe.transform(this._PaymentmodechangesService.UseFormGroup.get('startdate').value, "yyyy-MM-dd")
+    this.toDate = this.datePipe.transform(this._PaymentmodechangesService.UseFormGroup.get('enddate').value, "yyyy-MM-dd")
+    this.f_name = this._PaymentmodechangesService.UseFormGroup.get('FirstName').value + "%"
+    this.l_name = this._PaymentmodechangesService.UseFormGroup.get('LastName').value + "%"
+    this.regNo = this._PaymentmodechangesService.UseFormGroup.get('RegNo').value || "0"
+    this.PBillNo = this._PaymentmodechangesService.UseFormGroup.get('PBillNo').value || "0"
+    this.ReceiptNo = this._PaymentmodechangesService.UseFormGroup.get('ReceiptNo').value || "0"
+    this.getfiltertPay();
+  }
+
+  getfiltertPay() {
+
+    this.gridConfig = {
+      apiUrl: "PaymentMode/OPBillListForPaymentModeChangeList",
+      columnsList: this.allopdColumns,
+      sortField: "RegNo",
+      sortOrder: 0,
+      filters: [{ fieldName: "F_Name", fieldValue: this.f_name, opType: OperatorComparer.Contains },
+      { fieldName: "L_Name", fieldValue: this.l_name, opType: OperatorComparer.Contains },
+      { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
+      { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
+      { fieldName: "Reg_No", fieldValue: this.regNo, opType: OperatorComparer.Equals },
+      { fieldName: "PBillNo", fieldValue: this.PBillNo, opType: OperatorComparer.Equals },
+      { fieldName: "ReceiptNo", fieldValue: this.ReceiptNo, opType: OperatorComparer.Equals }
+      ]
+    }
+    this.grid.gridConfig = this.gridConfig;
+    this.grid.bindGridData();
+    console.log("opd:", this.gridConfig)
+  }
+
+  ClearfiltertPay(event) {
+
+    console.log(event)
+    if (event == 'FirstName')
+      this._PaymentmodechangesService.UseFormGroup.get('FirstName').setValue("")
+    else
+      if (event == 'LastName')
+        this._PaymentmodechangesService.UseFormGroup.get('LastName').setValue("")
+    if (event == 'RegNo')
+      this._PaymentmodechangesService.UseFormGroup.get('RegNo').setValue("")
+    if (event == 'PBillNo')
+      this._PaymentmodechangesService.UseFormGroup.get('PBillNo').setValue("")
+    if (event == 'ReceiptNo')
+      this._PaymentmodechangesService.UseFormGroup.get('ReceiptNo').setValue("")
+
+    this.onNameFieldChange();
   }
 
 
@@ -461,11 +573,14 @@ export class PaymentChange {
   chPayTmamount: any
   tranMode: any
   companyId: any
-  wfamount:any;
-  tdsamount:any
-  strId:any
-      opdipdtype:any
-      PaymentId:any
+  wfamount: any;
+  tdsamount: any
+  strId: any
+  opdipdtype: any
+  PaymentId: any
+  Neftdate: any
+
+  currentDate = new Date().toISOString()
 
   constructor(PaymentChange) {
     {
@@ -498,8 +613,8 @@ export class PaymentChange {
       this.paymentId = PaymentChange.paymentId || 0;
       this.billNo = PaymentChange.billNo || 0;
       this.receiptNo = PaymentChange.receiptNo || 0;
-      this.chequeDate = PaymentChange.chequeDate || 0;
-      this.cardDate = PaymentChange.cardDate || 0;
+      this.chequeDate = PaymentChange.chequeDate || this.currentDate;
+      this.cardDate = PaymentChange.cardDate || this.currentDate;
 
       this.advanceUsedAmount = PaymentChange.advanceUsedAmount || 0;
       this.advanceId = PaymentChange.advanceId || 0;
@@ -526,11 +641,14 @@ export class PaymentChange {
       this.chPayTmamount = PaymentChange.chPayTmamount || 0;
       this.tranMode = PaymentChange.tranMode || '';
       this.companyId = PaymentChange.companyId || 0;
-      this.wfamount= PaymentChange.wfamount || 0;
-      this.tdsamount= PaymentChange.tdsamount || 0;
+      this.wfamount = PaymentChange.wfamount || 0;
+      this.tdsamount = PaymentChange.tdsamount || 0;
+      this.Neftdate = PaymentChange.Neftdate || this.currentDate;
 
-        this.strId= PaymentChange.strId || 0;
-      this.opdipdtype= PaymentChange.opdipdtype || 1;
+
+
+      this.strId = PaymentChange.strId || 0;
+      this.opdipdtype = PaymentChange.opdipdtype || 1;
     }
   }
 
