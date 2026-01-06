@@ -1,0 +1,97 @@
+<div class="modal-wrapper grid-container">
+    <div class="modal-header accent">
+        <div class="modal-header-content">
+            <div class="modal-header-title">
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">SubQuesion Result Values Master</span>
+            </div>
+            <div class="modal-header-right">
+                <div class="close-icon">
+                    <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
+                        matTooltip="Close">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-body" fusePerfectScrollbar>
+        <div class="modal-body-container">
+            <form [formGroup]="SubresultvaluesForm">
+                <input type="hidden" name="subQuestionValId" formControlName="subQuestionValId">
+
+                <div fxLayout="row wrap" fxLayoutGap="12px grid">
+
+                    <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="33%">
+                          <airmid-textbox label="SubQuestion Value" formControlName="subQuestionValName"
+                        [value]="data?.subQuestionValName" [formGroup]="SubresultvaluesForm" [maxLength]="50">
+                    </airmid-textbox>
+                    </div>
+
+
+                </div>
+
+                <div fxLayout="row wrap" fxLayoutGap="12px grid">
+
+                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <airmid-dropdown label="Question" formControlName="questionId" [formGroup]="SubresultvaluesForm"
+                            [value]="data?.questionId" [validations]="getValidationMessages().questionId"
+                            [mode]="autocompleteModesQuesiontatus">
+                        </airmid-dropdown>
+
+                    </div>
+
+                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <airmid-dropdown label="Sub Question" formControlName="subQuestionValId"
+                            [formGroup]="SubresultvaluesForm" [value]="data?.questionValId"
+                            [validations]="getValidationMessages().subQuestionValId"
+                            [mode]="autocompleteModesSubQuesiontatus">
+                        </airmid-dropdown>
+                    </div>
+
+                </div>
+                 <div fxLayout="row wrap" fxLayoutGap="12px grid">
+
+
+                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <airmid-textbox label="Sequence No " formControlName="sequenceNo" [value]="data?.sequenceNo"
+                            [formGroup]="SubresultvaluesForm" [maxLength]="5">
+                        </airmid-textbox>
+                    </div>
+                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                    
+                        <airmid-textbox label="Shortcut Values" formControlName="shortcutValues"
+                            [value]="data?.shortcutValues" [formGroup]="SubresultvaluesForm" [maxLength]="50">
+                        </airmid-textbox>
+
+                    </div>
+
+                    
+                    <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <airmid-textbox label="Result Values " formControlName="resultValues"
+                            [value]="data?.resultValues" [formGroup]="SubresultvaluesForm" [maxLength]="50">
+                        </airmid-textbox>
+                    </div>
+
+                </div>
+
+
+                <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" fxLayoutAlign="space-between">
+
+                    <div>
+                        <app-airmid-slider label="IsActive/Deactive" formControlName="isActive"
+                            [formGroup]="SubresultvaluesForm" [(ngModel)]="isActive"></app-airmid-slider>
+                    </div>
+
+                    <div class="new-appointment-actions gap-8" fxLayoutAlign="end center">
+                        <button class="btn btn-danger-outline" (click)="onClear(false)">Close</button>
+                        <button class="btn btn-primary " color="accent" (click)="onSubmit()">
+                            <span>Save</span>
+                        </button>
+                    </div>
+
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>

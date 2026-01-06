@@ -237,7 +237,7 @@ export class SalesReturnInPatientComponent implements OnInit {
     if (this.ItemFormGroup.get('PaymentType').value == 'Credit') {
       var param = {
         "searchFields": Filters,
-        "mode": "IPSalesReturnCredit"
+        "mode": "IPSalesInPatientReturnCredit"
       }
     }
     this._IpSalesRetInpatService.getSalesReturnitemlist(param).subscribe(response => {
