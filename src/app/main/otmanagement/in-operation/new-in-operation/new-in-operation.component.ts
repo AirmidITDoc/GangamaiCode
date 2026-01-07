@@ -115,7 +115,7 @@ export class NewInOperationComponent {
   AllTypeDescription1: any = []
   RtrvDescriptionList: any = [];
   RtrvDescriptionList1: any = [];
-OPIPType=0
+  OPIPType = 0
   constructor(public _inOpearionService: InOperationService,
     public dialogRef: MatDialogRef<NewInOperationComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -152,7 +152,7 @@ OPIPType=0
       this.vPatientName = this.registerObj1.patientName
       this.vInOperationId = this.registerObj1.otInOperationId
       this.vreservationId = this.registerObj1.otReservationId
-         this.OPIPType=this.registerObj1.opIpType
+      this.OPIPType = this.registerObj1.opIpType
 
       setTimeout(() => {
         this._inOpearionService.getotTableById(this.data.ottable).subscribe((response) => {
@@ -357,8 +357,8 @@ OPIPType=0
 
       // extra fields
       TheaterLocation: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      diagnosis: [[], [Validators.required]],
-      postDiagnosis: [[], [Validators.required]],
+      diagnosis: [[]],
+      postDiagnosis: [[]],
       bodyPartId: [0],
 
       ////////surgery det parameters ////////////
@@ -528,6 +528,32 @@ OPIPType=0
 
   selectChangeanesthesiaType(obj: any) {
     this.anesthesiaType = obj.text
+  }
+
+  calculateToTime() {
+    const duration = this.inOperFinalForm.get('surgeryDuration')?.value;
+    const start = this.inOperFinalForm.get('surgeryFromTime')?.value;
+
+    if (!start || duration === null) return;
+
+    // split duration 1.30 → ["1","30"]
+    const parts = duration.toString().split('.');
+    const hrs = Number(parts[0]);  // before decimal
+    const mins = parts[1] ? Number(parts[1].padEnd(2, '0')) : 0; // after decimal as minutes
+
+    const [h, m] = start.split(':').map(Number);
+
+    const startDate = new Date();
+    startDate.setHours(h, m, 0);
+
+    // Add hours + minutes
+    startDate.setHours(startDate.getHours() + hrs);
+    startDate.setMinutes(startDate.getMinutes() + mins);
+
+    const endH = startDate.getHours().toString().padStart(2, '0');
+    const endM = startDate.getMinutes().toString().padStart(2, '0');
+
+    this.inOperFinalForm.get('surgeryEndTime')?.setValue(`${endH}:${endM}`);
   }
 
   onChangeDuration(event: any) {
@@ -809,12 +835,6 @@ OPIPType=0
   }
   /////////////////////////////// surgery detail part /////////////////////////////
   onAdd() {
-    // if (!this.inOperFinalForm.get("surgeryCategoryId")?.value) {
-    //   this.toastr.warning('Please select a surgery Type', 'Warning !', {
-    //     toastClass: 'tostr-tost custom-toast-warning',
-    //   });
-    //   return;
-    // }
     if (!this.inOperFinalForm.get("surgeryId")?.value || this.inOperFinalForm.get("surgeryId")?.value == "0") {
       this.toastr.warning('Please select a Surgery', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
@@ -868,6 +888,13 @@ OPIPType=0
     //   const [hours, minutes] = surgeryFromTime.split(':');
     //   combinedDateTime.setHours(+hours, +minutes, 0, 0);
     // }
+
+    const selectedPrimary = this.inOperFinalForm.get('isPrimary').value;
+    const alreadyHasPrimary = this.dssurgeryDetailList.data.some(x => x.isPrimary === "true" || x.isPrimary === true);
+    if (selectedPrimary && alreadyHasPrimary) {
+      this.toastr.warning("Primary surgery already added. You can only select one primary.");
+      return;
+    }
 
     let newEntry = {
       surgeryCategoryName: this.surgCategoryName,
@@ -1006,7 +1033,7 @@ OPIPType=0
             surgeryId: element.surgeryId,//
             surgeryName: element.surgeryName,
             surgeryPart: element.surgeryPart,
-            surgeryDuration: element.surgeryDuration,
+            surgeryDuration: Number(element.surgeryDuration).toFixed(2),
             surgeryFromTime: surgeryFromTime,
             surgeryEndTime: surgeryEndTime,
             isPrimary: element.isPrimary,
@@ -1481,21 +1508,21 @@ OPIPType=0
   }
 
   viewgetOTIntReportPdf(el) {
-  // let opip = this.opIpType == true ? 1 : 0
+    // let opip = this.opIpType == true ? 1 : 0
 
-  debugger
+    debugger
     const param = {
       searchFields: [
-          {
-                    fieldName: "OPIPID",
-                    fieldValue: String(this.opIpId),
-                    opType: "Equals"
-                },
-                {
-                    fieldName: "OPIPType",
-                    fieldValue: String(this.OPIPType),
-                    opType: "Equals"
-                }
+        {
+          fieldName: "OPIPID",
+          fieldValue: String(this.opIpId),
+          opType: "Equals"
+        },
+        {
+          fieldName: "OPIPType",
+          fieldValue: String(this.OPIPType),
+          opType: "Equals"
+        }
       ],
       mode: "OTInOperationReport"
     };
