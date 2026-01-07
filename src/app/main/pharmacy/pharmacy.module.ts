@@ -69,14 +69,16 @@ const appRoutes: Routes = [
     path:"salesreturninpatient",
     loadChildren: () => import("./sales-return-in-patient/sales-return-in-patient.module").then((m)=>m.SalesReturnInPatientModule),
   },
+  {  
+    path:"browseInPatientissuelist",
+    loadChildren: () => import("./inpatientbrowse-list/inpatientbrowse-list.module").then((m)=>m.InpatientbrowseListModule),
+  },
 ];
 
 
 @NgModule({
   declarations: [   
-  
-    SalespageRedirectComponent, InpatientbrowseListComponent
-  ],
+    ],
   imports: [
     RouterModule.forChild(appRoutes)
   ]
