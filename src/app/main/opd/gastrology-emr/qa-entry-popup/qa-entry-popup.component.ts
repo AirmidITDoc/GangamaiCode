@@ -30,7 +30,7 @@ import { CasepaperService } from '../../new-casepaper/casepaper.service';
 export class QAEntryPopupComponent {
 
   dataSource = new MatTableDataSource<QuesResult>();
-  // helpList = new MatTableDataSource<QuesResult>();
+  clinicalForm: FormGroup;
 
   displayedColumns: string[] = [
     'sequence',
@@ -60,9 +60,76 @@ export class QAEntryPopupComponent {
 
   ngOnInit(): void {
 
-    console.log("Question data:", this.data)
+    console.log("Question data:", this.data.row)
 
-    this.getResultList1(this.data)
+    this.clinicalForm = this.clinicalQuesForm()
+    this.clinicalForm.markAllAsTouched()
+
+    this.clinicalQuesArray.push(this.createclinicalDetailFormInsert());
+
+    if (this.data.row.clinicalQuesHeaderId) {
+      this.editTableRow(this.data.row)
+    } else {
+      this.getResultList1(this.data.row)
+    }
+  }
+
+  clinicalQuesForm(): FormGroup {
+    return this.formBuilder.group({
+      clinicalQuesHeaderId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      clinicalQuesDate: [(new Date()).toISOString().split('T')[0]],
+      clinicalQuesTime: [(new Date()).toISOString()],
+      opipid: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      opiptype: 0,
+      questionId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      questionName: ['', [Validators.required]],
+      clinicalQuesDetails: this.formBuilder.array([]),
+    })
+  }
+
+  createclinicalDetailFormInsert(element: any = {}): FormGroup {
+    return this.formBuilder.group({
+      clinicalQuesDetId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      clinicalQuesHeaderId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      subQuesId: [element.SubQuestionId, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      subQuesName: [element.SubQuestionName],
+      resultEntry: [element.ResultValue ?? ''],
+      seqNo: [this.clinicalQuesArray.length + 1]
+    });
+  }
+
+  get clinicalQuesArray(): FormArray {
+    return this.clinicalForm.get('clinicalQuesDetails') as FormArray;
+  }
+
+  editTableRow(row) {
+    var SelectQuery =
+    {
+      "searchFields": [
+        {
+          "fieldName": "ClinicalQuesHeaderId",
+          "fieldValue": String(row.clinicalQuesHeaderId),
+          "opType": "Equals"
+        }
+      ],
+      "mode": "ClinicalQuesDetail"
+    }
+
+    console.log(SelectQuery);
+
+    this._CasepaperService.geteditList(SelectQuery).subscribe(Visit => {
+
+      this.dataSource.data = Visit.map(item => ({
+        ...item,
+        SubQuestionId:item.SubQuesId,
+        SubQuestionName: item.SubQuesName,
+        ResultValue: item.ResultEntry
+      })) as QuesResult[];
+
+      // this.dataSource.data = Visit as QuesResult[];
+
+      console.log(this.dataSource.data)
+    });
   }
 
   getResultList1(data) {
@@ -137,11 +204,59 @@ export class QAEntryPopupComponent {
   }
 
   onSave() {
+    this.clinicalForm.get("clinicalQuesHeaderId").setValue(this.data.row.clinicalQuesHeaderId ?? 0)
+    this.clinicalForm.get("opipid").setValue(this.data.opipid)
+    this.clinicalForm.get("questionId").setValue(this.data.row.questionId)
+    this.clinicalForm.get("questionName").setValue(this.data.row.questionName)
+    debugger
+    // console.log(this.clinicalForm.value)
+    if (!this.clinicalForm.invalid) {
 
+      this.clinicalQuesArray.clear();
+      this.dataSource.data.forEach(item => {
+        console.log(item)
+        this.clinicalQuesArray.push(this.createclinicalDetailFormInsert(item));
+      });
+
+      console.log(this.clinicalForm.value)
+
+      this._CasepaperService.clinicalQuesSave(this.clinicalForm.value).subscribe(response => {
+        debugger
+        if (response) {
+          // this.onClose(response)
+          this.dialogRef.close(response);
+        }
+      });
+    } else {
+      const invalidFields = this.collectErrors(this.clinicalForm);
+      if (invalidFields.length > 0) {
+        invalidFields.forEach(field => {
+          this.toastr.warning(`Field "${field}" is invalid.`, 'Warning');
+        });
+        return;
+      }
+    }
+  }
+
+  collectErrors(formGroup: FormGroup | FormArray, parentKey: string = ''): string[] {
+    let errors: string[] = [];
+    Object.keys(formGroup.controls).forEach(key => {
+      const control = formGroup.get(key);
+      const newKey = parentKey ? `${parentKey}.${key}` : key;
+      if (control instanceof FormGroup || control instanceof FormArray) {
+        // go deeper
+        errors = errors.concat(this.collectErrors(control, newKey));
+      } else {
+        if (control?.invalid) {
+          errors.push(newKey);
+        }
+      }
+    });
+    return errors;
   }
 
   onClose() {
-    this.dialogRef.close();
+    this.dialogRef.close(this.data.opipid);
   }
 
   @HostListener('document:click')
