@@ -146,9 +146,9 @@ export class TestmasterComponent implements OnInit {
   onSave(row: any = null) {
     const dialogRef = this._matDialog.open(TestFormMasterComponent,
       {
-        maxWidth: "99vw",
-        height: "98vh",
-        width: "100%",
+        maxWidth: "96%",
+        width: '95%',
+        height: '95%',
         data: row
       });
     dialogRef.afterClosed().subscribe(result => {

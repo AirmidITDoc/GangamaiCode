@@ -420,7 +420,7 @@ export class SalesReturnInPatientComponent implements OnInit {
       FinalTotalAmt: itemList.reduce((sum, { TotalAmt }) => sum += +(TotalAmt || 0), 0).toFixed(2),
       FinalGSTAmt: itemList.reduce((sum, { GSTAmt }) => sum += +(GSTAmt || 0), 0).toFixed(2),
       FinalDiscAmount: itemList.reduce((sum, { DiscAmt }) => sum += +(DiscAmt || 0), 0).toFixed(2),
-      FinalNetAmount: netAmount.toFixed(2),
+      FinalNetAmount: Math.round(netAmount).toFixed(2),
     }
     form.patchValue({
       ...updatableFormValues

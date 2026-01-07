@@ -563,7 +563,16 @@ vparaMultipleRange:any;
     //         this.onAdd(event);
     //     }
     // }
-
+ // it allowed only Digit & decimal
+       keyPressDigitDecimalOnly(event) {
+           var inp = String.fromCharCode(event.keyCode);
+           if (/^\d*\.?\d*$/.test(inp)) {
+               return true;
+           } else {
+               event.preventDefault();
+               return false;
+           }
+       }
     selectedGenderName: any;
     selectChangeGender(obj: any) {
         console.log(obj);

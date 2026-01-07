@@ -1270,7 +1270,7 @@ debugger
                     bankName: "",
                     validationDate: this.datePipe.transform(this.currentDate, 'yyyy-MM-dd'),
                     comments: "",
-                    payMode: "UPI",
+                    payMode: "CASH",
                     onlineTranNo: "0",
                     onlineTranResponse: "0",
                     companyId: this.patientDetail?.CompanyId ?? 0,
