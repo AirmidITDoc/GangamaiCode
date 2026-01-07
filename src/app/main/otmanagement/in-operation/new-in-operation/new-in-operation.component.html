@@ -214,24 +214,37 @@
                                             <mat-form-field appearance="outline" style="width: 100%;">
                                                 <mat-label>Duration (hours)</mat-label>
                                                 <input matInput type="number" formControlName="surgeryDuration"
-                                                    (change)="onChangeDuration($event)" min="0" step="0.5"
-                                                    (keydown.enter)="surgeryFromTimeInput.focus()">
+                                                    (change)="onChangeDuration($event)" min="0" step="0.5">
                                             </mat-form-field>
+                                            <!-- <mat-form-field appearance="outline" style="width: 100%;">
+                                                <mat-label>Duration (hrs or min)</mat-label>
+                                                <input matInput type="text" formControlName="surgeryDuration"
+                                                    pattern="^[0-9]+(\.[0-9]{1,2})?$" (change)="calculateToTime()">
+                                            </mat-form-field> -->
                                         </div>
 
                                         <div fxFlex="5%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                            <mat-form-field appearance="outline" style="width: 100%;">
+                                            <!-- <mat-form-field appearance="outline" style="width: 100%;">
                                                 <mat-label>From Time</mat-label>
                                                 <input matInput type="time" formControlName="surgeryFromTime"
                                                     (change)="onChangeTimefrom($event)" #surgeryFromTimeInput>
+                                            </mat-form-field> -->
+                                            <mat-form-field appearance="outline" style="width: 100%;">
+                                                <mat-label>From Time</mat-label>
+                                                <input matInput type="time" formControlName="surgeryFromTime"
+                                                    (change)="calculateToTime()">
                                             </mat-form-field>
                                         </div>
 
                                         <div fxFlex="5%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                            <mat-form-field appearance="outline" style="width: 100%;">
+                                            <!-- <mat-form-field appearance="outline" style="width: 100%;">
                                                 <mat-label>To Time</mat-label>
                                                 <input matInput type="time" formControlName="surgeryEndTime" readonly
                                                     (change)="onChangeTimeto($event)">
+                                            </mat-form-field> -->
+                                            <mat-form-field appearance="outline" style="width: 100%;">
+                                                <mat-label>To Time</mat-label>
+                                                <input matInput type="time" formControlName="surgeryEndTime" readonly>
                                             </mat-form-field>
                                         </div>
 
@@ -497,13 +510,13 @@
                             <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="80%" fxLayout="row wrap"
                                 fxLayoutGap="4px grid">
 
-                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <airmid-dropdown label="Category Type" formControlName="categoryType"
                                         [formGroup]="inOperFinalForm" [mode]="autocompleteModeotTableCategory">
                                     </airmid-dropdown>
                                 </div>
 
-                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <airmid-dropdown label="Theater" formControlName="ottable"
                                         [formGroup]="inOperFinalForm" ValueField="ottableId" TextField="ottableName"
                                         (selectionChange)="onChangeOtTable($event)"
@@ -511,13 +524,13 @@
                                     </airmid-dropdown>
                                 </div>
 
-                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <airmid-dropdown label="Theater Location" formControlName="TheaterLocation"
                                         [formGroup]="inOperFinalForm" #ddlLocation [readonly]="true"
                                         [mode]="autocompleteModeLocation"></airmid-dropdown>
                                 </div>
 
-                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                     <mat-form-field appearance="outline" fxFlex>
                                         <mat-label>Surgery Dt</mat-label>
                                         <input name="Surgerydate" matInput [matDatepicker]="picker1"
@@ -527,7 +540,7 @@
                                     </mat-form-field>
                                 </div>
 
-                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%" class="gap-4">
+                                <!-- <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%" class="gap-4">
                                     <div fxFlex="30%" fxFlex.xs="100%" fxFlex.sm="33%">
                                         <mat-form-field appearance="outline" style="width: 100%;">
                                             <mat-label>Duration (hours)</mat-label>
@@ -551,7 +564,7 @@
                                                 (change)="onChangeTimeto1($event)">
                                         </mat-form-field>
                                     </div>
-                                </div>
+                                </div> -->
 
                                 <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%" fxLayout="column">
                                     <app-airmid-chipautocomplete fxFlex
@@ -635,7 +648,7 @@
                                         </mat-icon>
                                     </mat-form-field> -->
 
-                                     <mat-form-field appearance="outline" fxFlex>
+                                    <mat-form-field appearance="outline" fxFlex>
                                         <mat-label>Theater-In Time</mat-label>
                                         <input matInput type="time" formControlName="theaterOutTime"
                                             (change)="onChangeTheateroutTime($event)" #theaterOutTime>
@@ -775,11 +788,11 @@
                         </div>
                     </mat-tab>
 
-                    <mat-tab label="Sample Collection">
+                    <!-- <mat-tab label="Sample Collection">
                         <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 10px;">
 
                         </mat-card>
-                    </mat-tab>
+                    </mat-tab> -->
 
                 </mat-tab-group>
 

@@ -131,8 +131,11 @@ export class CasepaperService {
   public getquList(param) {
     return this._httpClient1.PostData("QuestionMaster/List", param);
   }
+  public getquResultList(param) {
+    return this._httpClient1.PostData("GastrologyEMR/ClinicalQuesList", param);
+  }
 
-   public getSubquesById(Id) {
+  public getSubquesById(Id) {
     return this._httpClient1.GetData("SubQuestionMaster/" + Id);
   }
 
@@ -141,6 +144,16 @@ export class CasepaperService {
   }
 
   public getSubQuesValueByIdList(param) {
+    return this._httpClient1.PostData("Common", param)
+  }
+
+  public clinicalQuesSave(Param) {
+    if (Param.clinicalQuesHeaderId) {
+      return this._httpClient1.PutData("GastrologyEMR/Edit/" + Param.clinicalQuesHeaderId, Param);
+    } else return this._httpClient1.PostData("GastrologyEMR/Insert", Param)
+  }
+
+  public geteditList(param) {
     return this._httpClient1.PostData("Common", param)
   }
 }
