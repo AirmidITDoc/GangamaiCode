@@ -23,8 +23,8 @@
 
     <div class="modal-body preOperMiddle" fusePerfectScrollbar>
         <div class="modal-body-container">
-            <div fxLayout="column" class="gap-12"></div>
-            <form [formGroup]="preOperationFinalForm">
+            <!-- <div fxLayout="column" class="gap-12"></div> -->
+            <form [formGroup]="preOperationFinalForm" fxLayout="column">
                 <div class="modal-card-container" style="padding: 10px 2px 5px 0px ;">
                     <div fxFlex.gt-sm="100%" fxFlex class="patient-info-container">
                         <div class="patient-info-container">
@@ -150,7 +150,109 @@
                     </div>
                 </div>
 
-                <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start">
+                <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 10px ;">
+                    <div class="patient-info-title">
+                        <span class="h1">Check List</span>
+                    </div>
+                    <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="80%" fxLayout="row wrap" fxLayoutGap="4px grid">
+
+                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                            <airmid-dropdown label="Category Type" formControlName="categoryType"
+                                [formGroup]="preOperationFinalForm" [mode]="autocompleteModeSurgeryCategory">
+                            </airmid-dropdown>
+                        </div>
+
+                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                            <airmid-dropdown label="Theater" formControlName="ottable"
+                                [formGroup]="preOperationFinalForm" ValueField="ottableId" TextField="ottableName"
+                                (selectionChange)="onChangeOtTable($event)" ApiUrl="OTRequest/getlocationByOttable">
+                            </airmid-dropdown>
+                        </div>
+
+                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                            <airmid-dropdown label="Theater Location" formControlName="TheaterLocation"
+                                [formGroup]="preOperationFinalForm" [mode]="autocompleteModeLocation" #ddlLocation
+                                [readonly]="true"></airmid-dropdown>
+                        </div>
+
+                        <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                            <mat-form-field appearance="outline" fxFlex>
+                                <mat-label>Surgery Dt</mat-label>
+                                <input name="Surgerydate" matInput [matDatepicker]="picker1"
+                                    formControlName="surgeryDate" #surgeryDateInput
+                                    (dateChange)="onSurgeryDateChange($event)" />
+                                <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                                <mat-datepicker #picker1></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+
+                        <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%" fxLayout="column">
+                            <app-airmid-chipautocomplete fxFlex [placeholder]="'Select Diagnosis'"
+                                [chips]="preOperationFinalForm.get('diagnosis')?.value"
+                                [apiUrl]="'OTPreOperation/GetPreOperationDiagnosisList?DescriptionType=Diagnosis'"
+                                [displayKey]="'descriptionName'" [allowCustom]="true"
+                                (chipsChange)="selectChangeDiagnosis($event)">
+                            </app-airmid-chipautocomplete>
+                        </div>
+
+                        <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%" fxLayout="column">
+                            <app-airmid-chipautocomplete fxFlex [placeholder]="'cath Lab Diagnosis'"
+                                [chips]="preOperationFinalForm.get('cathLabDiagnosis')?.value"
+                                [apiUrl]="'OTPreOperation/GetPreOperationCathlabDiagnosisList?DescriptionType=CathLabDiagnosis'"
+                                [displayKey]="'descriptionName'" [allowCustom]="true"
+                                (chipsChange)="selectChangeCathLabDiagnosis($event)">
+                            </app-airmid-chipautocomplete>
+                        </div>
+
+                        <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                            <mat-radio-group formControlName="bloodArranged" [(ngModel)]="vbloodArranged">
+                                <label style="font-weight: bold;">Blood Arranged:</label>
+                                <mat-radio-button value="1">Yes</mat-radio-button>
+                                <mat-radio-button value="0">No</mat-radio-button>
+                            </mat-radio-group>
+                        </div>
+
+                        <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                            <mat-radio-group formControlName="pacrequired" [(ngModel)]="vpacrequired">
+                                <label style="font-weight: bold;">PAC Required:</label>
+                                <mat-radio-button value="1">Yes</mat-radio-button>
+                                <mat-radio-button value="0">No</mat-radio-button>
+                            </mat-radio-group>
+                        </div>
+
+                        <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                            <mat-radio-group formControlName="equipmentsRequired" [(ngModel)]="vequipmentsRequired">
+                                <label style="font-weight: bold;">Equipments Required:</label>
+                                <mat-radio-button value="1">Yes</mat-radio-button>
+                                <mat-radio-button value="0">No</mat-radio-button>
+                            </mat-radio-group>
+                        </div>
+
+                        <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                            <mat-radio-group formControlName="infective" [(ngModel)]="vinfective">
+                                <label style="font-weight: bold;">Infective:</label>
+                                <mat-radio-button value="1">Yes</mat-radio-button>
+                                <mat-radio-button value="0">No</mat-radio-button>
+                            </mat-radio-group>
+                        </div>
+
+                        <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                            <label style="font-weight: bold;">Clearance:</label>
+                            <mat-checkbox formControlName="clearanceMedical">Medical</mat-checkbox>
+                            <mat-checkbox formControlName="clearanceFinancial">Finance</mat-checkbox>
+                        </div>
+
+                    </div>
+                </mat-card>
+
+                <div fxLayout="row">
+                    <button mat-raised-button (click)="onFiles()" *ngIf="showAddBtn"
+                    style="position: absolute; top: 55%; right: 16px;">New Consent
+                    </button>
+                </div>
+
+                <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start"
+                    (selectedIndexChange)="onTabChange($event)">
                     <mat-tab label="Surgery & Attendent Details">
                         <div class="modal-body" fusePerfectScrollbar>
                             <div>
@@ -484,153 +586,6 @@
                         </div>
                     </mat-tab>
 
-                    <mat-tab label="Check List">
-                        <mat-card fxFlex.gt-sm="100%" fxFlex style="padding: 10px ;">
-                            <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="80%" fxLayout="row wrap"
-                                fxLayoutGap="4px grid">
-
-                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <airmid-dropdown label="Category Type" formControlName="categoryType"
-                                        [formGroup]="preOperationFinalForm" [mode]="autocompleteModeSurgeryCategory">
-                                    </airmid-dropdown>
-                                </div>
-
-                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <airmid-dropdown label="Theater" formControlName="ottable"
-                                        [formGroup]="preOperationFinalForm" ValueField="ottableId"
-                                        TextField="ottableName" (selectionChange)="onChangeOtTable($event)"
-                                        ApiUrl="OTRequest/getlocationByOttable">
-                                    </airmid-dropdown>
-                                </div>
-
-                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <airmid-dropdown label="Theater Location" formControlName="TheaterLocation"
-                                        [formGroup]="preOperationFinalForm" [mode]="autocompleteModeLocation"
-                                        #ddlLocation [readonly]="true"></airmid-dropdown>
-                                </div>
-
-                                <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <mat-form-field appearance="outline" fxFlex>
-                                        <mat-label>Surgery Dt</mat-label>
-                                        <input name="Surgerydate" matInput [matDatepicker]="picker1"
-                                            formControlName="surgeryDate" #surgeryDateInput
-                                            (dateChange)="onSurgeryDateChange($event)" />
-                                        <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-                                        <mat-datepicker #picker1></mat-datepicker>
-                                    </mat-form-field>
-                                </div>
-
-                                <!-- <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%" class="gap-4">
-                                    <div fxFlex="30%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <mat-form-field appearance="outline" style="width: 100%;">
-                                            <mat-label>Duration (hours)</mat-label>
-                                            <input matInput type="number" formControlName="duration"
-                                                (change)="onChangeDuration1($event)" min="0" step="0.5">
-                                        </mat-form-field>
-                                    </div>
-
-                                    <div fxFlex="30%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <mat-form-field appearance="outline" style="width: 100%;">
-                                            <mat-label>From Time</mat-label>
-                                            <input matInput type="time" formControlName="fromTime"
-                                                (change)="onChangeTimefrom1($event)">
-                                        </mat-form-field>
-                                    </div>
-
-                                    <div fxFlex="30%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                        <mat-form-field appearance="outline" style="width: 100%;">
-                                            <mat-label>To Time</mat-label>
-                                            <input matInput type="time" formControlName="toTime" readonly
-                                                (change)="onChangeTimeto1($event)">
-                                        </mat-form-field>
-                                    </div>
-                                </div> -->
-
-                                <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%" fxLayout="column">
-                                    <app-airmid-chipautocomplete fxFlex [placeholder]="'Select Diagnosis'"
-                                        [chips]="preOperationFinalForm.get('diagnosis')?.value"
-                                        [apiUrl]="'OTPreOperation/GetPreOperationDiagnosisList?DescriptionType=Diagnosis'"
-                                        [displayKey]="'descriptionName'" [allowCustom]="true"
-                                        (chipsChange)="selectChangeDiagnosis($event)">
-                                    </app-airmid-chipautocomplete>
-                                </div>
-
-                                <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%" fxLayout="column">
-                                    <app-airmid-chipautocomplete fxFlex [placeholder]="'cath Lab Diagnosis'"
-                                        [chips]="preOperationFinalForm.get('cathLabDiagnosis')?.value"
-                                        [apiUrl]="'OTPreOperation/GetPreOperationCathlabDiagnosisList?DescriptionType=CathLabDiagnosis'"
-                                        [displayKey]="'descriptionName'" [allowCustom]="true"
-                                        (chipsChange)="selectChangeCathLabDiagnosis($event)">
-                                    </app-airmid-chipautocomplete>
-                                </div>
-
-                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <mat-radio-group formControlName="bloodArranged" [(ngModel)]="vbloodArranged">
-                                        <label style="font-weight: bold;">Blood Arranged:</label>
-                                        <mat-radio-button value="1">Yes</mat-radio-button>
-                                        <mat-radio-button value="0">No</mat-radio-button>
-                                    </mat-radio-group>
-                                </div>
-
-                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <mat-radio-group formControlName="pacrequired" [(ngModel)]="vpacrequired">
-                                        <label style="font-weight: bold;">PAC Required:</label>
-                                        <mat-radio-button value="1">Yes</mat-radio-button>
-                                        <mat-radio-button value="0">No</mat-radio-button>
-                                    </mat-radio-group>
-                                </div>
-
-                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <mat-radio-group formControlName="equipmentsRequired"
-                                        [(ngModel)]="vequipmentsRequired">
-                                        <label style="font-weight: bold;">Equipments Required:</label>
-                                        <mat-radio-button value="1">Yes</mat-radio-button>
-                                        <mat-radio-button value="0">No</mat-radio-button>
-                                    </mat-radio-group>
-                                </div>
-
-                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <mat-radio-group formControlName="infective" [(ngModel)]="vinfective">
-                                        <label style="font-weight: bold;">Infective:</label>
-                                        <mat-radio-button value="1">Yes</mat-radio-button>
-                                        <mat-radio-button value="0">No</mat-radio-button>
-                                    </mat-radio-group>
-                                </div>
-
-                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                    <label style="font-weight: bold;">Clearance:</label>
-                                    <mat-checkbox formControlName="clearanceMedical">Medical</mat-checkbox>
-                                    <mat-checkbox formControlName="clearanceFinancial">Finance</mat-checkbox>
-                                </div>
-
-                            </div>
-                        </mat-card>
-                    </mat-tab>
-
-                    <mat-tab label="Part Of Surgery">
-                        <div fxLayout="column" fxLayoutGap="16px" fxLayoutAlign="start start" fxLayoutWrap
-                            style="height: 200px;">
-
-                            <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
-                                <airmid-dropdown label="Select Body Part" formControlName="bodyPartId"
-                                    [formGroup]="preOperationFinalForm">
-                                </airmid-dropdown>
-                            </div>
-
-                            <div fxFlex="30%" fxFlex.xs="100%" fxFlex.sm="50%" fxLayout="column" fxLayoutGap="8px">
-                                <label class="mat-body-1 font-semibold">Upload / Capture Image</label>
-
-                                <button mat-raised-button color="primary" type="button" (click)="openCamera()">
-                                    <mat-icon>photo_camera</mat-icon> Capture from Camera
-                                </button>
-
-                                <div *ngIf="previewUrl" class="preview-box">
-                                    <img [src]="previewUrl" alt="Preview" style="max-width: 200px; border-radius: 8px;">
-                                </div>
-                            </div>
-                        </div>
-                    </mat-tab>
-
                     <mat-tab label="Consent List">
 
                         <ng-template #actionButtonTemplate let-element>
@@ -639,11 +594,6 @@
                                     [opipId]="element.opipid"
                                     title="Name: {{ registerObj1.patientName }}  UHID: {{ registerObj1.regNo }}"
                                     [opipType]="element.opiptype"></app-airmid-consentform-icon>
-
-                                      <!-- <app-airmid-consentform-icon [refId]="element.otReservationId" [opipId]="element.opIpId"
-                        [opipType]="element.opIpType" labelType="OT"
-                        title="Name: {{ element.patientName }}  UHID: {{ element.regNo }}"></app-airmid-consentform-icon> -->
-
 
                                 <button mat-icon-button (click)="delete(element)" matTooltip="Delete">
                                     <mat-icon title="Delete">delete</mat-icon>

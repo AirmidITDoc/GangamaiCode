@@ -18,6 +18,7 @@ import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
 import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
 import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
 import { ConsentService } from 'app/main/nursingstation/consent/consent.service';
+import { AirmidConsentformComponent } from 'app/main/shared/componets/airmid-consentform/airmid-consentform.component';
 
 @Component({
   selector: 'app-new-ot-preoperation',
@@ -847,7 +848,7 @@ export class NewOtPreoperationComponent {
             surgeryId: element.surgeryId,//
             surgeryName: element.surgeryName,
             surgeryPart: element.surgeryPart,
-            surgeryDuration: element.surgeryDuration,
+            surgeryDuration: Number(element.surgeryDuration).toFixed(2),
             surgeryFromTime: surgeryFromTime,
             surgeryEndTime: surgeryEndTime,
             isPrimary: element.isPrimary,
@@ -1022,6 +1023,12 @@ export class NewOtPreoperationComponent {
   }
 
   /////////////////////////////// attendent detail part end/////////////////////////////
+
+  showAddBtn = false;
+
+  onTabChange(index: number) {
+    this.showAddBtn = index === 1;
+  }
 
   selectedDate: any;
   onSurgeryDateChange(event: any) {
@@ -1313,6 +1320,22 @@ export class NewOtPreoperationComponent {
 
   pad1(num: number): string {
     return num.toString().padStart(2, '0');
+  }
+
+  onFiles() {
+    const dialogRef = this._matDialog.open(
+      AirmidConsentformComponent,
+      {
+        maxWidth: "90vw",
+        maxHeight: '85%',
+        width: '70%',
+        data: { refId: this.vreservationId, opipId: this.opIpId, opipType: this.opipType, Id: 0, title: 'Consent', labelType: 'OT' }
+      }
+    );
+
+    dialogRef.afterClosed().subscribe((result) => {
+      this.grid.bindGridData();
+    });
   }
 
   // Consent list

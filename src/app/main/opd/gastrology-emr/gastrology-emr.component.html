@@ -323,7 +323,7 @@
                                                 </div>
 
                                                 <mat-table #table matSort [dataSource]="dsQuesList"
-                                                    class="h-275 fix-first-col" [@animateStagger]="{value:'50'}">
+                                                    class="h-250 fix-first-col" [@animateStagger]="{value:'50'}">
                                                     <ng-container matColumnDef="QA">
                                                         <mat-header-cell *matHeaderCellDef mat-sort-header>Select
                                                             QA</mat-header-cell>
@@ -350,7 +350,7 @@
                                         <div fxFlex="65%">
                                             <mat-card>
                                                 <mat-table #table matSort #quesSort="matSort" [dataSource]="resultList"
-                                                    class="h-280" [@animateStagger]="{value:'50'}">
+                                                    class="h-280 fix-first-col" [@animateStagger]="{value:'50'}">
 
                                                     <ng-container matColumnDef="date">
                                                         <mat-header-cell *matHeaderCellDef class="w-150"
@@ -362,13 +362,13 @@
 
                                                     <ng-container matColumnDef="question">
                                                         <mat-header-cell *matHeaderCellDef mat-sort-header
-                                                            class="w-550">Questions</mat-header-cell>
+                                                            class="w-550">Questions Values</mat-header-cell>
 
                                                         <mat-cell *matCellDef="let element" fxShow.gt-sm
                                                             class="w-550 text-ellipsis" [matTooltip]="element.questionName"
                                                             matTooltipPosition="above"
                                                             [matTooltipDisabled]="element.questionName?.length <= 100">
-                                                            {{ element.questionName }}
+                                                            <strong>{{ element.questionName }}</strong> - {{ element.subQuesName }}
                                                         </mat-cell>
 
                                                         <!-- <mat-cell *matCellDef="let contact"

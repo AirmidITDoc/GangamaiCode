@@ -226,13 +226,20 @@
                         <mat-card>
 
                             <div class="input-container gap-8" fxLayout="column" fxLayout.gt-xs="row">
-                                <airmid-autocomplete label="Enter Item Name" [formGroup]="ItemSubform" #itemAutocomplete
-                                    formControlName="ItemId" placeholderText="Enter Item Name" fxFlex="30%"
-                                    [ApiUrl]="'ItemMaster/GetItemListForPrescriptionReturn?StoreId=' + vstoreId + '&ItemName='"
-                                    (selectionChange)="selectChangeItem($event)" (onClearSelection)="ItemFromReset()"
-                                    [validations]="getValidationMessages().ItemId" TextField="formattedText"
-                                    ValueField="ItemId">
-                                </airmid-autocomplete>
+                                <div fxLayout="column" fxFlex="25%" style="height: 95px;">
+                                    <airmid-autocomplete label="Enter Item Name" [formGroup]="ItemSubform"
+                                        #itemAutocomplete formControlName="ItemId" placeholderText="Enter Item Name"
+                                        fxFlex="30%" [ApiUrl]="OP_IP_Id 
+                                        ? 'ItemMaster/GetItemListForPrescriptionReturn?StoreId=' + vstoreId + '&IPAdmID=' + OP_IP_Id + '&ItemName='
+                                        : null" (selectionChange)="selectChangeItem($event)"
+                                        (onClearSelection)="ItemFromReset()"
+                                        [validations]="getValidationMessages().ItemId" TextField="formattedText"
+                                        ValueField="ItemId">
+                                    </airmid-autocomplete>
+                                    <div style="color: rgb(255, 12, 12); margin-top: 30px; margin-left: 10px;" *ngIf="!OP_IP_Id && ItemSubform.get('ItemId')?.touched">
+                                        First select patient
+                                    </div>
+                                </div>
 
                                 <airmid-textbox label="Batch No" formControlName="BatchNo" fxFlex="25%"
                                     [formGroup]="ItemSubform" [(ngModel)]="BatchNo"

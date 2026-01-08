@@ -27,8 +27,7 @@ export class SubQuestionMasterComponent {
     allcolumns = [
         { heading: "Subquestion Name", key: "subQuestionName", sort: true, align: 'left', emptySign: 'NA', width: 450 },
         { heading: "Sequence No", key: "sequenceNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-        { heading: "Result Values", key: "resultValues", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-        // { heading: "Shortcut Values", key: "shortCutValues", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+        { heading: "Shortcut Values", key: "shortCutValues", sort: true, align: 'left', emptySign: 'NA', width: 150 },
 
 
         { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
@@ -79,8 +78,8 @@ export class SubQuestionMasterComponent {
         let that = this;
         const dialogRef = this._matDialog.open(NewSubquestionComponent,
             {
-                maxWidth: "50vw",
-                maxHeight: '50%',
+                maxWidth: "70vw",
+                maxHeight: '70%',
                 width: '70%',
                 data: row
             });

@@ -121,7 +121,7 @@ export class QAEntryPopupComponent {
 
       this.dataSource.data = Visit.map(item => ({
         ...item,
-        SubQuestionId:item.SubQuesId,
+        SubQuestionId: item.SubQuesId,
         SubQuestionName: item.SubQuesName,
         ResultValue: item.ResultEntry
       })) as QuesResult[];
@@ -209,7 +209,11 @@ export class QAEntryPopupComponent {
     this.clinicalForm.get("questionId").setValue(this.data.row.questionId)
     this.clinicalForm.get("questionName").setValue(this.data.row.questionName)
     debugger
-    // console.log(this.clinicalForm.value)
+    
+    if (this.dataSource.data.length === 0) {
+      this.toastr.warning('Please add at least one clinical question');
+      return;
+    }
     if (!this.clinicalForm.invalid) {
 
       this.clinicalQuesArray.clear();

@@ -627,31 +627,21 @@ export class GastrologyEmrComponent {
       this.casePaperInsertForm.get(['visitDetails', 'followupDate'])?.setValue(this.MedicineItemForm.get('start')?.value);
       console.log('form:', this.casePaperInsertForm.value)
       this._CasepaperService.onSaveCasepaper(this.casePaperInsertForm.value).subscribe(response => {
-        // if (this.caseFormGroup.get("LetteHeadRadio").value == 'LetterHead')
-        //   this.commonService.Onprint("VisitId", this.VisitId, "OPPrescriptionA5");
-        // else
-        //   this.commonService.Onprint("VisitId", this.VisitId, "OPPrescriptionwithoutHeaderA5");
-
-
-        // if (this.caseFormGroup.get("LetteHeadRadio").value == 'LetterHead')
-        //   this.OnViewReportWithHeaderPdf(this.VisitId)
-        // else
-        //   this.OnViewReportWithoutHeaderPdf(this.VisitId)
+        
         debugger
         const [PrescriptionA5_Print, Prescription_Print] = this._ConfigService.configParams.OPEmrPrescriptionA5.split(":");
-
-        if (PrescriptionA5_Print != 1) {
-          if (this.caseFormGroup.get("LetteHeadRadio").value == 'LetterHead')
-            this.OnViewReportWithHeaderPdf(this.VisitId)
-          else
-            this.OnViewReportWithoutHeaderPdf(this.VisitId)
-        } else {
-          if (this.caseFormGroup.get("LetteHeadRadio").value == 'LetterHead')
-            this.OnViewReportWithHeaderA5Pdf(this.VisitId)
-          else
-            this.OnViewReportWithoutHeaderA5Pdf(this.VisitId)
-        }
-
+        this.OnViewReportPdf1(this.VisitId)
+        // if (PrescriptionA5_Print != 1) {
+        //   if (this.caseFormGroup.get("LetteHeadRadio").value == 'LetterHead')
+        //     this.OnViewReportWithHeaderPdf(this.VisitId)
+        //   else
+        //     this.OnViewReportWithoutHeaderPdf(this.VisitId)
+        // } else {
+        //   if (this.caseFormGroup.get("LetteHeadRadio").value == 'LetterHead')
+        //     this.OnViewReportWithHeaderA5Pdf(this.VisitId)
+        //   else
+        //     this.OnViewReportWithoutHeaderA5Pdf(this.VisitId)
+        // }
 
         this.getWhatsappshareSales(this.vOPIPId, this.vMobileNo)
         this.onClear();
@@ -691,6 +681,10 @@ export class GastrologyEmrComponent {
       }
     }
 
+  }
+
+   OnViewReportPdf1(element: any) {
+    this.commonService.Onprint("VisitId", element, "OPGastrologyPrescription");
   }
 
   getDateTime(dateTimeObj) {
@@ -2323,7 +2317,7 @@ export class GastrologyEmrComponent {
     let name = this.myFormGroup.get("quesId").value || "";
     var param = {
       "first": 0,
-      "rows": 10,
+      "rows": 7,
       "sortField": "QuestionId",
       "sortOrder": 0,
       "filters": [

@@ -18,51 +18,134 @@
         <div class="modal-body-container">
             <form [formGroup]="SubQuestionForm">
                 <input type="hidden" name="subQuestionId" formControlName="subQuestionId">
-                <div fxLayout="row wrap" fxLayoutGap="12px grid">
+                <div fxLayout="row wrap" fxLayoutGap="12px grid" style="padding: 10px;">
+
+                    <div fxFlex="30%">
+                        <airmid-dropdown label="Question" formControlName="questionId" [formGroup]="SubQuestionForm"
+                            [value]="data?.questionId" [validations]="getValidationMessages().questionId"
+                            [mode]="autocompleteModesQuesiontatus" (selectionChange)="onChangeques($event)">
+                        </airmid-dropdown>
+                    </div>
+                    <div fxFlex="10%">
+                        <!-- <airmid-textbox label="SequenceNo" formControlName="sequenceNo" [value]="data?.sequenceNo"
+                            [formGroup]="SubQuestionForm" [maxLength]="50">
+                        </airmid-textbox> -->
+
+                        <airmid-textbox label="Sequence No " formControlName="sequenceNo"
+                            (keypress)="keyPressAlphanumeric($event)" [value]="data?.sequenceNo ?? ''"
+                            [formGroup]="SubQuestionForm" [validations]="getValidationMessages().sequenceNo1"
+                            [maxLength]="10"></airmid-textbox>
+                    </div>
+
+                
                     <div fxFlex>
-                        <airmid-textbox label="subQuestion Name" formControlName="subQuestionName"
+                        <airmid-textbox label="Sub Question " formControlName="subQuestionName"
                             [value]="data?.subQuestionName" [formGroup]="SubQuestionForm"
                             [validations]="getValidationMessages().subQuestionName" [maxLength]="50">
                         </airmid-textbox>
                     </div>
-                    <div fxFlex>
-                        <airmid-dropdown label="Question" formControlName="questionId"
-                            [formGroup]="SubQuestionForm" [value]="data?.questionId"
-                            [validations]="getValidationMessages().questionId"
-                            [mode]="autocompleteModesQuesiontatus">
-                        </airmid-dropdown>
-                    </div>
-                    <div fxFlex>
-                        <airmid-textbox label="SequenceNo" formControlName="sequenceNo" [value]="data?.sequenceNo"
-                            [formGroup]="SubQuestionForm" [maxLength]="50">
-                        </airmid-textbox>
-                    </div>
-
-                    <div fxFlex>
-                        <airmid-textbox label="ResutValues" formControlName="resultValues" [value]="data?.resultValues"
-                            [formGroup]="SubQuestionForm" [maxLength]="50">
-                        </airmid-textbox>
-                    </div>
-                </div>
-
-
-                <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" fxLayoutAlign="space-between">
-
-                    <div>
-                        <app-airmid-slider label="IsActive/Deactive" formControlName="isActive"
-                            [formGroup]="SubQuestionForm" [(ngModel)]="isActive"></app-airmid-slider>
-                    </div>
-
-                    <div class="new-appointment-actions gap-8" fxLayoutAlign="end center">
-                        <button class="btn btn-danger-outline" (click)="onClear(false)">Close</button>
-                        <button class="btn btn-primary " color="accent" (click)="onSubmit()">
-                            <span>Save</span>
-                        </button>
-                    </div>
-
                 </div>
 
             </form>
+            <mat-card style="padding: 10px;">
+                <span style="font-weight: bold;color: blue;font-size: large;box-sizing: border-box;padding: 10px;">Sub
+                    Question Result
+                    Details</span>
+                <form [formGroup]="SubresultvaluesForm">
+                    <div fxLayout="row" fxLayoutGap="5px">
+
+
+                        <div fxFlex="20%" fxFlex.xs="20%" fxFlex.sm="20%">
+
+                            <airmid-textbox label="Sequence No " formControlName="sequenceNo"
+                                (keypress)="keyPressAlphanumeric($event)" [formGroup]="SubresultvaluesForm"
+                                [validations]="getValidationMessages().sequenceNo" [maxLength]="10"></airmid-textbox>
+                        </div>
+
+                        <div fxFlex="28%" fxFlex.xs="28%" fxFlex.sm="28%">
+                            <airmid-textbox label="Shortcut Values" formControlName="shortcutValues"
+                                [formGroup]="SubresultvaluesForm" [maxLength]="50">
+                            </airmid-textbox>
+                        </div>
+                        <div fxFlex="45%" fxFlex.xs="45%" fxFlex.sm="45%">
+                            <airmid-textbox label="Result Values " formControlName="subQuestionValName"
+                                [formGroup]="SubresultvaluesForm" [maxLength]="250">
+                            </airmid-textbox>
+
+                        </div>
+                        <!-- <div fxFlex="10%" fxFlex.xs="10%" fxFlex.sm="10%">
+                        <airmid-textbox label="Net amount" formControlName="netAmount" [formGroup]="chargeForm"
+                            [validations]="getValidationMessages().netAmount" [type]="'number'" [readonly]="true">
+                        </airmid-textbox>
+                    </div> -->
+
+                        <!-- [disabled]="!SubresultvaluesForm.valid" -->
+                        <div fxFlex="5%" fxFlex.xs="5%" fxFlex.sm="5%">
+                            <div class="mt-2">
+                                <button type="button" (click)="onAddResult()" class="btn btn-primary btn-with-icon py-8"
+                                    [matTooltip]="!SubresultvaluesForm.valid?'Enter all data to enable this button!!':''"
+                                    [matTooltipPosition]="'above'" fxFlex>
+                                    <span class="btn-icon">
+                                        <mat-icon> add </mat-icon>
+                                    </span>
+                                </button>
+                            </div>
+                        </div>
+
+
+                    </div>
+
+                    <div fxLayout="row" fxLayoutGap="5px">
+
+                        <mat-table #table matSort [dataSource]="dsQuesList" class="h-280 fix-first-col"
+                            [@animateStagger]="{value:'50'}">
+
+
+                            <ng-container matColumnDef="sequenceNo">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header> Sequence No</mat-header-cell>
+                                <mat-cell *matCellDef="let contact">{{contact.SequenceNo}}</mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="subQuestionValName">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header>SubQuestion Value</mat-header-cell>
+                                <mat-cell *matCellDef="let contact">{{contact.SubQuestionValName}}</mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="shortcutValues">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header>Shortcut Values</mat-header-cell>
+                                <mat-cell *matCellDef="let contact">{{contact.ShortcutValues}}</mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="Action" stickyEnd>
+                                <mat-header-cell *matHeaderCellDef class="w-80">Action</mat-header-cell>
+                                <mat-cell *matCellDef="let contact" class="w-80">
+                                    <button mat-icon-button color="warn"
+                                        (click)="ondel(contact)"><mat-icon>delete</mat-icon></button>
+                                </mat-cell>
+                            </ng-container>
+                            <mat-header-row *matHeaderRowDef="displayedIsubQColumn" class="accent"
+                                sticky></mat-header-row>
+                            <mat-row *matRowDef="let row; columns: displayedIsubQColumn"></mat-row>
+                        </mat-table>
+                    </div>
+
+                    <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" fxLayoutAlign="space-between">
+
+                        <div>
+                            <!-- <app-airmid-slider label="IsActive/Deactive" formControlName="isActive"
+                                [formGroup]="SubQuestionForm" [(ngModel)]="isActive"></app-airmid-slider> -->
+                        </div>
+
+                        <div class="new-appointment-actions gap-8" fxLayoutAlign="end center">
+                            <button class="btn btn-danger-outline" (click)="onClear(false)">Close</button>
+                            <button class="btn btn-primary " color="accent" (click)="save()">
+                                <span>Save</span>
+                            </button>
+                        </div>
+
+                    </div>
+                </form>
+            </mat-card>
         </div>
     </div>
 </div>

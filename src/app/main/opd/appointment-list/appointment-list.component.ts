@@ -812,6 +812,10 @@ export class AppointmentListComponent implements OnInit {
         console.log('Third action clicked for:', element);
     }
 
+    OnViewReportPdf1(element: any) {
+        this.commonService.Onprint("VisitId", element.visitId, "OPGastrologyPrescription");
+    }
+
     AppointmentCancle(contact) {
         Swal.fire({
             title: 'Do you want to Cancle Appointment',
