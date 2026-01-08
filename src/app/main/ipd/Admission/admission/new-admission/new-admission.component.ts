@@ -989,8 +989,8 @@ this.Is9_Digit_National_Id = id === "1";
        aadharCardNo: [
       { name: "pattern", Message: "Only numbers allowed" },
       { name: "required", Message: "Aadhaar / National ID is required" },
-      { name: "minLength", Message: `Minimum ${minLen} digits required.` },
-      { name: "maxLength", Message: `More than ${maxLen} digits not allowed.` }
+      // { name: "minLength", Message: `Minimum ${minLen} digits required.` },
+      // { name: "maxLength", Message: `More than ${maxLen} digits not allowed.` }
     ],
       MaritalStatusId: [
         { name: "required", Message: "Mstatus Name is required" }

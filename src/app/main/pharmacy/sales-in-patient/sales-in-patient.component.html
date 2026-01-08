@@ -426,7 +426,11 @@
                     <ng-container matColumnDef="UnitMRP">
                       <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm>Unit MRP</mat-header-cell>
                       <mat-cell *matCellDef="let contact" fxShow.gt-sm>
-                        <span> {{ contact.UnitMRP}}</span>
+                        <mat-form-field appearance="fill">
+                          <input matInput [(ngModel)]="contact.UnitMRP" type="text " (keyup)="getCellCalculation(contact)"
+                            min="0"  OnlyNumber  (keypress)="keyPressDigitDecimalOnly($event)"/>
+                        </mat-form-field>
+                        <!-- <span> {{ contact.UnitMRP | currency: currency:'symbol'  }}</span> -->
                       </mat-cell>
                     </ng-container>
 
@@ -592,9 +596,9 @@
 
                                
                          
-                        <mat-slide-toggle name="IsPurchaseWsie"  (change)="getPurchaseRateWise($event)" formControlName="IsPurchaseWsie">
+                        <!-- <mat-slide-toggle name="IsPurchaseWsie"  (change)="getPurchaseRateWise($event)" formControlName="IsPurchaseWsie">
                          ByRate
-                        </mat-slide-toggle> 
+                        </mat-slide-toggle>  -->
 
                                 <div class="sales-footer-buttons gap-8" fxLayout="row">
 

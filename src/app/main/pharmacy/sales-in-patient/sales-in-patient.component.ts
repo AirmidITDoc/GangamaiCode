@@ -1168,7 +1168,7 @@ export class SalesInPatientComponent implements OnInit {
              MRP = +item?.LandedRate;
              IsPurRate=1  
          } else {
-             MRP = +item?.MRP;
+             MRP = +item?.UnitMRP;
              IsPurRate=0; 
          }
          const unitMrp = MRP
@@ -1180,7 +1180,7 @@ export class SalesInPatientComponent implements OnInit {
  
          const updatedItem = {
              GSTAmount: gstAmount.toFixed(2),
-             UnitMRP: unitMrp.toFixed(2),
+             //UnitMRP: unitMrp.toFixed(2),
              TotalMRP: totalMrp.toFixed(2),
              MarginAmt: marginAmt.toFixed(2),
              MRPRateTotal:mrpRateTotal.toFixed(2),

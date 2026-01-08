@@ -177,8 +177,8 @@ debugger
             return;
         }
         if (this.personalFormGroup.valid) {
-            console.log(this.personalFormGroup.value)
-            this.personalFormGroup.get('aadharCardNo').setValue(this.aadharRaw || this.registerObj.aadharCardNo || '');
+            console.log(this.personalFormGroup.value) //this.aadharRaw 
+            this.personalFormGroup.get('aadharCardNo').setValue(this.personalFormGroup.get('aadharCardNo')?.value || this.registerObj.aadharCardNo || '');
             this.personalFormGroup.get('emgAadharCardNo').setValue(this.aadharRaw1 || this.registerObj.emgAadharCardNo || '');
             console.log(this.personalFormGroup.get('aadharCardNo').value)
             this.personalFormGroup.removeControl('IsNRI')
@@ -367,8 +367,8 @@ debugger
             aadharCardNo: [
                 { name: "pattern", Message: "Only numbers allowed" },
                 { name: "required", Message: "Aadhaar / National ID is required" },
-                { name: "minLength", Message: `Minimum ${minLen} digits required.` },
-                { name: "maxLength", Message: `More than ${maxLen} digits not allowed.` }
+                // { name: "minLength", Message: `Minimum ${minLen} digits required.` },
+                // { name: "maxLength", Message: `More than ${maxLen} digits not allowed.` }
             ],
             emgDrivingLicenceNo: [
                 { name: "pattern", Message: "e.g., MH14-20210001234" },

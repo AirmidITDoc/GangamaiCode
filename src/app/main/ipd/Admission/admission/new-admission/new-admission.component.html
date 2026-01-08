@@ -413,6 +413,14 @@
 
                                                     </div>
                                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                                        <airmid-textbox label="National ID"
+                                                            formControlName="aadharCardNo"
+                                                            [value]="registerObj.aadharCardNo ?? ''"
+                                                            [formGroup]="personalFormGroup"  
+                                                            [validations]="getValidationMessages().aadharCardNo">
+                                                        </airmid-textbox>
+                                                    </div>
+                                                     <!-- <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                         <airmid-textbox label="Aadhaar No. / National ID"
                                                             formControlName="aadharCardNo"
                                                             [value]="registerObj.aadharCardNo ?? ''"
@@ -420,7 +428,7 @@
                                                             [min]="Is9_Digit_National_Id ? 7 : 12" 
                                                             [validations]="getValidationMessages().aadharCardNo">
                                                         </airmid-textbox>
-                                                    </div>
+                                                    </div> -->
                                                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                         <mat-checkbox formControlName="IsNRI">
                                                             ISNRI

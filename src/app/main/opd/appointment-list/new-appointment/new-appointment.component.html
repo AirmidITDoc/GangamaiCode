@@ -195,14 +195,21 @@
                                   [validations]="getValidationMessages().address"></airmid-textbox>
                               </div> 
 
-                              <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                              <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%" *ngIf="Is9_Digit_National_Id == false">
                                 <airmid-dropdown label="City" formControlName="CityId" [formGroup]="personalFormGroup"
                                   [value]="registerObj?.cityId" [validations]="getValidationMessages().cityId"
                                   ValueField="cityId" TextField="cityName" (selectionChange)="onChangecity($event)"
                                   ApiUrl="CityMaster/get-cities"></airmid-dropdown>
                               </div>
 
-                              <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                               <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%" *ngIf="Is9_Digit_National_Id == true">
+                                <airmid-dropdown label="Town" formControlName="CityId" [formGroup]="personalFormGroup"
+                                  [value]="registerObj?.cityId" [validations]="getValidationMessages().cityId"
+                                  ValueField="cityId" TextField="cityName" (selectionChange)="onChangecity($event)"
+                                  ApiUrl="CityMaster/get-cities"></airmid-dropdown>
+                              </div>
+
+                              <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%" *ngIf="Is9_Digit_National_Id == false">
                                 <airmid-dropdown label="State" formControlName="StateId"
                                   [formGroup]="personalFormGroup" [value]="registerObj?.stateId" [readonly]="true"
                                   [validations]="getValidationMessages().stateId" ValueField="stateId"
@@ -210,7 +217,7 @@
                                   ApiUrl="StateMaster/get-state"></airmid-dropdown>
                               </div>
 
-                              <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                              <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%" *ngIf="Is9_Digit_National_Id == false">
                                 <airmid-dropdown label="Country" formControlName="CountryId" [readonly]="true"
                                   [value]="registerObj?.countryId" [formGroup]="personalFormGroup" [disabled]="false"
                                   [validations]="getValidationMessages().countryId" #ddlCountry
@@ -224,15 +231,20 @@
                                     [value]="registerObj.mobileNo ?? ''" [formGroup]="personalFormGroup"
                                     [validations]="getValidationMessages().mobileNo" [maxLength]="10"
                                     (valueChange)="handleInputChangeDebounced('MobileNo')"></airmid-textbox>  
-                              </div>
-
-                              <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                              </div> 
+                              
+                                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                <airmid-textbox label="National ID" formControlName="aadharCardNo"
+                                  [value]="registerObj.aadharCardNo ?? ''" [formGroup]="personalFormGroup" 
+                                  [validations]="getValidationMessages().aadharCardNo"></airmid-textbox>
+                              </div> 
+                                <!-- <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                                 <airmid-textbox label="National ID" formControlName="aadharCardNo"
                                   [value]="registerObj.aadharCardNo ?? ''" [formGroup]="personalFormGroup"
                                   (keypress)="keyPressAlphanumeric($event)" [maxLength]="Is9_Digit_National_Id ? 9 : 12"
                                   [min]="Is9_Digit_National_Id ? 7 : 12"
                                   [validations]="getValidationMessages().aadharCardNo"></airmid-textbox>
-                              </div> 
+                              </div>  -->
                              
                               <!-- <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">   
                                      <airmid-dropdown
@@ -307,8 +319,7 @@
 
                             <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%">
                               <airmid-textbox label="Aadhaar No. / National ID" formControlName="emgAadharCardNo"
-                                [formGroup]="personalFormGroup" [maxLength]="12"
-                                [validations]="getValidationMessages().aadharCardNo"
+                                [formGroup]="personalFormGroup" [maxLength]="12"  
                                 [value]="registerObj.emgAadharCardNo ?? ''"></airmid-textbox>
                             </div>
 
@@ -521,7 +532,7 @@
                     </form>
                   </mat-expansion-panel>
 
-                      <mat-expansion-panel expanded class="mt-12" [(expanded)]="isExpanded2">
+                      <mat-expansion-panel expanded class="mt-12" [(expanded)]="isExpanded3">
                       <mat-expansion-panel-header>
                         <mat-panel-title>Additional Info</mat-panel-title>
                       </mat-expansion-panel-header>

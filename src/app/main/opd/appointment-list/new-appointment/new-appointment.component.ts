@@ -98,6 +98,7 @@ export class NewAppointmentComponent implements OnInit {
     // <mat-expansion-panel> default to closed,
     isExpanded1 = false; // Defaults to closed
     isExpanded2 = false;
+     isExpanded3 = false;
     ApiUrl = "PhoneAppointment2/auto-complete?Keyword=a"
 
     screenFromString = 'appointment';
@@ -510,6 +511,7 @@ this.Is9_Digit_National_Id = id === "1";
                             LastName: this.registerObj.lastName,
                             MobileNo: this.registerObj.mobileNo,
                             address: this.registerObj.address.trim(),
+                            aadharCardNo:this.registerObj.aadharCardNo,
                             // DateOfBirth:this.registerObj.dateofBirth,
                             emgContactPersonName: this.registerObj?.emgContactPersonName ?? '',
                             emgRelationshipId: this.registerObj?.emgRelationshipId ?? 0,
@@ -1016,10 +1018,10 @@ debugger
             //     { name: "maxLength", Message: "More than 12 digits not allowed." }
             // ],
             aadharCardNo: [
-      { name: "pattern", Message: "Only numbers allowed" },
+     // { name: "pattern", Message: "Only numbers allowed" },
       { name: "required", Message: "Aadhaar / National ID is required" },
-      { name: "minLength", Message: `Minimum ${minLen} digits required.` },
-      { name: "maxLength", Message: `More than ${maxLen} digits not allowed.` }
+    //   { name: "minLength", Message: `Minimum ${minLen} digits required.` },
+    //   { name: "maxLength", Message: `More than ${maxLen} digits not allowed.` }
     ],
             MaritalStatusId: [
                 { Message: "Mstatus Name is required" }
@@ -1173,21 +1175,21 @@ debugger
             Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$"),
             this._FormvalidationserviceService.onlyNumberValidator()
             ]],
-             aadharCardNo: ['', [
-           Validators.minLength(minLen),  //     Validators.minLength(12),
-            Validators.maxLength(maxLen), //     Validators.maxLength(12),
-                Validators.pattern("^[0-9]*$"),
-                this._FormvalidationserviceService.onlyNumberValidator()
-         ]],
-             
+        //      aadharCardNo: ['', [Validators.required
+        // //    Validators.minLength(minLen),  //     Validators.minLength(12),
+        // //     Validators.maxLength(maxLen), //     Validators.maxLength(12),
+        // //         Validators.pattern("^[0-9]*$"),
+        // //         this._FormvalidationserviceService.onlyNumberValidator()
+        //  ]],
+            aadharCardNo:['',[Validators.required]],
             panCardNo: ['', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
             MaritalStatusId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             ReligionId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             AreaId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             CityId: [0, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             City: [''],
-            StateId: [0, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-            CountryId: [0, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+            StateId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            CountryId: [0, [ this._FormvalidationserviceService.onlyNumberValidator()]],
             IsCharity: false,
             IsSeniorCitizen: false,
             AddedBy: [this.accountService.currentUserValue.userId, this._FormvalidationserviceService.onlyNumberValidator()],

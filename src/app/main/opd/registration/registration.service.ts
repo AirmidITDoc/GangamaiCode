@@ -82,9 +82,9 @@ export class RegistrationService {
             //     // this._FormvalidationserviceService.onlyNumberValidator()
             // ]], // Validators.pattern("^[0-9]*$"),Validators.pattern(/^[xX]{8}\d{4}$/),
             aadharCardNo: ['', [
-                Validators.minLength(minLen),
-                Validators.maxLength(maxLen),
-                Validators.pattern("^[0-9]*$")
+                // Validators.minLength(minLen),
+                // Validators.maxLength(maxLen),
+                // Validators.pattern("^[0-9]*$")
             ]],
 
             GenderId: [0, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],

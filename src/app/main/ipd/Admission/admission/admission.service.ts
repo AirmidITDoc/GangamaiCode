@@ -107,9 +107,9 @@ this.Is9_Digit_National_Id = id === "1";
             Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
             ]],
             aadharCardNo: ['', [
-                Validators.minLength(minLen),
-                Validators.maxLength(maxLen),
-                Validators.pattern("^[0-9]*$")
+                // Validators.minLength(minLen),
+                // Validators.maxLength(maxLen),
+                // Validators.pattern("^[0-9]*$")
             ]],
 
             panCardNo: '',

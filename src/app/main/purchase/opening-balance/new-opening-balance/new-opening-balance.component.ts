@@ -529,6 +529,7 @@ export class NewOpeningBalanceComponent implements OnInit {
 
   onMRPInput(event: any) {
     this.validateFormValues()
+     this.CalculatePerUnit();
   }
 
   onLandedRateInput(event: any) { 
@@ -537,10 +538,10 @@ export class NewOpeningBalanceComponent implements OnInit {
   }
 CalculatePerUnit(){
  const formvalues= this.OPeningtemForm.value
-    if((formvalues?.MRP || 0)> 0){
-    const perunit = (formvalues?.MRP || 0) / (formvalues?.pack || 0).toFixed(2)
+    if((formvalues?.LandedRate || 0)> 0){
+    const perunit = (formvalues?.LandedRate || 0) / (formvalues?.pack || 0) || 0
     this.OPeningtemForm.patchValue({
-      RatePerUnit : perunit || 0
+      RatePerUnit : perunit.toFixed(2) || 0
     })
     } 
 }

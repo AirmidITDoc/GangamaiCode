@@ -26,7 +26,7 @@
                 <div fxFlex="25%" fxFlex.sm="35%" fxFlex.xs="100%" class="table-right">
                     <div fxLayout="column" class="gap-8 h-100-p">
                     
-                        <div class="modal-card-container">
+                        <!-- <div class="modal-card-container">
                             <mat-card>
                                 <mat-card-content>
                                     <div class="company-bill-summary px-12">
@@ -64,7 +64,7 @@
                                 </mat-card-content>
                             </mat-card>
                     
-                        </div>
+                        </div> --> 
                     
                         <div class="modal-card-container" fxFlex>
                             <mat-card fxFlex.gt-sm="100%" fxFlex>
@@ -150,47 +150,52 @@
                                 </mat-card-content>
                             </mat-card>
                         </div>
-                    
+
                         <div class="modal-card-container">
-                            <mat-card style="padding: 6px;">
-                                <mat-card-content>
-                                    <form [formGroup]="CompanyForm">
-                                        <div class="company-bill-summary">
-                                            <div class="company-approval-summary-title pb-2" fxLayoutAlign="space-between">
-                                                <span class="h3 font-weight-600">Company Approval Details</span>
-                                               <button type="button" class="btn btn-primary" (click)="CompanyAmtSave()">Save</button>
-                                            </div>
-                                            <hr>
-                                            <div fxLayout="column" fxLayoutGap="6px">
-                                                <div fxLayout="row" fxLayoutGap="6px">
-                                                    <airmid-dropdown label="Gov.Company Name" fxFlex formControlName="govtCompanyId"
-                                                        [formGroup]="CompanyForm" [validations]="getValidationMessages().govtCompanyId"
-                                                        [mode]="autocompleteModecompany"></airmid-dropdown>
-                    
-                                                        <div fxFlex>
-                                                    <airmid-textbox  label="Gov.Company Amount" formControlName="govtApprovedAmt"
-                                                        [formGroup]="CompanyForm" [validations]="getValidationMessages().govtApprovedAmt">
-                                                    </airmid-textbox>
-                                                    </div>
-                                                       
-                                                </div>
-                                                <div fxLayout="row" fxLayoutGap="6px">
-                                                    <airmid-dropdown label="Company Name" fxFlex formControlName="companyApprovedId"
-                                                        [formGroup]="CompanyForm" [validations]="getValidationMessages().companyApprovedId"
-                                                        [mode]="autocompleteModecompany"></airmid-dropdown>
-                    
-                                                         <div fxFlex>
-                                                    <airmid-textbox  label="Company Amount" formControlName="companyApprovedAmt"
-                                                        [formGroup]="CompanyForm" [validations]="getValidationMessages().companyApprovedAmt">
-                                                    </airmid-textbox>
-                                                    </div>
-                                                </div>
-                                            </div>
+                            <form [formGroup]="CompanyForm">
+                                <mat-card style="padding: 6px;">
+                                    <mat-card-content> 
+                                        <div fxLayoutAlign="space-between">
+                                            <span class="h3 font-weight-600">Company Approval Details</span>
+                                            <button type="button" class="btn btn-primary" (click)="CompanyAmtSave()">Save</button>
                                         </div>
-                                    </form>
-                                </mat-card-content>
-                            </mat-card>
+                                        <hr>
+                                        <div fxLayout="row" fxLayoutGap="6px">
+                                            <div fxLayout="column" fxLayoutGap="6px">
+                                                <airmid-dropdown label="Gov.Company Name" fxFlex formControlName="govtCompanyId"
+                                                    [formGroup]="CompanyForm" [validations]="getValidationMessages().govtCompanyId"
+                                                    [mode]="autocompleteModecompany" [readonly]="true"></airmid-dropdown>
+                        
+                                                <airmid-textbox label="Gov.Company Amount" formControlName="govtApprovedAmt" fxFlex
+                                                    [formGroup]="CompanyForm" [validations]="getValidationMessages().govtApprovedAmt">
+                                                </airmid-textbox>
+                        
+                                                <airmid-textbox label="Reference No" formControlName="referenceNo" fxFlex
+                                                    [formGroup]="CompanyForm" [validations]="getValidationMessages().referenceNo">
+                                                </airmid-textbox>
+                        
+                                            </div>
+                                            <div fxLayout="column" fxLayoutGap="6px">
+                                                <airmid-dropdown label="Company Name" fxFlex formControlName="companyApprovedId"
+                                                    [formGroup]="CompanyForm" [validations]="getValidationMessages().companyApprovedId"
+                                                    [mode]="autocompleteModecompany"></airmid-dropdown>
+                        
+                                                <airmid-textbox label="Company Amount" formControlName="companyApprovedAmt" fxFlex
+                                                    [formGroup]="CompanyForm" [validations]="getValidationMessages().companyApprovedAmt">
+                                                </airmid-textbox>
+                        
+                                                <airmid-textbox label="Reference No1" formControlName="referenceNo_1" fxFlex
+                                                    [formGroup]="CompanyForm" [validations]="getValidationMessages().referenceNo_1">
+                                                </airmid-textbox>
+                        
+                                            </div>
+                                        </div> 
+                                    </mat-card-content>
+                                </mat-card>
+                            </form>
                         </div>
+                    
+                        
                     </div>
                 </div>
 

@@ -553,6 +553,7 @@ export class SalesHospitalKenyaComponent {
                this.PatientTypeId = obj?.patientTypeID
                 if((obj?.companyName || '') != ''){
                 this.ItemSubform.get('CashPay').setValue('Credit');
+                 this.CreditReasonShow = true
                 }
          }
          this.getBillSummary(obj?.admissionID);  
@@ -579,6 +580,7 @@ export class SalesHospitalKenyaComponent {
          this.Itemchargeslist = [];
           if((obj?.companyId || 0) != 0){
             this.ItemSubform.get('CashPay').setValue('Credit');
+             this.CreditReasonShow = true
          }
      }
     
@@ -1524,7 +1526,7 @@ export class SalesHospitalKenyaComponent {
              MRP = +item?.LandedRate || 0;
              IsPurRate=1  
          } else {
-             MRP = +item?.MRP || 0;
+             MRP = +item?.UnitMRP  || 0 ///MRP || 0;
              IsPurRate=0; 
          }
          const unitMrp = MRP
@@ -1536,7 +1538,7 @@ export class SalesHospitalKenyaComponent {
  
          const updatedItem = {
              GSTAmount: gstAmount.toFixed(2),
-             UnitMRP: unitMrp.toFixed(2),
+             //UnitMRP: unitMrp.toFixed(2),
              TotalMRP: totalMrp.toFixed(2),
              MarginAmt: marginAmt.toFixed(2),
              MRPRateTotal:mrpRateTotal.toFixed(2),
@@ -2018,6 +2020,7 @@ export class SalesHospitalKenyaComponent {
                  this.ItemSubform.get('regId').setValue(result[0]?.RegId);
                  if((result[0]?.companyId || 0)>0){
                    this.ItemSubform.get('CashPay').setValue('Credit');
+                   this.CreditReasonShow = true
                  } 
                  if (result[0]?.IPMedID > 0) {
                      this.IPDNocheck = true;

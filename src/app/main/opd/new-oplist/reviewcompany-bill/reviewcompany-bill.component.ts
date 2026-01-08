@@ -111,6 +111,7 @@ export class ReviewcompanyBillComponent {
       this.BillNo = this.patientDetail?.billNo
       this.getPrevCompanyBillList(this.patientDetail?.billNo,'Bill')
       this.getBilllist();
+      this.CompanyForm.get('govtCompanyId').setValue(this.patientDetail?.companyId || 0)
       //opdno
     }
         //this is for curreny symbol
@@ -222,9 +223,11 @@ export class ReviewcompanyBillComponent {
         govtCompanyId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         govtApprovedAmt: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
         companyApprovedId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-        companyApprovedAmt: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]], 
+        companyApprovedAmt: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+        referenceNo:[''],
+        referenceNo_1:[''] 
       })
-  } 
+  }  
   CreateCompanyUpdateForm() {
     return this.formBuilder.group({
       billGovtUpdates: this.formBuilder.group({
@@ -232,14 +235,16 @@ export class ReviewcompanyBillComponent {
         govtApprovedAmt: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
         companyApprovedId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         companyApprovedAmt: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-        billNo: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]]
+        billNo: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+        govtRefNo:[''],
+        compRefNo:['']
       }),
     })
   } 
   CompanyAmtSave(){
     debugger
     const formValue = this.CompanyForm.value
-    if (!((formValue?.govtCompanyId && formValue?.govtApprovedAmt) || (formValue?.companyApprovedId && formValue?.companyApprovedAmt))) {
+    if (!((formValue?.govtCompanyId && formValue?.govtApprovedAmt && formValue?.referenceNo) || (formValue?.companyApprovedId && formValue?.companyApprovedAmt  && formValue?.referenceNo_1))) {
       this.toastr.warning('Select Company & Enter Amount', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
@@ -256,10 +261,10 @@ export class ReviewcompanyBillComponent {
         govtCompanyId:formValue?.govtCompanyId || 0,
         govtApprovedAmt:formValue?.govtApprovedAmt || 0,
         companyApprovedId:formValue?.companyApprovedId || 0,
-        companyApprovedAmt:formValue?.companyApprovedAmt || 0
-        })
-
-
+        companyApprovedAmt:formValue?.companyApprovedAmt || 0,
+        govtRefNo:formValue?.referenceNo || 0,
+        compRefNo:formValue?.referenceNo_1 || 0,
+        }) 
     this._OPListService.UpdateGovernAmt(this.CompanyUpdateForm.value).subscribe(response=>{
     })
 
@@ -731,6 +736,16 @@ export class ReviewcompanyBillComponent {
         companyApprovedAmt: [
         {
           name: "pattern", Message: "only Number allowed."
+        }
+      ],
+       referenceNo: [
+        {
+          name: "required", Message: "required."
+        }
+      ],
+      referenceNo_1: [
+        {
+          name: "required", Message: "required."
         }
       ],
     }
