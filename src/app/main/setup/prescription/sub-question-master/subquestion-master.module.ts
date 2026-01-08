@@ -15,12 +15,23 @@ import { MatSortModule } from "@angular/material/sort";
 import { MatTableModule } from "@angular/material/table";
 import { MatToolbarModule } from "@angular/material/toolbar";
 import { RouterModule, Routes } from "@angular/router";
-import { FuseSidebarModule } from "@fuse/components";
+import { FuseConfirmDialogModule, FuseSidebarModule } from "@fuse/components";
 import { FuseSharedModule } from "@fuse/shared.module";
 import { SharedModule } from "app/main/shared/shared.module";
 import { NewSubquestionComponent } from './new-subquestion/new-subquestion.component';
 import { SubQuestionMasterComponent } from "./sub-question-master.component";
 import { SubquestionMasterService } from "./subquestion-master.service";
+import { ReactiveFormsModule } from "@angular/forms";
+import { MatAutocompleteModule } from "@angular/material/autocomplete";
+import { MatCardModule } from "@angular/material/card";
+import { MatSidenavModule } from "@angular/material/sidenav";
+import { NgxMatSelectSearchModule } from "ngx-mat-select-search";
+import { MatExpansionModule } from "@angular/material/expansion";
+import { ScrollingModule } from "@angular/cdk/scrolling";
+import { MatStepperModule } from "@angular/material/stepper";
+import { MatTooltipModule } from "@angular/material/tooltip";
+import { MatButtonToggleModule } from "@angular/material/button-toggle";
+import { OverlayModule } from "@angular/cdk/overlay";
 
 const routes: Routes = [
     {
@@ -34,22 +45,34 @@ const routes: Routes = [
     imports: [
         RouterModule.forChild(routes),
         SharedModule,
-        MatButtonModule,
-        MatCheckboxModule,
-        MatFormFieldModule,
-        MatIconModule,
-        MatInputModule,
-        MatMenuModule,
-        MatTableModule,
-        MatToolbarModule,
-        MatPaginatorModule,
-        MatSortModule,
-        MatSelectModule,
-        MatRadioModule,
-        MatSnackBarModule,
-        FuseSharedModule,
-        FuseSidebarModule,
-        MatDialogModule,
+    MatButtonModule,
+            MatCheckboxModule,
+            MatFormFieldModule,
+            MatIconModule,
+            MatInputModule,
+            MatMenuModule,
+            MatTableModule,
+            MatToolbarModule,
+            MatPaginatorModule,
+            MatSortModule,
+            MatSelectModule,
+            MatRadioModule,
+            FuseSidebarModule,
+            MatDialogModule,
+            FuseSharedModule,
+            FuseConfirmDialogModule,
+            ReactiveFormsModule,
+            MatSnackBarModule,
+            MatStepperModule,
+            MatAutocompleteModule,
+            NgxMatSelectSearchModule,
+            MatCardModule,
+            MatTooltipModule,
+            MatExpansionModule,
+            ScrollingModule,
+            MatSidenavModule,
+            MatButtonToggleModule,
+            OverlayModule
     ],
     providers: [SubquestionMasterService, DatePipe]
 })
