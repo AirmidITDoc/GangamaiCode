@@ -310,6 +310,12 @@
                         <span style="font-size: 13px;">Send WhatsApp Message</span>
                     </button>
 
+                    <button mat-menu-item (click)="OnViewReportPdf1(element)" style="height: 32px; min-height: 32px;">
+                        <mat-icon
+                            style="margin-right: 8px; font-size: 16px; width: 16px; height: 16px;">print</mat-icon>
+                        <span style="font-size: 13px;">Gastrology Print</span>
+                    </button>
+
                     <ng-container *ngFor="let m of menuActions">
                         <button mat-menu-item (click)="OngetRecord(element, m.text)"
                             [disabled]="shouldDisableMenuItem(m.text, element)" style="height: 32px; min-height: 32px;">
