@@ -133,53 +133,51 @@ export class EditAdmissionComponent implements OnInit {
     return this._formBuilder.group({
         AdmissionId: 0,
         RegId: 0,
-        AdmissionDate: [this.registerObj1.admissionDate],
-        AdmissionTime: [this.registerObj1.admissionTime],
+        AdmissionDate: [this.registerObj1?.admissionDate],
+        AdmissionTime: [this.registerObj1?.admissionTime],
         PatientTypeId:[0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
         hospitalId: [this.accountService.currentUserValue.user.unitId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
         DocNameId:[0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
         RefDocNameId: 0,
         DischargeDate: "1900-01-01",
         DischargeTime: "1900-01-01T11:24:02.655Z",
-        IsDischarged:[this.registerObj1.isDischarged],
-        IsBillGenerated: [this.registerObj1.isBillGenerated],
+        IsDischarged:[this.registerObj1?.isDischarged],
+        IsBillGenerated: [this.registerObj1?.isBillGenerated],
         CompanyId:[0],
-        TariffId:[this.registerObj1.tariffId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-        ClassId:[this.registerObj1.classId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-        wardId:[this.registerObj1.wardId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-        bedId:[this.registerObj1.bedId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-
+        TariffId:[this.registerObj1?.tariffId || 0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+        ClassId:[this.registerObj1?.classId || 0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+        wardId:[this.registerObj1?.wardId || 0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+        bedId:[this.registerObj1?.bedId || 0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
         DepartmentId:[0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-        RelativeName:this.registerObj1.relativeName,
-        RelativeAddress: this.registerObj1.relativeAddress,
-        PhoneNo: [ this.registerObj1.phoneNo,[
+        RelativeName:this.registerObj1?.relativeName || '',
+        RelativeAddress: this.registerObj1?.relativeAddress || '',
+        PhoneNo: [ this.registerObj1?.phoneNo || '0',[
             Validators.minLength(10),
             Validators.maxLength(10),
             Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
             ]],
-        MobileNo: [this.registerObj1.mobileNo, [
+        MobileNo: [this.registerObj1?.mobileNo, [
         Validators.minLength(10),
         Validators.maxLength(10),
         Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")
         ]],
-        RelationshipId:[this.registerObj1.relationshipId],
+        RelationshipId:[this.registerObj1?.relationshipId || 0],
         AddedBy:this.accountService.currentUserValue.userId,
         isMlc: [false],
         ischarity: [false],
-        MotherName: [this.registerObj1.motherName],
-        AdmittedDoctor1:[this.registerObj1.admittedDoctor1],
-        AdmittedDoctor2:[this.registerObj1.admittedDoctor2],
-        RefByTypeId: [this.registerObj1.refByTypeId],
-        RefByName:[this.registerObj1.refByName],
-        SubTpaComId:[this.registerObj1.subTpaComId],
-        PolicyNo:[this.registerObj1.policyNo],
-        AprovAmount:[this.registerObj1.aprovAmount],
+        MotherName: [this.registerObj1?.motherName || ''],
+        AdmittedDoctor1:[this.registerObj1?.admittedDoctor1 || 0],
+        AdmittedDoctor2:[this.registerObj1?.admittedDoctor2 || 0],
+        RefByTypeId: [this.registerObj1?.refByTypeId || 0],
+        RefByName:[this.registerObj1?.refByName || 0],
+        SubTpaComId:[this.registerObj1?.subTpaComId || 0],
+        PolicyNo:[this.registerObj1?.policyNo],
+        AprovAmount:[this.registerObj1?.aprovAmount],
         compDOd: [(new Date()).toISOString()],
-        IsOpToIpconv: [this.registerObj1.isOpToIpconv],
-        RefDoctorDept: [this.registerObj1.refDoctorDept],
-        AdmissionType:[this.registerObj1.admittedDoctor2],
-        convertId:0
-   
+        IsOpToIpconv: [this.registerObj1?.isOpToIpconv || ''],
+        RefDoctorDept: [this.registerObj1?.refDoctorDept || ''],
+        AdmissionType:[this.registerObj1?.admittedDoctor2 || ''],
+        convertId:0 
     });
 }
 
@@ -228,14 +226,16 @@ AdmissionFormSet(){
   OnSaveAdmission() {
     // this.admissionFormGroup.get('AdmissionDate').setValue(this.datePipe.transform(this.admissionFormGroup.get('AdmissionDate').value, 'yyyy-MM-dd'))
     debugger
-    const inputDate = this.registerObj1.admissionTime;  
-    const [datePart, timePart] = inputDate.split(' ');
-    const [day, month, year] = datePart.split('-');
-    const formattedDate = `${year}-${month}-${day} ${timePart}`;
+const rawDate = this.registerObj1.admissionTime;
+const [datePart, timePart] = rawDate.split(' ');
+const [day, month, year] = datePart.split('-');
+const isoDate = `${year}-${month}-${day}T${timePart}`;
+const inputDate = new Date(isoDate);
 
-    this.admissionFormGroup.get('AdmissionDate').setValue(this.datePipe.transform(this.registerObj1.admissionDate, 'yyyy-MM-dd'))
-    this.admissionFormGroup.get('AdmissionTime').setValue(formattedDate)
-    
+  this.admissionFormGroup.get('AdmissionDate').setValue(this.datePipe.transform(this.registerObj1.admissionDate, 'yyyy-MM-dd'))
+ this.admissionFormGroup.get('AdmissionTime')?.setValue(
+  this.datePipe.transform(inputDate, 'yyyy-MM-dd hh:mm:ss a')
+); 
     console.log(this.admissionFormGroup.value)
 
     if (this.isCompanySelected && this.admissionFormGroup.get('CompanyId').value == 0) {

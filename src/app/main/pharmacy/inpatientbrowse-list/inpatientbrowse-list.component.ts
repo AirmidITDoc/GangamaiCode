@@ -509,7 +509,7 @@ export class InpatientbrowseListComponent {
   getSalesRetrunlistdata() {
     debugger
     this.gridConfig2 = {
-      apiUrl: "SalesReturn/SalesReturnBrowseList",
+      apiUrl: "InPatient/SalesInPatientReturnBillList",
       columnsList: this.SalesReturnHColumns,
       sortField: "SalesReturnId",
       sortOrder: 0,
@@ -587,7 +587,7 @@ export class InpatientbrowseListComponent {
     console.log(event)
     this.isShowDetailTableRetrun = true;
     this.gridConfig3 = {
-      apiUrl: "SalesReturn/salesReturnBrowseDetaillist",
+      apiUrl: "InPatient/salesInPatientReturnBrowseDetaillist",
       columnsList: this.BrowseDetColumns,
       sortField: "SalesReturnId",
       sortOrder: 0,

@@ -79,11 +79,11 @@
                             <button mat-icon-button matTooltip="Bill Return" *ngIf="element.isRefundFlag==true ">
                                 <mat-icon>replay</mat-icon>
                             </button>
-                            <button mat-icon-button matTooltip="Credit Bill"
+                            <!-- <button mat-icon-button matTooltip="Credit Bill"
                                 *ngIf="element.paidType=='Credit' && element.balanceAmount > '0'"
                                 (click)="OnPayment(element)">
                                 <mat-icon>payment</mat-icon>
-                            </button>
+                            </button> -->
                         </div>
                     </ng-template>
 
@@ -355,8 +355,6 @@
                         (onSelectRow)="getsalesReturndetaillist($event)">
                         <ng-container filters>
                             <form [formGroup]="_BrowsSalesBillService.formReturn" fxLayout="column">
-
-                             
 
                                 <mat-form-field appearance="outline">
                                     <mat-label>Enter a date range</mat-label>

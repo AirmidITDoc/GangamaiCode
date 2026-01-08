@@ -708,7 +708,7 @@
                                   <mat-icon class="active-icon green-600 s-16">check</mat-icon>
                                 </button>
                                 <button mat-icon-button (click)="deletecharges(contact)" matTooltip="Delete"
-                                  *ngIf="!contact.EditDoctor">
+                                  *ngIf="!contact.EditDoctor && contact.serviceName != 'Pharmacy Charges'">
                                   <mat-icon class="active-icon red-600-fg s-16">delete</mat-icon>
                                 </button>
                               </ng-container>

@@ -27,47 +27,47 @@
                     <form [formGroup]="parameterForm">
                         <input type="hidden" name="ParameterID" formControlName="parameterId">
                         <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row wrap" fxLayoutGap="8px grid">
-                            <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                 <airmid-textbox label="Parameter Short Name" formControlName="parameterShortName"
                                     [value]="data?.parameterShortName" [formGroup]="parameterForm"
                                     [validations]="getValidationMessages().parameterShortName" [maxLength]="50">
                                 </airmid-textbox>
                             </div>
 
-                            <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                 <airmid-textbox label="Parameter Name" formControlName="parameterName"
                                     [value]="data?.parameterName" [formGroup]="parameterForm"
                                     [validations]="getValidationMessages().parameterName" [maxLength]="50">
                                 </airmid-textbox>
                             </div>
 
-                            <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                 <airmid-textbox label="Print Parameter Name" formControlName="printParameterName"
                                     [value]="data?.printParameterName" [formGroup]="parameterForm"
                                     [validations]="getValidationMessages().printParameterName" [maxLength]="50">
                                 </airmid-textbox>
                             </div>
                             <!-- [value]="data?.MethodName" -->
-                            <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                 <airmid-textbox label="Method Name" formControlName="methodName"
                                     [formGroup]="parameterForm" [validations]="getValidationMessages().methodName"
                                     [maxLength]="50">
                                 </airmid-textbox>
                             </div>
                             <!-- [value]="data?.formula" -->
-                            <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                 <airmid-textbox label="Formula" formControlName="formula" [formGroup]="parameterForm"
                                     [validations]="getValidationMessages().formula" [maxLength]="150">
                                 </airmid-textbox>
                             </div>
 
-                            <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                                 <airmid-dropdown label="UnitId" formControlName="unitId" [value]="data?.unitId"
                                     [formGroup]="parameterForm" [validations]="getValidationMessages().unitId"
                                     [mode]="autocompleteModeUnitId" (selectDdlObject)="selectChangeUnitId($event)">
                                 </airmid-dropdown>
                             </div>
-                            <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                            <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                              <textarea cols="90%" rows="6" matInput label="Para Multiple Range" formControlName="paraMultipleRange"  
                                   [(ngModel)]="vparaMultipleRange" placeholder="Enter here" >
                             </textarea>
@@ -148,14 +148,14 @@
                                                         <airmid-textbox label="Min Value" formControlName="minValue"
                                                             [value]="vMinValue" [formGroup]="numericForm"
                                                             [validations]="getValidationMessages().minValue"
-                                                            [maxLength]="3">
+                                                            [maxLength]="6" >
                                                         </airmid-textbox>
                                                     </div>
                                                     <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="33%">
                                                         <airmid-textbox label="Max Value" formControlName="maxvalue"
                                                             [value]="vMaxValue" [formGroup]="numericForm"
                                                             [validations]="getValidationMessages().maxValue"
-                                                            [maxLength]="3">
+                                                            [maxLength]="6">
                                                         </airmid-textbox>
                                                     </div>
                                                     <div fxFlex="10%" fxFlex.xs="100%" fxFlex.sm="33%">

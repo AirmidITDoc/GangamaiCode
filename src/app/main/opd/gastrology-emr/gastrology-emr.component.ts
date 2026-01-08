@@ -267,6 +267,7 @@ export class GastrologyEmrComponent {
       this.getCertificateList();
       // this.getLabdata();
       this.getQuesList();
+      this.getQuesResultList(this.vOPIPId);
     }
 
     this.loadGridDataForVisit(this.VisitId);
@@ -2320,7 +2321,6 @@ export class GastrologyEmrComponent {
 
   getQuesList() {
     let name = this.myFormGroup.get("quesId").value || "";
-    // if (this.vRegNo) {
     var param = {
       "first": 0,
       "rows": 10,
@@ -2345,7 +2345,6 @@ export class GastrologyEmrComponent {
       this.dsQuesList.paginator = this.paginator;
       console.log(this.dsQuesList.data)
     });
-    // }  
   }
 
   onOpen(row: any = null) {
@@ -2354,13 +2353,53 @@ export class GastrologyEmrComponent {
         maxWidth: "96vw",
         height: "70vh",
         width: "60%",
-        data: row
+        data: { row: row, opipid: this.vOPIPId }
       });
     dialogRef.afterClosed().subscribe(result => {
-      this.grid.bindGridData();
-      // this.getSelectedRow(event);
+      this.getQuesResultList(result);
     });
   }
+
+  @ViewChild('quesPaginator') quesPaginator!: MatPaginator;
+@ViewChild('quesSort') quesSort!: MatSort;
+  getQuesResultList(data) {
+    // debugger
+    let opipID = data
+    var param = {
+      "first": 0,
+      "rows": 10,
+      "sortField": "ClinicalQuesHeaderId",
+      "sortOrder": 0,
+      "filters": [
+        {
+          "fieldName": "OPIPID",
+          "fieldValue": String(opipID),
+          "opType": "startswith"
+        }
+      ],
+      "exportType": "JSON",
+      "columns": [
+        {
+          "data": "string",
+          "name": "string"
+        }
+      ]
+    }
+    console.log(param)
+
+    this._CasepaperService.getquResultList(param).subscribe(Menu => {
+
+      this.resultList.data = Menu.data as QuesList[];
+      // this.quesPaginator.length = Menu.recordsTotal;
+      this.resultList.paginator = this.quesPaginator;
+      this.resultList.sort = this.quesSort;
+
+      this.quesPaginator.length = Menu.recordsTotal;
+
+      console.log(this.resultList.data)
+    });
+  }
+
 }
 
 export class QuesList {

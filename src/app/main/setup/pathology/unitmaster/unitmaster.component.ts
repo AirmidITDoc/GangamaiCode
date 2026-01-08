@@ -110,10 +110,10 @@ export class UnitmasterComponent implements OnInit {
         
         let that = this;
         const dialogRef = this._matDialog.open(NewUnitComponent,
-            {
-                maxWidth: "45vw",
-                maxHeight: '35%',
-                width: '70%',
+            { 
+                 maxWidth: "96%",
+                 width: '95%',
+                 height: '95%',
                 data: row
             });
         dialogRef.afterClosed().subscribe(result => {

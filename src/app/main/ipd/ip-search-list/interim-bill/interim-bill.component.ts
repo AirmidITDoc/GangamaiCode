@@ -528,7 +528,7 @@ export class InterimBillComponent implements OnInit {
   mPesa_ReceiptNo: any = '0';
   openWaitingScreen() {
     debugger
-    this._IpSearchListService.postpayment(this.IPInterimBillForm.controls["NetpayAmount"]?.value, this.IPInterimBillForm.get('mpesaMobile')?.value,
+    this._IpSearchListService.postpayment(this.InterimFooterForm.get("NetpayAmount")?.value, this.InterimFooterForm.get('mpesaMobile')?.value,
       this.selectedAdvanceObj?.admissionId).subscribe(response => {
         this.mpesaResponse = response;
         console.log(this.mpesaResponse)

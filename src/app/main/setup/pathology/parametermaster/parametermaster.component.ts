@@ -225,9 +225,9 @@ export class ParametermasterComponent implements OnInit {
             // }
             // this._ParameterService.populateForm(param);
             const dialogRef = this._matDialog.open(ParameterFormMasterComponent, {
-                maxWidth: "100vw",
-                height: '95%',
-                width: '70%',
+                        maxWidth: "96%",
+                        width: '95%',
+                        height: '95%',
                 // data:row,
                 data: { rowData: row, tableData: data.data }
             });
@@ -243,9 +243,9 @@ export class ParametermasterComponent implements OnInit {
         let that = this;
         const dialogRef = this._matDialog.open(ParameterFormMasterComponent,
             {
-                maxWidth: "100vw",
+                maxWidth: "96%",
+                width: '95%',
                 height: '95%',
-                width: '70%'
             });
         dialogRef.afterClosed().subscribe(result => {
           that.grid.bindGridData();
