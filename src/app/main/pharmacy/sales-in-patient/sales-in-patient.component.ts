@@ -704,7 +704,7 @@ export class SalesInPatientComponent implements OnInit {
              IGSTAmt: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
              PurchaseRate: [this.selectedItem?.purchaseRate, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
              PurTotAmt: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-             MarginAmt: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+             MarginAmt: [0],
              BalanceQty: [this.selectedItem?.balanceQty, [this._FormvalidationserviceService.onlyNumberValidator()]],
              SalesDraftId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
              StoreId: [this.selectedItem?.storeId, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],

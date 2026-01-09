@@ -262,8 +262,8 @@ export class ReviewcompanyBillComponent {
         govtApprovedAmt:formValue?.govtApprovedAmt || 0,
         companyApprovedId:formValue?.companyApprovedId || 0,
         companyApprovedAmt:formValue?.companyApprovedAmt || 0,
-        govtRefNo:formValue?.referenceNo || 0,
-        compRefNo:formValue?.referenceNo_1 || 0,
+        govtRefNo: String(formValue?.referenceNo) || '',
+        compRefNo:String(formValue?.referenceNo_1) || '',
         }) 
     this._OPListService.UpdateGovernAmt(this.CompanyUpdateForm.value).subscribe(response=>{
     })

@@ -374,7 +374,8 @@
 
                         <div fxFlex="100%" fxFlex.gt-sm="7%">
                           <airmid-textbox label="MRP" formControlName="MRP" type="number"  
-                            [formGroup]="_salesService.ItemSearchGroup"></airmid-textbox>
+                            [formGroup]="_salesService.ItemSearchGroup"
+                             (valueChange)="calculateTotalAmt()"></airmid-textbox>
                         </div>
 
                         <div fxFlex="100%" fxFlex.gt-sm="7%">
