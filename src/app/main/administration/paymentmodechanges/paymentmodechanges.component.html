@@ -31,12 +31,12 @@
                     <ng-template #actionButtonTemplateOP let-element>
                         <div fxLayout="row" fxLayoutAlign="center center">
 
-                            <button class="btn btn-primary" (click)="PaymentDate(element)"
+                            <button class="btn btn-primary" (click)="PaymentDate(element,1)"
                                 matTooltip="Bill Date Update">
                                 Date Update
                             </button>&nbsp;
                             <button class="btn btn-danger" *ngIf="element.paidAmount > 0" (click)="onEdit(element)"
-                                matTooltip="Cancle Bill" style="color: white;">
+                                matTooltip="Update" style="color: white;">
                                 Edit
                             </button>
                         </div>
@@ -48,15 +48,12 @@
                                 class="pill orange-600 s-16">circle</mat-icon>
                             <mat-icon *ngIf="element.interimOrFinal=='0'" matTooltip="Final Bill"
                                 class="pill green    s-16">circle</mat-icon>
-
-                            <!-- <mat-icon *ngIf="element.label != 'OP Reciept' && element.label != 'IP Advance'" matTooltip="IP Receipt"
-                    class="pill green-600 s-16">circle</mat-icon> -->
                         </div>
                     </ng-template>
 
                     <ng-template #actionButtonTemplateIP let-element>
                         <div fxLayout="row" fxLayoutAlign="center center">
-                            <button class="btn btn-primary" (click)="PaymentDate(element)"
+                            <button class="btn btn-primary" (click)="PaymentDate(element,1)"
                                 matTooltip="Payment Date Update">
                                 Date Update
                             </button>&nbsp;
@@ -79,11 +76,11 @@
 
                     <ng-template #actionButtonTemplateIPAdv let-element>
                         <div fxLayout="row" fxLayoutAlign="center center">
-                            <button class="btn btn-primary" (click)="PaymentDate(element,2)"
+                            <button class="btn btn-primary" (click)="PaymentDate(element,1)"
                                 matTooltip="Payment Date Update">
                                 Date Update
                             </button>&nbsp;
-                            <button class="btn btn-danger" (click)="onEdit(element)" matTooltip="Cancle Bill"
+                            <button class="btn btn-danger" (click)="onEdit(element)" matTooltip="Update"
                                 style="color: white;">
                                 Edit
                             </button>
@@ -184,7 +181,7 @@
 
         </mat-tab>
 
-        <mat-tab label="IP Payment Receipt List">
+        <mat-tab label="New Payment List">
 
             <div fusePerfectScrollbar
                 class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
@@ -202,74 +199,83 @@
                 </mat-toolbar>
 
                 <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
-                    <ng-template #ColorCodeOP let-element>
+                    <ng-template #ColorCodeOP1 let-element>
                         <div fxLayout="row" fxLayoutAlign="center center">
                             <mat-icon *ngIf="element.label == 'OP Reciept'" matTooltip="OP Receipt"
                                 class="pill orange-600 s-16">circle</mat-icon>
                         </div>
                     </ng-template>
 
-                    <ng-template #actionButtonTemplateOP let-element>
+                    <ng-template #actionButtonTemplateOP1 let-element>
                         <div fxLayout="row" fxLayoutAlign="center center">
 
-                            <button class="btn btn-primary" (click)="PaymentDate(element)"
-                                matTooltip="Bill Date Update">
-                                Date Update
+                            <button class="btn btn-primary" (click)="PaymentDate(element,3)" *ngIf="element.payAmount > 0"
+                                matTooltip="Payment Date Update">
+                               <img width="30" height="30" src="assets/images/logos/padate.jpg">
                             </button>&nbsp;
-                            <button class="btn btn-danger" *ngIf="element.paidAmount > 0" (click)="onEdit1(element)"
-                                matTooltip="Cancle Bill" style="color: white;">
-                                Edit
+                            <!-- *ngIf="element.payAmount > 0" -->
+                            <button class="btn btn-danger" (click)="onEdit1(element)" matTooltip="Update PaymentMode" *ngIf="element.payAmount > 0"
+                                style="color: rgb(126, 216, 90);">
+                               <img width="30" height="30" src="assets/images/logos/pamode.png">
                             </button>
+
+<!-- 
+                            <button mat-icon-button [matTooltip]="'PaymentDate Update" matTooltipPosition="right"
+                                (click)="PaymentDate(element,2)">
+                                <img width="20" height="20" src="assets/images/logos/padate.jpg">
+                            </button>
+
+
+                            <button mat-icon-button (click)="onEdit1(element)" matTooltip="Update PaymentMode">
+                                <img width="20" height="20" src="assets/images/logos/pamode.png">
+                            </button> -->
                         </div>
                     </ng-template>
 
-                    <ng-template #ColorCodeIp let-element>
+                    <!-- <ng-template #ColorCodeIp1 let-element>
                         <div fxLayout="row" fxLayoutAlign="center center">
                             <mat-icon *ngIf="element.interimOrFinal=='1'" matTooltip="Interim Bill"
                                 class="pill orange-600 s-16">circle</mat-icon>
                             <mat-icon *ngIf="element.interimOrFinal=='0'" matTooltip="Final Bill"
                                 class="pill green    s-16">circle</mat-icon>
 
-                            <!-- <mat-icon *ngIf="element.label != 'OP Reciept' && element.label != 'IP Advance'" matTooltip="IP Receipt"
-                    class="pill green-600 s-16">circle</mat-icon> -->
+                          
                         </div>
-                    </ng-template>
+                    </ng-template> -->
 
-                    <ng-template #actionButtonTemplateIP let-element>
-                        <div fxLayout="row" fxLayoutAlign="center center">
-                            <button class="btn btn-primary" (click)="PaymentDate(element)"
-                                matTooltip="Payment Date Update">
-                                Date Update
-                            </button>&nbsp;
-                            <button class="btn btn-danger" (click)="onEdit(element)" matTooltip="Edit Payment Mode"
-                                style="color: white;">
-                                Edit
-                            </button>
-                        </div>
-                    </ng-template>
-
-                    <ng-template #ColorCodeIPAdv let-element>
-                        <div fxLayout="row" fxLayoutAlign="center center">
-                            <!-- <mat-icon *ngIf="element.label != 'OP Reciept' && element.label != 'IP Advance'" matTooltip="IP Receipt" class="pill green-600 s-16">circle</mat-icon>
-                <mat-icon *ngIf="element.label == 'OP Reciept'" matTooltip="OP Receipt" class="pill orange-600 s-16">circle</mat-icon>  -->
-                            <mat-icon *ngIf="element.label == 'IP Advance'" matTooltip="IP Advance"
-                                class="pill blue-600 s-16">circle</mat-icon>
-                        </div>
-
-                    </ng-template>
-
-                    <ng-template #actionButtonTemplateIPAdv let-element>
+                    <!-- <ng-template #actionButtonTemplateIP1 let-element>
                         <div fxLayout="row" fxLayoutAlign="center center">
                             <button class="btn btn-primary" (click)="PaymentDate(element,2)"
                                 matTooltip="Payment Date Update">
                                 Date Update
                             </button>&nbsp;
-                            <button class="btn btn-danger" (click)="onEdit(element)" matTooltip="Cancle Bill"
+                            <button class="btn btn-danger" (click)="onEdit1(element)" matTooltip="Edit Payment Mode"
                                 style="color: white;">
                                 Edit
                             </button>
                         </div>
                     </ng-template>
+
+                    <ng-template #ColorCodeIPAdv1 let-element>
+                        <div fxLayout="row" fxLayoutAlign="center center">
+                       <mat-icon *ngIf="element.label == 'IP Advance'" matTooltip="IP Advance"
+                                class="pill blue-600 s-16">circle</mat-icon>
+                        </div>
+
+                    </ng-template>
+
+                    <ng-template #actionButtonTemplateIPAdv1 let-element>
+                        <div fxLayout="row" fxLayoutAlign="center center">
+                            <button class="btn btn-primary" (click)="PaymentDate(element,2)"
+                                matTooltip="Payment Date Update">
+                                Date Update
+                            </button>&nbsp;
+                            <button class="btn btn-danger" (click)="onEdit1(element)" matTooltip="Cancle Bill"
+                                style="color: white;">
+                                Edit
+                            </button>
+                        </div>
+                    </ng-template> -->
 
                     <airmid-table [gridConfig]="gridConfigtPay" class="content">
 
@@ -278,8 +284,8 @@
 
                                 <airmid-datepicker [formGroup]="_PaymentmodechangesService.tpayFormGroup"
                                     [isRangePicker]="true" formStartControlName="startdate" formEndControlName="enddate"
-                                    [(fromValue)]="gridConfig.filters[2].fieldValue"
-                                    [(toValue)]="gridConfig.filters[3].fieldValue">
+                                    [(fromValue)]="gridConfigtPay.filters[2].fieldValue"
+                                    [(toValue)]="gridConfigtPay.filters[3].fieldValue">
                                 </airmid-datepicker>
 
                                 <mat-form-field appearance="outline" fxFlex>
@@ -287,7 +293,7 @@
                                     <input matInput placeholder="Search First Name" autocomplete="off"
                                         (input)="onChangetPay()" formControlName="FirstName" />
                                     <button matSuffix mat-icon-button aria-label="Clear"
-                                        (click)=" Clearfilteropd('FirstName')">
+                                        (click)=" ClearfiltertPay('FirstName')">
                                         <mat-icon>close</mat-icon>
                                     </button>
                                 </mat-form-field>
@@ -297,7 +303,7 @@
                                     <input matInput placeholder="Search Last Name" autocomplete="off"
                                         (input)="onChangetPay()" formControlName="LastName" />
                                     <button matSuffix mat-icon-button aria-label="Clear"
-                                        (click)=" Clearfilteropd('LastName')">
+                                        (click)=" ClearfiltertPay('LastName')">
                                         <mat-icon>close</mat-icon>
                                     </button>
                                 </mat-form-field>
@@ -307,7 +313,7 @@
                                     <input matInput placeholder="Search UHID No" autocomplete="off"
                                         (input)="onChangetPay()" formControlName="RegNo" />
                                     <button matSuffix mat-icon-button aria-label="Clear"
-                                        (click)=" Clearfilteropd('RegNo')">
+                                        (click)=" ClearfiltertPay('RegNo')">
                                         <mat-icon>close</mat-icon>
                                     </button>
                                 </mat-form-field>
@@ -317,7 +323,7 @@
                                     <input matInput placeholder="Search PBill No" autocomplete="off"
                                         (input)="onChangetPay()" formControlName="PBillNo" />
                                     <button matSuffix mat-icon-button aria-label="Clear"
-                                        (click)=" Clearfilteropd('PBillNo')">
+                                        (click)=" ClearfiltertPay('PBillNo')">
                                         <mat-icon>close</mat-icon>
                                     </button>
                                 </mat-form-field>
@@ -327,7 +333,7 @@
                                     <input matInput placeholder="Search Receipt No" autocomplete="off"
                                         (input)="onChangetPay()" formControlName="ReceiptNo" />
                                     <button matSuffix mat-icon-button aria-label="Clear"
-                                        (click)=" Clearfilteropd('ReceiptNo')">
+                                        (click)="ClearfiltertPay('ReceiptNo')">
                                         <mat-icon>close</mat-icon>
                                     </button>
                                 </mat-form-field>

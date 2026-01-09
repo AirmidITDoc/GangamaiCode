@@ -9,13 +9,14 @@ export class PaymentmodechangesService {
 
   UseFormGroup:FormGroup
    tpayFormGroup:FormGroup
+   paymentform:FormGroup
   constructor(
     public _formBuilder:UntypedFormBuilder,
     public _httpClient:ApiCaller
   ) 
   { this.UseFormGroup=this.createUserFormGroup()
     this.tpayFormGroup=this.createUserFormGroup()
-
+ this.paymentform = this.createpaymentForm();
    }
 
   createUserFormGroup(){
@@ -30,7 +31,33 @@ export class PaymentmodechangesService {
       ReceiptNo:''
     })
   }
+createpaymentForm() {
+    return this._formBuilder.group({
+      startdate: [(new Date()).toISOString()],
+      enddate: [(new Date()).toISOString()],
+      PaymentId: '',
+      CashPayAmt: '',
+      IsCashpay: '',
+      CardPayAmt: '',
+      CardNo: '',
+      CardBankName: '',
+      IsCardpay: '',
+      ChequePayAmt: '',
+      ChequeNo: '',
+      ChequeBankName: '',
+      IsChequepay: '',
+      NEFTPayAmount: '',
+      NEFTNo: '',
+      NEFTBankName: '',
+      IsNEFTpay: '',
+      PayTMAmount: '',
+      PayTMTranNo: '',
+      IsPayTMpay: '',
+      PaidAmount: '',
+      BalAmount: ''
 
+    })
+  }
   public deactivateTheStatus(m_data) {
     return this._httpClient.DeleteData("StoreMaster?Id=" + m_data.toString());
     }
@@ -47,8 +74,33 @@ export class PaymentmodechangesService {
   public getDateTimeChange(m_data) {
     return this._httpClient.PutData("Administration/UpdatePaymentdatetime"+ m_data.paymentId,m_data);
 }
+  public getDateTimeChange1(m_data) {
+    return this._httpClient.PutData("Administration/TPaymentdatetime"+ m_data.paymentId,m_data);
+}
+
+
+  public PharDateTimeChange(m_data) {
+    return this._httpClient.PutData("Administration/TPaymentPharmacydatetime"+ m_data.paymentId,m_data);
+}
 
 public getpaybBillBrowseList(m_data) {
-    return this._httpClient.PostData("PaymentMode/OPBillListForPaymentModeChangeList",m_data);
+    return this._httpClient.PostData("PaymentMode/OPBillListForPaymentModeChangeListBillNoWise",m_data);
 }
+
+public TPaymentUpdate(paymentId,m_data) {
+    return this._httpClient.PutData("PaymentMode/PaymentMode"+paymentId,m_data);
+}
+
+
+
+public getpaymodeList(m_data) {
+    return this._httpClient.PostData("Common", m_data)
+}
+
+public getBankNameList(m_data) {
+    return this._httpClient.PostData("Common", m_data)
+}
+
+
+
 }

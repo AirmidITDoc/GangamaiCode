@@ -28,14 +28,16 @@ export class DateUpdateComponent implements OnInit {
     public dialogRef: MatDialogRef<DateUpdateComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
   ) { }
-
+  FormId = 0
   ngOnInit(): void {
     debugger
     if (this.data) {
-      
-      console.log(this.data)
-      this.PaymentId = this.data.paymentId;
-      this.BillDate = this.data.BillDate
+      debugger
+      console.log(this.data.registerObj)
+      this.PaymentId = this.data.registerObj.paymentId;
+      this.BillDate = this.data.registerObj.BillDate
+      this.FormId = this.data.FromName
+
       console.log(this.PaymentId)
     }
   }
@@ -43,7 +45,84 @@ export class DateUpdateComponent implements OnInit {
     this.dateTimeObj = dateTimeObj;
     console.log(this.dateTimeObj)
   }
+
+
   PaymentDate() {
+    debugger
+    const formattedDate = this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd");
+    const formattedTime = formattedDate + this.dateTimeObj.time;//this.datePipe.transform(this.dateTimeObj.date,"yyyy-MM-dd")+this.dateTimeObj.time;  
+
+    Swal.fire({
+      title: 'Do you want to Update Payment Date & Time ',
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, Update it!"
+    }).then((result) => {
+      debugger
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {
+        debugger
+        const d1 = new Date(this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd")!);
+        const d2 = new Date(this.BillDate);
+
+        if (d1 < d2) {
+          Swal.fire("Enter Payment Date After Bill Date :" + this.datePipe.transform(this.BillDate, "yyyy-MM-dd"))
+          return;
+        } else {
+          if (this.FormId == 1) {
+            var data = {
+              'paymentId': this.PaymentId,
+              'paymentDate': this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd"),
+              'paymentTime': formattedDate + this.dateTimeObj.time
+            }
+            console.log(data);
+            this._PaymentmodechangesService.getDateTimeChange(data).subscribe(response => {
+              this.toastr.success(response);
+              this._matDialog.closeAll();
+            }, (error) => {
+              this.toastr.error(error.message);
+            });
+
+          } else if (this.FormId == 3) {
+            var data1 = {
+              'paymentId': this.PaymentId,
+              'paymentDate': this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd"),
+              'paymentTime': this.dateTimeObj.time
+            }
+            console.log(data1);
+            this._PaymentmodechangesService.getDateTimeChange1(data1).subscribe(response => {
+              this.toastr.success(response);
+              this._matDialog.closeAll();
+            }, (error) => {
+              this.toastr.error(error.message);
+            });
+
+          }else if (this.FormId == 4) {
+            var data1 = {
+              'paymentId': this.PaymentId,
+              'paymentDate': this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd"),
+              'paymentTime': this.dateTimeObj.time
+            }
+            console.log(data1);
+            this._PaymentmodechangesService.PharDateTimeChange(data1).subscribe(response => {
+              this.toastr.success(response);
+              this._matDialog.closeAll();
+            }, (error) => {
+              this.toastr.error(error.message);
+            });
+
+          }
+
+        }
+      }
+    });
+
+  }
+
+  tPaymentDate() {
     debugger
     const formattedDate = this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd");
     const formattedTime = formattedDate + this.dateTimeObj.time;//this.datePipe.transform(this.dateTimeObj.date,"yyyy-MM-dd")+this.dateTimeObj.time;  

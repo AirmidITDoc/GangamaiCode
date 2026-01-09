@@ -26,8 +26,12 @@ export class QuestionMasterService {
                     this._FormvalidationserviceService.allowEmptyStringValidator()
                 ]
             ],
-            shortCutValues:[''],
-            isActive: [true, [Validators.required]],
+            shortCutValues: ["",
+                [
+                    Validators.required, Validators.maxLength(50),
+                    this._FormvalidationserviceService.allowEmptyStringValidator()
+                ]],
+            // isActive: [true, [Validators.required]],
            
         });
     }

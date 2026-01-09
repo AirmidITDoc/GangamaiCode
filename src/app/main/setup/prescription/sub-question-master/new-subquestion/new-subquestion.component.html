@@ -26,18 +26,7 @@
                             [mode]="autocompleteModesQuesiontatus" (selectionChange)="onChangeques($event)">
                         </airmid-dropdown>
                     </div>
-                    <div fxFlex="10%">
-                        <!-- <airmid-textbox label="SequenceNo" formControlName="sequenceNo" [value]="data?.sequenceNo"
-                            [formGroup]="SubQuestionForm" [maxLength]="50">
-                        </airmid-textbox> -->
-
-                        <airmid-textbox label="Sequence No " formControlName="sequenceNo"
-                            (keypress)="keyPressAlphanumeric($event)" [value]="data?.sequenceNo ?? ''"
-                            [formGroup]="SubQuestionForm" [validations]="getValidationMessages().sequenceNo1"
-                            [maxLength]="10"></airmid-textbox>
-                    </div>
-
-                
+                                  
                     <div fxFlex>
                         <airmid-textbox label="Sub Question " formControlName="subQuestionName"
                             [value]="data?.subQuestionName" [formGroup]="SubQuestionForm"
@@ -48,19 +37,19 @@
 
             </form>
             <mat-card style="padding: 10px;">
-                <span style="font-weight: bold;color: blue;font-size: large;box-sizing: border-box;padding: 10px;">Sub
+                <span style="font-weight: bold;color: rgb(4, 62, 104);font-size: xx-large;box-sizing: border-box;padding: 10px;">Sub
                     Question Result
                     Details</span>
                 <form [formGroup]="SubresultvaluesForm">
                     <div fxLayout="row" fxLayoutGap="5px">
 
 
-                        <div fxFlex="20%" fxFlex.xs="20%" fxFlex.sm="20%">
+                        <!-- <div fxFlex="20%" fxFlex.xs="20%" fxFlex.sm="20%"> -->
 
-                            <airmid-textbox label="Sequence No " formControlName="sequenceNo"
+                            <!-- <airmid-textbox label="Sequence No " formControlName="sequenceNo"
                                 (keypress)="keyPressAlphanumeric($event)" [formGroup]="SubresultvaluesForm"
-                                [validations]="getValidationMessages().sequenceNo" [maxLength]="10"></airmid-textbox>
-                        </div>
+                                [validations]="getValidationMessages().sequenceNo" [maxLength]="10"></airmid-textbox> -->
+                        <!-- </div> -->
 
                         <div fxFlex="28%" fxFlex.xs="28%" fxFlex.sm="28%">
                             <airmid-textbox label="Shortcut Values" formControlName="shortcutValues"
@@ -73,12 +62,7 @@
                             </airmid-textbox>
 
                         </div>
-                        <!-- <div fxFlex="10%" fxFlex.xs="10%" fxFlex.sm="10%">
-                        <airmid-textbox label="Net amount" formControlName="netAmount" [formGroup]="chargeForm"
-                            [validations]="getValidationMessages().netAmount" [type]="'number'" [readonly]="true">
-                        </airmid-textbox>
-                    </div> -->
-
+                      
                         <!-- [disabled]="!SubresultvaluesForm.valid" -->
                         <div fxFlex="5%" fxFlex.xs="5%" fxFlex.sm="5%">
                             <div class="mt-2">
@@ -103,7 +87,7 @@
 
                             <ng-container matColumnDef="sequenceNo">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header> Sequence No</mat-header-cell>
-                                <mat-cell *matCellDef="let contact">{{contact.SequenceNo}}</mat-cell>
+                                <mat-cell *matCellDef="let i =index let contact">{{i+1}}</mat-cell>
                             </ng-container>
 
                             <ng-container matColumnDef="subQuestionValName">
@@ -138,7 +122,7 @@
 
                         <div class="new-appointment-actions gap-8" fxLayoutAlign="end center">
                             <button class="btn btn-danger-outline" (click)="onClear(false)">Close</button>
-                            <button class="btn btn-primary " color="accent" (click)="save()">
+                            <button class="btn btn-primary " color="accent" (click)="onSubmit()">
                                 <span>Save</span>
                             </button>
                         </div>

@@ -406,7 +406,7 @@ export class BrowsSalesBillComponent implements OnInit {
       heading: "", key: "Status", align: "right", width: 40, sticky: true, type: gridColumnTypes.template,
       template: this.patientTypetempReturn
     },
-    { heading: "Date", key: "date", sort: true, align: 'left', emptySign: 'NA', width: 180, type: 9 },
+    { heading: "Date", key: "date", sort: true, align: 'left', emptySign: 'NA', width: 180},
     { heading: "Sales Retrun No", key: "salesReturnNo", sort: true, align: 'left', emptySign: 'NA', width: 130 },
     { heading: "UHID No", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
     { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 200 },

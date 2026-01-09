@@ -116,7 +116,7 @@ export class NewSubquestionComponent {
         this._FormvalidationserviceService.allowEmptyStringValidator()
       ]
       ],
-      sequenceNo: [parseInt(item.SequenceNo)],
+      sequenceNo: [this.mSubQuestionValuesMastersArray.length + 1],
       shortcutValues: [item.ShortcutValues],
 
     });
@@ -149,68 +149,27 @@ export class NewSubquestionComponent {
   }
   onAddResult(): void {
 
-    debugger
+    
     if (this.SubresultvaluesForm.get('subQuestionValName').value == '') {
       this.toastr.warning('Please select SubQuestionValName.', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       return;
     }
-
-    if (this.SubresultvaluesForm.get('sequenceNo').value == '') {
-      this.toastr.warning('Please select SequenceNo.', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-    }
-
-
-    //  ? if (!this.SubresultvaluesForm.invalid) {
-
-
-
     const newRow = {
       SubQuestionValId: 0,
       SubQuestionId: 0,
       SubQuestionValName: this.SubresultvaluesForm.get('subQuestionValName').value,
-      SequenceNo: this.SubresultvaluesForm.get('sequenceNo').value,
+      // SequenceNo: this.SubresultvaluesForm.get('sequenceNo').value,
       ShortcutValues: this.SubresultvaluesForm.get('shortcutValues').value,
     };
-debugger
+
     const newCharge = new SubQuesList(newRow);
     this.SubQueList.push(newCharge);
     this.dsQuesList.data = this.SubQueList;
     this.resetForm();
-
-    // } else {
-    //   Swal.fire({
-    //     title: 'Message',
-    //     text: "Please Enter Result Detail.. !",
-    //     icon: "warning"
-    //   });
-    // }
   }
 
-  save() {
-    debugger
-    if (this.SubQuestionForm.get('questionId').value == '') {
-      this.toastr.warning('Please select QuestionId.', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-    }
-
-    if (this.SubQuestionForm.get('subQuestionName').value == '') {
-      this.toastr.warning('Please select SubQuestionName.', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-    }
-
-
-    this.onSubmit()
-
-  }
 
   onSubmit() {
 if (this.SubQuestionForm.get('questionId').value == '') {
