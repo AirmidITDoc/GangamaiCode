@@ -209,7 +209,7 @@
                                   ApiUrl="CityMaster/get-cities"></airmid-dropdown>
                               </div>
 
-                              <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%" *ngIf="Is9_Digit_National_Id == false">
+                              <!-- <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%" *ngIf="Is9_Digit_National_Id == false">
                                 <airmid-dropdown label="State" formControlName="StateId"
                                   [formGroup]="personalFormGroup" [value]="registerObj?.stateId" [readonly]="true"
                                   [validations]="getValidationMessages().stateId" ValueField="stateId"
@@ -222,7 +222,7 @@
                                   [value]="registerObj?.countryId" [formGroup]="personalFormGroup" [disabled]="false"
                                   [validations]="getValidationMessages().countryId" #ddlCountry
                                   [mode]="autocompleteModecountry"></airmid-dropdown>
-                              </div>
+                              </div> -->
 
                             
                               <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%"> 
