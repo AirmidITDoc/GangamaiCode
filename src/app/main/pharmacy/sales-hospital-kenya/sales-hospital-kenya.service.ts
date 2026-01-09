@@ -42,7 +42,7 @@ import { FormvalidationserviceService } from 'app/main/shared/services/formvalid
         DiscAmt: [' '],
         NetAmt: ['', [this._FormvalidationserviceService.AllowDecimalNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
         DiscPer:['', [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-        MarginAmt:[0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+        MarginAmt:[0],
        GSTAmount:[0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
        LandedRateandedTotal:[0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
        CGSTAmt:[0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],

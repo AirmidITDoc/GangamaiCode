@@ -24,6 +24,7 @@ import { PrescriptionComponent } from '../sales-hopsital-new/prescription/prescr
 import { Subscription } from 'rxjs';
 import { ConfigService } from 'app/core/services/config.service';
 import { SalesbatchpopupComponent } from '../sales-hospital-kenya/salesbatchpopup/salesbatchpopup.component';
+import { SalesHospitalKenyaService } from '../sales-hospital-kenya/sales-hospital-kenya.service';
 
 @Component({
   selector: 'app-sales-in-patient',
@@ -154,7 +155,7 @@ export class SalesInPatientComponent implements OnInit {
  
      constructor(
          public _BrowsSalesBillService: BrowsSalesBillService,
-         public _salesService: SalesHospitalService,
+         public _salesService: SalesHospitalKenyaService,
          public _salesInPatientService: SalesInPatientService,
          public _matDialog: MatDialog,
          public datePipe: DatePipe,
@@ -197,7 +198,7 @@ export class SalesInPatientComponent implements OnInit {
              totalAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
              vatAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
              discAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-             netAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+             netAmount: [0],
              paidAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
              balanceAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
              concessionReasonId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -226,7 +227,7 @@ export class SalesInPatientComponent implements OnInit {
                  totalAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
                  vatAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
                  discAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-                 netAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+                 netAmount: [0],
                  paidAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
                  balanceAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
                  concessionReasonId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -333,7 +334,7 @@ export class SalesInPatientComponent implements OnInit {
                  totalAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
                  vatAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
                  discAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-                 netAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+                 netAmount: [0],
                  paidAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
                  balanceAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
                  concessionReasonId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
