@@ -197,11 +197,18 @@
                                         [(ngModel)]="vpaytmpay" (keyup)="getbalAmt()" placeholder="Enter amount" [maxLength]="10">
                                 </mat-form-field>
 
-                                <mat-form-field appearance="outline" fxFlex="25">
+                                <!-- <mat-form-field appearance="outline" fxFlex="25">
                                     <mat-label>Transaction No</mat-label>
                                     <input matInput name="PayTmtranNo" formControlName="PayTmtranNo"
                                         [(ngModel)]="vPayTmtranNo" maxlength="12"
                                         oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 12)"
+                                        placeholder="Enter transaction no.">
+                                </mat-form-field> -->
+
+                                <mat-form-field appearance="outline" fxFlex="25">
+                                    <mat-label>Transaction No</mat-label>
+                                    <input matInput name="PayTmtranNo" formControlName="PayTmtranNo"
+                                        [(ngModel)]="vPayTmtranNo"  
                                         placeholder="Enter transaction no.">
                                 </mat-form-field>
                             </div>

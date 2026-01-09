@@ -75,7 +75,7 @@ export class ReviewcompanyBillComponent {
     ['Status','ServiceCode', 'ServiceName', 'Price', 'Qty', 'TotalAmount', 'DiscountPer', 'DiscountAmount', 'NetAmount', 'DoctorName',
       //  'ClassName', 'ChargesAddedName',  
       'Exclucion', 'Approved',
-      //'buttons'
+      'buttons'
       ];
   public displayedColumnspackage: string[] =
     ['IsCheck', 'ServiceNamePackage', 'ServiceName', 'Price', 'Qty', 'TotalAmt', 'DoctorName', 'DiscAmt', 'NetAmount'];
@@ -773,6 +773,7 @@ export class ReviewcompanyBillComponent {
         console.log(submitData);
         this._OPListService.AddchargesDelete(submitData).subscribe(response => {
           this.getPrevCompanyBillList(this.BillNo, this.Lable);
+          this.OnSave();
         });
       }
     });

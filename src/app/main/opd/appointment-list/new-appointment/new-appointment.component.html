@@ -492,10 +492,9 @@
                         </div> 
                         
                         <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%" *ngIf="isCompanySelected">
-                          <airmid-textbox label="Member No/Membership No" formControlName="policyNumber"
-                            (keypress)="keyPressAlphanumeric($event)"
+                          <airmid-textbox label="Member No/Membership No" formControlName="policyNumber" 
                             [validations]="getValidationMessages().policyNumber"
-                            [formGroup]="VisitFormGroup" [maxLength]="20">
+                            [formGroup]="VisitFormGroup"  >
                           </airmid-textbox>
                         </div>
 
