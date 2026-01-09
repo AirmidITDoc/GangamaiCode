@@ -130,9 +130,9 @@ export class NewResultEntryComponent {
             console.log(this.data.patientdata)
 
             this.opipnumber = this.data.patientdata.oP_IP_No
-            this.ageY = this.data.patientdata.ageYear.trim()
-            this.ageM = this.data.patientdata.ageMonth.trim()
-            this.ageD = this.data.patientdata.ageDay.trim()
+            this.ageY = this.data.patientdata.ageYear.trim() || "0"
+            this.ageM = this.data.patientdata.ageMonth.trim() || "0"
+            this.ageD = this.data.patientdata.ageDay.trim() || "0"
             this.genderId = this.data.patientdata.genderId
             this.sampleNo = this.data.patientdata.sampleNo
             this.suggestionNotes = this.data.patientdata.suggestionNotes
@@ -264,13 +264,24 @@ export class NewResultEntryComponent {
     ParameterId = "";
 
     AddData1(contact, val) {
-
         console.warn(val);
         if (this.currentval != "")
             this.currentval = this.currentval + ' , ' + val;
         else
             this.currentval = this.currentval + '  ' + val;
         contact.ResultValue = this.currentval
+    }
+
+    onRowChange(row: any) {
+        // if user moves to a different row
+        if (this.activeHelpRow && this.activeHelpRow !== row) {
+            this.resetHelpSelection(this.activeHelpRow);
+        }
+        this.activeHelpRow = row;
+    }
+    resetHelpSelection(row: any) {
+        if (!row) return;
+        this.currentval = ""
     }
 
     helpItems: any[] = [];
@@ -585,7 +596,7 @@ export class NewResultEntryComponent {
     }
 
     onUpload() {
-        debugger
+        // debugger
         if ((this.vPathResultDoctorId == '')) {
             this.toastr.warning('Please select valid Pathalogist', 'Warning !', {
                 toastClass: 'tostr-tost custom-toast-warning',
