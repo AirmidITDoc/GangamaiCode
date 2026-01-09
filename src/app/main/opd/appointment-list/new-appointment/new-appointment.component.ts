@@ -101,6 +101,9 @@ export class NewAppointmentComponent implements OnInit {
      isExpanded3 = false;
     ApiUrl = "PhoneAppointment2/auto-complete?Keyword=a"
 
+    stateId=0
+    counryId=0
+
     screenFromString = 'appointment';
     @ViewChild('attachments') attachment: any;
     @ViewChild('ddlGender') ddlGender: AirmidDropDownComponent;
@@ -166,7 +169,7 @@ export class NewAppointmentComponent implements OnInit {
     chkregisterd: boolean = false; 
     Is9_Digit_National_Id: boolean = false;
     ngOnInit(): void {
-        debugger
+        
         // console.log(this._configue.configParams.OPDDefaultDepartment)
         // console.log(this._configue.configParams.OPDDefaultDoctor)
    
@@ -251,14 +254,14 @@ this.Is9_Digit_National_Id = id === "1";
     }
 
     // setdoctorconfig() {
-    //     debugger
+    //     
     //     this._AppointmentlistService.getDoctorsByDepartment(this._configue.configParams.OPDDefaultDepartment).subscribe((data: any) => {
     //         console.log(data)
     //         if (data) {
 
     //             this.ddlDoctor.options = data;
     //             this.ddlDoctor.bindGridAutoComplete();
-    //             debugger
+    //             
     //             const incomingDoctorId = DoctorId;
     //             if (incomingDoctorId) {
     //                 const matchedDoctor = data.find(doc => doc.value === incomingDoctorId);
@@ -729,22 +732,27 @@ this.Is9_Digit_National_Id = id === "1";
                     });
                     return;
                 }
-debugger
+
 
         const formattedDate = this.datePipe.transform(this.VisitFormGroup.get('visitDate').value, "yyyy-MM-dd");
         const formattedTime = this.datePipe.transform(new Date(), "HH:mm:ss");
         this.VisitFormGroup.get('visitDate').setValue(formattedDate);
         this.VisitFormGroup.get('visitTime').setValue(formattedDate + ' ' + formattedTime); 
               
+
+            // const formValues = this.personalFormGroup.getRawValue() as RegInsert;
+
+            //     console.log(formValues)
                  this.personalFormGroup.get('City').setValue(this.CityName)
                 this.personalFormGroup.get('Age').setValue(String(this.ageYear))
+                this.personalFormGroup.get('StateId').setValue(this.stateId)
+                this.personalFormGroup.get('CountryId').setValue(String(this.counryId))
+
                 this.personalFormGroup.get('AgeYear').setValue(String(this.ageYear))
                 this.personalFormGroup.get('AgeMonth').setValue(String(this.ageMonth))
                 this.personalFormGroup.get('AgeDay').setValue(String(this.ageDay))
                 this.personalFormGroup.get("DateOfBirth").setValue(this.datePipe.transform(this.personalFormGroup.get("DateOfBirth").value, "yyyy-MM-dd"))
-                //  this.personalFormGroup.get('RegDate').setValue(this.personalFormGroup.get('RegDate').value, 'yyyy-MM-dd');
-                // this.personalFormGroup.get('RegTime').setValue(this.personalFormGroup.get('RegDate').value)
-
+               
                 console.log('Personal Form : ', this.personalFormGroup.value)
                 console.log('Visit Form : ', this.VisitFormGroup.value)
                 if (!this.personalFormGroup.invalid && !this.VisitFormGroup.invalid) {
@@ -804,6 +812,9 @@ debugger
         this.policyFormGroup.get("policyValidateDate").setValue(this.datePipe.transform(this.VisitFormGroup.get('policyValidateDate').value , "yyyy-MM-dd") || '1900-01-01');
         this.policyFormGroup.get("policyNo").setValue(String(this.VisitFormGroup.get('policyNumber')?.value || 0))
         this.policyFormGroup.get("approvedAmount").setValue(Number(this.VisitFormGroup.get('policyLimit')?.value || 0))
+        //  this.personalFormGroup.get('RegDate').setValue(this.personalFormGroup.get('RegDate').value, 'yyyy-MM-dd');
+        //         this.personalFormGroup.get('RegTime').setValue(this.personalFormGroup.get('RegDate').value)
+
 
         let submitData = {
             "registration": this.personalFormGroup.value,
@@ -909,15 +920,21 @@ debugger
     }
 
     onChangecity(e) {
+        
         this.CityName = e.cityName
         this.registerObj.stateId = e.stateId
+        this.stateId= e.stateId
         this._AppointmentlistService.getstateId(e.stateId).subscribe((Response) => {
             // console.log(Response)
-            this.ddlCountry.SetSelection(Response.countryId);
+            // this.ddlCountry.SetSelection(Response.countryId);
+             this.counryId= Response.countryId
+             console.log(Response.countryId)
         });
     }
 
     onChangestate(e) {
+        // console.log(e)
+        // this.stateId=e
     }
     getVisitRecord(row) {
         this.departmentId = row.DepartmentId;
@@ -926,7 +943,7 @@ debugger
     }
 
     selectChangedepartment(obj: any) {
-        debugger
+        
         if (obj.value) {
             this._AppointmentlistService.getDoctorsByDepartment(obj.value).subscribe((data: any) => {
                 this.ddlDoctor.options = data;
@@ -936,7 +953,7 @@ debugger
             this._AppointmentlistService.getDoctorsByDepartment(obj.departmentId).subscribe((data: any) => {
                 console.log(data)
                 if (data) {
-                    debugger
+                    
                     this.ddlDoctor.options = data;
                     this.ddlDoctor.bindGridAutoComplete();
                     const incomingDoctorId = obj.consultantDocId || obj.doctorId;
@@ -1188,14 +1205,15 @@ debugger
             AreaId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             CityId: [0, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             City: [''],
-            StateId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            StateId: [this.stateId, [this._FormvalidationserviceService.onlyNumberValidator()]],
             CountryId: [0, [ this._FormvalidationserviceService.onlyNumberValidator()]],
             IsCharity: false,
             IsSeniorCitizen: false,
             AddedBy: [this.accountService.currentUserValue.userId, this._FormvalidationserviceService.onlyNumberValidator()],
             updatedBy: [this.accountService.currentUserValue.userId, this._FormvalidationserviceService.onlyNumberValidator()],
-            RegDate: [(new Date()).toISOString()],
-            RegTime: [(new Date()).toISOString()],
+            RegDate: [this.datePipe.transform((new Date()).toISOString(),'yyyy-MM-dd')],
+            RegTime: [this.datePipe.transform(new Date(), "HH:mm:ss")],
+
             Photo: [''],
             PinNo: [''],
             // CourtesyId:[0, [this._FormvalidationserviceService.onlyNumberValidator()]],
