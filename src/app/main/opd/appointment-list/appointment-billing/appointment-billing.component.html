@@ -884,9 +884,13 @@
                                         </div>
                                         <div fxFlex="10%" fxFlex.xs="100%" fxFlex.sm="100%"
                                             *ngIf="OPFooterForm.get('paymentType')?.value === 'OnlinePay'">
-                                            <airmid-textbox label="UPI NO" formControlName="UpiNo"
+                                            <!-- <airmid-textbox label="UPI NO" formControlName="UpiNo"
                                                 [formGroup]="OPFooterForm" [validations]="getValidationMessages().UpiNo"
                                                 [minLength]="4" [maxLength]="12">
+                                            </airmid-textbox> -->
+                                              <airmid-textbox label="UPI NO" formControlName="UpiNo"
+                                                [formGroup]="OPFooterForm" [validations]="getValidationMessages().UpiNo"
+                                                >
                                             </airmid-textbox>
                                         </div>
                                     </div>

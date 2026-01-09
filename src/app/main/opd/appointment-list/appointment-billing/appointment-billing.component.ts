@@ -402,7 +402,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
             paymentType: ['CashPay'],
             GovrnApprovAmt:[0],
             mpesaMobile: ['',[Validators.minLength(10), Validators.maxLength(10)]],
-            UpiNo:[0, [Validators.minLength(4), Validators.maxLength(12), this._FormvalidationserviceService.onlyNumberValidator()]]
+            UpiNo:[0]
         })
     }
     createTotalChargeForm(): FormGroup {
