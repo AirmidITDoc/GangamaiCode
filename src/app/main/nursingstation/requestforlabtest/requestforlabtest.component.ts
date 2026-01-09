@@ -22,8 +22,8 @@ import { permissionCodes, permissionType } from 'app/main/shared/model/permissio
     animations: fuseAnimations
 })
 export class RequestforlabtestComponent implements OnInit {
- IsAdd: boolean = this.permissionService.getPermission(permissionCodes.Prescription, permissionType.Add);
-    
+    IsAdd: boolean = this.permissionService.getPermission(permissionCodes.Prescription, permissionType.Add);
+
     hasSelectedContacts: boolean;
     fname = "%"
     lname = "%"
@@ -38,9 +38,8 @@ export class RequestforlabtestComponent implements OnInit {
     ngAfterViewInit() {
         this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
         this.gridConfig.columnsList.find(col => col.key === 'isOnFileTest')!.template = this.isOnFileTestIcon;
-        this.gridConfig.columnsList.find(col => col.key === 'isStatus')!.template = this.isStatusIcon;
-        this.gridConfig.columnsList.find(col => col.key === 'isTestCompleted')!.template = this.isTestCompletedIcon;
-
+        // this.gridConfig.columnsList.find(col => col.key === 'isTestCompleted')!.template = this.isTestCompletedIcon;
+        // this.gridConfig.columnsList.find(col => col.key === 'isStatus')!.template = this.isStatusIcon;
     }
 
     fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
@@ -75,7 +74,7 @@ export class RequestforlabtestComponent implements OnInit {
     ]
 
     gridConfig: gridModel = {
-          permissionCode: permissionCodes.Prescription,
+        permissionCode: permissionCodes.Prescription,
         apiUrl: "IPPrescription/LabRadRequestList",
         columnsList: this.allColumns,
         sortField: "RegNo",
@@ -133,13 +132,15 @@ export class RequestforlabtestComponent implements OnInit {
     }
 
     constructor(public _RequestforlabtestService: RequestforlabtestService, public _matDialog: MatDialog,
-        public toastr: ToastrService, private commonService: PrintserviceService,public permissionService: PagePermissionService,
+        public toastr: ToastrService, private commonService: PrintserviceService, public permissionService: PagePermissionService,
         public datePipe: DatePipe,) { }
     ngOnInit(): void {
     }
 
     gridConfig1: gridModel = new gridModel();
     isShowDetailTable: boolean = false;
+
+    @ViewChild('iconisCompeleted') iconisCompeleted!: TemplateRef<any>;
 
     getSelectedRow(row: any): void {
 
@@ -151,12 +152,13 @@ export class RequestforlabtestComponent implements OnInit {
             columnsList: [
 
                 { heading: "Status", key: "isStatus", type: gridColumnTypes.status, align: "center", width: 70 },
-                { heading: "Completed", key: "isTestCompleted", type: gridColumnTypes.status, align: "center", width: 50 },
+                {
+                    heading: "Completed", key: "isTestCompleted", sort: true, align: 'left', type: gridColumnTypes.template,
+                    template: this.iconisCompeleted, width: 50
+                },
                 { heading: "Request Date ", key: "reqDate", sort: true, align: 'left', emptySign: 'NA', width: 200 },
                 { heading: "ServiceName", key: "serviceName", sort: true, align: 'left', emptySign: 'NA', width: 450 },
                 { heading: "BillNo | User | DateTime", key: "addedByDate", sort: true, align: 'left', emptySign: 'NA', width: 350 },
-
-
             ],
             sortField: "RequestId",
             sortOrder: 0,
@@ -164,70 +166,12 @@ export class RequestforlabtestComponent implements OnInit {
                 { fieldName: "RequestId", fieldValue: String(vRequestId), opType: OperatorComparer.Equals }
             ]
         }
+
         this.isShowDetailTable = true;
 
         setTimeout(() => {
             this.grid1.gridConfig = this.gridConfig1;
             this.grid1.bindGridData();
-        });
-    }
-
-    viewgetPathologyTemplateReportPdf1(contact: any, mode: string) {
-
-        setTimeout(() => {
-            const param = {
-                searchFields: [
-                    {
-                        fieldName: "PathReportId",
-                        fieldValue: String(contact.pathReportID),
-                        opType: "Equals"
-                    },
-                    {
-                        fieldName: "OP_IP_Type",
-                        fieldValue: String(contact.opdipdtype),
-                        opType: "Equals"
-                    }
-                ],
-                mode: mode
-            };
-            console.log(param)
-            this._RequestforlabtestService.getReportView(param).subscribe(res => {
-                const matDialog = this._matDialog.open(PdfviewerComponent, {
-                    maxWidth: "85vw",
-                    height: '750px',
-                    width: '100%',
-                    data: {
-                        base64: res["base64"] as string,
-                        title: "Template Report Viewer"
-                    }
-                });
-                matDialog.afterClosed().subscribe(result => { });
-            });
-        }, 100);
-    }
-
-    getPrint(contact) {
-
-        console.log(contact)
-
-        Swal.fire({
-            title: 'Select Report Format',
-            text: "Choose how you want to view the report:",
-            icon: "warning",
-            showDenyButton: true,
-            showCancelButton: true,
-            confirmButtonColor: "#3085d6",
-            denyButtonColor: "#6c757d",
-            cancelButtonColor: "#d33",
-            confirmButtonText: "With Header",
-            denyButtonText: "Without Header",
-        }).then((result) => {
-
-            if (result.isConfirmed) {
-                this.viewgetPathologyTemplateReportPdf1(contact, "PathologyReportTemplateWithHeader");
-            } else if (result.isDenied) {
-                this.viewgetPathologyTemplateReportPdf1(contact, "PathologyReportTemplate");
-            }
         });
     }
 
@@ -242,6 +186,7 @@ export class RequestforlabtestComponent implements OnInit {
             this.grid.bindGridData();
         });
     }
+
     keyPressAlphanumeric(event) {
         var inp = String.fromCharCode(event.keyCode);
         if (/[a-zA-Z0-9]/.test(inp) && /^\d+$/.test(inp)) {
@@ -274,5 +219,80 @@ export class RequestforlabtestComponent implements OnInit {
                 });
             }
         });
+    }
+
+    // Print part ///
+
+    getPrint(contact) {
+
+        console.log(contact)
+
+        Swal.fire({
+            title: 'Select Report Format',
+            text: "Choose how you want to view the report:",
+            icon: "warning",
+            showDenyButton: true,
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            denyButtonColor: "#6c757d",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "With Header",
+            denyButtonText: "Without Header",
+        }).then((result) => {
+
+            if (result.isConfirmed) {
+                this.Printresultentrywithheader(contact);
+            } else if (result.isDenied) {
+                this.Printresultentry(contact);
+            }
+        });
+    }
+
+    Printresultentry(row) {
+        // debugger
+        console.log("WithHeader", row);
+        let pathologyDelete = [{
+            pathReportId: row.pathReportID
+        }];
+
+        const submitData = {
+            pathPrintResultEntry: pathologyDelete
+        };
+
+        console.log(submitData);
+
+        this._RequestforlabtestService.PathPrintResultentryInsert(submitData).subscribe(res => {
+            if (res) {
+                this.viewgetPathologyTestReportPdf(row.opipType)
+            }
+        });
+    }
+
+    viewgetPathologyTestReportPdf(data) {
+        this.commonService.Onprint("OP_IP_Type", data, "PathologyReportWithOutHeader");
+    }
+
+    Printresultentrywithheader(row: any) {
+
+        console.log("WithHeader", row);
+        let pathologyDelete = [{
+            pathReportId: row.pathReportID
+        }];
+
+        const submitData = {
+            pathPrintResultEntry: pathologyDelete
+        };
+
+        console.log(submitData);
+
+        this._RequestforlabtestService.PathPrintResultentryInsert(submitData).subscribe(res => {
+            if (res) {
+                this.viewgetPathologyTestReportwithheaderPdf(row.opipType)
+            }
+        });
+    }
+
+    viewgetPathologyTestReportwithheaderPdf(data) {
+        this.commonService.Onprint("OP_IP_Type", data, "PathologyReportWithHeader");
     }
 }
