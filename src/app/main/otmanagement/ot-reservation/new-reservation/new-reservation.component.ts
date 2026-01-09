@@ -287,6 +287,7 @@ export class NewReservationComponent implements OnInit {
       // MobileNo: [],
       bodyPartId: [0],
       anesthesiaType: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      IsDischargedit: 0,
     });
   }
 
@@ -598,6 +599,35 @@ export class NewReservationComponent implements OnInit {
       this.vPatientName = extractedName;
       this.opIpId = obj.visitId;
     }
+  }
+
+  isDischarge: any;
+  getSelectedObjDC(obj) {
+    console.log(obj)
+    if ((obj.regID ?? 0) > 0) {
+      console.log("Discharge patient:", obj)
+      this.registerObj1 = obj
+      this.vRegNo = obj.regNo
+      this.vIPDNo = obj.ipdNo
+      let nameField = obj.formattedText;
+      let extractedName = nameField.split('|')[0].trim();
+      this.vPatientName = extractedName;
+      this.isDischarge = obj.isDischarged
+      this.opIpId = obj.admissionID;
+    }
+  }
+
+  vCheckBox: boolean = false;
+  getDischargedList(event) {
+    if (event.checked == true) {
+      this.vCheckBox = true;
+      this.patientInfoReset()
+    }
+    else {
+      this.vCheckBox = false;
+      this.patientInfoReset();
+    }
+    // this._DischargeCancelService.DischargeForm.get('RegID').setValue('');
   }
 
   selectChangeSurgeryCategory(obj: any) {
@@ -1329,7 +1359,11 @@ export class NewReservationComponent implements OnInit {
 
       this.reservationForm.get('otrequestId')?.setValue(this.vrequestId ?? 0);
       this.reservationForm.get('otreservationId')?.setValue(this.vreservationId ?? 0);
-      this.reservationForm.get('opiptype')?.setValue(this.reservationForm.get('opiptype')?.value === 'IP' ? '1' : '0');
+      if (this.isDischarge == 1) {
+        this.reservationForm.get('opiptype')?.setValue('1');
+      } else {
+        this.reservationForm.get('opiptype')?.setValue(this.reservationForm.get('opiptype')?.value === 'IP' ? '1' : '0');
+      }
       this.reservationForm.get('reservationType')?.setValue(this.reservationForm.get('reservationType')?.value === '1' ? true : false);
       this.reservationForm.get('pacrequired')?.setValue(this.reservationForm.get('pacrequired')?.value === '1' ? true : false);
       this.reservationForm.get('equipmentsRequired')?.setValue(this.reservationForm.get('equipmentsRequired')?.value === '1' ? true : false);
@@ -1363,7 +1397,7 @@ export class NewReservationComponent implements OnInit {
 
       const formValue = { ...this.reservationForm.value };
       const controlsToRemove = ['TheaterLocation', 'bodyPartId', 'surgeryCategoryId', 'surgeryId', 'surgeryPart', 'surgeryFromTime', 'surgeryEndTime', 'surgeryDuration', 'isPrimary',
-        'surgeonId', 'anesthetistId', 'recourceType', 'doctorTypeId', 'doctorId', 'diagnosis'];
+        'surgeonId', 'anesthetistId', 'recourceType', 'doctorTypeId', 'doctorId', 'diagnosis', 'IsDischargedit'];
       controlsToRemove.forEach(key => delete formValue[key]);
 
       console.log(formValue)

@@ -36,12 +36,12 @@
                             </mat-radio-group>
                         </div>
 
-                        <div class="input-container gap-8" fxFlex>
+                        <div class="input-container gap-8" fxFlex *ngIf="!vCheckBox">
 
                             <airmid-autocomplete lbl="RgId" *ngIf="reservationForm.get('opiptype').value == 'OP'"
                                 [formGroup]="reservationForm" formControlName="opipid"
                                 placeholderText="OP-RegNo/Patient Name/Mobile No"
-                                label="Search Reg No / Patient Name / Mobile No"
+                                label="Search OP-Reg No / Patient Name / Mobile No"
                                 ApiUrl="VisitDetail/search-patient?Keyword="
                                 (selectionChange)="getSelectedObjOP($event)" TextField="formattedText"
                                 ValueField="opIpId">
@@ -50,11 +50,29 @@
                             <airmid-autocomplete lbl="RgId" *ngIf="reservationForm.get('opiptype').value == 'IP'"
                                 [formGroup]="reservationForm" formControlName="opipid"
                                 placeholderText="IP-RegNo/Patient Name/Mobile No"
-                                label="Search Reg No / Patient Name / Mobile No"
+                                label="Search IP-Reg No / Patient Name / Mobile No"
                                 ApiUrl="Admission/search-patient?Keyword=" (selectionChange)="getSelectedObjIP($event)"
                                 ValueField="admissionID" TextField="formattedText">
                             </airmid-autocomplete>
+
                         </div>
+
+                        <div class="input-container gap-8" fxFlex *ngIf="vCheckBox">
+
+                            <airmid-autocomplete lbl="RegID"
+                                [formGroup]="reservationForm" formControlName="opipid" fxFlex="50%"
+                                label="Search DC-Reg No / Patient Name / Mobile No(AD)"
+                                ApiUrl="Admission/Dischargesearch-patient?Keyword="
+                                (selectionChange)="getSelectedObjDC($event)" ValueField="admissionID"
+                                TextField="formattedText">
+                            </airmid-autocomplete>
+
+                        </div>
+
+                        <mat-checkbox fxFlex="15%" formControlName="IsDischargedit"
+                            (change)="getDischargedList($event)">IsDischarged
+                        </mat-checkbox>
+
                         <airmid-dropdown class="w-400" label="Get OT-Request" formControlName="otrequestId"
                             [formGroup]="reservationForm" (selectionChange)="onChangeOtRequest($event)"
                             ValueField="otRequestId" TextField="patientName"
