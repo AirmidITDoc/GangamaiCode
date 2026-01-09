@@ -1,10 +1,13 @@
 import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { fuseAnimations } from '@fuse/animations';
 import { ToastrService } from 'ngx-toastr';
 import { PrefixMasterService } from '../prefix-master.service';
-import { SpeechService } from 'app/main/shared/services/speech.service';
+// import { SpeechService } from 'app/main/shared/services/speech.service';
+import { VimalSpeechService } from 'app/main/shared/services/vimal-speech.service';
+import { ReportService } from 'app/main/reports/report-generation/service/report-generation.service';
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 
 
 @Component({
@@ -20,19 +23,46 @@ export class NewPrefixComponent implements OnInit {
     autocompleteModegender: string = "Gender";
     isSaving: boolean = false;
     text = '';
+
     constructor(
         public _PrefixMasterService: PrefixMasterService,
         public dialogRef: MatDialogRef<NewPrefixComponent>,
         @Inject(MAT_DIALOG_DATA) public data: any,
         public toastr: ToastrService,
-        private speech: SpeechService
+        private speechService: VimalSpeechService, public _reportService: ReportService, public _matDialog: MatDialog
     ) { }
 
-    speak() {
-        this.speech.start(result => {
-            this.text += result;
+    startGujarati() {
+        this.speechService.start('gu-IN', text => {
+            this.text += ' ' + text;
         });
     }
+
+    stop() {
+        this.speechService.stop();
+    }
+    TestPdf() {
+        this._reportService.getHtmlToPdf().subscribe(res => {
+
+            const matDialog = this._matDialog.open(PdfviewerComponent,
+                {
+                    maxWidth: "85vw",
+                    height: '750px',
+                    width: '100%',
+                    data: {
+                        base64: res["base64"] as string,
+                        title: "Bed Transfer" + " " + "Viewer"
+                    }
+                });
+            matDialog.afterClosed().subscribe(result => {
+            });
+        });
+    }
+    // speak() {
+    //     this.speech.start(result => {
+    //         this.text += result;
+    //     });
+    // }
     ngOnInit(): void {
 
         this.prefixForm = this._PrefixMasterService.createPrefixForm();

@@ -21,6 +21,7 @@ import { SharedModule } from "app/main/shared/shared.module";
 import { NewPrefixComponent } from "./new-prefix/new-prefix.component";
 import { PrefixMasterComponent } from "./prefix-master.component";
 import { PrefixMasterService } from "./prefix-master.service";
+import { ReportService } from "app/main/reports/report-generation/service/report-generation.service";
 
 const routes: Routes = [
     {
@@ -51,6 +52,6 @@ const routes: Routes = [
         FuseSidebarModule,
         MatDialogModule,
     ],
-    providers: [PrefixMasterService, DatePipe]
+    providers: [PrefixMasterService, DatePipe,ReportService]
 })
 export class PrefixMasterModule {}

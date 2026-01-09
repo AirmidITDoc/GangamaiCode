@@ -32,11 +32,6 @@
                             [mode]="autocompleteModegender">
                         </airmid-dropdown>
                     </div>
-                    <button (click)="speak()">🎤 Speak Any Indian Language</button>
-
-                    <textarea rows="4" style="width:100%; margin-top:10px">
-{{ text }}
-</textarea>
 
                 </div>
 
@@ -48,6 +43,7 @@
                     </div>
 
                     <div class="new-appointment-actions gap-8" fxLayoutAlign="end center">
+                    <button class="btn btn-danger" (click)="TestPdf()">Print Test pdf from html prepare by vimal</button>
                         <button class="btn btn-danger-outline" (click)="onClear(false)">Close</button>
                         <button class="btn btn-primary " color="accent" (click)="onSubmit()" [disabled]="isSaving">
                             <span>Save</span>

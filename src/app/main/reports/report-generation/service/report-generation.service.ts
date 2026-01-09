@@ -66,6 +66,10 @@ export class ReportService {
     public getReportView(Param) {
         return this._httpClient1.PostData("Report/NewViewReport", Param);
     }
+    
+    public getHtmlToPdf() {
+        return this._httpClient1.PostData("Report/new-vimal-html-pdf", {});
+    }
     public getExcelReport(Param) {
         return this._httpClient1.downloadFile("Report/NewExportExcelReport", Param,1,"Report.xlsx");
     }
