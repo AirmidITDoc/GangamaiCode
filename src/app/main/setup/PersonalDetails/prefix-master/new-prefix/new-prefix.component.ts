@@ -5,7 +5,6 @@ import { fuseAnimations } from '@fuse/animations';
 import { ToastrService } from 'ngx-toastr';
 import { PrefixMasterService } from '../prefix-master.service';
 // import { SpeechService } from 'app/main/shared/services/speech.service';
-import { VimalSpeechService } from 'app/main/shared/services/vimal-speech.service';
 import { ReportService } from 'app/main/reports/report-generation/service/report-generation.service';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 
@@ -28,19 +27,18 @@ export class NewPrefixComponent implements OnInit {
         public _PrefixMasterService: PrefixMasterService,
         public dialogRef: MatDialogRef<NewPrefixComponent>,
         @Inject(MAT_DIALOG_DATA) public data: any,
-        public toastr: ToastrService,
-        private speechService: VimalSpeechService, public _reportService: ReportService, public _matDialog: MatDialog
+        public toastr: ToastrService, public _reportService: ReportService, public _matDialog: MatDialog
     ) { }
 
-    startGujarati() {
-        this.speechService.start('gu-IN', text => {
-            this.text += ' ' + text;
-        });
-    }
+    // startGujarati() {
+    //     this.speechService.start('gu-IN', text => {
+    //         this.text += ' ' + text;
+    //     });
+    // }
 
-    stop() {
-        this.speechService.stop();
-    }
+    // stop() {
+    //     this.speechService.stop();
+    // }
     TestPdf() {
         this._reportService.getHtmlToPdf().subscribe(res => {
 
