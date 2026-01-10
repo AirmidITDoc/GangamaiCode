@@ -20,6 +20,7 @@ import { OutsourceDetailsPopoverComponent } from 'app/main/pathology/result-entr
 import { EmailSendComponent } from 'app/main/shared/componets/email-send/email-send.component';
 import { WhatsAppEmailService } from 'app/main/shared/services/whats-app-email.service';
 import { RadioloyOrderlistService } from '../radiology-order-list/radioloy-orderlist.service';
+import { permissionCodes } from 'app/main/shared/model/permission.model';
 @Component({
   selector: 'app-radio-report-dispatch',
   templateUrl: './radio-report-dispatch.component.html',
@@ -69,7 +70,7 @@ export class RadioReportDispatchComponent {
       template: this.actionsCompleted
     },
     {
-      heading: "Verify", key: "isVerified", sort: true, align: 'left', emptySign: 'NA',width: 150, type: gridColumnTypes.template,
+      heading: "Verify", key: "isVerified", sort: true, align: 'left', emptySign: 'NA', width: 150, type: gridColumnTypes.template,
       template: this.actionsverify
     },
     //  { heading: "DOA", key: "visitTime", sort: true, align: 'left', emptySign: 'NA', width: 200},
@@ -97,6 +98,7 @@ export class RadioReportDispatchComponent {
   ]
 
   gridConfig: gridModel = {
+    permissionCode: permissionCodes.ReportDispatch,
     apiUrl: "Radiology/RadiologyList",
     columnsList: this.allColumns,
     sortField: "RadReportId",

@@ -21,6 +21,7 @@ import { OpPaymentComponent } from 'app/main/opd/op-search-list/op-payment/op-pa
 import { BrowseLabBillsService } from './browse-lab-bills.service';
 import { ReviewcompanyBillComponent } from 'app/main/opd/new-oplist/reviewcompany-bill/reviewcompany-bill.component';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
+import { permissionCodes } from 'app/main/shared/model/permission.model';
 
 
 @Component({
@@ -214,7 +215,7 @@ export class BrowseLabBillsComponent {
 
 
   gridConfig: gridModel = {
-
+    permissionCode: permissionCodes.ExternalInvestigation,
     apiUrl: "LabBrowseList/LabBillList",
     columnsList: this.allOPbillcolumns,
     sortField: "BillDate",
@@ -223,6 +224,7 @@ export class BrowseLabBillsComponent {
   }
 
   gridConfig1: gridModel = {
+    permissionCode: permissionCodes.ExternalInvestigation,
     apiUrl: "LabBrowseList/LabPaymentList",
     columnsList: this.allOPpaymentcolumns,
     sortField: "BillDate",
@@ -232,6 +234,7 @@ export class BrowseLabBillsComponent {
 
 
   gridConfig2: gridModel = {
+    permissionCode: permissionCodes.ExternalInvestigation,
     apiUrl: "LabBrowseList/LabRefundList",
     columnsList: this.allOPRefundColumns,
     sortField: "BillDate",

@@ -232,5 +232,6 @@ export class DashboardService {
   public bedReset() {
     return this._httpClient.PutData("BedMaster/Edit",{});
   }
+  
 }
 

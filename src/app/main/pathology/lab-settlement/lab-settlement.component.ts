@@ -14,6 +14,7 @@ import { LabPatientList } from '../lab-patient-reg/lab-patient-reg.component';
 import { LabPatientRegService } from '../lab-patient-reg/lab-patient-reg.service';
 import { OpPaymentComponent } from 'app/main/opd/op-search-list/op-payment/op-payment.component';
 import { DiscountAfterFinalLabbillComponent } from '../lab-patient-reg/discount-after-final-labbill/discount-after-final-labbill.component';
+import { permissionCodes } from 'app/main/shared/model/permission.model';
 
 @Component({
   selector: 'app-lab-settlement',
@@ -179,6 +180,7 @@ export class LabSettlementComponent {
     }
   ]
   gridConfig: gridModel = {
+    permissionCode: permissionCodes.ExternalInvestigation,
     apiUrl: "OPBill/OPBillListSettlementList",
     columnsList: this.AllColumns,
     sortField: "BillNo",

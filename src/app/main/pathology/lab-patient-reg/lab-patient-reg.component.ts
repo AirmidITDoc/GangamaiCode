@@ -29,6 +29,8 @@ import { DoctorDetailsPopoverComponent } from 'app/main/opd/appointment-list/doc
 import { PageNames } from 'app/main/shared/componets/airmid-fileupload/airmid-fileupload.component';
 import { DiscountAfterFinalLabbillComponent } from './discount-after-final-labbill/discount-after-final-labbill.component';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
+import { permissionCodes, permissionType } from 'app/main/shared/model/permission.model';
+import { PagePermissionService } from 'app/main/shared/services/page-permission.service';
 
 @Component({
   selector: 'app-lab-patient-reg',
@@ -56,6 +58,9 @@ export class LabPatientRegComponent {
   fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
   toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
 
+  IsAdd: boolean = this.permissionService.getPermission(permissionCodes.LabPatientRegistration, permissionType.Add);
+  IsEdit: boolean = this.permissionService.getPermission(permissionCodes.LabPatientRegistration, permissionType.Edit);
+
   @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
   @ViewChild('actionsTemplate4') actionsTemplate4!: TemplateRef<any>;
   @ViewChild('ColorCode') ColorCode!: TemplateRef<any>;
@@ -72,6 +77,7 @@ export class LabPatientRegComponent {
     private overlay: Overlay,
     public formBuilder: UntypedFormBuilder,
     public _FormvalidationserviceService: FormvalidationserviceService,
+    public permissionService: PagePermissionService,
   ) { }
 
   ngOnInit(): void {
@@ -210,6 +216,7 @@ export class LabPatientRegComponent {
   ]
 
   gridConfig: gridModel = {
+    permissionCode: permissionCodes.LabPatientRegistration,
     apiUrl: "LabPatientRegistration/List",
     columnsList: this.allcolumns,
     sortField: "LabPatientId",

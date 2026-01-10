@@ -16,6 +16,7 @@ import { ExcelDownloadService } from 'app/main/shared/services/excel-download.se
 import { PathologyService } from '../pathology.service';
 import { isThisSecond } from 'date-fns';
 import { set } from 'lodash';
+import { permissionCodes } from 'app/main/shared/model/permission.model';
 
 @Component({
   selector: 'app-sample-request',
@@ -85,6 +86,7 @@ export class SampleRequestComponent implements OnInit {
 
   ];
   gridConfig: gridModel = {
+    permissionCode: permissionCodes.SamplecollectionList,
     apiUrl: "PathlogySampleCollection/LabOrRadRequestPatientList",
     columnsList: this.allcolumns,
     sortField: "RegNo",
@@ -174,9 +176,8 @@ export class SampleRequestComponent implements OnInit {
     this.regNo = this.myformSearch.get('RegNo').value || ""
     this.Istype = this.myformSearch.get('IsPathOrRad').value
     this.IsCompleted = this.myformSearch.get('IsCompleted').value
-    
-    this.getfilterdata();
 
+    this.getfilterdata();
   }
 
   getfilterdata() {

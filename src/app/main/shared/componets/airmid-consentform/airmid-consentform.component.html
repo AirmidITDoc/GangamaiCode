@@ -30,21 +30,19 @@
                                 <mat-radio-button value="IP">IP</mat-radio-button>
                             </mat-radio-group>
 
-                            <airmid-autocomplete *ngIf="myForm.get('PatientType').value == 'OP'"
-                                lbl="RgId" [formGroup]="myForm" formControlName="RegID"
-                                label="OP-RegNo/FirstName/LastName" fxFlex="60"
-                                placeholderText="OP-RegNo/FirstName/LastName"
+                            <airmid-autocomplete *ngIf="myForm.get('PatientType').value == 'OP'" lbl="RgId"
+                                [formGroup]="myForm" formControlName="RegID" label="OP-RegNo/FirstName/LastName"
+                                fxFlex="60" placeholderText="OP-RegNo/FirstName/LastName"
                                 ApiUrl="VisitDetail/search-patient?Keyword="
                                 (selectionChange)="getSelectedObjOP($event)" TextField="formattedText"
                                 ValueField="regId">
                             </airmid-autocomplete>
 
-                            <airmid-autocomplete *ngIf="myForm.get('PatientType').value == 'IP'"
-                                lbl="RgId" [formGroup]="myForm" formControlName="RegID"
-                                label="IP-RegNo/FirstName/LastName" fxFlex="60"
-                                placeholderText="IP-RegNo/FirstName/LastName" ApiUrl="Admission/search-patient?Keyword="
-                                (selectionChange)="getSelectedObjIP($event)" TextField="formattedText"
-                                ValueField="admissionID">
+                            <airmid-autocomplete *ngIf="myForm.get('PatientType').value == 'IP'" lbl="RgId"
+                                [formGroup]="myForm" formControlName="RegID" label="IP-RegNo/FirstName/LastName"
+                                fxFlex="60" placeholderText="IP-RegNo/FirstName/LastName"
+                                ApiUrl="Admission/search-patient?Keyword=" (selectionChange)="getSelectedObjIP($event)"
+                                TextField="formattedText" ValueField="admissionID">
                             </airmid-autocomplete>
                         </div>
                     </mat-card>
@@ -116,14 +114,10 @@
 
                     <!-- Department, Template, Language -->
                     <mat-card class="mt-16" style="padding: 10px;" fxLayout="row wrap" fxLayoutGap="16px">
-                        <airmid-dropdown label="Department Name" formControlName="ConsentDepartment"
-                            [formGroup]="myForm" fxFlex="30" [mode]="autocompletedepartment"
-                            (selectionChange)="selectChangedepartment($event)">
-                        </airmid-dropdown>
-
-                        <airmid-dropdown label="Template" formControlName="ConsentTempId" [formGroup]="myForm"
-                            fxFlex="30" #ddlTemplate (selectionChange)="onTemplateSelect($event)">
-                        </airmid-dropdown>
+                        <airmid-dropdown fxFlex="40%" label="Template" formControlName="ConsentTempId"
+                            [formGroup]="myForm" (selectionChange)="onTemplateSelect($event)" ValueField="consentId"
+                            TextField="consentName"
+                            [ApiUrl]="'NursingConsent/GetMConsentMasterList?ConsentTypeName=' + ConsentTy"></airmid-dropdown>
 
                         <div fxFlex="auto">
                             <button class="btn btn-primary" (click)="addTemplateDescription()"

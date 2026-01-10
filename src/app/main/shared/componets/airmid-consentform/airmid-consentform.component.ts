@@ -37,6 +37,7 @@ export class AirmidConsentformComponent {
   registerObj: any;
   OP_IP_Id: any;
   vRegNo: any;
+  ConsentTy: any;
 
   constructor(
     public dialogRef: MatDialogRef<AirmidConsentformComponent>,
@@ -61,11 +62,12 @@ export class AirmidConsentformComponent {
         console.log(response)
         this.myForm.get('ConsentDescription')?.setValue(response.consentDescription);
         this.myForm.get('ConsentDepartment')?.setValue(response.consentDepartment);
+        this.myForm.get('ConsentTempId')?.setValue(response.consentTempId);
         this.vRefType = response.refType
         this.templateId = response.consentTempId
         this.templateName = response.consentName
         this.vconsentID = response.consentId
-        this.selectChangedepartment(response)
+        // this.selectChangedepartment(response)
         this.isButtonDisabled = true
       });
     }
@@ -74,6 +76,18 @@ export class AirmidConsentformComponent {
     }
     if (this.data?.Id > 0) {
       this.hideFlag = false
+    }
+
+    if (this.data?.labelType == 'MRD') {
+      this.ConsentTy = 'MRD Consent'
+    } else if (this.data?.labelType == 'OT') {
+      this.ConsentTy = 'OT Consent'
+    } else if (this.data?.labelType == 'OPD') {
+      this.ConsentTy = 'OPD Consent'
+    } else if (this.data?.labelType == 'IPD') {
+      this.ConsentTy = 'IPD Consent'
+    } else if (this.data?.labelType == 'Nursing') {
+      this.ConsentTy = 'Nursing Consent'
     }
   }
 
@@ -85,7 +99,7 @@ export class AirmidConsentformComponent {
       refId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       // refId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       refType: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-      opipid: [0, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator()]],
+      opipid: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       opiptype: [0],
       ConsentTempId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       ConsentName: ['', [Validators.required, this._FormvalidationserviceService.allowEmptyStringValidator()]],
@@ -105,6 +119,7 @@ export class AirmidConsentformComponent {
     this.templateName = option.consentName
     this.vRefType = option.consentType
     this.selectedTemplateOption = option.consentDesc;
+    this.myForm.get('ConsentDepartment')?.setValue(option.departmentId)
   }
 
   onEditorValueChange(content: string) {
@@ -114,7 +129,7 @@ export class AirmidConsentformComponent {
   selectChangedepartment(obj: any) {
     if (obj.value) {
       this.vdepartmentId = obj.value
-      this._service.GetData("NursingConsent/GetMConsentMasterList?DeptId=" + obj.value).subscribe((data: any[]) => {
+      this._service.GetData('NursingConsent/GetMConsentMasterList?DeptId=' + obj.value + '&consentType=' + this.ConsentTy).subscribe((data: any[]) => {
         const mapped = data.map(item => ({
           ...item,
           value: item.consentId,
@@ -124,7 +139,7 @@ export class AirmidConsentformComponent {
         this.ddlTemplate.bindGridAutoComplete();
       });
     } else {
-      this._service.GetData("NursingConsent/GetMConsentMasterList?DeptId=" + obj.consentDepartment).subscribe((data: any[]) => {
+      this._service.GetData('NursingConsent/GetMConsentMasterList?DeptId=' + obj.value + '&consentType=' + this.ConsentTy).subscribe((data: any[]) => {
         const mapped = data.map(item => ({
           ...item,
           value: item.consentId,
@@ -147,13 +162,7 @@ export class AirmidConsentformComponent {
   }
 
   addTemplateDescription() {
-    const deptId = this.myForm.get('ConsentDepartment')?.value;
-    if (deptId === null || deptId === 0 || deptId === '' || deptId === "0") {
-      this.toastr.warning('Please select Department ', 'Warning !', {
-        toastClass: 'tostr-tost custom-toast-warning',
-      });
-      return;
-    }
+    
     const tempId = this.myForm.get('ConsentTempId')?.value;
     if (tempId === null || tempId === 0 || tempId === '' || tempId === "0") {
       this.toastr.warning('Please select Template ', 'Warning !', {
@@ -207,7 +216,7 @@ export class AirmidConsentformComponent {
 
     this.myForm.get('consentDate')?.setValue(formattedDate);
     this.myForm.get('consentTime')?.setValue(`${formattedDate} ${formattedTime}`);
-debugger
+    debugger
     this.myForm.get("opipid").setValue(this.OP_IP_Id ?? this.data?.opipId)
     this.myForm.get("opiptype").setValue(Number(this.OP_IPType))
     this.myForm.get("transactionLabel").setValue(this.data?.labelType || 'OT')
