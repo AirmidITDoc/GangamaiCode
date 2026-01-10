@@ -90,7 +90,7 @@ export class NewResultEntryComponent {
     CheckAgemonth: any = 0
     CheckAgeday: any = 0
     regObj: any;
-
+FinalAge:any=0;
     opipnumber = '0'
     ageY = 0
     ageM = 0
@@ -142,12 +142,16 @@ export class NewResultEntryComponent {
             this.SexId = this.selectedAdvanceObj2.genderId;
             if (this.selectedAdvanceObj2.ageYear)
                 this.CheckAge = this.selectedAdvanceObj2.ageYear.trim();
+                this.FinalAge = this.selectedAdvanceObj2.ageYear.trim();
             if (this.selectedAdvanceObj2.ageMonth)
                 this.CheckAgemonth = this.selectedAdvanceObj2.ageMonth.trim();
+                this.FinalAge = this.selectedAdvanceObj2.ageMonth.trim();
             if (this.selectedAdvanceObj2.ageDay)
                 this.CheckAgeday = this.selectedAdvanceObj2.ageDay.trim();
+                this.FinalAge = this.selectedAdvanceObj2.ageDay.trim();
 
             this.reportIdData = [];
+
             this.regObj = data.RIdData
             this.vPathReportId = this.regObj[0].PathReportId
 
@@ -435,7 +439,7 @@ export class NewResultEntryComponent {
                 },
                 {
                     "fieldName": "MaxAge",
-                    "fieldValue": String(obj.ageYear),
+                    "fieldValue": String(this.FinalAge),
                     "opType": "Equals"
                 }
             ],
@@ -495,7 +499,7 @@ export class NewResultEntryComponent {
                 },
                 {
                     "fieldName": "MaxAge",
-                    "fieldValue": String(obj.ageYear),
+                    "fieldValue": String(this.FinalAge),
                     "opType": "Equals"
                 }
             ],
@@ -559,7 +563,7 @@ export class NewResultEntryComponent {
                 },
                 {
                     "fieldName": "MaxAge",
-                    "fieldValue": String(obj.ageYear),
+                    "fieldValue": String(this.FinalAge),
                     "opType": "Equals"
                 }
             ],
@@ -805,6 +809,7 @@ export class NewResultEntryComponent {
         this._SampleService.PathResultentryInsert(this.ResultForm.value).subscribe(response => {
             if (response) {
                 this._matDialog.closeAll();
+                this.FinalAge  = 0
                 this.Printresultentry();
             }
             this.isLoading = '';
