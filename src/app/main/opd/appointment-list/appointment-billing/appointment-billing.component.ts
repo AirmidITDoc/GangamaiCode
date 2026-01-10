@@ -143,7 +143,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
             this.vClassId = this.patientDetail.classId
             this.savebtn = false
             this.searchForm.get('TariffId').setValue(this.patientDetail.tariffId)
-            this.checkCompanypatient(this.patientDetail?.companyId ?? 0)
+            this.checkCompanypatient(this.patientDetail?.companyId?? 0)
             this.patientDetail.mobileNo
             this.OPFooterForm.patchValue({mpesaMobile:this.patientDetail?.mobileNo || 0})
         } 
@@ -1328,7 +1328,7 @@ debugger
                     transactionType: 0,
                     isSelfOrcompany: this.patientDetail?.CompanyId ? 1 : 0,
                 });
-
+debugger
                 this.OpBillForm.get('balanceAmt').setValue(0)
                 this.OpBillForm.get('paidAmt')?.setValue(this.OPFooterForm.get('netPayableAmt')?.value)
                 this.OpBillForm.get('payments.payTmamount')?.setValue(Number(this.OPFooterForm.get('netPayableAmt')?.value))

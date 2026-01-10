@@ -397,9 +397,9 @@ export class AppointmentListComponent implements OnInit {
         if (action === 'Update Referred Doctor') {
             return !this.isTodayAppointment(element.dVisitDate);
         }
-        if (action === 'Update Consultant Doctor') {
-            return element.mPbillNo !== '0';
-        }
+        // if (action === 'Update Consultant Doctor') {
+        //     return element.mPbillNo !== '0';
+        // }
         if (action === 'Request For IP') {
             return element.isConvertRequestForIp == true;
         }

@@ -124,7 +124,7 @@
                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                   <input type="hidden" name="AdmissionId" formControlName="AdmissionId"
                     [(ngModel)]="registerObj1.admissionId">
-                  <input type="hidden" name="RegId" formControlName="RegId" [(ngModel)]="registerObj.regId">
+                  <!-- <input type="hidden" name="RegId" formControlName="RegId" [(ngModel)]="registerObj.regId"> -->
 
                   <airmid-dropdown label="Hospital" formControlName="hospitalId" [formGroup]="admissionFormGroup"
                     [mode]="autocompleteModehospital"> </airmid-dropdown>
@@ -151,7 +151,7 @@
 
                   <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="25%">
 
-                    <airmid-dropdown label="SubTpaCom" formControlName="SubTpaComId" [value]="registerObj1?.subTpaComId"
+                    <airmid-dropdown label="SubTpaCom" formControlName="subTpaComId" [value]="registerObj1?.subTpaComId"
                       [formGroup]="admissionFormGroup" [validations]="getValidationMessages().SubTpaComId"
                       [mode]="autocompleteModeSubCompany">
                     </airmid-dropdown>
@@ -249,9 +249,9 @@
                     [value]="registerObj1?.relationshipId" [formGroup]="admissionFormGroup"
                     [validations]="getValidationMessages().RelationshipId" [mode]="autocompleteModerelationship">
                   </airmid-dropdown>
-                  <input type="hidden" name="BedId" formControlName="bedId" [(ngModel)]="registerObj1.bedId">
+                  <!-- <input type="hidden" name="BedId" formControlName="bedId" [(ngModel)]="registerObj1.bedId">
                   <input type="hidden" name="ClassId" formControlName="ClassId" [(ngModel)]="registerObj1.classId">
-                  <input type="hidden" name="WardId" formControlName="wardId" [(ngModel)]="registerObj1.wardId">
+                  <input type="hidden" name="WardId" formControlName="wardId" [(ngModel)]="registerObj1.wardId"> -->
                   <input type="hidden" name="TariffId" formControlName="TariffId" [(ngModel)]="registerObj1.tariffId">
 
                 </div>
