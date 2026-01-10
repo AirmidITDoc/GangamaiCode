@@ -144,7 +144,7 @@ export class SalesHospitalKenyaComponent {
      vPharExtOpt: any;
      vPharOPOpt: any;
      vPharIPOpt: any;
-     vSelectedOption: any = '1';
+     vSelectedOption: any = '0';
      vCondition: boolean = false;
      vConditionExt: boolean = false;
      vConditionIP: boolean = false;
@@ -223,7 +223,7 @@ export class SalesHospitalKenyaComponent {
              PaidbyPatient: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
              PaidbacktoPatient: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
              roundoffAmt: [0],
-             opIpType: ['1', [this._FormvalidationserviceService.onlyNumberValidator()]],
+             opIpType: ['0', [this._FormvalidationserviceService.onlyNumberValidator()]],
              totalAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
              vatAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
              discAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],

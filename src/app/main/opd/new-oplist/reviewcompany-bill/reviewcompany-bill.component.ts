@@ -103,6 +103,7 @@ export class ReviewcompanyBillComponent {
     this.CompanyUpdateForm = this.CreateCompanyUpdateForm();
 
     if (this.data) {
+      debugger
       console.log(this.data)
       this.patientDetail = this.data?.Obj;
       this.OPDIPDID = this.data?.Obj?.opdipdid || 0 
@@ -110,9 +111,7 @@ export class ReviewcompanyBillComponent {
       this.Lable = 'Bill'
       this.BillNo = this.patientDetail?.billNo
       this.getPrevCompanyBillList(this.patientDetail?.billNo,'Bill')
-      this.getBilllist();
-      this.CompanyForm.get('govtCompanyId').setValue(this.patientDetail?.companyId || 0)
-      //opdno
+      this.getBilllist(); 
     }
         //this is for curreny symbol
         const [CurrencyId, CurrencyValue] = this._ConfigService.configParams.CurrencyValue.split(":");
@@ -277,6 +276,7 @@ export class ReviewcompanyBillComponent {
     this.getPrevCompanyBillList(element.BillNo,element.Lbl)
   }
   getPrevCompanyBillList(billNo,Label) {
+    debugger
     var param = {
       "first": 0,
       "rows": 100,
@@ -315,6 +315,7 @@ export class ReviewcompanyBillComponent {
     CompanyApprovedAmt:any=0;
     AdjustmentAmt:any=0;
    getBilllist() {
+    debugger
     //ps_rtrv_BillList
     if (this.OPDIPDID == '' || this.OPDIPDID == null || this.OPDIPDID == undefined || this.OPDIPDID == 0) {
       this.toastr.warning('Please select patient', 'Warning !', {
@@ -334,13 +335,28 @@ export class ReviewcompanyBillComponent {
       console.log('response', response)
       this.dsbillList.data = response
       if(this.dsbillList.data.length){
-      this.FinalBillBalAmt = ( this.dsbillList.data.reduce((sum, { BalanceAmt }) => sum += +(BalanceAmt || 0), 0)).toFixed(2);
-      this.CompanyApprovedAmt = this.dsbillList.data[0]?.ApprovedAmount || 0 
-       if(this.FinalBillBalAmt > this.CompanyApprovedAmt){
-      this.AdjustmentAmt = ((this.FinalBillBalAmt || 0) - (this.CompanyApprovedAmt || 0)).toFixed(2);
-      }else{
-       this.AdjustmentAmt = 0;
-       }
+      // this.FinalBillBalAmt = ( this.dsbillList.data.reduce((sum, { BalanceAmt }) => sum += +(BalanceAmt || 0), 0)).toFixed(2);
+      // this.CompanyApprovedAmt = this.dsbillList.data[0]?.ApprovedAmount || 0 
+      //  if(this.FinalBillBalAmt > this.CompanyApprovedAmt){
+      // this.AdjustmentAmt = ((this.FinalBillBalAmt || 0) - (this.CompanyApprovedAmt || 0)).toFixed(2);
+      // }else{
+      //  this.AdjustmentAmt = 0;
+      //  }  
+      const GovApprovedamt = this.dsbillList.data.map(x => x.GovtApprovedAmt).find(x => typeof x === 'number' && x > 0);
+      const GovtRefNo = this.dsbillList.data.map(x => x.GovtRefNo).find(x => typeof x === 'string' && x.trim() !== '');
+      const GovtCompanyId = this.dsbillList.data.map(x => x.GovtCompanyId).find(x => typeof x === 'number' && x > 0);
+      const ComApprovedamt = this.dsbillList.data.map(x => x.CompanyApprovedAmt).find(x => typeof x === 'number' && x > 0);
+      const CompanyRefNo = this.dsbillList.data.map(x => x.CompRefNo).find(x => typeof x === 'string' && x.trim() !== '');
+      const CompanyamtID = this.dsbillList.data.map(x => x.CompanyApprovedId).find(x => typeof x === 'number' && x > 0);
+
+      this.CompanyForm.patchValue({
+        govtCompanyId:GovtCompanyId || 0,
+        govtApprovedAmt:GovApprovedamt || 0,
+        referenceNo:GovtRefNo || '',
+        companyApprovedId:CompanyamtID || 0,
+        companyApprovedAmt:ComApprovedamt || 0,
+        referenceNo_1: CompanyRefNo || ''
+      }); 
       }
     })
   }
@@ -522,7 +538,39 @@ export class ReviewcompanyBillComponent {
       }
     }
   }
+  deletecharges(contact) {
+    debugger
+    Swal.fire({
+      title: 'Do you want to cancel the Service ',
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, Delete it!"
 
+    }).then((flag) => {
+      if (flag.isConfirmed) {
+        let Chargescancle = {};
+        Chargescancle['chargesId'] = contact.chargesId;
+        Chargescancle['isCancelledBy'] = this.accountService.currentUserValue.userId;
+
+        let submitData = {
+          "deleteCharges": Chargescancle
+        };
+        console.log(submitData);
+        this._OPListService.AddchargesDelete(submitData).subscribe(response => {
+          this.getPrevCompanyBillList(this.BillNo, this.Lable);
+          this.calculateTotalAmount();
+
+          setTimeout(() => {
+             this.OnSave();
+          }, 2500);
+        });
+      }
+    });
+
+  }
   resetform() {
     this.chargeList = [];
     this.dsChargeList.data = []
@@ -750,35 +798,7 @@ export class ReviewcompanyBillComponent {
       ],
     }
   }
-  deletecharges(contact) {
-    debugger
-    Swal.fire({
-      title: 'Do you want to cancel the Service ',
-      text: "You won't be able to revert this!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, Delete it!"
 
-    }).then((flag) => {
-      if (flag.isConfirmed) {
-        let Chargescancle = {};
-        Chargescancle['chargesId'] = contact.chargesId;
-        Chargescancle['isCancelledBy'] = this.accountService.currentUserValue.userId;
-
-        let submitData = {
-          "deleteCharges": Chargescancle
-        };
-        console.log(submitData);
-        this._OPListService.AddchargesDelete(submitData).subscribe(response => {
-          this.getPrevCompanyBillList(this.BillNo, this.Lable);
-          this.OnSave();
-        });
-      }
-    });
-
-  }
 }
 
 export class ChargesList {
@@ -827,6 +847,15 @@ BalanceAmt:any;
   originalQty:any;
   previousQty:any;
   reutrnQty:any;
+  GovtCompanyId:any;
+  GovApprovedamt:any;
+  GovtRefNo:any;
+  CompanyApprovedId:any;
+  CompanyApprovedAmt:any;
+  CompRefNo:any;
+  GovtApprovedAmt :any;
+ 
+
   constructor(ChargesList) {
     this.ChargesId = ChargesList.ChargesId || '';
     this.ServiceId = ChargesList.ServiceId || '';
@@ -873,5 +902,12 @@ BalanceAmt:any;
     this.userName = ChargesList.userName || '';
      this.previousQty = ChargesList.previousQty || 0;
       this.reutrnQty = ChargesList.reutrnQty || 0;
+        this.GovApprovedamt = ChargesList.GovApprovedamt || 0;
+          this.GovtCompanyId = ChargesList.GovtCompanyId || 0;
+            this.GovtRefNo = ChargesList.GovtRefNo || '';
+              this.CompanyApprovedId = ChargesList.CompanyApprovedId || 0;
+                this.CompanyApprovedAmt = ChargesList.CompanyApprovedAmt || 0;
+                this.CompRefNo = ChargesList.CompRefNo || '';
+                 this.GovtApprovedAmt = ChargesList.GovtApprovedAmt || 0; 
   }
 }

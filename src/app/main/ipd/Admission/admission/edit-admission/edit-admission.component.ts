@@ -117,6 +117,7 @@ export class EditAdmissionComponent implements OnInit {
 
         });
       }, 500);
+       this.admissionFormGroup = this.createEditAdmissionForm();
     }
     this.admissionFormGroup = this.createEditAdmissionForm();
 
@@ -226,19 +227,16 @@ AdmissionFormSet(){
   OnSaveAdmission() {
     // this.admissionFormGroup.get('AdmissionDate').setValue(this.datePipe.transform(this.admissionFormGroup.get('AdmissionDate').value, 'yyyy-MM-dd'))
     debugger
-const rawDate = this.registerObj1.admissionTime;
-const [datePart, timePart] = rawDate.split(' ');
-const [day, month, year] = datePart.split('-');
-const isoDate = `${year}-${month}-${day}T${timePart}`;
-const inputDate = new Date(isoDate);
+ 
+const inputDate = this.parseAdmissionTime(this.registerObj1.admissionTime);
 
-  this.admissionFormGroup.get('AdmissionDate').setValue(this.datePipe.transform(this.registerObj1.admissionDate, 'yyyy-MM-dd'))
+ this.admissionFormGroup.get('AdmissionDate').setValue(this.datePipe.transform(this.registerObj1.admissionDate, 'yyyy-MM-dd'))
  this.admissionFormGroup.get('AdmissionTime')?.setValue(
   this.datePipe.transform(inputDate, 'yyyy-MM-dd hh:mm:ss a')
 ); 
     console.log(this.admissionFormGroup.value)
 
-    if (this.isCompanySelected && this.admissionFormGroup.get('CompanyId').value == 0) {
+    if (this.isCompanySelected && (!this.admissionFormGroup.get('CompanyId').value)) {
       this.toastr.warning('Please select valid Company ', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
@@ -267,10 +265,13 @@ const inputDate = new Date(isoDate);
     // this.admissionFormGroup.get('compDOd').setValue(this.registerObj1.compDod)
      this.admissionFormGroup.get('IsOpToIpconv').setValue(this.registerObj1.isOpToIpconv)
     // this.admissionFormGroup.get('RefDoctorDept').setValue(this.registerObj1.refDoctorDept)
-  //  this.admissionFormGroup.get('AdmissionType').setValue(this.registerObj1.admissionType)
+  //  this.admissionFormGroup.get('AdmissionType').setValue(this.registerObj1.admissionType) 
+   this.admissionFormGroup.get('isUpdatedBy').setValue(this.accountService.currentUserValue.userId)
     this.admissionFormGroup.get('ischarity').setValue(this.admissionFormGroup.get('ischarity').value)
     this.admissionFormGroup.get('convertId').setValue(this.registerObj1.converId || 0)
     this.admissionFormGroup.get('RefDocNameId').setValue(this.registerObj1.refDocNameId || 0)
+     this.admissionFormGroup.get('RelativeName').setValue(this.registerObj1?.relativeName || '')
+    
   
   delete this.registerObj.regNo
 
@@ -405,5 +406,37 @@ const inputDate = new Date(isoDate);
     this.admissionFormGroup.get('CompanyId').updateValueAndValidity();
     this.admissionFormGroup.get('SubCompanyId').updateValueAndValidity();
   }
+ parseAdmissionTime(rawDate) {
+  if (!rawDate || typeof rawDate !== 'string') return null;
 
+  rawDate = rawDate.trim();
+
+  // Case 1: Slash format with AM/PM → "1/3/2026 3:44:14 PM"
+  if (rawDate.includes('/') && /AM|PM/i.test(rawDate)) {
+    const date = new Date(rawDate);
+    return isNaN(date.getTime()) ? null : date;
+  }
+
+  // Case 2: Dash format → "05-01-2026 14:30" or "05-01-2026 14:30:45"
+  if (rawDate.includes('-')) {
+    const [datePart, timePart] = rawDate.split(/\s+/);
+    if (!datePart || !timePart) return null;
+
+    const [day, month, year] = datePart.split('-').map(Number);
+    const [h, m, s = 0] = timePart.split(':').map(Number);
+
+    if (
+      !year || month < 1 || month > 12 || day < 1 || day > 31 ||
+      h < 0 || h > 23 || m < 0 || m > 59 || s < 0 || s > 59
+    ) {
+      return null;
+    }
+
+    const date = new Date(year, month - 1, day, h, m, s);
+    return isNaN(date.getTime()) ? null : date;
+  }
+
+  return null;
+}
+ 
 }
