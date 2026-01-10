@@ -614,6 +614,8 @@ export class NewReservationComponent implements OnInit {
       this.vPatientName = extractedName;
       this.isDischarge = obj.isDischarged
       this.opIpId = obj.admissionID;
+      this.opIpType = true
+        this.vSelectedOption = "IP"
     }
   }
 

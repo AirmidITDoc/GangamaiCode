@@ -61,6 +61,7 @@
 
                             <airmid-autocomplete lbl="RegID"
                                 [formGroup]="reservationForm" formControlName="opipid" fxFlex="50%"
+                                placeholderText="Search DC-RegNo/Patient Name/Mobile No"
                                 label="Search DC-Reg No / Patient Name / Mobile No(AD)"
                                 ApiUrl="Admission/Dischargesearch-patient?Keyword="
                                 (selectionChange)="getSelectedObjDC($event)" ValueField="admissionID"
