@@ -615,7 +615,6 @@ export class NewReservationComponent implements OnInit {
       this.isDischarge = obj.isDischarged
       this.opIpId = obj.admissionID;
       this.opIpType = true
-        this.vSelectedOption = "IP"
     }
   }
 
@@ -623,6 +622,7 @@ export class NewReservationComponent implements OnInit {
   getDischargedList(event) {
     if (event.checked == true) {
       this.vCheckBox = true;
+      this.reservationForm.get('opiptype')?.setValue('IP');
       this.patientInfoReset()
     }
     else {

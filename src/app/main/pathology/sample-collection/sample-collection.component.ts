@@ -14,6 +14,8 @@ import { SamplecollectionPageComponent } from './samplecollection-page/samplecol
 import { NursingPathRadRequestList } from '../sample-request/sample-request.component';
 import { MatTableDataSource } from '@angular/material/table';
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
+import { permissionCodes, permissionType } from 'app/main/shared/model/permission.model';
+import { PagePermissionService } from 'app/main/shared/services/page-permission.service';
 
 
 @Component({
@@ -41,6 +43,8 @@ export class SampleCollectionComponent implements OnInit {
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     @ViewChild('grid1') grid1: AirmidTableComponent;
 
+    IsEdit: boolean = this.permissionService.getPermission(permissionCodes.LabPatientRegistration, permissionType.Edit);
+
     @ViewChild('iconisCompeleted') iconisCompeleted!: TemplateRef<any>;
     @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
     @ViewChild('statusbtnTemplate') statusbtnTemplate!: TemplateRef<any>;
@@ -52,7 +56,6 @@ export class SampleCollectionComponent implements OnInit {
     }
 
     gridConfig1: gridModel = new gridModel();
-
 
     allcolumns = [
         {
@@ -76,6 +79,7 @@ export class SampleCollectionComponent implements OnInit {
         }
     ];
     gridConfig: gridModel = {
+        permissionCode: permissionCodes.PathologyResultlist,
         apiUrl: "PathlogySampleCollection/SampleCollectionPatientList",
         columnsList: this.allcolumns,
         sortField: "RegNo",
@@ -94,7 +98,8 @@ export class SampleCollectionComponent implements OnInit {
     constructor(public _SampleCollectionService: SampleCollectionService,
         public _matDialog: MatDialog, private commonService: PrintserviceService,
         public datePipe: DatePipe,
-        public toastr: ToastrService,) { }
+        public toastr: ToastrService,
+        public permissionService: PagePermissionService,) { }
 
     ngOnInit(): void {
         this.myformSearch = this._SampleCollectionService.createSearchForm()

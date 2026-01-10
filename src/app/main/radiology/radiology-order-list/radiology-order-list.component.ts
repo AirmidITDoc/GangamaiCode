@@ -28,8 +28,7 @@ import { SMSDetailsPopupOverComponent } from 'app/main/shared/componets/email-se
 import { WhatsappDetPopUpOverComponent } from 'app/main/shared/componets/email-send/whatsapp-det-pop-up-over/whatsapp-det-pop-up-over.component';
 import { Subscription } from 'rxjs';
 import { OutsourceDetailsPopoverComponent } from 'app/main/pathology/result-entry/outsource-details-popover/outsource-details-popover.component';
-
-
+import { permissionCodes } from 'app/main/shared/model/permission.model';
 
 @Component({
     selector: 'app-radiology-order-list',
@@ -112,6 +111,7 @@ export class RadiologyOrderListComponent implements OnInit {
     ]
 
     gridConfig: gridModel = {
+        permissionCode: permissionCodes.RadiologyList,
         apiUrl: "Radiology/RadiologyList",
         columnsList: this.allColumns,
         sortField: "RadReportId",

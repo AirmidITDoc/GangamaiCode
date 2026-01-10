@@ -28,6 +28,7 @@ import { ConsoleLogger } from '@microsoft/signalr/dist/esm/Utils';
 import { Console } from 'console';
 import { ResultEntryService } from '../result-entry/result-entry.service';
 import { PatientList, SampleDetailObj, SampleList } from '../result-entry/result-entry.component';
+import { permissionCodes } from 'app/main/shared/model/permission.model';
 
 
 @Component({
@@ -161,6 +162,7 @@ export class ReportDispatchComponent {
   ];
 
   gridConfig: gridModel = {
+    permissionCode: permissionCodes.ReportDispatch,
     apiUrl: "Pathology/PathologyPatientTestList",
     columnsList: this.allcolumns,
     sortField: "PresReId",

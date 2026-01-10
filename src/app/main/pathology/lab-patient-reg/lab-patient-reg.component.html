@@ -11,10 +11,10 @@
             </div>
         </div>
         <div class="gap-8" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
-            <button mat-raised-button (click)="onnew()">+ Add New
+            <button mat-raised-button (click)="onnew()" *ngIf="IsAdd">+ Add New
             </button>
 
-            <button mat-raised-button (click)="Onmessage()">+ Add Estimate
+            <button mat-raised-button (click)="Onmessage()" *ngIf="IsAdd">+ Add Estimate
             </button>
         </div>
     </div>
@@ -79,7 +79,7 @@
 
     <ng-template #actionButtonTemplate let-element>
         <div fxLayout="row" fxLayoutAlign="center center">
-            <button mat-icon-button matTooltip="Edit Registration" (click)="OnEditRegistration(element)">
+            <button mat-icon-button matTooltip="Edit Registration" (click)="OnEditRegistration(element)" *ngIf="IsEdit">
                 <mat-icon>edit</mat-icon>
             </button>
 

@@ -76,7 +76,7 @@
             <ng-template #actionButtonTemplate let-element>
                 <!-- *ngIf="element.isSampleCollection?.toString().trim() === 'False'" -->
                 <div fxLayout="row" fxLayoutAlign="center center">
-                    <button mat-icon-button (click)="onSave(element)" matTooltip="Edit">
+                    <button mat-icon-button (click)="onSave(element)" matTooltip="Edit" *ngIf="IsEdit">
                         <mat-icon>edit</mat-icon>
                     </button>
                     <button mat-icon-button matTooltip="Patient Details Sticker" (click)="OnPrintPatientIcard(element)">

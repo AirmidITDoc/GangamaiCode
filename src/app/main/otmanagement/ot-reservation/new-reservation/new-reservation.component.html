@@ -31,7 +31,7 @@
                             <mat-radio-group aria-label="Select an option" [formGroup]="reservationForm"
                                 formControlName="opiptype" name="opiptype" (change)="onChangeReg($event)"
                                 (blur)="onChangeReg($event)" [(ngModel)]="vSelectedOption">
-                                <mat-radio-button value="OP">OP</mat-radio-button>
+                                <mat-radio-button value="OP" [disabled]="vCheckBox == true">OP</mat-radio-button>
                                 <mat-radio-button value="IP">IP</mat-radio-button>
                             </mat-radio-group>
                         </div>

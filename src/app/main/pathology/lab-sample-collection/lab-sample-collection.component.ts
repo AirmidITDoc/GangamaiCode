@@ -12,6 +12,8 @@ import { MatTableDataSource } from '@angular/material/table';
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 import { LabSampleCollectionService } from './lab-sample-collection.service';
 import { SamplecollectionPageComponent } from '../sample-collection/samplecollection-page/samplecollection-page.component';
+import { permissionCodes, permissionType } from 'app/main/shared/model/permission.model';
+import { PagePermissionService } from 'app/main/shared/services/page-permission.service';
 
 @Component({
   selector: 'app-lab-sample-collection',
@@ -37,6 +39,8 @@ export class LabSampleCollectionComponent {
   dataSource = new MatTableDataSource<NursingPathRadRequestList>();
   @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
   @ViewChild('grid1') grid1: AirmidTableComponent;
+
+  IsEdit: boolean = this.permissionService.getPermission(permissionCodes.ExternalInvestigation, permissionType.Edit);
 
   @ViewChild('iconisCompeleted') iconisCompeleted!: TemplateRef<any>;
   @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
@@ -91,7 +95,8 @@ export class LabSampleCollectionComponent {
   constructor(public _SampleCollectionService: LabSampleCollectionService,
     public _matDialog: MatDialog, private commonService: PrintserviceService,
     public datePipe: DatePipe,
-    public toastr: ToastrService,) { }
+    public toastr: ToastrService,
+    public permissionService: PagePermissionService,) { }
 
   ngOnInit(): void {
     this.myformSearch = this._SampleCollectionService.createSearchForm()
@@ -116,6 +121,7 @@ export class LabSampleCollectionComponent {
     // let opipType = 4
 
     this.gridConfig1 = {
+      permissionCode: permissionCodes.ExternalInvestigation,
       apiUrl: "PathlogySampleCollection/SampleCollectionTestList",
       columnsList: [
         {

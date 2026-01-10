@@ -4,6 +4,7 @@ import { UntypedFormBuilder, UntypedFormGroup } from "@angular/forms";
 import { fuseAnimations } from "@fuse/animations";
 import Chart, { Color } from 'chart.js/auto';
 import { MatTableDataSource } from '@angular/material/table';
+import { DashboardService } from "../dashboard.service";
 
 @Component({
   selector: 'app-radiology-dashboard',
@@ -15,12 +16,13 @@ import { MatTableDataSource } from '@angular/material/table';
 export class RadiologyDashboardComponent implements OnInit {
 
   dateFilterForm: UntypedFormGroup;
-
+  fromDate: Date;
+  toDate: Date;
   // Summary Card Data
-  totalTestsToday: number = 156;
-  completedReports: number = 118;
-  pendingReports: number = 32;
-  cancelledScans: number = 6;
+  totalTestsToday: number = 0;
+  completedReports: number = 0;
+  pendingReports: number = 0;
+  cancelledScans: number = 0;
 
   // Chart References
   public totalTestsChart: any;
@@ -36,6 +38,8 @@ export class RadiologyDashboardComponent implements OnInit {
   topTestsColumns: string[] = ['TestName', 'Count'];
   radiologistPerformanceColumns: string[] = ['RadiologistName', 'ReportsCompleted', 'AvgTime'];
 
+  dsPathologyCount = new MatTableDataSource<PathologyCount>()
+  dsRadiologyCount = new MatTableDataSource<PathologyCount>()
   // Table Data Sources
   dsRecentReports = new MatTableDataSource<RecentReport>();
   dsTopTests = new MatTableDataSource<TopTest>();
@@ -110,15 +114,15 @@ export class RadiologyDashboardComponent implements OnInit {
 
   // ========== PATHOLOGY DATA ==========
   // TODO: Replace with API data
-  
+
   // Tab Management
   selectedTabIndex: number = 0;
 
   // Pathology Summary Card Data
-  pathologyTotalTests: number = 234;
-  pathologyCompletedReports: number = 198;
-  pathologyPendingReports: number = 28;
-  pathologyRejectedSamples: number = 8;
+  pathologyTotalTests: number = 0;
+  pathologyCompletedReports: number = 0;
+  pathologyPendingReports: number = 0;
+  pathologyRejectedSamples: number = 0;
 
   // Pathology Chart References
   public pathologyTotalTestsChart: any;
@@ -205,13 +209,16 @@ export class RadiologyDashboardComponent implements OnInit {
 
   constructor(
     public datePipe: DatePipe,
-    private formBuilder: UntypedFormBuilder
+    private formBuilder: UntypedFormBuilder,
+    private dashboardService: DashboardService,
   ) {
     // Initialize date filter form
     this.dateFilterForm = this.formBuilder.group({
       start: [new Date(new Date().setDate(new Date().getDate() - 7))],
       end: [new Date()]
     });
+
+    this.initializeDateRange();
   }
 
   ngOnInit(): void {
@@ -224,23 +231,163 @@ export class RadiologyDashboardComponent implements OnInit {
     }, 500);
   }
 
+  initializeDateRange() {
+    const today = new Date();
+    this.toDate = new Date(today);
+
+    // Find Monday of current week
+    const day = today.getDay();
+    const diff = today.getDate() - day + (day === 0 ? -6 : 1); // Adjust when day is Sunday
+    const monday = new Date(today);
+    monday.setDate(diff);
+    this.fromDate = monday;
+  }
+
   loadTableData(): void {
     // Load Radiology Data
+    this.getRadiologyData();
     this.dsRecentReports.data = this.recentReportsData;
     this.dsTopTests.data = this.topTestsData;
     this.dsRadiologistPerformance.data = this.radiologistPerformanceData;
 
     // Load Pathology Data
+    this.getpathologyData();
     this.dsPathologyReports.data = this.pathologyReportsData;
     this.dsPathologyTopTests.data = this.pathologyTopTestsData;
     this.dsPathologistWorkload.data = this.pathologistWorkloadData;
+  }
+
+  formatDateForAPI(date: Date): string {
+    const dd = String(date.getDate()).padStart(2, '0');
+    const mm = String(date.getMonth() + 1).padStart(2, '0');
+    const yyyy = date.getFullYear();
+    return `${dd}/${mm}/${yyyy}`;
+  }
+
+  formatDateForRadiologyAPI(date: Date): string {
+    if (!date) return '';
+
+    const d = new Date(date);
+    const year = d.getFullYear();
+    const month = ('0' + (d.getMonth() + 1)).slice(-2);
+    const day = ('0' + d.getDate()).slice(-2);
+
+    return `${year}-${month}-${day}`;
   }
 
   onDateRangeChanged(): void {
     console.log('Date range changed:', this.dateFilterForm.value);
     // TODO: When you add APIs, filter data based on date range here
     // For now, using static data
+    if (this.fromDate && this.toDate) {
+      this.loadTableData();
+    }
   }
+
+  getpathologyData() {
+    const payload = {
+      "searchFields": [
+        {
+          "fieldName": "FromDate",
+          "fieldValue": this.formatDateForAPI(this.fromDate),
+          "opType": "Equals"
+        },
+        {
+          "fieldName": "ToDate",
+          "fieldValue": this.formatDateForAPI(this.toDate),
+          "opType": "Equals"
+        }
+      ],
+      "mode": "PathologyDashboard"
+    };
+
+    this.pathologyTotalTests = 0;
+    this.pathologyCompletedReports = 0;
+    this.pathologyPendingReports = 0;
+    this.pathologyRejectedSamples = 0;
+
+    this.dashboardService.HomeDashboardAPI(payload).subscribe((res: any) => {
+      this.dsPathologyCount.data = res || [];
+      if (this.dsPathologyCount.data.length > 0) {
+
+        this.dsPathologyCount.data.forEach(element => {
+
+          // TOTAL TEST COUNT (DATE RANGE)
+          this.pathologyTotalTests += Number(element.TestCount) || 0;
+
+          if (element.IsCompleted == 1) {
+            this.pathologyCompletedReports++;
+          }
+
+          if (element.IsCompleted == 0) {
+            this.pathologyPendingReports++;
+          }
+
+          if (element.IsCancelled == 1) {
+            this.pathologyRejectedSamples++;
+          }
+
+        });
+        console.log('Pathology Total Tests:', this.pathologyTotalTests);
+        console.log('Pathology complete Tests:', this.pathologyCompletedReports);
+        console.log('Pathology Pending Tests:', this.pathologyPendingReports);
+        console.log('Pathology cancel Tests:', this.pathologyRejectedSamples);
+      }
+    });
+  }
+
+  getRadiologyData() {
+    const payload = {
+      searchFields: [
+        {
+          fieldName: "FromDate",
+          fieldValue: this.formatDateForRadiologyAPI(this.fromDate),
+          opType: "Equals"
+        },
+        {
+          fieldName: "ToDate",
+          fieldValue: this.formatDateForRadiologyAPI(this.toDate),
+          opType: "Equals"
+        }
+      ],
+      mode: "RadiologyDashboard"
+    };
+
+    this.totalTestsToday = 0;
+    this.completedReports = 0;
+    this.pendingReports = 0;
+    this.cancelledScans = 0;
+
+    this.dashboardService.HomeDashboardAPI(payload).subscribe((res: any) => {
+      this.dsRadiologyCount.data = res || [];
+
+      if (this.dsRadiologyCount.data.length > 0) {
+
+        this.dsRadiologyCount.data.forEach(element => {
+
+          // TOTAL TEST COUNT (DATE RANGE)
+          this.totalTestsToday += Number(element.TestCount) || 0;
+
+          if (element.IsCompleted == 1) {
+            this.completedReports++;
+          }
+
+          if (element.Pending == 0) {
+            this.pendingReports++;
+          }
+
+          if (element.IsCancelled == 1) {
+            this.cancelledScans++;
+          }
+        });
+      }
+      console.log('Radiology Total Tests:', this.totalTestsToday);
+      console.log('Radiology complete Tests:', this.completedReports);
+      console.log('Radiology Pending Tests:', this.pendingReports);
+      console.log('Radiology cancel Tests:', this.cancelledScans);
+    });
+  }
+
 
   onTabChanged(event: any): void {
     console.log('Tab changed to:', event.index);
@@ -762,6 +909,20 @@ export class PathologyReport {
     this.Status = report.Status || '';
     this.Pathologist = report.Pathologist || '';
     this.Date = report.Date || '';
+  }
+}
+
+export class PathologyCount {
+  TestCount: any;
+  IsCompleted: any;
+  IsCancelled: any;
+  Pending: any;
+
+  constructor(PathologyCount) {
+    this.TestCount = PathologyCount.TestCount || '0';
+    this.IsCompleted = PathologyCount.IsCompleted || '';
+    this.IsCancelled = PathologyCount.IsCancelled || '';
+    this.Pending = PathologyCount.Pending || '';
   }
 }
 

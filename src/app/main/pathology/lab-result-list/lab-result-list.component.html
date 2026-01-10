@@ -147,7 +147,7 @@
                                         <ng-template #actionButtonTemplate let-element>
                                             <div fxLayout="row" fxLayoutAlign="center center">
                                                 <button mat-icon-button matTooltip="Sample Collection"
-                                                    (click)="onSampleCollSave(element)">
+                                                    (click)="onSampleCollSave(element)" *ngIf="IsEdit">
                                                     <mat-icon>description</mat-icon>
                                                 </button>
 

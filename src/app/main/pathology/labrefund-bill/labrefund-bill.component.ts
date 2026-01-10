@@ -22,6 +22,7 @@ import { HospitalConfigService } from 'app/core/services/hospital-config.service
 import { OpPaymentComponent } from 'app/main/opd/op-search-list/op-payment/op-payment.component';
 import { LabPatientRegService } from 'app/main/pathology/lab-patient-reg/lab-patient-reg.service';
 import { LabPatientList } from 'app/main/pathology/lab-patient-reg/lab-patient-reg.component';
+import { permissionCodes } from 'app/main/shared/model/permission.model';
 
 
 @Component({
@@ -70,6 +71,7 @@ export class LabrefundBillComponent {
     { heading: "Refund Amount", key: "refundAmount", sort: true, align: 'left', emptySign: 'NA', type: 22 }
   ]
   gridConfig: gridModel = {
+    permissionCode: permissionCodes.ExternalInvestigation,
     apiUrl: "RefundOfBill/OPBilllistforrefundList",
     columnsList: this.allColumns1,
     sortField: "BillNo",

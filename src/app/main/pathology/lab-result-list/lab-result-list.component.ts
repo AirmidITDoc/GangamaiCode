@@ -37,6 +37,8 @@ import { OutsourceDetailsPopoverComponent } from '../result-entry/outsource-deta
 import { NewResultTemplateComponent } from '../result-entry/new-result-template/new-result-template.component';
 import { OutsourceDetailsComponent } from '../result-entry/outsource-details/outsource-details.component';
 import { NewResultEntryComponent } from '../result-entry/new-result-entry/new-result-entry.component';
+import { permissionCodes, permissionType } from 'app/main/shared/model/permission.model';
+import { PagePermissionService } from 'app/main/shared/services/page-permission.service';
 
 
 @Component({
@@ -142,6 +144,8 @@ export class LabResultListComponent {
   @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
   @ViewChild('actionsIPOP') actionsIPOP!: TemplateRef<any>;
 
+  IsEdit: boolean = this.permissionService.getPermission(permissionCodes.ExternalInvestigation, permissionType.Edit);
+
   fromdate = this.fromDate ? this.datePipe.transform(this.fromDate, "yyyy-MM-dd") : "";
   todate = this.toDate ? this.datePipe.transform(this.toDate, "yyyy-MM-dd") : "";
   ngAfterViewInit() {
@@ -165,6 +169,7 @@ export class LabResultListComponent {
   ];
 
   gridConfig: gridModel = {
+    permissionCode: permissionCodes.ExternalInvestigation,
     apiUrl: "Pathology/PathologyPatientTestList",
     columnsList: this.allcolumns,
     sortField: "PresReId",
@@ -194,7 +199,8 @@ export class LabResultListComponent {
     public _WhatsAppEmailService: WhatsAppEmailService,
     private _fuseSidebarService: FuseSidebarService,
     public _whatsppService: WhatsAppEmailService,
-    private overlay: Overlay
+    private overlay: Overlay,
+    public permissionService: PagePermissionService,
   ) { }
 
 
@@ -274,7 +280,7 @@ export class LabResultListComponent {
 
     console.log(formattedDate);
 
-    let OPIP="4"    
+    let OPIP = "4"
 
     var m_data = {
       "first": 0,

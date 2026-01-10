@@ -17,7 +17,7 @@ export enum permissionCodes {
     VillageMaster = 'VillageMaster',
     HospitalMaster = 'HospitalMaster',
     CampMaster = 'CampMaster',
-QuestionMaster='QuestionMaster',
+    QuestionMaster = 'QuestionMaster',
 
 
 
@@ -98,8 +98,8 @@ QuestionMaster='QuestionMaster',
     MOutSourcelabMaster = 'MOutSourcelabMaster',
 
     // OPD
-    Appointment='Appointment',
-     Registration = 'Registration',
+    Appointment = 'Appointment',
+    Registration = 'Registration',
     Refund = 'Refund',
     Advance = 'Advance',
     Bill = 'Bill',
@@ -108,9 +108,22 @@ QuestionMaster='QuestionMaster',
     Admission = 'Admission',
 
     // OT?
-    OTReservation='OTReservation',
-    ConsentMaster='ConsentMaster',
+    OTReservation = 'OTReservation',
+    ConsentMaster = 'ConsentMaster',
 
     //Nursing Station
-    NursingConsent='NursingConsent',
+    NursingConsent = 'NursingConsent',
+
+    //Pathology
+    SamplecollectionList = 'SamplecollectionList',
+    PathologyResultlist = 'PathologyResultlist',
+    Pathology = 'Pathology',
+    ReportDispatch = 'ReportDispatch',
+
+    //Radiology
+    RadiologyList = 'RadiologyList',
+
+    // External lab
+    LabPatientRegistration = 'LabPatientRegistration',
+    ExternalInvestigation = 'ExternalInvestigation',
 }
