@@ -1043,7 +1043,31 @@ export class BrowsSalesBillComponent implements OnInit {
   //   let printContents;
 
   // }
-
+    OnPaitentFinalPrint(element) {
+        setTimeout(() => {
+            let param = {
+                "searchFields": [
+                    { "fieldName": "OPIPId", "fieldValue": String(element.opipid), "opType": "13" },
+                    { "fieldName": "OPIPType", "fieldValue": String(0), "opType": "13" }
+                ],
+                "mode": "PatientBillStatement"
+            }
+            this._BrowsSalesBillService.getReportView(param).subscribe(res => {
+                const matDialog = this._matDialog.open(PdfviewerComponent,
+                    {
+                        maxWidth: "85vw",
+                        height: '750px',
+                        width: '100%',
+                        data: {
+                            base64: res["base64"] as string,
+                            title: "Patient Statement" + " " + "Viewer"
+                        }
+                    });
+                matDialog.afterClosed().subscribe(result => {
+                });
+            });
+        }, 100);
+    }
   viewgetSalesBillReportPdf(response) {
     console.log(response)
     setTimeout(() => {
