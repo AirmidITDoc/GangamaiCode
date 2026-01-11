@@ -32,6 +32,10 @@ export class ReviewcompanyBillComponent {
   OpBillEditSaveForm: FormGroup;
   OPFooterForm: FormGroup;
   CompanyUpdateForm:FormGroup;
+  Doceditform:FormGroup;
+
+   autocompleteModedeptdoc: string = "ConDoctor";
+
   patientDetail: any = new RegInsert({});
   public chargeList: ChargesList[] = [];
   public packageList: ChargesList[] = [];
@@ -67,6 +71,7 @@ export class ReviewcompanyBillComponent {
   opD_IPD_Type:any=1;
   BillNo:any;
   ReturnList:any=[];
+  IsBillreview=false
 
   public isDiscountApplied = false;
   Consessionres: boolean = false;
@@ -96,14 +101,18 @@ export class ReviewcompanyBillComponent {
   ) { this.OpBillEditSaveForm = this.createTotalChargeForm(); };
 
   ngOnInit() {
+// console.log(this.accountService.currentUserValue.user.isBillReview)
+    this.IsBillreview = this.accountService.currentUserValue.user.isBillReview
+
     this.OPFooterForm = this.CreateOPFooter();
     this.OPFooterForm.markAllAsTouched();
     this.salesUpdateForm = this.CreateSalesUpdateForm();
     this.CompanyForm = this.CreateCompanyForm()
     this.CompanyUpdateForm = this.CreateCompanyUpdateForm();
-
+    
+    this.createDocForm()
     if (this.data) {
-      debugger
+      
       console.log(this.data)
       this.patientDetail = this.data?.Obj;
       this.OPDIPDID = this.data?.Obj?.opdipdid || 0 
@@ -116,6 +125,7 @@ export class ReviewcompanyBillComponent {
         //this is for curreny symbol
         const [CurrencyId, CurrencyValue] = this._ConfigService.configParams.CurrencyValue.split(":");
         this.currency = CurrencyValue 
+                 
   }
 
   CreateOPFooter() {
@@ -155,6 +165,7 @@ export class ReviewcompanyBillComponent {
     });
   }
   CreateAddchargeform(item: any): FormGroup {
+    console.log(item)
     return this.formBuilder.group({
       chargesDate: this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
       billNo: [item?.billNo, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -168,7 +179,9 @@ export class ReviewcompanyBillComponent {
       chargesTime: this.datePipe.transform(new Date(), 'shortTime'),
       isInclusionExclusion: [item?.isInclusionExclusion || false,],
       chargesId: [item?.chargesId, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      isApprovedByCamp: [item?.isApprovedByCamp || false,]
+      isApprovedByCamp: [item?.isApprovedByCamp || false,],
+      doctorId: [item?.doctorId || 0,],
+      doctorName: [item?.DoctorName || '',],
     });
   }
   // Getters 
@@ -268,6 +281,14 @@ export class ReviewcompanyBillComponent {
     })
 
   }
+
+   createDocForm() {
+          this.Doceditform = this.formBuilder.group({
+                           EditDoctor: [''],
+             
+          });
+      }
+
   BillDetailsObj:any;
   getBillDetlist(element){
     this.BillDetailsObj = element
@@ -295,6 +316,7 @@ export class ReviewcompanyBillComponent {
     if(Label == 'Bill'){
     this._OPListService.getCompanyBillList(param).subscribe(response => { 
       this.dsChargeList.data = response.data as ChargesList[]  
+      console.log(response.data )
        this.chargeList = this.dsChargeList.data
         this.calculateTotalAmount();
     })
@@ -796,8 +818,35 @@ export class ReviewcompanyBillComponent {
           name: "required", Message: "required."
         }
       ],
+      DoctorId: [
+        {
+          name: "required", Message: "required."
+        }
+      ],
     }
   }
+
+  //doc
+   EditDoctor: boolean = false;
+      DocenableEditing(row: ChargesList) {
+          // if (row.CreditedtoDoctor == 1) {
+          //     this.toastr.warning('Doctor option unavailable for the selected service!', 'warning', {
+          //         toastClass: 'tostr-tost custom-toast-warning',
+          //     });
+          //     return
+          // }
+          row.EditDoctor = true;
+          row.doctorName = '';
+      }
+      DoctorisableEditing(row: ChargesList) {
+          row.EditDoctor = false;
+          this.Doceditform.get('EditDoctor').setValue('')
+          
+      }
+      SelectedDocName: any = [];
+      DropDownValue(Obj) {
+          console.log(Obj)
+      }
 
 }
 
@@ -854,7 +903,7 @@ BalanceAmt:any;
   CompanyApprovedAmt:any;
   CompRefNo:any;
   GovtApprovedAmt :any;
- 
+ EditDoctor:any
 
   constructor(ChargesList) {
     this.ChargesId = ChargesList.ChargesId || '';
@@ -909,5 +958,7 @@ BalanceAmt:any;
                 this.CompanyApprovedAmt = ChargesList.CompanyApprovedAmt || 0;
                 this.CompRefNo = ChargesList.CompRefNo || '';
                  this.GovtApprovedAmt = ChargesList.GovtApprovedAmt || 0; 
+this.EditDoctor = ChargesList.EditDoctor || 0; 
+                 
   }
 }
