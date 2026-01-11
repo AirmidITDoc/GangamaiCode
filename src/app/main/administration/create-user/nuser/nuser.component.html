@@ -138,6 +138,13 @@
                                                 style="padding: 10px;">IsDoctor
                                             </mat-checkbox>&nbsp;
 
+                                               <mat-checkbox formControlName="IsBillReview"
+                                                (change)="chkIsBillReview($event)"
+                                                [(ngModel)]="registerObj.isBillReview"
+                                                style="padding: 10px;">IsBillReview
+                                            </mat-checkbox>&nbsp;
+
+
                                             <airmid-dropdown label="Doctor Name" formControlName="doctorId" fxFlex="50%"
                                                 [formGroup]="myuserApprovalform"
                                                 [validations]="getValidationMessages().doctorId"

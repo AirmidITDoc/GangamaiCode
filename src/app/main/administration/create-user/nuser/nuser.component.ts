@@ -207,33 +207,33 @@ export class NUserComponent implements OnInit {
       "columns": []
     }
     setTimeout(() => {
-    this._CreateUserService.getUnitDetailList(SelectQuery).subscribe(response => {
-      const rowData = response?.data || [];
+      this._CreateUserService.getUnitDetailList(SelectQuery).subscribe(response => {
+        const rowData = response?.data || [];
 
-      console.log(rowData)
-      this.RtrvUnitList = rowData.map(item => ({
-        value: String(item.unitId),
-        text: item.hospitalName
-      }))
-      debugger
+        console.log(rowData)
+        this.RtrvUnitList = rowData.map(item => ({
+          value: String(item.unitId),
+          text: item.hospitalName
+        }))
+        debugger
 
-      console.log("unit data:", this.RtrvUnitList)
-      const assignedunit = this.RtrvUnitList.filter(unit => {
-        const originalItem = rowData.find(r => r.unitId == unit.value);
-        return true;
+        console.log("unit data:", this.RtrvUnitList)
+        const assignedunit = this.RtrvUnitList.filter(unit => {
+          const originalItem = rowData.find(r => r.unitId == unit.value);
+          return true;
+        });
+
+        this.myuserApprovalform1.patchValue({
+          multipleUnitId: assignedunit
+        });
+
       });
 
-      this.myuserApprovalform1.patchValue({
-        multipleUnitId: assignedunit
-      });
-
-       });
-       
       // setTimeout(() => {
       //   this.myuserApprovalform1.get('multipleUnitId')?.setValue(this.RtrvUnitList);
       // }, 0);
       // console.log("setData:", this.myuserApprovalform1.get('multipleUnitId').value)
-    },1000);
+    }, 1000);
   }
 
 
@@ -253,34 +253,34 @@ export class NUserComponent implements OnInit {
       "exportType": "JSON",
       "columns": []
     }
-     setTimeout(() => {
-    this._CreateUserService.getStoreDetailList(SelectQuery).subscribe(response => {
-      const rowData = response?.data || [];
+    setTimeout(() => {
+      this._CreateUserService.getStoreDetailList(SelectQuery).subscribe(response => {
+        const rowData = response?.data || [];
 
-      console.log(rowData)
-      this.RtrvStoreList = rowData.map(item => ({
-        value: String(item.storeId),
-        text: item.storeName
-      }))
+        console.log(rowData)
+        this.RtrvStoreList = rowData.map(item => ({
+          value: String(item.storeId),
+          text: item.storeName
+        }))
 
 
-      console.log("store data:", this.RtrvStoreList)
-      const assignedStore = this.RtrvStoreList.filter(store => {
-        const originalItem = rowData.find(r => r.storeId == store.value);
-        return true;
+        console.log("store data:", this.RtrvStoreList)
+        const assignedStore = this.RtrvStoreList.filter(store => {
+          const originalItem = rowData.find(r => r.storeId == store.value);
+          return true;
+        });
+        //  this.ddlStore.SetSelection(assignedStore);
+
+        this.myuserApprovalform1.patchValue({
+          multipleStoreId: assignedStore
+        });
       });
-      //  this.ddlStore.SetSelection(assignedStore);
-
-      this.myuserApprovalform1.patchValue({
-        multipleStoreId: assignedStore
-      });
- });
 
       // setTimeout(() => {
       //   this.myuserApprovalform1.get('multipleStoreId')?.setValue(this.RtrvStoreList);
       // }, 0);
 
-     },1000);
+    }, 1000);
   }
 
   createuserApprovalForm(): FormGroup {
@@ -342,6 +342,7 @@ export class NUserComponent implements OnInit {
       pharIpopt: 0,
       isDiscApply: 0,
       discApplyPer: [0],
+      IsBillReview: true,
       isActive: [true, [Validators.required]],
       tLoginAccessDetails: this._formBuilder.array([]),
       tLoginUnitDetails: this._formBuilder.array([]),
@@ -574,6 +575,20 @@ export class NUserComponent implements OnInit {
     doctorControl?.updateValueAndValidity();
   }
 
+    
+  chkIsBillReview(event) {
+    const doctorControl = this.myuserApprovalform.get('doctorId');
+    // if (this.myuserApprovalform.get('isDoctorType').value == true) {
+    //   this.docflag = true
+    //   doctorControl?.setValidators([Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]);
+    // } else {
+    //   doctorControl?.clearValidators();
+    //   this.docflag = false
+    // }
+    // doctorControl?.updateValueAndValidity();
+  }
+
+
   DisclimitFlag: boolean = false;
   chkDiscLimitApp(event) {
     if (event.checked == true) {
@@ -696,6 +711,7 @@ export class UserDetail {
   accessInputValue: any;
   accessValueName: any;
   loginId: any;
+  isBillReview: any;
   /**
    * Constructor
    *
@@ -752,6 +768,8 @@ export class UserDetail {
       this.accessInputValue = UserDetail.accessInputValue || ''
       this.accessValueName = UserDetail.accessValueName || ''
       this.loginId = UserDetail.loginId || 0
+      this.isBillReview = UserDetail.isBillReview || true
+
     }
 
   }
