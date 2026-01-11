@@ -216,9 +216,11 @@ AdmissionFormSet(){
     } else if (value.text == "Self") {
       this.isCompanySelected = false;
       this.admissionFormGroup.get('CompanyId').clearValidators();
-      this.admissionFormGroup.get('SubCompanyId').clearValidators();
+      this.admissionFormGroup.get('subTpaComId').clearValidators();
       this.admissionFormGroup.get('CompanyId').updateValueAndValidity();
       this.admissionFormGroup.get('SubCompanyId').updateValueAndValidity();
+      this.admissionFormGroup.get('CompanyId').setValue(0);
+      this.admissionFormGroup.get('subTpaComId').setValue(0);
       this.patienttype = 1;
     }
   }

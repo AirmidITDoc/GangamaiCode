@@ -155,6 +155,7 @@ export class SalesHospitalKenyaComponent {
      PharmaSalesDraftForm: FormGroup
      selectedItem: SalesBatchItemModel;
      selectedTableRowItem: IndentList;
+     Is9_Digit_National_Id:boolean=false;
      autocompletestore: string = 'Store';
      autocompleteModeConcession: string = "Concession";
      autocompleteModeCreditReason: string = "CreditReason";
@@ -209,6 +210,12 @@ export class SalesHospitalKenyaComponent {
         //this is for curreny symbol
         const [CurrencyId, CurrencyValue] = this._ConfigService.configParams.CurrencyValue.split(":");
         this.currency = CurrencyValue 
+
+
+        //this code for Mediforte 9 digit national id
+const rawValue = this?._ConfigService?.configParams?.Is9_Digit_NationalId || "";
+const [id, val] = rawValue.includes(":") ? rawValue.split(":") : [null, null]; 
+this.Is9_Digit_National_Id = id === "1";
      }
      ngOnDestroy() {
          this.ItemFormreset();
@@ -218,7 +225,7 @@ export class SalesHospitalKenyaComponent {
      getSalesFooterform() {
          this.ItemSubform = this.formBuilder.group({
              FinalDiscPer: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-             CashPay: ['CashPay'],
+             CashPay: ['Credit'],
              referanceNo: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
              PaidbyPatient: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
              PaidbacktoPatient: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -1020,7 +1027,7 @@ export class SalesHospitalKenyaComponent {
          this.DoctorName = '';
          this.ItemSubform.get('opIpType').setValue('1');
          this.Draftchk = true;
-         this.ItemSubform.get('CashPay').setValue('CashPay');
+         this.ItemSubform.get('CashPay').setValue('Credit');
          this.ItemSubform.get('referanceNo').reset('');
          this.ItemSubform.get('extMobileNo').reset('');
          this.ItemSubform.get('externalPatientName').reset('');

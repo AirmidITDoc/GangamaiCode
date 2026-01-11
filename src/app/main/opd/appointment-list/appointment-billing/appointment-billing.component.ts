@@ -85,6 +85,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
     public isDiscountApplied = false;
     public isDoctor = false;
     public isUpdating = false;
+    Is9_Digit_National_Id:boolean = false
     serviceSelct = false
     @ViewChild('regIdfocus') regIdfocus: ElementRef;
     currency:any='';
@@ -155,7 +156,13 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
         this.startCountdown();
         //this is for curreny symbol
         const [CurrencyId, CurrencyValue] = this._ConfigService.configParams.CurrencyValue.split(":");
-        this.currency = CurrencyValue 
+        this.currency = CurrencyValue
+        
+        
+//this code for Mediforte 9 digit national id
+const rawValue = this?._ConfigService?.configParams?.Is9_Digit_NationalId || "";
+const [id, val] = rawValue.includes(":") ? rawValue.split(":") : [null, null]; 
+this.Is9_Digit_National_Id = id === "1";
     }
     private setupFormListener(): void {
         this.handleChange('price', () => this.calculateTotalCharge());
@@ -399,7 +406,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
             concessionAmt: [0, [Validators.min(0), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
             concessionReasonId: [0, this._FormvalidationserviceService.onlyNumberValidator()],
             netPayableAmt: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-            paymentType: ['CashPay'],
+            paymentType: ['CreditPay'],
             GovrnApprovAmt:[0],
             mpesaMobile: ['',[Validators.minLength(10), Validators.maxLength(10)]],
             UpiNo:[0]
@@ -1454,7 +1461,7 @@ debugger
             netPayableAmt: 0,
             concessionReasonId: 0,
         });
-        this.OPFooterForm.get('paymentType').setValue('CashPay')
+        this.OPFooterForm.get('paymentType').setValue('CreditPay')
         this.PatientName = ''
     }
     viewgetCreditOPBillReportPdf(element) {
@@ -1591,7 +1598,7 @@ debugger
         if (companyId > 0) {
             this.OPFooterForm.get('paymentType').setValue('CreditPay');
         } else {
-            this.OPFooterForm.get('paymentType').setValue('CashPay');
+            this.OPFooterForm.get('paymentType').setValue('CreditPay');
         }
     }
     isWaiting = false;

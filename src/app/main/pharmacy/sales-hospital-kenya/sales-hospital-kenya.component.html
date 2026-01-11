@@ -628,9 +628,9 @@
                                 fxLayoutAlign="space-between center">
                                 <mat-radio-group aria-label="Select an option" formControlName="CashPay" (change)="checkCreditreason()">
                                   <mat-radio-button value="Credit" *ngIf="paymethod" >Credit</mat-radio-button>
-                                  <mat-radio-button value="CashPay">Cash</mat-radio-button>
-                                  <mat-radio-button value="Online">Online</mat-radio-button>
-                                  <mat-radio-button value="PayOption">PayOption</mat-radio-button>
+                                  <mat-radio-button value="CashPay" *ngIf="!Is9_Digit_National_Id">Cash</mat-radio-button>
+                                  <mat-radio-button value="Online"  *ngIf="!Is9_Digit_National_Id">Online</mat-radio-button>
+                                  <mat-radio-button value="PayOption" *ngIf="!Is9_Digit_National_Id">PayOption</mat-radio-button>
                                  </mat-radio-group>
 
                                   <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="100%" *ngIf="ItemSubform.get('CashPay')?.value === 'Online'">
