@@ -273,6 +273,11 @@ const inputDate = this.parseAdmissionTime(this.registerObj1.admissionTime);
     this.admissionFormGroup.get('convertId').setValue(this.registerObj1.converId || 0)
     this.admissionFormGroup.get('RefDocNameId').setValue(this.registerObj1.refDocNameId || 0)
      this.admissionFormGroup.get('RelativeName').setValue(this.registerObj1?.relativeName || '')
+
+     if (!this.isCompanySelected) {  
+      this.admissionFormGroup.get('CompanyId').setValue(0);
+      this.admissionFormGroup.get('subTpaComId').setValue(0); 
+    }
     
   
   delete this.registerObj.regNo

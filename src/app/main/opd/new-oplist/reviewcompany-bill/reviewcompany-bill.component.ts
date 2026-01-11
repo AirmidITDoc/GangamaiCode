@@ -181,7 +181,7 @@ export class ReviewcompanyBillComponent {
       chargesId: [item?.chargesId, [this._FormvalidationserviceService.onlyNumberValidator()]],
       isApprovedByCamp: [item?.isApprovedByCamp || false,],
       doctorId: [item?.doctorId || 0,],
-      doctorName: [item?.DoctorName || '',],
+      doctorName: [item?.doctorName || '',],
     });
   }
   // Getters 
@@ -278,6 +278,9 @@ export class ReviewcompanyBillComponent {
         compRefNo:String(formValue?.referenceNo_1) || '',
         }) 
     this._OPListService.UpdateGovernAmt(this.CompanyUpdateForm.value).subscribe(response=>{
+      this._matDialog.closeAll();
+      this.savebtn = true 
+      this.resetform(); 
     })
 
   }
@@ -357,13 +360,13 @@ export class ReviewcompanyBillComponent {
       console.log('response', response)
       this.dsbillList.data = response
       if(this.dsbillList.data.length){
-      // this.FinalBillBalAmt = ( this.dsbillList.data.reduce((sum, { BalanceAmt }) => sum += +(BalanceAmt || 0), 0)).toFixed(2);
-      // this.CompanyApprovedAmt = this.dsbillList.data[0]?.ApprovedAmount || 0 
-      //  if(this.FinalBillBalAmt > this.CompanyApprovedAmt){
-      // this.AdjustmentAmt = ((this.FinalBillBalAmt || 0) - (this.CompanyApprovedAmt || 0)).toFixed(2);
-      // }else{
-      //  this.AdjustmentAmt = 0;
-      //  }  
+      this.FinalBillBalAmt = ( this.dsbillList.data.reduce((sum, { BalanceAmt }) => sum += +(BalanceAmt || 0), 0)).toFixed(2);
+      this.CompanyApprovedAmt = this.dsbillList.data[0]?.ApprovedAmount || 0 
+       if(this.FinalBillBalAmt > this.CompanyApprovedAmt){
+      this.AdjustmentAmt = ((this.FinalBillBalAmt || 0) - (this.CompanyApprovedAmt || 0)).toFixed(2);
+      }else{
+       this.AdjustmentAmt = 0;
+       }  
       const GovApprovedamt = this.dsbillList.data.map(x => x.GovtApprovedAmt).find(x => typeof x === 'number' && x > 0);
       const GovtRefNo = this.dsbillList.data.map(x => x.GovtRefNo).find(x => typeof x === 'string' && x.trim() !== '');
       const GovtCompanyId = this.dsbillList.data.map(x => x.GovtCompanyId).find(x => typeof x === 'number' && x > 0);
@@ -389,6 +392,12 @@ export class ReviewcompanyBillComponent {
     let DiscPerSum = this.chargeList.reduce((sum, charge) => sum + (+charge.concessionPercentage), 0);
     let totalDiscount = this.chargeList.reduce((sum, charge) => sum + (+charge.concessionAmount), 0);
     let totalNet = totalSum - totalDiscount;
+
+    if(totalDiscount){
+      this.Consessionres == true
+    }else{
+        this.Consessionres == false
+    }
 
     this.OPFooterForm.patchValue({
     totalAmt: totalSum.toFixed(2),
@@ -442,7 +451,7 @@ export class ReviewcompanyBillComponent {
     const [ThermalPrint, ThermalPrintValue] = this._ConfigService.configParams.ThermalPrint.split(":");
     const formValue = this.OPFooterForm.value
     this.OpBillEditSaveForm.get('billUpdates').patchValue({
-      billNo: this.patientDetail?.billNo || 0,
+      billNo: this.BillNo || 0,
       totalAmt: formValue?.totalAmt || 0,
       concessionAmt: formValue?.concessionAmt || 0,
       netPayableAmt: formValue?.netPayableAmt || 0,
@@ -840,12 +849,15 @@ export class ReviewcompanyBillComponent {
       }
       DoctorisableEditing(row: ChargesList) {
           row.EditDoctor = false;
-          this.Doceditform.get('EditDoctor').setValue('')
-          
+          this.Doceditform.get('EditDoctor').setValue('') 
       }
       SelectedDocName: any = [];
-      DropDownValue(Obj) {
-          console.log(Obj)
+      DropDownValue(Obj,contact) {
+          console.log(Obj) 
+          if(Obj.value){
+            contact.doctorId = Obj.value || 0
+            contact.doctorName = Obj.text || 0
+          } 
       }
 
 }
