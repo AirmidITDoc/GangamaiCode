@@ -489,7 +489,7 @@ export class BrowsSalesBillComponent implements OnInit {
       { fieldName: "M_Name", fieldValue: "%", opType: OperatorComparer.Contains },
       { fieldName: "IPNo", fieldValue: "0", opType: OperatorComparer.Equals },
     ],
-    row: 25
+    row: 150
   }
   isChecked: boolean = false;
   @ViewChild(MatSort) sort: MatSort;
