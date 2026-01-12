@@ -66,6 +66,10 @@
                             <div fxLayout.gt-xs="row" fxLayout="column" fxLayoutAlign="start" class="gap-4">
                                 <div fxLayout="row wrap" fxFlex fxLayoutGap="14px 0px grid">
 
+                                    <airmid-dropdown label="Unit Name" formControlName="UnitId"
+                                        [readonly]="!isSuperAdmin" (selectionChange)="ListView1($event)"
+                                        [formGroup]="myformSearch" [mode]="autocompleteModeunit"></airmid-dropdown>
+
                                     <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="35%">
                                         <airmid-datepicker [formGroup]="myformSearch" [isRangePicker]="true"
                                             formStartControlName="start" formEndControlName="end"
@@ -303,7 +307,7 @@
                                                 Action</mat-header-cell>
                                             <mat-cell *matCellDef="let contact" class="w-250">
                                                 <button mat-icon-button matTooltip="Report Dispatch"
-                                                *ngIf="contact.isCompleted === true && contact.isVerifySign === true">
+                                                    *ngIf="contact.isCompleted === true && contact.isVerifySign === true">
                                                     <mat-icon>send</mat-icon>
                                                 </button>
                                             </mat-cell>

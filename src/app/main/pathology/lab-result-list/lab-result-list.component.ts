@@ -109,6 +109,7 @@ export class LabResultListComponent {
   vStatusSearch: any = "0";
   patientName: 'RK'
   title: 'Reports'
+  autocompleteModeunit: string = "Hospital";
   page: PageNames = PageNames.PATIENT;
   pathFiles: PageNames = PageNames.PATIENT_PATHFILES;
 
@@ -139,6 +140,8 @@ export class LabResultListComponent {
   ];
 
   hasSelectedContacts: boolean;
+  UnitId: any = this._loggedService.currentUserValue.user.unitId;
+  isSuperAdmin: any = this._loggedService.currentUserValue.user.isAdminMultiview;
 
   @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
   @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
@@ -200,6 +203,7 @@ export class LabResultListComponent {
     private _fuseSidebarService: FuseSidebarService,
     public _whatsppService: WhatsAppEmailService,
     private overlay: Overlay,
+    private _loggedService: AuthenticationService,
     public permissionService: PagePermissionService,
   ) { }
 
@@ -209,6 +213,16 @@ export class LabResultListComponent {
     this.fromDate = this.myformSearch.get("start").value || "";
     this.toDate = this.myformSearch.get("end").value || "";
     this.GetResultdetail();
+  }
+
+  ListView1(value) {
+    console.log(value)
+    if (value.value !== 0)
+      this.UnitId = value.value
+    else
+      this.UnitId = 0
+
+    // this.onChangeFirst();
   }
 
   searchRecords(data) {

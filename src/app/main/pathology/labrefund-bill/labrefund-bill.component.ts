@@ -36,6 +36,7 @@ export class LabrefundBillComponent {
 
   screenFromString = 'Common-form';
   autocompleteModeCashcounter: string = "CashCounter";
+  autocompleteModeunit: string = "Hospital";
   searchFormGroup: FormGroup;
   RefundOfBillFormFooter: FormGroup
   vRefundOfBillFormGroup: FormGroup
@@ -48,6 +49,8 @@ export class LabrefundBillComponent {
   RegNo: any;;
   billNo: any;
   dataSource2 = new MatTableDataSource<InsertRefundDetail>();
+  UnitId: any = this.accountService.currentUserValue.user.unitId;
+  isSuperAdmin: any = this.accountService.currentUserValue.user.isAdminMultiview;
 
   displayedColumns1 = [
     'serviceName',
@@ -114,7 +117,8 @@ export class LabrefundBillComponent {
   createSearchForm() {
     return this.formBuilder.group({
       RegId: [''],
-      CashCounterID: [this.hospitalconfigservice.HospitalconfigParams?.OPD_Refund_Bill_CounterId]
+      CashCounterID: [this.hospitalconfigservice.HospitalconfigParams?.OPD_Refund_Bill_CounterId],
+      UnitId: [this.accountService.currentUserValue.user.unitId]
     });
   }
 
@@ -221,6 +225,14 @@ export class LabrefundBillComponent {
       RefundBalAmount: [0, [Validators.required]],
       Remark: [''],
     });
+  }
+
+   ListView1(value) {
+    console.log(value)
+    if (value.value !== 0)
+      this.UnitId = value.value
+    else
+      this.UnitId = 0
   }
 
   regflag = false

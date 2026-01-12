@@ -38,7 +38,8 @@ export class LabResultListService {
       CategoryId: [''],
       start: [new Date().toISOString()],
       end: [new Date().toISOString()],
-      TestStatusSearch: ['1']
+      TestStatusSearch: ['1'],
+      UnitId: [this.accountService.currentUserValue.user.unitId]
     });
   }
 

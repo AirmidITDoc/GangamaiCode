@@ -110,6 +110,7 @@ export class AirmidConsentformComponent {
       // extra fields
       RegID: [''],
       PatientType: ['OP'],
+      IsDischargedit: 0,
     });
   }
 
@@ -162,7 +163,7 @@ export class AirmidConsentformComponent {
   }
 
   addTemplateDescription() {
-    
+
     const tempId = this.myForm.get('ConsentTempId')?.value;
     if (tempId === null || tempId === 0 || tempId === '' || tempId === "0") {
       this.toastr.warning('Please select Template ', 'Warning !', {
@@ -201,6 +202,31 @@ export class AirmidConsentformComponent {
     this.OP_IP_Id = obj.admissionID
   }
 
+  isDischarge: any;
+  getSelectedObjDC(obj) {
+    console.log(obj)
+    if ((obj.regID ?? 0) > 0) {
+      console.log("Discharge patient:", obj)
+      this.registerObj = obj
+      this.vRegNo = obj.regNo
+      this.isDischarge = obj.isDischarged
+      this.OP_IP_Id = obj.admissionID;
+    }
+  }
+
+  vCheckBox: boolean = false;
+  getDischargedList(event) {
+    if (event.checked == true) {
+      this.vCheckBox = true;
+      this.myForm.get('PatientType')?.setValue('IP');
+      this.patientInfoReset()
+    }
+    else {
+      this.vCheckBox = false;
+      this.patientInfoReset();
+    }
+  }
+
   patientInfoReset() {
     this.myForm.get('RegID').setValue('');
     this.myForm.get('RegID').reset();
@@ -228,6 +254,7 @@ export class AirmidConsentformComponent {
 
     if (!this.myForm.invalid) {
       this.myForm.removeControl('RegID')
+      this.myForm.removeControl('IsDischargedit')
       this.myForm.removeControl('PatientType')
 
       if (this.vconsentID > 0) {

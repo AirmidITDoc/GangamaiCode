@@ -128,6 +128,9 @@ export class ReportDispatchComponent {
   ];
 
   hasSelectedContacts: boolean;
+  UnitId: any = this.accountService.currentUserValue.user.unitId;
+  isSuperAdmin: any = this.accountService.currentUserValue.user.isAdminMultiview;
+  autocompleteModeunit: string = "Hospital";
 
   @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
   @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
@@ -200,6 +203,15 @@ export class ReportDispatchComponent {
     this.GetResultdetail();
   }
 
+  ListView1(value) {
+    console.log(value)
+    if (value.value !== 0)
+      this.UnitId = value.value
+    else
+      this.UnitId = 0
+
+    this.onChangeFirst();
+  }
 
   searchRecords(data) {
     this.dataSource1.data = [];

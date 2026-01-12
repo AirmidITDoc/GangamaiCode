@@ -2,6 +2,7 @@ import { HttpBackend, HttpClient, HttpErrorResponse, HttpHeaders } from '@angula
 import { Injectable } from '@angular/core';
 import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { ApiCaller } from 'app/core/services/apiCaller';
+import { AuthenticationService } from 'app/core/services/authentication.service';
 import { throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
@@ -12,12 +13,13 @@ export class SampleCollectionService {
   myformSearch: FormGroup;
   sampldetailform: FormGroup;
 
-  constructor( private _formBuilder: UntypedFormBuilder,
-    private handler: HttpBackend,private _httpClient: HttpClient,private _httpClient1: ApiCaller,)
-   {  this.myformSearch = this.createSearchForm();
-    
+  constructor(private _formBuilder: UntypedFormBuilder,
+    private handler: HttpBackend, private _httpClient: HttpClient, private _httpClient1: ApiCaller,
+    private _loggedService: AuthenticationService,) {
+    this.myformSearch = this.createSearchForm();
+
     this.sampldetailform = this.createSampledetailForm();
-   }
+  }
 
   createSearchForm(): FormGroup {
     return this._formBuilder.group({
@@ -26,31 +28,32 @@ export class SampleCollectionService {
         Validators.pattern("^[A-Za-z]*[a-zA-z]*$"),
       ]],
       LastName: ['', [
-      Validators.pattern("^[A-Za-z]*[a-zA-z]*$"),
+        Validators.pattern("^[A-Za-z]*[a-zA-z]*$"),
       ]],
       // BillNo:[''],
       // BillDate:[''],
       PatientTypeSearch: ['5'],
       StatusSearch: ['0'],
-      Istype:['2'],
+      Istype: ['2'],
       CategoryId: [''],
       start: [new Date().toISOString()],
       end: [new Date().toISOString()],
-      TestStatusSearch:['1']
+      TestStatusSearch: ['1'],
+      UnitId: [this._loggedService.currentUserValue.user.unitId]
     });
   }
 
   createSampledetailForm(): FormGroup {
     return this._formBuilder.group({
-  SampleDateTime: [''],
+      SampleDateTime: [''],
 
     });
   }
 
-  
- public getSampleCollectionlist(employee) {
-        return this._httpClient1.PostData("PathlogySampleCollection/SampleCollectionPatientList", employee)
-    }
+
+  public getSampleCollectionlist(employee) {
+    return this._httpClient1.PostData("PathlogySampleCollection/SampleCollectionPatientList", employee)
+  }
   public getPatientSamplesList(employee) {
     return this._httpClient.post("Generic/GetByProc?procName=Rtrv_PathSamPatList", employee)
   }
@@ -67,24 +70,24 @@ export class SampleCollectionService {
     return this._httpClient1.PutData("PathlogySampleCollection/Update", employee);
   }
 
- public SampleEditdate(employee) {
+  public SampleEditdate(employee) {
     return this._httpClient1.PostData("PathlogySampleCollection/UpdateSamplecollectionDatetime", employee);
   }
-  
 
-  public InsertLabDetail(employee){
+
+  public InsertLabDetail(employee) {
 
     this._httpClient = new HttpClient(this.handler);
-    
-    
+
+
     let headers = new HttpHeaders()
-        .set("Content-Type", "application/json")
-        .set("Accept", "application/json")
-    let  httpOptions = {
-        
-        headers: headers,
-      };
-    
+      .set("Content-Type", "application/json")
+      .set("Accept", "application/json")
+    let httpOptions = {
+
+      headers: headers,
+    };
+
     // let newjson={
     //   "mobile": "",
     //   "email": "",
@@ -131,7 +134,7 @@ export class SampleCollectionService {
     //           {
     //               "testCode": "Blood Group & Rh Type"
     //           }
-    
+
     //       ],
     //       "paymentList": [
     //           {
@@ -143,26 +146,26 @@ export class SampleCollectionService {
     //       ]
     //   }
     // };
-    
+
     //return this._httpClient.post('https://livehealth.solutions/LHRegisterBillAPI/e57fda5e-995b-11ed-ac02-0a6c65d93ce2/',newjson,httpOptions);
-    
+
     return this._httpClient
-         .post<any>("https://livehealth.solutions/LHRegisterBillAPI/e57fda5e-995b-11ed-ac02-0a6c65d93ce2/", employee, httpOptions)
-         .pipe( catchError((error: HttpErrorResponse)=>{
-          console.log(error);
-          if (error.status === 401) {
-           
-          } else {
-           
-            return throwError(error);
-          }
-        }));
-      }
+      .post<any>("https://livehealth.solutions/LHRegisterBillAPI/e57fda5e-995b-11ed-ac02-0a6c65d93ce2/", employee, httpOptions)
+      .pipe(catchError((error: HttpErrorResponse) => {
+        console.log(error);
+        if (error.status === 401) {
+
+        } else {
+
+          return throwError(error);
+        }
+      }));
+  }
 
 
-      public deactivateTheStatus(m_data) {
-        return this._httpClient1.PostData("PhoneApp", m_data);
-      }
-      
+  public deactivateTheStatus(m_data) {
+    return this._httpClient1.PostData("PhoneApp", m_data);
+  }
+
 }
 

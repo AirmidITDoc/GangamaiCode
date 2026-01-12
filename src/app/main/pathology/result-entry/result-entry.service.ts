@@ -37,7 +37,8 @@ export class ResultEntryService {
       CategoryId: [''],
       start: [new Date().toISOString()],
       end: [new Date().toISOString()],
-      TestStatusSearch: ['1']
+      TestStatusSearch: ['1'],
+      UnitId: [this.accountService.currentUserValue.user.unitId]
     });
   }
 
@@ -185,9 +186,9 @@ export class ResultEntryService {
     return this._httpClient1.PostData("Pathology/PathologyPatientTestList", employee)
   }
 
-  
 
-      public gettemplatebyService(ServiceId) {
-        return this._httpClient1.GetData("Pathology/search-GetServicewiseTemplate?ServiceId=" + ServiceId)
-    }
+
+  public gettemplatebyService(ServiceId) {
+    return this._httpClient1.GetData("Pathology/search-GetServicewiseTemplate?ServiceId=" + ServiceId)
+  }
 }

@@ -2,6 +2,7 @@ import { HttpBackend, HttpClient, HttpErrorResponse, HttpHeaders } from '@angula
 import { Injectable } from '@angular/core';
 import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { ApiCaller } from 'app/core/services/apiCaller';
+import { AuthenticationService } from 'app/core/services/authentication.service';
 import { throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
@@ -14,6 +15,7 @@ export class LabSampleCollectionService {
   sampldetailform: FormGroup;
 
   constructor(private _formBuilder: UntypedFormBuilder,
+    private accountService: AuthenticationService,
     private handler: HttpBackend, private _httpClient: HttpClient, private _httpClient1: ApiCaller,) {
     this.myformSearch = this.createSearchForm();
 
@@ -37,7 +39,8 @@ export class LabSampleCollectionService {
       CategoryId: [''],
       start: [new Date().toISOString()],
       end: [new Date().toISOString()],
-      TestStatusSearch: ['1']
+      TestStatusSearch: ['1'],
+      UnitId: [this.accountService.currentUserValue.user.unitId]
     });
   }
 

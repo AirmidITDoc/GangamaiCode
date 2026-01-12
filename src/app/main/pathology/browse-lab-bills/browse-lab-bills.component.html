@@ -95,7 +95,7 @@
     </ng-template>
     <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start">
         <!-- (selectedTabChange)="onTabChange($event)" -->
-        <mat-tab label="LAB Browse Bill List">
+        <mat-tab label="Lab Browse Bill List">
             <div fusePerfectScrollbar
                 class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
                 dynamicTableHeight>
@@ -104,7 +104,7 @@
                     <div class="top-header-info">
                         <div class="top-header-title">
                             <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                                LAB Browse Bill List
+                                Lab Browse Bill List
                             </span>
                         </div>
                     </div>
@@ -114,6 +114,10 @@
                     <airmid-table [gridConfig]="gridConfig" class="content" #opBillGrid>
                         <ng-container filters>
                             <form [formGroup]="myFilterbillform">
+                                <airmid-dropdown label="Unit Name" formControlName="UnitId"
+                                    [readonly]="!isSuperAdmin" (selectionChange)="ListViewUnit1($event)"
+                                    [formGroup]="myFilterbillform" [mode]="autocompleteModeunit"></airmid-dropdown>
+
                                 <airmid-datepicker [formGroup]="myFilterbillform" [isRangePicker]="true"
                                     formStartControlName="fromDate" formEndControlName="enddate"
                                     [(fromValue)]="gridConfig.filters[2].fieldValue"
@@ -175,7 +179,7 @@
 
         </mat-tab>
 
-        <mat-tab label="LAB Browse Payment List">
+        <mat-tab label="Lab Browse Payment List">
 
             <div fusePerfectScrollbar
                 class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
@@ -185,7 +189,7 @@
                     <div class="top-header-info">
                         <div class="top-header-title">
                             <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                                LAB Browse Payment List
+                                Lab Browse Payment List
                             </span>
                         </div>
                     </div>
@@ -211,6 +215,9 @@
                         <ng-container filters>
 
                             <form [formGroup]="myFilterpayform">
+                                <airmid-dropdown label="Unit Name" formControlName="UnitId"
+                                    [readonly]="!isSuperAdmin" (selectionChange)="ListViewUnit2($event)"
+                                    [formGroup]="myFilterpayform" [mode]="autocompleteModeunit"></airmid-dropdown>
 
                                 <airmid-datepicker [formGroup]="myFilterpayform" [isRangePicker]="true"
                                     formStartControlName="fromDate" formEndControlName="enddate"
@@ -287,7 +294,7 @@
 
         </mat-tab>
 
-        <mat-tab label="LAB Browse Refund List">
+        <mat-tab label="Lab Browse Refund List">
 
             <div fusePerfectScrollbar
                 class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
@@ -297,7 +304,7 @@
                     <div class="top-header-info">
                         <div class="top-header-title">
                             <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                                LAB Browse Refund List
+                                Lab Browse Refund List
                             </span>
                         </div>
                     </div>
@@ -321,11 +328,15 @@
                     <airmid-table [gridConfig]="gridConfig2" class="content" #opRefundGrid>
                         <ng-container filters>
                             <form [formGroup]="myFilterrefundform">
+                                <airmid-dropdown label="Unit Name" formControlName="UnitId"
+                                    [readonly]="!isSuperAdmin" (selectionChange)="ListViewUnit3($event)"
+                                    [formGroup]="myFilterrefundform" [mode]="autocompleteModeunit"></airmid-dropdown>
 
                                 <airmid-datepicker [formGroup]="myFilterrefundform" [isRangePicker]="true"
                                     formStartControlName="fromDate" formEndControlName="enddate"
                                     [(fromValue)]="gridConfig2.filters[2].fieldValue"
                                     [(toValue)]="gridConfig2.filters[3].fieldValue"></airmid-datepicker>
+
                                 <mat-form-field appearance="outline">
                                     <mat-label>First Name</mat-label>
                                     <input matInput placeholder="Search First Name" autocomplete="off"

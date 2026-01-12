@@ -117,8 +117,10 @@ export class NUserComponent implements OnInit {
       this.visBedStatus = this.regobj.isBedStatus
       this.visCurrentStk = this.regobj.isCurrentStk
       this.vaddChargeIsDelete = this.regobj.addChargeIsDelete
+      this.myuserApprovalform.get("IsAdminMultiview").setValue(this.regobj.isAdminMultiview)
       this.myuserApprovalform.get("userName").setValue(this.regobj.userLoginName)
       this.myuserApprovalform.get("doctorId").setValue(this.regobj.doctorID)
+      this.myuserApprovalform.get("mailDomain").setValue("1")
       if (this.regobj.isDoctorType == true)
         this.docflag = true
       else
@@ -343,6 +345,7 @@ export class NUserComponent implements OnInit {
       isDiscApply: 0,
       discApplyPer: [0],
       IsBillReview: true,
+      IsAdminMultiview: false,
       isActive: [true, [Validators.required]],
       tLoginAccessDetails: this._formBuilder.array([]),
       tLoginUnitDetails: this._formBuilder.array([]),
@@ -358,8 +361,8 @@ export class NUserComponent implements OnInit {
 
   CreateMultidataform(): FormGroup {
     return this._formBuilder.group({
-      multipleUnitId: [[]],
-      multipleStoreId: [[]]
+      multipleUnitId: [[],[Validators.required]],
+      multipleStoreId: [[],[Validators.required]]
     });
   }
 
@@ -575,7 +578,7 @@ export class NUserComponent implements OnInit {
     doctorControl?.updateValueAndValidity();
   }
 
-    
+
   chkIsBillReview(event) {
     const doctorControl = this.myuserApprovalform.get('doctorId');
     // if (this.myuserApprovalform.get('isDoctorType').value == true) {
@@ -712,6 +715,7 @@ export class UserDetail {
   accessValueName: any;
   loginId: any;
   isBillReview: any;
+  isAdminMultiview: any;
   /**
    * Constructor
    *
@@ -769,7 +773,7 @@ export class UserDetail {
       this.accessValueName = UserDetail.accessValueName || ''
       this.loginId = UserDetail.loginId || 0
       this.isBillReview = UserDetail.isBillReview || true
-
+      this.isAdminMultiview = UserDetail.isAdminMultiview || false
     }
 
   }

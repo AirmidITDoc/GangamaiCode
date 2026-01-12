@@ -83,6 +83,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { SMSDetailsPopupOverComponent } from './componets/email-send/smsdetails-popup-over/smsdetails-popup-over.component';
 import { WhatsappDetPopUpOverComponent } from './componets/email-send/whatsapp-det-pop-up-over/whatsapp-det-pop-up-over.component';
 import { MatRadioModule } from '@angular/material/radio'; 
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 @NgModule({
     declarations: [
@@ -124,7 +125,8 @@ import { MatRadioModule } from '@angular/material/radio';
         WebcamModule,
         MatTooltipModule,
         MatDialogModule,
-        MatRadioModule
+        MatRadioModule,
+        MatCheckboxModule
     ],
     providers: [
         ExcelDownloadService,

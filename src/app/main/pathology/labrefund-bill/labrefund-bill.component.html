@@ -25,12 +25,19 @@
                                 <div fxLayout="row" fxLayoutAlign="start start" class="gap-8">
                                     <div fxFlexFill fxLayout="row" fxLayoutGap="4px" fxLayoutAlign="space-between">
 
-                                        <airmid-autocomplete label="Lab-UHID / First Name / Last Name / Mobile No"
-                                            [formGroup]="searchFormGroup" formControlName="RegId"
-                                            placeholderText="Lab-UHID / First Name / Last Name / Mobile No" fxFlex="40%"
-                                            ApiUrl="LabPatientRegistration/search-patient-1?Keyword="
-                                            (selectionChange)="getSelectedObj($event)" ValueField="regId"
-                                            TextField="formattedText"></airmid-autocomplete>
+                                        <div fxLayout="row" fxLayoutGap="4px" fxFlex="50%">
+                                            <airmid-dropdown label="Unit Name" formControlName="UnitId" fxFlex="30%"
+                                                [readonly]="!isSuperAdmin" (selectionChange)="ListView1($event)"
+                                                [formGroup]="searchFormGroup"
+                                                [mode]="autocompleteModeunit"></airmid-dropdown>
+
+                                            <airmid-autocomplete label="Lab-UHID / First Name / Last Name / Mobile No"
+                                                [formGroup]="searchFormGroup" formControlName="RegId"
+                                                placeholderText="Lab-UHID / First Name / Last Name / Mobile No"
+                                                fxFlex="40%" ApiUrl="LabPatientRegistration/search-patient-1?Keyword="
+                                                (selectionChange)="getSelectedObj($event)" ValueField="regId"
+                                                TextField="formattedText"></airmid-autocomplete>
+                                        </div>
 
                                         <airmid-dropdown label="CashCounterID" formControlName="CashCounterID"
                                             fxFlex="30%" [formGroup]="searchFormGroup"
@@ -60,7 +67,8 @@
                                                     <div class="patient-col">
                                                         <span class="patient-col-key">UHID No</span>
                                                         <span>:</span>
-                                                        <span class="patient-col-value">{{ registerObj.labRequestNo }}</span>
+                                                        <span class="patient-col-value">{{ registerObj.labRequestNo
+                                                            }}</span>
                                                     </div>
                                                     <div class="patient-col">
                                                         <span class="patient-col-key">Patient Name</span>

@@ -47,6 +47,10 @@ export class LabSettlementComponent {
   RegId = 0;
   OpSettlementForm: FormGroup
 
+  autocompleteModeunit: string = "Hospital";
+  UnitId: any = this.accountService.currentUserValue.user.unitId;
+  isSuperAdmin: any = this.accountService.currentUserValue.user.isAdminMultiview;
+
   @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
   @ViewChild('actionsTemplate') actionsTemplate!: TemplateRef<any>;
   @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
@@ -72,6 +76,7 @@ export class LabSettlementComponent {
     return this.formBuilder.group({
       RegId: 0,
       AppointmentDate: [(new Date()).toISOString()],
+      UnitId: [this.accountService.currentUserValue.user.unitId]
     });
   }
 
@@ -189,6 +194,14 @@ export class LabSettlementComponent {
       { fieldName: "RegId", fieldValue: String(this.RegId), opType: OperatorComparer.Contains }
     ],
     row: 25
+  }
+
+  ListView1(value) {
+    console.log(value)
+    if (value.value !== 0)
+      this.UnitId = value.value
+    else
+      this.UnitId = 0
   }
 
   getSelectedObj(obj) {

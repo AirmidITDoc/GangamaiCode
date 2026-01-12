@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { ApiCaller } from 'app/core/services/apiCaller';
+import { AuthenticationService } from 'app/core/services/authentication.service';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 
 
@@ -9,7 +10,9 @@ import { FormvalidationserviceService } from 'app/main/shared/services/formvalid
 })
 export class BrowseLabBillsService {
 
-  constructor(public _httpClient: ApiCaller, private _formBuilder: UntypedFormBuilder, public _httpClient1: ApiCaller, private _FormvalidationserviceService: FormvalidationserviceService) { }
+  constructor(public _httpClient: ApiCaller, private _formBuilder: UntypedFormBuilder, public _httpClient1: ApiCaller, private _FormvalidationserviceService: FormvalidationserviceService,
+        private accountService: AuthenticationService,
+  ) { }
 
   myFilterbillbrowseform(): FormGroup {
     return this._formBuilder.group({
@@ -24,7 +27,8 @@ export class BrowseLabBillsService {
       enddate: [(new Date()).toISOString()],
       PBillNo: '',
       RegNo: '',
-      CompanyId: 0
+      CompanyId: 0,      
+      UnitId: [this.accountService.currentUserValue.user.unitId]
       //  ReceiptNo: '',
     });
   }
@@ -42,7 +46,8 @@ export class BrowseLabBillsService {
       PBillNo: '',
       RegNo: '',
       ReceiptNo: '',
-      CompanyId: 0
+      CompanyId: 0,      
+      UnitId: [this.accountService.currentUserValue.user.unitId]
     });
   }
   myFilterrefundbrowseform(): FormGroup {
@@ -58,7 +63,8 @@ export class BrowseLabBillsService {
       enddate: [(new Date()).toISOString(), this._FormvalidationserviceService.validDateValidator()],
       PBillNo: '',
       RegNo: '',
-      ReceiptNo: '',
+      ReceiptNo: '',     
+      UnitId: [this.accountService.currentUserValue.user.unitId]
     });
   }
 

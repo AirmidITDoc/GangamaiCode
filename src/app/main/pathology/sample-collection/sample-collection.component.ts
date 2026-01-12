@@ -16,6 +16,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 import { permissionCodes, permissionType } from 'app/main/shared/model/permission.model';
 import { PagePermissionService } from 'app/main/shared/services/page-permission.service';
+import { AuthenticationService } from 'app/core/services/authentication.service';
 
 
 @Component({
@@ -42,6 +43,9 @@ export class SampleCollectionComponent implements OnInit {
     dataSource = new MatTableDataSource<NursingPathRadRequestList>();
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
     @ViewChild('grid1') grid1: AirmidTableComponent;
+    UnitId: any = this._loggedService.currentUserValue.user.unitId;
+    isSuperAdmin: any = this._loggedService.currentUserValue.user.isAdminMultiview;
+    autocompleteModeunit: string = "Hospital";
 
     IsEdit: boolean = this.permissionService.getPermission(permissionCodes.LabPatientRegistration, permissionType.Edit);
 
@@ -99,13 +103,23 @@ export class SampleCollectionComponent implements OnInit {
         public _matDialog: MatDialog, private commonService: PrintserviceService,
         public datePipe: DatePipe,
         public toastr: ToastrService,
-        public permissionService: PagePermissionService,) { }
+        public permissionService: PagePermissionService,
+        private _loggedService: AuthenticationService,) { }
 
     ngOnInit(): void {
         this.myformSearch = this._SampleCollectionService.createSearchForm()
         this.GetSampleCollectiondetail()
     }
 
+    ListView1(value) {
+        console.log(value)
+        if (value.value !== 0)
+            this.UnitId = value.value
+        else
+            this.UnitId = 0
+
+        this.onChangeFirst();
+    }
     getSelectedRow(row: any): void {
         // debugger
         console.log("selectedRow:", row)

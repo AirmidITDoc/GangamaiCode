@@ -14,6 +14,7 @@ import { LabSampleCollectionService } from './lab-sample-collection.service';
 import { SamplecollectionPageComponent } from '../sample-collection/samplecollection-page/samplecollection-page.component';
 import { permissionCodes, permissionType } from 'app/main/shared/model/permission.model';
 import { PagePermissionService } from 'app/main/shared/services/page-permission.service';
+import { AuthenticationService } from 'app/core/services/authentication.service';
 
 @Component({
   selector: 'app-lab-sample-collection',
@@ -24,6 +25,7 @@ import { PagePermissionService } from 'app/main/shared/services/page-permission.
 })
 export class LabSampleCollectionComponent {
   myformSearch: FormGroup;
+  autocompleteModeunit: string = "Hospital";
   isShowDetailTable: boolean = false;
   fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
   toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
@@ -39,6 +41,8 @@ export class LabSampleCollectionComponent {
   dataSource = new MatTableDataSource<NursingPathRadRequestList>();
   @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
   @ViewChild('grid1') grid1: AirmidTableComponent;
+  UnitId: any = this._loggedService.currentUserValue.user.unitId;
+  isSuperAdmin: any = this._loggedService.currentUserValue.user.isAdminMultiview;
 
   IsEdit: boolean = this.permissionService.getPermission(permissionCodes.ExternalInvestigation, permissionType.Edit);
 
@@ -95,7 +99,8 @@ export class LabSampleCollectionComponent {
   constructor(public _SampleCollectionService: LabSampleCollectionService,
     public _matDialog: MatDialog, private commonService: PrintserviceService,
     public datePipe: DatePipe,
-    public toastr: ToastrService,
+    public toastr: ToastrService,    
+    private _loggedService: AuthenticationService,
     public permissionService: PagePermissionService,) { }
 
   ngOnInit(): void {
@@ -154,6 +159,16 @@ export class LabSampleCollectionComponent {
 
     });
     console.log(this.gridConfig1)
+  }
+
+   ListView1(value) {
+    console.log(value)
+    if (value.value !== 0)
+      this.UnitId = value.value
+    else
+      this.UnitId = 0
+
+    // this.onChangeFirst();
   }
 
   onChangeFirst() {

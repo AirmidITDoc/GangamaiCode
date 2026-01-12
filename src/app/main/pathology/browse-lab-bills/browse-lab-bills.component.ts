@@ -55,6 +55,7 @@ export class BrowseLabBillsComponent {
   PBillNo: any = "%"
   autocompleteModecompany: string = "Company";
   autocompleteModecompany1: string = "Company";
+  autocompleteModeunit: string = "Hospital";
   pf_name: any = ""
   pregNo: any = "0"
   pl_name: any = ""
@@ -71,6 +72,8 @@ export class BrowseLabBillsComponent {
 
   pfromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
   ptoDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
+  UnitId: any = this.accountService.currentUserValue.user.unitId;
+  isSuperAdmin: any = this.accountService.currentUserValue.user.isAdminMultiview;
 
   @ViewChild('actionsTemplate1') actionsTemplate1!: TemplateRef<any>;
   @ViewChild('actionsTemplate2') actionsTemplate2!: TemplateRef<any>;
@@ -264,6 +267,30 @@ export class BrowseLabBillsComponent {
 
     this.menuActions.push("Bill Print-Package Info");
     this.menuActions.push("Bill Print");
+  }
+
+  ListViewUnit1(value) {
+    console.log(value)
+    if (value.value !== 0)
+      this.UnitId = value.value
+    else
+      this.UnitId = 0
+  }
+
+  ListViewUnit2(value) {
+    console.log(value)
+    if (value.value !== 0)
+      this.UnitId = value.value
+    else
+      this.UnitId = 0
+  }
+
+  ListViewUnit3(value) {
+    console.log(value)
+    if (value.value !== 0)
+      this.UnitId = value.value
+    else
+      this.UnitId = 0
   }
 
   CreateOPSettlementForm() {

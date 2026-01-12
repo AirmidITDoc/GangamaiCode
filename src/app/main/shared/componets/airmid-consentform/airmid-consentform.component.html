@@ -23,28 +23,51 @@
                 <!-- <input type="hidden" name="ConsentId" formControlName="ConsentId"> -->
                 <div fxLayout="column" fxLayoutGap="12px grid">
                     <mat-card *ngIf="hideFlag">
-                        <div fxLayout="row wrap" fxLayoutGap="16px" fxLayoutAlign="start center">
-                            <mat-radio-group formControlName="PatientType" [(ngModel)]="vSelectedOption"
-                                (change)="onChangePatientType($event)">
-                                <mat-radio-button value="OP">OP</mat-radio-button>
-                                <mat-radio-button value="IP">IP</mat-radio-button>
-                            </mat-radio-group>
+                        <div fxLayout="row" fxLayoutGap="16px" fxLayoutAlign="start center center">
+                            <div class="radio-container">
+                                <mat-radio-group formControlName="PatientType" [(ngModel)]="vSelectedOption"
+                                    (change)="onChangePatientType($event)">
+                                    <mat-radio-button value="OP" [disabled]="vCheckBox == true">OP</mat-radio-button>
+                                    <mat-radio-button value="IP">IP</mat-radio-button>
+                                </mat-radio-group>
+                            </div>
 
-                            <airmid-autocomplete *ngIf="myForm.get('PatientType').value == 'OP'" lbl="RgId"
-                                [formGroup]="myForm" formControlName="RegID" label="OP-RegNo/FirstName/LastName"
-                                fxFlex="60" placeholderText="OP-RegNo/FirstName/LastName"
-                                ApiUrl="VisitDetail/search-patient?Keyword="
-                                (selectionChange)="getSelectedObjOP($event)" TextField="formattedText"
-                                ValueField="regId">
-                            </airmid-autocomplete>
+                            <div class="input-container gap-8" fxFlex *ngIf="!vCheckBox">
+                                <airmid-autocomplete *ngIf="myForm.get('PatientType').value == 'OP'" lbl="RgId"
+                                    [formGroup]="myForm" formControlName="RegID" label="OP-RegNo/FirstName/LastName"
+                                    fxFlex="60" placeholderText="OP-RegNo/FirstName/LastName"
+                                    ApiUrl="VisitDetail/search-patient?Keyword="
+                                    (selectionChange)="getSelectedObjOP($event)" TextField="formattedText"
+                                    ValueField="regId">
+                                </airmid-autocomplete>
 
-                            <airmid-autocomplete *ngIf="myForm.get('PatientType').value == 'IP'" lbl="RgId"
-                                [formGroup]="myForm" formControlName="RegID" label="IP-RegNo/FirstName/LastName"
-                                fxFlex="60" placeholderText="IP-RegNo/FirstName/LastName"
-                                ApiUrl="Admission/search-patient?Keyword=" (selectionChange)="getSelectedObjIP($event)"
-                                TextField="formattedText" ValueField="admissionID">
-                            </airmid-autocomplete>
+                                <airmid-autocomplete *ngIf="myForm.get('PatientType').value == 'IP'" lbl="RgId"
+                                    [formGroup]="myForm" formControlName="RegID" label="IP-RegNo/FirstName/LastName"
+                                    fxFlex="60" placeholderText="IP-RegNo/FirstName/LastName"
+                                    ApiUrl="Admission/search-patient?Keyword="
+                                    (selectionChange)="getSelectedObjIP($event)" TextField="formattedText"
+                                    ValueField="admissionID">
+                                </airmid-autocomplete>
+                            </div>
+
+                            <div class="input-container gap-8" fxFlex *ngIf="vCheckBox">
+
+                                <airmid-autocomplete lbl="RegID" [formGroup]="myForm" formControlName="RegID"
+                                    fxFlex="50%" placeholderText="Search DC-RegNo/Patient Name/Mobile No"
+                                    label="Search DC-Reg No / Patient Name / Mobile No(AD)"
+                                    ApiUrl="Admission/Dischargesearch-patient?Keyword="
+                                    (selectionChange)="getSelectedObjDC($event)" ValueField="admissionID"
+                                    TextField="formattedText">
+                                </airmid-autocomplete>
+
+                            </div>
+
+                            <mat-checkbox fxFlex="15%" formControlName="IsDischargedit"
+                                (change)="getDischargedList($event)">IsDischarged
+                            </mat-checkbox>
+
                         </div>
+
                     </mat-card>
 
                     <!-- Patient Info -->

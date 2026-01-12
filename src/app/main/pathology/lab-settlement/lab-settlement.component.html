@@ -18,7 +18,12 @@
                 <mat-card style="padding: 5px;">
                     <form [formGroup]="searchFormGroup" fxLayoutAlign="space-between start">
                         <div fxLayout="column" fxLayoutAlign="start none" style="width: 100%;">
-                            <div class="redio-container" style="padding: 10px;">
+                            <div class="redio-container" style="padding: 10px; gap: 5px;">
+                                
+                                <airmid-dropdown label="Unit Name" formControlName="UnitId" fxFlex="15%"
+                                    [readonly]="!isSuperAdmin" (selectionChange)="ListView1($event)"
+                                    [formGroup]="searchFormGroup" [mode]="autocompleteModeunit"></airmid-dropdown>
+
                                 <airmid-autocomplete label="Lab-UHID / First Name / Last Name / Mobile No"
                                     [formGroup]="searchFormGroup" formControlName="RegId"
                                     placeholderText="Lab-UHID / First Name / Last Name / Mobile No" fxFlex="40%"

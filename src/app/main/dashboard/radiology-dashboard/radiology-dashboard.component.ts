@@ -252,6 +252,7 @@ export class RadiologyDashboardComponent implements OnInit {
 
     // Load Pathology Data
     this.getpathologyData();
+    this.getpathologyReportData();
     this.dsPathologyReports.data = this.pathologyReportsData;
     this.dsPathologyTopTests.data = this.pathologyTopTestsData;
     this.dsPathologistWorkload.data = this.pathologistWorkloadData;
@@ -261,7 +262,7 @@ export class RadiologyDashboardComponent implements OnInit {
     const dd = String(date.getDate()).padStart(2, '0');
     const mm = String(date.getMonth() + 1).padStart(2, '0');
     const yyyy = date.getFullYear();
-    return `${dd}/${mm}/${yyyy}`;
+    return `${mm}/${dd}/${yyyy}`;
   }
 
   formatDateForRadiologyAPI(date: Date): string {
@@ -336,6 +337,33 @@ export class RadiologyDashboardComponent implements OnInit {
     });
   }
 
+  getpathologyReportData() {
+    const payload = {
+      "searchFields": [
+        {
+          "fieldName": "FromDate",
+          "fieldValue": this.formatDateForAPI(this.fromDate),
+          "opType": "Equals"
+        },
+        {
+          "fieldName": "ToDate",
+          "fieldValue": this.formatDateForAPI(this.toDate),
+          "opType": "Equals"
+        }
+      ],
+      "mode": "PathologyDashboard"
+    };
+
+    this.dashboardService.HomeDashboardAPI(payload).subscribe((res: any) => {
+      this.dsPathologyReports.data = res || [];
+      this.dsPathologyTopTests.data = res || [];
+      this.dsPathologistWorkload.data = res || [];
+        console.log('Pathology Reports:', this.dsPathologyReports.data);
+        console.log('Pathology TopTests:', this.dsPathologyTopTests.data);
+        console.log('Pathologist:', this.dsPathologistWorkload.data);
+    });
+  }
+
   getRadiologyData() {
     const payload = {
       searchFields: [
@@ -360,6 +388,9 @@ export class RadiologyDashboardComponent implements OnInit {
 
     this.dashboardService.HomeDashboardAPI(payload).subscribe((res: any) => {
       this.dsRadiologyCount.data = res || [];
+      this.dsRecentReports.data = res || [];
+      this.dsTopTests.data = res || [];
+      this.dsRadiologistPerformance.data = res || [];
 
       if (this.dsRadiologyCount.data.length > 0) {
 

@@ -25,8 +25,8 @@
             <mat-form-field class="date-range-field">
                 <mat-label>Date Range</mat-label>
                 <mat-date-range-input appearance="outline" [rangePicker]="rangePicker">
-                    <input matStartDate class="date-range-input" [(ngModel)]="fromDate"
-                        placeholder="Start date" readonly>
+                    <input matStartDate class="date-range-input" [(ngModel)]="fromDate" placeholder="Start date"
+                        readonly>
                     <input matEndDate class="date-range-input" [(ngModel)]="toDate" (dateChange)="onDateRangeChanged()"
                         placeholder="End date" readonly>
                 </mat-date-range-input>
@@ -592,7 +592,7 @@
                                             Test Name
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let report">
-                                            {{report.TestName}}
+                                            {{report.PrintTestName}}
                                         </mat-cell>
                                     </ng-container>
 
@@ -600,15 +600,31 @@
                                         <mat-header-cell *matHeaderCellDef mat-sort-header>
                                             Status
                                         </mat-header-cell>
+                                        <!-- <mat-cell *matCellDef="let report">
+                                            <span [ngClass]="{
+                                                'status-completed': report.IsCompleted === 1,
+                                                'status-pending': report.IsCompleted === 0,
+                                                'status-cancelled': report.IsCancelled === 1
+                                            }">
+                                                {{report.IsCompleted ? 'Completed' : 'Pending'}}
+                                            </span>
+                                        </mat-cell> -->
                                         <mat-cell *matCellDef="let report">
                                             <span [ngClass]="{
-                                                'status-completed': report.Status === 'Completed',
-                                                'status-pending': report.Status === 'Pending',
-                                                'status-cancelled': report.Status === 'Rejected'
-                                            }">
-                                                {{report.Status}}
+                                                'status-cancelled': report.IsCancelled === 1,
+                                                'status-completed': report.IsCancelled !== 1 && report.IsCompleted === 1,
+                                                'status-pending': report.IsCancelled !== 1 && report.IsCompleted !== 1
+                                                }">
+                                                {{
+                                                report.IsCancelled === 1
+                                                ? 'Cancelled'
+                                                : report.IsCompleted === 1
+                                                ? 'Completed'
+                                                : 'Pending'
+                                                }}
                                             </span>
                                         </mat-cell>
+
                                     </ng-container>
 
                                     <ng-container matColumnDef="Pathologist">
@@ -625,7 +641,7 @@
                                             Date
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let report">
-                                            {{report.Date}}
+                                            {{report.PathDate}}
                                         </mat-cell>
                                     </ng-container>
 
@@ -670,7 +686,7 @@
                                             Test Name
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let test">
-                                            {{test.TestName}}
+                                            {{test.PrintTestName}}
                                         </mat-cell>
                                     </ng-container>
 
@@ -679,7 +695,7 @@
                                             Count
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let test">
-                                            {{test.Count}}
+                                            {{test.TestCount}}
                                         </mat-cell>
                                     </ng-container>
 
@@ -721,7 +737,7 @@
                                             Pathologist
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let pathologist">
-                                            {{pathologist.PathologistName}}
+                                            {{pathologist.Pathologist}}
                                         </mat-cell>
                                     </ng-container>
 

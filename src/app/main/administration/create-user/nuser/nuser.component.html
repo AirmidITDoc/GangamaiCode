@@ -138,12 +138,15 @@
                                                 style="padding: 10px;">IsDoctor
                                             </mat-checkbox>&nbsp;
 
-                                               <mat-checkbox formControlName="IsBillReview"
+                                            <mat-checkbox formControlName="IsBillReview"
                                                 (change)="chkIsBillReview($event)"
                                                 [(ngModel)]="registerObj.isBillReview"
                                                 style="padding: 10px;">IsBillReview
                                             </mat-checkbox>&nbsp;
 
+                                            <mat-checkbox formControlName="IsAdminMultiview"
+                                                style="padding: 10px;">IsAdminMultiview
+                                            </mat-checkbox>&nbsp;
 
                                             <airmid-dropdown label="Doctor Name" formControlName="doctorId" fxFlex="50%"
                                                 [formGroup]="myuserApprovalform"
@@ -340,7 +343,7 @@
                                                     (selectionChange)="selectChangeStoreName($event)">
                                                 </airmid-dropdown>
 
-                                                 <!-- <airmid-dropdown label="Department"
+                                                <!-- <airmid-dropdown label="Department"
                                                         formControlName="MDoctorDepartmentDets" [formGroup]="myForm"
                                                         [IsMultiPle]="true" [value]="registerObj.mDoctorDepartmentDets"
                                                         [validations]="getValidationMessages().Departmentid"
@@ -396,7 +399,7 @@
                                             <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
                                                 <!-- <ng-container
                                                     *ngIf="(element.IsInputField && element.AccessValueId) === 'IsDiscount' || (element.accessValue && element.accessValueName) === 'IsDiscount'"> -->
-                                                    <ng-container *ngIf="
+                                                <ng-container *ngIf="
                                                         (element.IsInputField &&
                                                         (element.AccessValueId === 'IsDiscount' ||
                                                         element.AccessValueId === 'IsLoginTimeOut')) ||
@@ -404,12 +407,12 @@
                                                         (element.accessValueName === 'IsDiscount' ||
                                                         element.accessValueName === 'IsLoginTimeOut'))
                                                     ">
-                                                        <mat-form-field appearance="fill">
-                                                            <input matInput [maxLength]="100"
-                                                                [value]="getInputFieldValue(element)"
-                                                                (input)="setInputFieldValue(element, $event.target.value)" />
-                                                        </mat-form-field>
-                                                    </ng-container>
+                                                    <mat-form-field appearance="fill">
+                                                        <input matInput [maxLength]="100"
+                                                            [value]="getInputFieldValue(element)"
+                                                            (input)="setInputFieldValue(element, $event.target.value)" />
+                                                    </mat-form-field>
+                                                </ng-container>
                                             </mat-cell>
                                         </ng-container>
 

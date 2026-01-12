@@ -114,6 +114,9 @@ export class ResultEntryComponent implements OnInit {
     title: 'Reports'
     page: PageNames = PageNames.PATIENT;
     pathFiles: PageNames = PageNames.PATIENT_PATHFILES;
+  autocompleteModeunit: string = "Hospital";
+    UnitId: any = this.accountService.currentUserValue.user.unitId;
+    isSuperAdmin: any = this.accountService.currentUserValue.user.isAdminMultiview;
 
     IsEdit: boolean = this.permissionService.getPermission(permissionCodes.Pathology, permissionType.Edit);
 
@@ -215,6 +218,16 @@ export class ResultEntryComponent implements OnInit {
         this.fromDate = this.myformSearch.get("start").value || "";
         this.toDate = this.myformSearch.get("end").value || "";
         this.GetResultdetail();
+    }
+
+    ListView1(value) {
+        console.log(value)
+        if (value.value !== 0)
+            this.UnitId = value.value
+        else
+            this.UnitId = 0
+
+        // this.onChangeFirst();
     }
 
     searchRecords(data) {

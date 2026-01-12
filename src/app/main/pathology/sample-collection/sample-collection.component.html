@@ -129,6 +129,11 @@
                 (onSelectRow)="getSelectedRow($event)">
                 <ng-container filters>
                     <form [formGroup]="myformSearch">
+
+                        <airmid-dropdown label="Unit Name" formControlName="UnitId"
+                            [readonly]="!isSuperAdmin" (selectionChange)="ListView1($event)" [formGroup]="myformSearch"
+                            [mode]="autocompleteModeunit"></airmid-dropdown>
+
                         <airmid-datepicker [formGroup]="myformSearch" [isRangePicker]="true"
                             formStartControlName="start" formEndControlName="end"
                             [(fromValue)]="gridConfig.filters[3].fieldValue"

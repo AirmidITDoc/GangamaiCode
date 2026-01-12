@@ -48,6 +48,7 @@ export class LabPatientRegComponent {
   PBillNo: any = "%";
   DoctorId: any = "0";
   UnitId: any = this._loggedService.currentUserValue.user.unitId;
+  isSuperAdmin: any = this._loggedService.currentUserValue.user.isAdminMultiview;
   vbalanceamt: any;
   vpaidamt: any;
   autocompleteModedoctor: string = "ConDoctor";
