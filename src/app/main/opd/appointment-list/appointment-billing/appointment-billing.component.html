@@ -504,7 +504,7 @@
                                                                     <!-- {{contact.Price}} -->
                                                                     <mat-form-field floatLabel="never">
                                                                         <input matInput placeholder="Price"
-                                                                            type="number" [(ngModel)]="contact.Price"
+                                                                            type="text" [(ngModel)]="contact.Price"
                                                                             required
                                                                             (ngModelChange)="onPriceOrQtyChange(contact)">
                                                                     </mat-form-field>
@@ -542,7 +542,7 @@
                                                                     <mat-form-field floatLabel="never"
                                                                         appearance="fill">
                                                                         <input matInput placeholder="Disc %"
-                                                                            [(ngModel)]="contact.DiscPer" type="number"
+                                                                            [(ngModel)]="contact.DiscPer" type="text"
                                                                             [min]="0" [max]="100"
                                                                             (ngModelChange)="onDiscountPerChange(contact)">
                                                                     </mat-form-field>
@@ -557,7 +557,7 @@
                                                                     <mat-form-field floatLabel="never"
                                                                         appearance="fill">
                                                                         <input matInput placeholder="Disc Amt"
-                                                                            [(ngModel)]="contact.DiscAmt" type="number"
+                                                                            [(ngModel)]="contact.DiscAmt" type="text"
                                                                             [min]="0" [max]="contact.TotalAmt"
                                                                             (ngModelChange)="onDiscountAmtChange(contact)">
                                                                     </mat-form-field>

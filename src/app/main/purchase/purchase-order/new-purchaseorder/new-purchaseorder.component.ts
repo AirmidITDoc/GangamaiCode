@@ -53,7 +53,7 @@ export class NewPurchaseorderComponent {
   SGSTAmount: any = 0.0;
   optionsInc = null;
   VatPercentage: any = 0.0;
-
+  StoreId_1:any = 0;
   BatchNo: any;
   BatchExpDate: any;
   UnitMRP: any;
@@ -949,7 +949,7 @@ export class NewPurchaseorderComponent {
   vstoreId = this.accountService.currentUserValue.user.storeId;
   selectChangeStore(obj: any) {
     console.log("Store:", obj);
-    this.vstoreId = obj.value
+    this.vstoreId = obj.value || 0
   }
 
 

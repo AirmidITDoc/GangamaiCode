@@ -65,7 +65,7 @@
 
                     <airmid-dropdown label="Store Name" formControlName="StoreId" [formGroup]="userFormGroup"
                       [validations]="getValidationMessages().StoreId" [value]="data?.StoreId" fxFlex="11%"
-                      [mode]="autocompletestore">
+                      [mode]="autocompletestore"  (selectionChange)="selectChangeStore($event)">
                     </airmid-dropdown>
 
                     <airmid-dropdown label="Supplier Name | Code" formControlName="SupplierId"
@@ -125,7 +125,8 @@
  
                     <airmid-autocomplete label="Item Name (enter 2 char)" [formGroup]="userFormGroup"
                       formControlName="ItemName" placeholderText="Item Name (enter 2 char)" fxFlex="14%"
-                      TextField="formattedText" ApiUrl="ItemMaster/GetItemListForGRNOrPO?StoreId=2&ItemName="
+                      TextField="formattedText" 
+                      [ApiUrl]="'ItemMaster/GetItemListForGRNOrPO?StoreId=' + StoreId_1 + '&ItemName='"
                       (selectionChange)="getSelectedItem($event)" ValueField="itemId"
                       (onClearSelection)="resetFormItem()"></airmid-autocomplete>
 

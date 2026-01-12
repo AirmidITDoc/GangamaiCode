@@ -420,7 +420,7 @@ export class SalesReturnInPatientComponent implements OnInit {
       FinalTotalAmt: itemList.reduce((sum, { TotalAmt }) => sum += +(TotalAmt || 0), 0).toFixed(2),
       FinalGSTAmt: itemList.reduce((sum, { GSTAmt }) => sum += +(GSTAmt || 0), 0).toFixed(2),
       FinalDiscAmount: itemList.reduce((sum, { DiscAmt }) => sum += +(DiscAmt || 0), 0).toFixed(2),
-      FinalNetAmount: Math.round(netAmount).toFixed(2),
+      FinalNetAmount: (netAmount).toFixed(2),
     }
     form.patchValue({
       ...updatableFormValues
@@ -480,7 +480,7 @@ export class SalesReturnInPatientComponent implements OnInit {
     this.IpSalesReturnForm.get('salesReturn.totalAmount')?.setValue(this.IPSalesRetFooterform.get('FinalTotalAmt').value)
     this.IpSalesReturnForm.get('salesReturn.vatAmount')?.setValue(this.IPSalesRetFooterform.get('FinalGSTAmt').value)
     this.IpSalesReturnForm.get('salesReturn.discAmount')?.setValue(this.IPSalesRetFooterform.get('FinalDiscAmount').value)
-    this.IpSalesReturnForm.get('salesReturn.netAmount')?.setValue((Math.round(this.IPSalesRetFooterform.get('FinalNetAmount').value)))
+    this.IpSalesReturnForm.get('salesReturn.netAmount')?.setValue(((this.IPSalesRetFooterform.get('FinalNetAmount').value)))
     this.IpSalesReturnForm.get('salesReturn.isPurBill').setValue(this.selcteditemObj?.IsPurRate || false);
     if (this.IpSalesReturnForm.valid) {
       this.SaleRetDetailsArray.clear()
@@ -493,7 +493,7 @@ export class SalesReturnInPatientComponent implements OnInit {
       });
       if (this.ItemFormGroup.get('PaymentType').value == 'Credit') {
         this.IpSalesReturnForm.get('salesReturn.paidAmount').setValue(0)
-        this.IpSalesReturnForm.get('salesReturn.balanceAmount').setValue((Math.round(this.IPSalesRetFooterform.get('FinalNetAmount').value)))
+        this.IpSalesReturnForm.get('salesReturn.balanceAmount').setValue(((this.IPSalesRetFooterform.get('FinalNetAmount').value)))
 
         console.log(this.IpSalesReturnForm.value);
         this._IpSalesRetInpatService.InsertSalesReturnInPatient(this.IpSalesReturnForm.value).subscribe(response => {
