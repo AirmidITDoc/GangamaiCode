@@ -126,6 +126,7 @@ export class NewGrnComponent implements OnInit, OnDestroy {
     vpoBalQty: any;
     vMobile: any;
     ExpDate: any;
+    StoreId_1:any=0;
     // Make it true when you want to use mock data.
     mock = false;
     vGRNType: boolean = true;
@@ -164,6 +165,7 @@ export class NewGrnComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
         this.GrnHeaderForm = this.createGrnHeaderInsert();
         this.PoToGrnSaveForm = this.createGrnPOInsert();
+        this.StoreId_1 = this.accountService.currentUserValue.user.storeId || 0
         if (this.mock) {
             this.setMockData();
         }
@@ -195,6 +197,9 @@ export class NewGrnComponent implements OnInit, OnDestroy {
     }
     batchlistApiUrl: any = '';
     //Item details selectedObj
+    selectChangeStore(obj){
+            this.StoreId_1 = obj?.value
+    }
     getSelectedItem(item: GRNItemResponseType): void {
         if (this.mock) {
             return;
@@ -1146,6 +1151,7 @@ export class NewGrnComponent implements OnInit, OnDestroy {
         this._matDialog.closeAll();
         this.resetForm();
         this.vPurchaseId = 0;
+        this.StoreId_1 = 0;
     }
     // item details retreving 
     getGRNrtrvItemlist() {

@@ -91,7 +91,7 @@
                                         <airmid-autocomplete label="Item Name (enter 2 char)"
                                             [formGroup]="userFormGroup" formControlName="ItemName"
                                             placeholderText="Item Name (enter 2 char)" fxFlex="22%"
-                                            ApiUrl="ItemMaster/GetItemListForGRNOrPO?StoreId=2&ItemName="
+                                            ApiUrl="ItemMaster/GetItemListForGRNOrPO?StoreId= + vstoreId + &ItemName=" 
                                             (selectionChange)="getSelectedItem($event)" TextField="formattedText"
                                             ValueField="itemId"
                                             (onClearSelection)="resetFormItem()"></airmid-autocomplete>
