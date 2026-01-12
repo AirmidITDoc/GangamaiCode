@@ -1,100 +1,4 @@
-<!-- <div class="patient-details-popover-container" (mouseenter)="onMouseEnter()" (mouseleave)="onMouseLeave()">
-  <div class="popover-header">
-    <h3>
-      <mat-icon class="header-icon">email</mat-icon>
-      Email Details
-    </h3>
-  </div>
-
-  <div class="popover-body">
-    <div *ngIf="isLoading" class="loading-container">
-      <mat-spinner diameter="30"></mat-spinner>
-      <p>Loading Mail details...</p>
-    </div>
-
-    <div *ngIf="!isLoading && patientDetails" class="details-content">
-      Basic Information
-      <div class="detail-section">
-        <h4 class="section-title">Basic Information</h4>
-        <div class="detail-grid">
-          <div class="detail-item">
-            <span class="detail-label">UHID:</span>
-            <span class="detail-value">{{ patientDetails.regNoWithPrefix || patientDetails.regNo ||
-              patientData?.regNoWithPrefix || 'N/A' }}</span>
-          </div>
-          <div class="detail-item">
-            <span class="detail-label">Name:</span>
-            <span class="detail-value">
-              {{ patientData?.patientName ||
-              (patientDetails.firstName || patientDetails.FirstName || '') + ' ' +
-              (patientDetails.middleName || patientDetails.MiddleName || '') + ' ' +
-              (patientDetails.lastName || patientDetails.LastName || '') ||
-              'N/A' }}
-            </span>
-          </div>
-          <div class="detail-item">
-            <span class="detail-label">Gender:</span>
-            <span class="detail-value">{{ patientDetails?.genderName || patientDetails?.GenderName ||
-              patientData?.genderName || 'N/A' }}</span>
-          </div>
-           
-          <div class="detail-item">
-            <span class="detail-label">Mobile No:</span>
-            <span class="detail-value">{{ patientDetails?.mobileNo || patientDetails?.MobileNo || patientData?.mobileNo ||
-              'N/A' }}</span>
-          </div>
-          <div class="detail-item">
-            <span class="detail-label">Email ID:</span>
-            <span class="detail-value">{{ patientDetails?.emailId || patientDetails?.mailId || 'N/A' }}</span>
-          </div>
-        </div>
-      </div>
-
-      Address Information
-      <div class="detail-section"
-        *ngIf="mailDetails?.emailDate || mailDetails?.fromEmail || mailDetails?.toEmail">
-        <h4 class="section-title">Email  Details</h4>
-        <div class="detail-grid">
-             <div class="detail-item">
-            <span class="detail-label">Email Date:</span>
-            <span class="detail-value">{{ formatDate(mailDetails?.emailDate) }}</span>
-          </div>
-            <div class="detail-item">
-            <span class="detail-label">From MailId:</span>
-            <span class="detail-value">{{ mailDetails?.fromEmail || 'N/A' }}</span>
-          </div>
-          <div class="detail-item full-width">
-            <span class="detail-label">To MailId:</span>
-            <span class="detail-value">{{ mailDetails?.toEmail || 'N/A' }}</span>
-          </div>
-          <div class="detail-item">
-            <span class="detail-label">Subject:</span>
-            <span class="detail-value">{{ mailDetails?.mailSubject || 'N/A' }}</span>
-          </div>
-          <div class="detail-item">
-            <span class="detail-label">Email Response:</span>
-            <span class="detail-value">{{ mailDetails?.lastResponse || 'N/A' }}</span>
-          </div> 
-          <div class="detail-item">
-            <span class="detail-label">Last Sending Date:</span>
-            <span class="detail-value">{{ formatDate(mailDetails?.lastSendingTry) }}</span>
-          </div>
-
-        </div>
-      </div> 
-    </div>
-
-    <div *ngIf="!isLoading && !patientDetails" class="no-data">
-      <mat-icon>info</mat-icon>
-      <p>Email details not available</p>
-    </div>
-  </div>
-</div> -->
-
-
- <div class="patient-details-popover-container"
-     (mouseenter)="onMouseEnter()"
-     (mouseleave)="onMouseLeave()">
+<div class="patient-details-popover-container" (mouseenter)="onMouseEnter()" (mouseleave)="onMouseLeave()">
 
   <!-- Header -->
   <div class="popover-header">
@@ -122,15 +26,15 @@
         </div>
 
         <div class="detail-grid">
-          <div class="detail-item"> 
+          <div class="detail-item">
             <div>
               <label>UHID:</label>
               <p>{{ patientDetails.regNoWithPrefix || patientDetails.regNo ||
-              patientData?.regNoWithPrefix || 'N/A' }}</p>
+                patientData?.regNoWithPrefix || 'N/A' }}</p>
             </div>
           </div>
 
-          <div class="detail-item"> 
+          <div class="detail-item">
             <div>
               <label>Name:</label>
               <p>{{ patientData?.patientName ||
@@ -141,14 +45,14 @@
             </div>
           </div>
 
-          <div class="detail-item"> 
+          <div class="detail-item">
             <div>
               <label>Mobile:</label>
               <p>{{ patientDetails?.mobileNo || 'N/A' }}</p>
             </div>
           </div>
 
-          <div class="detail-item"> 
+          <div class="detail-item">
             <div>
               <label>Email ID:</label>
               <p>{{ patientDetails?.emailId || patientDetails?.mailId || 'N/A' }}</p>
@@ -157,72 +61,89 @@
         </div>
       </div>
 
-      <!-- EMAIL INFORMATION -->
-      <div class="detail-section" *ngIf="mailDetails">
-        <div class="section-title">
-          <mat-icon>mail</mat-icon>
-          <span>Email Information</span>
-        </div>
 
-        <div class="detail-grid">
-          <div class="detail-item">
-            <mat-icon>event</mat-icon>
-            <div>
-              <label>Email Date</label>
-              <p>{{ formatDate(mailDetails?.emailDate) }}</p>
-            </div>
-          </div>
+      <!-- EMAIL INFORMATION LIST -->
+      <div *ngIf="mailDetails?.length">
 
-          <div class="detail-item">
-            <mat-icon>forward_to_inbox</mat-icon>
-            <div>
-              <label>From</label>
-              <p>{{ mailDetails?.fromEmail || 'N/A' }}</p>
+        <mat-card class="email-card" *ngFor="let mail of mailDetails">
+          <mat-card-header class="header-border" [ngClass]="mail?.status === 1 ? 'border-success' : 'border-failed'">
+            <mat-icon mat-card-avatar>mail</mat-icon>
+            <div class="header-content">
+              <!-- TITLE -->
+              <mat-card-title class="header-title">Email Information</mat-card-title>
+              <!-- LAST SENDING DATE -->
+              <mat-card-subtitle class="sub-line">
+                <mat-icon class="time-icon">schedule</mat-icon>
+                Last Sent:
+                {{ mail?.lastSendingTry | date:'dd-MM-yyyy hh:mm a' }}
+              </mat-card-subtitle>
             </div>
-          </div>
+            <span class="spacer"></span>
+            <!-- INFO ICON -->
+            <mat-icon class="info-icon" (click)="mail.showDetails = !mail.showDetails" matTooltip="View details">
+              info
+            </mat-icon>
+          </mat-card-header>
 
-          <div class="detail-item full-width">
-            <mat-icon>outgoing_mail</mat-icon>
-            <div>
-              <label>To</label>
-              <p>{{ mailDetails?.toEmail || 'N/A' }}</p>
-            </div>
-          </div>
+          <!-- DETAILS (TOGGLE) -->
+          <mat-card-content *ngIf="mail.showDetails">
 
-          <div class="detail-item full-width">
-            <mat-icon>subject</mat-icon>
-            <div>
-              <label>Subject</label>
-              <p>{{ mailDetails?.mailSubject || 'N/A' }}</p>
-            </div>
-          </div>
+            <div class="detail-grid">
 
-          <div class="detail-item full-width response">
-            <mat-icon color="warn">error_outline</mat-icon>
-            <div>
-              <label>Email Response</label>
-              <p>{{ mailDetails?.lastResponse || 'N/A' }}</p>
-            </div>
-          </div>
+              <div class="detail-item">
+                <mat-icon>forward_to_inbox</mat-icon>
+                <div>
+                  <label>From</label>
+                  <p>{{ mail?.fromEmail || 'N/A' }}</p>
+                </div>
+              </div>
 
-          <div class="detail-item">
-            <mat-icon>schedule</mat-icon>
-            <div>
-              <label>Last Sending Date</label>
-              <p>{{ formatDate(mailDetails?.lastSendingTry) }}</p>
+              <div class="detail-item full-width">
+                <mat-icon>outgoing_mail</mat-icon>
+                <div>
+                  <label>To</label>
+                  <p>{{ mail?.toEmail || 'N/A' }}</p>
+                </div>
+              </div>
+
+              <div class="detail-item full-width response">
+                <mat-icon [color]="mail?.status === 1 ? 'primary' : 'warn'">
+                  {{ mail?.status === 1 ? 'check_circle' : 'error_outline' }}
+                </mat-icon>
+
+                <div>
+                  <label>Email Response</label>
+                  <p>{{ mail?.lastResponse || 'N/A' }}</p>
+                  <small>
+                    Status:
+                    <strong [ngClass]="mail?.status === 1 ? 'success' : 'failed'">
+                      {{ mail?.status === 1 ? 'Successfully Sent' : 'Unsuccessful' }}
+                    </strong>
+                  </small>
+                </div>
+              </div>
+
+              <div class="detail-item">
+                <mat-icon>schedule</mat-icon>
+                <div>
+                  <label>Last Sending Date</label>
+                  <p>{{ formatDate(mail?.lastSendingTry) }}</p>
+                </div>
+              </div>
+
             </div>
-          </div>
-        </div>
+
+          </mat-card-content>
+
+        </mat-card>
+
+      </div>
+
+      <!-- No Data -->
+      <div *ngIf="!isLoading && !patientDetails" class="no-data">
+        <mat-icon>info</mat-icon>
+        <span>Email details not available</span>
       </div>
 
     </div>
-
-    <!-- No Data -->
-    <div *ngIf="!isLoading && !patientDetails" class="no-data">
-      <mat-icon>info</mat-icon>
-      <span>Email details not available</span>
-    </div>
-
   </div>
-</div>
-
