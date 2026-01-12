@@ -253,7 +253,7 @@
                                     </mat-form-field>
 
 
-                                    <mat-form-field appearance="outline" fxFlex="25%">
+                                    <!-- <mat-form-field appearance="outline" fxFlex="25%">
                                         <mat-label>PayTMTranNo </mat-label>
 
                                         <input name="PayTmtranNo" formControlName="PayTmtranNo" matInput required
@@ -261,6 +261,19 @@
                                             autocomplete="off" maxlength="12" minlength="4"
                                             oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1').slice(0, 12);"
                                             required="required" value="987665868888">
+                                        <mat-error class="error"
+                                            *ngIf="_Paymentmodesevice.paymentInsertform.get('PayTmtranNo')?.invalid && _Paymentmodesevice.paymentInsertform.get('PayTmtranNo')?.touched">
+                                            PayTMTranNo is required
+                                        </mat-error>
+                                    </mat-form-field> -->
+
+                                     <mat-form-field appearance="outline" fxFlex="25%">
+                                        <mat-label>PayTMTranNo </mat-label>
+
+                                        <input name="PayTmtranNo" formControlName="PayTmtranNo" matInput required
+                                            [(ngModel)]="vPayTmtranNo" #PayTmtranNo  
+                                            autocomplete="off" 
+                                            required="required" >
                                         <mat-error class="error"
                                             *ngIf="_Paymentmodesevice.paymentInsertform.get('PayTmtranNo')?.invalid && _Paymentmodesevice.paymentInsertform.get('PayTmtranNo')?.touched">
                                             PayTMTranNo is required
