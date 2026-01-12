@@ -87,11 +87,11 @@
                                         <airmid-textbox fxFlex="6%" label="HSNcode" formControlName="HSNcode"
                                             [(ngModel)]="vHSNcode" [formGroup]="userFormGroup"
                                             [readonly]="true"></airmid-textbox>
-
+<!-- ApiUrl="'ItemMaster/GetItemListForGRNOrPO?StoreId=' + vstoreId +  '&ItemName='" -->
                                         <airmid-autocomplete label="Item Name (enter 2 char)"
                                             [formGroup]="userFormGroup" formControlName="ItemName"
                                             placeholderText="Item Name (enter 2 char)" fxFlex="22%"
-                                            ApiUrl="ItemMaster/GetItemListForGRNOrPO?StoreId= + vstoreId + &ItemName=" 
+                                            ApiUrl={{ApiUrl}}
                                             (selectionChange)="getSelectedItem($event)" TextField="formattedText"
                                             ValueField="itemId"
                                             (onClearSelection)="resetFormItem()"></airmid-autocomplete>

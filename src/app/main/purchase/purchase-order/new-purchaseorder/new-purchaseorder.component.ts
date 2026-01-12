@@ -53,7 +53,7 @@ export class NewPurchaseorderComponent {
   SGSTAmount: any = 0.0;
   optionsInc = null;
   VatPercentage: any = 0.0;
-  StoreId_1:any = 0;
+  StoreId_1: any = 0;
   BatchNo: any;
   BatchExpDate: any;
   UnitMRP: any;
@@ -159,7 +159,8 @@ export class NewPurchaseorderComponent {
   isLoading = true;
   vsaveflag: boolean = true;
   lastsupplierflag: boolean = false;
-
+  vstoreId = 0
+  ApiUrl = ""
   displayedColumns2 = [
     // 'ItemID',
     'ItemName',
@@ -222,6 +223,11 @@ export class NewPurchaseorderComponent {
   ) { }
 
   ngOnInit(): void {
+    debugger
+    this.vstoreId = this.accountService.currentUserValue.user.storeId;
+    this.ApiUrl = `ItemMaster/GetItemListForGRNOrPO?StoreId=${this.vstoreId}&ItemName=`
+    console.log(this.ApiUrl)
+
     this.userFormGroup = this.getPurchaseOrderForm();
     this.FinalPurchaseform = this.getPurchaseOrderFinalForm()
     this.userFormGroup.markAllAsTouched();
@@ -946,10 +952,13 @@ export class NewPurchaseorderComponent {
   onClear() { }
 
   //new 
-  vstoreId = this.accountService.currentUserValue.user.storeId;
+
   selectChangeStore(obj: any) {
+    debugger
     console.log("Store:", obj);
     this.vstoreId = obj.value || 0
+    this.ApiUrl = `ItemMaster/GetItemListForGRNOrPO?StoreId=${this.vstoreId}&ItemName=`
+  
   }
 
 
@@ -1123,7 +1132,7 @@ export class NewPurchaseorderComponent {
   getLastThreeItemInfo() {
     var vdata = {
       "first": 0,
-      "rows": 10,
+      "rows": 999,
       "sortField": "ItemId",
       "sortOrder": 0,
       "filters": [{ "fieldName": "ItemId", "fieldValue": String(this.ItemID), "opType": "Equals" }],
@@ -1138,7 +1147,7 @@ export class NewPurchaseorderComponent {
   getOldPurchaseOrder(Id) {
     var Param = {
       "first": 0,
-      "rows": 10,
+      "rows": 999,
       "sortField": "PurchaseID",
       "sortOrder": 0,
       "filters": [{ "fieldName": "PurchaseID", "fieldValue": String(Id), "opType": "Equals" }],
@@ -1196,7 +1205,7 @@ export class NewPurchaseorderComponent {
     var data =
     {
       "first": 0,
-      "rows": 10,
+      "rows": 999,
       "sortField": "ItemId",
       "sortOrder": 0,
       "filters": [{ "fieldName": "ItemId", "fieldValue": String(this.ItemID), "opType": "Equals" },

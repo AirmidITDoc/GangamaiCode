@@ -131,6 +131,7 @@ export class NewGrnComponent implements OnInit, OnDestroy {
     mock = false;
     vGRNType: boolean = true;
     vPaymentType: boolean = false
+    ApiUrl=""
     // Bind dropdown mode
     dropdownMode = {
         gstCalcType: "GstCalcType",
@@ -163,6 +164,14 @@ export class NewGrnComponent implements OnInit, OnDestroy {
         this._GRNList.GRNFinalForm.markAllAsTouched();
     }
     ngOnInit(): void {
+
+       
+                     
+             this.StoreId = this.accountService.currentUserValue.user.storeId;
+            this.ApiUrl = `ItemMaster/GetItemListForGRNOrPO?StoreId=${this.StoreId}&ItemName=`
+            console.log(this.ApiUrl)
+
+
         this.GrnHeaderForm = this.createGrnHeaderInsert();
         this.PoToGrnSaveForm = this.createGrnPOInsert();
         this.StoreId_1 = this.accountService.currentUserValue.user.storeId || 0
@@ -196,10 +205,14 @@ export class NewGrnComponent implements OnInit, OnDestroy {
         }
     }
     batchlistApiUrl: any = '';
-    //Item details selectedObj
-    selectChangeStore(obj){
-            this.StoreId_1 = obj?.value
-    }
+   
+      selectChangeStore(obj: any) {
+    debugger
+    console.log("Store:", obj);
+    this.StoreId = obj.value || 0
+    this.ApiUrl = `ItemMaster/GetItemListForGRNOrPO?StoreId=${this.StoreId}&ItemName=`
+      }
+
     getSelectedItem(item: GRNItemResponseType): void {
         if (this.mock) {
             return;
@@ -1157,7 +1170,7 @@ export class NewGrnComponent implements OnInit, OnDestroy {
     getGRNrtrvItemlist() {
         var vdata = {
             "first": 0,
-            "rows": 100,
+            "rows": 999,
             "sortField": "GRNDetID",
             "sortOrder": 0,
             "filters": [{ "fieldName": "GRNID", "fieldValue": String(this.registerObj.grnid), "opType": "Equals" }],
@@ -1370,7 +1383,7 @@ export class NewGrnComponent implements OnInit, OnDestroy {
     getLastThreeItemInfo(Obj) {
         var vdata = {
             "first": 0,
-            "rows": 10,
+            "rows": 999,
             "sortField": "ItemId",
             "sortOrder": 0,
             "filters": [{ "fieldName": "ItemId", "fieldValue": String(Obj.itemId), "opType": "Equals" }],

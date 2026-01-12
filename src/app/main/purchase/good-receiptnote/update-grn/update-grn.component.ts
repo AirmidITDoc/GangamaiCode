@@ -33,6 +33,8 @@ const moment = _rollupMoment || _moment;
     animations: fuseAnimations
 })
 export class UpdateGRNComponent implements OnInit { 
+     ApiUrl = ""
+
        displayedColumns2 = [
            'Status',
            'SrNo',
@@ -159,6 +161,11 @@ export class UpdateGRNComponent implements OnInit {
            this._GRNList.GRNFinalForm.markAllAsTouched();
        }
        ngOnInit(): void {
+
+             this.StoreId = this.accountService.currentUserValue.user.storeId;
+            this.ApiUrl = `ItemMaster/GetItemListForGRNOrPO?StoreId=${this.StoreId}&ItemName=`
+            console.log(this.ApiUrl)
+
            this.GrnHeaderForm = this.createGrnHeaderInsert();
            this.PoToGrnSaveForm = this.createGrnPOInsert();
            if (this.mock) {
@@ -1084,7 +1091,7 @@ export class UpdateGRNComponent implements OnInit {
        getGRNrtrvItemlist() {
            var vdata = {
                "first": 0,
-               "rows": 10,
+               "rows": 9999,
                "sortField": "GRNDetID",
                "sortOrder": 0,
                "filters": [{ "fieldName": "GRNID", "fieldValue": String(this.registerObj.grnid), "opType": "Equals" }],
@@ -1289,7 +1296,7 @@ export class UpdateGRNComponent implements OnInit {
        getLastThreeItemInfo(Obj) {
            var vdata = {
                "first": 0,
-               "rows": 10,
+               "rows": 9999,
                "sortField": "ItemId",
                "sortOrder": 0,
                "filters": [{ "fieldName": "ItemId", "fieldValue": String(Obj.itemId), "opType": "Equals" }],
@@ -1727,6 +1734,14 @@ export class UpdateGRNComponent implements OnInit {
                }
            }
        }
+
+        selectChangeStore(obj: any) {
+    debugger
+    console.log("Store:", obj);
+    this.StoreId = obj.value || 0
+    this.ApiUrl = `ItemMaster/GetItemListForGRNOrPO?StoreId=${this.StoreId}&ItemName=`
+  
+  }
    }
    export class LastThreeItemList {
        ItemID: any;
