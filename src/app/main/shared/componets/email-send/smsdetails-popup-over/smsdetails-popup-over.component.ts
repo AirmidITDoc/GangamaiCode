@@ -8,8 +8,8 @@ import { OPListService } from 'app/main/opd/new-oplist/oplist.service';
   selector: 'app-smsdetails-popup-over',
   templateUrl: './smsdetails-popup-over.component.html',
   styleUrls: ['./smsdetails-popup-over.component.scss'],
-      encapsulation: ViewEncapsulation.None,
-      animations: fuseAnimations,
+  encapsulation: ViewEncapsulation.None,
+  animations: fuseAnimations,
 })
 export class SMSDetailsPopupOverComponent {
   @Input() patientData: any;
@@ -17,33 +17,33 @@ export class SMSDetailsPopupOverComponent {
   @Output() mouseLeave = new EventEmitter<void>();
 
   patientDetails: any = null;
-   mailDetails: any = null;
+  mailDetails: any = null;
   isLoading: boolean = false;
-BillNo=0
+  BillNo = 0
   constructor(
     private _OPListService: OPListService,
     private datePipe: DatePipe
   ) { }
 
   ngOnInit(): void {
-    if (this.patientData && this.patientData.billNo || this.patientData.pBillNo|| this.patientData.grnNumber|| this.patientData.purchaseNo) {
-       this.patientDetails = this.patientData;
-       if(this.patientData.billNo )
-       this.BillNo=this.patientData.billNo 
-      else   if(this.patientData.pBillNo )
-         this.BillNo=this.patientData.pBillNo 
-   else   if(this.patientData.grnNumber )
-         this.BillNo=this.patientData.grnNumber 
-   else   if(this.patientData.purchaseNo )
-         this.BillNo=this.patientData.purchaseNo 
-  //  else   if(this.patientData.billNo )
-  //        this.BillNo=this.patientData.billNo 
+    if (this.patientData && this.patientData.billNo || this.patientData.pBillNo || this.patientData.grnNumber || this.patientData.purchaseNo) {
+      this.patientDetails = this.patientData;
+      if (this.patientData.billNo)
+        this.BillNo = this.patientData.billNo
+      else if (this.patientData.pBillNo)
+        this.BillNo = this.patientData.pBillNo
+      else if (this.patientData.grnNumber)
+        this.BillNo = this.patientData.grnNumber
+      else if (this.patientData.purchaseNo)
+        this.BillNo = this.patientData.purchaseNo
+      //  else   if(this.patientData.billNo )
+      //        this.BillNo=this.patientData.billNo 
 
 
 
-       console.log(this.patientDetails)
+      console.log(this.patientDetails)
       this.loadPatientDetails();
-    }  
+    }
   }
 
   loadPatientDetails() {
@@ -70,7 +70,7 @@ BillNo=0
     } catch {
       return 'N/A';
     }
-  } 
+  }
 
   onMouseEnter() {
     this.mouseEnter.emit();

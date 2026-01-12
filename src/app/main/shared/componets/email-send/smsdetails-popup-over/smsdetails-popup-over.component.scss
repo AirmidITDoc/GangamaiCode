@@ -1,5 +1,5 @@
 .patient-details-popover-container {
-  width: 450px;
+  width: 600px;
   max-height: 600px;
   padding: 0;
   background: white;
@@ -152,7 +152,7 @@
 
 
 .patient-details-popover-container {
-  width: 420px;
+  width: 600px;
   background: #ffffff;
   border-radius: 10px;
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
@@ -251,4 +251,81 @@
   gap: 8px;
   color: #666;
   padding: 18px 0;
+}
+
+
+.email-card {
+  margin-bottom: 16px;
+}
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+}
+.info-icon {
+  cursor: pointer;
+  color: #1976d2;
+}
+
+.detail-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.full-width {
+  grid-column: span 2;
+}
+
+.header-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.status-text.success { color: #2e7d32; }
+.status-text.failed { color: #d32f2f; }
+
+
+.header-border {
+  border-left: 5px solid transparent;
+}
+
+.border-success {
+  border-left-color: #2e7d32;
+}
+
+.border-failed {
+  border-left-color: #d32f2f;
+}
+
+.header-content {
+  display: flex;
+  flex-direction: column;
+  font-size: 13px;
+}
+
+.header-title {
+  font-size: 12px;
+  font-weight: 600;
+}
+.sub-line {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+}
+
+.time-icon {
+  font-size: 18px;
+  color: #666;
+}
+
+.spacer {
+  flex: 1;
 }
