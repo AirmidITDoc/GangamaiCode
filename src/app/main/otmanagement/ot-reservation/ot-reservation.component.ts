@@ -118,7 +118,7 @@ export class OTReservationComponent implements OnInit {
         { heading: "Theater Name", key: "otTableName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         { heading: "UserName", key: "userName", sort: true, align: 'left', emptySign: 'NA', width: 180 },
         {
-            heading: "Action", key: "action", align: "right", width: 120, sticky: true, type: gridColumnTypes.template,
+            heading: "Action", key: "action", align: "right", width: 150, sticky: true, type: gridColumnTypes.template,
             template: this.actionButtonTemplate
         }
     ];
