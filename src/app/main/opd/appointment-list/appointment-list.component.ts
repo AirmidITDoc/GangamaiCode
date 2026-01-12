@@ -805,7 +805,7 @@ export class AppointmentListComponent implements OnInit {
 
     OnPrintPatientIcard(element) {
         console.log('Third action clicked for:', element);
-        this.commonService.Onprint("VisitId", element.visitId, "OPStickerPrint");
+        this.commonService.OnThermalPrintNew("VisitId", element.visitId, "OPStickerPrint");
     }
 
     OnWhatsAppAppointmentSend(element) {

@@ -41,6 +41,7 @@ import { Error403Component } from './main/shared/APIerrorpages/error-403/error-4
 import { Error404Component } from './main/shared/APIerrorpages/error-404/error-404.component';
 import { InternetConnectionComponent } from './main/shared/componets/internet-connection/internet-connection.component';
 import { SharedModule } from './main/shared/shared.module';
+import { HtmlviewerComponent } from './main/htmlviewer/htmlviewer.component';
 const appRoutes: Routes = [
     {
         path: "auth",
@@ -214,6 +215,7 @@ class PickDateAdapter extends NativeDateAdapter {
     declarations: [
         AppComponent,
         PdfviewerComponent,
+        HtmlviewerComponent,
         InternetConnectionComponent,
 
     ],
