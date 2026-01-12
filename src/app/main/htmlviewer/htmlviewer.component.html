@@ -23,11 +23,14 @@
                 <span>{{title}}</span>
             </div>
             <div class="modal-header-right">
-                <button mat-icon-button matTooltip="Print (Thermal)" (click)="onPrintThermal()" style="color: white; margin-right: 8px;">
+                <span class="qty-label">Qty</span>
+                <input type="number" min="1" [(ngModel)]="qty" class="qty-input" matTooltip="Number of copies" />
+                <button mat-icon-button matTooltip="Print (Thermal)" (click)="onPrintThermal()"
+                    style="color: white; margin-right: 8px;">
                     <mat-icon>print</mat-icon>
                 </button>
                 <span tabIndex="-1" aria-label="Close dialog" matTooltip="Close" (click)="onClose()" class="close-icon">
-                    <mat-icon >close</mat-icon>
+                    <mat-icon>close</mat-icon>
                 </span>
             </div>
         </div>
@@ -37,7 +40,7 @@
     <div class="modal-body" fusePerfectScrollbar>
         <div class="modal-body-container">
             <!-- <div [innerHTML]="html"></div> -->
-             <iframe #frame class="print-frame"></iframe>
+            <iframe #frame class="print-frame"></iframe>
         </div>
     </div>
 </div>

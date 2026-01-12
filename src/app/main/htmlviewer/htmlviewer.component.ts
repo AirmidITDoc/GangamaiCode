@@ -15,6 +15,7 @@ export class HtmlviewerComponent implements OnInit, AfterViewInit {
     constructor(@Inject(MAT_DIALOG_DATA) public data: any, public dialogRef: MatDialogRef<HtmlviewerComponent>) { }
     html: string = "";
     title: string = "";
+    qty = 1;
 
     ngOnInit(): void {
         if (this.data) {
@@ -48,9 +49,14 @@ export class HtmlviewerComponent implements OnInit, AfterViewInit {
     onClose() {
         this.dialogRef.close();
     }
+
+
     onPrintThermal() {
         const win = window.open('', '', 'height=800,width=1200');
-
+        let finalPrint = "";
+        for (let i = 0; i < this.qty; i++) {
+            finalPrint += this.html;
+        }
         win!.document.write(`
     <html>
       <head>
@@ -62,7 +68,7 @@ export class HtmlviewerComponent implements OnInit, AfterViewInit {
         </style>
       </head>
       <body>
-        ${this.html}
+        ${finalPrint}
       </body>
     </html>
   `);
