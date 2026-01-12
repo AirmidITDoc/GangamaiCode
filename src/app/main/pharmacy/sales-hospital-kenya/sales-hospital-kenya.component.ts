@@ -1025,7 +1025,7 @@ this.Is9_Digit_National_Id = id === "1";
          this.RegId = '';
          this.PatientName = '';
          this.DoctorName = '';
-         this.ItemSubform.get('opIpType').setValue('1');
+         this.ItemSubform.get('opIpType').setValue('0');
          this.Draftchk = true;
          this.ItemSubform.get('CashPay').setValue('Credit');
          this.ItemSubform.get('referanceNo').reset('');

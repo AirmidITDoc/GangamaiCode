@@ -456,23 +456,23 @@
                                                                         </span></mat-cell>
                                                                 </ng-container>
 
-                                                                <ng-container matColumnDef="DoctorName">
+                                                                <!-- <ng-container matColumnDef="DoctorName">
                                                                     <mat-header-cell *matHeaderCellDef>Doctor
                                                                         Name</mat-header-cell>
                                                                     <mat-cell *matCellDef="let contact"><span
                                                                             class="text-overflow">
                                                                             {{contact.doctorName}} </span></mat-cell>
-                                                                </ng-container>
+                                                                </ng-container> -->
 
 
-                                                                <!-- <ng-container matColumnDef="DoctorName">
+                                                                <ng-container matColumnDef="DoctorName">
                                                                     <mat-header-cell *matHeaderCellDef mat-sort-header
                                                                         fxShow.gt-sm class="w-250">Doctor
                                                                         Name</mat-header-cell>
                                                                     <mat-cell *matCellDef="let contact" fxShow.gt-sm
                                                                         class="w-250">
-                                                                        <span>{{ contact.doctorName}}</span>
-                                                                        <div>
+                                                                        <span>{{contact.doctorName}}</span>
+                                                                        <div fxLayout="row" *ngIf="Lable != 'Pharmacy'">
                                                                             <ng-container
                                                                                 *ngIf="!contact.EditDoctor; else showInput">
                                                                                 <button mat-icon-button
@@ -485,20 +485,20 @@
                                                                                     fxLayout="row" fxLayoutGap="2px">
                                                                                     <airmid-dropdown
                                                                                         formControlName="EditDoctor"
-                                                                                        class="w-250" appearance="fill"
+                                                                                        class="w-200" appearance="fill"
                                                                                         [formGroup]="Doceditform"
                                                                                         [mode]="autocompleteModedeptdoc"
                                                                                         [validations]="getValidationMessages().DoctorId"
-                                                                                        (selectionChange)="DropDownValue($event)"></airmid-dropdown>
+                                                                                        (selectionChange)="DropDownValue($event,contact)"></airmid-dropdown>
                                                                                 </form>
                                                                                 <mat-icon matTooltip="Close"
                                                                                     (click)="DoctorisableEditing(contact)">cancel</mat-icon>
                                                                             </ng-template>
                                                                         </div>
                                                                     </mat-cell>
-                                                                </ng-container> -->
+                                                                </ng-container>
 
-                                                                <ng-container matColumnDef="Exclucion" stickyEnd>
+                                                                <ng-container matColumnDef="Exclucion">
                                                                     <mat-header-cell *matHeaderCellDef mat-sort-header
                                                                         class="w-90">Exclusion</mat-header-cell>
                                                                     <mat-cell *matCellDef="let contact" class="w-90">
@@ -507,7 +507,7 @@
                                                                     </mat-cell>
                                                                 </ng-container>
 
-                                                                <ng-container matColumnDef="Approved" stickyEnd>
+                                                                <ng-container matColumnDef="Approved">
                                                                     <mat-header-cell *matHeaderCellDef mat-sort-header
                                                                         class="w-90">Approved</mat-header-cell>
                                                                     <mat-cell *matCellDef="let contact" class="w-90">
