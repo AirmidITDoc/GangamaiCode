@@ -685,6 +685,7 @@ export class PaymentChange {
   onlineTranNo: any
   payMode1: any
   currentDate = new Date().toISOString()
+  salesId: any
 
   constructor(PaymentChange) {
     {
@@ -754,6 +755,7 @@ export class PaymentChange {
       this.tranNo = PaymentChange.tranNo || '';
       this.onlineTranNo = PaymentChange.onlineTranNo || '';
       this.payMode1 = PaymentChange.payMode1 || '';
+this.salesId = PaymentChange.salesId || 0;
 
 
 

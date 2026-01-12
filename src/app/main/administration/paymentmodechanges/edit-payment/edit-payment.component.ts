@@ -86,12 +86,17 @@ export class EditPaymentComponent implements OnInit {
     if (this.data) {
       this.registerObj = this.data.registerObj;
       console.log("EditData:", this.registerObj)
-      console.log(this.data.registerObj)
+      console.log(this.data)
       this.vpaymentId = this.registerObj.paymentId;
       this.vnetPayAmt = this.registerObj.paidAmount;
       this.vbalanceAmt = this.registerObj.paidAmount;
       this.vPaidAmount = this.registerObj.paidAmount;
-      this.vBillNo = this.registerObj.billNo || 0;
+debugger
+      if (this.data.FromName == 'IP-PaymentModeChange')
+        this.vBillNo = this.registerObj.billNo || 0;
+      else
+        this.vBillNo = this.registerObj.salesId || 0;
+
       this.opiptype = this.registerObj.opdipdtype || 1
     }
 

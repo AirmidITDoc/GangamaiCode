@@ -465,7 +465,7 @@
                                                                 </ng-container> -->
 
 
-                                                                <ng-container matColumnDef="DoctorName">
+                                                                <!-- <ng-container matColumnDef="DoctorName">
                                                                     <mat-header-cell *matHeaderCellDef mat-sort-header
                                                                         fxShow.gt-sm class="w-250">Doctor
                                                                         Name</mat-header-cell>
@@ -486,6 +486,41 @@
                                                                                     <airmid-dropdown
                                                                                         formControlName="EditDoctor"
                                                                                         class="w-200" appearance="fill"
+                                                                                        [formGroup]="Doceditform"
+                                                                                        [mode]="autocompleteModedeptdoc"
+                                                                                        [validations]="getValidationMessages().DoctorId"
+                                                                                        (selectionChange)="DropDownValue($event,contact)"></airmid-dropdown>
+                                                                                </form>
+                                                                                <mat-icon matTooltip="Close"
+                                                                                    (click)="DoctorisableEditing(contact)">cancel</mat-icon>
+                                                                            </ng-template>
+                                                                        </div>
+                                                                    </mat-cell>
+                                                                </ng-container> -->
+
+
+                                                                <ng-container matColumnDef="DoctorName">
+                                                                    <mat-header-cell *matHeaderCellDef mat-sort-header
+                                                                        fxShow.gt-sm class="w-230">Doctor
+                                                                        Name</mat-header-cell>
+                                                                    <mat-cell *matCellDef="let contact" fxShow.gt-sm
+                                                                        class="w-230">
+                                                                        <span>{{ contact.doctorName}}</span>
+
+                                                                            <div *ngIf="Lable != 'Pharmacy' && contact.doctorId >0">
+                                                                            <ng-container
+                                                                                *ngIf="!contact.EditDoctor; else showInput">
+                                                                                <button mat-icon-button
+                                                                                    (click)="DocenableEditing(contact)"
+                                                                                    class="clear-button">
+                                                                                    <mat-icon>edit</mat-icon></button>
+                                                                            </ng-container>
+                                                                            <ng-template #showInput>
+                                                                                <form [formGroup]="Doceditform"
+                                                                                    fxLayout="row" fxLayoutGap="2px">
+                                                                                    <airmid-dropdown
+                                                                                        formControlName="EditDoctor"
+                                                                                        class="w-250" appearance="fill"
                                                                                         [formGroup]="Doceditform"
                                                                                         [mode]="autocompleteModedeptdoc"
                                                                                         [validations]="getValidationMessages().DoctorId"
