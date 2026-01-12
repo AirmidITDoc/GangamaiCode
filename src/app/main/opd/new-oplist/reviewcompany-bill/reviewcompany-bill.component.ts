@@ -180,7 +180,7 @@ export class ReviewcompanyBillComponent {
       isInclusionExclusion: [item?.isInclusionExclusion || false,],
       chargesId: [item?.chargesId, [this._FormvalidationserviceService.onlyNumberValidator()]],
       isApprovedByCamp: [item?.isApprovedByCamp || false,],
-      doctorId: [item?.doctorId || 0,],
+      doctorId: [this.Doceditform.get('Doceditform').value.DoctorId || item?.doctorId || 0,],
       doctorName: [item?.DoctorName || '',],
     });
   }
