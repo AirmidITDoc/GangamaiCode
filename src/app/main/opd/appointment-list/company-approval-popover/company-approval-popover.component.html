@@ -2,7 +2,7 @@
   <div class="popover-header">
     <h3>Company Approval Information</h3>
   </div>
-  
+
   <div class="popover-body">
     <!-- Company Approval Form -->
     <form [formGroup]="companyApprovalFormGroup" class="approval-form">
@@ -39,10 +39,15 @@
         <mat-form-field appearance="outline" class="form-field">
           <mat-label>Date Approved</mat-label>
           <input matInput [matDatepicker]="picker" formControlName="dateApproved"
-                 (dateChange)="onDateApprovedChange($event)">
+            (dateChange)="onDateApprovedChange($event)">
           <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
           <mat-datepicker #picker></mat-datepicker>
         </mat-form-field>
+
+        <airmid-dropdown label="Company Name" formControlName="companyId" [formGroup]="companyApprovalFormGroup"
+           [validations]="getValidationMessages().CompanyId" [mode]="autocompleteModecompany"
+          (selectionChange)="onChangeCompany($event)">
+        </airmid-dropdown>
       </div>
 
       <div class="form-row">
@@ -67,4 +72,3 @@
     </div>
   </div>
 </div>
-

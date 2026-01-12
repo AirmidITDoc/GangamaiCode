@@ -19,7 +19,7 @@ export class CompanyApprovalPopoverComponent implements OnInit {
   
   companyApprovalFormGroup: FormGroup;
   AdmissionID: any;
-
+    autocompleteModecompany: string = "Company";
   constructor(
     private formBuilder: UntypedFormBuilder,
     private toastr: ToastrService,
@@ -38,7 +38,8 @@ export class CompanyApprovalPopoverComponent implements OnInit {
         approvedAmount: this.patientData.approvedAmount || 0,
         alentry: this.patientData.alentry || '',
         dateApproved: this.patientData.dateApproved || new Date(),
-        comments: this.patientData.comments || ''
+        comments: this.patientData.comments || '',
+        companyId: this.patientData.CompanyId || 0
       });
     }
   }
@@ -60,6 +61,7 @@ export class CompanyApprovalPopoverComponent implements OnInit {
       alentry: [''],
       dateApproved: [new Date(), [Validators.required]],
       comments: [''],
+      companyId:0
     });
   }
 
@@ -179,6 +181,20 @@ export class CompanyApprovalPopoverComponent implements OnInit {
     );
   }
 
+    onChangeCompany(value) {
+        // this._AdmissionService.getCompanyById(value.value).subscribe((response) => {
+        //     this.companyDet = response;
+           
+        // });
+    }
+
+  getValidationMessages() {
+        
+        return {
+            CompanyId: [],
+         };
+    }
+
   onClose() {
     this.companyApprovalFormGroup.reset({
       id: 0,
@@ -187,7 +203,8 @@ export class CompanyApprovalPopoverComponent implements OnInit {
       approvedAmount: 0,
       alentry: '',
       dateApproved: new Date(),
-      comments: ''
+      comments: '',
+      companyId:0
     });
   }
 
