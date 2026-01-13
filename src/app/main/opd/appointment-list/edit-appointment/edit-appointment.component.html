@@ -1,0 +1,191 @@
+<div class="modal-wrapper grid-container">
+  <!-- Modal header -->
+  <div class="modal-header accent">
+    <div class="modal-header-content">
+      <div class="modal-header-title">
+        <span [@animate]="{ value: '*', params: { delay: '100ms', x: '-25px' } }">Edit Appointment</span>
+      </div>
+      <div class="modal-header-right">
+        <div class="comman-date-container">
+          <div class="comman-date">
+            <app-common-date [screenFrom]="screenFromString" [isDisableFuture]="true"
+              (dateTimeEventEmitter)="getDateTime($event)"></app-common-date>
+          </div>
+          <div class="close-icon">
+            <button mat-icon-button tabIndex="-1" [mat-dialog-close]="true" aria-label="Close dialog"
+              matTooltip="Close">
+              <mat-icon>close</mat-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-body">
+    <div class="modal-body-container">
+      <mat-drawer-container class="main-container h-100-p">
+        <mat-drawer-content class="overflow-hidden">
+          <div class="main-content h-100-p overflow-auto ml-8">
+            <div>
+              <div class="modal-card-container">
+                <mat-card>
+                  <div class="patient-info-container">
+                    <div class="patient-sub">
+                      <div class="patient-info-row patient-info-1-111 pt-8" fxLayout="row"
+                        fxLayoutAlign="space-between">
+                        <div fxLayout="column" fxLayoutGap="10px">
+                          <div class="patient-col">
+                            <span class="patient-col-key">UHID No
+                            </span>
+                            <span>:</span>
+                            <span class="patient-col-value">{{data.regNo}}</span>
+                          </div>
+                          <div class="patient-col">
+                            <span class="patient-col-key">Patient Name
+                            </span>
+                            <span>:</span>
+                            <span class="patient-col-value">{{data.patientName}}</span>
+                          </div>
+                          <div class="patient-col">
+                            <span class="patient-col-key">Doctor Name</span>
+                            <span>:</span>
+                            <span class="patient-col-value">{{data.doctorname}}</span>
+                          </div>
+                        </div>
+                        <div fxLayout="column" fxLayoutGap="10px">
+
+                          <div class="patient-col">
+                            <span class="patient-col-key">OPD No</span>
+                            <span>:</span>
+                            <span class="patient-col-value">{{data.opdNo}}</span>
+                          </div>
+                          <div class="patient-col">
+                            <span class="patient-col-key">Age | Sex
+                            </span>
+                            <span>:</span>
+                            <span class="patient-col-value">{{data.ageYear}}Y|{{data.ageMonth}}M|{{data.ageDay}}
+                              D | {{data.genderName}}</span>
+                          </div>
+                          <div class="patient-col">
+                            <span class="patient-col-key">Department</span>
+                            <span>:</span>
+                            <span class="patient-col-value">{{data.departmentName}}</span>
+                          </div>
+
+
+                        </div>
+                        <div fxLayout="column" fxLayoutGap="10px" style="margin-right: 100px;">
+
+                          <div class="patient-col">
+                            <span class="patient-col-key">Patient Type | Tarrif
+                            </span>
+                            <span>:</span>
+                            <span class="patient-col-value">{{data.patientType}} |
+                              {{data.tariffName}}</span>
+                          </div>
+                          <div class="patient-col">
+                            <span class="patient-col-key">Company Name</span>
+                            <span>:</span>
+                            <span class="patient-col-value" style="color: orange;">{{data.companyName}}</span>
+                          </div>
+                          <div class="patient-col">
+                            <span class="patient-col-key">Ref-Doctor Name
+                            </span>
+                            <span>:</span>
+                            <span class="patient-col-value">{{data.refDocName}}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </mat-card>
+              </div>
+              <div class="personal-panel">
+                <mat-accordion multi>
+
+                  <mat-expansion-panel expanded class="mt-12">
+                    <mat-expansion-panel-header>
+                      <mat-panel-title>Visit Details</mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <form [formGroup]="VisitFormGroup" class="mat-form-field-100">
+                      <div fxFlex="100" fxLayout="row wrap" fxLayoutGap="10px grid">
+                        <input type="hidden" name="RegId" formControlName="regId" [(ngModel)]="registerObj.regId" />
+
+                        <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
+                          <airmid-dropdown label="Class Name" formControlName="ClassId" [value]="data?.classId"
+                            [validations]="getValidationMessages().ClassId" [formGroup]="VisitFormGroup"
+                            [mode]="autocompleteModeClass"></airmid-dropdown>
+                        </div>
+
+                        <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
+                          <airmid-dropdown label="Payer Type" formControlName="PatientTypeId"
+                            [value]="data?.patientTypeId" [formGroup]="VisitFormGroup"
+                            [validations]="getValidationMessages().patientTypeId" [mode]="autocompleteModepatienttype"
+                            (selectionChange)="onChangePatient($event)"></airmid-dropdown>
+                        </div>
+                        <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%" *ngIf="isCompanySelected">
+                          <airmid-dropdown label="Company Name" formControlName="CompanyId" [formGroup]="VisitFormGroup"
+                            [value]="data?.companyId" [validations]="getValidationMessages().CompanyId"
+                            [mode]="autocompleteModecompany" (selectionChange)="onChangeCompany($event)">
+                          </airmid-dropdown>
+                        </div>
+
+                        <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
+                          <airmid-dropdown label="Tariff Name" formControlName="TariffId" [formGroup]="VisitFormGroup"
+                            [value]="data?.tariffId" [validations]="getValidationMessages().tariffId"
+                            [mode]="autocompleteModetariff"></airmid-dropdown>
+                        </div>
+                        <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
+                          <airmid-dropdown label="Department Name" formControlName="DepartmentId"
+                            [value]="registerObj?.departmentId || vDepId" [formGroup]="VisitFormGroup"
+                            [validations]="getValidationMessages().departmentId" [mode]="autocompletedepartment"
+                            (selectionChange)="selectChangedepartment($event)"></airmid-dropdown>
+                        </div>
+
+                        <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
+                          <airmid-dropdown label="Doctor Name" formControlName="ConsultantDocId"
+                            [value]="registerObj?.doctorId" [formGroup]="VisitFormGroup"
+                            [validations]="getValidationMessages().DoctorID" #ddldoctor></airmid-dropdown>
+                        </div>
+
+                        <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
+                          <airmid-dropdown label="RefDoctor Name" formControlName="RefDocId"
+                            [formGroup]="VisitFormGroup" [value]="data?.refDocId"
+                            [validations]="getValidationMessages().refDocId"
+                            [mode]="autocompleteModerefdoc"></airmid-dropdown>
+                        </div>
+
+
+
+                        <!-- <div fxFlex="30%" fxFlex.xs="100%" fxFlex.sm="33%" *ngIf="isCompanySelected">
+                          <airmid-dropdown label="SubCompany Name" formControlName="SubCompanyId"
+                            [formGroup]="VisitFormGroup" [validations]="getValidationMessages().SubCompanyId"
+                            [mode]="autocompleteModesubcompany"></airmid-dropdown>
+                        </div> -->
+
+
+                      </div>
+                    </form>
+                  </mat-expansion-panel>
+
+                </mat-accordion>
+              </div>
+            </div>
+          </div>
+        </mat-drawer-content>
+
+      </mat-drawer-container>
+    </div>
+  </div>
+
+  <div class="modal-footer">
+    <div class="footer-navigation-container">
+      <div class="modal-footer-buttons">
+
+        <button type="button" class="btn btn-danger-outline" (click)="onClose()">Close</button>
+        <button type="button" class="btn btn-primary" (click)="onSave()">Save</button>
+      </div>
+    </div>
+  </div>
+</div>

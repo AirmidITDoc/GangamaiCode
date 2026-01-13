@@ -46,6 +46,7 @@ import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { PagePermissionService } from 'app/main/shared/services/page-permission.service';
 import { permissionCodes, permissionType } from 'app/main/shared/model/permission.model';
 import { GastrologyEmrComponent } from '../gastrology-emr/gastrology-emr.component';
+import { EditAppointmentComponent } from './edit-appointment/edit-appointment.component';
 // import { NewAppointmentwithBillComponent } from './new-appointmentwith-bill/new-appointmentwith-bill.component';
 // const moment = _rollupMoment || _moment;
 
@@ -347,6 +348,24 @@ export class AppointmentListComponent implements OnInit {
         dialogRef.afterClosed().subscribe(result => {
             that.grid.bindGridData();
             this.GetAppointdetail()
+        });
+    }
+
+        onEdit(row) {
+        const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+        buttonElement.blur(); // Remove focus from the button
+
+        let that = this;
+        const dialogRef = this._matDialog.open(EditAppointmentComponent,
+            {
+                maxWidth: "65vw",
+                height: '65%',
+                width: '90%',
+                data: row
+            });
+        dialogRef.afterClosed().subscribe(result => {
+            that.grid.bindGridData();
+            // this.GetAppointdetail()
         });
     }
     createSearchForm() {

@@ -58,6 +58,7 @@ import { CompanyApprovalPopoverComponent } from './company-approval-popover/comp
 import { PatientDetailsPopoverComponent } from './patient-details-popover/patient-details-popover.component';
 import { DoctorDetailsPopoverComponent } from './doctor-details-popover/doctor-details-popover.component';
 import { NewAppointmentwithBillComponent } from "./new-appointmentwith-bill/new-appointmentwith-bill.component";
+import { EditAppointmentComponent } from './edit-appointment/edit-appointment.component';
 // import { NewAppointmentwithBillComponent } from './new-appointmentwith-bill/new-appointmentwith-bill.component';
 
 
@@ -92,7 +93,8 @@ const routes: Routes = [
         CompanyApprovalPopoverComponent,
         PatientDetailsPopoverComponent,
         DoctorDetailsPopoverComponent,
-        NewAppointmentwithBillComponent
+        NewAppointmentwithBillComponent,
+        EditAppointmentComponent
     ],
     imports: [
         RouterModule.forChild(routes),

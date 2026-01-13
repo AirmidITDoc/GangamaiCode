@@ -183,6 +183,11 @@ export class AppointmentlistService {
         return this._httpClient1.PostData("VisitDetail/Insert", Param);
 
     }
+    
+     public Editappointment(Param: any) {
+        return this._httpClient1.PutData("VisitDetail/VisitUpdate", Param);
+
+    }
 
     public RregisteredappointmentSave(Param: any) {
 
