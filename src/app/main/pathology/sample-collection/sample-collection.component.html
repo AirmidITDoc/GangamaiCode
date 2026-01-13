@@ -62,6 +62,17 @@
 
         <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
 
+            <ng-template #iconPatientType let-element>
+                <div fxLayout="column" fxLayoutAlign="center center" class="status-box">
+                    <span [ngClass]="{
+                            'status-company': element.patientType == 'Company',
+                            'status-self': element.patientType == 'Self'
+                        }">
+                        {{ element.patientType}}
+                    </span>
+                </div>
+            </ng-template>
+
             <ng-template #iconisCompeleted let-element>
                 <div fxLayout="column" fxLayoutAlign="center center" class="status-box">
                     <span [ngClass]="{
@@ -130,8 +141,8 @@
                 <ng-container filters>
                     <form [formGroup]="myformSearch">
 
-                        <airmid-dropdown label="Unit Name" formControlName="UnitId"
-                            [readonly]="!isSuperAdmin" (selectionChange)="ListView1($event)" [formGroup]="myformSearch"
+                        <airmid-dropdown label="Unit Name" formControlName="UnitId" [readonly]="!isSuperAdmin"
+                            (selectionChange)="ListView1($event)" [formGroup]="myformSearch"
                             [mode]="autocompleteModeunit"></airmid-dropdown>
 
                         <airmid-datepicker [formGroup]="myformSearch" [isRangePicker]="true"

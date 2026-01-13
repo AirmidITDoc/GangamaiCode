@@ -10,6 +10,7 @@ import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { AirmidConsentformComponent } from 'app/main/shared/componets/airmid-consentform/airmid-consentform.component';
 import { NewCertificateVersionService } from './new-certificate-version.service';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-new-certificate-version',
@@ -136,7 +137,28 @@ export class NewCertificateVersionComponent {
     });
   }
 
-  OnViewReportPdf(element: any) {
+  getPrint(element) {
+    Swal.fire({
+      title: 'Select Report Format',
+      text: "Choose how you want to view the report:",
+      icon: "warning",
+      showDenyButton: true,
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      denyButtonColor: "#6c757d",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "With Header",
+      denyButtonText: "Without Header",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.OnViewReporWithHeader(element);
+      } else if (result.isDenied) {
+        this.OnViewReporWithOutHeader(element);
+      }
+    });
+  }
+
+  OnViewReporWithHeader(element: any) {
 
     setTimeout(() => {
       let param = {
@@ -153,6 +175,43 @@ export class NewCertificateVersionComponent {
           }
         ],
         "mode": "ConsentInformation"
+      }
+
+      this._certificateService.getReportView(param).subscribe(res => {
+
+        const matDialog = this._matDialog.open(PdfviewerComponent,
+          {
+            maxWidth: "85vw",
+            height: '750px',
+            width: '100%',
+            data: {
+              base64: res["base64"] as string,
+              title: "Consent Report" + " " + "Viewer"
+            }
+          });
+        matDialog.afterClosed().subscribe(result => {
+        });
+      });
+    }, 100);
+  }
+
+  OnViewReporWithOutHeader(element: any) {
+
+    setTimeout(() => {
+      let param = {
+        "searchFields": [
+          {
+            "fieldName": "ConsentId",
+            "fieldValue": String(element.consentId),
+            "opType": "Equals"
+          },
+          {
+            "fieldName": "OPIPType",
+            "fieldValue": String(element?.opipType),
+            "opType": "Equals"
+          }
+        ],
+        "mode": "ConsentInformationWithoutHeader"
       }
 
       this._certificateService.getReportView(param).subscribe(res => {

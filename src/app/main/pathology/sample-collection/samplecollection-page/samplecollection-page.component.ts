@@ -35,6 +35,7 @@ export class SamplecollectionPageComponent {
     'ServiceName',
     'SampleCollectionTime',
     'editSampleCollectionTime',
+    'approval'
   ];
 
   selectedAdvanceObj: AdvanceDetailObj;
@@ -163,10 +164,14 @@ export class SamplecollectionPageComponent {
       this.dataSource.sort = this.sort;
       this.dataSource.paginator = this.paginator;
       this.sIsLoading = '';
-    },
-      error => {
-        // this.sIsLoading = '';
-      });
+    });
+  }
+
+  isCheckboxDisabled(contact: any): boolean {
+    if (contact.patientTypeId > 1) {
+      return !contact.isApprovedByCamp;
+    }
+    return false; // Self patient → always enabled
   }
 
   vSamplecollFormInsert(): FormGroup {
@@ -190,27 +195,6 @@ export class SamplecollectionPageComponent {
   get refundDetailsArray(): FormArray {
     return this.vSampleCollFormGroup.get('pathlogySampleCollection') as FormArray;
   }
-
-  // onSave() {
-
-  // if (this.selection.selected.length == 0) {
-  //     Swal.fire('Error !', 'Please select sample data', 'error');
-  //     return;
-  //   }
-  //     this.refundDetailsArray.clear();
-  //     this.selection.selected.forEach(item => {
-  //       this.refundDetailsArray.push(this.createSampleDetail(item));
-  //     });
-
-
-  //   console.log(this.vSampleCollFormGroup.value);
-  //   this._SampleService.UpdateSampleCollection(this.vSampleCollFormGroup.value).subscribe(data => {
-  //    this._matDialog.closeAll()
-  //   });
-
-  // }
-
-
 
   onSave() {
 
@@ -258,29 +242,63 @@ export class SamplecollectionPageComponent {
   }
 
   selection = new SelectionModel<SampleList>(true, []);
+  // masterToggle() {
+  //   if (this.isSomeSelected()) {
+  //     this.selection.clear();
+  //   } else {
+  //     this.isAllSelected()
+  //       ? this.selection.clear()
+  //       : this.dataSource.data.forEach(row => this.selection.select(row));
+  //   }
+  //   console.log(this.selection)
+  //   this.samplelist.push(this.selection);
+  // }
+
+  // isSomeSelected() {
+  //   return this.selection.selected.length > 0;
+  // }
+
+  // isAllSelected() {
+  //   const numSelected = this.selection.selected.length;
+  //   const numRows = this.dataSource.data.length;
+
+  //   return numSelected === numRows;
+
+  // }
+
   masterToggle() {
-    // if there is a selection then clear that selection
-    if (this.isSomeSelected()) {
+
+    const selectableRows = this.dataSource.data.filter(
+      row => !this.isCheckboxDisabled(row)
+    );
+
+    if (this.isAllSelected()) {
       this.selection.clear();
     } else {
-      this.isAllSelected()
-        ? this.selection.clear()
-        : this.dataSource.data.forEach(row => this.selection.select(row));
+      selectableRows.forEach(row => this.selection.select(row));
     }
-    console.log(this.selection)
-    this.samplelist.push(this.selection);
-  }
 
-  isSomeSelected() {
-    return this.selection.selected.length > 0;
+    console.log(this.selection.selected);
   }
 
   isAllSelected() {
+    const selectableRows = this.dataSource.data.filter(
+      row => !this.isCheckboxDisabled(row)
+    );
+
     const numSelected = this.selection.selected.length;
-    const numRows = this.dataSource.data.length;
+    const numRows = selectableRows.length;
 
-    return numSelected === numRows;
+    return numRows > 0 && numSelected === numRows;
+  }
 
+  isSomeSelected() {
+    const selectableRows = this.dataSource.data.filter(
+      row => !this.isCheckboxDisabled(row)
+    );
+
+    return this.selection.selected.length > 0 &&
+      this.selection.selected.length < selectableRows.length;
   }
 
   EditSampleDate(contact) {
@@ -324,6 +342,7 @@ export class SampleList {
   RegNo: any;
   pathReportID: any;
   sampleNo: any;
+  isApprovedByCamp: any;
 
   constructor(SampleList) {
     this.VADate = SampleList.VADate || '';
@@ -338,6 +357,7 @@ export class SampleList {
     this.RegNo = SampleList.RegNo || 0;
     this.pathReportID = SampleList.pathReportID || 0;
     this.sampleNo = SampleList.sampleNo || 0;
+    this.isApprovedByCamp = SampleList.isApprovedByCamp || 0;
   }
 }
 

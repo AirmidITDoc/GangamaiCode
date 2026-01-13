@@ -141,14 +141,11 @@ FinalAge:any=0;
             this.OP_IPType = this.selectedAdvanceObj2.opdipdtype;
             this.SexId = this.selectedAdvanceObj2.genderId;
             if (this.selectedAdvanceObj2.ageYear)
-                this.CheckAge = this.selectedAdvanceObj2.ageYear.trim();
-                this.FinalAge = this.selectedAdvanceObj2.ageYear.trim();
+                this.CheckAge = this.selectedAdvanceObj2.ageYear.trim(); 
             if (this.selectedAdvanceObj2.ageMonth)
-                this.CheckAgemonth = this.selectedAdvanceObj2.ageMonth.trim();
-                this.FinalAge = this.selectedAdvanceObj2.ageMonth.trim();
+                this.CheckAgemonth = this.selectedAdvanceObj2.ageMonth.trim(); 
             if (this.selectedAdvanceObj2.ageDay)
-                this.CheckAgeday = this.selectedAdvanceObj2.ageDay.trim();
-                this.FinalAge = this.selectedAdvanceObj2.ageDay.trim();
+                this.CheckAgeday = this.selectedAdvanceObj2.ageDay.trim(); 
 
             this.reportIdData = [];
 
@@ -163,6 +160,14 @@ FinalAge:any=0;
                 else
                     this.Iscompleted = 0
             });
+
+
+            if (this.selectedAdvanceObj2.ageYear) 
+                this.FinalAge = this.selectedAdvanceObj2.ageYear.trim();
+            if (this.selectedAdvanceObj2.ageMonth && this.FinalAge == 0) 
+                this.FinalAge = this.selectedAdvanceObj2.ageMonth.trim();
+            if (this.selectedAdvanceObj2.ageDay && this.FinalAge == 0) 
+                this.FinalAge = this.selectedAdvanceObj2.ageDay.trim();
 
         }
 

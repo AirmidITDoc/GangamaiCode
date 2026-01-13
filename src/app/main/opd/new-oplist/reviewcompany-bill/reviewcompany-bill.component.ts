@@ -303,7 +303,7 @@ export class ReviewcompanyBillComponent {
     debugger
     var param = {
       "first": 0,
-      "rows": 100,
+      "rows": 999,
       "sortField": "ServiceId",
       "sortOrder": 0,
       "filters": [
@@ -580,7 +580,15 @@ export class ReviewcompanyBillComponent {
     }
   }
   deletecharges(contact) {
-    debugger
+    debugger 
+if (contact?.isCompleted === true) {
+  this.toastr.warning(
+    'The lab test has already been completed. This service cannot be deleted.',
+    'Warning!',
+    { toastClass: 'tostr-tost custom-toast-warning' }
+  );
+}
+
     Swal.fire({
       title: 'Do you want to cancel the Service ',
       text: "You won't be able to revert this!",

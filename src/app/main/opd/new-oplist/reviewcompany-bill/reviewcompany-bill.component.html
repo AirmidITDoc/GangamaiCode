@@ -166,7 +166,7 @@
                                                 (click)="CompanyAmtSave()">Save</button>
                                         </div>
                                         <hr>
-                                        <div fxLayout="row" fxLayoutGap="6px">
+                                        <!-- <div fxLayout="row" fxLayoutGap="6px">
                                             <div fxLayout="column" fxLayoutGap="6px">
                                                 <airmid-dropdown label="Gov.Company Name" fxFlex
                                                     formControlName="govtCompanyId" [formGroup]="CompanyForm"
@@ -202,7 +202,42 @@
                                                 </airmid-textbox>
 
                                             </div>
+                                        </div> -->
+                                        <div fxLayout="row" fxLayout.xs="column" fxLayout.sm="column" fxLayoutGap="12px">
+                                        
+                                            <!-- Govt Company -->
+                                            <div fxLayout="column" fxFlex="50" fxFlex.md="50" fxFlex.sm="100" fxFlex.xs="100" fxLayoutGap="6px">
+                                        
+                                                <airmid-dropdown label="Gov.Company Name" formControlName="govtCompanyId" [formGroup]="CompanyForm"
+                                                    [validations]="getValidationMessages().govtCompanyId" [mode]="autocompleteModecompany">
+                                                </airmid-dropdown>
+                                        
+                                                <airmid-textbox label="Gov.Company Amount" formControlName="govtApprovedAmt" [formGroup]="CompanyForm"
+                                                    [validations]="getValidationMessages().govtApprovedAmt">
+                                                </airmid-textbox>
+                                        
+                                                <airmid-textbox label="Reference No" formControlName="referenceNo" [formGroup]="CompanyForm"
+                                                    [validations]="getValidationMessages().referenceNo">
+                                                </airmid-textbox>
+                                            </div>
+                                        
+                                            <!-- Company -->
+                                            <div fxLayout="column" fxFlex="50" fxFlex.md="50" fxFlex.sm="100" fxFlex.xs="100" fxLayoutGap="6px">
+                                        
+                                                <airmid-dropdown label="Company Name" formControlName="companyApprovedId" [formGroup]="CompanyForm"
+                                                    [validations]="getValidationMessages().companyApprovedId" [mode]="autocompleteModecompany">
+                                                </airmid-dropdown>
+                                        
+                                                <airmid-textbox label="Company Amount" formControlName="companyApprovedAmt" [formGroup]="CompanyForm"
+                                                    [validations]="getValidationMessages().companyApprovedAmt">
+                                                </airmid-textbox>
+                                        
+                                                <airmid-textbox label="Reference No1" formControlName="referenceNo_1" [formGroup]="CompanyForm"
+                                                    [validations]="getValidationMessages().referenceNo_1">
+                                                </airmid-textbox>
+                                            </div>
                                         </div>
+
                                     </mat-card-content>
                                 </mat-card>
                             </form>
@@ -368,15 +403,15 @@
                                                                     <mat-cell *matCellDef="let contact">
                                                                         <mat-form-field floatLabel="never"
                                                                             class="compact-field"
-                                                                            *ngIf="Lable != 'Pharmacy'">
+                                                                          >
                                                                             <input matInput placeholder="Price"
-                                                                                type="number"
+                                                                                type="text"
                                                                                 [(ngModel)]="contact.price" required
                                                                                 (ngModelChange)="onPriceOrQtyChange($event,contact)">
 
                                                                         </mat-form-field>
-                                                                        <span *ngIf="Lable == 'Pharmacy'">{{
-                                                                            contact.price | number:'1.2-2'}}</span>
+                                                                        <!-- <span *ngIf="Lable == 'Pharmacy'">{{
+                                                                            contact.price | number:'1.2-2'}}</span> -->
                                                                     </mat-cell>
                                                                 </ng-container>
 
@@ -394,7 +429,7 @@
                                                                         <mat-form-field floatLabel="never"
                                                                             class="compact-field">
                                                                             <input matInput placeholder="Qty"
-                                                                                type="number" [(ngModel)]="contact.qty"
+                                                                                type="text" [(ngModel)]="contact.qty"
                                                                                 required
                                                                                 (ngModelChange)="onPriceOrQtyChange($event,contact)">
                                                                         </mat-form-field>
@@ -420,7 +455,7 @@
                                                                             *ngIf="Lable != 'Pharmacy'">
                                                                             <input matInput placeholder="Disc %"
                                                                                 [(ngModel)]="contact.concessionPercentage"
-                                                                                type="number" [min]="0" [max]="100"
+                                                                                type="text" [min]="0" [max]="100"
                                                                                 (ngModelChange)="onDiscountPerChange(contact)">
                                                                         </mat-form-field>
                                                                         <span *ngIf="Lable == 'Pharmacy'">{{
@@ -437,7 +472,7 @@
                                                                             *ngIf="Lable != 'Pharmacy'">
                                                                             <input matInput placeholder="Disc Amt"
                                                                                 [(ngModel)]="contact.concessionAmount"
-                                                                                type="number" [min]="0"
+                                                                                type="text" [min]="0"
                                                                                 [max]="contact.totalAmt"
                                                                                 (ngModelChange)="onDiscountAmtChange(contact)">
                                                                         </mat-form-field>

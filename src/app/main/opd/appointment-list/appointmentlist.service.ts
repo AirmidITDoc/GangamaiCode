@@ -297,6 +297,9 @@ public RegistredAppointmentBilling(Param: any) {
     public getReportView(Param) {
         return this._httpClient1.PostData("Report/ViewReport", Param);
     }
+    public getReportHtml(Param) {
+        return this._httpClient1.PostData("Report/get-report-html", Param);
+    }
 
 
 
