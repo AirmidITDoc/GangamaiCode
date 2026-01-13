@@ -47,7 +47,7 @@ export class SampleCollectionComponent implements OnInit {
     isSuperAdmin: any = this._loggedService.currentUserValue.user.isAdminMultiview;
     autocompleteModeunit: string = "Hospital";
 
-    IsEdit: boolean = this.permissionService.getPermission(permissionCodes.LabPatientRegistration, permissionType.Edit);
+    IsEdit: boolean = this.permissionService.getPermission(permissionCodes.PathologyResultlist, permissionType.Edit);
 
     @ViewChild('iconisCompeleted') iconisCompeleted!: TemplateRef<any>;
     @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
