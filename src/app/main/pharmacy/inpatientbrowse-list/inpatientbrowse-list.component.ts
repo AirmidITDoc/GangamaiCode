@@ -37,6 +37,7 @@ import { SMSDetailsPopupOverComponent } from 'app/main/shared/componets/email-se
 import { WhatsappDetPopUpOverComponent } from 'app/main/shared/componets/email-send/whatsapp-det-pop-up-over/whatsapp-det-pop-up-over.component';
 import { Subscription } from 'rxjs';
 import { InpatientbrowseListService } from './inpatientbrowse-list.service';
+import { PharmacyBIllEditComponent } from './pharmacy-bill-edit/pharmacy-bill-edit.component';
 
 
 @Component({
@@ -926,6 +927,25 @@ export class InpatientbrowseListComponent {
       }
     });
   }
+
+
+     OnPharmaBill(element) {
+          const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+          buttonElement.blur();
+          const dialogRef = this._matDialog.open(PharmacyBIllEditComponent, {
+              maxWidth: "98vw",
+              height: "96vh",
+              width: "100%",
+              data:{
+                  Obj:element,
+                  OPIPType:0
+              } 
+          });
+          dialogRef.afterClosed().subscribe(result => {
+              this.grid.bindGridData();
+          });
+      }
+  
 
   getPrint(el) {
     var D_data = {
