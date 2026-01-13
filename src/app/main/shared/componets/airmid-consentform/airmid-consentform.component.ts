@@ -211,6 +211,7 @@ export class AirmidConsentformComponent {
       this.vRegNo = obj.regNo
       this.isDischarge = obj.isDischarged
       this.OP_IP_Id = obj.admissionID;
+      this.OP_IPType=1
     }
   }
 

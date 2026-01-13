@@ -138,7 +138,8 @@
                                             (change)="tableElementChecked($event,contact)"
                                             (change)="$event ? selection.toggle(contact) : null"
                                             *ngIf="!contact.sampleNo  else noMLC"
-                                            [checked]="selection.isSelected(contact)">
+                                            [checked]="selection.isSelected(contact)"
+                                            [disabled]="isCheckboxDisabled(contact)">
                                         </mat-checkbox>
                                         <ng-template #noMLC>
                                             <div
@@ -147,16 +148,7 @@
                                             </div>
                                         </ng-template>
                                     </td>
-                                    <!-- <td mat-cell *matCellDef="let contact">
 
-                                        <mat-icon *ngIf="contact.sampleNo">cancle</mat-icon>
-
-                                        <mat-checkbox (click)="$event.stopPropagation()" *ngIf="!contact.sampleNo"
-                                            (change)="tableElementChecked($event,contact)"
-                                            (change)="$event ? selection.toggle(contact) : null"
-                                            [checked]="selection.isSelected(contact)">
-                                        </mat-checkbox>
-                                    </td> -->
                                 </ng-container>
 
                                 <ng-container matColumnDef="ServiceName">
@@ -178,7 +170,6 @@
                                     </mat-cell>
                                 </ng-container>
 
-
                                 <ng-container matColumnDef="editSampleCollectionTime">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm fxFlex="5%">
                                         <!-- CollectionDate/Time -->
@@ -191,6 +182,28 @@
                                         </ng-container>
                                     </mat-cell>
                                 </ng-container>
+
+                                <ng-container matColumnDef="approval">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-md>
+                                        -
+                                    </mat-header-cell>
+
+                                    <mat-cell *matCellDef="let contact" fxHide fxShow.gt-md>
+                                        <span *ngIf="contact.patientTypeId > 1 && !contact.isApprovedByCamp"
+                                            class="text-warn">
+                                            Approval from the company is pending for the unbilled lab collection
+                                        </span>
+
+                                        <span *ngIf="contact.patientTypeId > 1 && contact.isApprovedByCamp">
+                                            Approved
+                                        </span>
+
+                                        <span *ngIf="contact.patientTypeId === 1">
+                                            -
+                                        </span>
+                                    </mat-cell>
+                                </ng-container>
+
 
                                 <ng-container matColumnDef="loading">
                                     <mat-footer-cell *matFooterCellDef colspan="6">

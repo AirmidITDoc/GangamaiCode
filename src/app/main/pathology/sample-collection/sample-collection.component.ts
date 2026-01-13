@@ -50,6 +50,7 @@ export class SampleCollectionComponent implements OnInit {
     IsEdit: boolean = this.permissionService.getPermission(permissionCodes.PathologyResultlist, permissionType.Edit);
 
     @ViewChild('iconisCompeleted') iconisCompeleted!: TemplateRef<any>;
+    @ViewChild('iconPatientType') iconPatientType!: TemplateRef<any>;
     @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
     @ViewChild('statusbtnTemplate') statusbtnTemplate!: TemplateRef<any>;
     @ViewChild('actionButtonTemplate1') actionButtonTemplate1!: TemplateRef<any>;
@@ -57,6 +58,7 @@ export class SampleCollectionComponent implements OnInit {
     ngAfterViewInit() {
         this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
         this.gridConfig.columnsList.find(col => col.key === 'action1')!.template = this.statusbtnTemplate;
+        this.gridConfig.columnsList.find(col => col.key === 'patientType')!.template = this.iconPatientType;
     }
 
     gridConfig1: gridModel = new gridModel();
@@ -72,7 +74,10 @@ export class SampleCollectionComponent implements OnInit {
         { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
         { heading: "Admission No", key: "oP_IP_No", sort: true, align: 'left', emptySign: 'NA' },
         { heading: "PBill No", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "Patient Type", key: "patientType", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        {
+            heading: "Patient Type", key: "patientType", sort: true, align: 'left', type: gridColumnTypes.template,
+            template: this.iconPatientType, width: 180
+        },
         { heading: "Doctor Name", key: "doctorName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
 
         { heading: "Company Name", key: "cm", sort: true, align: 'left', emptySign: 'NA', width: 150 },
@@ -211,7 +216,6 @@ export class SampleCollectionComponent implements OnInit {
 
     }
 
-
     GetSampleCollectiondetail() {
 
         let fromDateControl = this.datePipe.transform(this.myformSearch.get('start').value, "yyyy-MM-dd");
@@ -296,7 +300,6 @@ export class SampleCollectionComponent implements OnInit {
         });
     }
 
-
     Clearfilter(event) {
         console.log(event)
         if (event == 'FirstName')
@@ -310,14 +313,12 @@ export class SampleCollectionComponent implements OnInit {
         this.onChangeFirst();
     }
 
-
     onSave(row: any = null) {
         let that = this;
         const dialogRef = this._matDialog.open(SamplecollectionPageComponent,
             {
-
-                maxHeight: '80vh',
-                width: '60%',
+                maxHeight: '85vh',
+                width: '70%',
                 data: row
             });
         dialogRef.afterClosed().subscribe(result => {
