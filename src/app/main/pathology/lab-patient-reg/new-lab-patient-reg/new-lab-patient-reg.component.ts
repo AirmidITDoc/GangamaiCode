@@ -270,7 +270,7 @@ export class NewLabPatientRegComponent {
       transactionType: [item?.transactionType ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       isSelfOrcompany: [item?.isSelfOrcompany ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       tranMode: ['HOSP', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
-      createdBy: [this.accountService.currentUserValue.user.userId],
+      createdBy: [this.accountService.currentUserValue.userId],
       transactionLabel: ['LAB_BILL'],
     })
   }
