@@ -131,7 +131,7 @@ export class NewAppointmentwithBillComponent {
 
   vOPIPId = 0
   regNo = 0;
-  PatientName: any = "";
+  PatientName: any;
   opdNo = "0";
   ageYear: any = 0;
   ageMonth: any = 0;
@@ -243,7 +243,7 @@ export class NewAppointmentwithBillComponent {
           this.loadDataById(id);
         }
       });
-      
+
       // Also check query params for additional data
       this.route.queryParams.subscribe(queryParams => {
         if (queryParams) {
@@ -302,7 +302,7 @@ export class NewAppointmentwithBillComponent {
   }
 
   private setupFormListener(): void {
-    
+
     this.handleChange('price', () => this.calculateTotalCharge());
     this.handleChange('qty', () => this.calculateTotalCharge());
     this.handleChange('discountPer', () => this.updateDiscountAmount());
@@ -508,6 +508,7 @@ export class NewAppointmentwithBillComponent {
       discComments: [0, [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],//need to set concession reason
       cashCounterId: ["1", [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],//need to set cashCounterId
       createdBy: [this.accountService.currentUserValue.userId, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      govtApprovedAmt:0,
       addCharges: this._formbuilder.array([]),
 
       // ✅ Fixed: should be FormArray
@@ -557,7 +558,7 @@ export class NewAppointmentwithBillComponent {
     });
   }
   CreateAddchargeform(item: any): FormGroup {
-    
+
     return this._formbuilder.group({
       chargesId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       chargesDate: this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
@@ -697,7 +698,7 @@ export class NewAppointmentwithBillComponent {
   }
 
   getSelectedserviceObj(obj) {
-    
+
     console.log(obj)
     this.SrvcName1 = obj.serviceName;
     this.serviceId = obj.serviceId;
@@ -994,7 +995,7 @@ export class NewAppointmentwithBillComponent {
 
   // Calculation of total amount.
   calculateTotalAmount(): void {
-    
+
     let totalSum = this.chargeList.reduce((sum, charge) => sum + (+charge.TotalAmt), 0);
     let totalDiscount = this.chargeList.reduce((sum, charge) => sum + (+charge.DiscAmt), 0);
     let totalNet = totalSum - totalDiscount;
@@ -1075,7 +1076,7 @@ export class NewAppointmentwithBillComponent {
   }
 
   getSelectedTariffObj(event) {
-    
+
     this.ApiURL = "VisitDetail/GetServiceListwithTraiff?TariffId=" + event.value + "&ClassId=" + this.classId + "&ServiceName="
     this.tariffId = event.value
   }
@@ -1157,8 +1158,10 @@ export class NewAppointmentwithBillComponent {
       if (result.isConfirmed) {
         console.log(this.myForm.value)
 
-        const formattedDate = this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd");
-        const formattedTime = formattedDate + this.dateTimeObj.time;
+        const now = new Date();
+        const formattedDate = this.datePipe.transform(now, "yyyy-MM-dd");
+        const formattedTime = this.datePipe.transform(now,'yyyy-MM-dd HH:mm:ss');
+        // const formattedTime = formattedDate + this.dateTimeObj.time;
 
         this.myForm.get('RegDate').setValue(formattedDate);
         this.myForm.get('RegTime').setValue(formattedTime);
@@ -1242,9 +1245,10 @@ export class NewAppointmentwithBillComponent {
       this.myForm.get('AgeDay')?.setValue(String(ageDay), { emitEvent: false });
 
     }
-debugger
-    if (this.PatientName == "")
+    debugger
+    // if (this.PatientName){
       this.PatientName = this.myForm.get('FirstName').value + " " + this.myForm.get('LastName').value
+    // }
 
     // Bill data
     const formattedDate1 = this.datePipe.transform(this.OpBillForm.get('billDate').value, "yyyy-MM-dd");
@@ -1278,7 +1282,7 @@ debugger
     controlsToRemove.forEach(key => delete formValue[key]);
     console.log(formValue)
     console.log("form values", this.OpBillForm.value)
-    
+
 
     this.AppointmentBillfinalform.get("appRegistrationBills").setValue(formValue)
     this.AppointmentBillfinalform.get("visit").setValue(this.VisitFormGroup.value)
@@ -1311,7 +1315,7 @@ debugger
 
           if (this.OPFooterForm.get('paymentType').value == 'PayOption') {
             let PatientHeaderObj = {};
-            PatientHeaderObj['Date'] = this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd') || '01/01/1900',
+            PatientHeaderObj['Date'] = this.datePipe.transform(new Date(), 'yyyy-MM-dd') || '01/01/1900',
               PatientHeaderObj['PatientName'] = this.PatientName; // this.patientDetail.patientName;
             PatientHeaderObj['RegNo'] = this.regNo;
             PatientHeaderObj['DoctorName'] = this.doctorname;
@@ -1352,8 +1356,8 @@ debugger
             this.OpBillForm.get('balanceAmt').setValue(0)
             this.OpBillForm.get('paidAmt')?.setValue(this.OPFooterForm.get('netPayableAmt')?.value)
             this.OpBillForm.get('payments.cashPayAmount')?.setValue(Number(this.OPFooterForm.get('netPayableAmt')?.value))
-            this.OpBillForm.get('payments.paymentDate')?.setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'))
-            this.OpBillForm.get('payments.paymentTime')?.setValue(this.dateTimeObj.time)
+            this.OpBillForm.get('payments.paymentDate')?.setValue(this.datePipe.transform(new Date(), 'yyyy-MM-dd'))
+            this.OpBillForm.get('payments.paymentTime')?.setValue(this.datePipe.transform(new Date(), 'HH:mm:ss'))
 
             console.log(this.OpBillForm.value)
             this.AppointmentBillfinalform.get('appOPBillIngModels').setValue(this.OpBillForm.value)
@@ -1424,7 +1428,7 @@ debugger
 
           if (this.OPFooterForm.get('paymentType').value == 'PayOption') {
             let PatientHeaderObj = {};
-            PatientHeaderObj['Date'] = this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd') || '01/01/1900',
+            PatientHeaderObj['Date'] = this.datePipe.transform(new Date(), 'yyyy-MM-dd') || '01/01/1900',
               PatientHeaderObj['PatientName'] = this.PatientName; // this.patientDetail.patientName;
             PatientHeaderObj['RegNo'] = this.regNo;
             PatientHeaderObj['DoctorName'] = this.doctorname;
@@ -1465,22 +1469,22 @@ debugger
             this.OpBillForm.get('balanceAmt').setValue(0)
             this.OpBillForm.get('paidAmt')?.setValue(this.OPFooterForm.get('netPayableAmt')?.value)
             this.OpBillForm.get('payments.cashPayAmount')?.setValue(Number(this.OPFooterForm.get('netPayableAmt')?.value))
-            this.OpBillForm.get('payments.paymentDate')?.setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'))
-            this.OpBillForm.get('payments.paymentTime')?.setValue(this.dateTimeObj.time)
+            this.OpBillForm.get('payments.paymentDate')?.setValue(this.datePipe.transform(new Date(), 'yyyy-MM-dd'))
+            this.OpBillForm.get('payments.paymentTime')?.setValue(this.datePipe.transform(new Date(), 'HH:mm:ss'))
 
             console.log(this.OpBillForm.value)
 
             this.RegiAppointmentBillfinalform.get('appOPBillIngModels').setValue(this.OpBillForm.value)
-             this.RegiAppointmentBillfinalform.get("visit").setValue(this.VisitFormGroup.value)
+            this.RegiAppointmentBillfinalform.get("visit").setValue(this.VisitFormGroup.value)
 
 
             console.log(this.RegiAppointmentBillfinalform.value)
-debugger
-            
+            debugger
+
             // const formValue = { ...this.RegiAppointmentBillfinalform.value };
             // delete formValue['appRegistrationBills']
             console.log(this.RegiAppointmentBillfinalform.value)
-//  console.log(formValue)
+            //  console.log(formValue)
             this._AppointmentlistService.RegistredAppointmentBilling(this.RegiAppointmentBillfinalform.value).subscribe(response => {
               console.log(response)
               this.viewgetOPBillReportPdf(response)
@@ -1630,7 +1634,7 @@ debugger
                 ClassId: 1,
                 DoctorId: element.DoctornewId,
                 DoctorName: element.DoctorName,
-                ChargesDate: this.datePipe.transform(this.dateTimeObj.date, 'MM/dd/yyyy') || '01/01/1900',
+                ChargesDate: this.datePipe.transform(new Date(), 'MM/dd/yyyy') || '01/01/1900',
                 IsPathology: element.IsPathology,
                 IsRadiology: element.IsRadiology,
                 IsPackage: element.IsPackage,
@@ -1647,7 +1651,7 @@ debugger
     })
   }
   calculateTotalCharge(row: any = null): void {
-    
+
     let qty = +this.chargeForm.get("qty").value;
     let price = +this.chargeForm.get("price").value;
     let total = 0
@@ -1718,7 +1722,7 @@ debugger
     this.isUpdating = false; // Reset flag
   }
   handleChange(key: string, callback: () => void, form: FormGroup = this.chargeForm) {
-    
+
     this.subscription.push(form.get(key).valueChanges.subscribe(value => {
       callback();
     }));
@@ -1837,11 +1841,11 @@ debugger
     this.doctorName = event.text
   }
   getSelectedObj(obj) {
-debugger
+    debugger
     if (this.data?.FormName == 'Registration-Page') {
       // this.PatientName = obj.firstName + ' ' + obj.lastName;
-this.PatientName = obj.patientName
-      
+      this.PatientName = obj.patientName
+
       // this.RegId = obj.regId;
       // this.VisitFlagDisp = true;
       if ((this.RegId ?? 0) > 0) {
