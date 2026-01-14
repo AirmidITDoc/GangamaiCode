@@ -81,7 +81,7 @@ export class NewIssueTodeptComponent {
   vstoreId: any = '';
   vstoreId1: any = '';
   fromstore: any;
-
+ItemstoreId:any=0;
 
   batchresult: any;
   vItemObj: NewIssueList3;
@@ -89,7 +89,7 @@ export class NewIssueTodeptComponent {
   ItemSamelist: any = [];
   Itemchargeslist1: any = [];
   Charglist: any = [];
-
+  ApiUrl = ""
   showIndentFlag: boolean = false;
   Addflag: boolean = false;
   vAgainstIndet: boolean = false;
@@ -149,6 +149,9 @@ export class NewIssueTodeptComponent {
   ) { }
 
   ngOnInit(): void {
+    this.vstoreId = this.accountService.currentUserValue.user.storeId;
+    this.ApiUrl = `ItemMaster/GetItemListForGRNOrPO?StoreId=${this.vstoreId}&ItemName=`
+
     this.NewIssueGroup = this._IssueToDep.getNewIssueForm();
     this.IssueFinalForm = this._IssueToDep.createfinal()
     this.StoreFrom = this._IssueToDep.CreateStoreFrom();
@@ -916,6 +919,8 @@ export class NewIssueTodeptComponent {
   selectChangeStore(obj: any) {
     console.log("Store:", obj);
     this.vstoreId = obj.value
+    this.ApiUrl = `ItemMaster/GetItemListForGRNOrPO?StoreId=${this.vstoreId}&ItemName=`
+
   }
   selectChangeStore1(obj: any) {
     console.log("Store:", obj);
