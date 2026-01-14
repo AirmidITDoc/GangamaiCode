@@ -133,7 +133,7 @@
                                             </airmid-dropdown>
                                         </div>
 
-                                        <div fxFlex="30%" fxFlex.xs="100%">
+                                        <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="34%" class="gap-4">
                                             <mat-checkbox formControlName="isDoctorType" (change)="chkdoctorApp($event)"
                                                 style="padding: 10px;">IsDoctor
                                             </mat-checkbox>&nbsp;
@@ -153,11 +153,9 @@
                                                 [validations]="getValidationMessages().doctorId"
                                                 [mode]="autocompleteModedoctor" *ngIf="docflag">
                                             </airmid-dropdown>
-                                        </div>
-
-                                        <div fxFlex="20%" fxFlex.xs="100%">
+                                            
                                             <airmid-textbox label="BrowseDays" formControlName="isDateIntervalDays"
-                                                [formGroup]="myuserApprovalform"
+                                                [formGroup]="myuserApprovalform" fxFlex="50%"
                                                 (keypress)="keyPressAlphanumeric($event)"
                                                 [validations]="getValidationMessages().isDateIntervalDays"
                                                 [maxLength]="30">
