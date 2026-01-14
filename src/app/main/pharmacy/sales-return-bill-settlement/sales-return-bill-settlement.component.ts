@@ -22,6 +22,7 @@ import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { element } from 'protractor';
+import { ConfigService } from 'app/core/services/config.service';
 
 @Component({
   selector: 'app-sales-return-bill-settlement',
@@ -73,7 +74,8 @@ export class SalesReturnBillSettlementComponent implements OnInit {
   mDoctorName: any;
   mBedName: any;
   mOPDNo: any;
-  mIPDNo: any
+  mIPDNo: any;
+   Is9_Digit_National_Id:boolean=false;
   mWardName: any = ''
   mRegId: any = '' 
    autocompleteModeConcession: string = "Concession";
@@ -170,6 +172,7 @@ export class SalesReturnBillSettlementComponent implements OnInit {
     public toastr: ToastrService,
     public _formBuilder: FormBuilder,
      private commonService: PrintserviceService,
+     public _ConfigService : ConfigService,
     public _FormvalidationserviceService: FormvalidationserviceService
   ) { }
 
@@ -178,6 +181,12 @@ export class SalesReturnBillSettlementComponent implements OnInit {
     this.MutliSettlemForm = this.CreateMultipleFrom();
     this.PharmaSettlementfrom = this.createSettlementform();
     this.globleDiscFrom = this.CreateApplyglobeDiscForm();
+
+
+            //this code for Mediforte 9 digit national id
+const rawValue = this?._ConfigService?.configParams?.Is9_Digit_NationalId || "";
+const [id, val] = rawValue.includes(":") ? rawValue.split(":") : [null, null]; 
+this.Is9_Digit_National_Id = id === "1";
   }
   CreateUseFrom() {
     return this._formBuilder.group({

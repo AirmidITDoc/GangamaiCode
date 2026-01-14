@@ -96,7 +96,7 @@ export class InpatientbrowseListComponent {
   first_Name: any = "%";
   Last_Name: any = "%";
 
-
+currency:any='';
   //Patient list
   Fr_Date = '' //this.datePipe.transform(new Date(), "yyyy-MM-dd")
   T_Date = '' // this.datePipe.transform(new Date(), "yyyy-MM-dd")   
@@ -121,6 +121,7 @@ export class InpatientbrowseListComponent {
     public _formBuilder: FormBuilder,
     public _FormvalidationserviceService: FormvalidationserviceService, public _whatsppService: WhatsAppEmailService,
     private overlay: Overlay,
+    public _ConfigService:ConfigService
   ) { }
 
   ngOnInit(): void {
@@ -130,6 +131,10 @@ export class InpatientbrowseListComponent {
       this.menuActions.push("Patient Statement");
       this.menuActions.push("Patient Sales Summary");
       this.menuActions.push("Patient Sales Detail");
+
+                  //this is for curreny symbol
+        const [CurrencyId, CurrencyValue] = this._ConfigService.configParams.CurrencyValue.split(":");
+        this.currency = CurrencyValue 
     }
 
     this.salesForm = this._BrowsSalesBillService.SearchFilter();

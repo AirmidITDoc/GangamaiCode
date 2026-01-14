@@ -33,7 +33,7 @@
                                                         (change)="onChangePatientType($event)"
                                                         (blur)="onChangePatientType($event)" fxLayout="row">
                                                         <mat-radio-button value="0">OP</mat-radio-button>
-                                                        <mat-radio-button value="1">IP</mat-radio-button>
+                                                        <mat-radio-button value="1" *ngIf="!Is9_Digit_National_Id">IP</mat-radio-button>
                                                         <mat-radio-button value="2">External</mat-radio-button>
                                                     </mat-radio-group>
 

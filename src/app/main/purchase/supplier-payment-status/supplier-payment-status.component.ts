@@ -14,6 +14,7 @@ import { SupplierPaymentListComponent } from './supplier-payment-list/supplier-p
 import { SupplierPaymentStatusService } from './supplier-payment-status.service';
 import { FormArray, FormGroup, UntypedFormBuilder } from '@angular/forms';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
+import { ConfigService } from 'app/core/services/config.service';
 
 @Component({
   selector: 'app-supplier-payment-status',
@@ -47,6 +48,7 @@ export class SupplierPaymentStatusComponent implements OnInit {
   vSupplierName: any;
   vInvoiceNo: any;
   GRNID: any;
+  currency:any='';
   SelectedList: any = [];
   vNetAmount: any = 0;
   vPaidAmount: any = 0;
@@ -70,6 +72,7 @@ export class SupplierPaymentStatusComponent implements OnInit {
     private _loggedService: AuthenticationService,
     private accountService: AuthenticationService,
     public toastr: ToastrService,
+    public _ConfigService:ConfigService,
     public _formbuilder: UntypedFormBuilder,
     private _FormvalidationserviceService: FormvalidationserviceService,
   ) { }
@@ -84,6 +87,11 @@ export class SupplierPaymentStatusComponent implements OnInit {
     this.GrnSupplierPayForm = this.CreateGrnSupplierPayInsertForm();
     this.grnArray.push(this.createGrnInsert());
     this.grnSupPayDetArray.push(this.createGrnSupPayDetInsert());
+
+
+            //this is for curreny symbol
+        const [CurrencyId, CurrencyValue] = this._ConfigService.configParams.CurrencyValue.split(":");
+        this.currency = CurrencyValue
   }
 
   CreateGrnSupplierPayInsertForm() {

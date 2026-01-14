@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FormGroup, UntypedFormBuilder } from '@angular/forms';
+import { LoaderService } from 'app/core/components/loader/loader.service';
 import { ApiCaller } from 'app/core/services/apiCaller';
 
 @Injectable({
@@ -12,6 +13,7 @@ export class SalesInPatientService {
   constructor(
     public _formbuilder: UntypedFormBuilder,
     public _httpClient: HttpClient,
+    private _loaderService: LoaderService,
     public _httpClient1:ApiCaller
   ) {
     this.SearchGroupForm = this.CreaterSearchForm();
@@ -44,7 +46,10 @@ export class SalesInPatientService {
   public getSalesList(Param){ 
     return this._httpClient.post("Generic/GetByProc?procName=m_Rtrv_Phar_Bill_List_Settlement",Param);
   }
-     public InsertSalesInPatientCreditSales(employee){
+     public InsertSalesInPatientCreditSales(employee,loader = true){ 
+    if (loader) {
+      this._loaderService.show();
+  }
       return this._httpClient1.PostData("Sales/SaveSalesInpatient ", employee)
     }
 
