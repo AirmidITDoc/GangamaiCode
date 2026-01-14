@@ -86,4 +86,13 @@ export class NursingnoteService {
   public getSchedulerdatalist(employee) {
     return this._httpClient.PostData("Nursing/NursingMedicationList", employee)
   }
+  public getPrescriptionList(employee) {
+    return this._httpClient.PostData("DischargeSummary/IPPrescriptionDischargeData", employee)
+  }
+    public getTempPrescriptionList(param) {
+    return this._httpClient.PostData("OPDPrescriptionMedical/OPPrescriptionTemplateList", param)
+  }
+  public getDoseMasterById(Id) {
+  return this._httpClient.GetData("DoseMaster/" + Id);
+}
 }

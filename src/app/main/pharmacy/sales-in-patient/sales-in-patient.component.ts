@@ -93,6 +93,7 @@ export class SalesInPatientComponent implements OnInit {
      PatientHeaderObj: any;
      StockId: any; 
      Draftchk: boolean = true;
+     saveflag:boolean = false
      ConShow: Boolean = false; 
      Creditflag: boolean = false;
      Addflag: boolean = false;
@@ -404,6 +405,7 @@ export class SalesInPatientComponent implements OnInit {
          this.ItemFormreset();  
          this.saleSelectedDatasource.data = [];
          this.Itemchargeslist = [];
+         this.saveflag = true;
      } 
      onItemChange(event: SalesItemModel): void { 
              this._salesService.ItemSearchGroup.patchValue({ 
@@ -816,6 +818,7 @@ export class SalesInPatientComponent implements OnInit {
                  ItemIdElement.focus();
              }
          }
+          this.saveflag = true;
      }
      ItemFormreset() {
          this._salesService.ItemSearchGroup.patchValue({
@@ -862,6 +865,8 @@ export class SalesInPatientComponent implements OnInit {
          this.TotalAdvanceAmt = 0;
          this.TotalBalanceAmt = 0;
          this.TotalCreditAmt = 0;
+         this.PatientTypeId = 0;
+         this.saveflag = false
      }
      deleteTableRow(event, element) {
          let index = this.Itemchargeslist.indexOf(element);
@@ -1014,13 +1019,14 @@ export class SalesInPatientComponent implements OnInit {
              confirmButtonText: 'Yes, save it!',
              cancelButtonText: 'No, cancel'
          }).then((result) => {
-             if (result.isConfirmed) {
+             if (result.isConfirmed) { 
                  this.BillSave(event); // Call your save function
              }
          });
      }
      BillSave(event) {
          debugger
+         this.saveflag = false;
          const formattedTime = this.datePipe.transform(new Date(), 'hh:mm');
          const formattedDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
          const FormattedDateTime = formattedDate + ' ' + formattedTime

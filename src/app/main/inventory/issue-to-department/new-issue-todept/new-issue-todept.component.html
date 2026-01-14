@@ -63,8 +63,8 @@
                                     [(ngModel)]="vBarcode"></airmid-textbox>
 
                                 <airmid-autocomplete label="Item Name (enter 2 char)" [formGroup]="NewIssueGroup"
-                                    formControlName="ItemName" placeholderText="Item Name (enter 2 char)" fxFlex="25%"
-                                    ApiUrl="ItemMaster/GetItemListForGRNOrPO?StoreId=2&ItemName="
+                                    formControlName="ItemName" placeholderText="Item Name (enter 2 char)" fxFlex="25%" 
+                                    ApiUrl={{ApiUrl}}
                                     (selectionChange)="getSelectedItem($event)" TextField="formattedText"
                                     ValueField="itemId" (onClearSelection)="resetFormItem()"></airmid-autocomplete>
 

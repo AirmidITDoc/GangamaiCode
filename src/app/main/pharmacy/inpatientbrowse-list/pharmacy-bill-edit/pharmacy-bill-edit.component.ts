@@ -117,13 +117,13 @@ export class PharmacyBIllEditComponent {
       console.log(this.data)
       this.patientDetail = this.data?.Obj;
        console.log(this.patientDetail)
-      this.OPDIPDID = this.data?.Obj?.opipid || 0
+      this.OPDIPDID = this.data?.Obj?.admissionId |this.data?.Obj?.opipid || 0
       this.opD_IPD_Type = this.data?.oP_IP_Type || 1
       this.Lable = 'Bill'
       this.BillNo = this.patientDetail?.salesId
 
        this.getBilllist();
-      this.getPrevCompanyBillList(this.patientDetail?.salesId, 'Bill')
+      // this.getPrevCompanyBillList(this.patientDetail?.salesId, 'Bill')
       // this.getsaleslist();
     }
     //this is for curreny symbol
