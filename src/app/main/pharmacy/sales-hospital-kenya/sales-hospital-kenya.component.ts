@@ -126,6 +126,7 @@ export class SalesHospitalKenyaComponent {
      ConcessionReasonList: any = [];
  PatientTypeId:any=0;
      // Print Related
+     saveflag:boolean = false
      reportPrintObj: Printsal;
      subscriptionArr: Subscription[] = [];
      printTemplate: any;
@@ -589,6 +590,7 @@ this.Is9_Digit_National_Id = id === "1";
             this.ItemSubform.get('CashPay').setValue('Credit');
              this.CreditReasonShow = true
          }
+         this.saveflag = true;
      }
     
      onItemChange(event: SalesItemModel): void { 
@@ -993,6 +995,7 @@ this.Is9_Digit_National_Id = id === "1";
                  ItemIdElement.focus();
              }
          }
+         this.saveflag = true;
      }
      ItemFormreset() {
          this._salesService.ItemSearchGroup.patchValue({
@@ -1045,6 +1048,8 @@ this.Is9_Digit_National_Id = id === "1";
          this.TotalCreditAmt = 0;
          this.saleSelectedDatasource.data = [];
          this.Itemchargeslist = [];
+         this.PatientTypeId = 0
+         this.saveflag = false;
      }
      deleteTableRow(event, element) {
          let index = this.Itemchargeslist.indexOf(element);
@@ -1224,6 +1229,7 @@ this.Is9_Digit_National_Id = id === "1";
              cancelButtonText: 'No, cancel'
          }).then((result) => {
              if (result.isConfirmed) {
+                 this.saveflag = false;
                  this.BillSave(event); // Call your save function
              }
          });
