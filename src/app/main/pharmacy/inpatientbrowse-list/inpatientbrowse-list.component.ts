@@ -38,6 +38,7 @@ import { WhatsappDetPopUpOverComponent } from 'app/main/shared/componets/email-s
 import { Subscription } from 'rxjs';
 import { InpatientbrowseListService } from './inpatientbrowse-list.service';
 import { PharmacyBIllEditComponent } from './pharmacy-bill-edit/pharmacy-bill-edit.component';
+import { ConfigService } from 'app/core/services/config.service';
 
 
 @Component({
