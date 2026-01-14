@@ -127,6 +127,10 @@
                                 *ngIf="!element.isEditing && element.oP_IP_Type == 2">
                                 <mat-icon>edit</mat-icon>
                             </button>
+                            <button mat-icon-button matTooltip="Edit Bill" (click)="OnPharmaBill(element)">
+                                <mat-icon>edit</mat-icon>
+                            </button>
+                            
                             <button mat-icon-button matTooltip="Save" (click)="savePatientName(element)"
                                 *ngIf="element.isEditing">
                                 <mat-icon class="active-icon green-600 s-16" matTooltip="Save">check</mat-icon>

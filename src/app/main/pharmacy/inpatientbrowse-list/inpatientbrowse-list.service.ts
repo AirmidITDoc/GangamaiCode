@@ -88,4 +88,9 @@ export class InpatientbrowseListService {
     public InsertSalessettlement(emp) { 
     return this._httpClient1.PostData("Sales/PaymentSettlement", emp);
   }
+
+  public getAllPharmacyBillList(emp) { 
+    return this._httpClient1.PostData(" InPatient/SalesInPatientDetailsList", emp);
+  }
+ 
 }

@@ -86,7 +86,8 @@
         <!-- Page Header - Matching Appointment List Style -->
         <div class="top-header header accent p-16" fxLayout="row" fxLayoutAlign="space-between center">
             <div class="top-header-info" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="12px">
-                <button mat-icon-button *ngIf="!isModal" (click)="closeOrNavigateBack()" matTooltip="Back to List" class="back-btn">
+                <button mat-icon-button *ngIf="!isModal" (click)="closeOrNavigateBack()" matTooltip="Back to List"
+                    class="back-btn">
                     <mat-icon>arrow_back</mat-icon>
                 </button>
                 <div class="top-header-title">
@@ -110,7 +111,7 @@
         <!-- Page Body -->
         <div class="page-body" fusePerfectScrollbar>
             <div class="page-content">
-                
+
                 <!-- Section 1: Patient Selection -->
                 <div class="section-card">
                     <div class="section-header">
@@ -120,9 +121,11 @@
                     <div class="section-body">
                         <form [formGroup]="searchFormGroup">
                             <div fxLayout="row wrap" fxLayoutGap="16px" fxLayoutAlign="start center">
-                                <div class="radio-container" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="16px">
+                                <div class="radio-container" fxLayout="row" fxLayoutAlign="start center"
+                                    fxLayoutGap="16px">
                                     <mat-radio-group aria-label="Select an option" formControlName="regRadio"
-                                        name="regRadio" (change)="onChangeReg($event)" fxLayout="row" fxLayoutGap="16px">
+                                        name="regRadio" (change)="onChangeReg($event)" fxLayout="row"
+                                        fxLayoutGap="16px">
                                         <mat-radio-button value="registration" [disabled]="chkregisterd">
                                             New Registration / Phone Appointment
                                         </mat-radio-button>
@@ -132,7 +135,8 @@
                                     </mat-radio-group>
                                 </div>
 
-                                <div *ngIf="showEmergencyFlag" class="emergency-badge" fxLayout="row" fxLayoutAlign="start center">
+                                <div *ngIf="showEmergencyFlag" class="emergency-badge" fxLayout="row"
+                                    fxLayoutAlign="start center">
                                     <span style="font-size: 24px;">🚨</span>
                                     <strong>Emergency Patient</strong>
                                 </div>
@@ -170,11 +174,10 @@
                             <div fxLayout="row wrap" fxLayoutGap="12px grid" class="input-error-hidden">
                                 <!-- Row 1: Name Fields -->
                                 <div fxFlex="12.5%" fxFlex.xs="100%" fxFlex.sm="50%" fxFlex.md="25%">
-                                    <airmid-dropdown label="Prefix" formControlName="PrefixId"
-                                        [formGroup]="myForm" [value]="registerObj?.prefixId"
-                                        [validations]="getValidationMessages().prefixId" ValueField="prefixId"
-                                        TextField="prefixName" (selectionChange)="onChangePrefix($event)"
-                                        ApiUrl="Prefix/get-prefixs">
+                                    <airmid-dropdown label="Prefix" formControlName="PrefixId" [formGroup]="myForm"
+                                        [value]="registerObj?.prefixId" [validations]="getValidationMessages().prefixId"
+                                        ValueField="prefixId" TextField="prefixName"
+                                        (selectionChange)="onChangePrefix($event)" ApiUrl="Prefix/get-prefixs">
                                     </airmid-dropdown>
                                 </div>
 
@@ -200,10 +203,9 @@
                                 </div>
 
                                 <div fxFlex="12.5%" fxFlex.xs="100%" fxFlex.sm="50%" fxFlex.md="25%">
-                                    <airmid-dropdown label="Gender" formControlName="GenderId"
-                                        [formGroup]="myForm" [value]="registerObj?.genderId"
-                                        [validations]="getValidationMessages().genderId" #ddlGender
-                                        [readonly]="true" [mode]="autocompleteModegender">
+                                    <airmid-dropdown label="Gender" formControlName="GenderId" [formGroup]="myForm"
+                                        [value]="registerObj?.genderId" [validations]="getValidationMessages().genderId"
+                                        #ddlGender [readonly]="true" [mode]="autocompleteModegender">
                                     </airmid-dropdown>
                                 </div>
 
@@ -217,9 +219,11 @@
 
                                 <!-- Row 2: DOB + Marital Status + Address + Aadhar -->
                                 <div fxFlex="48%" fxFlex.xs="100%" fxFlex.sm="100%" fxFlex.md="50%">
-                                    <app-airmid-dateofbirth-v2 [formGroup]="myForm" dateStyle="Year"
+                                    <!-- <app-airmid-dateofbirth-v2 [formGroup]="myForm" dateStyle="Year"
                                         formControlName="DateOfBirth"
-                                        [(value)]="registerObj.dateofBirth"></app-airmid-dateofbirth-v2>
+                                        [(value)]="registerObj.dateofBirth"></app-airmid-dateofbirth-v2> -->
+                                    <app-airmid-dateofbirth [formGroup]="myForm" [(value)]="registerObj.dateofBirth"
+                                        dateStyle="Year" formControlName="DateOfBirth"></app-airmid-dateofbirth>
                                 </div>
 
                                 <div fxFlex="12%" fxFlex.xs="100%" fxFlex.sm="50%" fxFlex.md="20%">
@@ -248,19 +252,17 @@
 
                                 <!-- Row 3: Address Fields -->
                                 <div fxFlex="16.66%" fxFlex.xs="100%" fxFlex.sm="50%" fxFlex.md="16.66%">
-                                    <airmid-dropdown label="Area" formControlName="AreaId"
-                                        [value]="registerObj?.areaId" [formGroup]="myForm"
-                                        [validations]="getValidationMessages().areaId"
+                                    <airmid-dropdown label="Area" formControlName="AreaId" [value]="registerObj?.areaId"
+                                        [formGroup]="myForm" [validations]="getValidationMessages().areaId"
                                         [mode]="autocompleteModearea">
                                     </airmid-dropdown>
                                 </div>
 
                                 <div fxFlex="16.66%" fxFlex.xs="100%" fxFlex.sm="50%" fxFlex.md="16.66%">
                                     <airmid-dropdown label="City" formControlName="CityId" [formGroup]="myForm"
-                                        [value]="registerObj?.cityId"
-                                        [validations]="getValidationMessages().cityId" ValueField="cityId"
-                                        TextField="cityName" (selectionChange)="onChangecity($event)"
-                                        ApiUrl="CityMaster/get-cities">
+                                        [value]="registerObj?.cityId" [validations]="getValidationMessages().cityId"
+                                        ValueField="cityId" TextField="cityName"
+                                        (selectionChange)="onChangecity($event)" ApiUrl="CityMaster/get-cities">
                                     </airmid-dropdown>
                                 </div>
 
@@ -291,9 +293,8 @@
 
                                 <div fxFlex="16.66%" fxFlex.xs="100%" fxFlex.sm="50%" fxFlex.md="16.66%">
                                     <airmid-textbox label="Phone No" formControlName="PhoneNo"
-                                        [validations]="getValidationMessages().phoneNo"
-                                        [value]="registerObj.phoneNo" [formGroup]="myForm" [maxLength]="10"
-                                        (keypress)="keyPressAlphanumeric($event)">
+                                        [validations]="getValidationMessages().phoneNo" [value]="registerObj.phoneNo"
+                                        [formGroup]="myForm" [maxLength]="10" (keypress)="keyPressAlphanumeric($event)">
                                     </airmid-textbox>
                                 </div>
                             </div>
@@ -319,9 +320,9 @@
                                 </div>
 
                                 <div fxFlex="16.66%" fxFlex.xs="100%" fxFlex.sm="50%" fxFlex.md="25%">
-                                    <airmid-dropdown label="Class Name" formControlName="ClassId" [value]="data?.classId"
-                                        [validations]="getValidationMessages().ClassId" [formGroup]="VisitFormGroup"
-                                        [mode]="autocompleteModeClass"></airmid-dropdown>
+                                    <airmid-dropdown label="Class Name" formControlName="ClassId"
+                                        [value]="data?.classId" [validations]="getValidationMessages().ClassId"
+                                        [formGroup]="VisitFormGroup" [mode]="autocompleteModeClass"></airmid-dropdown>
                                 </div>
 
                                 <div fxFlex="16.66%" fxFlex.xs="100%" fxFlex.sm="50%" fxFlex.md="25%">
@@ -332,16 +333,20 @@
                                         (selectionChange)="onChangePatient($event)"></airmid-dropdown>
                                 </div>
 
-                                <div fxFlex="16.66%" fxFlex.xs="100%" fxFlex.sm="50%" fxFlex.md="25%" *ngIf="isCompanySelected">
+                                <div fxFlex="16.66%" fxFlex.xs="100%" fxFlex.sm="50%" fxFlex.md="25%"
+                                    *ngIf="isCompanySelected">
                                     <airmid-dropdown label="Company Name" formControlName="CompanyId"
                                         [formGroup]="VisitFormGroup" [value]="data?.companyId"
-                                        [validations]="getValidationMessages().CompanyId" [mode]="autocompleteModecompany"
+                                        [validations]="getValidationMessages().CompanyId"
+                                        [mode]="autocompleteModecompany"
                                         (selectionChange)="onChangeCompany($event)"></airmid-dropdown>
                                 </div>
 
-                                <div fxFlex="16.66%" fxFlex.xs="100%" fxFlex.sm="50%" fxFlex.md="25%" *ngIf="isCompanySelected">
+                                <div fxFlex="16.66%" fxFlex.xs="100%" fxFlex.sm="50%" fxFlex.md="25%"
+                                    *ngIf="isCompanySelected">
                                     <airmid-dropdown label="SubCompany Name" formControlName="SubCompanyId"
-                                        [formGroup]="VisitFormGroup" [validations]="getValidationMessages().SubCompanyId"
+                                        [formGroup]="VisitFormGroup"
+                                        [validations]="getValidationMessages().SubCompanyId"
                                         [mode]="autocompleteModesubcompany"></airmid-dropdown>
                                 </div>
 
@@ -355,7 +360,8 @@
                                 <div fxFlex="16.66%" fxFlex.xs="100%" fxFlex.sm="50%" fxFlex.md="25%">
                                     <airmid-dropdown label="Department Name" formControlName="DepartmentId"
                                         [value]="registerObj?.departmentId || vDepId" [formGroup]="VisitFormGroup"
-                                        [validations]="getValidationMessages().departmentId" [mode]="autocompletedepartment"
+                                        [validations]="getValidationMessages().departmentId"
+                                        [mode]="autocompletedepartment"
                                         (selectionChange)="selectChangedepartment($event)"></airmid-dropdown>
                                 </div>
 
@@ -423,19 +429,14 @@
                                                 [formGroup]="chargeForm"
                                                 [mode]="autocompleteModeGroup"></airmid-dropdown>
 
-                                            <airmid-autocomplete label="Service Name"
-                                                [formGroup]="chargeForm" formControlName="serviceName"
-                                                placeholderText="Enter Service Name"
-                                                ApiUrl="{{ApiURL}}"
-                                                (selectionChange)="getSelectedserviceObj($event)"
-                                                TextField="formattedText"
-                                                ValueField="serviceId"></airmid-autocomplete>
+                                            <airmid-autocomplete label="Service Name" [formGroup]="chargeForm"
+                                                formControlName="serviceName" placeholderText="Enter Service Name"
+                                                ApiUrl="{{ApiURL}}" (selectionChange)="getSelectedserviceObj($event)"
+                                                TextField="formattedText" ValueField="serviceId"></airmid-autocomplete>
 
                                             <airmid-textbox label="Price" formControlName="price"
-                                                [formGroup]="chargeForm"
-                                                [validations]="getValidationMessages().price"
-                                                [type]="'number'" [value]="vPrice"
-                                                [readonly]="chkIsEditable" [min]="0">
+                                                [formGroup]="chargeForm" [validations]="getValidationMessages().price"
+                                                [type]="'number'" [value]="vPrice" [readonly]="chkIsEditable" [min]="0">
                                             </airmid-textbox>
 
                                             <div *ngIf="isDoctor">
@@ -449,8 +450,8 @@
 
                                             <airmid-textbox label="Net Amount" formControlName="netAmount"
                                                 [formGroup]="chargeForm"
-                                                [validations]="getValidationMessages().netAmount"
-                                                [type]="'number'" [readonly]="true">
+                                                [validations]="getValidationMessages().netAmount" [type]="'number'"
+                                                [readonly]="true">
                                             </airmid-textbox>
 
                                             <button type="button" (click)="onAddCharges()"
@@ -474,8 +475,8 @@
                                 </div>
                                 <div class="panel-body">
                                     <div class="table-container">
-                                        <mat-table matSort [dataSource]="dsChargeList"
-                                            [@animateStagger]="{value:'50'}" class="airmid-table full-width-table">
+                                        <mat-table matSort [dataSource]="dsChargeList" [@animateStagger]="{value:'50'}"
+                                            class="airmid-table full-width-table">
 
                                             <ng-container matColumnDef="Status" sticky>
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="80px">
@@ -483,14 +484,17 @@
                                                 </mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" fxFlex="80px">
                                                     <mat-icon *ngIf="contact.IsRadiology == 1" matTooltip="Radiology">
-                                                        <img width="15px" height="8px" src="/assets/images/logos/radiology.png">
+                                                        <img width="15px" height="8px"
+                                                            src="/assets/images/logos/radiology.png">
                                                     </mat-icon>
                                                     <mat-icon *ngIf="contact.IsPathology == 1" matTooltip="Pathology">
-                                                        <img width="15px" height="9px" src="/assets/images/logos/pathology.png">
+                                                        <img width="15px" height="9px"
+                                                            src="/assets/images/logos/pathology.png">
                                                     </mat-icon>
                                                     <mat-icon *ngIf="contact.IsPackage == '1'" matTooltip="Package Edit"
                                                         (click)="getPacakgeDetail(contact)" class="cursor-pointer">
-                                                        <img width="15px" height="9px" src="/assets/images/logos/package.png">
+                                                        <img width="15px" height="9px"
+                                                            src="/assets/images/logos/package.png">
                                                     </mat-icon>
                                                 </mat-cell>
                                             </ng-container>
@@ -576,7 +580,8 @@
                                             </div>
                                             <div class="summary-item">
                                                 <span class="summary-label">Company Amt:</span>
-                                                <span class="summary-value">{{ExclusionAmt | currency:'INR':'symbol':'1.2-2'}}</span>
+                                                <span class="summary-value">{{ExclusionAmt |
+                                                    currency:'INR':'symbol':'1.2-2'}}</span>
                                             </div>
                                             <div class="summary-item">
                                                 <span class="summary-label">Patient Amt:</span>
@@ -584,7 +589,8 @@
                                             </div>
                                             <div class="summary-item highlight">
                                                 <span class="summary-label">Net Amount:</span>
-                                                <span class="summary-value">{{OPFooterForm?.get("netPayableAmt")?.value | currency:'INR'}}</span>
+                                                <span class="summary-value">{{OPFooterForm?.get("netPayableAmt")?.value
+                                                    | currency:'INR'}}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -602,11 +608,11 @@
                     </div>
                     <div class="section-body">
                         <form [formGroup]="OPFooterForm">
-                            <div fxLayout="row wrap" fxLayoutGap="12px grid" fxLayoutAlign="start center" class="input-error-hidden">
+                            <div fxLayout="row wrap" fxLayoutGap="12px grid" fxLayoutAlign="start center"
+                                class="input-error-hidden">
                                 <div fxFlex="16.66%" fxFlex.xs="100%" fxFlex.sm="50%" fxFlex.md="25%">
                                     <airmid-textbox label="Total Amount" formControlName="totalAmt"
-                                        [formGroup]="OPFooterForm"
-                                        [validations]="getValidationMessages().totalAmount"
+                                        [formGroup]="OPFooterForm" [validations]="getValidationMessages().totalAmount"
                                         [type]="'number'" [readonly]="true">
                                     </airmid-textbox>
                                 </div>
@@ -614,8 +620,7 @@
                                 <div fxFlex="16.66%" fxFlex.xs="100%" fxFlex.sm="50%" fxFlex.md="25%"
                                     *ngIf="!isDiscountApplied">
                                     <airmid-textbox label="Discount %" formControlName="totalDiscountPer"
-                                        [formGroup]="OPFooterForm"
-                                        [validations]="getValidationMessages().discountPer"
+                                        [formGroup]="OPFooterForm" [validations]="getValidationMessages().discountPer"
                                         [type]="'number'" [readonly]="isDiscountApplied">
                                     </airmid-textbox>
                                 </div>
@@ -623,16 +628,15 @@
                                 <div fxFlex="16.66%" fxFlex.xs="100%" fxFlex.sm="50%" fxFlex.md="25%">
                                     <airmid-textbox label="Discount Amount" formControlName="concessionAmt"
                                         [formGroup]="OPFooterForm"
-                                        [validations]="getValidationMessages().discountAmount"
-                                        [type]="'number'" [readonly]="isDiscountApplied">
+                                        [validations]="getValidationMessages().discountAmount" [type]="'number'"
+                                        [readonly]="isDiscountApplied">
                                     </airmid-textbox>
                                 </div>
 
                                 <div fxFlex="16.66%" fxFlex.xs="100%" fxFlex.sm="50%" fxFlex.md="25%"
                                     *ngIf="Consessionres">
                                     <airmid-dropdown label="Concession Reason" formControlName="concessionReasonId"
-                                        [formGroup]="OPFooterForm"
-                                        [validations]="getValidationMessages().concessionId"
+                                        [formGroup]="OPFooterForm" [validations]="getValidationMessages().concessionId"
                                         [mode]="autocompleteModeConcession"
                                         (selectionChange)="selectChangeConcession($event)">
                                     </airmid-dropdown>
@@ -641,21 +645,21 @@
                                 <div fxFlex="16.66%" fxFlex.xs="100%" fxFlex.sm="50%" fxFlex.md="25%">
                                     <airmid-textbox label="Net Payable Amount" formControlName="netPayableAmt"
                                         [formGroup]="OPFooterForm"
-                                        [validations]="getValidationMessages().totalNetAmount"
-                                        [type]="'number'" [readonly]="true">
+                                        [validations]="getValidationMessages().totalNetAmount" [type]="'number'"
+                                        [readonly]="true">
                                     </airmid-textbox>
                                 </div>
 
                                 <div fxFlex="16.66%" fxFlex.xs="100%" fxFlex.sm="50%" fxFlex.md="25%"
                                     *ngIf="OPFooterForm.get('paymentType')?.value === 'Mpesa'">
                                     <airmid-textbox label="MPesa Mobile" formControlName="mpesaMobile"
-                                        [formGroup]="OPFooterForm"
-                                        [validations]="getValidationMessages().mpesaMobile">
+                                        [formGroup]="OPFooterForm" [validations]="getValidationMessages().mpesaMobile">
                                     </airmid-textbox>
                                 </div>
                             </div>
 
-                            <div class="payment-type-section" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="16px">
+                            <div class="payment-type-section" fxLayout="row" fxLayoutAlign="start center"
+                                fxLayoutGap="16px">
                                 <span class="payment-label">Payment Type:</span>
                                 <mat-radio-group formControlName="paymentType" fxLayout="row" fxLayoutGap="16px">
                                     <mat-radio-button value="CashPay">
@@ -686,13 +690,12 @@
         <!-- Page Footer -->
         <div class="page-footer">
             <div class="footer-content" fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="12px">
-                <button type="button" class="btn btn-danger-outline" (click)="closeOrNavigateBack()"
-                    matTooltip="Close">
+                <button type="button" class="btn btn-danger-outline" (click)="closeOrNavigateBack()" matTooltip="Close">
                     <mat-icon>close</mat-icon>
                     Close
                 </button>
-                <button type="button" class="btn btn-primary" [disabled]="!chargeList.length"
-                    (click)="BillSave()" matTooltip="Save Bill">
+                <button type="button" class="btn btn-primary" [disabled]="!chargeList.length" (click)="BillSave()"
+                    matTooltip="Save Bill">
                     <mat-icon>save</mat-icon>
                     Save Bill
                 </button>

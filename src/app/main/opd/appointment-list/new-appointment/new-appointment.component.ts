@@ -98,11 +98,11 @@ export class NewAppointmentComponent implements OnInit {
     // <mat-expansion-panel> default to closed,
     isExpanded1 = false; // Defaults to closed
     isExpanded2 = false;
-     isExpanded3 = false;
+    isExpanded3 = false;
     ApiUrl = "PhoneAppointment2/auto-complete?Keyword=a"
 
-    stateId=0
-    counryId=0
+    stateId = 0
+    counryId = 0
 
     screenFromString = 'appointment';
     @ViewChild('attachments') attachment: any;
@@ -166,19 +166,17 @@ export class NewAppointmentComponent implements OnInit {
 
     ) { }
     FromRegistration: any;
-    chkregisterd: boolean = false; 
+    chkregisterd: boolean = false;
     Is9_Digit_National_Id: boolean = false;
     ngOnInit(): void {
-        
+
         // console.log(this._configue.configParams.OPDDefaultDepartment)
         // console.log(this._configue.configParams.OPDDefaultDoctor)
-   
+
         //this code for Mediforte 9 digit national id
-const rawValue = this?._configue?.configParams?.Is9_Digit_NationalId || "";
-const [id, val] = rawValue.includes(":") ? rawValue.split(":") : [null, null]; 
-this.Is9_Digit_National_Id = id === "1";
-
-
+        const rawValue = this?._configue?.configParams?.Is9_Digit_NationalId || "";
+        const [id, val] = rawValue.includes(":") ? rawValue.split(":") : [null, null];
+        this.Is9_Digit_National_Id = id === "1";
 
         // Swal.fire("", this._configue.configParams)
 
@@ -192,13 +190,14 @@ this.Is9_Digit_National_Id = id === "1";
 
         this.VisitFormGroup = this._AppointmentlistService.createVisitdetailForm();
         this.VisitFormGroup.markAllAsTouched();
+        this.setNationalIdValidation();
         // this.ClassId=1
         //  this.VisitFormGroup.get("UnitId").setValue(this.accountService.currentUserValue.user.unitId)
 
         // this.abhaForm = this._AppointmentlistService.createAbhadetailForm();
 
         this.searchFormGroup = this.createSearchForm();
-         this.policyFormGroup = this.createPolicyFormGrp();
+        this.policyFormGroup = this.createPolicyFormGrp();
         console.log(this.data)
         if (this.data) {
             this.FromRegistration = this.data?.Obj
@@ -273,7 +272,20 @@ this.Is9_Digit_National_Id = id === "1";
     //     });
     // }
 
+    setNationalIdValidation() {
+        debugger
+        const control = this.personalFormGroup.get('aadharCardNo');
 
+        if (!control) return;
+        const [is9Digit, is9DigitNot] = this._configue?.configParams?.Is9_Digit_NationalId.split(":");
+        if (is9Digit == 1) {
+            control.setValidators([Validators.required]);
+        } else {
+            control.clearValidators();
+        }
+
+        control.updateValueAndValidity();
+    }
 
     setdoctor(data) {
 
@@ -395,7 +407,7 @@ this.Is9_Digit_National_Id = id === "1";
     onChangeCompany(value) {
         this._AppointmentlistService.getCompanyById(value.value).subscribe((response) => {
             this.companyDet = response;
-            console.log("Company Data:",this.companyDet)
+            console.log("Company Data:", this.companyDet)
             this.VisitFormGroup.get('TariffId').setValue(this.companyDet.traiffId);
         });
     }
@@ -463,6 +475,7 @@ this.Is9_Digit_National_Id = id === "1";
                         this.onChangeDateofBirth(response.dateofBirth)
                         console.log(response)
                         this.getLastDepartmetnNameList(this.registerObj)
+                        this.setNationalIdValidation();
                         this.personalFormGroup.patchValue({
                             FirstName: this.registerObj.firstName.trim(),
                             middleName: this.registerObj.middleName.trim(),
@@ -508,13 +521,14 @@ this.Is9_Digit_National_Id = id === "1";
                         this.value = response.dateofBirth
                         this.onChangeDateofBirth(response.dateofBirth)
                         this.getLastDepartmetnNameList(this.registerObj)
+                        this.setNationalIdValidation();
                         this.personalFormGroup.patchValue({
                             FirstName: this.registerObj.firstName,
                             middleName: this.registerObj.middleName.trim(),
                             LastName: this.registerObj.lastName,
                             MobileNo: this.registerObj.mobileNo,
                             address: this.registerObj.address.trim(),
-                            aadharCardNo:this.registerObj.aadharCardNo,
+                            aadharCardNo: this.registerObj.aadharCardNo,
                             // DateOfBirth:this.registerObj.dateofBirth,
                             emgContactPersonName: this.registerObj?.emgContactPersonName ?? '',
                             emgRelationshipId: this.registerObj?.emgRelationshipId ?? 0,
@@ -668,20 +682,20 @@ this.Is9_Digit_National_Id = id === "1";
         });
     }
 
-  policyFormGroup:FormGroup; 
-  createPolicyFormGrp(){ 
-    return this.formBuilder.group({
-    patientPolicyId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
-    opipid:[0,[this._FormvalidationserviceService.onlyNumberValidator()]],
-    opiptype: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
-    policyNo: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
-    policyValidateDate: ['1999-01-01'],
-    approvedAmount: [0,[this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-    createdBy:[this.accountService.currentUserValue.userId],
-    isActive: true
-    }) 
-  }
- 
+    policyFormGroup: FormGroup;
+    createPolicyFormGrp() {
+        return this.formBuilder.group({
+            patientPolicyId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            opipid: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            opiptype: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            policyNo: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            policyValidateDate: ['1999-01-01'],
+            approvedAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            createdBy: [this.accountService.currentUserValue.userId],
+            isActive: true
+        })
+    }
+
     onSave() {
         Swal.fire({
             title: 'Confirm Save',
@@ -734,16 +748,16 @@ this.Is9_Digit_National_Id = id === "1";
                 }
 
 
-        const formattedDate = this.datePipe.transform(this.VisitFormGroup.get('visitDate').value, "yyyy-MM-dd");
-        const formattedTime = this.datePipe.transform(new Date(), "HH:mm:ss");
-        this.VisitFormGroup.get('visitDate').setValue(formattedDate);
-        this.VisitFormGroup.get('visitTime').setValue(formattedDate + ' ' + formattedTime); 
-              
+                const formattedDate = this.datePipe.transform(this.VisitFormGroup.get('visitDate').value, "yyyy-MM-dd");
+                const formattedTime = this.datePipe.transform(new Date(), "HH:mm:ss");
+                this.VisitFormGroup.get('visitDate').setValue(formattedDate);
+                this.VisitFormGroup.get('visitTime').setValue(formattedDate + ' ' + formattedTime);
 
-            // const formValues = this.personalFormGroup.getRawValue() as RegInsert;
 
-            //     console.log(formValues)
-                 this.personalFormGroup.get('City').setValue(this.CityName)
+                // const formValues = this.personalFormGroup.getRawValue() as RegInsert;
+
+                //     console.log(formValues)
+                this.personalFormGroup.get('City').setValue(this.CityName)
                 this.personalFormGroup.get('Age').setValue(String(this.ageYear))
                 this.personalFormGroup.get('StateId').setValue(this.stateId)
                 this.personalFormGroup.get('CountryId').setValue(String(this.counryId))
@@ -752,7 +766,7 @@ this.Is9_Digit_National_Id = id === "1";
                 this.personalFormGroup.get('AgeMonth').setValue(String(this.ageMonth))
                 this.personalFormGroup.get('AgeDay').setValue(String(this.ageDay))
                 this.personalFormGroup.get("DateOfBirth").setValue(this.datePipe.transform(this.personalFormGroup.get("DateOfBirth").value, "yyyy-MM-dd"))
-               
+
                 console.log('Personal Form : ', this.personalFormGroup.value)
                 console.log('Visit Form : ', this.VisitFormGroup.value)
                 if (!this.personalFormGroup.invalid && !this.VisitFormGroup.invalid) {
@@ -809,7 +823,7 @@ this.Is9_Digit_National_Id = id === "1";
         this.personalFormGroup.get('medTourismDateOfEntry').setValue(this.datePipe.transform(this.personalFormGroup.get("medTourismDateOfEntry").value, "yyyy-MM-dd") || '1900-01-01');
         this.personalFormGroup.removeControl('updatedBy')
         this.personalFormGroup.removeControl('IsNRI')
-        this.policyFormGroup.get("policyValidateDate").setValue(this.datePipe.transform(this.VisitFormGroup.get('policyValidateDate').value , "yyyy-MM-dd") || '1900-01-01');
+        this.policyFormGroup.get("policyValidateDate").setValue(this.datePipe.transform(this.VisitFormGroup.get('policyValidateDate').value, "yyyy-MM-dd") || '1900-01-01');
         this.policyFormGroup.get("policyNo").setValue(String(this.VisitFormGroup.get('policyNumber')?.value || 0))
         this.policyFormGroup.get("approvedAmount").setValue(Number(this.VisitFormGroup.get('policyLimit')?.value || 0))
         //  this.personalFormGroup.get('RegDate').setValue(this.personalFormGroup.get('RegDate').value, 'yyyy-MM-dd');
@@ -819,9 +833,9 @@ this.Is9_Digit_National_Id = id === "1";
         let submitData = {
             "registration": this.personalFormGroup.value,
             "visit": this.VisitFormGroup.value,
-            "patientPolicy":this.policyFormGroup.value
+            "patientPolicy": this.policyFormGroup.value
         }
-         
+
         console.log(submitData);
         this._AppointmentlistService.NewappointmentSave(submitData).subscribe((response) => {
             this.OnViewReportPdf(response)
@@ -882,14 +896,14 @@ this.Is9_Digit_National_Id = id === "1";
             this.personalFormGroup.removeControl(control)
         })
 
-        this.policyFormGroup.get("policyValidateDate").setValue(this.datePipe.transform(this.VisitFormGroup.get('policyValidateDate').value , "yyyy-MM-dd") || '1900-01-01');
+        this.policyFormGroup.get("policyValidateDate").setValue(this.datePipe.transform(this.VisitFormGroup.get('policyValidateDate').value, "yyyy-MM-dd") || '1900-01-01');
         this.policyFormGroup.get("policyNo").setValue(String(this.VisitFormGroup.get('policyNumber')?.value || 0))
         this.policyFormGroup.get("approvedAmount").setValue(Number(this.VisitFormGroup.get('policyLimit')?.value || 0))
 
         let submitData = {
             // "appReistrationUpdate": this.personalFormGroup.value,
             "visit": this.VisitFormGroup.value,
-            "patientPolicy":this.policyFormGroup.value 
+            "patientPolicy": this.policyFormGroup.value
         };
         console.log(submitData)
         this._AppointmentlistService.RregisteredappointmentSave(submitData).subscribe((response) => {
@@ -899,18 +913,18 @@ this.Is9_Digit_National_Id = id === "1";
             this._matDialog.closeAll();
         });
     }
-  onValidDateChange(event: any) {
-    const selectedDate = new Date(event.value);
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
+    onValidDateChange(event: any) {
+        const selectedDate = new Date(event.value);
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
 
-    if (selectedDate < today) {
-      this.toastr.warning('Valid Date cannot be earlier than today.', 'Warning!',
-        { toastClass: 'tostr-tost custom-toast-warning' }
-      );
-      this.VisitFormGroup.get('policyValidateDate')?.setValue(today);
+        if (selectedDate < today) {
+            this.toastr.warning('Valid Date cannot be earlier than today.', 'Warning!',
+                { toastClass: 'tostr-tost custom-toast-warning' }
+            );
+            this.VisitFormGroup.get('policyValidateDate')?.setValue(today);
+        }
     }
-  }
     onChangeDate(value) {
         // console.log(value)
     }
@@ -920,15 +934,15 @@ this.Is9_Digit_National_Id = id === "1";
     }
 
     onChangecity(e) {
-        
+
         this.CityName = e.cityName
         this.registerObj.stateId = e.stateId
-        this.stateId= e.stateId
+        this.stateId = e.stateId
         this._AppointmentlistService.getstateId(e.stateId).subscribe((Response) => {
             // console.log(Response)
             // this.ddlCountry.SetSelection(Response.countryId);
-             this.counryId= Response.countryId
-             console.log(Response.countryId)
+            this.counryId = Response.countryId
+            console.log(Response.countryId)
         });
     }
 
@@ -943,7 +957,7 @@ this.Is9_Digit_National_Id = id === "1";
     }
 
     selectChangedepartment(obj: any) {
-        
+
         if (obj.value) {
             this._AppointmentlistService.getDoctorsByDepartment(obj.value).subscribe((data: any) => {
                 this.ddlDoctor.options = data;
@@ -953,7 +967,7 @@ this.Is9_Digit_National_Id = id === "1";
             this._AppointmentlistService.getDoctorsByDepartment(obj.departmentId).subscribe((data: any) => {
                 console.log(data)
                 if (data) {
-                    
+
                     this.ddlDoctor.options = data;
                     this.ddlDoctor.bindGridAutoComplete();
                     const incomingDoctorId = obj.consultantDocId || obj.doctorId;
@@ -969,8 +983,8 @@ this.Is9_Digit_National_Id = id === "1";
     }
 
     getValidationMessages() {
-         const maxLen = this.Is9_Digit_National_Id ? 9 : 12;
-          const minLen = this.Is9_Digit_National_Id ? 7 : 12;
+        const maxLen = this.Is9_Digit_National_Id ? 9 : 12;
+        const minLen = this.Is9_Digit_National_Id ? 7 : 12;
         return {
             RegId: [],
             firstName: [
@@ -1035,11 +1049,11 @@ this.Is9_Digit_National_Id = id === "1";
             //     { name: "maxLength", Message: "More than 12 digits not allowed." }
             // ],
             aadharCardNo: [
-     // { name: "pattern", Message: "Only numbers allowed" },
-      { name: "required", Message: "Aadhaar / National ID is required" },
-    //   { name: "minLength", Message: `Minimum ${minLen} digits required.` },
-    //   { name: "maxLength", Message: `More than ${maxLen} digits not allowed.` }
-    ],
+                // { name: "pattern", Message: "Only numbers allowed" },
+                { name: "required", Message: "Aadhaar / National ID is required" },
+                //   { name: "minLength", Message: `Minimum ${minLen} digits required.` },
+                //   { name: "maxLength", Message: `More than ${maxLen} digits not allowed.` }
+            ],
             MaritalStatusId: [
                 { Message: "Mstatus Name is required" }
             ],
@@ -1088,15 +1102,15 @@ this.Is9_Digit_National_Id = id === "1";
             ClassId: [
                 { name: "required", Message: "Class Name is required" }
             ],
-             policyNumber: [
+            policyNumber: [
                 { name: "required", Message: "Policy name is required" }
             ],
-             policyLimit: [
+            policyLimit: [
                 { name: "required", Message: "Policy limit is required" }
             ],
-              EmailId: [
+            EmailId: [
                 { name: "pattern", Message: "Enter valid Email Address" }
-            ], 
+            ],
         };
     }
 
@@ -1146,7 +1160,7 @@ this.Is9_Digit_National_Id = id === "1";
 
     createPesonalForm() {
         const maxLen = this.Is9_Digit_National_Id ? 9 : 12;
-         const minLen = this.Is9_Digit_National_Id ? 7 : 12;
+        const minLen = this.Is9_Digit_National_Id ? 7 : 12;
         return this._formBuilder.group({
             RegId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             // RegNo: ['', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
@@ -1192,13 +1206,13 @@ this.Is9_Digit_National_Id = id === "1";
             Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$"),
             this._FormvalidationserviceService.onlyNumberValidator()
             ]],
-        //      aadharCardNo: ['', [Validators.required
-        // //    Validators.minLength(minLen),  //     Validators.minLength(12),
-        // //     Validators.maxLength(maxLen), //     Validators.maxLength(12),
-        // //         Validators.pattern("^[0-9]*$"),
-        // //         this._FormvalidationserviceService.onlyNumberValidator()
-        //  ]],
-            aadharCardNo:['',[Validators.required]],
+            //      aadharCardNo: ['', [Validators.required
+            // //    Validators.minLength(minLen),  //     Validators.minLength(12),
+            // //     Validators.maxLength(maxLen), //     Validators.maxLength(12),
+            // //         Validators.pattern("^[0-9]*$"),
+            // //         this._FormvalidationserviceService.onlyNumberValidator()
+            //  ]],
+            aadharCardNo: [''],
             panCardNo: ['', [this._FormvalidationserviceService.allowEmptyStringValidator()]],
             MaritalStatusId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             ReligionId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -1206,12 +1220,12 @@ this.Is9_Digit_National_Id = id === "1";
             CityId: [0, [Validators.required, this._FormvalidationserviceService.onlyNumberValidator(), this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             City: [''],
             StateId: [this.stateId, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            CountryId: [0, [ this._FormvalidationserviceService.onlyNumberValidator()]],
+            CountryId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             IsCharity: false,
             IsSeniorCitizen: false,
             AddedBy: [this.accountService.currentUserValue.userId, this._FormvalidationserviceService.onlyNumberValidator()],
             updatedBy: [this.accountService.currentUserValue.userId, this._FormvalidationserviceService.onlyNumberValidator()],
-            RegDate: [this.datePipe.transform((new Date()).toISOString(),'yyyy-MM-dd')],
+            RegDate: [this.datePipe.transform((new Date()).toISOString(), 'yyyy-MM-dd')],
             RegTime: [this.datePipe.transform(new Date(), "HH:mm:ss")],
 
             Photo: [''],
@@ -1245,8 +1259,8 @@ this.Is9_Digit_National_Id = id === "1";
 
             // extra field
             IsNRI: [false],
-            EmailId:['',[Validators.email]]
-            
+            EmailId: ['', [Validators.email]]
+
         });
     }
 

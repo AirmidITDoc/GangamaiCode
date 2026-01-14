@@ -37,6 +37,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatTabsModule } from '@angular/material/tabs';
 import { InpatientbrowseListComponent } from './inpatientbrowse-list.component';
+import { PharmacyBIllEditComponent } from './pharmacy-bill-edit/pharmacy-bill-edit.component';
 
 const routes: Routes = [
   { 
@@ -46,7 +47,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    declarations: [InpatientbrowseListComponent],
+    declarations: [InpatientbrowseListComponent, PharmacyBIllEditComponent],
     imports: [
        RouterModule.forChild(routes),
             CommonModule,
