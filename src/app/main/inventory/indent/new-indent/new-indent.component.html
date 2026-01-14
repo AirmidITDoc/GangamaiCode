@@ -29,7 +29,8 @@
                                 <div fxFlexFill fxLayout="row" fxLayoutGap="8px">
                                     <airmid-dropdown label="From Store Name" formControlName="FromStoreId" fxFlex="30%"
                                         [formGroup]="IndentSaveFrom" [validations]="getValidationMessages().FromStoreId"
-                                        [readonly]="true" [value]="data?.FromStoreId" [mode]="autocompletestore">
+                                        [readonly]="true" [value]="data?.FromStoreId" [mode]="autocompletestore"
+                                         (selectionChange)="selectChangeStore($event)">
                                     </airmid-dropdown>
 
                                     <airmid-dropdown label="To Store Name" formControlName="ToStoreId" fxFlex="30%"
@@ -47,7 +48,8 @@
                                 <div fxFlexFill fxLayout="row" fxLayoutGap="8px">
                                     <airmid-autocomplete label="Item Name (enter 2 char)" [formGroup]="IndentForm"
                                         formControlName="ItemName" placeholderText="Item Name (enter 2 char)"
-                                        fxFlex="27%" ApiUrl="ItemMaster/GetItemListForGRNOrPO?StoreId=2&ItemName="
+                                        fxFlex="27%"
+                                        ApiUrl={{ApiUrl}} 
                                         (selectionChange)="getSelectedItem($event)" TextField="formattedText"
                                         ValueField="itemId" (onClearSelection)="resetFormItem()"></airmid-autocomplete>
 

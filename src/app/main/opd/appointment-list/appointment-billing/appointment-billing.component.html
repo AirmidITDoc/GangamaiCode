@@ -895,8 +895,15 @@
                                         </div>
                                     </div>
                                     <div class="radio-container">
-                                        <mat-radio-group formControlName="paymentType" fxLayout="row" class="gap-4">
-                                            <mat-radio-button value="CashPay"   *ngIf="!Is9_Digit_National_Id">Cash Payment</mat-radio-button>
+                                         <mat-radio-group formControlName="paymentType" fxLayout="row" class="gap-4" *ngIf="!Is9_Digit_National_Id">
+                                            <mat-radio-button value="CashPay">Cash Payment</mat-radio-button>
+                                            <mat-radio-button value="CreditPay">Credit Payment</mat-radio-button>
+                                            <mat-radio-button value="OnlinePay">Online Payment</mat-radio-button>
+                                            <mat-radio-button value="PayOption">Pay Option</mat-radio-button>
+                                             
+                                        </mat-radio-group>
+                                        <mat-radio-group formControlName="paymentType" fxLayout="row" class="gap-4" *ngIf="Is9_Digit_National_Id">
+                                            <mat-radio-button value="CashPay" *ngIf="!Is9_Digit_National_Id">Cash Payment</mat-radio-button>
                                             <mat-radio-button value="CreditPay" *ngIf="Is9_Digit_National_Id">Credit Payment</mat-radio-button>
                                             <mat-radio-button value="OnlinePay" *ngIf="!Is9_Digit_National_Id">Online Payment</mat-radio-button>
                                             <mat-radio-button value="PayOption" *ngIf="!Is9_Digit_National_Id">Pay Option</mat-radio-button>

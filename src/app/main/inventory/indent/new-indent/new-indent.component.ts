@@ -37,6 +37,7 @@ export class NewIndentComponent implements OnInit {
   vprintflag: boolean = false;
   vItemId: any;
   ItemName: any;
+  vstoreId:any;
   vQty: any;
   chargeslist: any = [];
   vRemark: any;
@@ -49,6 +50,7 @@ export class NewIndentComponent implements OnInit {
   dateTimeObj: any;
   status: any;
   Qty = 0
+  ApiUrl=''
   dsIndentNameList = new MatTableDataSource<IndentNameList>();
   dsTempItemNameList = new MatTableDataSource<IndentNameList>();
   @ViewChild(MatSort) sort: MatSort;
@@ -71,6 +73,8 @@ export class NewIndentComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.vstoreId = this._loggedService.currentUserValue.user.storeId;
+    this.ApiUrl = `ItemMaster/GetItemListForGRNOrPO?StoreId=${this.vstoreId}&ItemName=`
     this.IndentSaveFrom = this.CreateIndentSaveFrom();
     this.IndentForm = this._IndentService.createnewindentfrom();
     this.IndentSaveFrom.markAllAsTouched();
@@ -101,7 +105,12 @@ export class NewIndentComponent implements OnInit {
   get IndentdetailArray(): FormArray {
     return this.IndentSaveFrom.get('tIndentDetails') as FormArray;
   }
+  selectChangeStore(obj: any) {
+    console.log("Store:", obj);
+    this.vstoreId = obj.value
+    this.ApiUrl = `ItemMaster/GetItemListForGRNOrPO?StoreId=${this.vstoreId}&ItemName=`
 
+  }
   CreateIndentSaveFrom() {
     return this._formBuilder.group({
       unitId: [this._loggedService.currentUserValue.user.unitId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
