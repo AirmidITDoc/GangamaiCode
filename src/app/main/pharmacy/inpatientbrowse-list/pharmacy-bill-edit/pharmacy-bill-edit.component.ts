@@ -119,11 +119,11 @@ export class PharmacyBIllEditComponent {
        console.log(this.patientDetail)
       this.OPDIPDID = this.data?.Obj?.admissionId |this.data?.Obj?.opipid || 0
       this.opD_IPD_Type = this.data?.oP_IP_Type || 1
-      this.Lable = 'Bill'
-      this.BillNo = this.patientDetail?.salesId
+      this.Lable = 'Pharmacy'
+       this.BillNo= this.patientDetail?.salesId
 
        this.getBilllist();
-      // this.getPrevCompanyBillList(this.patientDetail?.salesId, 'Bill')
+       this.getPrevCompanyBillList(this.patientDetail?.salesId, 'Pharmacy')
       // this.getsaleslist();
     }
     //this is for curreny symbol
@@ -373,6 +373,7 @@ export class PharmacyBIllEditComponent {
       cancelButtonText: 'No, cancel'
     }).then((result) => {
       if (result.isConfirmed) {
+        debugger
         if (this.Lable == 'Pharmacy') {
           this.OnSaveSalesupdate();
         }
@@ -446,7 +447,7 @@ export class PharmacyBIllEditComponent {
     debugger
     const formValue = this.OPFooterForm.value
     this.salesUpdateForm.get('salesHeader').patchValue({
-      salesId: this.BillDetailsObj?.BillNo || 0,
+      salesId: this.BillNo || 0,
       totalAmount: formValue?.totalAmt || 0,
       vatAmount: 0,
       discAmount: formValue?.concessionAmt || 0,
@@ -460,7 +461,7 @@ export class PharmacyBIllEditComponent {
       this.SalesUpDetArray.clear();
       this.dsChargeList.data.forEach(item => {
         const formObj = this.CreateSalesdetform(item as ChargesList);
-        formObj.patchValue({ salesId: this.BillDetailsObj?.BillNo || 0 });
+        formObj.patchValue({ salesId: this.BillNo || 0 });
         storeId = item?.storeId || 0
         this.SalesUpDetArray.push(formObj);
       });
