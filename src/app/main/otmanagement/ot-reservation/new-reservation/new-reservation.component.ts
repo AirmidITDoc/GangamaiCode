@@ -115,6 +115,7 @@ export class NewReservationComponent implements OnInit {
   registerObj2 = new OtReserInsert({});
   AllTypeDescription: any = []
   RtrvDescriptionList: any = [];
+  vanesthesiaType:any;
 
   constructor(public _OtReservationService: OtReservationService,
     public dialogRef: MatDialogRef<NewReservationComponent>,
@@ -165,6 +166,7 @@ export class NewReservationComponent implements OnInit {
           this._OtReservationService.getotReservationById(this.data.otReservationId).subscribe((response) => {
             this.registerObj2 = response;
             console.log("Get Data:", this.registerObj2)
+            this.vanesthesiaType=this.registerObj2.anesthesiaType
             this.vreservationId = this.registerObj2.otreservationId
             this.opIpId = this.registerObj2.opipid
             this.vSelectedOption = this.registerObj2.opiptype == 0 ? 'OP' : 'IP';
@@ -173,6 +175,7 @@ export class NewReservationComponent implements OnInit {
             this.vequipmentsRequired = this.registerObj2.equipmentsRequired == true ? '1' : '0';
             this.vinfective = this.registerObj2.infective == true ? '1' : '0';
             this.reservationForm.get('surgeryDate')?.setValue(this.registerObj2.surgeryDate)
+            this.reservationForm.get('anesthesiaType')?.setValue(this.registerObj2.anesthesiaType)
           });
         }, 500);
       }

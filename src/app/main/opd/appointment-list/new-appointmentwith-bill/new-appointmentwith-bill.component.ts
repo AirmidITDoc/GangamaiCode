@@ -508,7 +508,7 @@ export class NewAppointmentwithBillComponent {
       discComments: [0, [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],//need to set concession reason
       cashCounterId: ["1", [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],//need to set cashCounterId
       createdBy: [this.accountService.currentUserValue.userId, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      govtApprovedAmt:0,
+      govtApprovedAmt: 0,
       addCharges: this._formbuilder.array([]),
 
       // ✅ Fixed: should be FormArray
@@ -1098,7 +1098,7 @@ export class NewAppointmentwithBillComponent {
       this._AppointmentlistService.getDoctorsByDepartment(obj.departmentId).subscribe((data: any) => {
         // 
         this.ddlDoctor.options = data;
-        const incomingDoctorId = obj.doctorId;
+        const incomingDoctorId = obj.doctorId ?? obj.consultantDocId;
         console.log("Id:", incomingDoctorId)
         setTimeout(() => {
           this.ddlDoctor.bindGridAutoComplete();
@@ -1160,7 +1160,7 @@ export class NewAppointmentwithBillComponent {
 
         const now = new Date();
         const formattedDate = this.datePipe.transform(now, "yyyy-MM-dd");
-        const formattedTime = this.datePipe.transform(now,'yyyy-MM-dd HH:mm:ss');
+        const formattedTime = this.datePipe.transform(now, 'yyyy-MM-dd HH:mm:ss');
         // const formattedTime = formattedDate + this.dateTimeObj.time;
 
         this.myForm.get('RegDate').setValue(formattedDate);
@@ -1247,7 +1247,7 @@ export class NewAppointmentwithBillComponent {
     }
     debugger
     // if (this.PatientName){
-      this.PatientName = this.myForm.get('FirstName').value + " " + this.myForm.get('LastName').value
+    this.PatientName = this.myForm.get('FirstName').value + " " + this.myForm.get('LastName').value
     // }
 
     // Bill data
@@ -1297,6 +1297,7 @@ export class NewAppointmentwithBillComponent {
         });
         return;
       }
+      debugger
       if (this.searchFormGroup.get('regRadio').value == "registration") {
 
         //
@@ -1344,7 +1345,7 @@ export class NewAppointmentwithBillComponent {
                 console.log(this.AppointmentBillfinalform.value)
 
                 this._AppointmentlistService.InsertAppointmentBilling(this.AppointmentBillfinalform.value).subscribe(response => {
-                  this.viewgetOPBillReportPdf(response)
+                  this.viewgetOPBillReportPdf(response.billNo)
                   this.closeAllOrNavigateBack();
                   this.savebtn = true
                 });
@@ -1364,7 +1365,7 @@ export class NewAppointmentwithBillComponent {
             console.log(this.AppointmentBillfinalform.value)
             this._AppointmentlistService.InsertAppointmentBilling(this.AppointmentBillfinalform.value).subscribe(response => {
               console.log(response)
-              this.viewgetOPBillReportPdf(response)
+              this.viewgetOPBillReportPdf(response.billNo)
               this.closeAllOrNavigateBack();
               this.savebtn = true
 
@@ -1379,7 +1380,7 @@ export class NewAppointmentwithBillComponent {
             console.log(this.AppointmentBillfinalform.value)
 
             this._AppointmentlistService.InsertAppointmentCreditBill(this.AppointmentBillfinalform.value).subscribe(response => {
-              // this.viewgetOPBillReportPdf(response)
+              // this.viewgetOPBillReportPdf(response.billNo)
               this.closeAllOrNavigateBack();
               this.savebtn = true
             });
@@ -1453,11 +1454,16 @@ export class NewAppointmentwithBillComponent {
                 this.OpBillForm.get('balanceAmt').setValue(result.BillBalanceAmount || 0)
                 this.OpBillForm.get('payments').setValue(result.submitDataPay.ipPaymentInsert)
 
-                this.AppointmentBillfinalform.get('appOPBillIngModels').setValue(this.OpBillForm.value)
-                console.log(this.AppointmentBillfinalform.value)
+                // this.AppointmentBillfinalform.get('appOPBillIngModels').setValue(this.OpBillForm.value)
+                // console.log(this.AppointmentBillfinalform.value)
+                this.RegiAppointmentBillfinalform.get('appOPBillIngModels').setValue(this.OpBillForm.value)
+                this.RegiAppointmentBillfinalform.get("visit").setValue(this.VisitFormGroup.value)
 
-                this._AppointmentlistService.InsertAppointmentBilling(this.AppointmentBillfinalform.value).subscribe(response => {
-                  this.viewgetOPBillReportPdf(response)
+
+                console.log(this.RegiAppointmentBillfinalform.value)
+
+                this._AppointmentlistService.RegistredAppointmentBilling(this.RegiAppointmentBillfinalform.value).subscribe(response => {
+                  this.viewgetOPBillReportPdf(response.billNo)
                   this.closeAllOrNavigateBack();
                   this.savebtn = true
                 });
@@ -1487,7 +1493,7 @@ export class NewAppointmentwithBillComponent {
             //  console.log(formValue)
             this._AppointmentlistService.RegistredAppointmentBilling(this.RegiAppointmentBillfinalform.value).subscribe(response => {
               console.log(response)
-              this.viewgetOPBillReportPdf(response)
+              this.viewgetOPBillReportPdf(response.billNo)
               this.closeAllOrNavigateBack();
               this.savebtn = true
 
@@ -1502,7 +1508,7 @@ export class NewAppointmentwithBillComponent {
             console.log(this.AppointmentBillfinalform.value)
 
             this._AppointmentlistService.InsertAppointmentCreditBill(this.AppointmentBillfinalform.value).subscribe(response => {
-              // this.viewgetOPBillReportPdf(response)
+              // this.viewgetOPBillReportPdf(response.billNo)
               this.closeAllOrNavigateBack();
               this.savebtn = true
             });
@@ -1841,7 +1847,7 @@ export class NewAppointmentwithBillComponent {
     this.doctorName = event.text
   }
   getSelectedObj(obj) {
-    debugger
+    // debugger
     if (this.data?.FormName == 'Registration-Page') {
       // this.PatientName = obj.firstName + ' ' + obj.lastName;
       this.PatientName = obj.patientName
@@ -1953,9 +1959,6 @@ export class NewAppointmentwithBillComponent {
       this.VisitFormGroup.get("DepartmentId").setValue(this.PrevregisterObj.departmentId)
       this.selectChangedepartment(this.PrevregisterObj)
       console.log(this.PrevregisterObj)
-
-
-
     });
   }
 
