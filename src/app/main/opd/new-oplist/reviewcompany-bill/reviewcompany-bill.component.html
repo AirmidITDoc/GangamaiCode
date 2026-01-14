@@ -4,7 +4,7 @@
         <div class="modal-header accent">
             <div class="modal-header-content">
                 <div class="modal-header-title">
-                    <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">Company BILLING</span>
+                    <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">Company Billing</span>
                 </div>
                 <div class="modal-header-right">
                     <div class="comman-date-container">
@@ -203,36 +203,47 @@
 
                                             </div>
                                         </div> -->
-                                        <div fxLayout="row" fxLayout.xs="column" fxLayout.sm="column" fxLayoutGap="12px">
-                                        
+                                        <div fxLayout="row" fxLayout.xs="column" fxLayout.sm="column"
+                                            fxLayoutGap="12px">
+
                                             <!-- Govt Company -->
-                                            <div fxLayout="column" fxFlex="50" fxFlex.md="50" fxFlex.sm="100" fxFlex.xs="100" fxLayoutGap="6px">
-                                        
-                                                <airmid-dropdown label="Gov.Company Name" formControlName="govtCompanyId" [formGroup]="CompanyForm"
-                                                    [validations]="getValidationMessages().govtCompanyId" [mode]="autocompleteModecompany">
+                                            <div fxLayout="column" fxFlex="50" fxFlex.md="50" fxFlex.sm="100"
+                                                fxFlex.xs="100" fxLayoutGap="6px">
+
+                                                <airmid-dropdown label="Gov.Company Name"
+                                                    formControlName="govtCompanyId" [formGroup]="CompanyForm"
+                                                    [validations]="getValidationMessages().govtCompanyId"
+                                                    [mode]="autocompleteModecompany">
                                                 </airmid-dropdown>
-                                        
-                                                <airmid-textbox label="Gov.Company Amount" formControlName="govtApprovedAmt" [formGroup]="CompanyForm"
+
+                                                <airmid-textbox label="Gov.Company Amount"
+                                                    formControlName="govtApprovedAmt" [formGroup]="CompanyForm"
                                                     [validations]="getValidationMessages().govtApprovedAmt">
                                                 </airmid-textbox>
-                                        
-                                                <airmid-textbox label="Reference No" formControlName="referenceNo" [formGroup]="CompanyForm"
+
+                                                <airmid-textbox label="Reference No" formControlName="referenceNo"
+                                                    [formGroup]="CompanyForm"
                                                     [validations]="getValidationMessages().referenceNo">
                                                 </airmid-textbox>
                                             </div>
-                                        
+
                                             <!-- Company -->
-                                            <div fxLayout="column" fxFlex="50" fxFlex.md="50" fxFlex.sm="100" fxFlex.xs="100" fxLayoutGap="6px">
-                                        
-                                                <airmid-dropdown label="Company Name" formControlName="companyApprovedId" [formGroup]="CompanyForm"
-                                                    [validations]="getValidationMessages().companyApprovedId" [mode]="autocompleteModecompany">
+                                            <div fxLayout="column" fxFlex="50" fxFlex.md="50" fxFlex.sm="100"
+                                                fxFlex.xs="100" fxLayoutGap="6px">
+
+                                                <airmid-dropdown label="Company Name"
+                                                    formControlName="companyApprovedId" [formGroup]="CompanyForm"
+                                                    [validations]="getValidationMessages().companyApprovedId"
+                                                    [mode]="autocompleteModecompany">
                                                 </airmid-dropdown>
-                                        
-                                                <airmid-textbox label="Company Amount" formControlName="companyApprovedAmt" [formGroup]="CompanyForm"
+
+                                                <airmid-textbox label="Company Amount"
+                                                    formControlName="companyApprovedAmt" [formGroup]="CompanyForm"
                                                     [validations]="getValidationMessages().companyApprovedAmt">
                                                 </airmid-textbox>
-                                        
-                                                <airmid-textbox label="Reference No1" formControlName="referenceNo_1" [formGroup]="CompanyForm"
+
+                                                <airmid-textbox label="Reference No1" formControlName="referenceNo_1"
+                                                    [formGroup]="CompanyForm"
                                                     [validations]="getValidationMessages().referenceNo_1">
                                                 </airmid-textbox>
                                             </div>
@@ -271,8 +282,6 @@
                                                             <span>:</span>
                                                             <span
                                                                 class="patient-col-value">{{patientDetail?.regNo}}</span>
-                                                        </div>
-                                                        <div class="patient-col">
                                                             <span class="patient-col-key">Patient Name
                                                             </span>
                                                             <span>:</span>
@@ -281,10 +290,26 @@
                                                             </span>
                                                         </div>
                                                         <div class="patient-col">
-                                                            <span class="patient-col-key">Doctor Name</span>
+                                                            <!-- <span class="patient-col-key">Patient Name
+                                                            </span>
                                                             <span>:</span>
                                                             <span
-                                                                class="patient-col-value">{{patientDetail?.doctorName}}</span>
+                                                                class="patient-col-value">{{patientDetail?.patientName}}
+                                                            </span> -->
+                                                            <span class="patient-col-key">Department</span>
+                                                            <span>:</span>
+                                                            <span
+                                                                class="patient-col-value">{{patientDetail?.departmentName}}</span>
+                                                            <!-- <span class="patient-col-key">Doctor Name</span>
+                                                            <span>:</span>
+                                                            <span
+                                                                class="patient-col-value">{{patientDetail?.doctorName}}</span> -->
+                                                        </div>
+                                                        <div class="patient-col">
+                                                            <!-- <span class="patient-col-key">Doctor Name</span>
+                                                            <span>:</span>
+                                                            <span
+                                                                class="patient-col-value">{{patientDetail?.doctorName}}</span> -->
                                                         </div>
                                                     </div>
                                                     <div fxLayout="column" fxLayoutGap="6px">
@@ -294,8 +319,6 @@
                                                             <span>:</span>
                                                             <span class="patient-col-value">{{patientDetail?.opdNo}}
                                                                 {{patientDetail?.ipdNo}}</span>
-                                                        </div>
-                                                        <div class="patient-col">
                                                             <span class="patient-col-key">Age | Gender
                                                             </span>
                                                             <span>:</span>
@@ -303,10 +326,20 @@
                                                                 class="patient-col-value">{{patientDetail?.patientAge}}Y</span>
                                                         </div>
                                                         <div class="patient-col">
-                                                            <span class="patient-col-key">Department</span>
+                                                            <span class="patient-col-key">Doctor Name</span>
+                                                            <span>:</span>
+                                                            <span
+                                                                class="patient-col-value">{{patientDetail?.doctorName}}</span>
+                                                        </div>
+                                                        <div class="patient-col">
+                                                            <!-- <span class="patient-col-key">Department</span>
                                                             <span>:</span>
                                                             <span
                                                                 class="patient-col-value">{{patientDetail?.departmentName}}</span>
+                                                            <span class="patient-col-key">Doctor Name</span>
+                                                            <span>:</span>
+                                                            <span
+                                                                class="patient-col-value">{{patientDetail?.doctorName}}</span> -->
                                                         </div>
                                                     </div>
                                                     <div fxLayout="column" fxLayoutGap="6px">
@@ -319,13 +352,17 @@
                                                                 class="patient-col-value">{{patientDetail?.patientType}}
                                                                 |
                                                                 {{patientDetail?.tariffName}}</span>
-                                                        </div>
-                                                        <div class="patient-col">
                                                             <span class="patient-col-key">Company Name</span>
                                                             <span>:</span>
                                                             <span class="patient-col-value"
                                                                 style="background-color: orange;">{{patientDetail?.companyName}}</span>
                                                         </div>
+                                                        <!-- <div class="patient-col">
+                                                            <span class="patient-col-key">Company Name</span>
+                                                            <span>:</span>
+                                                            <span class="patient-col-value"
+                                                                style="background-color: orange;">{{patientDetail?.companyName}}</span>
+                                                        </div> -->
                                                         <div class="patient-col">
                                                             <span class="patient-col-key">Ref-Doctor Name</span>
                                                             <span>:</span>
@@ -343,6 +380,97 @@
 
                         <div class="modal-card-container" fxFlex>
                             <mat-card fxFlex.gt-sm="100%" fxFlex>
+                                <!-- <div class="modal-card-container">
+                                    <mat-card fxFlex.gt-sm="100%" fxFlex *ngIf="IsBillreview">
+                                        <mat-card-content>
+                                            <form [formGroup]="chargeForm">
+                                                <div fxLayout="row" fxLayoutGap="5px">
+                                                   
+                                                    <div fxFlex="27%" fxFlex.xs="27%" fxFlex.sm="27%">
+                                                        <airmid-autocomplete label="Enter Service Name"
+                                                            [formGroup]="chargeForm" formControlName="serviceName"
+                                                            placeholderText="Enter Service Name" fxFlex
+                                                            ApiUrl="{{ApiURL}}"
+                                                            (selectionChange)="getSelectedserviceObj($event)"
+                                                            TextField="formattedText"
+                                                            ValueField="serviceId"></airmid-autocomplete>
+                                                    </div>
+                                                    <div fxFlex="8%" fxFlex.xs="8%" fxFlex.sm="8%">
+                                                        <airmid-textbox label="Price" formControlName="price"
+                                                            [formGroup]="chargeForm"
+                                                            [validations]="getValidationMessages().price"
+                                                            [type]="'number'" [value]="vPrice"
+                                                            [readonly]="chkIsEditable" [min]="0">
+                                                        </airmid-textbox>
+                                                    </div>
+                                                    <div fxFlex="5%" fxFlex.xs="5%" fxFlex.sm="5%">
+                                                        <airmid-textbox label="Qty" formControlName="qty"
+                                                            [formGroup]="chargeForm"
+                                                            [validations]="getValidationMessages().qty"
+                                                            [type]="'number'">
+                                                        </airmid-textbox>
+                                                    </div>
+                                                   
+                                                    <div fxFlex="14%" fxFlex.xs="14%" fxFlex.sm="14%" *ngIf="isDoctor">
+                                                        <airmid-dropdown label="Doctor Name" formControlName="DoctorID"
+                                                            [formGroup]="chargeForm"
+                                                            [validations]="getValidationMessages().DoctorID"
+                                                            [mode]="autocompleteModedeptdoc"
+                                                            (selectionChange)="getdocdetail($event)">
+                                                        </airmid-dropdown>
+                                                    </div>
+                                                    <div fxFlex="5%" fxFlex.xs="5%" fxFlex.sm="5%">
+                                                        <airmid-textbox label="Discount per"
+                                                            formControlName="discountPer" [formGroup]="chargeForm"
+                                                            [validations]="getValidationMessages().discountPer"
+                                                            [min]="0" [max]="100" [type]="'number'">
+                                                        </airmid-textbox>
+
+                                                    </div>
+                                                    <div fxFlex="7%" fxFlex.xs="7%" fxFlex.sm="7%">
+                                                        <airmid-textbox label="Discount amount" [formGroup]="chargeForm"
+                                                            formControlName="discountAmount"
+                                                            [validations]="getValidationMessages().discountAmount"
+                                                            [type]="'number'" [min]="0"
+                                                            [max]="chargeForm.get('totalAmount')?.value">
+                                                        </airmid-textbox>
+                                                    </div>
+                                                    <div fxFlex="10%" fxFlex.xs="10%" fxFlex.sm="8%">
+                                                        <airmid-textbox label="Net amount" formControlName="netAmount"
+                                                            [formGroup]="chargeForm"
+                                                            [validations]="getValidationMessages().netAmount"
+                                                            [type]="'number'" [readonly]="true">
+                                                        </airmid-textbox>
+                                                    </div>
+                                                    <div class="comman-date-container">
+                                                        <mat-form-field appearance="outline" fxFlex.sm="10%">
+                                                            <mat-label>Service Dt</mat-label>
+                                                            <input name="serviceDate" matInput [matDatepicker]="picker1"
+                                                                formControlName="serviceDate" #serviceDateDateInput />
+                                                            <mat-datepicker-toggle matSuffix
+                                                                [for]="picker1"></mat-datepicker-toggle>
+                                                            <mat-datepicker #picker1></mat-datepicker>
+                                                        </mat-form-field>
+                                                    </div>
+                                                    <div fxFlex="5%" fxFlex.xs="5%" fxFlex.sm="5%">
+                                                        <div class="mt-2">
+                                                            <button type="button" (click)="onAddCharges()"
+                                                                class="btn btn-primary btn-with-icon py-8"
+                                                                [disabled]="!chargeForm.valid"
+                                                                [matTooltip]="!chargeForm.valid?'Enter all data to enable this button!!':''"
+                                                                [matTooltipPosition]="'above'" fxFlex>
+                                                                <span class="btn-icon">
+                                                                    <mat-icon> add </mat-icon>
+                                                                </span>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </form>
+                                        </mat-card-content>
+                                    </mat-card>
+                                </div> -->
                                 <mat-card-content class="py-4 h-100-p">
                                     <div fxLayout="row" fxLayoutGap="6px" class="h-100-p">
                                         <div fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%">
@@ -402,11 +530,10 @@
                                                                         *matHeaderCellDef>Price</mat-header-cell>
                                                                     <mat-cell *matCellDef="let contact">
                                                                         <mat-form-field floatLabel="never"
-                                                                            class="compact-field"
-                                                                          >
+                                                                            class="compact-field">
                                                                             <input matInput placeholder="Price"
-                                                                                type="text"
-                                                                                [(ngModel)]="contact.price" required
+                                                                                type="text" [(ngModel)]="contact.price"
+                                                                                required
                                                                                 (ngModelChange)="onPriceOrQtyChange($event,contact)">
 
                                                                         </mat-form-field>
@@ -542,7 +669,8 @@
                                                                         class="w-230">
                                                                         <span>{{ contact.doctorName}}</span>
 
-                                                                            <div *ngIf="Lable != 'Pharmacy' && contact.doctorId >0">
+                                                                        <div
+                                                                            *ngIf="Lable != 'Pharmacy' && contact.doctorId >0">
                                                                             <ng-container
                                                                                 *ngIf="!contact.EditDoctor; else showInput">
                                                                                 <button mat-icon-button

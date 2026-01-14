@@ -33,9 +33,10 @@ export class ReviewcompanyBillComponent {
   OPFooterForm: FormGroup;
   CompanyUpdateForm: FormGroup;
   Doceditform: FormGroup;
-
+  chargeForm!: FormGroup;
+  isWaiting = false;
   autocompleteModedeptdoc: string = "ConDoctor";
-
+  screenFromString = 'Pharmacy-form';
   patientDetail: any = new RegInsert({});
   public chargeList: ChargesList[] = [];
   public packageList: ChargesList[] = [];
@@ -64,6 +65,7 @@ export class ReviewcompanyBillComponent {
   DepartmentName: any;
   autocompleteModeConcession: string = "Concession";
   autocompleteModecompany: string = "Company";
+  autocompleteModeGroup: string = "GroupName";
   vPrice = '0';
   vQty: any;
   currency: any = '';
@@ -72,10 +74,24 @@ export class ReviewcompanyBillComponent {
   BillNo: any;
   ReturnList: any = [];
   IsBillreview = false
-
+  doctorName: any
   public isDiscountApplied = false;
   Consessionres: boolean = false;
-  // 'Status', 'ServiceCode',
+  IsPathology: any;
+  IsRadiology: any;
+  vIsPackage: any;
+  serviceSelct = false
+  public isDoctor = false;
+  chkIsEditable: boolean = true;
+
+  SrvcName1: any = ""
+  serviceId: any;
+  ApiURL: any = '';
+  countdown: number = 180; // 3 minutes
+  countdownColorClass = 'green';
+  public isUpdating = false;
+  public subscription: Array<Subscription> = [];
+
   public displayedChargeColumns: string[] =
     ['Status', 'ServiceCode', 'ServiceName', 'Price', 'Qty', 'TotalAmount', 'DiscountPer', 'DiscountAmount', 'NetAmount', 'DoctorName',
       //  'ClassName', 'ChargesAddedName',  
@@ -96,12 +112,13 @@ export class ReviewcompanyBillComponent {
     private _FormvalidationserviceService: FormvalidationserviceService,
     private formBuilder: FormBuilder,
     private toastrService: ToastrService,
+    //  private _loggedService: AuthenticationService,
     public _ConfigService: ConfigService,
     public dialogRef: MatDialogRef<ReviewcompanyBillComponent>
   ) { this.OpBillEditSaveForm = this.createTotalChargeForm(); };
 
   ngOnInit() {
-    // console.log(this.accountService.currentUserValue.user.isBillReview)
+    console.log(this.accountService.currentUserValue.user.isBillReview)
     this.IsBillreview = this.accountService.currentUserValue.user.isBillReview
 
     this.OPFooterForm = this.CreateOPFooter();
@@ -109,12 +126,16 @@ export class ReviewcompanyBillComponent {
     this.salesUpdateForm = this.CreateSalesUpdateForm();
     this.CompanyForm = this.CreateCompanyForm()
     this.CompanyUpdateForm = this.CreateCompanyUpdateForm();
+    this.chargeForm = this.createChargeForm();
 
     this.createDocForm()
     if (this.data) {
 
       console.log(this.data)
+      debugger
       this.patientDetail = this.data?.Obj;
+      this.ApiURL = "VisitDetail/search-GetServiceListwithTraiff?TariffId=" + 1 + "&ClassId=" + 1 + "&SrvcName="
+
       this.OPDIPDID = this.data?.Obj?.opdipdid || 0
       this.opD_IPD_Type = this.data?.OPIPType || 0
       this.Lable = 'Bill'
@@ -122,12 +143,49 @@ export class ReviewcompanyBillComponent {
       this.getPrevCompanyBillList(this.patientDetail?.billNo, 'Bill')
       this.getBilllist();
     }
+
+    // this.setupFormListener();
+    // this.startCountdown();
+
     //this is for curreny symbol
     const [CurrencyId, CurrencyValue] = this._ConfigService.configParams.CurrencyValue.split(":");
     this.currency = CurrencyValue
 
   }
 
+  private setupFormListener(): void {
+    this.handleChange('price', () => this.calculateTotalCharge());
+    this.handleChange('qty', () => this.calculateTotalCharge());
+    this.handleChange('discountPer', () => this.updateDiscountAmount());
+    this.handleChange('discountAmount', () => this.updateDiscountPercentage());
+    this.handleChange('totalDiscountPer', () => this.updateTotalDiscountAmt(), this.OPFooterForm);
+    this.handleChange('concessionAmt', () => this.updateTotalDiscountPer(), this.OPFooterForm);
+  }
+
+  handleChange(key: string, callback: () => void, form: FormGroup = this.chargeForm) {
+    this.subscription.push(form.get(key).valueChanges.subscribe(value => {
+      callback();
+    }));
+  }
+
+  startCountdown() {
+    const interval = setInterval(() => {
+      this.countdown--;
+      // Update color dynamically
+      if (this.countdown > 120) {
+        this.countdownColorClass = 'green';
+      } else if (this.countdown > 60) {
+        this.countdownColorClass = 'orange';
+      } else {
+        this.countdownColorClass = 'red';
+      }
+      if (this.countdown <= 0) {
+        clearInterval(interval);
+        this.isWaiting = false;
+      }
+
+    }, 1000);
+  }
   CreateOPFooter() {
     return this.formBuilder.group({
       remark: [''],
@@ -137,6 +195,21 @@ export class ReviewcompanyBillComponent {
       concessionReasonId: [0, this._FormvalidationserviceService.onlyNumberValidator()],
       netPayableAmt: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
     })
+  }
+
+  createChargeForm() {
+    return this.formBuilder.group({
+      serviceName: ['', Validators.required],
+      price: [0, [Validators.required, Validators.min(0)]],
+      qty: [1, [Validators.required, Validators.min(1)]],
+      totalAmount: [0,],
+      discountPer: [0, [Validators.min(0), Validators.max(100)]],
+      discountAmount: [0, [Validators.required, Validators.min(0)]],
+      netAmount: [0, [Validators.min(0)]],
+      DoctorID: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      GroupId: [0],
+      serviceDate: [new Date().toISOString()]
+    });
   }
   getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;
@@ -164,11 +237,14 @@ export class ReviewcompanyBillComponent {
       })
     });
   }
+
+
+
   CreateAddchargeform(item: any): FormGroup {
     console.log(item)
     return this.formBuilder.group({
-      chargesDate: this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
-      billNo: [item?.billNo, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
+      chargesDate: [item?.chargesDate || this.datePipe.transform(new Date(), 'yyyy-MM-dd')],
+      billNo: [item?.billNo || this.BillNo, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
       price: [item?.price, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
       qty: [item?.qty, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
       totalAmt: [item?.totalAmt, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
@@ -178,10 +254,16 @@ export class ReviewcompanyBillComponent {
       addedBy: [this.accountService.currentUserValue.userId],
       chargesTime: this.datePipe.transform(new Date(), 'shortTime'),
       isInclusionExclusion: [item?.isInclusionExclusion || false,],
-      chargesId: [item?.chargesId, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      chargesId: [item?.chargesId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       isApprovedByCamp: [item?.isApprovedByCamp || false,],
       doctorId: [item?.doctorId || 0,],
       doctorName: [item?.doctorName || '',],
+      serviceId: [item?.serviceId || 0],
+      serviceName: [item?.serviceName || ''],
+      opdIpdId: [this.OPDIPDID],
+      opdIpdType: [1],
+      unitId: [this.accountService.currentUserValue.user.unitId || 1],
+
     });
   }
   // Getters 
@@ -393,14 +475,14 @@ export class ReviewcompanyBillComponent {
     let totalDiscount = this.chargeList.reduce((sum, charge) => sum + (+charge.concessionAmount), 0);
     let totalNet = totalSum - totalDiscount;
 
-    
+
 
     this.OPFooterForm.patchValue({
       totalAmt: totalSum.toFixed(2),
       concessionAmt: Number(totalDiscount.toFixed(2)),
       totalDiscountPer: DiscPerSum.toFixed(2),
       netPayableAmt: Number(Math.round(totalNet).toFixed(2)),
-          
+
 
     }, { emitEvent: false });
 
@@ -474,9 +556,11 @@ export class ReviewcompanyBillComponent {
         console.log(item)
         debugger
         const formObj = this.CreateAddchargeform(item as ChargesList);
-        formObj.patchValue({ opdIpdId: formValue?.IsPurchaseWsie || false });
+        // formObj.patchValue({ opdIpdId: formValue?.IsPurchaseWsie || false });
         formObj.patchValue({ doctorId: item.doctorId || 0 });
         formObj.patchValue({ doctorName: item.doctorName || '' });
+        formObj.patchValue({ chargesDate: this.datePipe.transform(this.chargeForm.get('serviceDate').value, 'yyyy-MM-dd') });
+
         this.IPaddchargeArray.push(formObj);
       });
       console.log("form values", this.OpBillEditSaveForm.value)
@@ -580,14 +664,14 @@ export class ReviewcompanyBillComponent {
     }
   }
   deletecharges(contact) {
-    debugger 
-if (contact?.isCompleted === true) {
-  this.toastr.warning(
-    'The lab test has already been completed. This service cannot be deleted.',
-    'Warning!',
-    { toastClass: 'tostr-tost custom-toast-warning' }
-  );
-}
+    debugger
+    if (contact?.isCompleted === true) {
+      this.toastr.warning(
+        'The lab test has already been completed. This service cannot be deleted.',
+        'Warning!',
+        { toastClass: 'tostr-tost custom-toast-warning' }
+      );
+    }
 
     Swal.fire({
       title: 'Do you want to cancel the Service ',
@@ -632,6 +716,7 @@ if (contact?.isCompleted === true) {
       concessionAmt: 0,
       netPayableAmt: 0,
       concessionReasonId: 0,
+      serviceDate: new Date()
     });
   }
   viewgetOPBillReportPdf(element) {
@@ -877,8 +962,208 @@ if (contact?.isCompleted === true) {
     if (Obj.value) {
       contact.doctorId = Obj.value || 0
       contact.doctorName = Obj.text || 0
-       contact.EditDoctor = false
+      contact.EditDoctor = false
     }
+  }
+  onAddCharges(): void {
+
+    const isItemAlreadyAdded = this.dsChargeList.data.some((element) => element.ServiceId === this.chargeForm.get('serviceName')?.value.serviceId);
+    if (isItemAlreadyAdded) {
+      Swal.fire({
+        title: 'Message',
+        text: "Selected Service already available in the list",
+        icon: "warning"
+      });
+      return;
+    }
+    const serviceNameValue = this.chargeForm.get('serviceName')?.value;
+    if (serviceNameValue?.serviceId == 0 || this.serviceSelct == false || serviceNameValue?.serviceId == '' || serviceNameValue?.serviceId == null || serviceNameValue?.serviceId == undefined) {
+      this.toastrService.warning('Please select a valid service name.', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    if (this.chargeForm.get('DoctorID').value == "0") {
+      this.toastrService.warning('Please select a valid doctor name.', 'Warning !', {
+        toastClass: 'tostr-tost custom-toast-warning',
+      });
+      return;
+    }
+    if (this.chargeForm.valid) {
+      const formValue = this.chargeForm.value;
+      if (this.chargeForm.value.discountPer > 0)
+        this.Consessionres = true
+      // Calculate total amount, discount amount, and net amount
+      const totalAmount = formValue.price * formValue.qty;
+      const discountAmount = (totalAmount * formValue.discountPer) / 100;
+      const netAmount = totalAmount - discountAmount;
+      debugger
+      if (totalAmount > 0) {
+        const newRow = {
+          serviceId: formValue.serviceName.serviceId,
+          serviceName: formValue.serviceName.serviceName,
+          price: formValue.price,
+          qty: formValue.qty,
+          totalAmt: totalAmount,
+          discPer: formValue.discountPer || 0,
+          discAmt: discountAmount || 0,
+          netAmount: netAmount,
+          doctorName: this.doctorName || '-',
+          className: this.className || '-',
+          doctorId: formValue.DoctorID,
+          chargesAddedName: this.accountService.currentUserValue.userName,
+          isPathology: this.IsPathology,
+          isRadiology: this.IsRadiology,
+          isPackage: this.vIsPackage,
+          serviceCode: formValue.serviceName.companyCode,
+          isInclusionExclusion: formValue.serviceName.isInclusionOrExclusion
+        };
+        if (!this.isDiscountApplied && discountAmount > 0) {
+          this.isDiscountApplied = true;
+          this.Consessionres = true
+        }
+        const newCharge = new ChargesList(newRow);
+        newCharge.DiscAmt = newCharge.DiscAmt || 0;
+        newCharge.DiscPer = newCharge.DiscPer || 0;
+        this.chargeList.push(newCharge);
+        this.dsChargeList.data = this.chargeList;
+        this.calculateTotalAmount();
+        this.serviceSelct = false
+        this.resetForm();
+        this.chargeForm.get("qty").setValue(1);
+        const serviceNameElement = document.querySelector(`[name='serviceName']`) as HTMLElement;
+        if (serviceNameElement) {
+          serviceNameElement.focus();
+        }
+      } else {
+        Swal.fire({
+          title: 'Message',
+          text: "Please Enter Service Detail.. !",
+          icon: "warning"
+        });
+      }
+    }
+  }
+  getdocdetail(event) {
+    this.doctorName = event.text
+  }
+  getSelectedserviceObj(obj) {
+
+    console.log(obj)
+    this.SrvcName1 = obj.serviceName;
+    this.serviceId = obj.serviceId;
+    this.vQty = 1;
+    this.IsPathology = obj.isPathology;
+    this.IsRadiology = obj.isRadiology;
+    this.vIsPackage = obj.isPackage;
+    this.chargeForm.patchValue({
+      price: obj.price,
+      netAmount: obj.price * this.vQty
+    })
+    if (obj?.creditedtoDoctor == true) {
+      this.isDoctor = true;
+      this.chargeForm.get('DoctorID').reset();
+      this.chargeForm.get('DoctorID').setValidators([Validators.required]);
+      this.chargeForm.get('DoctorID').enable();
+    } else {
+      this.isDoctor = false;
+      this.chargeForm.get('DoctorID').reset();
+      this.chargeForm.get('DoctorID').clearValidators();
+      this.chargeForm.get('DoctorID').updateValueAndValidity();
+      this.chargeForm.get('DoctorID').disable();
+    }
+    if (obj?.isEditable == true) {
+      this.chkIsEditable = false;
+    } else {
+      this.chkIsEditable = true;
+    }
+    this.serviceSelct = true
+    // }
+    // this.getRtevPackageDetList(obj)
+  }
+
+
+  calculateTotalCharge(row: any = null): void {
+    let qty = +this.chargeForm.get("qty").value;
+    let price = +this.chargeForm.get("price").value;
+    let total = 0
+    if (qty > 0 && price > 0) {
+      total = qty * price;
+    }
+    this.chargeForm.patchValue({
+      totalAmount: total,
+      netAmount: total  // Set net amount initially
+    }, { emitEvent: false }); // Prevent infinite loop
+
+    this.updateDiscountAmount();
+    this.updateDiscountPercentage();
+  }
+  // Trigger when discount percentage change
+  updateDiscountAmount(row: any = null): void {
+    if (this.isUpdating) return; // Stop recursion
+    this.isUpdating = true;
+
+    const perControl = this.chargeForm.get("discountPer");
+    if (!perControl.valid) {
+      this.chargeForm.get("discountAmount").setValue(0);
+      this.chargeForm.get("discountPer").setValue(0);
+      this.isUpdating = false;
+      this.toastrService.error("Enter discount % between 0-100");
+      return;
+    }
+    let percentage = perControl.value;
+    let totalAmount = this.chargeForm.get("totalAmount").value;
+    let discountAmount = parseFloat((totalAmount * percentage / 100).toFixed(2));
+    let netAmount = parseFloat((totalAmount - discountAmount).toFixed(2));
+
+    this.chargeForm.patchValue({
+      discountAmount: discountAmount,
+      netAmount: netAmount
+    }, { emitEvent: false }); // Prevent infinite loop
+
+    this.isUpdating = false; // Reset flag
+  }
+  // Trigger when discount amount change
+  updateDiscountPercentage(): void {
+    if (this.isUpdating) return;
+    this.isUpdating = true;
+
+    let discountAmount = this.chargeForm.get("discountAmount").value;
+    let totalAmount = this.chargeForm.get("totalAmount").value;
+
+    if (discountAmount < 0 || discountAmount > totalAmount) {
+      this.chargeForm.get("discountAmount").setValue(0);
+      this.chargeForm.get("discountPer").setValue(0);
+      this.isUpdating = false;
+      this.toastrService.error("Discount must be between 0 and the total amount.");
+      return;
+    }
+    // let percent = this.getFixedDecimal(totalAmount ? (discountAmount / totalAmount) * 100 : 0);
+    // let netAmount = this.getFixedDecimal(totalAmount - discountAmount);
+
+    let percent = Number(totalAmount ? ((discountAmount / totalAmount) * 100).toFixed(2) : "0.00");
+    let netAmount = Number((totalAmount - discountAmount).toFixed(2));
+    this.chargeForm.patchValue({
+      discountPer: percent,
+      netAmount: netAmount
+    }, { emitEvent: false }); // Prevent infinite loop
+
+    this.isUpdating = false; // Reset flag
+  }
+  resetForm(): void {
+    this.chargeForm.reset({
+      serviceName: '',
+      price: 0,
+      qty: 0,
+      totalAmount: 0,
+      discountPer: 0,
+      discountAmount: 0,
+      netAmount: 0,
+      DoctorID: 0,
+      DoctorName: '',
+      serviceDate: new Date()
+    });
+    this.doctorName = '';
   }
 
 }
@@ -939,7 +1224,7 @@ export class ChargesList {
   EditDoctor: any
 
   constructor(ChargesList) {
-    this.ChargesId = ChargesList.ChargesId || '';
+    this.ChargesId = ChargesList.ChargesId || 0;
     this.ServiceId = ChargesList.ServiceId || '';
     this.serviceId = ChargesList.serviceId || '';
     this.ServiceName = ChargesList.ServiceName || '';
