@@ -13,20 +13,20 @@
 
                         <div class="dashboard-card appointments-split">
                             <div class="card-label">Total Amt</div>
-                            <div class="card-value">{{finalTotalAmt | currency:'INR'}}</div>
+                            <div class="card-value">{{finalTotalAmt | currency: currency:'symbol'}}</div>
                             <mat-icon class="card-icon" matTooltip="Total Test Results">check_circle</mat-icon>
                         </div>
 
                         <div class="dashboard-card DiscountAmt">
                             <div class="card-label">Discount Amt</div>
-                            <div class="card-value">{{finalDiscAmt | currency:'INR'}}</div>
+                            <div class="card-value">{{finalDiscAmt | currency: currency:'symbol'}}</div>
                             <mat-icon class="card-icon" matTooltip="Completed Tests">check_circle</mat-icon>
                         </div>
 
                         <div class="dashboard-card appointments-split">
                             <div class="card-label">Net Amt</div>
                             <div class="card-value">
-                                <div> {{finalNetAmt | currency:'INR'}}</div>
+                                <div> {{finalNetAmt | currency: currency:'symbol'}}</div>
                             </div>
                             <mat-icon class="card-icon" matTooltip="Pending Tests">check_circle</mat-icon>
                         </div>
@@ -34,7 +34,7 @@
                         <div class="dashboard-card PaidAmt">
                             <div class="card-label">Paid Amt</div>
                             <div class="card-value">
-                                <div> {{finalPaidAmt | currency:'INR'}}</div>
+                                <div> {{finalPaidAmt | currency: currency:'symbol'}}</div>
                             </div>
                             <mat-icon class="card-icon" matTooltip="Pending Tests">check_circle</mat-icon>
                         </div>
@@ -42,7 +42,7 @@
                         <div class="dashboard-card BalanceAmt">
                             <div class="card-label">Balance Amt</div>
                             <div class="card-value">
-                                <div> {{finalBalanceAmt | currency:'INR'}}</div>
+                                <div> {{finalBalanceAmt | currency: currency:'symbol'}}</div>
                             </div>
                             <mat-icon class="card-icon" matTooltip="Pending Tests">schedule</mat-icon>
                         </div>
@@ -250,20 +250,20 @@
 
                         <div class="dashboard-card appointments-split">
                             <div class="card-label">Total Amt</div>
-                            <div class="card-value">{{RetfinalTotalAmt | currency:'INR'}}</div>
+                            <div class="card-value">{{RetfinalTotalAmt | currency: currency:'symbol'}}</div>
                             <mat-icon class="card-icon" matTooltip="Total Test Results">check_circle</mat-icon>
                         </div>
 
                         <div class="dashboard-card DiscountAmt">
                             <div class="card-label">Discount Amt</div>
-                            <div class="card-value">{{RetfinalDiscAmt | currency:'INR'}}</div>
+                            <div class="card-value">{{RetfinalDiscAmt | currency: currency:'symbol'}}</div>
                             <mat-icon class="card-icon" matTooltip="Completed Tests">check_circle</mat-icon>
                         </div>
 
                         <div class="dashboard-card appointments-split">
                             <div class="card-label">Net Amt</div>
                             <div class="card-value">
-                                <div> {{RetfinalNetAmt | currency:'INR'}}</div>
+                                <div> {{RetfinalNetAmt | currency: currency:'symbol'}}</div>
                             </div>
                             <mat-icon class="card-icon" matTooltip="Pending Tests">check_circle</mat-icon>
                         </div>
@@ -271,7 +271,7 @@
                         <div class="dashboard-card PaidAmt">
                             <div class="card-label">Paid Amt</div>
                             <div class="card-value">
-                                <div> {{RetfinalPaidAmt | currency:'INR'}}</div>
+                                <div> {{RetfinalPaidAmt | currency: currency:'symbol'}}</div>
                             </div>
                             <mat-icon class="card-icon" matTooltip="Pending Tests">check_circle</mat-icon>
                         </div>
@@ -279,7 +279,7 @@
                         <div class="dashboard-card BalanceAmt">
                             <div class="card-label">Balance Amt</div>
                             <div class="card-value">
-                                <div> {{RetfinalBalanceAmt | currency:'INR'}}</div>
+                                <div> {{RetfinalBalanceAmt | currency: currency:'symbol'}}</div>
                             </div>
                             <mat-icon class="card-icon" matTooltip="Pending Tests">schedule</mat-icon>
                         </div>

@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
+import { LoaderService } from 'app/core/components/loader/loader.service';
 import { ApiCaller } from 'app/core/services/apiCaller';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
   
@@ -18,6 +19,7 @@ import { FormvalidationserviceService } from 'app/main/shared/services/formvalid
       public _httpClient: HttpClient,
       private _formBuilder: UntypedFormBuilder,
       public _httpClient1 :ApiCaller,
+       private _loaderService: LoaderService,
       public _FormvalidationserviceService:FormvalidationserviceService
     ) { 
       this.userFormGroup = this.IndentID();
@@ -102,11 +104,17 @@ import { FormvalidationserviceService } from 'app/main/shared/services/formvalid
     {
       return this._httpClient.post("Generic/GetByProc?procName=Retrieve_ConcessionReasonMasterForCombo", {});
     }
-    public InsertCashSales(employee){
+    public InsertCashSales(employee,loader = true){ 
+    if (loader) {
+      this._loaderService.show();
+  }
       return this._httpClient1.PostData("Sales/SalesSaveWithPayment", employee)
     }
   
-    public InsertCreditSales  (employee){
+    public InsertCreditSales(employee,loader = true){ 
+    if (loader) {
+      this._loaderService.show();
+  }
       return this._httpClient1.PostData("Sales/SalesSaveWithCredit", employee)
     }
   

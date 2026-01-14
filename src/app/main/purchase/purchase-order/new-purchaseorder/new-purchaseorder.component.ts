@@ -19,6 +19,7 @@ import { GRNFormModel } from '../../good-receiptnote/new-grn/types';
 import { ItemNameList, PurchaseItemList } from '../purchase-order.component';
 import { PurchaseOrderService } from '../purchase-order.service';
 import { FinalFormModel, GRNItemResponseType, GSTType, PurchaseFormModel, ToastType } from './types';
+import { ConfigService } from 'app/core/services/config.service';
 // import { FinalFormModel, GRNItemResponseType, GSTType, PurchaseFormModel, ToastType } from '../update-purchaseorder/types';
 
 @Component({
@@ -149,7 +150,7 @@ export class NewPurchaseorderComponent {
   GSTTypeList: any = [];
   ItemnameList = [];
   chargeslist: any = [];
-
+  currency:any=''
   registerObj = new ItemNameList({});
   SupplierObj = new SupplierMaster({});
   ItemObj: IndentList;
@@ -219,6 +220,7 @@ export class NewPurchaseorderComponent {
     private _FormvalidationserviceService: FormvalidationserviceService,
     private _formBuilder: UntypedFormBuilder,
     public toastr: ToastrService,
+    public _ConfigService:ConfigService,
     private accountService: AuthenticationService,
   ) { }
 
@@ -273,6 +275,11 @@ export class NewPurchaseorderComponent {
 
       this.getOldPurchaseOrder(this.data.Obj.purchaseID);
     }
+
+          
+        //this is for curreny symbol
+        const [CurrencyId, CurrencyValue] = this._ConfigService.configParams.CurrencyValue.split(":");
+        this.currency = CurrencyValue
   }
 
   // Item Calculation form

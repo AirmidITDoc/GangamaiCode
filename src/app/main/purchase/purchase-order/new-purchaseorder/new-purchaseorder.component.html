@@ -436,41 +436,41 @@
 
                                     <div class="net-amt-box">
                                         <span class="net-amt-mat-label">CGSTAmt:</span>
-                                        <span class="net-amt-value">{{ getCGSTAmt() | currency :'INR'}}</span>
+                                        <span class="net-amt-value">{{ getCGSTAmt() | currency: currency:'symbol'}}</span>
                                     </div>
 
                                     <div class="net-amt-box">
                                         <span class="net-amt-mat-label">SGSTAmt:</span>
-                                        <span class="net-amt-value">{{ getSGSTAmt() | currency :'INR'}}</span>
+                                        <span class="net-amt-value">{{ getSGSTAmt() | currency: currency:'symbol'}}</span>
                                     </div>
 
                                     <div class="net-amt-box">
                                         <span class="net-amt-mat-label">IGSTAmt</span>
-                                        <span class="net-amt-value">{{ getIGSTAmt() | currency : 'INR'}}</span>
+                                        <span class="net-amt-value">{{ getIGSTAmt() | currency: currency:'symbol'}}</span>
                                     </div>
 
                                     <div class="net-amt-box">
                                         <span class="net-amt-mat-label">Total Amt:</span>
                                         <span class="net-amt-value">{{getTotalAmt(dsItemNameList.data)
-                                            | currency:'INR'}}</span>
+                                            | currency: currency:'symbol'}}</span>
                                     </div>
 
                                     <div class="net-amt-box">
                                         <span class="net-amt-mat-label">Disc Amt:</span>
                                         <span class="net-amt-value">{{getTotalDisc(dsItemNameList.data)
-                                            | currency:'INR'}}</span>
+                                            | currency: currency:'symbol'}}</span>
                                     </div>
 
                                     <div class="net-amt-box">
                                         <span class="net-amt-mat-label">GST Amt:</span>
                                         <span class="net-amt-value">{{getTotalGST(dsItemNameList.data)
-                                            | currency:'INR'}}</span>
+                                            | currency: currency:'symbol'}}</span>
                                     </div>
 
                                     <div class="final-amt-box">
                                         <span class="final-amt-label">Net Amt :</span>
                                         <span class="final-amt-value">{{getTotalNet(dsItemNameList.data)
-                                            | currency:'INR'}}</span>
+                                            | currency: currency:'symbol'}}</span>
                                     </div>
                                 </div>
                             </mat-expansion-panel-header>
@@ -513,7 +513,7 @@
                                                     class="w-100">
                                                     MRP</mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100">
-                                                    {{contact.mrp | currency:'INR':'symbol-narrow':'0.2'}}
+                                                    {{contact.mrp | number:'1.2-2' }}
                                                 </mat-cell>
                                             </ng-container>
 
@@ -522,7 +522,7 @@
                                                     class="w-100">
                                                     Rate</mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-100">
-                                                    {{contact.rate | currency:'INR':'symbol-narrow':'0.2'}}
+                                                    {{contact.rate | number:'1.2-2' }}
                                                 </mat-cell>
                                             </ng-container>
 
