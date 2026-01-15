@@ -70,7 +70,7 @@ export class LabResultListService {
     return this._httpClient1.PostData("Pathology/InsertResultEntry", employee);
   }
   public PathResultentryDetailList(employee) {
-    return this._httpClient1.PostData("Pathology/PathologyTestList", employee);
+    return this._httpClient1.PostData("LabPatientRegistration/LabResultDetailsList", employee);
   }
 
   public PathReportverifyMaster(employee) {
@@ -184,7 +184,7 @@ export class LabResultListService {
   }
 
   public getresultenterylist(employee) {
-    return this._httpClient1.PostData("Pathology/PathologyPatientTestList", employee)
+    return this._httpClient1.PostData("LabPatientRegistration/LabResultList", employee)
   }
 
   public gettemplatebyService(ServiceId) {

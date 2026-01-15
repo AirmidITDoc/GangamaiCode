@@ -91,7 +91,8 @@ export class BrowseLabBillsComponent {
     { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
     { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
     { fieldName: "PBillNo", fieldValue: "%", opType: OperatorComparer.Equals },
-    { fieldName: "CompanyId", fieldValue: '0', opType: OperatorComparer.Equals }
+    { fieldName: "CompanyId", fieldValue: '0', opType: OperatorComparer.Equals },
+    { fieldName: "UnitId", fieldValue: String(this.UnitId), opType: OperatorComparer.Equals }
   ];
 
   allOPbillcolumns = [
@@ -141,10 +142,10 @@ export class BrowseLabBillsComponent {
     { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
     { fieldName: "PBillNo", fieldValue: "0", opType: OperatorComparer.Contains },
     { fieldName: "ReceiptNo", fieldValue: "0", opType: OperatorComparer.Contains },
-    { fieldName: "CompanyId", fieldValue: "0", opType: OperatorComparer.Equals }
-
-
+    { fieldName: "CompanyId", fieldValue: "0", opType: OperatorComparer.Equals },
+    { fieldName: "UnitId", fieldValue: String(this.UnitId), opType: OperatorComparer.Equals }
   ];
+
   allOPpaymentcolumns = [
     { heading: "Date", key: "paymentTime", sort: true, align: 'left', emptySign: 'NA', type: 6, width: 130 },
     { heading: "PBillNo", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA' },
@@ -178,7 +179,8 @@ export class BrowseLabBillsComponent {
     { fieldName: "L_Name", fieldValue: "%", opType: OperatorComparer.Contains },
     { fieldName: "From_Dt", fieldValue: this.rfromDate, opType: OperatorComparer.Equals },
     { fieldName: "To_Dt", fieldValue: this.rtoDate, opType: OperatorComparer.Equals },
-    { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals }
+    { fieldName: "Reg_No", fieldValue: "0", opType: OperatorComparer.Equals },
+    { fieldName: "UnitId", fieldValue: String(this.UnitId), opType: OperatorComparer.Equals }
   ]
 
   allOPRefundColumns = [
@@ -213,7 +215,6 @@ export class BrowseLabBillsComponent {
 
     this.gridConfig1.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate1;
     this.gridConfig2.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate2;
-
   }
 
 
@@ -260,6 +261,7 @@ export class BrowseLabBillsComponent {
 
   ngOnInit(): void {
     this.myFilterbillform = this._OPListService.myFilterbillbrowseform();
+    this.myFilterbillform.get('UnitId').setValue(this.accountService.currentUserValue.user.unitId)
     this.myFilterpayform = this._OPListService.myFilterpaymentbrowseform();
     this.myFilterrefundform = this._OPListService.myFilterrefundbrowseform();
     this.OpSettlementForm = this.CreateOPSettlementForm();
@@ -275,6 +277,8 @@ export class BrowseLabBillsComponent {
       this.UnitId = value.value
     else
       this.UnitId = 0
+
+    this.onChangeOPBill();
   }
 
   ListViewUnit2(value) {
@@ -283,6 +287,8 @@ export class BrowseLabBillsComponent {
       this.UnitId = value.value
     else
       this.UnitId = 0
+
+    this.onChangeOPPayment();
   }
 
   ListViewUnit3(value) {
@@ -291,6 +297,8 @@ export class BrowseLabBillsComponent {
       this.UnitId = value.value
     else
       this.UnitId = 0
+
+    this.onChangeOPRefund();
   }
 
   CreateOPSettlementForm() {
@@ -535,7 +543,7 @@ export class BrowseLabBillsComponent {
   }
 
   onChangeOPBill() {
-    debugger
+    // debugger
     this.fromDate = this.datePipe.transform(this.myFilterbillform.get('fromDate').value, "yyyy-MM-dd")
     this.toDate = this.datePipe.transform(this.myFilterbillform.get('enddate').value, "yyyy-MM-dd")
     this.f_name = this.myFilterbillform.get('FirstName').value + "%"
@@ -543,7 +551,7 @@ export class BrowseLabBillsComponent {
     this.regNo = this.myFilterbillform.get('RegNo').value || "0"
     this.PBillNo = this.myFilterbillform.get('PBillNo').value || "%"
     this.CompanyId = this.myFilterbillform.get('CompanyId').value || "0"
-
+    this.UnitId = this.myFilterbillform.get('UnitId').value || "0"
 
     this.getfilterdataOpBill();
   }
@@ -561,7 +569,8 @@ export class BrowseLabBillsComponent {
       { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
       { fieldName: "Reg_No", fieldValue: this.regNo, opType: OperatorComparer.Equals },
       { fieldName: "PBillNo", fieldValue: this.PBillNo, opType: OperatorComparer.Equals },
-      { fieldName: "CompanyId", fieldValue: this.CompanyId, opType: OperatorComparer.Equals }
+      { fieldName: "CompanyId", fieldValue: this.CompanyId, opType: OperatorComparer.Equals },
+      { fieldName: "UnitId", fieldValue: String(this.UnitId), opType: OperatorComparer.Equals }
       ]
     }
     this.grid.gridConfig = this.gridConfig;
@@ -615,6 +624,7 @@ export class BrowseLabBillsComponent {
     this.pPBillNo = this.myFilterpayform.get('PBillNo').value || "0"
     this.precptNo = this.myFilterpayform.get('ReceiptNo').value || "0"
     this.CompanyId1 = this.myFilterpayform.get('CompanyId').value || "0"
+    this.UnitId = this.myFilterpayform.get('UnitId').value || "0"
     this.getfilterdataOpPayment();
   }
 
@@ -631,8 +641,8 @@ export class BrowseLabBillsComponent {
       { fieldName: "Reg_No", fieldValue: this.pregNo, opType: OperatorComparer.Equals },
       { fieldName: "PBillNo", fieldValue: this.pPBillNo, opType: OperatorComparer.Equals },
       { fieldName: "ReceiptNo", fieldValue: this.precptNo, opType: OperatorComparer.Contains },
-      { fieldName: "CompanyId", fieldValue: this.CompanyId1, opType: OperatorComparer.Equals }
-
+      { fieldName: "CompanyId", fieldValue: this.CompanyId1, opType: OperatorComparer.Equals },
+      { fieldName: "UnitId", fieldValue: String(this.UnitId), opType: OperatorComparer.Equals }
       ]
     }
 
@@ -666,6 +676,7 @@ export class BrowseLabBillsComponent {
     this.rf_name = this.myFilterrefundform.get('FirstName').value + "%"
     this.rl_name = this.myFilterrefundform.get('LastName').value + "%"
     this.rregNo = this.myFilterrefundform.get('RegNo').value || "0"
+    this.UnitId = this.myFilterrefundform.get('UnitId').value || "0"
     this.getfilterdataOPRefund();
   }
 
@@ -680,7 +691,8 @@ export class BrowseLabBillsComponent {
         { fieldName: "L_Name", fieldValue: this.rl_name, opType: OperatorComparer.Contains },
         { fieldName: "From_Dt", fieldValue: this.rfromDate, opType: OperatorComparer.Equals },
         { fieldName: "To_Dt", fieldValue: this.rtoDate, opType: OperatorComparer.Equals },
-        { fieldName: "Reg_No", fieldValue: this.rregNo, opType: OperatorComparer.Equals }
+        { fieldName: "Reg_No", fieldValue: this.rregNo, opType: OperatorComparer.Equals },
+        { fieldName: "UnitId", fieldValue: String(this.UnitId), opType: OperatorComparer.Equals }
       ]
     }
     this.grid2.gridConfig = { ...this.gridConfig2 }; // Use a new object reference

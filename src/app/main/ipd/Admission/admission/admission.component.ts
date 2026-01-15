@@ -193,7 +193,7 @@ export class AdmissionComponent implements OnInit {
   ]
 
   gridConfig: gridModel = {
-     permissionCode: permissionCodes.Admission,
+    permissionCode: permissionCodes.Admission,
     apiUrl: "Admission/AdmissionList",
     columnsList: this.allcolumns,
     sortField: "AdmissionId",
@@ -414,35 +414,35 @@ export class AdmissionComponent implements OnInit {
         }
       });
     }
-    else if (m == "Patient Statement Print") {  
+    else if (m == "Patient Statement Print") {
       this.OnPaitentFinalPrint(element)
-    } 
-  }
-    OnPaitentFinalPrint(element) {
-        setTimeout(() => {
-            let param = {
-                "searchFields": [
-                    { "fieldName": "OPIPId", "fieldValue": String(element.admissionId), "opType": "13" },
-                    { "fieldName": "OPIPType", "fieldValue": String(1), "opType": "13" }
-                ],
-                "mode": "PatientBillStatement"
-            }
-            this._AdmissionService.getReportView(param).subscribe(res => {
-                const matDialog = this._matDialog.open(PdfviewerComponent,
-                    {
-                        maxWidth: "85vw",
-                        height: '750px',
-                        width: '100%',
-                        data: {
-                            base64: res["base64"] as string,
-                            title: "Patient Statement" + " " + "Viewer"
-                        }
-                    });
-                matDialog.afterClosed().subscribe(result => {
-                });
-            });
-        }, 100);
     }
+  }
+  OnPaitentFinalPrint(element) {
+    setTimeout(() => {
+      let param = {
+        "searchFields": [
+          { "fieldName": "OPIPId", "fieldValue": String(element.admissionId), "opType": "13" },
+          { "fieldName": "OPIPType", "fieldValue": String(1), "opType": "13" }
+        ],
+        "mode": "PatientBillStatement"
+      }
+      this._AdmissionService.getReportView(param).subscribe(res => {
+        const matDialog = this._matDialog.open(PdfviewerComponent,
+          {
+            maxWidth: "85vw",
+            height: '750px',
+            width: '100%',
+            data: {
+              base64: res["base64"] as string,
+              title: "Patient Statement" + " " + "Viewer"
+            }
+          });
+        matDialog.afterClosed().subscribe(result => {
+        });
+      });
+    }, 100);
+  }
   onClose() {
     this.searchFormGroup.get('RegId').reset();
     this.searchFormGroup.get('RegId').disable();
@@ -1376,7 +1376,8 @@ export class AdmissionPersonlModel {
   ischarity: any;
   converId: any;
   VisAdmTime: any;
-serviceId: any;
+  serviceId: any;
+  pathReportID: any;
 
   /**
 * Constructor
@@ -1609,8 +1610,7 @@ serviceId: any;
       this.ischarity = AdmissionPersonl.ischarity || 0
       this.converId = AdmissionPersonl.converId || 0
       this.serviceId = AdmissionPersonl.serviceId || 0
-
-
+      this.pathReportID = AdmissionPersonl.pathReportID || 0
 
     }
   }

@@ -202,7 +202,9 @@
                             <div class="footer-navigation-container">
                                 <div fxLayout="row" fxLayoutAlign="end start" fxLayoutGap="6px">
                                     <button class="btn btn-danger-outline" (click)="onClose()">Clear</button>
-                                    <button class="btn btn-primary" (click)="onSubmit()">Save</button>
+                                    <button class="btn btn-primary" (click)="onSubmit()" *ngIf="!verifyCheck">Save</button>
+                                    <button class="btn btn-success" (click)="onVerify()"
+                                        *ngIf="verifyCheck">Authorization</button>
                                     <!-- [disabled]="otherForm.invalid" -->
                                 </div>
                             </div>

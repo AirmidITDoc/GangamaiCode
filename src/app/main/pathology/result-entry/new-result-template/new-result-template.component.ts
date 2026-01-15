@@ -12,6 +12,7 @@ import { DatePipe } from '@angular/common';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
 import { fuseAnimations } from '@fuse/animations';
 import { AirmidDropDownComponent } from 'app/main/shared/componets/airmid-dropdown/airmid-dropdown.component';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-new-result-template',
@@ -29,12 +30,12 @@ export class NewResultTemplateComponent {
   @ViewChild('PathResultDoctorId') PathResultDoctorId: ElementRef;
   currentDate: Date = new Date();
   dataSource: any = { data: [] };
-   VpathResultDr1 = 0
+  VpathResultDr1 = 0
   vTemplateName: any = 0;
   vPathResultDoctorId: any = 0;
   isLoading: string = '';
   msg: any;
- 
+
   screenFromString = 'opd-casepaper';
   printTemplate: any;
   PathReportID: any;
@@ -64,6 +65,8 @@ export class NewResultTemplateComponent {
   autocompleteModeDoctor: string = "ConDoctor";
   autocompleteModeTemplate: string = "RadioTemplate";
   serviceId = 0
+  verifyCheck: boolean;
+
   constructor(
     public _SampleService: ResultEntryService,
     private accountService: AuthenticationService,
@@ -77,20 +80,18 @@ export class NewResultTemplateComponent {
     private _FormvalidationserviceService: FormvalidationserviceService,
   ) {
     dialogRef.disableClose = true;
-    debugger
-    debugger
+
     if (this.data) {
-      this.selectedAdvanceObj1 = this.data;
+      this.verifyCheck = data.verifyCheck
+      this.selectedAdvanceObj1 = this.data.data;
       this.serviceId = this.selectedAdvanceObj1.serviceId
       console.log(this.selectedAdvanceObj1)
       this.OP_IPType = this.selectedAdvanceObj1.patientType === 'OP' ? '0' : '1';
-      this.reportIdData = this.selectedAdvanceObj1.pathReportId
+      this.reportIdData = this.selectedAdvanceObj1.pathReportID ?? this.selectedAdvanceObj1.pathReportId
       this.PathResultDr1 = this.selectedAdvanceObj1.adm_Visit_docId //PathResultDr1 ask to sir
       //  this.TemplateId = row.templateId
-      // if (this.OP_IPType == 1)
-      //   this.getTemplatedetailIP(this.selectedAdvanceObj1);
-      // else
-      // this.getTemplatedetailOP(this.selectedAdvanceObj1);
+
+      this.getTemplatedetail(this.selectedAdvanceObj1);
     }
     this.otherForm = this.formBuilder.group({
       TemplateName: [0],
@@ -98,13 +99,13 @@ export class NewResultTemplateComponent {
       TemplateId: [0],
       suggestionNotes: [''],
       PathResultDoctorId: ['', Validators.required]
-
     });
 
     this.selectChangeService()
     //  this.ApiURL = "Pathology/search-GetServicewiseTemplate?ServiceId=" + this.selectedAdvanceObj1.serviceId;
 
   }
+
   @ViewChild('itemAutocomplete', { read: ElementRef }) itemAutocomplete: ElementRef;
   ngOnInit(): void {
     this.TemplateForm = this.vResultTemplateFormInsert()
@@ -112,21 +113,39 @@ export class NewResultTemplateComponent {
 
     this.PathReportTemplateForm = this.createTemplateform();
     this.PathReportHeaderForm = this.createTemplateHeader();
-    debugger
+
     // this.ApiURL = "Pathology/search-GetServicewiseTemplate?ServiceId=" +this.selectedAdvanceObj1.serviceId;
     console.log(this.ApiURL)
-
-    //     setTimeout(() => {
-    //   const nativeElement = this.itemAutocomplete?.nativeElement;
-    //   if (nativeElement) {
-    //     const inputEl: HTMLInputElement = nativeElement.querySelector('input');
-    //     if (inputEl) {
-    //       inputEl.focus();
-    //     }
-    //   }
-    // }, 100);
   }
 
+  onVerify() {
+    Swal.fire({
+      title: 'Confirm Verify Report ',
+      text: 'Are you sure you want to Verify Report?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#41ea76ff',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, Verify!'
+
+    }).then((flag) => {
+      // debugger
+      if (flag.isConfirmed) {
+
+        let submitData = {
+          "pathReportId": this.reportIdData,
+          "isVerifyid": this.accountService.currentUserValue.userId,
+          "isVerifySign": true,
+          "isVerifyedDate": new Date().toISOString()
+        };
+        console.log(submitData);
+        this._SampleService.PathReportverifyMaster(submitData).subscribe(response => {
+          this._matDialog.closeAll();
+        });
+      }
+    });
+    // this.onEdit(row);
+  }
 
   onBlur(e: any) {
     this.vTemplateDesc = e.target.innerHTML;
@@ -141,7 +160,6 @@ export class NewResultTemplateComponent {
 
     });
   }
-
 
   createTemplateform(): FormGroup {
     return this.formBuilder.group({
@@ -182,10 +200,10 @@ export class NewResultTemplateComponent {
   }
 
 
-  getTemplatedetailIP(row) {
-    debugger
+  getTemplatedetail(row) {
+    // debugger
     console.log("data:", row)
-    this.PathReportId = row.pathReportId
+    this.PathReportId = row.pathReportId ?? row.pathReportID
     if ((this.PathReportId ?? 0) > 0) {
       setTimeout(() => {
         this._SampleService.getPathTemplateById(this.PathReportId).subscribe((response) => {
@@ -198,34 +216,14 @@ export class NewResultTemplateComponent {
       }, 500);
     }
   }
-
-  getTemplatedetailOP(row) {
-    debugger
-    console.log("data:", row)
-    this.PathReportId = row.pathReportId
-    if ((this.PathReportId ?? 0) > 0) {
-      setTimeout(() => {
-        this._SampleService.getPathTemplateById(this.PathReportId).subscribe((response) => {
-          this.templateObj = response;
-          console.log("all data:", this.templateObj)
-          this.vTemplateDesc = this.templateObj.templateResultInHTML
-          this.vsuggestionNotes = this.templateObj.suggestionNotes
-          this.otherForm.get("PathResultDoctorId").setValue(this.templateObj.pathResultDr1)
-        });
-      }, 500);
-    }
-  }
-
 
   selectChangeDoctorName(row) {
     console.log(row)
     this.VpathResultDr1 = row.doctorId
   }
 
+  onSubmit() {
 
-
-onSubmit() {
- 
     const currentDate = new Date();
 
     const datePipe = new DatePipe('en-US');
@@ -233,7 +231,7 @@ onSubmit() {
     const formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
 
     const formattedTime = datePipe.transform(currentDate, 'shortTime');
- 
+
     if (this.otherForm.get("PathResultDoctorId")?.value == '') {
 
       this.toastr.warning('Please select valid Pathalogist', 'Warning !', {
@@ -257,10 +255,8 @@ onSubmit() {
       return;
 
     }
- 
-    this.PathReportTemplateForm.get("pathTemplateId").setValue(this.TemplateId)
 
-    debugger
+    this.PathReportTemplateForm.get("pathTemplateId").setValue(this.TemplateId)
 
     this.PathReportTemplateForm.get("pathTemplateDetailsResult").setValue(this.otherForm.get("ResultEntry").value)
 
@@ -271,20 +267,20 @@ onSubmit() {
     this.PathReportTemplateForm.get("suggestionNotes").setValue(this.otherForm.get("suggestionNotes").value)
 
     this.PathReportTemplateForm.get("pathResultDr1").setValue(this.VpathResultDr1)
- 
+
     this.PathReportHeaderForm.get("pathResultDr1").setValue(this.VpathResultDr1)
 
     this.PathReportHeaderForm.get("suggestionNotes").setValue(this.otherForm.get("suggestionNotes").value)
 
     this.PathReportHeaderForm.get("reportTime").setValue(datePipe.transform(currentDate, 'shortTime'))
- 
+
     this.TemplateForm.get("pathologyReportTemplate").setValue(this.PathReportTemplateForm.value)
 
     this.TemplateForm.get("pathologyReportHeader").setValue(this.PathReportHeaderForm.value)
- 
- 
+
+
     console.log(this.TemplateForm.value);
- 
+
     if (!this.TemplateForm.invalid) {
 
       this._SampleService.PathTemplateResultentryInsert(this.TemplateForm.value).subscribe(response => {
@@ -292,14 +288,14 @@ onSubmit() {
         this.dialogRef.close();
 
         this.viewgetPathologyTemplateReportPdf(this.selectedAdvanceObj1);
- 
+
       });
 
     }
 
   }
 
- 
+
 
   viewgetPathologyTemplateReportPdf(contact) {
     // debugger
@@ -308,12 +304,12 @@ onSubmit() {
         "searchFields": [
           {
             "fieldName": "PathReportId",
-            "fieldValue": String(contact.pathReportId),
+            "fieldValue": String(contact.pathReportId ?? contact.pathReportID),
             "opType": "Equals"
           },
           {
             "fieldName": "OP_IP_Type",
-            "fieldValue": String(contact.opdipdtype),
+            "fieldValue": String(contact.opdipdtype ?? contact.opdIpdType),
             "opType": "Equals"
           }
         ],
@@ -351,7 +347,7 @@ onSubmit() {
   // @ViewChild('ddltemplate') ddltemplate: AirmidDropDownComponent;
 
   selectChangeService() {
-    
+
     if (this.selectedAdvanceObj1.serviceId) {
       this._SampleService.gettemplatebyService(this.selectedAdvanceObj1.serviceId).subscribe((data: any) => {
         console.log(data)

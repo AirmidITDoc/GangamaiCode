@@ -34,7 +34,8 @@
                                             <airmid-autocomplete label="Lab-UHID / First Name / Last Name / Mobile No"
                                                 [formGroup]="searchFormGroup" formControlName="RegId"
                                                 placeholderText="Lab-UHID / First Name / Last Name / Mobile No"
-                                                fxFlex="40%" ApiUrl="LabPatientRegistration/search-patient-1?Keyword="
+                                                fxFlex="40%"
+                                                [ApiUrl]="'LabPatientRegistration/search-patient-1?UnitId=' + UnitId + '&Keyword='"
                                                 (selectionChange)="getSelectedObj($event)" ValueField="regId"
                                                 TextField="formattedText"></airmid-autocomplete>
                                         </div>

@@ -16,6 +16,24 @@ import { SelectionModel } from '@angular/cdk/collections';
 import Swal from 'sweetalert2';
 import { EditSampledateComponent } from '../edit-sampledate/edit-sampledate.component';
 
+function formatDate(rawDate: string): string {
+  if (!rawDate) return '';
+
+  // Case 1: ISO format with T → 2026-01-15T00:00:00
+  if (rawDate.includes('T')) {
+    return rawDate.split('T')[0]; // 2026-01-15
+  }
+
+  // Case 2: Space format → 15-01-2026 00:00:00
+  if (rawDate.includes(' ')) {
+    const datePart = rawDate.split(' ')[0]; // 15-01-2026
+    const [day, month, year] = datePart.split('-');
+    return `${year}-${month}-${day}`; // 2026-01-15
+  }
+
+  return '';
+}
+
 @Component({
   selector: 'app-samplecollection-page',
   templateUrl: './samplecollection-page.component.html',
@@ -23,6 +41,7 @@ import { EditSampledateComponent } from '../edit-sampledate/edit-sampledate.comp
   encapsulation: ViewEncapsulation.None,
   animations: fuseAnimations
 })
+
 export class SamplecollectionPageComponent {
 
   interimArray: any = [];
@@ -82,12 +101,12 @@ export class SamplecollectionPageComponent {
 
     if (this.data?.type) {
       this.regObj = this.data.row
+      this.getSampledetailListLab(this.regObj);
+      return;
     }
     else {
       this.regObj = this.data
     }
-    // if (this.data)
-    //   this.regObj = this.data || this.data.row
     this.getSampledetailList1(this.regObj);
   }
 
@@ -159,6 +178,49 @@ export class SamplecollectionPageComponent {
 
     console.log(m_data);
     this._SampleService.getSampleDetailsList1(m_data).subscribe(Visit => {
+      this.dataSource.data = Visit.data as SampleList[];
+      console.log(this.dataSource.data)
+      this.dataSource.sort = this.sort;
+      this.dataSource.paginator = this.paginator;
+      this.sIsLoading = '';
+    });
+  }
+
+  getSampledetailListLab(row) {
+    // debugger
+
+    let formattedDate = formatDate(row.pathDate);
+
+    console.log(formattedDate);
+
+    var m_data = {
+      "first": 0,
+      "rows": 10,
+      "sortField": "PathTestID",
+      "sortOrder": 0,
+      "filters": [
+        {
+          "fieldName": "BillNo",
+          "fieldValue": String(row.billNo),
+          "opType": "Equals"
+        },
+        {
+          "fieldName": "BillDate",
+          "fieldValue": formattedDate,
+          "opType": "Equals"
+        },
+        {
+          "fieldName": "OP_IP_Type",
+          "fieldValue": "4",
+          "opType": "Equals"
+        }
+      ],
+      "Columns": [],
+      "exportType": "JSON"
+    }
+
+    console.log(m_data);
+    this._SampleService.getSampleDetailsListLab(m_data).subscribe(Visit => {
       this.dataSource.data = Visit.data as SampleList[];
       console.log(this.dataSource.data)
       this.dataSource.sort = this.sort;
