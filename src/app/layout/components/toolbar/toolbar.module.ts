@@ -9,22 +9,23 @@ import { FuseSearchBarModule, FuseShortcutsModule } from '@fuse/components';
 import { FuseSharedModule } from '@fuse/shared.module';
 
 import { ToolbarComponent } from 'app/layout/components/toolbar/toolbar.component';
+import { SharedModule } from 'app/main/shared/shared.module';
 
 @NgModule({
     declarations: [
         ToolbarComponent
     ],
     imports: [
-        RouterModule,
-        MatButtonModule,
-        MatIconModule,
-        MatMenuModule,
-        MatToolbarModule,
-
-        FuseSharedModule,
-        FuseSearchBarModule,
-        FuseShortcutsModule
-    ],
+    RouterModule,
+    MatButtonModule,
+    MatIconModule,
+    MatMenuModule,
+    MatToolbarModule,
+    FuseSharedModule,
+    FuseSearchBarModule,
+    FuseShortcutsModule,
+    SharedModule
+],
     exports: [
         ToolbarComponent
     ]

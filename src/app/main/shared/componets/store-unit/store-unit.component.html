@@ -1,0 +1,6 @@
+<airmid-dropdown label="Store" formControlName="storeId" [formGroup]="itemForm" (selectionChange)="onChange($event,'Store')"
+    [validations]="getValidationMessages().storeId" [value]="storeId" mode="Store" fxFlex="25%">
+</airmid-dropdown>
+<airmid-dropdown label="Unit" formControlName="unitId" [formGroup]="itemForm" (selectionChange)="onChange($event,'Unit')"
+    [validations]="getValidationMessages().unitId" [value]="unitId" mode="Unit" fxFlex="25%">
+</airmid-dropdown>
