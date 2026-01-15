@@ -40,6 +40,23 @@ import { NewResultEntryComponent } from '../result-entry/new-result-entry/new-re
 import { permissionCodes, permissionType } from 'app/main/shared/model/permission.model';
 import { PagePermissionService } from 'app/main/shared/services/page-permission.service';
 
+function formatDate(rawDate: string): string {
+  if (!rawDate) return '';
+
+  // Case 1: ISO format with T → 2026-01-15T00:00:00
+  if (rawDate.includes('T')) {
+    return rawDate.split('T')[0]; // 2026-01-15
+  }
+
+  // Case 2: Space format → 15-01-2026 00:00:00
+  if (rawDate.includes(' ')) {
+    const datePart = rawDate.split(' ')[0]; // 15-01-2026
+    const [day, month, year] = datePart.split('-');
+    return `${year}-${month}-${day}`; // 2026-01-15
+  }
+
+  return '';
+}
 
 @Component({
   selector: 'app-lab-result-list',
@@ -145,7 +162,6 @@ export class LabResultListComponent {
 
   @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
   @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
-  @ViewChild('actionsIPOP') actionsIPOP!: TemplateRef<any>;
 
   IsEdit: boolean = this.permissionService.getPermission(permissionCodes.ExternalInvestigation, permissionType.Edit);
 
@@ -153,16 +169,15 @@ export class LabResultListComponent {
   todate = this.toDate ? this.datePipe.transform(this.toDate, "yyyy-MM-dd") : "";
   ngAfterViewInit() {
     this.gridConfig.columnsList.find(col => col.key === 'action')!.template = this.actionButtonTemplate;
-    this.gridConfig.columnsList.find(col => col.key === 'patientType')!.template = this.actionsIPOP;
   }
 
   allcolumns = [
-    { heading: "Test Date", key: "pathDate", sort: true, align: 'left', emptySign: 'NA', type: 6, width: 100 },
+    { heading: "Test Date", key: "doa", sort: true, align: 'left', emptySign: 'NA', width: 100 },
     { heading: "DOA", key: "vaTime", sort: true, align: 'left', emptySign: 'NA', width: 150 },
     { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
     { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
     { heading: "Age | Gender", key: "genderName", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "Admission No", key: "oP_IP_No", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+    { heading: "Unit Name", key: "hospitalName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
     { heading: "PBill No", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
     { heading: "Doctor Name", key: "doctorName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
     {
@@ -173,7 +188,7 @@ export class LabResultListComponent {
 
   gridConfig: gridModel = {
     permissionCode: permissionCodes.ExternalInvestigation,
-    apiUrl: "Pathology/PathologyPatientTestList",
+    apiUrl: "LabPatientRegistration/LabResultList",
     columnsList: this.allcolumns,
     sortField: "PresReId",
     sortOrder: 0,
@@ -185,7 +200,7 @@ export class LabResultListComponent {
       { fieldName: "From_Dt ", fieldValue: this.fromdate, opType: OperatorComparer.Equals },
       { fieldName: "To_Dt ", fieldValue: this.todate, opType: OperatorComparer.Equals },
       { fieldName: "IsCompleted", fieldValue: "0", opType: OperatorComparer.Equals },
-      { fieldName: "OP_IP_Type", fieldValue: "4", opType: OperatorComparer.Equals }
+      { fieldName: "UnitId", fieldValue: String(this.UnitId), opType: OperatorComparer.Equals }
     ]
   }
 
@@ -239,7 +254,7 @@ export class LabResultListComponent {
     this.GetResultdetail()
     // Update the filters dynamically
     this.gridConfig = {
-      apiUrl: "Pathology/PathologyPatientTestList",
+      apiUrl: "LabPatientRegistration/LabResultList",
 
       columnsList: this.allcolumns,
       sortField: "PresReId",
@@ -252,7 +267,7 @@ export class LabResultListComponent {
         { fieldName: "From_Dt ", fieldValue: fromDate, opType: OperatorComparer.Equals }, //"2024-01-01"
         { fieldName: "To_Dt ", fieldValue: toDate, opType: OperatorComparer.Equals }, //"2024-10-01"
         { fieldName: "IsCompleted", fieldValue: status, opType: OperatorComparer.Equals },
-        { fieldName: "OP_IP_Type", fieldValue: "4", opType: OperatorComparer.Equals }
+        { fieldName: "UnitId", fieldValue: String(this.UnitId), opType: OperatorComparer.Equals }
       ]
     }
     this.grid.gridConfig = this.gridConfig;
@@ -260,7 +275,6 @@ export class LabResultListComponent {
   }
 
   getSelectedRow(row: any): void {
-    debugger
     console.log("Selected row : ", row);
 
     this.dataSource1.data = [];
@@ -276,30 +290,23 @@ export class LabResultListComponent {
     this.Mobileno = row.mobileNo
     this.SBillNo = row.billNo;
     this.SOPIPtype = row.opdipdtype;
-    this.SFromDate = this.datePipe.transform(row.pathDate, "yyyy-MM-dd ");
 
     this.getSampledetailList1(row);
   }
 
   getSampledetailList1(row) {
-    // debugger
     this.dataSource1.data = [];
     let rawDate = row.pathDate;
-    let day = rawDate.split("T")[0];
-    let rest = rawDate.split("T")[1].split("-");
-    let month = rest[0];
-    let year = rest[1];
 
-    let formattedDate = `${day}`
+    let formattedDate = formatDate(row.pathDate);
+    // let formattedDate = `${day}`
 
     console.log(formattedDate);
-
-    let OPIP = "4"
 
     var m_data = {
       "first": 0,
       "rows": 20,
-      "sortField": "RegNo",
+      "sortField": "PathDate",
       "sortOrder": 0,
       "filters": [
         {
@@ -309,7 +316,7 @@ export class LabResultListComponent {
         },
         {
           "fieldName": "OP_IP_Type",
-          "fieldValue": OPIP,
+          "fieldValue": "4",
           "opType": "Equals"
         },
         {
@@ -355,7 +362,7 @@ export class LabResultListComponent {
   getfilterdata() {
 
     this.gridConfig = {
-      apiUrl: "Pathology/PathologyPatientTestList",
+      apiUrl: "LabPatientRegistration/LabResultList",
       columnsList: this.allcolumns,
       sortField: "PresReId",
       sortOrder: 0,
@@ -366,8 +373,7 @@ export class LabResultListComponent {
         { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
         { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
         { fieldName: "IsCompleted", fieldValue: this.status, opType: OperatorComparer.Equals },
-        { fieldName: "OP_IP_Type", fieldValue: "4", opType: OperatorComparer.Equals }
-
+        { fieldName: "UnitId", fieldValue: String(this.UnitId), opType: OperatorComparer.Equals }
       ]
     }
     this.grid.gridConfig = this.gridConfig;
@@ -431,11 +437,11 @@ export class LabResultListComponent {
           this.selection.selected.forEach(element => {
             console.log(element)
             data.push({
-              PathReportId: element["pathReportId"].toString(),
+              PathReportId: element["pathReportID"].toString(),
               ServiceId: element["serviceId"].toString(),
               IsCompleted: element["isCompleted"].toString()
             });
-            this.printdata.push({ PathReportId: element["pathReportId"].toString() });
+            this.printdata.push({ PathReportId: element["pathReportID"].toString() });
           });
 
           console.log(this.printdata)
@@ -487,7 +493,7 @@ export class LabResultListComponent {
   }
 
   chkresultentryEdit(contact, flag) {
-    debugger
+    // debugger
     this.printdata = [];
     this.reportIdData = [];
     this.ServiceIdData = [];
@@ -503,11 +509,11 @@ export class LabResultListComponent {
         contactArray.forEach(element => {
           console.log(element)
           data.push({
-            PathReportId: element["pathReportId"].toString(),
+            PathReportId: element["pathReportID"].toString(),
             ServiceId: element["serviceId"].toString(),
             IsCompleted: element["isCompleted"].toString()
           });
-          this.printdata.push({ PathReportId: element["pathReportId"].toString() });
+          this.printdata.push({ PathReportId: element["pathReportID"].toString() });
         });
 
         console.log(this.printdata)
@@ -543,7 +549,7 @@ export class LabResultListComponent {
   }
 
   chkresultentryVerify(contact, flag) {
-    debugger
+    // debugger
     this.printdata = [];
     this.reportIdData = [];
     this.ServiceIdData = [];
@@ -559,11 +565,11 @@ export class LabResultListComponent {
         contactArray.forEach(element => {
           console.log(element)
           data.push({
-            PathReportId: element["pathReportId"].toString(),
+            PathReportId: element["pathReportID"].toString(),
             ServiceId: element["serviceId"].toString(),
             IsCompleted: element["isCompleted"].toString()
           });
-          this.printdata.push({ PathReportId: element["pathReportId"].toString() });
+          this.printdata.push({ PathReportId: element["pathReportID"].toString() });
         });
 
         console.log(this.printdata)
@@ -597,6 +603,60 @@ export class LabResultListComponent {
     this.searchRecords(contact)
     // this.selection.clear(); // Clears all selected items
     // this.dataSource1.data = [];
+  }
+
+  chkTemplateVerify(contact, flag) {
+    debugger
+    this.printdata = [];
+    this.reportIdData = [];
+    this.ServiceIdData = [];
+
+    if (flag)
+      this.IsTemplateTest = contact.isTemplateTest
+
+    console.log(contact)
+    if (this.IsTemplateTest == 1) {
+      setTimeout(() => {
+        let data = [];
+        const contactArray = Array.isArray(contact) ? contact : [contact];
+        contactArray.forEach(element => {
+          console.log(element)
+          data.push({
+            PathReportId: element["pathReportID"].toString(),
+            ServiceId: element["serviceId"].toString(),
+            IsCompleted: element["isCompleted"].toString()
+          });
+          this.printdata.push({ PathReportId: element["pathReportID"].toString() });
+        });
+
+        console.log(this.printdata)
+        data.forEach((element) => {
+          console.log('aaaaaa:', element)
+          this.reportIdData.push(element.PathReportId)
+          this.ServiceIdData.push(element.ServiceId)
+          if (element.IsCompleted == "true")
+            this.Iscompleted = 1;
+        });
+
+        const dialogRef = this._matDialog.open(NewResultTemplateComponent,
+          {
+            maxWidth: "75vw",
+            height: '95%',
+            width: '96%',
+            data: {
+              data: contact,
+              verifyCheck: true
+            }
+          });
+
+        dialogRef.afterClosed().subscribe(result => {
+          console.log('Pathology Template  Saved ..', result);
+        });
+        return;
+      }, 100);
+      return;
+    }
+    this.searchRecords(contact)
   }
 
   OPIPID: any = 0;
@@ -667,12 +727,12 @@ export class LabResultListComponent {
         searchFields: [
           {
             fieldName: "PathReportId",
-            fieldValue: String(contact.pathReportId),
+            fieldValue: String(contact.pathReportID),
             opType: "Equals"
           },
           {
             fieldName: "OP_IP_Type",
-            fieldValue: String(contact.opdipdtype),
+            fieldValue: String(contact.opdIpdType),
             opType: "Equals"
           }
         ],
@@ -740,30 +800,23 @@ export class LabResultListComponent {
   CompletdFlag = 1
 
   // changed by raksha 5/11/25
-  Printresultentry(row?: any[]) {
+  Printresultentry(row: any = null) {
     // debugger
     console.log(row);
-    // let pathologyDelete = [];
-
-    // this.selectedItem = row;
-
-
     console.log(this.selection.selected);
     let pathologyDelete = [];
 
     this.selectedItem = this.selection.selected[0];
 
     this.selection.selected.forEach((element) => {
-      pathologyDelete.push({ pathReportId: element.pathReportId });
+      pathologyDelete.push({ pathReportId: element.pathReportID });
     });
     if (this.selectedItem.isCompleted)
       this.CompletdFlag = 1
     else
       this.CompletdFlag = 0
 
-    pathologyDelete.push({ pathReportId: this.selectedItem.pathReportId });
-
-
+    pathologyDelete.push({ pathReportId: this.selectedItem.pathReportID });
 
     const submitData = {
       pathPrintResultEntry: pathologyDelete
@@ -786,7 +839,7 @@ export class LabResultListComponent {
       searchFields: [
         {
           fieldName: "OP_IP_Type",
-          fieldValue: String(data.opdipdtype),
+          fieldValue: String(data.opdIpdType),
           opType: "Equals"
         }
       ],
@@ -821,7 +874,7 @@ export class LabResultListComponent {
     this.selectedItem = this.selection.selected[0];
 
     this.selection.selected.forEach((element) => {
-      pathologyDelete.push({ pathReportId: element.pathReportId });
+      pathologyDelete.push({ pathReportId: element.pathReportID });
     });
 
     const submitData = {
@@ -844,7 +897,7 @@ export class LabResultListComponent {
       searchFields: [
         {
           fieldName: "OP_IP_Type",
-          fieldValue: String(data.opdipdtype),
+          fieldValue: String(data.opdIpdType),
           opType: "Equals"
         }
       ],
@@ -1010,8 +1063,8 @@ export class LabResultListComponent {
           "opType": "Equals"
         },
         {
-          "fieldName": "OP_IP_Type",
-          "fieldValue": "4",
+          "fieldName": "UnitId",
+          "fieldValue": String(this.UnitId),
           "opType": "Equals"
         }
       ],
@@ -1050,21 +1103,7 @@ export class LabResultListComponent {
   }
   selection = new SelectionModel<SampleList>(true, []);
 
-  // masterToggle() {
-  //     // Toggle selection
-  //     if (this.isSomeSelected()) {
-  //         this.selection.clear();
-  //     } else {
-  //         this.isAllSelected()
-  //             ? this.selection.clear()
-  //             : this.dataSource1.data.forEach(row => this.selection.select(row));
-  //     }
 
-  //     console.log('Selected items count:', this.selection.selected.length);
-
-  //     this.resultSource = [...this.selection.selected];
-  //     console.log('Selected items:', this.resultSource);
-  // }
   masterToggle() {
     // debugger
     const totalTests = this.dataSource1.data.length;

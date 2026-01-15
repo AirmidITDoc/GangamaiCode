@@ -68,22 +68,20 @@ export class LabSampleCollectionComponent {
     // { heading: "DOA", key: "vaTime", sort: true, align: 'left', emptySign: 'NA', width: 150 },
     { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
     { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
-    { heading: "Admission No", key: "oP_IP_No", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "PBill No", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+    { heading: "Unit Name", key: "hospitalName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
     { heading: "Patient Type", key: "patientType", sort: true, align: 'left', emptySign: 'NA', width: 100 },
     { heading: "Doctor Name", key: "doctorName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
-
     { heading: "Company Name", key: "cm", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-    { heading: "Ward Name", key: "wardName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
     {
       heading: "Action", key: "action", align: "right", width: 150, sticky: true, type: gridColumnTypes.template,
       template: this.actionButtonTemplate  // Assign ng-template to the column
     }
   ];
   gridConfig: gridModel = {
-    apiUrl: "PathlogySampleCollection/SampleCollectionPatientList",
+    apiUrl: "LabPatientRegistration/LabSampleCollectionList",
     columnsList: this.allcolumns,
-    sortField: "RegNo",
+    sortField: "LabPatientId",
     sortOrder: 0,
     filters: [
       { fieldName: "F_Name ", fieldValue: "%", opType: OperatorComparer.StartsWith },
@@ -92,14 +90,14 @@ export class LabSampleCollectionComponent {
       { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
       { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
       { fieldName: "IsCompleted", fieldValue: "0", opType: OperatorComparer.Equals },
-      { fieldName: "OPIPType", fieldValue: "2", opType: OperatorComparer.Equals }
+      { fieldName: "UnitId", fieldValue: String(this.UnitId), opType: OperatorComparer.Equals }
     ]
   }
 
   constructor(public _SampleCollectionService: LabSampleCollectionService,
     public _matDialog: MatDialog, private commonService: PrintserviceService,
     public datePipe: DatePipe,
-    public toastr: ToastrService,    
+    public toastr: ToastrService,
     private _loggedService: AuthenticationService,
     public permissionService: PagePermissionService,) { }
 
@@ -123,11 +121,9 @@ export class LabSampleCollectionComponent {
 
     console.log(formattedDate);
 
-    // let opipType = 4
-
     this.gridConfig1 = {
       permissionCode: permissionCodes.ExternalInvestigation,
-      apiUrl: "PathlogySampleCollection/SampleCollectionTestList",
+      apiUrl: "LabPatientRegistration/LabSampleCollectionDetailList",
       columnsList: [
         {
           heading: "Status", key: "isCompleted", sort: true, align: 'left', type: gridColumnTypes.template,
@@ -141,7 +137,7 @@ export class LabSampleCollectionComponent {
           template: this.actionButtonTemplate1
         }
       ],
-      sortField: "BillNo",
+      sortField: "PathTestID",
       sortOrder: 0,
       filters: [
         { fieldName: "BillNo", fieldValue: String(billNo), opType: OperatorComparer.Equals },
@@ -155,13 +151,11 @@ export class LabSampleCollectionComponent {
     setTimeout(() => {
       this.grid1.gridConfig = this.gridConfig1;
       this.grid1.bindGridData();
-
-
     });
     console.log(this.gridConfig1)
   }
 
-   ListView1(value) {
+  ListView1(value) {
     console.log(value)
     if (value.value !== 0)
       this.UnitId = value.value
@@ -187,9 +181,9 @@ export class LabSampleCollectionComponent {
   getfilterdata() {
     // debugger
     this.gridConfig = {
-      apiUrl: "PathlogySampleCollection/SampleCollectionPatientList",
+      apiUrl: "LabPatientRegistration/LabSampleCollectionList",
       columnsList: this.allcolumns,
-      sortField: "RegNo",
+      sortField: "LabPatientId",
       sortOrder: 0,
       filters: [
         { fieldName: "F_Name ", fieldValue: this.f_name, opType: OperatorComparer.StartsWith },
@@ -198,8 +192,7 @@ export class LabSampleCollectionComponent {
         { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
         { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals },
         { fieldName: "IsCompleted", fieldValue: this.status, opType: OperatorComparer.Equals },
-        { fieldName: "OPIPType", fieldValue: '2', opType: OperatorComparer.Equals }
-
+        { fieldName: "UnitId", fieldValue: String(this.UnitId), opType: OperatorComparer.Equals }
       ]
     }
     this.grid.gridConfig = this.gridConfig;
@@ -257,8 +250,8 @@ export class LabSampleCollectionComponent {
         "opType": "Equals"
       },
       {
-        "fieldName": "OPIPType",
-        "fieldValue": '2',
+        "fieldName": "UnitId",
+        "fieldValue": String(this.UnitId),
         "opType": "Equals"
       }
     );
@@ -280,18 +273,17 @@ export class LabSampleCollectionComponent {
         // debugger
         this.Vtotalcount = this.dataSource.data.length
         this.VCompletedcount = this.dataSource.data.filter(
-          (element: any) => element.isSampleCollection == 'True'
+          (element: any) => element.isSampleCollection == true
         ).length;
 
         this.Vpendingcount = this.dataSource.data.filter(
-          (element: any) => element.isSampleCollection == 'False'
+          (element: any) => element.isSampleCollection == false
         ).length;
 
         console.log(this.dataSource.data)
       }
     });
   }
-
 
   Clearfilter(event) {
     console.log(event)
@@ -305,7 +297,6 @@ export class LabSampleCollectionComponent {
 
     this.onChangeFirst();
   }
-
 
   onSave(row: any = null) {
     let that = this;

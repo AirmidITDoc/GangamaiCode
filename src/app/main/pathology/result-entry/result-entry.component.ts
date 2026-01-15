@@ -114,7 +114,7 @@ export class ResultEntryComponent implements OnInit {
     title: 'Reports'
     page: PageNames = PageNames.PATIENT;
     pathFiles: PageNames = PageNames.PATIENT_PATHFILES;
-  autocompleteModeunit: string = "Hospital";
+    autocompleteModeunit: string = "Hospital";
     UnitId: any = this.accountService.currentUserValue.user.unitId;
     isSuperAdmin: any = this.accountService.currentUserValue.user.isAdminMultiview;
 
@@ -266,7 +266,7 @@ export class ResultEntryComponent implements OnInit {
     }
 
     getSelectedRow(row: any): void {
-        debugger
+        // debugger
         console.log("Selected row : ", row);
 
         this.dataSource1.data = [];
@@ -615,6 +615,61 @@ export class ResultEntryComponent implements OnInit {
         // this.dataSource1.data = [];
     }
 
+    chkTemplateVerify(contact, flag) {
+        debugger
+        this.printdata = [];
+        this.reportIdData = [];
+        this.ServiceIdData = [];
+
+        if (flag)
+            this.IsTemplateTest = contact.isTemplateTest
+
+        console.log(contact)
+        if (this.IsTemplateTest == 1) {
+            setTimeout(() => {
+                let data = [];
+                const contactArray = Array.isArray(contact) ? contact : [contact];
+                contactArray.forEach(element => {
+                    console.log(element)
+                    data.push({
+                        PathReportId: element["pathReportId"].toString(),
+                        ServiceId: element["serviceId"].toString(),
+                        IsCompleted: element["isCompleted"].toString()
+                    });
+                    this.printdata.push({ PathReportId: element["pathReportId"].toString() });
+                });
+
+                console.log(this.printdata)
+                data.forEach((element) => {
+                    console.log('aaaaaa:', element)
+                    this.reportIdData.push(element.PathReportId)
+                    this.ServiceIdData.push(element.ServiceId)
+                    if (element.IsCompleted == "true")
+                        this.Iscompleted = 1;
+                });
+
+                const dialogRef = this._matDialog.open(NewResultTemplateComponent,
+                    {
+                        maxWidth: "75vw",
+                        height: '95%',
+                        width: '96%',
+                        data: {
+                            data: contact,
+                            verifyCheck: true
+                        }
+                    });
+
+                dialogRef.afterClosed().subscribe(result => {
+                    this.grid.bindGridData();
+                    this.getSelectedRow(event);
+                });
+                return;
+            }, 100);
+            return;
+        }
+        this.searchRecords(contact)
+    }
+
     OPIPID: any = 0;
     onresultentryshow(event, m) {
         // debugger
@@ -797,14 +852,9 @@ export class ResultEntryComponent implements OnInit {
 
 
     // changed by raksha 5/11/25
-    Printresultentry(row?: any[]) {
+    Printresultentry(row: any = null) {
         // debugger
         console.log(row);
-        // let pathologyDelete = [];
-
-        // this.selectedItem = row;
-
-
         console.log(this.selection.selected);
         let pathologyDelete = [];
 
@@ -819,8 +869,6 @@ export class ResultEntryComponent implements OnInit {
             this.CompletdFlag = 0
 
         pathologyDelete.push({ pathReportId: this.selectedItem.pathReportId });
-
-
 
         const submitData = {
             pathPrintResultEntry: pathologyDelete
@@ -1694,6 +1742,7 @@ export class SampleList {
     sampleNo: any;
     suggestionNotes: any;
     isCompleted: any;
+    pathReportID: any;
 
     constructor(SampleList) {
         this.VADate = SampleList.VADate || '';
@@ -1726,6 +1775,7 @@ export class SampleList {
         this.sampleNo = SampleList.sampleNo || '0'
         this.suggestionNotes = SampleList.suggestionNotes || 0
         this.isCompleted = SampleList.isCompleted || 0
+        this.pathReportID = SampleList.pathReportID || 0
     }
 
 }

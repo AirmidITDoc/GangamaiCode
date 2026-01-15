@@ -84,10 +84,11 @@ import { SMSDetailsPopupOverComponent } from './componets/email-send/smsdetails-
 import { WhatsappDetPopUpOverComponent } from './componets/email-send/whatsapp-det-pop-up-over/whatsapp-det-pop-up-over.component';
 import { MatRadioModule } from '@angular/material/radio'; 
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { StoreUnitComponent } from './componets/store-unit/store-unit.component';
 
 @NgModule({
     declarations: [
-        TrimPipe, CommonDateComponent, AirmidTableComponent, AirmidTextboxComponent, AirmidDropDownComponent, AirmidAutoCompleteComponent, SmsEmailTemplateComponent, HeaderComponent, PaymentModeComponent, ImageCropComponent, EmailSendComponent, DyanmicTableHeightDirective,
+        TrimPipe, CommonDateComponent, AirmidTableComponent, AirmidTextboxComponent, AirmidDropDownComponent, AirmidAutoCompleteComponent, SmsEmailTemplateComponent, HeaderComponent,StoreUnitComponent, PaymentModeComponent, ImageCropComponent, EmailSendComponent, DyanmicTableHeightDirective,
         AirmidDateofbirthComponent, AirmidDateofbirthV2Component, AirmidSliderComponent, AirmidDatepickerComponent, TableSearchBarComponent, PrintCallingComponent, ErrorPageComponent, Error401Component, Error403Component, Error404Component, Error500Component, FocusNextDirective, AirmidTimePickerComponent, PatientInfoComponent, AirmidDateTimePickerComponent, TableKeyboardNavigationDirective, AirmidChipautocompleteComponent, 
         AirmidFullDatepickerComponent, AirmidFileuploadComponent,AirmidFileViewerComponent, AirmidFileuploadIconComponent, AirmidSignatureComponent, AirmidSignatureIconComponent, AirmidPhotoComponent, AirmidPhotoIconComponent,
         AirmidCardViewComponent, Error0Component, AirmidImageviewComponent, AirmidImageIconComponent, AirmidEditorComponent, AirmidConsentformComponent, AirmidConsentformIconComponent, PatientSearchComponent, SMSDetailsPopupOverComponent, WhatsappDetPopUpOverComponent
@@ -139,6 +140,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
         TrimPipe,
         CommonDateComponent,
         HeaderComponent,
+        StoreUnitComponent,
         PaymentModeComponent,
         DyanmicTableHeightDirective,
         AirmidTableComponent,

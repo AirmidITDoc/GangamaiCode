@@ -47,7 +47,8 @@
 
                                     <airmid-dropdown label="Unit Name" formControlName="UnitId"
                                         [readonly]="!isSuperAdmin" (selectionChange)="ListView1($event)"
-                                        [formGroup]="myformSearch" [mode]="autocompleteModeunit"></airmid-dropdown>
+                                        [(ngModel)]="gridConfig.filters[6].fieldValue" [formGroup]="myformSearch"
+                                        [mode]="autocompleteModeunit"></airmid-dropdown>
 
                                     <div fxFlex="15%" fxFlex.xs="100%" fxFlex.sm="35%">
                                         <airmid-datepicker [formGroup]="myformSearch" [isRangePicker]="true"
@@ -94,19 +95,6 @@
                                             </button>
                                         </mat-form-field>
                                     </div>
-                                    <!-- <div fxFlex="16%" fxLayout="row">
-                                        <mat-radio-group name="PatientTypeSearch" formControlName="PatientTypeSearch"
-                                            (change)="onChangeFirst()" fxLayout="column" value="2" class="gap-4"
-                                            [(ngModel)]="gridConfig.filters[6].fieldValue">
-                                            <mat-label><b>Patient Type:</b></mat-label>
-                                            <div fxLayout="row">
-                                                <mat-radio-button value='3'>All</mat-radio-button>
-                                                <mat-radio-button value='1'>IP</mat-radio-button>
-                                                <mat-radio-button value='0'>OP</mat-radio-button>
-                                                <mat-radio-button value='4'>LAB</mat-radio-button>
-                                            </div>
-                                        </mat-radio-group>
-                                    </div> -->
 
                                     <div fxFlex="15%" fxLayout="row">
                                         <mat-radio-group name="StatusSearch" formControlName="StatusSearch"
@@ -202,12 +190,19 @@
                                                     </mat-checkbox>
                                                 </th>
                                                 <td mat-cell *matCellDef="let contact">
-                                                    <mat-checkbox (click)="$event.stopPropagation()"
-                                                        (change)="onresultentryshow($event,contact)"
-                                                        (change)="$event ? selection.toggle(contact) : null"
-                                                        *ngIf="contact.isTemplateTest !='1' else noMLC"
-                                                        [checked]="selection.isSelected(contact)">
-                                                    </mat-checkbox>
+                                                    <span *ngIf="contact.isTemplateTest != '1'; else noMLC"
+                                                        [matTooltip]="contact.isSampleCollection === 'False'
+                                                            ? 'Please complete sample collection first'
+                                                            : ''">
+
+                                                        <mat-checkbox (click)="$event.stopPropagation()"
+                                                            (change)="onresultentryshow($event,contact)"
+                                                            (change)="$event ? selection.toggle(contact) : null"
+                                                            *ngIf="contact.isTemplateTest !='1' else noMLC"
+                                                            [checked]="selection.isSelected(contact)"
+                                                            [disabled]="contact.isSampleCollection === 'False'">
+                                                        </mat-checkbox>
+                                                    </span>
                                                     <ng-template #noMLC>
                                                         <div
                                                             style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;">
@@ -303,7 +298,8 @@
                                                                     'status-pending': !contact.isVerifyid
                                                                 }" [matTooltip]="getVerifyTooltip(contact)"
                                                                     matTooltipClass="verify-tooltip"
-                                                                    (click)="contact.isCompleted && !contact.isVerifyid && chkresultentryVerify(contact,true)"
+                                                                    (click)=" contact.isCompleted && !contact.isVerifyid ? (contact.isTemplateTest == 1
+                                                                            ? chkTemplateVerify(contact, true) : chkresultentryVerify(contact, true)) : null "
                                                                     [style.cursor]="contact.isCompleted && !contact.isVerifyid ? 'pointer' : 'default'"
                                                                     [style.pointer-events]="contact.isCompleted ? 'auto' : 'none'">
                                                                     {{ contact.isVerifyid ? 'Verified' : 'UnVerified' }}
@@ -379,14 +375,6 @@
                                                         </button>
                                                     </ng-container>
 
-                                                    <!-- If OutSource Lab Name NOT exists -->
-                                                    <!-- <ng-template #noOutSource>
-                                                    <button mat-icon-button *ngIf="element.isPathOutSource == 1"
-                                                        (click)="Editoutsoucedata(element)"
-                                                        matTooltip="Add OutSource Data">
-                                                        <mat-icon style="color:#ff5722;">local_shipping</mat-icon>
-                                                    </button>
-                                                </ng-template> -->
                                                     <ng-template #noOutSource>
                                                         <span [matTooltip]="element.isSampleCollection === 'False'
                                                         ? 'Please complete sample collection first'
@@ -409,29 +397,38 @@
                                                 <mat-header-cell *matHeaderCellDef fxShow.gt-sm class="w-250">
                                                     Action</mat-header-cell>
                                                 <mat-cell *matCellDef="let contact" class="w-250">
-                                                    <button mat-icon-button *ngIf="contact.isTemplateTest == 0"
-                                                        matTooltip="Edit Result Entry"
-                                                        (click)="chkresultentryEdit(contact,true)">
-                                                        <mat-icon style="color: #ff9800;">edit</mat-icon>
-                                                    </button>
+                                                    <span [matTooltip]="contact.isSampleCollection === 'False'
+                                                    ? 'Please complete sample collection first'
+                                                    : 'Edit Result Entry'">
+                                                        <button mat-icon-button *ngIf="contact.isTemplateTest == 0"
+                                                            matTooltip="Edit Result Entry"
+                                                            [disabled]="contact.isSampleCollection === 'False'"
+                                                            (click)="chkresultentryEdit(contact,true)">
+                                                            <mat-icon style="color: #ff9800;">edit</mat-icon>
+                                                        </button>
+                                                    </span>
 
-                                                    <button mat-icon-button *ngIf="contact.isTemplateTest == 1"
-                                                        matTooltip="Edit Template Test"
-                                                        (click)="chkresultentry(contact, false)">
-                                                        <mat-icon style="color: #ff9800;">edit</mat-icon>
-                                                    </button>
+                                                    <span [matTooltip]="contact.isSampleCollection === 'False'
+                                                    ? 'Please complete sample collection first'
+                                                    : 'Edit Template Test'">
+                                                        <button mat-icon-button *ngIf="contact.isTemplateTest == 1"
+                                                            [disabled]="contact.isSampleCollection === 'False'"
+                                                            (click)="chkresultentry(contact, false)">
+                                                            <mat-icon style="color:#ff9800;">edit</mat-icon>
+                                                        </button>
+                                                    </span>
 
                                                     <airmid-fileupload-icon [refId]="contact.pathReportId"
                                                         [refType]="pathFiles" [multiple]="true"
                                                         [title]="contact.patientName + ' Report'"></airmid-fileupload-icon>
 
                                                     <button mat-icon-button (click)="Cancleresult(contact)"
-                                                        matTooltip="Cancel Result">
+                                                        matTooltip="Cancel Result" *ngIf="contact.isVerifySign==false">
                                                         <mat-icon color="warn">cancel</mat-icon>
                                                     </button>
 
-                                                    <button mat-icon-button (click)="Printresultentry(contact)"
-                                                        matTooltip="Print" *ngIf="contact.isCompleted">
+                                                    <button mat-icon-button (click)="getPrint(contact)"
+                                                        matTooltip="Result Print" *ngIf="contact.isCompleted">
                                                         <mat-icon>print</mat-icon>
                                                     </button>
 

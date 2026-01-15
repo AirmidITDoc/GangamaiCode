@@ -51,10 +51,10 @@
             <ng-template #iconisCompeleted let-element>
                 <div fxLayout="column" fxLayoutAlign="center center" class="status-box">
                     <span [ngClass]="{
-                            'status-completed': element.isSampleCollection == 'True',
-                            'status-pending': element.isSampleCollection == 'False'
+                            'status-completed': element.isSampleCollection == true,
+                            'status-pending': element.isSampleCollection == false
                         }">
-                        {{ element.isSampleCollection == 'True' ? 'Completed' : 'Pending' }}
+                        {{ element.isSampleCollection == true ? 'Completed' : 'Pending' }}
                     </span>
                 </div>
             </ng-template>
@@ -111,8 +111,8 @@
                 <ng-container filters>
                     <form [formGroup]="myformSearch">
                         <airmid-dropdown label="Unit Name" formControlName="UnitId" [readonly]="!isSuperAdmin"
-                            (selectionChange)="ListView1($event)" [formGroup]="myformSearch"
-                            [mode]="autocompleteModeunit"></airmid-dropdown>
+                            [(ngModel)]="gridConfig.filters[6].fieldValue" (selectionChange)="ListView1($event)"
+                            [formGroup]="myformSearch" [mode]="autocompleteModeunit"></airmid-dropdown>
 
                         <airmid-datepicker [formGroup]="myformSearch" [isRangePicker]="true"
                             formStartControlName="start" formEndControlName="end"
@@ -148,19 +148,6 @@
                         </mat-form-field>
 
                         <div fxLayout="column" fxLayoutAlign="start start">
-                            <!-- <div fxFlex fxLayout="row">
-                                <mat-radio-group name="Istype" fxLayout="row" [formGroup]="myformSearch"
-                                    formControlName="PatientTypeSearch" (change)="onChangeFirst()" style="padding: 6px;"
-                                    class="gap-4">
-                                    <mat-label>Type:</mat-label>
-                                    <div fxLayout="row">
-                                        <mat-radio-button value='5'>All</mat-radio-button>
-                                        <mat-radio-button value='1'>IP</mat-radio-button>
-                                        <mat-radio-button value='0'>OP</mat-radio-button>
-                                        <mat-radio-button value='2'>LAB</mat-radio-button>
-                                    </div>
-                                </mat-radio-group>
-                            </div> -->
 
                             <div fxFlex fxLayout="row">
                                 <mat-radio-group name="StatusSearch" fxLayout="row" [formGroup]="myformSearch"

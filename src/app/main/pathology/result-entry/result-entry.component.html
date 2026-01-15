@@ -376,9 +376,10 @@
                                                                 <span class="status-box" [ngClass]="{
                                                                     'status-completed': contact.isVerifyid,
                                                                     'status-pending': !contact.isVerifyid
-                                                                }" [matTooltip]="getVerifyTooltip(contact)"
+                                                                    }" [matTooltip]="getVerifyTooltip(contact)"
                                                                     matTooltipClass="verify-tooltip"
-                                                                    (click)="contact.isCompleted && !contact.isVerifyid && chkresultentryVerify(contact,true)"
+                                                                    (click)=" contact.isCompleted && !contact.isVerifyid ? (contact.isTemplateTest == 1
+                                                                            ? chkTemplateVerify(contact, true) : chkresultentryVerify(contact, true)) : null "
                                                                     [style.cursor]="contact.isCompleted && !contact.isVerifyid ? 'pointer' : 'default'"
                                                                     [style.pointer-events]="contact.isCompleted ? 'auto' : 'none'">
                                                                     {{ contact.isVerifyid ? 'Verified' : 'UnVerified' }}
@@ -505,11 +506,11 @@
                                                         [title]="contact.patientName + ' Report'"></airmid-fileupload-icon>
 
                                                     <button mat-icon-button (click)="Cancleresult(contact)"
-                                                        matTooltip="Cancel Result">
+                                                        matTooltip="Cancel Result" *ngIf="contact.isVerifySign==false">
                                                         <mat-icon color="warn">cancel</mat-icon>
                                                     </button>
 
-                                                    <button mat-icon-button (click)="Printresultentry(contact)"
+                                                    <button mat-icon-button (click)="getPrint(contact)"
                                                         matTooltip="Print" *ngIf="contact.isCompleted">
                                                         <mat-icon>print</mat-icon>
                                                     </button>

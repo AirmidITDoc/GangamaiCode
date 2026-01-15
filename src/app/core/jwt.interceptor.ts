@@ -9,6 +9,7 @@ import { LoaderService } from "./components/loader/loader.service";
 import { AuthenticationService } from "./services/authentication.service";
 import { MatDialog } from "@angular/material/dialog";
 import { Error0Component } from "app/main/shared/APIerrorpages/error-0/error-0.component";
+import { StoreUnitContextService } from "app/main/shared/services/storeunit-context.service";
 
 
 @Injectable()
@@ -17,7 +18,8 @@ export class JwtInterceptor implements HttpInterceptor {
 
     constructor(@Inject(APP_CONFIG) private config: AppConfig, private dialog: MatDialog,
         private _ls: LoaderService, public toastr: ToastrService, private router: Router,
-        private authenticationService: AuthenticationService) { }
+        private authenticationService: AuthenticationService,
+        private contextSvc: StoreUnitContextService) { }
 
     intercept(
         request: HttpRequest<any>,
@@ -25,12 +27,15 @@ export class JwtInterceptor implements HttpInterceptor {
     ): Observable<HttpEvent<any>> {
         // add authorization header with jwt token if available
         let currentUser = this.authenticationService.currentUserValue;
+        const ctx = this.contextSvc.getContext();
         if (currentUser && currentUser.token) {
             if (request.body instanceof FormData)
                 request = request.clone({
                     setHeaders: {
                         Authorization: `Bearer ${currentUser.token}`,
                         "Access-Control-Allow-Origin": "*",
+                        'X-Store-Id': ctx?.storeId?.toString()??"",
+                        'X-Unit-Id': ctx?.unitId?.toString()??""
                     },
                 });
             else
@@ -38,7 +43,9 @@ export class JwtInterceptor implements HttpInterceptor {
                     setHeaders: {
                         Authorization: `Bearer ${currentUser.token}`,
                         "Access-Control-Allow-Origin": "*",
-                        "Content-Type": "application/json; charset=utf-8"
+                        "Content-Type": "application/json; charset=utf-8",
+                        'X-Store-Id': ctx?.storeId?.toString()??"",
+                        'X-Unit-Id': ctx?.unitId?.toString()??""
                     },
                 });
         }

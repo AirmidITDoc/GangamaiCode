@@ -129,6 +129,7 @@ export class NewLabPatientRegComponent {
 
   doctorOptions: any[] = [];
   onlineflag: boolean = false;
+  UnitId: any = this.accountService.currentUserValue.user.unitId;
 
   @ViewChild('ddlGender') ddlGender: AirmidDropDownComponent;
   @ViewChild('ddlCountry') ddlCountry: AirmidDropDownComponent;
@@ -333,7 +334,7 @@ export class NewLabPatientRegComponent {
       discComments: [0, [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],//need to set concession reason
       cashCounterId: ["1", [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],//need to set cashCounterId
       createdBy: [this.accountService.currentUserValue.userId, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      govtApprovedAmt : [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+      govtApprovedAmt: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
 
       addCharges: this._formbuilder.array([]),
 
@@ -383,7 +384,7 @@ export class NewLabPatientRegComponent {
     });
   }
   CreateAddchargeform(item: any): FormGroup {
-debugger
+    debugger
     return this._formbuilder.group({
       chargesId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       chargesDate: this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
@@ -547,7 +548,7 @@ debugger
         height: '45%',
         width: '100%',
         data: {
-          Obj: row,
+          Obj: row, Label: 'Lab'
         }
       });
     dialogRef.afterClosed().subscribe(result => {
@@ -1055,7 +1056,7 @@ debugger
           'Please select Doctor for added service', 'Warning!');
         return;
       }
-debugger
+      debugger
       this.dstable1.data.forEach(item => {
         this.ChargeddetailsArray.push(this.CreateAddchargeform(item as ChargesList));
         this.BillDetailsArray.push(this.createBillDetails(item as ChargesList));
@@ -1291,7 +1292,7 @@ debugger
     // If only one field is filled, and it's FirstName or MobileNo, call API
     if (filledFields === 1 && (changedField === 'firstName' || changedField === 'mobileNo')) {
       const keyword = firstName || mobileNo;
-      this._labPatientRegService.getlabSuggestions("LabPatientRegistration/search-patient-1?Keyword=", keyword).subscribe(results => {
+      this._labPatientRegService.getlabSuggestions(`LabPatientRegistration/search-patient-1?UnitId=${this.UnitId}&Keyword=`,keyword).subscribe(results => {
         this.prevResults = results || [];
         // console.log(results)
         this.filteredOptions = this.filterResults(this.prevResults, { firstName, lastName, mobileNo });
@@ -1312,7 +1313,7 @@ debugger
       // Fallback: if prevResults is empty, call API with the changed field (if allowed)
       const keyword = this.myForm.get(changedField).value?.trim();
       if (keyword) {
-        this._labPatientRegService.getlabSuggestions("LabPatientRegistration/search-patient-1?Keyword=", keyword).subscribe(results => {
+        this._labPatientRegService.getlabSuggestions(`LabPatientRegistration/search-patient-1?UnitId=${this.UnitId}&Keyword=`,keyword).subscribe(results => {
           this.prevResults = results || [];
           this.filteredOptions = this.filterResults(this.prevResults, { firstName, lastName, mobileNo });
         });

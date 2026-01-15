@@ -40,7 +40,7 @@ export class PreviousDeptListComponent {
     if (this.data) {
       this.registerObj = this.data.Obj
       console.log(this.registerObj)
-      if (this.registerObj.labPatRegId) {
+      if (this.data.Label == 'Lab') {
         this.getLabDocVisitList(this.registerObj);
       } else {
         this.getLastVisitDoctorList(this.registerObj)
@@ -86,7 +86,17 @@ export class PreviousDeptListComponent {
       "exportType": "JSON"
     }
     this._opappointmentService.getLabVisitDoctorList(vdata).subscribe(data => {
-      this.dsLastDepartmentname.data = data.data as RegInsert[]
+      // this.dsLastDepartmentname.data = data.data as RegInsert[]
+      this.dsLastDepartmentname.data = (data.data as RegInsert[]).map(item => {
+        if (item.regDate) { 
+          return {
+            ...item,
+            visitDate: item.regDate
+          };
+        }
+        return item;
+      });
+
     })
   }
 

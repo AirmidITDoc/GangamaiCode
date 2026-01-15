@@ -53,7 +53,7 @@ export class LabSampleCollectionService {
 
 
   public getSampleCollectionlist(employee) {
-    return this._httpClient1.PostData("PathlogySampleCollection/SampleCollectionPatientList", employee)
+    return this._httpClient1.PostData("LabPatientRegistration/LabSampleCollectionList", employee)
   }
   public getPatientSamplesList(employee) {
     return this._httpClient.post("Generic/GetByProc?procName=Rtrv_PathSamPatList", employee)
