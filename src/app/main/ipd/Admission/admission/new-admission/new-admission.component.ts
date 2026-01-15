@@ -62,7 +62,7 @@ export class NewAdmissionComponent implements OnInit {
   registerObj1 = new AdmissionPersonlModel({});
   registerObj = new RegInsert({});
   companyDet = new RegInsert({});
-  RegId: any;
+  RegId: any=0;
   currentDate = new Date();
   public now: Date = new Date();
   // isLoading: string = '';
@@ -253,7 +253,7 @@ this.Is9_Digit_National_Id = id === "1";
   // }
 
   getSelectedObj(obj: any) {
-    // debugger
+    debugger
     console.log(obj);
     this.RegId = obj.value;
 
@@ -686,9 +686,9 @@ this.Is9_Digit_National_Id = id === "1";
     return this.formBuilder.group({
     patientPolicyId: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
     opipid:[0,[this._FormvalidationserviceService.onlyNumberValidator()]],
-    opiptype: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
+    opiptype: [1,[this._FormvalidationserviceService.onlyNumberValidator()]],
     policyNo: [0,[this._FormvalidationserviceService.onlyNumberValidator()]],
-    policyValidateDate: ['1999-01-01'],
+    policyValidateDate: [new Date().toISOString()],
     approvedAmount: [0,[this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
     createdBy:[this.accountService.currentUserValue.userId],
     isActive: true
@@ -714,12 +714,14 @@ this.Is9_Digit_National_Id = id === "1";
     this.admissionFormGroup.get('hospitalId').setValue(this.searchFormGroup.get("HospitalId").value)
     this.personalFormGroup.get('RegDate').setValue(this.datePipe.transform(this.personalFormGroup.get('RegDate').value, 'yyyy-MM-dd'))
     this.admissionFormGroup.get('AdmissionDate').setValue(this.datePipe.transform(this.admissionFormGroup.get('AdmissionDate').value, 'yyyy-MM-dd'))
+    this.admissionFormGroup.get('RegId').setValue(this.RegId)
+   
     this.personalFormGroup.get('medTourismVisaIssueDate').setValue(this.datePipe.transform(this.rawDate1, "yyyy-MM-dd") || this.rawDate1);
     this.personalFormGroup.get('medTourismVisaValidityDate').setValue(this.datePipe.transform(this.rawDate2, "yyyy-MM-dd") || this.rawDate2);
     this.personalFormGroup.get('medTourismDateOfEntry').setValue(this.datePipe.transform(this.rawDate3, "yyyy-MM-dd") || this.rawDate3);
-    this.policyFormGroup.get("policyValidateDate").setValue(this.datePipe.transform(this.admissionFormGroup.get('policyValidateDate').value , "yyyy-MM-dd") || '1900-01-01');
-    this.policyFormGroup.get("policyNo").setValue(String(this.admissionFormGroup.get('policyNumber')?.value || 0))
-    this.policyFormGroup.get("approvedAmount").setValue(Number(this.admissionFormGroup.get('policyLimit')?.value || 0))
+    this.policyFormGroup.get("policyValidateDate").setValue(this.datePipe.transform(this.policyFormGroup.get('policyValidateDate').value , "yyyy-MM-dd") || '1900-01-01');
+    this.policyFormGroup.get("policyNo").setValue(String(this.policyFormGroup.get('policyNo')?.value || 0))
+    this.policyFormGroup.get("approvedAmount").setValue(Number(this.policyFormGroup.get('approvedAmount')?.value || 0))
 
     if (this.isCompanySelected && this.admissionFormGroup.get('CompanyId').value == 0) {
       this.toastr.warning('Please select valid Company ', 'Warning !', {
@@ -733,11 +735,7 @@ this.Is9_Digit_National_Id = id === "1";
 
     console.log(this.admissionFormGroup.value)
     if (!this.admissionFormGroup.invalid) {
-      // let submitData = {
-      //   "AdmissionReg": this.personalFormGroup.value,
-      //   "ADMISSION": this.admissionFormGroup.value
-      // };
-
+      
       if (this.searchFormGroup.get('regRadio').value == "registration" && this.AdmissionId == 0) {
         let submitData = {
           "admissionReg": this.personalFormGroup.value,
@@ -761,7 +759,6 @@ this.Is9_Digit_National_Id = id === "1";
       else { 
         // console.log(submitData);
         let submitData = {
-          // "AdmissionReg": this.personalFormGroup.value,
           "admission": this.admissionFormGroup.value,
           "patientPolicy":this.policyFormGroup.value
         };
