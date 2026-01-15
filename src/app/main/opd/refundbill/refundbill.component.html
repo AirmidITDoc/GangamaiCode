@@ -29,19 +29,19 @@
               <div class="patient-search">
                 <div fxLayout="row" fxLayoutAlign="start start" class="gap-8">
                   <div fxFlexFill fxLayout="row" fxLayoutGap="4px" fxLayoutAlign="space-between">
-                    <!-- <airmid-autocomplete class="w-350" label="Search Reg No / Patient Name / Mobile No"
+                    <airmid-autocomplete class="w-350" label="Search Reg No / Patient Name / Mobile No"
                       [formGroup]="searchFormGroup" fxFlex="40%" formControlName="RegId"
                       placeholderText="Search Reg No / Patient Name / Mobile No"
                       ApiUrl="OutPatient/auto-complete?Keyword="
-                      (selectionChange)="getSelectedObj($event)"></airmid-autocomplete> -->
+                      (selectionChange)="getSelectedObj($event)"></airmid-autocomplete>
 
 
-                      <airmid-autocomplete label="OP-UHID / First Name / Last Name / Mobile No"  
+                      <!-- <airmid-autocomplete label="OP-UHID / First Name / Last Name / Mobile No"  
                                 [formGroup]="searchFormGroup" formControlName="RegId"
                                 placeholderText="OP-UHID / First Name / Last Name / Mobile No" fxFlex="40%"
                                 ApiUrl="VisitDetail/search-patient-1?Keyword="
                                 (selectionChange)="getSelectedObj($event)" ValueField="regId"  
-                                TextField="formattedText"></airmid-autocomplete> 
+                                TextField="formattedText"></airmid-autocomplete>  -->
 
 
                                 <airmid-dropdown label="CashCounterID" formControlName="CashCounterID" fxFlex="30%"
@@ -139,14 +139,14 @@
               <ng-container matColumnDef="netAmount">
                 <mat-header-cell *matHeaderCellDef mat-sort-header>NetAmount</mat-header-cell>
                 <mat-cell *matCellDef="let element">
-                  <span>{{ element.netAmount | currency: currency:'symbol' }}</span>
+                  <span>{{ element.netAmount}}</span>
                 </mat-cell>
               </ng-container>
 
                  <ng-container matColumnDef="discnetAmount">
                 <mat-header-cell *matHeaderCellDef mat-sort-header>NetAmt(AfterDisc)</mat-header-cell>
                 <mat-cell *matCellDef="let element">
-                  <span>{{ element.netAmount -  element.serviceWiseDisc | currency: currency:'symbol' }}</span>
+                  <span>{{ element.netAmount -  element.serviceWiseDisc}}</span>
                 </mat-cell>
               </ng-container>
 
@@ -173,14 +173,14 @@
               <ng-container matColumnDef="balanceAmount">
                 <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Bal Amount</mat-header-cell>
                 <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                  <span>{{ element.balanceAmount | currency: currency:'symbol'}}</span>
+                  <span>{{ element.balanceAmount}}</span>
                 </mat-cell>
               </ng-container>
 
               <ng-container matColumnDef="refundAmount">
                 <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Prev.Ref Amt</mat-header-cell>
                 <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                  <span>{{ element.refundAmount | currency: currency:'symbol' }}</span>
+                  <span>{{ element.refundAmount}}</span>
                 </mat-cell>
               </ng-container>
 
