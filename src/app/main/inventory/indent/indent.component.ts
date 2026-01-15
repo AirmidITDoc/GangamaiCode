@@ -224,10 +224,10 @@ debugger
     let that = this;
     const dialogRef = this._matDialog.open(NewIndentComponent,
       {
-        maxWidth: "90vw",
-        height: '750px',
-        width: '90%',
-        data: row
+        maxWidth: "97vw",
+        height: '98%',
+        width: '96%',
+        data: row 
       });
     dialogRef.afterClosed().subscribe(result => {
       that.grid.bindGridData();

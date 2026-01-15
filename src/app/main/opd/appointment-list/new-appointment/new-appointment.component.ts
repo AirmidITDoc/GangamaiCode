@@ -826,6 +826,7 @@ export class NewAppointmentComponent implements OnInit {
         this.policyFormGroup.get("policyValidateDate").setValue(this.datePipe.transform(this.VisitFormGroup.get('policyValidateDate').value, "yyyy-MM-dd") || '1900-01-01');
         this.policyFormGroup.get("policyNo").setValue(String(this.VisitFormGroup.get('policyNumber')?.value || 0))
         this.policyFormGroup.get("approvedAmount").setValue(Number(this.VisitFormGroup.get('policyLimit')?.value || 0))
+        
         //  this.personalFormGroup.get('RegDate').setValue(this.personalFormGroup.get('RegDate').value, 'yyyy-MM-dd');
         //         this.personalFormGroup.get('RegTime').setValue(this.personalFormGroup.get('RegDate').value)
 

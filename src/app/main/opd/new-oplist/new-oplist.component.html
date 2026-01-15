@@ -121,6 +121,17 @@
                                     [(toValue)]="gridConfig.filters[3].fieldValue"></airmid-datepicker>
 
                                 <mat-form-field appearance="outline">
+                                    <mat-label>UHID</mat-label>
+                                    <input matInput placeholder="Search UHID" autocomplete="off"
+                                        [formGroup]="myFilterbillform" formControlName="RegNo"
+                                        (keypress)="keyPressAlphanumeric($event)" (input)="onChangeOPBill()" />
+                                    <button matSuffix mat-icon-button aria-label="Clear"
+                                        (click)=" ClearfilterOPbill('RegNo')">
+                                        <mat-icon>close</mat-icon>
+                                    </button>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline">
                                     <mat-label>First Name</mat-label>
                                     <input matInput placeholder="Search First Name" autocomplete="off"
                                         [formGroup]="myFilterbillform" formControlName="FirstName"
@@ -151,18 +162,7 @@
                                         (click)=" ClearfilterOPbill('PBillNo')">
                                         <mat-icon>close</mat-icon>
                                     </button>
-                                </mat-form-field>
-
-                                <mat-form-field appearance="outline">
-                                    <mat-label>UHID</mat-label>
-                                    <input matInput placeholder="Search UHID" autocomplete="off"
-                                        [formGroup]="myFilterbillform" formControlName="RegNo"
-                                        (keypress)="keyPressAlphanumeric($event)" (input)="onChangeOPBill()" />
-                                    <button matSuffix mat-icon-button aria-label="Clear"
-                                        (click)=" ClearfilterOPbill('RegNo')">
-                                        <mat-icon>close</mat-icon>
-                                    </button>
-                                </mat-form-field>
+                                </mat-form-field> 
 
                                 <airmid-dropdown label="Company Name" formControlName="CompanyId"
                                     [formGroup]="myFilterbillform" [(ngModel)]="gridConfig.filters[6].fieldValue"

@@ -355,7 +355,7 @@ export class GoodReceiptnoteComponent implements OnInit {
 
         reader.readAsBinaryString(target.files[0]);
     }
-        Is9_Digit_National_Id: boolean = false;
+Is9_Digit_National_Id: boolean = false;
     newGRNEntry(chkNewGRN) {
         //this code for Mediforte 9 digit national id
         const rawValue = this?._ConfigService?.configParams?.Is9_Digit_NationalId || "";

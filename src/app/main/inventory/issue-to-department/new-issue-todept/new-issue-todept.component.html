@@ -63,7 +63,7 @@
                                     [(ngModel)]="vBarcode"></airmid-textbox>
 
                                 <airmid-autocomplete label="Item Name (enter 2 char)" [formGroup]="NewIssueGroup"
-                                    formControlName="ItemName" placeholderText="Item Name (enter 2 char)" fxFlex="25%" 
+                                    formControlName="ItemName" placeholderText="Item Name (enter 2 char)" fxFlex="38%" 
                                     ApiUrl={{ApiUrl}}
                                     (selectionChange)="getSelectedItem($event)" TextField="formattedText"
                                     ValueField="itemId" (onClearSelection)="resetFormItem()"></airmid-autocomplete>
@@ -74,12 +74,12 @@
                                     [(ngModel)]="vBatchNo"></airmid-textbox>
 
 
-                                <airmid-textbox fxFlex="8%" label="BalanceQty" formControlName="BalanceQty"
+                                <airmid-textbox fxFlex="6%" label="BalanceQty" formControlName="BalanceQty"
                                     [formGroup]="NewIssueGroup" type="number" placeholder="BalanceQty" [readonly]="true"
                                     [(ngModel)]="vBalanceQty"></airmid-textbox>
 
 
-                                <airmid-textbox fxFlex="8%" label="Qty" formControlName="Qty" [(ngModel)]="vQty"
+                                <airmid-textbox fxFlex="6%" label="Qty" formControlName="Qty" [(ngModel)]="vQty"
                                     (keypress)="keyPressAlphanumeric($event)" [formGroup]="NewIssueGroup"
                                     (valueChange)="CalculateTotalAmt()" [maxLength]="10">
                                 </airmid-textbox>
@@ -89,7 +89,7 @@
                                     (valueChange)="CalculateTotalAmt()" [(ngModel)]="vLandedRate"></airmid-textbox>
 
 
-                                <airmid-textbox fxFlex="12%" label="TotalAmount" [readonly]="true" [readonly]="true"
+                                <airmid-textbox fxFlex="10%" label="TotalAmount" [readonly]="true" [readonly]="true"
                                     formControlName="TotalAmount" [formGroup]="NewIssueGroup" placeholder="TotalAmount"
                                     [(ngModel)]="vTotalAmount"></airmid-textbox>
 

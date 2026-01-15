@@ -126,7 +126,7 @@ export class SalesHospitalKenyaComponent {
      ConcessionReasonList: any = [];
  PatientTypeId:any=0;
      // Print Related
-     saveflag:boolean = false
+     saveflag:boolean = true
      reportPrintObj: Printsal;
      subscriptionArr: Subscription[] = [];
      printTemplate: any;
@@ -590,7 +590,7 @@ this.Is9_Digit_National_Id = id === "1";
             this.ItemSubform.get('CashPay').setValue('Credit');
              this.CreditReasonShow = true
          }
-         this.saveflag = true;
+         this.saveflag = false;
      }
     
      onItemChange(event: SalesItemModel): void { 
@@ -995,7 +995,7 @@ this.Is9_Digit_National_Id = id === "1";
                  ItemIdElement.focus();
              }
          }
-         this.saveflag = true;
+         this.saveflag = false;
      }
      ItemFormreset() {
          this._salesService.ItemSearchGroup.patchValue({
@@ -1049,7 +1049,7 @@ this.Is9_Digit_National_Id = id === "1";
          this.saleSelectedDatasource.data = [];
          this.Itemchargeslist = [];
          this.PatientTypeId = 0
-         this.saveflag = false;
+         this.saveflag = true;
      }
      deleteTableRow(event, element) {
          let index = this.Itemchargeslist.indexOf(element);
@@ -1228,14 +1228,14 @@ this.Is9_Digit_National_Id = id === "1";
              confirmButtonText: 'Yes, save it!',
              cancelButtonText: 'No, cancel'
          }).then((result) => {
-             if (result.isConfirmed) {
-                 this.saveflag = false;
+             if (result.isConfirmed) { 
                  this.BillSave(event); // Call your save function
              }
          });
      }
      BillSave(event) {
          debugger
+        
          const formattedTime = this.datePipe.transform(new Date(), 'HH:mm');
          const formattedDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
          const FormattedDateTime = formattedDate + ' ' + formattedTime
@@ -1253,6 +1253,7 @@ this.Is9_Digit_National_Id = id === "1";
                  return;
              }
          }
+         this.saveflag = true;
          let opIpType = formValue?.opIpType || 0
          this.PharmaSalesForm.get('sales.date').setValue(formattedDate)
          this.PharmaSalesForm.get('sales.time').setValue(FormattedDateTime)
@@ -1397,8 +1398,10 @@ this.Is9_Digit_National_Id = id === "1";
                  this.toastr.warning('Please select Credit Reason ', 'Warning !', {
                      toastClass: 'tostr-tost custom-toast-warning',
                  });
+                 this.saveflag = false;
                  return;
              }  
+                
                  this.PharmaSalesForm.get('sales.creditReason').setValue(formValue.CredirReasonName)
                  this.PharmaSalesForm.get('sales.creditReasonId').setValue(formValue.CredirReasonId)
                  this.PharmaSalesForm.get('payment.paymentDate').setValue(formattedDate)

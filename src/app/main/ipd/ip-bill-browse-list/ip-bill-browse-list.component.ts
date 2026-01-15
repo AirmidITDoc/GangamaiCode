@@ -28,6 +28,7 @@ import { WhatsappDetPopUpOverComponent } from 'app/main/shared/componets/email-s
 import { Subscription } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
+import { ConfigService } from 'app/core/services/config.service';
 
 
 @Component({
@@ -224,13 +225,14 @@ export class IPBillBrowseListComponent implements OnInit {
         sortOrder: 0,
         filters: this.allIpRefundFilters
     }
-
+    Is9_Digit_National_Id:boolean=false;
     constructor(public _IPBrowseBillService: IPBrowseBillService,
         private commonService: PrintserviceService,
         public _matDialog: MatDialog, private _ActRoute: Router,
         private accountService: AuthenticationService,
         public formBuilder: FormBuilder, public _whatsppService: WhatsAppEmailService,
         private overlay: Overlay,
+        public _configue:ConfigService   ,
         public _FormvalidationserviceService: FormvalidationserviceService,
         public toastr: ToastrService, public datePipe: DatePipe) { }
 
@@ -240,14 +242,21 @@ export class IPBillBrowseListComponent implements OnInit {
         this.myFilterFormIPBrowsePayment = this._IPBrowseBillService.filterForm_IpdpaymentBrowse()
         this.myFilterFormIPBrowseRefund = this._IPBrowseBillService.filterForm_IpdrefundBrowse()
 
+        const rawValue = this?._configue?.configParams?.Is9_Digit_NationalId || "";
+        const [id, val] = rawValue.includes(":") ? rawValue.split(":") : [null, null]; 
+        this.Is9_Digit_National_Id = id === "1";
+        
         if (this._ActRoute.url == '/ipd/ipd-bill-browse-list') {
+            if(!this.Is9_Digit_National_Id){
             this.menuActions.push('Print Final Bill - Group wise');
             this.menuActions.push('Print Final Bill - Class wise');
             this.menuActions.push('Print Final Bill - Class Service');
             this.menuActions.push('Print Final Bill'); 
             this.menuActions.push('Print Final Bill - Charge Date Wise'); 
-            this.menuActions.push('Patient Statement Print');
-            this.menuActions.push('Print Final Bill - Charge Date with Group wise');
+            this.menuActions.push('Patient Statement Print'); 
+            }else{
+                this.menuActions.push('Print Final Bill - Charge Date with Group wise');
+            }
         }
     }
 
