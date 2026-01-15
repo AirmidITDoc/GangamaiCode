@@ -299,13 +299,17 @@
                                                                     <mat-header-cell
                                                                         *matHeaderCellDef>Price</mat-header-cell>
                                                                     <mat-cell *matCellDef="let contact">
-                                                                        <mat-form-field floatLabel="never"
+                                                                        <!-- <mat-form-field floatLabel="never"
                                                                             class="compact-field">
                                                                             <input matInput placeholder="Price"
                                                                                 type="number"
                                                                                 [(ngModel)]="contact.price" required
                                                                                 (ngModelChange)="onPriceOrQtyChange($event,contact)">
-                                                                        </mat-form-field>
+                                                                        </mat-form-field> -->
+                                                                        <span
+                                                                            class="text-overflow">
+                                                                            {{(contact.price | number:'1.2-2')}}
+                                                                        </span>
                                                                     </mat-cell>
                                                                 </ng-container>
 
