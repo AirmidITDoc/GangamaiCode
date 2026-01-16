@@ -48,6 +48,7 @@ export class RequestforlabtestComponent implements OnInit {
 
     allColumns = [
 
+        { heading: "No.", key: "reqNo", sort: true, align: 'left', emptySign: 'NA', width: 80 },
         { heading: "IsFileON", key: "isOnFileTest", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 80 },
         { heading: "Request Date", key: "reqTime", sort: true, align: 'left', emptySign: 'NA', width: 180, type: 8 },
         { heading: "DOA", key: "admDate", sort: true, align: 'left', emptySign: 'NA', width: 110 },

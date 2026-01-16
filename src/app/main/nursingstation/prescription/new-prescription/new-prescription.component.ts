@@ -191,9 +191,9 @@ export class NewPrescriptionComponent implements OnInit {
     console.log("Item:", obj);
     this.vitemId = obj.itemId;
     this.vitemname = obj.itemName;
-    this.vdoseId = Number(obj.doseName);
+    this.vdoseId = Number(obj.doseName) ?? 0;
     this.day = obj.doseDay;
-    this.vInstruction = obj.instruction;
+    this.vInstruction = obj.instruction ?? '';
     this.vQty = obj.balanceQty;
     this.ItemForm.get('ItemId').setValue(obj);
 debugger
@@ -294,7 +294,7 @@ debugger
     if (!iscekDuplicate) {
       var vdata = {
         "first": 0,
-        "rows": 10,
+        "rows": 999,
         "sortField": "Presid",
         "sortOrder": 0,
         "filters": [
