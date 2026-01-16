@@ -38,7 +38,6 @@ export class RadiologyDashboardComponent implements OnInit {
     topTestsColumns: string[] = ['TestName', 'Count'];
     radiologistPerformanceColumns: string[] = ['RadiologistName', 'ReportsCompleted', 'AvgTime'];
 
-    dsPathologyCount = new MatTableDataSource<PathologyCount>()
     dsRadiologyCount = new MatTableDataSource<PathologyCount>()
     // Table Data Sources
     dsRecentReports = new MatTableDataSource<RecentReport>();
@@ -118,11 +117,6 @@ export class RadiologyDashboardComponent implements OnInit {
     // Tab Management
     selectedTabIndex: number = 0;
 
-    // Pathology Summary Card Data
-    pathologyTotalTests: number = 0;
-    pathologyCompletedReports: number = 0;
-    pathologyPendingReports: number = 0;
-    pathologyRejectedSamples: number = 0;
 
     // Pathology Chart References
     public pathologyTotalTestsChart: any;
@@ -168,7 +162,6 @@ export class RadiologyDashboardComponent implements OnInit {
     pathologyData: any;
     ngOnInit(): void {
         this.dashboardService.getPathologyDashboard({ "FromDate": this.fromDate.toLocaleDateString(), "ToDate": this.toDate.toLocaleDateString() }).subscribe((data) => {
-            debugger
             this.pathologyData = data;
             this.dsPathologyReports.data = this.pathologyData.recentPathologyReports;
             this.dsPathologyTopTests.data = this.pathologyData.mostOrderedTests;
@@ -252,40 +245,6 @@ export class RadiologyDashboardComponent implements OnInit {
             ],
             "mode": "PathologyDashboard"
         };
-
-        this.pathologyTotalTests = 0;
-        this.pathologyCompletedReports = 0;
-        this.pathologyPendingReports = 0;
-        this.pathologyRejectedSamples = 0;
-
-        this.dashboardService.HomeDashboardAPI(payload).subscribe((res: any) => {
-            this.dsPathologyCount.data = res || [];
-            if (this.dsPathologyCount.data.length > 0) {
-
-                this.dsPathologyCount.data.forEach(element => {
-
-                    // TOTAL TEST COUNT (DATE RANGE)
-                    this.pathologyTotalTests += Number(element.TestCount) || 0;
-
-                    if (element.IsCompleted == 1) {
-                        this.pathologyCompletedReports++;
-                    }
-
-                    if (element.IsCompleted == 0) {
-                        this.pathologyPendingReports++;
-                    }
-
-                    if (element.IsCancelled == 1) {
-                        this.pathologyRejectedSamples++;
-                    }
-
-                });
-                console.log('Pathology Total Tests:', this.pathologyTotalTests);
-                console.log('Pathology complete Tests:', this.pathologyCompletedReports);
-                console.log('Pathology Pending Tests:', this.pathologyPendingReports);
-                console.log('Pathology cancel Tests:', this.pathologyRejectedSamples);
-            }
-        });
     }
 
     getpathologyReportData() {
