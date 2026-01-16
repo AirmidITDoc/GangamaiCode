@@ -62,12 +62,11 @@ export class PrescriptionComponent implements OnInit {
 
     }
     allColumns1 = [
-
+        
+        { heading: "No.", key: "presNo", sort: true, align: 'left', emptySign: 'NA', width: 80 },
         { heading: "Prescription Date", key: "ptime", sort: true, align: 'left', emptySign: 'NA', type: 8, width: 190 },
         { heading: "DOA", key: "vst_Adm_Date", sort: true, align: 'left', emptySign: 'NA', width: 200 },//cant apply any date type
-
         { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 90 },
-
         { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
         { heading: "IPD NO", key: "ipdno", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "Doctor Name", key: "doctorName", sort: true, align: 'left', emptySign: 'NA', width: 300 },

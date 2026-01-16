@@ -168,7 +168,7 @@ export class NewRequestforlabComponent implements OnInit {
     if (this.vRegNo) {
       var param = {
         "first": 0,
-        "rows": 10,
+        "rows": 999,
         "sortField": "ServiceId",
         "sortOrder": 0,
         "filters": [
