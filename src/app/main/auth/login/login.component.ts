@@ -8,6 +8,7 @@ import { FuseConfigService } from "@fuse/services/config.service";
 import { AuthenticationService } from "app/core/services/authentication.service";
 import { EncryptionService } from "app/core/services/encryption.service";
 import { ServerMonitoringService } from "app/core/services/servermonitoring.service";
+import { StoreUnitContextService } from "app/main/shared/services/storeunit-context.service";
 // import { EncryptionService } from "app/core/services/encryption.service";
 
 @Component({
@@ -37,7 +38,8 @@ export class LoginComponent implements OnInit {
         private authenticationService: AuthenticationService,
         private serverMonitoringService: ServerMonitoringService,
         private _matDialog: MatDialog,
-        private encryptionService: EncryptionService
+        private encryptionService: EncryptionService,
+        private contextSvc: StoreUnitContextService
     ) {
         // Configure the layout
         this._fuseConfigService.config = {
@@ -98,7 +100,6 @@ export class LoginComponent implements OnInit {
         };
         this.authenticationService.login(data).subscribe(
             (data) => {
-                // debugger
                 if ((data?.status ?? 'Ok') != 'Ok') {
                     this.confirmDialogRef = this._matDialog.open(
                         FuseConfirmDialogComponent,
@@ -111,6 +112,14 @@ export class LoginComponent implements OnInit {
                         if (result) {
                             this.authenticationService.confirmlogin({ Token: data.token, LoginType: 1 }).subscribe((data) => {
                                 if ((data?.userId ?? 0) > 0) {
+                                    this.contextSvc.setContext({
+                                        storeId: data.user.storeId,
+                                        storeName: data.user.tLoginStoreDetails.find(x => x.storeId == data.user.storeId).storeName,
+                                        unitId: data.user.unitId,
+                                        unitName: data.user.tLoginUnitDetails.find(x => x.unitId == data.user.unitId).unitName,
+                                        Stores: data.user.tLoginStoreDetails,
+                                        Units: data.user.tLoginUnitDetails
+                                    });
                                     this.router.navigate([this.returnUrl]);
                                 }
                             }, (error) => {
@@ -123,6 +132,14 @@ export class LoginComponent implements OnInit {
                     });
                 }
                 else if ((data?.userId ?? 0) > 0) {
+                    this.contextSvc.setContext({
+                        storeId: data.user.storeId,
+                        storeName: data.user.tLoginStoreDetails.find(x => x.storeId == data.user.storeId).storeName,
+                        unitId: data.user.unitId,
+                        unitName: data.user.tLoginUnitDetails.find(x => x.unitId == data.user.unitId).unitName,
+                        Stores: data.user.tLoginStoreDetails,
+                        Units: data.user.tLoginUnitDetails
+                    });
                     this.router.navigate([this.returnUrl]);
                 }
                 else {
