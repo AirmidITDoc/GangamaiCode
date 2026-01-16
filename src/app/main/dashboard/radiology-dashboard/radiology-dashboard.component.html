@@ -443,7 +443,8 @@
                                     </div>
                                     <div class="labels-div" fxLayout="row">
                                         <div>Total Tests Today |</div>
-                                        <div [@animate]="{value:'*',params:{x:'50px'}}">{{pathologyTotalTests}}</div>
+                                        <div [@animate]="{value:'*',params:{x:'50px'}}">
+                                            {{pathologyData?.countSummary?.todaysCount??0}}</div>
                                     </div>
                                 </div>
                                 <div class="card-chart-section">
@@ -463,7 +464,8 @@
                                     </div>
                                     <div class="labels-div" fxLayout="row">
                                         <div>Completed Reports |</div>
-                                        <div [@animate]="{value:'*',params:{x:'50px'}}">{{pathologyCompletedReports}}
+                                        <div [@animate]="{value:'*',params:{x:'50px'}}">
+                                            {{pathologyData?.countSummary?.completedCount??0}}
                                         </div>
                                     </div>
                                 </div>
@@ -484,7 +486,8 @@
                                     </div>
                                     <div class="labels-div" fxLayout="row">
                                         <div>Pending Reports |</div>
-                                        <div [@animate]="{value:'*',params:{x:'50px'}}">{{pathologyPendingReports}}
+                                        <div [@animate]="{value:'*',params:{x:'50px'}}">
+                                            {{pathologyData?.countSummary?.pendingCount??0}}
                                         </div>
                                     </div>
                                 </div>
@@ -505,7 +508,8 @@
                                     </div>
                                     <div class="labels-div" fxLayout="row">
                                         <div>Rejected Samples |</div>
-                                        <div [@animate]="{value:'*',params:{x:'50px'}}">{{pathologyRejectedSamples}}
+                                        <div [@animate]="{value:'*',params:{x:'50px'}}">
+                                            {{pathologyData?.countSummary?.rejectedCount??0}}
                                         </div>
                                     </div>
                                 </div>
@@ -583,7 +587,7 @@
                                             Patient Name
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let report">
-                                            {{report.PatientName}}
+                                            {{report.printTestName}}
                                         </mat-cell>
                                     </ng-container>
 
@@ -592,7 +596,7 @@
                                             Test Name
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let report">
-                                            {{report.PrintTestName}}
+                                            {{report.testName}}
                                         </mat-cell>
                                     </ng-container>
 
@@ -611,16 +615,12 @@
                                         </mat-cell> -->
                                         <mat-cell *matCellDef="let report">
                                             <span [ngClass]="{
-                                                'status-cancelled': report.IsCancelled === 1,
-                                                'status-completed': report.IsCancelled !== 1 && report.IsCompleted === 1,
-                                                'status-pending': report.IsCancelled !== 1 && report.IsCompleted !== 1
+                                                'status-cancelled': report.isCompleted === 1,
+                                                'status-completed': report.isCompleted !== 1 && report.isCompleted === 1,
+                                                'status-pending': report.isCompleted !== 1 && report.isCompleted !== 1
                                                 }">
                                                 {{
-                                                report.IsCancelled === 1
-                                                ? 'Cancelled'
-                                                : report.IsCompleted === 1
-                                                ? 'Completed'
-                                                : 'Pending'
+                                                report.isCompleted
                                                 }}
                                             </span>
                                         </mat-cell>
@@ -632,7 +632,7 @@
                                             Pathologist
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let report">
-                                            {{report.Pathologist}}
+                                            {{report.doctorName}}
                                         </mat-cell>
                                     </ng-container>
 
@@ -641,7 +641,7 @@
                                             Date
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let report">
-                                            {{report.PathDate}}
+                                            {{report.pathDate}}
                                         </mat-cell>
                                     </ng-container>
 
@@ -686,7 +686,7 @@
                                             Test Name
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let test">
-                                            {{test.PrintTestName}}
+                                            {{test.testName}}
                                         </mat-cell>
                                     </ng-container>
 
@@ -695,7 +695,7 @@
                                             Count
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let test">
-                                            {{test.TestCount}}
+                                            {{test.count}}
                                         </mat-cell>
                                     </ng-container>
 
@@ -737,25 +737,16 @@
                                             Pathologist
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let pathologist">
-                                            {{pathologist.Pathologist}}
+                                            {{pathologist.doctorName}}
                                         </mat-cell>
                                     </ng-container>
 
                                     <ng-container matColumnDef="TestsReported">
                                         <mat-header-cell *matHeaderCellDef mat-sort-header>
-                                            Tests Reported
+                                            Count
                                         </mat-header-cell>
                                         <mat-cell *matCellDef="let pathologist">
-                                            {{pathologist.TestsReported}}
-                                        </mat-cell>
-                                    </ng-container>
-
-                                    <ng-container matColumnDef="AvgTime">
-                                        <mat-header-cell *matHeaderCellDef mat-sort-header>
-                                            Avg Time (hrs)
-                                        </mat-header-cell>
-                                        <mat-cell *matCellDef="let pathologist">
-                                            {{pathologist.AvgTime}}
+                                            {{pathologist.count}}
                                         </mat-cell>
                                     </ng-container>
 

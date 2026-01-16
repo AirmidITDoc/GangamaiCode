@@ -10,8 +10,8 @@ import { FormvalidationserviceService } from '../../services/formvalidationservi
     styleUrls: ['./store-unit.component.scss']
 })
 export class StoreUnitComponent implements OnInit {
-    sessions = [];
-    units = [];
+    Stores = [];
+    Units = [];
 
     storeId!: number;
     unitId!: number;
@@ -31,22 +31,26 @@ export class StoreUnitComponent implements OnInit {
         if (ctx) {
             this.storeId = ctx.storeId;
             this.unitId = ctx.unitId;
+            this.Stores = ctx.Stores;
+            this.Units = ctx.Units;
         }
     }
     onChange(value, type) {
         if (type == 'Store') {
-            this.storeId = value.value;
-            this.storeName = value.text;
+            this.storeId = value.storeId;
+            this.storeName = value.storeName;
         }
         else {
-            this.unitId = value.value;
-            this.unitName = value.text;
+            this.unitId = value.unitId;
+            this.unitName = value.unitName;
         }
         this.contextSvc.setContext({
             storeId: this.storeId,
             storeName: this.storeName,
             unitId: this.unitId,
-            unitName: this.unitName
+            unitName: this.unitName,
+            Stores: this.Stores,
+            Units: this.Units
         });
     }
     getValidationMessages() {

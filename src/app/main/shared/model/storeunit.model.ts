@@ -3,4 +3,6 @@ export interface StoreUnitContext {
   storeName: string;
   unitId: number;
   unitName: string;
+  Stores:any[];
+  Units:any[];
 }
