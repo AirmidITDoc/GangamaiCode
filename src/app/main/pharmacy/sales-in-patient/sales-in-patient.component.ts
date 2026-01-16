@@ -1218,7 +1218,7 @@ export class SalesInPatientComponent implements OnInit {
          this.dsDraftList.data = [];
          var m = {
              "first": 0,
-             "rows": 10,
+             "rows": 999,
              "sortField": "ItemId",
              "sortOrder": 0,
              "filters": [
@@ -1242,7 +1242,7 @@ export class SalesInPatientComponent implements OnInit {
          this.dsDraftList.data = [];
          var m = {
              "first": 0,
-             "rows": 10,
+             "rows": 999,
              "sortField": "DSalesId",
              "sortOrder": 0,
              "filters": [
@@ -1412,7 +1412,7 @@ export class SalesInPatientComponent implements OnInit {
          }
          var vdata = {
              "first": 0,
-             "rows": 10,
+             "rows": 999,
              "sortField": "ItemId",
              "sortOrder": 0,
              "filters": [{ "fieldName": "DSalesId", "fieldValue": String(contact?.dsalesId), "opType": "Contains" }],
@@ -1435,7 +1435,7 @@ export class SalesInPatientComponent implements OnInit {
  
          var m_data = {
              "first": 0,
-             "rows": 10,
+             "rows": 999,
              "sortField": "ItemId",
              "sortOrder": 0,
              "filters": [
@@ -1579,37 +1579,57 @@ export class SalesInPatientComponent implements OnInit {
                  width: '95%',
              });
              dialogRef.afterClosed().subscribe((result) => {
-                 console.log('The dialog was closed - Insert Action', result); 
+                 console.log('The dialog was closed - Insert Action', result);  
+                   if (result[0]?.IPMedID == 0) {
+                     this.toastr.warning('Please check selected patient Type is OP Patient', 'Warning !', {
+                         toastClass: 'tostr-tost custom-toast-warning',
+                     });
+                     return;
+                 }
+
                  this.PatientName = result[0]?.PatientName;
                  this.RegId = result[0]?.RegId;
                  this.RegNo =  result[0]?.RegNo;
                  this.OP_IP_Id = result[0]?.AdmissionID;
                  this.DoctorName = result[0]?.DoctorName;
                  this.ItemSubform.get('regId').setValue(result[0]?.RegId);
+                 const companyId = result[0]?.companyId;
+                 if(companyId){
+                    this.PatientTypeId=1
+                 }else{
+                    this.PatientTypeId=0
+                 }
+                   
  
                  if (result[0]?.IPMedID > 0) { 
                      this.IPDNo = result[0]?.IPDNo;
                      this.IPMedID = result[0]?.IPMedID; 
                      this.vSelectedOption = '1';
                  } 
+                 this.saveflag =  false;
                  this.getBillSummary(result[0]?.AdmissionID || 0)
                  this.dsItemNameList1.data = result; 
                  this.dsItemNameList1.data.forEach((contact) => { 
-                     var m_data = {
-                         "first": 0,
-                         "rows": 10,
-                         "sortField": "ItemId",
-                         "sortOrder": 0,
-                         "filters": [
-                             { "fieldName": "ItemId", "fieldValue": String(contact.ItemId), "opType": "Contains" },
-                             { "fieldName": "StoreId", "fieldValue": String(this._loggedService.currentUserValue.user.storeId), "opType": "Contains" }
-                         ],
-                         "exportType": "JSON",
-                         "columns": [{ "data": "string", "name": "string" }]
-                     };
-                     this._salesService.getDraftBillItemBalQty(m_data).subscribe((response) => {
+                    //  var m_data = {
+                    //      "first": 0,
+                    //      "rows": 999,
+                    //      "sortField": "ItemId",
+                    //      "sortOrder": 0,
+                    //      "filters": [
+                    //          { "fieldName": "ItemId", "fieldValue": String(contact.ItemId), "opType": "Contains" },
+                    //          { "fieldName": "StoreId", "fieldValue": String(this._loggedService.currentUserValue.user.storeId), "opType": "Contains" }
+                    //      ],
+                    //      "exportType": "JSON",
+                    //      "columns": [{ "data": "string", "name": "string" }]
+                    //  };
+                          var reqData = {
+                          ItemId: contact.ItemId,
+                          StoreId: this._loggedService.currentUserValue.user.storeId,
+                          PatientTypeId:this.PatientTypeId
+                        };
+                        this._salesService.getKenyaSalesBatchList(reqData).subscribe((response) => {
                          debugger
-                         this.Tempchargeslist = response.data as any;
+                         this.Tempchargeslist = response as any;
                          if (this.Tempchargeslist.length == 0) { 
                              Swal.fire({
                                  icon: 'warning',
@@ -1651,7 +1671,7 @@ export class SalesInPatientComponent implements OnInit {
          //Total Credit Amount
          var vdata = {
              "first": 0,
-             "rows": 10,
+             "rows": 999,
              "sortField": "OP_IP_ID",
              "sortOrder": 0,
              "filters": [{ "fieldName": "OP_IP_ID", "fieldValue": String(admissionID), "opType": "Contains" }],
@@ -1665,7 +1685,7 @@ export class SalesInPatientComponent implements OnInit {
          //Total advance and advance bal Amount
          var m_data = {
              "first": 0,
-             "rows": 10,
+             "rows": 999,
              "sortField": "AdmissionID",
              "sortOrder": 0,
              "filters": [{ "fieldName": "AdmissionID", "fieldValue": String(admissionID), "opType": "Equals" }],

@@ -554,7 +554,7 @@ this.Is9_Digit_National_Id = id === "1";
     let opiptype = this.MutliSettlemForm.get('PatientType')?.value || 0 
   var vdata= {
   "first": 0,
-  "rows": 25,
+  "rows": 999,
   "sortField": "SalesId",
   "sortOrder": 0,
   "filters": [ {"fieldName": "RegId", "fieldValue":  String(this.mRegId), "opType": "Contains" },

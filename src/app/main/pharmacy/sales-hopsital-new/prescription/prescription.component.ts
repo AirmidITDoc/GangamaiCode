@@ -170,7 +170,7 @@ PrescriptionFrom:FormGroup;
     } 
     var vdata = {
       "first": 0,
-      "rows": 10,
+      "rows": 999,
       "sortField": "ItemId",
       "sortOrder": 0,
       "filters": [
