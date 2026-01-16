@@ -458,6 +458,7 @@ export class NewLabPatientRegComponent {
       this.myForm.get('companyId').setValidators([Validators.required]);
       this.isCompanySelected = true;
       this.patienttype = 2;
+      this.OPFooterForm.get('paymentType').setValue('CreditPay')
     } else if (value.text == "Self") {
       this.isCompanySelected = false;
       this.myForm.get('companyId').clearValidators();
@@ -465,7 +466,12 @@ export class NewLabPatientRegComponent {
       this.myForm.get('companyId').updateValueAndValidity();
       this.myForm.get('subCompanyId').updateValueAndValidity();
       this.patienttype = 1;
-    }
+      this.OPFooterForm.get('paymentType').setValue('CashPay')
+    } 
+    // else {
+    //   if (this.patienttype != 2)
+    //     this.OPFooterForm.get('paymentType').setValue('CashPay')
+    // }
   }
 
   private destroy$ = new Subject<void>();
@@ -1292,7 +1298,7 @@ export class NewLabPatientRegComponent {
     // If only one field is filled, and it's FirstName or MobileNo, call API
     if (filledFields === 1 && (changedField === 'firstName' || changedField === 'mobileNo')) {
       const keyword = firstName || mobileNo;
-      this._labPatientRegService.getlabSuggestions(`LabPatientRegistration/search-patient-1?UnitId=${this.UnitId}&Keyword=`,keyword).subscribe(results => {
+      this._labPatientRegService.getlabSuggestions(`LabPatientRegistration/search-patient-1?UnitId=${this.UnitId}&Keyword=`, keyword).subscribe(results => {
         this.prevResults = results || [];
         // console.log(results)
         this.filteredOptions = this.filterResults(this.prevResults, { firstName, lastName, mobileNo });
@@ -1313,7 +1319,7 @@ export class NewLabPatientRegComponent {
       // Fallback: if prevResults is empty, call API with the changed field (if allowed)
       const keyword = this.myForm.get(changedField).value?.trim();
       if (keyword) {
-        this._labPatientRegService.getlabSuggestions(`LabPatientRegistration/search-patient-1?UnitId=${this.UnitId}&Keyword=`,keyword).subscribe(results => {
+        this._labPatientRegService.getlabSuggestions(`LabPatientRegistration/search-patient-1?UnitId=${this.UnitId}&Keyword=`, keyword).subscribe(results => {
           this.prevResults = results || [];
           this.filteredOptions = this.filterResults(this.prevResults, { firstName, lastName, mobileNo });
         });

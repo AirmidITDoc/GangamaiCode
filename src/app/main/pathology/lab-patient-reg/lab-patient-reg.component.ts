@@ -31,6 +31,7 @@ import { DiscountAfterFinalLabbillComponent } from './discount-after-final-labbi
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 import { permissionCodes, permissionType } from 'app/main/shared/model/permission.model';
 import { PagePermissionService } from 'app/main/shared/services/page-permission.service';
+import { EditLabregComponent } from './edit-labreg/edit-labreg.component';
 
 @Component({
   selector: 'app-lab-patient-reg',
@@ -341,6 +342,23 @@ export class LabPatientRegComponent {
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed - Insert Action', result);
       this.grid.bindGridData();
+    });
+  }
+
+  OnEditVisitDet(row) {
+    const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
+    buttonElement.blur(); // Remove focus from the button
+
+    let that = this;
+    const dialogRef = this._matDialog.open(EditLabregComponent,
+      {
+        maxWidth: "65vw",
+        height: '65%',
+        width: '90%',
+        data: row
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      that.grid.bindGridData();
     });
   }
 
@@ -846,6 +864,11 @@ export class LabPatientList {
   regNo: any;
   labRequestNo: any;
   billNo: any;
+  unitId: any;
+  patientTypeId: any;
+  campId: any;
+  companyId: any;
+  subCompanyId: any;
 
   constructor(LabPatientList) {
     {
@@ -913,11 +936,11 @@ export class LabPatientList {
       this.labPatRegId = LabPatientList.labPatRegId || 0
       this.labRequestNo = LabPatientList.labRequestNo || 0
       this.billNo = LabPatientList.billNo || 0
-      // this.regNo = LabPatientList.regNo || 0
-      // this.regNo = LabPatientList.regNo || 0
-      // this.regNo = LabPatientList.regNo || 0
-      // this.regNo = LabPatientList.regNo || 0
-      // this.regNo = LabPatientList.regNo || 0
+      this.unitId = LabPatientList.unitId || 0
+      this.patientTypeId = LabPatientList.patientTypeId || 0
+      this.campId = LabPatientList.campId || 0
+      this.companyId = LabPatientList.companyId || 0
+      this.subCompanyId = LabPatientList.subCompanyId || 0
     }
   }
 }

@@ -98,6 +98,20 @@
             <button mat-icon-button matTooltip="Print" (click)="viewgetOPBillReportPdf(element)">
                 <mat-icon>print</mat-icon>
             </button>
+
+            <button mat-icon-button [matMenuTriggerFor]="actionsMenu" matTooltip="Actions" matTooltipPosition="above"
+                (click)="$event.stopPropagation();">
+                <mat-icon>more_vert</mat-icon>
+            </button>
+
+            <mat-menu #actionsMenu="matMenu" xPosition="before" yPosition="below" [overlapTrigger]="false">
+
+                <button mat-menu-item (click)="OnEditVisitDet(element)" style="height: 32px; min-height: 32px;">
+                    <mat-icon style="margin-right: 8px; font-size: 16px; width: 16px; height: 16px;">edit</mat-icon>
+                    <span style="font-size: 13px;">Edit VisitDetail</span>
+                </button>
+
+            </mat-menu>
         </div>
     </ng-template>
 
