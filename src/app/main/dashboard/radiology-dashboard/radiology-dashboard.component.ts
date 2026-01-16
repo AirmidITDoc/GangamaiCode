@@ -144,44 +144,6 @@ export class RadiologyDashboardComponent implements OnInit {
     dsPathologistWorkload = new MatTableDataSource<PathologistWorkload>();
 
 
-    // Pathology Status Data
-    pathologyStatusData = [
-        { status: 'Completed', count: 198 },
-        { status: 'Pending', count: 28 },
-        { status: 'Rejected', count: 8 }
-    ];
-
-
-    // Recent Pathology Reports Mock Data
-    pathologyReportsData: PathologyReport[] = [
-        { PatientName: 'Sanjay Patel', TestName: 'Complete Blood Count', Status: 'Completed', Pathologist: 'Dr. Kumar', Date: '2025-11-09' },
-        { PatientName: 'Anita Desai', TestName: 'Lipid Profile', Status: 'Completed', Pathologist: 'Dr. Iyer', Date: '2025-11-09' },
-        { PatientName: 'Ravi Sharma', TestName: 'Blood Culture', Status: 'Pending', Pathologist: 'Dr. Menon', Date: '2025-11-09' },
-        { PatientName: 'Deepa Nair', TestName: 'Liver Function Test', Status: 'Completed', Pathologist: 'Dr. Kumar', Date: '2025-11-09' },
-        { PatientName: 'Manoj Singh', TestName: 'HbA1c', Status: 'Pending', Pathologist: 'Dr. Iyer', Date: '2025-11-08' },
-        { PatientName: 'Priya Reddy', TestName: 'Thyroid Profile', Status: 'Completed', Pathologist: 'Dr. Menon', Date: '2025-11-08' },
-        { PatientName: 'Karthik Rao', TestName: 'Urine Culture', Status: 'Rejected', Pathologist: 'Dr. Kumar', Date: '2025-11-08' },
-        { PatientName: 'Lakshmi Iyer', TestName: 'Renal Function Test', Status: 'Completed', Pathologist: 'Dr. Iyer', Date: '2025-11-08' }
-    ];
-
-    // Top Pathology Tests Mock Data
-    pathologyTopTestsData: TopTest[] = [
-        { TestName: 'Complete Blood Count', Count: 65 },
-        { TestName: 'Lipid Profile', Count: 58 },
-        { TestName: 'Blood Sugar (Fasting)', Count: 52 },
-        { TestName: 'Liver Function Test', Count: 48 },
-        { TestName: 'Kidney Function Test', Count: 42 },
-        { TestName: 'Thyroid Profile', Count: 38 },
-        { TestName: 'HbA1c', Count: 32 }
-    ];
-
-    // Pathologist Workload Mock Data
-    pathologistWorkloadData: PathologistWorkload[] = [
-        { PathologistName: 'Dr. Kumar', TestsReported: 68, AvgTime: 1.8 },
-        { PathologistName: 'Dr. Iyer', TestsReported: 62, AvgTime: 2.1 },
-        { PathologistName: 'Dr. Menon', TestsReported: 58, AvgTime: 1.9 },
-        { PathologistName: 'Dr. Rao', TestsReported: 52, AvgTime: 2.3 }
-    ];
 
     // Sample Collection Statistics
     sampleCollectionStats = [
@@ -770,14 +732,21 @@ export class RadiologyDashboardComponent implements OnInit {
 
     // Pathology Status Pie Chart
     getPathologyStatusPieChart() {
+
+        // Pathology Status Data
+        let pathologyStatusData = [
+            { status: 'Completed', count: this.pathologyData?.countSummary?.completedCount ?? 0 },
+            { status: 'Pending', count: this.pathologyData?.countSummary?.pendingCount ?? 0 },
+            { status: 'Rejected', count: this.pathologyData?.countSummary?.rejectedCount ?? 0 }
+        ];
         return new Chart('pathologyStatusPieChart', {
             type: 'doughnut',
             data: {
-                labels: this.pathologyStatusData.map(d => d.status),
+                labels: pathologyStatusData.map(d => d.status),
                 datasets: [
                     {
                         backgroundColor: ['#28af28', '#f6c542', '#ff5a8a'],
-                        data: this.pathologyStatusData.map(d => d.count),
+                        data: pathologyStatusData.map(d => d.count),
                         borderWidth: 2
                     }
                 ]
