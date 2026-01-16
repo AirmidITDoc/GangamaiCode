@@ -205,7 +205,7 @@ debugger
         if (this.ServiceId) {
             var param = {
                 "first": 0,
-                "rows": 20,
+                "rows": 999,
                 "sortField": "ServiceDetailId",
                 "sortOrder": 0,
                 "filters": [
@@ -228,7 +228,7 @@ debugger
 
             var param1 = {
                 "first": 0,
-                "rows": 10,
+                "rows": 999,
                 "sortField": "ClassId",
                 "sortOrder": 0,
                 "filters": [

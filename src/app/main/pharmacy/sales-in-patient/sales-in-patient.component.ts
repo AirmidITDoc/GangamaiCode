@@ -880,6 +880,7 @@ export class SalesInPatientComponent implements OnInit {
       }
       isdiscAmount:boolean=false;
      getUpdateNetAmtSum(data) { 
+        debugger
           const itemData = data
          let FinalNetAmt = itemData.reduce((sum, { NetAmt }) => (sum += +(NetAmt || 0)), 0).toFixed(2);
          let FinalTotalAmt = itemData.reduce((sum, { TotalMRP }) => (sum += +(TotalMRP || 0)), 0).toFixed(2);
@@ -1474,8 +1475,8 @@ export class SalesInPatientComponent implements OnInit {
      }
      vExpDate: any;
      getFinalCalculation(contact, DraftQty) {
- 
-         if (DraftQty && contact.unitMrp) {
+ debugger
+         if (DraftQty && contact.unitMrp) {//unitMRP
              this.saleSelectedDatasource.data = [];
              let LandedRateandedTotal = '0', TotalMRP = '0', PurTotAmt = '0',
                  v_marginamt = '0', GSTAmount = '0', CGSTAmt = '0', SGSTAmt = '0', IGSTAmt = '0', NetAmt = '0',MRPRateTotal = '0';
@@ -1546,6 +1547,7 @@ export class SalesInPatientComponent implements OnInit {
                  }
              )
              this.saleSelectedDatasource.data = this.Itemchargeslist;
+             console.log(this.Itemchargeslist)
              this.getUpdateNetAmtSum(this.saleSelectedDatasource.data)
              this.ItemFormreset();
          }
@@ -1610,35 +1612,40 @@ export class SalesInPatientComponent implements OnInit {
                  this.getBillSummary(result[0]?.AdmissionID || 0)
                  this.dsItemNameList1.data = result; 
                  this.dsItemNameList1.data.forEach((contact) => { 
-                    //  var m_data = {
-                    //      "first": 0,
-                    //      "rows": 999,
-                    //      "sortField": "ItemId",
-                    //      "sortOrder": 0,
-                    //      "filters": [
-                    //          { "fieldName": "ItemId", "fieldValue": String(contact.ItemId), "opType": "Contains" },
-                    //          { "fieldName": "StoreId", "fieldValue": String(this._loggedService.currentUserValue.user.storeId), "opType": "Contains" }
-                    //      ],
-                    //      "exportType": "JSON",
-                    //      "columns": [{ "data": "string", "name": "string" }]
-                    //  };
-                          var reqData = {
-                          ItemId: contact.ItemId,
-                          StoreId: this._loggedService.currentUserValue.user.storeId,
-                          PatientTypeId:this.PatientTypeId
-                        };
-                        this._salesService.getKenyaSalesBatchList(reqData).subscribe((response) => {
+                     var m_data = {
+                         "first": 0,
+                         "rows": 999,
+                         "sortField": "ItemId",
+                         "sortOrder": 0,
+                         "filters": [
+                             { "fieldName": "ItemId", "fieldValue": String(contact.ItemId), "opType": "Contains" },
+                             { "fieldName": "StoreId", "fieldValue": String(this._loggedService.currentUserValue.user.storeId), "opType": "Contains" },
+                              { "fieldName": "PatientTypeId", "fieldValue": String(this.PatientTypeId), "opType": "Contains" }
+                         ],
+                         "exportType": "JSON",
+                         "columns": [{ "data": "string", "name": "string" }]
+                     };
+                        //   var reqData = {
+                        //   ItemId: contact.ItemId,
+                        //   StoreId: this._loggedService.currentUserValue.user.storeId,
+                        //   PatientTypeId:this.PatientTypeId
+                        // };
+                        this._salesService.getKenyaSalesBatchList(m_data).subscribe((response) => {
                          debugger
-                         this.Tempchargeslist = response as any;
+                         console.log(response.data)
+                         this.Tempchargeslist = response.data as any;
+                           console.log(this.Tempchargeslist)
+                           if(response){
                          if (this.Tempchargeslist.length == 0) { 
-                             Swal.fire({
-                                 icon: 'warning',
-                                 title: 'Stock Unavailable',
-                                 text: `The item with ID ${contact.ItemId} is currently out of stock.`,
-                                 showConfirmButton: true,
-                                 confirmButtonText: 'OK'
-                             }); 
+                            //  Swal.fire({
+                            //      icon: 'warning',
+                            //      title: 'Stock Unavailable',
+                            //      text: `The item with ID ${contact.ItemId} is currently out of stock.`,
+                            //      showConfirmButton: true,
+                            //      confirmButtonText: 'OK'
+                            //  }); 
                          } else if (this.Tempchargeslist.length > 0) {
+                            debugger
                              let remaing_qty = contact.QtyPerDay;
                              let bal_qnt = 0;
                              this.Tempchargeslist.forEach((element) => {
@@ -1662,6 +1669,7 @@ export class SalesInPatientComponent implements OnInit {
                              });
                              //Swal.fire('Balance Qty is :', String(bal_qnt));
                          }
+                        }
                      });
                  });
              });
