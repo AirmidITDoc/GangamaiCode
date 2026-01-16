@@ -191,6 +191,7 @@ PrescriptionFrom:FormGroup;
         this.Patientlist.push(
           {
             ItemId :element.itemId,
+            ItemName :element.itemName,
             QtyPerDay :element.qtyPerDay,
             BalQty :element.balQty,
             IsBatchRequired :element.isBatchRequired,

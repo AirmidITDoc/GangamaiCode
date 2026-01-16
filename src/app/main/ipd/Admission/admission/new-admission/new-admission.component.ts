@@ -746,7 +746,10 @@ this.Is9_Digit_National_Id = id === "1";
         debugger
         console.log(submitData);
         this._AdmissionService.AdmissionNewInsert(submitData).subscribe(response => {
+          
+          if(!this.Is9_Digit_National_Id){
           this.getAdmittedPatientCasepaperview(response);
+          }
           console.log(response)
           if (this.EmgId > 0) {
             this.AddChargesFromEmg(response);

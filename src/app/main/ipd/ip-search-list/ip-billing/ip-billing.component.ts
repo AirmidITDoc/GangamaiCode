@@ -189,6 +189,7 @@ export class IPBillingComponent implements OnInit {
     TariffId: any;
     WardId: any;
     BedId: any;
+    Is9_Digit_National_Id:boolean=false;
     autocompleteModeCashcounter: string = "CashCounter";
     autocompleteModedeptdoc: string = "ConDoctor";
     autocompleteModeService: string = "Service";
@@ -249,11 +250,17 @@ export class IPBillingComponent implements OnInit {
         this.getChargesList();
         this.getLabRequestChargelist();
         this.getRtrvpackagedetList();
-        this.AddBedCharge();
+        
         this.loadClassList(); // Load class list for inline table editing
 
         // this.getBillheaderList();
         // this.getPharmacyAmount();
+        const rawValue = this?._ConfigService?.configParams?.Is9_Digit_NationalId || "";
+        const [ids, val] = rawValue.includes(":") ? rawValue.split(":") : [null, null];
+        this.Is9_Digit_National_Id = ids === "1";
+        if (!this.Is9_Digit_National_Id) {
+            this.AddBedCharge();
+        } 
 
         if (this.selectedAdvanceObj.isDischarged) {
             this.IpbillFooterform.get('GenerateBill').enable();
@@ -291,6 +298,9 @@ export class IPBillingComponent implements OnInit {
         //this is for curreny symbol
         const [CurrencyId, CurrencyValue] = this._ConfigService.configParams.CurrencyValue.split(":");
         this.currency = CurrencyValue
+
+
+
     }
     private setupFormListener(): void {
         this.handleChange('price', () => this.calculateTotalCharge());

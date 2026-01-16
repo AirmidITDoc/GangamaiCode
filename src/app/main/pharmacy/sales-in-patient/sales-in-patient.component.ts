@@ -1633,17 +1633,18 @@ export class SalesInPatientComponent implements OnInit {
                         this._salesService.getKenyaSalesBatchList(m_data).subscribe((response) => {
                          debugger
                          console.log(response.data)
-                         this.Tempchargeslist = response.data as any;
+                         this.Tempchargeslist = response.data as any;  
                            console.log(this.Tempchargeslist)
                            if(response){
-                         if (this.Tempchargeslist.length == 0) { 
-                            //  Swal.fire({
-                            //      icon: 'warning',
-                            //      title: 'Stock Unavailable',
-                            //      text: `The item with ID ${contact.ItemId} is currently out of stock.`,
-                            //      showConfirmButton: true,
-                            //      confirmButtonText: 'OK'
-                            //  }); 
+                         if (this.Tempchargeslist.length == 0) {  
+                             Swal.fire({
+                                 icon: 'warning',
+                                 title: 'Stock Unavailable',
+                                 html: `The item <strong>${contact.ItemName}</strong> is currently out of stock.`,
+                                 showConfirmButton: true,
+                                 confirmButtonText: 'OK'
+                             });
+
                          } else if (this.Tempchargeslist.length > 0) {
                             debugger
                              let remaing_qty = contact.QtyPerDay;

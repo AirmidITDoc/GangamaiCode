@@ -2070,34 +2070,35 @@ export class SalesHospitalKenyaComponent {
                 this.getBillSummary(result[0]?.AdmissionID || 0)
                 this.dsItemNameList1.data = result;
                 this.dsItemNameList1.data.forEach((contact) => {
-                    //  var m_data = {
-                    //      "first": 0,
-                    //      "rows": 999,
-                    //      "sortField": "ItemId",
-                    //      "sortOrder": 0,
-                    //      "filters": [
-                    //          { "fieldName": "ItemId", "fieldValue": String(contact.ItemId), "opType": "Contains" },
-                    //          { "fieldName": "StoreId", "fieldValue": String(this._loggedService.currentUserValue.user.storeId), "opType": "Contains" }
-                    //      ],
-                    //      "exportType": "JSON",
-                    //      "columns": [{ "data": "string", "name": "string" }]
-                    //  };
-                    var reqData = {
-                        ItemId: contact.ItemId,
-                        StoreId: this._loggedService.currentUserValue.user.storeId,
-                        PatientTypeId: this.PatientTypeId
-                    };
-                    this._salesService.getKenyaSalesBatchList(reqData).subscribe((response) => {
+                       var m_data = {
+                         "first": 0,
+                         "rows": 999,
+                         "sortField": "ItemId",
+                         "sortOrder": 0,
+                         "filters": [
+                             { "fieldName": "ItemId", "fieldValue": String(contact.ItemId), "opType": "Contains" },
+                             { "fieldName": "StoreId", "fieldValue": String(this._loggedService.currentUserValue.user.storeId), "opType": "Contains" },
+                              { "fieldName": "PatientTypeId", "fieldValue": String(this.PatientTypeId), "opType": "Contains" }
+                         ],
+                         "exportType": "JSON",
+                         "columns": [{ "data": "string", "name": "string" }]
+                     };
+                    // var reqData = {
+                    //     ItemId: contact.ItemId,
+                    //     StoreId: this._loggedService.currentUserValue.user.storeId,
+                    //     PatientTypeId: this.PatientTypeId
+                    // };
+                    this._salesService.getKenyaSalesBatchList(m_data).subscribe((response) => {
                         debugger
-                        this.Tempchargeslist = response as any;
+                        this.Tempchargeslist = response.data as any;
                         console.log(response)
                         if (this.Tempchargeslist.length == 0) {
                             Swal.fire({
-                                icon: 'warning',
-                                title: 'Stock Unavailable',
-                                text: `The item with ID ${contact.ItemId} is currently out of stock.`,
-                                showConfirmButton: true,
-                                confirmButtonText: 'OK'
+                                 icon: 'warning',
+                                 title: 'Stock Unavailable',
+                                 html: `The item <strong>${contact.ItemName}</strong> is currently out of stock.`,
+                                 showConfirmButton: true,
+                                 confirmButtonText: 'OK'
                             });
                         } else if (this.Tempchargeslist.length > 0) {
                             let remaing_qty = contact.QtyPerDay;
