@@ -205,7 +205,7 @@ export class RadiologyDashboardComponent implements OnInit {
     }
     pathologyData: any;
     ngOnInit(): void {
-        this.dashboardService.getPathologyDashboard({ "UnitId": 0, "FromDate": this.fromDate.toLocaleDateString(), "ToDate": this.toDate.toLocaleDateString() }).subscribe((data) => {
+        this.dashboardService.getPathologyDashboard({ "FromDate": this.fromDate.toLocaleDateString(), "ToDate": this.toDate.toLocaleDateString() }).subscribe((data) => {
             debugger
             this.pathologyData = data;
             this.dsPathologyReports.data = this.pathologyData.recentPathologyReports;

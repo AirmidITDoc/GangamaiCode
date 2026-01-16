@@ -212,7 +212,7 @@ export class DashboardService {
         return this._httpClient.PutData("BedMaster/Edit", {});
     }
     public getPathologyDashboard(params) {
-        return this._httpClient.GetData("Dashboard/pathology-dashboard?UnitId=" + params.UnitId + "&FromDate=" + params.FromDate + "&ToDate=" + params.ToDate)
+        return this._httpClient.GetData("Dashboard/pathology-dashboard?FromDate=" + params.FromDate + "&ToDate=" + params.ToDate)
     }
 
 }
