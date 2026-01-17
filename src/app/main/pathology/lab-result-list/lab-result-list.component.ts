@@ -173,7 +173,7 @@ export class LabResultListComponent {
 
   allcolumns = [
     { heading: "Test Date", key: "doa", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-    { heading: "DOA", key: "vaTime", sort: true, align: 'left', emptySign: 'NA', width: 150 },
+    // { heading: "DOA", key: "vaTime", sort: true, align: 'left', emptySign: 'NA', width: 150 },
     { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
     { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
     { heading: "Age | Gender", key: "genderName", sort: true, align: 'left', emptySign: 'NA' },

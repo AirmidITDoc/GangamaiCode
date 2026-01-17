@@ -47,7 +47,6 @@ export class NewLabPatientRegComponent {
   registerObj = new LabPatientList({});
   companyDet = new LabPatientList({});
   CityName = ""
-  vRegNo: any;
   vTariffId: any = 1;
   vClassId: any = 1;
 
@@ -247,7 +246,7 @@ export class NewLabPatientRegComponent {
 
   // only passed for cash & credit pay demo
   CreateModePaymentform(item: any): FormGroup {
-    debugger
+    // debugger
     return this._formbuilder.group({
       paymentId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       unitId: [this.accountService.currentUserValue.user.unitId],
@@ -384,7 +383,7 @@ export class NewLabPatientRegComponent {
     });
   }
   CreateAddchargeform(item: any): FormGroup {
-    debugger
+    // debugger
     return this._formbuilder.group({
       chargesId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       chargesDate: this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
@@ -467,7 +466,7 @@ export class NewLabPatientRegComponent {
       this.myForm.get('subCompanyId').updateValueAndValidity();
       this.patienttype = 1;
       this.OPFooterForm.get('paymentType').setValue('CashPay')
-    } 
+    }
     // else {
     //   if (this.patienttype != 2)
     //     this.OPFooterForm.get('paymentType').setValue('CashPay')
@@ -528,7 +527,7 @@ export class NewLabPatientRegComponent {
           console.log(response)
           this.registerObj = response;
           this.value = response.dateofBirth
-          this.vRegNo = response.regno
+          this.regNo = response.labRequestNo
           this.onChangeDateofBirth(response.dateofBirth)
           this.getLastDepartmetnNameList(this.registerObj)
           this.regflag = true
@@ -797,7 +796,9 @@ export class NewLabPatientRegComponent {
     }
   }
 
+  prefixName: any;
   onChangePrefix(e) {
+    this.prefixName = e.prefixName
     this.ddlGender.SetSelection(e.sexId);
   }
 
@@ -834,6 +835,7 @@ export class NewLabPatientRegComponent {
             const matchedDoctor = data.find(doc => doc.value === incomingDoctorId);
             if (matchedDoctor) {
               this.ddlDoctor.SetSelection(matchedDoctor.value);
+              this.doctorname = matchedDoctor.text
             }
           }
         }, 100);
@@ -962,6 +964,7 @@ export class NewLabPatientRegComponent {
     this.myForm.get('regTime').setValue(formattedTime);
     this.myForm.get('LabPatRegId').setValue(this.VlabPatRegId ?? 0);
     this.myForm.get('adharCardNo').setValue(Number(this.myForm.get('adharCardNo').value) ?? 0);
+    // this.PatientName = this.prefixName + ' ' + this.myForm.get('firstName').value + ' ' + this.myForm.get('lastName').value
 
     if (this.myForm.get('discountAmt').value > 0) {
       if (!this.myForm.get('concessionReasonId').value) {
@@ -1027,7 +1030,7 @@ export class NewLabPatientRegComponent {
     this.OpBillForm.get('opdipdid')?.setValue(0)
     this.OpBillForm.get('tariffId')?.setValue(this.vTariffId)
     this.OpBillForm.get('regNo')?.setValue(this.regNo)
-    this.OpBillForm.get('patientName')?.setValue(this.PatientName || this.myForm.get('firstName').value)
+    this.OpBillForm.get('patientName')?.setValue(this.PatientName ?? this.prefixName + ' ' + this.myForm.get('firstName').value + ' ' + this.myForm.get('lastName').value)
     this.OpBillForm.get('ipdno')?.setValue(this.opdNo)
     this.OpBillForm.get('ageYear')?.setValue(Number(this.ageYear) || 0)
     this.OpBillForm.get('ageMonth')?.setValue(Number(this.ageMonth) || 0)
@@ -1121,7 +1124,7 @@ export class NewLabPatientRegComponent {
         });
       }
       else if (this.OPFooterForm.get('paymentType').value == 'CashPay') {
-        debugger
+        // debugger
         let ModePaymentObj = [];
         ModePaymentObj.push({
           paymentDate: formattedDate,
@@ -1186,7 +1189,7 @@ export class NewLabPatientRegComponent {
         });
       }
       else if (this.OPFooterForm.get('paymentType').value == 'onlinepay') {
-        debugger
+        // debugger
         if (!(this.OPFooterForm.get('UPINO')?.value)) {
           this.toastr.warning('Please enter upi no', 'Warning !', {
             toastClass: 'tostr-tost custom-toast-warning',
