@@ -100,8 +100,8 @@
 
                                 <span class="h1">Patient Information</span>
 
-                                <button mat-raised-button color="primary"
-                                    style="background-color: aliceblue; color: brown;">
+                                <button mat-raised-button color="primary" (click)="onUpload()"
+                                    style="background-color: aliceblue; color: brown;" *ngIf="!verifyCheck">
                                     Upload
                                     <mat-icon class="ml-4">cloud_upload</mat-icon>
                                 </button>
