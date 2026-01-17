@@ -256,7 +256,9 @@ export class IPBillBrowseListComponent implements OnInit {
             this.menuActions.push('Patient Statement Print'); 
             }else{
                 this.menuActions.push('Print Final Bill - Charge Date with Group wise');
+                this.menuActions.push('Print Final Bill - Charge Date with Group wise Without Advance');
             }
+            
         }
     }
 
@@ -415,6 +417,9 @@ export class IPBillBrowseListComponent implements OnInit {
           } 
             else if (m == "Print Final Bill - Charge Date with Group wise") {  
             this.viewgetFinalGroupWisChargeatewiseReportPdf(contact.billNo)
+          }
+            else if (m == "Print Final Bill - Charge Date with Group wise Without Advance") {  
+            this.viewgetFinalGroupWisChargeatewiseWithoutAdvanceReportPdf(contact.billNo)
           } 
     }
  
@@ -445,6 +450,9 @@ export class IPBillBrowseListComponent implements OnInit {
     }
     viewgetFinalGroupWisChargeatewiseReportPdf(billNo) {
     this.commonService.Onprint("BillNo", billNo, "IPFinalBillChargesDateWisegroupwise");
+    }
+        viewgetFinalGroupWisChargeatewiseWithoutAdvanceReportPdf(billNo) {
+    this.commonService.Onprint("BillNo", billNo, "IPFinalBillChargesDateWisegroupwisewithoutadvance");
     }
     // viewgetBillReportPdf(billNo) {
     //     this.commonService.Onprint("BillNo", billNo, "IpFinalBill");
