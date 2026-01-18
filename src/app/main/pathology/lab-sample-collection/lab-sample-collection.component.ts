@@ -313,8 +313,7 @@ export class LabSampleCollectionComponent {
   }
 
   OnPrintPatientIcard(element) {
-    console.log('Third action clicked for:', element);
-    this.commonService.Onprint("AdmissionId", element.visit_Adm_ID, "IPStickerPrint");
+    this.commonService.OnThermalPrintNew("LabPatientId", element.labPatientId, "LabStickerPrint");
   }
 
 }
