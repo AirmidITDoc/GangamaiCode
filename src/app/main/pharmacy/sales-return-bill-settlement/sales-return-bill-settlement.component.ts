@@ -191,7 +191,7 @@ this.Is9_Digit_National_Id = id === "1";
   CreateUseFrom() {
     return this._formBuilder.group({
       RegID: [''],
-      PatientType: ['1'],
+      PatientType: ['0'],
       MobileNo: ['', [Validators.required, Validators.pattern("^[0-9]*$"),
       Validators.minLength(10),
       Validators.maxLength(10),]],
@@ -200,7 +200,7 @@ this.Is9_Digit_National_Id = id === "1";
   CreateMultipleFrom() {
     return this._formBuilder.group({
       RegID: [''],
-      PatientType: ['1'],
+      PatientType: ['0'],
       MobileNo: ['', [Validators.required, Validators.pattern("^[0-9]*$"),
       Validators.minLength(10),
       Validators.maxLength(10),]],
@@ -719,8 +719,8 @@ this._SelseSettelmentservice.SalesBillList(vdata).subscribe((response)=>{
     this.PatientInformRest();
     this.userFormGroup.get('RegID').setValue('');
     this.MutliSettlemForm.get('RegID').setValue('');
-    this.userFormGroup.get('PatientType').setValue('1');
-    this.MutliSettlemForm.get('PatientType').setValue('1');
+    this.userFormGroup.get('PatientType').setValue('0');
+    this.MutliSettlemForm.get('PatientType').setValue('0');
     
   }
   onclearmultipledata(){ 
