@@ -907,7 +907,7 @@
                                             <mat-radio-button value="CreditPay" *ngIf="Is9_Digit_National_Id">Credit Payment</mat-radio-button>
                                             <mat-radio-button value="OnlinePay" *ngIf="!Is9_Digit_National_Id">Online Payment</mat-radio-button>
                                             <mat-radio-button value="PayOption" *ngIf="!Is9_Digit_National_Id">Pay Option</mat-radio-button>
-                                            <mat-radio-button value="Mpesa" *ngIf="!Is9_Digit_National_Id">MPesa</mat-radio-button>
+                                            <mat-radio-button value="Mpesa" *ngIf="Is9_Digit_National_Id">MPesa</mat-radio-button>
                                         </mat-radio-group>
                                     </div>
                                 </form>
