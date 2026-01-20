@@ -863,8 +863,8 @@ export class ChargesList {
         this.ServiceId = ChargesList.ServiceId || '';
         this.doctorName = ChargesList.doctorName || '';
         this.ServiceName = ChargesList.ServiceName || '';
-        this.Price = ChargesList.Price || '';
-        this.Qty = ChargesList.Qty || '';
+        this.Price = ChargesList.Price || 0;
+        this.Qty = ChargesList.Qty || 1;
         this.TotalAmt = ChargesList.TotalAmt || '';
         this.DiscPer = ChargesList.DiscPer || '';
         this.DiscAmt = ChargesList.DiscAmt || '';

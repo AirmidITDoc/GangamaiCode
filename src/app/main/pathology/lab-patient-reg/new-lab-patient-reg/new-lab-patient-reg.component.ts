@@ -49,7 +49,7 @@ export class NewLabPatientRegComponent {
   CityName = ""
   vTariffId: any = 1;
   vClassId: any = 1;
-
+  ApiURL: any = '';
   isServiceIdSelected: boolean = false;
   isDoctor: boolean = false;
   // Consessionres: boolean = false;
@@ -67,7 +67,7 @@ export class NewLabPatientRegComponent {
   autocompleteModecamp: string = "CampMaster";
   autocompleteModedoctor: string = "ConDoctor";
   autocompleteModeConcession: string = "Concession";
-
+  
   dsLabRequest2 = new MatTableDataSource<LabRequest>();
   // dstable1 = new MatTableDataSource<LabRequest>();
   filteredOptions: any[] = [];
@@ -116,13 +116,16 @@ export class NewLabPatientRegComponent {
   displayedServiceColumns: string[] = [
     'ServiceName',
     'price',
-    'Action'
+    // 'Action'
   ]
 
   displayedServiceselected: string[] = [
     'ServiceName',
     'DoctorName',
+    'Urgent',
     'Price',
+    'DiscountAmount',
+    'NetAmount',
     'buttons'
   ]
 
@@ -134,6 +137,8 @@ export class NewLabPatientRegComponent {
   @ViewChild('ddlCountry') ddlCountry: AirmidDropDownComponent;
   @ViewChild('ddlState') ddlState: AirmidDropDownComponent;
   @ViewChild('ddlDoctor') ddlDoctor: AirmidDropDownComponent;
+  
+  @ViewChild('serviceInput') serviceInput!: ElementRef<HTMLInputElement>;
 
   constructor(public _labPatientRegService: LabPatientRegService,
     public _matDialog: MatDialog,
@@ -144,9 +149,9 @@ export class NewLabPatientRegComponent {
     private _FormvalidationserviceService: FormvalidationserviceService,
     private accountService: AuthenticationService,
     private hospitalconfigservice: HospitalConfigService,
-    public toastr: ToastrService, public _ConfigService: ConfigService,
+    public toastrService: ToastrService, public _ConfigService: ConfigService,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private apiCaller: ApiCaller
+    private apiCaller: ApiCaller,
   ) { }
 
   ngOnInit(): void {
@@ -178,6 +183,8 @@ export class NewLabPatientRegComponent {
     this.getServiceList();
     console.log(this.hospitalconfigservice.HospitalconfigParams)
     console.log(this._ConfigService.configParams)
+
+    this.ApiURL = "VisitDetail/search-GetServiceListwithTraiff?TariffId=" + 1 + "&ClassId=" + 1 + "&SrvcName="
   }
 
   createFinalFormView() {
@@ -513,6 +520,12 @@ export class NewLabPatientRegComponent {
       this.myForm.get('tariffId').setValue(this.companyDet.traiffId);
     });
   }
+  urgentStatus: boolean = false;
+  onUrgentToggleChange(event: any, contact: any) {
+   this.urgentStatus = event.checked;
+  // optionally do recalculation or other logic
+  console.log(contact);
+}
 
   regflag = false
   VlabPatRegId: any;
@@ -569,7 +582,7 @@ export class NewLabPatientRegComponent {
   onChangeDateofBirth(DateOfBirth: Date) {
 
     if (DateOfBirth > this.minDate) {
-      this.toastr.warning('Enter Proper Birth Date..', 'warning !', {
+      this.toastrService.warning('Enter Proper Birth Date..', 'warning !', {
         toastClass: 'tostr-tost custom-toast-success',
       });
       return;
@@ -598,10 +611,51 @@ export class NewLabPatientRegComponent {
       this.value = DateOfBirth;
       this.myForm.get('DateOfBirth').setValue(DateOfBirth);
       if (this.ageYear > 110)
-        this.toastr.warning('Please Enter Valid BirthDate..', 'warning !', {
+        this.toastrService.warning('Please Enter Valid BirthDate..', 'warning !', {
           toastClass: 'tostr-tost custom-toast-success',
         });
     }
+  }
+  Consessionres: boolean = false;
+  onDiscountAmtChange(row: ChargesList): void {
+    if (!row) return;
+    let discountAmt = +row.DiscAmt || 0;
+    const totalAmount = (+row.Price || 0) * (+row.Qty || 0);
+
+    if (discountAmt < 0 || discountAmt > totalAmount) {
+      row.DiscAmt = 0;
+      discountAmt = 0;
+      this.toastrService.error("Discount must be between 0 and the total amount.");
+    }
+
+    this.Consessionres = true
+    if (discountAmt == 0) {
+      this.Consessionres = false
+      this.OPFooterForm.get("concessionReasonId").setValue(0)
+    }
+    row.DiscPer = totalAmount ? parseFloat(((discountAmt / totalAmount) * 100).toFixed(2)) : 0;
+    row.TotalAmt = totalAmount;
+    row.NetAmount = totalAmount - discountAmt;
+
+    this.calculateTotalAmount();
+  }
+  // Calculation of total amount.
+  calculateTotalAmount(): void {
+    let totalSum = this.chargeList.reduce((sum, charge) => sum + (+charge.TotalAmt), 0);
+    let totalDiscount = this.chargeList.reduce((sum, charge) => sum + (+charge.DiscAmt), 0);
+    let totalNet = totalSum - totalDiscount;
+
+    this.OPFooterForm.patchValue({
+      totalAmt: totalSum,
+      concessionAmt: Math.round(totalDiscount),
+      netPayableAmt: Math.round(totalNet)
+    }, { emitEvent: false });
+
+    // const Exclusionlist = this.chargeList.filter(i => i.isInclusionExclusion === true)
+    // const Inclusionlist = this.chargeList.filter(i => i.isInclusionExclusion !== true)
+    // this.ExclusionAmt = Exclusionlist.reduce((sum, { NetAmount }) => sum += +(NetAmount || 0), 0);
+    // this.InclusionAmt = Inclusionlist.reduce((sum, { NetAmount }) => sum += +(NetAmount || 0), 0);
+
   }
   getServiceList() {
     let ServiceName = this.myForm.get("ServiceId").value + "%" || "%";
@@ -647,7 +701,31 @@ export class NewLabPatientRegComponent {
     });
 
   }
+  SrvcName1: any = "";
+  serviceId: any;
+  vQty: any;
+  chkIsEditable: boolean = true;
+  serviceSelct = false
+  getSelectedserviceObj(obj) {
+    console.log(obj)
+    this.SrvcName1 = obj.serviceName;
+    this.serviceId = obj.serviceId;
+    this.vQty = 1;
+    this.IsPathology = obj.isPathology;
+    this.IsRadiology = obj.isRadiology;
+    this.vIsPackage = obj.isPackage;
+    this.serviceSelct = true
+    this.onSaveEntry(obj);
 
+    // ✅ Clear Service Name
+    this.myForm.get('ServiceId')?.reset();
+
+    // ✅ Focus back to input (wait for DOM update)
+    setTimeout(() => {
+      this.serviceInput?.nativeElement.focus();
+    });
+  }
+ 
   onChangeReg(event) {
     if (event.value == 'onlinepay') {
       this.onlineflag = true;
@@ -674,7 +752,7 @@ export class NewLabPatientRegComponent {
       this.onAddCharges(row)
     }
     else {
-      this.toastr.warning('Selected Item already added in the list ', 'Warning !', {
+      this.toastrService.warning('Selected Item already added in the list ', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       return;
@@ -735,7 +813,7 @@ export class NewLabPatientRegComponent {
     const newRow = {
       ServiceId: row.serviceId,
       ServiceName: row.serviceName,
-      Price: row.price || 0,
+      Price: row.price ?? 0,
       Qty: 1,
       TotalAmt: totalAmount || 0,
       DiscPer: 0,
@@ -783,14 +861,14 @@ export class NewLabPatientRegComponent {
       this.servicedoctorname = ''
       this.serivcedoctorId = 0
     }
-    this.toastr.success('Record Deleted Successfully.', 'Deleted !', {
+    this.toastrService.success('Record Deleted Successfully.', 'Deleted !', {
       toastClass: 'tostr-tost custom-toast-success',
     });
   }
 
   chkChange() {
     if (this.registerObj.dateOfBirth > this.minDate) {
-      this.toastr.warning('Enter Proper Birth Date', 'warning !', {
+      this.toastrService.warning('Enter Proper Birth Date', 'warning !', {
         toastClass: 'tostr-tost custom-toast-success',
       });
     }
@@ -916,7 +994,7 @@ export class NewLabPatientRegComponent {
           let priceflag = this.dstable1.data.filter(row => row.Price == 0);
 
           if (priceflag.length) {
-            this.toastr.warning('Please Enter Price For Service', 'Warning !', {
+            this.toastrService.warning('Please Enter Price For Service', 'Warning !', {
               toastClass: 'tostr-tost custom-toast-warning',
             });
             return;
@@ -945,7 +1023,7 @@ export class NewLabPatientRegComponent {
             }
             if (invalidFields.length > 0) {
               invalidFields.forEach(field => {
-                this.toastr.warning(`Please Check this field "${field}" is invalid.`, 'Warning',
+                this.toastrService.warning(`Please Check this field "${field}" is invalid.`, 'Warning',
                 );
               });
               return
@@ -968,7 +1046,7 @@ export class NewLabPatientRegComponent {
 
     if (this.myForm.get('discountAmt').value > 0) {
       if (!this.myForm.get('concessionReasonId').value) {
-        this.toastr.warning('Please select ConcessionReason.', 'Warning !', {
+        this.toastrService.warning('Please select ConcessionReason.', 'Warning !', {
           toastClass: 'tostr-tost custom-toast-warning',
         });
         return;
@@ -1004,7 +1082,7 @@ export class NewLabPatientRegComponent {
         (!ageMonth || ageMonth == 0) &&
         (!ageDay || ageDay == 0)
       ) {
-        this.toastr.warning('Please select the birthdate or enter the age of the patient.', 'Warning!', {
+        this.toastrService.warning('Please select the birthdate or enter the age of the patient.', 'Warning!', {
           toastClass: 'tostr-tost custom-toast-warning',
         });
         return;
@@ -1061,7 +1139,7 @@ export class NewLabPatientRegComponent {
       );
 
       if (invalidRow) {
-        this.toastr.warning(
+        this.toastrService.warning(
           'Please select Doctor for added service', 'Warning!');
         return;
       }
@@ -1191,7 +1269,7 @@ export class NewLabPatientRegComponent {
       else if (this.OPFooterForm.get('paymentType').value == 'onlinepay') {
         // debugger
         if (!(this.OPFooterForm.get('UPINO')?.value)) {
-          this.toastr.warning('Please enter upi no', 'Warning !', {
+          this.toastrService.warning('Please enter upi no', 'Warning !', {
             toastClass: 'tostr-tost custom-toast-warning',
           });
           return;
@@ -1263,7 +1341,7 @@ export class NewLabPatientRegComponent {
       }
       if (invalidFields.length > 0) {
         invalidFields.forEach(field => {
-          this.toastr.warning(`Please Check this field "${field}" is invalid.`, 'Warning',
+          this.toastrService.warning(`Please Check this field "${field}" is invalid.`, 'Warning',
           );
         });
         return

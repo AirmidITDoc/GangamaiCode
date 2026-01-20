@@ -302,9 +302,9 @@ export class LabPatientRegComponent {
   onnew(row: any = null) {
     const dialogRef = this._matDialog.open(NewLabPatientRegComponent,
       {
-        maxWidth: "90vw",
-        maxHeight: '90vh',
-        width: '95%',
+        maxWidth: "95vw",
+        height: '95%',
+        width: '90%',
         data: { mode: 'add', row: null }
       });
     dialogRef.afterClosed().subscribe(result => {
