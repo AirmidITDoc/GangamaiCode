@@ -546,7 +546,7 @@ export class ResultEntryComponent implements OnInit {
                         data: {
                             RIdData: data,
                             patientdata: this.reportPrintObj,
-                            sampleNo: contact[0].sampleNo
+                            sampleNo: contact.sampleNo
                         }
                     });
                 dialogRef.afterClosed().subscribe(result => {

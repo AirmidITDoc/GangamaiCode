@@ -461,7 +461,8 @@ export class LabResultListComponent {
               data: {
                 RIdData: data,
                 patientdata: this.reportPrintObj,
-                type: 'Lab'
+                type: 'Lab',
+                sampleNo: contact[0].sampleNo
               }
             });
           dialogRef.afterClosed().subscribe(result => {
@@ -533,7 +534,8 @@ export class LabResultListComponent {
             data: {
               RIdData: data,
               patientdata: this.reportPrintObj,
-              type: 'Lab'
+              type: 'Lab',
+              sampleNo: contact.sampleNo
             }
           });
         dialogRef.afterClosed().subscribe(result => {
