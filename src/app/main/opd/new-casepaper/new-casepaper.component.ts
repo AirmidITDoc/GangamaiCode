@@ -164,6 +164,7 @@ export class NewCasepaperComponent implements OnInit {
     attachments: any[] = [];
     selectedFile: File | null = null;
     previewUrl: string | null = null;
+    vTariffId: any;
     displayedColumns1: string[] = [
         'CertificateDate',
         'CertificateName',
@@ -194,6 +195,7 @@ export class NewCasepaperComponent implements OnInit {
     @ViewChild('ddlChiefComplaint') ddlChiefComplaint: AirmidDropDownComponent;
     @ViewChild('ddlExamination') ddlExamination: AirmidDropDownComponent;
     @ViewChild('ddlService') ddlService: AirmidDropDownComponent;
+    @ViewChild('ddlService1') ddlService1: AirmidDropDownComponent;
     @ViewChild('medicineTableRef') medicineTableRef: MedicineTableNewComponent;
 
     BloodGroupNames: string[] = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
@@ -258,6 +260,7 @@ export class NewCasepaperComponent implements OnInit {
             this.CompanyName = this.regObj.companyName
             this.RefDocName = this.regObj.refDocName
             this.vClassId = this.regObj.classId
+            this.vTariffId = this.regObj.tariffId
             this.getPrescription(this.regObj);
             this.getnewVisistListDemo(this.regObj);
             this.getCertificateHistoryTab(this.regObj);
@@ -348,6 +351,17 @@ export class NewCasepaperComponent implements OnInit {
         }
     }
 
+    removeService1(item) {
+        let removedIndex = this.caseFormGroup.value.mAssignService1.findIndex(x => x.serviceId === item.serviceId);
+        if (removedIndex !== -1) {
+            this.caseFormGroup.value.mAssignService1.splice(removedIndex, 1);
+
+            this.ddlService1.SetSelection(this.caseFormGroup.value.mAssignService1.map(x => x.serviceId));
+
+            this.selectedItems1 = this.caseFormGroup.value.mAssignService1.map(x => ({ serviceId: x.serviceId }));
+        }
+    }
+
     onDaysChange() {
         const today = new Date();
         let followUp = new Date(today);
@@ -414,6 +428,7 @@ export class NewCasepaperComponent implements OnInit {
             mAssignDiagnosis: [[], [this._FormvalidationserviceService.allowEmptyStringValidator]],
             mAssignExamination: [[], [this._FormvalidationserviceService.allowEmptyStringValidator]],
             mAssignService: ['', [this._FormvalidationserviceService.allowEmptyStringValidator]],
+            mAssignService1: ['', [this._FormvalidationserviceService.allowEmptyStringValidator]],
         });
     }
 
@@ -601,15 +616,31 @@ export class NewCasepaperComponent implements OnInit {
 
             // 2nd detail
             this.topRequestListArray.clear();
-            if (this.selectedItems.length === 0) {
-                const opRequestListFormGroup: FormGroup = this.createtopRequestList({ serviceId: 0 });
-                this.topRequestListArray.push(opRequestListFormGroup);
+
+            const combinedItems = [...this.selectedItems, ...this.selectedItems1];
+
+            if (combinedItems.length === 0) {
+                this.topRequestListArray.push(
+                    this.createtopRequestList({ serviceId: 0 })
+                );
             } else {
-                this.selectedItems.forEach(element => {
-                    const opRequestListFormGroup: FormGroup = this.createtopRequestList(element);
-                    this.topRequestListArray.push(opRequestListFormGroup);
+                combinedItems.forEach(item => {
+                    this.topRequestListArray.push(
+                        this.createtopRequestList(item)
+                    );
                 });
             }
+
+            // this.topRequestListArray.clear();
+            // if (this.selectedItems.length === 0) {
+            //     const opRequestListFormGroup: FormGroup = this.createtopRequestList({ serviceId: 0 });
+            //     this.topRequestListArray.push(opRequestListFormGroup);
+            // } else {
+            //     this.selectedItems.forEach(element => {
+            //         const opRequestListFormGroup: FormGroup = this.createtopRequestList(element);
+            //         this.topRequestListArray.push(opRequestListFormGroup);
+            //     });
+            // }
 
             // 3rd detail array
             this.mopCasepaperDignosisArray.clear();
@@ -1107,13 +1138,16 @@ export class NewCasepaperComponent implements OnInit {
 
         // to stop popup
         this.MedicineItemForm.get('DoctorID')?.reset(null, { emitEvent: false });
+    }
 
-        // setTimeout(() => {
-        //   const panel = this.ddlDoctor.nativeElement.querySelector('.mat-autocomplete-panel') as HTMLElement;
-        //   if (panel) {
-        //     panel.style.display = 'none'; // hides it
-        //   }
-        // }, 0);
+    selectedItems1 = [];
+    // @ViewChild('ddlDoctor', { read: ElementRef }) ddlDoctor!: ElementRef;
+    selectChangeServiceName1(row) {
+        const selectedData = Array.isArray(row) ? row : [row];
+        this.selectedItems1 = selectedData.map(item => ({ serviceId: item.serviceId }));
+
+        // to stop popup
+        this.MedicineItemForm.get('DoctorID')?.reset(null, { emitEvent: false });
     }
 
     RtrvTestServiceList: any = [];
@@ -1144,6 +1178,7 @@ export class NewCasepaperComponent implements OnInit {
                     });
                 });
                 this.caseFormGroup.get('mAssignService').setValue(this.selectedItems);
+                this.caseFormGroup.get('mAssignService1').setValue(this.selectedItems);
             }
         })
     }
@@ -2399,8 +2434,9 @@ export class CasepaperVisitDetails {
     advice: any
     patientReferDocId: any
     drugName: any;
-
+    tariffId: any;
     MAssignService: ServiceDet[];
+    MAssignService1: ServiceDet[];
 
     constructor(casePaperDetails) {
         this.BP = casePaperDetails.BP || '';
@@ -2476,6 +2512,8 @@ export class CasepaperVisitDetails {
         this.advice = casePaperDetails.advice || '';
         this.patientReferDocId = casePaperDetails.patientReferDocId || '';
         this.MAssignService = casePaperDetails.MAssignService;
+        this.MAssignService1 = casePaperDetails.MAssignService1;
+        this.tariffId = casePaperDetails.tariffId;
     }
 
 

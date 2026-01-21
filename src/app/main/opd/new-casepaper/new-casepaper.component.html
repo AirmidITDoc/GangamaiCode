@@ -225,7 +225,7 @@
                                                         <span matSuffix style="font-size: x-large;">|</span>
                                                         <!-- <span matSuffix style="margin-right: 10px; font-size: x-large;">°F</span> -->
                                                         <span matSuffix
-                                                            style="margin-right: 10px; font-size: x-large;">F</span>
+                                                            style="margin-right: 15px; font-size: x-large;">°C</span>
                                                     </mat-form-field>
 
                                                     <mat-form-field appearance="outline" fxFlex="9%">
@@ -302,40 +302,40 @@
                                                         style="font-weight: 700;margin: 10px 10px 8px 5px; font-size: 15px; display: block;">
                                                         Prescription List
                                                     </span>
-                                                    <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="6px" style="flex-wrap: wrap; align-items: center;">
+                                                    <div fxLayout="row" fxLayoutAlign="space-between center"
+                                                        fxLayoutGap="6px" style="flex-wrap: wrap; align-items: center;">
                                                         <div style="display: flex; align-items: center;">
-                                                            <button mat-raised-button
-                                                                color="primary"
-                                                                type="button"
-                                                                style="height: 36px;"
-                                                                (click)="onAddRecordClick()">
-                                                                <mat-icon style="font-size: 18px; width: 18px; height: 18px; line-height: 18px;">add</mat-icon>
+                                                            <button mat-raised-button color="primary" type="button"
+                                                                style="height: 36px;" (click)="onAddRecordClick()">
+                                                                <mat-icon
+                                                                    style="font-size: 18px; width: 18px; height: 18px; line-height: 18px;">add</mat-icon>
                                                                 Add Record
                                                             </button>
                                                         </div>
-                                                        <div fxLayout="row" fxLayoutGap="6px" style="flex-wrap: wrap; align-items: center;">
-                                                            <button mat-raised-button 
-                                                                style="height: 36px;"
+                                                        <div fxLayout="row" fxLayoutGap="6px"
+                                                            style="flex-wrap: wrap; align-items: center;">
+                                                            <button mat-raised-button style="height: 36px;"
                                                                 (click)="getItemMaster()">
-                                                                <mat-icon style="font-size: 18px; width: 18px; height: 18px; line-height: 18px;">add</mat-icon>
+                                                                <mat-icon
+                                                                    style="font-size: 18px; width: 18px; height: 18px; line-height: 18px;">add</mat-icon>
                                                                 Drug</button>
 
-                                                            <button mat-raised-button 
-                                                                style="height: 36px;"
+                                                            <button mat-raised-button style="height: 36px;"
                                                                 (click)="getDosemaster()">
-                                                                <mat-icon style="font-size: 18px; width: 18px; height: 18px; line-height: 18px;">add</mat-icon>
+                                                                <mat-icon
+                                                                    style="font-size: 18px; width: 18px; height: 18px; line-height: 18px;">add</mat-icon>
                                                                 Dose</button>
 
-                                                            <button mat-raised-button
-                                                                style="height: 36px;"
+                                                            <button mat-raised-button style="height: 36px;"
                                                                 (click)="getPreviousPrescriptionlist()">
-                                                                <mat-icon style="font-size: 18px; width: 18px; height: 18px; line-height: 18px;">first_page</mat-icon>
+                                                                <mat-icon
+                                                                    style="font-size: 18px; width: 18px; height: 18px; line-height: 18px;">first_page</mat-icon>
                                                                 Load Previous</button>
 
-                                                            <button mat-raised-button 
-                                                                style="height: 36px;"
+                                                            <button mat-raised-button style="height: 36px;"
                                                                 (click)="SaveTemplate()">
-                                                                <mat-icon style="font-size: 18px; width: 18px; height: 18px; line-height: 18px;">save</mat-icon>
+                                                                <mat-icon
+                                                                    style="font-size: 18px; width: 18px; height: 18px; line-height: 18px;">save</mat-icon>
                                                                 Save Template</button>
 
                                                             <airmid-dropdown label="Template List"
@@ -350,9 +350,9 @@
                                                             </airmid-dropdown>
 
                                                             <button #addbutton mat-raised-button color="primary"
-                                                                style="height: 36px;"
-                                                                (click)="onTemplDetAdd()">
-                                                                <mat-icon style="font-size: 18px; width: 18px; height: 18px; line-height: 18px;">add</mat-icon>Add
+                                                                style="height: 36px;" (click)="onTemplDetAdd()">
+                                                                <mat-icon
+                                                                    style="font-size: 18px; width: 18px; height: 18px; line-height: 18px;">add</mat-icon>Add
                                                             </button>
                                                         </div>
                                                     </div>
@@ -434,9 +434,7 @@
                                                 </form>-->
                                             </div>
                                             <!-- Medicine Table Component -->
-                                            <app-medicine-table-new 
-                                                #medicineTableRef
-                                                [storeId]="vstoreId"
+                                            <app-medicine-table-new #medicineTableRef [storeId]="vstoreId"
                                                 [itemApiUrl]="'ItemMaster/GetItemListForPrescription?StoreId=' + vstoreId + '&ItemName='"
                                                 [autocompleteModeItemGeneric]="autocompleteModeItemGeneric"
                                                 [autocompleteModeDose]="autocompleteModeDose"
@@ -457,13 +455,33 @@
                                             <div fxLayout="row">
                                                 <div fxFlex="35%">
 
-                                                    <airmid-dropdown label="Service" formControlName="mAssignService"
-                                                        [formGroup]="caseFormGroup" #ddlService [IsMultiPle]="true"
-                                                        ValueField="serviceId" TextField="serviceName"
-                                                        ApiUrl="BillingService/GetServiceListwithGroupWise?TariffId=1&ClassId=1&IsPathRad=2&ServiceName=%"
+                                                    <airmid-dropdown label="Pathology Service"
+                                                        formControlName="mAssignService" [formGroup]="caseFormGroup"
+                                                        #ddlService [IsMultiPle]="true" ValueField="serviceId"
+                                                        TextField="serviceName"
+                                                        [ApiUrl]="'BillingService/GetServiceListwithGroupWise?TariffId=' + vTariffId + '&ClassId=' + vClassId + '&IsPathRad=1&ServiceName=%'"
                                                         [ReqFullObj]="true"
                                                         (selectionChange)="selectChangeServiceName($event)">
                                                     </airmid-dropdown>
+
+                                                    <!-- <airmid-dropdown label="Service" formControlName="mAssignService"
+                                                        [formGroup]="caseFormGroup" #ddlService [IsMultiPle]="true"
+                                                        ValueField="serviceId" TextField="serviceName"
+                                                        [ApiUrl]="'BillingService/GetServicewithGroupWiseList?TariffId=' + vTariffId + '&ClassId=' + vClassId + '&SrvcName=%'"
+                                                        [ReqFullObj]="true"
+                                                        (selectionChange)="selectChangeServiceName($event)">
+                                                    </airmid-dropdown> -->
+
+                                                    <!-- <airmid-dropdown label="Service" formControlName="mAssignService"  *ngIf="showServiceDropdown"
+                                                        [formGroup]="caseFormGroup" #ddlService [IsMultiPle]="true"
+                                                        ValueField="serviceId" TextField="serviceName"
+                                                        [ApiUrl]="serviceApiUrl" [ReqFullObj]="true"
+                                                        (selectionChange)="selectChangeServiceName($event)">
+                                                    </airmid-dropdown> -->
+
+                                                    <!-- 
+                                                        [ApiUrl]="'BillingService/GetServicewithGroupWiseList?TariffId=' + vTariffId + '&ClassId=' + vClassId + '&SrvcName=%'"
+                                                        ApiUrl="BillingService/GetServiceListwithGroupWise?TariffId=1&ClassId=1&IsPathRad=1&ServiceName=%" -->
 
                                                 </div>
 
@@ -471,6 +489,26 @@
                                                     <mat-chip *ngFor="let item of caseFormGroup.value.mAssignService">
                                                         {{ item.serviceName }} <mat-icon
                                                             (click)="removeService(item)">close</mat-icon>
+                                                    </mat-chip>
+                                                </mat-chip-listbox>
+                                            </div>
+                                            <div fxLayout="row">
+                                                <div fxFlex="35%">
+
+                                                    <airmid-dropdown label="Radiology Service"
+                                                        formControlName="mAssignService1" [formGroup]="caseFormGroup"
+                                                        #ddlService1 [IsMultiPle]="true" ValueField="serviceId"
+                                                        TextField="serviceName"
+                                                        [ApiUrl]="'BillingService/GetServiceListwithGroupWise?TariffId=' + vTariffId + '&ClassId=' + vClassId + '&IsPathRad=2&ServiceName=%'"
+                                                        [ReqFullObj]="true"
+                                                        (selectionChange)="selectChangeServiceName1($event)">
+                                                    </airmid-dropdown>
+                                                </div>
+
+                                                <mat-chip-listbox #chipList>
+                                                    <mat-chip *ngFor="let item of caseFormGroup.value.mAssignService1">
+                                                        {{ item.serviceName }} <mat-icon
+                                                            (click)="removeService1(item)">close</mat-icon>
                                                     </mat-chip>
                                                 </mat-chip-listbox>
                                             </div>
