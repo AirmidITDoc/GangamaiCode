@@ -47,14 +47,14 @@
                                     <div fxFlexFill fxLayout="row wrap" fxLayoutGap="10px">
                                         <airmid-autocomplete label="Item Name (enter 2 char)"
                                             [formGroup]="OPeningtemForm" formControlName="ItemName"
-                                            placeholderText="Item Name (enter 2 char)" fxFlex="15%"
+                                            placeholderText="Item Name (enter 2 char)" fxFlex="25%"
                                             [ApiUrl]="'ItemMaster/GetItemListForGRNOrPO?StoreId=' + (StoreId || '2') + '&ItemName='"
                                             (selectionChange)="getSelectedItem($event)" TextField="formattedText"
                                             ValueField="itemId"
                                             (onClearSelection)="ItemFromReset()"></airmid-autocomplete>
 
                                         <!-- how many strips are in 1 pack. -->
-                                        <airmid-textbox fxFlex="7%" label="Packing" formControlName="pack" [min]="0"
+                                        <airmid-textbox fxFlex="6%" label="Packing" formControlName="pack" [min]="0"
                                             [formGroup]="OPeningtemForm" type="number" (input)="calculateTotalQty()"
                                             placeholder="Packing"
                                             (keypress)="keyPressAlphanumeric($event)"></airmid-textbox>
@@ -74,22 +74,22 @@
                                         </mat-form-field>
 
                                         <!-- number of packs. (conversion factor)-->
-                                        <airmid-textbox fxFlex="7%" label="Qty" formControlName="stripQty"
+                                        <airmid-textbox fxFlex="5%" label="Qty" formControlName="stripQty"
                                             [(ngModel)]="vstrQty" [formGroup]="OPeningtemForm" type="number"
                                             placeholder="Qty" (input)="calculateTotalQty()" [min]="0"
                                             (keypress)="keyPressAlphanumeric($event)"></airmid-textbox>
 
-                                        <airmid-textbox fxFlex="7%" label="Total Qty" formControlName="totalQty"
+                                        <airmid-textbox fxFlex="6%" label="Total Qty" formControlName="totalQty"
                                             [formGroup]="OPeningtemForm" type="number" [readonly]="true"
                                             placeholder="Total Qty"></airmid-textbox>
 
-                                        <airmid-dropdown label="CGST/SGST" formControlName="CGST" fxFlex="8%"
+                                        <airmid-dropdown label="CGST/SGST" formControlName="CGST" fxFlex="6%"
                                             [formGroup]="OPeningtemForm" [mode]="autocompleteModeGSTTypesValues"
                                             (selectionChange)="getchangegstper($event)" [readonly]="isBatchSelected"
                                             (onClearSelection)="getchangegstper($event)">
                                         </airmid-dropdown>
 
-                                        <airmid-dropdown label="IGST" formControlName="IGST" fxFlex="7%" [readonly]="isBatchSelected"
+                                        <airmid-dropdown label="IGST" formControlName="IGST" fxFlex="6%" [readonly]="isBatchSelected"
                                             [formGroup]="OPeningtemForm" [mode]="autocompleteModeGSTTypesValues"
                                             (selectionChange)="getchangeIgstper($event)"> </airmid-dropdown>
 
@@ -102,7 +102,7 @@
                                             (input)="onLandedRateInput($event)" [min]="0" [readonly]="isBatchSelected"
                                             (keypress)="keyPressCharater($event)"></airmid-textbox>
 
-                                        <airmid-textbox fxFlex="7%" label="Rate PerUnit" formControlName="RatePerUnit"
+                                        <airmid-textbox fxFlex="6%" label="Rate PerUnit" formControlName="RatePerUnit"
                                             [formGroup]="OPeningtemForm" type="number" placeholder="Rate PerUnit"
                                             (input)="onRatePerUnitInput($event)" [min]="0"   
                                             (keypress)="keyPressCharater($event)"></airmid-textbox>

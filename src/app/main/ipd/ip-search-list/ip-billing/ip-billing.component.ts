@@ -941,6 +941,7 @@ export class IPBillingComponent implements OnInit {
         }
     }
     checkAdvBalAmt: any = 0;
+    DayLimitbal:any = 0;
     getbillbalamt() {
         this.AdvanceBalAmt = this.checkAdvBalAmt
         if (this.AdvanceBalAmt > 0) {
@@ -953,6 +954,31 @@ export class IPBillingComponent implements OnInit {
                 this.AdvanceBalAmt = balamt
                 this.BillBalAmount = 0;
             }
+        }
+        if ((this.selectedAdvanceObj?.dayWiseCredit || 0) > 0 && this.dataSource?.data.length) {
+            debugger
+            const today = new Date();
+            const todayDate =
+                String(today.getDate()).padStart(2, '0') + '/' +
+                String(today.getMonth() + 1).padStart(2, '0') + '/' +
+                today.getFullYear();
+
+            const todayNetAmt = Math.round(
+                this.dataSource.data
+                    .filter(item => item?.chargesDate === todayDate)
+                    .reduce((total, item) => total + (Number(item?.netAmount) || 0), 0)
+            );
+
+            if (this.selectedAdvanceObj?.dayWiseCredit > todayNetAmt) {
+                const daybalamt = this.selectedAdvanceObj?.dayWiseCredit - todayNetAmt
+                this.DayLimitbal = daybalamt
+            } 
+            // else {
+            //     const daybalamt = this.selectedAdvanceObj?.dayWiseCredit - todayNetAmt
+            //     this.DayLimitbal = daybalamt
+            // }
+
+            console.log('Today Net Amount:', todayNetAmt);
         }
     }
     //Charge list 

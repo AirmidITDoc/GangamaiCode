@@ -28,6 +28,12 @@ export class AppointmentBillService {
     public InsertOPBilling(param) {
         return this._httpClient1.PostData("OPBill/OPBillingInsert", param)
     }
+        public InsertOPDraftBilling(param) {
+        return this._httpClient1.PostData("OPBill/OPDraftBillInsert", param)
+    }
+    public InsertEditOPDraftBilling(param) {
+        return this._httpClient1.PostData("OPBill/OPDraftBillUpdate", param)
+    }
     public getRtevPackageDetList(param) {
         return this._httpClient1.PostData("BillingService/PackageDetailList", param);
     }
@@ -72,4 +78,10 @@ export class AppointmentBillService {
   //return this._httpClient1.PostData("Report/ViewReport", Param);
     return this._httpClient1.PostData("Common",Param)
 }
+    public getdraftchargeslist(param) {
+        return this._httpClient1.PostData("OPBill/OPDraftAddChargeslList", param)
+    }
+    public getdraftlist(param) {
+        return this._httpClient1.PostData("OPBill/OPDraftBillList", param)
+    }
 }

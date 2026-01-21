@@ -24,6 +24,7 @@ import { SalesbatchpopupComponent } from './salesbatchpopup/salesbatchpopup.comp
 import { SalePopupComponent } from '../sales/sale-popup/sale-popup.component';
 import { ConfigService } from 'app/core/services/config.service';
 import { SalesHospitalKenyaService } from './sales-hospital-kenya.service';
+import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 
 @Component({
     selector: 'app-sales-bill-kenya',
@@ -34,7 +35,7 @@ import { SalesHospitalKenyaService } from './sales-hospital-kenya.service';
 })
 export class SalesHospitalKenyaComponent {
     // Display Columns
-    DraftSaleDisplayedCol: string[] = ['Action', 'UHID', 'PatientName', 'NetAmt', 'MobileNo', 'UserName', 'DraftClose'];
+    DraftSaleDisplayedCol: string[] = ['Action', 'UHID', 'PatientName', 'NetAmt', 'MobileNo', 'UserName', 'DraftClose',];
     selectedSaleDisplayedCol = ['itemMolecule', 'ItemName', 'BatchNo', 'BatchExpDate', 'Qty', 'UnitMRP', 'GSTPer', 'GSTAmount', 'TotalMRP', 'DiscPer', 'DiscAmt', 'NetAmt', 'buttons'];
     DraftAvbStkListDisplayedCol = ['StoreName', 'BalQty'];
     // View Children
@@ -172,7 +173,8 @@ export class SalesHospitalKenyaComponent {
         public _RequestforlabtestService: RequestforlabtestService,
         public toastr: ToastrService,
         private _FormvalidationserviceService: FormvalidationserviceService,
-        public _ConfigService: ConfigService
+        public _ConfigService: ConfigService,
+        public commonService:PrintserviceService
     ) { }
 
     ngOnInit(): void {
@@ -1742,8 +1744,10 @@ export class SalesHospitalKenyaComponent {
             });
             console.log(this.PharmaSalesDraftForm.value)
             this._salesService.InsertSalesDraftBill(this.PharmaSalesDraftForm.value).subscribe((response) => {
+                console.log(response)
                 this.onClose()
                 this.getDraftorderList();
+                this.viewgetsalesDraftReportPdf(response);
             });
         }
         else {
@@ -1771,6 +1775,9 @@ export class SalesHospitalKenyaComponent {
             }
         }
     }
+    viewgetsalesDraftReportPdf(element){
+    this.commonService.Onprint("DSalesId", element, "OpDraftPharmacyReceipt");
+    } 
     draftpatientlist: any = [];
     draftextMobilenolist: any = [];
     onAddDraftList(contact) {
