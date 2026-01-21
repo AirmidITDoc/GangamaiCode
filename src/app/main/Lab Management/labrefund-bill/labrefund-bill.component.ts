@@ -20,9 +20,9 @@ import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
 import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
 import { HospitalConfigService } from 'app/core/services/hospital-config.service';
 import { OpPaymentComponent } from 'app/main/opd/op-search-list/op-payment/op-payment.component';
-import { LabPatientRegService } from 'app/main/pathology/lab-patient-reg/lab-patient-reg.service';
-import { LabPatientList } from 'app/main/pathology/lab-patient-reg/lab-patient-reg.component';
 import { permissionCodes } from 'app/main/shared/model/permission.model';
+import { LabPatientList } from '../lab-patient-reg/lab-patient-reg.component';
+import { LabPatientRegService } from '../lab-patient-reg/lab-patient-reg.service';
 
 
 @Component({

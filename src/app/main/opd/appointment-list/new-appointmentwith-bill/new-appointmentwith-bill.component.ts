@@ -18,15 +18,14 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { OpPaymentComponent } from 'app/main/opd/op-search-list/op-payment/op-payment.component';
 import { ConfigService } from 'app/core/services/config.service';
-import { ItemNameList } from 'app/main/purchase/purchase-order/purchase-order.component';
 import { HospitalConfigService } from 'app/core/services/hospital-config.service';
-import { debounce } from 'lodash';
 import { AppointmentlistService } from '../appointmentlist.service';
-import { LabPatientList, LabRequest } from 'app/main/pathology/lab-patient-reg/lab-patient-reg.component';
 import { ChargesList } from '../appointment-billing/appointment-billing.component';
 import { RegInsert } from '../../registration/registration.component';
 import { PreviousDeptListComponent } from '../update-reg-patient-info/previous-dept-list/previous-dept-list.component';
 import { PackageDetailsComponent } from '../appointment-billing/package-details/package-details.component';
+import { LabRequest } from 'app/main/Lab Management/lab-patient-reg/lab-patient-reg.component';
+
 @Component({
   selector: 'app-new-appointmentwith-bill',
   templateUrl: './new-appointmentwith-bill.component.html',

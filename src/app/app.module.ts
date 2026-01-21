@@ -91,11 +91,11 @@ const appRoutes: Routes = [
         loadChildren: () =>
             import("./main/pathology/pathology.module").then((m) => m.PathologyModule),
     },
-    // {
-    //     path: "radiology",
-    //     loadChildren: () =>
-    //         import("./main/radiology/radiology-order-list/radioloy-orderlist.module").then((m) => m.RadioloyOrderlistModule),
-    // },
+    {
+        path: "LabManagement",
+        loadChildren: () =>
+            import("./main/Lab Management/labmanagement.module").then((m) => m.LabmanagementModule),
+    },
     {
         path: "radiology",
         loadChildren: () =>

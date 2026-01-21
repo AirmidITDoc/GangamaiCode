@@ -7,14 +7,14 @@ import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
 import { gridColumnTypes } from "app/core/models/tableActions";
 import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
 import { ToastrService } from 'ngx-toastr';
-import { NursingPathRadRequestList } from '../sample-request/sample-request.component';
 import { MatTableDataSource } from '@angular/material/table';
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 import { LabSampleCollectionService } from './lab-sample-collection.service';
-import { SamplecollectionPageComponent } from '../sample-collection/samplecollection-page/samplecollection-page.component';
 import { permissionCodes, permissionType } from 'app/main/shared/model/permission.model';
 import { PagePermissionService } from 'app/main/shared/services/page-permission.service';
 import { AuthenticationService } from 'app/core/services/authentication.service';
+import { NursingPathRadRequestList } from 'app/main/pathology/sample-request/sample-request.component';
+import { SamplecollectionPageComponent } from 'app/main/pathology/sample-collection/samplecollection-page/samplecollection-page.component';
 
 @Component({
   selector: 'app-lab-sample-collection',

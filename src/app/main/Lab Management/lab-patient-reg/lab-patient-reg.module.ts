@@ -55,7 +55,8 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [LabPatientRegComponent, NewLabPatientRegComponent, LabRegBillDeatilsComponent, EstimateForPatientComponent, DiscountAfterFinalLabbillComponent, EditLabregComponent],
+  declarations: [LabPatientRegComponent, NewLabPatientRegComponent, LabRegBillDeatilsComponent, EstimateForPatientComponent, DiscountAfterFinalLabbillComponent, 
+    EditLabregComponent],
   imports: [
     CommonModule,
     RouterModule.forChild(routes),

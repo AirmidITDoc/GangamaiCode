@@ -22,9 +22,6 @@ import { WhatsAppEmailService } from 'app/main/shared/services/whats-app-email.s
 import { Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
 import { PageNames } from 'app/main/shared/componets/airmid-fileupload/airmid-fileupload.component';
-import { SamplecollectionPageComponent } from '../sample-collection/samplecollection-page/samplecollection-page.component';
-import { ConsoleLogger } from '@microsoft/signalr/dist/esm/Utils';
-import { Console } from 'console';
 import { EmailSendComponent } from 'app/main/shared/componets/email-send/email-send.component';
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
@@ -32,13 +29,14 @@ import { SMSDetailsPopupOverComponent } from 'app/main/shared/componets/email-se
 import { WhatsappDetPopUpOverComponent } from 'app/main/shared/componets/email-send/whatsapp-det-pop-up-over/whatsapp-det-pop-up-over.component';
 import { ToastrService } from 'ngx-toastr';
 import { LabResultListService } from './lab-result-list.service';
-import { PatientList, SampleDetailObj, SampleList } from '../result-entry/result-entry.component';
-import { OutsourceDetailsPopoverComponent } from '../result-entry/outsource-details-popover/outsource-details-popover.component';
-import { NewResultTemplateComponent } from '../result-entry/new-result-template/new-result-template.component';
-import { OutsourceDetailsComponent } from '../result-entry/outsource-details/outsource-details.component';
-import { NewResultEntryComponent } from '../result-entry/new-result-entry/new-result-entry.component';
 import { permissionCodes, permissionType } from 'app/main/shared/model/permission.model';
 import { PagePermissionService } from 'app/main/shared/services/page-permission.service';
+import { PatientList, SampleDetailObj, SampleList } from 'app/main/pathology/result-entry/result-entry.component';
+import { SamplecollectionPageComponent } from 'app/main/pathology/sample-collection/samplecollection-page/samplecollection-page.component';
+import { NewResultEntryComponent } from 'app/main/pathology/result-entry/new-result-entry/new-result-entry.component';
+import { NewResultTemplateComponent } from 'app/main/pathology/result-entry/new-result-template/new-result-template.component';
+import { OutsourceDetailsComponent } from 'app/main/pathology/result-entry/outsource-details/outsource-details.component';
+import { OutsourceDetailsPopoverComponent } from 'app/main/pathology/result-entry/outsource-details-popover/outsource-details-popover.component';
 
 function formatDate(rawDate: string): string {
   if (!rawDate) return '';
