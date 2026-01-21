@@ -74,7 +74,7 @@ export class RadioloyOrderlistService {
     }
 
     public getRadTemplateById(Id) {
-      debugger
+      // debugger
       return this._httpClient1.GetData("RadiologyTemplate/RadReportId/" + Id);
     }
     

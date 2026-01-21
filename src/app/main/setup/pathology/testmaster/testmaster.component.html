@@ -24,6 +24,12 @@
                     <mat-icon>edit</mat-icon>
                 </button>
 
+                <button mat-icon-button matTooltip="Test Settings" (click)="openSettings(element)">
+                    <mat-icon>
+                        list_alt
+                    </mat-icon>
+                </button>
+
                 <button mat-icon-button matTooltip="Delete" (click)="deactivateTestMaster(element)">
                     <mat-icon> delete</mat-icon>
                 </button>
@@ -64,24 +70,20 @@
                             <mat-icon>close</mat-icon>
                         </button>
                     </mat-form-field>
-                    <airmid-dropdown label="CategoryName" formControlName="CategoryId"
-                        [formGroup]="searchFormGroup" (selectionChange)="CatView($event)"
-                        [(ngModel)]="gridConfig.filters[1].fieldValue"
-                        [mode]="autocompleteModeCategoryId"
-                      ></airmid-dropdown>
+                    <airmid-dropdown label="CategoryName" formControlName="CategoryId" [formGroup]="searchFormGroup"
+                        (selectionChange)="CatView($event)" [(ngModel)]="gridConfig.filters[1].fieldValue"
+                        [mode]="autocompleteModeCategoryId"></airmid-dropdown>
 
                     <airmid-dropdown label="ServiceName" formControlName="ServiceId"
-                    (selectionChange)="ServiceView($event)"
-                        [(ngModel)]="gridConfig.filters[2].fieldValue"
-                        [formGroup]="searchFormGroup" [mode]="autocompleteModeServiceID"
-                       ></airmid-dropdown>
+                        (selectionChange)="ServiceView($event)" [(ngModel)]="gridConfig.filters[2].fieldValue"
+                        [formGroup]="searchFormGroup" [mode]="autocompleteModeServiceID"></airmid-dropdown>
 
-                        <mat-radio-group name="Istest" formControlName="Istest" fxLayout="row"
+                    <mat-radio-group name="Istest" formControlName="Istest" fxLayout="row"
                         [(ngModel)]="gridConfig.filters[3].fieldValue">
-                             <mat-radio-button value="2">All</mat-radio-button>
-                            <mat-radio-button value="0">IsTest</mat-radio-button>
-                            <mat-radio-button value="1">IsSubTest</mat-radio-button>
-                        </mat-radio-group>
+                        <mat-radio-button value="2">All</mat-radio-button>
+                        <mat-radio-button value="0">IsTest</mat-radio-button>
+                        <mat-radio-button value="1">IsSubTest</mat-radio-button>
+                    </mat-radio-group>
                 </form>
             </ng-container>
         </airmid-table>

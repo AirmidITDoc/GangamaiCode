@@ -13,6 +13,7 @@ import { gridModel, OperatorComparer } from "app/core/models/gridRequest";
 import { gridColumnTypes } from "app/core/models/tableActions";
 import { AirmidTableComponent } from "app/main/shared/componets/airmid-table/airmid-table.component";
 import Swal from "sweetalert2";
+import { TestSettingsComponent } from "./test-settings/test-settings.component";
 
 @Component({
   selector: "app-testmaster",
@@ -153,10 +154,21 @@ export class TestmasterComponent implements OnInit {
       });
     dialogRef.afterClosed().subscribe(result => {
       this.grid.bindGridData();
-
     });
   }
 
+  openSettings(row: any = null) {
+    const dialogRef = this._matDialog.open(TestSettingsComponent,
+      {
+        maxWidth: "90vw",
+        width: '95%',
+        height: '95%',
+        data: row
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      this.grid.bindGridData();
+    });
+  }
 
   deactivateTestMaster(row) {
     Swal.fire({

@@ -27,10 +27,7 @@ export class ResultEntryComponent implements OnInit {
 
   Tempdesc: any;
   isSelected: boolean = false;
-  onBlur(e: any) {
-    this.vTemplateDesc = e.target.innerHTML;
-    throw new Error('Method not implemented.');
-  }
+
   filteredrefdr: Observable<string[]>;
   optionsDoc1: any[] = [];
   msg: any;
@@ -40,7 +37,7 @@ export class ResultEntryComponent implements OnInit {
   reportPrintObj: RadiologyPrint;
   regobj: RadiologyPatienInsert;
   vTemplateDesc: any = "";
-   screenFromString = 'Common-form';
+  screenFromString = 'Common-form';
   isresultdrSelected: boolean = false;
   templatelist: any = [];
   Doctorlist: any = [];
@@ -68,6 +65,7 @@ export class ResultEntryComponent implements OnInit {
   GenderName: any;
   RefDocName: any;
   WardName: any;
+  bedName: any;
   RegNo: any;
   vOPIPId: any;
   VisitId: any;
@@ -121,13 +119,14 @@ export class ResultEntryComponent implements OnInit {
     if (this.advanceDataStored.storage) {
       this.selectedAdvanceObj = this.advanceDataStored.storage;
       this.TemplateId == this.selectedAdvanceObj.TemplateId;
-   
+
       console.log(this.selectedAdvanceObj)
     }
   }
   RaioInsertForm: FormGroup;
   ngOnInit(): void {
-this.RaioInsertForm = this.createradioInsert();
+    this.RaioInsertForm = this.createradioInsert();
+
     if (this.data) {
       this.regObj = this.data
       console.log(this.regObj)
@@ -136,27 +135,28 @@ this.RaioInsertForm = this.createradioInsert();
       this.VisitId = this.regObj.visitId
       this.RegId = this.regObj.regId
       this.PatientName = this.regObj.patientName
-      this.Doctorname = this.regObj.doctorName
-      this.vOPDIPdNo = this.regObj.oP_IP_No
+      this.Doctorname = this.regObj.doctorName || this.regObj.consultantDoctor
+      this.vOPDIPdNo = this.regObj.oP_IP_Number
       this.AgeYear = this.regObj.ageYear
       this.AgeMonth = this.regObj.ageMonth
       this.AgeDay = this.regObj.ageDay
-      this.GenderName = this.regObj.genderName
+      this.GenderName = this.regObj.genderName.split('|')[1]
       this.DepartmentName = this.regObj.departmentName
       this.PatientType = this.regObj.patientType
       this.Tarrifname = this.regObj.tariffName
       this.CompanyName = this.regObj.companyName
-      this.RefDocName = this.regObj.refDocName
+      this.RefDocName = this.regObj.refDocName || this.regObj.refDoctor
       this.vClassId = this.regObj.classId
       this.Lbl = this.regObj.lbl
       this.DOA = this.regObj.doa
       this.DOT = this.regObj.dot
-      this.WardName = this.regObj.wardName
-         this._radiologytemplateService.myform.get("TemplateName").setValue(this.TemplateId)
+      this.WardName = this.regObj.roomName
+      this.bedName = this.regObj.bedName
+      this._radiologytemplateService.myform.get("TemplateName").setValue(this.TemplateId)
     }
-    this.getTemplateList(this.regObj);
-
-    this.RaioInsertForm = this.createradioInsert();
+    if (this.data.isCompleted==true) {
+      this.getTemplateList(this.regObj);
+    }
   }
 
 
@@ -174,7 +174,7 @@ this.RaioInsertForm = this.createradioInsert();
       suggestionNotes: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
       admVisitDoctorId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       refDoctorId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      resultEntry: ['', [ Validators.required,this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+      resultEntry: ['', [Validators.required, this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
 
     });
   }
@@ -183,7 +183,6 @@ this.RaioInsertForm = this.createradioInsert();
 
   selectChangeTemplateName(row) {
     console.log("Template:", row)
-    debugger
     this.Tempdesc = row.templateDesc
     if (row.templateId)
       this.isSelected = true
@@ -193,15 +192,15 @@ this.RaioInsertForm = this.createradioInsert();
     this.vTemplateDesc = this.Tempdesc
   }
 
-    onEditorValueChange(content: string) {
-        this._radiologytemplateService.myform.get('ResultEntry')?.setValue(content);
-    }
+  onEditorValueChange(content: string) {
+    this._radiologytemplateService.myform.get('ResultEntry')?.setValue(content);
+  }
 
 
   RadReportId = 0
   templateObj: any;
   getTemplateList(row) {
-    debugger
+    // debugger
     console.log("data:", row)
     this.RadReportId = row.radReportId
     if ((this.RadReportId ?? 0) > 0) {
@@ -209,27 +208,28 @@ this.RaioInsertForm = this.createradioInsert();
         this._radiologytemplateService.getRadTemplateById(this.RadReportId).subscribe((response) => {
           this.templateObj = response;
           console.log("all data:", this.templateObj)
-          if(this.templateObj.isCompleted){
-          this.vTemplateDesc = this.templateObj.resultEntry
-          this.vsuggestionNotes = this.templateObj.suggestionNotes
-          
-          }else
-            this.isSelected=true
+          if (this.templateObj.isCompleted) {
+            this.vTemplateDesc = this.templateObj.resultEntry
+            this.vsuggestionNotes = this.templateObj.suggestionNotes
+            this._radiologytemplateService.myform.get("DoctorId").setValue(this.templateObj.refDoctorId)
+          } else {
+            this.isSelected = true
+          }
         });
       }, 500);
     }
   }
 
-    VpathResultDr1 = 0
+  VpathResultDr1 = 0
   selectChangeDoctorName(row) {
     this.VpathResultDr1 = row.value
   }
-  
+
 
   onSubmit() {
     console.log(this._radiologytemplateService.myform.value)
 
-debugger
+    // debugger
     if (this._radiologytemplateService.myform.get("ResultEntry")?.value == '' || this._radiologytemplateService.myform.get("ResultEntry")?.value == undefined) {
       this.toastr.warning('Please Enter Result Entry ', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
@@ -237,49 +237,32 @@ debugger
       return;
     }
 
-      if (this._radiologytemplateService.myform.get("DoctorId")?.value == '' || this._radiologytemplateService.myform.get("DoctorId")?.value == undefined) {
+    if (this._radiologytemplateService.myform.get("DoctorId")?.value == '' || this._radiologytemplateService.myform.get("DoctorId")?.value == undefined) {
       this.toastr.warning('Please Select Doctor', 'Warning !', {
         toastClass: 'tostr-tost custom-toast-warning',
       });
       return;
     }
-      
-    if (this.regObj.radReportId) {
 
-      // var m_dataUpdate = {
-      //   "radReportId": this.regObj.radReportId || 0,
-      //   "reportDate": formattedDate,
-      //   "reportTime": formattedTime,
-      //   "isCompleted": true,
-      //   "isPrinted": true,
-      //   "radResultDr1": this._radiologytemplateService.myform.get("DoctorId").value || 0,
-      //   "radResultDr2": 0,
-      //   "radResultDr3": 0,
-      //   "suggestionNotes": this._radiologytemplateService.myform.get("suggestionNotes").value || '',
-      //   "admVisitDoctorId": 0,
-      //   "refDoctorId": this._radiologytemplateService.myform.get("DoctorId").value || 1,
-      //   "resultEntry": this._radiologytemplateService.myform.get("ResultEntry")?.value || 'abc',
-      // }
-      //
+    if (this.regObj.radReportId) {
 
       this.RaioInsertForm.get("radReportId").setValue(this.regObj.radReportId || 0)
       this.RaioInsertForm.get("radResultDr1").setValue(this._radiologytemplateService.myform.get("DoctorId").value || 10)
       this.RaioInsertForm.get("suggestionNotes").setValue(this._radiologytemplateService.myform.get("suggestionNotes").value || '')
       this.RaioInsertForm.get("refDoctorId").setValue(this._radiologytemplateService.myform.get("DoctorId").value || 0)
-      this.RaioInsertForm.get("resultEntry").setValue(this._radiologytemplateService.myform.get("ResultEntry")?.value || 'abc')
+      this.RaioInsertForm.get("resultEntry").setValue(this._radiologytemplateService.myform.get("ResultEntry")?.value || '')
       this.RaioInsertForm.get("reportDate").setValue(this.datePipe.transform(new Date(), 'yyyy-MM-dd'))
       this.RaioInsertForm.get("reportTime").setValue(this.dateTimeObj.time)
 
       console.log(this.RaioInsertForm.value);
       this._radiologytemplateService.RadiologyUpdate(this.RaioInsertForm.value).subscribe(data => {
-        console.log()
-        this.dialogRef.close();
+        this.onClear();
         this.viewgetRadioloyTemplateReportPdf(this.regObj);
       });
-      } else {
-        let invalidFields =[];
+    } else {
+      let invalidFields = [];
 
-        if(this.RaioInsertForm.invalid) {
+      if (this.RaioInsertForm.invalid) {
         for (const controlName in this.RaioInsertForm.controls) {
           if (this.RaioInsertForm.controls[controlName].invalid) {
             invalidFields.push(`RadioInsertForm Form: ${controlName}`);
@@ -294,66 +277,67 @@ debugger
       }
 
     }
-  
-}
-  
+
+  }
 
 
-viewgetRadioloyTemplateReportPdf(contact) {
-  debugger
-  setTimeout(() => {
-    let param = {
-      "searchFields": [
-        {
-          "fieldName": "RadReportId",
-          "fieldValue": String(contact.radReportId),
-          "opType": "Equals"
-        },
-        {
-          "fieldName": "OP_IP_Type",
-          "fieldValue": String(contact.opdipdtype),
-          "opType": "Equals"
-        }
-      ],
-      "mode": "RadiologyTemplateReportWithHeader"
-    }
-
-    this._radiologytemplateService.getReportView(param).subscribe(res => {
-
-      const matDialog = this._matDialog.open(PdfviewerComponent,
-        {
-          maxWidth: "85vw",
-          height: '750px',
-          width: '100%',
-          data: {
-            base64: res["base64"] as string,
-            title: "Radiology Template Report" + " " + "Viewer"
+  viewgetRadioloyTemplateReportPdf(contact) {
+    // debugger
+    setTimeout(() => {
+      let param = {
+        "searchFields": [
+          {
+            "fieldName": "RadReportId",
+            "fieldValue": String(contact.radReportId),
+            "opType": "Equals"
+          },
+          {
+            "fieldName": "OP_IP_Type",
+            "fieldValue": String(contact.opdipdtype),
+            "opType": "Equals"
           }
+        ],
+        "mode": "RadiologyTemplateReportWithHeader"
+      }
+
+      this._radiologytemplateService.getReportView(param).subscribe(res => {
+
+        const matDialog = this._matDialog.open(PdfviewerComponent,
+          {
+            maxWidth: "85vw",
+            height: '750px',
+            width: '100%',
+            data: {
+              base64: res["base64"] as string,
+              title: "Radiology Template Report" + " " + "Viewer"
+            }
+          });
+        matDialog.afterClosed().subscribe(result => {
         });
-      matDialog.afterClosed().subscribe(result => {
       });
-    });
-  }, 100);
-}
+    }, 100);
+  }
 
-onEdit(row) {
+  onEdit(row) {
+    this._radiologytemplateService.populateForm(row);
+  }
 
-  this._radiologytemplateService.populateForm(row);
-}
+  dateTimeObj: any;
+  getDateTime(dateTimeObj) {
+    this.dateTimeObj = dateTimeObj;
+  }
 
-dateTimeObj: any;
-getDateTime(dateTimeObj) {
-  this.dateTimeObj = dateTimeObj;
-}
+  onClear() {
+    this._radiologytemplateService.myform.get("ResultEntry")?.setValue('')
+    this._radiologytemplateService.myform.get("DoctorId")?.setValue('')
+    // this._radiologytemplateService.myform.reset();
+    this.dialogRef.close();
+  }
 
-onClear() {
-  this._radiologytemplateService.myform.reset();
-}
-
-onClose() {
-  // this._radiologytemplateService.myform.reset();
-  this.dialogRef.close();
-}
+  onClose() {
+    // this._radiologytemplateService.myform.reset();
+    this.dialogRef.close();
+  }
 
 }
 

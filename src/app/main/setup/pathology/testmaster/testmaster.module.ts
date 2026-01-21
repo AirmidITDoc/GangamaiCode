@@ -38,6 +38,7 @@ import { NgxMatSelectSearchModule } from "ngx-mat-select-search";
 import { TestFormMasterComponent } from "./test-form-master/test-form-master.component";
 import { TestmasterComponent } from "./testmaster.component";
 import { TestmasterService } from "./testmaster.service";
+import { TestSettingsComponent } from './test-settings/test-settings.component';
 
 const routes: Routes = [
     {
@@ -47,7 +48,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    declarations: [TestmasterComponent, TestFormMasterComponent],
+    declarations: [TestmasterComponent, TestFormMasterComponent, TestSettingsComponent],
     imports: [
         DragDropModule,
         RouterModule.forChild(routes),

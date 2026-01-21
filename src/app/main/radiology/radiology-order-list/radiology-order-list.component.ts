@@ -87,7 +87,7 @@ export class RadiologyOrderListComponent implements OnInit {
         { heading: "UHID", key: "regNo", sort: true, align: 'left', emptySign: 'NA', width: 70 },
         { heading: "Patient Name ", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 230 },
         { heading: "Age | Gender", key: "genderName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
-        { heading: "Test Name", key: "serviceName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
+        { heading: "Test Name", key: "testName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
         { heading: "Admission No", key: "oP_IP_Number", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "Bill No", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "DoctorName", key: "consultantDoctor", sort: true, align: 'left', emptySign: 'NA', width: 150 },
@@ -192,7 +192,6 @@ export class RadiologyOrderListComponent implements OnInit {
     }
 
     onSave(row: any = null) {
-        debugger
         let that = this;
         const dialogRef = this._matDialog.open(ResultEntryComponent,
             {
@@ -206,8 +205,34 @@ export class RadiologyOrderListComponent implements OnInit {
         });
     }
 
+    getPrint(contact) {
+
+        console.log(contact)
+
+        if (contact.isTemplateTest)
+
+            Swal.fire({
+                title: 'Select Report Format',
+                text: "Choose how you want to view the report:",
+                icon: "warning",
+                showDenyButton: true,
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                denyButtonColor: "#6c757d",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "With Header",
+                denyButtonText: "Without Header",
+            }).then((result) => {
+
+                if (result.isConfirmed) {
+                    this.viewgetRadioloyTemplateReportPdf(contact);
+                } else if (result.isDenied) {
+                    this.viewgetRadioloyTemplateReportPdf1(contact);
+                }
+            });
+    }
+
     viewgetRadioloyTemplateReportPdf(contact) {
-        debugger
         setTimeout(() => {
             let param = {
                 "searchFields": [
@@ -223,6 +248,42 @@ export class RadiologyOrderListComponent implements OnInit {
                     }
                 ],
                 "mode": "RadiologyTemplateReportWithHeader"
+            }
+
+            this._RadioloyOrderlistService.getReportView(param).subscribe(res => {
+
+                const matDialog = this._matDialog.open(PdfviewerComponent,
+                    {
+                        maxWidth: "85vw",
+                        height: '750px',
+                        width: '100%',
+                        data: {
+                            base64: res["base64"] as string,
+                            title: "Radiology Template Report" + " " + "Viewer"
+                        }
+                    });
+                matDialog.afterClosed().subscribe(result => {
+                });
+            });
+        }, 100);
+    }
+
+    viewgetRadioloyTemplateReportPdf1(contact) {
+        setTimeout(() => {
+            let param = {
+                "searchFields": [
+                    {
+                        "fieldName": "RadReportId",
+                        "fieldValue": String(contact.radReportId),
+                        "opType": "Equals"
+                    },
+                    {
+                        "fieldName": "OP_IP_Type",
+                        "fieldValue": String(contact.opdipdtype),
+                        "opType": "Equals"
+                    }
+                ],
+                "mode": "RadiologyTemplateReportWithoutHeader"
             }
 
             this._RadioloyOrderlistService.getReportView(param).subscribe(res => {
@@ -295,7 +356,7 @@ export class RadiologyOrderListComponent implements OnInit {
                 };
                 console.log(submitData);
                 this._RadioloyOrderlistService.RadioReportverifyMaster(submitData).subscribe(response => {
-
+                    this.grid.bindGridData();
                 });
             }
         });

@@ -1,0 +1,166 @@
+<div class="modal-wrapper grid-container">
+    <div class="modal-header accent">
+        <div class="modal-header-content">
+            <div class="modal-header-title">
+                <span [@animate]="{ value: '*', params: { delay: '100ms', x: '-25px' } }">
+                    Test Settings
+                </span>
+            </div>
+            <div class="modal-header-right">
+                <div class="close-icon">
+                    <button mat-icon-button tabIndex="-1" (click)="onClose(false)" matTooltip="Close">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-body labpatientMiddle">
+        <div class="modal-body-container">
+
+            <div class="main-content h-100-p overflow-auto ml-8">
+
+                <div class="personal-panel">
+                    <mat-accordion multi>
+                        <mat-expansion-panel expanded class="mt-12">
+                            <mat-expansion-panel-header>
+                                <mat-panel-title>Specimen Details</mat-panel-title>
+                            </mat-expansion-panel-header>
+
+                            <form [formGroup]="testSettingForm">
+                                <div fxLayout="row wrap" fxLayoutGap="12px 0px grid">
+                                    <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                        <airmid-dropdown label="Specimen Type" formControlName="specimenId"
+                                            [value]="data?.specimenId" [formGroup]="testSettingForm"></airmid-dropdown>
+                                    </div>
+
+                                    <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                        <airmid-textbox label="Specimen Qty" formControlName="specimenQty"
+                                            (keypress)="keyPressAlphanumeric($event)" [formGroup]="testSettingForm"
+                                            [value]="data?.specimenQty">
+                                        </airmid-textbox>
+                                    </div>
+
+                                    <!-- Fresh / Preserved / Frozen -->
+                                    <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                        <airmid-dropdown label="Specimen Condition" formControlName="specimenConId"
+                                            [value]="data?.specimenConId"
+                                            [formGroup]="testSettingForm"></airmid-dropdown>
+                                    </div>
+                                </div>
+
+                            </form>
+
+                        </mat-expansion-panel>
+
+                        <mat-expansion-panel expanded class="mt-12">
+                            <mat-expansion-panel-header>
+                                <mat-panel-title>Barcode, Disease & Consent</mat-panel-title>
+                            </mat-expansion-panel-header>
+                            <form [formGroup]="testSettingForm">
+                                <div fxLayout="row wrap" fxLayoutGap="12px 0px grid">
+
+                                    <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                        <airmid-textbox label="Barcode Label" formControlName="barcode"
+                                            [formGroup]="testSettingForm" [value]="data?.barcode">
+                                        </airmid-textbox>
+                                    </div>
+
+                                    <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                        <airmid-dropdown label="Disease Condition" formControlName="disease"
+                                            [value]="data?.disease" [formGroup]="testSettingForm"></airmid-dropdown>
+                                    </div>
+
+                                    <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                        <app-airmid-slider label="Consent Required" formControlName="isConsent"
+                                            [formGroup]="testSettingForm"></app-airmid-slider>
+                                    </div>
+                                </div>
+                            </form>
+                        </mat-expansion-panel>
+
+                        <mat-expansion-panel expanded class="mt-12">
+                            <mat-expansion-panel-header>
+                                <mat-panel-title>Test Information</mat-panel-title>
+                            </mat-expansion-panel-header>
+                            <form [formGroup]="testSettingForm">
+                                <div fxLayout="row wrap" fxLayoutGap="12px 0px grid">
+                                    <!-- instruction to report test -->
+                                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                        <airmid-textbox label="Reported" formControlName="reported"
+                                            [formGroup]="testSettingForm" [value]="data?.reported">
+                                        </airmid-textbox>
+                                    </div>
+
+                                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                        <airmid-textbox label="Information" formControlName="information"
+                                            [formGroup]="testSettingForm" [value]="data?.information">
+                                        </airmid-textbox>
+                                    </div>
+
+                                    <div fxFlex="30%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                        <app-airmid-slider label="Fasting Required" formControlName="isFasting"
+                                            [formGroup]="testSettingForm"></app-airmid-slider>
+                                    </div>
+                                </div>
+                            </form>
+                        </mat-expansion-panel>
+
+                        <mat-expansion-panel expanded class="mt-12">
+                            <mat-expansion-panel-header>
+                                <mat-panel-title>TAT (Turnaround Time)</mat-panel-title>
+                            </mat-expansion-panel-header>
+
+                            <form [formGroup]="testSettingForm">
+                                <div fxLayout="row wrap" fxLayoutGap="12px grid">
+
+                                    <!-- Days -->
+                                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                        <mat-form-field appearance="outline" fxFlex>
+                                            <mat-label>Days</mat-label>
+                                            <input matInput type="number" min="0" formControlName="days"
+                                                placeholder="0" />
+                                        </mat-form-field>
+                                    </div>
+
+                                    <!-- Hours -->
+                                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                        <mat-form-field appearance="outline" fxFlex>
+                                            <mat-label>Hours</mat-label>
+                                            <input matInput type="number" min="0" max="23" formControlName="hrs"
+                                                placeholder="0" />
+                                        </mat-form-field>
+                                    </div>
+
+                                    <!-- Minutes -->
+                                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                                        <mat-form-field appearance="outline" fxFlex>
+                                            <mat-label>Minutes</mat-label>
+                                            <input matInput type="number" min="0" max="59" formControlName="min"
+                                                placeholder="0" />
+                                        </mat-form-field>
+                                    </div>
+
+                                </div>
+                            </form>
+                        </mat-expansion-panel>
+
+
+                    </mat-accordion>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <div class="footer-navigation-container">
+            <div class="modal-footer-buttons">
+                <button class="btn btn-danger-outline" (click)="onClose(false)">Close</button>
+                <button type="button" class="btn btn-primary" (click)="onSubmit()">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
