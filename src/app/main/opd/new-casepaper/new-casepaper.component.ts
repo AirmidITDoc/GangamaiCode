@@ -1172,13 +1172,20 @@ export class NewCasepaperComponent implements OnInit {
             this.RtrvTestServiceList = response.data
             if (Array.isArray(this.RtrvTestServiceList) && this.RtrvTestServiceList.length > 0) {
                 this.RtrvTestServiceList.forEach(element => {
-                    this.selectedItems.push({
+                    // this.selectedItems.push({
+                    //     serviceId: element.serviceId || 0,
+                    //     serviceName: element.serviceName || ''
+                    // });
+                    const item = {
                         serviceId: element.serviceId || 0,
                         serviceName: element.serviceName || ''
-                    });
+                    };
+
+                    this.selectedItems.push(item);
+                    this.selectedItems1.push(item);
                 });
                 this.caseFormGroup.get('mAssignService').setValue(this.selectedItems);
-                this.caseFormGroup.get('mAssignService1').setValue(this.selectedItems);
+                this.caseFormGroup.get('mAssignService1').setValue(this.selectedItems1);
             }
         })
     }
