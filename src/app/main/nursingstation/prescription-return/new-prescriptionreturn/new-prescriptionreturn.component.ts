@@ -33,7 +33,7 @@ export class NewPrescriptionreturnComponent implements OnInit {
   registerObj = new RegInsert({});
   RegId: any;
   PatientName: any;
-  OP_IP_Id: any;
+  OP_IP_Id: any=0;
   sIsLoading: string = '';
   OP_IPType: any = 1;
   ItemName: any;

@@ -38,6 +38,7 @@ export class NewIndentComponent implements OnInit {
   vItemId: any;
   ItemName: any;
   vstoreId:any;
+  storeId=0
   vQty: any;
   chargeslist: any = [];
   vRemark: any;
@@ -73,8 +74,12 @@ export class NewIndentComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    debugger
     this.vstoreId = this._loggedService.currentUserValue.user.storeId;
+      this.storeId = this._loggedService.currentUserValue.user.storeId;
+
     this.ApiUrl = `ItemMaster/GetItemListForGRNOrPO?StoreId=${this.vstoreId}&ItemName=`
+        // this.ApiUrl = `ItemMaster/GetItemListForGRNOrPOBySp?StoreId=${this.vstoreId}&ItemName=`
     this.IndentSaveFrom = this.CreateIndentSaveFrom();
     this.IndentForm = this._IndentService.createnewindentfrom();
     this.IndentSaveFrom.markAllAsTouched();

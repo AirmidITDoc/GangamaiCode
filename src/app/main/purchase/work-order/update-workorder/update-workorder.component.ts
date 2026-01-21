@@ -128,7 +128,7 @@ export class UpdateWorkorderComponent implements OnInit {
         storeId: [this.accountService.currentUserValue.user.storeId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
         supplierID: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
         totalAmount: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-        vatAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        vatAmount: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
         discAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
         netAmount: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
         isclosed: false,
@@ -619,7 +619,7 @@ export class UpdateWorkorderComponent implements OnInit {
     const formattedTime = this.datePipe.transform(new Date(), "HH:mm:ss");
     this.workOrderForm.get('workOrders.date').setValue(formattedDate);
     this.workOrderForm.get('workOrders.time').setValue(formattedDate + ' ' + formattedTime);
-
+    debugger
     this.workOrderForm.get('workOrders.supplierID').setValue(this.WorkOrderStoreForm.get("SupplierName").value)
     this.workOrderForm.get('workOrders.totalAmount').setValue(this.WorkorderFinalForm.get("totalAmount").value)
     this.workOrderForm.get('workOrders.vatAmount').setValue(this.WorkorderFinalForm.get("vatAmount").value)
@@ -627,13 +627,16 @@ export class UpdateWorkorderComponent implements OnInit {
     this.workOrderForm.get('workOrders.netAmount').setValue(this.WorkorderFinalForm.get("netAmount").value)
     this.workOrderForm.get('workOrders.remark').setValue(this.WorkorderFinalForm.get("Remark").value)
 
-    debugger
-    if (!this.workOrderForm.invalid) {
 
-      this.workOrderArray.clear();
-      this.dsItemNameList.data.forEach(item => {
-        this.workOrderArray.push(this.createworkOrderInsert(item));
-      });
+
+
+    this.workOrderArray.clear();
+    this.dsItemNameList.data.forEach(item => {
+      this.workOrderArray.push(this.createworkOrderInsert(item));
+    });
+    console.log(this.workOrderForm.value)
+    console.log(this.WorkorderFinalForm.value)
+    // if (!this.workOrderForm.invalid) {
 
       if (this.vWorkId == 0) {
         (this.workOrderForm.get('workOrders') as FormGroup).removeControl('updatedBy');
@@ -658,31 +661,31 @@ export class UpdateWorkorderComponent implements OnInit {
 
         });
       }
-    } else {
-      let invalidFields = [];
+    // } else {
+    //   let invalidFields = [];
 
-      if (this.WorkorderFinalForm.invalid) {
-        for (const controlName in this.WorkorderFinalForm.controls) {
-          if (this.WorkorderFinalForm.controls[controlName].invalid) {
-            invalidFields.push(`Final Form: ${controlName}`);
-          }
-        }
-      }
-      if (this.WorkOrderStoreForm.invalid) {
-        for (const controlName in this.WorkOrderStoreForm.controls) {
-          if (this.WorkOrderStoreForm.controls[controlName].invalid) {
-            invalidFields.push(`Store Form: ${controlName}`);
-          }
-        }
-      }
-      if (invalidFields.length > 0) {
-        invalidFields.forEach(field => {
-          this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
-          );
-        });
-      }
+    //   if (this.workOrderForm.invalid) {
+    //     for (const controlName in this.workOrderForm.controls) {
+    //       if (this.workOrderForm.controls[controlName].invalid) {
+    //         invalidFields.push(`Final Form: ${controlName}`);
+    //       }
+    //     }
+    //   }
+    //   if (this.WorkOrderStoreForm.invalid) {
+    //     for (const controlName in this.WorkOrderStoreForm.controls) {
+    //       if (this.WorkOrderStoreForm.controls[controlName].invalid) {
+    //         invalidFields.push(`Store Form: ${controlName}`);
+    //       }
+    //     }
+    //   }
+    //   if (invalidFields.length > 0) {
+    //     invalidFields.forEach(field => {
+    //       this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
+    //       );
+    //     });
+    //   }
 
-    }
+    // }
   }
 
   viewgetWorkorderReportPdf(element) {

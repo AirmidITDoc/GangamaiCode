@@ -126,4 +126,17 @@ export enum permissionCodes {
     // External lab
     LabPatientRegistration = 'LabPatientRegistration',
     ExternalInvestigation = 'ExternalInvestigation',
+
+    // Purchase
+    PurchaseOrder = 'PurchaseOrder',
+    OpeningBalance = 'OpeningBalance',
+    GRN = 'GRN',
+    GRNReturn = 'GRNReturn',
+    WorkOrder = 'WorkOrder',
+
+    // Inventory
+    IssueToDepartment = 'IssueToDepartment',
+    MaterialConsumption = 'MaterialConsumption',
+    // WorkOrder = 'WorkOrder',
+    Indent = 'Indent',
 }

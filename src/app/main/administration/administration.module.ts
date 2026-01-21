@@ -55,10 +55,10 @@ const appRoutes: Routes = [
     path: "paymentmodechangesforpharmacy",
     loadChildren: () => import("./paymentmodechangesfor-pharmacy/paymentmodechangesfor-pharmacy.module").then((m) => m.PaymentmodechangesforPharmacyModule),
   },
-  //  {
-  //   path:"tallyinterface",
-  //   loadChildren: () => import("./tally-interface/tally-interface.module").then((m)=>m.TallyInterfaceModule),
-  //  },
+   {
+    path:"tallyinterface",
+    loadChildren: () => import("./tally-interface/tally-interface.module").then((m)=>m.TallyInterfaceModule),
+   },
   {
     path: "dischargecancel",
     loadChildren: () => import("./new-administrative-task/administrativetask.module").then((m) => m.AdministrativetaskModule),

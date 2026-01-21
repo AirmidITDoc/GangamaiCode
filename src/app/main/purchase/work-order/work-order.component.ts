@@ -12,6 +12,10 @@ import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/air
 import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
 import { gridColumnTypes } from 'app/core/models/tableActions';
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
+import { permissionCodes, permissionType } from 'app/main/shared/model/permission.model';
+import { PagePermissionService } from 'app/main/shared/services/page-permission.service';
+
+
 
 @Component({
   selector: 'app-work-order',
@@ -21,7 +25,8 @@ import { PrintserviceService } from 'app/main/shared/services/printservice.servi
   animations: fuseAnimations,
 })
 export class WorkOrderComponent implements OnInit {
-
+IsAdd: boolean = this.permissionService.getPermission(permissionCodes.WorkOrder, permissionType.Add);
+  
   myform: FormGroup;
   autocompletestore: string = "Store";
   autocompleteSupplier: string = "SupplierMaster"
@@ -54,11 +59,13 @@ export class WorkOrderComponent implements OnInit {
   ];
 
   constructor(public _WorkOrderService: WorkOrderService, public _matDialog: MatDialog, public datePipe: DatePipe,
-    private commonService: PrintserviceService,
+    private commonService: PrintserviceService,public permissionService: PagePermissionService,
     public toastr: ToastrService, private _formBuilder: UntypedFormBuilder, private accountService: AuthenticationService,) { }
 
   @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
   gridConfig: gridModel = {
+     permissionCode: permissionCodes.WorkOrder,
+
     apiUrl: "WorkOrder/WorkOrderHeaderList",
     columnsList: this.allcolumns,
     sortField: "WOId",

@@ -1809,6 +1809,7 @@ export class NewGrnComponent implements OnInit, OnDestroy {
         });
         console.log(this.PoToGrnSaveForm.value)
         if (this.PoToGrnSaveForm.valid) {
+            debugger
             if (!this.registerObj?.grnid) {
                 //New GRN Save
                 this._GRNList.POtoGRNSave(this.PoToGrnSaveForm.value).subscribe(response => {

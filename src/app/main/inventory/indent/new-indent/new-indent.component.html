@@ -44,13 +44,16 @@
                                     </mat-slide-toggle>
                                 </div>
                             </from>
+
+                            
                             <form [formGroup]="IndentForm">
                                 <div  fxLayout="row" fxLayoutGap="8px">
                                     <airmid-autocomplete label="Item Name (enter 2 char)" [formGroup]="IndentForm"
                                         formControlName="ItemName" placeholderText="Item Name (enter 2 char)"
+                                        [ApiUrl]="'ItemMaster/search-GetItemListForIndent?StoreId=' + storeId + '&ItemName='"
+                                        
                                         fxFlex="38%"
-                                        ApiUrl={{ApiUrl}} 
-                                        (selectionChange)="getSelectedItem($event)" TextField="formattedText"
+                                        (selectionChange)="getSelectedItem($event)" TextField="itemName"
                                         ValueField="itemId" (onClearSelection)="resetFormItem()"></airmid-autocomplete>
 
                                     <airmid-textbox fxFlex="6%" label="Qty" formControlName="Qty"

@@ -220,7 +220,10 @@
                         </form>
                     </mat-card>
                 </div>
-
+<!-- [ApiUrl]="Apiurl" -->
+  <!-- [ApiUrl]="'ItemMaster/GetItemListForPrescriptionReturn?StoreId=' + vstoreId + '&IPAdmID=' + OP_IP_Id + '&ItemName='" (selectionChange)="selectChangeItem($event)" -->
+                                      
+                                      
                 <form [formGroup]="ItemSubform">
                     <div class="modal-card-container">
                         <mat-card>
@@ -229,10 +232,9 @@
                                 <div fxLayout="column" fxFlex="25%" style="height: 95px;">
                                     <airmid-autocomplete label="Enter Item Name" [formGroup]="ItemSubform"
                                         #itemAutocomplete formControlName="ItemId" placeholderText="Enter Item Name"
-                                        fxFlex="30%" [ApiUrl]="OP_IP_Id 
-                                        ? 'ItemMaster/GetItemListForPrescriptionReturn?StoreId=' + vstoreId + '&IPAdmID=' + OP_IP_Id + '&ItemName='
-                                        : null" (selectionChange)="selectChangeItem($event)"
-                                        (onClearSelection)="ItemFromReset()"
+                                        fxFlex="30%" 
+                                         [ApiUrl]="OP_IP_Id? 'ItemMaster/GetItemListForPrescriptionReturn?StoreId=' + vstoreId + '&IPAdmID=' + OP_IP_Id + '&ItemName=': null"
+                                          (onClearSelection)="ItemFromReset()"
                                         [validations]="getValidationMessages().ItemId" TextField="formattedText"
                                         ValueField="ItemId">
                                     </airmid-autocomplete>
