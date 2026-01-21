@@ -180,5 +180,15 @@ this.Is5_Digit_Pincode_Id = id === "1";
              return false;
          }
      }
+             // it allowed only Digit & decimal
+    keyPressDigitDecimalOnly(event) {
+        var inp = String.fromCharCode(event.keyCode);
+        if (/^\d*\.?\d*$/.test(inp)) {
+            return true;
+        } else {
+            event.preventDefault();
+            return false;
+        }
+    }
  }
  

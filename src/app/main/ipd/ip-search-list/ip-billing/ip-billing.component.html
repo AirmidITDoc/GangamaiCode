@@ -410,7 +410,18 @@
 
                   <span style="color: sandybrown;margin-left:40px;" class=" border-bottom h3 font-weight-600">
                     Bill Summary</span>
-                  <!-- <div class="net-amt gap-12"> -->
+                  <!-- <div class="net-amt gap-12">  dayWiseCredit-->
+                  <div class="net-amt-box">
+                    <span class="net-amt-label">Day Limit: </span>
+                    <span class="net-amt-value">{{ (selectedAdvanceObj?.dayWiseCredit || 0) | currency: currency:'symbol'
+                      }}</span>
+                  </div>
+
+                   <div class="net-amt-box">
+                    <span class="net-amt-label">Day Balance: </span>
+                    <span class="net-amt-value">{{ (DayLimitbal || 0) | currency: currency:'symbol'}}</span>
+                  </div>
+
                   <div class="net-amt-box">
                     <span class="net-amt-label">Bill Amount : </span>
                     <span class="net-amt-value">{{ IpbillFooterform.get('FinalAmount').value | currency: currency:'symbol'
@@ -420,7 +431,7 @@
                     <span class="net-amt-label">Advance Amt : </span>
                     <span class="net-amt-value">{{ checkAdvBalAmt | currency: currency:'symbol' }}</span>
                   </div>
-                  <div class="net-amt-box">
+                  <!-- <div class="net-amt-box">
                     <span class="net-amt-label">Advance Bal Amt : </span>
                     <span class="net-amt-value">{{ AdvanceBalAmt | currency: currency:'symbol' }}</span>
                   </div>
@@ -431,7 +442,7 @@
                               'amount-zero': BillBalAmount == 0,
                               'amount-negative': BillBalAmount < 0
                             }">{{ BillBalAmount | currency: currency:'symbol' }}</span>
-                  </div>
+                  </div> -->
                   <div class="net-amt-box">
                     <span class="net-amt-label">Pharmacy Amt : </span>
                     <span class="net-amt-value">{{ PharmacyAmont | currency: currency:'symbol' }}</span>
@@ -502,8 +513,8 @@
                         </ng-container>
 
                         <ng-container matColumnDef="ChargesDate">
-                          <mat-header-cell *matHeaderCellDef mat-sort-header>Charges Date</mat-header-cell>
-                          <mat-cell *matCellDef="let contact">
+                          <mat-header-cell *matHeaderCellDef mat-sort-header class="w-120">Charges Date</mat-header-cell>
+                          <mat-cell *matCellDef="let contact" class="w-120">
                             <ng-container *ngIf="contact.isNewRow || contact.isEditMode; else showDate">
                               <mat-form-field appearance="outline" class="compact-field">
                                 <input matInput [matDatepicker]="pickerRow" placeholder="Select date" 
@@ -538,7 +549,7 @@
                               </mat-form-field>
                             </ng-container>
                             <ng-template #showService>
-                              <span>{{ contact.serviceName }}</span>
+                              <span matTooltip="{{contact.serviceName}}">{{ contact.serviceName }}</span>
                             </ng-template>
                           </mat-cell>
                         </ng-container>
@@ -727,9 +738,9 @@
                           </mat-footer-cell>
                         </ng-container>
 
-                        <mat-header-row class="accent min-width-1950 h-40"
+                        <mat-header-row class="accent min-width-2050 h-40"
                           *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
-                        <mat-row *matRowDef="let contact; columns: displayedColumns" class="min-width-1950 h-32"
+                        <mat-row *matRowDef="let contact; columns: displayedColumns" class="min-width-2050 h-32"
                           [ngClass]="{'red-row': contact.isPathTestCompleted == '1' ||  contact.isRadTestCompleted == '1' }"
                           [@animate]="{ value: '*', params: { y: '100%' } }"></mat-row>
                         <mat-footer-row *matFooterRowDef="['loading']"
@@ -890,31 +901,45 @@
               <form class="example-form" [formGroup]="IpbillFooterform">
                 <div class="net-amt-section mb-2 mt-16">
                   <div class="net-amt gap-12" style="margin-left:20%;">
+                  
+                    <!-- <div class="net-amt-box">
+                                        <div class="net-amt-label">Company Amt :</div>
+                                        <div class="net-amt-value">{{ ExclusionAmt | currency: currency:'symbol' }}</div>
+                                      </div>
+                                      <div class="net-amt-box">
+                                        <span class="net-amt-label">Patient Amt :</span>
+                                        <span class="net-amt-value">{{ InclusionAmt | currency: currency:'symbol' }}</span>
+                                      </div> --> 
+                  
+                    <div class="net-amt-box">
+                      <span class="net-amt-label">Advance Bal Amt : </span>
+                      <span class="net-amt-value">{{ AdvanceBalAmt | currency: currency:'symbol' }}</span>
+                    </div>
 
                     <div class="net-amt-box">
-                      <div class="net-amt-label">Company Amt :</div>
-                      <div class="net-amt-value">{{ ExclusionAmt | currency: currency:'symbol' }}</div>
+                      <span class="net-amt-label">Bill Bal Amt : </span>
+                      <span class="net-amt-value" [ngClass]="{
+                        'amount-positive': BillBalAmount > 0,
+                        'amount-zero': BillBalAmount == 0,
+                        'amount-negative': BillBalAmount < 0}">
+                        {{ BillBalAmount | currency: currency:'symbol' }}</span>
                     </div>
-                    <div class="net-amt-box">
-                      <span class="net-amt-label">Patient Amt :</span>
-                      <span class="net-amt-value">{{ InclusionAmt | currency: currency:'symbol' }}</span>
-                    </div>
-
 
                     <div class="net-amt-box">
                       <span class="net-amt-label">No of Items :</span>
                       <span class="net-amt-value">{{ chargeslist.length }}</span>
                     </div>
-
+                  
                     <div class="net-amt-box">
                       <span class="net-amt-label">Total Amt :</span>
                       <span class="net-amt-value">{{ TotalShowAmt | currency: currency:'symbol' }}</span>
                     </div>
                     <div class="net-amt-box">
                       <span class="net-amt-label">Disc Amt :</span>
-                      <span class="net-amt-value">{{ IpbillFooterform.get('totalconcessionAmt').value || 0 | currency: currency:'symbol' }}</span>
+                      <span class="net-amt-value">{{ IpbillFooterform.get('totalconcessionAmt').value || 0 | currency: currency:'symbol'
+                        }}</span>
                     </div>
-
+                  
                     <div class="final-amt-box">
                       <span class="final-amt-label">Net Amt :</span>
                       <span class="final-amt-value">{{ IpbillFooterform.get('FinalAmount').value | currency: currency:'symbol'

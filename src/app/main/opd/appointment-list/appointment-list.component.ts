@@ -127,6 +127,7 @@ export class AppointmentListComponent implements OnInit {
         this.menuActions.push({ icon: "language", text: "Request For IP" });
         this.menuActions.push({ icon: "language", text: "Update Followup Date" });
         this.menuActions.push({ icon: "print", text: "CasePaper Print" });
+        this.menuActions.push({ icon: "print", text: "Patient Draft Statement Print" });
         this.menuActions.push({ icon: "print", text: "Patient Statement Print" });
 
         const savedTimers = localStorage.getItem('consultTimers');
@@ -550,6 +551,9 @@ export class AppointmentListComponent implements OnInit {
         else if (m == "Patient Statement Print") {
             this.OnPaitentFinalPrint(element)
         }
+        else if (m == "Patient Draft Statement Print") {
+            this.OnPaitentDraftPrint(element)
+        }
 
     }
     OnPaitentFinalPrint(element) {
@@ -560,6 +564,31 @@ export class AppointmentListComponent implements OnInit {
                     { "fieldName": "OPIPType", "fieldValue": String(0), "opType": "13" }
                 ],
                 "mode": "PatientBillStatement"
+            }
+            this._AppointmentlistService.getReportView(param).subscribe(res => {
+                const matDialog = this._matDialog.open(PdfviewerComponent,
+                    {
+                        maxWidth: "85vw",
+                        height: '750px',
+                        width: '100%',
+                        data: {
+                            base64: res["base64"] as string,
+                            title: "Patient Statement" + " " + "Viewer"
+                        }
+                    });
+                matDialog.afterClosed().subscribe(result => {
+                });
+            });
+        }, 100);
+    }
+        OnPaitentDraftPrint(element) { 
+        setTimeout(() => {
+            let param = {
+                "searchFields": [
+                    { "fieldName": "OPIPId", "fieldValue": String(element.visitId), "opType": "13" }
+                    // { "fieldName": "OPIPType", "fieldValue": String(0), "opType": "13" }
+                ],
+                "mode": "OpDraftPatientStatement"
             }
             this._AppointmentlistService.getReportView(param).subscribe(res => {
                 const matDialog = this._matDialog.open(PdfviewerComponent,
@@ -658,10 +687,14 @@ export class AppointmentListComponent implements OnInit {
             debugger
             const [ThermalPrint, ThermalPrintValue] = this._ConfigService.configParams.ThermalPrint.split(":");
             console.log(result)
-            if ((result || 0) > 0) {
+            const billId = Number(result || 0); // ensures numeric comparison
+            if (billId > 0) {
                 if (ThermalPrint == 1) {
                     this.viewgetOPBillThermalReportPdf(result)
                 }
+            }
+            else {
+                console.log('No bill generated or dialog cancelled');
             }
         });
     }

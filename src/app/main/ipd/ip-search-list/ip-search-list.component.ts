@@ -857,6 +857,7 @@ export class ChargesList {
     netAmount: any;
     CreditedtoDoctor: any;
     creditedtoDoctor: boolean;
+    chargesDate:any;
 
     constructor(ChargesList) {
         this.chargesId = ChargesList.chargesId || '';
@@ -896,6 +897,7 @@ export class ChargesList {
         this.isRadiology = ChargesList.isRadiology || 0;
         this.CreditedtoDoctor = ChargesList.CreditedtoDoctor;
         this.creditedtoDoctor = ChargesList.creditedtoDoctor;
+        this.chargesDate = ChargesList.chargesDate;
     }
 }
 export class AdvanceHeader {

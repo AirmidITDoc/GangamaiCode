@@ -210,7 +210,7 @@
 
                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                       <airmid-textbox label="Credit Days" formControlName="creditDays" fxFlex
-                        [formGroup]="companyFormDemo" [maxLength]="3" [value]="registerObj?.creditDays"
+                        [formGroup]="companyFormDemo"   [value]="registerObj?.creditDays"
                         (keypress)="keyPressAlphanumeric($event)">
                       </airmid-textbox>
                     </div>
@@ -235,6 +235,13 @@
                       </airmid-dropdown>
                     </div>
 
+                      <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <airmid-textbox label="Day wise Credit" formControlName="dayWiseCredit" fxFlex [formGroup]="companyFormDemo"
+                           
+                           (keypress)="keyPressDigitDecimalOnly($event)" >
+                        </airmid-textbox>
+                        <!-- [value]="registerObj?.dayWiseCredit" -->
+                      </div> 
 
                   </div>
 
