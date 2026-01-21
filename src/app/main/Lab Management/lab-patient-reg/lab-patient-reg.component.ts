@@ -2,20 +2,14 @@ import { fuseAnimations } from '@fuse/animations';
 import { DatePipe } from '@angular/common';
 import { Component, ComponentRef, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { ToastrService } from 'ngx-toastr';
 import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
 import { Color, gridModel, OperatorComparer } from 'app/core/models/gridRequest';
-import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
+import { gridColumnTypes } from 'app/core/models/tableActions';
 import { FormArray, FormGroup, UntypedFormBuilder } from '@angular/forms';
 import Swal from 'sweetalert2';
-import { NewAppointmentComponent } from 'app/main/opd/appointment-list/new-appointment/new-appointment.component';
-import { NewAdmissionComponent } from 'app/main/ipd/Admission/admission/new-admission/new-admission.component';
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
-import { MLCInformationComponent } from 'app/main/ipd/Admission/admission/mlcinformation/mlcinformation.component';
 import { LabPatientRegService } from './lab-patient-reg.service';
 import { NewLabPatientRegComponent } from './new-lab-patient-reg/new-lab-patient-reg.component';
 import { OpPaymentComponent } from 'app/main/opd/op-search-list/op-payment/op-payment.component';
@@ -188,7 +182,7 @@ export class LabPatientRegComponent {
     },
     { heading: "Status", key: "statua", sort: true, align: 'left', emptySign: 'NA', width: 50 },
     { heading: "", key: "balanceAmt1", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
-    { heading: "Type", key: "patientType", sort: true, align: 'left', emptySign: 'NA'},
+    { heading: "Type", key: "patientType", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "Unit/Branch Name", key: "hospitalName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
     { heading: "Date-Time", key: "regTime", sort: true, align: 'left', emptySign: 'NA', width: 100, type: 6 },
     { heading: "PatientNo", key: "labRequestNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
@@ -569,18 +563,14 @@ export class LabPatientRegComponent {
   }
 
 
-  Onmessage() {
-    // console.log(element)
-
+  OnEstimate() {
     const dialogRef = this._matDialog.open(EstimateForPatientComponent,
       {
-        maxWidth: "80vw",
-        height: '650px',
-        width: '100%',
-        // data: element
+        maxWidth: "95vw",
+        height: '95%',
+        width: '90%',
       });
     dialogRef.afterClosed().subscribe(result => {
-      // this.onChangeFirst2()
     });
   }
   Onemail() { }
@@ -963,10 +953,10 @@ export class LabPatientList {
       this.campId = LabPatientList.campId || 0
       this.companyId = LabPatientList.companyId || 0
       this.subCompanyId = LabPatientList.subCompanyId || 0
- this.pBillNo = LabPatientList.pBillNo || 0
+      this.pBillNo = LabPatientList.pBillNo || 0
       this.labPatientId = LabPatientList.labPatientId || 0
-       this.balanceAmt = LabPatientList.balanceAmt || 0
-      
+      this.balanceAmt = LabPatientList.balanceAmt || 0
+
 
     }
   }
