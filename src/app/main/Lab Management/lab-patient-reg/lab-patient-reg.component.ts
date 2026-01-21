@@ -187,6 +187,7 @@ export class LabPatientRegComponent {
     },
     { heading: "Status", key: "statua", sort: true, align: 'left', emptySign: 'NA', width: 50 },
     { heading: "", key: "balanceAmt1", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
+    { heading: "Type", key: "patientType", sort: true, align: 'left', emptySign: 'NA'},
     { heading: "Unit/Branch Name", key: "hospitalName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
     { heading: "Date-Time", key: "regTime", sort: true, align: 'left', emptySign: 'NA', width: 100, type: 6 },
     { heading: "PatientNo", key: "labRequestNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
