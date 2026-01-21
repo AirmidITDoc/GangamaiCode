@@ -88,11 +88,11 @@ this.Is5_Digit_Pincode_Id = id === "1";
             ]],
             faxNo: [" ", [Validators.required, Validators.maxLength(10)]],
             traiffId: ["", [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-            creditDays: [0, Validators.maxLength(3)],
+            creditDays: [0],
 
             loginWebsiteUser: "",
             loginWebsitePassword: "",
-
+            dayWiseCredit:0
         });
     }
     createSearchForm(): FormGroup {

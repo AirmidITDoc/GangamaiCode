@@ -14,7 +14,7 @@
                 </div>
                 <div class="top-header-right">
                     <div class="header-add-button">
-                        <button mat-raised-button (click)="onSave()">Add Work Order</button>
+                        <button mat-raised-button (click)="onSave()" *ngIf="IsAdd">Add Work Order</button>
                     </div>
                 </div>
             </div>

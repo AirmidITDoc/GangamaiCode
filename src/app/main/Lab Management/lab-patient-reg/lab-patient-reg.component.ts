@@ -32,6 +32,7 @@ import { FormvalidationserviceService } from 'app/main/shared/services/formvalid
 import { permissionCodes, permissionType } from 'app/main/shared/model/permission.model';
 import { PagePermissionService } from 'app/main/shared/services/page-permission.service';
 import { EditLabregComponent } from './edit-labreg/edit-labreg.component';
+import { ReportDispatchComponent } from '../report-dispatch/report-dispatch.component';
 
 @Component({
   selector: 'app-lab-patient-reg',
@@ -187,19 +188,21 @@ export class LabPatientRegComponent {
     },
     { heading: "Status", key: "statua", sort: true, align: 'left', emptySign: 'NA', width: 50 },
     { heading: "", key: "balanceAmt1", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template, width: 50 },
+    { heading: "Type", key: "patientType", sort: true, align: 'left', emptySign: 'NA'},
+    { heading: "Unit/Branch Name", key: "hospitalName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
     { heading: "Date-Time", key: "regTime", sort: true, align: 'left', emptySign: 'NA', width: 100, type: 6 },
+    { heading: "PatientNo", key: "labRequestNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
     { heading: "PBillNo", key: "pBillNo", sort: true, align: 'left', emptySign: 'NA', width: 80 },
-    { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 200, type: gridColumnTypes.template },
+    { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 240, type: gridColumnTypes.template },
+    { heading: "CompanyName", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
     { heading: "DoctorName", key: "doctorName", sort: true, align: 'left', emptySign: 'NA', width: 150, type: gridColumnTypes.template },
     { heading: "RefDoctorName", key: "refDoctorName", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-    { heading: "CompanyName", key: "companyName", sort: true, align: 'left', emptySign: 'NA', width: 200 },
     { heading: "Paid Amount", key: "paidAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, width: 100 },
     { heading: "Balance Amount", key: "balanceAmt", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, columnClass: (element) => element["balanceAmt"] > 0 ? Color.RED : "" },
     { heading: "Cash Pay", key: "cashPayAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, width: 100 },
     { heading: "Cheque Pay", key: "chequePayAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, width: 100 },
     { heading: "Card Pay", key: "cardPayAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, width: 100 },
     { heading: "Online Pay", key: "payTMAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, width: 100 },
-    { heading: "UnitName", key: "hospitalName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
     { heading: "AddedBy", key: "userName", sort: true, align: 'left', emptySign: 'NA' },
     {
       heading: "Action", key: "action", align: "right", width: 190, sticky: true, type: gridColumnTypes.template,
@@ -544,6 +547,22 @@ export class LabPatientRegComponent {
 
   }
 
+  viewgetReportdispatchPdf(element) {
+    console.log(element)
+    const dialogRef = this._matDialog.open(ReportDispatchComponent,
+      {
+        maxWidth: "80vw",
+        height: '850px',
+        width: '100%',
+        data: element
+
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      // this.onChangeFirst2()
+    });
+
+  }
+
 
   viewgetOPBillReportPdf(element) {
     this.commonService.Onprint("BillNo", element.billNo, "LabregisterBillReceipt");
@@ -869,6 +888,9 @@ export class LabPatientList {
   campId: any;
   companyId: any;
   subCompanyId: any;
+  pBillNo: any;
+  labPatientId: any;
+  balanceAmt: any;
 
   constructor(LabPatientList) {
     {
@@ -941,6 +963,11 @@ export class LabPatientList {
       this.campId = LabPatientList.campId || 0
       this.companyId = LabPatientList.companyId || 0
       this.subCompanyId = LabPatientList.subCompanyId || 0
+ this.pBillNo = LabPatientList.pBillNo || 0
+      this.labPatientId = LabPatientList.labPatientId || 0
+       this.balanceAmt = LabPatientList.balanceAmt || 0
+      
+
     }
   }
 }

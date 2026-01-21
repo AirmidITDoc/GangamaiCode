@@ -88,7 +88,10 @@
   padding: 4px 8px;
   border-radius: 4px;
 }
-
+  .red-row {
+    background-color: rgb(245, 186, 195) !important; /* Use !important to override default styles */
+    //color: white; /* Optional: Change text color for better visibility */
+    }
 // message box  ---- mpesa
 .message-box {
   background: #1f1f33;

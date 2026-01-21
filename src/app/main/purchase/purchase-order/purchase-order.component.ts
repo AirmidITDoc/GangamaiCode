@@ -19,6 +19,8 @@ import { ComponentPortal } from '@angular/cdk/portal';
 import { SMSDetailsPopupOverComponent } from 'app/main/shared/componets/email-send/smsdetails-popup-over/smsdetails-popup-over.component';
 import { WhatsappDetPopUpOverComponent } from 'app/main/shared/componets/email-send/whatsapp-det-pop-up-over/whatsapp-det-pop-up-over.component';
 import { Subscription } from 'rxjs';
+import { permissionCodes, permissionType } from 'app/main/shared/model/permission.model';
+import { PagePermissionService } from 'app/main/shared/services/page-permission.service';
 
 
 @Component({
@@ -30,6 +32,9 @@ import { Subscription } from 'rxjs';
 
 })
 export class PurchaseOrderComponent implements OnInit {
+   IsAdd: boolean = this.permissionService.getPermission(permissionCodes.PurchaseOrder, permissionType.Add);
+  
+
   mysearchform: FormGroup;
   autocompletestore: string = "Store";
   autocompleteSupplier: string = "SupplierMaster"
@@ -77,6 +82,7 @@ IsPoverify=0;
   ];
 
   gridConfig: gridModel = {
+     permissionCode: permissionCodes.PurchaseOrder,
     apiUrl: "Purchase/PurchaseOrderList",
     columnsList: this.allcolumns,
     sortField: "PurchaseID",
@@ -129,12 +135,13 @@ IsPoverify=0;
 
   constructor(public _PurchaseOrderService: PurchaseOrderService, public _matDialog: MatDialog,
     public toastr: ToastrService, private commonService: PrintserviceService, private accountService: AuthenticationService,
-    public datePipe: DatePipe,   public _whatsppService: WhatsAppEmailService,
+    public datePipe: DatePipe,   public _whatsppService: WhatsAppEmailService,public permissionService: PagePermissionService,
         private overlay: Overlay) { }
 
   ngOnInit(): void {
     this.mysearchform = this._PurchaseOrderService.PurchaseSearchFrom();
-    this.IsPoverify=this.accountService.currentUserValue.user.isPoverify
+    console.log(this.accountService.currentUserValue.user)
+    this.IsPoverify=1//this.accountService.currentUserValue.user.isPoverify
   }
 
 
@@ -317,6 +324,13 @@ IsPoverify=0;
   
               const portal = new ComponentPortal(SMSDetailsPopupOverComponent);
               const componentRef: ComponentRef<SMSDetailsPopupOverComponent> = this.EmailOverlayRef.attach(portal);
+              console.log(patientData)
+             patientData.billNo=patientData.purchaseID
+               patientData.patientName=patientData.supplierName
+                patientData.mobileNo=patientData.mobile
+                 patientData. regNo=patientData.supplierID
+               patientData.emailId= patientData.email
+
               componentRef.instance.patientData = patientData;
               
               // Handle mouse events on the overlay element
@@ -398,6 +412,12 @@ IsPoverify=0;
   
               const portal = new ComponentPortal(WhatsappDetPopUpOverComponent);
               const componentRef: ComponentRef<WhatsappDetPopUpOverComponent> = this.whatsappOverlayRef.attach(portal);
+               patientData.billNo=patientData.purchaseID
+               patientData.patientName=patientData.supplierName
+                patientData.mobileNo=patientData.mobile
+                 patientData. regNo=patientData.supplierID
+               patientData.emailId= patientData.email
+
               componentRef.instance.patientData = patientData;
               
               // Handle mouse events on the overlay element
@@ -459,12 +479,28 @@ IsPoverify=0;
           console.log(el);
           this._whatsppService.OnWhatsAppMsgSent({
               mobileNo: el.mobileNo,
-              patientName: el.patientName,
-              billNo: el.purchaseId,
+              patientName: el.supplierName,
+              billNo: el.purchaseID,
               smsType: "PurchaseReport",
-              patientId:el.regNo
+              patientId:el.supplierID
           })
       }
+
+          Onemail(contact) {
+              const dialogRef = this._matDialog.open(EmailSendComponent,
+                  {
+                      maxWidth: "100%",
+                      height: '75%',
+                      width: '55%',
+                      data: {
+                          Obj: contact,
+                          emailType:'PurchaseReport'
+                      }
+                  });
+              dialogRef.afterClosed().subscribe(result => {
+                  this.grid.bindGridData();
+              });
+          }
 }
 export class ItemNameList {
   Action: string;

@@ -99,6 +99,10 @@
                 <mat-icon>print</mat-icon>
             </button>
 
+              <button mat-icon-button matTooltip="Report Discpatch" (click)="viewgetReportdispatchPdf(element)">
+                <mat-icon>edit</mat-icon>
+            </button>
+
             <button mat-icon-button [matMenuTriggerFor]="actionsMenu" matTooltip="Actions" matTooltipPosition="above"
                 (click)="$event.stopPropagation();">
                 <mat-icon>more_vert</mat-icon>

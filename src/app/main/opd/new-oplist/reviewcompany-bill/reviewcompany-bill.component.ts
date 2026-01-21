@@ -140,11 +140,13 @@ export class ReviewcompanyBillComponent {
       this.opD_IPD_Type = this.data?.OPIPType || 0
       this.Lable = 'Bill'
       this.BillNo = this.patientDetail?.billNo
+
+       this.getBilllist();
       this.getPrevCompanyBillList(this.patientDetail?.billNo, 'Bill')
-      this.getBilllist();
+     
     }
 
-    // this.setupFormListener();
+    this.setupFormListener();
     // this.startCountdown();
 
     //this is for curreny symbol
@@ -158,8 +160,8 @@ export class ReviewcompanyBillComponent {
     this.handleChange('qty', () => this.calculateTotalCharge());
     this.handleChange('discountPer', () => this.updateDiscountAmount());
     this.handleChange('discountAmount', () => this.updateDiscountPercentage());
-    this.handleChange('totalDiscountPer', () => this.updateTotalDiscountAmt(), this.OPFooterForm);
-    this.handleChange('concessionAmt', () => this.updateTotalDiscountPer(), this.OPFooterForm);
+    // this.handleChange('totalDiscountPer', () => this.updateTotalDiscountAmt(), this.OPFooterForm);
+    // this.handleChange('concessionAmt', () => this.updateTotalDiscountPer(), this.OPFooterForm);
   }
 
   handleChange(key: string, callback: () => void, form: FormGroup = this.chargeForm) {
@@ -261,7 +263,7 @@ export class ReviewcompanyBillComponent {
       serviceId: [item?.serviceId || 0],
       serviceName: [item?.serviceName || ''],
       opdIpdId: [this.OPDIPDID],
-      opdIpdType: [1],
+      opdIpdType: [this.opD_IPD_Type],
       unitId: [this.accountService.currentUserValue.user.unitId || 1],
 
     });
@@ -715,8 +717,7 @@ export class ReviewcompanyBillComponent {
       totalDiscountPer: 0,
       concessionAmt: 0,
       netPayableAmt: 0,
-      concessionReasonId: 0,
-      serviceDate: new Date()
+      concessionReasonId: 0
     });
   }
   viewgetOPBillReportPdf(element) {

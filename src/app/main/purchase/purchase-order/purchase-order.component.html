@@ -15,7 +15,7 @@
                 </div>
                 <div class="top-header-right">
                     <div class="header-add-button">
-                        <button mat-raised-button (click)="AddPurchase()">Add Purchase Order</button>
+                        <button mat-raised-button (click)="AddPurchase()" *ngIf="IsAdd">Add Purchase Order</button>
                     </div>
                 </div>
             </div>

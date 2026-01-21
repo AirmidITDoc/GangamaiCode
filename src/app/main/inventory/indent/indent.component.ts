@@ -26,6 +26,9 @@ import { gridActions, gridColumnTypes } from 'app/core/models/tableActions';
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 import { ConsoleLogger } from '@microsoft/signalr/dist/esm/Utils';
 import { ConfigService } from 'app/core/services/config.service';
+import { permissionCodes, permissionType } from 'app/main/shared/model/permission.model';
+import { PagePermissionService } from 'app/main/shared/services/page-permission.service';
+
 
 @Component({
   selector: 'app-indent',
@@ -35,6 +38,9 @@ import { ConfigService } from 'app/core/services/config.service';
   animations: fuseAnimations,
 })
 export class IndentComponent implements OnInit {
+  IsAdd: boolean = this.permissionService.getPermission(permissionCodes.Indent, permissionType.Add);
+    
+
   hasSelectedContacts: boolean;
   IndentSearchGroup: FormGroup;
   autocompletestore: string = "Store";
@@ -90,6 +96,7 @@ export class IndentComponent implements OnInit {
   ]
 
   gridConfig: gridModel = {
+     permissionCode: permissionCodes.Indent,
     apiUrl: "Indent/IndentList",
     columnsList: this.allcolumns,
     sortField: "IndentId",
@@ -134,7 +141,7 @@ export class IndentComponent implements OnInit {
   constructor(
     public _IndentService: IndentService, private commonService: PrintserviceService,
     public toastr: ToastrService, public _matDialog: MatDialog, private accountService: AuthenticationService,
-    public datePipe: DatePipe,  public _ConfigService: ConfigService,
+    public datePipe: DatePipe,  public _ConfigService: ConfigService,public permissionService: PagePermissionService,
   ) { }
 
   ngOnInit(): void {

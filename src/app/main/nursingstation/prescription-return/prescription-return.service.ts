@@ -89,9 +89,9 @@ public getRegistraionById(Id) {
     
   }
 
-  public presciptionreturnUpdate(emp){
-   return this._httpClient1.PutData("Nursing/PrescriptionReturnUpdate",emp)
-  }
+  // public presciptionreturnUpdate(emp){
+  //  return this._httpClient1.PutData("Nursing/PrescriptionReturnUpdate",emp)
+  // }
 
   public getAdmittedpatientlist(id){
     

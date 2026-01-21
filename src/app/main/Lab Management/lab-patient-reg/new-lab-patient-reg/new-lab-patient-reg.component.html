@@ -38,6 +38,15 @@
                                         [mode]="autocompleteModeunit"></airmid-dropdown>
                                 </div>
                                 <div fxFlex="100%">
+                                    <!-- <airmid-dropdown label="PatientType" formControlName="patientTypeValue" [formGroup]="myForm"
+                                        [validations]="getValidationMessages().patientTypeValue"
+                                        [mode]="autocompleteModeLabPatientType">
+                                    </airmid-dropdown> -->
+                                     <airmid-dropdown label="PatientType" formControlName="patientTypValId"
+                                        [formGroup]="myForm"
+                                        [mode]="autocompleteModeLabPatientType"></airmid-dropdown>
+                                </div>
+                                <div fxFlex="100%">
                                     <airmid-dropdown label=" Self / Payer / Corp." formControlName="patientTypeId"
                                         [value]="data?.patientTypeId" [formGroup]="myForm"
                                         [validations]="getValidationMessages().patientTypeId"
@@ -188,16 +197,13 @@
                                                     </div>
                                                     <div fxLayout="row" fxLayoutGap="4px">
                                                         <div fxFlex="50">
-                                                            <airmid-textbox label="Patient Type"
-                                                                formControlName="address"
-                                                                [validations]="getValidationMessages().address"
-                                                                [formGroup]="myForm" [value]="registerObj?.address">
+                                                            <airmid-textbox label="Comments" formControlName="Comments" [validations]="getValidationMessages().Comments"
+                                                                [formGroup]="myForm">
                                                             </airmid-textbox>
                                                         </div>
                                                         <div fxFlex="50">
-                                                            <airmid-textbox label="Remark" formControlName="address"
-                                                                [validations]="getValidationMessages().address"
-                                                                [formGroup]="myForm" [value]="registerObj?.address">
+                                                            <airmid-textbox label="ReferByName" formControlName="ReferByName" [validations]="getValidationMessages().ReferByName"
+                                                                [formGroup]="myForm">
                                                             </airmid-textbox>
                                                         </div>
                                                     </div>

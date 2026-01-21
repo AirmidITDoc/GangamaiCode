@@ -13,7 +13,7 @@
         </div>
 
         <div class="gap-8" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
-            <button mat-raised-button (click)="onSave()">New Indent
+            <button mat-raised-button (click)="onSave()" *ngIf="IsAdd">New Indent
             </button>
         </div>
     </mat-toolbar>

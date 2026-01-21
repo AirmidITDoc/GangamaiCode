@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component,  ElementRef,  Inject, OnDestroy, OnInit, Optional, TemplateRef, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, Inject, OnDestroy, OnInit, Optional, TemplateRef, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
@@ -18,6 +18,7 @@ import { PacakgeList } from 'app/main/setup/billing/service-master/editpackage/e
 import { PackageDetailsComponent } from './package-details/package-details.component';
 import { ConfigService } from 'app/core/services/config.service';
 import { HospitalConfigService } from 'app/core/services/hospital-config.service';
+import { element } from 'protractor';
 
 @Component({
     selector: 'app-appointment-billing',
@@ -32,7 +33,9 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
         ['IsCheck', 'ServiceNamePackage', 'ServiceName', 'Price', 'Qty', 'TotalAmt', 'DoctorName', 'DiscAmt', 'NetAmount'];
     public displayedPrescriptionColumns =
         ['groupName', 'serviceName', 'classRate', 'userName'];
-    public  mPesaColumns = ['PayStatus','transactionDate','phoneNumber','mpesaReceiptNumber','amount','ResponseDate','Description', 'Action' ];
+    public mPesaColumns = ['PayStatus', 'transactionDate', 'phoneNumber', 'mpesaReceiptNumber', 'amount', 'ResponseDate', 'Description', 'Action'];
+    public displayedColumnsDraft: string[] =
+        ['DraftDate', 'draftNo', 'NetAmount', 'Action'];
 
     countdown: number = 180; // 3 minutes
     countdownColorClass = 'green';
@@ -72,7 +75,7 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
     autocompleteModedeptdoc: string = "ConDoctor";
     autocompleteModeService: string = "Service";
     autocompleteModeConcession: string = "Concession";
-    autocompleteModeGroup: string = "GroupName"; 
+    autocompleteModeGroup: string = "GroupName";
 
     public dataSource = new MatTableDataSource<any>();
     public subscription: Array<Subscription> = [];
@@ -85,16 +88,17 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
     public isDiscountApplied = false;
     public isDoctor = false;
     public isUpdating = false;
-    Is9_Digit_National_Id:boolean = false
+    Is9_Digit_National_Id: boolean = false
     serviceSelct = false
     @ViewChild('regIdfocus') regIdfocus: ElementRef;
-    currency:any='';
+    currency: any = '';
 
     @ViewChild('serviceTable') serviceTable!: TemplateRef<any>;
     @ViewChild('MpesatranscationlistTable') MpesatranscationlistTable!: TemplateRef<any>;
     public dsChargeList = new MatTableDataSource<ChargesList>();
     public dsPackageList = new MatTableDataSource<ChargesList>();
-    public dsServiceList = new MatTableDataSource<ChargesList>(); 
+    public dsOpDraftlist = new MatTableDataSource<ChargesList>();
+    public dsServiceList = new MatTableDataSource<ChargesList>();
     public dsMpesaTransactionlist = new MatTableDataSource<ChargesList>();
     public chargeList: ChargesList[] = [];
     public packageList: ChargesList[] = [];
@@ -115,16 +119,17 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
         public _ConfigService: ConfigService,
         private cdr: ChangeDetectorRef,
         @Optional() public dialogRef: MatDialogRef<AppointmentBillingComponent>
-    ) { }; 
+    ) { };
 
-    ngOnInit() { 
+    ngOnInit() {
         this.isModal = !!this.dialogRef;
         this.searchForm = this.createSearchForm();
         this.chargeForm = this.createChargeForm();
         this.OpBillForm = this.createTotalChargeForm();
         this.OPFooterForm = this.CreateOPFooter();
         this.OPFooterForm.markAllAsTouched();
-        
+        this.OpDraftSaveForm = this.createDraftSaveform()
+
         if (this.data) {
             // console.log(this.data)
             this.patientDetail = this.advanceDataStored.storage;
@@ -144,25 +149,26 @@ export class AppointmentBillingComponent implements OnInit, OnDestroy {
             this.vClassId = this.patientDetail.classId
             this.savebtn = false
             this.searchForm.get('TariffId').setValue(this.patientDetail.tariffId)
-            this.checkCompanypatient(this.patientDetail?.companyId?? 0)
+            this.checkCompanypatient(this.patientDetail?.companyId ?? 0)
             this.patientDetail.mobileNo
-            this.OPFooterForm.patchValue({mpesaMobile:this.patientDetail?.mobileNo || 0})
-        } 
+            this.OPFooterForm.patchValue({ mpesaMobile: this.patientDetail?.mobileNo || 0 })
+        }
         this.dsChargeList = new MatTableDataSource(this.chargeList);
         this.dsPackageList = new MatTableDataSource(this.packageList);
         this.dsServiceList = new MatTableDataSource(this.serviceList);
 
-        this.setupFormListener(); 
+        this.setupFormListener();
         this.startCountdown();
+        this.getdraftlist();
         //this is for curreny symbol
         const [CurrencyId, CurrencyValue] = this._ConfigService.configParams.CurrencyValue.split(":");
         this.currency = CurrencyValue
-        
-        
-//this code for Mediforte 9 digit national id
-const rawValue = this?._ConfigService?.configParams?.Is9_Digit_NationalId || "";
-const [id, val] = rawValue.includes(":") ? rawValue.split(":") : [null, null]; 
-this.Is9_Digit_National_Id = id === "1";
+
+
+        //this code for Mediforte 9 digit national id
+        const rawValue = this?._ConfigService?.configParams?.Is9_Digit_NationalId || "";
+        const [id, val] = rawValue.includes(":") ? rawValue.split(":") : [null, null];
+        this.Is9_Digit_National_Id = id === "1";
     }
     private setupFormListener(): void {
         this.handleChange('price', () => this.calculateTotalCharge());
@@ -192,13 +198,13 @@ this.Is9_Digit_National_Id = id === "1";
         });
     }
     getMpesaTransactionlist(): void {
-            if(!this.dsChargeList.data.length){
-                this.toastrService.warning('Charges are not available in list, Please add Charges', 'Warning !', {
+        if (!this.dsChargeList.data.length) {
+            this.toastrService.warning('Charges are not available in list, Please add Charges', 'Warning !', {
                 toastClass: 'tostr-tost custom-toast-warning',
             });
             return;
-            }
-           if (this.OPFooterForm.get('concessionAmt').value > 0 && this.Consessionres) {
+        }
+        if (this.OPFooterForm.get('concessionAmt').value > 0 && this.Consessionres) {
             if (!this.OPFooterForm.get('concessionReasonId').value) {
                 this.toastr.warning('Please select ConcessionReason.', 'Warning !', {
                     toastClass: 'tostr-tost custom-toast-warning',
@@ -207,15 +213,15 @@ this.Is9_Digit_National_Id = id === "1";
             }
         }
 
-             if(!this.OPFooterForm.get('mpesaMobile')?.value){
-                this.toastrService.warning('Enter Mobile number', 'Warning !', {
+        if (!this.OPFooterForm.get('mpesaMobile')?.value) {
+            this.toastrService.warning('Enter Mobile number', 'Warning !', {
                 toastClass: 'tostr-tost custom-toast-warning',
             });
             return;
-            }
-        this._matDialog.open(this.MpesatranscationlistTable, { 
-             width: '65vw',
-             maxHeight: '60vh'
+        }
+        this._matDialog.open(this.MpesatranscationlistTable, {
+            width: '65vw',
+            maxHeight: '60vh'
         })
         //424929  this.vOPIPId
         let Data = {
@@ -224,11 +230,11 @@ this.Is9_Digit_National_Id = id === "1";
             "sortField": "Id",
             "sortOrder": 0,
             "filters": [{ "fieldName": "Opdipdid", "fieldValue": String(424929), "opType": "Equals" },
-                { "fieldName": "PhoneNumber", "fieldValue": String(this.OPFooterForm.get('mpesaMobile')?.value || 0), "opType": "Equals" }],
+            { "fieldName": "PhoneNumber", "fieldValue": String(this.OPFooterForm.get('mpesaMobile')?.value || 0), "opType": "Equals" }],
             "exportType": "JSON",
             "columns": [{ "data": "string", "name": "string" }]
         }
-        this._AppointmentlistService.getmPesaTranscationlist(Data).subscribe((response) => {  
+        this._AppointmentlistService.getmPesaTranscationlist(Data).subscribe((response) => {
             this.dsMpesaTransactionlist.data = response.data;
             console.log(this.dsMpesaTransactionlist.data)
         });
@@ -407,9 +413,9 @@ this.Is9_Digit_National_Id = id === "1";
             concessionReasonId: [0, this._FormvalidationserviceService.onlyNumberValidator()],
             netPayableAmt: [0, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
             paymentType: ['CreditPay'],
-            GovrnApprovAmt:[0],
-            mpesaMobile: ['',[Validators.minLength(10), Validators.maxLength(10)]],
-            UpiNo:[0]
+            GovrnApprovAmt: [0],
+            mpesaMobile: ['', [Validators.minLength(10), Validators.maxLength(10)]],
+            UpiNo: [0]
         })
     }
     createTotalChargeForm(): FormGroup {
@@ -446,7 +452,7 @@ this.Is9_Digit_National_Id = id === "1";
             isSettled: true,
             isPrinted: true,
             isFree: true,
-            govtApprovedAmt:[0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            govtApprovedAmt: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
             companyId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             tariffId: [this.vTariffId, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
             unitId: [this.accountService.currentUserValue.user.unitId, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -507,6 +513,11 @@ this.Is9_Digit_National_Id = id === "1";
             //New Payments
             // ✅ Fixed: should be FormArray
             tPayments: this.formBuilder.array([]),
+
+            tdrBill:this.formBuilder.group({
+                drbno:[0],
+                isCancelled:[0]
+            })
         });
     }
     CreateAddchargeform(item: any): FormGroup {
@@ -521,10 +532,10 @@ this.Is9_Digit_National_Id = id === "1";
             unitId: [this.accountService.currentUserValue.user.unitId, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
             totalAmt: [item?.TotalAmt, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
             concessionPercentage: [item?.DiscPer || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-            concessionAmount: [item?.DiscAmt ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            concessionAmount: [item?.DiscAmt || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
             netAmount: [item?.NetAmount, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-            doctorId: [item?.DoctorId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            doctorName: [item?.DoctorName ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+            doctorId: [item?.DoctorId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            doctorName: [item?.DoctorName || '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
             docPercentage: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
             docAmt: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             hospitalAmt: [item?.NetAmount, [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -551,7 +562,7 @@ this.Is9_Digit_National_Id = id === "1";
             packageId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             chargesTime: this.datePipe.transform(new Date(), 'shortTime'),
             classId: [1, [this._FormvalidationserviceService.onlyNumberValidator()]],
-            tariffId: [this.vTariffId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            tariffId: [this.vTariffId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             billNo: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
             createdBy: [this.accountService.currentUserValue.userId, [this._FormvalidationserviceService.onlyNumberValidator()]],
         });
@@ -655,7 +666,7 @@ this.Is9_Digit_National_Id = id === "1";
     getdocdetail(event) {
         this.doctorName = event.text
     }
-        keyPressCharater(event) {
+    keyPressCharater(event) {
         var inp = String.fromCharCode(event.keyCode);
         if (/^\d*\.?\d*$/.test(inp)) {
             return true;
@@ -664,9 +675,9 @@ this.Is9_Digit_National_Id = id === "1";
             return false;
         }
     }
-    onAddCharges(): void { 
-debugger
-         const isItemAlreadyAdded = this.dsChargeList.data.some((element) => element.ServiceId ===  this.chargeForm.get('serviceName')?.value.serviceId);
+    onAddCharges(): void {
+        debugger
+        const isItemAlreadyAdded = this.dsChargeList.data.some((element) => element.ServiceId === this.chargeForm.get('serviceName')?.value.serviceId);
         if (isItemAlreadyAdded) {
             Swal.fire({
                 title: 'Message',
@@ -681,7 +692,7 @@ debugger
                 toastClass: 'tostr-tost custom-toast-warning',
             });
             return;
-        } 
+        }
         if (this.chargeForm.get('DoctorID').value == "0") {
             this.toastrService.warning('Please select a valid doctor name.', 'Warning !', {
                 toastClass: 'tostr-tost custom-toast-warning',
@@ -936,6 +947,11 @@ debugger
         this.ExclusionAmt = Exclusionlist.reduce((sum, { NetAmount }) => sum += +(NetAmount || 0), 0);
         this.InclusionAmt = Inclusionlist.reduce((sum, { NetAmount }) => sum += +(NetAmount || 0), 0);
 
+        if (!this.isDiscountApplied && totalDiscount > 0) {
+            this.isDiscountApplied = true;
+            this.Consessionres = true
+        }
+
     }
     onPriceOrQtyChange(row: ChargesList = null): void {
         if (!row) return;
@@ -1120,7 +1136,7 @@ debugger
         this.vhospitalId = this.patientDetail.hospitalId;
         this.searchForm.get('TariffId').setValue(this.patientDetail.tariffId)
         this.ApiURL = "VisitDetail/search-GetServiceListwithTraiff?TariffId=" + this.patientDetail.tariffId + "&ClassId=" + this.patientDetail.classId + "&SrvcName="
-        this.OPFooterForm.patchValue({mpesaMobile:this.patientDetail?.mobileNo || 0})
+        this.OPFooterForm.patchValue({ mpesaMobile: this.patientDetail?.mobileNo || 0 })
         if (this.vOPIPId > 0)
             this.savebtn = false
         this.Regstatus = false
@@ -1131,14 +1147,14 @@ debugger
     }
     BillSave() {
         if (this.OPFooterForm.get('paymentType').value == 'OnlinePay') {
-                const upi = this.OPFooterForm.get('UpiNo')?.value;
-                if (!upi || upi.length < 4) {
+            const upi = this.OPFooterForm.get('UpiNo')?.value;
+            if (!upi || upi.length < 4) {
                 this.toastr.warning('Enter UPI No (min 4 & max 12 characters)', 'Warning !', {
                     toastClass: 'tostr-tost custom-toast-warning',
                 });
                 return;
-            }  
-        } 
+            }
+        }
         Swal.fire({
             title: 'Confirm Save',
             text: 'Are you sure you want to save this OPD bill?',
@@ -1154,9 +1170,9 @@ debugger
             }
         });
     }
-    mpesaResponse_1:any=[];
+    mpesaResponse_1: any = [];
     OnSave() {
-        
+
         if (this.OPFooterForm.get('concessionAmt').value > 0 && this.Consessionres) {
             if (!this.OPFooterForm.get('concessionReasonId').value) {
                 this.toastr.warning('Please select ConcessionReason.', 'Warning !', {
@@ -1170,7 +1186,7 @@ debugger
         const formattedTime = this.datePipe.transform(new Date(), "HH:mm:ss");
         this.OpBillForm.get('billDate').setValue(formattedDate);
         this.OpBillForm.get('billTime').setValue(formattedDate + ' ' + formattedTime);
-        this.OpBillForm.get('opdipdid')?.setValue(this.vOPIPId)
+        this.OpBillForm.get('opdipdid')?.setValue(this.patientDetail?.visitId)
         this.OpBillForm.get('tariffId')?.setValue(this.vTariffId)
         this.OpBillForm.get('regNo')?.setValue(this.patientDetail?.regNo)
         this.OpBillForm.get('patientName')?.setValue(this.PatientName)
@@ -1184,13 +1200,17 @@ debugger
         this.OpBillForm.get('companyName')?.setValue(this.patientDetail?.companyName || '')
         this.OpBillForm.get('companyAmt')?.setValue(this.ExclusionAmt)
         this.OpBillForm.get('patientAmt')?.setValue(this.InclusionAmt)
-        this.OpBillForm.get('totalAmt')?.setValue(this.OPFooterForm.get('totalAmt')?.value)
-        this.OpBillForm.get('concessionAmt')?.setValue(this.OPFooterForm.get('concessionAmt')?.value)
-        this.OpBillForm.get('netPayableAmt')?.setValue(this.OPFooterForm.get('netPayableAmt')?.value)
+        this.OpBillForm.get('totalAmt')?.setValue(this.OPFooterForm.get('totalAmt')?.value || 0)
+        this.OpBillForm.get('concessionAmt')?.setValue(this.OPFooterForm.get('concessionAmt')?.value || 0)
+        this.OpBillForm.get('netPayableAmt')?.setValue(this.OPFooterForm.get('netPayableAmt')?.value || 0)
         this.OpBillForm.get('concessionReasonId')?.setValue(this.ConcessionId)
         this.OpBillForm.get('discComments')?.setValue(this.ConcessionReason)
         this.OpBillForm.get('cashCounterId')?.setValue(this.searchForm.get('CashCounterID')?.value)
         this.OpBillForm.get('govtApprovedAmt')?.setValue(this.OPFooterForm.get('GovrnApprovAmt').value || 0)
+        if((this.DraftdetObj?.drbno || 0)>0){
+        this.OpBillForm.get('tdrBill.drbno')?.setValue(this.DraftdetObj?.drbno || 0)
+        this.OpBillForm.get('tdrBill.isCancelled')?.setValue(1) 
+        }
         this.ChargeddetailsArray.clear();
         this.BillDetailsArray.clear();
         if (!this.OpBillForm.invalid) {
@@ -1299,7 +1319,7 @@ debugger
 
                 console.log(this.OpBillForm.value)
                 this._AppointmentlistService.InsertOPBilling(this.OpBillForm.value).subscribe(response => {
-                    
+
                     console.log(response)
                     this.mpesaResponse = response.data;
                     // this.startPolling();
@@ -1335,7 +1355,7 @@ debugger
                     transactionType: 0,
                     isSelfOrcompany: this.patientDetail?.CompanyId ? 1 : 0,
                 });
-debugger
+                debugger
                 this.OpBillForm.get('balanceAmt').setValue(0)
                 this.OpBillForm.get('paidAmt')?.setValue(this.OPFooterForm.get('netPayableAmt')?.value)
                 this.OpBillForm.get('payments.payTmamount')?.setValue(Number(this.OPFooterForm.get('netPayableAmt')?.value))
@@ -1352,7 +1372,7 @@ debugger
 
                 console.log(this.OpBillForm.value)
                 this._AppointmentlistService.InsertOPBilling(this.OpBillForm.value).subscribe(response => {
-                    
+
                     console.log(response)
                     this.mpesaResponse = response.data;
                     // this.startPolling();
@@ -1391,7 +1411,7 @@ debugger
                 });
             }
             else if (this.OPFooterForm.get('paymentType')?.value === 'Mpesa') {
-                
+
                 this.openWaitingScreen();
                 // this.startPolling();  
                 // if(this.mPesa_ReceiptNo && this.mpesaResponse){
@@ -1473,13 +1493,15 @@ debugger
     viewgetOPBillThermalReportPdf1(element) {
         this.commonService.Onprint("BillNo", element, "OpBillReceipt");
     }
-   
+    viewgetOPBillDraftReportPdf(element) {
+        this.commonService.Onprint("BillNo", element, "OpDraftBillReceipt");
+    } 
     reportPrintObj: ChargesList;
     subscriptionArr: Subscription[] = [];
     printTemplate: any;
-    reportPrintObjList: ChargesList[] = []; 
+    reportPrintObjList: ChargesList[] = [];
     viewgetOPBillThermalReportPdf(BillNo) {
-        debugger 
+        debugger
         let param = {
             "searchFields": [
                 {
@@ -1496,19 +1518,19 @@ debugger
             setTimeout(() => {
                 this.print3();
             }, 1000);
-        }); 
-    } 
-  
-   @ViewChild('billTemplate2') billTemplate2: ElementRef;
-      print3() {
-        
-      let popupWin, printContents;
-  
-      popupWin = window.open('', '_blank', 'top=0,left=0,height=800px !important,width=auto,width=2200px !important');
-  
-      popupWin.document.write(` <html>
+        });
+    }
+
+    @ViewChild('billTemplate2') billTemplate2: ElementRef;
+    print3() {
+
+        let popupWin, printContents;
+
+        popupWin = window.open('', '_blank', 'top=0,left=0,height=800px !important,width=auto,width=2200px !important');
+
+        popupWin.document.write(` <html>
     <head><style type="text/css">`);
-      popupWin.document.write(`
+        popupWin.document.write(`
       </style>
       <style type="text/css" media="print">
     @page { size: portrait; }
@@ -1516,9 +1538,9 @@ debugger
           <title></title>
       </head>
     `);
-    // console.log(this.billTemplate2.nativeElement.innerHTML)
-    debugger
-      popupWin.document.write(`<body onload="window.print();window.close()" style="font-family: system-ui, sans-serif;margin:0;font-size: 16px;">${this.billTemplate2.nativeElement.innerHTML}</body>
+        // console.log(this.billTemplate2.nativeElement.innerHTML)
+        debugger
+        popupWin.document.write(`<body onload="window.print();window.close()" style="font-family: system-ui, sans-serif;margin:0;font-size: 16px;">${this.billTemplate2.nativeElement.innerHTML}</body>
     <script>
       var css = '@page { size: portrait; }',
       head = document.head || document.getElementsByTagName('head')[0],
@@ -1534,10 +1556,10 @@ debugger
       head.appendChild(style);
     </script>
     </html>`);
-      // popupWin.document.write(`<body style="margin:0;font-size: 16px;">${this.printTemplate}</body>
-      // </html>`);
-  
-      popupWin.document.close();
+        // popupWin.document.write(`<body style="margin:0;font-size: 16px;">${this.printTemplate}</body>
+        // </html>`);
+
+        popupWin.document.close();
     }
     selectChangeConcession(event) {
         this.ConcessionId = event.value
@@ -1587,7 +1609,7 @@ debugger
             tariffId: [
                 { name: "pattern", Message: "only Char allowed." }
             ],
-              UpiNo: [
+            UpiNo: [
                 { name: "required", Message: "UPI required!", },
                 { name: "pattern", Message: "only Number allowed.", },
                 { name: "min", Message: "Enter valid UPI No.", }
@@ -1605,20 +1627,20 @@ debugger
     mpesaResponse: any;
     statusMessage: any;
     pollingSub?: Subscription;
-    mPesa_ReceiptNo:any='0';
+    mPesa_ReceiptNo: any = '0';
     openWaitingScreen() {
-        
+        debugger
         this._AppointmentlistService.postpayment(this.OpBillForm.controls["netPayableAmt"]?.value, this.OPFooterForm.get('mpesaMobile')?.value,
-    this.OpBillForm.get('opdipdid')?.value ).subscribe(response => {
-            this.mpesaResponse = response;
-            console.log(this.mpesaResponse)
-            // Build message AFTER response arrives
-            this.statusMessage = '' + response.responseDescription + '\n' +
-                'CheckoutRequestId  : ' + response.checkoutRequestID + '\n' +
-                'MerchantRequestId  : ' + response.merchantRequestID;
-            this.isWaiting = true;
-             this.startPolling();
-        });
+            this.OpBillForm.get('opdipdid')?.value).subscribe(response => {
+                this.mpesaResponse = response;
+                console.log(this.mpesaResponse)
+                // Build message AFTER response arrives
+                this.statusMessage = '' + response.responseDescription + '\n' +
+                    'CheckoutRequestId  : ' + response.checkoutRequestID + '\n' +
+                    'MerchantRequestId  : ' + response.merchantRequestID;
+                this.isWaiting = true;
+                this.startPolling();
+            });
     }
 
     manualRefresh() {
@@ -1626,16 +1648,17 @@ debugger
     }
 
     startPolling() {
+        debugger
         this.pollingSub = interval(10000)
             .pipe(switchMap(() => this._AppointmentlistService.checkStatus(this.mpesaResponse)))
             .subscribe((status: any) => this.handleStatus(status));
     }
 
     stopPolling() {
-    if (this.pollingSub) {
-    this.pollingSub.unsubscribe();
-    this.pollingSub = null;
-  }
+        if (this.pollingSub) {
+            this.pollingSub.unsubscribe();
+            this.pollingSub = null;
+        }
         // this._matDialog.closeAll();
         //this.savebtn = true
         // this.resetform();
@@ -1648,8 +1671,9 @@ debugger
         }
     }
     handleStatus(status: any) {
+        debugger
         console.log(status)
-        
+
         // if (status?.resultCode == 0 && (status?.mpesaReceiptNumber ?? '') != '') {
         //     // here you can get json response.
         //     this.statusMessage = 'Payment successful.' + this.mpesaResponse.responseDescription + '\n' +
@@ -1692,64 +1716,64 @@ debugger
         }
 
     }
-  // Mpesa Save  
-SavemPesaBill() {
-    
-    const formattedDate = this.datePipe.transform(this.OpBillForm.get('billDate').value, "yyyy-MM-dd");
-    const formattedTime = this.datePipe.transform(new Date(), "HH:mm:ss");
-    const [ThermalPrint, ThermalPrintValue] = this._ConfigService.configParams.ThermalPrint.split(":");
-    const mPesaMerchant_CheckoutRequest_Id = this.mpesaResponse.checkoutRequestID + "|" + this.mpesaResponse.merchantRequestID;
+    // Mpesa Save  
+    SavemPesaBill() {
 
-    this.OpBillForm.get('balanceAmt').setValue(0);
-    this.OpBillForm.get('paidAmt').setValue(this.OPFooterForm.get('netPayableAmt').value);
-    this.OpBillForm.get('payments.paymentDate')?.setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'))
-    this.OpBillForm.get('payments.paymentTime')?.setValue(this.dateTimeObj.time)
-    this.OpBillForm.get('payments.payTmamount').setValue(Number(this.OPFooterForm.get('netPayableAmt').value));
-    this.OpBillForm.get('payments.payTmdate').setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'));
-    this.OpBillForm.get('payments.payTmtranNo').setValue(this.mPesa_ReceiptNo || 0);
-    this.OpBillForm.get('payments.remark').setValue(mPesaMerchant_CheckoutRequest_Id || 0);
-    this.OpBillForm.get('payments.companyId')?.setValue(this.patientDetail?.companyId || 0)
+        const formattedDate = this.datePipe.transform(this.OpBillForm.get('billDate').value, "yyyy-MM-dd");
+        const formattedTime = this.datePipe.transform(new Date(), "HH:mm:ss");
+        const [ThermalPrint, ThermalPrintValue] = this._ConfigService.configParams.ThermalPrint.split(":");
+        const mPesaMerchant_CheckoutRequest_Id = this.mpesaResponse.checkoutRequestID + "|" + this.mpesaResponse.merchantRequestID;
 
-                let ModePaymentObj = [];
-                 ModePaymentObj.push({ 
-                    paymentDate: formattedDate,
-                    paymentTime: formattedTime,
-                    payAmount: this.OPFooterForm.get('netPayableAmt')?.value || 0,
-                    tranNo: this.mPesa_ReceiptNo || 0,
-                    bankName: "",
-                    validationDate: this.datePipe.transform(this.currentDate, 'yyyy-MM-dd'), 
-                    comments: "",
-                    payMode: "MPESA",
-                    onlineTranNo: this.mPesa_ReceiptNo || 0,
-                    onlineTranResponse: mPesaMerchant_CheckoutRequest_Id || 0,
-                    companyId: this.patientDetail?.CompanyId ?? 0, 
-                    cashCounterId:this.searchForm.get('CashCounterID')?.value || 0,
-                    transactionType: 0,
-                    isSelfOrcompany: this.patientDetail?.CompanyId ? 1 : 0, 
-                });
+        this.OpBillForm.get('balanceAmt').setValue(0);
+        this.OpBillForm.get('paidAmt').setValue(this.OPFooterForm.get('netPayableAmt').value);
+        this.OpBillForm.get('payments.paymentDate')?.setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'))
+        this.OpBillForm.get('payments.paymentTime')?.setValue(this.dateTimeObj.time)
+        this.OpBillForm.get('payments.payTmamount').setValue(Number(this.OPFooterForm.get('netPayableAmt').value));
+        this.OpBillForm.get('payments.payTmdate').setValue(this.datePipe.transform(this.dateTimeObj.date, 'yyyy-MM-dd'));
+        this.OpBillForm.get('payments.payTmtranNo').setValue(this.mPesa_ReceiptNo || 0);
+        this.OpBillForm.get('payments.remark').setValue(mPesaMerchant_CheckoutRequest_Id || 0);
+        this.OpBillForm.get('payments.companyId')?.setValue(this.patientDetail?.companyId || 0)
 
-                 this.ModeOfPaymentsArray.clear(); 
-                ModePaymentObj.forEach(item => {
-                this.ModeOfPaymentsArray.push(this.CreateModePaymentform(item as ChargesList));
-                }); 
-
-    this._AppointmentlistService.InsertOPBilling(this.OpBillForm.value)
-        .subscribe(response => {   
-            this.savebtn = true;
-            this.resetform(); 
-            this._matDialog.closeAll(); 
-              if (ThermalPrint != 1) {
-                        this.viewgetOPBillReportPdf(response)
-                    } else {
-                        if (this.data?.FormName != 'Appointment-OPBill') {
-                            this.viewgetOPBillThermalReportPdf(response)
-                        } else {
-                            this.dialogRef.close(response)
-                        }
-                    }
+        let ModePaymentObj = [];
+        ModePaymentObj.push({
+            paymentDate: formattedDate,
+            paymentTime: formattedTime,
+            payAmount: this.OPFooterForm.get('netPayableAmt')?.value || 0,
+            tranNo: this.mPesa_ReceiptNo || 0,
+            bankName: "",
+            validationDate: this.datePipe.transform(this.currentDate, 'yyyy-MM-dd'),
+            comments: "",
+            payMode: "MPESA",
+            onlineTranNo: this.mPesa_ReceiptNo || 0,
+            onlineTranResponse: mPesaMerchant_CheckoutRequest_Id || 0,
+            companyId: this.patientDetail?.CompanyId ?? 0,
+            cashCounterId: this.searchForm.get('CashCounterID')?.value || 0,
+            transactionType: 0,
+            isSelfOrcompany: this.patientDetail?.CompanyId ? 1 : 0,
         });
-}
-// mpesa Save through history
+
+        this.ModeOfPaymentsArray.clear();
+        ModePaymentObj.forEach(item => {
+            this.ModeOfPaymentsArray.push(this.CreateModePaymentform(item as ChargesList));
+        });
+
+        this._AppointmentlistService.InsertOPBilling(this.OpBillForm.value)
+            .subscribe(response => {
+                this.savebtn = true;
+                this.resetform();
+                this._matDialog.closeAll();
+                if (ThermalPrint != 1) {
+                    this.viewgetOPBillReportPdf(response)
+                } else {
+                    if (this.data?.FormName != 'Appointment-OPBill') {
+                        this.viewgetOPBillThermalReportPdf(response)
+                    } else {
+                        this.dialogRef.close(response)
+                    }
+                }
+            });
+    }
+    // mpesa Save through history
     OnmPesaSave(row) {
         Swal.fire({
             title: 'Confirm Save',
@@ -1761,7 +1785,7 @@ SavemPesaBill() {
             confirmButtonText: 'Yes, save it!',
             cancelButtonText: 'No, cancel'
         }).then((result) => {
-            if (result.isConfirmed) { 
+            if (result.isConfirmed) {
                 const formattedDate = this.datePipe.transform(this.OpBillForm.get('billDate').value, "yyyy-MM-dd");
                 const formattedTime = this.datePipe.transform(new Date(), "HH:mm:ss");
                 this.OpBillForm.get('billDate').setValue(formattedDate);
@@ -1800,7 +1824,7 @@ SavemPesaBill() {
                                 this.packcagechargesArray.push(this.Createpacakgechargeform(item as ChargesList));
                             });
                         }
-                    });  
+                    });
                     if (this.OPFooterForm.get('paymentType')?.value === 'Mpesa') {
                         this.mPesa_ReceiptNo = row?.mpesaReceiptNumber || 0
                         const [ThermalPrint, ThermalPrintValue] = this._ConfigService.configParams.ThermalPrint.split(":");
@@ -1816,43 +1840,43 @@ SavemPesaBill() {
                         this.OpBillForm.get('payments.remark').setValue(mPesaMerchant_CheckoutRequest_Id);
                         this.OpBillForm.get('payments.companyId')?.setValue(this.patientDetail?.companyId || 0)
 
-                let ModePaymentObj = [];
-                 ModePaymentObj.push({ 
-                    paymentDate: formattedDate,
-                    paymentTime: formattedTime,
-                    payAmount: this.OPFooterForm.get('netPayableAmt')?.value || 0,
-                    tranNo: this.mPesa_ReceiptNo || 0,
-                    bankName: "",
-                    validationDate: this.datePipe.transform(this.currentDate, 'yyyy-MM-dd'), 
-                    comments: "",
-                    payMode: "MPESA",
-                    onlineTranNo: this.mPesa_ReceiptNo || 0,
-                    onlineTranResponse: mPesaMerchant_CheckoutRequest_Id || 0,
-                    companyId: this.patientDetail?.CompanyId ?? 0, 
-                    cashCounterId:this.searchForm.get('CashCounterID')?.value || 0,
-                    transactionType: 0,
-                    isSelfOrcompany: this.patientDetail?.CompanyId ? 1 : 0, 
-                });
+                        let ModePaymentObj = [];
+                        ModePaymentObj.push({
+                            paymentDate: formattedDate,
+                            paymentTime: formattedTime,
+                            payAmount: this.OPFooterForm.get('netPayableAmt')?.value || 0,
+                            tranNo: this.mPesa_ReceiptNo || 0,
+                            bankName: "",
+                            validationDate: this.datePipe.transform(this.currentDate, 'yyyy-MM-dd'),
+                            comments: "",
+                            payMode: "MPESA",
+                            onlineTranNo: this.mPesa_ReceiptNo || 0,
+                            onlineTranResponse: mPesaMerchant_CheckoutRequest_Id || 0,
+                            companyId: this.patientDetail?.CompanyId ?? 0,
+                            cashCounterId: this.searchForm.get('CashCounterID')?.value || 0,
+                            transactionType: 0,
+                            isSelfOrcompany: this.patientDetail?.CompanyId ? 1 : 0,
+                        });
 
-                 this.ModeOfPaymentsArray.clear(); 
-                ModePaymentObj.forEach(item => {
-                this.ModeOfPaymentsArray.push(this.CreateModePaymentform(item as ChargesList));
-                }); 
+                        this.ModeOfPaymentsArray.clear();
+                        ModePaymentObj.forEach(item => {
+                            this.ModeOfPaymentsArray.push(this.CreateModePaymentform(item as ChargesList));
+                        });
 
                         this._AppointmentlistService.InsertOPBilling(this.OpBillForm.value)
-                            .subscribe(response => { 
+                            .subscribe(response => {
                                 this.savebtn = true;
-                                this.resetform(); 
-                                this._matDialog.closeAll(); 
-                                  if (ThermalPrint != 1) {
-                        this.viewgetOPBillReportPdf(response)
-                    } else {
-                        if (this.data?.FormName != 'Appointment-OPBill') {
-                            this.viewgetOPBillThermalReportPdf(response)
-                        } else {
-                            this.dialogRef.close(response)
-                        }
-                    }
+                                this.resetform();
+                                this._matDialog.closeAll();
+                                if (ThermalPrint != 1) {
+                                    this.viewgetOPBillReportPdf(response)
+                                } else {
+                                    if (this.data?.FormName != 'Appointment-OPBill') {
+                                        this.viewgetOPBillThermalReportPdf(response)
+                                    } else {
+                                        this.dialogRef.close(response)
+                                    }
+                                }
                             });
                     }
                 }
@@ -1881,13 +1905,443 @@ SavemPesaBill() {
                     }
                 }
             }
-        }); 
+        });
     }
+
+    OpDraftSaveForm: FormGroup
+
+    createDraftSaveform(): FormGroup {
+        return this.formBuilder.group({
+            //draft save form
+            drBill: this.formBuilder.group({
+                drbno: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+                opdIpdId: [this.vOPIPId, [this._FormvalidationserviceService.onlyNumberValidator()]],
+                totalAmt: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+                concessionAmt: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+                netPayableAmt: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+                paidAmt: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+                balanceAmt: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+                billDate: [''],
+                opdIpdType: [0, [this._FormvalidationserviceService.onlyNumberValidator]],
+                isCancelled: [0],
+                pbillNo: ['', [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+                totalAdvanceAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+                advanceUsedAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+                addedBy: [this.accountService.currentUserValue.userId, [this._FormvalidationserviceService.onlyNumberValidator()]],
+                cashCounterId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+                billTime: [''],
+                concessionReasonId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+                isSettled: [true],
+                isPrinted: [true],
+                isFree: [true],
+                companyId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+                tariffId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+                unitId: [this.accountService.currentUserValue.user.unitId, [this._FormvalidationserviceService.onlyNumberValidator()]],
+                interimOrFinal: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+                companyRefNo: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly]],
+                concessionAuthorizationName: [0],
+                taxPer: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+                taxAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            }),
+            // ✅ Fixed: should be FormArray
+            tDrbillDet: this.formBuilder.array([]),
+            // ✅ Fixed: should be FormArray
+            tDraddCharge: this.formBuilder.array([]),
+        });
+    }
+    CreateDraftDet(item:any) {
+        return this.formBuilder.group({
+            drno: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+           // drbillDetId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            chargesId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        })
+    }
+    CreateDraftAddchargeform(item: any): FormGroup {
+        return this.formBuilder.group({
+            chargesId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            chargesDate: this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
+            chargesTime: this.datePipe.transform(new Date(), 'shortTime'),
+            opdIpdType: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            opdIpdId: [this.vOPIPId, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
+            serviceId: [item?.ServiceId, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
+            price: [item?.Price, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
+            qty: [item?.Qty, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            classId: [1, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            tariffId: [this.vTariffId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            unitId: [this.accountService.currentUserValue.user.unitId, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
+            totalAmt: [item?.TotalAmt, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            concessionPercentage: [item?.DiscPer || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            concessionAmount: [item?.DiscAmt || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            netAmount: [item?.NetAmount, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            doctorId: [item?.DoctorId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            doctorName: [item?.DoctorName || '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+            docPercentage: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            docAmt: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            hospitalAmt: [item?.NetAmount, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            refundAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            isPathology: [item?.isPathology],
+            isRadiology: [item?.isRadiology], 
+            isDoctorShareGenerated: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            isInterimBillFlag: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            isPackage: [Number(item?.IsPackage || 0)],
+            packageId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            packageMainChargeID: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            isSelfOrCompanyService: [item?.isSelfOrCompanyService || 0],
+            cPrice: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            cQty: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            cTotalAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            isComServ: [false],
+            isPrintCompSer: [false],
+            chPrice: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            chQty: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            chTotalAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            isBillableCharity: [false],
+            salesId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            isGenerated: [true],
+            isApprovedByCamp: [false],
+            wardId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            bedId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            serviceCode: [item?.serviceCode || '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+            serviceName: [item?.ServiceName ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+            companyServiceName: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+            isInclusionExclusion: [item?.isInclusionExclusion || false,],
+            isHospMrk: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            billNo: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            isCancelled: [false],
+            isCancelledBy: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            isCancelledDate: ['1999-01-01'],
+            addedBy: [this.accountService.currentUserValue.userId, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            createdBy: [this.accountService.currentUserValue.userId, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        });
+    }
+     CreateDraftDetEdit(item:any) {
+        return this.formBuilder.group({
+            drno: [this.DraftdetObj?.drbno || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            drbillDetId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            chargesId: [item?.chargesId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        })
+    }
+    CreateDraftAddchargeEditform(item: any): FormGroup {
+        return this.formBuilder.group({
+            chargesId: [item?.chargesId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            chargesDate: this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
+            chargesTime: this.datePipe.transform(new Date(), 'shortTime'),
+            opdIpdType: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            opdIpdId: [this.vOPIPId, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
+            serviceId: [item?.ServiceId, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
+            price: [item?.Price, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
+            qty: [item?.Qty, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            classId: [1, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            tariffId: [this.vTariffId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            unitId: [this.accountService.currentUserValue.user.unitId, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
+            totalAmt: [item?.TotalAmt, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            concessionPercentage: [item?.DiscPer || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            concessionAmount: [item?.DiscAmt || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            netAmount: [item?.NetAmount, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            doctorId: [item?.DoctorId || 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            doctorName: [item?.DoctorName || '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+            docPercentage: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            docAmt: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            hospitalAmt: [item?.NetAmount, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            refundAmount: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+            isPathology: [item?.isPathology],
+            isRadiology: [item?.isRadiology], 
+            isDoctorShareGenerated: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            isInterimBillFlag: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            isPackage: [Number(item?.IsPackage || 0)],
+            packageId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            packageMainChargeID: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            isSelfOrCompanyService: [item?.isSelfOrCompanyService || 0],
+            cPrice: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            cQty: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            cTotalAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            isComServ: [false],
+            isPrintCompSer: [false],
+            chPrice: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            chQty: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            chTotalAmount: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            isBillableCharity: [false],
+            salesId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            isGenerated: [true],
+            isApprovedByCamp: [false],
+            wardId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            bedId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            serviceCode: [item?.serviceCode || '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+            serviceName: [item?.ServiceName ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+            companyServiceName: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+            isInclusionExclusion: [item?.isInclusionExclusion || false,],
+            isHospMrk: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            billNo: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            isCancelled: [false],
+            isCancelledBy: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            isCancelledDate: ['1999-01-01'],
+            addedBy: [this.accountService.currentUserValue.userId, [this._FormvalidationserviceService.onlyNumberValidator()]],
+            modifiedBy: [this.accountService.currentUserValue.userId, [this._FormvalidationserviceService.onlyNumberValidator()]],
+        });
+    }
+    get draftchargesArray(): FormArray {
+        return this.OpDraftSaveForm.get('tDraddCharge') as FormArray;
+    }
+    get draftdetlist(): FormArray {
+        return this.OpDraftSaveForm.get('tDrbillDet') as FormArray;
+    }
+
+    DraftbillSave() {
+        Swal.fire({
+            title: 'Confirm Save',
+            text: 'Are you sure you want to save Draft OPD bill?',
+            icon: 'warning', // or 'question'
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6', // Blue
+            cancelButtonColor: '#d33',     // Red
+            confirmButtonText: 'Yes, save it!',
+            cancelButtonText: 'No, cancel'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const formattedDate = this.datePipe.transform(this.OpBillForm.get('billDate').value, "yyyy-MM-dd");
+                const formattedTime = this.datePipe.transform(new Date(), "HH:mm:ss");
+                this.OpDraftSaveForm.get('drBill.billDate').setValue(formattedDate);
+                this.OpDraftSaveForm.get('drBill.billTime').setValue(formattedDate + ' ' + formattedTime);
+                this.OpDraftSaveForm.get('drBill.opdIpdId').setValue(this.vOPIPId)
+                this.OpDraftSaveForm.get('drBill.totalAmt')?.setValue(this.OPFooterForm.get('totalAmt')?.value || 0)
+                this.OpDraftSaveForm.get('drBill.concessionAmt')?.setValue(this.OPFooterForm.get('concessionAmt')?.value || 0)
+                this.OpDraftSaveForm.get('drBill.netPayableAmt')?.setValue(this.OPFooterForm.get('netPayableAmt')?.value || 0)
+                this.OpDraftSaveForm.get('drBill.balanceAmt')?.setValue(this.OPFooterForm.get('netPayableAmt')?.value || 0)
+                this.OpDraftSaveForm.get('drBill.cashCounterId')?.setValue(this.searchForm.get('CashCounterID')?.value || 0)
+                this.OpDraftSaveForm.get('drBill.concessionReasonId')?.setValue(this.ConcessionId)
+                this.OpDraftSaveForm.get('drBill.companyId')?.setValue(this.patientDetail?.companyId || 0)
+                this.OpDraftSaveForm.get('drBill.tariffId')?.setValue(this.vTariffId)
+
+                if (!this.OpDraftSaveForm.invalid) {
+                    if (!(this.DraftdetObj?.drbno || 0)) {
+                        this.draftdetlist.clear();
+                        this.draftchargesArray.clear();
+                        this.dsChargeList.data.forEach(item => {
+                            this.draftdetlist.push(this.CreateDraftDet(item as ChargesList));
+                            this.draftchargesArray.push(this.CreateDraftAddchargeform(item as ChargesList));
+                        });
+                        this._AppointmentlistService.InsertOPDraftBilling(this.OpDraftSaveForm.value)
+                            .subscribe(response => {
+                                console.log(response)
+                                this.savebtn = true;
+                                this.resetform();
+                                this._matDialog.closeAll();
+                                this.viewgetOPBillDraftReportPdf(response)
+                            });
+                    } else {
+                        this.OpDraftSaveForm.get('drBill.drbno')?.setValue(this.DraftdetObj?.drbno || 0)
+                        this.draftdetlist.clear();
+                        this.draftchargesArray.clear();
+                        this.dsChargeList.data.forEach(item => {
+                            this.draftdetlist.push(this.CreateDraftDet(item as ChargesList));
+                            this.draftchargesArray.push(this.CreateDraftAddchargeform(item as ChargesList));
+                        });
+                        this._AppointmentlistService.InsertEditOPDraftBilling(this.OpDraftSaveForm.value)
+                            .subscribe(response => {
+                                console.log(response)
+                                this.savebtn = true;
+                                this.resetform();
+                                this._matDialog.closeAll();
+                                this.viewgetOPBillDraftReportPdf(response)
+                            });
+                    } 
+                }
+                else {
+                    let invalidFields = [];
+                    if (this.OpDraftSaveForm.invalid) {
+                        for (const controlName in this.OpDraftSaveForm.controls) {
+                            const control = this.OpDraftSaveForm.get(controlName);
+                            if (control instanceof FormGroup || control instanceof FormArray) {
+                                for (const nestedKey in control.controls) {
+                                    if (control.get(nestedKey)?.invalid) {
+                                        invalidFields.push(`OP Bill Draft Data : ${controlName}.${nestedKey}`);
+                                    }
+                                }
+                            } else if (control?.invalid) {
+                                invalidFields.push(`OpBill Draft From: ${controlName}`);
+                            }
+                        }
+                    }
+                    if (invalidFields.length > 0) {
+                        invalidFields.forEach(field => {
+                            this.toastr.warning(`Please Check this field "${field}" is invalid.`, 'Warning',
+                            );
+                        });
+                        return
+                    }
+                }
+            }
+        });
+    }
+    getdraftlist() {
+        var param = {
+            "first": 0,
+            "rows": 999,
+            "sortField": "DRBNo",
+            "sortOrder": 0,
+            "filters": [
+                { "fieldName": "OPD_IPD_ID", "fieldValue": String(this.vOPIPId), "opType": "Equals" },
+                { "fieldName": "OPD_IPD_Type", "fieldValue": String(0), "opType": "Equals" },
+            ],
+            "exportType": "JSON",
+            "columns": [{ "data": "string", "name": "string" }]
+        }
+        this._AppointmentlistService.getdraftlist(param).subscribe(response => {
+            console.log(response)
+            this.dsOpDraftlist.data = response.data as ChargesList[];
+
+        })
+    }
+    draftChargelist: any = [];
+    DraftdetObj:any;
+    getdraftchargelist(contact) {
+        this.DraftdetObj = contact
+        var param = {
+            "first": 0,
+            "rows": 999,
+            "sortField": "ChargesId",
+            "sortOrder": 0,
+            "filters": [
+                { "fieldName": "DRBNo", "fieldValue": String(contact?.drbno), "opType": "Equals" },
+                { "fieldName": "OPD_IPD_ID", "fieldValue": String(this.vOPIPId), "opType": "Equals" },
+                { "fieldName": "OPD_IPD_Type", "fieldValue": String(0), "opType": "Equals" } 
+            ],
+            "exportType": "JSON",
+            "columns": [{ "data": "string", "name": "string" }]
+        }
+        this._AppointmentlistService.getdraftchargeslist(param).subscribe(response => {
+            console.log(response)
+            this.draftChargelist = response.data as any;
+            if(this.draftChargelist.length){
+             this.onAddDraftCharges();
+            }
+        })
+    } 
+
+    onAddDraftCharges(): void {
+        debugger 
+        if (this.dsChargeList.data.length) {
+            const hasDuplicate = this.dsChargeList.data.some(element =>
+                this.draftChargelist.some(
+                    item => item.serviceId === element.ServiceId
+                )
+            );
+
+            if (hasDuplicate) {
+                Swal.fire({
+                    title: 'Message',
+                    text: 'Selected Service already available in the list',
+                    icon: 'warning'
+                });
+                return; // ✅ stops execution correctly
+            }
+        } 
+        if (this.draftChargelist.length) {
+            this.draftChargelist.forEach(element=>{
+                 const newRow = {
+                    ServiceId: element.serviceId,
+                    ServiceName:element.serviceName,
+                    Price: element.price,
+                    Qty: element.qty,
+                    TotalAmt: element.totalAmt,
+                    DiscPer: element.concessionPercentage || 0,
+                    DiscAmt: element.concessionAmount || 0,
+                    NetAmount: element.netAmount,
+                    DoctorName: element.doctorName || '-',
+                    ClassName: element.classname || '-',
+                    DoctorId: element.doctorId,
+                    ChargesAddedName: this.accountService.currentUserValue.userName,
+                    IsPathology: element.isPathology,
+                    IsRadiology: element.isRadiology,
+                    IsPackage: element.isPackage,
+                    serviceCode: element.companyCode,
+                    isInclusionExclusion: element.isInclusionExclusion 
+                }; 
+                const newCharge = new ChargesList(newRow); 
+                this.chargeList.push(newCharge);
+                this.dsChargeList.data = this.chargeList;
+                this.calculateTotalAmount();
+                this.serviceSelct = false
+            }) 
+        }
+    }
+    //   "drbno": 40245,
+    // "totalAmt": 200,
+    // "concessionAmt": 200,
+    // "netPayableAmt": 100,
+    // "paidAmt": 400,
+    // "balanceAmt": 300,
+    // "billDate": "2026-01-19T00:00:00",
+    // "isCancelled": 1,
+    // "pbillNo": "123",
+    // "totalAdvanceAmount": 12,
+    // "advanceUsedAmount": 13,
+    // "addedBy": 0,
+    // "cashCounterId": 0,
+    // "billTime": "2026-01-19T11:00:00",
+    // "concessionReasonId": 0,
+    // "isSettled": true,
+    // "isPrinted": true,
+    // "isFree": true,
+    // "companyId": 0,
+    // "tariffId": 11,
+    // "unitId": 12,
+    // "interimOrFinal": 0,
+    // "companyRefNo": "234",
+    // "concessionAuthorizationName": 0,
+    // "taxPer": 1,
+    // "taxAmount": 100
+
+    //  "chargesId": 3,
+    //     "chargesDate": "2026-01-19T00:00:00",
+    //     "chargesTime": "2026-01-19T23:00:00",
+    //     "unitId": 1,
+    //     "serviceId": 1,
+    //     "classId": 1,
+    //     "tariffId": 1,
+    //     "price": 1,
+    //     "qty": 20,
+    //     "totalAmt": 0,
+    //     "concessionPercentage": 0,
+    //     "concessionAmount": 0,
+    //     "netAmount": 0,
+    //     "doctorId": 0,
+    //     "doctorName": "ss",
+    //     "docPercentage": 0,
+    //     "docAmt": 0,
+    //     "hospitalAmt": 0,
+    //     "refundAmount": 0,
+    //     "isPathology": 0,
+    //     "isRadiology": 0,
+    //     "isDoctorShareGenerated": 0,
+    //     "isInterimBillFlag": 0,
+    //     "isPackage": 0,
+    //     "packageId": 0,
+    //     "packageMainChargeId": 0,
+    //     "isSelfOrCompanyService": 0,
+    //     "isComServ": true,
+    //     "isPrintCompSer": true,
+    //     "salesId": 0,
+    // "isGenerated": true,
+    // "isApprovedByCamp": true,
+    // "wardId": 0,
+    // "bedId": 0,
+    // "serviceCode": "string",
+    // "serviceName": "string",
+    // "companyServiceName": "string",
+    // "isInclusionExclusion": true,
+    // "isHospMrk": 0,
+    // "billNo": 40265,
+    // "isCancelled": true,
+    // "isCancelledBy": 0,
+    // "isCancelledDate": "2026-01-19T00:00:00",
+    // "addedBy": 0,
+    // "createdBy": 0 
 }
 
 export class ChargesList {
     ChargesId: number;
-    ConcessionAmt:any;
+    ConcessionAmt: any;
     ServiceId: number;
     serviceId: number;
     ServiceName: String;
@@ -1920,7 +2374,7 @@ export class ChargesList {
     PatientName: any;
     BillNo: any;
     TotalBillAmount: any;
-    ConcessionAmount: any; 
+    ConcessionAmount: any;
     NetPayableAmt: any;
     ConsultantDocName: any;
     AddedByName: any;
@@ -1940,7 +2394,7 @@ export class ChargesList {
     packageId: any;
     ConcessionPercentage: any = 0;
     userName: any;
-    BalanceAmt:any;
+    BalanceAmt: any;
     constructor(ChargesList) {
         this.ChargesId = ChargesList.ChargesId || '';
         this.ServiceId = ChargesList.ServiceId || '';
@@ -1964,7 +2418,7 @@ export class ChargesList {
         this.PackageId = ChargesList.PackageId || 0;
         this.PackageServiceId = ChargesList.PackageServiceId || 0;
         this.IsPackage = ChargesList.IsPackage || 0;
-         this.ConcessionAmt = ChargesList.ConcessionAmt || 0;
+        this.ConcessionAmt = ChargesList.ConcessionAmt || 0;
         this.PacakgeServiceName = ChargesList.PacakgeServiceName || '';
         this.OpdIpdId = ChargesList.OpdIpdId || '';
         this.serviceName = ChargesList.serviceName || ''
@@ -1973,7 +2427,7 @@ export class ChargesList {
         this.packageServiceId = ChargesList.packageServiceId || 0;
         this.price = ChargesList.price || 0;
         this.packageId = ChargesList.packageId || '';
-        this.doctorName = ChargesList.doctorName || 0; 
+        this.doctorName = ChargesList.doctorName || 0;
         this.BalanceAmt = ChargesList.BalanceAmt || 0;
         this.doctorId = ChargesList.doctorId || 0;
         this.serviceCode = ChargesList.serviceCode || 0;
@@ -1991,10 +2445,10 @@ export class ChargesList {
         this.ConsultantDocName = ChargesList.ConsultantDocName || '';
         this.AddedByName = ChargesList.AddedByName || '';
         this.DiscComments = ChargesList.DiscComments || '';
-               this.PaymentMode = ChargesList.PaymentMode || 0;
+        this.PaymentMode = ChargesList.PaymentMode || 0;
         this.TokenNo = ChargesList.TokenNo || 0;
         this.RefundAmt = ChargesList.RefundAmt || 0;
- 
+
     }
 }
 export class PaymentInsert {

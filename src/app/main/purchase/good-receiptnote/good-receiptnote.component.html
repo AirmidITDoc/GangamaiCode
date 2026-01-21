@@ -22,7 +22,7 @@
                     </button>
                 </div> -->
                 <div class="header-add-button">
-                    <button mat-raised-button fxLayoutAlign="center center" class="py-8" (click)="newGRNEntry(1)">
+                    <button mat-raised-button fxLayoutAlign="center center" class="py-8" (click)="newGRNEntry(1)" *ngIf="IsAdd">
                         New GRN</button>
                 </div>
             </div>

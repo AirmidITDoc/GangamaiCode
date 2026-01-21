@@ -67,6 +67,7 @@ export class NewLabPatientRegComponent {
   autocompleteModecamp: string = "CampMaster";
   autocompleteModedoctor: string = "ConDoctor";
   autocompleteModeConcession: string = "Concession";
+  autocompleteModeLabPatientType: string = "LabPatientType";
   
   dsLabRequest2 = new MatTableDataSource<LabRequest>();
   // dstable1 = new MatTableDataSource<LabRequest>();
@@ -234,7 +235,9 @@ export class NewLabPatientRegComponent {
         Validators.pattern("^[0-9]*$"),
         this._FormvalidationserviceService.onlyNumberValidator()
       ]],
-
+      patientTypValId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      Comments: ['', [Validators.maxLength(255), Validators.pattern("^[A-Za-z/() ]*$"), this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+      ReferByName: ['', [Validators.maxLength(255), Validators.pattern("^[A-Za-z/() ]*$"), this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
       // extra fields
       mobileNo: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(15), Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")]],
       regId: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
@@ -1527,6 +1530,15 @@ export class NewLabPatientRegComponent {
       ],
       subCompanyId: [
         { name: "required", Message: "SubCompany Name is required" }
+      ],
+      patientTypeValue: [
+         { name: "required", Message: "PatientType is required" }
+      ],
+      Comments: [
+        { name: "pattern", Message: "only char allowed." }
+      ],
+      ReferByName: [
+        { name: "pattern", Message: "only char allowed." }
       ],
       emgDrivingLicenceNo: [
         { name: "pattern", Message: "e.g., MH14-20210001234" },

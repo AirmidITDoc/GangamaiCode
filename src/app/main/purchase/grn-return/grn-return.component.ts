@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, ComponentRef, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -20,6 +20,17 @@ import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/air
 import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 import { GrnreturnWithoutGrnNewComponent } from './grnreturn-without-grn-new/grnreturn-without-grn-new.component';
 
+import { WhatsAppEmailService } from 'app/main/shared/services/whats-app-email.service';
+import { EmailSendComponent } from 'app/main/shared/componets/email-send/email-send.component';
+import { Overlay, OverlayRef } from '@angular/cdk/overlay';
+import { ComponentPortal } from '@angular/cdk/portal';
+import { SMSDetailsPopupOverComponent } from 'app/main/shared/componets/email-send/smsdetails-popup-over/smsdetails-popup-over.component';
+import { WhatsappDetPopUpOverComponent } from 'app/main/shared/componets/email-send/whatsapp-det-pop-up-over/whatsapp-det-pop-up-over.component';
+import { Subscription } from 'rxjs';
+import { permissionCodes, permissionType } from 'app/main/shared/model/permission.model';
+import { PagePermissionService } from 'app/main/shared/services/page-permission.service';
+
+
 @Component({
   selector: 'app-grn-return',
   templateUrl: './grn-return.component.html',
@@ -28,38 +39,7 @@ import { GrnreturnWithoutGrnNewComponent } from './grnreturn-without-grn-new/grn
   animations: fuseAnimations,
 })
 export class GRNReturnComponent implements OnInit {
-  // displayedColumns = [
-  //   'Status',
-  //   'GRNReturnId',
-  //   'GRNReturnNo',
-  //   'GRNReturnDate',
-  //   //'StoreName',
-  //   'SupplierName',
-  //   'UserName',
-  //   'GSTAmount',
-  //   'NetAmount',
-  //   'Remark',
-  //   'AddedBy',
-  //   'action',
-  // ];
-
-  // displayedColumns1 = [
-  //   // "Action",
-  //   "ItemName",
-  //   "BatchNo",
-  //   "BatchExpiryDate",
-  //    "Conversion",
-  //   "ReturnQty",
-  //   "TotalQty",
-  //   "MRP",
-  //   "LandedRate",
-  //   "Totalamt",
-  //   "GST",
-  //   "GSTAmount",
-  //   "NetAmount",
-  //   "StkId",
-  // ];
-
+  IsAdd: boolean = this.permissionService.getPermission(permissionCodes.GRNReturn, permissionType.Add);
   SpinLoading: boolean = false;
   ToStoreList: any = [];
   SupplierList: any;
@@ -99,9 +79,9 @@ export class GRNReturnComponent implements OnInit {
     public _matDialog: MatDialog,
     private _fuseSidebarService: FuseSidebarService,
     public datePipe: DatePipe,
-    private accountService: AuthenticationService,
-    public toastr: ToastrService,
-    private commonService: PrintserviceService,
+    private accountService: AuthenticationService, private overlay: Overlay,
+    public toastr: ToastrService, public _whatsppService: WhatsAppEmailService,
+    private commonService: PrintserviceService, public permissionService: PagePermissionService,
   ) { }
 
   isDataAvailableInColumn(column: string): boolean {
@@ -139,16 +119,16 @@ export class GRNReturnComponent implements OnInit {
       heading: "-", key: "isVerified", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.template,
       template: this.ColorCode
     },
-    { heading: "GRNReturnNo", key: "grnReturnNo", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "GRNReturnNo", key: "grnReturnNo", sort: true, align: 'left', emptySign: 'NA', width: 70 },
     { heading: "GRNReturnDateTime", key: "grnReturnDate", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-    { heading: "SupplierName", key: "supplierName", sort: true, align: 'left', emptySign: 'NA', width: 350 },
+    { heading: "SupplierName", key: "supplierName", sort: true, align: 'left', emptySign: 'NA', width: 300 },
     { heading: "TotalAmount", key: "totalAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
     // { heading: "GSTAmount", key: "totalVatAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount },
     { heading: "NetAmount", key: "netAmount", sort: true, align: 'left', emptySign: 'NA', width: 100, type: gridColumnTypes.amount },
-    { heading: "Remark", key: "remark", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "UserName", key: "userName", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "Remark", key: "remark", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+    { heading: "UserName", key: "userName", sort: true, align: 'left', emptySign: 'NA', width: 100 },
     {
-      heading: "Action", key: "action", align: "right", width: 150, sticky: true, type: gridColumnTypes.template,
+      heading: "Action", key: "action", align: "right", width: 250, sticky: true, type: gridColumnTypes.template,
       template: this.actionButtonTemplate
     }
   ]
@@ -160,6 +140,7 @@ export class GRNReturnComponent implements OnInit {
     { fieldName: "IsVerify", fieldValue: this.Status, opType: OperatorComparer.Equals }
   ]
   gridConfig: gridModel = {
+    permissionCode: permissionCodes.GRNReturn,
     apiUrl: "GRNReturn/GRNReturnlistbynameList",
     columnsList: this.allColumns,
     sortField: "GRNReturnId",
@@ -346,6 +327,247 @@ export class GRNReturnComponent implements OnInit {
 
   onPrint(row) {
     this.commonService.Onprint("GRNReturnId", row.grnReturnId, "GRNReturnReport");
+  }
+
+  //whatsapp
+  private overlayRef: OverlayRef | null = null;
+  private EmailOverlayRef: OverlayRef | null = null;
+  private whatsappOverlayRef: OverlayRef | null = null;
+  private hoverTimeout: any = null;
+  private patientCloseTimeout: any = null;
+  private doctorCloseTimeout: any = null;
+
+  openEmailDetailsPopover(event: MouseEvent, patientData: any) {
+    event.stopPropagation();
+
+    // Clear any existing timeout
+    if (this.hoverTimeout) {
+      clearTimeout(this.hoverTimeout);
+    }
+
+    // Add small delay to prevent flickering
+    this.hoverTimeout = setTimeout(() => {
+      // Close any existing patient popover
+      if (this.EmailOverlayRef) {
+        this.EmailOverlayRef.dispose();
+        this.EmailOverlayRef = null;
+      }
+
+      const positionStrategy = this.overlay.position()
+        .flexibleConnectedTo(event.target as HTMLElement)
+        .withPositions([
+          {
+            originX: 'start',
+            originY: 'bottom',
+            overlayX: 'start',
+            overlayY: 'top',
+          },
+          {
+            originX: 'start',
+            originY: 'top',
+            overlayX: 'start',
+            overlayY: 'bottom',
+          },
+          {
+            originX: 'end',
+            originY: 'center',
+            overlayX: 'start',
+            overlayY: 'center',
+          },
+          {
+            originX: 'start',
+            originY: 'center',
+            overlayX: 'end',
+            overlayY: 'center',
+          }
+        ]);
+
+      this.EmailOverlayRef = this.overlay.create({
+        positionStrategy,
+        scrollStrategy: this.overlay.scrollStrategies.close(),
+        hasBackdrop: false,
+      });
+
+      const portal = new ComponentPortal(SMSDetailsPopupOverComponent);
+      const componentRef: ComponentRef<SMSDetailsPopupOverComponent> = this.EmailOverlayRef.attach(portal);
+      console.log(patientData)
+      debugger
+      patientData.billNo = patientData.grnReturnId
+
+      patientData.patientName = patientData.supplierName
+      patientData.regNo = patientData.supplierId
+      patientData.mobileNo = patientData.mobile.trim()
+      patientData.emailId = patientData.email
+
+      componentRef.instance.patientData = patientData;
+
+      // Handle mouse events on the overlay element
+      const overlayElement = this.EmailOverlayRef.overlayElement;
+      overlayElement.addEventListener('mouseenter', () => this.keepPatientPopoverOpen());
+      overlayElement.addEventListener('mouseleave', () => this.closeEmailDetailsPopover());
+    }, 300); // 300ms delay before showing popover
+  }
+  closeEmailDetailsPopover() {
+    // Clear timeout if popover hasn't opened yet
+    if (this.hoverTimeout) {
+      clearTimeout(this.hoverTimeout);
+      this.hoverTimeout = null;
+    }
+
+    // Clear any existing close timeout
+    if (this.patientCloseTimeout) {
+      clearTimeout(this.patientCloseTimeout);
+    }
+
+    // Add delay before closing to allow moving mouse to popover
+    this.patientCloseTimeout = setTimeout(() => {
+      if (this.EmailOverlayRef) {
+        this.EmailOverlayRef.dispose();
+        this.EmailOverlayRef = null;
+      }
+    }, 200);
+  }
+  openWhatsappDetailsPopover(event: MouseEvent, patientData: any) {
+    event.stopPropagation();
+
+    // Clear any existing timeout
+    if (this.hoverTimeout) {
+      clearTimeout(this.hoverTimeout);
+    }
+
+    // Add small delay to prevent flickering
+    this.hoverTimeout = setTimeout(() => {
+      // Close any existing patient popover
+      if (this.whatsappOverlayRef) {
+        this.whatsappOverlayRef.dispose();
+        this.whatsappOverlayRef = null;
+      }
+
+      const positionStrategy = this.overlay.position()
+        .flexibleConnectedTo(event.target as HTMLElement)
+        .withPositions([
+          {
+            originX: 'start',
+            originY: 'bottom',
+            overlayX: 'start',
+            overlayY: 'top',
+          },
+          {
+            originX: 'start',
+            originY: 'top',
+            overlayX: 'start',
+            overlayY: 'bottom',
+          },
+          {
+            originX: 'end',
+            originY: 'center',
+            overlayX: 'start',
+            overlayY: 'center',
+          },
+          {
+            originX: 'start',
+            originY: 'center',
+            overlayX: 'end',
+            overlayY: 'center',
+          }
+        ]);
+
+      this.whatsappOverlayRef = this.overlay.create({
+        positionStrategy,
+        scrollStrategy: this.overlay.scrollStrategies.close(),
+        hasBackdrop: false,
+      });
+
+      const portal = new ComponentPortal(WhatsappDetPopUpOverComponent);
+      const componentRef: ComponentRef<WhatsappDetPopUpOverComponent> = this.whatsappOverlayRef.attach(portal);
+
+      console.log(patientData)
+      patientData.billNo = patientData.grnReturnId
+
+      patientData.patientName = patientData.supplierName
+      patientData.regNo = patientData.supplierId
+      patientData.mobileNo = patientData.mobile.trim()
+
+      componentRef.instance.patientData = patientData;
+
+      // Handle mouse events on the overlay element
+      const overlayElement = this.whatsappOverlayRef.overlayElement;
+      overlayElement.addEventListener('mouseenter', () => this.keepPatientPopoverOpen());
+      overlayElement.addEventListener('mouseleave', () => this.closeWhatsappDetailsPopover());
+    }, 300); // 300ms delay before showing popover
+  }
+  closeWhatsappDetailsPopover() {
+    // Clear timeout if popover hasn't opened yet
+    if (this.hoverTimeout) {
+      clearTimeout(this.hoverTimeout);
+      this.hoverTimeout = null;
+    }
+
+    // Clear any existing close timeout
+    if (this.patientCloseTimeout) {
+      clearTimeout(this.patientCloseTimeout);
+    }
+
+    // Add delay before closing to allow moving mouse to popover
+    this.patientCloseTimeout = setTimeout(() => {
+      if (this.whatsappOverlayRef) {
+        this.whatsappOverlayRef.dispose();
+        this.whatsappOverlayRef = null;
+      }
+    }, 200);
+  }
+  keepPatientPopoverOpen() {
+    // Clear close timeout when hovering over popover
+    if (this.patientCloseTimeout) {
+      clearTimeout(this.patientCloseTimeout);
+      this.patientCloseTimeout = null;
+    }
+  }
+  ngOnDestroy() {
+    if (this.overlayRef) {
+      this.overlayRef.dispose();
+    }
+    if (this.EmailOverlayRef) {
+      this.EmailOverlayRef.dispose();
+    }
+    if (this.whatsappOverlayRef) {
+      this.whatsappOverlayRef.dispose();
+    }
+    if (this.hoverTimeout) {
+      clearTimeout(this.hoverTimeout);
+    }
+    if (this.patientCloseTimeout) {
+      clearTimeout(this.patientCloseTimeout);
+    }
+    if (this.doctorCloseTimeout) {
+      clearTimeout(this.doctorCloseTimeout);
+    }
+  }
+
+  getWhatsappshareBill(el) {
+    console.log(el);
+    this._whatsppService.OnWhatsAppMsgSent({
+      mobileNo: el.mobile,
+      patientName: el.supplierName,
+      billNo: el.grnreturnId,
+      smsType: "GRNReturnReceipt",
+      patientId: el.supplierId
+    })
+  }
+  Onemail(contact) {
+    const dialogRef = this._matDialog.open(EmailSendComponent,
+      {
+        maxWidth: "100%",
+        height: '75%',
+        width: '55%',
+        data: {
+          Obj: contact,
+          emailType: 'GRNReturnReceipt'
+        }
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      this.grid.bindGridData();
+    });
   }
 }
 

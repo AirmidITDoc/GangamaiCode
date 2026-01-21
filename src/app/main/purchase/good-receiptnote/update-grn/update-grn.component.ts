@@ -228,7 +228,7 @@ export class UpdateGRNComponent implements OnInit {
            if (Number(rate?.text) > 0) {
                this.userFormGroup.patchValue({ 
                    //IGST: rate?.taxPer,
-                   GST: Number(rate.text),
+                   GST: Number(rate.text) || 0,
                }) 
            } else {
                this.userFormGroup.get('IGST').reset(0); 
@@ -883,7 +883,7 @@ export class UpdateGRNComponent implements OnInit {
                mrp: [item?.UnitMRP, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
                rate: [item?.Rate, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
                totalAmount: [item?.TotalAmount, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-               conversionFactor: [item?.ConversionFactor, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+               conversionFactor: [item?.ConversionFactor || 1, [this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
                vatPercentage: [item?.GST || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
                vatAmount: [item?.GSTAmount || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
                discPercentage: [item?.Disc || 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
@@ -957,7 +957,7 @@ export class UpdateGRNComponent implements OnInit {
                return;
            }
            if (!this.isValidForm()) {
-               Swal.fire('Please enter valid table data.');
+             //  Swal.fire('Please enter valid table data.');
                return;
            }
            if ((this._GRNList.GRNFinalForm.get('ReceivedBy').value == '' || this._GRNList.GRNFinalForm.get('ReceivedBy').value == null)) {
@@ -1307,13 +1307,58 @@ export class UpdateGRNComponent implements OnInit {
                this.dsLastThreeItemList.data = response.data as LastThreeItemList[];
            });
        }
-       isValidForm(): boolean {
-           //  return this.dsItemNameList.data.every((i) => i.ConversionFactor > 0 && i.Qty > 0 && i.TotalQty > 0 );
-           return this.dsItemNameList.data.every((item) =>
-               item.ConversionFactor > 0 && item.Qty > 0 && item.TotalQty > 0 && !!item.HSNCode && !!item.ExpDate // Checks for null, undefined, false, 0, NaN, ''
-           );
-   
-       }
+    //    isValidForm(): boolean {
+    //        //  return this.dsItemNameList.data.every((i) => i.ConversionFactor > 0 && i.Qty > 0 && i.TotalQty > 0 );
+    //        return this.dsItemNameList.data.every((item) =>
+    //            item.ConversionFactor > 0 && item.Qty > 0 && item.TotalQty > 0 && !!item.ExpDate // Checks for null, undefined, false, 0, NaN, ''
+    //        ); 
+    //    }
+isValidForm(): boolean {
+    const invalidItem = this.dsItemNameList.data.find((item, index) => { 
+debugger
+        if (item.Qty <= 0) {
+            this.toastr.warning(
+                `Row ${index + 1}: Quantity must be greater than 0`,
+                'Warning !',
+                { toastClass: 'tostr-tost custom-toast-warning' }
+            );
+            return true;
+        }
+
+        if (item.TotalQty <= 0) {
+            this.toastr.warning(
+                `Row ${index + 1}: Total Quantity must be greater than 0`,
+                'Warning !',
+                { toastClass: 'tostr-tost custom-toast-warning' }
+            );
+            return true;
+        }
+
+         if (item.ConversionFactor <= 0 || item.ConversionFactor == '' || item.ConversionFactor == null) {
+            this.toastr.warning(
+                `Row ${index + 1}: Conversion Factor must be greater than 0`,
+                'Warning !',
+                { toastClass: 'tostr-tost custom-toast-warning' }
+            );
+            return true;
+        }
+
+        if (!item.ExpDate) {
+            this.toastr.warning(
+                `Row ${index + 1}: Expiry Date is required`,
+                'Warning !',
+                { toastClass: 'tostr-tost custom-toast-warning' }
+            );
+            return true;
+        }
+
+        return false;
+    });
+
+    return !invalidItem; // valid only if no invalid row
+}
+ 
+
        // it allowed only Digit 
        keyPressDigitsOnly(event) {
            var inp = String.fromCharCode(event.keyCode);
