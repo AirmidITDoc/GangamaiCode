@@ -32,6 +32,7 @@ import { FormvalidationserviceService } from 'app/main/shared/services/formvalid
 import { permissionCodes, permissionType } from 'app/main/shared/model/permission.model';
 import { PagePermissionService } from 'app/main/shared/services/page-permission.service';
 import { EditLabregComponent } from './edit-labreg/edit-labreg.component';
+import { ReportDispatchComponent } from '../report-dispatch/report-dispatch.component';
 
 @Component({
   selector: 'app-lab-patient-reg',
@@ -544,6 +545,22 @@ export class LabPatientRegComponent {
 
   }
 
+  viewgetReportdispatchPdf(element) {
+    console.log(element)
+    const dialogRef = this._matDialog.open(ReportDispatchComponent,
+      {
+        maxWidth: "80vw",
+        height: '850px',
+        width: '100%',
+        data: element
+
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      // this.onChangeFirst2()
+    });
+
+  }
+
 
   viewgetOPBillReportPdf(element) {
     this.commonService.Onprint("BillNo", element.billNo, "LabregisterBillReceipt");
@@ -869,6 +886,9 @@ export class LabPatientList {
   campId: any;
   companyId: any;
   subCompanyId: any;
+  pBillNo: any;
+  labPatientId: any;
+  balanceAmt: any;
 
   constructor(LabPatientList) {
     {
@@ -941,6 +961,11 @@ export class LabPatientList {
       this.campId = LabPatientList.campId || 0
       this.companyId = LabPatientList.companyId || 0
       this.subCompanyId = LabPatientList.subCompanyId || 0
+ this.pBillNo = LabPatientList.pBillNo || 0
+      this.labPatientId = LabPatientList.labPatientId || 0
+       this.balanceAmt = LabPatientList.balanceAmt || 0
+      
+
     }
   }
 }
