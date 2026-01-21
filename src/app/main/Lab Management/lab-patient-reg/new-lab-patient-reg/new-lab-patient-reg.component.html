@@ -29,34 +29,46 @@
             <mat-drawer-container class="main-container h-100-p">
                 <mat-drawer-content [class.expanded]="!(filteredOptions.length > 0)" class="overflow-hidden">
                     <div>
-                        <form [formGroup]="myForm" >
+                        <form [formGroup]="myForm">
                             <div fxLayout="row" fxLayoutGap="4px">
                                 <div fxFlex="100%">
-                                    <airmid-dropdown label="Unit / Branch Name" formControlName="unitId" [value]="data?.unitId"
-                                        [readonly]="true" [validations]="getValidationMessages().UnitId" [formGroup]="myForm"
+                                    <airmid-dropdown label="Unit / Branch Name" formControlName="unitId"
+                                        [value]="data?.unitId" [readonly]="true"
+                                        [validations]="getValidationMessages().UnitId" [formGroup]="myForm"
                                         [mode]="autocompleteModeunit"></airmid-dropdown>
+                                </div>
+                                <div fxFlex="100%">
+                                    <!-- <airmid-dropdown label="PatientType" formControlName="patientTypeValue" [formGroup]="myForm"
+                                        [validations]="getValidationMessages().patientTypeValue"
+                                        [mode]="autocompleteModeLabPatientType">
+                                    </airmid-dropdown> -->
+                                     <airmid-dropdown label="PatientType" formControlName="patientTypValId"
+                                        [formGroup]="myForm"
+                                        [mode]="autocompleteModeLabPatientType"></airmid-dropdown>
                                 </div>
                                 <div fxFlex="100%">
                                     <airmid-dropdown label=" Self / Payer / Corp." formControlName="patientTypeId"
                                         [value]="data?.patientTypeId" [formGroup]="myForm"
-                                        [validations]="getValidationMessages().patientTypeId" [mode]="autocompleteModepatienttype"
+                                        [validations]="getValidationMessages().patientTypeId"
+                                        [mode]="autocompleteModepatienttype"
                                         (selectionChange)="onChangePatient($event)"></airmid-dropdown>
                                 </div>
                                 <div fxFlex="100%" *ngIf="isCompanySelected">
-                                    <airmid-dropdown label="B2B / Company Name" formControlName="companyId" [formGroup]="myForm"
-                                        [value]="data?.companyId" [validations]="getValidationMessages().companyId"
-                                        [mode]="autocompleteModecompany" (selectionChange)="onChangeCompany($event)"></airmid-dropdown>
+                                    <airmid-dropdown label="B2B / Company Name" formControlName="companyId"
+                                        [formGroup]="myForm" [value]="data?.companyId"
+                                        [validations]="getValidationMessages().companyId"
+                                        [mode]="autocompleteModecompany"
+                                        (selectionChange)="onChangeCompany($event)"></airmid-dropdown>
                                 </div>
                                 <div fxFlex="100%">
-                                    <airmid-dropdown label="Doctor Name" formControlName="doctorId" [value]="registerObj?.doctorId"
-                                        [formGroup]="myForm" [mode]="autocompleteModedoctor"
-                                        [value]="registerObj?.doctorId">
+                                    <airmid-dropdown label="Doctor Name" formControlName="doctorId" [formGroup]="myForm"
+                                        [mode]="autocompleteModedoctor">
                                     </airmid-dropdown>
                                 </div>
                                 <div fxFlex="100%">
                                     <airmid-dropdown label="Ref Doctor Name" formControlName="refDocId"
                                         [validations]="getValidationMessages().refDocId" [formGroup]="myForm"
-                                        [mode]="autocompleteModerefdoc" [value]="registerObj?.refDocId">
+                                        [mode]="autocompleteModerefdoc">
                                     </airmid-dropdown>
                                 </div>
                             </div>
@@ -183,17 +195,15 @@
                                                             </airmid-dropdown>
                                                         </div>
                                                     </div>
-                                                      <div fxLayout="row" fxLayoutGap="4px">
+                                                    <div fxLayout="row" fxLayoutGap="4px">
                                                         <div fxFlex="50">
-                                                            <airmid-textbox label="Patient Type" formControlName="address"
-                                                                [validations]="getValidationMessages().address"
-                                                                [formGroup]="myForm" [value]="registerObj?.address">
+                                                            <airmid-textbox label="Comments" formControlName="Comments" [validations]="getValidationMessages().Comments"
+                                                                [formGroup]="myForm">
                                                             </airmid-textbox>
                                                         </div>
                                                         <div fxFlex="50">
-                                                             <airmid-textbox label="Remark" formControlName="address"
-                                                                [validations]="getValidationMessages().address"
-                                                                [formGroup]="myForm" [value]="registerObj?.address">
+                                                            <airmid-textbox label="ReferByName" formControlName="ReferByName" [validations]="getValidationMessages().ReferByName"
+                                                                [formGroup]="myForm">
                                                             </airmid-textbox>
                                                         </div>
                                                     </div>
@@ -522,9 +532,11 @@
                                             </div> -->
                                             <div fxFlex="100%">
                                                 <form [formGroup]="myForm">
-                                                    <airmid-autocomplete label="Enter Service Name" [formGroup]="myForm" formControlName="ServiceId"
-                                                        placeholderText="Enter Service Name" fxFlex ApiUrl="{{ApiURL}}"
-                                                        (selectionChange)="getSelectedserviceObj($event)" TextField="formattedText"
+                                                    <airmid-autocomplete label="Enter Service Name" [formGroup]="myForm"
+                                                        formControlName="ServiceId" placeholderText="Enter Service Name"
+                                                        fxFlex ApiUrl="{{ApiURL}}"
+                                                        (selectionChange)="getSelectedserviceObj($event)"
+                                                        TextField="formattedText"
                                                         ValueField="serviceId"></airmid-autocomplete>
                                                 </form>
                                             </div>
@@ -588,15 +600,17 @@
                                                             class="airmid-table table h-480">
 
                                                             <ng-container matColumnDef="ServiceName">
-                                                                <mat-header-cell *matHeaderCellDef mat-sort-header class="w-300">Service
+                                                                <mat-header-cell *matHeaderCellDef mat-sort-header
+                                                                    class="w-300">Service
                                                                     Name</mat-header-cell>
-                                                                <mat-cell *matCellDef="let contact" class="w-300">{{contact.ServiceName}}</mat-cell>
+                                                                <mat-cell *matCellDef="let contact"
+                                                                    class="w-300">{{contact.ServiceName}}</mat-cell>
                                                             </ng-container>
 
                                                             <ng-container matColumnDef="DoctorName">
                                                                 <mat-header-cell *matHeaderCellDef mat-sort-header
                                                                     class="w-300">
-                                                                   -
+                                                                    -
                                                                 </mat-header-cell>
 
                                                                 <mat-cell *matCellDef="let contact" class="w-300">
@@ -621,11 +635,13 @@
                                                             </ng-container>
 
                                                             <ng-container matColumnDef="Urgent">
-                                                                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.gt-sm class="w-70">
+                                                                <mat-header-cell *matHeaderCellDef mat-sort-header
+                                                                    fxShow.gt-sm class="w-70">
                                                                     -
                                                                 </mat-header-cell>
-                                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm class="w-70">
-                                                                    <mat-slide-toggle [(ngModel)]="contact.Price" 
+                                                                <mat-cell *matCellDef="let contact" fxShow.gt-sm
+                                                                    class="w-70">
+                                                                    <mat-slide-toggle
                                                                         (change)="onUrgentToggleChange($event, contact)">
                                                                     </mat-slide-toggle>
                                                                 </mat-cell>
@@ -638,15 +654,14 @@
                                                                     class="w-100">
                                                                     <mat-form-field appearance="fill">
                                                                         <input matInput [(ngModel)]="contact.Price"
-                                                                            type="text"
-                                                                            [id]="'Price' + index" [min]="0"
+                                                                            type="text" [id]="'Price' + index" [min]="0"
                                                                             (ngModelChange)="getCellCalculation(contact)"
                                                                             type="number" />
                                                                     </mat-form-field>
                                                                 </mat-cell>
                                                             </ng-container>
 
-                                                              <ng-container matColumnDef="DiscountAmount">
+                                                            <ng-container matColumnDef="DiscountAmount">
                                                                 <mat-header-cell *matHeaderCellDef>Disc
                                                                     Amt</mat-header-cell>
                                                                 <mat-cell *matCellDef="let contact">
@@ -665,7 +680,8 @@
                                                                     Amt</mat-header-cell>
                                                                 <mat-cell *matCellDef="let contact"><span
                                                                         class="text-overflow">
-                                                                        {{(contact.NetAmount || 0) | currency: currency:'symbol'}}
+                                                                        {{(contact.NetAmount || 0) | currency:
+                                                                        currency:'symbol'}}
                                                                     </span></mat-cell>
                                                             </ng-container>
 

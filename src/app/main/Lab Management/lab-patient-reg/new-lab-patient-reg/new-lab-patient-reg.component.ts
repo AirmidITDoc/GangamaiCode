@@ -67,6 +67,7 @@ export class NewLabPatientRegComponent {
   autocompleteModecamp: string = "CampMaster";
   autocompleteModedoctor: string = "ConDoctor";
   autocompleteModeConcession: string = "Concession";
+  autocompleteModeLabPatientType: string = "LabPatientType";
   
   dsLabRequest2 = new MatTableDataSource<LabRequest>();
   // dstable1 = new MatTableDataSource<LabRequest>();
@@ -171,6 +172,8 @@ export class NewLabPatientRegComponent {
     if (this.data?.row?.labPatientId) {
       this._labPatientRegService.getLabRegistraionById(this.data?.row?.labPatientId).subscribe((response) => {
         this.registerObj = response;
+        this.myForm.get('doctorId').setValue(this.registerObj.doctorId);
+        this.myForm.get('refDocId').setValue(this.registerObj.refDocId);
         this.VlabPatRegId = this.registerObj.labPatRegId
         console.log("retrive Data:", this.registerObj)
         this._labPatientRegService.getLabRegistraionMasterById(this.VlabPatRegId).subscribe((response) => {
@@ -220,7 +223,7 @@ export class NewLabPatientRegComponent {
       patientTypeId: [1],
       tariffId: [1],//this.hospitalconfigservice.HospitalconfigParams?.IPD_Billing_CounterId], // need to ask sir what value to pass
       classId: [1],// [this.hospitalconfigservice.HospitalconfigParams?.IPD_Billing_CounterId],
-      departmentId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      departmentId: [0],
       doctorId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       refDocId: [0],
       companyId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
@@ -232,7 +235,9 @@ export class NewLabPatientRegComponent {
         Validators.pattern("^[0-9]*$"),
         this._FormvalidationserviceService.onlyNumberValidator()
       ]],
-
+      patientTypValId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      Comments: ['', [Validators.maxLength(255), Validators.pattern("^[A-Za-z/() ]*$"), this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+      ReferByName: ['', [Validators.maxLength(255), Validators.pattern("^[A-Za-z/() ]*$"), this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
       // extra fields
       mobileNo: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(15), Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")]],
       regId: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
@@ -402,7 +407,7 @@ export class NewLabPatientRegComponent {
       unitId: [this.accountService.currentUserValue.user.unitId, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.onlyNumberValidator()]],
       totalAmt: [item?.TotalAmt, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
       concessionPercentage: [0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
-      concessionAmount: [item?.DiscAmt ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
+      concessionAmount: [Number(item?.DiscAmt) ?? 0, [this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
       netAmount: [item?.NetAmount, [this._FormvalidationserviceService.notEmptyOrZeroValidator(), this._FormvalidationserviceService.AllowDecimalNumberValidator()]],
       doctorId: [item?.DoctorId ?? 0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       doctorName: [item?.DoctorName ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
@@ -422,7 +427,7 @@ export class NewLabPatientRegComponent {
       isPackage: [Number(item?.IsPackage ?? 0) === 1],
       wardId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
       bedId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-      serviceCode: [item?.ServiceId || '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
+      serviceCode: [String(item?.ServiceId) || '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
       serviceName: [item?.ServiceName ?? '', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
       companyServiceName: ['', [this._FormvalidationserviceService.allowEmptyStringValidatorOnly()]],
       isInclusionExclusion: [item?.isInclusionExclusion || false,],
@@ -542,7 +547,7 @@ export class NewLabPatientRegComponent {
           this.value = response.dateofBirth
           this.regNo = response.labRequestNo
           this.onChangeDateofBirth(response.dateofBirth)
-          this.getLastDepartmetnNameList(this.registerObj)
+          // this.getLastDepartmetnNameList(this.registerObj)
           this.regflag = true
           this.myForm.patchValue({
             firstName: this.registerObj.firstName.trim(),
@@ -573,7 +578,7 @@ export class NewLabPatientRegComponent {
       console.log('The dialog was closed - Insert Action', result);
       this.PrevregisterObj = result
       this.myForm.get("departmentId").setValue(this.PrevregisterObj.departmentId)
-      this.selectChangedepartment(this.PrevregisterObj)
+      // this.selectChangedepartment(this.PrevregisterObj)
       console.log(this.PrevregisterObj)
     });
   }
@@ -638,6 +643,7 @@ export class NewLabPatientRegComponent {
     row.NetAmount = totalAmount - discountAmt;
 
     this.calculateTotalAmount();
+    this.updateCalculation();
   }
   // Calculation of total amount.
   calculateTotalAmount(): void {
@@ -1369,7 +1375,7 @@ export class NewLabPatientRegComponent {
 
     // If all fields are empty, clear everything
     if (!firstName && !lastName && !mobileNo) {
-      // this.resetFilteredOptions();
+      this.resetFilteredOptions();
       return;
     }
 
@@ -1524,6 +1530,15 @@ export class NewLabPatientRegComponent {
       ],
       subCompanyId: [
         { name: "required", Message: "SubCompany Name is required" }
+      ],
+      patientTypeValue: [
+         { name: "required", Message: "PatientType is required" }
+      ],
+      Comments: [
+        { name: "pattern", Message: "only char allowed." }
+      ],
+      ReferByName: [
+        { name: "pattern", Message: "only char allowed." }
       ],
       emgDrivingLicenceNo: [
         { name: "pattern", Message: "e.g., MH14-20210001234" },
