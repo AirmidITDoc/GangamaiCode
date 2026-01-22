@@ -67,10 +67,10 @@
 
                     <ng-template #actionButtonTemplateIP let-element>
                         <div fxLayout="row" fxLayoutAlign="center center">
-                            <!-- <button mat-icon-button matTooltip="Review Company Bill" (click)="OnCompanyBill(element)"
+                            <button mat-icon-button matTooltip="Review Company Bill" (click)="OnCompanyBill(element)"
                                 *ngIf="element?.companyName && element?.isCancelled == 0 && element?.balanceAmt > 0">
                                 <mat-icon>remove_red_eye</mat-icon>
-                            </button> -->
+                            </button>
 
                             <button mat-icon-button (click)="getFinalBillview(element)" matTooltip="Bill Print">
                                 <mat-icon>print</mat-icon>
