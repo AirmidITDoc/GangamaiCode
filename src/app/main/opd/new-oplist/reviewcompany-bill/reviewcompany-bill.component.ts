@@ -146,7 +146,7 @@ export class ReviewcompanyBillComponent {
      
     }
 
-    this.setupFormListener();
+   // this.setupFormListener();
     // this.startCountdown();
 
     //this is for curreny symbol
@@ -561,7 +561,9 @@ export class ReviewcompanyBillComponent {
         // formObj.patchValue({ opdIpdId: formValue?.IsPurchaseWsie || false });
         formObj.patchValue({ doctorId: item.doctorId || 0 });
         formObj.patchValue({ doctorName: item.doctorName || '' });
-        formObj.patchValue({ chargesDate: this.datePipe.transform(this.chargeForm.get('serviceDate').value, 'yyyy-MM-dd') });
+        formObj.patchValue({ chargesDate: this.datePipe.transform(item?.chargesDate, 'yyyy-MM-dd')
+          // this.datePipe.transform(this.chargeForm.get('serviceDate').value, 'yyyy-MM-dd') 
+        });
 
         this.IPaddchargeArray.push(formObj);
       });
@@ -571,6 +573,29 @@ export class ReviewcompanyBillComponent {
         this.savebtn = true
         this.resetform();
       });
+
+//       {
+//     "serviceId": 2195,
+//     "serviceName": "Clinical Officer Consultation ",
+//     "price": 3000,
+//     "qty": 1,
+//     "totalAmt": 3000,
+//     "concessionPercentage": 0,
+//     "concessionAmount": 0,
+//     "netAmount": 3000,
+//     "doctorId": 3,
+//     "doctorName": "Alice  Moraa",
+//     "isPathology": 0,
+//     "isRadiology": 0,
+//     "isPackage": 0,
+//     "billNo": 11509,
+//     "isInclusionExclusion": false,
+//     "chargesId": 14958,
+//     "chargesDate": "2026-01-21T00:00:00",
+//     "chargesTime": "2026-01-21T14:40:00",
+//     "stockId": 0,
+//     "storeId": 0
+// }
     }
     else {
       let invalidFields = [];
@@ -1223,10 +1248,12 @@ export class ChargesList {
   CompRefNo: any;
   GovtApprovedAmt: any;
   EditDoctor: any
+  chargesDate:Date;
 
   constructor(ChargesList) {
     this.ChargesId = ChargesList.ChargesId || 0;
     this.ServiceId = ChargesList.ServiceId || '';
+    this.chargesDate = ChargesList.chargesDate || '';
     this.serviceId = ChargesList.serviceId || '';
     this.ServiceName = ChargesList.ServiceName || '';
     this.price = ChargesList.price || '';
