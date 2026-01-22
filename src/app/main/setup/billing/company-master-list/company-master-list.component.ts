@@ -248,6 +248,7 @@ export class CompanyMaster {
     CompanyName: string;
     isSubCompany: any;
     dayWiseCredit:any;
+    mAssignCompany:any;
     /**
    * Constructor
    *
