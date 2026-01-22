@@ -152,6 +152,11 @@
                                         <mat-icon title="Print">print</mat-icon>
                                     </button>
 
+                                    <button mat-icon-button matTooltip="Verify" (click)="onVerify(element)"
+                                        *ngIf="!element.isVerifySign">
+                                        <mat-icon>verified_user</mat-icon>
+                                    </button>
+                                    
                                     <button mat-icon-button
                                         [matTooltip]="'We send the mail on your registered MailID : ' + element?.emailId"
                                         matTooltipPosition="right" (click)="Onemail(element)"
@@ -187,24 +192,15 @@
 
                             <ng-template #actionsverify let-element>
                                 <div fxLayout="row" fxLayoutAlign="center center" class="status-box">
-                                    <!-- <span [ngClass]="{
-                                            'status-completed': element.isVerified,
-                                            'status-pending': !element.isVerified
-                                            }" [matTooltip]="getVerifyTooltip(element)"
-                                        matTooltipClass="verify-tooltip"
-                                        (click)="element.isCompleted && !element.isVerified && onVerify(element)"
-                                        [style.cursor]="element.isCompleted && !element.isVerified ? 'pointer' : 'default'">
-                                        {{ element.isVerified ? 'Verified' : 'UnVerified' }}
-                                    </span> -->
                                     <span [ngClass]="{
                                             'status-completed': element.isVerifySign,
                                             'status-pending': !element.isVerifySign
                                             }" [matTooltip]="getVerifyTooltip(element)"
                                         matTooltipClass="verify-tooltip"
-                                        (click)="element.isCompleted && !element.isVerifySign && onVerify(element)"
-                                        [style.cursor]="element.isCompleted && !element.isVerifySign ? 'pointer' : 'default'">
+                                        [style.cursor]="element.isCompleted && !element.isVerifySign ? '' : 'default'">
                                         {{ element.isVerifySign ? 'Verified' : 'UnVerified' }}
                                     </span>
+                                    <!-- (click)="element.isCompleted && !element.isVerifySign && onVerify(element)" -->
                                 </div>
                             </ng-template>
 

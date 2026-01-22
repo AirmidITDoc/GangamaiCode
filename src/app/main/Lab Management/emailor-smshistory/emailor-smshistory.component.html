@@ -1,1 +1,277 @@
-<p>emailor-smshistory works!</p>
+<div class="page-layout simple inner-sidebar inner-scroll right-sidebar">
+    
+    <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start">
+
+       <mat-tab label="Email List">
+
+            <div class="modal-body" fusePerfectScrollbar>
+                <div class="modal-body-container">
+                    <div fxLayout="column" class="gap-12">
+                        <div class="modal-card-container">
+                            <mat-card style="padding: 10px;">
+
+                                <div fxLayout="column" fxLayoutGap="10px">
+                                    <div class="patient-col">
+                                        <span
+                                            style="font-size: large;font-weight: bolder;color: rgb(17, 65, 118);">Patient
+                                            Details</span>
+                                        <span>:</span>
+                                        <span style="font-size: medium;font-weight: bolder;">{{ Personaldata.regNo }} |
+                                            {{
+                                            Personaldata.patientName }} | {{
+                                            Personaldata.ageYear }}Y|{{ Personaldata.ageMonth }}M|{{
+                                            Personaldata.ageDay }} D | {{ Personaldata.genderName }} | <span
+                                                style="font-size: large;font-weight: bolder;color: rgb(17, 65, 118);">Department
+                                                | Doctor Name</span>
+                                            <span>:</span>
+                                            <span style="font-size: medium;font-weight: bolder;">{{
+                                                Personaldata.departmentName }} |{{
+                                                Personaldata.doctorName}}</span></span>
+                                        <span style="font-size: large;font-weight: bolder;color: rgb(17, 65, 118);"> |
+                                            Lab Details</span>
+                                        <span>:</span>
+                                        <span style="font-size: medium;font-weight: bolder;">{{
+                                            Personaldata.labPatientId}} |{{
+                                            Personaldata.pBillNo}}</span>
+                                    </div>
+
+
+                                </div>
+                            </mat-card>
+                        </div>
+                        <div class="modal-card-container">
+                            <mat-card style="padding: 10px;">
+                                <div fxLayout="column" class="gap-4">
+
+                                    <form [formGroup]="Emailform" style="border: blue">
+                                        <div class="modal-card-container">
+                                            <mat-card>
+
+                                                <div class="form-body">
+                                                    <div fxLayout="row wrap" fxLayoutGap="5px 0px grid"
+                                                        style="padding-left: 10px;padding-right:10px;">
+
+
+                                                        <div fxFlex="50" fxFlex.xs="100" fxFlex.sm="33">
+
+                                                            <airmid-textbox label="EmailId"
+                                                                formControlName="EmailId" [formGroup]="Emailform"
+                                                                [validations]="getValidationMessages().EmailId"></airmid-textbox>
+                                                        </div>
+
+                                                        <div fxFlex="50" fxFlex.xs="100" fxFlex.sm="33">
+                                                            <airmid-dropdown label="Doctor Name"
+                                                                formControlName="DoctorId" [formGroup]="Emailform"
+                                                                [mode]="autocompleteModedeptdoc"
+                                                                [validations]="getValidationMessages().DoctorID"
+                                                                #ddlDoctor></airmid-dropdown>
+                                                        </div>
+
+                                                    </div>
+                                                    <div style="height: 280px;">
+                                                        <airmid-table [gridConfig]="gridConfigSms1" class="content"
+                                                            [ShowFilter]="false" [ShowButtons]="false">
+                                                            <ng-container filters>
+                                                                <!-- <form [formGroup]="gridConfigReportdispatch">
+                        <airmid-datepicker [formGroup]="SMSform" [isRangePicker]="true"
+                            formStartControlName="fromDate" formEndControlName="enddate"
+                            [(fromValue)]="gridConfigReportdispatch.filters[0].fieldValue"
+                            [(toValue)]="gridConfigReportdispatch.filters[1].fieldValue"></airmid-datepicker>
+
+                    </form> -->
+                                                            </ng-container>
+                                                        </airmid-table>
+                                                    </div>
+
+                                                </div>
+                                                <div fxLayout="row wrap" fxLayoutGap="5px 0px grid">
+
+                                                    <div fxFlex="95" fxFlex.xs="100" fxFlex.sm="33"
+                                                        style="padding-left: 10px;padding-right:10px;">
+
+                                                        <airmid-textbox label="Remark" formControlName="Remark"
+                                                            [formGroup]="Emailform"
+                                                            [validations]="getValidationMessages().Remark"
+                                                            [maxLength]="500"></airmid-textbox>
+                                                    </div>
+                                                </div>
+                                            </mat-card>
+
+                                        </div>
+                                    </form>
+                                </div>
+                            </mat-card>
+
+                        </div>
+                        <div fxLayoutAlign="end">
+                            <div class="modal-footer-buttons" fxLayout="row" fxLayoutGap="5px"
+                                style="margin: 10px 10px 0px 10px; ">
+
+                                <button class="btn btn-primary" (click)="onSubmit()">Send Result
+                                    Email</button>
+                                <button class="btn btn-primary" (click)="onSubmit()">Send Manual
+                                    Receipt Email</button>
+                                <button class="btn btn-primary" (click)="onSubmit()">Send Patient
+                                    Portal Email</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="height: 200px;">
+                <div class="form-title mb-2 border-bottom pb-2">
+                    <span
+                        style="font-size: large;font-weight: bolder;color: rgb(17, 65, 118);padding-left: 20px;">History</span>
+                </div>
+                <div>
+                    <airmid-table [gridConfig]="gridConfigSms" class="content" [ShowFilter]="false"
+                        [ShowButtons]="false">
+                        <ng-container filters>
+                            
+                        </ng-container>
+                    </airmid-table>
+                </div>
+            </div>
+
+        </mat-tab>
+
+        <mat-tab label="SMS List">
+
+            <div class="modal-body" fusePerfectScrollbar>
+                <div class="modal-body-container">
+                    <div fxLayout="column" class="gap-12">
+                        <div class="modal-card-container">
+                            <mat-card style="padding: 10px;">
+
+                                <div fxLayout="column" fxLayoutGap="10px">
+                                    <div class="patient-col">
+                                        <span
+                                            style="font-size: large;font-weight: bolder;color: rgb(17, 65, 118);">Patient
+                                            Details</span>
+                                        <span>:</span>
+                                        <span style="font-size: medium;font-weight: bolder;">{{ Personaldata.regNo }} |
+                                            {{
+                                            Personaldata.patientName }} | {{
+                                            Personaldata.ageYear }}Y|{{ Personaldata.ageMonth }}M|{{
+                                            Personaldata.ageDay }} D | {{ Personaldata.genderName }} | <span
+                                                style="font-size: large;font-weight: bolder;color: rgb(17, 65, 118);">Department
+                                                | Doctor Name</span>
+                                            <span>:</span>
+                                            <span style="font-size: medium;font-weight: bolder;">{{
+                                                Personaldata.departmentName }} |{{
+                                                Personaldata.doctorName}}</span></span>
+                                        <span style="font-size: large;font-weight: bolder;color: rgb(17, 65, 118);"> |
+                                            Lab Details</span>
+                                        <span>:</span>
+                                        <span style="font-size: medium;font-weight: bolder;">{{
+                                            Personaldata.labPatientId}} |{{
+                                            Personaldata.pBillNo}}</span>
+                                    </div>
+
+
+                                </div>
+                            </mat-card>
+                        </div>
+                        <div class="modal-card-container">
+                            <mat-card style="padding: 10px;">
+                                <div fxLayout="column" class="gap-4">
+
+                                    <form [formGroup]="SMSform" style="border: blue">
+                                        <div class="modal-card-container">
+                                            <mat-card>
+
+                                                <div class="form-body">
+                                                    <div fxLayout="row wrap" fxLayoutGap="5px 0px grid"
+                                                        style="padding-left: 10px;padding-right:10px;">
+
+
+                                                        <div fxFlex="50" fxFlex.xs="100" fxFlex.sm="33">
+
+                                                            <airmid-textbox label="CustMobile"
+                                                                formControlName="CustMobile" [formGroup]="SMSform"
+                                                                [validations]="getValidationMessages().CustMobile"></airmid-textbox>
+                                                        </div>
+
+                                                        <div fxFlex="50" fxFlex.xs="100" fxFlex.sm="33">
+                                                            <airmid-dropdown label="Doctor Name"
+                                                                formControlName="DoctorId" [formGroup]="SMSform"
+                                                                [mode]="autocompleteModedeptdoc"
+                                                                [validations]="getValidationMessages().DoctorID"
+                                                                #ddlDoctor></airmid-dropdown>
+                                                        </div>
+
+                                                    </div>
+                                                    <div>
+                                                        <airmid-table [gridConfig]="gridConfigSms" class="content h-200"
+                                                            [ShowFilter]="false" [ShowButtons]="false">
+                                                            <ng-container filters>
+                                                                <!-- <form [formGroup]="gridConfigReportdispatch">
+                        <airmid-datepicker [formGroup]="SMSform" [isRangePicker]="true"
+                            formStartControlName="fromDate" formEndControlName="enddate"
+                            [(fromValue)]="gridConfigReportdispatch.filters[0].fieldValue"
+                            [(toValue)]="gridConfigReportdispatch.filters[1].fieldValue"></airmid-datepicker>
+
+                    </form> -->
+                                                            </ng-container>
+                                                        </airmid-table>
+                                                    </div>
+
+                                                </div>
+                                                <div fxLayout="row wrap" fxLayoutGap="5px 0px grid">
+
+                                                    <div fxFlex="95" fxFlex.xs="100" fxFlex.sm="33"
+                                                        style="padding-left: 10px;padding-right:10px;">
+
+                                                        <airmid-textbox label="Remark" formControlName="Remark"
+                                                            [formGroup]="SMSform"
+                                                            [validations]="getValidationMessages().Remark"
+                                                            [maxLength]="500"></airmid-textbox>
+                                                    </div>
+                                                </div>
+                                            </mat-card>
+
+                                        </div>
+                                    </form>
+                                </div>
+                            </mat-card>
+
+                        </div>
+                        <div fxLayoutAlign="end">
+                            <div class="modal-footer-buttons" fxLayout="row" fxLayoutGap="5px"
+                                style="margin: 10px 10px 0px 10px; ">
+
+                                <button class="btn btn-primary" (click)="onSubmit()">Send Result
+                                    SMS</button>
+                                <button class="btn btn-primary" (click)="onSubmit()">Send Manual
+                                    Receipt SMS</button>
+                                <button class="btn btn-primary" (click)="onSubmit()">Send Patient
+                                    Portal SMS</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="height: 200px;">
+                <div class="form-title mb-2 border-bottom pb-2">
+                    <span
+                        style="font-size: large;font-weight: bolder;color: rgb(17, 65, 118);padding-left: 20px;">History</span>
+                </div>
+                <div>
+                    <airmid-table [gridConfig]="gridConfigSms" class="content" [ShowFilter]="false"
+                        [ShowButtons]="false" class="content h-250">
+                        <ng-container filters>
+                            
+                        </ng-container>
+                    </airmid-table>
+                </div>
+            </div>
+
+        </mat-tab>
+
+
+    </mat-tab-group>
+
+
+</div>

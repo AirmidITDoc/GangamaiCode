@@ -99,14 +99,18 @@
                 <mat-icon>print</mat-icon>
             </button>
 
-              <button mat-icon-button matTooltip="Report Discpatch" (click)="viewgetReportdispatchPdf(element)">
+              <button mat-icon-button matTooltip="Report Discpatch" (click)="viewgetReportdispatch(element)">
                 <mat-icon>edit</mat-icon>
             </button>
-
+            <button mat-icon-button matTooltip="SMS " (click)="viewgetSms(element)">
+                <mat-icon>edit</mat-icon>
+            </button>
             <button mat-icon-button [matMenuTriggerFor]="actionsMenu" matTooltip="Actions" matTooltipPosition="above"
                 (click)="$event.stopPropagation();">
                 <mat-icon>more_vert</mat-icon>
             </button>
+          
+           
 
             <mat-menu #actionsMenu="matMenu" xPosition="before" yPosition="below" [overlapTrigger]="false">
 

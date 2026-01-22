@@ -34,7 +34,7 @@ export enum permissionCodes {
     SubGroupMaster = 'SubGroupMaster',
     SubTpacompanyMaster = 'SubTpacompanyMaster',
     TariffMaster = 'TariffMaster',
-
+    CompanyRepresentative = 'CompanyRepresentative',
 
     //Department 
 
@@ -96,6 +96,7 @@ export enum permissionCodes {
     TestMaster = 'TestMaster',
     PathUnitMaster = 'PathUnitMaster',
     MOutSourcelabMaster = 'MOutSourcelabMaster',
+    SpecimenMaster = 'SpecimenMaster',
 
     // OPD
     Appointment = 'Appointment',
@@ -139,4 +140,5 @@ export enum permissionCodes {
     MaterialConsumption = 'MaterialConsumption',
     // WorkOrder = 'WorkOrder',
     Indent = 'Indent',
+    Tally='Tally',
 }

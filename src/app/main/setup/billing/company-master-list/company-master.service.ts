@@ -10,14 +10,14 @@ import { FormvalidationserviceService } from 'app/main/shared/services/formvalid
 export class CompanyMasterService {
 
 
- Is5_Digit_Pincode_Id: boolean = false;
+    Is5_Digit_Pincode_Id: boolean = false;
     companyForm: FormGroup;
     myformSearch: FormGroup;
 
     constructor(
         private _httpClient: ApiCaller,
         private _formBuilder: UntypedFormBuilder,
-            public _configue:ConfigService,
+        public _configue: ConfigService,
         private _FormvalidationserviceService: FormvalidationserviceService
     ) {
         // this.companyForm = this.createCompanymasterForm();
@@ -26,24 +26,24 @@ export class CompanyMasterService {
     }
 
     createCompanymasterFormDemo(): FormGroup {
-const rawValue = this?._configue?.configParams?.Is9_Digit_NationalId || "";
-const [id, val] = rawValue.includes(":") ? rawValue.split(":") : [null, null]; 
-this.Is5_Digit_Pincode_Id = id === "1";
-            const maxLen = this.Is5_Digit_Pincode_Id ? 5 : 6;
+        const rawValue = this?._configue?.configParams?.Is9_Digit_NationalId || "";
+        const [id, val] = rawValue.includes(":") ? rawValue.split(":") : [null, null];
+        this.Is5_Digit_Pincode_Id = id === "1";
+        const maxLen = this.Is5_Digit_Pincode_Id ? 5 : 6;
         return this._formBuilder.group({
             companyId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
 
-            companyName: ['', [Validators.required, Validators.maxLength(50), 
-                // Validators.pattern('^[a-zA-Z0-9 ]*$'),
+            companyName: ['', [Validators.required, Validators.maxLength(50),
+            // Validators.pattern('^[a-zA-Z0-9 ]*$'),
             this._FormvalidationserviceService.allowEmptyStringValidator()]],
             serviceId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
 
-            companyShortName: ['', [Validators.required, Validators.maxLength(50), 
+            companyShortName: ['', [Validators.required, Validators.maxLength(50),
                 // Validators.pattern('^[a-zA-Z0-9 ]*$')
             ]],
             // tariffId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             companyCode: ['', [Validators.maxLength(50),
-                //  Validators.pattern('^[a-zA-Z0-9 ]*$'),
+            //  Validators.pattern('^[a-zA-Z0-9 ]*$'),
             this._FormvalidationserviceService.allowEmptyStringValidator()]],
 
             address: ['', [Validators.required, Validators.maxLength(100), this._FormvalidationserviceService.allowEmptyStringValidator()]],
@@ -56,7 +56,7 @@ this.Is5_Digit_Pincode_Id = id === "1";
 
             contactPerson: ['', [Validators.maxLength(50),
                 //  Validators.pattern('^[a-zA-Z0-9 ]*$')
-                ]],
+            ]],
             companyServicePrint: ['', [Validators.maxLength(50), Validators.pattern('^[a-zA-Z0-9 ]*$'),
             this._FormvalidationserviceService.allowEmptyStringValidator()]],
             inInclusionOrExclusion: [0],
@@ -64,11 +64,11 @@ this.Is5_Digit_Pincode_Id = id === "1";
             // designation: ['', [Validators.maxLength(50), Validators.pattern('^[a-zA-Z0-9 ]*$'),
             // this._FormvalidationserviceService.allowEmptyStringValidator()]],
 
-            phoneNo: ["", [Validators.required, Validators.pattern("^[- +()]*[0-9][- +()0-9]*$"),Validators.minLength(10),
+            phoneNo: ["", [Validators.required, Validators.pattern("^[- +()]*[0-9][- +()0-9]*$"), Validators.minLength(10),
             Validators.maxLength(10)]],
 
             contactNumber: ["", [Validators.required, Validators.pattern("^[- +()]*[0-9][- +()0-9]*$"),
-            Validators.maxLength(10),Validators.minLength(10),]],
+            Validators.maxLength(10), Validators.minLength(10),]],
 
             emailId: ['', [Validators.email]],
             website: [''],
@@ -92,15 +92,16 @@ this.Is5_Digit_Pincode_Id = id === "1";
 
             loginWebsiteUser: "",
             loginWebsitePassword: "",
-            dayWiseCredit:0
+            dayWiseCredit: 0,
+             mAssignCompany: ['', [Validators.required]],
         });
     }
     createSearchForm(): FormGroup {
         return this._formBuilder.group({
             CompanyNameSearch: [""],
-            cityId:[0, this._FormvalidationserviceService.notEmptyOrZeroValidator()],
-            compTypeId:[0, this._FormvalidationserviceService.notEmptyOrZeroValidator()],
-            phoneNo:'',
+            cityId: [0, this._FormvalidationserviceService.notEmptyOrZeroValidator()],
+            compTypeId: [0, this._FormvalidationserviceService.notEmptyOrZeroValidator()],
+            phoneNo: '',
             Isactive: ["2"],
         });
     }

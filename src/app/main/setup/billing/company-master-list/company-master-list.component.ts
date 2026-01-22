@@ -294,8 +294,7 @@ export class CompanyMaster {
             this.TypeName = CompanyMaster.TypeName || "";
             this.CompanyName = CompanyMaster.CompanyName || "";
             this.isSubCompany = CompanyMaster.isSubCompany || 0;
-
-
+            this.mAssignCompany = CompanyMaster.mAssignCompany || ''
         }
     }
 }

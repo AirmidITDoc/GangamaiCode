@@ -45,12 +45,19 @@ const appRoutes: Routes = [
                 (m) => m.OutsourceLabtetailsModule
             ),
     },
+    {
+        path: "specimenmaster",
+        loadChildren: () =>
+            import("./specimum-master/specimum-master.module").then(
+                (m) => m.SpecimumMasterModule
+            ),
+    },
 ];
 
 @NgModule({
     declarations: [
-    
-  ],
+
+    ],
     imports: [RouterModule.forChild(appRoutes)],
 })
-export class PathologyModule {}
+export class PathologyModule { }

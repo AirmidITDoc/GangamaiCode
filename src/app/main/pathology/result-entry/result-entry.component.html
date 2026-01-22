@@ -67,8 +67,8 @@
                     <div fxLayout="column" style="padding-top:5px ;">
                         <div class="layout-card-container" style="height: 60px;">
 
-                            <div fxLayout.gt-xs="row" fxLayout="column" fxLayoutAlign="start" class="gap-4">
-                                <div fxLayout="row wrap" fxFlex fxLayoutGap="5px 0px grid">
+                            <!-- <div fxLayout.gt-xs="row" fxLayout="column" fxLayoutAlign="start" class="gap-4"> -->
+                                <div fxLayout.gt-xs="row" fxLayout="column" fxLayoutAlign="start" class="gap-5">
 
                                     <airmid-dropdown label="Unit Name" formControlName="UnitId"
                                         [readonly]="!isSuperAdmin" (selectionChange)="ListView1($event)"
@@ -119,7 +119,7 @@
                                             </button>
                                         </mat-form-field>
                                     </div>
-                                    <div fxFlex="10%" fxLayout="row">
+                                    <div fxFlex="12%" fxLayout="row">
                                         <mat-radio-group name="PatientTypeSearch" formControlName="PatientTypeSearch"
                                             (change)="onChangeFirst()" fxLayout="column" value="2" class="gap-4"
                                             [(ngModel)]="gridConfig.filters[6].fieldValue">
@@ -145,7 +145,7 @@
                                         </mat-radio-group>
                                     </div>
                                     <!-- (click)="searchRecords($event)" -->
-                                    <div class="action-button-container">
+                                    <!-- <div class="action-button-container">
                                         <div class="button-row-group">
                                             <button class="btn btn-danger-outline btn-xs"
                                                 (click)="onClear()">clear</button>
@@ -158,9 +158,19 @@
                                             </button>
 
                                         </div>
+                                    </div> -->
+
+                                    <div class="action-button-container" style="padding-top: 10px;">
+                                    <div class="button-row-group">
+                                        <button class="btn btn-danger-outline btn-xs" (click)="onClear()">clear</button>
+                                        <button class="btn btn-primary btn-with-icon btn-xs" (click)="searchRecords($event)">
+                                            <span>Search</span>
+                                        </button>
+
                                     </div>
                                 </div>
-                            </div>
+                                </div>
+                            <!-- </div> -->
 
                         </div>
 
@@ -513,6 +523,11 @@
                                                     <button mat-icon-button (click)="getPrint(contact)"
                                                         matTooltip="Print" *ngIf="contact.isCompleted">
                                                         <mat-icon>print</mat-icon>
+                                                    </button>
+
+                                                    <button mat-icon-button matTooltip="Verify"
+                                                        (click)="onVerify(element)" *ngIf="!element.isVerifyid">
+                                                        <mat-icon>verified_user</mat-icon>
                                                     </button>
 
                                                     <button mat-icon-button

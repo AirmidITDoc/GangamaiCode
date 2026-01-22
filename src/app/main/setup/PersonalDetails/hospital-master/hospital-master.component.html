@@ -23,8 +23,11 @@
             <button mat-icon-button (click)="onDelete(element)" color="warn">
                 <mat-icon>delete_outline</mat-icon>
             </button>
-           
+
             <airmid-signature-icon [refId]="element.hospitalId" [refType]="logo" [multiple]="true"
+                docName="HospitalLogo"></airmid-signature-icon>
+
+            <airmid-signature-icon [refId]="element.hospitalId" [refType]="nabh" [multiple]="true"
                 docName="HospitalLogo"></airmid-signature-icon>
         </div>
     </ng-template>

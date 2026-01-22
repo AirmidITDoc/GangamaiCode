@@ -39,6 +39,9 @@ import { TestFormMasterComponent } from "./test-form-master/test-form-master.com
 import { TestmasterComponent } from "./testmaster.component";
 import { TestmasterService } from "./testmaster.service";
 import { TestSettingsComponent } from './test-settings/test-settings.component';
+import { ScrollingModule } from "@angular/cdk/scrolling";
+import { MatButtonToggleModule } from "@angular/material/button-toggle";
+import { MatSidenavModule } from "@angular/material/sidenav";
 
 const routes: Routes = [
     {
@@ -87,8 +90,11 @@ const routes: Routes = [
         SharedModule,
         NgxMatSelectSearchModule,
         MatBadgeModule,
-        MatTooltipModule
+        MatTooltipModule,
+        ScrollingModule,
+        MatButtonToggleModule,
+        MatSidenavModule,
     ],
     providers: [DatePipe, TestmasterService]
 })
-export class TestmasterModule {}
+export class TestmasterModule { }

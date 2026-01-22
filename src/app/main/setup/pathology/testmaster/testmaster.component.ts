@@ -161,8 +161,10 @@ export class TestmasterComponent implements OnInit {
     const dialogRef = this._matDialog.open(TestSettingsComponent,
       {
         maxWidth: "90vw",
-        width: '95%',
-        height: '95%',
+        // width: '95%',
+        // height: '95%',
+        maxHeight: '90%',
+        width: '94%',
         data: row
       });
     dialogRef.afterClosed().subscribe(result => {
