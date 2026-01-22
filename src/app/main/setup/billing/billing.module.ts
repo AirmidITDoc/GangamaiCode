@@ -90,12 +90,19 @@ const appRoutes: Routes = [
                 (m) => m.CreditReasonMasterModule
             ),
     },
+    {
+        path: "company-representative",
+        loadChildren: () =>
+            import("./company-employ-master/company-employ-master.module").then(
+                (m) => m.CompanyEmployMasterModule
+            ),
+    },
 ];
 
 @NgModule({
     declarations: [
-   
-  ],
+
+    ],
     imports: [RouterModule.forChild(appRoutes)],
 })
-export class BillingModule {}
+export class BillingModule { }

@@ -25,8 +25,8 @@ import { PagePermissionService } from 'app/main/shared/services/page-permission.
   animations: fuseAnimations,
 })
 export class HospitalMasterComponent implements OnInit {
-IsAdd: boolean = this.permissionService.getPermission(permissionCodes.Hospital, permissionType.Add);
-  
+  IsAdd: boolean = this.permissionService.getPermission(permissionCodes.Hospital, permissionType.Add);
+
   myformSearch: FormGroup;
   msg: any;
   cityId = "0";
@@ -34,14 +34,15 @@ IsAdd: boolean = this.permissionService.getPermission(permissionCodes.Hospital, 
   hospitalname = '';
   active: any;
   autocompletecity: string = "City";
-   logo: PageNames = PageNames.HOSPITAL_LOGO;
-      // signature: PageNames = PageNames.HOSPITAL_LOGO;
+  logo: PageNames = PageNames.HOSPITAL_LOGO;
+  nabh: PageNames = PageNames.NABH
+  // signature: PageNames = PageNames.HOSPITAL_LOGO;
 
   @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
   confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
 
   constructor(public _HospitalService: HospitalService,
-    public _matDialog: MatDialog, public toastr: ToastrService,public permissionService: PagePermissionService,
+    public _matDialog: MatDialog, public toastr: ToastrService, public permissionService: PagePermissionService,
   ) { }
   @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
   ngAfterViewInit() {
@@ -55,14 +56,14 @@ IsAdd: boolean = this.permissionService.getPermission(permissionCodes.Hospital, 
     { heading: "Pin", key: "pin", sort: true, align: 'left', emptySign: 'NA', Width: 100 },
     { heading: "Phone", key: "phone", sort: true, align: 'left', emptySign: 'NA', Width: 100 },
     { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
-   {
-              heading: "Files", key: "action", align: "right", width: 250, sticky: true, type: gridColumnTypes.template,
-              template: this.actionButtonTemplate  // Assign ng-template to the column
-          }
+    {
+      heading: "Files", key: "action", align: "right", width: 250, sticky: true, type: gridColumnTypes.template,
+      template: this.actionButtonTemplate  // Assign ng-template to the column
+    }
   ]
 
   gridConfig: gridModel = {
-      permissionCode:permissionCodes.Hospital,
+    permissionCode: permissionCodes.Hospital,
     apiUrl: "HospitalMaster/HospitalMasterList",
     columnsList: this.allcolumns,
     sortField: "HospitalId",

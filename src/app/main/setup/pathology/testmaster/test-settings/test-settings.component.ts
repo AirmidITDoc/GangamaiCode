@@ -29,6 +29,7 @@ export class TestSettingsComponent {
 
   testSettingForm: FormGroup;
   autocompleteModeCategoryId: string = "PathCategory";
+  vConsentTemplate: any;
 
   constructor(
     public _TestmasterService: TestmasterService,
@@ -44,6 +45,26 @@ export class TestSettingsComponent {
   ngOnInit(): void {
     this.testSettingForm = this.createSettingForm();
     this.testSettingForm.markAllAsTouched();
+
+    this.testSettingForm.get('isConsent')?.valueChanges.subscribe((isConsent: boolean) => {
+
+      const consentNameCtrl = this.testSettingForm.get('consentName');
+      const consentTemplateCtrl = this.testSettingForm.get('consentTemplate');
+
+      if (isConsent) {
+        consentNameCtrl?.setValidators([Validators.required]);
+        consentTemplateCtrl?.setValidators([Validators.required]);
+      } else {
+        consentNameCtrl?.clearValidators();
+        consentTemplateCtrl?.clearValidators();
+
+        consentNameCtrl?.setValue('');
+        consentTemplateCtrl?.setValue('');
+      }
+
+      consentNameCtrl?.updateValueAndValidity();
+      consentTemplateCtrl?.updateValueAndValidity();
+    });
   }
 
   createSettingForm() {
@@ -51,13 +72,30 @@ export class TestSettingsComponent {
       specimenId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
       specimenQty: ['', [Validators.maxLength(50)]],
       specimenConId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
+      containerTypeId: [0],
+      collectionMethodId: [0],
+      specimenSource: [''],
+      containerCount: [''],
+      preservativeId: [0],
+      transportInstruction: [''],
+
       isConsent: [false, [Validators.required]],
+      consentName: [''],
+      consentTemplate: [''],
       barcode: [''],
-      disease: [],
+
+      disease: [0],
+      diseasePrecautionNote: [''],
+      isNotifiable: [false],
+      isInfectious: [false],
+
       isFasting: [false, [Validators.required]],
-      CategoryId: [0],
+      methodologyId: [0],
       reported: [''],
       information: [''],
+      unit:[],
+      isApprovalRequired:[false],
+
       days: [''],
       hrs: [''],
       min: [''],

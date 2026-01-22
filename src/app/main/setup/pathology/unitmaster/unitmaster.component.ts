@@ -19,36 +19,36 @@ import { permissionCodes, permissionType } from "app/main/shared/model/permissio
 })
 export class UnitmasterComponent implements OnInit {
     @ViewChild(AirmidTableComponent) grid: AirmidTableComponent;
- unitName: any = "";
- IsAdd: boolean = this.permissionService.getPermission(permissionCodes.PathUnitMaster, permissionType.Add);
-   
-   
-       allcolumns = [
-           
-            { heading: "Unit Name", key: "unitName", sort: true, align: 'left', emptySign: 'NA' },
-            { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
-            {
-                heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
-                  {
-                      action: gridActions.edit, visible: this.permissionService.getPermission(permissionCodes.PathUnitMaster, permissionType.Edit), callback: (data: any) => {
-                                             this.onSave(data);
-                                         }
-                    }, {
-                        action: gridActions.delete, callback: (data: any) => {
-                            this._unitmasterService.deactivateTheStatus(data.unitId).subscribe((response: any) => {
-                                this.grid.bindGridData();
-                            });
-                        }
-                    }]
-            } //Action 1-view, 2-Edit,3-delete
-        ]
-        
-         allfilters = [
-            { fieldName: "unitName", fieldValue: "", opType: OperatorComparer.StartsWith },
-            { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
-        ]
-     gridConfig: gridModel = {
-           permissionCode: permissionCodes.PathUnitMaster,
+    unitName: any = "";
+    IsAdd: boolean = this.permissionService.getPermission(permissionCodes.PathUnitMaster, permissionType.Add);
+
+
+    allcolumns = [
+
+        { heading: "Unit Name", key: "unitName", sort: true, align: 'left', emptySign: 'NA' },
+        { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
+        {
+            heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
+                {
+                    action: gridActions.edit, visible: this.permissionService.getPermission(permissionCodes.PathUnitMaster, permissionType.Edit), callback: (data: any) => {
+                        this.onSave(data);
+                    }
+                }, {
+                    action: gridActions.delete, callback: (data: any) => {
+                        this._unitmasterService.deactivateTheStatus(data.unitId).subscribe((response: any) => {
+                            this.grid.bindGridData();
+                        });
+                    }
+                }]
+        } //Action 1-view, 2-Edit,3-delete
+    ]
+
+    allfilters = [
+        { fieldName: "unitName", fieldValue: "", opType: OperatorComparer.StartsWith },
+        { fieldName: "isActive", fieldValue: "", opType: OperatorComparer.Equals }
+    ]
+    gridConfig: gridModel = {
+        permissionCode: permissionCodes.PathUnitMaster,
         apiUrl: "PathUnitMaster/List",
         columnsList: this.allcolumns,
         sortField: "unitId",
@@ -66,7 +66,7 @@ export class UnitmasterComponent implements OnInit {
 
     }
 
-//filters addedby avdhoot vedpathak date-28/05/2025
+    //filters addedby avdhoot vedpathak date-28/05/2025
     // Clearfilter(event) {
     //     console.log(event)
     //     if (event == 'UnitNameSearch')
@@ -107,13 +107,13 @@ export class UnitmasterComponent implements OnInit {
     onSave(row: any = null) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button
-        
+
         let that = this;
         const dialogRef = this._matDialog.open(NewUnitComponent,
-            { 
-                 maxWidth: "96%",
-                 width: '95%',
-                 height: '95%',
+            {
+                maxWidth: "45vw",
+                maxHeight: '35%',
+                width: '70%',
                 data: row
             });
         dialogRef.afterClosed().subscribe(result => {
