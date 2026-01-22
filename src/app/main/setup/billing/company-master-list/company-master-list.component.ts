@@ -247,6 +247,7 @@ export class CompanyMaster {
     TypeName: any;
     CompanyName: string;
     isSubCompany: any;
+    dayWiseCredit:any;
     /**
    * Constructor
    *
@@ -267,7 +268,7 @@ export class CompanyMaster {
             this.faxNo = CompanyMaster.FaxNo || "";
             this.traiffId = CompanyMaster.traiffId || 0;
             this.classId = CompanyMaster.classId || 0;
-
+            this.dayWiseCredit = CompanyMaster.dayWiseCredit || 0;
             this.AddedBy = CompanyMaster.AddedBy || 0;
             this.isDeleted = CompanyMaster.IsDeleted || "false";
             this.UpdatedBy = CompanyMaster.UpdatedBy || 0;

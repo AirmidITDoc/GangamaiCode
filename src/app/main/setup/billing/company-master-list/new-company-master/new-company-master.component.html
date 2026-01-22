@@ -237,10 +237,10 @@
 
                       <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                         <airmid-textbox label="Day wise Credit" formControlName="dayWiseCredit" fxFlex [formGroup]="companyFormDemo"
-                           
+                           [value]="registerObj?.dayWiseCredit"
                            (keypress)="keyPressDigitDecimalOnly($event)" >
                         </airmid-textbox>
-                        <!-- [value]="registerObj?.dayWiseCredit" -->
+                        <!--  -->
                       </div> 
 
                   </div>

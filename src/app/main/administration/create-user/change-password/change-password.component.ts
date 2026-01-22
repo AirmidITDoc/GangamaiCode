@@ -77,7 +77,9 @@ export class ChangePasswordComponent implements OnInit {
     return this.formBuilder.group({
       userId: this.accountService.currentUserValue.userId,
       userName: this.accountService.currentUserValue.user.userName,
-      password: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(15), Validators.pattern(this.passwordPattern)]],
+      password: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(15)
+      //  , Validators.pattern(this.passwordPattern)
+      ]],
       confirmpassword: ['', [Validators.minLength(8), Validators.maxLength(15)]]
     }, { validators: this.passwordMatchValidator }
     );
