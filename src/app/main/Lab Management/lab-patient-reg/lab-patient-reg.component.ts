@@ -27,6 +27,7 @@ import { permissionCodes, permissionType } from 'app/main/shared/model/permissio
 import { PagePermissionService } from 'app/main/shared/services/page-permission.service';
 import { EditLabregComponent } from './edit-labreg/edit-labreg.component';
 import { ReportDispatchComponent } from '../report-dispatch/report-dispatch.component';
+import { EmailorSMSHistoryComponent } from '../emailor-smshistory/emailor-smshistory.component';
 
 @Component({
   selector: 'app-lab-patient-reg',
@@ -541,12 +542,13 @@ export class LabPatientRegComponent {
 
   }
 
-  viewgetReportdispatchPdf(element) {
+
+viewgetReportdispatch(element) {
     console.log(element)
     const dialogRef = this._matDialog.open(ReportDispatchComponent,
       {
         maxWidth: "80vw",
-        height: '850px',
+        maxHeight: '90%',
         width: '100%',
         data: element
 
@@ -556,8 +558,21 @@ export class LabPatientRegComponent {
     });
 
   }
+  viewgetSms(element) {
+    console.log(element)
+    const dialogRef = this._matDialog.open(EmailorSMSHistoryComponent,
+      {
+        maxWidth: "80vw",
+        maxHeight: '90%',
+        width: '100%',
+        data: element
 
+      });
+    dialogRef.afterClosed().subscribe(result => {
+      // this.onChangeFirst2()
+    });
 
+  }
   viewgetOPBillReportPdf(element) {
     this.commonService.Onprint("BillNo", element.billNo, "LabregisterBillReceipt");
   }
