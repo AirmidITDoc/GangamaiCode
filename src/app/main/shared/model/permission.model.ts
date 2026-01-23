@@ -140,5 +140,5 @@ export enum permissionCodes {
     MaterialConsumption = 'MaterialConsumption',
     // WorkOrder = 'WorkOrder',
     Indent = 'Indent',
-    Tally='Tally',
+    TallyInterface='TallyInterface',
 }

@@ -15,6 +15,8 @@ import { SupplierPaymentStatusService } from './supplier-payment-status.service'
 import { FormArray, FormGroup, UntypedFormBuilder } from '@angular/forms';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 import { ConfigService } from 'app/core/services/config.service';
+import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
+import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 
 @Component({
   selector: 'app-supplier-payment-status',
@@ -72,7 +74,7 @@ export class SupplierPaymentStatusComponent implements OnInit {
     private _loggedService: AuthenticationService,
     private accountService: AuthenticationService,
     public toastr: ToastrService,
-    public _ConfigService:ConfigService,
+    public _ConfigService:ConfigService,private commonService: PrintserviceService,
     public _formbuilder: UntypedFormBuilder,
     private _FormvalidationserviceService: FormvalidationserviceService,
   ) { }
@@ -357,7 +359,9 @@ export class SupplierPaymentStatusComponent implements OnInit {
         console.log(this.GrnSupplierPayForm.value)
         this._SupplierPaymentStatusService.InsertSupplierPay(this.GrnSupplierPayForm.value).subscribe((response) => {
           if (response) {
-            this.getSupplierPayStatusList();
+            console.log(response)
+            // this.getSupplierPayStatusList();
+            this.viewgetPayReportPdf(response)
             this.OnReset();
           }
         }
@@ -397,7 +401,51 @@ export class SupplierPaymentStatusComponent implements OnInit {
     }
 
   }
+  viewgetPayReportPdf(element) {
+        this.commonService.Onprint("SupPayId", element, "SupplierPaymentRecieptByPayment");
+    }
 
+   viewgetReportPdf() {
+      let fromDate = this.datePipe.transform(new Date(), "yyyy-MM-dd")
+      let toDate = this.datePipe.transform(new Date(), "yyyy-MM-dd")
+      var Param = {
+        "searchFields": [
+          {
+            "fieldName": "FromDate",
+            "fieldValue": fromDate,
+            "opType": "Equals"
+          },
+          {
+            "fieldName": "ToDate",
+            "fieldValue": toDate,
+            "opType": "Equals"
+          },
+          {
+            "fieldName": "SupplierId",
+            "fieldValue": String(this.supplierid),
+            "opType": "Equals"
+          },
+        ],
+        "mode": "SupplierPaymentReciept"
+      }
+      this._SupplierPaymentStatusService.getReportView(Param).subscribe(res => {
+  
+        const matDialog = this._matDialog.open(PdfviewerComponent,
+          {
+            maxWidth: "85vw",
+            height: '750px',
+            width: '100%',
+            data: {
+              base64: res["base64"] as string,
+              title: "Supplier Payment " + " " + "Viewer"
+            }
+          });
+        matDialog.afterClosed().subscribe(result => {
+        });
+      });
+  
+    }
+    
   onClear() {
 
   }

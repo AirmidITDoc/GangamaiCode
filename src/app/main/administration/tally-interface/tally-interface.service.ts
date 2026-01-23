@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { gridRequest } from 'app/core/models/gridRequest';
 import { ApiCaller } from 'app/core/services/apiCaller';
+import { AuthenticationService } from 'app/core/services/authentication.service';
 import { FormvalidationserviceService } from 'app/main/shared/services/formvalidationservice.service';
 
 @Injectable({
@@ -13,32 +14,23 @@ export class TallyInterfaceService {
 
   constructor(
     public _httpClient:ApiCaller, private _FormvalidationserviceService: FormvalidationserviceService,
-    private _formBuilder: UntypedFormBuilder
+    private _formBuilder: UntypedFormBuilder,  private accountService: AuthenticationService,
   ) {
     // this.tallyForm = this.CreaterTallyForm()
     // this.myformSearch = this.createSearchForm();
   }
 
 
-  myFilterbillbrowseform(): FormGroup {
-    return this._formBuilder.group({
 
-      fromDate: [(new Date()).toISOString()],
+
+    myFilterbillbrowseform() {
+    return this._formBuilder.group({
+     fromDate: [(new Date()).toISOString()],
       enddate: [(new Date()).toISOString()],
     });
   }
-  myFilterOprefundform(): FormGroup {
-    return this._formBuilder.group({
 
    
-      fromDate: [(new Date()).toISOString(), this._FormvalidationserviceService.validDateValidator()],
-      enddate: [(new Date()).toISOString(), this._FormvalidationserviceService.validDateValidator()],
-  
-    });
-  }
- 
-
-  
   myFilterrIPBillform(): FormGroup {
     return this._formBuilder.group({
 
@@ -46,15 +38,7 @@ export class TallyInterfaceService {
       enddate: [(new Date()).toISOString()],
     });
   }
-  myFilterAdvrefundform(): FormGroup {
-    return this._formBuilder.group({
-
-   
-      fromDate: [(new Date()).toISOString(), this._FormvalidationserviceService.validDateValidator()],
-      enddate: [(new Date()).toISOString(), this._FormvalidationserviceService.validDateValidator()],
-  
-    });
-  }
+ 
   myFilterOpcashcounerform(): FormGroup {
     return this._formBuilder.group({
 
@@ -64,15 +48,7 @@ export class TallyInterfaceService {
   
     });
   }
- myFilterrIPrefundBillform(): FormGroup {
-    return this._formBuilder.group({
-
-   
-      fromDate: [(new Date()).toISOString(), this._FormvalidationserviceService.validDateValidator()],
-      enddate: [(new Date()).toISOString(), this._FormvalidationserviceService.validDateValidator()],
-  
-    });
-  }
+ 
   myFilterIPAdvanceform(): FormGroup {
     return this._formBuilder.group({
 
@@ -83,48 +59,20 @@ export class TallyInterfaceService {
     });
   }
 
-  myFilterrIPcashcounterform(): FormGroup {
-    return this._formBuilder.group({
-      fromDate: [(new Date()).toISOString(), this._FormvalidationserviceService.validDateValidator()],
-      enddate: [(new Date()).toISOString(), this._FormvalidationserviceService.validDateValidator()],
-  
-    });
-  }
-
    myFiltersalesform(): FormGroup {
     return this._formBuilder.group({
     fromDate: [(new Date()).toISOString(), this._FormvalidationserviceService.validDateValidator()],
       enddate: [(new Date()).toISOString(), this._FormvalidationserviceService.validDateValidator()],
+      StoreId:[this.accountService.currentUserValue.user.storeId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
   
     });
   }
-   myFilterrsalesreturnform(): FormGroup {
-    return this._formBuilder.group({
-    fromDate: [(new Date()).toISOString(), this._FormvalidationserviceService.validDateValidator()],
-      enddate: [(new Date()).toISOString(), this._FormvalidationserviceService.validDateValidator()],
   
-    });
-  }
-
-   myFilterPharPaymentform(): FormGroup {
-    return this._formBuilder.group({
-    fromDate: [(new Date()).toISOString(), this._FormvalidationserviceService.validDateValidator()],
-      enddate: [(new Date()).toISOString(), this._FormvalidationserviceService.validDateValidator()],
-  
-    });
-  }
-   myFilterPhar2receiptform(): FormGroup {
-    return this._formBuilder.group({
-    fromDate: [(new Date()).toISOString(), this._FormvalidationserviceService.validDateValidator()],
-      enddate: [(new Date()).toISOString(), this._FormvalidationserviceService.validDateValidator()],
-  
-    });
-  }
-
   myFilterpurchaseform(): FormGroup {
     return this._formBuilder.group({
     fromDate: [(new Date()).toISOString(), this._FormvalidationserviceService.validDateValidator()],
       enddate: [(new Date()).toISOString(), this._FormvalidationserviceService.validDateValidator()],
+   StoreId:[this.accountService.currentUserValue.user.storeId, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
   
     });
   }

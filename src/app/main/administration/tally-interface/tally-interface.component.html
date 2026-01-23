@@ -4,26 +4,62 @@
     <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start">
 
 
-        <mat-tab label="OP CashCounter">
+        <mat-tab label="OP Tally">
+            <div fxLayout="column" class="gap-4 h-10-p">
+                <div class="modal-card-container" style="padding: 10px;">
+                    <mat-card>
+                    <form [formGroup]="myFilteropcashcounerform">
+                        <div class="patient-search">
+                            <div fxLayout="row" fxLayoutAlign="start start" class="gap-8">
+                                <div fxFlexFill fxLayout="column" fxLayout="row" fxLayoutGap="6px">
+                                    <!-- (dateChange)="onChangeOPBill()" -->
+                                    <mat-form-field appearance="outline" fxFlex="20%">
+                                        <mat-label>Enter a date range</mat-label>
+                                        <mat-date-range-input [rangePicker]="grnPicker">
+                                            <input matStartDate formControlName="fromDate" placeholder="Start date">
+                                            <input matEndDate formControlName="enddate" placeholder="End date">
+                                        </mat-date-range-input>
+                                        <mat-datepicker-toggle matSuffix [for]="grnPicker"></mat-datepicker-toggle>
+                                        <mat-date-range-picker #grnPicker></mat-date-range-picker>
+                                    </mat-form-field>
 
-            <div fusePerfectScrollbar
-                class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
-                dynamicTableHeight>
+
+                                    <div class="action-buttons" style="padding: 10px;">
+                                        <!-- <button mat-raised-button (click)="onClear()" class="clear-button"
+                                                matTooltip="close">
+                                                <mat-icon class="cleariconbutton">close</mat-icon>
+                                            </button>&nbsp; -->
+                                        <button mat-raised-button class="search-button" (click)="onChangeOPBill()"
+                                            matTooltip="search">
+                                            <mat-icon class="searchiconbutton">search</mat-icon>
+                                        </button>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    </mat-card>
+                </div>
+            </div>
+            <div fusePerfectScrollbar>
                 <div class="top-header header accent p-16" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
                     fxLayoutAlign.gt-xs="space-between center ">
                     <div class="top-header-info">
                         <div class="top-header-title">
                             <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                                OP Cash Counter List
+                                OP Cash Counter Wise
                             </span>
                         </div>
                     </div>
 
                 </div>
-                <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+                <div id="contacts" style="height: 300px;overflow: auto;">
 
-                    <airmid-table [gridConfig]="gridConfigOPBillCashcouner" class="content">
-                        <ng-container filters>
+                    <airmid-table [gridConfig]="gridConfigOPBillCashcouner" #opBillGrid :ShowFilter="false"
+                        :ShowButtons="true">
+
+                        <!-- <ng-container filters>
 
                             <form [formGroup]="myFilteropcashcounerform">
 
@@ -33,13 +69,45 @@
                                     [(toValue)]="gridConfigOPBillCashcouner.filters[1].fieldValue"></airmid-datepicker>
 
                             </form>
-                        </ng-container>
+                        </ng-container> -->
                     </airmid-table>
                 </div>
+
+                <div fusePerfectScrollbar>
+                    <div class="top-header header accent p-16" fxLayout="column" fxLayoutAlign="start"
+                        fxLayout.gt-xs="row" fxLayoutAlign.gt-xs="space-between center ">
+                        <div class="top-header-info">
+                            <div class="top-header-title">
+                                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                                    Op Day Wise Refund
+                                </span>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div id="contacts" style="height: 300px;overflow: auto;">
+
+                        <airmid-table [gridConfig]="gridConfigOpRefund" :ShowButtons="true" :ShowFilter="false"
+                            #opRefundGrid>
+                            <!-- <ng-container filters>
+
+                                <form [formGroup]="myFilterrefundform">
+
+                                    <airmid-datepicker [formGroup]="myFilterrefundform" [isRangePicker]="true"
+                                        formStartControlName="fromDate" formEndControlName="enddate"
+                                        [(fromValue)]="gridConfigOpRefund.filters[0].fieldValue"
+                                        [(toValue)]="gridConfigOpRefund.filters[1].fieldValue"></airmid-datepicker>
+
+                                </form>
+                            </ng-container> -->
+                        </airmid-table>
+                    </div>
+                </div>
+
             </div>
 
         </mat-tab>
-        <mat-tab label="OP Refund">
+        <!-- <mat-tab label="OP Refund">
 
             <div fusePerfectScrollbar
                 class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
@@ -73,43 +141,159 @@
                 </div>
             </div>
 
-        </mat-tab>
+        </mat-tab> -->
 
 
-        <mat-tab label="IP Bill ">
-            <div fusePerfectScrollbar
-                class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
-                dynamicTableHeight>
-                <div class="top-header header accent p-16" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
-                    fxLayoutAlign.gt-xs="space-between center ">
-                    <div class="top-header-info">
-                        <div class="top-header-title">
-                            <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                                IP Bill List
-                            </span>
+        <mat-tab label="IP Tally ">
+            <div fusePerfectScrollbar>
+
+                <div fxLayout="column" class="gap-4 h-10-p">
+                    <div class="modal-card-container" style="padding: 10px;">
+                        <mat-card>
+                        <form [formGroup]="myFilterIpBillform">
+                            <div class="patient-search">
+                                <div fxLayout="row" fxLayoutAlign="start start" class="gap-8">
+                                    <div fxFlexFill fxLayout="column" fxLayout="row" fxLayoutGap="6px">
+
+                                        <mat-form-field appearance="outline" fxFlex="20%">
+                                            <mat-label>Enter a date range</mat-label>
+                                            <mat-date-range-input [rangePicker]="Picker1">
+                                                <input matStartDate formControlName="fromDate" placeholder="Start date">
+                                                <input matEndDate formControlName="enddate" placeholder="End date">
+                                            </mat-date-range-input>
+                                            <mat-datepicker-toggle matSuffix [for]="Picker1"></mat-datepicker-toggle>
+                                            <mat-date-range-picker #Picker1></mat-date-range-picker>
+                                        </mat-form-field>
+
+
+                                        <div class="action-buttons" style="padding: 10px;">
+                                            <!-- <button mat-raised-button (click)="onClear()" class="clear-button"
+                                                matTooltip="close">
+                                                <mat-icon class="cleariconbutton">close</mat-icon>
+                                            </button>&nbsp; -->
+                                            <button mat-raised-button class="search-button" (click)="onChangeIPBill()"
+                                                matTooltip="search">
+                                                <mat-icon class="searchiconbutton">search</mat-icon>
+                                            </button>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                        </mat-card>
+                    </div>
+                </div>
+
+                <!-- <div >
+                    <div class="top-header header accent p-16" fxLayout="column" fxLayoutAlign="start"
+                        fxLayout.gt-xs="row" fxLayoutAlign.gt-xs="space-between center ">
+                        <div class="top-header-info">
+                            <div class="top-header-title">
+                                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                                    IP Bill Wise
+                                </span>
+                            </div>
                         </div>
+
+                    </div>
+                    <div id="contacts" style="height: 300px;overflow: auto;">
+                        <airmid-table [gridConfig]="gridConfigIPBill" ShowButtons="true" :ShowFilter="false"
+                            #IPBillGrid>
+                           
+                        </airmid-table>
                     </div>
 
-                </div>
-                <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
-                    <airmid-table [gridConfig]="gridConfigIPBill" class="content">
-                        <ng-container filters>
-                            <form [formGroup]="myFilterIpBillform">
-                                <airmid-datepicker [formGroup]="myFilterIpBillform" [isRangePicker]="true"
+                </div> -->
+
+                <div fusePerfectScrollbar>
+                    <div class="top-header header accent p-16" fxLayout="column" fxLayoutAlign="start"
+                        fxLayout.gt-xs="row" fxLayoutAlign.gt-xs="space-between center ">
+                        <div class="top-header-info">
+                            <div class="top-header-title">
+                                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                                    IP Bill Patient Wise
+                                </span>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div id="contacts" style="height: 300px;overflow: auto;">
+                        <airmid-table [gridConfig]="gridConfigIPBillPatientwise" ShowButtons="true" :ShowFilter="false"
+                            #IPPatientwiseGrid>
+                            <!-- <ng-container filters>
+                            <form [formGroup]="myFilterIpcashcounterform">
+                                <airmid-datepicker [formGroup]="myFilterIpcashcounterform" [isRangePicker]="true"
                                     formStartControlName="fromDate" formEndControlName="enddate"
-                                    [(fromValue)]="gridConfigIPBill.filters[0].fieldValue"
-                                    [(toValue)]="gridConfigIPBill.filters[1].fieldValue"></airmid-datepicker>
+                                    [(fromValue)]="gridConfigIPbillCashcounter.filters[0].fieldValue"
+                                    [(toValue)]="gridConfigIPbillCashcounter.filters[1].fieldValue"></airmid-datepicker>
 
                             </form>
-                        </ng-container>
-                    </airmid-table>
+                        </ng-container> -->
+                        </airmid-table>
+                    </div>
+                </div>
+                <div fusePerfectScrollbar>
+                    <div class="top-header header accent p-16" fxLayout="column" fxLayoutAlign="start"
+                        fxLayout.gt-xs="row" fxLayoutAlign.gt-xs="space-between center ">
+                        <div class="top-header-info">
+                            <div class="top-header-title">
+                                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                                    IP Bill CashCounter Wise
+                                </span>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div id="contacts" style="height: 300px;overflow: auto;">
+                        <airmid-table [gridConfig]="gridConfigIPbillCashcounter" ShowButtons="true" :ShowFilter="false"
+                            #IPCashGrid>
+                            <!-- <ng-container filters>
+                            <form [formGroup]="myFilterIpcashcounterform">
+                                <airmid-datepicker [formGroup]="myFilterIpcashcounterform" [isRangePicker]="true"
+                                    formStartControlName="fromDate" formEndControlName="enddate"
+                                    [(fromValue)]="gridConfigIPbillCashcounter.filters[0].fieldValue"
+                                    [(toValue)]="gridConfigIPbillCashcounter.filters[1].fieldValue"></airmid-datepicker>
+
+                            </form>
+                        </ng-container> -->
+                        </airmid-table>
+                    </div>
+                </div>
+
+
+                <div fusePerfectScrollbar>
+                    <div class="top-header header accent p-16" fxLayout="column" fxLayoutAlign="start"
+                        fxLayout.gt-xs="row" fxLayoutAlign.gt-xs="space-between center ">
+                        <div class="top-header-info">
+                            <div class="top-header-title">
+                                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                                    IP Patient Wise Refund
+                                </span>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div id="contacts" style="height: 300px;overflow: auto;">
+                        <airmid-table [gridConfig]="gridConfigIPRefundBillPay" class="content" :ShowButtons="true"
+                            :ShowFilter="false" #IpRefundGrid>
+                            <!-- <ng-container filters>
+                                <form [formGroup]="myFilterIprefundBillform">
+                                    <airmid-datepicker [formGroup]="myFilterIprefundBillform" [isRangePicker]="true"
+                                        formStartControlName="fromDate" formEndControlName="enddate"
+                                        [(fromValue)]="gridConfigIPRefundBillPay.filters[0].fieldValue"
+                                        [(toValue)]="gridConfigIPRefundBillPay.filters[1].fieldValue"></airmid-datepicker>
+
+                                </form>
+                            </ng-container> -->
+                        </airmid-table>
+                    </div>
                 </div>
             </div>
-
         </mat-tab>
 
 
-        <mat-tab label="IP CashCounter Payment ">
+        <!-- <mat-tab label="IP CashCounter Payment ">
             <div fusePerfectScrollbar
                 class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
                 dynamicTableHeight>
@@ -139,9 +323,9 @@
                 </div>
             </div>
 
-        </mat-tab>
+        </mat-tab> -->
 
-        <mat-tab label="IP Bill Refund ">
+        <!-- <mat-tab label="IP Bill Refund ">
             <div fusePerfectScrollbar
                 class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
                 dynamicTableHeight>
@@ -171,27 +355,61 @@
                 </div>
             </div>
 
-        </mat-tab>
+        </mat-tab> -->
         <mat-tab label="IP Advance">
+            <div fxLayout="column" class="gap-4 h-10-p">
+                <div class="modal-card-container" style="padding: 10px;">
+                     <mat-card>
+                    <form [formGroup]="myFilterIpAdvform">
+                        <div class="patient-search">
+                            <div fxLayout="row" fxLayoutAlign="start start" class="gap-8">
+                                <div fxFlexFill fxLayout="column" fxLayout="row" fxLayoutGap="6px">
 
-            <div fusePerfectScrollbar
-                class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
-                dynamicTableHeight>
+                                    <mat-form-field appearance="outline" fxFlex="20%">
+                                        <mat-label>Enter a date range</mat-label>
+                                        <mat-date-range-input [rangePicker]="Picker3">
+                                            <input matStartDate formControlName="fromDate" placeholder="Start date">
+                                            <input matEndDate formControlName="enddate" placeholder="End date">
+                                        </mat-date-range-input>
+                                        <mat-datepicker-toggle matSuffix [for]="Picker3"></mat-datepicker-toggle>
+                                        <mat-date-range-picker #Picker3></mat-date-range-picker>
+                                    </mat-form-field>
+
+
+                                    <div class="action-buttons" style="padding: 10px;">
+                                        <!-- <button mat-raised-button (click)="onClear()" class="clear-button"
+                                                matTooltip="close">
+                                                <mat-icon class="cleariconbutton">close</mat-icon>
+                                            </button>&nbsp; -->
+                                        <button mat-raised-button class="search-button" (click)="onChangeIPAdvance()"
+                                            matTooltip="search">
+                                            <mat-icon class="searchiconbutton">search</mat-icon>
+                                        </button>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    </mat-card>
+                </div>
+            </div>
+            <div fusePerfectScrollbar>
                 <div class="top-header header accent p-16" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
                     fxLayoutAlign.gt-xs="space-between center ">
                     <div class="top-header-info">
                         <div class="top-header-title">
                             <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                                IP Advance List
+                                IP Advance Patient Wise
                             </span>
                         </div>
                     </div>
 
                 </div>
-                <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+                <div id="contacts" style="height: 300px;overflow: auto;">
 
-                    <airmid-table [gridConfig]="gridConfigIPAdvance" class="content">
-                        <ng-container filters>
+                    <airmid-table [gridConfig]="gridConfigIPAdvance" :ShowButtons="true" #IPAdvGrid :ShowFilter="false">
+                        <!-- <ng-container filters>
 
                             <form [formGroup]="myFilterIpAdvform">
 
@@ -201,32 +419,27 @@
                                     [(toValue)]="gridConfigIPAdvance.filters[1].fieldValue"></airmid-datepicker>
 
                             </form>
-                        </ng-container>
+                        </ng-container> -->
                     </airmid-table>
                 </div>
             </div>
-
-        </mat-tab>
-        <mat-tab label="IP Adv Refund">
-
-            <div fusePerfectScrollbar
-                class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
-                dynamicTableHeight>
+            <div fusePerfectScrollbar>
                 <div class="top-header header accent p-16" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
                     fxLayoutAlign.gt-xs="space-between center ">
                     <div class="top-header-info">
                         <div class="top-header-title">
                             <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                                IP Adv Refund List
+                                IP Adv Refund Patient Wise
                             </span>
                         </div>
                     </div>
 
                 </div>
-                <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+                <div id="contacts" style="height: 300px;overflow: auto;">
 
-                    <airmid-table [gridConfig]="gridConfigIAdvRefund" class="content">
-                        <ng-container filters>
+                    <airmid-table [gridConfig]="gridConfigIAdvRefund" :ShowButtons="true" #IPAdvRefGrid
+                        :ShowFilter="false">
+                        <!-- <ng-container filters>
 
                             <form [formGroup]="myFilterIpAdvReturnform">
 
@@ -236,21 +449,62 @@
                                     [(toValue)]="gridConfigIAdvRefund.filters[1].fieldValue"></airmid-datepicker>
 
                             </form>
-                        </ng-container>
+                        </ng-container> -->
                     </airmid-table>
                 </div>
             </div>
-
         </mat-tab>
+        <!-- <mat-tab label="IP Adv Refund">
+
+          
+
+        </mat-tab> -->
 
 
 
 
-        <mat-tab label="Pharmacy Sales">
+        <mat-tab label="Pharmacy Tally">
+            <div fxLayout="column" class="gap-4 h-5-p">
+                <div class="modal-card-container" style="padding: 10px;">
+                    <mat-card>
+                    <form [formGroup]="myFiltersalesform">
+                        <div fxLayout="row" fxLayoutAlign="start start" class="gap-8">
 
-            <div fusePerfectScrollbar
-                class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
-                dynamicTableHeight>
+                            <airmid-dropdown label="To Store Name" formControlName="StoreId" fxFlex="30%"
+                                [formGroup]="myFiltersalesform" [validations]="getValidationMessages().StoreId"
+                                [mode]="autocompletestore" (input)="selectChangeStore($event)">
+                            </airmid-dropdown>
+
+
+                            <mat-form-field appearance="outline" fxFlex="20%">
+                                <mat-label>Enter a date range</mat-label>
+                                <mat-date-range-input [rangePicker]="Picker2">
+                                    <input matStartDate formControlName="fromDate" placeholder="Start date">
+                                    <input matEndDate formControlName="enddate" placeholder="End date">
+                                </mat-date-range-input>
+                                <mat-datepicker-toggle matSuffix [for]="Picker2"></mat-datepicker-toggle>
+                                <mat-date-range-picker #Picker2></mat-date-range-picker>
+                            </mat-form-field>
+
+
+                            <div class="action-buttons" style="padding: 10px;">
+                                <!-- <button mat-raised-button (click)="onClear()" class="clear-button"
+                                                matTooltip="close">
+                                                <mat-icon class="cleariconbutton">close</mat-icon>
+                                            </button>&nbsp; -->
+                                <button mat-raised-button class="search-button" (click)="onChangePharmacy()"
+                                    matTooltip="search">
+                                    <mat-icon class="searchiconbutton">search</mat-icon>
+                                </button>
+                            </div>
+
+                        </div>
+
+                    </form>
+                    </mat-card>
+                </div>
+            </div>
+            <div fusePerfectScrollbar>
                 <div class="top-header header accent p-16" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
                     fxLayoutAlign.gt-xs="space-between center ">
                     <div class="top-header-info">
@@ -264,8 +518,8 @@
                 </div>
                 <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
 
-                    <airmid-table [gridConfig]="gridConfigPharSales" class="content">
-                        <ng-container filters>
+                    <airmid-table [gridConfig]="gridConfigPharSales" :ShowButtons="true" :ShowFilter="false" #SalesGrid>
+                        <!-- <ng-container filters>
 
                             <form [formGroup]="myFiltersalesform">
 
@@ -275,32 +529,28 @@
                                     [(toValue)]="gridConfigPharSales.filters[1].fieldValue"></airmid-datepicker>
 
                             </form>
-                        </ng-container>
+                        </ng-container> -->
                     </airmid-table>
                 </div>
             </div>
 
-        </mat-tab>
-        <mat-tab label="Pharmacy Payment">
-
-            <div fusePerfectScrollbar
-                class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
-                dynamicTableHeight>
+            <div fusePerfectScrollbar>
                 <div class="top-header header accent p-16" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
                     fxLayoutAlign.gt-xs="space-between center ">
                     <div class="top-header-info">
                         <div class="top-header-title">
                             <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                                Pharmacy Payment List
+                                Pharmacy Payment Wise
                             </span>
                         </div>
                     </div>
 
                 </div>
-                <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+                <div id="contacts" style="height: 300px;overflow: auto;">
 
-                    <airmid-table [gridConfig]="gridConfigPharPayment" class="content">
-                        <ng-container filters>
+                    <airmid-table [gridConfig]="gridConfigPharPayment" :ShowButtons="true" :ShowFilter="false"
+                        #PharPayGrid>
+                        <!-- <ng-container filters>
 
                             <form [formGroup]="myFilterPharPaymentform">
 
@@ -310,14 +560,80 @@
                                     [(toValue)]="gridConfigPharPayment.filters[1].fieldValue"></airmid-datepicker>
 
                             </form>
-                        </ng-container>
+                        </ng-container> -->
                     </airmid-table>
                 </div>
             </div>
 
-        </mat-tab>
+            <div fusePerfectScrollbar>
+                <div class="top-header header accent p-16" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
+                    fxLayoutAlign.gt-xs="space-between center ">
+                    <div class="top-header-info">
+                        <div class="top-header-title">
+                            <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                                Pharmacy Sales Return Wise
+                            </span>
+                        </div>
+                    </div>
 
-        <mat-tab label="Pharmacy Sales Return">
+                </div>
+                <div id="contacts" style="height: 300px;overflow: auto;">
+
+                    <airmid-table [gridConfig]="gridConfigPharsalesreturn" :ShowButtons="true" :ShowFilter="false"
+                        #salereturnGrid>
+                        <!-- <ng-container filters>
+
+                            <form [formGroup]="myFiltersalesreurnform">
+
+                                <airmid-datepicker [formGroup]="myFiltersalesreurnform" [isRangePicker]="true"
+                                    formStartControlName="fromDate" formEndControlName="enddate"
+                                    [(fromValue)]="gridConfigPharsalesreturn.filters[0].fieldValue"
+                                    [(toValue)]="gridConfigPharsalesreturn.filters[1].fieldValue"></airmid-datepicker>
+
+                            </form>
+                        </ng-container> -->
+                    </airmid-table>
+                </div>
+            </div>
+
+            <div fusePerfectScrollbar>
+                <div class="top-header header accent p-16" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
+                    fxLayoutAlign.gt-xs="space-between center ">
+                    <div class="top-header-info">
+                        <div class="top-header-title">
+                            <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                                Pharmacy Receipt Wise
+                            </span>
+                        </div>
+                    </div>
+
+                </div>
+                <div id="contacts" style="height: 300px;overflow: auto;">
+
+                    <airmid-table [gridConfig]="gridConfigPharReceipt" :ShowButtons="true" :ShowFilter="false"
+                        #salespayreceipt>
+                        <!-- <ng-container filters>
+
+                            <form [formGroup]="myFilterPhar2receiptform">
+
+                                <airmid-datepicker [formGroup]="myFilterPhar2receiptform" [isRangePicker]="true"
+                                    formStartControlName="fromDate" formEndControlName="enddate"
+                                    [(fromValue)]="gridConfigPharReceipt.filters[0].fieldValue"
+                                    [(toValue)]="gridConfigPharReceipt.filters[1].fieldValue"></airmid-datepicker>
+
+                            </form>
+                        </ng-container> -->
+                    </airmid-table>
+                </div>
+            </div>
+        </mat-tab>
+        <!-- <mat-tab label="Pharmacy Payment">
+
+          
+
+        </mat-tab> -->
+
+        <!-- <mat-tab label="Pharmacy Sales Return">
 
             <div fusePerfectScrollbar
                 class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
@@ -335,7 +651,8 @@
                 </div>
                 <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
 
-                    <airmid-table [gridConfig]="gridConfigPharsalesreturn" class="content">
+                    <airmid-table [gridConfig]="gridConfigPharsalesreturn" class="content" :ShowButtons="true"
+                        :ShowFilter="false">
                         <ng-container filters>
 
                             <form [formGroup]="myFiltersalesreurnform">
@@ -351,8 +668,8 @@
                 </div>
             </div>
 
-        </mat-tab>
-        <mat-tab label="Pharmacy Receipt">
+        </mat-tab> -->
+        <!-- <mat-tab label="Pharmacy Receipt">
 
             <div fusePerfectScrollbar
                 class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
@@ -370,7 +687,8 @@
                 </div>
                 <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
 
-                    <airmid-table [gridConfig]="gridConfigPharReceipt" class="content">
+                    <airmid-table [gridConfig]="gridConfigPharReceipt" class="content" :ShowButtons="true"
+                        :ShowFilter="false">
                         <ng-container filters>
 
                             <form [formGroup]="myFilterPhar2receiptform">
@@ -386,15 +704,51 @@
                 </div>
             </div>
 
-        </mat-tab>
+        </mat-tab> -->
 
 
 
         <mat-tab label=" Purchase Wise Supplier">
+            <div fxLayout="column" class="gap-4 h-10-p">
+                <div class="modal-card-container" style="padding: 10px;">
+                    <mat-card>
+                    <form [formGroup]="myFilterpurchaseform">
+                        <div fxLayout="row" fxLayoutAlign="start start" class="gap-8">
 
-            <div fusePerfectScrollbar
-                class="page-layout simple left-sidebar inner-sidebar inner-scroll update-grn mat-form-field-auto"
-                dynamicTableHeight>
+                         <airmid-dropdown label="To Store Name" formControlName="StoreId" fxFlex="30%"
+                                [formGroup]="myFiltersalesform" [validations]="getValidationMessages().StoreId"
+                                [mode]="autocompletestore" (input)="selectChangeStore1($event)">
+                            </airmid-dropdown>
+
+                            <mat-form-field appearance="outline" fxFlex="20%">
+                                <mat-label>Enter a date range</mat-label>
+                                <mat-date-range-input [rangePicker]="Picker5">
+                                    <input matStartDate formControlName="fromDate" placeholder="Start date">
+                                    <input matEndDate formControlName="enddate" placeholder="End date">
+                                </mat-date-range-input>
+                                <mat-datepicker-toggle matSuffix [for]="Picker5"></mat-datepicker-toggle>
+                                <mat-date-range-picker #Picker5></mat-date-range-picker>
+                            </mat-form-field>
+
+
+                            <div class="action-buttons" style="padding: 10px;">
+                                <!-- <button mat-raised-button (click)="onClear()" class="clear-button"
+                                                matTooltip="close">
+                                                <mat-icon class="cleariconbutton">close</mat-icon>
+                                            </button>&nbsp; -->
+                                <button mat-raised-button class="search-button" (click)="onChangePurchase()"
+                                    matTooltip="search">
+                                    <mat-icon class="searchiconbutton">search</mat-icon>
+                                </button>
+                            </div>
+
+                        </div>
+
+                    </form>
+                    </mat-card>
+                </div>
+            </div>
+            <div fusePerfectScrollbar>
                 <div class="top-header header accent p-16" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
                     fxLayoutAlign.gt-xs="space-between center ">
                     <div class="top-header-info">
@@ -408,8 +762,8 @@
                 </div>
                 <div id="contacts" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
 
-                    <airmid-table [gridConfig]="gridConfigPurchase" class="content">
-                        <ng-container filters>
+                    <airmid-table [gridConfig]="gridConfigPurchase" #PurchaseGrid  :ShowButtons="true" :ShowFilter="false">
+                        <!-- <ng-container filters>
 
                             <form [formGroup]="myFilterPurchaseform">
 
@@ -419,7 +773,7 @@
                                     [(toValue)]="gridConfigPurchase.filters[1].fieldValue"></airmid-datepicker>
 
                             </form>
-                        </ng-container>
+                        </ng-container> -->
                     </airmid-table>
                 </div>
             </div>

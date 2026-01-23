@@ -1,44 +1,31 @@
 <div class="page-layout simple inner-sidebar inner-scroll right-sidebar">
 
     <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start">
+        <div class="modal-card-container">
+            <mat-card style="padding: 10px;">
 
+                <div fxLayout="column" fxLayoutGap="10px">
+                    <div class="patient-col">
+                        <span style="font-size: large;font-weight: bolder;color: rgb(17, 65, 118);">Patient
+                            Details</span>
+                        <span>:</span>
+                        <span style="font-size: medium;font-weight: bolder;">{{ Personaldata.regNo }} |
+                            {{Personaldata.patientName }} | {{Personaldata.ageYear }}Y|{{ Personaldata.ageMonth }}M|{{Personaldata.ageDay }} D | {{ Personaldata.genderName }} |
+                            <span style="font-size: medium;font-weight: bolder;">{{Personaldata.departmentName }} |{{Personaldata.doctorName}}</span></span>
+                       
+                        <span style="font-size: medium;font-weight: bolder;">{{Personaldata.labPatientId}} |{{Personaldata.pBillNo}}</span>
+                    </div>
+
+
+                </div>
+            </mat-card>
+        </div>
         <mat-tab label="Email List">
 
             <div class="modal-body" fusePerfectScrollbar>
                 <div class="modal-body-container">
                     <div fxLayout="column" class="gap-12">
-                        <div class="modal-card-container">
-                            <mat-card style="padding: 10px;">
 
-                                <div fxLayout="column" fxLayoutGap="10px">
-                                    <div class="patient-col">
-                                        <span
-                                            style="font-size: large;font-weight: bolder;color: rgb(17, 65, 118);">Patient
-                                            Details</span>
-                                        <span>:</span>
-                                        <span style="font-size: medium;font-weight: bolder;">{{ Personaldata.regNo }} |
-                                            {{
-                                            Personaldata.patientName }} | {{
-                                            Personaldata.ageYear }}Y|{{ Personaldata.ageMonth }}M|{{
-                                            Personaldata.ageDay }} D | {{ Personaldata.genderName }} | <span
-                                                style="font-size: large;font-weight: bolder;color: rgb(17, 65, 118);">Department
-                                                | Doctor Name</span>
-                                            <span>:</span>
-                                            <span style="font-size: medium;font-weight: bolder;">{{
-                                                Personaldata.departmentName }} |{{
-                                                Personaldata.doctorName}}</span></span>
-                                        <span style="font-size: large;font-weight: bolder;color: rgb(17, 65, 118);"> |
-                                            Lab Details</span>
-                                        <span>:</span>
-                                        <span style="font-size: medium;font-weight: bolder;">{{
-                                            Personaldata.labPatientId}} |{{
-                                            Personaldata.pBillNo}}</span>
-                                    </div>
-
-
-                                </div>
-                            </mat-card>
-                        </div>
                         <div class="modal-card-container">
                             <mat-card style="padding: 10px;">
                                 <div fxLayout="column" class="gap-4">
@@ -116,7 +103,7 @@
                 </div>
             </div>
 
-            <div style="height: 200px;">
+            <div style="height: 200px; overflow:auto;">
                 <div class="form-title mb-2 border-bottom pb-2">
                     <span
                         style="font-size: large;font-weight: bolder;color: rgb(17, 65, 118);padding-left: 20px;">History</span>
@@ -199,7 +186,7 @@
                                                         </div>
 
                                                     </div>
-                                                    <div>
+                                                    <div style="height: 250px; overflow:auto;">
                                                         <airmid-table [gridConfig]="gridConfigSms" class="content h-200"
                                                             [ShowFilter]="false" [ShowButtons]="false">
                                                             <ng-container filters>
@@ -250,7 +237,7 @@
                 </div>
             </div>
 
-            <div style="height: 200px;">
+            <div style="height: 200px; overflow:auto;">
                 <div class="form-title mb-2 border-bottom pb-2">
                     <span
                         style="font-size: large;font-weight: bolder;color: rgb(17, 65, 118);padding-left: 20px;">History</span>

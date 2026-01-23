@@ -895,7 +895,9 @@ export class LabPatientList {
   subCompanyId: any;
   pBillNo: any;
   labPatientId: any;
-  balanceAmt: any;
+  balanceAmt: any=0;
+  regTime:any;
+  dispatchModeId:any
 
   constructor(LabPatientList) {
     {
@@ -971,8 +973,10 @@ export class LabPatientList {
       this.pBillNo = LabPatientList.pBillNo || 0
       this.labPatientId = LabPatientList.labPatientId || 0
       this.balanceAmt = LabPatientList.balanceAmt || 0
+      this.regTime = LabPatientList.regTime
+      this.dispatchModeId = LabPatientList.dispatchModeId || 0
 
-
+      
     }
   }
 }

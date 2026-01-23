@@ -13,20 +13,6 @@ export class LabmanagementService {
 
   
 
-  CreateReportDiscpathform(): FormGroup {
-      return this._formBuilder.group({
-        UnitId:0,
-        LabId:0,
-        Service:true,
-        SGPT:true,
-        Remark:'',
-        DispatchBranch:'',
-        DueAmt:0,
-        Mode:0
-        // fromDate: [(new Date()).toISOString()],
-        // enddate: [(new Date()).toISOString()],
-      });
-    }
 
     CreateSMSform(): FormGroup {
       return this._formBuilder.group({
@@ -41,12 +27,20 @@ export class LabmanagementService {
     CreateEmailform(): FormGroup {
       return this._formBuilder.group({
         EmailId:0,
-       DoctorId:0,
+         DoctorId:0,
       
         Remark:'',
         Status:true
       
       });
+    }
+
+    
+
+      public ReportDispatchInsert(Param: any) {
+        if (Param.dispatchId) {
+            return this._httpClient.PutData("PathDispatchReportHistory/", Param);
+        } else return this._httpClient.PostData("PathDispatchReportHistory", Param)
     }
 }
 

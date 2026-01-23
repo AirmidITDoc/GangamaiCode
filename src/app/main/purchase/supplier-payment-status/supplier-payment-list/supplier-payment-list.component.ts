@@ -14,6 +14,7 @@ import { ToastrService } from 'ngx-toastr';
 import { SupplierPaymentStatusService } from '../supplier-payment-status.service';
 import { FormGroup } from '@angular/forms';
 import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
+import { PrintserviceService } from 'app/main/shared/services/printservice.service';
 
 @Component({
   selector: 'app-supplier-payment-list',
@@ -23,17 +24,7 @@ import { PdfviewerComponent } from 'app/main/pdfviewer/pdfviewer.component';
   animations: fuseAnimations,
 })
 export class SupplierPaymentListComponent implements OnInit {
-  // displayedColumns = [
-  //   'SupPayNo',
-  //   'Date',
-  //   'SupplierName',
-  //   'TotalAmount',
-  //   'CashPayAmt',
-  //   'ChequePayAmt',
-  //   'UserName',
-  //   'PartyReceipt',
-  //   'action',
-  // ];
+ 
 
   SupplierListForm: FormGroup;
   isSupplierSelected: boolean = false;
@@ -60,7 +51,7 @@ export class SupplierPaymentListComponent implements OnInit {
     public datePipe: DatePipe,
     private _loggedService: AuthenticationService,
     private accountService: AuthenticationService,
-    public toastr: ToastrService,
+    public toastr: ToastrService, private commonService: PrintserviceService,
   ) { }
 
   ngOnInit(): void {
@@ -108,11 +99,7 @@ export class SupplierPaymentListComponent implements OnInit {
   }
 
   selectChangeSupplier(obj: any) {
-    // if (!obj || obj.text === null || obj.text === undefined || obj.text === 0 || obj.text === '') {
-    //   this.supplierN = "%";
-    // } else {
-    //   this.supplierN = obj.text;
-    // }
+   
     if (obj.value !== 0)
       this.SupplierID = obj.value
     else
@@ -123,46 +110,50 @@ export class SupplierPaymentListComponent implements OnInit {
     this._matDialog.closeAll();
   }
 
-  viewgetReportPdf(element) {
-    let fromDate = this.datePipe.transform(this.SupplierListForm.get('start').value, "yyyy-MM-dd")
-    let toDate = this.datePipe.transform(this.SupplierListForm.get('end').value, "yyyy-MM-dd")
-    var Param = {
-      "searchFields": [
-        {
-          "fieldName": "FromDate",
-          "fieldValue": fromDate,
-          "opType": "Equals"
-        },
-        {
-          "fieldName": "ToDate",
-          "fieldValue": toDate,
-          "opType": "Equals"
-        },
-        {
-          "fieldName": "SupplierId",
-          "fieldValue": String(element.supplierId),
-          "opType": "Equals"
-        },
-      ],
-      "mode": "SupplierPaymentReciept"
+    viewgetReportPdf(element) {
+        this.commonService.Onprint("SupPayId", element, "SupplierPaymentRecieptByPayment");
     }
-    this._SupplierPaymentStatusService.getReportView(Param).subscribe(res => {
 
-      const matDialog = this._matDialog.open(PdfviewerComponent,
-        {
-          maxWidth: "85vw",
-          height: '750px',
-          width: '100%',
-          data: {
-            base64: res["base64"] as string,
-            title: "OpeningBalance" + " " + "Viewer"
-          }
-        });
-      matDialog.afterClosed().subscribe(result => {
-      });
-    });
+  // viewgetReportPdf(element) {
+  //   let fromDate = this.datePipe.transform(this.SupplierListForm.get('start').value, "yyyy-MM-dd")
+  //   let toDate = this.datePipe.transform(this.SupplierListForm.get('end').value, "yyyy-MM-dd")
+  //   var Param = {
+  //     "searchFields": [
+  //       {
+  //         "fieldName": "FromDate",
+  //         "fieldValue": fromDate,
+  //         "opType": "Equals"
+  //       },
+  //       {
+  //         "fieldName": "ToDate",
+  //         "fieldValue": toDate,
+  //         "opType": "Equals"
+  //       },
+  //       {
+  //         "fieldName": "SupplierId",
+  //         "fieldValue": String(element.supplierId),
+  //         "opType": "Equals"
+  //       },
+  //     ],
+  //     "mode": "SupplierPaymentReciept"
+  //   }
+  //   this._SupplierPaymentStatusService.getReportView(Param).subscribe(res => {
 
-  }
+  //     const matDialog = this._matDialog.open(PdfviewerComponent,
+  //       {
+  //         maxWidth: "85vw",
+  //         height: '750px',
+  //         width: '100%',
+  //         data: {
+  //           base64: res["base64"] as string,
+  //           title: "Supplier Payment " + " " + "Viewer"
+  //         }
+  //       });
+  //     matDialog.afterClosed().subscribe(result => {
+  //     });
+  //   });
+
+  // }
 }
 
 export class SupplierPayStatusList {

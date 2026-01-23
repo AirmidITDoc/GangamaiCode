@@ -1,4 +1,4 @@
-import { Component, Inject, ViewEncapsulation } from '@angular/core';
+import { Component, Inject, ViewChild, ViewEncapsulation } from '@angular/core';
 import { LabmanagementService } from '../labmanagement.service';
 import { Overlay, ToastrService } from 'ngx-toastr';
 import { AuthenticationService } from 'app/core/services/authentication.service';
@@ -8,66 +8,92 @@ import { PrintserviceService } from 'app/main/shared/services/printservice.servi
 import { DatePipe } from '@angular/common';
 import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { gridModel, OperatorComparer } from 'app/core/models/gridRequest';
-import { FormGroup } from '@angular/forms';
+import { FormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { LabPatientList } from '../lab-patient-reg/lab-patient-reg.component';
 import { fuseAnimations } from '@fuse/animations';
+import { AirmidTableComponent } from 'app/main/shared/componets/airmid-table/airmid-table.component';
 
 @Component({
   selector: 'app-report-dispatch',
   templateUrl: './report-dispatch.component.html',
   styleUrls: ['./report-dispatch.component.scss'],
-    encapsulation: ViewEncapsulation.None,
-    animations: fuseAnimations,
+  encapsulation: ViewEncapsulation.None,
+  animations: fuseAnimations,
 })
 export class ReportDispatchComponent {
 
   fromDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
   toDate = this.datePipe.transform(new Date().toISOString(), "yyyy-MM-dd")
-  myReportFilterform: FormGroup
+  myReportform: FormGroup
   autocompleteModehospital: string = "Hospital";
-  Remark:any=''
-  dateTimeObj:any
-  LabId=0
-  DueAmt=0
- screenFromString = 'Common-form';
-  Personaldata=new LabPatientList({})
+  autocompleteModedispatch: string = "LabDispatchModeList";
+
+  Remark: any = ''
+  dateTimeObj: any
+  LabId = 0
+  UnitId = this._accountService.currentUserValue.user.unitId
+  DueAmt = 0
+  ModeId = "0"
+  screenFromString = 'Common-form';
+
+    @ViewChild('Grid', { static: false }) grid: AirmidTableComponent;
+    
+  Personaldata = new LabPatientList({})
   constructor(public _LabmanagementService: LabmanagementService, public _matDialog: MatDialog,
     public toastr: ToastrService, public datePipe: DatePipe,
     private commonService: PrintserviceService, @Inject(MAT_DIALOG_DATA) public data: any,
     public _ConfigService: ConfigService,
     public _accountService: AuthenticationService,
-    public _whatsppService: WhatsAppEmailService,
+    public _whatsppService: WhatsAppEmailService, private _formBuilder: UntypedFormBuilder,
     private overlay: Overlay
   ) { }
 
   ngOnInit(): void {
     if (this.data) {
       this.Personaldata = this.data;
-      this.LabId=this.Personaldata.labPatientId
-         this.DueAmt=this.Personaldata.balanceAmt
-      console.log( this.Personaldata)
+       console.log(this.Personaldata)
+      this.LabId = this.Personaldata.labPatientId
+      this.DueAmt = this.Personaldata.balanceAmt
+     this.ModeId=this.Personaldata.dispatchModeId
+     
     }
-    this.myReportFilterform = this._LabmanagementService.CreateReportDiscpathform()
+    this.myReportform = this.CreateReportDiscpathform()
+    if( this.LabId)
+     this.getfilterReporthistory()
+  }
+
+
+  CreateReportDiscpathform(): FormGroup {
+    return this._formBuilder.group({
+      dispatchId: [0, [
+        Validators.required]],
+      labPatientId: [this.LabId, [
+        Validators.required]],
+      unitId: [this._accountService.currentUserValue.user.unitId, [Validators.required]],
+      dispatchModeId: [this.ModeId, [Validators.required]],
+      comments: "",
+      dispatchBy: this._accountService.currentUserValue.userId,
+      dispatchOn: this.datePipe.transform(new Date(), "yyyy-MM-dd"),
+      // DispatchBranch:0,
+      // DueAmt:0,
+      Service: true
+    });
   }
 
   allReportfilters = [
-    { fieldName: "From_Dt", fieldValue: this.fromDate, opType: OperatorComparer.Equals },
-    { fieldName: "To_Dt", fieldValue: this.toDate, opType: OperatorComparer.Equals }
+   { fieldName: "LabPatientId", fieldValue: String(this.LabId), opType: OperatorComparer.Equals }
 
   ];
-
+  
   allReportcolumns = [
-    { heading: "Service Name", key: "billDate", sort: true, align: 'left', emptySign: 'NA', width: 120, type: 6 },
-    { heading: "Dispatch Mode", key: "cashCounterName", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "Courier/Phlebo/PickUp", key: "netPayableAmt", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "POD No", key: "cashPayAmount", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "Remarks", key: "chequePayAmount", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "Unit Name", key: "unitId", sort: true, align: 'left', emptySign: 'NA', width: 120, type: 6 },
+    { heading: "Dispatch Mode", key: "dispatchModeId", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "Dispatch By", key: "dispatchBy", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "Dispatch On", key: "dispatchOn", sort: true, align: 'left', emptySign: 'NA',type:6 },
 
-    { heading: "Due Amount", key: "advanceUsedAmount", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "Approved On", key: "cashPayAmount1", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "Dispatch By", key: "chequePayAmount1", sort: true, align: 'left', emptySign: 'NA' },
-
-    { heading: "Dispatch On", key: "advanceUsedAmount1", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "Created By", key: "createdBy", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "Created Date", key: "createdDate", sort: true, align: 'left', emptySign: 'NA',type:6  },
+    { heading: "Remarks", key: "comments", sort: true, align: 'left', emptySign: 'NA' },
 
 
   ];
@@ -75,17 +101,50 @@ export class ReportDispatchComponent {
 
   gridConfigReportdispatch: gridModel = {
 
-    apiUrl: "Tally/TallyOPBillCashCounterList",
+    apiUrl: "PathDispatchReportHistory/List",
     columnsList: this.allReportcolumns,
-    sortField: "BillDate",
+    sortField: "DispatchId",
     sortOrder: 0,
     filters: this.allReportfilters
   }
 
 
+  
+    getfilterReporthistory() {
+
+        this.gridConfigReportdispatch = {
+            apiUrl: "PathDispatchReportHistory/List",
+            columnsList: this.allReportcolumns,
+            sortField: "DispatchId",
+            sortOrder: 0,
+            filters: [ { fieldName: "LabPatientId", fieldValue: String(this.LabId), opType: OperatorComparer.Equals }
+
+            ]
+        }
+        debugger
+        this.grid.gridConfig = this.gridConfigReportdispatch;
+        this.grid.bindGridData();
+    }
   getDateTime(dateTimeObj) {
     this.dateTimeObj = dateTimeObj;
   }
+
+  getSelectedObjMode(obj) {
+    {
+
+      // this.ModeId=obj
+      console.log("Mode data:", obj)
+    }
+  }
+
+  getSelectedObjunit(obj) {
+    {
+
+      this.UnitId = obj
+      console.log("Unit data:", obj)
+    }
+  }
+
   getValidationMessages() {
     return {
       UnitId: [
@@ -103,12 +162,46 @@ export class ReportDispatchComponent {
       DueAmt: [
         { name: "required", Message: "DueAmt is required" }
       ],
-       Remark: [
+      Remark: [
         { name: "required", Message: "Remark is required" }
       ],
     };
   }
-  onSubmit() { }
+  onSubmit() {
+    if (!this.myReportform.invalid) {
+      console.log(this.myReportform.value)
+
+      // this.myReportform.removeControl('DispatchBranch')
+      //   this.myReportform.removeControl('DueAmt')
+      this.myReportform.removeControl('Service')
+
+      this.myReportform.get('unitId').setValue(parseInt(this.myReportform.get('unitId').value))
+      this.myReportform.get('dispatchModeId').setValue(parseInt(this.myReportform.get('dispatchModeId').value))
+
+      console.log(this.myReportform.value)
+
+      this._LabmanagementService.ReportDispatchInsert(this.myReportform.value).subscribe((response) => {
+        console.log(response)
+        this._matDialog.closeAll();
+      });
+    } else {
+      let invalidFields = [];
+
+      if (this.myReportform.invalid) {
+        for (const controlName in this.myReportform.controls) {
+          if (this.myReportform.controls[controlName].invalid) {
+            invalidFields.push(`Report Dispatch  Form: ${controlName}`);
+          }
+        }
+      }
+      if (invalidFields.length > 0) {
+        invalidFields.forEach(field => {
+          this.toastr.warning(`Field "${field}" is invalid.`, 'Warning',
+          );
+        });
+      }
+    }
+  }
 
   onClose() { }
 }
