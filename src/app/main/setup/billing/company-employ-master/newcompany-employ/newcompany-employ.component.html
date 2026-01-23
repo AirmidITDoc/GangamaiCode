@@ -44,20 +44,20 @@
 
                         <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                             <airmid-textbox label="First Name" formControlName="firstName"
-                                [value]="registerObj.firstName" [formGroup]="personalFormGroup"
+                                [value]="registerObj.firstName ?? ''" [formGroup]="personalFormGroup"
                                 [validations]="getValidationMessages().firstName" [maxLength]="100">
                             </airmid-textbox>
                         </div>
 
                         <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                             <airmid-textbox label="Middle Name" formControlName="middleName"
-                                [value]="registerObj.middleName" [formGroup]="personalFormGroup"
+                                [value]="registerObj.middleName ?? ''" [formGroup]="personalFormGroup"
                                 [validations]="getValidationMessages().middleName" [maxLength]="100">
                             </airmid-textbox>
                         </div>
 
                         <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                            <airmid-textbox label="Last Name" formControlName="lastName" [value]="registerObj.lastName"
+                            <airmid-textbox label="Last Name" formControlName="lastName" [value]="registerObj.lastName ?? ''"
                                 [formGroup]="personalFormGroup" [validations]="getValidationMessages().lastName"
                                 [maxLength]="100">
                             </airmid-textbox>
@@ -72,13 +72,13 @@
 
                         <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                             <airmid-textbox label="Email Address" formControlName="emailid"
-                                [value]="registerObj.emailid" [formGroup]="personalFormGroup">
+                                [value]="registerObj.emailId ?? ''" [formGroup]="personalFormGroup">
                             </airmid-textbox>
                         </div>
 
                         <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                             <airmid-textbox label="Address" formControlName="address"
-                                [value]="registerObj.address" [formGroup]="personalFormGroup">
+                                [value]="registerObj.address ?? ''" [formGroup]="personalFormGroup">
                             </airmid-textbox>
                         </div>
 

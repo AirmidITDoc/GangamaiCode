@@ -330,24 +330,24 @@ export class MedicalrecordComponent implements OnInit {
   }
 
   getGastroPrint(element) {
-    // Swal.fire({
-    //   title: 'Select Report Format',
-    //   text: "Choose how you want to view the report:",
-    //   icon: "warning",
-    //   showDenyButton: true,
-    //   showCancelButton: true,
-    //   confirmButtonColor: "#3085d6",
-    //   denyButtonColor: "#6c757d",
-    //   cancelButtonColor: "#d33",
-    //   confirmButtonText: "With Header",
-    //   denyButtonText: "Without Header",
-    // }).then((result) => {
-    //   if (result.isConfirmed) {
-    //     this.OnViewReportPdf(element, true);
-    //   } else if (result.isDenied) {
-        this.OnViewReportPdf1(element);
-    //   }
-    // });
+    Swal.fire({
+      title: 'Select Report Format',
+      text: "Choose how you want to view the report:",
+      icon: "warning",
+      showDenyButton: true,
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      denyButtonColor: "#6c757d",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "With Header",
+      denyButtonText: "Without Header",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.OnViewReportGastrologywithHeaderPdf(element);
+      } else if (result.isDenied) {
+        this.OnViewReportGastrologywithoutHeaderPdf(element);
+      }
+    });
   }
 
   OnViewReportPdf(element: any, withHeader: boolean) {
@@ -363,8 +363,11 @@ export class MedicalrecordComponent implements OnInit {
     }
   }
 
-  OnViewReportPdf1(element: any) {
+  OnViewReportGastrologywithHeaderPdf(element: any) {
     this.commonService.Onprint("VisitId", element.visitId, "OPGastrologyPrescription");
+  }
+  OnViewReportGastrologywithoutHeaderPdf(element: any) {
+    this.commonService.Onprint("VisitId", element.visitId, "OPGastrologyPrescriptionWithoutHeader");
   }
 
   // OnViewReportPdf(element: any, withHeader: boolean) {

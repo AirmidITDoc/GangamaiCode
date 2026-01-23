@@ -36,15 +36,9 @@ export class CompanyMasterService {
             companyName: ['', [Validators.required, Validators.maxLength(50),
             // Validators.pattern('^[a-zA-Z0-9 ]*$'),
             this._FormvalidationserviceService.allowEmptyStringValidator()]],
-            serviceId: [0, [this._FormvalidationserviceService.onlyNumberValidator()]],
-
             companyShortName: ['', [Validators.required, Validators.maxLength(50),
                 // Validators.pattern('^[a-zA-Z0-9 ]*$')
             ]],
-            // tariffId: [0, [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
-            companyCode: ['', [Validators.maxLength(50),
-            //  Validators.pattern('^[a-zA-Z0-9 ]*$'),
-            this._FormvalidationserviceService.allowEmptyStringValidator()]],
 
             address: ['', [Validators.required, Validators.maxLength(100), this._FormvalidationserviceService.allowEmptyStringValidator()]],
 
@@ -57,12 +51,6 @@ export class CompanyMasterService {
             contactPerson: ['', [Validators.maxLength(50),
                 //  Validators.pattern('^[a-zA-Z0-9 ]*$')
             ]],
-            companyServicePrint: ['', [Validators.maxLength(50), Validators.pattern('^[a-zA-Z0-9 ]*$'),
-            this._FormvalidationserviceService.allowEmptyStringValidator()]],
-            inInclusionOrExclusion: [0],
-
-            // designation: ['', [Validators.maxLength(50), Validators.pattern('^[a-zA-Z0-9 ]*$'),
-            // this._FormvalidationserviceService.allowEmptyStringValidator()]],
 
             phoneNo: ["", [Validators.required, Validators.pattern("^[- +()]*[0-9][- +()0-9]*$"), Validators.minLength(10),
             Validators.maxLength(10)]],
@@ -86,14 +74,18 @@ export class CompanyMasterService {
             Validators.minLength(maxLen),
             Validators.maxLength(maxLen)  //, Validators.pattern("^[0-9]*$")
             ]],
-            faxNo: [" ", [Validators.required, Validators.maxLength(10)]],
+            faxNo: ["0"],
             traiffId: ["", [Validators.required, this._FormvalidationserviceService.notEmptyOrZeroValidator()]],
             creditDays: [0],
 
             loginWebsiteUser: "",
             loginWebsitePassword: "",
             dayWiseCredit: 0,
-             mAssignCompany: ['', [Validators.required]],
+            mCompanyExecutiveInfos: [{
+                id: 0,
+                companyId: 0,
+                employeId: 0
+            }, [Validators.required]],
         });
     }
     createSearchForm(): FormGroup {
@@ -156,8 +148,8 @@ export class CompanyMasterService {
 
     public companyMasterSave(Param: any) {
         if (Param.companyId) {
-            return this._httpClient.PutData("CompanyMaster/" + Param.companyId, Param);
-        } else return this._httpClient.PostData("CompanyMaster", Param);
+            return this._httpClient.PutData("CompanyMaster/Edit/" + Param.companyId, Param);
+        } else return this._httpClient.PostData("CompanyMaster/InsertEDMX", Param);
     }
 
     public deactivateTheStatus(m_data) {
@@ -166,6 +158,9 @@ export class CompanyMasterService {
 
     getCompanyById(companyId: any) {
         return this._httpClient.GetData("CompanyMaster/" + companyId);
+    }
+    getCompanyExecuById(companyId: any) {
+        return this._httpClient.GetData("CompanyExecutiveInfo/" + companyId);
     }
     public getstateId(Id) {
         return this._httpClient.GetData("StateMaster/" + Id);
@@ -203,6 +198,9 @@ export class CompanyMasterService {
             return this._httpClient.PutData("CompanyMaster/CompanyWiseServiceDiscount/" + Param.compServiceDetailId, Param);
         } else
             return this._httpClient.PostData("CompanyMaster/CompanyWiseServiceDiscount", Param);
+    }
+    public getempList(employee) {
+        return this._httpClient.PostData("CompanyMaster/CompanyExecutiveInfoList", employee);
     }
 
 

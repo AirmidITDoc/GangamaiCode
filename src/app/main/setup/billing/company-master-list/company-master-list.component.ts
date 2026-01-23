@@ -51,7 +51,7 @@ IsAdd: boolean = this.permissionService.getPermission(permissionCodes.CompanyMas
         { heading: "Pin No", key: "pinNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "Mobile No", key: "phoneNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "Contact Person", key: "contactPerson", sort: true, align: 'left', emptySign: 'NA', width: 150 },
-        { heading: "Phone No", key: "contactNumber", sort: true, align: 'left', emptySign: 'NA', width: 100 },
+        { heading: "Contact Person No", key: "contactNumber", sort: true, align: 'left', emptySign: 'NA', width: 100 },
         { heading: "EmailId", key: "emailId", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "Website", key: "website", sort: true, align: 'left', emptySign: 'NA', width: 150 },
         { heading: "PAN No", key: "panNo", sort: true, align: 'left', emptySign: 'NA', width: 150 },
@@ -248,7 +248,7 @@ export class CompanyMaster {
     CompanyName: string;
     isSubCompany: any;
     dayWiseCredit:any;
-    mAssignCompany:any;
+    mCompanyExecutiveInfos:any;
     /**
    * Constructor
    *
@@ -295,7 +295,7 @@ export class CompanyMaster {
             this.TypeName = CompanyMaster.TypeName || "";
             this.CompanyName = CompanyMaster.CompanyName || "";
             this.isSubCompany = CompanyMaster.isSubCompany || 0;
-            this.mAssignCompany = CompanyMaster.mAssignCompany || ''
+            this.mCompanyExecutiveInfos = CompanyMaster.mCompanyExecutiveInfos || ''
         }
     }
 }

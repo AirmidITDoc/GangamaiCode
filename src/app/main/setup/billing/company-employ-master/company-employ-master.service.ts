@@ -84,7 +84,7 @@ export class CompanyEmployMasterService {
     return this._httpClient1.DeleteData("CompanyEmployeInfo?Id=" + m_data.toString());
   }
 
-  public bankMasterSave(Param: any) {
+  public companyEmpSave(Param: any) {
     if (Param.executiveId) {
       return this._httpClient1.PutData("CompanyEmployeInfo/" + Param.executiveId, Param);
     } else return this._httpClient1.PostData("CompanyEmployeInfo", Param);

@@ -627,21 +627,11 @@ export class GastrologyEmrComponent {
       this.casePaperInsertForm.get(['visitDetails', 'followupDate'])?.setValue(this.MedicineItemForm.get('start')?.value);
       console.log('form:', this.casePaperInsertForm.value)
       this._CasepaperService.onSaveCasepaper(this.casePaperInsertForm.value).subscribe(response => {
-        
-        debugger
-        const [PrescriptionA5_Print, Prescription_Print] = this._ConfigService.configParams.OPEmrPrescriptionA5.split(":");
-        this.OnViewReportPdf1(this.VisitId)
-        // if (PrescriptionA5_Print != 1) {
-        //   if (this.caseFormGroup.get("LetteHeadRadio").value == 'LetterHead')
-        //     this.OnViewReportWithHeaderPdf(this.VisitId)
-        //   else
-        //     this.OnViewReportWithoutHeaderPdf(this.VisitId)
-        // } else {
-        //   if (this.caseFormGroup.get("LetteHeadRadio").value == 'LetterHead')
-        //     this.OnViewReportWithHeaderA5Pdf(this.VisitId)
-        //   else
-        //     this.OnViewReportWithoutHeaderA5Pdf(this.VisitId)
-        // }
+
+        if (this.caseFormGroup.get("LetteHeadRadio").value == 'LetterHead')
+          this.OnViewReportWithHeaderPdf(this.VisitId)
+        else
+          this.OnViewReportWithoutHeaderPdf(this.VisitId)
 
         this.getWhatsappshareSales(this.vOPIPId, this.vMobileNo)
         this.onClear();
@@ -681,10 +671,6 @@ export class GastrologyEmrComponent {
       }
     }
 
-  }
-
-   OnViewReportPdf1(element: any) {
-    this.commonService.Onprint("VisitId", element, "OPGastrologyPrescription");
   }
 
   getDateTime(dateTimeObj) {
@@ -1428,11 +1414,10 @@ export class GastrologyEmrComponent {
   }
 
   OnViewReportWithHeaderPdf(element: any) {
-
-    this.commonService.Onprint("VisitId", element, "OPPrescription");
+    this.commonService.Onprint("VisitId", element, "OPGastrologyPrescription");
   }
   OnViewReportWithoutHeaderPdf(element: any) {
-    this.commonService.Onprint("VisitId", element, "OPPrescriptionwithoutHeader");
+    this.commonService.Onprint("VisitId", element, "OPGastrologyPrescriptionWithoutHeader");
   }
 
   OnViewReportWithHeaderA5Pdf(element: any) {
@@ -2355,7 +2340,7 @@ export class GastrologyEmrComponent {
   }
 
   @ViewChild('quesPaginator') quesPaginator!: MatPaginator;
-@ViewChild('quesSort') quesSort!: MatSort;
+  @ViewChild('quesSort') quesSort!: MatSort;
   getQuesResultList(data) {
     // debugger
     let opipID = data
