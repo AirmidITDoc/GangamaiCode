@@ -402,7 +402,7 @@ export class NewPrescriptionreturnComponent implements OnInit {
         this.saleSelectedDatasource.data = [];
         this.Chargelist.push(
           {
-            ItemID: this.ItemId || 0,
+            ItemID: this.ItemId || 0, 
             ItemName: this.itemName || '',
             BatchNo: this.BatchNo || '',
             Qty: this.ItemSubform.get('Qty').value || this.Qty,

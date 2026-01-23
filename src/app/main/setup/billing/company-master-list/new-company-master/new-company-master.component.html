@@ -80,7 +80,7 @@
                   </airmid-textbox>
                 </div>
                 <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                  <airmid-textbox label="Mobbile No" formControlName="faxNo" fxFlex [value]="registerObj?.faxNo"
+                  <airmid-textbox label="Fax No" formControlName="faxNo" fxFlex [value]="registerObj?.faxNo"
                     [formGroup]="companyFormDemo" [maxLength]="10">
                   </airmid-textbox>
                 </div>
@@ -140,7 +140,7 @@
                         [maxLength]="10">
                       </airmid-textbox>
                     </div>
-                  <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
+                    <div fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="33%">
 
                       <airmid-textbox label="Email ID" formControlName="emailId" fxFlex [formGroup]="companyFormDemo"
                         [value]="registerObj?.emailId" [validations]="getValidationMessages().phoneNo">
@@ -148,6 +148,24 @@
 
                     </div>
 
+                  </div>
+                  <div fxLayout="row wrap" fxLayoutGap="12px 0px grid">
+
+                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="100%">
+                      <airmid-dropdown label="Company Representative" formControlName="mCompanyExecutiveInfos"
+                        [formGroup]="companyFormDemo" [IsMultiPle]="true"
+                        #ddlCompanyExec ValueField="executiveId" TextField="fullName"
+                        ApiUrl="CompanyEmployeInfo/get-employe" [ReqFullObj]="true">
+                      </airmid-dropdown>
+                    </div>
+
+                    <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="100%">
+                      <mat-chip-listbox #chipList>
+                        <mat-chip *ngFor="let item of companyFormDemo.value.mCompanyExecutiveInfos">
+                          {{ item.fullName }} <mat-icon (click)="removeCompanyEmp(item)">close</mat-icon>
+                        </mat-chip>
+                      </mat-chip-listbox>
+                    </div>
                   </div>
 
                 </mat-card-content>
@@ -210,13 +228,14 @@
 
                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
                       <airmid-textbox label="Credit Days" formControlName="creditDays" fxFlex
-                        [formGroup]="companyFormDemo"   [value]="registerObj?.creditDays"
+                        [formGroup]="companyFormDemo" [value]="registerObj?.creditDays"
                         (keypress)="keyPressAlphanumeric($event)">
                       </airmid-textbox>
                     </div>
                     <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                      <airmid-textbox label="FAdministrative Charges %" fxFlex [value]="registerObj?.adminCharges"  (keypress)="keyPressAlphanumeric($event)"
-                        formControlName="adminCharges" [formGroup]="companyFormDemo" [maxLength]="5">
+                      <airmid-textbox label="FAdministrative Charges %" fxFlex [value]="registerObj?.adminCharges"
+                        (keypress)="keyPressAlphanumeric($event)" formControlName="adminCharges"
+                        [formGroup]="companyFormDemo" [maxLength]="5">
                       </airmid-textbox>
                     </div>
 
@@ -235,17 +254,17 @@
                       </airmid-dropdown>
                     </div>
 
-                      <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
-                        <airmid-textbox label="Day wise Credit" formControlName="dayWiseCredit" fxFlex [formGroup]="companyFormDemo"
-                           [value]="registerObj?.dayWiseCredit"
-                           (keypress)="keyPressDigitDecimalOnly($event)" >
-                        </airmid-textbox>
-                        <!--  -->
-                      </div> 
+                    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%">
+                      <airmid-textbox label="Day wise Credit" formControlName="dayWiseCredit" fxFlex
+                        [formGroup]="companyFormDemo" [value]="registerObj?.dayWiseCredit"
+                        (keypress)="keyPressDigitDecimalOnly($event)">
+                      </airmid-textbox>
+                      <!--  -->
+                    </div>
 
                   </div>
 
-               
+
                 </mat-card-content>
               </mat-card>
             </form>
@@ -255,7 +274,8 @@
           <div class="new-appointment-actions gap-8 mt-12" fxLayout="row" fxLayoutAlign="space-between">
 
             <div fxLayout="row" style="padding-left: 10px;" fxFlex="20%">
-              <app-airmid-slider label="Sub Company" formControlName="isSubCompany" [formGroup]="companyFormDemo" [value]="registerObj?.isSubCompany">
+              <app-airmid-slider label="Sub Company" formControlName="isSubCompany" [formGroup]="companyFormDemo"
+                [value]="registerObj?.isSubCompany">
               </app-airmid-slider>
 
             </div>

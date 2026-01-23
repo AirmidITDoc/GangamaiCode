@@ -51,12 +51,12 @@ export class NewcompanyEmployComponent {
     this.personalFormGroup = this._companyEmpService.createPesonalForm1();
     this.personalFormGroup.markAllAsTouched();
 
-    if ((this.data?.regId ?? 0) > 0) {
+    if ((this.data?.executiveId ?? 0) > 0) {
       this.isActive = this.data.isActive
       setTimeout(() => {
-        // this._companyEmpService.getCompanyEmpById(this.data.regId).subscribe((response) => {
-        //   this.registerObj = response;
-        // });
+        this._companyEmpService.getCompanyEmpById(this.data.executiveId).subscribe((response) => {
+          this.registerObj = response;
+        });
       }, 500);
     }
   }
@@ -64,10 +64,11 @@ export class NewcompanyEmployComponent {
   onSubmit() {
     if (!this.personalFormGroup.invalid) {
       this.personalFormGroup.removeControl('isActive')
+      this.personalFormGroup.get('executiveId').setValue(this.data.executiveId ?? 0)
       console.log(this.personalFormGroup.value)
-      // this._companyEmpService.bankMasterSave(this.personalFormGroup.value).subscribe((response) => {
-      //   this.onClose();
-      // });
+      this._companyEmpService.companyEmpSave(this.personalFormGroup.value).subscribe((response) => {
+        this.onClose();
+      });
     } {
       let invalidFields = [];
       if (this.personalFormGroup.invalid) {

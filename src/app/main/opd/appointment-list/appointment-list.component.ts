@@ -352,7 +352,7 @@ export class AppointmentListComponent implements OnInit {
         });
     }
 
-        onEdit(row) {
+    onEdit(row) {
         const buttonElement = document.activeElement as HTMLElement; // Get the currently focused element
         buttonElement.blur(); // Remove focus from the button
 
@@ -581,7 +581,7 @@ export class AppointmentListComponent implements OnInit {
             });
         }, 100);
     }
-        OnPaitentDraftPrint(element) { 
+    OnPaitentDraftPrint(element) {
         setTimeout(() => {
             let param = {
                 "searchFields": [
@@ -864,8 +864,32 @@ export class AppointmentListComponent implements OnInit {
         console.log('Third action clicked for:', element);
     }
 
-    OnViewReportPdf1(element: any) {
+    OnViewReportGastrologywithHeaderPdf(element: any) {
         this.commonService.Onprint("VisitId", element.visitId, "OPGastrologyPrescription");
+    }
+    OnViewReportGastrologywithoutHeaderPdf(element: any) {
+        this.commonService.Onprint("VisitId", element.visitId, "OPGastrologyPrescriptionWithoutHeader");
+    }
+
+    getGastroPrint(element) {
+        Swal.fire({
+            title: 'Select Report Format',
+            text: "Choose how you want to view the report:",
+            icon: "warning",
+            showDenyButton: true,
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            denyButtonColor: "#6c757d",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "With Header",
+            denyButtonText: "Without Header",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                this.OnViewReportGastrologywithHeaderPdf(element);
+            } else if (result.isDenied) {
+                this.OnViewReportGastrologywithoutHeaderPdf(element);
+            }
+        });
     }
 
     AppointmentCancle(contact) {

@@ -53,12 +53,14 @@ export class CompanyEmployMasterComponent {
   @ViewChild('actionButtonTemplate') actionButtonTemplate!: TemplateRef<any>;
 
   allcolumns = [
-    { heading: "Patient Name", key: "patientName", sort: true, align: 'left', emptySign: 'NA', width: 250 },
-    { heading: "Gender", key: "genderName", sort: true, align: 'left', emptySign: 'NA', },
+    { heading: "First Name", key: "firstName", sort: true, align: 'left', emptySign: 'NA', width: 180 },
+    { heading: "Last Name", key: "lastName", sort: true, align: 'left', emptySign: 'NA', width: 180 },
+    // { heading: "Gender", key: "genderName", sort: true, align: 'left', emptySign: 'NA', },
     { heading: "Mobile No", key: "mobileNo", sort: true, align: 'left', emptySign: 'NA' },
-    { heading: "EmailId", key: "emailid", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "EmailId", key: "emailId", sort: true, align: 'left', emptySign: 'NA' },
     { heading: "Adddress", key: "address", sort: true, align: 'left', emptySign: 'NA', width: 300 },
     { heading: "Added By", key: "createdBy", sort: true, align: 'left', emptySign: 'NA' },
+    { heading: "IsActive", key: "isActive", type: gridColumnTypes.status, align: "center" },
     {
       heading: "Action", key: "action", align: "right", type: gridColumnTypes.action, actions: [
         {
@@ -68,9 +70,9 @@ export class CompanyEmployMasterComponent {
 
         }, {
           action: gridActions.delete, visible: this.permissionService.getPermission(permissionCodes.CompanyRepresentative, permissionType.Delete), callback: (data: any) => {
-            // this._companyEmpService.deactivateTheStatus(data.executiveId).subscribe((response: any) => {
-            //   this.grid.bindGridData;
-            // });
+            this._companyEmpService.deactivateTheStatus(data.executiveId).subscribe((response: any) => {
+              this.grid.bindGridData;
+            });
           }
         }]
     }
@@ -81,11 +83,11 @@ export class CompanyEmployMasterComponent {
     permissionCode: permissionCodes.CompanyRepresentative,
     apiUrl: "CompanyEmployeInfo/List",
     columnsList: this.allcolumns,
-    sortField: "RegId",
+    sortField: "ExecutiveId",
     sortOrder: 0,
     filters: [
-      { fieldName: "FirstName", fieldValue: "%", opType: OperatorComparer.Contains },
-      { fieldName: "LastName", fieldValue: "%", opType: OperatorComparer.Contains },
+      { fieldName: "FirstName", fieldValue: "", opType: OperatorComparer.StartsWith },
+      { fieldName: "LastName", fieldValue: "", opType: OperatorComparer.StartsWith },
       // { fieldName: "MobileNo", fieldValue: "%", opType: OperatorComparer.Contains }
     ]
   }
@@ -120,7 +122,7 @@ export class RegInsert {
   mobileNo: string;
   cityId: number;
   companyId: any;
-  emailid: any;
+  emailId: any;
 
   /**
    * Constructor
@@ -140,7 +142,7 @@ export class RegInsert {
       this.mobileNo = RegInsert.mobileNo || '';
       this.cityId = RegInsert.cityId || 0;
       this.companyId = RegInsert.companyId || 0
-      this.emailid = RegInsert.emailid || ''
+      this.emailId = RegInsert.emailId || ''
 
     }
   }

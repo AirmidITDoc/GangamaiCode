@@ -526,24 +526,24 @@
                                                     </button>
 
                                                     <button mat-icon-button matTooltip="Verify"
-                                                        (click)="onVerify(element)" *ngIf="!element.isVerifyid">
+                                                        (click)="onVerify(contact)" *ngIf="!contact.isVerifyid">
                                                         <mat-icon>verified_user</mat-icon>
                                                     </button>
 
                                                     <button mat-icon-button
-                                                        [matTooltip]="'We send the mail on your registered MailID : ' + element?.emailId"
-                                                        matTooltipPosition="right" (click)="Onemail(element)"
-                                                        (mouseenter)="openEmailDetailsPopover($event, element)"
+                                                        [matTooltip]="'We send the mail on your registered MailID : ' + contact?.emailId"
+                                                        matTooltipPosition="right" (click)="Onemail(contact)"
+                                                        (mouseenter)="openEmailDetailsPopover($event, contact)"
                                                         (mouseleave)="closeEmailDetailsPopover()"
                                                         style="position: relative; cursor: pointer; text-decoration: underline; color: #667eea;">
                                                         <mat-icon>email</mat-icon>
                                                     </button>
 
                                                     <button mat-icon-button
-                                                        [matTooltip]="'We send the message on your registered WhatsApp number: ' + element?.mobileNo"
+                                                        [matTooltip]="'We send the message on your registered WhatsApp number: ' + contact?.mobileNo"
                                                         matTooltipPosition="right"
-                                                        (click)="getWhatsappshareReport(element)"
-                                                        (mouseenter)="openWhatsappDetailsPopover($event, element)"
+                                                        (click)="getWhatsappshareReport(contact)"
+                                                        (mouseenter)="openWhatsappDetailsPopover($event, contact)"
                                                         (mouseleave)="closeWhatsappDetailsPopover()"
                                                         style="position: relative; cursor: pointer; text-decoration: underline; color: #667eea;">
                                                         <img width="20" height="20"
