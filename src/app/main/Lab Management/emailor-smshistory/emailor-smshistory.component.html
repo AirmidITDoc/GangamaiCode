@@ -1,8 +1,8 @@
 <div class="page-layout simple inner-sidebar inner-scroll right-sidebar">
-    
+
     <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start">
 
-       <mat-tab label="Email List">
+        <mat-tab label="Email List">
 
             <div class="modal-body" fusePerfectScrollbar>
                 <div class="modal-body-container">
@@ -49,13 +49,11 @@
 
                                                 <div class="form-body">
                                                     <div fxLayout="row wrap" fxLayoutGap="5px 0px grid"
-                                                        style="padding-left: 10px;padding-right:10px;">
-
-
+                                                        style="padding-left: 10px;padding-right:10px;height: 50px;">
                                                         <div fxFlex="50" fxFlex.xs="100" fxFlex.sm="33">
 
-                                                            <airmid-textbox label="EmailId"
-                                                                formControlName="EmailId" [formGroup]="Emailform"
+                                                            <airmid-textbox label="EmailId" formControlName="EmailId"
+                                                                [formGroup]="Emailform"
                                                                 [validations]="getValidationMessages().EmailId"></airmid-textbox>
                                                         </div>
 
@@ -68,7 +66,7 @@
                                                         </div>
 
                                                     </div>
-                                                    <div style="height: 280px;">
+                                                    <div style="height:220px; overflow:auto;">
                                                         <airmid-table [gridConfig]="gridConfigSms1" class="content"
                                                             [ShowFilter]="false" [ShowButtons]="false">
                                                             <ng-container filters>
@@ -104,8 +102,7 @@
 
                         </div>
                         <div fxLayoutAlign="end">
-                            <div class="modal-footer-buttons" fxLayout="row" fxLayoutGap="5px"
-                                style="margin: 10px 10px 0px 10px; ">
+                            <div class="modal-footer-buttons" fxLayout="row" fxLayoutGap="5px">
 
                                 <button class="btn btn-primary" (click)="onSubmit()">Send Result
                                     Email</button>
@@ -128,7 +125,7 @@
                     <airmid-table [gridConfig]="gridConfigSms" class="content" [ShowFilter]="false"
                         [ShowButtons]="false">
                         <ng-container filters>
-                            
+
                         </ng-container>
                     </airmid-table>
                 </div>
@@ -262,7 +259,7 @@
                     <airmid-table [gridConfig]="gridConfigSms" class="content" [ShowFilter]="false"
                         [ShowButtons]="false" class="content h-250">
                         <ng-container filters>
-                            
+
                         </ng-container>
                     </airmid-table>
                 </div>

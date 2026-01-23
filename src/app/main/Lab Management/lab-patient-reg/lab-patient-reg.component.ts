@@ -200,7 +200,7 @@ export class LabPatientRegComponent {
     { heading: "Online Pay", key: "payTMAmount", sort: true, align: 'left', emptySign: 'NA', type: gridColumnTypes.amount, width: 100 },
     { heading: "AddedBy", key: "userName", sort: true, align: 'left', emptySign: 'NA' },
     {
-      heading: "Action", key: "action", align: "right", width: 190, sticky: true, type: gridColumnTypes.template,
+      heading: "Action", key: "action", align: "right", width: 210, sticky: true, type: gridColumnTypes.template,
       template: this.actionButtonTemplate
     }
   ]
