@@ -570,6 +570,8 @@ export class SalesHospitalKenyaComponent {
         this.ItemFormreset();
         this.saleSelectedDatasource.data = [];
         this.Itemchargeslist = [];
+        this.getDraftorderList();
+
     }
     getSelectedObjOP(obj) {
         console.log(obj);
@@ -593,6 +595,7 @@ export class SalesHospitalKenyaComponent {
             this.CreditReasonShow = true
         }
         this.saveflag = false;
+        this.getDraftorderList();
     }
 
     onItemChange(event: SalesItemModel): void {
@@ -1615,7 +1618,8 @@ export class SalesHospitalKenyaComponent {
             "sortOrder": 0,
             "filters": [
                 { "fieldName": "FromDate", "fieldValue": String(this.datePipe.transform(new Date(), 'yyyy-MM-dd')), "opType": "Equals" },
-                { "fieldName": "ToDate", "fieldValue": String(this.datePipe.transform(new Date(), 'yyyy-MM-dd')), "opType": "Equals" }
+                { "fieldName": "ToDate", "fieldValue": String(this.datePipe.transform(new Date(), 'yyyy-MM-dd')), "opType": "Equals" },
+                { "fieldName": "OPIPID", "fieldValue": String(this.OP_IP_Id || 0), "opType": "Equals" }
             ],
             "exportType": "JSON",
             "columns": [
@@ -1894,12 +1898,13 @@ export class SalesHospitalKenyaComponent {
             "sortOrder": 0,
             "filters": [
                 { "fieldName": "ItemId", "fieldValue": String(contact.itemId), "opType": "Contains" },
-                { "fieldName": "StoreId", "fieldValue": String(this._loggedService.currentUserValue.user.storeId), "opType": "Contains" }
+                { "fieldName": "StoreId", "fieldValue": String(this._loggedService.currentUserValue.user.storeId), "opType": "Contains" },
+                { "fieldName": "PatientTypeId", "fieldValue": String(this.PatientTypeId), "opType": "Contains" }
             ],
             "exportType": "JSON",
             "columns": [{ "data": "string", "name": "string" }]
         };
-        this._salesService.getDraftBillItemBalQty(m_data).subscribe((response) => {
+        this._salesService.getKenyaSalesBatchList(m_data).subscribe((response) => {
             console.log(response)
             const tempChargesList = response?.data || [];
             let qtyBalChk = 0;
