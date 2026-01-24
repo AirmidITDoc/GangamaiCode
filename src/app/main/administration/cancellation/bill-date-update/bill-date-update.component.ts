@@ -39,18 +39,19 @@ export class BillDateUpdateComponent implements OnInit {
     if (this.data.data) {
       console.log(this.data)
       
-      this.BillNo = this.data.data.BillNo;
+      this.BillNo = this.data.data.billNo || this.data.data.BillNo;
+
       this.AdvanceDetailId = this.data.data.advanceDetailID
-      this.RefundId = this.data.data.RefundId
+      this.RefundId = this.data.data.refundId
       this.SalesId = this.data.data.salesId
       this.PaymentId = this.data.data.paymentId
       this.SalesDate = this.data.data.date
       this.refundDate = this.data.data.refundDate
-      console.log(this.BillNo)
-      console.log(this.AdvanceDetailId)
-      console.log(this.RefundId)
-      console.log(this.SalesId)
-      console.log(this.PaymentId)
+      // console.log(this.BillNo)
+      // console.log(this.AdvanceDetailId)
+      // console.log(this.RefundId)
+      // console.log(this.SalesId)
+      // console.log(this.PaymentId)
     }
   }
   getDateTime(dateTimeObj) {
@@ -123,6 +124,17 @@ debugger
             this._matDialog.closeAll();
           });
 
+        } else if (this.SalesId && this.data.Id == 4) {//tpayBilledit
+          var data3 = {
+            "date": this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd"),
+            "time": formattedDate + this.dateTimeObj.time,
+            "salesId": this.SalesId
+          }
+          console.log(data3);
+          this._CancellationService.getDateTimeChangeSalesId(data3).subscribe(response => {
+            this._matDialog.closeAll();
+          });
+
         } else if (this.PaymentId && this.data.Id == 2) {
 
           const d1 = new Date(this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd")!);
@@ -156,6 +168,24 @@ debugger
             }
             console.log(data4);
             this._CancellationService.ChangeBillPaymentdate(data4).subscribe(response => {
+              this._matDialog.closeAll();
+            });
+          }
+        }else if (this.PaymentId && this.data.Id == 4) {
+
+          const d1 = new Date(this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd")!);
+          const d2 = new Date(this.SalesDate);
+          if (d1 < d2) {
+            Swal.fire("Enter Payment Date After Bill Date :" + this.datePipe.transform(this.SalesDate, "yyyy-MM-dd"))
+            return;
+          } else {
+            var data5 = {
+              "paymentDate": this.datePipe.transform(this.dateTimeObj.date, "yyyy-MM-dd"),
+              "paymentTime":  formattedDate + this.dateTimeObj.time,
+              "paymentId": this.PaymentId
+            }
+            console.log(data5);
+            this._CancellationService.TPaymentPharmacyDateTimeChange(data5).subscribe(response => {
               this._matDialog.closeAll();
             });
           }
